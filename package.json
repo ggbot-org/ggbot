@@ -5,8 +5,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "admin-webapp": "npm run dev --workspace admin-webapp",
+    "lint": "npm run lint --workspaces --if-present",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "workspaces": [
+    "admin-webapp"
+  ],
   "keywords": [],
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "license": "UNLICENSED"
