@@ -6,13 +6,25 @@
   "private": true,
   "scripts": {
     "admin-webapp": "npm run dev --workspace admin-webapp",
+    "build:aws": "npm run build --workspace aws",
+    "build:env": "npm run build --workspace env",
+    "build:models": "npm run build --workspace models",
     "lint": "npm run lint --workspaces --if-present",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild:aws": "run-s build:env build:models",
+    "prebuild:database": "run-s build:aws",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
   },
   "workspaces": [
-    "admin-webapp"
+    "admin-webapp",
+    "aws",
+    "env",
+    "models"
   ],
   "keywords": [],
   "author": "Gianluca Casati (http://fibo.github.io/)",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
 }

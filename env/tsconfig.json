@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "lib": ["dom", "es2015"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "target": "ESNext"
+  },
+  "include": ["./src/**/*.ts"]
+}
