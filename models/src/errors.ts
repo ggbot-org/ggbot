@@ -3,3 +3,9 @@ export class ErrorItemNotFound extends Error {
     super("ItemNotFound");
   }
 }
+
+export class ErrorItemNotValid extends Error {
+  constructor() {
+    super("ItemNotValid");
+  }
+}

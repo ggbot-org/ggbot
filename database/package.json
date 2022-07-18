@@ -14,7 +14,8 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/aws": "0.0.0"
+    "@ggbot2/aws": "file:aws",
+    "@ggbot2/models": "file:models"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

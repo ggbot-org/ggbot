@@ -1,9 +1,10 @@
 import { getObject } from "@ggbot2/aws";
 import {
-  Account,
   AccountKey,
   ErrorItemNotFound,
+  ErrorItemNotValid,
   ReadAccount,
+  isAccount,
 } from "@ggbot2/models";
 
 export function accountDirname({ accountId }: AccountKey) {
@@ -17,8 +18,9 @@ export function accountPathname({ accountId }: AccountKey) {
 export const readAccount: ReadAccount["resolver"] = async ({ accountId }) => {
   try {
     const Key = accountPathname({ accountId });
-    const data = await getObject<Account>({ Key });
+    const data = await getObject({ Key });
     if (!data) throw new ErrorItemNotFound();
+    if (!isAccount(data)) throw new ErrorItemNotValid();
     return data;
   } catch (error) {
     console.error(error);

@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "_components": ["components/index.ts"]
+      "_components": ["components/index.ts"],
+      "_hooks": ["hooks/index.ts"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

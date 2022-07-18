@@ -8,7 +8,7 @@ import type {
   PutObjectRequest,
 } from "aws-sdk/clients/s3";
 import { getDeployStage } from "@ggbot2/env";
-import type { DataValue } from "@ggbot2/models";
+import type { JsonValue } from "type-fest";
 import { isAwsError } from "./error.js";
 import { region } from "./region.js";
 import { domainName } from "./route53.js";
@@ -24,20 +24,17 @@ const Bucket = dataBucketName();
 
 type GetObjectArgs = Pick<GetObjectRequest, "Key">;
 
-export function getObject<Data>({
+export function getObject({
   Key,
-}: GetObjectArgs): Promise<Data | undefined> {
+}: GetObjectArgs): Promise<JsonValue | undefined> {
   return new Promise((resolve, reject) => {
     try {
       s3.getObject({ Bucket, Key }, (_error, output) => {
         const body = output?.Body;
-        if (typeof body === "undefined") {
-          resolve(body);
-        } else {
-          const json = body.toString("utf-8");
-          const data = JSON.parse(json) as Data;
-          resolve(data);
-        }
+        if (typeof body === "undefined") resolve(body);
+        const json = body.toString("utf-8");
+        const data = JSON.parse(json);
+        resolve(data);
       });
     } catch (error) {
       if (isAwsError(error)) {
@@ -129,7 +126,7 @@ export function listObjects({
 }
 
 type PutObjectArgs = Pick<PutObjectRequest, "Key"> & {
-  data: DataValue;
+  data: JsonValue;
 };
 
 export function putObject({ Key, data }: PutObjectArgs) {
