@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "lint": "next lint",
     "start": "next start",
-    "lint": "next lint"
+    "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
     "@ggbot2/database": "file:database",

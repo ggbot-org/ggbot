@@ -1,8 +1,12 @@
-import { DataValue } from "./data.js";
+import { JsonArray, JsonObject } from "type-fest";
+
+type OperationInput = JsonObject | void;
+
+type OperationOutput = JsonArray | JsonObject | undefined;
 
 export type Operation<
-  Input extends DataValue | void,
-  Output extends DataValue
+  Input extends OperationInput,
+  Output extends OperationOutput
 > = {
   input: Input;
   output: Output;

@@ -16,8 +16,7 @@
   "dependencies": {
     "@ggbot2/env": "file:env",
     "@ggbot2/models": "file:models",
-    "aws-sdk": "^2.1171.0",
-    "type-fest": "^2.16.0"
+    "aws-sdk": "^2.1171.0"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

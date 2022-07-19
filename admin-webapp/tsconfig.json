@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
+      "_api/*": ["pages/api/*"],
       "_components": ["components/index.ts"],
       "_hooks": ["hooks/index.ts"]
     },

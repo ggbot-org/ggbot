@@ -1,25 +1,45 @@
+import { readAccount, readAccountKeys } from "@ggbot2/database";
+import type { ReadAccount, ReadAccountKeys } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { JsonObject } from "type-fest";
+import { JsonValue } from "type-fest";
 
-type ApiActionInput<T = string> = {
-  type: T;
+type Action<Input, Output> = {
+  input: Input;
+  output: Output;
 };
 
-type ApiActionOutput = JsonObject;
+export type ApiAction = {
+  READ_ACCOUNT: Action<ReadAccount["input"], ReadAccount["output"]>;
+  READ_ACCOUNT_KEYS: Action<
+    ReadAccountKeys["input"],
+    ReadAccountKeys["output"]
+  >;
+};
+
+type ApiActionType = keyof ApiAction;
 
 export default async function apiActionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiActionOutput>
+  res: NextApiResponse<JsonValue>
 ) {
   try {
     if (req.method !== "POST") return res.status(405);
 
-    const input: ApiActionInput = req.body;
+    const action = req.body;
 
-    switch (input.type) {
-      default: {
-        res.status(200).json({});
+    switch (action.type as ApiActionType) {
+      case "READ_ACCOUNT": {
+        const output = await readAccount(action.data);
+        return res.status(200).json(output);
       }
+
+      case "READ_ACCOUNT_KEYS": {
+        const output = await readAccountKeys();
+        return res.status(200).json(output);
+      }
+
+      default:
+        res.status(406).json(null);
     }
   } catch (error) {
     console.error(error);
