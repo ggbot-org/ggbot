@@ -8,5 +8,5 @@
     "outDir": "./dist",
     "target": "ESNext"
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["./src/index.ts"]
 }

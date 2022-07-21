@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build tsconfig.build.json",
     "test": "jest",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
