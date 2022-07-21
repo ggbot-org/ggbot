@@ -1,8 +1,7 @@
-/**
- * String with format yyyy-mm-ddThh:mm:ss.lllZ
- */
-export type Time = string;
+import type { Timestamp } from "@ggbot2/time";
 
-export type CreationTime = { readonly whenCreated: Time };
-export type DeletionTime = { readonly whenDeleted: Time };
-export type UpdateTime = { readonly whenUpdated: Time };
+export type CreationTime = { readonly whenCreated: Timestamp };
+
+export type DeletionTime = { readonly whenDeleted: Timestamp };
+
+export type UpdateTime = { readonly whenUpdated: Timestamp };
