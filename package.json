@@ -19,7 +19,6 @@
     "prebuild:aws": "run-s build:env build:models",
     "prebuild:database": "run-s build:aws",
     "prebuild:models": "run-s build:time",
-    "prebuild:ui-components": "run-s build:time",
     "test": "npm run test --workspaces --if-present",
     "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present",
     "ui-components-webapp": "npm run dev --workspace ui-components"
