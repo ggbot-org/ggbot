@@ -8,4 +8,3 @@ The following environment variables are used
 - `STRIPE_PURCHASE_API_KEY`
 - `STRIPE_BASIC_PLAN_PRODUCT_ID`
 
-Using [direnv](https://direnv.net/) you can edit a *.envrc* file to load variables automatically.
