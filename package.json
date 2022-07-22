@@ -13,15 +13,18 @@
     "build:models": "npm run build --workspace models",
     "build:ui-components": "npm run build --workspace ui-components",
     "build:time": "npm run build --workspace time",
+    "build:user-webapp": "npm run build --workspace user-webapp",
     "lint": "npm run lint --workspaces --if-present",
     "prebuild:admin-webapp": "npm run build:database; npm run build:ui-components",
     "prebuild:aws": "npm run build:env; npm run build:models",
     "prebuild:database": "npm run build:aws",
     "prebuild:models": "npm run build:time",
     "prebuild:ui-components": "npm run build:time",
+    "prebuild:user-webapp": "npm run build:database; npm run build:ui-components",
     "test": "npm run test --workspaces --if-present",
     "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present",
-    "ui-components-webapp": "npm run dev --workspace ui-components"
+    "ui-components-webapp": "npm run dev --workspace ui-components",
+    "user-webapp": "npm run dev --workspace user-webapp"
   },
   "workspaces": [
     "admin-webapp",
@@ -29,8 +32,9 @@
     "database",
     "env",
     "models",
+    "time",
     "ui-components",
-    "time"
+    "user-webapp"
   ],
   "keywords": [],
   "author": "Gianluca Casati (http://fibo.github.io/)",

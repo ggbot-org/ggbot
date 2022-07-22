@@ -1,0 +1,5 @@
+@import "@ggbot2/ui-components";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
