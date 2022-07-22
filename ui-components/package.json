@@ -8,6 +8,9 @@
       "import": "./dist/index.js",
       "style": "./dist/style.css",
       "types": "./dist/index.d.ts"
+    },
+    "./tailwind.theme": {
+      "require": "./tailwind.theme.js"
     }
   },
   "scripts": {

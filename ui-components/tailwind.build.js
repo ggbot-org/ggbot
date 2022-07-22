@@ -1,6 +1,7 @@
-const tailwindConfig = require("./tailwind.config");
+const theme = require("./tailwind.theme");
 
 module.exports = {
-  ...tailwindConfig,
   content: ["./src/**/*.{ts,tsx}"],
+  plugins: [],
+  theme,
 };

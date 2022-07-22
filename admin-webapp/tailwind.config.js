@@ -1,19 +1,7 @@
-const colors = require("tailwindcss/colors");
+const theme = require("@ggbot2/ui-components/tailwind.theme");
 
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./components/**/*.{ts,tsx}"],
-  theme: {
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      black: colors.black,
-      white: colors.white,
-      danger: colors.red,
-      mono: colors.neutral,
-      primary: colors.cyan,
-    },
-    extend: {},
-  },
+  content: ["./components/**/*.{ts,tsx}", "./pages/**/*.{ts,tsx}"],
+  theme,
   plugins: [],
 };
