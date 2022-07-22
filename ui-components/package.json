@@ -15,6 +15,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "tailwindcss": "tailwindcss --config ./tailwind.build.js --minify --input ./src/tailwind.css --output ./dist/style.css",
+    "test": "npm run tsc--noEmit; npm run lint",
     "tsc--build": "tsc --build tsconfig.build.json",
     "tsc--noEmit": "tsc --noEmit --project tsconfig.json"
   },

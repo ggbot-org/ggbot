@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {

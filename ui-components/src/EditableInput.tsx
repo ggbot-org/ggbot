@@ -6,6 +6,8 @@ import {
   useEffect,
   useMemo,
   useState,
+  ChangeEventHandler,
+  KeyboardEventHandler,
 } from "react";
 import { Input, InputProps } from "./Input";
 
@@ -37,7 +39,7 @@ export const EditableInput: FC<EditableInputProps> = ({
     setValue(value);
   }, [setEditing, setValue, value]);
 
-  const onChange = useCallback(
+  const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
       if (!editing) return;
       setNextValue(event.target.value);
@@ -55,7 +57,7 @@ export const EditableInput: FC<EditableInputProps> = ({
     [readOnly, onClick, startEditing]
   );
 
-  const onKeyDown = useCallback(
+  const onKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (event) => {
       switch (event.key) {
         case "Enter": {
