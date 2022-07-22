@@ -13,7 +13,7 @@ export const Accounts: FC = () => {
   }, [data]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <div>accounts</div>
       <div>
         <Button color="primary">update</Button>
