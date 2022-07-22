@@ -1,16 +1,6 @@
+import { Day, getDayFromDate, truncateDate } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { Icon } from "./Icon";
-
-/**
- * String with format yyyy-mm-dd
- */
-type Day = string;
-
-const getDayFromDate = (date: Date): Day => {
-  return date.toISOString().substring(0, 10);
-};
-
-const truncateDate = (date: Date) => new Date(getDayFromDate(date));
 
 const calendarMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const;
 export type CalendarMonth = typeof calendarMonths[number];

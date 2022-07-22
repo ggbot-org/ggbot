@@ -1,3 +1,4 @@
+import { Button } from "@ggbot2/ui-components";
 import { FC, useMemo } from "react";
 import { useApiAction } from "_hooks";
 import { Account } from "./Account";
@@ -14,6 +15,9 @@ export const Accounts: FC = () => {
   return (
     <div>
       <div>accounts</div>
+      <div>
+        <Button color="primary">update</Button>
+      </div>
       <div>{numAccounts}</div>
       <div>
         {accountIds.map((accountId) => (
