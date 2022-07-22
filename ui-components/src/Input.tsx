@@ -6,7 +6,6 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const Input: FC<InputProps> = ({
-  color,
   disabled,
   loading,
   readOnly,
@@ -19,7 +18,7 @@ export const Input: FC<InputProps> = ({
       readOnly ? "cursor-default" : "",
       loading ? "pointer-events-none" : "",
     ].join(" ");
-  }, [color, loading, readOnly]);
+  }, [loading, readOnly]);
 
   return (
     <div className="relative w-full">

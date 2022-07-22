@@ -13,7 +13,7 @@ const Home: NextPage = () => {
 
       <Logo size={20} />
 
-      <div>
+      <div className="flex flex-row gap-10">
         <Button>button</Button>
         <Button color="primary">primary</Button>
         <Button color="danger">danger</Button>

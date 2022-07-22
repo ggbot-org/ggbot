@@ -35,9 +35,9 @@ export const Button: FC<Props> = ({
   const buttonClassName = useMemo(() => {
     return [
       "relative inline-flex items-center rounded-md whitespace-nowrap",
+      "px-4 leading-10",
       "font-medium",
       loading ? "cursor-default" : "",
-      "px-4",
       colorClassNames({
         disabled,
         color,
