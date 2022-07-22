@@ -42,6 +42,7 @@ export const readAccountKeys: ReadAccountKeys["resolver"] = async () => {
   if (!Array.isArray(results.Contents)) return Promise.resolve([]);
   return (
     results.Contents.reduce<AccountKey[]>((list, { Key }) => {
+      if (typeof Key !== "string") return list;
       // TODO
       // change folder structure
       //

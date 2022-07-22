@@ -31,10 +31,13 @@ export function getObject({
     try {
       s3.getObject({ Bucket, Key }, (_error, output) => {
         const body = output?.Body;
-        if (typeof body === "undefined") resolve(body);
-        const json = body.toString("utf-8");
-        const data = JSON.parse(json);
-        resolve(data);
+        if (typeof body === "undefined") {
+          resolve(body);
+        } else {
+          const json = body.toString("utf-8");
+          const data = JSON.parse(json);
+          resolve(data);
+        }
       });
     } catch (error) {
       if (isAwsError(error)) {

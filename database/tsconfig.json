@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "declaration": true,
     "lib": ["dom", "es2015"],
     "module": "ESNext",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
     "target": "ESNext"
   },
   "include": ["./src/**/*.ts"]

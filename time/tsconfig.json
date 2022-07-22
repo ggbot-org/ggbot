@@ -4,6 +4,9 @@
     "lib": ["dom", "es2015"],
     "module": "ESNext",
     "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
     "target": "ESNext"
   },
   "include": ["./src/**/*.ts"]
