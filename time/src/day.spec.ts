@@ -19,8 +19,13 @@ describe("getDayFromDate", () => {
 });
 
 describe("isDay", () => {
-  it("validates day in YYYY-MM-DD format", () => {
-    [{ input: "not a date", output: false }].forEach(({ input, output }) => {
+  it("validates string if is a valid Day", () => {
+    [
+      { input: "not a date", output: false },
+      { input: "0000-00-00", output: false },
+      { input: "2000-01-99", output: false },
+      { input: "2000-01-01", output: true },
+    ].forEach(({ input, output }) => {
       expect(isDay(input)).toBe(output);
     });
   });
