@@ -8,7 +8,7 @@ import {
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__
-} from "@ggobt2/http-status-codes";
+} from "@ggbot2/http-status-codes";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // Type input data
