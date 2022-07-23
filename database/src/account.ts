@@ -21,20 +21,15 @@ export function accountPathname({ accountId }: AccountKey) {
   return `${accountDirname({ accountId })}/account.json`;
 }
 
-export const readAccount: ReadAccount["resolver"] = async ({ accountId }) => {
-  try {
-    const Key = accountPathname({ accountId });
-    const data = await getObject({ Key });
-    if (!data) throw new ErrorItemNotFound();
-    if (!isAccount(data)) throw new ErrorItemNotValid();
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+export const readAccount: ReadAccount["func"] = async ({ accountId }) => {
+  const Key = accountPathname({ accountId });
+  const data = await getObject({ Key });
+  if (!data) throw new ErrorItemNotFound();
+  if (!isAccount(data)) throw new ErrorItemNotValid();
+  return data;
 };
 
-export const readAccountKeys: ReadAccountKeys["resolver"] = async () => {
+export const readAccountKeys: ReadAccountKeys["func"] = async () => {
   const Prefix = accountDirnamePrefix();
   const results = await listObjects({
     Prefix,

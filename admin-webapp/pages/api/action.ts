@@ -4,7 +4,7 @@ import {
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
-} from "@ggobt2/http-status-codes";
+} from "@ggbot2/http-status-codes";
 import type { ReadAccount, ReadAccountKeys } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { JsonValue } from "type-fest";
@@ -17,11 +17,8 @@ type Action<Input, Output> = {
 };
 
 export type ApiAction = {
-  READ_ACCOUNT: Action<ReadAccount["input"], ReadAccount["output"]>;
-  READ_ACCOUNT_KEYS: Action<
-    ReadAccountKeys["input"],
-    ReadAccountKeys["output"]
-  >;
+  READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
+  READ_ACCOUNT_KEYS: Action<ReadAccountKeys["in"], ReadAccountKeys["out"]>;
 };
 
 type ApiActionType = keyof ApiAction;

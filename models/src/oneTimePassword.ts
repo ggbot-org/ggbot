@@ -32,6 +32,9 @@ export function generateOneTimePasswordCode(): OneTimePassword {
   return { code, ...createdNow() };
 }
 
-export type CreateOneTimePassword = Operation<EmailAddress, CreationTime>;
+export type CreateOneTimePassword = Operation<
+  EmailAddress,
+  OneTimePasswordCode
+>;
 
 export type ReadOneTimePassword = Operation<EmailAddress, OneTimePassword>;

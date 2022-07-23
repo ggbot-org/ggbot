@@ -4,6 +4,9 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import { sendEmail } from "@ggbot2/aws";
+import { createOneTimePassword } from "@ggbot2/database";
+import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -32,13 +35,11 @@ export default async function apiHandler(
     if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__);
     const { email } = input;
 
-    const oneTimePassword = await createOneTimePassword({ email });
+    const code = await createOneTimePassword(email);
 
-    const emailMessage = oneTimePasswordEmailMessage({
-      email,
-      oneTimePassword,
-    });
-    await sendEmail(emailMessage);
+    const emailMessage = oneTimePasswordEmailMessage({ code });
+
+    await sendEmail({ email, ...emailMessage });
 
     res.status(__200__OK__).json({ ok: true });
   } catch (error) {

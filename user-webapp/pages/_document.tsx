@@ -1,26 +1,15 @@
-import { assetsDomain } from "@ggbot2/aws";
+import { assetsBaseUrl, favicon, faviconSvg, logoPng180 } from "@ggbot2/assets";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="preconnect" href={`https://{assetsDomain}`} />
+        <link rel="preconnect" href={assetsBaseUrl} />
 
-        <link
-          rel="icon"
-          href={`https://${assetsDomain}/logo/favicon.ico`}
-          sizes="any"
-        />
-        <link
-          rel="icon"
-          href={`https://${assetsDomain}/logo/favicon.svg`}
-          type="image/svg+xml"
-        />
-        <link
-          rel="apple-touch-icon"
-          href={`https://${assetsDomain}/logo/logo-180.png`}
-        />
+        <link rel="icon" href={favicon} sizes="any" />
+        <link rel="icon" href={faviconSvg} type="image/svg+xml" />
+        <link rel="apple-touch-icon" href={logoPng180} />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
