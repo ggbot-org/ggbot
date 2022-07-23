@@ -1,6 +1,6 @@
-const GGBOT2_DEPLOY_STAGE = process.env.GGBOT2_DEPLOY_STAGE;
-
 export type DeployStage = "main" | "next";
+
+const GGBOT2_DEPLOY_STAGE = process.env.GGBOT2_DEPLOY_STAGE;
 
 export function getDeployStage(): DeployStage {
   switch (GGBOT2_DEPLOY_STAGE) {

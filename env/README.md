@@ -5,6 +5,7 @@ The following environment variables are used
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `GGBOT2_DEPLOY_STAGE`
+- `NODE_ENV`
 - `STRIPE_PURCHASE_API_KEY`
 - `STRIPE_BASIC_PLAN_PRODUCT_ID`
 
