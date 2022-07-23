@@ -1,0 +1,26 @@
+{
+  "name": "@ggbot2/email-messages",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "test": "npm run tsc--noEmit",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    "@ggbot2/assets": "file:assets",
+    "@ggbot2/models": "file:models"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "typescript": "^4.7.4"
+  }
+}
