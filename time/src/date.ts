@@ -14,9 +14,15 @@ export function isValidDate(value: unknown): value is ValidDate {
   return false;
 }
 
-export const addSeconds = (seconds: number, date: Date): Date => {
+export const addDays = (value: number, date: Date): Date => {
   const d = new Date(date);
-  d.setSeconds(d.getSeconds() + seconds);
+  d.setDate(d.getDate() + value);
+  return d;
+};
+
+export const addSeconds = (value: number, date: Date): Date => {
+  const d = new Date(date);
+  d.setSeconds(d.getSeconds() + value);
   return d;
 };
 
