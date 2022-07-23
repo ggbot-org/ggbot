@@ -14,7 +14,8 @@
     "paths": {
       "_api/*": ["pages/api/*"],
       "_components": ["components/index.ts"],
-      "_hooks": ["hooks/index.ts"]
+      "_hooks": ["hooks/index.ts"],
+      "_routing": ["routing/index.ts"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

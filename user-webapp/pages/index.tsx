@@ -1,8 +1,18 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { Navigation } from "_components";
+import { hasValidSessionCookie, redirectToAuthenticationPage } from "_routing";
 
-const Home: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const hasSession = hasValidSessionCookie(req.cookies);
+  if (!hasSession) return redirectToAuthenticationPage();
+
+  return {
+    props: {},
+  };
+};
+
+const Page: NextPage = () => {
   return (
     <>
       <Head>
@@ -15,4 +25,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Page;
