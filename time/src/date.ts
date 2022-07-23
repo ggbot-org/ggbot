@@ -14,6 +14,12 @@ export function isValidDate(value: unknown): value is ValidDate {
   return false;
 }
 
+export const addSeconds = (seconds: number, date: Date): Date => {
+  const d = new Date(date);
+  d.setSeconds(d.getSeconds() + seconds);
+  return d;
+};
+
 export const truncateDate = (date: Date) => {
   const day = getDayFromDate(date);
   if (day === null) throw new TypeError(`Invalid Date ${date}`);
