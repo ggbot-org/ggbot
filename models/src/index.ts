@@ -4,6 +4,7 @@ export * from "./email.js";
 export * from "./errors.js";
 export * from "./oneTimePassword.js";
 export * from "./operation.js";
+export * from "./session.js";
 export * from "./strategy.js";
 export * from "./strategyScheduling.js";
 export * from "./time.js";

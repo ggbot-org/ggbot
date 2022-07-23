@@ -1,9 +1,19 @@
-import { Timestamp, isTimestamp, now } from "@ggbot2/time";
+import { Day, Timestamp, isDay, isTimestamp, now } from "@ggbot2/time";
 
 // Create
 // ///////////////////////////////////////////////////////////////////
 
+export type CreationDay = {
+  creationDay: Day;
+};
+
 export type CreationTime = { readonly whenCreated: Timestamp };
+
+export function isCreationDay(value: unknown): value is CreationDay {
+  if (typeof value !== "object" || value === null) return false;
+  const { creationDay } = value as Partial<CreationDay>;
+  return isDay(creationDay);
+}
 
 export function isCreationTime(value: unknown): value is CreationTime {
   if (typeof value !== "object" || value === null) return false;

@@ -13,6 +13,10 @@ export function isDay(day: unknown): day is Day {
   }
 }
 
+export type Today = () => Day;
+
+export const today = () => new Date().toJSON().substring(0, 10);
+
 export const getDayFromDate = (date: Date): Day | null => {
   const dateString = date.toJSON();
 
