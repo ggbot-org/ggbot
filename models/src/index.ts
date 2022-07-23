@@ -2,6 +2,7 @@ export * from "./account.js";
 export * from "./accountStrategy.js";
 export * from "./email.js";
 export * from "./errors.js";
+export * from "./oneTimePassword.js";
 export * from "./operation.js";
 export * from "./strategy.js";
 export * from "./strategyScheduling.js";

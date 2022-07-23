@@ -1,14 +1,14 @@
-import { JsonArray, JsonObject } from "type-fest";
+import { JsonValue } from "type-fest";
 
-type OperationInput = JsonObject | void;
+type OperationInput = JsonValue | void;
 
-type OperationOutput = JsonArray | JsonObject | undefined;
+type OperationOutput = JsonValue | undefined;
 
 export type Operation<
   Input extends OperationInput,
   Output extends OperationOutput
 > = {
-  input: Input;
-  output: Output;
-  resolver: (_: Input) => Promise<Output>;
+  in: Input;
+  out: Output;
+  func: (_: Input) => Promise<Output>;
 };

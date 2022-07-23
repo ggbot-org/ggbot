@@ -33,8 +33,8 @@ export function isEmailAddress(value: unknown): value is EmailAddress {
 // Also users can append labels to the EmailAddress user part after a "+" character.
 //
 //     name@gmail.com EmailAddress can be used as name+label@gmail.com
-//
-export function normalizeEmailAddress(email: EmailAddress) {
+
+export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
   // Split EmailAddress
   const [firstPart, domain] = email.split("@");
   // Remove labels
@@ -42,5 +42,5 @@ export function normalizeEmailAddress(email: EmailAddress) {
   // Remove dots
   const userWithNoDots = user.replace(/\./g, "");
   // Return normalized email as a lowercase string
-  return `${userWithNoDots}@${domain}`.toLowerCase();
+  return `${userWithNoDots}@${domain}`.toLowerCase() as EmailAddress;
 }

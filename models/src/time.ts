@@ -1,9 +1,15 @@
-import { Timestamp, now } from "@ggbot2/time";
+import { Timestamp, isTimestamp, now } from "@ggbot2/time";
 
 // Create
 // ///////////////////////////////////////////////////////////////////
 
 export type CreationTime = { readonly whenCreated: Timestamp };
+
+export function isCreationTime(value: unknown): value is CreationTime {
+  if (typeof value !== "object" || value === null) return false;
+  const { whenCreated } = value as Partial<CreationTime>;
+  return isTimestamp(whenCreated);
+}
 
 export type CreatedNow = () => CreationTime;
 
@@ -14,6 +20,12 @@ export const createdNow: CreatedNow = () => ({ whenCreated: now() });
 
 export type DeletionTime = { readonly whenDeleted: Timestamp };
 
+export function isDeletionTime(value: unknown): value is DeletionTime {
+  if (typeof value !== "object" || value === null) return false;
+  const { whenDeleted } = value as Partial<DeletionTime>;
+  return isTimestamp(whenDeleted);
+}
+
 export type DeletedNow = () => DeletionTime;
 
 export const deletedNow: DeletedNow = () => ({ whenDeleted: now() });
@@ -22,6 +34,12 @@ export const deletedNow: DeletedNow = () => ({ whenDeleted: now() });
 // ///////////////////////////////////////////////////////////////////
 
 export type UpdateTime = { readonly whenUpdated: Timestamp };
+
+export function isUpdateTime(value: unknown): value is UpdateTime {
+  if (typeof value !== "object" || value === null) return false;
+  const { whenUpdated } = value as Partial<UpdateTime>;
+  return isTimestamp(whenUpdated);
+}
 
 export type UpdatedNow = () => UpdateTime;
 
