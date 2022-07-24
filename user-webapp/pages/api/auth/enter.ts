@@ -10,40 +10,43 @@ import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type RequestData = {
+export type ApiEnterRequestData = {
   email: EmailAddress;
 };
 
-type ResponseData = {
-  ok: boolean;
-};
-
-function isRequestData(value: unknown): value is RequestData {
+export function isApiEnterRequestData(
+  value: unknown
+): value is ApiEnterRequestData {
   if (typeof value !== "object" || value === null) return false;
-  const { email } = value as Partial<RequestData>;
+  const { email } = value as Partial<ApiEnterRequestData>;
   return isEmailAddress(email);
 }
 
+export type ApiEnterResponseData = {
+  emailSent?: boolean | undefined;
+};
+
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ApiEnterResponseData>
 ) {
   try {
     if (req.method !== "POST") return res.status(__405__METHOD_NOT_ALLOWED__);
 
     const input = req.body;
-    if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__);
+    if (!isApiEnterRequestData(input)) return res.status(__400__BAD_REQUEST__);
+
     const { email } = input;
 
-    const code = await createOneTimePassword(email);
+    const oneTimePassword = await createOneTimePassword(email);
 
-    const emailMessage = oneTimePasswordEmailMessage({ code });
+    const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
 
     await sendEmail({ email, ...emailMessage });
 
-    res.status(__200__OK__).json({ ok: true });
+    res.status(__200__OK__).json({ emailSent: true });
   } catch (error) {
     console.error(error);
-    res.status(__500__INTERNAL_SERVER_ERROR__).json({ ok: false });
+    res.status(__500__INTERNAL_SERVER_ERROR__).json({});
   }
 }

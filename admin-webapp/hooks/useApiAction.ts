@@ -15,6 +15,7 @@ async function fetcher(action: JsonObject) {
     const body = JSON.stringify(action);
     const response = await fetch("/api/action", {
       body,
+      credentials: "include",
       headers: new Headers({
         Accept: "application/json",
         "Content-Type": "application/json",

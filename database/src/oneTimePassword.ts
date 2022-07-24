@@ -22,7 +22,7 @@ export const createOneTimePassword: CreateOneTimePassword["func"] = async (
   const Key = oneTimePasswordPathname(email);
   const data = generateOneTimePasswordCode();
   await putObject({ Key, data });
-  return { whenCreated: data.whenCreated };
+  return data.code;
 };
 
 export const readOneTimePassword: ReadOneTimePassword["func"] = async (

@@ -5,7 +5,7 @@ type Color = "primary" | "danger";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: Color;
-  loading?: boolean;
+  isLoading?: boolean;
 };
 
 function colorClassNames({
@@ -26,9 +26,9 @@ function colorClassNames({
 
 export const Button: FC<Props> = ({
   children,
-  disabled,
-  loading,
   color,
+  disabled,
+  isLoading,
   tabIndex: _tabIndex,
   ...props
 }) => {
@@ -37,22 +37,23 @@ export const Button: FC<Props> = ({
       "relative inline-flex items-center rounded-md whitespace-nowrap",
       "px-4 leading-10",
       "font-medium",
-      loading ? "cursor-default" : "",
+      isLoading ? "cursor-default" : "",
       colorClassNames({
         disabled,
         color,
       }),
       "transition-all",
     ].join(" ");
-  }, [disabled, loading, color]);
+  }, [color, disabled, isLoading]);
 
   const contentClassName = useMemo(() => {
-    return loading ? "invisible" : "";
-  }, [loading]);
+    return isLoading ? "invisible" : "";
+  }, [isLoading]);
 
-  const tabIndex = useMemo(() => {
-    return disabled ? -1 : _tabIndex;
-  }, [disabled, _tabIndex]);
+  const tabIndex = useMemo(
+    () => (disabled ? -1 : _tabIndex),
+    [_tabIndex, disabled]
+  );
 
   return (
     <button
@@ -61,7 +62,7 @@ export const Button: FC<Props> = ({
       className={buttonClassName}
       tabIndex={tabIndex}
     >
-      {loading && (
+      {isLoading && (
         <Spinner
           className="absolute text-white"
           style={{ left: "calc(50% - 5px)" }}

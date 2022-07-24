@@ -2,7 +2,7 @@ import { EmailAddress } from "./email.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, createdNow, isCreationTime } from "./time.js";
 
-type OneTimePasswordCode = string;
+export type OneTimePasswordCode = string;
 
 export const oneTimePasswordCodeLength = 6;
 

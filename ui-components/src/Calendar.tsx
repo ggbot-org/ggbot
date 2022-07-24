@@ -1,4 +1,4 @@
-import { Day, getDayFromDate, truncateDate } from "@ggbot2/time";
+import { Day, getDayFromDate, today, truncateDate } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { Icon } from "./Icon";
 
@@ -45,7 +45,7 @@ export const Calendar: FC<CalendarProps> = ({
     5: "Fr",
     6: "Sa",
   },
-  selectedDay = getDayFromDate(new Date()),
+  selectedDay = today(),
   setSelectedDay,
 }) => {
   const [monthOffset, setMonthOffset] = useState(0);
@@ -104,13 +104,13 @@ export const Calendar: FC<CalendarProps> = ({
   }, [lastDate]);
 
   const isFirstMonth = useMemo(() => {
-    if (typeof min === "undefined") return false;
-    return getDayFromDate(firstDate) <= min;
+    const day = getDayFromDate(firstDate);
+    return day && min && day <= min;
   }, [min, firstDate]);
 
   const isLastMonth = useMemo(() => {
-    if (typeof max === "undefined") return false;
-    return getDayFromDate(lastDate) >= max;
+    const day = getDayFromDate(firstDate);
+    return day && max && day >= max;
   }, [max, lastDate]);
 
   const dateCells = useMemo(() => {
@@ -134,8 +134,8 @@ export const Calendar: FC<CalendarProps> = ({
         selected: day === selectedDay,
         isSelectable:
           day !== selectedDay &&
-          (typeof min !== "undefined" ? day >= min : true) &&
-          (typeof max !== "undefined" ? day <= max : true),
+          (min && day ? day >= min : true) &&
+          (max && day ? day <= max : true),
         day,
         ...rest,
       }))
@@ -151,12 +151,13 @@ export const Calendar: FC<CalendarProps> = ({
               ].join(" ")
             : "text-mono-200",
         ].join(" "),
-        onClick: isSelectable
-          ? () => {
-              setSelectedDay?.(day);
-              setMonthOffset(0);
-            }
-          : undefined,
+        onClick:
+          day && isSelectable
+            ? () => {
+                setSelectedDay?.(day);
+                setMonthOffset(0);
+              }
+            : undefined,
         num: date.getDate(),
       }));
   }, [
