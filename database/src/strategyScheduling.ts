@@ -1,3 +1,1 @@
-export function strategySchedulingDirnamePrefix() {
-  return "strategyScheduling";
-}
+export const strategySchedulingDirnamePrefix = () => "strategyScheduling";

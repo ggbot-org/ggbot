@@ -1,4 +1,9 @@
-import { Session, isSession } from "@ggbot2/models";
+import {
+  AccountKey,
+  CreationDay,
+  isAccountKey,
+  isCreationDay,
+} from "@ggbot2/models";
 import { addSeconds, truncateDate } from "@ggbot2/time";
 import {
   Cookies,
@@ -10,9 +15,16 @@ import {
 
 const separator = "_";
 
-function serializeCookieSession({ id, creationDay }: Session): string {
-  return [id, creationDay].join(separator);
-}
+export type Session = AccountKey & CreationDay;
+
+export const isSession = (value: unknown): value is Session => {
+  if (typeof value !== "object" || value === null) return false;
+  const { accountId, creationDay } = value as Partial<Session>;
+  return isAccountKey({ accountId }) && isCreationDay({ creationDay });
+};
+
+const serializeSessionCookie = ({ accountId, creationDay }: Session) =>
+  [accountId, creationDay].join(separator);
 
 export const createSessionCookie = (
   session: Session,
@@ -22,7 +34,7 @@ export const createSessionCookie = (
   const todayDate = truncateDate(new Date());
   const expires = addSeconds(maxAge, todayDate);
 
-  const content = serializeCookieSession(session);
+  const content = serializeSessionCookie(session);
 
   return createCookie(SESSION_COOKIE_NAME, content, {
     expires,
@@ -31,12 +43,12 @@ export const createSessionCookie = (
   });
 };
 
-export function readSessionCookie(cookies: Cookies): Session | undefined {
+export const readSessionCookie = (cookies: Cookies): Session | undefined => {
   const serializedSession = cookies[SESSION_COOKIE_NAME];
   if (typeof serializedSession !== "string") return;
-  const [id, creationDay] = serializedSession.split(separator);
-  const session = { id, creationDay };
+  const [accountId, creationDay] = serializedSession.split(separator);
+  const session = { accountId, creationDay };
   if (isSession(session)) return session;
-}
+};
 
 export const deleteSessionCookie = () => deleteCookie(SESSION_COOKIE_NAME);

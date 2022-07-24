@@ -7,12 +7,12 @@ export type Timestamp = string;
 
 const timestampLength = 24;
 
-export function isTimestamp(value: unknown): value is Timestamp {
+export const isTimestamp = (value: unknown): value is Timestamp => {
   if (typeof value !== "string") return false;
   if (value.length !== timestampLength) return false;
   const date = new Date(value);
   return isValidDate(date);
-}
+};
 
 export type Now = () => Timestamp;
 

@@ -1,6 +1,6 @@
 export type EmailAddress = `${string}@${string}`;
 
-export function isEmailAddress(value: unknown): value is EmailAddress {
+export const isEmailAddress = (value: unknown): value is EmailAddress => {
   // EmailAddress is a string
   if (typeof value !== "string") return false;
 
@@ -22,7 +22,7 @@ export function isEmailAddress(value: unknown): value is EmailAddress {
   if (domainExtension === "") return false;
 
   return true;
-}
+};
 
 // If a domain is gmail.com or is handled by Google for Business,
 // any "." character in the EmailAddress user part is ignored.
@@ -34,7 +34,7 @@ export function isEmailAddress(value: unknown): value is EmailAddress {
 //
 //     name@gmail.com EmailAddress can be used as name+label@gmail.com
 
-export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
+export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
   // Split EmailAddress
   const [firstPart, domain] = email.split("@");
   // Remove labels
@@ -43,4 +43,4 @@ export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
   const userWithNoDots = user.replace(/\./g, "");
   // Return normalized email as a lowercase string
   return `${userWithNoDots}@${domain}`.toLowerCase() as EmailAddress;
-}
+};

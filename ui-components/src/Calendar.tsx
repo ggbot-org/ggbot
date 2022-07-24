@@ -109,7 +109,7 @@ export const Calendar: FC<CalendarProps> = ({
   }, [min, firstDate]);
 
   const isLastMonth = useMemo(() => {
-    const day = getDayFromDate(firstDate);
+    const day = getDayFromDate(lastDate);
     return day && max && day >= max;
   }, [max, lastDate]);
 

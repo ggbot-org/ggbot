@@ -6,31 +6,35 @@ export type OneTimePasswordCode = string;
 
 export const oneTimePasswordCodeLength = 6;
 
-export function isOneTimePasswordCode(
+export const isOneTimePasswordCode = (
   value: unknown
-): value is OneTimePasswordCode {
+): value is OneTimePasswordCode => {
   if (typeof value !== "string") return false;
   return value.length === oneTimePasswordCodeLength;
-}
+};
 
 export type OneTimePassword = CreationTime & {
   code: OneTimePasswordCode;
 };
 
-export function isOneTimePassword(value: unknown): value is OneTimePassword {
+export const isOneTimePassword = (value: unknown): value is OneTimePassword => {
   if (typeof value !== "object" || value === null) return false;
   const { code, whenCreated } = value as Partial<OneTimePassword>;
-  return isOneTimePasswordCode(code) && isCreationTime(whenCreated);
-}
+  return isOneTimePasswordCode(code) && isCreationTime({ whenCreated });
+};
 
-export function generateOneTimePasswordCode(): OneTimePassword {
+export const normalizeOneTimePassword = (
+  code: OneTimePasswordCode
+): OneTimePasswordCode => code.toLowerCase().trim();
+
+export const generateOneTimePassword = (): OneTimePassword => {
   const code = Math.random()
     .toString(36)
     .replace(/[^a-z]+/g, "")
     .substring(0, oneTimePasswordCodeLength);
 
-  return { code, ...createdNow() };
-}
+  return { code: normalizeOneTimePassword(code), ...createdNow() };
+};
 
 export type CreateOneTimePassword = Operation<
   EmailAddress,

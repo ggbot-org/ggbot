@@ -9,7 +9,9 @@ import type { ReadAccount, ReadAccountKeys } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { JsonValue } from "type-fest";
 
-type ResponseData = JsonValue;
+type ResponseData = {
+  data?: JsonValue;
+};
 
 type Action<Input, Output> = {
   input: Input;
@@ -28,23 +30,24 @@ export default async function apiHandler(
   res: NextApiResponse<ResponseData>
 ) {
   try {
-    if (req.method !== "POST") return res.status(__405__METHOD_NOT_ALLOWED__);
+    if (req.method !== "POST")
+      return res.status(__405__METHOD_NOT_ALLOWED__).json({});
 
     const action = req.body;
 
     switch (action.type as ApiActionType) {
       case "READ_ACCOUNT": {
-        const output = await readAccount(action.data);
-        return res.status(__200__OK__).json(output);
+        const data = (await readAccount(action.data)) ?? null;
+        return res.status(__200__OK__).json({ data });
       }
 
       case "READ_ACCOUNT_KEYS": {
-        const output = await readAccountKeys();
-        return res.status(__200__OK__).json(output);
+        const data = await readAccountKeys();
+        return res.status(__200__OK__).json({ data });
       }
 
       default:
-        return res.status(__400__BAD_REQUEST__).json(null);
+        return res.status(__400__BAD_REQUEST__).json({});
     }
   } catch (error) {
     console.error(error);

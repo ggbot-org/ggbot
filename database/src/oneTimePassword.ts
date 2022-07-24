@@ -3,24 +3,21 @@ import {
   CreateOneTimePassword,
   EmailAddress,
   ReadOneTimePassword,
-  generateOneTimePasswordCode,
+  generateOneTimePassword,
   isOneTimePassword,
 } from "@ggbot2/models";
 import { emailToDirname } from "./email.js";
 
-function oneTimePasswordDirnamePrefix() {
-  return "oneTimePassword";
-}
+const oneTimePasswordDirnamePrefix = () => "oneTimePassword";
 
-export function oneTimePasswordPathname(email: EmailAddress) {
-  return `${oneTimePasswordDirnamePrefix()}/${emailToDirname(email)}/otp.json`;
-}
+export const oneTimePasswordPathname = (email: EmailAddress) =>
+  `${oneTimePasswordDirnamePrefix()}/${emailToDirname(email)}/otp.json`;
 
 export const createOneTimePassword: CreateOneTimePassword["func"] = async (
   email
 ) => {
   const Key = oneTimePasswordPathname(email);
-  const data = generateOneTimePasswordCode();
+  const data = generateOneTimePassword();
   await putObject({ Key, data });
   return data.code;
 };

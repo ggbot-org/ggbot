@@ -10,7 +10,7 @@ class ApiActionResponseError extends Error {
   }
 }
 
-async function fetcher(action: JsonObject) {
+const fetcher = async (action: JsonObject) => {
   try {
     const body = JSON.stringify(action);
     const response = await fetch("/api/action", {
@@ -29,7 +29,7 @@ async function fetcher(action: JsonObject) {
   } catch (error) {
     throw error;
   }
-}
+};
 
 export const useApiAction = {
   READ_ACCOUNT: (data: ApiAction["READ_ACCOUNT"]["input"]) =>

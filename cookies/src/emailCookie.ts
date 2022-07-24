@@ -12,9 +12,9 @@ export const createEmailCookie = (
   { secure }: Pick<CreateCookieOptions, "secure">
 ) => createCookie(EMAIL_COOKIE_NAME, email, { secure });
 
-export function readEmailCookie(cookies: Cookies): EmailAddress | undefined {
+export const readEmailCookie = (cookies: Cookies): EmailAddress | undefined => {
   const email = cookies[EMAIL_COOKIE_NAME];
   if (isEmailAddress(email)) return email;
-}
+};
 
 export const deleteEmailCookie = () => deleteCookie(EMAIL_COOKIE_NAME);

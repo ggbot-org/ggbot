@@ -15,18 +15,18 @@ import { domainName } from "./route53.js";
 
 const s3 = new AWS.S3({ apiVersion: "2006-03-01", region });
 
-function dataBucketName(): BucketName {
+const dataBucketName = (): BucketName => {
   const deployStage = getDeployStage();
   return `${deployStage}-data.${domainName}`;
-}
+};
 
 const Bucket = dataBucketName();
 
 type GetObjectArgs = Pick<GetObjectRequest, "Key">;
 
-export function getObject({
+export const getObject = ({
   Key,
-}: GetObjectArgs): Promise<JsonValue | undefined> {
+}: GetObjectArgs): Promise<JsonValue | undefined> => {
   return new Promise((resolve, reject) => {
     try {
       s3.getObject({ Bucket, Key }, (_error, output) => {
@@ -48,7 +48,7 @@ export function getObject({
       reject(error);
     }
   });
-}
+};
 
 type ListObjectsOutput = Pick<
   ListObjectsV2Output,
@@ -64,14 +64,14 @@ type ListObjectsArgs = Pick<
     withETag?: boolean;
   };
 
-export function listObjects({
+export const listObjects = ({
   ContinuationToken,
   Contents: PreviousContents = [],
   CommonPrefixes: PreviousCommonPrefixes = [],
   withETag,
   withLastModified,
   ...params
-}: ListObjectsArgs): Promise<ListObjectsOutput> {
+}: ListObjectsArgs): Promise<ListObjectsOutput> => {
   return new Promise((resolve, reject) => {
     try {
       s3.listObjectsV2(
@@ -126,13 +126,13 @@ export function listObjects({
       reject(error);
     }
   });
-}
+};
 
 type PutObjectArgs = Pick<PutObjectRequest, "Key"> & {
   data: JsonValue;
 };
 
-export function putObject({ Key, data }: PutObjectArgs) {
+export const putObject = ({ Key, data }: PutObjectArgs) => {
   return new Promise((resolve, reject) => {
     const json = JSON.stringify(data);
     const Body = Buffer.from(json);
@@ -140,14 +140,14 @@ export function putObject({ Key, data }: PutObjectArgs) {
       error ? reject(error) : resolve(data)
     );
   });
-}
+};
 
 type DeleteObjectArgs = Pick<DeleteObjectRequest, "Key">;
 
-export function deleteObject({ Key }: DeleteObjectArgs) {
+export const deleteObject = ({ Key }: DeleteObjectArgs) => {
   return new Promise((resolve, reject) => {
     s3.deleteObject({ Bucket, Key }, (error, data) =>
       error ? reject(error) : resolve(data)
     );
   });
-}
+};

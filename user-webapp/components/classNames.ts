@@ -1,3 +1,3 @@
-// Keep navigationLineHeight and pageContentMarginTop in sync, with same spacing value.
+// Keep navigationLineHeight and pageContentGapTopHeight in sync, with same spacing value.
 export const navigationLineHeight = "leading-7";
-export const pageContentMarginTop = "mt-7";
+export const pageContentGapTopHeight = "h-7";

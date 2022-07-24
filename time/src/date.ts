@@ -2,7 +2,7 @@ import { getDayFromDate } from "./day.js";
 
 export type ValidDate = Date;
 
-export function isValidDate(value: unknown): value is ValidDate {
+export const isValidDate = (value: unknown): value is ValidDate => {
   if (
     value instanceof Date ||
     typeof value === "string" ||
@@ -12,11 +12,17 @@ export function isValidDate(value: unknown): value is ValidDate {
     return date.toString() !== "Invalid Date";
   }
   return false;
-}
+};
 
 export const addDays = (value: number, date: Date): Date => {
   const d = new Date(date);
   d.setDate(d.getDate() + value);
+  return d;
+};
+
+export const addMinutes = (value: number, date: Date): Date => {
+  const d = new Date(date);
+  d.setMinutes(d.getMinutes() + value);
   return d;
 };
 

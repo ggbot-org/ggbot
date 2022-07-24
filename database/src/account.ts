@@ -1,30 +1,46 @@
-import { getObject, listObjects } from "@ggbot2/aws";
+import { getObject, listObjects, putObject } from "@ggbot2/aws";
 import {
   AccountKey,
-  ErrorItemNotFound,
   ErrorItemNotValid,
   ReadAccount,
   ReadAccountKeys,
   isAccount,
   isAccountKey,
+  CreateAccount,
+  Account,
+  createdNow,
 } from "@ggbot2/models";
+import { v4 as uuidv4 } from "uuid";
+import { createEmailAccount } from "./emailAccount.js";
 
-export function accountDirnamePrefix() {
-  return "account";
-}
+export const accountDirnamePrefix = () => "account";
 
-export function accountDirname({ accountId }: AccountKey) {
-  return `${accountDirnamePrefix()}/${accountId}`;
-}
+export const accountDirname = (accountKey: AccountKey) =>
+  `${accountDirnamePrefix()}/${accountKeyToDirname(accountKey)}`;
 
-export function accountPathname({ accountId }: AccountKey) {
-  return `${accountDirname({ accountId })}/account.json`;
-}
+export const accountKeyToDirname = ({ accountId }: AccountKey) =>
+  `accountId=${accountId}`;
+
+export const accountPathname = ({ accountId }: AccountKey) =>
+  `${accountDirname({ accountId })}/account.json`;
+
+export const createAccount: CreateAccount["func"] = async ({ email }) => {
+  const accountId = uuidv4();
+  const data: Account = {
+    id: accountId,
+    email,
+    ...createdNow(),
+  };
+  const Key = accountPathname({ accountId });
+  await putObject({ Key, data });
+  await createEmailAccount({ accountId, email });
+  return data;
+};
 
 export const readAccount: ReadAccount["func"] = async ({ accountId }) => {
   const Key = accountPathname({ accountId });
   const data = await getObject({ Key });
-  if (!data) throw new ErrorItemNotFound();
+  if (!data) return;
   if (!isAccount(data)) throw new ErrorItemNotValid();
   return data;
 };

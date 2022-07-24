@@ -22,6 +22,7 @@
     "prebuild:admin-webapp": "npm run build:database; npm run http-status-codes; npm run build:ui-components",
     "prebuild:aws": "npm run build:env; npm run build:models",
     "prebuild:database": "npm run build:aws",
+    "prebuild:cookies": "npm run build:models",
     "prebuild:models": "npm run build:time",
     "prebuild:ui-components": "npm run build:time",
     "prebuild:user-webapp": "npm run build:assets; npm run build:database; npm run http-status-codes; npm run build:ui-components",

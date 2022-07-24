@@ -3,7 +3,7 @@
  */
 export type Day = string;
 
-export function isDay(day: unknown): day is Day {
+export const isDay = (day: unknown): day is Day => {
   if (typeof day !== "string") return false;
   try {
     const maybeDate = new Date(day);
@@ -11,7 +11,18 @@ export function isDay(day: unknown): day is Day {
   } catch {
     return false;
   }
-}
+};
+
+type Yyyy = string;
+type Mm = string;
+type Dd = string;
+
+export type SplittedDay = [Yyyy, Mm, Dd];
+
+export const splitDay = (day: Day): SplittedDay => {
+  const [yyyy, mm, dd] = day.split("-");
+  return [yyyy, mm, dd];
+};
 
 export type Today = () => Day;
 

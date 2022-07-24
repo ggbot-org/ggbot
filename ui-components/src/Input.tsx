@@ -6,6 +6,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const Input: FC<InputProps> = ({
+  className,
   disabled,
   loading,
   readOnly,
@@ -13,12 +14,13 @@ export const Input: FC<InputProps> = ({
 }) => {
   const inputClassName = useMemo(() => {
     return [
+      className,
       "w-full rounded-md px-4 py-2",
       "shadow border border-dark-300 outline-dark-600",
       readOnly ? "cursor-default" : "",
       loading ? "pointer-events-none" : "",
     ].join(" ");
-  }, [loading, readOnly]);
+  }, [className, loading, readOnly]);
 
   return (
     <div className="relative w-full">
