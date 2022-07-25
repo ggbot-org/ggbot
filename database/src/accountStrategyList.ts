@@ -17,12 +17,12 @@ export const accountStrategyListDirname = (accountKey: AccountKey) =>
 export const accountStrategyListPathname = (accountKey: AccountKey) =>
   `${accountStrategyListDirname(accountKey)}/strategies.json`;
 
-export const readAccountStrategyList: ReadAccountStrategyList["func"] = async ({
-  accountId,
-}) => {
-  const Key = accountStrategyListPathname({ accountId });
+export const readAccountStrategyList: ReadAccountStrategyList["func"] = async (
+  accountKey
+) => {
+  const Key = accountStrategyListPathname(accountKey);
   const data = await getObject({ Key });
-  if (!data) return [];
+  if (!data) return;
   if (!isAccountStrategyList(data)) throw new ErrorItemNotValid();
   return data;
 };

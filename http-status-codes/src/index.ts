@@ -13,6 +13,9 @@ export const __200__OK__ = 200;
 // (e.g., malformed request syntax)
 export const __400__BAD_REQUEST__ = 400;
 
+// Authentication is required and has failed or has not yet been provided.
+export const __401__UNAUTHORIZED__ = 401;
+
 // A request method is not supported for the requested resource;
 // for example, a GET request on a form that requires data to be presented via POST,
 // or a PUT request on a read-only resource.

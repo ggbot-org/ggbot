@@ -33,7 +33,7 @@ export const isAccountStrategyList = (
 
 export type ReadAccountStrategyList = Operation<
   AccountKey,
-  AccountStrategyList
+  AccountStrategyList | undefined
 >;
 
 export type WriteAccountStrategyList = Operation<

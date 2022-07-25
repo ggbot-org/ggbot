@@ -32,14 +32,9 @@ const fetcher = async (action: JsonObject) => {
 };
 
 export const useApiAction = {
-  READ_ACCOUNT: (data: ApiAction["READ_ACCOUNT"]["in"]) =>
-    useSWR<ApiAction["READ_ACCOUNT"]["out"]>(
-      { type: "READ_ACCOUNT", data },
-      fetcher
-    ),
-  READ_ACCOUNT_KEYS: () =>
-    useSWR<ApiAction["READ_ACCOUNT_KEYS"]["out"]>(
-      { type: "READ_ACCOUNT_KEYS" },
+  READ_ACCOUNT_STRATEGY_LIST: () =>
+    useSWR<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>(
+      { type: "READ_ACCOUNT_STRATEGY_LIST" },
       fetcher
     ),
 };
