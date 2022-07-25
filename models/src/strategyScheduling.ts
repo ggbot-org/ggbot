@@ -1,16 +1,58 @@
-import type { AccountStrategyKey } from "./accountStrategy.js";
-import type { Operation } from "./operation.js";
+export const strategySchedulingStatuses = [
+  "active",
+  "inactive",
+  "suspended",
+] as const;
+export type StrategySchedulingStatus =
+  typeof strategySchedulingStatuses[number];
 
-export type StrategySchedulingKey = AccountStrategyKey;
-
-export type StrategyScheduling = {
-  every: number;
+export const isStrategySchedulingStatus = (
+  value: unknown
+): value is StrategySchedulingStatus => {
+  if (typeof value !== "string") return false;
+  return (strategySchedulingStatuses as readonly string[]).includes(value);
 };
 
-export type StrategySchedulingListItem = StrategySchedulingKey &
-  StrategyScheduling;
+export const strategySchedulingIntervals = ["1h"] as const;
+export type StrategySchedulingInterval =
+  typeof strategySchedulingStatuses[number];
 
-export type ReadStrategySchedulingList = Operation<
-  void,
-  StrategySchedulingListItem[]
->;
+export const isStrategySchedulingInterval = (
+  value: unknown
+): value is StrategySchedulingInterval => {
+  if (typeof value !== "string") return false;
+  return (strategySchedulingIntervals as readonly string[]).includes(value);
+};
+
+export type StrategySchedulingFrequency = {
+  every: number;
+  interval: StrategySchedulingInterval;
+};
+
+export const isStrategySchedulingFrequency = (
+  value: unknown
+): value is StrategySchedulingFrequency => {
+  if (typeof value !== "object" || value === null) return false;
+  const { every, interval } = value as Partial<StrategySchedulingFrequency>;
+  return (
+    typeof every === "number" &&
+    every > 0 &&
+    isStrategySchedulingInterval(interval)
+  );
+};
+
+export type StrategyScheduling = {
+  frequency: StrategySchedulingFrequency;
+  status: StrategySchedulingStatus;
+};
+
+export const isStrategyScheduling = (
+  value: unknown
+): value is StrategyScheduling => {
+  if (typeof value !== "object" || value === null) return false;
+  const { frequency, status } = value as Partial<StrategyScheduling>;
+  return (
+    isStrategySchedulingFrequency(frequency) &&
+    isStrategySchedulingStatus(status)
+  );
+};

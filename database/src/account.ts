@@ -21,8 +21,8 @@ export const accountDirname = (accountKey: AccountKey) =>
 export const accountKeyToDirname = ({ accountId }: AccountKey) =>
   `accountId=${accountId}`;
 
-export const accountPathname = ({ accountId }: AccountKey) =>
-  `${accountDirname({ accountId })}/account.json`;
+export const accountPathname = (accountKey: AccountKey) =>
+  `${accountDirname(accountKey)}/account.json`;
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
   const accountId = uuidv4();

@@ -1,5 +1,6 @@
 export * from "./account.js";
 export * from "./accountStrategy.js";
+export * from "./accountStrategyList.js";
 export * from "./email.js";
 export * from "./emailAccount.js";
 export * from "./errors.js";

@@ -11,6 +11,7 @@ export const isStrategyKind = (value: unknown): value is StrategyKind => {
 
 export type Strategy = Item & {
   readonly kind: StrategyKind;
+  name: string;
 };
 
 export const isStrategy = (value: unknown): value is StrategyKind => {
