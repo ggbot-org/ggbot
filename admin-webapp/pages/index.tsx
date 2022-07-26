@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
-import { Accounts, Page } from "_components";
+import { Accounts, Content } from "_components";
 
-const Home: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <Page>
+    <Content>
       <h1>ggbot2</h1>
       <Accounts />
-    </Page>
+    </Content>
   );
 };
 
-export default Home;
+export default Page;

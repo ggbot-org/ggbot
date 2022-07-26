@@ -5,7 +5,7 @@ type Props = {
   children: ReactNode;
 };
 
-export const Page: FC<Props> = ({ children }) => {
+export const Content: FC<Props> = ({ children }) => {
   return (
     <>
       <Head>

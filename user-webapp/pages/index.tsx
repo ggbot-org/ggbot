@@ -1,22 +1,15 @@
-import type { GetServerSideProps, NextPage } from "next";
-import { Page, Strategies } from "_components";
-import { readSession, redirectToAuthenticationPage } from "_routing";
+import type { NextPage } from "next";
+import { Content, Strategies } from "_components";
+import { requireAuthentication } from "_routing";
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = readSession(req.cookies);
-  if (!session) return redirectToAuthenticationPage();
+export const getServerSideProps = requireAuthentication;
 
-  return {
-    props: {},
-  };
-};
-
-const HomePage: NextPage = () => {
+const Page: NextPage = () => {
   return (
-    <Page>
+    <Content>
       <Strategies />
-    </Page>
+    </Content>
   );
 };
 
-export default HomePage;
+export default Page;

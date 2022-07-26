@@ -17,7 +17,7 @@ import {
   ApiVerifyResponseData,
   isApiVerifyRequestData,
 } from "_api/auth/verify";
-import { Page } from "_components";
+import { Content } from "_components";
 import { HasSession, readSession, route } from "_routing";
 
 type ServerSideProps = HasSession;
@@ -313,11 +313,11 @@ const Verify: FC = () => {
   );
 };
 
-const AuthPage: NextPage<ServerSideProps> = ({ hasSession }) => {
+const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [emailSent, setEmailSent] = useState<EmailSent>(false);
 
   return (
-    <Page>
+    <Content>
       {hasSession ? (
         <Exit />
       ) : (
@@ -329,8 +329,8 @@ const AuthPage: NextPage<ServerSideProps> = ({ hasSession }) => {
           )}
         </>
       )}
-    </Page>
+    </Content>
   );
 };
 
-export default AuthPage;
+export default Page;

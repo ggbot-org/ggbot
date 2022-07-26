@@ -2,10 +2,8 @@ import { getObject, putObject } from "@ggbot2/aws";
 import {
   CreateEmailAccount,
   EmailAddress,
-  ErrorItemNotValid,
   ReadEmailAccount,
   createdNow,
-  isEmailAccount,
   EmailAccount,
 } from "@ggbot2/models";
 import { emailToDirname } from "./email.js";
@@ -34,6 +32,5 @@ export const readEmailAccount: ReadEmailAccount["func"] = async (email) => {
   const Key = emailAccountPathname(email);
   const data = await getObject({ Key });
   if (!data) return;
-  if (!isEmailAccount(data)) throw new ErrorItemNotValid();
-  return data;
+  return data as EmailAccount;
 };

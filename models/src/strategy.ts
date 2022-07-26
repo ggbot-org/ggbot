@@ -1,4 +1,8 @@
-import { Item, isItemId } from "./item.js";
+import { AccountKey } from "./account.js";
+import { Item, isItemId, NewItem } from "./item.js";
+import type { Operation } from "./operation.js";
+import { Name, isName } from "./string.js";
+import { CreationTime, DeletionTime } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;
 
@@ -9,15 +13,17 @@ export const isStrategyKind = (value: unknown): value is StrategyKind => {
   return (strategyKinds as readonly string[]).includes(value);
 };
 
-export type Strategy = Item & {
-  readonly kind: StrategyKind;
-  name: string;
-};
+export type Strategy = Item &
+  CreationTime &
+  AccountKey & {
+    readonly kind: StrategyKind;
+    name: Name;
+  };
 
 export const isStrategy = (value: unknown): value is StrategyKind => {
   if (typeof value !== "object" || value === null) return false;
-  const { id, kind } = value as Partial<Strategy>;
-  return isItemId(id) && isStrategyKind(kind);
+  const { id, kind, name } = value as Partial<Strategy>;
+  return isItemId(id) && isStrategyKind(kind) && isName(name);
 };
 
 export type StrategyKey = Readonly<{
@@ -30,3 +36,11 @@ export const isStrategyKey = (value: unknown): value is StrategyKey => {
   const { strategyId, strategyKind } = value as Partial<StrategyKey>;
   return isItemId(strategyId) && isStrategyKind(strategyKind);
 };
+
+export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
+
+export type ReadStrategy = Operation<StrategyKey, Strategy | undefined>;
+
+export type ReadStrategyKeys = Operation<void, StrategyKey[]>;
+
+export type DeleteStrategy = Operation<StrategyKey, DeletionTime>;

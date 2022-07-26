@@ -1,4 +1,4 @@
-import { readAccountStrategyList } from "@ggbot2/database";
+import { createStrategy, readAccountStrategyList } from "@ggbot2/database";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -6,22 +6,43 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import type { ReadAccountStrategyList } from "@ggbot2/models";
+import type {
+  AccountKey,
+  CreateStrategy,
+  OperationInput,
+  OperationOutput,
+  ReadAccountStrategyList,
+} from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { JsonValue } from "type-fest";
 import { readSession } from "_routing";
 
+type ApiActionInputData = OperationInput;
+type ApiActionOutputData = OperationOutput;
+
 type ResponseData = {
-  data?: JsonValue | undefined;
+  data?: ApiActionOutputData;
 };
 
-type Action<I, O> = { in: I; out: O };
+type Action<Input, Output> = {
+  // AccountKey is provided by authentication, no need to add it as action input parameter.
+  in: Input extends AccountKey ? Omit<Input, "accountId"> : Input;
+  out: Output;
+};
 
 export type ApiAction = {
-  READ_ACCOUNT_STRATEGY_LIST: Action<void, ReadAccountStrategyList["out"]>;
+  CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
+  READ_ACCOUNT_STRATEGY_LIST: Action<
+    ReadAccountStrategyList["in"],
+    ReadAccountStrategyList["out"]
+  >;
 };
 
 type ApiActionType = keyof ApiAction;
+
+export type ApiActionInput = {
+  type: ApiActionType;
+  data?: ApiActionInputData;
+};
 
 export default async function apiHandler(
   req: NextApiRequest,
@@ -39,6 +60,11 @@ export default async function apiHandler(
     const action = req.body;
 
     switch (action.type as ApiActionType) {
+      case "CREATE_STRATEGY": {
+        const data = await createStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
+      }
+
       case "READ_ACCOUNT_STRATEGY_LIST": {
         const data = await readAccountStrategyList({ accountId });
         return res.status(__200__OK__).json({ data });

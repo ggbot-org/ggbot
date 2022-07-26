@@ -1,10 +1,9 @@
 import { getObject, putObject } from "@ggbot2/aws";
 import {
   AccountKey,
-  ErrorItemNotValid,
+  AccountStrategyList,
   ReadAccountStrategyList,
   WriteAccountStrategyList,
-  isAccountStrategyList,
   updatedNow,
 } from "@ggbot2/models";
 import { accountKeyToDirname } from "./account.js";
@@ -23,8 +22,7 @@ export const readAccountStrategyList: ReadAccountStrategyList["func"] = async (
   const Key = accountStrategyListPathname(accountKey);
   const data = await getObject({ Key });
   if (!data) return;
-  if (!isAccountStrategyList(data)) throw new ErrorItemNotValid();
-  return data;
+  return data as AccountStrategyList;
 };
 
 export const writeAccountStrategyList: WriteAccountStrategyList["func"] =

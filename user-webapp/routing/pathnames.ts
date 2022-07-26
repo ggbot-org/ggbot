@@ -3,5 +3,6 @@ export const route = {
   apiExit: () => "/api/auth/exit",
   apiVerify: () => "/api/auth/verify",
   authPage: () => "/auth",
+  createStrategyPage: () => "/create/strategy",
   homePage: () => "/",
 };

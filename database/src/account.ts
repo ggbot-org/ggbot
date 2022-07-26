@@ -1,14 +1,14 @@
-import { getObject, listObjects, putObject } from "@ggbot2/aws";
+import { deleteObject, getObject, listObjects, putObject } from "@ggbot2/aws";
 import {
+  Account,
   AccountKey,
-  ErrorItemNotValid,
+  CreateAccount,
+  DeleteAccount,
   ReadAccount,
   ReadAccountKeys,
-  isAccount,
-  isAccountKey,
-  CreateAccount,
-  Account,
   createdNow,
+  deletedNow,
+  isAccountKey,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
 import { createEmailAccount } from "./emailAccount.js";
@@ -37,12 +37,11 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
   return data;
 };
 
-export const readAccount: ReadAccount["func"] = async ({ accountId }) => {
-  const Key = accountPathname({ accountId });
+export const readAccount: ReadAccount["func"] = async (accountKey) => {
+  const Key = accountPathname(accountKey);
   const data = await getObject({ Key });
   if (!data) return;
-  if (!isAccount(data)) throw new ErrorItemNotValid();
-  return data;
+  return data as Account;
 };
 
 export const readAccountKeys: ReadAccountKeys["func"] = async () => {
@@ -80,4 +79,10 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
       return list;
     }, []) ?? []
   );
+};
+
+export const deleteAccount: DeleteAccount["func"] = async (accountKey) => {
+  const Key = accountPathname(accountKey);
+  await deleteObject({ Key });
+  return deletedNow();
 };

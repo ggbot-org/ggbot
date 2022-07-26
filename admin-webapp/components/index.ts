@@ -1,2 +1,2 @@
 export * from "./Accounts";
-export * from "./Page";
+export * from "./Content";
