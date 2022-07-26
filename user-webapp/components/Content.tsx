@@ -1,13 +1,14 @@
 import Head from "next/head";
 import { FC, ReactNode } from "react";
 import { Navigation } from "./Navigation";
-import { pageContentGapTopHeight } from "./classNames";
+import { pageContentPaddingTop } from "./classNames";
 
 type Props = {
   children: ReactNode;
 };
 
 export const Content: FC<Props> = ({ children }) => {
+  const className = `${pageContentPaddingTop} px-2`;
   return (
     <>
       <Head>
@@ -17,8 +18,7 @@ export const Content: FC<Props> = ({ children }) => {
 
       <Navigation />
 
-      <div className={pageContentGapTopHeight} />
-      <div className="px-2">{children}</div>
+      <div className={className}>{children}</div>
     </>
   );
 };

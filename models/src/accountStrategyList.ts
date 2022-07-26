@@ -1,22 +1,33 @@
 import type { AccountKey } from "./account.js";
-import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
 import type { Operation } from "./operation.js";
-import type { Strategy } from "./strategy.js";
-import type { StrategyScheduling } from "./strategyScheduling.js";
+import {
+  Strategy,
+  StrategyKey,
+  isStrategyKey,
+  isStrategyName,
+} from "./strategy.js";
+import {
+  StrategySchedulingStatus,
+  isStrategySchedulingStatus,
+} from "./strategyScheduling.js";
 import type { DeletionTime, UpdateTime } from "./time.js";
 
-export type AccountStrategyListItem = AccountStrategyKey &
+export type AccountStrategyListItem = StrategyKey &
   Pick<Strategy, "name"> & {
-    scheduling: StrategyScheduling;
+    schedulingStatus: StrategySchedulingStatus;
   };
 
 export const isAccountStrategyListItem = (
   value: unknown
 ): value is AccountStrategyListItem => {
   if (typeof value !== "object" || value === null) return false;
-  const { name, scheduling, ...accountStrategyKey } =
+  const { name, schedulingStatus, ...strategyKey } =
     value as Partial<AccountStrategyListItem>;
-  return isAccountStrategyKey(accountStrategyKey);
+  return (
+    isStrategyKey(strategyKey) &&
+    isStrategyName(name) &&
+    isStrategySchedulingStatus(schedulingStatus)
+  );
 };
 
 export type AccountStrategyList = AccountStrategyListItem[];

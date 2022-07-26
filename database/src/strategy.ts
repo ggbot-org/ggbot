@@ -1,5 +1,6 @@
 import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
+  AccountStrategyListItem,
   CreateStrategy,
   DeleteStrategy,
   ReadStrategy,
@@ -9,6 +10,10 @@ import {
   deletedNow,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
+import {
+  readAccountStrategyList,
+  writeAccountStrategyList,
+} from "./accountStrategyList.js";
 
 export const strategyDirnamePrefix = () => "strategy";
 
@@ -29,6 +34,8 @@ export const createStrategy: CreateStrategy["func"] = async ({
   name,
 }) => {
   const strategyId = uuidv4();
+  const strategyKind = kind;
+  const strategyKey: StrategyKey = { strategyId, strategyKind };
   const data: Strategy = {
     id: strategyId,
     kind,
@@ -36,8 +43,18 @@ export const createStrategy: CreateStrategy["func"] = async ({
     accountId,
     ...createdNow(),
   };
-  const Key = strategyPathname({ strategyId, strategyKind: kind });
+  const Key = strategyPathname(strategyKey);
   await putObject({ Key, data });
+  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
+  const strategyListItem: AccountStrategyListItem = {
+    name,
+    schedulingStatus: "inactive",
+    ...strategyKey,
+  };
+  await writeAccountStrategyList({
+    accountId,
+    strategies: strategies.concat(strategyListItem),
+  });
   return data;
 };
 
@@ -48,8 +65,8 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) => {
   return data as Strategy;
 };
 
-export const deleteStrategy: DeleteStrategy["func"] = async (accountKey) => {
-  const Key = strategyPathname(accountKey);
+export const deleteStrategy: DeleteStrategy["func"] = async (strategyKey) => {
+  const Key = strategyPathname(strategyKey);
   await deleteObject({ Key });
   return deletedNow();
 };

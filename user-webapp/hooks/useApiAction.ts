@@ -1,6 +1,10 @@
 import useSWR from "swr";
 import { JsonObject } from "type-fest";
-import type { ApiAction, ApiActionInput } from "_api/action";
+import type {
+  ApiAction,
+  ApiActionResponseOutput,
+  ApiActionInput,
+} from "_api/action";
 
 class ApiActionResponseError extends Error {
   status: number;
@@ -33,9 +37,12 @@ const fetcher = async (action: JsonObject) => {
 
 export type CREATE_STRATEGY_IN = ApiAction["CREATE_STRATEGY"]["in"] | undefined;
 
-function useAction<Output>(arg: ApiActionInput | null) {
-  const { error, data } = useSWR<Output>(arg, fetcher);
-  const isLoading = arg !== null && !error && !data;
+function useAction<OutputData>(arg: ApiActionInput | null) {
+  const { error, data: responseOutput } = useSWR<
+    ApiActionResponseOutput<OutputData>
+  >(arg, fetcher);
+  const isLoading = arg !== null && !error && !responseOutput;
+  const data = responseOutput?.data;
   return { error, data, isLoading };
 }
 

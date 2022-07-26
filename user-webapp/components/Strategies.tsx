@@ -7,19 +7,22 @@ import { route } from "_routing";
 export const Strategies: FC = () => {
   const router = useRouter();
 
-  const { data } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
-  console.log(data);
+  const { data: strategies } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
 
   const onClickNewStrategy = useCallback(() => {
     router.push(route.createStrategyPage());
   }, [router]);
 
+  console.log(strategies);
   return (
     <div>
       strategies
       <menu>
         <Button onClick={onClickNewStrategy}>new strategy</Button>
       </menu>
+      {strategies?.map(({ name, strategyId }) => (
+        <div key={strategyId}>{name}</div>
+      ))}
     </div>
   );
 };

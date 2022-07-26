@@ -19,8 +19,8 @@ import { readSession } from "_routing";
 type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
 
-type ResponseData = {
-  data?: ApiActionOutputData;
+export type ApiActionResponseOutput<T> = {
+  data?: T;
 };
 
 type Action<Input, Output> = {
@@ -46,7 +46,7 @@ export type ApiActionInput = {
 
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ApiActionResponseOutput<ApiActionOutputData>>
 ) {
   try {
     if (req.method !== "POST")
