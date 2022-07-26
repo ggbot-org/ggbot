@@ -13,10 +13,11 @@ const Home: NextPage = () => {
 
       <Logo size={20} />
 
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-2 p-2">
         <Button>button</Button>
         <Button color="primary">primary</Button>
         <Button color="danger">danger</Button>
+        <Button disabled>disabled</Button>
       </div>
 
       <SimpleTable />

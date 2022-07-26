@@ -4,7 +4,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="data:;base64,=" />
+
+        <link rel="preconnect" href="https://rsms.me" crossOrigin="" />
+        <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
       </Head>
       <body>
         <Main />

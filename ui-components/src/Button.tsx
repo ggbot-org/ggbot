@@ -14,13 +14,13 @@ function colorClassNames({
 }: Pick<Props, "color" | "disabled">) {
   switch (true) {
     case disabled:
-      return "bg-dark-200 text-mono-400 outline-none cursor-not-allowed";
+      return "border-transparent bg-mono-100 text-mono-400 cursor-not-allowed";
     case color === "primary":
-      return "text-primary-800 bg-primary-300 hover:bg-primary-400";
+      return "border-primary-400 bg-primary-50 text-primary-500 focus:bg-primary-300 focus:text-primary-800 focus:ring-primary-400 hover:bg-primary-300 hover:text-primary-800";
     case color === "danger":
-      return "text-danger-100 bg-danger-400 hover:bg-danger-500";
+      return "border-danger-400 bg-danger-50 text-danger-700 focus:bg-danger-400 focus:text-danger-50 focus:ring-danger-300 hover:bg-danger-400 hover:text-danger-50";
     default:
-      return "text-mono-200 bg-dark-700 hover:bg-dark-800";
+      return "border-mono-600 bg-mono-50 text-mono-800 focus:bg-mono-700 focus:text-mono-200 focus:ring-mono-400 hover:bg-mono-700 hover:text-mono-200";
   }
 }
 
@@ -34,10 +34,11 @@ export const Button: FC<Props> = ({
 }) => {
   const buttonClassName = useMemo(() => {
     return [
-      "relative inline-flex items-center rounded-md whitespace-nowrap",
+      "relative inline-flex items-center border rounded-md whitespace-nowrap select-none",
       "px-4 leading-10",
       "font-medium",
       isLoading ? "cursor-default" : "",
+      "focus:outline-none focus:ring",
       colorClassNames({
         disabled,
         color,

@@ -13,5 +13,9 @@ module.exports = {
       brand: "#09eae5",
     },
   },
-  extend: {},
+  extend: {
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
+  },
 };
