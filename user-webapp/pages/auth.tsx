@@ -287,7 +287,6 @@ const Verify: FC = () => {
     <div>
       <AuthForm message="enter ggbot2" onSubmit={onSubmit}>
         <Field
-          className="w-32 text-center"
           label="password"
           name="code"
           type="text"

@@ -1,6 +1,11 @@
 import { EmailAddress } from "./email.js";
 import type { Operation } from "./operation.js";
-import { CreationTime, createdNow, isCreationTime } from "./time.js";
+import {
+  CreationTime,
+  createdNow,
+  isCreationTime,
+  DeletionTime,
+} from "./time.js";
 
 export type OneTimePasswordCode = string;
 
@@ -42,3 +47,5 @@ export type CreateOneTimePassword = Operation<
 >;
 
 export type ReadOneTimePassword = Operation<EmailAddress, OneTimePassword>;
+
+export type DeleteOneTimePassword = Operation<EmailAddress, DeletionTime>;

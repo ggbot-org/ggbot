@@ -1,8 +1,10 @@
-import { getObject, putObject } from "@ggbot2/aws";
+import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
   CreateOneTimePassword,
+  DeleteOneTimePassword,
   EmailAddress,
   ReadOneTimePassword,
+  deletedNow,
   generateOneTimePassword,
   isOneTimePassword,
 } from "@ggbot2/models";
@@ -29,4 +31,12 @@ export const readOneTimePassword: ReadOneTimePassword["func"] = async (
   const data = await getObject({ Key });
   if (isOneTimePassword(data)) return data;
   throw new TypeError(`Invalid OneTimePassword ${data}`);
+};
+
+export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
+  email
+) => {
+  const Key = oneTimePasswordPathname(email);
+  await deleteObject({ Key });
+  return deletedNow();
 };

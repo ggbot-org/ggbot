@@ -8,6 +8,7 @@ import { Session, createSessionCookie, readEmailCookie } from "@ggbot2/cookies";
 import { nodeEnvIsProduction } from "@ggbot2/env";
 import {
   createAccount,
+  deleteOneTimePassword,
   readEmailAccount,
   readOneTimePassword,
 } from "@ggbot2/database";
@@ -56,6 +57,8 @@ export default async function apiHandler(
     const verified = oneTimePasswordCode === storedOneTimePassword.code;
 
     if (!verified) return res.status(__200__OK__).json({ verified });
+
+    await deleteOneTimePassword(email);
 
     const emailAccount = await readEmailAccount(email);
 
