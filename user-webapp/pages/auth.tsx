@@ -182,7 +182,7 @@ const Exit: FC = () => {
         onReset={onReset}
         onSubmit={onSubmit}
       >
-        <menu>
+        <menu className="flex flex-row gap-4">
           <Button type="reset">stay</Button>
           <Button type="submit" color="danger" isLoading={isLoading}>
             exit

@@ -1,33 +1,71 @@
 import { Button, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
-import { FormEventHandler, useCallback, useState } from "react";
+import { useRouter } from "next/router";
+import {
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Content } from "_components";
-import { CREATE_STRATEGY_IN, useApiAction } from "_hooks";
-import { requireAuthentication } from "_routing";
+import { ApiAction, useApiAction } from "_hooks";
+import { StrategyKey, requireAuthentication, route } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  const [newStrategy, setNewStrategy] = useState<CREATE_STRATEGY_IN>();
+  const router = useRouter();
 
-  const { data } = useApiAction.CREATE_STRATEGY(newStrategy);
-  console.log(data);
+  const [newStrategy, setNewStrategy] =
+    useState<ApiAction["CREATE_STRATEGY"]["in"]>();
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>((event) => {
-    event.preventDefault();
+  const { data, isLoading } = useApiAction.CREATE_STRATEGY(newStrategy);
 
-    const name = (event.target as EventTarget & { name: { value: string } })
-      .name.value;
-    setNewStrategy({ kind: "binance", name });
-  }, []);
+  const strategyKey = useMemo<StrategyKey | undefined>(
+    () => (data ? { strategyKind: data.kind, strategyId: data.id } : undefined),
+    [data]
+  );
+
+  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+    (event) => {
+      event.preventDefault();
+      if (isLoading) return;
+
+      const name = (event.target as EventTarget & { name: { value: string } })
+        .name.value;
+      setNewStrategy({ kind: "binance", name });
+    },
+    [isLoading]
+  );
+
+  useEffect(() => {
+    if (!strategyKey) return;
+    router.push(route.homePage());
+  }, [router, strategyKey]);
 
   return (
     <Content>
-      <form onSubmit={onSubmit}>
-        new strategy
-        <Field label="strategy name" name="name" required />
-        <Button color="primary">create</Button>
-      </form>
+      <div className="p-4">
+        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+          <span className="text-xl">new strategy</span>
+          <Field
+            label="strategy name"
+            name="name"
+            required
+            readOnly={isLoading}
+          />
+          {strategyKey ? (
+            <div>done</div>
+          ) : (
+            <menu>
+              <Button color="primary" isLoading={isLoading}>
+                create
+              </Button>
+            </menu>
+          )}
+        </form>
+      </div>
     </Content>
   );
 };

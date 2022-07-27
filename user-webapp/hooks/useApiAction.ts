@@ -6,6 +6,8 @@ import type {
   ApiActionInput,
 } from "_api/action";
 
+export type { ApiAction } from "_api/action";
+
 class ApiActionResponseError extends Error {
   status: number;
   constructor({ status }: Pick<ApiActionResponseError, "status">) {
@@ -35,8 +37,6 @@ const fetcher = async (action: JsonObject) => {
   }
 };
 
-export type CREATE_STRATEGY_IN = ApiAction["CREATE_STRATEGY"]["in"] | undefined;
-
 function useAction<OutputData>(arg: ApiActionInput | null) {
   const { error, data: responseOutput } = useSWR<
     ApiActionResponseOutput<OutputData>
@@ -47,7 +47,7 @@ function useAction<OutputData>(arg: ApiActionInput | null) {
 }
 
 export const useApiAction = {
-  CREATE_STRATEGY: (data?: CREATE_STRATEGY_IN) =>
+  CREATE_STRATEGY: (data?: ApiAction["CREATE_STRATEGY"]["in"]) =>
     useAction<ApiAction["CREATE_STRATEGY"]["out"]>(
       data ? { type: "CREATE_STRATEGY", data } : null
     ),
@@ -55,4 +55,8 @@ export const useApiAction = {
     useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>({
       type: "READ_ACCOUNT_STRATEGY_LIST",
     }),
+  READ_STRATEGY: (data?: ApiAction["READ_STRATEGY"]["in"]) =>
+    useAction<ApiAction["READ_STRATEGY"]["out"]>(
+      data ? { type: "READ_STRATEGY", data } : null
+    ),
 };

@@ -8,7 +8,7 @@ type Props = InputProps & {
 
 export const Field: FC<Props> = ({ label, name, ...inputProps }) => {
   const containerClassName = "w-full py-2";
-  const labelClassName = "font-semibold text-sm uppercase my-2";
+  const labelClassName = "font-semibold text-xs uppercase my-2";
   return (
     <div className={containerClassName}>
       <label htmlFor={name} className={labelClassName}>

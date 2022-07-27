@@ -12,6 +12,7 @@ import type {
   OperationInput,
   OperationOutput,
   ReadAccountStrategyList,
+  ReadStrategy,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
@@ -31,6 +32,7 @@ type Action<Input, Output> = {
 
 export type ApiAction = {
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
+  READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
     ReadAccountStrategyList["out"]
