@@ -46,26 +46,24 @@ const Page: NextPage = () => {
 
   return (
     <Content>
-      <div className="p-4">
-        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-          <span className="text-xl">new strategy</span>
-          <Field
-            label="strategy name"
-            name="name"
-            required
-            readOnly={isLoading}
-          />
-          {strategyKey ? (
-            <div>done</div>
-          ) : (
-            <menu>
-              <Button color="primary" isLoading={isLoading}>
-                create
-              </Button>
-            </menu>
-          )}
-        </form>
-      </div>
+      <form className="p-4 flex flex-col gap-4 sm:w-96" onSubmit={onSubmit}>
+        <span className="text-xl">new strategy</span>
+        <Field
+          label="strategy name"
+          name="name"
+          required
+          readOnly={isLoading}
+        />
+        {strategyKey ? (
+          <div>done</div>
+        ) : (
+          <menu>
+            <Button color="primary" isLoading={isLoading}>
+              create
+            </Button>
+          </menu>
+        )}
+      </form>
     </Content>
   );
 };

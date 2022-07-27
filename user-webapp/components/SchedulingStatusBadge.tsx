@@ -6,31 +6,27 @@ type Props = {
 };
 
 export const SchedulingStatusBadge: FC<Props> = ({ schedulingStatus }) => {
-  const schedulingStatusClassName: Record<StrategySchedulingStatus, string> = {
-    active: "bg-primary-100",
-    inactive: "bg-mono-100",
-    suspended: "bg-danger-100",
-  };
+  const label = useMemo(() => {
+    const schedulingStatusLabel: Record<StrategySchedulingStatus, string> = {
+      active: "active",
+      inactive: "inactive",
+      suspended: "suspended",
+    };
+    return schedulingStatusLabel[schedulingStatus];
+  }, [schedulingStatus]);
 
-  const schedulingStatusLabel: Record<StrategySchedulingStatus, string> = {
-    active: "active",
-    inactive: "inactive",
-    suspended: "suspended",
-  };
-
-  const label = useMemo(
-    () => schedulingStatusLabel[schedulingStatus],
-    [schedulingStatus]
-  );
-
-  const className = useMemo(
-    () =>
-      [
-        "px-2 py-1 select-none rounded-md",
-        schedulingStatusClassName[schedulingStatus],
-      ].join(" "),
-    [schedulingStatus]
-  );
+  const className = useMemo(() => {
+    const schedulingStatusClassName: Record<StrategySchedulingStatus, string> =
+      {
+        active: "bg-primary-100",
+        inactive: "bg-mono-100",
+        suspended: "bg-danger-100",
+      };
+    return [
+      "px-2 py-1 select-none rounded-md",
+      schedulingStatusClassName[schedulingStatus],
+    ].join(" ");
+  }, [schedulingStatus]);
 
   return <div className={className}>{label}</div>;
 };

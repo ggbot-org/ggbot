@@ -1,4 +1,8 @@
-import { createStrategy, readAccountStrategyList } from "@ggbot2/database";
+import {
+  createStrategy,
+  deleteStrategy,
+  readAccountStrategyList,
+} from "@ggbot2/database";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -9,6 +13,7 @@ import {
 import type {
   AccountKey,
   CreateStrategy,
+  DeleteStrategy,
   OperationInput,
   OperationOutput,
   ReadAccountStrategyList,
@@ -32,6 +37,7 @@ type Action<Input, Output> = {
 
 export type ApiAction = {
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
+  DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
@@ -64,6 +70,11 @@ export default async function apiHandler(
     switch (action.type as ApiActionType) {
       case "CREATE_STRATEGY": {
         const data = await createStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "DELETE_STRATEGY": {
+        const data = await deleteStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 

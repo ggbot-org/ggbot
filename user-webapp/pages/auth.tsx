@@ -9,7 +9,6 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
-  useEffect,
   useState,
 } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
@@ -36,8 +35,8 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
   message: string;
 };
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
-  <form className="p-4 flex flex-col gap-4 sm:w-96" {...props}>
-    <div className="flex flex-col items-center gap-4">
+  <form className="flex flex-col p-4 gap-4 sm:w-96" {...props}>
+    <div>
       <span className="text-2xl">{message}</span>
       <Logo size={107} animated />
     </div>
@@ -46,7 +45,7 @@ const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
 );
 
 const FeedbackMessages: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="my-4">{children}</div>
+  <div className="px-6 my-4 sm:w-96">{children}</div>
 );
 
 const GenericErrorFeedback: FC = () => <div>Something went wrong.</div>;
@@ -130,6 +129,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
     [
       emailSent,
       isLoading,
+      setEmailSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
@@ -138,9 +138,15 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
   );
 
   return (
-    <div>
+    <>
       <AuthForm onSubmit={onSubmit} message="enter ggbot2">
-        <Field label="email" name="email" type="email" />
+        <Field
+          label="email"
+          name="email"
+          type="email"
+          readOnly={isLoading}
+          required
+        />
         <menu>
           <Button color="primary" isLoading={isLoading}>
             send
@@ -153,7 +159,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
       </FeedbackMessages>
-    </div>
+    </>
   );
 };
 
@@ -172,24 +178,22 @@ const Exit: FC = () => {
 
   const onSubmit = useCallback(() => {
     setIsLoading(true);
-  }, [router, setIsLoading]);
+  }, [setIsLoading]);
 
   return (
-    <div>
-      <AuthForm
-        action={route.apiExit()}
-        message="exit ggbot2"
-        onReset={onReset}
-        onSubmit={onSubmit}
-      >
-        <menu className="flex flex-row gap-4">
-          <Button type="reset">stay</Button>
-          <Button type="submit" color="danger" isLoading={isLoading}>
-            exit
-          </Button>
-        </menu>
-      </AuthForm>
-    </div>
+    <AuthForm
+      action={route.apiExit()}
+      message="exit ggbot2"
+      onReset={onReset}
+      onSubmit={onSubmit}
+    >
+      <menu className="flex flex-row gap-4">
+        <Button type="reset">stay</Button>
+        <Button type="submit" color="danger" isLoading={isLoading}>
+          exit
+        </Button>
+      </menu>
+    </AuthForm>
   );
 };
 
@@ -271,27 +275,26 @@ const Verify: FC = () => {
       }
     },
     [
+      goToHomePage,
       isLoading,
       setCodeSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
       setIsLoading,
-      setGotTimeout,
     ]
   );
 
-  useEffect(() => {}, [router]);
-
   return (
-    <div>
+    <>
       <AuthForm message="enter ggbot2" onSubmit={onSubmit}>
         <Field
           label="password"
           name="code"
-          type="text"
-          spellCheck={false}
+          readOnly={isLoading}
           required
+          spellCheck={false}
+          type="text"
         />
         <menu>
           <Button color="primary" isLoading={isLoading}>
@@ -300,15 +303,14 @@ const Verify: FC = () => {
         </menu>
       </AuthForm>
 
-      {codeSent ? null : <div>Check your email to get the password.</div>}
-
       <FeedbackMessages>
+        {codeSent ? null : <div>Check your email to get the password.</div>}
         {hasGenericError ? <GenericErrorFeedback /> : null}
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
         {verificationFailed ? <div>Verification failed.</div> : null}
       </FeedbackMessages>
-    </div>
+    </>
   );
 };
 

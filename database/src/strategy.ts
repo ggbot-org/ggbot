@@ -65,8 +65,18 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) => {
   return data as Strategy;
 };
 
-export const deleteStrategy: DeleteStrategy["func"] = async (strategyKey) => {
+export const deleteStrategy: DeleteStrategy["func"] = async ({
+  accountId,
+  ...strategyKey
+}) => {
   const Key = strategyPathname(strategyKey);
   await deleteObject({ Key });
+  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
+  await writeAccountStrategyList({
+    accountId,
+    strategies: strategies.filter(
+      ({ strategyId }) => strategyId === strategyKey.strategyId
+    ),
+  });
   return deletedNow();
 };

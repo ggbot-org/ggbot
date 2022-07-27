@@ -51,6 +51,10 @@ export const useApiAction = {
     useAction<ApiAction["CREATE_STRATEGY"]["out"]>(
       data ? { type: "CREATE_STRATEGY", data } : null
     ),
+  DELETE_STRATEGY: (data?: ApiAction["DELETE_STRATEGY"]["in"]) =>
+    useAction<ApiAction["DELETE_STRATEGY"]["out"]>(
+      data ? { type: "DELETE_STRATEGY", data } : null
+    ),
   READ_ACCOUNT_STRATEGY_LIST: () =>
     useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>({
       type: "READ_ACCOUNT_STRATEGY_LIST",

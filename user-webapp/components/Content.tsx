@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Content: FC<Props> = ({ children }) => {
-  const className = `${pageContentPaddingTop} px-2`;
+  const className = `${pageContentPaddingTop} px-2 w-fit min-w-full`;
   return (
     <>
       <Head>

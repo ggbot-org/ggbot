@@ -32,9 +32,7 @@ export const Strategies: FC = () => {
             name,
             onClick: (event: SyntheticEvent) => {
               event.stopPropagation();
-              setSelectedStrategyKey(
-                isSelected ? undefined : { strategyId, strategyKind }
-              );
+              setSelectedStrategyKey({ strategyId, strategyKind });
             },
             schedulingStatus,
             strategyKind,
@@ -56,7 +54,7 @@ export const Strategies: FC = () => {
       <menu>
         <Button onClick={onClickNewStrategy}>new strategy</Button>
       </menu>
-      <div className="flex flex-row gap-4 flex-wrap">
+      <div className="flex flex-col md:flex-row gap-4 flex-wrap">
         {strategyItems?.map(
           ({
             name,
@@ -67,11 +65,11 @@ export const Strategies: FC = () => {
             strategyKind,
           }) => (
             <div
-              className="flex flex-col gap-4 h-fit shadow p-2 hover:shadow-md transition-all"
+              className="flex flex-col gap-4 shadow p-2 hover:shadow-md transition-all duration-200"
               key={strategyId}
             >
               <div
-                className="flex flex-row justify-between gap-2 items-center cursor-pointer"
+                className="flex flex-row justify-between gap-2 items-center"
                 onClick={onClick}
               >
                 <span>{name}</span>
