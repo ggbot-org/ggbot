@@ -3,34 +3,34 @@ import { isEmailAddress, normalizeEmailAddress } from "./email";
 describe("normalizeEmailAddress", () => {
   it("returns email in lowercase", () => {
     [
-      { input: "lower@example.com", expected: "lower@example.com" },
-      { input: "MiXeD@example.com", expected: "mixed@example.com" },
-    ].forEach(({ input, expected }) => {
+      { input: "lower@example.com", output: "lower@example.com" },
+      { input: "MiXeD@example.com", output: "mixed@example.com" },
+    ].forEach(({ input, output }) => {
       if (!isEmailAddress(input))
         throw new TypeError(`Invalid EmailAddress ${input}`);
-      expect(normalizeEmailAddress(input)).toBe(expected);
+      expect(normalizeEmailAddress(input)).toBe(output);
     });
   });
 
   it("removes period characters", () => {
     [
-      { input: "john.smith@gmail.com", expected: "johnsmith@gmail.com" },
-      { input: "jOhN.sMiTh@gmail.com", expected: "johnsmith@gmail.com" },
-      { input: "MiXeD.cAsE@example.com", expected: "mixedcase@example.com" },
-      { input: "u.s.e.r@example.com", expected: "user@example.com" },
-    ].forEach(({ input, expected }) => {
+      { input: "john.smith@gmail.com", output: "johnsmith@gmail.com" },
+      { input: "jOhN.sMiTh@gmail.com", output: "johnsmith@gmail.com" },
+      { input: "MiXeD.cAsE@example.com", output: "mixedcase@example.com" },
+      { input: "u.s.e.r@example.com", output: "user@example.com" },
+    ].forEach(({ input, output }) => {
       if (!isEmailAddress(input))
         throw new TypeError(`Invalid EmailAddress ${input}`);
-      expect(normalizeEmailAddress(input)).toBe(expected);
+      expect(normalizeEmailAddress(input)).toBe(output);
     });
   });
 
   it("removes labels", () => {
-    [{ input: "user+label@example.com", expected: "user@example.com" }].forEach(
-      ({ input, expected }) => {
+    [{ input: "user+label@example.com", output: "user@example.com" }].forEach(
+      ({ input, output }) => {
         if (!isEmailAddress(input))
           throw new TypeError(`Invalid EmailAddress ${input}`);
-        expect(normalizeEmailAddress(input)).toBe(expected);
+        expect(normalizeEmailAddress(input)).toBe(output);
       }
     );
   });
@@ -39,15 +39,15 @@ describe("normalizeEmailAddress", () => {
 describe("isEmailAddress", () => {
   it("validates email", () => {
     [
-      { input: undefined, expected: false },
-      { input: "not an email", expected: false },
-      { input: "john.smith at gmail.com", expected: false },
-      { input: "john.smith@gmail.com", expected: true },
-      { input: "jOhN.sMiTh@gmail.com", expected: true },
-      { input: "john.smith+label@gmail.com", expected: true },
-      { input: "john.smith@example.co", expected: true },
-    ].forEach(({ input, expected }) => {
-      expect(isEmailAddress(input)).toBe(expected);
+      { input: undefined, output: false },
+      { input: "not an email", output: false },
+      { input: "john.smith at gmail.com", output: false },
+      { input: "john.smith@gmail.com", output: true },
+      { input: "jOhN.sMiTh@gmail.com", output: true },
+      { input: "john.smith+label@gmail.com", output: true },
+      { input: "john.smith@example.co", output: true },
+    ].forEach(({ input, output }) => {
+      expect(isEmailAddress(input)).toBe(output);
     });
   });
 });

@@ -2,7 +2,7 @@ import { Button } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useState } from "react";
 import { Content } from "_components";
-import { ApiAction, useApiAction } from "_hooks";
+import { useApiAction } from "_hooks";
 import {
   StrategyKey,
   requireAuthenticationAndGetStrategyKey,

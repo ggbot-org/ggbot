@@ -1,12 +1,30 @@
 import { StrategyKey, isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { readSession } from "./authentication";
-import { redirectToAuthenticationPage, redirectToHomePage } from "./redirects";
+import {
+  redirectToAuthenticationPage,
+  redirectToErrorPageInvalidStrategyKey,
+  redirectToHomePage,
+} from "./redirects";
 
 export type { StrategyKey } from "@ggbot2/models";
 
 export type HasSession = {
   hasSession: boolean;
+};
+
+export type InvalidStrategyKey = {
+  strategyKind: string;
+  strategyId: string;
+};
+
+export const getStrategyKey: GetServerSideProps = async ({ params }) => {
+  const strategyKey = strategyKeyFromRouterParams(params);
+  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
+
+  return {
+    props: strategyKey,
+  };
 };
 
 export const requireAuthentication: GetServerSideProps = async ({ req }) =>
@@ -18,7 +36,7 @@ export const requireAuthenticationAndGetStrategyKey: GetServerSideProps =
     if (!session) return redirectToAuthenticationPage();
 
     const strategyKey = strategyKeyFromRouterParams(params);
-    if (!strategyKey) return redirectToHomePage();
+    if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
 
     return {
       props: strategyKey,
@@ -33,6 +51,5 @@ export const strategyKeyFromRouterParams = (
     strategyKind: params.strategyKind,
     strategyId: params.strategyId,
   };
-  if (!isStrategyKey(strategyKey)) return;
-  return strategyKey;
+  if (isStrategyKey(strategyKey)) return strategyKey;
 };

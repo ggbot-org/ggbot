@@ -1,4 +1,4 @@
-import type { StrategyKey } from "./serverSideProps";
+import type { InvalidStrategyKey, StrategyKey } from "./serverSideProps";
 
 export const route = {
   apiEnter: () => "/api/auth/enter",
@@ -8,6 +8,11 @@ export const route = {
   createStrategyPage: () => "/create/strategy",
   deleteStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/delete/strategy/${strategyKind}/${strategyId}`,
+  errorPageInvalidStrategyKey: ({
+    strategyKind,
+    strategyId,
+  }: InvalidStrategyKey) =>
+    `/error/invalid-strategy-key/${strategyKind}/${strategyId}`,
   homePage: () => "/",
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,

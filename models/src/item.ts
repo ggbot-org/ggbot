@@ -2,9 +2,11 @@ import { CreationTime } from "./time.js";
 
 type ItemId = string;
 
+const nullId = "00000000-0000-0000-0000-000000000000";
+
 export const isItemId = (value: unknown): value is ItemId => {
   if (typeof value !== "string") return false;
-  return value !== "";
+  return value.length === nullId.length;
 };
 
 export type Item = {
