@@ -9,17 +9,28 @@ type Props = StrategyKey;
 export const StrategyActions: FC<Props> = (strategyKey) => {
   const router = useRouter();
 
-  const onClickFlow = useCallback((event: SyntheticEvent) => {
-    event.stopPropagation();
-  }, []);
+  const onClickFlow = useCallback(
+    (event: SyntheticEvent) => {
+      event.stopPropagation();
+    },
+    [router, strategyKey]
+  );
 
-  const onClickScheduling = useCallback((event: SyntheticEvent) => {
-    event.stopPropagation();
-  }, []);
+  const onClickScheduling = useCallback(
+    (event: SyntheticEvent) => {
+      event.stopPropagation();
+      router.push(route.scheduleStrategyPage(strategyKey));
+    },
+    [router, strategyKey]
+  );
 
-  const onClickCopy = useCallback((event: SyntheticEvent) => {
-    event.stopPropagation();
-  }, []);
+  const onClickCopy = useCallback(
+    (event: SyntheticEvent) => {
+      event.stopPropagation();
+      router.push(route.copyStrategyPage(strategyKey));
+    },
+    [router, strategyKey]
+  );
 
   const onClickDelete = useCallback(
     (event: SyntheticEvent) => {
@@ -31,7 +42,7 @@ export const StrategyActions: FC<Props> = (strategyKey) => {
 
   return (
     <div>
-      <menu className="flex flex-row gap-4 overflow-x-scroll">
+      <menu className="p-2 flex flex-row gap-4 overflow-x-scroll">
         <Button color="primary" onClick={onClickFlow}>
           flow
         </Button>
