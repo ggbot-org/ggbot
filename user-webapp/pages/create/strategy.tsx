@@ -46,7 +46,10 @@ const Page: NextPage = () => {
 
   return (
     <Content>
-      <form className="p-4 flex flex-col gap-4 sm:w-96" onSubmit={onSubmit}>
+      <form
+        className="p-4 w-full max-w-lg flex flex-col gap-4"
+        onSubmit={onSubmit}
+      >
         <span className="text-xl">new strategy</span>
         <Field
           label="strategy name"

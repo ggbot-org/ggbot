@@ -35,17 +35,19 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
   message: string;
 };
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
-  <form className="flex flex-col p-4 gap-4 sm:w-96" {...props}>
-    <div>
+  <>
+    <div className="p-4 flex flex-col gap-4 items-center">
       <span className="text-2xl">{message}</span>
       <Logo size={107} animated />
     </div>
-    {children}
-  </form>
+    <form className="p-4 w-full flex flex-col gap-4" {...props}>
+      {children}
+    </form>
+  </>
 );
 
 const FeedbackMessages: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="px-6 my-4 sm:w-96">{children}</div>
+  <div className="p-6">{children}</div>
 );
 
 const GenericErrorFeedback: FC = () => <div>Something went wrong.</div>;
@@ -316,20 +318,21 @@ const Verify: FC = () => {
 
 const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [emailSent, setEmailSent] = useState<EmailSent>(false);
-
   return (
     <Content>
-      {hasSession ? (
-        <Exit />
-      ) : (
-        <>
-          {emailSent ? (
-            <Verify />
-          ) : (
-            <Enter emailSent={emailSent} setEmailSent={setEmailSent} />
-          )}
-        </>
-      )}
+      <div className="p-4 w-full max-w-lg flex flex-col gap-4 items-center">
+        {hasSession ? (
+          <Exit />
+        ) : (
+          <>
+            {emailSent ? (
+              <Verify />
+            ) : (
+              <Enter emailSent={emailSent} setEmailSent={setEmailSent} />
+            )}
+          </>
+        )}
+      </div>
     </Content>
   );
 };
