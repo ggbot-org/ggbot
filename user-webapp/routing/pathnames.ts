@@ -15,6 +15,8 @@ export const route = {
     strategyId,
   }: InvalidStrategyKey) =>
     `/error/invalid-strategy-key/${strategyKind}/${strategyId}`,
+  errorPageStrategyNotFound: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/error/strategy-not-found/${strategyKind}/${strategyId}`,
   homePage: () => "/",
   scheduleStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/schedule/strategy/${strategyKind}/${strategyId}`,

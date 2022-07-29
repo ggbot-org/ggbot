@@ -53,6 +53,11 @@ export const isAccountStrategyKey = (
   return isAccountKey({ accountId }) && isStrategyKey(strategyKey);
 };
 
+export type CopyStrategy = Operation<
+  AccountKey & StrategyKey & Pick<Strategy, "name">,
+  Strategy
+>;
+
 export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
 
 export type ReadStrategy = Operation<StrategyKey, Strategy | undefined>;

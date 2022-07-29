@@ -1,4 +1,5 @@
 import {
+  copyStrategy,
   createStrategy,
   deleteStrategy,
   readAccountStrategyList,
@@ -13,6 +14,7 @@ import {
 } from "@ggbot2/http-status-codes";
 import type {
   AccountKey,
+  CopyStrategy,
   CreateStrategy,
   DeleteStrategy,
   OperationInput,
@@ -38,6 +40,7 @@ type Action<Input, Output> = {
 };
 
 export type ApiAction = {
+  COPY_STRATEGY: Action<CopyStrategy["in"], CopyStrategy["out"]>;
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
@@ -71,6 +74,11 @@ export default async function apiHandler(
     const action = req.body;
 
     switch (action.type as ApiActionType) {
+      case "COPY_STRATEGY": {
+        const data = await copyStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
+      }
+
       case "CREATE_STRATEGY": {
         const data = await createStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });

@@ -1,10 +1,13 @@
 import type { NextPage } from "next";
 import { Content } from "_components";
-import { StrategyKey, requireAuthenticationAndGetStrategyKey } from "_routing";
+import {
+  StrategyInfo,
+  requireAuthenticationAndGetStrategyInfo,
+} from "_routing";
 
-type ServerSideProps = StrategyKey;
+type ServerSideProps = StrategyInfo;
 
-export const getServerSideProps = requireAuthenticationAndGetStrategyKey;
+export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
 const Page: NextPage<ServerSideProps> = () => {
   return (

@@ -2,16 +2,10 @@ import { isStrategyName } from "@ggbot2/models";
 import { Button, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FormEventHandler, useCallback, useEffect, useState } from "react";
 import { Content } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
-import { StrategyKey, requireAuthentication, route } from "_routing";
+import { requireAuthentication, route } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
@@ -22,11 +16,6 @@ const Page: NextPage = () => {
     useState<ApiAction["CREATE_STRATEGY"]["in"]>();
 
   const { data, isLoading } = useApiAction.CREATE_STRATEGY(newStrategy);
-
-  const strategyKey = useMemo<StrategyKey | undefined>(
-    () => (data ? { strategyKind: data.kind, strategyId: data.id } : undefined),
-    [data]
-  );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -42,9 +31,9 @@ const Page: NextPage = () => {
   );
 
   useEffect(() => {
-    if (!strategyKey) return;
+    if (!data) return;
     router.push(route.homePage());
-  }, [router, strategyKey]);
+  }, [data, router]);
 
   return (
     <Content>
@@ -59,7 +48,7 @@ const Page: NextPage = () => {
           required
           readOnly={isLoading}
         />
-        {strategyKey ? (
+        {data ? (
           <div>done</div>
         ) : (
           <menu>

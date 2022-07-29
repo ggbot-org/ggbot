@@ -1,6 +1,7 @@
 import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
   AccountStrategyListItem,
+  CopyStrategy,
   CreateStrategy,
   DeleteStrategy,
   ReadStrategy,
@@ -31,6 +32,20 @@ export const strategyKeyToDirname = ({
 
 export const strategyPathname = (strategyKey: StrategyKey) =>
   `${strategyDirname(strategyKey)}/strategy.json`;
+
+export const copyStrategy: CopyStrategy["func"] = async ({
+  accountId,
+  strategyKind,
+  strategyId,
+  name,
+}) => {
+  const strategy = await readStrategy({ strategyKind, strategyId });
+  if (!strategy)
+    throw new Error(
+      `Strategy not found, kind=${strategyKind} id=${strategyId}`
+    );
+  return await createStrategy({ accountId, kind: strategyKind, name });
+};
 
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
@@ -114,7 +129,7 @@ export const deleteStrategy: DeleteStrategy["func"] = async ({
   await writeAccountStrategyList({
     accountId,
     strategies: strategies.filter(
-      ({ strategyId }) => strategyId === strategyKey.strategyId
+      ({ strategyId }) => strategyId !== strategyKey.strategyId
     ),
   });
   return deletedNow();

@@ -47,6 +47,10 @@ function useAction<OutputData>(arg: ApiActionInput | null) {
 }
 
 export const useApiAction = {
+  COPY_STRATEGY: (data?: ApiAction["COPY_STRATEGY"]["in"]) =>
+    useAction<ApiAction["COPY_STRATEGY"]["out"]>(
+      data ? { type: "COPY_STRATEGY", data } : null
+    ),
   CREATE_STRATEGY: (data?: ApiAction["CREATE_STRATEGY"]["in"]) =>
     useAction<ApiAction["CREATE_STRATEGY"]["out"]>(
       data ? { type: "CREATE_STRATEGY", data } : null

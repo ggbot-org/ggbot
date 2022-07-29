@@ -14,6 +14,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { SchedulingStatusBadge, StrategyActions } from "_components";
@@ -30,17 +31,6 @@ const getStoredSelectedStrategy = (): SelectedStrategyKey => {
   if (!storedValue) return null;
   const objValue = JSON.parse(storedValue);
   return isStrategyKey(objValue) ? objValue : null;
-};
-
-const setStoredSelectedStrategyKey = (
-  selectedStrategyKey: SelectedStrategyKey
-) => {
-  if (selectedStrategyKey)
-    global?.sessionStorage?.setItem(
-      selectedStrategyKeyStorageKey,
-      JSON.stringify(selectedStrategyKey)
-    );
-  else global?.sessionStorage?.removeItem(selectedStrategyKeyStorageKey);
 };
 
 type StrategyItemProps = StrategyKey &
@@ -96,6 +86,8 @@ type RenamedStrategyItem = Pick<StrategyItemProps, "name" | "strategyId">;
 export const Strategies: FC = () => {
   const router = useRouter();
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [selectedStrategyKey, setSelectedStrategyKey] =
     useState<SelectedStrategyKey>(getStoredSelectedStrategy());
   const [renameStrategyIn, setRenameStrategyIn] =
@@ -105,7 +97,7 @@ export const Strategies: FC = () => {
   >([]);
 
   const { data: strategies } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
-  const { data: renameStrategyOut, isLoading: renamStrategyIsLoading } =
+  const { isLoading: renamStrategyIsLoading } =
     useApiAction.RENAME_STRATEGY(renameStrategyIn);
 
   const onClickNewStrategy = useCallback(() => {
@@ -122,7 +114,6 @@ export const Strategies: FC = () => {
 
           const onClick: StrategyItemProps["onClick"] = (event) => {
             event.stopPropagation();
-            setStoredSelectedStrategyKey({ strategyId, strategyKind });
             setSelectedStrategyKey({ strategyId, strategyKind });
           };
 
@@ -181,18 +172,33 @@ export const Strategies: FC = () => {
     ]
   );
 
-  const onClickContainer = useCallback(() => {
+  const closeSelectedItemOnClick = useCallback(() => {
+    if (!selectedStrategyKey) return;
     if (renamStrategyIsLoading) return;
-    setStoredSelectedStrategyKey(null);
     setSelectedStrategyKey(null);
-  }, [renamStrategyIsLoading, setSelectedStrategyKey]);
+  }, [renamStrategyIsLoading, selectedStrategyKey, setSelectedStrategyKey]);
 
   useEffect(() => {
-    if (!renameStrategyOut) return;
-  }, [renameStrategyOut]);
+    if (!containerRef.current) return;
+
+    window.addEventListener("click", closeSelectedItemOnClick);
+
+    return () => {
+      window.removeEventListener("click", closeSelectedItemOnClick);
+    };
+  }, [closeSelectedItemOnClick]);
+
+  useEffect(() => {
+    if (selectedStrategyKey)
+      global?.sessionStorage?.setItem(
+        selectedStrategyKeyStorageKey,
+        JSON.stringify(selectedStrategyKey)
+      );
+    else global?.sessionStorage?.removeItem(selectedStrategyKeyStorageKey);
+  }, [selectedStrategyKey]);
 
   return (
-    <div className="p-4 flex flex-col gap-4" onClick={onClickContainer}>
+    <div ref={containerRef} className="p-4 flex flex-col gap-4">
       <span className="text-xl">strategies</span>
       <menu>
         <Button onClick={onClickNewStrategy}>new strategy</Button>
