@@ -1,7 +1,5 @@
 import {
   FC,
-  Dispatch,
-  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -13,10 +11,10 @@ import { Input, InputProps } from "./Input";
 
 export type EditableInputProps = Omit<
   InputProps,
-  "defaultValue" | "value" | "onBlur" | "onChange"
+  "defaultValue" | "value" | "onBlur" | "onChange" | "onFocus"
 > & {
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue: (value: string) => void;
 };
 
 export const EditableInput: FC<EditableInputProps> = ({
@@ -29,15 +27,17 @@ export const EditableInput: FC<EditableInputProps> = ({
   const [editing, setEditing] = useState(false);
   const [nextValue, setNextValue] = useState(value);
 
-  const submitValue = useCallback(() => {
+  const submit = useCallback(() => {
     setEditing(false);
-    setValue(nextValue);
-  }, [nextValue, setValue]);
+    if (value !== nextValue) setValue(nextValue);
+  }, [nextValue, setValue, value]);
 
-  const resetValue = useCallback(() => {
+  const reset = useCallback(() => {
     setEditing(false);
     setValue(value);
   }, [setEditing, setValue, value]);
+
+  const onBlur = submit;
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -46,6 +46,10 @@ export const EditableInput: FC<EditableInputProps> = ({
     },
     [editing]
   );
+
+  const onFocus = useCallback(() => {
+    setEditing(true);
+  }, [setEditing]);
 
   const startEditing = useCallback(() => {
     setEditing(true);
@@ -60,20 +64,15 @@ export const EditableInput: FC<EditableInputProps> = ({
   const onKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (event) => {
       switch (event.key) {
-        case "Enter": {
-          submitValue();
+        case "Enter":
+          return submit();
+        case "Escape":
+          return reset();
+        default:
           break;
-        }
-        case "Escape": {
-          resetValue();
-          break;
-        }
-        default: {
-          break;
-        }
       }
     },
-    [resetValue, submitValue]
+    [reset, submit]
   );
 
   // If prop `value` changes, then update `nextValue`.
@@ -85,9 +84,10 @@ export const EditableInput: FC<EditableInputProps> = ({
   return (
     <Input
       {...inputProps}
-      onBlur={submitValue}
+      onBlur={onBlur}
       onChange={onChange}
       onClick={onClickInput}
+      onFocus={onFocus}
       onKeyDown={onKeyDown}
       readOnly={readOnly || !editing}
       value={nextValue}

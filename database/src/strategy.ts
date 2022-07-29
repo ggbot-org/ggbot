@@ -4,10 +4,14 @@ import {
   CreateStrategy,
   DeleteStrategy,
   ReadStrategy,
+  RenameStrategy,
   Strategy,
   StrategyKey,
   createdNow,
   deletedNow,
+  updatedNow,
+  normalizeStrategyName,
+  isStrategyName,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -63,6 +67,41 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) => {
   const data = await getObject({ Key });
   if (!data) return;
   return data as Strategy;
+};
+
+export const renameStrategy: RenameStrategy["func"] = async ({
+  accountId,
+  strategyId,
+  strategyKind,
+  name,
+}) => {
+  if (!isStrategyName(name))
+    throw new TypeError(`Invalid strategy name ${name}`);
+  const strategyKey: StrategyKey = { strategyId, strategyKind };
+  const strategy = await readStrategy(strategyKey);
+  if (!strategy)
+    throw new Error(
+      `Strategy not found, kind=${strategyKind} id=${strategyId}`
+    );
+  if (strategy.accountId !== accountId)
+    throw new Error(
+      `Permission denied, accountId=${accountId} cannot rename strategy kind=${strategyKind} id=${strategyId}`
+    );
+  const renamedStrategy = { ...strategy, name: normalizeStrategyName(name) };
+  const Key = strategyPathname(strategyKey);
+  await putObject({ Key, data: renamedStrategy });
+  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
+  await writeAccountStrategyList({
+    accountId,
+    strategies: strategies.map(
+      ({ strategyId: itemStrategyId, name: itemName, ...item }) => ({
+        strategyId: itemStrategyId,
+        name: strategyId === itemStrategyId ? name : itemName,
+        ...item,
+      })
+    ),
+  });
+  return updatedNow();
 };
 
 export const deleteStrategy: DeleteStrategy["func"] = async ({

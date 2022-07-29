@@ -2,6 +2,7 @@ import {
   createStrategy,
   deleteStrategy,
   readAccountStrategyList,
+  renameStrategy,
 } from "@ggbot2/database";
 import {
   __200__OK__,
@@ -18,6 +19,7 @@ import type {
   OperationOutput,
   ReadAccountStrategyList,
   ReadStrategy,
+  RenameStrategy,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
@@ -43,6 +45,7 @@ export type ApiAction = {
     ReadAccountStrategyList["in"],
     ReadAccountStrategyList["out"]
   >;
+  RENAME_STRATEGY: Action<RenameStrategy["in"], RenameStrategy["out"]>;
 };
 
 type ApiActionType = keyof ApiAction;
@@ -80,6 +83,11 @@ export default async function apiHandler(
 
       case "READ_ACCOUNT_STRATEGY_LIST": {
         const data = await readAccountStrategyList({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "RENAME_STRATEGY": {
+        const data = await renameStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 

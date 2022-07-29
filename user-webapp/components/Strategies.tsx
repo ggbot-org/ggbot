@@ -1,9 +1,23 @@
-import { StrategyKey, isStrategyKey } from "@ggbot2/models";
-import { Button } from "@ggbot2/ui-components";
+import {
+  Strategy,
+  StrategyKey,
+  StrategySchedulingStatus,
+  isStrategyKey,
+  isStrategyName,
+  normalizeStrategyName,
+} from "@ggbot2/models";
+import { Button, EditableInput } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import { FC, SyntheticEvent, useCallback, useMemo, useState } from "react";
+import {
+  FC,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { SchedulingStatusBadge, StrategyActions } from "_components";
-import { useApiAction } from "_hooks";
+import { ApiAction, useApiAction } from "_hooks";
 import { route } from "_routing";
 
 type SelectedStrategyKey = StrategyKey | null;
@@ -29,13 +43,70 @@ const setStoredSelectedStrategyKey = (
   else global?.sessionStorage?.removeItem(selectedStrategyKeyStorageKey);
 };
 
+type StrategyItemProps = StrategyKey &
+  Pick<Strategy, "name"> & {
+    isSelected: boolean;
+    onClick: (event: SyntheticEvent) => void;
+    renameIsLoading?: boolean;
+    schedulingStatus: StrategySchedulingStatus;
+    setName: (name: Strategy["name"]) => void;
+  };
+
+const StrategyItem: FC<StrategyItemProps> = ({
+  isSelected,
+  name,
+  onClick,
+  renameIsLoading,
+  schedulingStatus,
+  setName,
+  ...strategyKey
+}) => {
+  return (
+    <div className="p-2 flex flex-col gap-4 shadow rounded hover:shadow-md transition-all">
+      {isSelected ? (
+        <>
+          <div
+            className="p-2 flex flex-row justify-between gap-2 items-center"
+            onClick={onClick}
+          >
+            <EditableInput
+              value={name}
+              setValue={setName}
+              isLoading={renameIsLoading}
+            />
+            <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
+          </div>
+          <StrategyActions {...strategyKey} />
+        </>
+      ) : (
+        <div
+          className="flex flex-row justify-between gap-2 items-center"
+          onClick={onClick}
+        >
+          <span className="select-none">{name}</span>
+          <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+type RenamedStrategyItem = Pick<StrategyItemProps, "name" | "strategyId">;
+
 export const Strategies: FC = () => {
   const router = useRouter();
 
   const [selectedStrategyKey, setSelectedStrategyKey] =
     useState<SelectedStrategyKey>(getStoredSelectedStrategy());
+  const [renameStrategyIn, setRenameStrategyIn] =
+    useState<ApiAction["RENAME_STRATEGY"]["in"]>();
+  const [renamedStrategyItems, setRenamedStrategyItems] = useState<
+    RenamedStrategyItem[]
+  >([]);
 
   const { data: strategies } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
+  const { data: renameStrategyOut, isLoading: renamStrategyIsLoading } =
+    useApiAction.RENAME_STRATEGY(renameStrategyIn);
 
   const onClickNewStrategy = useCallback(() => {
     router.push(route.createStrategyPage());
@@ -43,33 +114,82 @@ export const Strategies: FC = () => {
 
   const strategyItems = useMemo(
     () =>
-      strategies?.map(
-        ({ name, schedulingStatus, strategyId, strategyKind }) => {
+      strategies
+        ?.map(({ name, schedulingStatus, strategyId, strategyKind }) => {
           const isSelected =
             selectedStrategyKey?.strategyId === strategyId &&
             selectedStrategyKey?.strategyKind === strategyKind;
 
+          const onClick: StrategyItemProps["onClick"] = (event) => {
+            event.stopPropagation();
+            setStoredSelectedStrategyKey({ strategyId, strategyKind });
+            setSelectedStrategyKey({ strategyId, strategyKind });
+          };
+
+          const renameIsLoading =
+            renameStrategyIn?.strategyId === strategyId &&
+            renameStrategyIn.strategyKind === strategyKind &&
+            renamStrategyIsLoading;
+
+          const setName: StrategyItemProps["setName"] = (value) => {
+            if (renameIsLoading) return;
+            if (!isStrategyName(value)) return;
+            const newName = normalizeStrategyName(value);
+            if (name === newName) return;
+
+            setRenameStrategyIn({ name: newName, strategyId, strategyKind });
+            setRenamedStrategyItems((items) =>
+              items
+                .filter((item) => item.strategyId !== strategyId)
+                .concat({
+                  strategyId,
+                  name: newName,
+                })
+            );
+          };
+
           return {
             isSelected,
             name,
-            onClick: (event: SyntheticEvent) => {
-              event.stopPropagation();
-              setStoredSelectedStrategyKey({ strategyId, strategyKind });
-              setSelectedStrategyKey({ strategyId, strategyKind });
-            },
+            onClick,
+            renameIsLoading,
             schedulingStatus,
+            setName,
+            setRenameStrategyIn,
             strategyKind,
             strategyId,
           };
-        }
-      ),
-    [selectedStrategyKey, setSelectedStrategyKey, strategies]
+        })
+        .map(({ name, strategyId, ...rest }) => {
+          const newName = renamedStrategyItems.find(
+            (item) => item.strategyId === strategyId
+          )?.name;
+          return {
+            name: newName ?? name,
+            strategyId,
+            ...rest,
+          };
+        }),
+    [
+      renamStrategyIsLoading,
+      renameStrategyIn?.strategyId,
+      renameStrategyIn?.strategyKind,
+      renamedStrategyItems,
+      selectedStrategyKey?.strategyId,
+      selectedStrategyKey?.strategyKind,
+      strategies,
+    ]
   );
 
   const onClickContainer = useCallback(() => {
+    if (renamStrategyIsLoading) return;
     setStoredSelectedStrategyKey(null);
     setSelectedStrategyKey(null);
-  }, [setSelectedStrategyKey]);
+  }, [renamStrategyIsLoading, setSelectedStrategyKey]);
+
+  useEffect(() => {
+    if (!renameStrategyOut) return;
+  }, [renameStrategyOut]);
 
   return (
     <div className="p-4 flex flex-col gap-4" onClick={onClickContainer}>
@@ -78,35 +198,9 @@ export const Strategies: FC = () => {
         <Button onClick={onClickNewStrategy}>new strategy</Button>
       </menu>
       <div className="flex flex-col md:flex-row gap-4 flex-wrap">
-        {strategyItems?.map(
-          ({
-            name,
-            onClick,
-            isSelected,
-            schedulingStatus,
-            strategyId,
-            strategyKind,
-          }) => (
-            <div
-              className="flex flex-col gap-4 shadow p-2 hover:shadow-md transition-all"
-              key={strategyId}
-            >
-              <div
-                className="flex flex-row justify-between gap-2 items-center"
-                onClick={onClick}
-              >
-                <span>{name}</span>
-                <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
-              </div>
-              {isSelected ? (
-                <StrategyActions
-                  strategyId={strategyId}
-                  strategyKind={strategyKind}
-                />
-              ) : null}
-            </div>
-          )
-        )}
+        {strategyItems?.map(({ strategyId, ...props }) => (
+          <StrategyItem key={strategyId} strategyId={strategyId} {...props} />
+        ))}
       </div>
     </div>
   );

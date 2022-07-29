@@ -2,13 +2,13 @@ import { FC, InputHTMLAttributes, useMemo } from "react";
 import { Spinner } from "./Spinner";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  loading?: boolean;
+  isLoading?: boolean;
 };
 
 export const Input: FC<InputProps> = ({
   className,
   disabled,
-  loading,
+  isLoading,
   readOnly,
   ...props
 }) => {
@@ -18,14 +18,14 @@ export const Input: FC<InputProps> = ({
       "w-full rounded-md px-4 py-2",
       "shadow border border-dark-300 outline-dark-600",
       readOnly ? "cursor-default" : "",
-      loading ? "pointer-events-none" : "",
+      isLoading ? "pointer-events-none" : "",
     ].join(" ");
-  }, [className, loading, readOnly]);
+  }, [className, isLoading, readOnly]);
 
   return (
     <div className="relative w-full">
       <input className={inputClassName} readOnly={readOnly} {...props} />
-      {loading ? (
+      {isLoading ? (
         <div className="absolute top-0 right-0 h-full flex items-center">
           <Spinner className="text-black" />
         </div>

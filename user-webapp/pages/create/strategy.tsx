@@ -1,3 +1,4 @@
+import { isStrategyName } from "@ggbot2/models";
 import { Button, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -34,7 +35,8 @@ const Page: NextPage = () => {
 
       const name = (event.target as EventTarget & { name: { value: string } })
         .name.value;
-      setNewStrategy({ kind: "binance", name });
+
+      if (isStrategyName(name)) setNewStrategy({ kind: "binance", name });
     },
     [isLoading]
   );

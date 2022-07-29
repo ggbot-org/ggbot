@@ -4,4 +4,6 @@
 export type Name = string;
 
 export const isName = (value: unknown): value is Name =>
-  typeof value === "string" && value !== "";
+  typeof value === "string" && normalizeName(value) !== "";
+
+export const normalizeName = (name: string) => name.trim();
