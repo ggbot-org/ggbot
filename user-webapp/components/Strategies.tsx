@@ -1,12 +1,10 @@
 import {
-  Strategy,
   StrategyKey,
-  StrategySchedulingStatus,
   isStrategyKey,
   isStrategyName,
   normalizeStrategyName,
 } from "@ggbot2/models";
-import { Button, EditableInput } from "@ggbot2/ui-components";
+import { Button } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import {
   FC,
@@ -17,7 +15,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { SchedulingStatusBadge, StrategyActions } from "_components";
+import { StrategyItem, StrategyItemProps } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import { route } from "_routing";
 
@@ -31,54 +29,6 @@ const getStoredSelectedStrategy = (): SelectedStrategyKey => {
   if (!storedValue) return null;
   const objValue = JSON.parse(storedValue);
   return isStrategyKey(objValue) ? objValue : null;
-};
-
-type StrategyItemProps = StrategyKey &
-  Pick<Strategy, "name"> & {
-    isSelected: boolean;
-    onClick: (event: SyntheticEvent) => void;
-    renameIsLoading?: boolean;
-    schedulingStatus: StrategySchedulingStatus;
-    setName: (name: Strategy["name"]) => void;
-  };
-
-const StrategyItem: FC<StrategyItemProps> = ({
-  isSelected,
-  name,
-  onClick,
-  renameIsLoading,
-  schedulingStatus,
-  setName,
-  ...strategyKey
-}) => {
-  return (
-    <div className="p-2 flex flex-col gap-4 shadow rounded hover:shadow-md transition-all">
-      {isSelected ? (
-        <>
-          <div
-            className="p-2 flex flex-row justify-between gap-2 items-center"
-            onClick={onClick}
-          >
-            <EditableInput
-              value={name}
-              setValue={setName}
-              isLoading={renameIsLoading}
-            />
-            <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
-          </div>
-          <StrategyActions {...strategyKey} />
-        </>
-      ) : (
-        <div
-          className="flex flex-row justify-between gap-2 items-center"
-          onClick={onClick}
-        >
-          <span className="select-none">{name}</span>
-          <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
-        </div>
-      )}
-    </div>
-  );
 };
 
 type RenamedStrategyItem = Pick<StrategyItemProps, "name" | "strategyId">;

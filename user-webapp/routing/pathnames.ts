@@ -10,6 +10,8 @@ export const route = {
   createStrategyPage: () => "/create/strategy",
   deleteStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/delete/strategy/${strategyKind}/${strategyId}`,
+  editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/edit/flow/${strategyKind}/${strategyId}`,
   errorPageInvalidStrategyKey: ({
     strategyKind,
     strategyId,
@@ -22,4 +24,6 @@ export const route = {
     `/schedule/strategy/${strategyKind}/${strategyId}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
+  viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/view/flow/${strategyKind}/${strategyId}`,
 };

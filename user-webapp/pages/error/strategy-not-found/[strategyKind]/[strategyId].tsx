@@ -13,16 +13,14 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
         <span className="text-xl">
           Strategy <em>not found</em>
         </span>
-        <dl>
-          <dt>
-            <span className="font-medium uppercase">kind</span>
-          </dt>
-          <dd>{strategyKind}</dd>
-          <dt>
-            <span className="font-medium uppercase">ID</span>
-          </dt>
-          <dd>{strategyId}</dd>
-        </dl>
+        <div className="p-4 shadow">
+          <dl>
+            <dt>kind</dt>
+            <dd>{strategyKind}</dd>
+            <dt>id</dt>
+            <dd>{strategyId}</dd>
+          </dl>
+        </div>
       </div>
     </Content>
   );

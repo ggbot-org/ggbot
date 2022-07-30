@@ -17,4 +17,12 @@
   body {
     @apply bg-light-background dark:bg-dark-background;
   }
+
+  /* Definition list */
+  dt {
+    @apply font-medium text-xs uppercase first:mt-0 mt-2;
+  }
+  dd {
+    @apply pl-4;
+  }
 }

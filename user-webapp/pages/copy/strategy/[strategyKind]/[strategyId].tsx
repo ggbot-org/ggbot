@@ -1,5 +1,5 @@
 import { isStrategyName } from "@ggbot2/models";
-import { Button, Field } from "@ggbot2/ui-components";
+import { Button, DateTime, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect, useState } from "react";
@@ -18,6 +18,7 @@ export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 const Page: NextPage<ServerSideProps> = ({
   strategyKey: { strategyKind, strategyId },
   name: strategyName,
+  whenCreated,
 }) => {
   const router = useRouter();
 
@@ -52,8 +53,18 @@ const Page: NextPage<ServerSideProps> = ({
         onSubmit={onSubmit}
       >
         <span className="text-xl">copy strategy</span>
+        <dl>
+          <dt>name</dt>
+          <dd>{strategyName}</dd>
+          <dt>created</dt>
+          <dd>
+            <DateTime format="time" value={whenCreated} />
+          </dd>
+          <dt>id</dt>
+          <dd className="text-xs">{strategyId}</dd>
+        </dl>
         <Field
-          label="strategy name"
+          label="new strategy name"
           name="name"
           placeholder={strategyName}
           required

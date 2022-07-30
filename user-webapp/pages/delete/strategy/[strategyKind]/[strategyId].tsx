@@ -1,4 +1,4 @@
-import { Button } from "@ggbot2/ui-components";
+import { Button, DateTime } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useState } from "react";
 import { Content } from "_components";
@@ -14,7 +14,12 @@ type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({ accountIsOwner, strategyKey }) => {
+const Page: NextPage<ServerSideProps> = ({
+  accountIsOwner,
+  strategyKey,
+  name,
+  whenCreated,
+}) => {
   const goBack = useGoBack();
   const [strategyKeyToBeDeleted, setStrategyKeyToBeDeleted] = useState<
     StrategyKey | undefined
@@ -37,7 +42,17 @@ const Page: NextPage<ServerSideProps> = ({ accountIsOwner, strategyKey }) => {
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <span className="text-xl">delete strategy</span>
-            <div>are you sure you want to delete strategy?</div>
+            <p>Are you sure you want to delete this strategy?</p>
+            <div className="p-4 shadow">
+              <dl>
+                <dt>name</dt>
+                <dd>{name}</dd>
+                <dt>created</dt>
+                <dd>
+                  <DateTime format="time" value={whenCreated} />
+                </dd>
+              </dl>
+            </div>
             <menu className="flex flex-row gap-4">
               <Button type="reset" onClick={goBack}>
                 no, go back
