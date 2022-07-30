@@ -8,4 +8,13 @@
       font-family: "Inter var", sans-serif;
     }
   }
+
+  :root {
+    /* Adapt to color-scheme */
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-light-background dark:bg-dark-background;
+  }
 }

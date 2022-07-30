@@ -12,6 +12,12 @@ module.exports = {
       ...colors.cyan,
       brand: "#09eae5",
     },
+    dark: {
+      background: "#6a797c",
+    },
+    light: {
+      background: "#faffff",
+    },
   },
   extend: {
     fontFamily: {
