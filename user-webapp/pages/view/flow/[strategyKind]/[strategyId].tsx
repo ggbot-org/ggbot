@@ -1,7 +1,8 @@
 import { Button, DateTime } from "@ggbot2/ui-components";
+import type { FlowView } from "flow-view";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { SyntheticEvent, useCallback } from "react";
+import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
 import { Content } from "_components";
 import { StrategyInfo, getStrategyInfo, route } from "_routing";
 
@@ -16,6 +17,9 @@ const Page: NextPage<ServerSideProps> = ({
   whenCreated,
 }) => {
   const router = useRouter();
+
+  const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
+  const flowViewRef = useRef<FlowView | null>(null);
 
   const onClickCopy = useCallback(
     (event: SyntheticEvent) => {
@@ -32,6 +36,20 @@ const Page: NextPage<ServerSideProps> = ({
     },
     [router, strategyKey]
   );
+
+  const importFlowView = useCallback(async () => {
+    const { FlowView } = await import("flow-view");
+    if (flowViewContainerRef.current === null) return;
+    if (flowViewRef.current !== null) return;
+    const flowView = new FlowView({
+      container: flowViewContainerRef.current,
+    });
+    flowViewRef.current = flowView;
+  }, [flowViewRef, flowViewContainerRef]);
+
+  useEffect(() => {
+    importFlowView();
+  }, [importFlowView]);
 
   return (
     <Content>
@@ -53,6 +71,9 @@ const Page: NextPage<ServerSideProps> = ({
           ) : null}
           <Button onClick={onClickCopy}>copy</Button>
         </menu>
+        <div>
+          <div className="w-full h-96" ref={flowViewContainerRef}></div>
+        </div>
       </div>
     </Content>
   );
