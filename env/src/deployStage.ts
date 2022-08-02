@@ -10,3 +10,5 @@ export const getDeployStage = (): DeployStage => {
       return "next";
   }
 };
+
+export const deployStageIsMain = getDeployStage() === "main";

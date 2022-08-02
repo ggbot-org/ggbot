@@ -6,15 +6,7 @@ import {
 } from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import {
-  FC,
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StrategyItem, StrategyItemProps } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import { route } from "_routing";
@@ -40,13 +32,15 @@ export const Strategies: FC = () => {
 
   const [selectedStrategyKey, setSelectedStrategyKey] =
     useState<SelectedStrategyKey>(getStoredSelectedStrategy());
-  const [renameStrategyIn, setRenameStrategyIn] =
-    useState<ApiAction["RENAME_STRATEGY"]["in"]>();
+
   const [renamedStrategyItems, setRenamedStrategyItems] = useState<
     RenamedStrategyItem[]
   >([]);
 
   const { data: strategies } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
+
+  const [renameStrategyIn, setRenameStrategyIn] =
+    useState<ApiAction["RENAME_STRATEGY"]["in"]>();
   const { isLoading: renamStrategyIsLoading } =
     useApiAction.RENAME_STRATEGY(renameStrategyIn);
 

@@ -190,8 +190,8 @@ export const Calendar: FC<CalendarProps> = ({
   }, [setMonthOffset]);
 
   return (
-    <div className="flex flex-col gap-1 w-64">
-      <div className="flex flex-row justify-between my-1 py-1 border-b border-mono-300">
+    <div className="flex w-64 flex-col gap-1">
+      <div className="my-1 flex flex-row justify-between border-b border-mono-300 py-1">
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
             <Icon
@@ -213,7 +213,7 @@ export const Calendar: FC<CalendarProps> = ({
       </div>
       <div className="grid grid-cols-7">
         {calendarWeekDays.map((n) => (
-          <div key={n} className="text-center select-none font-medium">
+          <div key={n} className="select-none text-center">
             {weekDayName[n]}
           </div>
         ))}

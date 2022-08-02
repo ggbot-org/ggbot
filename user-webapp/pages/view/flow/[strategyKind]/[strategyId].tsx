@@ -52,9 +52,9 @@ const Page: NextPage<ServerSideProps> = ({
   }, [importFlowView]);
 
   return (
-    <Content>
-      <div className="p-4 flex flex-col gap-4">
-        <span className="text-xl">view strategy</span>
+    <Content metadata={{ title: "ggbot2 strategy", description: name }}>
+      <div className="flex flex-col gap-4 p-4">
+        <span className="text-xl">strategy</span>
         <dl>
           <dt>name</dt>
           <dd>{name}</dd>
@@ -68,11 +68,14 @@ const Page: NextPage<ServerSideProps> = ({
             <Button color="primary" onClick={onClickEdit}>
               edit
             </Button>
-          ) : null}
-          <Button onClick={onClickCopy}>copy</Button>
+          ) : (
+            <Button color="primary" onClick={onClickCopy}>
+              copy
+            </Button>
+          )}
         </menu>
         <div>
-          <div className="w-full h-96" ref={flowViewContainerRef}></div>
+          <div className="h-96 w-full" ref={flowViewContainerRef}></div>
         </div>
       </div>
     </Content>

@@ -25,4 +25,8 @@
   dd {
     @apply pl-4;
   }
+
+  label {
+    @apply font-medium text-xs uppercase mb-2;
+  }
 }

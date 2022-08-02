@@ -16,24 +16,24 @@ export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
   const router = useRouter();
 
-  const onClickScheduling = useCallback(
+  const onClickManage = useCallback(
     (event: SyntheticEvent) => {
       event.stopPropagation();
-      router.push(route.scheduleStrategyPage(strategyKey));
+      router.push(route.strategyPage(strategyKey));
     },
     [router, strategyKey]
   );
 
   return (
     <Content>
-      <div className="p-4 flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-4">
         <span className="text-xl">edit strategy</span>
         <dl>
           <dt>name</dt>
           <dd>{name}</dd>
         </dl>
         <menu className="flex flex-row gap-4">
-          <Button onClick={onClickScheduling}>scheduling</Button>
+          <Button onClick={onClickManage}>manage</Button>
         </menu>
       </div>
     </Content>

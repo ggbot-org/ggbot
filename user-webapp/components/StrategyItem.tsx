@@ -15,7 +15,7 @@ export type StrategyItemProps = StrategyKey &
     onClick: (event: SyntheticEvent) => void;
     renameIsLoading?: boolean;
     schedulingStatus: StrategySchedulingStatus;
-    setName: (name: Strategy["name"]) => void;
+    setName: (value: unknown) => void;
   };
 
 export const StrategyItem: FC<StrategyItemProps> = ({
@@ -32,16 +32,15 @@ export const StrategyItem: FC<StrategyItemProps> = ({
   const onClickFlow = useCallback(
     (event: SyntheticEvent) => {
       event.stopPropagation();
-      // TODO go to flow editor
-      router.push(route.viewFlowPage(strategyKey));
+      router.push(route.editFlowPage(strategyKey));
     },
     [router, strategyKey]
   );
 
-  const onClickScheduling = useCallback(
+  const onClickManage = useCallback(
     (event: SyntheticEvent) => {
       event.stopPropagation();
-      router.push(route.scheduleStrategyPage(strategyKey));
+      router.push(route.strategyPage(strategyKey));
     },
     [router, strategyKey]
   );
@@ -50,14 +49,6 @@ export const StrategyItem: FC<StrategyItemProps> = ({
     (event: SyntheticEvent) => {
       event.stopPropagation();
       router.push(route.copyStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
-
-  const onClickDelete = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.deleteStrategyPage(strategyKey));
     },
     [router, strategyKey]
   );
@@ -81,11 +72,8 @@ export const StrategyItem: FC<StrategyItemProps> = ({
             <Button color="primary" onClick={onClickFlow}>
               flow
             </Button>
-            <Button onClick={onClickScheduling}>scheduling</Button>
+            <Button onClick={onClickManage}>manage</Button>
             <Button onClick={onClickCopy}>copy</Button>
-            <Button color="danger" onClick={onClickDelete}>
-              delete
-            </Button>
           </menu>
         </>
       ) : (

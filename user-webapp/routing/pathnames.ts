@@ -20,8 +20,6 @@ export const route = {
   errorPageStrategyNotFound: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-found/${strategyKind}/${strategyId}`,
   homePage: () => "/",
-  scheduleStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
-    `/schedule/strategy/${strategyKind}/${strategyId}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
