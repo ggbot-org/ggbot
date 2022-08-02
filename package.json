@@ -59,6 +59,8 @@
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "license": "UNLICENSED",
   "devDependencies": {
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "rimraf": "^3.0.2"
   }
 }
