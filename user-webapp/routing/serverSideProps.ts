@@ -1,5 +1,5 @@
 import { readStrategy } from "@ggbot2/database";
-import { Strategy, StrategyKey, isStrategyKey } from "@ggbot2/models";
+import { isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { readSession } from "./authentication";
 import {
@@ -7,22 +7,7 @@ import {
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
 } from "./redirects";
-
-export type { StrategyKey } from "@ggbot2/models";
-
-export type HasSession = {
-  hasSession: boolean;
-};
-
-export type InvalidStrategyKey = {
-  strategyKind: string;
-  strategyId: string;
-};
-
-export type StrategyInfo = {
-  accountIsOwner: boolean;
-  strategyKey: StrategyKey;
-} & Pick<Strategy, "name" | "whenCreated">;
+import type { StrategyKey } from "./types";
 
 export const getStrategyInfo: GetServerSideProps = async ({ params, req }) => {
   const session = readSession(req.cookies);

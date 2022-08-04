@@ -1,6 +1,6 @@
 import type { GetServerSidePropsContext } from "next";
 import { route } from "./pathnames";
-import type { InvalidStrategyKey, StrategyKey } from "./serverSideProps";
+import type { InvalidStrategyKey, StrategyKey } from "./types";
 
 export const redirectToAuthenticationPage = () => ({
   redirect: {

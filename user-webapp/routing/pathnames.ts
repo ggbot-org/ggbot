@@ -1,4 +1,4 @@
-import type { InvalidStrategyKey, StrategyKey } from "./serverSideProps";
+import type { StrategyKey, InvalidStrategyKey } from "./types.js";
 
 export const route = {
   apiEnter: () => "/api/auth/enter",

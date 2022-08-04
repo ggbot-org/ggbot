@@ -1,5 +1,3 @@
-/** @type {import('next').NextConfig} */
-
 // See also Mozilla documentation:
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 const ContentSecurityPolicy = `
@@ -24,6 +22,7 @@ const securityHeaders = [
   },
 ];
 
+/** @type {import('next').NextConfig} */
 module.exports = {
   async headers() {
     return [
