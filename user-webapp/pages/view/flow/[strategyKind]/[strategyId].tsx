@@ -37,23 +37,33 @@ const Page: NextPage<ServerSideProps> = ({
     [router, strategyKey]
   );
 
-  const importFlowView = useCallback(async () => {
-    const { FlowView } = await import("flow-view");
-    if (flowViewContainerRef.current === null) return;
-    if (flowViewRef.current !== null) return;
-    const flowView = new FlowView({
-      container: flowViewContainerRef.current,
-    });
-    flowViewRef.current = flowView;
-  }, [flowViewRef, flowViewContainerRef]);
-
   useEffect(() => {
+    let unmounted = false;
+
+    const importFlowView = async () => {
+      if (unmounted) return;
+      if (flowViewContainerRef.current === null) return;
+      if (flowViewRef.current !== null) return;
+
+      const { FlowView } = await import("flow-view");
+
+      const flowView = new FlowView({
+        container: flowViewContainerRef.current,
+      });
+      flowViewRef.current = flowView;
+    };
+
     importFlowView();
-  }, [importFlowView]);
+
+    return () => {
+      unmounted = true;
+      if (flowViewRef.current !== null) flowViewRef.current.destroy();
+    };
+  }, [flowViewRef, flowViewContainerRef]);
 
   return (
     <Content metadata={{ title: "ggbot2 strategy", description: name }}>
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col p-4 gap-4">
         <span className="text-xl">strategy</span>
         <dl>
           <dt>name</dt>

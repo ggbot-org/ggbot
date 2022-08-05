@@ -67,6 +67,10 @@ export const useApiAction = {
     useAction<ApiAction["READ_STRATEGY"]["out"]>(
       data ? { type: "READ_STRATEGY", data } : null
     ),
+  READ_STRATEGY_FLOW: (data?: ApiAction["READ_STRATEGY_FLOW"]["in"]) =>
+    useAction<ApiAction["READ_STRATEGY_FLOW"]["out"]>(
+      data ? { type: "READ_STRATEGY_FLOW", data } : null
+    ),
   RENAME_STRATEGY: (data?: ApiAction["RENAME_STRATEGY"]["in"]) =>
     useAction<ApiAction["RENAME_STRATEGY"]["out"]>(
       data ? { type: "RENAME_STRATEGY", data } : null

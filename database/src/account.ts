@@ -11,15 +11,13 @@ import {
   isAccountKey,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
+import { accountKeyToDirname } from "./accountKey.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const accountDirnamePrefix = () => "account";
 
 export const accountDirname = (accountKey: AccountKey) =>
   `${accountDirnamePrefix()}/${accountKeyToDirname(accountKey)}`;
-
-export const accountKeyToDirname = ({ accountId }: AccountKey) =>
-  `accountId=${accountId}`;
 
 export const accountPathname = (accountKey: AccountKey) =>
   `${accountDirname(accountKey)}/account.json`;

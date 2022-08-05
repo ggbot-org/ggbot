@@ -1,4 +1,4 @@
-import { AccountKey, isAccountKey } from "./account.js";
+import { Account, AccountKey, isAccountKey } from "./account.js";
 import { Item, isItemId, NewItem } from "./item.js";
 import { Name, isName } from "./name.js";
 import type { Operation } from "./operation.js";
@@ -28,8 +28,13 @@ export type Strategy = Item &
 
 export const isStrategy = (value: unknown): value is StrategyKind => {
   if (typeof value !== "object" || value === null) return false;
-  const { id, kind, name } = value as Partial<Strategy>;
-  return isItemId(id) && isStrategyKind(kind) && isName(name);
+  const { accountId, id, kind, name } = value as Partial<Strategy>;
+  return (
+    isItemId(id) &&
+    isAccountKey({ accountId }) &&
+    isStrategyKind(kind) &&
+    isName(name)
+  );
 };
 
 export type StrategyKey = Readonly<{
@@ -61,6 +66,8 @@ export type CopyStrategy = Operation<
 export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
 
 export type ReadStrategy = Operation<StrategyKey, Strategy | undefined>;
+
+export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
 
 export type ReadStrategyKeys = Operation<void, StrategyKey[]>;
 

@@ -3,6 +3,8 @@ import {
   createStrategy,
   deleteStrategy,
   readAccountStrategyList,
+  readStrategy,
+  readStrategyFlow,
   renameStrategy,
 } from "@ggbot2/database";
 import {
@@ -21,6 +23,7 @@ import type {
   OperationOutput,
   ReadAccountStrategyList,
   ReadStrategy,
+  ReadStrategyFlow,
   RenameStrategy,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -43,6 +46,7 @@ export type ApiAction = {
   COPY_STRATEGY: Action<CopyStrategy["in"], CopyStrategy["out"]>;
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
+  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
@@ -91,6 +95,21 @@ export default async function apiHandler(
 
       case "READ_ACCOUNT_STRATEGY_LIST": {
         const data = await readAccountStrategyList({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "READ_ACCOUNT_STRATEGY_LIST": {
+        const data = await readAccountStrategyList({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "READ_STRATEGY": {
+        const data = await readStrategy({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "READ_STRATEGY_FLOW": {
+        const data = await readStrategyFlow({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 

@@ -6,7 +6,7 @@ import {
   WriteAccountStrategyList,
   updatedNow,
 } from "@ggbot2/models";
-import { accountKeyToDirname } from "./account.js";
+import { accountKeyToDirname } from "./accountKey.js";
 
 export const accountStrategyListDirnamePrefix = () => "accountStrategies";
 
