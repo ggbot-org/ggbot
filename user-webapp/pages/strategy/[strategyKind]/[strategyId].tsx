@@ -3,14 +3,15 @@ import { Button, DateTime, EditableInput } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { SyntheticEvent, useCallback, useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
-import { Content /*SchedulingStatusBadge*/ } from "_components";
+import {
+  ButtonShareStrategy,
+  Content /*SchedulingStatusBadge*/,
+} from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import {
   StrategyInfo,
   requireAuthenticationAndGetStrategyInfo,
   route,
-  webappBaseUrl,
 } from "_routing";
 
 type ServerSideProps = StrategyInfo;
@@ -41,18 +42,6 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     (event: SyntheticEvent) => {
       event.stopPropagation();
       router.push(route.editFlowPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
-
-  const onClickShare = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      const sharableLink = `${webappBaseUrl}/${route.viewFlowPage(
-        strategyKey
-      )}`;
-      navigator.clipboard.writeText(sharableLink);
-      toast("Link copied to clipboard");
     },
     [router, strategyKey]
   );
@@ -91,7 +80,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   return (
     <Content>
-      <div className="flex flex-col p-4 gap-4">
+      <div className="flex flex-col gap-4 p-4">
         <span className="text-xl">strategy</span>
         <dl>
           <dt>created</dt>
@@ -102,7 +91,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           <dd className="text-xs">{strategyId}</dd>
         </dl>
 
-        <div className="flex items-center justify-between max-w-lg p-2 gap-2">
+        <div className="flex max-w-lg items-center justify-between gap-2 p-2">
           <div className="w-full">
             <label htmlFor="name">name</label>
             <EditableInput
@@ -118,11 +107,11 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           */}
         </div>
 
-        <menu className="flex flex-row p-2 overflow-x-scroll gap-4">
+        <menu className="flex flex-row gap-4 overflow-x-scroll p-2">
           <Button color="primary" onClick={onClickFlow}>
             flow
           </Button>
-          <Button onClick={onClickShare}>share</Button>
+          <ButtonShareStrategy {...strategyKey} />
           <Button onClick={onClickCopy}>copy</Button>
           <Button color="danger" onClick={onClickDelete}>
             delete

@@ -16,7 +16,7 @@ export const Content: FC<Props> = ({
   children,
   metadata = { title: "ggbot2", description: "crypto flow" },
 }) => {
-  const className = `${pageContentPaddingTop} px-2 w-fit min-w-full`;
+  const className = `${pageContentPaddingTop} px-2 w-screen`;
   return (
     <>
       <Head>
