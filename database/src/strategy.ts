@@ -14,6 +14,7 @@ import {
   isAccountKey,
   isStrategyName,
   normalizeStrategyName,
+  throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
@@ -42,6 +43,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   name,
   ...strategyKey
 }) => {
+  throwIfInvalidName(name);
   const strategy = await readStrategy(strategyKey);
   if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
   return await createStrategy({
@@ -56,6 +58,7 @@ export const createStrategy: CreateStrategy["func"] = async ({
   kind,
   name,
 }) => {
+  throwIfInvalidName(name);
   const strategyId = uuidv4();
   const strategyKind = kind;
   const strategyKey = { strategyId, strategyKind };
@@ -103,6 +106,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   name,
   ...strategyKey
 }) => {
+  throwIfInvalidName(name);
   if (!isStrategyName(name)) throw new ErrorInvalidStrategyName(name);
   const strategy = await readStrategy(strategyKey);
   if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
