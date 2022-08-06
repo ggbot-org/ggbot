@@ -1,8 +1,14 @@
-import { isStrategyName } from "@ggbot2/models";
+import {
+  ErrorInvalidName,
+  ErrorNameToLong,
+  isStrategyName,
+  throwIfInvalidName,
+} from "@ggbot2/models";
 import { Button, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { Content } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
@@ -19,13 +25,19 @@ const Page: NextPage = () => {
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
-      event.preventDefault();
-      if (isLoading) return;
-
-      const name = (event.target as EventTarget & { name: { value: string } })
-        .name.value;
-
-      if (isStrategyName(name)) setNewStrategy({ kind: "binance", name });
+      try {
+        event.preventDefault();
+        if (isLoading) return;
+        const name = (event.target as EventTarget & { name: { value: string } })
+          .name.value;
+        throwIfInvalidName(name);
+        if (isStrategyName(name)) setNewStrategy({ kind: "binance", name });
+      } catch (error) {
+        if (error instanceof ErrorInvalidName)
+          toast.error("Invalid strategy name");
+        if (error instanceof ErrorNameToLong)
+          toast.error("Strategy name too long");
+      }
     },
     [isLoading]
   );
@@ -38,7 +50,7 @@ const Page: NextPage = () => {
   return (
     <Content>
       <form
-        className="p-4 w-full max-w-lg flex flex-col gap-4"
+        className="flex w-full max-w-lg flex-col gap-4 p-4"
         onSubmit={onSubmit}
       >
         <span className="text-xl">new strategy</span>

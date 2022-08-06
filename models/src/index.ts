@@ -2,6 +2,8 @@ export * from "./account.js";
 export * from "./accountStrategyList.js";
 export * from "./email.js";
 export * from "./emailAccount.js";
+export * from "./errors.js";
+export * from "./name.js";
 export * from "./oneTimePassword.js";
 export * from "./operation.js";
 export * from "./strategy.js";

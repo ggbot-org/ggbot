@@ -68,6 +68,8 @@ export const EditableInput: FC<EditableInputProps> = ({
           return submit();
         case "Escape":
           return reset();
+        case "Tab":
+          event.currentTarget.blur();
         default:
           break;
       }

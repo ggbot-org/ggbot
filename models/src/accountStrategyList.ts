@@ -1,11 +1,7 @@
 import type { AccountKey } from "./account.js";
+import { isName } from "./name.js";
 import type { Operation } from "./operation.js";
-import {
-  Strategy,
-  StrategyKey,
-  isStrategyKey,
-  isStrategyName,
-} from "./strategy.js";
+import { Strategy, StrategyKey, isStrategyKey } from "./strategy.js";
 import {
   StrategySchedulingStatus,
   isStrategySchedulingStatus,
@@ -25,7 +21,7 @@ export const isAccountStrategyListItem = (
     value as Partial<AccountStrategyListItem>;
   return (
     isStrategyKey(strategyKey) &&
-    isStrategyName(name) &&
+    isName(name) &&
     isStrategySchedulingStatus(schedulingStatus)
   );
 };

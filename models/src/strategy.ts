@@ -4,12 +4,6 @@ import { Name, isName } from "./name.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
-export {
-  Name as StrategyName,
-  isName as isStrategyName,
-  normalizeName as normalizeStrategyName,
-} from "./name.js";
-
 export const strategyKinds = ["binance"] as const;
 
 export type StrategyKind = typeof strategyKinds[number];

@@ -1,12 +1,15 @@
 import {
+  ErrorInvalidName,
+  ErrorNameToLong,
   StrategyKey,
   isStrategyKey,
-  isStrategyName,
-  normalizeStrategyName,
+  normalizeName,
+  throwIfInvalidName,
 } from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { StrategyItem, StrategyItemProps } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import { route } from "_routing";
@@ -67,20 +70,27 @@ export const Strategies: FC = () => {
             renamStrategyIsLoading;
 
           const setName: StrategyItemProps["setName"] = (value) => {
-            if (renameIsLoading) return;
-            if (!isStrategyName(value)) return;
-            const newName = normalizeStrategyName(value);
-            if (name === newName) return;
+            try {
+              if (renameIsLoading) return;
+              throwIfInvalidName(value);
+              const newName = normalizeName(value);
+              if (name === newName) return;
 
-            setRenameStrategyIn({ name: newName, strategyId, strategyKind });
-            setRenamedStrategyItems((items) =>
-              items
-                .filter((item) => item.strategyId !== strategyId)
-                .concat({
-                  strategyId,
-                  name: newName,
-                })
-            );
+              setRenameStrategyIn({ name: newName, strategyId, strategyKind });
+              setRenamedStrategyItems((items) =>
+                items
+                  .filter((item) => item.strategyId !== strategyId)
+                  .concat({
+                    strategyId,
+                    name: newName,
+                  })
+              );
+            } catch (error) {
+              if (error instanceof ErrorInvalidName)
+                toast.error("Invalid strategy name");
+              if (error instanceof ErrorNameToLong)
+                toast.error("Strategy name too long");
+            }
           };
 
           return {
@@ -142,12 +152,12 @@ export const Strategies: FC = () => {
   }, [selectedStrategyKey]);
 
   return (
-    <div ref={containerRef} className="p-4 flex flex-col gap-4">
+    <div ref={containerRef} className="flex flex-col gap-4 p-4">
       <span className="text-xl">strategies</span>
       <menu>
         <Button onClick={onClickNewStrategy}>new strategy</Button>
       </menu>
-      <div className="flex flex-col md:flex-row gap-4 flex-wrap">
+      <div className="flex flex-col flex-wrap gap-4 md:flex-row">
         {strategyItems?.map(({ strategyId, ...props }) => (
           <StrategyItem key={strategyId} strategyId={strategyId} {...props} />
         ))}

@@ -15,7 +15,7 @@ export type StrategyItemProps = StrategyKey &
     onClick: (event: SyntheticEvent) => void;
     renameIsLoading?: boolean;
     schedulingStatus: StrategySchedulingStatus;
-    setName: (value: unknown) => void;
+    setName: (value: string) => void;
   };
 
 export const StrategyItem: FC<StrategyItemProps> = ({
@@ -54,11 +54,11 @@ export const StrategyItem: FC<StrategyItemProps> = ({
   );
 
   return (
-    <div className="p-2 flex flex-col gap-4 shadow rounded hover:shadow-md transition-all">
+    <div className="flex flex-col gap-4 rounded p-2 shadow transition-all hover:shadow-md">
       {isSelected ? (
         <>
           <div
-            className="p-2 flex flex-row justify-between gap-2 items-center"
+            className="flex flex-row items-center justify-between gap-2 p-2"
             onClick={onClick}
           >
             <EditableInput
@@ -68,7 +68,7 @@ export const StrategyItem: FC<StrategyItemProps> = ({
             />
             <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
           </div>
-          <menu className="p-2 flex flex-row gap-4 overflow-x-scroll">
+          <menu className="flex flex-row gap-4 overflow-x-scroll p-2">
             <Button color="primary" onClick={onClickFlow}>
               flow
             </Button>
@@ -78,7 +78,7 @@ export const StrategyItem: FC<StrategyItemProps> = ({
         </>
       ) : (
         <div
-          className="flex flex-row justify-between gap-2 items-center"
+          className="flex flex-row items-center justify-between gap-2"
           onClick={onClick}
         >
           <span className="select-none">{name}</span>

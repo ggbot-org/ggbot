@@ -13,7 +13,7 @@ import {
   deletedNow,
   isAccountKey,
   isStrategyName,
-  normalizeStrategyName,
+  normalizeName,
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
@@ -111,7 +111,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   const strategy = await readStrategy(strategyKey);
   if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
   if (strategy.accountId === accountId) {
-    const renamedStrategy = { ...strategy, name: normalizeStrategyName(name) };
+    const renamedStrategy = { ...strategy, name: normalizeName(name) };
     const Key = strategyPathname(strategyKey);
     await putObject({ Key, data: renamedStrategy });
   }
