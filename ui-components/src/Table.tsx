@@ -10,7 +10,10 @@ import {
 
 type ChildrenProp = { children: ReactNode };
 
-export const Table: FC<ChildrenProp> = ({ children }) => {
+type TableProps = ChildrenProp & {
+  caption?: string;
+};
+export const Table: FC<TableProps> = ({ caption, children }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
 
@@ -39,41 +42,39 @@ export const Table: FC<ChildrenProp> = ({ children }) => {
       ref={containerRef}
       style={containerStyle}
     >
-      <table>{children}</table>
+      <table>
+        {caption ? <caption className="text-lg">{caption}</caption> : null}
+        {children}
+      </table>
     </div>
   );
 };
 
 export const Tbody: FC<ChildrenProp> = ({ children }) => {
-  const className = "border-l border-r border-b border-mono-300";
-  return <tbody className={className}>{children}</tbody>;
+  return <tbody>{children}</tbody>;
 };
 
 export const Td: FC<ChildrenProp> = ({ children }) => {
-  const className = "px-2 py-1";
-  return <td className={className}>{children}</td>;
+  return <td className="px-2 py-1">{children}</td>;
 };
 
 export const Tfoot: FC<ChildrenProp> = ({ children }) => {
-  const className = "border-b border-mono-300";
-  return <tfoot className={className}>{children}</tfoot>;
+  return <tfoot>{children}</tfoot>;
 };
 
 export const Thead: FC<ChildrenProp> = ({ children }) => {
-  const className = "my-2 border-l border-t border-mono-300";
-  return <thead className={className}>{children}</thead>;
+  return <thead>{children}</thead>;
 };
 
 export type ThProps = Omit<ThHTMLAttributes<HTMLTableCellElement>, "className">;
 export const Th: FC<ThProps> = ({ children, ...props }) => {
-  const className = "px-2 py-1 font-semibold border-b border-r border-mono-300";
   return (
-    <th className={className} {...props}>
+    <th className="px-2 py-1 font-semibold" {...props}>
       {children}
     </th>
   );
 };
 
 export const Tr: FC<ChildrenProp> = ({ children }) => {
-  return <tr>{children}</tr>;
+  return <tr className="border border-mono-300 p-1">{children}</tr>;
 };
