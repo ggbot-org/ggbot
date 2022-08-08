@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/binance",
+  "name": "@ggbot2/dflow",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,12 +14,12 @@
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "dependencies": {
+    "@ggbot2/models": "file:models",
+    "dflow": "^0.37.0"
+  },
   "devDependencies": {
     "@types/node": "^18.0.3",
     "typescript": "^4.7.4"
-  },
-  "dependencies": {
-    "@ggbot2/dflow": "file:dflow",
-    "node-fetch": "^3.2.10"
   }
 }

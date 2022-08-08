@@ -40,6 +40,8 @@ export class BinanceClient extends BinanceConnector {
 
     const timestamp = Date.now();
     searchParams.append("timestamp", String(timestamp));
+    // recvWindow defaults to 5000 and the maximum is 60000
+    searchParams.append("recvWindow", "10000");
 
     const signature = createHmac("sha256", this.apiSecret)
       .update(searchParams.toString())
@@ -47,7 +49,7 @@ export class BinanceClient extends BinanceConnector {
     searchParams.append("signature", signature);
 
     return await super.request({
-      apiKey: "",
+      apiKey: this.apiKey,
       endpoint,
       method,
       params: Object.fromEntries(searchParams),

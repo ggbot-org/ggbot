@@ -8,5 +8,6 @@ export * from "./oneTimePassword.js";
 export * from "./operation.js";
 export * from "./strategy.js";
 export * from "./strategyFlow.js";
+export * from "./StrategyMemory.js";
 export * from "./strategyScheduling.js";
 export * from "./time.js";
