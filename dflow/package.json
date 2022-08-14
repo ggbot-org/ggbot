@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@ggbot2/models": "file:models",
-    "dflow": "^0.37.0"
+    "dflow": "^0.37.0",
+    "tulind": "^0.8.20"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

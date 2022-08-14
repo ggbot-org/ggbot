@@ -3,7 +3,7 @@ import { DflowCommonHostContext as Context } from "../host.js";
 
 const { input, output } = DflowNode;
 
-class GetMemory extends DflowNode {
+export class GetMemory extends DflowNode {
   static kind = "getMemory";
   static inputs = [input("string", { name: "key" })];
   static outputs = [output([], { name: "value" })];
@@ -12,7 +12,3 @@ class GetMemory extends DflowNode {
     this.output(0).data = (this.host.context as Context).memory[key];
   }
 }
-
-export const catalog = {
-  [GetMemory.kind]: GetMemory,
-};

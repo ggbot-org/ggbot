@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "lib": ["dom", "es2015"],
     "module": "ESNext",
     "moduleResolution": "node",
@@ -8,5 +9,5 @@
     "strict": true,
     "target": "ESNext"
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["./src/**/*.ts", "./src/nodes/tulind.js"]
 }
