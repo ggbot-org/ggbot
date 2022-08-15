@@ -1,1 +1,1 @@
-export declare const isMainModule: (importMetaUrl: string) => boolean;
+export function isMainModule(importMetaUrl: any): boolean;

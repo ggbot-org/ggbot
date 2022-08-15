@@ -2,6 +2,7 @@
 
 The following environment variables are used
 
+- `AWS_ACCOUNT_ID`
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `GGBOT2_DEPLOY_STAGE`

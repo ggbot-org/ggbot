@@ -1,4 +1,4 @@
-export declare const dataBucket: string;
+export { dataBucketName } from "@ggbot2/infrastructure";
 export declare const dataBucketExists: () => Promise<boolean>;
 export declare type DataBucketStatus = {
     exists: boolean;

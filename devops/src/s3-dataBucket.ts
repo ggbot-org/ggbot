@@ -5,8 +5,9 @@ import {
 } from "@ggbot2/aws";
 import { dataBucketName } from "@ggbot2/infrastructure";
 
-const Bucket = dataBucketName();
-export const dataBucket = Bucket;
+export { dataBucketName } from "@ggbot2/infrastructure";
+
+const Bucket = dataBucketName;
 
 export const dataBucketExists = async () => {
   try {
@@ -25,6 +26,7 @@ export type DataBucketStatus = {
 
 export const getDataBucketStatus = async () => {
   const exists = await dataBucketExists();
+  if (!exists) return { exists };
 
   return { exists };
 };

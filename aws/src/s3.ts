@@ -1,4 +1,3 @@
-import { awsRegion } from "@ggbot2/infrastructure";
 import {
   DeleteObjectCommand,
   DeleteObjectCommandOutput,
@@ -11,13 +10,14 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import type {
-  DeleteObjectRequest,
-  GetObjectRequest,
-  HeadBucketRequest,
-  ListObjectsV2Request,
-  ListObjectsV2Output,
-  PutObjectRequest,
+  DeleteObjectCommandInput,
+  GetObjectCommandInput,
+  HeadBucketCommandInput,
+  ListObjectsV2CommandInput,
+  ListObjectsV2CommandOutput,
+  PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
+import { awsRegion } from "@ggbot2/infrastructure";
 import type { JsonValue } from "type-fest";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
@@ -28,7 +28,7 @@ export const s3ServiceExceptionName = {
 
 const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
 
-export type GetObjectArgs = Pick<GetObjectRequest, "Bucket" | "Key">;
+export type GetObjectArgs = Pick<GetObjectCommandInput, "Bucket" | "Key">;
 
 export const getObject = async ({
   Bucket,
@@ -43,7 +43,7 @@ export const getObject = async ({
   return data;
 };
 
-export type HeadBucketArgs = Pick<HeadBucketRequest, "Bucket">;
+export type HeadBucketArgs = Pick<HeadBucketCommandInput, "Bucket">;
 
 export const headBucket = async ({
   Bucket,
@@ -53,12 +53,12 @@ export const headBucket = async ({
 };
 
 type ListObjectsOutput = Pick<
-  ListObjectsV2Output,
+  ListObjectsV2CommandOutput,
   "Contents" | "CommonPrefixes"
 >;
 
 export type ListObjectsArgs = Pick<
-  ListObjectsV2Request,
+  ListObjectsV2CommandInput,
   | "Bucket"
   | "ContinuationToken"
   | "Delimiter"
@@ -102,7 +102,7 @@ export const listObjects = async ({
   return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes };
 };
 
-export type PutObjectArgs = Pick<PutObjectRequest, "Bucket" | "Key"> & {
+export type PutObjectArgs = Pick<PutObjectCommandInput, "Bucket" | "Key"> & {
   data: JsonValue;
 };
 
@@ -117,7 +117,7 @@ export const putObject = async ({
   return await client.send(command);
 };
 
-export type DeleteObjectArgs = Pick<DeleteObjectRequest, "Bucket" | "Key">;
+export type DeleteObjectArgs = Pick<DeleteObjectCommandInput, "Bucket" | "Key">;
 
 export const deleteObject = async ({
   Bucket,

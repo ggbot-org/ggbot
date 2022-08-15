@@ -1,7 +1,7 @@
 import { S3ServiceException, headBucket, s3ServiceExceptionName, } from "@ggbot2/aws";
 import { dataBucketName } from "@ggbot2/infrastructure";
-const Bucket = dataBucketName() + "pippo";
-export const dataBucket = Bucket;
+export { dataBucketName } from "@ggbot2/infrastructure";
+const Bucket = dataBucketName;
 export const dataBucketExists = async () => {
     try {
         await headBucket({ Bucket });
@@ -16,5 +16,7 @@ export const dataBucketExists = async () => {
 };
 export const getDataBucketStatus = async () => {
     const exists = await dataBucketExists();
+    if (!exists)
+        return { exists };
     return { exists };
 };
