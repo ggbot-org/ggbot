@@ -1,5 +1,7 @@
-import { dataBucketArn } from "@ggbot2/infrastructure";
+import { getDataBucketArn } from "@ggbot2/infrastructure";
 import { isMainModule } from "./_isMainModule.js";
+
+const dataBucketArn = getDataBucketArn();
 
 export const generateDevopsPolicy = () => {
   return {
@@ -9,6 +11,11 @@ export const generateDevopsPolicy = () => {
         Effect: "Allow",
         Action: ["s3:GetBucketAcl", "s3:ListBucket"],
         Resource: [dataBucketArn],
+      },
+      {
+        Effect: "Allow",
+        Action: ["elasticloadbalancing:DescribeLoadBalancers"],
+        Resource: "*",
       },
     ],
   };

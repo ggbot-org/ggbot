@@ -15,6 +15,7 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
+    "@aws-sdk/client-elastic-load-balancing-v2": "^3.145.0",
     "@ggbot2/env": "file:env"
   },
   "devDependencies": {

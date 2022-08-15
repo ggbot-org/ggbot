@@ -10,12 +10,8 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import type {
-  DeleteObjectCommandInput,
-  GetObjectCommandInput,
-  HeadBucketCommandInput,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
-  PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
 import type { JsonValue } from "type-fest";
@@ -28,7 +24,14 @@ export const s3ServiceExceptionName = {
 
 const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
 
-export type GetObjectArgs = Pick<GetObjectCommandInput, "Bucket" | "Key">;
+// Bucket and Key types are defined by @aws-sdk/client-s3 as string | undefined
+// See for example GetObjectCommandInput
+// Redefine them here, in our use case an undefined Bucket or Key does not make sense.
+type S3Path = {
+  Bucket: string;
+  Key: string;
+};
+export type GetObjectArgs = S3Path;
 
 export const getObject = async ({
   Bucket,
@@ -43,7 +46,7 @@ export const getObject = async ({
   return data;
 };
 
-export type HeadBucketArgs = Pick<HeadBucketCommandInput, "Bucket">;
+export type HeadBucketArgs = Pick<S3Path, "Bucket">;
 
 export const headBucket = async ({
   Bucket,
@@ -57,15 +60,11 @@ type ListObjectsOutput = Pick<
   "Contents" | "CommonPrefixes"
 >;
 
-export type ListObjectsArgs = Pick<
-  ListObjectsV2CommandInput,
-  | "Bucket"
-  | "ContinuationToken"
-  | "Delimiter"
-  | "MaxKeys"
-  | "Prefix"
-  | "StartAfter"
-> &
+export type ListObjectsArgs = Pick<S3Path, "Bucket"> &
+  Pick<
+    ListObjectsV2CommandInput,
+    "ContinuationToken" | "Delimiter" | "MaxKeys" | "Prefix" | "StartAfter"
+  > &
   ListObjectsOutput;
 
 export const listObjects = async ({
@@ -102,7 +101,7 @@ export const listObjects = async ({
   return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes };
 };
 
-export type PutObjectArgs = Pick<PutObjectCommandInput, "Bucket" | "Key"> & {
+export type PutObjectArgs = S3Path & {
   data: JsonValue;
 };
 
@@ -117,7 +116,7 @@ export const putObject = async ({
   return await client.send(command);
 };
 
-export type DeleteObjectArgs = Pick<DeleteObjectCommandInput, "Bucket" | "Key">;
+export type DeleteObjectArgs = S3Path;
 
 export const deleteObject = async ({
   Bucket,

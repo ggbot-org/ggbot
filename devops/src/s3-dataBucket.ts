@@ -1,32 +1,8 @@
-import {
-  S3ServiceException,
-  headBucket,
-  s3ServiceExceptionName,
-} from "@ggbot2/aws";
-import { dataBucketName } from "@ggbot2/infrastructure";
+import { getDataBucketName } from "@ggbot2/infrastructure";
+import { S3BucketStatus, getS3BucketStatus } from "./_s3.js";
 
-export { dataBucketName } from "@ggbot2/infrastructure";
+export const dataBucketName = getDataBucketName();
 
-const Bucket = dataBucketName;
-
-export const dataBucketExists = async () => {
-  try {
-    await headBucket({ Bucket });
-    return true;
-  } catch (error) {
-    if (error instanceof S3ServiceException)
-      if (error.name === s3ServiceExceptionName.NotFound) return false;
-    throw error;
-  }
-};
-
-export type DataBucketStatus = {
-  exists: boolean;
-};
-
-export const getDataBucketStatus = async () => {
-  const exists = await dataBucketExists();
-  if (!exists) return { exists };
-
-  return { exists };
+export const getDataBucketStatus = async (): Promise<S3BucketStatus> => {
+  return await getS3BucketStatus({ Bucket: dataBucketName });
 };

@@ -8,9 +8,9 @@ import {
   listObjects as _listObjects,
   putObject as _putObject,
 } from "@ggbot2/aws";
-import { dataBucketName } from "@ggbot2/infrastructure";
+import { getDataBucketName } from "@ggbot2/infrastructure";
 
-const Bucket = dataBucketName;
+const Bucket = getDataBucketName();
 
 export const deleteObject = (args: Omit<DeleteObjectArgs, "Bucket">) =>
   _deleteObject({ Bucket, ...args });
