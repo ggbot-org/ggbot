@@ -9,6 +9,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import { noReplyAddress } from "@ggbot2/infrastructure";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -46,7 +47,11 @@ export default async function apiHandler(
 
     const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
 
-    await sendEmail({ email, ...emailMessage });
+    await sendEmail({
+      source: noReplyAddress,
+      toAddresses: [email],
+      ...emailMessage,
+    });
 
     const cookie = createEmailCookie(email, { secure: nodeEnvIsProduction });
     res.setHeader("Set-Cookie", cookie);

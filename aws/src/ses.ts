@@ -1,37 +1,43 @@
-import * as AWS from "aws-sdk";
-import { region } from "./region.js";
-import { domainName } from "./route53.js";
+import { awsRegion } from "@ggbot2/infrastructure";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import type { Destination, Message } from "@aws-sdk/client-ses";
 
-const ses = new AWS.SES({ apiVersion: "2010-12-01", region });
+const ses = new SESClient({ apiVersion: "2010-12-01", region: awsRegion });
 
 export type SendEmailInput = {
-  email: string;
   html: string;
-  text: string;
+  source: string;
   subject: string;
+  text: string;
+  toAddresses: string[];
 };
 
-const noReplyAddress = `noreply@${domainName}`;
-
-export function sendEmail({ email, html, text, subject }: SendEmailInput) {
+export const sendEmail = async ({
+  html,
+  source,
+  subject,
+  toAddresses,
+  text,
+}: SendEmailInput) => {
   const Charset = "UTF-8";
 
-  return new Promise((resolve, reject) => {
-    ses.sendEmail(
-      {
-        Destination: {
-          ToAddresses: [email],
-        },
-        Message: {
-          Body: {
-            Html: { Charset, Data: html },
-            Text: { Charset, Data: text },
-          },
-          Subject: { Charset, Data: subject },
-        },
-        Source: noReplyAddress,
-      },
-      (error, data) => (error ? reject(error) : resolve(data))
-    );
+  const destination: Destination = {
+    ToAddresses: toAddresses,
+  };
+
+  const message: Message = {
+    Body: {
+      Html: { Charset, Data: html },
+      Text: { Charset, Data: text },
+    },
+    Subject: { Charset, Data: subject },
+  };
+
+  const command = new SendEmailCommand({
+    Destination: destination,
+    Message: message,
+    Source: source,
   });
-}
+
+  await ses.send(command);
+};

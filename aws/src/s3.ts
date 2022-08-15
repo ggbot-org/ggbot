@@ -1,53 +1,55 @@
-import * as AWS from "aws-sdk";
+import { awsRegion } from "@ggbot2/infrastructure";
+import {
+  DeleteObjectCommand,
+  DeleteObjectCommandOutput,
+  GetObjectCommand,
+  HeadBucketCommand,
+  HeadBucketCommandOutput,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  PutObjectCommandOutput,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import type {
-  BucketName,
   DeleteObjectRequest,
   GetObjectRequest,
+  HeadBucketRequest,
   ListObjectsV2Request,
   ListObjectsV2Output,
   PutObjectRequest,
-} from "aws-sdk/clients/s3";
-import { getDeployStage } from "@ggbot2/env";
+} from "@aws-sdk/client-s3";
 import type { JsonValue } from "type-fest";
-import { isAwsError } from "./error.js";
-import { region } from "./region.js";
-import { domainName } from "./route53.js";
 
-const s3 = new AWS.S3({ apiVersion: "2006-03-01", region });
+export { S3ServiceException } from "@aws-sdk/client-s3";
 
-const dataBucketName = (): BucketName => {
-  const deployStage = getDeployStage();
-  return `${deployStage}-data.${domainName}`;
+export const s3ServiceExceptionName = {
+  NotFound: "NotFound",
 };
 
-const Bucket = dataBucketName();
+const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
 
-type GetObjectArgs = Pick<GetObjectRequest, "Key">;
+export type GetObjectArgs = Pick<GetObjectRequest, "Bucket" | "Key">;
 
-export const getObject = ({
+export const getObject = async ({
+  Bucket,
   Key,
 }: GetObjectArgs): Promise<JsonValue | undefined> => {
-  return new Promise((resolve, reject) => {
-    try {
-      s3.getObject({ Bucket, Key }, (_error, output) => {
-        const body = output?.Body;
-        if (typeof body === "undefined") {
-          resolve(body);
-        } else {
-          const json = body.toString("utf-8");
-          const data = JSON.parse(json);
-          resolve(data);
-        }
-      });
-    } catch (error) {
-      if (isAwsError(error)) {
-        const { statusCode } = error;
-        console.error(`Key=${Key} code=${statusCode}`);
-        if (statusCode === 404) return resolve(undefined);
-      }
-      reject(error);
-    }
-  });
+  const command = new GetObjectCommand({ Bucket, Key });
+  const output = await client.send(command);
+  const body = output?.Body;
+  if (typeof body === "undefined") return;
+  const json = body.toString();
+  const data = JSON.parse(json);
+  return data;
+};
+
+export type HeadBucketArgs = Pick<HeadBucketRequest, "Bucket">;
+
+export const headBucket = async ({
+  Bucket,
+}: HeadBucketArgs): Promise<HeadBucketCommandOutput> => {
+  const command = new HeadBucketCommand({ Bucket });
+  return await client.send(command);
 };
 
 type ListObjectsOutput = Pick<
@@ -55,99 +57,72 @@ type ListObjectsOutput = Pick<
   "Contents" | "CommonPrefixes"
 >;
 
-type ListObjectsArgs = Pick<
+export type ListObjectsArgs = Pick<
   ListObjectsV2Request,
-  "ContinuationToken" | "Delimiter" | "MaxKeys" | "Prefix" | "StartAfter"
+  | "Bucket"
+  | "ContinuationToken"
+  | "Delimiter"
+  | "MaxKeys"
+  | "Prefix"
+  | "StartAfter"
 > &
-  ListObjectsOutput & {
-    withLastModified?: boolean;
-    withETag?: boolean;
-  };
+  ListObjectsOutput;
 
-export const listObjects = ({
+export const listObjects = async ({
+  Bucket,
   ContinuationToken,
   Contents: PreviousContents = [],
   CommonPrefixes: PreviousCommonPrefixes = [],
-  withETag,
-  withLastModified,
   ...params
 }: ListObjectsArgs): Promise<ListObjectsOutput> => {
-  return new Promise((resolve, reject) => {
-    try {
-      s3.listObjectsV2(
-        { Bucket, ContinuationToken, ...params },
-        (_error, output) => {
-          const {
-            CommonPrefixes: CurrentCommonPrefixes = [],
-            Contents: CurrentContents = [],
-            IsTruncated,
-            NextContinuationToken,
-          } = output;
-          const CommonPrefixes = PreviousCommonPrefixes.concat(
-            CurrentCommonPrefixes
-          );
-          const Contents = PreviousContents.concat(CurrentContents);
-          if (IsTruncated) {
-            resolve(
-              listObjects({
-                ...params,
-                CommonPrefixes,
-                Contents,
-                ContinuationToken: NextContinuationToken,
-                withETag,
-                withLastModified,
-              }).then(({ Contents, CommonPrefixes }) =>
-                Promise.resolve({
-                  Contents: Contents?.map(({ Key, LastModified, ETag }) => ({
-                    Key,
-                    ...(withLastModified ? { LastModified } : {}),
-                    ...(withETag ? { ETag } : {}),
-                  })),
-                  CommonPrefixes,
-                })
-              )
-            );
-          }
-          resolve({
-            Contents: Contents?.map(({ Key, LastModified, ETag }) => ({
-              Key,
-              ...(withLastModified ? { LastModified } : {}),
-              ...(withETag ? { ETag } : {}),
-            })),
-            CommonPrefixes,
-          });
-        }
-      );
-    } catch (error) {
-      if (isAwsError(error)) {
-        const { statusCode } = error;
-        console.error(`code=${statusCode}`);
-      }
-      reject(error);
-    }
+  const command = new ListObjectsV2Command({
+    Bucket,
+    ContinuationToken,
+    ...params,
   });
+  const {
+    CommonPrefixes: CurrentCommonPrefixes = [],
+    Contents: CurrentContents = [],
+    IsTruncated,
+    NextContinuationToken,
+  } = await client.send(command);
+
+  const CommonPrefixes = PreviousCommonPrefixes.concat(CurrentCommonPrefixes);
+  const Contents = PreviousContents.concat(CurrentContents);
+
+  if (!IsTruncated) return { Contents, CommonPrefixes };
+
+  const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } =
+    await listObjects({
+      Bucket,
+      CommonPrefixes,
+      Contents,
+      ContinuationToken: NextContinuationToken,
+    });
+  return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes };
 };
 
-type PutObjectArgs = Pick<PutObjectRequest, "Key"> & {
+export type PutObjectArgs = Pick<PutObjectRequest, "Bucket" | "Key"> & {
   data: JsonValue;
 };
 
-export const putObject = ({ Key, data }: PutObjectArgs) => {
-  return new Promise((resolve, reject) => {
-    const json = JSON.stringify(data);
-    const Body = Buffer.from(json);
-    s3.putObject({ Body, Bucket, Key }, (error, data) =>
-      error ? reject(error) : resolve(data)
-    );
-  });
+export const putObject = async ({
+  Bucket,
+  Key,
+  data,
+}: PutObjectArgs): Promise<PutObjectCommandOutput> => {
+  const json = JSON.stringify(data);
+  const Body = Buffer.from(json);
+  const command = new PutObjectCommand({ Body, Bucket, Key });
+  return await client.send(command);
 };
 
-type DeleteObjectArgs = Pick<DeleteObjectRequest, "Key">;
+export type DeleteObjectArgs = Pick<DeleteObjectRequest, "Bucket" | "Key">;
 
-export const deleteObject = ({ Key }: DeleteObjectArgs) => {
-  return new Promise((resolve, reject) => {
-    s3.deleteObject({ Bucket, Key }, (error, data) =>
-      error ? reject(error) : resolve(data)
-    );
-  });
+export const deleteObject = async ({
+  Bucket,
+  Key,
+}: DeleteObjectArgs): Promise<DeleteObjectCommandOutput> => {
+  const command = new DeleteObjectCommand({ Bucket, Key });
+  return await client.send(command);
 };

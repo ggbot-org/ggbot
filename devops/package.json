@@ -1,0 +1,25 @@
+{
+  "name": "@ggbot2/devops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "task:status": "node ./dist/task-status.js",
+    "test": "npm run tsc--noEmit",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    "@ggbot2/aws": "file:aws"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "typescript": "^4.7.4"
+  }
+}

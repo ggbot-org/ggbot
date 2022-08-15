@@ -15,9 +15,9 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/env": "file:env",
-    "@ggbot2/models": "file:models",
-    "aws-sdk": "^2.1171.0"
+    "@aws-sdk/client-s3": "^3.145.0",
+    "@aws-sdk/client-ses": "^3.145.0",
+    "@ggbot2/infrastructure": "file:infrastructure"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

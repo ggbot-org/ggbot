@@ -1,4 +1,3 @@
-import { getObject, putObject } from "@ggbot2/aws";
 import {
   AccountKey,
   AccountStrategyList,
@@ -6,6 +5,7 @@ import {
   WriteAccountStrategyList,
   updatedNow,
 } from "@ggbot2/models";
+import { getObject, putObject } from "./_dataBucket.js";
 import { accountKeyToDirname } from "./accountKey.js";
 
 export const accountStrategyListDirnamePrefix = () => "accountStrategies";

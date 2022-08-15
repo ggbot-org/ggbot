@@ -1,4 +1,3 @@
-import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
   CreateOneTimePassword,
   DeleteOneTimePassword,
@@ -8,6 +7,7 @@ import {
   deletedNow,
   generateOneTimePassword,
 } from "@ggbot2/models";
+import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { emailToDirname } from "./email.js";
 
 const oneTimePasswordDirnamePrefix = () => "oneTimePassword";

@@ -1,4 +1,3 @@
-import { getObject, putObject } from "@ggbot2/aws";
 import {
   CreateEmailAccount,
   EmailAddress,
@@ -6,6 +5,7 @@ import {
   createdNow,
   EmailAccount,
 } from "@ggbot2/models";
+import { getObject, putObject } from "./_dataBucket.js";
 import { emailToDirname } from "./email.js";
 
 export const emailAccountDirnamePrefix = () => "emailAccount";

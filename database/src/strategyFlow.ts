@@ -1,4 +1,3 @@
-import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
   CopyStrategyFlow,
   DeleteStrategyFlow,
@@ -9,6 +8,7 @@ import {
   deletedNow,
   updatedNow,
 } from "@ggbot2/models";
+import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import {
   ErrorPermissionDeniedCannotDeleteStrategyFlow,
   ErrorPermissionDeniedCannotWriteStrategyFlow,

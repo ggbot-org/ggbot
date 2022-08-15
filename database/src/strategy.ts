@@ -1,4 +1,3 @@
-import { deleteObject, getObject, putObject } from "@ggbot2/aws";
 import {
   AccountStrategyListItem,
   CopyStrategy,
@@ -12,12 +11,13 @@ import {
   createdNow,
   deletedNow,
   isAccountKey,
-  isStrategyName,
+  isName,
   normalizeName,
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
+import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import {
   readAccountStrategyList,
   writeAccountStrategyList,
@@ -107,7 +107,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   ...strategyKey
 }) => {
   throwIfInvalidName(name);
-  if (!isStrategyName(name)) throw new ErrorInvalidStrategyName(name);
+  if (!isName(name)) throw new ErrorInvalidStrategyName(name);
   const strategy = await readStrategy(strategyKey);
   if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
   if (strategy.accountId === accountId) {

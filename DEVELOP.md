@@ -1,4 +1,8 @@
-# ggbot2 Development
+# ggbot2 development
+
+## Rules
+
+1. Use lowercase strings everywhere, unless it makes sense to use an uppercase letter.
 
 ## Requirements
 
@@ -26,3 +30,6 @@ Use [direnv](https://direnv.net/) to load variables from *.envrc* file.
 
 See also [`env` workspace](./env).
 
+## DevOps
+
+See [`devops` workspace](./devops).

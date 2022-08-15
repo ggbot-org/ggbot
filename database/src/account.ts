@@ -1,4 +1,3 @@
-import { deleteObject, getObject, listObjects, putObject } from "@ggbot2/aws";
 import {
   Account,
   AccountKey,
@@ -11,6 +10,12 @@ import {
   isAccountKey,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
+import {
+  deleteObject,
+  getObject,
+  listObjects,
+  putObject,
+} from "./_dataBucket.js";
 import { accountKeyToDirname } from "./accountKey.js";
 import { createEmailAccount } from "./emailAccount.js";
 

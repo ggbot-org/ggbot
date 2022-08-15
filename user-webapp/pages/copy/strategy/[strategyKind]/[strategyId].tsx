@@ -1,7 +1,7 @@
 import {
   ErrorInvalidName,
   ErrorNameToLong,
-  isStrategyName,
+  isName,
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { Button, DateTime, Field } from "@ggbot2/ui-components";
@@ -41,8 +41,7 @@ const Page: NextPage<ServerSideProps> = ({
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isStrategyName(name))
-          setNewStrategy({ strategyId, strategyKind, name });
+        if (isName(name)) setNewStrategy({ strategyId, strategyKind, name });
       } catch (error) {
         if (error instanceof ErrorInvalidName)
           toast.error("Invalid strategy name");
@@ -61,7 +60,7 @@ const Page: NextPage<ServerSideProps> = ({
   return (
     <Content>
       <form
-        className="flex flex-col w-full max-w-lg p-4 gap-4"
+        className="flex w-full max-w-lg flex-col gap-4 p-4"
         onSubmit={onSubmit}
       >
         <span className="text-xl">copy strategy</span>
