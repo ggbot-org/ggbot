@@ -1,7 +1,13 @@
-import { getDataBucketArn } from "@ggbot2/infrastructure";
+import { getDataBucketArn, getLogsBucketArn } from "@ggbot2/infrastructure";
 import { isMainModule } from "./_isMainModule.js";
 
-const dataBucketArn = getDataBucketArn();
+const resources = (deployStage) => ({
+  dataBucketArn: getDataBucketArn(deployStage),
+  logsBucketArn: getLogsBucketArn(deployStage),
+});
+
+const main = resources("main");
+const next = resources("next");
 
 export const generateDevopsPolicy = () => {
   return {
@@ -9,8 +15,13 @@ export const generateDevopsPolicy = () => {
     Statement: [
       {
         Effect: "Allow",
-        Action: ["s3:GetBucketAcl", "s3:ListBucket"],
-        Resource: [dataBucketArn],
+        Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
+        Resource: [
+          main.dataBucketArn,
+          main.logsBucketArn,
+          next.dataBucketArn,
+          next.logsBucketArn,
+        ],
       },
       {
         Effect: "Allow",

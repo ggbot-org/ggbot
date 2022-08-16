@@ -1,4 +1,10 @@
-import { headBucket, HeadBucketArgs, S3ServiceException } from "@ggbot2/aws";
+import {
+  CreateBucketArgs,
+  HeadBucketArgs,
+  S3ServiceException,
+  createBucket,
+  headBucket,
+} from "@ggbot2/aws";
 
 export type S3BucketStatus = {
   name: string;
@@ -15,6 +21,17 @@ export const s3BucketExists = async (args: HeadBucketArgs) => {
 
     throw error;
   }
+};
+
+type CreateS3BucketArgs = CreateBucketArgs;
+
+export const createS3Bucket = async (
+  args: CreateS3BucketArgs
+): Promise<void> => {
+  const { Bucket } = args;
+  const exists = await s3BucketExists({ Bucket });
+  if (exists) return;
+  await createBucket(args);
 };
 
 type GetS3BucketStatusArgs = HeadBucketArgs;

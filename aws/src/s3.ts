@@ -1,4 +1,6 @@
 import {
+  CreateBucketCommand,
+  CreateBucketCommandInput,
   DeleteObjectCommand,
   DeleteObjectCommandOutput,
   GetObjectCommand,
@@ -31,6 +33,22 @@ type S3Path = {
   Bucket: string;
   Key: string;
 };
+
+export type CreateBucketArgs = Pick<S3Path, "Bucket"> &
+  Pick<CreateBucketCommandInput, "ACL">;
+
+export const createBucket = async ({
+  ACL,
+  Bucket,
+}: CreateBucketArgs): Promise<void> => {
+  console.log("create", Bucket, ACL);
+  const command = new CreateBucketCommand({
+    ACL,
+    Bucket,
+  });
+  await client.send(command);
+};
+
 export type GetObjectArgs = S3Path;
 
 export const getObject = async ({

@@ -1,4 +1,6 @@
 export * from "./elb-webapp.js";
 export * from "./elb-worker.js";
-export * from "./s3-dataBucket.js";
+export * from "./s3-data.js";
+export * from "./s3-logs.js";
+export * from "./task-create.js";
 export * from "./task-status.js";
