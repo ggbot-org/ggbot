@@ -4,6 +4,5 @@
     "incremental": true,
     "outDir": "./dist"
   },
-  "extends": "./tsconfig.json",
-  "include": ["./src/index.ts"]
+  "extends": "./tsconfig.json"
 }
