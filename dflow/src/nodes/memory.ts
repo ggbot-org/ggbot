@@ -1,5 +1,5 @@
 import { DflowNode } from "dflow";
-import { DflowCommonHostContext as Context } from "../host.js";
+import { DflowCommonContext as Context } from "../context.js";
 
 const { input, output } = DflowNode;
 

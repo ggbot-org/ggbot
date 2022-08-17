@@ -19,8 +19,8 @@ export class Sma extends DflowNode {
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
-    const values = this.input(0).data;
-    const period = this.input(1).data;
+    const values = this.input(0).data as number[];
+    const period = this.input(1).data as number;
     const result = await promisify(indicators.sma.indicator)(
       [values],
       [period]
@@ -35,8 +35,8 @@ export class Ema extends DflowNode {
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
-    const values = this.input(0).data;
-    const period = this.input(1).data;
+    const values = this.input(0).data as number[];
+    const period = this.input(1).data as number;
     const result = await promisify(indicators.ema.indicator)(
       [values],
       [period]

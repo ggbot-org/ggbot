@@ -10,5 +10,5 @@
     "strict": true,
     "target": "ESNext"
   },
-  "include": ["./src/**/*.ts", "./src/nodes/tulind.js"]
+  "include": ["./src/**/*.ts"]
 }
