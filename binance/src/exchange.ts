@@ -2,14 +2,18 @@ import { BinanceConnector, BinanceConnectorRequestArg } from "./connector.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
-  BinanceSymbol,
   binanceKlineIntervals,
 } from "./types.js";
 
+/**
+ * BinanceExchange implements public API requests and exposes
+ * {@link https://binance-docs.github.io/apidocs/spot/en/#public-api-definitions|Binance public API definitions}
+ * as static attributes, for example: orderTypes, orderSides, klineIntervals, etc.
+ */
 export class BinanceExchange extends BinanceConnector {
   static readonly klineIntervals = binanceKlineIntervals;
 
-  async publicRequest<Data>(
+  async _publicRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
@@ -17,8 +21,8 @@ export class BinanceExchange extends BinanceConnector {
     return await super.request<Data>({ apiKey: "", endpoint, method, params });
   }
 
-  async avgPrice(symbol: BinanceSymbol): Promise<BinanceAvgPrice> {
-    return await this.publicRequest<BinanceAvgPrice>(
+  async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
+    return await this._publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
       { symbol }
@@ -26,7 +30,7 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
-    return await this.publicRequest<BinanceExchangeInfo>(
+    return await this._publicRequest<BinanceExchangeInfo>(
       "GET",
       "/api/v3/exchangeInfo"
     );

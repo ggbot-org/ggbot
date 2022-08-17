@@ -1,27 +1,17 @@
-type BaseUrl = string;
-
-export type BinanceConnectorConstructorArg = Pick<BinanceConnector, "baseUrl">;
-
-export type BinanceConnectorRequestArg = {
-  apiKey: string;
-  endpoint: string;
-  method: "GET";
-  params?: Record<string, string | number>;
-};
-
+/**
+ * BinanceConnector is a base class for BinanceExchange and BinanceClient.
+ */
 export class BinanceConnector {
-  static defaultBaseUrl: BaseUrl = "https://api.binance.com";
+  static defaultBaseUrl = "https://api.binance.com";
 
   static userAgent = "ggbot2 - crypto flow (https://ggbot2.com)";
 
   baseUrl: string;
 
-  constructor(
-    arg: BinanceConnectorConstructorArg = {
-      baseUrl: BinanceConnector.defaultBaseUrl,
-    }
-  ) {
-    this.baseUrl = arg.baseUrl;
+  constructor({
+    baseUrl = BinanceConnector.defaultBaseUrl,
+  }: BinanceConnectorConstructorArg) {
+    this.baseUrl = baseUrl;
   }
 
   async request<Data>({
@@ -53,3 +43,14 @@ export class BinanceConnector {
     }
   }
 }
+
+export type BinanceConnectorConstructorArg = Partial<
+  Pick<BinanceConnector, "baseUrl">
+>;
+
+export type BinanceConnectorRequestArg = {
+  apiKey: string;
+  endpoint: string;
+  method: "GET";
+  params?: Record<string, string | number>;
+};

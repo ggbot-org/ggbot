@@ -4,30 +4,22 @@ import {
   BinanceConnectorConstructorArg,
   BinanceConnectorRequestArg,
 } from "./connector.js";
+import { BinanceAccountInformation } from "./types.js";
 
-type ApiKey = string;
-type ApiSecret = string;
-
-export type BinanceClientConstructorArg = BinanceConnectorConstructorArg & {
-  apiKey: ApiKey;
-  apiSecret: ApiSecret;
-};
-
+/**
+ * BinanceClient implements private API requests.
+ */
 export class BinanceClient extends BinanceConnector {
-  apiKey: ApiKey;
-  apiSecret: ApiSecret;
+  apiKey: string;
+  apiSecret: string;
 
-  constructor({
-    apiKey,
-    apiSecret,
-    baseUrl = BinanceConnector.defaultBaseUrl,
-  }: BinanceClientConstructorArg) {
+  constructor({ apiKey, apiSecret, baseUrl }: BinanceClientConstructorArg) {
     super({ baseUrl });
     this.apiKey = apiKey;
     this.apiSecret = apiSecret;
   }
 
-  async privateRequest(
+  async _privateRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
@@ -48,11 +40,35 @@ export class BinanceClient extends BinanceConnector {
       .digest("hex");
     searchParams.append("signature", signature);
 
-    return await super.request({
+    return await super.request<Data>({
       apiKey: this.apiKey,
       endpoint,
       method,
       params: Object.fromEntries(searchParams),
     });
   }
+
+  async account(): Promise<BinanceAccountInformation> {
+    const { balances, ...rest } =
+      await this._privateRequest<BinanceAccountInformation>(
+        "GET",
+        "/api/v3/account"
+      );
+
+    return {
+      balances: balances.filter(
+        // Filter empty balances
+        //
+        // An empty balance looks like
+        //
+        //     { asset: 'LUNA', free: '0.00000000', locked: '0.00000000' }
+        //
+        ({ free, locked }) => Number(free) + Number(locked) > 0
+      ),
+      ...rest,
+    };
+  }
 }
+
+export type BinanceClientConstructorArg = BinanceConnectorConstructorArg &
+  Pick<BinanceClient, "apiKey" | "apiSecret">;

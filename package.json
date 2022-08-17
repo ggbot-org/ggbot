@@ -4,6 +4,7 @@
   "homepage": "http://ggbot2.com",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "admin-webapp": "npm run dev --workspace admin-webapp",
     "build:admin-webapp": "rimraf admin-webapp/.next; npm run build --workspace admin-webapp",

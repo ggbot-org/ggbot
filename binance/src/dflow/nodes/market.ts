@@ -1,9 +1,9 @@
 import { DflowNode, DflowData } from "dflow";
-import type { Context } from "../context.js";
+import type { BinanceDflowContext as Context } from "../host.js";
 
 const { input, output } = DflowNode;
 
-class BinanceAvgPrice extends DflowNode {
+export class BinanceAvgPrice extends DflowNode {
   static kind = "avgPrice";
   static isAsync = true;
   static inputs = [input("string", { name: "symbol" })];
@@ -17,7 +17,3 @@ class BinanceAvgPrice extends DflowNode {
     else this.clearOutputs();
   }
 }
-
-export const catalog = {
-  [BinanceAvgPrice.kind]: BinanceAvgPrice,
-};

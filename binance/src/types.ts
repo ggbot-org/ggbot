@@ -1,14 +1,29 @@
-// Enums are documented here:
-// https://binance-docs.github.io/apidocs/spot/en/#public-api-definitions
-
-export type BinanceAsset = string;
+export type BinanceAccountInformation = {
+  makerCommission: number;
+  takerCommission: number;
+  buyerCommission: number;
+  sellerCommission: number;
+  canTrade: boolean;
+  canWithdraw: boolean;
+  canDeposit: boolean;
+  updateTime: BinanceTime;
+  accountType: string;
+  balances: BinanceBalance[];
+  permissions: string[];
+};
 
 export type BinanceAvgPrice = {
   /**
    * is the number of minutes the average price is calculated over
    */
   mins: number;
-  price: BinanceQuantity;
+  price: string;
+};
+
+export type BinanceBalance = {
+  asset: string;
+  free: string;
+  locked: string;
 };
 
 export type BinanceExchangeInfo = {
@@ -48,9 +63,7 @@ export const binanceOrderTypes = [
 ] as const;
 export type BinanceOrderType = typeof binanceOrderTypes[number];
 
-export type BinanceQuantity = "string";
-
-export declare type BinanceRateLimitInfo = {
+export type BinanceRateLimitInfo = {
   rateLimitType: BinanceRateLimitType;
   interval: BinanceRateLimitInterval;
   intervalNum: number;
@@ -67,14 +80,12 @@ export const binanceRateLimitTypes = [
 ] as const;
 export type BinanceRateLimitType = typeof binanceRateLimitTypes[number];
 
-export type BinanceSymbol = string;
-
 export type BinanceSymbolInfo = {
-  symbol: BinanceSymbol;
+  symbol: string;
   status: BinanceSymbolStatus;
-  baseAsset: BinanceAsset;
+  baseAsset: string;
   baseAssetPrecision: number;
-  quoteAsset: BinanceAsset;
+  quoteAsset: string;
   quotePrecision: number;
   quoteAssetPrecision: number;
   baseCommissionPrecision: number;
@@ -95,14 +106,14 @@ export type BinanceSymbolInfoFilter =
 
 export type BinanceSymbolInfoFilterLotSize = {
   filterType: "LOT_SIZE";
-  minQty: BinanceQuantity;
-  maxQty: BinanceQuantity;
-  stepSize: BinanceQuantity;
+  minQty: string;
+  maxQty: string;
+  stepSize: string;
 };
 
 export type BinanceSymbolInfoFilterMinNotional = {
   filterType: "MIN_NOTIONAL";
-  minNotional: BinanceQuantity;
+  minNotional: string;
   applyToMarket: boolean;
   avgPriceMins: number;
 };
