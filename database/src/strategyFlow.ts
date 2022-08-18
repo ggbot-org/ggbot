@@ -43,8 +43,8 @@ export const readStrategyFlow: ReadStrategyFlow["func"] = async (
   strategyKey
 ) => {
   const Key = strategyFlowPathname(strategyKey);
-  const data = await getObject({ Key });
-  return data as StrategyFlow;
+  const data = await getObject<ReadStrategyFlow["out"]>({ Key });
+  return data;
 };
 
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({

@@ -9,9 +9,7 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
   const onClick = useCallback(
     (event: SyntheticEvent) => {
       event.stopPropagation();
-      const sharableLink = `${webappBaseUrl}/${route.viewFlowPage(
-        strategyKey
-      )}`;
+      const sharableLink = `${webappBaseUrl}${route.viewFlowPage(strategyKey)}`;
       navigator.clipboard.writeText(sharableLink);
       toast("Link copied");
     },

@@ -4,6 +4,7 @@ import {
   S3ServiceException,
   createBucket,
   headBucket,
+  s3ServiceExceptionName,
 } from "@ggbot2/aws";
 import { CreateOutput } from "./_create.js";
 
@@ -16,9 +17,9 @@ export const s3BucketExists = async (args: HeadBucketArgs) => {
     await headBucket(args);
     return true;
   } catch (error) {
-    if (error instanceof S3ServiceException)
-      if (error.name === "NotFound") return false;
-
+    if (error instanceof S3ServiceException) {
+      if (error.name === s3ServiceExceptionName.NotFound) return false;
+    }
     throw error;
   }
 };

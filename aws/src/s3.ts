@@ -10,18 +10,21 @@ import {
   PutObjectCommand,
   PutObjectCommandOutput,
   S3Client,
+  S3ServiceException,
 } from "@aws-sdk/client-s3";
 import type {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
+import stream from "stream";
 import type { JsonValue } from "type-fest";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
 
 export const s3ServiceExceptionName = {
   NotFound: "NotFound",
+  NoSuchKey: "NoSuchKey",
 };
 
 const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
@@ -41,7 +44,6 @@ export const createBucket = async ({
   ACL,
   Bucket,
 }: CreateBucketArgs): Promise<void> => {
-  console.log("create", Bucket, ACL);
   const command = new CreateBucketCommand({
     ACL,
     Bucket,
@@ -49,19 +51,34 @@ export const createBucket = async ({
   await client.send(command);
 };
 
+const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const chunks: any[] = [];
+    stream.on("data", (chunk) => chunks.push(chunk));
+    stream.on("error", reject);
+    stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+  });
+
 export type GetObjectArgs = S3Path;
 
-export const getObject = async ({
+export const getObject = async <Data>({
   Bucket,
   Key,
-}: GetObjectArgs): Promise<JsonValue | undefined> => {
-  const command = new GetObjectCommand({ Bucket, Key });
-  const output = await client.send(command);
-  const body = output?.Body;
-  if (typeof body === "undefined") return;
-  const json = body.toString();
-  const data = JSON.parse(json);
-  return data;
+}: GetObjectArgs): Promise<Data | undefined> => {
+  try {
+    const command = new GetObjectCommand({ Bucket, Key });
+    const output = await client.send(command);
+    const body = output?.Body;
+    if (!(body instanceof stream.Readable)) return;
+    const json = await streamToString(body);
+    const data = JSON.parse(json);
+    return data;
+  } catch (error) {
+    if (error instanceof S3ServiceException) {
+      if (error.name === s3ServiceExceptionName.NoSuchKey) return;
+    }
+    throw error;
+  }
 };
 
 export type HeadBucketArgs = Pick<S3Path, "Bucket">;
