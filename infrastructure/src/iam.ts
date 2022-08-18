@@ -2,6 +2,9 @@ import { DeployStage } from "@ggbot2/env";
 import { awsAccountId } from "./_env.js";
 import { getDataBucketArn, getLogsBucketArn } from "./s3.js";
 
+// IAM version
+const Version = "2012-10-17";
+
 const resources = (deployStage: DeployStage) => ({
   dataBucketArn: getDataBucketArn(deployStage),
   logsBucketArn: getLogsBucketArn(deployStage),
@@ -32,3 +35,8 @@ export const devopsPolicyStatements = () => [
     ],
   },
 ];
+
+export const getDevopsPolicy = () => ({
+  Version,
+  Statement: devopsPolicyStatements(),
+});

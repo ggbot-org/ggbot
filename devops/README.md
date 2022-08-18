@@ -12,11 +12,11 @@ Create devops user:
 
 Create devops policy:
 
-1. Generate policy: `cd devops; npm run generateDevopsPolicy; cd -`. Copy the output of the command and put in the create policy's JSON editor.
+1. Launch command `npm run task:showDevopsPolicy`. Copy the output of the command and put in the create policy's JSON editor.
 1. Create a policy named *ggbot2-devops-policy*, add a description: *manage ggbot2 devops automations*
 
 Create devops user group:
 
 1. Create a group named *ggbot2-devops-group*.
 2. Add *ggbot2-devops* user to group.
-3. Attacjh *ggbot2-devops-policy*  policy to group.
+3. Attach *ggbot2-devops-policy*  policy to group.

@@ -11,8 +11,8 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "generateDevopsPolicy": "node src/generateDevopsPolicy.js",
     "task:create": "node ./dist/task-create.js",
+    "task:showDevopsPolicy": "node src/showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
