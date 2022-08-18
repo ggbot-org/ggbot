@@ -84,18 +84,15 @@ export const createStrategy: CreateStrategy["func"] = async ({
   return data;
 };
 
-export const readStrategy: ReadStrategy["func"] = async (strategyKey) => {
-  const Key = strategyPathname(strategyKey);
-  const data = await getObject({ Key });
-  if (!data) return;
-  return data as Strategy;
-};
+export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
+  await getObject<ReadStrategy["out"]>({
+    Key: strategyPathname(strategyKey),
+  });
 
 export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   strategyKey
 ) => {
-  const Key = strategyPathname(strategyKey);
-  const data = await getObject({ Key });
+  const data = await readStrategy(strategyKey);
   if (!data) throw new ErrorStrategyNotFound(strategyKey);
   if (!isAccountKey(data)) throw new ErrorMissingAccountId();
   return data.accountId;

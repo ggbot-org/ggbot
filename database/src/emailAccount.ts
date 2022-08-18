@@ -28,9 +28,7 @@ export const createEmailAccount: CreateEmailAccount["func"] = async ({
   return creationTime;
 };
 
-export const readEmailAccount: ReadEmailAccount["func"] = async (email) => {
-  const Key = emailAccountPathname(email);
-  const data = await getObject({ Key });
-  if (!data) return;
-  return data as EmailAccount;
-};
+export const readEmailAccount: ReadEmailAccount["func"] = async (email) =>
+  await getObject<ReadEmailAccount["out"]>({
+    Key: emailAccountPathname(email),
+  });

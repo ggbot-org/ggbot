@@ -24,13 +24,10 @@ export const createOneTimePassword: CreateOneTimePassword["func"] = async (
   return data.code;
 };
 
-export const readOneTimePassword: ReadOneTimePassword["func"] = async (
-  email
-) => {
-  const Key = oneTimePasswordPathname(email);
-  const data = await getObject({ Key });
-  return data as OneTimePassword;
-};
+export const readOneTimePassword: ReadOneTimePassword["func"] = async (email) =>
+  await getObject<ReadOneTimePassword["out"]>({
+    Key: oneTimePasswordPathname(email),
+  });
 
 export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
   email

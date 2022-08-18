@@ -15,8 +15,8 @@ const Bucket = getDataBucketName();
 export const deleteObject = (args: Omit<DeleteObjectArgs, "Bucket">) =>
   _deleteObject({ Bucket, ...args });
 
-export const getObject = (args: Omit<GetObjectArgs, "Bucket">) =>
-  _getObject({ Bucket, ...args });
+export const getObject = <T>(args: Omit<GetObjectArgs, "Bucket">) =>
+  _getObject<T>({ Bucket, ...args });
 
 export const listObjects = (args: Omit<ListObjectsArgs, "Bucket">) =>
   _listObjects({ Bucket, ...args });

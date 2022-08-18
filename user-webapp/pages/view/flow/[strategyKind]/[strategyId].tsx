@@ -1,16 +1,10 @@
 import { Button } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
 import { ButtonShareStrategy, Content } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
-import { StrategyInfo, StrategyKey, getStrategyInfo, route } from "_routing";
+import { StrategyInfo, getStrategyInfo, route } from "_routing";
 
 type ServerSideProps = StrategyInfo;
 
@@ -54,13 +48,13 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content metadata={{ title: "ggbot2 strategy", description: name }}>
-      <div className="flex flex-col h-full">
-        <div className="flex flex-col justify-between p-4 gap-4 md:flex-row md:items-center">
+      <div className="flex h-full flex-col">
+        <div className="flex flex-col justify-between gap-4 p-4 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
           </dl>
-          <menu className="flex flex-row h-10 gap-4">
+          <menu className="flex h-10 flex-row gap-4">
             {accountIsOwner ? (
               <Button color="primary" onClick={onClickEdit}>
                 edit

@@ -39,13 +39,10 @@ export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   });
 };
 
-export const readStrategyFlow: ReadStrategyFlow["func"] = async (
-  strategyKey
-) => {
-  const Key = strategyFlowPathname(strategyKey);
-  const data = await getObject<ReadStrategyFlow["out"]>({ Key });
-  return data;
-};
+export const readStrategyFlow: ReadStrategyFlow["func"] = async (strategyKey) =>
+  await getObject<ReadStrategyFlow["out"]>({
+    Key: strategyFlowPathname(strategyKey),
+  });
 
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   accountId,

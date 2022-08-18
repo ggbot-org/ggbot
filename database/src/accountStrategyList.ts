@@ -18,12 +18,10 @@ export const accountStrategyListPathname = (accountKey: AccountKey) =>
 
 export const readAccountStrategyList: ReadAccountStrategyList["func"] = async (
   accountKey
-) => {
-  const Key = accountStrategyListPathname(accountKey);
-  const data = await getObject({ Key });
-  if (!data) return;
-  return data as AccountStrategyList;
-};
+) =>
+  await getObject<ReadAccountStrategyList["out"]>({
+    Key: accountStrategyListPathname(accountKey),
+  });
 
 export const writeAccountStrategyList: WriteAccountStrategyList["func"] =
   async ({ accountId, strategies }) => {

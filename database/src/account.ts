@@ -40,12 +40,8 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
   return data;
 };
 
-export const readAccount: ReadAccount["func"] = async (accountKey) => {
-  const Key = accountPathname(accountKey);
-  const data = await getObject({ Key });
-  if (!data) return;
-  return data as Account;
-};
+export const readAccount: ReadAccount["func"] = async (accountKey) =>
+  await getObject<ReadAccount["out"]>({ Key: accountPathname(accountKey) });
 
 export const readAccountKeys: ReadAccountKeys["func"] = async () => {
   const Prefix = accountDirnamePrefix();
