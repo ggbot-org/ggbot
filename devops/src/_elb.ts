@@ -6,10 +6,11 @@ import {
   describeLoadBalancers,
 } from "@ggbot2/aws";
 
-export type LoadBalancerStatus = LoadBalancer & {
-  exists: boolean;
-  typeIsOk?: boolean;
-};
+export type LoadBalancerStatus = { exists: boolean } & Partial<
+  Pick<LoadBalancer, "Type"> & {
+    typeIsOk?: boolean;
+  }
+>;
 
 type GetLoadBalancerStatusOptions = {
   wantedType: LoadBalancerTypeEnum;
@@ -23,11 +24,11 @@ export const getLoadBalancerStatus = async (
     const result = await describeLoadBalancers(args);
     const exists = result.LoadBalancers?.length === 1;
     if (!exists) return { exists };
-    const loadBalancer = result.LoadBalancers?.[0] as LoadBalancer;
+    const { Type } = result.LoadBalancers?.[0] as LoadBalancer;
     return {
       exists: true,
-      typeIsOk: options.wantedType === loadBalancer.Type,
-      ...loadBalancer,
+      Type,
+      typeIsOk: options.wantedType === Type,
     };
   } catch (error) {
     if (error instanceof ElasticLoadBalancingV2ServiceException)

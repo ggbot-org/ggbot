@@ -1,3 +1,6 @@
+// Declarations stolen from here
+// https://github.com/TulipCharts/tulipnode/pull/74
+
 declare module "tulind" {
   export type Indicator = {
     name: IndicatorIndentifier;

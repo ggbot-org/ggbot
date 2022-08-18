@@ -2,10 +2,10 @@ import { ErrorInvalidEnvironmentVariable } from "./errors.js";
 
 export type DeployStage = "main" | "next";
 
-const GGBOT2_DEPLOY_STAGE = process.env.GGBOT2_DEPLOY_STAGE;
+const DEPLOY_STAGE = process.env.DEPLOY_STAGE;
 
 export const getDeployStage = (): DeployStage => {
-  switch (GGBOT2_DEPLOY_STAGE) {
+  switch (DEPLOY_STAGE) {
     case "main":
       return "main";
     case undefined:
@@ -13,8 +13,8 @@ export const getDeployStage = (): DeployStage => {
       return "next";
     default:
       throw new ErrorInvalidEnvironmentVariable({
-        name: "GGBOT2_DEPLOY_STAGE",
-        value: GGBOT2_DEPLOY_STAGE,
+        name: "DEPLOY_STAGE",
+        value: DEPLOY_STAGE,
       });
   }
 };

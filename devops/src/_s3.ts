@@ -5,9 +5,9 @@ import {
   createBucket,
   headBucket,
 } from "@ggbot2/aws";
+import { CreateOutput } from "./_create.js";
 
 export type S3BucketStatus = {
-  name: string;
   exists: boolean;
 };
 
@@ -24,14 +24,16 @@ export const s3BucketExists = async (args: HeadBucketArgs) => {
 };
 
 type CreateS3BucketArgs = CreateBucketArgs;
+export type CreateS3BucketOutput = CreateOutput & { name: string };
 
 export const createS3Bucket = async (
   args: CreateS3BucketArgs
-): Promise<void> => {
+): Promise<CreateS3BucketOutput> => {
   const { Bucket } = args;
   const exists = await s3BucketExists({ Bucket });
-  if (exists) return;
+  if (exists) return { exists: true, created: false, name: Bucket };
   await createBucket(args);
+  return { exists: false, created: true, name: Bucket };
 };
 
 type GetS3BucketStatusArgs = HeadBucketArgs;
@@ -40,7 +42,7 @@ export const getS3BucketStatus = async ({
   Bucket,
 }: GetS3BucketStatusArgs): Promise<S3BucketStatus> => {
   const exists = await s3BucketExists({ Bucket });
-  if (!exists) return { exists, name: Bucket };
+  if (!exists) return { exists };
 
-  return { exists, name: Bucket };
+  return { exists };
 };
