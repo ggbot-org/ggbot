@@ -20,13 +20,10 @@
 
   /* Definition list */
   dt {
-    @apply font-medium text-xs uppercase first:mt-0 mt-2;
-  }
-  dd {
-    @apply pl-4;
+    @apply mt-2 text-2xs font-medium uppercase first:mt-0;
   }
 
   label {
-    @apply font-medium text-xs uppercase mb-2;
+    @apply mb-2 text-xs font-medium uppercase;
   }
 }

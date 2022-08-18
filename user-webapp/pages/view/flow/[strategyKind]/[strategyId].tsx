@@ -49,7 +49,7 @@ const Page: NextPage<ServerSideProps> = ({
   return (
     <Content metadata={{ title: "ggbot2 strategy", description: name }}>
       <div className="flex h-full flex-col">
-        <div className="flex flex-col justify-between gap-4 p-4 md:flex-row md:items-center">
+        <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
@@ -68,7 +68,7 @@ const Page: NextPage<ServerSideProps> = ({
           </menu>
         </div>
 
-        <div className="w-full grow" ref={flowViewContainerRef}></div>
+        <div className="w-full mb-2 grow" ref={flowViewContainerRef}></div>
       </div>
     </Content>
   );

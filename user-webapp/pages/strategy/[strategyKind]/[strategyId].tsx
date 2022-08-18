@@ -80,7 +80,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   return (
     <Content>
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col p-4 gap-4">
         <span className="text-xl">strategy</span>
         <dl>
           <dt>created</dt>
@@ -91,7 +91,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           <dd className="text-xs">{strategyId}</dd>
         </dl>
 
-        <div className="flex max-w-lg items-center justify-between gap-2 p-2">
+        <div className="flex items-center justify-between max-w-lg gap-2">
           <div className="w-full">
             <label htmlFor="name">name</label>
             <EditableInput
@@ -107,7 +107,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           */}
         </div>
 
-        <menu className="flex flex-row gap-4 overflow-x-scroll p-2">
+        <menu className="flex flex-row overflow-x-scroll gap-4">
           <Button color="primary" onClick={onClickFlow}>
             flow
           </Button>
