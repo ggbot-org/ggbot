@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@ggbot2/models": "file:models",
-    "@ggbot2/time": "file:time",
     "cookie": "^0.5.0"
   },
   "devDependencies": {

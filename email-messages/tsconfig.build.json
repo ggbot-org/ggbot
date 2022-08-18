@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "incremental": true,
     "outDir": "./dist"
   },
   "extends": "./tsconfig.json"

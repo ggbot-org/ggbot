@@ -49,7 +49,7 @@ const Page: NextPage<ServerSideProps> = ({
           toast.error("Strategy name too long");
       }
     },
-    [isLoading]
+    [isLoading, strategyId, strategyKind]
   );
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Page: NextPage<ServerSideProps> = ({
   return (
     <Content>
       <form
-        className="flex w-full max-w-lg flex-col gap-4 p-4"
+        className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
       >
         <span className="text-xl">copy strategy</span>

@@ -1,6 +1,5 @@
 import { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2";
-import { getDeployStage } from "@ggbot2/env";
-import { awsAccountId } from "./_env.js";
+import { getAwsAccountId, getDeployStage } from "@ggbot2/env";
 import { awsRegion } from "./awsRegion.js";
 
 const defaultDeployStage = getDeployStage();
@@ -12,7 +11,9 @@ export const webappLoadBalancerType = LoadBalancerTypeEnum.NETWORK;
 
 export const getWebappLoadBalancerArnPrefix = (
   deployStage = defaultDeployStage
-) =>
-  `arn:aws:elasticloadbalancing:${awsRegion}:${awsAccountId}:loadbalancer/app/${getWebappLoadBalancerName(
+) => {
+  const awsAccountId = getAwsAccountId();
+  return `arn:aws:elasticloadbalancing:${awsRegion}:${awsAccountId}:loadbalancer/app/${getWebappLoadBalancerName(
     deployStage
   )}`;
+};

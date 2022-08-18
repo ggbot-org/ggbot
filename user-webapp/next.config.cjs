@@ -1,3 +1,5 @@
+// Content Security Policy
+// //
 // See also Mozilla documentation:
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 const ContentSecurityPolicy = `
@@ -34,4 +36,5 @@ module.exports = {
     ];
   },
   reactStrictMode: true,
+  swcMinify: true,
 };

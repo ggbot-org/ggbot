@@ -1,4 +1,3 @@
-import { wwwDomain } from "@ggbot2/aws";
 import { deleteEmailCookie, deleteSessionCookie } from "@ggbot2/cookies";
 import {
   __200__OK__,
@@ -6,6 +5,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import { wwwDomain } from "@ggbot2/infrastructure";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function apiHandler(

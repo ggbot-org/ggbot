@@ -1,5 +1,4 @@
-import { DeployStage } from "@ggbot2/env";
-import { awsAccountId } from "./_env.js";
+import { DeployStage, getAwsAccountId } from "@ggbot2/env";
 import { getDataBucketArn, getLogsBucketArn } from "./s3.js";
 
 // IAM version
@@ -15,8 +14,10 @@ const next = resources("next");
 
 export const getDevopsPolicyName = () => "ggbot2-devops-policy";
 
-export const getDevopsPolicyArn = () =>
-  `arn:aws:iam::${awsAccountId}:policy/${getDevopsPolicyName()}`;
+export const getDevopsPolicyArn = () => {
+  const awsAccountId = getAwsAccountId();
+  return `arn:aws:iam::${awsAccountId}:policy/${getDevopsPolicyName()}`;
+};
 
 export const devopsPolicyStatements = () => [
   {

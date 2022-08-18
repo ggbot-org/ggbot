@@ -104,12 +104,12 @@ export default async function apiHandler(
       }
 
       case "READ_STRATEGY": {
-        const data = await readStrategy({ accountId });
+        const data = await readStrategy(action.data);
         return res.status(__200__OK__).json({ data });
       }
 
       case "READ_STRATEGY_FLOW": {
-        const data = await readStrategyFlow({ accountId });
+        const data = await readStrategyFlow(action.data);
         return res.status(__200__OK__).json({ data });
       }
 
