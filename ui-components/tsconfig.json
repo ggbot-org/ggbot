@@ -11,6 +11,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
       "_api/*": ["pages/api/*"],
       "_components": ["components/index.ts"],
