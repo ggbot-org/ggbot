@@ -14,13 +14,8 @@ export const isStrategySchedulingStatus =
 export const strategySchedulingIntervals = ["1h"] as const;
 export type StrategySchedulingInterval =
   typeof strategySchedulingStatuses[number];
-
-export const isStrategySchedulingInterval = (
-  value: unknown
-): value is StrategySchedulingInterval => {
-  if (typeof value !== "string") return false;
-  return (strategySchedulingIntervals as readonly string[]).includes(value);
-};
+export const isStrategySchedulingInterval =
+  isLiteralType<StrategySchedulingInterval>(strategySchedulingIntervals);
 
 export type StrategySchedulingFrequency = {
   every: number;

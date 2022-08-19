@@ -18,6 +18,7 @@ import {
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
+import { strategyKeyToDirname } from "./_dataBucketLocators.js";
 import {
   readAccountStrategyList,
   writeAccountStrategyList,
@@ -28,7 +29,6 @@ import {
   ErrorPermissionDeniedCannotDeleteStrategy,
   ErrorStrategyNotFound,
 } from "./errors.js";
-import { strategyKeyToDirname } from "./strategyKey.js";
 
 export const strategyDirnamePrefix = () => "strategy";
 

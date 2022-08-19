@@ -9,18 +9,13 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
+import { strategyFlowDirname, strategyKeyToDirname } from "./_dirnames.js";
 import {
   ErrorPermissionDeniedCannotDeleteStrategyFlow,
   ErrorPermissionDeniedCannotWriteStrategyFlow,
   ErrorStrategyFlowNotFound,
 } from "./errors.js";
 import { readStrategyAccountId } from "./strategy.js";
-import { strategyKeyToDirname } from "./strategyKey.js";
-
-export const strategyFlowDirnamePrefix = () => "strategyFlow";
-
-export const strategyFlowDirname = (strategyKey: StrategyKey) =>
-  `${strategyFlowDirnamePrefix()}/${strategyKeyToDirname(strategyKey)}`;
 
 export const strategyFlowPathname = (strategyKey: StrategyKey) =>
   `${strategyFlowDirname(strategyKey)}/flow.json`;
