@@ -1,18 +1,10 @@
 import { BinanceConnector, BinanceConnectorRequestArg } from "./connector.js";
-import {
-  BinanceAvgPrice,
-  BinanceExchangeInfo,
-  binanceKlineIntervals,
-} from "./types.js";
+import { BinanceAvgPrice, BinanceExchangeInfo } from "./types.js";
 
 /**
- * BinanceExchange implements public API requests and exposes
- * {@link https://binance-docs.github.io/apidocs/spot/en/#public-api-definitions|Binance public API definitions}
- * as static attributes, for example: orderTypes, orderSides, klineIntervals, etc.
+ * BinanceExchange implements public API requests.
  */
 export class BinanceExchange extends BinanceConnector {
-  static readonly klineIntervals = binanceKlineIntervals;
-
   async _publicRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],

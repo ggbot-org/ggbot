@@ -1,3 +1,5 @@
+import { isLiteralType } from "./literalType.js";
+
 export const strategySchedulingStatuses = [
   "active",
   "inactive",
@@ -6,12 +8,8 @@ export const strategySchedulingStatuses = [
 export type StrategySchedulingStatus =
   typeof strategySchedulingStatuses[number];
 
-export const isStrategySchedulingStatus = (
-  value: unknown
-): value is StrategySchedulingStatus => {
-  if (typeof value !== "string") return false;
-  return (strategySchedulingStatuses as readonly string[]).includes(value);
-};
+export const isStrategySchedulingStatus =
+  isLiteralType<StrategySchedulingStatus>(strategySchedulingStatuses);
 
 export const strategySchedulingIntervals = ["1h"] as const;
 export type StrategySchedulingInterval =

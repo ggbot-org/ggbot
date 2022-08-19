@@ -1,3 +1,5 @@
+import { isLiteralType } from "@ggbot2/models";
+
 export type BinanceAccountInformation = {
   makerCommission: number;
   takerCommission: number;
@@ -51,6 +53,9 @@ export const binanceKlineIntervals = [
   "1M",
 ] as const;
 export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
+export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
+  binanceKlineIntervals
+);
 
 export const binanceOrderTypes = [
   "LIMIT",
@@ -62,6 +67,8 @@ export const binanceOrderTypes = [
   "TAKE_PROFIT_LIMIT",
 ] as const;
 export type BinanceOrderType = typeof binanceOrderTypes[number];
+export const isBinanceOrderType =
+  isLiteralType<BinanceOrderType>(binanceOrderTypes);
 
 export type BinanceRateLimitInfo = {
   rateLimitType: BinanceRateLimitType;
@@ -72,6 +79,8 @@ export type BinanceRateLimitInfo = {
 
 export const binanceRateLimitIntervals = ["SECOND", "MINUTE", "DAY"] as const;
 export type BinanceRateLimitInterval = typeof binanceRateLimitIntervals[number];
+export const isBinanceRateLimitInterval =
+  isLiteralType<BinanceRateLimitInterval>(binanceRateLimitIntervals);
 
 export const binanceRateLimitTypes = [
   "ORDERS",
@@ -79,6 +88,9 @@ export const binanceRateLimitTypes = [
   "REQUEST_WEIGHT",
 ] as const;
 export type BinanceRateLimitType = typeof binanceRateLimitTypes[number];
+export const isBinanceRateLimitType = isLiteralType<BinanceRateLimitType>(
+  binanceRateLimitTypes
+);
 
 export type BinanceSymbolInfo = {
   symbol: string;
@@ -120,5 +132,8 @@ export type BinanceSymbolInfoFilterMinNotional = {
 
 export const binanceSymbolStatuses = ["TRADING", "BREAK"] as const;
 export type BinanceSymbolStatus = typeof binanceSymbolStatuses[number];
+export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
+  binanceSymbolStatuses
+);
 
 export type BinanceTime = number;

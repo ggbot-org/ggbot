@@ -1,5 +1,6 @@
 import { Account, AccountKey, isAccountKey } from "./account.js";
 import { Item, isItemId, NewItem } from "./item.js";
+import { isLiteralType } from "./literalType.js";
 import { Name, isName } from "./name.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
@@ -8,10 +9,7 @@ export const strategyKinds = ["binance"] as const;
 
 export type StrategyKind = typeof strategyKinds[number];
 
-export const isStrategyKind = (value: unknown): value is StrategyKind => {
-  if (typeof value !== "string") return false;
-  return (strategyKinds as readonly string[]).includes(value);
-};
+export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 
 export type Strategy = Item &
   CreationTime &

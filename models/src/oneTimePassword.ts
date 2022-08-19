@@ -46,6 +46,9 @@ export type CreateOneTimePassword = Operation<
   OneTimePasswordCode
 >;
 
-export type ReadOneTimePassword = Operation<EmailAddress, OneTimePassword>;
+export type ReadOneTimePassword = Operation<
+  EmailAddress,
+  OneTimePassword | undefined
+>;
 
 export type DeleteOneTimePassword = Operation<EmailAddress, DeletionTime>;
