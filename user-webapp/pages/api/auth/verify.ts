@@ -1,5 +1,6 @@
 import {
   __200__OK__,
+  __204__NO_CONTENT__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
@@ -54,6 +55,8 @@ export default async function apiHandler(
 
     const oneTimePasswordCode = normalizeOneTimePassword(code);
     const storedOneTimePassword = await readOneTimePassword(email);
+    if (!storedOneTimePassword) return res.status(__204__NO_CONTENT__).json({});
+
     const verified = oneTimePasswordCode === storedOneTimePassword.code;
 
     if (!verified) return res.status(__200__OK__).json({ verified });

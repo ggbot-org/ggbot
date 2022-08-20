@@ -36,11 +36,11 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
 };
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
   <>
-    <div className="p-4 flex flex-col gap-4 items-center">
+    <div className="flex flex-col items-center p-4 gap-4">
       <span className="text-2xl">{message}</span>
       <Logo size={107} animated />
     </div>
-    <form className="p-4 w-full flex flex-col gap-4" {...props}>
+    <form className="flex flex-col w-full p-4 gap-4" {...props}>
       {children}
     </form>
   </>
@@ -199,7 +199,11 @@ const Exit: FC = () => {
   );
 };
 
-const Verify: FC = () => {
+type VerifyProps = {
+  setEmailSent: Dispatch<SetStateAction<EmailSent>>;
+};
+
+const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
   const router = useRouter();
 
   const [codeSent, setCodeSent] = useState(false);
@@ -207,7 +211,15 @@ const Verify: FC = () => {
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
+  const [
+    needToGenerateOneTimePasswordAgain,
+    setNeedToGenerateOneTimePasswordAgain,
+  ] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
+
+  const onClickOkGenerateOneTimePasswordAgain = useCallback(() => {
+    setEmailSent(false);
+  }, [setEmailSent]);
 
   const goToHomePage = useCallback(() => {
     router.push(route.homePage());
@@ -269,6 +281,9 @@ const Verify: FC = () => {
         } else {
           setIsLoading(false);
           setVerificationFailed(true);
+          if (typeof responseData.verified === "undefined") {
+            setNeedToGenerateOneTimePasswordAgain(true);
+          }
         }
       } catch (error) {
         setHasGenericError(true);
@@ -311,6 +326,16 @@ const Verify: FC = () => {
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
         {verificationFailed ? <div>Verification failed.</div> : null}
+        {needToGenerateOneTimePasswordAgain ? (
+          <div>
+            <div>Need to generate one time password again</div>
+            <div>
+              <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
+                ok
+              </Button>
+            </div>
+          </div>
+        ) : null}
       </FeedbackMessages>
     </>
   );
@@ -320,13 +345,13 @@ const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [emailSent, setEmailSent] = useState<EmailSent>(false);
   return (
     <Content>
-      <div className="p-4 w-full max-w-lg flex flex-col gap-4 items-center">
+      <div className="flex flex-col items-center w-full max-w-lg p-4 gap-4">
         {hasSession ? (
           <Exit />
         ) : (
           <>
             {emailSent ? (
-              <Verify />
+              <Verify setEmailSent={setEmailSent} />
             ) : (
               <Enter emailSent={emailSent} setEmailSent={setEmailSent} />
             )}
