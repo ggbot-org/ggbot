@@ -5,9 +5,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "license": "UNLICENSED",
+  "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
     "admin-webapp": "npm run dev --workspace admin-webapp",
-    "build:admin-webapp": "rimraf admin-webapp/.next; npm run build --workspace admin-webapp",
+    "build:admin-webapp": "rm -rf admin-webapp/.next; npm run build --workspace admin-webapp",
     "build:assets": "npm run build --workspace assets",
     "build:aws": "npm run build --workspace aws",
     "build:binance": "npm run build --workspace binance",
@@ -24,7 +26,9 @@
     "build:time": "npm run build --workspace time",
     "build:user-webapp": "npm run build:webapp --workspace user-webapp",
     "build:user-webapp:package": "npm run build:package --workspace user-webapp",
-    "cleanup:dist": "rimraf */dist",
+    "cleanup:.next": "rm -rf */.next",
+    "cleanup:node_modules": "rm -rf */node_modules",
+    "cleanup:dist": "rm -rf */dist",
     "e2e": "npm run playwright --workspace end-to-end-tests",
     "e2e:chromium": "npm run chromium --workspace end-to-end-tests",
     "e2e:show-report": "npm run show-report --workspace end-to-end-tests",
@@ -84,11 +88,8 @@
     "user-webapp"
   ],
   "keywords": [],
-  "author": "Gianluca Casati (http://fibo.github.io/)",
-  "license": "UNLICENSED",
   "devDependencies": {
     "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.13",
-    "rimraf": "^3.0.2"
+    "prettier-plugin-tailwindcss": "^0.1.13"
   }
 }
