@@ -6,7 +6,6 @@ import {
   ReadAccount,
   ReadAccountKeys,
   createdNow,
-  deletedNow,
   isAccountKey,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
@@ -16,16 +15,11 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import { accountKeyToDirname } from "./accountKey.js";
+import {
+  accountDirnamePrefix,
+  accountPathname,
+} from "./_dataBucketLocators.js";
 import { createEmailAccount } from "./emailAccount.js";
-
-export const accountDirnamePrefix = () => "account";
-
-export const accountDirname = (accountKey: AccountKey) =>
-  `${accountDirnamePrefix()}/${accountKeyToDirname(accountKey)}`;
-
-export const accountPathname = (accountKey: AccountKey) =>
-  `${accountDirname(accountKey)}/account.json`;
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
   const accountId = uuidv4();
@@ -44,7 +38,7 @@ export const readAccount: ReadAccount["func"] = async (accountKey) =>
   await getObject<ReadAccount["out"]>({ Key: accountPathname(accountKey) });
 
 export const readAccountKeys: ReadAccountKeys["func"] = async () => {
-  const Prefix = accountDirnamePrefix();
+  const Prefix = accountDirnamePrefix;
   const results = await listObjects({
     Prefix,
   });
@@ -80,8 +74,5 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
   );
 };
 
-export const deleteAccount: DeleteAccount["func"] = async (accountKey) => {
-  const Key = accountPathname(accountKey);
-  await deleteObject({ Key });
-  return deletedNow();
-};
+export const deleteAccount: DeleteAccount["func"] = async (_) =>
+  await deleteObject({ Key: accountPathname(_) });

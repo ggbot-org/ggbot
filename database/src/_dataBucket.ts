@@ -8,12 +8,21 @@ import {
   listObjects as _listObjects,
   putObject as _putObject,
 } from "@ggbot2/aws";
+import { DeletionTime, deletedNow } from "@ggbot2/models";
 import { getDataBucketName } from "@ggbot2/infrastructure";
 
 const Bucket = getDataBucketName();
 
-export const deleteObject = (args: Omit<DeleteObjectArgs, "Bucket">) =>
-  _deleteObject({ Bucket, ...args });
+type DeleteObject = (
+  _: Omit<DeleteObjectArgs, "Bucket">
+) => Promise<DeletionTime>;
+
+export const deleteObject: DeleteObject = async (
+  args: Omit<DeleteObjectArgs, "Bucket">
+) => {
+  await _deleteObject({ Bucket, ...args });
+  return deletedNow();
+};
 
 export const getObject = <T>(args: Omit<GetObjectArgs, "Bucket">) =>
   _getObject<T>({ Bucket, ...args });
@@ -21,5 +30,5 @@ export const getObject = <T>(args: Omit<GetObjectArgs, "Bucket">) =>
 export const listObjects = (args: Omit<ListObjectsArgs, "Bucket">) =>
   _listObjects({ Bucket, ...args });
 
-export const putObject = (args: Omit<PutObjectArgs, "Bucket">) =>
-  _putObject({ Bucket, ...args });
+export const putObject = async (args: Omit<PutObjectArgs, "Bucket">) =>
+  await _putObject({ Bucket, ...args });

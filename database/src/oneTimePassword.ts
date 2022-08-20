@@ -2,9 +2,7 @@ import {
   CreateOneTimePassword,
   DeleteOneTimePassword,
   EmailAddress,
-  OneTimePassword,
   ReadOneTimePassword,
-  deletedNow,
   generateOneTimePassword,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
@@ -16,9 +14,9 @@ export const oneTimePasswordPathname = (email: EmailAddress) =>
   `${oneTimePasswordDirnamePrefix()}/${emailToDirname(email)}/otp.json`;
 
 export const createOneTimePassword: CreateOneTimePassword["func"] = async (
-  email
+  _
 ) => {
-  const Key = oneTimePasswordPathname(email);
+  const Key = oneTimePasswordPathname(_);
   const data = generateOneTimePassword();
   await putObject({ Key, data });
   return data.code;
@@ -29,10 +27,5 @@ export const readOneTimePassword: ReadOneTimePassword["func"] = async (email) =>
     Key: oneTimePasswordPathname(email),
   });
 
-export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
-  email
-) => {
-  const Key = oneTimePasswordPathname(email);
-  await deleteObject({ Key });
-  return deletedNow();
-};
+export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (_) =>
+  await deleteObject({ Key: oneTimePasswordPathname(_) });

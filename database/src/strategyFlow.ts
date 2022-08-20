@@ -3,22 +3,17 @@ import {
   DeleteStrategyFlow,
   ReadStrategyFlow,
   StrategyFlow,
-  StrategyKey,
   WriteStrategyFlow,
-  deletedNow,
   updatedNow,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { strategyFlowDirname, strategyKeyToDirname } from "./_dirnames.js";
 import {
   ErrorPermissionDeniedCannotDeleteStrategyFlow,
   ErrorPermissionDeniedCannotWriteStrategyFlow,
   ErrorStrategyFlowNotFound,
 } from "./errors.js";
 import { readStrategyAccountId } from "./strategy.js";
-
-export const strategyFlowPathname = (strategyKey: StrategyKey) =>
-  `${strategyFlowDirname(strategyKey)}/flow.json`;
+import { strategyFlowPathname } from "./_dataBucketLocators.js";
 
 export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   accountId,
@@ -71,6 +66,5 @@ export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
       strategyKey,
     });
   const Key = strategyFlowPathname(strategyKey);
-  await deleteObject({ Key });
-  return deletedNow();
+  return await deleteObject({ Key });
 };

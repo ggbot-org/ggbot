@@ -1,4 +1,5 @@
 // data-bucket/
+// │
 // ├╴account/
 // │ └╴accountId=XXX/
 // │   └╴account.json
@@ -20,6 +21,12 @@
 // │   └╴strategyId=XXX/
 // │     └╴strategy.json
 // │
+// ├╴strategyExecution/
+// │ └╴accountId=XXX/
+// │   └╴strategyKind=XXX/
+// │     └╴strategyId=XXX/
+// │       └╴execution.json
+// │
 // ├╴strategyFlow/
 // │ └╴strategyKind=XXX/
 // │   └╴strategyId=XXX/
@@ -37,23 +44,55 @@ import type {
   StrategyKey,
 } from "@ggbot2/models";
 
+export const accountDirnamePrefix = "account";
+
+export const accountDirname = (_: AccountKey) =>
+  `${accountDirnamePrefix}/${accountKeyToDirname(_)}`;
+
 export const accountKeyToDirname = ({ accountId }: AccountKey) =>
   `accountId=${accountId}`;
 
+export const accountPathname = (_: AccountKey) =>
+  `${accountDirname(_)}/account.json`;
+
+export const accountStrategyKeyToDirname = ({
+  accountId,
+  strategyKind,
+  strategyId,
+}: AccountStrategyKey) =>
+  `${accountKeyToDirname({ accountId })}/${strategyKeyToDirname({
+    strategyKind,
+    strategyId,
+  })}`;
+
 export const accountStrategyListDirnamePrefix = "accountStrategies";
 
-export const accountStrategyListDirname = (accountKey: AccountKey) =>
-  `${accountStrategyListDirnamePrefix}/${accountKeyToDirname(accountKey)}`;
+export const accountStrategyListDirname = (_: AccountKey) =>
+  `${accountStrategyListDirnamePrefix}/${accountKeyToDirname(_)}`;
+
+export const accountStrategyListPathname = (_: AccountKey) =>
+  `${accountStrategyListDirname(_)}/strategies.json`;
+
+export const strategyExecutionDirnamePrefix = "StrategyExecution";
+
+export const strategyExecutionDirname = (_: AccountStrategyKey) =>
+  `${strategyExecutionDirnamePrefix}/${accountStrategyKeyToDirname(_)}`;
+
+export const strategyExecutionPathname = (_: AccountStrategyKey) =>
+  `${strategyExecutionDirname(_)}/executionr.json`;
 
 export const strategyFlowDirnamePrefix = "strategyFlow";
 
-export const strategyFlowDirname = (strategyKey: StrategyKey) =>
-  `${strategyFlowDirnamePrefix}/${strategyKeyToDirname(strategyKey)}`;
+export const strategyFlowDirname = (_: StrategyKey) =>
+  `${strategyFlowDirnamePrefix}/${strategyKeyToDirname(_)}`;
+
+export const strategyFlowPathname = (_: StrategyKey) =>
+  `${strategyFlowDirname(_)}/flow.json`;
 
 export const strategyMemoryDirnamePrefix = "strategyMemory";
 
-export const strategyMemoryDirname = (strategyKey: StrategyKey) =>
-  `${strategyMemoryDirnamePrefix}/${strategyKeyToDirname(strategyKey)}`;
+export const strategyMemoryDirname = (_: StrategyKey) =>
+  `${strategyMemoryDirnamePrefix}/${strategyKeyToDirname(_)}`;
 
 export const strategyMemoryPathname = (_: AccountStrategyKey) =>
   `${strategyMemoryDirname(_)}/flow.json`;
