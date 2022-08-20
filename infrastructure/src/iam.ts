@@ -1,8 +1,10 @@
 import { DeployStage, getAwsAccountId } from "@ggbot2/env";
 import {
+  getAssetsDomainBucketArn,
   getDataBucketArn,
   getLogsBucketArn,
   getNakedDomainBucketArn,
+  getWwwDomainBucketArn,
 } from "./s3.js";
 
 // IAM version
@@ -18,7 +20,9 @@ const main = resources("main");
 const next = resources("next");
 // Cross deployStage resources
 const cross = {
+  assetsDomainBucketArn: getAssetsDomainBucketArn(),
   nakedDomainBucketArn: getNakedDomainBucketArn(),
+  wwwDomainBucketArn: getWwwDomainBucketArn(),
 };
 
 export const getDevopsPolicyName = () => "ggbot2-devops-policy";
@@ -38,7 +42,9 @@ export const devopsPolicyStatements = () => [
     Effect: "Allow",
     Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
     Resource: [
+      cross.assetsDomainBucketArn,
       cross.nakedDomainBucketArn,
+      cross.wwwDomainBucketArn,
       main.dataBucketArn,
       main.logsBucketArn,
       next.dataBucketArn,
