@@ -6,16 +6,23 @@ import { S3BucketStatus } from "./_s3.js";
 import { TaskOptions } from "./_task.js";
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js";
 import { getDevopsPolicyStatus } from "./iam-devops.js";
-import { getAssetsDomainBucketStatus } from "./s3-assetsDomain.js";
+import { getSesNoreplyPolicyStatus } from "./iam-sesNoreply.js";
+import { getAssetsBucketStatus } from "./s3-assets.js";
 import { getDataBucketStatus } from "./s3-data.js";
 import { getLogsBucketStatus } from "./s3-logs.js";
 import { getNakedDomainBucketStatus } from "./s3-nakedDomain.js";
-import { getWwwDomainBucketStatus } from "./s3-wwwDomain.js";
+import { getWwwBucketStatus } from "./s3-www.js";
 
 type TaskStatus = (options: TaskOptions) => Promise<{
-  dataBucket: S3BucketStatus;
+  // IAM
   devopsPolicy: IamPolicyStatus;
+  sesNoreplyPolicy: IamPolicyStatus;
+  // S3
+  assetsBucket: S3BucketStatus;
+  dataBucket: S3BucketStatus;
   logsBucket: S3BucketStatus;
+  wwwBucket: S3BucketStatus;
+  // ELB
   webappLoadBalancer: LoadBalancerStatus;
 }>;
 
@@ -39,11 +46,22 @@ const s3BucketReport = (reportKey: string, s3Bucket: S3BucketStatus) => {
 };
 
 export const taskStatus: TaskStatus = async ({ verbose }) => {
-  const assetsDomainBucket = await getAssetsDomainBucketStatus();
-  if (verbose) s3BucketReport("assetsDomainBucket", assetsDomainBucket);
+  // //////////////////////////////////////////////////////////////////
+  if (verbose) console.info("IAM");
+  // //////////////////////////////////////////////////////////////////
 
   const devopsPolicy = await getDevopsPolicyStatus();
   if (verbose) iamPolicyReport("devopsPolicy", devopsPolicy);
+
+  const sesNoreplyPolicy = await getSesNoreplyPolicyStatus();
+  if (verbose) iamPolicyReport("sesNoReplyPolicy", sesNoreplyPolicy);
+
+  // //////////////////////////////////////////////////////////////////
+  if (verbose) console.info("S3");
+  // //////////////////////////////////////////////////////////////////
+
+  const assetsBucket = await getAssetsBucketStatus();
+  if (verbose) s3BucketReport("assetsDomainBucket", assetsBucket);
 
   const dataBucket = await getDataBucketStatus();
   if (verbose) s3BucketReport("dataBucket", dataBucket);
@@ -54,13 +72,26 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
   const nakedDomainBucket = await getNakedDomainBucketStatus();
   if (verbose) s3BucketReport("nakedDomainBucket", nakedDomainBucket);
 
-  const wwwDomainBucket = await getWwwDomainBucketStatus();
-  if (verbose) s3BucketReport("wwwDomainBucket", wwwDomainBucket);
+  const wwwBucket = await getWwwBucketStatus();
+  if (verbose) s3BucketReport("wwwBucket", wwwBucket);
+
+  // //////////////////////////////////////////////////////////////////
+  if (verbose) console.info("ELB");
+  // //////////////////////////////////////////////////////////////////
 
   const webappLoadBalancer = await getWebappLoadBalancerStatus();
   if (verbose) loadBalancerReport("webappLoadBalancer", webappLoadBalancer);
 
-  return { dataBucket, devopsPolicy, logsBucket, webappLoadBalancer };
+  // //////////////////////////////////////////////////////////////////
+  return {
+    assetsBucket,
+    dataBucket,
+    devopsPolicy,
+    logsBucket,
+    sesNoreplyPolicy,
+    webappLoadBalancer,
+    wwwBucket,
+  };
 };
 
 if (isMainModule(import.meta.url)) await taskStatus({ verbose: true });

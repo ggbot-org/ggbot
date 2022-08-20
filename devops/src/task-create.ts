@@ -2,11 +2,11 @@ import { OK } from "./_consoleColors.js";
 import { isMainModule } from "./_isMainModule.js";
 import { CreateS3BucketOutput } from "./_s3.js";
 import { TaskOptions } from "./_task.js";
-import { createAssetsDomainBucket } from "./s3-assetsDomain.js";
+import { createAssetsBucket } from "./s3-assets.js";
 import { createDataBucket } from "./s3-data.js";
 import { createLogsBucket } from "./s3-logs.js";
 import { createNakedDomainBucket } from "./s3-nakedDomain.js";
-import { createWwwDomainBucket } from "./s3-wwwDomain.js";
+import { createWwwBucket } from "./s3-www.js";
 
 type TaskCreate = (options: TaskOptions) => Promise<void>;
 
@@ -18,8 +18,8 @@ const s3BucketReport = (reportKey: string, s3Bucket: CreateS3BucketOutput) => {
 };
 
 export const taskCreate: TaskCreate = async ({ verbose }) => {
-  const assetsDomainBucket = await createAssetsDomainBucket();
-  if (verbose) s3BucketReport("create assetsDomainBucket", assetsDomainBucket);
+  const assetsBucket = await createAssetsBucket();
+  if (verbose) s3BucketReport("create assetsBucket", assetsBucket);
 
   const dataBucket = await createDataBucket();
   if (verbose) s3BucketReport("create dataBucket", dataBucket);
@@ -30,8 +30,8 @@ export const taskCreate: TaskCreate = async ({ verbose }) => {
   const nakedDomainBucket = await createNakedDomainBucket();
   if (verbose) s3BucketReport("create nakedDomainBucket", nakedDomainBucket);
 
-  const wwwDomainBucket = await createWwwDomainBucket();
-  if (verbose) s3BucketReport("create wwwDomainBucket", wwwDomainBucket);
+  const wwwBucket = await createWwwBucket();
+  if (verbose) s3BucketReport("create wwwBucket", wwwBucket);
 };
 
 if (isMainModule(import.meta.url)) await taskCreate({ verbose: true });

@@ -1,11 +1,14 @@
-import { DeployStage, getAwsAccountId } from "@ggbot2/env";
+import { DeployStage, getAwsAccountId, getDeployStage } from "@ggbot2/env";
 import {
-  getAssetsDomainBucketArn,
+  getAssetsBucketArn,
   getDataBucketArn,
   getLogsBucketArn,
   getNakedDomainBucketArn,
-  getWwwDomainBucketArn,
+  getWwwBucketArn,
 } from "./s3.js";
+import { getSesIdentityArn } from "./ses.js";
+
+const defaultDeployStage = getDeployStage();
 
 // IAM version
 const Version = "2012-10-17";
@@ -20,9 +23,12 @@ const main = resources("main");
 const next = resources("next");
 // Cross deployStage resources
 const cross = {
-  assetsDomainBucketArn: getAssetsDomainBucketArn(),
+  // S3
+  assetsBucketArn: getAssetsBucketArn(),
   nakedDomainBucketArn: getNakedDomainBucketArn(),
-  wwwDomainBucketArn: getWwwDomainBucketArn(),
+  wwwBucketArn: getWwwBucketArn(),
+  // SES
+  sesIdentityArn: getSesIdentityArn(),
 };
 
 export const getDevopsPolicyName = () => "ggbot2-devops-policy";
@@ -32,7 +38,7 @@ export const getDevopsPolicyArn = () => {
   return `arn:aws:iam::${awsAccountId}:policy/${getDevopsPolicyName()}`;
 };
 
-export const devopsPolicyStatements = () => [
+export const getDevopsPolicyStatements = () => [
   {
     Effect: "Allow",
     Action: ["elasticloadbalancing:DescribeLoadBalancers", "iam:GetPolicy"],
@@ -42,9 +48,9 @@ export const devopsPolicyStatements = () => [
     Effect: "Allow",
     Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
     Resource: [
-      cross.assetsDomainBucketArn,
+      cross.assetsBucketArn,
       cross.nakedDomainBucketArn,
-      cross.wwwDomainBucketArn,
+      cross.wwwBucketArn,
       main.dataBucketArn,
       main.logsBucketArn,
       next.dataBucketArn,
@@ -55,5 +61,28 @@ export const devopsPolicyStatements = () => [
 
 export const getDevopsPolicy = () => ({
   Version,
-  Statement: devopsPolicyStatements(),
+  Statement: getDevopsPolicyStatements(),
+});
+
+export const getSesNoreplyPolicyName = (deployStage = defaultDeployStage) =>
+  `ggbot2-${deployStage}-ses-noreply-policy`;
+
+export const getSesNoreplyPolicyArn = (deployStage = defaultDeployStage) => {
+  const awsAccountId = getAwsAccountId();
+  return `arn:aws:iam::${awsAccountId}:policy/${getSesNoreplyPolicyName(
+    deployStage
+  )}`;
+};
+
+export const getSesNoreplyPolicyStatements = () => [
+  {
+    Effect: "Allow",
+    Action: ["elasticloadbalancing:DescribeLoadBalancers", "iam:GetPolicy"],
+    Resource: getSesIdentityArn(),
+  },
+];
+
+export const getSesNoreplyPolicy = () => ({
+  Version,
+  Statement: getSesNoreplyPolicyStatements(),
 });
