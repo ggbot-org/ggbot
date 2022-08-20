@@ -7,7 +7,7 @@ const defaultDeployStage = getDeployStage();
 export const getWebappLoadBalancerName = (deployStage = defaultDeployStage) =>
   `ggbot2-${deployStage}-webapp-lb`;
 
-export const webappLoadBalancerType = LoadBalancerTypeEnum.NETWORK;
+export const webappLoadBalancerType = LoadBalancerTypeEnum.APPLICATION;
 
 export const getWebappLoadBalancerArnPrefix = (
   deployStage = defaultDeployStage

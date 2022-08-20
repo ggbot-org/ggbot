@@ -19,3 +19,10 @@ export const getLogsBucketArn = (deployStage = defaultDeployStage) =>
   `arn:aws:s3:::${getLogsBucketName(deployStage)}`;
 
 export const logsBucketACL: BucketCannedACL = "private";
+
+export const getNakedDomainBucketName = () => domainName;
+
+export const getNakedDomainBucketArn = () =>
+  `arn:aws:s3:::${getNakedDomainBucketName()}`;
+
+export const nakedDomainBucketACL: BucketCannedACL = "public-read";
