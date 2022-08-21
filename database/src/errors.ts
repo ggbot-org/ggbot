@@ -12,6 +12,12 @@ export class ErrorMissingAccountId extends Error {
   }
 }
 
+export class ErrorMissingBinanceApiConfig extends Error {
+  constructor({ accountId }: AccountKey) {
+    super(JSON.stringify({ accountId }));
+  }
+}
+
 export class ErrorPermissionDeniedCannotDeleteStrategy extends Error {
   constructor({
     accountId,
@@ -46,6 +52,12 @@ export class ErrorStrategyNotFound extends Error {
 }
 
 export class ErrorStrategyFlowNotFound extends Error {
+  constructor(strategyKey: StrategyKey) {
+    super(JSON.stringify(strategyKey));
+  }
+}
+
+export class ErrorUnimplementedStrategyKind extends Error {
   constructor(strategyKey: StrategyKey) {
     super(JSON.stringify(strategyKey));
   }

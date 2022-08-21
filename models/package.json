@@ -16,7 +16,8 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/time": "file:time"
+    "@ggbot2/time": "file:time",
+    "dflow": "^0.37.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",

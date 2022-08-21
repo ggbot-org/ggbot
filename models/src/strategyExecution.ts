@@ -1,22 +1,60 @@
+import { Timestamp } from "@ggbot2/time";
+import type { DflowExecutionNodeInfo, DflowGraphRunStatus } from "dflow";
+import { Balance } from "./balance.js";
 import { isLiteralType } from "./literalType.js";
 import type { Operation } from "./operation.js";
 import { AccountStrategyKey } from "./strategy.js";
+import { StrategyFlow } from "./strategyFlow.js";
+import { StrategyMemory } from "./strategyMemory.js";
 import { DeletionTime, UpdateTime } from "./time.js";
 
-export const strategyExecutionStatuses = ["success", "failure"] as const;
-export type StrategyExecutionStatus = typeof strategyExecutionStatuses[number];
-
+export type StrategyExecutionStatus = Extract<
+  DflowGraphRunStatus,
+  "success" | "failure"
+>;
 export const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>(
-  strategyExecutionStatuses
+  ["success", "failure"]
 );
 
 export type StrategyExecution = UpdateTime & {
+  /**
+   * If a strategy execution do some transaction, the result can be reported as a `balances` attribute.
+   */
+  balances: Balance[];
+  steps: DflowExecutionNodeInfo;
   status: StrategyExecutionStatus;
 };
 
 export type ReadStrategyExecution = Operation<
   AccountStrategyKey,
   StrategyExecution | undefined
+>;
+
+export type ExecuteStrategyOptions = {
+  /**
+   * If `balances` is defined it is used to initialize context balances.
+   */
+  balances?: undefined | Balance[];
+
+  /**
+   * If `memory` is undefined it defaults to StrategyMemory given by AccountStrategyKey.
+   */
+  memory?: undefined | StrategyMemory["memory"];
+
+  /**
+   * If `timestamp` is undefined it resolves to "system" time.
+   */
+  timestamp?: undefined | Timestamp;
+
+  /**
+   * If `view` is undefined it defaults to StrategyFlow given by AccountStrategyKey.
+   */
+  view?: undefined | StrategyFlow["view"];
+};
+
+export type ExecuteStrategy = Operation<
+  AccountStrategyKey & ExecuteStrategyOptions,
+  StrategyExecution
 >;
 
 export type WriteStrategyExecution = Operation<

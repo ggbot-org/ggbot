@@ -1,7 +1,6 @@
 import { DflowHost, DflowHostConstructorArg } from "dflow";
-import { DflowCommonContext } from "@ggbot2/dflow";
-import { BinanceClient } from "../client.js";
-import { BinanceExchange } from "../exchange.js";
+import { BinanceClient, BinanceExchange } from "@ggbot2/binance";
+import { DflowCommonContext } from "../common/context.js";
 
 /**
  * BinanceDflowHost extends DflowHost adding ggbot2 DflowCommonContext and
@@ -10,15 +9,14 @@ import { BinanceExchange } from "../exchange.js";
 export class BinanceDflowHost extends DflowHost {
   constructor(
     arg: DflowHostConstructorArg,
-    { client, exchange }: BinanceDflowHostConstructorArg
+    { client, exchange, memory }: BinanceDflowHostConstructorArg
   ) {
     super(arg);
 
     this.context.client = client;
     this.context.exchange = exchange;
 
-    const memory: DflowCommonContext["memory"] = {};
-    this.context.memory = memory;
+    this.context.memory = memory ?? {};
   }
 }
 
@@ -29,5 +27,5 @@ export type BinanceDflowContext = DflowCommonContext & {
 
 type BinanceDflowHostConstructorArg = Pick<
   BinanceDflowContext,
-  "client" | "exchange"
+  "client" | "exchange" | "memory"
 >;

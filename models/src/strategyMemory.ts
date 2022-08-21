@@ -4,7 +4,7 @@ import { AccountStrategyKey } from "./strategy.js";
 import { DeletionTime, UpdateTime } from "./time.js";
 
 export type StrategyMemory = UpdateTime & {
-  data: JsonObject;
+  memory: JsonObject;
 };
 
 export type ReadStrategyMemory = Operation<

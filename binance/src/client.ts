@@ -4,7 +4,7 @@ import {
   BinanceConnectorConstructorArg,
   BinanceConnectorRequestArg,
 } from "./connector.js";
-import { BinanceAccountInformation } from "./types.js";
+import { BinanceAccountInformation, BinanceApiKeyPermission } from "./types.js";
 
 /**
  * BinanceClient implements private API requests.
@@ -19,7 +19,7 @@ export class BinanceClient extends BinanceConnector {
     this.apiSecret = apiSecret;
   }
 
-  async _privateRequest<Data>(
+  private async _privateRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
@@ -67,6 +67,13 @@ export class BinanceClient extends BinanceConnector {
       ),
       ...rest,
     };
+  }
+
+  async apiRestrictions(): Promise<BinanceApiKeyPermission> {
+    return await this._privateRequest<BinanceApiKeyPermission>(
+      "GET",
+      "/api/v3/account/apiRestrictions"
+    );
   }
 }
 

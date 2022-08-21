@@ -15,8 +15,8 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
+    "@ggbot2/binance": "file:binance",
     "@ggbot2/models": "file:models",
-    "dflow": "^0.37.0",
     "tulind": "^0.8.20"
   },
   "devDependencies": {

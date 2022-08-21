@@ -14,9 +14,58 @@ export type BinanceAccountInformation = {
   permissions: string[];
 };
 
+export type BinanceApiKeyPermission = {
+  ipRestrict: boolean;
+
+  createTime: number;
+
+  /**
+   * This option allows you to withdraw via API.
+   * You must apply the IP Access Restriction filter in order to enable withdrawals.
+   */
+  enableWithdrawals: boolean;
+
+  /**
+   * This option authorizes this key to transfer funds between your master account and your sub account instantly.
+   */
+  enableInternalTransfer: boolean;
+
+  /**
+   * Authorizes this key to be used for a dedicated universal transfer API to transfer multiple supported currencies. Each business's own transfer API rights are not affected by this authorization.
+   */
+  permitsUniversalTransfer: boolean;
+
+  /**
+   * Authorizes this key to Vanilla options trading.
+   */
+  enableVanillaOptions: boolean;
+
+  enableReading: boolean;
+
+  /**
+   * API Key created before your futures account opened does not support futures API service.
+   */
+  enableFutures: boolean;
+
+  /**
+   * This option can be adjusted after the Cross Margin account transfer is completed.
+   */
+  enableMargin: boolean;
+
+  /**
+   * Spot and margin trading.
+   */
+  enableSpotAndMarginTrading: boolean;
+
+  /**
+   * Expiration time for spot and margin trading permission.
+   */
+  tradingAuthorityExpirationTime: number;
+};
+
 export type BinanceAvgPrice = {
   /**
-   * is the number of minutes the average price is calculated over
+   * Is the number of minutes the average price is calculated over.
    */
   mins: number;
   price: string;
@@ -56,6 +105,11 @@ export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
 export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
   binanceKlineIntervals
 );
+
+export const binanceOrderSides = ["BUY", "SELL"] as const;
+export type BinanceOrderSide = typeof binanceOrderSides[number];
+export const isBinanceOrderSide =
+  isLiteralType<BinanceOrderSide>(binanceOrderSides);
 
 export const binanceOrderTypes = [
   "LIMIT",
