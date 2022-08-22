@@ -3,7 +3,7 @@ import type { BinanceDflowContext as Context } from "../host.js";
 
 const { input, output } = DflowNode;
 
-export class BinanceAvgPrice extends DflowNode {
+export class AvgPrice extends DflowNode {
   static kind = "avgPrice";
   static isAsync = true;
   static inputs = [input("string", { name: "symbol" })];

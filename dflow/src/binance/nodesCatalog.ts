@@ -1,6 +1,7 @@
 import { BinanceExchange } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
-import { BinanceAvgPrice } from "./nodes/market.js";
+import { AvgPrice } from "./nodes/market.js";
+import { MarketBuy, MarketSell } from "./nodes/trade.js";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 
 const { output } = DflowNode;
@@ -14,7 +15,10 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
 }) => {
   const staticNodes = {
     // market
-    [BinanceAvgPrice.kind]: BinanceAvgPrice,
+    [AvgPrice.kind]: AvgPrice,
+    // trade
+    [MarketBuy.kind]: MarketBuy,
+    [MarketSell.kind]: MarketSell,
     ...commonNodesCatalog,
   };
 
@@ -47,7 +51,6 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
           }),
         ];
       }
-
       return { ...catalog, [NodeClass.kind]: NodeClass };
     },
     {}
