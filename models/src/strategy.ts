@@ -40,16 +40,6 @@ export const isStrategyKey = (value: unknown): value is StrategyKey => {
   return isItemId(strategyId) && isStrategyKind(strategyKind);
 };
 
-export type AccountStrategyKey = AccountKey & StrategyKey;
-
-export const isAccountStrategyKey = (
-  value: unknown
-): value is AccountStrategyKey => {
-  if (typeof value !== "object" || value === null) return false;
-  const { accountId, ...strategyKey } = value as Partial<AccountStrategyKey>;
-  return isAccountKey({ accountId }) && isStrategyKey(strategyKey);
-};
-
 export type CopyStrategy = Operation<
   AccountKey & StrategyKey & Pick<Strategy, "name">,
   Strategy
@@ -64,8 +54,8 @@ export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
 export type ReadStrategyKeys = Operation<void, StrategyKey[]>;
 
 export type RenameStrategy = Operation<
-  AccountStrategyKey & Pick<Strategy, "name">,
+  StrategyKey & Pick<Strategy, "name">,
   UpdateTime
 >;
 
-export type DeleteStrategy = Operation<AccountStrategyKey, DeletionTime>;
+export type DeleteStrategy = Operation<StrategyKey, DeletionTime>;

@@ -8,7 +8,7 @@ export type BinanceAccountInformation = {
   canTrade: boolean;
   canWithdraw: boolean;
   canDeposit: boolean;
-  updateTime: BinanceTime;
+  updateTime: number;
   accountType: string;
   balances: BinanceBalance[];
   permissions: string[];
@@ -79,7 +79,7 @@ export type BinanceBalance = {
 
 export type BinanceExchangeInfo = {
   timezone: string;
-  serverTime: BinanceTime;
+  serverTime: number;
   symbols: BinanceSymbolInfo[];
   rateLimits: BinanceRateLimitInfo[];
 };
@@ -104,6 +104,24 @@ export const binanceKlineIntervals = [
 export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
 export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
   binanceKlineIntervals
+);
+
+export declare type BinanceNewOrderOptions = Partial<{
+  timeInForce: BinanceTimeInForce;
+  quantity: number;
+  quoteOrderQty: number;
+  price: number;
+  newClientOrderId: string;
+  stopPrice: number;
+  icebergQty: number;
+  newOrderRespType: BinanceOrderRespType;
+  recvWindow: number;
+}>;
+
+export const binanceOrderRespTypes = ["ACK", "RESULT", "FULL"] as const;
+export type BinanceOrderRespType = typeof binanceOrderRespTypes[number];
+export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
+  binanceOrderRespTypes
 );
 
 export const binanceOrderSides = ["BUY", "SELL"] as const;
@@ -190,4 +208,22 @@ export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
   binanceSymbolStatuses
 );
 
-export type BinanceTime = number;
+export const binanceTimeInForces = [
+  /**
+   * Good Til Canceled. An order will be on the book unless the order is canceled.
+   */
+  "GTC",
+
+  /**
+   * Immediate Or Cancel. An order will try to fill the order as much as it can before the order expires.
+   */
+  "IOC",
+
+  /**
+   * Fill or Kill. An order will expire if the full order cannot be filled upon execution.
+   */
+  "FOK",
+] as const;
+export type BinanceTimeInForce = typeof binanceTimeInForces[number];
+export const isBinanceTimeInForce =
+  isLiteralType<BinanceTimeInForce>(binanceTimeInForces);

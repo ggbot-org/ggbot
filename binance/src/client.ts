@@ -1,15 +1,27 @@
 import { createHmac } from "crypto";
 import {
-  BinanceConnector,
   BinanceConnectorConstructorArg,
   BinanceConnectorRequestArg,
 } from "./connector.js";
-import { BinanceAccountInformation, BinanceApiKeyPermission } from "./types.js";
+import {
+  ErrorInvalidBinanceOrderOptions,
+  ErrorInvalidBinanceOrderSide,
+  ErrorInvalidBinanceOrderType,
+} from "./errors.js";
+import { BinanceExchange } from "./exchange.js";
+import {
+  BinanceAccountInformation,
+  BinanceApiKeyPermission,
+  BinanceNewOrderOptions,
+  isBinanceOrderSide,
+  isBinanceOrderType,
+} from "./types.js";
 
 /**
  * BinanceClient implements private API requests.
+ * It extends BinanceExchange to be able to use also some public API requests.
  */
-export class BinanceClient extends BinanceConnector {
+export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
 
@@ -73,6 +85,40 @@ export class BinanceClient extends BinanceConnector {
     return await this._privateRequest<BinanceApiKeyPermission>(
       "GET",
       "/api/v3/account/apiRestrictions"
+    );
+  }
+
+  /**
+   * @throws ErrorInvalidBinanceOrderOptions
+   * @throws ErrorInvalidBinanceOrderSide
+   * @throws ErrorInvalidBinanceOrderType
+   * @throws ErrorInvalidBinanceSymbol
+   */
+  async newOrder(
+    symbol: string,
+    side: string,
+    type: string,
+    orderOptions: BinanceNewOrderOptions
+  ) {
+    if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
+    if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
+
+    const symbolInfo = await this.symbolInfo(symbol);
+    const options = BinanceExchange.filterOrderOptions(
+      symbolInfo,
+      orderOptions
+    );
+    if (!options) throw new ErrorInvalidBinanceOrderOptions();
+
+    return await this._privateRequest<BinanceApiKeyPermission>(
+      "GET",
+      "/api/v3/order",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
     );
   }
 }

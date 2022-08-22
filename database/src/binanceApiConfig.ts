@@ -17,7 +17,7 @@ import { ErrorMissingBinanceApiConfig } from "./errors.js";
 
 const binanceApiConfigCache = new CacheMap<BinanceApiConfig>();
 const binanceApiKeyPermissionsCache =
-  new CacheMap<BinanceApiKeyPermissionCriteria>();
+  new CacheMap<BinanceApiKeyPermissionCriteria>("ONE_DAY");
 
 export const createBinanceApiConfig: CreateBinanceApiConfig["func"] = async ({
   accountId,
@@ -56,8 +56,8 @@ export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = async (
  */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
   async ({ accountId }) => {
-    const cachedData = binanceApiKeyPermissionsCache.get(accountId);
-    if (cachedData) return cachedData;
+    const cached = binanceApiKeyPermissionsCache.get(accountId);
+    if (cached) return cached;
     const binanceApiConfig = await readBinanceApiConfig({ accountId });
     if (!binanceApiConfig)
       throw new ErrorMissingBinanceApiConfig({ accountId });

@@ -1,16 +1,15 @@
-import { CacheMap, TimeToLive } from "@ggbot2/models";
+import { CacheMap } from "@ggbot2/models";
 import { BinanceConnector, BinanceConnectorRequestArg } from "./connector.js";
+import { ErrorInvalidBinanceSymbol } from "./errors.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
-  binanceKlineIntervals,
-  binanceOrderSides,
-  binanceOrderTypes,
+  BinanceNewOrderOptions,
+  BinanceSymbolInfo,
 } from "./types.js";
 
 /**
- * BinanceExchange implements public API requests
- * and holds some API definitions (e.g. order types, kline intervals, etc.).
+ * BinanceExchange implements public API requests.
  */
 export class BinanceExchange extends BinanceConnector {
   private async _publicRequest<Data>(
@@ -21,17 +20,25 @@ export class BinanceExchange extends BinanceConnector {
     return await super.request<Data>({ apiKey: "", endpoint, method, params });
   }
 
-  get klineIntervals() {
-    return binanceKlineIntervals;
-  }
-  get orderSides() {
-    return binanceOrderSides;
-  }
-  get orderTypes() {
-    return binanceOrderTypes;
+  static filterOrderOptions(
+    _symbolInfo: BinanceSymbolInfo,
+    _options: BinanceNewOrderOptions
+  ): BinanceNewOrderOptions | undefined {
+    // TODO apply filters, MIN_NOTIONAL, LOT_SIZE, etc
+    return;
   }
 
+  /**
+   * Current average price for a symbol.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
+   *
+   * @throws ErrorInvalidBinanceSymbol
+   */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
+    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
+    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+
     return await this._publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
@@ -39,16 +46,50 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
+  /**
+   * Current exchange trading rules and symbol information.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+   */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
-    const cachedData = exchangeInfoCache.get("exchangeInfo");
-    if (cachedData) return cachedData;
+    const cached = exchangeInfoCache.get("exchangeInfo");
+    if (typeof cached !== "undefined") return cached;
     const data = await this._publicRequest<BinanceExchangeInfo>(
       "GET",
       "/api/v3/exchangeInfo"
     );
-    exchangeInfoCache.set("exchangeInfo", data, TimeToLive.ONE_DAY);
+    exchangeInfoCache.set("exchangeInfo", data);
     return data;
+  }
+
+  async isBinanceSymbol(value: unknown): Promise<boolean> {
+    if (typeof value !== "string") return false;
+    // All symbols in Binance are in uppercase.
+    if (value.toUpperCase() !== value) return false;
+    const cached = isValidSymbolCache.get(value);
+    if (typeof cached !== "undefined") return cached;
+    const { symbols } = await this.exchangeInfo();
+    const isValid = symbols.findIndex(({ symbol }) => value === symbol) !== -1;
+    isValidSymbolCache.set(value, isValid);
+    return isValid;
+  }
+
+  /**
+   * @throws ErrorInvalidBinanceSymbol
+   */
+  async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
+    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
+    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    const { symbols } = await this.exchangeInfo();
+    const symbolInfo = symbols.find((info) => info.symbol === symbol);
+    // If `isBinanceSymbol` then `symbolInfo` has type `BinanceSymbolInfo`.
+    return symbolInfo as BinanceSymbolInfo;
   }
 }
 
-const exchangeInfoCache = new CacheMap<BinanceExchangeInfo>();
+const exchangeInfoCacheTimeToLive = "ONE_DAY";
+const exchangeInfoCache = new CacheMap<BinanceExchangeInfo>(
+  exchangeInfoCacheTimeToLive
+);
+// `isValidSymbol` results are cached with same duration as `exchangeInfo`.
+const isValidSymbolCache = new CacheMap<boolean>(exchangeInfoCacheTimeToLive);

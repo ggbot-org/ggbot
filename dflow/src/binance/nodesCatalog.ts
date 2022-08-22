@@ -1,4 +1,4 @@
-import { BinanceExchange } from "@ggbot2/binance";
+import { BinanceExchange, binanceKlineIntervals } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
 import { AvgPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
@@ -22,7 +22,7 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
     ...commonNodesCatalog,
   };
 
-  const klineIntervalNodes = binance.klineIntervals.reduce(
+  const klineIntervalNodes = binanceKlineIntervals.reduce(
     (catalog, klineInterval) => {
       class NodeClass extends DflowNode {
         static kind = klineInterval;

@@ -21,6 +21,12 @@ import { Timestamp } from "@ggbot2/time";
  */
 export type DflowCommonContext = {
   /**
+   * If `dryRun` is true, the execution will run in a "test" context,
+   * not actually performing real operations.
+   */
+  dryRun?: undefined | boolean;
+
+  /**
    * Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
    */
   memory: StrategyMemory["memory"];

@@ -20,7 +20,7 @@ import {
   ErrorUnimplementedStrategyKind,
 } from "./errors.js";
 import { readStrategyFlow } from "./strategyFlow.js";
-import { readStrategyMemory } from "./strategyMemory.js";
+import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
 /**
  * Execute a ggbot2 strategy.
@@ -33,6 +33,7 @@ import { readStrategyMemory } from "./strategyMemory.js";
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   balances: optionalBalances = [],
+  dryRun,
   memory: optionalMemory,
   strategyId,
   strategyKind,
@@ -80,6 +81,19 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     // Compute balances (TODO get it from steps)
     // TODO Use optionalBalances to simulate account transactions
     const balances = optionalBalances.slice();
+
+    // Handle memory changes
+    if (dflow.context.memoryChanged) {
+      if (!dryRun) {
+        const memory = dflow.context.memory;
+        await writeStrategyMemory({
+          accountId,
+          strategyKind,
+          strategyId,
+          memory,
+        });
+      }
+    }
 
     return {
       balances,

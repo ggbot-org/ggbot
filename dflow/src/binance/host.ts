@@ -9,23 +9,32 @@ import { DflowCommonContext } from "../common/context.js";
 export class BinanceDflowHost extends DflowHost {
   constructor(
     arg: DflowHostConstructorArg,
-    { client, exchange, memory }: BinanceDflowHostConstructorArg
+    {
+      // DflowCommonContext
+      dryRun,
+      memory,
+      timestamp,
+      // BinanceDflowContext
+      client,
+      exchange,
+    }: BinanceDflowContext
   ) {
     super(arg);
 
+    // DflowCommonContext
+    this.context.dryRun = dryRun;
+    this.context.memory = memory ?? {};
+    this.context.timestamp = timestamp;
+
+    // BinanceDflowContext
     this.context.client = client;
     this.context.exchange = exchange;
-
-    this.context.memory = memory ?? {};
   }
 }
 
-export type BinanceDflowContext = DflowCommonContext & {
+export type BinanceDflowContext = Partial<
+  Omit<DflowCommonContext, "memoryChanged">
+> & {
   client: BinanceClient;
   exchange: BinanceExchange;
 };
-
-type BinanceDflowHostConstructorArg = Pick<
-  BinanceDflowContext,
-  "client" | "exchange" | "memory"
->;
