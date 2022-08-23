@@ -1,4 +1,5 @@
 import { Account, AccountKey, isAccountKey } from "./account.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
 import { Item, isItemId, NewItem } from "./item.js";
 import { isLiteralType } from "./literalType.js";
 import { Name, isName } from "./name.js";
@@ -6,9 +7,7 @@ import type { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;
-
 export type StrategyKind = typeof strategyKinds[number];
-
 export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 
 export type Strategy = Item &
@@ -41,7 +40,7 @@ export const isStrategyKey = (value: unknown): value is StrategyKey => {
 };
 
 export type CopyStrategy = Operation<
-  AccountKey & StrategyKey & Pick<Strategy, "name">,
+  AccountStrategyKey & Pick<Strategy, "name">,
   Strategy
 >;
 
@@ -51,11 +50,9 @@ export type ReadStrategy = Operation<StrategyKey, Strategy | undefined>;
 
 export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
 
-export type ReadStrategyKeys = Operation<void, StrategyKey[]>;
-
 export type RenameStrategy = Operation<
-  StrategyKey & Pick<Strategy, "name">,
+  AccountStrategyKey & Pick<Strategy, "name">,
   UpdateTime
 >;
 
-export type DeleteStrategy = Operation<StrategyKey, DeletionTime>;
+export type DeleteStrategy = Operation<AccountStrategyKey, DeletionTime>;

@@ -1,9 +1,9 @@
 import { Timestamp } from "@ggbot2/time";
 import type { DflowExecutionNodeInfo, DflowGraphRunStatus } from "dflow";
+import { AccountStrategyKey } from "./accountStrategy.js";
 import { Balance } from "./balance.js";
 import { isLiteralType } from "./literalType.js";
 import type { Operation } from "./operation.js";
-import { AccountStrategyKey } from "./strategy.js";
 import { StrategyFlow } from "./strategyFlow.js";
 import { StrategyMemory } from "./strategyMemory.js";
 import { DeletionTime, UpdateTime } from "./time.js";
@@ -37,12 +37,19 @@ export type ExecuteStrategyOptions = {
   balances?: undefined | Balance[];
 
   /**
+   * If `dryRun` is true, the execution will run in a "test" context,
+   * not actually performing real operations.
+   */
+  dryRun?: undefined | boolean;
+
+  /**
    * If `memory` is undefined it defaults to StrategyMemory given by AccountStrategyKey.
    */
   memory?: undefined | StrategyMemory["memory"];
 
   /**
    * If `timestamp` is undefined it resolves to "system" time.
+   * If provided, it is used to simulate time.
    */
   timestamp?: undefined | Timestamp;
 

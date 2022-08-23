@@ -1,5 +1,4 @@
-import { StrategyMemory } from "@ggbot2/models";
-import { Timestamp } from "@ggbot2/time";
+import { ExecuteStrategyOptions, StrategyMemory } from "@ggbot2/models";
 
 /**
  * DflowCommonContext to be shared among all dflow host implementations.
@@ -19,13 +18,10 @@ import { Timestamp } from "@ggbot2/time";
  * }
  * ```
  */
-export type DflowCommonContext = {
-  /**
-   * If `dryRun` is true, the execution will run in a "test" context,
-   * not actually performing real operations.
-   */
-  dryRun?: undefined | boolean;
-
+export type DflowCommonContext = Pick<
+  ExecuteStrategyOptions,
+  "dryRun" | "timestamp"
+> & {
   /**
    * Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
    */
@@ -33,12 +29,7 @@ export type DflowCommonContext = {
 
   /**
    * The `memoryChanged` attribute is set to true by memory nodes
-   * every time there is an update or delete in memory.
+   * every time there is a change (e.g. update or delete) in memory.
    */
   memoryChanged?: undefined | boolean;
-
-  /**
-   * If provided, it is used by time nodes to simulate time.
-   */
-  timestamp?: undefined | Timestamp;
 };

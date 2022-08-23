@@ -29,7 +29,9 @@ import {
   ErrorPermissionDeniedCannotDeleteStrategy,
   ErrorStrategyNotFound,
 } from "./errors.js";
-import { , writeStrategyMemory } from "./strategyMemory.js";
+import { deleteStrategyExecution } from "./strategyExecution.js";
+import { deleteStrategyFlow } from "./strategyFlow.js";
+import { deleteStrategyMemory } from "./strategyMemory.js";
 
 export const strategyDirnamePrefix = () => "strategy";
 
@@ -99,6 +101,9 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   return data.accountId;
 };
 
+/**
+ * @throws ErrorInvalidStrategyName
+ */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
   name,
@@ -125,10 +130,13 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   return updatedNow();
 };
 
-export const deleteStrategy: DeleteStrategy["func"] = async ({
-  accountId,
-  ...strategyKey
-}) => {
+/**
+ * @throws ErrorPermissionDeniedCannotDeleteStrategy
+ */
+export const deleteStrategy: DeleteStrategy["func"] = async (
+  accountStrategyKey
+) => {
+  const { accountId, ...strategyKey } = accountStrategyKey;
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)
     throw new ErrorPermissionDeniedCannotDeleteStrategy({
@@ -137,6 +145,9 @@ export const deleteStrategy: DeleteStrategy["func"] = async ({
     });
   const Key = strategyPathname(strategyKey);
   await deleteObject({ Key });
+  await deleteStrategyExecution(accountStrategyKey);
+  await deleteStrategyFlow(accountStrategyKey);
+  await deleteStrategyMemory(accountStrategyKey);
   const strategies = (await readAccountStrategyList({ accountId })) ?? [];
   await writeAccountStrategyList({
     accountId,

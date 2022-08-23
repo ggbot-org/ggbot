@@ -1,3 +1,6 @@
+import { AccountKey, isAccountKey } from "./account.js";
+import { StrategyKey, isStrategyKey } from "./strategy.js";
+
 export type AccountStrategyKey = AccountKey & StrategyKey;
 
 export const isAccountStrategyKey = (
@@ -7,10 +10,3 @@ export const isAccountStrategyKey = (
   const { accountId, ...strategyKey } = value as Partial<AccountStrategyKey>;
   return isAccountKey({ accountId }) && isStrategyKey(strategyKey);
 };
-
-export type RenameAccountStrategy = Operation<
-  AccountStrategyKey & Pick<Strategy, "name">,
-  UpdateTime
->;
-
-export type DeleteAccountStrategy = Operation<AccountStrategyKey, DeletionTime>;

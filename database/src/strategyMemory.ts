@@ -33,6 +33,5 @@ export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
   return whenUpdated;
 };
 
-export const deleteStrategyMemory: DeleteStrategyMemory["func"] = async (
-  accountStrategyKey
-) => await deleteObject({ Key: strategyMemoryPathname(accountStrategyKey) });
+export const deleteStrategyMemory: DeleteStrategyMemory["func"] = async (_) =>
+  await deleteObject({ Key: strategyMemoryPathname(_) });
