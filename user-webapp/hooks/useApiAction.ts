@@ -59,6 +59,10 @@ export const useApiAction = {
     useAction<ApiAction["DELETE_STRATEGY"]["out"]>(
       data ? { type: "DELETE_STRATEGY", data } : null
     ),
+  READ_ACCOUNT: () =>
+    useAction<ApiAction["READ_ACCOUNT"]["out"]>({
+      type: "READ_ACCOUNT",
+    }),
   READ_ACCOUNT_STRATEGY_LIST: () =>
     useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>({
       type: "READ_ACCOUNT_STRATEGY_LIST",
@@ -70,6 +74,10 @@ export const useApiAction = {
   READ_STRATEGY_FLOW: (data?: ApiAction["READ_STRATEGY_FLOW"]["in"]) =>
     useAction<ApiAction["READ_STRATEGY_FLOW"]["out"]>(
       data ? { type: "READ_STRATEGY_FLOW", data } : null
+    ),
+  RENAME_ACCOUNT: (data?: ApiAction["RENAME_ACCOUNT"]["in"]) =>
+    useAction<ApiAction["RENAME_ACCOUNT"]["out"]>(
+      data ? { type: "RENAME_ACCOUNT", data } : null
     ),
   RENAME_STRATEGY: (data?: ApiAction["RENAME_STRATEGY"]["in"]) =>
     useAction<ApiAction["RENAME_STRATEGY"]["out"]>(

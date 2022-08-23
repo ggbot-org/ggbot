@@ -11,7 +11,6 @@ import {
   createdNow,
   deletedNow,
   isAccountKey,
-  isName,
   normalizeName,
   throwIfInvalidName,
   updatedNow,
@@ -24,7 +23,6 @@ import {
   writeAccountStrategyList,
 } from "./accountStrategyList.js";
 import {
-  ErrorInvalidStrategyName,
   ErrorMissingAccountId,
   ErrorPermissionDeniedCannotDeleteStrategy,
   ErrorStrategyNotFound,
@@ -102,7 +100,8 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
 };
 
 /**
- * @throws ErrorInvalidStrategyName
+ * @throws ErrorInvalidName
+ * @throws ErrorNameToLong
  */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
@@ -110,7 +109,6 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   ...strategyKey
 }) => {
   throwIfInvalidName(name);
-  if (!isName(name)) throw new ErrorInvalidStrategyName(name);
   const strategy = await readStrategy(strategyKey);
   if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
   if (strategy.accountId === accountId) {

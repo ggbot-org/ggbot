@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
-    "@ggbot2/models": "file:models",
-    "tulind": "^0.8.20"
+    "@ggbot2/models": "file:models"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",

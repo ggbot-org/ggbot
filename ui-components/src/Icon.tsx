@@ -1,6 +1,3 @@
-// Keep iconRecord keys sorted.
-/* eslint sort-keys: "error" */
-
 import { SVGAttributes, useMemo } from "react";
 
 export const iconNames = ["caret-left", "caret-right"] as const;

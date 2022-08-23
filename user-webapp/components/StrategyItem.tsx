@@ -54,11 +54,11 @@ export const StrategyItem: FC<StrategyItemProps> = ({
   );
 
   return (
-    <div className="flex flex-col gap-4 rounded p-2 shadow transition-all hover:shadow-md">
+    <div className="flex flex-col p-2 rounded shadow gap-4 transition-all hover:shadow-md">
       {isSelected ? (
         <>
           <div
-            className="flex flex-row items-center justify-between gap-2 p-2"
+            className="flex flex-row items-center justify-between p-2 gap-2"
             onClick={onClick}
           >
             <EditableInput
@@ -68,7 +68,7 @@ export const StrategyItem: FC<StrategyItemProps> = ({
             />
             <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
           </div>
-          <menu className="flex flex-row gap-4 overflow-x-scroll p-2">
+          <menu className="flex flex-row p-2 overflow-x-scroll gap-4">
             <Button color="primary" onClick={onClickFlow}>
               flow
             </Button>

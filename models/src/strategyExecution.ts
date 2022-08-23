@@ -21,7 +21,9 @@ export type StrategyExecution = UpdateTime & {
    * If a strategy execution do some transaction, the result can be reported as a `balances` attribute.
    */
   balances: Balance[];
+
   steps: DflowExecutionNodeInfo;
+
   status: StrategyExecutionStatus;
 };
 
@@ -61,7 +63,7 @@ export type ExecuteStrategyOptions = {
 
 export type ExecuteStrategy = Operation<
   AccountStrategyKey & ExecuteStrategyOptions,
-  StrategyExecution
+  Pick<StrategyExecution, "status" | "whenUpdated">
 >;
 
 export type WriteStrategyExecution = Operation<

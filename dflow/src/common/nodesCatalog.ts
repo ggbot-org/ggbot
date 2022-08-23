@@ -1,6 +1,6 @@
 import { DeleteMemory, GetMemory } from "./nodes/memory.js";
 import { Now } from "./nodes/time.js";
-import { Ema, Sma } from "./nodes/tulind.js";
+import { Ema, Sma } from "./nodes/indicators/movingAverages.js";
 
 export const nodesCatalog = {
   // memory
@@ -8,7 +8,7 @@ export const nodesCatalog = {
   [GetMemory.kind]: GetMemory,
   // time
   [Now.kind]: Now,
-  // tulind indicators
+  // indicators
   [Ema.kind]: Ema,
   [Sma.kind]: Sma,
 };

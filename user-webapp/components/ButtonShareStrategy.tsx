@@ -1,7 +1,8 @@
+import { StrategyKey } from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
 import { FC, SyntheticEvent, useCallback } from "react";
 import { toast } from "react-hot-toast";
-import { StrategyKey, route, webappBaseUrl } from "_routing";
+import { route, webappBaseUrl } from "_routing";
 
 type Props = StrategyKey;
 

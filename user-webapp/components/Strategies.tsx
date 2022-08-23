@@ -152,7 +152,7 @@ export const Strategies: FC = () => {
   }, [selectedStrategyKey]);
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-4 p-4">
+    <div ref={containerRef} className="flex flex-col p-4 gap-4">
       <span className="text-xl">strategies</span>
       <menu>
         <Button onClick={onClickNewStrategy}>new strategy</Button>

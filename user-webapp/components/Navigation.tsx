@@ -11,9 +11,9 @@ export const Navigation: FC = () => {
   }, [router]);
 
   return (
-    <header className="fixed top-0 w-full bg-black text-white select-none">
+    <header className="fixed top-0 w-full select-none bg-black text-white">
       <div
-        className="flex flex-row items-center gap-1 px-1 cursor-pointer w-fit"
+        className="flex w-fit cursor-pointer flex-row items-center gap-1 px-1"
         onClick={onClickBrand}
       >
         <Logo size={24} />

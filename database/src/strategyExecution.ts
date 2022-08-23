@@ -91,6 +91,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       // Compute balances (TODO get it from steps)
       // TODO Use optionalBalances to simulate account transactions
       const balances = optionalBalances.slice();
+      console.log(balances);
 
       // Handle memory changes
       if (dflow.context.memoryChanged) {
@@ -106,9 +107,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       }
 
       return {
-        balances: [],
         status: "success",
-        steps: [],
         ...updatedNow(),
       };
     }
@@ -118,9 +117,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     console.error(error);
 
     return {
-      balances,
       status: "failure",
-      steps: [],
       ...updatedNow(),
     };
   }

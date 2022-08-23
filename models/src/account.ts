@@ -1,18 +1,28 @@
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { Item, NewItem, isItemId } from "./item.js";
-import { CreationTime, DeletionTime, isCreationTime } from "./time.js";
+import { Name, isName } from "./name.js";
+import {
+  CreationTime,
+  DeletionTime,
+  UpdateTime,
+  isCreationTime,
+} from "./time.js";
 import type { Operation } from "./operation.js";
 
 export type Account = Item &
   CreationTime & {
+    name?: undefined | Name;
     email: EmailAddress;
   };
 
 export const isAccount = (value: unknown): value is Account => {
   if (typeof value !== "object" || value === null) return false;
-  const { id, email, whenCreated } = value as Partial<Account>;
+  const { id, email, name, whenCreated } = value as Partial<Account>;
   return (
-    isItemId(id) && isEmailAddress(email) && isCreationTime({ whenCreated })
+    isItemId(id) &&
+    isEmailAddress(email) &&
+    isCreationTime({ whenCreated }) &&
+    (typeof name !== "undefined" ? isName(name) : true)
   );
 };
 
@@ -29,6 +39,8 @@ export const isAccountKey = (value: unknown): value is AccountKey => {
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 
 export type ReadAccount = Operation<AccountKey, Account | undefined>;
+
+export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
 
 export type ReadAccountKeys = Operation<void, AccountKey[]>;
 

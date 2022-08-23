@@ -5,8 +5,11 @@ import {
   DeleteAccount,
   ReadAccount,
   ReadAccountKeys,
+  RenameAccount,
   createdNow,
   isAccountKey,
+  throwIfInvalidName,
+  updatedNow,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -19,6 +22,7 @@ import {
   accountDirnamePrefix,
   accountPathname,
 } from "./_dataBucketLocators.js";
+import { ErrorMissingAccountId } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
@@ -72,6 +76,27 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
       return list;
     }, []) ?? []
   );
+};
+
+/**
+ * @throws ErrorInvalidName
+ * @throws ErrorMissingAccountId
+ * @throws ErrorNameToLong
+ */
+export const renameAccount: RenameAccount["func"] = async ({
+  accountId,
+  name,
+}) => {
+  throwIfInvalidName(name);
+  const account = await readAccount({ accountId });
+  if (!account) throw new ErrorMissingAccountId();
+  const Key = accountPathname({ accountId });
+  const data: Account = {
+    ...account,
+    name,
+  };
+  await putObject({ Key, data });
+  return updatedNow();
 };
 
 export const deleteAccount: DeleteAccount["func"] = async (_) =>

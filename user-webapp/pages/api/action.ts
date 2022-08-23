@@ -5,6 +5,7 @@ import {
   readAccountStrategyList,
   readStrategy,
   readStrategyFlow,
+  renameAccount,
   renameStrategy,
 } from "@ggbot2/database";
 import {
@@ -21,9 +22,11 @@ import type {
   DeleteStrategy,
   OperationInput,
   OperationOutput,
+  ReadAccount,
   ReadAccountStrategyList,
   ReadStrategy,
   ReadStrategyFlow,
+  RenameAccount,
   RenameStrategy,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -46,12 +49,14 @@ export type ApiAction = {
   COPY_STRATEGY: Action<CopyStrategy["in"], CopyStrategy["out"]>;
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
-  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
-  READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
+  READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
     ReadAccountStrategyList["out"]
   >;
+  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
+  READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
+  RENAME_ACCOUNT: Action<RenameAccount["in"], RenameAccount["out"]>;
   RENAME_STRATEGY: Action<RenameStrategy["in"], RenameStrategy["out"]>;
 };
 
@@ -110,6 +115,11 @@ export default async function apiHandler(
 
       case "READ_STRATEGY_FLOW": {
         const data = await readStrategyFlow(action.data);
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "RENAME_ACCOUNT": {
+        const data = await renameAccount({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 

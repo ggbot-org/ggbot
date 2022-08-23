@@ -2,12 +2,11 @@ import { Button, DateTime } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useState } from "react";
 import { Content } from "_components";
-import { useApiAction } from "_hooks";
+import { useApiAction, useGoBack } from "_hooks";
 import {
   StrategyInfo,
   StrategyKey,
   requireAuthenticationAndGetStrategyInfo,
-  useGoBack,
 } from "_routing";
 
 type ServerSideProps = StrategyInfo;

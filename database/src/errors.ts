@@ -1,11 +1,5 @@
 import type { AccountKey, StrategyKey } from "@ggbot2/models";
 
-export class ErrorInvalidStrategyName extends Error {
-  constructor(name: unknown) {
-    super(`Invalid strategy name ${name}`);
-  }
-}
-
 export class ErrorMissingAccountId extends Error {
   constructor() {
     super("Missing accountId");

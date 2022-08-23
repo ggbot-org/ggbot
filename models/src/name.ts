@@ -16,12 +16,15 @@ export const isName = (value: unknown): value is Name => {
   return true;
 };
 
-export const throwIfInvalidName = (value: unknown): value is Name => {
+/**
+ * @throws ErrorInvalidName
+ * @throws ErrorNameToLong
+ */
+export const throwIfInvalidName = (value: unknown): void => {
   if (typeof value !== "string") throw new ErrorInvalidName(value);
   const name = normalizeName(value);
   if (name.length < minNameLength) throw new ErrorInvalidName(name);
   if (name.length > maxNameLength) throw new ErrorNameToLong(name);
-  return true;
 };
 
 export const normalizeName = (name: string) => name.trim();
