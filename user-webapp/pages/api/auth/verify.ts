@@ -14,16 +14,14 @@ import {
   readOneTimePassword,
 } from "@ggbot2/database";
 import {
-  OneTimePasswordCode,
+  OneTimePassword,
   isOneTimePasswordCode,
   normalizeOneTimePassword,
 } from "@ggbot2/models";
 import { today } from "@ggbot2/time";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export type ApiVerifyRequestData = {
-  code: OneTimePasswordCode;
-};
+export type ApiVerifyRequestData = Pick<OneTimePassword, "code">;
 
 export const isApiVerifyRequestData = (
   value: unknown

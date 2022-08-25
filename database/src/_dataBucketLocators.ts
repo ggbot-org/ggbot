@@ -20,6 +20,14 @@
 // │   └╴jsmith/
 // │     └╴account.json
 // │
+// ├╴oneTimePassword/
+// │ ├╴bitcoin.com/
+// │ │ └╴nakamoto/
+// │ │   └╴otp.json
+// │ └╴gmail.com/
+// │   └╴jsmith/
+// │     └╴otp.json
+//
 // ├╴strategy/
 // │ └╴strategyKind=XXX/
 // │   └╴strategyId=XXX/
@@ -42,15 +50,19 @@
 //         └╴strategyId=XXX/
 //           └╴memory.json
 
-import type {
+import {
   AccountKey,
   AccountStrategyKey,
+  EmailAddress,
   StrategyKey,
+  normalizeEmailAddress,
 } from "@ggbot2/models";
 
 export const accountDirnamePrefix = "account";
 export const accountConfigDirnamePrefix = "accountConfig";
 export const accountStrategyListDirnamePrefix = "accountStrategies";
+export const emailAccountDirnamePrefix = "emailAccount";
+export const oneTimePasswordDirnamePrefix = "oneTimePassword";
 export const strategyExecutionDirnamePrefix = "StrategyExecution";
 export const strategyFlowDirnamePrefix = "strategyFlow";
 export const strategyMemoryDirnamePrefix = "strategyMemory";
@@ -85,6 +97,17 @@ export const accountStrategyListPathname = (_: AccountKey) =>
 
 export const binanceApiConfigPathname = (_: AccountKey) =>
   `${accountConfigDirname(_)}/binance.json`;
+
+export const emailToDirname = (email: EmailAddress) => {
+  const normalizedEmailAddress = normalizeEmailAddress(email);
+  return normalizedEmailAddress.split("@").reverse().join("/");
+};
+
+export const emailAccountPathname = (email: EmailAddress) =>
+  `${emailAccountDirnamePrefix}/${emailToDirname(email)}/account.json`;
+
+export const oneTimePasswordPathname = (email: EmailAddress) =>
+  `${oneTimePasswordDirnamePrefix}/${emailToDirname(email)}/otp.json`;
 
 export const strategyExecutionDirname = (_: AccountStrategyKey) =>
   `${strategyExecutionDirnamePrefix}/${accountStrategyKeyToDirname(_)}`;

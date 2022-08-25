@@ -1,17 +1,11 @@
 import {
   CreateEmailAccount,
-  EmailAddress,
   ReadEmailAccount,
   createdNow,
   EmailAccount,
 } from "@ggbot2/models";
 import { getObject, putObject } from "./_dataBucket.js";
-import { emailToDirname } from "./email.js";
-
-export const emailAccountDirnamePrefix = () => "emailAccount";
-
-export const emailAccountPathname = (email: EmailAddress) =>
-  `${emailAccountDirnamePrefix()}/${emailToDirname(email)}/account.json`;
+import { emailAccountPathname } from "./_dataBucketLocators.js";
 
 export const createEmailAccount: CreateEmailAccount["func"] = async ({
   accountId,

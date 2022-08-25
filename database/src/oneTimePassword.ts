@@ -1,31 +1,56 @@
+import { sendEmail } from "@ggbot2/aws";
+import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
+import { noReplyAddress } from "@ggbot2/infrastructure";
 import {
   CreateOneTimePassword,
   DeleteOneTimePassword,
-  EmailAddress,
   ReadOneTimePassword,
+  SendOneTimePassword,
+  createdNow,
   generateOneTimePassword,
+  deletedNow,
 } from "@ggbot2/models";
+import { isTestAccountEmail, testOtp } from "@ggbot2/test-data";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { emailToDirname } from "./email.js";
-
-const oneTimePasswordDirnamePrefix = () => "oneTimePassword";
-
-export const oneTimePasswordPathname = (email: EmailAddress) =>
-  `${oneTimePasswordDirnamePrefix()}/${emailToDirname(email)}/otp.json`;
+import { oneTimePasswordPathname } from "./_dataBucketLocators.js";
 
 export const createOneTimePassword: CreateOneTimePassword["func"] = async (
-  _
+  email
 ) => {
-  const Key = oneTimePasswordPathname(_);
+  if (isTestAccountEmail(email)) return testOtp;
+  const Key = oneTimePasswordPathname(email);
   const data = generateOneTimePassword();
   await putObject({ Key, data });
-  return data.code;
+  return data;
 };
 
-export const readOneTimePassword: ReadOneTimePassword["func"] = async (email) =>
+export const readOneTimePassword: ReadOneTimePassword["func"] = async (
+  email
+) => {
+  if (isTestAccountEmail(email)) return testOtp;
   await getObject<ReadOneTimePassword["out"]>({
     Key: oneTimePasswordPathname(email),
   });
+};
 
-export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (_) =>
-  await deleteObject({ Key: oneTimePasswordPathname(_) });
+export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
+  email
+) => {
+  if (isTestAccountEmail(email)) return deletedNow();
+  return await deleteObject({ Key: oneTimePasswordPathname(email) });
+};
+
+export const sendOneTimePassword: SendOneTimePassword["func"] = async ({
+  email,
+  oneTimePassword,
+}) => {
+  const whenCreated = createdNow();
+  if (isTestAccountEmail(email)) return whenCreated;
+  const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
+  await sendEmail({
+    source: noReplyAddress,
+    toAddresses: [email],
+    ...emailMessage,
+  });
+  return whenCreated;
+};

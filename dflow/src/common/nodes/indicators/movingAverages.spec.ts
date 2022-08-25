@@ -1,4 +1,4 @@
-import { ema, sma } from "./indicators";
+import { ema, sma } from "./movingAverages";
 
 describe("Exponential Moving Average", () => {
   it("works", () => {

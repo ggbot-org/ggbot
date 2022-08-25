@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
     "chromium": "playwright test --headed --project=chromium",
     "playwright": "playwright test",
     "show-report": "playwright show-report",
@@ -12,6 +11,7 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
+    "@ggbot2/test-data": "file:test-data",
     "@ggbot2/user-webapp": "file:user-webapp"
   },
   "devDependencies": {

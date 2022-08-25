@@ -1,7 +1,5 @@
-import { sendEmail } from "@ggbot2/aws";
 import { createEmailCookie } from "@ggbot2/cookies";
-import { createOneTimePassword } from "@ggbot2/database";
-import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
+import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
 import { nodeEnvIsProduction } from "@ggbot2/env";
 import {
   __200__OK__,
@@ -9,7 +7,6 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import { noReplyAddress } from "@ggbot2/infrastructure";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -44,14 +41,7 @@ export default async function apiHandler(
     const { email } = input;
 
     const oneTimePassword = await createOneTimePassword(email);
-
-    const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
-
-    await sendEmail({
-      source: noReplyAddress,
-      toAddresses: [email],
-      ...emailMessage,
-    });
+    await sendOneTimePassword({ email, oneTimePassword });
 
     const cookie = createEmailCookie(email, { secure: nodeEnvIsProduction });
     res.setHeader("Set-Cookie", cookie);

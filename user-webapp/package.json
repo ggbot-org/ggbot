@@ -22,7 +22,6 @@
     "@ggbot2/assets": "file:assets",
     "@ggbot2/cookies": "file:cookies",
     "@ggbot2/database": "file:database",
-    "@ggbot2/email-messages": "file:email-messages",
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/ui-components": "file:ui-components",
     "next": "^12.2.2",

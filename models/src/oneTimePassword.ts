@@ -7,7 +7,7 @@ import {
   DeletionTime,
 } from "./time.js";
 
-export type OneTimePasswordCode = string;
+type OneTimePasswordCode = string;
 
 export const oneTimePasswordCodeLength = 6;
 
@@ -41,10 +41,7 @@ export const generateOneTimePassword = (): OneTimePassword => {
   return { code: normalizeOneTimePassword(code), ...createdNow() };
 };
 
-export type CreateOneTimePassword = Operation<
-  EmailAddress,
-  OneTimePasswordCode
->;
+export type CreateOneTimePassword = Operation<EmailAddress, OneTimePassword>;
 
 export type ReadOneTimePassword = Operation<
   EmailAddress,
@@ -52,3 +49,8 @@ export type ReadOneTimePassword = Operation<
 >;
 
 export type DeleteOneTimePassword = Operation<EmailAddress, DeletionTime>;
+
+export type SendOneTimePassword = Operation<
+  { email: EmailAddress; oneTimePassword: OneTimePassword },
+  CreationTime
+>;

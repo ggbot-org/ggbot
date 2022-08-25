@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "lib": ["dom", "es2015"],
     "module": "ESNext",
     "moduleResolution": "node",
+    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./dist",
     "strict": true,
     "target": "ESNext"
   },
-  "exclude": ["node_modules", "**/*.spec.ts"],
-  "include": ["index.ts"]
+  "include": ["./tests/**/*.ts"]
 }
