@@ -1,4 +1,5 @@
 import { DflowNode } from "dflow";
+import { BinanceDflowContext } from "../host.js";
 
 const { input, output } = DflowNode;
 
@@ -13,7 +14,12 @@ export class MarketBuy extends DflowNode {
   static kind = "marketBuy";
   static inputs = marketOrderInputs;
   static outputs = orderOutputs;
-  async run() {}
+  async run() {
+    const { exchange } = this.host.context as BinanceDflowContext;
+    const symbol = this.input(0).data;
+    if (!exchange.canTradeSymbol({ orderType: "MARKET", symbol }))
+      this.clearOutputs();
+  }
 }
 
 export class MarketSell extends DflowNode {

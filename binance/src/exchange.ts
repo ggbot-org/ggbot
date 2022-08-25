@@ -5,6 +5,7 @@ import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceNewOrderOptions,
+  BinanceOrderType,
   BinanceSymbolInfo,
 } from "./types.js";
 
@@ -46,6 +47,24 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
+  async canTradeSymbol({
+    orderType,
+    symbol,
+  }: {
+    orderType: BinanceOrderType;
+    symbol: unknown;
+  }): Promise<boolean> {
+    try {
+      const symbolInfo = await this.symbolInfo(symbol);
+      if (!symbolInfo.orderTypes.includes(orderType)) return false;
+      if (!symbolInfo.permissions.includes("SPOT")) return false;
+      return symbolInfo.status === "TRADING";
+    } catch (error) {
+      if (error instanceof ErrorInvalidBinanceSymbol) return false;
+      throw error;
+    }
+  }
+
   /**
    * Current exchange trading rules and symbol information.
    *
@@ -77,7 +96,7 @@ export class BinanceExchange extends BinanceConnector {
   /**
    * @throws ErrorInvalidBinanceSymbol
    */
-  async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
+  async symbolInfo(symbol: unknown): Promise<BinanceSymbolInfo> {
     const isBinanceSymbol = await this.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     const { symbols } = await this.exchangeInfo();

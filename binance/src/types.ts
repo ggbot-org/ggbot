@@ -142,6 +142,19 @@ export type BinanceOrderType = typeof binanceOrderTypes[number];
 export const isBinanceOrderType =
   isLiteralType<BinanceOrderType>(binanceOrderTypes);
 
+export const binancePermissions = [
+  "SPOT",
+  "MARGIN",
+  "LEVERAGED",
+  "TRD_GRP_002",
+  "TRD_GRP_003",
+  "TRD_GRP_004",
+  "TRD_GRP_005",
+] as const;
+export type BinancePermissions = typeof binancePermissions[number];
+export const isBinancePermission =
+  isLiteralType<BinancePermissions>(binancePermissions);
+
 export type BinanceRateLimitInfo = {
   rateLimitType: BinanceRateLimitType;
   interval: BinanceRateLimitInterval;
@@ -181,7 +194,7 @@ export type BinanceSymbolInfo = {
   isSpotTradingAllowed: boolean;
   isMarginTradingAllowed: boolean;
   filters: BinanceSymbolInfoFilter[];
-  // TODO permissions
+  permissions: BinancePermissions;
 };
 
 export type BinanceSymbolInfoFilter =
