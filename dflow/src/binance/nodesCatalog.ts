@@ -1,8 +1,9 @@
 import { BinanceExchange, binanceKlineIntervals } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
+import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { AvgPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
-import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
+import { binanceWantedPrecision } from "./arithmetic.js";
 
 const { output } = DflowNode;
 
@@ -40,8 +41,21 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
 
   const { symbols } = await binance.exchangeInfo();
 
-  const symbolNodes = symbols.reduce(
-    (catalog, { baseAsset, quoteAsset, symbol }) => {
+  const symbolNodes = symbols
+    .filter(
+      // Most of the Binance symbols has precision 8. Others are edge case markets.
+      ({
+        baseAssetPrecision,
+        baseCommissionPrecision,
+        quoteAssetPrecision,
+        quotePrecision,
+      }) =>
+        baseAssetPrecision === binanceWantedPrecision &&
+        baseCommissionPrecision === binanceWantedPrecision &&
+        quoteAssetPrecision === binanceWantedPrecision &&
+        quotePrecision === binanceWantedPrecision
+    )
+    .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
       class NodeClass extends DflowNode {
         static kind = `${baseAsset}/${quoteAsset}`;
         static outputs = [
@@ -52,9 +66,7 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
         ];
       }
       return { ...catalog, [NodeClass.kind]: NodeClass };
-    },
-    {}
-  );
+    }, {});
 
   return {
     ...klineIntervalNodes,

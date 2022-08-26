@@ -14,7 +14,6 @@ describe("Simple Moving Average", () => {
   it("works", () => {
     [
       { input: { values: [], period: 1 }, output: [] },
-      /*
       {
         input: {
           values: [
@@ -28,6 +27,7 @@ describe("Simple Moving Average", () => {
           86.8,
         ],
       },
+      /*
        */
     ].forEach(({ input: { values, period }, output }) => {
       expect(sma(values, period)).toStrictEqual(output);

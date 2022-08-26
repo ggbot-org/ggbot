@@ -1,4 +1,12 @@
 import { DflowNode } from "dflow";
+import {
+  Decimal,
+  add,
+  coerceToDecimal,
+  decimalToNumber,
+  div,
+  numOfDecimals,
+} from "../../arithmetic.js";
 
 type MovingAverage = (values: number[], period: number) => number[];
 
@@ -34,13 +42,18 @@ export class Ema extends DflowNode {
 
 export const sma: MovingAverage = (values, period) => {
   if (values.length < period) return [];
-  return values.reduce<number[]>((result, _, index, array) => {
+  return values.reduce<number[]>((result, _value, index, array) => {
     if (index < period - 1) return result;
-    return result.concat(
-      array.slice(index - period + 1, index + 1).reduce((a, b) => a + b) /
-        period,
+    const movingValues: Decimal[] = array
+      .slice(index - period + 1, index + 1)
+      .map((num) => coerceToDecimal(num));
+    const maxNumDecimals = movingValues.reduce<number>(
+      (max, num) => Math.max(max, numOfDecimals(num)),
       0
     );
+    const sum = movingValues.reduce<Decimal>((a, b) => add(a, b), "0");
+    const average = div(sum, coerceToDecimal(period));
+    return result.concat(decimalToNumber(average, maxNumDecimals));
   }, []);
 };
 
