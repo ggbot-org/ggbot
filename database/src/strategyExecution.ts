@@ -1,12 +1,11 @@
 import {
   BinanceClient,
   BinanceConnector,
-  BinanceExchange,
 } from "@ggbot2/binance";
 import {
   BinanceDflowContext,
+  BinanceDflowExecutor,
   BinanceDflowHost,
-  getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
 import {
   DeleteStrategyExecution,
@@ -15,6 +14,7 @@ import {
   StrategyExecution,
   WriteStrategyExecution,
   updatedNow,
+  StrategyMemory,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyExecutionPathname } from "./_dataBucketLocators.js";
@@ -37,71 +37,40 @@ import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
  */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
-  balances: optionalBalances = [],
-  dryRun,
-  memory: optionalMemory,
   strategyId,
   strategyKind,
-  timestamp,
-  view: optionalView,
 }) => {
   try {
     const accountStrategyKey = { accountId, strategyKind, strategyId };
     const strategyKey = { strategyKind, strategyId };
 
-    // Get memory from options or read it from stored data.
-    const memory = await (async () => {
-      if (optionalMemory) return optionalMemory;
-      const data = await readStrategyMemory(accountStrategyKey);
-      return data?.memory || {};
-    })();
+    const strategyFlow = await readStrategyFlow(accountStrategyKey);
+    if (!strategyFlow) throw new ErrorStrategyFlowNotFound(strategyKey);
 
-    // Get view from options or read it from stored data.
-    const view = await (async () => {
-      if (optionalView) return optionalView;
-      const data = await readStrategyFlow(accountStrategyKey);
-      if (!data) throw new ErrorStrategyFlowNotFound(strategyKey);
-      return data.view;
-    })();
+    const memory = ((await readStrategyMemory(accountStrategyKey)) ??
+      {}) as StrategyMemory;
 
     if (strategyKind === "binance") {
       const baseUrl = BinanceConnector.defaultBaseUrl;
-      const exchange = new BinanceExchange({ baseUrl });
 
-      const binanceApiConfig = dryRun
-        ? // If `dryRun` mode is on, use a fake API config.
-          { apiKey: "", apiSecret: "" }
-        : await readBinanceApiConfig({ accountId });
+      const binanceApiConfig = await readBinanceApiConfig({ accountId });
       if (!binanceApiConfig)
         throw new ErrorMissingBinanceApiConfig({ accountId });
 
-      const client = new BinanceClient({ baseUrl, ...binanceApiConfig });
-      const nodesCatalog = await getDflowBinanceNodesCatalog({
-        binance: exchange,
-      });
-      const dflow = new BinanceDflowHost(
-        { nodesCatalog },
-        { client, dryRun, exchange, memory, timestamp }
-      );
+      const binance = new BinanceClient({ baseUrl, ...binanceApiConfig });
 
-      dflow.loadView(view);
+      const executor = new BinanceDflowExecutor({ binance, view: strategyFlow.view})
+       await executor.prepare()
+      const result = await executor.run({memory})
 
-      await dflow.run();
-
-      // Compute balances (TODO get it from steps)
-      // TODO Use optionalBalances to simulate account transactions
-      const balances = optionalBalances.slice();
-      console.log(balances);
 
       // Handle memory changes
-      if (dflow.context.memoryChanged) {
-        if (!dryRun) {
-          const memory = (dflow.context as BinanceDflowContext).memory ?? {};
+      if (result.memoryChanged) {
           await writeStrategyMemory({
             accountId,
             strategyKind,
             strategyId,
-            memory,
+            memory: result.memory,
           });
         }
       }

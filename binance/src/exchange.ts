@@ -36,14 +36,17 @@ export class BinanceExchange extends BinanceConnector {
    *
    * @throws ErrorInvalidBinanceSymbol
    */
-  async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
+  async avgPrice(symbol: unknown): Promise<BinanceAvgPrice> {
     const isBinanceSymbol = await this.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
-
     return await this._publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
-      { symbol }
+      {
+        symbol:
+          // If `isBinanceSymbol` then `symbol` extends `string`.
+          symbol as string,
+      }
     );
   }
 

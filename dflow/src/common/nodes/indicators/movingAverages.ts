@@ -20,7 +20,7 @@ export const ema: MovingAverage = (values, period) => {
 };
 
 export class Ema extends DflowNode {
-  static kind = "ema";
+  static kind = "EMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
@@ -34,11 +34,18 @@ export class Ema extends DflowNode {
 
 export const sma: MovingAverage = (values, period) => {
   if (values.length < period) return [];
-  return [];
+  return values.reduce<number[]>((result, _, index, array) => {
+    if (index < period - 1) return result;
+    return result.concat(
+      array.slice(index - period + 1, index + 1).reduce((a, b) => a + b) /
+        period,
+      0
+    );
+  }, []);
 };
 
 export class Sma extends DflowNode {
-  static kind = "sma";
+  static kind = "SMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {

@@ -14,6 +14,22 @@ export type BinanceAccountInformation = {
   permissions: string[];
 };
 
+export type BinanceAccountTrade = {
+  symbol: string;
+  id: number;
+  orderId: string;
+  orderListId: number;
+  price: string;
+  qty: string;
+  quoteQty: string;
+  commission: string;
+  commissionAsset: string;
+  time: number;
+  isBuyer: boolean;
+  isMaker: boolean;
+  isBestMatch: boolean;
+};
+
 export type BinanceApiKeyPermission = {
   ipRestrict: boolean;
 
@@ -84,6 +100,11 @@ export type BinanceExchangeInfo = {
   rateLimits: BinanceRateLimitInfo[];
 };
 
+export type BinanceFill = Pick<
+  BinanceAccountTrade,
+  "price" | "qty" | "commission" | "commissionAsset"
+>;
+
 export const binanceKlineIntervals = [
   "1m",
   "3m",
@@ -106,7 +127,16 @@ export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
   binanceKlineIntervals
 );
 
-export declare type BinanceNewOrderOptions = Partial<{
+export type BinanceNewOrder<BinanceOrderRespType> =
+  BinanceOrderRespType extends "ACK"
+    ? BinanceOrderRespACK
+    : BinanceOrderRespType extends "FULL"
+    ? BinanceOrderRespFULL
+    : BinanceOrderRespType extends "RESULT"
+    ? BinanceOrderRespRESULT
+    : never;
+
+export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;
   quantity: number;
   quoteOrderQty: number;
@@ -118,6 +148,83 @@ export declare type BinanceNewOrderOptions = Partial<{
   recvWindow: number;
 }>;
 
+export type BinanceNewOrderOptionsWithRespType<
+  RespType extends BinanceOrderRespType
+> = Partial<{
+  timeInForce: BinanceTimeInForce;
+  quantity: number;
+  quoteOrderQty: number;
+  price: number;
+  newClientOrderId: string;
+  stopPrice: number;
+  icebergQty: number;
+  newOrderRespType: RespType;
+  recvWindow: number;
+}>;
+
+export type BinanceOrder = {
+  symbol: string;
+  orderId: string;
+  orderListId: number;
+  clientOrderId: string;
+  price: string;
+  origQty: string;
+  executedQty: string;
+  cummulativeQuoteQty: string;
+  transactTime: number;
+  status: BinanceOrderStatus;
+  timeInForce: BinanceTimeInForce;
+  type: BinanceOrderType;
+  side: BinanceOrderSide;
+  stopPrice: string;
+  icebergQty: string;
+  time: number;
+  updateTime: number;
+  isWorking: boolean;
+  origQuoteOrderQty: string;
+};
+
+export type BinanceOrderRespACK = Pick<
+  BinanceOrder,
+  "symbol" | "orderId" | "orderListId" | "clientOrderId" | "transactTime"
+>;
+
+export type BinanceOrderRespRESULT = Pick<
+  BinanceOrder,
+  | "symbol"
+  | "orderId"
+  | "orderListId"
+  | "clientOrderId"
+  | "transactTime"
+  | "price"
+  | "origQty"
+  | "executedQty"
+  | "cummulativeQuoteQty"
+  | "status"
+  | "timeInForce"
+  | "type"
+  | "side"
+>;
+
+export type BinanceOrderRespFULL = Pick<
+  BinanceOrder,
+  | "symbol"
+  | "orderId"
+  | "orderListId"
+  | "clientOrderId"
+  | "transactTime"
+  | "price"
+  | "origQty"
+  | "executedQty"
+  | "cummulativeQuoteQty"
+  | "status"
+  | "timeInForce"
+  | "type"
+  | "side"
+> & {
+  fills: BinanceFill[];
+};
+
 export const binanceOrderRespTypes = ["ACK", "RESULT", "FULL"] as const;
 export type BinanceOrderRespType = typeof binanceOrderRespTypes[number];
 export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
@@ -128,6 +235,26 @@ export const binanceOrderSides = ["BUY", "SELL"] as const;
 export type BinanceOrderSide = typeof binanceOrderSides[number];
 export const isBinanceOrderSide =
   isLiteralType<BinanceOrderSide>(binanceOrderSides);
+
+export const binanceOrderStatuses = [
+  // The order has been accepted by the engine.
+  "NEW",
+  // A part of the order has been filled.
+  "PARTIALLY_FILLED",
+  // The order has been completed.
+  "FILLED",
+  // The order has been canceled by the user.
+  "CANCELED",
+  // Currently unused
+  "PENDING_CANCEL",
+  // The order was not accepted by the engine and not processed.
+  "REJECTED",
+  // The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill) or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance)
+  "EXPIRED",
+] as const;
+export type BinanceOrderStatus = typeof binanceOrderStatuses[number];
+export const isBinanceOrderStatus =
+  isLiteralType<BinanceOrderStatus>(binanceOrderStatuses);
 
 export const binanceOrderTypes = [
   "LIMIT",

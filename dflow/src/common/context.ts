@@ -1,4 +1,4 @@
-import { ExecuteStrategyOptions, StrategyMemory } from "@ggbot2/models";
+import { StrategyMemory } from "@ggbot2/models";
 
 /**
  * DflowCommonContext to be shared among all dflow host implementations.
@@ -18,10 +18,7 @@ import { ExecuteStrategyOptions, StrategyMemory } from "@ggbot2/models";
  * }
  * ```
  */
-export type DflowCommonContext = Pick<
-  ExecuteStrategyOptions,
-  "dryRun" | "timestamp"
-> & {
+export type DflowCommonContext = {
   /**
    * Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
    */

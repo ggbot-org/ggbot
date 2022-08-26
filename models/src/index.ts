@@ -1,6 +1,7 @@
 export * from "./account.js";
 export * from "./accountStrategy.js";
 export * from "./accountStrategyList.js";
+export * from "./balance.js";
 export * from "./binanceApiConfig.js";
 export * from "./cache.js";
 export * from "./email.js";

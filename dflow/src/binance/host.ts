@@ -1,7 +1,6 @@
 import { DflowHost, DflowHostConstructorArg } from "dflow";
 import type { FlowViewSerializableGraph } from "flow-view";
-import { BinanceClient, BinanceExchange } from "@ggbot2/binance";
-import { ErrorUknownDflowNodes } from "../errors.js";
+import { BinanceClient } from "@ggbot2/binance";
 import { DflowCommonContext } from "../common/context.js";
 
 /**
@@ -13,37 +12,23 @@ export class BinanceDflowHost extends DflowHost {
     arg: DflowHostConstructorArg,
     {
       // DflowCommonContext
-      dryRun,
       memory,
-      timestamp,
       // BinanceDflowContext
-      client,
-      exchange,
+      binance,
     }: BinanceDflowContext
   ) {
     super(arg);
 
     // DflowCommonContext
-    this.context.dryRun = dryRun;
-    this.context.memory = memory ?? {};
-    this.context.timestamp = timestamp;
+    this.context.memory = memory;
 
     // BinanceDflowContext
-    this.context.client = client;
-    this.context.exchange = exchange;
+    this.context.binance = binance;
   }
 
-  /**
-   * Check if provided view is well defined, is compatible with nodesCatalog.
-   *
-   * @throws ErrorUknownDflowNodes
-   */
-  loadView(_view: FlowViewSerializableGraph): void {
-    throw new ErrorUknownDflowNodes([]);
-  }
+  load(_view: FlowViewSerializableGraph): void {}
 }
 
-export type BinanceDflowContext = Omit<DflowCommonContext, "memoryChanged"> & {
-  client: BinanceClient;
-  exchange: BinanceExchange;
+export type BinanceDflowContext = DflowCommonContext & {
+  binance: BinanceClient;
 };
