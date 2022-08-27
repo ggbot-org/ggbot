@@ -3,17 +3,15 @@ import type { FlowViewSerializableGraph } from "flow-view";
 import { ErrorUknownDflowNodes } from "../errors";
 import { dflowValidate } from "./validate";
 
-const viewWithUnknownNode: FlowViewSerializableGraph = {
-  nodes: [{ id: "nodeId", text: "node", x: 0, y: 0 }],
-  edges: [],
-};
-
-const nodesCatalog: DflowNodesCatalog = {};
-
 describe("dflowValidate", () => {
   it("throws ErrorUknownDflowNodes", () => {
+    const nodesCatalog: DflowNodesCatalog = {};
+    const view: FlowViewSerializableGraph = {
+      nodes: [{ id: "nodeId", text: "unknown node", x: 0, y: 0 }],
+      edges: [],
+    };
     expect(() => {
-      dflowValidate(nodesCatalog, viewWithUnknownNode);
+      dflowValidate(nodesCatalog, view);
     }).toThrow(ErrorUknownDflowNodes);
   });
 });

@@ -8,8 +8,13 @@ import { ErrorUknownDflowNodes } from "../errors.js";
  * @throws ErrorUknownDflowNodes
  */
 export const dflowValidate = (
-  _nodesCatalog: DflowNodesCatalog,
-  _view: FlowViewSerializableGraph
+  nodesCatalog: DflowNodesCatalog,
+  view: FlowViewSerializableGraph
 ): void => {
-  throw new ErrorUknownDflowNodes([]);
+  const viewNodeKinds = view.nodes.map(({ text, type }) => type ?? text);
+  const nodeKinds = Object.keys(nodesCatalog);
+  const unknownNodes = viewNodeKinds.filter(
+    (kind) => !nodeKinds.includes(kind)
+  );
+  if (unknownNodes.length) throw new ErrorUknownDflowNodes([]);
 };
