@@ -1,0 +1,8 @@
+## Ack is awesome: https://beyondgrep.com/
+#
+--smart-case
+# ignore the following files and folders
+--ignore-dir=.next
+--ignore-dir=dist
+--ignore-dir=playwright-report
+--ignore-file=match:/package-lock.json/
