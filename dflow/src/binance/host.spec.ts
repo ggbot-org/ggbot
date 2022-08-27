@@ -4,7 +4,7 @@ import { BinanceClientMock } from "./mocks/client";
 
 describe("BinanceDflowHost", () => {
   describe("load()", () => {
-    it("parses a flow view into a Dflow graph", async () => {
+    it("parses a flow view and loads it into a Dflow graph", async () => {
       const binance = new BinanceClientMock();
       const nodesCatalog = await getDflowBinanceNodesCatalog({ binance });
       const dflow = new BinanceDflowHost(

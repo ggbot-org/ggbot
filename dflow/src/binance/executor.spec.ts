@@ -11,7 +11,7 @@ describe("BinanceDflowExecutor", () => {
           nodes: [
             {
               id: "a",
-              text: "key1",
+              text: '"key1"',
               type: "data",
               x: 0,
               y: 0,
