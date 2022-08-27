@@ -1,4 +1,4 @@
-import { ema, sma } from "./movingAverages";
+import { ema, ma } from "./movingAverages";
 
 describe("Exponential Moving Average", () => {
   it("works", () => {
@@ -30,7 +30,7 @@ describe("Simple Moving Average", () => {
       /*
        */
     ].forEach(({ input: { values, period }, output }) => {
-      expect(sma(values, period)).toStrictEqual(output);
+      expect(ma(values, period)).toStrictEqual(output);
     });
   });
 });

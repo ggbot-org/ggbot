@@ -8,7 +8,7 @@ import {
   numOfDecimals,
 } from "../../arithmetic.js";
 
-type MovingAverage = (values: number[], period: number) => number[];
+type MovingAverageFunc = (values: number[], period: number) => number[];
 
 const { input, output } = DflowNode;
 
@@ -22,12 +22,12 @@ const movingAverageOutputs = [
   output("number", { name: "last" }),
 ];
 
-export const ema: MovingAverage = (values, period) => {
+export const ema: MovingAverageFunc = (values, period) => {
   if (values.length < period) return [];
   return [];
 };
 
-export class Ema extends DflowNode {
+export class ExponentialMovingAverage extends DflowNode {
   static kind = "EMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
@@ -40,7 +40,7 @@ export class Ema extends DflowNode {
   }
 }
 
-export const sma: MovingAverage = (values, period) => {
+export const ma: MovingAverageFunc = (values, period) => {
   if (values.length < period) return [];
   return values.reduce<number[]>((result, _value, index, array) => {
     if (index < period - 1) return result;
@@ -57,14 +57,14 @@ export const sma: MovingAverage = (values, period) => {
   }, []);
 };
 
-export class Sma extends DflowNode {
-  static kind = "SMA";
+export class MovingAverage extends DflowNode {
+  static kind = "MA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
     const values = this.input(0).data as number[];
     const period = this.input(1).data as number;
-    const result = sma(values, period);
+    const result = ma(values, period);
     this.output(0).data = result;
     this.output(1).data = result.slice(-1).pop();
   }
