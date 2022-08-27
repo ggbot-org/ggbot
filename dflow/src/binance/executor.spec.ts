@@ -3,7 +3,7 @@ import { BinanceClientMock } from "./mocks/client";
 
 describe("BinanceDflowExecutor", () => {
   describe("run", () => {
-    it("can return `memoryChanged` = true", async () => {
+    it("can change context memory", async () => {
       const binance = new BinanceClientMock();
       const executor = new BinanceDflowExecutor({
         binance,
@@ -11,7 +11,7 @@ describe("BinanceDflowExecutor", () => {
           nodes: [
             {
               id: "a",
-              text: "label",
+              text: "key1",
               type: "data",
               x: 0,
               y: 0,
@@ -29,8 +29,11 @@ describe("BinanceDflowExecutor", () => {
         },
       });
       await executor.prepare();
-      const { memoryChanged } = await executor.run({ memory: {} });
+      const { memory, memoryChanged } = await executor.run({
+        memory: { key1: "value1" },
+      });
       expect(memoryChanged).toBe(true);
+      expect(memory.key1).toBe(undefined);
     });
   });
 });

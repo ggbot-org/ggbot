@@ -52,13 +52,23 @@ export class BinanceDflowExecutor implements DflowExecutor {
   }
 
   /**
+   * Populate nodesCatalog, validate view. Run it once, before `run()`
+   *
    * @throws ErrorUknownDflowNodes
    */
   async prepare() {
+    const { binance, view } = this;
     const nodesCatalog = await getDflowBinanceNodesCatalog({
       binance: this.binance,
     });
-    dflowValidate(nodesCatalog, this.view);
+    // Use a temporary Dflow host for validation.
+    const dflow = new BinanceDflowHost(
+      { nodesCatalog },
+      { binance, memory: {} }
+    );
+    // Use dflow.nodesCatalog as dflowValidate() parameter, cause dflow adds few builtin nodes.
+    dflowValidate(dflow.nodesCatalog, view);
+    // If dflowValidate does not throw, update `nodesCatalog` with Binance nodes.
     this.nodesCatalog = nodesCatalog;
   }
 
@@ -73,6 +83,7 @@ export class BinanceDflowExecutor implements DflowExecutor {
     );
     dflow.load(view);
     await dflow.run();
-    return { balances: [], memory: {}, memoryChanged: false };
+    const { memory, memoryChanged } = dflow.context as BinanceDflowContext;
+    return { balances: [], memory, memoryChanged };
   }
 }

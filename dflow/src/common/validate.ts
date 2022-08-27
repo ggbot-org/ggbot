@@ -16,5 +16,5 @@ export const dflowValidate = (
   const unknownNodes = viewNodeKinds.filter(
     (kind) => !nodeKinds.includes(kind)
   );
-  if (unknownNodes.length) throw new ErrorUknownDflowNodes([]);
+  if (unknownNodes.length) throw new ErrorUknownDflowNodes(unknownNodes);
 };
