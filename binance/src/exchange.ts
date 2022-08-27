@@ -50,13 +50,10 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
-  async canTradeSymbol({
-    orderType,
-    symbol,
-  }: {
-    orderType: BinanceOrderType;
-    symbol: unknown;
-  }): Promise<boolean> {
+  async canTradeSymbol(
+    symbol: unknown,
+    orderType: BinanceOrderType
+  ): Promise<boolean> {
     try {
       const symbolInfo = await this.symbolInfo(symbol);
       if (!symbolInfo.orderTypes.includes(orderType)) return false;
@@ -100,7 +97,8 @@ export class BinanceExchange extends BinanceConnector {
    * @throws ErrorInvalidBinanceSymbol
    */
   async symbolInfo(symbol: unknown): Promise<BinanceSymbolInfo> {
-    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
+    if (typeof symbol !== "string") throw new ErrorInvalidBinanceSymbol(symbol);
+    const isBinanceSymbol = await this.isBinanceSymbol(symbol.toUpperCase());
     if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     const { symbols } = await this.exchangeInfo();
     const symbolInfo = symbols.find((info) => info.symbol === symbol);

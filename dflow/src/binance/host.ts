@@ -1,7 +1,7 @@
 import { DflowHost, DflowHostConstructorArg } from "dflow";
 import type { FlowViewSerializableGraph } from "flow-view";
-import { BinanceClient } from "@ggbot2/binance";
 import { DflowCommonContext } from "../common/context.js";
+import { Binance } from "./executor.js";
 
 /**
  * BinanceDflowHost extends DflowHost adding ggbot2 DflowCommonContext and
@@ -30,5 +30,5 @@ export class BinanceDflowHost extends DflowHost {
 }
 
 export type BinanceDflowContext = DflowCommonContext & {
-  binance: BinanceClient;
+  binance: Binance;
 };

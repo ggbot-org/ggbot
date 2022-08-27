@@ -1,3 +1,11 @@
+import { BinanceOrderType } from "./types.js";
+
+export class ErrorBinanceCannotTradeSymbol extends Error {
+  constructor(symbol: unknown, orderType: BinanceOrderType) {
+    super(`Binance cannot trade symbol ${symbol} with orderType ${orderType}`);
+  }
+}
+
 export class ErrorInvalidBinanceOrderOptions extends Error {
   constructor() {
     super("Invalid Binance order options");

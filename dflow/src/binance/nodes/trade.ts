@@ -17,7 +17,8 @@ export class MarketBuy extends DflowNode {
   async run() {
     const { binance } = this.host.context as Context;
     const symbol = this.input(0).data;
-    if (!binance.canTradeSymbol({ orderType: "MARKET", symbol })) return;
+    const order = await binance.newOrder(symbol, "BUY", "MARKET", {});
+    this.output(0).data = order;
   }
 }
 
@@ -25,5 +26,10 @@ export class MarketSell extends DflowNode {
   static kind = "marketSell";
   static inputs = marketOrderInputs;
   static outputs = orderOutputs;
-  async run() {}
+  async run() {
+    const { binance } = this.host.context as Context;
+    const symbol = this.input(0).data;
+    const order = await binance.newOrder(symbol, "SELL", "MARKET", {});
+    this.output(0).data = order;
+  }
 }

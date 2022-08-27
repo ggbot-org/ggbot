@@ -1,4 +1,12 @@
-import { BinanceClient } from "@ggbot2/binance";
+import {
+  BinanceAccountInformation,
+  BinanceAvgPrice,
+  BinanceExchangeInfo,
+  BinanceNewOrderOptions,
+  BinanceOrderRespFULL,
+  BinanceOrderSide,
+  BinanceOrderType,
+} from "@ggbot2/binance";
 import { StrategyFlow } from "@ggbot2/models";
 import { DflowNodesCatalog } from "dflow";
 import {
@@ -9,8 +17,29 @@ import {
 import { BinanceDflowContext, BinanceDflowHost } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 
+export interface Binance {
+  // Public API
+  // //////////////////////////////////////////////////////////////////
+
+  avgPrice(symbol: unknown): Promise<BinanceAvgPrice>;
+
+  exchangeInfo(): Promise<BinanceExchangeInfo>;
+
+  // Private API
+  // //////////////////////////////////////////////////////////////////
+
+  account(): Promise<BinanceAccountInformation>;
+
+  newOrder(
+    symbol: unknown,
+    side: BinanceOrderSide,
+    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<BinanceOrderRespFULL>;
+}
+
 export class BinanceDflowExecutor implements DflowExecutor {
-  readonly binance: BinanceClient;
+  readonly binance: Binance;
   readonly view: StrategyFlow["view"];
   nodesCatalog: DflowNodesCatalog;
   constructor({

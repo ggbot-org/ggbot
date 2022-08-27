@@ -17,7 +17,7 @@ export type BinanceAccountInformation = {
 export type BinanceAccountTrade = {
   symbol: string;
   id: number;
-  orderId: string;
+  orderId: number;
   orderListId: number;
   price: string;
   qty: string;
@@ -103,7 +103,7 @@ export type BinanceExchangeInfo = {
 export type BinanceFill = Pick<
   BinanceAccountTrade,
   "price" | "qty" | "commission" | "commissionAsset"
->;
+> & { tradeId: BinanceAccountTrade["id"] };
 
 export const binanceKlineIntervals = [
   "1m",
@@ -127,44 +127,47 @@ export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
   binanceKlineIntervals
 );
 
-export type BinanceNewOrder<BinanceOrderRespType> =
-  BinanceOrderRespType extends "ACK"
-    ? BinanceOrderRespACK
-    : BinanceOrderRespType extends "FULL"
-    ? BinanceOrderRespFULL
-    : BinanceOrderRespType extends "RESULT"
-    ? BinanceOrderRespRESULT
-    : never;
-
 export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;
-  quantity: number;
-  quoteOrderQty: number;
-  price: number;
-  newClientOrderId: string;
-  stopPrice: number;
-  icebergQty: number;
-  newOrderRespType: BinanceOrderRespType;
-  recvWindow: number;
-}>;
 
-export type BinanceNewOrderOptionsWithRespType<
-  RespType extends BinanceOrderRespType
-> = Partial<{
-  timeInForce: BinanceTimeInForce;
   quantity: number;
+
   quoteOrderQty: number;
+
   price: number;
+
+  /**
+   * A unique id among open orders. Automatically generated if not sent.
+   */
   newClientOrderId: string;
+
+  /**
+   * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders.
+   */
   stopPrice: number;
+
+  /**
+   * Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an iceberg order.
+   */
   icebergQty: number;
-  newOrderRespType: RespType;
+
+  /**
+   * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders. For more details on SPOT implementation on trailing stops, please refer to {@link https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md|Trailing Stop FAQ}
+   */
+  trailingDelta: number;
+
+  /**
+   * Set the response JSON. ACK, RESULT, or FULL;
+   * MARKET and LIMIT order types default to FULL, all other orders default to ACK.
+   */
+  newOrderRespType: BinanceOrderRespType;
+
   recvWindow: number;
 }>;
 
 export type BinanceOrder = {
   symbol: string;
-  orderId: string;
+  orderId: number;
   orderListId: number;
   clientOrderId: string;
   price: string;

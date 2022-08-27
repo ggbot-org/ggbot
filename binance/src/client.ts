@@ -1,10 +1,10 @@
 import { createHmac } from "crypto";
-import { Binance } from "./binance.js";
 import {
   BinanceConnectorConstructorArg,
   BinanceConnectorRequestArg,
 } from "./connector.js";
 import {
+  ErrorBinanceCannotTradeSymbol,
   ErrorInvalidBinanceOrderOptions,
   ErrorInvalidBinanceOrderSide,
   ErrorInvalidBinanceOrderType,
@@ -14,18 +14,19 @@ import {
   BinanceAccountInformation,
   BinanceApiKeyPermission,
   BinanceNewOrderOptions,
-  BinanceNewOrder,
+  BinanceOrderRespACK,
+  BinanceOrderRespFULL,
+  BinanceOrderSide,
+  BinanceOrderType,
   isBinanceOrderSide,
   isBinanceOrderType,
-  BinanceNewOrderOptionsWithRespType,
-  BinanceOrderRespType,
 } from "./types.js";
 
 /**
  * BinanceClient implements private API requests.
  * It extends BinanceExchange to be able to use also some public API requests.
  */
-export class BinanceClient extends BinanceExchange implements Binance {
+export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
 
@@ -64,6 +65,11 @@ export class BinanceClient extends BinanceExchange implements Binance {
     });
   }
 
+  /**
+   * Account Information (USER_DATA)
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
+   */
   async account(): Promise<BinanceAccountInformation> {
     const { balances, ...rest } =
       await this._privateRequest<BinanceAccountInformation>(
@@ -93,28 +99,23 @@ export class BinanceClient extends BinanceExchange implements Binance {
   }
 
   /**
-   * @throws ErrorInvalidBinanceOrderOptions
-   * @throws ErrorInvalidBinanceOrderSide
-   * @throws ErrorInvalidBinanceOrderType
-   * @throws ErrorInvalidBinanceSymbol
+   * Send in a new MARKET or LIMIT order.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
-  async newOrder<RespType extends BinanceOrderRespType>(
-    symbol: string,
-    side: string,
-    type: string,
-    orderOptions: BinanceNewOrderOptionsWithRespType<RespType>
-  ): Promise<BinanceNewOrder<RespType>> {
-    if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
-    if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
-
-    const symbolInfo = await this.symbolInfo(symbol);
-    const options = BinanceExchange.filterOrderOptions(
-      symbolInfo,
+  async newOrder(
+    symbolInput: unknown,
+    side: BinanceOrderSide,
+    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<BinanceOrderRespFULL> {
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
+      side,
+      type,
       orderOptions
     );
-    if (!options) throw new ErrorInvalidBinanceOrderOptions();
-
-    return await this._privateRequest<BinanceNewOrder<RespType>>(
+    return await this._privateRequest<BinanceOrderRespFULL>(
       "GET",
       "/api/v3/order",
       {
@@ -124,6 +125,124 @@ export class BinanceClient extends BinanceExchange implements Binance {
         ...options,
       }
     );
+  }
+
+  /**
+   * Test a new MARKET or LIMIT order.
+   * Binance API will validates new order but will not send it into the matching engine.
+   *
+   * Parameters are the same as `newOrder`.
+   */
+  async newOrderTest(
+    symbolInput: unknown,
+    side: BinanceOrderSide,
+    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<BinanceOrderRespFULL> {
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
+      side,
+      type,
+      orderOptions
+    );
+    return await this._privateRequest<BinanceOrderRespFULL>(
+      "GET",
+      "/api/v3/order/test",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
+  }
+
+  /**
+   * Send in a new order with type other than MARKET or LIMIT order.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+   */
+  async newOrderACK(
+    symbolInput: unknown,
+    side: BinanceOrderSide,
+    type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<BinanceOrderRespACK> {
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
+      side,
+      type,
+      orderOptions
+    );
+    return await this._privateRequest<BinanceOrderRespACK>(
+      "GET",
+      "/api/v3/order",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
+  }
+
+  /**
+   * Test a new order with type other than MARKET or LIMIT order.
+   * Binance API will validates new order but will not send it into the matching engine.
+   *
+   * Parameters are the same as `newOrderACK`.
+   */
+  async newOrderACKTest(
+    symbolInput: unknown,
+    side: BinanceOrderSide,
+    type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<BinanceOrderRespACK> {
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
+      side,
+      type,
+      orderOptions
+    );
+    return await this._privateRequest<BinanceOrderRespACK>(
+      "GET",
+      "/api/v3/order/test",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
+  }
+
+  /**
+   * Validate order parameters and try to adjust them; otherwise it throws an error.
+   *
+   * @throws ErrorBinanceCannotTradeSymbol
+   * @throws ErrorInvalidBinanceOrderOptions
+   * @throws ErrorInvalidBinanceOrderSide
+   * @throws ErrorInvalidBinanceOrderType
+   * @throws ErrorInvalidBinanceSymbol
+   */
+  async prepareOrder(
+    symbolInput: unknown,
+    side: BinanceOrderSide,
+    type: BinanceOrderType,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
+    if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
+    if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
+    if (!this.canTradeSymbol(symbolInput, type))
+      throw new ErrorBinanceCannotTradeSymbol(symbolInput, type);
+
+    const symbolInfo = await this.symbolInfo(symbolInput);
+    const options = BinanceExchange.filterOrderOptions(
+      symbolInfo,
+      orderOptions
+    );
+    if (!options) throw new ErrorInvalidBinanceOrderOptions();
+    return { options, symbol: symbolInfo.symbol };
   }
 }
 

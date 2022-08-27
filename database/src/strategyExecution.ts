@@ -1,12 +1,5 @@
-import {
-  BinanceClient,
-  BinanceConnector,
-} from "@ggbot2/binance";
-import {
-  BinanceDflowContext,
-  BinanceDflowExecutor,
-  BinanceDflowHost,
-} from "@ggbot2/dflow";
+import { BinanceClient, BinanceConnector } from "@ggbot2/binance";
+import { BinanceDflowExecutor } from "@ggbot2/dflow";
 import {
   DeleteStrategyExecution,
   ExecuteStrategy,
@@ -59,20 +52,21 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       const binance = new BinanceClient({ baseUrl, ...binanceApiConfig });
 
-      const executor = new BinanceDflowExecutor({ binance, view: strategyFlow.view})
-       await executor.prepare()
-      const result = await executor.run({memory})
-
+      const executor = new BinanceDflowExecutor({
+        binance,
+        view: strategyFlow.view,
+      });
+      await executor.prepare();
+      const result = await executor.run({ memory });
 
       // Handle memory changes
       if (result.memoryChanged) {
-          await writeStrategyMemory({
-            accountId,
-            strategyKind,
-            strategyId,
-            memory: result.memory,
-          });
-        }
+        await writeStrategyMemory({
+          accountId,
+          strategyKind,
+          strategyId,
+          memory: result.memory,
+        });
       }
 
       return {
@@ -80,7 +74,6 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         ...updatedNow(),
       };
     }
-
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {
     console.error(error);
