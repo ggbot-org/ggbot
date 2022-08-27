@@ -7,20 +7,18 @@ import {
   div,
   numOfDecimals,
 } from "../../arithmetic.js";
+import {
+  inputPeriod,
+  inputValues,
+  outputLastValue,
+  outputValues,
+} from "./commonIO.js";
 
 type MovingAverageFunc = (values: number[], period: number) => number[];
 
-const { input, output } = DflowNode;
+const movingAverageInputs = [inputValues, inputPeriod];
 
-const movingAverageInputs = [
-  input("array", { name: "values" }),
-  input("number", { name: "period" }),
-];
-
-const movingAverageOutputs = [
-  output("array", { name: "values" }),
-  output("number", { name: "last" }),
-];
+const movingAverageOutputs = [outputValues, outputLastValue];
 
 export const ema: MovingAverageFunc = (values, period) => {
   if (values.length < period) return [];
