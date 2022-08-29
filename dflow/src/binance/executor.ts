@@ -38,10 +38,20 @@ export interface Binance {
   ): Promise<BinanceOrderRespFULL>;
 }
 
-export class BinanceDflowExecutor implements DflowExecutor {
+type BinanceDflowExecutorRunInput = Pick<DflowCommonContext, "memory">;
+type BinanceDflowExecutorRunOutput = Pick<
+  DflowCommonContext,
+  "memory" | "memoryChanged"
+> & { balances: Binance[] };
+
+export class BinanceDflowExecutor
+  implements
+    DflowExecutor<BinanceDflowExecutorRunInput, BinanceDflowExecutorRunOutput>
+{
   readonly binance: Binance;
   readonly view: StrategyFlow["view"];
   nodesCatalog: DflowNodesCatalog;
+
   constructor({
     binance,
     view,
