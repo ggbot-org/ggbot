@@ -1,3 +1,4 @@
+import { Addition } from "./nodes/arithmetic.js";
 import { DeleteMemory, GetMemory } from "./nodes/memory.js";
 import { Now } from "./nodes/time.js";
 import {
@@ -6,6 +7,8 @@ import {
 } from "./nodes/indicators/movingAverages.js";
 
 export const nodesCatalog = {
+  // arithmetic
+  [Addition.kind]: Addition,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,
