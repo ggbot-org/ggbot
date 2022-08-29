@@ -17,8 +17,6 @@ describe("BinanceDflowHost", () => {
           {
             id: "a",
             text: "BTC/BUSD",
-            x: 0,
-            y: 0,
           },
         ],
       });

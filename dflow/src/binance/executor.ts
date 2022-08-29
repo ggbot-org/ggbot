@@ -7,13 +7,15 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { StrategyFlow } from "@ggbot2/models";
 import { DflowNodesCatalog } from "dflow";
 import {
-  DflowCommonContext,
+  DflowCommonExecutorInput,
+  DflowCommonExecutorOutput,
   DflowExecutor,
-  dflowValidate,
-} from "../common/index.js";
+  DflowExecutorView,
+} from "../common/executor.js";
+import { dflowValidate } from "../common/validate.js";
+import { ErrorMissingDflowExecutionReport } from "../errors.js";
 import { BinanceDflowContext, BinanceDflowHost } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 
@@ -38,24 +40,23 @@ export interface Binance {
   ): Promise<BinanceOrderRespFULL>;
 }
 
-type BinanceDflowExecutorRunInput = Pick<DflowCommonContext, "memory">;
-type BinanceDflowExecutorRunOutput = Pick<
-  DflowCommonContext,
-  "memory" | "memoryChanged"
-> & { balances: Binance[] };
+type BinanceDflowExecutorRunInput = DflowCommonExecutorInput;
+type BinanceDflowExecutorRunOutput = DflowCommonExecutorOutput & {
+  balances: Binance[];
+};
 
 export class BinanceDflowExecutor
   implements
     DflowExecutor<BinanceDflowExecutorRunInput, BinanceDflowExecutorRunOutput>
 {
   readonly binance: Binance;
-  readonly view: StrategyFlow["view"];
+  readonly view: DflowExecutorView;
   nodesCatalog: DflowNodesCatalog;
 
   constructor({
     binance,
     view,
-  }: Pick<BinanceDflowContext, "binance"> & Pick<StrategyFlow, "view">) {
+  }: Pick<BinanceDflowExecutor, "binance" | "view">) {
     this.binance = binance;
     this.view = view;
     this.nodesCatalog = {};
@@ -64,7 +65,7 @@ export class BinanceDflowExecutor
   /**
    * Populate nodesCatalog, validate view. Run it once, before `run()`
    *
-   * @throws ErrorUknownDflowNodes
+   * @throws {ErrorUknownDflowNodes}
    */
   async prepare() {
     const { binance, view } = this;
@@ -85,7 +86,7 @@ export class BinanceDflowExecutor
   /**
    * Execute flow on given context.
    */
-  async run(context: Pick<DflowCommonContext, "memory">) {
+  async run(context: BinanceDflowExecutorRunInput) {
     const { binance, nodesCatalog, view } = this;
     const dflow = new BinanceDflowHost(
       { nodesCatalog },
@@ -93,7 +94,9 @@ export class BinanceDflowExecutor
     );
     dflow.load(view);
     await dflow.run();
+    const execution = dflow.executionReport;
+    if (!execution) throw new ErrorMissingDflowExecutionReport();
     const { memory, memoryChanged } = dflow.context as BinanceDflowContext;
-    return { balances: [], memory, memoryChanged };
+    return { balances: [], execution, memory, memoryChanged };
   }
 }

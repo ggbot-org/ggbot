@@ -1,4 +1,4 @@
-import { StrategyMemory } from "@ggbot2/models";
+import type { JsonObject } from "type-fest";
 
 /**
  * DflowCommonContext to be shared among all dflow host implementations.
@@ -22,7 +22,7 @@ export type DflowCommonContext = {
   /**
    * Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
    */
-  memory: StrategyMemory["memory"];
+  memory: JsonObject;
 
   /**
    * The `memoryChanged` attribute is set to true by memory nodes

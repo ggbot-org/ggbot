@@ -1,5 +1,5 @@
 import { DflowHost, DflowErrorItemNotFound } from "dflow";
-import type { FlowViewSerializableGraph } from "flow-view";
+import { DflowExecutorView } from "./executor.js";
 
 /**
  * A DflowHost that can load a FlowView graph.
@@ -10,21 +10,21 @@ import type { FlowViewSerializableGraph } from "flow-view";
  * import { DflowLoader, load } from "../path/to/loader.js";
  *
  * class MyDflowHost extends DflowHost implements DflowLoader {
- *   load(view: FlowViewSerializableGraph): void {
+ *   load(view: DflowExecutorView): void {
  *     load(view, this);
  *   }
  * }
  * ```
  */
 export interface DflowLoader extends DflowHost {
-  load(view: FlowViewSerializableGraph): void;
+  load(view: DflowExecutorView): void;
 }
 
 /**
  * Parse view and load it as a Dflow graph.
  * Unknown nodes and broken connections are ignored.
  */
-export function load(view: FlowViewSerializableGraph, dflow: DflowLoader) {
+export function load(view: DflowExecutorView, dflow: DflowLoader) {
   const nodeKinds = Object.keys(dflow.nodesCatalog);
 
   // Create nodes.

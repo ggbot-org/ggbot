@@ -1,6 +1,6 @@
 import { DflowHost, DflowHostConstructorArg } from "dflow";
-import type { FlowViewSerializableGraph } from "flow-view";
 import { DflowCommonContext } from "../common/context.js";
+import { DflowExecutorView } from "../common/executor.js";
 import { DflowLoader, load } from "../common/loader.js";
 import { Binance } from "./executor.js";
 
@@ -24,7 +24,7 @@ export class BinanceDflowHost extends DflowHost implements DflowLoader {
     this.context.memoryChanged = false;
   }
 
-  load(view: FlowViewSerializableGraph): void {
+  load(view: DflowExecutorView): void {
     load(view, this);
   }
 }

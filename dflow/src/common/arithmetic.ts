@@ -41,7 +41,7 @@ const maxNumOfDecimals = (a: Decimal, b: Decimal): number =>
   Math.max(numOfDecimals(a), numOfDecimals(b));
 
 /**
- * @throws ErrorArithmeticOperationInvalidDecimal
+ * @throws {ErrorArithmeticOperationInvalidDecimal}
  */
 export const coerceToDecimal = (
   value: unknown,
@@ -73,7 +73,7 @@ export const mul: ArithmeticOperation = (a, b) =>
   coerceToDecimal(Number(a) * Number(b), maxNumOfDecimals(a, b));
 
 /**
- * @throws ErrorArithmeticOperationCannotDivideByZero
+ * @throws {ErrorArithmeticOperationCannotDivideByZero}
  */
 export const div: ArithmeticOperation = (a, b) => {
   if (equal(b, coerceToDecimal(0, numOfDecimals(b))))
