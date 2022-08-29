@@ -34,7 +34,7 @@ export class BinanceExchange extends BinanceConnector {
    *
    * {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
    *
-   * @throws ErrorInvalidBinanceSymbol
+   * @throws {ErrorInvalidBinanceSymbol}
    */
   async avgPrice(symbol: unknown): Promise<BinanceAvgPrice> {
     const isBinanceSymbol = await this.isBinanceSymbol(symbol);
@@ -94,7 +94,7 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * @throws ErrorInvalidBinanceSymbol
+   * @throws {ErrorInvalidBinanceSymbol}
    */
   async symbolInfo(symbol: unknown): Promise<BinanceSymbolInfo> {
     if (typeof symbol !== "string") throw new ErrorInvalidBinanceSymbol(symbol);

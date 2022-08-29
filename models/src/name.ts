@@ -17,8 +17,8 @@ export const isName = (value: unknown): value is Name => {
 };
 
 /**
- * @throws ErrorInvalidName
- * @throws ErrorNameToLong
+ * @throws {ErrorInvalidName}
+ * @throws {ErrorNameToLong}
  */
 export const throwIfInvalidName = (value: unknown): void => {
   if (typeof value !== "string") throw new ErrorInvalidName(value);

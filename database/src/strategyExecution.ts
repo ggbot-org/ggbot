@@ -25,8 +25,8 @@ import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
  *
  * It can point to the actual exchange or simulate an execution with a given balance or at a given time.
  *
- * @throws ErrorMissingBinanceApiConfig
- * @throws ErrorUnimplementedStrategyKind
+ * @throws {ErrorMissingBinanceApiConfig}
+ * @throws {ErrorUnimplementedStrategyKind}
  */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,

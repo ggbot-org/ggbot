@@ -52,7 +52,7 @@ export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = async (
 };
 
 /**
- * @throws ErrorMissingBinanceApiConfig
+ * @throws {ErrorMissingBinanceApiConfig}
  */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
   async ({ accountId }) => {

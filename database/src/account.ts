@@ -79,9 +79,9 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
 };
 
 /**
- * @throws ErrorInvalidName
- * @throws ErrorMissingAccountId
- * @throws ErrorNameToLong
+ * @throws {ErrorInvalidName}
+ * @throws {ErrorMissingAccountId}
+ * @throws {ErrorNameToLong}
  */
 export const renameAccount: RenameAccount["func"] = async ({
   accountId,

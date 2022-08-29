@@ -100,8 +100,8 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
 };
 
 /**
- * @throws ErrorInvalidName
- * @throws ErrorNameToLong
+ * @throws {ErrorInvalidName}
+ * @throws {ErrorNameToLong}
  */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
@@ -129,7 +129,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
 };
 
 /**
- * @throws ErrorPermissionDeniedCannotDeleteStrategy
+ * @throws {ErrorPermissionDeniedCannotDeleteStrategy}
  */
 export const deleteStrategy: DeleteStrategy["func"] = async (
   accountStrategyKey

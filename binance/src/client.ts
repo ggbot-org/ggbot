@@ -219,11 +219,11 @@ export class BinanceClient extends BinanceExchange {
   /**
    * Validate order parameters and try to adjust them; otherwise it throws an error.
    *
-   * @throws ErrorBinanceCannotTradeSymbol
-   * @throws ErrorInvalidBinanceOrderOptions
-   * @throws ErrorInvalidBinanceOrderSide
-   * @throws ErrorInvalidBinanceOrderType
-   * @throws ErrorInvalidBinanceSymbol
+   * @throws {ErrorBinanceCannotTradeSymbol}
+   * @throws {ErrorInvalidBinanceOrderOptions}
+   * @throws {ErrorInvalidBinanceOrderSide}
+   * @throws {ErrorInvalidBinanceOrderType}
+   * @throws {ErrorInvalidBinanceSymbol}
    */
   async prepareOrder(
     symbolInput: unknown,
