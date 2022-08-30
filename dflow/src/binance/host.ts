@@ -5,8 +5,8 @@ import { DflowLoader, load } from "../common/loader.js";
 import { Binance } from "./executor.js";
 
 /**
- * BinanceDflowHost extends DflowHost adding ggbot2 DflowCommonContext and
- * instances of BinanceClient and BinanceExchange.
+ * BinanceDflowHost extends DflowHost adding ggbot2 DflowCommonContext
+ * and an instance of Binance client.
  */
 export class BinanceDflowHost extends DflowHost implements DflowLoader {
   constructor(

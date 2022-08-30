@@ -15,6 +15,59 @@ type GetDflowBinanceNodesCatalog = (_: {
 /**
  * Creates a dynamic set of dflow nodes generated according to Binance definitions", () => {
  */
+export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
+  async ({ binance }) => {
+    const klineIntervalNodes = binanceKlineIntervals.reduce(
+      (catalog, klineInterval) => {
+        class NodeClass extends DflowNode {
+          static kind = klineInterval;
+          static outputs = [
+            output("string", {
+              name: "interval",
+              data: klineInterval,
+            }),
+          ];
+        }
+        return { ...catalog, [NodeClass.kind]: NodeClass };
+      },
+      {}
+    );
+
+    const { symbols } = await binance.exchangeInfo();
+
+    const symbolNodes = symbols
+      .filter(
+        // Most of the Binance symbols has precision 8. Others are edge case markets.
+        ({
+          baseAssetPrecision,
+          baseCommissionPrecision,
+          quoteAssetPrecision,
+          quotePrecision,
+        }) =>
+          baseAssetPrecision === binanceWantedPrecision &&
+          baseCommissionPrecision === binanceWantedPrecision &&
+          quoteAssetPrecision === binanceWantedPrecision &&
+          quotePrecision === binanceWantedPrecision
+      )
+      .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
+        class NodeClass extends DflowNode {
+          static kind = `${baseAsset}/${quoteAsset}`;
+          static outputs = [
+            output("string", {
+              name: "symbol",
+              data: symbol,
+            }),
+          ];
+        }
+        return { ...catalog, [NodeClass.kind]: NodeClass };
+      }, {});
+
+    return {
+      ...klineIntervalNodes,
+      ...symbolNodes,
+    };
+  };
+
 export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
   binance,
 }) => {
@@ -27,54 +80,10 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
     ...commonNodesCatalog,
   };
 
-  const klineIntervalNodes = binanceKlineIntervals.reduce(
-    (catalog, klineInterval) => {
-      class NodeClass extends DflowNode {
-        static kind = klineInterval;
-        static outputs = [
-          output("string", {
-            name: "interval",
-            data: klineInterval,
-          }),
-        ];
-      }
-      return { ...catalog, [NodeClass.kind]: NodeClass };
-    },
-    {}
-  );
-
-  const { symbols } = await binance.exchangeInfo();
-
-  const symbolNodes = symbols
-    .filter(
-      // Most of the Binance symbols has precision 8. Others are edge case markets.
-      ({
-        baseAssetPrecision,
-        baseCommissionPrecision,
-        quoteAssetPrecision,
-        quotePrecision,
-      }) =>
-        baseAssetPrecision === binanceWantedPrecision &&
-        baseCommissionPrecision === binanceWantedPrecision &&
-        quoteAssetPrecision === binanceWantedPrecision &&
-        quotePrecision === binanceWantedPrecision
-    )
-    .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
-      class NodeClass extends DflowNode {
-        static kind = `${baseAsset}/${quoteAsset}`;
-        static outputs = [
-          output("string", {
-            name: "symbol",
-            data: symbol,
-          }),
-        ];
-      }
-      return { ...catalog, [NodeClass.kind]: NodeClass };
-    }, {});
+  const dynamicNodes = await getDflowBinanceDynamicNodesCatalog({ binance });
 
   return {
-    ...klineIntervalNodes,
+    ...dynamicNodes,
     ...staticNodes,
-    ...symbolNodes,
   };
 };

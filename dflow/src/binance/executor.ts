@@ -63,8 +63,12 @@ export class BinanceDflowExecutor
   }
 
   /**
-   * Populate nodesCatalog, validate view. Run it once, before `run()`
-   *
+   * Populate nodesCatalog, validate view. Run it once, before `run()`.
+   * @example
+   * ```ts
+   * await dflow.prepare();
+   * await dflow.run({ memory: {} });
+   * ```
    * @throws {ErrorUknownDflowNodes}
    */
   async prepare() {
@@ -85,6 +89,7 @@ export class BinanceDflowExecutor
 
   /**
    * Execute flow on given context.
+   * @throws {ErrorMissingDflowExecutionReport}
    */
   async run(context: BinanceDflowExecutorRunInput) {
     const { binance, nodesCatalog, view } = this;
