@@ -53,7 +53,7 @@ export default async function apiHandler(
 
     const oneTimePasswordCode = normalizeOneTimePassword(code);
     const storedOneTimePassword = await readOneTimePassword(email);
-    if (!storedOneTimePassword) return res.status(__204__NO_CONTENT__).json({});
+    if (!storedOneTimePassword) return res.status(__204__NO_CONTENT__).end();
 
     const verified = oneTimePasswordCode === storedOneTimePassword.code;
 
