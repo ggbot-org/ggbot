@@ -43,7 +43,7 @@ export function load(view: DflowExecutorView, dflow: DflowLoader) {
         }
       }
 
-      // By default create a Dflow node with `kind` given by view `text`.
+      // By default create a Dflow node with `kind` given by `text`.
       default: {
         if (nodeKinds.includes(text)) {
           const NodeClass = dflow.nodesCatalog[text];
