@@ -41,7 +41,11 @@ export const getDevopsPolicyArn = () => {
 export const getDevopsPolicyStatements = () => [
   {
     Effect: "Allow",
-    Action: ["elasticloadbalancing:DescribeLoadBalancers", "iam:GetPolicy"],
+    Action: [
+      "ec2:DescribeAddresses",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "iam:GetPolicy",
+    ],
     Resource: "*",
   },
   {
@@ -77,8 +81,8 @@ export const getSesNoreplyPolicyArn = (deployStage = defaultDeployStage) => {
 export const getSesNoreplyPolicyStatements = () => [
   {
     Effect: "Allow",
-    Action: ["elasticloadbalancing:DescribeLoadBalancers", "iam:GetPolicy"],
-    Resource: getSesIdentityArn(),
+    Action: ["SES:SendEmail", "SES:SendRawEmail"],
+    Resource: cross.sesIdentityArn,
   },
 ];
 

@@ -4,6 +4,7 @@ import { LoadBalancerStatus } from "./_elb.js";
 import { IamPolicyStatus } from "./_iam.js";
 import { S3BucketStatus } from "./_s3.js";
 import { TaskOptions } from "./_task.js";
+import { ElasticIpStatus, getElasticIps } from "./elasticIp.js";
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js";
 import { getDevopsPolicyStatus } from "./iam-devops.js";
 import { getSesNoreplyPolicyStatus } from "./iam-sesNoreply.js";
@@ -25,6 +26,15 @@ type TaskStatus = (options: TaskOptions) => Promise<{
   // ELB
   webappLoadBalancer: LoadBalancerStatus;
 }>;
+
+const elasticIpsReport = (reportKey: string, elasticIps: ElasticIpStatus[]) => {
+  for (const elasticIp of elasticIps) {
+    const { PublicIp } = elasticIp;
+    console.info(reportKey, PublicIp, "exists", OK(elasticIp.exists));
+    if (elasticIp.InstanceId)
+      console.info(reportKey, PublicIp, "InstanceId", elasticIp.InstanceId);
+  }
+};
 
 const iamPolicyReport = (reportKey: string, iamPolicy: IamPolicyStatus) => {
   console.info(reportKey, "hasProjectTag", OK(iamPolicy.hasProjectTag));
@@ -81,6 +91,13 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
 
   const webappLoadBalancer = await getWebappLoadBalancerStatus();
   if (verbose) loadBalancerReport("webappLoadBalancer", webappLoadBalancer);
+
+  // //////////////////////////////////////////////////////////////////
+  if (verbose) console.info("EC2");
+  // //////////////////////////////////////////////////////////////////
+
+  const elasticIps = await getElasticIps();
+  if (verbose) elasticIpsReport("elasticIp", elasticIps);
 
   // //////////////////////////////////////////////////////////////////
   return {
