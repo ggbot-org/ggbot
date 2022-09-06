@@ -51,6 +51,12 @@ export const useApiAction = {
     useAction<ApiAction["COPY_STRATEGY"]["out"]>(
       data ? { type: "COPY_STRATEGY", data } : null
     ),
+  CREATE_BINANCE_API_CONFIG: (
+    data?: ApiAction["CREATE_BINANCE_API_CONFIG"]["in"]
+  ) =>
+    useAction<ApiAction["CREATE_BINANCE_API_CONFIG"]["out"]>(
+      data ? { type: "CREATE_BINANCE_API_CONFIG", data } : null
+    ),
   CREATE_STRATEGY: (data?: ApiAction["CREATE_STRATEGY"]["in"]) =>
     useAction<ApiAction["CREATE_STRATEGY"]["out"]>(
       data ? { type: "CREATE_STRATEGY", data } : null
@@ -66,6 +72,10 @@ export const useApiAction = {
   READ_ACCOUNT_STRATEGY_LIST: () =>
     useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>({
       type: "READ_ACCOUNT_STRATEGY_LIST",
+    }),
+  READ_BINANCE_API_CONFIG: () =>
+    useAction<ApiAction["READ_BINANCE_API_CONFIG"]["out"]>({
+      type: "READ_BINANCE_API_CONFIG",
     }),
   READ_STRATEGY: (data?: ApiAction["READ_STRATEGY"]["in"]) =>
     useAction<ApiAction["READ_STRATEGY"]["out"]>(

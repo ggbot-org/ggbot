@@ -1,8 +1,11 @@
 import {
   copyStrategy,
+  createBinanceApiConfig,
   createStrategy,
   deleteStrategy,
+  readAccount,
   readAccountStrategyList,
+  readBinanceApiConfig,
   readStrategy,
   readStrategyFlow,
   renameAccount,
@@ -17,13 +20,16 @@ import {
 } from "@ggbot2/http-status-codes";
 import type {
   AccountKey,
+  BinanceApiConfig,
   CopyStrategy,
+  CreateBinanceApiConfig,
   CreateStrategy,
   DeleteStrategy,
   OperationInput,
   OperationOutput,
   ReadAccount,
   ReadAccountStrategyList,
+  ReadBinanceApiConfig,
   ReadStrategy,
   ReadStrategyFlow,
   RenameAccount,
@@ -47,12 +53,20 @@ type Action<Input, Output> = {
 
 export type ApiAction = {
   COPY_STRATEGY: Action<CopyStrategy["in"], CopyStrategy["out"]>;
+  CREATE_BINANCE_API_CONFIG: Action<
+    CreateBinanceApiConfig["in"],
+    CreateBinanceApiConfig["out"]
+  >;
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
   READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
     ReadAccountStrategyList["out"]
+  >;
+  READ_BINANCE_API_CONFIG: Action<
+    ReadBinanceApiConfig["in"],
+    Pick<BinanceApiConfig, "apiKey"> | undefined
   >;
   READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
@@ -88,6 +102,14 @@ export default async function apiHandler(
         return res.status(__200__OK__).json({ data });
       }
 
+      case "CREATE_BINANCE_API_CONFIG": {
+        const data = await createBinanceApiConfig({
+          accountId,
+          ...action.data,
+        });
+        return res.status(__200__OK__).json({ data });
+      }
+
       case "CREATE_STRATEGY": {
         const data = await createStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
@@ -98,6 +120,11 @@ export default async function apiHandler(
         return res.status(__200__OK__).json({ data });
       }
 
+      case "READ_ACCOUNT": {
+        const data = await readAccount({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
       case "READ_ACCOUNT_STRATEGY_LIST": {
         const data = await readAccountStrategyList({ accountId });
         return res.status(__200__OK__).json({ data });
@@ -106,6 +133,15 @@ export default async function apiHandler(
       case "READ_ACCOUNT_STRATEGY_LIST": {
         const data = await readAccountStrategyList({ accountId });
         return res.status(__200__OK__).json({ data });
+      }
+
+      case "READ_BINANCE_API_CONFIG": {
+        const data = await readBinanceApiConfig({ accountId });
+        const apiKey = data?.apiKey;
+        return res.status(__200__OK__).json({
+          // Do not expose apiSecret.
+          data: apiKey ? { apiKey } : data,
+        });
       }
 
       case "READ_STRATEGY": {

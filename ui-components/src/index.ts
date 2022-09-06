@@ -3,6 +3,7 @@ export * from "./Calendar";
 export * from "./DateTime";
 export * from "./EditableInput";
 export * from "./Field";
+export * from "./Fieldset";
 export * from "./Icon";
 export * from "./Input";
 export * from "./Logo";
