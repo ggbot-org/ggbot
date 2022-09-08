@@ -29,29 +29,17 @@ export const StrategyItem: FC<StrategyItemProps> = ({
 }) => {
   const router = useRouter();
 
-  const onClickFlow = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.editFlowPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickFlow = useCallback(() => {
+    router.push(route.editFlowPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickManage = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.strategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickManage = useCallback(() => {
+    router.push(route.strategyPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickCopy = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickCopy = useCallback(() => {
+    router.push(route.copyStrategyPage(strategyKey));
+  }, [router, strategyKey]);
 
   return (
     <div className="flex flex-col p-2 rounded shadow gap-4 transition-all hover:shadow-md">

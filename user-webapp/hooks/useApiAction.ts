@@ -93,4 +93,8 @@ export const useApiAction = {
     useAction<ApiAction["RENAME_STRATEGY"]["out"]>(
       data ? { type: "RENAME_STRATEGY", data } : null
     ),
+  WRITE_STRATEGY_FLOW: (data?: ApiAction["WRITE_STRATEGY_FLOW"]["in"]) =>
+    useAction<ApiAction["WRITE_STRATEGY_FLOW"]["out"]>(
+      data ? { type: "WRITE_STRATEGY_FLOW", data } : null
+    ),
 };

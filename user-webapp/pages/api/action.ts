@@ -10,6 +10,7 @@ import {
   readStrategyFlow,
   renameAccount,
   renameStrategy,
+  writeStrategyFlow,
 } from "@ggbot2/database";
 import {
   __200__OK__,
@@ -34,6 +35,7 @@ import type {
   ReadStrategyFlow,
   RenameAccount,
   RenameStrategy,
+  WriteStrategyFlow,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
@@ -72,6 +74,10 @@ export type ApiAction = {
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
   RENAME_ACCOUNT: Action<RenameAccount["in"], RenameAccount["out"]>;
   RENAME_STRATEGY: Action<RenameStrategy["in"], RenameStrategy["out"]>;
+  WRITE_STRATEGY_FLOW: Action<
+    WriteStrategyFlow["in"],
+    WriteStrategyFlow["out"]
+  >;
 };
 
 type ApiActionType = keyof ApiAction;
@@ -161,6 +167,11 @@ export default async function apiHandler(
 
       case "RENAME_STRATEGY": {
         const data = await renameStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "WRITE_STRATEGY_FLOW": {
+        const data = await writeStrategyFlow({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 

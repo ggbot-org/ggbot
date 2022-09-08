@@ -2,7 +2,7 @@ import { isName, normalizeName } from "@ggbot2/models";
 import { Button, DateTime, EditableInput } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { SyntheticEvent, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   ButtonShareStrategy,
   Content /*SchedulingStatusBadge*/,
@@ -38,29 +38,17 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     return false;
   }, [name, renameIsLoading]);
 
-  const onClickFlow = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.editFlowPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickFlow = useCallback(() => {
+    router.push(route.editFlowPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickCopy = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickCopy = useCallback(() => {
+    router.push(route.copyStrategyPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickDelete = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.deleteStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickDelete = useCallback(() => {
+    router.push(route.deleteStrategyPage(strategyKey));
+  }, [router, strategyKey]);
 
   const setName = useCallback<(value: unknown) => void>(
     (value) => {
@@ -102,9 +90,6 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
               value={name}
             />
           </div>
-          {/*
-          <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
-          */}
         </div>
 
         <menu className="flex flex-row overflow-x-scroll gap-4">

@@ -1,7 +1,7 @@
 import { Button } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { SyntheticEvent, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { ButtonShareStrategy, Content } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
 import { StrategyInfo, getStrategyInfo, route } from "_routing";
@@ -26,21 +26,13 @@ const Page: NextPage<ServerSideProps> = ({
     flowView ? strategyKey : undefined
   );
 
-  const onClickCopy = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickCopy = useCallback(() => {
+    router.push(route.copyStrategyPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickEdit = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.editFlowPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickEdit = useCallback(() => {
+    router.push(route.editFlowPage(strategyKey));
+  }, [router, strategyKey]);
 
   useEffect(() => {
     if (data?.view) flowView?.loadGraph(data.view);
@@ -68,7 +60,7 @@ const Page: NextPage<ServerSideProps> = ({
           </menu>
         </div>
 
-        <div className="w-full mb-2 grow" ref={flowViewContainerRef}></div>
+        <div className="mb-2 w-full grow" ref={flowViewContainerRef}></div>
       </div>
     </Content>
   );
