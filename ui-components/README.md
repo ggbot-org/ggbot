@@ -15,6 +15,21 @@ Import styles in your React app.
 
 ```css
 @import "@ggbot2/ui-components";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Make page full height */
+  html,
+  body,
+  body > div:first-child,
+  div#__next,
+  div#__next > div {
+    height: 100%;
+  }
+}
 ```
 
 Import components in your React app.

@@ -8,7 +8,6 @@
   "license": "UNLICENSED",
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
-    "admin-webapp": "npm run dev --workspace admin-webapp",
     "build:admin-webapp": "rm -rf admin-webapp/.next; npm run build --workspace admin-webapp",
     "build:assets": "npm run build --workspace assets",
     "build:aws": "npm run build --workspace aws",
@@ -27,6 +26,7 @@
     "build:time": "npm run build --workspace time",
     "build:user-webapp": "npm run build:webapp --workspace user-webapp",
     "build:user-webapp:package": "npm run build:package --workspace user-webapp",
+    "build:website": "npm run build --workspace website",
     "cleanup:.next": "rm -rf */.next",
     "cleanup:node_modules": "rm -rf */node_modules",
     "cleanup:dist": "rm -rf */dist",
@@ -47,6 +47,11 @@
     "prebuild:ui-components": "npm run build:time",
     "prebuild:test-data": "npm run build:models",
     "prebuild:user-webapp": "npm run build:assets; npm run build:cookies; npm run build:database; npm run build:http-status-codes; npm run build:ui-components",
+    "prebuild:website": "npm run build:assets; npm run build:ui-components",
+    "server:admin-webapp": "npm run dev --workspace admin-webapp",
+    "server:ui-components": "npm run dev --workspace ui-components",
+    "server:user-webapp": "npm run dev --workspace user-webapp",
+    "server:website": "npm run dev --workspace website",
     "task:create": "npm run task:create --workspace devops",
     "task:showDevopsPolicy": "npm run task:showDevopsPolicy --workspace devops",
     "task:status": "npm run task:status --workspace devops",
@@ -67,9 +72,8 @@
     "test:test-data": "npm run test --workspace test-data",
     "test:time": "npm run test --workspace time",
     "test:user-webapp": "npm run test --workspace user-webapp",
-    "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present",
-    "ui-components-webapp": "npm run dev --workspace ui-components",
-    "user-webapp": "npm run dev --workspace user-webapp"
+    "test:website": "npm run test --workspace website",
+    "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
   },
   "workspaces": [
     "admin-webapp",
@@ -89,7 +93,8 @@
     "test-data",
     "time",
     "ui-components",
-    "user-webapp"
+    "user-webapp",
+    "website"
   ],
   "keywords": [],
   "devDependencies": {

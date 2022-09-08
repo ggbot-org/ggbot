@@ -1,6 +1,6 @@
 # NextJS Page handler
 
-For a page that requires authentication and use no server side prop, use the following template
+Page that requires authentication and use no *server-side prop*.
 
 ```ts
 import type { GetServerSideProps, NextPage } from "next";
@@ -28,7 +28,7 @@ const Page: NextPage<ServerSideProps> = () => {
 export default Page;
 ```
 
-A page with custom *serverSideProps* looks like
+Page with custom *server-side props*.
 
 ```ts
 import type { GetServerSideProps, NextPage } from "next";
