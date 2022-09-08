@@ -30,6 +30,7 @@
     "cleanup:.next": "rm -rf */.next",
     "cleanup:node_modules": "rm -rf */node_modules",
     "cleanup:dist": "rm -rf */dist",
+    "deploy:website": "npm run deploy --workspace website",
     "e2e": "npm run playwright --workspace end-to-end-tests",
     "e2e:chromium": "npm run chromium --workspace end-to-end-tests",
     "e2e:show-report": "npm run show-report --workspace end-to-end-tests",

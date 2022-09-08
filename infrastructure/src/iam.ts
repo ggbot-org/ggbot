@@ -61,6 +61,11 @@ export const getDevopsPolicyStatements = () => [
       next.logsBucketArn,
     ],
   },
+  {
+    Effect: "Allow",
+    Action: ["s3:PutObject"],
+    Resource: [cross.wwwBucketArn, `${cross.wwwBucketArn}/*`],
+  },
 ];
 
 export const getDevopsPolicy = () => ({

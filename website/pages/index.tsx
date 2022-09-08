@@ -1,9 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useCallback } from "react";
 import styles from "../styles/Home.module.css";
 
 const Page: NextPage = () => {
+  const goToApp = useCallback(() => {
+    window.location.href = "https://next.ggbot2.com";
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +26,9 @@ const Page: NextPage = () => {
             </p>
           </div>
 
-          <div className={styles.cta}>Launch App</div>
+          <div className={styles.cta} onClick={goToApp}>
+            Launch App
+          </div>
         </section>
       </main>
 
