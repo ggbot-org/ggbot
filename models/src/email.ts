@@ -1,4 +1,4 @@
-export type EmailAddress = `${string}@${string}`;
+export type EmailAddress = string;
 
 export const isEmailAddress = (value: unknown): value is EmailAddress => {
   // EmailAddress is a string

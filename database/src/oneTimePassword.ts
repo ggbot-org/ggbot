@@ -28,7 +28,7 @@ export const readOneTimePassword: ReadOneTimePassword["func"] = async (
   email
 ) => {
   if (isTestAccountEmail(email)) return testOtp;
-  await getObject<ReadOneTimePassword["out"]>({
+  return await getObject<ReadOneTimePassword["out"]>({
     Key: oneTimePasswordPathname(email),
   });
 };
