@@ -36,8 +36,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
 
     textarea.onpointerdown = (event) => {
       event.stopPropagation();
-      // TODO declare in flow-view
-      // super.view.selectNode(this);
+      this.view.selectNode(this);
     };
 
     textarea.onpointermove = (event) => {
