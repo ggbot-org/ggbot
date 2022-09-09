@@ -20,7 +20,7 @@ Import styles in your React app.
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+@layer utilities {
   /* Make page full height */
   html,
   body,

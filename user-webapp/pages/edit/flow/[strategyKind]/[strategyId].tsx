@@ -1,14 +1,9 @@
+import { nodeTextToViewType } from "@ggbot2/dflow";
 import { Button } from "@ggbot2/ui-components";
-import type { FlowViewOnChange } from "flow-view";
+import type { FlowViewOnChange, FlowViewSerializableNode } from "flow-view";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Content } from "_components";
 import { ApiAction, useApiAction, useFlowView } from "_hooks";
@@ -28,6 +23,7 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const flowView = useFlowView({
     containerRef: flowViewContainerRef,
+    nodeTextToViewType,
   });
 
   const [flowLoaded, setFlowLoaded] = useState(false);
@@ -55,9 +51,17 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
   const onChangeFlowView = useCallback<FlowViewOnChange>(
     ({ action, data }, info) => {
-      console.log(action, data, info);
+      switch (action) {
+        case "CREATE_NODE": {
+          if (!flowView) return;
+          const { type, id } = data as FlowViewSerializableNode;
+          if (!type) flowView.node(id).hasError = true;
+        }
+        default:
+          console.log(action, data, info);
+      }
     },
-    []
+    [flowView]
   );
 
   const onClickManage = useCallback(() => {
@@ -69,7 +73,7 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
     if (writeIsLoading) return;
     if (!flowView) return;
     setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
-  }, [flowView, flowLoaded, setNewStrategyFlow, strategyKey]);
+  }, [flowView, flowLoaded, setNewStrategyFlow, strategyKey, writeIsLoading]);
 
   const onClickRun = useCallback(() => {
     if (!flowLoaded) return;

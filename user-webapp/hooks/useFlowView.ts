@@ -1,5 +1,4 @@
-import { nodeTextToViewType } from "@ggbot2/dflow";
-import type { FlowView, FlowViewNode } from "flow-view";
+import type { FlowView, FlowViewNode, FlowViewNodeTextToType } from "flow-view";
 import {
   MutableRefObject,
   useCallback,
@@ -7,10 +6,10 @@ import {
   useRef,
   useState,
 } from "react";
-// import { FlowViewNodeInfo } from "_flow/nodes/info";
 
 type UseFlowView = (arg: {
   containerRef: MutableRefObject<HTMLDivElement | null>;
+  nodeTextToViewType: FlowViewNodeTextToType;
 }) => FlowView | undefined;
 
 /**
@@ -18,14 +17,17 @@ type UseFlowView = (arg: {
  *
  * ```
  * const containerRef = useRef<HTMLDivElement | null>(null);
- * const flowView = useFlowView({ containerRef });
+ * const flowView = useFlowView({ containerRef, nodeTextToViewType });
  *
  * return (
  *   <div ref={containerRef}/>
  * )
  * ```
  */
-export const useFlowView: UseFlowView = ({ containerRef }) => {
+export const useFlowView: UseFlowView = ({
+  containerRef,
+  nodeTextToViewType,
+}) => {
   const [flowViewInstance, setFlowViewInstance] = useState<
     FlowView | undefined
   >();
@@ -34,13 +36,19 @@ export const useFlowView: UseFlowView = ({ containerRef }) => {
   const importFlowView = useCallback(async () => {
     if (unmounted.current || !containerRef.current || flowViewInstance) return;
     const { FlowView } = await import("flow-view");
-    const { FlowViewNodeInfo } = await import("../flow/nodes/info");
+    const { FlowViewNodeJson, FlowViewNodeInfo } = await import(
+      "../flow/nodes/index.js"
+    );
     const flowView = new FlowView({
       container: containerRef.current,
     });
     flowView.addNodeClass(
       FlowViewNodeInfo.type,
       FlowViewNodeInfo as unknown as FlowViewNode
+    );
+    flowView.addNodeClass(
+      FlowViewNodeJson.type,
+      FlowViewNodeJson as unknown as FlowViewNode
     );
     flowView.nodeTextToType(nodeTextToViewType);
     setFlowViewInstance(flowView);
