@@ -3,6 +3,17 @@ import { FlowViewNode } from "flow-view";
 export class FlowViewNodeInfo extends FlowViewNode {
   static type = "info";
 
+  static style = {
+    textarea: {
+      border: "0",
+      "font-family": "monospace",
+      "font-size": "16px",
+      outline: "none",
+      padding: "4px 17px 4px 17px",
+    },
+    "textarea::selection": { "background-color": "transparent" },
+  };
+
   static minNumCols = 5;
   static minNumRows = 1;
 

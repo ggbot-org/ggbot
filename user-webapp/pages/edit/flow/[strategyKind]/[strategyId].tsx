@@ -1,6 +1,6 @@
 import { nodeTextToViewType } from "@ggbot2/dflow";
 import { Button } from "@ggbot2/ui-components";
-import type { FlowViewOnChange, FlowViewSerializableNode } from "flow-view";
+import type { FlowViewOnChange, FlowViewOnChangeDataNode } from "flow-view";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -54,7 +54,7 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
       switch (action) {
         case "CREATE_NODE": {
           if (!flowView) return;
-          const { type, id } = data as FlowViewSerializableNode;
+          const { type, id } = data as FlowViewOnChangeDataNode;
           if (!type) flowView.node(id).hasError = true;
         }
         default:

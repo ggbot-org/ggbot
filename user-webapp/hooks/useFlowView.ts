@@ -39,9 +39,7 @@ export const useFlowView: UseFlowView = ({
     const { FlowViewNodeJson, FlowViewNodeInfo } = await import(
       "../flow/nodes/index.js"
     );
-    const flowView = new FlowView({
-      container: containerRef.current,
-    });
+    const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
       FlowViewNodeInfo.type,
       FlowViewNodeInfo as unknown as FlowViewNode
