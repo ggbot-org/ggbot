@@ -1,4 +1,5 @@
-import type { FlowView } from "flow-view";
+import { nodeTextToViewType } from "@ggbot2/dflow";
+import type { FlowView, FlowViewNode } from "flow-view";
 import {
   MutableRefObject,
   useCallback,
@@ -6,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+// import { FlowViewNodeInfo } from "_flow/nodes/info";
 
 type UseFlowView = (arg: {
   containerRef: MutableRefObject<HTMLDivElement | null>;
@@ -24,26 +26,33 @@ type UseFlowView = (arg: {
  * ```
  */
 export const useFlowView: UseFlowView = ({ containerRef }) => {
-  const [flowView, setFlowView] = useState<FlowView | undefined>();
+  const [flowViewInstance, setFlowViewInstance] = useState<
+    FlowView | undefined
+  >();
   const unmounted = useRef<boolean | null>(null);
 
   const importFlowView = useCallback(async () => {
-    if (unmounted.current || !containerRef.current || flowView) return;
+    if (unmounted.current || !containerRef.current || flowViewInstance) return;
     const { FlowView } = await import("flow-view");
-    setFlowView(
-      new FlowView({
-        container: containerRef.current,
-      })
+    const { FlowViewNodeInfo } = await import("../flow/nodes/info");
+    const flowView = new FlowView({
+      container: containerRef.current,
+    });
+    flowView.addNodeClass(
+      FlowViewNodeInfo.type,
+      FlowViewNodeInfo as unknown as FlowViewNode
     );
-  }, [containerRef, flowView, setFlowView, unmounted]);
+    flowView.nodeTextToType(nodeTextToViewType);
+    setFlowViewInstance(flowView);
+  }, [containerRef, flowViewInstance, setFlowViewInstance, unmounted]);
 
   useEffect(() => {
     importFlowView();
     return () => {
       unmounted.current = true;
-      flowView?.destroy();
+      flowViewInstance?.destroy();
     };
-  }, [flowView, importFlowView, unmounted]);
+  }, [flowViewInstance, importFlowView, unmounted]);
 
-  return flowView;
+  return flowViewInstance;
 };

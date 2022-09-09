@@ -1,7 +1,7 @@
 import { FlowViewNode } from "flow-view";
 
 export class FlowViewNodeInfo extends FlowViewNode {
-  textarea: HTMLTextAreaElement = document.createElement("textarea");
+  static type = "info";
 
   static minNumCols = 5;
   static minNumRows = 1;
@@ -19,7 +19,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
   }
 
   initContent() {
-    const { textarea } = this;
+    const textarea = this.createElement("textarea");
     textarea.tabIndex = -1;
     textarea.wrap = "off";
     textarea.value = this.text;
@@ -33,6 +33,10 @@ export class FlowViewNodeInfo extends FlowViewNode {
     textarea.style.fontSize = "16px";
     textarea.style.outline = "none";
     textarea.style.padding = "4px 17px 4px 17px";
+
+    textarea.onblur = () => {
+      this.text = textarea.value;
+    };
 
     textarea.onpointerdown = (event) => {
       event.stopPropagation();

@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { toast } from "react-hot-toast";
 import { Content } from "_components";
 import { ApiAction, useApiAction, useFlowView } from "_hooks";
 import {
@@ -29,6 +30,8 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
     containerRef: flowViewContainerRef,
   });
 
+  const [flowLoaded, setFlowLoaded] = useState(false);
+
   const [newStrategyFlow, setNewStrategyFlow] =
     useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
 
@@ -40,8 +43,15 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
     useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
 
   useEffect(() => {
-    if (data?.view) flowView?.loadGraph(data.view);
-  }, [data, flowView]);
+    try {
+      if (!data?.view) return;
+      flowView?.loadGraph(data.view);
+      setFlowLoaded(true);
+    } catch (error) {
+      console.error(error);
+      toast.error("Cannot load flow");
+    }
+  }, [data, flowView, setFlowLoaded]);
 
   const onChangeFlowView = useCallback<FlowViewOnChange>(
     ({ action, data }, info) => {
@@ -50,23 +60,20 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
     []
   );
 
-  const onClickManage = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      router.push(route.strategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
+  const onClickManage = useCallback(() => {
+    router.push(route.strategyPage(strategyKey));
+  }, [router, strategyKey]);
 
-  const onClickSave = useCallback(
-    (event: SyntheticEvent) => {
-      event.stopPropagation();
-      if (writeIsLoading) return;
-      if (!flowView) return;
-      setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
-    },
-    [flowView, setNewStrategyFlow, strategyKey]
-  );
+  const onClickSave = useCallback(() => {
+    if (!flowLoaded) return;
+    if (writeIsLoading) return;
+    if (!flowView) return;
+    setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
+  }, [flowView, flowLoaded, setNewStrategyFlow, strategyKey]);
+
+  const onClickRun = useCallback(() => {
+    if (!flowLoaded) return;
+  }, [flowLoaded]);
 
   useEffect(() => {
     if (!flowView) return;
@@ -84,8 +91,10 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
           <menu className="flex h-10 flex-row gap-4">
             <Button onClick={onClickManage}>manage</Button>
-            <Button onClick={onClickSave}>save</Button>
-            <Button>run</Button>
+            <Button isLoading={writeIsLoading} onClick={onClickSave}>
+              save
+            </Button>
+            <Button onClick={onClickRun}>run</Button>
           </menu>
         </div>
 
