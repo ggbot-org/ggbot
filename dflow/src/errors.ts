@@ -17,7 +17,7 @@ export class ErrorMissingDflowExecutionReport extends Error {
 }
 
 export class ErrorUknownDflowNodes extends Error {
-  constructor(nodes: string[]) {
+  constructor(nodes: { id: string; text: string }[]) {
     super(JSON.stringify(nodes));
   }
 }

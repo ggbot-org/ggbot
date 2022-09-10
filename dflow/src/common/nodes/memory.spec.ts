@@ -8,7 +8,6 @@ describe("deleteMemory", () => {
           {
             id: "a",
             text: '"key1"',
-            type: "data",
             outs: [{ id: "b" }],
           },
           {
@@ -37,7 +36,6 @@ describe("getMemory", () => {
           {
             id: "a",
             text: '"key1"',
-            type: "data",
             outs: [{ id: "b" }],
           },
           {
@@ -70,13 +68,11 @@ describe("setMemory", () => {
           {
             id: "a",
             text: '"key1"',
-            type: "data",
             outs: [{ id: "b" }],
           },
           {
             id: "c",
             text: "1.2",
-            type: "data",
             outs: [{ id: "d" }],
           },
           {

@@ -1,3 +1,4 @@
+import { nodeTextToViewType } from "@ggbot2/dflow";
 import { Button } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -20,6 +21,7 @@ const Page: NextPage<ServerSideProps> = ({
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const flowView = useFlowView({
     containerRef: flowViewContainerRef,
+    nodeTextToViewType,
   });
 
   const { data } = useApiAction.READ_STRATEGY_FLOW(

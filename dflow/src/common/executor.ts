@@ -15,11 +15,8 @@ export type DflowCommonExecutorOutput = Pick<
  * Is a subset of `FlowViewSerializableGraph`.
  */
 export type DflowExecutorView = {
-  edges: FlowViewSerializableEdge[];
-  nodes: Pick<
-    FlowViewSerializableNode,
-    "id" | "ins" | "outs" | "text" | "type"
-  >[];
+  edges: Pick<FlowViewSerializableEdge, "id" | "from" | "to">[];
+  nodes: Pick<FlowViewSerializableNode, "id" | "ins" | "outs" | "text">[];
 };
 
 export interface DflowExecutor<

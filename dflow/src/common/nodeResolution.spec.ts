@@ -12,15 +12,15 @@ describe("nodeTextToViewType", () => {
     expect(nodeTextToViewType("thisCouldBeSomeNode")).toBe(undefined);
   });
 
-  it("resolves node containing comments to `info` type", () => {
+  it("resolves node containing JSON to `json` type", () => {
     [
       { input: "1", output: "json" },
       { input: "true", output: "json" },
       { input: "false", output: "json" },
+      { input: '{"message":"hello world"}', output: "json" },
+      { input: "[ 1 ]", output: "json" },
     ].forEach(({ input, output }) => {
       expect(nodeTextToViewType(input)).toBe(output);
     });
-
-    expect(nodeTextToViewType("thisCouldBeSomeNode")).toBe(undefined);
   });
 });

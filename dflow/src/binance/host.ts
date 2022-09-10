@@ -3,6 +3,7 @@ import { DflowCommonContext } from "../common/context.js";
 import { DflowExecutorView } from "../common/executor.js";
 import { DflowLoader, load } from "../common/loader.js";
 import { Binance } from "./executor.js";
+import { nodeTextToDflowKind } from "./nodeResolution.js";
 
 /**
  * BinanceDflowHost extends DflowHost adding ggbot2 DflowCommonContext
@@ -25,7 +26,7 @@ export class BinanceDflowHost extends DflowHost implements DflowLoader {
   }
 
   load(view: DflowExecutorView): void {
-    load(view, this);
+    load({ dflow: this, nodeTextToDflowKind, view });
   }
 }
 

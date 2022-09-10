@@ -1,5 +1,6 @@
 import { DflowHost, DflowErrorItemNotFound } from "dflow";
-import { DflowExecutorView } from "./executor.js";
+import type { DflowExecutorView } from "./executor.js";
+import { NodeTextToDflowKind, isInfoNode } from "./nodeResolution.js";
 
 /**
  * A DflowHost that can load a FlowView graph.
@@ -24,16 +25,30 @@ export interface DflowLoader extends DflowHost {
  * Parse view and load it as a Dflow graph.
  * Unknown nodes and broken connections are ignored.
  */
-export function load(view: DflowExecutorView, dflow: DflowLoader) {
+export function load({
+  dflow,
+  nodeTextToDflowKind,
+  view,
+}: {
+  dflow: DflowLoader;
+  nodeTextToDflowKind: NodeTextToDflowKind;
+  view: DflowExecutorView;
+}) {
   const nodeKinds = Object.keys(dflow.nodesCatalog);
 
   // Create nodes.
-  for (const { id, ins, outs, text, type } of view.nodes) {
+  for (const { id, ins, outs, text } of view.nodes) {
+    if (isInfoNode(text)) continue;
+
+    const type = nodeTextToDflowKind(text);
     switch (type) {
       // If node has type "data", parse text as JSON and create a DflowNode with kind "data".
       case "data": {
         const out = outs?.[0];
-        if (!out) continue;
+        if (!out) {
+          // Throw with a custom error; it should not happen if graph is validated.
+          throw new Error(`Data node has no out nodeId=${id}`);
+        }
         try {
           const data = JSON.parse(text);
           dflow.newNode({ id, kind: type, outputs: [{ id: out.id, data }] });
@@ -41,6 +56,7 @@ export function load(view: DflowExecutorView, dflow: DflowLoader) {
           if (error instanceof SyntaxError) continue;
           throw error;
         }
+        break;
       }
 
       // By default create a Dflow node with `kind` given by `text`.
@@ -71,7 +87,10 @@ export function load(view: DflowExecutorView, dflow: DflowLoader) {
       dflow.newEdge({ id, source, target });
     } catch (error) {
       // Ignore broken connections, there could be unknown nodes.
-      if (error instanceof DflowErrorItemNotFound) continue;
+      if (error instanceof DflowErrorItemNotFound) {
+        console.error(error);
+        continue;
+      }
       throw error;
     }
   }

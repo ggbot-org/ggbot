@@ -7,7 +7,7 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { DflowNodesCatalog } from "dflow";
+import type { DflowNodesCatalog } from "dflow";
 import {
   DflowCommonExecutorInput,
   DflowCommonExecutorOutput,
@@ -18,6 +18,7 @@ import { dflowValidate } from "../common/validate.js";
 import { ErrorMissingDflowExecutionReport } from "../errors.js";
 import { BinanceDflowContext, BinanceDflowHost } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
+import { nodeTextToDflowKind } from "./nodeResolution.js";
 
 export interface Binance {
   // Public API
@@ -72,19 +73,16 @@ export class BinanceDflowExecutor
    * @throws {ErrorUknownDflowNodes}
    */
   async prepare() {
-    const { binance, view } = this;
-    const nodesCatalog = await getDflowBinanceNodesCatalog({
+    const binanceNodesCatalog = await getDflowBinanceNodesCatalog({
       binance: this.binance,
     });
-    // Use a temporary Dflow host for validation.
-    const dflow = new BinanceDflowHost(
-      { nodesCatalog },
-      { binance, memory: {} }
-    );
-    // Use dflow.nodesCatalog as dflowValidate() parameter, cause dflow adds few builtin nodes.
-    dflowValidate(dflow.nodesCatalog, view);
+    dflowValidate({
+      nodesCatalog: binanceNodesCatalog,
+      nodeTextToDflowKind,
+      view: this.view,
+    });
     // If dflowValidate does not throw, update `nodesCatalog` with Binance nodes.
-    this.nodesCatalog = nodesCatalog;
+    this.nodesCatalog = binanceNodesCatalog;
   }
 
   /**
