@@ -76,12 +76,13 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     }
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {
+    if (
+      error instanceof ErrorMissingBinanceApiConfig ||
+      error instanceof ErrorUnimplementedStrategyKind
+    )
+      throw error;
     console.error(error);
-
-    return {
-      status: "failure",
-      ...updatedNow(),
-    };
+    throw error;
   }
 };
 

@@ -37,10 +37,10 @@ const fetcher = async (action: JsonObject) => {
   }
 };
 
-function useAction<OutputData>(arg: ApiActionInput | null) {
+function useAction<OutputData>(arg: ApiActionInput | null, options = {}) {
   const { error, data: responseOutput } = useSWR<
     ApiActionResponseOutput<OutputData>
-  >(arg, fetcher);
+  >(arg, fetcher, options);
   const isLoading = arg !== null && !error && !responseOutput;
   const data = responseOutput?.data;
   return { error, data, isLoading };
@@ -64,6 +64,11 @@ export const useApiAction = {
   DELETE_STRATEGY: (data?: ApiAction["DELETE_STRATEGY"]["in"]) =>
     useAction<ApiAction["DELETE_STRATEGY"]["out"]>(
       data ? { type: "DELETE_STRATEGY", data } : null
+    ),
+  EXECUTE_STRATEGY: (data?: ApiAction["EXECUTE_STRATEGY"]["in"]) =>
+    useAction<ApiAction["EXECUTE_STRATEGY"]["out"]>(
+      data ? { type: "EXECUTE_STRATEGY", data } : null,
+      { shouldRetryOnError: false }
     ),
   READ_ACCOUNT: () =>
     useAction<ApiAction["READ_ACCOUNT"]["out"]>({

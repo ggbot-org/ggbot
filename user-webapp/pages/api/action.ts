@@ -1,8 +1,11 @@
 import {
+  ErrorMissingBinanceApiConfig,
+  ErrorUnimplementedStrategyKind,
   copyStrategy,
   createBinanceApiConfig,
   createStrategy,
   deleteStrategy,
+  executeStrategy,
   readAccount,
   readAccountStrategyList,
   readBinanceApiConfig,
@@ -26,6 +29,7 @@ import type {
   CreateBinanceApiConfig,
   CreateStrategy,
   DeleteStrategy,
+  ExecuteStrategy,
   OperationInput,
   OperationOutput,
   ReadAccount,
@@ -61,6 +65,7 @@ export type ApiAction = {
   >;
   CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
+  EXECUTE_STRATEGY: Action<ExecuteStrategy["in"], ExecuteStrategy["out"]>;
   READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
   READ_ACCOUNT_STRATEGY_LIST: Action<
     ReadAccountStrategyList["in"],
@@ -124,6 +129,22 @@ export default async function apiHandler(
       case "DELETE_STRATEGY": {
         const data = await deleteStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
+      }
+
+      case "EXECUTE_STRATEGY": {
+        try {
+          const data = await executeStrategy({ accountId, ...action.data });
+          return res.status(__200__OK__).json({ data });
+        } catch (error) {
+          if (
+            error instanceof ErrorMissingBinanceApiConfig ||
+            error instanceof ErrorUnimplementedStrategyKind
+          ) {
+            return res.status(__400__BAD_REQUEST__).json({});
+          }
+          console.error(error);
+          return res.status(__500__INTERNAL_SERVER_ERROR__).json({});
+        }
       }
 
       case "READ_ACCOUNT": {

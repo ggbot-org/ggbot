@@ -3,7 +3,7 @@ import { Button } from "@ggbot2/ui-components";
 import type { FlowViewOnChange, FlowViewOnChangeDataNode } from "flow-view";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Content } from "_components";
 import { ApiAction, useApiAction, useFlowView } from "_hooks";
@@ -28,26 +28,23 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
   const [flowLoaded, setFlowLoaded] = useState(false);
 
+  const [manageIsLoading, setManageIsLoading] = useState(false);
+
+  const [strategyKeyToBeExecuted, setStrategyKeyToBeExecuted] =
+    useState<ApiAction["EXECUTE_STRATEGY"]["in"]>();
+
   const [newStrategyFlow, setNewStrategyFlow] =
     useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
 
-  const { data } = useApiAction.READ_STRATEGY_FLOW(
+  const { data: storedStrategyFlow } = useApiAction.READ_STRATEGY_FLOW(
     flowView ? strategyKey : undefined
   );
 
-  const { isLoading: writeIsLoading } =
-    useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
+  const { data: strategyExecution, isLoading: runIsLoading } =
+    useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
 
-  useEffect(() => {
-    try {
-      if (!data?.view) return;
-      flowView?.loadGraph(data.view);
-      setFlowLoaded(true);
-    } catch (error) {
-      console.error(error);
-      toast.error("Cannot load flow");
-    }
-  }, [data, flowView, setFlowLoaded]);
+  const { data: saveData, isLoading: saveIsLoading } =
+    useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
 
   const onChangeFlowView = useCallback<FlowViewOnChange>(
     ({ action, data }, info) => {
@@ -58,7 +55,7 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
           if (!type) flowView.node(id).hasError = true;
         }
         default:
-          console.log(action, data, info);
+          console.info(action, data, info);
       }
     },
     [flowView]
@@ -66,18 +63,73 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
   const onClickManage = useCallback(() => {
     router.push(route.strategyPage(strategyKey));
-  }, [router, strategyKey]);
+    setManageIsLoading(true);
+  }, [router, setManageIsLoading, strategyKey]);
 
   const onClickSave = useCallback(() => {
     if (!flowLoaded) return;
-    if (writeIsLoading) return;
+    if (manageIsLoading) return;
+    if (runIsLoading) return;
+    if (saveIsLoading) return;
     if (!flowView) return;
     setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
-  }, [flowView, flowLoaded, setNewStrategyFlow, strategyKey, writeIsLoading]);
+  }, [
+    flowView,
+    flowLoaded,
+    manageIsLoading,
+    runIsLoading,
+    setNewStrategyFlow,
+    strategyKey,
+    saveIsLoading,
+  ]);
 
   const onClickRun = useCallback(() => {
     if (!flowLoaded) return;
+    if (manageIsLoading) return;
+    if (saveIsLoading) return;
+    if (typeof newStrategyFlow !== "undefined") return;
+    setStrategyKeyToBeExecuted(strategyKey);
+  }, [
+    flowLoaded,
+    manageIsLoading,
+    newStrategyFlow,
+    runIsLoading,
+    saveIsLoading,
+    setStrategyKeyToBeExecuted,
+  ]);
+
+  const canRun = useMemo(() => {
+    if (!flowLoaded) return false;
+    if (typeof newStrategyFlow !== "undefined") return false;
+    return true;
+  }, [flowLoaded, newStrategyFlow]);
+
+  const canSave = useMemo(() => {
+    if (!flowLoaded) return false;
+    return true;
   }, [flowLoaded]);
+
+  useEffect(() => {
+    if (!saveData) return;
+    setNewStrategyFlow(undefined);
+  }, [saveData, setNewStrategyFlow]);
+
+  useEffect(() => {
+    try {
+      if (!storedStrategyFlow?.view) return;
+      flowView?.loadGraph(storedStrategyFlow.view);
+      setFlowLoaded(true);
+    } catch (error) {
+      console.error(error);
+      toast.error("Cannot load flow");
+    }
+  }, [flowView, setFlowLoaded, storedStrategyFlow]);
+
+  useEffect(() => {
+    if (!strategyExecution) return;
+    if (strategyExecution.status === "failure")
+      toast.error("Strategy execution failure");
+  }, [strategyExecution]);
 
   useEffect(() => {
     if (!flowView) return;
@@ -94,11 +146,23 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
           </dl>
 
           <menu className="flex h-10 flex-row gap-4">
-            <Button onClick={onClickManage}>manage</Button>
-            <Button isLoading={writeIsLoading} onClick={onClickSave}>
+            <Button isLoading={manageIsLoading} onClick={onClickManage}>
+              manage
+            </Button>
+            <Button
+              disabled={!canSave}
+              isLoading={saveIsLoading}
+              onClick={onClickSave}
+            >
               save
             </Button>
-            <Button onClick={onClickRun}>run</Button>
+            <Button
+              disabled={!canRun}
+              isLoading={runIsLoading}
+              onClick={onClickRun}
+            >
+              run
+            </Button>
           </menu>
         </div>
 
