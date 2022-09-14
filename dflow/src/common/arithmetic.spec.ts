@@ -1,4 +1,4 @@
-import { equal, isDecimal, numOfDecimals } from "./arithmetic";
+import { equal, isDecimal, mul, numOfDecimals } from "./arithmetic";
 
 describe("equal", () => {
   it("checks if two Decimal numbers are equal considering their number of decimals", () => {
@@ -34,6 +34,18 @@ describe("isDecimal", () => {
   });
 });
 
+describe("mul", () => {
+  it("implements multiplication", () => {
+    [
+      {
+        input: { a: "0.00096000", b: "20649.57000000", numDecimals: 8 },
+        output: "19.82358720",
+      },
+    ].forEach(({ input: { a, b, numDecimals }, output }) => {
+      expect(mul(a, b, numDecimals)).toBe(output);
+    });
+  });
+});
 describe("numOfDecimals", () => {
   it("return number of digits in mantissa part", () => {
     [

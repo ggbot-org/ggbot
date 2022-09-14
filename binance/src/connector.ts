@@ -42,9 +42,7 @@ export class BinanceConnector {
   }
 }
 
-export type BinanceConnectorConstructorArg = Partial<
-  Pick<BinanceConnector, "baseUrl">
->;
+export type BinanceConnectorConstructorArg = Pick<BinanceConnector, "baseUrl">;
 
 export type BinanceConnectorRequestArg = {
   apiKey?: string;

@@ -129,39 +129,26 @@ export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
 
 export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;
-
   quantity: number;
-
   quoteOrderQty: number;
-
   price: number;
-
-  /**
-   * A unique id among open orders. Automatically generated if not sent.
-   */
+  /** A unique id among open orders. Automatically generated if not sent. */
   newClientOrderId: string;
-
+  /** Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders. */
+  stopPrice: number;
+  /** Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an iceberg order. */
+  icebergQty: number;
   /**
    * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders.
-   */
-  stopPrice: number;
-
-  /**
-   * Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an iceberg order.
-   */
-  icebergQty: number;
-
-  /**
-   * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders. For more details on SPOT implementation on trailing stops, please refer to {@link https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md|Trailing Stop FAQ}
+   * For more details on SPOT implementation on trailing stops,
+   * @see {@link https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md|Trailing Stop FAQ}
    */
   trailingDelta: number;
-
   /**
    * Set the response JSON. ACK, RESULT, or FULL;
    * MARKET and LIMIT order types default to FULL, all other orders default to ACK.
    */
   newOrderRespType: BinanceOrderRespType;
-
   recvWindow: number;
 }>;
 
@@ -329,20 +316,92 @@ export type BinanceSymbolInfo = {
 
 export type BinanceSymbolInfoFilter =
   | BinanceSymbolInfoFilterLotSize
-  | BinanceSymbolInfoFilterMinNotional;
+  | BinanceSymbolInfoFilterMinNotional
+  | BinanceSymbolInfoFilterPrice;
 
+/**
+The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol.
+
+In order to pass the lot size, the following must be true for quantity/icebergQty:
+
+- `quantity` >= `minQtY`
+- `quantity` <= `maxQty`
+- (`quantity` - `minQty`) % `stepSize` == 0
+
+@example
+```json
+{
+  "filterType": "LOT_SIZE",
+  "minQty": "0.00100000",
+  "maxQty": "100000.00000000",
+  "stepSize": "0.00100000"
+}
+```
+*/
 export type BinanceSymbolInfoFilterLotSize = {
   filterType: "LOT_SIZE";
+  /** defines the minimum `quantity`/`icebergQty` allowed */
   minQty: string;
+  /** defines the maximum `quantity`/`icebergQty` allowed */
   maxQty: string;
+  /** defines the intervals that a `quantity`/`icebergQty` can be increased/decreased by */
   stepSize: string;
 };
 
+/**
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+An order's notional value is the `price` * `quantity`.
+If the order is an Algo order (e.g. `STOP_LOSS_LIMIT`), then the notional value of the `stopPrice` * `quantity` will also be evaluated.
+If the order is an Iceberg Order, then the notional value of the `price` * `icebergQty` will also be evaluated.
+`applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders.
+Since `MARKET` orders have no price, the average price is used over the last avgPriceMins minutes.
+`avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.
+
+@example
+```json
+{
+  "filterType": "MIN_NOTIONAL",
+  "minNotional": "0.00100000",
+  "applyToMarket": true,
+  "avgPriceMins": 5
+}
+```
+*/
 export type BinanceSymbolInfoFilterMinNotional = {
   filterType: "MIN_NOTIONAL";
   minNotional: string;
   applyToMarket: boolean;
   avgPriceMins: number;
+};
+
+/**
+The `PRICE_FILTER` defines the price rules for a symbol.
+
+Any of the above variables can be set to 0, which disables that rule in the `price filter`.
+In order to pass the `price filter`, the following must be true for `price`/`stopPrice` of the enabled rules:
+
+- `price` >= `minPrice`
+- `price` <= `maxPrice`
+- `price` % `tickSize` == 0
+
+@example
+```json
+{
+  "filterType": "PRICE_FILTER",
+  "minPrice": "0.00000100",
+  "maxPrice": "100000.00000000",
+  "tickSize": "0.00000100"
+}
+```
+*/
+export type BinanceSymbolInfoFilterPrice = {
+  filterType: "PRICE_FILTER";
+  /** defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0 */
+  minPrice: string;
+  /** defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0 */
+  maxPrice: string;
+  /** defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0 */
+  tickSize: string;
 };
 
 export const binanceSymbolStatuses = ["TRADING", "BREAK"] as const;

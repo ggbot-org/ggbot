@@ -1,28 +1,17 @@
 import {
+  BinanceAccountInformation,
   BinanceExchangeInfo,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
 import { Binance } from "../context.js";
+import accountInfo from "./accountInfo.json";
 import exchangeInfo from "./exchangeInfo.json";
 
 export class BinanceClientMock implements Binance {
   async account() {
-    return Promise.resolve({
-      makerCommission: 15,
-      takerCommission: 15,
-      buyerCommission: 0,
-      sellerCommission: 0,
-      canTrade: true,
-      canWithdraw: true,
-      canDeposit: true,
-      brokered: false,
-      updateTime: 0,
-      accountType: "SPOT",
-      balances: [],
-      permissions: ["SPOT"],
-    });
+    return Promise.resolve(accountInfo as unknown as BinanceAccountInformation);
   }
 
   async tickerPrice(symbol: string) {
@@ -30,8 +19,7 @@ export class BinanceClientMock implements Binance {
   }
 
   async exchangeInfo() {
-    const data = exchangeInfo as unknown as BinanceExchangeInfo;
-    return Promise.resolve(data);
+    return Promise.resolve(exchangeInfo as unknown as BinanceExchangeInfo);
   }
 
   async newOrder(

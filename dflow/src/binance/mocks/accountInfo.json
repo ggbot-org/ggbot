@@ -1,0 +1,14 @@
+{
+  "makerCommission": 15,
+  "takerCommission": 15,
+  "buyerCommission": 0,
+  "sellerCommission": 0,
+  "canTrade": true,
+  "canWithdraw": true,
+  "canDeposit": true,
+  "brokered": false,
+  "updateTime": 0,
+  "accountType": "SPOT",
+  "balances": [],
+  "permissions": ["SPOT"]
+}

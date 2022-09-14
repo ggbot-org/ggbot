@@ -3,7 +3,11 @@ import {
   ErrorArithmeticOperationInvalidDecimal,
 } from "../errors.js";
 
-export type ArithmeticOperation = (a: Decimal, b: Decimal) => Decimal;
+export type ArithmeticOperation = (
+  a: Decimal,
+  b: Decimal,
+  numDecimals?: number
+) => Decimal;
 
 /**
  * Represents a number with decimal digits as a string.
@@ -63,25 +67,25 @@ export const equal = (a: Decimal, b: Decimal): boolean => {
   return Number(a).toFixed(numDecimals) === Number(b).toFixed(numDecimals);
 };
 
-export const add: ArithmeticOperation = (a, b) =>
-  coerceToDecimal(Number(a) + Number(b), maxNumOfDecimals(a, b));
+export const add: ArithmeticOperation = (a, b, numDecimals) =>
+  coerceToDecimal(Number(a) + Number(b), numDecimals ?? maxNumOfDecimals(a, b));
 
-export const sub: ArithmeticOperation = (a, b) =>
-  coerceToDecimal(Number(a) - Number(b), maxNumOfDecimals(a, b));
+export const sub: ArithmeticOperation = (a, b, numDecimals) =>
+  coerceToDecimal(Number(a) - Number(b), numDecimals ?? maxNumOfDecimals(a, b));
 
-export const mul: ArithmeticOperation = (a, b) =>
-  coerceToDecimal(Number(a) * Number(b), maxNumOfDecimals(a, b));
+export const mul: ArithmeticOperation = (a, b, numDecimals) =>
+  coerceToDecimal(Number(a) * Number(b), numDecimals ?? maxNumOfDecimals(a, b));
 
 /**
  * @throws {ErrorArithmeticOperationCannotDivideByZero}
  */
-export const div: ArithmeticOperation = (a, b) => {
+export const div: ArithmeticOperation = (a, b, numDecimals) => {
   if (equal(b, coerceToDecimal(0, numOfDecimals(b))))
     throw new ErrorArithmeticOperationCannotDivideByZero();
-  // The numOfDecimals is not preserved with division, for example
+  // The `numOfDecimals` is not preserved with division, for example
   //
   //     1 / 2 = 0.5
   //     ↑   ↑     ↑
   //     0   0 ->  1 numOfDecimals
-  return coerceToDecimal(Number(a) / Number(b));
+  return coerceToDecimal(Number(a) / Number(b), numDecimals);
 };
