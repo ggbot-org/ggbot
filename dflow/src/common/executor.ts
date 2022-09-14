@@ -2,7 +2,9 @@ import { DflowGraphExecutionReport, DflowNodesCatalog } from "dflow";
 import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view";
 import { DflowCommonContext } from "./context.js";
 
-export type DflowCommonExecutorInput = Pick<DflowCommonContext, "memory">;
+export type DflowCommonExecutorInput = Partial<
+  Omit<DflowCommonContext, "memoryChanged">
+>;
 
 export type DflowCommonExecutorOutput = Pick<
   DflowCommonContext,

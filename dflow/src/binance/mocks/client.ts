@@ -4,7 +4,7 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { Binance } from "../executor.js";
+import { Binance } from "../context.js";
 import exchangeInfo from "./exchangeInfo.json";
 
 export class BinanceClientMock implements Binance {

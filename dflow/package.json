@@ -16,7 +16,8 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/binance": "file:binance"
+    "@ggbot2/binance": "file:binance",
+    "@ggbot2/time": "file:time"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",

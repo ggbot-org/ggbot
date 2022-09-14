@@ -1,5 +1,5 @@
 import { DflowNode, DflowData } from "dflow";
-import type { BinanceDflowContext as Context } from "../host.js";
+import type { BinanceDflowContext as Context } from "../context.js";
 
 const { input, output } = DflowNode;
 

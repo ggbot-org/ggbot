@@ -1,6 +1,6 @@
 import { Addition } from "./nodes/arithmetic.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
-import { Now } from "./nodes/time.js";
+import { Today } from "./nodes/time.js";
 import {
   ExponentialMovingAverage,
   MovingAverage,
@@ -14,7 +14,7 @@ export const nodesCatalog = {
   [GetMemory.kind]: GetMemory,
   [SetMemory.kind]: SetMemory,
   // time
-  [Now.kind]: Now,
+  [Today.kind]: Today,
   // indicators
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
   [MovingAverage.kind]: MovingAverage,

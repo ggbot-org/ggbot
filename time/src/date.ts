@@ -32,7 +32,7 @@ export const addSeconds = (value: number, date: Date): Date => {
   return d;
 };
 
-export const truncateDate = (date: Date) => {
+export const truncateDate = (date: Date): Date => {
   const day = getDayFromDate(date);
   if (day === null) throw new TypeError(`Invalid Date ${date}`);
   return new Date(day);

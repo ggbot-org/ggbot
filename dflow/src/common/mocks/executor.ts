@@ -32,7 +32,7 @@ export class DflowExecutorMock
     const { view } = this;
     const dflow = new DflowCommonHostMock(
       { nodesCatalog: this.nodesCatalog },
-      { ...context }
+      context
     );
     dflow.load(view);
     dflow.verbose = true;

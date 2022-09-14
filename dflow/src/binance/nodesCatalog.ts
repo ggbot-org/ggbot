@@ -2,7 +2,7 @@ import { binanceKlineIntervals } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { binanceWantedPrecision } from "./arithmetic.js";
-import { Binance } from "./executor.js";
+import { Binance } from "./context.js";
 import { AvgPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
 

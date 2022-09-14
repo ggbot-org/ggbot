@@ -42,7 +42,7 @@
     "prebuild:database": "npm run build:aws; npm run build:dflow; npm run build:email-messages; npm run build:test-data",
     "prebuild:devops": "npm run build:aws",
     "prebuild:cookies": "npm run build:models",
-    "prebuild:dflow": "npm run build:binance; npm run build:models",
+    "prebuild:dflow": "npm run build:binance; npm run build:time",
     "prebuild:infrastructure": "npm run build:env",
     "prebuild:models": "npm run build:time",
     "prebuild:ui-components": "npm run build:time",

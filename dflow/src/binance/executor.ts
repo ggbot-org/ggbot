@@ -1,54 +1,24 @@
-import {
-  BinanceAccountInformation,
-  BinanceAvgPrice,
-  BinanceExchangeInfo,
-  BinanceNewOrderOptions,
-  BinanceOrderRespFULL,
-  BinanceOrderSide,
-  BinanceOrderType,
-} from "@ggbot2/binance";
 import type { DflowNodesCatalog } from "dflow";
 import {
-  DflowCommonExecutorInput,
   DflowCommonExecutorOutput,
   DflowExecutor,
   DflowExecutorView,
 } from "../common/executor.js";
 import { dflowValidate } from "../common/validate.js";
 import { ErrorMissingDflowExecutionReport } from "../errors.js";
-import { BinanceDflowContext, BinanceDflowHost } from "./host.js";
+import type { Binance, BinanceDflowContext } from "./context.js";
+import { BinanceDflowHost, BinanceDflowHostContextArg } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 import { nodeTextToDflowKind } from "./nodeResolution.js";
 
-export interface Binance {
-  // Public API
-  // //////////////////////////////////////////////////////////////////
-
-  avgPrice(symbol: unknown): Promise<BinanceAvgPrice>;
-
-  exchangeInfo(): Promise<BinanceExchangeInfo>;
-
-  // Private API
-  // //////////////////////////////////////////////////////////////////
-
-  account(): Promise<BinanceAccountInformation>;
-
-  newOrder(
-    symbol: unknown,
-    side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
-    orderOptions: BinanceNewOrderOptions
-  ): Promise<BinanceOrderRespFULL>;
-}
-
-type BinanceDflowExecutorRunInput = DflowCommonExecutorInput;
-type BinanceDflowExecutorRunOutput = DflowCommonExecutorOutput & {
+type BinanceDflowExecutorInput = Omit<BinanceDflowHostContextArg, "binance">;
+type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
   balances: Binance[];
 };
 
 export class BinanceDflowExecutor
   implements
-    DflowExecutor<BinanceDflowExecutorRunInput, BinanceDflowExecutorRunOutput>
+    DflowExecutor<BinanceDflowExecutorInput, BinanceDflowExecutorOutput>
 {
   readonly binance: Binance;
   readonly view: DflowExecutorView;
@@ -89,7 +59,7 @@ export class BinanceDflowExecutor
    * Execute flow on given context.
    * @throws {ErrorMissingDflowExecutionReport}
    */
-  async run(context: BinanceDflowExecutorRunInput) {
+  async run(context: BinanceDflowExecutorInput) {
     const { binance, nodesCatalog, view } = this;
     const dflow = new BinanceDflowHost(
       { nodesCatalog },

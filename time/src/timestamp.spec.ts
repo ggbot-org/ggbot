@@ -1,4 +1,4 @@
-import { isTimestamp } from "./timestamp";
+import { isTimestamp } from "./timestamp.js";
 
 describe("isTimestamp", () => {
   it("validates string if is valid Timestamp", () => {
