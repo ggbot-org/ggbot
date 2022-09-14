@@ -1,3 +1,4 @@
+import type { BinanceBalance } from "@ggbot2/binance";
 import type { DflowNodesCatalog } from "dflow";
 import {
   DflowCommonExecutorOutput,
@@ -6,21 +7,21 @@ import {
 } from "../common/executor.js";
 import { dflowValidate } from "../common/validate.js";
 import { ErrorMissingDflowExecutionReport } from "../errors.js";
-import type { Binance, BinanceDflowContext } from "./context.js";
+import type { BinanceDflow, BinanceDflowContext } from "./context.js";
 import { BinanceDflowHost, BinanceDflowHostContextArg } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 import { nodeTextToDflowKind } from "./nodeResolution.js";
 
 type BinanceDflowExecutorInput = Omit<BinanceDflowHostContextArg, "binance">;
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
-  balances: Binance[];
+  balances: BinanceBalance[];
 };
 
 export class BinanceDflowExecutor
   implements
     DflowExecutor<BinanceDflowExecutorInput, BinanceDflowExecutorOutput>
 {
-  readonly binance: Binance;
+  readonly binance: BinanceDflow;
   readonly view: DflowExecutorView;
   nodesCatalog: DflowNodesCatalog;
 
@@ -43,15 +44,14 @@ export class BinanceDflowExecutor
    * @throws {ErrorUknownDflowNodes}
    */
   async prepare() {
-    const binanceNodesCatalog = await getDflowBinanceNodesCatalog({
-      binance: this.binance,
-    });
+    const { symbols } = await this.binance.exchangeInfo();
+    const binanceNodesCatalog = getDflowBinanceNodesCatalog({ symbols });
     dflowValidate({
       nodesCatalog: binanceNodesCatalog,
       nodeTextToDflowKind,
       view: this.view,
     });
-    // If dflowValidate does not throw, update `nodesCatalog` with Binance nodes.
+    // If `dflowValidate` does not throw, update `nodesCatalog` with Binance nodes.
     this.nodesCatalog = binanceNodesCatalog;
   }
 

@@ -1,9 +1,9 @@
 import {
   ArithmeticOperation,
-  add as _add,
-  sub as _sub,
-  mul as _mul,
-  div as _div,
+  add,
+  sub,
+  mul,
+  div,
 } from "../common/arithmetic.js";
 
 /**
@@ -21,14 +21,14 @@ In binance.exchangeInfo() response there are over 2000 symbols with values
 */
 export const binanceWantedPrecision = 8;
 
-export const add: ArithmeticOperation = (a, b) =>
-  _add(a, b, binanceWantedPrecision);
+export const binanceAdd: ArithmeticOperation = (a, b) =>
+  add(a, b, binanceWantedPrecision);
 
-export const div: ArithmeticOperation = (a, b) =>
-  _div(a, b, binanceWantedPrecision);
+export const binanceDiv: ArithmeticOperation = (a, b) =>
+  div(a, b, binanceWantedPrecision);
 
-export const mul: ArithmeticOperation = (a, b) =>
-  _mul(a, b, binanceWantedPrecision);
+export const binanceMul: ArithmeticOperation = (a, b) =>
+  mul(a, b, binanceWantedPrecision);
 
-export const sub: ArithmeticOperation = (a, b) =>
-  _sub(a, b, binanceWantedPrecision);
+export const binanceSub: ArithmeticOperation = (a, b) =>
+  sub(a, b, binanceWantedPrecision);

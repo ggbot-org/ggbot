@@ -11,7 +11,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
     <Content>
       <div className="flex flex-col gap-4 p-4">
         <span className="text-xl">
-          Strategy <em>not found</em>
+          Your account is <b>not</b> <em>owner</em> of this strategy.
         </span>
         <div className="p-4 shadow">
           <dl>

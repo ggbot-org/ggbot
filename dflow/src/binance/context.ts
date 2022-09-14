@@ -9,7 +9,7 @@ import {
 } from "@ggbot2/binance";
 import { DflowCommonContext } from "../common/context.js";
 
-export interface Binance {
+export interface BinanceDflow {
   // Public API
   // //////////////////////////////////////////////////////////////////
 
@@ -29,5 +29,5 @@ export interface Binance {
 }
 
 export type BinanceDflowContext = DflowCommonContext & {
-  binance: Binance;
+  binance: BinanceDflow;
 };

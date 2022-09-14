@@ -4,15 +4,21 @@ import { ErrorInvalidBinanceSymbol } from "./errors.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
-  BinanceNewOrderOptions,
   BinanceOrderType,
   BinanceSymbolInfo,
   BinanceTickerPrice,
 } from "./types.js";
 
 /**
- * BinanceExchange implements public API requests.
- */
+BinanceExchange implements public API requests.
+
+@example
+```ts
+const { BinanceConnector, BinanceExchange } = import "@ggbot2/binance";
+
+const binance = new BinanceExchange({ baseUrl: BinanceConnector.defaultBaseUrl});
+```
+*/
 export class BinanceExchange extends BinanceConnector {
   private async _publicRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
@@ -20,14 +26,6 @@ export class BinanceExchange extends BinanceConnector {
     params?: BinanceConnectorRequestArg["params"]
   ) {
     return await super.request<Data>({ endpoint, method, params });
-  }
-
-  static filterOrderOptions(
-    _symbolInfo: BinanceSymbolInfo,
-    _options: BinanceNewOrderOptions
-  ): BinanceNewOrderOptions | undefined {
-    // TODO apply filters, MIN_NOTIONAL, LOT_SIZE, etc
-    return;
   }
 
   /**

@@ -1,22 +1,21 @@
-import { binanceKlineIntervals } from "@ggbot2/binance";
+import { BinanceExchangeInfo, binanceKlineIntervals } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { binanceWantedPrecision } from "./arithmetic.js";
-import { Binance } from "./context.js";
 import { TickerPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
 
 const { output } = DflowNode;
 
-type GetDflowBinanceNodesCatalog = (_: {
-  binance: Binance;
-}) => Promise<DflowNodesCatalog>;
+type GetDflowBinanceNodesCatalog = (
+  arg: Pick<BinanceExchangeInfo, "symbols">
+) => DflowNodesCatalog;
 
 /**
- * Creates a dynamic set of dflow nodes generated according to Binance definitions", () => {
+ * Creates a dynamic set of dflow nodes generated according to Binance definitions.
  */
 export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
-  async ({ binance }) => {
+  ({ symbols }) => {
     const klineIntervalNodes = binanceKlineIntervals.reduce(
       (catalog, klineInterval) => {
         class NodeClass extends DflowNode {
@@ -32,8 +31,6 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
       },
       {}
     );
-
-    const { symbols } = await binance.exchangeInfo();
 
     const symbolNodes = symbols
       .filter(
@@ -68,9 +65,9 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
     };
   };
 
-export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
-  binance,
-}) => {
+export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
+  arg
+) => {
   const staticNodes = {
     // market
     [TickerPrice.kind]: TickerPrice,
@@ -80,7 +77,7 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
     ...commonNodesCatalog,
   };
 
-  const dynamicNodes = await getDflowBinanceDynamicNodesCatalog({ binance });
+  const dynamicNodes = getDflowBinanceDynamicNodesCatalog(arg);
 
   return {
     ...dynamicNodes,

@@ -35,6 +35,17 @@ export const redirectToErrorPageStrategyNotFound = (
   };
 };
 
+export const redirectToErrorPageStrategyNotOwned = (
+  strategyKey: StrategyKey
+) => {
+  return {
+    redirect: {
+      destination: route.errorPageStrategyNotOwned(strategyKey),
+      permanent: false,
+    },
+  };
+};
+
 export const redirectToHomePage = () => ({
   redirect: {
     destination: route.homePage(),

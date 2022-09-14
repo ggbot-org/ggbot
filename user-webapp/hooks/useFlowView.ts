@@ -13,17 +13,16 @@ type UseFlowView = (arg: {
 }) => FlowView | undefined;
 
 /**
- * @example
- *
- * ```
- * const containerRef = useRef<HTMLDivElement | null>(null);
- * const flowView = useFlowView({ containerRef, nodeTextToViewType });
- *
- * return (
- *   <div ref={containerRef}/>
- * )
- * ```
- */
+@example
+```ts
+const containerRef = useRef<HTMLDivElement | null>(null);
+const flowView = useFlowView({ containerRef, nodeTextToViewType });
+
+return (
+  <div ref={containerRef}/>
+)
+```
+*/
 export const useFlowView: UseFlowView = ({
   containerRef,
   nodeTextToViewType,

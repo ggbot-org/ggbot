@@ -1,7 +1,23 @@
-import { nodeTextToViewType } from "@ggbot2/dflow";
+import {
+  BinanceConnector,
+  BinanceExchange,
+  BinanceExchangeInfo,
+} from "@ggbot2/binance";
+import { readStrategy } from "@ggbot2/database";
+import {
+  BinanceDflowHost,
+  getDflowBinanceNodesCatalog,
+  nodeTextToViewType,
+} from "@ggbot2/dflow";
+import { now, truncateTimestamp } from "@ggbot2/time";
 import { Button } from "@ggbot2/ui-components";
-import type { FlowViewOnChange, FlowViewOnChangeDataNode } from "flow-view";
-import type { NextPage } from "next";
+import type { DflowNodesCatalog } from "dflow";
+import type {
+  FlowViewOnChange,
+  FlowViewOnChangeDataEdge,
+  FlowViewOnChangeDataNode,
+} from "flow-view";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -9,16 +25,67 @@ import { Content } from "_components";
 import { ApiAction, useApiAction, useFlowView } from "_hooks";
 import {
   StrategyInfo,
-  requireAuthenticationAndGetStrategyInfo,
+  readSession,
+  redirectToAuthenticationPage,
+  redirectToErrorPageInvalidStrategyKey,
+  redirectToErrorPageStrategyNotFound,
+  redirectToErrorPageStrategyNotOwned,
   route,
+  strategyKeyFromRouterParams,
 } from "_routing";
 
-type ServerSideProps = StrategyInfo;
+type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
+  binanceSymbols?: BinanceExchangeInfo["symbols"];
+};
 
-export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const session = readSession(req.cookies);
+  if (!session) return redirectToAuthenticationPage();
 
-const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
+  const strategyKey = strategyKeyFromRouterParams(params);
+  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
+
+  const strategy = await readStrategy(strategyKey);
+  if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
+
+  const accountIsOwner = session.accountId === strategy.accountId;
+  if (!accountIsOwner) return redirectToErrorPageStrategyNotOwned(strategyKey);
+
+  const { strategyKind } = strategyKey;
+
+  if (strategyKind === "binance") {
+    const binance = new BinanceExchange({
+      baseUrl: BinanceConnector.defaultBaseUrl,
+    });
+    const { symbols } = await binance.exchangeInfo();
+    return {
+      props: {
+        binanceSymbols: symbols,
+        strategyKey,
+        name: strategy.name,
+      },
+    };
+  }
+
+  return {
+    props: {
+      strategyKey,
+      name: strategy.name,
+    },
+  };
+};
+
+const Page: NextPage<ServerSideProps> = ({
+  binanceSymbols = [],
+  name,
+  strategyKey,
+}) => {
   const router = useRouter();
+
+  const { strategyKind } = strategyKey;
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const flowView = useFlowView({
@@ -46,19 +113,58 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
   const { data: saveData, isLoading: saveIsLoading } =
     useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
 
+  const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
+    if (strategyKind === "binance" && binanceSymbols.length > 0) {
+      const nodesCatalog = getDflowBinanceNodesCatalog({
+        symbols: binanceSymbols,
+      });
+      return nodesCatalog;
+    }
+  }, [binanceSymbols, strategyKind]);
+
+  const dflow = useMemo(() => {
+    if (strategyKind === "binance" && nodesCatalog) {
+      const timestamp = truncateTimestamp({ value: now(), to: "second" });
+      const dflow = new BinanceDflowHost(
+        { nodesCatalog },
+        { memory: {}, timestamp }
+      );
+      return dflow;
+    }
+  }, [nodesCatalog, strategyKind]);
+
   const onChangeFlowView = useCallback<FlowViewOnChange>(
     ({ action, data }, info) => {
-      switch (action) {
-        case "CREATE_NODE": {
-          if (!flowView) return;
-          const { type, id } = data as FlowViewOnChangeDataNode;
-          if (!type) flowView.node(id).hasError = true;
+      try {
+        if (!dflow) return;
+        if (!flowView) return;
+        switch (action) {
+          case "CREATE_EDGE": {
+            const { id, from, to } = data as FlowViewOnChangeDataEdge;
+            dflow.newEdge({ id, source: from, target: to });
+            break;
+          }
+
+          case "CREATE_NODE": {
+            const { text, type, id } = data as FlowViewOnChangeDataNode;
+            switch (type) {
+              case "info":
+                break;
+              default: {
+                dflow.newNode({ id, kind: text });
+              }
+            }
+            break;
+          }
+
+          default:
+            console.info(action, data, info);
         }
-        default:
-          console.info(action, data, info);
+      } catch (error) {
+        console.error(error);
       }
     },
-    [flowView]
+    [dflow, flowView]
   );
 
   const onClickManage = useCallback(() => {
@@ -96,6 +202,7 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
     runIsLoading,
     saveIsLoading,
     setStrategyKeyToBeExecuted,
+    strategyKey,
   ]);
 
   const canRun = useMemo(() => {
@@ -111,19 +218,23 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
   useEffect(() => {
     if (!saveData) return;
-    setNewStrategyFlow(undefined);
   }, [saveData, setNewStrategyFlow]);
 
   useEffect(() => {
     try {
       if (!storedStrategyFlow?.view) return;
-      flowView?.loadGraph(storedStrategyFlow.view);
+      if (!flowView) return;
+      if (!nodesCatalog) return;
+      flowView.loadGraph(storedStrategyFlow.view);
+      flowView.addNodeDefinitions({
+        nodes: Object.keys(nodesCatalog).map((kind) => ({ name: kind })),
+      });
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
       toast.error("Cannot load flow");
     }
-  }, [flowView, setFlowLoaded, storedStrategyFlow]);
+  }, [flowView, nodesCatalog, setFlowLoaded, storedStrategyFlow]);
 
   useEffect(() => {
     if (!strategyExecution) return;
@@ -138,14 +249,14 @@ const Page: NextPage<ServerSideProps> = ({ name, strategyKey }) => {
 
   return (
     <Content>
-      <div className="flex h-full flex-col">
-        <div className="flex flex-row justify-between gap-4 py-3 md:flex-row md:items-center">
+      <div className="flex flex-col h-full">
+        <div className="flex flex-row justify-between py-3 gap-4 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
           </dl>
 
-          <menu className="flex h-10 flex-row gap-4">
+          <menu className="flex flex-row h-10 gap-4">
             <Button isLoading={manageIsLoading} onClick={onClickManage}>
               manage
             </Button>

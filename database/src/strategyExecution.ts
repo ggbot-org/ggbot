@@ -9,6 +9,7 @@ import {
   updatedNow,
   StrategyMemory,
 } from "@ggbot2/models";
+import { now, truncateTimestamp } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyExecutionPathname } from "./_dataBucketLocators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
@@ -57,7 +58,10 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         view: strategyFlow.view,
       });
       await executor.prepare();
-      const result = await executor.run({ memory });
+      const result = await executor.run({
+        memory,
+        timestamp: truncateTimestamp({ value: now(), to: "second" }),
+      });
 
       // Handle memory changes
       if (result.memoryChanged) {

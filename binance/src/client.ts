@@ -219,6 +219,8 @@ export class BinanceClient extends BinanceExchange {
   /**
    * Validate order parameters and try to adjust them; otherwise throw an error.
    *
+   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+   *
    * @throws {ErrorBinanceCannotTradeSymbol}
    * @throws {ErrorInvalidBinanceOrderOptions}
    * @throws {ErrorInvalidBinanceOrderSide}
@@ -237,12 +239,92 @@ export class BinanceClient extends BinanceExchange {
       throw new ErrorBinanceCannotTradeSymbol(symbol, type);
 
     const symbolInfo = await this.symbolInfo(symbol);
-    const options = BinanceExchange.filterOrderOptions(
-      symbolInfo,
-      orderOptions
-    );
-    if (!options) throw new ErrorInvalidBinanceOrderOptions();
-    return { options, symbol: symbolInfo.symbol };
+    // TODO apply filters, MIN_NOTIONAL, LOT_SIZE, etc
+
+    const {
+      price,
+      quantity,
+      quoteOrderQty,
+      stopPrice,
+      timeInForce,
+      trailingDelta,
+    } = orderOptions;
+
+    switch (type) {
+      case "LIMIT": {
+        if (
+          typeof price === "undefined" ||
+          typeof quoteOrderQty === "undefined" ||
+          typeof timeInForce === "undefined"
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "LIMIT_MAKER": {
+        if (typeof quantity === "undefined" || typeof price === "undefined")
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "MARKET": {
+        if (
+          typeof quantity === "undefined" &&
+          typeof quoteOrderQty === "undefined"
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "STOP_LOSS": {
+        if (
+          typeof quantity === "undefined" ||
+          (typeof stopPrice === "undefined" &&
+            typeof trailingDelta === "undefined")
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "STOP_LOSS_LIMIT": {
+        if (
+          typeof timeInForce === "undefined" ||
+          typeof quantity === "undefined" ||
+          typeof price === "undefined" ||
+          (typeof stopPrice === "undefined" &&
+            typeof trailingDelta === "undefined")
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "TAKE_PROFIT": {
+        if (
+          typeof quantity === "undefined" ||
+          (typeof stopPrice === "undefined" &&
+            typeof trailingDelta === "undefined")
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      case "TAKE_PROFIT_LIMIT": {
+        if (
+          typeof timeInForce === "undefined" ||
+          typeof quantity === "undefined" ||
+          typeof price === "undefined" ||
+          (typeof stopPrice === "undefined" &&
+            typeof trailingDelta === "undefined")
+        )
+          throw new ErrorInvalidBinanceOrderOptions();
+        break;
+      }
+
+      default:
+        throw new Error(`Unhandled order type ${type}`);
+    }
+
+    return { options: orderOptions, symbol: symbolInfo.symbol };
   }
 }
 
