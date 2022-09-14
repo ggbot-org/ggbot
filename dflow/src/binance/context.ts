@@ -1,11 +1,11 @@
 import {
   BinanceAccountInformation,
-  BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
+  BinanceTickerPrice,
 } from "@ggbot2/binance";
 import { DflowCommonContext } from "../common/context.js";
 
@@ -13,7 +13,7 @@ export interface Binance {
   // Public API
   // //////////////////////////////////////////////////////////////////
 
-  avgPrice(symbol: unknown): Promise<BinanceAvgPrice>;
+  tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
   exchangeInfo(): Promise<BinanceExchangeInfo>;
 
   // Private API
@@ -23,7 +23,7 @@ export interface Binance {
   newOrder(
     symbol: unknown,
     side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL>;
 }

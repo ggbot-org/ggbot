@@ -25,8 +25,8 @@ export class BinanceClientMock implements Binance {
     });
   }
 
-  async avgPrice(_symbol: unknown) {
-    return Promise.resolve({ mins: 5, price: "0" });
+  async tickerPrice(symbol: string) {
+    return Promise.resolve({ symbol, price: "0" });
   }
 
   async exchangeInfo() {
@@ -37,7 +37,7 @@ export class BinanceClientMock implements Binance {
   async newOrder(
     symbol: string,
     side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">
+    type: Extract<BinanceOrderType, "MARKET">
   ) {
     const orderResp: BinanceOrderRespFULL = {
       symbol,

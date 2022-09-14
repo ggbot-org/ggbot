@@ -104,7 +104,7 @@ export class BinanceClient extends BinanceExchange {
    * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrder(
-    symbolInput: unknown,
+    symbolInput: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
@@ -134,7 +134,7 @@ export class BinanceClient extends BinanceExchange {
    * Parameters are the same as `newOrder`.
    */
   async newOrderTest(
-    symbolInput: unknown,
+    symbolInput: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
@@ -163,7 +163,7 @@ export class BinanceClient extends BinanceExchange {
    * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrderACK(
-    symbolInput: unknown,
+    symbolInput: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
@@ -193,7 +193,7 @@ export class BinanceClient extends BinanceExchange {
    * Parameters are the same as `newOrderACK`.
    */
   async newOrderACKTest(
-    symbolInput: unknown,
+    symbolInput: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
@@ -217,7 +217,7 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Validate order parameters and try to adjust them; otherwise it throws an error.
+   * Validate order parameters and try to adjust them; otherwise throw an error.
    *
    * @throws {ErrorBinanceCannotTradeSymbol}
    * @throws {ErrorInvalidBinanceOrderOptions}
@@ -226,17 +226,17 @@ export class BinanceClient extends BinanceExchange {
    * @throws {ErrorInvalidBinanceSymbol}
    */
   async prepareOrder(
-    symbolInput: unknown,
+    symbol: string,
     side: BinanceOrderSide,
     type: BinanceOrderType,
     orderOptions: BinanceNewOrderOptions
   ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
     if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
     if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
-    if (!this.canTradeSymbol(symbolInput, type))
-      throw new ErrorBinanceCannotTradeSymbol(symbolInput, type);
+    if (!this.canTradeSymbol(symbol, type))
+      throw new ErrorBinanceCannotTradeSymbol(symbol, type);
 
-    const symbolInfo = await this.symbolInfo(symbolInput);
+    const symbolInfo = await this.symbolInfo(symbol);
     const options = BinanceExchange.filterOrderOptions(
       symbolInfo,
       orderOptions

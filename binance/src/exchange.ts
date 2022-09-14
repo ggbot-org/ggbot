@@ -7,6 +7,7 @@ import {
   BinanceNewOrderOptions,
   BinanceOrderType,
   BinanceSymbolInfo,
+  BinanceTickerPrice,
 } from "./types.js";
 
 /**
@@ -18,7 +19,7 @@ export class BinanceExchange extends BinanceConnector {
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
   ) {
-    return await super.request<Data>({ apiKey: "", endpoint, method, params });
+    return await super.request<Data>({ endpoint, method, params });
   }
 
   static filterOrderOptions(
@@ -36,22 +37,18 @@ export class BinanceExchange extends BinanceConnector {
    *
    * @throws {ErrorInvalidBinanceSymbol}
    */
-  async avgPrice(symbol: unknown): Promise<BinanceAvgPrice> {
+  async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isBinanceSymbol = await this.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     return await this._publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
-      {
-        symbol:
-          // If `isBinanceSymbol` then `symbol` extends `string`.
-          symbol as string,
-      }
+      { symbol }
     );
   }
 
   async canTradeSymbol(
-    symbol: unknown,
+    symbol: string,
     orderType: BinanceOrderType
   ): Promise<boolean> {
     try {
@@ -96,14 +93,30 @@ export class BinanceExchange extends BinanceConnector {
   /**
    * @throws {ErrorInvalidBinanceSymbol}
    */
-  async symbolInfo(symbol: unknown): Promise<BinanceSymbolInfo> {
-    if (typeof symbol !== "string") throw new ErrorInvalidBinanceSymbol(symbol);
-    const isBinanceSymbol = await this.isBinanceSymbol(symbol.toUpperCase());
+  async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
+    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     const { symbols } = await this.exchangeInfo();
     const symbolInfo = symbols.find((info) => info.symbol === symbol);
     // If `isBinanceSymbol` then `symbolInfo` has type `BinanceSymbolInfo`.
     return symbolInfo as BinanceSymbolInfo;
+  }
+
+  /**
+   * Latest price for a symbol.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
+   *
+   * @throws {ErrorInvalidBinanceSymbol}
+   */
+  async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
+    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
+    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    return await this._publicRequest<BinanceTickerPrice>(
+      "GET",
+      "/api/v3/ticker/price",
+      { symbol }
+    );
   }
 }
 

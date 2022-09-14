@@ -15,7 +15,7 @@ export class BinanceConnector {
   }
 
   async request<Data>({
-    apiKey,
+    apiKey = "",
     endpoint,
     method,
     params = {},
@@ -29,18 +29,16 @@ export class BinanceConnector {
 
     const headers = new Headers({
       "Content-Type": "application/json",
-      "X-MBX-APIKEY": apiKey,
       "User-Agent": BinanceConnector.userAgent,
+      ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
     });
 
     const response = await fetch(url, { headers, method });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data as Data;
-    } else {
-      throw new Error(response.statusText);
-    }
+    if (!response.ok) throw new Error(response.statusText);
+
+    const data = await response.json();
+    return data as Data;
   }
 }
 
@@ -49,7 +47,7 @@ export type BinanceConnectorConstructorArg = Partial<
 >;
 
 export type BinanceConnectorRequestArg = {
-  apiKey: string;
+  apiKey?: string;
   endpoint: string;
   method: "GET";
   params?: Record<string, string | number>;

@@ -1,19 +1,15 @@
+import { getDayFromDate } from "@ggbot2/time";
 import { DflowNode } from "dflow";
+import { DflowCommonContext as Context } from "../context.js";
 
 const { output } = DflowNode;
 
-export class Now extends DflowNode {
-  static kind = "now";
-  static outputs = [
-    output("string", { name: "timestamp" }),
-    output("number", { name: "milliseconds" }),
-    output("string", { name: "yyyy-mm-dd" }),
-  ];
+export class Today extends DflowNode {
+  static kind = "today";
+  static outputs = [output("string", { name: "yyyy-mm-dd" })];
   run() {
-    const now = Date.now();
-    const timestamp = new Date(now).toJSON();
-    this.output(0).data = timestamp;
-    this.output(1).data = now;
-    this.output(2).data = timestamp.substring(0, 10);
+    const timestamp = (this.host.context as Context).timestamp;
+    const day = getDayFromDate(new Date(timestamp));
+    this.output(0).data = day;
   }
 }

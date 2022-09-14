@@ -3,7 +3,7 @@ import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { binanceWantedPrecision } from "./arithmetic.js";
 import { Binance } from "./context.js";
-import { AvgPrice } from "./nodes/market.js";
+import { TickerPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
 
 const { output } = DflowNode;
@@ -73,7 +73,7 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = async ({
 }) => {
   const staticNodes = {
     // market
-    [AvgPrice.kind]: AvgPrice,
+    [TickerPrice.kind]: TickerPrice,
     // trade
     [MarketBuy.kind]: MarketBuy,
     [MarketSell.kind]: MarketSell,

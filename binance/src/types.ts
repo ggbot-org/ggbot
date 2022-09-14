@@ -351,6 +351,11 @@ export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
   binanceSymbolStatuses
 );
 
+export type BinanceTickerPrice = {
+  symbol: string;
+  price: string;
+};
+
 export const binanceTimeInForces = [
   /**
    * Good Til Canceled. An order will be on the book unless the order is canceled.
