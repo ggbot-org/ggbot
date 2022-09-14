@@ -18,7 +18,7 @@ export type Now = () => Timestamp;
 
 export const now: Now = () => new Date().toJSON();
 
-export const timestampTruncations = ["second", "minute", "hour", "day"];
+export const timestampTruncations = ["second", "minute", "hour"];
 export type TimestampTruncation = typeof timestampTruncations[number];
 
 export type TruncateTimestamp = (arg: {
@@ -44,11 +44,6 @@ export const truncateTimestamp: TruncateTimestamp = ({
       date.setMilliseconds(0);
       date.setSeconds(0);
       date.setMinutes(0);
-    case "day":
-      date.setMilliseconds(0);
-      date.setSeconds(0);
-      date.setMinutes(0);
-      date.setHours(0);
       break;
     default:
       throw new TypeError(`Unhandled truncation ${truncation}`);
