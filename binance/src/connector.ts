@@ -28,7 +28,6 @@ export class BinanceConnector {
       url.searchParams.append(key, String(value));
 
     const headers = new Headers({
-      "Content-Type": "application/json",
       "User-Agent": BinanceConnector.userAgent,
       ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
     });
