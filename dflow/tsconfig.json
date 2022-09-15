@@ -1,15 +1,11 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "isolatedModules": true,
     "lib": ["dom", "es2015"],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "target": "ESNext"
+    "target": "esnext"
   },
-  "include": ["./src/**/*.ts", "src/common/nodeResolution.js"]
+  "extends": "../tsconfig.common.json",
+  "include": ["./src/**/*.ts"]
 }

@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "isolatedModules": true,
     "lib": ["dom", "es2015"],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "target": "ESNext"
+    "target": "esnext"
   },
+  "extends": "../tsconfig.common.json",
   "include": ["./tests/**/*.ts"]
 }

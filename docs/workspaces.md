@@ -9,15 +9,13 @@ A basic workspace package is a folder with the following content
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "isolatedModules": true,
     "lib": ["dom", "es2015"],
-    "module": "ESNext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "target": "ESNext"
+    "target": "esnext"
   },
+  // Extend common set of `compilerOptions`, used to improve code quality.
+  "extends": "../tsconfig.common.json",
   "include": ["./src/**/*.ts"]
 }
 ```
