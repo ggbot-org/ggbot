@@ -2,6 +2,7 @@ import { BinanceExchangeInfo, binanceKlineIntervals } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { binanceWantedPrecision } from "./arithmetic.js";
+import { Addition } from "./nodes/arithmetic.js";
 import { TickerPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
 
@@ -69,6 +70,8 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
   arg
 ) => {
   const staticNodes = {
+    // arithmetic
+    [Addition.kind]: Addition,
     // market
     [TickerPrice.kind]: TickerPrice,
     // trade

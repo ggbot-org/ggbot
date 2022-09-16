@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "outDir": "./dist"
+  },
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

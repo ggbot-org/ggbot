@@ -1,4 +1,7 @@
-import type { BinanceSymbolFilterLotSize } from "./types.js";
+import type {
+  BinanceSymbolFilterLotSize,
+  BinanceSymbolFilterMinNotional,
+} from "./types.js";
 
 export const isBinanceSymbolFilterLotSize = (
   arg: unknown
@@ -11,5 +14,19 @@ export const isBinanceSymbolFilterLotSize = (
     typeof minQty === "string" &&
     typeof maxQty === "string" &&
     typeof stepSize === "string"
+  );
+};
+
+export const isBinanceSymbolFilterMinNotional = (
+  arg: unknown
+): arg is BinanceSymbolFilterMinNotional => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { filterType, minNotional, applyToMarket, avgPriceMins } =
+    arg as Partial<BinanceSymbolFilterMinNotional>;
+  return (
+    filterType === "MIN_NOTIONAL" &&
+    typeof minNotional === "string" &&
+    typeof applyToMarket === "boolean" &&
+    typeof avgPriceMins === "number"
   );
 };

@@ -1,7 +1,108 @@
 # ggbot2 npm workspaces
 
-A basic workspace package is a folder with the following content
+Every workspace folder has the same name as its package and is a direct child of the project root folder.
+Hence every workspace folder name has lower case letters with hyphen, as a valid npm name. For example: _foo-bar_.
 
+Every workspace folder must be listed in the root *package.json* `workspaces` attribute.
+
+```json
+  "workspaces": [
+    "foo-bar",
+    "another-package"
+  ]
+```
+
+The root package.json exposes also scripts for the workspace, for example
+
+```jsonc
+  "scripts": {
+    "build:foo-bar": "npm run build --workspace foo-bar",
+    "prebuild:foo-bar": "npm run build:another-package",
+    "test:foo-bar": "npm run test --workspace foo-bar",
+  }
+```
+
+## Folder structure
+
+A basic workspace package is a folder with the following files:
+
+* .gitignore
+* jest.config.cjs
+* package.json
+* src/index.ts
+* tsconfig.json
+* tsconfig.build.json
+
+### .gitignore
+
+Create a gitignore file with at least the following content
+
+```
+dist/
+```
+
+### jest.config.cjs
+
+Configure [jest] with the following:
+
+```js
+const path = require("path");
+
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+  moduleNameMapper: {
+    "(.+)\\.js": "$1",
+    "@ggbot2/(.*)": path.resolve(__dirname, "../$1/src/index.ts"),
+  },
+  preset: "ts-jest",
+  testEnvironment: "node",
+};
+```
+
+### package.json
+
+```jsonc
+{
+  // Package name, for instance `foo-bar`, prefixed by `@ggbot2` project namespace.
+  "name": "@ggbot2/foo-bar",
+  "version": "0.1.0",
+  // Package must be a private module.
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "jest": "jest",
+    "test": "npm run tsc--noEmit; npm run jest",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    // Dependency from another workspace package is referenced using `file:` prefix.
+    "@ggbot2/another-package": "file:another-package"
+  },
+  "devDependencies": {
+    // Use actual version numbers here.
+    "@types/jest": "^x.y.z",
+    "@types/node": "^x.y.z",
+    "jest": "^x.y.z",
+    "ts-jest": "^x.y.z",
+    "typescript": "^x.y.z"
+  }
+}
+```
+
+### src/index.ts
+
+Entry file for exports. Notice the **mandatory** `.js` extension.
+
+```ts
+export * from "./foo.js";
+```
 
 ### tsconfig.json
 
@@ -39,3 +140,5 @@ A basic workspace package is a folder with the following content
   ]
 }
 ```
+
+[jest]: https://jestjs.io/ "Jest"

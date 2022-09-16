@@ -1,3 +1,4 @@
+import { mul } from "@ggbot2/arithmetic";
 import { createHmac } from "crypto";
 import {
   BinanceConnectorConstructorArg,
@@ -11,7 +12,12 @@ import {
   ErrorUnhandledBinanceOrderType,
 } from "./errors.js";
 import { BinanceExchange } from "./exchange.js";
-import { findSymbolFilterLotSize, lotSizeIsValid } from "./symbolFilters.js";
+import {
+  findSymbolFilterLotSize,
+  findSymbolFilterMinNotional,
+  lotSizeIsValid,
+  minNotionalIsValid,
+} from "./symbolFilters.js";
 import {
   BinanceAccountInformation,
   BinanceApiKeyPermission,
@@ -241,9 +247,10 @@ export class BinanceClient extends BinanceExchange {
     if (!this.canTradeSymbol(symbol, type))
       throw new ErrorBinanceCannotTradeSymbol(symbol, type);
 
-    const symbolInfo = await this.symbolInfo(symbol);
+    const { baseAssetPrecision, filters } = await this.symbolInfo(symbol);
 
-    const lotSizeFilter = findSymbolFilterLotSize(symbolInfo.filters);
+    const lotSizeFilter = findSymbolFilterLotSize(filters);
+    const minNotionalFilter = findSymbolFilterMinNotional(filters);
 
     const {
       price,
@@ -272,18 +279,31 @@ export class BinanceClient extends BinanceExchange {
       }
 
       case "MARKET": {
+        const { price, mins } = await this.avgPrice(symbol);
+
         if (typeof quantity === "undefined") {
           if (typeof quoteOrderQty === "undefined")
             throw new ErrorInvalidBinanceOrderOptions();
 
-          // TODO should get avgPrice and compute quantity as quoteOrderQty / price
-          // then validate quantity with lotSizeFilter
+          const computedQuantity = mul(
+            price,
+            quoteOrderQty,
+            baseAssetPrecision
+          );
+
+          if (
+            minNotionalFilter &&
+            minNotionalFilter.applyToMarket &&
+            minNotionalFilter.avgPriceMins === mins &&
+            !minNotionalIsValid(minNotionalFilter, computedQuantity)
+          )
+            throw new ErrorInvalidBinanceOrderOptions();
         } else {
           if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
             throw new ErrorInvalidBinanceOrderOptions();
         }
 
-        return { options: orderOptions, symbol: symbolInfo.symbol };
+        return { options: orderOptions, symbol };
       }
 
       case "STOP_LOSS": {
