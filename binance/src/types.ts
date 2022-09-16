@@ -129,9 +129,9 @@ export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
 
 export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;
-  quantity: number;
-  quoteOrderQty: number;
-  price: number;
+  quantity: string;
+  quoteOrderQty: string;
+  price: string;
   /** A unique id among open orders. Automatically generated if not sent. */
   newClientOrderId: string;
   /** Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders. */
@@ -310,19 +310,19 @@ export type BinanceSymbolInfo = {
   quoteOrderQtyMarketAllowed: boolean;
   isSpotTradingAllowed: boolean;
   isMarginTradingAllowed: boolean;
-  filters: BinanceSymbolInfoFilter[];
+  filters: BinanceSymbolFilter[];
   permissions: BinancePermissions;
 };
 
-export type BinanceSymbolInfoFilter =
-  | BinanceSymbolInfoFilterLotSize
-  | BinanceSymbolInfoFilterMinNotional
-  | BinanceSymbolInfoFilterPrice;
+export type BinanceSymbolFilter =
+  | BinanceSymbolFilterLotSize
+  | BinanceSymbolFilterMinNotional
+  | BinanceSymbolFilterPrice;
 
 /**
 The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol.
 
-In order to pass the lot size, the following must be true for quantity/icebergQty:
+In order to pass the lot size, the following must be true for `quantity`/`icebergQty`:
 
 - `quantity` >= `minQtY`
 - `quantity` <= `maxQty`
@@ -338,7 +338,7 @@ In order to pass the lot size, the following must be true for quantity/icebergQt
 }
 ```
 */
-export type BinanceSymbolInfoFilterLotSize = {
+export type BinanceSymbolFilterLotSize = {
   filterType: "LOT_SIZE";
   /** defines the minimum `quantity`/`icebergQty` allowed */
   minQty: string;
@@ -367,7 +367,7 @@ Since `MARKET` orders have no price, the average price is used over the last avg
 }
 ```
 */
-export type BinanceSymbolInfoFilterMinNotional = {
+export type BinanceSymbolFilterMinNotional = {
   filterType: "MIN_NOTIONAL";
   minNotional: string;
   applyToMarket: boolean;
@@ -394,7 +394,7 @@ In order to pass the `price filter`, the following must be true for `price`/`sto
 }
 ```
 */
-export type BinanceSymbolInfoFilterPrice = {
+export type BinanceSymbolFilterPrice = {
   filterType: "PRICE_FILTER";
   /** defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0 */
   minPrice: string;

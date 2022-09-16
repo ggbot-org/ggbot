@@ -8,8 +8,10 @@ import {
   ErrorInvalidBinanceOrderOptions,
   ErrorInvalidBinanceOrderSide,
   ErrorInvalidBinanceOrderType,
+  ErrorUnhandledBinanceOrderType,
 } from "./errors.js";
 import { BinanceExchange } from "./exchange.js";
+import { findSymbolFilterLotSize, lotSizeIsValid } from "./symbolFilters.js";
 import {
   BinanceAccountInformation,
   BinanceApiKeyPermission,
@@ -99,14 +101,14 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Send in a new MARKET or LIMIT order.
+   * Send in a new order.
    *
    * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrder(
     symbolInput: string,
     side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
     const { options, symbol } = await this.prepareOrder(
@@ -128,7 +130,7 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Test a new MARKET or LIMIT order.
+   * Test a new order.
    * Binance API will validates new order but will not send it into the matching engine.
    *
    * Parameters are the same as `newOrder`.
@@ -136,7 +138,7 @@ export class BinanceClient extends BinanceExchange {
   async newOrderTest(
     symbolInput: string,
     side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "LIMIT" | "MARKET">,
+    type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
     const { options, symbol } = await this.prepareOrder(
@@ -226,6 +228,7 @@ export class BinanceClient extends BinanceExchange {
    * @throws {ErrorInvalidBinanceOrderSide}
    * @throws {ErrorInvalidBinanceOrderType}
    * @throws {ErrorInvalidBinanceSymbol}
+   * @throws {ErrorUnhandledBinanceOrderType}
    */
   async prepareOrder(
     symbol: string,
@@ -239,7 +242,8 @@ export class BinanceClient extends BinanceExchange {
       throw new ErrorBinanceCannotTradeSymbol(symbol, type);
 
     const symbolInfo = await this.symbolInfo(symbol);
-    // TODO apply filters, MIN_NOTIONAL, LOT_SIZE, etc
+
+    const lotSizeFilter = findSymbolFilterLotSize(symbolInfo.filters);
 
     const {
       price,
@@ -258,22 +262,28 @@ export class BinanceClient extends BinanceExchange {
           typeof timeInForce === "undefined"
         )
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       case "LIMIT_MAKER": {
         if (typeof quantity === "undefined" || typeof price === "undefined")
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       case "MARKET": {
-        if (
-          typeof quantity === "undefined" &&
-          typeof quoteOrderQty === "undefined"
-        )
-          throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        if (typeof quantity === "undefined") {
+          if (typeof quoteOrderQty === "undefined")
+            throw new ErrorInvalidBinanceOrderOptions();
+
+          // TODO should get avgPrice and compute quantity as quoteOrderQty / price
+          // then validate quantity with lotSizeFilter
+        } else {
+          if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
+            throw new ErrorInvalidBinanceOrderOptions();
+        }
+
+        return { options: orderOptions, symbol: symbolInfo.symbol };
       }
 
       case "STOP_LOSS": {
@@ -283,7 +293,7 @@ export class BinanceClient extends BinanceExchange {
             typeof trailingDelta === "undefined")
         )
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       case "STOP_LOSS_LIMIT": {
@@ -295,7 +305,7 @@ export class BinanceClient extends BinanceExchange {
             typeof trailingDelta === "undefined")
         )
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       case "TAKE_PROFIT": {
@@ -305,7 +315,7 @@ export class BinanceClient extends BinanceExchange {
             typeof trailingDelta === "undefined")
         )
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       case "TAKE_PROFIT_LIMIT": {
@@ -317,14 +327,12 @@ export class BinanceClient extends BinanceExchange {
             typeof trailingDelta === "undefined")
         )
           throw new ErrorInvalidBinanceOrderOptions();
-        break;
+        throw new ErrorUnhandledBinanceOrderType(type);
       }
 
       default:
-        throw new Error(`Unhandled order type ${type}`);
+        throw new ErrorUnhandledBinanceOrderType(type);
     }
-
-    return { options: orderOptions, symbol: symbolInfo.symbol };
   }
 }
 

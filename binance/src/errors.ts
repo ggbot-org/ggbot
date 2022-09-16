@@ -29,3 +29,9 @@ export class ErrorInvalidBinanceSymbol extends Error {
     super(`Invalid Binance symbol ${value}`);
   }
 }
+
+export class ErrorUnhandledBinanceOrderType extends Error {
+  constructor(type: unknown) {
+    super(`Unhandled Binance order type ${type}`);
+  }
+}

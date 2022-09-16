@@ -247,6 +247,17 @@ const Page: NextPage<ServerSideProps> = ({
     flowView.onChange(onChangeFlowView);
   }, [flowView, onChangeFlowView]);
 
+  useEffect(() => {
+    async function test() {
+      const binance = new BinanceExchange({
+        baseUrl: BinanceConnector.defaultBaseUrl,
+      });
+      const info = await binance.exchangeInfo();
+      console.log(info);
+    }
+    test();
+  }, []);
+
   return (
     <Content>
       <div className="flex flex-col h-full">

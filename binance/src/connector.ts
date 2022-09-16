@@ -21,7 +21,6 @@ export class BinanceConnector {
     params = {},
   }: BinanceConnectorRequestArg) {
     const url = new URL(this.baseUrl);
-
     url.pathname = endpoint;
 
     for (const [key, value] of Object.entries(params))
