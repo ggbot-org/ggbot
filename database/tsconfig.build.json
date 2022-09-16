@@ -3,7 +3,8 @@
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "removeComments": true
   },
   "extends": "./tsconfig.json",
   "exclude": ["node_modules", "**/*.spec.ts"]

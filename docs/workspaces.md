@@ -1,5 +1,7 @@
 # ggbot2 npm workspaces
 
+This repo uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces).
+
 Every workspace folder has the same name as its package and is a direct child of the project root folder.
 Hence every workspace folder name has lower case letters with hyphen, as a valid npm name. For example: _foo-bar_.
 
@@ -17,8 +19,8 @@ The root package.json exposes also scripts for the workspace, for example
 ```jsonc
   "scripts": {
     "build:foo-bar": "npm run build --workspace foo-bar",
-    "prebuild:foo-bar": "npm run build:another-package",
-    "test:foo-bar": "npm run test --workspace foo-bar",
+    "prebuild:foo-bar": "npm run build:another-package && npm run build:yet-another-package",
+    "test:foo-bar": "npm run test --workspace foo-bar"
   }
 ```
 

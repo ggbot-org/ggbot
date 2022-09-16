@@ -22,14 +22,19 @@ See also how to [call `nvm use` automatically in a directory with a *.nvmrc* fil
 
 Package manager used is *npm*.
 
-This repo uses [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces).
-
-### Environment
+### Environment variables
 
 Use [direnv](https://direnv.net/) to load variables from *.envrc* file.
 
 See also [`env` workspace](./env).
 
+## Repo structure
+
+Repository structure and conventions are tested by `npm run repo_tests`, implemented [here](./repo_tests.js).
+See also [internal npm workspaces documentation](./docs/workspaces.md).
+
 ## DevOps
 
-See [`devops` workspace](./devops).
+Check platform status: `npm run task:status`.
+
+See also [`devops` workspace](./devops).
