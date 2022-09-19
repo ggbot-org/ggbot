@@ -1,35 +1,41 @@
-import { getDayFromDate } from "./day.js";
+import {Day, getDayFromDate} from "./day.js";
 
 export type ValidDate = Date;
 
-export const isValidDate = (value: unknown): value is ValidDate => {
+export const isValidDate = (arg: unknown): arg is ValidDate => {
   if (
-    value instanceof Date ||
-    typeof value === "string" ||
-    typeof value === "number"
+    arg instanceof Date ||
+    typeof arg === "string" ||
+    typeof arg === "number"
   ) {
-    const date = new Date(value);
+    const date = new Date(arg);
     return date.toString() !== "Invalid Date";
   }
   return false;
 };
 
-export const addDays = (value: number, date: Date): Date => {
+export const addDays = (num: number, date: Date): Date => {
   const d = new Date(date);
-  d.setDate(d.getDate() + value);
+  d.setDate(d.getDate() + num);
   return d;
 };
 
-export const addMinutes = (value: number, date: Date): Date => {
+export const addMinutes = (num: number, date: Date): Date => {
   const d = new Date(date);
-  d.setMinutes(d.getMinutes() + value);
+  d.setMinutes(d.getMinutes() + num);
   return d;
 };
 
-export const addSeconds = (value: number, date: Date): Date => {
+export const addSeconds = (num: number, date: Date): Date => {
   const d = new Date(date);
-  d.setSeconds(d.getSeconds() + value);
+  d.setSeconds(d.getSeconds() + num);
   return d;
+};
+
+export const getDateFromDay = (day: Day) => {
+  const date = new Date(day);
+  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+  return date;
 };
 
 export const truncateDate = (date: Date): Date => {
