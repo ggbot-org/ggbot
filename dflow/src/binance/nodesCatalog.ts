@@ -1,12 +1,12 @@
-import { BinanceExchangeInfo, binanceKlineIntervals } from "@ggbot2/binance";
-import { DflowNodesCatalog, DflowNode } from "dflow";
-import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
-import { binanceWantedPrecision } from "./arithmetic.js";
-import { Addition } from "./nodes/arithmetic.js";
-import { TickerPrice } from "./nodes/market.js";
-import { MarketBuy, MarketSell } from "./nodes/trade.js";
+import {BinanceExchangeInfo, binanceKlineIntervals} from "@ggbot2/binance";
+import {DflowNodesCatalog, DflowNode} from "dflow";
+import {nodesCatalog as commonNodesCatalog} from "../common/nodesCatalog.js";
+import {binanceWantedPrecision} from "./arithmetic.js";
+import {Addition} from "./nodes/arithmetic.js";
+import {TickerPrice} from "./nodes/market.js";
+import {MarketBuy, MarketSell} from "./nodes/trade.js";
 
-const { output } = DflowNode;
+const {output} = DflowNode;
 
 type GetDflowBinanceNodesCatalog = (
   arg: Pick<BinanceExchangeInfo, "symbols">
@@ -16,7 +16,7 @@ type GetDflowBinanceNodesCatalog = (
  * Creates a dynamic set of dflow nodes generated according to Binance definitions.
  */
 export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
-  ({ symbols }) => {
+  ({symbols}) => {
     const klineIntervalNodes = binanceKlineIntervals.reduce(
       (catalog, klineInterval) => {
         class NodeClass extends DflowNode {
@@ -28,7 +28,7 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
             }),
           ];
         }
-        return { ...catalog, [NodeClass.kind]: NodeClass };
+        return {...catalog, [NodeClass.kind]: NodeClass};
       },
       {}
     );
@@ -47,9 +47,9 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
           quoteAssetPrecision === binanceWantedPrecision &&
           quotePrecision === binanceWantedPrecision
       )
-      .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
+      .reduce((catalog, {symbol}) => {
         class NodeClass extends DflowNode {
-          static kind = `${baseAsset}/${quoteAsset}`;
+          static kind = symbol
           static outputs = [
             output("string", {
               name: "symbol",
@@ -57,7 +57,7 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
             }),
           ];
         }
-        return { ...catalog, [NodeClass.kind]: NodeClass };
+        return {...catalog, [NodeClass.kind]: NodeClass};
       }, {});
 
     return {

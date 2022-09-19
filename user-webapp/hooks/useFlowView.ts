@@ -1,4 +1,4 @@
-import type { FlowView, FlowViewNode, FlowViewNodeTextToType } from "flow-view";
+import type {FlowView, FlowViewNode} from "flow-view";
 import {
   MutableRefObject,
   useCallback,
@@ -9,14 +9,13 @@ import {
 
 type UseFlowView = (arg: {
   containerRef: MutableRefObject<HTMLDivElement | null>;
-  nodeTextToViewType: FlowViewNodeTextToType;
 }) => FlowView | undefined;
 
 /**
 @example
 ```ts
 const containerRef = useRef<HTMLDivElement | null>(null);
-const flowView = useFlowView({ containerRef, nodeTextToViewType });
+const flowView = useFlowView({ containerRef });
 
 return (
   <div ref={containerRef}/>
@@ -25,7 +24,6 @@ return (
 */
 export const useFlowView: UseFlowView = ({
   containerRef,
-  nodeTextToViewType,
 }) => {
   const [flowViewInstance, setFlowViewInstance] = useState<
     FlowView | undefined
@@ -34,8 +32,8 @@ export const useFlowView: UseFlowView = ({
 
   const importFlowView = useCallback(async () => {
     if (unmounted.current || !containerRef.current || flowViewInstance) return;
-    const { FlowView } = await import("flow-view");
-    const { FlowViewNodeJson, FlowViewNodeInfo } = await import(
+    const {FlowView} = await import("flow-view");
+    const {FlowViewNodeJson, FlowViewNodeInfo} = await import(
       "../flow/nodes/index.js"
     );
     const flowView = new FlowView(containerRef.current);
@@ -47,7 +45,6 @@ export const useFlowView: UseFlowView = ({
       FlowViewNodeJson.type,
       FlowViewNodeJson as unknown as FlowViewNode
     );
-    flowView.nodeTextToType(nodeTextToViewType);
     setFlowViewInstance(flowView);
   }, [containerRef, flowViewInstance, setFlowViewInstance, unmounted]);
 

@@ -2,27 +2,28 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceExchangeInfo,
+  binanceKlineIntervals
 } from "@ggbot2/binance";
-import { readStrategy } from "@ggbot2/database";
+import {readStrategy} from "@ggbot2/database";
 import {
   BinanceDflowHost,
   getDflowBinanceNodesCatalog,
   nodeTextToViewType,
 } from "@ggbot2/dflow";
-import { now, truncateTimestamp } from "@ggbot2/time";
-import { Button } from "@ggbot2/ui-components";
-import type { DflowNodesCatalog } from "dflow";
+import {now, truncateTimestamp} from "@ggbot2/time";
+import {Button} from "@ggbot2/ui-components";
+import type {DflowNodesCatalog} from "dflow";
 import type {
   FlowViewOnChange,
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
 } from "flow-view";
-import type { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
-import { Content } from "_components";
-import { ApiAction, useApiAction, useFlowView } from "_hooks";
+import type {GetServerSideProps, NextPage} from "next";
+import {useRouter} from "next/router";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {toast} from "react-hot-toast";
+import {Content} from "_components";
+import {ApiAction, useApiAction, useFlowView} from "_hooks";
 import {
   StrategyInfo,
   readSession,
@@ -54,13 +55,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   const accountIsOwner = session.accountId === strategy.accountId;
   if (!accountIsOwner) return redirectToErrorPageStrategyNotOwned(strategyKey);
 
-  const { strategyKind } = strategyKey;
+  const {strategyKind} = strategyKey;
 
   if (strategyKind === "binance") {
     const binance = new BinanceExchange({
       baseUrl: BinanceConnector.defaultBaseUrl,
     });
-    const { symbols } = await binance.exchangeInfo();
+    const {symbols} = await binance.exchangeInfo();
     return {
       props: {
         binanceSymbols: symbols,
@@ -85,12 +86,11 @@ const Page: NextPage<ServerSideProps> = ({
 }) => {
   const router = useRouter();
 
-  const { strategyKind } = strategyKey;
+  const {strategyKind} = strategyKey;
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const flowView = useFlowView({
     containerRef: flowViewContainerRef,
-    nodeTextToViewType,
   });
 
   const [flowLoaded, setFlowLoaded] = useState(false);
@@ -103,14 +103,14 @@ const Page: NextPage<ServerSideProps> = ({
   const [newStrategyFlow, setNewStrategyFlow] =
     useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
 
-  const { data: storedStrategyFlow } = useApiAction.READ_STRATEGY_FLOW(
+  const {data: storedStrategyFlow} = useApiAction.READ_STRATEGY_FLOW(
     flowView ? strategyKey : undefined
   );
 
-  const { data: strategyExecution, isLoading: runIsLoading } =
+  const {data: strategyExecution, isLoading: runIsLoading} =
     useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
 
-  const { data: saveData, isLoading: saveIsLoading } =
+  const {data: saveData, isLoading: saveIsLoading} =
     useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
 
   const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
@@ -124,34 +124,34 @@ const Page: NextPage<ServerSideProps> = ({
 
   const dflow = useMemo(() => {
     if (strategyKind === "binance" && nodesCatalog) {
-      const timestamp = truncateTimestamp({ value: now(), to: "second" });
+      const timestamp = truncateTimestamp({value: now(), to: "second"});
       const dflow = new BinanceDflowHost(
-        { nodesCatalog },
-        { memory: {}, timestamp }
+        {nodesCatalog},
+        {memory: {}, timestamp}
       );
       return dflow;
     }
   }, [nodesCatalog, strategyKind]);
 
   const onChangeFlowView = useCallback<FlowViewOnChange>(
-    ({ action, data }, info) => {
+    ({action, data}, info) => {
       try {
         if (!dflow) return;
         if (!flowView) return;
         switch (action) {
           case "CREATE_EDGE": {
-            const { id, from, to } = data as FlowViewOnChangeDataEdge;
-            dflow.newEdge({ id, source: from, target: to });
+            const {id, from, to} = data as FlowViewOnChangeDataEdge;
+            dflow.newEdge({id, source: from, target: to});
             break;
           }
 
           case "CREATE_NODE": {
-            const { text, type, id } = data as FlowViewOnChangeDataNode;
+            const {text, type, id} = data as FlowViewOnChangeDataNode;
             switch (type) {
               case "info":
                 break;
               default: {
-                dflow.newNode({ id, kind: text });
+                dflow.newNode({id, kind: text});
               }
             }
             break;
@@ -178,7 +178,7 @@ const Page: NextPage<ServerSideProps> = ({
     if (runIsLoading) return;
     if (saveIsLoading) return;
     if (!flowView) return;
-    setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
+    setNewStrategyFlow({...strategyKey, view: flowView.graph});
   }, [
     flowView,
     flowLoaded,
@@ -225,16 +225,33 @@ const Page: NextPage<ServerSideProps> = ({
       if (!storedStrategyFlow?.view) return;
       if (!flowView) return;
       if (!nodesCatalog) return;
+      if (strategyKind === 'binance') {
+        console.log('nodesCatalog', nodesCatalog)
+        const symbols = binanceSymbols.map(({baseAsset, quoteAsset}) => `${baseAsset}/${quoteAsset}`)
+        flowView.nodeTextToType((text) => {
+          if (symbols.includes(text)) return 'symbol'
+          if ((binanceKlineIntervals as readonly string[]).includes(text)) return 'interval'
+          return nodeTextToViewType(text)
+        })
+        flowView.addNodeDefinitions({
+          nodes: Object.keys(nodesCatalog).map((kind) => {
+            if (symbols.includes(kind)) return {name: kind, type: 'symbol'}
+            if ((binanceKlineIntervals as readonly string[]).includes(kind)) return {name: kind, type: 'interval'}
+            return ({name: kind})
+          }),
+          types: {
+            'interval': {outputs: [{name: 'interval'}]},
+            'symbol': {outputs: [{name: 'symbol'}]}
+          }
+        });
+      }
       flowView.loadGraph(storedStrategyFlow.view);
-      flowView.addNodeDefinitions({
-        nodes: Object.keys(nodesCatalog).map((kind) => ({ name: kind })),
-      });
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
       toast.error("Cannot load flow");
     }
-  }, [flowView, nodesCatalog, setFlowLoaded, storedStrategyFlow]);
+  }, [binanceSymbols, flowView, nodesCatalog, setFlowLoaded, storedStrategyFlow, strategyKind]);
 
   useEffect(() => {
     if (!strategyExecution) return;
@@ -248,6 +265,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, [flowView, onChangeFlowView]);
 
   useEffect(() => {
+    // TODO remove this test
     async function test() {
       const binance = new BinanceExchange({
         baseUrl: BinanceConnector.defaultBaseUrl,
