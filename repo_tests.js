@@ -19,9 +19,18 @@ const typeChecksNpmScriptKey = "tsc--noEmit";
 function testPackageJson({ packageJson }) {
   const { name } = packageJson;
   [
-    { key: "keywords", expected: undefined },
-    { key: "private", expected: true },
-    { key: "type", expected: "module" },
+    {
+      key: "keywords",
+      expected: undefined,
+    },
+    {
+      key: "private",
+      expected: true,
+    },
+    {
+      key: "version",
+      expected: rootPackageJson.version,
+    },
   ].forEach(({ key, expected }) => {
     assert.equal(packageJson[key], expected, `package ${name} ${key}`);
   });
@@ -48,6 +57,12 @@ async function testWorkspacePackageJson({ workspace }) {
       assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
     }
   );
+
+  if (!webappWorkspaces.includes(workspace)) {
+    [{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
+      assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
+    });
+  }
 
   if (typeof packageJson.scripts.build === "string") {
     assert.equal(
