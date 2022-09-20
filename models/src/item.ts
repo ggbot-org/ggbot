@@ -9,6 +9,7 @@ export const isItemId = (value: unknown): value is ItemId => {
   return value.length === nullId.length;
 };
 
+/** An Item is identified by its `id`. */
 export type Item = {
   readonly id: ItemId;
 };

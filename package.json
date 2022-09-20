@@ -29,6 +29,7 @@
     "build:user-webapp": "npm run build:webapp --workspace user-webapp",
     "build:user-webapp:package": "npm run build:package --workspace user-webapp",
     "build:website": "npm run build --workspace website",
+    "build:worker": "npm run build --workspace worker",
     "deploy:website": "npm run deploy --workspace website",
     "e2e": "npm run playwright --workspace end-to-end-tests",
     "e2e:chromium": "npm run chromium --workspace end-to-end-tests",
@@ -49,6 +50,7 @@
     "prebuild:test-data": "npm run build:models",
     "prebuild:user-webapp": "npm run build:assets && npm run build:cookies && npm run build:database && npm run build:http-status-codes && npm run build:ui-components",
     "prebuild:website": "npm run build:assets && npm run build:ui-components",
+    "prebuild:worder": "npm run build:models",
     "repo_tests": "node repo_tests.js",
     "server:admin-webapp": "npm run dev --workspace admin-webapp",
     "server:ui-components": "npm run dev --workspace ui-components",
@@ -78,6 +80,7 @@
     "test:time": "npm run test --workspace time",
     "test:user-webapp": "npm run test --workspace user-webapp",
     "test:website": "npm run test --workspace website",
+    "test:worker": "npm run test --workspace worker",
     "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
   },
   "workspaces": [
@@ -100,7 +103,8 @@
     "time",
     "ui-components",
     "user-webapp",
-    "website"
+    "website",
+    "worker"
   ],
   "devDependencies": {
     "prettier": "^2.7.1",

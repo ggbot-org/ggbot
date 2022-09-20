@@ -17,3 +17,4 @@ export * from "./strategyExecution.js";
 export * from "./strategyMemory.js";
 export * from "./strategyScheduling.js";
 export * from "./time.js";
+export * from "./worker.js";
