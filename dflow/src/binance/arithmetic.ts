@@ -1,4 +1,10 @@
-import { ArithmeticOperation, add as _add } from "@ggbot2/arithmetic";
+import {
+  ArithmeticOperator,
+  Decimal,
+  coerceToDecimal,
+  decimalToNumber,
+  add, div, mul, sub,
+} from "@ggbot2/arithmetic";
 
 /**
 Most of the Binance symbols has precision 8. Others are edge case markets.
@@ -15,14 +21,18 @@ In `binance.exchangeInfo()`` response, there are over 2000 symbols with values
 */
 export const binanceWantedPrecision = 8;
 
-export const add: ArithmeticOperation = (a, b) =>
-  _add(a, b, binanceWantedPrecision);
+export const binanceCoerceToDecimal = (arg: unknown) => coerceToDecimal(arg, binanceWantedPrecision)
 
-export const div: ArithmeticOperation = (a, b) =>
-  _div(a, b, binanceWantedPrecision);
+export const binanceDecimalToNumber = (arg: Decimal) => decimalToNumber(arg, binanceWantedPrecision)
 
-export const mul: ArithmeticOperation = (a, b) =>
-  _mul(a, b, binanceWantedPrecision);
+export const binanceAdd: ArithmeticOperator = (a, b) =>
+  add(a, b, binanceWantedPrecision);
 
-export const sub: ArithmeticOperation = (a, b) =>
-  _sub(a, b, binanceWantedPrecision);
+export const binanceDiv: ArithmeticOperator = (a, b) =>
+  div(a, b, binanceWantedPrecision);
+
+export const binanceMul: ArithmeticOperator = (a, b) =>
+  mul(a, b, binanceWantedPrecision);
+
+export const binanceSub: ArithmeticOperator = (a, b) =>
+  sub(a, b, binanceWantedPrecision);

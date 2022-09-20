@@ -1,4 +1,6 @@
-import { FlowViewNodeTextToType } from "flow-view";
+import {FlowViewNodeTextToType} from "flow-view";
+
+export type NodeTextToViewType = FlowViewNodeTextToType
 
 /** Node kinds to be ignored during execution. */
 export const noOpNodeKinds = ["info"];
@@ -21,7 +23,7 @@ export const isJsonNode = (text: string) => {
 };
 
 /** Resolve node view type by its text. */
-export const nodeTextToViewType: FlowViewNodeTextToType = (text) => {
+export const commonNodeTextToViewType: NodeTextToViewType = (text) => {
   // Run `isJsonNode` before `isInfoNode` to avoid parse JSON twice.
   if (isJsonNode(text)) return "json";
   if (isInfoNode(text)) return "info";
@@ -36,7 +38,7 @@ export type NodeTextToDflowKind = (text: string) => string;
  * If no match is found, return the input text.
  */
 export const commonNodeTextToDflowKind: NodeTextToDflowKind = (text) => {
-  const type = nodeTextToViewType(text);
+  const type = commonNodeTextToViewType(text);
   if (!type) return text;
   if (type === "info") return "info";
   if (type === "json") return "data";

@@ -2,13 +2,12 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceExchangeInfo,
-  binanceKlineIntervals
 } from "@ggbot2/binance";
 import {readStrategy} from "@ggbot2/database";
 import {
   BinanceDflowHost,
+  commonNodeTextToViewType,
   getDflowBinanceNodesCatalog,
-  nodeTextToViewType,
 } from "@ggbot2/dflow";
 import {now, truncateTimestamp} from "@ggbot2/time";
 import {Button} from "@ggbot2/ui-components";
@@ -146,12 +145,12 @@ const Page: NextPage<ServerSideProps> = ({
           }
 
           case "CREATE_NODE": {
-            const {text, type, id} = data as FlowViewOnChangeDataNode;
+            const {text, type, id, ins, outs} = data as FlowViewOnChangeDataNode;
             switch (type) {
               case "info":
                 break;
               default: {
-                dflow.newNode({id, kind: text});
+                dflow.newNode({id, kind: text, inputs: ins, outputs: outs});
               }
             }
             break;
@@ -225,33 +224,17 @@ const Page: NextPage<ServerSideProps> = ({
       if (!storedStrategyFlow?.view) return;
       if (!flowView) return;
       if (!nodesCatalog) return;
-      if (strategyKind === 'binance') {
-        console.log('nodesCatalog', nodesCatalog)
-        const symbols = binanceSymbols.map(({baseAsset, quoteAsset}) => `${baseAsset}/${quoteAsset}`)
-        flowView.nodeTextToType((text) => {
-          if (symbols.includes(text)) return 'symbol'
-          if ((binanceKlineIntervals as readonly string[]).includes(text)) return 'interval'
-          return nodeTextToViewType(text)
-        })
-        flowView.addNodeDefinitions({
-          nodes: Object.keys(nodesCatalog).map((kind) => {
-            if (symbols.includes(kind)) return {name: kind, type: 'symbol'}
-            if ((binanceKlineIntervals as readonly string[]).includes(kind)) return {name: kind, type: 'interval'}
-            return ({name: kind})
-          }),
-          types: {
-            'interval': {outputs: [{name: 'interval'}]},
-            'symbol': {outputs: [{name: 'symbol'}]}
-          }
-        });
-      }
+      flowView.nodeTextToType(commonNodeTextToViewType)
+      flowView.addNodeDefinitions({
+        nodes: Object.keys(nodesCatalog).map((kind) => ({name: kind})),
+      });
       flowView.loadGraph(storedStrategyFlow.view);
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
       toast.error("Cannot load flow");
     }
-  }, [binanceSymbols, flowView, nodesCatalog, setFlowLoaded, storedStrategyFlow, strategyKind]);
+  }, [flowView, nodesCatalog, setFlowLoaded, storedStrategyFlow, strategyKind]);
 
   useEffect(() => {
     if (!strategyExecution) return;

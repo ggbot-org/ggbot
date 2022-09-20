@@ -2,6 +2,7 @@ import {BinanceExchangeInfo, binanceKlineIntervals} from "@ggbot2/binance";
 import {DflowNodesCatalog, DflowNode} from "dflow";
 import {nodesCatalog as commonNodesCatalog} from "../common/nodesCatalog.js";
 import {binanceWantedPrecision} from "./arithmetic.js";
+import {binanceNodeSymbolKind} from "./nodeResolution.js";
 import {Addition} from "./nodes/arithmetic.js";
 import {TickerPrice} from "./nodes/market.js";
 import {MarketBuy, MarketSell} from "./nodes/trade.js";
@@ -47,9 +48,9 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
           quoteAssetPrecision === binanceWantedPrecision &&
           quotePrecision === binanceWantedPrecision
       )
-      .reduce((catalog, {symbol}) => {
+      .reduce((catalog, {baseAsset, quoteAsset, symbol}) => {
         class NodeClass extends DflowNode {
-          static kind = symbol
+          static kind = binanceNodeSymbolKind({baseAsset, quoteAsset})
           static outputs = [
             output("string", {
               name: "symbol",

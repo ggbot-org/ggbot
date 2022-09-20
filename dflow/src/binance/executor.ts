@@ -1,16 +1,16 @@
-import type { BinanceBalance } from "@ggbot2/binance";
-import type { DflowNodesCatalog } from "dflow";
+import type {BinanceBalance} from "@ggbot2/binance";
+import type {DflowNodesCatalog} from "dflow";
 import {
   DflowCommonExecutorOutput,
   DflowExecutor,
   DflowExecutorView,
 } from "../common/executor.js";
-import { dflowValidate } from "../common/validate.js";
-import { ErrorMissingDflowExecutionReport } from "../errors.js";
-import type { BinanceDflow, BinanceDflowContext } from "./context.js";
-import { BinanceDflowHost, BinanceDflowHostContextArg } from "./host.js";
-import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
-import { nodeTextToDflowKind } from "./nodeResolution.js";
+import {dflowValidate} from "../common/validate.js";
+import {ErrorMissingDflowExecutionReport} from "../errors.js";
+import type {BinanceDflow, BinanceDflowContext} from "./context.js";
+import {BinanceDflowHost, BinanceDflowHostContextArg} from "./host.js";
+import {getDflowBinanceNodesCatalog} from "./nodesCatalog.js";
+import {binanceNodeTextToDflowKind} from "./nodeResolution.js";
 
 type BinanceDflowExecutorInput = Omit<BinanceDflowHostContextArg, "binance">;
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
@@ -19,7 +19,7 @@ type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
 
 export class BinanceDflowExecutor
   implements
-    DflowExecutor<BinanceDflowExecutorInput, BinanceDflowExecutorOutput>
+  DflowExecutor<BinanceDflowExecutorInput, BinanceDflowExecutorOutput>
 {
   readonly binance: BinanceDflow;
   readonly view: DflowExecutorView;
@@ -44,11 +44,11 @@ export class BinanceDflowExecutor
    * @throws {ErrorUknownDflowNodes}
    */
   async prepare() {
-    const { symbols } = await this.binance.exchangeInfo();
-    const binanceNodesCatalog = getDflowBinanceNodesCatalog({ symbols });
+    const {symbols} = await this.binance.exchangeInfo();
+    const binanceNodesCatalog = getDflowBinanceNodesCatalog({symbols});
     dflowValidate({
       nodesCatalog: binanceNodesCatalog,
-      nodeTextToDflowKind,
+      nodeTextToDflowKind: binanceNodeTextToDflowKind,
       view: this.view,
     });
     // If `dflowValidate` does not throw, update `nodesCatalog` with Binance nodes.
@@ -60,16 +60,16 @@ export class BinanceDflowExecutor
    * @throws {ErrorMissingDflowExecutionReport}
    */
   async run(context: BinanceDflowExecutorInput) {
-    const { binance, nodesCatalog, view } = this;
+    const {binance, nodesCatalog, view} = this;
     const dflow = new BinanceDflowHost(
-      { nodesCatalog },
-      { binance, ...context }
+      {nodesCatalog},
+      {binance, ...context}
     );
     dflow.load(view);
     await dflow.run();
     const execution = dflow.executionReport;
     if (!execution) throw new ErrorMissingDflowExecutionReport();
-    const { memory, memoryChanged } = dflow.context as BinanceDflowContext;
-    return { balances: [], execution, memory, memoryChanged };
+    const {memory, memoryChanged} = dflow.context as BinanceDflowContext;
+    return {balances: [], execution, memory, memoryChanged};
   }
 }

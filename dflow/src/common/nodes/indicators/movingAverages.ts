@@ -1,4 +1,3 @@
-import { DflowNode } from "dflow";
 import {
   Decimal,
   add,
@@ -6,7 +5,8 @@ import {
   decimalToNumber,
   div,
   numOfDecimals,
-} from "../../arithmetic.js";
+} from "@ggbot2/arithmetic";
+import {DflowNode} from "dflow";
 import {
   inputPeriod,
   inputValues,
