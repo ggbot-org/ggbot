@@ -16,6 +16,9 @@ const webappWorkspaces = [
 
 const typeChecksNpmScriptKey = "tsc--noEmit";
 
+/** Checks that are in common to all package.json,
+ * including package.json in root folder.
+ */
 function testPackageJson({ packageJson }) {
   const { name } = packageJson;
   [
@@ -170,6 +173,22 @@ function testRootPackageJson() {
   const { workspaces } = rootPackageJson;
 
   testPackageJson({ packageJson: rootPackageJson });
+
+  for (const key of Object.keys(rootPackageJson.scripts)) {
+    const separator = ":";
+    if (
+      key.startsWith(`build${separator}`) ||
+      key.startsWith(`prebuild${separator}`) ||
+      key.startsWith(`test${separator}`)
+    ) {
+      const [task, target] = key.split(separator);
+      assert.equal(
+        workspaces.includes(target),
+        true,
+        `${task}${separator}${target} targets a workspace`
+      );
+    }
+  }
 
   for (const noBuildWorkspace of noBuildWorkspaces)
     assert.equal(
