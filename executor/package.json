@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/worker",
+  "name": "@ggbot2/executor",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "test": "npm run tsc--noEmit",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "tsc--noEmit": "tsc --noEmit --project .",
+    "start": "node ./dist/daemon.js"
   },
   "dependencies": {},
   "devDependencies": {
