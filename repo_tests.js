@@ -52,17 +52,22 @@ async function testWorkspacePackageJson({ workspace }) {
 
   testPackageJson({ packageJson });
 
+  const isWebapp = webappWorkspaces.includes(workspace);
+
   [{ key: "name", expected: `${npmScope}/${workspace}` }].forEach(
     ({ key, expected }) => {
       assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
     }
   );
 
-  if (!webappWorkspaces.includes(workspace)) {
+  if (!isWebapp) {
     [{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
       assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
     });
   }
+
+  /// Test packageJson and rootPackageJson scripts.
+  // // // // // // // // // // // // // // // ///
 
   if (typeof packageJson.scripts.build === "string") {
     assert.equal(
@@ -93,6 +98,21 @@ async function testWorkspacePackageJson({ workspace }) {
     `npm run test --workspace ${workspace}`,
     `script test:${workspace} is defined in root package.json`
   );
+
+  if (isWebapp) {
+    [
+      {
+        key: `devserver:${workspace}`,
+        expected: `npm run dev --workspace ${workspace}`,
+      },
+    ].forEach(({ key, expected }) => {
+      assert.equal(
+        rootPackageJson.scripts[key],
+        expected,
+        `${workspace}/package.json scripts["${key}"]`
+      );
+    });
+  }
 }
 
 async function testWorkspaceTsconfig({ workspace }) {
