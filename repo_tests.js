@@ -116,6 +116,38 @@ async function testWorkspacePackageJson({ workspace }) {
       );
     });
   }
+
+  /// Test packageJson dependencies.
+  // // // // // // // // // // // // // // // ///
+
+  for (const [dependencyKey, dependencyValue] of Object.entries(
+    packageJson.dependencies ?? {}
+  )) {
+    const filePrefix = "file:";
+
+    if (dependencyValue.startsWith(filePrefix)) {
+      const dependency = dependencyValue.substring(
+        filePrefix.length,
+        dependencyValue.length
+      );
+
+      assert.equal(
+        dependencyKey,
+        `${npmScope}/${dependency}`,
+        `${dependencyKey} matches ${dependencyValue}`
+      );
+
+      if (!noBuildWorkspaces.includes(workspace)) {
+        assert.equal(
+          rootPackageJson.scripts[`prebuild:${workspace}`].includes(
+            `npm run build:${dependency}`
+          ),
+          true,
+          `root package.json script prebuild:${workspace} handles dependency ${dependency}"]`
+        );
+      }
+    }
+  }
 }
 
 async function testWorkspaceTsconfig({ workspace }) {
@@ -174,21 +206,16 @@ function testRootPackageJson() {
 
   testPackageJson({ packageJson: rootPackageJson });
 
-  for (const key of Object.keys(rootPackageJson.scripts)) {
-    const separator = ":";
-    if (
-      key.startsWith(`build${separator}`) ||
-      key.startsWith(`prebuild${separator}`) ||
-      key.startsWith(`test${separator}`)
-    ) {
-      const [task, target] = key.split(separator);
-      assert.equal(
-        workspaces.includes(target),
-        true,
-        `${task}${separator}${target} targets a workspace`
-      );
-    }
-  }
+  for (const key of Object.keys(rootPackageJson.scripts))
+    for (const task of ["build", "prebuild", "test"])
+      if (key.startsWith(`${task}:`)) {
+        const [_, target] = key.split(":");
+        assert.equal(
+          workspaces.includes(target),
+          true,
+          `${task}:${target} targets a workspace`
+        );
+      }
 
   for (const noBuildWorkspace of noBuildWorkspaces)
     assert.equal(
