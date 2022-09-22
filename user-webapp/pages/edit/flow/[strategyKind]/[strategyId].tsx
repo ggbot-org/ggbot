@@ -3,9 +3,9 @@ import { readStrategy } from "@ggbot2/database";
 import {
   BinanceDflowHost,
   DflowBinanceSymbolInfo,
-  commonNodeTextToViewType,
   getDflowBinanceNodesCatalog,
   isDflowBinanceSymbolInfo,
+  nodeTextToViewType,
 } from "@ggbot2/dflow";
 import { now, truncateTimestamp } from "@ggbot2/time";
 import { Button } from "@ggbot2/ui-components";
@@ -192,7 +192,7 @@ const Page: NextPage<ServerSideProps> = ({
       if (!storedStrategyFlow?.view) return;
       if (!flowView) return;
       if (!nodesCatalog) return;
-      flowView.nodeTextToType(commonNodeTextToViewType);
+      flowView.nodeTextToType(nodeTextToViewType);
       flowView.addNodeDefinitions({
         nodes: Object.keys(nodesCatalog).map((kind) => ({ name: kind })),
       });
@@ -337,14 +337,14 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content>
-      <div className="flex h-full flex-col">
-        <div className="flex flex-row justify-between gap-4 py-3 md:flex-row md:items-center">
+      <div className="flex flex-col h-full">
+        <div className="flex flex-row justify-between py-3 gap-4 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
           </dl>
 
-          <menu className="flex h-10 flex-row gap-4">
+          <menu className="flex flex-row h-10 gap-4">
             <Button isLoading={manageIsLoading} onClick={onClickManage}>
               manage
             </Button>
