@@ -4,6 +4,6 @@ export class FlowViewNodeJson extends FlowViewNodeEditable {
   static type = "json";
   init(arg) {
     super.init(arg);
-    this.newOutput({});
+    if (this.outputs.length === 0) this.newOutput({ id: "o" });
   }
 }

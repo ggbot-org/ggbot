@@ -404,7 +404,15 @@ export type BinanceSymbolFilterPrice = {
   tickSize: string;
 };
 
-export const binanceSymbolStatuses = ["TRADING", "BREAK"] as const;
+export const binanceSymbolStatuses = [
+  "PRE_TRADING",
+  "TRADING",
+  "POST_TRADING",
+  "END_OF_DAY",
+  "HALT",
+  "AUCTION_MATCH",
+  "BREAK",
+] as const;
 export type BinanceSymbolStatus = typeof binanceSymbolStatuses[number];
 export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
   binanceSymbolStatuses

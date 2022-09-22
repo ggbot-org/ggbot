@@ -1,23 +1,30 @@
-import {BinanceExchangeInfo, binanceKlineIntervals} from "@ggbot2/binance";
-import {DflowNodesCatalog, DflowNode} from "dflow";
-import {nodesCatalog as commonNodesCatalog} from "../common/nodesCatalog.js";
-import {binanceWantedPrecision} from "./arithmetic.js";
-import {binanceNodeSymbolKind} from "./nodeResolution.js";
-import {Addition} from "./nodes/arithmetic.js";
-import {TickerPrice} from "./nodes/market.js";
-import {MarketBuy, MarketSell} from "./nodes/trade.js";
+import { binanceKlineIntervals } from "@ggbot2/binance";
+import { DflowNodesCatalog, DflowNode } from "dflow";
+import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
+import {
+  DflowBinanceSymbolInfo,
+  getDflowBinanceNodeSymbolKind,
+  isDflowBinanceSymbolInfo,
+} from "./symbols.js";
+import { Addition } from "./nodes/arithmetic.js";
+import { TickerPrice } from "./nodes/market.js";
+import { MarketBuy, MarketSell } from "./nodes/trade.js";
 
-const {output} = DflowNode;
+const { output } = DflowNode;
+
+export type GetDflowBinanceNodesCatalogArg = {
+  symbols: DflowBinanceSymbolInfo[];
+};
 
 type GetDflowBinanceNodesCatalog = (
-  arg: Pick<BinanceExchangeInfo, "symbols">
+  arg: GetDflowBinanceNodesCatalogArg
 ) => DflowNodesCatalog;
 
 /**
  * Creates a dynamic set of dflow nodes generated according to Binance definitions.
  */
 export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
-  ({symbols}) => {
+  ({ symbols }) => {
     const klineIntervalNodes = binanceKlineIntervals.reduce(
       (catalog, klineInterval) => {
         class NodeClass extends DflowNode {
@@ -29,28 +36,19 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
             }),
           ];
         }
-        return {...catalog, [NodeClass.kind]: NodeClass};
+        return { ...catalog, [NodeClass.kind]: NodeClass };
       },
       {}
     );
 
     const symbolNodes = symbols
-      .filter(
-        // Most of the Binance symbols has precision 8. Others are edge case markets.
-        ({
-          baseAssetPrecision,
-          baseCommissionPrecision,
-          quoteAssetPrecision,
-          quotePrecision,
-        }) =>
-          baseAssetPrecision === binanceWantedPrecision &&
-          baseCommissionPrecision === binanceWantedPrecision &&
-          quoteAssetPrecision === binanceWantedPrecision &&
-          quotePrecision === binanceWantedPrecision
-      )
-      .reduce((catalog, {baseAsset, quoteAsset, symbol}) => {
+      .filter(isDflowBinanceSymbolInfo)
+      .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
         class NodeClass extends DflowNode {
-          static kind = binanceNodeSymbolKind({baseAsset, quoteAsset})
+          static kind = getDflowBinanceNodeSymbolKind({
+            baseAsset,
+            quoteAsset,
+          });
           static outputs = [
             output("string", {
               name: "symbol",
@@ -58,7 +56,7 @@ export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
             }),
           ];
         }
-        return {...catalog, [NodeClass.kind]: NodeClass};
+        return { ...catalog, [NodeClass.kind]: NodeClass };
       }, {});
 
     return {

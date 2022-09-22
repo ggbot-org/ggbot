@@ -3,7 +3,10 @@ import {
   Decimal,
   coerceToDecimal,
   decimalToNumber,
-  add, div, mul, sub,
+  add,
+  div,
+  mul,
+  sub,
 } from "@ggbot2/arithmetic";
 
 /**
@@ -19,20 +22,22 @@ In `binance.exchangeInfo()`` response, there are over 2000 symbols with values
 }
 ```
 */
-export const binanceWantedPrecision = 8;
+export const dflowBinancePrecision = 8;
 
-export const binanceCoerceToDecimal = (arg: unknown) => coerceToDecimal(arg, binanceWantedPrecision)
+export const binanceCoerceToDecimal = (arg: unknown) =>
+  coerceToDecimal(arg, dflowBinancePrecision);
 
-export const binanceDecimalToNumber = (arg: Decimal) => decimalToNumber(arg, binanceWantedPrecision)
+export const binanceDecimalToNumber = (arg: Decimal) =>
+  decimalToNumber(arg, dflowBinancePrecision);
 
 export const binanceAdd: ArithmeticOperator = (a, b) =>
-  add(a, b, binanceWantedPrecision);
+  add(a, b, dflowBinancePrecision);
 
 export const binanceDiv: ArithmeticOperator = (a, b) =>
-  div(a, b, binanceWantedPrecision);
+  div(a, b, dflowBinancePrecision);
 
 export const binanceMul: ArithmeticOperator = (a, b) =>
-  mul(a, b, binanceWantedPrecision);
+  mul(a, b, dflowBinancePrecision);
 
 export const binanceSub: ArithmeticOperator = (a, b) =>
-  sub(a, b, binanceWantedPrecision);
+  sub(a, b, dflowBinancePrecision);
