@@ -16,7 +16,7 @@
     "start": "node ./dist/daemon.js"
   },
   "dependencies": {
-    "@ggbot2/dflow": "file:dflow"
+    "@ggbot2/database": "file:database"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",

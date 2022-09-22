@@ -49,7 +49,7 @@
     "prebuild:devops": "npm run build:aws",
     "prebuild:dflow": "npm run build:binance && npm run build:time",
     "prebuild:email-messages": "npm run build:assets; npm run build:models",
-    "prebuild:executor": "npm run build:dflow",
+    "prebuild:executor": "npm run build:database",
     "prebuild:infrastructure": "npm run build:env",
     "prebuild:models": "npm run build:time",
     "prebuild:test-data": "npm run build:models",
