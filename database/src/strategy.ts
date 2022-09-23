@@ -120,7 +120,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   await writeAccountStrategyList({
     accountId,
     strategies: strategies.map(({ strategyId, name: itemName, ...item }) => ({
-      strategyId: strategyKey.strategyId,
+      strategyId,
       name: strategyId === strategyKey.strategyId ? name : itemName,
       ...item,
     })),
