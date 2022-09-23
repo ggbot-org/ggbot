@@ -4,7 +4,7 @@ import type { BinanceDflowContext as Context } from "../context.js";
 const { input, output } = DflowNode;
 
 export class TickerPrice extends DflowNode {
-  static kind = "tickerPrice";
+  static kind = "price";
   static isAsync = true;
   static inputs = [input("string", { name: "symbol" })];
   static outputs = [output("number", { name: "price" })];

@@ -301,6 +301,18 @@ const Page: NextPage<ServerSideProps> = ({
         }
       } catch (error) {
         switch (action) {
+          case "CREATE_EDGE": {
+            // Highlight edge view with error color.
+            if (typeof data !== "object" || data === null) break;
+            const edgeId = data.id;
+            if (typeof edgeId !== "string") break;
+            try {
+              const viewEdge = flowView.edge(edgeId);
+              viewEdge.hasError = true;
+            } catch (_ignore) {}
+            break;
+          }
+
           case "CREATE_NODE": {
             // Highlight node view with error color.
             if (typeof data !== "object" || data === null) break;
@@ -337,14 +349,14 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content>
-      <div className="flex flex-col h-full">
-        <div className="flex flex-row justify-between py-3 gap-4 md:flex-row md:items-center">
+      <div className="flex h-full flex-col">
+        <div className="flex flex-row justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
           </dl>
 
-          <menu className="flex flex-row h-10 gap-4">
+          <menu className="flex h-10 flex-row gap-4">
             <Button isLoading={manageIsLoading} onClick={onClickManage}>
               manage
             </Button>
