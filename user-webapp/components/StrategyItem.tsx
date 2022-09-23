@@ -5,7 +5,14 @@ import {
 } from "@ggbot2/models";
 import { Button, EditableInput } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import { FC, SyntheticEvent, useCallback } from "react";
+import {
+  FC,
+  PointerEventHandler,
+  SyntheticEvent,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { SchedulingStatusBadge } from "_components";
 import { route } from "_routing";
 
@@ -29,20 +36,47 @@ export const StrategyItem: FC<StrategyItemProps> = ({
 }) => {
   const router = useRouter();
 
-  const onClickFlow = useCallback(() => {
-    router.push(route.editFlowPage(strategyKey));
-  }, [router, strategyKey]);
+  const [copyIsLoading, setCopyIsLoading] = useState(false);
+  const [flowIsLoading, setFlowIsLoading] = useState(false);
+  const [manageIsLoading, setManageIsLoading] = useState(false);
 
-  const onClickManage = useCallback(() => {
-    router.push(route.strategyPage(strategyKey));
-  }, [router, strategyKey]);
+  const someActionIsLoading = useMemo(
+    () => copyIsLoading || flowIsLoading || manageIsLoading,
+    [copyIsLoading, flowIsLoading, manageIsLoading]
+  );
 
-  const onClickCopy = useCallback(() => {
-    router.push(route.copyStrategyPage(strategyKey));
-  }, [router, strategyKey]);
+  const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setCopyIsLoading(true);
+      router.push(route.copyStrategyPage(strategyKey));
+    },
+    [someActionIsLoading, setCopyIsLoading, router, strategyKey]
+  );
+
+  const onClickFlow = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setFlowIsLoading(true);
+      router.push(route.editFlowPage(strategyKey));
+    },
+    [someActionIsLoading, setFlowIsLoading, router, strategyKey]
+  );
+
+  const onClickManage = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setManageIsLoading(true);
+      router.push(route.strategyPage(strategyKey));
+    },
+    [someActionIsLoading, setManageIsLoading, router, strategyKey]
+  );
 
   return (
-    <div className="flex flex-col p-2 rounded shadow gap-4 transition-all hover:shadow-md">
+    <div className="w-fit flex flex-col gap-4 p-2 rounded shadow transition-all hover:shadow-md">
       {isSelected ? (
         <>
           <div
@@ -57,11 +91,19 @@ export const StrategyItem: FC<StrategyItemProps> = ({
             <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
           </div>
           <menu className="flex flex-row p-2 overflow-x-scroll gap-4">
-            <Button color="primary" onClick={onClickFlow}>
+            <Button
+              isLoading={flowIsLoading}
+              onClick={onClickFlow}
+              color="primary"
+            >
               flow
             </Button>
-            <Button onClick={onClickManage}>manage</Button>
-            <Button onClick={onClickCopy}>copy</Button>
+            <Button isLoading={manageIsLoading} onClick={onClickManage}>
+              manage
+            </Button>
+            <Button isLoading={copyIsLoading} onClick={onClickCopy}>
+              copy
+            </Button>
           </menu>
         </>
       ) : (

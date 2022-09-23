@@ -8,7 +8,15 @@ import {
 } from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  FC,
+  PointerEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 import { StrategyItem, StrategyItemProps } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
@@ -35,21 +43,39 @@ export const Strategies: FC = () => {
 
   const [selectedStrategyKey, setSelectedStrategyKey] =
     useState<SelectedStrategyKey>(getStoredSelectedStrategy());
-
+  const [newStrategyIsLoading, setNewStrategyIsLoading] = useState(false);
   const [renamedStrategyItems, setRenamedStrategyItems] = useState<
     RenamedStrategyItem[]
   >([]);
 
-  const { data: strategies } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
+  const {
+    data: strategies,
+    isLoading: readStrategiesIsLoading,
+    isValidating: readStrategiesIsValidating,
+  } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
 
   const [renameStrategyIn, setRenameStrategyIn] =
     useState<ApiAction["RENAME_STRATEGY"]["in"]>();
   const { isLoading: renamStrategyIsLoading } =
     useApiAction.RENAME_STRATEGY(renameStrategyIn);
 
-  const onClickNewStrategy = useCallback(() => {
-    router.push(route.createStrategyPage());
-  }, [router]);
+  const onClickNewStrategy = useCallback<
+    PointerEventHandler<HTMLButtonElement>
+  >(
+    (event) => {
+      event.stopPropagation();
+      if (newStrategyIsLoading) return;
+      router.push(route.createStrategyPage());
+      setNewStrategyIsLoading(true);
+    },
+    [newStrategyIsLoading, setNewStrategyIsLoading, router]
+  );
+
+  const noStrategy = useMemo(
+    () =>
+      !readStrategiesIsLoading && !readStrategiesIsValidating && !strategies,
+    [readStrategiesIsLoading, readStrategiesIsValidating, strategies]
+  );
 
   const strategyItems = useMemo(
     () =>
@@ -155,9 +181,12 @@ export const Strategies: FC = () => {
     <div ref={containerRef} className="flex flex-col p-4 gap-4">
       <span className="text-xl">strategies</span>
       <menu>
-        <Button onClick={onClickNewStrategy}>new strategy</Button>
+        <Button isLoading={newStrategyIsLoading} onClick={onClickNewStrategy}>
+          new strategy
+        </Button>
       </menu>
-      <div className="flex flex-col flex-wrap gap-4 md:flex-row">
+      {noStrategy && <p>You have no strategy.</p>}
+      <div className="flex flex-col flex-wrap gap-4">
         {strategyItems?.map(({ strategyId, ...props }) => (
           <StrategyItem key={strategyId} strategyId={strategyId} {...props} />
         ))}

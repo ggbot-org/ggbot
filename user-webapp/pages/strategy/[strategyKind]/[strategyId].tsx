@@ -2,7 +2,7 @@ import { isName, normalizeName } from "@ggbot2/models";
 import { Button, DateTime, EditableInput } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useMemo, useState } from "react";
+import { PointerEventHandler, useCallback, useMemo, useState } from "react";
 import {
   ButtonShareStrategy,
   Content /*SchedulingStatusBadge*/,
@@ -23,6 +23,17 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   const { strategyKind, strategyId } = strategyKey;
 
+  const [copyIsLoading, setCopyIsLoading] = useState(false);
+  const [flowIsLoading, setFlowIsLoading] = useState(false);
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+
+  const someActionIsLoading = useMemo(
+    () =>
+      copyIsLoading ||
+      deleteIsLoading ||
+      flowIsLoading[(copyIsLoading, deleteIsLoading, flowIsLoading)]
+  );
+
   const [renameStrategyIn, setRenameStrategyIn] =
     useState<ApiAction["RENAME_STRATEGY"]["in"]>();
   const { isLoading: renameIsLoading } =
@@ -38,17 +49,35 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     return false;
   }, [name, renameIsLoading]);
 
-  const onClickFlow = useCallback(() => {
-    router.push(route.editFlowPage(strategyKey));
-  }, [router, strategyKey]);
+  const onClickFlow = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setFlowIsLoading(true);
+      router.push(route.editFlowPage(strategyKey));
+    },
+    [someActionIsLoading, setFlowIsLoading, router, strategyKey]
+  );
 
-  const onClickCopy = useCallback(() => {
-    router.push(route.copyStrategyPage(strategyKey));
-  }, [router, strategyKey]);
+  const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setCopyIsLoading(true);
+      router.push(route.copyStrategyPage(strategyKey));
+    },
+    [someActionIsLoading, setCopyIsLoading, router, strategyKey]
+  );
 
-  const onClickDelete = useCallback(() => {
-    router.push(route.deleteStrategyPage(strategyKey));
-  }, [router, strategyKey]);
+  const onClickDelete = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (someActionIsLoading) return;
+      setDeleteIsLoading(true);
+      router.push(route.deleteStrategyPage(strategyKey));
+    },
+    [someActionIsLoading, setDeleteIsLoading, router, strategyKey]
+  );
 
   const setName = useCallback<(value: unknown) => void>(
     (value) => {
@@ -93,12 +122,22 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
         </div>
 
         <menu className="flex flex-row overflow-x-scroll gap-4">
-          <Button color="primary" onClick={onClickFlow}>
+          <Button
+            isLoading={flowIsLoading}
+            onClick={onClickFlow}
+            color="primary"
+          >
             flow
           </Button>
           <ButtonShareStrategy {...strategyKey} />
-          <Button onClick={onClickCopy}>copy</Button>
-          <Button color="danger" onClick={onClickDelete}>
+          <Button isLoading={copyIsLoading} onClick={onClickCopy}>
+            copy
+          </Button>
+          <Button
+            isLoading={deleteIsLoading}
+            onClick={onClickDelete}
+            color="danger"
+          >
             delete
           </Button>
         </menu>

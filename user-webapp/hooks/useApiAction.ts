@@ -38,12 +38,14 @@ const fetcher = async (action: JsonObject) => {
 };
 
 function useAction<OutputData>(arg: ApiActionInput | null, options = {}) {
-  const { error, data: responseOutput } = useSWR<
-    ApiActionResponseOutput<OutputData>
-  >(arg, fetcher, options);
+  const {
+    error,
+    data: responseOutput,
+    isValidating,
+  } = useSWR<ApiActionResponseOutput<OutputData>>(arg, fetcher, options);
   const isLoading = arg !== null && !error && !responseOutput;
   const data = responseOutput?.data;
-  return { error, data, isLoading };
+  return { error, data, isLoading, isValidating };
 }
 
 export const useApiAction = {
