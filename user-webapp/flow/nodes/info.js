@@ -6,10 +6,9 @@ export class FlowViewNodeInfo extends FlowViewNode {
   static style = {
     textarea: {
       border: "0",
-      "font-family": "monospace",
       "font-size": "16px",
       outline: "none",
-      padding: "4px 17px 4px 17px",
+      padding: "4px 17px",
     },
     "textarea::selection": { "background-color": "transparent" },
   };
@@ -31,25 +30,22 @@ export class FlowViewNodeInfo extends FlowViewNode {
 
   initContent() {
     const textarea = this.createElement("textarea");
-    textarea.tabIndex = -1;
-    textarea.wrap = "off";
-    textarea.value = this.text;
     this.textarea = textarea;
+
+    textarea.spellcheck = false;
+    textarea.tabIndex = -1;
+    textarea.value = this.text;
+    textarea.wrap = "off";
 
     this.setNumRows();
     this.setNumCols();
-
-    textarea.style.border = "0";
-    textarea.style.fontFamily = "monospace";
-    textarea.style.fontSize = "16px";
-    textarea.style.outline = "none";
-    textarea.style.padding = "4px 17px 4px 17px";
 
     textarea.onblur = () => {
       if (this.text !== textarea.value) {
         this.text = textarea.value;
         this.view.host.viewChange({ updatedNode: this.toObject() });
       }
+      this.view.deselectNode(this);
     };
 
     textarea.onpointerdown = (event) => {
@@ -64,7 +60,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
     textarea.onkeydown = (event) => {
       event.stopPropagation();
       if (event.code === "Tab") event.preventDefault();
-      if (event.code === "Escape") this.textarea.blur();
+      if (event.code === "Escape") textarea.blur();
     };
 
     textarea.onkeyup = (event) => {
