@@ -1,13 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import styles from "../styles/PrivacyAndTerms.module.css";
 
 const Page: NextPage = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>ggbot2</title>
       </Head>
-      <main>
+
+      <main className={styles.main}>
         <h1>Privacy Policy</h1>
         <p>
           Welcome to <em>ggbot2</em>. Please read this Privacy Policy carefully
@@ -27,7 +29,7 @@ const Page: NextPage = () => {
           Amazon&apos;s Simple Email Service.
         </p>
       </main>
-    </div>
+    </>
   );
 };
 

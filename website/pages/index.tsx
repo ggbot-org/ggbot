@@ -14,7 +14,6 @@ const Page: NextPage = () => {
       <Head>
         <title>ggbot2</title>
         <meta name="description" content="crypto flow" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>

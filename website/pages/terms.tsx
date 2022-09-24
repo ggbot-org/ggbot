@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import styles from "../styles/PrivacyAndTerms.module.css";
 
 const Page: NextPage = () => {
   return (
@@ -8,7 +9,8 @@ const Page: NextPage = () => {
       <Head>
         <title>ggbot2</title>
       </Head>
-      <main>
+
+      <main className={styles.main}>
         <h1>Terms of Service</h1>
         <p>
           Welcome to <em>ggbot2</em>. Please read this <em>Terms of Service</em>{" "}
@@ -16,7 +18,7 @@ const Page: NextPage = () => {
           <em>ggbot2</em> website.
         </p>
 
-        <h2>Website usage</h2>
+        <h2>Website access</h2>
         <p>
           You access <em>ggbot2</em> website with your account email.
         </p>
@@ -24,7 +26,7 @@ const Page: NextPage = () => {
 
         <h2>Binance API</h2>
         <p>
-          The <em>ggbot2</em> engine needs you grant it access to your Binance
+          The <em>ggbot2</em> engine needs your grant to access your Binance
           account using Binance API key.
         </p>
         <p>
