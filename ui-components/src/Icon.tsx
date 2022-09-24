@@ -1,45 +1,29 @@
-import { SVGAttributes, useMemo } from "react";
+import { ReactNode, SVGAttributes, useMemo } from "react";
 
 export const iconNames = ["caret-left", "caret-right"] as const;
 export type IconName = typeof iconNames[number];
 
 type IconDefinition = {
-  fill?: SVGAttributes<SVGSVGElement>["fill"];
-
-  /**
-   * Path definition, the `d` attribute of an SVG `path` element.
-   */
-  shape: SVGAttributes<SVGPathElement>["d"];
-
-  stroke?: SVGAttributes<SVGSVGElement>["stroke"];
-  strokeLinecap?: SVGAttributes<SVGSVGElement>["strokeLinecap"];
-  strokeLinejoin?: SVGAttributes<SVGSVGElement>["strokeLinejoin"];
-  strokeWidth?: SVGAttributes<SVGSVGElement>["strokeWidth"];
-
-  /**
-   * SVG viewBox
-   */
+  jsx: ReactNode;
   viewBox: SVGAttributes<SVGSVGElement>["viewBox"];
 };
 
 const iconRecord: Record<IconName, IconDefinition> = {
   "caret-left": {
-    fill: "none",
-    shape: "M7 1L1 6.5L7 12",
-    stroke: "currentColor",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    strokeWidth: 2,
-    viewBox: "0 0 8 13",
+    jsx: (
+      <g>
+        <polyline points="10.293 19.707 0.586 10 10.293 0.293 11.707 1.707 3.414 10 11.707 18.293 10.293 19.707" />
+      </g>
+    ),
+    viewBox: "0 0 15 20",
   },
   "caret-right": {
-    fill: "none",
-    shape: "M1 12L7 6.5L1 1",
-    stroke: "currentColor",
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    strokeWidth: 2,
-    viewBox: "0 0 8 13",
+    jsx: (
+      <g>
+        <polyline points="1.707 19.707 0.293 18.293 8.586 10 0.293 1.707 1.707 0.293 11.414 10 1.707 19.707" />
+      </g>
+    ),
+    viewBox: "0 0 10 20",
   },
 };
 
@@ -53,15 +37,7 @@ export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 };
 
 export const Icon: React.FC<IconProps> = ({ name, onClick, size = "1em" }) => {
-  const {
-    viewBox,
-    fill,
-    shape,
-    stroke,
-    strokeLinecap,
-    strokeLinejoin,
-    strokeWidth,
-  } = useMemo(() => iconRecord[name], [name]);
+  const { viewBox, jsx } = useMemo(() => iconRecord[name], [name]);
 
   const className = useMemo(
     () => [typeof onClick === "function" ? "cursor-pointer" : ""].join(" "),
@@ -77,14 +53,7 @@ export const Icon: React.FC<IconProps> = ({ name, onClick, size = "1em" }) => {
       className={className}
       onClick={onClick}
     >
-      <path
-        d={shape}
-        fill={fill ?? "currentColor"}
-        stroke={stroke}
-        strokeLinecap={strokeLinecap}
-        strokeLinejoin={strokeLinejoin}
-        strokeWidth={strokeWidth}
-      />
+      {jsx}
     </svg>
   );
 };
