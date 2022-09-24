@@ -9,7 +9,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
@@ -48,7 +48,7 @@ const Page: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Content>
+    <Content topbar={<Navigation hasSettingsIcon />}>
       <form
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}

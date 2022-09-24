@@ -1,6 +1,10 @@
 import { ReactNode, SVGAttributes, useMemo } from "react";
 
-export const iconNames = ["caret-left", "caret-right"] as const;
+export const iconNames = [
+  "caret-left",
+  "caret-right",
+  "dots-vertical",
+] as const;
 export type IconName = typeof iconNames[number];
 
 type IconDefinition = {
@@ -11,7 +15,7 @@ type IconDefinition = {
 const iconRecord: Record<IconName, IconDefinition> = {
   "caret-left": {
     jsx: (
-      <g>
+      <g fill="currentColor">
         <polyline points="10.293 19.707 0.586 10 10.293 0.293 11.707 1.707 3.414 10 11.707 18.293 10.293 19.707" />
       </g>
     ),
@@ -19,11 +23,21 @@ const iconRecord: Record<IconName, IconDefinition> = {
   },
   "caret-right": {
     jsx: (
-      <g>
+      <g fill="currentColor">
         <polyline points="1.707 19.707 0.293 18.293 8.586 10 0.293 1.707 1.707 0.293 11.414 10 1.707 19.707" />
       </g>
     ),
     viewBox: "0 0 10 20",
+  },
+  "dots-vertical": {
+    jsx: (
+      <g fill="currentColor">
+        <circle r={2} cx={10} cy={4} />
+        <circle r={2} cx={10} cy={10} />
+        <circle r={2} cx={10} cy={16} />
+      </g>
+    ),
+    viewBox: "0 0 20 20",
   },
 };
 

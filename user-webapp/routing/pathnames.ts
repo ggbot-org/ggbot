@@ -22,6 +22,7 @@ export const route = {
   errorPageStrategyNotOwned: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
   homePage: () => "/",
+  settingsPage: () => "/settings",
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>

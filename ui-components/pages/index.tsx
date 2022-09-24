@@ -1,7 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import {
+  Buttons,
+  Colors,
+  IconList,
+  LoadingButtons,
+  SimpleForm,
+  SimpleTable,
+} from "../examples";
 import { Logo } from "../src/Logo";
-import { Buttons, IconList, LoadingButtons, SimpleTable } from "../examples";
+import { Main } from "../src/Main";
+import { Navbar, NavbarBrand } from "../src/Navbar";
 
 const Home: NextPage = () => {
   return (
@@ -10,15 +19,25 @@ const Home: NextPage = () => {
         <title>ggbot2 ui-components</title>
       </Head>
 
-      <Logo size={71} />
+      <Navbar>
+        <NavbarBrand />
+      </Navbar>
 
-      <Buttons />
+      <Main>
+        <Logo size={71} />
 
-      <LoadingButtons />
+        <Colors />
 
-      <IconList />
+        <SimpleForm />
 
-      <SimpleTable />
+        <Buttons />
+
+        <LoadingButtons />
+
+        <IconList />
+
+        <SimpleTable />
+      </Main>
     </>
   );
 };

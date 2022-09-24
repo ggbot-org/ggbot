@@ -1,11 +1,12 @@
 import { FC } from "react";
-import { Icon } from "../src";
+import { Icon, iconNames } from "../src";
 
 export const IconList: FC = () => {
   return (
     <div className="flex flex-row p-2">
-      <Icon name="caret-left" />
-      <Icon name="caret-right" />
+      {iconNames.map((name) => (
+        <Icon key={name} name={name} />
+      ))}
     </div>
   );
 };

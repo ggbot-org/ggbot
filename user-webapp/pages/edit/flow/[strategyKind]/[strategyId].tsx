@@ -19,7 +19,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { ApiAction, useApiAction, useFlowView } from "_hooks";
 import {
   StrategyInfo,
@@ -158,6 +158,7 @@ const Page: NextPage<ServerSideProps> = ({
   const onClickRun = useCallback(() => {
     if (!flowLoaded) return;
     if (manageIsLoading) return;
+    if (runIsLoading) return;
     if (saveIsLoading) return;
     if (typeof newStrategyFlow !== "undefined") return;
     setStrategyKeyToBeExecuted(strategyKey);
@@ -348,7 +349,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, []);
 
   return (
-    <Content>
+    <Content topbar={<Navigation hasSettingsIcon />}>
       <div className="flex h-full flex-col">
         <div className="flex flex-row justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>

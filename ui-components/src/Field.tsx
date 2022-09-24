@@ -7,9 +7,8 @@ type Props = InputProps & {
 };
 
 export const Field: FC<Props> = ({ label, name, ...inputProps }) => {
-  const containerClassName = "w-full py-2";
   return (
-    <div className={containerClassName}>
+    <div className="w-full py-2">
       <label htmlFor={name}>{label}</label>
       <Input {...inputProps} id={name} name={name} />
     </div>

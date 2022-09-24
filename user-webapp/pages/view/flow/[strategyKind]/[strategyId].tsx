@@ -3,7 +3,7 @@ import { Button } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
-import { ButtonShareStrategy, Content } from "_components";
+import { ButtonShareStrategy, Content, Navigation } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
 import { StrategyInfo, getStrategyInfo, route } from "_routing";
 
@@ -41,7 +41,10 @@ const Page: NextPage<ServerSideProps> = ({
   }, [data, flowView]);
 
   return (
-    <Content metadata={{ title: "ggbot2 strategy", description: name }}>
+    <Content
+      metadata={{ title: "ggbot2 strategy", description: name }}
+      topbar={<Navigation />}
+    >
       <div className="flex h-full flex-col">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>

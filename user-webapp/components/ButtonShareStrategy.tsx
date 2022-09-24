@@ -25,10 +25,14 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
 
   const copyToClipboard = useCallback(() => {
     try {
-      _navigator?.clipboard.writeText(url);
-      toast("Strategy link copied");
+      if (canShare) {
+        _navigator?.clipboard.writeText(url);
+        toast("Strategy link copied");
+      } else {
+        toast.error("Please copy URL manually");
+      }
     } catch (_ignore) {}
-  }, [_navigator, url]);
+  }, [_navigator, canShare, url]);
 
   const onClick = useCallback(async () => {
     try {
@@ -38,8 +42,6 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
       copyToClipboard();
     }
   }, [_navigator, copyToClipboard, url]);
-
-  if (!canShare) return null;
 
   return <Button onClick={onClick}>share</Button>;
 };

@@ -7,6 +7,8 @@ export * from "./Fieldset";
 export * from "./Icon";
 export * from "./Input";
 export * from "./Logo";
+export * from "./Main";
+export * from "./Navbar";
 export * from "./Pill";
 export * from "./Spinner";
 export * from "./Table";

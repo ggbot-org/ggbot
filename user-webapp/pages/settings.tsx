@@ -1,12 +1,17 @@
 import type { NextPage } from "next";
-import { AccountSettings, BinanceSettings, Content } from "_components";
+import {
+  AccountSettings,
+  BinanceSettings,
+  Content,
+  Navigation,
+} from "_components";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
   return (
-    <Content>
+    <Content topbar={<Navigation settingsIcon={false} />}>
       <AccountSettings />
       <BinanceSettings />
     </Content>

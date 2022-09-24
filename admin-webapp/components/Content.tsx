@@ -1,3 +1,4 @@
+import { Main } from "@ggbot2/ui-components";
 import Head from "next/head";
 import { FC, ReactNode } from "react";
 
@@ -12,7 +13,8 @@ export const Content: FC<Props> = ({ children }) => {
         <title>ggbot2 admin</title>
         <meta name="description" content="crypto flow" />
       </Head>
-      {children}
+
+      <Main>{children}</Main>
     </>
   );
 };

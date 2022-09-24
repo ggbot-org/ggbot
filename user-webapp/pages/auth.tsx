@@ -16,7 +16,7 @@ import {
   ApiVerifyResponseData,
   isApiVerifyRequestData,
 } from "_api/auth/verify";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { HasSession, readSession, route } from "_routing";
 
 type ServerSideProps = HasSession;
@@ -344,7 +344,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
 const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [emailSent, setEmailSent] = useState<EmailSent>(false);
   return (
-    <Content>
+    <Content topbar={<Navigation />}>
       <div className="flex flex-col items-center w-full max-w-lg p-4 gap-4">
         {hasSession ? (
           <Exit />

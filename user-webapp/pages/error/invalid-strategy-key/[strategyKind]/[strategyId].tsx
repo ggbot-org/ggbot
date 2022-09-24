@@ -1,6 +1,6 @@
 import { isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, NextPage } from "next";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { InvalidStrategyKey, redirectToHomePage } from "_routing";
 
 type ServerSideProps = InvalidStrategyKey;
@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content>
+    <Content topbar={<Navigation />}>
       <div className="p-4 flex flex-col gap-4">
         <span className="text-xl">
           Invalid <em>strategy key</em>

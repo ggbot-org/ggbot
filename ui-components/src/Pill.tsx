@@ -9,9 +9,9 @@ function colorClassNames({ color }: Pick<Props, "color">) {
     case "primary":
       return "bg-primary-100 border-primary-400 text-primary-800";
     case "neutral":
-      return "bg-dark-100 border-dark-400 text-mono-800";
+      return "bg-mono-100 border-mono-400 text-mono-800";
     default:
-      return "bg-white border-dark-300 text-mono-800";
+      return "bg-white border-mono-300 text-mono-800";
   }
 }
 

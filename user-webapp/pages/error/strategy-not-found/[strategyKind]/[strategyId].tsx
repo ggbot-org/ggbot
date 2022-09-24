@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { StrategyKey, requireAuthenticationAndGetStrategyKey } from "_routing";
 
 type ServerSideProps = StrategyKey;
@@ -8,7 +8,7 @@ export const getServerSideProps = requireAuthenticationAndGetStrategyKey;
 
 const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content>
+    <Content topbar={<Navigation />}>
       <div className="flex flex-col gap-4 p-4">
         <span className="text-xl">
           Strategy <em>not found</em>

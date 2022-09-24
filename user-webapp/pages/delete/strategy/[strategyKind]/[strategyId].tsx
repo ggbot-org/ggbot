@@ -1,7 +1,7 @@
 import { Button, DateTime } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useState } from "react";
-import { Content } from "_components";
+import { Content, Navigation } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import {
   StrategyInfo,
@@ -36,7 +36,7 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   return (
-    <Content>
+    <Content topbar={<Navigation />}>
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>

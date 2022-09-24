@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import { PointerEventHandler, useCallback, useMemo, useState } from "react";
 import {
   ButtonShareStrategy,
-  Content /*SchedulingStatusBadge*/,
+  Content /* TODO SchedulingStatusBadge*/,
+  Navigation,
 } from "_components";
 import { ApiAction, useApiAction } from "_hooks";
 import {
@@ -28,10 +29,8 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
 
   const someActionIsLoading = useMemo(
-    () =>
-      copyIsLoading ||
-      deleteIsLoading ||
-      flowIsLoading[(copyIsLoading, deleteIsLoading, flowIsLoading)]
+    () => copyIsLoading || deleteIsLoading || flowIsLoading,
+    [copyIsLoading, deleteIsLoading, flowIsLoading]
   );
 
   const [renameStrategyIn, setRenameStrategyIn] =
@@ -96,7 +95,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   );
 
   return (
-    <Content>
+    <Content topbar={<Navigation hasSettingsIcon />}>
       <div className="flex flex-col p-4 gap-4">
         <span className="text-xl">strategy</span>
         <dl>
@@ -121,7 +120,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           </div>
         </div>
 
-        <menu className="flex flex-row overflow-x-scroll gap-4">
+        <menu className="flex flex-row flex-wrap gap-4">
           <Button
             isLoading={flowIsLoading}
             onClick={onClickFlow}

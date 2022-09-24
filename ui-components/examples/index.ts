@@ -1,3 +1,5 @@
 export * from "./Buttons";
+export * from "./Colors";
+export * from "./Forms";
 export * from "./Icons";
-export * from "./SimpleTable";
+export * from "./Tables";

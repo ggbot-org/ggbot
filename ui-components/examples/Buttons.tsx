@@ -3,7 +3,7 @@ import { Button } from "../src/Button";
 
 export const Buttons: FC = () => {
   return (
-    <div className="flex flex-row gap-2 p-2">
+    <div className="flex flex-row gap-2 wrap">
       <Button>button</Button>
       <Button color="primary">primary</Button>
       <Button color="danger">danger</Button>
@@ -14,7 +14,7 @@ export const Buttons: FC = () => {
 
 export const LoadingButtons: FC = () => {
   return (
-    <div className="flex flex-row gap-2 p-2">
+    <div className="flex flex-row gap-2 wrap">
       <Button isLoading>button</Button>
       <Button isLoading color="primary">
         primary
