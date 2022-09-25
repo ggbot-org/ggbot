@@ -1,4 +1,4 @@
-import { ErrorInvalidDecimal } from "./errors.js";
+import { ErrorCannotConvertToDecimal } from "./errors.js";
 
 /**
  * Represents a number with decimal digits as a string.
@@ -6,8 +6,8 @@ import { ErrorInvalidDecimal } from "./errors.js";
  */
 export type Decimal = string;
 
-export const isDecimal = (value: unknown): value is Decimal => {
-  const n = Number(value);
+export const canBeDecimal = (arg: unknown): arg is Decimal => {
+  const n = Number(arg);
   if (typeof n !== "number" || isNaN(n) || !Number.isFinite(n)) return false;
   return true;
 };
@@ -29,17 +29,19 @@ export const numOfDecimals = (n: Decimal) => {
   //     n = '1.23456789000'
   //     mantissa = '23456789000'
   //     Number 0.{mantissa} = 0.23456789
-  return String(Number(`0.${mantissa}`)).length - 2;
+  const mantissaNum = Number(`0.${mantissa}`);
+  if (mantissaNum === 0) return 0;
+  return String(mantissaNum).length - 2;
 };
 
 /**
- * @throws {ErrorInvalidDecimal}
+ * @throws {ErrorCannotConvertToDecimal}
  */
 export const coerceToDecimal = (
   value: unknown,
   numDecimals?: number
 ): Decimal => {
-  if (!isDecimal(value)) throw new ErrorInvalidDecimal(value);
+  if (!canBeDecimal(value)) throw new ErrorCannotConvertToDecimal(value);
   const n = Number(value);
   return typeof numDecimals === "undefined"
     ? String(n)

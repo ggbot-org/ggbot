@@ -4,8 +4,8 @@ export class ErrorCannotDivideByZero extends TypeError {
   }
 }
 
-export class ErrorInvalidDecimal extends TypeError {
-  constructor(value: unknown) {
-    super(`Invalid decimal number ${value}`);
+export class ErrorCannotConvertToDecimal extends TypeError {
+  constructor(arg: unknown) {
+    super(`Cannot convert to Decimal ${arg}`);
   }
 }

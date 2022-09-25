@@ -27,8 +27,6 @@ describe("Simple Moving Average", () => {
           86.8,
         ],
       },
-      /*
-       */
     ].forEach(({ input: { values, period }, output }) => {
       expect(ma(values, period)).toStrictEqual(output);
     });
