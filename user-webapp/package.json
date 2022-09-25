@@ -9,10 +9,11 @@
     }
   },
   "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
-    "build:package": "tsc --build tsconfig.build.json",
-    "build:webapp": "next build",
     "lint": "next lint",
+    "next:build": "next build",
     "start": "next start",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."

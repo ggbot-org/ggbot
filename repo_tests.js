@@ -16,11 +16,16 @@ const webappWorkspaces = [
 
 const typeChecksNpmScriptKey = "tsc--noEmit";
 
-/** Checks that are in common to all package.json,
+/**
+ * Checks that are in common to all package.json,
  * including package.json in root folder.
  */
-function testPackageJson({ packageJson }) {
+function testPackageJson({ packageJson, workspace }) {
   const { name } = packageJson;
+
+  if (typeof workspace === "undefined" && name !== rootPackageJson.name)
+    throw new TypeError("Missing workspace argument");
+
   [
     {
       key: "keywords",
@@ -39,7 +44,11 @@ function testPackageJson({ packageJson }) {
   });
 
   const requiredNpmScripts = ["test", typeChecksNpmScriptKey];
-  requiredNpmScripts.forEach((key) => {
+  const buildNpmScripts = noBuildWorkspaces.includes(workspace)
+    ? []
+    : ["build", "cleanup"];
+
+  [...requiredNpmScripts, ...buildNpmScripts].forEach((key) => {
     assert.equal(
       typeof packageJson.scripts[key] === "string",
       true,
@@ -53,7 +62,7 @@ async function testWorkspacePackageJson({ workspace }) {
     assert: { type: "json" },
   });
 
-  testPackageJson({ packageJson });
+  testPackageJson({ packageJson, workspace });
 
   const isWebapp = webappWorkspaces.includes(workspace);
 
@@ -103,16 +112,30 @@ async function testWorkspacePackageJson({ workspace }) {
   );
 
   if (isWebapp) {
+    [{ key: "next:build", expected: "next build" }].forEach(
+      ({ key, expected }) => {
+        assert.equal(
+          packageJson.scripts[key],
+          expected,
+          `${workspace}/package.json scripts["${key}"]`
+        );
+      }
+    );
+
     [
       {
         key: `devserver:${workspace}`,
         expected: `npm run dev --workspace ${workspace}`,
       },
+      {
+        key: `next:build:${workspace}`,
+        expected: `npm run next:build --workspace ${workspace}`,
+      },
     ].forEach(({ key, expected }) => {
       assert.equal(
         rootPackageJson.scripts[key],
         expected,
-        `${workspace}/package.json scripts["${key}"]`
+        `root package.json scripts["${key}"]`
       );
     });
   }

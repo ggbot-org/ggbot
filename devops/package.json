@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/",
     "task:create": "node ./dist/task-create.js",
     "task:showDevopsPolicy": "node src/showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js",

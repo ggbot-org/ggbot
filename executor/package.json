@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project .",
     "start": "node ./dist/daemon.js"
