@@ -3,21 +3,21 @@
  */
 export type Day = string;
 
-export const isDay = (day: unknown): day is Day => {
-  if (typeof day !== "string") return false;
+export const isDay = (arg: unknown): arg is Day => {
+  if (typeof arg !== "string") return false;
   try {
-    const maybeDate = new Date(day);
-    return getDayFromDate(maybeDate) === day;
+    const maybeDate = new Date(arg);
+    return getDayFromDate(maybeDate) === arg;
   } catch {
     return false;
   }
 };
 
-type Yyyy = string;
-type Mm = string;
-type Dd = string;
+type YYYY = string;
+type MM = string;
+type DD = string;
 
-export type SplittedDay = [Yyyy, Mm, Dd];
+export type SplittedDay = [YYYY, MM, DD];
 
 export const splitDay = (day: Day): SplittedDay => {
   const [yyyy, mm, dd] = day.split("-");
