@@ -81,13 +81,15 @@ async function testWorkspacePackageJson({ workspace }) {
   /// Test packageJson and rootPackageJson scripts.
   // // // // // // // // // // // // // // // ///
 
-  if (typeof packageJson.scripts.build === "string") {
-    assert.equal(
-      rootPackageJson.scripts[`build:${workspace}`],
-      `npm run build --workspace ${workspace}`,
-      `script build defined in ${workspace}/package.json is exposed via script build:${workspace} defined in root package.json`
-    );
-  }
+  ["build", "cleanup"].forEach((key) => {
+    if (typeof packageJson.scripts[key] === "string") {
+      assert.equal(
+        rootPackageJson.scripts[`${key}:${workspace}`],
+        `npm run ${key} --workspace ${workspace}`,
+        `script ${key} defined in ${workspace}/package.json is exposed via script ${key}:${workspace} defined in root package.json`
+      );
+    }
+  });
 
   [
     { key: typeChecksNpmScriptKey, expected: "tsc --noEmit --project ." },
