@@ -1,4 +1,4 @@
-import { ema, ma } from "./movingAverages";
+import { ema, getMovingValues, sma } from "./movingAverages";
 
 describe("Exponential Moving Average", () => {
   it("works", () => {
@@ -28,7 +28,22 @@ describe("Simple Moving Average", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(ma(values, period)).toStrictEqual(output);
+      expect(sma(values, period)).toStrictEqual(output);
+    });
+  });
+});
+
+describe("getMovingValues", () => {
+  it("returns a rolling set of values", () => {
+    const array = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+    [
+      { input: { period: 2, index: 0, array }, output: [] },
+      { input: { period: 2, index: 1, array }, output: [10, 11] },
+      { input: { period: 3, index: 2, array }, output: [10, 11, 12] },
+      { input: { period: 4, index: 4, array }, output: [14, 15, 16, 17] },
+    ].forEach(({ input: { period, index, array }, output }) => {
+      expect(getMovingValues(period, index, array)).toBe(output);
     });
   });
 });

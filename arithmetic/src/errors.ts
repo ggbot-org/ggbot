@@ -4,7 +4,7 @@ export class ErrorCannotDivideByZero extends TypeError {
   }
 }
 
-export class ErrorCannotConvertToDecimal extends TypeError {
+export class ErrorCannotCoerceToDecimal extends TypeError {
   constructor(arg: unknown) {
     super(`Cannot convert to Decimal ${arg}`);
   }

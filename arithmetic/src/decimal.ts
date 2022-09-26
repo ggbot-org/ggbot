@@ -1,4 +1,4 @@
-import { ErrorCannotConvertToDecimal } from "./errors.js";
+import { ErrorCannotCoerceToDecimal } from "./errors.js";
 
 /**
  * Represents a number with decimal digits as a string.
@@ -6,19 +6,21 @@ import { ErrorCannotConvertToDecimal } from "./errors.js";
  */
 export type Decimal = string;
 
-export const canBeDecimal = (arg: unknown): arg is Decimal => {
+export type MaybeDecimal = Decimal | number;
+
+export const canBeDecimal = (arg: unknown): arg is MaybeDecimal => {
   const n = Number(arg);
   if (typeof n !== "number" || isNaN(n) || !Number.isFinite(n)) return false;
   return true;
 };
 
-export const decimalToNumber = (d: Decimal, numDecimals?: number) =>
+export const decimalToNumber = (arg: MaybeDecimal, numDecimals?: number) =>
   typeof numDecimals === "number"
-    ? Number(Number(d).toFixed(numDecimals))
-    : Number(d);
+    ? Number(Number(arg).toFixed(numDecimals))
+    : Number(arg);
 
-export const numOfDecimals = (n: Decimal) => {
-  const [_integer, mantissa] = n.split(".");
+export const numOfDecimals = (num: MaybeDecimal): number => {
+  const [_integer, mantissa] = String(num).split(".");
   if (typeof mantissa !== "string") return 0;
   // Remove right padded zeros.
   //
@@ -34,14 +36,17 @@ export const numOfDecimals = (n: Decimal) => {
   return String(mantissaNum).length - 2;
 };
 
+export const maxNumOfDecimals = (values: MaybeDecimal[]): number =>
+  values.reduce<number>((max, num) => Math.max(max, numOfDecimals(num)), 0);
+
 /**
- * @throws {ErrorCannotConvertToDecimal}
+ * @throws {ErrorCannotCoerceToDecimal}
  */
 export const coerceToDecimal = (
   value: unknown,
   numDecimals?: number
 ): Decimal => {
-  if (!canBeDecimal(value)) throw new ErrorCannotConvertToDecimal(value);
+  if (!canBeDecimal(value)) throw new ErrorCannotCoerceToDecimal(value);
   const n = Number(value);
   return typeof numDecimals === "undefined"
     ? String(n)

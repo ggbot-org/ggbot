@@ -2,7 +2,6 @@ import {
   Decimal,
   coerceToDecimal,
   decimalToNumber,
-  numOfDecimals,
   add,
   mul,
   div,
@@ -15,57 +14,42 @@ import {
   outputLastValue,
   outputValues,
 } from "./commonIO.js";
+import { MovingAverage } from "./movingAverages.js";
 
-export const rsi = (values: number[], period: number): number[] => {
-  const size = values.length;
+export const rsi: MovingAverage = (values, period) => {
+  const oneOverPeriod = 1 / period;
+  const periodMinusOneOverPeriod = (period - 1) / period;
   const outputs: number[] = [];
-  if (size < period) return outputs;
-
-  const periodDecimal = coerceToDecimal(period);
-  const decimalValues: Decimal[] = values.map((num) => coerceToDecimal(num));
-  const maxNumDecimals = decimalValues.reduce<number>(
-    (max, num) => Math.max(max, numOfDecimals(num)),
-    0
-  );
-  const zero = coerceToDecimal(0, maxNumDecimals);
-  const oneHundred = coerceToDecimal(100, maxNumDecimals);
-  const oneOverPeriod = coerceToDecimal(1 / period, maxNumDecimals);
-
-  const getUpward = (current: Decimal, previous: Decimal): Decimal =>
-    current > previous ? sub(current, previous) : zero;
-  const getDownard = (current: Decimal, previous: Decimal): Decimal =>
-    current < previous ? sub(previous, current) : zero;
-  const getOutput = (smoothUp: Decimal, smoothDown: Decimal): number =>
-    decimalToNumber(
-      mul(oneHundred, div(smoothUp, add(smoothUp, smoothDown))),
-      maxNumDecimals
+  const upwardAverages: Decimal[] = [];
+  const downwardAverages: Decimal[] = [];
+  for (let i = 0; i < values.length; i++) {
+    if (i === 0) {
+      upwardAverages.push("0");
+      downwardAverages.push("0");
+      continue;
+    }
+    const previous = coerceToDecimal(values[i - 1]);
+    const current = coerceToDecimal(values[i]);
+    const upward: Decimal = current > previous ? sub(current, previous) : "0";
+    const downward: Decimal = current < previous ? sub(previous, current) : "0";
+    const upwardAverage = add(
+      mul(oneOverPeriod, upward),
+      mul(periodMinusOneOverPeriod, upwardAverages[i - 1])
     );
-
-  let smoothUp = zero;
-  let smoothDown = zero;
-  for (let i = 1; i <= period; i++) {
-    const current = decimalValues[i];
-    const previous = decimalValues[i - 1];
-    const upward = getUpward(current, previous);
-    const downward = getDownard(current, previous);
-    smoothUp = add(smoothUp, upward);
-    smoothDown = add(smoothDown, downward);
+    upwardAverages.push(upwardAverage);
+    const downwardAverage = add(
+      mul(oneOverPeriod, downward),
+      mul(periodMinusOneOverPeriod, downwardAverages[i - 1])
+    );
+    downwardAverages.push(downwardAverage);
+    if (i > period + 1) {
+      outputs.push(
+        decimalToNumber(
+          div(mul(100, upwardAverage), add(upwardAverage, downwardAverage))
+        )
+      );
+    }
   }
-
-  smoothUp = div(smoothUp, periodDecimal);
-  smoothDown = div(smoothDown, periodDecimal);
-  outputs.push(getOutput(smoothUp, smoothDown));
-
-  for (let i = period + 1; i < size; i++) {
-    const current = decimalValues[i];
-    const previous = decimalValues[i - 1];
-    const upward = getUpward(current, previous);
-    const downward = getDownard(current, previous);
-    smoothUp = add(mul(sub(upward, smoothUp), oneOverPeriod), smoothUp);
-    smoothDown = add(mul(sub(downward, smoothDown), oneOverPeriod), smoothDown);
-    outputs.push(getOutput(smoothUp, smoothDown));
-  }
-
   return outputs;
 };
 

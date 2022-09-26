@@ -2,7 +2,7 @@ import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Today } from "./nodes/time.js";
 import {
   ExponentialMovingAverage,
-  MovingAverage,
+  SimpleMovingAverage,
 } from "./nodes/indicators/movingAverages.js";
 
 export const nodesCatalog = {
@@ -14,5 +14,5 @@ export const nodesCatalog = {
   [Today.kind]: Today,
   // indicators
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
-  [MovingAverage.kind]: MovingAverage,
+  [SimpleMovingAverage.kind]: SimpleMovingAverage,
 };

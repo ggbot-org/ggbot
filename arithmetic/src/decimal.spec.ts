@@ -42,7 +42,7 @@ describe("Decimal", () => {
 });
 
 describe("canBeDecimal", () => {
-  it("checks argument can be converted to Decimal", () => {
+  it("checks that argument can be converted to Decimal", () => {
     const validArgs = [1, -1, "0", "0.1", "0.12", "10", "11.0", "-1", "-1.2"];
     const invalidArgs = [
       "x",
