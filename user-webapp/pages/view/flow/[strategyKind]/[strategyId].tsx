@@ -1,28 +1,87 @@
-import { nodeTextToViewType } from "@ggbot2/dflow";
+import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
+import { readStrategy } from "@ggbot2/database";
+import {
+  DflowBinanceSymbolInfo,
+  isDflowBinanceSymbolInfo,
+} from "@ggbot2/dflow";
 import { Button } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { ButtonShareStrategy, Content, Navigation } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
-import { StrategyInfo, getStrategyInfo, route } from "_routing";
+import {
+  StrategyInfo,
+  readSession,
+  redirectToErrorPageInvalidStrategyKey,
+  redirectToErrorPageStrategyNotFound,
+  route,
+  strategyKeyFromRouterParams,
+} from "_routing";
 
-type ServerSideProps = StrategyInfo;
+type ServerSideProps = Pick<
+  StrategyInfo,
+  "accountIsOwner" | "strategyKey" | "name"
+> & {
+  binanceSymbols?: DflowBinanceSymbolInfo[];
+};
 
-export const getServerSideProps = getStrategyInfo;
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const session = readSession(req.cookies);
+
+  const strategyKey = strategyKeyFromRouterParams(params);
+  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
+
+  const strategy = await readStrategy(strategyKey);
+  if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
+
+  const accountIsOwner = session?.accountId === strategy.accountId;
+
+  const strategyInfo = {
+    accountIsOwner,
+    strategyKey,
+    name: strategy.name,
+  };
+
+  if (strategyKey.strategyKind === "binance") {
+    const binance = new BinanceExchange({
+      baseUrl: BinanceConnector.defaultBaseUrl,
+    });
+    const exchangeInfo = await binance.exchangeInfo();
+    const binanceSymbols = exchangeInfo.symbols.filter(
+      isDflowBinanceSymbolInfo
+    );
+    return {
+      props: {
+        binanceSymbols,
+        ...strategyInfo,
+      },
+    };
+  }
+
+  return { props: strategyInfo };
+};
 
 const Page: NextPage<ServerSideProps> = ({
   accountIsOwner,
+  binanceSymbols,
   name,
   strategyKey,
 }) => {
   const router = useRouter();
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const flowView = useFlowView({
+  const { flowView } = useFlowView({
     containerRef: flowViewContainerRef,
-    nodeTextToViewType,
+    binanceSymbols,
+    strategyKind: strategyKey.strategyKind,
   });
+
+  const [copyIsLoading, setCopyIsLoading] = useState(false);
+  const [editIsLoading, setEditIsLoading] = useState(false);
 
   const { data } = useApiAction.READ_STRATEGY_FLOW(
     flowView ? strategyKey : undefined
@@ -30,11 +89,13 @@ const Page: NextPage<ServerSideProps> = ({
 
   const onClickCopy = useCallback(() => {
     router.push(route.copyStrategyPage(strategyKey));
-  }, [router, strategyKey]);
+    setCopyIsLoading(true);
+  }, [router, setCopyIsLoading, strategyKey]);
 
   const onClickEdit = useCallback(() => {
     router.push(route.editFlowPage(strategyKey));
-  }, [router, strategyKey]);
+    setEditIsLoading(true);
+  }, [router, setEditIsLoading, strategyKey]);
 
   useEffect(() => {
     if (data?.view) flowView?.loadGraph(data.view);
@@ -45,7 +106,7 @@ const Page: NextPage<ServerSideProps> = ({
       metadata={{ title: "ggbot2 strategy", description: name }}
       topbar={<Navigation />}
     >
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
@@ -53,11 +114,19 @@ const Page: NextPage<ServerSideProps> = ({
           </dl>
           <menu className="flex h-10 flex-row gap-4">
             {accountIsOwner ? (
-              <Button color="primary" onClick={onClickEdit}>
+              <Button
+                isLoading={editIsLoading}
+                color="primary"
+                onClick={onClickEdit}
+              >
                 edit
               </Button>
             ) : (
-              <Button color="primary" onClick={onClickCopy}>
+              <Button
+                isLoading={copyIsLoading}
+                color="primary"
+                onClick={onClickCopy}
+              >
                 copy
               </Button>
             )}

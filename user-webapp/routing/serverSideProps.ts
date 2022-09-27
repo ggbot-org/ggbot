@@ -9,34 +9,6 @@ import {
 } from "./redirects";
 import type { StrategyKey } from "./types";
 
-export const getStrategyInfo: GetServerSideProps = async ({ params, req }) => {
-  const session = readSession(req.cookies);
-
-  const strategyKey = strategyKeyFromRouterParams(params);
-  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
-
-  const strategy = await readStrategy(strategyKey);
-  if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
-
-  return {
-    props: {
-      accountIsOwner: session?.accountId === strategy.accountId,
-      strategyKey,
-      name: strategy.name,
-      whenCreated: strategy.whenCreated,
-    },
-  };
-};
-
-export const getStrategyKey: GetServerSideProps = async ({ params }) => {
-  const strategyKey = strategyKeyFromRouterParams(params);
-  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
-
-  return {
-    props: strategyKey,
-  };
-};
-
 export const requireAuthentication: GetServerSideProps = async ({ req }) =>
   readSession(req.cookies) ? { props: {} } : redirectToAuthenticationPage();
 
