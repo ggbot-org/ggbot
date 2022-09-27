@@ -1,6 +1,7 @@
 import {
   Decimal,
   coerceToDecimal,
+  maxNumOfDecimals,
   decimalToNumber,
   add,
   mul,
@@ -17,40 +18,53 @@ import {
 import { MovingAverage } from "./movingAverages.js";
 
 export const rsi: MovingAverage = (values, period) => {
-  const oneOverPeriod = 1 / period;
-  const periodMinusOneOverPeriod = (period - 1) / period;
-  const outputs: number[] = [];
-  const upwardAverages: Decimal[] = [];
-  const downwardAverages: Decimal[] = [];
-  for (let i = 0; i < values.length; i++) {
-    if (i === 0) {
-      upwardAverages.push("0");
-      downwardAverages.push("0");
-      continue;
-    }
-    const previous = coerceToDecimal(values[i - 1]);
-    const current = coerceToDecimal(values[i]);
+  const size = values.length;
+  if (size < period) return [];
+  const numDecimals = maxNumOfDecimals(values);
+  const decimalValues = values.map((value) =>
+    coerceToDecimal(value, numDecimals)
+  );
+  const upwards: Decimal[] = [];
+  const downwards: Decimal[] = [];
+  for (let i = 1; i < size; i++) {
+    const current = decimalValues[i];
+    const previous = decimalValues[i - 1];
     const upward: Decimal = current > previous ? sub(current, previous) : "0";
     const downward: Decimal = current < previous ? sub(previous, current) : "0";
-    const upwardAverage = add(
-      mul(oneOverPeriod, upward),
-      mul(periodMinusOneOverPeriod, upwardAverages[i - 1])
-    );
-    upwardAverages.push(upwardAverage);
-    const downwardAverage = add(
-      mul(oneOverPeriod, downward),
-      mul(periodMinusOneOverPeriod, downwardAverages[i - 1])
-    );
-    downwardAverages.push(downwardAverage);
-    if (i > period + 1) {
-      outputs.push(
-        decimalToNumber(
-          div(mul(100, upwardAverage), add(upwardAverage, downwardAverage))
-        )
-      );
-    }
+    upwards.push(upward);
+    downwards.push(downward);
   }
-  return outputs;
+  const sumUp = upwards
+    .slice(0, period)
+    .reduce<Decimal>((a, b) => add(a, b), "0");
+  const sumDown = downwards
+    .slice(0, period)
+    .reduce<Decimal>((a, b) => add(a, b), "0");
+  const smoothUp = div(sumUp, period);
+  const smoothDown = div(sumDown, period);
+  const smoothUps: Decimal[] = [smoothUp];
+  const smoothDowns: Decimal[] = [smoothDown];
+  const decimalOutputs: Decimal[] = [
+    mul(100, div(smoothUp, add(smoothUp, smoothDown))),
+  ];
+  for (let i = period + 1; i < size; i++) {
+    const previousSmoothUp = smoothUps[i - period - 1];
+    const previousSmoothDown = smoothDowns[i - period - 1];
+    const upward = upwards[i - 1];
+    const downward = downwards[i - 1];
+    const smoothUp = add(
+      div(sub(upward, previousSmoothUp), period),
+      previousSmoothUp
+    );
+    smoothUps.push(smoothUp);
+    const smoothDown = add(
+      div(sub(downward, previousSmoothDown), period),
+      previousSmoothDown
+    );
+    smoothDowns.push(smoothDown);
+    decimalOutputs.push(mul(100, div(smoothUp, add(smoothUp, smoothDown))));
+  }
+  return decimalOutputs.map((value) => decimalToNumber(value, numDecimals));
 };
 
 export class RelativeStrengthIndex extends DflowNode {

@@ -42,7 +42,10 @@ export const getMovingValues = (
   period: number,
   index: number,
   array: number[]
-): Decimal[] => array.slice(index - period + 1, index + 1).map(coerceToDecimal);
+): number[] =>
+  index >= 0 && index < array.length && index - period + 1 >= 0
+    ? array.slice(index - period + 1, index + 1)
+    : [];
 
 export const sma: MovingAverage = (values, period) => {
   if (values.length < period) return [];
@@ -50,7 +53,9 @@ export const sma: MovingAverage = (values, period) => {
     if (index < period - 1) return result;
     const movingValues = getMovingValues(period, index, array);
     const numDecimals = maxNumOfDecimals(movingValues);
-    const sum = movingValues.reduce<Decimal>((a, b) => add(a, b), "0");
+    const sum = movingValues
+      .map((value) => coerceToDecimal(value, numDecimals))
+      .reduce<Decimal>((a, b) => add(a, b), "0");
     const average = div(sum, coerceToDecimal(period));
     return result.concat(decimalToNumber(average, numDecimals));
   }, []);
