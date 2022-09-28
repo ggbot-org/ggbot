@@ -3,7 +3,9 @@ import { Today } from "./nodes/time.js";
 import {
   ExponentialMovingAverage,
   SimpleMovingAverage,
+  WilderMovingAverage,
 } from "./nodes/indicators/movingAverages.js";
+import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 
 export const nodesCatalog = {
   // memory
@@ -14,5 +16,7 @@ export const nodesCatalog = {
   [Today.kind]: Today,
   // indicators
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
+  [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
   [SimpleMovingAverage.kind]: SimpleMovingAverage,
+  [WilderMovingAverage.kind]: WilderMovingAverage,
 };
