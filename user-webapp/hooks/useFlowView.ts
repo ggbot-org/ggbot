@@ -92,16 +92,17 @@ export const useFlowView: UseFlowView = ({
     );
     flowView.nodeTextToType(nodeTextToViewType);
     flowView.addNodeDefinitions({
-      nodes: Object.keys(nodesCatalog).map((kind) => ({ name: kind })),
+      nodes: Object.keys(nodesCatalog)
+        .map((kind) => ({ name: kind }))
+        .sort(),
     });
     setFlowViewInstance(flowView);
 
-    const onChangeFlowView: FlowViewOnChange = (
-      { action, data },
-      { isLoadGraph, isProgrammatic }
-    ) => {
+    const onChangeFlowView: FlowViewOnChange = ({ action, data }, info) => {
       try {
         if (!flowView) return;
+        const { isLoadGraph, isProgrammatic } = info;
+        console.info(action, data, info);
         const isUserInput = !isLoadGraph && !isProgrammatic;
 
         switch (action) {
@@ -144,21 +145,32 @@ export const useFlowView: UseFlowView = ({
                 const NodeClass = nodesCatalog[kind];
                 const { inputs = [], outputs = [] } = NodeClass;
                 const nodeView = flowView.node(id);
+                console.log(nodeView.inputs);
 
                 for (let i = 0; i < inputs.length; i++) {
-                  const { name } = inputs[i];
-
-                  if (!nodeView.inputs[i])
-                    nodeView.newInput({ id: node.input(0).id });
-                  if (typeof name === "string") nodeView.inputs[i].text = name;
+                  const name = inputs[i].name;
+                  if (nodeView.inputs[i]) {
+                    nodeView.inputs[i].name = name;
+                    nodeView.inputs[i].text = name;
+                  } else {
+                    nodeView.newInput({
+                      id: node.input(i).id,
+                      name,
+                    });
+                  }
                 }
 
                 for (let i = 0; i < outputs.length; i++) {
-                  const { name } = outputs[i];
-
-                  if (!nodeView.outputs[i])
-                    nodeView.newOutput({ id: node.output(0).id });
-                  if (typeof name === "string") nodeView.outputs[i].text = name;
+                  const name = outputs[i].name;
+                  if (nodeView.outputs[i]) {
+                    nodeView.outputs[i].name = name;
+                    nodeView.outputs[i].text = name;
+                  } else {
+                    nodeView.newOutput({
+                      id: node.output(i).id,
+                      name,
+                    });
+                  }
                 }
 
                 break;
