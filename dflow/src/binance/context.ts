@@ -13,8 +13,9 @@ export interface BinanceDflow {
   // Public API
   // //////////////////////////////////////////////////////////////////
 
-  tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
   exchangeInfo(): Promise<BinanceExchangeInfo>;
+  isBinanceSymbol(arg: unknown): Promise<boolean>;
+  tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
 
   // Private API
   // //////////////////////////////////////////////////////////////////

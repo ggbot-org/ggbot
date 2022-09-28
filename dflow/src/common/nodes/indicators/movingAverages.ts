@@ -100,7 +100,7 @@ export const wilderSmoothing: MovingAverage = (values, period) => {
 };
 
 export class WilderMovingAverage extends DflowNode {
-  static kind = "WMA";
+  static kind = "wilderMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {

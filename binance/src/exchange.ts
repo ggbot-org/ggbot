@@ -76,15 +76,15 @@ export class BinanceExchange extends BinanceConnector {
     return data;
   }
 
-  async isBinanceSymbol(value: unknown): Promise<boolean> {
-    if (typeof value !== "string") return false;
+  async isBinanceSymbol(arg: unknown): Promise<boolean> {
+    if (typeof arg !== "string") return false;
     // All symbols in Binance are in uppercase.
-    if (value.toUpperCase() !== value) return false;
-    const cached = isValidSymbolCache.get(value);
+    if (arg.toUpperCase() !== arg) return false;
+    const cached = isValidSymbolCache.get(arg);
     if (typeof cached !== "undefined") return cached;
     const { symbols } = await this.exchangeInfo();
-    const isValid = symbols.findIndex(({ symbol }) => value === symbol) !== -1;
-    isValidSymbolCache.set(value, isValid);
+    const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1;
+    isValidSymbolCache.set(arg, isValid);
     return isValid;
   }
 
