@@ -1,4 +1,8 @@
-import { ema, sma, wilderSmoothing } from "./movingAverages";
+import {
+  exponentialMovingAverage,
+  simpleMovingAverage,
+  wilderSmoothing,
+} from "./movingAverages";
 
 describe("Exponential Moving Average", () => {
   it("works", () => {
@@ -18,7 +22,7 @@ describe("Exponential Moving Average", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(ema(values, period)).toStrictEqual(output);
+      expect(exponentialMovingAverage(values, period)).toStrictEqual(output);
     });
   });
 });
@@ -41,7 +45,7 @@ describe("Simple Moving Average", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(sma(values, period)).toStrictEqual(output);
+      expect(simpleMovingAverage(values, period)).toStrictEqual(output);
     });
   });
 });

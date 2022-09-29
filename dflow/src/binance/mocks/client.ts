@@ -41,6 +41,12 @@ export class BinanceClientMock implements BinanceDflow {
     return Promise.resolve(exchangeInfo as unknown as BinanceExchangeInfo);
   }
 
+  async isBinanceSymbol(arg: unknown): Promise<boolean> {
+    if (typeof arg !== "string") return false;
+    const { symbols } = await this.exchangeInfo();
+    return symbols.findIndex(({ symbol }) => arg === symbol) !== -1;
+  }
+
   async newOrder(
     symbol: string,
     side: BinanceOrderSide,

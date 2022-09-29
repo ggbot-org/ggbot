@@ -1,5 +1,6 @@
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Today } from "./nodes/time.js";
+import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
 import {
   ExponentialMovingAverage,
   SimpleMovingAverage,
@@ -15,6 +16,7 @@ export const nodesCatalog = {
   // time
   [Today.kind]: Today,
   // indicators
+  [BollingerBands.kind]: BollingerBands,
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
   [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
   [SimpleMovingAverage.kind]: SimpleMovingAverage,

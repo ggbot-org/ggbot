@@ -22,7 +22,7 @@ const movingAverageInputs = [inputValues, inputPeriod];
 
 const movingAverageOutputs = [outputValues, outputLastValue];
 
-export const ema: MovingAverage = (values, period) => {
+export const exponentialMovingAverage: MovingAverage = (values, period) => {
   const size = values.length;
   if (size < period) return [];
   const numDecimals = maxNumOfDecimals(values);
@@ -40,19 +40,19 @@ export const ema: MovingAverage = (values, period) => {
 };
 
 export class ExponentialMovingAverage extends DflowNode {
-  static kind = "EMA";
+  static kind = "ema";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
     const values = this.input(0).data as number[];
     const period = this.input(1).data as number;
-    const result = ema(values, period);
+    const result = exponentialMovingAverage(values, period);
     this.output(0).data = result;
     this.output(1).data = result.slice(-1).pop();
   }
 }
 
-export const sma: MovingAverage = (values, period) => {
+export const simpleMovingAverage: MovingAverage = (values, period) => {
   if (values.length < period) return [];
   return values.reduce<number[]>((result, _value, index, array) => {
     if (index < period - 1) return result;
@@ -67,13 +67,13 @@ export const sma: MovingAverage = (values, period) => {
 };
 
 export class SimpleMovingAverage extends DflowNode {
-  static kind = "MA";
+  static kind = "sma";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
     const values = this.input(0).data as number[];
     const period = this.input(1).data as number;
-    const result = sma(values, period);
+    const result = simpleMovingAverage(values, period);
     this.output(0).data = result;
     this.output(1).data = result.slice(-1).pop();
   }
@@ -100,7 +100,7 @@ export const wilderSmoothing: MovingAverage = (values, period) => {
 };
 
 export class WilderMovingAverage extends DflowNode {
-  static kind = "wilderMA";
+  static kind = "wilder";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
