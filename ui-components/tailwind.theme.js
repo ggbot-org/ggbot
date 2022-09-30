@@ -6,7 +6,7 @@ module.exports = {
     current: "currentColor",
     black: "#070900",
     white: "#faffff",
-    danger: colors.red,
+    danger: colors.yellow,
     mono: colors.neutral,
     primary: {
       ...colors.cyan,

@@ -1,6 +1,6 @@
 import { Main } from "@ggbot2/ui-components";
 import Head from "next/head";
-import { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 type Props = {
@@ -10,11 +10,13 @@ type Props = {
     description: string;
   };
   topbar?: ReactNode;
+  message?: ReactNode;
 };
 
 export const Content: FC<Props> = ({
   children,
   metadata = { title: "ggbot2", description: "crypto flow" },
+  message,
   topbar,
 }) => {
   const [isOffline, setIsOffline] = useState(false);
@@ -44,6 +46,8 @@ export const Content: FC<Props> = ({
       {isOffline && (
         <p className="text-center">The network connection has been lost.</p>
       )}
+
+      {message}
 
       {topbar}
 

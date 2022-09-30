@@ -85,6 +85,7 @@ const Page: NextPage<ServerSideProps> = ({
   });
 
   const [flowLoaded, setFlowLoaded] = useState(false);
+  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
   const [manageIsLoading, setManageIsLoading] = useState(false);
 
   const [strategyKeyToBeExecuted, setStrategyKeyToBeExecuted] =
@@ -93,8 +94,11 @@ const Page: NextPage<ServerSideProps> = ({
   const [newStrategyFlow, setNewStrategyFlow] =
     useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
 
-  const { data: strategyExecution, isLoading: runIsLoading } =
-    useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
+  const {
+    data: strategyExecution,
+    isLoading: runIsLoading,
+    error: strategyExecutionError,
+  } = useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
 
   const { data: saveData, isLoading: saveIsLoading } =
     useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
@@ -144,8 +148,9 @@ const Page: NextPage<ServerSideProps> = ({
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
     if (typeof newStrategyFlow !== "undefined") return false;
+    if (hasNoBinanceApiConfig) return false;
     return true;
-  }, [flowLoaded, newStrategyFlow]);
+  }, [flowLoaded, hasNoBinanceApiConfig, newStrategyFlow]);
 
   const canSave = useMemo(() => {
     if (!flowLoaded) return false;
@@ -156,6 +161,14 @@ const Page: NextPage<ServerSideProps> = ({
   useEffect(() => {
     if (!saveData) return;
   }, [saveData, setNewStrategyFlow]);
+
+  useEffect(() => {
+    if (!strategyExecutionError) return;
+    if (hasNoBinanceApiConfig) return;
+    if (strategyExecutionError === "MissingBinanceApiConfig") {
+      setHasNoBinanceApiConfig(true);
+    }
+  }, [strategyExecutionError, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
     try {
@@ -193,9 +206,12 @@ const Page: NextPage<ServerSideProps> = ({
   }, []);
 
   return (
-    <Content topbar={<Navigation hasSettingsIcon />}>
+    <Content
+      topbar={<Navigation hasSettingsIcon />}
+      message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
+    >
       <div className="flex h-full flex-col grow">
-        <div className="flex flex-row justify-between gap-4 py-3 md:flex-row md:items-center">
+        <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>
             <dt>strategy</dt>
             <dd>{name}</dd>
@@ -226,6 +242,32 @@ const Page: NextPage<ServerSideProps> = ({
         <div className="my-2">memory</div>
       </div>
     </Content>
+  );
+};
+
+const PleaseConfigureBinanceApi = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const goToSettings = useCallback(() => {
+    setIsLoading(true);
+    router.push(route.settingsPage());
+  }, [router, setIsLoading]);
+
+  return (
+    <div className="bg-danger-100 p-4">
+      <div className="max-w-xl flex flex-col gap-4 text-mono-800">
+        <p className="text-base">You cannot run strategies on Binance yet.</p>
+        <p className="text-xl">
+          Please go to settings page and configure your Binance API.
+        </p>
+        <menu>
+          <Button isLoading={isLoading} onClick={goToSettings}>
+            Go to Settings
+          </Button>
+        </menu>
+      </div>
+    </div>
   );
 };
 

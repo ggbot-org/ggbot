@@ -1,9 +1,10 @@
 import useSWR from "swr";
 import { JsonObject } from "type-fest";
-import type {
+import {
   ApiAction,
   ApiActionResponseOutput,
   ApiActionInput,
+  isApiActionBadRequest,
 } from "_api/action";
 
 export type { ApiAction } from "_api/action";
@@ -29,7 +30,12 @@ const fetcher = async (action: JsonObject) => {
       method: "POST",
     });
     if (!response.ok) {
-      throw new ApiActionResponseError({ status: response.status });
+      const { status } = response;
+      if (status === 400) {
+        const data = await response.json();
+        if (isApiActionBadRequest(data)) throw data.error;
+      }
+      throw new ApiActionResponseError({ status });
     }
     return response.json();
   } catch (error) {

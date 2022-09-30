@@ -47,9 +47,35 @@ import { readSession } from "_routing";
 type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
 
-export type ApiActionResponseOutput<T> = {
-  data?: T;
+const apiActionBadRequestNames = [
+  "MissingBinanceApiConfig",
+  "UnimplementedStrategyKind",
+] as const;
+export type ApiActionBadRequestName = typeof apiActionBadRequestNames[number];
+
+const isApiActionBadRequestName = (
+  arg: unknown
+): arg is ApiActionBadRequestName => {
+  if (typeof arg !== "string") return false;
+  return (apiActionBadRequestNames as readonly string[]).includes(arg);
 };
+
+type ApiActionBadRequest = {
+  error: ApiActionBadRequestName;
+};
+
+export const isApiActionBadRequest = (
+  arg: unknown
+): arg is ApiActionBadRequest => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { error } = arg as Partial<ApiActionBadRequest>;
+  return isApiActionBadRequestName(error);
+};
+
+export type ApiActionResponseOutput<T> =
+  | {
+      data?: T;
+    } & Partial<ApiActionBadRequest>;
 
 type Action<Input, Output> = {
   // AccountKey is provided by authentication, no need to add it as action input parameter.
@@ -136,12 +162,14 @@ export default async function apiHandler(
           const data = await executeStrategy({ accountId, ...action.data });
           return res.status(__200__OK__).json({ data });
         } catch (error) {
-          if (
-            error instanceof ErrorMissingBinanceApiConfig ||
-            error instanceof ErrorUnimplementedStrategyKind
-          ) {
-            return res.status(__400__BAD_REQUEST__).json({});
-          }
+          if (error instanceof ErrorUnimplementedStrategyKind)
+            return res
+              .status(__400__BAD_REQUEST__)
+              .json({ error: "UnimplementedStrategyKind" });
+          if (error instanceof ErrorMissingBinanceApiConfig)
+            return res
+              .status(__400__BAD_REQUEST__)
+              .json({ error: "MissingBinanceApiConfig" });
           console.error(error);
           return res.status(__500__INTERNAL_SERVER_ERROR__).json({});
         }
