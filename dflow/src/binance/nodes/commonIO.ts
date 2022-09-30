@@ -1,5 +1,7 @@
 import { DflowNode } from "dflow";
 
+export * from "../../common/nodes/commonIO.js";
+
 const { input } = DflowNode;
 
 export const pinIntervalName = "interval";

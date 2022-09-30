@@ -7,6 +7,7 @@ import {
   WilderMovingAverage,
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
+import { TypicalPrice } from "./nodes/indicators/typicalPrice";
 
 export const nodesCatalog = {
   // memory
@@ -20,5 +21,6 @@ export const nodesCatalog = {
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
   [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
   [SimpleMovingAverage.kind]: SimpleMovingAverage,
+  [TypicalPrice.kind]: TypicalPrice,
   [WilderMovingAverage.kind]: WilderMovingAverage,
 };

@@ -14,7 +14,7 @@ import {
   inputValues,
   outputLastValue,
   outputValues,
-} from "./commonIO.js";
+} from "../commonIO.js";
 
 export type MovingAverage = (values: number[], period: number) => number[];
 
@@ -40,7 +40,7 @@ export const exponentialMovingAverage: MovingAverage = (values, period) => {
 };
 
 export class ExponentialMovingAverage extends DflowNode {
-  static kind = "ema";
+  static kind = "EMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
@@ -67,7 +67,7 @@ export const simpleMovingAverage: MovingAverage = (values, period) => {
 };
 
 export class SimpleMovingAverage extends DflowNode {
-  static kind = "sma";
+  static kind = "SMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {
@@ -100,7 +100,7 @@ export const wilderSmoothing: MovingAverage = (values, period) => {
 };
 
 export class WilderMovingAverage extends DflowNode {
-  static kind = "wilder";
+  static kind = "WilderMA";
   static inputs = movingAverageInputs;
   static outputs = movingAverageOutputs;
   async run() {

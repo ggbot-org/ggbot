@@ -14,10 +14,10 @@ import {
   inputValues,
   outputLastValue,
   outputValues,
-} from "./commonIO.js";
+} from "../commonIO.js";
 import { MovingAverage } from "./movingAverages.js";
 
-export const rsi: MovingAverage = (values, period) => {
+export const relativeStrengthIndex: MovingAverage = (values, period) => {
   const size = values.length;
   if (size < period) return [];
   const numDecimals = maxNumOfDecimals(values);
@@ -68,13 +68,13 @@ export const rsi: MovingAverage = (values, period) => {
 };
 
 export class RelativeStrengthIndex extends DflowNode {
-  static kind: "rsi";
+  static kind: "RSI";
   static inputs = [inputValues, inputPeriod];
   static outputs = [outputValues, outputLastValue];
   async run() {
     const values = this.input(0).data as number[];
     const period = this.input(1).data as number;
-    const result = rsi(values, period);
+    const result = relativeStrengthIndex(values, period);
     this.output(0).data = result;
     this.output(1).data = result.slice(-1).pop();
   }

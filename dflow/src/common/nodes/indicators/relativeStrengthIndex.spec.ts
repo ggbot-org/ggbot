@@ -1,4 +1,4 @@
-import { rsi } from "./relativeStrengthIndex";
+import { relativeStrengthIndex } from "./relativeStrengthIndex";
 
 describe("Relative Strength Index", () => {
   it("works", () => {
@@ -23,7 +23,7 @@ describe("Relative Strength Index", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(rsi(values, period)).toStrictEqual(output);
+      expect(relativeStrengthIndex(values, period)).toStrictEqual(output);
     });
   });
 });

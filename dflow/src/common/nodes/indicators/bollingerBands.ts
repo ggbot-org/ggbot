@@ -9,7 +9,7 @@ import {
   sub,
 } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
-import { inputPeriod, inputValues } from "./commonIO.js";
+import { inputPeriod, inputValues } from "../commonIO.js";
 import { simpleMovingAverage } from "./movingAverages.js";
 
 const { input, output } = DflowNode;
@@ -46,7 +46,7 @@ export const bollingerBands = (
 };
 
 export class BollingerBands extends DflowNode {
-  static kind = "bollinger";
+  static kind = "Bollinger";
   static inputs = [
     inputValues,
     inputPeriod,
