@@ -6,7 +6,6 @@ import {
   getDflowBinanceNodeSymbolKind,
   isDflowBinanceSymbolInfo,
 } from "./symbols.js";
-import { Addition } from "./nodes/arithmetic.js";
 import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js";
 import { Candles, TickerPrice } from "./nodes/market.js";
 import { MarketBuy, MarketSell } from "./nodes/trade.js";
@@ -70,8 +69,6 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
   arg
 ) => {
   const staticNodes = {
-    // arithmetic
-    [Addition.kind]: Addition,
     // market
     [Candles.kind]: Candles,
     [TickerPrice.kind]: TickerPrice,

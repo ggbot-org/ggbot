@@ -194,6 +194,7 @@ export const useFlowView: UseFlowView = ({
             break;
         }
       } catch (error) {
+        console.error(error);
         switch (action) {
           case "CREATE_EDGE": {
             if (typeof data !== "object" || data === null) break;
@@ -224,7 +225,6 @@ export const useFlowView: UseFlowView = ({
           default:
             break;
         }
-        console.error(error);
       }
     };
     flowView.onChange(onChangeFlowView);

@@ -68,7 +68,7 @@ export const relativeStrengthIndex: MovingAverage = (values, period) => {
 };
 
 export class RelativeStrengthIndex extends DflowNode {
-  static kind: "RSI";
+  static kind = "RSI";
   static inputs = [inputValues, inputPeriod];
   static outputs = [outputValues, outputLastValue];
   async run() {

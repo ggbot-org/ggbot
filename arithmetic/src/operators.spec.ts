@@ -1,8 +1,10 @@
 import { equal, add, sub, div, mul } from "./operators";
 
 describe("equal", () => {
-  it("checks if two Decimal numbers are equal considering their actual number of decimals", () => {
+  it("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {
     [
+      { input: { a: "0.00", b: 0 }, output: true },
+      { input: { a: "0.001", b: 0 }, output: false },
       { input: { a: "1", b: "-1" }, output: false },
       { input: { a: "1", b: "1" }, output: true },
       { input: { a: "1.0", b: "1" }, output: true },

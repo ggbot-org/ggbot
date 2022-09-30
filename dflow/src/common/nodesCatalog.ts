@@ -1,5 +1,11 @@
-import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
-import { Today } from "./nodes/time.js";
+import {
+  Addition,
+  Subtraction,
+  Multiplication,
+  Division,
+  GreaterThan,
+  LessThan,
+} from "./nodes/arithmetic.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
 import {
   ExponentialMovingAverage,
@@ -8,8 +14,17 @@ import {
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 import { TypicalPrice } from "./nodes/indicators/typicalPrice";
+import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
+import { Today } from "./nodes/time.js";
 
 export const nodesCatalog = {
+  // arithmetic
+  [Addition.kind]: Addition,
+  [Subtraction.kind]: Subtraction,
+  [Multiplication.kind]: Multiplication,
+  [Division.kind]: Division,
+  [GreaterThan.kind]: GreaterThan,
+  [LessThan.kind]: LessThan,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,
