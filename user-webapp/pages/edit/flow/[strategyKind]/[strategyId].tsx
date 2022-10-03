@@ -85,11 +85,15 @@ const Page: NextPage<ServerSideProps> = ({
   });
 
   const [flowLoaded, setFlowLoaded] = useState(false);
+  const [canSave, setCanSave] = useState(false);
   const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
   const [manageIsLoading, setManageIsLoading] = useState(false);
 
   const [strategyKeyToBeExecuted, setStrategyKeyToBeExecuted] =
     useState<ApiAction["EXECUTE_STRATEGY"]["in"]>();
+
+  const [strategyKeyToBeRead, setStrategyKeyToBeRead] =
+    useState<ApiAction["READ_STRATEGY_FLOW"]["in"]>();
 
   const [newStrategyFlow, setNewStrategyFlow] =
     useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
@@ -100,67 +104,39 @@ const Page: NextPage<ServerSideProps> = ({
     error: strategyExecutionError,
   } = useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
 
-  const { data: saveData, isLoading: saveIsLoading } =
+  const { isLoading: saveIsLoading } =
     useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
 
   const { data: storedStrategyFlow, isLoading: storedStrategyFlowIsLoading } =
-    useApiAction.READ_STRATEGY_FLOW(flowView ? strategyKey : undefined);
+    useApiAction.READ_STRATEGY_FLOW(strategyKeyToBeRead);
+  console.log("strategyKeyToBeRead", strategyKeyToBeRead);
 
   const onClickManage = useCallback(() => {
     router.push(route.strategyPage(strategyKey));
     setManageIsLoading(true);
   }, [router, setManageIsLoading, strategyKey]);
 
-  const onClickSave = useCallback(() => {
-    if (!flowLoaded) return;
-    if (manageIsLoading) return;
-    if (runIsLoading) return;
-    if (saveIsLoading) return;
-    if (!flowView) return;
-    setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
-  }, [
-    flowView,
-    flowLoaded,
-    manageIsLoading,
-    runIsLoading,
-    setNewStrategyFlow,
-    strategyKey,
-    saveIsLoading,
-  ]);
-
-  const onClickRun = useCallback(() => {
-    if (!flowLoaded) return;
-    if (manageIsLoading) return;
-    if (runIsLoading) return;
-    if (saveIsLoading) return;
-    if (typeof newStrategyFlow !== "undefined") return;
-    setStrategyKeyToBeExecuted(strategyKey);
-  }, [
-    flowLoaded,
-    manageIsLoading,
-    newStrategyFlow,
-    runIsLoading,
-    saveIsLoading,
-    setStrategyKeyToBeExecuted,
-    strategyKey,
-  ]);
-
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
-    if (typeof newStrategyFlow !== "undefined") return false;
     if (hasNoBinanceApiConfig) return false;
-    return true;
-  }, [flowLoaded, hasNoBinanceApiConfig, newStrategyFlow]);
-
-  const canSave = useMemo(() => {
-    if (!flowLoaded) return false;
     if (saveIsLoading) return false;
-    return flowChanged;
-  }, [flowChanged, flowLoaded, saveIsLoading]);
+    return !canSave;
+  }, [
+    canSave,
+    flowLoaded,
+    hasNoBinanceApiConfig,
+    newStrategyFlow,
+    saveIsLoading,
+  ]);
 
-  useEffect(() => {
-    if (!saveData) return;
-  }, [saveData, setNewStrategyFlow]);
+  const onClickSave = useCallback(() => {
+    if (!flowView) return;
+    if (canSave) setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
+  }, [canSave, flowView, setNewStrategyFlow, strategyKey]);
+
+  const onClickRun = useCallback(() => {
+    if (canRun) setStrategyKeyToBeExecuted(strategyKey);
+  }, [canRun, setStrategyKeyToBeExecuted, strategyKey]);
 
   useEffect(() => {
     if (!strategyExecutionError) return;
@@ -171,10 +147,17 @@ const Page: NextPage<ServerSideProps> = ({
   }, [strategyExecutionError, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
+    if (flowLoaded) setStrategyKeyToBeRead(strategyKey);
+  }, [flowLoaded, setStrategyKeyToBeRead, strategyKey]);
+
+  useEffect(() => {
     try {
       if (!flowView) return;
       if (storedStrategyFlowIsLoading) return;
-      if (storedStrategyFlow?.view) flowView.loadGraph(storedStrategyFlow.view);
+      if (storedStrategyFlow?.view) {
+        flowView.clearGraph();
+        flowView.loadGraph(storedStrategyFlow.view);
+      }
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
@@ -186,6 +169,18 @@ const Page: NextPage<ServerSideProps> = ({
     storedStrategyFlow,
     storedStrategyFlowIsLoading,
   ]);
+
+  useEffect(() => {
+    if (flowChanged) setCanSave(true);
+  }, [flowChanged, setCanSave]);
+
+  useEffect(() => {
+    if (saveIsLoading) setCanSave(false);
+  }, [saveIsLoading, setCanSave]);
+
+  useEffect(() => {
+    if (runIsLoading) setStrategyKeyToBeExecuted(undefined);
+  }, [runIsLoading, setStrategyKeyToBeExecuted]);
 
   useEffect(() => {
     if (!strategyExecution) return;

@@ -109,6 +109,7 @@ export const useFlowView: UseFlowView = ({
           case "CREATE_EDGE": {
             const { id, from, to } = data as FlowViewOnChangeDataEdge;
             dflow.newEdge({ id, source: from, target: to });
+            if (isUserInput) setFlowChanged(true);
             break;
           }
 
@@ -145,7 +146,6 @@ export const useFlowView: UseFlowView = ({
                 const NodeClass = nodesCatalog[kind];
                 const { inputs = [], outputs = [] } = NodeClass;
                 const nodeView = flowView.node(id);
-                console.log(nodeView.inputs);
 
                 for (let i = 0; i < inputs.length; i++) {
                   const name = inputs[i].name;
@@ -176,6 +176,11 @@ export const useFlowView: UseFlowView = ({
                 break;
               }
             }
+            if (isUserInput) setFlowChanged(true);
+            break;
+          }
+
+          case "DELETE_EDGE": {
             if (isUserInput) setFlowChanged(true);
             break;
           }
