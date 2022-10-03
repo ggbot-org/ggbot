@@ -4,11 +4,16 @@ import { Icon, Navbar, NavbarBrand } from "@ggbot2/ui-components";
 import { route } from "_routing";
 
 type Props = {
+  /** Click on brand links to Homepage */
+  brandLinksToHomepage?: boolean;
   /** Show settings icon. */
   hasSettingsIcon?: boolean;
 };
 
-export const Navigation: FC<Props> = ({ hasSettingsIcon }) => {
+export const Navigation: FC<Props> = ({
+  brandLinksToHomepage,
+  hasSettingsIcon,
+}) => {
   const router = useRouter();
 
   const goToHomepage = useCallback(() => {
@@ -23,7 +28,9 @@ export const Navigation: FC<Props> = ({ hasSettingsIcon }) => {
   return (
     <Navbar>
       <div className="flex flex-row justify-between">
-        <NavbarBrand onClick={goToHomepage} />
+        <NavbarBrand
+          onClick={brandLinksToHomepage ? goToHomepage : undefined}
+        />
         {hasSettingsIcon && (
           <div className="px-1 flex flex-row items-center">
             <Icon name="dots-vertical" onClick={goToSettings} />

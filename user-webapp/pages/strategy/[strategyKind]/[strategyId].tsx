@@ -26,13 +26,13 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   const { strategyKind, strategyId } = strategyKey;
 
-  const [copyIsPending, setCopyIsPending] = useState(false);
-  const [flowIsPending, setFlowIsPending] = useState(false);
-  const [deleteIsPending, setDeleteIsPending] = useState(false);
+  const [copyIsSpinning, setCopyIsSpinning] = useState(false);
+  const [flowIsSpinning, setFlowIsSpinning] = useState(false);
+  const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
 
-  const someActionIsPending = useMemo(
-    () => copyIsPending || deleteIsPending || flowIsPending,
-    [copyIsPending, deleteIsPending, flowIsPending]
+  const someButtonIsSpinning = useMemo(
+    () => copyIsSpinning || deleteIsSpinning || flowIsSpinning,
+    [copyIsSpinning, deleteIsSpinning, flowIsSpinning]
   );
 
   const [renameStrategy, { isPending: renameIsPending }] =
@@ -51,31 +51,31 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const onClickFlow = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsPending) return;
-      setFlowIsPending(true);
+      if (someButtonIsSpinning) return;
+      setFlowIsSpinning(true);
       router.push(route.editFlowPage(strategyKey));
     },
-    [someActionIsPending, setFlowIsPending, router, strategyKey]
+    [someButtonIsSpinning, setFlowIsSpinning, router, strategyKey]
   );
 
   const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsPending) return;
-      setCopyIsPending(true);
+      if (someButtonIsSpinning) return;
+      setCopyIsSpinning(true);
       router.push(route.copyStrategyPage(strategyKey));
     },
-    [someActionIsPending, setCopyIsPending, router, strategyKey]
+    [someButtonIsSpinning, setCopyIsSpinning, router, strategyKey]
   );
 
   const onClickDelete = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsPending) return;
-      setDeleteIsPending(true);
+      if (someButtonIsSpinning) return;
+      setDeleteIsSpinning(true);
       router.push(route.deleteStrategyPage(strategyKey));
     },
-    [someActionIsPending, setDeleteIsPending, router, strategyKey]
+    [someButtonIsSpinning, setDeleteIsSpinning, router, strategyKey]
   );
 
   const setName = useCallback<(value: unknown) => void>(
@@ -128,18 +128,18 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
         <menu className="flex flex-row flex-wrap gap-4">
           <Button
-            isSpinning={flowIsPending}
+            isSpinning={flowIsSpinning}
             onClick={onClickFlow}
             color="primary"
           >
             flow
           </Button>
           <ButtonShareStrategy {...strategyKey} />
-          <Button isSpinning={copyIsPending} onClick={onClickCopy}>
+          <Button isSpinning={copyIsSpinning} onClick={onClickCopy}>
             copy
           </Button>
           <Button
-            isSpinning={deleteIsPending}
+            isSpinning={deleteIsSpinning}
             onClick={onClickDelete}
             color="danger"
           >

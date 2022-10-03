@@ -76,14 +76,17 @@ const Page: NextPage<ServerSideProps> = ({
   name,
   strategyKey,
 }) => {
-  const router = useRouter();
-
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, flowChanged } = useFlowView({
     containerRef: flowViewContainerRef,
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
   });
+
+  const strategyHref = useMemo(
+    () => route.strategyPage(strategyKey),
+    [strategyKey]
+  );
 
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
@@ -103,11 +106,6 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [read, { data: storedStrategyFlow, isPending: readIsPending }] =
     useApiAction.READ_STRATEGY_FLOW();
-
-  const strategyHref = useMemo(
-    () => route.strategyPage(strategyKey),
-    [strategyKey]
-  );
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
@@ -177,19 +175,15 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content
-      topbar={<Navigation hasSettingsIcon />}
+      topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}
       message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
     >
       <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <Link href={strategyHref}>
-            <dl
-              className="cursor-pointer shadow rounded hover:shadow-primary-400 hover:bg-primary-100 grow p-2 transition-all"
-              tabIndex={-1}
-            >
-              <dt>strategy</dt>
-              <dd>{name}</dd>
-            </dl>
+            <div className="cursor-pointer rounded grow p-2 hover:text-primary-900 hover:bg-primary-100 transition-all delay-200">
+              {name}
+            </div>
           </Link>
 
           <menu className="flex h-10 flex-row gap-4">

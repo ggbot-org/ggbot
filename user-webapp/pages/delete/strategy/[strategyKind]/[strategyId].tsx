@@ -32,7 +32,7 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   return (
-    <Content topbar={<Navigation />}>
+    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>

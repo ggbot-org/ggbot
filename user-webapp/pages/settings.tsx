@@ -11,7 +11,7 @@ export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
   return (
-    <Content topbar={<Navigation />}>
+    <Content topbar={<Navigation brandLinksToHomepage />}>
       <AccountSettings />
       <BinanceSettings />
     </Content>

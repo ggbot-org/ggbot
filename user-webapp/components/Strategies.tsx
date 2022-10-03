@@ -57,7 +57,7 @@ export const Strategies: FC = () => {
   }, [strategies, router]);
 
   useEffect(() => {
-    readStrategies();
+    readStrategies({});
   }, [readStrategies]);
 
   return (

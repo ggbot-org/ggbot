@@ -72,7 +72,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, [router, data]);
 
   return (
-    <Content topbar={<Navigation hasSettingsIcon />}>
+    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
       <form
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}

@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactNode } from "react";
+import { FC, MouseEventHandler, ReactNode, useMemo } from "react";
 import { Logo } from "./Logo";
 
 type NavbarProps = { children?: ReactNode };
@@ -16,11 +16,17 @@ type NavbarBrandProps = {
 };
 
 export const NavbarBrand: FC<NavbarBrandProps> = ({ onClick }) => {
+  const className = useMemo(
+    () =>
+      [
+        "flex w-fit flex-row items-center gap-1 px-1",
+        typeof onClick === "function" ? "cursor-pointer" : "",
+      ].join(),
+    [onClick]
+  );
+
   return (
-    <div
-      className="flex w-fit cursor-pointer flex-row items-center gap-1 px-1"
-      onClick={onClick}
-    >
+    <div className={className} onClick={onClick}>
       <Logo size={24} />
       <span className="leading-7">
         ggbot<b className="text-primary-brand">2</b>

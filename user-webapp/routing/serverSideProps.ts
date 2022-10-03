@@ -9,6 +9,8 @@ import {
 } from "./redirects";
 import type { StrategyKey } from "./types";
 
+export type { StrategyFlow } from "@ggbot2/models";
+
 export const requireAuthentication: GetServerSideProps = async ({ req }) =>
   readSession(req.cookies) ? { props: {} } : redirectToAuthenticationPage();
 

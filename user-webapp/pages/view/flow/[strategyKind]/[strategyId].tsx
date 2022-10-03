@@ -1,5 +1,5 @@
 import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
-import { readStrategy } from "@ggbot2/database";
+import { readStrategy, readStrategyFlow } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
@@ -7,11 +7,18 @@ import {
 import { Button } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState, useRef } from "react";
+import {
+  PointerEventHandler,
+  useEffect,
+  useCallback,
+  useState,
+  useRef,
+} from "react";
 import { ButtonShareStrategy, Content, Navigation } from "_components";
-import { useApiAction, useFlowView } from "_hooks";
+import { useFlowView } from "_hooks";
 import {
   StrategyInfo,
+  StrategyFlow,
   readSession,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
@@ -24,6 +31,7 @@ type ServerSideProps = Pick<
   "accountIsOwner" | "strategyKey" | "name"
 > & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
+  strategyFlow: StrategyFlow;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -37,6 +45,9 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const strategy = await readStrategy(strategyKey);
   if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
+
+  const strategyFlow = await readStrategyFlow(strategyKey);
+  if (!strategyFlow) return redirectToErrorPageStrategyNotFound(strategyKey);
 
   const accountIsOwner = session?.accountId === strategy.accountId;
 
@@ -57,12 +68,13 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         binanceSymbols,
+        strategyFlow,
         ...strategyInfo,
       },
     };
   }
 
-  return { props: strategyInfo };
+  return { props: { ...strategyInfo, strategyFlow } };
 };
 
 const Page: NextPage<ServerSideProps> = ({
@@ -70,6 +82,7 @@ const Page: NextPage<ServerSideProps> = ({
   binanceSymbols,
   name,
   strategyKey,
+  strategyFlow,
 }) => {
   const router = useRouter();
 
@@ -80,30 +93,21 @@ const Page: NextPage<ServerSideProps> = ({
     strategyKind: strategyKey.strategyKind,
   });
 
-  const [copyIsPending, setCopyIsPending] = useState(false);
-  const [editIsPending, setEditIsPending] = useState(false);
+  const [copyIsSpinning, setCopyIsSpinning] = useState(false);
 
-  const [readFlow, { data }] = useApiAction.READ_STRATEGY_FLOW();
-
-  const onClickCopy = useCallback(() => {
-    router.push(route.copyStrategyPage(strategyKey));
-    setCopyIsPending(true);
-  }, [router, setCopyIsPending, strategyKey]);
-
-  const onClickEdit = useCallback(() => {
-    router.push(route.editFlowPage(strategyKey));
-    setEditIsPending(true);
-  }, [router, setEditIsPending, strategyKey]);
-
+  const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (copyIsSpinning) return;
+      setCopyIsSpinning(true);
+      router.push(route.copyStrategyPage(strategyKey));
+    },
+    [setCopyIsSpinning, router, strategyKey]
+  );
   useEffect(() => {
-    if (!data) return;
     if (!flowView) return;
-    flowView.loadGraph(data.view);
-  }, [data, flowView]);
-
-  useEffect(() => {
-    readFlow({ data: strategyKey });
-  }, [readFlow, strategyKey]);
+    flowView.loadGraph(strategyFlow.view);
+  }, [strategyFlow, flowView]);
 
   return (
     <Content
@@ -117,24 +121,16 @@ const Page: NextPage<ServerSideProps> = ({
             <dd>{name}</dd>
           </dl>
           <menu className="flex h-10 flex-row gap-4">
-            {accountIsOwner ? (
+            <ButtonShareStrategy {...strategyKey} />
+            {accountIsOwner || (
               <Button
-                isSpinning={editIsPending}
                 color="primary"
-                onClick={onClickEdit}
-              >
-                edit
-              </Button>
-            ) : (
-              <Button
-                isSpinning={copyIsPending}
-                color="primary"
+                isSpinning={copyIsSpinning}
                 onClick={onClickCopy}
               >
                 copy
               </Button>
             )}
-            <ButtonShareStrategy {...strategyKey} />
           </menu>
         </div>
 

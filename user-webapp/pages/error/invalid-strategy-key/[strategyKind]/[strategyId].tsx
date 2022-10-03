@@ -1,11 +1,22 @@
 import { isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, NextPage } from "next";
 import { Content, Navigation } from "_components";
-import { InvalidStrategyKey, redirectToHomePage } from "_routing";
+import {
+  InvalidStrategyKey,
+  readSession,
+  redirectToAuthenticationPage,
+  redirectToHomePage,
+} from "_routing";
 
 type ServerSideProps = InvalidStrategyKey;
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
+  const session = readSession(req.cookies);
+  if (!session) return redirectToAuthenticationPage();
+
   const strategyKey = {
     strategyKind: params?.strategyKind?.toString() ?? "undefined",
     strategyId: params?.strategyId?.toString() ?? "undefined",
@@ -18,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content topbar={<Navigation />}>
+    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
       <div className="p-4 flex flex-col gap-4">
         <span className="text-xl">
           Invalid <em>strategy key</em>
