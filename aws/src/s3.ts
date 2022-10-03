@@ -64,18 +64,18 @@ export type GetObjectArgs = S3Path;
 export const getObject = async <Data>({
   Bucket,
   Key,
-}: GetObjectArgs): Promise<Data | undefined> => {
+}: GetObjectArgs): Promise<Data | null> => {
   try {
     const command = new GetObjectCommand({ Bucket, Key });
     const output = await client.send(command);
     const body = output?.Body;
-    if (!(body instanceof stream.Readable)) return;
+    if (!(body instanceof stream.Readable)) return null;
     const json = await streamToString(body);
     const data = JSON.parse(json);
     return data;
   } catch (error) {
     if (error instanceof S3ServiceException) {
-      if (error.name === s3ServiceExceptionName.NoSuchKey) return;
+      if (error.name === s3ServiceExceptionName.NoSuchKey) return null;
     }
     throw error;
   }

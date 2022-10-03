@@ -5,4 +5,3 @@ export * from "./Content";
 export * from "./Navigation";
 export * from "./SchedulingStatusBadge";
 export * from "./Strategies";
-export * from "./StrategyItem";

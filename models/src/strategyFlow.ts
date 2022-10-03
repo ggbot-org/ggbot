@@ -14,7 +14,7 @@ export type CopyStrategyFlow = Operation<
   UpdateTime
 >;
 
-export type ReadStrategyFlow = Operation<StrategyKey, StrategyFlow | undefined>;
+export type ReadStrategyFlow = Operation<StrategyKey, StrategyFlow | null>;
 
 export type WriteStrategyFlow = Operation<
   AccountStrategyKey & Omit<StrategyFlow, "whenUpdated">,

@@ -68,14 +68,14 @@ type EnterProps = {
 const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     async (event) => {
       try {
         event.preventDefault();
-        if (emailSent || isLoading) return;
+        if (emailSent || isPending) return;
 
         setHasGenericError(false);
         setHasInvalidInput(false);
@@ -98,10 +98,10 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         const timeoutId = setTimeout(() => {
           controller.abort();
           setGotTimeout(true);
-          setIsLoading(false);
+          setIsPending(false);
         }, timeout);
 
-        setIsLoading(true);
+        setIsPending(true);
 
         const response = await fetch(route.apiEnter(), {
           body: JSON.stringify(requestData),
@@ -112,7 +112,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
           signal: controller.signal,
         });
 
-        setIsLoading(false);
+        setIsPending(false);
         clearTimeout(timeoutId);
 
         if (!response.ok) {
@@ -124,18 +124,18 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         setEmailSent(responseData.emailSent);
       } catch (error) {
         setHasGenericError(true);
-        setIsLoading(false);
+        setIsPending(false);
         console.error(error);
       }
     },
     [
       emailSent,
-      isLoading,
+      isPending,
       setEmailSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
-      setIsLoading,
+      setIsPending,
     ]
   );
 
@@ -146,11 +146,11 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
           label="email"
           name="email"
           type="email"
-          readOnly={isLoading}
+          readOnly={isPending}
           required
         />
         <menu>
-          <Button color="primary" isLoading={isLoading}>
+          <Button color="primary" isPending={isPending}>
             send
           </Button>
         </menu>
@@ -168,7 +168,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
 const Exit: FC = () => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -179,8 +179,8 @@ const Exit: FC = () => {
   );
 
   const onSubmit = useCallback(() => {
-    setIsLoading(true);
-  }, [setIsLoading]);
+    setIsPending(true);
+  }, [setIsPending]);
 
   return (
     <AuthForm
@@ -191,7 +191,7 @@ const Exit: FC = () => {
     >
       <menu className="flex flex-row gap-4">
         <Button type="reset">stay</Button>
-        <Button type="submit" color="danger" isLoading={isLoading}>
+        <Button type="submit" color="danger" isSpinning={isPending}>
           exit
         </Button>
       </menu>
@@ -209,7 +209,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
   const [codeSent, setCodeSent] = useState(false);
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
   const [
     needToGenerateOneTimePasswordAgain,
@@ -229,7 +229,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
     async (event) => {
       try {
         event.preventDefault();
-        if (isLoading) return;
+        if (isPending) return;
 
         setHasGenericError(false);
         setHasInvalidInput(false);
@@ -252,11 +252,11 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         const timeoutId = setTimeout(() => {
           controller.abort();
           setGotTimeout(true);
-          setIsLoading(false);
+          setIsPending(false);
         }, timeout);
 
         setCodeSent(true);
-        setIsLoading(true);
+        setIsPending(true);
 
         const response = await fetch(route.apiVerify(), {
           body: JSON.stringify(requestData),
@@ -267,7 +267,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
           signal: controller.signal,
         });
 
-        setIsLoading(false);
+        setIsPending(false);
         clearTimeout(timeoutId);
 
         if (!response.ok) {
@@ -279,7 +279,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         if (responseData.verified) {
           goToHomePage();
         } else {
-          setIsLoading(false);
+          setIsPending(false);
           setVerificationFailed(true);
           if (typeof responseData.verified === "undefined") {
             setNeedToGenerateOneTimePasswordAgain(true);
@@ -287,18 +287,18 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         }
       } catch (error) {
         setHasGenericError(true);
-        setIsLoading(false);
+        setIsPending(false);
         console.error(error);
       }
     },
     [
       goToHomePage,
-      isLoading,
+      isPending,
       setCodeSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
-      setIsLoading,
+      setIsPending,
     ]
   );
 
@@ -308,13 +308,13 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         <Field
           label="password"
           name="code"
-          readOnly={isLoading}
+          readOnly={isPending}
           required
           spellCheck={false}
           type="text"
         />
         <menu>
-          <Button color="primary" isLoading={isLoading}>
+          <Button color="primary" isSpinning={isPending}>
             enter
           </Button>
         </menu>

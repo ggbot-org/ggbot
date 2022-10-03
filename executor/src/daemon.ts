@@ -43,7 +43,7 @@ export async function spawnExecutorDaemon() {
 function isMainModule() {
   if (import.meta.url.startsWith("file:")) {
     const modulePath = fileURLToPath(import.meta.url);
-    return process.argv[1] === modulePath)
+    return process.argv[1] === modulePath;
   }
   return false;
 }

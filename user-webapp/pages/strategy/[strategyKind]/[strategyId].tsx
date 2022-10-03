@@ -2,13 +2,15 @@ import { isName, normalizeName } from "@ggbot2/models";
 import { Button, DateTime, EditableInput } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { PointerEventHandler, useCallback, useMemo, useState } from "react";
 import {
-  ButtonShareStrategy,
-  Content /* TODO SchedulingStatusBadge*/,
-  Navigation,
-} from "_components";
-import { ApiAction, useApiAction } from "_hooks";
+  PointerEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { ButtonShareStrategy, Content, Navigation } from "_components";
+import { useApiAction } from "_hooks";
 import {
   StrategyInfo,
   requireAuthenticationAndGetStrategyInfo,
@@ -24,58 +26,56 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   const { strategyKind, strategyId } = strategyKey;
 
-  const [copyIsLoading, setCopyIsLoading] = useState(false);
-  const [flowIsLoading, setFlowIsLoading] = useState(false);
-  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+  const [copyIsPending, setCopyIsPending] = useState(false);
+  const [flowIsPending, setFlowIsPending] = useState(false);
+  const [deleteIsPending, setDeleteIsPending] = useState(false);
 
-  const someActionIsLoading = useMemo(
-    () => copyIsLoading || deleteIsLoading || flowIsLoading,
-    [copyIsLoading, deleteIsLoading, flowIsLoading]
+  const someActionIsPending = useMemo(
+    () => copyIsPending || deleteIsPending || flowIsPending,
+    [copyIsPending, deleteIsPending, flowIsPending]
   );
 
-  const [renameStrategyIn, setRenameStrategyIn] =
-    useState<ApiAction["RENAME_STRATEGY"]["in"]>();
-  const { isLoading: renameIsLoading } =
-    useApiAction.RENAME_STRATEGY(renameStrategyIn);
+  const [renameStrategy, { isPending: renameIsPending }] =
+    useApiAction.RENAME_STRATEGY();
 
-  const { data: strategy } = useApiAction.READ_STRATEGY(strategyKey);
+  const [readStrategy, { data: strategy }] = useApiAction.READ_STRATEGY();
 
   const name = useMemo(() => strategy?.name ?? "", [strategy]);
 
   const readOnly = useMemo(() => {
     if (!name) return true;
-    if (renameIsLoading) return true;
+    if (renameIsPending) return true;
     return false;
-  }, [name, renameIsLoading]);
+  }, [name, renameIsPending]);
 
   const onClickFlow = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsLoading) return;
-      setFlowIsLoading(true);
+      if (someActionIsPending) return;
+      setFlowIsPending(true);
       router.push(route.editFlowPage(strategyKey));
     },
-    [someActionIsLoading, setFlowIsLoading, router, strategyKey]
+    [someActionIsPending, setFlowIsPending, router, strategyKey]
   );
 
   const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsLoading) return;
-      setCopyIsLoading(true);
+      if (someActionIsPending) return;
+      setCopyIsPending(true);
       router.push(route.copyStrategyPage(strategyKey));
     },
-    [someActionIsLoading, setCopyIsLoading, router, strategyKey]
+    [someActionIsPending, setCopyIsPending, router, strategyKey]
   );
 
   const onClickDelete = useCallback<PointerEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      if (someActionIsLoading) return;
-      setDeleteIsLoading(true);
+      if (someActionIsPending) return;
+      setDeleteIsPending(true);
       router.push(route.deleteStrategyPage(strategyKey));
     },
-    [someActionIsLoading, setDeleteIsLoading, router, strategyKey]
+    [someActionIsPending, setDeleteIsPending, router, strategyKey]
   );
 
   const setName = useCallback<(value: unknown) => void>(
@@ -85,14 +85,20 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
       const newName = normalizeName(value);
       if (name === newName) return;
 
-      setRenameStrategyIn({
-        name: newName,
-        strategyId,
-        strategyKind,
+      renameStrategy({
+        data: {
+          name: newName,
+          strategyId,
+          strategyKind,
+        },
       });
     },
-    [name, readOnly, strategyId, strategyKind]
+    [name, readOnly, renameStrategy, strategyId, strategyKind]
   );
+
+  useEffect(() => {
+    readStrategy({ data: strategyKey });
+  }, [readStrategy, strategyKey]);
 
   return (
     <Content topbar={<Navigation hasSettingsIcon />}>
@@ -112,7 +118,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
             <label htmlFor="name">name</label>
             <EditableInput
               id="name"
-              isLoading={renameIsLoading}
+              isSpinning={renameIsPending}
               readOnly={readOnly}
               setValue={setName}
               value={name}
@@ -122,18 +128,18 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
         <menu className="flex flex-row flex-wrap gap-4">
           <Button
-            isLoading={flowIsLoading}
+            isSpinning={flowIsPending}
             onClick={onClickFlow}
             color="primary"
           >
             flow
           </Button>
           <ButtonShareStrategy {...strategyKey} />
-          <Button isLoading={copyIsLoading} onClick={onClickCopy}>
+          <Button isSpinning={copyIsPending} onClick={onClickCopy}>
             copy
           </Button>
           <Button
-            isLoading={deleteIsLoading}
+            isSpinning={deleteIsPending}
             onClick={onClickDelete}
             color="danger"
           >

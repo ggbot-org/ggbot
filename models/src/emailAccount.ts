@@ -21,7 +21,4 @@ export type CreateEmailAccount = Operation<
   CreationTime
 >;
 
-export type ReadEmailAccount = Operation<
-  EmailAddress,
-  EmailAccount | undefined
->;
+export type ReadEmailAccount = Operation<EmailAddress, EmailAccount | null>;

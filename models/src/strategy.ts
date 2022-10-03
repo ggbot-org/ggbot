@@ -46,7 +46,7 @@ export type CopyStrategy = Operation<
 
 export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
 
-export type ReadStrategy = Operation<StrategyKey, Strategy | undefined>;
+export type ReadStrategy = Operation<StrategyKey, Strategy | null>;
 
 export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
 

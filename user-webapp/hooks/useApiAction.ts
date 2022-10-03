@@ -1,113 +1,131 @@
-import useSWR from "swr";
-import { JsonObject } from "type-fest";
+import { useCallback, useState } from "react";
+import { JsonValue, JsonObject } from "type-fest";
 import {
   ApiAction,
-  ApiActionResponseOutput,
+  ApiActionBadRequestName,
   ApiActionInput,
-  isApiActionBadRequest,
+  isApiActionResponseToBadRequest,
 } from "_api/action";
 
-export type { ApiAction } from "_api/action";
+type ActionIO = { in: JsonObject; out: JsonValue };
 
-class ApiActionResponseError extends Error {
-  status: number;
-  constructor({ status }: Pick<ApiActionResponseError, "status">) {
-    super("ApiActionResponse is not ok");
-    this.status = status;
-  }
-}
+const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
+type ErrorName = typeof errorNames[number];
 
-const fetcher = async (action: JsonObject) => {
-  try {
-    const body = JSON.stringify(action);
-    const response = await fetch("/api/action", {
-      body,
-      credentials: "include",
-      headers: new Headers({
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }),
-      method: "POST",
-    });
-    if (!response.ok) {
-      const { status } = response;
-      if (status === 400) {
-        const data = await response.json();
-        if (isApiActionBadRequest(data)) throw data.error;
-      }
-      throw new ApiActionResponseError({ status });
-    }
-    return response.json();
-  } catch (error) {
-    throw error;
-  }
+type UseActionRequest = (arg: Pick<ApiActionInput, "data">) => Promise<void>;
+type UseActionResponse<Action extends ActionIO> = {
+  error?: ErrorName | ApiActionBadRequestName | undefined;
+  data?: Action["out"] | undefined;
+  isPending: boolean;
 };
 
-function useAction<OutputData>(arg: ApiActionInput | null, options = {}) {
-  const {
-    error,
-    data: responseOutput,
-    isValidating,
-  } = useSWR<ApiActionResponseOutput<OutputData>>(arg, fetcher, options);
-  const isLoading = arg !== null && !error && !responseOutput;
-  const data = responseOutput?.data;
-  return { error, data, isLoading, isValidating };
-}
+const useAction = <Action extends ActionIO>({
+  type,
+}: Pick<ApiActionInput, "type">): [
+  request: UseActionRequest,
+  response: UseActionResponse<Action>
+] => {
+  const [response, setResponse] = useState<UseActionResponse<Action>>({
+    isPending: false,
+  });
+
+  const request = useCallback<UseActionRequest>(
+    async ({ data: inputData }) => {
+      const timeout = 10000;
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        setResponse({ error: "Timeout", isPending: false });
+      }, timeout);
+      const controller = new AbortController();
+
+      try {
+        setResponse({ isPending: true });
+
+        const body =
+          typeof inputData === "undefined"
+            ? JSON.stringify({ type })
+            : JSON.stringify({ type, data: inputData });
+        const response = await fetch("/api/action", {
+          body,
+          credentials: "include",
+          headers: new Headers({
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          }),
+          method: "POST",
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          const { status } = response;
+          if (status === 400) {
+            const responseOutput = await response.json();
+            if (isApiActionResponseToBadRequest(responseOutput)) {
+              setResponse({ error: responseOutput.error, isPending: false });
+              return;
+            }
+          }
+          if (status === 401) {
+            setResponse({ error: "Unauthorized", isPending: false });
+            return;
+          }
+          if (status === 500) {
+            setResponse({ error: "GenericError", isPending: false });
+            return;
+          }
+          // This error should not be thrown.
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+        const responseOutput = await response.json();
+        setResponse({
+          data: responseOutput.data,
+          isPending: false,
+        });
+      } catch (error) {
+        console.error(error);
+        setResponse({ error: "GenericError", isPending: false });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    },
+    [setResponse]
+  );
+
+  return [request, response];
+};
 
 export const useApiAction = {
-  COPY_STRATEGY: (data?: ApiAction["COPY_STRATEGY"]["in"]) =>
-    useAction<ApiAction["COPY_STRATEGY"]["out"]>(
-      data ? { type: "COPY_STRATEGY", data } : null
-    ),
-  CREATE_BINANCE_API_CONFIG: (
-    data?: ApiAction["CREATE_BINANCE_API_CONFIG"]["in"]
-  ) =>
-    useAction<ApiAction["CREATE_BINANCE_API_CONFIG"]["out"]>(
-      data ? { type: "CREATE_BINANCE_API_CONFIG", data } : null
-    ),
-  CREATE_STRATEGY: (data?: ApiAction["CREATE_STRATEGY"]["in"]) =>
-    useAction<ApiAction["CREATE_STRATEGY"]["out"]>(
-      data ? { type: "CREATE_STRATEGY", data } : null
-    ),
-  DELETE_STRATEGY: (data?: ApiAction["DELETE_STRATEGY"]["in"]) =>
-    useAction<ApiAction["DELETE_STRATEGY"]["out"]>(
-      data ? { type: "DELETE_STRATEGY", data } : null
-    ),
-  EXECUTE_STRATEGY: (data?: ApiAction["EXECUTE_STRATEGY"]["in"]) =>
-    useAction<ApiAction["EXECUTE_STRATEGY"]["out"]>(
-      data ? { type: "EXECUTE_STRATEGY", data } : null,
-      { shouldRetryOnError: false }
-    ),
-  READ_ACCOUNT: () =>
-    useAction<ApiAction["READ_ACCOUNT"]["out"]>({
-      type: "READ_ACCOUNT",
+  COPY_STRATEGY: () =>
+    useAction<ApiAction["COPY_STRATEGY"]>({ type: "COPY_STRATEGY" }),
+  CREATE_BINANCE_API_CONFIG: () =>
+    useAction<ApiAction["CREATE_BINANCE_API_CONFIG"]>({
+      type: "CREATE_BINANCE_API_CONFIG",
     }),
+  CREATE_STRATEGY: () =>
+    useAction<ApiAction["CREATE_STRATEGY"]>({ type: "CREATE_STRATEGY" }),
+  DELETE_STRATEGY: () =>
+    useAction<ApiAction["DELETE_STRATEGY"]>({ type: "DELETE_STRATEGY" }),
+  EXECUTE_STRATEGY: () =>
+    useAction<ApiAction["EXECUTE_STRATEGY"]>({ type: "EXECUTE_STRATEGY" }),
+  READ_ACCOUNT: () =>
+    useAction<ApiAction["READ_ACCOUNT"]>({ type: "READ_ACCOUNT" }),
   READ_ACCOUNT_STRATEGY_LIST: () =>
-    useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]["out"]>({
+    useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]>({
       type: "READ_ACCOUNT_STRATEGY_LIST",
     }),
   READ_BINANCE_API_CONFIG: () =>
-    useAction<ApiAction["READ_BINANCE_API_CONFIG"]["out"]>({
+    useAction<ApiAction["READ_BINANCE_API_CONFIG"]>({
       type: "READ_BINANCE_API_CONFIG",
     }),
-  READ_STRATEGY: (data?: ApiAction["READ_STRATEGY"]["in"]) =>
-    useAction<ApiAction["READ_STRATEGY"]["out"]>(
-      data ? { type: "READ_STRATEGY", data } : null
-    ),
-  READ_STRATEGY_FLOW: (data?: ApiAction["READ_STRATEGY_FLOW"]["in"]) =>
-    useAction<ApiAction["READ_STRATEGY_FLOW"]["out"]>(
-      data ? { type: "READ_STRATEGY_FLOW", data } : null
-    ),
-  RENAME_ACCOUNT: (data?: ApiAction["RENAME_ACCOUNT"]["in"]) =>
-    useAction<ApiAction["RENAME_ACCOUNT"]["out"]>(
-      data ? { type: "RENAME_ACCOUNT", data } : null
-    ),
-  RENAME_STRATEGY: (data?: ApiAction["RENAME_STRATEGY"]["in"]) =>
-    useAction<ApiAction["RENAME_STRATEGY"]["out"]>(
-      data ? { type: "RENAME_STRATEGY", data } : null
-    ),
-  WRITE_STRATEGY_FLOW: (data?: ApiAction["WRITE_STRATEGY_FLOW"]["in"]) =>
-    useAction<ApiAction["WRITE_STRATEGY_FLOW"]["out"]>(
-      data ? { type: "WRITE_STRATEGY_FLOW", data } : null
-    ),
+  READ_STRATEGY: () =>
+    useAction<ApiAction["READ_STRATEGY"]>({ type: "READ_STRATEGY" }),
+  READ_STRATEGY_FLOW: () =>
+    useAction<ApiAction["READ_STRATEGY_FLOW"]>({ type: "READ_STRATEGY_FLOW" }),
+  RENAME_ACCOUNT: () =>
+    useAction<ApiAction["RENAME_ACCOUNT"]>({ type: "RENAME_ACCOUNT" }),
+  RENAME_STRATEGY: () =>
+    useAction<ApiAction["RENAME_STRATEGY"]>({ type: "RENAME_STRATEGY" }),
+  WRITE_STRATEGY_FLOW: () =>
+    useAction<ApiAction["WRITE_STRATEGY_FLOW"]>({
+      type: "WRITE_STRATEGY_FLOW",
+    }),
 };

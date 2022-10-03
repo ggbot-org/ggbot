@@ -9,7 +9,7 @@ export type StrategyMemory = UpdateTime & {
 
 export type ReadStrategyMemory = Operation<
   AccountStrategyKey,
-  StrategyMemory | undefined
+  StrategyMemory | null
 >;
 
 export type WriteStrategyMemory = Operation<

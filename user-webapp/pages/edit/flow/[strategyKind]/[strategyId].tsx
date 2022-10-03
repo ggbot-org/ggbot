@@ -6,11 +6,12 @@ import {
 } from "@ggbot2/dflow";
 import { Button } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Content, Navigation } from "_components";
-import { ApiAction, useApiAction, useFlowView } from "_hooks";
+import { useApiAction, useFlowView } from "_hooks";
 import {
   StrategyInfo,
   readSession,
@@ -87,56 +88,43 @@ const Page: NextPage<ServerSideProps> = ({
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
-  const [manageIsLoading, setManageIsLoading] = useState(false);
 
-  const [strategyKeyToBeExecuted, setStrategyKeyToBeExecuted] =
-    useState<ApiAction["EXECUTE_STRATEGY"]["in"]>();
+  const [
+    execute,
+    {
+      data: strategyExecution,
+      isPending: runIsPending,
+      error: strategyExecutionError,
+    },
+  ] = useApiAction.EXECUTE_STRATEGY();
 
-  const [strategyKeyToBeRead, setStrategyKeyToBeRead] =
-    useState<ApiAction["READ_STRATEGY_FLOW"]["in"]>();
+  const [save, { isPending: saveIsPending }] =
+    useApiAction.WRITE_STRATEGY_FLOW();
 
-  const [newStrategyFlow, setNewStrategyFlow] =
-    useState<ApiAction["WRITE_STRATEGY_FLOW"]["in"]>();
+  const [read, { data: storedStrategyFlow, isPending: readIsPending }] =
+    useApiAction.READ_STRATEGY_FLOW();
 
-  const {
-    data: strategyExecution,
-    isLoading: runIsLoading,
-    error: strategyExecutionError,
-  } = useApiAction.EXECUTE_STRATEGY(strategyKeyToBeExecuted);
-
-  const { isLoading: saveIsLoading } =
-    useApiAction.WRITE_STRATEGY_FLOW(newStrategyFlow);
-
-  const { data: storedStrategyFlow, isLoading: storedStrategyFlowIsLoading } =
-    useApiAction.READ_STRATEGY_FLOW(strategyKeyToBeRead);
-  console.log("strategyKeyToBeRead", strategyKeyToBeRead);
-
-  const onClickManage = useCallback(() => {
-    router.push(route.strategyPage(strategyKey));
-    setManageIsLoading(true);
-  }, [router, setManageIsLoading, strategyKey]);
+  const strategyHref = useMemo(
+    () => route.strategyPage(strategyKey),
+    [strategyKey]
+  );
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
     if (hasNoBinanceApiConfig) return false;
-    if (saveIsLoading) return false;
+    if (runIsPending) return false;
+    if (saveIsPending) return false;
     return !canSave;
-  }, [
-    canSave,
-    flowLoaded,
-    hasNoBinanceApiConfig,
-    newStrategyFlow,
-    saveIsLoading,
-  ]);
+  }, [canSave, flowLoaded, runIsPending, hasNoBinanceApiConfig, saveIsPending]);
 
   const onClickSave = useCallback(() => {
     if (!flowView) return;
-    if (canSave) setNewStrategyFlow({ ...strategyKey, view: flowView.graph });
-  }, [canSave, flowView, setNewStrategyFlow, strategyKey]);
+    if (canSave) save({ data: { ...strategyKey, view: flowView.graph } });
+  }, [canSave, flowView, save, strategyKey]);
 
   const onClickRun = useCallback(() => {
-    if (canRun) setStrategyKeyToBeExecuted(strategyKey);
-  }, [canRun, setStrategyKeyToBeExecuted, strategyKey]);
+    if (canRun) execute({ data: strategyKey });
+  }, [canRun, execute, strategyKey]);
 
   useEffect(() => {
     if (!strategyExecutionError) return;
@@ -144,16 +132,16 @@ const Page: NextPage<ServerSideProps> = ({
     if (strategyExecutionError === "MissingBinanceApiConfig") {
       setHasNoBinanceApiConfig(true);
     }
-  }, [strategyExecutionError, setHasNoBinanceApiConfig]);
+  }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
-    if (flowLoaded) setStrategyKeyToBeRead(strategyKey);
-  }, [flowLoaded, setStrategyKeyToBeRead, strategyKey]);
+    if (flowLoaded) read({ data: strategyKey });
+  }, [flowLoaded, read, strategyKey]);
 
   useEffect(() => {
     try {
       if (!flowView) return;
-      if (storedStrategyFlowIsLoading) return;
+      if (readIsPending) return;
       if (storedStrategyFlow?.view) {
         flowView.clearGraph();
         flowView.loadGraph(storedStrategyFlow.view);
@@ -163,24 +151,11 @@ const Page: NextPage<ServerSideProps> = ({
       console.error(error);
       toast.error("Cannot load flow");
     }
-  }, [
-    flowView,
-    setFlowLoaded,
-    storedStrategyFlow,
-    storedStrategyFlowIsLoading,
-  ]);
+  }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
   useEffect(() => {
     if (flowChanged) setCanSave(true);
   }, [flowChanged, setCanSave]);
-
-  useEffect(() => {
-    if (saveIsLoading) setCanSave(false);
-  }, [saveIsLoading, setCanSave]);
-
-  useEffect(() => {
-    if (runIsLoading) setStrategyKeyToBeExecuted(undefined);
-  }, [runIsLoading, setStrategyKeyToBeExecuted]);
 
   useEffect(() => {
     if (!strategyExecution) return;
@@ -207,25 +182,27 @@ const Page: NextPage<ServerSideProps> = ({
     >
       <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
-          <dl>
-            <dt>strategy</dt>
-            <dd>{name}</dd>
-          </dl>
+          <Link href={strategyHref}>
+            <dl
+              className="cursor-pointer shadow rounded hover:shadow-primary-400 hover:bg-primary-100 grow p-2 transition-all"
+              tabIndex={-1}
+            >
+              <dt>strategy</dt>
+              <dd>{name}</dd>
+            </dl>
+          </Link>
 
           <menu className="flex h-10 flex-row gap-4">
-            <Button isLoading={manageIsLoading} onClick={onClickManage}>
-              manage
-            </Button>
             <Button
               disabled={!canSave}
-              isLoading={saveIsLoading}
+              isSpinning={saveIsPending}
               onClick={onClickSave}
             >
               save
             </Button>
             <Button
               disabled={!canRun}
-              isLoading={runIsLoading}
+              isSpinning={runIsPending}
               onClick={onClickRun}
             >
               run
@@ -242,12 +219,12 @@ const Page: NextPage<ServerSideProps> = ({
 
 const PleaseConfigureBinanceApi = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const goToSettings = useCallback(() => {
-    setIsLoading(true);
+    setIsPending(true);
     router.push(route.settingsPage());
-  }, [router, setIsLoading]);
+  }, [router, setIsPending]);
 
   return (
     <div className="bg-danger-100 p-4">
@@ -257,7 +234,7 @@ const PleaseConfigureBinanceApi = () => {
           Please go to settings page and configure your Binance API.
         </p>
         <menu>
-          <Button isLoading={isLoading} onClick={goToSettings}>
+          <Button isSpinning={isPending} onClick={goToSettings}>
             Go to Settings
           </Button>
         </menu>

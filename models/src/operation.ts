@@ -2,7 +2,7 @@ import { JsonValue } from "type-fest";
 
 export type OperationInput = JsonValue | void;
 
-export type OperationOutput = JsonValue | undefined;
+export type OperationOutput = JsonValue;
 
 export type Operation<
   Input extends OperationInput,

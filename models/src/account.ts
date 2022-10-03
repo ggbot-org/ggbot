@@ -38,7 +38,7 @@ export const isAccountKey = (value: unknown): value is AccountKey => {
 
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 
-export type ReadAccount = Operation<AccountKey, Account | undefined>;
+export type ReadAccount = Operation<AccountKey, Account | null>;
 
 export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
 

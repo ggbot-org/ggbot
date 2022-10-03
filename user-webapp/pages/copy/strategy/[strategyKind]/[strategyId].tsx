@@ -16,7 +16,7 @@ import {
 } from "react";
 import { toast } from "react-hot-toast";
 import { Content, Navigation } from "_components";
-import { ApiAction, useApiAction } from "_hooks";
+import { useApiAction } from "_hooks";
 import {
   StrategyInfo,
   requireAuthenticationAndGetStrategyInfo,
@@ -36,20 +36,18 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [newStrategy, setNewStrategy] =
-    useState<ApiAction["COPY_STRATEGY"]["in"]>();
-
-  const { data, isLoading } = useApiAction.COPY_STRATEGY(newStrategy);
+  const [copyStrategy, { data, isPending }] = useApiAction.COPY_STRATEGY();
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       try {
         event.preventDefault();
-        if (isLoading) return;
+        if (isPending) return;
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name)) setNewStrategy({ strategyId, strategyKind, name });
+        if (isName(name))
+          copyStrategy({ data: { strategyId, strategyKind, name } });
       } catch (error) {
         if (error instanceof ErrorInvalidName)
           toast.error("Invalid strategy name");
@@ -57,7 +55,7 @@ const Page: NextPage<ServerSideProps> = ({
           toast.error("Strategy name too long");
       }
     },
-    [isLoading, strategyId, strategyKind]
+    [isPending, strategyId, strategyKind, copyStrategy]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -96,13 +94,13 @@ const Page: NextPage<ServerSideProps> = ({
           name="name"
           placeholder={strategyName}
           required
-          readOnly={isLoading}
+          readOnly={isPending}
         />
         {data ? (
           <div>done</div>
         ) : (
           <menu>
-            <Button isLoading={isLoading} disabled={isDisabled}>
+            <Button isSpinning={isPending} disabled={isDisabled}>
               copy
             </Button>
           </menu>

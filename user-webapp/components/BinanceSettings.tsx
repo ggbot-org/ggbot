@@ -1,41 +1,41 @@
 import { Button, Field, Fieldset } from "@ggbot2/ui-components";
-import { FC, FormEventHandler, useCallback, useMemo, useState } from "react";
-import { ApiAction, useApiAction } from "_hooks";
+import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
+import { useApiAction } from "_hooks";
 
 export const BinanceSettings: FC = () => {
   const apiKeyLabel = "API Key";
 
-  const [newBinanceApiConfig, setNewBinanceApiConfig] =
-    useState<ApiAction["CREATE_BINANCE_API_CONFIG"]["in"]>();
+  const [create, { isPending: createIsPending }] =
+    useApiAction.CREATE_BINANCE_API_CONFIG();
 
-  const { isLoading: createIsLoading } =
-    useApiAction.CREATE_BINANCE_API_CONFIG(newBinanceApiConfig);
-
-  const { data: binanceApiConfig, isLoading: readIsLoading } =
+  const [read, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.READ_BINANCE_API_CONFIG();
 
   const hasBinanceApiConfig = useMemo(
-    () => typeof binanceApiConfig !== "undefined",
+    () => typeof binanceApiConfig !== "undefined" && binanceApiConfig !== null,
     [binanceApiConfig]
   );
 
-  const isLoading = useMemo(
-    () => createIsLoading || readIsLoading,
-    [createIsLoading, readIsLoading]
+  const hasNoBinanceApiConfig = useMemo(
+    () => typeof binanceApiConfig !== "undefined" && binanceApiConfig === null,
+    [binanceApiConfig]
   );
 
-  const submitLabel = useMemo(
-    () => (hasBinanceApiConfig ? "test" : "save"),
-    [hasBinanceApiConfig]
+  const isPending = useMemo(
+    () => createIsPending || readIsPending,
+    [createIsPending, readIsPending]
   );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
-      if (isLoading) return;
+      if (createIsPending || readIsPending) return;
 
       if (hasBinanceApiConfig) {
-      } else {
+        // TODO test button
+      }
+
+      if (hasNoBinanceApiConfig) {
         const {
           apiKey: { value: apiKey },
           apiSecret: { value: apiSecret },
@@ -43,11 +43,21 @@ export const BinanceSettings: FC = () => {
           apiKey: { value: string };
           apiSecret: { value: string };
         };
-        setNewBinanceApiConfig({ apiKey, apiSecret });
+        create({ data: { apiKey, apiSecret } });
       }
     },
-    [hasBinanceApiConfig, isLoading]
+    [
+      create,
+      createIsPending,
+      hasBinanceApiConfig,
+      hasNoBinanceApiConfig,
+      readIsPending,
+    ]
   );
+
+  useEffect(() => {
+    read();
+  }, [read]);
 
   return (
     <form onSubmit={onSubmit}>
@@ -63,19 +73,21 @@ export const BinanceSettings: FC = () => {
               label={apiKeyLabel}
               name="apiKey"
               required
-              readOnly={isLoading}
+              readOnly={isPending}
             />
             <Field
               label="Secret Key"
               name="apiSecret"
               required
-              readOnly={isLoading}
+              readOnly={isPending}
             />
           </>
         )}
       </Fieldset>
       <menu>
-        <Button isLoading={isLoading}>{submitLabel}</Button>
+        {hasNoBinanceApiConfig && (
+          <Button isSpinning={createIsPending}>create</Button>
+        )}
       </menu>
     </form>
   );

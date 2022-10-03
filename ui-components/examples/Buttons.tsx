@@ -15,11 +15,11 @@ export const Buttons: FC = () => {
 export const LoadingButtons: FC = () => {
   return (
     <div className="flex flex-row gap-2 wrap">
-      <Button isLoading>button</Button>
-      <Button isLoading color="primary">
+      <Button isSpinning>button</Button>
+      <Button isSpinning color="primary">
         primary
       </Button>
-      <Button isLoading color="danger">
+      <Button isSpinning color="danger">
         danger
       </Button>
     </div>

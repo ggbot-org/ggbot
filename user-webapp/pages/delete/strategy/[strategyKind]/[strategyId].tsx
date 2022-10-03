@@ -1,11 +1,10 @@
 import { Button, DateTime } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
-import { FormEventHandler, useCallback, useState } from "react";
+import { FormEventHandler, useCallback } from "react";
 import { Content, Navigation } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import {
   StrategyInfo,
-  StrategyKey,
   requireAuthenticationAndGetStrategyInfo,
 } from "_routing";
 
@@ -20,19 +19,16 @@ const Page: NextPage<ServerSideProps> = ({
   whenCreated,
 }) => {
   const goBack = useGoBack();
-  const [strategyKeyToBeDeleted, setStrategyKeyToBeDeleted] = useState<
-    StrategyKey | undefined
-  >();
 
-  const { isLoading } = useApiAction.DELETE_STRATEGY(strategyKeyToBeDeleted);
+  const [deleteStrategy, { isPending }] = useApiAction.DELETE_STRATEGY();
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
-      if (isLoading) return;
-      setStrategyKeyToBeDeleted(strategyKey);
+      if (isPending) return;
+      deleteStrategy({ data: strategyKey });
     },
-    [isLoading, setStrategyKeyToBeDeleted, strategyKey]
+    [isPending, deleteStrategy, strategyKey]
   );
 
   return (

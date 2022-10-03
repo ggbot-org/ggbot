@@ -5,23 +5,20 @@ import {
   EditableInput,
   Fieldset,
 } from "@ggbot2/ui-components";
-import { FC, useCallback, useMemo, useState } from "react";
-import { ApiAction, useApiAction } from "_hooks";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useApiAction } from "_hooks";
 
 export const AccountSettings: FC = () => {
-  const { data: account, isLoading: readIsLoading } =
-    useApiAction.READ_ACCOUNT();
+  const [readAccount, { data: account }] = useApiAction.READ_ACCOUNT();
 
-  const [renameAccountIn, setRenameAccountIn] =
-    useState<ApiAction["RENAME_ACCOUNT"]["in"]>();
-  const { isLoading: renameIsLoading } =
-    useApiAction.RENAME_ACCOUNT(renameAccountIn);
+  const [renameAccount, { isPending: renameIsPending }] =
+    useApiAction.RENAME_ACCOUNT();
 
   const name = useMemo(() => account?.name ?? "", [account]);
 
   const readOnly = useMemo(
-    () => readIsLoading || renameIsLoading,
-    [readIsLoading, renameIsLoading]
+    () => typeof account === "undefined" || renameIsPending,
+    [account, renameIsPending]
   );
 
   const setName = useCallback<(value: unknown) => void>(
@@ -31,12 +28,18 @@ export const AccountSettings: FC = () => {
       const newName = normalizeName(value);
       if (name === newName) return;
 
-      setRenameAccountIn({
-        name: newName,
+      renameAccount({
+        data: {
+          name: newName,
+        },
       });
     },
-    [name, readOnly]
+    [name, readOnly, renameAccount]
   );
+
+  useEffect(() => {
+    readAccount();
+  }, [readAccount]);
 
   return (
     <>
@@ -58,7 +61,7 @@ export const AccountSettings: FC = () => {
             value={name}
             setValue={setName}
             readOnly={readOnly}
-            isLoading={renameIsLoading}
+            isSpinning={renameIsPending}
           />
         </Fieldset>
         <menu>

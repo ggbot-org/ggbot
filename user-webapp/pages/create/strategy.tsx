@@ -7,10 +7,10 @@ import {
 import { Button, Field } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEventHandler, useCallback, useEffect, useState } from "react";
+import { FormEventHandler, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { Content, Navigation } from "_components";
-import { ApiAction, useApiAction } from "_hooks";
+import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
@@ -18,20 +18,17 @@ export const getServerSideProps = requireAuthentication;
 const Page: NextPage = () => {
   const router = useRouter();
 
-  const [newStrategy, setNewStrategy] =
-    useState<ApiAction["CREATE_STRATEGY"]["in"]>();
-
-  const { data, isLoading } = useApiAction.CREATE_STRATEGY(newStrategy);
+  const [create, { data, isPending }] = useApiAction.CREATE_STRATEGY();
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       try {
         event.preventDefault();
-        if (isLoading) return;
+        if (isPending) return;
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name)) setNewStrategy({ kind: "binance", name });
+        if (isName(name)) create({ data: { kind: "binance", name } });
       } catch (error) {
         if (error instanceof ErrorInvalidName)
           toast.error("Invalid strategy name");
@@ -39,7 +36,7 @@ const Page: NextPage = () => {
           toast.error("Strategy name too long");
       }
     },
-    [isLoading]
+    [create, isPending]
   );
 
   useEffect(() => {
@@ -58,13 +55,13 @@ const Page: NextPage = () => {
           label="strategy name"
           name="name"
           required
-          readOnly={isLoading}
+          readOnly={isPending}
         />
         {data ? (
           <div>done</div>
         ) : (
           <menu>
-            <Button color="primary" isLoading={isLoading}>
+            <Button color="primary" isSpinning={isPending}>
               create
             </Button>
           </menu>

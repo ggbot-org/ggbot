@@ -80,26 +80,30 @@ const Page: NextPage<ServerSideProps> = ({
     strategyKind: strategyKey.strategyKind,
   });
 
-  const [copyIsLoading, setCopyIsLoading] = useState(false);
-  const [editIsLoading, setEditIsLoading] = useState(false);
+  const [copyIsPending, setCopyIsPending] = useState(false);
+  const [editIsPending, setEditIsPending] = useState(false);
 
-  const { data } = useApiAction.READ_STRATEGY_FLOW(
-    flowView ? strategyKey : undefined
-  );
+  const [readFlow, { data }] = useApiAction.READ_STRATEGY_FLOW();
 
   const onClickCopy = useCallback(() => {
     router.push(route.copyStrategyPage(strategyKey));
-    setCopyIsLoading(true);
-  }, [router, setCopyIsLoading, strategyKey]);
+    setCopyIsPending(true);
+  }, [router, setCopyIsPending, strategyKey]);
 
   const onClickEdit = useCallback(() => {
     router.push(route.editFlowPage(strategyKey));
-    setEditIsLoading(true);
-  }, [router, setEditIsLoading, strategyKey]);
+    setEditIsPending(true);
+  }, [router, setEditIsPending, strategyKey]);
 
   useEffect(() => {
-    if (data?.view) flowView?.loadGraph(data.view);
+    if (!data) return;
+    if (!flowView) return;
+    flowView.loadGraph(data.view);
   }, [data, flowView]);
+
+  useEffect(() => {
+    readFlow({ data: strategyKey });
+  }, [readFlow, strategyKey]);
 
   return (
     <Content
@@ -115,7 +119,7 @@ const Page: NextPage<ServerSideProps> = ({
           <menu className="flex h-10 flex-row gap-4">
             {accountIsOwner ? (
               <Button
-                isLoading={editIsLoading}
+                isSpinning={editIsPending}
                 color="primary"
                 onClick={onClickEdit}
               >
@@ -123,7 +127,7 @@ const Page: NextPage<ServerSideProps> = ({
               </Button>
             ) : (
               <Button
-                isLoading={copyIsLoading}
+                isSpinning={copyIsPending}
                 color="primary"
                 onClick={onClickCopy}
               >

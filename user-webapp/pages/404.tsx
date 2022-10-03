@@ -3,7 +3,7 @@ import { Content, Navigation } from "_components";
 
 const Page: NextPage = () => {
   return (
-    <Content topbar={<Navigation settingsIcon={false} />}>
+    <Content topbar={<Navigation />}>
       <div className="p-4">
         <span className="text-xl">page not found</span>
       </div>

@@ -26,7 +26,7 @@ export type StrategyExecution = UpdateTime & {
 
 export type ReadStrategyExecution = Operation<
   AccountStrategyKey,
-  StrategyExecution | undefined
+  StrategyExecution | null
 >;
 
 export type ExecuteStrategy = Operation<

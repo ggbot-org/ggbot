@@ -45,7 +45,7 @@ export type CreateOneTimePassword = Operation<EmailAddress, OneTimePassword>;
 
 export type ReadOneTimePassword = Operation<
   EmailAddress,
-  OneTimePassword | undefined
+  OneTimePassword | null
 >;
 
 export type DeleteOneTimePassword = Operation<EmailAddress, DeletionTime>;

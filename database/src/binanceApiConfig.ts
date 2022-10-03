@@ -39,7 +39,7 @@ export const readBinanceApiConfig: ReadBinanceApiConfig["func"] = async ({
   const data = await getObject<ReadBinanceApiConfig["out"]>({
     Key: binanceApiConfigPathname({ accountId }),
   });
-  if (!data) return;
+  if (!data) return null;
   binanceApiConfigCache.set(accountId, data);
   return data;
 };

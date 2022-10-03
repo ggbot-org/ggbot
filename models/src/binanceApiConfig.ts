@@ -37,7 +37,7 @@ export type CreateBinanceApiConfig = Operation<
 
 export type ReadBinanceApiConfig = Operation<
   AccountKey,
-  BinanceApiConfig | undefined
+  BinanceApiConfig | null
 >;
 
 export type DeleteBinanceApiConfig = Operation<AccountKey, DeletionTime>;

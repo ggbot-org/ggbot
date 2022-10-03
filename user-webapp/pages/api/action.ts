@@ -60,22 +60,22 @@ const isApiActionBadRequestName = (
   return (apiActionBadRequestNames as readonly string[]).includes(arg);
 };
 
-type ApiActionBadRequest = {
+type ApiActionResponseToBadRequest = {
   error: ApiActionBadRequestName;
 };
 
-export const isApiActionBadRequest = (
+export const isApiActionResponseToBadRequest = (
   arg: unknown
-): arg is ApiActionBadRequest => {
+): arg is ApiActionResponseToBadRequest => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { error } = arg as Partial<ApiActionBadRequest>;
+  const { error } = arg as Partial<ApiActionResponseToBadRequest>;
   return isApiActionBadRequestName(error);
 };
 
 export type ApiActionResponseOutput<T> =
   | {
       data?: T;
-    } & Partial<ApiActionBadRequest>;
+    } & Partial<ApiActionResponseToBadRequest>;
 
 type Action<Input, Output> = {
   // AccountKey is provided by authentication, no need to add it as action input parameter.
@@ -99,7 +99,7 @@ export type ApiAction = {
   >;
   READ_BINANCE_API_CONFIG: Action<
     ReadBinanceApiConfig["in"],
-    Pick<BinanceApiConfig, "apiKey"> | undefined
+    Pick<BinanceApiConfig, "apiKey"> | null
   >;
   READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
@@ -195,7 +195,7 @@ export default async function apiHandler(
         const apiKey = data?.apiKey;
         return res.status(__200__OK__).json({
           // Do not expose apiSecret.
-          data: apiKey ? { apiKey } : data,
+          data: apiKey ? { apiKey } : null,
         });
       }
 

@@ -1,11 +1,3 @@
-import {
-  ErrorInvalidName,
-  ErrorNameToLong,
-  StrategyKey,
-  isStrategyKey,
-  normalizeName,
-  throwIfInvalidName,
-} from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import {
@@ -17,47 +9,19 @@ import {
   useRef,
   useState,
 } from "react";
-import { toast } from "react-hot-toast";
-import { StrategyItem, StrategyItemProps } from "_components";
-import { ApiAction, useApiAction } from "_hooks";
+import { SchedulingStatusBadge } from "_components";
+import { useApiAction } from "_hooks";
 import { route } from "_routing";
-
-type SelectedStrategyKey = StrategyKey | null;
-const selectedStrategyKeyStorageKey = "selectedStrategyKey";
-
-const getStoredSelectedStrategy = (): SelectedStrategyKey => {
-  const storedValue = global?.sessionStorage?.getItem(
-    selectedStrategyKeyStorageKey
-  );
-  if (!storedValue) return null;
-  const objValue = JSON.parse(storedValue);
-  return isStrategyKey(objValue) ? objValue : null;
-};
-
-type RenamedStrategyItem = Pick<StrategyItemProps, "name" | "strategyId">;
 
 export const Strategies: FC = () => {
   const router = useRouter();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [selectedStrategyKey, setSelectedStrategyKey] =
-    useState<SelectedStrategyKey>(getStoredSelectedStrategy());
   const [newStrategyIsLoading, setNewStrategyIsLoading] = useState(false);
-  const [renamedStrategyItems, setRenamedStrategyItems] = useState<
-    RenamedStrategyItem[]
-  >([]);
 
-  const {
-    data: strategies,
-    isLoading: readStrategiesIsLoading,
-    isValidating: readStrategiesIsValidating,
-  } = useApiAction.READ_ACCOUNT_STRATEGY_LIST();
-
-  const [renameStrategyIn, setRenameStrategyIn] =
-    useState<ApiAction["RENAME_STRATEGY"]["in"]>();
-  const { isLoading: renamStrategyIsLoading } =
-    useApiAction.RENAME_STRATEGY(renameStrategyIn);
+  const [readStrategies, { data: strategies }] =
+    useApiAction.READ_ACCOUNT_STRATEGY_LIST();
 
   const onClickNewStrategy = useCallback<
     PointerEventHandler<HTMLButtonElement>
@@ -71,125 +35,53 @@ export const Strategies: FC = () => {
     [newStrategyIsLoading, setNewStrategyIsLoading, router]
   );
 
-  const noStrategy = useMemo(
-    () =>
-      !readStrategiesIsLoading && !readStrategiesIsValidating && !strategies,
-    [readStrategiesIsLoading, readStrategiesIsValidating, strategies]
-  );
+  const noStrategy = useMemo(() => strategies === null, [strategies]);
 
-  const strategyItems = useMemo(
-    () =>
-      strategies
-        ?.map(({ name, schedulingStatus, strategyId, strategyKind }) => {
-          const isSelected =
-            selectedStrategyKey?.strategyId === strategyId &&
-            selectedStrategyKey?.strategyKind === strategyKind;
+  const strategyItems = useMemo(() => {
+    if (!strategies) return [];
+    return strategies.map(
+      ({ name, schedulingStatus, strategyId, strategyKind }) => {
+        const onClick: PointerEventHandler<HTMLDivElement> = (event) => {
+          event.stopPropagation();
+          router.push(route.strategyPage({ strategyKind, strategyId }));
+        };
 
-          const onClick: StrategyItemProps["onClick"] = (event) => {
-            event.stopPropagation();
-            setSelectedStrategyKey({ strategyId, strategyKind });
-          };
-
-          const renameIsLoading =
-            renameStrategyIn?.strategyId === strategyId &&
-            renameStrategyIn.strategyKind === strategyKind &&
-            renamStrategyIsLoading;
-
-          const setName: StrategyItemProps["setName"] = (value) => {
-            try {
-              if (renameIsLoading) return;
-              throwIfInvalidName(value);
-              const newName = normalizeName(value);
-              if (name === newName) return;
-
-              setRenameStrategyIn({ name: newName, strategyId, strategyKind });
-              setRenamedStrategyItems((items) =>
-                items
-                  .filter((item) => item.strategyId !== strategyId)
-                  .concat({
-                    strategyId,
-                    name: newName,
-                  })
-              );
-            } catch (error) {
-              if (error instanceof ErrorInvalidName)
-                toast.error("Invalid strategy name");
-              if (error instanceof ErrorNameToLong)
-                toast.error("Strategy name too long");
-            }
-          };
-
-          return {
-            isSelected,
-            name,
-            onClick,
-            renameIsLoading,
-            schedulingStatus,
-            setName,
-            setRenameStrategyIn,
-            strategyKind,
-            strategyId,
-          };
-        })
-        .map(({ name, strategyId, ...rest }) => {
-          const newName = renamedStrategyItems.find(
-            (item) => item.strategyId === strategyId
-          )?.name;
-          return {
-            name: newName ?? name,
-            strategyId,
-            ...rest,
-          };
-        }),
-    [
-      renamStrategyIsLoading,
-      renameStrategyIn?.strategyId,
-      renameStrategyIn?.strategyKind,
-      renamedStrategyItems,
-      selectedStrategyKey?.strategyId,
-      selectedStrategyKey?.strategyKind,
-      strategies,
-    ]
-  );
-
-  const closeSelectedItemOnClick = useCallback(() => {
-    if (!selectedStrategyKey) return;
-    if (renamStrategyIsLoading) return;
-    setSelectedStrategyKey(null);
-  }, [renamStrategyIsLoading, selectedStrategyKey, setSelectedStrategyKey]);
+        return {
+          name,
+          onClick,
+          schedulingStatus,
+          strategyId,
+        };
+      }
+    );
+  }, [strategies, router]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    window.addEventListener("click", closeSelectedItemOnClick);
-
-    return () => {
-      window.removeEventListener("click", closeSelectedItemOnClick);
-    };
-  }, [closeSelectedItemOnClick]);
-
-  useEffect(() => {
-    if (selectedStrategyKey)
-      global?.sessionStorage?.setItem(
-        selectedStrategyKeyStorageKey,
-        JSON.stringify(selectedStrategyKey)
-      );
-    else global?.sessionStorage?.removeItem(selectedStrategyKeyStorageKey);
-  }, [selectedStrategyKey]);
+    readStrategies();
+  }, [readStrategies]);
 
   return (
     <div ref={containerRef} className="flex flex-col p-4 gap-4">
       <span className="text-xl">strategies</span>
       <menu>
-        <Button isLoading={newStrategyIsLoading} onClick={onClickNewStrategy}>
+        <Button isSpinning={newStrategyIsLoading} onClick={onClickNewStrategy}>
           new strategy
         </Button>
       </menu>
       {noStrategy && <p>You have no strategy.</p>}
       <div className="flex flex-col flex-wrap gap-4">
-        {strategyItems?.map(({ strategyId, ...props }) => (
-          <StrategyItem key={strategyId} strategyId={strategyId} {...props} />
-        ))}
+        {strategyItems?.map(
+          ({ strategyId, name, onClick, schedulingStatus }) => (
+            <div
+              key={strategyId}
+              className="flex flex-row items-center justify-between gap-2"
+              onClick={onClick}
+            >
+              <span className="select-none">{name}</span>
+              <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
+            </div>
+          )
+        )}
       </div>
     </div>
   );
