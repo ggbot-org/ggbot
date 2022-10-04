@@ -4,13 +4,19 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
-import { Button } from "@ggbot2/ui-components";
+import { Button, Checkbox } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Content, Navigation } from "_components";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationBreadcrumbStrategy,
+  NavigationBreadcrumbLabel,
+} from "_components";
 import { useApiAction, useFlowView } from "_hooks";
 import {
   StrategyInfo,
@@ -85,6 +91,15 @@ const Page: NextPage<ServerSideProps> = ({
 
   const strategyHref = useMemo(
     () => route.strategyPage(strategyKey),
+    [strategyKey]
+  );
+
+  const breadcrumbs = useMemo(
+    () => [
+      <NavigationBreadcrumbDashboard key={1} isLink />,
+      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} isLink />,
+      <NavigationBreadcrumbLabel key={3} text="edit" />,
+    ],
     [strategyKey]
   );
 
@@ -175,7 +190,7 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content
-      topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}
+      topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}
       message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
     >
       <div className="flex h-full flex-col grow">
@@ -187,20 +202,33 @@ const Page: NextPage<ServerSideProps> = ({
           </Link>
 
           <menu className="flex h-10 flex-row gap-4">
-            <Button
-              disabled={!canSave}
-              isSpinning={saveIsPending}
-              onClick={onClickSave}
-            >
-              save
-            </Button>
-            <Button
-              disabled={!canRun}
-              isSpinning={runIsPending}
-              onClick={onClickRun}
-            >
-              run
-            </Button>
+            <li className="px-2 flex flex-row items-center gap-2">
+              <label
+                htmlFor="backtest"
+                className="text-xs uppercase cursor-pointer leading-10"
+              >
+                backtest
+              </label>
+              <Checkbox id="backtest" />
+            </li>
+            <li>
+              <Button
+                disabled={!canSave}
+                isSpinning={saveIsPending}
+                onClick={onClickSave}
+              >
+                save
+              </Button>
+            </li>
+            <li>
+              <Button
+                disabled={!canRun}
+                isSpinning={runIsPending}
+                onClick={onClickRun}
+              >
+                run
+              </Button>
+            </li>
           </menu>
         </div>
 
@@ -228,9 +256,11 @@ const PleaseConfigureBinanceApi = () => {
           Please go to settings page and configure your Binance API.
         </p>
         <menu>
-          <Button isSpinning={isPending} onClick={goToSettings}>
-            Go to Settings
-          </Button>
+          <li>
+            <Button isSpinning={isPending} onClick={goToSettings}>
+              Go to Settings
+            </Button>
+          </li>
         </menu>
       </div>
     </div>

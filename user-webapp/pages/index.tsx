@@ -1,12 +1,24 @@
 import type { NextPage } from "next";
-import { Content, Navigation, Strategies } from "_components";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  Strategies,
+} from "_components";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
   return (
-    <Content topbar={<Navigation hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation
+          breadcrumbs={[<NavigationBreadcrumbDashboard key={1} />]}
+          hasSettingsIcon
+        />
+      }
+    >
       <Strategies />
     </Content>
   );

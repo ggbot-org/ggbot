@@ -150,9 +150,11 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
           required
         />
         <menu>
-          <Button color="primary" isPending={isPending}>
-            send
-          </Button>
+          <li>
+            <Button color="primary" isSpinning={isPending}>
+              send
+            </Button>
+          </li>
         </menu>
       </AuthForm>
 
@@ -190,10 +192,14 @@ const Exit: FC = () => {
       onSubmit={onSubmit}
     >
       <menu className="flex flex-row gap-4">
-        <Button type="reset">stay</Button>
-        <Button type="submit" color="danger" isSpinning={isPending}>
-          exit
-        </Button>
+        <li>
+          <Button type="reset">stay</Button>
+        </li>
+        <li>
+          <Button type="submit" color="danger" isSpinning={isPending}>
+            exit
+          </Button>
+        </li>
       </menu>
     </AuthForm>
   );

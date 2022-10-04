@@ -1,7 +1,8 @@
 import { FC, InputHTMLAttributes, useMemo } from "react";
 import { Spinner } from "./Spinner";
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
+  type?: "text" | "password" | "email";
   isSpinning?: boolean;
 };
 

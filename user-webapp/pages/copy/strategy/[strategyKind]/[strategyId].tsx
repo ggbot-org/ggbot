@@ -12,10 +12,17 @@ import {
   FormEventHandler,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-import { Content, Navigation } from "_components";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationBreadcrumbStrategy,
+  NavigationBreadcrumbLabel,
+} from "_components";
 import { useApiAction } from "_hooks";
 import {
   StrategyInfo,
@@ -28,15 +35,26 @@ type ServerSideProps = StrategyInfo;
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
 const Page: NextPage<ServerSideProps> = ({
-  strategyKey: { strategyKind, strategyId },
+  strategyKey,
   name: strategyName,
   whenCreated,
 }) => {
   const router = useRouter();
 
+  const { strategyId } = strategyKey;
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [copyStrategy, { data, isPending }] = useApiAction.COPY_STRATEGY();
+
+  const breadcrumbs = useMemo(
+    () => [
+      <NavigationBreadcrumbDashboard key={1} isLink />,
+      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} isLink />,
+      <NavigationBreadcrumbLabel key={3} text="copy" />,
+    ],
+    [strategyKey]
+  );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -46,8 +64,7 @@ const Page: NextPage<ServerSideProps> = ({
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name))
-          copyStrategy({ data: { strategyId, strategyKind, name } });
+        if (isName(name)) copyStrategy({ data: { name, ...strategyKey } });
       } catch (error) {
         if (error instanceof ErrorInvalidName)
           toast.error("Invalid strategy name");
@@ -55,7 +72,7 @@ const Page: NextPage<ServerSideProps> = ({
           toast.error("Strategy name too long");
       }
     },
-    [isPending, strategyId, strategyKind, copyStrategy]
+    [isPending, strategyKey, copyStrategy]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -72,7 +89,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, [router, data]);
 
   return (
-    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
+    <Content topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}>
       <form
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
@@ -100,9 +117,11 @@ const Page: NextPage<ServerSideProps> = ({
           <div>done</div>
         ) : (
           <menu>
-            <Button isSpinning={isPending} disabled={isDisabled}>
-              copy
-            </Button>
+            <li>
+              <Button isSpinning={isPending} disabled={isDisabled}>
+                copy
+              </Button>
+            </li>
           </menu>
         )}
       </form>

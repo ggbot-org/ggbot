@@ -10,7 +10,9 @@ export const SimpleForm: FC = () => {
         <Field name="name" label="label" />
       </Fieldset>
       <menu>
-        <Button>submit</Button>
+        <li>
+          <Button>submit</Button>
+        </li>
       </menu>
     </form>
   );

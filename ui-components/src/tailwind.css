@@ -22,8 +22,4 @@
   dt {
     @apply mt-2 text-2xs font-medium uppercase first:mt-0;
   }
-
-  label {
-    @apply mb-2 text-xs font-medium uppercase;
-  }
 }

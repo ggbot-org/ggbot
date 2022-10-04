@@ -1,7 +1,13 @@
-import { Button, DateTime } from "@ggbot2/ui-components";
+import { Button, DateTime, Icon } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
-import { FormEventHandler, useCallback } from "react";
-import { Content, Navigation } from "_components";
+import { FormEventHandler, useCallback, useMemo } from "react";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationBreadcrumbStrategy,
+  NavigationBreadcrumbLabel,
+} from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import {
   StrategyInfo,
@@ -22,6 +28,20 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [deleteStrategy, { isPending }] = useApiAction.DELETE_STRATEGY();
 
+  const breadcrumbs = useMemo(
+    () => [
+      <NavigationBreadcrumbDashboard key={1} isLink />,
+      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} isLink />,
+      <div key={3} className="flex flex-row gap-2 items-center">
+        <NavigationBreadcrumbLabel text="delete" />
+        <span className="text-danger-400">
+          <Icon name="danger" size={17} />
+        </span>
+      </div>,
+    ],
+    [strategyKey]
+  );
+
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
@@ -32,7 +52,7 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   return (
-    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
+    <Content topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}>
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
@@ -49,12 +69,16 @@ const Page: NextPage<ServerSideProps> = ({
               </dl>
             </div>
             <menu className="flex flex-row gap-4">
-              <Button type="reset" onClick={goBack}>
-                no, go back
-              </Button>
-              <Button type="submit" color="danger">
-                yes, delete it
-              </Button>
+              <li>
+                <Button type="reset" onClick={goBack}>
+                  no, go back
+                </Button>
+              </li>
+              <li>
+                <Button type="submit" color="danger">
+                  yes, delete it
+                </Button>
+              </li>
             </menu>
           </form>
         ) : (

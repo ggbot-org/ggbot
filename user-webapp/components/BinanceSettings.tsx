@@ -5,11 +5,12 @@ import { useApiAction } from "_hooks";
 export const BinanceSettings: FC = () => {
   const apiKeyLabel = "API Key";
 
-  const [create, { isPending: createIsPending }] =
-    useApiAction.CREATE_BINANCE_API_CONFIG();
-
-  const [read, { data: binanceApiConfig, isPending: readIsPending }] =
+  const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.READ_BINANCE_API_CONFIG();
+  const [createConfig, { isPending: createIsPending }] =
+    useApiAction.CREATE_BINANCE_API_CONFIG();
+  const [testConfig, { isPending: testIsPending }] =
+    useApiAction.READ_BINANCE_API_KEY_PERMISSIONS();
 
   const hasBinanceApiConfig = useMemo(
     () => typeof binanceApiConfig !== "undefined" && binanceApiConfig !== null,
@@ -22,17 +23,17 @@ export const BinanceSettings: FC = () => {
   );
 
   const isPending = useMemo(
-    () => createIsPending || readIsPending,
-    [createIsPending, readIsPending]
+    () => createIsPending || readIsPending || testIsPending,
+    [createIsPending, readIsPending, testIsPending]
   );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
-      if (createIsPending || readIsPending) return;
+      if (isPending) return;
 
       if (hasBinanceApiConfig) {
-        // TODO test button
+        testConfig({});
       }
 
       if (hasNoBinanceApiConfig) {
@@ -43,31 +44,30 @@ export const BinanceSettings: FC = () => {
           apiKey: { value: string };
           apiSecret: { value: string };
         };
-        create({ data: { apiKey, apiSecret } });
+        createConfig({ data: { apiKey, apiSecret } });
       }
     },
     [
-      create,
-      createIsPending,
+      createConfig,
+      testConfig,
       hasBinanceApiConfig,
       hasNoBinanceApiConfig,
-      readIsPending,
+      isPending,
     ]
   );
 
-  useEffect(() => {
-    read();
-  }, [read]);
+  useEffect(readConfig, [readConfig]);
 
   return (
     <form onSubmit={onSubmit}>
       <Fieldset legend="Binance API">
-        {hasBinanceApiConfig ? (
+        {hasBinanceApiConfig && (
           <dl>
             <dt>{apiKeyLabel}</dt>
             <dd>{binanceApiConfig?.apiKey}</dd>
           </dl>
-        ) : (
+        )}
+        {hasNoBinanceApiConfig && (
           <>
             <Field
               label={apiKeyLabel}
@@ -86,7 +86,14 @@ export const BinanceSettings: FC = () => {
       </Fieldset>
       <menu>
         {hasNoBinanceApiConfig && (
-          <Button isSpinning={createIsPending}>create</Button>
+          <li>
+            <Button isSpinning={createIsPending}>create</Button>
+          </li>
+        )}
+        {hasBinanceApiConfig && (
+          <li>
+            <Button isSpinning={testIsPending}>test</Button>
+          </li>
         )}
       </menu>
     </form>

@@ -11,26 +11,29 @@ export const Navbar: FC<NavbarProps> = ({ children }) => {
   );
 };
 
-type NavbarBrandProps = {
-  onClick?: MouseEventHandler<HTMLDivElement>;
+export type NavbarBreadcrumbsProps = {
+  items: ReactNode[];
 };
 
-export const NavbarBrand: FC<NavbarBrandProps> = ({ onClick }) => {
-  const className = useMemo(
-    () =>
-      [
-        "flex w-fit flex-row items-center gap-1 px-1",
-        typeof onClick === "function" ? "cursor-pointer" : "",
-      ].join(),
-    [onClick]
-  );
+export const NavbarBreadcrumbs: FC<NavbarBreadcrumbsProps> = ({ items }) => {
+  if (items.length === 0) return null;
 
   return (
-    <div className={className} onClick={onClick}>
-      <Logo size={24} />
-      <span className="leading-7">
-        ggbot<b className="text-primary-brand">2</b>
-      </span>
-    </div>
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-row items-center gap-2">
+        {items.map((content, index) => (
+          <li key={index}>{content}</li>
+        ))}
+      </ol>
+    </nav>
   );
 };
+
+export const NavbarBrand: FC = () => (
+  <div className="flex w-fit flex-row items-center gap-1 px-1">
+    <Logo size={24} />
+    <span>
+      ggbot<b className="text-primary-brand">2</b>
+    </span>
+  </div>
+);

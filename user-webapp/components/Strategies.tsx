@@ -56,17 +56,20 @@ export const Strategies: FC = () => {
     );
   }, [strategies, router]);
 
-  useEffect(() => {
-    readStrategies({});
-  }, [readStrategies]);
+  useEffect(readStrategies, [readStrategies]);
 
   return (
     <div ref={containerRef} className="flex flex-col p-4 gap-4">
       <span className="text-xl">strategies</span>
       <menu>
-        <Button isSpinning={newStrategyIsLoading} onClick={onClickNewStrategy}>
-          new strategy
-        </Button>
+        <li>
+          <Button
+            isSpinning={newStrategyIsLoading}
+            onClick={onClickNewStrategy}
+          >
+            new strategy
+          </Button>
+        </li>
       </menu>
       {noStrategy && <p>You have no strategy.</p>}
       <div className="flex flex-col flex-wrap gap-4">

@@ -51,7 +51,7 @@ export const Button: FC<Props> = ({
 }) => {
   const buttonClassName = useMemo(() => {
     return [
-      "relative inline-flex items-center border rounded-md whitespace-nowrap select-none",
+      "relative border rounded-md whitespace-nowrap select-none",
       "px-4 leading-10",
       "font-medium",
       isSpinning ? "cursor-default" : "",
@@ -65,9 +65,13 @@ export const Button: FC<Props> = ({
     ].join(" ");
   }, [color, disabled, isSpinning]);
 
-  const contentClassName = useMemo(() => {
-    return isSpinning ? "invisible" : "";
-  }, [isSpinning]);
+  const contentClassName = useMemo(
+    () =>
+      ["inline-flex items-center gap-2", isSpinning ? "invisible" : ""].join(
+        " "
+      ),
+    [isSpinning]
+  );
 
   const tabIndex = useMemo(
     () => (disabled ? -1 : _tabIndex),

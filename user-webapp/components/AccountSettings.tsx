@@ -9,12 +9,14 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 
 export const AccountSettings: FC = () => {
+  const [newName, setNewName] = useState("");
+
   const [readAccount, { data: account }] = useApiAction.READ_ACCOUNT();
 
   const [renameAccount, { isPending: renameIsPending }] =
     useApiAction.RENAME_ACCOUNT();
 
-  const name = useMemo(() => account?.name ?? "", [account]);
+  const currentName = useMemo(() => account?.name ?? "", [account]);
 
   const readOnly = useMemo(
     () => typeof account === "undefined" || renameIsPending,
@@ -26,20 +28,17 @@ export const AccountSettings: FC = () => {
       if (readOnly) return;
       if (!isName(value)) return;
       const newName = normalizeName(value);
-      if (name === newName) return;
-
-      renameAccount({
-        data: {
-          name: newName,
-        },
-      });
+      if (currentName === newName) return;
+      setNewName(newName);
     },
-    [name, readOnly, renameAccount]
+    [currentName, readOnly, setNewName]
   );
 
   useEffect(() => {
-    readAccount();
-  }, [readAccount]);
+    if (newName) return renameAccount({ data: { name: newName } });
+  }, [renameAccount, newName]);
+
+  useEffect(readAccount, [readAccount]);
 
   return (
     <>
@@ -47,7 +46,7 @@ export const AccountSettings: FC = () => {
         <dt>email</dt>
         <dd>{account?.email}</dd>
         <dt>nickname</dt>
-        <dd>{name}</dd>
+        <dd>{currentName}</dd>
         <dt>when created</dt>
         <dd>
           {account && <DateTime format="day" value={account?.whenCreated} />}
@@ -58,14 +57,16 @@ export const AccountSettings: FC = () => {
       <form>
         <Fieldset legend="account">
           <EditableInput
-            value={name}
+            value={currentName}
             setValue={setName}
             readOnly={readOnly}
             isSpinning={renameIsPending}
           />
         </Fieldset>
         <menu>
-          <Button color="danger">Delete Account</Button>
+          <li>
+            <Button color="danger">Delete Account</Button>
+          </li>
         </menu>
       </form>
     </>

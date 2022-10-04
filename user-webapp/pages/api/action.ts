@@ -9,6 +9,7 @@ import {
   readAccount,
   readAccountStrategyList,
   readBinanceApiConfig,
+  readBinanceApiKeyPermissions,
   readStrategy,
   readStrategyFlow,
   renameAccount,
@@ -35,6 +36,7 @@ import type {
   ReadAccount,
   ReadAccountStrategyList,
   ReadBinanceApiConfig,
+  ReadBinanceApiKeyPermissions,
   ReadStrategy,
   ReadStrategyFlow,
   RenameAccount,
@@ -44,7 +46,7 @@ import type {
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
 
-type ApiActionInputData = OperationInput;
+export type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
 
 const apiActionBadRequestNames = [
@@ -100,6 +102,10 @@ export type ApiAction = {
   READ_BINANCE_API_CONFIG: Action<
     ReadBinanceApiConfig["in"],
     Pick<BinanceApiConfig, "apiKey"> | null
+  >;
+  READ_BINANCE_API_KEY_PERMISSIONS: Action<
+    ReadBinanceApiKeyPermissions["in"],
+    ReadBinanceApiKeyPermissions["out"]
   >;
   READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
@@ -197,6 +203,11 @@ export default async function apiHandler(
           // Do not expose apiSecret.
           data: apiKey ? { apiKey } : null,
         });
+      }
+
+      case "READ_BINANCE_API_KEY_PERMISSIONS": {
+        const data = await readBinanceApiKeyPermissions({ accountId });
+        return res.status(__200__OK__).json({ data });
       }
 
       case "READ_STRATEGY": {

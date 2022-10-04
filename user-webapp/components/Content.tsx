@@ -1,13 +1,18 @@
 import { Main } from "@ggbot2/ui-components";
 import Head from "next/head";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { webappBaseUrl } from "_routing";
 
 type Props = {
   children: ReactNode;
   metadata?: {
+    /** Tag title content */
     title: string;
+    /** Meta description */
     description: string;
+    /** Link rel canonical pathname, e.g. `/settings`. */
+    canonical?: string;
   };
   topbar?: ReactNode;
   message?: ReactNode;
@@ -19,6 +24,8 @@ export const Content: FC<Props> = ({
   message,
   topbar,
 }) => {
+  const { title, description, canonical } = metadata;
+
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
@@ -36,11 +43,17 @@ export const Content: FC<Props> = ({
     };
   }, []);
 
+  const canonicalHref = useMemo(
+    () => `${webappBaseUrl}${canonical ?? "/"}`,
+    [canonical]
+  );
+
   return (
     <>
       <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalHref} />
       </Head>
 
       {isOffline && (

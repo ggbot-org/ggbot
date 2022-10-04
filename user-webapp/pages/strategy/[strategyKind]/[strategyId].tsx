@@ -9,7 +9,13 @@ import {
   useMemo,
   useState,
 } from "react";
-import { ButtonShareStrategy, Content, Navigation } from "_components";
+import {
+  ButtonShareStrategy,
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationBreadcrumbStrategy,
+} from "_components";
 import { useApiAction } from "_hooks";
 import {
   StrategyInfo,
@@ -33,6 +39,14 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const someButtonIsSpinning = useMemo(
     () => copyIsSpinning || deleteIsSpinning || flowIsSpinning,
     [copyIsSpinning, deleteIsSpinning, flowIsSpinning]
+  );
+
+  const breadcrumbs = useMemo(
+    () => [
+      <NavigationBreadcrumbDashboard key={1} isLink />,
+      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} />,
+    ],
+    [strategyKey]
   );
 
   const [renameStrategy, { isPending: renameIsPending }] =
@@ -101,7 +115,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   }, [readStrategy, strategyKey]);
 
   return (
-    <Content topbar={<Navigation hasSettingsIcon />}>
+    <Content topbar={<Navigation hasSettingsIcon breadcrumbs={breadcrumbs} />}>
       <div className="flex flex-col p-4 gap-4">
         <span className="text-xl">strategy</span>
         <dl>
@@ -127,24 +141,32 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
         </div>
 
         <menu className="flex flex-row flex-wrap gap-4">
-          <Button
-            isSpinning={flowIsSpinning}
-            onClick={onClickFlow}
-            color="primary"
-          >
-            flow
-          </Button>
-          <ButtonShareStrategy {...strategyKey} />
-          <Button isSpinning={copyIsSpinning} onClick={onClickCopy}>
-            copy
-          </Button>
-          <Button
-            isSpinning={deleteIsSpinning}
-            onClick={onClickDelete}
-            color="danger"
-          >
-            delete
-          </Button>
+          <li>
+            <Button
+              isSpinning={flowIsSpinning}
+              onClick={onClickFlow}
+              color="primary"
+            >
+              flow
+            </Button>
+          </li>
+          <li>
+            <ButtonShareStrategy {...strategyKey} />
+          </li>
+          <li>
+            <Button isSpinning={copyIsSpinning} onClick={onClickCopy}>
+              copy
+            </Button>
+          </li>
+          <li>
+            <Button
+              isSpinning={deleteIsSpinning}
+              onClick={onClickDelete}
+              color="danger"
+            >
+              delete
+            </Button>
+          </li>
         </menu>
       </div>
     </Content>

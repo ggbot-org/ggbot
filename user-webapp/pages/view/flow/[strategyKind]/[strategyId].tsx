@@ -11,10 +11,18 @@ import {
   PointerEventHandler,
   useEffect,
   useCallback,
+  useMemo,
   useState,
   useRef,
 } from "react";
-import { ButtonShareStrategy, Content, Navigation } from "_components";
+import {
+  ButtonShareStrategy,
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationBreadcrumbLabel,
+  NavigationBreadcrumbStrategy,
+} from "_components";
 import { useFlowView } from "_hooks";
 import {
   StrategyInfo,
@@ -31,6 +39,7 @@ type ServerSideProps = Pick<
   "accountIsOwner" | "strategyKey" | "name"
 > & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
+  hasSession: boolean;
   strategyFlow: StrategyFlow;
 };
 
@@ -39,6 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const session = readSession(req.cookies);
+  const hasSession = typeof session !== "undefined";
 
   const strategyKey = strategyKeyFromRouterParams(params);
   if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
@@ -68,19 +78,21 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         binanceSymbols,
+        hasSession,
         strategyFlow,
         ...strategyInfo,
       },
     };
   }
 
-  return { props: { ...strategyInfo, strategyFlow } };
+  return { props: { ...strategyInfo, hasSession, strategyFlow } };
 };
 
 const Page: NextPage<ServerSideProps> = ({
   accountIsOwner,
   binanceSymbols,
-  name,
+  hasSession,
+  name: strategyName,
   strategyKey,
   strategyFlow,
 }) => {
@@ -93,6 +105,29 @@ const Page: NextPage<ServerSideProps> = ({
     strategyKind: strategyKey.strategyKind,
   });
 
+  const strategyPathname = useMemo(
+    () => route.viewFlowPage(strategyKey),
+    [strategyKey]
+  );
+
+  const breadcrumbs = useMemo(() => {
+    const action = <NavigationBreadcrumbLabel text="view" />;
+    return hasSession
+      ? [
+          <NavigationBreadcrumbDashboard key={1} isLink />,
+          <NavigationBreadcrumbStrategy
+            key={2}
+            strategyKey={strategyKey}
+            isLink={accountIsOwner}
+          />,
+          action,
+        ]
+      : [
+          <NavigationBreadcrumbStrategy key={1} strategyKey={strategyKey} />,
+          action,
+        ];
+  }, [accountIsOwner, hasSession, strategyKey]);
+
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
 
   const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
@@ -102,8 +137,9 @@ const Page: NextPage<ServerSideProps> = ({
       setCopyIsSpinning(true);
       router.push(route.copyStrategyPage(strategyKey));
     },
-    [setCopyIsSpinning, router, strategyKey]
+    [copyIsSpinning, setCopyIsSpinning, router, strategyKey]
   );
+
   useEffect(() => {
     if (!flowView) return;
     flowView.loadGraph(strategyFlow.view);
@@ -111,25 +147,35 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content
-      metadata={{ title: "ggbot2 strategy", description: name }}
-      topbar={<Navigation />}
+      metadata={{
+        title: "ggbot2 strategy",
+        description: strategyName,
+        canonical: strategyPathname,
+      }}
+      topbar={
+        <Navigation breadcrumbs={breadcrumbs} hasSettingsIcon={hasSession} />
+      }
     >
       <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <dl>
-            <dt>strategy</dt>
-            <dd>{name}</dd>
+            <dt>name</dt>
+            <dd>{strategyName}</dd>
           </dl>
           <menu className="flex h-10 flex-row gap-4">
-            <ButtonShareStrategy {...strategyKey} />
+            <li>
+              <ButtonShareStrategy {...strategyKey} />
+            </li>
             {accountIsOwner || (
-              <Button
-                color="primary"
-                isSpinning={copyIsSpinning}
-                onClick={onClickCopy}
-              >
-                copy
-              </Button>
+              <li>
+                <Button
+                  color="primary"
+                  isSpinning={copyIsSpinning}
+                  onClick={onClickCopy}
+                >
+                  copy
+                </Button>
+              </li>
             )}
           </menu>
         </div>

@@ -1,9 +1,45 @@
+/**
+Hook to use API actions: CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
+
+It returns a `request` and a `response`.
+
+@example
+```ts
+const [request, response] = useApiAction.FOO_BAR();
+```
+
+The `response` can be destructured as follow.
+
+@example
+```ts
+const [request, { data, isPending, error }] = useApiAction.FOO_BAR();
+```
+
+The `request` returns a useEffect Destructor function; assuming it is needed to
+fetch data on mount the two following snippets are equivalent.
+
+@example
+```ts
+const [request, response] = useApiAction.FOO_BAR();
+useEffect(() => {
+  const abort = request();
+  return () => { abort() }
+}, [request])
+```
+
+@example
+```ts
+const [request, response] = useApiAction.FOO_BAR();
+useEffect(request, [request])
+```
+*/
 import { useCallback, useState } from "react";
 import { JsonValue, JsonObject } from "type-fest";
 import {
   ApiAction,
   ApiActionBadRequestName,
   ApiActionInput,
+  ApiActionInputData,
   isApiActionResponseToBadRequest,
 } from "_api/action";
 
@@ -12,7 +48,9 @@ type ActionIO = { in: JsonObject; out: JsonValue };
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];
 
-type UseActionRequest = (arg: Pick<ApiActionInput, "data">) => Promise<void>;
+type UseActionRequestArg = ApiActionInputData;
+type UseEffectDestructor = () => void;
+type UseActionRequest = (arg?: UseActionRequestArg) => UseEffectDestructor;
 type UseActionResponse<Action extends ActionIO> = {
   error?: ErrorName | ApiActionBadRequestName | undefined;
   data?: Action["out"] | undefined;
@@ -30,17 +68,21 @@ const useAction = <Action extends ActionIO>({
   });
 
   const request = useCallback<UseActionRequest>(
-    async ({ data: inputData }) => {
+    (arg) => {
+      const controller = new AbortController();
+      const { abort, signal } = controller;
       const timeout = 10000;
       const timeoutId = setTimeout(() => {
-        controller.abort();
+        abort();
         setResponse({ error: "Timeout", isPending: false });
       }, timeout);
-      const controller = new AbortController();
+      signal.addEventListener("abort", () => {
+        setResponse({ isPending: false });
+        clearTimeout(timeoutId);
+      });
 
-      try {
+      const fetchRequest = async (inputData: UseActionRequestArg) => {
         setResponse({ isPending: true });
-
         const body =
           typeof inputData === "undefined"
             ? JSON.stringify({ type })
@@ -53,7 +95,7 @@ const useAction = <Action extends ActionIO>({
             "Content-Type": "application/json",
           }),
           method: "POST",
-          signal: controller.signal,
+          signal,
         });
         if (!response.ok) {
           const { status } = response;
@@ -80,12 +122,27 @@ const useAction = <Action extends ActionIO>({
           data: responseOutput.data,
           isPending: false,
         });
-      } catch (error) {
-        console.error(error);
-        setResponse({ error: "GenericError", isPending: false });
-      } finally {
-        clearTimeout(timeoutId);
-      }
+      };
+
+      (async function () {
+        try {
+          await fetchRequest(arg);
+        } catch (error) {
+          // AbortError is called on component unmount and on request timeout:
+          // the signal eventListener on 'abort', set `isPending` to `false`.
+          if (error instanceof DOMException && error.name === "AbortError")
+            return;
+          // Fallback for unhandled errors.
+          console.error(error);
+          setResponse({ error: "GenericError", isPending: false });
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      })();
+
+      return () => {
+        controller.abort();
+      };
     },
     [setResponse]
   );
@@ -115,6 +172,10 @@ export const useApiAction = {
   READ_BINANCE_API_CONFIG: () =>
     useAction<ApiAction["READ_BINANCE_API_CONFIG"]>({
       type: "READ_BINANCE_API_CONFIG",
+    }),
+  READ_BINANCE_API_KEY_PERMISSIONS: () =>
+    useAction<ApiAction["READ_BINANCE_API_KEY_PERMISSIONS"]>({
+      type: "READ_BINANCE_API_KEY_PERMISSIONS",
     }),
   READ_STRATEGY: () =>
     useAction<ApiAction["READ_STRATEGY"]>({ type: "READ_STRATEGY" }),

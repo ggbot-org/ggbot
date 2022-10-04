@@ -9,7 +9,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { Content, Navigation } from "_components";
+import { Content, Navigation, NavigationBreadcrumbLabel } from "_components";
 import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
@@ -45,7 +45,14 @@ const Page: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation
+          breadcrumbs={[<NavigationBreadcrumbLabel key={1} text="create" />]}
+          hasSettingsIcon
+        />
+      }
+    >
       <form
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
@@ -61,9 +68,11 @@ const Page: NextPage = () => {
           <div>done</div>
         ) : (
           <menu>
-            <Button color="primary" isSpinning={isPending}>
-              create
-            </Button>
+            <li>
+              <Button color="primary" isSpinning={isPending}>
+                create
+              </Button>
+            </li>
           </menu>
         )}
       </form>

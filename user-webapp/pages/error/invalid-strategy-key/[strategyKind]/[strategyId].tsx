@@ -1,6 +1,10 @@
 import { isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, NextPage } from "next";
-import { Content, Navigation } from "_components";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+} from "_components";
 import {
   InvalidStrategyKey,
   readSession,
@@ -29,7 +33,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content topbar={<Navigation brandLinksToHomepage hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation
+          breadcrumbs={[<NavigationBreadcrumbDashboard key={1} isLink />]}
+          hasSettingsIcon
+        />
+      }
+    >
       <div className="p-4 flex flex-col gap-4">
         <span className="text-xl">
           Invalid <em>strategy key</em>
