@@ -1,14 +1,12 @@
 export type NodeEnv = "development" | "production";
 
-const NODE_ENV = process.env.NODE_ENV;
-
 export const getNodeEnv = (): NodeEnv => {
-  switch (NODE_ENV) {
-    case "production":
-      return "production";
-    default:
-      return "development";
-  }
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_NODE_ENV === "production"
+  )
+    return "production";
+  return "development";
 };
 
 export const nodeEnvIsProduction = getNodeEnv() === "production";
