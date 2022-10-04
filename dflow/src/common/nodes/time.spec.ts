@@ -1,3 +1,4 @@
+import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
 
 describe("today", () => {
@@ -20,8 +21,6 @@ describe("today", () => {
       memory: {},
       timestamp: new Date(day).toJSON(),
     });
-    expect(
-      execution?.steps?.find(({ id }) => id === nodeId)?.outputs?.[0]?.data
-    ).toBe(day);
+    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(day);
   });
 });

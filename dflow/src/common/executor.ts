@@ -2,8 +2,9 @@ import { DflowGraphExecutionReport, DflowNodesCatalog } from "dflow";
 import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view";
 import { DflowCommonContext } from "./context.js";
 
-export type DflowCommonExecutorInput = Partial<
-  Omit<DflowCommonContext, "memoryChanged">
+export type DflowCommonExecutorInput = Omit<
+  DflowCommonContext,
+  "memoryChanged"
 >;
 
 export type DflowCommonExecutorOutput = Pick<
@@ -30,3 +31,12 @@ export interface DflowExecutor<
   prepare(): Promise<void>;
   run(_: RunInput): Promise<RunOutput>;
 }
+
+export const getDflowExecutionOutputData = (
+  execution: undefined | DflowCommonExecutorOutput["execution"],
+  nodeId: string,
+  outputPosition: number
+) => {
+  const node = execution?.steps?.find(({ id }) => id === nodeId);
+  return node?.outputs?.[outputPosition]?.data;
+};

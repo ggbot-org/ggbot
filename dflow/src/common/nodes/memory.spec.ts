@@ -1,3 +1,5 @@
+import { now } from "@ggbot2/time";
+import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
 
 describe("deleteMemory", () => {
@@ -22,6 +24,7 @@ describe("deleteMemory", () => {
     await executor.prepare();
     const { memory, memoryChanged } = await executor.run({
       memory: { key1: "value1" },
+      timestamp: now(),
     });
     expect(memoryChanged).toBe(true);
     expect(memory.key1).toBe(undefined);
@@ -51,12 +54,11 @@ describe("getMemory", () => {
     const value = "value1";
     const { execution, memory, memoryChanged } = await executor.run({
       memory: { key1: value },
+      timestamp: now(),
     });
     expect(memoryChanged).toBe(false);
     expect(memory.key1).toBe(value);
-    expect(
-      execution.steps.find(({ id }) => id === "c")?.outputs?.[0].data
-    ).toBe(value);
+    expect(getDflowExecutionOutputData(execution, "c", 0)).toBe(value);
   });
 });
 
@@ -90,6 +92,7 @@ describe("setMemory", () => {
     await executor.prepare();
     const { memory, memoryChanged } = await executor.run({
       memory: {},
+      timestamp: now(),
     });
     expect(memoryChanged).toBe(true);
     expect(memory.key1).toBe(1.2);

@@ -1,3 +1,4 @@
+import { now } from "@ggbot2/time";
 import type { DflowNodesCatalog } from "dflow";
 import { ErrorUknownDflowNodes } from "../errors";
 import { DflowExecutorView } from "./executor";
@@ -37,7 +38,10 @@ describe("dflowValidate", () => {
   });
 
   it("validates json nodes", () => {
-    const dflow = new DflowCommonHostMock({ nodesCatalog: {} }, { memory: {} });
+    const dflow = new DflowCommonHostMock(
+      { nodesCatalog: {} },
+      { memory: {}, timestamp: now() }
+    );
     const view: DflowExecutorView = {
       nodes: [
         { id: "n1", text: '{"message":"hello world"}', outs: [{ id: "o1" }] },
