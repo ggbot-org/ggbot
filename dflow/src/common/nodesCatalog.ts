@@ -6,6 +6,7 @@ import {
   GreaterThan,
   LessThan,
 } from "./nodes/arithmetic.js";
+import { Shift, Pop, Push } from "./nodes/array.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
 import {
   ExponentialMovingAverage,
@@ -25,6 +26,10 @@ export const nodesCatalog = {
   [Division.kind]: Division,
   [GreaterThan.kind]: GreaterThan,
   [LessThan.kind]: LessThan,
+  // array
+  [Shift.kind]: Shift,
+  [Pop.kind]: Pop,
+  [Push.kind]: Push,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,

@@ -22,12 +22,11 @@ describe("add", () => {
             id: nodeId,
             text: "add",
             ins: [{ id: "a" }, { id: "b" }],
-            outs: [{ id: "c" }],
           },
         ],
         edges: [
           { id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-          { id: "e1", from: ["i2", "o2"], to: [nodeId, "b"] },
+          { id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] },
         ],
       },
     });
@@ -60,12 +59,11 @@ describe("sub", () => {
             id: nodeId,
             text: "mul",
             ins: [{ id: "a" }, { id: "b" }],
-            outs: [{ id: "c" }],
           },
         ],
         edges: [
           { id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-          { id: "e1", from: ["i2", "o2"], to: [nodeId, "b"] },
+          { id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] },
         ],
       },
     });
@@ -74,7 +72,7 @@ describe("sub", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(-1);
+    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(6);
   });
 });
 
@@ -98,12 +96,11 @@ describe("mul", () => {
             id: nodeId,
             text: "mul",
             ins: [{ id: "a" }, { id: "b" }],
-            outs: [{ id: "c" }],
           },
         ],
         edges: [
           { id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-          { id: "e1", from: ["i2", "o2"], to: [nodeId, "b"] },
+          { id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] },
         ],
       },
     });
@@ -136,12 +133,11 @@ describe("div", () => {
             id: nodeId,
             text: "div",
             ins: [{ id: "a" }, { id: "b" }],
-            outs: [{ id: "c" }],
           },
         ],
         edges: [
           { id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-          { id: "e1", from: ["i2", "o2"], to: [nodeId, "b"] },
+          { id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] },
         ],
       },
     });

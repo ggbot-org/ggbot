@@ -20,4 +20,6 @@ export const inputPeriod = input("number", { name: "period" });
 export const inputValues = input("array", { name: "values" });
 export const outputValues = output("array", { name: "values" });
 
+export const outputValue = output([], { name: "value" });
+
 export const outputVolume = input("number", { name: "volume" });
