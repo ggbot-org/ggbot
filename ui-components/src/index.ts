@@ -11,5 +11,6 @@ export * from "./Icon";
 export * from "./Input";
 export * from "./Logo";
 export * from "./Pill";
+export * from "./Select";
 export * from "./Spinner";
 export * from "./Table";

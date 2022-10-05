@@ -18,7 +18,7 @@ export const Input: FC<InputProps> = ({
   const inputClassName = useMemo(() => {
     return [
       "w-full rounded-md px-4 py-2",
-      "shadow border border-dark-300 outline-dark-600",
+      "shadow outline-dark-600",
       readOnly ? "cursor-default" : "",
       isSpinning ? "pointer-events-none" : "",
     ].join(" ");

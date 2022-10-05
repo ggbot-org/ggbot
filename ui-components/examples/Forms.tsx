@@ -1,5 +1,5 @@
 import { FC, FormEventHandler, useCallback, useState } from "react";
-import { Button, Checkbox, Field, Fieldset } from "../src";
+import { Button, Checkbox, Field, Fieldset, Select } from "../src";
 
 export const SimpleForm: FC = () => {
   const [isPending, setIsPending] = useState(false);
@@ -14,9 +14,16 @@ export const SimpleForm: FC = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Fieldset legend="fieldset">
+      <Fieldset legend="account">
         <Field name="nick" label="nick" />
         <Field name="password" label="password" />
+        <Select
+          options={[
+            { value: "M", label: "Male" },
+            { value: "F", label: "Female" },
+            { value: "X", label: "Other" },
+          ]}
+        />
       </Fieldset>
       <div className="inline-flex gap-2">
         <Checkbox id="consent" />
