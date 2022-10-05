@@ -4,6 +4,7 @@ import { CreateS3BucketOutput } from "./_s3.js";
 import { TaskOptions } from "./_task.js";
 import { createAssetsBucket } from "./s3-assets.js";
 import { createDataBucket } from "./s3-data.js";
+import { createDesignBucket } from "./s3-design.js";
 import { createLogsBucket } from "./s3-logs.js";
 import { createNakedDomainBucket } from "./s3-nakedDomain.js";
 import { createWwwBucket } from "./s3-www.js";
@@ -23,6 +24,9 @@ export const taskCreate: TaskCreate = async ({ verbose }) => {
 
   const dataBucket = await createDataBucket();
   if (verbose) s3BucketReport("create dataBucket", dataBucket);
+
+  const designBucket = await createDesignBucket();
+  if (verbose) s3BucketReport("create designBucket", designBucket);
 
   const logsBucket = await createLogsBucket();
   if (verbose) s3BucketReport("create logsBucket", logsBucket);

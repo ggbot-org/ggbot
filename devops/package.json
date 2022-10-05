@@ -13,7 +13,7 @@
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/",
     "task:create": "node ./dist/task-create.js",
-    "task:showDevopsPolicy": "node src/showDevopsPolicy.js",
+    "task:showDevopsPolicy": "node src/task-showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."

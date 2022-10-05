@@ -15,10 +15,12 @@
   },
   "scripts": {
     "build": "npm run tsc--build; npm run tailwindcss",
-    "cleanup": "rm -rf dist/ .next/",
+    "cleanup": "rm -rf dist/ out/ .next/",
+    "deploy": "sh deploy.sh",
     "dev": "next dev",
     "lint": "next lint",
     "next:build": "next build",
+    "next:export": "next export",
     "tailwindcss": "tailwindcss --config ./tailwind.build.js --minify --input ./src/tailwind.css --output ./dist/style.css",
     "test": "npm run tsc--noEmit; npm run lint",
     "tsc--build": "tsc --build tsconfig.build.json",

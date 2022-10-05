@@ -14,7 +14,7 @@ const Page: NextPage = () => {
     <Content
       topbar={
         <Navigation
-          breadcrumbs={[<NavigationBreadcrumbDashboard key={1} />]}
+          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard /> }]}
           hasSettingsIcon
         />
       }

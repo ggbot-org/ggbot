@@ -48,6 +48,7 @@
     "cleanup:ui-components": "npm run cleanup --workspace ui-components",
     "cleanup:user-webapp": "npm run cleanup --workspace user-webapp",
     "cleanup:website": "npm run cleanup --workspace website",
+    "deploy:ui-components": "npm run deploy --workspace ui-components",
     "deploy:website": "npm run deploy --workspace website",
     "devserver:admin-webapp": "npm run dev --workspace admin-webapp",
     "devserver:ui-components": "npm run dev --workspace ui-components",

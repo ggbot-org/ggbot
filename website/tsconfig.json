@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "incremental": true,
     "jsx": "preserve",
@@ -8,6 +9,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
+    "paths": {
+      "_components": ["components/index.ts"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "target": "es6"

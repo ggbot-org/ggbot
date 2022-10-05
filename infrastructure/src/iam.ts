@@ -2,6 +2,7 @@ import { DeployStage, getAwsAccountId, getDeployStage } from "@ggbot2/env";
 import {
   getAssetsBucketArn,
   getDataBucketArn,
+  getDesignBucketArn,
   getLogsBucketArn,
   getNakedDomainBucketArn,
   getWwwBucketArn,
@@ -25,6 +26,7 @@ const next = resources("next");
 const cross = {
   // S3
   assetsBucketArn: getAssetsBucketArn(),
+  designBucketArn: getDesignBucketArn(),
   nakedDomainBucketArn: getNakedDomainBucketArn(),
   wwwBucketArn: getWwwBucketArn(),
   // SES
@@ -53,6 +55,7 @@ export const getDevopsPolicyStatements = () => [
     Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
     Resource: [
       cross.assetsBucketArn,
+      cross.designBucketArn,
       cross.nakedDomainBucketArn,
       cross.wwwBucketArn,
       main.dataBucketArn,
@@ -60,6 +63,11 @@ export const getDevopsPolicyStatements = () => [
       next.dataBucketArn,
       next.logsBucketArn,
     ],
+  },
+  {
+    Effect: "Allow",
+    Action: ["s3:PutObject"],
+    Resource: [cross.designBucketArn, `${cross.designBucketArn}/*`],
   },
   {
     Effect: "Allow",

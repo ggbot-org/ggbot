@@ -6,7 +6,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
-  NavigationBreadcrumbLabel,
+  NavigationLabel,
 } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import {
@@ -30,14 +30,25 @@ const Page: NextPage<ServerSideProps> = ({
 
   const breadcrumbs = useMemo(
     () => [
-      <NavigationBreadcrumbDashboard key={1} isLink />,
-      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} isLink />,
-      <div key={3} className="flex flex-row gap-2 items-center">
-        <NavigationBreadcrumbLabel text="delete" />
-        <span className="text-danger-400">
-          <Icon name="danger" size={17} />
-        </span>
-      </div>,
+      {
+        content: <NavigationBreadcrumbDashboard isLink />,
+      },
+      {
+        content: (
+          <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />
+        ),
+      },
+      {
+        content: (
+          <div className="flex flex-row gap-2 items-center">
+            <NavigationLabel text="delete" />
+            <span className="text-danger-400">
+              <Icon name="danger" size={17} />
+            </span>
+          </div>
+        ),
+        current: true,
+      },
     ],
     [strategyKey]
   );

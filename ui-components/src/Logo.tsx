@@ -1,6 +1,6 @@
 type Props = {
   animated?: boolean;
-  size: number;
+  size?: number;
 };
 
 export const Logo: React.FC<Props> = ({ animated, size }) => {

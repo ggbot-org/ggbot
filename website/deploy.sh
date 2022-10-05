@@ -2,7 +2,7 @@ BUCKET=www.ggbot2.com
 BUILD_DIR=out
 
 npm run cleanup
-npm run test && npm run lint && npm run next:build && npm run next:export
+npm run test && npm run next:build && npm run next:export
 
 aws s3 sync --exclude ${BUILD_DIR}/privacy.html --exclude ${BUILD_DIR}/terms.html ${BUILD_DIR}/ s3://${BUCKET}
 

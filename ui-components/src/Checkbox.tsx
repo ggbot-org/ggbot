@@ -1,7 +1,13 @@
 import { FC, InputHTMLAttributes } from "react";
 
-export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "type">;
 
-export const Checkbox: FC<CheckboxProps> = ({ ...props }) => {
-  return <input type="checkbox" {...props} />;
+export const Checkbox: FC<Props> = ({ ...props }) => {
+  return (
+    <input
+      type="checkbox"
+      className="cursor-pointer accent-primary-300"
+      {...props}
+    />
+  );
 };

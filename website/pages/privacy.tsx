@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Navigation } from "_components";
 import styles from "../styles/PrivacyAndTerms.module.css";
 
 const Page: NextPage = () => {
@@ -8,6 +9,8 @@ const Page: NextPage = () => {
       <Head>
         <title>ggbot2</title>
       </Head>
+
+      <Navigation />
 
       <main className={styles.main}>
         <h1>Privacy Policy</h1>

@@ -2,7 +2,6 @@
   "name": "@ggbot2/website",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "cleanup": "rm -rf out/ .next/",
@@ -10,6 +9,7 @@
     "lint": "next lint",
     "next:build": "next build",
     "next:export": "next export",
+    "start": "next start",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },

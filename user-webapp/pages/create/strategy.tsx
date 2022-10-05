@@ -9,7 +9,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { Content, Navigation, NavigationBreadcrumbLabel } from "_components";
+import { Content, Navigation, NavigationLabel } from "_components";
 import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
@@ -48,7 +48,9 @@ const Page: NextPage = () => {
     <Content
       topbar={
         <Navigation
-          breadcrumbs={[<NavigationBreadcrumbLabel key={1} text="create" />]}
+          breadcrumbs={[
+            { content: <NavigationLabel text="create" />, current: true },
+          ]}
           hasSettingsIcon
         />
       }

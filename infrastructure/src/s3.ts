@@ -1,6 +1,11 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3";
 import { getDeployStage } from "@ggbot2/env";
-import { assetsDomain, domainName, wwwDomain } from "./domainNames.js";
+import {
+  assetsDomain,
+  domainName,
+  designDomain,
+  wwwDomain,
+} from "./domainNames.js";
 
 const defaultDeployStage = getDeployStage();
 
@@ -32,6 +37,12 @@ export const getNakedDomainBucketArn = () =>
   `arn:aws:s3:::${getNakedDomainBucketName()}`;
 
 export const nakedDomainBucketACL: BucketCannedACL = "public-read";
+
+export const getDesignBucketName = () => designDomain;
+
+export const getDesignBucketArn = () => `arn:aws:s3:::${getDesignBucketName()}`;
+
+export const designBucketACL: BucketCannedACL = "public-read";
 
 export const getWwwBucketName = () => wwwDomain;
 

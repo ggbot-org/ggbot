@@ -20,7 +20,7 @@ import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbLabel,
+  NavigationLabel,
   NavigationBreadcrumbStrategy,
 } from "_components";
 import { useFlowView } from "_hooks";
@@ -111,20 +111,25 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   const breadcrumbs = useMemo(() => {
-    const action = <NavigationBreadcrumbLabel text="view" />;
+    const action = <NavigationLabel text="view" />;
     return hasSession
       ? [
-          <NavigationBreadcrumbDashboard key={1} isLink />,
-          <NavigationBreadcrumbStrategy
-            key={2}
-            strategyKey={strategyKey}
-            isLink={accountIsOwner}
-          />,
-          action,
+          { content: <NavigationBreadcrumbDashboard isLink /> },
+          {
+            content: (
+              <NavigationBreadcrumbStrategy
+                strategyKey={strategyKey}
+                isLink={accountIsOwner}
+              />
+            ),
+          },
+          { content: action, current: true },
         ]
       : [
-          <NavigationBreadcrumbStrategy key={1} strategyKey={strategyKey} />,
-          action,
+          {
+            content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} />,
+          },
+          { content: action, current: true },
         ];
   }, [accountIsOwner, hasSession, strategyKey]);
 

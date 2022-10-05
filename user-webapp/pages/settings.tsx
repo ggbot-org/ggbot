@@ -46,7 +46,12 @@ const Page: NextPage = () => {
     <Content
       topbar={
         <Navigation
-          breadcrumbs={[<NavigationBreadcrumbDashboard key={1} isLink />]}
+          breadcrumbs={[
+            {
+              content: <NavigationBreadcrumbDashboard isLink />,
+              current: true,
+            },
+          ]}
         />
       }
     >

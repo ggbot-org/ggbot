@@ -2,7 +2,9 @@ import { FC, HTMLAttributes, useMemo } from "react";
 
 type Color = "primary" | "neutral";
 
-type Props = HTMLAttributes<HTMLSpanElement> & { color?: Color };
+type Props = Omit<HTMLAttributes<HTMLSpanElement>, "className"> & {
+  color?: Color;
+};
 
 function colorClassNames({ color }: Pick<Props, "color">) {
   switch (color) {

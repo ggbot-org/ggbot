@@ -43,8 +43,13 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   const breadcrumbs = useMemo(
     () => [
-      <NavigationBreadcrumbDashboard key={1} isLink />,
-      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} />,
+      {
+        content: <NavigationBreadcrumbDashboard isLink />,
+      },
+      {
+        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} />,
+        current: true,
+      },
     ],
     [strategyKey]
   );

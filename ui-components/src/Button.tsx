@@ -3,7 +3,7 @@ import { Spinner } from "./Spinner";
 
 type Color = "primary" | "danger";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
   color?: Color;
   isSpinning?: boolean;
 };
@@ -51,9 +51,7 @@ export const Button: FC<Props> = ({
 }) => {
   const buttonClassName = useMemo(() => {
     return [
-      "relative border rounded-md whitespace-nowrap select-none",
-      "px-4 leading-10",
-      "font-medium",
+      "relative inline-flex items-center border rounded-md whitespace-nowrap select-none",
       isSpinning ? "cursor-default" : "",
       "focus:outline-none focus:ring",
       colorClassNames({
@@ -67,9 +65,11 @@ export const Button: FC<Props> = ({
 
   const contentClassName = useMemo(
     () =>
-      ["inline-flex items-center gap-2", isSpinning ? "invisible" : ""].join(
-        " "
-      ),
+      [
+        "inline-flex items-center",
+        "px-4 leading-10 font-medium",
+        isSpinning ? "invisible" : "",
+      ].join(" "),
     [isSpinning]
   );
 

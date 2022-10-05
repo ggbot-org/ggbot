@@ -1,4 +1,3 @@
-import { Main } from "@ggbot2/ui-components";
 import Head from "next/head";
 import React, { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -64,7 +63,7 @@ export const Content: FC<Props> = ({
 
       {topbar}
 
-      <Main>{children}</Main>
+      <div className="min-w-screen flex flex-col grow px-2">{children}</div>
 
       <Toaster position="top-right" />
     </>

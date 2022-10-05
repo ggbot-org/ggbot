@@ -15,7 +15,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
-  NavigationBreadcrumbLabel,
+  NavigationLabel,
 } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
 import {
@@ -96,9 +96,18 @@ const Page: NextPage<ServerSideProps> = ({
 
   const breadcrumbs = useMemo(
     () => [
-      <NavigationBreadcrumbDashboard key={1} isLink />,
-      <NavigationBreadcrumbStrategy key={2} strategyKey={strategyKey} isLink />,
-      <NavigationBreadcrumbLabel key={3} text="edit" />,
+      {
+        content: <NavigationBreadcrumbDashboard isLink />,
+      },
+      {
+        content: (
+          <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />
+        ),
+      },
+      {
+        content: <NavigationLabel text="edit" />,
+        current: true,
+      },
     ],
     [strategyKey]
   );

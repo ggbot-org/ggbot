@@ -36,7 +36,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
     <Content
       topbar={
         <Navigation
-          breadcrumbs={[<NavigationBreadcrumbDashboard key={1} isLink />]}
+          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard isLink /> }]}
           hasSettingsIcon
         />
       }

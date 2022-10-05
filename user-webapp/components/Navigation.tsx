@@ -1,19 +1,17 @@
 import { useRouter } from "next/router";
 import { FC, PointerEventHandler, useCallback, useMemo } from "react";
 import {
+  Breadcrumb,
+  BreadcrumbItems,
+  Header,
   Icon,
-  Navbar,
-  NavbarBrand,
-  NavbarBreadcrumbs,
-  NavbarBreadcrumbsProps,
+  Logo,
 } from "@ggbot2/ui-components";
 import { StrategyKey, route } from "_routing";
 
-type NavigationBreadcrumbs = NavbarBreadcrumbsProps["items"];
-
 type NavigationProps = {
-  /** Optionally define navigation */
-  breadcrumbs?: NavigationBreadcrumbs;
+  /** Optionally define navigation. */
+  breadcrumbs?: BreadcrumbItems;
   /** Show settings icon. */
   hasSettingsIcon?: boolean;
 };
@@ -22,32 +20,29 @@ export const Navigation: FC<NavigationProps> = ({
   breadcrumbs,
   hasSettingsIcon,
 }) => {
-  const navigation = useMemo<NavigationBreadcrumbs | undefined>(() => {
-    // Fallback to tagline.
-    if (!breadcrumbs)
-      return [<NavigationBreadcrumbLabel key={1} italic text="crypto flow" />];
-
-    return breadcrumbs.reduce<NavigationBreadcrumbs>((result, item, index) => {
-      const isFirst = index === 0;
-      if (isFirst) return [...result, item];
-      return [...result, <NavigationBreadcrumbSeparator key={index} />, item];
-    }, []);
-  }, [breadcrumbs]);
-
   return (
-    <Navbar>
+    <Header>
       <div className="flex flex-row justify-between">
-        <NavbarBrand />
-        {navigation && (
-          <div className="ml-4 grow">
-            <NavbarBreadcrumbs items={navigation} />
-          </div>
-        )}
+        <div className="flex w-fit flex-row items-center gap-1 px-1">
+          <Logo size={24} />
+          <span>
+            ggbot<b className="text-primary-brand">2</b>
+          </span>
+        </div>
+
+        <div className="grow">
+          {breadcrumbs ? (
+            <Breadcrumb items={breadcrumbs} />
+          ) : (
+            <NavigationLabel italic text="crypto flow" />
+          )}
+        </div>
+
         <div className="px-1 flex flex-row items-center">
           {hasSettingsIcon && <NavigationSettingsIcon />}
         </div>
       </div>
-    </Navbar>
+    </Header>
   );
 };
 
@@ -60,20 +55,19 @@ const NavigationSettingsIcon: FC = () => {
   return <Icon name="dots-vertical" onClick={goToSettings} />;
 };
 
-const NavigationBreadcrumbSeparator: FC = () => (
-  <Icon name="caret-right" size={10} />
-);
-
 type NavigationBreadcrumbItemProps = {
   isLink?: boolean;
 };
 
 const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
-  [isLink ? "cursor-pointer hover:text-primary-200" : ""].join(" ");
+  [
+    "inline-flex items-center",
+    isLink ? "cursor-pointer hover:text-primary-200" : "",
+  ].join(" ");
 
 type NavigationBreadcrumbLabelProps = { text: string; italic?: boolean };
 
-export const NavigationBreadcrumbLabel: FC<NavigationBreadcrumbLabelProps> = ({
+export const NavigationLabel: FC<NavigationBreadcrumbLabelProps> = ({
   italic,
   text,
 }) => {
@@ -99,7 +93,7 @@ export const NavigationBreadcrumbDashboard: FC<
   );
   return (
     <div className={className} onClick={onClick}>
-      <NavigationBreadcrumbLabel text="dashboard" />
+      <NavigationLabel text="dashboard" />
     </div>
   );
 };
@@ -130,8 +124,8 @@ export const NavigationBreadcrumbStrategy: FC<
   );
   return (
     <div className={className} onClick={onClick}>
-      <NavigationBreadcrumbLabel text="strategy" />
-      <NavigationBreadcrumbLabel text={id} />
+      <NavigationLabel text="strategy" />
+      <NavigationLabel text={id} />
     </div>
   );
 };

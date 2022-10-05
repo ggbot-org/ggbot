@@ -3,14 +3,15 @@ import Head from "next/head";
 import {
   Buttons,
   Colors,
-  IconList,
+  Icons,
   LoadingButtons,
+  Navigation,
+  GroupedPills,
+  Pills,
   SimpleForm,
   SimpleTable,
 } from "../examples";
-import { Logo } from "../src/Logo";
-import { Main } from "../src/Main";
-import { Navbar, NavbarBrand } from "../src/Navbar";
+import { Logo } from "../src";
 
 const Home: NextPage = () => {
   return (
@@ -19,11 +20,9 @@ const Home: NextPage = () => {
         <title>ggbot2 ui-components</title>
       </Head>
 
-      <Navbar>
-        <NavbarBrand />
-      </Navbar>
+      <Navigation />
 
-      <Main>
+      <main>
         <Logo size={71} />
 
         <Colors />
@@ -34,10 +33,13 @@ const Home: NextPage = () => {
 
         <LoadingButtons />
 
-        <IconList />
+        <Icons />
+
+        <Pills />
+        <GroupedPills />
 
         <SimpleTable />
-      </Main>
+      </main>
     </>
   );
 };
