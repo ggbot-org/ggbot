@@ -20,6 +20,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@ggbot2/arithmetic": "file:arithmetic"
+    "@ggbot2/arithmetic": "file:arithmetic",
+    "@ggbot2/models": "file:models"
   }
 }
