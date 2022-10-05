@@ -61,8 +61,8 @@ type NavigationBreadcrumbItemProps = {
 
 const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
   [
-    "inline-flex items-center",
-    isLink ? "cursor-pointer hover:text-primary-200" : "",
+    "inline-flex items-center transition-all ease-in",
+    isLink ? "cursor-pointer hover:text-primary-brand" : "",
   ].join(" ");
 
 type NavigationBreadcrumbLabelProps = { text: string; italic?: boolean };

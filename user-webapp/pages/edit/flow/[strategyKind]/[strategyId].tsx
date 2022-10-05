@@ -125,11 +125,13 @@ const Page: NextPage<ServerSideProps> = ({
     },
   ] = useApiAction.EXECUTE_STRATEGY();
 
-  const [save, { isPending: saveIsPending }] =
+  const [saveStrategyFlow, { isPending: saveIsPending }] =
     useApiAction.WRITE_STRATEGY_FLOW();
 
-  const [read, { data: storedStrategyFlow, isPending: readIsPending }] =
-    useApiAction.READ_STRATEGY_FLOW();
+  const [
+    readStrategyFlow,
+    { data: storedStrategyFlow, isPending: readIsPending },
+  ] = useApiAction.READ_STRATEGY_FLOW();
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
@@ -141,8 +143,8 @@ const Page: NextPage<ServerSideProps> = ({
 
   const onClickSave = useCallback(() => {
     if (!flowView) return;
-    if (canSave) save({ data: { ...strategyKey, view: flowView.graph } });
-  }, [canSave, flowView, save, strategyKey]);
+    if (canSave) saveStrategyFlow({ ...strategyKey, view: flowView.graph });
+  }, [canSave, flowView, saveStrategyFlow, strategyKey]);
 
   const onClickRun = useCallback(() => {
     if (canRun) execute({ data: strategyKey });
@@ -157,8 +159,8 @@ const Page: NextPage<ServerSideProps> = ({
   }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
-    if (flowLoaded) read({ data: strategyKey });
-  }, [flowLoaded, read, strategyKey]);
+    if (flowLoaded) readStrategyFlow(strategyKey);
+  }, [flowLoaded, readStrategyFlow, strategyKey]);
 
   useEffect(() => {
     try {
@@ -205,12 +207,12 @@ const Page: NextPage<ServerSideProps> = ({
       <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
           <Link href={strategyHref}>
-            <div className="cursor-pointer rounded grow p-2 hover:text-primary-900 hover:bg-primary-100 transition-all delay-200">
+            <div className="cursor-pointer grow rounded border border-transparent p-2 hover:bg-mono-100 hover:border-mono-400 dark:hover:bg-mono-500 transition-all delay-200">
               {name}
             </div>
           </Link>
 
-          <menu className="flex h-10 flex-row gap-4">
+          <menu className="flex h-10 flex-row gap-4 self-end">
             <li className="px-2 flex flex-row items-center gap-2">
               <label
                 htmlFor="backtest"

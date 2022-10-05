@@ -29,7 +29,7 @@ export const SettingsMenu: FC<SettingsMenuProps> = ({
   }, [titleOfSection, selected, setSelected]);
 
   return (
-    <menu className="md:w-48 flex flex-col gap-2">
+    <menu className="md:w-48 flex flex-col gap-4">
       {items.map(({ id, ...props }) => (
         <SettingsMenuItem key={id} {...props} />
       ))}
@@ -51,9 +51,9 @@ const SettingsMenuItem: FC<SettingsMenuItemProps> = ({
   const className = useMemo(
     () =>
       [
-        "pl-2 border-l-2 border-transparent",
+        "pl-2 border-l-2 font-medium select-none border-transparent transition-all ease-in-out delay-100",
         selected
-          ? "font-medium select-none text-primary-600 border-primary-600"
+          ? "text-primary-600 border-primary-600 dark:text-primary-400 dark:border-primary-500"
           : "cursor-pointer",
       ].join(" "),
     [selected]

@@ -24,6 +24,7 @@
     "@ggbot2/database": "file:database",
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/ui-components": "file:ui-components",
+    "country-isocode2": "^1.1.0",
     "next": "^12.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -7,6 +7,7 @@ import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
+  NavigationLabel,
   SettingsMenu,
   SettingsMenuProps,
   SettingsSectionId,
@@ -49,6 +50,9 @@ const Page: NextPage = () => {
           breadcrumbs={[
             {
               content: <NavigationBreadcrumbDashboard isLink />,
+            },
+            {
+              content: <NavigationLabel text="settings" />,
               current: true,
             },
           ]}
