@@ -1,16 +1,11 @@
-import {
-  ChangeEventHandler,
-  FC,
-  FormEventHandler,
-  useCallback,
-  useState,
-} from "react";
+import { FC, FormEventHandler, useCallback, useState } from "react";
 import {
   Button,
   Checkbox,
+  CheckboxOnChange,
+  Fieldset,
   Icon,
   InputField,
-  Fieldset,
   SelectField,
 } from "../src";
 
@@ -18,7 +13,7 @@ export const SimpleForm: FC = () => {
   const [isPending, setIsPending] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
 
-  const onChangeConsent = useCallback<ChangeEventHandler<HTMLInputElement>>(
+  const onChangeConsent = useCallback<CheckboxOnChange>(
     (event) => {
       setHasConsent(event.target.checked);
     },

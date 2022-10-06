@@ -1,4 +1,10 @@
-import { Button, Fieldset, Logo, InputField } from "@ggbot2/ui-components";
+import {
+  Button,
+  Fieldset,
+  Logo,
+  InputField,
+  ButtonOnClick,
+} from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -226,9 +232,10 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
   ] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
 
-  const onClickOkGenerateOneTimePasswordAgain = useCallback(() => {
-    setEmailSent(false);
-  }, [setEmailSent]);
+  const onClickOkGenerateOneTimePasswordAgain =
+    useCallback<ButtonOnClick>(() => {
+      setEmailSent(false);
+    }, [setEmailSent]);
 
   const goToHomePage = useCallback(() => {
     router.push(route.homePage());

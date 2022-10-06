@@ -4,17 +4,10 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
-import { Button } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  PointerEventHandler,
-  useEffect,
-  useCallback,
-  useMemo,
-  useState,
-  useRef,
-} from "react";
+import { useEffect, useCallback, useMemo, useState, useRef } from "react";
 import {
   ButtonShareStrategy,
   Content,
@@ -135,7 +128,7 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
 
-  const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
+  const onClickCopy = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
       if (copyIsSpinning) return;

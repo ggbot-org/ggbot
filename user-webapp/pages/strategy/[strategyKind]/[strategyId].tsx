@@ -1,14 +1,13 @@
 import { isName, normalizeName } from "@ggbot2/models";
-import { Button, DateTime, EditableInput } from "@ggbot2/ui-components";
+import {
+  Button,
+  ButtonOnClick,
+  DateTime,
+  EditableInput,
+} from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  PointerEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ButtonShareStrategy,
   Content,
@@ -67,7 +66,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     return false;
   }, [name, renameIsPending]);
 
-  const onClickFlow = useCallback<PointerEventHandler<HTMLButtonElement>>(
+  const onClickFlow = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
       if (someButtonIsSpinning) return;
@@ -77,7 +76,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     [someButtonIsSpinning, setFlowIsSpinning, router, strategyKey]
   );
 
-  const onClickCopy = useCallback<PointerEventHandler<HTMLButtonElement>>(
+  const onClickCopy = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
       if (someButtonIsSpinning) return;
@@ -87,7 +86,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     [someButtonIsSpinning, setCopyIsSpinning, router, strategyKey]
   );
 
-  const onClickDelete = useCallback<PointerEventHandler<HTMLButtonElement>>(
+  const onClickDelete = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
       if (someButtonIsSpinning) return;

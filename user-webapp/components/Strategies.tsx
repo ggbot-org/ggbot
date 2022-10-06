@@ -1,13 +1,6 @@
-import { Button } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import {
-  FC,
-  PointerEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { SchedulingStatusBadge, StrategyItem } from "_components";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
@@ -20,9 +13,7 @@ export const Strategies: FC = () => {
   const [readStrategies, { data: strategies }] =
     useApiAction.READ_ACCOUNT_STRATEGY_LIST();
 
-  const onClickNewStrategy = useCallback<
-    PointerEventHandler<HTMLButtonElement>
-  >(
+  const onClickNewStrategy = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
       if (newStrategyIsLoading) return;
@@ -70,13 +61,15 @@ export const Strategies: FC = () => {
         {noStrategy && <p>Your strategy list is empty.</p>}
         {strategyItems?.map(
           ({ name, strategyId, strategyKind, schedulingStatus }) => (
-            <StrategyItem
-              key={strategyId}
-              strategyKey={{ strategyId, strategyKind }}
-            >
-              <span>{name}</span>
-              <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
-            </StrategyItem>
+            <div className="lg:max-w-lg">
+              <StrategyItem
+                key={strategyId}
+                strategyKey={{ strategyId, strategyKind }}
+              >
+                <span>{name}</span>
+                <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
+              </StrategyItem>
+            </div>
           )
         )}
       </div>

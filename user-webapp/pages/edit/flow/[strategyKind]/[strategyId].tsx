@@ -4,13 +4,15 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
-import { Button, Checkbox } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, CheckboxOnChange } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
+  BacktestCheckbox,
   Content,
+  LiveCheckbox,
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
@@ -82,13 +84,6 @@ const Page: NextPage<ServerSideProps> = ({
   name,
   strategyKey,
 }) => {
-  const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const { flowView, flowChanged } = useFlowView({
-    containerRef: flowViewContainerRef,
-    binanceSymbols,
-    strategyKind: strategyKey.strategyKind,
-  });
-
   const breadcrumbs = useMemo(
     () => [
       {
@@ -107,9 +102,20 @@ const Page: NextPage<ServerSideProps> = ({
     [strategyKey]
   );
 
+  const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
+  const [isBacktesting, setIsBacktesting] = useState(false);
+  const [isLive, setIsLive] = useState(false);
+
+  const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
+  const { flowView } = useFlowView({
+    containerRef: flowViewContainerRef,
+    binanceSymbols,
+    setFlowChanged,
+    strategyKind: strategyKey.strategyKind,
+  });
 
   const [
     execute,
@@ -131,17 +137,43 @@ const Page: NextPage<ServerSideProps> = ({
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
     if (hasNoBinanceApiConfig) return false;
+    if (!isLive) return false;
     if (runIsPending) return false;
     if (saveIsPending) return false;
     return !canSave;
-  }, [canSave, flowLoaded, runIsPending, hasNoBinanceApiConfig, saveIsPending]);
+  }, [
+    canSave,
+    flowLoaded,
+    isLive,
+    runIsPending,
+    hasNoBinanceApiConfig,
+    saveIsPending,
+  ]);
 
-  const onClickSave = useCallback(() => {
+  const onChangeBacktestingCheckbox = useCallback<CheckboxOnChange>(
+    (event) => {
+      const isBacktesting = event.target.checked;
+      setIsBacktesting(isBacktesting);
+      if (isBacktesting) setIsLive(false);
+    },
+    [setIsBacktesting, setIsLive]
+  );
+
+  const onChangeLiveCheckbox = useCallback<CheckboxOnChange>(
+    (event) => {
+      const isLive = event.target.checked;
+      setIsLive(isLive);
+      if (isLive) setIsBacktesting(false);
+    },
+    [setIsBacktesting, setIsLive]
+  );
+
+  const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
     if (canSave) saveStrategyFlow({ ...strategyKey, view: flowView.graph });
   }, [canSave, flowView, saveStrategyFlow, strategyKey]);
 
-  const onClickRun = useCallback(() => {
+  const onClickRun = useCallback<ButtonOnClick>(() => {
     if (canRun) execute({ data: strategyKey });
   }, [canRun, execute, strategyKey]);
 
@@ -173,8 +205,16 @@ const Page: NextPage<ServerSideProps> = ({
   }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
   useEffect(() => {
-    if (flowChanged) setCanSave(true);
-  }, [flowChanged, setCanSave]);
+    console.log("flowChanged", flowChanged);
+    // Disable Save button once saving changes start.
+    if (saveIsPending) {
+      setCanSave(false);
+      setFlowChanged(false);
+    } else {
+      // Enable Save button when some change on flow happens.
+      if (flowChanged) setCanSave(true);
+    }
+  }, [flowChanged, saveIsPending, setCanSave]);
 
   useEffect(() => {
     if (!strategyExecution) return;
@@ -206,18 +246,19 @@ const Page: NextPage<ServerSideProps> = ({
           </div>
 
           <menu className="flex h-10 flex-row gap-4 self-end">
-            <li className="px-2 flex flex-row items-center gap-2">
-              <label
-                htmlFor="backtest"
-                className="text-xs uppercase cursor-pointer leading-10"
-              >
-                backtest
-              </label>
-              <Checkbox id="backtest" />
+            <li>
+              <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
+            </li>
+            <li>
+              <BacktestCheckbox
+                checked={isBacktesting}
+                onChange={onChangeBacktestingCheckbox}
+              />
             </li>
             <li>
               <Button
-                disabled={!canSave}
+                disabled={isBacktesting}
+                color={canSave ? "primary" : undefined}
                 isSpinning={saveIsPending}
                 onClick={onClickSave}
               >
@@ -227,6 +268,7 @@ const Page: NextPage<ServerSideProps> = ({
             <li>
               <Button
                 disabled={!canRun}
+                color="danger"
                 isSpinning={runIsPending}
                 onClick={onClickRun}
               >
@@ -236,7 +278,10 @@ const Page: NextPage<ServerSideProps> = ({
           </menu>
         </div>
 
-        <div className="w-full grow" ref={flowViewContainerRef}></div>
+        <div
+          className="w-full grow shadow dark:shadow-black"
+          ref={flowViewContainerRef}
+        ></div>
         <div className="my-2">memory</div>
       </div>
     </Content>

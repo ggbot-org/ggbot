@@ -32,18 +32,21 @@ type UseFlowView = (
   arg: Pick<StrategyKey, "strategyKind"> & {
     binanceSymbols?: DflowBinanceSymbolInfo[];
     containerRef: MutableRefObject<HTMLDivElement | null>;
+    setFlowChanged?: (arg: boolean) => void;
   }
-) => { flowView: FlowView | undefined; flowChanged: boolean };
+) => { flowView: FlowView | undefined };
 
 /**
 @example
 ```ts
 const containerRef = useRef<HTMLDivElement | null>(null);
+const [flowChanged, setFlowChanged] = useState(false);
 
 const flowView = useFlowView({
   containerRef,
   strategyKind: "binance",
-  binanceSymbols
+  binanceSymbols,
+  setFlowChanged
 });
 
 return (
@@ -54,13 +57,13 @@ return (
 export const useFlowView: UseFlowView = ({
   binanceSymbols,
   containerRef,
+  setFlowChanged,
   strategyKind,
 }) => {
   const [flowViewInstance, setFlowViewInstance] = useState<
     FlowView | undefined
   >();
   const unmounted = useRef<boolean | null>(null);
-  const [flowChanged, setFlowChanged] = useState(false);
 
   const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
     if (strategyKind === "binance" && binanceSymbols)
@@ -109,7 +112,7 @@ export const useFlowView: UseFlowView = ({
           case "CREATE_EDGE": {
             const { id, from, to } = data as FlowViewOnChangeDataEdge;
             dflow.newEdge({ id, source: from, target: to });
-            if (isUserInput) setFlowChanged(true);
+            if (isUserInput) setFlowChanged?.(true);
             break;
           }
 
@@ -176,22 +179,22 @@ export const useFlowView: UseFlowView = ({
                 break;
               }
             }
-            if (isUserInput) setFlowChanged(true);
+            if (isUserInput) setFlowChanged?.(true);
             break;
           }
 
           case "DELETE_EDGE": {
-            if (isUserInput) setFlowChanged(true);
+            if (isUserInput) setFlowChanged?.(true);
             break;
           }
 
           case "DELETE_NODE": {
-            if (isUserInput) setFlowChanged(true);
+            if (isUserInput) setFlowChanged?.(true);
             break;
           }
 
           case "UPDATE_NODE": {
-            if (isUserInput) setFlowChanged(true);
+            if (isUserInput) setFlowChanged?.(true);
             break;
           }
 
@@ -251,5 +254,5 @@ export const useFlowView: UseFlowView = ({
     };
   }, [flowViewInstance, dflow, importFlowView, nodesCatalog, unmounted]);
 
-  return { flowView: flowViewInstance, flowChanged };
+  return { flowView: flowViewInstance };
 };

@@ -1,7 +1,9 @@
-import { ButtonHTMLAttributes, FC, useMemo } from "react";
+import { ButtonHTMLAttributes, FC, PointerEventHandler, useMemo } from "react";
 import { Spinner } from "./Spinner";
 
 type Color = "primary" | "danger";
+
+export type ButtonOnClick = PointerEventHandler<HTMLButtonElement>;
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
   color?: Color;
