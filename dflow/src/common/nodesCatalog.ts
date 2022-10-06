@@ -8,6 +8,7 @@ import {
 } from "./nodes/arithmetic.js";
 import { Shift, Pop, Push } from "./nodes/array.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
+import { HeikinAshi } from "./nodes/indicators/candles.js";
 import {
   ExponentialMovingAverage,
   SimpleMovingAverage,
@@ -39,6 +40,7 @@ export const nodesCatalog = {
   // indicators
   [BollingerBands.kind]: BollingerBands,
   [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
+  [HeikinAshi.kind]: HeikinAshi,
   [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
   [SimpleMovingAverage.kind]: SimpleMovingAverage,
   [TypicalPrice.kind]: TypicalPrice,

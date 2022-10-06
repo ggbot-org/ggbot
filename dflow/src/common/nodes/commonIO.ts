@@ -13,6 +13,7 @@ export const outputLow = output("array", { name: "low" });
 
 export const outputLastValue = output("number", { name: "last" });
 
+export const inputOpen = input("array", { name: "open" });
 export const outputOpen = output("array", { name: "open" });
 
 export const inputPeriod = input("number", { name: "period" });

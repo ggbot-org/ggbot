@@ -65,12 +65,9 @@ const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
     isLink ? "cursor-pointer hover:text-primary-brand" : "",
   ].join(" ");
 
-type NavigationBreadcrumbLabelProps = { text: string; italic?: boolean };
+type NavigationLabelProps = { text: string; italic?: boolean };
 
-export const NavigationLabel: FC<NavigationBreadcrumbLabelProps> = ({
-  italic,
-  text,
-}) => {
+export const NavigationLabel: FC<NavigationLabelProps> = ({ italic, text }) => {
   const className = useMemo(
     () => ["text-xs leading-8", italic ? "italic" : ""].join(" "),
     [italic]

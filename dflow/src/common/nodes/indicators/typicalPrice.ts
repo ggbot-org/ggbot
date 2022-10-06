@@ -32,13 +32,15 @@ export class TypicalPrice extends DflowNode {
     const low = this.input(1).data as number[];
     const close = this.input(2).data as number[];
     const size = high.length;
-    if (close.length === size && low.length === size) {
-      const result: number[] = [];
-      for (let i = 0; i < size; i++) {
-        result.push(typicalPrice(high[i], low[i], close[i]));
-      }
-      this.output(0).data = result;
-      this.output(1).data = result.slice(-1).pop();
-    } else this.clearOutputs();
+    if (close.length !== size || low.length !== size) {
+      this.clearOutputs();
+      return;
+    }
+    const result: number[] = [];
+    for (let i = 0; i < size; i++) {
+      result.push(typicalPrice(high[i], low[i], close[i]));
+    }
+    this.output(0).data = result;
+    this.output(1).data = result.slice(-1).pop();
   }
 }
