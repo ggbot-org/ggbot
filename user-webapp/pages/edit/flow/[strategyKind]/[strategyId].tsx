@@ -6,7 +6,6 @@ import {
 } from "@ggbot2/dflow";
 import { Button, Checkbox } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -16,6 +15,7 @@ import {
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
   NavigationLabel,
+  StrategyItem,
 } from "_components";
 import { useApiAction, useFlowView } from "_hooks";
 import {
@@ -88,11 +88,6 @@ const Page: NextPage<ServerSideProps> = ({
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
   });
-
-  const strategyHref = useMemo(
-    () => route.strategyPage(strategyKey),
-    [strategyKey]
-  );
 
   const breadcrumbs = useMemo(
     () => [
@@ -206,11 +201,9 @@ const Page: NextPage<ServerSideProps> = ({
     >
       <div className="flex h-full flex-col grow">
         <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
-          <Link href={strategyHref}>
-            <div className="cursor-pointer grow rounded border border-transparent p-2 hover:bg-mono-100 hover:border-mono-400 dark:hover:bg-mono-500 transition-all delay-200">
-              {name}
-            </div>
-          </Link>
+          <div className="grow">
+            <StrategyItem strategyKey={strategyKey}>{name}</StrategyItem>
+          </div>
 
           <menu className="flex h-10 flex-row gap-4 self-end">
             <li className="px-2 flex flex-row items-center gap-2">

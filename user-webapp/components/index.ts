@@ -7,3 +7,4 @@ export * from "./Navigation";
 export * from "./SchedulingStatusBadge";
 export * from "./SettingsMenu";
 export * from "./Strategies";
+export * from "./StrategyItem";
