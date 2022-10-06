@@ -1,4 +1,5 @@
 import { FC, InputHTMLAttributes, useMemo } from "react";
+import { Field, FieldProps } from "./Field";
 import { Spinner } from "./Spinner";
 
 export type InputProps = Omit<
@@ -33,5 +34,15 @@ export const Input: FC<InputProps> = ({
         </div>
       ) : null}
     </div>
+  );
+};
+
+type InputFieldProps = FieldProps & Omit<InputProps, "id" | "name">;
+
+export const InputField: FC<InputFieldProps> = ({ label, name, ...props }) => {
+  return (
+    <Field label={label} name={name}>
+      <Input {...props} />
+    </Field>
   );
 };

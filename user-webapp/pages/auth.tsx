@@ -1,4 +1,4 @@
-import { Button, Field, Logo } from "@ggbot2/ui-components";
+import { Button, Logo, InputField } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -142,7 +142,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
   return (
     <>
       <AuthForm onSubmit={onSubmit} message="enter ggbot2">
-        <Field
+        <InputField
           label="email"
           name="email"
           type="email"
@@ -311,7 +311,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
   return (
     <>
       <AuthForm message="enter ggbot2" onSubmit={onSubmit}>
-        <Field
+        <InputField
           label="password"
           name="code"
           readOnly={isPending}

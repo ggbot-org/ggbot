@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FC, ReactNode, useCallback, useMemo } from "react";
+import { FC, ReactNode, useMemo } from "react";
 import { StrategyKey, route } from "_routing";
 
 type Props = { children: ReactNode; strategyKey: StrategyKey };

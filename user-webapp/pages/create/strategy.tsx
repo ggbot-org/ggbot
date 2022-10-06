@@ -4,12 +4,17 @@ import {
   isName,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { Button, Field } from "@ggbot2/ui-components";
+import { Button, InputField, Fieldset } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { Content, Navigation, NavigationLabel } from "_components";
+import {
+  Content,
+  Navigation,
+  NavigationBreadcrumbDashboard,
+  NavigationLabel,
+} from "_components";
 import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
@@ -49,6 +54,7 @@ const Page: NextPage = () => {
       topbar={
         <Navigation
           breadcrumbs={[
+            { content: <NavigationBreadcrumbDashboard isLink /> },
             { content: <NavigationLabel text="create" />, current: true },
           ]}
           hasSettingsIcon
@@ -59,24 +65,25 @@ const Page: NextPage = () => {
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
       >
-        <span className="text-xl">new strategy</span>
-        <Field
-          label="strategy name"
-          name="name"
-          required
-          readOnly={isPending}
-        />
-        {data ? (
-          <div>done</div>
-        ) : (
-          <menu>
-            <li>
-              <Button color="primary" isSpinning={isPending}>
-                create
-              </Button>
-            </li>
-          </menu>
-        )}
+        <Fieldset legend="create strategy">
+          <InputField
+            label="strategy name"
+            name="name"
+            required
+            readOnly={isPending}
+          />
+          {data ? (
+            <div>done</div>
+          ) : (
+            <menu>
+              <li>
+                <Button color="primary" isSpinning={isPending}>
+                  create
+                </Button>
+              </li>
+            </menu>
+          )}
+        </Fieldset>
       </form>
     </Content>
   );

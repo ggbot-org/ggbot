@@ -70,7 +70,10 @@ export const Strategies: FC = () => {
         {noStrategy && <p>Your strategy list is empty.</p>}
         {strategyItems?.map(
           ({ name, strategyId, strategyKind, schedulingStatus }) => (
-            <StrategyItem strategyKey={{ strategyId, strategyKind }}>
+            <StrategyItem
+              key={strategyId}
+              strategyKey={{ strategyId, strategyKind }}
+            >
               <span>{name}</span>
               <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
             </StrategyItem>

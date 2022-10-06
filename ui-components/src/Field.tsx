@@ -1,18 +1,32 @@
-import { FC, ReactNode } from "react";
-import { Input, InputProps } from "./Input";
+import { FC, LabelHTMLAttributes, PropsWithChildren, ReactNode } from "react";
 
-type Props = InputProps & {
+export type FieldProps = {
   label: ReactNode;
   name: string;
 };
 
-export const Field: FC<Props> = ({ label, name, ...inputProps }) => {
+export const Field: FC<PropsWithChildren<FieldProps>> = ({
+  children,
+  label,
+  name,
+}) => {
   return (
-    <div className="w-full py-2">
-      <label htmlFor={name} className="mb-2 text-xs font-medium uppercase">
-        {label}
-      </label>
-      <Input {...inputProps} id={name} name={name} />
+    <div className="mb-4">
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      {children}
     </div>
+  );
+};
+
+export type FieldLabelProps = Omit<
+  LabelHTMLAttributes<HTMLLabelElement>,
+  "className"
+> & { children: ReactNode };
+
+export const FieldLabel: FC<FieldLabelProps> = ({ children, ...props }) => {
+  return (
+    <label className="mb-3 text-xs font-medium uppercase" {...props}>
+      {children}
+    </label>
   );
 };

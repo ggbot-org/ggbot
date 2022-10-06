@@ -4,7 +4,7 @@ import {
   isName,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { Button, DateTime, Field } from "@ggbot2/ui-components";
+import { Button, DateTime, InputField } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -112,7 +112,7 @@ const Page: NextPage<ServerSideProps> = ({
           <dt>id</dt>
           <dd className="text-xs">{strategyId}</dd>
         </dl>
-        <Field
+        <InputField
           onChange={onChangeName}
           label="new strategy name"
           name="name"

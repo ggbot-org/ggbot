@@ -1,4 +1,5 @@
 import { FC, OptionHTMLAttributes, SelectHTMLAttributes } from "react";
+import { Field, FieldProps } from "./Field";
 
 export type SelectProps = Omit<
   SelectHTMLAttributes<HTMLSelectElement>,
@@ -9,10 +10,27 @@ export type SelectProps = Omit<
 
 export const Select: FC<SelectProps> = ({ options, ...props }) => {
   return (
-    <select className="shadow outline-dark-600 rounded-md px-4 py-2" {...props}>
+    <select
+      className="appearance-none w-full shadow outline-dark-600 rounded-md px-4 py-2"
+      {...props}
+    >
       {options.map(({ value, ...props }, i) => (
         <option key={i} {...props} />
       ))}
     </select>
+  );
+};
+
+type SelectFieldProps = FieldProps & Omit<SelectProps, "id" | "name">;
+
+export const SelectField: FC<SelectFieldProps> = ({
+  label,
+  name,
+  ...props
+}) => {
+  return (
+    <Field label={label} name={name}>
+      <Select {...props} />
+    </Field>
   );
 };

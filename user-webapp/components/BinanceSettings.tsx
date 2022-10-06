@@ -1,4 +1,4 @@
-import { Button, Field, Fieldset } from "@ggbot2/ui-components";
+import { Button, Fieldset, InputField } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 
@@ -69,13 +69,13 @@ export const BinanceSettings: FC = () => {
         )}
         {hasNoBinanceApiConfig && (
           <>
-            <Field
+            <InputField
               label={apiKeyLabel}
               name="apiKey"
               required
               readOnly={isPending}
             />
-            <Field
+            <InputField
               label="Secret Key"
               name="apiSecret"
               required
