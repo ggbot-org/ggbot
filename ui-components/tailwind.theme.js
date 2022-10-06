@@ -13,7 +13,7 @@ module.exports = {
       brand: "#09eae5",
     },
     dark: {
-      background: "#476b6b",
+      background: "#4e4d4a",
     },
     light: {
       background: "#faffff",
