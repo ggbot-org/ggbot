@@ -1,4 +1,4 @@
-import { Button, Logo, InputField } from "@ggbot2/ui-components";
+import { Button, Fieldset, Logo, InputField } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -35,15 +35,18 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
   message: string;
 };
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
-  <>
-    <div className="flex flex-col items-center p-4 gap-4">
-      <span className="text-2xl">{message}</span>
-      <Logo size={107} animated />
-    </div>
-    <form className="flex flex-col w-full p-4 gap-4" {...props}>
+  <form className="flex flex-col w-full p-4 gap-4" {...props}>
+    <Fieldset
+      legend={
+        <div className="flex flex-row items-center py-2">
+          <Logo size={71} animated />
+          <span className="text-xl">{message}</span>
+        </div>
+      }
+    >
       {children}
-    </form>
-  </>
+    </Fieldset>
+  </form>
 );
 
 const FeedbackMessages: FC<{ children: ReactNode }> = ({ children }) => (
