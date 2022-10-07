@@ -143,8 +143,8 @@ export type BinanceKline = [
 ];
 
 export type BinanceKlineOptionalParameters = {
-  startTime: number;
-  endTime: number;
+  startTime?: number;
+  endTime?: number;
   /** Default 500; max 1000. */
   limit: number;
 };

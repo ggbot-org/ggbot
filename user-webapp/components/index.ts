@@ -4,6 +4,7 @@ export * from "./BacktestController";
 export * from "./BinanceSettings";
 export * from "./BillingSettings";
 export * from "./ButtonShareStrategy";
+export * from "./ChartOhlcv";
 export * from "./Content";
 export * from "./LiveCheckbox";
 export * from "./Navigation";

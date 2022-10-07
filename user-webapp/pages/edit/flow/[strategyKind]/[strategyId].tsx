@@ -228,18 +228,6 @@ const Page: NextPage<ServerSideProps> = ({
       toast.error("Strategy execution failure");
   }, [strategyExecution]);
 
-  useEffect(() => {
-    // TODO remove this test
-    async function test() {
-      const binance = new BinanceExchange({
-        baseUrl: BinanceConnector.defaultBaseUrl,
-      });
-      const info = await binance.exchangeInfo();
-      console.log(info);
-    }
-    test();
-  }, []);
-
   return (
     <Content
       topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}
