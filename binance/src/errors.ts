@@ -13,20 +13,32 @@ export class ErrorInvalidBinanceOrderOptions extends Error {
 }
 
 export class ErrorInvalidBinanceOrderSide extends Error {
-  constructor(value: unknown) {
-    super(`Invalid Binance order side ${value}`);
+  constructor(arg: unknown) {
+    super(`Invalid Binance order side ${arg}`);
   }
 }
 
 export class ErrorInvalidBinanceOrderType extends Error {
-  constructor(value: unknown) {
-    super(`Invalid Binance order type ${value}`);
+  constructor(arg: unknown) {
+    super(`Invalid Binance order type ${arg}`);
   }
 }
 
 export class ErrorInvalidBinanceSymbol extends Error {
-  constructor(value: unknown) {
-    super(`Invalid Binance symbol ${value}`);
+  constructor(arg: unknown) {
+    super(`Invalid Binance symbol ${arg}`);
+  }
+}
+
+export class ErrorInvalidBinanceKlineInterval extends Error {
+  constructor(arg: unknown) {
+    super(`Invalid Binance kline interval ${arg}`);
+  }
+}
+
+export class ErrorInvalidBinanceKlineOptionalParameters extends Error {
+  constructor() {
+    super("Invalid Binance kline optional parameters");
   }
 }
 

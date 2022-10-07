@@ -1,12 +1,20 @@
 import { CacheMap } from "@ggbot2/models";
 import { BinanceConnector, BinanceConnectorRequestArg } from "./connector.js";
-import { ErrorInvalidBinanceSymbol } from "./errors.js";
+import {
+  ErrorInvalidBinanceSymbol,
+  ErrorInvalidBinanceKlineInterval,
+  ErrorInvalidBinanceKlineOptionalParameters,
+} from "./errors.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
+  BinanceKline,
+  BinanceKlineOptionalParameters,
   BinanceOrderType,
   BinanceSymbolInfo,
   BinanceTickerPrice,
+  isBinanceKlineInterval,
+  isBinanceKlineOptionalParameters,
 } from "./types.js";
 
 /**
@@ -36,8 +44,8 @@ export class BinanceExchange extends BinanceConnector {
    * @throws {ErrorInvalidBinanceSymbol}
    */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
-    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
-    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    const isSymbol = await this.isBinanceSymbol(symbol);
+    if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     return await this._publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
@@ -89,14 +97,95 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
+   * Kline/Candlestick Data.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
+   *
+   * @throws {ErrorInvalidBinanceSymbol}
+   * @throws {ErrorInvalidBinanceKlineInterval}
+   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
+   */
+  // TODO try also UIKlines api/v3/uiKlines
+  async klines(
+    symbol: string,
+    interval: string,
+    optionalParameters: BinanceKlineOptionalParameters
+  ): Promise<BinanceKline[]> {
+    await this.klinesParametersAreValidOrThrow(
+      symbol,
+      interval,
+      optionalParameters
+    );
+    return await this._publicRequest<BinanceKline[]>("GET", "/api/v3/klines", {
+      symbol,
+      interval,
+      ...optionalParameters,
+    });
+  }
+
+  /**
+   * Validate klines parameters.
+   *
+   * @throws {ErrorInvalidBinanceSymbol}
+   * @throws {ErrorInvalidBinanceKlineInterval}
+   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
+   */
+  async klinesParametersAreValidOrThrow(
+    symbol: string,
+    interval: string,
+    optionalParameters: BinanceKlineOptionalParameters
+  ): Promise<void> {
+    const isInterval = isBinanceKlineInterval(interval);
+    if (!isInterval) throw new ErrorInvalidBinanceKlineInterval(interval);
+    const hasParameters = isBinanceKlineOptionalParameters(optionalParameters);
+    if (!hasParameters) throw new ErrorInvalidBinanceKlineOptionalParameters();
+    const isSymbol = await this.isBinanceSymbol(symbol);
+    if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+  }
+
+  /**
+   * UIKlines
+   *
+   * The request is similar to klines having the same parameters and response.
+   *
+   * `uiKlines` return modified kline data, optimized for presentation of candlestick charts.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
+   *
+   * @throws {ErrorInvalidBinanceSymbol}
+   * @throws {ErrorInvalidBinanceKlineInterval}
+   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
+   */
+  async uiKlines(
+    symbol: string,
+    interval: string,
+    optionalParameters: BinanceKlineOptionalParameters
+  ): Promise<BinanceKline[]> {
+    await this.klinesParametersAreValidOrThrow(
+      symbol,
+      interval,
+      optionalParameters
+    );
+    return await this._publicRequest<BinanceKline[]>(
+      "GET",
+      "/api/v3/uiKlines",
+      {
+        symbol,
+        interval,
+        ...optionalParameters,
+      }
+    );
+  }
+
+  /**
    * @throws {ErrorInvalidBinanceSymbol}
    */
   async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
-    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
-    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    const isSymbol = await this.isBinanceSymbol(symbol);
+    if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     const { symbols } = await this.exchangeInfo();
     const symbolInfo = symbols.find((info) => info.symbol === symbol);
-    // If `isBinanceSymbol` then `symbolInfo` has type `BinanceSymbolInfo`.
+    // If `isSymbol` then `symbolInfo` has type `BinanceSymbolInfo`.
     return symbolInfo as BinanceSymbolInfo;
   }
 
@@ -108,8 +197,8 @@ export class BinanceExchange extends BinanceConnector {
    * @throws {ErrorInvalidBinanceSymbol}
    */
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-    const isBinanceSymbol = await this.isBinanceSymbol(symbol);
-    if (!isBinanceSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    const isSymbol = await this.isBinanceSymbol(symbol);
+    if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     return await this._publicRequest<BinanceTickerPrice>(
       "GET",
       "/api/v3/ticker/price",
