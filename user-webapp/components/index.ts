@@ -1,5 +1,6 @@
 export * from "./AccountSettings";
 export * from "./BacktestCheckbox";
+export * from "./BacktestController";
 export * from "./BinanceSettings";
 export * from "./BillingSettings";
 export * from "./ButtonShareStrategy";

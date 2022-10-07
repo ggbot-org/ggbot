@@ -1,7 +1,13 @@
-import { Checkbox, CheckboxProps } from "@ggbot2/ui-components";
+import {
+  Checkbox,
+  CheckboxOnChange,
+  CheckboxProps,
+} from "@ggbot2/ui-components";
 import { FC, useId, useMemo } from "react";
 
-type Props = Omit<CheckboxProps, "id">;
+type Props = Omit<CheckboxProps, "color" | "id">;
+
+export type BacktestCheckboxOnChange = CheckboxOnChange;
 
 export const BacktestCheckbox: FC<Props> = ({ checked, ...props }) => {
   const id = useId();

@@ -5,7 +5,7 @@ type Color = "primary" | "danger";
 export type CheckboxProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "className" | "type"
->;
+> & { color?: Color };
 
 export type CheckboxOnChange = ChangeEventHandler<HTMLInputElement>;
 

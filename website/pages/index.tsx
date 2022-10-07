@@ -8,14 +8,10 @@ const Page: NextPage = () => {
   const [isFirstPageview, setIsFirstPageview] = useState(false);
 
   useEffect(() => {
-    const sessionStorageKey = "first-page-view";
-    const firstPageView =
-      global?.window?.sessionStorage?.getItem(sessionStorageKey);
+    const storageKey = "first-page-view";
+    const firstPageView = global?.window?.sessionStorage?.getItem(storageKey);
     if (typeof firstPageView === "string") return;
-    global?.window?.sessionStorage?.setItem(
-      sessionStorageKey,
-      new Date().toJSON()
-    );
+    global?.window?.sessionStorage?.setItem(storageKey, new Date().toJSON());
     setIsFirstPageview(true);
   }, [setIsFirstPageview]);
 

@@ -4,22 +4,25 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
-import { Button, ButtonOnClick, CheckboxOnChange } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
   BacktestCheckbox,
+  BacktestCheckboxOnChange,
+  BacktestController,
   Content,
   LiveCheckbox,
+  LiveCheckboxOnChange,
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
   NavigationLabel,
   StrategyItem,
 } from "_components";
-import { useApiAction, useFlowView } from "_hooks";
+import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
   readSession,
@@ -105,9 +108,10 @@ const Page: NextPage<ServerSideProps> = ({
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
-  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
-  const [isBacktesting, setIsBacktesting] = useState(false);
   const [isLive, setIsLive] = useState(false);
+  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
+
+  const [backtesting, backtestingDispatch] = useBacktesting(strategyKey);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView } = useFlowView({
@@ -150,22 +154,24 @@ const Page: NextPage<ServerSideProps> = ({
     saveIsPending,
   ]);
 
-  const onChangeBacktestingCheckbox = useCallback<CheckboxOnChange>(
+  const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
+
+  const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
     (event) => {
-      const isBacktesting = event.target.checked;
-      setIsBacktesting(isBacktesting);
-      if (isBacktesting) setIsLive(false);
+      const wantBacktesting = event.target.checked;
+      backtestingDispatch({ type: "TOGGLE" });
+      if (wantBacktesting) setIsLive(false);
     },
-    [setIsBacktesting, setIsLive]
+    [backtestingDispatch, setIsLive]
   );
 
-  const onChangeLiveCheckbox = useCallback<CheckboxOnChange>(
+  const onChangeLiveCheckbox = useCallback<LiveCheckboxOnChange>(
     (event) => {
       const isLive = event.target.checked;
       setIsLive(isLive);
-      if (isLive) setIsBacktesting(false);
+      if (isLive) backtestingDispatch({ type: "DISABLE" });
     },
-    [setIsBacktesting, setIsLive]
+    [backtestingDispatch, setIsLive]
   );
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
@@ -249,15 +255,17 @@ const Page: NextPage<ServerSideProps> = ({
             <li>
               <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
             </li>
-            <li>
-              <BacktestCheckbox
-                checked={isBacktesting}
-                onChange={onChangeBacktestingCheckbox}
-              />
-            </li>
+            {backtesting && (
+              <li>
+                <BacktestCheckbox
+                  checked={backtesting.isEnabled}
+                  onChange={onChangeBacktestingCheckbox}
+                />
+              </li>
+            )}
             <li>
               <Button
-                disabled={isBacktesting}
+                disabled={saveIsDisabled}
                 color={canSave ? "primary" : undefined}
                 isSpinning={saveIsPending}
                 onClick={onClickSave}
@@ -277,6 +285,11 @@ const Page: NextPage<ServerSideProps> = ({
             </li>
           </menu>
         </div>
+
+        <BacktestController
+          state={backtesting}
+          dispatch={backtestingDispatch}
+        />
 
         <div
           className="w-full grow shadow dark:shadow-black"

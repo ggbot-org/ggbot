@@ -1,21 +1,27 @@
-import {Day, getDateFromDay, getDayFromDate, today} from "@ggbot2/time";
-import {FC, useCallback, useMemo, useState} from "react";
-import {Icon} from "./Icon";
+import {
+  Day,
+  MonthNum,
+  WeekDayNum,
+  getDateFromDay,
+  getDayFromDate,
+  today,
+  weekDayNums,
+} from "@ggbot2/time";
+import { FC, useCallback, useMemo, useState } from "react";
+import { Icon } from "./Icon";
 
-const calendarMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const;
-export type CalendarMonth = typeof calendarMonths[number];
-export type CalendarMonthNameRecord = Record<CalendarMonth, string>;
+export type CalendarMonthNameRecord = Record<MonthNum, string>;
 
-const calendarWeekDays = [0, 1, 2, 3, 4, 5, 6] as const;
-export type CalendarWeekDay = typeof calendarWeekDays[number];
-export type CalendarWeekDayNameRecord = Record<CalendarWeekDay, string>;
+export type CalendarWeekDayNameRecord = Record<WeekDayNum, string>;
+
+export type CalendarSetSelectedDay = (arg: Day) => void;
 
 export type CalendarProps = {
   monthName?: CalendarMonthNameRecord;
   min?: Day;
   max?: Day;
   selectedDay?: Day;
-  setSelectedDay?: (_: Day) => void;
+  setSelectedDay?: CalendarSetSelectedDay;
   weekDayName?: CalendarWeekDayNameRecord;
 };
 
@@ -54,20 +60,17 @@ export const Calendar: FC<CalendarProps> = ({
     const date = getDateFromDay(selectedDay);
     date.setDate(1);
     date.setMonth(date.getMonth() + monthOffset);
-    return date
+    return date;
   }, [monthOffset, selectedDay]);
 
   const lastDate = useMemo<Date>(() => {
     const date = new Date(firstDate);
     date.setMonth(date.getMonth() + monthOffset + 1);
     date.setDate(date.getDate() - 1);
-    return date
+    return date;
   }, [monthOffset, firstDate]);
 
-  const monthNum = useMemo(
-    () => firstDate.getMonth() as CalendarMonth,
-    [firstDate]
-  );
+  const monthNum = useMemo(() => firstDate.getMonth() as MonthNum, [firstDate]);
 
   const datesBeforeFirstDate = useMemo(() => {
     const dates: Date[] = [];
@@ -118,18 +121,18 @@ export const Calendar: FC<CalendarProps> = ({
         date,
         isDateOfCurrentMonth: false,
       })),
-      ...datesOfMonth.map((date) => ({date, isDateOfCurrentMonth: true})),
+      ...datesOfMonth.map((date) => ({ date, isDateOfCurrentMonth: true })),
       ...datesAfterLastDate.map((date) => ({
         date,
         isDateOfCurrentMonth: false,
       })),
     ]
-      .map(({date, ...rest}) => ({
+      .map(({ date, ...rest }) => ({
         day: getDayFromDate(date),
         date,
         ...rest,
       }))
-      .map(({day, ...rest}) => ({
+      .map(({ day, ...rest }) => ({
         selected: day === selectedDay,
         isSelectable:
           day !== selectedDay &&
@@ -138,24 +141,24 @@ export const Calendar: FC<CalendarProps> = ({
         day,
         ...rest,
       }))
-      .map(({date, day, isDateOfCurrentMonth, isSelectable, selected}) => ({
+      .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
         className: [
           "text-center select-none",
           selected
             ? "bg-primary-400 text-white"
             : isSelectable
-              ? [
+            ? [
                 isDateOfCurrentMonth ? "text-mono-600" : "text-mono-400",
                 "hover:bg-primary-100",
               ].join(" ")
-              : "text-mono-200",
+            : "text-mono-200",
         ].join(" "),
         onClick:
           day && isSelectable
             ? () => {
-              setSelectedDay?.(day);
-              setMonthOffset(0);
-            }
+                setSelectedDay?.(day);
+                setMonthOffset(0);
+              }
             : undefined,
         num: date.getDate(),
       }));
@@ -211,12 +214,12 @@ export const Calendar: FC<CalendarProps> = ({
         </div>
       </div>
       <div className="grid grid-cols-7">
-        {calendarWeekDays.map((n) => (
+        {weekDayNums.map((n) => (
           <div key={n} className="text-center select-none">
             {weekDayName[n]}
           </div>
         ))}
-        {dateCells.map(({num, className, onClick}, i) => (
+        {dateCells.map(({ num, className, onClick }, i) => (
           <div key={i} className={className} onClick={onClick}>
             {num}
           </div>
@@ -224,7 +227,7 @@ export const Calendar: FC<CalendarProps> = ({
         {
           /* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
           dateCells.length === 35
-            ? Array.from({length: 7}).map((_, i) => <div key={i}>&nbsp;</div>)
+            ? Array.from({ length: 7 }).map((_, i) => <div key={i}>&nbsp;</div>)
             : null
         }
       </div>

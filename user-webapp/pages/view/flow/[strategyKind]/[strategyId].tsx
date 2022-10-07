@@ -9,6 +9,8 @@ import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useMemo, useState, useRef } from "react";
 import {
+  BacktestCheckbox,
+  BacktestController,
   ButtonShareStrategy,
   Content,
   Navigation,
@@ -16,7 +18,7 @@ import {
   NavigationLabel,
   NavigationBreadcrumbStrategy,
 } from "_components";
-import { useFlowView } from "_hooks";
+import { useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
   StrategyFlow,
@@ -128,6 +130,12 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
 
+  const [backtesting, backtestingDispatch] = useBacktesting(strategyKey);
+
+  const onChangeBacktestingCheckbox = useCallback(() => {
+    backtestingDispatch({ type: "TOGGLE" });
+  }, [backtestingDispatch]);
+
   const onClickCopy = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
@@ -161,6 +169,14 @@ const Page: NextPage<ServerSideProps> = ({
             <dd>{strategyName}</dd>
           </dl>
           <menu className="flex h-10 flex-row gap-4">
+            {backtesting && (
+              <li>
+                <BacktestCheckbox
+                  checked={backtesting.isEnabled}
+                  onChange={onChangeBacktestingCheckbox}
+                />
+              </li>
+            )}
             <li>
               <ButtonShareStrategy {...strategyKey} />
             </li>
@@ -177,6 +193,11 @@ const Page: NextPage<ServerSideProps> = ({
             )}
           </menu>
         </div>
+
+        <BacktestController
+          state={backtesting}
+          dispatch={backtestingDispatch}
+        />
 
         <div className="mb-2 w-full grow" ref={flowViewContainerRef}></div>
       </div>
