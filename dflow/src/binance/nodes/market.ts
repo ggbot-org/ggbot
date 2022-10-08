@@ -3,10 +3,11 @@ import type { BinanceDflowContext as Context } from "../context.js";
 import {
   inputInterval,
   inputSymbol,
-  outputLow,
-  outputHigh,
   outputClose,
+  outputHigh,
+  outputLow,
   outputOpen,
+  outputTime,
   outputVolume,
 } from "./commonIO.js";
 
@@ -16,6 +17,7 @@ export class Candles extends DflowNode {
   static kind = "candles";
   static inputs = [inputSymbol, inputInterval];
   static outputs = [
+    outputTime,
     outputOpen,
     outputHigh,
     outputLow,

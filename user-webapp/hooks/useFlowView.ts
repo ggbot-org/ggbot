@@ -81,10 +81,13 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog || !dflow) return;
     if (unmounted.current || !containerRef.current || flowViewInstance) return;
     const { FlowView } = await import("flow-view");
-    const { FlowViewNodeJson, FlowViewNodeInfo } = await import(
-      "../flow/nodes/index.js"
-    );
+    const { FlowViewNodeCandlesChart, FlowViewNodeInfo, FlowViewNodeJson } =
+      await import("../flow/nodes/index.js");
     const flowView = new FlowView(containerRef.current);
+    flowView.addNodeClass(
+      FlowViewNodeCandlesChart.type,
+      FlowViewNodeCandlesChart as unknown as FlowViewNode
+    );
     flowView.addNodeClass(
       FlowViewNodeInfo.type,
       FlowViewNodeInfo as unknown as FlowViewNode
@@ -93,7 +96,11 @@ export const useFlowView: UseFlowView = ({
       FlowViewNodeJson.type,
       FlowViewNodeJson as unknown as FlowViewNode
     );
-    flowView.nodeTextToType(nodeTextToViewType);
+    flowView.nodeTextToType((text) => {
+      if (text === FlowViewNodeCandlesChart.type)
+        return FlowViewNodeCandlesChart.type;
+      return nodeTextToViewType(text);
+    });
     flowView.addNodeDefinitions({
       nodes: Object.keys(nodesCatalog)
         .map((kind) => ({ name: kind }))

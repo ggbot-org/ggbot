@@ -3,9 +3,13 @@ import {
   BinanceExchange,
   BinanceKline,
 } from "@ggbot2/binance";
-import { Calendar, CalendarSetSelectedDay } from "@ggbot2/ui-components";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { ChartOhlcv, ChartOhlcvProps } from "_components";
+import {
+  ChartOhlcv,
+  ChartOhlcvProps,
+  DailyIntervalSelector,
+  DailyIntervalSelectorProps,
+} from "_components";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 
 type Props = {
@@ -19,7 +23,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
 
   const { startDay } = state;
 
-  const setStartDay = useCallback<CalendarSetSelectedDay>(
+  const setStartDay = useCallback<DailyIntervalSelectorProps["setStartDay"]>(
     (day) => {
       dispatch({ type: "SET_START_DAY", day });
     },
@@ -64,7 +68,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
 
   return (
     <div className="my-2">
-      <Calendar selectedDay={startDay} setSelectedDay={setStartDay} />
+      <DailyIntervalSelector startDay={startDay} setStartDay={setStartDay} />
       <ChartOhlcv candles={candles} volume={volume} />
     </div>
   );

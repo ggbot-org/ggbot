@@ -1,13 +1,19 @@
-import { Calendar } from "@ggbot2/ui-components";
+import { Calendar, CalendarSetSelectedDay } from "@ggbot2/ui-components";
 import { Day } from "@ggbot2/time";
 import { FC } from "react";
 
-type Props = { isBacktesting: boolean };
+export type DailyIntervalSelectorProps = {
+  startDay: Day;
+  setStartDay: CalendarSetSelectedDay;
+};
 
-export const DailyIntervalSelector: FC<Props> = ({}) => {
+export const DailyIntervalSelector: FC<DailyIntervalSelectorProps> = ({
+  startDay,
+  setStartDay,
+}) => {
   return (
     <div>
-      <Calendar />
+      <Calendar selectedDay={startDay} setSelectedDay={setStartDay} />
     </div>
   );
 };

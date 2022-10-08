@@ -30,7 +30,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 }) => {
   return (
     <Field label={label} name={name}>
-      <Select {...props} />
+      <Select {...props} name={name} />
     </Field>
   );
 };

@@ -42,7 +42,7 @@ type InputFieldProps = FieldProps & Omit<InputProps, "id" | "name">;
 export const InputField: FC<InputFieldProps> = ({ label, name, ...props }) => {
   return (
     <Field label={label} name={name}>
-      <Input {...props} />
+      <Input {...props} name={name} />
     </Field>
   );
 };
