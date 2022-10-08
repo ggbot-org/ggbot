@@ -14,8 +14,8 @@ import {
   BinanceSymbolInfo,
   BinanceTickerPrice,
   isBinanceKlineInterval,
-  isBinanceKlineOptionalParameters,
 } from "./types.js";
+import { isBinanceKlineOptionalParameters } from "./typeGuards";
 
 /**
 BinanceExchange implements public API requests.

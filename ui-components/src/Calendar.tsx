@@ -2,7 +2,6 @@ import {
   Day,
   MonthNum,
   WeekDayNum,
-  getDateFromDay,
   getDayFromDate,
   today,
   weekDayNums,
@@ -57,7 +56,7 @@ export const Calendar: FC<CalendarProps> = ({
   const [monthOffset, setMonthOffset] = useState(0);
 
   const firstDate = useMemo<Date>(() => {
-    const date = getDateFromDay(selectedDay);
+    const date = new Date(selectedDay);
     date.setDate(1);
     date.setMonth(date.getMonth() + monthOffset);
     return date;
@@ -74,7 +73,7 @@ export const Calendar: FC<CalendarProps> = ({
 
   const datesBeforeFirstDate = useMemo(() => {
     const dates: Date[] = [];
-    const weekDay = firstDate.getDate();
+    const weekDay = firstDate.getDay();
     for (let i = weekDay; i > 0; i--) {
       const date = new Date(firstDate);
       date.setDate(date.getDate() - i);
@@ -96,7 +95,7 @@ export const Calendar: FC<CalendarProps> = ({
 
   const datesAfterLastDate = useMemo(() => {
     const dates: Date[] = [];
-    const weekDate = lastDate.getDate();
+    const weekDate = lastDate.getDay();
     for (let i = 1; i < 7 - weekDate; i++) {
       const date = new Date(lastDate);
       date.setDate(date.getDate() + i);

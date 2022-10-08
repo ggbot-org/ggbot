@@ -142,38 +142,12 @@ export type BinanceKline = [
   unusedField: string
 ];
 
-export type BinanceKlineOptionalParameters = {
-  startTime?: number;
-  endTime?: number;
+export type BinanceKlineOptionalParameters = Partial<{
+  startTime: number;
+  endTime: number;
   /** Default 500; max 1000. */
   limit: number;
-};
-
-export const binanceKlineMaxLimit = 1000;
-
-/**
-Altough `limit` parameter is optional for Binance API and default to 500,
-it is better to make it mandatory to avoid a waste of data.
-*/
-export const isBinanceKlineOptionalParameters = (
-  arg: unknown
-): arg is BinanceKlineOptionalParameters => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { startTime, endTime, limit } =
-    arg as Partial<BinanceKlineOptionalParameters>;
-  if (typeof startTime !== "undefined" && typeof startTime !== "number")
-    return false;
-  if (typeof endTime !== "undefined" && typeof endTime !== "number")
-    return false;
-  if (
-    typeof startTime === "number" &&
-    typeof endTime === "number" &&
-    startTime > endTime
-  )
-    return false;
-  if (typeof limit !== "number") return false;
-  return limit > 0 && limit <= binanceKlineMaxLimit;
-};
+}>;
 
 export const binanceKlineIntervals = [
   "1m",

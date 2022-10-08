@@ -1,4 +1,4 @@
-import {Day, getDayFromDate} from "./day.js";
+import { getDayFromDate } from "./day.js";
 
 export type ValidDate = Date;
 
@@ -30,12 +30,6 @@ export const addSeconds = (num: number, date: Date): Date => {
   const d = new Date(date);
   d.setSeconds(d.getSeconds() + num);
   return d;
-};
-
-export const getDateFromDay = (day: Day) => {
-  const date = new Date(day);
-  date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-  return date;
 };
 
 export const truncateDate = (date: Date): Date => {

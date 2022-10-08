@@ -9,20 +9,26 @@ import type {
 export type ChartOhlcvProps = {
   candles: OhlcData[];
   volume: Array<SingleValueData & { up: boolean }>;
+  height: number;
 };
 
-export const ChartOhlcv: FC<ChartOhlcvProps> = ({ candles, volume }) => {
+export const ChartOhlcv: FC<ChartOhlcvProps> = ({
+  candles,
+  volume,
+  height,
+}) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const volumeRef = useRef<ISeriesApi<"Histogram"> | null>(null);
 
   const backgroundColor = "transparent";
-  const height = 300;
   const textColor = "black";
 
-  const green = "rgb(38,166,154)";
-  const red = "rgb(255,82,82)";
+  const greenBar = "rgb(38,166,117)";
+  const redBar = "rgb(222,71,71)";
+  const greenVolume = "rgba(38,166,140,0.71)";
+  const redVolume = "rgba(255,82,82,0.71)";
 
   const importLibAndCreateChart = useCallback(async () => {
     if (!containerRef.current) return;
@@ -41,10 +47,10 @@ export const ChartOhlcv: FC<ChartOhlcvProps> = ({ candles, volume }) => {
     chartRef.current = chart;
 
     candlesRef.current = chart.addCandlestickSeries({
-      upColor: green,
-      downColor: red,
-      wickUpColor: green,
-      wickDownColor: red,
+      upColor: greenBar,
+      downColor: redBar,
+      wickUpColor: greenBar,
+      wickDownColor: redBar,
       borderVisible: false,
     });
 
@@ -56,7 +62,7 @@ export const ChartOhlcv: FC<ChartOhlcvProps> = ({ candles, volume }) => {
         bottom: 0,
       },
     });
-  }, [containerRef, chartRef, candlesRef, volumeRef]);
+  }, [height, containerRef, chartRef, candlesRef, volumeRef]);
 
   const onResize = useCallback(() => {
     if (!chartRef.current) return;
@@ -93,7 +99,7 @@ export const ChartOhlcv: FC<ChartOhlcvProps> = ({ candles, volume }) => {
       volume.map(({ time, value, up }) => ({
         time,
         value,
-        color: up ? green : red,
+        color: up ? greenVolume : redVolume,
       }))
     );
   }, [volume, volumeRef]);

@@ -4,7 +4,8 @@ import {
   getDflowBinanceNodesCatalog,
   nodeTextToViewType,
 } from "@ggbot2/dflow";
-import { now, truncateTimestamp } from "@ggbot2/time";
+import { UpdateTime } from "@ggbot2/models";
+import { Timestamp, now, truncateTimestamp } from "@ggbot2/time";
 import {
   DflowHost,
   DflowNodesCatalog,
@@ -32,21 +33,18 @@ type UseFlowView = (
   arg: Pick<StrategyKey, "strategyKind"> & {
     binanceSymbols?: DflowBinanceSymbolInfo[];
     containerRef: MutableRefObject<HTMLDivElement | null>;
-    setFlowChanged?: (arg: boolean) => void;
   }
-) => { flowView: FlowView | undefined };
+) => { flowView: FlowView | undefined } & Partial<UpdateTime>;
 
 /**
 @example
 ```ts
 const containerRef = useRef<HTMLDivElement | null>(null);
-const [flowChanged, setFlowChanged] = useState(false);
 
-const flowView = useFlowView({
+const { flowView, whenUpdated } = useFlowView({
   containerRef,
   strategyKind: "binance",
   binanceSymbols,
-  setFlowChanged
 });
 
 return (
@@ -57,13 +55,13 @@ return (
 export const useFlowView: UseFlowView = ({
   binanceSymbols,
   containerRef,
-  setFlowChanged,
   strategyKind,
 }) => {
   const [flowViewInstance, setFlowViewInstance] = useState<
     FlowView | undefined
   >();
   const unmounted = useRef<boolean | null>(null);
+  const [whenUpdated, setWhenUpdated] = useState<Timestamp | undefined>();
 
   const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
     if (strategyKind === "binance" && binanceSymbols)
@@ -112,14 +110,13 @@ export const useFlowView: UseFlowView = ({
       try {
         if (!flowView) return;
         const { isLoadGraph, isProgrammatic } = info;
-        console.info(action, data, info);
         const isUserInput = !isLoadGraph && !isProgrammatic;
 
         switch (action) {
           case "CREATE_EDGE": {
             const { id, from, to } = data as FlowViewOnChangeDataEdge;
             dflow.newEdge({ id, source: from, target: to });
-            if (isUserInput) setFlowChanged?.(true);
+            if (isUserInput) setWhenUpdated(now());
             break;
           }
 
@@ -186,22 +183,22 @@ export const useFlowView: UseFlowView = ({
                 break;
               }
             }
-            if (isUserInput) setFlowChanged?.(true);
+            if (isUserInput) setWhenUpdated(now());
             break;
           }
 
           case "DELETE_EDGE": {
-            if (isUserInput) setFlowChanged?.(true);
+            if (isUserInput) setWhenUpdated(now());
             break;
           }
 
           case "DELETE_NODE": {
-            if (isUserInput) setFlowChanged?.(true);
+            if (isUserInput) setWhenUpdated(now());
             break;
           }
 
           case "UPDATE_NODE": {
-            if (isUserInput) setFlowChanged?.(true);
+            if (isUserInput) setWhenUpdated(now());
             break;
           }
 
@@ -247,8 +244,8 @@ export const useFlowView: UseFlowView = ({
     containerRef,
     flowViewInstance,
     nodesCatalog,
-    setFlowChanged,
     setFlowViewInstance,
+    setWhenUpdated,
     unmounted,
   ]);
 
@@ -261,5 +258,5 @@ export const useFlowView: UseFlowView = ({
     };
   }, [flowViewInstance, dflow, importFlowView, nodesCatalog, unmounted]);
 
-  return { flowView: flowViewInstance };
+  return { flowView: flowViewInstance, whenUpdated };
 };

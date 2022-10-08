@@ -1,4 +1,5 @@
 import { BinanceSymbolInfo } from "@ggbot2/binance";
+import { StrategyFlow } from "@ggbot2/models";
 import { dflowBinancePrecision } from "./arithmetic.js";
 
 export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"];
@@ -47,8 +48,29 @@ export const isDflowBinanceSymbolInfo = (
   );
 };
 
+const dflowBinanceSymbolSeparator = "/";
+
 export const getDflowBinanceNodeSymbolKind = ({
   baseAsset,
   quoteAsset,
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
-  [baseAsset, quoteAsset].join("/");
+  [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator);
+
+type ExtractBinanceSymbolsFromFlowArg = {
+  binanceSymbols: DflowBinanceSymbolInfo[];
+} & Pick<StrategyFlow, "view">;
+
+export const extractBinanceSymbolsFromFlow = ({
+  binanceSymbols,
+  view: { nodes },
+}: ExtractBinanceSymbolsFromFlowArg): string[] => {
+  const symbols = binanceSymbols.map(({ symbol }) => symbol);
+  return nodes
+    .filter(({ text }) => text.includes(dflowBinanceSymbolSeparator))
+    .map(({ text }) => text.split(dflowBinanceSymbolSeparator).join(""))
+    .filter(
+      (element, index, array) =>
+        // `element` is a symbol and is not duplicated.
+        symbols.includes(element) && array.indexOf(element) === index
+    );
+};

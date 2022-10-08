@@ -1,4 +1,4 @@
-import { Day, today } from "@ggbot2/time";
+import { Day, addDays, getDayFromDate, today } from "@ggbot2/time";
 import {
   Dispatch,
   useCallback,
@@ -9,10 +9,11 @@ import {
 } from "react";
 import { StrategyKey } from "_routing";
 
-type State = {
-  startDay: Day;
+type State = StrategyKey & {
   isEnabled: boolean;
   isRunning: boolean;
+  startDay: Day;
+  maxDay: Day;
 };
 export type BacktestingState = State;
 
@@ -59,23 +60,39 @@ const backtestingReducer = (state: State, action: Action) => {
   }
 };
 
-const getInitialState = (
-  persistingState: PersistingState | undefined
-): State => {
-  return persistingState
-    ? {
+const getInitialState =
+  (strategyKey: StrategyKey) =>
+  (persistingState: PersistingState | undefined): State => {
+    // Max is yesterday.
+    const maxDay = getDayFromDate(addDays(-1, new Date())) as Day;
+    if (persistingState) {
+      return {
         ...persistingState,
         isRunning: false,
-      }
-    : { isEnabled: false, isRunning: false, startDay: today() };
-};
+        maxDay,
+        ...strategyKey,
+      };
+    }
+    // Default state.
+    const startDay = getDayFromDate(addDays(-7, new Date(maxDay))) as Day;
+    return {
+      isEnabled: false,
+      isRunning: false,
+      startDay,
+      maxDay,
+      ...strategyKey,
+    };
+  };
 
-export const useBacktesting = ({
-  strategyId,
-}: StrategyKey): [state: State | undefined, dispatch: BacktestingDispatch] => {
+export const useBacktesting = (
+  strategyKey: StrategyKey
+): [state: State | undefined, dispatch: BacktestingDispatch] => {
   const [isServerSide, setIsServerSide] = useState(true);
 
-  const storageKey = useMemo(() => `backtest:${strategyId}`, [strategyId]);
+  const storageKey = useMemo(
+    () => `backtest:${strategyKey.strategyKind}:${strategyKey.strategyId}`,
+    [strategyKey]
+  );
 
   const getPersistingState = useCallback<GetPersistingState>(() => {
     try {
@@ -105,7 +122,7 @@ export const useBacktesting = ({
   const [state, dispatch] = useReducer(
     backtestingReducer,
     getPersistingState(),
-    getInitialState
+    getInitialState(strategyKey)
   );
 
   const { isEnabled, startDay } = state;

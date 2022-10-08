@@ -197,6 +197,7 @@ const Page: NextPage<ServerSideProps> = ({
         <BacktestController
           state={backtesting}
           dispatch={backtestingDispatch}
+          view={flowView?.graph}
         />
 
         <div className="mb-2 w-full grow" ref={flowViewContainerRef}></div>

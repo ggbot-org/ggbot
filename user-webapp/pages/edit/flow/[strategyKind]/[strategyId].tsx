@@ -114,10 +114,9 @@ const Page: NextPage<ServerSideProps> = ({
   const [backtesting, backtestingDispatch] = useBacktesting(strategyKey);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const { flowView } = useFlowView({
+  const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
     containerRef: flowViewContainerRef,
     binanceSymbols,
-    setFlowChanged,
     strategyKind: strategyKey.strategyKind,
   });
 
@@ -192,18 +191,21 @@ const Page: NextPage<ServerSideProps> = ({
   }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
-    if (flowLoaded) readStrategyFlow(strategyKey);
+    if (!flowLoaded) readStrategyFlow(strategyKey);
   }, [flowLoaded, readStrategyFlow, strategyKey]);
 
   useEffect(() => {
     try {
       if (!flowView) return;
       if (readIsPending) return;
-      if (storedStrategyFlow?.view) {
+      if (typeof storedStrategyFlow === "undefined") return;
+      if (storedStrategyFlow === null) {
+        setFlowLoaded(true);
+      } else {
         flowView.clearGraph();
         flowView.loadGraph(storedStrategyFlow.view);
+        setFlowLoaded(true);
       }
-      setFlowLoaded(true);
     } catch (error) {
       console.error(error);
       toast.error("Cannot load flow");
@@ -211,7 +213,10 @@ const Page: NextPage<ServerSideProps> = ({
   }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
   useEffect(() => {
-    console.log("flowChanged", flowChanged);
+    if (whenUpdatedFlow) setFlowChanged(true);
+  }, [setFlowChanged, whenUpdatedFlow]);
+
+  useEffect(() => {
     // Disable Save button once saving changes start.
     if (saveIsPending) {
       setCanSave(false);
@@ -277,6 +282,7 @@ const Page: NextPage<ServerSideProps> = ({
         <BacktestController
           state={backtesting}
           dispatch={backtestingDispatch}
+          view={flowView?.graph}
         />
 
         <div
