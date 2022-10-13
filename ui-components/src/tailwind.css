@@ -14,6 +14,12 @@
     color-scheme: light dark;
   }
 
+  @media (prefers-color-scheme: dark) {
+    *::selection {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  }
+
   body {
     @apply bg-light-background text-mono-900 dark:bg-dark-background dark:text-mono-50;
   }
