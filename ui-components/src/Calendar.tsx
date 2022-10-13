@@ -147,10 +147,12 @@ export const Calendar: FC<CalendarProps> = ({
             ? "bg-primary-400 text-white"
             : isSelectable
             ? [
-                isDateOfCurrentMonth ? "text-mono-600" : "text-mono-400",
-                "hover:bg-primary-100",
+                isDateOfCurrentMonth
+                  ? "text-mono-600 dark:text-mono-300"
+                  : "text-mono-400 dark:text-mono-500",
+                "hover:bg-primary-100 hover:text-mono-600",
               ].join(" ")
-            : "text-mono-200",
+            : "text-mono-200 dark:text-mono-500",
         ].join(" "),
         onClick:
           day && isSelectable
