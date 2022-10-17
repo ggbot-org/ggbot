@@ -153,6 +153,11 @@ const Page: NextPage<ServerSideProps> = ({
     saveIsPending,
   ]);
 
+  const runIsDisabled = useMemo(() => {
+    if (runIsPending) return false;
+    return !canRun;
+  }, [canRun, runIsPending]);
+
   const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
 
   const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
@@ -245,9 +250,6 @@ const Page: NextPage<ServerSideProps> = ({
           </div>
 
           <menu className="flex h-10 flex-row gap-4 self-end">
-            <li>
-              <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
-            </li>
             {backtesting && (
               <li>
                 <BacktestCheckbox
@@ -257,6 +259,19 @@ const Page: NextPage<ServerSideProps> = ({
               </li>
             )}
             <li>
+              <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
+            </li>
+            <li>
+              <Button
+                disabled={runIsDisabled}
+                color="danger"
+                isSpinning={runIsPending}
+                onClick={onClickRun}
+              >
+                run
+              </Button>
+            </li>
+            <li>
               <Button
                 disabled={saveIsDisabled}
                 color={canSave ? "primary" : undefined}
@@ -264,16 +279,6 @@ const Page: NextPage<ServerSideProps> = ({
                 onClick={onClickSave}
               >
                 save
-              </Button>
-            </li>
-            <li>
-              <Button
-                disabled={!canRun}
-                color="danger"
-                isSpinning={runIsPending}
-                onClick={onClickRun}
-              >
-                run
               </Button>
             </li>
           </menu>
