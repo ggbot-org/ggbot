@@ -133,13 +133,13 @@ export type BinanceKline = [
   high: string,
   low: string,
   close: string,
-  volumne: string,
+  volume: string,
   closeTime: number,
   quoteVolume: string,
   numTrades: number,
   takerBaseVolume: string,
   takerQuoteVolume: string,
-  unusedField: string
+  _unused_field: string
 ];
 
 export type BinanceKlineOptionalParameters = Partial<{
@@ -148,28 +148,6 @@ export type BinanceKlineOptionalParameters = Partial<{
   /** Default 500; max 1000. */
   limit: number;
 }>;
-
-export const binanceKlineIntervals = [
-  "1m",
-  "3m",
-  "5m",
-  "15m",
-  "30m",
-  "1h",
-  "2h",
-  "4h",
-  "6h",
-  "8h",
-  "12h",
-  "1d",
-  "3d",
-  "1w",
-  "1M",
-] as const;
-export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
-export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
-  binanceKlineIntervals
-);
 
 export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;

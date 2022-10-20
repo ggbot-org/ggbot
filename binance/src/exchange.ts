@@ -13,9 +13,11 @@ import {
   BinanceOrderType,
   BinanceSymbolInfo,
   BinanceTickerPrice,
-  isBinanceKlineInterval,
 } from "./types.js";
-import { isBinanceKlineOptionalParameters } from "./typeGuards";
+import {
+  isBinanceKlineInterval,
+  isBinanceKlineOptionalParameters,
+} from "./typeGuards";
 
 /**
 BinanceExchange implements public API requests.
@@ -37,12 +39,12 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * Current average price for a symbol.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
-   *
-   * @throws {ErrorInvalidBinanceSymbol}
-   */
+  Current average price for a symbol.
+
+  {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
+
+  @throws {ErrorInvalidBinanceSymbol}
+  */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -69,10 +71,10 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * Current exchange trading rules and symbol information.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
-   */
+  Current exchange trading rules and symbol information.
+
+  {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+  */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
     const cached = exchangeInfoCache.get("exchangeInfo");
     if (typeof cached !== "undefined") return cached;
@@ -124,12 +126,12 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * Validate klines parameters.
-   *
-   * @throws {ErrorInvalidBinanceSymbol}
-   * @throws {ErrorInvalidBinanceKlineInterval}
-   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
-   */
+  Validate klines parameters.
+
+  @throws {ErrorInvalidBinanceSymbol}
+  @throws {ErrorInvalidBinanceKlineInterval}
+  @throws {ErrorInvalidBinanceKlineOptionalParameters}
+  */
   async klinesParametersAreValidOrThrow(
     symbol: string,
     interval: string,
@@ -144,18 +146,18 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * UIKlines
-   *
-   * The request is similar to klines having the same parameters and response.
-   *
-   * `uiKlines` return modified kline data, optimized for presentation of candlestick charts.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
-   *
-   * @throws {ErrorInvalidBinanceSymbol}
-   * @throws {ErrorInvalidBinanceKlineInterval}
-   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
-   */
+  UIKlines
+
+  The request is similar to klines having the same parameters and response.
+
+  `uiKlines` return modified kline data, optimized for presentation of candlestick charts.
+
+  {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
+
+  @throws {ErrorInvalidBinanceSymbol}
+  @throws {ErrorInvalidBinanceKlineInterval}
+  @throws {ErrorInvalidBinanceKlineOptionalParameters}
+  */
   async uiKlines(
     symbol: string,
     interval: string,
@@ -178,8 +180,8 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * @throws {ErrorInvalidBinanceSymbol}
-   */
+  @throws {ErrorInvalidBinanceSymbol}
+  */
   async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -190,12 +192,12 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-   * Latest price for a symbol.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
-   *
-   * @throws {ErrorInvalidBinanceSymbol}
-   */
+  Latest price for a symbol.
+
+  {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
+
+  @throws {ErrorInvalidBinanceSymbol}
+  */
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);

@@ -1,3 +1,4 @@
+import { coerceToDecimal } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
 import { BinanceDflowContext as Context } from "../context.js";
 
@@ -10,26 +11,46 @@ const marketOrderInputs = [
 ];
 const orderOutputs = [output("object", { name: "order" })];
 
-export class MarketBuy extends DflowNode {
-  static kind = "marketBuy";
+export class BuyMarket extends DflowNode {
+  static kind = "buyMarket";
   static inputs = marketOrderInputs;
   static outputs = orderOutputs;
   async run() {
     const { binance } = this.host.context as Context;
-    const symbol = this.input(0).data;
-    const order = await binance.newOrder(symbol, "BUY", "MARKET", {});
+    const symbol = this.input(0).data as string;
+    const quantity = this.input(1).data as number | undefined;
+    const quoteOrderQty = this.input(1).data as number | undefined;
+    const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
+    if (!isBinanceSymbol) return this.clearOutputs();
+    const order = await binance.newOrder(symbol, "BUY", "MARKET", {
+      quantity: quantity === undefined ? undefined : coerceToDecimal(quantity),
+      quoteOrderQty:
+        quoteOrderQty === undefined
+          ? undefined
+          : coerceToDecimal(quoteOrderQty),
+    });
     this.output(0).data = order;
   }
 }
 
-export class MarketSell extends DflowNode {
-  static kind = "marketSell";
+export class SellMarket extends DflowNode {
+  static kind = "sellMarket";
   static inputs = marketOrderInputs;
   static outputs = orderOutputs;
   async run() {
     const { binance } = this.host.context as Context;
-    const symbol = this.input(0).data;
-    const order = await binance.newOrder(symbol, "SELL", "MARKET", {});
+    const symbol = this.input(0).data as string;
+    const quantity = this.input(1).data as number | undefined;
+    const quoteOrderQty = this.input(1).data as number | undefined;
+    const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
+    if (!isBinanceSymbol) return this.clearOutputs();
+    const order = await binance.newOrder(symbol, "SELL", "MARKET", {
+      quantity: quantity === undefined ? undefined : coerceToDecimal(quantity),
+      quoteOrderQty:
+        quoteOrderQty === undefined
+          ? undefined
+          : coerceToDecimal(quoteOrderQty),
+    });
     this.output(0).data = order;
   }
 }

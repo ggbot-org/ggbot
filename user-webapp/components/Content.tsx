@@ -59,7 +59,7 @@ export const Content: FC<Props> = ({
         <p className="text-center">The network connection has been lost.</p>
       )}
 
-      <div className="min-w-screen min-h-screen flex flex-col ">
+      <div className="min-w-screen min-h-screen flex flex-col">
         {message}
 
         {topbar}

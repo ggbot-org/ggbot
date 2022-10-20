@@ -2,7 +2,7 @@ import { DflowGraphExecutionReport, DflowNodesCatalog } from "dflow";
 import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view";
 import { DflowCommonContext } from "./context.js";
 
-export type DflowCommonExecutorInput = Omit<
+export type DflowCommonExecutorContext = Omit<
   DflowCommonContext,
   "memoryChanged"
 >;
@@ -11,24 +11,21 @@ export type DflowCommonExecutorOutput = Pick<
   DflowCommonContext,
   "memory" | "memoryChanged"
 > & {
-  execution: DflowGraphExecutionReport;
+  execution: null | DflowGraphExecutionReport;
 };
 
-/**
- * Is a subset of `FlowViewSerializableGraph`.
- */
+/** A subset of `FlowViewSerializableGraph`. */
 export type DflowExecutorView = {
   edges: Pick<FlowViewSerializableEdge, "id" | "from" | "to">[];
   nodes: Pick<FlowViewSerializableNode, "id" | "ins" | "outs" | "text">[];
 };
 
 export interface DflowExecutor<
-  RunInput extends DflowCommonExecutorInput,
+  RunContext extends DflowCommonExecutorContext,
   RunOutput extends DflowCommonExecutorOutput
 > {
-  readonly view: DflowExecutorView;
   readonly nodesCatalog: DflowNodesCatalog;
-  run(_: RunInput): Promise<RunOutput>;
+  run(context: RunContext, view: DflowExecutorView): Promise<RunOutput>;
 }
 
 export const getDflowExecutionOutputData = (

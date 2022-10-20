@@ -3,7 +3,7 @@ import { DflowNode } from "dflow";
 const { input, output } = DflowNode;
 
 export const inputClose = input("array", { name: "close" });
-export const outputClose = input("array", { name: "close" });
+export const outputClose = output("array", { name: "close" });
 
 export const inputHigh = input("array", { name: "high" });
 export const outputHigh = output("array", { name: "high" });

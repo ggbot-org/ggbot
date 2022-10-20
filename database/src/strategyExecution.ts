@@ -1,5 +1,11 @@
-import { BinanceClient, BinanceConnector } from "@ggbot2/binance";
 import {
+  BinanceClient,
+  BinanceConnector,
+  BinanceKline,
+  BinanceKlineInterval,
+} from "@ggbot2/binance";
+import {
+  BinanceDflow,
   BinanceDflowExecutor,
   getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
@@ -12,7 +18,7 @@ import {
   updatedNow,
   StrategyMemory,
 } from "@ggbot2/models";
-import { now, truncateTimestamp } from "@ggbot2/time";
+import { truncateTimestamp } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyExecutionPathname } from "./_dataBucketLocators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
@@ -24,14 +30,24 @@ import {
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
+class Binance extends BinanceClient implements BinanceDflow {
+  async candles(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    limit: number
+  ): Promise<BinanceKline[]> {
+    return await this.klines(symbol, interval, { limit });
+  }
+}
+
 /**
- * Execute a ggbot2 strategy.
- *
- * It can point to the actual exchange or simulate an execution with a given balance or at a given time.
- *
- * @throws {ErrorMissingBinanceApiConfig}
- * @throws {ErrorUnimplementedStrategyKind}
- */
+Execute a ggbot2 strategy.
+
+It can point to the actual exchange or simulate an execution with a given balance or at a given time.
+
+@throws {ErrorMissingBinanceApiConfig}
+@throws {ErrorUnimplementedStrategyKind}
+*/
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   strategyId,
@@ -54,20 +70,19 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       if (!binanceApiConfig)
         throw new ErrorMissingBinanceApiConfig({ accountId });
 
-      const binance = new BinanceClient({ baseUrl, ...binanceApiConfig });
+      const binance = new Binance({ baseUrl, ...binanceApiConfig });
 
       const { symbols } = await binance.exchangeInfo();
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
 
-      const executor = new BinanceDflowExecutor(
-        binance,
-        strategyFlow.view,
-        nodesCatalog
+      const executor = new BinanceDflowExecutor(binance, nodesCatalog);
+      const result = await executor.run(
+        {
+          memory,
+          timestamp: truncateTimestamp().to("second"),
+        },
+        strategyFlow.view
       );
-      const result = await executor.run({
-        memory,
-        timestamp: truncateTimestamp().to("second"),
-      });
 
       // Handle memory changes
       if (result.memoryChanged) {

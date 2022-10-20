@@ -8,7 +8,7 @@ import {
 } from "./symbols.js";
 import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js";
 import { Candles, TickerPrice } from "./nodes/market.js";
-import { MarketBuy, MarketSell } from "./nodes/trade.js";
+import { BuyMarket, SellMarket } from "./nodes/trade.js";
 
 const { output } = DflowNode;
 
@@ -73,8 +73,8 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
     [Candles.kind]: Candles,
     [TickerPrice.kind]: TickerPrice,
     // trade
-    [MarketBuy.kind]: MarketBuy,
-    [MarketSell.kind]: MarketSell,
+    [BuyMarket.kind]: BuyMarket,
+    [SellMarket.kind]: SellMarket,
     ...commonNodesCatalog,
   };
 

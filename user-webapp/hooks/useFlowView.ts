@@ -1,6 +1,7 @@
 import {
   BinanceDflowHost,
   DflowBinanceSymbolInfo,
+  BinanceDflowExecutor,
   getDflowBinanceNodesCatalog,
   nodeTextToViewType,
 } from "@ggbot2/dflow";
@@ -27,6 +28,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { BinanceDflow } from "_flow/binance";
 import { StrategyKey } from "_routing";
 
 type UseFlowView = (
@@ -57,9 +59,7 @@ export const useFlowView: UseFlowView = ({
   containerRef,
   strategyKind,
 }) => {
-  const [flowViewInstance, setFlowViewInstance] = useState<
-    FlowView | undefined
-  >();
+  const flowViewRef = useRef<FlowView>();
   const unmounted = useRef<boolean | null>(null);
   const [whenUpdated, setWhenUpdated] = useState<Timestamp | undefined>();
 
@@ -69,15 +69,30 @@ export const useFlowView: UseFlowView = ({
   }, [binanceSymbols, strategyKind]);
 
   const dflow = useMemo<DflowHost | undefined>(() => {
-    if (strategyKind === "binance" && nodesCatalog) {
-      const timestamp = truncateTimestamp({ value: now(), to: "second" });
-      return new BinanceDflowHost({ nodesCatalog }, { memory: {}, timestamp });
-    }
+    if (strategyKind !== "binance") return;
+    if (!nodesCatalog) return;
+    const timestamp = truncateTimestamp().to("second");
+    const dflow = new BinanceDflowHost(
+      { nodesCatalog },
+      { memory: {}, timestamp }
+    );
+    dflow.verbose = true;
+    return dflow;
   }, [nodesCatalog, strategyKind]);
+
+  const binanceExecutor = useMemo<BinanceDflowExecutor | undefined>(() => {
+    if (strategyKind !== "binance") return;
+    if (!nodesCatalog) return;
+    if (!dflow) return;
+    const binance = new BinanceDflow();
+    const executor = new BinanceDflowExecutor(binance, nodesCatalog);
+    return executor;
+  }, [dflow, nodesCatalog, strategyKind]);
 
   const importFlowView = useCallback(async () => {
     if (!nodesCatalog || !dflow) return;
-    if (unmounted.current || !containerRef.current || flowViewInstance) return;
+    if (unmounted.current || !containerRef.current || !flowViewRef.current)
+      return;
     const { FlowView } = await import("flow-view");
     const { FlowViewNodeCandlesChart, FlowViewNodeInfo, FlowViewNodeJson } =
       await import("../flow/nodes/index.js");
@@ -104,7 +119,7 @@ export const useFlowView: UseFlowView = ({
         .map((kind) => ({ name: kind }))
         .sort(),
     });
-    setFlowViewInstance(flowView);
+    flowViewRef.current = flowView;
 
     const onChangeFlowView: FlowViewOnChange = ({ action, data }, info) => {
       try {
@@ -207,6 +222,7 @@ export const useFlowView: UseFlowView = ({
         }
       } catch (error) {
         console.error(error);
+
         switch (action) {
           case "CREATE_EDGE": {
             if (typeof data !== "object" || data === null) break;
@@ -240,23 +256,37 @@ export const useFlowView: UseFlowView = ({
       }
     };
     flowView.onChange(onChangeFlowView);
-  }, [
-    containerRef,
-    flowViewInstance,
-    nodesCatalog,
-    setFlowViewInstance,
-    setWhenUpdated,
-    unmounted,
-  ]);
+  }, [containerRef, flowViewRef, nodesCatalog, setWhenUpdated, unmounted]);
+
+  useEffect(() => {
+    if (!whenUpdated) return;
+    (async () => {
+      const flowView = flowViewRef.current;
+      if (!flowView) return;
+      switch (strategyKind) {
+        case "binance": {
+          if (!binanceExecutor) return;
+          await binanceExecutor.run(
+            { memory: {}, timestamp: truncateTimestamp().to("minute") },
+            flowView.graph
+          );
+          // TODO update flow with mocked execution if is not "live"
+          break;
+        }
+        default:
+          break;
+      }
+    })();
+  }, [binanceExecutor, flowViewRef, strategyKind, whenUpdated]);
 
   useEffect(() => {
     if (!nodesCatalog || !dflow) return;
     importFlowView();
     return () => {
       unmounted.current = true;
-      flowViewInstance?.destroy();
+      flowViewRef.current?.destroy();
     };
-  }, [flowViewInstance, dflow, importFlowView, nodesCatalog, unmounted]);
+  }, [flowViewRef, dflow, importFlowView, nodesCatalog, unmounted]);
 
-  return { flowView: flowViewInstance, whenUpdated };
+  return { flowView: flowViewRef.current, whenUpdated };
 };

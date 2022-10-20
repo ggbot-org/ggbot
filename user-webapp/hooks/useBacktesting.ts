@@ -1,4 +1,4 @@
-import { Day, addDays, getDayFromDate, today } from "@ggbot2/time";
+import { Day, addDays, getDayFromDate } from "@ggbot2/time";
 import {
   Dispatch,
   useCallback,

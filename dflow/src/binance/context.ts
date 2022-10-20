@@ -1,6 +1,8 @@
 import {
   BinanceAccountInformation,
   BinanceExchangeInfo,
+  BinanceKline,
+  BinanceKlineInterval,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
   BinanceOrderSide,
@@ -13,6 +15,11 @@ export interface BinanceDflow {
   // Public API
   // //////////////////////////////////////////////////////////////////
 
+  candles(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    limit: number
+  ): Promise<BinanceKline[]>;
   exchangeInfo(): Promise<BinanceExchangeInfo>;
   isBinanceSymbol(arg: unknown): Promise<boolean>;
   tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
@@ -22,11 +29,24 @@ export interface BinanceDflow {
 
   account(): Promise<BinanceAccountInformation>;
   newOrder(
-    symbol: unknown,
+    symbol: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
-  ): Promise<BinanceOrderRespFULL>;
+  ): Promise<
+    Omit<
+      BinanceOrderRespFULL,
+      | "clientOrderId"
+      | "cummulativeQuoteQty"
+      | "executedQty"
+      | "orderId"
+      | "orderListId"
+      | "origQty"
+      | "status"
+      | "timeInForce"
+      | "transactTime"
+    >
+  >;
 }
 
 export type BinanceDflowContext = DflowCommonContext & {

@@ -13,23 +13,27 @@ export type ArithmeticOperator = (
   numDecimals?: number
 ) => Decimal;
 
+/** Equality operator. */
 export const equal = (a: MaybeDecimal, b: MaybeDecimal): boolean => {
   const numDecimals = maxNumOfDecimals([a, b]);
   return Number(a).toFixed(numDecimals) === Number(b).toFixed(numDecimals);
 };
 
+/** Addition operator. */
 export const add: ArithmeticOperator = (a, b, numDecimals) =>
   coerceToDecimal(
     Number(a) + Number(b),
     numDecimals ?? maxNumOfDecimals([a, b])
   );
 
+/** Subtraction operator. */
 export const sub: ArithmeticOperator = (a, b, numDecimals) =>
   coerceToDecimal(
     Number(a) - Number(b),
     numDecimals ?? maxNumOfDecimals([a, b])
   );
 
+/** Multiplication operator. */
 export const mul: ArithmeticOperator = (a, b, numDecimals) =>
   coerceToDecimal(
     Number(a) * Number(b),
@@ -37,8 +41,9 @@ export const mul: ArithmeticOperator = (a, b, numDecimals) =>
   );
 
 /**
- * @throws {ErrorArithmeticOperatorCannotDivideByZero}
- */
+Division operator.
+@throws {ErrorArithmeticOperatorCannotDivideByZero}
+*/
 export const div: ArithmeticOperator = (a, b, numDecimals) => {
   if (equal(b, coerceToDecimal(0, numOfDecimals(b))))
     throw new ErrorCannotDivideByZero();

@@ -1,4 +1,3 @@
-import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
 import { readStrategy } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
@@ -22,6 +21,7 @@ import {
   NavigationLabel,
   StrategyItem,
 } from "_components";
+import { binance } from "_flow/binance";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
@@ -58,9 +58,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { strategyKind } = strategyKey;
 
   if (strategyKind === "binance") {
-    const binance = new BinanceExchange({
-      baseUrl: BinanceConnector.defaultBaseUrl,
-    });
     const exchangeInfo = await binance.exchangeInfo();
     const binanceSymbols = exchangeInfo.symbols.filter(
       isDflowBinanceSymbolInfo

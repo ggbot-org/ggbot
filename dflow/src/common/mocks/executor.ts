@@ -1,8 +1,7 @@
 import type { DflowNodesCatalog } from "dflow";
 import { DflowCommonContext } from "../context.js";
-import { ErrorMissingDflowExecutionReport } from "../../errors.js";
 import {
-  DflowCommonExecutorInput,
+  DflowCommonExecutorContext,
   DflowCommonExecutorOutput,
   DflowExecutor,
   DflowExecutorView,
@@ -11,7 +10,8 @@ import { nodesCatalog } from "../nodesCatalog.js";
 import { DflowCommonHostMock } from "./host.js";
 
 export class DflowExecutorMock
-  implements DflowExecutor<DflowCommonExecutorInput, DflowCommonExecutorOutput>
+  implements
+    DflowExecutor<DflowCommonExecutorContext, DflowCommonExecutorOutput>
 {
   readonly view: DflowExecutorView;
   nodesCatalog: DflowNodesCatalog;
@@ -19,7 +19,7 @@ export class DflowExecutorMock
     this.view = view;
     this.nodesCatalog = nodesCatalog;
   }
-  async run(context: DflowCommonExecutorInput) {
+  async run(context: DflowCommonExecutorContext) {
     const { view } = this;
     const dflow = new DflowCommonHostMock(
       { nodesCatalog: this.nodesCatalog },
@@ -29,7 +29,6 @@ export class DflowExecutorMock
     dflow.verbose = true;
     await dflow.run();
     const execution = dflow.executionReport;
-    if (!execution) throw new ErrorMissingDflowExecutionReport();
     const { memory, memoryChanged } = dflow.context as DflowCommonContext;
     return {
       execution,

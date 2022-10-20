@@ -1,5 +1,4 @@
 import {
-  BinanceConnector,
   BinanceExchange,
   BinanceExchangeInfo,
   BinanceKline,
@@ -12,6 +11,7 @@ import {
   DailyIntervalSelector,
   DailyIntervalSelectorProps,
 } from "_components";
+import { binance } from "_flow/binance";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { StrategyFlow } from "_routing";
 
@@ -25,16 +25,16 @@ export const BacktestController: FC<BacktestControllerProps> = ({
   dispatch,
   view,
 }) => {
-  if (!state || !state.isEnabled) return null;
-
-  const { maxDay, startDay, strategyKind } = state;
-
   const setStartDay = useCallback<DailyIntervalSelectorProps["setStartDay"]>(
     (day) => {
       dispatch({ type: "SET_START_DAY", day });
     },
     [dispatch]
   );
+
+  if (!state || !state.isEnabled) return null;
+
+  const { maxDay, startDay, strategyKind } = state;
 
   return (
     <div className="my-2">
@@ -63,12 +63,6 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
     BinanceExchangeInfo | undefined
   >();
 
-  const binance = useMemo<BinanceExchange>(() => {
-    return new BinanceExchange({
-      baseUrl: BinanceConnector.defaultBaseUrl,
-    });
-  }, []);
-
   const selectedSymbols = useMemo<string[]>(() => {
     if (!exchangeInfo) return [];
 
@@ -79,16 +73,15 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
   }, [exchangeInfo, view]);
 
   useEffect(() => {
-    const fetchExchangeInfo = async () => {
+    (async () => {
       try {
         const exchangeInfo = await binance.exchangeInfo();
         setExchangeInfo(exchangeInfo);
       } catch (error) {
         console.error(error);
       }
-    };
-    fetchExchangeInfo();
-  }, [binance, setExchangeInfo]);
+    })();
+  }, [setExchangeInfo]);
 
   const { startTime, endTime } = useMemo(() => {
     return {
@@ -133,16 +126,14 @@ export const BinanceKlinesChart: FC<BinanceKlinesChartProps> = ({
   const [klines, setKlines] = useState<BinanceKline[]>([]);
 
   useEffect(() => {
-    async function fetchKlines() {
-      const interval = "1d";
-      const klines = await binance.klines(symbol, interval, {
+    (async () => {
+      const data = await binance.klines(symbol, "1d", {
         startTime,
         endTime,
       });
-      setKlines(klines);
-    }
-    fetchKlines();
-  }, [binance, setKlines, startTime, endTime]);
+      setKlines(data);
+    })();
+  }, [binance, setKlines, symbol, startTime, endTime]);
 
   const { candles, volume } = useMemo(
     () =>
