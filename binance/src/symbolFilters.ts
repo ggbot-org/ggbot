@@ -1,4 +1,4 @@
-import { coerceToDecimal, decimalToNumber, sub } from "@ggbot2/arithmetic";
+import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
 import type {
   BinanceSymbolFilter,
   BinanceSymbolFilterLotSize,
@@ -31,11 +31,7 @@ export const lotSizeIsValid: SymbolFilterIsValid<BinanceSymbolFilterLotSize> = (
 ) => {
   if (Number(minQty) !== 0 && value < minQty) return false;
   if (Number(maxQty) !== 0 && value > maxQty) return false;
-  return (
-    decimalToNumber(sub(coerceToDecimal(value), coerceToDecimal(minQty))) %
-      Number(stepSize) ===
-    0
-  );
+  return Number.isInteger(decimalToNumber(div(sub(value, minQty), stepSize)));
 };
 
 export const minNotionalIsValid: SymbolFilterIsValid<
