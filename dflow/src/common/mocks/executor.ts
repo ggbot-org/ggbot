@@ -8,8 +8,6 @@ import {
   DflowExecutorView,
 } from "../executor.js";
 import { nodesCatalog } from "../nodesCatalog.js";
-import { commonNodeTextToDflowKind } from "../nodeResolution.js";
-import { dflowValidate } from "../validate.js";
 import { DflowCommonHostMock } from "./host.js";
 
 export class DflowExecutorMock
@@ -20,13 +18,6 @@ export class DflowExecutorMock
   constructor({ view }: Pick<DflowExecutorMock, "view">) {
     this.view = view;
     this.nodesCatalog = nodesCatalog;
-  }
-  async prepare() {
-    dflowValidate({
-      nodesCatalog: this.nodesCatalog,
-      nodeTextToDflowKind: commonNodeTextToDflowKind,
-      view: this.view,
-    });
   }
   async run(context: DflowCommonExecutorInput) {
     const { view } = this;

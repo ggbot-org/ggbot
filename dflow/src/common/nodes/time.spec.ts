@@ -16,7 +16,6 @@ describe("today", () => {
         edges: [],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: new Date(day).toJSON(),

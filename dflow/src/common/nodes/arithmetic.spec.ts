@@ -30,7 +30,6 @@ describe("add", () => {
         ],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),
@@ -67,7 +66,6 @@ describe("sub", () => {
         ],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),
@@ -104,7 +102,6 @@ describe("mul", () => {
         ],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),
@@ -141,7 +138,6 @@ describe("div", () => {
         ],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),

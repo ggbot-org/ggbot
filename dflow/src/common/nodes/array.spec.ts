@@ -22,7 +22,6 @@ describe("shift", () => {
         edges: [{ id: "e1", from: ["array", "out"], to: [nodeId, "in"] }],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),
@@ -54,7 +53,6 @@ describe("pop", () => {
         edges: [{ id: "e1", from: ["array", "out"], to: [nodeId, "in"] }],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),
@@ -94,7 +92,6 @@ describe("push", () => {
         ],
       },
     });
-    await executor.prepare();
     const { execution } = await executor.run({
       memory: {},
       timestamp: now(),

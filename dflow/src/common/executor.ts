@@ -27,8 +27,7 @@ export interface DflowExecutor<
   RunOutput extends DflowCommonExecutorOutput
 > {
   readonly view: DflowExecutorView;
-  nodesCatalog: DflowNodesCatalog;
-  prepare(): Promise<void>;
+  readonly nodesCatalog: DflowNodesCatalog;
   run(_: RunInput): Promise<RunOutput>;
 }
 

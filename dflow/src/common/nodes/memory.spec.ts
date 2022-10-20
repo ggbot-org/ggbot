@@ -21,7 +21,6 @@ describe("deleteMemory", () => {
         edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }],
       },
     });
-    await executor.prepare();
     const { memory, memoryChanged } = await executor.run({
       memory: { key1: "value1" },
       timestamp: now(),
@@ -50,7 +49,6 @@ describe("getMemory", () => {
         edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }],
       },
     });
-    await executor.prepare();
     const value = "value1";
     const { execution, memory, memoryChanged } = await executor.run({
       memory: { key1: value },
@@ -89,7 +87,6 @@ describe("setMemory", () => {
         ],
       },
     });
-    await executor.prepare();
     const { memory, memoryChanged } = await executor.run({
       memory: {},
       timestamp: now(),

@@ -6,12 +6,9 @@ import {
   DflowExecutor,
   DflowExecutorView,
 } from "../common/executor.js";
-import { dflowValidate } from "../common/validate.js";
 import { ErrorMissingDflowExecutionReport } from "../errors.js";
 import type { BinanceDflow, BinanceDflowContext } from "./context.js";
 import { BinanceDflowHost } from "./host.js";
-import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
-import { binanceNodeTextToDflowKind } from "./nodeResolution.js";
 
 type BinanceDflowExecutorInput = DflowCommonExecutorInput;
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
@@ -22,39 +19,11 @@ export class BinanceDflowExecutor
   implements
     DflowExecutor<BinanceDflowExecutorInput, BinanceDflowExecutorOutput>
 {
-  readonly binance: BinanceDflow;
-  readonly view: DflowExecutorView;
-  nodesCatalog: DflowNodesCatalog;
-
-  constructor({
-    binance,
-    view,
-  }: Pick<BinanceDflowExecutor, "binance" | "view">) {
-    this.binance = binance;
-    this.view = view;
-    this.nodesCatalog = {};
-  }
-
-  /**
-   * Populate nodesCatalog, validate view. Run it once, before `run()`.
-   * @example
-   * ```ts
-   * await dflow.prepare();
-   * await dflow.run({ memory: {} });
-   * ```
-   * @throws {ErrorUknownDflowNodes}
-   */
-  async prepare() {
-    const { symbols } = await this.binance.exchangeInfo();
-    const binanceNodesCatalog = getDflowBinanceNodesCatalog({ symbols });
-    dflowValidate({
-      nodesCatalog: binanceNodesCatalog,
-      nodeTextToDflowKind: binanceNodeTextToDflowKind,
-      view: this.view,
-    });
-    // If `dflowValidate` does not throw, update `nodesCatalog` with Binance nodes.
-    this.nodesCatalog = binanceNodesCatalog;
-  }
+  constructor(
+    readonly binance: BinanceDflow,
+    readonly view: DflowExecutorView,
+    readonly nodesCatalog: DflowNodesCatalog
+  ) {}
 
   /**
    * Execute flow on given context.
@@ -70,7 +39,10 @@ export class BinanceDflowExecutor
     await dflow.run();
     const execution = dflow.executionReport;
     if (!execution) throw new ErrorMissingDflowExecutionReport();
-    const { memory, memoryChanged } = dflow.context as BinanceDflowContext;
+    const { memory, memoryChanged } = dflow.context as Pick<
+      BinanceDflowContext,
+      "memory" | "memoryChanged"
+    >;
     return { balances: [], execution, memory, memoryChanged };
   }
 }
