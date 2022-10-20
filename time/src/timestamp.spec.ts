@@ -16,19 +16,19 @@ describe("truncateTimestamp", () => {
   it("truncates a timestamp to given granularity", () => {
     [
       {
-        input: { value: "2022-07-23T11:43:05.841Z", to: "second" },
+        input: { timestamp: "2022-07-23T11:43:05.841Z", truncation: "second" },
         output: "2022-07-23T11:43:05.000Z",
       },
       {
-        input: { value: "2022-07-23T11:43:05.841Z", to: "minute" },
+        input: { timestamp: "2022-07-23T11:43:05.841Z", truncation: "minute" },
         output: "2022-07-23T11:43:00.000Z",
       },
       {
-        input: { value: "2022-07-23T11:43:05.841Z", to: "hour" },
+        input: { timestamp: "2022-07-23T11:43:05.841Z", truncation: "hour" },
         output: "2022-07-23T11:00:00.000Z",
       },
-    ].forEach(({ input, output }) => {
-      expect(truncateTimestamp(input)).toBe(output);
+    ].forEach(({ input: { timestamp, truncation }, output }) => {
+      expect(truncateTimestamp(timestamp).to(truncation)).toBe(output);
     });
   });
 });

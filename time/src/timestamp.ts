@@ -21,32 +21,18 @@ export const now: Now = () => new Date().toJSON();
 export const timestampTruncations = ["second", "minute", "hour"];
 export type TimestampTruncation = typeof timestampTruncations[number];
 
-export type TruncateTimestamp = (arg: {
-  value: unknown;
-  to: TimestampTruncation;
-}) => Timestamp;
+type TruncateTimestamp = (arg?: Timestamp) => {
+  to: (arg: TimestampTruncation) => Timestamp;
+};
 
-export const truncateTimestamp: TruncateTimestamp = ({
-  value,
-  to: truncation,
-}) => {
-  if (!isTimestamp(value)) throw new TypeError(`Invalid timestamp ${value}`);
-  const date = new Date(value);
-  switch (truncation) {
-    case "second":
+export const truncateTimestamp: TruncateTimestamp = (timestamp = now()) => {
+  const date = new Date(timestamp);
+  return {
+    to: (truncation) => {
       date.setMilliseconds(0);
-      break;
-    case "minute":
-      date.setMilliseconds(0);
-      date.setSeconds(0);
-      break;
-    case "hour":
-      date.setMilliseconds(0);
-      date.setSeconds(0);
-      date.setMinutes(0);
-      break;
-    default:
-      throw new TypeError(`Unhandled truncation ${truncation}`);
-  }
-  return date.toJSON();
+      if (["minute", "hour"].includes(truncation)) date.setUTCSeconds(0);
+      if (["hour"].includes(truncation)) date.setUTCMinutes(0);
+      return date.toJSON();
+    },
+  };
 };
