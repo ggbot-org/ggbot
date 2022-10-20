@@ -1,5 +1,8 @@
 import { BinanceClient, BinanceConnector } from "@ggbot2/binance";
-import { BinanceDflowExecutor } from "@ggbot2/dflow";
+import {
+  BinanceDflowExecutor,
+  getDflowBinanceNodesCatalog,
+} from "@ggbot2/dflow";
 import {
   DeleteStrategyExecution,
   ExecuteStrategy,
@@ -53,14 +56,17 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       const binance = new BinanceClient({ baseUrl, ...binanceApiConfig });
 
-      const executor = new BinanceDflowExecutor({
+      const { symbols } = await binance.exchangeInfo();
+      const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
+
+      const executor = new BinanceDflowExecutor(
         binance,
-        view: strategyFlow.view,
-      });
-      await executor.prepare();
+        strategyFlow.view,
+        nodesCatalog
+      );
       const result = await executor.run({
         memory,
-        timestamp: truncateTimestamp({ value: now(), to: "second" }),
+        timestamp: truncateTimestamp().to("second"),
       });
 
       // Handle memory changes

@@ -70,6 +70,7 @@ export const EditableInput: FC<EditableInputProps> = ({
           return reset();
         case "Tab":
           event.currentTarget.blur();
+          break;
         default:
           break;
       }
