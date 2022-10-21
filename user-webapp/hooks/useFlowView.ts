@@ -60,7 +60,6 @@ export const useFlowView: UseFlowView = ({
   strategyKind,
 }) => {
   const flowViewRef = useRef<FlowView>();
-  const unmounted = useRef<boolean | null>(null);
   const [whenUpdated, setWhenUpdated] = useState<Timestamp | undefined>();
 
   const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
@@ -90,9 +89,8 @@ export const useFlowView: UseFlowView = ({
   }, [dflow, nodesCatalog, strategyKind]);
 
   const importFlowView = useCallback(async () => {
+    if (!containerRef.current) return;
     if (!nodesCatalog || !dflow) return;
-    if (unmounted.current || !containerRef.current || !flowViewRef.current)
-      return;
     const { FlowView } = await import("flow-view");
     const { FlowViewNodeCandlesChart, FlowViewNodeInfo, FlowViewNodeJson } =
       await import("../flow/nodes/index.js");
@@ -256,7 +254,7 @@ export const useFlowView: UseFlowView = ({
       }
     };
     flowView.onChange(onChangeFlowView);
-  }, [containerRef, flowViewRef, nodesCatalog, setWhenUpdated, unmounted]);
+  }, [containerRef, flowViewRef, nodesCatalog, setWhenUpdated]);
 
   useEffect(() => {
     if (!whenUpdated) return;
@@ -283,10 +281,9 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog || !dflow) return;
     importFlowView();
     return () => {
-      unmounted.current = true;
       flowViewRef.current?.destroy();
     };
-  }, [flowViewRef, dflow, importFlowView, nodesCatalog, unmounted]);
+  }, [flowViewRef, dflow, importFlowView, nodesCatalog]);
 
   return { flowView: flowViewRef.current, whenUpdated };
 };
