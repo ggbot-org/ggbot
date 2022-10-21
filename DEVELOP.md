@@ -3,6 +3,7 @@
 ## Rules
 
 1. Use lowercase strings everywhere, unless it makes sense to use an uppercase letter.
+2. Stay minimal, less is more.
 
 ## Requirements
 
@@ -32,6 +33,13 @@ See also [`env` workspace](./env).
 
 Repository structure and conventions are tested by `npm run repo_tests`, implemented [here](./repo_tests.js).
 See also [internal npm workspaces documentation](./docs/workspaces.md).
+
+## Dependencies
+
+Check deps: `npm outdated`
+Update deps: `npm update`
+
+Notice that npm updates to *minor* versions. It is a good idea to not automate *major* upgrades.
 
 ## DevOps
 
