@@ -20,8 +20,7 @@
     "@ggbot2/aws": "file:aws",
     "@ggbot2/dflow": "file:dflow",
     "@ggbot2/email-messages": "file:email-messages",
-    "@ggbot2/test-data": "file:test-data",
-    "uuid": "^8.3.2"
+    "@ggbot2/test-data": "file:test-data"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
