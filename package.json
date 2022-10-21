@@ -81,6 +81,7 @@
     "prebuild:website": "npm run build:assets && npm run build:ui-components",
     "pree2e:chromium": "npm run build:user-webapp:package",
     "repo_tests": "node repo_tests.js",
+    "start": "npm run dev --workspace user-webapp",
     "start:executor": "npm run start --workspace executor",
     "task:create": "npm run task:create --workspace devops",
     "task:showDevopsPolicy": "npm run task:showDevopsPolicy --workspace devops",
