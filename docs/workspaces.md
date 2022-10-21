@@ -43,7 +43,8 @@ Configure [eslint](https://eslint.org/) when it makes sense.
 ```json
 {
   "rules": {
-    "no-console": ["error", { "allow": ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-warning-comments": "error"
   }
 }
 ```
