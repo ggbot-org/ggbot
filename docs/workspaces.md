@@ -28,12 +28,25 @@ The root package.json exposes also scripts for the workspace, for example
 
 A basic workspace package is a folder with the following files:
 
+* .eslintrc.json
 * .gitignore
 * jest.config.cjs
 * package.json
 * src/index.ts
 * tsconfig.json
 * tsconfig.build.json
+
+### .eslintrc.json
+
+Configure [eslint](https://eslint.org/) when it makes sense.
+
+```json
+{
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  }
+}
+```
 
 ### .gitignore
 
@@ -79,6 +92,7 @@ module.exports = {
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "lint": "eslint src",
     "jest": "jest",
     "test": "npm run tsc--noEmit; npm run jest",
     "tsc--noEmit": "tsc --noEmit --project ."
@@ -91,6 +105,7 @@ module.exports = {
     // Use actual version numbers here.
     "@types/jest": "^x.y.z",
     "@types/node": "^x.y.z",
+    "eslint": "^x.y.z",
     "jest": "^x.y.z",
     "ts-jest": "^x.y.z",
     "typescript": "^x.y.z"
@@ -136,7 +151,7 @@ export * from "./foo.js";
   },
   "extends": "./tsconfig.json",
   "exclude": [
-    "node_modules", 
+    "node_modules",
     // Exclude tests.
     "**/*.spec.ts"
   ]

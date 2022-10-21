@@ -116,7 +116,6 @@ const Page: NextPage<ServerSideProps> = ({
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
   });
-  console.log(flowView);
 
   const [
     execute,

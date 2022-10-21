@@ -13,6 +13,7 @@
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/",
     "jest": "jest",
+    "lint": "eslint src",
     "test": "npm run tsc--noEmit; npm run jest",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
