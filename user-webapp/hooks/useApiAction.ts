@@ -33,8 +33,8 @@ const [request, response] = useApiAction.FOO_BAR();
 useEffect(request, [request])
 ```
 */
+import { DflowObject, DflowValue } from "dflow";
 import { useCallback, useState } from "react";
-import { JsonValue, JsonObject } from "type-fest";
 import {
   ApiAction,
   ApiActionBadRequestName,
@@ -43,7 +43,7 @@ import {
   isApiActionResponseToBadRequest,
 } from "_api/action";
 
-type ActionIO = { in: JsonObject; out: JsonValue };
+type ActionIO = { in: DflowObject; out: DflowValue };
 
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];

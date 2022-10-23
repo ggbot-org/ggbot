@@ -103,13 +103,8 @@ module.exports = {
     "@ggbot2/another-package": "file:another-package"
   },
   "devDependencies": {
-    // Use actual version numbers here.
-    "@types/jest": "^x.y.z",
-    "@types/node": "^x.y.z",
-    "eslint": "^x.y.z",
-    "jest": "^x.y.z",
-    "ts-jest": "^x.y.z",
-    "typescript": "^x.y.z"
+    // The "@ggobt2/dev" package adds a list of development dependencies.
+    "@ggobt2/dev": "file:dev"
   }
 }
 ```

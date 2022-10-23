@@ -1,3 +1,5 @@
+// TODO move this into workspace repo
+// change repo_test to npm run test:repo
 import { strict as assert } from "node:assert";
 import rootPackageJson from "./package.json" assert { type: "json" };
 import tsconfigCommon from "./tsconfig.common.json" assert { type: "json" };

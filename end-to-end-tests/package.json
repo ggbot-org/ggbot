@@ -15,9 +15,7 @@
     "@ggbot2/user-webapp": "file:user-webapp"
   },
   "devDependencies": {
-    "@ggbot2/user-webapp": "file:assets",
-    "@playwright/test": "^1.24.2",
-    "@types/node": "^18.0.3",
-    "typescript": "^4.7.4"
+    "@ggobt2/dev": "file:dev",
+    "@playwright/test": "^1.24.2"
   }
 }

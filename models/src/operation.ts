@@ -1,8 +1,8 @@
-import { JsonValue } from "type-fest";
+import { DflowValue } from "dflow";
 
-export type OperationInput = JsonValue | void;
+export type OperationInput = DflowValue | void;
 
-export type OperationOutput = JsonValue;
+export type OperationOutput = DflowValue | null;
 
 export type Operation<
   Input extends OperationInput,

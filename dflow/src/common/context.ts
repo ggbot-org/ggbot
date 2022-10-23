@@ -1,5 +1,5 @@
 import type { Timestamp } from "@ggbot2/time";
-import type { JsonObject } from "type-fest";
+import type { DflowObject } from "dflow";
 
 /**
 DflowCommonContext to be shared among all dflow host implementations.
@@ -23,7 +23,7 @@ export type DflowCommonContext = {
   /**
   Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
   */
-  memory: JsonObject;
+  memory: DflowObject;
   /**
   The `memoryChanged` attribute is set to true by memory nodes
   every time there is a change (e.g. update or delete) in memory.

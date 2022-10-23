@@ -1,5 +1,5 @@
+import { DflowObject } from "dflow";
 import useSWR from "swr";
-import { JsonObject } from "type-fest";
 import type { ApiAction } from "_api/action";
 
 class ApiActionResponseError extends Error {
@@ -10,7 +10,7 @@ class ApiActionResponseError extends Error {
   }
 }
 
-const fetcher = async (action: JsonObject) => {
+const fetcher = async (action: DflowObject) => {
   try {
     const body = JSON.stringify(action);
     const response = await fetch("/api/action", {

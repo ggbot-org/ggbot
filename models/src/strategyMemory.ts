@@ -1,10 +1,10 @@
-import type { JsonObject } from "type-fest";
+import type { DflowObject } from "dflow";
 import { AccountStrategyKey } from "./accountStrategy.js";
 import type { Operation } from "./operation.js";
 import { DeletionTime, UpdateTime } from "./time.js";
 
 export type StrategyMemory = UpdateTime & {
-  memory: JsonObject;
+  memory: DflowObject;
 };
 
 export type ReadStrategyMemory = Operation<
