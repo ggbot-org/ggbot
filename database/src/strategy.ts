@@ -3,6 +3,7 @@ import {
   CopyStrategy,
   CreateStrategy,
   DeleteStrategy,
+  ListStrategies,
   ReadStrategy,
   ReadStrategyAccountId,
   RenameStrategy,
@@ -16,7 +17,12 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 import { v4 as uuidv4 } from "uuid";
-import { deleteObject, getObject, putObject } from "./_dataBucket.js";
+import {
+  deleteObject,
+  getObject,
+  listObjects,
+  putObject,
+} from "./_dataBucket.js";
 import { strategyKeyToDirname } from "./_dataBucketLocators.js";
 import {
   readAccountStrategyList,
@@ -39,6 +45,10 @@ export const strategyDirname = (strategyKey: StrategyKey) =>
 export const strategyPathname = (strategyKey: StrategyKey) =>
   `${strategyDirname(strategyKey)}/strategy.json`;
 
+/**
+@throws {ErrorInvalidName}
+@throws {ErrorNameToLong}
+*/
 export const copyStrategy: CopyStrategy["func"] = async ({
   accountId,
   name,
@@ -54,6 +64,10 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   });
 };
 
+/**
+@throws {ErrorInvalidName}
+@throws {ErrorNameToLong}
+*/
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
   kind,
@@ -85,6 +99,15 @@ export const createStrategy: CreateStrategy["func"] = async ({
   return data;
 };
 
+export const listStrategies: ListStrategies["func"] = async (strategyKey) => {
+  const strategies = await listObjects({
+    Prefix: strategyKeyToDirname(strategyKey),
+  });
+  // TODO destructure strategy paths
+  console.log(strategies);
+  return [];
+};
+
 export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
   await getObject<ReadStrategy["out"]>({
     Key: strategyPathname(strategyKey),
@@ -100,9 +123,9 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
 };
 
 /**
- * @throws {ErrorInvalidName}
- * @throws {ErrorNameToLong}
- */
+@throws {ErrorInvalidName}
+@throws {ErrorNameToLong}
+*/
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
   name,

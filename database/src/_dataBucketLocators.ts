@@ -63,6 +63,7 @@ export const accountConfigDirnamePrefix = "accountConfig";
 export const accountStrategyListDirnamePrefix = "accountStrategies";
 export const emailAccountDirnamePrefix = "emailAccount";
 export const oneTimePasswordDirnamePrefix = "oneTimePassword";
+export const strategyDirnamePrefix = "strategy";
 export const strategyExecutionDirnamePrefix = "StrategyExecution";
 export const strategyFlowDirnamePrefix = "strategyFlow";
 export const strategyMemoryDirnamePrefix = "strategyMemory";

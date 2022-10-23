@@ -105,8 +105,8 @@ export type ListObjectsArgs = Pick<S3Path, "Bucket"> &
 export const listObjects = async ({
   Bucket,
   ContinuationToken,
-  Contents: PreviousContents = [],
-  CommonPrefixes: PreviousCommonPrefixes = [],
+  Contents: previousContents = [],
+  CommonPrefixes: previousCommonPrefixes = [],
   ...params
 }: ListObjectsArgs): Promise<ListObjectsOutput> => {
   const command = new ListObjectsV2Command({
@@ -121,8 +121,8 @@ export const listObjects = async ({
     NextContinuationToken,
   } = await client.send(command);
 
-  const CommonPrefixes = PreviousCommonPrefixes.concat(CurrentCommonPrefixes);
-  const Contents = PreviousContents.concat(CurrentContents);
+  const CommonPrefixes = previousCommonPrefixes.concat(CurrentCommonPrefixes);
+  const Contents = previousContents.concat(CurrentContents);
 
   if (!IsTruncated) return { Contents, CommonPrefixes };
 

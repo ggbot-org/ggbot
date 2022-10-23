@@ -7,5 +7,5 @@
     "target": "esnext"
   },
   "extends": "../tsconfig.common.json",
-  "include": ["./src/**/*.ts", "src/tasks.js"]
+  "include": ["./src/**/*.ts"]
 }

@@ -28,7 +28,6 @@
     "build:time": "npm run build --workspace time",
     "build:ui-components": "npm run build --workspace ui-components",
     "build:user-webapp": "npm run build --workspace user-webapp",
-    "build:worker": "npm run build --workspace worker",
     "cleanup": "npm run cleanup --workspaces --if-present",
     "cleanup:admin-webapp": "npm run cleanup --workspace admin-webapp",
     "cleanup:arithmetic": "npm run cleanup --workspace arithmetic",
@@ -51,7 +50,6 @@
     "cleanup:ui-components": "npm run cleanup --workspace ui-components",
     "cleanup:user-webapp": "npm run cleanup --workspace user-webapp",
     "cleanup:website": "npm run cleanup --workspace website",
-    "cleanup:worker": "npm run cleanup --workspace worker",
     "deploy:ui-components": "npm run deploy --workspace ui-components",
     "deploy:website": "npm run deploy --workspace website",
     "devserver:admin-webapp": "npm run dev --workspace admin-webapp",
@@ -83,7 +81,6 @@
     "prebuild:ui-components": "npm run build:time",
     "prebuild:user-webapp": "npm run build:assets && npm run build:cookies && npm run build:database && npm run build:http-status-codes && npm run build:ui-components",
     "prebuild:website": "npm run build:assets && npm run build:ui-components",
-    "prebuild:worker": "npm run build:database",
     "pree2e:chromium": "npm run build:user-webapp:package",
     "repo_tests": "node repo_tests.js",
     "start": "npm run dev --workspace user-webapp",
@@ -114,7 +111,6 @@
     "test:ui-components": "npm run test --workspace ui-components",
     "test:user-webapp": "npm run test --workspace user-webapp",
     "test:website": "npm run test --workspace website",
-    "test:worker": "npm run test --workspace worker",
     "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
   },
   "workspaces": [
