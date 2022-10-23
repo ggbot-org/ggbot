@@ -1,5 +1,5 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": "next",
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-warning-comments": "error"
