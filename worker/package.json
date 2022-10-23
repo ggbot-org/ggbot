@@ -1,0 +1,27 @@
+{
+  "name": "@ggbot2/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/",
+    "jest": "jest",
+    "lint": "eslint src",
+    "test": "npm run tsc--noEmit; npm run jest",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    "@ggbot2/database": "file:database"
+  },
+  "devDependencies": {
+    "@ggobt2/dev": "file:dev"
+  }
+}

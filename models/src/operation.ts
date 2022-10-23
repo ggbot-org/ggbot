@@ -1,8 +1,8 @@
-import { DflowValue } from "dflow";
+import { DflowData } from "dflow";
 
-export type OperationInput = DflowValue | void;
+export type OperationInput = DflowData | void;
 
-export type OperationOutput = DflowValue | null;
+export type OperationOutput = DflowData | null;
 
 export type Operation<
   Input extends OperationInput,

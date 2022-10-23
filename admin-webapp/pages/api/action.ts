@@ -7,10 +7,10 @@ import {
 } from "@ggbot2/http-status-codes";
 import type { ReadAccount, ReadAccountKeys } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { JsonValue } from "type-fest";
+import { DflowData } from "dflow";
 
 type ResponseData = {
-  data?: JsonValue | undefined;
+  data?: DflowData | undefined;
 };
 
 type Action<I, O> = { in: I; out: O };

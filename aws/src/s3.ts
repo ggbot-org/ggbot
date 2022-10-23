@@ -17,8 +17,8 @@ import type {
   ListObjectsV2CommandOutput,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
+import type { DflowData } from "dflow";
 import stream from "stream";
-import type { JsonValue } from "type-fest";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
 
@@ -137,7 +137,7 @@ export const listObjects = async ({
 };
 
 export type PutObjectArgs = S3Path & {
-  data: JsonValue;
+  data: DflowData;
 };
 
 export const putObject = async ({

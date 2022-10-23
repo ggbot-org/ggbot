@@ -1,4 +1,4 @@
-import { DflowNode, DflowValue } from "dflow";
+import { DflowData, DflowNode } from "dflow";
 import { DflowCommonContext as Context } from "../context.js";
 
 const { input, output } = DflowNode;
@@ -32,7 +32,7 @@ export class SetMemory extends DflowNode {
   static inputs = [inputKey, input([], { name: "value" })];
   async run() {
     const key = this.input(0).data as string;
-    const value = this.input(1).data as DflowValue;
+    const value = this.input(1).data as DflowData;
     const previousValue = (this.host.context as Context).memory[key];
     if (Object.is(value, previousValue)) return;
     (this.host.context as Context).memoryChanged = true;

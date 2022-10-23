@@ -8,6 +8,7 @@ export * from "./email.js";
 export * from "./emailAccount.js";
 export * from "./errors.js";
 export * from "./executor.js";
+export * from "./item.js";
 export * from "./literalType.js";
 export * from "./name.js";
 export * from "./oneTimePassword.js";

@@ -1,5 +1,5 @@
 import { isBinanceKlineInterval } from "@ggbot2/binance";
-import { DflowNode, DflowData } from "dflow";
+import { Dflow, DflowNode } from "dflow";
 import type { BinanceDflowContext as Context } from "../context.js";
 import {
   inputInterval,
@@ -86,6 +86,6 @@ export class TickerPrice extends DflowNode {
     if (!isBinanceSymbol) return this.clearOutputs();
     const data = await binance.tickerPrice(symbol);
     const price = parseFloat(data.price);
-    if (DflowData.isNumber(price)) this.output(0).data = price;
+    if (Dflow.isNumber(price)) this.output(0).data = price;
   }
 }
