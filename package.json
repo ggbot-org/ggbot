@@ -135,8 +135,7 @@
     "time",
     "ui-components",
     "user-webapp",
-    "website",
-    "worker"
+    "website"
   ],
   "devDependencies": {
     "prettier": "^2.7.1"
