@@ -5,15 +5,51 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import type { ReadAccount, ReadAccountKeys } from "@ggbot2/models";
+import type {
+  OperationInput,
+  OperationOutput,
+  ReadAccount,
+  ReadAccountKeys,
+} from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DflowData } from "dflow";
 
-type ResponseData = {
-  data?: DflowData | undefined;
+export type ApiActionInputData = OperationInput;
+type ApiActionOutputData = OperationOutput;
+
+export type ApiActionInput = {
+  type: ApiActionType;
+  data?: ApiActionInputData;
 };
 
-type Action<I, O> = { in: I; out: O };
+const apiActionBadRequestNames = ["UnimplementedStrategyKind"] as const;
+export type ApiActionBadRequestName = typeof apiActionBadRequestNames[number];
+
+const isApiActionBadRequestName = (
+  arg: unknown
+): arg is ApiActionBadRequestName => {
+  if (typeof arg !== "string") return false;
+  return (apiActionBadRequestNames as readonly string[]).includes(arg);
+};
+
+type ApiActionResponseToBadRequest = {
+  error: ApiActionBadRequestName;
+};
+
+export const isApiActionResponseToBadRequest = (
+  arg: unknown
+): arg is ApiActionResponseToBadRequest => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { error } = arg as Partial<ApiActionResponseToBadRequest>;
+  return isApiActionBadRequestName(error);
+};
+
+export type ApiActionResponseOutput<T> =
+  | {
+      data?: T;
+    } & Partial<ApiActionResponseToBadRequest>;
+
+type Action<Input, Output> = { in: Input; out: Output };
 
 export type ApiAction = {
   READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
@@ -24,7 +60,7 @@ type ApiActionType = keyof ApiAction;
 
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ApiActionResponseOutput<ApiActionOutputData>>
 ) {
   try {
     if (req.method !== "POST")
