@@ -12,7 +12,6 @@ import type {
   ReadAccountKeys,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { DflowData } from "dflow";
 
 export type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
