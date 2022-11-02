@@ -1,0 +1,28 @@
+{
+  "name": "@ggbot2/webdev",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/",
+    "jest": "jest",
+    "test": "npm run tsc--noEmit; npm run jest",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "autoprefixer": "^10.4.7",
+    "eslint-config-next": "^12.2.2",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.6"
+  }
+}

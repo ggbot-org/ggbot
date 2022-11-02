@@ -1,0 +1,13 @@
+{
+  "name": "@ggbot2/repo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "dependencies": {
+    "@ggobt2/dev": "file:dev",
+    "@ggobt2/webdev": "file:webdev"
+  }
+}

@@ -1,10 +1,8 @@
-// TODO move this into workspace repo
-// change repo_test to npm run test:repo
-// use packageScript from '@ggbot2/dev' and webdev
+import { packageScript, typeChecksNpmScriptKey } from "@ggbot2/dev";
 import { strict as assert } from "node:assert";
-import rootPackageJson from "./package.json" assert { type: "json" };
-import tsconfigCommon from "./tsconfig.common.json" assert { type: "json" };
-import uiComponentsTsconfig from "./ui-components/tsconfig.json" assert { type: "json" };
+import rootPackageJson from "../package.json" assert { type: "json" };
+import tsconfigCommon from "../tsconfig.common.json" assert { type: "json" };
+import uiComponentsTsconfig from "../ui-components/tsconfig.json" assert { type: "json" };
 
 const npmScope = "@ggbot2";
 
@@ -16,8 +14,6 @@ const webappWorkspaces = [
   "user-webapp",
   "website",
 ];
-
-const typeChecksNpmScriptKey = "tsc--noEmit";
 
 /**
  * Checks that are in common to all package.json,
@@ -61,9 +57,12 @@ function testPackageJson({ packageJson, workspace }) {
 }
 
 async function testWorkspacePackageJson({ workspace }) {
-  const { default: packageJson } = await import(`./${workspace}/package.json`, {
-    assert: { type: "json" },
-  });
+  const { default: packageJson } = await import(
+    `../${workspace}/package.json`,
+    {
+      assert: { type: "json" },
+    }
+  );
 
   testPackageJson({ packageJson, workspace });
 
@@ -95,7 +94,10 @@ async function testWorkspacePackageJson({ workspace }) {
   });
 
   [
-    { key: typeChecksNpmScriptKey, expected: "tsc --noEmit --project ." },
+    {
+      key: typeChecksNpmScriptKey,
+      expected: packageScript[typeChecksNpmScriptKey],
+    },
   ].forEach(({ key, expected }) => {
     assert.equal(
       packageJson.scripts[key],
@@ -179,7 +181,7 @@ async function testWorkspacePackageJson({ workspace }) {
 }
 
 async function testWorkspaceTsconfig({ workspace }) {
-  const { default: tsconfig } = await import(`./${workspace}/tsconfig.json`, {
+  const { default: tsconfig } = await import(`../${workspace}/tsconfig.json`, {
     assert: { type: "json" },
   });
 
@@ -210,7 +212,7 @@ async function testWorkspaceTsconfig({ workspace }) {
 
 async function testWorkspaceTsconfigBuild({ workspace }) {
   const { default: tsconfig } = await import(
-    `./${workspace}/tsconfig.build.json`,
+    `../${workspace}/tsconfig.build.json`,
     {
       assert: { type: "json" },
     }
@@ -276,8 +278,11 @@ async function testWorkspace({ workspace }) {
 async function repoTests() {
   testRootPackageJson();
 
-  for (const workspace of rootPackageJson.workspaces)
-    await testWorkspace({ workspace });
+  const workspaces = rootPackageJson.workspaces.filter(
+    (name) => name !== "repo"
+  );
+
+  for (const workspace of workspaces) await testWorkspace({ workspace });
 }
 
 repoTests();

@@ -27,16 +27,13 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/time": "file:time"
+    "@ggbot2/time": "file:time",
+    "next": "^12.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@ggobt2/dev": "file:dev",
-    "autoprefixer": "^10.4.7",
-    "eslint-config-next": "^12.2.2",
-    "next": "^12.2.2",
-    "postcss": "^8.4.14",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.1.6"
+    "@ggobt2/webdev": "file:webdev"
   }
 }

@@ -31,7 +31,7 @@ See also [`env` workspace](./env).
 
 ## Repo structure
 
-Repository structure and conventions are tested by `npm run repo_tests`, implemented [here](./repo_tests.js).
+Repository structure and conventions are tested by `npm run repo_tests`, implemented [here](./repo/tests.js).
 See also [internal npm workspaces documentation](./docs/workspaces.md).
 
 ## Dependencies

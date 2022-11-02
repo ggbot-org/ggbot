@@ -15,17 +15,10 @@
   },
   "dependencies": {
     "@ggbot2/assets": "file:assets",
-    "@ggbot2/ui-components": "file:ui-components",
-    "next": "^12.2.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@ggbot2/ui-components": "file:ui-components"
   },
   "devDependencies": {
     "@ggobt2/dev": "file:dev",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "18.0.6",
-    "eslint-config-next": "^12.2.2",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.6"
+    "@ggobt2/webdev": "file:webdev"
   }
 }
