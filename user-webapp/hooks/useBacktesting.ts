@@ -33,6 +33,9 @@ type Action =
       type: "DISABLE";
     }
   | {
+      type: "END";
+    }
+  | {
       type: "SET_START_DAY";
       day: Day;
     }
@@ -49,6 +52,8 @@ const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "DISABLE":
       return { ...state, isEnabled: false };
+    case "END":
+      return { ...state, isRunning: false };
     case "SET_START_DAY":
       return { ...state, startDay: action.day };
     case "START":
@@ -56,7 +61,7 @@ const backtestingReducer = (state: State, action: Action) => {
     case "TOGGLE":
       return { ...state, isEnabled: !state.isEnabled };
     default:
-      throw new Error();
+      return state;
   }
 };
 
@@ -64,7 +69,7 @@ const getInitialState =
   (strategyKey: StrategyKey) =>
   (persistingState: PersistingState | undefined): State => {
     // Max is yesterday.
-    const maxDay = getDayFromDate(addDays(-1, new Date())) as Day;
+    const maxDay = getDayFromDate(addDays(-1, new Date()));
     if (persistingState) {
       return {
         ...persistingState,
@@ -74,7 +79,7 @@ const getInitialState =
       };
     }
     // Default state.
-    const startDay = getDayFromDate(addDays(-7, new Date(maxDay))) as Day;
+    const startDay = getDayFromDate(addDays(-7, new Date(maxDay)));
     return {
       isEnabled: false,
       isRunning: false,

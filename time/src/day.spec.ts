@@ -1,3 +1,4 @@
+import { ErrorInvalidDate } from "./errors";
 import { getDayFromDate, isDay } from "./day";
 
 describe("getDayFromDate", () => {
@@ -10,10 +11,8 @@ describe("getDayFromDate", () => {
   });
 
   it("handles invalid dates", () => {
-    [{ input: new Date("0000-00-00"), output: null }].forEach(
-      ({ input, output }) => {
-        expect(getDayFromDate(input)).toBe(output);
-      }
+    expect(() => getDayFromDate(new Date("0000-00-00"))).toThrow(
+      ErrorInvalidDate
     );
   });
 });
