@@ -16,7 +16,6 @@ import {
   StrategyExecution,
   WriteStrategyExecution,
   updatedNow,
-  StrategyMemory,
 } from "@ggbot2/models";
 import { truncateTimestamp } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
@@ -46,6 +45,7 @@ Execute a ggbot2 strategy.
 It can point to the actual exchange or simulate an execution with a given balance or at a given time.
 
 @throws {ErrorMissingBinanceApiConfig}
+@throws {ErrorStrategyFlowNotFound}
 @throws {ErrorUnimplementedStrategyKind}
 */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
@@ -60,8 +60,8 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     const strategyFlow = await readStrategyFlow(accountStrategyKey);
     if (!strategyFlow) throw new ErrorStrategyFlowNotFound(strategyKey);
 
-    const memory = ((await readStrategyMemory(accountStrategyKey)) ??
-      {}) as StrategyMemory;
+    const strategyMemory = await readStrategyMemory(accountStrategyKey);
+    const memoryInput = strategyMemory?.memory ?? {};
 
     if (strategyKind === "binance") {
       const baseUrl = BinanceConnector.defaultBaseUrl;
@@ -76,26 +76,35 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
 
       const executor = new BinanceDflowExecutor(binance, nodesCatalog);
-      const result = await executor.run(
+      const {
+        execution,
+        memory: memoryOutput,
+        memoryChanged,
+      } = await executor.run(
         {
-          memory,
+          memory: memoryInput,
           timestamp: truncateTimestamp().to("second"),
         },
         strategyFlow.view
       );
 
-      // Handle memory changes
-      if (result.memoryChanged) {
+      // Handle memory changes.
+      if (memoryChanged) {
         await writeStrategyMemory({
           accountId,
           strategyKind,
           strategyId,
-          memory: result.memory,
+          memory: memoryOutput,
         });
       }
 
+      const executionStatus =
+        execution?.status === "success" ? "success" : "failure";
+
       return {
-        status: "success",
+        status: executionStatus,
+        memory: memoryOutput,
+        steps: execution?.steps ?? [],
         ...updatedNow(),
       };
     }

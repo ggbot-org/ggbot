@@ -75,7 +75,6 @@ export const useFlowView: UseFlowView = ({
       { nodesCatalog },
       { memory: {}, timestamp }
     );
-    dflow.verbose = true;
     return dflow;
   }, [nodesCatalog, strategyKind]);
 

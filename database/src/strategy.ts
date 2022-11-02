@@ -8,7 +8,6 @@ import {
   ReadStrategyAccountId,
   RenameStrategy,
   Strategy,
-  StrategyKey,
   createdNow,
   deletedNow,
   isAccountKey,
@@ -23,7 +22,10 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import { strategyKeyToDirname } from "./_dataBucketLocators.js";
+import {
+  strategyKeyToDirname,
+  strategyPathname,
+} from "./_dataBucketLocators.js";
 import {
   readAccountStrategyList,
   writeAccountStrategyList,
@@ -36,14 +38,6 @@ import {
 import { deleteStrategyExecution } from "./strategyExecution.js";
 import { deleteStrategyFlow } from "./strategyFlow.js";
 import { deleteStrategyMemory } from "./strategyMemory.js";
-
-export const strategyDirnamePrefix = () => "strategy";
-
-export const strategyDirname = (strategyKey: StrategyKey) =>
-  `${strategyDirnamePrefix()}/${strategyKeyToDirname(strategyKey)}`;
-
-export const strategyPathname = (strategyKey: StrategyKey) =>
-  `${strategyDirname(strategyKey)}/strategy.json`;
 
 /**
 @throws {ErrorInvalidName}

@@ -26,7 +26,6 @@ export class DflowExecutorMock
       context
     );
     dflow.load(view);
-    dflow.verbose = true;
     await dflow.run();
     const execution = dflow.executionReport;
     const { memory, memoryChanged } = dflow.context as DflowCommonContext;

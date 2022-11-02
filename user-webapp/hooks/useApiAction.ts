@@ -43,7 +43,7 @@ import {
   isApiActionResponseToBadRequest,
 } from "_api/action";
 
-type ActionIO = { in: DflowObject; out: DflowData };
+type ActionIO = { in: DflowObject; out: DflowData | null };
 
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];

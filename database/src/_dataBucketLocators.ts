@@ -110,6 +110,12 @@ export const emailAccountPathname = (email: EmailAddress) =>
 export const oneTimePasswordPathname = (email: EmailAddress) =>
   `${oneTimePasswordDirnamePrefix}/${emailToDirname(email)}/otp.json`;
 
+export const strategyDirname = (strategyKey: StrategyKey) =>
+  `${strategyDirnamePrefix}/${strategyKeyToDirname(strategyKey)}`;
+
+export const strategyPathname = (strategyKey: StrategyKey) =>
+  `${strategyDirname(strategyKey)}/strategy.json`;
+
 export const strategyExecutionDirname = (_: AccountStrategyKey) =>
   `${strategyExecutionDirnamePrefix}/${accountStrategyKeyToDirname(_)}`;
 

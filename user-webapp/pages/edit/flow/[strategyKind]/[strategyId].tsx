@@ -181,7 +181,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, [canSave, flowView, saveStrategyFlow, strategyKey]);
 
   const onClickRun = useCallback<ButtonOnClick>(() => {
-    if (canRun) execute({ data: strategyKey });
+    if (canRun) execute(strategyKey);
   }, [canRun, execute, strategyKey]);
 
   useEffect(() => {
