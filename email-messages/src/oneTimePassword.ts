@@ -1,4 +1,3 @@
-import { logoPng192 } from "@ggbot2/assets";
 import { OneTimePassword } from "@ggbot2/models";
 import type { EmailMessageContent } from "./emailMessage.js";
 
@@ -11,24 +10,32 @@ export const oneTimePasswordEmailMessage = ({
 <table>
   <tbody>
     <tr>
-      <td align="center">
-        <img src="${logoPng192}">
+      <td>
+        Copy and paste this ggbot2 <em>one time password</em> to get access to your account:
       </td>
     </tr>
-
     <tr>
       <td align="center" style="font-family:monospace">
-        <h1>${code}</h1>
+        <h2>${code}</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        ggbot2 <em>crypto flow</em>
       </td>
     </tr>
   </tbody>
 </table>`;
 
-  const text = `${code}`;
+  const text = `
+Copy and paste this ggbot2 "one time password" to get access to your account:
+
+${code}
+`;
 
   return {
     html,
     text,
-    subject: "ggbot2 · One Time Password",
+    subject: `ggbot2 · one time password · ${code}`,
   };
 };

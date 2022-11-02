@@ -17,7 +17,6 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@ggbot2/assets": "file:assets",
     "@ggbot2/models": "file:models"
   },
   "devDependencies": {
