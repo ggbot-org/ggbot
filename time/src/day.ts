@@ -1,4 +1,5 @@
 import { ErrorInvalidDate } from "./errors.js";
+import type { Timestamp } from "./timestamp";
 
 /** String with format yyyy-mm-dd */
 export type Day = string;
@@ -33,13 +34,17 @@ Convert `Date` to `Day`.
 
 @throws {ErrorInvalidDate}
 */
-export const getDayFromDate = (date: Date): Day => {
+export const getDayFromDate = (arg: Date): Day => {
   // Notice that invalid dates could return a null JSON
   //
   //     new Date('0000-00-00').toJSON() // null
-  const dateString = date.toJSON();
+  const dateString = arg.toJSON();
 
   if (typeof dateString === "string") return dateString.substring(0, 10);
 
   throw new ErrorInvalidDate();
+};
+
+export const getDayFromTimestamp = (arg: Timestamp): Day => {
+  return arg.substring(0, 10);
 };

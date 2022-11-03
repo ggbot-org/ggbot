@@ -3,3 +3,9 @@ export class ErrorInvalidDate extends TypeError {
     super("Invalid Date");
   }
 }
+
+export class ErrorInvalidTimestamp extends TypeError {
+  constructor() {
+    super("Invalid Timestamp");
+  }
+}

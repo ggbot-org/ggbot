@@ -4,6 +4,7 @@ import {
   BinanceKline,
 } from "@ggbot2/binance";
 import { extractBinanceSymbolsFromFlow } from "@ggbot2/dflow";
+import { Button } from "@ggbot2/ui-components";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ChartOhlcv,
@@ -27,9 +28,11 @@ export const BacktestController: FC<BacktestControllerProps> = ({
 }) => {
   const setStartDay = useCallback<DailyIntervalSelectorProps["setStartDay"]>(
     (day) => {
-      dispatch({ type: "SET_START_DAY", day });
+      const endDay = state?.endDay;
+      if (!endDay) return;
+      dispatch({ type: "SET_INTERVAL", startDay: day, endDay });
     },
-    [dispatch]
+    [dispatch, state?.endDay]
   );
 
   if (!state || !state.isEnabled) return null;
@@ -44,7 +47,11 @@ export const BacktestController: FC<BacktestControllerProps> = ({
         setStartDay={setStartDay}
       />
       {strategyKind === "binance" && view && state && (
-        <BacktestControllerBinance state={state} view={view} />
+        <BacktestControllerBinance
+          state={state}
+          dispatch={dispatch}
+          view={view}
+        />
       )}
     </div>
   );
@@ -52,19 +59,25 @@ export const BacktestController: FC<BacktestControllerProps> = ({
 
 type BacktestControllerBinanceProps = Pick<StrategyFlow, "view"> & {
   state: BacktestingState;
+  dispatch: BacktestingDispatch;
 };
 
 const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
   state: { startDay, maxDay },
-  // dispatch,
+  dispatch,
   view,
 }) => {
   const [exchangeInfo, setExchangeInfo] = useState<
     BinanceExchangeInfo | undefined
   >();
 
-  const selectedSymbols = useMemo<string[]>(() => {
-    if (!exchangeInfo) return [];
+  const onClickStart = useCallback(() => {
+    dispatch({ type: "START" });
+  }, [dispatch]);
+
+  const selectedSymbols = useMemo<string[] | undefined>(() => {
+    if (!exchangeInfo) return;
+    if (!view) return;
 
     return extractBinanceSymbolsFromFlow({
       binanceSymbols: exchangeInfo.symbols,
@@ -90,22 +103,30 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
     };
   }, [startDay, maxDay]);
 
+  if (!Array.isArray(selectedSymbols)) return null;
+
   return (
     <div>
-      {selectedSymbols.length === 0 && (
+      {selectedSymbols.length === 0 ? (
         <div className="my-2 h-48">No symbol found in strategy below.</div>
+      ) : (
+        <div>
+          <div>
+            <Button onClick={onClickStart}>Start</Button>
+          </div>
+          <div className="flex flex-row flex-wrap justify-start gap-2">
+            {selectedSymbols.map((symbol) => (
+              <BinanceKlinesChart
+                key={symbol}
+                binance={binance}
+                symbol={symbol}
+                startTime={startTime}
+                endTime={endTime}
+              />
+            ))}
+          </div>
+        </div>
       )}
-      <div className="flex flex-row flex-wrap justify-start gap-2">
-        {selectedSymbols.map((symbol) => (
-          <BinanceKlinesChart
-            key={symbol}
-            binance={binance}
-            symbol={symbol}
-            startTime={startTime}
-            endTime={endTime}
-          />
-        ))}
-      </div>
     </div>
   );
 };
