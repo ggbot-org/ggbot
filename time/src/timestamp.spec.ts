@@ -1,4 +1,8 @@
-import { isTimestamp, truncateTimestamp } from "./timestamp.js";
+import {
+  getTimestampFromDay,
+  isTimestamp,
+  truncateTimestamp,
+} from "./timestamp.js";
 
 describe("isTimestamp", () => {
   it("validates string if is valid Timestamp", () => {
@@ -8,6 +12,19 @@ describe("isTimestamp", () => {
       { input: "2022-07-23T11:43:05.841Z", output: true },
     ].forEach(({ input, output }) => {
       expect(isTimestamp(input)).toBe(output);
+    });
+  });
+});
+
+describe("getTimestampFromDay", () => {
+  it("truncates a timestamp to given granularity", () => {
+    [
+      {
+        input: "2022-07-23",
+        output: "2022-07-23T00:00:00.000Z",
+      },
+    ].forEach(({ input, output }) => {
+      expect(getTimestampFromDay(input)).toBe(output);
     });
   });
 });
