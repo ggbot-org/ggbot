@@ -16,8 +16,7 @@ const webappWorkspaces = [
 ];
 
 /**
- * Checks that are in common to all package.json,
- * including package.json in root folder.
+ * Checks that are in common to package.json workspace.
  */
 function testPackageJson({ packageJson, workspace }) {
   const { name } = packageJson;
@@ -233,8 +232,6 @@ async function testWorkspaceTsconfigBuild({ workspace }) {
 
 function testRootPackageJson() {
   const { workspaces } = rootPackageJson;
-
-  testPackageJson({ packageJson: rootPackageJson });
 
   for (const key of Object.keys(rootPackageJson.scripts))
     for (const task of ["build", "prebuild", "test"])

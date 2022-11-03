@@ -8,7 +8,6 @@
   "license": "UNLICENSED",
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
     "build:arithmetic": "npm run build --workspace arithmetic",
     "build:assets": "npm run build --workspace assets",
     "build:aws": "npm run build --workspace aws",
@@ -143,6 +142,7 @@
     "website"
   ],
   "devDependencies": {
+    "eslint-config-next": "^12.3.2",
     "prettier": "^2.7.1"
   }
 }
