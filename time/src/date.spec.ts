@@ -1,4 +1,5 @@
-import { addDays } from "./date";
+import { ErrorInvalidDate } from "./errors";
+import { addDays, truncateDate } from "./date";
 
 describe("addDays", () => {
   it("works", () => {
@@ -22,5 +23,13 @@ describe("addDays", () => {
     ].forEach(({ input: { num, date }, output }) => {
       expect(addDays(num, date)).toStrictEqual(output);
     });
+  });
+});
+
+describe("truncateDate", () => {
+  it("throws ErrorInvalidDate", () => {
+    expect(() => truncateDate(new Date("0000-00-00"))).toThrow(
+      ErrorInvalidDate
+    );
   });
 });

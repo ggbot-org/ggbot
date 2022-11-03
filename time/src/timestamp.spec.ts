@@ -1,4 +1,6 @@
+import { ErrorInvalidDate } from "./errors.js";
 import {
+  getTimestampFromDate,
   getTimestampFromDay,
   isTimestamp,
   truncateTimestamp,
@@ -17,7 +19,7 @@ describe("isTimestamp", () => {
 });
 
 describe("getTimestampFromDay", () => {
-  it("truncates a timestamp to given granularity", () => {
+  it("truncates a timestamp to its day", () => {
     [
       {
         input: "2022-07-23",
@@ -47,5 +49,13 @@ describe("truncateTimestamp", () => {
     ].forEach(({ input: { timestamp, truncation }, output }) => {
       expect(truncateTimestamp(timestamp).to(truncation)).toBe(output);
     });
+  });
+});
+
+describe("getTimestampFromDate", () => {
+  it("throws ErrorInvalidDate", () => {
+    expect(() => getTimestampFromDate(new Date("0000-00-00"))).toThrow(
+      ErrorInvalidDate
+    );
   });
 });

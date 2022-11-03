@@ -32,8 +32,12 @@ export const addSeconds = (num: number, date: Date): Date => {
   return d;
 };
 
+/**
+Truncate `Date` to its day.
+
+@throws ErrorInvalidDate
+*/
 export const truncateDate = (date: Date): Date => {
   const day = getDayFromDate(date);
-  if (day === null) throw new TypeError(`Invalid Date ${date}`);
   return new Date(day);
 };

@@ -10,7 +10,7 @@ describe("getDayFromDate", () => {
     );
   });
 
-  it("handles invalid dates", () => {
+  it("throws ErrorInvalidDate", () => {
     expect(() => getDayFromDate(new Date("0000-00-00"))).toThrow(
       ErrorInvalidDate
     );

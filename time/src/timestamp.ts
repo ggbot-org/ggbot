@@ -1,3 +1,4 @@
+import { ErrorInvalidDate } from "./errors.js";
 import type { Day } from "./day.js";
 import { isValidDate } from "./date.js";
 
@@ -16,6 +17,17 @@ export const isTimestamp = (arg: unknown): arg is Timestamp => {
 export type Now = () => Timestamp;
 
 export const now: Now = () => new Date().toJSON();
+
+/**
+Convert `Timestamp` to `Date`.
+
+@throws {ErrorInvalidDate}
+*/
+export const getTimestampFromDate = (date: Date): Timestamp => {
+  const timestamp = date.toJSON();
+  if (timestamp === null) throw new ErrorInvalidDate();
+  return timestamp;
+};
 
 export const getTimestampFromDay = (day: Day): Timestamp => {
   return new Date(day).toJSON();
