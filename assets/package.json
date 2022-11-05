@@ -17,8 +17,5 @@
   },
   "dependencies": {
     "@ggbot2/infrastructure": "file:infrastructure"
-  },
-  "devDependencies": {
-    "@ggbot2/dev": "file:dev"
   }
 }

@@ -19,8 +19,5 @@
     "@aws-sdk/client-elastic-load-balancing-v2": "^3.145.0",
     "@aws-sdk/client-s3": "^3.145.0",
     "@ggbot2/env": "file:env"
-  },
-  "devDependencies": {
-    "@ggobt2/dev": "file:dev"
   }
 }

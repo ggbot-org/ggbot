@@ -22,7 +22,6 @@
     "@ggbot2/test-data": "file:test-data"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@types/uuid": "^8.3.4"
   }
 }

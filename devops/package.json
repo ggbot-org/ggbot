@@ -20,8 +20,5 @@
   },
   "dependencies": {
     "@ggbot2/aws": "file:aws"
-  },
-  "devDependencies": {
-    "@ggobt2/dev": "file:dev"
   }
 }

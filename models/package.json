@@ -20,8 +20,5 @@
     "@ggbot2/time": "file:time",
     "dflow": "^0.40.0",
     "flow-view": "^6.0.0"
-  },
-  "devDependencies": {
-    "@ggbot2/dev": "file:dev"
   }
 }

@@ -20,8 +20,5 @@
     "@ggbot2/binance": "file:binance",
     "@ggbot2/time": "file:time",
     "dflow": "^0.40.0"
-  },
-  "devDependencies": {
-    "@ggbot2/dev": "file:dev"
   }
 }

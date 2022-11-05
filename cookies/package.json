@@ -20,7 +20,6 @@
     "cookie": "^0.5.0"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@types/cookie": "^0.5.1"
   }
 }

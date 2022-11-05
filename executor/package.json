@@ -18,8 +18,5 @@
   },
   "dependencies": {
     "@ggbot2/database": "file:database"
-  },
-  "devDependencies": {
-    "@ggobt2/dev": "file:dev"
   }
 }

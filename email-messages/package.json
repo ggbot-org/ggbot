@@ -18,8 +18,5 @@
   },
   "dependencies": {
     "@ggbot2/models": "file:models"
-  },
-  "devDependencies": {
-    "@ggobt2/dev": "file:dev"
   }
 }

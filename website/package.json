@@ -18,7 +18,6 @@
     "@ggbot2/ui-components": "file:ui-components"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@ggobt2/webdev": "file:webdev"
   }
 }

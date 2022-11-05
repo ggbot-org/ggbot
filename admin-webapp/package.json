@@ -19,7 +19,6 @@
     "swr": "^1.3.0"
   },
   "devDependencies": {
-    "@ggbot2/dev": "file:dev",
     "@ggobt2/webdev": "file:webdev"
   }
 }

@@ -29,7 +29,6 @@
     "react-hot-toast": "^2.3.0"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@ggobt2/webdev": "file:webdev"
   }
 }

@@ -15,7 +15,6 @@
     "@ggbot2/user-webapp": "file:user-webapp"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@playwright/test": "^1.24.2"
   }
 }

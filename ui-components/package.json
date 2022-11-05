@@ -33,7 +33,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@ggobt2/dev": "file:dev",
     "@ggobt2/webdev": "file:webdev"
   }
 }

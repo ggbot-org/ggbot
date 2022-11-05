@@ -14,9 +14,5 @@
     "cleanup": "rm -rf dist/",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@ggobt2/dev": "file:dev"
   }
 }

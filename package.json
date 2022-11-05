@@ -14,7 +14,6 @@
     "build:binance": "npm run build --workspace binance",
     "build:cookies": "npm run build --workspace cookies",
     "build:database": "npm run build --workspace database",
-    "build:dev": "npm run build --workspace dev",
     "build:devops": "npm run build --workspace devops",
     "build:dflow": "npm run build --workspace dflow",
     "build:email-messages": "npm run build --workspace email-messages",
@@ -36,7 +35,6 @@
     "cleanup:binance": "npm run cleanup --workspace binance",
     "cleanup:cookies": "npm run cleanup --workspace cookies",
     "cleanup:database": "npm run cleanup --workspace database",
-    "cleanup:dev": "npm run cleanup --workspace dev",
     "cleanup:devops": "npm run cleanup --workspace devops",
     "cleanup:dflow": "npm run cleanup --workspace dflow",
     "cleanup:email-messages": "npm run cleanup --workspace email-messages",
@@ -97,7 +95,6 @@
     "test:binance": "npm run test --workspace binance",
     "test:cookies": "npm run test --workspace cookies",
     "test:database": "npm run test --workspace database",
-    "test:dev": "npm run test --workspace dev",
     "test:devops": "npm run test --workspace devops",
     "test:dflow": "npm run test --workspace dflow",
     "test:email-messages": "npm run test --workspace email-messages",
@@ -123,7 +120,6 @@
     "binance",
     "cookies",
     "database",
-    "dev",
     "devops",
     "dflow",
     "email-messages",
@@ -142,7 +138,13 @@
     "website"
   ],
   "devDependencies": {
+    "@types/jest": "^29.2.1",
+    "@types/node": "^18.0.3",
+    "eslint": "^8.26.0",
     "eslint-config-next": "^12.3.2",
-    "prettier": "^2.7.1"
+    "jest": "^29.2.2",
+    "prettier": "^2.7.1",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.8.4"
   }
 }
