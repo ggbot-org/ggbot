@@ -223,9 +223,15 @@ export const useBacktesting: UseBacktesting = ({
     getInitialState({ strategyKind, strategyId })
   );
 
-  const { isEnabled, isRunning, startDay, endDay, timestamps } = state;
+  const {
+    isEnabled,
+    isRunning: backtestIsRunning,
+    startDay,
+    endDay,
+    timestamps,
+  } = state;
 
-  const run = useCallback(async () => {
+  const runBacktest = useCallback(async () => {
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
 
@@ -233,25 +239,34 @@ export const useBacktesting: UseBacktesting = ({
       const binance = new BinanceDflow();
       const executor = new BinanceDflowExecutor(binance, nodesCatalog);
 
-      for (const timestamp of timestamps) {
-        console.log(timestamp);
-        try {
-          const { execution } = await executor.run(
-            { memory: {}, timestamp },
-            flowViewGraph
-          );
-          console.log(execution);
-        } catch (error) {
-          console.error(error);
+      const interval = 2000;
+
+      const executeStep = async (index = 0) => {
+        const timestamp = timestamps[index];
+        if (timestamp) {
+          try {
+            const { execution } = await executor.run(
+              { memory: {}, timestamp },
+              flowViewGraph
+            );
+            console.log(execution);
+            setTimeout(() => executeStep(index + 1), interval);
+          } catch (error) {
+            console.error(error);
+            dispatch({ type: "END" });
+          }
+        } else {
+          dispatch({ type: "END" });
         }
-      }
-      dispatch({ type: "END" });
+      };
+
+      executeStep();
     }
   }, [dispatch, flowViewGraph, nodesCatalog, strategyKind]);
 
   useEffect(() => {
-    if (isRunning) run();
-  }, [isRunning, run]);
+    if (backtestIsRunning) runBacktest();
+  }, [backtestIsRunning, runBacktest]);
 
   useEffect(() => {
     if (isServerSide) return;
