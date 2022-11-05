@@ -108,25 +108,25 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
   return (
     <div>
       {selectedSymbols.length === 0 ? (
-        <div className="my-2 h-48">No symbol found in strategy below.</div>
+        <div className="my-2 h-48 flex flex-col justify-center">
+          <span>No symbol found in strategy flow.</span>
+        </div>
       ) : (
-        <div>
-          <div>
-            <Button onClick={onClickStart}>Start</Button>
-          </div>
-          <div className="flex flex-row flex-wrap justify-start gap-2">
-            {selectedSymbols.map((symbol) => (
-              <BinanceKlinesChart
-                key={symbol}
-                binance={binance}
-                symbol={symbol}
-                startTime={startTime}
-                endTime={endTime}
-              />
-            ))}
-          </div>
+        <div className="flex flex-row flex-wrap justify-start gap-2">
+          {selectedSymbols.map((symbol) => (
+            <BinanceKlinesChart
+              key={symbol}
+              binance={binance}
+              symbol={symbol}
+              startTime={startTime}
+              endTime={endTime}
+            />
+          ))}
         </div>
       )}
+      <menu>
+        <Button onClick={onClickStart}>Start</Button>
+      </menu>
     </div>
   );
 };

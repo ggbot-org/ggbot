@@ -108,13 +108,17 @@ const Page: NextPage<ServerSideProps> = ({
   const [isLive, setIsLive] = useState(false);
   const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
 
-  const [backtesting, backtestingDispatch] = useBacktesting(strategyKey);
-
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
     containerRef: flowViewContainerRef,
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
+  });
+
+  const [backtesting, backtestingDispatch] = useBacktesting({
+    ...strategyKey,
+    binanceSymbols,
+    flowViewGraph: flowView?.graph,
   });
 
   const [

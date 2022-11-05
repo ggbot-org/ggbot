@@ -1,3 +1,4 @@
+import { BinanceDflowExecutor } from "@ggbot2/dflow";
 import {
   ErrorInvalidTimestamp,
   Day,
@@ -9,15 +10,19 @@ import {
   isTimestamp,
   getDayFromTimestamp,
 } from "@ggbot2/time";
+import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
+import { BinanceDflow } from "_flow/binance";
 import { StrategyKey } from "_routing";
 import { useIsServerSide } from "./useIsServerSide";
+import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey & {
   isEnabled: boolean;
   isRunning: boolean;
   startDay: Day;
   endDay: Day;
+  timestamps: Timestamp[];
   maxDay: Day;
 };
 export type BacktestingState = State;
@@ -31,6 +36,40 @@ const isPersistingState = (arg: unknown): arg is PersistingState => {
   if (!arg || typeof arg !== "object") return false;
   const { isEnabled } = arg as Partial<PersistingState>;
   return typeof isEnabled === "boolean";
+};
+
+const computeTimestamps = ({
+  startDay,
+  endDay,
+}: Pick<State, "startDay" | "endDay">): State["timestamps"] => {
+  const numMinutes = 60;
+  const startDate = new Date(startDay);
+  const timestamps: Timestamp[] = [getTimestampFromDate(startDate)];
+
+  const getLastTimestamp = () => {
+    const lastTimestamp = timestamps.slice(-1).pop();
+    if (!isTimestamp(lastTimestamp)) throw new ErrorInvalidTimestamp();
+    return lastTimestamp;
+  };
+
+  const getNextDate = () => {
+    const lastTimestamp = getLastTimestamp();
+    const lastDate = new Date(lastTimestamp);
+    const nextDate = addMinutes(numMinutes, lastDate);
+    return nextDate;
+  };
+
+  const getLastDay = () => {
+    const lastTimestamp = getLastTimestamp();
+    return getDayFromTimestamp(lastTimestamp);
+  };
+
+  while (getLastDay() < endDay) {
+    const nextDate = getNextDate();
+    timestamps.push(getTimestampFromDate(nextDate));
+  }
+
+  return timestamps;
 };
 
 type Action =
@@ -70,6 +109,7 @@ const backtestingReducer = (state: State, action: Action) => {
         ...state,
         startDay,
         endDay,
+        timestamps: computeTimestamps({ startDay, endDay }),
       };
     }
     case "START":
@@ -111,29 +151,42 @@ const getInitialState =
         ...persistingState,
         isRunning: false,
         maxDay,
+        timestamps: computeTimestamps(persistingState),
         ...strategyKey,
       };
     }
     // Default state.
     const startDay = getDayFromDate(addDays(-7, new Date(maxDay)));
+    const endDay = maxDay;
     return {
       isEnabled: false,
       isRunning: false,
       startDay,
-      endDay: maxDay,
+      endDay,
+      timestamps: computeTimestamps({ startDay, endDay }),
       maxDay,
       ...strategyKey,
     };
   };
 
-export const useBacktesting = (
-  strategyKey: StrategyKey
-): [state: State | undefined, dispatch: BacktestingDispatch] => {
+type UseBacktesting = (
+  arg: StrategyKey &
+    Pick<UseNodesCatalogArg, "binanceSymbols"> & {
+      flowViewGraph?: FlowViewSerializableGraph;
+    }
+) => [state: State | undefined, dispatch: BacktestingDispatch];
+
+export const useBacktesting: UseBacktesting = ({
+  binanceSymbols,
+  flowViewGraph,
+  strategyKind,
+  strategyId,
+}) => {
   const storage = global?.window?.sessionStorage;
 
-  const { strategyKind, strategyId } = strategyKey;
-
   const isServerSide = useIsServerSide();
+
+  const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
   const storageKey = useMemo(
     () => `backtest:${strategyKind}:${strategyId}`,
@@ -167,49 +220,38 @@ export const useBacktesting = (
   const [state, dispatch] = useReducer(
     backtestingReducer,
     getPersistingState(),
-    getInitialState(strategyKey)
+    getInitialState({ strategyKind, strategyId })
   );
 
-  const { isEnabled, isRunning, startDay, endDay } = state;
+  const { isEnabled, isRunning, startDay, endDay, timestamps } = state;
 
   const run = useCallback(async () => {
-    if (!isRunning) return;
+    if (!nodesCatalog) return;
+    if (!flowViewGraph) return;
 
-    const numMinutes = 60;
-    const startDate = new Date(startDay);
-    const timestamps: Timestamp[] = [getTimestampFromDate(startDate)];
+    if (strategyKind === "binance") {
+      const binance = new BinanceDflow();
+      const executor = new BinanceDflowExecutor(binance, nodesCatalog);
 
-    const getLastTimestamp = () => {
-      const lastTimestamp = timestamps.slice(-1).pop();
-      if (!isTimestamp(lastTimestamp)) throw new ErrorInvalidTimestamp();
-      return lastTimestamp;
-    };
-
-    const getNextDate = () => {
-      const lastTimestamp = getLastTimestamp();
-      const lastDate = new Date(lastTimestamp);
-      const nextDate = addMinutes(numMinutes, lastDate);
-      return nextDate;
-    };
-
-    const getLastDay = () => {
-      const lastTimestamp = getLastTimestamp();
-      return getDayFromTimestamp(lastTimestamp);
-    };
-
-    while (getLastDay() < endDay) {
-      const nextDate = getNextDate();
-      timestamps.push(getTimestampFromDate(nextDate));
+      for (const timestamp of timestamps) {
+        console.log(timestamp);
+        try {
+          const { execution } = await executor.run(
+            { memory: {}, timestamp },
+            flowViewGraph
+          );
+          console.log(execution);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      dispatch({ type: "END" });
     }
-
-    for (const timestamp of timestamps) {
-      console.log(timestamp);
-    }
-  }, [dispatch, isRunning, endDay]);
+  }, [dispatch, flowViewGraph, nodesCatalog, strategyKind]);
 
   useEffect(() => {
     if (isRunning) run();
-  }, [isRunning]);
+  }, [isRunning, run]);
 
   useEffect(() => {
     if (isServerSide) return;

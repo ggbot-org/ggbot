@@ -1,15 +1,12 @@
 import {
   BinanceDflowHost,
-  DflowBinanceSymbolInfo,
   BinanceDflowExecutor,
-  getDflowBinanceNodesCatalog,
   nodeTextToViewType,
 } from "@ggbot2/dflow";
 import { UpdateTime } from "@ggbot2/models";
 import { Timestamp, now, truncateTimestamp } from "@ggbot2/time";
 import {
   DflowHost,
-  DflowNodesCatalog,
   DflowNodeUnknown,
   DflowErrorCannotConnectPins,
 } from "dflow";
@@ -30,12 +27,13 @@ import {
 } from "react";
 import { BinanceDflow } from "_flow/binance";
 import { StrategyKey } from "_routing";
+import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type UseFlowView = (
-  arg: Pick<StrategyKey, "strategyKind"> & {
-    binanceSymbols?: DflowBinanceSymbolInfo[];
-    containerRef: MutableRefObject<HTMLDivElement | null>;
-  }
+  arg: Pick<StrategyKey, "strategyKind"> &
+    Pick<UseNodesCatalogArg, "binanceSymbols"> & {
+      containerRef: MutableRefObject<HTMLDivElement | null>;
+    }
 ) => { flowView: FlowView | undefined } & Partial<UpdateTime>;
 
 /**
@@ -62,10 +60,7 @@ export const useFlowView: UseFlowView = ({
   const flowViewRef = useRef<FlowView>();
   const [whenUpdated, setWhenUpdated] = useState<Timestamp | undefined>();
 
-  const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
-    if (strategyKind === "binance" && binanceSymbols)
-      return getDflowBinanceNodesCatalog({ symbols: binanceSymbols });
-  }, [binanceSymbols, strategyKind]);
+  const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
   const dflow = useMemo<DflowHost | undefined>(() => {
     if (strategyKind !== "binance") return;
@@ -81,11 +76,10 @@ export const useFlowView: UseFlowView = ({
   const binanceExecutor = useMemo<BinanceDflowExecutor | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!nodesCatalog) return;
-    if (!dflow) return;
     const binance = new BinanceDflow();
     const executor = new BinanceDflowExecutor(binance, nodesCatalog);
     return executor;
-  }, [dflow, nodesCatalog, strategyKind]);
+  }, [nodesCatalog, strategyKind]);
 
   const importFlowView = useCallback(async () => {
     if (!containerRef.current) return;

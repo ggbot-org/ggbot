@@ -130,7 +130,11 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
 
-  const [backtesting, backtestingDispatch] = useBacktesting(strategyKey);
+  const [backtesting, backtestingDispatch] = useBacktesting({
+    ...strategyKey,
+    binanceSymbols,
+    flowViewGraph: flowView?.graph,
+  });
 
   const onChangeBacktestingCheckbox = useCallback(() => {
     backtestingDispatch({ type: "TOGGLE" });
