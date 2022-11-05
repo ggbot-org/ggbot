@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
 
@@ -20,6 +22,6 @@ describe("today", () => {
       memory: {},
       timestamp: new Date(day).toJSON(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(day);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), day);
   });
 });

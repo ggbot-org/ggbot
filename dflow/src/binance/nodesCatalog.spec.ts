@@ -1,21 +1,41 @@
-import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog";
-import { BinanceClientMock } from "./mocks/client";
-import { DflowBinanceSymbolInfo } from "./symbols";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js";
+import { BinanceClientMock } from "./mocks/client.js";
+import { DflowBinanceSymbolInfo } from "./symbols.js";
 
 describe("getDflowBinanceDynamicNodesCatalog", () => {
   it("creates Dflow nodes related with Binance symbols", async () => {
     const binance = new BinanceClientMock();
     const { symbols } = await binance.exchangeInfo();
     const nodesCatalog = getDflowBinanceDynamicNodesCatalog({ symbols });
-    expect(Object.keys(nodesCatalog)).toEqual(
-      expect.arrayContaining([
+    assert.deepEqual(
+      Object.keys(nodesCatalog).sort(),
+      [
+        // intervals
+        "1m",
+        "3m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "4h",
+        "6h",
+        "8h",
+        "12h",
+        "1d",
+        "1w",
+        "3d",
+        "1M",
+        // symbols
         "BNB/BTC",
         "BNB/BUSD",
         "BNB/ETH",
         "BTC/BUSD",
         "ETH/BTC",
         "ETH/BUSD",
-      ])
+      ].sort()
     );
   });
 
@@ -101,12 +121,12 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
     });
 
     // Valid node.
-    expect(nodesCatalog["AAA/BTC"]).toBeDefined();
+    assert.ok(nodesCatalog["AAA/BTC"] !== undefined);
     // Invalid nodes.
-    expect(nodesCatalog["XXA/BUSD"]).toBeUndefined();
-    expect(nodesCatalog["XXB/BUSD"]).toBeUndefined();
-    expect(nodesCatalog["XXC/BUSD"]).toBeUndefined();
-    expect(nodesCatalog["XXD/YYYY"]).toBeUndefined();
-    expect(nodesCatalog["XXE/BUSD"]).toBeUndefined();
+    assert.ok(nodesCatalog["XXA/BUSD"] === undefined);
+    assert.ok(nodesCatalog["XXB/BUSD"] === undefined);
+    assert.ok(nodesCatalog["XXC/BUSD"] === undefined);
+    assert.ok(nodesCatalog["XXD/YYYY"] === undefined);
+    assert.ok(nodesCatalog["XXE/BUSD"] === undefined);
   });
 });

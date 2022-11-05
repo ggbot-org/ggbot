@@ -16,7 +16,7 @@ import {
   WilderMovingAverage,
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
-import { TypicalPrice } from "./nodes/indicators/typicalPrice";
+import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Today } from "./nodes/time.js";
 

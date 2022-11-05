@@ -28,26 +28,12 @@ The root package.json exposes also scripts for the workspace, for example
 
 A basic workspace package is a folder with the following files:
 
-* .eslintrc.json
 * .gitignore
-* jest.config.cjs
 * package.json
 * src/index.ts
 * tsconfig.json
 * tsconfig.build.json
-
-### .eslintrc.json
-
-Configure [eslint](https://eslint.org/) when it makes sense.
-
-```json
-{
-  "rules": {
-    "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-warning-comments": "error"
-  }
-}
-```
+* tsconfig.test.json
 
 ### .gitignore
 
@@ -55,24 +41,7 @@ Create a gitignore file with at least the following content
 
 ```
 dist/
-```
-
-### jest.config.cjs
-
-Configure [jest] with the following:
-
-```js
-const path = require("path");
-
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
-  moduleNameMapper: {
-    "(.+)\\.js": "$1",
-    "@ggbot2/(.*)": path.resolve(__dirname, "../$1/src/index.ts"),
-  },
-  preset: "ts-jest",
-  testEnvironment: "node",
-};
+test/
 ```
 
 ### package.json
@@ -93,18 +62,13 @@ module.exports = {
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "lint": "eslint src",
-    "jest": "jest",
-    "test": "npm run tsc--noEmit; npm run jest",
+    "pretest": "tsc --build tsconfig.test.json",
+    "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
     // Dependency from another workspace package is referenced using `file:` prefix.
     "@ggbot2/another-package": "file:another-package"
-  },
-  "devDependencies": {
-    // The "@ggobt2/dev" package adds a list of development dependencies.
-    "@ggobt2/dev": "file:dev"
   }
 }
 ```
@@ -154,4 +118,18 @@ export * from "./foo.js";
 }
 ```
 
-[jest]: https://jestjs.io/ "Jest"
+### tsconfig.test.json
+
+```jsonc
+{
+  "compilerOptions": {
+    "incremental": true,
+    // Node.js test runner search recursively the test/ folder by default.
+    "outDir": "./test"
+  },
+  // Extend build config to reproduce its result, only
+  // `outDir` and `exclude` are overridden.
+  "extends": "./tsconfig.build.json",
+  "exclude": ["node_modules"]
+}
+```

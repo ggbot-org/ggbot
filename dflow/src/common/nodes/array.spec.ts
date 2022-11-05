@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { now } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
@@ -26,10 +28,8 @@ describe("shift", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(1);
-    expect(getDflowExecutionOutputData(execution, nodeId, 1)).toStrictEqual([
-      2, 3,
-    ]);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 1);
+    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 1), [2, 3]);
   });
 });
 
@@ -57,10 +57,8 @@ describe("pop", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(3);
-    expect(getDflowExecutionOutputData(execution, nodeId, 1)).toStrictEqual([
-      1, 2,
-    ]);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 3);
+    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 1), [1, 2]);
   });
 });
 
@@ -96,7 +94,7 @@ describe("push", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toStrictEqual([
+    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [
       1,
       2,
       3,

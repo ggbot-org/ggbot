@@ -7,8 +7,8 @@ import {
   BinanceOrderType,
 } from "@ggbot2/binance";
 import { BinanceDflow } from "../context.js";
-import accountInfo from "./accountInfo.json";
-import exchangeInfo from "./exchangeInfo.json";
+import { accountInfo } from "./accountInfo.js";
+import { exchangeInfo } from "./exchangeInfo.js";
 
 export class BinanceClientMock implements BinanceDflow {
   async account() {

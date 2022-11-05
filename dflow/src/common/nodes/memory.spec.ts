@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { now } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
@@ -25,8 +27,8 @@ describe("deleteMemory", () => {
       memory: { key1: "value1" },
       timestamp: now(),
     });
-    expect(memoryChanged).toBe(true);
-    expect(memory.key1).toBe(undefined);
+    assert.equal(memoryChanged, true);
+    assert.equal(memory.key1, undefined);
   });
 });
 
@@ -54,9 +56,9 @@ describe("getMemory", () => {
       memory: { key1: value },
       timestamp: now(),
     });
-    expect(memoryChanged).toBe(false);
-    expect(memory.key1).toBe(value);
-    expect(getDflowExecutionOutputData(execution, "c", 0)).toBe(value);
+    assert.equal(memoryChanged, false);
+    assert.equal(memory.key1, value);
+    assert.equal(getDflowExecutionOutputData(execution, "c", 0), value);
   });
 });
 
@@ -91,7 +93,7 @@ describe("setMemory", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(memoryChanged).toBe(true);
-    expect(memory.key1).toBe(1.2);
+    assert.equal(memoryChanged, true);
+    assert.equal(memory.key1, 1.2);
   });
 });

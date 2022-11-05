@@ -1,4 +1,6 @@
-import { bollingerBands } from "./bollingerBands";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { bollingerBands } from "./bollingerBands.js";
 
 describe("Bollinger Bands", () => {
   it("works", () => {
@@ -29,7 +31,7 @@ describe("Bollinger Bands", () => {
         ],
       },
     ].forEach(({ input: { values, period, amplitude }, output }) => {
-      expect(bollingerBands(values, period, amplitude)).toStrictEqual(output);
+      assert.deepEqual(bollingerBands(values, period, amplitude), output);
     });
   });
 });

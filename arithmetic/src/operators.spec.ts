@@ -1,4 +1,6 @@
-import { equal, add, sub, div, mul } from "./operators";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { equal, add, sub, div, mul } from "./operators.js";
 
 describe("equal", () => {
   it("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {
@@ -11,7 +13,7 @@ describe("equal", () => {
       { input: { a: "1.02", b: "1.020" }, output: true },
       { input: { a: "-1.2300", b: "-1.230" }, output: true },
     ].forEach(({ input: { a, b }, output }) => {
-      expect(equal(a, b)).toBe(output);
+      assert.equal(equal(a, b), output);
     });
   });
 });
@@ -24,7 +26,7 @@ describe("add", () => {
         output: "1.00",
       },
     ].forEach(({ input: { a, b, numDecimals }, output }) => {
-      expect(add(a, b, numDecimals)).toBe(output);
+      assert.equal(add(a, b, numDecimals), output);
     });
   });
 });
@@ -37,7 +39,7 @@ describe("sub", () => {
         output: "-1.00",
       },
     ].forEach(({ input: { a, b, numDecimals }, output }) => {
-      expect(sub(a, b, numDecimals)).toBe(output);
+      assert.equal(sub(a, b, numDecimals), output);
     });
   });
 });
@@ -54,7 +56,7 @@ describe("mul", () => {
         output: "19.82358720",
       },
     ].forEach(({ input: { a, b, numDecimals }, output }) => {
-      expect(mul(a, b, numDecimals)).toBe(output);
+      assert.equal(mul(a, b, numDecimals), output);
     });
   });
 });
@@ -67,7 +69,7 @@ describe("div", () => {
         output: "1.00",
       },
     ].forEach(({ input: { a, b, numDecimals }, output }) => {
-      expect(div(a, b, numDecimals)).toBe(output);
+      assert.equal(div(a, b, numDecimals), output);
     });
   });
 });

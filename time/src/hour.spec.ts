@@ -1,4 +1,6 @@
-import { isHour } from "./hour";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { isHour } from "./hour.js";
 
 describe("isHour", () => {
   it("validates string if is a valid Hour", () => {
@@ -32,7 +34,7 @@ describe("isHour", () => {
       { input: "23", output: true },
       { input: "23", output: true },
     ].forEach(({ input, output }) => {
-      expect(isHour(input)).toBe(output);
+      assert.equal(isHour(input), output);
     });
   });
 });

@@ -1,4 +1,6 @@
-import { canBeDecimal, numOfDecimals } from "./decimal";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { canBeDecimal, numOfDecimals } from "./decimal.js";
 
 describe("Decimal", () => {
   it('supports "Greater than" operator', () => {
@@ -19,7 +21,7 @@ describe("Decimal", () => {
         output: true,
       },
     ].forEach(({ input1, input2, output }) => {
-      expect(input1 > input2).toBe(output);
+      assert.equal(input1 > input2, output);
     });
   });
 
@@ -36,7 +38,7 @@ describe("Decimal", () => {
         output: true,
       },
     ].forEach(({ input1, input2, output }) => {
-      expect(input1 < input2).toBe(output);
+      assert.equal(input1 < input2, output);
     });
   });
 });
@@ -57,7 +59,7 @@ describe("canBeDecimal", () => {
       ...validArgs.map((input) => ({ input, output: true })),
       ...invalidArgs.map((input) => ({ input, output: false })),
     ].forEach(({ input, output }) => {
-      expect(canBeDecimal(input)).toBe(output);
+      assert.equal(canBeDecimal(input), output);
     });
   });
 });
@@ -76,7 +78,7 @@ describe("numOfDecimals", () => {
       { input: "-1.2", output: 1 },
       { input: "-1.200", output: 1 },
     ].forEach(({ input, output }) => {
-      expect(numOfDecimals(input)).toBe(output);
+      assert.equal(numOfDecimals(input), output);
     });
   });
 });

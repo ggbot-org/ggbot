@@ -1,4 +1,5 @@
-import { ErrorInvalidDate } from "./errors.js";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import {
   getTimestampFromDate,
   getTimestampFromDay,
@@ -13,7 +14,7 @@ describe("isTimestamp", () => {
       { input: "2000-01-01", output: false },
       { input: "2022-07-23T11:43:05.841Z", output: true },
     ].forEach(({ input, output }) => {
-      expect(isTimestamp(input)).toBe(output);
+      assert.equal(isTimestamp(input), output);
     });
   });
 });
@@ -26,7 +27,7 @@ describe("getTimestampFromDay", () => {
         output: "2022-07-23T00:00:00.000Z",
       },
     ].forEach(({ input, output }) => {
-      expect(getTimestampFromDay(input)).toBe(output);
+      assert.equal(getTimestampFromDay(input), output);
     });
   });
 });
@@ -47,15 +48,15 @@ describe("truncateTimestamp", () => {
         output: "2022-07-23T11:00:00.000Z",
       },
     ].forEach(({ input: { timestamp, truncation }, output }) => {
-      expect(truncateTimestamp(timestamp).to(truncation)).toBe(output);
+      assert.equal(truncateTimestamp(timestamp).to(truncation), output);
     });
   });
 });
 
 describe("getTimestampFromDate", () => {
   it("throws ErrorInvalidDate", () => {
-    expect(() => getTimestampFromDate(new Date("0000-00-00"))).toThrow(
-      ErrorInvalidDate
-    );
+    assert.throws(() => getTimestampFromDate(new Date("0000-00-00")), {
+      name: "TypeError",
+    });
   });
 });

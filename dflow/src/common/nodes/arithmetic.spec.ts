@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { now } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
@@ -34,7 +36,7 @@ describe("add", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(5);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 5);
   });
 });
 
@@ -70,7 +72,7 @@ describe("sub", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(6);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6);
   });
 });
 
@@ -106,7 +108,7 @@ describe("mul", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(6);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6);
   });
 });
 
@@ -142,6 +144,6 @@ describe("div", () => {
       memory: {},
       timestamp: now(),
     });
-    expect(getDflowExecutionOutputData(execution, nodeId, 0)).toBe(1.5);
+    assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 1.5);
   });
 });

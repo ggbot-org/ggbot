@@ -16,19 +16,11 @@ const webappWorkspaces = [
 
 const typeChecksNpmScriptKey = "tsc--noEmit";
 
-// const packageScripts = [
-//   "build",
-//   "cleanup",
-//   "jest",
-//   "test",
-//   typeChecksNpmScriptKey,
-// ]
-
 const packageScript = {
   build: "tsc --build tsconfig.build.json",
-  cleanup: "rm -rf dist/",
-  jest: "jest",
-  test: "npm run tsc--noEmit; npm run jest",
+  cleanup: "rm -rf dist/ test/",
+  pretest: "tsc --build tsconfig.test.json",
+  test: "node --test",
   "tsc--noEmit": "tsc --noEmit --project .",
 };
 
@@ -121,12 +113,6 @@ async function testWorkspacePackageJson({ workspace }) {
       `${workspace}/package.json scripts["${key}"]`
     );
   });
-
-  assert.equal(
-    packageJson.scripts.test.includes(`npm run ${typeChecksNpmScriptKey}`),
-    true,
-    `${workspace}/package.json scripts.test run TypeScript type checks`
-  );
 
   assert.equal(
     rootPackageJson.scripts[`test:${workspace}`],

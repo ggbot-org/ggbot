@@ -1,8 +1,10 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import {
   exponentialMovingAverage,
   simpleMovingAverage,
   wilderSmoothing,
-} from "./movingAverages";
+} from "./movingAverages.js";
 
 describe("Exponential Moving Average", () => {
   it("works", () => {
@@ -22,7 +24,7 @@ describe("Exponential Moving Average", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(exponentialMovingAverage(values, period)).toStrictEqual(output);
+      assert.deepEqual(exponentialMovingAverage(values, period), output);
     });
   });
 });
@@ -45,7 +47,7 @@ describe("Simple Moving Average", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(simpleMovingAverage(values, period)).toStrictEqual(output);
+      assert.deepEqual(simpleMovingAverage(values, period), output);
     });
   });
 });
@@ -68,7 +70,7 @@ describe("Wilder's smoothing", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(wilderSmoothing(values, period)).toStrictEqual(output);
+      assert.deepEqual(wilderSmoothing(values, period), output);
     });
   });
 });

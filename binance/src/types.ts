@@ -1,17 +1,18 @@
 import { isLiteralType } from "@ggbot2/models";
 
 export type BinanceAccountInformation = {
-  makerCommission: number;
-  takerCommission: number;
-  buyerCommission: number;
-  sellerCommission: number;
-  canTrade: boolean;
-  canWithdraw: boolean;
-  canDeposit: boolean;
-  updateTime: number;
   accountType: string;
   balances: BinanceBalance[];
+  brokered: boolean;
+  buyerCommission: number;
+  canDeposit: boolean;
+  canTrade: boolean;
+  canWithdraw: boolean;
+  makerCommission: number;
   permissions: string[];
+  sellerCommission: number;
+  takerCommission: number;
+  updateTime: number;
 };
 
 export type BinanceAccountTrade = {
@@ -317,23 +318,25 @@ export const isBinanceRateLimitType = isLiteralType<BinanceRateLimitType>(
 );
 
 export type BinanceSymbolInfo = {
-  symbol: string;
-  status: BinanceSymbolStatus;
+  allowTrailingStop: boolean;
   baseAsset: string;
   baseAssetPrecision: number;
-  quoteAsset: string;
-  quotePrecision: number;
-  quoteAssetPrecision: number;
   baseCommissionPrecision: number;
-  quoteCommissionPrecision: number;
-  orderTypes: BinanceOrderType[];
-  icebergAllowed: boolean;
-  ocoAllowed: boolean;
-  quoteOrderQtyMarketAllowed: boolean;
-  isSpotTradingAllowed: boolean;
-  isMarginTradingAllowed: boolean;
+  cancelReplaceAllowed: boolean;
   filters: BinanceSymbolFilter[];
+  icebergAllowed: boolean;
+  isMarginTradingAllowed: boolean;
+  isSpotTradingAllowed: boolean;
+  ocoAllowed: boolean;
+  orderTypes: BinanceOrderType[];
   permissions: BinancePermissions;
+  quoteAsset: string;
+  quoteAssetPrecision: number;
+  quoteCommissionPrecision: number;
+  quoteOrderQtyMarketAllowed: boolean;
+  quotePrecision: number;
+  status: BinanceSymbolStatus;
+  symbol: string;
 };
 
 export type BinanceSymbolFilter =

@@ -1,4 +1,6 @@
-import { nodeTextToViewType } from "./nodeResolution";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { nodeTextToViewType } from "./nodeResolution.js";
 
 describe("nodeTextToViewType", () => {
   it("resolves node containing comments to `info` type", () => {
@@ -6,10 +8,10 @@ describe("nodeTextToViewType", () => {
       { input: "this is a comment, it contains spaces", output: "info" },
       { input: "this\nis\na\ncomment", output: "info" },
     ].forEach(({ input, output }) => {
-      expect(nodeTextToViewType(input)).toBe(output);
+      assert.equal(nodeTextToViewType(input), output);
     });
 
-    expect(nodeTextToViewType("thisCouldBeSomeNode")).toBe(undefined);
+    assert.equal(nodeTextToViewType("thisCouldBeSomeNode"), undefined);
   });
 
   it("resolves node containing JSON to `json` type", () => {
@@ -20,7 +22,7 @@ describe("nodeTextToViewType", () => {
       { input: '{"message":"hello world"}', output: "json" },
       { input: "[ 1 ]", output: "json" },
     ].forEach(({ input, output }) => {
-      expect(nodeTextToViewType(input)).toBe(output);
+      assert.equal(nodeTextToViewType(input), output);
     });
   });
 });

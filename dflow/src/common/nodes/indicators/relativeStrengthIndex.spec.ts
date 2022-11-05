@@ -1,4 +1,6 @@
-import { relativeStrengthIndex } from "./relativeStrengthIndex";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { relativeStrengthIndex } from "./relativeStrengthIndex.js";
 
 describe("Relative Strength Index", () => {
   it("works", () => {
@@ -23,7 +25,7 @@ describe("Relative Strength Index", () => {
         ],
       },
     ].forEach(({ input: { values, period }, output }) => {
-      expect(relativeStrengthIndex(values, period)).toStrictEqual(output);
+      assert.deepEqual(relativeStrengthIndex(values, period), output);
     });
   });
 });

@@ -1,6 +1,8 @@
-import { BinanceDflowHost } from "./host";
-import { getDflowBinanceNodesCatalog } from "./nodesCatalog";
-import { BinanceClientMock } from "./mocks/client";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { BinanceDflowHost } from "./host.js";
+import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
+import { BinanceClientMock } from "./mocks/client.js";
 
 describe("BinanceDflowHost", () => {
   describe("load()", () => {
@@ -18,7 +20,7 @@ describe("BinanceDflowHost", () => {
           },
         ],
       });
-      expect(dflow.getNodeById("a")).toBeDefined();
+      assert.ok(dflow.getNodeById("a") !== undefined);
     });
   });
 });

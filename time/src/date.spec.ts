@@ -1,5 +1,6 @@
-import { ErrorInvalidDate } from "./errors";
-import { addDays, truncateDate } from "./date";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { addDays, truncateDate } from "./date.js";
 
 describe("addDays", () => {
   it("works", () => {
@@ -21,15 +22,15 @@ describe("addDays", () => {
         output: new Date(1665187200000 + 86400 * 1000 * 2),
       },
     ].forEach(({ input: { num, date }, output }) => {
-      expect(addDays(num, date)).toStrictEqual(output);
+      assert.equal(addDays(num, date), output);
     });
   });
 });
 
 describe("truncateDate", () => {
   it("throws ErrorInvalidDate", () => {
-    expect(() => truncateDate(new Date("0000-00-00"))).toThrow(
-      ErrorInvalidDate
-    );
+    assert.throws(() => truncateDate(new Date("0000-00-00")), {
+      name: "TypeError",
+    });
   });
 });

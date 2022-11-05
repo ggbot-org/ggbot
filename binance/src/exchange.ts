@@ -17,7 +17,7 @@ import {
 import {
   isBinanceKlineInterval,
   isBinanceKlineOptionalParameters,
-} from "./typeGuards";
+} from "./typeGuards.js";
 
 /**
 BinanceExchange implements public API requests.

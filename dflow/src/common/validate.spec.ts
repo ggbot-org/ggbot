@@ -1,10 +1,11 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 import { now } from "@ggbot2/time";
 import type { DflowNodesCatalog } from "dflow";
-import { ErrorUknownDflowNodes } from "../errors";
-import { DflowExecutorView } from "./executor";
-import { commonNodeTextToDflowKind } from "./nodeResolution";
-import { dflowValidate } from "./validate";
-import { DflowCommonHostMock } from "./mocks/host";
+import { DflowExecutorView } from "./executor.js";
+import { commonNodeTextToDflowKind } from "./nodeResolution.js";
+import { dflowValidate } from "./validate.js";
+import { DflowCommonHostMock } from "./mocks/host.js";
 
 describe("dflowValidate", () => {
   it("throws ErrorUknownDflowNodes", () => {
@@ -13,13 +14,18 @@ describe("dflowValidate", () => {
       nodes: [{ id: "n1", text: "unknownNode" }],
       edges: [],
     };
-    expect(() => {
-      dflowValidate({
-        nodesCatalog,
-        nodeTextToDflowKind: commonNodeTextToDflowKind,
-        view,
-      });
-    }).toThrow(ErrorUknownDflowNodes);
+    assert.throws(
+      () => {
+        dflowValidate({
+          nodesCatalog,
+          nodeTextToDflowKind: commonNodeTextToDflowKind,
+          view,
+        });
+      },
+      {
+        name: "Error",
+      }
+    );
   });
 
   it("ignores info nodes", () => {
@@ -28,13 +34,13 @@ describe("dflowValidate", () => {
       nodes: [{ id: "n1", text: "this is a comment" }],
       edges: [],
     };
-    expect(() => {
+    assert.doesNotThrow(() => {
       dflowValidate({
         nodesCatalog,
         nodeTextToDflowKind: commonNodeTextToDflowKind,
         view,
       });
-    }).not.toThrow(Error);
+    }, Error);
   });
 
   it("validates json nodes", () => {
@@ -48,12 +54,12 @@ describe("dflowValidate", () => {
       ],
       edges: [],
     };
-    expect(() => {
+    assert.doesNotThrow(() => {
       dflowValidate({
         nodesCatalog: dflow.nodesCatalog,
         nodeTextToDflowKind: commonNodeTextToDflowKind,
         view,
       });
-    }).not.toThrow(Error);
+    }, Error);
   });
 });

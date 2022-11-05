@@ -1,6 +1,8 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { StrategyFlow } from "@ggbot2/models";
-import { BinanceClientMock } from "./mocks/client";
-import { extractBinanceSymbolsFromFlow } from "./symbols";
+import { BinanceClientMock } from "./mocks/client.js";
+import { extractBinanceSymbolsFromFlow } from "./symbols.js";
 
 describe("extractBinanceSymbolsFromFlow", () => {
   it("works", async () => {
@@ -15,9 +17,9 @@ describe("extractBinanceSymbolsFromFlow", () => {
       ],
       edges: [],
     };
-    const expected = ["BTCBUSD", "ETHBTC"];
-    expect(
-      extractBinanceSymbolsFromFlow({ binanceSymbols: symbols, view }).sort()
-    ).toStrictEqual(expected.sort());
+    assert.deepEqual(
+      extractBinanceSymbolsFromFlow({ binanceSymbols: symbols, view }).sort(),
+      ["BTCBUSD", "ETHBTC"].sort()
+    );
   });
 });

@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "outDir": "./test"
+  },
+  "extends": "./tsconfig.build.json",
+  "exclude": ["node_modules"]
+}
