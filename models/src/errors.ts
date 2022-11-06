@@ -1,12 +1,18 @@
-export class ErrorInvalidName extends Error {
-  constructor(value: unknown) {
-    super(`Invalid name ${value}`);
+export class ErrorInvalidName extends TypeError {
+  constructor(arg: unknown) {
+    super(`Invalid name ${arg}`);
   }
 }
 
-export class ErrorNameToLong extends Error {
-  constructor(value: string) {
-    super(`Name to long, length is ${value.length}`);
+export class ErrorInvalidEmailAddress extends TypeError {
+  constructor(arg: unknown) {
+    super(`Invalid email ${arg}`);
+  }
+}
+
+export class ErrorNameToLong extends TypeError {
+  constructor(arg: string) {
+    super(`Name to long, length is ${arg.length}`);
   }
 }
 

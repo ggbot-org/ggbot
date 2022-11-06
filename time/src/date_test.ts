@@ -22,7 +22,7 @@ describe("addDays", () => {
         output: new Date(1665187200000 + 86400 * 1000 * 2),
       },
     ].forEach(({ input: { num, date }, output }) => {
-      assert.equal(addDays(num, date), output);
+      assert.deepEqual(addDays(num, date), output);
     });
   });
 });

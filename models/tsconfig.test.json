@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "outDir": "./test"
+    "outDir": "./temp"
   },
   "extends": "./tsconfig.build.json",
   "exclude": ["node_modules"]

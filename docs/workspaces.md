@@ -41,7 +41,7 @@ Create a gitignore file with at least the following content
 
 ```
 dist/
-test/
+temp/
 ```
 
 ### package.json
@@ -62,6 +62,7 @@ test/
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/ temp/",
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
@@ -73,9 +74,24 @@ test/
 }
 ```
 
+If package has no test, its `scripts` can be the following
+
+```jsonc
+{
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/",
+    "test": "npm run tsc--noEmit",
+    "tsc--noEmit": "tsc --noEmit --project ."
+  }
+}
+```
+
 ### src/index.ts
 
 Entry file for exports. Notice the **mandatory** `.js` extension.
+Every TypeScript source file importing another file **must** explicitly set the file
+extension.
 
 ```ts
 export * from "./foo.js";
@@ -113,19 +129,19 @@ export * from "./foo.js";
   "exclude": [
     "node_modules",
     // Exclude tests.
-    "**/*.spec.ts"
+    "**/*_test.ts"
   ]
 }
 ```
 
 ### tsconfig.test.json
 
+If package has no test, `tsconfig.test.json` can be omitted.
+
 ```jsonc
 {
   "compilerOptions": {
-    "incremental": true,
-    // Node.js test runner search recursively the test/ folder by default.
-    "outDir": "./test"
+    "outDir": "./temp"
   },
   // Extend build config to reproduce its result, only
   // `outDir` and `exclude` are overridden.

@@ -26,7 +26,6 @@
     "build:time": "npm run build --workspace time",
     "build:ui-components": "npm run build --workspace ui-components",
     "build:user-webapp": "npm run build --workspace user-webapp",
-    "build:webdev": "npm run build --workspace webdev",
     "cleanup": "npm run cleanup --workspaces --if-present",
     "cleanup:admin-webapp": "npm run cleanup --workspace admin-webapp",
     "cleanup:arithmetic": "npm run cleanup --workspace arithmetic",
@@ -47,7 +46,6 @@
     "cleanup:time": "npm run cleanup --workspace time",
     "cleanup:ui-components": "npm run cleanup --workspace ui-components",
     "cleanup:user-webapp": "npm run cleanup --workspace user-webapp",
-    "cleanup:webdev": "npm run cleanup --workspace webdev",
     "cleanup:website": "npm run cleanup --workspace website",
     "deploy:ui-components": "npm run deploy --workspace ui-components",
     "deploy:website": "npm run deploy --workspace website",
@@ -108,7 +106,6 @@
     "test:time": "npm run test --workspace time",
     "test:ui-components": "npm run test --workspace ui-components",
     "test:user-webapp": "npm run test --workspace user-webapp",
-    "test:webdev": "npm run test --workspace webdev",
     "test:website": "npm run test --workspace website",
     "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
   },
@@ -134,7 +131,6 @@
     "time",
     "ui-components",
     "user-webapp",
-    "webdev",
     "website"
   ],
   "devDependencies": {

@@ -1,4 +1,6 @@
-import { isBinanceKlineOptionalParameters } from "./typeGuards";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { isBinanceKlineOptionalParameters } from "./typeGuards.js";
 
 describe("isBinanceKlineOptionalParameters", () => {
   it("works", () => {
@@ -49,7 +51,7 @@ describe("isBinanceKlineOptionalParameters", () => {
         output: false,
       },
     ].forEach(({ input, output }) => {
-      expect(isBinanceKlineOptionalParameters(input)).toBe(output);
+      assert.equal(isBinanceKlineOptionalParameters(input), output);
     });
   });
 });

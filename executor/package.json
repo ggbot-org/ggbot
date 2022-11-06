@@ -11,10 +11,10 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "cleanup": "rm -rf dist/",
-    "test": "npm run tsc--noEmit",
-    "tsc--noEmit": "tsc --noEmit --project .",
-    "start": "node ./dist/daemon.js"
+    "cleanup": "rm -rf dist/ temp/",
+    "pretest": "tsc --build tsconfig.test.json",
+    "test": "node --test",
+    "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
     "@ggbot2/database": "file:database"

@@ -1,6 +1,7 @@
-import { isAccount } from "./account";
-
-import { testId0 } from "./item.spec";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { isAccount } from "./account.js";
+import { testId0 } from "./item_test.js";
 
 describe("isAccount", () => {
   it("validates Account, name is optional", () => {
@@ -16,7 +17,7 @@ describe("isAccount", () => {
         output: true,
       },
     ].forEach(({ input, output }) => {
-      expect(isAccount(input)).toBe(output);
+      assert.equal(isAccount(input), output);
     });
   });
 });

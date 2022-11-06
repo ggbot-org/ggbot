@@ -5,8 +5,5 @@
   "type": "module",
   "scripts": {
     "test": "node tests.js"
-  },
-  "dependencies": {
-    "@ggobt2/webdev": "file:webdev"
   }
 }

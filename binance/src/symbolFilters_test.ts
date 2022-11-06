@@ -1,8 +1,10 @@
-import { lotSizeIsValid, minNotionalIsValid } from "./symbolFilters";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js";
 import type {
   BinanceSymbolFilterLotSize,
   BinanceSymbolFilterMinNotional,
-} from "./types";
+} from "./types.js";
 
 describe("lotSizeIsValid", () => {
   it("applies LOT_SIZE symbol filter", () => {
@@ -31,7 +33,7 @@ describe("lotSizeIsValid", () => {
     ];
 
     testData.forEach(({ input: { filter, value }, output }) => {
-      expect(lotSizeIsValid(filter, value)).toBe(output);
+      assert.equal(lotSizeIsValid(filter, value), output);
     });
   });
 });
@@ -63,7 +65,7 @@ describe("minNotionalIsValid", () => {
     ];
 
     testData.forEach(({ input: { filter, value }, output }) => {
-      expect(minNotionalIsValid(filter, value)).toBe(output);
+      assert.equal(minNotionalIsValid(filter, value), output);
     });
   });
 });

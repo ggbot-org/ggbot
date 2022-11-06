@@ -1,3 +1,5 @@
+import { ErrorInvalidEmailAddress } from "./errors.js";
+
 export type EmailAddress = string;
 
 export const isEmailAddress = (value: unknown): value is EmailAddress => {
@@ -24,16 +26,23 @@ export const isEmailAddress = (value: unknown): value is EmailAddress => {
   return true;
 };
 
-// If a domain is gmail.com or is handled by Google for Business,
-// any "." character in the EmailAddress user part is ignored.
-//
-//     namesurname@gmail.com is the same as name.surname@gmail.com
-//     and also the same as n.a.m.e.s.u.r.n.a.m.e@gmail.com
-//
-// Also users can append labels to the EmailAddress user part after a "+" character.
-//
-//     name@gmail.com EmailAddress can be used as name+label@gmail.com
+/**
+If a domain is gmail.com or is handled by Google for Business,
+any "." character in the EmailAddress user part is ignored.
 
+@example
+```
+namesurname@gmail.com is the same as name.surname@gmail.com
+and also the same as n.a.m.e.s.u.r.n.a.m.e@gmail.com
+```
+
+Also users can append labels to the EmailAddress user part after a "+" character.
+
+@example
+```
+name@gmail.com EmailAddress can be used as name+label@gmail.com
+```
+*/
 export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
   // Split EmailAddress
   const [firstPart, domain] = email.split("@");
@@ -42,5 +51,8 @@ export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
   // Remove dots
   const userWithNoDots = user.replace(/\./g, "");
   // Return normalized email as a lowercase string
-  return `${userWithNoDots}@${domain}`.toLowerCase() as EmailAddress;
+  const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase();
+  if (!isEmailAddress(normalizeEmail))
+    throw new ErrorInvalidEmailAddress(normalizeEmail);
+  return normalizeEmail;
 };

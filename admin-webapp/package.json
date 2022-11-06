@@ -17,8 +17,5 @@
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/ui-components": "file:ui-components",
     "swr": "^1.3.0"
-  },
-  "devDependencies": {
-    "@ggobt2/webdev": "file:webdev"
   }
 }
