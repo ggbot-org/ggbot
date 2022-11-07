@@ -1,11 +1,125 @@
 import { isDecimal } from "@ggbot2/arithmetic";
 import { isLiteralType } from "@ggbot2/models";
 
-import type {
+import {
+  BinanceBalance,
+  BinanceFill,
   BinanceKlineOptionalParameters,
+  BinanceOrderRespACK,
+  BinanceOrderRespFULL,
+  BinanceOrderRespRESULT,
+  BinanceOrderRespType,
+  BinanceOrderSide,
+  BinanceOrderStatus,
+  BinanceOrderType,
+  BinancePermissions,
+  BinanceRateLimitInterval,
+  BinanceRateLimitType,
   BinanceSymbolFilterLotSize,
   BinanceSymbolFilterMinNotional,
+  BinanceSymbolStatus,
+  BinanceTimeInForce,
+  binanceOrderRespTypes,
+  binanceOrderSides,
+  binanceOrderStatuses,
+  binanceOrderTypes,
+  binancePermissions,
+  binanceRateLimitIntervals,
+  binanceRateLimitTypes,
+  binanceSymbolStatuses,
+  binanceTimeInForces,
 } from "./types.js";
+
+export const isBinanceBalance = (arg: unknown): arg is BinanceBalance => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { asset, free, locked } = arg as Partial<BinanceBalance>;
+  return typeof asset === "string" && isDecimal(free) && isDecimal(locked);
+};
+
+export const isBinanceFill = (arg: unknown): arg is BinanceFill => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { price, qty, commission, commissionAsset } =
+    arg as Partial<BinanceFill>;
+  return (
+    isDecimal(price) &&
+    isDecimal(qty) &&
+    isDecimal(commission) &&
+    typeof commissionAsset === "string"
+  );
+};
+
+export const isBinanceOrderRespACK = (
+  arg: unknown
+): arg is BinanceOrderRespACK => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { symbol, orderId, orderListId, clientOrderId, transactTime } =
+    arg as Partial<BinanceOrderRespACK>;
+  return (
+    typeof symbol === "string" &&
+    typeof orderId === "number" &&
+    typeof orderListId === "number" &&
+    typeof clientOrderId === "string" &&
+    typeof transactTime === "number"
+  );
+};
+
+export const isBinanceOrderRespRESULT = (
+  arg: unknown
+): arg is BinanceOrderRespRESULT => {
+  if (!isBinanceOrderRespACK(arg)) return false;
+  const {
+    price,
+    origQty,
+    executedQty,
+    cummulativeQuoteQty,
+    status,
+    timeInForce,
+    type,
+    side,
+  } = arg as Partial<BinanceOrderRespRESULT>;
+  return (
+    isDecimal(price) &&
+    isDecimal(origQty) &&
+    isDecimal(executedQty) &&
+    isDecimal(cummulativeQuoteQty) &&
+    isBinanceOrderStatus(status) &&
+    isBinanceTimeInForce(timeInForce) &&
+    isBinanceOrderType(type) &&
+    isBinanceOrderSide(side)
+  );
+};
+
+export const isBinanceOrderRespFULL = (
+  arg: unknown
+): arg is BinanceOrderRespFULL => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { fills } = arg as Partial<BinanceOrderRespFULL>;
+  if (!Array.isArray(fills)) return false;
+  return fills.every((fill) => isBinanceFill(fill));
+};
+
+export const isBinancePermission =
+  isLiteralType<BinancePermissions>(binancePermissions);
+
+export const isBinanceOrderStatus =
+  isLiteralType<BinanceOrderStatus>(binanceOrderStatuses);
+
+export const isBinanceOrderType =
+  isLiteralType<BinanceOrderType>(binanceOrderTypes);
+
+export const isBinanceRateLimitInterval =
+  isLiteralType<BinanceRateLimitInterval>(binanceRateLimitIntervals);
+
+export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
+  binanceOrderRespTypes
+);
+
+export const isBinanceOrderSide =
+  isLiteralType<BinanceOrderSide>(binanceOrderSides);
+
+export const isBinanceRateLimitType = isLiteralType<BinanceRateLimitType>(
+  binanceRateLimitTypes
+);
 
 export const isBinanceSymbolFilterLotSize = (
   arg: unknown
@@ -80,3 +194,10 @@ export const isBinanceKlineOptionalParameters = (
   }
   return true;
 };
+
+export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
+  binanceSymbolStatuses
+);
+
+export const isBinanceTimeInForce =
+  isLiteralType<BinanceTimeInForce>(binanceTimeInForces);

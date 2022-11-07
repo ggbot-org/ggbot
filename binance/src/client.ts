@@ -18,7 +18,7 @@ import {
   lotSizeIsValid,
   minNotionalIsValid,
 } from "./symbolFilters.js";
-import {
+import type {
   BinanceAccountInformation,
   BinanceApiKeyPermission,
   BinanceNewOrderOptions,
@@ -26,13 +26,12 @@ import {
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
-  isBinanceOrderSide,
-  isBinanceOrderType,
 } from "./types.js";
+import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js";
 
 /**
- * BinanceClient implements private API requests.
- * It extends BinanceExchange to be able to use also some public API requests.
+BinanceClient implements private API requests.
+It extends BinanceExchange to be able to use also some public API requests.
  */
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
@@ -74,9 +73,9 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Account Information (USER_DATA)
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
+Account Information (USER_DATA)
+
+{@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
    */
   async account(): Promise<BinanceAccountInformation> {
     const { balances, ...rest } =
@@ -107,9 +106,9 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Send in a new order.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+Send in a new order.
+
+{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrder(
     symbolInput: string,
@@ -136,10 +135,10 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Test a new order.
-   * Binance API will validates new order but will not send it into the matching engine.
-   *
-   * Parameters are the same as `newOrder`.
+Test a new order.
+Binance API will validates new order but will not send it into the matching engine.
+
+Parameters are the same as `newOrder`.
    */
   async newOrderTest(
     symbolInput: string,
@@ -166,9 +165,9 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Send in a new order with type other than MARKET or LIMIT order.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+Send in a new order with type other than MARKET or LIMIT order.
+
+{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrderACK(
     symbolInput: string,
@@ -195,10 +194,10 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Test a new order with type other than MARKET or LIMIT order.
-   * Binance API will validates new order but will not send it into the matching engine.
-   *
-   * Parameters are the same as `newOrderACK`.
+Test a new order with type other than MARKET or LIMIT order.
+Binance API will validates new order but will not send it into the matching engine.
+
+Parameters are the same as `newOrderACK`.
    */
   async newOrderACKTest(
     symbolInput: string,
@@ -225,16 +224,16 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /**
-   * Validate order parameters and try to adjust them; otherwise throw an error.
-   *
-   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-   *
-   * @throws {ErrorBinanceCannotTradeSymbol}
-   * @throws {ErrorInvalidBinanceOrderOptions}
-   * @throws {ErrorInvalidBinanceOrderSide}
-   * @throws {ErrorInvalidBinanceOrderType}
-   * @throws {ErrorInvalidBinanceSymbol}
-   * @throws {ErrorUnhandledBinanceOrderType}
+Validate order parameters and try to adjust them; otherwise throw an error.
+
+@see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+
+@throws {ErrorBinanceCannotTradeSymbol}
+@throws {ErrorInvalidBinanceOrderOptions}
+@throws {ErrorInvalidBinanceOrderSide}
+@throws {ErrorInvalidBinanceOrderType}
+@throws {ErrorInvalidBinanceSymbol}
+@throws {ErrorUnhandledBinanceOrderType}
    */
   async prepareOrder(
     symbol: string,

@@ -1,5 +1,3 @@
-import { isLiteralType } from "@ggbot2/models";
-
 export type BinanceAccountInformation = {
   accountType: string;
   balances: BinanceBalance[];
@@ -37,52 +35,52 @@ export type BinanceApiKeyPermission = {
   createTime: number;
 
   /**
-   * This option allows you to withdraw via API.
-   * You must apply the IP Access Restriction filter in order to enable withdrawals.
+This option allows you to withdraw via API.
+You must apply the IP Access Restriction filter in order to enable withdrawals.
    */
   enableWithdrawals: boolean;
 
   /**
-   * This option authorizes this key to transfer funds between your master account and your sub account instantly.
+This option authorizes this key to transfer funds between your master account and your sub account instantly.
    */
   enableInternalTransfer: boolean;
 
   /**
-   * Authorizes this key to be used for a dedicated universal transfer API to transfer multiple supported currencies. Each business's own transfer API rights are not affected by this authorization.
+Authorizes this key to be used for a dedicated universal transfer API to transfer multiple supported currencies. Each business's own transfer API rights are not affected by this authorization.
    */
   permitsUniversalTransfer: boolean;
 
   /**
-   * Authorizes this key to Vanilla options trading.
+Authorizes this key to Vanilla options trading.
    */
   enableVanillaOptions: boolean;
 
   enableReading: boolean;
 
   /**
-   * API Key created before your futures account opened does not support futures API service.
+API Key created before your futures account opened does not support futures API service.
    */
   enableFutures: boolean;
 
   /**
-   * This option can be adjusted after the Cross Margin account transfer is completed.
+This option can be adjusted after the Cross Margin account transfer is completed.
    */
   enableMargin: boolean;
 
   /**
-   * Spot and margin trading.
+Spot and margin trading.
    */
   enableSpotAndMarginTrading: boolean;
 
   /**
-   * Expiration time for spot and margin trading permission.
+Expiration time for spot and margin trading permission.
    */
   tradingAuthorityExpirationTime: number;
 };
 
 export type BinanceAvgPrice = {
   /**
-   * Is the number of minutes the average price is calculated over.
+Is the number of minutes the average price is calculated over.
    */
   mins: number;
   price: string;
@@ -162,14 +160,14 @@ export type BinanceNewOrderOptions = Partial<{
   /** Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an iceberg order. */
   icebergQty: number;
   /**
-   * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders.
-   * For more details on SPOT implementation on trailing stops,
-   * @see {@link https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md|Trailing Stop FAQ}
+Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT orders.
+For more details on SPOT implementation on trailing stops,
+@see {@link https://github.com/binance/binance-spot-api-docs/blob/master/faqs/trailing-stop-faq.md|Trailing Stop FAQ}
    */
   trailingDelta: number;
   /**
-   * Set the response JSON. ACK, RESULT, or FULL;
-   * MARKET and LIMIT order types default to FULL, all other orders default to ACK.
+Set the response JSON. ACK, RESULT, or FULL;
+MARKET and LIMIT order types default to FULL, all other orders default to ACK.
    */
   newOrderRespType: BinanceOrderRespType;
   recvWindow: number;
@@ -240,14 +238,9 @@ export type BinanceOrderRespFULL = Pick<
 
 export const binanceOrderRespTypes = ["ACK", "RESULT", "FULL"] as const;
 export type BinanceOrderRespType = typeof binanceOrderRespTypes[number];
-export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
-  binanceOrderRespTypes
-);
 
 export const binanceOrderSides = ["BUY", "SELL"] as const;
 export type BinanceOrderSide = typeof binanceOrderSides[number];
-export const isBinanceOrderSide =
-  isLiteralType<BinanceOrderSide>(binanceOrderSides);
 
 export const binanceOrderStatuses = [
   // The order has been accepted by the engine.
@@ -266,8 +259,6 @@ export const binanceOrderStatuses = [
   "EXPIRED",
 ] as const;
 export type BinanceOrderStatus = typeof binanceOrderStatuses[number];
-export const isBinanceOrderStatus =
-  isLiteralType<BinanceOrderStatus>(binanceOrderStatuses);
 
 export const binanceOrderTypes = [
   "LIMIT",
@@ -279,8 +270,6 @@ export const binanceOrderTypes = [
   "TAKE_PROFIT_LIMIT",
 ] as const;
 export type BinanceOrderType = typeof binanceOrderTypes[number];
-export const isBinanceOrderType =
-  isLiteralType<BinanceOrderType>(binanceOrderTypes);
 
 export const binancePermissions = [
   "SPOT",
@@ -292,8 +281,6 @@ export const binancePermissions = [
   "TRD_GRP_005",
 ] as const;
 export type BinancePermissions = typeof binancePermissions[number];
-export const isBinancePermission =
-  isLiteralType<BinancePermissions>(binancePermissions);
 
 export type BinanceRateLimitInfo = {
   rateLimitType: BinanceRateLimitType;
@@ -304,8 +291,6 @@ export type BinanceRateLimitInfo = {
 
 export const binanceRateLimitIntervals = ["SECOND", "MINUTE", "DAY"] as const;
 export type BinanceRateLimitInterval = typeof binanceRateLimitIntervals[number];
-export const isBinanceRateLimitInterval =
-  isLiteralType<BinanceRateLimitInterval>(binanceRateLimitIntervals);
 
 export const binanceRateLimitTypes = [
   "ORDERS",
@@ -313,9 +298,6 @@ export const binanceRateLimitTypes = [
   "REQUEST_WEIGHT",
 ] as const;
 export type BinanceRateLimitType = typeof binanceRateLimitTypes[number];
-export const isBinanceRateLimitType = isLiteralType<BinanceRateLimitType>(
-  binanceRateLimitTypes
-);
 
 export type BinanceSymbolInfo = {
   allowTrailingStop: boolean;
@@ -421,11 +403,11 @@ In order to pass the `price filter`, the following must be true for `price`/`sto
 */
 export type BinanceSymbolFilterPrice = {
   filterType: "PRICE_FILTER";
-  /** defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0 */
+  /** Defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0 */
   minPrice: string;
-  /** defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0 */
+  /** Defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0 */
   maxPrice: string;
-  /** defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0 */
+  /** Defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0 */
   tickSize: string;
 };
 
@@ -439,9 +421,6 @@ export const binanceSymbolStatuses = [
   "BREAK",
 ] as const;
 export type BinanceSymbolStatus = typeof binanceSymbolStatuses[number];
-export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
-  binanceSymbolStatuses
-);
 
 export type BinanceTickerPrice = {
   symbol: string;
@@ -450,20 +429,18 @@ export type BinanceTickerPrice = {
 
 export const binanceTimeInForces = [
   /**
-   * Good Til Canceled. An order will be on the book unless the order is canceled.
+Good Til Canceled. An order will be on the book unless the order is canceled.
    */
   "GTC",
 
   /**
-   * Immediate Or Cancel. An order will try to fill the order as much as it can before the order expires.
+Immediate Or Cancel. An order will try to fill the order as much as it can before the order expires.
    */
   "IOC",
 
   /**
-   * Fill or Kill. An order will expire if the full order cannot be filled upon execution.
+Fill or Kill. An order will expire if the full order cannot be filled upon execution.
    */
   "FOK",
 ] as const;
 export type BinanceTimeInForce = typeof binanceTimeInForces[number];
-export const isBinanceTimeInForce =
-  isLiteralType<BinanceTimeInForce>(binanceTimeInForces);
