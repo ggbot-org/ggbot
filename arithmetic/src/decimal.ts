@@ -1,14 +1,19 @@
 import { ErrorCannotCoerceToDecimal } from "./errors.js";
 
 /**
- * Represents a number with decimal digits as a string.
- * Exponential notation is not allowed.
- */
+Represents a number with decimal digits as a string.
+Exponential notation is not allowed.
+*/
 export type Decimal = string;
+
+export const isDecimal = (arg: unknown): arg is Decimal => {
+  if (typeof arg !== "string") return false;
+  return isMaybeDecimal(arg);
+};
 
 export type MaybeDecimal = Decimal | number;
 
-export const canBeDecimal = (arg: unknown): arg is MaybeDecimal => {
+export const isMaybeDecimal = (arg: unknown): arg is MaybeDecimal => {
   const n = Number(arg);
   if (typeof n !== "number" || isNaN(n) || !Number.isFinite(n)) return false;
   return true;
@@ -40,13 +45,13 @@ export const maxNumOfDecimals = (values: MaybeDecimal[]): number =>
   values.reduce<number>((max, num) => Math.max(max, numOfDecimals(num)), 0);
 
 /**
- * @throws {ErrorCannotCoerceToDecimal}
- */
+@throws {ErrorCannotCoerceToDecimal}
+*/
 export const coerceToDecimal = (
   value: unknown,
   numDecimals?: number
 ): Decimal => {
-  if (!canBeDecimal(value)) throw new ErrorCannotCoerceToDecimal(value);
+  if (!isMaybeDecimal(value)) throw new ErrorCannotCoerceToDecimal(value);
   const n = Number(value);
   return typeof numDecimals === "undefined"
     ? String(n)

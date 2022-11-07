@@ -1,3 +1,4 @@
+import { isDecimal } from "@ggbot2/arithmetic";
 import { isLiteralType } from "@ggbot2/models";
 
 import type {
@@ -14,9 +15,9 @@ export const isBinanceSymbolFilterLotSize = (
     arg as Partial<BinanceSymbolFilterLotSize>;
   return (
     filterType === "LOT_SIZE" &&
-    typeof minQty === "string" &&
-    typeof maxQty === "string" &&
-    typeof stepSize === "string"
+    isDecimal(minQty) &&
+    isDecimal(maxQty) &&
+    isDecimal(stepSize)
   );
 };
 
@@ -28,7 +29,7 @@ export const isBinanceSymbolFilterMinNotional = (
     arg as Partial<BinanceSymbolFilterMinNotional>;
   return (
     filterType === "MIN_NOTIONAL" &&
-    typeof minNotional === "string" &&
+    isDecimal(minNotional) &&
     typeof applyToMarket === "boolean" &&
     typeof avgPriceMins === "number"
   );
