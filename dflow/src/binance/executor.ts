@@ -1,4 +1,4 @@
-import type { BinanceBalance } from "@ggbot2/binance";
+import type { Balance } from "@ggbot2/models";
 import type { DflowNodesCatalog } from "dflow";
 import {
   DflowCommonExecutorContext,
@@ -7,10 +7,12 @@ import {
   DflowExecutorView,
 } from "../common/executor.js";
 import type { BinanceDflow, BinanceDflowContext } from "./context.js";
+import { getBalancesFromExecutionSteps } from "./execution.js";
 import { BinanceDflowHost } from "./host.js";
+import type { DflowBinanceSymbolInfo } from "./symbols.js";
 
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
-  balances: BinanceBalance[];
+  balances: Balance[];
 };
 
 export class BinanceDflowExecutor
@@ -19,12 +21,13 @@ export class BinanceDflowExecutor
 {
   constructor(
     readonly binance: BinanceDflow,
+    readonly binanceSymbols: DflowBinanceSymbolInfo[],
     readonly nodesCatalog: DflowNodesCatalog
   ) {}
 
   /** Execute flow on given context. */
   async run(context: DflowCommonExecutorContext, view: DflowExecutorView) {
-    const { binance, nodesCatalog } = this;
+    const { binance, binanceSymbols, nodesCatalog } = this;
     const dflow = new BinanceDflowHost(
       { nodesCatalog },
       { binance, ...context }
@@ -36,6 +39,9 @@ export class BinanceDflowExecutor
       BinanceDflowContext,
       "memory" | "memoryChanged"
     >;
-    return { balances: [], execution, memory, memoryChanged };
+    const balances = execution
+      ? getBalancesFromExecutionSteps(binanceSymbols, execution.steps)
+      : [];
+    return { balances, execution, memory, memoryChanged };
   }
 }

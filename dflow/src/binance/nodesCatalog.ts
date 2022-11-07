@@ -21,8 +21,8 @@ type GetDflowBinanceNodesCatalog = (
 ) => DflowNodesCatalog;
 
 /**
- * Creates a dynamic set of dflow nodes generated according to Binance definitions.
- */
+Creates a dynamic set of dflow nodes generated according to Binance definitions.
+*/
 export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
   ({ symbols }) => {
     const klineIntervalNodes = binanceKlineIntervals.reduce(

@@ -9,7 +9,8 @@ const marketOrderInputs = [
   input("number", { name: "quantity", optional: true }),
   input("number", { name: "quoteOrderQty", optional: true }),
 ];
-const orderOutputs = [output("object", { name: "order" })];
+export const orderOutput = output("object", { name: "order" });
+const orderOutputs = [orderOutput];
 
 export class BuyMarket extends DflowNode {
   static kind = "buyMarket";
