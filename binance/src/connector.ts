@@ -1,6 +1,8 @@
+import type { BinanceApiEndpoint } from "./endpoints.js";
+
 /**
- * BinanceConnector is a base class for BinanceExchange and BinanceClient.
- */
+BinanceConnector is a base class for BinanceExchange and BinanceClient.
+*/
 export class BinanceConnector {
   static defaultBaseUrl = "https://api.binance.com";
 
@@ -44,7 +46,7 @@ export type BinanceConnectorConstructorArg = Pick<BinanceConnector, "baseUrl">;
 
 export type BinanceConnectorRequestArg = {
   apiKey?: string;
-  endpoint: string;
+  endpoint: BinanceApiEndpoint;
   method: "GET";
   params?: Record<string, string | number>;
 };

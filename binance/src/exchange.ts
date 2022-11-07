@@ -12,6 +12,7 @@ import {
   BinanceKlineOptionalParameters,
   BinanceOrderType,
   BinanceSymbolInfo,
+  BinanceTicker24hr,
   BinanceTickerPrice,
 } from "./types.js";
 import {
@@ -21,11 +22,9 @@ import {
 
 /**
 BinanceExchange implements public API requests.
-
 @example
 ```ts
 const { BinanceConnector, BinanceExchange } = import "@ggbot2/binance";
-
 const binance = new BinanceExchange({ baseUrl: BinanceConnector.defaultBaseUrl});
 ```
 */
@@ -39,12 +38,10 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /**
-  Current average price for a symbol.
-
-  {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
-
-  @throws {ErrorInvalidBinanceSymbol}
-  */
+Current average price for a symbol.
+{@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
+@throws {ErrorInvalidBinanceSymbol}
+*/
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -55,12 +52,14 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
+  /** Check if `symbol` can be traded. */
   async canTradeSymbol(
     symbol: string,
     orderType: BinanceOrderType
   ): Promise<boolean> {
     try {
       const symbolInfo = await this.symbolInfo(symbol);
+      if (!symbolInfo) return false;
       if (!symbolInfo.orderTypes.includes(orderType)) return false;
       if (!symbolInfo.permissions.includes("SPOT")) return false;
       return symbolInfo.status === "TRADING";
@@ -70,11 +69,9 @@ export class BinanceExchange extends BinanceConnector {
     }
   }
 
-  /**
-  Current exchange trading rules and symbol information.
-
-  {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
-  */
+  /** Current exchange trading rules and symbol information.
+{@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+*/
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
     const cached = exchangeInfoCache.get("exchangeInfo");
     if (typeof cached !== "undefined") return cached;
@@ -98,15 +95,12 @@ export class BinanceExchange extends BinanceConnector {
     return isValid;
   }
 
-  /**
-   * Kline/Candlestick Data.
-   *
-   * {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
-   *
-   * @throws {ErrorInvalidBinanceSymbol}
-   * @throws {ErrorInvalidBinanceKlineInterval}
-   * @throws {ErrorInvalidBinanceKlineOptionalParameters}
-   */
+  /** Kline/Candlestick Data.
+{@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
+@throws {ErrorInvalidBinanceSymbol}
+@throws {ErrorInvalidBinanceKlineInterval}
+@throws {ErrorInvalidBinanceKlineOptionalParameters}
+*/
   // TODO try also UIKlines api/v3/uiKlines
   async klines(
     symbol: string,
@@ -125,12 +119,10 @@ export class BinanceExchange extends BinanceConnector {
     });
   }
 
-  /**
-  Validate klines parameters.
-
-  @throws {ErrorInvalidBinanceSymbol}
-  @throws {ErrorInvalidBinanceKlineInterval}
-  @throws {ErrorInvalidBinanceKlineOptionalParameters}
+  /** Validate klines parameters.
+@throws {ErrorInvalidBinanceSymbol}
+@throws {ErrorInvalidBinanceKlineInterval}
+@throws {ErrorInvalidBinanceKlineOptionalParameters}
   */
   async klinesParametersAreValidOrThrow(
     symbol: string,
@@ -145,18 +137,12 @@ export class BinanceExchange extends BinanceConnector {
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
   }
 
-  /**
-  UIKlines
-
-  The request is similar to klines having the same parameters and response.
-
-  `uiKlines` return modified kline data, optimized for presentation of candlestick charts.
-
-  {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
-
-  @throws {ErrorInvalidBinanceSymbol}
-  @throws {ErrorInvalidBinanceKlineInterval}
-  @throws {ErrorInvalidBinanceKlineOptionalParameters}
+  /** UIKlines.
+The request is similar to klines having the same parameters and response but `uiKlines` return modified kline data, optimized for presentation of candlestick charts.
+{@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
+@throws {ErrorInvalidBinanceSymbol}
+@throws {ErrorInvalidBinanceKlineInterval}
+@throws {ErrorInvalidBinanceKlineOptionalParameters}
   */
   async uiKlines(
     symbol: string,
@@ -179,24 +165,34 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
-  /**
-  @throws {ErrorInvalidBinanceSymbol}
+  /** Get `BinanceSymbolInfo` for `symbol`, if any.
+@throws {ErrorInvalidBinanceSymbol}
   */
-  async symbolInfo(symbol: string): Promise<BinanceSymbolInfo> {
+  async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
     const { symbols } = await this.exchangeInfo();
     const symbolInfo = symbols.find((info) => info.symbol === symbol);
-    // If `isSymbol` then `symbolInfo` has type `BinanceSymbolInfo`.
-    return symbolInfo as BinanceSymbolInfo;
+    return symbolInfo;
   }
 
-  /**
-  Latest price for a symbol.
+  /** 24 hour rolling window price change statistics.
+{@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
+@throws {ErrorInvalidBinanceSymbol}
+  */
+  async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
+    const isSymbol = await this.isBinanceSymbol(symbol);
+    if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
+    return await this._publicRequest<BinanceTicker24hr>(
+      "GET",
+      "/api/v3/ticker/24hr",
+      { symbol }
+    );
+  }
 
-  {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
-
-  @throws {ErrorInvalidBinanceSymbol}
+  /** Latest price for a symbol.
+{@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
+@throws {ErrorInvalidBinanceSymbol}
   */
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);

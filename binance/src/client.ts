@@ -32,7 +32,7 @@ import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js";
 /**
 BinanceClient implements private API requests.
 It extends BinanceExchange to be able to use also some public API requests.
- */
+*/
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
@@ -50,7 +50,7 @@ export class BinanceClient extends BinanceExchange {
   ) {
     const searchParams = new URLSearchParams();
 
-    if (typeof params !== "undefined")
+    if (params)
       for (const [key, value] of Object.entries(params))
         searchParams.append(key, String(value));
 
@@ -76,7 +76,7 @@ export class BinanceClient extends BinanceExchange {
 Account Information (USER_DATA)
 
 {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
-   */
+*/
   async account(): Promise<BinanceAccountInformation> {
     const { balances, ...rest } =
       await this._privateRequest<BinanceAccountInformation>(
@@ -109,7 +109,7 @@ Account Information (USER_DATA)
 Send in a new order.
 
 {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-   */
+*/
   async newOrder(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -139,7 +139,7 @@ Test a new order.
 Binance API will validates new order but will not send it into the matching engine.
 
 Parameters are the same as `newOrder`.
-   */
+*/
   async newOrderTest(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -168,7 +168,7 @@ Parameters are the same as `newOrder`.
 Send in a new order with type other than MARKET or LIMIT order.
 
 {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-   */
+*/
   async newOrderACK(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -198,7 +198,7 @@ Test a new order with type other than MARKET or LIMIT order.
 Binance API will validates new order but will not send it into the matching engine.
 
 Parameters are the same as `newOrderACK`.
-   */
+*/
   async newOrderACKTest(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -234,7 +234,7 @@ Validate order parameters and try to adjust them; otherwise throw an error.
 @throws {ErrorInvalidBinanceOrderType}
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorUnhandledBinanceOrderType}
-   */
+*/
   async prepareOrder(
     symbol: string,
     side: BinanceOrderSide,
@@ -243,10 +243,11 @@ Validate order parameters and try to adjust them; otherwise throw an error.
   ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
     if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
     if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
-    if (!this.canTradeSymbol(symbol, type))
+    const symbolInfo = await this.symbolInfo(symbol);
+    if (!symbolInfo || !this.canTradeSymbol(symbol, type))
       throw new ErrorBinanceCannotTradeSymbol(symbol, type);
 
-    const { baseAssetPrecision, filters } = await this.symbolInfo(symbol);
+    const { baseAssetPrecision, filters } = symbolInfo;
 
     const lotSizeFilter = findSymbolFilterLotSize(filters);
     const minNotionalFilter = findSymbolFilterMinNotional(filters);
