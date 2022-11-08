@@ -3,6 +3,7 @@ import Head from "next/head";
 import {
   Buttons,
   Colors,
+  EditableInputs,
   Icons,
   LoadingButtons,
   Navigation,
@@ -32,6 +33,8 @@ const Home: NextPage = () => {
         <Buttons />
 
         <LoadingButtons />
+
+        <EditableInputs />
 
         <Icons />
 

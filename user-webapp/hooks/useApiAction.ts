@@ -45,7 +45,12 @@ import {
 
 type ActionIO = { in: DflowObject; out: DflowData | null };
 
-const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
+const errorNames = [
+  "GenericError",
+  "ServerError",
+  "Timeout",
+  "Unauthorized",
+] as const;
 type ErrorName = typeof errorNames[number];
 
 type UseActionRequestArg = ApiActionInputData;
@@ -111,7 +116,7 @@ const useAction = <Action extends ActionIO>({
             return;
           }
           if (status === 500) {
-            setResponse({ error: "GenericError", isPending: false });
+            setResponse({ error: "ServerError", isPending: false });
             return;
           }
           // This error should not be thrown.

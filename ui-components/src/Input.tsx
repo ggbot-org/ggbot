@@ -1,18 +1,17 @@
-import { FC, InputHTMLAttributes, useMemo } from "react";
+import { FC, InputHTMLAttributes, ReactNode, useMemo } from "react";
 import { Field, FieldProps } from "./Field";
-import { Spinner } from "./Spinner";
 
 export type InputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "className" | "type"
 > & {
   type?: "text" | "password" | "email";
-  isSpinning?: boolean;
+  icon?: ReactNode;
 };
 
 export const Input: FC<InputProps> = ({
+  icon,
   disabled,
-  isSpinning,
   readOnly,
   ...props
 }) => {
@@ -21,16 +20,15 @@ export const Input: FC<InputProps> = ({
       "w-full rounded-md px-4 py-2",
       "shadow outline-dark-600",
       readOnly ? "cursor-default" : "",
-      isSpinning ? "pointer-events-none" : "",
     ].join(" ");
-  }, [isSpinning, readOnly]);
+  }, [readOnly]);
 
   return (
     <div className="relative w-full">
       <input className={inputClassName} readOnly={readOnly} {...props} />
-      {isSpinning ? (
+      {icon ? (
         <div className="absolute top-0 right-0 h-full flex items-center">
-          <Spinner className="text-black" />
+          {icon}
         </div>
       ) : null}
     </div>

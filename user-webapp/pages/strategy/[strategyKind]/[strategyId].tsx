@@ -3,7 +3,7 @@ import {
   Button,
   ButtonOnClick,
   DateTime,
-  EditableInput,
+  EditableInputField,
 } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -34,6 +34,8 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
   const [flowIsSpinning, setFlowIsSpinning] = useState(false);
   const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
+  const [name, setName] = useState("");
+  const [newName, setNewName] = useState("");
 
   const someButtonIsSpinning = useMemo(
     () => copyIsSpinning || deleteIsSpinning || flowIsSpinning,
@@ -53,12 +55,10 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     [strategyKey]
   );
 
-  const [renameStrategy, { isPending: renameIsPending }] =
+  const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
     useApiAction.RENAME_STRATEGY();
 
   const [readStrategy, { data: strategy }] = useApiAction.READ_STRATEGY();
-
-  const name = useMemo(() => strategy?.name ?? "", [strategy]);
 
   const readOnly = useMemo(() => {
     if (!name) return true;
@@ -96,27 +96,46 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     [someButtonIsSpinning, setDeleteIsSpinning, router, strategyKey]
   );
 
-  const setName = useCallback<(value: unknown) => void>(
+  const inputNameSetValue = useCallback<(value: unknown) => void>(
     (value) => {
       if (readOnly) return;
       if (!isName(value)) return;
       const newName = normalizeName(value);
       if (name === newName) return;
-
-      renameStrategy({
-        data: {
-          name: newName,
-          strategyId,
-          strategyKind,
-        },
-      });
+      setNewName(newName);
     },
-    [name, readOnly, renameStrategy, strategyId, strategyKind]
+    [name, readOnly]
   );
 
+  const inputNameValue = useMemo(() => {
+    if (renameIsPending) return "";
+    return name;
+  }, [name, renameIsPending]);
+
+  const inputNamePlaceholder = useMemo(() => {
+    if (renameIsPending) return newName;
+    return "";
+  }, [newName, renameIsPending]);
+
   useEffect(() => {
-    readStrategy({ data: strategyKey });
-  }, [readStrategy, strategyKey]);
+    if (strategy) setName(strategy.name);
+  }, [strategy]);
+
+  useEffect(() => {
+    if (renameData) setName(newName);
+  }, [renameData, newName]);
+
+  useEffect(() => readStrategy(strategyKey), [readStrategy, strategyKey]);
+
+  useEffect(() => {
+    if (!newName) return;
+    if (name === newName) return;
+    return renameStrategy({
+      name: newName,
+      strategyId,
+      strategyKind,
+    });
+  }, [name, newName, renameStrategy, strategyId, strategyKind]);
 
   return (
     <Content topbar={<Navigation hasSettingsIcon breadcrumbs={breadcrumbs} />}>
@@ -133,13 +152,14 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
         <div className="flex items-center justify-between max-w-lg gap-2">
           <div className="w-full">
-            <label htmlFor="name">name</label>
-            <EditableInput
-              id="name"
+            <EditableInputField
+              name="name"
+              label="name"
+              placeholder={inputNamePlaceholder}
               isSpinning={renameIsPending}
               readOnly={readOnly}
-              setValue={setName}
-              value={name}
+              setValue={inputNameSetValue}
+              value={inputNameValue}
             />
           </div>
         </div>

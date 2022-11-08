@@ -7,7 +7,9 @@ import {
   ChangeEventHandler,
   KeyboardEventHandler,
 } from "react";
+import { Field, FieldProps } from "./Field";
 import { Input, InputProps } from "./Input";
+import { Spinner } from "./Spinner";
 
 export type EditableInputProps = Omit<
   InputProps,
@@ -15,11 +17,13 @@ export type EditableInputProps = Omit<
 > & {
   value: string;
   setValue: (value: string) => void;
+  isSpinning?: boolean;
 };
 
 export const EditableInput: FC<EditableInputProps> = ({
   onClick,
   readOnly,
+  isSpinning,
   value,
   setValue,
   ...inputProps
@@ -56,10 +60,21 @@ export const EditableInput: FC<EditableInputProps> = ({
     setNextValue(value);
   }, [value]);
 
+  const isReadonly = useMemo(() => {
+    if (readOnly) return true;
+    if (isSpinning) return true;
+    return false;
+  }, [readOnly, isSpinning]);
+
   const onClickInput = useMemo(
     () => (readOnly ? onClick : startEditing),
     [readOnly, onClick, startEditing]
   );
+
+  const icon = useMemo(() => {
+    if (isSpinning) return <Spinner className="text-black" />;
+    return null;
+  }, [isSpinning]);
 
   const onKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (event) => {
@@ -87,13 +102,29 @@ export const EditableInput: FC<EditableInputProps> = ({
   return (
     <Input
       {...inputProps}
+      icon={icon}
       onBlur={onBlur}
       onChange={onChange}
       onClick={onClickInput}
       onFocus={onFocus}
       onKeyDown={onKeyDown}
-      readOnly={readOnly || !editing}
+      readOnly={isReadonly}
       value={nextValue}
     />
+  );
+};
+
+type EditableInputFieldProps = FieldProps &
+  Omit<EditableInputProps, "id" | "name">;
+
+export const EditableInputField: FC<EditableInputFieldProps> = ({
+  label,
+  name,
+  ...props
+}) => {
+  return (
+    <Field label={label} name={name}>
+      <EditableInput {...props} name={name} />
+    </Field>
   );
 };
