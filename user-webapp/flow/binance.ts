@@ -1,4 +1,5 @@
 import {
+  BinanceAccountInformation,
   BinanceBalance,
   BinanceConnector,
   BinanceExchange,
@@ -6,20 +7,24 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import type { BinanceDflow as IBinanceDflow } from "@ggbot2/dflow";
-import { Timestamp, truncateTimestamp } from "@ggbot2/time";
+import type { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
+import {
+  Timestamp,
+  truncateTimestamp,
+  getTimeFromTimestamp,
+} from "@ggbot2/time";
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
 });
 
-export class BinanceDflow implements IBinanceDflow {
+export class BinanceDflowClient implements IBinanceDflowClient {
   balances: BinanceBalance[] = [];
 
   timestamp: Timestamp = truncateTimestamp().to("hour");
 
   async account() {
-    return Promise.resolve({
+    const accountInfo: BinanceAccountInformation = {
       makerCommission: 15,
       takerCommission: 15,
       buyerCommission: 0,
@@ -32,17 +37,16 @@ export class BinanceDflow implements IBinanceDflow {
       accountType: "SPOT",
       balances: this.balances,
       permissions: ["SPOT"],
-    });
+    };
+    return Promise.resolve(accountInfo);
   }
 
-  async candles(
-    _symbol: string,
-    _interval: BinanceKlineInterval,
-    _limit: number
-  ) {
+  async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
     // TODO call binance.klines with proper startTime according to timestamp
     // TODO cache results
     // TODO fetch strategy: partition intervals in days
+    const startTime = getTimeFromTimestamp(this.timestamp);
+    const klines = await binance.klines(symbol, interval, { startTime, limit });
     return Promise.resolve([]);
   }
 

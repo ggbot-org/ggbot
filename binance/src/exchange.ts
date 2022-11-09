@@ -123,7 +123,7 @@ Current average price for a symbol.
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorInvalidBinanceKlineInterval}
 @throws {ErrorInvalidBinanceKlineOptionalParameters}
-  */
+*/
   async klinesParametersAreValidOrThrow(
     symbol: string,
     interval: string,

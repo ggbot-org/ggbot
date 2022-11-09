@@ -1,11 +1,11 @@
 export class ErrorInvalidDate extends TypeError {
-  constructor() {
-    super("Invalid Date");
+  constructor(arg: unknown) {
+    super(`Invalid Date ${arg}`);
   }
 }
 
 export class ErrorInvalidTimestamp extends TypeError {
-  constructor() {
-    super("Invalid Timestamp");
+  constructor(arg: unknown) {
+    super(`Invalid Timestamp ${arg}`);
   }
 }

@@ -25,9 +25,7 @@ export const hours = [
   "23",
 ] as const;
 
-/**
- * String with format HH, from 00 to 23.
- */
+/** String with format HH, from 00 to 23. */
 export type Hour = typeof hours[number];
 
 export const isHour = (arg: unknown): arg is Hour => {

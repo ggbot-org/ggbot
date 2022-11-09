@@ -1,8 +1,11 @@
-import { getDayFromDate } from "./day.js";
+import type { Day } from "./day.js";
+import type { Time } from "./time.js";
+import type { Timestamp } from "./timestamp.js";
 
-export type ValidDate = Date;
+/** `ValidDateArg` is any argument, excluding `undefined`, that the Date constructor will parse into a valid date. */
+export type ValidDateArg = Date | string | number | Day | Time | Timestamp;
 
-export const isValidDate = (arg: unknown): arg is ValidDate => {
+export const isValidDateArg = (arg: unknown): arg is ValidDateArg => {
   if (
     arg instanceof Date ||
     typeof arg === "string" ||
@@ -14,30 +17,20 @@ export const isValidDate = (arg: unknown): arg is ValidDate => {
   return false;
 };
 
-export const addDays = (num: number, date: Date): Date => {
-  const d = new Date(date);
-  d.setDate(d.getDate() + num);
-  return d;
+export const addDays = (num: number, arg: ValidDateArg): ValidDateArg => {
+  const date = new Date(arg);
+  date.setDate(date.getDate() + num);
+  return date;
 };
 
-export const addMinutes = (num: number, date: Date): Date => {
-  const d = new Date(date);
-  d.setMinutes(d.getMinutes() + num);
-  return d;
+export const addMinutes = (num: number, arg: ValidDateArg): ValidDateArg => {
+  const date = new Date(arg);
+  date.setMinutes(date.getMinutes() + num);
+  return date;
 };
 
-export const addSeconds = (num: number, date: Date): Date => {
-  const d = new Date(date);
-  d.setSeconds(d.getSeconds() + num);
-  return d;
-};
-
-/**
-Truncate `Date` to its day.
-
-@throws ErrorInvalidDate
-*/
-export const truncateDate = (date: Date): Date => {
-  const day = getDayFromDate(date);
-  return new Date(day);
+export const addSeconds = (num: number, arg: ValidDateArg): ValidDateArg => {
+  const date = new Date(arg);
+  date.setSeconds(date.getSeconds() + num);
+  return date;
 };
