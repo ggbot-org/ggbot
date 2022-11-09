@@ -29,7 +29,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
       limit: 6100,
     },
   ],
-  exchangeFilters: [],
   symbols: [
     {
       symbol: "ETHBTC",

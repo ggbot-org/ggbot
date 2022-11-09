@@ -12,7 +12,7 @@ import {
   BinanceOrderSide,
   BinanceOrderStatus,
   BinanceOrderType,
-  BinancePermissions,
+  BinancePermission,
   BinanceRateLimitInterval,
   BinanceRateLimitType,
   BinanceSymbolFilterLotSize,
@@ -99,7 +99,7 @@ export const isBinanceOrderRespFULL = (
 };
 
 export const isBinancePermission =
-  isLiteralType<BinancePermissions>(binancePermissions);
+  isLiteralType<BinancePermission>(binancePermissions);
 
 export const isBinanceOrderStatus =
   isLiteralType<BinanceOrderStatus>(binanceOrderStatuses);

@@ -7,7 +7,7 @@ export type BinanceAccountInformation = {
   canTrade: boolean;
   canWithdraw: boolean;
   makerCommission: number;
-  permissions: string[];
+  permissions: BinancePermission[];
   sellerCommission: number;
   takerCommission: number;
   updateTime: number;
@@ -280,7 +280,7 @@ export const binancePermissions = [
   "TRD_GRP_004",
   "TRD_GRP_005",
 ] as const;
-export type BinancePermissions = typeof binancePermissions[number];
+export type BinancePermission = typeof binancePermissions[number];
 
 export type BinanceRateLimitInfo = {
   rateLimitType: BinanceRateLimitType;
@@ -311,7 +311,7 @@ export type BinanceSymbolInfo = {
   isSpotTradingAllowed: boolean;
   ocoAllowed: boolean;
   orderTypes: BinanceOrderType[];
-  permissions: BinancePermissions;
+  permissions: BinancePermission[];
   quoteAsset: string;
   quoteAssetPrecision: number;
   quoteCommissionPrecision: number;
@@ -323,8 +323,29 @@ export type BinanceSymbolInfo = {
 
 export type BinanceSymbolFilter =
   | BinanceSymbolFilterLotSize
+  | BinanceSymbolFilterIcebergParts
+  | BinanceSymbolFilterMarketLotSize
+  | BinanceSymbolFilterMaxNumOrders
+  | BinanceSymbolFilterMaxNumAlgoOrders
   | BinanceSymbolFilterMinNotional
-  | BinanceSymbolFilterPrice;
+  | BinanceSymbolFilterPercentPrice
+  | BinanceSymbolFilterPrice
+  | BinanceSymbolFilterTrailingDelta;
+
+/**
+TODO copy info from Binance docs
+@example
+```json
+{
+  "filterType": "ICEBERG_PARTS",
+  "limit": 10,
+},
+```
+*/
+export type BinanceSymbolFilterIcebergParts = {
+  filterType: "ICEBERG_PARTS";
+  limit: number;
+};
 
 /**
 The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol.
@@ -356,6 +377,55 @@ export type BinanceSymbolFilterLotSize = {
 };
 
 /**
+TODO copy info from Binance docs
+@example
+```json
+{
+  "filterType": "MARKET_LOT_SIZE",
+  "minQty": "0.00000000",
+  "maxQty": "1201.84537855",
+  "stepSize": "0.00000000",
+},
+```
+*/
+export type BinanceSymbolFilterMarketLotSize = {
+  filterType: "MARKET_LOT_SIZE";
+  minQty: string;
+  maxQty: string;
+  stepSize: string;
+};
+
+/**
+TODO copy info from Binance docs
+@example
+```json
+{
+  "filterType": "MAX_NUM_ORDERS",
+  "maxNumOrders": 10,
+},
+```
+*/
+export type BinanceSymbolFilterMaxNumOrders = {
+  filterType: "MAX_NUM_ORDERS";
+  maxNumOrders: number;
+};
+
+/**
+TODO copy info from Binance docs
+@example
+```json
+{
+  "filterType": "MAX_NUM_ALGO_ORDERS",
+  "maxNumAlgoOrders": 10,
+},
+```
+*/
+export type BinanceSymbolFilterMaxNumAlgoOrders = {
+  filterType: "MAX_NUM_ALGO_ORDERS";
+  maxNumAlgoOrders: number;
+};
+
+/**
 The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
 An order's notional value is the `price` * `quantity`.
 If the order is an Algo order (e.g. `STOP_LOSS_LIMIT`), then the notional value of the `stopPrice` * `quantity` will also be evaluated.
@@ -378,6 +448,25 @@ export type BinanceSymbolFilterMinNotional = {
   filterType: "MIN_NOTIONAL";
   minNotional: string;
   applyToMarket: boolean;
+  avgPriceMins: number;
+};
+
+/**
+TODO copy info from Binance docs
+@example
+```json
+{
+  "filterType": "PERCENT_PRICE",
+  "multiplierUp": "5",
+  "multiplierDown": "0.2",
+  "avgPriceMins": 5,
+},
+```
+*/
+export type BinanceSymbolFilterPercentPrice = {
+  filterType: "PERCENT_PRICE";
+  multiplierUp: string;
+  multiplierDown: string;
   avgPriceMins: number;
 };
 
@@ -409,6 +498,27 @@ export type BinanceSymbolFilterPrice = {
   maxPrice: string;
   /** Defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0 */
   tickSize: string;
+};
+
+/**
+TODO copy info from Binance docs
+@example
+```json
+{
+   "filterType: "TRAILING_DELTA",
+   "minTrailingAboveDelta": 10,
+   "maxTrailingAboveDelta": 2000,
+   "minTrailingBelowDelta": 10,
+   "maxTrailingBelowDelta": 2000,
+},
+```
+*/
+export type BinanceSymbolFilterTrailingDelta = {
+  filterType: "TRAILING_DELTA";
+  minTrailingAboveDelta: number;
+  maxTrailingAboveDelta: number;
+  minTrailingBelowDelta: number;
+  maxTrailingBelowDelta: number;
 };
 
 export const binanceSymbolStatuses = [
