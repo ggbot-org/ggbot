@@ -1,18 +1,17 @@
 import {
-  BinanceAccountInformation,
   BinanceExchangeInfo,
   BinanceKline,
   BinanceKlineInterval,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { BinanceDflow } from "../context.js";
+import { BinanceDflowClient } from "../context.js";
 import { accountInfo } from "./accountInfo.js";
 import { exchangeInfo } from "./exchangeInfo.js";
 
-export class BinanceClientMock implements BinanceDflow {
+export class BinanceClientMock implements BinanceDflowClient {
   async account() {
-    return Promise.resolve(accountInfo as unknown as BinanceAccountInformation);
+    return Promise.resolve(accountInfo);
   }
 
   async tickerPrice(symbol: string) {

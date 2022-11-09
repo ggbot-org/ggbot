@@ -4,16 +4,19 @@ import {
   getBalancesFromExecutionSteps,
   getOrdersFromExecutionSteps,
 } from "./execution.js";
+import { BinanceClientMock } from "./mocks/client.js";
 
 describe("getBalancesFromExecutionSteps", () => {
-  it("works", () => {
+  it("works", async () => {
+    const binance = new BinanceClientMock();
+    const { symbols } = await binance.exchangeInfo();
     [
       {
         input: [],
         output: [],
       },
     ].forEach(({ input, output }) => {
-      assert.deepEqual(getBalancesFromExecutionSteps(input), output);
+      assert.deepEqual(getBalancesFromExecutionSteps(symbols, input), output);
     });
   });
 });

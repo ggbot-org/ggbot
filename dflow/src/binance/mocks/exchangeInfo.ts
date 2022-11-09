@@ -1,6 +1,6 @@
 import type { BinanceExchangeInfo } from "@ggbot2/binance";
 
-export const exchangeInfo = {
+export const exchangeInfo: BinanceExchangeInfo = {
   timezone: "UTC",
   serverTime: 1661290003214,
   rateLimits: [
@@ -508,4 +508,4 @@ export const exchangeInfo = {
       permissions: ["SPOT", "MARGIN", "TRD_GRP_004"],
     },
   ],
-} as unknown as BinanceExchangeInfo;
+};

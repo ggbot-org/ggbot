@@ -11,10 +11,10 @@ import {
 } from "@ggbot2/binance";
 import { DflowCommonContext } from "../common/context.js";
 
-export interface BinanceDflow {
-  // Public API
-  // //////////////////////////////////////////////////////////////////
-
+/**
+Binance Public API used by dflow binance nodes.
+*/
+interface BinanceDflowClientPublic {
   candles(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -23,10 +23,12 @@ export interface BinanceDflow {
   exchangeInfo(): Promise<BinanceExchangeInfo>;
   isBinanceSymbol(arg: unknown): Promise<boolean>;
   tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
+}
 
-  // Private API
-  // //////////////////////////////////////////////////////////////////
-
+/**
+Binance Private API used by dflow binance nodes.
+*/
+interface BinanceDflowClientPrivate {
   account(): Promise<BinanceAccountInformation>;
   newOrder(
     symbol: string,
@@ -49,6 +51,13 @@ export interface BinanceDflow {
   >;
 }
 
+/**
+Binance API used by dflow binance nodes.
+*/
+export interface BinanceDflowClient
+  extends BinanceDflowClientPublic,
+    BinanceDflowClientPrivate {}
+
 export type BinanceDflowContext = DflowCommonContext & {
-  binance: BinanceDflow;
+  binance: BinanceDflowClient;
 };
