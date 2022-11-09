@@ -6,7 +6,8 @@ import {
   DflowExecutor,
   DflowExecutorView,
 } from "../common/executor.js";
-import type { BinanceDflowClient, BinanceDflowContext } from "./context.js";
+import type { BinanceDflowClient } from "./client.js";
+import type { BinanceDflowContext } from "./context.js";
 import { getBalancesFromExecutionSteps } from "./execution.js";
 import { BinanceDflowHost } from "./host.js";
 import type { DflowBinanceSymbolInfo } from "./symbols.js";

@@ -1,13 +1,12 @@
 import {
-  BinanceExchangeInfo,
-  BinanceKline,
   BinanceKlineInterval,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { BinanceDflowClient } from "../context.js";
+import { BinanceDflowClient } from "../client.js";
 import { accountInfo } from "./accountInfo.js";
 import { exchangeInfo } from "./exchangeInfo.js";
+import { kline } from "./klines.js";
 
 export class BinanceClientMock implements BinanceDflowClient {
   async account() {
@@ -22,15 +21,15 @@ export class BinanceClientMock implements BinanceDflowClient {
     _symbol: string,
     _interval: BinanceKlineInterval,
     _limit: number
-  ): Promise<BinanceKline[]> {
-    return [];
+  ) {
+    return [kline];
   }
 
   async exchangeInfo() {
-    return Promise.resolve(exchangeInfo as unknown as BinanceExchangeInfo);
+    return Promise.resolve(exchangeInfo);
   }
 
-  async isBinanceSymbol(arg: unknown): Promise<boolean> {
+  async isBinanceSymbol(arg: unknown) {
     if (typeof arg !== "string") return false;
     const { symbols } = await this.exchangeInfo();
     return symbols.findIndex(({ symbol }) => arg === symbol) !== -1;

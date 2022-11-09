@@ -1,3 +1,4 @@
+export * from "./binance/client.js";
 export * from "./binance/context.js";
 export * from "./binance/executor.js";
 export * from "./binance/host.js";
