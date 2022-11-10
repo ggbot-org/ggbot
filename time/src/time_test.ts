@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { isHour } from "./hour.js";
+import { isDay, isHour, isTimestamp } from "./time.js";
 
 describe("isHour", () => {
   it("validates string if is a valid Hour", () => {
@@ -35,6 +35,31 @@ describe("isHour", () => {
       { input: "23", output: true },
     ].forEach(({ input, output }) => {
       assert.equal(isHour(input), output);
+    });
+  });
+});
+
+describe("isDay", () => {
+  it("validates string if is a valid Day", () => {
+    [
+      { input: "not a date", output: false },
+      { input: "0000-00-00", output: false },
+      { input: "2000-01-99", output: false },
+      { input: "2000-01-01", output: true },
+    ].forEach(({ input, output }) => {
+      assert.equal(isDay(input), output);
+    });
+  });
+});
+
+describe("isTimestamp", () => {
+  it("validates string if is valid Timestamp", () => {
+    [
+      { input: "not a date", output: false },
+      { input: "2000-01-01", output: false },
+      { input: "2022-07-23T11:43:05.841Z", output: true },
+    ].forEach(({ input, output }) => {
+      assert.equal(isTimestamp(input), output);
     });
   });
 });

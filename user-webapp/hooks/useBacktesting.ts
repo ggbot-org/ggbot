@@ -1,6 +1,5 @@
 import { BinanceDflowExecutor } from "@ggbot2/dflow";
 import {
-  ErrorInvalidTimestamp,
   Day,
   Timestamp,
   addMinutes,
@@ -47,9 +46,7 @@ const computeTimestamps = ({
   const timestamps: Timestamp[] = [getTimestampFromDate(startDate)];
 
   const getLastTimestamp = () => {
-    const lastTimestamp = timestamps.slice(-1).pop();
-    if (!isTimestamp(lastTimestamp)) throw new ErrorInvalidTimestamp();
-    return lastTimestamp;
+    return timestamps.slice(-1).pop();
   };
 
   const getNextDate = () => {

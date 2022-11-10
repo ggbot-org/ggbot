@@ -1,6 +1,26 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { getTimestampFromDate, getTimestampFromDay } from "./conversions";
+import {
+  getDayFromDate,
+  getTimestampFromDate,
+  getTimestampFromDay,
+} from "./conversions.js";
+
+describe("getDayFromDate", () => {
+  it("returns YYYY-MM-DD from date", () => {
+    [{ input: new Date("2000-01-01"), output: "2000-01-01" }].forEach(
+      ({ input, output }) => {
+        assert.equal(getDayFromDate(input), output);
+      }
+    );
+  });
+
+  it("throws ErrorInvalidDate", () => {
+    assert.throws(() => getDayFromDate(new Date("0000-00-00")), {
+      name: "ErrorInvalidDate",
+    });
+  });
+});
 
 describe("getTimestampFromDay", () => {
   it("truncates a timestamp to its day", () => {
@@ -18,7 +38,7 @@ describe("getTimestampFromDay", () => {
 describe("getTimestampFromDate", () => {
   it("throws ErrorInvalidDate", () => {
     assert.throws(() => getTimestampFromDate(new Date("0000-00-00")), {
-      name: "TypeError",
+      name: "ErrorInvalidDate",
     });
   });
 });
