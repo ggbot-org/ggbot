@@ -1,5 +1,5 @@
 import { ErrorInvalidDate } from "./errors.js";
-import { Time, Timestamp, TimeUnit, isInvalidDate, hours } from "./time.js";
+import { Time, Timestamp, TimeUnit, isInvalidDate } from "./time.js";
 
 type TimeTruncator<Input, Output> = (arg: Input) => {
   to: Record<TimeUnit, () => Output>;

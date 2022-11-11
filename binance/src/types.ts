@@ -31,61 +31,42 @@ export type BinanceAccountTrade = {
 
 export type BinanceApiKeyPermission = {
   ipRestrict: boolean;
-
   createTime: number;
-
-  /**
-This option allows you to withdraw via API.
-You must apply the IP Access Restriction filter in order to enable withdrawals.
-   */
+  /** This option allows you to withdraw via API. You must apply the IP Access Restriction filter in order to enable withdrawals. */
   enableWithdrawals: boolean;
-
-  /**
-This option authorizes this key to transfer funds between your master account and your sub account instantly.
-   */
+  /** This option authorizes this key to transfer funds between your master account and your sub account instantly. */
   enableInternalTransfer: boolean;
-
-  /**
-Authorizes this key to be used for a dedicated universal transfer API to transfer multiple supported currencies. Each business's own transfer API rights are not affected by this authorization.
-   */
+  /** Authorizes this key to be used for a dedicated universal transfer API to transfer multiple supported currencies. Each business's own transfer API rights are not affected by this authorization. */
   permitsUniversalTransfer: boolean;
-
-  /**
-Authorizes this key to Vanilla options trading.
-   */
+  /** Authorizes this key to Vanilla options trading. */
   enableVanillaOptions: boolean;
-
   enableReading: boolean;
-
-  /**
-API Key created before your futures account opened does not support futures API service.
-   */
+  /** API Key created before your futures account opened does not support futures API service. */
   enableFutures: boolean;
-
-  /**
-This option can be adjusted after the Cross Margin account transfer is completed.
-   */
+  /** This option can be adjusted after the Cross Margin account transfer is completed. */
   enableMargin: boolean;
-
-  /**
-Spot and margin trading.
-   */
+  /** Spot and margin trading. */
   enableSpotAndMarginTrading: boolean;
-
-  /**
-Expiration time for spot and margin trading permission.
-   */
+  /** Expiration time for spot and margin trading permission. */
   tradingAuthorityExpirationTime: number;
 };
 
 export type BinanceAvgPrice = {
-  /**
-Is the number of minutes the average price is calculated over.
-   */
+  /** Is the number of minutes the average price is calculated over. */
   mins: number;
   price: string;
 };
 
+/**
+@example
+```json
+{
+  "asset": "BTC",
+  "free": "0.10189777",
+  "locked": "0.02466239"
+}
+```
+*/
 export type BinanceBalance = {
   asset: string;
   free: string;
@@ -141,12 +122,34 @@ export type BinanceKline = [
   _unused_field: string
 ];
 
+export const binanceKlineIntervals = [
+  "1m",
+  "3m",
+  "5m",
+  "15m",
+  "30m",
+  "1h",
+  "2h",
+  "4h",
+  "6h",
+  "8h",
+  "12h",
+  "1d",
+  "3d",
+  "1w",
+  "1M",
+] as const;
+export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
+
 export type BinanceKlineOptionalParameters = Partial<{
   startTime: number;
   endTime: number;
   /** Default 500; max 1000. */
   limit: number;
 }>;
+
+export const binanceKlineMaxLimit = 1000;
+export const binanceKlineDefaultLimit = 500;
 
 export type BinanceNewOrderOptions = Partial<{
   timeInForce: BinanceTimeInForce;

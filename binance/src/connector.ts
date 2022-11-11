@@ -8,7 +8,7 @@ export class BinanceConnector {
 
   static userAgent = "ggbot2 - crypto flow (https://ggbot2.com)";
 
-  baseUrl: string;
+  readonly baseUrl: string;
 
   constructor({
     baseUrl = BinanceConnector.defaultBaseUrl,

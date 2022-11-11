@@ -1,9 +1,6 @@
 import { mul } from "@ggbot2/arithmetic";
 import { createHmac } from "crypto";
-import {
-  BinanceConnectorConstructorArg,
-  BinanceConnectorRequestArg,
-} from "./connector.js";
+import { BinanceConnectorRequestArg } from "./connector.js";
 import {
   ErrorBinanceCannotTradeSymbol,
   ErrorInvalidBinanceOrderOptions,
@@ -11,7 +8,7 @@ import {
   ErrorInvalidBinanceOrderType,
   ErrorUnhandledBinanceOrderType,
 } from "./errors.js";
-import { BinanceExchange } from "./exchange.js";
+import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
 import {
   findSymbolFilterLotSize,
   findSymbolFilterMinNotional,
@@ -29,27 +26,25 @@ import type {
 } from "./types.js";
 import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js";
 
-/**
-BinanceClient implements private API requests.
+/** BinanceClient implements private API requests.
 It extends BinanceExchange to be able to use also some public API requests.
 */
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
 
-  constructor({ apiKey, apiSecret, baseUrl }: BinanceClientConstructorArg) {
-    super({ baseUrl });
+  constructor({ apiKey, apiSecret, ...arg }: BinanceClientConstructorArg) {
+    super(arg);
     this.apiKey = apiKey;
     this.apiSecret = apiSecret;
   }
 
-  private async _privateRequest<Data>(
+  async privateRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
   ) {
     const searchParams = new URLSearchParams();
-
     if (params)
       for (const [key, value] of Object.entries(params))
         searchParams.append(key, String(value));
@@ -79,7 +74,7 @@ Account Information (USER_DATA)
 */
   async account(): Promise<BinanceAccountInformation> {
     const { balances, ...rest } =
-      await this._privateRequest<BinanceAccountInformation>(
+      await this.privateRequest<BinanceAccountInformation>(
         "GET",
         "/api/v3/account"
       );
@@ -99,7 +94,7 @@ Account Information (USER_DATA)
   }
 
   async apiRestrictions(): Promise<BinanceApiKeyPermission> {
-    return await this._privateRequest<BinanceApiKeyPermission>(
+    return await this.privateRequest<BinanceApiKeyPermission>(
       "GET",
       "/api/v3/account/apiRestrictions"
     );
@@ -122,7 +117,7 @@ Send in a new order.
       type,
       orderOptions
     );
-    return await this._privateRequest<BinanceOrderRespFULL>(
+    return await this.privateRequest<BinanceOrderRespFULL>(
       "GET",
       "/api/v3/order",
       {
@@ -152,7 +147,7 @@ Parameters are the same as `newOrder`.
       type,
       orderOptions
     );
-    return await this._privateRequest<BinanceOrderRespFULL>(
+    return await this.privateRequest<BinanceOrderRespFULL>(
       "GET",
       "/api/v3/order/test",
       {
@@ -181,7 +176,7 @@ Send in a new order with type other than MARKET or LIMIT order.
       type,
       orderOptions
     );
-    return await this._privateRequest<BinanceOrderRespACK>(
+    return await this.privateRequest<BinanceOrderRespACK>(
       "GET",
       "/api/v3/order",
       {
@@ -211,7 +206,7 @@ Parameters are the same as `newOrderACK`.
       type,
       orderOptions
     );
-    return await this._privateRequest<BinanceOrderRespACK>(
+    return await this.privateRequest<BinanceOrderRespACK>(
       "GET",
       "/api/v3/order/test",
       {
@@ -356,5 +351,5 @@ Validate order parameters and try to adjust them; otherwise throw an error.
   }
 }
 
-export type BinanceClientConstructorArg = BinanceConnectorConstructorArg &
+export type BinanceClientConstructorArg = BinanceExchangeConstructorArg &
   Pick<BinanceClient, "apiKey" | "apiSecret">;

@@ -1,16 +1,13 @@
-// Time Units
-// /////////////////////////////////////////////////////////////////////////////
+// Time Units ////////////////////////////////////////////////////////
 
 export const timeUnits = ["second", "minute", "hour", "day"];
 export type TimeUnit = typeof timeUnits[number];
 
-// Date
-// /////////////////////////////////////////////////////////////////////////////
+// Date //////////////////////////////////////////////////////////////
 
 export const isInvalidDate = (arg: Date) => arg.toString() === "Invalid Date";
 
-// Time
-// /////////////////////////////////////////////////////////////////////////////
+// Time //////////////////////////////////////////////////////////////
 
 /** The number of milliseconds since the @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.*/
 export type Time = number;
@@ -20,8 +17,7 @@ export const isTime = (arg: unknown): arg is Time => {
   return arg > 0;
 };
 
-// Timestamp
-// /////////////////////////////////////////////////////////////////////////////
+// Timestamp /////////////////////////////////////////////////////////
 
 /** String with format yyyy-mm-ddThh:mm:ss.lllZ */
 export type Timestamp = string;
@@ -35,12 +31,9 @@ export const isTimestamp = (arg: unknown): arg is Timestamp => {
   return !isInvalidDate(date);
 };
 
-export type Now = () => Timestamp;
+export const now = (): Timestamp => new Date().toJSON();
 
-export const now: Now = () => new Date().toJSON();
-
-// Hour
-// /////////////////////////////////////////////////////////////////////////////
+// Hour ////////////////////////////////////////////////////////////////
 
 export const hours = [
   "00",
@@ -77,8 +70,7 @@ export const isHour = (arg: unknown): arg is Hour => {
   return (hours as readonly string[]).includes(arg);
 };
 
-// Day
-// /////////////////////////////////////////////////////////////////////////////
+// Day ////////////////////////////////////////////////////////////////
 
 /** String with format yyyy-mm-dd */
 export type Day = string;
@@ -91,9 +83,7 @@ export const isDay = (arg: unknown): arg is Day => {
   return day === arg;
 };
 
-export type Today = () => Day;
-
-export const today = () => new Date().toJSON().substring(0, 10);
+export const today = (): Day => new Date().toJSON().substring(0, 10);
 
 type YYYY = string;
 type MM = string;
@@ -106,16 +96,14 @@ export const splitDay = (day: Day): SplittedDay => {
   return [yyyy, mm, dd];
 };
 
-// Week
-// /////////////////////////////////////////////////////////////////////////////
+// Week ///////////////////////////////////////////////////////////////
 
 export const weekDayNums = [0, 1, 2, 3, 4, 5, 6] as const;
 
 /** Week day num as returned by `new Date().getDate()`. */
 export type WeekDayNum = typeof weekDayNums[number];
 
-// Month
-// /////////////////////////////////////////////////////////////////////////////
+// Month //////////////////////////////////////////////////////////////
 
 export const monthNums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const;
 

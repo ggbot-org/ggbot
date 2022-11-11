@@ -1,14 +1,22 @@
-import { CacheMap } from "@ggbot2/models";
-import { BinanceConnector, BinanceConnectorRequestArg } from "./connector.js";
+import { truncateDate } from "@ggbot2/time";
+import { BinanceCacheProvider, BinanceCacheMap } from "./cache.js";
+import {
+  BinanceConnector,
+  BinanceConnectorConstructorArg,
+  BinanceConnectorRequestArg,
+} from "./connector.js";
 import {
   ErrorInvalidBinanceSymbol,
   ErrorInvalidBinanceKlineInterval,
   ErrorInvalidBinanceKlineOptionalParameters,
 } from "./errors.js";
+import { BinanceTimeProvider, getIntervalTime } from "./time.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceKline,
+  binanceKlineDefaultLimit,
+  BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceOrderType,
   BinanceSymbolInfo,
@@ -20,16 +28,60 @@ import {
   isBinanceKlineOptionalParameters,
 } from "./typeGuards.js";
 
-/**
-BinanceExchange implements public API requests.
-@example
-```ts
-const { BinanceConnector, BinanceExchange } = import "@ggbot2/binance";
-const binance = new BinanceExchange({ baseUrl: BinanceConnector.defaultBaseUrl});
-```
-*/
+class DefaultTimeProvider implements BinanceTimeProvider {
+  now() {
+    return truncateDate(new Date()).to.minutes().getTime();
+  }
+}
+
+/** BinanceExchange implements public API requests. */
 export class BinanceExchange extends BinanceConnector {
-  private async _publicRequest<Data>(
+  private readonly cache: BinanceCacheProvider;
+  private readonly time: BinanceTimeProvider;
+  constructor({ baseUrl, cache, time }: BinanceExchangeConstructorArg) {
+    super({ baseUrl: baseUrl ?? BinanceConnector.defaultBaseUrl });
+    this.cache = cache ?? new BinanceCacheMap();
+    this.time = time ?? new DefaultTimeProvider();
+  }
+
+  static coerceKlineOptionalParametersToTimeInterval(
+    time: BinanceTimeProvider,
+    interval: BinanceKlineInterval,
+    { startTime, endTime, limit }: BinanceKlineOptionalParameters
+  ): { startTime: number; endTime: number } {
+    if (startTime) {
+      if (endTime) {
+        return { startTime, endTime };
+      } else {
+        return {
+          startTime,
+          endTime: getIntervalTime[interval](
+            startTime,
+            limit ?? binanceKlineDefaultLimit
+          ),
+        };
+      }
+    } else if (endTime) {
+      return {
+        startTime: getIntervalTime[interval](
+          endTime,
+          -1 * (limit ?? binanceKlineDefaultLimit)
+        ),
+        endTime,
+      };
+    } else {
+      const now = time.now();
+      return {
+        startTime: getIntervalTime[interval](
+          now,
+          -1 * (limit ?? binanceKlineDefaultLimit)
+        ),
+        endTime: now,
+      };
+    }
+  }
+
+  async publicRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
     endpoint: BinanceConnectorRequestArg["endpoint"],
     params?: BinanceConnectorRequestArg["params"]
@@ -37,15 +89,14 @@ export class BinanceExchange extends BinanceConnector {
     return await super.request<Data>({ endpoint, method, params });
   }
 
-  /**
-Current average price for a symbol.
+  /** Current average price for a symbol.
 {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
 @throws {ErrorInvalidBinanceSymbol}
 */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
-    return await this._publicRequest<BinanceAvgPrice>(
+    return await this.publicRequest<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
       { symbol }
@@ -73,13 +124,13 @@ Current average price for a symbol.
 {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
 */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
-    const cached = exchangeInfoCache.get("exchangeInfo");
-    if (typeof cached !== "undefined") return cached;
-    const data = await this._publicRequest<BinanceExchangeInfo>(
+    const cached = this.cache.getExchangeInfo();
+    if (cached) return cached;
+    const data = await this.publicRequest<BinanceExchangeInfo>(
       "GET",
       "/api/v3/exchangeInfo"
     );
-    exchangeInfoCache.set("exchangeInfo", data);
+    this.cache.setExchangeInfo(data);
     return data;
   }
 
@@ -87,11 +138,11 @@ Current average price for a symbol.
     if (typeof arg !== "string") return false;
     // All symbols in Binance are in uppercase.
     if (arg.toUpperCase() !== arg) return false;
-    const cached = isValidSymbolCache.get(arg);
-    if (typeof cached !== "undefined") return cached;
+    const cached = this.cache.getIsValidSymbol(arg);
+    if (cached !== undefined) return cached;
     const { symbols } = await this.exchangeInfo();
     const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1;
-    isValidSymbolCache.set(arg, isValid);
+    this.cache.setIsValidSymbol(arg, isValid);
     return isValid;
   }
 
@@ -101,10 +152,9 @@ Current average price for a symbol.
 @throws {ErrorInvalidBinanceKlineInterval}
 @throws {ErrorInvalidBinanceKlineOptionalParameters}
 */
-  // TODO try also UIKlines api/v3/uiKlines
   async klines(
     symbol: string,
-    interval: string,
+    interval: BinanceKlineInterval,
     optionalParameters: BinanceKlineOptionalParameters
   ): Promise<BinanceKline[]> {
     await this.klinesParametersAreValidOrThrow(
@@ -112,11 +162,25 @@ Current average price for a symbol.
       interval,
       optionalParameters
     );
-    return await this._publicRequest<BinanceKline[]>("GET", "/api/v3/klines", {
-      symbol,
-      interval,
-      ...optionalParameters,
-    });
+    const { startTime, endTime } =
+      BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
+        this.time,
+        interval,
+        optionalParameters
+      );
+    const cached = this.cache.getKlines(symbol, interval, startTime, endTime);
+    if (cached) return cached;
+    const klines = await this.publicRequest<BinanceKline[]>(
+      "GET",
+      "/api/v3/klines",
+      {
+        symbol,
+        interval,
+        ...optionalParameters,
+      }
+    );
+    this.cache.setKlines(symbol, interval, klines);
+    return klines;
   }
 
   /** Validate klines parameters.
@@ -143,7 +207,7 @@ The request is similar to klines having the same parameters and response but `ui
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorInvalidBinanceKlineInterval}
 @throws {ErrorInvalidBinanceKlineOptionalParameters}
-  */
+*/
   async uiKlines(
     symbol: string,
     interval: string,
@@ -154,20 +218,16 @@ The request is similar to klines having the same parameters and response but `ui
       interval,
       optionalParameters
     );
-    return await this._publicRequest<BinanceKline[]>(
-      "GET",
-      "/api/v3/uiKlines",
-      {
-        symbol,
-        interval,
-        ...optionalParameters,
-      }
-    );
+    return await this.publicRequest<BinanceKline[]>("GET", "/api/v3/uiKlines", {
+      symbol,
+      interval,
+      ...optionalParameters,
+    });
   }
 
   /** Get `BinanceSymbolInfo` for `symbol`, if any.
 @throws {ErrorInvalidBinanceSymbol}
-  */
+*/
   async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -179,11 +239,11 @@ The request is similar to klines having the same parameters and response but `ui
   /** 24 hour rolling window price change statistics.
 {@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
 @throws {ErrorInvalidBinanceSymbol}
-  */
+*/
   async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
-    return await this._publicRequest<BinanceTicker24hr>(
+    return await this.publicRequest<BinanceTicker24hr>(
       "GET",
       "/api/v3/ticker/24hr",
       { symbol }
@@ -193,11 +253,11 @@ The request is similar to klines having the same parameters and response but `ui
   /** Latest price for a symbol.
 {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
 @throws {ErrorInvalidBinanceSymbol}
-  */
+*/
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
-    return await this._publicRequest<BinanceTickerPrice>(
+    return await this.publicRequest<BinanceTickerPrice>(
       "GET",
       "/api/v3/ticker/price",
       { symbol }
@@ -205,9 +265,9 @@ The request is similar to klines having the same parameters and response but `ui
   }
 }
 
-const exchangeInfoCacheTimeToLive = "ONE_DAY";
-const exchangeInfoCache = new CacheMap<BinanceExchangeInfo>(
-  exchangeInfoCacheTimeToLive
-);
-// `isValidSymbol` results are cached with same duration as `exchangeInfo`.
-const isValidSymbolCache = new CacheMap<boolean>(exchangeInfoCacheTimeToLive);
+export type BinanceExchangeConstructorArg = Partial<
+  BinanceConnectorConstructorArg & {
+    cache: BinanceCacheProvider;
+    time: BinanceTimeProvider;
+  }
+>;

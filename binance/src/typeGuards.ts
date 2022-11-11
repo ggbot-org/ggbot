@@ -4,6 +4,7 @@ import { isLiteralType } from "@ggbot2/models";
 import {
   BinanceBalance,
   BinanceFill,
+  BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceOrderRespACK,
   BinanceOrderRespFULL,
@@ -27,6 +28,8 @@ import {
   binanceRateLimitIntervals,
   binanceRateLimitTypes,
   binanceSymbolStatuses,
+  binanceKlineIntervals,
+  binanceKlineMaxLimit,
   binanceTimeInForces,
 } from "./types.js";
 
@@ -149,29 +152,9 @@ export const isBinanceSymbolFilterMinNotional = (
   );
 };
 
-export const binanceKlineIntervals = [
-  "1m",
-  "3m",
-  "5m",
-  "15m",
-  "30m",
-  "1h",
-  "2h",
-  "4h",
-  "6h",
-  "8h",
-  "12h",
-  "1d",
-  "3d",
-  "1w",
-  "1M",
-] as const;
-export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
 export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
   binanceKlineIntervals
 );
-
-export const binanceKlineMaxLimit = 1000;
 
 export const isBinanceKlineOptionalParameters = (
   arg: unknown
@@ -180,11 +163,9 @@ export const isBinanceKlineOptionalParameters = (
   const { startTime, endTime, limit } =
     arg as Partial<BinanceKlineOptionalParameters>;
   // If a parameter is defined it must be a number.
-  if (typeof startTime !== "undefined" && typeof startTime !== "number")
-    return false;
-  if (typeof endTime !== "undefined" && typeof endTime !== "number")
-    return false;
-  if (typeof limit !== "undefined" && typeof limit !== "number") return false;
+  if (startTime !== undefined && typeof startTime !== "number") return false;
+  if (endTime !== undefined && typeof endTime !== "number") return false;
+  if (limit !== undefined && typeof limit !== "number") return false;
   // `startTime` must preceed `endTime`.
   if (typeof startTime === "number" && typeof endTime === "number")
     if (startTime > endTime) return false;
