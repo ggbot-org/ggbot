@@ -2,8 +2,7 @@ import { ErrorInvalidDate } from "./errors.js";
 import { Day, Time, Timestamp, isInvalidDate } from "./time.js";
 
 /** Convert `Date` to `Day`.
-@throws {ErrorInvalidDate}
-*/
+@throws {ErrorInvalidDate} */
 export const getDayFromDate = (date: Date): Day => {
   return getDayFromTimestamp(getTimestampFromDate(date));
 };
@@ -19,8 +18,7 @@ export const getTimeFromTimestamp = (timestamp: Timestamp): Time => {
 };
 
 /** Convert `Date` to `Timestamp`.
-@throws {ErrorInvalidDate}
-*/
+@throws {ErrorInvalidDate} */
 export const getTimestampFromDate = (date: Date): Timestamp => {
   // Invalid dates return a null JSON
   //     new Date('0000-00-00').toJSON() // null

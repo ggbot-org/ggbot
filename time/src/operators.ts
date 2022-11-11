@@ -1,12 +1,14 @@
 import { ErrorInvalidDate } from "./errors.js";
-import { Timestamp, TimeUnit, isInvalidDate } from "./time.js";
+import { Time, Timestamp, TimeUnit, isInvalidDate, hours } from "./time.js";
 
 type TimeTruncator<Input, Output> = (arg: Input) => {
   to: Record<TimeUnit, () => Output>;
 };
 
 type TimeTranslationUnits<TimeType> = {
+  months: () => TimeType;
   days: () => TimeType;
+  hours: () => TimeType;
   minutes: () => TimeType;
   seconds: () => TimeType;
 };
@@ -17,14 +19,21 @@ type TimeTranslator<TimeType> = (arg: TimeType) => {
 };
 
 /** Translate `Date`.
-@throws ErrorInvalidDate
-*/
+@throws ErrorInvalidDate */
 export const getDate: TimeTranslator<Date> = (date) => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return {
     plus: (num) => ({
+      months: () => {
+        date.setDate(date.getMonth() + num);
+        return date;
+      },
       days: () => {
         date.setDate(date.getDate() + num);
+        return date;
+      },
+      hours: () => {
+        date.setDate(date.getHours() + num);
         return date;
       },
       minutes: () => {
@@ -37,8 +46,16 @@ export const getDate: TimeTranslator<Date> = (date) => {
       },
     }),
     minus: (num) => ({
+      months: () => {
+        date.setDate(date.getMonth() - num);
+        return date;
+      },
       days: () => {
         date.setDate(date.getDate() - num);
+        return date;
+      },
+      hours: () => {
+        date.setDate(date.getHours() - num);
         return date;
       },
       minutes: () => {
@@ -53,9 +70,29 @@ export const getDate: TimeTranslator<Date> = (date) => {
   };
 };
 
+/** Translate `Time`. */
+export const getTime: TimeTranslator<Time> = (time) => {
+  const date = new Date(time);
+  return {
+    plus: (num) => ({
+      months: () => getDate(date).plus(num).months().getTime(),
+      days: () => getDate(date).plus(num).days().getTime(),
+      hours: () => getDate(date).plus(num).hours().getTime(),
+      minutes: () => getDate(date).plus(num).minutes().getTime(),
+      seconds: () => getDate(date).plus(num).seconds().getTime(),
+    }),
+    minus: (num) => ({
+      months: () => getDate(date).minus(num).months().getTime(),
+      days: () => getDate(date).minus(num).days().getTime(),
+      hours: () => getDate(date).minus(num).hours().getTime(),
+      minutes: () => getDate(date).minus(num).minutes().getTime(),
+      seconds: () => getDate(date).minus(num).seconds().getTime(),
+    }),
+  };
+};
+
 /** Truncate `Date`.
-@throws ErrorInvalidDate
-*/
+@throws ErrorInvalidDate */
 export const truncateDate: TimeTruncator<Date, Date> = (date) => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return {
