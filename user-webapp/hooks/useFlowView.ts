@@ -25,7 +25,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { BinanceDflow } from "_flow/binance";
+import { BinanceDflowClient } from "_flow/binance";
 import { StrategyKey } from "_routing";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
@@ -65,7 +65,7 @@ export const useFlowView: UseFlowView = ({
   const dflow = useMemo<DflowHost | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!nodesCatalog) return;
-    const timestamp = truncateTimestamp().to("second");
+    const timestamp = truncateTimestamp(now()).to.second();
     const dflow = new BinanceDflowHost(
       { nodesCatalog },
       { memory: {}, timestamp }
@@ -75,11 +75,16 @@ export const useFlowView: UseFlowView = ({
 
   const binanceExecutor = useMemo<BinanceDflowExecutor | undefined>(() => {
     if (strategyKind !== "binance") return;
+    if (!binanceSymbols) return;
     if (!nodesCatalog) return;
-    const binance = new BinanceDflow();
-    const executor = new BinanceDflowExecutor(binance, nodesCatalog);
+    const binance = new BinanceDflowClient();
+    const executor = new BinanceDflowExecutor(
+      binance,
+      binanceSymbols,
+      nodesCatalog
+    );
     return executor;
-  }, [nodesCatalog, strategyKind]);
+  }, [binanceSymbols, nodesCatalog, strategyKind]);
 
   const importFlowView = useCallback(async () => {
     if (!containerRef.current) return;
@@ -258,7 +263,7 @@ export const useFlowView: UseFlowView = ({
         case "binance": {
           if (!binanceExecutor) return;
           await binanceExecutor.run(
-            { memory: {}, timestamp: truncateTimestamp().to("minute") },
+            { memory: {}, timestamp: truncateTimestamp(now()).to.minute() },
             flowView.graph
           );
           // TODO update flow with mocked execution if is not "live"

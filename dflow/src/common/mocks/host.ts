@@ -1,4 +1,4 @@
-import { truncateTimestamp } from "@ggbot2/time";
+import { now, truncateTimestamp } from "@ggbot2/time";
 import { DflowHost, DflowHostConstructorArg } from "dflow";
 import { DflowExecutorView, DflowCommonExecutorContext } from "../executor.js";
 import { DflowLoader, load } from "../loader.js";
@@ -13,7 +13,7 @@ export class DflowCommonHostMock extends DflowHost implements DflowLoader {
     this.context.memory = context.memory ?? {};
     this.context.memoryChanged = false;
     this.context.timestamp =
-      context.timestamp ?? truncateTimestamp().to("minute");
+      context.timestamp ?? truncateTimestamp(now()).to.minute();
   }
   load(view: DflowExecutorView): void {
     load({ dflow: this, nodeTextToDflowKind: commonNodeTextToDflowKind, view });

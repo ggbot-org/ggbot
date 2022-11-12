@@ -2,16 +2,13 @@ import { BinanceDflowExecutor } from "@ggbot2/dflow";
 import {
   Day,
   Timestamp,
-  addMinutes,
-  addDays,
+  getDate,
   getDayFromDate,
   getTimestampFromDate,
-  isTimestamp,
-  getDayFromTimestamp,
 } from "@ggbot2/time";
 import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
-import { BinanceDflow } from "_flow/binance";
+import { BinanceDflowClient } from "_flow/binance";
 import { StrategyKey } from "_routing";
 import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
@@ -42,30 +39,13 @@ const computeTimestamps = ({
   endDay,
 }: Pick<State, "startDay" | "endDay">): State["timestamps"] => {
   const numMinutes = 60;
-  const startDate = new Date(startDay);
-  const timestamps: Timestamp[] = [getTimestampFromDate(startDate)];
-
-  const getLastTimestamp = () => {
-    return timestamps.slice(-1).pop();
-  };
-
-  const getNextDate = () => {
-    const lastTimestamp = getLastTimestamp();
-    const lastDate = new Date(lastTimestamp);
-    const nextDate = addMinutes(numMinutes, lastDate);
-    return nextDate;
-  };
-
-  const getLastDay = () => {
-    const lastTimestamp = getLastTimestamp();
-    return getDayFromTimestamp(lastTimestamp);
-  };
-
-  while (getLastDay() < endDay) {
-    const nextDate = getNextDate();
-    timestamps.push(getTimestampFromDate(nextDate));
+  const timestamps: Timestamp[] = [];
+  let date = new Date(startDay);
+  const endDate = new Date(endDay);
+  while (date < endDate) {
+    timestamps.push(getTimestampFromDate(date));
+    date = getDate(date).plus(numMinutes).minutes();
   }
-
   return timestamps;
 };
 
@@ -140,7 +120,7 @@ const getInitialState =
   (strategyKey: StrategyKey) =>
   (persistingState: PersistingState | undefined): State => {
     // Max is yesterday.
-    const maxDay = getDayFromDate(addDays(-1, new Date()));
+    const maxDay = getDayFromDate(getDate(new Date()).minus(1).days());
     // PersistingState:
     // startDay and endDay will always be lower than maxDay.
     if (persistingState) {
@@ -153,7 +133,7 @@ const getInitialState =
       };
     }
     // Default state.
-    const startDay = getDayFromDate(addDays(-7, new Date(maxDay)));
+    const startDay = getDayFromDate(getDate(new Date(maxDay)).minus(7).days());
     const endDay = maxDay;
     return {
       isEnabled: false,
@@ -233,8 +213,13 @@ export const useBacktesting: UseBacktesting = ({
     if (!flowViewGraph) return;
 
     if (strategyKind === "binance") {
-      const binance = new BinanceDflow();
-      const executor = new BinanceDflowExecutor(binance, nodesCatalog);
+      if (!binanceSymbols) return;
+      const binance = new BinanceDflowClient();
+      const executor = new BinanceDflowExecutor(
+        binance,
+        binanceSymbols,
+        nodesCatalog
+      );
 
       const interval = 2000;
 
@@ -259,7 +244,7 @@ export const useBacktesting: UseBacktesting = ({
 
       executeStep();
     }
-  }, [dispatch, flowViewGraph, nodesCatalog, strategyKind]);
+  }, [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, strategyKind]);
 
   useEffect(() => {
     if (backtestIsRunning) runBacktest();

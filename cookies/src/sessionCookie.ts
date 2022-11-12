@@ -4,7 +4,7 @@ import {
   isAccountKey,
   isCreationDay,
 } from "@ggbot2/models";
-import { addSeconds, truncateDate } from "@ggbot2/time";
+import { getDate, truncateDate } from "@ggbot2/time";
 import {
   Cookies,
   CreateCookieOptions,
@@ -30,9 +30,10 @@ export const createSessionCookie = (
   session: Session,
   { secure }: Pick<CreateCookieOptions, "secure">
 ) => {
-  const maxAge = 60 * 60 * 24 * 30; // 30 days
-  const todayDate = truncateDate(new Date());
-  const expires = addSeconds(maxAge, todayDate);
+  const numDays = 30;
+  const maxAge = 60 * 60 * 24 * numDays;
+  const todayDate = truncateDate(new Date()).to.day();
+  const expires = getDate(todayDate).plus(numDays).days();
 
   const content = serializeSessionCookie(session);
 

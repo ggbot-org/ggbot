@@ -5,7 +5,7 @@ import {
   BinanceKlineInterval,
 } from "@ggbot2/binance";
 import {
-  BinanceDflow,
+  BinanceDflowClient,
   BinanceDflowExecutor,
   getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
@@ -17,7 +17,7 @@ import {
   WriteStrategyExecution,
   updatedNow,
 } from "@ggbot2/models";
-import { truncateTimestamp } from "@ggbot2/time";
+import { truncateTimestamp, now } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyExecutionPathname } from "./_dataBucketLocators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
@@ -29,7 +29,7 @@ import {
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
-class Binance extends BinanceClient implements BinanceDflow {
+class Binance extends BinanceClient implements BinanceDflowClient {
   async candles(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -75,7 +75,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       const { symbols } = await binance.exchangeInfo();
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
 
-      const executor = new BinanceDflowExecutor(binance, nodesCatalog);
+      const executor = new BinanceDflowExecutor(binance, symbols, nodesCatalog);
       const {
         execution,
         memory: memoryOutput,
@@ -83,7 +83,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       } = await executor.run(
         {
           memory: memoryInput,
-          timestamp: truncateTimestamp().to("second"),
+          timestamp: truncateTimestamp(now()).to.second(),
         },
         strategyFlow.view
       );

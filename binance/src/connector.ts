@@ -1,14 +1,16 @@
 import type { BinanceApiEndpoint } from "./endpoints.js";
 
-/**
-BinanceConnector is a base class for BinanceExchange and BinanceClient.
-*/
+const defaultBaseUrl = "https://api.binance.com";
+const baseUrls = [defaultBaseUrl];
+type BaseUrl = typeof baseUrls[number];
+
+/** BinanceConnector is a base class for BinanceExchange and BinanceClient. */
 export class BinanceConnector {
-  static defaultBaseUrl = "https://api.binance.com";
+  static defaultBaseUrl = defaultBaseUrl;
 
   static userAgent = "ggbot2 - crypto flow (https://ggbot2.com)";
 
-  readonly baseUrl: string;
+  readonly baseUrl: BaseUrl;
 
   constructor({
     baseUrl = BinanceConnector.defaultBaseUrl,

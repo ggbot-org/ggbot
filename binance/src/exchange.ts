@@ -1,5 +1,4 @@
-import { truncateDate } from "@ggbot2/time";
-import { BinanceCacheProvider, BinanceCacheMap } from "./cache.js";
+import type { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,
   BinanceConnectorConstructorArg,
@@ -28,20 +27,38 @@ import {
   isBinanceKlineOptionalParameters,
 } from "./typeGuards.js";
 
-class DefaultTimeProvider implements BinanceTimeProvider {
+/** BinanceExchange implements public API requests.
+
+To create a cached client, pass a `BinanceCacheProvider` and a `BinanceTimeProvider` to the constructor.
+@example
+```ts
+import { truncateDate } from "@ggbot2/time";
+import {
+  BinanceCacheMap,
+  BinanceConnector,
+  BinanceExchange,
+  BinanceTimeProvider
+} from '@ggbot2/binance'
+class TimeProvider implements BinanceTimeProvider {
   now() {
     return truncateDate(new Date()).to.minutes().getTime();
   }
 }
-
-/** BinanceExchange implements public API requests. */
+const time = new TimeProvider();
+const cache = new BinanceCacheMap();
+const binance = new BinanceExchange({
+  cache: new BinanceCacheMap(),
+  time: new TimeProvider()
+});
+```
+*/
 export class BinanceExchange extends BinanceConnector {
-  private readonly cache: BinanceCacheProvider;
-  private readonly time: BinanceTimeProvider;
+  private readonly cache: BinanceCacheProvider | undefined;
+  private readonly time: BinanceTimeProvider | undefined;
   constructor({ baseUrl, cache, time }: BinanceExchangeConstructorArg) {
-    super({ baseUrl: baseUrl ?? BinanceConnector.defaultBaseUrl });
-    this.cache = cache ?? new BinanceCacheMap();
-    this.time = time ?? new DefaultTimeProvider();
+    super({ baseUrl });
+    this.cache = cache;
+    this.time = time;
   }
 
   static coerceKlineOptionalParametersToTimeInterval(
@@ -91,8 +108,7 @@ export class BinanceExchange extends BinanceConnector {
 
   /** Current average price for a symbol.
 {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
-@throws {ErrorInvalidBinanceSymbol}
-*/
+@throws {ErrorInvalidBinanceSymbol} */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -121,16 +137,16 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   /** Current exchange trading rules and symbol information.
-{@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
-*/
+{@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information} */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
-    const cached = this.cache.getExchangeInfo();
+    const { cache } = this;
+    const cached = cache?.getExchangeInfo();
     if (cached) return cached;
     const data = await this.publicRequest<BinanceExchangeInfo>(
       "GET",
       "/api/v3/exchangeInfo"
     );
-    this.cache.setExchangeInfo(data);
+    cache?.setExchangeInfo(data);
     return data;
   }
 
@@ -138,11 +154,12 @@ export class BinanceExchange extends BinanceConnector {
     if (typeof arg !== "string") return false;
     // All symbols in Binance are in uppercase.
     if (arg.toUpperCase() !== arg) return false;
-    const cached = this.cache.getIsValidSymbol(arg);
-    if (cached !== undefined) return cached;
+    const { cache } = this;
+    const cached = cache?.getIsValidSymbol(arg);
+    if (cached) return cached;
     const { symbols } = await this.exchangeInfo();
     const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1;
-    this.cache.setIsValidSymbol(arg, isValid);
+    cache?.setIsValidSymbol(arg, isValid);
     return isValid;
   }
 
@@ -150,8 +167,7 @@ export class BinanceExchange extends BinanceConnector {
 {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorInvalidBinanceKlineInterval}
-@throws {ErrorInvalidBinanceKlineOptionalParameters}
-*/
+@throws {ErrorInvalidBinanceKlineOptionalParameters} */
   async klines(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -162,14 +178,17 @@ export class BinanceExchange extends BinanceConnector {
       interval,
       optionalParameters
     );
-    const { startTime, endTime } =
-      BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
-        this.time,
-        interval,
-        optionalParameters
-      );
-    const cached = this.cache.getKlines(symbol, interval, startTime, endTime);
-    if (cached) return cached;
+    const { cache, time } = this;
+    if (cache && time) {
+      const { startTime, endTime } =
+        BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
+          time,
+          interval,
+          optionalParameters
+        );
+      const cached = cache.getKlines(symbol, interval, startTime, endTime);
+      if (cached) return cached;
+    }
     const klines = await this.publicRequest<BinanceKline[]>(
       "GET",
       "/api/v3/klines",
@@ -179,15 +198,14 @@ export class BinanceExchange extends BinanceConnector {
         ...optionalParameters,
       }
     );
-    this.cache.setKlines(symbol, interval, klines);
+    cache?.setKlines(symbol, interval, klines);
     return klines;
   }
 
   /** Validate klines parameters.
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorInvalidBinanceKlineInterval}
-@throws {ErrorInvalidBinanceKlineOptionalParameters}
-*/
+@throws {ErrorInvalidBinanceKlineOptionalParameters} */
   async klinesParametersAreValidOrThrow(
     symbol: string,
     interval: string,
@@ -206,8 +224,7 @@ The request is similar to klines having the same parameters and response but `ui
 {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
 @throws {ErrorInvalidBinanceSymbol}
 @throws {ErrorInvalidBinanceKlineInterval}
-@throws {ErrorInvalidBinanceKlineOptionalParameters}
-*/
+@throws {ErrorInvalidBinanceKlineOptionalParameters} */
   async uiKlines(
     symbol: string,
     interval: string,
@@ -226,8 +243,7 @@ The request is similar to klines having the same parameters and response but `ui
   }
 
   /** Get `BinanceSymbolInfo` for `symbol`, if any.
-@throws {ErrorInvalidBinanceSymbol}
-*/
+@throws {ErrorInvalidBinanceSymbol} */
   async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -238,8 +254,7 @@ The request is similar to klines having the same parameters and response but `ui
 
   /** 24 hour rolling window price change statistics.
 {@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
-@throws {ErrorInvalidBinanceSymbol}
-*/
+@throws {ErrorInvalidBinanceSymbol} */
   async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -252,8 +267,7 @@ The request is similar to klines having the same parameters and response but `ui
 
   /** Latest price for a symbol.
 {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
-@throws {ErrorInvalidBinanceSymbol}
-*/
+@throws {ErrorInvalidBinanceSymbol} */
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol) throw new ErrorInvalidBinanceSymbol(symbol);
@@ -265,9 +279,7 @@ The request is similar to klines having the same parameters and response but `ui
   }
 }
 
-export type BinanceExchangeConstructorArg = Partial<
-  BinanceConnectorConstructorArg & {
-    cache: BinanceCacheProvider;
-    time: BinanceTimeProvider;
-  }
->;
+export type BinanceExchangeConstructorArg = BinanceConnectorConstructorArg & {
+  cache?: BinanceCacheProvider | undefined;
+  time?: BinanceTimeProvider | undefined;
+};

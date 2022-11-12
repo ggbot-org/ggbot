@@ -10,8 +10,9 @@ import {
 import type { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
 import {
   Timestamp,
-  truncateTimestamp,
   getTimeFromTimestamp,
+  now,
+  truncateTimestamp,
 } from "@ggbot2/time";
 
 export const binance = new BinanceExchange({
@@ -21,7 +22,7 @@ export const binance = new BinanceExchange({
 export class BinanceDflowClient implements IBinanceDflowClient {
   balances: BinanceBalance[] = [];
 
-  timestamp: Timestamp = truncateTimestamp().to("hour");
+  timestamp: Timestamp = truncateTimestamp(now()).to.hour();
 
   async account() {
     const accountInfo: BinanceAccountInformation = {
@@ -42,12 +43,9 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
-    // TODO call binance.klines with proper startTime according to timestamp
-    // TODO cache results
-    // TODO fetch strategy: partition intervals in days
     const startTime = getTimeFromTimestamp(this.timestamp);
     const klines = await binance.klines(symbol, interval, { startTime, limit });
-    return Promise.resolve([]);
+    return klines;
   }
 
   async exchangeInfo() {
