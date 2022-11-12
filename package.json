@@ -65,7 +65,7 @@
     "prebuild:admin-webapp": "npm run build:database && npm run build:http-status-codes && npm run build:ui-components",
     "prebuild:assets": "npm run build:infrastructure",
     "prebuild:aws": "npm run build:infrastructure",
-    "prebuild:binance": "npm run build:arithmetic; npm run build:models",
+    "prebuild:binance": "npm run build:arithmetic && npm run build:http-status-codes && npm run build:models",
     "prebuild:cookies": "npm run build:models",
     "prebuild:database": "npm run build:aws && npm run build:dflow && npm run build:email-messages && npm run build:test-data",
     "prebuild:devops": "npm run build:aws",

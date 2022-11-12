@@ -63,7 +63,7 @@ export const BinanceSettings: FC = () => {
   useEffect(readConfig, [readConfig]);
 
   return (
-    <form onSubmit={onSubmit} className="max-w-lg">
+    <form onSubmit={onSubmit}>
       <Fieldset legend="Binance API">
         {hasBinanceApiConfig && (
           <>

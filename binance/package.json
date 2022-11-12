@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
+    "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/models": "file:models"
   }
 }

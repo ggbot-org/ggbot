@@ -94,10 +94,16 @@ Account Information (USER_DATA)
   }
 
   async apiRestrictions(): Promise<BinanceApiKeyPermission> {
-    return await this.privateRequest<BinanceApiKeyPermission>(
-      "GET",
-      "/api/v3/account/apiRestrictions"
-    );
+    try {
+      const response = await this.privateRequest<BinanceApiKeyPermission>(
+        "GET",
+        "/api/v3/account/apiRestrictions"
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   /**

@@ -61,9 +61,12 @@ export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] 
     const binanceApiConfig = await readBinanceApiConfig({ accountId });
     if (!binanceApiConfig)
       throw new ErrorMissingBinanceApiConfig({ accountId });
-    const baseUrl = BinanceConnector.defaultBaseUrl;
     const { apiKey, apiSecret } = binanceApiConfig;
-    const client = new BinanceClient({ baseUrl, apiKey, apiSecret });
+    const client = new BinanceClient({
+      baseUrl: BinanceConnector.defaultBaseUrl,
+      apiKey,
+      apiSecret,
+    });
     const data = await client.apiRestrictions();
     binanceApiKeyPermissionsCache.set(accountId, data);
     return data;
