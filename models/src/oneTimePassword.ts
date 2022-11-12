@@ -28,17 +28,11 @@ export const isOneTimePassword = (value: unknown): value is OneTimePassword => {
   return isOneTimePasswordCode(code) && isCreationTime({ whenCreated });
 };
 
-export const normalizeOneTimePassword = (
-  code: OneTimePasswordCode
-): OneTimePasswordCode => code.toLowerCase().trim();
-
 export const generateOneTimePassword = (): OneTimePassword => {
-  const code = Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, "")
-    .substring(0, oneTimePasswordCodeLength);
-
-  return { code: normalizeOneTimePassword(code), ...createdNow() };
+  const chars = [];
+  while (chars.length < oneTimePasswordCodeLength)
+    chars.push(String(Math.floor(Math.random() * 10)));
+  return { code: chars.join(""), ...createdNow() };
 };
 
 export type CreateOneTimePassword = Operation<EmailAddress, OneTimePassword>;

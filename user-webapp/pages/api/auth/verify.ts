@@ -13,11 +13,7 @@ import {
   readEmailAccount,
   readOneTimePassword,
 } from "@ggbot2/database";
-import {
-  OneTimePassword,
-  isOneTimePasswordCode,
-  normalizeOneTimePassword,
-} from "@ggbot2/models";
+import { OneTimePassword, isOneTimePasswordCode } from "@ggbot2/models";
 import { today } from "@ggbot2/time";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -51,11 +47,10 @@ export default async function apiHandler(
 
     const { code } = input;
 
-    const oneTimePasswordCode = normalizeOneTimePassword(code);
     const storedOneTimePassword = await readOneTimePassword(email);
     if (!storedOneTimePassword) return res.status(__204__NO_CONTENT__).end();
 
-    const verified = oneTimePasswordCode === storedOneTimePassword.code;
+    const verified = code === storedOneTimePassword.code;
 
     if (!verified) return res.status(__200__OK__).json({ verified });
 

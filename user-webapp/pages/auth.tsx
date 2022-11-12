@@ -1,9 +1,9 @@
 import {
   Button,
-  Fieldset,
-  Logo,
-  InputField,
   ButtonOnClick,
+  Fieldset,
+  InputField,
+  Logo,
 } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -124,9 +124,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         setIsPending(false);
         clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          throw new Error("response not ok");
-        }
+        if (!response.ok) throw new Error("response not ok");
 
         const responseData: ApiEnterResponseData = await response.json();
 
@@ -286,9 +284,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         setIsPending(false);
         clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          throw new Error("response not ok");
-        }
+        if (!response.ok) throw new Error("response not ok");
 
         const responseData: ApiVerifyResponseData = await response.json();
 
@@ -322,7 +318,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
     <>
       <AuthForm message="enter ggbot2" onSubmit={onSubmit}>
         <InputField
-          label="password"
+          label="one time password"
           name="code"
           readOnly={isPending}
           required
@@ -337,7 +333,11 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
       </AuthForm>
 
       <FeedbackMessages>
-        {codeSent ? null : <div>Check your email to get the password.</div>}
+        {codeSent ? null : (
+          <div>
+            Check your email to get the <em>One Time Password</em>.
+          </div>
+        )}
         {hasGenericError ? <GenericErrorFeedback /> : null}
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
