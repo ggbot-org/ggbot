@@ -16,6 +16,7 @@ import {
 import { OneTimePassword, isOneTimePasswordCode } from "@ggbot2/models";
 import { today } from "@ggbot2/time";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { sessionNumDays } from "_routing";
 
 export type ApiVerifyRequestData = Pick<OneTimePassword, "code">;
 
@@ -63,6 +64,7 @@ export default async function apiHandler(
     const createCookye = (session: Session) => {
       const cookie = createSessionCookie(session, {
         secure: nodeEnvIsProduction,
+        numDays: sessionNumDays,
       });
       res.setHeader("Set-Cookie", cookie);
     };

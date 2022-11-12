@@ -67,7 +67,7 @@ const Page: NextPage = () => {
             setSelected={setSelectedSectionId}
           />
         </div>
-        <div className="my-2 md:my-4 flex flex-col gap-2">
+        <div className="my-2 md:my-4 flex flex-col gap-2 grow">
           <div className="m-2">
             <h2 className="text-xl">{sectionTitle}</h2>
           </div>

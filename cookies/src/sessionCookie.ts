@@ -28,9 +28,13 @@ const serializeSessionCookie = ({ accountId, creationDay }: Session) =>
 
 export const createSessionCookie = (
   session: Session,
-  { secure }: Pick<CreateCookieOptions, "secure">
+  {
+    secure,
+    numDays,
+  }: Pick<CreateCookieOptions, "secure"> & {
+    numDays: number;
+  }
 ) => {
-  const numDays = 30;
   const maxAge = 60 * 60 * 24 * numDays;
   const todayDate = truncateDate(new Date()).to.day();
   const expires = getDate(todayDate).plus(numDays).days();

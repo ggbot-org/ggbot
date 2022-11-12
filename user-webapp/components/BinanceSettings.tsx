@@ -2,9 +2,13 @@ import { Button, Fieldset, InputField } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 
-export const BinanceSettings: FC = () => {
-  const apiKeyLabel = "API Key";
+const apiKeyField = {
+  label: "API Key",
+  name: "apiKey",
+};
+const apiSecretField = { label: "API Secret", name: "apiSecret" };
 
+export const BinanceSettings: FC = () => {
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.READ_BINANCE_API_CONFIG();
   const [createConfig, { isPending: createIsPending }] =
@@ -13,12 +17,12 @@ export const BinanceSettings: FC = () => {
     useApiAction.READ_BINANCE_API_KEY_PERMISSIONS();
 
   const hasBinanceApiConfig = useMemo(
-    () => typeof binanceApiConfig !== "undefined" && binanceApiConfig !== null,
+    () => binanceApiConfig !== undefined && binanceApiConfig !== null,
     [binanceApiConfig]
   );
 
   const hasNoBinanceApiConfig = useMemo(
-    () => typeof binanceApiConfig !== "undefined" && binanceApiConfig === null,
+    () => binanceApiConfig !== undefined && binanceApiConfig === null,
     [binanceApiConfig]
   );
 
@@ -59,43 +63,34 @@ export const BinanceSettings: FC = () => {
   useEffect(readConfig, [readConfig]);
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="max-w-lg">
       <Fieldset legend="Binance API">
         {hasBinanceApiConfig && (
-          <dl>
-            <dt>{apiKeyLabel}</dt>
-            <dd>{binanceApiConfig?.apiKey}</dd>
-          </dl>
+          <>
+            <InputField
+              {...apiKeyField}
+              readOnly
+              defaultValue={binanceApiConfig?.apiKey}
+            />
+            <menu>
+              <li>
+                <Button isSpinning={testIsPending}>test</Button>
+              </li>
+            </menu>
+          </>
         )}
         {hasNoBinanceApiConfig && (
           <>
-            <InputField
-              label={apiKeyLabel}
-              name="apiKey"
-              required
-              readOnly={isPending}
-            />
-            <InputField
-              label="Secret Key"
-              name="apiSecret"
-              required
-              readOnly={isPending}
-            />
+            <InputField {...apiKeyField} required readOnly={isPending} />
+            <InputField {...apiSecretField} required readOnly={isPending} />
+            <menu>
+              <li>
+                <Button isSpinning={createIsPending}>create</Button>
+              </li>
+            </menu>
           </>
         )}
       </Fieldset>
-      <menu>
-        {hasNoBinanceApiConfig && (
-          <li>
-            <Button isSpinning={createIsPending}>create</Button>
-          </li>
-        )}
-        {hasBinanceApiConfig && (
-          <li>
-            <Button isSpinning={testIsPending}>test</Button>
-          </li>
-        )}
-      </menu>
     </form>
   );
 };

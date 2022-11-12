@@ -124,7 +124,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         setIsPending(false);
         clearTimeout(timeoutId);
 
-        if (!response.ok) throw new Error("response not ok");
+        if (!response.ok) throw new Error();
 
         const responseData: ApiEnterResponseData = await response.json();
 
