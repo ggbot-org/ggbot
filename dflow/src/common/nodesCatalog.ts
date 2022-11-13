@@ -18,7 +18,7 @@ import {
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
-import { Today } from "./nodes/time.js";
+import { Time, TimeToDay, TimeMinus, TimePlus, Today } from "./nodes/time.js";
 
 export const nodesCatalog = {
   // arithmetic
@@ -39,6 +39,10 @@ export const nodesCatalog = {
   [GetMemory.kind]: GetMemory,
   [SetMemory.kind]: SetMemory,
   // time
+  [Time.kind]: Time,
+  [TimeMinus.kind]: TimeMinus,
+  [TimePlus.kind]: TimePlus,
+  [TimeToDay.kind]: TimeToDay,
   [Today.kind]: Today,
   // indicators
   [BollingerBands.kind]: BollingerBands,

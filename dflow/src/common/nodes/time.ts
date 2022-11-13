@@ -1,15 +1,108 @@
-import { getDayFromDate } from "@ggbot2/time";
+import {
+  coerceToTimeUnit,
+  getTime,
+  isTime,
+  timeToDay,
+  timestampToDay,
+  timestampToTime,
+} from "@ggbot2/time";
 import { DflowNode } from "dflow";
 import { DflowCommonContext as Context } from "../context.js";
 
-const { output } = DflowNode;
+const { input, output } = DflowNode;
+
+const outputDay = output("string", { name: "yyyy-mm-dd" });
+
+const inputTime = input("number", { name: "time" });
+const outputTime = output("number", { name: "time" });
+
+const inputTimeUnit = input("string", { name: "timeUnit" });
+
+const timeOutputs = [outputTime, output("string", { name: "timestamp" })];
+
+const timeTranslatorInputs = [
+  inputTime,
+  inputTimeUnit,
+  input("number", { name: "num" }),
+];
+
+const translateTime = (
+  time: number,
+  timeUnitStr: string,
+  num: number
+): number | undefined => {
+  if (!isTime(time)) return;
+  const timeUnit = coerceToTimeUnit(timeUnitStr);
+  switch (timeUnit) {
+    case "second":
+      return getTime(time).plus(num).seconds();
+    case "minute":
+      return getTime(time).plus(num).minutes();
+    case "hour":
+      return getTime(time).plus(num).hours();
+    case "day":
+      return getTime(time).plus(num).days();
+    default:
+      return;
+  }
+};
+
+export class Time extends DflowNode {
+  static kind = "time";
+  static outputs = timeOutputs;
+  run() {
+    const timestamp = (this.host.context as Context).timestamp;
+    const time = timestampToTime(timestamp);
+    this.output(0).data = time;
+    this.output(1).data = timestamp;
+  }
+}
+
+export class TimeMinus extends DflowNode {
+  static kind = "timeMinus";
+  static inputs = timeTranslatorInputs;
+  static outputs = timeOutputs;
+  run() {
+    const time = this.input(0).data as number;
+    const timeUnit = this.input(1).data as string;
+    const num = this.input(2).data as number;
+    const result = translateTime(time, timeUnit, num * -1);
+    if (result) this.output(0).data = result;
+    else this.clearOutputs();
+  }
+}
+
+export class TimePlus extends DflowNode {
+  static kind = "timePlus";
+  static inputs = timeTranslatorInputs;
+  static outputs = timeOutputs;
+  run() {
+    const time = this.input(0).data as number;
+    const timeUnit = this.input(1).data as string;
+    const num = this.input(2).data as number;
+    const result = translateTime(time, timeUnit, num);
+    if (result) this.output(0).data = result;
+    else this.clearOutputs();
+  }
+}
+
+export class TimeToDay extends DflowNode {
+  static kind = "timeToDay";
+  static inputs = [inputTime];
+  static outputs = [outputDay];
+  run() {
+    const time = this.input(0).data as number;
+    if (isTime(time)) this.output(0).data = timeToDay(time);
+    else this.clearOutputs();
+  }
+}
 
 export class Today extends DflowNode {
   static kind = "today";
-  static outputs = [output("string", { name: "yyyy-mm-dd" })];
+  static outputs = [outputDay];
   run() {
     const timestamp = (this.host.context as Context).timestamp;
-    const day = getDayFromDate(new Date(timestamp));
+    const day = timestampToDay(timestamp);
     this.output(0).data = day;
   }
 }
