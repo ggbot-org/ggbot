@@ -11,6 +11,7 @@ import {
   ChartOhlcvProps,
   DailyIntervalSelector,
   DailyIntervalSelectorProps,
+  ProfitSummary,
 } from "_components";
 import { binance } from "_flow/binance";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
@@ -37,7 +38,7 @@ export const BacktestController: FC<BacktestControllerProps> = ({
 
   if (!state || !state.isEnabled) return null;
 
-  const { maxDay, startDay, strategyKind } = state;
+  const { maxDay, startDay, endDay, strategyKind } = state;
 
   return (
     <div className="my-2">
@@ -46,6 +47,14 @@ export const BacktestController: FC<BacktestControllerProps> = ({
         startDay={startDay}
         setStartDay={setStartDay}
       />
+      <ProfitSummary
+        timeInterval={{
+          start: new Date(startDay).getTime(),
+          end: new Date(endDay).getTime(),
+        }}
+        balances={[]}
+      />
+
       {strategyKind === "binance" && view && state && (
         <BacktestControllerBinance
           state={state}

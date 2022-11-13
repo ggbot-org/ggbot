@@ -62,29 +62,33 @@ export const useFlowView: UseFlowView = ({
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
+  const timestamp = useMemo(() => truncateTimestamp(now()).to.minute(), []);
+
   const dflow = useMemo<DflowHost | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!nodesCatalog) return;
-    const timestamp = truncateTimestamp(now()).to.second();
     const dflow = new BinanceDflowHost(
       { nodesCatalog },
       { memory: {}, timestamp }
     );
     return dflow;
-  }, [nodesCatalog, strategyKind]);
+  }, [nodesCatalog, strategyKind, timestamp]);
 
   const binanceExecutor = useMemo<BinanceDflowExecutor | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!binanceSymbols) return;
     if (!nodesCatalog) return;
-    const binance = new BinanceDflowClient();
+    const binance = new BinanceDflowClient({
+      balances: [],
+      timestamp,
+    });
     const executor = new BinanceDflowExecutor(
       binance,
       binanceSymbols,
       nodesCatalog
     );
     return executor;
-  }, [binanceSymbols, nodesCatalog, strategyKind]);
+  }, [binanceSymbols, nodesCatalog, strategyKind, timestamp]);
 
   const importFlowView = useCallback(async () => {
     if (!containerRef.current) return;

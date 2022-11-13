@@ -214,25 +214,23 @@ export const useBacktesting: UseBacktesting = ({
 
     if (strategyKind === "binance") {
       if (!binanceSymbols) return;
-      const binance = new BinanceDflowClient();
-      const executor = new BinanceDflowExecutor(
-        binance,
-        binanceSymbols,
-        nodesCatalog
-      );
-
-      const interval = 2000;
+      const delay = 2000;
 
       const executeStep = async (index = 0) => {
         const timestamp = timestamps[index];
         if (timestamp) {
           try {
+            const binance = new BinanceDflowClient({ balances: [], timestamp });
+            const executor = new BinanceDflowExecutor(
+              binance,
+              binanceSymbols,
+              nodesCatalog
+            );
             const { execution } = await executor.run(
               { memory: {}, timestamp },
               flowViewGraph
             );
-            console.log(execution);
-            setTimeout(() => executeStep(index + 1), interval);
+            setTimeout(() => executeStep(index + 1), delay);
           } catch (error) {
             console.error(error);
             dispatch({ type: "END" });

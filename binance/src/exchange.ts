@@ -47,6 +47,7 @@ class TimeProvider implements BinanceTimeProvider {
 const time = new TimeProvider();
 const cache = new BinanceCacheMap();
 const binance = new BinanceExchange({
+  baseUrl: BinanceConnector.defaultBaseUrl,
   cache: new BinanceCacheMap(),
   time: new TimeProvider()
 });

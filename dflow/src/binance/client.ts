@@ -10,16 +10,12 @@ import {
   BinanceTickerPrice,
 } from "@ggbot2/binance";
 
-/**
-Binance API used by dflow binance nodes.
-*/
+/** Binance API used by dflow binance nodes. */
 export interface BinanceDflowClient
   extends BinanceDflowClientPublic,
     BinanceDflowClientPrivate {}
 
-/**
-Binance Public API used by dflow binance nodes.
-*/
+/** Binance Public API used by dflow binance nodes. */
 interface BinanceDflowClientPublic {
   candles(
     symbol: string,
@@ -31,9 +27,7 @@ interface BinanceDflowClientPublic {
   tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
 }
 
-/**
-Binance Private API used by dflow binance nodes.
-*/
+/** Binance Private API used by dflow binance nodes. */
 interface BinanceDflowClientPrivate {
   account(): Promise<BinanceAccountInformation>;
   newOrder(

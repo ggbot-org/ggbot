@@ -20,9 +20,13 @@ export const binance = new BinanceExchange({
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {
-  balances: BinanceBalance[] = [];
+  readonly balances: BinanceBalance[] = [];
+  readonly timestamp: Timestamp = truncateTimestamp(now()).to.minute();
 
-  timestamp: Timestamp = truncateTimestamp(now()).to.hour();
+  constructor({ balances, timestamp }: BinanceDflowClientArg) {
+    this.balances = balances;
+    this.timestamp = timestamp;
+  }
 
   async account() {
     const accountInfo: BinanceAccountInformation = {
@@ -80,8 +84,14 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
-    // TODO cache data
-    const data = await this.candles(symbol, "1h", 1);
-    return Promise.resolve({ symbol, price: data[0][4] });
+    const startTime = getTimeFromTimestamp(this.timestamp);
+    const klines = await binance.klines(symbol, "1m", { startTime, limit: 1 });
+    const price = klines[0][4];
+    return Promise.resolve({ symbol, price });
   }
 }
+
+export type BinanceDflowClientArg = Pick<
+  BinanceDflowClient,
+  "balances" | "timestamp"
+>;

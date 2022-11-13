@@ -1,11 +1,9 @@
 import type { Timestamp } from "@ggbot2/time";
 import type { DflowObject } from "dflow";
 
-/**
-DflowCommonContext to be shared among all dflow host implementations.
-
+/** DflowCommonContext to be shared among all dflow host implementations.
 @example
-```typescript
+```ts
 import { DflowHost, DflowHostConstructorArg } from "dflow";
 import { DflowCommonContext } from "@ggbot2/dflow";
 
@@ -17,20 +15,12 @@ export class MyDflowHost extends DflowHost {
     this.context.memory = memory;
   }
 }
-```
-*/
+``` */
 export type DflowCommonContext = {
-  /**
-  Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
-  */
+  /** Used by memory nodes: GetMemory, SetMemory, DeleteMemory. */
   memory: DflowObject;
-  /**
-  The `memoryChanged` attribute is set to true by memory nodes
-  every time there is a change (e.g. update or delete) in memory.
-  */
+  /** The `memoryChanged` attribute is set to true by memory nodes every time there is a change (e.g. update or delete) in memory. */
   memoryChanged?: undefined | boolean;
-  /**
-  Time related nodes use the `timestamp` value.
-  */
+  /** Time related nodes use the `timestamp` value. */
   timestamp: Timestamp;
 };
