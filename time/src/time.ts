@@ -17,6 +17,13 @@ export const isTime = (arg: unknown): arg is Time => {
   return arg > 0;
 };
 
+// TimeInterval /////////////////////////////////////////////////////////
+
+export type TimeInterval = {
+  start: Time;
+  end: Time;
+};
+
 // Timestamp /////////////////////////////////////////////////////////
 
 /** String with format yyyy-mm-ddThh:mm:ss.lllZ */
