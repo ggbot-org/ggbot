@@ -2,12 +2,9 @@ import { isName, normalizeName } from "@ggbot2/models";
 import {
   Button,
   DateTime,
-  EditableInput,
+  EditableInputField,
   Fieldset,
-  Select,
-  SelectProps,
 } from "@ggbot2/ui-components";
-import { countries } from "country-isocode2/en";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 
@@ -24,15 +21,6 @@ export const AccountSettings: FC = () => {
   const readOnly = useMemo(
     () => typeof account === "undefined" || renameIsPending,
     [account, renameIsPending]
-  );
-
-  const countryOptions = useMemo<SelectProps["options"]>(
-    () =>
-      Object.entries(countries).map(([isoCode2, country]) => ({
-        value: isoCode2,
-        label: country,
-      })),
-    []
   );
 
   const setName = useCallback<(value: unknown) => void>(
@@ -68,14 +56,14 @@ export const AccountSettings: FC = () => {
       </dl>
       <form>
         <Fieldset legend="account">
-          <EditableInput
+          <EditableInputField
+            name="name"
+            label="nick name"
             value={currentName}
             setValue={setName}
             readOnly={readOnly}
             isSpinning={renameIsPending}
           />
-
-          <Select options={countryOptions} />
         </Fieldset>
         <menu>
           <li>

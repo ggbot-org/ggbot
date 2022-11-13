@@ -97,7 +97,7 @@ Account Information (USER_DATA)
     try {
       const response = await this.privateRequest<BinanceApiKeyPermission>(
         "GET",
-        "/api/v3/account/apiRestrictions"
+        "/sapi/v1/account/apiRestrictions"
       );
       return response;
     } catch (error) {

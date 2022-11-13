@@ -2,6 +2,7 @@ export * from "./_dataBucketLocators.js";
 export * from "./account.js";
 export * from "./accountStrategyList.js";
 export * from "./binanceApiConfig.js";
+export * from "./binanceApiKeyPermissions.js";
 export * from "./emailAccount.js";
 export * from "./errors.js";
 export * from "./oneTimePassword.js";

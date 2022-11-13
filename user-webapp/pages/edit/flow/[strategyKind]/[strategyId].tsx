@@ -1,4 +1,4 @@
-import { readStrategy } from "@ggbot2/database";
+import { ErrorMissingBinanceApiConfig, readStrategy } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
@@ -191,7 +191,7 @@ const Page: NextPage<ServerSideProps> = ({
   useEffect(() => {
     if (!strategyExecutionError) return;
     if (hasNoBinanceApiConfig) return;
-    if (strategyExecutionError === "MissingBinanceApiConfig") {
+    if (strategyExecutionError.name === ErrorMissingBinanceApiConfig.name) {
       setHasNoBinanceApiConfig(true);
     }
   }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);

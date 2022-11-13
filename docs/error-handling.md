@@ -3,7 +3,6 @@
 Place all package errors in *src/errors.ts* file and export them in
 *src/index.ts*.
 Create errors extending an error class, e.g. `Error` or `TypeError`.
-Use a class name starting with Error, for example `ErrorInvalidArg`.
 The constructor need to call `super` passing it the error message.
 Then override the `name` attribute.
 
@@ -28,12 +27,10 @@ Optionally add info attributes to the class, for example
 ```ts
 export class ErrorHttpResponse extends Error {
   status: number;
-  statusText: string;
-  constructor(status: number, statusText: string) {
-    super(`${status} ${statusText}`);
+  constructor(status: number) {
+    super(`${status}`);
     this.name = ErrorHttpResponse.name;
     this.status = status;
-    this.statusText = statusText;
   }
 }
 

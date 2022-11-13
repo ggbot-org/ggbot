@@ -1,23 +1,15 @@
-import { BinanceClient, BinanceConnector } from "@ggbot2/binance";
 import {
   BinanceApiConfig,
   CacheMap,
   CreateBinanceApiConfig,
   DeleteBinanceApiConfig,
-  DeleteBinanceApiKeyPermissions,
   ReadBinanceApiConfig,
-  ReadBinanceApiKeyPermissions,
   createdNow,
-  deletedNow,
-  BinanceApiKeyPermissionCriteria,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { binanceApiConfigPathname } from "./_dataBucketLocators.js";
-import { ErrorMissingBinanceApiConfig } from "./errors.js";
 
 const binanceApiConfigCache = new CacheMap<BinanceApiConfig>();
-const binanceApiKeyPermissionsCache =
-  new CacheMap<BinanceApiKeyPermissionCriteria>("ONE_DAY");
 
 export const createBinanceApiConfig: CreateBinanceApiConfig["func"] = async ({
   accountId,
@@ -44,37 +36,6 @@ export const readBinanceApiConfig: ReadBinanceApiConfig["func"] = async ({
   return data;
 };
 
-export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = async (
-  _
-) => {
-  await deleteBinanceApiKeyPermissions(_);
-  return await deleteObject({ Key: binanceApiConfigPathname(_) });
-};
-
-/**
- * @throws {ErrorMissingBinanceApiConfig}
- */
-export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
-  async ({ accountId }) => {
-    const cached = binanceApiKeyPermissionsCache.get(accountId);
-    if (cached) return cached;
-    const binanceApiConfig = await readBinanceApiConfig({ accountId });
-    if (!binanceApiConfig)
-      throw new ErrorMissingBinanceApiConfig({ accountId });
-    const { apiKey, apiSecret } = binanceApiConfig;
-    const client = new BinanceClient({
-      baseUrl: BinanceConnector.defaultBaseUrl,
-      apiKey,
-      apiSecret,
-    });
-    const data = await client.apiRestrictions();
-    binanceApiKeyPermissionsCache.set(accountId, data);
-    return data;
-  };
-
-export const deleteBinanceApiKeyPermissions: DeleteBinanceApiKeyPermissions["func"] =
-  async ({ accountId }) =>
-    new Promise((resolve) => {
-      binanceApiKeyPermissionsCache.delete(accountId);
-      resolve(deletedNow());
-    });
+export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = async ({
+  accountId,
+}) => await deleteObject({ Key: binanceApiConfigPathname({ accountId }) });

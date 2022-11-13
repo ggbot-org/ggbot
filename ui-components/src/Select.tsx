@@ -21,7 +21,7 @@ export const Select: FC<SelectProps> = ({ options, ...props }) => {
   );
 };
 
-type SelectFieldProps = FieldProps & Omit<SelectProps, "id" | "name">;
+type SelectFieldProps = FieldProps & Omit<SelectProps, "name">;
 
 export const SelectField: FC<SelectFieldProps> = ({
   label,

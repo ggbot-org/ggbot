@@ -35,7 +35,7 @@ export const Input: FC<InputProps> = ({
   );
 };
 
-type InputFieldProps = FieldProps & Omit<InputProps, "id" | "name">;
+type InputFieldProps = FieldProps & Omit<InputProps, "name">;
 
 export const InputField: FC<InputFieldProps> = ({ label, name, ...props }) => {
   return (

@@ -1,3 +1,4 @@
+import type { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import {
   ErrorMissingBinanceApiConfig,
   ErrorUnimplementedStrategyKind,
@@ -22,6 +23,8 @@ import {
   __401__UNAUTHORIZED__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
+  ErrorHttpResponse,
+  InternalServerError,
 } from "@ggbot2/http-status-codes";
 import type {
   AccountKey,
@@ -36,7 +39,6 @@ import type {
   ReadAccount,
   ReadAccountStrategyList,
   ReadBinanceApiConfig,
-  ReadBinanceApiKeyPermissions,
   ReadStrategy,
   ReadStrategyFlow,
   RenameAccount,
@@ -49,35 +51,38 @@ import { readSession } from "_routing";
 export type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
 
-const apiActionBadRequestNames = [
-  "MissingBinanceApiConfig",
-  "UnimplementedStrategyKind",
+const apiActionErrorNames = [
+  ErrorHttpResponse.name,
+  ErrorMissingBinanceApiConfig.name,
+  ErrorUnimplementedStrategyKind.name,
+  InternalServerError.name,
 ] as const;
-export type ApiActionBadRequestName = typeof apiActionBadRequestNames[number];
+export type ApiActionErrorName = typeof apiActionErrorNames[number];
 
-const isApiActionBadRequestName = (
-  arg: unknown
-): arg is ApiActionBadRequestName => {
+const isApiActionErrorName = (arg: unknown): arg is ApiActionErrorName => {
   if (typeof arg !== "string") return false;
-  return (apiActionBadRequestNames as readonly string[]).includes(arg);
+  return (apiActionErrorNames as readonly string[]).includes(arg);
 };
 
-type ApiActionResponseToBadRequest = {
-  error: ApiActionBadRequestName;
+type ApiActionResponseError = {
+  error: {
+    name: ApiActionErrorName;
+  };
 };
 
-export const isApiActionResponseToBadRequest = (
+export const isApiActionResponseError = (
   arg: unknown
-): arg is ApiActionResponseToBadRequest => {
+): arg is ApiActionResponseError => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { error } = arg as Partial<ApiActionResponseToBadRequest>;
-  return isApiActionBadRequestName(error);
+  const { error } = arg as Partial<ApiActionResponseError>;
+  return isApiActionErrorName(error);
 };
 
 export type ApiActionResponseOutput<T> =
   | {
       data?: T;
-    } & Partial<ApiActionResponseToBadRequest>;
+    }
+  | ApiActionResponseError;
 
 type Action<Input, Output> = {
   // AccountKey is provided by authentication, no need to add it as action input parameter.
@@ -164,21 +169,8 @@ export default async function apiHandler(
       }
 
       case "EXECUTE_STRATEGY": {
-        try {
-          const data = await executeStrategy({ accountId, ...action.data });
-          return res.status(__200__OK__).json({ data });
-        } catch (error) {
-          if (error instanceof ErrorUnimplementedStrategyKind)
-            return res
-              .status(__400__BAD_REQUEST__)
-              .json({ error: "UnimplementedStrategyKind" });
-          if (error instanceof ErrorMissingBinanceApiConfig)
-            return res
-              .status(__400__BAD_REQUEST__)
-              .json({ error: "MissingBinanceApiConfig" });
-          console.error(error);
-          return res.status(__500__INTERNAL_SERVER_ERROR__).json({});
-        }
+        const data = await executeStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
       }
 
       case "READ_ACCOUNT": {
@@ -239,7 +231,17 @@ export default async function apiHandler(
         return res.status(__400__BAD_REQUEST__).json({});
     }
   } catch (error) {
+    if (
+      error instanceof ErrorMissingBinanceApiConfig ||
+      error instanceof ErrorUnimplementedStrategyKind
+    )
+      return res
+        .status(__400__BAD_REQUEST__)
+        .json({ error: { name: error.name } });
+
     console.error(error);
-    res.status(__500__INTERNAL_SERVER_ERROR__).json({});
+    res
+      .status(__500__INTERNAL_SERVER_ERROR__)
+      .json({ error: { name: InternalServerError.name } });
   }
 }

@@ -8,12 +8,22 @@ const apiKeyField = {
 };
 const apiSecretField = { label: "API Secret", name: "apiSecret" };
 
+const PermissionCheck: FC<{ label: string; ok: boolean | undefined }> = ({
+  label,
+  ok,
+}) =>
+  ok === undefined ? null : (
+    <span className={ok ? "text-primary-400" : "text-danger-400"}>
+      {label} {ok ? "✓" : "✗"}
+    </span>
+  );
+
 export const BinanceSettings: FC = () => {
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.READ_BINANCE_API_CONFIG();
   const [createConfig, { isPending: createIsPending }] =
     useApiAction.CREATE_BINANCE_API_CONFIG();
-  const [testConfig, { isPending: testIsPending }] =
+  const [testConfig, { data: permissions, isPending: testIsPending }] =
     useApiAction.READ_BINANCE_API_KEY_PERMISSIONS();
 
   const hasBinanceApiConfig = useMemo(
@@ -36,9 +46,7 @@ export const BinanceSettings: FC = () => {
       event.preventDefault();
       if (isPending) return;
 
-      if (hasBinanceApiConfig) {
-        testConfig({});
-      }
+      if (hasBinanceApiConfig) testConfig();
 
       if (hasNoBinanceApiConfig) {
         const {
@@ -72,11 +80,57 @@ export const BinanceSettings: FC = () => {
               readOnly
               defaultValue={binanceApiConfig?.apiKey}
             />
-            <menu>
+            <menu className="mb-8">
               <li>
                 <Button isSpinning={testIsPending}>test</Button>
               </li>
             </menu>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between">
+                <span>
+                  is <em>reading</em> permission enabled?
+                </span>
+                <PermissionCheck
+                  label={String(permissions?.enableReading)}
+                  ok={permissions?.enableReading}
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <span>
+                  are <em>withdrawals</em> enabled?
+                </span>
+                <PermissionCheck
+                  label={String(permissions?.enableWithdrawals)}
+                  ok={
+                    typeof permissions?.enableWithdrawals === "boolean"
+                      ? !permissions?.enableWithdrawals
+                      : undefined
+                  }
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <span>
+                  is <em>Spot and Margin</em> enabled?
+                </span>
+                <PermissionCheck
+                  label={String(permissions?.enableSpotAndMarginTrading)}
+                  ok={permissions?.enableSpotAndMarginTrading}
+                />
+              </div>
+
+              <div className="flex justify-between">
+                <span>
+                  is <em>static IP</em> restriction activated?
+                </span>
+                <PermissionCheck
+                  label={String(permissions?.ipRestrict)}
+                  ok={permissions?.ipRestrict}
+                />
+              </div>
+            </div>
           </>
         )}
         {hasNoBinanceApiConfig && (

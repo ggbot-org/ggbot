@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { ErrorInvalidName, ErrorNameToLong } from "./errors.js";
 import { isName, throwIfInvalidName, maxNameLength } from "./name.js";
 
 const invalidNames = ["", "     "];
@@ -25,7 +26,7 @@ describe("throwIfInvalidName", () => {
         () => {
           throwIfInvalidName(value);
         },
-        { name: "TypeError" }
+        { name: ErrorInvalidName.name }
       );
     });
   });
@@ -35,7 +36,7 @@ describe("throwIfInvalidName", () => {
       () => {
         throwIfInvalidName(nameTooLong);
       },
-      { name: "TypeError" }
+      { name: ErrorNameToLong.name }
     );
   });
 });

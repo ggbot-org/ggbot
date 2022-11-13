@@ -33,31 +33,31 @@ const [request, response] = useApiAction.FOO_BAR();
 useEffect(request, [request])
 ```
 */
+import { InternalServerError } from "@ggbot2/http-status-codes";
 import { DflowData, DflowObject } from "dflow";
 import { useCallback, useState } from "react";
 import {
   ApiAction,
-  ApiActionBadRequestName,
+  ApiActionErrorName,
   ApiActionInput,
   ApiActionInputData,
-  isApiActionResponseToBadRequest,
+  isApiActionResponseError,
 } from "_api/action";
 
 type ActionIO = { in: DflowObject; out: DflowData | null };
 
-const errorNames = [
-  "GenericError",
-  "ServerError",
-  "Timeout",
-  "Unauthorized",
-] as const;
+const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];
+
+type ActionError = {
+  name: ErrorName | ApiActionErrorName;
+};
 
 type UseActionRequestArg = ApiActionInputData;
 type UseEffectDestructor = () => void;
 type UseActionRequest = (arg?: UseActionRequestArg) => UseEffectDestructor;
 type UseActionResponse<Action extends ActionIO> = {
-  error?: ErrorName | ApiActionBadRequestName | undefined;
+  error?: ActionError | undefined;
   data?: Action["out"] | undefined;
   isPending: boolean;
 };
@@ -79,7 +79,7 @@ const useAction = <Action extends ActionIO>({
       const timeout = 10000;
       const timeoutId = setTimeout(() => {
         abort();
-        setResponse({ error: "Timeout", isPending: false });
+        setResponse({ error: { name: "Timeout" }, isPending: false });
       }, timeout);
       signal.addEventListener("abort", () => {
         setResponse({ isPending: false });
@@ -106,17 +106,23 @@ const useAction = <Action extends ActionIO>({
           const { status } = response;
           if (status === 400) {
             const responseOutput = await response.json();
-            if (isApiActionResponseToBadRequest(responseOutput)) {
-              setResponse({ error: responseOutput.error, isPending: false });
+            if (isApiActionResponseError(responseOutput)) {
+              setResponse({
+                error: { name: responseOutput.error.name },
+                isPending: false,
+              });
               return;
             }
           }
           if (status === 401) {
-            setResponse({ error: "Unauthorized", isPending: false });
+            setResponse({ error: { name: "Unauthorized" }, isPending: false });
             return;
           }
           if (status === 500) {
-            setResponse({ error: "ServerError", isPending: false });
+            setResponse({
+              error: { name: InternalServerError.name },
+              isPending: false,
+            });
             return;
           }
           // This error should not be thrown.
@@ -139,7 +145,7 @@ const useAction = <Action extends ActionIO>({
             return;
           // Fallback for unhandled errors.
           console.error(error);
-          setResponse({ error: "GenericError", isPending: false });
+          setResponse({ error: { name: "GenericError" }, isPending: false });
         } finally {
           clearTimeout(timeoutId);
         }
