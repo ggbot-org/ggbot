@@ -106,6 +106,9 @@ export * from "./foo.js";
     "lib": ["dom", "es2015"],
     "module": "esnext",
     "moduleResolution": "node",
+    // Specify the root folder within your source files.
+    // It is set explicitly, since tsconfig.build.json set `"composite": true`
+    "rootDir": "./src",
     "target": "esnext"
   },
   // Extend common set of `compilerOptions`, used to improve code quality.
@@ -119,15 +122,25 @@ export * from "./foo.js";
 ```jsonc
 {
   "compilerOptions": {
-    "declaration": true,
+    // Enable constraints that allow a TypeScript project to be used with project references.
+    // It implies: `"declaration": true`; `"incremental": true`.
+    "composite": true,
+
     // Go to JS file when using IDE functions like "Go to Definition" in VSCode.
     "declarationMap": true,
-    "incremental": true,
-    "outDir": "./dist"
+
+    "outDir": "./dist",
+
+    // Keep .tsbuildinfo into temp/ folder.
+    "tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo",
+
+    // Disable emitting declarations that have @internal in their JSDoc comments.
+    "stripInternal": true
   },
   "extends": "./tsconfig.json",
   "exclude": [
     "node_modules",
+
     // Exclude tests.
     "**/*_test.ts"
   ]
@@ -141,10 +154,13 @@ If package has no test, `tsconfig.test.json` can be omitted.
 ```jsonc
 {
   "compilerOptions": {
-    "outDir": "./temp"
+    "outDir": "./temp",
+
+    // Keep .tsbuildinfo into temp/ folder.
+    "tsBuildInfoFile": "temp/tsconfig.temp.tsbuildinfo"
   },
-  // Extend build config to reproduce its result, only
-  // `outDir` and `exclude` are overridden.
+  // Extend build config to reproduce its result:
+  // notice that // `outDir` and `exclude` are overridden.
   "extends": "./tsconfig.build.json",
   "exclude": ["node_modules"]
 }

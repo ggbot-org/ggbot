@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "outDir": "./temp"
+    "declarationMap": false,
+    "outDir": "./temp",
+    "tsBuildInfoFile": "temp/tsconfig.test.tsbuildinfo"
   },
   "extends": "./tsconfig.build.json",
   "exclude": ["node_modules"]
