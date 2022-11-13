@@ -1,11 +1,42 @@
+/** Generic time interval*/
+type Interval<T> = {
+  end: T;
+  start: T;
+};
+
 // Time Units ////////////////////////////////////////////////////////
 
 export const timeUnits = ["second", "minute", "hour", "day"];
 export type TimeUnit = typeof timeUnits[number];
+export const isTimeUnit = (arg: unknown): arg is TimeUnit =>
+  typeof arg === "string" && (timeUnits as readonly string[]).includes(arg);
+
+export const coerceToTimeUnit = (arg: string): TimeUnit | undefined => {
+  if (isTimeUnit(arg)) return arg;
+  if (["1s", "seconds"]) return "second";
+  if (["1m", "minutes"]) return "minute";
+  if (["1h", "hours"]) return "hour";
+  if (["1d", "days"]) return "day";
+  return;
+};
 
 // Date //////////////////////////////////////////////////////////////
 
+/* `Date` is already built in JavaScript */
+
 export const isInvalidDate = (arg: Date) => arg.toString() === "Invalid Date";
+
+export type DateInterval = Interval<Date>;
+export const isDateInterval = (arg: unknown): arg is DateInterval => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { start, end } = arg as Partial<DateInterval>;
+  return (
+    start instanceof Date &&
+    !isInvalidDate(start) &&
+    end instanceof Date &&
+    !isInvalidDate(end)
+  );
+};
 
 // Time //////////////////////////////////////////////////////////////
 
@@ -19,9 +50,11 @@ export const isTime = (arg: unknown): arg is Time => {
 
 // TimeInterval /////////////////////////////////////////////////////////
 
-export type TimeInterval = {
-  start: Time;
-  end: Time;
+export type TimeInterval = Interval<Time>;
+export const isTimeInterval = (arg: unknown): arg is TimeInterval => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { start, end } = arg as Partial<TimeInterval>;
+  return isTime(start) && isTime(end);
 };
 
 // Timestamp /////////////////////////////////////////////////////////

@@ -1,28 +1,24 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
-  getDayFromDate,
-  getTimestampFromDate,
-  getTimestampFromDay,
-} from "./conversions.js";
+import { datetoDay, dateToTimestamp, dayToTimestamp } from "./conversions.js";
 
-describe("getDayFromDate", () => {
+describe("datetoDay", () => {
   it("returns YYYY-MM-DD from date", () => {
     [{ input: new Date("2000-01-01"), output: "2000-01-01" }].forEach(
       ({ input, output }) => {
-        assert.equal(getDayFromDate(input), output);
+        assert.equal(datetoDay(input), output);
       }
     );
   });
 
   it("throws ErrorInvalidDate", () => {
-    assert.throws(() => getDayFromDate(new Date("0000-00-00")), {
+    assert.throws(() => datetoDay(new Date("0000-00-00")), {
       name: "ErrorInvalidDate",
     });
   });
 });
 
-describe("getTimestampFromDay", () => {
+describe("dayToTimestamp", () => {
   it("truncates a timestamp to its day", () => {
     [
       {
@@ -30,14 +26,14 @@ describe("getTimestampFromDay", () => {
         output: "2022-07-23T00:00:00.000Z",
       },
     ].forEach(({ input, output }) => {
-      assert.equal(getTimestampFromDay(input), output);
+      assert.equal(dayToTimestamp(input), output);
     });
   });
 });
 
-describe("getTimestampFromDate", () => {
+describe("dateToTimestamp", () => {
   it("throws ErrorInvalidDate", () => {
-    assert.throws(() => getTimestampFromDate(new Date("0000-00-00")), {
+    assert.throws(() => dateToTimestamp(new Date("0000-00-00")), {
       name: "ErrorInvalidDate",
     });
   });
