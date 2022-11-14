@@ -1,10 +1,12 @@
+import { add } from "@ggbot2/arithmetic";
 import { BinanceDflowExecutor } from "@ggbot2/dflow";
+import { Balance } from "@ggbot2/models";
 import {
   Day,
   Timestamp,
   getDate,
-  getDayFromDate,
-  getTimestampFromDate,
+  dateToDay,
+  dateToTimestamp,
 } from "@ggbot2/time";
 import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
@@ -14,6 +16,7 @@ import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey & {
+  balances: Balance[];
   isEnabled: boolean;
   isRunning: boolean;
   startDay: Day;
@@ -41,9 +44,9 @@ const computeTimestamps = ({
   const numMinutes = 60;
   const timestamps: Timestamp[] = [];
   let date = new Date(startDay);
-  const endDate = new Date(endDay);
+  const endDate = getDate(new Date(endDay)).plus(1).days();
   while (date < endDate) {
-    timestamps.push(getTimestampFromDate(date));
+    timestamps.push(dateToTimestamp(date));
     date = getDate(date).plus(numMinutes).minutes();
   }
   return timestamps;
@@ -66,6 +69,10 @@ type Action =
     }
   | {
       type: "TOGGLE";
+    }
+  | {
+      type: "UPDATE_BALANCE";
+      balances: Balance[];
     };
 
 export type BacktestingDispatch = Dispatch<Action>;
@@ -74,11 +81,13 @@ const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "DISABLE":
       return { ...state, isEnabled: false };
+
     case "END":
       return {
         ...state,
         isRunning: false,
       };
+
     case "SET_INTERVAL": {
       if (state.isRunning) return state;
       const { startDay, endDay } = action;
@@ -89,10 +98,27 @@ const backtestingReducer = (state: State, action: Action) => {
         timestamps: computeTimestamps({ startDay, endDay }),
       };
     }
+
     case "START":
       return { ...state, isRunning: true };
+
     case "TOGGLE":
       return { ...state, isEnabled: !state.isEnabled };
+
+    case "UPDATE_BALANCE":
+      const balancesMap = new Map<Balance["asset"], Balance>();
+      for (const balance of [...state.balances, ...action.balances]) {
+        const currentBalance = balancesMap.get(balance.asset);
+        if (currentBalance)
+          balancesMap.set(balance.asset, {
+            asset: balance.asset,
+            free: add(balance.free, currentBalance.free),
+            locked: add(balance.locked, currentBalance.locked),
+          });
+        else balancesMap.set(balance.asset, balance);
+      }
+      return { ...state, balances: [...balancesMap.values()] };
+
     default:
       return state;
   }
@@ -120,12 +146,13 @@ const getInitialState =
   (strategyKey: StrategyKey) =>
   (persistingState: PersistingState | undefined): State => {
     // Max is yesterday.
-    const maxDay = getDayFromDate(getDate(new Date()).minus(1).days());
+    const maxDay = dateToDay(getDate(new Date()).minus(1).days());
     // PersistingState:
     // startDay and endDay will always be lower than maxDay.
     if (persistingState) {
       return {
         ...persistingState,
+        balances: [],
         isRunning: false,
         maxDay,
         timestamps: computeTimestamps(persistingState),
@@ -133,9 +160,10 @@ const getInitialState =
       };
     }
     // Default state.
-    const startDay = getDayFromDate(getDate(new Date(maxDay)).minus(7).days());
+    const startDay = dateToDay(getDate(new Date(maxDay)).minus(7).days());
     const endDay = maxDay;
     return {
+      balances: [],
       isEnabled: false,
       isRunning: false,
       startDay,
@@ -208,44 +236,52 @@ export const useBacktesting: UseBacktesting = ({
     timestamps,
   } = state;
 
-  const runBacktest = useCallback(async () => {
-    if (!nodesCatalog) return;
-    if (!flowViewGraph) return;
+  const runBacktest = useCallback<(arg: { delay: number }) => void>(
+    async ({ delay }) => {
+      if (!nodesCatalog) return;
+      if (!flowViewGraph) return;
 
-    if (strategyKind === "binance") {
-      if (!binanceSymbols) return;
-      const delay = 2000;
+      if (strategyKind === "binance") {
+        if (!binanceSymbols) return;
 
-      const executeStep = async (index = 0) => {
-        const timestamp = timestamps[index];
-        if (timestamp) {
-          try {
-            const binance = new BinanceDflowClient({ balances: [], timestamp });
-            const executor = new BinanceDflowExecutor(
-              binance,
-              binanceSymbols,
-              nodesCatalog
-            );
-            const { execution } = await executor.run(
-              { memory: {}, timestamp },
-              flowViewGraph
-            );
-            setTimeout(() => executeStep(index + 1), delay);
-          } catch (error) {
-            console.error(error);
+        const executeStep = async (index = 0, memory = {}) => {
+          const timestamp = timestamps[index];
+          if (timestamp) {
+            try {
+              const binance = new BinanceDflowClient({
+                balances: [],
+                timestamp,
+              });
+              const executor = new BinanceDflowExecutor(
+                binance,
+                binanceSymbols,
+                nodesCatalog
+              );
+              const result = await executor.run(
+                { memory, timestamp },
+                flowViewGraph
+              );
+              if (result.balances.length > 0)
+                dispatch({ type: "UPDATE_BALANCE", balances: result.balances });
+              // TODO check memory nodes
+              setTimeout(() => executeStep(index + 1, memory), delay);
+            } catch (error) {
+              console.error(error);
+              dispatch({ type: "END" });
+            }
+          } else {
             dispatch({ type: "END" });
           }
-        } else {
-          dispatch({ type: "END" });
-        }
-      };
+        };
 
-      executeStep();
-    }
-  }, [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, strategyKind]);
+        executeStep();
+      }
+    },
+    [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, strategyKind]
+  );
 
   useEffect(() => {
-    if (backtestIsRunning) runBacktest();
+    if (backtestIsRunning) runBacktest({ delay: 2000 });
   }, [backtestIsRunning, runBacktest]);
 
   useEffect(() => {
