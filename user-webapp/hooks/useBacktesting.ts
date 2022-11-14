@@ -3,10 +3,12 @@ import { BinanceDflowExecutor } from "@ggbot2/dflow";
 import { Balance } from "@ggbot2/models";
 import {
   Day,
+  DayInterval,
   Timestamp,
-  getDate,
   dateToDay,
   dateToTimestamp,
+  dayIntervalToDate,
+  getDate,
 } from "@ggbot2/time";
 import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
@@ -16,18 +18,17 @@ import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey & {
-  index: number;
+  stepIndex: number;
   balances: Balance[];
   isEnabled: boolean;
   isRunning: boolean;
-  startDay: Day;
-  endDay: Day;
+  dayInterval: DayInterval;
   timestamps: Timestamp[];
   maxDay: Day;
 };
 export type BacktestingState = State;
 
-type PersistingState = Pick<State, "isEnabled" | "startDay" | "endDay">;
+type PersistingState = Pick<State, "isEnabled" | "dayInterval">;
 
 type GetPersistingState = () => PersistingState | undefined;
 type SetPersistingState = (arg: PersistingState) => void;
@@ -38,15 +39,14 @@ const isPersistingState = (arg: unknown): arg is PersistingState => {
   return typeof isEnabled === "boolean";
 };
 
-const computeTimestamps = ({
-  startDay,
-  endDay,
-}: Pick<State, "startDay" | "endDay">): State["timestamps"] => {
+const computeTimestamps = (
+  dayInterval: State["dayInterval"]
+): State["timestamps"] => {
+  const { start, end } = dayIntervalToDate(dayInterval);
   const numMinutes = 60;
   const timestamps: Timestamp[] = [];
-  let date = new Date(startDay);
-  const endDate = getDate(new Date(endDay)).plus(1).days();
-  while (date < endDate) {
+  let date = start;
+  while (date < end) {
     timestamps.push(dateToTimestamp(date));
     date = getDate(date).plus(numMinutes).minutes();
   }
@@ -63,21 +63,18 @@ type Action =
   | {
       type: "NEXT";
     }
-  | {
+  | ({
       type: "SET_INTERVAL";
-      startDay: Day;
-      endDay: Day;
-    }
+    } & Pick<State, "dayInterval">)
   | {
       type: "START";
     }
   | {
       type: "TOGGLE";
     }
-  | {
+  | ({
       type: "UPDATE_BALANCE";
-      balances: Balance[];
-    };
+    } & Pick<State, "balances">);
 
 export type BacktestingDispatch = Dispatch<Action>;
 
@@ -89,29 +86,31 @@ const backtestingReducer = (state: State, action: Action) => {
     case "END":
       return {
         ...state,
-        index: 0,
         isRunning: false,
       };
 
     case "NEXT":
       return {
         ...state,
-        index: state.index + 1,
+        stepIndex: state.stepIndex + 1,
       };
 
     case "SET_INTERVAL": {
       if (state.isRunning) return state;
-      const { startDay, endDay } = action;
+      const { dayInterval } = action;
       return {
         ...state,
-        startDay,
-        endDay,
-        timestamps: computeTimestamps({ startDay, endDay }),
+        dayInterval,
+        timestamps: computeTimestamps(dayInterval),
       };
     }
 
     case "START":
-      return { ...state, index: 0, isRunning: true };
+      return {
+        ...state,
+        isRunning: true,
+        stepIndex: 0,
+      };
 
     case "TOGGLE":
       return { ...state, isEnabled: !state.isEnabled };
@@ -164,24 +163,25 @@ const getInitialState =
       return {
         ...persistingState,
         balances: [],
-        index: 0,
+        stepIndex: 0,
         isRunning: false,
         maxDay,
-        timestamps: computeTimestamps(persistingState),
+        timestamps: computeTimestamps(persistingState.dayInterval),
         ...strategyKey,
       };
     }
     // Default state.
-    const startDay = dateToDay(getDate(new Date(maxDay)).minus(7).days());
-    const endDay = maxDay;
+    const dayInterval = {
+      start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
+      end: maxDay,
+    };
     return {
       balances: [],
-      index: 0,
+      dayInterval,
       isEnabled: false,
       isRunning: false,
-      startDay,
-      endDay,
-      timestamps: computeTimestamps({ startDay, endDay }),
+      stepIndex: 0,
+      timestamps: computeTimestamps(dayInterval),
       maxDay,
       ...strategyKey,
     };
@@ -242,72 +242,68 @@ export const useBacktesting: UseBacktesting = ({
   );
 
   const {
+    dayInterval,
     isEnabled,
     isRunning: backtestIsRunning,
-    startDay,
-    endDay,
+    stepIndex,
     timestamps,
   } = state;
 
-  const runBacktest = useCallback<(arg: { delay: number }) => void>(
-    async ({ delay }) => {
-      if (!nodesCatalog) return;
-      if (!flowViewGraph) return;
+  const runBacktest = useCallback(async () => {
+    if (!nodesCatalog) return;
+    if (!flowViewGraph) return;
+    const timestamp = timestamps[stepIndex];
+    if (!timestamp) return;
 
-      if (strategyKind === "binance") {
+    if (strategyKind === "binance") {
+      try {
         if (!binanceSymbols) return;
-
-        // TODO togli da useCallback e metti tutto in useEffect
-        // ora posso fare dispatch ma devo anche poter viceversa
-        // leggere i dati o poter fermare il loop
-        const executeStep = async (index = 0, memory = {}) => {
-          const timestamp = timestamps[index];
-          if (timestamp) {
-            try {
-              const binance = new BinanceDflowClient({
-                balances: [],
-                timestamp,
-              });
-              const executor = new BinanceDflowExecutor(
-                binance,
-                binanceSymbols,
-                nodesCatalog
-              );
-              const result = await executor.run(
-                { memory, timestamp },
-                flowViewGraph
-              );
-              console.log(result);
-              if (result.balances.length > 0)
-                dispatch({ type: "UPDATE_BALANCE", balances: result.balances });
-              // TODO check memory nodes
-              setTimeout(() => {
-                // TODO dispatch({ type: "NEXT" });
-                executeStep(index + 1, memory);
-              }, delay);
-            } catch (error) {
-              console.error(error);
-              dispatch({ type: "END" });
-            }
-          } else {
-            dispatch({ type: "END" });
-          }
-        };
-
-        executeStep();
+        const binance = new BinanceDflowClient({
+          balances: [],
+          timestamp,
+        });
+        const executor = new BinanceDflowExecutor(
+          binance,
+          binanceSymbols,
+          nodesCatalog
+        );
+        const result = await executor.run(
+          { memory: {}, timestamp },
+          flowViewGraph
+        );
+        console.log(result);
+        if (result.balances.length > 0)
+          dispatch({ type: "UPDATE_BALANCE", balances: result.balances });
+        // TODO check memory nodes
+        dispatch({ type: "NEXT" });
+      } catch (error) {
+        console.error(error);
+        dispatch({ type: "END" });
       }
-    },
-    [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, strategyKind]
-  );
+    }
+  }, [
+    binanceSymbols,
+    dispatch,
+    flowViewGraph,
+    nodesCatalog,
+    timestamps,
+    strategyKind,
+    stepIndex,
+  ]);
 
   useEffect(() => {
-    if (backtestIsRunning) runBacktest({ delay: 2000 });
+    if (!backtestIsRunning) return;
+    const delay = 2000;
+    const timeoutId = setTimeout(runBacktest, delay);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [backtestIsRunning, runBacktest]);
 
   useEffect(() => {
     if (isServerSide) return;
-    setPersistingState({ isEnabled, startDay, endDay });
-  }, [isEnabled, startDay, endDay, isServerSide, setPersistingState]);
+    setPersistingState({ isEnabled, dayInterval });
+  }, [isEnabled, dayInterval, isServerSide, setPersistingState]);
 
   return useMemo(
     () => [isServerSide ? undefined : state, dispatch],

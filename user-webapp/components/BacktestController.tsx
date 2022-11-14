@@ -36,6 +36,7 @@ export const BacktestController: FC<BacktestControllerProps> = ({
     [dispatch, state?.endDay]
   );
 
+  // TODO use a flip clock: https://1stwebdesigner.com/9-free-open-source-flipping-clocks-using-css-javascript/
   const currentTimestamp = useMemo(() => {
     if (!state) return;
     const { index, timestamps, isRunning } = state;
