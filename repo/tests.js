@@ -221,9 +221,11 @@ async function testWorkspaceTsconfigBuild({ workspace }) {
   );
 
   [
-    { key: "declaration", expected: true },
+    { key: "composite", expected: true },
+    { key: "declarationMap", expected: true },
     { key: "outDir", expected: "./dist" },
-    { key: "removeComments", expected: true },
+    { key: "tsBuildInfoFile", expected: "temp/tsconfig.build.tsbuildinfo" },
+    { key: "stripInternal", expected: true },
   ].forEach(({ key, expected }) => {
     assert.equal(
       tsconfig.compilerOptions[key],
@@ -270,7 +272,10 @@ async function testWorkspace({ workspace }) {
   await testWorkspaceTsconfig({ workspace });
 
   // tsconfig.build.json
-  if (!noBuildWorkspaces.includes(workspace)) {
+  if (
+    !noBuildWorkspaces.includes(workspace) &&
+    !webappWorkspaces.includes(workspace)
+  ) {
     await testWorkspaceTsconfigBuild({ workspace });
   }
 }
