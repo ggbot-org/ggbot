@@ -2,7 +2,7 @@ import {
   Day,
   MonthNum,
   WeekDayNum,
-  getDayFromDate,
+  dateToDay,
   today,
   weekDayNums,
 } from "@ggbot2/time";
@@ -105,12 +105,12 @@ export const Calendar: FC<CalendarProps> = ({
   }, [lastDate]);
 
   const isFirstMonth = useMemo(() => {
-    const day = getDayFromDate(firstDate);
+    const day = dateToDay(firstDate);
     return day && min && day <= min;
   }, [min, firstDate]);
 
   const isLastMonth = useMemo(() => {
-    const day = getDayFromDate(lastDate);
+    const day = dateToDay(lastDate);
     return day && max && day >= max;
   }, [max, lastDate]);
 
@@ -127,7 +127,7 @@ export const Calendar: FC<CalendarProps> = ({
       })),
     ]
       .map(({ date, ...rest }) => ({
-        day: getDayFromDate(date),
+        day: dateToDay(date),
         date,
         ...rest,
       }))
