@@ -9,6 +9,10 @@ export const getIntervalTime: Record<
   BinanceKlineInterval,
   (time: Time, numIntervals: number) => Time
 > = {
+  "1s": (time, num) =>
+    getTime(time)
+      .plus(1 * num)
+      .seconds(),
   "1m": (time, num) =>
     getTime(time)
       .plus(1 * num)
