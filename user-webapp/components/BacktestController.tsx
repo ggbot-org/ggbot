@@ -36,6 +36,13 @@ export const BacktestController: FC<BacktestControllerProps> = ({
     [dispatch, state?.endDay]
   );
 
+  const currentTimestamp = useMemo(() => {
+    if (!state) return;
+    const { index, timestamps, isRunning } = state;
+    if (!isRunning) return;
+    return timestamps[index];
+  }, [state]);
+
   if (!state || !state.isEnabled) return null;
 
   const { maxDay, startDay, endDay, strategyKind } = state;
@@ -47,6 +54,7 @@ export const BacktestController: FC<BacktestControllerProps> = ({
         startDay={startDay}
         setStartDay={setStartDay}
       />
+      {currentTimestamp}
       <ProfitSummary
         timeInterval={{
           start: new Date(startDay).getTime(),
@@ -72,7 +80,7 @@ type BacktestControllerBinanceProps = Pick<StrategyFlow, "view"> & {
 };
 
 const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
-  state: { startDay, maxDay },
+  state: { startDay, maxDay, isRunning },
   dispatch,
   view,
 }) => {
@@ -81,8 +89,9 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
   >();
 
   const onClickStart = useCallback(() => {
+    if (isRunning) return;
     dispatch({ type: "START" });
-  }, [dispatch]);
+  }, [dispatch, isRunning]);
 
   const selectedSymbols = useMemo<string[] | undefined>(() => {
     if (!exchangeInfo) return;
@@ -134,7 +143,9 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
         </div>
       )}
       <menu>
-        <Button onClick={onClickStart}>Start</Button>
+        <Button onClick={onClickStart} isSpinning={isRunning}>
+          Start
+        </Button>
       </menu>
     </div>
   );

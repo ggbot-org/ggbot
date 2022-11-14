@@ -16,6 +16,7 @@ import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey & {
+  index: number;
   balances: Balance[];
   isEnabled: boolean;
   isRunning: boolean;
@@ -60,6 +61,9 @@ type Action =
       type: "END";
     }
   | {
+      type: "NEXT";
+    }
+  | {
       type: "SET_INTERVAL";
       startDay: Day;
       endDay: Day;
@@ -85,7 +89,14 @@ const backtestingReducer = (state: State, action: Action) => {
     case "END":
       return {
         ...state,
+        index: 0,
         isRunning: false,
+      };
+
+    case "NEXT":
+      return {
+        ...state,
+        index: state.index + 1,
       };
 
     case "SET_INTERVAL": {
@@ -100,7 +111,7 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "START":
-      return { ...state, isRunning: true };
+      return { ...state, index: 0, isRunning: true };
 
     case "TOGGLE":
       return { ...state, isEnabled: !state.isEnabled };
@@ -153,6 +164,7 @@ const getInitialState =
       return {
         ...persistingState,
         balances: [],
+        index: 0,
         isRunning: false,
         maxDay,
         timestamps: computeTimestamps(persistingState),
@@ -164,6 +176,7 @@ const getInitialState =
     const endDay = maxDay;
     return {
       balances: [],
+      index: 0,
       isEnabled: false,
       isRunning: false,
       startDay,
@@ -244,6 +257,9 @@ export const useBacktesting: UseBacktesting = ({
       if (strategyKind === "binance") {
         if (!binanceSymbols) return;
 
+        // TODO togli da useCallback e metti tutto in useEffect
+        // ora posso fare dispatch ma devo anche poter viceversa
+        // leggere i dati o poter fermare il loop
         const executeStep = async (index = 0, memory = {}) => {
           const timestamp = timestamps[index];
           if (timestamp) {
@@ -261,10 +277,14 @@ export const useBacktesting: UseBacktesting = ({
                 { memory, timestamp },
                 flowViewGraph
               );
+              console.log(result);
               if (result.balances.length > 0)
                 dispatch({ type: "UPDATE_BALANCE", balances: result.balances });
               // TODO check memory nodes
-              setTimeout(() => executeStep(index + 1, memory), delay);
+              setTimeout(() => {
+                // TODO dispatch({ type: "NEXT" });
+                executeStep(index + 1, memory);
+              }, delay);
             } catch (error) {
               console.error(error);
               dispatch({ type: "END" });
