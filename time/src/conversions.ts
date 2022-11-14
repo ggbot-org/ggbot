@@ -1,5 +1,29 @@
 import { ErrorInvalidDate } from "./errors.js";
-import { Day, Time, Timestamp, isInvalidDate } from "./time.js";
+import { getDate } from "./operators";
+import {
+  DateInterval,
+  Day,
+  DayInterval,
+  Time,
+  Timestamp,
+  isInvalidDate,
+} from "./time.js";
+
+/** Convert `Day` to `Date`.
+@throws {ErrorInvalidDate} */
+export const dayToDate = (day: Day): Date => new Date(day);
+
+/** Convert `DayInterval` to `DateInterval`.
+@throws {ErrorInvalidDate} */
+export const dayIntervalToDate = ({
+  start,
+  end,
+}: DayInterval): DateInterval => ({
+  start: dayToDate(start),
+  end: getDate(getDate(dayToDate(end)).plus(1).days())
+    .minus(1)
+    .seconds(),
+});
 
 /** Convert `Date` to `Day`.
 @throws {ErrorInvalidDate} */

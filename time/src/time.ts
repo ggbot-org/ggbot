@@ -48,8 +48,6 @@ export const isTime = (arg: unknown): arg is Time => {
   return arg > 0;
 };
 
-// TimeInterval /////////////////////////////////////////////////////////
-
 export type TimeInterval = Interval<Time>;
 export const isTimeInterval = (arg: unknown): arg is TimeInterval => {
   if (typeof arg !== "object" || arg === null) return false;
@@ -121,6 +119,13 @@ export const isDay = (arg: unknown): arg is Day => {
   if (isInvalidDate(date)) return false;
   const day = date.toJSON().substring(0, 10);
   return day === arg;
+};
+
+export type DayInterval = Interval<Day>;
+export const isDayInterval = (arg: unknown): arg is DayInterval => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { start, end } = arg as Partial<DayInterval>;
+  return isDay(start) && isDay(end);
 };
 
 export const today = (): Day => new Date().toJSON().substring(0, 10);
