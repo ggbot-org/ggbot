@@ -43,10 +43,8 @@ export const isDateInterval = (arg: unknown): arg is DateInterval => {
 /** The number of milliseconds since the @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.*/
 export type Time = number;
 
-export const isTime = (arg: unknown): arg is Time => {
-  if (typeof arg !== "number") return false;
-  return arg > 0;
-};
+export const isTime = (arg: unknown): arg is Time =>
+  typeof arg === "number" && arg >= 0;
 
 export type TimeInterval = Interval<Time>;
 export const isTimeInterval = (arg: unknown): arg is TimeInterval => {

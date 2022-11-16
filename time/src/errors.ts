@@ -1,6 +1,6 @@
-export class ErrorInvalidDate extends TypeError {
+export class ErrorInvalidDate extends Error {
+  static message = "Invalid Date";
   constructor() {
-    super("Invalid Date");
-    this.name = ErrorInvalidDate.name;
+    super(ErrorInvalidDate.message);
   }
 }

@@ -1,8 +1,11 @@
 export class ErrorHttpResponse extends Error {
   status: number;
   statusText: string;
-  constructor(status: number, statusText: string) {
-    super(`${status} ${statusText}`);
+  constructor({
+    status,
+    statusText,
+  }: Pick<ErrorHttpResponse, "status" | "statusText">) {
+    super("HTTP Response failure");
     this.name = ErrorHttpResponse.name;
     this.status = status;
     this.statusText = statusText;
