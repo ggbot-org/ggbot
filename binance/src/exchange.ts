@@ -64,36 +64,36 @@ export class BinanceExchange extends BinanceConnector {
   static coerceKlineOptionalParametersToTimeInterval(
     time: BinanceTimeProvider,
     interval: BinanceKlineInterval,
-    { startTime, endTime, limit }: BinanceKlineOptionalParameters
-  ): { startTime: number; endTime: number } {
-    if (startTime) {
-      if (endTime) {
-        return { startTime, endTime };
+    { start, end, limit }: BinanceKlineOptionalParameters
+  ): { start: number; end: number } {
+    if (start) {
+      if (end) {
+        return { start, end };
       } else {
         return {
-          startTime,
-          endTime: getIntervalTime[interval](
-            startTime,
+          start,
+          end: getIntervalTime[interval](
+            start,
             limit ?? binanceKlineDefaultLimit
           ),
         };
       }
-    } else if (endTime) {
+    } else if (end) {
       return {
-        startTime: getIntervalTime[interval](
-          endTime,
+        start: getIntervalTime[interval](
+          end,
           -1 * (limit ?? binanceKlineDefaultLimit)
         ),
-        endTime,
+        end,
       };
     } else {
       const now = time.now();
       return {
-        startTime: getIntervalTime[interval](
+        start: getIntervalTime[interval](
           now,
           -1 * (limit ?? binanceKlineDefaultLimit)
         ),
-        endTime: now,
+        end: now,
       };
     }
   }
@@ -180,13 +180,13 @@ export class BinanceExchange extends BinanceConnector {
     );
     const { cache, time } = this;
     if (cache && time) {
-      const { startTime, endTime } =
+      const { start, end } =
         BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
           time,
           interval,
           optionalParameters
         );
-      const cached = cache.getKlines(symbol, interval, startTime, endTime);
+      const cached = cache.getKlines(symbol, interval, start, end);
       if (cached) return cached;
     }
     const klines = await this.publicRequest<BinanceKline[]>(

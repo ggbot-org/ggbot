@@ -1,9 +1,4 @@
-import {
-  ErrorInvalidName,
-  ErrorNameToLong,
-  isName,
-  throwIfInvalidName,
-} from "@ggbot2/models";
+import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { Button, DateTime, InputField } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -73,10 +68,8 @@ const Page: NextPage<ServerSideProps> = ({
         throwIfInvalidName(name);
         if (isName(name)) copyStrategy({ data: { name, ...strategyKey } });
       } catch (error) {
-        if (error instanceof ErrorInvalidName)
+        if (error instanceof ErrorInvalidArg)
           toast.error("Invalid strategy name");
-        if (error instanceof ErrorNameToLong)
-          toast.error("Strategy name too long");
       }
     },
     [isPending, strategyKey, copyStrategy]

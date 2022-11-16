@@ -4,6 +4,7 @@ import {
   BinanceKline,
 } from "@ggbot2/binance";
 import { extractBinanceSymbolsFromFlow } from "@ggbot2/dflow";
+import { TimeInterval, dayIntervalToTime } from "@ggbot2/time";
 import { Button } from "@ggbot2/ui-components";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -29,24 +30,31 @@ export const BacktestController: FC<BacktestControllerProps> = ({
 }) => {
   const setStartDay = useCallback<DailyIntervalSelectorProps["setStartDay"]>(
     (day) => {
-      const endDay = state?.endDay;
+      const endDay = state?.dayInterval.end;
       if (!endDay) return;
-      dispatch({ type: "SET_INTERVAL", startDay: day, endDay });
+      dispatch({
+        type: "SET_INTERVAL",
+        dayInterval: { start: day, end: endDay },
+      });
     },
-    [dispatch, state?.endDay]
+    [dispatch, state?.dayInterval.end]
   );
 
   // TODO use a flip clock: https://1stwebdesigner.com/9-free-open-source-flipping-clocks-using-css-javascript/
   const currentTimestamp = useMemo(() => {
     if (!state) return;
-    const { index, timestamps, isRunning } = state;
+    const { stepIndex, timestamps, isRunning } = state;
     if (!isRunning) return;
-    return timestamps[index];
+    return timestamps[stepIndex];
   }, [state]);
 
   if (!state || !state.isEnabled) return null;
 
-  const { maxDay, startDay, endDay, strategyKind } = state;
+  const {
+    maxDay,
+    dayInterval: { start: startDay, end: endDay },
+    strategyKind,
+  } = state;
 
   return (
     <div className="my-2">
@@ -81,7 +89,11 @@ type BacktestControllerBinanceProps = Pick<StrategyFlow, "view"> & {
 };
 
 const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
-  state: { startDay, maxDay, isRunning },
+  state: {
+    dayInterval: { start: startDay },
+    maxDay,
+    isRunning,
+  },
   dispatch,
   view,
 }) => {
@@ -115,12 +127,10 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
     })();
   }, [setExchangeInfo]);
 
-  const { startTime, endTime } = useMemo(() => {
-    return {
-      startTime: new Date(startDay).getTime(),
-      endTime: new Date(maxDay).getTime(),
-    };
-  }, [startDay, maxDay]);
+  const timeInterval = useMemo(
+    () => dayIntervalToTime({ start: startDay, end: maxDay }),
+    [startDay, maxDay]
+  );
 
   if (!Array.isArray(selectedSymbols)) return null;
 
@@ -137,8 +147,7 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
               key={symbol}
               binance={binance}
               symbol={symbol}
-              startTime={startTime}
-              endTime={endTime}
+              timeInterval={timeInterval}
             />
           ))}
         </div>
@@ -155,27 +164,22 @@ const BacktestControllerBinance: FC<BacktestControllerBinanceProps> = ({
 type BinanceKlinesChartProps = {
   binance: BinanceExchange;
   symbol: string;
-  startTime: number;
-  endTime: number;
+  timeInterval: TimeInterval;
 };
 
 export const BinanceKlinesChart: FC<BinanceKlinesChartProps> = ({
   binance,
   symbol,
-  startTime,
-  endTime,
+  timeInterval,
 }) => {
   const [klines, setKlines] = useState<BinanceKline[]>([]);
 
   useEffect(() => {
     (async () => {
-      const data = await binance.klines(symbol, "1d", {
-        startTime,
-        endTime,
-      });
+      const data = await binance.klines(symbol, "1d", timeInterval);
       setKlines(data);
     })();
-  }, [binance, setKlines, symbol, startTime, endTime]);
+  }, [binance, setKlines, symbol, timeInterval]);
 
   const { candles, volume } = useMemo(
     () =>

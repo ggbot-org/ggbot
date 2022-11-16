@@ -34,7 +34,8 @@ export const isDateInterval = (arg: unknown): arg is DateInterval => {
     start instanceof Date &&
     !isInvalidDate(start) &&
     end instanceof Date &&
-    !isInvalidDate(end)
+    !isInvalidDate(end) &&
+    start <= end
   );
 };
 
@@ -50,7 +51,7 @@ export type TimeInterval = Interval<Time>;
 export const isTimeInterval = (arg: unknown): arg is TimeInterval => {
   if (typeof arg !== "object" || arg === null) return false;
   const { start, end } = arg as Partial<TimeInterval>;
-  return isTime(start) && isTime(end);
+  return isTime(start) && isTime(end) && start <= end;
 };
 
 // Timestamp /////////////////////////////////////////////////////////

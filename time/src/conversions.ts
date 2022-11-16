@@ -5,13 +5,35 @@ import {
   Day,
   DayInterval,
   Time,
+  TimeInterval,
   Timestamp,
   isInvalidDate,
 } from "./time.js";
 
+/** Convert `Date` to `Time`.
+@throws {ErrorInvalidDate} */
+export const dateToTime = (date: Date): Time => {
+  if (isInvalidDate(date)) throw new ErrorInvalidDate();
+  return date.getTime();
+};
+
 /** Convert `Day` to `Date`.
 @throws {ErrorInvalidDate} */
 export const dayToDate = (day: Day): Date => new Date(day);
+
+/** Convert `Day` to `Time`.
+@throws {ErrorInvalidDate} */
+export const dayToTime = (day: Day): Time => dateToTime(dayToDate(day));
+
+/** Convert `DateInterval` to `TimeInterval`.
+@throws {ErrorInvalidDate} */
+export const dateIntervalToTime = ({
+  start,
+  end,
+}: DateInterval): TimeInterval => ({
+  start: dateToTime(start),
+  end: dateToTime(end),
+});
 
 /** Convert `DayInterval` to `DateInterval`.
 @throws {ErrorInvalidDate} */
@@ -24,6 +46,11 @@ export const dayIntervalToDate = ({
     .minus(1)
     .seconds(),
 });
+
+/** Convert `DayInterval` to `TimeInterval`.
+@throws {ErrorInvalidDate} */
+export const dayIntervalToTime = (interval: DayInterval): TimeInterval =>
+  dateIntervalToTime(dayIntervalToDate(interval));
 
 /** Convert `Date` to `Day`.
 @throws {ErrorInvalidDate} */

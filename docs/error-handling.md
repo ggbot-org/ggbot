@@ -116,7 +116,9 @@ try {
 However, using `error instanceof MyError` can be done only if the error instance
 was created in the same JavaScript context that catches it. This could be not
 the case, not only in client-server model but also when using threads (e.g. *Web
-Workers*). An error should also be serializable into JSON.
+Workers*).
+An error should also be serializable into JSON, in the following example the
+`toObject()` method return something that can be serialized.
 
 ```ts
 export class MyError extends Error {
@@ -139,17 +141,15 @@ export class MyError extends Error {
     this.whenCreated = new Date().getTime();
   }
 
-  toJSON() {
-    return JSON.stringify({
-      error: {
-        name: MyError.name,
-        data: {
-          bar: this.bar,
-          quz: this.quz,
-          whenCreated: this.whenCreated
-        }
+  toObject() {
+    return {
+      name: MyError.name,
+      data: {
+        bar: this.bar,
+        quz: this.quz,
+        whenCreated: this.whenCreated
       }
-    })
+    }
   }
 }
 

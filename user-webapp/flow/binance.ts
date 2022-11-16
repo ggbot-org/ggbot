@@ -10,7 +10,7 @@ import {
 import type { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
 import {
   Timestamp,
-  getTimeFromTimestamp,
+  timestampToTime,
   now,
   truncateTimestamp,
 } from "@ggbot2/time";
@@ -47,8 +47,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
-    const startTime = getTimeFromTimestamp(this.timestamp);
-    const klines = await binance.klines(symbol, interval, { startTime, limit });
+    const start = timestampToTime(this.timestamp);
+    const klines = await binance.klines(symbol, interval, { start, limit });
     return klines;
   }
 
@@ -84,8 +84,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
-    const startTime = getTimeFromTimestamp(this.timestamp);
-    const klines = await binance.klines(symbol, "1m", { startTime, limit: 1 });
+    const start = timestampToTime(this.timestamp);
+    const klines = await binance.klines(symbol, "1m", { start, limit: 1 });
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });
   }

@@ -14,6 +14,14 @@ export class ErrorAccountItemNotFound extends Error {
     this.type = type;
     this.accountId = accountId;
   }
+  toObject() {
+    return {
+      name: ErrorUnimplementedStrategyKind.name,
+      data: {
+        accountId: this.accountId,
+      },
+    };
+  }
 }
 
 export class ErrorStrategyItemNotFound extends Error {
@@ -67,17 +75,20 @@ export class ErrorPermissionOnStrategyItem extends Error {
 }
 
 export class ErrorUnimplementedStrategyKind extends Error {
-  static message(
-    strategyKind: ErrorUnimplementedStrategyKind["strategyKey"]["strategyKind"]
-  ) {
+  static message(strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]) {
     return `Unimplemented strategyKind ${strategyKind}`;
   }
-  readonly strategyKey: StrategyKey;
-  constructor({
-    strategyId,
-    strategyKind,
-  }: ErrorUnimplementedStrategyKind["strategyKey"]) {
+  readonly strategyKind?: unknown;
+  constructor(strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]) {
     super(ErrorUnimplementedStrategyKind.message(strategyKind));
-    this.strategyKey = { strategyId, strategyKind };
+    this.strategyKind = strategyKind;
+  }
+  toObject() {
+    return {
+      name: ErrorUnimplementedStrategyKind.name,
+      data: {
+        strategyKind: this.strategyKind,
+      },
+    };
   }
 }

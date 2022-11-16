@@ -1,3 +1,5 @@
+import { TimeInterval } from "@ggbot2/time";
+
 export type BinanceAccountInformation = {
   accountType: string;
   balances: BinanceBalance[];
@@ -142,12 +144,11 @@ export const binanceKlineIntervals = [
 ] as const;
 export type BinanceKlineInterval = typeof binanceKlineIntervals[number];
 
-export type BinanceKlineOptionalParameters = Partial<{
-  startTime: number;
-  endTime: number;
-  /** Default 500; max 1000. */
-  limit: number;
-}>;
+export type BinanceKlineOptionalParameters = Partial<TimeInterval> &
+  Partial<{
+    /** Default 500; max 1000. */
+    limit: number;
+  }>;
 
 export const binanceKlineMaxLimit = 1000;
 export const binanceKlineDefaultLimit = 500;

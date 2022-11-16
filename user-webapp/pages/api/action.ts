@@ -1,6 +1,6 @@
 import type { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import {
-  ErrorMissingBinanceApiConfig,
+  ErrorAccountItemNotFound,
   ErrorUnimplementedStrategyKind,
   copyStrategy,
   createBinanceApiConfig,
@@ -23,7 +23,7 @@ import {
   __401__UNAUTHORIZED__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
-  ErrorHttpResponse,
+  ErrorHTTP,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
 import type {
@@ -52,8 +52,8 @@ export type ApiActionInputData = OperationInput;
 type ApiActionOutputData = OperationOutput;
 
 const apiActionErrorNames = [
-  ErrorHttpResponse.name,
-  ErrorMissingBinanceApiConfig.name,
+  ErrorHTTP.name,
+  ErrorAccountItemNotFound.name,
   ErrorUnimplementedStrategyKind.name,
   InternalServerError.name,
 ] as const;
@@ -232,12 +232,10 @@ export default async function apiHandler(
     }
   } catch (error) {
     if (
-      error instanceof ErrorMissingBinanceApiConfig ||
+      error instanceof ErrorAccountItemNotFound ||
       error instanceof ErrorUnimplementedStrategyKind
     )
-      return res
-        .status(__400__BAD_REQUEST__)
-        .json({ error: { name: error.name } });
+      return res.status(__400__BAD_REQUEST__).json({ error: error.toObject() });
 
     console.error(error);
     res

@@ -160,20 +160,19 @@ export const isBinanceKlineOptionalParameters = (
   arg: unknown
 ): arg is BinanceKlineOptionalParameters => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { startTime, endTime, limit } =
-    arg as Partial<BinanceKlineOptionalParameters>;
+  const { start, end, limit } = arg as Partial<BinanceKlineOptionalParameters>;
   // If a parameter is defined it must be a number.
-  if (startTime !== undefined && typeof startTime !== "number") return false;
-  if (endTime !== undefined && typeof endTime !== "number") return false;
+  if (start !== undefined && typeof start !== "number") return false;
+  if (end !== undefined && typeof end !== "number") return false;
   if (limit !== undefined && typeof limit !== "number") return false;
-  // `startTime` must preceed `endTime`.
-  if (typeof startTime === "number" && typeof endTime === "number")
-    if (startTime > endTime) return false;
-  if (typeof startTime === "number" && typeof endTime === "number") return true;
+  // `start` must preceed `end`.
+  if (typeof start === "number" && typeof end === "number")
+    if (start > end) return false;
+  if (typeof start === "number" && typeof end === "number") return true;
   // `limit` is position and below its threeshold.
   if (typeof limit === "number")
     return limit > 0 && limit <= binanceKlineMaxLimit;
-  // TODO also need to check that startTime and endTime is below
+  // TODO also need to check that `start` and `end` time is below
   // limit threeshold? If yes, will need the interval as param.
   return false;
 };
