@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { ErrorInvalidDate } from "./errors.js";
 import { getDate, truncateDate, truncateTimestamp } from "./operators.js";
 
 describe("getDate", () => {
@@ -9,7 +10,8 @@ describe("getDate", () => {
         getDate(new Date("0000-00-00")).plus(2).days();
       },
       {
-        name: "ErrorInvalidDate",
+        name: "Error",
+        message: ErrorInvalidDate.message,
       }
     );
   });
@@ -62,7 +64,8 @@ describe("truncateDate", () => {
         truncateDate(new Date("0000-00-00")).to.day();
       },
       {
-        name: "ErrorInvalidDate",
+        name: "Error",
+        message: ErrorInvalidDate.message,
       }
     );
   });

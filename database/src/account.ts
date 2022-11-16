@@ -22,7 +22,7 @@ import {
   accountDirnamePrefix,
   accountPathname,
 } from "./_dataBucketLocators.js";
-import { ErrorMissingAccountId } from "./errors.js";
+import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
@@ -79,9 +79,8 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
 };
 
 /**
- * @throws {ErrorInvalidName}
- * @throws {ErrorMissingAccountId}
- * @throws {ErrorNameToLong}
+ * @throws {ErrorInvalidArg}
+ * @throws {ErrorAccountItemNotFound}
  */
 export const renameAccount: RenameAccount["func"] = async ({
   accountId,
@@ -89,7 +88,8 @@ export const renameAccount: RenameAccount["func"] = async ({
 }) => {
   throwIfInvalidName(name);
   const account = await readAccount({ accountId });
-  if (!account) throw new ErrorMissingAccountId();
+  if (!account)
+    throw new ErrorAccountItemNotFound({ type: "Account", accountId });
   const Key = accountPathname({ accountId });
   const data: Account = {
     ...account,

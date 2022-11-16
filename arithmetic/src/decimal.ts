@@ -53,7 +53,5 @@ export const coerceToDecimal = (
 ): Decimal => {
   if (!isMaybeDecimal(value)) throw new ErrorCannotCoerceToDecimal(value);
   const n = Number(value);
-  return typeof numDecimals === "undefined"
-    ? String(n)
-    : n.toFixed(numDecimals);
+  return numDecimals === undefined ? String(n) : n.toFixed(numDecimals);
 };

@@ -204,7 +204,7 @@ const Page: NextPage<ServerSideProps> = ({
     try {
       if (!flowView) return;
       if (readIsPending) return;
-      if (typeof storedStrategyFlow === "undefined") return;
+      if (storedStrategyFlow === undefined) return;
       if (storedStrategyFlow === null) {
         setFlowLoaded(true);
       } else {

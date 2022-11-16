@@ -22,8 +22,8 @@ import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyExecutionPathname } from "./_dataBucketLocators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
-  ErrorMissingBinanceApiConfig,
-  ErrorStrategyFlowNotFound,
+  ErrorAccountItemNotFound,
+  ErrorStrategyItemNotFound,
   ErrorUnimplementedStrategyKind,
 } from "./errors.js";
 import { readStrategyFlow } from "./strategyFlow.js";
@@ -44,8 +44,8 @@ Execute a ggbot2 strategy.
 
 It can point to the actual exchange or simulate an execution with a given balance or at a given time.
 
-@throws {ErrorMissingBinanceApiConfig}
-@throws {ErrorStrategyFlowNotFound}
+@throws {ErrorAccountItemNotFound}
+@throws {ErrorStrategyItemNotFound}
 @throws {ErrorUnimplementedStrategyKind}
 */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
@@ -58,7 +58,11 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     const strategyKey = { strategyKind, strategyId };
 
     const strategyFlow = await readStrategyFlow(accountStrategyKey);
-    if (!strategyFlow) throw new ErrorStrategyFlowNotFound(strategyKey);
+    if (!strategyFlow)
+      throw new ErrorStrategyItemNotFound({
+        type: "StrategyFlow",
+        ...strategyKey,
+      });
 
     const strategyMemory = await readStrategyMemory(accountStrategyKey);
     const memoryInput = strategyMemory?.memory ?? {};
@@ -68,7 +72,10 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       const binanceApiConfig = await readBinanceApiConfig({ accountId });
       if (!binanceApiConfig)
-        throw new ErrorMissingBinanceApiConfig({ accountId });
+        throw new ErrorAccountItemNotFound({
+          type: "BinanceApiConfig",
+          accountId,
+        });
 
       const binance = new Binance({ baseUrl, ...binanceApiConfig });
 
@@ -111,7 +118,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {
     if (
-      error instanceof ErrorMissingBinanceApiConfig ||
+      error instanceof ErrorAccountItemNotFound ||
       error instanceof ErrorUnimplementedStrategyKind
     )
       throw error;

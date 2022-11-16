@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { ErrorInvalidName, ErrorNameToLong } from "./errors.js";
+import { ErrorInvalidArg } from "./errors.js";
 import { isName, throwIfInvalidName, maxNameLength } from "./name.js";
 
 const invalidNames = ["", "     "];
@@ -20,23 +20,14 @@ describe("isName", () => {
 });
 
 describe("throwIfInvalidName", () => {
-  it("throws ErrorInvalidName", () => {
-    invalidNames.forEach((value) => {
+  it("throws ErrorInvalidArg", () => {
+    [...invalidNames, nameTooLong].forEach((value) => {
       assert.throws(
         () => {
           throwIfInvalidName(value);
         },
-        { name: ErrorInvalidName.name }
+        { name: "Error", message: ErrorInvalidArg.message("Name") }
       );
     });
-  });
-
-  it("throws ErrorNameToLong", () => {
-    assert.throws(
-      () => {
-        throwIfInvalidName(nameTooLong);
-      },
-      { name: ErrorNameToLong.name }
-    );
   });
 });

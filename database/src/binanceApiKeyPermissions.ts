@@ -4,14 +4,17 @@ import {
   ReadBinanceApiKeyPermissions,
 } from "@ggbot2/binance";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
-import { ErrorMissingBinanceApiConfig } from "./errors.js";
+import { ErrorAccountItemNotFound } from "./errors.js";
 
-/** @throws {ErrorMissingBinanceApiConfig} */
+/** @throws {ErrorAccountItemNotFound} */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
   async ({ accountId }) => {
     const binanceApiConfig = await readBinanceApiConfig({ accountId });
     if (!binanceApiConfig)
-      throw new ErrorMissingBinanceApiConfig({ accountId });
+      throw new ErrorAccountItemNotFound({
+        type: "BinanceApiConfig",
+        accountId,
+      });
     const { apiKey, apiSecret } = binanceApiConfig;
     const client = new BinanceClient({
       baseUrl: BinanceConnector.defaultBaseUrl,

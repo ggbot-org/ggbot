@@ -3,10 +3,8 @@ import { createHmac } from "crypto";
 import { BinanceConnectorRequestArg } from "./connector.js";
 import {
   ErrorBinanceCannotTradeSymbol,
-  ErrorInvalidBinanceOrderOptions,
-  ErrorInvalidBinanceOrderSide,
-  ErrorInvalidBinanceOrderType,
-  ErrorUnhandledBinanceOrderType,
+  ErrorBinanceInvalidArg,
+  ErrorBinanceInvalidOrderOptions,
 } from "./errors.js";
 import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
 import {
@@ -27,8 +25,7 @@ import type {
 import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js";
 
 /** BinanceClient implements private API requests.
-It extends BinanceExchange to be able to use also some public API requests.
-*/
+It extends BinanceExchange to be able to use also some public API requests. */
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
@@ -226,27 +223,26 @@ Parameters are the same as `newOrderACK`.
 
   /**
 Validate order parameters and try to adjust them; otherwise throw an error.
-
 @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-
 @throws {ErrorBinanceCannotTradeSymbol}
-@throws {ErrorInvalidBinanceOrderOptions}
-@throws {ErrorInvalidBinanceOrderSide}
-@throws {ErrorInvalidBinanceOrderType}
-@throws {ErrorInvalidBinanceSymbol}
-@throws {ErrorUnhandledBinanceOrderType}
+@throws {ErrorBinanceInvalidArg}
 */
   async prepareOrder(
     symbol: string,
     side: BinanceOrderSide,
-    type: BinanceOrderType,
+    orderType: BinanceOrderType,
     orderOptions: BinanceNewOrderOptions
   ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
-    if (!isBinanceOrderSide(side)) throw new ErrorInvalidBinanceOrderSide(side);
-    if (!isBinanceOrderType(type)) throw new ErrorInvalidBinanceOrderType(type);
+    if (!isBinanceOrderSide(side))
+      throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
+    if (!isBinanceOrderType(orderType))
+      throw new ErrorBinanceInvalidArg({
+        arg: orderType,
+        type: "orderType",
+      });
     const symbolInfo = await this.symbolInfo(symbol);
-    if (!symbolInfo || !this.canTradeSymbol(symbol, type))
-      throw new ErrorBinanceCannotTradeSymbol(symbol, type);
+    if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
+      throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
 
     const { baseAssetPrecision, filters } = symbolInfo;
 
@@ -262,98 +258,87 @@ Validate order parameters and try to adjust them; otherwise throw an error.
       trailingDelta,
     } = orderOptions;
 
-    switch (type) {
-      case "LIMIT": {
+    const prepareOptions: Record<
+      BinanceOrderType,
+      () => Promise<BinanceNewOrderOptions>
+    > = {
+      LIMIT: async () => {
         if (
-          typeof price === "undefined" ||
-          typeof quoteOrderQty === "undefined" ||
-          typeof timeInForce === "undefined"
+          price === undefined ||
+          quoteOrderQty === undefined ||
+          timeInForce === undefined
         )
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
-
-      case "LIMIT_MAKER": {
-        if (typeof quantity === "undefined" || typeof price === "undefined")
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
-
-      case "MARKET": {
-        const { price, mins } = await this.avgPrice(symbol);
-
-        if (typeof quantity === "undefined") {
-          if (typeof quoteOrderQty === "undefined")
-            throw new ErrorInvalidBinanceOrderOptions();
-
-          const computedQuantity = mul(
-            price,
-            quoteOrderQty,
-            baseAssetPrecision
-          );
-
-          if (
-            minNotionalFilter &&
-            minNotionalFilter.applyToMarket &&
-            minNotionalFilter.avgPriceMins === mins &&
-            !minNotionalIsValid(minNotionalFilter, computedQuantity)
-          )
-            throw new ErrorInvalidBinanceOrderOptions();
-        } else {
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      LIMIT_MAKER: async () => {
+        if (quantity === undefined || price === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      MARKET: async () => {
+        if (quantity) {
           if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
-            throw new ErrorInvalidBinanceOrderOptions();
+            throw new ErrorBinanceInvalidOrderOptions();
+          return orderOptions;
         }
 
-        return { options: orderOptions, symbol };
-      }
+        if (quoteOrderQty === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
 
-      case "STOP_LOSS": {
+        const { price, mins } = await this.avgPrice(symbol);
+
+        const computedQuantity = mul(price, quoteOrderQty, baseAssetPrecision);
+
         if (
-          typeof quantity === "undefined" ||
-          (typeof stopPrice === "undefined" &&
-            typeof trailingDelta === "undefined")
+          minNotionalFilter &&
+          minNotionalFilter.applyToMarket &&
+          minNotionalFilter.avgPriceMins === mins &&
+          !minNotionalIsValid(minNotionalFilter, computedQuantity)
         )
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
-
-      case "STOP_LOSS_LIMIT": {
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      STOP_LOSS: async () => {
         if (
-          typeof timeInForce === "undefined" ||
-          typeof quantity === "undefined" ||
-          typeof price === "undefined" ||
-          (typeof stopPrice === "undefined" &&
-            typeof trailingDelta === "undefined")
+          quantity === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
         )
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
-
-      case "TAKE_PROFIT": {
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      STOP_LOSS_LIMIT: async () => {
         if (
-          typeof quantity === "undefined" ||
-          (typeof stopPrice === "undefined" &&
-            typeof trailingDelta === "undefined")
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
         )
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
-
-      case "TAKE_PROFIT_LIMIT": {
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      TAKE_PROFIT: async () => {
         if (
-          typeof timeInForce === "undefined" ||
-          typeof quantity === "undefined" ||
-          typeof price === "undefined" ||
-          (typeof stopPrice === "undefined" &&
-            typeof trailingDelta === "undefined")
+          quantity === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
         )
-          throw new ErrorInvalidBinanceOrderOptions();
-        throw new ErrorUnhandledBinanceOrderType(type);
-      }
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      TAKE_PROFIT_LIMIT: async () => {
+        if (
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+    };
 
-      default:
-        throw new ErrorUnhandledBinanceOrderType(type);
-    }
+    const options = await prepareOptions[orderType]();
+    return { symbol, options };
   }
 }
 

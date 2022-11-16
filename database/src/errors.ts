@@ -1,66 +1,83 @@
 import type { AccountKey, StrategyKey } from "@ggbot2/models";
 
-export class ErrorMissingAccountId extends Error {
-  constructor() {
-    super("Missing accountId");
-    this.name = ErrorMissingAccountId.name;
+export class ErrorAccountItemNotFound extends Error {
+  static message(type: ErrorAccountItemNotFound["type"]) {
+    return `${type} not found`;
+  }
+  readonly type: "Account" | "BinanceApiConfig";
+  readonly accountId?: unknown;
+  constructor({
+    type,
+    accountId,
+  }: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
+    super(ErrorAccountItemNotFound.message(type));
+    this.type = type;
+    this.accountId = accountId;
   }
 }
 
-export class ErrorMissingBinanceApiConfig extends Error {
-  constructor({ accountId }: AccountKey) {
-    super(JSON.stringify({ accountId }));
-    this.name = ErrorMissingBinanceApiConfig.name;
+export class ErrorStrategyItemNotFound extends Error {
+  static message(type: ErrorStrategyItemNotFound["type"]) {
+    return `${type} not found`;
+  }
+  readonly type: "Strategy" | "StrategyFlow";
+  readonly strategyKind?: unknown;
+  readonly strategyId?: unknown;
+  constructor({
+    type,
+    strategyKind,
+    strategyId,
+  }: Pick<ErrorStrategyItemNotFound, "type" | "strategyKind" | "strategyId">) {
+    super(ErrorStrategyItemNotFound.message(type));
+    this.type = type;
+    this.strategyKind = strategyKind;
+    this.strategyId = strategyId;
   }
 }
 
-export class ErrorPermissionDeniedCannotDeleteStrategy extends Error {
+export class ErrorPermissionOnStrategyItem extends Error {
+  static message({
+    action,
+    type,
+  }: Pick<ErrorPermissionOnStrategyItem, "action" | "type">) {
+    return `Cannot ${action} ${type}`;
+  }
+  readonly accountId: AccountKey["accountId"];
+  readonly strategyKind: StrategyKey["strategyKind"];
+  readonly strategyId: StrategyKey["strategyId"];
+  readonly action: "delete" | "write";
+  readonly type: "Strategy" | "StrategyFlow";
   constructor({
     accountId,
-    strategyKey,
-  }: AccountKey & { strategyKey: StrategyKey }) {
-    super(JSON.stringify({ accountId, strategyKey }));
-    this.name = ErrorPermissionDeniedCannotDeleteStrategy.name;
-  }
-}
-
-export class ErrorPermissionDeniedCannotDeleteStrategyFlow extends Error {
-  constructor({
-    accountId,
-    strategyKey,
-  }: AccountKey & { strategyKey: StrategyKey }) {
-    super(JSON.stringify({ accountId, strategyKey }));
-    this.name = ErrorPermissionDeniedCannotDeleteStrategyFlow.name;
-  }
-}
-
-export class ErrorPermissionDeniedCannotWriteStrategyFlow extends Error {
-  constructor({
-    accountId,
-    strategyKey,
-  }: AccountKey & { strategyKey: StrategyKey }) {
-    super(JSON.stringify({ accountId, strategyKey }));
-    this.name = ErrorPermissionDeniedCannotWriteStrategyFlow.name;
-  }
-}
-
-export class ErrorStrategyNotFound extends Error {
-  constructor(strategyKey: StrategyKey) {
-    super(JSON.stringify(strategyKey));
-    this.name = ErrorStrategyNotFound.name;
-  }
-}
-
-export class ErrorStrategyFlowNotFound extends Error {
-  constructor(strategyKey: StrategyKey) {
-    super(JSON.stringify(strategyKey));
-    this.name = ErrorStrategyFlowNotFound.name;
+    action,
+    strategyKind,
+    strategyId,
+    type,
+  }: Pick<
+    ErrorPermissionOnStrategyItem,
+    "accountId" | "action" | "type" | "strategyKind" | "strategyId"
+  >) {
+    super(ErrorPermissionOnStrategyItem.message({ action, type }));
+    this.accountId = accountId;
+    this.action = action;
+    this.type = type;
+    this.strategyKind = strategyKind;
+    this.strategyId = strategyId;
   }
 }
 
 export class ErrorUnimplementedStrategyKind extends Error {
-  constructor(strategyKey: StrategyKey) {
-    super(JSON.stringify(strategyKey));
-    this.name = ErrorUnimplementedStrategyKind.name;
+  static message(
+    strategyKind: ErrorUnimplementedStrategyKind["strategyKey"]["strategyKind"]
+  ) {
+    return `Unimplemented strategyKind ${strategyKind}`;
+  }
+  readonly strategyKey: StrategyKey;
+  constructor({
+    strategyId,
+    strategyKind,
+  }: ErrorUnimplementedStrategyKind["strategyKey"]) {
+    super(ErrorUnimplementedStrategyKind.message(strategyKind));
+    this.strategyKey = { strategyId, strategyKind };
   }
 }

@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = readSession(req.cookies);
   return {
     props: {
-      hasSession: typeof session !== "undefined",
+      hasSession: session !== undefined,
     },
   };
 };
@@ -293,9 +293,8 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
         } else {
           setIsPending(false);
           setVerificationFailed(true);
-          if (typeof responseData.verified === "undefined") {
+          if (responseData.verified === undefined)
             setNeedToGenerateOneTimePasswordAgain(true);
-          }
         }
       } catch (error) {
         setHasGenericError(true);

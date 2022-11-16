@@ -30,7 +30,7 @@ const packageScript = {
 function testPackageJson({ packageJson, workspace }) {
   const { name } = packageJson;
 
-  if (typeof workspace === "undefined" && name !== rootPackageJson.name)
+  if (workspace === undefined && name !== rootPackageJson.name)
     throw new TypeError("Missing workspace argument");
 
   [
@@ -191,7 +191,7 @@ async function testWorkspaceTsconfig({ workspace }) {
 
   for (const compilerOption of Object.keys(tsconfigCommon.compilerOptions)) {
     assert.equal(
-      typeof compilerOptions[compilerOption] === "undefined",
+      compilerOptions[compilerOption] === undefined,
       true,
       `${workspace}/tsconfig.json does not override common compiler option ${compilerOption}`
     );

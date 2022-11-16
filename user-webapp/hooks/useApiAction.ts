@@ -89,7 +89,7 @@ const useAction = <Action extends ActionIO>({
       const fetchRequest = async (inputData: UseActionRequestArg) => {
         setResponse({ isPending: true });
         const body =
-          typeof inputData === "undefined"
+          inputData === undefined
             ? JSON.stringify({ type })
             : JSON.stringify({ type, data: inputData });
         const response = await fetch("/api/action", {

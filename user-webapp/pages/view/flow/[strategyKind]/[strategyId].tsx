@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const session = readSession(req.cookies);
-  const hasSession = typeof session !== "undefined";
+  const hasSession = session !== undefined;
 
   const strategyKey = strategyKeyFromRouterParams(params);
   if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);

@@ -22,7 +22,7 @@ export const isAccount = (value: unknown): value is Account => {
     isItemId(id) &&
     isEmailAddress(email) &&
     isCreationTime({ whenCreated }) &&
-    (typeof name !== "undefined" ? isName(name) : true)
+    (name !== undefined ? isName(name) : true)
   );
 };
 

@@ -19,7 +19,7 @@ export const AccountSettings: FC = () => {
   const currentName = useMemo(() => account?.name ?? "", [account]);
 
   const readOnly = useMemo(
-    () => typeof account === "undefined" || renameIsPending,
+    () => account === undefined || renameIsPending,
     [account, renameIsPending]
   );
 

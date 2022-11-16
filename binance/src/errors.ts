@@ -1,77 +1,42 @@
 import { BinanceOrderType } from "./types.js";
 
 export class ErrorBinanceCannotTradeSymbol extends Error {
+  static message = "Binance cannot trade this symbol";
   readonly symbol: unknown;
   readonly orderType: BinanceOrderType;
-  constructor(symbol: unknown, orderType: BinanceOrderType) {
-    super("Binance cannot trade this symbol");
+  constructor({
+    symbol,
+    orderType,
+  }: Pick<ErrorBinanceCannotTradeSymbol, "symbol" | "orderType">) {
+    super(ErrorBinanceCannotTradeSymbol.message);
     this.name = ErrorBinanceCannotTradeSymbol.name;
     this.symbol = symbol;
     this.orderType = orderType;
   }
 }
 
-// TODO replace all other errors with this generic one
 export class ErrorBinanceInvalidArg extends Error {
+  static message = "Invalid Binance argument";
   arg: unknown;
-  type: "BinanceOrderType" | "BinanceOrderSide";
+  type: "kilneInterval" | "orderType" | "orderSide" | "symbol";
   constructor({ arg, type }: Pick<ErrorBinanceInvalidArg, "arg" | "type">) {
-    super("Invalid Binance argument");
+    super(ErrorBinanceInvalidArg.message);
     this.name = ErrorBinanceInvalidArg.name;
     this.arg = arg;
     this.type = type;
   }
 }
 
-export class ErrorInvalidBinanceOrderOptions extends Error {
+export class ErrorBinanceInvalidOrderOptions extends Error {
+  static message = "Invalid Binance order options";
   constructor() {
-    super("Invalid Binance order options");
-    this.name = ErrorInvalidBinanceOrderOptions.name;
+    super(ErrorBinanceInvalidOrderOptions.message);
   }
 }
 
-export class ErrorInvalidBinanceOrderSide extends Error {
-  readonly arg: unknown;
-  constructor(arg: unknown) {
-    super(`Invalid Binance order side ${arg}`);
-    this.name = ErrorInvalidBinanceOrderSide.name;
-  }
-}
-
-export class ErrorInvalidBinanceOrderType extends Error {
-  readonly arg: unknown;
-  constructor(arg: unknown) {
-    super(`Invalid Binance order type ${arg}`);
-    this.name = ErrorInvalidBinanceOrderType.name;
-  }
-}
-
-export class ErrorInvalidBinanceSymbol extends Error {
-  readonly arg: unknown;
-  constructor(arg: unknown) {
-    super(`Invalid Binance symbol ${arg}`);
-    this.name = ErrorInvalidBinanceSymbol.name;
-  }
-}
-
-export class ErrorInvalidBinanceKlineInterval extends Error {
-  readonly arg: unknown;
-  constructor(arg: unknown) {
-    super(`Invalid Binance kline interval ${arg}`);
-    this.name = ErrorInvalidBinanceKlineInterval.name;
-  }
-}
-
-export class ErrorInvalidBinanceKlineOptionalParameters extends Error {
+export class ErrorBinanceInvalidKlineOptionalParameters extends Error {
+  static message = "Invalid kline optional parameters";
   constructor() {
-    super("Invalid Binance kline optional parameters");
-    this.name = ErrorInvalidBinanceKlineOptionalParameters.name;
-  }
-}
-
-export class ErrorUnhandledBinanceOrderType extends Error {
-  constructor(type: unknown) {
-    super(`Unhandled Binance order type ${type}`);
-    this.name = ErrorUnhandledBinanceOrderType.name;
+    super(ErrorBinanceInvalidKlineOptionalParameters.message);
   }
 }

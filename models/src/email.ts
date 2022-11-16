@@ -1,4 +1,4 @@
-import { ErrorInvalidEmailAddress } from "./errors.js";
+import { ErrorInvalidArg } from "./errors.js";
 
 export type EmailAddress = string;
 
@@ -29,6 +29,7 @@ export const isEmailAddress = (value: unknown): value is EmailAddress => {
 /**
 If a domain is gmail.com or is handled by Google for Business,
 any "." character in the EmailAddress user part is ignored.
+@throws {ErrorInvalidArg}
 
 @example
 ```
@@ -53,6 +54,6 @@ export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
   // Return normalized email as a lowercase string
   const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase();
   if (!isEmailAddress(normalizeEmail))
-    throw new ErrorInvalidEmailAddress(normalizeEmail);
+    throw new ErrorInvalidArg({ type: "EmailAddress", arg: normalizeEmail });
   return normalizeEmail;
 };

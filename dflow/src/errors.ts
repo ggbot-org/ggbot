@@ -1,6 +1,8 @@
 export class ErrorUknownDflowNodes extends Error {
-  constructor(nodes: { id: string; text: string }[]) {
-    super(JSON.stringify(nodes));
-    this.name = ErrorUknownDflowNodes.name;
+  static message = "Unknown dflow nodes";
+  readonly nodes: { id: string; text: string }[];
+  constructor(nodes: ErrorUknownDflowNodes["nodes"]) {
+    super(ErrorUknownDflowNodes.message);
+    this.nodes = nodes;
   }
 }

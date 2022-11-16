@@ -1,4 +1,4 @@
-import { ErrorHttpResponse } from "@ggbot2/http-status-codes";
+import { ErrorHTTP } from "@ggbot2/http-status-codes";
 import type { BinanceApiEndpoint } from "./endpoints.js";
 
 const defaultBaseUrl = "https://api.binance.com";
@@ -41,8 +41,7 @@ export class BinanceConnector {
     });
 
     const response = await fetch(url, { headers, method });
-    if (!response.ok)
-      throw new ErrorHttpResponse(response.status, response.statusText);
+    if (!response.ok) throw new ErrorHTTP(response);
 
     const data = await response.json();
     return data as Data;

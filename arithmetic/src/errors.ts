@@ -1,14 +1,15 @@
 export class ErrorCannotDivideByZero extends Error {
+  static message = "Cannot divide by zero";
   constructor() {
-    super("Cannot divide by zero");
-    this.name = ErrorCannotDivideByZero.name;
+    super(ErrorCannotDivideByZero.message);
   }
 }
 
 export class ErrorCannotCoerceToDecimal extends Error {
+  static message = "Cannot convert to Decimal";
   readonly arg: unknown;
   constructor(arg: unknown) {
-    super("Cannot convert to Decimal");
+    super(ErrorCannotCoerceToDecimal.message);
     this.name = ErrorCannotCoerceToDecimal.name;
     this.arg = arg;
   }

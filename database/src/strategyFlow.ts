@@ -9,19 +9,25 @@ import {
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { strategyFlowPathname } from "./_dataBucketLocators.js";
 import {
-  ErrorPermissionDeniedCannotDeleteStrategyFlow,
-  ErrorPermissionDeniedCannotWriteStrategyFlow,
-  ErrorStrategyFlowNotFound,
+  ErrorPermissionOnStrategyItem,
+  ErrorStrategyItemNotFound,
 } from "./errors.js";
 import { readStrategyAccountId } from "./strategy.js";
 
+/**
+@throws {ErrorStrategyItemNotFound}
+*/
 export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   accountId,
   source: strategyKey,
   target,
 }) => {
   const strategyFlow = await readStrategyFlow(strategyKey);
-  if (!strategyFlow) throw new ErrorStrategyFlowNotFound(strategyKey);
+  if (!strategyFlow)
+    throw new ErrorStrategyItemNotFound({
+      type: "StrategyFlow",
+      ...strategyKey,
+    });
   return await writeStrategyFlow({
     accountId,
     view: strategyFlow.view,
@@ -34,6 +40,9 @@ export const readStrategyFlow: ReadStrategyFlow["func"] = async (strategyKey) =>
     Key: strategyFlowPathname(strategyKey),
   });
 
+/**
+@throws {ErrorPermissionOnStrategyItem}
+*/
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   accountId,
   view,
@@ -41,9 +50,11 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
 }) => {
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)
-    throw new ErrorPermissionDeniedCannotWriteStrategyFlow({
+    throw new ErrorPermissionOnStrategyItem({
+      type: "StrategyFlow",
+      action: "delete",
       accountId,
-      strategyKey,
+      ...strategyKey,
     });
   const whenUpdated = updatedNow();
   const data: StrategyFlow = {
@@ -55,15 +66,20 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   return whenUpdated;
 };
 
+/**
+@throws {ErrorPermissionOnStrategyItem}
+*/
 export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
   accountId,
   ...strategyKey
 }) => {
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)
-    throw new ErrorPermissionDeniedCannotDeleteStrategyFlow({
+    throw new ErrorPermissionOnStrategyItem({
+      type: "StrategyFlow",
+      action: "delete",
       accountId,
-      strategyKey,
+      ...strategyKey,
     });
   const Key = strategyFlowPathname(strategyKey);
   return await deleteObject({ Key });

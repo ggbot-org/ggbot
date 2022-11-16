@@ -1,19 +1,21 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { datetoDay, dateToTimestamp, dayToTimestamp } from "./conversions.js";
+import { ErrorInvalidDate } from "./errors.js";
+import { dateToDay, dateToTimestamp, dayToTimestamp } from "./conversions.js";
 
-describe("datetoDay", () => {
+describe("dateToDay", () => {
   it("returns YYYY-MM-DD from date", () => {
     [{ input: new Date("2000-01-01"), output: "2000-01-01" }].forEach(
       ({ input, output }) => {
-        assert.equal(datetoDay(input), output);
+        assert.equal(dateToDay(input), output);
       }
     );
   });
 
   it("throws ErrorInvalidDate", () => {
-    assert.throws(() => datetoDay(new Date("0000-00-00")), {
-      name: "ErrorInvalidDate",
+    assert.throws(() => dateToDay(new Date("0000-00-00")), {
+      name: "Error",
+      message: ErrorInvalidDate.message,
     });
   });
 });
@@ -34,7 +36,8 @@ describe("dayToTimestamp", () => {
 describe("dateToTimestamp", () => {
   it("throws ErrorInvalidDate", () => {
     assert.throws(() => dateToTimestamp(new Date("0000-00-00")), {
-      name: "ErrorInvalidDate",
+      name: "Error",
+      message: ErrorInvalidDate.message,
     });
   });
 });

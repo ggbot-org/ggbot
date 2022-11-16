@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { isEmailAddress, normalizeEmailAddress } from "./email.js";
-import { ErrorInvalidEmailAddress } from "./errors.js";
+import { ErrorInvalidArg } from "./errors.js";
 
 describe("normalizeEmailAddress", () => {
   it("returns email in lowercase", () => {
@@ -9,7 +9,7 @@ describe("normalizeEmailAddress", () => {
       { input: "lower@example.com", output: "lower@example.com" },
       { input: "MiXeD@example.com", output: "mixed@example.com" },
     ].forEach(({ input, output }) => {
-      if (!isEmailAddress(input)) throw new ErrorInvalidEmailAddress(input);
+      if (!isEmailAddress(input)) throw new Error();
       assert.equal(normalizeEmailAddress(input), output);
     });
   });
@@ -21,7 +21,7 @@ describe("normalizeEmailAddress", () => {
       { input: "MiXeD.cAsE@example.com", output: "mixedcase@example.com" },
       { input: "u.s.e.r@example.com", output: "user@example.com" },
     ].forEach(({ input, output }) => {
-      if (!isEmailAddress(input)) throw new ErrorInvalidEmailAddress(input);
+      if (!isEmailAddress(input)) throw new Error();
       assert.equal(normalizeEmailAddress(input), output);
     });
   });
@@ -29,10 +29,21 @@ describe("normalizeEmailAddress", () => {
   it("removes labels", () => {
     [{ input: "user+label@example.com", output: "user@example.com" }].forEach(
       ({ input, output }) => {
-        if (!isEmailAddress(input)) throw new ErrorInvalidEmailAddress(input);
+        if (!isEmailAddress(input)) throw new Error();
         assert.equal(normalizeEmailAddress(input), output);
       }
     );
+  });
+
+  it("throws ErrorInvalidArg", () => {
+    ["", "@@", "not an email", "john.smith at gmail.com"].forEach((value) => {
+      assert.throws(
+        () => {
+          normalizeEmailAddress(value);
+        },
+        { name: "Error", message: ErrorInvalidArg.message("EmailAddress") }
+      );
+    });
   });
 });
 

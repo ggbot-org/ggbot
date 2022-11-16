@@ -1,5 +1,5 @@
 import { ErrorInvalidDate } from "./errors.js";
-import { getDate } from "./operators";
+import { getDate } from "./operators.js";
 import {
   DateInterval,
   Day,

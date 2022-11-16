@@ -31,17 +31,17 @@ import {
   writeAccountStrategyList,
 } from "./accountStrategyList.js";
 import {
-  ErrorMissingAccountId,
-  ErrorPermissionDeniedCannotDeleteStrategy,
-  ErrorStrategyNotFound,
+  ErrorAccountItemNotFound,
+  ErrorPermissionOnStrategyItem,
+  ErrorStrategyItemNotFound,
 } from "./errors.js";
 import { deleteStrategyExecution } from "./strategyExecution.js";
 import { deleteStrategyFlow } from "./strategyFlow.js";
 import { deleteStrategyMemory } from "./strategyMemory.js";
 
 /**
-@throws {ErrorInvalidName}
-@throws {ErrorNameToLong}
+@throws {ErrorInvalidArg}
+@throws {ErrorStrategyItemNotFound}
 */
 export const copyStrategy: CopyStrategy["func"] = async ({
   accountId,
@@ -50,7 +50,8 @@ export const copyStrategy: CopyStrategy["func"] = async ({
 }) => {
   throwIfInvalidName(name);
   const strategy = await readStrategy(strategyKey);
-  if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
+  if (!strategy)
+    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   return await createStrategy({
     accountId,
     kind: strategyKey.strategyKind,
@@ -59,8 +60,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
 };
 
 /**
-@throws {ErrorInvalidName}
-@throws {ErrorNameToLong}
+@throws {ErrorInvalidArg}
 */
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
@@ -107,18 +107,23 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
     Key: strategyPathname(strategyKey),
   });
 
+/**
+ @throws {ErrorStrategyItemNotFound}
+*/
 export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   strategyKey
 ) => {
   const data = await readStrategy(strategyKey);
-  if (!data) throw new ErrorStrategyNotFound(strategyKey);
-  if (!isAccountKey(data)) throw new ErrorMissingAccountId();
+  if (!data)
+    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
+  if (!isAccountKey(data))
+    throw new ErrorAccountItemNotFound({ type: "Account" });
   return data.accountId;
 };
 
 /**
-@throws {ErrorInvalidName}
-@throws {ErrorNameToLong}
+@throws {ErrorInvalidArg}
+ @throws {ErrorStrategyItemNotFound}
 */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
@@ -127,7 +132,8 @@ export const renameStrategy: RenameStrategy["func"] = async ({
 }) => {
   throwIfInvalidName(name);
   const strategy = await readStrategy(strategyKey);
-  if (!strategy) throw new ErrorStrategyNotFound(strategyKey);
+  if (!strategy)
+    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   if (strategy.accountId === accountId) {
     const renamedStrategy = { ...strategy, name: normalizeName(name) };
     const Key = strategyPathname(strategyKey);
@@ -146,17 +152,19 @@ export const renameStrategy: RenameStrategy["func"] = async ({
 };
 
 /**
- * @throws {ErrorPermissionDeniedCannotDeleteStrategy}
- */
+@throws {ErrorPermissionOnStrategyItem}
+*/
 export const deleteStrategy: DeleteStrategy["func"] = async (
   accountStrategyKey
 ) => {
   const { accountId, ...strategyKey } = accountStrategyKey;
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)
-    throw new ErrorPermissionDeniedCannotDeleteStrategy({
+    throw new ErrorPermissionOnStrategyItem({
+      action: "delete",
+      type: "Strategy",
       accountId,
-      strategyKey,
+      ...strategyKey,
     });
   const Key = strategyPathname(strategyKey);
   await deleteObject({ Key });

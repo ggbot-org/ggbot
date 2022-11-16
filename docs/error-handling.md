@@ -1,8 +1,5 @@
 # Error handling
 
-Place all package errors in *src/errors.ts* file and export them in
-*src/index.ts*.
-
 ## How to define an error
 
 Create an error extending the `Error` class.
@@ -19,31 +16,81 @@ export class ErrorInvalidArg extends Error {
 It is not worth to extend other error classes, (e.g. `TypeError`, `RangeError`)
 as they are used to categorize [errors thrown by JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors) and extending them would pollute what consumers expect to be on that list.
 
-In most cases it is handy for the consumer that the class name is prefixed with `Error`.
+It is handy for the consumer that the class name is prefixed with `Error`.
+However break rules when it makes sense, for instance:
+
+```ts
+export class InternalServerError extends Error {
+  constructor() {
+    super("500");
+  }
+}
+```
 
 The constructor need to call `super` first, passing it the error message.
 
-The error message is a *static string*, not a *template literal*, in
-order to be able to use [AggregateError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError).
+Error `message` is defined as a *static attribute* or a *static method*, it can be used to recognize the error in some contexts, for example when testing.
 
-When the error is stringified in the stack trace it will produce something like
 
+```ts
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+
+class ErrorInvalidDate extends Error {
+  static message = "Invalid Date";
+  constructor() {
+    super(ErrorInvalidDate.message);
+  }
+}
+
+const truncateDate = (arg: Date) {
+  if (arg.toString() === "Invalid Date") throw new ErrorInvalidDate();
+  return arg.toJSON().substring(0, 10);
+}
+
+describe("truncateDate", () => {
+  it("throws ErrorInvalidDate", () => {
+    assert.throws(
+      () => {
+        truncateDate(new Date("0000-00-00"));
+      },
+      {
+        name: "Error",
+        message: ErrorInvalidDate.message
+      }
+    );
+  });
+});
 ```
-Error: Invalid argument
-```
-
-Error message is defined as a *static attribute*, it can be used to recognize
-the error in some contexts, for example when testing.
 
 Optionally add info attributes to the class, for example
 
 ```ts
-export class ErrorHttpResponse extends Error {
-  static message = "HTTP response failure";
+export class ErrorHTTP extends Error {
+  static message(status: ErrorHTTP["status"]) {
+    return `Server responded with ${status}`;
+  }
   readonly status: number;
-  constructor(status: number) {
-    super(ErrorHttpResponse.message);
+  constructor(status: ErrorHTTP["status"]) {
+    super(ErrorHttp.message(status));
     this.status = status;
+  }
+}
+```
+
+Notice some info could be not defined or `unknown`.
+
+```ts
+export class ErrorItemNotFound extends Error {
+  static message(type: ErrorItemNotFound["type"]) {
+    return `${type} not found`;
+  }
+  id?: unknown
+  type: "User" | "Project" | "Transaction"
+  constructor({ id, type }) {
+    super(ErrorItemNotFound.message(type));
+    this.id = id;
+    this.type = type;
   }
 }
 ```
@@ -76,6 +123,7 @@ export class MyError extends Error {
   static message = "Something went wrong";
 
   readonly bar: boolean;
+  readonly quz: number;
   readonly whenCreated: number;
 
   static isMyErrorData (arg: unknown): arg is MyErrorData  {
@@ -84,9 +132,10 @@ export class MyError extends Error {
     return typeof bar === "boolean" && typeof whenCreated === "number" && whenCreated > 0;
   }
 
-  constructor({ bar }: Pick<MyError, "bar">) {
+  constructor({ bar, quz }: Pick<MyError, "bar" | "quz">) {
     super(MyError.message);
     this.bar = bar;
+    this.quz = quz
     this.whenCreated = new Date().getTime();
   }
 
@@ -96,6 +145,7 @@ export class MyError extends Error {
         name: MyError.name,
         data: {
           bar: this.bar,
+          quz: this.quz,
           whenCreated: this.whenCreated
         }
       }
