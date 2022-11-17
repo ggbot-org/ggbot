@@ -1,8 +1,8 @@
 import { Executor, isNodeError } from "@ggbot2/models";
+import { randomUUID } from "crypto";
 import { readFile, writeFile } from "fs/promises";
 import { homedir } from "os";
 import { join } from "path";
-import { v4 as uuidv4 } from "uuid";
 
 export const executorIdFile = join(homedir(), ".ggbot2-executor");
 
@@ -17,7 +17,7 @@ export const getExecutorId = async (): Promise<Executor["id"]> => {
   } catch (error) {
     if (isNodeError(error)) {
       if (error.code === "ENOENT") {
-        const executorId = uuidv4();
+        const executorId = randomUUID();
         await writeFile(executorIdFile, executorId, "utf8");
         return executorId;
       }

@@ -15,7 +15,7 @@ import {
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import {
   deleteObject,
   getObject,
@@ -68,7 +68,7 @@ export const createStrategy: CreateStrategy["func"] = async ({
   name,
 }) => {
   throwIfInvalidName(name);
-  const strategyId = uuidv4();
+  const strategyId = randomUUID();
   const strategyKind = kind;
   const strategyKey = { strategyId, strategyKind };
   const data: Strategy = {

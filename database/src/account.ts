@@ -11,7 +11,7 @@ import {
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "crypto";
 import {
   deleteObject,
   getObject,
@@ -26,7 +26,7 @@ import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
-  const accountId = uuidv4();
+  const accountId = randomUUID();
   const data: Account = {
     id: accountId,
     email,

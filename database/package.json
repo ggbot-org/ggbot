@@ -20,8 +20,5 @@
     "@ggbot2/dflow": "file:dflow",
     "@ggbot2/email-messages": "file:email-messages",
     "@ggbot2/test-data": "file:test-data"
-  },
-  "devDependencies": {
-    "@types/uuid": "^8.3.4"
   }
 }
