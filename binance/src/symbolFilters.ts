@@ -1,5 +1,6 @@
 import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
 import type {
+  BinanceNewOrderOptions,
   BinanceSymbolFilter,
   BinanceSymbolFilterLotSize,
   BinanceSymbolFilterMinNotional,
@@ -9,11 +10,13 @@ import {
   isBinanceSymbolFilterMinNotional,
 } from "./typeGuards.js";
 
+type IcebergQty = NonNullable<BinanceNewOrderOptions["icebergQty"]>;
+type Quantity = NonNullable<BinanceNewOrderOptions["quantity"]>;
+type QuoteOrderQuantity = NonNullable<BinanceNewOrderOptions["quoteOrderQty"]>;
+
 type FindSymbolFilter<Filter> = (
   filters: BinanceSymbolFilter[]
 ) => Filter | undefined;
-
-type SymbolFilterIsValid<Filter> = (filter: Filter, value: string) => boolean;
 
 export const findSymbolFilterLotSize: FindSymbolFilter<
   BinanceSymbolFilterLotSize
@@ -25,17 +28,18 @@ export const findSymbolFilterMinNotional: FindSymbolFilter<
 > = (filters: BinanceSymbolFilter[]) =>
   filters.find(isBinanceSymbolFilterMinNotional);
 
-export const lotSizeIsValid: SymbolFilterIsValid<BinanceSymbolFilterLotSize> = (
-  { minQty, maxQty, stepSize },
-  value
+export const lotSizeIsValid = (
+  { minQty, maxQty, stepSize }: BinanceSymbolFilterLotSize,
+  value: Quantity | IcebergQty
 ) => {
   if (Number(minQty) !== 0 && value < minQty) return false;
   if (Number(maxQty) !== 0 && value > maxQty) return false;
   return Number.isInteger(decimalToNumber(div(sub(value, minQty), stepSize)));
 };
 
-export const minNotionalIsValid: SymbolFilterIsValid<
-  BinanceSymbolFilterMinNotional
-> = ({ minNotional }, value) => {
+export const minNotionalIsValid = (
+  { minNotional }: BinanceSymbolFilterMinNotional,
+  value: QuoteOrderQuantity
+) => {
   return value > minNotional;
 };

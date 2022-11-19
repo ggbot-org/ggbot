@@ -1,4 +1,4 @@
-import { BinanceOrderType } from "./types.js";
+import { BinanceOrderType, BinanceSymbolFilter } from "./types.js";
 
 export class ErrorBinanceCannotTradeSymbol extends Error {
   static message = "Binance cannot trade this symbol";
@@ -9,7 +9,6 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
     orderType,
   }: Pick<ErrorBinanceCannotTradeSymbol, "symbol" | "orderType">) {
     super(ErrorBinanceCannotTradeSymbol.message);
-    this.name = ErrorBinanceCannotTradeSymbol.name;
     this.symbol = symbol;
     this.orderType = orderType;
   }
@@ -21,9 +20,19 @@ export class ErrorBinanceInvalidArg extends Error {
   type: "klineInterval" | "orderType" | "orderSide" | "symbol";
   constructor({ arg, type }: Pick<ErrorBinanceInvalidArg, "arg" | "type">) {
     super(ErrorBinanceInvalidArg.message);
-    this.name = ErrorBinanceInvalidArg.name;
     this.arg = arg;
     this.type = type;
+  }
+}
+
+export class ErrorBinanceSymbolFilter extends Error {
+  filterType: BinanceSymbolFilter["filterType"];
+  static message(filterType: ErrorBinanceSymbolFilter["filterType"]) {
+    return `Binance filter ${filterType} violated`;
+  }
+  constructor({ filterType }: Pick<ErrorBinanceSymbolFilter, "filterType">) {
+    super(ErrorBinanceSymbolFilter.message(filterType));
+    this.filterType = filterType;
   }
 }
 

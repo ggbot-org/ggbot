@@ -1,4 +1,3 @@
-import { mul } from "@ggbot2/arithmetic";
 import { TimeInterval } from "@ggbot2/time";
 import type { BinanceCacheProvider } from "./cache.js";
 import {
@@ -11,6 +10,7 @@ import {
   ErrorBinanceInvalidArg,
   ErrorBinanceInvalidKlineOptionalParameters,
   ErrorBinanceInvalidOrderOptions,
+  ErrorBinanceSymbolFilter,
 } from "./errors.js";
 import {
   findSymbolFilterLotSize,
@@ -28,6 +28,8 @@ import {
   BinanceNewOrderOptions,
   BinanceOrderSide,
   BinanceOrderType,
+  BinanceSymbolFilterMinNotional,
+  BinanceSymbolFilterLotSize,
   BinanceSymbolInfo,
   BinanceTicker24hr,
   BinanceTickerPrice,
@@ -41,7 +43,6 @@ import {
 } from "./typeGuards.js";
 
 /** BinanceExchange implements public API requests.
-
 To create a cached client, pass a `BinanceCacheProvider` and a `BinanceTimeProvider` to the constructor.
 @example
 ```ts
@@ -64,8 +65,7 @@ const binance = new BinanceExchange({
   cache: new BinanceCacheMap(),
   time: new TimeProvider()
 });
-```
-*/
+``` */
 export class BinanceExchange extends BinanceConnector {
   private readonly cache: BinanceCacheProvider | undefined;
   private readonly time: BinanceTimeProvider | undefined;
@@ -73,6 +73,27 @@ export class BinanceExchange extends BinanceConnector {
     super({ baseUrl });
     this.cache = cache;
     this.time = time;
+  }
+
+  /** @throws {ErrorBinanceSymbolFilter} */
+  static throwIfMinNotionalFilterIsInvalid(
+    quoteOrderQty: Exclude<BinanceNewOrderOptions["quoteOrderQty"], undefined>,
+    type: BinanceOrderType,
+    minNotionalFilter?: BinanceSymbolFilterMinNotional
+  ) {
+    if (minNotionalFilter === undefined) return;
+    if (type === "MARKET" && minNotionalFilter.applyToMarket !== true) return;
+    if (!minNotionalIsValid(minNotionalFilter, quoteOrderQty))
+      throw new ErrorBinanceSymbolFilter({ filterType: "MIN_NOTIONAL" });
+  }
+
+  /** @throws {ErrorBinanceSymbolFilter} */
+  static throwIfLotSizeFilterIsInvalid(
+    quantity: Exclude<BinanceNewOrderOptions["quantity"], undefined>,
+    lotSizeFilter?: BinanceSymbolFilterLotSize
+  ) {
+    if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
+      throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" });
   }
 
   static coerceKlineOptionalParametersToTimeInterval(
@@ -258,22 +279,10 @@ The request is similar to klines having the same parameters and response but `ui
     });
   }
 
-  async quoteQuantityToBaseQuantity(
-    symbol: string,
-    quoteOrderQty: Exclude<BinanceNewOrderOptions["quoteOrderQty"], undefined>,
-    baseAssetPrecision: BinanceSymbolInfo["baseAssetPrecision"]
-  ) {
-    const { price } = await this.tickerPrice(symbol);
-    const quantity = mul(price, quoteOrderQty, baseAssetPrecision);
-    return quantity;
-  }
-
-  /**
-Validate order parameters and try to adjust them; otherwise throw an error.
+  /** Validate order parameters and try to adjust them; otherwise throw an error.
 @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
 @throws {ErrorBinanceCannotTradeSymbol}
-@throws {ErrorBinanceInvalidArg}
-*/
+@throws {ErrorBinanceInvalidArg} */
   async prepareOrder(
     symbol: string,
     side: BinanceOrderSide,
@@ -291,7 +300,7 @@ Validate order parameters and try to adjust them; otherwise throw an error.
     if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
       throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
 
-    const { baseAssetPrecision, filters } = symbolInfo;
+    const { filters } = symbolInfo;
 
     const lotSizeFilter = findSymbolFilterLotSize(filters);
     const minNotionalFilter = findSymbolFilterMinNotional(filters);
@@ -310,51 +319,52 @@ Validate order parameters and try to adjust them; otherwise throw an error.
       () => Promise<BinanceNewOrderOptions>
     > = {
       LIMIT: async () => {
-        if (
-          price === undefined ||
-          quoteOrderQty === undefined ||
-          timeInForce === undefined
-        )
+        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (quoteOrderQty === undefined)
           throw new ErrorBinanceInvalidOrderOptions();
+        if (timeInForce === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        BinanceExchange.throwIfMinNotionalFilterIsInvalid(
+          quoteOrderQty,
+          orderType,
+          minNotionalFilter
+        );
         return orderOptions;
       },
+
       LIMIT_MAKER: async () => {
-        if (quantity === undefined || price === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
+        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
         return orderOptions;
       },
+
       MARKET: async () => {
+        if (quantity === undefined && quoteOrderQty === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
         if (quantity) {
-          if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
-            throw new ErrorBinanceInvalidOrderOptions();
-          return orderOptions;
-        } else {
-          if (quoteOrderQty === undefined)
-            throw new ErrorBinanceInvalidOrderOptions();
-
-          const quantity = await this.quoteQuantityToBaseQuantity(
-            symbol,
-            quoteOrderQty,
-            baseAssetPrecision
+          BinanceExchange.throwIfLotSizeFilterIsInvalid(
+            quantity,
+            lotSizeFilter
           );
-
-          if (
-            minNotionalFilter &&
-            minNotionalFilter.applyToMarket &&
-            !minNotionalIsValid(minNotionalFilter, quantity)
-          )
-            throw new ErrorBinanceInvalidOrderOptions();
           return orderOptions;
         }
+        if (quoteOrderQty) {
+          BinanceExchange.throwIfMinNotionalFilterIsInvalid(
+            quoteOrderQty,
+            orderType,
+            minNotionalFilter
+          );
+        }
+        return orderOptions;
       },
+
       STOP_LOSS: async () => {
-        if (
-          quantity === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
+        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (stopPrice === undefined && trailingDelta === undefined)
           throw new ErrorBinanceInvalidOrderOptions();
         return orderOptions;
       },
+
       STOP_LOSS_LIMIT: async () => {
         if (
           timeInForce === undefined ||
@@ -365,6 +375,7 @@ Validate order parameters and try to adjust them; otherwise throw an error.
           throw new ErrorBinanceInvalidOrderOptions();
         return orderOptions;
       },
+
       TAKE_PROFIT: async () => {
         if (
           quantity === undefined ||
@@ -373,6 +384,7 @@ Validate order parameters and try to adjust them; otherwise throw an error.
           throw new ErrorBinanceInvalidOrderOptions();
         return orderOptions;
       },
+
       TAKE_PROFIT_LIMIT: async () => {
         if (
           timeInForce === undefined ||

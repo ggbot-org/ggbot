@@ -10,6 +10,7 @@ import type {
   BinanceOrderSide,
   BinanceOrderType,
 } from "./types.js";
+import { balanceIsNotEmpty } from "./utils.js";
 
 /** BinanceClient implements private API requests.
 It extends BinanceExchange to be able to use also some public API requests. */
@@ -51,11 +52,8 @@ export class BinanceClient extends BinanceExchange {
     });
   }
 
-  /**
-Account Information (USER_DATA)
-
-{@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
-*/
+  /** Account Information (USER_DATA)
+{@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data} */
   async account(): Promise<BinanceAccountInformation> {
     const { balances, ...rest } =
       await this.privateRequest<BinanceAccountInformation>(
@@ -64,15 +62,8 @@ Account Information (USER_DATA)
       );
 
     return {
-      balances: balances.filter(
-        // Filter empty balances
-        //
-        // An empty balance looks like
-        //
-        //     { asset: 'LUNA', free: '0.00000000', locked: '0.00000000' }
-        //
-        ({ free, locked }) => Number(free) + Number(locked) > 0
-      ),
+      // Filter empty balances
+      balances: balances.filter(balanceIsNotEmpty),
       ...rest,
     };
   }
@@ -90,11 +81,8 @@ Account Information (USER_DATA)
     }
   }
 
-  /**
-Send in a new order.
-
-{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-*/
+  /** Send in a new order.
+{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade} */
   async newOrder(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -119,12 +107,9 @@ Send in a new order.
     );
   }
 
-  /**
-Test a new order.
+  /** Test a new order.
 Binance API will validates new order but will not send it into the matching engine.
-
-Parameters are the same as `newOrder`.
-*/
+Parameters are the same as `newOrder`. */
   async newOrderTest(
     symbolInput: string,
     side: BinanceOrderSide,
@@ -149,11 +134,8 @@ Parameters are the same as `newOrder`.
     );
   }
 
-  /**
-Send in a new order with type other than MARKET or LIMIT order.
-
-{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-*/
+  /** Send in a new order with type other than MARKET or LIMIT order.
+{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade} */
   async newOrderACK(
     symbolInput: string,
     side: BinanceOrderSide,

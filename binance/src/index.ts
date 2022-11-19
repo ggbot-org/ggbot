@@ -6,3 +6,4 @@ export * from "./exchange.js";
 export * from "./errors.js";
 export * from "./types.js";
 export * from "./typeGuards.js";
+export * from "./utils.js";
