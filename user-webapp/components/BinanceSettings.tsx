@@ -1,21 +1,13 @@
 import {
   Button,
+  Checkmark,
+  CheckmarkProps,
   Fieldset,
   InputField,
   OutputField,
 } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
-
-const PermissionCheck: FC<{ label: string; ok: boolean | undefined }> = ({
-  label,
-  ok,
-}) =>
-  ok === undefined ? null : (
-    <span className={ok ? "text-cyan-400" : "text-yellow-400"}>
-      {label} {ok ? "✓" : "✗"}
-    </span>
-  );
 
 export const BinanceSettings: FC = () => {
   const apiKeyLabel = "API Key";
@@ -93,7 +85,7 @@ export const BinanceSettings: FC = () => {
                   <span>
                     is <em>reading</em> permission enabled?
                   </span>
-                  <PermissionCheck
+                  <Checkmark
                     label={String(permissions?.enableReading)}
                     ok={permissions?.enableReading}
                   />
@@ -103,7 +95,7 @@ export const BinanceSettings: FC = () => {
                   <span>
                     are <em>withdrawals</em> enabled?
                   </span>
-                  <PermissionCheck
+                  <Checkmark
                     label={String(permissions?.enableWithdrawals)}
                     ok={
                       typeof permissions?.enableWithdrawals === "boolean"
@@ -117,7 +109,7 @@ export const BinanceSettings: FC = () => {
                   <span>
                     is <em>Spot and Margin</em> enabled?
                   </span>
-                  <PermissionCheck
+                  <Checkmark
                     label={String(permissions?.enableSpotAndMarginTrading)}
                     ok={permissions?.enableSpotAndMarginTrading}
                   />
@@ -127,7 +119,7 @@ export const BinanceSettings: FC = () => {
                   <span>
                     is <em>static IP</em> restriction activated?
                   </span>
-                  <PermissionCheck
+                  <Checkmark
                     label={String(permissions?.ipRestrict)}
                     ok={permissions?.ipRestrict}
                   />

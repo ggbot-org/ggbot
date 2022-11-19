@@ -46,6 +46,7 @@ const Page: NextPage = () => {
       <footer className="py-2 inline-flex justify-center gap-4">
         <Link href="/privacy">Privacy Policy</Link>
         <Link href="/terms">Terms of Service</Link>
+        <Link href="/roadmap">Roadmap</Link>
       </footer>
     </div>
   );
