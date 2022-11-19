@@ -27,7 +27,7 @@ const Page: NextPage = () => {
           <Logo animated={isFirstPageview} size={400} />
           <div className="flex flex-col gap-4">
             <h1 className="font-semibold text-8xl">
-              ggbot<b className="text-primary-brand">2</b>
+              ggbot<b className="text-brand">2</b>
             </h1>
             <i>crypto flow</i>
           </div>
@@ -37,7 +37,7 @@ const Page: NextPage = () => {
       <main className="grow inline-flex items-center justify-center">
         <Link
           href="https://next.ggbot2.com"
-          className="font-medium text-2xl cursor-pointer bg-black text-white px-6 py-8 rounded-md active:bg-primary-brand active:text-primary-900 hover:ring-4 outline-0 focus:ring-4 ring-primary-brand transition-colors ease-in"
+          className="font-medium text-2xl cursor-pointer bg-black text-white px-6 py-8 rounded-md active:bg-brand active:text-cyan-900 hover:ring-4 outline-0 focus:ring-4 ring-cyan-brand transition-colors ease-in"
         >
           Launch App
         </Link>

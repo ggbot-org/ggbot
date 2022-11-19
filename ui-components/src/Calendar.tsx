@@ -144,15 +144,15 @@ export const Calendar: FC<CalendarProps> = ({
         className: [
           "text-center select-none",
           selected
-            ? "bg-primary-400 text-white"
+            ? "bg-cyan-400 text-white"
             : isSelectable
             ? [
                 isDateOfCurrentMonth
-                  ? "text-mono-600 dark:text-mono-300"
-                  : "text-mono-400 dark:text-mono-500",
-                "hover:bg-primary-100 hover:text-mono-600",
+                  ? "text-neutral-600 dark:text-neutral-300"
+                  : "text-neutral-400 dark:text-neutral-500",
+                "hover:bg-cyan-100 hover:text-neutral-600",
               ].join(" ")
-            : "text-mono-200 dark:text-mono-500",
+            : "text-neutral-200 dark:text-neutral-500",
         ].join(" "),
         onClick:
           day && isSelectable
@@ -194,7 +194,7 @@ export const Calendar: FC<CalendarProps> = ({
 
   return (
     <div className="flex flex-col w-64 gap-1">
-      <div className="flex flex-row justify-between py-1 my-1 border-b border-mono-300">
+      <div className="flex flex-row justify-between py-1 my-1 border-b border-neutral-300">
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
             <Icon

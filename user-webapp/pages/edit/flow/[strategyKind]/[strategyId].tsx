@@ -311,8 +311,8 @@ const PleaseConfigureBinanceApi = () => {
   }, [router, setIsPending]);
 
   return (
-    <div className="bg-danger-100 p-4">
-      <div className="max-w-xl flex flex-col gap-4 text-mono-800">
+    <div className="bg-yellow-100 p-4">
+      <div className="max-w-xl flex flex-col gap-4 text-neutral-800">
         <p className="text-base">You cannot run strategies on Binance yet.</p>
         <p className="text-xl">
           Please go to settings page and configure your Binance API.

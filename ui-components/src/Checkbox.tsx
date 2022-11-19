@@ -1,11 +1,10 @@
 import { ChangeEventHandler, FC, InputHTMLAttributes, useMemo } from "react";
-
-type Color = "primary" | "danger";
+import { Color } from "./Color";
 
 export type CheckboxProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "className" | "type"
-> & { color?: Color };
+> & { color?: Extract<Color, "primary" | "danger"> };
 
 export type CheckboxOnChange = ChangeEventHandler<HTMLInputElement>;
 
@@ -17,9 +16,9 @@ function colorClassNames({
     case disabled:
       return "";
     case color === "primary":
-      return "accent-primary-300";
+      return "accent-cyan-300";
     case color === "danger":
-      return "accent-danger-300";
+      return "accent-yellow-300";
     default:
       return "";
   }

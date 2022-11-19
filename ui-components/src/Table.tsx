@@ -76,5 +76,5 @@ export const Th: FC<ThProps> = ({ children, ...props }) => {
 };
 
 export const Tr: FC<ChildrenProp> = ({ children }) => {
-  return <tr className="border border-mono-300 p-1">{children}</tr>;
+  return <tr className="border border-neutral-300 p-1">{children}</tr>;
 };

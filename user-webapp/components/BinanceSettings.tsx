@@ -13,7 +13,7 @@ const PermissionCheck: FC<{ label: string; ok: boolean | undefined }> = ({
   ok,
 }) =>
   ok === undefined ? null : (
-    <span className={ok ? "text-primary-400" : "text-danger-400"}>
+    <span className={ok ? "text-cyan-400" : "text-yellow-400"}>
       {label} {ok ? "✓" : "✗"}
     </span>
   );
@@ -149,7 +149,7 @@ export const BinanceSettings: FC = () => {
       </form>
 
       <form>
-        <Fieldset legend="Danger zone">
+        <Fieldset color="danger" legend="Danger zone">
           <menu>
             <li>
               <Button color="danger">Delete Account</Button>

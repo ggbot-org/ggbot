@@ -1,12 +1,14 @@
 import { ButtonHTMLAttributes, FC, PointerEventHandler, useMemo } from "react";
+import { Color } from "./Color";
 import { Spinner } from "./Spinner";
-
-type Color = "primary" | "danger";
 
 export type ButtonOnClick = PointerEventHandler<HTMLButtonElement>;
 
-type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
-  color?: Color;
+type ButtonProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "className"
+> & {
+  color?: Extract<Color, "primary" | "danger">;
   isSpinning?: boolean;
 };
 
@@ -14,36 +16,36 @@ function colorClassNames({
   disabled,
   color,
   isSpinning,
-}: Pick<Props, "color" | "disabled" | "isSpinning">) {
+}: Pick<ButtonProps, "color" | "disabled" | "isSpinning">) {
   switch (true) {
     case disabled:
-      return "border-transparent bg-mono-100 text-mono-400 cursor-not-allowed";
+      return "border-transparent bg-neutral-100 text-neutral-400 cursor-not-allowed";
     case color === "primary":
       return [
-        "border-primary-400",
-        isSpinning
-          ? "bg-primary-300 text-primary-800"
-          : "bg-primary-50 text-primary-500",
-        "focus:bg-primary-300 focus:text-primary-800 focus:ring-primary-400 hover:bg-primary-300 hover:text-primary-800 active:bg-primart-300 active:text-primary-800",
+        "border-cyan-400",
+        isSpinning ? "bg-cyan-300 text-cyan-800" : "bg-cyan-50 text-cyan-500",
+        "focus:bg-cyan-300 focus:text-cyan-800 focus:ring-cyan-400 hover:bg-cyan-300 hover:text-cyan-800 active:bg-primart-300 active:text-cyan-800",
       ].join(" ");
     case color === "danger":
       return [
-        "border-danger-400",
+        "border-yellow-400",
         isSpinning
-          ? "bg-danger-400 text-danger-50"
-          : "bg-danger-50 text-danger-700",
-        "focus:bg-danger-400 focus:text-danger-50 focus:ring-danger-300 hover:bg-danger-400 hover:text-danger-50 active:bg-danger-400 active:text-danger-50",
+          ? "bg-yellow-400 text-yellow-50"
+          : "bg-yellow-50 text-yellow-700",
+        "focus:bg-yellow-400 focus:text-yellow-50 focus:ring-yellow-300 hover:bg-yellow-400 hover:text-yellow-50 active:bg-yellow-400 active:text-yellow-50",
       ].join(" ");
     default:
       return [
-        "border-mono-600",
-        isSpinning ? "bg-mono-700 text-mono-200" : "bg-mono-50 text-mono-800",
-        "focus:bg-mono-700 focus:text-mono-200 focus:ring-mono-400 hover:bg-mono-700 hover:text-mono-200 active:bg-mono-700 active:text-mono-200",
+        "border-neutral-600",
+        isSpinning
+          ? "bg-neutral-700 text-neutral-200"
+          : "bg-neutral-50 text-neutral-800",
+        "focus:bg-neutral-700 focus:text-neutral-200 focus:ring-neutral-400 hover:bg-neutral-700 hover:text-neutral-200 active:bg-neutral-700 active:text-neutral-200",
       ].join(" ");
   }
 }
 
-export const Button: FC<Props> = ({
+export const Button: FC<ButtonProps> = ({
   children,
   color,
   disabled,

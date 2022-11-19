@@ -102,7 +102,7 @@ export const AccountSettings: FC = () => {
       </form>
 
       <form>
-        <Fieldset legend="Danger zone">
+        <Fieldset color="danger" legend="Danger zone">
           <menu>
             <li>
               <Button color="danger">Delete Account</Button>

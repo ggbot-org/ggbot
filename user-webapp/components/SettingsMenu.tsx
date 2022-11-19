@@ -53,7 +53,7 @@ const SettingsMenuItem: FC<SettingsMenuItemProps> = ({
       [
         "pl-2 border-l-2 font-medium select-none border-transparent transition-all ease-in-out delay-100",
         selected
-          ? "text-primary-600 border-primary-600 dark:text-primary-400 dark:border-primary-500"
+          ? "text-cyan-600 border-cyan-600 dark:text-cyan-400 dark:border-cyan-500"
           : "cursor-pointer",
       ].join(" "),
     [selected]

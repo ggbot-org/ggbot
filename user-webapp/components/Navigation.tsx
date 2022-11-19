@@ -26,7 +26,7 @@ export const Navigation: FC<NavigationProps> = ({
         <div className="flex w-fit flex-row items-center gap-1 px-1">
           <Logo size={24} />
           <span>
-            ggbot<b className="text-primary-brand">2</b>
+            ggbot<b className="text-brand">2</b>
           </span>
         </div>
 
@@ -62,7 +62,7 @@ type NavigationBreadcrumbItemProps = {
 const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
   [
     "inline-flex items-center transition-all ease-in",
-    isLink ? "cursor-pointer hover:text-primary-brand" : "",
+    isLink ? "cursor-pointer hover:text-brand" : "",
   ].join(" ");
 
 type NavigationLabelProps = { text: string; italic?: boolean };

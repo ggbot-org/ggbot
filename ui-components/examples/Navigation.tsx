@@ -8,7 +8,7 @@ export const Navigation: FC = () => {
         <div className="flex w-fit flex-row items-center gap-1 px-1">
           <Logo size={24} />
           <span>
-            ggbot<b className="text-primary-brand">2</b>
+            ggbot<b className="text-brand">2</b>
           </span>
         </div>
 

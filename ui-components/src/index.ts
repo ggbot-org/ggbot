@@ -2,6 +2,7 @@ export * from "./Button";
 export * from "./Breadcrumb";
 export * from "./Calendar";
 export * from "./Checkbox";
+export * from "./Color";
 export * from "./DateTime";
 export * from "./EditableInput";
 export * from "./Field";

@@ -17,8 +17,8 @@ export const LiveCheckbox: FC<Props> = ({ checked, ...props }) => {
       [
         "px-2 rounded transition-all ease-in",
         checked
-          ? "ring-2 ring-danger-400"
-          : "hover:ring-2 hover:ring-danger-400",
+          ? "ring-2 ring-yellow-400"
+          : "hover:ring-2 hover:ring-yellow-400",
       ].join(" "),
     [checked]
   );

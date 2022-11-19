@@ -16,9 +16,7 @@ export const BacktestCheckbox: FC<Props> = ({ checked, ...props }) => {
     () =>
       [
         "px-2 rounded transition-all ease-in",
-        checked
-          ? "ring-2 ring-primary-400"
-          : "hover:ring-2 hover:ring-primary-400",
+        checked ? "ring-2 ring-cyan-400" : "hover:ring-2 hover:ring-cyan-400",
       ].join(" "),
     [checked]
   );

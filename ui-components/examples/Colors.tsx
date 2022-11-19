@@ -24,20 +24,20 @@ export const Colors: FC = () => {
         <BgColor color="black">
           <TextColor color="white">black</TextColor>
         </BgColor>
-        <BgColor color="mono-100">
-          <TextColor color="mono-800">mono-100</TextColor>
+        <BgColor color="neutral-100">
+          <TextColor color="neutral-800">neutral-100</TextColor>
         </BgColor>
-        <BgColor color="primary-100">
-          <TextColor color="primary-800">primary-100</TextColor>
+        <BgColor color="cyan-100">
+          <TextColor color="cyan-800">cyan-100</TextColor>
         </BgColor>
       </div>
 
       <div className="flex flex-row wrap">
         <BgColor color="white">
-          <TextColor color="primary-800">primary-800</TextColor>
+          <TextColor color="cyan-800">cyan-800</TextColor>
         </BgColor>
         <BgColor color="white">
-          <TextColor color="mono-800">mono-800</TextColor>
+          <TextColor color="neutral-800">neutral-800</TextColor>
         </BgColor>
       </div>
     </div>

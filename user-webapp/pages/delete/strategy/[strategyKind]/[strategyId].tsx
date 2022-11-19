@@ -42,7 +42,7 @@ const Page: NextPage<ServerSideProps> = ({
         content: (
           <div className="flex flex-row gap-2 items-center">
             <NavigationLabel text="delete" />
-            <span className="text-danger-400">
+            <span className="text-yellow-400">
               <Icon name="danger" size={17} />
             </span>
           </div>
