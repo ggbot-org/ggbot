@@ -40,7 +40,6 @@ export const BacktestController: FC<BacktestControllerProps> = ({
     [dispatch, state?.dayInterval.end]
   );
 
-  // TODO use a flip clock: https://1stwebdesigner.com/9-free-open-source-flipping-clocks-using-css-javascript/
   const currentTimestamp = useMemo(() => {
     if (!state) return;
     const { stepIndex, timestamps, isRunning } = state;
@@ -176,7 +175,10 @@ export const BinanceKlinesChart: FC<BinanceKlinesChartProps> = ({
 
   useEffect(() => {
     (async () => {
-      const data = await binance.klines(symbol, "1d", timeInterval);
+      const data = await binance.klines(symbol, "1d", {
+        startTime: timeInterval.start,
+        endTime: timeInterval.end,
+      });
       setKlines(data);
     })();
   }, [binance, setKlines, symbol, timeInterval]);

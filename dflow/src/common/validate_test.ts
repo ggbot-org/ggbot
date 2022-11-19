@@ -24,7 +24,8 @@ describe("dflowValidate", () => {
         });
       },
       {
-        name: ErrorUknownDflowNodes.name,
+        name: "Error",
+        message: ErrorUknownDflowNodes.message,
       }
     );
   });

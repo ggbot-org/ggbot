@@ -20,7 +20,7 @@ export class BuyMarket extends DflowNode {
     const { binance } = this.host.context as Context;
     const symbol = this.input(0).data as string;
     const quantity = this.input(1).data as number | undefined;
-    const quoteOrderQty = this.input(1).data as number | undefined;
+    const quoteOrderQty = this.input(2).data as number | undefined;
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "BUY", "MARKET", {
@@ -42,7 +42,7 @@ export class SellMarket extends DflowNode {
     const { binance } = this.host.context as Context;
     const symbol = this.input(0).data as string;
     const quantity = this.input(1).data as number | undefined;
-    const quoteOrderQty = this.input(1).data as number | undefined;
+    const quoteOrderQty = this.input(2).data as number | undefined;
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "SELL", "MARKET", {

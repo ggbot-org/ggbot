@@ -4,10 +4,14 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceKlineInterval,
+  BinanceNewOrderOptions,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import type { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
+import {
+  BinanceDflowClient as IBinanceDflowClient,
+  dflowBinancePrecision,
+} from "@ggbot2/dflow";
 import {
   Timestamp,
   timestampToTime,
@@ -47,8 +51,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
-    const start = timestampToTime(this.timestamp);
-    const klines = await binance.klines(symbol, interval, { start, limit });
+    const startTime = timestampToTime(this.timestamp);
+    const klines = await binance.klines(symbol, interval, { startTime, limit });
     return klines;
   }
 
@@ -57,11 +61,31 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async newOrder(
-    symbol: string,
+    symbolInput: string,
     side: BinanceOrderSide,
-    type: Extract<BinanceOrderType, "MARKET">
+    type: Extract<BinanceOrderType, "MARKET">,
+    orderOptions: BinanceNewOrderOptions
   ) {
     const zero = "0.00000000";
+
+    const { options, symbol } = await binance.prepareOrder(
+      symbolInput,
+      side,
+      type,
+      orderOptions
+    );
+    const { quantity, quoteOrderQty } = options;
+    const baseQuantity = quantity
+      ? quantity
+      : quoteOrderQty
+      ? await binance.quoteQuantityToBaseQuantity(
+          symbol,
+          quoteOrderQty,
+          dflowBinancePrecision
+        )
+      : zero;
+
+    const { price } = await this.tickerPrice(symbol);
     return Promise.resolve({
       symbol,
       price: zero,
@@ -69,8 +93,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
       side,
       fills: [
         {
-          price: zero,
-          qty: zero,
+          price,
+          qty: baseQuantity,
           commission: zero,
           commissionAsset: "BNB",
           tradeId: -1,
@@ -84,8 +108,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
-    const start = timestampToTime(this.timestamp);
-    const klines = await binance.klines(symbol, "1m", { start, limit: 1 });
+    const startTime = timestampToTime(this.timestamp);
+    const klines = await binance.klines(symbol, "1m", { startTime, limit: 1 });
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });
   }

@@ -37,40 +37,56 @@ describe("isBinanceKlineOptionalParameters", () => {
     [
       {
         input: {
-          start: "not a number",
-          end: undefined,
+          startTime: undefined,
+          endTime: undefined,
+          limit: undefined,
+        },
+        output: true,
+      },
+      {
+        input: {
+          startTime: "not a number",
+          endTime: undefined,
           limit: undefined,
         },
         output: false,
       },
       {
         input: {
-          start: undefined,
-          end: "not a number",
+          startTime: undefined,
+          endTime: "not a number",
           limit: undefined,
         },
         output: false,
       },
       {
         input: {
-          start: undefined,
-          end: undefined,
+          startTime: undefined,
+          endTime: undefined,
           limit: "not a number",
         },
         output: false,
       },
       {
         input: {
-          start: undefined,
-          end: undefined,
+          startTime: -1,
+          endTime: -1,
+          limit: -1,
+        },
+        output: false,
+      },
+      {
+        input: {
+          startTime: undefined,
+          endTime: undefined,
           limit: 10,
         },
         output: true,
       },
       {
         input: {
-          start: new Date("2022-01-01").getTime(),
-          end: new Date("2022-01-10").getTime(),
+          startTime: new Date("2022-01-01").getTime(),
+          endTime: new Date("2022-01-10").getTime(),
           limit: undefined,
         },
         output: true,
@@ -78,8 +94,8 @@ describe("isBinanceKlineOptionalParameters", () => {
       {
         input: {
           // start is after end
-          start: new Date("2025-01-01").getTime(),
-          end: new Date("2022-01-10").getTime(),
+          startTime: new Date("2025-01-01").getTime(),
+          endTime: new Date("2022-01-10").getTime(),
           limit: undefined,
         },
         output: false,

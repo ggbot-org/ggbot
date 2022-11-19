@@ -1,3 +1,5 @@
+import { mul } from "@ggbot2/arithmetic";
+import { TimeInterval } from "@ggbot2/time";
 import type { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,
@@ -5,25 +7,37 @@ import {
   BinanceConnectorRequestArg,
 } from "./connector.js";
 import {
+  ErrorBinanceCannotTradeSymbol,
   ErrorBinanceInvalidArg,
   ErrorBinanceInvalidKlineOptionalParameters,
+  ErrorBinanceInvalidOrderOptions,
 } from "./errors.js";
+import {
+  findSymbolFilterLotSize,
+  findSymbolFilterMinNotional,
+  lotSizeIsValid,
+  minNotionalIsValid,
+} from "./symbolFilters.js";
 import { BinanceTimeProvider, getIntervalTime } from "./time.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceKline,
-  binanceKlineDefaultLimit,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
+  BinanceNewOrderOptions,
+  BinanceOrderSide,
   BinanceOrderType,
   BinanceSymbolInfo,
   BinanceTicker24hr,
   BinanceTickerPrice,
+  binanceKlineDefaultLimit,
 } from "./types.js";
 import {
   isBinanceKlineInterval,
   isBinanceKlineOptionalParameters,
+  isBinanceOrderSide,
+  isBinanceOrderType,
 } from "./typeGuards.js";
 
 /** BinanceExchange implements public API requests.
@@ -64,27 +78,27 @@ export class BinanceExchange extends BinanceConnector {
   static coerceKlineOptionalParametersToTimeInterval(
     time: BinanceTimeProvider,
     interval: BinanceKlineInterval,
-    { start, end, limit }: BinanceKlineOptionalParameters
-  ): { start: number; end: number } {
-    if (start) {
-      if (end) {
-        return { start, end };
+    { startTime, endTime, limit }: BinanceKlineOptionalParameters
+  ): TimeInterval {
+    if (startTime) {
+      if (endTime) {
+        return { start: startTime, end: endTime };
       } else {
         return {
-          start,
+          start: startTime,
           end: getIntervalTime[interval](
-            start,
+            startTime,
             limit ?? binanceKlineDefaultLimit
           ),
         };
       }
-    } else if (end) {
+    } else if (endTime) {
       return {
         start: getIntervalTime[interval](
-          end,
+          endTime,
           -1 * (limit ?? binanceKlineDefaultLimit)
         ),
-        end,
+        end: endTime,
       };
     } else {
       const now = time.now();
@@ -180,13 +194,13 @@ export class BinanceExchange extends BinanceConnector {
     );
     const { cache, time } = this;
     if (cache && time) {
-      const { start, end } =
+      const timeInterval =
         BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
           time,
           interval,
           optionalParameters
         );
-      const cached = cache.getKlines(symbol, interval, start, end);
+      const cached = cache.getKlines(symbol, interval, timeInterval);
       if (cached) return cached;
     }
     const klines = await this.publicRequest<BinanceKline[]>(
@@ -210,14 +224,13 @@ export class BinanceExchange extends BinanceConnector {
     interval: string,
     optionalParameters: BinanceKlineOptionalParameters
   ): Promise<void> {
-    const isInterval = isBinanceKlineInterval(interval);
-    if (!isInterval)
+    if (!isBinanceKlineInterval(interval))
       throw new ErrorBinanceInvalidArg({
         arg: interval,
-        type: "kilneInterval",
+        type: "klineInterval",
       });
-    const hasParameters = isBinanceKlineOptionalParameters(optionalParameters);
-    if (!hasParameters) throw new ErrorBinanceInvalidKlineOptionalParameters();
+    if (!isBinanceKlineOptionalParameters(optionalParameters))
+      throw new ErrorBinanceInvalidKlineOptionalParameters();
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
       throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" });
@@ -243,6 +256,137 @@ The request is similar to klines having the same parameters and response but `ui
       interval,
       ...optionalParameters,
     });
+  }
+
+  async quoteQuantityToBaseQuantity(
+    symbol: string,
+    quoteOrderQty: Exclude<BinanceNewOrderOptions["quoteOrderQty"], undefined>,
+    baseAssetPrecision: BinanceSymbolInfo["baseAssetPrecision"]
+  ) {
+    const { price } = await this.tickerPrice(symbol);
+    const quantity = mul(price, quoteOrderQty, baseAssetPrecision);
+    return quantity;
+  }
+
+  /**
+Validate order parameters and try to adjust them; otherwise throw an error.
+@see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+@throws {ErrorBinanceCannotTradeSymbol}
+@throws {ErrorBinanceInvalidArg}
+*/
+  async prepareOrder(
+    symbol: string,
+    side: BinanceOrderSide,
+    orderType: BinanceOrderType,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
+    if (!isBinanceOrderSide(side))
+      throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
+    if (!isBinanceOrderType(orderType))
+      throw new ErrorBinanceInvalidArg({
+        arg: orderType,
+        type: "orderType",
+      });
+    const symbolInfo = await this.symbolInfo(symbol);
+    if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
+      throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
+
+    const { baseAssetPrecision, filters } = symbolInfo;
+
+    const lotSizeFilter = findSymbolFilterLotSize(filters);
+    const minNotionalFilter = findSymbolFilterMinNotional(filters);
+
+    const {
+      price,
+      quantity,
+      quoteOrderQty,
+      stopPrice,
+      timeInForce,
+      trailingDelta,
+    } = orderOptions;
+
+    const prepareOptions: Record<
+      BinanceOrderType,
+      () => Promise<BinanceNewOrderOptions>
+    > = {
+      LIMIT: async () => {
+        if (
+          price === undefined ||
+          quoteOrderQty === undefined ||
+          timeInForce === undefined
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      LIMIT_MAKER: async () => {
+        if (quantity === undefined || price === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      MARKET: async () => {
+        if (quantity) {
+          if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
+            throw new ErrorBinanceInvalidOrderOptions();
+          return orderOptions;
+        } else {
+          if (quoteOrderQty === undefined)
+            throw new ErrorBinanceInvalidOrderOptions();
+
+          const quantity = await this.quoteQuantityToBaseQuantity(
+            symbol,
+            quoteOrderQty,
+            baseAssetPrecision
+          );
+
+          if (
+            minNotionalFilter &&
+            minNotionalFilter.applyToMarket &&
+            !minNotionalIsValid(minNotionalFilter, quantity)
+          )
+            throw new ErrorBinanceInvalidOrderOptions();
+          return orderOptions;
+        }
+      },
+      STOP_LOSS: async () => {
+        if (
+          quantity === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      STOP_LOSS_LIMIT: async () => {
+        if (
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      TAKE_PROFIT: async () => {
+        if (
+          quantity === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+      TAKE_PROFIT_LIMIT: async () => {
+        if (
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+    };
+
+    const options = await prepareOptions[orderType]();
+    return { symbol, options };
   }
 
   /** Get `BinanceSymbolInfo` for `symbol`, if any.

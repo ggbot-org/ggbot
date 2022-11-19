@@ -1,4 +1,4 @@
-import type { Time } from "@ggbot2/time";
+import type { Time, TimeInterval } from "@ggbot2/time";
 import { CacheMap } from "@ggbot2/models";
 import { getIntervalTime } from "./time.js";
 import type {
@@ -21,8 +21,7 @@ interface BinanceKlineCacheProvider {
   getKlines(
     symbol: string,
     interval: BinanceKlineInterval,
-    startTime: Time,
-    endTime: Time
+    timeInterval: TimeInterval
   ): BinanceKline[] | undefined;
   setKlines(
     symbol: string,
@@ -75,12 +74,11 @@ export class BinanceCacheMap implements BinanceCacheProvider {
   getKlines(
     symbol: string,
     interval: BinanceKlineInterval,
-    startTime: Time,
-    endTime: Time
+    timeInterval: TimeInterval
   ) {
-    let nextTime = getIntervalTime[interval](startTime, 1);
+    let nextTime = getIntervalTime[interval](timeInterval.start, 1);
     const klines: BinanceKline[] = [];
-    while (nextTime < endTime) {
+    while (nextTime < timeInterval.end) {
       const key = this.klinesKey(symbol, interval, nextTime);
       const kline = this.klinesMap.get(key);
       // At first hole found, return.

@@ -18,7 +18,7 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
 export class ErrorBinanceInvalidArg extends Error {
   static message = "Invalid Binance argument";
   arg: unknown;
-  type: "kilneInterval" | "orderType" | "orderSide" | "symbol";
+  type: "klineInterval" | "orderType" | "orderSide" | "symbol";
   constructor({ arg, type }: Pick<ErrorBinanceInvalidArg, "arg" | "type">) {
     super(ErrorBinanceInvalidArg.message);
     this.name = ErrorBinanceInvalidArg.name;

@@ -1,18 +1,6 @@
-import { mul } from "@ggbot2/arithmetic";
 import { createHmac } from "crypto";
 import { BinanceConnectorRequestArg } from "./connector.js";
-import {
-  ErrorBinanceCannotTradeSymbol,
-  ErrorBinanceInvalidArg,
-  ErrorBinanceInvalidOrderOptions,
-} from "./errors.js";
 import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
-import {
-  findSymbolFilterLotSize,
-  findSymbolFilterMinNotional,
-  lotSizeIsValid,
-  minNotionalIsValid,
-} from "./symbolFilters.js";
 import type {
   BinanceAccountInformation,
   BinanceApiKeyPermission,
@@ -22,7 +10,6 @@ import type {
   BinanceOrderSide,
   BinanceOrderType,
 } from "./types.js";
-import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js";
 
 /** BinanceClient implements private API requests.
 It extends BinanceExchange to be able to use also some public API requests. */
@@ -219,126 +206,6 @@ Parameters are the same as `newOrderACK`.
         ...options,
       }
     );
-  }
-
-  /**
-Validate order parameters and try to adjust them; otherwise throw an error.
-@see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-@throws {ErrorBinanceCannotTradeSymbol}
-@throws {ErrorBinanceInvalidArg}
-*/
-  async prepareOrder(
-    symbol: string,
-    side: BinanceOrderSide,
-    orderType: BinanceOrderType,
-    orderOptions: BinanceNewOrderOptions
-  ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
-    if (!isBinanceOrderSide(side))
-      throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
-    if (!isBinanceOrderType(orderType))
-      throw new ErrorBinanceInvalidArg({
-        arg: orderType,
-        type: "orderType",
-      });
-    const symbolInfo = await this.symbolInfo(symbol);
-    if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
-      throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
-
-    const { baseAssetPrecision, filters } = symbolInfo;
-
-    const lotSizeFilter = findSymbolFilterLotSize(filters);
-    const minNotionalFilter = findSymbolFilterMinNotional(filters);
-
-    const {
-      price,
-      quantity,
-      quoteOrderQty,
-      stopPrice,
-      timeInForce,
-      trailingDelta,
-    } = orderOptions;
-
-    const prepareOptions: Record<
-      BinanceOrderType,
-      () => Promise<BinanceNewOrderOptions>
-    > = {
-      LIMIT: async () => {
-        if (
-          price === undefined ||
-          quoteOrderQty === undefined ||
-          timeInForce === undefined
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      LIMIT_MAKER: async () => {
-        if (quantity === undefined || price === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      MARKET: async () => {
-        if (quantity) {
-          if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
-            throw new ErrorBinanceInvalidOrderOptions();
-          return orderOptions;
-        }
-
-        if (quoteOrderQty === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-
-        const { price, mins } = await this.avgPrice(symbol);
-
-        const computedQuantity = mul(price, quoteOrderQty, baseAssetPrecision);
-
-        if (
-          minNotionalFilter &&
-          minNotionalFilter.applyToMarket &&
-          minNotionalFilter.avgPriceMins === mins &&
-          !minNotionalIsValid(minNotionalFilter, computedQuantity)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      STOP_LOSS: async () => {
-        if (
-          quantity === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      STOP_LOSS_LIMIT: async () => {
-        if (
-          timeInForce === undefined ||
-          quantity === undefined ||
-          price === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      TAKE_PROFIT: async () => {
-        if (
-          quantity === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-      TAKE_PROFIT_LIMIT: async () => {
-        if (
-          timeInForce === undefined ||
-          quantity === undefined ||
-          price === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-    };
-
-    const options = await prepareOptions[orderType]();
-    return { symbol, options };
   }
 }
 
