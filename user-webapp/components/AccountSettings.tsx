@@ -47,7 +47,7 @@ export const AccountSettings: FC = () => {
         },
         {
           label: "id",
-          value: accountId && <div className="text-xs">{accountId}</div>,
+          value: accountId && <span className="text-xs">{accountId}</span>,
         },
       ].map(({ value, ...rest }) => ({
         value: value ? value : <>&nbsp;</>,

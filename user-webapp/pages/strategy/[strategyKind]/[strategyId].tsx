@@ -4,6 +4,8 @@ import {
   ButtonOnClick,
   DateTime,
   EditableInputField,
+  Fieldset,
+  OutputField,
 } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -139,30 +141,24 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   return (
     <Content topbar={<Navigation hasSettingsIcon breadcrumbs={breadcrumbs} />}>
-      <div className="flex flex-col p-4 gap-4">
-        <span className="text-xl">strategy</span>
-        <dl>
-          <dt>created</dt>
-          <dd>
-            <DateTime format="time" value={whenCreated} />
-          </dd>
-          <dt>id</dt>
-          <dd className="text-xs">{strategyId}</dd>
-        </dl>
+      <Fieldset legend={<span className="text-xl">strategy</span>}>
+        <EditableInputField
+          name="name"
+          label="name"
+          placeholder={inputNamePlaceholder}
+          isSpinning={renameIsPending}
+          readOnly={readOnly}
+          setValue={inputNameSetValue}
+          value={inputNameValue}
+        />
 
-        <div className="flex items-center justify-between max-w-lg gap-2">
-          <div className="w-full">
-            <EditableInputField
-              name="name"
-              label="name"
-              placeholder={inputNamePlaceholder}
-              isSpinning={renameIsPending}
-              readOnly={readOnly}
-              setValue={inputNameSetValue}
-              value={inputNameValue}
-            />
-          </div>
-        </div>
+        <OutputField label="When created">
+          <DateTime format="time" value={whenCreated} />
+        </OutputField>
+
+        <OutputField label="Strategy id">
+          <span className="text-xs">{strategyId}</span>
+        </OutputField>
 
         <menu className="flex flex-row flex-wrap gap-4">
           <li>
@@ -192,7 +188,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
             </Button>
           </li>
         </menu>
-      </div>
+      </Fieldset>
     </Content>
   );
 };

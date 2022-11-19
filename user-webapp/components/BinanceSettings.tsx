@@ -1,12 +1,11 @@
-import { Button, Fieldset, InputField } from "@ggbot2/ui-components";
+import {
+  Button,
+  Fieldset,
+  InputField,
+  OutputField,
+} from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
-
-const apiKeyField = {
-  label: "API Key",
-  name: "apiKey",
-};
-const apiSecretField = { label: "API Secret", name: "apiSecret" };
 
 const PermissionCheck: FC<{ label: string; ok: boolean | undefined }> = ({
   label,
@@ -19,6 +18,8 @@ const PermissionCheck: FC<{ label: string; ok: boolean | undefined }> = ({
   );
 
 export const BinanceSettings: FC = () => {
+  const apiKeyLabel = "API Key";
+
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.READ_BINANCE_API_CONFIG();
   const [createConfig, { isPending: createIsPending }] =
@@ -76,11 +77,11 @@ export const BinanceSettings: FC = () => {
         <Fieldset legend="Binance API">
           {hasBinanceApiConfig && (
             <>
-              <InputField
-                {...apiKeyField}
-                readOnly
-                defaultValue={binanceApiConfig?.apiKey}
-              />
+              <OutputField label={apiKeyLabel}>
+                {" "}
+                {binanceApiConfig?.apiKey}{" "}
+              </OutputField>
+
               <menu className="mb-8">
                 <li>
                   <Button isSpinning={testIsPending}>test</Button>
@@ -136,8 +137,18 @@ export const BinanceSettings: FC = () => {
           )}
           {hasNoBinanceApiConfig && (
             <>
-              <InputField {...apiKeyField} required readOnly={isPending} />
-              <InputField {...apiSecretField} required readOnly={isPending} />
+              <InputField
+                name="apiKey"
+                label={apiKeyLabel}
+                required
+                readOnly={isPending}
+              />
+              <InputField
+                label="API Secret"
+                name="apiSecret"
+                required
+                readOnly={isPending}
+              />
               <menu>
                 <li>
                   <Button isSpinning={createIsPending}>create</Button>

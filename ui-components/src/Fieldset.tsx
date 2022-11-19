@@ -7,25 +7,23 @@ export type FieldsetProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
 };
 
 function colorClassNames({ color }: Pick<FieldsetProps, "color">) {
-  const transition = "transition-colors ease-in";
   switch (true) {
     case color === "danger":
-      return `bg-yellow-50 hover:bg-yellow-200 ${transition}`;
+      return "bg-yellow-100 text-black";
     default:
-      return `bg-teal-50/50 hover:bg-teal-50 ${transition}`;
+      return "bg-cyan-50 dark:bg-stone-600 text-black dark:text-white";
   }
 }
 
 export const Fieldset: FC<FieldsetProps> = ({ children, color, legend }) => {
-  const fieldsetClassName = useMemo(
-    () =>
-      `${colorClassNames({
-        color,
-      })} w-full lg:max-w-lg my-2 p-4 shadow dark:shadow-black rounded`,
-    [color]
-  );
+  const { fieldsetClassName, legendClassname } = useMemo(() => {
+    const colors = colorClassNames({ color });
+    return {
+      fieldsetClassName: `${colors} w-full lg:max-w-lg flex flex-col gap-4 my-2 p-4 rounded`,
 
-  const legendClassname = "bg-inherit px-4 py-2 rounded-md";
+      legendClassname: `${colors} px-4 py-2 rounded-md`,
+    };
+  }, [color]);
 
   return (
     <fieldset className={fieldsetClassName}>
