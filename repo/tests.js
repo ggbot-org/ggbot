@@ -150,7 +150,7 @@ async function testWorkspacePackageJson({ workspace }) {
   }
 
   /// Test packageJson dependencies.
-  // // // // // // // // // // // // // // // ///
+  // // // // // // // // // // ///
 
   for (const [dependencyKey, dependencyValue] of Object.entries(
     packageJson.dependencies ?? {}
@@ -172,7 +172,23 @@ async function testWorkspacePackageJson({ workspace }) {
       if (!noBuildWorkspaces.includes(workspace)) {
         assert.equal(
           rootPackageJson.scripts[`prebuild:${workspace}`].includes(
-            `npm run build:${dependency}`
+            `build:${dependency}`
+          ),
+          true,
+          `root package.json script prebuild:${workspace} dependency ${dependency}"]`
+        );
+      }
+
+      assert.equal(
+        dependencyKey,
+        `${npmScope}/${dependency}`,
+        `${dependencyKey} matches ${dependencyValue}`
+      );
+
+      if (!noBuildWorkspaces.includes(workspace)) {
+        assert.equal(
+          rootPackageJson.scripts[`prebuild:${workspace}`].includes(
+            `build:${dependency}`
           ),
           true,
           `root package.json script prebuild:${workspace} handles dependency ${dependency}"]`
