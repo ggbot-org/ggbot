@@ -1,7 +1,6 @@
 import {
   Button,
   Checkmark,
-  CheckmarkProps,
   Fieldset,
   InputField,
   OutputField,

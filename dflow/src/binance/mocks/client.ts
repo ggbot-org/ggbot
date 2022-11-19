@@ -1,5 +1,6 @@
 import {
   BinanceKlineInterval,
+  BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
@@ -41,9 +42,18 @@ export class BinanceClientMock implements BinanceDflowClient {
     type: Extract<BinanceOrderType, "MARKET">
   ) {
     const zero = "0.00000000";
-    return Promise.resolve({
+    const order: BinanceOrderRespFULL = {
       symbol,
+      orderId: -1,
+      orderListId: -1,
+      clientOrderId: "",
+      transactTime: 0,
       price: zero,
+      origQty: zero,
+      executedQty: zero,
+      cummulativeQuoteQty: zero,
+      status: "FILLED",
+      timeInForce: "GTC",
       type,
       side,
       fills: [
@@ -55,6 +65,7 @@ export class BinanceClientMock implements BinanceDflowClient {
           tradeId: -1,
         },
       ],
-    });
+    };
+    return Promise.resolve(order);
   }
 }

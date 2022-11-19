@@ -267,13 +267,12 @@ export const useBacktesting: UseBacktesting = ({
           binanceSymbols,
           nodesCatalog
         );
-        const result = await executor.run(
+        const { balances, execution } = await executor.run(
           { memory: {}, timestamp },
           flowViewGraph
         );
-        console.log(result);
-        if (result.balances.length > 0)
-          dispatch({ type: "UPDATE_BALANCE", balances: result.balances });
+        console.log(balances, execution);
+        if (balances.length > 0) dispatch({ type: "UPDATE_BALANCE", balances });
         // TODO check memory nodes
         dispatch({ type: "NEXT" });
       } catch (error) {

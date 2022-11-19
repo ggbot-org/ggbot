@@ -5,13 +5,11 @@ import {
   BinanceExchange,
   BinanceKlineInterval,
   BinanceNewOrderOptions,
+  BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import {
-  BinanceDflowClient as IBinanceDflowClient,
-  dflowBinancePrecision,
-} from "@ggbot2/dflow";
+import { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
 import {
   Timestamp,
   timestampToTime,
@@ -67,28 +65,25 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     orderOptions: BinanceNewOrderOptions
   ) {
     const zero = "0.00000000";
-
-    const { options, symbol } = await binance.prepareOrder(
-      symbolInput,
-      side,
-      type,
-      orderOptions
-    );
-    const { quantity, quoteOrderQty } = options;
-    const baseQuantity = quantity
-      ? quantity
-      : quoteOrderQty
-      ? await binance.quoteQuantityToBaseQuantity(
-          symbol,
-          quoteOrderQty,
-          dflowBinancePrecision
-        )
-      : zero;
-
-    const { price } = await this.tickerPrice(symbol);
-    return Promise.resolve({
+    const {
+      options: { quantity, quoteOrderQty },
       symbol,
-      price: zero,
+    } = await binance.prepareOrder(symbolInput, side, type, orderOptions);
+    const { price } = await this.tickerPrice(symbol);
+    const baseQuantity = quantity ?? quoteOrderQty ?? /* will never be */ zero;
+
+    const order: BinanceOrderRespFULL = {
+      symbol,
+      orderId: -1,
+      orderListId: -1,
+      clientOrderId: "",
+      transactTime: 0,
+      price,
+      origQty: zero,
+      executedQty: zero,
+      cummulativeQuoteQty: zero,
+      status: "FILLED",
+      timeInForce: "GTC",
       type,
       side,
       fills: [
@@ -100,7 +95,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
           tradeId: -1,
         },
       ],
-    });
+    };
+    return Promise.resolve(order);
   }
 
   async isBinanceSymbol(arg: unknown) {

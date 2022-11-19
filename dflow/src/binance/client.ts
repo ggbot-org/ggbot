@@ -35,18 +35,5 @@ interface BinanceDflowClientPrivate {
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
-  ): Promise<
-    Omit<
-      BinanceOrderRespFULL,
-      | "clientOrderId"
-      | "cummulativeQuoteQty"
-      | "executedQty"
-      | "orderId"
-      | "orderListId"
-      | "origQty"
-      | "status"
-      | "timeInForce"
-      | "transactTime"
-    >
-  >;
+  ): Promise<BinanceOrderRespFULL>;
 }
