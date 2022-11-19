@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes, ReactNode, useMemo } from "react";
+import { FC, InputHTMLAttributes, ReactNode, useId, useMemo } from "react";
 import { Field, FieldProps } from "./Field";
 
 export type InputProps = Omit<
@@ -35,12 +35,13 @@ export const Input: FC<InputProps> = ({
   );
 };
 
-type InputFieldProps = FieldProps & Omit<InputProps, "name">;
+type InputFieldProps = Omit<FieldProps, "htmlFor"> & Omit<InputProps, "id">;
 
-export const InputField: FC<InputFieldProps> = ({ label, name, ...props }) => {
+export const InputField: FC<InputFieldProps> = ({ label, ...props }) => {
+  const id = useId();
   return (
-    <Field label={label} name={name}>
-      <Input {...props} name={name} />
+    <Field label={label} htmlFor={id}>
+      <Input id={id} {...props} />
     </Field>
   );
 };

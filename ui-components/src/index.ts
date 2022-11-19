@@ -10,6 +10,7 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./Input";
 export * from "./Logo";
+export * from "./Output";
 export * from "./Pill";
 export * from "./Select";
 export * from "./Spinner";

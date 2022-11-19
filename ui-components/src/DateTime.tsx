@@ -1,3 +1,4 @@
+import { isInvalidDate } from "@ggbot2/time";
 import { FC, useEffect, useMemo, useState } from "react";
 
 const dateTimeFormats = ["day", "time"];
@@ -9,24 +10,21 @@ type Props = {
 };
 
 export const DateTime: FC<Props> = ({ format, value }) => {
-  const dateTimeValue = useMemo(
-    () => (value ? value.toString() : undefined),
-    [value]
-  );
+  const dateTimeValue = useMemo(() => value?.toString(), [value]);
 
   const [formattedValue, setFormattedValue] = useState("");
 
   useEffect(() => {
     try {
-      const time = new Date(value);
-      if (time.toString() === "Invalid Date") return;
+      const date = new Date(value);
+      if (isInvalidDate(date)) return;
 
-      const dateString = time.toLocaleDateString();
+      const dateString = date.toLocaleDateString();
 
       if (format === "day") setFormattedValue(dateString);
 
       if (format === "time")
-        setFormattedValue(`${dateString} ${time.toLocaleTimeString()}`);
+        setFormattedValue(`${dateString} ${date.toLocaleTimeString()}`);
     } catch (error) {
       console.error(error);
     }

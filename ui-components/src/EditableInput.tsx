@@ -2,6 +2,7 @@ import {
   FC,
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useState,
   ChangeEventHandler,
@@ -114,17 +115,17 @@ export const EditableInput: FC<EditableInputProps> = ({
   );
 };
 
-type EditableInputFieldProps = FieldProps &
-  Omit<EditableInputProps, "id" | "name">;
+type EditableInputFieldProps = Omit<FieldProps, "htmlFor"> &
+  Omit<EditableInputProps, "id">;
 
 export const EditableInputField: FC<EditableInputFieldProps> = ({
   label,
-  name,
   ...props
 }) => {
+  const id = useId();
   return (
-    <Field label={label} name={name}>
-      <EditableInput {...props} name={name} />
+    <Field label={label} htmlFor={id}>
+      <EditableInput id={id} {...props} />
     </Field>
   );
 };

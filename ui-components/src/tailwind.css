@@ -26,6 +26,9 @@
 
   /* Definition list */
   dt {
-    @apply mt-2 text-2xs font-medium uppercase first:mt-0;
+    @apply mt-4 text-xs font-medium uppercase;
+  }
+  dd {
+    @apply px-4 py-1;
   }
 }

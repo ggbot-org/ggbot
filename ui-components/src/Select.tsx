@@ -1,4 +1,4 @@
-import { FC, OptionHTMLAttributes, SelectHTMLAttributes } from "react";
+import { FC, OptionHTMLAttributes, SelectHTMLAttributes, useId } from "react";
 import { Field, FieldProps } from "./Field";
 
 export type SelectProps = Omit<
@@ -21,16 +21,13 @@ export const Select: FC<SelectProps> = ({ options, ...props }) => {
   );
 };
 
-type SelectFieldProps = FieldProps & Omit<SelectProps, "name">;
+type SelectFieldProps = Omit<FieldProps, "htmlFor"> & Omit<SelectProps, "id">;
 
-export const SelectField: FC<SelectFieldProps> = ({
-  label,
-  name,
-  ...props
-}) => {
+export const SelectField: FC<SelectFieldProps> = ({ label, ...props }) => {
+  const id = useId();
   return (
-    <Field label={label} name={name}>
-      <Select {...props} name={name} />
+    <Field label={label} htmlFor={id}>
+      <Select id={id} {...props} />
     </Field>
   );
 };

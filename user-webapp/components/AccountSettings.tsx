@@ -4,8 +4,16 @@ import {
   DateTime,
   EditableInputField,
   Fieldset,
+  OutputField,
 } from "@ggbot2/ui-components";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useApiAction } from "_hooks";
 
 export const AccountSettings: FC = () => {
@@ -16,7 +24,37 @@ export const AccountSettings: FC = () => {
   const [renameAccount, { isPending: renameIsPending }] =
     useApiAction.RENAME_ACCOUNT();
 
-  const currentName = useMemo(() => account?.name ?? "", [account]);
+  const { accountId, currentName, email, whenCreated } = useMemo(
+    () => ({
+      accountId: account?.id ?? "",
+      currentName: account?.name ?? "",
+      email: account?.email ?? "",
+      whenCreated: account?.whenCreated ?? "",
+    }),
+    [account]
+  );
+
+  const accountInfo = useMemo<{ label: string; value: ReactNode }[]>(
+    () =>
+      [
+        {
+          label: "email",
+          value: email,
+        },
+        {
+          label: "When created",
+          value: whenCreated && <DateTime format="day" value={whenCreated} />,
+        },
+        {
+          label: "id",
+          value: accountId && <div className="text-xs">{accountId}</div>,
+        },
+      ].map(({ value, ...rest }) => ({
+        value: value ? value : <>&nbsp;</>,
+        ...rest,
+      })),
+    [accountId, email, whenCreated]
+  );
 
   const readOnly = useMemo(
     () => account === undefined || renameIsPending,
@@ -41,21 +79,9 @@ export const AccountSettings: FC = () => {
   useEffect(readAccount, [readAccount]);
 
   return (
-    <>
-      <dl>
-        <dt>email</dt>
-        <dd>{account?.email}</dd>
-        <dt>nickname</dt>
-        <dd>{currentName}</dd>
-        <dt>when created</dt>
-        <dd>
-          {account && <DateTime format="day" value={account?.whenCreated} />}
-        </dd>
-        <dt>id</dt>
-        <dd className="text-xs">{account?.id}</dd>
-      </dl>
+    <div className="flex flex-col gap-4">
       <form>
-        <Fieldset legend="account">
+        <Fieldset legend="Profile">
           <EditableInputField
             name="name"
             label="nick name"
@@ -64,13 +90,26 @@ export const AccountSettings: FC = () => {
             readOnly={readOnly}
             isSpinning={renameIsPending}
           />
+
+          <div>
+            {accountInfo.map(({ label, value }, i) => (
+              <OutputField key={i} label={label}>
+                {value}
+              </OutputField>
+            ))}
+          </div>
         </Fieldset>
-        <menu>
-          <li>
-            <Button color="danger">Delete Account</Button>
-          </li>
-        </menu>
       </form>
-    </>
+
+      <form>
+        <Fieldset legend="Danger zone">
+          <menu>
+            <li>
+              <Button color="danger">Delete Account</Button>
+            </li>
+          </menu>
+        </Fieldset>
+      </form>
+    </div>
   );
 };

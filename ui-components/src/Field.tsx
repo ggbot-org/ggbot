@@ -1,32 +1,29 @@
 import { FC, LabelHTMLAttributes, PropsWithChildren, ReactNode } from "react";
 
-export type FieldProps = {
+export type FieldProps = Pick<
+  LabelHTMLAttributes<HTMLLabelElement>,
+  "htmlFor"
+> & {
   label: ReactNode;
-  name: string;
 };
 
 export const Field: FC<PropsWithChildren<FieldProps>> = ({
   children,
   label,
-  name,
+  htmlFor,
 }) => {
+  const labelClassName = "mb-3 text-xs font-medium uppercase";
+
   return (
-    <div className="mb-4">
-      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+    <div className="mb-4 flex flex-col">
+      {htmlFor ? (
+        <label htmlFor={htmlFor} className={labelClassName}>
+          {label}
+        </label>
+      ) : (
+        <span className={labelClassName}>{label}</span>
+      )}
       {children}
     </div>
-  );
-};
-
-export type FieldLabelProps = Omit<
-  LabelHTMLAttributes<HTMLLabelElement>,
-  "className"
-> & { children: ReactNode };
-
-export const FieldLabel: FC<FieldLabelProps> = ({ children, ...props }) => {
-  return (
-    <label className="mb-3 text-xs font-medium uppercase" {...props}>
-      {children}
-    </label>
   );
 };
