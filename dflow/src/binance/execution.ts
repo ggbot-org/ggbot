@@ -78,7 +78,7 @@ export const getOrdersFromExecutionSteps = (
   steps.reduce<BinanceOrderRespFULL[]>((result, { kind, outputs }) => {
     if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result;
     if (!Array.isArray(outputs)) return result;
-    const order = outputs.find(({ name }) => name === orderOutput.name)?.data;
+    const order = outputs[0].data;
     if (!isBinanceOrderRespFULL(order)) return result;
     return [...result, order];
   }, []);
