@@ -11,7 +11,7 @@ function colorClassNames({ color }: Pick<FieldsetProps, "color">) {
     case color === "danger":
       return "bg-yellow-100 text-black";
     default:
-      return "bg-cyan-50 dark:bg-stone-600 text-black dark:text-white";
+      return "bg-gray-50 dark:bg-stone-600 text-black dark:text-white";
   }
 }
 

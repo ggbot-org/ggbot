@@ -9,7 +9,10 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { BinanceDflowClient as IBinanceDflowClient } from "@ggbot2/dflow";
+import {
+  BinanceDflowClient as IBinanceDflowClient,
+  dflowBinanceZero as zero,
+} from "@ggbot2/dflow";
 import {
   Timestamp,
   timestampToTime,
@@ -64,7 +67,6 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ) {
-    const zero = "0.00000000";
     const {
       options: { quantity, quoteOrderQty },
       symbol,

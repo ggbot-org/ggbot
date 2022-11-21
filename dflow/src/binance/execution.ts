@@ -1,9 +1,14 @@
 import { add, sub, mul } from "@ggbot2/arithmetic";
-import { BinanceOrderRespFULL, isBinanceOrderRespFULL } from "@ggbot2/binance";
+import {
+  BinanceOrderRespFULL,
+  balanceIsNotEmpty,
+  isBinanceOrderRespFULL,
+} from "@ggbot2/binance";
 import type { Balance } from "@ggbot2/models";
 import type { DflowGraphExecutionReport } from "dflow";
+import { dflowBinanceZero as zero } from "./arithmetic.js";
 import { DflowBinanceSymbolInfo } from "./symbols.js";
-import { BuyMarket, SellMarket, orderOutput } from "./nodes/trade.js";
+import { BuyMarket, SellMarket } from "./nodes/trade.js";
 
 export const getBalancesFromExecutionSteps = (
   binanceSymbols: DflowBinanceSymbolInfo[],
@@ -17,13 +22,13 @@ export const getBalancesFromExecutionSteps = (
     const { baseAsset, quoteAsset } = symbolInfo;
     const baseBalance = balanceMap.get(symbol) ?? {
       asset: baseAsset,
-      free: "0",
-      locked: "0",
+      free: zero,
+      locked: zero,
     };
     const quoteBalance = balanceMap.get(symbol) ?? {
       asset: quoteAsset,
-      free: "0",
-      locked: "0",
+      free: zero,
+      locked: zero,
     };
     // TODO how to emulate other order types?
     if (type === "MARKET") {
@@ -42,9 +47,9 @@ export const getBalancesFromExecutionSteps = (
     }
     for (const { commission, commissionAsset, qty, price } of fills) {
       const commissionBalance = balanceMap.get(commissionAsset) ?? {
-        asset: commission,
-        free: "0",
-        locked: "0",
+        asset: commissionAsset,
+        free: sub(zero, commission),
+        locked: zero,
       };
       // TODO how to emulate other order types?
       if (type === "MARKET") {
@@ -62,10 +67,11 @@ export const getBalancesFromExecutionSteps = (
           });
         }
         // Commissions.
-        balanceMap.set(commissionAsset, {
-          ...commissionBalance,
-          free: sub(commissionBalance.free, commission),
-        });
+        if (balanceIsNotEmpty(commissionBalance))
+          balanceMap.set(commissionAsset, {
+            ...commissionBalance,
+            free: sub(commissionBalance.free, commission),
+          });
       }
     }
   }
@@ -75,10 +81,10 @@ export const getBalancesFromExecutionSteps = (
 export const getOrdersFromExecutionSteps = (
   steps: DflowGraphExecutionReport["steps"]
 ): BinanceOrderRespFULL[] =>
-  steps.reduce<BinanceOrderRespFULL[]>((result, { kind, outputs }) => {
+  steps.reduce<BinanceOrderRespFULL[]>((result, { k: kind, o: outputs }) => {
     if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result;
     if (!Array.isArray(outputs)) return result;
-    const order = outputs[0].data;
+    const order = outputs[0].d;
     if (!isBinanceOrderRespFULL(order)) return result;
     return [...result, order];
   }, []);

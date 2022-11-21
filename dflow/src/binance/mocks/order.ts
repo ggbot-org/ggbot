@@ -1,6 +1,6 @@
 import { BinanceOrderRespFULL } from "@ggbot2/binance";
 
-export const orderBTCBUSD: BinanceOrderRespFULL = {
+export const orderBuyBTCBUSD: BinanceOrderRespFULL = {
   symbol: "BTCBUSD",
   orderId: 6906110758,
   orderListId: -1,

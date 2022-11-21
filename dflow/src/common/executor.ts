@@ -34,5 +34,5 @@ export const getDflowExecutionOutputData = (
   outputPosition: number
 ) => {
   const node = execution?.steps?.find(({ id }) => id === nodeId);
-  return node?.outputs?.[outputPosition]?.data;
+  return node?.o?.[outputPosition]?.d;
 };

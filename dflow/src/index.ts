@@ -1,3 +1,4 @@
+export * from "./binance/arithmetic.js";
 export * from "./binance/client.js";
 export * from "./binance/context.js";
 export * from "./binance/executor.js";

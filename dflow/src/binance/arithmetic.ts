@@ -12,3 +12,5 @@ In `binance.exchangeInfo()`` response, there are over 2000 symbols with values
 ```
 */
 export const dflowBinancePrecision = 8;
+
+export const dflowBinanceZero = "0.00000000";

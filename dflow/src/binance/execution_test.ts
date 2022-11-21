@@ -5,6 +5,7 @@ import {
   getOrdersFromExecutionSteps,
 } from "./execution.js";
 import { BinanceClientMock } from "./mocks/client.js";
+import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js";
 
 describe("getBalancesFromExecutionSteps", () => {
   it("works", async () => {
@@ -14,6 +15,21 @@ describe("getBalancesFromExecutionSteps", () => {
       {
         input: [],
         output: [],
+      },
+      {
+        input: executionStepsBuyBTCUSD,
+        output: [
+          {
+            asset: "BTC",
+            free: "0.00096",
+            locked: "0.00000000",
+          },
+          {
+            asset: "BUSD",
+            free: "-19.88287",
+            locked: "0.00000000",
+          },
+        ],
       },
     ].forEach(({ input, output }) => {
       assert.deepEqual(getBalancesFromExecutionSteps(symbols, input), output);
