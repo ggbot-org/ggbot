@@ -6,12 +6,12 @@ import {
 import { Day } from "@ggbot2/time";
 import { FC } from "react";
 
-export type DailyIntervalSelectorProps = {
-  startDay: Day;
-  setStartDay: CalendarSetSelectedDay;
+export type Props = {
+  startDay?: Day;
+  setStartDay?: CalendarSetSelectedDay;
 } & Pick<CalendarProps, "min" | "max">;
 
-export const DailyIntervalSelector: FC<DailyIntervalSelectorProps> = ({
+export const DailyIntervalSelector: FC<Props> = ({
   max,
   startDay,
   setStartDay,

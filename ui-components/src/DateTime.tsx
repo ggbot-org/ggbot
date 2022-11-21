@@ -5,7 +5,7 @@ const dateTimeFormats = ["day", "time"];
 type DateTimeFormat = typeof dateTimeFormats[number];
 
 type Props = {
-  value: number | string;
+  value: number | string | undefined;
   format: DateTimeFormat;
 };
 
@@ -16,6 +16,7 @@ export const DateTime: FC<Props> = ({ format, value }) => {
 
   useEffect(() => {
     try {
+      if (value === undefined) return;
       const date = new Date(value);
       if (isInvalidDate(date)) return;
 

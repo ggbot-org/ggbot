@@ -1,9 +1,10 @@
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { SchedulingStatusBadge, StrategyItem } from "_components";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
+import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
+import { StrategyItem } from "./StrategyItem";
 
 export const Strategies: FC = () => {
   const router = useRouter();

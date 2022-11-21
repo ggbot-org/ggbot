@@ -1,6 +1,5 @@
-import { add } from "@ggbot2/arithmetic";
 import { BinanceDflowExecutor } from "@ggbot2/dflow";
-import { Balance } from "@ggbot2/models";
+import { BalanceChangeEvent } from "@ggbot2/models";
 import {
   Day,
   DayInterval,
@@ -19,9 +18,10 @@ import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey & {
   stepIndex: number;
-  balances: Balance[];
+  balanceHistory: BalanceChangeEvent[];
   isEnabled: boolean;
   isRunning: boolean;
+  isPaused: boolean;
   dayInterval: DayInterval;
   timestamps: Timestamp[];
   maxDay: Day;
@@ -63,6 +63,12 @@ type Action =
   | {
       type: "NEXT";
     }
+  | {
+      type: "PAUSE";
+    }
+  | {
+      type: "RESUME";
+    }
   | ({
       type: "SET_INTERVAL";
     } & Pick<State, "dayInterval">)
@@ -74,29 +80,59 @@ type Action =
     }
   | ({
       type: "UPDATE_BALANCE";
-    } & Pick<State, "balances">);
+    } & BalanceChangeEvent);
 
 export type BacktestingDispatch = Dispatch<Action>;
 
 const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
-    case "DISABLE":
-      return { ...state, isEnabled: false };
-
-    case "END":
+    case "DISABLE": {
+      const { isRunning } = state;
       return {
         ...state,
+        isEnabled: false,
+        isRunning: false,
+        isPaused: isRunning,
+      };
+    }
+
+    case "END": {
+      return {
+        ...state,
+        isPaused: true,
         isRunning: false,
       };
+    }
 
-    case "NEXT":
+    case "NEXT": {
       return {
         ...state,
         stepIndex: state.stepIndex + 1,
       };
+    }
+
+    case "PAUSE": {
+      return {
+        ...state,
+        isPaused: true,
+        isRunning: false,
+      };
+    }
+
+    case "RESUME": {
+      const { isPaused } = state;
+      return isPaused
+        ? {
+            ...state,
+            isPaused: false,
+            isRunning: true,
+          }
+        : state;
+    }
 
     case "SET_INTERVAL": {
-      if (state.isRunning) return state;
+      const { isPaused, isRunning } = state;
+      if (isPaused || isRunning) return state;
       const { dayInterval } = action;
       return {
         ...state,
@@ -105,29 +141,36 @@ const backtestingReducer = (state: State, action: Action) => {
       };
     }
 
-    case "START":
+    case "START": {
+      const { isEnabled, isPaused } = state;
+      if (!isEnabled || isPaused) return state;
       return {
         ...state,
+        balanceHistory: [],
+        isPaused: false,
         isRunning: true,
         stepIndex: 0,
       };
+    }
 
-    case "TOGGLE":
-      return { ...state, isEnabled: !state.isEnabled };
+    case "TOGGLE": {
+      const { isEnabled } = state;
+      return isEnabled
+        ? { ...state, isEnabled: false, isRunning: false, isPaused: true }
+        : { ...state, isEnabled: true };
+    }
 
-    case "UPDATE_BALANCE":
-      const balancesMap = new Map<Balance["asset"], Balance>();
-      for (const balance of [...state.balances, ...action.balances]) {
-        const currentBalance = balancesMap.get(balance.asset);
-        if (currentBalance)
-          balancesMap.set(balance.asset, {
-            asset: balance.asset,
-            free: add(balance.free, currentBalance.free),
-            locked: add(balance.locked, currentBalance.locked),
-          });
-        else balancesMap.set(balance.asset, balance);
-      }
-      return { ...state, balances: [...balancesMap.values()] };
+    case "UPDATE_BALANCE": {
+      const { balanceHistory } = state;
+      const { timestamp, balances } = action;
+      return {
+        ...state,
+        balanceHistory: balanceHistory.concat({
+          timestamp,
+          balances,
+        }),
+      };
+    }
 
     default:
       return state;
@@ -162,8 +205,9 @@ const getInitialState =
     if (persistingState) {
       return {
         ...persistingState,
-        balances: [],
+        balanceHistory: [],
         stepIndex: 0,
+        isPaused: false,
         isRunning: false,
         maxDay,
         timestamps: computeTimestamps(persistingState.dayInterval),
@@ -176,9 +220,10 @@ const getInitialState =
       end: maxDay,
     };
     return {
-      balances: [],
+      balanceHistory: [],
       dayInterval,
       isEnabled: false,
+      isPaused: false,
       isRunning: false,
       stepIndex: 0,
       timestamps: computeTimestamps(dayInterval),
@@ -267,12 +312,12 @@ export const useBacktesting: UseBacktesting = ({
           binanceSymbols,
           nodesCatalog
         );
-        const { balances, execution } = await executor.run(
+        const { balances } = await executor.run(
           { memory: {}, timestamp },
           flowViewGraph
         );
-        console.log(balances, execution);
-        if (balances.length > 0) dispatch({ type: "UPDATE_BALANCE", balances });
+        if (balances.length > 0)
+          dispatch({ type: "UPDATE_BALANCE", timestamp, balances });
         // TODO check memory nodes
         dispatch({ type: "NEXT" });
       } catch (error) {

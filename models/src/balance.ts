@@ -1,3 +1,5 @@
+import { Timestamp } from "@ggbot2/time";
+
 /**
 A Balance is an abstract representation of an asset owned.
 
@@ -30,4 +32,9 @@ export type Balance = {
   free: string;
   /** Locked value, for example via staking or a limit order. */
   locked: string;
+};
+
+export type BalanceChangeEvent = {
+  timestamp: Timestamp;
+  balances: Balance[];
 };
