@@ -17,9 +17,9 @@ export type Strategy = Item &
     name: Name;
   };
 
-export const isStrategy = (value: unknown): value is StrategyKind => {
-  if (typeof value !== "object" || value === null) return false;
-  const { accountId, id, kind, name } = value as Partial<Strategy>;
+export const isStrategy = (arg: unknown): arg is StrategyKind => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { accountId, id, kind, name } = arg as Partial<Strategy>;
   return (
     isItemId(id) &&
     isAccountKey({ accountId }) &&
@@ -33,9 +33,9 @@ export type StrategyKey = Readonly<{
   strategyKind: Strategy["kind"];
 }>;
 
-export const isStrategyKey = (value: unknown): value is StrategyKey => {
-  if (typeof value !== "object" || value === null) return false;
-  const { strategyId, strategyKind } = value as Partial<StrategyKey>;
+export const isStrategyKey = (arg: unknown): arg is StrategyKey => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { strategyId, strategyKind } = arg as Partial<StrategyKey>;
   return isItemId(strategyId) && isStrategyKind(strategyKind);
 };
 
