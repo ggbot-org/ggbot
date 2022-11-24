@@ -4,9 +4,9 @@ import { StrategyKey, isStrategyKey } from "./strategy.js";
 export type AccountStrategyKey = AccountKey & StrategyKey;
 
 export const isAccountStrategyKey = (
-  value: unknown
-): value is AccountStrategyKey => {
-  if (typeof value !== "object" || value === null) return false;
-  const { accountId, ...strategyKey } = value as Partial<AccountStrategyKey>;
+  arg: unknown
+): arg is AccountStrategyKey => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { accountId, ...strategyKey } = arg as Partial<AccountStrategyKey>;
   return isAccountKey({ accountId }) && isStrategyKey(strategyKey);
 };

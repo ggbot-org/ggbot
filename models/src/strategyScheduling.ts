@@ -23,10 +23,10 @@ export type StrategySchedulingFrequency = {
 };
 
 export const isStrategySchedulingFrequency = (
-  value: unknown
-): value is StrategySchedulingFrequency => {
-  if (typeof value !== "object" || value === null) return false;
-  const { every, interval } = value as Partial<StrategySchedulingFrequency>;
+  arg: unknown
+): arg is StrategySchedulingFrequency => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { every, interval } = arg as Partial<StrategySchedulingFrequency>;
   return (
     typeof every === "number" &&
     every > 0 &&
@@ -40,10 +40,10 @@ export type StrategyScheduling = {
 };
 
 export const isStrategyScheduling = (
-  value: unknown
-): value is StrategyScheduling => {
-  if (typeof value !== "object" || value === null) return false;
-  const { frequency, status } = value as Partial<StrategyScheduling>;
+  arg: unknown
+): arg is StrategyScheduling => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { frequency, status } = arg as Partial<StrategyScheduling>;
   return (
     isStrategySchedulingFrequency(frequency) &&
     isStrategySchedulingStatus(status)

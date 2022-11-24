@@ -6,11 +6,11 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { strategyMemoryPathname } from "./_dataBucketLocators.js";
+import { pathname } from "./locators.js";
 
-export const readStrategyMemory: ReadStrategyMemory["func"] = async (_) =>
+export const readStrategyMemory: ReadStrategyMemory["func"] = async (arg) =>
   await getObject<ReadStrategyMemory["out"]>({
-    Key: strategyMemoryPathname(_),
+    Key: pathname.strategyMemory(arg),
   });
 
 export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
@@ -24,7 +24,7 @@ export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
     ...rest,
     ...whenUpdated,
   };
-  const Key = strategyMemoryPathname({
+  const Key = pathname.strategyMemory({
     accountId,
     strategyKind,
     strategyId,
@@ -33,5 +33,5 @@ export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
   return whenUpdated;
 };
 
-export const deleteStrategyMemory: DeleteStrategyMemory["func"] = async (_) =>
-  await deleteObject({ Key: strategyMemoryPathname(_) });
+export const deleteStrategyMemory: DeleteStrategyMemory["func"] = async (arg) =>
+  await deleteObject({ Key: pathname.strategyMemory(arg) });

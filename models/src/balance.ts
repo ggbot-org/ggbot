@@ -1,4 +1,4 @@
-import { Timestamp, isTimestamp } from "@ggbot2/time";
+import { CreationTime, isCreationTime } from "./time.js";
 
 /**
 A Balance is an abstract representation of an asset owned.
@@ -44,8 +44,7 @@ export const isBalance = (arg: unknown): arg is Balance => {
   );
 };
 
-export type BalanceChangeEvent = {
-  timestamp: Timestamp;
+export type BalanceChangeEvent = CreationTime & {
   balances: Balance[];
 };
 
@@ -53,7 +52,7 @@ export const isBalanceChangeEvent = (
   arg: unknown
 ): arg is BalanceChangeEvent => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { balances, timestamp } = arg as Partial<BalanceChangeEvent>;
-  if (!isTimestamp(timestamp) || !Array.isArray(balances)) return false;
-  return balances.every((balance) => isBalance(balance));
+  const { balances, ...creationTime } = arg as Partial<BalanceChangeEvent>;
+  if (!isCreationTime(creationTime)) return false;
+  return Array.isArray(balances) && balances.every((item) => isBalance(item));
 };

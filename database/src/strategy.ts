@@ -22,10 +22,7 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import {
-  strategyKeyToDirname,
-  strategyPathname,
-} from "./_dataBucketLocators.js";
+import { strategyPathname, itemKeyToDirname, pathname } from "./locators.js";
 import {
   readAccountStrategyList,
   writeAccountStrategyList,
@@ -78,7 +75,7 @@ export const createStrategy: CreateStrategy["func"] = async ({
     accountId,
     ...createdNow(),
   };
-  const Key = strategyPathname(strategyKey);
+  const Key = pathname.strategy(strategyKey);
   await putObject({ Key, data });
   const strategies = (await readAccountStrategyList({ accountId })) ?? [];
   const strategyListItem: AccountStrategyListItem = {
@@ -94,9 +91,8 @@ export const createStrategy: CreateStrategy["func"] = async ({
 };
 
 export const listStrategies: ListStrategies["func"] = async (strategyKey) => {
-  const strategies = await listObjects({
-    Prefix: strategyKeyToDirname(strategyKey),
-  });
+  const Prefix = itemKeyToDirname.strategy(strategyKey);
+  const strategies = await listObjects({ Prefix });
   // TODO destructure strategy paths
   console.log(strategies);
   return [];

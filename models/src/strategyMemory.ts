@@ -1,7 +1,7 @@
 import type { DflowObject } from "dflow";
-import { AccountStrategyKey } from "./accountStrategy.js";
+import type { AccountStrategyKey } from "./accountStrategy.js";
 import type { Operation } from "./operation.js";
-import { DeletionTime, UpdateTime } from "./time.js";
+import type { DeletionTime, UpdateTime } from "./time.js";
 
 export type StrategyMemory = UpdateTime & {
   memory: DflowObject;

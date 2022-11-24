@@ -19,7 +19,7 @@ import {
 } from "@ggbot2/models";
 import { truncateTimestamp, now } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { strategyExecutionPathname } from "./_dataBucketLocators.js";
+import { pathname, strategyExecutionPathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
   ErrorAccountItemNotFound,
@@ -28,6 +28,7 @@ import {
 } from "./errors.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
+import path from "path";
 
 class Binance extends BinanceClient implements BinanceDflowClient {
   async candles(
@@ -127,9 +128,11 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
   }
 };
 
-export const readStrategyExecution: ReadStrategyExecution["func"] = async (_) =>
+export const readStrategyExecution: ReadStrategyExecution["func"] = async (
+  arg
+) =>
   await getObject<ReadStrategyExecution["out"]>({
-    Key: strategyExecutionPathname(_),
+    Key: pathname.strategyExecution(arg),
   });
 
 export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
@@ -143,7 +146,7 @@ export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
     ...rest,
     ...whenUpdated,
   };
-  const Key = strategyExecutionPathname({
+  const Key = pathname.strategyExecution({
     accountId,
     strategyKind,
     strategyId,
@@ -153,5 +156,5 @@ export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
 };
 
 export const deleteStrategyExecution: DeleteStrategyExecution["func"] = async (
-  _
-) => await deleteObject({ Key: strategyExecutionPathname(_) });
+  arg
+) => await deleteObject({ Key: pathname.strategyExecution(arg) });

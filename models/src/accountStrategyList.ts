@@ -14,11 +14,11 @@ export type AccountStrategyListItem = StrategyKey &
   };
 
 export const isAccountStrategyListItem = (
-  value: unknown
-): value is AccountStrategyListItem => {
-  if (typeof value !== "object" || value === null) return false;
+  arg: unknown
+): arg is AccountStrategyListItem => {
+  if (typeof arg !== "object" || arg === null) return false;
   const { name, schedulingStatus, ...strategyKey } =
-    value as Partial<AccountStrategyListItem>;
+    arg as Partial<AccountStrategyListItem>;
   return (
     isStrategyKey(strategyKey) &&
     isName(name) &&
@@ -29,14 +29,9 @@ export const isAccountStrategyListItem = (
 export type AccountStrategyList = AccountStrategyListItem[];
 
 export const isAccountStrategyList = (
-  value: unknown
-): value is AccountStrategyList => {
-  if (!Array.isArray(value)) return false;
-  for (const item of value) {
-    if (!isAccountStrategyListItem(item)) return false;
-  }
-  return true;
-};
+  arg: unknown
+): arg is AccountStrategyList =>
+  Array.isArray(arg) && arg.every((item) => isAccountStrategyList(item));
 
 export type ReadAccountStrategyList = Operation<
   AccountKey,

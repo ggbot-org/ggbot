@@ -1,4 +1,4 @@
-import { DflowData } from "dflow";
+import type { DflowData } from "dflow";
 
 export type OperationInput = DflowData | void;
 
@@ -10,5 +10,5 @@ export type Operation<
 > = {
   in: Input;
   out: Output;
-  func: (_: Input) => Promise<Output>;
+  func: (arg: Input) => Promise<Output>;
 };

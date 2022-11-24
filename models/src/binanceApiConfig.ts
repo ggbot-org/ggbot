@@ -1,11 +1,12 @@
 import type { AccountKey } from "./account.js";
+import type { ItemKey } from "./item.js";
 import type { Operation } from "./operation.js";
-import { CreationTime, DeletionTime } from "./time.js";
+import type { CreationTime, DeletionTime } from "./time.js";
 
-export type BinanceApiConfig = {
+export type BinanceApiConfig = ItemKey<{
   apiKey: string;
   apiSecret: string;
-};
+}>;
 
 /** BinanceApiKeyPermissionCriteria defines a set of conditions that validate if a Binance API key can be used with ggbot2.
 It is important to notice that withdrawals MUST not be enabled for security reasons. */

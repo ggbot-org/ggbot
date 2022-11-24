@@ -1,9 +1,9 @@
 import type { DflowExecutionNodeInfo, DflowGraphRunStatus } from "dflow";
-import { AccountStrategyKey } from "./accountStrategy.js";
-import { Balance } from "./balance.js";
+import type { AccountStrategyKey } from "./accountStrategy.js";
+import type { Balance } from "./balance.js";
 import { isLiteralType } from "./literalType.js";
 import type { Operation } from "./operation.js";
-import { DeletionTime, UpdateTime } from "./time.js";
+import type { DeletionTime, UpdateTime } from "./time.js";
 
 export type StrategyExecutionStatus = Extract<
   DflowGraphRunStatus,

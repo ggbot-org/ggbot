@@ -1,10 +1,10 @@
 import { Account, AccountKey, isAccountKey } from "./account.js";
-import { AccountStrategyKey } from "./accountStrategy.js";
+import type { AccountStrategyKey } from "./accountStrategy.js";
 import { Item, isItemId, NewItem } from "./item.js";
 import { isLiteralType } from "./literalType.js";
 import { Name, isName } from "./name.js";
 import type { Operation } from "./operation.js";
-import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
+import type { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;
 export type StrategyKind = typeof strategyKinds[number];

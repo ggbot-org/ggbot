@@ -18,10 +18,7 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import {
-  accountDirnamePrefix,
-  accountPathname,
-} from "./_dataBucketLocators.js";
+import { dirnamePrefix, pathname } from "./locators.js";
 import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
@@ -32,17 +29,17 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
     email,
     ...createdNow(),
   };
-  const Key = accountPathname({ accountId });
+  const Key = pathname.account({ accountId });
   await putObject({ Key, data });
   await createEmailAccount({ accountId, email });
   return data;
 };
 
 export const readAccount: ReadAccount["func"] = async (accountKey) =>
-  await getObject<ReadAccount["out"]>({ Key: accountPathname(accountKey) });
+  await getObject<ReadAccount["out"]>({ Key: pathname.account(accountKey) });
 
 export const readAccountKeys: ReadAccountKeys["func"] = async () => {
-  const Prefix = accountDirnamePrefix;
+  const Prefix = dirnamePrefix.account;
   const results = await listObjects({
     Prefix,
   });

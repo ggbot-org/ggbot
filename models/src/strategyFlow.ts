@@ -1,9 +1,9 @@
 import type { FlowViewSerializableGraph } from "flow-view";
-import { AccountKey } from "./account.js";
-import { AccountStrategyKey } from "./accountStrategy.js";
+import type { AccountKey } from "./account.js";
+import type { AccountStrategyKey } from "./accountStrategy.js";
 import type { Operation } from "./operation.js";
-import { StrategyKey } from "./strategy.js";
-import { DeletionTime, UpdateTime } from "./time.js";
+import type { StrategyKey } from "./strategy.js";
+import type { DeletionTime, UpdateTime } from "./time.js";
 
 export type StrategyFlow = UpdateTime & {
   view: FlowViewSerializableGraph;

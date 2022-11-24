@@ -1,13 +1,13 @@
 import { EmailAddress, isEmailAddress } from "./email.js";
-import { Item, NewItem, isItemId } from "./item.js";
+import { Item, ItemKey, NewItem, isItemId } from "./item.js";
 import { Name, isName } from "./name.js";
+import type { Operation } from "./operation.js";
 import {
   CreationTime,
   DeletionTime,
   UpdateTime,
   isCreationTime,
 } from "./time.js";
-import type { Operation } from "./operation.js";
 
 export type Account = Item &
   CreationTime & {
@@ -26,9 +26,9 @@ export const isAccount = (value: unknown): value is Account => {
   );
 };
 
-export type AccountKey = {
-  readonly accountId: Account["id"];
-};
+export type AccountKey = ItemKey<{
+  accountId: Account["id"];
+}>;
 
 export const isAccountKey = (value: unknown): value is AccountKey => {
   if (typeof value !== "object" || value === null) return false;

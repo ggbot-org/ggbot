@@ -1,5 +1,7 @@
 import { Day, Timestamp, isDay, isTimestamp, now } from "@ggbot2/time";
 
+export type DayKey = { day: Day };
+
 // Create
 // ///////////////////////////////////////////////////////////////////
 
@@ -9,15 +11,15 @@ export type CreationDay = {
 
 export type CreationTime = { readonly whenCreated: Timestamp };
 
-export const isCreationDay = (value: unknown): value is CreationDay => {
-  if (typeof value !== "object" || value === null) return false;
-  const { creationDay } = value as Partial<CreationDay>;
+export const isCreationDay = (arg: unknown): arg is CreationDay => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { creationDay } = arg as Partial<CreationDay>;
   return isDay(creationDay);
 };
 
-export const isCreationTime = (value: unknown): value is CreationTime => {
-  if (typeof value !== "object" || value === null) return false;
-  const { whenCreated } = value as Partial<CreationTime>;
+export const isCreationTime = (arg: unknown): arg is CreationTime => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { whenCreated } = arg as Partial<CreationTime>;
   return isTimestamp(whenCreated);
 };
 
@@ -30,9 +32,9 @@ export const createdNow: CreatedNow = () => ({ whenCreated: now() });
 
 export type DeletionTime = { readonly whenDeleted: Timestamp };
 
-export const isDeletionTime = (value: unknown): value is DeletionTime => {
-  if (typeof value !== "object" || value === null) return false;
-  const { whenDeleted } = value as Partial<DeletionTime>;
+export const isDeletionTime = (arg: unknown): arg is DeletionTime => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { whenDeleted } = arg as Partial<DeletionTime>;
   return isTimestamp(whenDeleted);
 };
 
@@ -45,9 +47,9 @@ export const deletedNow: DeletedNow = () => ({ whenDeleted: now() });
 
 export type UpdateTime = { readonly whenUpdated: Timestamp };
 
-export const isUpdateTime = (value: unknown): value is UpdateTime => {
-  if (typeof value !== "object" || value === null) return false;
-  const { whenUpdated } = value as Partial<UpdateTime>;
+export const isUpdateTime = (arg: unknown): arg is UpdateTime => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { whenUpdated } = arg as Partial<UpdateTime>;
   return isTimestamp(whenUpdated);
 };
 

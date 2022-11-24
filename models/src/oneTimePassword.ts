@@ -1,4 +1,4 @@
-import { EmailAddress } from "./email.js";
+import type { EmailAddress } from "./email.js";
 import type { Operation } from "./operation.js";
 import {
   CreationTime,
@@ -12,19 +12,17 @@ type OneTimePasswordCode = string;
 export const oneTimePasswordCodeLength = 6;
 
 export const isOneTimePasswordCode = (
-  value: unknown
-): value is OneTimePasswordCode => {
-  if (typeof value !== "string") return false;
-  return value.length === oneTimePasswordCodeLength;
-};
+  arg: unknown
+): arg is OneTimePasswordCode =>
+  typeof arg === "string" && arg.length === oneTimePasswordCodeLength;
 
 export type OneTimePassword = CreationTime & {
   code: OneTimePasswordCode;
 };
 
-export const isOneTimePassword = (value: unknown): value is OneTimePassword => {
-  if (typeof value !== "object" || value === null) return false;
-  const { code, whenCreated } = value as Partial<OneTimePassword>;
+export const isOneTimePassword = (arg: unknown): arg is OneTimePassword => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { code, whenCreated } = arg as Partial<OneTimePassword>;
   return isOneTimePasswordCode(code) && isCreationTime({ whenCreated });
 };
 

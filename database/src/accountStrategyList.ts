@@ -4,18 +4,18 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 import { getObject, putObject } from "./_dataBucket.js";
-import { accountStrategyListPathname } from "./_dataBucketLocators.js";
+import { pathname } from "./locators.js";
 
 export const readAccountStrategyList: ReadAccountStrategyList["func"] = async (
   key
 ) =>
   await getObject<ReadAccountStrategyList["out"]>({
-    Key: accountStrategyListPathname(key),
+    Key: pathname.accountStrategyList(key),
   });
 
 export const writeAccountStrategyList: WriteAccountStrategyList["func"] =
   async ({ accountId, strategies }) => {
-    const Key = accountStrategyListPathname({ accountId });
+    const Key = pathname.accountStrategyList({ accountId });
     await putObject({ Key, data: strategies });
     return updatedNow();
   };

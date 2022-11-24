@@ -1,4 +1,4 @@
-import { Item } from "./item.js";
-import { CreationTime } from "./time.js";
+import type { Item } from "./item.js";
+import type { CreationTime } from "./time.js";
 
 export type Executor = Item & CreationTime;

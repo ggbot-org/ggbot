@@ -7,16 +7,14 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { strategyFlowPathname } from "./_dataBucketLocators.js";
+import { pathname } from "./locators.js";
 import {
   ErrorPermissionOnStrategyItem,
   ErrorStrategyItemNotFound,
 } from "./errors.js";
 import { readStrategyAccountId } from "./strategy.js";
 
-/**
-@throws {ErrorStrategyItemNotFound}
-*/
+/** @throws {ErrorStrategyItemNotFound} */
 export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   accountId,
   source: strategyKey,
@@ -35,14 +33,12 @@ export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   });
 };
 
-export const readStrategyFlow: ReadStrategyFlow["func"] = async (strategyKey) =>
+export const readStrategyFlow: ReadStrategyFlow["func"] = async (arg) =>
   await getObject<ReadStrategyFlow["out"]>({
-    Key: strategyFlowPathname(strategyKey),
+    Key: pathname.strategyFlow(arg),
   });
 
-/**
-@throws {ErrorPermissionOnStrategyItem}
-*/
+/** @throws {ErrorPermissionOnStrategyItem} */
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   accountId,
   view,
@@ -61,14 +57,12 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
     view,
     ...whenUpdated,
   };
-  const Key = strategyFlowPathname(strategyKey);
+  const Key = pathname.strategyFlow(strategyKey);
   await putObject({ Key, data });
   return whenUpdated;
 };
 
-/**
-@throws {ErrorPermissionOnStrategyItem}
-*/
+/** @throws {ErrorPermissionOnStrategyItem} */
 export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
   accountId,
   ...strategyKey

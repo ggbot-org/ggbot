@@ -5,13 +5,13 @@ import {
   EmailAccount,
 } from "@ggbot2/models";
 import { getObject, putObject } from "./_dataBucket.js";
-import { emailAccountPathname } from "./_dataBucketLocators.js";
+import { pathname } from "./locators.js";
 
 export const createEmailAccount: CreateEmailAccount["func"] = async ({
   accountId,
   email,
 }) => {
-  const Key = emailAccountPathname(email);
+  const Key = pathname.emailAccount(email);
   const creationTime = createdNow();
   const data: EmailAccount = {
     accountId,
@@ -24,5 +24,5 @@ export const createEmailAccount: CreateEmailAccount["func"] = async ({
 
 export const readEmailAccount: ReadEmailAccount["func"] = async (email) =>
   await getObject<ReadEmailAccount["out"]>({
-    Key: emailAccountPathname(email),
+    Key: pathname.emailAccount(email),
   });
