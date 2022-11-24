@@ -8,6 +8,7 @@ import {
 } from "./nodes/arithmetic.js";
 import { Shift, Pop, Push } from "./nodes/array.js";
 import { CandlesChart } from "./nodes/charts.js";
+import { If } from "./nodes/conditional.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
 import { HeikinAshi } from "./nodes/indicators/candles.js";
 import {
@@ -34,6 +35,8 @@ export const nodesCatalog = {
   [Push.kind]: Push,
   // charts
   [CandlesChart.kind]: CandlesChart,
+  // conditional
+  [If.kind]: If,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,
