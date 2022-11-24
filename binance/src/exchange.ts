@@ -1,4 +1,4 @@
-import { TimeInterval } from "@ggbot2/time";
+import type { TimeInterval } from "@ggbot2/time";
 import type { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,

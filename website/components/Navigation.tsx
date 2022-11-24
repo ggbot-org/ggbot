@@ -1,6 +1,6 @@
 import { Header, Logo } from "@ggbot2/ui-components";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Navigation: FC = () => {
   return (

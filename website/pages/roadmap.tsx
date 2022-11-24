@@ -1,5 +1,5 @@
 import { Checkmark, CheckmarkProps } from "@ggbot2/ui-components";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Navigation } from "_components";
@@ -37,8 +37,8 @@ const Page: NextPage = () => {
         <h1>Roadmap</h1>
 
         <ul className="my-4">
-          {steps.map(({ content, ok }) => (
-            <div className="flex my-2">
+          {steps.map(({ content, ok }, i) => (
+            <div key={i} className="flex my-2">
               <Checkmark ok={ok} />
               {content}
             </div>

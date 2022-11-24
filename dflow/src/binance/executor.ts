@@ -1,6 +1,6 @@
 import type { Balance } from "@ggbot2/models";
 import type { DflowNodesCatalog } from "dflow";
-import {
+import type {
   DflowCommonExecutorContext,
   DflowCommonExecutorOutput,
   DflowExecutor,

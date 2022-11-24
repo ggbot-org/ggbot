@@ -1,5 +1,5 @@
 import { FC, FieldsetHTMLAttributes, ReactNode, useMemo } from "react";
-import { Color } from "./Color";
+import type { Color } from "./Color";
 
 export type FieldsetProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
   color?: Extract<Color, "danger">;

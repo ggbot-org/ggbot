@@ -22,7 +22,7 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import { strategyPathname, itemKeyToDirname, pathname } from "./locators.js";
+import { itemKeyToDirname, pathname } from "./locators.js";
 import {
   readAccountStrategyList,
   writeAccountStrategyList,
@@ -100,7 +100,7 @@ export const listStrategies: ListStrategies["func"] = async (strategyKey) => {
 
 export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
   await getObject<ReadStrategy["out"]>({
-    Key: strategyPathname(strategyKey),
+    Key: pathname.strategy(strategyKey),
   });
 
 /**
@@ -132,7 +132,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
     throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   if (strategy.accountId === accountId) {
     const renamedStrategy = { ...strategy, name: normalizeName(name) };
-    const Key = strategyPathname(strategyKey);
+    const Key = pathname.strategy(strategyKey);
     await putObject({ Key, data: renamedStrategy });
   }
   const strategies = (await readAccountStrategyList({ accountId })) ?? [];
@@ -162,7 +162,7 @@ export const deleteStrategy: DeleteStrategy["func"] = async (
       accountId,
       ...strategyKey,
     });
-  const Key = strategyPathname(strategyKey);
+  const Key = pathname.strategy(strategyKey);
   await deleteObject({ Key });
   await deleteStrategyExecution(accountStrategyKey);
   await deleteStrategyFlow(accountStrategyKey);

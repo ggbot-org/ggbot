@@ -1,5 +1,5 @@
-import { BinanceSymbolInfo } from "@ggbot2/binance";
-import { StrategyFlow } from "@ggbot2/models";
+import type { BinanceSymbolInfo } from "@ggbot2/binance";
+import type { StrategyFlow } from "@ggbot2/models";
 import { dflowBinancePrecision } from "./arithmetic.js";
 
 export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"];

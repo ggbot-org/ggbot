@@ -74,7 +74,6 @@ import {
   AccountStrategyKey,
   DayKey,
   EmailAddress,
-  StrategyDailyTransactionsKey,
   StrategyKey,
   normalizeEmailAddress,
 } from "@ggbot2/models";

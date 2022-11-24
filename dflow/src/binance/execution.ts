@@ -7,7 +7,7 @@ import {
 import type { Balance } from "@ggbot2/models";
 import type { DflowGraphExecutionReport } from "dflow";
 import { dflowBinanceZero as zero } from "./arithmetic.js";
-import { DflowBinanceSymbolInfo } from "./symbols.js";
+import type { DflowBinanceSymbolInfo } from "./symbols.js";
 import { BuyMarket, SellMarket } from "./nodes/trade.js";
 
 export const getBalancesFromExecutionSteps = (

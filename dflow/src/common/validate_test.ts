@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { now } from "@ggbot2/time";
 import type { DflowNodesCatalog } from "dflow";
 import { ErrorUknownDflowNodes } from "../errors.js";
-import { DflowExecutorView } from "./executor.js";
+import type { DflowExecutorView } from "./executor.js";
 import { commonNodeTextToDflowKind } from "./nodeResolution.js";
 import { dflowValidate } from "./validate.js";
 import { DflowCommonHostMock } from "./mocks/host.js";

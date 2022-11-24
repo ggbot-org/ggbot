@@ -6,7 +6,7 @@ import {
   headBucket,
   s3ServiceExceptionName,
 } from "@ggbot2/aws";
-import { CreateOutput } from "./_create.js";
+import type { CreateOutput } from "./_create.js";
 
 export type S3BucketStatus = {
   exists: boolean;

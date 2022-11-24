@@ -1,5 +1,5 @@
-import { AccountKey } from "@ggbot2/models";
-import { FC } from "react";
+import type { AccountKey } from "@ggbot2/models";
+import type { FC } from "react";
 import { useApiAction } from "_hooks";
 
 type Props = AccountKey;

@@ -1,4 +1,4 @@
-import { BinanceKline } from "@ggbot2/binance";
+import type { BinanceKline } from "@ggbot2/binance";
 
 export const kline: BinanceKline = [
   1499040000000, // Kline open time

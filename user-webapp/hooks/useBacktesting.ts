@@ -1,5 +1,5 @@
 import { BinanceDflowExecutor } from "@ggbot2/dflow";
-import { BalanceChangeEvent } from "@ggbot2/models";
+import type { BalanceChangeEvent } from "@ggbot2/models";
 import {
   Day,
   DayInterval,
@@ -12,7 +12,7 @@ import {
 import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
 import { BinanceDflowClient } from "_flow/binance";
-import { StrategyKey } from "_routing";
+import type { StrategyKey } from "_routing";
 import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
@@ -162,11 +162,11 @@ const backtestingReducer = (state: State, action: Action) => {
 
     case "UPDATE_BALANCE": {
       const { balanceHistory } = state;
-      const { timestamp, balances } = action;
+      const { whenCreated, balances } = action;
       return {
         ...state,
         balanceHistory: balanceHistory.concat({
-          timestamp,
+          whenCreated,
           balances,
         }),
       };
@@ -317,7 +317,11 @@ export const useBacktesting: UseBacktesting = ({
           flowViewGraph
         );
         if (balances.length > 0)
-          dispatch({ type: "UPDATE_BALANCE", timestamp, balances });
+          dispatch({
+            type: "UPDATE_BALANCE",
+            whenCreated: timestamp,
+            balances,
+          });
         // TODO check memory nodes
         dispatch({ type: "NEXT" });
       } catch (error) {

@@ -1,11 +1,8 @@
-import { SVGProps } from "react";
+import type { FC, SVGProps } from "react";
 
 type Props = SVGProps<SVGSVGElement>;
 
-export const Spinner: React.FC<Props> = ({
-  className = "",
-  ...props
-}: Props) => {
+export const Spinner: FC<Props> = ({ className = "", ...props }: Props) => {
   return (
     <svg
       className={["animate-spin -ml-1 mr-3 h-5 w-5", className ?? ""].join(" ")}

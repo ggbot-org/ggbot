@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Pill } from "../src/Pill";
+import type { FC } from "react";
+import { Pill } from "../src";
 
 export const Pills: FC = () => {
   return (

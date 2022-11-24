@@ -15,7 +15,7 @@ import {
   outputLastValue,
   outputValues,
 } from "../commonIO.js";
-import { MovingAverage } from "./movingAverages.js";
+import type { MovingAverage } from "./movingAverages.js";
 
 export const relativeStrengthIndex: MovingAverage = (values, period) => {
   const size = values.length;

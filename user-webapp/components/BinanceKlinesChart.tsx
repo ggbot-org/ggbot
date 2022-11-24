@@ -1,5 +1,5 @@
-import { BinanceExchange, BinanceKline } from "@ggbot2/binance";
-import { TimeInterval } from "@ggbot2/time";
+import type { BinanceExchange, BinanceKline } from "@ggbot2/binance";
+import type { TimeInterval } from "@ggbot2/time";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ChartOhlcv, ChartOhlcvProps } from "./ChartOhlcv";
 

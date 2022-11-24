@@ -1,6 +1,9 @@
 import { now, truncateTimestamp } from "@ggbot2/time";
 import { DflowHost, DflowHostConstructorArg } from "dflow";
-import { DflowExecutorView, DflowCommonExecutorContext } from "../executor.js";
+import type {
+  DflowExecutorView,
+  DflowCommonExecutorContext,
+} from "../executor.js";
 import { DflowLoader, load } from "../loader.js";
 import { commonNodeTextToDflowKind } from "../nodeResolution.js";
 

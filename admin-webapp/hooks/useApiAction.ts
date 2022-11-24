@@ -1,4 +1,4 @@
-import { DflowObject } from "dflow";
+import type { DflowObject } from "dflow";
 import useSWR from "swr";
 import type { ApiAction } from "_api/action";
 

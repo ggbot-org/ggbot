@@ -3,7 +3,7 @@ import {
   BinanceDflowExecutor,
   nodeTextToViewType,
 } from "@ggbot2/dflow";
-import { UpdateTime } from "@ggbot2/models";
+import type { UpdateTime } from "@ggbot2/models";
 import { Timestamp, now, truncateTimestamp } from "@ggbot2/time";
 import {
   DflowHost,
@@ -26,7 +26,7 @@ import {
   useState,
 } from "react";
 import { BinanceDflowClient } from "_flow/binance";
-import { StrategyKey } from "_routing";
+import type { StrategyKey } from "_routing";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type UseFlowView = (

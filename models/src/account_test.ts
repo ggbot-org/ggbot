@@ -31,7 +31,7 @@ describe("isAccount", () => {
       },
       {
         input: { id: nullId, email, whenCreated: "not a timestamp" },
-        output: true,
+        output: false,
       },
     ].forEach(({ input, output }) => {
       assert.equal(isAccount(input), output);

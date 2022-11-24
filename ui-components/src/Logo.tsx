@@ -1,9 +1,11 @@
+import type { FC } from "react";
+
 type Props = {
   animated?: boolean;
   size?: number;
 };
 
-export const Logo: React.FC<Props> = ({ animated, size }) => {
+export const Logo: FC<Props> = ({ animated, size }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

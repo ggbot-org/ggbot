@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, FC, PointerEventHandler, useMemo } from "react";
-import { Color } from "./Color";
+import type { Color } from "./Color";
 import { Spinner } from "./Spinner";
 
 export type ButtonOnClick = PointerEventHandler<HTMLButtonElement>;

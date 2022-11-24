@@ -1,7 +1,7 @@
 import { OK } from "./_consoleColors.js";
 import { isMainModule } from "./_isMainModule.js";
-import { CreateS3BucketOutput } from "./_s3.js";
-import { TaskOptions } from "./_task.js";
+import type { CreateS3BucketOutput } from "./_s3.js";
+import type { TaskOptions } from "./_task.js";
 import { createAssetsBucket } from "./s3-assets.js";
 import { createDataBucket } from "./s3-data.js";
 import { createDesignBucket } from "./s3-design.js";

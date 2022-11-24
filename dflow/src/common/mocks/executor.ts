@@ -1,6 +1,6 @@
 import type { DflowNodesCatalog } from "dflow";
-import { DflowCommonContext } from "../context.js";
-import {
+import type { DflowCommonContext } from "../context.js";
+import type {
   DflowCommonExecutorContext,
   DflowCommonExecutorOutput,
   DflowExecutor,

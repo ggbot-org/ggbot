@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Icon, iconNames } from "../src/";
+import type { FC } from "react";
+import { Icon, iconNames } from "../src";
 
 export const Icons: FC = () => {
   return (

@@ -11,8 +11,7 @@ const Component = () => {
 
   return <Button onClick={goBack}>go back</Button>
 }
-```
-*/
+``` */
 export const useGoBack = () => {
   const router = useRouter();
   return useCallback(() => {

@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import { BinanceConnectorRequestArg } from "./connector.js";
+import type { BinanceConnectorRequestArg } from "./connector.js";
 import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
 import type {
   BinanceAccountInformation,

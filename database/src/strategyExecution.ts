@@ -19,7 +19,7 @@ import {
 } from "@ggbot2/models";
 import { truncateTimestamp, now } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { pathname, strategyExecutionPathname } from "./locators.js";
+import { pathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
   ErrorAccountItemNotFound,
@@ -28,7 +28,6 @@ import {
 } from "./errors.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
-import path from "path";
 
 class Binance extends BinanceClient implements BinanceDflowClient {
   async candles(

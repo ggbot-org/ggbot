@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js";
 import { BinanceClientMock } from "./mocks/client.js";
-import { DflowBinanceSymbolInfo } from "./symbols.js";
+import type { DflowBinanceSymbolInfo } from "./symbols.js";
 
 describe("getDflowBinanceDynamicNodesCatalog", () => {
   it("creates Dflow nodes related with Binance symbols", async () => {

@@ -1,11 +1,11 @@
-import { BinanceExchangeInfo } from "@ggbot2/binance";
+import type { BinanceExchangeInfo } from "@ggbot2/binance";
 import { extractBinanceSymbolsFromFlow } from "@ggbot2/dflow";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { Button } from "@ggbot2/ui-components";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { binance } from "_flow/binance";
-import { BacktestingState, BacktestingDispatch } from "_hooks";
-import { StrategyFlow } from "_routing";
+import type { BacktestingState, BacktestingDispatch } from "_hooks";
+import type { StrategyFlow } from "_routing";
 import { BinanceKlinesChart } from "./BinanceKlinesChart";
 
 type Props = Pick<StrategyFlow, "view"> & {

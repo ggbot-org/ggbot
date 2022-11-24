@@ -34,7 +34,7 @@ useEffect(request, [request])
 ```
 */
 import { InternalServerError } from "@ggbot2/http-status-codes";
-import { DflowData, DflowObject } from "dflow";
+import type { DflowData, DflowObject } from "dflow";
 import { useCallback, useState } from "react";
 import {
   ApiAction,

@@ -87,7 +87,7 @@ export const renameAccount: RenameAccount["func"] = async ({
   const account = await readAccount({ accountId });
   if (!account)
     throw new ErrorAccountItemNotFound({ type: "Account", accountId });
-  const Key = accountPathname({ accountId });
+  const Key = pathname.account({ accountId });
   const data: Account = {
     ...account,
     name,
@@ -96,5 +96,5 @@ export const renameAccount: RenameAccount["func"] = async ({
   return updatedNow();
 };
 
-export const deleteAccount: DeleteAccount["func"] = async (_) =>
-  await deleteObject({ Key: accountPathname(_) });
+export const deleteAccount: DeleteAccount["func"] = async (arg) =>
+  await deleteObject({ Key: pathname.account(arg) });

@@ -75,6 +75,6 @@ export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
       accountId,
       ...strategyKey,
     });
-  const Key = strategyFlowPathname(strategyKey);
+  const Key = pathname.strategyFlow(strategyKey);
   return await deleteObject({ Key });
 };

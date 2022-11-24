@@ -1,9 +1,8 @@
 import { FC, HTMLAttributes, useMemo } from "react";
-
-type Color = "primary" | "neutral";
+import type { Color } from "./Color";
 
 type Props = Omit<HTMLAttributes<HTMLSpanElement>, "className"> & {
-  color?: Color;
+  color?: Extract<Color, "primary" | "neutral">;
 };
 
 function colorClassNames({ color }: Pick<Props, "color">) {

@@ -1,4 +1,4 @@
-import { FlowViewNodeTextToType } from "flow-view";
+import type { FlowViewNodeTextToType } from "flow-view";
 
 export type NodeTextToViewType = FlowViewNodeTextToType;
 

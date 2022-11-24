@@ -1,4 +1,4 @@
-import { StrategySchedulingStatus } from "@ggbot2/models";
+import type { StrategySchedulingStatus } from "@ggbot2/models";
 import { FC, useMemo } from "react";
 
 type Props = {
