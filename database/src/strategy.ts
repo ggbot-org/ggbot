@@ -1,13 +1,14 @@
 import {
-  AccountStrategyListItem,
+  AccountStrategy,
   CopyStrategy,
   CreateStrategy,
   DeleteStrategy,
-  ListStrategies,
+  ListStrategyKeys,
   ReadStrategy,
   ReadStrategyAccountId,
   RenameStrategy,
   Strategy,
+  StrategyKey,
   createdNow,
   deletedNow,
   isAccountKey,
@@ -22,11 +23,16 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import { itemKeyToDirname, pathname } from "./locators.js";
 import {
-  readAccountStrategyList,
-  writeAccountStrategyList,
-} from "./accountStrategyList.js";
+  dirnameDelimiter,
+  locatorToItemKey,
+  itemKeyToDirname,
+  pathname,
+} from "./locators.js";
+import {
+  readAccountStrategies,
+  writeAccountStrategies,
+} from "./accountStrategies.js";
 import {
   ErrorAccountItemNotFound,
   ErrorPermissionOnStrategyItem,
@@ -38,8 +44,7 @@ import { deleteStrategyMemory } from "./strategyMemory.js";
 
 /**
 @throws {ErrorInvalidArg}
-@throws {ErrorStrategyItemNotFound}
-*/
+@throws {ErrorStrategyItemNotFound} */
 export const copyStrategy: CopyStrategy["func"] = async ({
   accountId,
   name,
@@ -56,9 +61,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   });
 };
 
-/**
-@throws {ErrorInvalidArg}
-*/
+/** @throws {ErrorInvalidArg} */
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
   kind,
@@ -77,25 +80,32 @@ export const createStrategy: CreateStrategy["func"] = async ({
   };
   const Key = pathname.strategy(strategyKey);
   await putObject({ Key, data });
-  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
-  const strategyListItem: AccountStrategyListItem = {
+  const strategies = (await readAccountStrategies({ accountId })) ?? [];
+  const strategyListItem: AccountStrategy = {
     name,
     schedulingStatus: "inactive",
     ...strategyKey,
   };
-  await writeAccountStrategyList({
+  await writeAccountStrategies({
     accountId,
     strategies: strategies.concat(strategyListItem),
   });
   return data;
 };
 
-export const listStrategies: ListStrategies["func"] = async (strategyKey) => {
-  const Prefix = itemKeyToDirname.strategy(strategyKey);
-  const strategies = await listObjects({ Prefix });
-  // TODO destructure strategy paths
-  console.log(strategies);
-  return [];
+export const listStrategyKeys: ListStrategyKeys["func"] = async (
+  strategyKey
+) => {
+  const Prefix = itemKeyToDirname.strategy(strategyKey) + dirnameDelimiter;
+  const results = await listObjects({ Prefix });
+  if (!Array.isArray(results.Contents)) return Promise.resolve([]);
+  return (
+    results.Contents.reduce<StrategyKey[]>((list, { Key }) => {
+      if (typeof Key !== "string") return list;
+      const itemKey = locatorToItemKey.strategy(Key);
+      return isAccountKey(itemKey) ? list.concat(itemKey) : list;
+    }, []) ?? []
+  );
 };
 
 export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
@@ -135,8 +145,8 @@ export const renameStrategy: RenameStrategy["func"] = async ({
     const Key = pathname.strategy(strategyKey);
     await putObject({ Key, data: renamedStrategy });
   }
-  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
-  await writeAccountStrategyList({
+  const strategies = (await readAccountStrategies({ accountId })) ?? [];
+  await writeAccountStrategies({
     accountId,
     strategies: strategies.map(({ strategyId, name: itemName, ...item }) => ({
       strategyId,
@@ -167,8 +177,8 @@ export const deleteStrategy: DeleteStrategy["func"] = async (
   await deleteStrategyExecution(accountStrategyKey);
   await deleteStrategyFlow(accountStrategyKey);
   await deleteStrategyMemory(accountStrategyKey);
-  const strategies = (await readAccountStrategyList({ accountId })) ?? [];
-  await writeAccountStrategyList({
+  const strategies = (await readAccountStrategies({ accountId })) ?? [];
+  await writeAccountStrategies({
     accountId,
     strategies: strategies.filter(
       ({ strategyId }) => strategyId !== strategyKey.strategyId

@@ -8,7 +8,7 @@ import {
   deleteStrategy,
   executeStrategy,
   readAccount,
-  readAccountStrategyList,
+  readAccountStrategies,
   readBinanceApiConfig,
   readBinanceApiKeyPermissions,
   readStrategy,
@@ -37,7 +37,7 @@ import type {
   OperationInput,
   OperationOutput,
   ReadAccount,
-  ReadAccountStrategyList,
+  ReadAccountStrategies,
   ReadBinanceApiConfig,
   ReadStrategy,
   ReadStrategyFlow,
@@ -84,7 +84,7 @@ export type ApiActionResponseOutput<T> =
     }
   | ApiActionResponseError;
 
-type Action<Input, Output> = {
+type Action<Input extends OperationInput, Output extends OperationOutput> = {
   // AccountKey is provided by authentication, no need to add it as action input parameter.
   in: Input extends AccountKey ? Omit<Input, "accountId"> : Input;
   out: Output;
@@ -100,9 +100,9 @@ export type ApiAction = {
   DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
   EXECUTE_STRATEGY: Action<ExecuteStrategy["in"], ExecuteStrategy["out"]>;
   READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
-  READ_ACCOUNT_STRATEGY_LIST: Action<
-    ReadAccountStrategyList["in"],
-    ReadAccountStrategyList["out"]
+  READ_ACCOUNT_STRATEGIES: Action<
+    ReadAccountStrategies["in"],
+    ReadAccountStrategies["out"]
   >;
   READ_BINANCE_API_CONFIG: Action<
     ReadBinanceApiConfig["in"],
@@ -178,13 +178,8 @@ export default async function apiHandler(
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_ACCOUNT_STRATEGY_LIST": {
-        const data = await readAccountStrategyList({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "READ_ACCOUNT_STRATEGY_LIST": {
-        const data = await readAccountStrategyList({ accountId });
+      case "READ_ACCOUNT_STRATEGIES": {
+        const data = await readAccountStrategies({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 

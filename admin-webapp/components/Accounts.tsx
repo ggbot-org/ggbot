@@ -4,7 +4,7 @@ import { useApiAction } from "_hooks";
 import { Account } from "./Account";
 
 export const Accounts: FC = () => {
-  const { data } = useApiAction.READ_ACCOUNT_KEYS();
+  const { data } = useApiAction.LIST_ACCOUNT_KEYS();
 
   const { accountIds, numAccounts } = useMemo(() => {
     if (!data) return { accountIds: [], numAccounts: "" };

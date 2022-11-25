@@ -1,5 +1,5 @@
-/**
-Hook to use API actions: CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
+/** Hook to use API actions:
+CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
 
 It returns a `request` and a `response`.
 
@@ -33,7 +33,13 @@ const [request, response] = useApiAction.FOO_BAR();
 useEffect(request, [request])
 ```
 */
-import { InternalServerError } from "@ggbot2/http-status-codes";
+import {
+  ErrorHTTP,
+  InternalServerError,
+  __400__BAD_REQUEST__,
+  __401__UNAUTHORIZED__,
+  __500__INTERNAL_SERVER_ERROR__,
+} from "@ggbot2/http-status-codes";
 import type { DflowData, DflowObject } from "dflow";
 import { useCallback, useState } from "react";
 import {
@@ -104,7 +110,7 @@ const useAction = <Action extends ActionIO>({
         });
         if (!response.ok) {
           const { status } = response;
-          if (status === 400) {
+          if (status === __400__BAD_REQUEST__) {
             const responseOutput = await response.json();
             if (isApiActionResponseError(responseOutput)) {
               setResponse({
@@ -114,11 +120,11 @@ const useAction = <Action extends ActionIO>({
               return;
             }
           }
-          if (status === 401) {
+          if (status === __401__UNAUTHORIZED__) {
             setResponse({ error: { name: "Unauthorized" }, isPending: false });
             return;
           }
-          if (status === 500) {
+          if (status === __500__INTERNAL_SERVER_ERROR__) {
             setResponse({
               error: { name: InternalServerError.name },
               isPending: false,
@@ -126,7 +132,7 @@ const useAction = <Action extends ActionIO>({
             return;
           }
           // This error should not be thrown.
-          throw new Error(`${response.status} ${response.statusText}`);
+          throw new ErrorHTTP(response);
         }
         const responseOutput = await response.json();
         setResponse({
@@ -176,9 +182,9 @@ export const useApiAction = {
     useAction<ApiAction["EXECUTE_STRATEGY"]>({ type: "EXECUTE_STRATEGY" }),
   READ_ACCOUNT: () =>
     useAction<ApiAction["READ_ACCOUNT"]>({ type: "READ_ACCOUNT" }),
-  READ_ACCOUNT_STRATEGY_LIST: () =>
-    useAction<ApiAction["READ_ACCOUNT_STRATEGY_LIST"]>({
-      type: "READ_ACCOUNT_STRATEGY_LIST",
+  READ_ACCOUNT_STRATEGIES: () =>
+    useAction<ApiAction["READ_ACCOUNT_STRATEGIES"]>({
+      type: "READ_ACCOUNT_STRATEGIES",
     }),
   READ_BINANCE_API_CONFIG: () =>
     useAction<ApiAction["READ_BINANCE_API_CONFIG"]>({

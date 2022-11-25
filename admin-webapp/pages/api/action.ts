@@ -1,4 +1,4 @@
-import { readAccount, readAccountKeys } from "@ggbot2/database";
+import { readAccount, listAccountKeys } from "@ggbot2/database";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -9,7 +9,7 @@ import type {
   OperationInput,
   OperationOutput,
   ReadAccount,
-  ReadAccountKeys,
+  ListAccountKeys,
 } from "@ggbot2/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -48,11 +48,14 @@ export type ApiActionResponseOutput<T> =
       data?: T;
     } & Partial<ApiActionResponseToBadRequest>;
 
-type Action<Input, Output> = { in: Input; out: Output };
+type Action<Input extends OperationInput, Output extends OperationOutput> = {
+  in: Input;
+  out: Output;
+};
 
 export type ApiAction = {
   READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
-  READ_ACCOUNT_KEYS: Action<ReadAccountKeys["in"], ReadAccountKeys["out"]>;
+  LIST_ACCOUNT_KEYS: Action<ListAccountKeys["in"], ListAccountKeys["out"]>;
 };
 
 type ApiActionType = keyof ApiAction;
@@ -73,8 +76,8 @@ export default async function apiHandler(
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_ACCOUNT_KEYS": {
-        const data = await readAccountKeys();
+      case "LIST_ACCOUNT_KEYS": {
+        const data = await listAccountKeys();
         return res.status(__200__OK__).json({ data });
       }
 

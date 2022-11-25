@@ -12,7 +12,7 @@ export const Strategies: FC = () => {
   const [newStrategyIsLoading, setNewStrategyIsLoading] = useState(false);
 
   const [readStrategies, { data: strategies }] =
-    useApiAction.READ_ACCOUNT_STRATEGY_LIST();
+    useApiAction.READ_ACCOUNT_STRATEGIES();
 
   const onClickNewStrategy = useCallback<ButtonOnClick>(
     (event) => {

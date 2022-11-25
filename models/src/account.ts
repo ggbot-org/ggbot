@@ -42,6 +42,6 @@ export type ReadAccount = Operation<AccountKey, Account | null>;
 
 export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
 
-export type ReadAccountKeys = Operation<void, AccountKey[]>;
-
 export type DeleteAccount = Operation<AccountKey, DeletionTime>;
+
+export type ListAccountKeys = Operation<void, AccountKey[]>;

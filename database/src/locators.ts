@@ -75,14 +75,51 @@ import {
   DayKey,
   EmailAddress,
   StrategyKey,
+  isAccountKey,
+  isAccountStrategyKey,
+  isStrategyKey,
   normalizeEmailAddress,
+  isLiteralType,
 } from "@ggbot2/models";
-import { splitDay } from "@ggbot2/time";
+import { joinDay, isSplittedDay, splitDay } from "@ggbot2/time";
 
-export const dirnamePrefix = {
-  accountConfig: "accountConfig",
+export const dirnameDelimiter = "/";
+const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter);
+
+const fieldNames = [
+  "accountId",
+  "strategyKind",
+  "strategyId",
+  "y",
+  "m",
+  "d",
+] as const;
+type FieldName = typeof fieldNames[number];
+const isFieldName = isLiteralType<FieldName>(fieldNames);
+const fieldSeparator = "=";
+const fieldJoin = (name: FieldName, value: string) =>
+  [name, value].join(fieldSeparator);
+
+const dirnamePrefixes = [
+  "accountConfig",
+  "account",
+  "accountStrategies",
+  "accountTransactions",
+  "emailAccount",
+  "oneTimePassword",
+  "strategy",
+  "strategyExecution",
+  "strategyFlow",
+  "strategyMemory",
+  "strategyTransactions",
+] as const;
+
+type DirnamePrefix = typeof dirnamePrefixes[number];
+
+export const dirnamePrefix: Record<DirnamePrefix, string> = {
   account: "account",
-  accountStrategyList: "accountStrategies",
+  accountConfig: "accountConfig",
+  accountStrategies: "accountStrategies",
   accountTransactions: "accountTransactions",
   emailAccount: "emailAccount",
   oneTimePassword: "oneTimePassword",
@@ -93,71 +130,138 @@ export const dirnamePrefix = {
   strategyTransactions: "strategyTransactions",
 };
 
+const destructureLocator = (locator: string, fieldNames: FieldName[]) => {
+  const result: Record<string, string> = {};
+  for (const locatorPart of locator.split(dirnameDelimiter)) {
+    const [fieldName, value] = locatorPart.split(fieldSeparator);
+    if (!isFieldName(fieldName)) continue;
+    // If value is `undefined`, this `locatorPart` could be a prefix. Skip it.
+    if (value === undefined) continue;
+    if (fieldNames.includes(fieldName)) result[fieldName] = value;
+  }
+  return result;
+};
+
+export const locatorToItemKey = {
+  account: (locator: string): AccountKey | undefined => {
+    const obj = destructureLocator(locator, ["accountId"]);
+    return isAccountKey(obj) ? obj : undefined;
+  },
+  accountStrategy: (locator: string): AccountStrategyKey | undefined => {
+    const obj = destructureLocator(locator, [
+      "accountId",
+      "strategyKind",
+      "strategyId",
+    ]);
+    return isAccountStrategyKey(obj) ? obj : undefined;
+  },
+  day: (locator: string): DayKey | undefined => {
+    const obj = destructureLocator(locator, ["y", "m", "d"]);
+    return isSplittedDay(obj) ? { day: joinDay(obj) } : undefined;
+  },
+  strategy: (locator: string): StrategyKey | undefined => {
+    const obj = destructureLocator(locator, ["strategyKind", "strategyId"]);
+    return isStrategyKey(obj) ? obj : undefined;
+  },
+};
+
 export const itemKeyToDirname = {
-  account: ({ accountId }: AccountKey) => `accountId=${accountId}`,
+  account: ({ accountId }: AccountKey) => fieldJoin("accountId", accountId),
   accountStrategy: ({
     accountId,
     strategyKind,
     strategyId,
   }: AccountStrategyKey) =>
-    `${itemKeyToDirname.account({ accountId })}/${itemKeyToDirname.strategy({
-      strategyKind,
-      strategyId,
-    })}`,
+    [
+      itemKeyToDirname.account({ accountId }),
+      itemKeyToDirname.strategy({
+        strategyKind,
+        strategyId,
+      }),
+    ].join(dirnameDelimiter),
   day: ({ day }: DayKey) => {
     const [yyyy, mm, dd] = splitDay(day);
-    return `y=${yyyy}/m=${mm}/d=${dd}`;
+    return [`y=${yyyy}`, `m=${mm}`, `d=${dd}`].join(dirnameDelimiter);
   },
   strategy: ({ strategyId, strategyKind }: StrategyKey) =>
-    `strategyKind=${strategyKind}/strategyId=${strategyId}`,
+    [`strategyKind=${strategyKind}`, `strategyId=${strategyId}`].join(
+      dirnameDelimiter
+    ),
 };
 
 export const dirname = {
   account: (arg: AccountKey) =>
-    `${dirnamePrefix.account}/${itemKeyToDirname.account(arg)}`,
+    dirJoin([`${dirnamePrefix.account}`, `${itemKeyToDirname.account(arg)}`]),
   accountConfig: (arg: AccountKey) =>
-    `${dirname.accountConfig}/${itemKeyToDirname.account(arg)}`,
+    dirJoin([dirnamePrefix.accountConfig, itemKeyToDirname.account(arg)]),
   accountDailyTransactions: ({ accountId, day }: AccountDailyTransactionsKey) =>
-    `${dirname.accountTransactions({ accountId })}/${itemKeyToDirname.day({
-      day,
-    })}`,
-  accountStrategyList: (arg: AccountKey) =>
-    `${dirnamePrefix.accountStrategyList}/${itemKeyToDirname.account(arg)}`,
+    dirJoin([
+      dirname.accountTransactions({ accountId }),
+      itemKeyToDirname.day({
+        day,
+      }),
+    ]),
+  accountStrategies: (arg: AccountKey) =>
+    dirJoin([dirnamePrefix.accountStrategies, itemKeyToDirname.account(arg)]),
   accountTransactions: ({ accountId }: AccountKey) =>
-    `${dirnamePrefix.accountTransactions}/${itemKeyToDirname.account({
-      accountId,
-    })}`,
-  email: (arg: EmailAddress) => {
-    const normalizedEmailAddress = normalizeEmailAddress(arg);
-    return normalizedEmailAddress.split("@").reverse().join("/");
-  },
+    dirJoin([
+      dirnamePrefix.accountTransactions,
+      itemKeyToDirname.account({
+        accountId,
+      }),
+    ]),
+  email: (arg: EmailAddress) =>
+    dirJoin(normalizeEmailAddress(arg).split("@").reverse()),
   strategy: (arg: StrategyKey) =>
-    `${dirnamePrefix.strategy}/${itemKeyToDirname.strategy(arg)}`,
+    dirJoin([dirnamePrefix.strategy, itemKeyToDirname.strategy(arg)]),
   strategyExecution: (arg: AccountStrategyKey) =>
-    `${dirnamePrefix.strategyExecution}/${itemKeyToDirname.accountStrategy(
-      arg
-    )}`,
+    dirJoin([
+      dirnamePrefix.strategyExecution,
+      itemKeyToDirname.accountStrategy(arg),
+    ]),
   strategyFlow: (arg: StrategyKey) =>
-    `${dirnamePrefix.strategyFlow}/${itemKeyToDirname.strategy(arg)}`,
+    dirJoin([dirnamePrefix.strategyFlow, itemKeyToDirname.strategy(arg)]),
   strategyMemory: (arg: StrategyKey) =>
-    `${dirnamePrefix.strategyMemory}/${itemKeyToDirname.strategy(arg)}`,
+    dirJoin([dirnamePrefix.strategyMemory, itemKeyToDirname.strategy(arg)]),
+};
+
+const filename = {
+  account: "account.json",
+  accountStrategies: "strategies.json",
+  binanceApiConfig: "binance.json",
+  emailAccount: "email.json",
+  oneTimePassword: "otp.json",
+  strategy: "strategy.json",
+  strategyExecution: "execution.json",
+  strategyFlow: "flow.json",
+  strategyMemory: "memory.json",
 };
 
 export const pathname = {
-  account: (arg: AccountKey) => `${dirname.account(arg)}/account.json`,
-  accountStrategyList: (arg: AccountKey) =>
-    `${dirname.accountStrategyList(arg)}/strategies.json`,
+  account: (arg: AccountKey) =>
+    dirJoin([dirname.account(arg), filename.account]),
+  accountStrategies: (arg: AccountKey) =>
+    dirJoin([dirname.accountStrategies(arg), filename.accountStrategies]),
   binanceApiConfig: (arg: AccountKey) =>
-    `${dirname.accountConfig(arg)}/binance.json`,
+    dirJoin([dirname.accountConfig(arg), filename.binanceApiConfig]),
   emailAccount: (arg: EmailAddress) =>
-    `${dirnamePrefix.emailAccount}/${dirname.email(arg)}/email.json`,
+    dirJoin([
+      dirnamePrefix.emailAccount,
+      dirname.email(arg),
+      filename.emailAccount,
+    ]),
   oneTimePassword: (arg: EmailAddress) =>
-    `${dirnamePrefix.oneTimePassword}/${dirname.email(arg)}/otp.json`,
+    dirJoin([
+      dirnamePrefix.oneTimePassword,
+      dirname.email(arg),
+      filename.oneTimePassword,
+    ]),
   strategy: (arg: StrategyKey) =>
-    `${itemKeyToDirname.strategy(arg)}/strategy.json`,
+    dirJoin([itemKeyToDirname.strategy(arg), filename.strategy]),
   strategyExecution: (arg: AccountStrategyKey) =>
-    `${dirname.strategyExecution(arg)}/execution.json`,
-  strategyFlow: (arg: StrategyKey) => `${dirname.strategyFlow(arg)}/flow.json`,
+    dirJoin([dirname.strategyExecution(arg), filename.strategyExecution]),
+  strategyFlow: (arg: StrategyKey) =>
+    dirJoin([dirname.strategyFlow(arg), filename.strategyFlow]),
   strategyMemory: (arg: AccountStrategyKey) =>
-    `${dirname.strategyMemory(arg)}/memory.json`,
+    dirJoin([dirname.strategyMemory(arg), filename.strategyMemory]),
 };

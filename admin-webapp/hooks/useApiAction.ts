@@ -37,9 +37,9 @@ export const useApiAction = {
       { type: "READ_ACCOUNT", data },
       fetcher
     ),
-  READ_ACCOUNT_KEYS: () =>
-    useSWR<ApiAction["READ_ACCOUNT_KEYS"]["out"]>(
-      { type: "READ_ACCOUNT_KEYS" },
+  LIST_ACCOUNT_KEYS: () =>
+    useSWR<ApiAction["LIST_ACCOUNT_KEYS"]["out"]>(
+      { type: "LIST_ACCOUNT_KEYS" },
       fetcher
     ),
 };

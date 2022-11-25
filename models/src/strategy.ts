@@ -46,9 +46,7 @@ export type CopyStrategy = Operation<
 
 export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
 
-/**
-Input StrategyKey has strategyKind and partial strategyId.
-
+/** Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.
 @example
 Get all strategies with strategyId starting with 'a'.
 ```json
@@ -56,9 +54,13 @@ Get all strategies with strategyId starting with 'a'.
   "strategyKind": "binance",
   "strategyId": "a"
 }
-```
-*/
-export type ListStrategies = Operation<StrategyKey, StrategyKey[]>;
+``` */
+export type ListStrategyKeys = Operation<
+  Pick<StrategyKey, "strategyKind"> & {
+    strategyId: string;
+  },
+  StrategyKey[]
+>;
 
 export type ReadStrategy = Operation<StrategyKey, Strategy | null>;
 

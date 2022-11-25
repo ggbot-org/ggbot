@@ -3,8 +3,8 @@ import {
   AccountKey,
   CreateAccount,
   DeleteAccount,
+  ListAccountKeys,
   ReadAccount,
-  ReadAccountKeys,
   RenameAccount,
   createdNow,
   isAccountKey,
@@ -18,7 +18,12 @@ import {
   listObjects,
   putObject,
 } from "./_dataBucket.js";
-import { dirnamePrefix, pathname } from "./locators.js";
+import {
+  dirnameDelimiter,
+  dirnamePrefix,
+  locatorToItemKey,
+  pathname,
+} from "./locators.js";
 import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
@@ -38,8 +43,8 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
 export const readAccount: ReadAccount["func"] = async (accountKey) =>
   await getObject<ReadAccount["out"]>({ Key: pathname.account(accountKey) });
 
-export const readAccountKeys: ReadAccountKeys["func"] = async () => {
-  const Prefix = dirnamePrefix.account;
+export const listAccountKeys: ListAccountKeys["func"] = async () => {
+  const Prefix = dirnamePrefix.account + dirnameDelimiter;
   const results = await listObjects({
     Prefix,
   });
@@ -47,30 +52,8 @@ export const readAccountKeys: ReadAccountKeys["func"] = async () => {
   return (
     results.Contents.reduce<AccountKey[]>((list, { Key }) => {
       if (typeof Key !== "string") return list;
-      // TODO
-      // change folder structure
-      //
-      // from
-      //
-      // account/xxx/account.json
-      //            /strategies.json
-      //            /subscription.json
-      //
-      // to
-      //
-      // account/accountId=xxx/account.json
-      // accountStrategies/accountId=xxx/strategies.json
-      // accountSubscription/accountId=xxx/subscription.json
-      //
-      // By now this custom logic is implemented
-      // to get unique accounts and parse account key
-      if (!Key.includes("account.json")) return list;
-
-      const accountId = Key.split("/")[1];
-      const accountKey = { accountId };
-      if (isAccountKey(accountKey)) return list.concat(accountKey);
-
-      return list;
+      const itemKey = locatorToItemKey.account(Key);
+      return isAccountKey(itemKey) ? list.concat(itemKey) : list;
     }, []) ?? []
   );
 };

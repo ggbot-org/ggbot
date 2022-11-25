@@ -38,7 +38,7 @@ export const BacktestControllerBinance: FC<Props> = ({
     if (isRunning) dispatch({ type: "PAUSE" });
     if (isPaused) dispatch({ type: "RESUME" });
     else if (isEnabled) dispatch({ type: "START" });
-  }, [dispatch, isPaused, isRunning]);
+  }, [dispatch, isEnabled, isPaused, isRunning]);
 
   const selectedSymbols = useMemo<string[] | undefined>(() => {
     if (!exchangeInfo) return;
