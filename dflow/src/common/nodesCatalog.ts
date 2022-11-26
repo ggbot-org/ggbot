@@ -18,6 +18,7 @@ import {
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
+import { NullishCoaleshing } from "./nodes/logic.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Time, TimeToDay, TimeMinus, TimePlus, Today } from "./nodes/time.js";
 
@@ -37,6 +38,8 @@ export const nodesCatalog = {
   [CandlesChart.kind]: CandlesChart,
   // conditional
   [If.kind]: If,
+  // logic
+  [NullishCoaleshing.kind]: NullishCoaleshing,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,

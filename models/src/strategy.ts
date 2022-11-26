@@ -35,8 +35,8 @@ export type StrategyKey = Readonly<{
 
 export const isStrategyKey = (arg: unknown): arg is StrategyKey => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { strategyId, strategyKind } = arg as Partial<StrategyKey>;
-  return isItemId(strategyId) && isStrategyKind(strategyKind);
+  const { strategyId: id, strategyKind } = arg as Partial<StrategyKey>;
+  return isItemId(id) && isStrategyKind(strategyKind);
 };
 
 export type CopyStrategy = Operation<

@@ -1,4 +1,6 @@
-import { BinanceDflowExecutor } from "@ggbot2/dflow";
+// TODO use markers to show sell and buy
+// https://jsfiddle.net/TradingView/nd80cx1a/
+import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
 import type { BalanceChangeEvent } from "@ggbot2/models";
 import {
   Day,
@@ -16,16 +18,17 @@ import type { StrategyKey } from "_routing";
 import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
-type State = StrategyKey & {
-  stepIndex: number;
-  balanceHistory: BalanceChangeEvent[];
-  isEnabled: boolean;
-  isRunning: boolean;
-  isPaused: boolean;
-  dayInterval: DayInterval;
-  timestamps: Timestamp[];
-  maxDay: Day;
-};
+type State = StrategyKey &
+  Pick<DflowCommonContext, "memory"> & {
+    stepIndex: number;
+    balanceHistory: BalanceChangeEvent[];
+    isEnabled: boolean;
+    isRunning: boolean;
+    isPaused: boolean;
+    dayInterval: DayInterval;
+    timestamps: Timestamp[];
+    maxDay: Day;
+  };
 export type BacktestingState = State;
 
 type PersistingState = Pick<State, "isEnabled" | "dayInterval">;
@@ -60,9 +63,10 @@ type Action =
   | {
       type: "END";
     }
-  | {
+  | ({
       type: "NEXT";
-    }
+      balanceChangeEvent?: BalanceChangeEvent;
+    } & Pick<State, "memory">)
   | {
       type: "PAUSE";
     }
@@ -77,10 +81,7 @@ type Action =
     }
   | {
       type: "TOGGLE";
-    }
-  | ({
-      type: "UPDATE_BALANCE";
-    } & BalanceChangeEvent);
+    };
 
 export type BacktestingDispatch = Dispatch<Action>;
 
@@ -105,8 +106,14 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "NEXT": {
+      const { balanceHistory } = state;
+      const { balanceChangeEvent, memory } = action;
       return {
         ...state,
+        balanceHistory: balanceChangeEvent
+          ? balanceHistory.concat(balanceChangeEvent)
+          : balanceHistory,
+        memory,
         stepIndex: state.stepIndex + 1,
       };
     }
@@ -149,6 +156,7 @@ const backtestingReducer = (state: State, action: Action) => {
         balanceHistory: [],
         isPaused: false,
         isRunning: true,
+        memory: {},
         stepIndex: 0,
       };
     }
@@ -158,18 +166,6 @@ const backtestingReducer = (state: State, action: Action) => {
       return isEnabled
         ? { ...state, isEnabled: false, isRunning: false, isPaused: true }
         : { ...state, isEnabled: true };
-    }
-
-    case "UPDATE_BALANCE": {
-      const { balanceHistory } = state;
-      const { whenCreated, balances } = action;
-      return {
-        ...state,
-        balanceHistory: balanceHistory.concat({
-          whenCreated,
-          balances,
-        }),
-      };
     }
 
     default:
@@ -209,6 +205,7 @@ const getInitialState =
         stepIndex: 0,
         isPaused: false,
         isRunning: false,
+        memory: {},
         maxDay,
         timestamps: computeTimestamps(persistingState.dayInterval),
         ...strategyKey,
@@ -225,6 +222,7 @@ const getInitialState =
       isEnabled: false,
       isPaused: false,
       isRunning: false,
+      memory: {},
       stepIndex: 0,
       timestamps: computeTimestamps(dayInterval),
       maxDay,
@@ -290,6 +288,7 @@ export const useBacktesting: UseBacktesting = ({
     dayInterval,
     isEnabled,
     isRunning: backtestIsRunning,
+    memory: previousMemory,
     stepIndex,
     timestamps,
   } = state;
@@ -312,18 +311,22 @@ export const useBacktesting: UseBacktesting = ({
           binanceSymbols,
           nodesCatalog
         );
-        const { balances } = await executor.run(
-          { memory: {}, timestamp },
+        const { balances, memory } = await executor.run(
+          { memory: previousMemory, timestamp },
           flowViewGraph
         );
-        if (balances.length > 0)
-          dispatch({
-            type: "UPDATE_BALANCE",
-            whenCreated: timestamp,
-            balances,
-          });
-        // TODO check memory nodes
-        dispatch({ type: "NEXT" });
+        const balanceChangeEvent =
+          balances.length === 0
+            ? undefined
+            : {
+                whenCreated: timestamp,
+                balances,
+              };
+        dispatch({
+          type: "NEXT",
+          balanceChangeEvent,
+          memory,
+        });
       } catch (error) {
         console.error(error);
         dispatch({ type: "END" });

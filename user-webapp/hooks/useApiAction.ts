@@ -40,7 +40,11 @@ import {
   __401__UNAUTHORIZED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import type { DflowData, DflowObject } from "dflow";
+import type {
+  Operation,
+  OperationInput,
+  OperationOutput,
+} from "@ggbot2/models";
 import { useCallback, useState } from "react";
 import {
   ApiAction,
@@ -50,10 +54,10 @@ import {
   isApiActionResponseError,
 } from "_api/action";
 
-type ActionIO = { in: DflowObject; out: DflowData | null };
-
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];
+
+type ActionIO = Pick<Operation<OperationInput, OperationOutput>, "in" | "out">;
 
 type ActionError = {
   name: ErrorName | ApiActionErrorName;
@@ -79,7 +83,7 @@ const useAction = <Action extends ActionIO>({
   });
 
   const request = useCallback<UseActionRequest>(
-    (arg) => {
+    (arg: Action["in"]) => {
       const controller = new AbortController();
       const { abort, signal } = controller;
       const timeout = 10000;

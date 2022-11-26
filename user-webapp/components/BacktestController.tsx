@@ -29,6 +29,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     balanceHistory,
     currentTimestamp,
     maxDay,
+    memoryItems,
     dayInterval,
     numSteps,
     stepIndex,
@@ -38,6 +39,8 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       return {
         balanceHistory: [],
         currentTimestamp: undefined,
+        memoryItems: [],
+        noMemory: true,
         maxDay: undefined,
         dayInterval: undefined,
         numSteps: undefined,
@@ -48,6 +51,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       balanceHistory,
       dayInterval,
       maxDay,
+      memory,
       stepIndex,
       strategyKind,
       timestamps,
@@ -56,10 +60,16 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     const currentTimestamp = timestamps[stepIndex];
     const numSteps = timestamps.length;
 
+    const memoryItems = Object.entries(memory).map(([key, value]) => ({
+      key,
+      value,
+    }));
+
     return {
       balanceHistory,
       currentTimestamp,
       maxDay,
+      memoryItems,
       dayInterval,
       numSteps,
       stepIndex,
@@ -75,7 +85,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   if (!state || !state.isEnabled) return null;
 
   return (
-    <div className="my-2">
+    <div className="my-2 flex flex-col gap-2">
       <DailyIntervalSelector
         max={maxDay}
         startDay={dayInterval?.start}
@@ -84,6 +94,23 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       <div>
         <span>{`${stepIndex} of ${numSteps} intervals`}</span>
         <DateTime format="time" value={currentTimestamp} />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-row gap-1">
+          <span>Memory</span>
+          {memoryItems.length === 0 ? <span>(empty)</span> : null}
+        </div>
+        <div>
+          {memoryItems.map(({ key, value }) => (
+            <div key={key} className="flex flex-row gap-1">
+              <span>{key}:</span>
+              <pre>
+                <code>{JSON.stringify(value, null, 2)}</code>
+              </pre>
+            </div>
+          ))}
+        </div>
       </div>
 
       <ProfitSummary

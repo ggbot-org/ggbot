@@ -32,8 +32,8 @@ export type AccountKey = ItemKey<{
 
 export const isAccountKey = (value: unknown): value is AccountKey => {
   if (typeof value !== "object" || value === null) return false;
-  const { accountId } = value as Partial<AccountKey>;
-  return isItemId(accountId);
+  const { accountId: id } = value as Partial<AccountKey>;
+  return isItemId(id);
 };
 
 export type CreateAccount = Operation<NewItem<Account>, Account>;

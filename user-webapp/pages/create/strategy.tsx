@@ -28,7 +28,7 @@ const Page: NextPage = () => {
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name)) create({ data: { kind: "binance", name } });
+        if (isName(name)) create({ kind: "binance", name });
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
           toast.error("Invalid strategy name");

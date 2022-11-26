@@ -39,15 +39,15 @@ class Binance extends BinanceClient implements BinanceDflowClient {
   }
 }
 
-/**
-Execute a ggbot2 strategy.
+/** Execute a ggbot2 strategy.
 
-It can point to the actual exchange or simulate an execution with a given balance or at a given time.
+It can either:
+  - Point to the actual exchange.
+  - Simulate an execution with a given balance or at a given time.
 
 @throws {ErrorAccountItemNotFound}
 @throws {ErrorStrategyItemNotFound}
-@throws {ErrorUnimplementedStrategyKind}
-*/
+@throws {ErrorUnimplementedStrategyKind} */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   strategyId,

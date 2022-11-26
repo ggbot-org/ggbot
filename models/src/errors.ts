@@ -1,3 +1,16 @@
+import type { QuotaType } from "./quotas.js";
+
+export class ErrorExceededQuota extends Error {
+  static message(type: ErrorExceededQuota["type"]) {
+    return `${type} quota exceeded`;
+  }
+  readonly type: QuotaType;
+  constructor({ type }: Pick<ErrorExceededQuota, "type">) {
+    super(ErrorExceededQuota.message(type));
+    this.type = type;
+  }
+}
+
 export class ErrorInvalidArg extends Error {
   static message(type: ErrorInvalidArg["type"]) {
     return `Invalid ${type}`;
