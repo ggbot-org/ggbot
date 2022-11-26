@@ -1,4 +1,5 @@
 export * from "./account.js";
+export * from "./accountDailyOrders.js";
 export * from "./accountStrategies.js";
 export * from "./binanceApiConfig.js";
 export * from "./binanceApiKeyPermissions.js";
@@ -7,6 +8,7 @@ export * from "./errors.js";
 export * from "./locators.js";
 export * from "./oneTimePassword.js";
 export * from "./strategy.js";
+export * from "./strategyDailyBalanceChanges.js";
 export * from "./strategyExecution.js";
 export * from "./strategyFlow.js";
 export * from "./strategyMemory.js";

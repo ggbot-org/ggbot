@@ -200,6 +200,10 @@ export const useApiAction = {
     }),
   READ_STRATEGY: () =>
     useAction<ApiAction["READ_STRATEGY"]>({ type: "READ_STRATEGY" }),
+  READ_STRATEGY_BALANCES: () =>
+    useAction<ApiAction["READ_STRATEGY_BALANCES"]>({
+      type: "READ_STRATEGY_BALANCES",
+    }),
   READ_STRATEGY_FLOW: () =>
     useAction<ApiAction["READ_STRATEGY_FLOW"]>({ type: "READ_STRATEGY_FLOW" }),
   RENAME_ACCOUNT: () =>

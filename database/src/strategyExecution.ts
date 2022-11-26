@@ -15,6 +15,7 @@ import {
   ReadStrategyExecution,
   StrategyExecution,
   WriteStrategyExecution,
+  createdNow,
   updatedNow,
 } from "@ggbot2/models";
 import { truncateTimestamp, now } from "@ggbot2/time";
@@ -26,6 +27,7 @@ import {
   ErrorStrategyItemNotFound,
   ErrorUnimplementedStrategyKind,
 } from "./errors.js";
+import { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
@@ -84,6 +86,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       const executor = new BinanceDflowExecutor(binance, symbols, nodesCatalog);
       const {
+        balances,
         execution,
         memory: memoryOutput,
         memoryChanged,
@@ -96,24 +99,34 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       );
 
       // Handle memory changes.
-      if (memoryChanged) {
+      if (memoryChanged)
         await writeStrategyMemory({
           accountId,
           strategyKind,
           strategyId,
           memory: memoryOutput,
         });
+
+      // TODO extract orders from execution
+      // update order pools with orders that has temporary state
+      // write other orders (e.g. filled) in history
+
+      if (balances.length > 0) {
+        const { whenCreated } = createdNow();
+        const day = truncateTimestamp(whenCreated).to.day();
+        await appendStrategyDailyBalanceChanges({
+          accountId,
+          strategyKind,
+          strategyId,
+          day,
+          items: [{ whenCreated, balances }],
+        });
       }
 
-      const executionStatus =
-        execution?.status === "success" ? "success" : "failure";
+      const status = execution?.status === "success" ? "success" : "failure";
+      const steps = execution?.steps ?? [];
 
-      return {
-        status: executionStatus,
-        memory: memoryOutput,
-        steps: execution?.steps ?? [],
-        ...updatedNow(),
-      };
+      return { status, memory: memoryOutput, steps, ...updatedNow() };
     }
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {

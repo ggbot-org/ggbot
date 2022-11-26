@@ -53,7 +53,7 @@ export class ErrorPermissionOnStrategyItem extends Error {
   readonly accountId: AccountKey["accountId"];
   readonly strategyKind: StrategyKey["strategyKind"];
   readonly strategyId: StrategyKey["strategyId"];
-  readonly action: "delete" | "write";
+  readonly action: "delete" | "read" | "write";
   readonly type: "Strategy" | "StrategyFlow";
   constructor({
     accountId,

@@ -1,7 +1,4 @@
-import { CreationTime, isCreationTime } from "./time.js";
-
-/**
-A Balance is an abstract representation of an asset owned.
+/** A Balance is an abstract representation of an asset owned.
 
 Values can be negative, for example a simulation could start with an empty list of balances.
 @example
@@ -23,8 +20,7 @@ Then after buying BTC for a worth of 1000 BUSD we have the following balances.
     "locked": "0"
   }
 ]
-```
-*/
+``` */
 export type Balance = {
   /** Asset symbol, e.g. BTC, ETH. */
   asset: string;
@@ -42,17 +38,4 @@ export const isBalance = (arg: unknown): arg is Balance => {
     typeof free === "string" &&
     typeof locked === "string"
   );
-};
-
-export type BalanceChangeEvent = CreationTime & {
-  balances: Balance[];
-};
-
-export const isBalanceChangeEvent = (
-  arg: unknown
-): arg is BalanceChangeEvent => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { balances, ...creationTime } = arg as Partial<BalanceChangeEvent>;
-  if (!isCreationTime(creationTime)) return false;
-  return Array.isArray(balances) && balances.every((item) => isBalance(item));
 };

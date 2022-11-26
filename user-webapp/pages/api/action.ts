@@ -15,6 +15,7 @@ import {
   readStrategyFlow,
   renameAccount,
   renameStrategy,
+  readStrategyBalances,
   writeStrategyFlow,
 } from "@ggbot2/database";
 import {
@@ -40,6 +41,7 @@ import type {
   ReadAccountStrategies,
   ReadBinanceApiConfig,
   ReadStrategy,
+  ReadStrategyBalances,
   ReadStrategyFlow,
   RenameAccount,
   RenameStrategy,
@@ -114,6 +116,10 @@ export type ApiAction = {
   >;
   READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
   READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
+  READ_STRATEGY_BALANCES: Action<
+    ReadStrategyBalances["in"],
+    ReadStrategyBalances["out"]
+  >;
   RENAME_ACCOUNT: Action<RenameAccount["in"], RenameAccount["out"]>;
   RENAME_STRATEGY: Action<RenameStrategy["in"], RenameStrategy["out"]>;
   WRITE_STRATEGY_FLOW: Action<
@@ -199,6 +205,11 @@ export default async function apiHandler(
 
       case "READ_STRATEGY": {
         const data = await readStrategy(action.data);
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "READ_STRATEGY_BALANCES": {
+        const data = await readStrategyBalances(action.data);
         return res.status(__200__OK__).json({ data });
       }
 

@@ -1,6 +1,10 @@
 import {
+  InsertAccountStrategiesItem,
+  DeleteAccountStrategiesItem,
+  UpdateAccountStrategiesItem,
   ReadAccountStrategies,
-  WriteAccountStrategies,
+  deletedNow,
+  createdNow,
   updatedNow,
 } from "@ggbot2/models";
 import { getObject, putObject } from "./_dataBucket.js";
@@ -13,11 +17,34 @@ export const readAccountStrategies: ReadAccountStrategies["func"] = async (
     Key: pathname.accountStrategies(key),
   });
 
-export const writeAccountStrategies: WriteAccountStrategies["func"] = async ({
-  accountId,
-  strategies,
-}) => {
-  const Key = pathname.accountStrategies({ accountId });
-  await putObject({ Key, data: strategies });
-  return updatedNow();
-};
+export const insertAccountStrategiesItem: InsertAccountStrategiesItem["func"] =
+  async ({ accountId, item }) => {
+    const items = (await readAccountStrategies({ accountId })) ?? [];
+    const data = [...items, item];
+    const Key = pathname.accountStrategies({ accountId });
+    await putObject({ Key, data });
+    return createdNow();
+  };
+
+export const updateAccountStrategiesItem: UpdateAccountStrategiesItem["func"] =
+  async ({ accountId, strategyId, changes }) => {
+    const items = (await readAccountStrategies({ accountId })) ?? [];
+    const data = items.map((item) => {
+      if (item.strategyId !== strategyId) return item;
+      return { ...item, ...changes };
+    });
+    const Key = pathname.accountStrategies({ accountId });
+    await putObject({ Key, data });
+    return updatedNow();
+  };
+
+export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem["func"] =
+  async ({ accountId, strategyId }) => {
+    const items = (await readAccountStrategies({ accountId })) ?? [];
+    const data = items.filter((item) => item.strategyId !== strategyId);
+    if (data.length !== items.length) {
+      const Key = pathname.accountStrategies({ accountId });
+      await putObject({ Key, data });
+    }
+    return deletedNow();
+  };

@@ -1,12 +1,10 @@
 import { AccountKey, isAccountKey } from "./account.js";
 import { isName } from "./name.js";
-import type { Operation } from "./operation.js";
 import { Strategy, StrategyKey, isStrategyKey } from "./strategy.js";
 import {
-  StrategySchedulingStatus,
-  isStrategySchedulingStatus,
+  StrategyScheduling,
+  isStrategyScheduling,
 } from "./strategyScheduling.js";
-import type { DeletionTime, UpdateTime } from "./time.js";
 
 export type AccountStrategyKey = AccountKey & StrategyKey;
 
@@ -20,33 +18,15 @@ export const isAccountStrategyKey = (
 
 export type AccountStrategy = StrategyKey &
   Pick<Strategy, "name"> & {
-    schedulingStatus: StrategySchedulingStatus;
+    schedulings: StrategyScheduling[];
   };
 
 export const isAccountStrategy = (arg: unknown): arg is AccountStrategy => {
   if (typeof arg !== "object" || arg === null) return false;
-  const { name, schedulingStatus, ...strategyKey } =
-    arg as Partial<AccountStrategy>;
+  const { name, schedulings, ...strategyKey } = arg as Partial<AccountStrategy>;
+  if (!isStrategyKey(strategyKey) || !isName(name)) return false;
   return (
-    isStrategyKey(strategyKey) &&
-    isName(name) &&
-    isStrategySchedulingStatus(schedulingStatus)
+    Array.isArray(schedulings) &&
+    schedulings.every((item) => isStrategyScheduling(item))
   );
 };
-
-export type AccountStrategies = AccountStrategy[];
-
-export const isAccountStrategies = (arg: unknown): arg is AccountStrategies =>
-  Array.isArray(arg) && arg.every((item) => isAccountStrategy(item));
-
-export type ReadAccountStrategies = Operation<
-  AccountKey,
-  AccountStrategies | null
->;
-
-export type WriteAccountStrategies = Operation<
-  AccountKey & { strategies: AccountStrategies },
-  UpdateTime
->;
-
-export type DeleteAccountStrategies = Operation<AccountKey, DeletionTime>;

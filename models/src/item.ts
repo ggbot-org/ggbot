@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import type { CreationTime } from "./time.js";
 
 type ItemId = string;
@@ -18,6 +19,8 @@ export type Item = ItemKey<{
 export const itemIdCharacters = "abcdefghijklmnopqrstuvwxyz1234567890-";
 
 export const nullId = "00000000-0000-0000-0000-000000000000";
+
+export const newId = (): ItemId => randomUUID();
 
 export type NewItem<T extends Item> = T extends Item & CreationTime
   ? Omit<T, "id" | "whenCreated">

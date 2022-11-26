@@ -48,7 +48,7 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   if (accountId !== ownerId)
     throw new ErrorPermissionOnStrategyItem({
       type: "StrategyFlow",
-      action: "delete",
+      action: "write",
       accountId,
       ...strategyKey,
     });
