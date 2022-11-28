@@ -210,6 +210,10 @@ export const useApiAction = {
     useAction<ApiAction["RENAME_ACCOUNT"]>({ type: "RENAME_ACCOUNT" }),
   RENAME_STRATEGY: () =>
     useAction<ApiAction["RENAME_STRATEGY"]>({ type: "RENAME_STRATEGY" }),
+  UPDATE_ACCOUNT_STRATEGIES_ITEM: () =>
+    useAction<ApiAction["UPDATE_ACCOUNT_STRATEGIES_ITEM"]>({
+      type: "UPDATE_ACCOUNT_STRATEGIES_ITEM",
+    }),
   WRITE_STRATEGY_FLOW: () =>
     useAction<ApiAction["WRITE_STRATEGY_FLOW"]>({
       type: "WRITE_STRATEGY_FLOW",
