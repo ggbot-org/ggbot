@@ -16,6 +16,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
+  SchedulingsController,
 } from "_components";
 import { useApiAction } from "_hooks";
 import {
@@ -189,6 +190,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           </li>
         </menu>
       </Fieldset>
+      <SchedulingsController />
     </Content>
   );
 };

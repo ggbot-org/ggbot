@@ -15,6 +15,7 @@ import {
   Content,
   LiveCheckbox,
   LiveCheckboxOnChange,
+  MemoryController,
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
@@ -294,8 +295,9 @@ const Page: NextPage<ServerSideProps> = ({
         <div
           className="w-full grow shadow dark:shadow-black"
           ref={flowViewContainerRef}
-        ></div>
-        <div className="my-2">memory</div>
+        />
+
+        <MemoryController />
       </div>
     </Content>
   );
