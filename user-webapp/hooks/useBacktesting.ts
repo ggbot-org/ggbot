@@ -10,6 +10,7 @@ import {
   dateToTimestamp,
   dayIntervalToDate,
   getDate,
+  timestampToTime,
 } from "@ggbot2/time";
 import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
@@ -298,13 +299,14 @@ export const useBacktesting: UseBacktesting = ({
     if (!flowViewGraph) return;
     const timestamp = timestamps[stepIndex];
     if (!timestamp) return;
+    const time = timestampToTime(timestamp);
 
     if (strategyKind === "binance") {
       try {
         if (!binanceSymbols) return;
         const binance = new BinanceDflowClient({
           balances: [],
-          timestamp,
+          time,
         });
         const executor = new BinanceDflowExecutor(
           binance,
@@ -312,14 +314,14 @@ export const useBacktesting: UseBacktesting = ({
           nodesCatalog
         );
         const { balances, memory } = await executor.run(
-          { memory: previousMemory, timestamp },
+          { memory: previousMemory, time },
           flowViewGraph
         );
         const balanceChangeEvent =
           balances.length === 0
             ? undefined
             : {
-                whenCreated: timestamp,
+                whenCreated: time,
                 balances,
               };
         dispatch({

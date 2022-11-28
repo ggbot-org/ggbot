@@ -13,7 +13,7 @@ export const testOtp: OneTimePassword = {
 export const testAccount1: Account = {
   id: "test1",
   email: "test@ggbot2.com",
-  whenCreated: "2022-08-25T17:36:20.841Z",
+  whenCreated: 1669636196576,
 };
 
 const testAccounts: Account[] = [testAccount1];

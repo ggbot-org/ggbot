@@ -48,7 +48,7 @@ describe("dflowValidate", () => {
   it("validates json nodes", () => {
     const dflow = new DflowCommonHostMock(
       { nodesCatalog: {} },
-      { memory: {}, timestamp: now() }
+      { memory: {}, time: now() }
     );
     const view: DflowExecutorView = {
       nodes: [

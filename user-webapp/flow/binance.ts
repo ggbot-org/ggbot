@@ -15,12 +15,7 @@ import {
   dflowBinanceZero as zero,
   dflowBinancePrecision,
 } from "@ggbot2/dflow";
-import {
-  Timestamp,
-  timestampToTime,
-  now,
-  truncateTimestamp,
-} from "@ggbot2/time";
+import { Time, now, truncateTime } from "@ggbot2/time";
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
@@ -28,11 +23,11 @@ export const binance = new BinanceExchange({
 
 export class BinanceDflowClient implements IBinanceDflowClient {
   readonly balances: BinanceBalance[] = [];
-  readonly timestamp: Timestamp = truncateTimestamp(now()).to.minute();
+  readonly time: Time = truncateTime(now()).to.minute();
 
-  constructor({ balances, timestamp }: BinanceDflowClientArg) {
+  constructor({ balances, time }: BinanceDflowClientArg) {
     this.balances = balances;
-    this.timestamp = timestamp;
+    this.time = time;
   }
 
   async account() {
@@ -54,8 +49,10 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
-    const startTime = timestampToTime(this.timestamp);
-    const klines = await binance.klines(symbol, interval, { startTime, limit });
+    const klines = await binance.klines(symbol, interval, {
+      startTime: this.time,
+      limit,
+    });
     return klines;
   }
 
@@ -119,8 +116,10 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
-    const startTime = timestampToTime(this.timestamp);
-    const klines = await binance.klines(symbol, "1m", { startTime, limit: 1 });
+    const klines = await binance.klines(symbol, "1m", {
+      startTime: this.time,
+      limit: 1,
+    });
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });
   }
@@ -128,5 +127,5 @@ export class BinanceDflowClient implements IBinanceDflowClient {
 
 export type BinanceDflowClientArg = Pick<
   BinanceDflowClient,
-  "balances" | "timestamp"
+  "balances" | "time"
 >;

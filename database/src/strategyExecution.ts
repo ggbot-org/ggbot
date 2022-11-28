@@ -18,7 +18,7 @@ import {
   createdNow,
   updatedNow,
 } from "@ggbot2/models";
-import { truncateTimestamp, now } from "@ggbot2/time";
+import { truncateTime, now, timeToDay } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
@@ -93,7 +93,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       } = await executor.run(
         {
           memory: memoryInput,
-          timestamp: truncateTimestamp(now()).to.second(),
+          time: truncateTime(now()).to.second(),
         },
         strategyFlow.view
       );
@@ -113,7 +113,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       if (balances.length > 0) {
         const { whenCreated } = createdNow();
-        const day = truncateTimestamp(whenCreated).to.day();
+        const day = timeToDay(truncateTime(whenCreated).to.day());
         await appendStrategyDailyBalanceChanges({
           accountId,
           strategyKind,

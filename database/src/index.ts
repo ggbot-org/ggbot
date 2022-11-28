@@ -8,6 +8,7 @@ export * from "./errors.js";
 export * from "./locators.js";
 export * from "./oneTimePassword.js";
 export * from "./strategy.js";
+export * from "./strategyBalances.js";
 export * from "./strategyDailyBalanceChanges.js";
 export * from "./strategyExecution.js";
 export * from "./strategyFlow.js";

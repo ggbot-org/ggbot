@@ -1,4 +1,4 @@
-import type { Timestamp } from "@ggbot2/time";
+import type { Time } from "@ggbot2/time";
 import type { DflowObject } from "dflow";
 
 /** DflowCommonContext to be shared among all dflow host implementations.
@@ -21,6 +21,6 @@ export type DflowCommonContext = {
   memory: DflowObject;
   /** The `memoryChanged` attribute is set to true by memory nodes every time there is a change (e.g. update or delete) in memory. */
   memoryChanged?: undefined | boolean;
-  /** Time related nodes use the `timestamp` value. */
-  timestamp: Timestamp;
+  /** Time related nodes read the `time` value. */
+  time: Time;
 };

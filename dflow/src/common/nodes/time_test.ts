@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { dayToTime } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
 
@@ -20,7 +21,7 @@ describe("today", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: new Date(day).toJSON(),
+      time: dayToTime(day),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), day);
   });

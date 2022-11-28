@@ -25,7 +25,7 @@ describe("deleteMemory", () => {
     });
     const { memory, memoryChanged } = await executor.run({
       memory: { key1: "value1" },
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(memoryChanged, true);
     assert.equal(memory.key1, undefined);
@@ -54,7 +54,7 @@ describe("getMemory", () => {
     const value = "value1";
     const { execution, memory, memoryChanged } = await executor.run({
       memory: { key1: value },
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(memoryChanged, false);
     assert.equal(memory.key1, value);
@@ -91,7 +91,7 @@ describe("setMemory", () => {
     });
     const { memory, memoryChanged } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(memoryChanged, true);
     assert.equal(memory.key1, 1.2);

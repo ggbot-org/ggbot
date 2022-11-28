@@ -1,3 +1,9 @@
+import {
+  dateToTime,
+  dateToTimestamp,
+  timeToDate,
+  timestampToDate,
+} from "./conversions.js";
 import { ErrorInvalidDate } from "./errors.js";
 import { Time, Timestamp, TimeUnit, isInvalidDate } from "./time.js";
 
@@ -46,26 +52,26 @@ export const getDate: TimeTranslator<Date> = (date) => {
       },
     }),
     minus: (num) => ({
-      months: () => {
-        date.setDate(date.getMonth() - num);
-        return date;
-      },
-      days: () => {
-        date.setDate(date.getDate() - num);
-        return date;
-      },
-      hours: () => {
-        date.setDate(date.getHours() - num);
-        return date;
-      },
-      minutes: () => {
-        date.setMinutes(date.getMinutes() - num);
-        return date;
-      },
-      seconds: () => {
-        date.setSeconds(date.getSeconds() - num);
-        return date;
-      },
+      months: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .months(),
+      days: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .days(),
+      hours: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .hours(),
+      minutes: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .minutes(),
+      seconds: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .seconds(),
     }),
   };
 };
@@ -75,18 +81,33 @@ export const getTime: TimeTranslator<Time> = (time) => {
   const date = new Date(time);
   return {
     plus: (num) => ({
-      months: () => getDate(date).plus(num).months().getTime(),
-      days: () => getDate(date).plus(num).days().getTime(),
-      hours: () => getDate(date).plus(num).hours().getTime(),
-      minutes: () => getDate(date).plus(num).minutes().getTime(),
-      seconds: () => getDate(date).plus(num).seconds().getTime(),
+      months: () => dateToTime(getDate(date).plus(num).months()),
+      days: () => dateToTime(getDate(date).plus(num).days()),
+      hours: () => dateToTime(getDate(date).plus(num).hours()),
+      minutes: () => dateToTime(getDate(date).plus(num).minutes()),
+      seconds: () => dateToTime(getDate(date).plus(num).seconds()),
     }),
     minus: (num) => ({
-      months: () => getDate(date).minus(num).months().getTime(),
-      days: () => getDate(date).minus(num).days().getTime(),
-      hours: () => getDate(date).minus(num).hours().getTime(),
-      minutes: () => getDate(date).minus(num).minutes().getTime(),
-      seconds: () => getDate(date).minus(num).seconds().getTime(),
+      months: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .months(),
+      days: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .days(),
+      hours: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .hours(),
+      minutes: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .minutes(),
+      seconds: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .seconds(),
     }),
   };
 };
@@ -123,14 +144,30 @@ export const truncateDate: TimeTruncator<Date, Date> = (date) => {
   };
 };
 
+/** Truncate `Time`. */
+export const truncateTime: TimeTruncator<Time, Time> = (time) => {
+  const date = timeToDate(time);
+  return {
+    to: {
+      second: () => dateToTime(truncateDate(date).to.second()),
+      minute: () => dateToTime(truncateDate(date).to.minute()),
+      hour: () => dateToTime(truncateDate(date).to.hour()),
+      day: () => dateToTime(truncateDate(date).to.day()),
+    },
+  };
+};
+
 /** Truncate `Timestamp`. */
 export const truncateTimestamp: TimeTruncator<Timestamp, Timestamp> = (
   timestamp
-) => ({
-  to: {
-    second: () => truncateDate(new Date(timestamp)).to.second().toJSON(),
-    minute: () => truncateDate(new Date(timestamp)).to.minute().toJSON(),
-    hour: () => truncateDate(new Date(timestamp)).to.hour().toJSON(),
-    day: () => truncateDate(new Date(timestamp)).to.day().toJSON(),
-  },
-});
+) => {
+  const date = timestampToDate(timestamp);
+  return {
+    to: {
+      second: () => dateToTimestamp(truncateDate(date).to.second()),
+      minute: () => dateToTimestamp(truncateDate(date).to.minute()),
+      hour: () => dateToTimestamp(truncateDate(date).to.hour()),
+      day: () => dateToTimestamp(truncateDate(date).to.day()),
+    },
+  };
+};

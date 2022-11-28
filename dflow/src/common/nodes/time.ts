@@ -3,8 +3,7 @@ import {
   getTime,
   isTime,
   timeToDay,
-  timestampToDay,
-  timestampToTime,
+  timeToTimestamp,
 } from "@ggbot2/time";
 import { DflowNode } from "dflow";
 import type { DflowCommonContext as Context } from "../context.js";
@@ -51,8 +50,8 @@ export class Time extends DflowNode {
   static kind = "time";
   static outputs = timeOutputs;
   run() {
-    const timestamp = (this.host.context as Context).timestamp;
-    const time = timestampToTime(timestamp);
+    const time = (this.host.context as Context).time;
+    const timestamp = timeToTimestamp(time);
     this.output(0).data = time;
     this.output(1).data = timestamp;
   }
@@ -101,8 +100,8 @@ export class Today extends DflowNode {
   static kind = "today";
   static outputs = [outputDay];
   run() {
-    const timestamp = (this.host.context as Context).timestamp;
-    const day = timestampToDay(timestamp);
+    const time = (this.host.context as Context).time;
+    const day = timeToDay(time);
     this.output(0).data = day;
   }
 }

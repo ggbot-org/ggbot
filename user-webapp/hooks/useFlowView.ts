@@ -4,7 +4,7 @@ import {
   nodeTextToViewType,
 } from "@ggbot2/dflow";
 import type { UpdateTime } from "@ggbot2/models";
-import { Timestamp, now, truncateTimestamp } from "@ggbot2/time";
+import { Time, now, truncateTime } from "@ggbot2/time";
 import {
   DflowHost,
   DflowNodeUnknown,
@@ -58,21 +58,18 @@ export const useFlowView: UseFlowView = ({
   strategyKind,
 }) => {
   const flowViewRef = useRef<FlowView>();
-  const [whenUpdated, setWhenUpdated] = useState<Timestamp | undefined>();
+  const [whenUpdated, setWhenUpdated] = useState<Time | undefined>();
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
-  const timestamp = useMemo(() => truncateTimestamp(now()).to.minute(), []);
+  const time = useMemo(() => truncateTime(now()).to.minute(), []);
 
   const dflow = useMemo<DflowHost | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!nodesCatalog) return;
-    const dflow = new BinanceDflowHost(
-      { nodesCatalog },
-      { memory: {}, timestamp }
-    );
+    const dflow = new BinanceDflowHost({ nodesCatalog }, { memory: {}, time });
     return dflow;
-  }, [nodesCatalog, strategyKind, timestamp]);
+  }, [nodesCatalog, strategyKind, time]);
 
   const binanceExecutor = useMemo<BinanceDflowExecutor | undefined>(() => {
     if (strategyKind !== "binance") return;
@@ -80,7 +77,7 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog) return;
     const binance = new BinanceDflowClient({
       balances: [],
-      timestamp,
+      time,
     });
     const executor = new BinanceDflowExecutor(
       binance,
@@ -88,7 +85,7 @@ export const useFlowView: UseFlowView = ({
       nodesCatalog
     );
     return executor;
-  }, [binanceSymbols, nodesCatalog, strategyKind, timestamp]);
+  }, [binanceSymbols, nodesCatalog, strategyKind, time]);
 
   const importFlowView = useCallback(async () => {
     if (!containerRef.current) return;
@@ -267,7 +264,7 @@ export const useFlowView: UseFlowView = ({
         case "binance": {
           if (!binanceExecutor) return;
           await binanceExecutor.run(
-            { memory: {}, timestamp: truncateTimestamp(now()).to.minute() },
+            { memory: {}, time: truncateTime(now()).to.minute() },
             flowView.graph
           );
           // TODO update flow with mocked execution if is not "live"

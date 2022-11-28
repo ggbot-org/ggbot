@@ -1,4 +1,4 @@
-import { now, truncateTimestamp } from "@ggbot2/time";
+import { now, truncateTime } from "@ggbot2/time";
 import { DflowHost, DflowHostConstructorArg } from "dflow";
 import type { DflowExecutorView } from "../common/executor.js";
 import { DflowLoader, load } from "../common/loader.js";
@@ -16,8 +16,7 @@ export class BinanceDflowHost extends DflowHost implements DflowLoader {
     this.context.binance = context.binance;
     this.context.memory = context.memory ?? {};
     this.context.memoryChanged = false;
-    this.context.timestamp =
-      context.timestamp ?? truncateTimestamp(now()).to.minute();
+    this.context.time = context.time ?? truncateTime(now()).to.minute();
   }
 
   load(view: DflowExecutorView): void {

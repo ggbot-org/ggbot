@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ErrorInvalidArg } from "./errors.js";
-import { isName, throwIfInvalidName, maxNameLength } from "./name.js";
+import { isName, throwIfInvalidName } from "./name.js";
 
 const invalidNames = ["", "     "];
-const nameTooLong = "x".repeat(maxNameLength + 1);
+const nameTooLong = "x".repeat(999);
 
 describe("isName", () => {
   it("validates string as name or throws", () => {

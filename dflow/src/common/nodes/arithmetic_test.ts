@@ -34,7 +34,7 @@ describe("add", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 5);
   });
@@ -70,7 +70,7 @@ describe("sub", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6);
   });
@@ -106,7 +106,7 @@ describe("mul", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6);
   });
@@ -142,7 +142,7 @@ describe("div", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 1.5);
   });

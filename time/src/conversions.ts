@@ -49,24 +49,33 @@ export const dayIntervalToDate = ({
 
 /** Convert `DayInterval` to `TimeInterval`.
 @throws {ErrorInvalidDate} */
-export const dayIntervalToTime = (interval: DayInterval): TimeInterval =>
-  dateIntervalToTime(dayIntervalToDate(interval));
+export const dayIntervalToTime = (dayInterval: DayInterval): TimeInterval => {
+  const dateInterval = dayIntervalToDate(dayInterval);
+  return dateIntervalToTime(dateInterval);
+};
 
 /** Convert `Date` to `Day`.
 @throws {ErrorInvalidDate} */
-export const dateToDay = (date: Date): Day =>
-  timestampToDay(dateToTimestamp(date));
+export const dateToDay = (date: Date): Day => {
+  const timestamp = dateToTimestamp(date);
+  return timestampToDay(timestamp);
+};
 
 /** Convert `Time` to `Day`. */
-export const timeToDay = (time: Time): Day => dateToDay(new Date(time));
+export const timeToDay = (time: Time): Day => {
+  const date = timeToDate(time);
+  return dateToDay(date);
+};
 
 /** Convert `Timestamp` to `Day`. */
 export const timestampToDay = (timestamp: Timestamp): Day =>
   timestamp.substring(0, 10);
 
 /** Convert `Timestamp` to `Time`. */
-export const timestampToTime = (timestamp: Timestamp): Time =>
-  new Date(timestamp).getTime();
+export const timestampToTime = (timestamp: Timestamp): Time => {
+  const date = timestampToDate(timestamp);
+  return dateToTime(date);
+};
 
 /** Convert `Date` to `Timestamp`.
 @throws {ErrorInvalidDate} */
@@ -80,4 +89,20 @@ export const dateToTimestamp = (date: Date): Timestamp => {
 /** Convert `Day` to `Timestamp`. */
 export const dayToTimestamp = (day: Day): Timestamp => {
   return new Date(day).toJSON();
+};
+
+/** Convert `Time` to `Date`. */
+export const timeToDate = (time: Time): Date => {
+  return new Date(time);
+};
+
+/** Convert `Time` to `Timestamp`. */
+export const timeToTimestamp = (time: Time): Timestamp => {
+  const date = timeToDate(time);
+  return dateToTimestamp(date);
+};
+
+/** Convert `Timestamp` to `Date`. */
+export const timestampToDate = (timestamp: Timestamp): Date => {
+  return new Date(timestamp);
 };

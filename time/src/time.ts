@@ -45,7 +45,7 @@ export const isDateInterval = (arg: unknown): arg is DateInterval => {
 export type Time = number;
 
 export const isTime = (arg: unknown): arg is Time =>
-  typeof arg === "number" && arg >= 0;
+  typeof arg === "number" && !isNaN(arg) && Number.isInteger(arg) && arg >= 0;
 
 export type TimeInterval = Interval<Time>;
 export const isTimeInterval = (arg: unknown): arg is TimeInterval => {
@@ -68,7 +68,7 @@ export const isTimestamp = (arg: unknown): arg is Timestamp => {
   return !isInvalidDate(date);
 };
 
-export const now = (): Timestamp => new Date().toJSON();
+export const now = (): Time => new Date().getTime();
 
 // Hour ////////////////////////////////////////////////////////////////
 

@@ -40,7 +40,7 @@ describe("if", () => {
     });
     const { execution } = await executor.run({
       memory: {},
-      timestamp: now(),
+      time: now(),
     });
     assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 2);
   });

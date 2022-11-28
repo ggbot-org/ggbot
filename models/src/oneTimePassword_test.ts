@@ -6,7 +6,7 @@ import {
 } from "./oneTimePassword.js";
 
 describe("isOneTimePassword", () => {
-  it("validates value if is valid OneTimePassword", () => {
+  it("validates input if is valid OneTimePassword", () => {
     [
       {
         input: { code: "123456", whenCreated: "2022-07-24T14:53:11.513Z" },

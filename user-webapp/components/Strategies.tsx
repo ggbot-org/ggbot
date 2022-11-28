@@ -28,16 +28,14 @@ export const Strategies: FC = () => {
 
   const strategyItems = useMemo(
     () =>
-      strategies?.map(
-        ({ name, schedulingStatus, strategyId, strategyKind }) => {
-          return {
-            name,
-            schedulingStatus,
-            strategyId,
-            strategyKind,
-          };
-        }
-      ),
+      strategies?.map(({ name, schedulings, strategyId, strategyKind }) => {
+        return {
+          name,
+          schedulings,
+          strategyId,
+          strategyKind,
+        };
+      }),
     [strategies]
   );
 
@@ -61,11 +59,11 @@ export const Strategies: FC = () => {
       <div className="flex flex-col md:flex-row md:flex-wrap gap-4">
         {noStrategy && <p>Your strategy list is empty.</p>}
         {strategyItems?.map(
-          ({ name, strategyId, strategyKind, schedulingStatus }) => (
+          ({ name, strategyId, strategyKind, schedulings }) => (
             <div className="lg:max-w-lg" key={strategyId}>
               <StrategyItem strategyKey={{ strategyId, strategyKind }}>
                 <span>{name}</span>
-                <SchedulingStatusBadge schedulingStatus={schedulingStatus} />
+                <SchedulingStatusBadge schedulings={schedulings} />
               </StrategyItem>
             </div>
           )

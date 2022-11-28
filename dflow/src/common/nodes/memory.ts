@@ -10,7 +10,8 @@ export class DeleteMemory extends DflowNode {
   static inputs = [inputKey];
   async run() {
     const key = this.input(0).data as string;
-    if ((this.host.context as Context).memory[key] !== undefined) return;
+    const value = (this.host.context as Context).memory[key];
+    if (value === undefined) return;
     delete (this.host.context as Context).memory[key];
     (this.host.context as Context).memoryChanged = true;
   }
