@@ -13,7 +13,7 @@ import { ButtonShareStrategy } from "_components";
 import { useApiAction } from "_hooks";
 import { StrategyInfo, route } from "_routing";
 
-type Props = StrategyInfo;
+type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
 export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   const router = useRouter();

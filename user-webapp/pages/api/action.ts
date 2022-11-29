@@ -88,50 +88,29 @@ export type ApiActionResponseOutput<T> =
     }
   | ApiActionResponseError;
 
-type Action<Input extends OperationInput, Output extends OperationOutput> = {
+type Action<Input extends OperationInput> = {
   // AccountKey is provided by authentication, no need to add it as action input parameter.
   in: Input extends AccountKey ? Omit<Input, "accountId"> : Input;
-  out: Output;
+  out: OperationOutput;
 };
 
 export type ApiAction = {
-  COPY_STRATEGY: Action<CopyStrategy["in"], CopyStrategy["out"]>;
-  CREATE_BINANCE_API_CONFIG: Action<
-    CreateBinanceApiConfig["in"],
-    CreateBinanceApiConfig["out"]
-  >;
-  CREATE_STRATEGY: Action<CreateStrategy["in"], CreateStrategy["out"]>;
-  DELETE_STRATEGY: Action<DeleteStrategy["in"], DeleteStrategy["out"]>;
-  EXECUTE_STRATEGY: Action<ExecuteStrategy["in"], ExecuteStrategy["out"]>;
-  READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
-  READ_ACCOUNT_STRATEGIES: Action<
-    ReadAccountStrategies["in"],
-    ReadAccountStrategies["out"]
-  >;
-  READ_BINANCE_API_CONFIG: Action<
-    ReadBinanceApiConfig["in"],
-    Pick<BinanceApiConfig, "apiKey"> | null
-  >;
-  READ_BINANCE_API_KEY_PERMISSIONS: Action<
-    ReadBinanceApiKeyPermissions["in"],
-    ReadBinanceApiKeyPermissions["out"]
-  >;
-  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"], ReadStrategyFlow["out"]>;
-  READ_STRATEGY: Action<ReadStrategy["in"], ReadStrategy["out"]>;
-  READ_STRATEGY_BALANCES: Action<
-    ReadStrategyBalances["in"],
-    ReadStrategyBalances["out"]
-  >;
-  RENAME_ACCOUNT: Action<RenameAccount["in"], RenameAccount["out"]>;
-  RENAME_STRATEGY: Action<RenameStrategy["in"], RenameStrategy["out"]>;
-  UPDATE_ACCOUNT_STRATEGIES_ITEM: Action<
-    UpdateAccountStrategiesItem["in"],
-    UpdateAccountStrategiesItem["out"]
-  >;
-  WRITE_STRATEGY_FLOW: Action<
-    WriteStrategyFlow["in"],
-    WriteStrategyFlow["out"]
-  >;
+  COPY_STRATEGY: Action<CopyStrategy["in"]>;
+  CREATE_BINANCE_API_CONFIG: Action<CreateBinanceApiConfig["in"]>;
+  CREATE_STRATEGY: Action<CreateStrategy["in"]>;
+  DELETE_STRATEGY: Action<DeleteStrategy["in"]>;
+  EXECUTE_STRATEGY: Action<ExecuteStrategy["in"]>;
+  READ_ACCOUNT: Action<ReadAccount["in"]>;
+  READ_ACCOUNT_STRATEGIES: Action<ReadAccountStrategies["in"]>;
+  READ_BINANCE_API_CONFIG: Action<ReadBinanceApiConfig["in"]>;
+  READ_BINANCE_API_KEY_PERMISSIONS: Action<ReadBinanceApiKeyPermissions["in"]>;
+  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"]>;
+  READ_STRATEGY: Action<ReadStrategy["in"]>;
+  READ_STRATEGY_BALANCES: Action<ReadStrategyBalances["in"]>;
+  RENAME_ACCOUNT: Action<RenameAccount["in"]>;
+  RENAME_STRATEGY: Action<RenameStrategy["in"]>;
+  UPDATE_ACCOUNT_STRATEGIES_ITEM: Action<UpdateAccountStrategiesItem["in"]>;
+  WRITE_STRATEGY_FLOW: Action<WriteStrategyFlow["in"]>;
 };
 
 type ApiActionType = keyof ApiAction;

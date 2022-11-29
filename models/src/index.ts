@@ -14,6 +14,8 @@ export * from "./frequency.js";
 export * from "./item.js";
 export * from "./literalType.js";
 export * from "./name.js";
+export * from "./numbers.js";
+export * from "./objects.js";
 export * from "./oneTimePassword.js";
 export * from "./operation.js";
 export * from "./order.js";

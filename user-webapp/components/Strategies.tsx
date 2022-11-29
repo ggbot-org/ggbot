@@ -1,3 +1,4 @@
+import { AccountStrategy, isAccountStrategy, isObject } from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -26,18 +27,30 @@ export const Strategies: FC = () => {
 
   const noStrategy = useMemo(() => strategies === null, [strategies]);
 
-  const strategyItems = useMemo(
-    () =>
-      strategies?.map(({ name, schedulings, strategyId, strategyKind }) => {
-        return {
-          name,
-          schedulings,
-          strategyId,
-          strategyKind,
-        };
-      }),
-    [strategies]
-  );
+  const { strategyItems, unknownItems } = useMemo(() => {
+    const unknownItems: unknown[] = [];
+    const strategyItems: Pick<
+      AccountStrategy,
+      "name" | "strategyId" | "strategyKind" | "schedulings"
+    >[] = [];
+    if (Array.isArray(strategies))
+      for (const item of strategies) {
+        if (isAccountStrategy(item)) {
+          const { name, strategyId, strategyKind, schedulings } = item;
+          strategyItems.push({ name, strategyId, strategyKind, schedulings });
+          continue;
+        }
+        // if (isObject(item)) {
+        //   const { name, strategyId, strategyKind, schedulings } =
+        //     item as Partial<AccountStrategy>;
+
+        //   continue;
+        // }
+
+        unknownItems.push(item);
+      }
+    return { strategyItems, unknownItems };
+  }, [strategies]);
 
   useEffect(readStrategies, [readStrategies]);
 
@@ -58,7 +71,7 @@ export const Strategies: FC = () => {
       </div>
       <div className="flex flex-col md:flex-row md:flex-wrap gap-4">
         {noStrategy && <p>Your strategy list is empty.</p>}
-        {strategyItems?.map(
+        {strategyItems.map(
           ({ name, strategyId, strategyKind, schedulings }) => (
             <div className="lg:max-w-lg" key={strategyId}>
               <StrategyItem strategyKey={{ strategyId, strategyKind }}>
@@ -69,6 +82,14 @@ export const Strategies: FC = () => {
           )
         )}
       </div>
+      {unknownItems.length > 0 ? (
+        <div>
+          <div>unknown items</div>
+          <pre>
+            <code>{JSON.stringify(unknownItems, null, 2)}</code>
+          </pre>
+        </div>
+      ) : null}
     </div>
   );
 };
