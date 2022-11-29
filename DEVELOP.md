@@ -26,6 +26,13 @@ Package manager used is *npm*.
 ### Environment variables
 
 Use [direnv](https://direnv.net/) to load variables from *.envrc* file.
+In the repo root dir, to be able to start development, create a *.envrc* file like the following
+
+```sh
+export AWS_ACCOUNT_ID=123
+export AWS_ACCESS_KEY_ID=XXX
+export AWS_SECRET_ACCESS_KEY=XXX
+```
 
 See also [`env` workspace](./env).
 
