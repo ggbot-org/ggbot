@@ -1,5 +1,5 @@
 import { AccountKey, isAccountKey } from "./account.js";
-import { isName } from "./name.js";
+import { isName, normalizeName } from "./name.js";
 import { Strategy, StrategyKey, isStrategyKey } from "./strategy.js";
 import {
   StrategyScheduling,
@@ -29,4 +29,18 @@ export const isAccountStrategy = (arg: unknown): arg is AccountStrategy => {
     Array.isArray(schedulings) &&
     schedulings.every((item) => isStrategyScheduling(item))
   );
+};
+
+export const newAccountStrategy = ({
+  name,
+  ...strategyKey
+}: Pick<
+  AccountStrategy,
+  "strategyId" | "strategyKind" | "name"
+>): AccountStrategy => {
+  return {
+    ...strategyKey,
+    name: normalizeName(name),
+    schedulings: [],
+  };
 };

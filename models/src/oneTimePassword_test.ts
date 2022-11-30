@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { createdNow } from "./time.js";
 import {
   generateOneTimePassword,
   isOneTimePassword,
@@ -9,7 +10,7 @@ describe("isOneTimePassword", () => {
   it("validates input if is valid OneTimePassword", () => {
     [
       {
-        input: { code: "123456", whenCreated: "2022-07-24T14:53:11.513Z" },
+        input: { code: "123456", ...createdNow() },
         output: true,
       },
     ].forEach(({ input, output }) => {

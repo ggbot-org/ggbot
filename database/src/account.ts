@@ -6,9 +6,8 @@ import {
   ListAccountKeys,
   ReadAccount,
   RenameAccount,
-  createdNow,
   isAccountKey,
-  newId,
+  newAccount,
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
@@ -28,16 +27,12 @@ import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
-  const accountId = newId();
-  const data: Account = {
-    id: accountId,
-    email,
-    ...createdNow(),
-  };
+  const account = newAccount({ email });
+  const accountId = account.id;
   const Key = pathname.account({ accountId });
-  await putObject({ Key, data });
+  await putObject({ Key, data: account });
   await createEmailAccount({ accountId, email });
-  return data;
+  return account;
 };
 
 export const readAccount: ReadAccount["func"] = async (accountKey) =>
@@ -60,8 +55,7 @@ export const listAccountKeys: ListAccountKeys["func"] = async () => {
 
 /**
  * @throws {ErrorInvalidArg}
- * @throws {ErrorAccountItemNotFound}
- */
+ * @throws {ErrorAccountItemNotFound} */
 export const renameAccount: RenameAccount["func"] = async ({
   accountId,
   name,

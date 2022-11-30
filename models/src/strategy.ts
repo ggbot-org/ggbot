@@ -1,10 +1,10 @@
 import { Account, AccountKey, isAccountKey } from "./account.js";
 import type { AccountStrategyKey } from "./accountStrategy.js";
-import { Item, isItemId, NewItem } from "./item.js";
+import { Item, isItemId, NewItem, newId } from "./item.js";
 import { isLiteralType } from "./literalType.js";
-import { Name, isName } from "./name.js";
+import { Name, isName, normalizeName } from "./name.js";
 import type { Operation } from "./operation.js";
-import type { CreationTime, DeletionTime, UpdateTime } from "./time.js";
+import { CreationTime, DeletionTime, UpdateTime, createdNow } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;
 export type StrategyKind = typeof strategyKinds[number];
@@ -26,6 +26,20 @@ export const isStrategy = (arg: unknown): arg is StrategyKind => {
     isStrategyKind(kind) &&
     isName(name)
   );
+};
+
+export const newStrategy = ({
+  accountId,
+  kind,
+  name,
+}: NewItem<Strategy>): Strategy => {
+  return {
+    ...createdNow(),
+    id: newId(),
+    accountId,
+    kind,
+    name: normalizeName(name),
+  };
 };
 
 export type StrategyKey = Readonly<{

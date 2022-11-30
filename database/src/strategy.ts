@@ -1,6 +1,5 @@
 import {
   Account,
-  AccountStrategy,
   CacheMap,
   CopyStrategy,
   CreateStrategy,
@@ -9,11 +8,10 @@ import {
   ReadStrategy,
   ReadStrategyAccountId,
   RenameStrategy,
-  Strategy,
   StrategyKey,
-  createdNow,
   isAccountKey,
-  newId,
+  newAccountStrategy,
+  newStrategy,
   normalizeName,
   throwIfInvalidName,
 } from "@ggbot2/models";
@@ -71,24 +69,15 @@ export const createStrategy: CreateStrategy["func"] = async ({
   name,
 }) => {
   throwIfInvalidName(name);
-  const strategyId = newId();
-  const strategyKind = kind;
-  const strategyKey = { strategyId, strategyKind };
-  const strategy: Strategy = {
-    id: strategyId,
+  const strategy = newStrategy({
     kind,
     name,
     accountId,
-    ...createdNow(),
-  };
+  });
+  const strategyKey = { strategyId: strategy.id, strategyKind: kind };
   const Key = pathname.strategy(strategyKey);
   await putObject({ Key, data: strategy });
-  const accountStrategy: AccountStrategy = {
-    strategyId,
-    strategyKind,
-    name,
-    schedulings: [],
-  };
+  const accountStrategy = newAccountStrategy({ name, ...strategyKey });
   insertAccountStrategiesItem({ accountId, item: accountStrategy });
   return strategy;
 };

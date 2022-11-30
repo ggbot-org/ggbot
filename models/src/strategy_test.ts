@@ -1,40 +1,35 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { isAccount, newAccount } from "./account.js";
+import { isStrategy, newStrategy } from "./strategy.js";
 import { nullId } from "./item.js";
 import { normalizeName } from "./name.js";
 import { invalidNames } from "./name_test.js";
 import { createdNow } from "./time.js";
 
-describe("isAccount", () => {
-  it("validates Account, name is optional", () => {
-    const email = "user@example.com";
+describe("isStrategy", () => {
+  it("validates Strategy", () => {
+    const accountId = nullId;
+    const kind = "binance";
+    const name = "Name";
     const { whenCreated } = createdNow();
     [
       {
-        input: newAccount({ email }),
+        input: newStrategy({ accountId, kind, name }),
         output: true,
       },
       {
-        input: newAccount({ email, name: "Name" }),
-        output: true,
-      },
-      {
-        input: { id: "not an id", email, whenCreated },
+        input: { id: "not an id", kind, accountId, name, whenCreated },
         output: false,
       },
       {
-        input: { id: nullId, email: "not an email", whenCreated },
-        output: false,
-      },
-      {
-        input: { id: nullId, email, whenCreated: "not a timestamp" },
+        input: { id: nullId, accountId, whenCreated: "not a timestamp" },
         output: false,
       },
       ...invalidNames.map((invalidName) => ({
         input: {
           id: nullId,
-          email,
+          kind,
+          accountId,
           whenCreated,
           name: normalizeName(invalidName),
         },
@@ -42,9 +37,9 @@ describe("isAccount", () => {
       })),
     ].forEach(({ input, output }) => {
       assert.equal(
-        isAccount(input),
+        isStrategy(input),
         output,
-        `isAccount(${JSON.stringify(input)}) !== ${output}`
+        `isStrategy(${JSON.stringify(input)}) !== ${output}`
       );
     });
   });
