@@ -1,4 +1,4 @@
-import type { DflowExecutionNodeInfo, DflowGraphRunStatus } from "dflow";
+import type { DflowExecutionNodeInfo, DflowGraph } from "dflow";
 import type { AccountStrategyKey } from "./accountStrategy.js";
 import { Balances, isBalances } from "./balance.js";
 import { isLiteralType } from "./literalType.js";
@@ -7,7 +7,7 @@ import type { Operation } from "./operation.js";
 import { DeletionTime, UpdateTime, isUpdateTime } from "./time.js";
 
 export type StrategyExecutionStatus = Extract<
-  DflowGraphRunStatus,
+  DflowGraph["runStatus"],
   "success" | "failure"
 >;
 export const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>(
