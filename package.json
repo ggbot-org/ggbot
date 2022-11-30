@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
-    "build": "run-s build:time build:arithmetic build:models build:http-status-codes build:binance build:env build:aws build:database build:executor build:ui-components build:user-webapp",
+    "build": "run-s build:time build:arithmetic build:models build:http-status-codes build:binance build:env build:aws build:database build:executor build:ui-components build:user-webapp build:devops",
     "build:arithmetic": "npm run build --workspace arithmetic",
     "build:assets": "npm run build --workspace assets",
     "build:aws": "npm run build --workspace aws",
