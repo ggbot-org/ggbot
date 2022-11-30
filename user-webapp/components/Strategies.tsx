@@ -1,4 +1,10 @@
-import { AccountStrategy, isAccountStrategy, isObject } from "@ggbot2/models";
+import {
+  AccountStrategy,
+  isAccountStrategy,
+  isMaybeObject,
+  isName,
+  isStrategyKey,
+} from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -36,17 +42,18 @@ export const Strategies: FC = () => {
     if (Array.isArray(strategies))
       for (const item of strategies) {
         if (isAccountStrategy(item)) {
-          const { name, strategyId, strategyKind, schedulings } = item;
-          strategyItems.push({ name, strategyId, strategyKind, schedulings });
+          strategyItems.push(item);
           continue;
         }
-        // if (isObject(item)) {
-        //   const { name, strategyId, strategyKind, schedulings } =
-        //     item as Partial<AccountStrategy>;
-
-        //   continue;
-        // }
-
+        if (isMaybeObject<AccountStrategy>(item)) {
+          // Handle unknown schedulings.
+          const { name, strategyKind, strategyId } = item;
+          const strategyKey = { strategyKind, strategyId };
+          if (isName(name) && isStrategyKey(strategyKey)) {
+            strategyItems.push({ name, schedulings: [], ...strategyKey });
+            continue;
+          }
+        }
         unknownItems.push(item);
       }
     return { strategyItems, unknownItems };

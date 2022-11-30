@@ -1,6 +1,7 @@
 import { isDecimal } from "@ggbot2/arithmetic";
-import { isLiteralType } from "@ggbot2/models";
+import { isLiteralType, objectTypeGuard } from "@ggbot2/models";
 import {
+  BinanceApiKeyPermission,
   BinanceBalance,
   BinanceFill,
   BinanceKlineInterval,
@@ -31,6 +32,23 @@ import {
   binanceKlineMaxLimit,
   binanceTimeInForces,
 } from "./types.js";
+
+// TODO use objectTypeGuard for all type guards
+
+export const isBinanceApiKeyPermission =
+  objectTypeGuard<BinanceApiKeyPermission>(
+    ({
+      // TODO should I add also other fields?
+      ipRestrict,
+      enableWithdrawals,
+      enableMargin,
+      enableSpotAndMarginTrading,
+    }) =>
+      typeof ipRestrict === "boolean" &&
+      typeof enableWithdrawals === "boolean" &&
+      typeof enableMargin === "boolean" &&
+      typeof enableSpotAndMarginTrading === "boolean"
+  );
 
 export const isBinanceBalance = (arg: unknown): arg is BinanceBalance => {
   if (typeof arg !== "object" || arg === null) return false;

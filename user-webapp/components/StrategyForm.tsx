@@ -6,7 +6,7 @@ import {
   Fieldset,
   OutputField,
 } from "@ggbot2/ui-components";
-import { isName, normalizeName } from "@ggbot2/models";
+import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ButtonShareStrategy } from "_components";
@@ -91,7 +91,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [newName, renameIsPending]);
 
   useEffect(() => {
-    if (strategy) setName(strategy.name);
+    if (isStrategy(strategy)) setName(strategy.name);
   }, [strategy]);
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { Item, ItemKey, NewItem, isItemId, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import {
   CreationTime,
@@ -16,16 +17,13 @@ export type Account = Item &
     email: EmailAddress;
   };
 
-export const isAccount = (value: unknown): value is Account => {
-  if (typeof value !== "object" || value === null) return false;
-  const { id, email, name, ...creationTime } = value as Partial<Account>;
-  return (
+export const isAccount = objectTypeGuard<Account>(
+  ({ id, email, name, ...creationTime }) =>
     isItemId(id) &&
     isEmailAddress(email) &&
     isCreationTime(creationTime) &&
     (name !== undefined ? isName(name) : true)
-  );
-};
+);
 
 export const newAccount = ({ email, name }: NewItem<Account>): Account => {
   const optionalName =
@@ -42,11 +40,9 @@ export type AccountKey = ItemKey<{
   accountId: Account["id"];
 }>;
 
-export const isAccountKey = (value: unknown): value is AccountKey => {
-  if (typeof value !== "object" || value === null) return false;
-  const { accountId: id } = value as Partial<AccountKey>;
-  return isItemId(id);
-};
+export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
+  isItemId(accountId)
+);
 
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 

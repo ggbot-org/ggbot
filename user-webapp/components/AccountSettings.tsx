@@ -1,4 +1,4 @@
-import { isName, normalizeName } from "@ggbot2/models";
+import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import {
   Button,
   DateTime,
@@ -25,12 +25,20 @@ export const AccountSettings: FC = () => {
     useApiAction.RENAME_ACCOUNT();
 
   const { accountId, currentName, email, whenCreated } = useMemo(
-    () => ({
-      accountId: account?.id ?? "",
-      currentName: account?.name ?? "",
-      email: account?.email ?? "",
-      whenCreated: account?.whenCreated ?? "",
-    }),
+    () =>
+      isAccount(account)
+        ? {
+            accountId: account.id,
+            currentName: account.name ?? "",
+            email: account.email,
+            whenCreated: account.whenCreated,
+          }
+        : {
+            accountId: "",
+            currentName: "",
+            email: "",
+            whenCreated: "",
+          },
     [account]
   );
 

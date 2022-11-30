@@ -30,7 +30,6 @@ import {
 } from "@ggbot2/http-status-codes";
 import type {
   AccountKey,
-  BinanceApiConfig,
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,

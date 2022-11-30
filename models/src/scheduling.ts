@@ -1,5 +1,6 @@
 import { Frequency, isFrequency } from "./frequency.js";
 import { isLiteralType } from "./literalType.js";
+import { objectTypeGuard } from "./objects.js";
 
 export const SchedulingStatuses = ["active", "inactive", "suspended"] as const;
 export type SchedulingStatus = typeof SchedulingStatuses[number];
@@ -12,8 +13,7 @@ export type Scheduling = {
   status: SchedulingStatus;
 };
 
-export const isScheduling = (arg: unknown): arg is Scheduling => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { frequency, status } = arg as Partial<Scheduling>;
-  return isFrequency(frequency) && isSchedulingStatus(status);
-};
+export const isScheduling = objectTypeGuard<Scheduling>(
+  ({ frequency, status }) =>
+    isFrequency(frequency) && isSchedulingStatus(status)
+);

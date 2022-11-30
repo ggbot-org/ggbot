@@ -1,5 +1,5 @@
 import type { BinanceSymbolInfo } from "@ggbot2/binance";
-import type { StrategyFlow } from "@ggbot2/models";
+import { StrategyFlow, objectTypeGuard } from "@ggbot2/models";
 import { dflowBinancePrecision } from "./arithmetic.js";
 
 export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"];
@@ -17,11 +17,8 @@ export type DflowBinanceSymbolInfo = Pick<
   | "symbol"
 >;
 
-export const isDflowBinanceSymbolInfo = (
-  arg: unknown
-): arg is DflowBinanceSymbolInfo => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const {
+export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
+  ({
     baseAsset,
     baseAssetPrecision,
     baseCommissionPrecision,
@@ -31,8 +28,7 @@ export const isDflowBinanceSymbolInfo = (
     isSpotTradingAllowed,
     status,
     symbol,
-  } = arg as Partial<DflowBinanceSymbolInfo>;
-  return (
+  }) =>
     isSpotTradingAllowed === true &&
     status === "TRADING" &&
     typeof symbol === "string" &&
@@ -45,8 +41,7 @@ export const isDflowBinanceSymbolInfo = (
     baseCommissionPrecision === dflowBinancePrecision &&
     quoteAssetPrecision === dflowBinancePrecision &&
     quotePrecision === dflowBinancePrecision
-  );
-};
+);
 
 const dflowBinanceSymbolSeparator = "/";
 

@@ -3,6 +3,12 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
+import {
+  StrategyExecution,
+  isMaybeObject,
+  isStrategyExecutionStatus,
+  isStrategyFlow,
+} from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -208,11 +214,13 @@ const Page: NextPage<ServerSideProps> = ({
       if (storedStrategyFlow === undefined) return;
       if (storedStrategyFlow === null) {
         setFlowLoaded(true);
-      } else {
-        flowView.clearGraph();
-        flowView.loadGraph(storedStrategyFlow.view);
-        setFlowLoaded(true);
+        return;
       }
+      flowView.clearGraph();
+      if (isStrategyFlow(storedStrategyFlow)) {
+        flowView.loadGraph(storedStrategyFlow.view);
+      }
+      setFlowLoaded(true);
     } catch (error) {
       console.error(error);
       toast.error("Cannot load flow");
@@ -235,9 +243,10 @@ const Page: NextPage<ServerSideProps> = ({
   }, [flowChanged, saveIsPending, setCanSave]);
 
   useEffect(() => {
-    if (!strategyExecution) return;
-    if (strategyExecution.status === "failure")
-      toast.error("Strategy execution failure");
+    if (!isMaybeObject<StrategyExecution>(strategyExecution)) return;
+    const { status } = strategyExecution;
+    if (!isStrategyExecutionStatus(status)) return;
+    if (status === "failure") toast.error("Strategy execution failure");
   }, [strategyExecution]);
 
   return (

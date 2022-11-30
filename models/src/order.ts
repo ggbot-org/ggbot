@@ -1,5 +1,6 @@
 import { Dflow, DflowObject } from "dflow";
 import { Item, isItemId } from "./item.js";
+import { objectTypeGuard } from "./objects.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
 export type Order = Item &
@@ -7,8 +8,7 @@ export type Order = Item &
     info: DflowObject;
   };
 
-export const isOrder = (arg: unknown): arg is Order => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { id, info, whenCreated } = arg as Partial<Order>;
-  return isItemId(id) && isCreationTime(whenCreated) && Dflow.isObject(info);
-};
+export const isOrder = objectTypeGuard<Order>(
+  ({ id, info, ...creationTime }) =>
+    isItemId(id) && isCreationTime(creationTime) && Dflow.isObject(info)
+);

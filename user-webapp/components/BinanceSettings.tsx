@@ -1,11 +1,21 @@
+import { isBinanceApiKeyPermission } from "@ggbot2/binance";
 import {
   Button,
   Checkmark,
+  CheckmarkProps,
   Fieldset,
   InputField,
   OutputField,
 } from "@ggbot2/ui-components";
-import { FC, FormEventHandler, useCallback, useEffect, useMemo } from "react";
+import { isBinanceApiConfig } from "@ggbot2/models";
+import {
+  FC,
+  FormEventHandler,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import { useApiAction } from "_hooks";
 
 export const BinanceSettings: FC = () => {
@@ -18,8 +28,35 @@ export const BinanceSettings: FC = () => {
   const [testConfig, { data: permissions, isPending: testIsPending }] =
     useApiAction.READ_BINANCE_API_KEY_PERMISSIONS();
 
-  const hasBinanceApiConfig = useMemo(
-    () => binanceApiConfig !== undefined && binanceApiConfig !== null,
+  const {
+    enableSpotAndMarginTrading,
+    enableWithdrawals,
+    enableReading,
+    ipRestrict,
+  } = useMemo(
+    () =>
+      isBinanceApiKeyPermission(permissions)
+        ? permissions
+        : {
+            enableSpotAndMarginTrading: undefined,
+            enableWithdrawals: undefined,
+            enableReading: undefined,
+            ipRestrict: undefined,
+          },
+    [permissions]
+  );
+
+  const { currentApiKey, hasBinanceApiConfig } = useMemo(
+    () =>
+      isBinanceApiConfig(binanceApiConfig)
+        ? {
+            currentApiKey: binanceApiConfig.apiKey,
+            hasBinanceApiConfig: true,
+          }
+        : {
+            currentApiKey: "",
+            hasBinanceApiConfig: false,
+          },
     [binanceApiConfig]
   );
 
@@ -31,6 +68,62 @@ export const BinanceSettings: FC = () => {
   const isPending = useMemo(
     () => createIsPending || readIsPending || testIsPending,
     [createIsPending, readIsPending, testIsPending]
+  );
+
+  const permissionItems: {
+    description: ReactNode;
+    checkmark: CheckmarkProps;
+  }[] = useMemo(
+    () => [
+      {
+        checkmark: {
+          label: String(enableReading),
+          ok: enableReading,
+        },
+        description: (
+          <span>
+            is <em>reading</em> permission enabled?
+          </span>
+        ),
+      },
+      {
+        checkmark: {
+          label: String(enableWithdrawals),
+          ok:
+            typeof enableWithdrawals === "boolean"
+              ? enableWithdrawals
+              : undefined,
+        },
+        description: (
+          <span>
+            are <em>withdrawals</em> enabled?
+          </span>
+        ),
+      },
+      {
+        checkmark: {
+          label: String(enableSpotAndMarginTrading),
+          ok: enableSpotAndMarginTrading,
+        },
+        description: (
+          <span>
+            is <em>Spot and Margin</em> enabled?
+          </span>
+        ),
+      },
+      {
+        checkmark: {
+          label: String(ipRestrict),
+          ok: ipRestrict,
+        },
+        description: (
+          <span>
+            is <em>static IP</em> restriction activated?
+          </span>
+        ),
+      },
+    ],
+    [enableSpotAndMarginTrading, enableWithdrawals, enableReading, ipRestrict]
   );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
@@ -68,10 +161,7 @@ export const BinanceSettings: FC = () => {
         <Fieldset legend="Binance API">
           {hasBinanceApiConfig && (
             <>
-              <OutputField label={apiKeyLabel}>
-                {" "}
-                {binanceApiConfig?.apiKey}{" "}
-              </OutputField>
+              <OutputField label={apiKeyLabel}>{currentApiKey}</OutputField>
 
               <menu className="mb-8">
                 <li>
@@ -80,49 +170,14 @@ export const BinanceSettings: FC = () => {
               </menu>
 
               <div className="flex flex-col gap-2">
-                <div className="flex justify-between">
-                  <span>
-                    is <em>reading</em> permission enabled?
-                  </span>
-                  <Checkmark
-                    label={String(permissions?.enableReading)}
-                    ok={permissions?.enableReading}
-                  />
-                </div>
-
-                <div className="flex justify-between">
-                  <span>
-                    are <em>withdrawals</em> enabled?
-                  </span>
-                  <Checkmark
-                    label={String(permissions?.enableWithdrawals)}
-                    ok={
-                      typeof permissions?.enableWithdrawals === "boolean"
-                        ? !permissions?.enableWithdrawals
-                        : undefined
-                    }
-                  />
-                </div>
-
-                <div className="flex justify-between">
-                  <span>
-                    is <em>Spot and Margin</em> enabled?
-                  </span>
-                  <Checkmark
-                    label={String(permissions?.enableSpotAndMarginTrading)}
-                    ok={permissions?.enableSpotAndMarginTrading}
-                  />
-                </div>
-
-                <div className="flex justify-between">
-                  <span>
-                    is <em>static IP</em> restriction activated?
-                  </span>
-                  <Checkmark
-                    label={String(permissions?.ipRestrict)}
-                    ok={permissions?.ipRestrict}
-                  />
-                </div>
+                {permissionItems.map(
+                  ({ description, checkmark: checkmarkProps }, i) => (
+                    <div key={i} className="flex justify-between">
+                      {description}
+                      <Checkmark {...checkmarkProps} />
+                    </div>
+                  )
+                )}
               </div>
             </>
           )}

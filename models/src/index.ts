@@ -2,6 +2,7 @@ export * from "./account.js";
 export * from "./accountDailyOrders.js";
 export * from "./accountStrategies.js";
 export * from "./accountStrategy.js";
+export * from "./arrays.js";
 export * from "./balance.js";
 export * from "./balanceChangeEvent.js";
 export * from "./binanceApiConfig.js";

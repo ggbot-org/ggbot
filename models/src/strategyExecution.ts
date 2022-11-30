@@ -1,9 +1,10 @@
 import type { DflowExecutionNodeInfo, DflowGraphRunStatus } from "dflow";
 import type { AccountStrategyKey } from "./accountStrategy.js";
-import type { Balance } from "./balance.js";
+import { Balances, isBalances } from "./balance.js";
 import { isLiteralType } from "./literalType.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
-import type { DeletionTime, UpdateTime } from "./time.js";
+import { DeletionTime, UpdateTime, isUpdateTime } from "./time.js";
 
 export type StrategyExecutionStatus = Extract<
   DflowGraphRunStatus,
@@ -14,15 +15,22 @@ export const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>(
 );
 
 export type StrategyExecution = UpdateTime & {
-  /**
-   * If a strategy execution do some transaction, the result can be reported as a `balances` attribute.
-   */
-  balances: Balance[];
+  /** If a strategy execution do some transaction, the result can be reported as a `balances` attribute. */
+  balances: Balances;
 
   steps: DflowExecutionNodeInfo;
 
   status: StrategyExecutionStatus;
 };
+
+export const isStrategyExecution = objectTypeGuard<StrategyExecution>(
+  ({ status, balances, steps, ...updateTime }) =>
+    isUpdateTime(updateTime) &&
+    isStrategyExecutionStatus(status) &&
+    isBalances(balances) &&
+    // TODO isDflowExecutionNodeInfo(steps)
+    Array.isArray(steps)
+);
 
 export type ReadStrategyExecution = Operation<
   AccountStrategyKey,

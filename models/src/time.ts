@@ -1,57 +1,50 @@
 import { Day, Time, isDay, isTime, now } from "@ggbot2/time";
+import { objectTypeGuard } from "./objects.js";
 
 export type DayKey = { day: Day };
 
-// Create
-// ///////////////////////////////////////////////////////////////////
+// Create.
+// //////
+
+export type CreationTime = { readonly whenCreated: Time };
+
+export const isCreationTime = objectTypeGuard<CreationTime>(({ whenCreated }) =>
+  isTime(whenCreated)
+);
 
 export type CreationDay = {
   creationDay: Day;
 };
 
-export type CreationTime = { readonly whenCreated: Time };
-
-export const isCreationDay = (arg: unknown): arg is CreationDay => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { creationDay } = arg as Partial<CreationDay>;
-  return isDay(creationDay);
-};
-
-export const isCreationTime = (arg: unknown): arg is CreationTime => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { whenCreated } = arg as Partial<CreationTime>;
-  return isTime(whenCreated);
-};
+export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) =>
+  isDay(creationDay)
+);
 
 export type CreatedNow = () => CreationTime;
 
 export const createdNow: CreatedNow = () => ({ whenCreated: now() });
 
-// Delete
-// ///////////////////////////////////////////////////////////////////
+// Delete.
+// //////
 
 export type DeletionTime = { readonly whenDeleted: Time };
 
-export const isDeletionTime = (arg: unknown): arg is DeletionTime => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { whenDeleted } = arg as Partial<DeletionTime>;
-  return isTime(whenDeleted);
-};
+export const isDeletionTime = objectTypeGuard<DeletionTime>(({ whenDeleted }) =>
+  isTime(whenDeleted)
+);
 
 export type DeletedNow = () => DeletionTime;
 
 export const deletedNow: DeletedNow = () => ({ whenDeleted: now() });
 
-// Update
-// ///////////////////////////////////////////////////////////////////
+// Update.
+// //////
 
 export type UpdateTime = { readonly whenUpdated: Time };
 
-export const isUpdateTime = (arg: unknown): arg is UpdateTime => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { whenUpdated } = arg as Partial<UpdateTime>;
-  return isTime(whenUpdated);
-};
+export const isUpdateTime = objectTypeGuard<UpdateTime>(({ whenUpdated }) =>
+  isTime(whenUpdated)
+);
 
 export type UpdatedNow = () => UpdateTime;
 

@@ -1,3 +1,8 @@
+import { Decimal, isDecimal } from "@ggbot2/arithmetic";
+import { arrayTypeGuard } from "./arrays.js";
+import { objectTypeGuard } from "./objects.js";
+import { NonEmptyString, isNonEmptyString } from "./strings.js";
+
 /** A Balance is an abstract representation of an asset owned.
 
 Values can be negative, for example a simulation could start with an empty list of balances.
@@ -23,19 +28,18 @@ Then after buying BTC for a worth of 1000 BUSD we have the following balances.
 ``` */
 export type Balance = {
   /** Asset symbol, e.g. BTC, ETH. */
-  asset: string;
+  asset: NonEmptyString;
   /** Free value available. */
-  free: string;
+  free: Decimal;
   /** Locked value, for example via staking or a limit order. */
-  locked: string;
+  locked: Decimal;
 };
 
-export const isBalance = (arg: unknown): arg is Balance => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { asset, free, locked } = arg as Partial<Balance>;
-  return (
-    typeof asset === "string" &&
-    typeof free === "string" &&
-    typeof locked === "string"
-  );
-};
+export const isBalance = objectTypeGuard<Balance>(
+  ({ asset, free, locked }) =>
+    isNonEmptyString(asset) && isDecimal(free) && isDecimal(locked)
+);
+
+export type Balances = Balance[];
+
+export const isBalances = arrayTypeGuard<Balance>(isBalance);

@@ -1,4 +1,5 @@
 import type { AccountKey } from "./account.js";
+import { arrayTypeGuard } from "./arrays.js";
 import {
   AccountStrategy,
   AccountStrategyKey,
@@ -9,8 +10,8 @@ import type { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export type AccountStrategies = AccountStrategy[];
 
-export const isAccountStrategies = (arg: unknown): arg is AccountStrategies =>
-  Array.isArray(arg) && arg.every((item) => isAccountStrategy(item));
+export const isAccountStrategies =
+  arrayTypeGuard<AccountStrategy>(isAccountStrategy);
 
 export type ReadAccountStrategies = Operation<
   AccountKey,

@@ -1,6 +1,7 @@
 import { AccountKey, isAccountKey } from "./account.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import type { ItemKey } from "./item.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
@@ -8,15 +9,12 @@ export type EmailAccount = AccountKey &
   ItemKey<{ email: EmailAddress }> &
   CreationTime;
 
-export const isEmailAccount = (arg: unknown): arg is EmailAccount => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { accountId, email, ...creationTime } = arg as Partial<EmailAccount>;
-  return (
+export const isEmailAccount = objectTypeGuard<EmailAccount>(
+  ({ accountId, email, ...creationTime }) =>
     isAccountKey({ accountId }) &&
     isCreationTime(creationTime) &&
     isEmailAddress(email)
-  );
-};
+);
 
 export type CreateEmailAccount = Operation<
   Omit<EmailAccount, "whenCreated">,

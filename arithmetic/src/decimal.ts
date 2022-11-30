@@ -48,10 +48,10 @@ export const maxNumOfDecimals = (values: MaybeDecimal[]): number =>
 @throws {ErrorCannotCoerceToDecimal}
 */
 export const coerceToDecimal = (
-  value: unknown,
+  arg: unknown,
   numDecimals?: number
 ): Decimal => {
-  if (!isMaybeDecimal(value)) throw new ErrorCannotCoerceToDecimal(value);
-  const n = Number(value);
+  if (!isMaybeDecimal(arg)) throw new ErrorCannotCoerceToDecimal(arg);
+  const n = Number(arg);
   return numDecimals === undefined ? String(n) : n.toFixed(numDecimals);
 };

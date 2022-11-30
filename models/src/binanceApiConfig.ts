@@ -1,12 +1,19 @@
 import type { AccountKey } from "./account.js";
 import type { ItemKey } from "./item.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
+import { NonEmptyString, isNonEmptyString } from "./strings.js";
 import type { CreationTime, DeletionTime } from "./time.js";
 
 export type BinanceApiConfig = ItemKey<{
-  apiKey: string;
-  apiSecret: string;
+  apiKey: NonEmptyString;
+  apiSecret: NonEmptyString;
 }>;
+
+export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
+  ({ apiKey, apiSecret }) =>
+    isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
+);
 
 /** BinanceApiKeyPermissionCriteria defines a set of conditions that validate if a Binance API key can be used with ggbot2.
 It is important to notice that withdrawals MUST not be enabled for security reasons. */

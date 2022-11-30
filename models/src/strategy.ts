@@ -3,6 +3,7 @@ import type { AccountStrategyKey } from "./accountStrategy.js";
 import { Item, isItemId, NewItem, newId } from "./item.js";
 import { isLiteralType } from "./literalType.js";
 import { Name, isName, normalizeName } from "./name.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime, createdNow } from "./time.js";
 
@@ -17,16 +18,13 @@ export type Strategy = Item &
     name: Name;
   };
 
-export const isStrategy = (arg: unknown): arg is StrategyKind => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { accountId, id, kind, name } = arg as Partial<Strategy>;
-  return (
+export const isStrategy = objectTypeGuard<Strategy>(
+  ({ id, name, kind, ...accountKey }) =>
     isItemId(id) &&
-    isAccountKey({ accountId }) &&
+    isAccountKey(accountKey) &&
     isStrategyKind(kind) &&
     isName(name)
-  );
-};
+);
 
 export const newStrategy = ({
   accountId,
@@ -47,11 +45,10 @@ export type StrategyKey = Readonly<{
   strategyKind: Strategy["kind"];
 }>;
 
-export const isStrategyKey = (arg: unknown): arg is StrategyKey => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { strategyId: id, strategyKind } = arg as Partial<StrategyKey>;
-  return isItemId(id) && isStrategyKind(strategyKind);
-};
+export const isStrategyKey = objectTypeGuard<StrategyKey>(
+  ({ strategyId, strategyKind }) =>
+    isItemId(strategyId) && isStrategyKind(strategyKind)
+);
 
 export type CopyStrategy = Operation<
   AccountStrategyKey & Pick<Strategy, "name">,

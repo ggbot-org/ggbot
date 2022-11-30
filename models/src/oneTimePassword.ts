@@ -1,4 +1,5 @@
 import type { EmailAddress } from "./email.js";
+import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import {
   CreationTime,
@@ -20,11 +21,10 @@ export type OneTimePassword = CreationTime & {
   code: OneTimePasswordCode;
 };
 
-export const isOneTimePassword = (arg: unknown): arg is OneTimePassword => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { code, whenCreated } = arg as Partial<OneTimePassword>;
-  return isOneTimePasswordCode(code) && isCreationTime({ whenCreated });
-};
+export const isOneTimePassword = objectTypeGuard<OneTimePassword>(
+  ({ code, ...creationTime }) =>
+    isOneTimePasswordCode(code) && isCreationTime(creationTime)
+);
 
 export const generateOneTimePassword = (): OneTimePassword => {
   const chars = [];
