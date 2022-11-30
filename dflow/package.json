@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
-    "@ggbot2/time": "file:time",
-    "dflow": "^0.42.0"
+    "@ggbot2/time": "file:time"
   }
 }
