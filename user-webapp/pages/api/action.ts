@@ -28,7 +28,7 @@ import {
   ErrorHTTP,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import type {
+import {
   AccountKey,
   CopyStrategy,
   CreateBinanceApiConfig,
@@ -47,7 +47,9 @@ import type {
   RenameStrategy,
   UpdateAccountStrategiesItem,
   WriteStrategyFlow,
+  objectTypeGuard,
 } from "@ggbot2/models";
+import { Dflow, DflowObject } from "dflow";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
 
@@ -67,19 +69,24 @@ const isApiActionErrorName = (arg: unknown): arg is ApiActionErrorName => {
   return (apiActionErrorNames as readonly string[]).includes(arg);
 };
 
-type ApiActionResponseError = {
-  error: {
-    name: ApiActionErrorName;
-  };
+export type ApiActionError = {
+  name: ApiActionErrorName;
+  info?: DflowObject;
 };
 
-export const isApiActionResponseError = (
-  arg: unknown
-): arg is ApiActionResponseError => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { error } = arg as Partial<ApiActionResponseError>;
-  return isApiActionErrorName(error);
+export const isApiActionError = objectTypeGuard<ApiActionError>(
+  ({ name, info }) =>
+    isApiActionErrorName(name) &&
+    (info === undefined ? true : Dflow.isObject(info))
+);
+
+type ApiActionResponseError = {
+  error: ApiActionError;
 };
+
+export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
+  ({ error }) => isApiActionError(error)
+);
 
 export type ApiActionResponseOutput<T> =
   | {

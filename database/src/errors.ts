@@ -16,9 +16,10 @@ export class ErrorAccountItemNotFound extends Error {
   }
   toObject() {
     return {
-      name: ErrorUnimplementedStrategyKind.name,
-      data: {
+      name: ErrorAccountItemNotFound.name,
+      info: {
         accountId: this.accountId,
+        type: this.type,
       },
     };
   }
@@ -86,7 +87,7 @@ export class ErrorUnimplementedStrategyKind extends Error {
   toObject() {
     return {
       name: ErrorUnimplementedStrategyKind.name,
-      data: {
+      info: {
         strategyKind: this.strategyKind,
       },
     };

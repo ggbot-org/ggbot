@@ -1,4 +1,4 @@
-import { ErrorStrategyItemNotFound, readStrategy } from "@ggbot2/database";
+import { ErrorAccountItemNotFound, readStrategy } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
@@ -198,7 +198,9 @@ const Page: NextPage<ServerSideProps> = ({
   useEffect(() => {
     if (!strategyExecutionError) return;
     if (hasNoBinanceApiConfig) return;
-    if (strategyExecutionError.name === ErrorStrategyItemNotFound.name) {
+    if (strategyExecutionError.name === ErrorAccountItemNotFound.name) {
+      // TODO type guards or other util for errors
+      // check that strategyExecutionError.info.type === 'BinanceApiConfig'
       setHasNoBinanceApiConfig(true);
     }
   }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);

@@ -45,10 +45,11 @@ import type {
   OperationInput,
   OperationOutput,
 } from "@ggbot2/models";
+import type { DflowObject } from "dflow";
 import { useCallback, useState } from "react";
 import {
   ApiAction,
-  ApiActionErrorName,
+  ApiActionError,
   ApiActionInput,
   ApiActionInputData,
   isApiActionResponseError,
@@ -59,9 +60,11 @@ type ErrorName = typeof errorNames[number];
 
 type ActionIO = Pick<Operation<OperationInput, OperationOutput>, "in" | "out">;
 
-type ActionError = {
-  name: ErrorName | ApiActionErrorName;
-};
+type ActionError =
+  | {
+      name: ErrorName;
+    }
+  | ApiActionError;
 
 type UseActionRequestArg = ApiActionInputData;
 type UseEffectDestructor = () => void;
@@ -116,9 +119,10 @@ const useAction = <Action extends ActionIO>({
           const { status } = response;
           if (status === __400__BAD_REQUEST__) {
             const responseOutput = await response.json();
+            console.log(responseOutput);
             if (isApiActionResponseError(responseOutput)) {
               setResponse({
-                error: { name: responseOutput.error.name },
+                error: responseOutput.error,
                 isPending: false,
               });
               return;
