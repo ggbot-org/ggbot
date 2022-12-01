@@ -1,16 +1,20 @@
+import { Button, ButtonOnClick, Fieldset } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
-import { useMemo } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useMemo, useState } from "react";
 import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
+  NavigationSettingsIcon,
   SchedulingsForm,
   StrategyForm,
 } from "_components";
 import {
   StrategyInfo,
   requireAuthenticationAndGetStrategyInfo,
+  route,
 } from "_routing";
 
 type ServerSideProps = StrategyInfo;
@@ -18,6 +22,10 @@ type ServerSideProps = StrategyInfo;
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
 const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
+  const router = useRouter();
+
+  const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
+
   const breadcrumbs = useMemo(
     () => [
       {
@@ -31,10 +39,39 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
     [strategyKey]
   );
 
+  const onClickDelete = useCallback<ButtonOnClick>(
+    (event) => {
+      event.stopPropagation();
+      setDeleteIsSpinning(true);
+      router.push(route.deleteStrategyPage(strategyKey));
+    },
+    [router, strategyKey]
+  );
+
   return (
-    <Content topbar={<Navigation hasSettingsIcon breadcrumbs={breadcrumbs} />}>
+    <Content
+      topbar={
+        <Navigation
+          breadcrumbs={breadcrumbs}
+          icon={<NavigationSettingsIcon />}
+        />
+      }
+    >
       <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
       <SchedulingsForm strategyKey={strategyKey} />
+      <Fieldset color="danger" legend="Danger zone">
+        <menu>
+          <li>
+            <Button
+              color="danger"
+              isSpinning={deleteIsSpinning}
+              onClick={onClickDelete}
+            >
+              Delete strategy
+            </Button>
+          </li>
+        </menu>
+      </Fieldset>
     </Content>
   );
 };

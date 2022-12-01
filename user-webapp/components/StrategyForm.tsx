@@ -20,13 +20,12 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
   const [flowIsSpinning, setFlowIsSpinning] = useState(false);
-  const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
   const [name, setName] = useState("");
   const [newName, setNewName] = useState("");
 
   const someButtonIsSpinning = useMemo(
-    () => copyIsSpinning || deleteIsSpinning || flowIsSpinning,
-    [copyIsSpinning, deleteIsSpinning, flowIsSpinning]
+    () => copyIsSpinning || flowIsSpinning,
+    [copyIsSpinning, flowIsSpinning]
   );
   const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
     useApiAction.RENAME_STRATEGY();
@@ -63,10 +62,9 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     (event) => {
       event.stopPropagation();
       if (someButtonIsSpinning) return;
-      setDeleteIsSpinning(true);
       router.push(route.deleteStrategyPage(strategyKey));
     },
-    [someButtonIsSpinning, setDeleteIsSpinning, router, strategyKey]
+    [someButtonIsSpinning, router, strategyKey]
   );
 
   const inputNameSetValue = useCallback<(value: unknown) => void>(
@@ -145,15 +143,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         <li>
           <Button isSpinning={copyIsSpinning} onClick={onClickCopy}>
             copy
-          </Button>
-        </li>
-        <li>
-          <Button
-            isSpinning={deleteIsSpinning}
-            onClick={onClickDelete}
-            color="danger"
-          >
-            delete
           </Button>
         </li>
       </menu>

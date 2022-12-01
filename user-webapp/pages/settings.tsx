@@ -42,7 +42,7 @@ const Page: NextPage = () => {
   );
 
   const sectionTitle = useMemo(
-    () => titleOfSection[selectedSectionId],
+    () => (selectedSectionId ? titleOfSection[selectedSectionId] : ""),
     [titleOfSection, selectedSectionId]
   );
 
@@ -52,7 +52,7 @@ const Page: NextPage = () => {
       binance: <BinanceSettings />,
       billing: <BillingSettings />,
     };
-    return componentOfSection[selectedSectionId];
+    return selectedSectionId ? componentOfSection[selectedSectionId] : null;
   }, [selectedSectionId]);
 
   useEffect(() => {

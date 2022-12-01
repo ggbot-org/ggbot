@@ -15,8 +15,9 @@ import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
-  NavigationLabel,
   NavigationBreadcrumbStrategy,
+  NavigationLabel,
+  NavigationSettingsIcon,
 } from "_components";
 import { useBacktesting, useFlowView } from "_hooks";
 import {
@@ -163,7 +164,10 @@ const Page: NextPage<ServerSideProps> = ({
         canonical: strategyPathname,
       }}
       topbar={
-        <Navigation breadcrumbs={breadcrumbs} hasSettingsIcon={hasSession} />
+        <Navigation
+          breadcrumbs={breadcrumbs}
+          icon={hasSession ? <NavigationSettingsIcon /> : null}
+        />
       }
     >
       <div className="flex h-full flex-col grow">

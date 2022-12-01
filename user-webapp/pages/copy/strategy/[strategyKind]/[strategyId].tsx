@@ -17,6 +17,7 @@ import {
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
   NavigationLabel,
+  NavigationSettingsIcon,
 } from "_components";
 import { useApiAction } from "_hooks";
 import {
@@ -89,7 +90,14 @@ const Page: NextPage<ServerSideProps> = ({
   }, [router, data]);
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation
+          breadcrumbs={breadcrumbs}
+          icon={<NavigationSettingsIcon />}
+        />
+      }
+    >
       <form
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}

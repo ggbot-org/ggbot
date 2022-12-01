@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { FC, PointerEventHandler, useCallback, useMemo } from "react";
+import {
+  FC,
+  PointerEventHandler,
+  ReactNode,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   Breadcrumb,
   BreadcrumbItems,
@@ -12,14 +18,11 @@ import { StrategyKey, route } from "_routing";
 type NavigationProps = {
   /** Optionally define navigation. */
   breadcrumbs?: BreadcrumbItems;
-  /** Show settings icon. */
-  hasSettingsIcon?: boolean;
+  /** Optional top-right icon. */
+  icon?: ReactNode;
 };
 
-export const Navigation: FC<NavigationProps> = ({
-  breadcrumbs,
-  hasSettingsIcon,
-}) => {
+export const Navigation: FC<NavigationProps> = ({ breadcrumbs, icon }) => {
   return (
     <Header>
       <div className="flex flex-row justify-between">
@@ -38,15 +41,19 @@ export const Navigation: FC<NavigationProps> = ({
           )}
         </div>
 
-        <div className="px-1 flex flex-row items-center">
-          {hasSettingsIcon && <NavigationSettingsIcon />}
-        </div>
+        <div className="px-1 flex items-center">{icon}</div>
       </div>
     </Header>
   );
 };
 
-const NavigationSettingsIcon: FC = () => {
+export const NavigationDangerIcon: FC = () => (
+  <span className="text-yellow-400">
+    <Icon name="danger" />
+  </span>
+);
+
+export const NavigationSettingsIcon: FC = () => {
   const router = useRouter();
   const goToSettings = useCallback(() => {
     if (router.pathname !== route.settingsPage())

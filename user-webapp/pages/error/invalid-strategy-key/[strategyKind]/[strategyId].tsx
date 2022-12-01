@@ -4,6 +4,7 @@ import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
+  NavigationSettingsIcon,
 } from "_components";
 import {
   InvalidStrategyKey,
@@ -37,7 +38,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
       topbar={
         <Navigation
           breadcrumbs={[{ content: <NavigationBreadcrumbDashboard isLink /> }]}
-          hasSettingsIcon
+          icon={<NavigationSettingsIcon />}
         />
       }
     >

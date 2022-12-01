@@ -26,6 +26,7 @@ import {
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
   NavigationLabel,
+  NavigationSettingsIcon,
   StrategyItem,
 } from "_components";
 import { binance } from "_flow/binance";
@@ -253,7 +254,12 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content
-      topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}
+      topbar={
+        <Navigation
+          breadcrumbs={breadcrumbs}
+          icon={<NavigationSettingsIcon />}
+        />
+      }
       message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
     >
       <div className="flex h-full flex-col grow">

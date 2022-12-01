@@ -6,6 +6,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbSettings,
+  NavigationDangerIcon,
   NavigationLabel,
 } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
@@ -44,7 +45,11 @@ const Page: NextPage = () => {
   );
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
+      }
+    >
       <div className="p-4">
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <span className="text-xl">Delete account</span>

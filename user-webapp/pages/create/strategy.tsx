@@ -9,6 +9,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationLabel,
+  NavigationSettingsIcon,
 } from "_components";
 import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
@@ -50,7 +51,7 @@ const Page: NextPage = () => {
             { content: <NavigationBreadcrumbDashboard isLink /> },
             { content: <NavigationLabel text="create" />, current: true },
           ]}
-          hasSettingsIcon
+          icon={<NavigationSettingsIcon />}
         />
       }
     >

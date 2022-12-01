@@ -6,6 +6,7 @@ import {
   Navigation,
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
+  NavigationDangerIcon,
   NavigationLabel,
 } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
@@ -56,7 +57,11 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} hasSettingsIcon />}>
+    <Content
+      topbar={
+        <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
+      }
+    >
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>

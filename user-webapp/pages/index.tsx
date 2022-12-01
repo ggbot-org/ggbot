@@ -3,6 +3,7 @@ import {
   Content,
   Navigation,
   NavigationBreadcrumbDashboard,
+  NavigationSettingsIcon,
   Strategies,
 } from "_components";
 import { requireAuthentication } from "_routing";
@@ -15,7 +16,7 @@ const Page: NextPage = () => {
       topbar={
         <Navigation
           breadcrumbs={[{ content: <NavigationBreadcrumbDashboard /> }]}
-          hasSettingsIcon
+          icon={<NavigationSettingsIcon />}
         />
       }
     >
