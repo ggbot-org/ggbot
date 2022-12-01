@@ -1,10 +1,13 @@
+import { isLiteralType } from "@ggbot2/models";
 import { FC, PointerEventHandler, ReactNode, useMemo } from "react";
 
 const settingsSectionIds = ["account", "binance", "billing"] as const;
 export type SettingsSectionId = typeof settingsSectionIds[number];
+export const isSettingsSectionId =
+  isLiteralType<SettingsSectionId>(settingsSectionIds);
 
 export type SettingsMenuProps = {
-  selected: SettingsSectionId;
+  selected: SettingsSectionId | undefined;
   setSelected: (selected: SettingsSectionId) => void;
   titleOfSection: Record<SettingsSectionId, string>;
 };

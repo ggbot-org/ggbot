@@ -95,6 +95,27 @@ export const NavigationBreadcrumbDashboard: FC<
   );
 };
 
+export const NavigationBreadcrumbSettings: FC<
+  NavigationBreadcrumbItemProps
+> = ({ isLink }) => {
+  const router = useRouter();
+  const className = useMemo(() => itemClassName({ isLink }), [isLink]);
+  const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
+    (event) => {
+      event.stopPropagation();
+      if (!isLink) return;
+      if (router.pathname !== route.settingsPage())
+        router.push(route.settingsPage());
+    },
+    [isLink, router]
+  );
+  return (
+    <div className={className} onClick={onClick}>
+      <NavigationLabel text="settings" />
+    </div>
+  );
+};
+
 type NavigationBreadcrumbStrategyProps = {
   strategyKey: StrategyKey;
 } & NavigationBreadcrumbItemProps;

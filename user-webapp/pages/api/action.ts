@@ -5,6 +5,8 @@ import {
   copyStrategy,
   createBinanceApiConfig,
   createStrategy,
+  deleteAccount,
+  deleteBinanceApiConfig,
   deleteStrategy,
   executeStrategy,
   readAccount,
@@ -12,10 +14,10 @@ import {
   readBinanceApiConfig,
   readBinanceApiKeyPermissions,
   readStrategy,
+  readStrategyBalances,
   readStrategyFlow,
   renameAccount,
   renameStrategy,
-  readStrategyBalances,
   updateAccountStrategiesItem,
   writeStrategyFlow,
 } from "@ggbot2/database";
@@ -33,6 +35,8 @@ import {
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
+  DeleteAccount,
+  DeleteBinanceApiConfig,
   DeleteStrategy,
   ExecuteStrategy,
   OperationInput,
@@ -104,6 +108,8 @@ export type ApiAction = {
   COPY_STRATEGY: Action<CopyStrategy["in"]>;
   CREATE_BINANCE_API_CONFIG: Action<CreateBinanceApiConfig["in"]>;
   CREATE_STRATEGY: Action<CreateStrategy["in"]>;
+  DELETE_ACCOUNT: Action<DeleteAccount["in"]>;
+  DELETE_BINANCE_API_CONFIG: Action<DeleteBinanceApiConfig["in"]>;
   DELETE_STRATEGY: Action<DeleteStrategy["in"]>;
   EXECUTE_STRATEGY: Action<ExecuteStrategy["in"]>;
   READ_ACCOUNT: Action<ReadAccount["in"]>;
@@ -157,6 +163,16 @@ export default async function apiHandler(
 
       case "CREATE_STRATEGY": {
         const data = await createStrategy({ accountId, ...action.data });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "DELETE_ACCOUNT": {
+        const data = await deleteAccount({ accountId });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "DELETE_BINANCE_API_CONFIG": {
+        const data = await deleteBinanceApiConfig({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 

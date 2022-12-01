@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import {
   AccountSettings,
   BillingSettings,
@@ -11,14 +11,26 @@ import {
   SettingsMenu,
   SettingsMenuProps,
   SettingsSectionId,
+  isSettingsSectionId,
 } from "_components";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
+  const sectionIdStorageKey = "settingsSectionId";
   const [selectedSectionId, setSelectedSectionId] =
-    useState<SettingsSectionId>("account");
+    useState<SettingsMenuProps["selected"]>();
+
+  const storeAndSetSelectedSectionId = useCallback<
+    SettingsMenuProps["setSelected"]
+  >(
+    (sectionId) => {
+      global?.window?.sessionStorage.setItem(sectionIdStorageKey, sectionId);
+      setSelectedSectionId(sectionId);
+    },
+    [setSelectedSectionId]
+  );
 
   const titleOfSection = useMemo<SettingsMenuProps["titleOfSection"]>(
     () => ({
@@ -43,6 +55,17 @@ const Page: NextPage = () => {
     return componentOfSection[selectedSectionId];
   }, [selectedSectionId]);
 
+  useEffect(() => {
+    const storedSelectedSectionId =
+      global?.window?.sessionStorage.getItem(sectionIdStorageKey);
+
+    if (isSettingsSectionId(storedSelectedSectionId)) {
+      storeAndSetSelectedSectionId(storedSelectedSectionId);
+    } else {
+      storeAndSetSelectedSectionId("account");
+    }
+  }, [storeAndSetSelectedSectionId]);
+
   return (
     <Content
       topbar={
@@ -64,7 +87,7 @@ const Page: NextPage = () => {
           <SettingsMenu
             titleOfSection={titleOfSection}
             selected={selectedSectionId}
-            setSelected={setSelectedSectionId}
+            setSelected={storeAndSetSelectedSectionId}
           />
         </div>
         <div className="my-2 md:my-4 flex flex-col gap-2 grow">

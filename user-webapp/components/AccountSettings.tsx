@@ -1,11 +1,13 @@
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import {
   Button,
+  ButtonOnClick,
   DateTime,
   EditableInputField,
   Fieldset,
   OutputField,
 } from "@ggbot2/ui-components";
+import { useRouter } from "next/router";
 import {
   FC,
   ReactNode,
@@ -15,8 +17,11 @@ import {
   useState,
 } from "react";
 import { useApiAction } from "_hooks";
+import { route } from "_routing";
 
 export const AccountSettings: FC = () => {
+  const router = useRouter();
+
   const [newName, setNewName] = useState("");
 
   const [readAccount, { data: account }] = useApiAction.READ_ACCOUNT();
@@ -80,6 +85,14 @@ export const AccountSettings: FC = () => {
     [currentName, readOnly, setNewName]
   );
 
+  const onClickDelete = useCallback<ButtonOnClick>(
+    (event) => {
+      event.stopPropagation();
+      router.push(route.deleteAccountPage());
+    },
+    [router]
+  );
+
   useEffect(() => {
     if (newName) return renameAccount({ data: { name: newName } });
   }, [renameAccount, newName]);
@@ -109,15 +122,15 @@ export const AccountSettings: FC = () => {
         </Fieldset>
       </form>
 
-      <form>
-        <Fieldset color="danger" legend="Danger zone">
-          <menu>
-            <li>
-              <Button color="danger">Delete Account</Button>
-            </li>
-          </menu>
-        </Fieldset>
-      </form>
+      <Fieldset color="danger" legend="Danger zone">
+        <menu>
+          <li>
+            <Button color="danger" onClick={onClickDelete}>
+              Delete Account
+            </Button>
+          </li>
+        </menu>
+      </Fieldset>
     </div>
   );
 };

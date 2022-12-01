@@ -1,4 +1,4 @@
-import { Button, DateTime, Icon } from "@ggbot2/ui-components";
+import { Button, DateTime, Fieldset, OutputField } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
@@ -39,14 +39,7 @@ const Page: NextPage<ServerSideProps> = ({
         ),
       },
       {
-        content: (
-          <div className="flex flex-row gap-2 items-center">
-            <NavigationLabel text="delete" />
-            <span className="text-yellow-400">
-              <Icon name="danger" size={17} />
-            </span>
-          </div>
-        ),
+        content: <NavigationLabel text="delete strategy" />,
         current: true,
       },
     ],
@@ -67,30 +60,27 @@ const Page: NextPage<ServerSideProps> = ({
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-            <span className="text-xl">delete strategy</span>
-            <p>Are you sure you want to delete this strategy?</p>
-            <div className="p-4 shadow">
-              <dl>
-                <dt>name</dt>
-                <dd>{name}</dd>
-                <dt>created</dt>
-                <dd>
-                  <DateTime format="time" value={whenCreated} />
-                </dd>
-              </dl>
-            </div>
-            <menu className="flex flex-row gap-4">
-              <li>
-                <Button type="reset" onClick={goBack}>
-                  no, go back
-                </Button>
-              </li>
-              <li>
-                <Button type="submit" color="danger">
-                  yes, delete it
-                </Button>
-              </li>
-            </menu>
+            <Fieldset legend="Delete strategy">
+              <p>Are you sure you want to delete this strategy?</p>
+
+              <OutputField label="name">{name}</OutputField>
+              <OutputField label="When created">
+                <DateTime format="time" value={whenCreated} />
+              </OutputField>
+
+              <menu className="flex flex-row gap-4">
+                <li>
+                  <Button type="reset" onClick={goBack}>
+                    no, go back
+                  </Button>
+                </li>
+                <li>
+                  <Button type="submit" color="danger">
+                    yes, delete it
+                  </Button>
+                </li>
+              </menu>
+            </Fieldset>
           </form>
         ) : (
           <div>Cannot delete strategy. Permission denied!</div>

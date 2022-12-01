@@ -8,6 +8,8 @@ export const route = {
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,
   createStrategyPage: () => "/create/strategy",
+  deleteAccountPage: () => "/delete/account",
+  deleteBinanceApiConfigPage: () => "/delete/binance-api-config",
   deleteStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/delete/strategy/${strategyKind}/${strategyId}`,
   editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>

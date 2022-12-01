@@ -45,7 +45,6 @@ import type {
   OperationInput,
   OperationOutput,
 } from "@ggbot2/models";
-import type { DflowObject } from "dflow";
 import { useCallback, useState } from "react";
 import {
   ApiAction,
@@ -184,6 +183,12 @@ export const useApiAction = {
     }),
   CREATE_STRATEGY: () =>
     useAction<ApiAction["CREATE_STRATEGY"]>({ type: "CREATE_STRATEGY" }),
+  DELETE_ACCOUNT: () =>
+    useAction<ApiAction["DELETE_ACCOUNT"]>({ type: "DELETE_ACCOUNT" }),
+  DELETE_BINANCE_API_CONFIG: () =>
+    useAction<ApiAction["DELETE_BINANCE_API_CONFIG"]>({
+      type: "DELETE_BINANCE_API_CONFIG",
+    }),
   DELETE_STRATEGY: () =>
     useAction<ApiAction["DELETE_STRATEGY"]>({ type: "DELETE_STRATEGY" }),
   EXECUTE_STRATEGY: () =>

@@ -1,13 +1,15 @@
 import { isBinanceApiKeyPermission } from "@ggbot2/binance";
 import {
   Button,
+  ButtonOnClick,
   Checkmark,
   CheckmarkProps,
   Fieldset,
   InputField,
   OutputField,
 } from "@ggbot2/ui-components";
-import { isBinanceApiConfig } from "@ggbot2/models";
+import { BinanceApiConfig, isMaybeObject } from "@ggbot2/models";
+import { useRouter } from "next/router";
 import {
   FC,
   FormEventHandler,
@@ -17,8 +19,11 @@ import {
   useMemo,
 } from "react";
 import { useApiAction } from "_hooks";
+import { route } from "_routing";
 
 export const BinanceSettings: FC = () => {
+  const router = useRouter();
+
   const apiKeyLabel = "API Key";
 
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
@@ -48,7 +53,8 @@ export const BinanceSettings: FC = () => {
 
   const { currentApiKey, hasBinanceApiConfig } = useMemo(
     () =>
-      isBinanceApiConfig(binanceApiConfig)
+      isMaybeObject<BinanceApiConfig>(binanceApiConfig) &&
+      typeof binanceApiConfig.apiKey === "string"
         ? {
             currentApiKey: binanceApiConfig.apiKey,
             hasBinanceApiConfig: true,
@@ -91,7 +97,7 @@ export const BinanceSettings: FC = () => {
           label: String(enableWithdrawals),
           ok:
             typeof enableWithdrawals === "boolean"
-              ? enableWithdrawals
+              ? enableWithdrawals === false
               : undefined,
         },
         description: (
@@ -141,7 +147,7 @@ export const BinanceSettings: FC = () => {
           apiKey: { value: string };
           apiSecret: { value: string };
         };
-        createConfig({ data: { apiKey, apiSecret } });
+        createConfig({ apiKey, apiSecret });
       }
     },
     [
@@ -153,67 +159,75 @@ export const BinanceSettings: FC = () => {
     ]
   );
 
+  const onClickDelete = useCallback<ButtonOnClick>(
+    (event) => {
+      event.stopPropagation();
+      router.push(route.deleteBinanceApiConfigPage());
+    },
+    [router]
+  );
+
   useEffect(readConfig, [readConfig]);
 
   return (
     <div className="flex flex-col gap-4">
       <form onSubmit={onSubmit}>
-        <Fieldset legend="Binance API">
-          {hasBinanceApiConfig && (
-            <>
-              <OutputField label={apiKeyLabel}>{currentApiKey}</OutputField>
+        {hasBinanceApiConfig && (
+          <Fieldset legend="Binance API">
+            <OutputField label={apiKeyLabel}>{currentApiKey}</OutputField>
 
-              <menu className="mb-8">
-                <li>
-                  <Button isSpinning={testIsPending}>test</Button>
-                </li>
-              </menu>
+            <menu className="mb-8">
+              <li>
+                <Button isSpinning={testIsPending}>test</Button>
+              </li>
+            </menu>
 
-              <div className="flex flex-col gap-2">
-                {permissionItems.map(
-                  ({ description, checkmark: checkmarkProps }, i) => (
-                    <div key={i} className="flex justify-between">
-                      {description}
-                      <Checkmark {...checkmarkProps} />
-                    </div>
-                  )
-                )}
-              </div>
-            </>
-          )}
-          {hasNoBinanceApiConfig && (
-            <>
-              <InputField
-                name="apiKey"
-                label={apiKeyLabel}
-                required
-                readOnly={isPending}
-              />
-              <InputField
-                label="API Secret"
-                name="apiSecret"
-                required
-                readOnly={isPending}
-              />
-              <menu>
-                <li>
-                  <Button isSpinning={createIsPending}>create</Button>
-                </li>
-              </menu>
-            </>
-          )}
-        </Fieldset>
+            <div className="flex flex-col gap-2">
+              {permissionItems.map(
+                ({ description, checkmark: checkmarkProps }, i) => (
+                  <div key={i} className="flex justify-between">
+                    {description}
+                    <Checkmark {...checkmarkProps} />
+                  </div>
+                )
+              )}
+            </div>
+          </Fieldset>
+        )}
+        {hasNoBinanceApiConfig && (
+          <Fieldset legend="New Binance API">
+            <InputField
+              name="apiKey"
+              label={apiKeyLabel}
+              required
+              readOnly={isPending}
+            />
+            <InputField
+              label="API Secret"
+              name="apiSecret"
+              required
+              readOnly={isPending}
+            />
+            <menu>
+              <li>
+                <Button isSpinning={createIsPending}>create</Button>
+              </li>
+            </menu>
+          </Fieldset>
+        )}
       </form>
 
-      <form>
+      {hasBinanceApiConfig ? (
         <Fieldset color="danger" legend="Danger zone">
           <menu>
             <li>
-              <Button color="danger">Delete Account</Button>
+              <Button color="danger" onClick={onClickDelete}>
+                Delete API key
+              </Button>
             </li>
           </menu>
         </Fieldset>
-      </form>
+      ) : null}
     </div>
   );
 };
