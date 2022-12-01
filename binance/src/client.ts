@@ -96,7 +96,7 @@ export class BinanceClient extends BinanceExchange {
       orderOptions
     );
     return await this.privateRequest<BinanceOrderRespFULL>(
-      "GET",
+      "POST",
       "/api/v3/order",
       {
         symbol,
@@ -108,7 +108,7 @@ export class BinanceClient extends BinanceExchange {
   }
 
   /** Test a new order.
-Binance API will validates new order but will not send it into the matching engine.
+Binance API will validate new order but will not send it into the matching engine.
 Parameters are the same as `newOrder`. */
   async newOrderTest(
     symbolInput: string,
@@ -123,7 +123,7 @@ Parameters are the same as `newOrder`. */
       orderOptions
     );
     return await this.privateRequest<BinanceOrderRespFULL>(
-      "GET",
+      "POST",
       "/api/v3/order/test",
       {
         symbol,
@@ -149,7 +149,7 @@ Parameters are the same as `newOrder`. */
       orderOptions
     );
     return await this.privateRequest<BinanceOrderRespACK>(
-      "GET",
+      "POST",
       "/api/v3/order",
       {
         symbol,
@@ -179,7 +179,7 @@ Parameters are the same as `newOrderACK`.
       orderOptions
     );
     return await this.privateRequest<BinanceOrderRespACK>(
-      "GET",
+      "POST",
       "/api/v3/order/test",
       {
         symbol,

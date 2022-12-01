@@ -32,15 +32,21 @@ export class BinanceConnector {
     const url = new URL(this.baseUrl);
     url.pathname = endpoint;
 
-    for (const [key, value] of Object.entries(params))
-      url.searchParams.append(key, String(value));
+    if (method === "GET")
+      for (const [key, value] of Object.entries(params))
+        url.searchParams.append(key, String(value));
 
     const headers = new Headers({
+      "Content-Type": "application/json",
       "User-Agent": BinanceConnector.userAgent,
       ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
     });
 
-    const response = await fetch(url, { headers, method });
+    const fetchOptions: RequestInit = { headers, method };
+
+    if (method === "POST") fetchOptions.body = JSON.stringify(params);
+
+    const response = await fetch(url, fetchOptions);
     if (!response.ok) throw new ErrorHTTP(response);
 
     const data = await response.json();
@@ -53,6 +59,6 @@ export type BinanceConnectorConstructorArg = Pick<BinanceConnector, "baseUrl">;
 export type BinanceConnectorRequestArg = {
   apiKey?: string;
   endpoint: BinanceApiEndpoint;
-  method: "GET";
+  method: "GET" | "POST";
   params?: Record<string, string | number>;
 };
