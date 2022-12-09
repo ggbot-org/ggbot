@@ -1,4 +1,4 @@
-import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
+// TODO (see below) import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
 import type {
   BinanceNewOrderOptions,
   BinanceSymbolFilter,
@@ -29,12 +29,16 @@ export const findSymbolFilterMinNotional: FindSymbolFilter<
   filters.find(isBinanceSymbolFilterMinNotional);
 
 export const lotSizeIsValid = (
-  { minQty, maxQty, stepSize }: BinanceSymbolFilterLotSize,
+  { minQty, maxQty /*stepSize*/ }: BinanceSymbolFilterLotSize,
   value: Quantity | IcebergQty
 ) => {
   if (Number(minQty) !== 0 && value < minQty) return false;
   if (Number(maxQty) !== 0 && value > maxQty) return false;
-  return Number.isInteger(decimalToNumber(div(sub(value, minQty), stepSize)));
+  return true;
+  // TODO test case
+  // args: 0.00001000 9000.00000000 0.00001000
+  // result is 98.99999999999999 (not integer)
+  // TODO return Number.isInteger(decimalToNumber(div(sub(value, minQty), stepSize)));
 };
 
 export const minNotionalIsValid = (

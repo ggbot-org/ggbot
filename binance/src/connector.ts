@@ -32,9 +32,16 @@ export class BinanceConnector {
     const url = new URL(this.baseUrl);
     url.pathname = endpoint;
 
-    if (method === "GET")
-      for (const [key, value] of Object.entries(params))
-        url.searchParams.append(key, String(value));
+    // TODO See @binance/connector
+    // query string is not standard (e.g. for symbols) they use
+    // const buildQueryString = params => {
+    //   if (!params) return ''
+    //   return Object.entries(params)
+    //     .map(stringifyKeyValuePair)
+    //     .join('&')
+    // }
+    for (const [key, value] of Object.entries(params))
+      url.searchParams.append(key, String(value));
 
     const headers = new Headers({
       "Content-Type": "application/json",
@@ -43,8 +50,6 @@ export class BinanceConnector {
     });
 
     const fetchOptions: RequestInit = { headers, method };
-
-    if (method === "POST") fetchOptions.body = JSON.stringify(params);
 
     const response = await fetch(url, fetchOptions);
     if (!response.ok) throw new ErrorHTTP(response);
