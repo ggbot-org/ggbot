@@ -50,7 +50,6 @@ import {
   ApiAction,
   ApiActionError,
   ApiActionInput,
-  ApiActionInputData,
   isApiActionResponseError,
 } from "_api/action";
 
@@ -65,9 +64,10 @@ type ActionError =
     }
   | ApiActionError;
 
-type UseActionRequestArg = ApiActionInputData;
 type UseEffectDestructor = () => void;
-type UseActionRequest = (arg?: UseActionRequestArg) => UseEffectDestructor;
+type UseActionRequest<Action extends ActionIO> = (
+  arg?: Action["in"]
+) => UseEffectDestructor;
 type UseActionResponse<Action extends ActionIO> = {
   error?: ActionError | undefined;
   data?: Action["out"] | undefined;
@@ -77,15 +77,15 @@ type UseActionResponse<Action extends ActionIO> = {
 const useAction = <Action extends ActionIO>({
   type,
 }: Pick<ApiActionInput, "type">): [
-  request: UseActionRequest,
+  request: UseActionRequest<Action>,
   response: UseActionResponse<Action>
 ] => {
   const [response, setResponse] = useState<UseActionResponse<Action>>({
     isPending: false,
   });
 
-  const request = useCallback<UseActionRequest>(
-    (arg: Action["in"]) => {
+  const request = useCallback<UseActionRequest<Action>>(
+    (arg) => {
       const controller = new AbortController();
       const { abort, signal } = controller;
       const timeout = 10000;
@@ -98,7 +98,7 @@ const useAction = <Action extends ActionIO>({
         clearTimeout(timeoutId);
       });
 
-      const fetchRequest = async (inputData: UseActionRequestArg) => {
+      const fetchRequest = async (inputData: Action["in"]) => {
         setResponse({ isPending: true });
         const body =
           inputData === undefined

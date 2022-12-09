@@ -57,8 +57,11 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
         />
       }
     >
-      <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
-      <SchedulingsForm strategyKey={strategyKey} />
+      <div className="flex flex-wrap gap-2">
+        <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
+        <SchedulingsForm strategyKey={strategyKey} />
+      </div>
+
       <Fieldset color="danger" legend="Danger zone">
         <menu>
           <li>

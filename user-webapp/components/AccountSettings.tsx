@@ -94,7 +94,7 @@ export const AccountSettings: FC = () => {
   );
 
   useEffect(() => {
-    if (newName) return renameAccount({ data: { name: newName } });
+    if (newName) return renameAccount({ name: newName });
   }, [renameAccount, newName]);
 
   useEffect(readAccount, [readAccount]);

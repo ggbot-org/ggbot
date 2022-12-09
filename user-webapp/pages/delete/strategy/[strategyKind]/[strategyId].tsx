@@ -51,7 +51,7 @@ const Page: NextPage<ServerSideProps> = ({
     (event) => {
       event.preventDefault();
       if (isPending) return;
-      deleteStrategy({ data: strategyKey });
+      deleteStrategy(strategyKey);
     },
     [isPending, deleteStrategy, strategyKey]
   );

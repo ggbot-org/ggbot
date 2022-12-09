@@ -67,7 +67,7 @@ const Page: NextPage<ServerSideProps> = ({
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name)) copyStrategy({ data: { name, ...strategyKey } });
+        if (isName(name)) copyStrategy({ name, ...strategyKey });
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
           toast.error("Invalid strategy name");

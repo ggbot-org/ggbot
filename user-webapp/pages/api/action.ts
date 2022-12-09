@@ -57,9 +57,6 @@ import { Dflow, DflowObject } from "dflow";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
 
-export type ApiActionInputData = OperationInput;
-type ApiActionOutputData = OperationOutput;
-
 const apiActionErrorNames = [
   ErrorHTTP.name,
   ErrorAccountItemNotFound.name,
@@ -92,9 +89,9 @@ export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
   ({ error }) => isApiActionError(error)
 );
 
-export type ApiActionResponseOutput<T> =
+export type ApiActionResponseOutput =
   | {
-      data?: T;
+      data?: OperationOutput;
     }
   | ApiActionResponseError;
 
@@ -129,12 +126,12 @@ type ApiActionType = keyof ApiAction;
 
 export type ApiActionInput = {
   type: ApiActionType;
-  data?: ApiActionInputData;
+  data?: OperationInput;
 };
 
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiActionResponseOutput<ApiActionOutputData>>
+  res: NextApiResponse<ApiActionResponseOutput>
 ) {
   try {
     if (req.method !== "POST")
