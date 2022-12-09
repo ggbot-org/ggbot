@@ -1,5 +1,7 @@
 import {
+  BinanceCacheMap,
   BinanceClient,
+  BinanceClientConstructorArg,
   BinanceConnector,
   BinanceKline,
   BinanceKlineInterval,
@@ -32,6 +34,13 @@ import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
 class Binance extends BinanceClient implements BinanceDflowClient {
+  constructor(arg: Pick<BinanceClientConstructorArg, "apiKey" | "apiSecret">) {
+    super({
+      ...arg,
+      baseUrl: BinanceConnector.defaultBaseUrl,
+      cache: new BinanceCacheMap(),
+    });
+  }
   async candles(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -70,8 +79,6 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
     const memoryInput = strategyMemory?.memory ?? {};
 
     if (strategyKind === "binance") {
-      const baseUrl = BinanceConnector.defaultBaseUrl;
-
       const binanceApiConfig = await readBinanceApiConfig({ accountId });
       if (!binanceApiConfig)
         throw new ErrorAccountItemNotFound({
@@ -79,7 +86,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
           accountId,
         });
 
-      const binance = new Binance({ baseUrl, ...binanceApiConfig });
+      const binance = new Binance(binanceApiConfig);
 
       const { symbols } = await binance.exchangeInfo();
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });

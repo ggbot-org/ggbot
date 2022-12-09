@@ -1,10 +1,6 @@
 import { Time, getTime } from "@ggbot2/time";
 import type { BinanceKlineInterval } from "./types.js";
 
-export interface BinanceTimeProvider {
-  now: () => Time;
-}
-
 export const getIntervalTime: Record<
   BinanceKlineInterval,
   (time: Time, numIntervals: number) => Time

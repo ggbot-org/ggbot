@@ -2,6 +2,7 @@ import { div, mul } from "@ggbot2/arithmetic";
 import {
   BinanceAccountInformation,
   BinanceBalance,
+  BinanceCacheMap,
   BinanceConnector,
   BinanceExchange,
   BinanceKlineInterval,
@@ -19,6 +20,7 @@ import { Time, now, truncateTime } from "@ggbot2/time";
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
+  cache: new BinanceCacheMap(),
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {

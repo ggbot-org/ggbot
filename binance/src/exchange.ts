@@ -18,7 +18,7 @@ import {
   lotSizeIsValid,
   minNotionalIsValid,
 } from "./symbolFilters.js";
-import { BinanceTimeProvider, getIntervalTime } from "./time.js";
+import { getIntervalTime } from "./time.js";
 import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
@@ -43,7 +43,7 @@ import {
 } from "./typeGuards.js";
 
 /** BinanceExchange implements public API requests.
-To create a cached client, pass a `BinanceCacheProvider` and a `BinanceTimeProvider` to the constructor.
+To create a cached client, pass a `BinanceCacheProvider` to the constructor.
 @example
 ```ts
 import { truncateDate } from "@ggbot2/time";
@@ -51,28 +51,18 @@ import {
   BinanceCacheMap,
   BinanceConnector,
   BinanceExchange,
-  BinanceTimeProvider
 } from '@ggbot2/binance'
-class TimeProvider implements BinanceTimeProvider {
-  now() {
-    return truncateDate(new Date()).to.minutes().getTime();
-  }
-}
-const time = new TimeProvider();
 const cache = new BinanceCacheMap();
 const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
   cache: new BinanceCacheMap(),
-  time: new TimeProvider()
 });
 ``` */
 export class BinanceExchange extends BinanceConnector {
   private readonly cache: BinanceCacheProvider | undefined;
-  private readonly time: BinanceTimeProvider | undefined;
-  constructor({ baseUrl, cache, time }: BinanceExchangeConstructorArg) {
+  constructor({ baseUrl, cache }: BinanceExchangeConstructorArg) {
     super({ baseUrl });
     this.cache = cache;
-    this.time = time;
   }
 
   /** @throws {ErrorBinanceSymbolFilter} */
@@ -97,7 +87,6 @@ export class BinanceExchange extends BinanceConnector {
   }
 
   static coerceKlineOptionalParametersToTimeInterval(
-    time: BinanceTimeProvider,
     interval: BinanceKlineInterval,
     { startTime, endTime, limit }: BinanceKlineOptionalParameters
   ): TimeInterval {
@@ -121,16 +110,8 @@ export class BinanceExchange extends BinanceConnector {
         ),
         end: endTime,
       };
-    } else {
-      const now = time.now();
-      return {
-        start: getIntervalTime[interval](
-          now,
-          -1 * (limit ?? binanceKlineDefaultLimit)
-        ),
-        end: now,
-      };
     }
+    throw new ErrorBinanceInvalidKlineOptionalParameters();
   }
 
   async publicRequest<Data>(
@@ -213,11 +194,10 @@ export class BinanceExchange extends BinanceConnector {
       interval,
       optionalParameters
     );
-    const { cache, time } = this;
-    if (cache && time) {
+    const { cache } = this;
+    if (cache) {
       const timeInterval =
         BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
-          time,
           interval,
           optionalParameters
         );
@@ -443,5 +423,4 @@ The request is similar to klines having the same parameters and response but `ui
 
 export type BinanceExchangeConstructorArg = BinanceConnectorConstructorArg & {
   cache?: BinanceCacheProvider | undefined;
-  time?: BinanceTimeProvider | undefined;
 };
