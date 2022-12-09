@@ -58,15 +58,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     [someButtonIsSpinning, setCopyIsSpinning, router, strategyKey]
   );
 
-  const onClickDelete = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      if (someButtonIsSpinning) return;
-      router.push(route.deleteStrategyPage(strategyKey));
-    },
-    [someButtonIsSpinning, router, strategyKey]
-  );
-
   const inputNameSetValue = useCallback<(value: unknown) => void>(
     (value) => {
       if (readOnly) return;

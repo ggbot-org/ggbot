@@ -32,19 +32,17 @@ export class BinanceConnector {
     const url = new URL(this.baseUrl);
     url.pathname = endpoint;
 
-    // TODO See @binance/connector
-    // query string is not standard (e.g. for symbols) they use
-    // const buildQueryString = params => {
-    //   if (!params) return ''
-    //   return Object.entries(params)
-    //     .map(stringifyKeyValuePair)
-    //     .join('&')
-    // }
-    for (const [key, value] of Object.entries(params))
-      url.searchParams.append(key, String(value));
+    for (const [key, value] of Object.entries(params)) {
+      if (value === undefined) continue;
+      // The array conversion logic is different from usual query string.
+      // E.g. symbols=["BTCUSDT","BNBBTC"] instead of symbols[]=BTCUSDT&symbols[]=BNBBTC
+      const valueString = Array.isArray(value)
+        ? `["${value.join('","')}"]`
+        : value;
+      url.searchParams.append(key, String(valueString));
+    }
 
     const headers = new Headers({
-      "Content-Type": "application/json",
       "User-Agent": BinanceConnector.userAgent,
       ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
     });

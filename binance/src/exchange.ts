@@ -346,7 +346,7 @@ The request is similar to klines having the same parameters and response but `ui
             quantity,
             lotSizeFilter
           );
-          return orderOptions;
+          return { quantity };
         }
         if (quoteOrderQty) {
           BinanceExchange.throwIfMinNotionalFilterIsInvalid(
@@ -355,7 +355,7 @@ The request is similar to klines having the same parameters and response but `ui
             minNotionalFilter
           );
         }
-        return orderOptions;
+        return { quoteOrderQty };
       },
 
       STOP_LOSS: async () => {
