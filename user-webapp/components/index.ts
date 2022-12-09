@@ -19,3 +19,4 @@ export * from "./SettingsMenu";
 export * from "./Strategies";
 export * from "./StrategyForm";
 export * from "./StrategyItem";
+export * from "./StrategyProfits";

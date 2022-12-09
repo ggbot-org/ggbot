@@ -4,7 +4,7 @@ import type { TimeInterval } from "@ggbot2/time";
 import { DateTime, Pill } from "@ggbot2/ui-components";
 import { FC, useMemo } from "react";
 
-type Props = {
+export type Props = {
   timeInterval: TimeInterval | undefined;
   balanceHistory: BalanceChangeEvent[];
 };

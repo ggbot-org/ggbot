@@ -10,6 +10,7 @@ import {
   NavigationSettingsIcon,
   SchedulingsForm,
   StrategyForm,
+  StrategyProfits,
 } from "_components";
 import {
   StrategyInfo,
@@ -60,6 +61,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
       <div className="flex flex-wrap gap-2">
         <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
         <SchedulingsForm strategyKey={strategyKey} />
+        <StrategyProfits strategyKey={strategyKey} />
       </div>
 
       <Fieldset color="danger" legend="Danger zone">
