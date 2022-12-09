@@ -1,7 +1,7 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { Item, ItemKey, NewItem, isItemId, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
-import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import {
   CreationTime,

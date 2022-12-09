@@ -1,7 +1,10 @@
 import { Decimal, isDecimal } from "@ggbot2/arithmetic";
-import { arrayTypeGuard } from "./arrays.js";
-import { objectTypeGuard } from "./objects.js";
-import { NonEmptyString, isNonEmptyString } from "./strings.js";
+import {
+  NonEmptyString,
+  arrayTypeGuard,
+  isNonEmptyString,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 
 /** A Balance is an abstract representation of an asset owned.
 

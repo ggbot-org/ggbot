@@ -1,6 +1,5 @@
+import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Frequency, isFrequency } from "./frequency.js";
-import { isLiteralType } from "./literalType.js";
-import { objectTypeGuard } from "./objects.js";
 
 export const SchedulingStatuses = ["active", "inactive", "suspended"] as const;
 export type SchedulingStatus = typeof SchedulingStatuses[number];

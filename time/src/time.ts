@@ -1,3 +1,5 @@
+import { NaturalNumber, isNaturalNumber } from "@ggbot2/type-utils";
+
 /** Generic time interval*/
 type Interval<T> = {
   end: T;
@@ -42,10 +44,9 @@ export const isDateInterval = (arg: unknown): arg is DateInterval => {
 // Time //////////////////////////////////////////////////////////////
 
 /** The number of milliseconds since the @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.*/
-export type Time = number;
+export type Time = NaturalNumber;
 
-export const isTime = (arg: unknown): arg is Time =>
-  typeof arg === "number" && !isNaN(arg) && Number.isInteger(arg) && arg >= 0;
+export const isTime = (arg: unknown): arg is Time => isNaturalNumber(arg);
 
 export type TimeInterval = Interval<Time>;
 export const isTimeInterval = (arg: unknown): arg is TimeInterval => {

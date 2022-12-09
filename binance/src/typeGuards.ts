@@ -1,5 +1,5 @@
 import { isDecimal } from "@ggbot2/arithmetic";
-import { isLiteralType, objectTypeGuard } from "@ggbot2/models";
+import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import {
   BinanceApiKeyPermission,
   BinanceBalance,

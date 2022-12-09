@@ -1,5 +1,5 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { Balances, isBalances } from "./balance.js";
-import { objectTypeGuard } from "./objects.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
 export type BalanceChangeEvent = CreationTime & {

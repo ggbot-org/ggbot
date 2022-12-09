@@ -62,7 +62,7 @@ describe("isTime", () => {
       { input: 1.5, output: false },
       { input: Infinity, output: false },
       { input: NaN, output: false },
-      { input: 0, output: true },
+      { input: 999999, output: true },
       { input: now(), output: true },
     ].forEach(({ input, output }) => {
       assert.equal(isTime(input), output);

@@ -1,5 +1,5 @@
 import { Day, Time, isDay, isTime, now } from "@ggbot2/time";
-import { objectTypeGuard } from "./objects.js";
+import { objectTypeGuard } from "@ggbot2/type-utils";
 
 export type DayKey = { day: Day };
 

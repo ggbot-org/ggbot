@@ -85,12 +85,12 @@ import {
   isAccountDailyOrdersKey,
   isAccountKey,
   isAccountStrategyKey,
-  isLiteralType,
   isStrategyDailyBalanceChangesKey,
   isStrategyKey,
   normalizeEmailAddress,
 } from "@ggbot2/models";
 import { joinDay, isSplittedDay, splitDay } from "@ggbot2/time";
+import { isLiteralType } from "@ggbot2/type-utils";
 
 export const dirnameDelimiter = "/";
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter);

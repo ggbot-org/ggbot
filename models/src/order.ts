@@ -1,6 +1,6 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow, DflowObject } from "dflow";
 import { Item, isItemId } from "./item.js";
-import { objectTypeGuard } from "./objects.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
 export type Order = Item &

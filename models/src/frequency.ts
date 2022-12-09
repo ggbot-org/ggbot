@@ -1,5 +1,8 @@
-import { isLiteralType } from "./literalType.js";
-import { NaturalNumber, isNaturalNumber } from "./numbers.js";
+import {
+  NaturalNumber,
+  isLiteralType,
+  isNaturalNumber,
+} from "@ggbot2/type-utils";
 
 export const frequencyIntervals = ["1h"] as const;
 export type FrequencyInterval = typeof frequencyIntervals[number];

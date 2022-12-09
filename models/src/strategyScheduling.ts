@@ -1,6 +1,5 @@
-import { arrayTypeGuard } from "./arrays.js";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 import { Item, isItemId } from "./item.js";
-import { objectTypeGuard } from "./objects.js";
 import { Scheduling, isScheduling } from "./scheduling.js";
 
 export type StrategyScheduling = Item & Scheduling;

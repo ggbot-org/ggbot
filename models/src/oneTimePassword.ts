@@ -1,5 +1,5 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import type { EmailAddress } from "./email.js";
-import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import {
   CreationTime,

@@ -1,7 +1,7 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountKey, isAccountKey } from "./account.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import type { ItemKey } from "./item.js";
-import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, isCreationTime } from "./time.js";
 

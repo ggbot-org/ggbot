@@ -1,6 +1,6 @@
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountKey, isAccountKey } from "./account.js";
 import { isName, normalizeName } from "./name.js";
-import { objectTypeGuard } from "./objects.js";
 import { Strategy, StrategyKey, isStrategyKey } from "./strategy.js";
 import {
   StrategySchedulings,

@@ -1,8 +1,11 @@
+import {
+  NonEmptyString,
+  isNonEmptyString,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 import type { AccountKey } from "./account.js";
 import type { ItemKey } from "./item.js";
-import { objectTypeGuard } from "./objects.js";
 import type { Operation } from "./operation.js";
-import { NonEmptyString, isNonEmptyString } from "./strings.js";
 import type { CreationTime, DeletionTime } from "./time.js";
 
 export type BinanceApiConfig = ItemKey<{

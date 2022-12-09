@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "es2015"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "target": "esnext"
+  },
+  "extends": "../tsconfig.common.json",
+  "include": ["./src/**/*.ts"]
+}

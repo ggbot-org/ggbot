@@ -1,5 +1,5 @@
+import { arrayTypeGuard } from "@ggbot2/type-utils";
 import type { AccountKey } from "./account.js";
-import { arrayTypeGuard } from "./arrays.js";
 import {
   AccountStrategy,
   AccountStrategyKey,
