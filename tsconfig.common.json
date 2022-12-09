@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true
-  }
+    "esModuleInterop": true
+  },
+  "extends": "./tsconfig.quality.json"
 }

@@ -102,7 +102,6 @@ export * from "./foo.js";
 ```jsonc
 {
   "compilerOptions": {
-    "esModuleInterop": true,
     "lib": ["dom", "es2015"],
     "module": "esnext",
     "moduleResolution": "node",
