@@ -7,6 +7,7 @@ type Props = {
 
 export const SchedulingStatusBadge: FC<Props> = ({ schedulings }) => {
   const schedulingStatus = useMemo<StrategyScheduling["status"]>(() => {
+    if (schedulings.length === 0) return "inactive";
     if (schedulings.some((scheduling) => scheduling.status === "suspended"))
       return "suspended";
     if (schedulings.every((scheduling) => scheduling.status === "active"))

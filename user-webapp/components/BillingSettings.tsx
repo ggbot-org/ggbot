@@ -1,4 +1,4 @@
-import { Fieldset, SelectField, SelectProps } from "@ggbot2/ui-components";
+import { Section, SelectField, SelectProps } from "@ggbot2/ui-components";
 import { countries } from "country-isocode2/en";
 import { FC, useMemo } from "react";
 
@@ -12,8 +12,8 @@ export const BillingSettings: FC = () => {
     []
   );
   return (
-    <Fieldset legend="subscribe">
+    <Section header="subscribe">
       <SelectField label="country" name="country" options={countryOptions} />
-    </Fieldset>
+    </Section>
   );
 };

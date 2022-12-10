@@ -19,7 +19,7 @@ export const Strategies: FC = () => {
   const [newStrategyIsLoading, setNewStrategyIsLoading] = useState(false);
 
   const [readStrategies, { data: strategies }] =
-    useApiAction.READ_ACCOUNT_STRATEGIES();
+    useApiAction.ReadAccountStrategies();
 
   const onClickNewStrategy = useCallback<ButtonOnClick>(
     (event) => {
@@ -59,7 +59,12 @@ export const Strategies: FC = () => {
     return { strategyItems, unknownItems };
   }, [strategies]);
 
-  useEffect(readStrategies, [readStrategies]);
+  useEffect(() => {
+    const controller = readStrategies({});
+    return () => {
+      controller.abort();
+    };
+  }, [readStrategies]);
 
   return (
     <div className="flex flex-col p-4 gap-4">

@@ -26,7 +26,7 @@ const Page: NextPage = () => {
     SettingsMenuProps["setSelected"]
   >(
     (sectionId) => {
-      global?.window?.sessionStorage.setItem(sectionIdStorageKey, sectionId);
+      sessionStorage.setItem(sectionIdStorageKey, sectionId);
       setSelectedSectionId(sectionId);
     },
     [setSelectedSectionId]
@@ -56,8 +56,7 @@ const Page: NextPage = () => {
   }, [selectedSectionId]);
 
   useEffect(() => {
-    const storedSelectedSectionId =
-      global?.window?.sessionStorage.getItem(sectionIdStorageKey);
+    const storedSelectedSectionId = sessionStorage.getItem(sectionIdStorageKey);
 
     if (isSettingsSectionId(storedSelectedSectionId)) {
       storeAndSetSelectedSectionId(storedSelectedSectionId);

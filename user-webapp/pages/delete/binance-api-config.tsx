@@ -18,7 +18,7 @@ const Page: NextPage = () => {
   const goBack = useGoBack();
 
   const [deleteBinanceApiKey, { isPending }] =
-    useApiAction.DELETE_BINANCE_API_CONFIG();
+    useApiAction.DeleteBinanceApiConfig();
 
   const breadcrumbs = useMemo(
     () => [
@@ -40,7 +40,7 @@ const Page: NextPage = () => {
     (event) => {
       event.preventDefault();
       if (isPending) return;
-      deleteBinanceApiKey();
+      deleteBinanceApiKey({});
     },
     [isPending, deleteBinanceApiKey]
   );

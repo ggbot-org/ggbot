@@ -14,6 +14,11 @@ export type Frequency = {
   interval: FrequencyInterval;
 };
 
+export const everyHour = (): Frequency => ({
+  every: 1,
+  interval: "1h",
+});
+
 export const isFrequency = (arg: unknown): arg is Frequency => {
   if (typeof arg !== "object" || arg === null) return false;
   const { every, interval } = arg as Partial<Frequency>;

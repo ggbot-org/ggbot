@@ -4,8 +4,8 @@ import {
   ButtonOnClick,
   DateTime,
   EditableInputField,
-  Fieldset,
   OutputField,
+  Section,
 } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import {
@@ -24,10 +24,10 @@ export const AccountSettings: FC = () => {
 
   const [newName, setNewName] = useState("");
 
-  const [readAccount, { data: account }] = useApiAction.READ_ACCOUNT();
+  const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
   const [renameAccount, { isPending: renameIsPending }] =
-    useApiAction.RENAME_ACCOUNT();
+    useApiAction.RenameAccount();
 
   const { accountId, currentName, email, whenCreated } = useMemo(
     () =>
@@ -94,15 +94,24 @@ export const AccountSettings: FC = () => {
   );
 
   useEffect(() => {
-    if (newName) return renameAccount({ name: newName });
+    if (!newName) return;
+    const controller = renameAccount({ name: newName });
+    return () => {
+      controller.abort();
+    };
   }, [renameAccount, newName]);
 
-  useEffect(readAccount, [readAccount]);
+  useEffect(() => {
+    const controller = readAccount({});
+    return () => {
+      controller.abort();
+    };
+  }, [readAccount]);
 
   return (
     <div className="flex flex-col gap-4">
       <form>
-        <Fieldset legend="Profile">
+        <Section header="Profile">
           <EditableInputField
             name="name"
             label="nick name"
@@ -119,10 +128,10 @@ export const AccountSettings: FC = () => {
               </OutputField>
             ))}
           </div>
-        </Fieldset>
+        </Section>
       </form>
 
-      <Fieldset color="danger" legend="Danger zone">
+      <Section color="danger" header="Danger zone">
         <menu>
           <li>
             <Button color="danger" onClick={onClickDelete}>
@@ -130,7 +139,7 @@ export const AccountSettings: FC = () => {
             </Button>
           </li>
         </menu>
-      </Fieldset>
+      </Section>
     </div>
   );
 };

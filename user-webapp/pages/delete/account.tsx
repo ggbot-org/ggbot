@@ -17,7 +17,7 @@ export const getServerSideProps = requireAuthentication;
 const Page: NextPage = () => {
   const goBack = useGoBack();
 
-  const [deleteAccount, { isPending }] = useApiAction.DELETE_ACCOUNT();
+  const [deleteAccount, { isPending }] = useApiAction.DeleteAccount();
 
   const breadcrumbs = useMemo(
     () => [
@@ -39,7 +39,7 @@ const Page: NextPage = () => {
     (event) => {
       event.preventDefault();
       if (isPending) return;
-      deleteAccount();
+      deleteAccount({});
     },
     [isPending, deleteAccount]
   );

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ggbot2/assets": "file:assets",
+    "@ggbot2/models": "file:models",
     "@ggbot2/ui-components": "file:ui-components"
   }
 }

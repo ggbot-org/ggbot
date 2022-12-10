@@ -244,7 +244,7 @@ export const useBacktesting: UseBacktesting = ({
   strategyKind,
   strategyId,
 }) => {
-  const storage = global?.window?.sessionStorage;
+  const storage = sessionStorage;
 
   const isServerSide = useIsServerSide();
 

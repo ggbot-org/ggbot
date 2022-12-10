@@ -16,11 +16,7 @@ export type Item = ItemKey<{
   id: ItemId;
 }>;
 
-const shortId = (arg: string) => arg.substring(0, 8);
-
 export const nullId = "00000000";
-
-export const nullShortId = shortId(nullId);
 
 export const newId = (): ItemId => randomUUID().substring(0, nullId.length);
 

@@ -1,5 +1,5 @@
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import { Button, InputField, Fieldset } from "@ggbot2/ui-components";
+import { Button, InputField, Section } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
@@ -19,7 +19,7 @@ export const getServerSideProps = requireAuthentication;
 const Page: NextPage = () => {
   const router = useRouter();
 
-  const [create, { data, isPending }] = useApiAction.CREATE_STRATEGY();
+  const [create, { data, isPending }] = useApiAction.CreateStrategy();
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -59,7 +59,7 @@ const Page: NextPage = () => {
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
       >
-        <Fieldset legend="create strategy">
+        <Section header="create strategy">
           <InputField
             label="strategy name"
             name="name"
@@ -77,7 +77,7 @@ const Page: NextPage = () => {
               </li>
             </menu>
           )}
-        </Fieldset>
+        </Section>
       </form>
     </Content>
   );

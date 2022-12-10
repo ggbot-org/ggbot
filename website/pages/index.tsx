@@ -1,3 +1,4 @@
+import { createdNow } from "@ggbot2/models";
 import { Header, Logo } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -9,9 +10,9 @@ const Page: NextPage = () => {
 
   useEffect(() => {
     const storageKey = "first-page-view";
-    const firstPageView = global?.window?.sessionStorage?.getItem(storageKey);
-    if (typeof firstPageView === "string") return;
-    global?.window?.sessionStorage?.setItem(storageKey, new Date().toJSON());
+    const firstPageView = sessionStorage.getItem(storageKey);
+    if (firstPageView) return;
+    sessionStorage.setItem(storageKey, JSON.stringify(createdNow()));
     setIsFirstPageview(true);
   }, [setIsFirstPageview]);
 

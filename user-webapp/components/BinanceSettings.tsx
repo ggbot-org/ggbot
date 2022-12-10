@@ -6,9 +6,9 @@ import {
   ButtonOnClick,
   Checkmark,
   CheckmarkProps,
-  Fieldset,
   InputField,
   OutputField,
+  Section,
 } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import {
@@ -28,11 +28,11 @@ export const BinanceSettings: FC = () => {
   const apiKeyLabel = "API Key";
 
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
-    useApiAction.READ_BINANCE_API_CONFIG();
+    useApiAction.ReadBinanceApiConfig();
   const [createConfig, { isPending: createIsPending }] =
-    useApiAction.CREATE_BINANCE_API_CONFIG();
+    useApiAction.CreateBinanceApiConfig();
   const [testConfig, { data: permissions, isPending: testIsPending }] =
-    useApiAction.READ_BINANCE_API_KEY_PERMISSIONS();
+    useApiAction.ReadBinanceApiKeyPermissions();
 
   const {
     enableSpotAndMarginTrading,
@@ -138,7 +138,7 @@ export const BinanceSettings: FC = () => {
       event.preventDefault();
       if (isPending) return;
 
-      if (hasBinanceApiConfig) testConfig();
+      if (hasBinanceApiConfig) testConfig({});
 
       if (hasNoBinanceApiConfig) {
         const {
@@ -168,13 +168,18 @@ export const BinanceSettings: FC = () => {
     [router]
   );
 
-  useEffect(readConfig, [readConfig]);
+  useEffect(() => {
+    const controller = readConfig({});
+    return () => {
+      controller.abort();
+    };
+  }, [readConfig]);
 
   return (
     <div className="flex flex-col gap-4">
       <form onSubmit={onSubmit}>
         {hasBinanceApiConfig && (
-          <Fieldset legend="Binance API">
+          <Section header="Binance API">
             <OutputField label={apiKeyLabel}>{currentApiKey}</OutputField>
 
             <menu className="mb-8">
@@ -193,10 +198,10 @@ export const BinanceSettings: FC = () => {
                 )
               )}
             </div>
-          </Fieldset>
+          </Section>
         )}
         {hasNoBinanceApiConfig && (
-          <Fieldset legend="New Binance API">
+          <Section header="New Binance API">
             <InputField
               name="apiKey"
               label={apiKeyLabel}
@@ -214,12 +219,12 @@ export const BinanceSettings: FC = () => {
                 <Button isSpinning={createIsPending}>create</Button>
               </li>
             </menu>
-          </Fieldset>
+          </Section>
         )}
       </form>
 
       {hasBinanceApiConfig ? (
-        <Fieldset color="danger" legend="Danger zone">
+        <Section color="danger" header="Danger zone">
           <menu>
             <li>
               <Button color="danger" onClick={onClickDelete}>
@@ -227,7 +232,7 @@ export const BinanceSettings: FC = () => {
               </Button>
             </li>
           </menu>
-        </Fieldset>
+        </Section>
       ) : null}
     </div>
   );

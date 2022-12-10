@@ -6,6 +6,7 @@ import {
   isAccountStrategy,
 } from "./accountStrategy.js";
 import type { Operation } from "./operation.js";
+import type { StrategyScheduling } from "./strategyScheduling.js";
 import type { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export type AccountStrategies = AccountStrategy[];
@@ -27,6 +28,18 @@ export type UpdateAccountStrategiesItem = Operation<
   AccountStrategyKey & {
     changes: Partial<Pick<AccountStrategy, "name" | "schedulings">>;
   },
+  UpdateTime
+>;
+
+/** Update accountStrategy, add new scheduling. */
+export type CreateAccountStrategiesItemScheduling = Operation<
+  AccountStrategyKey & Pick<StrategyScheduling, "frequency">,
+  UpdateTime
+>;
+
+/** Update accountStrategy, remove all schedulings. */
+export type RemoveAccountStrategiesItemSchedulings = Operation<
+  AccountStrategyKey,
   UpdateTime
 >;
 

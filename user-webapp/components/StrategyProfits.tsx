@@ -1,4 +1,4 @@
-import { BalanceChangeEvent, isStrategyBalance } from "@ggbot2/models";
+import { BalanceChangeEvents, isStrategyBalance } from "@ggbot2/models";
 import {
   TimeInterval,
   truncateTime,
@@ -26,10 +26,10 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
   }, []);
 
   const [request, { data: strategyBalances }] =
-    useApiAction.READ_STRATEGY_BALANCES();
+    useApiAction.ReadStrategyBalances();
 
-  const balanceHistory = useMemo<BalanceChangeEvent[]>(() => {
-    const balanceHistory: BalanceChangeEvent[] = [];
+  const balanceHistory = useMemo<BalanceChangeEvents>(() => {
+    const balanceHistory: BalanceChangeEvents = [];
     if (Array.isArray(strategyBalances))
       for (const strategyBalance of strategyBalances)
         if (isStrategyBalance(strategyBalance))

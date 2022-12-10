@@ -20,33 +20,17 @@
 const [request, { data, isPending, error }] = useApiAction.FOO_BAR();
 ```
 
-The `request` returns an `AbortController` that can be used in a `useEffect` destructor function;
+The `request` returns an `AbortController`:
+it can be used in a `useEffect` destructor function;
 assuming it is needed to fetch data on mount the following snippets are equivalent.
 
 @example
 ```ts
 const [request, response] = useApiAction.FOO_BAR();
 useEffect(() => {
-  const abort = request();
-  return () => { abort() }
+  const controller = request({ param });
+  return () => { controller.abort() }
 }, [request])
-```
-
-@example
-```ts
-const [request, response] = useApiAction.FOO_BAR();
-useEffect(() => {
-  return request();
-}, [request])
-
-```
-
-If request has no params, it is even possible to do
-
-@example
-```ts
-const [request, response] = useApiAction.FOO_BAR();
-useEffect(request, [request])
 ```
 */
 import {
@@ -78,11 +62,12 @@ type ActionError =
     }
   | ApiActionError;
 
-type UseActionRequestArg<Input> = Input extends AccountKey
-  ? Omit<Input, "accountId"> extends void
-    ? void
-    : Omit<Input, "accountId">
-  : Input;
+type UseActionRequestArg<Input extends OperationInput> =
+  Input extends AccountKey ? Omit<Input, "accountId"> : Input;
+
+type UseActionRequest<Input extends OperationInput> = (
+  arg: UseActionRequestArg<Input>
+) => AbortController;
 
 type UseActionResponse<Output extends OperationOutput> = {
   error?: ActionError | undefined;
@@ -95,156 +80,153 @@ const useAction = <
 >({
   type,
 }: Pick<ApiActionInput, "type">): [
-  request: (arg: UseActionRequestArg<Action["in"]>) => AbortController,
+  request: UseActionRequest<Action["in"]>,
   response: UseActionResponse<Action["out"]>
 ] => {
   const [response, setResponse] = useState<UseActionResponse<Action["out"]>>({
     isPending: false,
   });
 
-  const request = useCallback<
-    (arg: UseActionRequestArg<Action["in"]>) => AbortController
-  >(
-    (arg) => {
-      const controller = new AbortController();
-      const { abort, signal } = controller;
-      const timeout = 10000;
-      const timeoutId = setTimeout(() => {
-        abort();
-        setResponse({ error: { name: "Timeout" }, isPending: false });
-      }, timeout);
-      signal.addEventListener("abort", () => {
-        setResponse({ isPending: false });
-        clearTimeout(timeoutId);
-      });
+  const request = useCallback<UseActionRequest<Action["in"]>>((arg) => {
+    const controller = new AbortController();
+    const { abort, signal } = controller;
+    const timeout = 10000;
+    const timeoutId = setTimeout(() => {
+      abort();
+      setResponse({ error: { name: "Timeout" }, isPending: false });
+    }, timeout);
+    signal.addEventListener("abort", () => {
+      setResponse({ isPending: false });
+      clearTimeout(timeoutId);
+    });
 
-      const fetchRequest = async (inputData: Action["in"]) => {
-        setResponse({ isPending: true });
-        const body =
-          inputData === undefined
-            ? JSON.stringify({ type })
-            : JSON.stringify({ type, data: inputData });
-        const response = await fetch("/api/action", {
-          body,
-          credentials: "include",
-          headers: new Headers({
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          }),
-          method: "POST",
-          signal,
-        });
-        if (!response.ok) {
-          const { status } = response;
-          if (status === __400__BAD_REQUEST__) {
-            const responseOutput = await response.json();
-            console.log(responseOutput);
-            if (isApiActionResponseError(responseOutput)) {
-              setResponse({
-                error: responseOutput.error,
-                isPending: false,
-              });
-              return;
-            }
-          }
-          if (status === __401__UNAUTHORIZED__) {
-            setResponse({ error: { name: "Unauthorized" }, isPending: false });
-            return;
-          }
-          if (status === __500__INTERNAL_SERVER_ERROR__) {
+    const fetchRequest = async (inputData: Action["in"]) => {
+      setResponse({ isPending: true });
+      const body =
+        inputData === undefined
+          ? JSON.stringify({ type })
+          : JSON.stringify({ type, data: inputData });
+      const response = await fetch("/api/action", {
+        body,
+        credentials: "include",
+        headers: new Headers({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+        method: "POST",
+        signal,
+      });
+      if (!response.ok) {
+        const { status } = response;
+        if (status === __400__BAD_REQUEST__) {
+          const responseOutput = await response.json();
+          console.log(responseOutput);
+          if (isApiActionResponseError(responseOutput)) {
             setResponse({
-              error: { name: InternalServerError.name },
+              error: responseOutput.error,
               isPending: false,
             });
             return;
           }
-          // This error should not be thrown.
-          throw new ErrorHTTP(response);
         }
-        const responseOutput = await response.json();
-        setResponse({
-          data: responseOutput.data,
-          isPending: false,
-        });
-      };
-
-      (async function () {
-        try {
-          await fetchRequest(arg);
-        } catch (error) {
-          // AbortError is called on component unmount and on request timeout:
-          // the signal eventListener on 'abort', set `isPending` to `false`.
-          if (error instanceof DOMException && error.name === "AbortError")
-            return;
-          // Fallback for unhandled errors.
-          console.error(error);
-          setResponse({ error: { name: "GenericError" }, isPending: false });
-        } finally {
-          clearTimeout(timeoutId);
+        if (status === __401__UNAUTHORIZED__) {
+          setResponse({ error: { name: "Unauthorized" }, isPending: false });
+          return;
         }
-      })();
+        if (status === __500__INTERNAL_SERVER_ERROR__) {
+          setResponse({
+            error: { name: InternalServerError.name },
+            isPending: false,
+          });
+          return;
+        }
+        // This error should not be thrown.
+        throw new ErrorHTTP(response);
+      }
+      const responseOutput = await response.json();
+      setResponse({
+        data: responseOutput.data,
+        isPending: false,
+      });
+    };
 
-      return controller.abort;
-    },
-    [setResponse]
-  );
+    (async function () {
+      try {
+        await fetchRequest(arg);
+      } catch (error) {
+        // AbortError is called on component unmount and on request timeout:
+        // the signal eventListener on 'abort', set `isPending` to `false`.
+        if (error instanceof DOMException && error.name === "AbortError")
+          return;
+        // Fallback for unhandled errors.
+        console.error(error);
+        setResponse({ error: { name: "GenericError" }, isPending: false });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    })();
+
+    return controller;
+  }, []);
 
   return [request, response];
 };
 
 export const useApiAction = {
   COPY_STRATEGY: () =>
-    useAction<ApiAction["COPY_STRATEGY"]>({ type: "COPY_STRATEGY" }),
-  CREATE_BINANCE_API_CONFIG: () =>
-    useAction<ApiAction["CREATE_BINANCE_API_CONFIG"]>({
-      type: "CREATE_BINANCE_API_CONFIG",
+    useAction<ApiAction["CopyStrategy"]>({ type: "CopyStrategy" }),
+  CreateAccountStrategiesItemScheduling: () =>
+    useAction<ApiAction["CreateAccountStrategiesItemScheduling"]>({
+      type: "CreateAccountStrategiesItemScheduling",
     }),
-  CREATE_STRATEGY: () =>
-    useAction<ApiAction["CREATE_STRATEGY"]>({ type: "CREATE_STRATEGY" }),
-  DELETE_ACCOUNT: () =>
-    useAction<ApiAction["DELETE_ACCOUNT"]>({ type: "DELETE_ACCOUNT" }),
-  DELETE_BINANCE_API_CONFIG: () =>
-    useAction<ApiAction["DELETE_BINANCE_API_CONFIG"]>({
-      type: "DELETE_BINANCE_API_CONFIG",
+  CreateBinanceApiConfig: () =>
+    useAction<ApiAction["CreateBinanceApiConfig"]>({
+      type: "CreateBinanceApiConfig",
     }),
-  DELETE_STRATEGY: () =>
-    useAction<ApiAction["DELETE_STRATEGY"]>({ type: "DELETE_STRATEGY" }),
-  EXECUTE_STRATEGY: () =>
-    useAction<ApiAction["EXECUTE_STRATEGY"]>({ type: "EXECUTE_STRATEGY" }),
-  READ_ACCOUNT: () =>
-    useAction<ApiAction["READ_ACCOUNT"]>({ type: "READ_ACCOUNT" }),
-  READ_ACCOUNT_STRATEGIES: () =>
-    useAction<ApiAction["READ_ACCOUNT_STRATEGIES"]>({
-      type: "READ_ACCOUNT_STRATEGIES",
+  CreateStrategy: () =>
+    useAction<ApiAction["CreateStrategy"]>({ type: "CreateStrategy" }),
+  DeleteAccount: () =>
+    useAction<ApiAction["DeleteAccount"]>({ type: "DeleteAccount" }),
+  DeleteBinanceApiConfig: () =>
+    useAction<ApiAction["DeleteBinanceApiConfig"]>({
+      type: "DeleteBinanceApiConfig",
     }),
-  READ_BINANCE_API_CONFIG: () =>
-    useAction<ApiAction["READ_BINANCE_API_CONFIG"]>({
-      type: "READ_BINANCE_API_CONFIG",
+  DeleteStrategy: () =>
+    useAction<ApiAction["DeleteStrategy"]>({ type: "DeleteStrategy" }),
+  ExecuteStrategy: () =>
+    useAction<ApiAction["ExecuteStrategy"]>({ type: "ExecuteStrategy" }),
+  ReadAccount: () =>
+    useAction<ApiAction["ReadAccount"]>({ type: "ReadAccount" }),
+  ReadAccountStrategies: () =>
+    useAction<ApiAction["ReadAccountStrategies"]>({
+      type: "ReadAccountStrategies",
     }),
-  READ_BINANCE_API_KEY_PERMISSIONS: () =>
-    useAction<ApiAction["READ_BINANCE_API_KEY_PERMISSIONS"]>({
-      type: "READ_BINANCE_API_KEY_PERMISSIONS",
+  ReadBinanceApiConfig: () =>
+    useAction<ApiAction["ReadBinanceApiConfig"]>({
+      type: "ReadBinanceApiConfig",
     }),
-  READ_STRATEGY: () =>
-    useAction<ApiAction["READ_STRATEGY"]>({ type: "READ_STRATEGY" }),
-  // TODO why not ReadStrategyBalances ?
-  // ReadStrategyBalances: () => useAction<ApiAction['ReadStrategyBalances']>({ type: "ReadStrategyBalances"})
-  READ_STRATEGY_BALANCES: () =>
-    useAction<ApiAction["READ_STRATEGY_BALANCES"]>({
-      type: "READ_STRATEGY_BALANCES",
+  ReadBinanceApiKeyPermissions: () =>
+    useAction<ApiAction["ReadBinanceApiKeyPermissions"]>({
+      type: "ReadBinanceApiKeyPermissions",
     }),
-  READ_STRATEGY_FLOW: () =>
-    useAction<ApiAction["READ_STRATEGY_FLOW"]>({ type: "READ_STRATEGY_FLOW" }),
-  RENAME_ACCOUNT: () =>
-    useAction<ApiAction["RENAME_ACCOUNT"]>({ type: "RENAME_ACCOUNT" }),
-  RENAME_STRATEGY: () =>
-    useAction<ApiAction["RENAME_STRATEGY"]>({ type: "RENAME_STRATEGY" }),
-  UPDATE_ACCOUNT_STRATEGIES_ITEM: () =>
-    useAction<ApiAction["UPDATE_ACCOUNT_STRATEGIES_ITEM"]>({
-      type: "UPDATE_ACCOUNT_STRATEGIES_ITEM",
+  ReadStrategy: () =>
+    useAction<ApiAction["ReadStrategy"]>({ type: "ReadStrategy" }),
+  ReadStrategyBalances: () =>
+    useAction<ApiAction["ReadStrategyBalances"]>({
+      type: "ReadStrategyBalances",
     }),
-  WRITE_STRATEGY_FLOW: () =>
-    useAction<ApiAction["WRITE_STRATEGY_FLOW"]>({
-      type: "WRITE_STRATEGY_FLOW",
+  ReadStrategyFlow: () =>
+    useAction<ApiAction["ReadStrategyFlow"]>({ type: "ReadStrategyFlow" }),
+  RemoveAccountStrategiesItemSchedulings: () =>
+    useAction<ApiAction["RemoveAccountStrategiesItemSchedulings"]>({
+      type: "RemoveAccountStrategiesItemSchedulings",
+    }),
+  RenameAccount: () =>
+    useAction<ApiAction["RenameAccount"]>({ type: "RenameAccount" }),
+  RenameStrategy: () =>
+    useAction<ApiAction["RenameStrategy"]>({ type: "RenameStrategy" }),
+  WriteStrategyFlow: () =>
+    useAction<ApiAction["WriteStrategyFlow"]>({
+      type: "WriteStrategyFlow",
     }),
 };

@@ -4,6 +4,8 @@ import {
   ErrorUnimplementedStrategyKind,
   copyStrategy,
   createBinanceApiConfig,
+  createAccountStrategiesItemScheduling,
+  removeAccountStrategiesItemSchedulings,
   createStrategy,
   deleteAccount,
   deleteBinanceApiConfig,
@@ -18,7 +20,6 @@ import {
   readStrategyFlow,
   renameAccount,
   renameStrategy,
-  updateAccountStrategiesItem,
   writeStrategyFlow,
 } from "@ggbot2/database";
 import {
@@ -35,6 +36,8 @@ import type {
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
+  CreateAccountStrategiesItemScheduling,
+  RemoveAccountStrategiesItemSchedulings,
   DeleteAccount,
   DeleteBinanceApiConfig,
   DeleteStrategy,
@@ -49,7 +52,6 @@ import type {
   ReadStrategyFlow,
   RenameAccount,
   RenameStrategy,
-  UpdateAccountStrategiesItem,
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
@@ -102,24 +104,29 @@ type Action<Input extends OperationInput> = {
 };
 
 export type ApiAction = {
-  COPY_STRATEGY: Action<CopyStrategy["in"]>;
-  CREATE_BINANCE_API_CONFIG: Action<CreateBinanceApiConfig["in"]>;
-  CREATE_STRATEGY: Action<CreateStrategy["in"]>;
-  DELETE_ACCOUNT: Action<DeleteAccount["in"]>;
-  DELETE_BINANCE_API_CONFIG: Action<DeleteBinanceApiConfig["in"]>;
-  DELETE_STRATEGY: Action<DeleteStrategy["in"]>;
-  EXECUTE_STRATEGY: Action<ExecuteStrategy["in"]>;
-  READ_ACCOUNT: Action<ReadAccount["in"]>;
-  READ_ACCOUNT_STRATEGIES: Action<ReadAccountStrategies["in"]>;
-  READ_BINANCE_API_CONFIG: Action<ReadBinanceApiConfig["in"]>;
-  READ_BINANCE_API_KEY_PERMISSIONS: Action<ReadBinanceApiKeyPermissions["in"]>;
-  READ_STRATEGY_FLOW: Action<ReadStrategyFlow["in"]>;
-  READ_STRATEGY: Action<ReadStrategy["in"]>;
-  READ_STRATEGY_BALANCES: Action<ReadStrategyBalances["in"]>;
-  RENAME_ACCOUNT: Action<RenameAccount["in"]>;
-  RENAME_STRATEGY: Action<RenameStrategy["in"]>;
-  UPDATE_ACCOUNT_STRATEGIES_ITEM: Action<UpdateAccountStrategiesItem["in"]>;
-  WRITE_STRATEGY_FLOW: Action<WriteStrategyFlow["in"]>;
+  CopyStrategy: Action<CopyStrategy["in"]>;
+  CreateAccountStrategiesItemScheduling: Action<
+    CreateAccountStrategiesItemScheduling["in"]
+  >;
+  CreateBinanceApiConfig: Action<CreateBinanceApiConfig["in"]>;
+  CreateStrategy: Action<CreateStrategy["in"]>;
+  DeleteAccount: Action<DeleteAccount["in"]>;
+  DeleteBinanceApiConfig: Action<DeleteBinanceApiConfig["in"]>;
+  DeleteStrategy: Action<DeleteStrategy["in"]>;
+  ExecuteStrategy: Action<ExecuteStrategy["in"]>;
+  ReadAccount: Action<ReadAccount["in"]>;
+  ReadAccountStrategies: Action<ReadAccountStrategies["in"]>;
+  ReadBinanceApiConfig: Action<ReadBinanceApiConfig["in"]>;
+  ReadBinanceApiKeyPermissions: Action<ReadBinanceApiKeyPermissions["in"]>;
+  ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
+  ReadStrategy: Action<ReadStrategy["in"]>;
+  ReadStrategyBalances: Action<ReadStrategyBalances["in"]>;
+  RenameAccount: Action<RenameAccount["in"]>;
+  RenameStrategy: Action<RenameStrategy["in"]>;
+  RemoveAccountStrategiesItemSchedulings: Action<
+    RemoveAccountStrategiesItemSchedulings["in"]
+  >;
+  WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
 type ApiActionType = keyof ApiAction;
@@ -145,12 +152,20 @@ export default async function apiHandler(
     const action = req.body;
 
     switch (action.type as ApiActionType) {
-      case "COPY_STRATEGY": {
+      case "CopyStrategy": {
         const data = await copyStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "CREATE_BINANCE_API_CONFIG": {
+      case "CreateAccountStrategiesItemScheduling": {
+        const data = await createAccountStrategiesItemScheduling({
+          accountId,
+          ...action.data,
+        });
+        return res.status(__200__OK__).json({ data });
+      }
+
+      case "CreateBinanceApiConfig": {
         const data = await createBinanceApiConfig({
           accountId,
           ...action.data,
@@ -158,42 +173,42 @@ export default async function apiHandler(
         return res.status(__200__OK__).json({ data });
       }
 
-      case "CREATE_STRATEGY": {
+      case "CreateStrategy": {
         const data = await createStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "DELETE_ACCOUNT": {
+      case "DeleteAccount": {
         const data = await deleteAccount({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "DELETE_BINANCE_API_CONFIG": {
+      case "DeleteBinanceApiConfig": {
         const data = await deleteBinanceApiConfig({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "DELETE_STRATEGY": {
+      case "DeleteStrategy": {
         const data = await deleteStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "EXECUTE_STRATEGY": {
+      case "ExecuteStrategy": {
         const data = await executeStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_ACCOUNT": {
+      case "ReadAccount": {
         const data = await readAccount({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_ACCOUNT_STRATEGIES": {
+      case "ReadAccountStrategies": {
         const data = await readAccountStrategies({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_BINANCE_API_CONFIG": {
+      case "ReadBinanceApiConfig": {
         const data = await readBinanceApiConfig({ accountId });
         const apiKey = data?.apiKey;
         return res.status(__200__OK__).json({
@@ -202,45 +217,45 @@ export default async function apiHandler(
         });
       }
 
-      case "READ_BINANCE_API_KEY_PERMISSIONS": {
+      case "ReadBinanceApiKeyPermissions": {
         const data = await readBinanceApiKeyPermissions({ accountId });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_STRATEGY": {
+      case "ReadStrategy": {
         const data = await readStrategy(action.data);
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_STRATEGY_BALANCES": {
+      case "ReadStrategyBalances": {
         const data = await readStrategyBalances({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "READ_STRATEGY_FLOW": {
+      case "ReadStrategyFlow": {
         const data = await readStrategyFlow(action.data);
         return res.status(__200__OK__).json({ data });
       }
 
-      case "RENAME_ACCOUNT": {
+      case "RenameAccount": {
         const data = await renameAccount({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "RENAME_STRATEGY": {
+      case "RenameStrategy": {
         const data = await renameStrategy({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "UPDATE_ACCOUNT_STRATEGIES_ITEM": {
-        const data = await updateAccountStrategiesItem({
+      case "RemoveAccountStrategiesItemSchedulings": {
+        const data = await removeAccountStrategiesItemSchedulings({
           accountId,
           ...action.data,
         });
         return res.status(__200__OK__).json({ data });
       }
 
-      case "WRITE_STRATEGY_FLOW": {
+      case "WriteStrategyFlow": {
         const data = await writeStrategyFlow({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }

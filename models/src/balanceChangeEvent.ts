@@ -11,5 +11,7 @@ export const isBalanceChangeEvent = objectTypeGuard<BalanceChangeEvent>(
     isCreationTime(creationTime) && isBalances(balances)
 );
 
+export type BalanceChangeEvents = BalanceChangeEvent[];
+
 export const isBalanceChangeEvents =
   arrayTypeGuard<BalanceChangeEvent>(isBalanceChangeEvent);

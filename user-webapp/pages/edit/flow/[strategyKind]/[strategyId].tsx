@@ -136,15 +136,15 @@ const Page: NextPage<ServerSideProps> = ({
       isPending: runIsPending,
       error: strategyExecutionError,
     },
-  ] = useApiAction.EXECUTE_STRATEGY();
+  ] = useApiAction.ExecuteStrategy();
 
   const [saveStrategyFlow, { isPending: saveIsPending }] =
-    useApiAction.WRITE_STRATEGY_FLOW();
+    useApiAction.WriteStrategyFlow();
 
   const [
     readStrategyFlow,
     { data: storedStrategyFlow, isPending: readIsPending },
-  ] = useApiAction.READ_STRATEGY_FLOW();
+  ] = useApiAction.ReadStrategyFlow();
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;

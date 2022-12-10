@@ -1,9 +1,9 @@
 import {
   Button,
   ButtonOnClick,
-  Fieldset,
   InputField,
   Logo,
+  Section,
 } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -42,16 +42,16 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
 };
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
   <form className="flex flex-col w-full p-4 gap-4" {...props}>
-    <Fieldset
-      legend={
+    <Section
+      header={
         <div className="flex flex-row items-center py-2">
           <Logo size={71} animated />
-          <span className="text-xl">{message}</span>
+          <span>{message}</span>
         </div>
       }
     >
       {children}
-    </Fieldset>
+    </Section>
   </form>
 );
 

@@ -3,7 +3,7 @@ import {
   ButtonOnClick,
   DateTime,
   EditableInputField,
-  Fieldset,
+  Section,
   OutputField,
 } from "@ggbot2/ui-components";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
@@ -28,9 +28,9 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     [copyIsSpinning, flowIsSpinning]
   );
   const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
-    useApiAction.RENAME_STRATEGY();
+    useApiAction.RenameStrategy();
 
-  const [readStrategy, { data: strategy }] = useApiAction.READ_STRATEGY();
+  const [readStrategy, { data: strategy }] = useApiAction.ReadStrategy();
 
   const readOnly = useMemo(() => {
     if (!name) return true;
@@ -87,19 +87,27 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     if (renameData) setName(newName);
   }, [renameData, newName]);
 
-  useEffect(() => readStrategy(strategyKey), [readStrategy, strategyKey]);
+  useEffect(() => {
+    const controller = readStrategy(strategyKey);
+    return () => {
+      controller.abort();
+    };
+  }, [readStrategy, strategyKey]);
 
   useEffect(() => {
     if (!newName) return;
     if (name === newName) return;
-    return renameStrategy({
+    const controller = renameStrategy({
       name: newName,
       ...strategyKey,
     });
+    return () => {
+      controller.abort();
+    };
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <Fieldset legend={<span className="text-xl">strategy</span>}>
+    <Section header="strategy">
       <EditableInputField
         name="name"
         label="name"
@@ -115,7 +123,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
       </OutputField>
 
       <OutputField label="Strategy id">
-        <span className="text-xs">{strategyKey.strategyId}</span>
+        <code>{strategyKey.strategyId}</code>
       </OutputField>
 
       <menu className="flex flex-row flex-wrap gap-4">
@@ -137,6 +145,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
           </Button>
         </li>
       </menu>
-    </Fieldset>
+    </Section>
   );
 };

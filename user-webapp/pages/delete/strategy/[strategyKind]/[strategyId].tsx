@@ -1,4 +1,4 @@
-import { Button, DateTime, Fieldset, OutputField } from "@ggbot2/ui-components";
+import { Button, DateTime, Section, OutputField } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
@@ -27,7 +27,7 @@ const Page: NextPage<ServerSideProps> = ({
 }) => {
   const goBack = useGoBack();
 
-  const [deleteStrategy, { isPending }] = useApiAction.DELETE_STRATEGY();
+  const [deleteStrategy, { isPending }] = useApiAction.DeleteStrategy();
 
   const breadcrumbs = useMemo(
     () => [
@@ -65,7 +65,7 @@ const Page: NextPage<ServerSideProps> = ({
       <div className="p-4">
         {accountIsOwner ? (
           <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-            <Fieldset legend="Delete strategy">
+            <Section header="Delete strategy">
               <p>Are you sure you want to delete this strategy?</p>
 
               <OutputField label="name">{name}</OutputField>
@@ -85,7 +85,7 @@ const Page: NextPage<ServerSideProps> = ({
                   </Button>
                 </li>
               </menu>
-            </Fieldset>
+            </Section>
           </form>
         ) : (
           <div>Cannot delete strategy. Permission denied!</div>

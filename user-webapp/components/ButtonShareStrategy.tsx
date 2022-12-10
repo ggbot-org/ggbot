@@ -8,40 +8,36 @@ type Props = StrategyKey;
 
 // TODO try it on iPhone
 export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
-  const _navigator = global?.window?.navigator;
-
-  const canShare = useMemo(
-    () =>
-      _navigator &&
-      ("clipboard" in _navigator ||
-        ("share" in _navigator && "canShare" in _navigator)),
-    [_navigator]
-  );
-
-  const url = useMemo(
-    () => `${webappBaseUrl}${route.viewFlowPage(strategyKey)}`,
+  const shareData = useMemo(
+    () => ({
+      title: "ggbot2",
+      text: `srategy ${strategyKey.strategyId}`,
+      url: `${webappBaseUrl}${route.viewFlowPage(strategyKey)}`,
+    }),
     [strategyKey]
   );
 
-  const copyToClipboard = useCallback(() => {
-    try {
-      if (canShare) {
-        _navigator?.clipboard.writeText(url);
-        toast("Strategy link copied");
-      } else {
-        toast.error("Please copy URL manually");
-      }
-    } catch (_ignore) {}
-  }, [_navigator, canShare, url]);
-
   const onClick = useCallback<ButtonOnClick>(async () => {
     try {
-      if (_navigator.canShare({ url })) _navigator.share({ url });
-      else copyToClipboard();
-    } catch (_ignore) {
-      copyToClipboard();
+      if (!navigator) return;
+      if (
+        "share" in navigator &&
+        "canShare" in navigator &&
+        navigator.canShare(shareData)
+      ) {
+        navigator.share(shareData);
+        return;
+      }
+      if ("clipboard" in navigator) {
+        navigator.clipboard.writeText(shareData.url);
+        toast("Strategy link copied");
+        return;
+      }
+      throw new Error("Unable to share strategy");
+    } catch {
+      toast.error("Please copy URL manually");
     }
-  }, [_navigator, copyToClipboard, url]);
+  }, [shareData]);
 
   return <Button onClick={onClick}>share</Button>;
 };

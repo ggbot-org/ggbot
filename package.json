@@ -81,7 +81,7 @@
     "prebuild:time": "run-s build:type-utils",
     "prebuild:ui-components": "run-s build:time",
     "prebuild:user-webapp": "run-s build:assets build:cookies build:database build:http-status-codes build:ui-components",
-    "prebuild:website": "run-s build:assets build:ui-components",
+    "prebuild:website": "run-s build:assets build:models build:ui-components",
     "pree2e:chromium": "run-s build:user-webapp:package",
     "repo_tests": "npm run test --workspace repo",
     "start": "npm run dev --workspace user-webapp",

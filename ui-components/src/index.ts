@@ -7,7 +7,6 @@ export * from "./Color";
 export * from "./DateTime";
 export * from "./EditableInput";
 export * from "./Field";
-export * from "./Fieldset";
 export * from "./Header";
 export * from "./Icon";
 export * from "./Input";

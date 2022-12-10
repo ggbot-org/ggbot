@@ -3,9 +3,9 @@ import {
   Button,
   Checkbox,
   CheckboxOnChange,
-  Fieldset,
   Icon,
   InputField,
+  Section,
   SelectField,
 } from "../src";
 
@@ -30,11 +30,11 @@ export const SimpleForm: FC = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Fieldset
-        legend={
+      <Section
+        header={
           <div className="inline-flex items-center gap-4">
-            <Icon name="account" size={25} />
-            <span className="text-lg">create account</span>
+            <Icon name="account" />
+            <span>create account</span>
           </div>
         }
       >
@@ -66,7 +66,7 @@ export const SimpleForm: FC = () => {
             </Button>
           </li>
         </menu>
-      </Fieldset>
+      </Section>
     </form>
   );
 };
