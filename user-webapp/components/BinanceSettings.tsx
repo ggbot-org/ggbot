@@ -1,4 +1,6 @@
 import { isBinanceApiKeyPermission } from "@ggbot2/binance";
+import type { BinanceApiConfig } from "@ggbot2/models";
+import { isMaybeObject } from "@ggbot2/type-utils";
 import {
   Button,
   ButtonOnClick,
@@ -8,7 +10,6 @@ import {
   InputField,
   OutputField,
 } from "@ggbot2/ui-components";
-import { BinanceApiConfig, isMaybeObject } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import {
   FC,

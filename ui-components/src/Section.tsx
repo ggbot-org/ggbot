@@ -21,7 +21,7 @@ export const Section: FC<SectionProps> = ({ children, color, header }) => {
     return {
       sectionClassName: `${colors} w-full lg:max-w-lg flex flex-col gap-4 my-2 p-4 rounded`,
 
-      headerClassname: "px-4 py-2",
+      headerClassname: "font-medium text-lg px-4 py-2",
     };
   }, [color]);
 

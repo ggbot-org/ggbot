@@ -1,4 +1,4 @@
-import { isLiteralType } from "@ggbot2/models";
+import { isLiteralType } from "@ggbot2/type-utils";
 import { FC, PointerEventHandler, ReactNode, useMemo } from "react";
 
 const settingsSectionIds = ["account", "binance", "billing"] as const;

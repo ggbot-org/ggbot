@@ -1,10 +1,10 @@
 import {
   AccountStrategy,
   isAccountStrategy,
-  isMaybeObject,
   isName,
   isStrategyKey,
 } from "@ggbot2/models";
+import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";

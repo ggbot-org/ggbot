@@ -23,41 +23,4 @@
   body {
     @apply bg-light-background text-neutral-900 dark:bg-dark-background dark:text-neutral-50;
   }
-
-  /* Heading */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-semibold;
-  }
-
-  h1 {
-    @apply text-5xl;
-  }
-  h2 {
-    @apply text-4xl;
-  }
-  h3 {
-    @apply text-3xl;
-  }
-  h4 {
-    @apply text-2xl;
-  }
-  h5 {
-    @apply text-xl;
-  }
-  h6 {
-    @apply text-lg;
-  }
-
-  /* Definition list */
-  dt {
-    @apply mt-4 text-xs font-medium uppercase;
-  }
-  dd {
-    @apply px-4 py-1;
-  }
 }

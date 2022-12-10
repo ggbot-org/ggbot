@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick, Fieldset } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, Section } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
@@ -64,7 +64,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
         <StrategyProfits strategyKey={strategyKey} />
       </div>
 
-      <Fieldset color="danger" legend="Danger zone">
+      <Section color="danger" header="Danger zone">
         <menu>
           <li>
             <Button
@@ -76,7 +76,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
             </Button>
           </li>
         </menu>
-      </Fieldset>
+      </Section>
     </Content>
   );
 };

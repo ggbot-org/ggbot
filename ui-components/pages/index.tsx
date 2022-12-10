@@ -4,7 +4,6 @@ import {
   Buttons,
   Colors,
   EditableInputs,
-  Heading,
   Icons,
   LoadingButtons,
   Navigation,
@@ -12,6 +11,7 @@ import {
   Pills,
   SimpleForm,
   SimpleTable,
+  Typography,
 } from "../examples";
 import { Logo } from "../src";
 
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 
         <Colors />
 
-        <Heading />
+        <Typography />
 
         <SimpleForm />
 

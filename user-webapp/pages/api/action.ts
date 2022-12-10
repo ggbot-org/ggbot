@@ -30,7 +30,7 @@ import {
   ErrorHTTP,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import {
+import type {
   AccountKey,
   CopyStrategy,
   CreateBinanceApiConfig,
@@ -51,8 +51,8 @@ import {
   RenameStrategy,
   UpdateAccountStrategiesItem,
   WriteStrategyFlow,
-  objectTypeGuard,
 } from "@ggbot2/models";
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow, DflowObject } from "dflow";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
@@ -213,7 +213,7 @@ export default async function apiHandler(
       }
 
       case "READ_STRATEGY_BALANCES": {
-        const data = await readStrategyBalances(action.data);
+        const data = await readStrategyBalances({ accountId, ...action.data });
         return res.status(__200__OK__).json({ data });
       }
 

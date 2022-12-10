@@ -67,6 +67,18 @@ export const timeToDay = (time: Time): Day => {
   return dateToDay(date);
 };
 
+/**
+ * Convert `TimeInterval` to `DayInterval`.
+ * @throws {ErrorInvalidDate}
+ */
+export const timeIntervalToDay = ({
+  start,
+  end,
+}: TimeInterval): DayInterval => ({
+  start: timeToDay(start),
+  end: timeToDay(end),
+});
+
 /** Convert `Timestamp` to `Day`. */
 export const timestampToDay = (timestamp: Timestamp): Day =>
   timestamp.substring(0, 10);

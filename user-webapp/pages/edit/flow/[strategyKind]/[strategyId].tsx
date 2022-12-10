@@ -5,10 +5,10 @@ import {
 } from "@ggbot2/dflow";
 import {
   StrategyExecution,
-  isMaybeObject,
   isStrategyExecutionStatus,
   isStrategyFlow,
 } from "@ggbot2/models";
+import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";

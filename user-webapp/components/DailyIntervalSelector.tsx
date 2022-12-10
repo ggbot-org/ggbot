@@ -6,7 +6,7 @@ import {
 import type { Day } from "@ggbot2/time";
 import type { FC } from "react";
 
-export type Props = {
+type Props = {
   startDay?: Day;
   setStartDay?: CalendarSetSelectedDay;
 } & Pick<CalendarProps, "min" | "max">;

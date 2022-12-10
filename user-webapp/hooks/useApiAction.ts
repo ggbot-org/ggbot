@@ -1,22 +1,27 @@
-/** Hook to use API actions:
-CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
+// classic jsdoc is more readible
+// TODO revert all jsdocs to classic style, while reviewing whole codebase
 
-It returns a `request` and a `response`.
-
-@example
-```ts
-const [request, response] = useApiAction.FOO_BAR();
-```
-
-The `response` can be destructured as follow.
-
-@example
+/**
+ * Hook to use API actions:
+ *
+ * CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
+ *
+ * It returns a `request` and a `response`.
+ *
+ * @example
+ * ```ts
+ * const [request, response] = useApiAction.FOO_BAR();
+ * ```
+ *
+ * The `response` can be destructured as follow.
+ *
+ * @example
 ```ts
 const [request, { data, isPending, error }] = useApiAction.FOO_BAR();
 ```
 
-The `request` returns a useEffect Destructor function; assuming it is needed to
-fetch data on mount the two following snippets are equivalent.
+The `request` returns an `AbortController` that can be used in a `useEffect` destructor function;
+assuming it is needed to fetch data on mount the following snippets are equivalent.
 
 @example
 ```ts
@@ -26,6 +31,17 @@ useEffect(() => {
   return () => { abort() }
 }, [request])
 ```
+
+@example
+```ts
+const [request, response] = useApiAction.FOO_BAR();
+useEffect(() => {
+  return request();
+}, [request])
+
+```
+
+If request has no params, it is even possible to do
 
 @example
 ```ts
@@ -41,7 +57,7 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
 import type {
-  Operation,
+  AccountKey,
   OperationInput,
   OperationOutput,
 } from "@ggbot2/models";
@@ -56,35 +72,39 @@ import {
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
 type ErrorName = typeof errorNames[number];
 
-type ActionIO = Pick<Operation<OperationInput, OperationOutput>, "in" | "out">;
-
 type ActionError =
   | {
       name: ErrorName;
     }
   | ApiActionError;
 
-type UseEffectDestructor = () => void;
-type UseActionRequest<Action extends ActionIO> = (
-  arg?: Action["in"]
-) => UseEffectDestructor;
-type UseActionResponse<Action extends ActionIO> = {
+type UseActionRequestArg<Input> = Input extends AccountKey
+  ? Omit<Input, "accountId"> extends void
+    ? void
+    : Omit<Input, "accountId">
+  : Input;
+
+type UseActionResponse<Output extends OperationOutput> = {
   error?: ActionError | undefined;
-  data?: Action["out"] | undefined;
+  data?: Output | undefined;
   isPending: boolean;
 };
 
-const useAction = <Action extends ActionIO>({
+const useAction = <
+  Action extends { in: OperationInput; out: OperationOutput }
+>({
   type,
 }: Pick<ApiActionInput, "type">): [
-  request: UseActionRequest<Action>,
-  response: UseActionResponse<Action>
+  request: (arg: UseActionRequestArg<Action["in"]>) => AbortController,
+  response: UseActionResponse<Action["out"]>
 ] => {
-  const [response, setResponse] = useState<UseActionResponse<Action>>({
+  const [response, setResponse] = useState<UseActionResponse<Action["out"]>>({
     isPending: false,
   });
 
-  const request = useCallback<UseActionRequest<Action>>(
+  const request = useCallback<
+    (arg: UseActionRequestArg<Action["in"]>) => AbortController
+  >(
     (arg) => {
       const controller = new AbortController();
       const { abort, signal } = controller;
@@ -164,9 +184,7 @@ const useAction = <Action extends ActionIO>({
         }
       })();
 
-      return () => {
-        controller.abort();
-      };
+      return controller.abort;
     },
     [setResponse]
   );
@@ -209,6 +227,8 @@ export const useApiAction = {
     }),
   READ_STRATEGY: () =>
     useAction<ApiAction["READ_STRATEGY"]>({ type: "READ_STRATEGY" }),
+  // TODO why not ReadStrategyBalances ?
+  // ReadStrategyBalances: () => useAction<ApiAction['ReadStrategyBalances']>({ type: "ReadStrategyBalances"})
   READ_STRATEGY_BALANCES: () =>
     useAction<ApiAction["READ_STRATEGY_BALANCES"]>({
       type: "READ_STRATEGY_BALANCES",

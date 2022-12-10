@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 import { Balances, isBalances } from "./balance.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
@@ -10,3 +10,6 @@ export const isBalanceChangeEvent = objectTypeGuard<BalanceChangeEvent>(
   ({ balances, ...creationTime }) =>
     isCreationTime(creationTime) && isBalances(balances)
 );
+
+export const isBalanceChangeEvents =
+  arrayTypeGuard<BalanceChangeEvent>(isBalanceChangeEvent);

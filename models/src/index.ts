@@ -20,7 +20,7 @@ export * from "./ordersPool.js";
 export * from "./quotas.js";
 export * from "./scheduling.js";
 export * from "./strategy.js";
-export * from "./strategyBalances.js";
+export * from "./strategyBalance.js";
 export * from "./strategyDailyBalanceChanges.js";
 export * from "./strategyExecution.js";
 export * from "./strategyFlow.js";

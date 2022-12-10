@@ -4,7 +4,8 @@ import type { TimeInterval } from "@ggbot2/time";
 import { DateTime, Pill } from "@ggbot2/ui-components";
 import { FC, useMemo } from "react";
 
-export type Props = {
+// TODO shouls use StrategyBalance
+type Props = {
   timeInterval: TimeInterval | undefined;
   balanceHistory: BalanceChangeEvent[];
 };
@@ -51,7 +52,7 @@ export const ProfitSummary: FC<Props> = ({ balanceHistory, timeInterval }) => {
   }, [balanceHistory]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <div className="flex gap-2">
           <span>from</span>

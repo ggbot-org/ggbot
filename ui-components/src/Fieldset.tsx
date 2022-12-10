@@ -1,3 +1,4 @@
+// TODO remove Fieldset component, use Section
 import { FC, FieldsetHTMLAttributes, ReactNode, useMemo } from "react";
 import type { Color } from "./Color";
 
