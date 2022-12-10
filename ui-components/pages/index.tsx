@@ -4,6 +4,7 @@ import {
   Buttons,
   Colors,
   EditableInputs,
+  Heading,
   Icons,
   LoadingButtons,
   Navigation,
@@ -27,6 +28,8 @@ const Home: NextPage = () => {
         <Logo size={71} />
 
         <Colors />
+
+        <Heading />
 
         <SimpleForm />
 

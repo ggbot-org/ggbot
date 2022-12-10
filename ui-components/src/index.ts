@@ -14,6 +14,7 @@ export * from "./Input";
 export * from "./Logo";
 export * from "./Output";
 export * from "./Pill";
+export * from "./Section";
 export * from "./Select";
 export * from "./Spinner";
 export * from "./Table";
