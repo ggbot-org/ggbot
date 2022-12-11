@@ -5,7 +5,7 @@ import { awsRegion } from "./awsRegion.js";
 const defaultDeployStage = getDeployStage();
 
 export const getWebappLoadBalancerName = (deployStage = defaultDeployStage) =>
-  `ggbot2-${deployStage}-webapp-lb`;
+  `ggbot2-${deployStage}-user-webapp-lb`;
 
 export const webappLoadBalancerType = LoadBalancerTypeEnum.APPLICATION;
 
