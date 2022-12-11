@@ -1,1 +1,1 @@
-export const awsRegion = "us-east-1";
+export const awsRegion = "eu-central-1";
