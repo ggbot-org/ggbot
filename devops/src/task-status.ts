@@ -8,21 +8,23 @@ import { ElasticIpStatus, getElasticIps } from "./elasticIp.js";
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js";
 import { getDevopsPolicyStatus } from "./iam-devops.js";
 import { getSesNoreplyPolicyStatus } from "./iam-sesNoreply.js";
-import { getAssetsBucketStatus } from "./s3-assets.js";
 import { getDataBucketStatus } from "./s3-data.js";
 import { getLogsBucketStatus } from "./s3-logs.js";
-import { getNakedDomainBucketStatus } from "./s3-nakedDomain.js";
-import { getWwwBucketStatus } from "./s3-www.js";
+// TODO how to check bucket in other region
+// import { getAssetsBucketStatus } from "./s3-assets.js";
+// import { getNakedDomainBucketStatus } from "./s3-nakedDomain.js";
+// import { getWwwBucketStatus } from "./s3-www.js";
 
 type TaskStatus = (options: TaskOptions) => Promise<{
   // IAM
   devopsPolicy: IamPolicyStatus;
   sesNoreplyPolicy: IamPolicyStatus;
   // S3
-  assetsBucket: S3BucketStatus;
+  // assetsBucket: S3BucketStatus;
+  // TODO how to check bucket in other region
   dataBucket: S3BucketStatus;
   logsBucket: S3BucketStatus;
-  wwwBucket: S3BucketStatus;
+  // wwwBucket: S3BucketStatus;
   // ELB
   webappLoadBalancer: LoadBalancerStatus;
 }>;
@@ -70,8 +72,9 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
   if (verbose) console.info("S3");
   // //////////////////////////////////////////////////////////////////
 
-  const assetsBucket = await getAssetsBucketStatus();
-  if (verbose) s3BucketReport("assetsDomainBucket", assetsBucket);
+  // TODO how to check bucket in other region
+  // const assetsBucket = await getAssetsBucketStatus();
+  // if (verbose) s3BucketReport("assetsDomainBucket", assetsBucket);
 
   const dataBucket = await getDataBucketStatus();
   if (verbose) s3BucketReport("dataBucket", dataBucket);
@@ -79,11 +82,13 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
   const logsBucket = await getLogsBucketStatus();
   if (verbose) s3BucketReport("logsBucket", logsBucket);
 
-  const nakedDomainBucket = await getNakedDomainBucketStatus();
-  if (verbose) s3BucketReport("nakedDomainBucket", nakedDomainBucket);
+  // TODO how to check bucket in other region
+  // const nakedDomainBucket = await getNakedDomainBucketStatus();
+  // if (verbose) s3BucketReport("nakedDomainBucket", nakedDomainBucket);
 
-  const wwwBucket = await getWwwBucketStatus();
-  if (verbose) s3BucketReport("wwwBucket", wwwBucket);
+  // TODO how to check bucket in other region
+  // const wwwBucket = await getWwwBucketStatus();
+  // if (verbose) s3BucketReport("wwwBucket", wwwBucket);
 
   // //////////////////////////////////////////////////////////////////
   if (verbose) console.info("ELB");
@@ -101,13 +106,13 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
 
   // //////////////////////////////////////////////////////////////////
   return {
-    assetsBucket,
+    // assetsBucket,
     dataBucket,
     devopsPolicy,
     logsBucket,
     sesNoreplyPolicy,
     webappLoadBalancer,
-    wwwBucket,
+    // wwwBucket,
   };
 };
 

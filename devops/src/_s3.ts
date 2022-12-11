@@ -20,6 +20,7 @@ export const s3BucketExists = async (args: HeadBucketArgs) => {
     if (error instanceof S3ServiceException) {
       if (error.name === s3ServiceExceptionName.NotFound) return false;
     }
+    console.error(`s3BucketExists Bucket=${args.Bucket}`);
     throw error;
   }
 };
