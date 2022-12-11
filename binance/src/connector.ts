@@ -1,4 +1,5 @@
 import { ErrorHTTP } from "@ggbot2/http-status-codes";
+import fetch from "node-fetch";
 import type { BinanceApiEndpoint } from "./endpoints.js";
 
 const defaultBaseUrl = "https://api.binance.com";
@@ -42,13 +43,18 @@ export class BinanceConnector {
       url.searchParams.append(key, String(valueString));
     }
 
-    const headers = new Headers({
+    // TODO when updating to Node 18 use
+    // const headers = new Headers({
+    const headers = {
       "User-Agent": BinanceConnector.userAgent,
       ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
-    });
+    };
 
     const fetchOptions: RequestInit = { headers, method };
 
+    // TODO when updating to Node 18 use native fetch
+    // by now Amazon Linux support Node 16
+    // @ts-ignore
     const response = await fetch(url, fetchOptions);
     if (!response.ok) throw new ErrorHTTP(response);
 

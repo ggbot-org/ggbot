@@ -23,6 +23,8 @@ type Props = {
 };
 
 export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
+  const { strategyId } = strategyKey;
+
   const [read, { data: accountStrategies, isPending: readIsPending }] =
     useApiAction.ReadAccountStrategies();
   const [create, { isPending: createIsPending, data: createData }] =
@@ -40,7 +42,7 @@ export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
     if (Array.isArray(accountStrategies)) {
       for (const accountStrategy of accountStrategies) {
         if (isAccountStrategy(accountStrategy)) {
-          if (accountStrategy.strategyId === strategyKey.strategyId) {
+          if (accountStrategy.strategyId === strategyId) {
             for (const scheduling of accountStrategy.schedulings) {
               schedulings.push(scheduling);
             }
@@ -49,7 +51,7 @@ export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
       }
     }
     return schedulings;
-  }, [accountStrategies]);
+  }, [accountStrategies, strategyId]);
 
   // TODO by now only one scheduling
   const scheduling = useMemo<StrategyScheduling | undefined>(() => {
