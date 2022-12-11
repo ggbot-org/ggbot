@@ -22,6 +22,7 @@ import {
 } from "@ggbot2/models";
 import { truncateTime, now, timeToDay } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
+import { removeAccountStrategiesItemSchedulings } from "./accountStrategies.js";
 import { pathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
@@ -50,15 +51,17 @@ class Binance extends BinanceClient implements BinanceDflowClient {
   }
 }
 
-/** Execute a ggbot2 strategy.
-
-It can either:
-  - Point to the actual exchange.
-  - Simulate an execution with a given balance or at a given time.
-
-@throws {ErrorAccountItemNotFound}
-@throws {ErrorStrategyItemNotFound}
-@throws {ErrorUnimplementedStrategyKind} */
+/**
+ * Execute a ggbot2 strategy.
+ *
+ * It can either:
+ *   - Point to the actual exchange.
+ *   - Simulate an execution with a given balance or at a given time.
+ *
+ * @throws {ErrorAccountItemNotFound}
+ * @throws {ErrorStrategyItemNotFound}
+ * @throws {ErrorUnimplementedStrategyKind}
+ */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   strategyId,
@@ -92,48 +95,57 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
 
       const executor = new BinanceDflowExecutor(binance, symbols, nodesCatalog);
-      const {
-        balances,
-        execution,
-        memory: memoryOutput,
-        memoryChanged,
-      } = await executor.run(
-        {
-          memory: memoryInput,
-          time: truncateTime(now()).to.second(),
-        },
-        strategyFlow.view
-      );
-
-      // Handle memory changes.
-      if (memoryChanged)
-        await writeStrategyMemory({
-          accountId,
-          strategyKind,
-          strategyId,
+      try {
+        const {
+          balances,
+          execution,
           memory: memoryOutput,
-        });
+          memoryChanged,
+        } = await executor.run(
+          {
+            memory: memoryInput,
+            time: truncateTime(now()).to.second(),
+          },
+          strategyFlow.view
+        );
 
-      // TODO extract orders from execution
-      // update order pools with orders that has temporary state
-      // write other orders (e.g. filled) in history
+        // Handle memory changes.
+        if (memoryChanged)
+          await writeStrategyMemory({
+            accountId,
+            strategyKind,
+            strategyId,
+            memory: memoryOutput,
+          });
 
-      if (balances.length > 0) {
-        const { whenCreated } = createdNow();
-        const day = timeToDay(truncateTime(whenCreated).to.day());
-        await appendStrategyDailyBalanceChanges({
+        // TODO extract orders from execution
+        // update order pools with orders that has temporary state
+        // write other orders (e.g. filled) in history
+
+        if (balances.length > 0) {
+          const { whenCreated } = createdNow();
+          const day = timeToDay(truncateTime(whenCreated).to.day());
+          await appendStrategyDailyBalanceChanges({
+            accountId,
+            strategyKind,
+            strategyId,
+            day,
+            items: [{ whenCreated, balances }],
+          });
+        }
+
+        const status = execution?.status === "success" ? "success" : "failure";
+        const steps = execution?.steps ?? [];
+
+        return { status, memory: memoryOutput, steps, ...updatedNow() };
+      } catch (error) {
+        await removeAccountStrategiesItemSchedulings({
           accountId,
-          strategyKind,
           strategyId,
-          day,
-          items: [{ whenCreated, balances }],
+          strategyKind,
         });
+        return { status: "failure", memory: {}, steps: [], ...updatedNow() };
       }
-
-      const status = execution?.status === "success" ? "success" : "failure";
-      const steps = execution?.steps ?? [];
-
-      return { status, memory: memoryOutput, steps, ...updatedNow() };
     }
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {

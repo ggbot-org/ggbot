@@ -1,6 +1,6 @@
-import { exit, pid } from "node:process";
-import { fileURLToPath } from "node:url";
+import { exit } from "node:process";
 import { getExecutorId } from "./executorId.js";
+import { log } from "./log.js";
 import { executorTasks } from "./tasks.js";
 
 export async function spawnExecutorDaemon() {
@@ -8,29 +8,43 @@ export async function spawnExecutorDaemon() {
   try {
     executorId = await getExecutorId();
   } catch (error) {
-    console.error(error);
+    log.error(error);
     exit(1);
   }
 
-  console.info("executor daemon pid", pid);
-  console.info("executor daemon executorId", executorId);
+  log.info("executorId", executorId);
 
   let canRun = true;
+  let gotSIGINT = false;
+  let gotSIGHUP = false;
+  let gotSIGTERM = false;
 
   const terminate = () => {
-    console.info("executor daemon", pid, "is terminating");
+    log.info("terminating");
     canRun = false;
   };
 
   process.on("SIGHUP", () => {
-    console.info("executor daemon", pid, "SIGHUP");
+    if (gotSIGHUP) return;
+    gotSIGHUP = true;
+    log.info("got SIGHUP");
   });
 
-  process.on("SIGINT", terminate);
+  process.on("SIGINT", () => {
+    if (gotSIGINT) return;
+    gotSIGINT = true;
+    log.info("got SIGINT");
+    terminate();
+  });
 
-  process.on("SIGTERM", terminate);
+  process.on("SIGTERM", () => {
+    if (gotSIGTERM) return;
+    gotSIGTERM = true;
+    log.info("got SIGTERM");
+    terminate();
+  });
 
-  // While loop must be last statement.
+  // The `while` loop must be last statement.
   while (canRun) {
     try {
       await executorTasks();
@@ -39,13 +53,3 @@ export async function spawnExecutorDaemon() {
     }
   }
 }
-
-function isMainModule() {
-  if (import.meta.url.startsWith("file:")) {
-    const modulePath = fileURLToPath(import.meta.url);
-    return process.argv[1] === modulePath;
-  }
-  return false;
-}
-
-if (isMainModule()) await spawnExecutorDaemon();
