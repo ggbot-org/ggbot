@@ -120,7 +120,6 @@ const useAction = <
         const { status } = response;
         if (status === __400__BAD_REQUEST__) {
           const responseOutput = await response.json();
-          console.log(responseOutput);
           if (isApiActionResponseError(responseOutput)) {
             setResponse({
               error: responseOutput.error,

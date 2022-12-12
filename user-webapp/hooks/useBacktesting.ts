@@ -244,8 +244,6 @@ export const useBacktesting: UseBacktesting = ({
   strategyKind,
   strategyId,
 }) => {
-  const storage = sessionStorage;
-
   const isServerSide = useIsServerSide();
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
@@ -257,26 +255,26 @@ export const useBacktesting: UseBacktesting = ({
 
   const getPersistingState = useCallback<GetPersistingState>(() => {
     try {
-      if (!storage) return;
-      const storedState = storage.getItem(storageKey);
+      if (isServerSide) return;
+      const storedState = sessionStorage.getItem(storageKey);
       if (!storedState) return;
       const persistingState = JSON.parse(storedState);
       if (isPersistingState(persistingState)) return persistingState;
     } catch (error) {
       console.error(error);
     }
-  }, [storage, storageKey]);
+  }, [isServerSide, storageKey]);
 
   const setPersistingState = useCallback<SetPersistingState>(
     (arg) => {
       try {
-        if (!storage) return;
-        storage.setItem(storageKey, JSON.stringify(arg));
+        if (isServerSide) return;
+        sessionStorage.setItem(storageKey, JSON.stringify(arg));
       } catch (error) {
         console.error(error);
       }
     },
-    [storage, storageKey]
+    [isServerSide, storageKey]
   );
 
   const [state, dispatch] = useReducer(

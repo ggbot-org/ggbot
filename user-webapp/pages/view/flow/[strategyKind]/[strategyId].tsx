@@ -48,6 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const strategyKey = strategyKeyFromRouterParams(params);
   if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
+  const { strategyKind } = strategyKey;
 
   const strategy = await readStrategy(strategyKey);
   if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
@@ -63,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     name: strategy.name,
   };
 
-  if (strategyKey.strategyKind === "binance") {
+  if (strategyKind === "binance") {
     const binance = new BinanceExchange({
       baseUrl: BinanceConnector.defaultBaseUrl,
     });
@@ -94,11 +95,13 @@ const Page: NextPage<ServerSideProps> = ({
 }) => {
   const router = useRouter();
 
+  const { strategyKind } = strategyKey;
+
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView } = useFlowView({
     containerRef: flowViewContainerRef,
     binanceSymbols,
-    strategyKind: strategyKey.strategyKind,
+    strategyKind,
   });
 
   const strategyPathname = useMemo(

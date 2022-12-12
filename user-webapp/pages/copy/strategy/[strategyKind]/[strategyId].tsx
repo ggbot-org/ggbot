@@ -1,5 +1,11 @@
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import { Button, DateTime, InputField } from "@ggbot2/ui-components";
+import {
+  Button,
+  DateTime,
+  InputField,
+  OutputField,
+  Section,
+} from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -41,7 +47,8 @@ const Page: NextPage<ServerSideProps> = ({
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [copyStrategy, { data, isPending }] = useApiAction.COPY_STRATEGY();
+  const [copyStrategy, { data: whenCopied, isPending }] =
+    useApiAction.COPY_STRATEGY();
 
   const breadcrumbs = useMemo(
     () => [
@@ -64,6 +71,7 @@ const Page: NextPage<ServerSideProps> = ({
       try {
         event.preventDefault();
         if (isPending) return;
+        if (whenCopied) return;
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
@@ -73,7 +81,7 @@ const Page: NextPage<ServerSideProps> = ({
           toast.error("Invalid strategy name");
       }
     },
-    [isPending, strategyKey, copyStrategy]
+    [isPending, strategyKey, copyStrategy, whenCopied]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -85,9 +93,9 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   useEffect(() => {
-    if (!data) return;
+    if (!whenCopied) return;
     router.push(route.homePage());
-  }, [router, data]);
+  }, [router, whenCopied]);
 
   return (
     <Content
@@ -102,36 +110,35 @@ const Page: NextPage<ServerSideProps> = ({
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
       >
-        <span className="text-xl">copy strategy</span>
-        <dl>
-          <dt>name</dt>
-          <dd>{strategyName}</dd>
-          <dt>created</dt>
-          <dd>
+        <Section header="Copy strategy">
+          <OutputField label="name">{strategyName}</OutputField>
+          <OutputField label="when created">
             <DateTime format="time" value={whenCreated} />
-          </dd>
-          <dt>id</dt>
-          <dd className="text-xs">{strategyId}</dd>
-        </dl>
-        <InputField
-          onChange={onChangeName}
-          label="new strategy name"
-          name="name"
-          placeholder={strategyName}
-          required
-          readOnly={isPending}
-        />
-        {data ? (
-          <div>done</div>
-        ) : (
+          </OutputField>
+
+          <p>Choose a new name for the copied strategy.</p>
+
+          <InputField
+            onChange={onChangeName}
+            label="new strategy name"
+            name="name"
+            placeholder={strategyName}
+            required
+            readOnly={isPending}
+          />
+
           <menu>
             <li>
-              <Button isSpinning={isPending} disabled={isDisabled}>
-                copy
-              </Button>
+              {whenCopied ? (
+                <Button color="primary">Done</Button>
+              ) : (
+                <Button isSpinning={isPending} disabled={isDisabled}>
+                  Copy
+                </Button>
+              )}
             </li>
           </menu>
-        )}
+        </Section>
       </form>
     </Content>
   );

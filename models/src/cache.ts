@@ -62,14 +62,14 @@ export class CacheMap<Data> implements CacheProvider<Data> {
     if (!this.itemMap.has(key)) return;
     // No `timeToLive` found means item is cached for ever.
     if (!this.timeToLive) return this.itemMap.get(key) as Data;
-    // No `whenUpdated` found means it is not possible to know if is `isUpToDate`.
+    // No `whenUpdated` found means it is not possible to know if `isUpToDate`.
     const whenUpdated = this.whenUpdatedMap.get(key);
     if (!whenUpdated) {
       this.delete(key);
       return;
     }
     const cacheDuration = timeToLiveDuration[this.timeToLive];
-    const isUpToDate = whenUpdated + cacheDuration < this.currentTimestamp;
+    const isUpToDate = whenUpdated + cacheDuration > this.currentTimestamp;
     if (!isUpToDate) {
       this.delete(key);
       return;

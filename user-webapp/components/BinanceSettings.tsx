@@ -52,20 +52,25 @@ export const BinanceSettings: FC = () => {
     [permissions]
   );
 
-  const { currentApiKey, hasBinanceApiConfig } = useMemo(
-    () =>
+  const { currentApiKey, hasBinanceApiConfig } = useMemo(() => {
+    if (
       isMaybeObject<BinanceApiConfig>(binanceApiConfig) &&
       typeof binanceApiConfig.apiKey === "string"
-        ? {
-            currentApiKey: binanceApiConfig.apiKey,
-            hasBinanceApiConfig: true,
-          }
-        : {
-            currentApiKey: "",
-            hasBinanceApiConfig: false,
-          },
-    [binanceApiConfig]
-  );
+    ) {
+      const { apiKey } = binanceApiConfig;
+      return {
+        currentApiKey: `${apiKey.substring(0, 10)}...${apiKey.substring(
+          apiKey.length - 10,
+          apiKey.length
+        )}`,
+        hasBinanceApiConfig: true,
+      };
+    }
+    return {
+      currentApiKey: "",
+      hasBinanceApiConfig: false,
+    };
+  }, [binanceApiConfig]);
 
   const hasNoBinanceApiConfig = useMemo(
     () => binanceApiConfig !== undefined && binanceApiConfig === null,

@@ -1,6 +1,7 @@
 import { Button, DateTime, Section, OutputField } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
-import { FormEventHandler, useCallback, useMemo } from "react";
+import { useRouter } from "next/router";
+import { FormEventHandler, useCallback, useEffect, useMemo } from "react";
 import {
   Content,
   Navigation,
@@ -13,6 +14,7 @@ import { useApiAction, useGoBack } from "_hooks";
 import {
   StrategyInfo,
   requireAuthenticationAndGetStrategyInfo,
+  route,
 } from "_routing";
 
 type ServerSideProps = StrategyInfo;
@@ -25,9 +27,12 @@ const Page: NextPage<ServerSideProps> = ({
   name,
   whenCreated,
 }) => {
+  const router = useRouter();
+
   const goBack = useGoBack();
 
-  const [deleteStrategy, { isPending }] = useApiAction.DeleteStrategy();
+  const [deleteStrategy, { isPending, data: whenDeleted }] =
+    useApiAction.DeleteStrategy();
 
   const breadcrumbs = useMemo(
     () => [
@@ -40,7 +45,7 @@ const Page: NextPage<ServerSideProps> = ({
         ),
       },
       {
-        content: <NavigationLabel text="delete strategy" />,
+        content: <NavigationLabel text="delete" />,
         current: true,
       },
     ],
@@ -56,41 +61,44 @@ const Page: NextPage<ServerSideProps> = ({
     [isPending, deleteStrategy, strategyKey]
   );
 
+  useEffect(() => {
+    if (!whenDeleted) return;
+    router.push(route.homePage());
+  }, [router, whenDeleted]);
+
   return (
     <Content
       topbar={
         <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
       }
     >
-      <div className="p-4">
-        {accountIsOwner ? (
-          <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-            <Section header="Delete strategy">
-              <p>Are you sure you want to delete this strategy?</p>
+      {accountIsOwner ? (
+        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+          <Section header="Delete strategy" color="danger">
+            <p>Are you sure you want to delete this strategy?</p>
 
-              <OutputField label="name">{name}</OutputField>
-              <OutputField label="When created">
-                <DateTime format="time" value={whenCreated} />
-              </OutputField>
+            <OutputField label="name">{name}</OutputField>
+            <OutputField label="when created">
+              <DateTime format="time" value={whenCreated} />
+            </OutputField>
 
-              <menu className="flex flex-row gap-4">
-                <li>
-                  <Button type="reset" onClick={goBack}>
-                    no, go back
-                  </Button>
-                </li>
-                <li>
-                  <Button type="submit" color="danger">
-                    yes, delete it
-                  </Button>
-                </li>
-              </menu>
-            </Section>
-          </form>
-        ) : (
-          <div>Cannot delete strategy. Permission denied!</div>
-        )}
-      </div>
+            <menu className="flex flex-row gap-4 justify-between">
+              <li>
+                <Button type="reset" onClick={goBack}>
+                  no, go back
+                </Button>
+              </li>
+              <li>
+                <Button type="submit" color="danger" isSpinning={isPending}>
+                  yes, delete it
+                </Button>
+              </li>
+            </menu>
+          </Section>
+        </form>
+      ) : (
+        <div>Cannot delete strategy. Permission denied!</div>
+      )}
     </Content>
   );
 };

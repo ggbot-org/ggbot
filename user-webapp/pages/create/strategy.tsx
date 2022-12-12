@@ -49,7 +49,7 @@ const Page: NextPage = () => {
         <Navigation
           breadcrumbs={[
             { content: <NavigationBreadcrumbDashboard isLink /> },
-            { content: <NavigationLabel text="create" />, current: true },
+            { content: <NavigationLabel text="new strategy" />, current: true },
           ]}
           icon={<NavigationSettingsIcon />}
         />
@@ -59,7 +59,7 @@ const Page: NextPage = () => {
         className="flex flex-col w-full max-w-lg p-4 gap-4"
         onSubmit={onSubmit}
       >
-        <Section header="create strategy">
+        <Section header="New strategy">
           <InputField
             label="strategy name"
             name="name"

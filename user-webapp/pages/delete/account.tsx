@@ -1,4 +1,4 @@
-import { Button } from "@ggbot2/ui-components";
+import { Button, Section } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
@@ -50,11 +50,10 @@ const Page: NextPage = () => {
         <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
       }
     >
-      <div className="p-4">
-        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-          <span className="text-xl">Delete account</span>
-          <p>Are you sure you want to delete this account?</p>
-          <menu className="flex flex-row gap-4">
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+        <Section header="Account deletion" color="danger">
+          <p>Are you sure you want to delete your account?</p>
+          <menu className="flex flex-row gap-4 justify-between">
             <li>
               <Button type="reset" onClick={goBack}>
                 no, go back
@@ -66,8 +65,8 @@ const Page: NextPage = () => {
               </Button>
             </li>
           </menu>
-        </form>
-      </div>
+        </Section>
+      </form>
     </Content>
   );
 };

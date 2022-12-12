@@ -1,4 +1,4 @@
-import { Button } from "@ggbot2/ui-components";
+import { Button, Section } from "@ggbot2/ui-components";
 import type { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
@@ -29,7 +29,7 @@ const Page: NextPage = () => {
         content: <NavigationBreadcrumbSettings isLink />,
       },
       {
-        content: <NavigationLabel text="delete api key" />,
+        content: <NavigationLabel text="delete Binance API" />,
         current: true,
       },
     ],
@@ -51,11 +51,11 @@ const Page: NextPage = () => {
         <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
       }
     >
-      <div className="p-4">
-        <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-          <span className="text-xl">Delete Binance API key</span>
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+        <Section header="Delete Binance API key" color="danger">
           <p>Are you sure you want to delete your Binance API key?</p>
-          <menu className="flex flex-row gap-4">
+
+          <menu className="flex flex-row gap-4 justify-between">
             <li>
               <Button type="reset" onClick={goBack}>
                 no, go back
@@ -67,8 +67,8 @@ const Page: NextPage = () => {
               </Button>
             </li>
           </menu>
-        </form>
-      </div>
+        </Section>
+      </form>
     </Content>
   );
 };
