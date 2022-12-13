@@ -20,7 +20,9 @@
     "@ggbot2/arithmetic": "file:arithmetic",
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/models": "file:models",
-    "@types/node-fetch": "^2.6.2",
-    "node-fetch": "^2.6.7"
+    "isomorphic-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.36"
   }
 }

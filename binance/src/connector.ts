@@ -1,5 +1,5 @@
 import { ErrorHTTP } from "@ggbot2/http-status-codes";
-import fetch from "node-fetch";
+import fetch from "isomorphic-fetch";
 import type { BinanceApiEndpoint } from "./endpoints.js";
 
 const defaultBaseUrl = "https://api.binance.com";
