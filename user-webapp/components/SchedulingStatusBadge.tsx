@@ -1,3 +1,4 @@
+import { Pill, PillProps } from "@ggbot2/ui-components";
 import type { AccountStrategy, StrategyScheduling } from "@ggbot2/models";
 import { FC, useMemo } from "react";
 
@@ -25,21 +26,17 @@ export const SchedulingStatusBadge: FC<Props> = ({ schedulings }) => {
     return schedulingStatusLabel[schedulingStatus];
   }, [schedulingStatus]);
 
-  const className = useMemo(() => {
-    const schedulingStatusClassName: Record<
+  const color = useMemo<PillProps["color"]>(() => {
+    const schedulingStatusColor: Record<
       StrategyScheduling["status"],
-      string
+      PillProps["color"]
     > = {
-      active: "bg-cyan-100 dark:bg-cyan-200 text-cyan-800",
-      inactive:
-        "bg-neutral-100 text-neutral-500 dark:bg-neutral-500 dark:text-neutral-800",
-      suspended: "bg-yellow-300 text-yellow-800",
+      active: "primary",
+      inactive: "neutral",
+      suspended: "danger",
     };
-    return [
-      "px-2 py-1 select-none rounded-md",
-      schedulingStatusClassName[schedulingStatus],
-    ].join(" ");
+    return schedulingStatusColor[schedulingStatus];
   }, [schedulingStatus]);
 
-  return <div className={className}>{label}</div>;
+  return <Pill color={color}>{label}</Pill>;
 };

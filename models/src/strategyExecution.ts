@@ -14,10 +14,13 @@ export const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>(
 );
 
 export type StrategyExecution = UpdateTime & {
-  /** If a strategy execution do some transaction, the result can be reported as a `balances` attribute. */
+  /**
+   * If a strategy execution do some transaction,
+   * the result can be reported as a `balances` attribute.
+   */
   balances: Balances;
 
-  steps: DflowExecutionNodeInfo;
+  steps: DflowExecutionNodeInfo[];
 
   status: StrategyExecutionStatus;
 };

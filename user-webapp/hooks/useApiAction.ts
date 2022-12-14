@@ -172,7 +172,7 @@ const useAction = <
 };
 
 export const useApiAction = {
-  COPY_STRATEGY: () =>
+  CopyStrategy: () =>
     useAction<ApiAction["CopyStrategy"]>({ type: "CopyStrategy" }),
   CreateAccountStrategiesItemScheduling: () =>
     useAction<ApiAction["CreateAccountStrategiesItemScheduling"]>({

@@ -1,4 +1,4 @@
-import type { TimeInterval } from "@ggbot2/time";
+import { TimeInterval, now, truncateTime } from "@ggbot2/time";
 import type { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,
@@ -108,6 +108,12 @@ export class BinanceExchange extends BinanceConnector {
           endTime,
           -1 * (limit ?? binanceKlineDefaultLimit)
         ),
+        end: endTime,
+      };
+    } else if (limit) {
+      const endTime = truncateTime(now()).to.minutes();
+      return {
+        start: getIntervalTime[interval](endTime, -1 * limit),
         end: endTime,
       };
     }

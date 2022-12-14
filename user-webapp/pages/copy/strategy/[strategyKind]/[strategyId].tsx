@@ -43,12 +43,10 @@ const Page: NextPage<ServerSideProps> = ({
 }) => {
   const router = useRouter();
 
-  const { strategyId } = strategyKey;
-
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [copyStrategy, { data: whenCopied, isPending }] =
-    useApiAction.COPY_STRATEGY();
+    useApiAction.CopyStrategy();
 
   const breadcrumbs = useMemo(
     () => [

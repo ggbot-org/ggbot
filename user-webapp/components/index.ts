@@ -17,6 +17,7 @@ export * from "./SchedulingsForm";
 export * from "./SchedulingStatusBadge";
 export * from "./SettingsMenu";
 export * from "./Strategies";
+export * from "./StrategyExecutionLog";
 export * from "./StrategyForm";
 export * from "./StrategyItem";
 export * from "./StrategyProfits";

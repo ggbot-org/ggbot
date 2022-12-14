@@ -4,10 +4,12 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
+import { isStrategyFlow } from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useMemo, useState, useRef } from "react";
+import { toast } from "react-hot-toast";
 import {
   BacktestCheckbox,
   BacktestController,
@@ -19,10 +21,9 @@ import {
   NavigationLabel,
   NavigationSettingsIcon,
 } from "_components";
-import { useBacktesting, useFlowView } from "_hooks";
+import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
-  StrategyFlow,
   readSession,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
@@ -36,7 +37,6 @@ type ServerSideProps = Pick<
 > & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
   hasSession: boolean;
-  strategyFlow: StrategyFlow;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -76,13 +76,12 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         binanceSymbols,
         hasSession,
-        strategyFlow,
         ...strategyInfo,
       },
     };
   }
 
-  return { props: { ...strategyInfo, hasSession, strategyFlow } };
+  return { props: { ...strategyInfo, hasSession } };
 };
 
 const Page: NextPage<ServerSideProps> = ({
@@ -91,23 +90,8 @@ const Page: NextPage<ServerSideProps> = ({
   hasSession,
   name: strategyName,
   strategyKey,
-  strategyFlow,
 }) => {
   const router = useRouter();
-
-  const { strategyKind } = strategyKey;
-
-  const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const { flowView } = useFlowView({
-    containerRef: flowViewContainerRef,
-    binanceSymbols,
-    strategyKind,
-  });
-
-  const strategyPathname = useMemo(
-    () => route.viewFlowPage(strategyKey),
-    [strategyKey]
-  );
 
   const breadcrumbs = useMemo(() => {
     const action = <NavigationLabel text="view" />;
@@ -132,13 +116,33 @@ const Page: NextPage<ServerSideProps> = ({
         ];
   }, [accountIsOwner, hasSession, strategyKey]);
 
+  const { strategyKind } = strategyKey;
+
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
+  const [flowLoaded, setFlowLoaded] = useState(false);
+
+  const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
+  const { flowView } = useFlowView({
+    containerRef: flowViewContainerRef,
+    binanceSymbols,
+    strategyKind,
+  });
 
   const [backtesting, backtestingDispatch] = useBacktesting({
     ...strategyKey,
     binanceSymbols,
     flowViewGraph: flowView?.graph,
   });
+
+  const [
+    readStrategyFlow,
+    { data: storedStrategyFlow, isPending: readIsPending },
+  ] = useApiAction.ReadStrategyFlow();
+
+  const strategyPathname = useMemo(
+    () => route.viewFlowPage(strategyKey),
+    [strategyKey]
+  );
 
   const onChangeBacktestingCheckbox = useCallback(() => {
     backtestingDispatch({ type: "TOGGLE" });
@@ -155,9 +159,28 @@ const Page: NextPage<ServerSideProps> = ({
   );
 
   useEffect(() => {
-    if (!flowView) return;
-    flowView.loadGraph(strategyFlow.view);
-  }, [strategyFlow, flowView]);
+    if (!flowLoaded) readStrategyFlow(strategyKey);
+  }, [flowLoaded, readStrategyFlow, strategyKey]);
+
+  useEffect(() => {
+    try {
+      if (!flowView) return;
+      if (readIsPending) return;
+      if (storedStrategyFlow === undefined) return;
+      if (storedStrategyFlow === null) {
+        setFlowLoaded(true);
+        return;
+      }
+      flowView.clearGraph();
+      if (isStrategyFlow(storedStrategyFlow)) {
+        flowView.loadGraph(storedStrategyFlow.view);
+      }
+      setFlowLoaded(true);
+    } catch (error) {
+      console.error(error);
+      toast.error("Cannot load flow");
+    }
+  }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
   return (
     <Content
@@ -211,7 +234,10 @@ const Page: NextPage<ServerSideProps> = ({
           view={flowView?.graph}
         />
 
-        <div className="mb-2 w-full grow" ref={flowViewContainerRef}></div>
+        <div
+          className="mb-2 w-full grow shadow dark:shadow-black"
+          ref={flowViewContainerRef}
+        ></div>
       </div>
     </Content>
   );

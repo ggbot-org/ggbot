@@ -13,6 +13,9 @@ export const Pills: FC = () => {
       <div>
         <Pill color="neutral">neutral</Pill>
       </div>
+      <div>
+        <Pill color="danger">danger</Pill>
+      </div>
     </div>
   );
 };

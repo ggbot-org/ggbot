@@ -28,6 +28,7 @@ import {
   NavigationLabel,
   NavigationSettingsIcon,
   StrategyItem,
+  StrategyExecutionLog,
 } from "_components";
 import { binance } from "_flow/binance";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
@@ -315,6 +316,8 @@ const Page: NextPage<ServerSideProps> = ({
         />
 
         <MemoryController />
+
+        <StrategyExecutionLog />
       </div>
     </Content>
   );

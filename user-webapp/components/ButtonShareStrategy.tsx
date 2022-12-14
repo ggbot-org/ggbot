@@ -6,12 +6,11 @@ import { route, webappBaseUrl } from "_routing";
 
 type Props = StrategyKey;
 
-// TODO try it on iPhone
 export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
   const shareData = useMemo(
     () => ({
       title: "ggbot2",
-      text: `srategy ${strategyKey.strategyId}`,
+      text: `strategy ${strategyKey.strategyId}`,
       url: `${webappBaseUrl}${route.viewFlowPage(strategyKey)}`,
     }),
     [strategyKey]
