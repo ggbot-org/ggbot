@@ -54,7 +54,7 @@ import type {
   RenameStrategy,
   WriteStrategyFlow,
 } from "@ggbot2/models";
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow, DflowObject } from "dflow";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from "_routing";
@@ -129,7 +129,29 @@ export type ApiAction = {
   WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
-type ApiActionType = keyof ApiAction;
+const apiActionTypes = [
+  "CopyStrategy",
+  "CreateAccountStrategiesItemScheduling",
+  "CreateBinanceApiConfig",
+  "CreateStrategy",
+  "DeleteAccount",
+  "DeleteStrategy",
+  "DeleteBinanceApiConfig",
+  "ExecuteStrategy",
+  "ReadAccount",
+  "ReadAccountStrategies",
+  "ReadBinanceApiConfig",
+  "ReadBinanceApiKeyPermissions",
+  "ReadStrategy",
+  "ReadStrategyBalances",
+  "ReadStrategyFlow",
+  "RenameStrategy",
+  "RemoveAccountStrategiesItemSchedulings",
+  "RenameAccount",
+  "WriteStrategyFlow",
+] as const;
+type ApiActionType = typeof apiActionTypes[number];
+const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
 
 export type ApiActionInput = {
   type: ApiActionType;
@@ -144,124 +166,156 @@ export default async function apiHandler(
     if (req.method !== "POST")
       return res.status(__405__METHOD_NOT_ALLOWED__).json({});
 
-    const session = readSession(req.cookies);
-    if (!session) return res.status(__401__UNAUTHORIZED__).json({});
-
-    const { accountId } = session;
-
     const action = req.body;
 
-    switch (action.type as ApiActionType) {
-      case "CopyStrategy": {
-        const data = await copyStrategy({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
+    const { type: actionType } = action;
 
-      case "CreateAccountStrategiesItemScheduling": {
-        const data = await createAccountStrategiesItemScheduling({
-          accountId,
-          ...action.data,
-        });
-        return res.status(__200__OK__).json({ data });
-      }
+    if (!isApiActionType(actionType))
+      return res.status(__400__BAD_REQUEST__).json({});
 
-      case "CreateBinanceApiConfig": {
-        const data = await createBinanceApiConfig({
-          accountId,
-          ...action.data,
-        });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "CreateStrategy": {
-        const data = await createStrategy({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "DeleteAccount": {
-        const data = await deleteAccount({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "DeleteBinanceApiConfig": {
-        const data = await deleteBinanceApiConfig({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "DeleteStrategy": {
-        const data = await deleteStrategy({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ExecuteStrategy": {
-        const data = await executeStrategy({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ReadAccount": {
-        const data = await readAccount({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ReadAccountStrategies": {
-        const data = await readAccountStrategies({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ReadBinanceApiConfig": {
-        const data = await readBinanceApiConfig({ accountId });
-        const apiKey = data?.apiKey;
-        return res.status(__200__OK__).json({
-          // Do not expose apiSecret.
-          data: apiKey ? { apiKey } : null,
-        });
-      }
-
-      case "ReadBinanceApiKeyPermissions": {
-        const data = await readBinanceApiKeyPermissions({ accountId });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ReadStrategy": {
-        const data = await readStrategy(action.data);
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "ReadStrategyBalances": {
-        const data = await readStrategyBalances({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
+    switch (actionType) {
+      // Actions that do not require authentication.
       case "ReadStrategyFlow": {
         const data = await readStrategyFlow(action.data);
         return res.status(__200__OK__).json({ data });
       }
+      default: {
+        // Actions that require authentication.
+        switch (actionType) {
+          default: {
+            const session = readSession(req.cookies);
+            if (!session) return res.status(__401__UNAUTHORIZED__).json({});
 
-      case "RenameAccount": {
-        const data = await renameAccount({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
+            const { accountId } = session;
+
+            switch (actionType) {
+              case "CopyStrategy": {
+                const data = await copyStrategy({ accountId, ...action.data });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "CreateAccountStrategiesItemScheduling": {
+                const data = await createAccountStrategiesItemScheduling({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "CreateBinanceApiConfig": {
+                const data = await createBinanceApiConfig({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "CreateStrategy": {
+                const data = await createStrategy({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "DeleteAccount": {
+                const data = await deleteAccount({ accountId });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "DeleteBinanceApiConfig": {
+                const data = await deleteBinanceApiConfig({ accountId });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "DeleteStrategy": {
+                const data = await deleteStrategy({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ExecuteStrategy": {
+                const data = await executeStrategy({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadAccount": {
+                const data = await readAccount({ accountId });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadAccountStrategies": {
+                const data = await readAccountStrategies({ accountId });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadBinanceApiConfig": {
+                const data = await readBinanceApiConfig({ accountId });
+                const apiKey = data?.apiKey;
+                return res.status(__200__OK__).json({
+                  // Do not expose apiSecret.
+                  data: apiKey ? { apiKey } : null,
+                });
+              }
+
+              case "ReadBinanceApiKeyPermissions": {
+                const data = await readBinanceApiKeyPermissions({ accountId });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadStrategy": {
+                const data = await readStrategy(action.data);
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadStrategyBalances": {
+                const data = await readStrategyBalances({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "RenameAccount": {
+                const data = await renameAccount({ accountId, ...action.data });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "RenameStrategy": {
+                const data = await renameStrategy({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "RemoveAccountStrategiesItemSchedulings": {
+                const data = await removeAccountStrategiesItemSchedulings({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "WriteStrategyFlow": {
+                const data = await writeStrategyFlow({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              default:
+                return res.status(__400__BAD_REQUEST__).json({});
+            }
+          }
+        }
       }
-
-      case "RenameStrategy": {
-        const data = await renameStrategy({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "RemoveAccountStrategiesItemSchedulings": {
-        const data = await removeAccountStrategiesItemSchedulings({
-          accountId,
-          ...action.data,
-        });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      case "WriteStrategyFlow": {
-        const data = await writeStrategyFlow({ accountId, ...action.data });
-        return res.status(__200__OK__).json({ data });
-      }
-
-      default:
-        return res.status(__400__BAD_REQUEST__).json({});
     }
   } catch (error) {
     if (

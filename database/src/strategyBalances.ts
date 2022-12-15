@@ -9,7 +9,7 @@ export const readStrategyBalances: ReadStrategyBalances["func"] = async ({
 }) => {
   const result = [];
   let date = dayToDate(start);
-  while (date < dayToDate(end)) {
+  while (date <= dayToDate(end)) {
     const day = dateToDay(date);
     const data = (await readStrategyDailyBalanceChanges({ day, ...key })) ?? [];
     result.push({ day, data });

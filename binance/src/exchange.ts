@@ -111,7 +111,7 @@ export class BinanceExchange extends BinanceConnector {
         end: endTime,
       };
     } else if (limit) {
-      const endTime = truncateTime(now()).to.minutes();
+      const endTime = truncateTime(now()).to.minute();
       return {
         start: getIntervalTime[interval](endTime, -1 * limit),
         end: endTime,
