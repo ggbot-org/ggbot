@@ -31,21 +31,17 @@ sudo yum install -y nodejs
 ### Get code and build
 
 ```sh
+sudo rm -rf /opt/ggbot2
 sudo mkdir -p /opt/ggbot2
 sudo chown ec2-user:ec2-user /opt/ggbot2
 aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
-```
-
-Install deps
-
-```sh
 cd /opt/ggbot2
-npm ci
 ```
 
-Build executor and user-webapp
+Install deps and build
 
 ```sh
+npm ci
 npm run build
 npm run next:build:user-webapp
 ```
