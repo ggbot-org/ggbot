@@ -2,23 +2,16 @@ import type { StrategyExecution } from "@ggbot2/models";
 import { Pill } from "@ggbot2/ui-components";
 import { FC, ReactNode, useMemo } from "react";
 
-type Props = {
-  log?: Pick<StrategyExecution, "steps" | "status"> | undefined | null;
-};
+type Props = Partial<Pick<StrategyExecution, "status" | "steps">>;
 
-export const StrategyExecutionLog: FC<Props> = ({ log }) => {
-  const { steps, status } = useMemo(
-    () => log ?? { steps: [], status: "" },
-    [log]
-  );
-
+export const StrategyExecutionLog: FC<Props> = ({ status, steps }) => {
   const statusPill = useMemo<ReactNode>(() => {
     if (status === "success") return <Pill color="primary">{status}</Pill>;
     if (status === "failure") return <Pill color="danger">{status}</Pill>;
     return <Pill>{status}</Pill>;
   }, [status]);
 
-  if (!log) return null;
+  if (!steps) return null;
 
   return (
     <div className="flex flex-col gap-2">

@@ -10,6 +10,7 @@ import {
 } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
+import type { DflowExecutionNodeInfo } from "dflow";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -170,6 +171,22 @@ const Page: NextPage<ServerSideProps> = ({
 
   const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
 
+  const { executionStatus, executionSteps } = useMemo(() => {
+    if (!isMaybeObject<StrategyExecution>(strategyExecution))
+      return {
+        executionSteps: undefined,
+        executionStatus: undefined,
+      };
+    const { status, steps } = strategyExecution;
+    const executionStatus = isStrategyExecutionStatus(status)
+      ? status
+      : undefined;
+    return {
+      executionSteps: steps as DflowExecutionNodeInfo[],
+      executionStatus,
+    };
+  }, [strategyExecution]);
+
   const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
     (event) => {
       const wantBacktesting = event.target.checked;
@@ -317,7 +334,7 @@ const Page: NextPage<ServerSideProps> = ({
 
         <MemoryController />
 
-        <StrategyExecutionLog />
+        <StrategyExecutionLog status={executionStatus} steps={executionSteps} />
       </div>
     </Content>
   );
