@@ -1,7 +1,9 @@
 import {
+  ErrorAccountItemNotFound,
   executeStrategy,
   listAccountKeys,
   readAccountStrategies,
+  suspendAccountStrategiesSchedulings,
 } from "@ggbot2/database";
 import { isAccountKey, isAccountStrategy, isScheduling } from "@ggbot2/models";
 import { log } from "./log.js";
@@ -36,12 +38,19 @@ export async function executorTasks() {
               await executeStrategy({ accountId, strategyId, strategyKind });
             } catch (error) {
               log.error(error);
-              try {
-              } catch (error) {
-                log.error(error);
-                continue STRATEGY;
+
+              if (error instanceof ErrorAccountItemNotFound) {
+                if (error.type === "BinanceApiConfig") {
+                  try {
+                    log.info(`Suspend all strategies accountId=${accountId}`);
+                    await suspendAccountStrategiesSchedulings({ accountId });
+                  } catch (error) {
+                    log.error(error);
+                    continue STRATEGY;
+                  }
+                  continue STRATEGY;
+                }
               }
-              continue STRATEGY;
             }
           }
         }

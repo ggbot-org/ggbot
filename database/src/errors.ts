@@ -1,10 +1,10 @@
 import type { AccountKey, StrategyKey } from "@ggbot2/models";
 
 export class ErrorAccountItemNotFound extends Error {
-  static message(
-    type: ErrorAccountItemNotFound["type"],
-    accountId: ErrorAccountItemNotFound["accountId"]
-  ) {
+  static message({
+    type,
+    accountId,
+  }: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
     return `${type} not found, accountId=${accountId}`;
   }
   readonly type: "Account" | "BinanceApiConfig";
@@ -13,7 +13,7 @@ export class ErrorAccountItemNotFound extends Error {
     type,
     accountId,
   }: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
-    super(ErrorAccountItemNotFound.message(type, accountId));
+    super(ErrorAccountItemNotFound.message({ type, accountId }));
     this.type = type;
     this.accountId = accountId;
   }
@@ -29,10 +29,10 @@ export class ErrorAccountItemNotFound extends Error {
 }
 
 export class ErrorStrategyItemNotFound extends Error {
-  static message(
-    type: ErrorStrategyItemNotFound["type"],
-    strategyId: ErrorStrategyItemNotFound["strategyId"]
-  ) {
+  static message({
+    type,
+    strategyId,
+  }: Pick<ErrorStrategyItemNotFound, "type" | "strategyId">) {
     return `${type} not found, strategyId=${strategyId}`;
   }
   readonly type: "Strategy" | "StrategyFlow";
@@ -43,7 +43,7 @@ export class ErrorStrategyItemNotFound extends Error {
     strategyKind,
     strategyId,
   }: Pick<ErrorStrategyItemNotFound, "type" | "strategyKind" | "strategyId">) {
-    super(ErrorStrategyItemNotFound.message(type, strategyId));
+    super(ErrorStrategyItemNotFound.message({ type, strategyId }));
     this.type = type;
     this.strategyKind = strategyKind;
     this.strategyId = strategyId;

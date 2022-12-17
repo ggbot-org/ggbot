@@ -114,7 +114,10 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   if (!data)
     throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   if (!isAccountKey(data))
-    throw new ErrorAccountItemNotFound({ type: "Account" });
+    throw new ErrorAccountItemNotFound({
+      type: "Account",
+      accountId: undefined,
+    });
   const { accountId } = data;
   strategyAccountIdCache.set(strategyId, accountId);
   return accountId;

@@ -4,6 +4,7 @@ import {
   InsertAccountStrategiesItem,
   ReadAccountStrategies,
   RemoveAccountStrategiesItemSchedulings,
+  SuspendAccountStrategiesSchedulings,
   UpdateAccountStrategiesItem,
   deletedNow,
   createdNow,
@@ -82,4 +83,21 @@ export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem["func"] =
       await putObject({ Key, data });
     }
     return deletedNow();
+  };
+
+export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings["func"] =
+  async ({ accountId }) => {
+    const items = (await readAccountStrategies({ accountId })) ?? [];
+    const data = items.map((item) => {
+      return {
+        ...item,
+        schedulings: item.schedulings.map(({ status, ...scheduling }) => ({
+          ...scheduling,
+          status: "suspended",
+        })),
+      };
+    });
+    const Key = pathname.accountStrategies({ accountId });
+    await putObject({ Key, data });
+    return updatedNow();
   };

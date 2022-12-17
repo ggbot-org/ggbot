@@ -47,3 +47,8 @@ export type DeleteAccountStrategiesItem = Operation<
   AccountStrategyKey,
   DeletionTime
 >;
+
+export type SuspendAccountStrategiesSchedulings = Operation<
+  AccountKey,
+  UpdateTime
+>;
