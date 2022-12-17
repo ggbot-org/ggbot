@@ -186,7 +186,7 @@ Tell systemd that there is a new service and enable service start at boot
 
 ```sh
 sudo systemctl daemon-reload
-sudo systemctl enable ggbot2-user-webapp
+sudo systemctl enable ggbot2-executor
 ```
 
 Start service and check its status
