@@ -1,16 +1,19 @@
 import type { AccountKey, StrategyKey } from "@ggbot2/models";
 
 export class ErrorAccountItemNotFound extends Error {
-  static message(type: ErrorAccountItemNotFound["type"]) {
-    return `${type} not found`;
+  static message(
+    type: ErrorAccountItemNotFound["type"],
+    accountId: ErrorAccountItemNotFound["accountId"]
+  ) {
+    return `${type} not found, accountId=${accountId}`;
   }
   readonly type: "Account" | "BinanceApiConfig";
-  readonly accountId?: unknown;
+  readonly accountId: unknown;
   constructor({
     type,
     accountId,
   }: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
-    super(ErrorAccountItemNotFound.message(type));
+    super(ErrorAccountItemNotFound.message(type, accountId));
     this.type = type;
     this.accountId = accountId;
   }
@@ -26,18 +29,21 @@ export class ErrorAccountItemNotFound extends Error {
 }
 
 export class ErrorStrategyItemNotFound extends Error {
-  static message(type: ErrorStrategyItemNotFound["type"]) {
-    return `${type} not found`;
+  static message(
+    type: ErrorStrategyItemNotFound["type"],
+    strategyId: ErrorStrategyItemNotFound["strategyId"]
+  ) {
+    return `${type} not found, strategyId=${strategyId}`;
   }
   readonly type: "Strategy" | "StrategyFlow";
-  readonly strategyKind?: unknown;
-  readonly strategyId?: unknown;
+  readonly strategyKind: unknown;
+  readonly strategyId: unknown;
   constructor({
     type,
     strategyKind,
     strategyId,
   }: Pick<ErrorStrategyItemNotFound, "type" | "strategyKind" | "strategyId">) {
-    super(ErrorStrategyItemNotFound.message(type));
+    super(ErrorStrategyItemNotFound.message(type, strategyId));
     this.type = type;
     this.strategyKind = strategyKind;
     this.strategyId = strategyId;
