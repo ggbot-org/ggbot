@@ -12,7 +12,7 @@ const Page: NextPage = () => {
 
         <menu>
           <li>
-            <Button onClick={goBack}>go back</Button>
+            <Button onClick={goBack}>Go back</Button>
           </li>
         </menu>
       </div>

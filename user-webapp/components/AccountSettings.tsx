@@ -60,7 +60,7 @@ export const AccountSettings: FC = () => {
         },
         {
           label: "id",
-          value: accountId && <span className="text-xs">{accountId}</span>,
+          value: accountId && <code>{accountId}</code>,
         },
       ].map(({ value, ...rest }) => ({
         value: value ? value : <>&nbsp;</>,
@@ -93,6 +93,14 @@ export const AccountSettings: FC = () => {
     [router]
   );
 
+  const onClickExit = useCallback<ButtonOnClick>(
+    (event) => {
+      event.stopPropagation();
+      router.push(route.authPage());
+    },
+    [router]
+  );
+
   useEffect(() => {
     if (!newName) return;
     const controller = renameAccount({ name: newName });
@@ -110,32 +118,38 @@ export const AccountSettings: FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <form>
-        <Section header="Profile">
-          <EditableInputField
-            name="name"
-            label="nick name"
-            value={currentName}
-            setValue={setName}
-            readOnly={readOnly}
-            isSpinning={renameIsPending}
-          />
+      <Section header="Profile">
+        <EditableInputField
+          name="name"
+          label="nick name"
+          value={currentName}
+          setValue={setName}
+          readOnly={readOnly}
+          isSpinning={renameIsPending}
+        />
 
-          <div>
-            {accountInfo.map(({ label, value }, i) => (
-              <OutputField key={i} label={label}>
-                {value}
-              </OutputField>
-            ))}
-          </div>
-        </Section>
-      </form>
+        <div>
+          {accountInfo.map(({ label, value }, i) => (
+            <OutputField key={i} label={label}>
+              {value}
+            </OutputField>
+          ))}
+        </div>
+
+        <menu>
+          <li>
+            <Button type="reset" color="danger" onClick={onClickExit}>
+              Exit
+            </Button>
+          </li>
+        </menu>
+      </Section>
 
       <Section color="danger" header="Danger zone">
         <menu>
           <li>
             <Button color="danger" onClick={onClickDelete}>
-              Delete Account
+              Delete account
             </Button>
           </li>
         </menu>

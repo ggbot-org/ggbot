@@ -56,12 +56,12 @@ const Page: NextPage = () => {
           <menu className="flex flex-row gap-4 justify-between">
             <li>
               <Button type="reset" onClick={goBack}>
-                no, go back
+                No, go back...
               </Button>
             </li>
             <li>
               <Button type="submit" color="danger">
-                yes, delete it
+                Yes, delete it!
               </Button>
             </li>
           </menu>

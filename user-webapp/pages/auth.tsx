@@ -1,8 +1,10 @@
+import { isAccount } from "@ggbot2/models";
 import {
   Button,
   ButtonOnClick,
   InputField,
   Logo,
+  OutputField,
   Section,
 } from "@ggbot2/ui-components";
 import type { GetServerSideProps, NextPage } from "next";
@@ -15,6 +17,8 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
+  useEffect,
+  useMemo,
   useState,
 } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
@@ -23,6 +27,7 @@ import {
   isApiVerifyRequestData,
 } from "_api/auth/verify";
 import { Content, Navigation } from "_components";
+import { useApiAction } from "_hooks";
 import { HasSession, readSession, route } from "_routing";
 
 type ServerSideProps = HasSession;
@@ -45,8 +50,8 @@ const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
     <Section
       header={
         <div className="flex flex-row items-center py-2">
-          <Logo size={71} animated />
-          <span>{message}</span>
+          <Logo size={171} animated />
+          <span className="text-3xl">{message}</span>
         </div>
       }
     >
@@ -179,6 +184,34 @@ const Exit: FC = () => {
 
   const [isPending, setIsPending] = useState(false);
 
+  const [readAccount, { data: account }] = useApiAction.ReadAccount();
+
+  const { email } = useMemo(
+    () =>
+      isAccount(account)
+        ? {
+            email: account.email,
+          }
+        : {
+            email: "",
+          },
+    [account]
+  );
+
+  const accountInfo = useMemo<{ label: string; value: ReactNode }[]>(
+    () =>
+      [
+        {
+          label: "email",
+          value: email,
+        },
+      ].map(({ value, ...rest }) => ({
+        value: value ? value : <>&nbsp;</>,
+        ...rest,
+      })),
+    [email]
+  );
+
   const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
@@ -191,24 +224,41 @@ const Exit: FC = () => {
     setIsPending(true);
   }, [setIsPending]);
 
+  useEffect(() => {
+    const controller = readAccount({});
+    return () => {
+      controller.abort();
+    };
+  }, [readAccount]);
+
   return (
-    <AuthForm
-      action={route.apiExit()}
-      message="exit ggbot2"
-      onReset={onReset}
-      onSubmit={onSubmit}
-    >
-      <menu className="flex flex-row gap-4">
-        <li>
-          <Button type="reset">stay</Button>
-        </li>
-        <li>
-          <Button type="submit" color="danger" isSpinning={isPending}>
-            exit
-          </Button>
-        </li>
-      </menu>
-    </AuthForm>
+    <>
+      <AuthForm
+        action={route.apiExit()}
+        message="Exit ggbot2"
+        onReset={onReset}
+        onSubmit={onSubmit}
+      >
+        <div>
+          {accountInfo.map(({ label, value }, i) => (
+            <OutputField key={i} label={label}>
+              {value}
+            </OutputField>
+          ))}
+        </div>
+
+        <menu className="flex gap-4 justify-between">
+          <li>
+            <Button type="reset">Stay</Button>
+          </li>
+          <li>
+            <Button color="danger" isSpinning={isPending}>
+              Exit
+            </Button>
+          </li>
+        </menu>
+      </AuthForm>
+    </>
   );
 };
 
@@ -315,7 +365,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
 
   return (
     <>
-      <AuthForm message="enter ggbot2" onSubmit={onSubmit}>
+      <AuthForm message="Enter ggbot2" onSubmit={onSubmit}>
         <InputField
           label="one time password"
           name="code"

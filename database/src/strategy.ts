@@ -38,7 +38,7 @@ import {
   ErrorStrategyItemNotFound,
 } from "./errors.js";
 import { deleteStrategyExecution } from "./strategyExecution.js";
-import { deleteStrategyFlow } from "./strategyFlow.js";
+import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js";
 import { deleteStrategyMemory } from "./strategyMemory.js";
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>();
@@ -52,14 +52,23 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   ...strategyKey
 }) => {
   throwIfInvalidName(name);
-  const strategy = await readStrategy(strategyKey);
-  if (!strategy)
-    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
-  return await createStrategy({
+
+  const strategy = await createStrategy({
     accountId,
     kind: strategyKey.strategyKind,
     name,
   });
+
+  await copyStrategyFlow({
+    accountId,
+    source: strategyKey,
+    target: {
+      strategyId: strategy.id,
+      strategyKind: strategy.kind,
+    },
+  });
+
+  return strategy;
 };
 
 /** @throws {ErrorInvalidArg} */

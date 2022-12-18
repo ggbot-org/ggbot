@@ -9,7 +9,7 @@ import { useGoBack } from "_hooks";
 const Component = () => {
   const goBack = useGoBack()
 
-  return <Button onClick={goBack}>go back</Button>
+  return <Button onClick={goBack}>Go back</Button>
 }
 ``` */
 export const useGoBack = () => {
