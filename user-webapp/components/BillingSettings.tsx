@@ -5,10 +5,16 @@ import { FC, useMemo } from "react";
 export const BillingSettings: FC = () => {
   const countryOptions = useMemo<SelectProps["options"]>(
     () =>
-      Object.entries(countries).map(([isoCode2, country]) => ({
-        value: isoCode2,
-        label: country,
-      })),
+      Object.entries(countries)
+        .filter(([isoCode2]) =>
+          ["AT", "FR", "IT", "DE", "ES", "GB", "GR", "NL", "PT"].includes(
+            isoCode2
+          )
+        )
+        .map(([isoCode2, country]) => ({
+          value: isoCode2,
+          label: country,
+        })),
     []
   );
   return (
