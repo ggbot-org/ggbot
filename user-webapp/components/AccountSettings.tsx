@@ -59,7 +59,7 @@ export const AccountSettings: FC = () => {
           value: whenCreated && <DateTime format="day" value={whenCreated} />,
         },
         {
-          label: "id",
+          label: "account id",
           value: accountId && <code>{accountId}</code>,
         },
       ].map(({ value, ...rest }) => ({
