@@ -8,6 +8,7 @@ import {
   NavigationBreadcrumbDashboard,
   NavigationBreadcrumbStrategy,
   NavigationSettingsIcon,
+  PleasePurchaseSubscription,
   SchedulingsForm,
   StrategyForm,
   StrategyProfits,
@@ -26,6 +27,10 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const router = useRouter();
 
   const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState<
+    boolean | undefined
+  >();
+  console.log(hasActiveSubscription);
 
   const breadcrumbs = useMemo(
     () => [
@@ -57,10 +62,16 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
           icon={<NavigationSettingsIcon />}
         />
       }
+      message={
+        hasActiveSubscription === false ? <PleasePurchaseSubscription /> : null
+      }
     >
       <div className="flex flex-wrap gap-2">
         <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
-        <SchedulingsForm strategyKey={strategyKey} />
+        <SchedulingsForm
+          setHasActiveSubscription={setHasActiveSubscription}
+          strategyKey={strategyKey}
+        />
         <StrategyProfits strategyKey={strategyKey} />
       </div>
 

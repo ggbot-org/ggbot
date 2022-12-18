@@ -4,7 +4,6 @@ import type { TimeInterval } from "@ggbot2/time";
 import { DateTime, Pill } from "@ggbot2/ui-components";
 import { FC, useMemo } from "react";
 
-// TODO shouls use StrategyBalance
 type Props = {
   timeInterval: TimeInterval | undefined;
   balanceHistory: BalanceChangeEvent[];

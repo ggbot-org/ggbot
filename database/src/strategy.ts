@@ -68,6 +68,9 @@ export const copyStrategy: CopyStrategy["func"] = async ({
     },
   });
 
+  // TODO copy scheduling and put it as inactive
+  // however schedulings form need to show inanctive scheduling parameters
+
   return strategy;
 };
 

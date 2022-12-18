@@ -55,7 +55,7 @@ export const AccountSettings: FC = () => {
           value: email,
         },
         {
-          label: "When created",
+          label: "when created",
           value: whenCreated && <DateTime format="day" value={whenCreated} />,
         },
         {

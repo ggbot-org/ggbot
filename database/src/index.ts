@@ -13,3 +13,4 @@ export * from "./strategyDailyBalanceChanges.js";
 export * from "./strategyExecution.js";
 export * from "./strategyFlow.js";
 export * from "./strategyMemory.js";
+export * from "./subscription.js";

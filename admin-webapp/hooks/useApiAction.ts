@@ -1,3 +1,4 @@
+// TODO remove swr, consider a hooks package with useApiAction
 import type { DflowObject } from "dflow";
 import useSWR from "swr";
 import type { ApiAction } from "_api/action";

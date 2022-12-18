@@ -40,7 +40,10 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
 
   useEffect(() => {
     const dayInterval = timeIntervalToDay(timeInterval);
-    request({ ...strategyKey, ...dayInterval });
+    const controller = request({ ...strategyKey, ...dayInterval });
+    return () => {
+      controller.abort();
+    };
   }, [request, timeInterval, strategyKey]);
 
   return (

@@ -67,11 +67,19 @@
  │     └╴strategyId=XXX/
  │       └╴orders.json
  │
- └╴strategyMemory/
+ ├╴strategyMemory/
+ │ └╴accountId=XXX/
+ │   └╴strategyKind=XXX/
+ │     └╴strategyId=XXX/
+ │       └╴memory.json
+ │
+ ├╴subscription
+ │ └╴accountId=XXX/
+ │   └╴subscription.json
+ │
+ └╴subscriptionHistory
    └╴accountId=XXX/
-     └╴strategyKind=XXX/
-       └╴strategyId=XXX/
-         └╴memory.json
+     └╴purchases.json
 */
 
 import {
@@ -122,6 +130,8 @@ const dirnamePrefixes = [
   "strategyFlow",
   "strategyMemory",
   "strategyOrdersPool",
+  "subscription",
+  "subscriptionHistory",
 ] as const;
 
 type DirnamePrefix = typeof dirnamePrefixes[number];
@@ -139,6 +149,8 @@ export const dirnamePrefix: Record<DirnamePrefix, string> = {
   strategyFlow: "strategyFlow",
   strategyMemory: "strategyMemory",
   strategyOrdersPool: "strategyOrdersPool",
+  subscription: "subscription",
+  subscriptionHistory: "subscriptionHistory",
 };
 
 const destructureLocator = (
@@ -255,6 +267,16 @@ export const dirname = {
     dirJoin([dirnamePrefix.strategyMemory, itemKeyToDirname.strategy(arg)]),
   strategyOrdersPool: (arg: StrategyKey) =>
     dirJoin([dirnamePrefix.strategyOrdersPool, itemKeyToDirname.strategy(arg)]),
+  subscription: (arg: AccountKey) =>
+    dirJoin([
+      `${dirnamePrefix.subscription}`,
+      `${itemKeyToDirname.account(arg)}`,
+    ]),
+  subscriptionHistory: (arg: AccountKey) =>
+    dirJoin([
+      `${dirnamePrefix.subscriptionHistory}`,
+      `${itemKeyToDirname.account(arg)}`,
+    ]),
 };
 
 const filename = {
@@ -270,6 +292,8 @@ const filename = {
   strategyFlow: "flow.json",
   strategyMemory: "memory.json",
   strategyOrdersPool: "orders.json",
+  subscription: "subscription.json",
+  subscriptionHistory: "purchases.json",
 };
 
 export const pathname = {
@@ -308,4 +332,8 @@ export const pathname = {
     dirJoin([dirname.strategyMemory(arg), filename.strategyMemory]),
   strategyOrdersPool: (arg: AccountStrategyKey) =>
     dirJoin([dirname.strategyOrdersPool(arg), filename.strategyOrdersPool]),
+  subscription: (arg: AccountKey) =>
+    dirJoin([dirname.subscription(arg), filename.subscription]),
+  subscriptionHistory: (arg: AccountKey) =>
+    dirJoin([dirname.subscriptionHistory(arg), filename.subscriptionHistory]),
 };

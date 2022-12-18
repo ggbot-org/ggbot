@@ -18,6 +18,7 @@ import {
   readStrategy,
   readStrategyBalances,
   readStrategyFlow,
+  readSubscription,
   renameAccount,
   renameStrategy,
   writeStrategyFlow,
@@ -50,6 +51,7 @@ import type {
   ReadStrategy,
   ReadStrategyBalances,
   ReadStrategyFlow,
+  ReadSubscription,
   RenameAccount,
   RenameStrategy,
   WriteStrategyFlow,
@@ -118,9 +120,10 @@ export type ApiAction = {
   ReadAccountStrategies: Action<ReadAccountStrategies["in"]>;
   ReadBinanceApiConfig: Action<ReadBinanceApiConfig["in"]>;
   ReadBinanceApiKeyPermissions: Action<ReadBinanceApiKeyPermissions["in"]>;
-  ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
   ReadStrategy: Action<ReadStrategy["in"]>;
   ReadStrategyBalances: Action<ReadStrategyBalances["in"]>;
+  ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
+  ReadSubscription: Action<ReadSubscription["in"]>;
   RenameAccount: Action<RenameAccount["in"]>;
   RenameStrategy: Action<RenameStrategy["in"]>;
   RemoveAccountStrategiesItemSchedulings: Action<
@@ -145,6 +148,7 @@ const apiActionTypes = [
   "ReadStrategy",
   "ReadStrategyBalances",
   "ReadStrategyFlow",
+  "ReadSubscription",
   "RenameStrategy",
   "RemoveAccountStrategiesItemSchedulings",
   "RenameAccount",
@@ -175,20 +179,24 @@ export default async function apiHandler(
 
     switch (actionType) {
       // Actions that do not require authentication.
+      // //////////////////////////////////////////
+
       case "ReadStrategyFlow": {
         const data = await readStrategyFlow(action.data);
         return res.status(__200__OK__).json({ data });
       }
+
       default: {
-        // Actions that require authentication.
         switch (actionType) {
           default: {
             const session = readSession(req.cookies);
             if (!session) return res.status(__401__UNAUTHORIZED__).json({});
-
             const { accountId } = session;
 
             switch (actionType) {
+              // Actions that require authentication.
+              // ///////////////////////////////////
+
               case "CopyStrategy": {
                 const data = await copyStrategy({ accountId, ...action.data });
                 return res.status(__200__OK__).json({ data });
@@ -278,6 +286,11 @@ export default async function apiHandler(
                   accountId,
                   ...action.data,
                 });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "ReadSubscription": {
+                const data = await readSubscription({ accountId });
                 return res.status(__200__OK__).json({ data });
               }
 

@@ -12,6 +12,7 @@ type TimeTruncator<Input, Output> = (arg: Input) => {
 };
 
 type TimeTranslationUnits<TimeType> = {
+  years: () => TimeType;
   months: () => TimeType;
   days: () => TimeType;
   hours: () => TimeType;
@@ -30,6 +31,10 @@ export const getDate: TimeTranslator<Date> = (date) => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return {
     plus: (num) => ({
+      years: () => {
+        date.setFullYear(date.getFullYear() + num);
+        return date;
+      },
       months: () => {
         date.setDate(date.getMonth() + num);
         return date;
@@ -52,6 +57,10 @@ export const getDate: TimeTranslator<Date> = (date) => {
       },
     }),
     minus: (num) => ({
+      years: () =>
+        getDate(date)
+          .plus(-1 * num)
+          .years(),
       months: () =>
         getDate(date)
           .plus(-1 * num)
@@ -78,9 +87,10 @@ export const getDate: TimeTranslator<Date> = (date) => {
 
 /** Translate `Time`. */
 export const getTime: TimeTranslator<Time> = (time) => {
-  const date = new Date(time);
+  const date = timeToDate(time);
   return {
     plus: (num) => ({
+      years: () => dateToTime(getDate(date).plus(num).years()),
       months: () => dateToTime(getDate(date).plus(num).months()),
       days: () => dateToTime(getDate(date).plus(num).days()),
       hours: () => dateToTime(getDate(date).plus(num).hours()),
@@ -88,6 +98,10 @@ export const getTime: TimeTranslator<Time> = (time) => {
       seconds: () => dateToTime(getDate(date).plus(num).seconds()),
     }),
     minus: (num) => ({
+      years: () =>
+        getTime(time)
+          .plus(-1 * num)
+          .years(),
       months: () =>
         getTime(time)
           .plus(-1 * num)

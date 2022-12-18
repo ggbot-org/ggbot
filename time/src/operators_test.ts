@@ -17,6 +17,7 @@ describe("getDate", () => {
   });
 
   it("works both with plus() and minus()", () => {
+    // plus days
     [
       {
         input: { num: 0, date: new Date("1978-12-31") },
@@ -38,6 +39,7 @@ describe("getDate", () => {
       assert.deepEqual(getDate(date).plus(num).days(), output);
     });
 
+    // minus days
     [
       {
         input: { num: 1, date: new Date("1979-01-01") },
@@ -53,6 +55,20 @@ describe("getDate", () => {
       },
     ].forEach(({ input: { num, date }, output }) => {
       assert.deepEqual(getDate(date).minus(num).days(), output);
+    });
+
+    // plus years
+    [
+      {
+        input: { num: 1, date: new Date("1978-12-31") },
+        output: new Date("1979-12-31"),
+      },
+      {
+        input: { num: 2, date: new Date("1978-12-31") },
+        output: new Date("1980-12-31"),
+      },
+    ].forEach(({ input: { num, date }, output }) => {
+      assert.deepEqual(getDate(date).plus(num).years(), output);
     });
   });
 });

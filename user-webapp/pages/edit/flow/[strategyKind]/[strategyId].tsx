@@ -12,7 +12,6 @@ import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { DflowExecutionNodeInfo } from "dflow";
 import type { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -28,6 +27,7 @@ import {
   NavigationBreadcrumbStrategy,
   NavigationLabel,
   NavigationSettingsIcon,
+  PleaseConfigureBinanceApi,
   StrategyItem,
   StrategyExecutionLog,
 } from "_components";
@@ -40,7 +40,6 @@ import {
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
   redirectToErrorPageStrategyNotOwned,
-  route,
   strategyKeyFromRouterParams,
 } from "_routing";
 
@@ -337,34 +336,6 @@ const Page: NextPage<ServerSideProps> = ({
         <StrategyExecutionLog status={executionStatus} steps={executionSteps} />
       </div>
     </Content>
-  );
-};
-
-const PleaseConfigureBinanceApi = () => {
-  const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
-
-  const goToSettings = useCallback(() => {
-    setIsPending(true);
-    router.push(route.settingsPage());
-  }, [router, setIsPending]);
-
-  return (
-    <div className="bg-yellow-100 p-4">
-      <div className="max-w-xl flex flex-col gap-4 text-neutral-800">
-        <p className="text-base">You cannot run strategies on Binance yet.</p>
-        <p className="text-xl">
-          Please go to settings page and configure your Binance API.
-        </p>
-        <menu>
-          <li>
-            <Button isSpinning={isPending} onClick={goToSettings}>
-              Go to Settings
-            </Button>
-          </li>
-        </menu>
-      </div>
-    </div>
   );
 };
 

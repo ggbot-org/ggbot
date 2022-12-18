@@ -1,9 +1,9 @@
 import {
   StrategyScheduling,
   StrategySchedulings,
-  isStrategyScheduling,
-  isAccountStrategy,
   everyHour,
+  isAccountStrategy,
+  isStrategyScheduling,
 } from "@ggbot2/models";
 import { Button, Section } from "@ggbot2/ui-components";
 import {
@@ -14,16 +14,23 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { useApiAction } from "_hooks";
+import { useApiAction, useSubscription } from "_hooks";
 import type { StrategyKey } from "_routing";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
 type Props = {
   strategyKey: StrategyKey;
+  setHasActiveSubscription: (arg: boolean | undefined) => void;
 };
 
-export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
+export const SchedulingsForm: FC<Props> = ({
+  setHasActiveSubscription,
+  strategyKey,
+}) => {
   const { strategyId } = strategyKey;
+
+  const { hasActiveSubscription, readSubscriptionIsPending } =
+    useSubscription();
 
   const [read, { data: accountStrategies, isPending: readIsPending }] =
     useApiAction.ReadAccountStrategies();
@@ -32,9 +39,14 @@ export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
   const [remove, { isPending: removeIsPending, data: removeData }] =
     useApiAction.RemoveAccountStrategiesItemSchedulings();
 
-  const updateIsPending = useMemo(
-    () => createIsPending || removeIsPending,
-    [createIsPending, removeIsPending]
+  const disabled = useMemo(
+    () => hasActiveSubscription === false,
+    [hasActiveSubscription]
+  );
+
+  const actionIsPending = useMemo(
+    () => readSubscriptionIsPending || createIsPending || removeIsPending,
+    [createIsPending, removeIsPending, readSubscriptionIsPending]
   );
 
   const schedulings = useMemo<StrategySchedulings>(() => {
@@ -65,20 +77,30 @@ export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
   }, [scheduling]);
 
   const actionButton = useMemo<ReactNode>(() => {
-    if (isActive) return <Button isSpinning={updateIsPending}>dismiss</Button>;
+    if (isActive)
+      return (
+        <Button disabled={disabled} isSpinning={actionIsPending}>
+          dismiss
+        </Button>
+      );
     if (!isActive)
       return (
-        <Button isSpinning={updateIsPending} color="primary">
+        <Button
+          disabled={disabled}
+          isSpinning={actionIsPending}
+          color="primary"
+        >
           activate
         </Button>
       );
     return null;
-  }, [isActive, updateIsPending]);
+  }, [disabled, isActive, actionIsPending]);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
-      if (readIsPending || updateIsPending) return;
+      if (disabled) return;
+      if (readIsPending || actionIsPending) return;
       if (isActive) {
         remove(strategyKey);
       } else {
@@ -94,12 +116,18 @@ export const SchedulingsForm: FC<Props> = ({ strategyKey }) => {
       isActive,
       create,
       remove,
-      updateIsPending,
+      disabled,
+      actionIsPending,
       readIsPending,
       strategyKey,
       schedulings,
     ]
   );
+
+  useEffect(() => {
+    if (typeof hasActiveSubscription === "boolean")
+      setHasActiveSubscription(hasActiveSubscription);
+  }, [hasActiveSubscription, setHasActiveSubscription]);
 
   // Fetch accountStrategies on mount.
   useEffect(() => {

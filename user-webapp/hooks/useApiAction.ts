@@ -216,6 +216,8 @@ export const useApiAction = {
     }),
   ReadStrategyFlow: () =>
     useAction<ApiAction["ReadStrategyFlow"]>({ type: "ReadStrategyFlow" }),
+  ReadSubscription: () =>
+    useAction<ApiAction["ReadSubscription"]>({ type: "ReadSubscription" }),
   RemoveAccountStrategiesItemSchedulings: () =>
     useAction<ApiAction["RemoveAccountStrategiesItemSchedulings"]>({
       type: "RemoveAccountStrategiesItemSchedulings",
