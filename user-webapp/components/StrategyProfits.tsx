@@ -1,4 +1,9 @@
-import { BalanceChangeEvents, isStrategyBalance } from "@ggbot2/models";
+import {
+  BalanceChangeEvents,
+  Orders,
+  isOrders,
+  isStrategyBalance,
+} from "@ggbot2/models";
 import {
   TimeInterval,
   truncateTime,
@@ -25,32 +30,50 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
     return { start, end };
   }, []);
 
-  const [request, { data: strategyBalances }] =
+  const [readBalances, { data: balances }] =
     useApiAction.ReadStrategyBalances();
+  const [readOrders, { data: orders }] = useApiAction.ReadStrategyDailyOrders();
 
   const balanceHistory = useMemo<BalanceChangeEvents>(() => {
     const balanceHistory: BalanceChangeEvents = [];
-    if (Array.isArray(strategyBalances))
-      for (const strategyBalance of strategyBalances)
-        if (isStrategyBalance(strategyBalance))
-          for (const balanceChangeEvent of strategyBalance.data)
+    if (Array.isArray(balances))
+      for (const balance of balances)
+        if (isStrategyBalance(balance))
+          for (const balanceChangeEvent of balance.data)
             balanceHistory.push(balanceChangeEvent);
     return balanceHistory;
-  }, [strategyBalances]);
+  }, [balances]);
+
+  const orderHistory = useMemo<Orders>(
+    () => (isOrders(orders) ? orders : []),
+    [orders]
+  );
+
+  const dayInterval = useMemo(
+    () => timeIntervalToDay(timeInterval),
+    [timeInterval]
+  );
 
   useEffect(() => {
-    const dayInterval = timeIntervalToDay(timeInterval);
-    const controller = request({ ...strategyKey, ...dayInterval });
+    const controller = readBalances({ ...strategyKey, ...dayInterval });
     return () => {
       controller.abort();
     };
-  }, [request, timeInterval, strategyKey]);
+  }, [dayInterval, readBalances, strategyKey]);
+
+  useEffect(() => {
+    const controller = readOrders({ ...strategyKey, ...dayInterval });
+    return () => {
+      controller.abort();
+    };
+  }, [dayInterval, readOrders, strategyKey]);
 
   return (
     <Section header="Profits">
       <ProfitSummary
         balanceHistory={balanceHistory}
         timeInterval={timeInterval}
+        orderHistory={orderHistory}
       />
     </Section>
   );

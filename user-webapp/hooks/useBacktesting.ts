@@ -1,7 +1,7 @@
 // TODO use markers to show sell and buy
 // https://jsfiddle.net/TradingView/nd80cx1a/
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
-import type { BalanceChangeEvent } from "@ggbot2/models";
+import type { BalanceChangeEvent, Order } from "@ggbot2/models";
 import {
   Day,
   DayInterval,
@@ -27,6 +27,7 @@ type State = StrategyKey &
     isRunning: boolean;
     isPaused: boolean;
     dayInterval: DayInterval;
+    orderHistory: Order[];
     timestamps: Timestamp[];
     maxDay: Day;
   };
@@ -67,6 +68,7 @@ type Action =
   | ({
       type: "NEXT";
       balanceChangeEvent?: BalanceChangeEvent;
+      orders: Order[];
     } & Pick<State, "memory">)
   | {
       type: "PAUSE";
@@ -107,14 +109,15 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "NEXT": {
-      const { balanceHistory } = state;
-      const { balanceChangeEvent, memory } = action;
+      const { balanceHistory, orderHistory } = state;
+      const { balanceChangeEvent, memory, orders } = action;
       return {
         ...state,
         balanceHistory: balanceChangeEvent
           ? balanceHistory.concat(balanceChangeEvent)
           : balanceHistory,
         memory,
+        orderHistory: orderHistory.concat(orders),
         stepIndex: state.stepIndex + 1,
       };
     }
@@ -158,6 +161,7 @@ const backtestingReducer = (state: State, action: Action) => {
         isPaused: false,
         isRunning: true,
         memory: {},
+        orderHistory: [],
         stepIndex: 0,
       };
     }
@@ -208,6 +212,7 @@ const getInitialState =
         isRunning: false,
         memory: {},
         maxDay,
+        orderHistory: [],
         timestamps: computeTimestamps(persistingState.dayInterval),
         ...strategyKey,
       };
@@ -224,6 +229,7 @@ const getInitialState =
       isPaused: false,
       isRunning: false,
       memory: {},
+      orderHistory: [],
       stepIndex: 0,
       timestamps: computeTimestamps(dayInterval),
       maxDay,
@@ -311,7 +317,7 @@ export const useBacktesting: UseBacktesting = ({
           binanceSymbols,
           nodesCatalog
         );
-        const { balances, memory } = await executor.run(
+        const { balances, memory, orders } = await executor.run(
           { memory: previousMemory, time },
           flowViewGraph
         );
@@ -326,6 +332,7 @@ export const useBacktesting: UseBacktesting = ({
           type: "NEXT",
           balanceChangeEvent,
           memory,
+          orders,
         });
       } catch (error) {
         console.error(error);

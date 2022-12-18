@@ -32,6 +32,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     memoryItems,
     dayInterval,
     numSteps,
+    orderHistory,
     stepIndex,
     strategyKind,
   } = useMemo(() => {
@@ -44,6 +45,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         maxDay: undefined,
         dayInterval: undefined,
         numSteps: undefined,
+        orderHistory: [],
         stepIndex: undefined,
         strategyKind: undefined,
       };
@@ -52,6 +54,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       dayInterval,
       maxDay,
       memory,
+      orderHistory,
       stepIndex,
       strategyKind,
       timestamps,
@@ -72,6 +75,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       memoryItems,
       dayInterval,
       numSteps,
+      orderHistory,
       stepIndex,
       strategyKind,
     };
@@ -82,6 +86,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     [dayInterval]
   );
 
+  console.log(orderHistory);
   if (!state || !state.isEnabled) return null;
 
   return (
@@ -115,7 +120,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
 
       <ProfitSummary
         balanceHistory={balanceHistory}
+        orderHistory={orderHistory}
         timeInterval={timeInterval}
+        strategyKind={strategyKind}
       />
 
       {strategyKind === "binance" && view && state && (

@@ -10,12 +10,14 @@ const marketOrderInputs = [
   input("number", { name: "quoteOrderQty", optional: true }),
 ];
 export const orderOutput = output("object", { name: "order" });
-const orderOutputs = [orderOutput];
+export const orderOutputPosition = 0;
+const outputs = new Array();
+outputs[orderOutputPosition] = orderOutput;
 
 export class BuyMarket extends DflowNode {
   static kind = "buyMarket";
   static inputs = marketOrderInputs;
-  static outputs = orderOutputs;
+  static outputs = outputs;
   async run() {
     const { binance } = this.host.context as Context;
     const symbol = this.input(0).data as string;
@@ -37,7 +39,7 @@ export class BuyMarket extends DflowNode {
 export class SellMarket extends DflowNode {
   static kind = "sellMarket";
   static inputs = marketOrderInputs;
-  static outputs = orderOutputs;
+  static outputs = outputs;
   async run() {
     const { binance } = this.host.context as Context;
     const symbol = this.input(0).data as string;

@@ -8,7 +8,7 @@ import type { Balance } from "@ggbot2/models";
 import type { DflowGraphExecutionReport } from "dflow";
 import { dflowBinanceZero as zero } from "./arithmetic.js";
 import type { DflowBinanceSymbolInfo } from "./symbols.js";
-import { BuyMarket, SellMarket } from "./nodes/trade.js";
+import { BuyMarket, SellMarket, orderOutputPosition } from "./nodes/trade.js";
 
 export const getBalancesFromExecutionSteps = (
   binanceSymbols: DflowBinanceSymbolInfo[],
@@ -84,7 +84,7 @@ export const getOrdersFromExecutionSteps = (
   steps.reduce<BinanceOrderRespFULL[]>((result, { k: kind, o: outputs }) => {
     if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result;
     if (!Array.isArray(outputs)) return result;
-    const order = outputs[0].d;
+    const order = outputs[orderOutputPosition].d;
     if (!isBinanceOrderRespFULL(order)) return result;
     return [...result, order];
   }, []);

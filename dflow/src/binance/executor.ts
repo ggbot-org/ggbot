@@ -1,4 +1,4 @@
-import type { Balance } from "@ggbot2/models";
+import type { Balance, Order } from "@ggbot2/models";
 import type { DflowNodesCatalog } from "dflow";
 import type {
   DflowCommonExecutorContext,
@@ -8,12 +8,16 @@ import type {
 } from "../common/executor.js";
 import type { BinanceDflowClient } from "./client.js";
 import type { BinanceDflowContext } from "./context.js";
-import { getBalancesFromExecutionSteps } from "./execution.js";
+import {
+  getBalancesFromExecutionSteps,
+  getOrdersFromExecutionSteps,
+} from "./execution.js";
 import { BinanceDflowHost } from "./host.js";
 import type { DflowBinanceSymbolInfo } from "./symbols.js";
 
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
   balances: Balance[];
+  orders: Pick<Order, "info">[];
 };
 
 export class BinanceDflowExecutor
@@ -43,6 +47,9 @@ export class BinanceDflowExecutor
     const balances = execution
       ? getBalancesFromExecutionSteps(binanceSymbols, execution.steps)
       : [];
-    return { balances, execution, memory, memoryChanged };
+    const orders = execution
+      ? getOrdersFromExecutionSteps(execution.steps).map((info) => ({ info }))
+      : [];
+    return { balances, execution, memory, memoryChanged, orders };
   }
 }

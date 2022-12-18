@@ -22,6 +22,7 @@ export * from "./scheduling.js";
 export * from "./strategy.js";
 export * from "./strategyBalance.js";
 export * from "./strategyDailyBalanceChanges.js";
+export * from "./strategyDailyOrders.js";
 export * from "./strategyExecution.js";
 export * from "./strategyFlow.js";
 export * from "./strategyMemory.js";

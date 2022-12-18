@@ -101,6 +101,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
           execution,
           memory: memoryOutput,
           memoryChanged,
+          orders,
         } = await executor.run(
           {
             memory: memoryInput,
@@ -121,6 +122,22 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         // TODO extract orders from execution
         // update order pools with orders that has temporary state
         // write other orders (e.g. filled) in history
+        if (orders.length > 0) {
+          // const { whenCreated } = createdNow();
+          // const day = timeToDay(truncateTime(whenCreated).to.day());
+          // TODO appendAccountDailyOrders
+          // TODO appendStrategyDailyOrders
+          //
+          // // TODO orders.map(info => newOrder(info))
+          //
+          // await appendStrategyDailyBalanceChanges({
+          //   accountId,
+          //   strategyKind,
+          //   strategyId,
+          //   day,
+          //   items: [{ whenCreated, balances }],
+          // });
+        }
 
         if (balances.length > 0) {
           const { whenCreated } = createdNow();

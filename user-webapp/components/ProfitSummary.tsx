@@ -1,5 +1,11 @@
 import { add } from "@ggbot2/arithmetic";
-import type { Balance, BalanceChangeEvent } from "@ggbot2/models";
+import { isBinanceOrderRespFULL } from "@ggbot2/binance";
+import type {
+  Balance,
+  BalanceChangeEvent,
+  Order,
+  StrategyKind,
+} from "@ggbot2/models";
 import type { TimeInterval } from "@ggbot2/time";
 import { DateTime, Pill } from "@ggbot2/ui-components";
 import { FC, useMemo } from "react";
@@ -7,11 +13,39 @@ import { FC, useMemo } from "react";
 type Props = {
   timeInterval: TimeInterval | undefined;
   balanceHistory: BalanceChangeEvent[];
+  orderHistory: Order[];
+  strategyKind?: StrategyKind | undefined;
 };
 
 const customAssetSort = ["BTC", "ETH", "BNB", "BUSD"];
 
-export const ProfitSummary: FC<Props> = ({ balanceHistory, timeInterval }) => {
+export const ProfitSummary: FC<Props> = ({
+  balanceHistory,
+  orderHistory,
+  timeInterval,
+  strategyKind,
+}) => {
+  const { numBuys, numSells } = useMemo<{
+    numBuys: undefined | number;
+    numSells: undefined | number;
+  }>(() => {
+    const none = { numBuys: undefined, numSells: undefined };
+    if (orderHistory.length === 0) return none;
+    if (strategyKind === "binance") {
+      let numBuys = 0;
+      let numSells = 0;
+      for (const { info } of orderHistory) {
+        if (isBinanceOrderRespFULL(info)) {
+          const { side } = info;
+          if (side === "BUY") numBuys++;
+          if (side === "SELL") numSells++;
+        }
+      }
+      return { numBuys, numSells };
+    }
+    return none;
+  }, [orderHistory]);
+
   const { totalBalance, assets } = useMemo(() => {
     const balancesMap = new Map<Balance["asset"], Balance>();
     for (const { balances } of balanceHistory) {
@@ -54,15 +88,23 @@ export const ProfitSummary: FC<Props> = ({ balanceHistory, timeInterval }) => {
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <div className="flex gap-2">
-          <span>from</span>
+          <span>From</span>
           <DateTime format="day" value={timeInterval?.start} />
         </div>
 
         <div className="flex gap-2">
-          <span>to</span>
+          <span>To</span>
           <DateTime format="day" value={timeInterval?.end} />
         </div>
       </div>
+
+      {strategyKind === "binance" && (
+        <div className="flex gap-2">
+          {typeof numBuys === "number" && <span>Num buys: {numBuys}</span>}
+
+          {typeof numSells === "number" && <span>Num sells: {numSells}</span>}
+        </div>
+      )}
 
       <div className="flex flex-row gap-2">
         {assets.map((asset) => (
