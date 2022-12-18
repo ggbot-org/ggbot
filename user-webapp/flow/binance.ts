@@ -120,7 +120,7 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   async tickerPrice(symbol: string) {
     const klines = await binance.klines(symbol, "1m", {
       startTime: this.time,
-      limit: 1,
+      limit: 2,
     });
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });

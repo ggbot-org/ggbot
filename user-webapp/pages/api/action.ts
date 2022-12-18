@@ -170,8 +170,6 @@ export default async function apiHandler(
 
     const { type: actionType } = action;
 
-    console.log(actionType, action.data);
-
     if (!isApiActionType(actionType))
       return res.status(__400__BAD_REQUEST__).json({});
 

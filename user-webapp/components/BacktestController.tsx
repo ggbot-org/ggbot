@@ -82,6 +82,8 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     [dayInterval]
   );
 
+  console.log(balanceHistory);
+
   if (!state || !state.isEnabled) return null;
 
   return (
