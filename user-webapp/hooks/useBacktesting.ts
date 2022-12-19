@@ -1,7 +1,7 @@
 // TODO use markers to show sell and buy
 // https://jsfiddle.net/TradingView/nd80cx1a/
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
-import type { BalanceChangeEvent, Order } from "@ggbot2/models";
+import { BalanceChangeEvent, newOrder, Order } from "@ggbot2/models";
 import {
   Day,
   DayInterval,
@@ -332,7 +332,7 @@ export const useBacktesting: UseBacktesting = ({
           type: "NEXT",
           balanceChangeEvent,
           memory,
-          orders,
+          orders: orders.map(({ info }) => newOrder({ info })),
         });
       } catch (error) {
         console.error(error);

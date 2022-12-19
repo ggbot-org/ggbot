@@ -86,7 +86,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     [dayInterval]
   );
 
-  console.log(orderHistory);
   if (!state || !state.isEnabled) return null;
 
   return (

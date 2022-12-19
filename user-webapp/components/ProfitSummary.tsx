@@ -29,11 +29,9 @@ export const ProfitSummary: FC<Props> = ({
     numBuys: undefined | number;
     numSells: undefined | number;
   }>(() => {
-    const none = { numBuys: undefined, numSells: undefined };
-    if (orderHistory.length === 0) return none;
+    let numBuys = 0;
+    let numSells = 0;
     if (strategyKind === "binance") {
-      let numBuys = 0;
-      let numSells = 0;
       for (const { info } of orderHistory) {
         if (isBinanceOrderRespFULL(info)) {
           const { side } = info;
@@ -41,10 +39,9 @@ export const ProfitSummary: FC<Props> = ({
           if (side === "SELL") numSells++;
         }
       }
-      return { numBuys, numSells };
     }
-    return none;
-  }, [orderHistory]);
+    return { numBuys, numSells };
+  }, [orderHistory, strategyKind]);
 
   const { totalBalance, assets } = useMemo(() => {
     const balancesMap = new Map<Balance["asset"], Balance>();
