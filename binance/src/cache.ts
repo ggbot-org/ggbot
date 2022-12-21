@@ -1,39 +1,37 @@
-import type { Time, TimeInterval } from "@ggbot2/time";
+// import type { Time, TimeInterval } from "@ggbot2/time";
 import { CacheMap } from "@ggbot2/models";
-import { getIntervalTime } from "./time.js";
+// import { getIntervalTime } from "./time.js";
 import type {
   BinanceExchangeInfo,
-  BinanceKline,
-  BinanceKlineInterval,
+  // BinanceKline,
+  // BinanceKlineInterval,
 } from "./types.js";
 
-interface BinanceExchangeInfoCacheProvider {
+type BinanceExchangeInfoCacheProvider = {
   getExchangeInfo(): BinanceExchangeInfo | undefined;
   setExchangeInfo(arg: BinanceExchangeInfo): void;
-}
+};
 
-interface BinanceIsValidSymbolCacheProvider {
+type BinanceIsValidSymbolCacheProvider = {
   getIsValidSymbol(symbol: string): boolean | undefined;
   setIsValidSymbol(symbol: string, value: boolean): void;
-}
+};
 
-interface BinanceKlineCacheProvider {
-  getKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    timeInterval: TimeInterval
-  ): BinanceKline[] | undefined;
-  setKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    klines: BinanceKline[]
-  ): void;
-}
+// type BinanceKlineCacheProvider = {
+//   getKlines(
+//     symbol: string,
+//     interval: BinanceKlineInterval,
+//     timeInterval: TimeInterval
+//   ): BinanceKline[] | undefined;
+//   setKlines(
+//     symbol: string,
+//     interval: BinanceKlineInterval,
+//     klines: BinanceKline[]
+//   ): void;
+// }
 
-export interface BinanceCacheProvider
-  extends BinanceExchangeInfoCacheProvider,
-    BinanceIsValidSymbolCacheProvider,
-    BinanceKlineCacheProvider {}
+export type BinanceCacheProvider = BinanceExchangeInfoCacheProvider &
+  BinanceIsValidSymbolCacheProvider;
 
 // `isValidSymbolMap` and `exchangeInfoMap` are cached with same duration.
 const exchangeInfoCacheDuration = "ONE_DAY";
@@ -63,40 +61,40 @@ export class BinanceCacheMap implements BinanceCacheProvider {
   }
 
   // BinanceKlineCacheProvider
-  private readonly klinesMap = new CacheMap<BinanceKline>();
-  private klinesKey(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    openTime: Time
-  ) {
-    return `${symbol}:${interval}:${openTime}`;
-  }
-  getKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    timeInterval: TimeInterval
-  ) {
-    let nextTime = getIntervalTime[interval](timeInterval.start, 1);
-    const klines: BinanceKline[] = [];
-    while (nextTime < timeInterval.end) {
-      const key = this.klinesKey(symbol, interval, nextTime);
-      const kline = this.klinesMap.get(key);
-      // At first hole found, return.
-      if (!kline) return;
-      klines.push(kline);
-      nextTime = getIntervalTime[interval](nextTime, 1);
-    }
-    return klines;
-  }
-  setKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    klines: BinanceKline[]
-  ) {
-    for (const kline of klines) {
-      const [openTime] = kline;
-      const key = this.klinesKey(symbol, interval, openTime);
-      this.klinesMap.set(key, kline);
-    }
-  }
+  // private readonly klinesMap = new CacheMap<BinanceKline>();
+  // private klinesKey(
+  //   symbol: string,
+  //   interval: BinanceKlineInterval,
+  //   openTime: Time
+  // ) {
+  //   return `${symbol}:${interval}:${openTime}`;
+  // }
+  // getKlines(
+  //   symbol: string,
+  //   interval: BinanceKlineInterval,
+  //   timeInterval: TimeInterval
+  // ) {
+  //   let nextTime = getIntervalTime[interval](timeInterval.start, 1);
+  //   const klines: BinanceKline[] = [];
+  //   while (nextTime < timeInterval.end) {
+  //     const key = this.klinesKey(symbol, interval, nextTime);
+  //     const kline = this.klinesMap.get(key);
+  //     // At first hole found, return.
+  //     if (!kline) return;
+  //     klines.push(kline);
+  //     nextTime = getIntervalTime[interval](nextTime, 1);
+  //   }
+  //   return klines;
+  // }
+  // setKlines(
+  //   symbol: string,
+  //   interval: BinanceKlineInterval,
+  //   klines: BinanceKline[]
+  // ) {
+  //   for (const kline of klines) {
+  //     const [openTime] = kline;
+  //     const key = this.klinesKey(symbol, interval, openTime);
+  //     this.klinesMap.set(key, kline);
+  //   }
+  // }
 }

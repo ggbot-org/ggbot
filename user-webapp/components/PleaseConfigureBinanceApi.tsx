@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { ButtonGoSettings } from "_components";
 
 export const PleaseConfigureBinanceApi: FC = () => {

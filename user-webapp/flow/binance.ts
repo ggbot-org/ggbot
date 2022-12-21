@@ -6,6 +6,7 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceKlineInterval,
+  BinanceKlineOptionalParameters,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
   BinanceOrderSide,
@@ -16,7 +17,7 @@ import {
   dflowBinanceZero as zero,
   dflowBinancePrecision,
 } from "@ggbot2/dflow";
-import { Time, now, truncateTime } from "@ggbot2/time";
+import type { Time } from "@ggbot2/time";
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
@@ -24,8 +25,8 @@ export const binance = new BinanceExchange({
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {
-  readonly balances: BinanceBalance[] = [];
-  readonly time: Time = truncateTime(now()).to.minute();
+  readonly balances: BinanceBalance[];
+  readonly time: Time;
 
   constructor({ balances, time }: BinanceDflowClientArg) {
     this.balances = balances;
@@ -50,11 +51,12 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     return Promise.resolve(accountInfo);
   }
 
-  async candles(symbol: string, interval: BinanceKlineInterval, limit: number) {
-    const klines = await binance.klines(symbol, interval, {
-      startTime: this.time,
-      limit,
-    });
+  async klines(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    optionalParameters: BinanceKlineOptionalParameters
+  ) {
+    const klines = await binance.klines(symbol, interval, optionalParameters);
     return klines;
   }
 

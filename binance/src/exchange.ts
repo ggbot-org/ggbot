@@ -1,4 +1,4 @@
-import { TimeInterval, now, truncateTime } from "@ggbot2/time";
+// import { TimeInterval, now, truncateTime } from "@ggbot2/time";
 import type { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,
@@ -18,8 +18,8 @@ import {
   lotSizeIsValid,
   minNotionalIsValid,
 } from "./symbolFilters.js";
-import { getIntervalTime } from "./time.js";
-import {
+// import { getIntervalTime } from "./time.js";
+import type {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceKline,
@@ -33,7 +33,7 @@ import {
   BinanceSymbolInfo,
   BinanceTicker24hr,
   BinanceTickerPrice,
-  binanceKlineDefaultLimit,
+  // binanceKlineDefaultLimit,
 } from "./types.js";
 import {
   isBinanceKlineInterval,
@@ -86,39 +86,39 @@ export class BinanceExchange extends BinanceConnector {
       throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" });
   }
 
-  static coerceKlineOptionalParametersToTimeInterval(
-    interval: BinanceKlineInterval,
-    { startTime, endTime, limit }: BinanceKlineOptionalParameters
-  ): TimeInterval {
-    if (startTime) {
-      if (endTime) {
-        return { start: startTime, end: endTime };
-      } else {
-        return {
-          start: startTime,
-          end: getIntervalTime[interval](
-            startTime,
-            limit ?? binanceKlineDefaultLimit
-          ),
-        };
-      }
-    } else if (endTime) {
-      return {
-        start: getIntervalTime[interval](
-          endTime,
-          -1 * (limit ?? binanceKlineDefaultLimit)
-        ),
-        end: endTime,
-      };
-    } else if (limit) {
-      const endTime = truncateTime(now()).to.minute();
-      return {
-        start: getIntervalTime[interval](endTime, -1 * limit),
-        end: endTime,
-      };
-    }
-    throw new ErrorBinanceInvalidKlineOptionalParameters();
-  }
+  // static coerceKlineOptionalParametersToTimeInterval(
+  //   interval: BinanceKlineInterval,
+  //   { startTime, endTime, limit }: BinanceKlineOptionalParameters
+  // ): TimeInterval {
+  //   if (startTime) {
+  //     if (endTime) {
+  //       return { start: startTime, end: endTime };
+  //     } else {
+  //       return {
+  //         start: startTime,
+  //         end: getIntervalTime[interval](
+  //           startTime,
+  //           limit ?? binanceKlineDefaultLimit
+  //         ),
+  //       };
+  //     }
+  //   } else if (endTime) {
+  //     return {
+  //       start: getIntervalTime[interval](
+  //         endTime,
+  //         -1 * (limit ?? binanceKlineDefaultLimit)
+  //       ),
+  //       end: endTime,
+  //     };
+  //   } else if (limit) {
+  //     const endTime = truncateTime(now()).to.minute();
+  //     return {
+  //       start: getIntervalTime[interval](endTime, -1 * limit),
+  //       end: endTime,
+  //     };
+  //   }
+  //   throw new ErrorBinanceInvalidKlineOptionalParameters();
+  // }
 
   async publicRequest<Data>(
     method: BinanceConnectorRequestArg["method"],
@@ -200,16 +200,16 @@ export class BinanceExchange extends BinanceConnector {
       interval,
       optionalParameters
     );
-    const { cache } = this;
-    if (cache) {
-      const timeInterval =
-        BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
-          interval,
-          optionalParameters
-        );
-      const cached = cache.getKlines(symbol, interval, timeInterval);
-      if (cached) return cached;
-    }
+    // const { cache } = this;
+    // if (cache) {
+    //   const timeInterval =
+    //     BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
+    //       interval,
+    //       optionalParameters
+    //     );
+    //   const cached = cache.getKlines(symbol, interval, timeInterval);
+    //   if (cached) return cached;
+    // }
     const klines = await this.publicRequest<BinanceKline[]>(
       "GET",
       "/api/v3/klines",
@@ -219,7 +219,7 @@ export class BinanceExchange extends BinanceConnector {
         ...optionalParameters,
       }
     );
-    cache?.setKlines(symbol, interval, klines);
+    // cache?.setKlines(symbol, interval, klines);
     return klines;
   }
 

@@ -3,6 +3,7 @@ import type {
   BinanceExchangeInfo,
   BinanceKline,
   BinanceKlineInterval,
+  BinanceKlineOptionalParameters,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
   BinanceOrderSide,
@@ -17,13 +18,13 @@ export interface BinanceDflowClient
 
 /** Binance Public API used by dflow binance nodes. */
 interface BinanceDflowClientPublic {
-  candles(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    limit: number
-  ): Promise<BinanceKline[]>;
   exchangeInfo(): Promise<BinanceExchangeInfo>;
   isBinanceSymbol(arg: unknown): Promise<boolean>;
+  klines(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    optionalParameters: BinanceKlineOptionalParameters
+  ): Promise<BinanceKline[]>;
   tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
 }
 

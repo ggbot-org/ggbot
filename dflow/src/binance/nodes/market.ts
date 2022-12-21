@@ -1,3 +1,4 @@
+import { decimalToNumber } from "@ggbot2/arithmetic";
 import { isBinanceKlineInterval } from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
 import type { BinanceDflowContext as Context } from "../context.js";
@@ -13,15 +14,6 @@ import {
 } from "./commonIO.js";
 
 const { input, output } = DflowNode;
-
-type CandlesOutputs = {
-  time: number[];
-  open: string[];
-  high: string[];
-  low: string[];
-  close: string[];
-  volume: string[];
-};
 
 export class Candles extends DflowNode {
   static kind = "candles";
@@ -39,33 +31,42 @@ export class Candles extends DflowNode {
     outputVolume,
   ];
   async run() {
-    const { binance } = this.host.context as Context;
+    const { binance, time: currentTime } = this.host.context as Context;
     const symbol = this.input(0).data as string;
     const interval = this.input(1).data as string;
     const limit = this.input(2).data as number;
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol || !isBinanceKlineInterval(interval))
       return this.clearOutputs();
-    const data = await binance.candles(symbol, interval, limit);
-    const { time, open, high, low, close, volume } =
-      data.reduce<CandlesOutputs>(
-        ({ time, open, high, low, close, volume }, kline) => ({
-          time: [...time, kline[0]],
-          open: [...open, kline[1]],
-          high: [...high, kline[2]],
-          low: [...low, kline[3]],
-          close: [...close, kline[4]],
-          volume: [...volume, kline[5]],
-        }),
-        {
-          time: [],
-          open: [],
-          high: [],
-          low: [],
-          close: [],
-          volume: [],
-        }
-      );
+    const data = await binance.klines(symbol, interval, {
+      endTime: currentTime,
+      limit,
+    });
+    const { time, open, high, low, close, volume } = data.reduce<{
+      time: number[];
+      open: number[];
+      high: number[];
+      low: number[];
+      close: number[];
+      volume: number[];
+    }>(
+      ({ time, open, high, low, close, volume }, kline) => ({
+        time: [...time, decimalToNumber(kline[0])],
+        open: [...open, decimalToNumber(kline[1])],
+        high: [...high, decimalToNumber(kline[2])],
+        low: [...low, decimalToNumber(kline[3])],
+        close: [...close, decimalToNumber(kline[4])],
+        volume: [...volume, decimalToNumber(kline[5])],
+      }),
+      {
+        time: [],
+        open: [],
+        high: [],
+        low: [],
+        close: [],
+        volume: [],
+      }
+    );
     this.output(0).data = time;
     this.output(1).data = open;
     this.output(2).data = high;

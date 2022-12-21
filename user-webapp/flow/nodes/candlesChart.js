@@ -38,6 +38,7 @@ export class FlowViewNodeCandlesChart extends FlowViewNode {
       wickDownColor: red,
       borderVisible: false,
     });
+    // TODO why need to set this data?
     this.candles.setData([
       { time: "2022-10-01", open: 10, high: 20, low: 5, close: 15 },
       { time: "2022-10-02", open: 10, high: 20, low: 5, close: 15 },

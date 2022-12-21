@@ -1,5 +1,6 @@
 import type {
   BinanceKlineInterval,
+  BinanceKlineOptionalParameters,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
@@ -18,14 +19,6 @@ export class BinanceClientMock implements BinanceDflowClient {
     return Promise.resolve({ symbol, price: "0" });
   }
 
-  async candles(
-    _symbol: string,
-    _interval: BinanceKlineInterval,
-    _limit: number
-  ) {
-    return [kline];
-  }
-
   async exchangeInfo() {
     return Promise.resolve(exchangeInfo);
   }
@@ -34,6 +27,14 @@ export class BinanceClientMock implements BinanceDflowClient {
     if (typeof arg !== "string") return false;
     const { symbols } = await this.exchangeInfo();
     return symbols.findIndex(({ symbol }) => arg === symbol) !== -1;
+  }
+
+  async klines(
+    _symbol: string,
+    _interval: BinanceKlineInterval,
+    _optionalParameters: BinanceKlineOptionalParameters
+  ) {
+    return [kline];
   }
 
   async newOrder(

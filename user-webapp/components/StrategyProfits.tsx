@@ -1,7 +1,7 @@
 import {
   BalanceChangeEvents,
-  Orders,
-  isOrders,
+  // Orders,
+  // isOrders,
   isStrategyBalance,
 } from "@ggbot2/models";
 import {
@@ -32,7 +32,7 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
 
   const [readBalances, { data: balances }] =
     useApiAction.ReadStrategyBalances();
-  const [readOrders, { data: orders }] = useApiAction.ReadStrategyDailyOrders();
+  // const [readOrders, { data: orders }] = useApiAction.ReadStrategyDailyOrders();
 
   const balanceHistory = useMemo<BalanceChangeEvents>(() => {
     const balanceHistory: BalanceChangeEvents = [];
@@ -44,10 +44,10 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
     return balanceHistory;
   }, [balances]);
 
-  const orderHistory = useMemo<Orders>(
-    () => (isOrders(orders) ? orders : []),
-    [orders]
-  );
+  // const orderHistory = useMemo<Orders>(
+  //   () => (isOrders(orders) ? orders : []),
+  //   [orders]
+  // );
 
   const dayInterval = useMemo(
     () => timeIntervalToDay(timeInterval),
@@ -61,19 +61,20 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
     };
   }, [dayInterval, readBalances, strategyKey]);
 
-  useEffect(() => {
-    const controller = readOrders({ ...strategyKey, ...dayInterval });
-    return () => {
-      controller.abort();
-    };
-  }, [dayInterval, readOrders, strategyKey]);
+  // useEffect(() => {
+  //   const controller = readOrders({ ...strategyKey, ...dayInterval });
+  //   return () => {
+  //     controller.abort();
+  //   };
+  // }, [dayInterval, readOrders, strategyKey]);
 
   return (
     <Section header="Profits">
       <ProfitSummary
         balanceHistory={balanceHistory}
         timeInterval={timeInterval}
-        orderHistory={orderHistory}
+        // orderHistory={orderHistory}
+        orderHistory={[]}
       />
     </Section>
   );

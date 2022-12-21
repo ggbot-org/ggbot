@@ -45,6 +45,7 @@ type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
   children: ReactNode;
   message: string;
 };
+
 const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
   <form className="flex flex-col w-full p-4 gap-4" {...props}>
     <Section

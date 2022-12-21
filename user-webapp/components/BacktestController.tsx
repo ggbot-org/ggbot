@@ -95,16 +95,17 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         startDay={dayInterval?.start}
         setStartDay={setStartDay}
       />
-      <div>
-        <span>{`${stepIndex} of ${numSteps} intervals`}</span>
-        <DateTime format="time" value={currentTimestamp} />
-      </div>
-
       <div className="flex flex-col gap-1">
+        <div className="flex gap-1">
+          <span>{`${stepIndex} of ${numSteps} intervals`}</span>
+          <DateTime format="time" value={currentTimestamp} />
+        </div>
+
         <div className="flex flex-row gap-1">
           <span>Memory</span>
           {memoryItems.length === 0 ? <span>(empty)</span> : null}
         </div>
+
         <div>
           {memoryItems.map(({ key, value }) => (
             <div key={key} className="flex flex-row gap-1">
