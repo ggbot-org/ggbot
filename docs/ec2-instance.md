@@ -14,7 +14,38 @@ aws s3 sync --exclude '.git*' --exclude 'node_modules/*' . s3://code.ggbot2.com/
 
 ## On remote server
 
-Connect with ec2-user to an *Amazon Linux 2 AMI* instance, then launch
+Connect with ec2-user to an *Amazon Linux 2 AMI* instance.
+
+If services are already configured, create an update.sh script with the
+following content
+
+```sh
+### Update deps
+sudo yum update -y
+
+### Set environment
+export NEXT_PUBLIC_NODE_ENV=production
+export DEPLOY_STAGE=main
+export NEXT_PUBLIC_DEPLOY_STAGE=main
+
+### Get code and build
+sudo rm -rf /opt/ggbot2
+sudo mkdir -p /opt/ggbot2
+sudo chown ec2-user:ec2-user /opt/ggbot2
+aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
+cd /opt/ggbot2
+npm ci
+npm run build
+npm run next:build:user-webapp
+```
+
+If it is a previous AMI, just launch the update.sh script to get the job done.
+
+```sh
+sh update.sh
+```
+
+Follows steps with details.
 
 Update to latest packages: `sudo yum update -y`.
 

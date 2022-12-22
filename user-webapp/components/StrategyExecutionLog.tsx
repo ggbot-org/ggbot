@@ -1,5 +1,4 @@
 import type { StrategyExecution } from "@ggbot2/models";
-import type { StrategyExecution } from "@ggbot2/dflow";
 import { Pill } from "@ggbot2/ui-components";
 import { FC, ReactNode, useMemo } from "react";
 
