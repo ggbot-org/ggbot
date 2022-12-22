@@ -18,6 +18,14 @@ Connect with ec2-user to an *Amazon Linux 2 AMI* instance, then launch
 
 Update to latest packages: `sudo yum update -y`.
 
+### Set environment
+
+```sh
+export NEXT_PUBLIC_NODE_ENV=production
+export DEPLOY_STAGE=main
+export NEXT_PUBLIC_DEPLOY_STAGE=main
+```
+
 ### Install Node.js v16
 
 NOTA BENE: Node.js v18 requires glibc v2.8, not available yet on Amazon Linux.
@@ -97,10 +105,10 @@ Environment="NEXT_PUBLIC_DEPLOY_STAGE=main"
 
 Command `systemctl edit` uses nano, to "exit and save" do `CTRL-x SHIFT-Y ENTER`.
 
-Edit override file with
+You can edit override file with
 
 ```sh
-sudo vi /etc/systemd/system/ggbot2-user-webapp.service.d/override.conf
+sudo systemctl edit ggbot2-user-webapp
 ```
 
 Tell systemd that there is a new service, run only once
@@ -176,10 +184,10 @@ Environment="AWS_SECRET_ACCESS_KEY=xxx"
 Environment="DEPLOY_STAGE=main"
 ```
 
-Edit override file with
+You can edit override file with
 
 ```sh
-sudo vi /etc/systemd/system/ggbot2-executor.service.d/override.conf
+sudo systemctl edit ggbot2-executor
 ```
 
 Tell systemd that there is a new service and enable service start at boot

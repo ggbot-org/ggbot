@@ -2,6 +2,11 @@ import { DflowNode } from "dflow";
 
 const { input, output } = DflowNode;
 
+export const inputExecute = input("boolean", {
+  name: "execute",
+  optional: true,
+});
+
 export const inputClose = input("array", { name: "close" });
 export const outputClose = output("array", { name: "close" });
 

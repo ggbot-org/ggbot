@@ -1,6 +1,7 @@
 import { coerceToDecimal } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
 import type { BinanceDflowContext as Context } from "../context.js";
+import { inputExecute } from "./commonIO.js";
 
 const { input, output } = DflowNode;
 
@@ -8,6 +9,7 @@ const marketOrderInputs = [
   input("string", { name: "symbol" }),
   input("number", { name: "quantity", optional: true }),
   input("number", { name: "quoteOrderQty", optional: true }),
+  inputExecute,
 ];
 export const orderOutput = output("object", { name: "order" });
 export const orderOutputPosition = 0;
@@ -23,6 +25,10 @@ export class BuyMarket extends DflowNode {
     const symbol = this.input(0).data as string;
     const quantity = this.input(1).data as number | undefined;
     const quoteOrderQty = this.input(2).data as number | undefined;
+    const execute = this.input(3).data as boolean | undefined;
+    if (!execute) return this.clearOutputs();
+    if (quantity === undefined && quoteOrderQty === undefined)
+      return this.clearOutputs();
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "BUY", "MARKET", {
@@ -45,6 +51,10 @@ export class SellMarket extends DflowNode {
     const symbol = this.input(0).data as string;
     const quantity = this.input(1).data as number | undefined;
     const quoteOrderQty = this.input(2).data as number | undefined;
+    const execute = this.input(3).data as boolean | undefined;
+    if (!execute) return this.clearOutputs();
+    if (quantity === undefined && quoteOrderQty === undefined)
+      return this.clearOutputs();
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "SELL", "MARKET", {
