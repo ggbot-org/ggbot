@@ -1,3 +1,4 @@
+import { mul } from "@ggbot2/arithmetic";
 import { readEmailCookie } from "@ggbot2/cookies";
 import { getUtrustApiKey, deployStageIsMain } from "@ggbot2/env";
 import {
@@ -7,6 +8,14 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import {
+  PaymentProvider,
+  SubscriptionPlan,
+  newMonthlySubscription,
+  newYearlySubscription,
+} from "@ggbot2/models";
+import { today } from "@ggbot2/time";
+import type { NaturalNumber } from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession, route, webappBaseUrl } from "_routing";
@@ -45,10 +54,44 @@ export default async function apiHandler(
 
     const returnUrl = `${webappBaseUrl}${route.settingsPage("billing")}`;
 
+    // TODO numMonths
+    // if 12 apply discount, multiply by 11
+    const numMonths: NaturalNumber = 12;
+    const price = "10.00";
+    const numDecimals = 2;
+    // TODO const total = mul(price, Math.max(numMonths, 11), numDecimals);
+    const total = mul(price, Math.max(numMonths, 1), numDecimals);
+    const plan: SubscriptionPlan = "basic";
+    const reference = `order-${plan}`;
+
+    const paymentProvider: PaymentProvider = "utrust";
+
+    //
+    // TODO if subscription expires in less than one Month
+    // show subscribe button in Billing settings.
+    //
+    // TODO need also to read current subscription to get startDay
+    const startDay = today();
+
+    const purchase =
+      numMonths === 12
+        ? newYearlySubscription({ plan, paymentProvider, startDay })
+        : newMonthlySubscription({
+            plan,
+            paymentProvider,
+            numMonths,
+            startDay,
+          });
+
+    console.log(purchase);
+    // TODO store purchase
+    // use CreateYearlySubscriptionPurchase and
+    // CreateMonthlySubscriptionPurchase
+
     const order: Order = {
-      reference: "order-51367",
+      reference,
       amount: {
-        total: "10.00",
+        total,
         currency: "EUR",
       },
       return_urls: {
@@ -56,11 +99,11 @@ export default async function apiHandler(
       },
       line_items: [
         {
-          sku: "item-unique-id",
-          name: "Donation",
-          price: "10.00",
+          sku: purchase.id,
+          name: "Subscription",
+          price,
           currency: "EUR",
-          quantity: 1,
+          quantity: numMonths,
         },
       ],
     };

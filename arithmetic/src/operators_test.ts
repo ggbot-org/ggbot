@@ -52,6 +52,10 @@ describe("mul", () => {
         output: "1.00",
       },
       {
+        input: { a: "10.00", b: 2, numDecimals: 2 },
+        output: "20.00",
+      },
+      {
         input: { a: "0.00096000", b: "20649.57000000", numDecimals: 8 },
         output: "19.82358720",
       },
