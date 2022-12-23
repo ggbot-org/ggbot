@@ -8,6 +8,7 @@ import {
   isStrategyExecutionStatus,
   isStrategyFlow,
 } from "@ggbot2/models";
+import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import type { DflowExecutionNodeInfo } from "dflow";
@@ -170,21 +171,27 @@ const Page: NextPage<ServerSideProps> = ({
 
   const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
 
-  const { executionStatus, executionSteps } = useMemo(() => {
-    if (!isMaybeObject<StrategyExecution>(strategyExecution))
+  const { executionStatus, executionSteps, executionWhenUpdated } =
+    useMemo(() => {
+      if (!isMaybeObject<StrategyExecution>(strategyExecution))
+        return {
+          executionWhenUpdated: undefined,
+          executionSteps: undefined,
+          executionStatus: undefined,
+        };
+      const { status, steps, whenUpdated } = strategyExecution;
+      const executionStatus = isStrategyExecutionStatus(status)
+        ? status
+        : undefined;
+      const executionWhenUpdated = isTime(whenUpdated)
+        ? whenUpdated
+        : undefined;
       return {
-        executionSteps: undefined,
-        executionStatus: undefined,
+        executionSteps: steps as DflowExecutionNodeInfo[],
+        executionStatus,
+        executionWhenUpdated,
       };
-    const { status, steps } = strategyExecution;
-    const executionStatus = isStrategyExecutionStatus(status)
-      ? status
-      : undefined;
-    return {
-      executionSteps: steps as DflowExecutionNodeInfo[],
-      executionStatus,
-    };
-  }, [strategyExecution]);
+    }, [strategyExecution]);
 
   const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
     (event) => {
@@ -333,7 +340,11 @@ const Page: NextPage<ServerSideProps> = ({
 
         <MemoryController />
 
-        <StrategyExecutionLog status={executionStatus} steps={executionSteps} />
+        <StrategyExecutionLog
+          status={executionStatus}
+          steps={executionSteps}
+          whenUpdated={executionWhenUpdated}
+        />
       </div>
     </Content>
   );
