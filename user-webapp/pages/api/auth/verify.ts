@@ -15,18 +15,15 @@ import {
 } from "@ggbot2/database";
 import { OneTimePassword, isOneTimePasswordCode } from "@ggbot2/models";
 import { today } from "@ggbot2/time";
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { sessionNumDays } from "_routing";
 
 export type ApiVerifyRequestData = Pick<OneTimePassword, "code">;
 
-export const isApiVerifyRequestData = (
-  value: unknown
-): value is ApiVerifyRequestData => {
-  if (typeof value !== "object" || value === null) return false;
-  const { code } = value as Partial<ApiVerifyRequestData>;
-  return isOneTimePasswordCode(code);
-};
+export const isApiVerifyRequestData = objectTypeGuard<ApiVerifyRequestData>(
+  ({ code }) => isOneTimePasswordCode(code)
+);
 
 export type ApiVerifyResponseData = {
   verified?: boolean | undefined;

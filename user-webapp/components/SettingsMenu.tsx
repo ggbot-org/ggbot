@@ -1,10 +1,5 @@
-import { isLiteralType } from "@ggbot2/type-utils";
 import { FC, PointerEventHandler, ReactNode, useMemo } from "react";
-
-const settingsSectionIds = ["account", "binance", "billing"] as const;
-export type SettingsSectionId = typeof settingsSectionIds[number];
-export const isSettingsSectionId =
-  isLiteralType<SettingsSectionId>(settingsSectionIds);
+import { SettingsSectionId, settingsSectionIds } from "_routing";
 
 export type SettingsMenuProps = {
   selected: SettingsSectionId | undefined;

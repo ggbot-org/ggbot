@@ -19,7 +19,7 @@ type ResponseData = {
 };
 
 // Also create a type guard for input data
-const isRequestData = (value: unknown): value is RequestData => {
+const isRequestData = (arg: unknown): arg is RequestData => {
   if (typeof value !== 'object' || value === null) return false
   // ... validation code
 }
@@ -32,7 +32,7 @@ export default async function apiHandler(
     // Handle HTTP method
     if (req.method !== "POST") return res.status(__405__METHOD_NOT_ALLOWED__).json({});
 
-    // Check ResponseData is valid
+    // Check RequestData is valid
     const input = req.body;
     if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({})
 

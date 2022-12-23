@@ -1,4 +1,10 @@
+import { isLiteralType } from "@ggbot2/type-utils";
 import type { StrategyKey, InvalidStrategyKey } from "./types.js";
+
+export const settingsSectionIds = ["account", "binance", "billing"] as const;
+export type SettingsSectionId = typeof settingsSectionIds[number];
+export const isSettingsSectionId =
+  isLiteralType<SettingsSectionId>(settingsSectionIds);
 
 export const route = {
   apiEnter: () => "/api/auth/enter",
@@ -24,7 +30,8 @@ export const route = {
   errorPageStrategyNotOwned: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
   homePage: () => "/",
-  settingsPage: () => "/settings",
+  settingsPage: (hash?: SettingsSectionId) =>
+    `/settings${hash ? `#${hash}` : ""}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>

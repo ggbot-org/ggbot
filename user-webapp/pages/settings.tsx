@@ -10,10 +10,12 @@ import {
   NavigationLabel,
   SettingsMenu,
   SettingsMenuProps,
+} from "_components";
+import {
   SettingsSectionId,
   isSettingsSectionId,
-} from "_components";
-import { requireAuthentication } from "_routing";
+  requireAuthentication,
+} from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
@@ -56,11 +58,17 @@ const Page: NextPage = () => {
   }, [selectedSectionId]);
 
   useEffect(() => {
+    // Read sectionId from URL hash.
+    const locationHashSectionId = window.location.hash.replace(/^#/, "");
+    // Read sectionId from WebStorage.
     const storedSelectedSectionId = sessionStorage.getItem(sectionIdStorageKey);
 
-    if (isSettingsSectionId(storedSelectedSectionId)) {
+    if (isSettingsSectionId(locationHashSectionId)) {
+      storeAndSetSelectedSectionId(locationHashSectionId);
+    } else if (isSettingsSectionId(storedSelectedSectionId)) {
       storeAndSetSelectedSectionId(storedSelectedSectionId);
     } else {
+      // Fallback to default.
       storeAndSetSelectedSectionId("account");
     }
   }, [storeAndSetSelectedSectionId]);

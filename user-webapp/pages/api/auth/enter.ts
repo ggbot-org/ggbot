@@ -8,19 +8,16 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+import { objectTypeGuard } from "@ggbot2/type-utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiEnterRequestData = {
   email: EmailAddress;
 };
 
-export const isApiEnterRequestData = (
-  value: unknown
-): value is ApiEnterRequestData => {
-  if (typeof value !== "object" || value === null) return false;
-  const { email } = value as Partial<ApiEnterRequestData>;
-  return isEmailAddress(email);
-};
+export const isApiEnterRequestData = objectTypeGuard<ApiEnterRequestData>(
+  ({ email }) => isEmailAddress(email)
+);
 
 export type ApiEnterResponseData = {
   emailSent?: boolean | undefined;

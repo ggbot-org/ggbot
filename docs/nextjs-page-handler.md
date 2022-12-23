@@ -7,15 +7,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { Content } from "_components";
 import { requireAuthentication } from "_routing";
 
-type ServerSideProps = {
-  ...
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: ...
-  };
-};
+export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage<ServerSideProps> = () => {
   return (

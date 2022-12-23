@@ -6,6 +6,7 @@ The following environment variables are used:
   - `AWS_ACCOUNT_ID`
   - `AWS_ACCESS_KEY_ID`
   - `AWS_SECRET_ACCESS_KEY`
+  - `UTRUST_API_KEY`
 - Optional
   - `DEPLOY_STAGE`: can be `main` or `next`. It defaults to `next` if not provided.
   - `NEXT_PUBLIC_DEPLOY_STAGE`: expose `DEPLOY_STAGE` to browser context.
