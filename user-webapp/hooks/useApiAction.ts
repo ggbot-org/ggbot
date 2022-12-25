@@ -230,6 +230,8 @@ export const useApiAction = {
     useAction<ApiAction["RenameAccount"]>({ type: "RenameAccount" }),
   RenameStrategy: () =>
     useAction<ApiAction["RenameStrategy"]>({ type: "RenameStrategy" }),
+  SetAccountCountry: () =>
+    useAction<ApiAction["SetAccountCountry"]>({ type: "SetAccountCountry" }),
   WriteStrategyFlow: () =>
     useAction<ApiAction["WriteStrategyFlow"]>({
       type: "WriteStrategyFlow",

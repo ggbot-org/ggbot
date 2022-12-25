@@ -12,7 +12,9 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // Type input data
-type RequestData = {};
+type RequestData = {
+  foo: number
+};
 
 type ResponseData = {
   ok: boolean
@@ -35,6 +37,8 @@ export default async function apiHandler(
     // Check RequestData is valid
     const input = req.body;
     if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({})
+
+    const { foo } = input
 
     // ... other code
 

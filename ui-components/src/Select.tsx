@@ -1,4 +1,10 @@
-import { FC, OptionHTMLAttributes, SelectHTMLAttributes, useId } from "react";
+import {
+  ChangeEventHandler,
+  FC,
+  OptionHTMLAttributes,
+  SelectHTMLAttributes,
+  useId,
+} from "react";
 import { Field, FieldProps } from "./Field";
 
 export type SelectProps = Omit<
@@ -8,13 +14,15 @@ export type SelectProps = Omit<
   options: OptionHTMLAttributes<HTMLOptionElement>[];
 };
 
+export type SelectOnChange = ChangeEventHandler<HTMLSelectElement>;
+
 export const Select: FC<SelectProps> = ({ options, ...props }) => {
   return (
     <select
       className="appearance-none w-full shadow outline-dark-600 rounded-md px-4 py-2"
       {...props}
     >
-      {options.map(({ value, ...props }, i) => (
+      {options.map((props, i) => (
         <option key={i} {...props} />
       ))}
     </select>

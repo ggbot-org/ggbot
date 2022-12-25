@@ -6,6 +6,7 @@ import {
   ListAccountKeys,
   ReadAccount,
   RenameAccount,
+  SetAccountCountry,
   isAccountKey,
   newAccount,
   throwIfInvalidName,
@@ -38,6 +39,16 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
 export const readAccount: ReadAccount["func"] = async (accountKey) =>
   await getObject<ReadAccount["out"]>({ Key: pathname.account(accountKey) });
 
+/** @throws {ErrorAccountItemNotFound} */
+const getAccountOrThrow = async ({
+  accountId,
+}: AccountKey): Promise<Account> => {
+  const account = await readAccount({ accountId });
+  if (!account)
+    throw new ErrorAccountItemNotFound({ type: "Account", accountId });
+  return account;
+};
+
 export const listAccountKeys: ListAccountKeys["func"] = async () => {
   const Prefix = dirnamePrefix.account + dirnameDelimiter;
   const results = await listObjects({
@@ -61,13 +72,26 @@ export const renameAccount: RenameAccount["func"] = async ({
   name,
 }) => {
   throwIfInvalidName(name);
-  const account = await readAccount({ accountId });
-  if (!account)
-    throw new ErrorAccountItemNotFound({ type: "Account", accountId });
+  const account = await getAccountOrThrow({ accountId });
   const Key = pathname.account({ accountId });
   const data: Account = {
     ...account,
     name,
+  };
+  await putObject({ Key, data });
+  return updatedNow();
+};
+
+/** @throws {ErrorAccountItemNotFound} */
+export const setAccountCountry: SetAccountCountry["func"] = async ({
+  accountId,
+  country,
+}) => {
+  const account = await getAccountOrThrow({ accountId });
+  const Key = pathname.account({ accountId });
+  const data: Account = {
+    ...account,
+    country,
   };
   await putObject({ Key, data });
   return updatedNow();

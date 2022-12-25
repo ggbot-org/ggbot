@@ -7,17 +7,26 @@ import {
   InputField,
   Section,
   SelectField,
+  SelectOnChange,
 } from "../src";
 
 export const SimpleForm: FC = () => {
   const [isPending, setIsPending] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
+  const [gender, setGender] = useState("");
 
   const onChangeConsent = useCallback<CheckboxOnChange>(
     (event) => {
       setHasConsent(event.target.checked);
     },
     [setHasConsent]
+  );
+
+  const onChangeGender = useCallback<SelectOnChange>(
+    (event) => {
+      setGender(event.target.value);
+    },
+    [setGender]
   );
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
@@ -40,9 +49,17 @@ export const SimpleForm: FC = () => {
       >
         <InputField name="nick" label="nick" />
         <InputField name="password" label="password" />
+        <select id="" name="" value="c" onChange={onChangeGender}>
+          <option value="a">A</option>
+          <option value="b">Bi</option>
+          <option value="c">Ci</option>
+          <option value="d">Di</option>
+        </select>
         <SelectField
+          value={gender}
           name="gender"
           label="gender"
+          onChange={onChangeGender}
           options={[
             { value: "M", label: "Male" },
             { value: "F", label: "Female" },

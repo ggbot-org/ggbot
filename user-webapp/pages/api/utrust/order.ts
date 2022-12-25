@@ -1,4 +1,3 @@
-import { mul } from "@ggbot2/arithmetic";
 import { readEmailCookie } from "@ggbot2/cookies";
 import { getUtrustApiKey, deployStageIsMain } from "@ggbot2/env";
 import {
@@ -8,23 +7,30 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import { readSubscription } from "@ggbot2/database";
 import {
   PaymentProvider,
   SubscriptionPlan,
   newMonthlySubscription,
   newYearlySubscription,
+  totalPurchase,
+  purchaseMaxNumMonths as maxNumMonths,
 } from "@ggbot2/models";
-import { today } from "@ggbot2/time";
-import type { NaturalNumber } from "@ggbot2/type-utils";
+import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
+import {
+  NaturalNumber,
+  isNaturalNumber,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession, route, webappBaseUrl } from "_routing";
 
-type RequestData = {};
+type RequestData = { numMonths: NaturalNumber };
 
-const isRequestData = (_arg: unknown): _arg is RequestData => {
-  return true;
-};
+const isRequestData = objectTypeGuard<RequestData>(({ numMonths }) =>
+  isNaturalNumber(numMonths)
+);
 
 export default async function apiHandler(
   req: NextApiRequest,
@@ -40,7 +46,7 @@ export default async function apiHandler(
 
     const session = readSession(req.cookies);
     if (!session) return res.status(__401__UNAUTHORIZED__).json({});
-    // TODO const {accountId} = session
+    const { accountId } = session;
 
     const apiKey = getUtrustApiKey();
     const { createOrder } = ApiClient(
@@ -52,29 +58,27 @@ export default async function apiHandler(
     const input = req.body;
     if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({});
 
+    const { numMonths } = input;
+
     const returnUrl = `${webappBaseUrl}${route.settingsPage("billing")}`;
 
     // TODO numMonths
-    // if 12 apply discount, multiply by 11
-    const numMonths: NaturalNumber = 12;
     const price = "10.00";
     const numDecimals = 2;
-    // TODO const total = mul(price, Math.max(numMonths, 11), numDecimals);
-    const total = mul(price, Math.max(numMonths, 1), numDecimals);
+    const totalNum = totalPurchase(numMonths);
+    const totalStr = totalNum.toFixed(numDecimals);
     const plan: SubscriptionPlan = "basic";
     const reference = `order-${plan}`;
 
     const paymentProvider: PaymentProvider = "utrust";
 
-    //
-    // TODO if subscription expires in less than one Month
-    // show subscribe button in Billing settings.
-    //
-    // TODO need also to read current subscription to get startDay
-    const startDay = today();
+    const subscription = await readSubscription({ accountId });
+    const startDay = subscription
+      ? dateToDay(getDate(dayToDate(subscription.end)).plus(1).days())
+      : today();
 
     const purchase =
-      numMonths === 12
+      numMonths >= maxNumMonths - 1
         ? newYearlySubscription({ plan, paymentProvider, startDay })
         : newMonthlySubscription({
             plan,
@@ -91,7 +95,7 @@ export default async function apiHandler(
     const order: Order = {
       reference,
       amount: {
-        total,
+        total: totalStr,
         currency: "EUR",
       },
       return_urls: {
@@ -103,7 +107,7 @@ export default async function apiHandler(
           name: "Subscription",
           price,
           currency: "EUR",
-          quantity: numMonths,
+          quantity: 1,
         },
       ],
     };

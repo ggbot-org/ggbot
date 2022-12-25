@@ -1,13 +1,22 @@
-import { FC, InputHTMLAttributes, ReactNode, useId, useMemo } from "react";
+import {
+  ChangeEventHandler,
+  FC,
+  InputHTMLAttributes,
+  ReactNode,
+  useId,
+  useMemo,
+} from "react";
 import { Field, FieldProps } from "./Field";
 
 export type InputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "className" | "type"
 > & {
-  type?: "text" | "password" | "email";
+  type?: "text" | "password" | "email" | "number";
   icon?: ReactNode;
 };
+
+export type InputOnChange = ChangeEventHandler<HTMLInputElement>;
 
 export const Input: FC<InputProps> = ({
   icon,

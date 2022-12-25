@@ -18,6 +18,15 @@ import { Item, NewItem, isItemId, newId } from "./item.js";
 import type { Operation } from "./operation.js";
 import { CreationTime, createdNow, isCreationTime } from "./time.js";
 
+export const monthlyPrice = 10; // EUR
+export const monthlyPriceCurrency = "EUR";
+export const purchaseMaxNumMonths = 12;
+export const totalPurchase = (numMonths: NaturalNumber) => {
+  // if 12 months apply discount.
+  if (numMonths === 12) return monthlyPrice * 11;
+  return numMonths * monthlyPrice;
+};
+
 const paymentProviders = ["utrust"];
 export type PaymentProvider = typeof paymentProviders[number];
 export const isPaymentProvider =

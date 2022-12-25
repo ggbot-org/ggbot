@@ -1,55 +1,89 @@
-import { isSubscription } from "@ggbot2/models";
-import { dayToTime } from "@ggbot2/time";
 import {
+  AllowedCountryIsoCode2,
+  isAccount,
+  isAllowedCountryIsoCode2,
+  monthlyPrice,
+  monthlyPriceCurrency,
+  totalPurchase,
+  purchaseMaxNumMonths as maxNumMonths,
+} from "@ggbot2/models";
+import {
+  Button,
+  Checkmark,
   DateTime,
+  InputField,
+  InputOnChange,
   OutputField,
   Pill,
   Section,
   SelectField,
+  SelectOnChange,
   SelectProps,
 } from "@ggbot2/ui-components";
+import { isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
-import { FC, ReactNode, useMemo } from "react";
-import { useSubscription } from "_hooks";
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useEffect,
+  useState,
+} from "react";
+import { useApiAction, useSubscription } from "_hooks";
 
 export const BillingSettings: FC = () => {
-  const { hasActiveSubscription, subscription } = useSubscription();
+  const {
+    canPurchaseSubscription,
+    hasActiveSubscription,
+    subscriptionEnd,
+    subscriptionPlan,
+  } = useSubscription();
 
-  const countryOptions = useMemo<SelectProps["options"]>(
-    () =>
-      Object.entries(countries)
-        .filter(([isoCode2]) =>
-          ["AT", "FR", "IT", "DE", "ES", "GB", "GR", "NL", "PT"].includes(
-            isoCode2
-          )
-        )
-        .map(([isoCode2, country]) => ({
-          value: isoCode2,
-          label: country,
-        })),
-    []
+  const [readAccount, { data: account }] = useApiAction.ReadAccount();
+  const [setAccountCountry] = useApiAction.SetAccountCountry();
+
+  const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
+  const [formattedTotalPrice, setFormattedTotalPrice] = useState("");
+  const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
+  const minNumMonths = 1;
+  const defaultNumMonths = 6;
+  const [numMonths, setNumMonths] = useState<number | undefined>(
+    defaultNumMonths
   );
 
-  const { subscriptionEnd, subscriptionPlan } = useMemo(
-    () =>
-      isSubscription(subscription)
-        ? {
-            subscriptionEnd: dayToTime(subscription.end),
-            subscriptionPlan: subscription.plan,
-          }
-        : {
-            subscriptionEnd: undefined,
-            subscriptionPlan: "",
-          },
-    [subscription]
-  );
+  const { countryOptions, selectCountryIsDisabled } = useMemo<{
+    countryOptions: SelectProps["options"];
+    selectCountryIsDisabled: boolean;
+  }>(() => {
+    const allowedCountryOptions = Object.entries(countries)
+      .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
+      .map(([isoCode2, country]) => ({
+        value: isoCode2,
+        label: country,
+      }));
+    if (!isAccount(account))
+      return {
+        countryOptions: [{ value: "", label: "" }],
+        selectCountryIsDisabled: true,
+      };
+    return {
+      countryOptions: account.country
+        ? allowedCountryOptions
+        : [
+            { value: "", label: "-- your country --" },
+            ...allowedCountryOptions,
+          ],
+      selectCountryIsDisabled: false,
+    };
+  }, [account]);
 
   const subscriptionInfo = useMemo<{ label: string; value: ReactNode }[]>(
     () =>
       [
         {
           label: "plan",
-          value: subscriptionPlan,
+          value: subscriptionPlan ?? "",
         },
         {
           label: "end day",
@@ -63,6 +97,68 @@ export const BillingSettings: FC = () => {
       })),
     [subscriptionEnd, subscriptionPlan]
   );
+
+  const purchaseIsDisabled = useMemo(() => {
+    if (!country) return true;
+    if (!isNaturalNumber(numMonths)) return true;
+    if (numMonths < minNumMonths) return true;
+    if (numMonths > maxNumMonths) return true;
+    return false;
+  }, [country, numMonths]);
+
+  const onChangeNumMonths = useCallback<InputOnChange>(
+    (event) => {
+      const value = event.target.value;
+      if (value === "") {
+        setNumMonths(undefined);
+        return;
+      }
+      const num = Number(value);
+      if (num >= minNumMonths && num <= maxNumMonths) setNumMonths(num);
+    },
+    [setNumMonths]
+  );
+
+  const onChangeCountry = useCallback<SelectOnChange>(
+    (event) => {
+      const country = event.target.value;
+      if (isAllowedCountryIsoCode2(country)) setCountry(country);
+    },
+    [setCountry]
+  );
+
+  const onClickPurchase = useCallback(() => {
+    if (purchaseIsDisabled) return;
+  }, [purchaseIsDisabled]);
+
+  useEffect(() => {
+    if (!isAccount(account)) return;
+    if (account.country) setCountry(account.country);
+  }, [account, setCountry]);
+
+  useEffect(() => {
+    if (!isAccount(account)) return;
+    if (!country) return;
+    if (account.country !== country) {
+      setAccountCountry({ country });
+    }
+  }, [account, country, setAccountCountry]);
+
+  useEffect(() => {
+    const controller = readAccount({});
+    return () => {
+      controller.abort();
+    };
+  }, [readAccount]);
+
+  useEffect(() => {
+    const { format } = new Intl.NumberFormat(window.navigator.language, {
+      style: "currency",
+      currency: monthlyPriceCurrency,
+    });
+    if (!formattedMonthlyPrice) setFormattedMonthlyPrice(format(monthlyPrice));
+    if (numMonths) setFormattedTotalPrice(format(totalPurchase(numMonths)));
+  }, [numMonths]);
 
   return (
     <>
@@ -87,13 +183,55 @@ export const BillingSettings: FC = () => {
         </Section>
       )}
 
-      {hasActiveSubscription === false && (
+      {canPurchaseSubscription && (
         <Section header="Subscribe">
+          {hasActiveSubscription && (
+            <p>Your subscription will expire soon, please consider renew it.</p>
+          )}
+
+          <p>Price for 1 month is {formattedMonthlyPrice}.</p>
+
+          <div className="text-lg flex gap-1 my-2">
+            <div>
+              Go for 12 months subscription and get 1 month for <em>free</em>.
+            </div>
+            <Checkmark
+              ok={
+                typeof numMonths === "number" && numMonths >= maxNumMonths - 1
+                  ? true
+                  : undefined
+              }
+            />
+          </div>
+
+          <OutputField label="Total price">{formattedTotalPrice}</OutputField>
+
+          <InputField
+            label="num months"
+            value={numMonths}
+            type="number"
+            onChange={onChangeNumMonths}
+            min={1}
+            max={12}
+            step={1}
+          />
+
           <SelectField
+            disabled={selectCountryIsDisabled}
             label="country"
             name="country"
+            onChange={onChangeCountry}
             options={countryOptions}
+            value={country}
           />
+
+          <menu>
+            <li>
+              <Button disabled={purchaseIsDisabled} onClick={onClickPurchase}>
+                Purchase
+              </Button>
+            </li>
+          </menu>
         </Section>
       )}
     </>

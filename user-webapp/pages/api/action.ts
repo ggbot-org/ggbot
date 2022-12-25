@@ -21,6 +21,7 @@ import {
   readStrategyDailyOrders,
   readSubscription,
   renameAccount,
+  setAccountCountry,
   renameStrategy,
   writeStrategyFlow,
 } from "@ggbot2/database";
@@ -56,6 +57,7 @@ import type {
   ReadSubscription,
   RenameAccount,
   RenameStrategy,
+  SetAccountCountry,
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
@@ -132,6 +134,7 @@ export type ApiAction = {
   RemoveAccountStrategiesItemSchedulings: Action<
     RemoveAccountStrategiesItemSchedulings["in"]
   >;
+  SetAccountCountry: Action<SetAccountCountry["in"]>;
   WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
@@ -156,6 +159,7 @@ const apiActionTypes = [
   "RenameStrategy",
   "RemoveAccountStrategiesItemSchedulings",
   "RenameAccount",
+  "SetAccountCountry",
   "WriteStrategyFlow",
 ] as const;
 type ApiActionType = typeof apiActionTypes[number];
@@ -321,6 +325,14 @@ export default async function apiHandler(
 
               case "RemoveAccountStrategiesItemSchedulings": {
                 const data = await removeAccountStrategiesItemSchedulings({
+                  accountId,
+                  ...action.data,
+                });
+                return res.status(__200__OK__).json({ data });
+              }
+
+              case "SetAccountCountry": {
+                const data = await setAccountCountry({
                   accountId,
                   ...action.data,
                 });

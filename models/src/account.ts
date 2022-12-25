@@ -1,4 +1,8 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+import {
+  AllowedCountryIsoCode2,
+  isAllowedCountryIsoCode2,
+} from "./countries.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { Item, ItemKey, NewItem, isItemId, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
@@ -13,16 +17,18 @@ import {
 
 export type Account = Item &
   CreationTime & {
+    country?: AllowedCountryIsoCode2;
     name?: undefined | Name;
     email: EmailAddress;
   };
 
 export const isAccount = objectTypeGuard<Account>(
-  ({ id, email, name, ...creationTime }) =>
+  ({ id, country, email, name, ...creationTime }) =>
     isItemId(id) &&
     isEmailAddress(email) &&
     isCreationTime(creationTime) &&
-    (name !== undefined ? isName(name) : true)
+    (country === undefined ? true : isAllowedCountryIsoCode2(country)) &&
+    (name === undefined ? true : isName(name))
 );
 
 export const newAccount = ({ email, name }: NewItem<Account>): Account => {
@@ -49,6 +55,11 @@ export type CreateAccount = Operation<NewItem<Account>, Account>;
 export type ReadAccount = Operation<AccountKey, Account | null>;
 
 export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
+
+export type SetAccountCountry = Operation<
+  AccountKey & { country: AllowedCountryIsoCode2 },
+  UpdateTime
+>;
 
 export type DeleteAccount = Operation<AccountKey, DeletionTime>;
 
