@@ -11,6 +11,7 @@ export const route = {
   apiExit: () => "/api/auth/exit",
   apiVerify: () => "/api/auth/verify",
   authPage: () => "/auth",
+  apiPurchaseOrder: () => "/api/utrust/order",
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,
   createStrategyPage: () => "/create/strategy",

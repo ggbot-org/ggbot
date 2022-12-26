@@ -9,12 +9,17 @@ import {
 } from "@ggbot2/http-status-codes";
 import { readSubscription } from "@ggbot2/database";
 import {
+  AllowedCountryIsoCode2,
+  EmailAddress,
   PaymentProvider,
   SubscriptionPlan,
+  isAllowedCountryIsoCode2,
+  isEmailAddress,
+  monthlyPriceCurrency,
   newMonthlySubscription,
   newYearlySubscription,
-  totalPurchase,
   purchaseMaxNumMonths as maxNumMonths,
+  totalPurchase,
 } from "@ggbot2/models";
 import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
 import {
@@ -26,10 +31,17 @@ import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession, route, webappBaseUrl } from "_routing";
 
-type RequestData = { numMonths: NaturalNumber };
+type RequestData = {
+  country: AllowedCountryIsoCode2;
+  email: EmailAddress;
+  numMonths: NaturalNumber;
+};
 
-const isRequestData = objectTypeGuard<RequestData>(({ numMonths }) =>
-  isNaturalNumber(numMonths)
+const isRequestData = objectTypeGuard<RequestData>(
+  ({ country, email, numMonths }) =>
+    isAllowedCountryIsoCode2(country) &&
+    isEmailAddress(email) &&
+    isNaturalNumber(numMonths)
 );
 
 export default async function apiHandler(
@@ -40,9 +52,6 @@ export default async function apiHandler(
     // Handle HTTP method
     if (req.method !== "POST")
       return res.status(__405__METHOD_NOT_ALLOWED__).json({});
-
-    const email = readEmailCookie(req.cookies);
-    if (!email) return res.status(__400__BAD_REQUEST__).json({});
 
     const session = readSession(req.cookies);
     if (!session) return res.status(__401__UNAUTHORIZED__).json({});
@@ -58,12 +67,10 @@ export default async function apiHandler(
     const input = req.body;
     if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({});
 
-    const { numMonths } = input;
+    const { country, email, numMonths } = input;
 
     const returnUrl = `${webappBaseUrl}${route.settingsPage("billing")}`;
 
-    // TODO numMonths
-    const price = "10.00";
     const numDecimals = 2;
     const totalNum = totalPurchase(numMonths);
     const totalStr = totalNum.toFixed(numDecimals);
@@ -96,7 +103,7 @@ export default async function apiHandler(
       reference,
       amount: {
         total: totalStr,
-        currency: "EUR",
+        currency: monthlyPriceCurrency,
       },
       return_urls: {
         return_url: returnUrl,
@@ -105,22 +112,22 @@ export default async function apiHandler(
         {
           sku: purchase.id,
           name: "Subscription",
-          price,
-          currency: "EUR",
+          price: totalStr,
+          currency: monthlyPriceCurrency,
           quantity: 1,
         },
       ],
     };
 
-    // TODO read email from account
-    // account need to set his country in BillingSettings
-    // TODO store country in accountConfig
     const customer: Customer = {
       email,
-      country: "US",
+      country,
     };
 
-    const { data } = await createOrder(order, customer);
+    const order2 = await createOrder(order, customer);
+    console.log(order2);
+    const { data } = order2;
+    console.log("order", data);
 
     if (data === null) return res.status(__400__BAD_REQUEST__).json({});
 

@@ -7,6 +7,8 @@ import {
   totalPurchase,
   purchaseMaxNumMonths as maxNumMonths,
 } from "@ggbot2/models";
+import { getTime, now } from "@ggbot2/time";
+import { isNaturalNumber } from "@ggbot2/type-utils";
 import {
   Button,
   Checkmark,
@@ -20,7 +22,6 @@ import {
   SelectOnChange,
   SelectProps,
 } from "@ggbot2/ui-components";
-import { isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import {
   FC,
@@ -31,11 +32,15 @@ import {
   useState,
 } from "react";
 import { useApiAction, useSubscription } from "_hooks";
+import { route } from "_routing";
 
 export const BillingSettings: FC = () => {
+  const endDayLabel = "end day";
+
   const {
     canPurchaseSubscription,
     hasActiveSubscription,
+    readSubscriptionIsPending,
     subscriptionEnd,
     subscriptionPlan,
   } = useSubscription();
@@ -52,8 +57,9 @@ export const BillingSettings: FC = () => {
     defaultNumMonths
   );
 
-  const { countryOptions, selectCountryIsDisabled } = useMemo<{
+  const { countryOptions, email, selectCountryIsDisabled } = useMemo<{
     countryOptions: SelectProps["options"];
+    email: string;
     selectCountryIsDisabled: boolean;
   }>(() => {
     const allowedCountryOptions = Object.entries(countries)
@@ -65,6 +71,7 @@ export const BillingSettings: FC = () => {
     if (!isAccount(account))
       return {
         countryOptions: [{ value: "", label: "" }],
+        email: "",
         selectCountryIsDisabled: true,
       };
     return {
@@ -74,6 +81,7 @@ export const BillingSettings: FC = () => {
             { value: "", label: "-- your country --" },
             ...allowedCountryOptions,
           ],
+      email: account.email,
       selectCountryIsDisabled: false,
     };
   }, [account]);
@@ -86,7 +94,7 @@ export const BillingSettings: FC = () => {
           value: subscriptionPlan ?? "",
         },
         {
-          label: "end day",
+          label: endDayLabel,
           value: subscriptionEnd && (
             <DateTime format="day" value={subscriptionEnd} />
           ),
@@ -105,6 +113,17 @@ export const BillingSettings: FC = () => {
     if (numMonths > maxNumMonths) return true;
     return false;
   }, [country, numMonths]);
+
+  const newSubscriptionEnd = useMemo(() => {
+    if (readSubscriptionIsPending) return;
+    if (!isNaturalNumber(numMonths)) return;
+    const start = subscriptionEnd
+      ? getTime(subscriptionEnd).plus(1).days()
+      : now();
+    return getTime(start)
+      .plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
+      .months();
+  }, [numMonths, subscriptionEnd]);
 
   const onChangeNumMonths = useCallback<InputOnChange>(
     (event) => {
@@ -127,9 +146,18 @@ export const BillingSettings: FC = () => {
     [setCountry]
   );
 
-  const onClickPurchase = useCallback(() => {
+  const onClickPurchase = useCallback(async () => {
     if (purchaseIsDisabled) return;
-  }, [purchaseIsDisabled]);
+    await fetch(route.apiPurchaseOrder(), {
+      body: JSON.stringify({ country, email, numMonths }),
+      credentials: "include",
+      headers: new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    });
+  }, [country, purchaseIsDisabled, numMonths]);
 
   useEffect(() => {
     if (!isAccount(account)) return;
@@ -204,8 +232,6 @@ export const BillingSettings: FC = () => {
             />
           </div>
 
-          <OutputField label="Total price">{formattedTotalPrice}</OutputField>
-
           <InputField
             label="num months"
             value={numMonths}
@@ -216,6 +242,10 @@ export const BillingSettings: FC = () => {
             step={1}
           />
 
+          <OutputField label={endDayLabel}>
+            <DateTime format="day" value={newSubscriptionEnd} />
+          </OutputField>
+
           <SelectField
             disabled={selectCountryIsDisabled}
             label="country"
@@ -224,6 +254,10 @@ export const BillingSettings: FC = () => {
             options={countryOptions}
             value={country}
           />
+
+          <OutputField label="email">{email}</OutputField>
+
+          <OutputField label="Total price">{formattedTotalPrice}</OutputField>
 
           <menu>
             <li>

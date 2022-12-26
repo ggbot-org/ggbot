@@ -20,12 +20,17 @@ export const DateTime: FC<Props> = ({ format, value }) => {
       const date = new Date(value);
       if (isInvalidDate(date)) return;
 
-      const dateString = date.toLocaleDateString();
-
-      if (format === "day") setFormattedValue(dateString);
+      if (format === "day")
+        setFormattedValue(
+          new Intl.DateTimeFormat(window.navigator.language, {
+            dateStyle: "full",
+          }).format(date)
+        );
 
       if (format === "time")
-        setFormattedValue(`${dateString} ${date.toLocaleTimeString()}`);
+        setFormattedValue(
+          `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        );
     } catch (error) {
       console.error(error);
     }

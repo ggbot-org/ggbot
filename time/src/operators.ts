@@ -36,7 +36,7 @@ export const getDate: TimeTranslator<Date> = (date) => {
         return date;
       },
       months: () => {
-        date.setDate(date.getMonth() + num);
+        date.setMonth(date.getMonth() + num);
         return date;
       },
       days: () => {

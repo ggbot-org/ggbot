@@ -22,7 +22,7 @@ export const monthlyPrice = 10; // EUR
 export const monthlyPriceCurrency = "EUR";
 export const purchaseMaxNumMonths = 12;
 export const totalPurchase = (numMonths: NaturalNumber) => {
-  // if 12 months apply discount.
+  // if 12 months, apply discount.
   if (numMonths === 12) return monthlyPrice * 11;
   return numMonths * monthlyPrice;
 };
