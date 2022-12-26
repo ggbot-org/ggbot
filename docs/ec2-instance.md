@@ -24,9 +24,7 @@ following content
 sudo yum update -y
 
 ### Set environment
-export NEXT_PUBLIC_NODE_ENV=production
 export DEPLOY_STAGE=main
-export NEXT_PUBLIC_DEPLOY_STAGE=main
 
 ### Get code and build
 sudo rm -rf /opt/ggbot2
@@ -49,14 +47,6 @@ Follows steps with details.
 
 Update to latest packages: `sudo yum update -y`.
 
-### Set environment
-
-```sh
-export NEXT_PUBLIC_NODE_ENV=production
-export DEPLOY_STAGE=main
-export NEXT_PUBLIC_DEPLOY_STAGE=main
-```
-
 ### Install Node.js v16
 
 NOTA BENE: Node.js v18 requires glibc v2.8, not available yet on Amazon Linux.
@@ -77,10 +67,30 @@ aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
 cd /opt/ggbot2
 ```
 
-Install deps and build
+Install deps
 
 ```sh
 npm ci
+```
+
+### Set environment
+
+```sh
+export DEPLOY_STAGE=main
+export NODE_ENV=production
+export UTRUST_API_KEY=xxx
+export UTRUST_=xxx
+```
+
+Notice that `NODE_ENV` is set to production after installing npm deps, otherwise
+it will install only production deps, while for build we need also dev deps.
+
+Also notice that environment is used also by `npm run generate:user-webapp:env`
+script which is run automatically after build.
+
+Build
+
+```sh
 npm run build
 npm run next:build:user-webapp
 ```
@@ -111,7 +121,6 @@ ExecStart=/usr/bin/npm run start:user-webapp
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"
-Environment="NEXT_PUBLIC_NODE_ENV=production"
 
 [Install]
 WantedBy=multi-user.target
@@ -131,7 +140,6 @@ Environment="AWS_ACCOUNT_ID=xxx"
 Environment="AWS_ACCESS_KEY_ID=xxx"
 Environment="AWS_SECRET_ACCESS_KEY=xxx"
 Environment="DEPLOY_STAGE=main"
-Environment="NEXT_PUBLIC_DEPLOY_STAGE=main"
 ```
 
 Command `systemctl edit` uses nano, to "exit and save" do `CTRL-x SHIFT-Y ENTER`.

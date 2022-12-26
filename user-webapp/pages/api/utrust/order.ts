@@ -73,7 +73,9 @@ export default async function apiHandler(
 
     const { country, email, numMonths } = input;
 
-    const returnUrl = `${webappBaseUrl}${route.settingsPage("billing")}`;
+    const billingSettingsUrl = `${webappBaseUrl}${route.settingsPage(
+      "billing"
+    )}`;
 
     const numDecimals = 2;
     const totalNum = totalPurchase(numMonths);
@@ -105,12 +107,17 @@ export default async function apiHandler(
         currency: monthlyPriceCurrency,
       },
       return_urls: {
-        return_url: returnUrl,
+        return_url: billingSettingsUrl,
+        // TODO could add an id to callback url?
+        callback_url: route.apiUtrustCallback(),
+        cancel_url: billingSettingsUrl,
       },
       line_items: [
         {
           sku: purchase.id,
-          name: "Subscription",
+          name: `Subscription (${
+            numMonths >= maxNumMonths - 1 ? "1 year" : `${numMonths} months`
+          })`,
           price: totalStr,
           currency: monthlyPriceCurrency,
           quantity: 1,
