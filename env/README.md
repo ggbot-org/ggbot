@@ -22,7 +22,9 @@ export NEXT_PUBLIC_NODE_ENV=production
 export DEPLOY_STAGE=main
 export NEXT_PUBLIC_DEPLOY_STAGE=main
 
-export AWS_ACCOUNT_ID=123
+export UTRUST_API_KEY=u_live_api_ec6a0684-4f41-4f3c-b059-548dec333ad7
+
+export AWS_ACCOUNT_ID=12345678
 export AWS_ACCESS_KEY_ID=XXX
 export AWS_SECRET_ACCESS_KEY=XXX
 ```

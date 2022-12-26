@@ -1,5 +1,4 @@
-import { readEmailCookie } from "@ggbot2/cookies";
-import { getUtrustApiKey, deployStageIsMain } from "@ggbot2/env";
+import { getUtrustApiKey } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -37,6 +36,10 @@ type RequestData = {
   numMonths: NaturalNumber;
 };
 
+type ResponseData = {
+  redirectUrl?: string;
+};
+
 const isRequestData = objectTypeGuard<RequestData>(
   ({ country, email, numMonths }) =>
     isAllowedCountryIsoCode2(country) &&
@@ -46,7 +49,7 @@ const isRequestData = objectTypeGuard<RequestData>(
 
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ResponseData>
 ) {
   try {
     // Handle HTTP method
@@ -60,7 +63,8 @@ export default async function apiHandler(
     const apiKey = getUtrustApiKey();
     const { createOrder } = ApiClient(
       apiKey,
-      deployStageIsMain ? "production" : "sandbox"
+      "sandbox"
+      // TODO deployStageIsMain ? "production" : "sandbox"
     );
 
     // Check ResponseData is valid
@@ -94,11 +98,6 @@ export default async function apiHandler(
             startDay,
           });
 
-    console.log(purchase);
-    // TODO store purchase
-    // use CreateYearlySubscriptionPurchase and
-    // CreateMonthlySubscriptionPurchase
-
     const order: Order = {
       reference,
       amount: {
@@ -124,16 +123,23 @@ export default async function apiHandler(
       country,
     };
 
-    const order2 = await createOrder(order, customer);
-    console.log(order2);
-    const { data } = order2;
-    console.log("order", data);
+    const { data } = await createOrder(order, customer);
 
     if (data === null) return res.status(__400__BAD_REQUEST__).json({});
 
+    // TODO store order data from Utrust on database
+    // purchase/paymentProvider=utrust/accountId=, etc.
+    console.log(purchase);
+    // TODO store purchase
+    // use CreateYearlySubscriptionPurchase and
+    // CreateMonthlySubscriptionPurchase
+    //
+    // TODO purchase could have an info attribute
+    // purchase.info = data
+
     const { redirectUrl } = data;
 
-    res.redirect(redirectUrl);
+    res.status(__200__OK__).json({ redirectUrl });
   } catch (error) {
     console.error(error);
     res.status(__500__INTERNAL_SERVER_ERROR__).json({});

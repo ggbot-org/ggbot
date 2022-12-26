@@ -8,7 +8,7 @@ import {
   purchaseMaxNumMonths as maxNumMonths,
 } from "@ggbot2/models";
 import { getTime, now } from "@ggbot2/time";
-import { isNaturalNumber } from "@ggbot2/type-utils";
+import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import {
   Button,
   Checkmark,
@@ -48,6 +48,7 @@ export const BillingSettings: FC = () => {
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
   const [setAccountCountry] = useApiAction.SetAccountCountry();
 
+  const [purchaseIsPending, setPurchaseIsPending] = useState(false);
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
   const [formattedTotalPrice, setFormattedTotalPrice] = useState("");
   const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
@@ -148,16 +149,31 @@ export const BillingSettings: FC = () => {
 
   const onClickPurchase = useCallback(async () => {
     if (purchaseIsDisabled) return;
-    await fetch(route.apiPurchaseOrder(), {
-      body: JSON.stringify({ country, email, numMonths }),
-      credentials: "include",
-      headers: new Headers({
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }),
-      method: "POST",
-    });
-  }, [country, purchaseIsDisabled, numMonths]);
+    if (purchaseIsPending) return;
+    setPurchaseIsPending(true);
+    try {
+      const response = await fetch(route.apiPurchaseOrder(), {
+        body: JSON.stringify({ country, email, numMonths }),
+        credentials: "include",
+        headers: new Headers({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+        method: "POST",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (isMaybeObject<{ redirectUrl: string }>(data)) {
+          const { redirectUrl } = data;
+          if (typeof redirectUrl === "string")
+            window.location.href = redirectUrl;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setPurchaseIsPending(false);
+    }
+  }, [country, purchaseIsDisabled, purchaseIsPending, numMonths]);
 
   useEffect(() => {
     if (!isAccount(account)) return;
@@ -261,7 +277,11 @@ export const BillingSettings: FC = () => {
 
           <menu>
             <li>
-              <Button disabled={purchaseIsDisabled} onClick={onClickPurchase}>
+              <Button
+                disabled={purchaseIsDisabled}
+                onClick={onClickPurchase}
+                isSpinning={purchaseIsPending}
+              >
                 Purchase
               </Button>
             </li>
