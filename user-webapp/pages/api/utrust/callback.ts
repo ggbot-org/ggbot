@@ -1,4 +1,9 @@
 import {
+  locatorToItemKey,
+  readSubscription,
+  updateSubscriptionPurchaseStatus,
+} from "@ggbot2/database";
+import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
@@ -22,6 +27,15 @@ export default async function apiHandler(
     const input = req.body;
     // TODO check what utrust returns
     console.log(input);
+
+    // TODO const {reference} = input
+    const reference = "";
+    const purchaseKey = locatorToItemKey.subscriptionPurchase(reference);
+    await updateSubscriptionPurchaseStatus({
+      ...purchaseKey,
+      status: "completed",
+    });
+    // TODO status canceled
 
     res.status(__200__OK__).json({ ok: true });
   } catch (error) {

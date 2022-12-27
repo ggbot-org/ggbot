@@ -86,9 +86,12 @@
  │ └╴accountId=XXX/
  │   └╴subscription.json
  │
- └╴subscriptionHistory
+ └╴subscriptionPurchase
    └╴accountId=XXX/
-     └╴purchases.json
+     └╴y=YYYY/
+       └╴m=MM/
+         └╴d=DD/
+           └╴purchase.json
 */
 
 import {
@@ -100,11 +103,13 @@ import {
   StrategyDailyBalanceChangesKey,
   StrategyDailyOrdersKey,
   StrategyKey,
+  SubscriptionPurchaseKey,
   isAccountDailyOrdersKey,
   isAccountKey,
   isAccountStrategyKey,
   isStrategyDailyBalanceChangesKey,
   isStrategyKey,
+  isSubscriptionPurchaseKey,
   normalizeEmailAddress,
 } from "@ggbot2/models";
 import { joinDay, isSplittedDay, splitDay } from "@ggbot2/time";
@@ -116,10 +121,12 @@ const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter);
 const dayKeyFields = ["y", "m", "d"] as const;
 const accountKeyFields = ["accountId"] as const;
 const strategyKeyFields = ["strategyKind", "strategyId"] as const;
+const subscriptionPurchaseKeyFields = ["purchaseId"] as const;
 const fieldNames = [
   ...accountKeyFields,
   ...strategyKeyFields,
   ...dayKeyFields,
+  ...subscriptionPurchaseKeyFields,
 ] as const;
 type FieldName = typeof fieldNames[number];
 const isFieldName = isLiteralType<FieldName>(fieldNames);
@@ -142,7 +149,7 @@ const dirnamePrefixes = [
   "strategyMemory",
   "strategyOrdersPool",
   "subscription",
-  "subscriptionHistory",
+  "subscriptionPurchase",
 ] as const;
 
 type DirnamePrefix = typeof dirnamePrefixes[number];
@@ -162,7 +169,7 @@ export const dirnamePrefix: Record<DirnamePrefix, string> = {
   strategyMemory: "strategyMemory",
   strategyOrdersPool: "strategyOrdersPool",
   subscription: "subscription",
-  subscriptionHistory: "subscriptionHistory",
+  subscriptionPurchase: "subscriptionPurchase",
 };
 
 const destructureLocator = (
@@ -217,6 +224,16 @@ export const locatorToItemKey = {
     ]);
     return isStrategyDailyBalanceChangesKey(obj) ? obj : undefined;
   },
+  subscriptionPurchase: (
+    locator: string
+  ): SubscriptionPurchaseKey | undefined => {
+    const obj = destructureLocator(locator, [
+      ...dayKeyFields,
+      ...accountKeyFields,
+      "purchaseId",
+    ]);
+    return isSubscriptionPurchaseKey(obj) ? obj : undefined;
+  },
 };
 
 export const itemKeyToDirname = {
@@ -247,6 +264,16 @@ export const itemKeyToDirname = {
     ]),
   strategyDailyOrders: ({ day, ...key }: StrategyDailyOrdersKey) =>
     dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
+  subscriptionPurchase: ({
+    accountId,
+    day,
+    purchaseId,
+  }: SubscriptionPurchaseKey) =>
+    dirJoin([
+      itemKeyToDirname.account({ accountId }),
+      itemKeyToDirname.day({ day }),
+      fieldJoin("purchaseId", purchaseId),
+    ]),
 };
 
 export const dirname = {
@@ -291,10 +318,10 @@ export const dirname = {
       `${dirnamePrefix.subscription}`,
       `${itemKeyToDirname.account(arg)}`,
     ]),
-  subscriptionHistory: (arg: AccountKey) =>
+  subscriptionPurchase: (arg: SubscriptionPurchaseKey) =>
     dirJoin([
-      `${dirnamePrefix.subscriptionHistory}`,
-      `${itemKeyToDirname.account(arg)}`,
+      `${dirnamePrefix.subscriptionPurchase}`,
+      `${itemKeyToDirname.subscriptionPurchase(arg)}`,
     ]),
 };
 
@@ -313,7 +340,7 @@ const filename = {
   strategyMemory: "memory.json",
   strategyOrdersPool: "orders.json",
   subscription: "subscription.json",
-  subscriptionHistory: "purchases.json",
+  subscriptionPurchase: "purchases.json",
 };
 
 export const pathname = {
@@ -356,6 +383,6 @@ export const pathname = {
     dirJoin([dirname.strategyOrdersPool(arg), filename.strategyOrdersPool]),
   subscription: (arg: AccountKey) =>
     dirJoin([dirname.subscription(arg), filename.subscription]),
-  subscriptionHistory: (arg: AccountKey) =>
-    dirJoin([dirname.subscriptionHistory(arg), filename.subscriptionHistory]),
+  subscriptionPurchase: (arg: SubscriptionPurchaseKey) =>
+    dirJoin([dirname.subscriptionPurchase(arg), filename.subscriptionPurchase]),
 };

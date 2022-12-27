@@ -7,7 +7,7 @@ export class ErrorAccountItemNotFound extends Error {
   }: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
     return `${type} not found, accountId=${accountId}`;
   }
-  readonly type: "Account" | "BinanceApiConfig";
+  readonly type: "Account" | "BinanceApiConfig" | "SubscriptionPurchase";
   readonly accountId: unknown;
   constructor({
     type,

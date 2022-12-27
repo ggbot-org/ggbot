@@ -1,4 +1,11 @@
-import { getUtrustApiKey } from "@ggbot2/env";
+import {
+  itemKeyToDirname,
+  readSubscription,
+  createYearlySubscriptionPurchase,
+  createMonthlySubscriptionPurchase,
+  updateSubscriptionPurchaseInfo,
+} from "@ggbot2/database";
+import { getUtrustApiKey, getUtrustEnvironment } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -6,7 +13,6 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import { readSubscription } from "@ggbot2/database";
 import {
   AllowedCountryIsoCode2,
   EmailAddress,
@@ -15,8 +21,6 @@ import {
   isAllowedCountryIsoCode2,
   isEmailAddress,
   monthlyPriceCurrency,
-  newMonthlySubscription,
-  newYearlySubscription,
   purchaseMaxNumMonths as maxNumMonths,
   totalPurchase,
 } from "@ggbot2/models";
@@ -60,12 +64,10 @@ export default async function apiHandler(
     if (!session) return res.status(__401__UNAUTHORIZED__).json({});
     const { accountId } = session;
 
+    const utrustEnvironment = getUtrustEnvironment();
+
     const apiKey = getUtrustApiKey();
-    const { createOrder } = ApiClient(
-      apiKey,
-      "sandbox"
-      // TODO deployStageIsMain ? "production" : "sandbox"
-    );
+    const { createOrder } = ApiClient(apiKey, utrustEnvironment);
 
     // Check ResponseData is valid
     const input = req.body;
@@ -81,7 +83,6 @@ export default async function apiHandler(
     const totalNum = totalPurchase(numMonths);
     const totalStr = totalNum.toFixed(numDecimals);
     const plan: SubscriptionPlan = "basic";
-    const reference = `order-${plan}`;
 
     const paymentProvider: PaymentProvider = "utrust";
 
@@ -90,15 +91,24 @@ export default async function apiHandler(
       ? dateToDay(getDate(dayToDate(subscription.end)).plus(1).days())
       : today();
 
-    const purchase =
+    const purchaseKey =
       numMonths >= maxNumMonths - 1
-        ? newYearlySubscription({ plan, paymentProvider, startDay })
-        : newMonthlySubscription({
+        ? await createYearlySubscriptionPurchase({
+            accountId,
+            plan,
+            paymentProvider,
+            startDay,
+          })
+        : await createMonthlySubscriptionPurchase({
+            accountId,
             plan,
             paymentProvider,
             numMonths,
             startDay,
           });
+
+    // Save reference as stringified purchaseKey.
+    const reference = itemKeyToDirname.subscriptionPurchase(purchaseKey);
 
     const order: Order = {
       reference,
@@ -107,14 +117,15 @@ export default async function apiHandler(
         currency: monthlyPriceCurrency,
       },
       return_urls: {
+        // TODO return to thank-you page
         return_url: billingSettingsUrl,
-        // TODO could add an id to callback url?
         callback_url: route.apiUtrustCallback(),
+        // TODO add cancel page
         cancel_url: billingSettingsUrl,
       },
       line_items: [
         {
-          sku: purchase.id,
+          sku: plan,
           name: `Subscription (${
             numMonths >= maxNumMonths - 1 ? "1 year" : `${numMonths} months`
           })`,
@@ -134,17 +145,12 @@ export default async function apiHandler(
 
     if (data === null) return res.status(__400__BAD_REQUEST__).json({});
 
-    // TODO store order data from Utrust on database
-    // purchase/paymentProvider=utrust/accountId=, etc.
-    console.log(purchase);
-    // TODO store purchase
-    // use CreateYearlySubscriptionPurchase and
-    // CreateMonthlySubscriptionPurchase
-    //
     // TODO purchase could have an info attribute
     // purchase.info = data
 
-    const { redirectUrl } = data;
+    const { redirectUrl, uuid } = data;
+
+    updateSubscriptionPurchaseInfo({ ...purchaseKey, info: { uuid } });
 
     res.status(__200__OK__).json({ redirectUrl });
   } catch (error) {
