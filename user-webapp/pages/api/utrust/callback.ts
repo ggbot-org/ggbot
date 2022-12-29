@@ -1,14 +1,21 @@
 import {
   locatorToItemKey,
   readSubscription,
+  readSubscriptionPurchase,
+  writeSubscription,
   updateSubscriptionPurchaseStatus,
 } from "@ggbot2/database";
+import { getUtrustWebhookSecret } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import {
+  WebhookValidator,
+  Event as UtrustEvent,
+} from "@utrustdev/utrust-ts-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type ResponseData = {
@@ -24,18 +31,47 @@ export default async function apiHandler(
     if (req.method !== "POST")
       return res.status(__405__METHOD_NOT_ALLOWED__).json({ ok: false });
 
+    const webhookSecret = getUtrustWebhookSecret();
+    const { validateSignature } = WebhookValidator(webhookSecret);
     const input = req.body;
-    // TODO check what utrust returns
-    console.log(input);
+    const isValid = validateSignature(input);
+    if (!isValid) return res.status(__400__BAD_REQUEST__).json({ ok: false });
+    const {
+      event_type,
+      resource: { reference },
+    } = input as UtrustEvent;
 
-    // TODO const {reference} = input
-    const reference = "";
+    // Nothing to do, the payment is detected on the blockchain.
+    if (event_type === "ORDER.PAYMENT.DETECTED")
+      res.status(__200__OK__).json({ ok: true });
+
     const purchaseKey = locatorToItemKey.subscriptionPurchase(reference);
-    await updateSubscriptionPurchaseStatus({
-      ...purchaseKey,
-      status: "completed",
-    });
-    // TODO status canceled
+    if (!purchaseKey)
+      return res.status(__400__BAD_REQUEST__).json({ ok: false });
+
+    if (event_type === "ORDER.PAYMENT.RECEIVED") {
+      const purchase = await readSubscriptionPurchase(purchaseKey);
+      const { accountId } = purchaseKey;
+      const subscription = await readSubscription({ accountId });
+
+      if (!purchase || !subscription)
+        return res.status(__400__BAD_REQUEST__).json({ ok: false });
+
+      const { plan } = subscription;
+      const { end } = purchase;
+      await writeSubscription({ accountId, plan, end });
+
+      await updateSubscriptionPurchaseStatus({
+        ...purchaseKey,
+        status: "completed",
+      });
+    }
+
+    if (event_type === "ORDER.PAYMENT.CANCELLED")
+      await updateSubscriptionPurchaseStatus({
+        ...purchaseKey,
+        status: "canceled",
+      });
 
     res.status(__200__OK__).json({ ok: true });
   } catch (error) {

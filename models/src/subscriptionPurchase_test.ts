@@ -44,6 +44,7 @@ describe("isSubscriptionPurchase", () => {
           id: nullId,
           plan,
           paymentProvider,
+          status: "completed",
           whenCreated,
           ...dayInterval,
         },
@@ -73,13 +74,24 @@ describe("isSubscriptionPurchase", () => {
           ...dayInterval,
           info: "not an object",
         },
-        output: true,
+        output: false,
       },
       {
         input: {
           id: nullId,
           plan: "not an plan",
           status: "completed",
+          whenCreated,
+          paymentProvider,
+          ...dayInterval,
+        },
+        output: false,
+      },
+      {
+        input: {
+          id: nullId,
+          plan,
+          status: "not a status",
           whenCreated,
           paymentProvider,
           ...dayInterval,

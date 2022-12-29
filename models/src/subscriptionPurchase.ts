@@ -158,7 +158,12 @@ export type CreateMonthlySubscriptionPurchase = Operation<
   SubscriptionPurchaseKey
 >;
 
-export type UpdateSubscriptionPurchase = Operation<
-  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info" | "status">,
+export type UpdateSubscriptionPurchaseInfo = Operation<
+  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info">,
+  UpdateTime
+>;
+
+export type UpdateSubscriptionPurchaseStatus = Operation<
+  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "status">,
   UpdateTime
 >;

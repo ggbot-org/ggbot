@@ -6,7 +6,8 @@ import {
   SubscriptionPurchase,
   SubscriptionPurchaseKey,
   WriteSubscriptionPurchase,
-  UpdateSubscriptionPurchase,
+  UpdateSubscriptionPurchaseInfo,
+  UpdateSubscriptionPurchaseStatus,
   newMonthlySubscription,
   newSubscriptionPurchaseKey,
   newYearlySubscription,
@@ -32,8 +33,8 @@ export const writeSubscriptionPurchase: WriteSubscriptionPurchase["func"] =
     return updatedNow();
   };
 
-export const updateSubscriptionPurchase: UpdateSubscriptionPurchase["func"] =
-  async ({ info, status, ...key }) => {
+export const updateSubscriptionPurchaseInfo: UpdateSubscriptionPurchaseInfo["func"] =
+  async ({ info, ...key }) => {
     const purchase = await readSubscriptionPurchase(key);
     if (!purchase)
       throw new ErrorAccountItemNotFound({
@@ -44,6 +45,20 @@ export const updateSubscriptionPurchase: UpdateSubscriptionPurchase["func"] =
       ...purchase,
       ...key,
       info,
+    });
+  };
+
+export const updateSubscriptionPurchaseStatus: UpdateSubscriptionPurchaseStatus["func"] =
+  async ({ status, ...key }) => {
+    const purchase = await readSubscriptionPurchase(key);
+    if (!purchase)
+      throw new ErrorAccountItemNotFound({
+        accountId: key.accountId,
+        type: "SubscriptionPurchase",
+      });
+    return await writeSubscriptionPurchase({
+      ...purchase,
+      ...key,
       status,
     });
   };
