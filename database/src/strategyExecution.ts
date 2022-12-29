@@ -17,10 +17,11 @@ import {
   ReadStrategyExecution,
   StrategyExecution,
   WriteStrategyExecution,
+  newOrder,
   createdNow,
   updatedNow,
 } from "@ggbot2/models";
-import { truncateTime, now, timeToDay } from "@ggbot2/time";
+import { truncateTime, now, today, timeToDay } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { removeAccountStrategiesItemSchedulings } from "./accountStrategies.js";
 import { pathname } from "./locators.js";
@@ -30,6 +31,8 @@ import {
   ErrorStrategyItemNotFound,
   ErrorUnimplementedStrategyKind,
 } from "./errors.js";
+import { appendAccountDailyOrders } from "./accountDailyOrders.js";
+import { appendStrategyDailyOrders } from "./strategyDailyOrders.js";
 import { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
@@ -122,21 +125,31 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         // TODO extract orders from execution
         // update order pools with orders that has temporary state
         // write other orders (e.g. filled) in history
+
         if (orders.length > 0) {
-          // const { whenCreated } = createdNow();
-          // const day = timeToDay(truncateTime(whenCreated).to.day());
-          // TODO appendAccountDailyOrders
-          // TODO appendStrategyDailyOrders
-          //
-          // // TODO orders.map(info => newOrder(info))
-          //
-          // await appendStrategyDailyBalanceChanges({
-          //   accountId,
-          //   strategyKind,
-          //   strategyId,
-          //   day,
-          //   items: [{ whenCreated, balances }],
-          // });
+          const day = today();
+          // TODO filter orders that are not filled, e.g. limit orders
+          const strategyOrders = orders.map((info) => newOrder(info));
+
+          await appendStrategyDailyOrders({
+            accountId,
+            strategyKind,
+            strategyId,
+            day,
+            items: strategyOrders,
+          });
+
+          const accountOrders = strategyOrders.map((order) => ({
+            order,
+            strategyKind,
+            strategyId,
+          }));
+
+          await appendAccountDailyOrders({
+            accountId,
+            day,
+            items: accountOrders,
+          });
         }
 
         if (balances.length > 0) {

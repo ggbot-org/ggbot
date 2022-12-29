@@ -1,7 +1,7 @@
 import { isDay } from "@ggbot2/time";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
-import type { BalanceChangeEvent } from "./balanceChangeEvent.js";
+import type { BalanceChangeEvents } from "./balanceChangeEvent.js";
 import type { Operation } from "./operation.js";
 import type { DayKey, UpdateTime } from "./time.js";
 
@@ -15,10 +15,10 @@ export const isStrategyDailyBalanceChangesKey =
 
 export type ReadStrategyDailyBalanceChanges = Operation<
   StrategyDailyBalanceChangesKey,
-  BalanceChangeEvent[] | null
+  BalanceChangeEvents | null
 >;
 
 export type AppendStrategyDailyBalanceChanges = Operation<
-  StrategyDailyBalanceChangesKey & { items: BalanceChangeEvent[] },
+  StrategyDailyBalanceChangesKey & { items: BalanceChangeEvents },
   UpdateTime
 >;

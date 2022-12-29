@@ -18,7 +18,7 @@ import {
   readStrategy,
   readStrategyBalances,
   readStrategyFlow,
-  readStrategyDailyOrders,
+  readStrategyOrders,
   readSubscription,
   renameAccount,
   setAccountCountry,
@@ -53,7 +53,7 @@ import type {
   ReadStrategy,
   ReadStrategyBalances,
   ReadStrategyFlow,
-  ReadStrategyDailyOrders,
+  ReadStrategyOrders,
   ReadSubscription,
   RenameAccount,
   RenameStrategy,
@@ -127,7 +127,7 @@ export type ApiAction = {
   ReadStrategy: Action<ReadStrategy["in"]>;
   ReadStrategyBalances: Action<ReadStrategyBalances["in"]>;
   ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
-  ReadStrategyDailyOrders: Action<ReadStrategyDailyOrders["in"]>;
+  ReadStrategyOrders: Action<ReadStrategyOrders["in"]>;
   ReadSubscription: Action<ReadSubscription["in"]>;
   RenameAccount: Action<RenameAccount["in"]>;
   RenameStrategy: Action<RenameStrategy["in"]>;
@@ -154,7 +154,7 @@ const apiActionTypes = [
   "ReadStrategy",
   "ReadStrategyBalances",
   "ReadStrategyFlow",
-  "ReadStrategyDailyOrders",
+  "ReadStrategyOrders",
   "ReadSubscription",
   "RenameStrategy",
   "RemoveAccountStrategiesItemSchedulings",
@@ -297,8 +297,8 @@ export default async function apiHandler(
                 return res.status(__200__OK__).json({ data });
               }
 
-              case "ReadStrategyDailyOrders": {
-                const data = await readStrategyDailyOrders({
+              case "ReadStrategyOrders": {
+                const data = await readStrategyOrders({
                   accountId,
                   ...action.data,
                 });

@@ -23,7 +23,10 @@ export const DateTime: FC<Props> = ({ format, value }) => {
       if (format === "day")
         setFormattedValue(
           new Intl.DateTimeFormat(window.navigator.language, {
-            dateStyle: "full",
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
           }).format(date)
         );
 

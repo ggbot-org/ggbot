@@ -214,9 +214,9 @@ export const useApiAction = {
     useAction<ApiAction["ReadStrategyBalances"]>({
       type: "ReadStrategyBalances",
     }),
-  ReadStrategyDailyOrders: () =>
-    useAction<ApiAction["ReadStrategyDailyOrders"]>({
-      type: "ReadStrategyDailyOrders",
+  ReadStrategyOrders: () =>
+    useAction<ApiAction["ReadStrategyOrders"]>({
+      type: "ReadStrategyOrders",
     }),
   ReadStrategyFlow: () =>
     useAction<ApiAction["ReadStrategyFlow"]>({ type: "ReadStrategyFlow" }),
