@@ -16,15 +16,12 @@ aws s3 sync --exclude '.git*' --exclude 'node_modules/*' . s3://code.ggbot2.com/
 
 Connect with ec2-user to an *Amazon Linux 2 AMI* instance.
 
-If services are already configured, create an update.sh script with the
-following content
+If services are already configured, and environment is loaded on login,
+create an update.sh script with the following content
 
 ```sh
 ### Update deps
 sudo yum update -y
-
-### Set environment
-export DEPLOY_STAGE=main
 
 ### Get code and build
 sudo rm -rf /opt/ggbot2
@@ -33,6 +30,7 @@ sudo chown ec2-user:ec2-user /opt/ggbot2
 aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
 cd /opt/ggbot2
 npm ci
+export NODE_ENV=production
 npm run build
 npm run next:build:user-webapp
 ```
@@ -76,8 +74,8 @@ npm ci
 ### Set environment
 
 ```sh
-export DEPLOY_STAGE=main
 export NODE_ENV=production
+export DEPLOY_STAGE=main
 export UTRUST_API_KEY=xxx
 export UTRUST_=xxx
 ```
@@ -87,6 +85,8 @@ it will install only production deps, while for build we need also dev deps.
 
 Also notice that environment is used also by `npm run generate:user-webapp:env`
 script which is run automatically after build.
+
+Make it persistent, add to *~/.bashrc* all variable exports except `NODE_ENV`.
 
 Build
 
