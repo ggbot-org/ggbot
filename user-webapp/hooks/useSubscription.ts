@@ -15,6 +15,14 @@ export const useSubscription = () => {
     subscriptionEnd,
     subscriptionPlan,
   } = useMemo(() => {
+    if (subscription === undefined) {
+      return {
+        canPurchaseSubscription: undefined,
+        hasActiveSubscription: undefined,
+        subscriptionEnd: undefined,
+        subscriptionPlan: undefined,
+      };
+    }
     if (!isSubscription(subscription))
       return {
         canPurchaseSubscription: true,
@@ -24,7 +32,7 @@ export const useSubscription = () => {
       };
     return {
       canPurchaseSubscription:
-        getTime(dayToTime(subscription.end)).minus(1).months() > now(),
+        getTime(dayToTime(subscription.end)).minus(30).days() < now(),
       hasActiveSubscription: subscriptionStatus(subscription) === "active",
       subscriptionEnd: dayToTime(subscription.end),
       subscriptionPlan: subscription.plan,

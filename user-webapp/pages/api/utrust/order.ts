@@ -23,6 +23,8 @@ import {
   monthlyPriceCurrency,
   purchaseMaxNumMonths as maxNumMonths,
   totalPurchase,
+  isSubscription,
+  subscriptionStatus,
 } from "@ggbot2/models";
 import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
 import {
@@ -87,9 +89,11 @@ export default async function apiHandler(
     const paymentProvider: PaymentProvider = "utrust";
 
     const subscription = await readSubscription({ accountId });
-    const startDay = subscription
-      ? dateToDay(getDate(dayToDate(subscription.end)).plus(1).days())
-      : today();
+    const startDay =
+      isSubscription(subscription) &&
+      subscriptionStatus({ end: subscription.end }) === "active"
+        ? dateToDay(getDate(dayToDate(subscription.end)).plus(1).days())
+        : today();
 
     const purchaseKey =
       numMonths >= maxNumMonths - 1

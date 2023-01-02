@@ -30,6 +30,7 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const [hasActiveSubscription, setHasActiveSubscription] = useState<
     boolean | undefined
   >();
+  console.log(hasActiveSubscription);
 
   const breadcrumbs = useMemo(
     () => [

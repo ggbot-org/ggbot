@@ -28,14 +28,22 @@ import {
 } from "_api/auth/verify";
 import { Content, Navigation } from "_components";
 import { useApiAction } from "_hooks";
-import { HasSession, readSession, route } from "_routing";
+import {
+  EmailAddressCookie,
+  HasSession,
+  readEmail,
+  readSession,
+  route,
+} from "_routing";
 
-type ServerSideProps = HasSession;
+type ServerSideProps = HasSession & EmailAddressCookie;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = readSession(req.cookies);
+  const email = readEmail(req.cookies);
   return {
     props: {
+      email,
       hasSession: session !== undefined,
     },
   };
@@ -265,9 +273,10 @@ const Exit: FC = () => {
 
 type VerifyProps = {
   setEmailSent: Dispatch<SetStateAction<EmailSent>>;
+  email: string;
 };
 
-const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
+const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
   const router = useRouter();
 
   const [codeSent, setCodeSent] = useState(false);
@@ -368,6 +377,14 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
     <>
       <AuthForm message="Enter ggbot2" onSubmit={onSubmit}>
         <InputField
+          label="email"
+          name="email"
+          readOnly
+          type="text"
+          defaultValue={email}
+        />
+
+        <InputField
           label="one time password"
           name="code"
           readOnly={isPending}
@@ -407,7 +424,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent }) => {
   );
 };
 
-const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
+const Page: NextPage<ServerSideProps> = ({ hasSession, email }) => {
   const [emailSent, setEmailSent] = useState<EmailSent>(false);
   return (
     <Content topbar={<Navigation />}>
@@ -417,7 +434,7 @@ const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
         ) : (
           <>
             {emailSent ? (
-              <Verify setEmailSent={setEmailSent} />
+              <Verify setEmailSent={setEmailSent} email={email} />
             ) : (
               <Enter emailSent={emailSent} setEmailSent={setEmailSent} />
             )}
