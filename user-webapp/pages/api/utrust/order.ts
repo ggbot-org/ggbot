@@ -69,6 +69,7 @@ export default async function apiHandler(
     const utrustEnvironment = getUtrustEnvironment();
 
     const apiKey = getUtrustApiKey();
+    console.log(apiKey, utrustEnvironment);
     const { createOrder } = ApiClient(apiKey, utrustEnvironment);
 
     // Check ResponseData is valid
@@ -80,6 +81,7 @@ export default async function apiHandler(
     const billingSettingsUrl = `${webappBaseUrl}${route.settingsPage(
       "billing"
     )}`;
+    const callbackUrl = `${webappBaseUrl}${route.apiUtrustCallback()}`;
 
     const numDecimals = 2;
     const totalNum = totalPurchase(numMonths);
@@ -123,7 +125,7 @@ export default async function apiHandler(
       return_urls: {
         // TODO return to thank-you page
         return_url: billingSettingsUrl,
-        callback_url: route.apiUtrustCallback(),
+        callback_url: callbackUrl,
         // TODO add cancel page
         cancel_url: billingSettingsUrl,
       },
@@ -146,6 +148,7 @@ export default async function apiHandler(
     };
 
     const { data } = await createOrder(order, customer);
+    console.log(data, order, customer);
 
     if (data === null) return res.status(__400__BAD_REQUEST__).json({});
 
