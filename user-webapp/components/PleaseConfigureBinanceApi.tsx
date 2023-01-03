@@ -11,7 +11,7 @@ export const PleaseConfigureBinanceApi: FC = () => {
         </p>
         <menu>
           <li>
-            <ButtonGoSettings />
+            <ButtonGoSettings section="binance" />
           </li>
         </menu>
       </div>

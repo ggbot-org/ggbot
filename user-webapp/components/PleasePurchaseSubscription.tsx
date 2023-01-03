@@ -13,7 +13,7 @@ export const PleasePurchaseSubscription: FC = () => {
         </p>
         <menu>
           <li>
-            <ButtonGoSettings />
+            <ButtonGoSettings section="billing" />
           </li>
         </menu>
       </div>
