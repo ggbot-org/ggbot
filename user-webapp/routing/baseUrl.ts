@@ -1,6 +1,5 @@
-import { nodeEnvIsProduction } from "@ggbot2/env";
 import { userWebappDomain } from "@ggbot2/infrastructure";
 
-export const webappBaseUrl = nodeEnvIsProduction
-  ? `https://${userWebappDomain}`
-  : "http://localhost:3000";
+// It does not make sense to use localhost even when
+// `nodeEnvIsProduction` is false. Those URLs will not be reachable.
+export const webappBaseUrl = `https://${userWebappDomain}`;

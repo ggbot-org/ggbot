@@ -127,7 +127,7 @@ export default async function apiHandler(
         return_url: billingSettingsUrl,
         callback_url: callbackUrl,
         // TODO add cancel page
-        cancel_url: billingSettingsUrl,
+        // cancel_url:
       },
       line_items: [
         {
@@ -143,17 +143,15 @@ export default async function apiHandler(
     };
 
     const customer: Customer = {
+      first_name: "",
+      last_name: "",
       email,
       country,
     };
 
     const { data } = await createOrder(order, customer);
-    console.log(data, order, customer);
 
     if (data === null) return res.status(__400__BAD_REQUEST__).json({});
-
-    // TODO purchase could have an info attribute
-    // purchase.info = data
 
     const { redirectUrl, uuid } = data;
 
