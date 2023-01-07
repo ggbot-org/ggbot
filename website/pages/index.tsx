@@ -36,11 +36,10 @@ const Page: NextPage = () => {
       </Header>
 
       <main className="grow inline-flex items-center justify-center">
-        <Link
-          href="https://app.ggbot2.com"
-          className="font-medium text-2xl cursor-pointer bg-black text-white px-6 py-8 rounded-md active:bg-brand active:text-cyan-900 hover:ring-4 outline-0 focus:ring-4 ring-cyan-brand transition-colors ease-in"
-        >
-          Launch App
+        <Link href="https://app.ggbot2.com">
+          <span className="font-medium text-2xl cursor-pointer bg-black text-white px-6 py-8 rounded-md active:bg-brand active:text-cyan-900 hover:ring-4 outline-0 focus:ring-4 ring-cyan-brand transition-colors ease-in">
+            Launch App
+          </span>
         </Link>
       </main>
 
