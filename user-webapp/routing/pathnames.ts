@@ -36,6 +36,8 @@ export const route = {
     `/settings${hash ? `#${hash}` : ""}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
+  subscriptionCanceledPage: () => "/subscription/canceled",
+  subscriptionThankYouPage: () => "/subscription/thank-you",
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/view/flow/${strategyKind}/${strategyId}`,
 };

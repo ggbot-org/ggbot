@@ -78,11 +78,6 @@ export default async function apiHandler(
 
     const { country, email, numMonths } = input;
 
-    const billingSettingsUrl = `${webappBaseUrl}${route.settingsPage(
-      "billing"
-    )}`;
-    const callbackUrl = `${webappBaseUrl}${route.apiUtrustCallback()}`;
-
     const numDecimals = 2;
     const totalNum = totalPurchase(numMonths);
     const totalStr = totalNum.toFixed(numDecimals);
@@ -123,11 +118,9 @@ export default async function apiHandler(
         currency: monthlyPriceCurrency,
       },
       return_urls: {
-        // TODO return to thank-you page
-        return_url: billingSettingsUrl,
-        callback_url: callbackUrl,
-        // TODO add cancel page
-        // cancel_url:
+        callback_url: `${webappBaseUrl}${route.apiUtrustCallback()}`,
+        return_url: `${webappBaseUrl}${route.subscriptionThankYouPage()}`,
+        cancel_url: `${webappBaseUrl}${route.subscriptionCanceledPage()}`,
       },
       line_items: [
         {
@@ -143,8 +136,6 @@ export default async function apiHandler(
     };
 
     const customer: Customer = {
-      first_name: "",
-      last_name: "",
       email,
       country,
     };
