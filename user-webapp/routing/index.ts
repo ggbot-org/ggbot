@@ -1,4 +1,3 @@
-export * from "./authentication";
 export * from "./baseUrl";
 export * from "./pathnames";
 export * from "./redirects";

@@ -1,16 +1,27 @@
+import { isAccountKey } from "@ggbot2/models";
 import { Button } from "@ggbot2/ui-components";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 import { Account } from "./Account";
 
 export const Accounts: FC = () => {
-  const { data } = useApiAction.LIST_ACCOUNT_KEYS();
+  const [request, { data: accountKeys }] = useApiAction.ListAccountKeys();
 
   const { accountIds, numAccounts } = useMemo(() => {
-    if (!data) return { accountIds: [], numAccounts: "" };
-    const accountIds = data.map(({ accountId }) => accountId);
+    const accountIds = Array.isArray(accountKeys)
+      ? accountKeys.map((accountKey) =>
+          isAccountKey(accountKey) ? accountKey.accountId : "unknown"
+        )
+      : [];
     return { accountIds, numAccounts: accountIds.length };
-  }, [data]);
+  }, [accountKeys, request]);
+
+  useEffect(() => {
+    const controller = request();
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-2">

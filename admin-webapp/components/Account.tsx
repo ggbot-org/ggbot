@@ -1,15 +1,23 @@
-import type { AccountKey } from "@ggbot2/models";
-import type { FC } from "react";
+import { AccountKey, isAccount } from "@ggbot2/models";
+import { FC, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 
 type Props = AccountKey;
 
 export const Account: FC<Props> = ({ accountId }) => {
-  const { data } = useApiAction.READ_ACCOUNT({ accountId });
+  const [request, { data: account }] = useApiAction.ReadAccount();
 
-  if (!data) return null;
+  useEffect(() => {
+    const controller = request({ accountId });
+    return () => {
+      controller.abort();
+    };
+  }, [accountId, request]);
 
-  const { email } = data;
+  const { email } = useMemo(
+    () => (isAccount(account) ? { email: account.email } : { email: "" }),
+    [account]
+  );
 
   return <div>{email}</div>;
 };

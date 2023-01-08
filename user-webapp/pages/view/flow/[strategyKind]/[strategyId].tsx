@@ -1,4 +1,5 @@
 import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
+import { readSession } from "@ggbot2/cookies";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
@@ -24,7 +25,6 @@ import {
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
-  readSession,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
   route,

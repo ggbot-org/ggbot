@@ -124,7 +124,7 @@ export const BillingSettings: FC = () => {
     return getTime(start)
       .plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
       .months();
-  }, [numMonths, subscriptionEnd]);
+  }, [numMonths, readSubscriptionIsPending, subscriptionEnd]);
 
   const onChangeNumMonths = useCallback<InputOnChange>(
     (event) => {
@@ -173,7 +173,7 @@ export const BillingSettings: FC = () => {
       console.error(error);
       setPurchaseIsPending(false);
     }
-  }, [country, purchaseIsDisabled, purchaseIsPending, numMonths]);
+  }, [country, email, purchaseIsDisabled, purchaseIsPending, numMonths]);
 
   useEffect(() => {
     if (!isAccount(account)) return;
@@ -202,7 +202,7 @@ export const BillingSettings: FC = () => {
     });
     if (!formattedMonthlyPrice) setFormattedMonthlyPrice(format(monthlyPrice));
     if (numMonths) setFormattedTotalPrice(format(totalPurchase(numMonths)));
-  }, [numMonths]);
+  }, [formattedMonthlyPrice, numMonths]);
 
   return (
     <>

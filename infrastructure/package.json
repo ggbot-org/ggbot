@@ -16,8 +16,8 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
-    "@aws-sdk/client-elastic-load-balancing-v2": "^3.145.0",
-    "@aws-sdk/client-s3": "^3.145.0",
+    "@aws-sdk/client-elastic-load-balancing-v2": "^3.245.0",
+    "@aws-sdk/client-s3": "^3.245.0",
     "@ggbot2/env": "file:env"
   }
 }

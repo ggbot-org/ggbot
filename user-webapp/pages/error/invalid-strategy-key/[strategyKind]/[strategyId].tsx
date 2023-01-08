@@ -1,3 +1,4 @@
+import { readSession } from "@ggbot2/cookies";
 import { isStrategyKey } from "@ggbot2/models";
 import type { GetServerSideProps, NextPage } from "next";
 import {
@@ -8,7 +9,6 @@ import {
 } from "_components";
 import {
   InvalidStrategyKey,
-  readSession,
   redirectToAuthenticationPage,
   redirectToHomePage,
 } from "_routing";

@@ -1,3 +1,5 @@
+import type { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
+import { readSession } from "@ggbot2/cookies";
 import type { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import {
   ErrorAccountItemNotFound,
@@ -31,11 +33,9 @@ import {
   __401__UNAUTHORIZED__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
-  ErrorHTTP,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
 import type {
-  AccountKey,
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
@@ -45,8 +45,6 @@ import type {
   DeleteBinanceApiConfig,
   DeleteStrategy,
   ExecuteStrategy,
-  OperationInput,
-  OperationOutput,
   ReadAccount,
   ReadAccountStrategies,
   ReadBinanceApiConfig,
@@ -60,54 +58,8 @@ import type {
   SetAccountCountry,
   WriteStrategyFlow,
 } from "@ggbot2/models";
-import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
-import { Dflow, DflowObject } from "dflow";
+import { isLiteralType } from "@ggbot2/type-utils";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { readSession } from "_routing";
-
-const apiActionErrorNames = [
-  ErrorHTTP.name,
-  ErrorAccountItemNotFound.name,
-  ErrorUnimplementedStrategyKind.name,
-  InternalServerError.name,
-] as const;
-export type ApiActionErrorName = typeof apiActionErrorNames[number];
-
-const isApiActionErrorName = (arg: unknown): arg is ApiActionErrorName => {
-  if (typeof arg !== "string") return false;
-  return (apiActionErrorNames as readonly string[]).includes(arg);
-};
-
-export type ApiActionError = {
-  name: ApiActionErrorName;
-  info?: DflowObject;
-};
-
-export const isApiActionError = objectTypeGuard<ApiActionError>(
-  ({ name, info }) =>
-    isApiActionErrorName(name) &&
-    (info === undefined ? true : Dflow.isObject(info))
-);
-
-type ApiActionResponseError = {
-  error: ApiActionError;
-};
-
-export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
-  ({ error }) => isApiActionError(error)
-);
-
-export type ApiActionResponseOutput =
-  | {
-      data?: OperationOutput;
-    }
-  | ApiActionResponseError;
-
-type Action<Input extends OperationInput> = {
-  // AccountKey is provided by authentication, no need to add it as action input parameter.
-  in: Input extends AccountKey ? Omit<Input, "accountId"> : Input;
-  out: OperationOutput;
-};
 
 export type ApiAction = {
   CopyStrategy: Action<CopyStrategy["in"]>;
@@ -162,13 +114,8 @@ const apiActionTypes = [
   "SetAccountCountry",
   "WriteStrategyFlow",
 ] as const;
-type ApiActionType = typeof apiActionTypes[number];
+export type ApiActionType = typeof apiActionTypes[number];
 const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
-
-export type ApiActionInput = {
-  type: ApiActionType;
-  data?: OperationInput;
-};
 
 export default async function apiHandler(
   req: NextApiRequest,

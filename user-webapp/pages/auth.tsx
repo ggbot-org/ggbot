@@ -1,3 +1,4 @@
+import { readEmail, readSession } from "@ggbot2/cookies";
 import { isAccount } from "@ggbot2/models";
 import {
   Button,
@@ -28,13 +29,7 @@ import {
 } from "_api/auth/verify";
 import { Content, Navigation } from "_components";
 import { useApiAction } from "_hooks";
-import {
-  EmailAddressCookie,
-  HasSession,
-  readEmail,
-  readSession,
-  route,
-} from "_routing";
+import { EmailAddressCookie, HasSession, route } from "_routing";
 
 type ServerSideProps = HasSession & EmailAddressCookie;
 

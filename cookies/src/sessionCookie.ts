@@ -1,9 +1,3 @@
-import {
-  AccountKey,
-  CreationDay,
-  isAccountKey,
-  isCreationDay,
-} from "@ggbot2/models";
 import { getDate, truncateDate } from "@ggbot2/time";
 import {
   Cookies,
@@ -12,32 +6,20 @@ import {
   createCookie,
   deleteCookie,
 } from "./cookies.js";
+import { Session, isSession, sessionNumDays } from "./session.js";
 
 const separator = "_";
-
-export type Session = AccountKey & CreationDay;
-
-export const isSession = (value: unknown): value is Session => {
-  if (typeof value !== "object" || value === null) return false;
-  const { accountId, creationDay } = value as Partial<Session>;
-  return isAccountKey({ accountId }) && isCreationDay({ creationDay });
-};
 
 const serializeSessionCookie = ({ accountId, creationDay }: Session) =>
   [accountId, creationDay].join(separator);
 
 export const createSessionCookie = (
   session: Session,
-  {
-    secure,
-    numDays,
-  }: Pick<CreateCookieOptions, "secure"> & {
-    numDays: number;
-  }
+  { secure }: Pick<CreateCookieOptions, "secure">
 ) => {
-  const maxAge = 60 * 60 * 24 * numDays;
+  const maxAge = 60 * 60 * 24 * sessionNumDays;
   const todayDate = truncateDate(new Date()).to.day();
-  const expires = getDate(todayDate).plus(numDays).days();
+  const expires = getDate(todayDate).plus(sessionNumDays).days();
 
   const content = serializeSessionCookie(session);
 

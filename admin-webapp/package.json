@@ -13,9 +13,9 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
+    "@ggbot2/api-action": "file:api-action",
     "@ggbot2/database": "file:database",
     "@ggbot2/http-status-codes": "file:http-status-codes",
-    "@ggbot2/ui-components": "file:ui-components",
-    "swr": "^1.3.0"
+    "@ggbot2/ui-components": "file:ui-components"
   }
 }

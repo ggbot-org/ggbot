@@ -1,3 +1,4 @@
+import { readSession } from "@ggbot2/cookies";
 import {
   itemKeyToDirname,
   readSubscription,
@@ -34,7 +35,7 @@ import {
 } from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { readSession, route, webappBaseUrl } from "_routing";
+import { route, webappBaseUrl } from "_routing";
 
 type RequestData = {
   country: AllowedCountryIsoCode2;
@@ -69,7 +70,6 @@ export default async function apiHandler(
     const utrustEnvironment = getUtrustEnvironment();
 
     const apiKey = getUtrustApiKey();
-    console.log(apiKey, utrustEnvironment);
     const { createOrder } = ApiClient(apiKey, utrustEnvironment);
 
     // Check ResponseData is valid

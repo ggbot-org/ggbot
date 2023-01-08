@@ -1,3 +1,4 @@
+import { readSession } from "@ggbot2/cookies";
 import { ErrorAccountItemNotFound, readStrategy } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
@@ -36,7 +37,6 @@ import { binance } from "_flow/binance";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import {
   StrategyInfo,
-  readSession,
   redirectToAuthenticationPage,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,

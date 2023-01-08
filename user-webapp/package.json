@@ -19,6 +19,7 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
+    "@ggbot2/api-action": "file:api-action",
     "@ggbot2/assets": "file:assets",
     "@ggbot2/cookies": "file:cookies",
     "@ggbot2/database": "file:database",

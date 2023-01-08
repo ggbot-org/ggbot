@@ -1,68 +1,34 @@
-import { readAccount, listAccountKeys } from "@ggbot2/database";
+import type { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
+import { readSession } from "@ggbot2/cookies";
+import {
+  ErrorUnimplementedStrategyKind,
+  readAccount,
+  listAccountKeys,
+} from "@ggbot2/database";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
+  __401__UNAUTHORIZED__,
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
+  InternalServerError,
 } from "@ggbot2/http-status-codes";
-import type {
-  OperationInput,
-  OperationOutput,
-  ReadAccount,
-  ListAccountKeys,
-} from "@ggbot2/models";
+import type { ReadAccount, ListAccountKeys } from "@ggbot2/models";
+import { isLiteralType } from "@ggbot2/type-utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export type ApiActionInputData = OperationInput;
-type ApiActionOutputData = OperationOutput;
-
-export type ApiActionInput = {
-  type: ApiActionType;
-  data?: ApiActionInputData;
-};
-
-const apiActionBadRequestNames = ["UnimplementedStrategyKind"] as const;
-export type ApiActionBadRequestName = typeof apiActionBadRequestNames[number];
-
-const isApiActionBadRequestName = (
-  arg: unknown
-): arg is ApiActionBadRequestName => {
-  if (typeof arg !== "string") return false;
-  return (apiActionBadRequestNames as readonly string[]).includes(arg);
-};
-
-type ApiActionResponseToBadRequest = {
-  error: ApiActionBadRequestName;
-};
-
-export const isApiActionResponseToBadRequest = (
-  arg: unknown
-): arg is ApiActionResponseToBadRequest => {
-  if (typeof arg !== "object" || arg === null) return false;
-  const { error } = arg as Partial<ApiActionResponseToBadRequest>;
-  return isApiActionBadRequestName(error);
-};
-
-export type ApiActionResponseOutput<T> =
-  | {
-      data?: T;
-    } & Partial<ApiActionResponseToBadRequest>;
-
-type Action<Input extends OperationInput, Output extends OperationOutput> = {
-  in: Input;
-  out: Output;
-};
-
 export type ApiAction = {
-  READ_ACCOUNT: Action<ReadAccount["in"], ReadAccount["out"]>;
-  LIST_ACCOUNT_KEYS: Action<ListAccountKeys["in"], ListAccountKeys["out"]>;
+  ReadAccount: Action<ReadAccount["in"]>;
+  ListAccountKeys: Action<ListAccountKeys["in"]>;
 };
 
-type ApiActionType = keyof ApiAction;
+const apiActionTypes = ["ReadAccount", "ListAccountKeys"] as const;
+export type ApiActionType = typeof apiActionTypes[number];
+const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
 
 export default async function apiHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ApiActionResponseOutput<ApiActionOutputData>>
+  res: NextApiResponse<ApiActionResponseOutput>
 ) {
   try {
     if (req.method !== "POST")
@@ -70,13 +36,21 @@ export default async function apiHandler(
 
     const action = req.body;
 
-    switch (action.type as ApiActionType) {
-      case "READ_ACCOUNT": {
+    const { type: actionType } = action;
+
+    if (!isApiActionType(actionType))
+      return res.status(__400__BAD_REQUEST__).json({});
+
+    const session = readSession(req.cookies);
+    if (!session) return res.status(__401__UNAUTHORIZED__).json({});
+
+    switch (actionType) {
+      case "ReadAccount": {
         const data = await readAccount(action.data);
         return res.status(__200__OK__).json({ data });
       }
 
-      case "LIST_ACCOUNT_KEYS": {
+      case "ListAccountKeys": {
         const data = await listAccountKeys();
         return res.status(__200__OK__).json({ data });
       }
@@ -85,7 +59,12 @@ export default async function apiHandler(
         return res.status(__400__BAD_REQUEST__).json({});
     }
   } catch (error) {
+    if (error instanceof ErrorUnimplementedStrategyKind)
+      return res.status(__400__BAD_REQUEST__).json({ error: error.toObject() });
+
     console.error(error);
-    res.status(__500__INTERNAL_SERVER_ERROR__).json({});
+    res
+      .status(__500__INTERNAL_SERVER_ERROR__)
+      .json({ error: { name: InternalServerError.name } });
   }
 }
