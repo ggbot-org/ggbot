@@ -85,7 +85,7 @@
     "prebuild:test-data": "run-p build:models",
     "prebuild:time": "run-p build:type-utils",
     "prebuild:ui-components": "run-p build:time",
-    "prebuild:user-webapp": "run-p build:assets build:cookies build:database build:http-status-codes build:ui-components",
+    "prebuild:user-webapp": "run-p build:api-action build:assets build:cookies build:database build:http-status-codes build:ui-components",
     "prebuild:website": "run-p build:assets build:models build:ui-components",
     "pree2e:chromium": "run-s build:user-webapp:package",
     "remove_node_modules": "rm -rf node_modules",
