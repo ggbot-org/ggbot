@@ -22,11 +22,13 @@ type Props = {
 };
 
 export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
+  const numDays = 30;
+
   const timeInterval = useMemo<TimeInterval>(() => {
     const time = now();
     const today = truncateTime(time).to.day();
     const end = today;
-    const start = getTime(end).minus(7).days();
+    const start = getTime(end).minus(numDays).days();
     return { start, end };
   }, []);
 
