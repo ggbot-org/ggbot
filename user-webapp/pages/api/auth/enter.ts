@@ -1,4 +1,3 @@
-import { createEmailCookie } from "@ggbot2/cookies";
 import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
 import { nodeEnvIsProduction } from "@ggbot2/env";
 import {
@@ -20,7 +19,7 @@ export const isApiEnterRequestData = objectTypeGuard<ApiEnterRequestData>(
 );
 
 export type ApiEnterResponseData = {
-  emailSent?: boolean | undefined;
+  emailSent?: boolean;
 };
 
 export default async function apiHandler(
@@ -40,8 +39,6 @@ export default async function apiHandler(
     const oneTimePassword = await createOneTimePassword(email);
     await sendOneTimePassword({ email, oneTimePassword });
 
-    const cookie = createEmailCookie(email, { secure: nodeEnvIsProduction });
-    res.setHeader("Set-Cookie", cookie);
     res.status(__200__OK__).json({ emailSent: true });
   } catch (error) {
     console.error(error);

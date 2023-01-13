@@ -2,10 +2,6 @@ import type { Strategy, StrategyKey } from "@ggbot2/models";
 
 export type { StrategyFlow, StrategyKey } from "@ggbot2/models";
 
-export type EmailAddressCookie = {
-  email: string;
-};
-
 export type HasSession = {
   hasSession: boolean;
 };

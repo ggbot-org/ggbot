@@ -5,9 +5,8 @@ export type Cookies = Partial<{
   [key: string]: string;
 }>;
 
-export const EMAIL_COOKIE_NAME = "email";
 export const SESSION_COOKIE_NAME = "sessionid";
-type CookieName = typeof EMAIL_COOKIE_NAME | typeof SESSION_COOKIE_NAME;
+type CookieName = typeof SESSION_COOKIE_NAME;
 
 export type CreateCookieOptions = Pick<
   CookieSerializeOptions,

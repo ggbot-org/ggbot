@@ -1,5 +1,5 @@
-import { readEmail, readSession } from "@ggbot2/cookies";
-import { isAccount } from "@ggbot2/models";
+import { readSession } from "@ggbot2/cookies";
+import { EmailAddress, isAccount } from "@ggbot2/models";
 import {
   Button,
   ButtonOnClick,
@@ -29,16 +29,18 @@ import {
 } from "_api/auth/verify";
 import { Content, Navigation } from "_components";
 import { useApiAction } from "_hooks";
-import { EmailAddressCookie, HasSession, route } from "_routing";
+import { HasSession, route } from "_routing";
 
-type ServerSideProps = HasSession & EmailAddressCookie;
+type ServerSideProps = HasSession;
+
+type EmailSent = ApiEnterResponseData["emailSent"];
+
+type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = readSession(req.cookies);
-  const email = readEmail(req.cookies);
   return {
     props: {
-      email,
       hasSession: session !== undefined,
     },
   };
@@ -76,14 +78,12 @@ const TimeoutFeedback: FC = () => (
   <div>Request not sent. Please check connectivity and try again.</div>
 );
 
-type EmailSent = ApiEnterResponseData["emailSent"];
-
 type EnterProps = {
   emailSent: EmailSent;
-  setEmailSent: Dispatch<SetStateAction<EmailSent>>;
+  setEmail: SetEmail;
 };
 
-const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
+const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -137,7 +137,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
 
         const responseData: ApiEnterResponseData = await response.json();
 
-        setEmailSent(responseData.emailSent);
+        if (responseData.emailSent) setEmail(email);
       } catch (error) {
         setHasGenericError(true);
         setIsPending(false);
@@ -147,7 +147,6 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
     [
       emailSent,
       isPending,
-      setEmailSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
@@ -168,7 +167,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmailSent }) => {
         <menu>
           <li>
             <Button color="primary" isSpinning={isPending}>
-              send
+              Send
             </Button>
           </li>
         </menu>
@@ -267,11 +266,11 @@ const Exit: FC = () => {
 };
 
 type VerifyProps = {
-  setEmailSent: Dispatch<SetStateAction<EmailSent>>;
-  email: string;
+  setEmail: SetEmail;
+  email: EmailAddress;
 };
 
-const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
+const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
   const router = useRouter();
 
   const [codeSent, setCodeSent] = useState(false);
@@ -287,8 +286,8 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
 
   const onClickOkGenerateOneTimePasswordAgain =
     useCallback<ButtonOnClick>(() => {
-      setEmailSent(false);
-    }, [setEmailSent]);
+      setEmail(undefined);
+    }, [setEmail]);
 
   const goToHomePage = useCallback(() => {
     router.push(route.homePage());
@@ -308,7 +307,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
         const code = (event.target as EventTarget & { code: { value: string } })
           .code.value;
 
-        const requestData = { code };
+        const requestData = { code, email };
 
         if (!isApiVerifyRequestData(requestData)) {
           setHasInvalidInput(true);
@@ -336,10 +335,9 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
           signal: controller.signal,
         });
 
-        setIsPending(false);
         clearTimeout(timeoutId);
 
-        if (!response.ok) throw new Error("response not ok");
+        if (!response.ok) throw new Error(response.statusText);
 
         const responseData: ApiVerifyResponseData = await response.json();
 
@@ -371,13 +369,11 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
   return (
     <>
       <AuthForm message="Enter ggbot2" onSubmit={onSubmit}>
-        <InputField
-          label="email"
-          name="email"
-          readOnly
-          type="text"
-          defaultValue={email}
-        />
+        <OutputField label="email">{email}</OutputField>
+
+        <div>
+          Check your email to get the <em>One Time Password</em>.
+        </div>
 
         <InputField
           label="one time password"
@@ -387,19 +383,15 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
           spellCheck={false}
           type="text"
         />
+
         <menu>
           <Button color="primary" isSpinning={isPending}>
-            enter
+            Enter
           </Button>
         </menu>
       </AuthForm>
 
       <FeedbackMessages>
-        {codeSent ? null : (
-          <div>
-            Check your email to get the <em>One Time Password</em>.
-          </div>
-        )}
         {hasGenericError ? <GenericErrorFeedback /> : null}
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
@@ -409,7 +401,7 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
             <div>Need to generate one time password again</div>
             <div>
               <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
-                ok
+                Ok
               </Button>
             </div>
           </div>
@@ -419,8 +411,11 @@ const Verify: FC<VerifyProps> = ({ setEmailSent, email }) => {
   );
 };
 
-const Page: NextPage<ServerSideProps> = ({ hasSession, email }) => {
-  const [emailSent, setEmailSent] = useState<EmailSent>(false);
+const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
+  const [email, setEmail] = useState<EmailAddress | undefined>();
+
+  const emailSent = useMemo(() => email !== undefined, []);
+
   return (
     <Content topbar={<Navigation />}>
       <div className="flex flex-col items-center w-full max-w-lg p-4 gap-4">
@@ -428,10 +423,10 @@ const Page: NextPage<ServerSideProps> = ({ hasSession, email }) => {
           <Exit />
         ) : (
           <>
-            {emailSent ? (
-              <Verify setEmailSent={setEmailSent} email={email} />
+            {email ? (
+              <Verify email={email} setEmail={setEmail} />
             ) : (
-              <Enter emailSent={emailSent} setEmailSent={setEmailSent} />
+              <Enter emailSent={emailSent} setEmail={setEmail} />
             )}
           </>
         )}
