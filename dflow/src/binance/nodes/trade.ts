@@ -1,5 +1,6 @@
 import { coerceToDecimal } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
+import { dflowBinancePrecision } from "../arithmetic.js";
 import type { BinanceDflowContext as Context } from "../context.js";
 import { inputExecute } from "./commonIO.js";
 
@@ -32,11 +33,14 @@ export class BuyMarket extends DflowNode {
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "BUY", "MARKET", {
-      quantity: quantity === undefined ? undefined : coerceToDecimal(quantity),
+      quantity:
+        quantity === undefined
+          ? undefined
+          : coerceToDecimal(quantity, dflowBinancePrecision),
       quoteOrderQty:
         quoteOrderQty === undefined
           ? undefined
-          : coerceToDecimal(quoteOrderQty),
+          : coerceToDecimal(quoteOrderQty, dflowBinancePrecision),
     });
     this.output(0).data = order;
   }
@@ -58,11 +62,14 @@ export class SellMarket extends DflowNode {
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol) return this.clearOutputs();
     const order = await binance.newOrder(symbol, "SELL", "MARKET", {
-      quantity: quantity === undefined ? undefined : coerceToDecimal(quantity),
+      quantity:
+        quantity === undefined
+          ? undefined
+          : coerceToDecimal(quantity, dflowBinancePrecision),
       quoteOrderQty:
         quoteOrderQty === undefined
           ? undefined
-          : coerceToDecimal(quoteOrderQty),
+          : coerceToDecimal(quoteOrderQty, dflowBinancePrecision),
     });
     this.output(0).data = order;
   }
