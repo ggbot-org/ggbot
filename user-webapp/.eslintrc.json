@@ -2,6 +2,6 @@
   "extends": "next",
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-warning-comments": "warn"
+    "no-warning-comments": "off"
   }
 }

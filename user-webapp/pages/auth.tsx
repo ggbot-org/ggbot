@@ -147,6 +147,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
     [
       emailSent,
       isPending,
+      setEmail,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
@@ -273,7 +274,6 @@ type VerifyProps = {
 const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
   const router = useRouter();
 
-  const [codeSent, setCodeSent] = useState(false);
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -323,7 +323,6 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
           setIsPending(false);
         }, timeout);
 
-        setCodeSent(true);
         setIsPending(true);
 
         const response = await fetch(route.apiVerify(), {
@@ -356,9 +355,9 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
       }
     },
     [
+      email,
       goToHomePage,
       isPending,
-      setCodeSent,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
@@ -414,7 +413,7 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
 const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
 
-  const emailSent = useMemo(() => email !== undefined, []);
+  const emailSent = useMemo(() => email !== undefined, [email]);
 
   return (
     <Content topbar={<Navigation />}>

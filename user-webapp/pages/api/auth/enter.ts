@@ -1,5 +1,4 @@
 import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
-import { nodeEnvIsProduction } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,

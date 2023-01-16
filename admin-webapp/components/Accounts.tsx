@@ -14,14 +14,14 @@ export const Accounts: FC = () => {
         )
       : [];
     return { accountIds, numAccounts: accountIds.length };
-  }, [accountKeys, request]);
+  }, [accountKeys]);
 
   useEffect(() => {
     const controller = request();
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [request]);
 
   return (
     <div className="flex flex-col gap-2">
