@@ -263,7 +263,10 @@ export const itemKeyToDirname = {
       itemKeyToDirname.accountStrategy(key),
     ]),
   strategyDailyOrders: ({ day, ...key }: StrategyDailyOrdersKey) =>
-    dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
+    dirJoin([
+      itemKeyToDirname.day({ day }),
+      itemKeyToDirname.accountStrategy(key),
+    ]),
   subscriptionPurchase: ({
     accountId,
     day,
