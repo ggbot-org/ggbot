@@ -46,3 +46,8 @@ export type WriteSubscription = Operation<
   AccountKey & Subscription,
   UpdateTime
 >;
+
+export type ReadSubscriptionPlan = Operation<
+  AccountKey,
+  SubscriptionPlan | null
+>;

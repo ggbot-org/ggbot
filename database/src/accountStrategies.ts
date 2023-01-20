@@ -6,13 +6,16 @@ import {
   RemoveAccountStrategiesItemSchedulings,
   SuspendAccountStrategiesSchedulings,
   UpdateAccountStrategiesItem,
-  deletedNow,
   createdNow,
-  updatedNow,
+  deletedNow,
   newStrategyScheduling,
+  quota,
+  updatedNow,
 } from "@ggbot2/models";
+import { ErrorExceededQuota } from "./errors.js";
 import { getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
+import { readSubscriptionPlan } from "./subscription.js";
 
 export const readAccountStrategies: ReadAccountStrategies["func"] = async (
   key
@@ -24,6 +27,10 @@ export const readAccountStrategies: ReadAccountStrategies["func"] = async (
 export const insertAccountStrategiesItem: InsertAccountStrategiesItem["func"] =
   async ({ accountId, item }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
+    const subscriptionPlan = await readSubscriptionPlan({ accountId });
+    const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan);
+    if (items.length >= numMaxStrategies)
+      throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" });
     const data = [...items, item];
     const Key = pathname.accountStrategies({ accountId });
     await putObject({ Key, data });
@@ -45,6 +52,20 @@ export const updateAccountStrategiesItem: UpdateAccountStrategiesItem["func"] =
 export const createAccountStrategiesItemScheduling: CreateAccountStrategiesItemScheduling["func"] =
   async ({ accountId, strategyId, frequency }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
+    const subscriptionPlan = await readSubscriptionPlan({ accountId });
+    const numMaxSchedulings =
+      quota.MAX_SCHEDULINGS_PER_ACCOUNT(subscriptionPlan);
+    const numSchedulings = items.reduce<number>(
+      (count, { schedulings = [] }) => {
+        const numActiveSchedulings = schedulings.filter(
+          ({ status }) => status === "active"
+        ).length;
+        return count + numActiveSchedulings;
+      },
+      0
+    );
+    if (numSchedulings >= numMaxSchedulings)
+      throw new ErrorExceededQuota({ type: "MAX_SCHEDULINGS_PER_ACCOUNT" });
     const data = items.map((item) => {
       if (item.strategyId !== strategyId) return item;
       return {

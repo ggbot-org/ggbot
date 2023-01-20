@@ -1,6 +1,8 @@
 import {
   ReadSubscription,
+  ReadSubscriptionPlan,
   WriteSubscription,
+  isSubscription,
   updatedNow,
 } from "@ggbot2/models";
 import { getObject, putObject } from "./_dataBucket.js";
@@ -18,4 +20,14 @@ export const writeSubscription: WriteSubscription["func"] = async ({
   const Key = pathname.subscription({ accountId });
   await putObject({ Key, data: subscription });
   return updatedNow();
+};
+
+export const readSubscriptionPlan: ReadSubscriptionPlan["func"] = async ({
+  accountId,
+}) => {
+  const subscription = await readSubscription({ accountId });
+  const subscriptionPlan = isSubscription(subscription)
+    ? subscription.plan
+    : null;
+  return subscriptionPlan;
 };

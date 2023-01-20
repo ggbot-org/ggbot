@@ -3,6 +3,7 @@ import { readSession } from "@ggbot2/cookies";
 import type { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import {
   ErrorAccountItemNotFound,
+  ErrorExceededQuota,
   ErrorUnimplementedStrategyKind,
   copyStrategy,
   createBinanceApiConfig,
@@ -35,7 +36,7 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import type {
+import {
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
@@ -304,6 +305,7 @@ export default async function apiHandler(
   } catch (error) {
     if (
       error instanceof ErrorAccountItemNotFound ||
+      error instanceof ErrorExceededQuota ||
       error instanceof ErrorUnimplementedStrategyKind
     )
       return res.status(__400__BAD_REQUEST__).json({ error: error.toObject() });

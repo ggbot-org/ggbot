@@ -1,4 +1,4 @@
-import type { AccountKey, StrategyKey } from "@ggbot2/models";
+import type { AccountKey, QuotaType, StrategyKey } from "@ggbot2/models";
 
 export class ErrorAccountItemNotFound extends Error {
   static message({
@@ -22,6 +22,25 @@ export class ErrorAccountItemNotFound extends Error {
       name: ErrorAccountItemNotFound.name,
       info: {
         accountId: String(this.accountId),
+        type: this.type,
+      },
+    };
+  }
+}
+
+export class ErrorExceededQuota extends Error {
+  static message(type: ErrorExceededQuota["type"]) {
+    return `${type} quota exceeded`;
+  }
+  readonly type: QuotaType;
+  constructor({ type }: Pick<ErrorExceededQuota, "type">) {
+    super(ErrorExceededQuota.message(type));
+    this.type = type;
+  }
+  toObject() {
+    return {
+      name: ErrorExceededQuota.name,
+      info: {
         type: this.type,
       },
     };
