@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import {
   Buttons,
+  Charts,
   Colors,
   EditableInputs,
   Icons,
@@ -45,6 +46,8 @@ const Home: NextPage = () => {
         <GroupedPills />
 
         <SimpleTable />
+
+        <Charts />
       </main>
     </>
   );
