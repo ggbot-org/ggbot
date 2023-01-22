@@ -11,8 +11,8 @@ export const readStrategyOrders: ReadStrategyOrders["func"] = async ({
   let date = dayToDate(start);
   while (date <= dayToDate(end)) {
     const day = dateToDay(date);
-    const data = (await readStrategyDailyOrders({ day, ...key })) ?? [];
-    result.push({ day, data });
+    const orders = (await readStrategyDailyOrders({ day, ...key })) ?? [];
+    for (const order of orders) result.push(order);
     date = getDate(date).plus(1).days();
   }
   return result;

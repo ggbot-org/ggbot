@@ -1,3 +1,4 @@
+import { useIsServerSide } from "@ggbot2/hooks";
 import type { FC } from "react";
 import { LineChart, Line, Tooltip } from "recharts";
 
@@ -12,9 +13,11 @@ const data1 = [
 ];
 
 export const Charts: FC = () => {
+  const isServerSide = useIsServerSide();
+  if (isServerSide) return null;
   return (
     <div>
-      <LineChart width={400} height={200} data={data1}>
+      <LineChart id="line1" width={400} height={200} data={data1}>
         <Line type="monotone" dataKey="v" stroke="#8884d8" />
         <Tooltip />
       </LineChart>

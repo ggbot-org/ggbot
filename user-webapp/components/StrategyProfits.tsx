@@ -22,6 +22,7 @@ type Props = {
 };
 
 export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
+  const { strategyKind } = strategyKey;
   const numDays = 30;
 
   const timeInterval = useMemo<TimeInterval>(() => {
@@ -76,6 +77,7 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
         balanceHistory={balanceHistory}
         timeInterval={timeInterval}
         orderHistory={orderHistory}
+        strategyKind={strategyKind}
       />
     </Section>
   );

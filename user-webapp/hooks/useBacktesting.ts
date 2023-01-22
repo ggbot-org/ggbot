@@ -1,6 +1,7 @@
 // TODO use markers to show sell and buy
 // https://jsfiddle.net/TradingView/nd80cx1a/
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
+import { useIsServerSide } from "@ggbot2/hooks";
 import { BalanceChangeEvent, newOrder, Order } from "@ggbot2/models";
 import {
   Day,
@@ -16,7 +17,6 @@ import type { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
 import { BinanceDflowClient } from "_flow/binance";
 import type { StrategyKey } from "_routing";
-import { useIsServerSide } from "./useIsServerSide";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey &

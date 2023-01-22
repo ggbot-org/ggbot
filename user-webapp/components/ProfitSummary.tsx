@@ -1,14 +1,24 @@
-import { add } from "@ggbot2/arithmetic";
+import { add, Decimal } from "@ggbot2/arithmetic";
 import { isBinanceOrderRespFULL } from "@ggbot2/binance";
+import { useIsServerSide } from "@ggbot2/hooks";
 import type {
   Balance,
   BalanceChangeEvent,
   Order,
   StrategyKind,
 } from "@ggbot2/models";
-import type { TimeInterval } from "@ggbot2/time";
+import { TimeInterval, timeToDay } from "@ggbot2/time";
 import { DateTime, Pill } from "@ggbot2/ui-components";
-import { FC, useMemo } from "react";
+import colors from "tailwindcss/colors";
+import { FC, useId, useMemo } from "react";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
@@ -25,6 +35,9 @@ export const ProfitSummary: FC<Props> = ({
   timeInterval,
   strategyKind,
 }) => {
+  const isServerSide = useIsServerSide();
+  const freeDailyBalanceChartsSyncId = useId();
+
   const { numBuys, numSells } = useMemo<{
     numBuys: undefined | number;
     numSells: undefined | number;
@@ -43,46 +56,88 @@ export const ProfitSummary: FC<Props> = ({
     return { numBuys, numSells };
   }, [orderHistory, strategyKind]);
 
-  const { totalBalance, assets } = useMemo(() => {
-    const balancesMap = new Map<Balance["asset"], Balance>();
-    for (const { balances } of balanceHistory) {
-      for (const balance of balances) {
-        const currentBalance = balancesMap.get(balance.asset);
-        if (currentBalance)
-          balancesMap.set(balance.asset, {
-            asset: balance.asset,
-            free: add(balance.free, currentBalance.free),
-            locked: add(balance.locked, currentBalance.locked),
+  const { dailyBalance, totalBalance, assets } = useMemo(() => {
+    const totalBalancesMap = new Map<Balance["asset"], Pick<Balance, "free">>();
+    const dailyBalancesMap = new Map<
+      Balance["asset"],
+      Array<{ name: string; freeDecimal: Decimal; free: number }>
+    >();
+
+    for (const { balances, whenCreated } of balanceHistory) {
+      for (const { asset, free } of balances) {
+        const freeNum = Number(free);
+
+        const currentTotalBalance = totalBalancesMap.get(asset);
+        if (currentTotalBalance)
+          totalBalancesMap.set(asset, {
+            free: add(free, currentTotalBalance.free),
           });
-        else balancesMap.set(balance.asset, balance);
+        else totalBalancesMap.set(asset, { free });
+
+        const day = timeToDay(whenCreated);
+        const currentDailyBalances = dailyBalancesMap.get(asset);
+        if (currentDailyBalances) {
+          const currentDailyBalance = currentDailyBalances.find(
+            ({ name }) => name === day
+          );
+          if (currentDailyBalance) {
+            dailyBalancesMap.set(
+              asset,
+              currentDailyBalances
+                .map((dailyBalance) => {
+                  if (dailyBalance.name !== day) return dailyBalance;
+                  const sum = add(free, dailyBalance.freeDecimal);
+                  return { name: day, free: Number(sum), freeDecimal: sum };
+                })
+                .sort((a, b) => (a.name < b.name ? -1 : 1))
+            );
+          } else
+            dailyBalancesMap.set(
+              asset,
+              currentDailyBalances.concat({
+                name: day,
+                free: freeNum,
+                freeDecimal: free,
+              })
+            );
+        } else
+          dailyBalancesMap.set(asset, [
+            { name: day, free: freeNum, freeDecimal: free },
+          ]);
       }
     }
-    return {
-      assets: Array.from(balancesMap.keys()).sort((a, b) => {
-        const aHasPrority = customAssetSort.includes(a);
-        const bHasPrority = customAssetSort.includes(b);
-        const aIndex = customAssetSort.indexOf(a);
-        const bIndex = customAssetSort.indexOf(b);
 
-        if (aHasPrority && bHasPrority) {
-          if (aIndex < bIndex) return -1;
-          if (aIndex > bIndex) return 1;
-        } else if (aHasPrority && !bHasPrority) {
-          return -1;
-        } else if (!aHasPrority && bHasPrority) {
-          return 1;
-        } else {
-          if (a < b) return -1;
-          if (a > b) return 1;
-        }
-        return 0;
-      }),
-      totalBalance: Object.fromEntries(balancesMap.entries()),
+    const assets = Array.from(totalBalancesMap.keys()).sort((a, b) => {
+      const aHasPrority = customAssetSort.includes(a);
+      const bHasPrority = customAssetSort.includes(b);
+      const aIndex = customAssetSort.indexOf(a);
+      const bIndex = customAssetSort.indexOf(b);
+
+      if (aHasPrority && bHasPrority) {
+        if (aIndex < bIndex) return -1;
+        if (aIndex > bIndex) return 1;
+      } else if (aHasPrority && !bHasPrority) {
+        return -1;
+      } else if (!aHasPrority && bHasPrority) {
+        return 1;
+      } else {
+        if (a < b) return -1;
+        if (a > b) return 1;
+      }
+      return 0;
+    });
+
+    return {
+      assets,
+      dailyBalance: Object.fromEntries(dailyBalancesMap.entries()),
+      totalBalance: Object.fromEntries(totalBalancesMap.entries()),
     };
   }, [balanceHistory]);
 
+  if (isServerSide) return null;
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div className="flex gap-2">
         <div className="flex gap-2">
           <span>From</span>
@@ -107,10 +162,36 @@ export const ProfitSummary: FC<Props> = ({
         {assets.map((asset) => (
           <div key={asset}>
             <Pill>{asset}</Pill>
-            <Pill>{totalBalance[asset]?.free}</Pill>
+            <Pill>{totalBalance[asset].free}</Pill>
           </div>
         ))}
       </div>
+
+      {strategyKind === "binance" && (
+        <div className="flex flex-col gap-2">
+          {assets.map((asset) => (
+            <ResponsiveContainer key={asset} width="100%" height={150}>
+              <LineChart
+                height={100}
+                data={dailyBalance[asset]}
+                syncId={freeDailyBalanceChartsSyncId}
+              >
+                <Line
+                  connectNulls
+                  dataKey="free"
+                  stroke={colors.purple[500]}
+                  type="monotone"
+                />
+                <XAxis dataKey="name" domain={["dataMin", "dataMax"]} />
+                <YAxis
+                  label={{ value: asset, angle: -90, position: "insideLeft" }}
+                />
+                <Tooltip formatter={(value) => [value, asset]} />
+              </LineChart>
+            </ResponsiveContainer>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -36,7 +36,7 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import {
+import type {
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
