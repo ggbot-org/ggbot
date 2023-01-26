@@ -4,7 +4,7 @@ import {
   isNaturalNumber,
 } from "@ggbot2/type-utils";
 
-export const frequencyIntervals = ["1h"] as const;
+export const frequencyIntervals = ["1h", "1m"] as const;
 export type FrequencyInterval = typeof frequencyIntervals[number];
 export const isFrequencyInterval =
   isLiteralType<FrequencyInterval>(frequencyIntervals);
@@ -17,6 +17,11 @@ export type Frequency = {
 export const everyHour = (): Frequency => ({
   every: 1,
   interval: "1h",
+});
+
+export const every15Minutes = (): Frequency => ({
+  every: 15,
+  interval: "1m",
 });
 
 export const isFrequency = (arg: unknown): arg is Frequency => {

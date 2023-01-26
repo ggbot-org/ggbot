@@ -1,11 +1,18 @@
 import {
+  Frequency,
   StrategyScheduling,
   StrategySchedulings,
   everyHour,
+  every15Minutes,
   isAccountStrategy,
   isStrategyScheduling,
 } from "@ggbot2/models";
-import { Button, Section } from "@ggbot2/ui-components";
+import {
+  Button,
+  Section,
+  SelectField,
+  SelectOnChange,
+} from "@ggbot2/ui-components";
 import {
   FC,
   ReactNode,
@@ -13,6 +20,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useApiAction, useSubscription } from "_hooks";
 import type { StrategyKey } from "_routing";
@@ -28,6 +36,19 @@ export const SchedulingsForm: FC<Props> = ({
   strategyKey,
 }) => {
   const { strategyId } = strategyKey;
+
+  const [selectedFrequencyKey, setSelectedFrequencyKey] = useState("1h");
+
+  const frequencyOptions = useMemo(
+    () => [
+      {
+        value: "1h",
+        label: "every hour",
+      },
+      { value: "15m", label: "every 15 minutes" },
+    ],
+    []
+  );
 
   const { hasActiveSubscription, readSubscriptionIsPending } =
     useSubscription();
@@ -65,6 +86,11 @@ export const SchedulingsForm: FC<Props> = ({
     return schedulings;
   }, [accountStrategies, strategyId]);
 
+  const frequency = useMemo<Frequency>(() => {
+    if (selectedFrequencyKey === "15m") return every15Minutes();
+    if (selectedFrequencyKey === "1h") return everyHour();
+  }, [selectedFrequencyKey]);
+
   // TODO by now only one scheduling
   const scheduling = useMemo<StrategyScheduling | undefined>(() => {
     const scheduling = schedulings[0];
@@ -96,6 +122,13 @@ export const SchedulingsForm: FC<Props> = ({
     return null;
   }, [disabled, isActive, actionIsPending]);
 
+  const onChangeFrequency = useCallback<SelectOnChange>(
+    (event) => {
+      setSelectedFrequencyKey(event.target.value);
+    },
+    [setSelectedFrequencyKey]
+  );
+
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
@@ -107,7 +140,7 @@ export const SchedulingsForm: FC<Props> = ({
         if (schedulings.length === 0) {
           create({
             ...strategyKey,
-            frequency: everyHour(),
+            frequency,
           });
         }
       }
@@ -115,6 +148,7 @@ export const SchedulingsForm: FC<Props> = ({
     [
       isActive,
       create,
+      frequency,
       remove,
       disabled,
       actionIsPending,
@@ -145,6 +179,13 @@ export const SchedulingsForm: FC<Props> = ({
   return (
     <form onSubmit={onSubmit}>
       <Section header="Schedulings">
+        <SelectField
+          value={selectedFrequencyKey}
+          onChange={onChangeFrequency}
+          options={frequencyOptions}
+          label="frequency"
+        />
+
         <div>
           <SchedulingStatusBadge schedulings={schedulings} />
         </div>
