@@ -3,8 +3,10 @@ import {
   BinanceAccountInformation,
   BinanceBalance,
   BinanceCacheMap,
+  BinanceCacheProvider,
   BinanceConnector,
   BinanceExchange,
+  BinanceKline,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceNewOrderOptions,
@@ -16,12 +18,52 @@ import {
   BinanceDflowClient as IBinanceDflowClient,
   dflowBinanceZero as zero,
   dflowBinancePrecision,
+  dflowBinanceLowerKlineInterval,
 } from "@ggbot2/dflow";
-import type { Time } from "@ggbot2/time";
+import type { Time, TimeInterval } from "@ggbot2/time";
+
+class BinanceCache extends BinanceCacheMap implements BinanceCacheProvider {
+  private klinesKey(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    openTime: Time
+  ) {
+    return `${symbol}:${interval}:${openTime}`;
+  }
+
+  getKlines(
+    symbol: string,
+    _interval: BinanceKlineInterval,
+    timeInterval: TimeInterval
+  ) {
+    // TODO group klines for example per hour
+    // interval must be always the lower granularity
+    // (dflowBinanceLowerKlineInterval 15m)
+    // remove other interval nodes (1s, 1m, etc.)
+    //
+    // for example with 15m
+    // every hour has four values
+    //
+    // backtest should fetch from start to finish before start, so it gets
+    // into the cache
+    const key = this.klinesKey(
+      symbol,
+      dflowBinanceLowerKlineInterval,
+      timeInterval.end
+    );
+    console.log(key);
+    return undefined;
+  }
+  setKlines(
+    _symbol: string,
+    _interval: BinanceKlineInterval,
+    _klines: BinanceKline[]
+  ) {}
+}
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
-  cache: new BinanceCacheMap(),
+  cache: new BinanceCache(),
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {

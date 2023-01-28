@@ -1,4 +1,4 @@
-import { binanceKlineIntervals } from "@ggbot2/binance";
+import { BinanceKlineInterval } from "@ggbot2/binance";
 import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import {
@@ -20,10 +20,26 @@ type GetDflowBinanceNodesCatalog = (
   arg: GetDflowBinanceNodesCatalogArg
 ) => DflowNodesCatalog;
 
+export const klineIntervals = [
+  "15m",
+  "30m",
+  "1h",
+  "2h",
+  "4h",
+  "6h",
+  "8h",
+  "12h",
+  "1d",
+  "3d",
+  "1w",
+  "1M",
+] as const;
+export const dflowBinanceLowerKlineInterval = klineIntervals[0];
+
 /** Creates a dynamic set of dflow nodes generated according to Binance definitions. */
 export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
   ({ symbols }) => {
-    const klineIntervalNodes = binanceKlineIntervals.reduce(
+    const klineIntervalNodes = klineIntervals.reduce(
       (catalog, klineInterval) => {
         class NodeClass extends DflowNode {
           static kind = klineInterval;

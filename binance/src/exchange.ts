@@ -42,22 +42,28 @@ import {
   isBinanceOrderType,
 } from "./typeGuards.js";
 
-/** BinanceExchange implements public API requests.
-To create a cached client, pass a `BinanceCacheProvider` to the constructor.
-@example
-```ts
-import { truncateDate } from "@ggbot2/time";
-import {
-  BinanceCacheMap,
-  BinanceConnector,
-  BinanceExchange,
-} from '@ggbot2/binance'
-const cache = new BinanceCacheMap();
-const binance = new BinanceExchange({
-  baseUrl: BinanceConnector.defaultBaseUrl,
-  cache: new BinanceCacheMap(),
-});
-``` */
+/**
+ * BinanceExchange implements public API requests.
+ *
+ * Constructor requires a `cache` that implements `BinanceCacheProvider`;
+ * default `BinanceCacheMap` can be used.
+ *
+ * @example
+ * ```ts
+ * import { truncateDate } from "@ggbot2/time";
+ * import {
+ *   BinanceCacheMap,
+ *   BinanceConnector,
+ *   BinanceExchange,
+ * } from "@ggbot2/binance";
+ *
+ * const cache = new BinanceCacheMap();
+ * const binance = new BinanceExchange({
+ *   baseUrl: BinanceConnector.defaultBaseUrl,
+ *   cache: new BinanceCacheMap(),
+ * });
+ * ```
+ */
 export class BinanceExchange extends BinanceConnector {
   private readonly cache: BinanceCacheProvider | undefined;
   constructor({ baseUrl, cache }: BinanceExchangeConstructorArg) {
@@ -86,6 +92,7 @@ export class BinanceExchange extends BinanceConnector {
       throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" });
   }
 
+  // TODO consider remove this
   // static coerceKlineOptionalParametersToTimeInterval(
   //   interval: BinanceKlineInterval,
   //   { startTime, endTime, limit }: BinanceKlineOptionalParameters
@@ -128,9 +135,12 @@ export class BinanceExchange extends BinanceConnector {
     return await super.request<Data>({ endpoint, method, params });
   }
 
-  /** Current average price for a symbol.
-{@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
-@throws {ErrorInvalidArg} */
+  /**
+   * Current average price for a symbol.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
+   * @throws {ErrorInvalidArg}
+   */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
@@ -142,7 +152,9 @@ export class BinanceExchange extends BinanceConnector {
     );
   }
 
-  /** Check if `symbol` can be traded. */
+  /**
+   * Check if `symbol` can be traded.
+   */
   async canTradeSymbol(
     symbol: string,
     orderType: BinanceOrderType
@@ -159,8 +171,11 @@ export class BinanceExchange extends BinanceConnector {
     }
   }
 
-  /** Current exchange trading rules and symbol information.
-{@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information} */
+  /**
+   * Current exchange trading rules and symbol information.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
+   */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
     const { cache } = this;
     const cached = cache?.getExchangeInfo();
@@ -186,10 +201,14 @@ export class BinanceExchange extends BinanceConnector {
     return isValid;
   }
 
-  /** Kline/Candlestick Data.
-{@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
-@throws {ErrorBinanceInvalidArg}
-@throws {ErrorBinanceInvalidKlineOptionalParameters} */
+  /**
+   * Kline/Candlestick Data.
+   *
+   * {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
+   *
+   * @throws {ErrorBinanceInvalidArg}
+   * @throws {ErrorBinanceInvalidKlineOptionalParameters}
+   */
   async klines(
     symbol: string,
     interval: BinanceKlineInterval,

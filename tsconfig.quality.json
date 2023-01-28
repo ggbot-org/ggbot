@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
     "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
