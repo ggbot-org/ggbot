@@ -28,9 +28,10 @@ import { Time, TimeInterval } from "@ggbot2/time";
 /**
  * Cache klines in WebStorage.
  */
-class BinanceCache implements BinanceCacheProvider {
+class BinanceCacheWebstorage implements BinanceCacheProvider {
   private cacheMap = new BinanceCacheMap();
 
+  // BinanceExchangeInfoCacheProvider
   getExchangeInfo() {
     return this.cacheMap.getExchangeInfo();
   }
@@ -38,6 +39,7 @@ class BinanceCache implements BinanceCacheProvider {
     if (value) this.cacheMap.setExchangeInfo(value);
   }
 
+  // BinanceIsValidSymbolCacheProvider
   getIsValidSymbol(symbol: string) {
     return this.cacheMap.getIsValidSymbol(symbol);
   }
@@ -45,14 +47,7 @@ class BinanceCache implements BinanceCacheProvider {
     this.cacheMap.setIsValidSymbol(symbol, value);
   }
 
-  private klinesKey(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    openTime: Time
-  ) {
-    return `${symbol}:${interval}:${openTime}`;
-  }
-
+  // BinanceKlineCacheProvider
   getKlines(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -61,17 +56,16 @@ class BinanceCache implements BinanceCacheProvider {
     const klines: BinanceKline[] = [];
     let openTime = timeInterval.start;
     while (openTime < timeInterval.end) {
-      const storageKey = this.klinesKey(symbol, interval, openTime);
-      const storedKline = global?.window?.sessionStorage.getItem(storageKey);
-      if (!storedKline) return;
-      const kline = JSON.parse(storedKline);
+      const key = BinanceCacheMap.klinesKey(symbol, interval, openTime);
+      const cachedKline = global?.window?.sessionStorage.getItem(key);
+      if (!cachedKline) return;
+      const kline = JSON.parse(cachedKline);
       if (!isBinanceKline(kline)) return;
       klines.push(kline);
       openTime = getBinanceIntervalTime[interval](openTime).plus(1);
     }
     return klines;
   }
-
   setKlines(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -79,15 +73,15 @@ class BinanceCache implements BinanceCacheProvider {
   ) {
     for (const kline of klines) {
       const openTime = kline[0];
-      const storageKey = this.klinesKey(symbol, interval, openTime);
-      global?.window?.sessionStorage.setItem(storageKey, JSON.stringify(kline));
+      const key = BinanceCacheMap.klinesKey(symbol, interval, openTime);
+      global?.window?.sessionStorage.setItem(key, JSON.stringify(kline));
     }
   }
 }
 
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
-  cache: new BinanceCache(),
+  cache: new BinanceCacheWebstorage(),
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {

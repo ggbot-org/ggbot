@@ -9,36 +9,39 @@ export interface CacheProvider<Data> {
   delete(key: string): void;
 }
 
-type TimeToLive = "FIVE_MINUTES" | "ONE_DAY";
+type TimeToLive = "FIVE_MINUTES" | "ONE_DAY" | "ONE_WEEK";
 
 /** A set of time durations expressed in milliseconds. */
 const timeToLiveDuration: Record<TimeToLive, number> = {
   FIVE_MINUTES: 300_000,
   ONE_DAY: 86_400_000,
+  ONE_WEEK: 604_800_000,
 };
 
-/** Implements a simple CacheProvider with Maps.
-@example
-```ts
-const isValidValueCache = new CacheMap<boolean>()
+/**
+ * Implements a simple CacheProvider with Maps.
+ *
+ * @example
+ * ```ts
+ * const isValidValueCache = new CacheMap<boolean>()
 
-const isValid async (value: unkown): booelan => {
-  if (typeof value !== 'string') return false;
-  // Here the value is used also as its key.
-  // Return cached value, if any.
-  const cached = isValidValueCache.get(value);
-  // Notice that in this case data type is `boolean` so it is necessary to check that
-  // it is not `undefined`. In most cases `if (cached) return cached;` will be enough.
-  if (cached !== undefined) return cached;
-  // Validate value with some logic.
-  const isValid = await validateValue(value);
-  // Add result to cache.
-  isValidValueCache.set(value, isValid);
-  // Finally return result.
-  return isValid.
-}
-```
-*/
+ * const isValid async (value: unkown): booelan => {
+ *   if (typeof value !== 'string') return false;
+ *   // Here the value is used also as its key.
+ *   // Return cached value, if any.
+ *   const cached = isValidValueCache.get(value);
+ *   // Notice that in this case data type is `boolean` so it is necessary to check that
+ *   // it is not `undefined`. In most cases `if (cached) return cached;` will be enough.
+ *   if (cached !== undefined) return cached;
+ *   // Validate value with some logic.
+ *   const isValid = await validateValue(value);
+ *   // Add result to cache.
+ *   isValidValueCache.set(value, isValid);
+ *   // Finally return result.
+ *   return isValid.
+ * }
+ * ```
+ */
 export class CacheMap<Data> implements CacheProvider<Data> {
   private itemMap = new Map<string, Data>();
   private timeToLiveMap = new Map<string, number>();

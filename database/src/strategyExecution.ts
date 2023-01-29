@@ -94,6 +94,10 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       const binance = new Binance(binanceApiConfig);
 
+      // Truncate logical time to minute. It is a good compromise also to
+      // cache klines data.
+      const time = truncateTime(now()).to.minute();
+
       const { symbols } = await binance.exchangeInfo();
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
 
@@ -108,7 +112,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         } = await executor.run(
           {
             memory: memoryInput,
-            time: truncateTime(now()).to.second(),
+            time,
           },
           strategyFlow.view
         );
