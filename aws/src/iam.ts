@@ -1,5 +1,5 @@
 import { IAMClient, GetPolicyCommand } from "@aws-sdk/client-iam";
-import type {
+import {
   GetPolicyCommandInput,
   GetPolicyCommandOutput,
 } from "@aws-sdk/client-iam";

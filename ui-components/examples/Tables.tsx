@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC } from "react";
 import { Table, Tbody, Th, Thead, Tr, Td } from "../src";
 
 export const SimpleTable: FC = () => {

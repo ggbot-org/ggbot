@@ -1,4 +1,4 @@
-import type { StrategyKey } from "@ggbot2/models";
+import { StrategyKey } from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";

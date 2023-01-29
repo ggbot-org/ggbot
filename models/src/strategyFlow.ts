@@ -1,9 +1,9 @@
 import { isMaybeObject, objectTypeGuard } from "@ggbot2/type-utils";
-import type { FlowViewSerializableGraph } from "flow-view";
-import type { AccountKey } from "./account.js";
-import type { AccountStrategyKey } from "./accountStrategy.js";
-import type { Operation } from "./operation.js";
-import type { StrategyKey } from "./strategy.js";
+import { FlowViewSerializableGraph } from "flow-view";
+import { AccountKey } from "./account.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
+import { Operation } from "./operation.js";
+import { StrategyKey } from "./strategy.js";
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js";
 
 export type StrategyFlow = UpdateTime & {

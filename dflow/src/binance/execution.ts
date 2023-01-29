@@ -4,10 +4,10 @@ import {
   balanceIsNotEmpty,
   isBinanceOrderRespFULL,
 } from "@ggbot2/binance";
-import type { Balance } from "@ggbot2/models";
-import type { DflowGraphExecutionReport } from "dflow";
+import { Balance } from "@ggbot2/models";
+import { DflowGraphExecutionReport } from "dflow";
 import { dflowBinanceZero as zero } from "./arithmetic.js";
-import type { DflowBinanceSymbolInfo } from "./symbols.js";
+import { DflowBinanceSymbolInfo } from "./symbols.js";
 import { BuyMarket, SellMarket, orderOutputPosition } from "./nodes/trade.js";
 
 export const getBalancesFromExecutionSteps = (

@@ -1,6 +1,6 @@
 import { readSession } from "@ggbot2/cookies";
 import { isStrategyKey } from "@ggbot2/models";
-import type { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import {
   Content,
   Navigation,

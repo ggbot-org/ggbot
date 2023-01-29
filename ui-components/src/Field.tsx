@@ -1,9 +1,4 @@
-import type {
-  FC,
-  LabelHTMLAttributes,
-  PropsWithChildren,
-  ReactNode,
-} from "react";
+import { FC, LabelHTMLAttributes, PropsWithChildren, ReactNode } from "react";
 
 export type FieldProps = Pick<
   LabelHTMLAttributes<HTMLLabelElement>,

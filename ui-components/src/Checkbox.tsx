@@ -1,5 +1,5 @@
 import { ChangeEventHandler, FC, InputHTMLAttributes, useMemo } from "react";
-import type { Color } from "./Color";
+import { Color } from "./Color";
 
 export type CheckboxProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,

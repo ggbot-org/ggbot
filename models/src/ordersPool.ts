@@ -1,7 +1,7 @@
-import type { AccountStrategyKey } from "./accountStrategy.js";
-import type { Operation } from "./operation.js";
-import type { Order } from "./order.js";
-import type { UpdateTime } from "./time.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
+import { Operation } from "./operation.js";
+import { Order } from "./order.js";
+import { UpdateTime } from "./time.js";
 
 /** Contains orders in a temporary state. */
 export type OrdersPool = Order[];

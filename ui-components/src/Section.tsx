@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, ReactNode, useMemo } from "react";
-import type { Color } from "./Color";
+import { Color } from "./Color";
 
 export type SectionProps = HTMLAttributes<HTMLElement> & {
   color?: Extract<Color, "danger">;

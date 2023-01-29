@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { Accounts, Content } from "_components";
 
 const Page: NextPage = () => {

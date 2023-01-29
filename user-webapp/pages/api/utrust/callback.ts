@@ -16,7 +16,7 @@ import {
   WebhookValidator,
   Event as UtrustEvent,
 } from "@utrustdev/utrust-ts-library";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 type ResponseData = {
   ok: boolean;

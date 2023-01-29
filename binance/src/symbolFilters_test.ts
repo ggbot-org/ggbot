@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js";
-import type {
+import {
   BinanceSymbolFilterLotSize,
   BinanceSymbolFilterMinNotional,
 } from "./types.js";

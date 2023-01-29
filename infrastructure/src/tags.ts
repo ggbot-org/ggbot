@@ -1,4 +1,4 @@
-import type { Tag } from "@aws-sdk/client-iam";
+import { Tag } from "@aws-sdk/client-iam";
 
 export const projectTag: Tag = { Key: "Project", Value: "ggbot2" };
 

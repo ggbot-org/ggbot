@@ -1,9 +1,9 @@
 import { isMainModule } from "./_isMainModule.js";
 import { OK } from "./_consoleColors.js";
-import type { LoadBalancerStatus } from "./_elb.js";
-import type { IamPolicyStatus } from "./_iam.js";
-import type { S3BucketStatus } from "./_s3.js";
-import type { TaskOptions } from "./_task.js";
+import { LoadBalancerStatus } from "./_elb.js";
+import { IamPolicyStatus } from "./_iam.js";
+import { S3BucketStatus } from "./_s3.js";
+import { TaskOptions } from "./_task.js";
 import { ElasticIpStatus, getElasticIps } from "./elasticIp.js";
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js";
 import { getDevopsPolicyStatus } from "./iam-devops.js";

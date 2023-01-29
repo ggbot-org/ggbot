@@ -9,7 +9,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__
 } from "@ggbot2/http-status-codes";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 // Type input data
 type RequestData = {

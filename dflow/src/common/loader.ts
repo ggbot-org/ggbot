@@ -1,28 +1,32 @@
 import { DflowHost, DflowErrorItemNotFound } from "dflow";
-import type { DflowExecutorView } from "./executor.js";
+import { DflowExecutorView } from "./executor.js";
 import { NodeTextToDflowKind, isInfoNode } from "./nodeResolution.js";
 
-/** A DflowHost that can load a FlowView graph.
-@example
-```ts
-import { DflowLoader, load } from "../path/to/loader.js";
-class MyDflowHost extends DflowHost implements DflowLoader {
-  load(view: DflowExecutorView): void {
-    load({
-      dflow: this,
-      nodeTextToDflowKind,
-      view,
-    });
-  }
-}
-```
-*/
+/**
+ * A DflowHost that can load a FlowView graph.
+ *
+ * @example
+ * ```ts
+ * import { DflowLoader, load } from "../path/to/loader.js";
+ * class MyDflowHost extends DflowHost implements DflowLoader {
+ *   load(view: DflowExecutorView): void {
+ *     load({
+ *       dflow: this,
+ *       nodeTextToDflowKind,
+ *       view,
+ *     });
+ *   }
+ * }
+ * ```
+ */
 export interface DflowLoader extends DflowHost {
   load(view: DflowExecutorView): void;
 }
 
-/** Parse view and load it as a Dflow graph.
-Unknown nodes and broken connections are ignored. */
+/**
+ * Parse view and load it as a Dflow graph.
+ * Unknown nodes and broken connections are ignored.
+ */
 export function load({
   dflow,
   nodeTextToDflowKind,

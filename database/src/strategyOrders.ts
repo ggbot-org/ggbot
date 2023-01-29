@@ -1,4 +1,4 @@
-import type { ReadStrategyOrders } from "@ggbot2/models";
+import { ReadStrategyOrders } from "@ggbot2/models";
 import { dateToDay, dayToDate, getDate } from "@ggbot2/time";
 import { readStrategyDailyOrders } from "./strategyDailyOrders.js";
 

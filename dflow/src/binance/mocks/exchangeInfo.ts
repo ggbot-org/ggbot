@@ -1,4 +1,4 @@
-import type { BinanceExchangeInfo } from "@ggbot2/binance";
+import { BinanceExchangeInfo } from "@ggbot2/binance";
 
 export const exchangeInfo: BinanceExchangeInfo = {
   timezone: "UTC",

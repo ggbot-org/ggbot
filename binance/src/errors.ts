@@ -1,4 +1,4 @@
-import type { BinanceOrderType, BinanceSymbolFilter } from "./types.js";
+import { BinanceOrderType, BinanceSymbolFilter } from "./types.js";
 
 export class ErrorBinanceCannotTradeSymbol extends Error {
   static message = "Binance cannot trade this symbol";

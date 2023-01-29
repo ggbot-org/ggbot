@@ -1,9 +1,9 @@
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Account, AccountKey, isAccountKey } from "./account.js";
-import type { AccountStrategyKey } from "./accountStrategy.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
 import { Item, isItemId, NewItem, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
-import type { Operation } from "./operation.js";
+import { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime, createdNow } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;

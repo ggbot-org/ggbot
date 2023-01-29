@@ -1,11 +1,11 @@
-import type {
+import {
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import type { BinanceDflowClient } from "../client.js";
+import { BinanceDflowClient } from "../client.js";
 import { accountInfo } from "./accountInfo.js";
 import { exchangeInfo } from "./exchangeInfo.js";
 import { kline } from "./klines.js";

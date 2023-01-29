@@ -1,4 +1,4 @@
-import type { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
+import { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
 import { readSession } from "@ggbot2/cookies";
 import {
   ErrorUnimplementedStrategyKind,
@@ -13,9 +13,9 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import type { ReadAccount, ListAccountKeys } from "@ggbot2/models";
+import { ReadAccount, ListAccountKeys } from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiAction = {
   ReadAccount: Action<ReadAccount["in"]>;

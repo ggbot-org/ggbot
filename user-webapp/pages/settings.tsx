@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import {
   AccountSettings,

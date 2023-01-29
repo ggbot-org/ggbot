@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC } from "react";
 import { Breadcrumb, Logo, Header } from "../src";
 
 export const Navigation: FC = () => {

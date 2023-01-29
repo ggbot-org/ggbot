@@ -1,4 +1,4 @@
-import type { Strategy, StrategyKey } from "@ggbot2/models";
+import { Strategy, StrategyKey } from "@ggbot2/models";
 
 export type { StrategyFlow, StrategyKey } from "@ggbot2/models";
 

@@ -1,5 +1,5 @@
 import { useIsServerSide } from "@ggbot2/hooks";
-import type { FC } from "react";
+import { FC } from "react";
 import { LineChart, Line, Tooltip } from "recharts";
 
 const data1 = [

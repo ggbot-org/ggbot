@@ -6,7 +6,7 @@ import {
   timeToTimestamp,
 } from "@ggbot2/time";
 import { DflowNode } from "dflow";
-import type { DflowCommonContext as Context } from "../context.js";
+import { DflowCommonContext as Context } from "../context.js";
 
 const { input, output } = DflowNode;
 

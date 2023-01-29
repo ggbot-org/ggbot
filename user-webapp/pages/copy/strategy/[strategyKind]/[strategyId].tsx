@@ -6,7 +6,7 @@ import {
   OutputField,
   Section,
 } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   ChangeEventHandler,

@@ -12,8 +12,8 @@ import {
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
-import type { DflowExecutionNodeInfo } from "dflow";
-import type { GetServerSideProps, NextPage } from "next";
+import { DflowExecutionNodeInfo } from "dflow";
+import { GetServerSideProps, NextPage } from "next";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {

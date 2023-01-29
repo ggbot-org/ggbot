@@ -1,5 +1,5 @@
 import { EC2Client, DescribeAddressesCommand } from "@aws-sdk/client-ec2";
-import type {
+import {
   DescribeAddressesCommandInput,
   DescribeAddressesCommandOutput,
 } from "@aws-sdk/client-ec2";

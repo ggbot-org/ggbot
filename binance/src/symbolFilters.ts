@@ -1,5 +1,5 @@
 // TODO (see below) import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
-import type {
+import {
   BinanceNewOrderOptions,
   BinanceSymbolFilter,
   BinanceSymbolFilterLotSize,

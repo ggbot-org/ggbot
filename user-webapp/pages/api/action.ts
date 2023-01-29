@@ -1,6 +1,6 @@
-import type { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
+import { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
 import { readSession } from "@ggbot2/cookies";
-import type { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
+import { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import {
   ErrorAccountItemNotFound,
   ErrorExceededQuota,
@@ -36,7 +36,7 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import type {
+import {
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
@@ -60,7 +60,7 @@ import type {
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiAction = {
   CopyStrategy: Action<CopyStrategy["in"]>;

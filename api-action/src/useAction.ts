@@ -5,13 +5,9 @@ import {
   __401__UNAUTHORIZED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import type {
-  AccountKey,
-  OperationInput,
-  OperationOutput,
-} from "@ggbot2/models";
+import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
 import { useCallback, useState } from "react";
-import type { ApiActionInput } from "./action.js";
+import { ApiActionInput } from "./action.js";
 import { ActionError, isApiActionResponseError } from "./errors.js";
 
 type UseActionRequestArg<Input extends OperationInput> =

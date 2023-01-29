@@ -1,5 +1,4 @@
-// import { TimeInterval, now, truncateTime } from "@ggbot2/time";
-import type { BinanceCacheProvider } from "./cache.js";
+import { BinanceCacheProvider } from "./cache.js";
 import {
   BinanceConnector,
   BinanceConnectorConstructorArg,
@@ -19,7 +18,7 @@ import {
   minNotionalIsValid,
 } from "./symbolFilters.js";
 // import { getIntervalTime } from "./time.js";
-import type {
+import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceKline,

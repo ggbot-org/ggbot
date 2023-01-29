@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC } from "react";
 import { Pill } from "../src";
 
 export const Pills: FC = () => {

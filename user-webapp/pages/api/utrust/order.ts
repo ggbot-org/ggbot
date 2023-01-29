@@ -34,7 +34,7 @@ import {
   objectTypeGuard,
 } from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { route, webappBaseUrl } from "_routing";
 
 type RequestData = {

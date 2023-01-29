@@ -3,8 +3,8 @@ import {
   CalendarProps,
   CalendarSetSelectedDay,
 } from "@ggbot2/ui-components";
-import type { Day } from "@ggbot2/time";
-import type { FC } from "react";
+import { Day } from "@ggbot2/time";
+import { FC } from "react";
 
 type Props = {
   startDay?: Day;

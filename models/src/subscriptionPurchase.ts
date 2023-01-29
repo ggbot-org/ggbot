@@ -14,10 +14,10 @@ import {
   isMaybeObject,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
-import type { DflowObject } from "dflow";
-import type { AccountKey } from "./account.js";
+import { DflowObject } from "dflow";
+import { AccountKey } from "./account.js";
 import { Item, NewItem, isItemId, newId } from "./item.js";
-import type { Operation } from "./operation.js";
+import { Operation } from "./operation.js";
 import { PaymentProvider, isPaymentProvider } from "./paymentProviders.js";
 import { SubscriptionPlan, isSubscriptionPlan } from "./subscription.js";
 import {

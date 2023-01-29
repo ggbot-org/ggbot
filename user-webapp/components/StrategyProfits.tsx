@@ -15,7 +15,7 @@ import { Section } from "@ggbot2/ui-components";
 import { FC, useEffect, useMemo } from "react";
 import { ProfitSummary } from "_components";
 import { useApiAction } from "_hooks";
-import type { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing";
 
 type Props = {
   strategyKey: StrategyKey;

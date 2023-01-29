@@ -1,6 +1,6 @@
 import { Checkmark, CheckmarkProps } from "@ggbot2/ui-components";
-import type { ReactNode } from "react";
-import type { NextPage } from "next";
+import { ReactNode } from "react";
+import { NextPage } from "next";
 import Head from "next/head";
 import { Navigation } from "_components";
 import styles from "../styles/PrivacyAndTerms.module.css";

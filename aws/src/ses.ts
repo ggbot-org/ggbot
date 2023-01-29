@@ -1,6 +1,6 @@
 // TODO import { awsRegion } from "@ggbot2/infrastructure"
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import type { Destination, Message } from "@aws-sdk/client-ses";
+import { Destination, Message } from "@aws-sdk/client-ses";
 
 // TODO
 // why sending from a region other than us-east-1 does not work?

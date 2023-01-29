@@ -1,8 +1,8 @@
 import { dayIntervalToTime } from "@ggbot2/time";
 import { CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
-import type { BacktestingState, BacktestingDispatch } from "_hooks";
-import type { StrategyFlow } from "_routing";
+import { BacktestingState, BacktestingDispatch } from "_hooks";
+import { StrategyFlow } from "_routing";
 import { BacktestControllerBinance } from "./BacktestControllerBinance";
 import { DailyIntervalSelector } from "./DailyIntervalSelector";
 import { ProfitSummary } from "./ProfitSummary";

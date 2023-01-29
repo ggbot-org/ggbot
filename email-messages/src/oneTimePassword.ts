@@ -1,5 +1,5 @@
-import type { OneTimePassword } from "@ggbot2/models";
-import type { EmailMessageContent } from "./emailMessage.js";
+import { OneTimePassword } from "@ggbot2/models";
+import { EmailMessageContent } from "./emailMessage.js";
 
 export const oneTimePasswordEmailMessage = ({
   oneTimePassword: { code },

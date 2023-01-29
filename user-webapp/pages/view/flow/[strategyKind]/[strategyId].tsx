@@ -7,7 +7,7 @@ import {
 } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
-import type { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useMemo, useState, useRef } from "react";
 import { toast } from "react-hot-toast";

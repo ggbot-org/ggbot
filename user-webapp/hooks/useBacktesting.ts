@@ -13,10 +13,10 @@ import {
   getDate,
   timestampToTime,
 } from "@ggbot2/time";
-import type { FlowViewSerializableGraph } from "flow-view";
+import { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
 import { BinanceDflowClient } from "_flow/binance";
-import type { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey &
@@ -351,11 +351,7 @@ export const useBacktesting: UseBacktesting = ({
 
   useEffect(() => {
     if (!backtestIsRunning) return;
-    const delay = 2000;
-    const timeoutId = setTimeout(runBacktest, delay);
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    runBacktest();
   }, [backtestIsRunning, runBacktest]);
 
   useEffect(() => {

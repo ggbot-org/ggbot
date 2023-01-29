@@ -1,5 +1,5 @@
 import { Button, Section } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
   Content,

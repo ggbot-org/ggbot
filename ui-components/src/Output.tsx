@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { Field, FieldProps } from "./Field";
 
 export type OutputProps = {

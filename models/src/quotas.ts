@@ -1,4 +1,4 @@
-import type { SubscriptionPlan } from "./subscription.js";
+import { SubscriptionPlan } from "./subscription.js";
 
 export const quotaTypes = [
   "NUM_DAYS_TRANSACTIONS_HISTORY",

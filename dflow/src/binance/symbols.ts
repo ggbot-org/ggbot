@@ -1,5 +1,5 @@
-import type { BinanceSymbolInfo } from "@ggbot2/binance";
-import type { StrategyFlow } from "@ggbot2/models";
+import { BinanceSymbolInfo } from "@ggbot2/binance";
+import { StrategyFlow } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { dflowBinancePrecision } from "./arithmetic.js";
 

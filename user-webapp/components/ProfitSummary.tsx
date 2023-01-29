@@ -1,7 +1,7 @@
 import { add, Decimal } from "@ggbot2/arithmetic";
 import { isBinanceOrderRespFULL } from "@ggbot2/binance";
 import { useIsServerSide } from "@ggbot2/hooks";
-import type {
+import {
   Balance,
   BalanceChangeEvent,
   Order,

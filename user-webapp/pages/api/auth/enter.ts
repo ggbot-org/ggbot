@@ -7,7 +7,7 @@ import {
 } from "@ggbot2/http-status-codes";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiEnterRequestData = {
   email: EmailAddress;

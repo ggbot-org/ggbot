@@ -1,8 +1,8 @@
 import { now, truncateTime } from "@ggbot2/time";
 import { DflowHost, DflowHostConstructorArg } from "dflow";
-import type { DflowExecutorView } from "../common/executor.js";
+import { DflowExecutorView } from "../common/executor.js";
 import { DflowLoader, load } from "../common/loader.js";
-import type { BinanceDflowContext } from "./context.js";
+import { BinanceDflowContext } from "./context.js";
 import { binanceNodeTextToDflowKind } from "./nodeResolution.js";
 
 /** `BinanceDflowHost` extends `DflowHost`

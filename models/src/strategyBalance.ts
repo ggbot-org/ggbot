@@ -4,8 +4,8 @@ import {
   BalanceChangeEvent,
   isBalanceChangeEvents,
 } from "./balanceChangeEvent.js";
-import type { AccountStrategyKey } from "./accountStrategy.js";
-import type { Operation } from "./operation.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
+import { Operation } from "./operation.js";
 
 export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] };
 

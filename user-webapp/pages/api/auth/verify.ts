@@ -21,7 +21,7 @@ import {
 } from "@ggbot2/models";
 import { today } from "@ggbot2/time";
 import { objectTypeGuard } from "@ggbot2/type-utils";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiVerifyRequestData = Pick<OneTimePassword, "code"> & {
   email: EmailAddress;

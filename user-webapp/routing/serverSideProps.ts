@@ -1,13 +1,13 @@
 import { readSession } from "@ggbot2/cookies";
 import { readStrategy } from "@ggbot2/database";
 import { isStrategyKey } from "@ggbot2/models";
-import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import {
   redirectToAuthenticationPage,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
 } from "./redirects";
-import type { StrategyKey } from "./types";
+import { StrategyKey } from "./types";
 
 export const requireAuthentication: GetServerSideProps = async ({ req }) =>
   readSession(req.cookies) ? { props: {} } : redirectToAuthenticationPage();

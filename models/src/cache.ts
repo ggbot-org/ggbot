@@ -1,4 +1,4 @@
-import type { Time } from "@ggbot2/time";
+import { Time } from "@ggbot2/time";
 
 export interface CacheProvider<Data> {
   /** Read item from cache, if any. */

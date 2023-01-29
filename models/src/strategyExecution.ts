@@ -1,8 +1,8 @@
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
-import type { DflowExecutionNodeInfo, DflowGraph } from "dflow";
-import type { AccountStrategyKey } from "./accountStrategy.js";
+import { DflowExecutionNodeInfo, DflowGraph } from "dflow";
+import { AccountStrategyKey } from "./accountStrategy.js";
 import { Balances, isBalances } from "./balance.js";
-import type { Operation } from "./operation.js";
+import { Operation } from "./operation.js";
 import { DeletionTime, UpdateTime, isUpdateTime } from "./time.js";
 
 export type StrategyExecutionStatus = Extract<

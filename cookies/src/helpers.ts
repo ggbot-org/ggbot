@@ -1,5 +1,5 @@
 import { getDate } from "@ggbot2/time";
-import type { Cookies } from "./cookies.js";
+import { Cookies } from "./cookies.js";
 import { Session, isSession, sessionNumDays } from "./session.js";
 import { readSessionCookie } from "./sessionCookie.js";
 

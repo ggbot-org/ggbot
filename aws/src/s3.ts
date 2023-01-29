@@ -12,12 +12,12 @@ import {
   S3Client,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
-import type {
+import {
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
-import type { DflowData } from "dflow";
+import { DflowData } from "dflow";
 import stream from "stream";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";

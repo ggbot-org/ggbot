@@ -1,7 +1,7 @@
 import { coerceToDecimal } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
 import { dflowBinancePrecision } from "../arithmetic.js";
-import type { BinanceDflowContext as Context } from "../context.js";
+import { BinanceDflowContext as Context } from "../context.js";
 import { inputExecute } from "./commonIO.js";
 
 const { input, output } = DflowNode;

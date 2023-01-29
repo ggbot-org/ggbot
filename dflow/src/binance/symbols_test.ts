@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import type { StrategyFlow } from "@ggbot2/models";
+import { StrategyFlow } from "@ggbot2/models";
 import { BinanceClientMock } from "./mocks/client.js";
 import { extractBinanceSymbolsFromFlow } from "./symbols.js";
 

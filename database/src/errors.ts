@@ -1,4 +1,4 @@
-import type { AccountKey, QuotaType, StrategyKey } from "@ggbot2/models";
+import { AccountKey, QuotaType, StrategyKey } from "@ggbot2/models";
 
 export class ErrorAccountItemNotFound extends Error {
   static message({

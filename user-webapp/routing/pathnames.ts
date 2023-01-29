@@ -1,5 +1,5 @@
 import { isLiteralType } from "@ggbot2/type-utils";
-import type { StrategyKey, InvalidStrategyKey } from "./types.js";
+import { StrategyKey, InvalidStrategyKey } from "./types.js";
 
 export const settingsSectionIds = ["account", "binance", "billing"] as const;
 export type SettingsSectionId = typeof settingsSectionIds[number];

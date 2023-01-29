@@ -1,4 +1,4 @@
-import type { DflowGraphExecutionReport } from "dflow";
+import { DflowGraphExecutionReport } from "dflow";
 import { orderBuyBTCBUSD1 } from "./orders.js";
 
 export const executionStepsBuyBTCUSD: DflowGraphExecutionReport["steps"] = [

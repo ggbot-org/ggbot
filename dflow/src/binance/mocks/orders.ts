@@ -1,4 +1,4 @@
-import type { BinanceOrderRespFULL } from "@ggbot2/binance";
+import { BinanceOrderRespFULL } from "@ggbot2/binance";
 
 export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {
   symbol: "BTCBUSD",

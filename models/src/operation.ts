@@ -1,4 +1,4 @@
-import type { DflowData } from "dflow";
+import { DflowData } from "dflow";
 
 export type OperationInput = DflowData | void;
 

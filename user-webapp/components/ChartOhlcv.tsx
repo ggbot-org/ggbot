@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef } from "react";
-import type {
+import {
   IChartApi,
   ISeriesApi,
   OhlcData,

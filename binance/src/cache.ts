@@ -1,7 +1,6 @@
-import type { Time, TimeInterval } from "@ggbot2/time";
+import { TimeInterval } from "@ggbot2/time";
 import { CacheMap } from "@ggbot2/models";
-import { getIntervalTime } from "./time.js";
-import type {
+import {
   BinanceExchangeInfo,
   BinanceKline,
   BinanceKlineInterval,

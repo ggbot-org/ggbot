@@ -23,7 +23,7 @@ import {
   useState,
 } from "react";
 import { useApiAction, useSubscription } from "_hooks";
-import type { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
 type Props = {

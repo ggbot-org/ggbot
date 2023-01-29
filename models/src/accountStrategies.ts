@@ -1,13 +1,13 @@
 import { arrayTypeGuard } from "@ggbot2/type-utils";
-import type { AccountKey } from "./account.js";
+import { AccountKey } from "./account.js";
 import {
   AccountStrategy,
   AccountStrategyKey,
   isAccountStrategy,
 } from "./accountStrategy.js";
-import type { Operation } from "./operation.js";
-import type { StrategyScheduling } from "./strategyScheduling.js";
-import type { CreationTime, DeletionTime, UpdateTime } from "./time.js";
+import { Operation } from "./operation.js";
+import { StrategyScheduling } from "./strategyScheduling.js";
+import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export type AccountStrategies = AccountStrategy[];
 

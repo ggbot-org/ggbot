@@ -1,6 +1,6 @@
 import { createdNow } from "@ggbot2/models";
 import { Header, Logo } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";

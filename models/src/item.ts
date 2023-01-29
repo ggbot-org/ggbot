@@ -1,4 +1,4 @@
-import type { CreationTime } from "./time.js";
+import { CreationTime } from "./time.js";
 
 export const itemIdCharacters = "0123456789abcdefghijklmnopqrstuvwxyz";
 

@@ -6,7 +6,7 @@ import {
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { Item, ItemKey, NewItem, isItemId, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
-import type { Operation } from "./operation.js";
+import { Operation } from "./operation.js";
 import {
   CreationTime,
   DeletionTime,

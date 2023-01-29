@@ -1,7 +1,7 @@
 import { decimalToNumber } from "@ggbot2/arithmetic";
 import { isBinanceKlineInterval } from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
-import type { BinanceDflowContext as Context } from "../context.js";
+import { BinanceDflowContext as Context } from "../context.js";
 import {
   inputInterval,
   inputSymbol,

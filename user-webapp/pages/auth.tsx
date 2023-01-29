@@ -8,7 +8,7 @@ import {
   OutputField,
   Section,
 } from "@ggbot2/ui-components";
-import type { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {
   Dispatch,

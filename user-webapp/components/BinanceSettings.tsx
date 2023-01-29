@@ -1,5 +1,5 @@
 import { isBinanceApiKeyPermission } from "@ggbot2/binance";
-import type { BinanceApiConfig } from "@ggbot2/models";
+import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import {
   Button,

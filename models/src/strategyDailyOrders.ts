@@ -1,9 +1,9 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { isDay } from "@ggbot2/time";
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
-import type { Order } from "./order.js";
-import type { Operation } from "./operation.js";
-import type { DayKey, UpdateTime } from "./time.js";
+import { Order } from "./order.js";
+import { Operation } from "./operation.js";
+import { DayKey, UpdateTime } from "./time.js";
 
 /** Daily orders per strategy. */
 export type StrategyDailyOrders = Order[];

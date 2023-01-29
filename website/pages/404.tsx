@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { Navigation } from "_components";
 
 const Page: NextPage = () => {

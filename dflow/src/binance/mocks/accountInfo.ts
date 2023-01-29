@@ -1,4 +1,4 @@
-import type { BinanceAccountInformation } from "@ggbot2/binance";
+import { BinanceAccountInformation } from "@ggbot2/binance";
 
 export const accountInfo: BinanceAccountInformation = {
   accountType: "SPOT",

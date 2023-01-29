@@ -1,5 +1,5 @@
 import { Pill, PillProps } from "@ggbot2/ui-components";
-import type { AccountStrategy, StrategyScheduling } from "@ggbot2/models";
+import { AccountStrategy, StrategyScheduling } from "@ggbot2/models";
 import { FC, useMemo } from "react";
 
 type Props = {

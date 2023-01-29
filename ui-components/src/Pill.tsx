@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, useMemo } from "react";
-import type { Color } from "./Color";
+import { Color } from "./Color";
 
 export type PillProps = Omit<HTMLAttributes<HTMLSpanElement>, "className"> & {
   color?: Extract<Color, "primary" | "neutral" | "danger">;

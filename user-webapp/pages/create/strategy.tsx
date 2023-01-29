@@ -1,6 +1,6 @@
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { Button, InputField, Section } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";

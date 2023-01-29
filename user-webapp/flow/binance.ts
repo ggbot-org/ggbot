@@ -20,7 +20,7 @@ import {
   dflowBinancePrecision,
   dflowBinanceLowerKlineInterval,
 } from "@ggbot2/dflow";
-import type { Time, TimeInterval } from "@ggbot2/time";
+import { Time, TimeInterval } from "@ggbot2/time";
 
 class BinanceCache extends BinanceCacheMap implements BinanceCacheProvider {
   private klinesKey(

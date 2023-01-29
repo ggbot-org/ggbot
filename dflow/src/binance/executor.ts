@@ -1,19 +1,19 @@
-import type { Balance, Order } from "@ggbot2/models";
-import type { DflowNodesCatalog } from "dflow";
-import type {
+import { Balance, Order } from "@ggbot2/models";
+import { DflowNodesCatalog } from "dflow";
+import {
   DflowCommonExecutorContext,
   DflowCommonExecutorOutput,
   DflowExecutor,
   DflowExecutorView,
 } from "../common/executor.js";
-import type { BinanceDflowClient } from "./client.js";
-import type { BinanceDflowContext } from "./context.js";
+import { BinanceDflowClient } from "./client.js";
+import { BinanceDflowContext } from "./context.js";
 import {
   getBalancesFromExecutionSteps,
   getOrdersFromExecutionSteps,
 } from "./execution.js";
 import { BinanceDflowHost } from "./host.js";
-import type { DflowBinanceSymbolInfo } from "./symbols.js";
+import { DflowBinanceSymbolInfo } from "./symbols.js";
 
 type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
   balances: Balance[];

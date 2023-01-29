@@ -1,5 +1,5 @@
 import { Button, ButtonOnClick, Section } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 import {

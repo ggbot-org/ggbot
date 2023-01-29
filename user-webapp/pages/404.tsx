@@ -1,5 +1,5 @@
 import { Button } from "@ggbot2/ui-components";
-import type { NextPage } from "next";
+import { NextPage } from "next";
 import { Content, Navigation } from "_components";
 import { useGoBack } from "_hooks";
 

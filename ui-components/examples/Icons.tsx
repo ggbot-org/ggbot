@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC } from "react";
 import { Icon, iconNames } from "../src";
 
 export const Icons: FC = () => {

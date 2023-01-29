@@ -2,7 +2,7 @@ import {
   DescribeLoadBalancersCommand,
   ElasticLoadBalancingV2Client,
 } from "@aws-sdk/client-elastic-load-balancing-v2";
-import type {
+import {
   DescribeLoadBalancersCommandInput,
   DescribeLoadBalancersCommandOutput,
 } from "@aws-sdk/client-elastic-load-balancing-v2";
