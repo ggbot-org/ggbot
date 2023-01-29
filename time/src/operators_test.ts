@@ -16,7 +16,22 @@ describe("getDate", () => {
     );
   });
 
+  // TODO more test cases
   it("works both with plus() and minus()", () => {
+    // plus minutes
+    [
+      {
+        input: { num: 0, date: new Date("1978-12-31") },
+        output: new Date("1978-12-31"),
+      },
+      {
+        input: { num: 1, date: new Date("1978-12-31T00:00") },
+        output: new Date("1978-12-31T00:01"),
+      },
+    ].forEach(({ input: { num, date }, output }) => {
+      assert.deepEqual(getDate(date).plus(num).minutes(), output);
+    });
+
     // plus days
     [
       {

@@ -1,12 +1,38 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  isBinanceKline,
   isBinanceKlineInterval,
   isBinanceKlineOptionalParameters,
   isBinanceSymbolFilterLotSize,
   isBinanceSymbolFilterMinNotional,
 } from "./typeGuards.js";
 
+describe("isBinanceKline", () => {
+  it("works", () => {
+    [
+      {
+        input: [
+          1674259200000,
+          "0.07316200",
+          "0.07390800",
+          "0.07115000",
+          "0.07140000",
+          "66387.19950000",
+          1674345599999,
+          "4790.90937830",
+          120641,
+          "29534.47870000",
+          "2131.84019322",
+          "0",
+        ],
+        output: true,
+      },
+    ].forEach(({ input, output }) => {
+      assert.equal(isBinanceKline(input), output);
+    });
+  });
+});
 describe("isBinanceKlineInterval", () => {
   it("works", () => {
     [

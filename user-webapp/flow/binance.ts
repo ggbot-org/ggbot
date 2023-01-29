@@ -6,6 +6,7 @@ import {
   BinanceCacheProvider,
   BinanceConnector,
   BinanceExchange,
+  BinanceExchangeInfo,
   BinanceKline,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
@@ -13,6 +14,8 @@ import {
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
+  getBinanceIntervalTime,
+  isBinanceKline,
 } from "@ggbot2/binance";
 import {
   BinanceDflowClient as IBinanceDflowClient,
@@ -22,7 +25,26 @@ import {
 } from "@ggbot2/dflow";
 import { Time, TimeInterval } from "@ggbot2/time";
 
-class BinanceCache extends BinanceCacheMap implements BinanceCacheProvider {
+/**
+ * Cache klines in WebStorage.
+ */
+class BinanceCache implements BinanceCacheProvider {
+  private cacheMap = new BinanceCacheMap();
+
+  getExchangeInfo() {
+    return this.cacheMap.getExchangeInfo();
+  }
+  setExchangeInfo(value: BinanceExchangeInfo | undefined) {
+    if (value) this.cacheMap.setExchangeInfo(value);
+  }
+
+  getIsValidSymbol(symbol: string) {
+    return this.cacheMap.getIsValidSymbol(symbol);
+  }
+  setIsValidSymbol(symbol: string, value: boolean) {
+    this.cacheMap.setIsValidSymbol(symbol, value);
+  }
+
   private klinesKey(
     symbol: string,
     interval: BinanceKlineInterval,
@@ -33,32 +55,34 @@ class BinanceCache extends BinanceCacheMap implements BinanceCacheProvider {
 
   getKlines(
     symbol: string,
-    _interval: BinanceKlineInterval,
+    interval: BinanceKlineInterval,
     timeInterval: TimeInterval
   ) {
-    // TODO group klines for example per hour
-    // interval must be always the lower granularity
-    // (dflowBinanceLowerKlineInterval 15m)
-    // remove other interval nodes (1s, 1m, etc.)
-    //
-    // for example with 15m
-    // every hour has four values
-    //
-    // backtest should fetch from start to finish before start, so it gets
-    // into the cache
-    const key = this.klinesKey(
-      symbol,
-      dflowBinanceLowerKlineInterval,
-      timeInterval.end
-    );
-    console.log(key);
-    return undefined;
+    const klines: BinanceKline[] = [];
+    let openTime = timeInterval.start;
+    while (openTime < timeInterval.end) {
+      const storageKey = this.klinesKey(symbol, interval, openTime);
+      const storedKline = global?.window?.sessionStorage.getItem(storageKey);
+      if (!storedKline) return;
+      const kline = JSON.parse(storedKline);
+      if (!isBinanceKline(kline)) return;
+      klines.push(kline);
+      openTime = getBinanceIntervalTime[interval](openTime).plus(1);
+    }
+    return klines;
   }
+
   setKlines(
-    _symbol: string,
-    _interval: BinanceKlineInterval,
-    _klines: BinanceKline[]
-  ) {}
+    symbol: string,
+    interval: BinanceKlineInterval,
+    klines: BinanceKline[]
+  ) {
+    for (const kline of klines) {
+      const openTime = kline[0];
+      const storageKey = this.klinesKey(symbol, interval, openTime);
+      global?.window?.sessionStorage.setItem(storageKey, JSON.stringify(kline));
+    }
+  }
 }
 
 export const binance = new BinanceExchange({
@@ -162,10 +186,14 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
-    const klines = await binance.klines(symbol, "1m", {
-      startTime: this.time,
-      limit: 2,
-    });
+    const klines = await binance.klines(
+      symbol,
+      dflowBinanceLowerKlineInterval,
+      {
+        startTime: this.time,
+        limit: 1,
+      }
+    );
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });
   }

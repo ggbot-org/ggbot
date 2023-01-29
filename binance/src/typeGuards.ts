@@ -4,6 +4,7 @@ import {
   BinanceApiKeyPermission,
   BinanceBalance,
   BinanceFill,
+  BinanceKline,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceOrderRespACK,
@@ -65,6 +66,38 @@ export const isBinanceFill = (arg: unknown): arg is BinanceFill => {
     isDecimal(qty) &&
     isDecimal(commission) &&
     typeof commissionAsset === "string"
+  );
+};
+
+export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
+  if (!Array.isArray(arg)) return false;
+  const [
+    openTime,
+    open,
+    high,
+    low,
+    close,
+    volume,
+    closeTime,
+    quoteVolume,
+    numTrades,
+    takerBaseVolume,
+    takerQuoteVolume,
+    _unused_field,
+  ] = arg;
+
+  return (
+    typeof openTime === "number" &&
+    typeof open === "string" &&
+    typeof high === "string" &&
+    typeof low === "string" &&
+    typeof close === "string" &&
+    typeof volume === "string" &&
+    typeof closeTime === "number" &&
+    typeof quoteVolume === "string" &&
+    typeof numTrades === "number" &&
+    typeof takerBaseVolume === "string" &&
+    typeof takerQuoteVolume === "string"
   );
 };
 

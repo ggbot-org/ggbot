@@ -1,4 +1,8 @@
-import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
+import {
+  BinanceCacheMap,
+  BinanceConnector,
+  BinanceExchange,
+} from "@ggbot2/binance";
 import { readSession } from "@ggbot2/cookies";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
 import {
@@ -67,6 +71,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (strategyKind === "binance") {
     const binance = new BinanceExchange({
       baseUrl: BinanceConnector.defaultBaseUrl,
+      cache: new BinanceCacheMap(),
     });
     const exchangeInfo = await binance.exchangeInfo();
     const binanceSymbols = exchangeInfo.symbols.filter(

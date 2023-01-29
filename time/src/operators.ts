@@ -25,10 +25,14 @@ type TimeTranslator<TimeType> = (arg: TimeType) => {
   minus: (num: number) => TimeTranslationUnits<TimeType>;
 };
 
-/** Translate `Date`.
-@throws ErrorInvalidDate */
-export const getDate: TimeTranslator<Date> = (date) => {
-  if (isInvalidDate(date)) throw new ErrorInvalidDate();
+/**
+ * Translate `Date`.
+ *
+ * @throws ErrorInvalidDate
+ */
+export const getDate: TimeTranslator<Date> = (input) => {
+  if (isInvalidDate(input)) throw new ErrorInvalidDate();
+  const date = new Date(input);
   return {
     plus: (num) => ({
       years: () => {
@@ -44,7 +48,7 @@ export const getDate: TimeTranslator<Date> = (date) => {
         return date;
       },
       hours: () => {
-        date.setDate(date.getHours() + num);
+        date.setHours(date.getHours() + num);
         return date;
       },
       minutes: () => {

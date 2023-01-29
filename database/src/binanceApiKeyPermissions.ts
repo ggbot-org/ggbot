@@ -1,4 +1,5 @@
 import {
+  BinanceCacheMap,
   BinanceClient,
   BinanceConnector,
   ReadBinanceApiKeyPermissions,
@@ -20,6 +21,7 @@ export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] 
       baseUrl: BinanceConnector.defaultBaseUrl,
       apiKey,
       apiSecret,
+      cache: new BinanceCacheMap(),
     });
     const data = await client.apiRestrictions();
     return data;

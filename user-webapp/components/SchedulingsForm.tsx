@@ -89,6 +89,8 @@ export const SchedulingsForm: FC<Props> = ({
   const frequency = useMemo<Frequency>(() => {
     if (selectedFrequencyKey === "15m") return every15Minutes();
     if (selectedFrequencyKey === "1h") return everyHour();
+    // TODO improve this
+    return everyHour();
   }, [selectedFrequencyKey]);
 
   // TODO by now only one scheduling

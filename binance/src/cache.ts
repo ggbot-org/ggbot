@@ -30,14 +30,13 @@ type BinanceKlineCacheProvider = {
 };
 
 export type BinanceCacheProvider = BinanceExchangeInfoCacheProvider &
-  BinanceIsValidSymbolCacheProvider;
+  BinanceIsValidSymbolCacheProvider &
+  BinanceKlineCacheProvider;
 
 // `isValidSymbolMap` and `exchangeInfoMap` are cached with same duration.
 const exchangeInfoCacheDuration = "ONE_DAY";
 
-export class BinanceCacheMap
-  implements BinanceCacheProvider, BinanceKlineCacheProvider
-{
+export class BinanceCacheMap implements BinanceCacheProvider {
   // BinanceExchangeInfoCacheProvider
   private readonly exchangeInfoKey = "exchangeInfo";
   private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(

@@ -4,6 +4,7 @@ export * from "./client.js";
 export * from "./connector.js";
 export * from "./exchange.js";
 export * from "./errors.js";
+export * from "./time.js";
 export * from "./types.js";
 export * from "./typeGuards.js";
 export * from "./utils.js";

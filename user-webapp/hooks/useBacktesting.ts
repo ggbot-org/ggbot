@@ -103,7 +103,7 @@ const backtestingReducer = (state: State, action: Action) => {
     case "END": {
       return {
         ...state,
-        isPaused: true,
+        isPaused: false,
         isRunning: false,
       };
     }
