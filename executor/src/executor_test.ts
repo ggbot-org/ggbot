@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-// import { Executor } from "./executor.js";
+// import { Executor } from "./Executor.js";
 
 describe("test", () => {
   it("works", () => {
@@ -8,7 +8,7 @@ describe("test", () => {
   });
 });
 // TODO
-// describe("executor.managesItem", () => {
+// describe("executor.managesItem()", () => {
 //   it("works", () => {
 //     const capacity = 2;
 //     const index = 1;

@@ -10,7 +10,6 @@ export * from "./countries.js";
 export * from "./email.js";
 export * from "./emailAccount.js";
 export * from "./errors.js";
-export * from "./executor.js";
 export * from "./frequency.js";
 export * from "./item.js";
 export * from "./name.js";
