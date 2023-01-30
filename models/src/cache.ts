@@ -9,11 +9,12 @@ export interface CacheProvider<Data> {
   delete(key: string): void;
 }
 
-type TimeToLive = "FIVE_MINUTES" | "ONE_DAY" | "ONE_WEEK";
+type TimeToLive = "FIVE_MINUTES" | "ONE_HOUR" | "ONE_DAY" | "ONE_WEEK";
 
 /** A set of time durations expressed in milliseconds. */
 const timeToLiveDuration: Record<TimeToLive, number> = {
   FIVE_MINUTES: 300_000,
+  ONE_HOUR: 3_600_000,
   ONE_DAY: 86_400_000,
   ONE_WEEK: 604_800_000,
 };

@@ -1,4 +1,9 @@
 import {
+  Time,
+  TimeUnit,
+  timeUnitDuration,
+} from "@ggbot2/time;
+import {
   NaturalNumber,
   isLiteralType,
   isNaturalNumber,
@@ -14,15 +19,15 @@ export type Frequency = {
   interval: FrequencyInterval;
 };
 
-export const everyHour = (): Frequency => ({
-  every: 1,
-  interval: "1h",
-});
+const frequencyIntervalTimeUnit : Record<FrequencyInterval, TimeUnit> = {
+  "1m":"minute",
+  "1h": "hour",
+}
 
-export const every15Minutes = (): Frequency => ({
-  every: 15,
-  interval: "1m",
-});
+export const frequencyIntervalDuration = ({every,interval }: Frequency): Time => {
+const timeUnit = frequencyIntervalTimeUnit[interval]
+return timeUnit*every
+}
 
 export const isFrequency = (arg: unknown): arg is Frequency => {
   if (typeof arg !== "object" || arg === null) return false;
