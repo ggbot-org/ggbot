@@ -1,14 +1,9 @@
 import { ErrorInvalidDate } from "./errors.js";
 import { getDate } from "./operators.js";
-import {
-  DateInterval,
-  Day,
-  DayInterval,
-  Time,
-  TimeInterval,
-  Timestamp,
-  isInvalidDate,
-} from "./time.js";
+import { DateInterval, isInvalidDate } from "./date.js";
+import { Day, DayInterval } from "./day.js";
+import { Time, TimeInterval } from "./time.js";
+import { Timestamp } from "./timestamp.js";
 
 /** Convert `Date` to `Time`.
 @throws {ErrorInvalidDate} */
