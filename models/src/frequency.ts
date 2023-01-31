@@ -1,8 +1,4 @@
-import {
-  Time,
-  TimeUnit,
-  timeUnitDuration,
-} from "@ggbot2/time;
+import { Time, TimeUnit, timeUnitDuration } from "@ggbot2/time";
 import {
   NaturalNumber,
   isLiteralType,
@@ -19,15 +15,18 @@ export type Frequency = {
   interval: FrequencyInterval;
 };
 
-const frequencyIntervalTimeUnit : Record<FrequencyInterval, TimeUnit> = {
-  "1m":"minute",
+const frequencyIntervalTimeUnit: Record<FrequencyInterval, TimeUnit> = {
+  "1m": "minute",
   "1h": "hour",
-}
+};
 
-export const frequencyIntervalDuration = ({every,interval }: Frequency): Time => {
-const timeUnit = frequencyIntervalTimeUnit[interval]
-return timeUnit*every
-}
+export const frequencyIntervalDuration = ({
+  every,
+  interval,
+}: Frequency): Time => {
+  const timeUnit = frequencyIntervalTimeUnit[interval];
+  return timeUnitDuration[timeUnit] * every;
+};
 
 export const isFrequency = (arg: unknown): arg is Frequency => {
   if (typeof arg !== "object" || arg === null) return false;
