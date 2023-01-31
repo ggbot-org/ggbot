@@ -10,10 +10,11 @@ export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(
 
 export const newStrategyScheduling = ({
   frequency,
-}: Pick<StrategyScheduling, "frequency">): StrategyScheduling => ({
+  status,
+}: Pick<StrategyScheduling, "frequency" | "status">): StrategyScheduling => ({
   id: newId(),
   frequency,
-  status: "active",
+  status,
 });
 
 export type StrategySchedulings = StrategyScheduling[];

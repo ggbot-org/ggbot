@@ -17,7 +17,7 @@ export * from "./PleaseConfigureBinanceApi";
 export * from "./PleasePurchaseSubscription";
 export * from "./ProfitSummary";
 export * from "./SchedulingsForm";
-export * from "./SchedulingStatusBadge";
+export * from "./SchedulingsStatusBadge";
 export * from "./SettingsMenu";
 export * from "./Strategies";
 export * from "./StrategyExecutionLog";
