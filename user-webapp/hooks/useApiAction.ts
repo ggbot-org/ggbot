@@ -6,13 +6,6 @@ export const useApiAction = {
     useAction<ApiAction["CopyStrategy"], ApiActionType>({
       type: "CopyStrategy",
     }),
-  CreateAccountStrategiesItemScheduling: () =>
-    useAction<
-      ApiAction["CreateAccountStrategiesItemScheduling"],
-      ApiActionType
-    >({
-      type: "CreateAccountStrategiesItemScheduling",
-    }),
   CreateBinanceApiConfig: () =>
     useAction<ApiAction["CreateBinanceApiConfig"], ApiActionType>({
       type: "CreateBinanceApiConfig",
@@ -71,13 +64,6 @@ export const useApiAction = {
     useAction<ApiAction["ReadSubscription"], ApiActionType>({
       type: "ReadSubscription",
     }),
-  RemoveAccountStrategiesItemSchedulings: () =>
-    useAction<
-      ApiAction["RemoveAccountStrategiesItemSchedulings"],
-      ApiActionType
-    >({
-      type: "RemoveAccountStrategiesItemSchedulings",
-    }),
   RenameAccount: () =>
     useAction<ApiAction["RenameAccount"], ApiActionType>({
       type: "RenameAccount",
@@ -89,6 +75,10 @@ export const useApiAction = {
   SetAccountCountry: () =>
     useAction<ApiAction["SetAccountCountry"], ApiActionType>({
       type: "SetAccountCountry",
+    }),
+  UpdateAccountStrategiesItem: () =>
+    useAction<ApiAction["UpdateAccountStrategiesItem"], ApiActionType>({
+      type: "UpdateAccountStrategiesItem",
     }),
   WriteStrategyFlow: () =>
     useAction<ApiAction["WriteStrategyFlow"], ApiActionType>({

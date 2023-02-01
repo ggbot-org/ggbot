@@ -29,18 +29,6 @@ export type UpdateAccountStrategiesItem = Operation<
   UpdateTime
 >;
 
-/** Update accountStrategy, add new scheduling. */
-export type CreateAccountStrategiesItemScheduling = Operation<
-  AccountStrategyKey & Pick<StrategyScheduling, "frequency">,
-  UpdateTime
->;
-
-/** Update accountStrategy, remove all schedulings. */
-export type RemoveAccountStrategiesItemSchedulings = Operation<
-  AccountStrategyKey,
-  UpdateTime
->;
-
 export type DeleteAccountStrategiesItem = Operation<
   AccountStrategyKey,
   DeletionTime

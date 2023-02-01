@@ -27,8 +27,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     () => copyIsSpinning || flowIsSpinning,
     [copyIsSpinning, flowIsSpinning]
   );
-  const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
-    useApiAction.RenameStrategy();
+  const [renameStrategy, { isPending: renameIsPending, data: renameData }] = useApiAction.RenameStrategy();
 
   const [readStrategy, { data: strategy }] = useApiAction.ReadStrategy();
 
@@ -107,7 +106,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <Section header="strategy">
+    <Section header="Strategy">
       <EditableInputField
         name="name"
         label="name"
@@ -128,11 +127,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <menu className="flex flex-row flex-wrap gap-4">
         <li>
-          <Button
-            isSpinning={flowIsSpinning}
-            onClick={onClickFlow}
-            color="primary"
-          >
+          <Button isSpinning={flowIsSpinning} onClick={onClickFlow} color="primary">
             flow
           </Button>
         </li>

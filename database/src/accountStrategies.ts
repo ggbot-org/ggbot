@@ -1,14 +1,11 @@
 import {
-  CreateAccountStrategiesItemScheduling,
   DeleteAccountStrategiesItem,
   InsertAccountStrategiesItem,
   ReadAccountStrategies,
-  RemoveAccountStrategiesItemSchedulings,
   SuspendAccountStrategiesSchedulings,
   UpdateAccountStrategiesItem,
   createdNow,
   deletedNow,
-  newStrategyScheduling,
   quota,
   updatedNow,
 } from "@ggbot2/models";
@@ -43,52 +40,6 @@ export const updateAccountStrategiesItem: UpdateAccountStrategiesItem["func"] =
     const data = items.map((item) => {
       if (item.strategyId !== strategyId) return item;
       return { ...item, ...changes };
-    });
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
-  };
-
-export const createAccountStrategiesItemScheduling: CreateAccountStrategiesItemScheduling["func"] =
-  async ({ accountId, strategyId, frequency }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const subscriptionPlan = await readSubscriptionPlan({ accountId });
-    const numMaxSchedulings =
-      quota.MAX_SCHEDULINGS_PER_ACCOUNT(subscriptionPlan);
-    const numSchedulings = items.reduce<number>(
-      (count, { schedulings = [] }) => {
-        const numActiveSchedulings = schedulings.filter(
-          ({ status }) => status === "active"
-        ).length;
-        return count + numActiveSchedulings;
-      },
-      0
-    );
-    if (numSchedulings >= numMaxSchedulings)
-      throw new ErrorExceededQuota({ type: "MAX_SCHEDULINGS_PER_ACCOUNT" });
-    const data = items.map((item) => {
-      if (item.strategyId !== strategyId) return item;
-      return {
-        ...item,
-        schedulings: item.schedulings.concat(
-          newStrategyScheduling({ frequency })
-        ),
-      };
-    });
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
-  };
-
-export const removeAccountStrategiesItemSchedulings: RemoveAccountStrategiesItemSchedulings["func"] =
-  async ({ accountId, strategyId }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => {
-      if (item.strategyId !== strategyId) return item;
-      return {
-        ...item,
-        schedulings: [],
-      };
     });
     const Key = pathname.accountStrategies({ accountId });
     await putObject({ Key, data });
