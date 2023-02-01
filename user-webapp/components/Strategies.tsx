@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
-import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
+import { SchedulingsStatusBadge } from "./SchedulingsStatusBadge";
 import { StrategyItem } from "./StrategyItem";
 
 export const Strategies: FC = () => {
@@ -88,7 +88,7 @@ export const Strategies: FC = () => {
             <div className="lg:max-w-lg" key={strategyId}>
               <StrategyItem strategyKey={{ strategyId, strategyKind }}>
                 <span>{name}</span>
-                <SchedulingStatusBadge schedulings={schedulings} />
+                <SchedulingsStatusBadge schedulings={schedulings} />
               </StrategyItem>
             </div>
           )

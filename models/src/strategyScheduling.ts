@@ -17,7 +17,5 @@ export const newStrategyScheduling = ({
   status,
 });
 
-export type StrategySchedulings = StrategyScheduling[];
-
 export const isStrategySchedulings =
   arrayTypeGuard<StrategyScheduling>(isStrategyScheduling);

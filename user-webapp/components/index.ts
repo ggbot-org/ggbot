@@ -16,6 +16,7 @@ export * from "./Navigation";
 export * from "./PleaseConfigureBinanceApi";
 export * from "./PleasePurchaseSubscription";
 export * from "./ProfitSummary";
+export * from "./SchedulingController";
 export * from "./SchedulingsForm";
 export * from "./SchedulingsStatusBadge";
 export * from "./SettingsMenu";

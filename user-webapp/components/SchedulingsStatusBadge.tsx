@@ -21,6 +21,11 @@ const schedulingStatusLabel: Record<StrategyScheduling["status"], string> = {
   suspended: "suspended",
 };
 
+// TODO show
+//    "active 2/3"
+//    "inactive"
+//    "active" if 1/1
+//    implement this TODO and turn it into docs
 export const SchedulingsStatusBadge: FC<Props> = ({ schedulings }) => {
   const schedulingStatus = useMemo<
     StrategyScheduling["status"] | undefined
