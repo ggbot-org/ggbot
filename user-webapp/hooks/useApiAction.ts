@@ -30,8 +30,7 @@ export const useApiAction = {
     useAction<ApiAction["ExecuteStrategy"], ApiActionType>({
       type: "ExecuteStrategy",
     }),
-  ReadAccount: () =>
-    useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
+  ReadAccount: () => useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
   ReadAccountStrategies: () =>
     useAction<ApiAction["ReadAccountStrategies"], ApiActionType>({
       type: "ReadAccountStrategies",
@@ -76,9 +75,9 @@ export const useApiAction = {
     useAction<ApiAction["SetAccountCountry"], ApiActionType>({
       type: "SetAccountCountry",
     }),
-  UpdateAccountStrategiesItem: () =>
-    useAction<ApiAction["UpdateAccountStrategiesItem"], ApiActionType>({
-      type: "UpdateAccountStrategiesItem",
+  WriteAccountStrategiesItemSchedulings: () =>
+    useAction<ApiAction["WriteAccountStrategiesItemSchedulings"], ApiActionType>({
+      type: "WriteAccountStrategiesItemSchedulings",
     }),
   WriteStrategyFlow: () =>
     useAction<ApiAction["WriteStrategyFlow"], ApiActionType>({

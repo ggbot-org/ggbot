@@ -13,16 +13,6 @@ insert_final_newline = true
 end_of_line = lf
 indent_style = space
 indent_size = 2
-max_line_length = 80
+max_line_length = 108
 
 trim_trailing_whitespace = true
-
-[*{.conf,.pl,.pm,.py,.sol}]
-indent_size = 4
-
-[*{.glsl,.go,.sh,.sql}]
-indent_style = tab
-
-[Makefile]
-indent_style = tab
-

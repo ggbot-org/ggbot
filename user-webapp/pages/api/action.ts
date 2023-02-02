@@ -24,7 +24,7 @@ import {
   renameAccount,
   renameStrategy,
   setAccountCountry,
-  updateAccountStrategiesItem,
+  writeAccountStrategiesItemSchedulings,
   writeStrategyFlow,
 } from "@ggbot2/database";
 import {
@@ -54,7 +54,7 @@ import {
   RenameAccount,
   RenameStrategy,
   SetAccountCountry,
-  UpdateAccountStrategiesItem,
+  WriteAccountStrategiesItemSchedulings,
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
@@ -80,7 +80,7 @@ export type ApiAction = {
   RenameAccount: Action<RenameAccount["in"]>;
   RenameStrategy: Action<RenameStrategy["in"]>;
   SetAccountCountry: Action<SetAccountCountry["in"]>;
-  UpdateAccountStrategiesItem: Action<UpdateAccountStrategiesItem["in"]>;
+  WriteAccountStrategiesItemSchedulings: Action<WriteAccountStrategiesItemSchedulings["in"]>;
   WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
@@ -104,7 +104,7 @@ const apiActionTypes = [
   "RenameStrategy",
   "RenameAccount",
   "SetAccountCountry",
-  "UpdateAccountStrategiesItem",
+  "WriteAccountStrategiesItemSchedulings",
   "WriteStrategyFlow",
 ] as const;
 export type ApiActionType = typeof apiActionTypes[number];
@@ -240,8 +240,8 @@ export default async function apiHandler(
             return res.status(__200__OK__).json({ data });
           }
 
-          case "UpdateAccountStrategiesItem": {
-            const data = await updateAccountStrategiesItem({ accountId, ...action.data });
+          case "WriteAccountStrategiesItemSchedulings": {
+            const data = await writeAccountStrategiesItemSchedulings({ accountId, ...action.data });
             return res.status(__200__OK__).json({ data });
           }
 

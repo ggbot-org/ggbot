@@ -6,11 +6,7 @@ import {
   BinanceKline,
   BinanceKlineInterval,
 } from "@ggbot2/binance";
-import {
-  BinanceDflowClient,
-  BinanceDflowExecutor,
-  getDflowBinanceNodesCatalog,
-} from "@ggbot2/dflow";
+import { BinanceDflowClient, BinanceDflowExecutor, getDflowBinanceNodesCatalog } from "@ggbot2/dflow";
 import {
   DeleteStrategyExecution,
   ExecuteStrategy,
@@ -23,7 +19,7 @@ import {
 } from "@ggbot2/models";
 import { truncateTime, now, today, timeToDay } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { removeAccountStrategiesItemSchedulings } from "./accountStrategies.js";
+import { suspendAccountStrategiesItemSchedulings } from "./accountStrategies.js";
 import { pathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
@@ -45,11 +41,7 @@ class Binance extends BinanceClient implements BinanceDflowClient {
       cache: new BinanceCacheMap(),
     });
   }
-  async candles(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    limit: number
-  ): Promise<BinanceKline[]> {
+  async candles(symbol: string, interval: BinanceKlineInterval, limit: number): Promise<BinanceKline[]> {
     return await this.klines(symbol, interval, { limit });
   }
 }
@@ -65,11 +57,7 @@ class Binance extends BinanceClient implements BinanceDflowClient {
  * @throws {ErrorStrategyItemNotFound}
  * @throws {ErrorUnimplementedStrategyKind}
  */
-export const executeStrategy: ExecuteStrategy["func"] = async ({
-  accountId,
-  strategyId,
-  strategyKind,
-}) => {
+export const executeStrategy: ExecuteStrategy["func"] = async ({ accountId, strategyId, strategyKind }) => {
   try {
     const accountStrategyKey = { accountId, strategyKind, strategyId };
     const strategyKey = { strategyKind, strategyId };
@@ -173,29 +161,23 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
         return { status, memory: memoryOutput, steps, ...updatedNow() };
       } catch (error) {
-        await removeAccountStrategiesItemSchedulings({
+        await suspendAccountStrategiesItemSchedulings({
           accountId,
           strategyId,
-          strategyKind,
         });
         return { status: "failure", memory: {}, steps: [], ...updatedNow() };
       }
     }
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {
-    if (
-      error instanceof ErrorAccountItemNotFound ||
-      error instanceof ErrorUnimplementedStrategyKind
-    )
+    if (error instanceof ErrorAccountItemNotFound || error instanceof ErrorUnimplementedStrategyKind)
       throw error;
     console.error(error);
     throw error;
   }
 };
 
-export const readStrategyExecution: ReadStrategyExecution["func"] = async (
-  arg
-) =>
+export const readStrategyExecution: ReadStrategyExecution["func"] = async (arg) =>
   await getObject<ReadStrategyExecution["out"]>({
     Key: pathname.strategyExecution(arg),
   });
@@ -220,6 +202,5 @@ export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
   return whenUpdated;
 };
 
-export const deleteStrategyExecution: DeleteStrategyExecution["func"] = async (
-  arg
-) => await deleteObject({ Key: pathname.strategyExecution(arg) });
+export const deleteStrategyExecution: DeleteStrategyExecution["func"] = async (arg) =>
+  await deleteObject({ Key: pathname.strategyExecution(arg) });

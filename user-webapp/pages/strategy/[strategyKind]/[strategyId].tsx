@@ -13,11 +13,7 @@ import {
   StrategyForm,
   StrategyProfits,
 } from "_components";
-import {
-  StrategyInfo,
-  requireAuthenticationAndGetStrategyInfo,
-  route,
-} from "_routing";
+import { StrategyInfo, requireAuthenticationAndGetStrategyInfo, route } from "_routing";
 
 type ServerSideProps = StrategyInfo;
 
@@ -27,9 +23,8 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const router = useRouter();
 
   const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
-  const [hasActiveSubscription, setHasActiveSubscription] = useState<
-    boolean | undefined
-  >();
+  // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
+  const [hasActiveSubscription, setHasActiveSubscription] = useState<boolean | undefined>();
 
   const breadcrumbs = useMemo(
     () => [
@@ -55,33 +50,19 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
 
   return (
     <Content
-      topbar={
-        <Navigation
-          breadcrumbs={breadcrumbs}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-      message={
-        hasActiveSubscription === false ? <PleasePurchaseSubscription /> : null
-      }
+      topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}
+      message={hasActiveSubscription === false ? <PleasePurchaseSubscription /> : null}
     >
       <div className="flex flex-wrap gap-2">
         <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
-        <SchedulingsForm
-          setHasActiveSubscription={setHasActiveSubscription}
-          strategyKey={strategyKey}
-        />
+        <SchedulingsForm setHasActiveSubscription={setHasActiveSubscription} strategyKey={strategyKey} />
         <StrategyProfits strategyKey={strategyKey} />
       </div>
 
       <Section color="danger" header="Danger zone">
         <menu>
           <li>
-            <Button
-              color="danger"
-              isSpinning={deleteIsSpinning}
-              onClick={onClickDelete}
-            >
+            <Button color="danger" isSpinning={deleteIsSpinning} onClick={onClickDelete}>
               Delete strategy
             </Button>
           </li>

@@ -3,19 +3,19 @@ import { isNaturalNumber, NaturalNumber } from "@ggbot2/type-utils";
 import { Button, InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 
-type SchedulingInput = Omit<StrategyScheduling, "frequency"> & {
-  frequency: Pick<StrategyScheduling["frequency"], "interval"> & {
-    every: NaturalNumber | "";
+type FrequencyInput = Pick<StrategyScheduling["frequency"], "interval"> & {
+  every: NaturalNumber | "";
+};
+
+export type SchedulingItemProps = {
+  scheduling: Omit<StrategyScheduling, "frequency"> & {
+    frequency: FrequencyInput;
   };
+  setFrequency: (arg: FrequencyInput) => void;
+  removeScheduling: () => void;
 };
 
-export type SchedulingControllerProps = {
-  currentScheduling: StrategyScheduling;
-  scheduling: SchedulingInput;
-  setScheduling: (arg: SchedulingInput) => void;
-};
-
-export const SchedulingController: FC<SchedulingControllerProps> = ({ scheduling, setScheduling }) => {
+export const SchedulingItem: FC<SchedulingItemProps> = ({ scheduling, setFrequency, removeScheduling }) => {
   const { frequency } = scheduling;
 
   const frequencyIntervalOptions = useMemo(
@@ -34,30 +34,24 @@ export const SchedulingController: FC<SchedulingControllerProps> = ({ scheduling
       const value = event.target.value;
       const every = value === "" ? value : Number(value);
       if (isNaturalNumber(every) || every === "")
-        setScheduling({
-          ...scheduling,
-          frequency: {
-            ...scheduling.frequency,
-            every,
-          },
+        setFrequency({
+          ...scheduling.frequency,
+          every,
         });
     },
-    [scheduling, setScheduling]
+    [scheduling, setFrequency]
   );
 
   const onChangeFrequencyInterval = useCallback<SelectOnChange>(
     (event) => {
       const value = event.target.value;
       if (isFrequencyInterval(value))
-        setScheduling({
-          ...scheduling,
-          frequency: {
-            ...scheduling.frequency,
-            interval: value,
-          },
+        setFrequency({
+          ...scheduling.frequency,
+          interval: value,
         });
     },
-    [scheduling, setScheduling]
+    [scheduling, setFrequency]
   );
 
   return (
@@ -83,7 +77,7 @@ export const SchedulingController: FC<SchedulingControllerProps> = ({ scheduling
 
       <menu className="flex flex-row flex-wrap gap-4">
         <li>
-          <Button>Remove</Button>
+          <Button onClick={removeScheduling}>Remove</Button>
         </li>
 
         <li>

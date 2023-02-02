@@ -3,13 +3,10 @@ import { AccountStrategy, StrategyScheduling } from "@ggbot2/models";
 import { FC, ReactNode, useMemo } from "react";
 
 type Props = {
-  schedulings?: AccountStrategy["schedulings"];
+  schedulings: AccountStrategy["schedulings"] | undefined;
 };
 
-const schedulingStatusColor: Record<
-  StrategyScheduling["status"],
-  PillProps["color"]
-> = {
+const schedulingStatusColor: Record<StrategyScheduling["status"], PillProps["color"]> = {
   active: "primary",
   inactive: "neutral",
   suspended: "danger",
@@ -27,16 +24,26 @@ const schedulingStatusLabel: Record<StrategyScheduling["status"], string> = {
 //    "active" if 1/1
 //    implement this TODO and turn it into docs
 export const SchedulingsStatusBadge: FC<Props> = ({ schedulings }) => {
-  const schedulingStatus = useMemo<
-    StrategyScheduling["status"] | undefined
-  >(() => {
-    if (!schedulings) return;
-    if (schedulings.length === 0) return "inactive";
-    if (schedulings.some((scheduling) => scheduling.status === "suspended"))
-      return "suspended";
-    if (schedulings.every((scheduling) => scheduling.status === "active"))
-      return "active";
-    return "inactive";
+  const { schedulingStatus, numActive, numSchedulings } = useMemo<{
+    schedulingStatus: StrategyScheduling["status"] | undefined;
+    numSchedulings: number | undefined;
+    numActive: number | undefined;
+  }>(() => {
+    if (!schedulings) {
+      return { schedulingStatus: undefined, numSchedulings: undefined, numActive: undefined };
+    }
+    const numSchedulings = schedulings.length;
+    const numActive = schedulings.filter(({ status }) => status === "active").length;
+    if (numSchedulings === 0) {
+      return { schedulingStatus: "inactive", numSchedulings, numActive };
+    }
+    if (schedulings.some(({ status }) => status === "suspended")) {
+      return { schedulingStatus: "suspended", numSchedulings, numActive };
+    }
+    if (schedulings.every(({ status }) => status === "active")) {
+      return { schedulingStatus: "active", numSchedulings, numActive };
+    }
+    return { schedulingStatus: "inactive", numSchedulings, numActive };
   }, [schedulings]);
 
   const { color, label } = useMemo<{
@@ -48,10 +55,13 @@ export const SchedulingsStatusBadge: FC<Props> = ({ schedulings }) => {
         color: "neutral",
         label: <>&npsp;</>,
       };
-    return {
-      label: schedulingStatusLabel[schedulingStatus],
-      color: schedulingStatusColor[schedulingStatus],
-    };
+    const statusLabel = schedulingStatusLabel[schedulingStatus];
+    const color = schedulingStatusColor[schedulingStatus];
+    if (status === "active") {
+      const label = numSchedulings === 1 ? statusLabel : `${statusLabel} ${numActive}/${numSchedulings}`;
+      return { label, color };
+    }
+    return { label: statusLabel, color };
   }, [schedulingStatus]);
 
   return <Pill color={color}>{label}</Pill>;

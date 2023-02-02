@@ -1,11 +1,15 @@
-import { StrategyScheduling, isAccountStrategy } from "@ggbot2/models";
+import {
+  StrategyScheduling,
+  isAccountStrategy,
+  isStrategyScheduling,
+  newStrategyScheduling,
+} from "@ggbot2/models";
 import { Button, Section } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction, useSubscription } from "_hooks";
 import { StrategyKey } from "_routing";
+import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem";
 import { SchedulingsStatusBadge } from "./SchedulingsStatusBadge";
-import { SchedulingController, SchedulingControllerProps } from "./SchedulingController";
-import { isNaturalNumber } from "@ggbot2/type-utils";
 
 type Props = {
   strategyKey: StrategyKey;
@@ -18,11 +22,10 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   const { hasActiveSubscription } = useSubscription();
 
   const [read, { data: accountStrategies }] = useApiAction.ReadAccountStrategies();
-  const [_update, { isPending: updateIsPending }] = useApiAction.UpdateAccountStrategiesItem();
+  const [write, { isPending: writeIsPending, data: writeData }] =
+    useApiAction.WriteAccountStrategiesItemSchedulings();
 
-  const [changedSchedulings, setChangedSchedulings] = useState<SchedulingControllerProps["scheduling"][]>(
-    []
-  );
+  const [schedulingItems, setSchedulingItems] = useState<SchedulingItemProps["scheduling"][]>([]);
 
   const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
     if (!Array.isArray(accountStrategies)) return [];
@@ -38,64 +41,83 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   const someSchedulingChanged = useMemo(() => {
     // Do not know about currentSchedulings yet, data fetch is pending.
     if (!currentSchedulings) return false;
-    // No change at all.
-    if (changedSchedulings.length === 0) return false;
-    // Some scheduling was added or removed.
-    if (changedSchedulings.length !== currentSchedulings.length) return true;
-    // Some scheduling value changed.
-    return currentSchedulings.some((scheduling) => {
-      const changedScheduling = changedSchedulings.find(({ id }) => scheduling.id === id);
-      if (!changedScheduling) return false;
-      return (
-        changedScheduling.frequency.every !== scheduling.frequency.every ||
-        changedScheduling.frequency.interval !== scheduling.frequency.interval
-      );
-    });
-  }, [changedSchedulings, currentSchedulings]);
+    // Some scheduling for sure was added or removed.
+    if (schedulingItems.length !== currentSchedulings.length) return true;
+    // Here the number of schedulingItem and currentSchedulings is the same.
+    // Check every schedulingItem:
+    for (const schedulingItem of schedulingItems) {
+      const currentScheduling = currentSchedulings.find(({ id }) => schedulingItem.id === id);
+      // if there is no corresponding currentScheduling, it is a new item;
+      if (!currentScheduling) return true;
+      // check if schedulingItem is valid, and some of its attribute changed.
+      if (
+        isStrategyScheduling(schedulingItem) &&
+        (schedulingItem.status !== currentScheduling.status ||
+          schedulingItem.frequency.every !== currentScheduling.frequency.every ||
+          schedulingItem.frequency.interval !== currentScheduling.frequency.interval)
+      )
+        return true;
+    }
+    return false;
+  }, [currentSchedulings, schedulingItems]);
 
-  const everyChangedSchedulingIsValid = useMemo(() => {
-    return changedSchedulings.every(({ frequency: { every } }) => {
-      return isNaturalNumber(every);
-    });
-  }, [changedSchedulings]);
+  const wantedSchedulings = useMemo<StrategyScheduling[]>(() => {
+    return schedulingItems.filter(isStrategyScheduling);
+  }, [schedulingItems]);
 
   const canSubmit = useMemo(() => {
     if (hasActiveSubscription !== true) return false;
-    if (someSchedulingChanged) return everyChangedSchedulingIsValid;
-    return false;
-  }, [someSchedulingChanged, hasActiveSubscription, everyChangedSchedulingIsValid]);
+    return someSchedulingChanged && schedulingItems.every(isStrategyScheduling);
+  }, [someSchedulingChanged, hasActiveSubscription, schedulingItems]);
 
-  const schedulingItems = useMemo<
-    Pick<SchedulingControllerProps, "scheduling" | "currentScheduling">[]
-  >(() => {
-    return currentSchedulings.map((currentScheduling) => {
-      const changedScheduling = changedSchedulings.find(
-        (schedulingChange) => schedulingChange.id === currentScheduling.id
-      );
-      return {
-        currentScheduling,
-        scheduling: changedScheduling ?? currentScheduling,
-      };
-    });
-  }, [currentSchedulings, changedSchedulings]);
-
-  const setScheduling = useCallback<SchedulingControllerProps["setScheduling"]>(
-    (scheduling) => {
-      setChangedSchedulings((schedulingChanges) =>
-        schedulingChanges
-          .filter((changedScheduling) => changedScheduling.id !== scheduling.id)
-          .concat(scheduling)
+  const setSchedulingItemFrequency = useCallback<
+    (id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
+  >(
+    (id) => (frequency) => {
+      setSchedulingItems((schedulingItems) =>
+        schedulingItems.map((schedulingItem) => {
+          if (schedulingItem.id !== id) return schedulingItem;
+          return { ...schedulingItem, frequency };
+        })
       );
     },
-    [setChangedSchedulings]
+    []
   );
+
+  const removeSchedulingItem = useCallback<
+    (id: StrategyScheduling["id"]) => SchedulingItemProps["removeScheduling"]
+  >(
+    (id) => () => {
+      setSchedulingItems((schedulingItems) =>
+        schedulingItems.filter((schedulingItem) => schedulingItem.id !== id)
+      );
+    },
+    []
+  );
+
+  const addSchedulingItem = useCallback(() => {
+    setSchedulingItems((schedulingItems) =>
+      schedulingItems.concat(
+        newStrategyScheduling({ frequency: { every: 1, interval: "1h" }, status: "inactive" })
+      )
+    );
+  }, []);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
       event.preventDefault();
       if (!canSubmit) return;
+      write({ strategyId, schedulings: wantedSchedulings });
     },
-    [canSubmit]
+    [canSubmit, strategyId, wantedSchedulings, write]
+  );
+
+  const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
+    (event) => {
+      event.preventDefault();
+      setSchedulingItems(currentSchedulings);
+    },
+    [currentSchedulings]
   );
 
   useEffect(() => {
@@ -110,15 +132,15 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
     };
   }, [read]);
 
+  // Update schedulings once fetched.
+  useEffect(() => {
+    if (currentSchedulings) setSchedulingItems(currentSchedulings);
+  }, [currentSchedulings]);
+
   // Fetch accountStrategies on updates.
-  useEffect(
-    () => {
-      // if (createData || removeData) read({});
-    },
-    [
-      /*read, createData, removeData*/
-    ]
-  );
+  useEffect(() => {
+    if (writeData) read({});
+  }, [writeData, read]);
 
   return (
     <Section
@@ -132,30 +154,35 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
         </div>
       }
     >
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} onReset={onReset}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            {schedulingItems.map(({ currentScheduling, scheduling }) => (
-              <SchedulingController
-                key={scheduling.id}
-                currentScheduling={currentScheduling}
-                scheduling={scheduling}
-                setScheduling={setScheduling}
-              />
-            ))}
+            {schedulingItems.map((scheduling) => {
+              const { id } = scheduling;
+              return (
+                <SchedulingItem
+                  key={id}
+                  scheduling={scheduling}
+                  setFrequency={setSchedulingItemFrequency(id)}
+                  removeScheduling={removeSchedulingItem(id)}
+                />
+              );
+            })}
           </div>
 
           <menu className="flex flex-row flex-wrap gap-4">
             <li>
-              <Button>Add</Button>
+              <Button onClick={addSchedulingItem}>Add</Button>
             </li>
           </menu>
 
           <menu className="flex flex-row flex-wrap gap-4">
             <li>
-              <Button type="submit" disabled={!canSubmit} isSpinning={updateIsPending}>
+              <Button type="submit" disabled={!canSubmit} isSpinning={writeIsPending}>
                 Save
               </Button>
+
+              <Button type="reset">Cancel</Button>
             </li>
           </menu>
         </div>
