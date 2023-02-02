@@ -4,10 +4,7 @@ import { Spinner } from "./Spinner";
 
 export type ButtonOnClick = PointerEventHandler<HTMLButtonElement>;
 
-type ButtonProps = Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  "className"
-> & {
+type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> & {
   color?: Extract<Color, "primary" | "danger">;
   isSpinning?: boolean;
 };
@@ -29,17 +26,13 @@ function colorClassNames({
     case color === "danger":
       return [
         "border-yellow-400",
-        isSpinning
-          ? "bg-yellow-400 text-yellow-50"
-          : "bg-yellow-50 text-yellow-700",
+        isSpinning ? "bg-yellow-400 text-yellow-50" : "bg-yellow-50 text-yellow-700",
         "focus:bg-yellow-400 focus:text-yellow-50 focus:ring-yellow-300 hover:bg-yellow-400 hover:text-yellow-50 active:bg-yellow-400 active:text-yellow-50",
       ].join(" ");
     default:
       return [
         "border-neutral-600",
-        isSpinning
-          ? "bg-neutral-700 text-neutral-200"
-          : "bg-neutral-50 text-neutral-800",
+        isSpinning ? "bg-neutral-700 text-neutral-200" : "bg-neutral-50 text-neutral-800",
         "focus:bg-neutral-700 focus:text-neutral-200 focus:ring-neutral-400 hover:bg-neutral-700 hover:text-neutral-200 active:bg-neutral-700 active:text-neutral-200",
       ].join(" ");
   }
@@ -51,6 +44,7 @@ export const Button: FC<ButtonProps> = ({
   disabled,
   isSpinning,
   tabIndex: _tabIndex,
+  type = "button",
   ...props
 }) => {
   const buttonClassName = useMemo(() => {
@@ -69,32 +63,16 @@ export const Button: FC<ButtonProps> = ({
 
   const contentClassName = useMemo(
     () =>
-      [
-        "inline-flex items-center",
-        "px-4 leading-10 font-medium",
-        isSpinning ? "invisible" : "",
-      ].join(" "),
+      ["inline-flex items-center", "px-4 leading-10 font-medium", isSpinning ? "invisible" : ""].join(" "),
     [isSpinning]
   );
 
-  const tabIndex = useMemo(
-    () => (disabled ? -1 : _tabIndex),
-    [_tabIndex, disabled]
-  );
+  const tabIndex = useMemo(() => (disabled ? -1 : _tabIndex), [_tabIndex, disabled]);
 
   return (
-    <button
-      disabled={disabled}
-      {...props}
-      className={buttonClassName}
-      tabIndex={tabIndex}
-    >
-      {isSpinning && (
-        <Spinner className="absolute" style={{ left: "calc(50% - 5px)" }} />
-      )}
-      <div className={contentClassName}>
-        {children ? children : <>&nbsp;</>}
-      </div>
+    <button disabled={disabled} {...props} className={buttonClassName} tabIndex={tabIndex} type={type}>
+      {isSpinning && <Spinner className="absolute" style={{ left: "calc(50% - 5px)" }} />}
+      <div className={contentClassName}>{children ? children : <>&nbsp;</>}</div>
     </button>
   );
 };

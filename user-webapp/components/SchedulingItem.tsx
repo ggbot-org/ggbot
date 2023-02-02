@@ -1,6 +1,13 @@
 import { StrategyScheduling, isFrequencyInterval } from "@ggbot2/models";
 import { isNaturalNumber, NaturalNumber } from "@ggbot2/type-utils";
-import { Button, InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/ui-components";
+import {
+  Button,
+  ButtonOnClick,
+  InputField,
+  InputOnChange,
+  SelectField,
+  SelectOnChange,
+} from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 
 type FrequencyInput = Pick<StrategyScheduling["frequency"], "interval"> & {
@@ -12,11 +19,17 @@ export type SchedulingItemProps = {
     frequency: FrequencyInput;
   };
   setFrequency: (arg: FrequencyInput) => void;
+  setStatus: (arg: Extract<StrategyScheduling["status"], "active" | "inactive">) => void;
   removeScheduling: () => void;
 };
 
-export const SchedulingItem: FC<SchedulingItemProps> = ({ scheduling, setFrequency, removeScheduling }) => {
-  const { frequency } = scheduling;
+export const SchedulingItem: FC<SchedulingItemProps> = ({
+  scheduling,
+  setFrequency,
+  removeScheduling,
+  setStatus,
+}) => {
+  const { frequency, status } = scheduling;
 
   const frequencyIntervalOptions = useMemo(
     () => [
@@ -28,6 +41,22 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({ scheduling, setFrequen
     ],
     []
   );
+
+  const onClickStatusButton = useCallback<ButtonOnClick>(() => {
+    if (status !== "active") {
+      setStatus("active");
+    } else {
+      setStatus("inactive");
+    }
+  }, [status]);
+
+  const statusButtonLabel = useMemo(() => {
+    if (status !== "active") {
+      return "Activate";
+    } else {
+      return "Dismiss";
+    }
+  }, [status]);
 
   const onChangeFrequencyEvery = useCallback<InputOnChange>(
     (event) => {
@@ -81,7 +110,7 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({ scheduling, setFrequen
         </li>
 
         <li>
-          <Button>Dismiss</Button>
+          <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
         </li>
       </menu>
     </fieldset>

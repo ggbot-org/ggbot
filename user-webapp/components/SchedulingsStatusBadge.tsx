@@ -18,11 +18,6 @@ const schedulingStatusLabel: Record<StrategyScheduling["status"], string> = {
   suspended: "suspended",
 };
 
-// TODO show
-//    "active 2/3"
-//    "inactive"
-//    "active" if 1/1
-//    implement this TODO and turn it into docs
 export const SchedulingsStatusBadge: FC<Props> = ({ schedulings }) => {
   const { schedulingStatus, numActive, numSchedulings } = useMemo<{
     schedulingStatus: StrategyScheduling["status"] | undefined;
@@ -57,7 +52,7 @@ export const SchedulingsStatusBadge: FC<Props> = ({ schedulings }) => {
       };
     const statusLabel = schedulingStatusLabel[schedulingStatus];
     const color = schedulingStatusColor[schedulingStatus];
-    if (status === "active") {
+    if (schedulingStatus === "active") {
       const label = numSchedulings === 1 ? statusLabel : `${statusLabel} ${numActive}/${numSchedulings}`;
       return { label, color };
     }

@@ -70,6 +70,10 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
     return someSchedulingChanged && schedulingItems.every(isStrategyScheduling);
   }, [someSchedulingChanged, hasActiveSubscription, schedulingItems]);
 
+  const canReset = useMemo(() => {
+    return someSchedulingChanged;
+  }, [someSchedulingChanged]);
+
   const setSchedulingItemFrequency = useCallback<
     (id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
   >(
@@ -102,6 +106,7 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
       )
     );
   }, []);
+  console.log(schedulingItems);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -156,7 +161,7 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
     >
       <form onSubmit={onSubmit} onReset={onReset}>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             {schedulingItems.map((scheduling) => {
               const { id } = scheduling;
               return (
@@ -181,8 +186,12 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
               <Button type="submit" disabled={!canSubmit} isSpinning={writeIsPending}>
                 Save
               </Button>
+            </li>
 
-              <Button type="reset">Cancel</Button>
+            <li>
+              <Button type="reset" disabled={!canReset}>
+                Cancel
+              </Button>
             </li>
           </menu>
         </div>
