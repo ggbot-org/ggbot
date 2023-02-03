@@ -9,6 +9,7 @@ import {
   SelectOnChange,
 } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
+import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
 type FrequencyInput = Pick<StrategyScheduling["frequency"], "interval"> & {
   every: NaturalNumber | "";
@@ -84,7 +85,21 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
   );
 
   return (
-    <fieldset>
+    <div className="flex flex-col gap-2">
+      <menu className="flex flex-row flex-wrap items-center gap-4">
+        <li>
+          <SchedulingStatusBadge schedulingStatus={scheduling.status} />
+        </li>
+
+        <li>
+          <Button onClick={removeScheduling}>Remove</Button>
+        </li>
+
+        <li>
+          <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
+        </li>
+      </menu>
+
       <div className="flex flex-row gap-1">
         <div className="w-16">
           <InputField
@@ -103,16 +118,6 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
           label="interval"
         />
       </div>
-
-      <menu className="flex flex-row flex-wrap gap-4">
-        <li>
-          <Button onClick={removeScheduling}>Remove</Button>
-        </li>
-
-        <li>
-          <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
-        </li>
-      </menu>
-    </fieldset>
+    </div>
   );
 };

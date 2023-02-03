@@ -1,16 +1,11 @@
-import {
-  AccountStrategy,
-  isAccountStrategy,
-  isName,
-  isStrategyKey,
-} from "@ggbot2/models";
+import { AccountStrategy, isAccountStrategy, isName, isStrategyKey } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
-import { SchedulingsStatusBadge } from "./SchedulingsStatusBadge";
+import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 import { StrategyItem } from "./StrategyItem";
 
 export const Strategies: FC = () => {
@@ -18,8 +13,7 @@ export const Strategies: FC = () => {
 
   const [newStrategyIsLoading, setNewStrategyIsLoading] = useState(false);
 
-  const [readStrategies, { data: strategies }] =
-    useApiAction.ReadAccountStrategies();
+  const [readStrategies, { data: strategies }] = useApiAction.ReadAccountStrategies();
 
   const onClickNewStrategy = useCallback<ButtonOnClick>(
     (event) => {
@@ -35,10 +29,8 @@ export const Strategies: FC = () => {
 
   const { strategyItems, unknownItems } = useMemo(() => {
     const unknownItems: unknown[] = [];
-    const strategyItems: Pick<
-      AccountStrategy,
-      "name" | "strategyId" | "strategyKind" | "schedulings"
-    >[] = [];
+    const strategyItems: Pick<AccountStrategy, "name" | "strategyId" | "strategyKind" | "schedulings">[] =
+      [];
     if (Array.isArray(strategies))
       for (const item of strategies) {
         if (isAccountStrategy(item)) {
@@ -72,10 +64,7 @@ export const Strategies: FC = () => {
         <h2 className="text-xl">strategies</h2>
         <menu>
           <li>
-            <Button
-              isSpinning={newStrategyIsLoading}
-              onClick={onClickNewStrategy}
-            >
+            <Button isSpinning={newStrategyIsLoading} onClick={onClickNewStrategy}>
               new strategy
             </Button>
           </li>
@@ -83,16 +72,14 @@ export const Strategies: FC = () => {
       </div>
       <div className="flex flex-col md:flex-row md:flex-wrap gap-4">
         {noStrategy && <p>Your strategy list is empty.</p>}
-        {strategyItems.map(
-          ({ name, strategyId, strategyKind, schedulings }) => (
-            <div className="lg:max-w-lg" key={strategyId}>
-              <StrategyItem strategyKey={{ strategyId, strategyKind }}>
-                <span>{name}</span>
-                <SchedulingsStatusBadge schedulings={schedulings} />
-              </StrategyItem>
-            </div>
-          )
-        )}
+        {strategyItems.map(({ name, strategyId, strategyKind, schedulings }) => (
+          <div className="lg:max-w-lg" key={strategyId}>
+            <StrategyItem strategyKey={{ strategyId, strategyKind }}>
+              <span>{name}</span>
+              <SchedulingsStatusBadges schedulings={schedulings} />
+            </StrategyItem>
+          </div>
+        ))}
       </div>
       {unknownItems.length > 0 ? (
         <div>

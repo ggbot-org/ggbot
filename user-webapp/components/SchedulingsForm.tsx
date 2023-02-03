@@ -4,12 +4,12 @@ import {
   isStrategyScheduling,
   newStrategyScheduling,
 } from "@ggbot2/models";
-import { Button, Section } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, Section } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction, useSubscription } from "_hooks";
 import { StrategyKey } from "_routing";
 import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem";
-import { SchedulingsStatusBadge } from "./SchedulingsStatusBadge";
+import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {
   strategyKey: StrategyKey;
@@ -70,7 +70,7 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
     return someSchedulingChanged && schedulingItems.every(isStrategyScheduling);
   }, [someSchedulingChanged, hasActiveSubscription, schedulingItems]);
 
-  const canReset = useMemo(() => {
+  const canCancel = useMemo(() => {
     return someSchedulingChanged;
   }, [someSchedulingChanged]);
 
@@ -82,6 +82,20 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
         schedulingItems.map((schedulingItem) => {
           if (schedulingItem.id !== id) return schedulingItem;
           return { ...schedulingItem, frequency };
+        })
+      );
+    },
+    []
+  );
+
+  const setSchedulingItemStatus = useCallback<
+    (id: StrategyScheduling["id"]) => SchedulingItemProps["setStatus"]
+  >(
+    (id) => (status) => {
+      setSchedulingItems((schedulingItems) =>
+        schedulingItems.map((schedulingItem) => {
+          if (schedulingItem.id !== id) return schedulingItem;
+          return { ...schedulingItem, status };
         })
       );
     },
@@ -106,18 +120,17 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
       )
     );
   }, []);
-  console.log(schedulingItems);
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
-    (event) => {
-      event.preventDefault();
-      if (!canSubmit) return;
-      write({ strategyId, schedulings: wantedSchedulings });
-    },
-    [canSubmit, strategyId, wantedSchedulings, write]
-  );
+  const onClickSave = useCallback<ButtonOnClick>(() => {
+    if (!canSubmit) return;
+    write({ strategyId, schedulings: wantedSchedulings });
+  }, [canSubmit, strategyId, wantedSchedulings, write]);
 
-  const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>((event) => {
+    event.preventDefault();
+  }, []);
+
+  const onClickCancel = useCallback<ButtonOnClick>(
     (event) => {
       event.preventDefault();
       setSchedulingItems(currentSchedulings);
@@ -148,18 +161,9 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   }, [writeData, read]);
 
   return (
-    <Section
-      header={
-        <div className="flex flex-row justify-between">
-          <span>Schedulings</span>
-
-          <div>
-            <SchedulingsStatusBadge schedulings={currentSchedulings} />
-          </div>
-        </div>
-      }
-    >
-      <form onSubmit={onSubmit} onReset={onReset}>
+    <Section header="Schedulings">
+      <SchedulingsStatusBadges schedulings={currentSchedulings} />
+      <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
             {schedulingItems.map((scheduling) => {
@@ -169,6 +173,7 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
                   key={id}
                   scheduling={scheduling}
                   setFrequency={setSchedulingItemFrequency(id)}
+                  setStatus={setSchedulingItemStatus(id)}
                   removeScheduling={removeSchedulingItem(id)}
                 />
               );
@@ -183,13 +188,13 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
 
           <menu className="flex flex-row flex-wrap gap-4">
             <li>
-              <Button type="submit" disabled={!canSubmit} isSpinning={writeIsPending}>
+              <Button onClick={onClickSave} disabled={!canSubmit} isSpinning={writeIsPending}>
                 Save
               </Button>
             </li>
 
             <li>
-              <Button type="reset" disabled={!canReset}>
+              <Button onClick={onClickCancel} disabled={!canCancel}>
                 Cancel
               </Button>
             </li>
