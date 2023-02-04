@@ -4,15 +4,12 @@ import { log } from "./log.js";
 
 const sleep = (delay: number) =>
   new Promise((resolve) => {
-    const timeoutId = setTimeout(() => {
-      resolve(true);
-    }, delay);
-    process.on("SIGINT", () => {
-      clearTimeout(timeoutId);
-    });
+    setTimeout(resolve, delay);
   });
 
 async function start() {
+  // TODO if it is a dedicated server, it will run only strategies of one account
+  // how to get the account id?
   const capacity = 1;
   const hostIndex = 0; // TODO how to get the index of this host?
   const executor = new Executor(capacity, hostIndex);
