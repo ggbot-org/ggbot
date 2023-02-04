@@ -13,10 +13,14 @@ export const outputClose = output("array", { name: "close" });
 export const inputHigh = input("array", { name: "high" });
 export const outputHigh = output("array", { name: "high" });
 
+export const inputKey = input("string", { name: "key" });
+
 export const inputLow = input("array", { name: "low" });
 export const outputLow = output("array", { name: "low" });
 
 export const outputLastValue = output("number", { name: "last" });
+
+export const inputName = input("string", { name: "name" });
 
 export const inputOpen = input("array", { name: "open" });
 export const outputOpen = output("array", { name: "open" });

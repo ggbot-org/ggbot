@@ -21,6 +21,10 @@ import { DflowObject } from "dflow";
  */
 export type DflowCommonContext = {
   /**
+   * Used by input nodes: InputBoolean, InputNumber, InputString, etc.
+   */
+  input: DflowObject;
+  /**
    * Used by memory nodes: GetMemory, SetMemory, DeleteMemory.
    */
   memory: DflowObject;

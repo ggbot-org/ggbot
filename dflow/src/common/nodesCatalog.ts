@@ -18,7 +18,8 @@ import {
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
-import { NullishCoaleshing } from "./nodes/logic.js";
+import { And, Not, NullishCoaleshing, Or } from "./nodes/logic.js";
+import { InputNumber } from "./nodes/inputs.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Time, TimeToDay, TimeMinus, TimePlus, Today } from "./nodes/time.js";
 
@@ -39,7 +40,12 @@ export const nodesCatalog = {
   // conditional
   [If.kind]: If,
   // logic
+  [And.kind]: And,
+  [Not.kind]: Not,
   [NullishCoaleshing.kind]: NullishCoaleshing,
+  [Or.kind]: Or,
+  // inputs
+  [InputNumber.kind]: InputNumber,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,

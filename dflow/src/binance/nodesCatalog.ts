@@ -6,6 +6,7 @@ import {
   isDflowBinanceSymbolInfo,
 } from "./symbols.js";
 import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js";
+import { InputInterval, InputSymbol } from "./nodes/inputs.js";
 import { Candles, TickerPrice } from "./nodes/market.js";
 import { BuyMarket, SellMarket } from "./nodes/trade.js";
 
@@ -15,11 +16,10 @@ export type GetDflowBinanceNodesCatalogArg = {
   symbols: DflowBinanceSymbolInfo[];
 };
 
-type GetDflowBinanceNodesCatalog = (
-  arg: GetDflowBinanceNodesCatalogArg
-) => DflowNodesCatalog;
+type GetDflowBinanceNodesCatalog = (arg: GetDflowBinanceNodesCatalogArg) => DflowNodesCatalog;
 
 export const dflowBinanceKlineIntervals = [
+  "5m",
   "15m",
   "30m",
   "1h",
@@ -33,57 +33,53 @@ export const dflowBinanceKlineIntervals = [
   "1w",
   "1M",
 ] as const;
-export type DflowBinanceKlineIntervals =
-  typeof dflowBinanceKlineIntervals[number];
+export type DflowBinanceKlineIntervals = typeof dflowBinanceKlineIntervals[number];
 export const dflowBinanceLowerKlineInterval = dflowBinanceKlineIntervals[0];
 
 /** Creates a dynamic set of dflow nodes generated according to Binance definitions. */
-export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog =
-  ({ symbols }) => {
-    const klineIntervalNodes = dflowBinanceKlineIntervals.reduce(
-      (catalog, klineInterval) => {
-        class NodeClass extends DflowNode {
-          static kind = klineInterval;
-          static outputs = [
-            output("string", {
-              name: pinIntervalName,
-              data: klineInterval,
-            }),
-          ];
-        }
-        return { ...catalog, [NodeClass.kind]: NodeClass };
-      },
-      {}
-    );
+export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog = ({ symbols }) => {
+  const klineIntervalNodes = dflowBinanceKlineIntervals.reduce((catalog, klineInterval) => {
+    class NodeClass extends DflowNode {
+      static kind = klineInterval;
+      static outputs = [
+        output("string", {
+          name: pinIntervalName,
+          data: klineInterval,
+        }),
+      ];
+    }
+    return { ...catalog, [NodeClass.kind]: NodeClass };
+  }, {});
 
-    const symbolNodes = symbols
-      .filter(isDflowBinanceSymbolInfo)
-      .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
-        class NodeClass extends DflowNode {
-          static kind = getDflowBinanceNodeSymbolKind({
-            baseAsset,
-            quoteAsset,
-          });
-          static outputs = [
-            output("string", {
-              name: pinSymbolName,
-              data: symbol,
-            }),
-          ];
-        }
-        return { ...catalog, [NodeClass.kind]: NodeClass };
-      }, {});
+  const symbolNodes = symbols
+    .filter(isDflowBinanceSymbolInfo)
+    .reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
+      class NodeClass extends DflowNode {
+        static kind = getDflowBinanceNodeSymbolKind({
+          baseAsset,
+          quoteAsset,
+        });
+        static outputs = [
+          output("string", {
+            name: pinSymbolName,
+            data: symbol,
+          }),
+        ];
+      }
+      return { ...catalog, [NodeClass.kind]: NodeClass };
+    }, {});
 
-    return {
-      ...klineIntervalNodes,
-      ...symbolNodes,
-    };
+  return {
+    ...klineIntervalNodes,
+    ...symbolNodes,
   };
+};
 
-export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
-  arg
-) => {
+export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (arg) => {
   const staticNodes = {
+    // inputs
+    [InputInterval.kind]: InputInterval,
+    [InputSymbol.kind]: InputSymbol,
     // market
     [Candles.kind]: Candles,
     [TickerPrice.kind]: TickerPrice,
