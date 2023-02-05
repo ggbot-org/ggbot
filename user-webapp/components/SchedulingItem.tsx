@@ -49,7 +49,7 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
     } else {
       setStatus("inactive");
     }
-  }, [status]);
+  }, [status, setStatus]);
 
   const statusButtonLabel = useMemo(() => {
     if (status !== "active") {
