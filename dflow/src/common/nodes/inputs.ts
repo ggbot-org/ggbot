@@ -6,7 +6,7 @@ const { input, output } = DflowNode;
 
 export class InputNumber extends DflowNode {
   static kind = "inputNumber";
-  static inputs = [inputKey, input("number")];
+  static inputs = [inputKey, input("number", { name: "value" })];
   static outputs = [output("number")];
   run() {
     const key = this.input(0).data as string;

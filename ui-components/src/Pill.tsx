@@ -22,7 +22,7 @@ export const Pill: FC<PillProps> = ({ children, color, ...props }) => {
   const className = useMemo(
     () =>
       [
-        "shadow px-2 py-1 select-none",
+        "text-base shadow px-2 py-1 select-none",
         "first:rounded-tl-lg first:rounded-bl-lg",
         "last:rounded-tr-lg last:rounded-br-lg",
         colorClassNames({ color }),

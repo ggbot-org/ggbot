@@ -20,8 +20,6 @@ export const outputLow = output("array", { name: "low" });
 
 export const outputLastValue = output("number", { name: "last" });
 
-export const inputName = input("string", { name: "name" });
-
 export const inputOpen = input("array", { name: "open" });
 export const outputOpen = output("array", { name: "open" });
 

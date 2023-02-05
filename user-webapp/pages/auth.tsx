@@ -1,13 +1,6 @@
 import { readSession } from "@ggbot2/cookies";
 import { EmailAddress, isAccount } from "@ggbot2/models";
-import {
-  Button,
-  ButtonOnClick,
-  InputField,
-  Logo,
-  OutputField,
-  Section,
-} from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, InputField, Logo, OutputField, Section } from "@ggbot2/ui-components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {
@@ -23,10 +16,7 @@ import {
   useState,
 } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
-import {
-  ApiVerifyResponseData,
-  isApiVerifyRequestData,
-} from "_api/auth/verify";
+import { ApiVerifyResponseData, isApiVerifyRequestData } from "_api/auth/verify";
 import { Content, Navigation } from "_components";
 import { useApiAction } from "_hooks";
 import { HasSession, route } from "_routing";
@@ -74,9 +64,7 @@ const GenericErrorFeedback: FC = () => <div>Something went wrong.</div>;
 
 const InvalidInputFeedback: FC = () => <div>Something went wrong.</div>;
 
-const TimeoutFeedback: FC = () => (
-  <div>Request not sent. Please check connectivity and try again.</div>
-);
+const TimeoutFeedback: FC = () => <div>Request not sent. Please check connectivity and try again.</div>;
 
 type EnterProps = {
   emailSent: EmailSent;
@@ -99,9 +87,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
         setHasInvalidInput(false);
         setGotTimeout(false);
 
-        const email = (
-          event.target as EventTarget & { email: { value: string } }
-        ).email.value;
+        const email = (event.target as EventTarget & { email: { value: string } }).email.value;
 
         const requestData = { email };
 
@@ -144,27 +130,13 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
         console.error(error);
       }
     },
-    [
-      emailSent,
-      isPending,
-      setEmail,
-      setGotTimeout,
-      setHasGenericError,
-      setHasInvalidInput,
-      setIsPending,
-    ]
+    [emailSent, isPending, setEmail, setGotTimeout, setHasGenericError, setHasInvalidInput, setIsPending]
   );
 
   return (
     <>
       <AuthForm onSubmit={onSubmit} message="enter ggbot2">
-        <InputField
-          label="email"
-          name="email"
-          type="email"
-          readOnly={isPending}
-          required
-        />
+        <InputField label="email" name="email" type="email" readOnly={isPending} required />
         <menu>
           <li>
             <Button color="primary" isSpinning={isPending}>
@@ -237,12 +209,7 @@ const Exit: FC = () => {
 
   return (
     <>
-      <AuthForm
-        action={route.apiExit()}
-        message="Exit ggbot2"
-        onReset={onReset}
-        onSubmit={onSubmit}
-      >
+      <AuthForm action={route.apiExit()} message="Exit ggbot2" onReset={onReset} onSubmit={onSubmit}>
         <div>
           {accountInfo.map(({ label, value }, i) => (
             <OutputField key={i} label={label}>
@@ -278,16 +245,12 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
-  const [
-    needToGenerateOneTimePasswordAgain,
-    setNeedToGenerateOneTimePasswordAgain,
-  ] = useState(false);
+  const [needToGenerateOneTimePasswordAgain, setNeedToGenerateOneTimePasswordAgain] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
 
-  const onClickOkGenerateOneTimePasswordAgain =
-    useCallback<ButtonOnClick>(() => {
-      setEmail(undefined);
-    }, [setEmail]);
+  const onClickOkGenerateOneTimePasswordAgain = useCallback<ButtonOnClick>(() => {
+    setEmail(undefined);
+  }, [setEmail]);
 
   const goToHomePage = useCallback(() => {
     router.push(route.homePage());
@@ -304,8 +267,7 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
         setGotTimeout(false);
         setVerificationFailed(false);
 
-        const code = (event.target as EventTarget & { code: { value: string } })
-          .code.value;
+        const code = (event.target as EventTarget & { code: { value: string } }).code.value;
 
         const requestData = { code, email };
 
@@ -345,8 +307,7 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
         } else {
           setIsPending(false);
           setVerificationFailed(true);
-          if (responseData.verified === undefined)
-            setNeedToGenerateOneTimePasswordAgain(true);
+          if (responseData.verified === undefined) setNeedToGenerateOneTimePasswordAgain(true);
         }
       } catch (error) {
         setHasGenericError(true);
@@ -354,15 +315,7 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
         console.error(error);
       }
     },
-    [
-      email,
-      goToHomePage,
-      isPending,
-      setGotTimeout,
-      setHasGenericError,
-      setHasInvalidInput,
-      setIsPending,
-    ]
+    [email, goToHomePage, isPending, setGotTimeout, setHasGenericError, setHasInvalidInput, setIsPending]
   );
 
   return (
@@ -399,9 +352,7 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
           <div>
             <div>Need to generate one time password again</div>
             <div>
-              <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
-                Ok
-              </Button>
+              <Button onClick={onClickOkGenerateOneTimePasswordAgain}>Ok</Button>
             </div>
           </div>
         ) : null}

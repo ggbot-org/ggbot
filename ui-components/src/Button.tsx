@@ -44,7 +44,6 @@ export const Button: FC<ButtonProps> = ({
   disabled,
   isSpinning,
   tabIndex: _tabIndex,
-  type = "button",
   ...props
 }) => {
   const buttonClassName = useMemo(() => {
@@ -70,7 +69,7 @@ export const Button: FC<ButtonProps> = ({
   const tabIndex = useMemo(() => (disabled ? -1 : _tabIndex), [_tabIndex, disabled]);
 
   return (
-    <button disabled={disabled} {...props} className={buttonClassName} tabIndex={tabIndex} type={type}>
+    <button disabled={disabled} {...props} className={buttonClassName} tabIndex={tabIndex}>
       {isSpinning && <Spinner className="absolute" style={{ left: "calc(50% - 5px)" }} />}
       <div className={contentClassName}>{children ? children : <>&nbsp;</>}</div>
     </button>
