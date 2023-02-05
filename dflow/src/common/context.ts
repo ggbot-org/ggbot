@@ -13,6 +13,9 @@ import { DflowObject } from "dflow";
  *   constructor(arg: DflowHostConstructorArg) {
  *     super(arg);
  *
+ *     const input: DflowCommonContext["input"] = {};
+ *     this.context.input = input;
+ *
  *     const memory: DflowCommonContext["memory"] = {};
  *     this.context.memory = memory;
  *   }

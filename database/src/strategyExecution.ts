@@ -19,7 +19,6 @@ import {
 } from "@ggbot2/models";
 import { truncateTime, now, today, timeToDay } from "@ggbot2/time";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
-import { suspendAccountStrategiesItemSchedulings } from "./accountStrategies.js";
 import { pathname } from "./locators.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import {
@@ -99,6 +98,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({ accountId, stra
           orders,
         } = await executor.run(
           {
+            input: {},
             memory: memoryInput,
             time,
           },
@@ -161,10 +161,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({ accountId, stra
 
         return { status, memory: memoryOutput, steps, ...updatedNow() };
       } catch (error) {
-        await suspendAccountStrategiesItemSchedulings({
-          accountId,
-          strategyId,
-        });
+        console.error(error);
         return { status: "failure", memory: {}, steps: [], ...updatedNow() };
       }
     }

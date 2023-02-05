@@ -44,9 +44,7 @@ const isPersistingState = (arg: unknown): arg is PersistingState => {
   return typeof isEnabled === "boolean";
 };
 
-const computeTimestamps = (
-  dayInterval: State["dayInterval"]
-): State["timestamps"] => {
+const computeTimestamps = (dayInterval: State["dayInterval"]): State["timestamps"] => {
   const { start, end } = dayIntervalToDate(dayInterval);
   const numMinutes = 60;
   const timestamps: Timestamp[] = [];
@@ -113,9 +111,7 @@ const backtestingReducer = (state: State, action: Action) => {
       const { balanceChangeEvent, memory, orders } = action;
       return {
         ...state,
-        balanceHistory: balanceChangeEvent
-          ? balanceHistory.concat(balanceChangeEvent)
-          : balanceHistory,
+        balanceHistory: balanceChangeEvent ? balanceHistory.concat(balanceChangeEvent) : balanceHistory,
         memory,
         orderHistory: orderHistory.concat(orders),
         stepIndex: state.stepIndex + 1,
@@ -254,10 +250,7 @@ export const useBacktesting: UseBacktesting = ({
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
-  const storageKey = useMemo(
-    () => `backtest:${strategyKind}:${strategyId}`,
-    [strategyKind, strategyId]
-  );
+  const storageKey = useMemo(() => `backtest:${strategyKind}:${strategyId}`, [strategyKind, strategyId]);
 
   const getPersistingState = useCallback<GetPersistingState>(() => {
     try {
@@ -302,7 +295,10 @@ export const useBacktesting: UseBacktesting = ({
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
     const timestamp = timestamps[stepIndex];
-    if (!timestamp) return;
+    if (!timestamp) {
+      dispatch({ type: "END" });
+      return;
+    }
     const time = timestampToTime(timestamp);
 
     if (strategyKind === "binance") {
@@ -312,13 +308,9 @@ export const useBacktesting: UseBacktesting = ({
           balances: [],
           time,
         });
-        const executor = new BinanceDflowExecutor(
-          binance,
-          binanceSymbols,
-          nodesCatalog
-        );
+        const executor = new BinanceDflowExecutor(binance, binanceSymbols, nodesCatalog);
         const { balances, memory, orders } = await executor.run(
-          { memory: previousMemory, time },
+          { input: {}, memory: previousMemory, time },
           flowViewGraph
         );
         const balanceChangeEvent =
@@ -339,15 +331,7 @@ export const useBacktesting: UseBacktesting = ({
         dispatch({ type: "END" });
       }
     }
-  }, [
-    binanceSymbols,
-    dispatch,
-    flowViewGraph,
-    nodesCatalog,
-    timestamps,
-    strategyKind,
-    stepIndex,
-  ]);
+  }, [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, timestamps, strategyKind, stepIndex]);
 
   useEffect(() => {
     if (!backtestIsRunning) return;
@@ -359,8 +343,5 @@ export const useBacktesting: UseBacktesting = ({
     setPersistingState({ isEnabled, dayInterval });
   }, [isEnabled, dayInterval, isServerSide, setPersistingState]);
 
-  return useMemo(
-    () => [isServerSide ? undefined : state, dispatch],
-    [isServerSide, dispatch, state]
-  );
+  return useMemo(() => [isServerSide ? undefined : state, dispatch], [isServerSide, dispatch, state]);
 };

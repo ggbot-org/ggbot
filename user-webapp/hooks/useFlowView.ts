@@ -1,15 +1,7 @@
-import {
-  BinanceDflowHost,
-  BinanceDflowExecutor,
-  nodeTextToViewType,
-} from "@ggbot2/dflow";
+import { BinanceDflowHost, BinanceDflowExecutor, nodeTextToViewType } from "@ggbot2/dflow";
 import { UpdateTime } from "@ggbot2/models";
 import { Time, now, truncateTime } from "@ggbot2/time";
-import {
-  DflowHost,
-  DflowNodeUnknown,
-  DflowErrorCannotConnectPins,
-} from "dflow";
+import { DflowHost, DflowNodeUnknown, DflowErrorCannotConnectPins } from "dflow";
 import {
   FlowView,
   FlowViewNode,
@@ -17,14 +9,7 @@ import {
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
 } from "flow-view";
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BinanceDflowClient } from "_flow/binance";
 import { StrategyKey } from "_routing";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
@@ -52,11 +37,7 @@ return (
 )
 ```
 */
-export const useFlowView: UseFlowView = ({
-  binanceSymbols,
-  containerRef,
-  strategyKind,
-}) => {
+export const useFlowView: UseFlowView = ({ binanceSymbols, containerRef, strategyKind }) => {
   const flowViewRef = useRef<FlowView>();
   const [whenUpdated, setWhenUpdated] = useState<Time | undefined>();
 
@@ -79,11 +60,7 @@ export const useFlowView: UseFlowView = ({
       balances: [],
       time,
     });
-    const executor = new BinanceDflowExecutor(
-      binance,
-      binanceSymbols,
-      nodesCatalog
-    );
+    const executor = new BinanceDflowExecutor(binance, binanceSymbols, nodesCatalog);
     return executor;
   }, [binanceSymbols, nodesCatalog, strategyKind, time]);
 
@@ -91,24 +68,18 @@ export const useFlowView: UseFlowView = ({
     if (!containerRef.current) return;
     if (!nodesCatalog || !dflow) return;
     const { FlowView } = await import("flow-view");
-    const { FlowViewNodeCandlesChart, FlowViewNodeInfo, FlowViewNodeJson } =
-      await import("../flow/nodes/index.js");
+    const { FlowViewNodeCandlesChart, FlowViewNodeInfo, FlowViewNodeJson } = await import(
+      "../flow/nodes/index.js"
+    );
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
       FlowViewNodeCandlesChart.type,
       FlowViewNodeCandlesChart as unknown as FlowViewNode
     );
-    flowView.addNodeClass(
-      FlowViewNodeInfo.type,
-      FlowViewNodeInfo as unknown as FlowViewNode
-    );
-    flowView.addNodeClass(
-      FlowViewNodeJson.type,
-      FlowViewNodeJson as unknown as FlowViewNode
-    );
+    flowView.addNodeClass(FlowViewNodeInfo.type, FlowViewNodeInfo as unknown as FlowViewNode);
+    flowView.addNodeClass(FlowViewNodeJson.type, FlowViewNodeJson as unknown as FlowViewNode);
     flowView.nodeTextToType((text) => {
-      if (text === FlowViewNodeCandlesChart.type)
-        return FlowViewNodeCandlesChart.type;
+      if (text === FlowViewNodeCandlesChart.type) return FlowViewNodeCandlesChart.type;
       return nodeTextToViewType(text);
     });
     flowView.addNodeDefinitions({
@@ -133,8 +104,7 @@ export const useFlowView: UseFlowView = ({
           }
 
           case "CREATE_NODE": {
-            const { text, type, id, ins, outs } =
-              data as FlowViewOnChangeDataNode;
+            const { text, type, id, ins, outs } = data as FlowViewOnChangeDataNode;
             switch (type) {
               case "info":
                 break;
@@ -264,7 +234,7 @@ export const useFlowView: UseFlowView = ({
         case "binance": {
           if (!binanceExecutor) return;
           await binanceExecutor.run(
-            { memory: {}, time: truncateTime(now()).to.minute() },
+            { input: {}, memory: {}, time: truncateTime(now()).to.minute() },
             flowView.graph
           );
           // TODO update flow with mocked execution if is not "live"
