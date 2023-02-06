@@ -3,11 +3,7 @@ import fetch from "isomorphic-fetch";
 import { BinanceApiEndpoint } from "./endpoints.js";
 
 const defaultBaseUrl = "https://api.binance.com";
-const apiClusters = [
-  "https://api1.binance.com",
-  "https://api2.binance.com",
-  "https://api3.binance.com",
-];
+const apiClusters = ["https://api1.binance.com", "https://api2.binance.com", "https://api3.binance.com"];
 const baseUrls = [defaultBaseUrl, ...apiClusters] as const;
 type BaseUrl = typeof baseUrls[number];
 
@@ -15,21 +11,13 @@ type BaseUrl = typeof baseUrls[number];
 export class BinanceConnector {
   static baseUrls = baseUrls;
   static defaultBaseUrl = defaultBaseUrl;
-  static userAgent = "ggbot2 - crypto flow (https://ggbot2.com)";
   readonly baseUrl: BaseUrl;
 
-  constructor({
-    baseUrl = BinanceConnector.defaultBaseUrl,
-  }: BinanceConnectorConstructorArg) {
+  constructor({ baseUrl = BinanceConnector.defaultBaseUrl }: BinanceConnectorConstructorArg) {
     this.baseUrl = baseUrl;
   }
 
-  async request<Data>({
-    apiKey = "",
-    endpoint,
-    method,
-    params = {},
-  }: BinanceConnectorRequestArg) {
+  async request<Data>({ apiKey = "", endpoint, method, params = {} }: BinanceConnectorRequestArg) {
     const url = new URL(this.baseUrl);
     url.pathname = endpoint;
 
@@ -37,16 +25,13 @@ export class BinanceConnector {
       if (value === undefined) continue;
       // The array conversion logic is different from usual query string.
       // E.g. symbols=["BTCUSDT","BNBBTC"] instead of symbols[]=BTCUSDT&symbols[]=BNBBTC
-      const valueString = Array.isArray(value)
-        ? `["${value.join('","')}"]`
-        : value;
+      const valueString = Array.isArray(value) ? `["${value.join('","')}"]` : value;
       url.searchParams.append(key, String(valueString));
     }
 
     // TODO when updating to Node 18 use
     // const headers = new Headers({
     const headers = {
-      "User-Agent": BinanceConnector.userAgent,
       ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
     };
 
