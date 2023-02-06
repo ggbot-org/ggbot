@@ -18,10 +18,7 @@ export type Item = ItemKey<{
 export const nullId = "00000000";
 
 export const newId = (): ItemId =>
-  nullId.replace(/0/g, () => {
-    var r = Date.now() + Math.random() * 16;
-    return (Math.floor(r) % 16).toString(16);
-  });
+  nullId.replace(/0/g, () => (Math.floor(Date.now() + Math.random() * 16) % 16).toString(16));
 
 export type NewItem<T extends Item> = T extends Item & CreationTime
   ? Omit<T, "id" | "whenCreated">
