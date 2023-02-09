@@ -10,6 +10,7 @@ export * from "./ButtonShareStrategy";
 export * from "./ChartOhlcv";
 export * from "./Content";
 export * from "./DailyIntervalSelector";
+export * from "./FrequencyInput";
 export * from "./LiveCheckbox";
 export * from "./MemoryController";
 export * from "./Navigation";

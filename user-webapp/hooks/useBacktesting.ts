@@ -2,7 +2,14 @@
 // https://jsfiddle.net/TradingView/nd80cx1a/
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
 import { useIsServerSide } from "@ggbot2/hooks";
-import { BalanceChangeEvent, newOrder, Order } from "@ggbot2/models";
+import {
+  BalanceChangeEvent,
+  Frequency,
+  frequencyIntervalDuration,
+  newOrder,
+  everyOneHour,
+  Order,
+} from "@ggbot2/models";
 import {
   Day,
   DayInterval,
@@ -23,6 +30,7 @@ type State = StrategyKey &
   Pick<DflowCommonContext, "memory"> & {
     stepIndex: number;
     balanceHistory: BalanceChangeEvent[];
+    frequency: Frequency;
     isEnabled: boolean;
     isRunning: boolean;
     isPaused: boolean;
@@ -44,14 +52,17 @@ const isPersistingState = (arg: unknown): arg is PersistingState => {
   return typeof isEnabled === "boolean";
 };
 
-const computeTimestamps = (dayInterval: State["dayInterval"]): State["timestamps"] => {
+const computeTimestamps = ({
+  dayInterval,
+  frequency,
+}: Pick<State, "dayInterval" | "frequency">): State["timestamps"] => {
   const { start, end } = dayIntervalToDate(dayInterval);
-  const numMinutes = 60;
+  const interval = frequencyIntervalDuration(frequency);
   const timestamps: Timestamp[] = [];
   let date = start;
   while (date < end) {
     timestamps.push(dateToTimestamp(date));
-    date = getDate(date).plus(numMinutes).minutes();
+    date = new Date(date.getTime() + interval);
   }
   return timestamps;
 };
@@ -74,6 +85,9 @@ type Action =
   | {
       type: "RESUME";
     }
+  | ({
+      type: "SET_FREQUENCY";
+    } & Pick<State, "frequency">)
   | ({
       type: "SET_INTERVAL";
     } & Pick<State, "dayInterval">)
@@ -137,14 +151,25 @@ const backtestingReducer = (state: State, action: Action) => {
         : state;
     }
 
+    case "SET_FREQUENCY": {
+      const { isPaused, isRunning, dayInterval } = state;
+      if (isPaused || isRunning) return state;
+      const { frequency } = action;
+      return {
+        ...state,
+        frequency,
+        timestamps: computeTimestamps({ dayInterval, frequency }),
+      };
+    }
+
     case "SET_INTERVAL": {
-      const { isPaused, isRunning } = state;
+      const { frequency, isPaused, isRunning } = state;
       if (isPaused || isRunning) return state;
       const { dayInterval } = action;
       return {
         ...state,
         dayInterval,
-        timestamps: computeTimestamps(dayInterval),
+        timestamps: computeTimestamps({ dayInterval, frequency }),
       };
     }
 
@@ -195,39 +220,42 @@ const sha256 = async (arg: string) => {
 const getInitialState =
   (strategyKey: StrategyKey) =>
   (persistingState: PersistingState | undefined): State => {
+    const frequency = everyOneHour();
     // Max is yesterday.
     const maxDay = dateToDay(getDate(new Date()).minus(1).days());
+    const dayInterval = {
+      start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
+      end: maxDay,
+    };
     // PersistingState:
     // startDay and endDay will always be lower than maxDay.
     if (persistingState) {
       return {
         ...persistingState,
         balanceHistory: [],
-        stepIndex: 0,
+        frequency,
         isPaused: false,
         isRunning: false,
-        memory: {},
         maxDay,
+        memory: {},
         orderHistory: [],
-        timestamps: computeTimestamps(persistingState.dayInterval),
+        stepIndex: 0,
+        timestamps: computeTimestamps({ dayInterval: persistingState.dayInterval, frequency }),
         ...strategyKey,
       };
     }
     // Default state.
-    const dayInterval = {
-      start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
-      end: maxDay,
-    };
     return {
       balanceHistory: [],
       dayInterval,
+      frequency,
       isEnabled: false,
       isPaused: false,
       isRunning: false,
       memory: {},
       orderHistory: [],
       stepIndex: 0,
-      timestamps: computeTimestamps(dayInterval),
+      timestamps: computeTimestamps({ dayInterval, frequency }),
       maxDay,
       ...strategyKey,
     };

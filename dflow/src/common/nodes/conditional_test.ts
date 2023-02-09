@@ -5,7 +5,7 @@ import { getDflowExecutionOutputData } from "../executor.js";
 import { DflowExecutorMock } from "../mocks/executor.js";
 
 describe("if", () => {
-  it("implements id condition", async () => {
+  it("implements `if` condition", async () => {
     const nodeId = "if";
     const executor = new DflowExecutorMock({
       view: {
@@ -39,6 +39,7 @@ describe("if", () => {
       },
     });
     const { execution } = await executor.run({
+      input: {},
       memory: {},
       time: now(),
     });

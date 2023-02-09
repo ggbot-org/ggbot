@@ -1,3 +1,4 @@
+import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
@@ -5,6 +6,7 @@ import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { StrategyFlow } from "_routing";
 import { BacktestControllerBinance } from "./BacktestControllerBinance";
 import { DailyIntervalSelector } from "./DailyIntervalSelector";
+import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";
 import { ProfitSummary } from "./ProfitSummary";
 
 type Props = Partial<Pick<StrategyFlow, "view">> & {
@@ -13,6 +15,13 @@ type Props = Partial<Pick<StrategyFlow, "view">> & {
 };
 
 export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
+  const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
+    (frequency) => {
+      if (isFrequency(frequency)) dispatch({ type: "SET_FREQUENCY", frequency });
+    },
+    [dispatch]
+  );
+
   const setStartDay = useCallback<CalendarSetSelectedDay>(
     (day) => {
       const endDay = state?.dayInterval.end;
@@ -28,6 +37,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   const {
     balanceHistory,
     currentTimestamp,
+    frequency,
     maxDay,
     memoryItems,
     dayInterval,
@@ -40,6 +50,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       return {
         balanceHistory: [],
         currentTimestamp: undefined,
+        frequency: everyOneHour(),
         memoryItems: [],
         noMemory: true,
         maxDay: undefined,
@@ -52,6 +63,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     const {
       balanceHistory,
       dayInterval,
+      frequency,
       maxDay,
       memory,
       orderHistory,
@@ -71,6 +83,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     return {
       balanceHistory,
       currentTimestamp,
+      frequency,
       maxDay,
       memoryItems,
       dayInterval,
@@ -92,9 +105,13 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     <div className="my-2 flex flex-col gap-2">
       <DailyIntervalSelector
         max={maxDay}
+        endDay={maxDay}
         startDay={dayInterval?.start}
         setStartDay={setStartDay}
       />
+
+      <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
+
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">
           <span>{`${stepIndex} of ${numSteps} intervals`}</span>
@@ -126,11 +143,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       />
 
       {strategyKind === "binance" && view && state && (
-        <BacktestControllerBinance
-          state={state}
-          dispatch={dispatch}
-          view={view}
-        />
+        <BacktestControllerBinance state={state} dispatch={dispatch} view={view} />
       )}
     </div>
   );

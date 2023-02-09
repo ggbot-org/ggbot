@@ -11,7 +11,7 @@ export const isInfoNode = (text: string) =>
   // A JSON could contain spaces, e.g. '{"message":"hello world"}'
   !isJsonNode(text);
 
-/** A node which text that contains valid JSON is used to store data. */
+/** A node which text is valid JSON is used to store data. */
 export const isJsonNode = (text: string) => {
   try {
     JSON.parse(text);

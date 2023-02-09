@@ -46,14 +46,9 @@ describe("dflowValidate", () => {
   });
 
   it("validates json nodes", () => {
-    const dflow = new DflowCommonHostMock(
-      { nodesCatalog: {} },
-      { memory: {}, time: now() }
-    );
+    const dflow = new DflowCommonHostMock({ nodesCatalog: {} }, { input: {}, memory: {}, time: now() });
     const view: DflowExecutorView = {
-      nodes: [
-        { id: "n1", text: '{"message":"hello world"}', outs: [{ id: "o1" }] },
-      ],
+      nodes: [{ id: "n1", text: '{"message":"hello world"}', outs: [{ id: "o1" }] }],
       edges: [],
     };
     assert.doesNotThrow(() => {

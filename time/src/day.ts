@@ -14,9 +14,7 @@ export const isDay = (arg: unknown): arg is Day => {
 };
 
 export type DayInterval = Interval<Day>;
-export const isDayInterval = objectTypeGuard<DayInterval>(
-  ({ start, end }) => isDay(start) && isDay(end)
-);
+export const isDayInterval = objectTypeGuard<DayInterval>(({ start, end }) => isDay(start) && isDay(end));
 
 export const today = (): Day => new Date().toJSON().substring(0, 10);
 
@@ -27,14 +25,11 @@ type DD = string;
 export type SplittedDay = [YYYY, MM, DD];
 
 export const isSplittedDay = (arg: unknown): arg is SplittedDay =>
-  Array.isArray(arg) &&
-  arg.every((item) => typeof item === "string") &&
-  isDay(arg.join("-"));
+  Array.isArray(arg) && arg.every((item) => typeof item === "string") && isDay(arg.join("-"));
 
 export const splitDay = (day: Day): SplittedDay => {
   const [yyyy, mm, dd] = day.split("-");
   return [yyyy, mm, dd];
 };
 
-export const joinDay = ([yyyy, mm, dd]: SplittedDay): Day =>
-  [yyyy, mm, dd].join("-");
+export const joinDay = ([yyyy, mm, dd]: SplittedDay): Day => [yyyy, mm, dd].join("-");

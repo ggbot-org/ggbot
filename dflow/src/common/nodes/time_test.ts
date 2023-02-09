@@ -20,6 +20,7 @@ describe("today", () => {
       },
     });
     const { execution } = await executor.run({
+      input: {},
       memory: {},
       time: dayToTime(day),
     });

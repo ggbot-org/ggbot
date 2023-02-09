@@ -13,9 +13,10 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
       Object.keys(nodesCatalog).sort(),
       [
         // intervals
-        "1s",
-        "1m",
-        "3m",
+        // ////////
+        // "1s",
+        // "1m",
+        // "3m",
         "5m",
         "15m",
         "30m",
@@ -30,6 +31,7 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
         "3d",
         "1M",
         // symbols
+        // //////
         "BNB/BTC",
         "BNB/BUSD",
         "BNB/ETH",

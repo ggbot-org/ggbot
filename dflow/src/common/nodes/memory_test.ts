@@ -24,6 +24,7 @@ describe("deleteMemory", () => {
       },
     });
     const { memory, memoryChanged } = await executor.run({
+      input: {},
       memory: { key1: "value1" },
       time: now(),
     });
@@ -53,6 +54,7 @@ describe("getMemory", () => {
     });
     const value = "value1";
     const { execution, memory, memoryChanged } = await executor.run({
+      input: {},
       memory: { key1: value },
       time: now(),
     });
@@ -90,6 +92,7 @@ describe("setMemory", () => {
       },
     });
     const { memory, memoryChanged } = await executor.run({
+      input: {},
       memory: {},
       time: now(),
     });

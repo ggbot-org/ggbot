@@ -25,6 +25,7 @@ describe("shift", () => {
       },
     });
     const { execution } = await executor.run({
+      input: {},
       memory: {},
       time: now(),
     });
@@ -54,6 +55,7 @@ describe("pop", () => {
       },
     });
     const { execution } = await executor.run({
+      input: {},
       memory: {},
       time: now(),
     });
@@ -91,14 +93,10 @@ describe("push", () => {
       },
     });
     const { execution } = await executor.run({
+      input: {},
       memory: {},
       time: now(),
     });
-    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [
-      1,
-      2,
-      3,
-      { foo: true },
-    ]);
+    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [1, 2, 3, { foo: true }]);
   });
 });
