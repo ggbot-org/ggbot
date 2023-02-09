@@ -18,7 +18,7 @@ export const DailyIntervalSelector: FC<Props> = ({
   setStartDay,
 }) => {
   return (
-    <div className="flex flex-row md:flex-col gap-2">
+    <div className="flex flex-col md:flex-row gap-4">
       <Calendar min={min} max={endDay} selectedDay={startDay} setSelectedDay={setStartDay} />
       <Calendar min={startDay} max={max} selectedDay={endDay} setSelectedDay={setEndDay} />
     </div>

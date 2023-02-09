@@ -52,21 +52,19 @@ export const getDflowBinanceNodeSymbolKind = ({
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
   [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator);
 
-type ExtractBinanceSymbolsFromFlowArg = {
-  binanceSymbols: DflowBinanceSymbolInfo[];
-} & Pick<StrategyFlow, "view">;
-
-export const extractBinanceSymbolsFromFlow = ({
-  binanceSymbols,
-  view: { nodes },
-}: ExtractBinanceSymbolsFromFlowArg): string[] => {
+export const extractBinanceSymbolsAndIntervalsFromFlow = (
+  binanceSymbols: DflowBinanceSymbolInfo[],
+  view: StrategyFlow["view"]
+): string[] => {
+  // TODO look for candles nodes and return [symbol, interval]
   const symbols = binanceSymbols.map(({ symbol }) => symbol);
-  return nodes
+  return view.nodes
     .filter(({ text }) => text.includes(dflowBinanceSymbolSeparator))
     .map(({ text }) => text.split(dflowBinanceSymbolSeparator).join(""))
     .filter(
       (element, index, array) =>
-        // `element` is a symbol and is not duplicated.
+        // Check that `element` is a symbol and is not duplicated.
         symbols.includes(element) && array.indexOf(element) === index
     );
+  // TODO return  list sorted by symbol and interval
 };

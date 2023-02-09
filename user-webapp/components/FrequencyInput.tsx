@@ -12,7 +12,10 @@ export type FrequencyInputProps = {
   setFrequency: (arg: FrequencyArg) => void;
 };
 
-export const FrequencyInput: FC<FrequencyInputProps> = ({ frequency, setFrequency }) => {
+export const FrequencyInput: FC<FrequencyInputProps> = ({
+  frequency: { interval, every },
+  setFrequency,
+}) => {
   const frequencyIntervalOptions = useMemo(
     () => [
       {
@@ -30,11 +33,11 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({ frequency, setFrequenc
       const every = value === "" ? value : Number(value);
       if (isNaturalNumber(every) || every === "")
         setFrequency({
-          ...scheduling.frequency,
+          interval,
           every,
         });
     },
-    [scheduling, setFrequency]
+    [interval, setFrequency]
   );
 
   const onChangeFrequencyInterval = useCallback<SelectOnChange>(
@@ -42,27 +45,21 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({ frequency, setFrequenc
       const value = event.target.value;
       if (isFrequencyInterval(value))
         setFrequency({
-          ...scheduling.frequency,
+          every,
           interval: value,
         });
     },
-    [scheduling, setFrequency]
+    [every, setFrequency]
   );
 
   return (
     <div className="flex flex-row gap-1">
       <div className="w-16">
-        <InputField
-          label="every"
-          value={frequency.every}
-          onChange={onChangeFrequencyEvery}
-          min={1}
-          step={1}
-        />
+        <InputField label="every" value={every} onChange={onChangeFrequencyEvery} min={1} step={1} />
       </div>
 
       <SelectField
-        value={frequency.interval}
+        value={interval}
         onChange={onChangeFrequencyInterval}
         options={frequencyIntervalOptions}
         label="interval"

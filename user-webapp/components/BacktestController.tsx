@@ -1,7 +1,7 @@
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { StrategyFlow } from "_routing";
 import { BacktestControllerBinance } from "./BacktestControllerBinance";
@@ -15,8 +15,11 @@ type Props = Partial<Pick<StrategyFlow, "view">> & {
 };
 
 export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
+  const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps["frequency"]>(everyOneHour());
+
   const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
     (frequency) => {
+      setFrequencyArg(frequency);
       if (isFrequency(frequency)) dispatch({ type: "SET_FREQUENCY", frequency });
     },
     [dispatch]
@@ -37,7 +40,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   const {
     balanceHistory,
     currentTimestamp,
-    frequency,
     maxDay,
     memoryItems,
     dayInterval,
@@ -50,7 +52,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       return {
         balanceHistory: [],
         currentTimestamp: undefined,
-        frequency: everyOneHour(),
         memoryItems: [],
         noMemory: true,
         maxDay: undefined,
@@ -63,7 +64,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     const {
       balanceHistory,
       dayInterval,
-      frequency,
       maxDay,
       memory,
       orderHistory,
@@ -83,7 +83,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     return {
       balanceHistory,
       currentTimestamp,
-      frequency,
       maxDay,
       memoryItems,
       dayInterval,
@@ -110,7 +109,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         setStartDay={setStartDay}
       />
 
-      <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
+      <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
 
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">

@@ -24,9 +24,7 @@ export const BacktestControllerBinance: FC<Props> = ({
   dispatch,
   view,
 }) => {
-  const [exchangeInfo, setExchangeInfo] = useState<
-    BinanceExchangeInfo | undefined
-  >();
+  const [exchangeInfo, setExchangeInfo] = useState<BinanceExchangeInfo | undefined>();
 
   const actionLabel = useMemo(() => {
     if (isPaused) return "Resume";
@@ -50,16 +48,14 @@ export const BacktestControllerBinance: FC<Props> = ({
     });
   }, [exchangeInfo, view]);
 
+  const fetchExchangeInfo = useCallback(async () => {
+    const exchangeInfo = await binance.exchangeInfo();
+    setExchangeInfo(exchangeInfo);
+  }, []);
+
   useEffect(() => {
-    (async () => {
-      try {
-        const exchangeInfo = await binance.exchangeInfo();
-        setExchangeInfo(exchangeInfo);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [setExchangeInfo]);
+    fetchExchangeInfo();
+  }, [fetchExchangeInfo]);
 
   const timeInterval = useMemo(
     () => dayIntervalToTime({ start: startDay, end: maxDay }),

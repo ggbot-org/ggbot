@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { StrategyFlow } from "@ggbot2/models";
 import { BinanceClientMock } from "./mocks/client.js";
-import { extractBinanceSymbolsFromFlow } from "./symbols.js";
+import { extractBinanceSymbolsAndIntervalsFromFlow } from "./symbols.js";
 
-describe("extractBinanceSymbolsFromFlow", () => {
+describe("extractBinanceSymbolsAndIntervalsFromFlow", () => {
   it("works", async () => {
     const binance = new BinanceClientMock();
     const { symbols } = await binance.exchangeInfo();
@@ -17,9 +17,6 @@ describe("extractBinanceSymbolsFromFlow", () => {
       ],
       edges: [],
     };
-    assert.deepEqual(
-      extractBinanceSymbolsFromFlow({ binanceSymbols: symbols, view }).sort(),
-      ["BTCBUSD", "ETHBTC"].sort()
-    );
+    assert.deepEqual(extractBinanceSymbolsAndIntervalsFromFlow(symbols, view), ["BTCBUSD", "ETHBTC"]);
   });
 });
