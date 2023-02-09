@@ -1,17 +1,7 @@
-import {
-  Decimal,
-  MaybeDecimal,
-  coerceToDecimal,
-  maxNumOfDecimals,
-  numOfDecimals,
-} from "./decimal.js";
+import { Decimal, MaybeDecimal, coerceToDecimal, maxNumOfDecimals, numOfDecimals } from "./decimal.js";
 import { ErrorCannotDivideByZero } from "./errors.js";
 
-export type ArithmeticOperator = (
-  a: MaybeDecimal,
-  b: MaybeDecimal,
-  numDecimals?: number
-) => Decimal;
+type ArithmeticOperator = (a: MaybeDecimal, b: MaybeDecimal, numDecimals?: number) => Decimal;
 
 /** Equality operator. */
 export const equal = (a: MaybeDecimal, b: MaybeDecimal): boolean => {
@@ -21,32 +11,23 @@ export const equal = (a: MaybeDecimal, b: MaybeDecimal): boolean => {
 
 /** Addition operator. */
 export const add: ArithmeticOperator = (a, b, numDecimals) =>
-  coerceToDecimal(
-    Number(a) + Number(b),
-    numDecimals ?? maxNumOfDecimals([a, b])
-  );
+  coerceToDecimal(Number(a) + Number(b), numDecimals ?? maxNumOfDecimals([a, b]));
 
 /** Subtraction operator. */
 export const sub: ArithmeticOperator = (a, b, numDecimals) =>
-  coerceToDecimal(
-    Number(a) - Number(b),
-    numDecimals ?? maxNumOfDecimals([a, b])
-  );
+  coerceToDecimal(Number(a) - Number(b), numDecimals ?? maxNumOfDecimals([a, b]));
 
 /** Multiplication operator. */
 export const mul: ArithmeticOperator = (a, b, numDecimals) =>
-  coerceToDecimal(
-    Number(a) * Number(b),
-    numDecimals ?? maxNumOfDecimals([a, b])
-  );
+  coerceToDecimal(Number(a) * Number(b), numDecimals ?? maxNumOfDecimals([a, b]));
 
 /**
-Division operator.
-@throws {ErrorArithmeticOperatorCannotDivideByZero}
-*/
+ * Division operator.
+ *
+ * @throws {ErrorCannotDivideByZero}
+ */
 export const div: ArithmeticOperator = (a, b, numDecimals) => {
-  if (equal(b, coerceToDecimal(0, numOfDecimals(b))))
-    throw new ErrorCannotDivideByZero();
+  if (equal(b, coerceToDecimal(0, numOfDecimals(b)))) throw new ErrorCannotDivideByZero();
   // Cannot use `maxNumOfDecimals` 'cause the `numOfDecimals` is
   // not preserved with division, for example
   //
