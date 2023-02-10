@@ -10,12 +10,11 @@ import { useCallback, useState } from "react";
 import { ApiActionInput } from "./action.js";
 import { ActionError, isApiActionResponseError } from "./errors.js";
 
-type UseActionRequestArg<Input extends OperationInput> =
-  Input extends AccountKey ? Omit<Input, "accountId"> : Input;
+type UseActionRequestArg<Input extends OperationInput> = Input extends AccountKey
+  ? Omit<Input, "accountId">
+  : Input;
 
-type UseActionRequest<Input extends OperationInput> = (
-  arg: UseActionRequestArg<Input>
-) => AbortController;
+type UseActionRequest<Input extends OperationInput> = (arg: UseActionRequestArg<Input>) => AbortController;
 
 type UseActionResponse<Output extends OperationOutput> = {
   error?: ActionError | undefined;
@@ -42,9 +41,7 @@ type UseActionResponse<Output extends OperationOutput> = {
  * const [request, { data, isPending, error }] = useApiAction.FooBar();
  * ```
  *
- * The `request` returns an `AbortController`:
- * it can be used in a `useEffect` destructor function;
- * assuming it is needed to fetch data on mount the following snippets are equivalent.
+ * The `request` returns an `AbortController`, it can be used as a `useEffect` destructor.
  *
  * @example
  * ```ts
@@ -52,9 +49,9 @@ type UseActionResponse<Output extends OperationOutput> = {
  * useEffect(() => {
  *   const controller = request({ param });
  *   return () => { controller.abort() }
- * }, [request])
-```
-*/
+ * }, [request]);
+ * ```
+ */
 export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },
   ApiActionType extends string
@@ -84,9 +81,7 @@ export const useAction = <
     const fetchRequest = async (inputData: Action["in"]) => {
       setResponse({ isPending: true });
       const body =
-        inputData === undefined
-          ? JSON.stringify({ type })
-          : JSON.stringify({ type, data: inputData });
+        inputData === undefined ? JSON.stringify({ type }) : JSON.stringify({ type, data: inputData });
       const response = await fetch("/api/action", {
         body,
         credentials: "include",
@@ -136,8 +131,7 @@ export const useAction = <
       } catch (error) {
         // AbortError is called on component unmount and on request timeout:
         // the signal eventListener on 'abort', set `isPending` to `false`.
-        if (error instanceof DOMException && error.name === "AbortError")
-          return;
+        if (error instanceof DOMException && error.name === "AbortError") return;
         // Fallback for unhandled errors.
         console.error(error);
         setResponse({ error: { name: "GenericError" }, isPending: false });

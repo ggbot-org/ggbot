@@ -1,6 +1,6 @@
 # ggbot2 stack
 
-- Node.js v16
+- Node.js
 - npm workspaces
 - AWS
 - Next.js
