@@ -1,4 +1,4 @@
-import { DflowNodesCatalog, DflowNode } from "dflow";
+import { DflowNodesCatalog, DflowNode, Dflow } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import {
   DflowBinanceSymbolInfo,

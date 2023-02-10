@@ -1,7 +1,9 @@
-import { BinanceSymbolInfo } from "@ggbot2/binance";
+import { BinanceKlineInterval, BinanceSymbolInfo } from "@ggbot2/binance";
 import { StrategyFlow } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
+import { DflowGraph, DflowId } from "dflow";
 import { dflowBinancePrecision } from "./arithmetic.js";
+import { Candles } from "./nodes/market.js";
 
 export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"];
 
@@ -53,18 +55,20 @@ export const getDflowBinanceNodeSymbolKind = ({
   [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator);
 
 export const extractBinanceSymbolsAndIntervalsFromFlow = (
-  binanceSymbols: DflowBinanceSymbolInfo[],
+  _binanceSymbols: DflowBinanceSymbolInfo[],
   view: StrategyFlow["view"]
-): string[] => {
-  // TODO look for candles nodes and return [symbol, interval]
-  const symbols = binanceSymbols.map(({ symbol }) => symbol);
-  return view.nodes
-    .filter(({ text }) => text.includes(dflowBinanceSymbolSeparator))
-    .map(({ text }) => text.split(dflowBinanceSymbolSeparator).join(""))
-    .filter(
-      (element, index, array) =>
-        // Check that `element` is a symbol and is not duplicated.
-        symbols.includes(element) && array.indexOf(element) === index
-    );
-  // TODO return  list sorted by symbol and interval
+): { symbol: string; interval: BinanceKlineInterval }[] => {
+  // const symbols = binanceSymbols.map(({ symbol }) => symbol);
+  const result: { symbol: string; interval: BinanceKlineInterval }[] = [];
+  const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] = view.edges.map((edge) => ({
+    sourceId: edge.from[0],
+    targetId: edge.to[0],
+  }));
+  for (const node of view.nodes) {
+    if (node.text === Candles.kind) {
+      const parents = DflowGraph.parentsOfNodeId(node.id, nodeConnections);
+      console.log(parents);
+    }
+  }
+  return result;
 };
