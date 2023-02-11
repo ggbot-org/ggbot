@@ -11,6 +11,7 @@ import {
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
+  binanceKlineIntervals,
 } from "@ggbot2/binance";
 import {
   BinanceDflowClient as IBinanceDflowClient,
@@ -20,9 +21,11 @@ import {
 } from "@ggbot2/dflow";
 import { Time } from "@ggbot2/time";
 
+const cache = new BinanceCacheMap();
+
 export const binance = new BinanceExchange({
   baseUrl: BinanceConnector.defaultBaseUrl,
-  cache: new BinanceCacheMap(),
+  cache,
 });
 
 export class BinanceDflowClient implements IBinanceDflowClient {
@@ -116,8 +119,19 @@ export class BinanceDflowClient implements IBinanceDflowClient {
   }
 
   async tickerPrice(symbol: string) {
+    const { time } = this;
+    // Look for cached data.
+    for (const interval of binanceKlineIntervals) {
+      const key = BinanceCacheMap.klinesKey(symbol, interval, time);
+      const kline = cache.klinesMap.get(key);
+      if (kline) {
+        const price = kline[4];
+        return Promise.resolve({ symbol, price });
+      }
+    }
+    // If no data was found in cache, fetch it from Binance API.
     const klines = await binance.klines(symbol, dflowBinanceLowerKlineInterval, {
-      startTime: this.time,
+      startTime: time,
       limit: 1,
     });
     const price = klines[0][4];

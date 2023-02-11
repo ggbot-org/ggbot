@@ -1,5 +1,5 @@
 import { BinanceExchangeInfo } from "@ggbot2/binance";
-import { extractBinanceSymbolsFromFlow } from "@ggbot2/dflow";
+import { extractBinanceSymbolsAndIntervalsFromFlow } from "@ggbot2/dflow";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { Button } from "@ggbot2/ui-components";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -16,7 +16,6 @@ type Props = Pick<StrategyFlow, "view"> & {
 export const BacktestControllerBinance: FC<Props> = ({
   state: {
     dayInterval: { start: startDay },
-    frequency,
     maxDay,
     isEnabled,
     isPaused,
@@ -39,14 +38,13 @@ export const BacktestControllerBinance: FC<Props> = ({
     else if (isEnabled) dispatch({ type: "START" });
   }, [dispatch, isEnabled, isPaused, isRunning]);
 
-  const selectedSymbols = useMemo<string[] | undefined>(() => {
+  const symbolsAndIntervals = useMemo<
+    ReturnType<typeof extractBinanceSymbolsAndIntervalsFromFlow> | undefined
+  >(() => {
     if (!exchangeInfo) return;
     if (!view) return;
 
-    return extractBinanceSymbolsFromFlow({
-      binanceSymbols: exchangeInfo.symbols,
-      view,
-    });
+    return extractBinanceSymbolsAndIntervalsFromFlow(exchangeInfo.symbols, view);
   }, [exchangeInfo, view]);
 
   const fetchExchangeInfo = useCallback(async () => {
@@ -63,23 +61,23 @@ export const BacktestControllerBinance: FC<Props> = ({
     [startDay, maxDay]
   );
 
-  if (!Array.isArray(selectedSymbols)) return null;
+  if (!Array.isArray(symbolsAndIntervals)) return null;
 
   return (
     <div>
-      {selectedSymbols.length === 0 ? (
+      {symbolsAndIntervals.length === 0 ? (
         <div className="my-2 h-48 flex flex-col justify-center">
           <span>No symbol found in strategy flow.</span>
         </div>
       ) : (
         <div className="flex flex-row flex-wrap justify-start gap-2">
-          {selectedSymbols.map((symbol) => (
+          {symbolsAndIntervals.map(({ symbol, interval }) => (
             <BinanceKlinesChart
               key={symbol}
               binance={binance}
               symbol={symbol}
               timeInterval={timeInterval}
-              interval={frequency.interval}
+              interval={interval}
             />
           ))}
         </div>

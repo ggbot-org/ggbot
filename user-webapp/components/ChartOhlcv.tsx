@@ -1,10 +1,5 @@
 import { FC, useCallback, useEffect, useRef } from "react";
-import {
-  IChartApi,
-  ISeriesApi,
-  OhlcData,
-  SingleValueData,
-} from "lightweight-charts";
+import { IChartApi, ISeriesApi, OhlcData, SingleValueData } from "lightweight-charts";
 
 export type ChartOhlcvProps = {
   candles: OhlcData[];
@@ -12,11 +7,8 @@ export type ChartOhlcvProps = {
   height: number;
 };
 
-export const ChartOhlcv: FC<ChartOhlcvProps> = ({
-  candles,
-  volume,
-  height,
-}) => {
+// TODO remove lightweight-charts and implement custom ChartOhlcv with SVG.
+export const ChartOhlcv: FC<ChartOhlcvProps> = ({ candles, volume, height }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -27,8 +19,8 @@ export const ChartOhlcv: FC<ChartOhlcvProps> = ({
 
   const greenBar = "rgb(38,166,117)";
   const redBar = "rgb(222,71,71)";
-  const greenVolume = "rgba(38,166,140,0.71)";
-  const redVolume = "rgba(255,82,82,0.71)";
+  // const greenVolume = "rgba(38,166,140,0.71)";
+  // const redVolume = "rgba(255,82,82,0.71)";
 
   const importLibAndCreateChart = useCallback(async () => {
     if (!containerRef.current) return;
@@ -91,18 +83,20 @@ export const ChartOhlcv: FC<ChartOhlcvProps> = ({
   // Update data
   useEffect(() => {
     if (!candlesRef.current || !candles) return;
-    candlesRef.current.setData(candles);
+    // candlesRef.current.setData(candles);
   }, [candles, candlesRef]);
   useEffect(() => {
     if (!volumeRef.current || !volume) return;
-    volumeRef.current?.setData(
-      volume.map(({ time, value, up }) => ({
-        time,
-        value,
-        color: up ? greenVolume : redVolume,
-      }))
-    );
+    /*
+     volumeRef.current?.setData(
+       volume.map(({ time, value, up }) => ({
+         time,
+         value,
+         color: up ? greenVolume : redVolume,
+       }))
+     );
+     */
   }, [volume, volumeRef]);
 
-  return <div ref={containerRef}></div>;
+  return null; // <div ref={containerRef}></div>;
 };

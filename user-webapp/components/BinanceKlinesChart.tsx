@@ -1,14 +1,14 @@
-import { BinanceExchange, BinanceKline } from "@ggbot2/binance";
-import { Frequency } from "@ggbot2/models";
+import { BinanceExchange, BinanceKline, BinanceKlineInterval } from "@ggbot2/binance";
 import { TimeInterval, timeToTimestamp } from "@ggbot2/time";
 import { FC, useEffect, useMemo, useState } from "react";
 import { ChartOhlcv, ChartOhlcvProps } from "./ChartOhlcv";
 
 type Props = {
   binance: BinanceExchange;
+  interval: BinanceKlineInterval;
   symbol: string;
   timeInterval: TimeInterval;
-} & Pick<Frequency, "interval">;
+};
 
 const klinesToCandlesAndVolume = (klines: BinanceKline[]) =>
   klines.reduce<Pick<ChartOhlcvProps, "candles" | "volume">>(
@@ -51,8 +51,11 @@ export const BinanceKlinesChart: FC<Props> = ({ binance, symbol, timeInterval, i
   const { candles, volume } = useMemo(() => klinesToCandlesAndVolume(klines), [klines]);
 
   return (
+    <div>
+      {/*
     <div className="grow max-w-md shadow dark:shadow-black p-2">
       <span className="text-sm">{symbol}</span>
+    */}
       <div>
         <ChartOhlcv candles={candles} volume={volume} height={180} />
       </div>
