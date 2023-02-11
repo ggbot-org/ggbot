@@ -1,4 +1,4 @@
-import { DflowNodesCatalog, DflowNode, Dflow } from "dflow";
+import { DflowNodesCatalog, DflowNode } from "dflow";
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import {
   DflowBinanceSymbolInfo,
@@ -9,6 +9,7 @@ import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js";
 import { InputInterval, InputSymbol } from "./nodes/inputs.js";
 import { Candles, TickerPrice } from "./nodes/market.js";
 import { BuyMarket, SellMarket } from "./nodes/trade.js";
+import { isLiteralType } from "@ggbot2/type-utils";
 
 const { output } = DflowNode;
 
@@ -33,7 +34,9 @@ export const dflowBinanceKlineIntervals = [
   "1w",
   "1M",
 ] as const;
-export type DflowBinanceKlineIntervals = typeof dflowBinanceKlineIntervals[number];
+export type DflowBinanceKlineInterval = typeof dflowBinanceKlineIntervals[number];
+export const isDflowBinanceKlineInterval =
+  isLiteralType<DflowBinanceKlineInterval>(dflowBinanceKlineIntervals);
 export const dflowBinanceLowerKlineInterval = dflowBinanceKlineIntervals[0];
 
 /** Creates a dynamic set of dflow nodes generated according to Binance definitions. */

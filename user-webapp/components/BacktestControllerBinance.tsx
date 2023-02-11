@@ -16,6 +16,7 @@ type Props = Pick<StrategyFlow, "view"> & {
 export const BacktestControllerBinance: FC<Props> = ({
   state: {
     dayInterval: { start: startDay },
+    frequency,
     maxDay,
     isEnabled,
     isPaused,
@@ -78,6 +79,7 @@ export const BacktestControllerBinance: FC<Props> = ({
               binance={binance}
               symbol={symbol}
               timeInterval={timeInterval}
+              interval={frequency.interval}
             />
           ))}
         </div>
