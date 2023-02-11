@@ -1,17 +1,11 @@
 import { FC, LabelHTMLAttributes, PropsWithChildren, ReactNode } from "react";
+// TODO remove this component, use trunx Field
 
-export type FieldProps = Pick<
-  LabelHTMLAttributes<HTMLLabelElement>,
-  "htmlFor"
-> & {
+export type FieldProps = Pick<LabelHTMLAttributes<HTMLLabelElement>, "htmlFor"> & {
   label: ReactNode;
 };
 
-export const Field: FC<PropsWithChildren<FieldProps>> = ({
-  children,
-  label,
-  htmlFor,
-}) => {
+export const Field: FC<PropsWithChildren<FieldProps>> = ({ children, label, htmlFor }) => {
   const labelClassName = "mb-3 text-xs font-medium uppercase";
 
   return (
