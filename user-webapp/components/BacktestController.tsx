@@ -1,6 +1,6 @@
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
-import { CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
+import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo, useState } from "react";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { StrategyFlow } from "_routing";
@@ -40,6 +40,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   const {
     balanceHistory,
     currentTimestamp,
+    isEnabled,
+    isPaused,
+    isRunning,
     maxDay,
     memoryItems,
     dayInterval,
@@ -52,6 +55,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       return {
         balanceHistory: [],
         currentTimestamp: undefined,
+        isEnabled: false,
+        isPaused: false,
+        isRunning: false,
         memoryItems: [],
         noMemory: true,
         maxDay: undefined,
@@ -64,6 +70,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     const {
       balanceHistory,
       dayInterval,
+      isEnabled,
+      isPaused,
+      isRunning,
       maxDay,
       memory,
       orderHistory,
@@ -83,6 +92,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     return {
       balanceHistory,
       currentTimestamp,
+      isEnabled,
+      isPaused,
+      isRunning,
       maxDay,
       memoryItems,
       dayInterval,
@@ -97,6 +109,18 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     () => (dayInterval ? dayIntervalToTime(dayInterval) : undefined),
     [dayInterval]
   );
+
+  const actionLabel = useMemo(() => {
+    if (isPaused) return "Resume";
+    if (isRunning) return "Pause";
+    if (isEnabled) return "Start";
+  }, [isEnabled, isPaused, isRunning]);
+
+  const onClickAction = useCallback(() => {
+    if (isRunning) dispatch({ type: "PAUSE" });
+    if (isPaused) dispatch({ type: "RESUME" });
+    else if (isEnabled) dispatch({ type: "START" });
+  }, [dispatch, isEnabled, isPaused, isRunning]);
 
   if (!state || !state.isEnabled) return null;
 
@@ -141,9 +165,13 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         strategyKind={strategyKind}
       />
 
-      {strategyKind === "binance" && view && state && (
-        <BacktestControllerBinance state={state} dispatch={dispatch} view={view} />
+      {strategyKind === "binance" && view && dayInterval && (
+        <BacktestControllerBinance dayInterval={dayInterval} view={view} />
       )}
+
+      <menu>
+        <Button onClick={onClickAction}>{actionLabel}</Button>
+      </menu>
     </div>
   );
 };

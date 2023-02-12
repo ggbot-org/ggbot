@@ -1,15 +1,21 @@
-import { BinanceExchange, BinanceKline, BinanceKlineInterval } from "@ggbot2/binance";
-import { TimeInterval, timeToTimestamp } from "@ggbot2/time";
-import { FC, useEffect, useMemo, useState } from "react";
-import { ChartOhlcv, ChartOhlcvProps } from "./ChartOhlcv";
+import {
+  BinanceExchange,
+  BinanceKline,
+  BinanceKlineInterval,
+  binanceKlineMaxLimit,
+  getBinanceIntervalTime,
+} from "@ggbot2/binance";
+import { TimeInterval } from "@ggbot2/time";
+import { FC, useCallback, useEffect, useState, useRef } from "react";
+// import { ChartOhlcv, ChartOhlcvProps } from "./ChartOhlcv";
 
-type Props = {
+type Props = TimeInterval & {
   binance: BinanceExchange;
   interval: BinanceKlineInterval;
   symbol: string;
-  timeInterval: TimeInterval;
 };
 
+/*
 const klinesToCandlesAndVolume = (klines: BinanceKline[]) =>
   klines.reduce<Pick<ChartOhlcvProps, "candles" | "volume">>(
     (result, [openTime, open, high, low, close, volume]) => {
@@ -31,34 +37,53 @@ const klinesToCandlesAndVolume = (klines: BinanceKline[]) =>
     },
     { candles: [], volume: [] }
   );
+  */
 
-export const BinanceKlinesChart: FC<Props> = ({ binance, symbol, timeInterval, interval }) => {
-  const [klines, setKlines] = useState<BinanceKline[]>([]);
+export const BinanceKlinesChart: FC<Props> = ({ binance, start, end, interval, symbol }) => {
+  const [previousTimeInterval, setPreviousTimeInterval] = useState<TimeInterval | undefined>();
+  const klines = useRef<BinanceKline[]>([]);
+
+  const fetchKlines = useCallback(async () => {
+    // Do not fetch if there are klines available.
+    if (klines.current.length > 0) return;
+    const data: BinanceKline[] = [];
+    let startTime = start;
+    let endTime = getBinanceIntervalTime[interval](startTime).plus(binanceKlineMaxLimit);
+    let shouldFetch = true;
+    while (shouldFetch) {
+      const klines = await binance.klines(symbol, interval, {
+        startTime,
+        limit: binanceKlineMaxLimit,
+      });
+      data.push(...klines);
+      endTime = Math.min(end, getBinanceIntervalTime[interval](endTime).plus(binanceKlineMaxLimit));
+      shouldFetch = endTime < end;
+    }
+    klines.current = data;
+  }, [binance, symbol, start, end, interval, klines]);
 
   useEffect(() => {
-    (async () => {
-      // TODO should chunk from start to end, with limit 1000
-      // according to interval
-      const data = await binance.klines(symbol, interval, {
-        startTime: timeInterval.start,
-        endTime: timeInterval.end,
-      });
-      // TODO should parse data here, not in useMemo below
-      setKlines(data);
-    })();
-  }, [binance, interval, symbol, timeInterval]);
+    if (previousTimeInterval === undefined) {
+      setPreviousTimeInterval({ start, end });
+      fetchKlines();
+    } else if (start < previousTimeInterval.start || end > previousTimeInterval.end) {
+      // Reset klines, and fetch them.
+      klines.current = [];
+      fetchKlines();
+    }
+  }, [fetchKlines, start, end, klines, previousTimeInterval]);
 
-  const { candles, volume } = useMemo(() => klinesToCandlesAndVolume(klines), [klines]);
+  // const { candles, volume } = useMemo(() => klinesToCandlesAndVolume(klines), [klines]);
 
   return (
     <div>
-      {/*
+      {/* TODO need to restore ChartOhlcv
     <div className="grow max-w-md shadow dark:shadow-black p-2">
       <span className="text-sm">{symbol}</span>
-    */}
       <div>
         <ChartOhlcv candles={candles} volume={volume} height={180} />
       </div>
+    */}
     </div>
   );
 };
