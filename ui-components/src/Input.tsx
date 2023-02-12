@@ -1,6 +1,5 @@
 import { ChangeEventHandler, FC, InputHTMLAttributes, ReactNode, useId, useMemo } from "react";
-// import { Control, Field, Label } from "trunx";
-import { Field, FieldProps } from "./Field";
+import { Control, Field, Label } from "trunx";
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "type"> & {
   type?: "text" | "password" | "email" | "number";
@@ -26,27 +25,16 @@ export const Input: FC<InputProps> = ({ icon, disabled, readOnly, ...props }) =>
   );
 };
 
-// type InputFieldProps = Omit<InputProps, "id"> & { label: string };
-
-// export const InputField: FC<InputFieldProps> = ({ label, ...props }) => {
-//   const id = useId();
-//   return (
-//     <Field>
-//       <Label htmlFor={id}>{label}</Label>
-//       <Control>
-//         <Input id={id} {...props} />
-//       </Control>
-//     </Field>
-//   );
-// };
-
-type InputFieldProps = Omit<FieldProps, "htmlFor"> & Omit<InputProps, "id">;
+type InputFieldProps = Omit<InputProps, "id"> & { label: string };
 
 export const InputField: FC<InputFieldProps> = ({ label, ...props }) => {
   const id = useId();
   return (
-    <Field label={label} htmlFor={id}>
-      <Input id={id} {...props} />
+    <Field>
+      <Label htmlFor={id}>{label}</Label>
+      <Control>
+        <Input id={id} {...props} />
+      </Control>
     </Field>
   );
 };
