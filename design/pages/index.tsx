@@ -7,14 +7,14 @@ import {
   EditableInputs,
   Icons,
   LoadingButtons,
-  Navigation,
   GroupedPills,
   Pills,
   SimpleForm,
   SimpleTable,
   Typography,
-} from "../examples";
-import { Logo } from "../src";
+} from "_examples";
+import { Nav } from "_components";
+import { Logo } from "@ggbot2/design";
 
 const Home: NextPage = () => {
   return (
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         <title>ggbot2 design</title>
       </Head>
 
-      <Navigation />
+      <Nav />
 
       <main>
         <Logo size={71} />

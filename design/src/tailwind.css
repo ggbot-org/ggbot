@@ -3,12 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  @supports (font-variation-settings: normal) {
-    html {
-      font-family: "Inter var", sans-serif;
-    }
-  }
-
   :root {
     /* Adapt to color-scheme */
     color-scheme: light dark;

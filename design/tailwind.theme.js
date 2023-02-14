@@ -16,9 +16,6 @@ module.exports = {
     ...colors,
   },
   extend: {
-    fontFamily: {
-      sans: ["Inter", "sans-serif"],
-    },
     fontSize: {
       "2xs": "0.625rem",
     },

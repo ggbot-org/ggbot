@@ -1,2 +1,6 @@
-/* Import all bulma modules. */
+// Import bulma variables first,
+@import "bulma-variables";
+// then all bulma modules.
 @import "bulma/bulma";
+
+@import "brand";
