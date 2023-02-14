@@ -1,10 +1,10 @@
+import { Button, ButtonOnClick, Section } from "@ggbot2/design";
 import {
   StrategyScheduling,
   isAccountStrategy,
   isStrategyScheduling,
   newStrategyScheduling,
 } from "@ggbot2/models";
-import { Button, ButtonOnClick, Section } from "@ggbot2/ui-components";
 import { FC, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction, useSubscription } from "_hooks";
 import { StrategyKey } from "_routing";

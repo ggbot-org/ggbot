@@ -1,16 +1,10 @@
+import { DateTime, Pill } from "@ggbot2/design";
 import { StrategyExecution } from "@ggbot2/models";
-import { DateTime, Pill } from "@ggbot2/ui-components";
 import { FC, ReactNode, useMemo } from "react";
 
-type Props = Partial<
-  Pick<StrategyExecution, "status" | "steps" | "whenUpdated">
->;
+type Props = Partial<Pick<StrategyExecution, "status" | "steps" | "whenUpdated">>;
 
-export const StrategyExecutionLog: FC<Props> = ({
-  status,
-  steps,
-  whenUpdated,
-}) => {
+export const StrategyExecutionLog: FC<Props> = ({ status, steps, whenUpdated }) => {
   const statusPill = useMemo<ReactNode>(() => {
     if (status === "success") return <Pill color="primary">{status}</Pill>;
     if (status === "failure") return <Pill color="danger">{status}</Pill>;
@@ -33,11 +27,9 @@ export const StrategyExecutionLog: FC<Props> = ({
           const kind = step.k;
           const numOutputs = step.o?.length ?? 0;
           const firstOutputData = step.o?.[0].d;
-          const hasNoOutputData =
-            numOutputs > 0 && step.o?.every(({ d }) => d === undefined);
+          const hasNoOutputData = numOutputs > 0 && step.o?.every(({ d }) => d === undefined);
           const showPreview =
-            numOutputs === 1 &&
-            ["boolean", "number", "string"].includes(typeof firstOutputData);
+            numOutputs === 1 && ["boolean", "number", "string"].includes(typeof firstOutputData);
           const showDetails = !showPreview && !hasNoOutputData;
           const preview = showPreview ? String(firstOutputData) : "";
 
@@ -60,10 +52,7 @@ export const StrategyExecutionLog: FC<Props> = ({
               {showDetails && (
                 <div className="py-1 flex flex-col gap-2">
                   {step.o?.map(({ d }, i) => (
-                    <pre
-                      key={i}
-                      className="pl-10 hover:bg-zinc-200 hover:dark:bg-zinc-900"
-                    >
+                    <pre key={i} className="pl-10 hover:bg-zinc-200 hover:dark:bg-zinc-900">
                       <code>{JSON.stringify(d ?? null, null, 2)}</code>
                     </pre>
                   ))}

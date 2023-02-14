@@ -1,24 +1,12 @@
 import { add, Decimal } from "@ggbot2/arithmetic";
 import { isBinanceOrderRespFULL } from "@ggbot2/binance";
+import { DateTime, Pill } from "@ggbot2/design";
 import { useIsServerSide } from "@ggbot2/hooks";
-import {
-  Balance,
-  BalanceChangeEvent,
-  Order,
-  StrategyKind,
-} from "@ggbot2/models";
+import { Balance, BalanceChangeEvent, Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval, timeToDay } from "@ggbot2/time";
-import { DateTime, Pill } from "@ggbot2/ui-components";
 import colors from "tailwindcss/colors";
 import { FC, useId, useMemo } from "react";
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
@@ -29,12 +17,7 @@ type Props = {
 
 const customAssetSort = ["BTC", "ETH", "BNB", "BUSD"];
 
-export const ProfitSummary: FC<Props> = ({
-  balanceHistory,
-  orderHistory,
-  timeInterval,
-  strategyKind,
-}) => {
+export const ProfitSummary: FC<Props> = ({ balanceHistory, orderHistory, timeInterval, strategyKind }) => {
   const isServerSide = useIsServerSide();
   const freeDailyBalanceChartsSyncId = useId();
 
@@ -77,9 +60,7 @@ export const ProfitSummary: FC<Props> = ({
         const day = timeToDay(whenCreated);
         const currentDailyBalances = dailyBalancesMap.get(asset);
         if (currentDailyBalances) {
-          const currentDailyBalance = currentDailyBalances.find(
-            ({ name }) => name === day
-          );
+          const currentDailyBalance = currentDailyBalances.find(({ name }) => name === day);
           if (currentDailyBalance) {
             dailyBalancesMap.set(
               asset,
@@ -100,10 +81,7 @@ export const ProfitSummary: FC<Props> = ({
                 freeDecimal: free,
               })
             );
-        } else
-          dailyBalancesMap.set(asset, [
-            { name: day, free: freeNum, freeDecimal: free },
-          ]);
+        } else dailyBalancesMap.set(asset, [{ name: day, free: freeNum, freeDecimal: free }]);
       }
     }
 
@@ -171,21 +149,10 @@ export const ProfitSummary: FC<Props> = ({
         <div className="flex flex-col gap-2">
           {assets.map((asset) => (
             <ResponsiveContainer key={asset} width="100%" height={150}>
-              <LineChart
-                height={100}
-                data={dailyBalance[asset]}
-                syncId={freeDailyBalanceChartsSyncId}
-              >
-                <Line
-                  connectNulls
-                  dataKey="free"
-                  stroke={colors.purple[500]}
-                  type="monotone"
-                />
+              <LineChart height={100} data={dailyBalance[asset]} syncId={freeDailyBalanceChartsSyncId}>
+                <Line connectNulls dataKey="free" stroke={colors.purple[500]} type="monotone" />
                 <XAxis dataKey="name" domain={["dataMin", "dataMax"]} />
-                <YAxis
-                  label={{ value: asset, angle: -90, position: "insideLeft" }}
-                />
+                <YAxis label={{ value: asset, angle: -90, position: "insideLeft" }} />
                 <Tooltip formatter={(value) => [value, asset]} />
               </LineChart>
             </ResponsiveContainer>

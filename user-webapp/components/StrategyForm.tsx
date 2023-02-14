@@ -1,11 +1,4 @@
-import {
-  Button,
-  ButtonOnClick,
-  DateTime,
-  EditableInputField,
-  Section,
-  OutputField,
-} from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, DateTime, EditableInputField, Section, OutputField } from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";

@@ -1,18 +1,6 @@
+import { Breadcrumb, BreadcrumbItems, Header, Icon, Logo } from "@ggbot2/design";
 import { useRouter } from "next/router";
-import {
-  FC,
-  PointerEventHandler,
-  ReactNode,
-  useCallback,
-  useMemo,
-} from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItems,
-  Header,
-  Icon,
-  Logo,
-} from "@ggbot2/ui-components";
+import { FC, PointerEventHandler, ReactNode, useCallback, useMemo } from "react";
 import { StrategyKey, route } from "_routing";
 
 type NavigationProps = {
@@ -34,11 +22,7 @@ export const Navigation: FC<NavigationProps> = ({ breadcrumbs, icon }) => {
         </div>
 
         <div className="grow">
-          {breadcrumbs ? (
-            <Breadcrumb items={breadcrumbs} />
-          ) : (
-            <NavigationLabel italic text="crypto flow" />
-          )}
+          {breadcrumbs ? <Breadcrumb items={breadcrumbs} /> : <NavigationLabel italic text="crypto flow" />}
         </div>
 
         <div className="px-1 flex items-center">{icon}</div>
@@ -56,8 +40,7 @@ export const NavigationDangerIcon: FC = () => (
 export const NavigationSettingsIcon: FC = () => {
   const router = useRouter();
   const goToSettings = useCallback(() => {
-    if (router.pathname !== route.settingsPage())
-      router.push(route.settingsPage());
+    if (router.pathname !== route.settingsPage()) router.push(route.settingsPage());
   }, [router]);
   return <Icon name="dots-vertical" onClick={goToSettings} />;
 };
@@ -67,24 +50,18 @@ type NavigationBreadcrumbItemProps = {
 };
 
 const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
-  [
-    "inline-flex items-center transition-all ease-in",
-    isLink ? "cursor-pointer hover:text-brand" : "",
-  ].join(" ");
+  ["inline-flex items-center transition-all ease-in", isLink ? "cursor-pointer hover:text-brand" : ""].join(
+    " "
+  );
 
 type NavigationLabelProps = { text: string; italic?: boolean };
 
 export const NavigationLabel: FC<NavigationLabelProps> = ({ italic, text }) => {
-  const className = useMemo(
-    () => ["text-xs leading-8", italic ? "italic" : ""].join(" "),
-    [italic]
-  );
+  const className = useMemo(() => ["text-xs leading-8", italic ? "italic" : ""].join(" "), [italic]);
   return <span className={className}>{text}</span>;
 };
 
-export const NavigationBreadcrumbDashboard: FC<
-  NavigationBreadcrumbItemProps
-> = ({ isLink }) => {
+export const NavigationBreadcrumbDashboard: FC<NavigationBreadcrumbItemProps> = ({ isLink }) => {
   const router = useRouter();
   const className = useMemo(() => itemClassName({ isLink }), [isLink]);
   const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
@@ -102,17 +79,14 @@ export const NavigationBreadcrumbDashboard: FC<
   );
 };
 
-export const NavigationBreadcrumbSettings: FC<
-  NavigationBreadcrumbItemProps
-> = ({ isLink }) => {
+export const NavigationBreadcrumbSettings: FC<NavigationBreadcrumbItemProps> = ({ isLink }) => {
   const router = useRouter();
   const className = useMemo(() => itemClassName({ isLink }), [isLink]);
   const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
     (event) => {
       event.stopPropagation();
       if (!isLink) return;
-      if (router.pathname !== route.settingsPage())
-        router.push(route.settingsPage());
+      if (router.pathname !== route.settingsPage()) router.push(route.settingsPage());
     },
     [isLink, router]
   );
@@ -127,23 +101,22 @@ type NavigationBreadcrumbStrategyProps = {
   strategyKey: StrategyKey;
 } & NavigationBreadcrumbItemProps;
 
-export const NavigationBreadcrumbStrategy: FC<
-  NavigationBreadcrumbStrategyProps
-> = ({ isLink, strategyKey }) => {
+export const NavigationBreadcrumbStrategy: FC<NavigationBreadcrumbStrategyProps> = ({
+  isLink,
+  strategyKey,
+}) => {
   const router = useRouter();
   const { strategyId } = strategyKey;
   const id = useMemo(() => strategyId.split("-").shift() ?? "", [strategyId]);
   const className = useMemo(
-    () =>
-      ["flex flex-row items-center gap-2", itemClassName({ isLink })].join(" "),
+    () => ["flex flex-row items-center gap-2", itemClassName({ isLink })].join(" "),
     [isLink]
   );
   const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
     (event) => {
       event.stopPropagation();
       if (!isLink) return;
-      if (router.pathname !== route.strategyPage(strategyKey))
-        router.push(route.strategyPage(strategyKey));
+      if (router.pathname !== route.strategyPage(strategyKey)) router.push(route.strategyPage(strategyKey));
     },
     [isLink, router, strategyKey]
   );

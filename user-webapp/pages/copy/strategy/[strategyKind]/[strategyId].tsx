@@ -1,21 +1,8 @@
+import { Button, DateTime, InputField, OutputField, Section } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import {
-  Button,
-  DateTime,
-  InputField,
-  OutputField,
-  Section,
-} from "@ggbot2/ui-components";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEventHandler, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
   Content,
@@ -26,35 +13,24 @@ import {
   NavigationSettingsIcon,
 } from "_components";
 import { useApiAction } from "_hooks";
-import {
-  StrategyInfo,
-  requireAuthenticationAndGetStrategyInfo,
-  route,
-} from "_routing";
+import { StrategyInfo, requireAuthenticationAndGetStrategyInfo, route } from "_routing";
 
 type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({
-  strategyKey,
-  name: strategyName,
-  whenCreated,
-}) => {
+const Page: NextPage<ServerSideProps> = ({ strategyKey, name: strategyName, whenCreated }) => {
   const router = useRouter();
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [copyStrategy, { data: whenCopied, isPending }] =
-    useApiAction.CopyStrategy();
+  const [copyStrategy, { data: whenCopied, isPending }] = useApiAction.CopyStrategy();
 
   const breadcrumbs = useMemo(
     () => [
       { content: <NavigationBreadcrumbDashboard isLink /> },
       {
-        content: (
-          <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />
-        ),
+        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />,
       },
       {
         content: <NavigationLabel text="copy" />,
@@ -70,13 +46,11 @@ const Page: NextPage<ServerSideProps> = ({
         event.preventDefault();
         if (isPending) return;
         if (whenCopied) return;
-        const name = (event.target as EventTarget & { name: { value: string } })
-          .name.value;
+        const name = (event.target as EventTarget & { name: { value: string } }).name.value;
         throwIfInvalidName(name);
         if (isName(name)) copyStrategy({ name, ...strategyKey });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg)
-          toast.error("Invalid strategy name");
+        if (error instanceof ErrorInvalidArg) toast.error("Invalid strategy name");
       }
     },
     [isPending, strategyKey, copyStrategy, whenCopied]
@@ -96,18 +70,8 @@ const Page: NextPage<ServerSideProps> = ({
   }, [router, whenCopied]);
 
   return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={breadcrumbs}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
-      <form
-        className="flex flex-col w-full max-w-lg p-4 gap-4"
-        onSubmit={onSubmit}
-      >
+    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}>
+      <form className="flex flex-col w-full max-w-lg p-4 gap-4" onSubmit={onSubmit}>
         <Section header="Copy strategy">
           <OutputField label="name">{strategyName}</OutputField>
           <OutputField label="when created">

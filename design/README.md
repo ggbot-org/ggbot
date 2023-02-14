@@ -1,4 +1,4 @@
-# ggbot2 ui-components
+# ggbot2 design
 
 ## Usage
 
@@ -14,7 +14,7 @@ For instance add the following into the `head` of your HTML page.
 Import styles in your React app.
 
 ```css
-@import "@ggbot2/ui-components";
+@import "@ggbot2/design";
 
 @tailwind base;
 @tailwind components;
@@ -34,5 +34,5 @@ Import styles in your React app.
 Import components in your React app.
 
 ```js
-import { Button } from '@ggbot2/ui-components'
+import { Button } from '@ggbot2/design'
 ```

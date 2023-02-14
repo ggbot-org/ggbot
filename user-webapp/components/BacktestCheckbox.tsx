@@ -1,8 +1,4 @@
-import {
-  Checkbox,
-  CheckboxOnChange,
-  CheckboxProps,
-} from "@ggbot2/ui-components";
+import { Checkbox, CheckboxOnChange, CheckboxProps } from "@ggbot2/design";
 import { FC, useId, useMemo } from "react";
 
 type Props = Omit<CheckboxProps, "color" | "id">;
@@ -28,9 +24,7 @@ export const BacktestCheckbox: FC<Props> = ({ checked, ...props }) => {
         className="inline-flex items-center gap-2
       cursor-pointer"
       >
-        <span className="select-none text-xs uppercase leading-10">
-          backtest
-        </span>
+        <span className="select-none text-xs uppercase leading-10">backtest</span>
         <Checkbox color="primary" id={id} checked={checked} {...props} />
       </label>
     </div>

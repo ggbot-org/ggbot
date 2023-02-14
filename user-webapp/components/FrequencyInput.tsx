@@ -1,6 +1,6 @@
+import { InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/design";
 import { Frequency, isFrequencyInterval } from "@ggbot2/models";
 import { NaturalNumber, isNaturalNumber } from "@ggbot2/type-utils";
-import { InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 
 type FrequencyArg = Pick<Frequency, "interval"> & {

@@ -1,21 +1,7 @@
+import { Button, ButtonOnClick, DateTime, EditableInputField, OutputField, Section } from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
-import {
-  Button,
-  ButtonOnClick,
-  DateTime,
-  EditableInputField,
-  OutputField,
-  Section,
-} from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
-import {
-  FC,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
 
@@ -26,8 +12,7 @@ export const AccountSettings: FC = () => {
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
-  const [renameAccount, { isPending: renameIsPending }] =
-    useApiAction.RenameAccount();
+  const [renameAccount, { isPending: renameIsPending }] = useApiAction.RenameAccount();
 
   const { accountId, currentName, email, whenCreated } = useMemo(
     () =>
@@ -69,10 +54,7 @@ export const AccountSettings: FC = () => {
     [accountId, email, whenCreated]
   );
 
-  const readOnly = useMemo(
-    () => account === undefined || renameIsPending,
-    [account, renameIsPending]
-  );
+  const readOnly = useMemo(() => account === undefined || renameIsPending, [account, renameIsPending]);
 
   const setName = useCallback<(value: unknown) => void>(
     (value) => {

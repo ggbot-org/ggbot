@@ -1,6 +1,4 @@
 import { isBinanceApiKeyPermission } from "@ggbot2/binance";
-import { BinanceApiConfig } from "@ggbot2/models";
-import { isMaybeObject } from "@ggbot2/type-utils";
 import {
   Button,
   ButtonOnClick,
@@ -9,16 +7,11 @@ import {
   InputField,
   OutputField,
   Section,
-} from "@ggbot2/ui-components";
+} from "@ggbot2/design";
+import { BinanceApiConfig } from "@ggbot2/models";
+import { isMaybeObject } from "@ggbot2/type-utils";
 import { useRouter } from "next/router";
-import {
-  FC,
-  FormEventHandler,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import { FC, FormEventHandler, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
 
@@ -29,17 +22,11 @@ export const BinanceSettings: FC = () => {
 
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.ReadBinanceApiConfig();
-  const [createConfig, { isPending: createIsPending }] =
-    useApiAction.CreateBinanceApiConfig();
+  const [createConfig, { isPending: createIsPending }] = useApiAction.CreateBinanceApiConfig();
   const [testConfig, { data: permissions, isPending: testIsPending }] =
     useApiAction.ReadBinanceApiKeyPermissions();
 
-  const {
-    enableSpotAndMarginTrading,
-    enableWithdrawals,
-    enableReading,
-    ipRestrict,
-  } = useMemo(
+  const { enableSpotAndMarginTrading, enableWithdrawals, enableReading, ipRestrict } = useMemo(
     () =>
       isBinanceApiKeyPermission(permissions)
         ? permissions
@@ -53,10 +40,7 @@ export const BinanceSettings: FC = () => {
   );
 
   const { currentApiKey, hasBinanceApiConfig } = useMemo(() => {
-    if (
-      isMaybeObject<BinanceApiConfig>(binanceApiConfig) &&
-      typeof binanceApiConfig.apiKey === "string"
-    ) {
+    if (isMaybeObject<BinanceApiConfig>(binanceApiConfig) && typeof binanceApiConfig.apiKey === "string") {
       const { apiKey } = binanceApiConfig;
       return {
         currentApiKey: `${apiKey.substring(0, 10)}...${apiKey.substring(
@@ -101,10 +85,7 @@ export const BinanceSettings: FC = () => {
       {
         checkmark: {
           label: String(enableWithdrawals),
-          ok:
-            typeof enableWithdrawals === "boolean"
-              ? enableWithdrawals === false
-              : undefined,
+          ok: typeof enableWithdrawals === "boolean" ? enableWithdrawals === false : undefined,
         },
         description: (
           <span>
@@ -156,13 +137,7 @@ export const BinanceSettings: FC = () => {
         createConfig({ apiKey, apiSecret });
       }
     },
-    [
-      createConfig,
-      testConfig,
-      hasBinanceApiConfig,
-      hasNoBinanceApiConfig,
-      isPending,
-    ]
+    [createConfig, testConfig, hasBinanceApiConfig, hasNoBinanceApiConfig, isPending]
   );
 
   const onClickDelete = useCallback<ButtonOnClick>(
@@ -194,31 +169,19 @@ export const BinanceSettings: FC = () => {
             </menu>
 
             <div className="flex flex-col gap-2">
-              {permissionItems.map(
-                ({ description, checkmark: checkmarkProps }, i) => (
-                  <div key={i} className="flex justify-between">
-                    {description}
-                    <Checkmark {...checkmarkProps} />
-                  </div>
-                )
-              )}
+              {permissionItems.map(({ description, checkmark: checkmarkProps }, i) => (
+                <div key={i} className="flex justify-between">
+                  {description}
+                  <Checkmark {...checkmarkProps} />
+                </div>
+              ))}
             </div>
           </Section>
         )}
         {hasNoBinanceApiConfig && (
           <Section header="New Binance API">
-            <InputField
-              name="apiKey"
-              label={apiKeyLabel}
-              required
-              readOnly={isPending}
-            />
-            <InputField
-              label="API Secret"
-              name="apiSecret"
-              required
-              readOnly={isPending}
-            />
+            <InputField name="apiKey" label={apiKeyLabel} required readOnly={isPending} />
+            <InputField label="API Secret" name="apiSecret" required readOnly={isPending} />
             <menu>
               <li>
                 <Button isSpinning={createIsPending}>create</Button>

@@ -1,5 +1,5 @@
 import { SchedulingStatus } from "@ggbot2/models";
-import { Color, Pill } from "@ggbot2/ui-components";
+import { Color, Pill } from "@ggbot2/design";
 import { FC, ReactNode, useMemo } from "react";
 
 type Props = {
