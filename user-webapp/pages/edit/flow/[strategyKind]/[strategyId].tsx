@@ -1,17 +1,10 @@
 import { readSession } from "@ggbot2/cookies";
 import { ErrorAccountItemNotFound, readStrategy } from "@ggbot2/database";
-import {
-  DflowBinanceSymbolInfo,
-  isDflowBinanceSymbolInfo,
-} from "@ggbot2/dflow";
-import {
-  StrategyExecution,
-  isStrategyExecutionStatus,
-  isStrategyFlow,
-} from "@ggbot2/models";
+import { Button, ButtonOnClick } from "@ggbot2/design";
+import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@ggbot2/models";
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
-import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { DflowExecutionNodeInfo } from "dflow";
 import { GetServerSideProps, NextPage } from "next";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -48,10 +41,7 @@ type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const session = readSession(req.cookies);
   if (!session) return redirectToAuthenticationPage();
 
@@ -69,9 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (strategyKind === "binance") {
     const exchangeInfo = await binance.exchangeInfo();
-    const binanceSymbols = exchangeInfo.symbols.filter(
-      isDflowBinanceSymbolInfo
-    );
+    const binanceSymbols = exchangeInfo.symbols.filter(isDflowBinanceSymbolInfo);
     return {
       props: {
         binanceSymbols,
@@ -89,20 +77,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({
-  binanceSymbols,
-  name,
-  strategyKey,
-}) => {
+const Page: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) => {
   const breadcrumbs = useMemo(
     () => [
       {
         content: <NavigationBreadcrumbDashboard isLink />,
       },
       {
-        content: (
-          <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />
-        ),
+        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />,
       },
       {
         content: <NavigationLabel text="edit" />,
@@ -131,22 +113,13 @@ const Page: NextPage<ServerSideProps> = ({
     flowViewGraph: flowView?.graph,
   });
 
-  const [
-    execute,
-    {
-      data: strategyExecution,
-      isPending: runIsPending,
-      error: strategyExecutionError,
-    },
-  ] = useApiAction.ExecuteStrategy();
+  const [execute, { data: strategyExecution, isPending: runIsPending, error: strategyExecutionError }] =
+    useApiAction.ExecuteStrategy();
 
-  const [saveStrategyFlow, { isPending: saveIsPending }] =
-    useApiAction.WriteStrategyFlow();
+  const [saveStrategyFlow, { isPending: saveIsPending }] = useApiAction.WriteStrategyFlow();
 
-  const [
-    readStrategyFlow,
-    { data: storedStrategyFlow, isPending: readIsPending },
-  ] = useApiAction.ReadStrategyFlow();
+  const [readStrategyFlow, { data: storedStrategyFlow, isPending: readIsPending }] =
+    useApiAction.ReadStrategyFlow();
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
@@ -155,14 +128,7 @@ const Page: NextPage<ServerSideProps> = ({
     if (runIsPending) return false;
     if (saveIsPending) return false;
     return !canSave;
-  }, [
-    canSave,
-    flowLoaded,
-    isLive,
-    runIsPending,
-    hasNoBinanceApiConfig,
-    saveIsPending,
-  ]);
+  }, [canSave, flowLoaded, isLive, runIsPending, hasNoBinanceApiConfig, saveIsPending]);
 
   const runIsDisabled = useMemo(() => {
     if (runIsPending) return false;
@@ -171,27 +137,22 @@ const Page: NextPage<ServerSideProps> = ({
 
   const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
 
-  const { executionStatus, executionSteps, executionWhenUpdated } =
-    useMemo(() => {
-      if (!isMaybeObject<StrategyExecution>(strategyExecution))
-        return {
-          executionWhenUpdated: undefined,
-          executionSteps: undefined,
-          executionStatus: undefined,
-        };
-      const { status, steps, whenUpdated } = strategyExecution;
-      const executionStatus = isStrategyExecutionStatus(status)
-        ? status
-        : undefined;
-      const executionWhenUpdated = isTime(whenUpdated)
-        ? whenUpdated
-        : undefined;
+  const { executionStatus, executionSteps, executionWhenUpdated } = useMemo(() => {
+    if (!isMaybeObject<StrategyExecution>(strategyExecution))
       return {
-        executionSteps: steps as DflowExecutionNodeInfo[],
-        executionStatus,
-        executionWhenUpdated,
+        executionWhenUpdated: undefined,
+        executionSteps: undefined,
+        executionStatus: undefined,
       };
-    }, [strategyExecution]);
+    const { status, steps, whenUpdated } = strategyExecution;
+    const executionStatus = isStrategyExecutionStatus(status) ? status : undefined;
+    const executionWhenUpdated = isTime(whenUpdated) ? whenUpdated : undefined;
+    return {
+      executionSteps: steps as DflowExecutionNodeInfo[],
+      executionStatus,
+      executionWhenUpdated,
+    };
+  }, [strategyExecution]);
 
   const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
     (event) => {
@@ -278,12 +239,7 @@ const Page: NextPage<ServerSideProps> = ({
 
   return (
     <Content
-      topbar={
-        <Navigation
-          breadcrumbs={breadcrumbs}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
+      topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}
       message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
     >
       <div className="flex h-full flex-col grow">
@@ -295,10 +251,7 @@ const Page: NextPage<ServerSideProps> = ({
           <menu className="flex h-10 flex-row gap-4 self-end">
             {backtesting && (
               <li>
-                <BacktestCheckbox
-                  checked={backtesting.isEnabled}
-                  onChange={onChangeBacktestingCheckbox}
-                />
+                <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
               </li>
             )}
             <li>
@@ -327,16 +280,9 @@ const Page: NextPage<ServerSideProps> = ({
           </menu>
         </div>
 
-        <BacktestController
-          state={backtesting}
-          dispatch={backtestingDispatch}
-          view={flowView?.graph}
-        />
+        <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
 
-        <div
-          className="w-full grow shadow dark:shadow-black"
-          ref={flowViewContainerRef}
-        />
+        <div className="w-full grow shadow dark:shadow-black" ref={flowViewContainerRef} />
 
         <MemoryController />
 

@@ -1,6 +1,6 @@
 import { readSession } from "@ggbot2/cookies";
+import { Button, ButtonOnClick, InputField, Logo, OutputField, Section } from "@ggbot2/design";
 import { EmailAddress, isAccount } from "@ggbot2/models";
-import { Button, ButtonOnClick, InputField, Logo, OutputField, Section } from "@ggbot2/ui-components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import {

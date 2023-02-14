@@ -1,4 +1,4 @@
-import { Button, DateTime, Section, OutputField } from "@ggbot2/ui-components";
+import { Button, DateTime, Section, OutputField } from "@ggbot2/design";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect, useMemo } from "react";
@@ -11,28 +11,18 @@ import {
   NavigationLabel,
 } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
-import {
-  StrategyInfo,
-  requireAuthenticationAndGetStrategyInfo,
-  route,
-} from "_routing";
+import { StrategyInfo, requireAuthenticationAndGetStrategyInfo, route } from "_routing";
 
 type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({
-  accountIsOwner,
-  strategyKey,
-  name,
-  whenCreated,
-}) => {
+const Page: NextPage<ServerSideProps> = ({ accountIsOwner, strategyKey, name, whenCreated }) => {
   const router = useRouter();
 
   const goBack = useGoBack();
 
-  const [deleteStrategy, { isPending, data: whenDeleted }] =
-    useApiAction.DeleteStrategy();
+  const [deleteStrategy, { isPending, data: whenDeleted }] = useApiAction.DeleteStrategy();
 
   const breadcrumbs = useMemo(
     () => [
@@ -40,9 +30,7 @@ const Page: NextPage<ServerSideProps> = ({
         content: <NavigationBreadcrumbDashboard isLink />,
       },
       {
-        content: (
-          <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />
-        ),
+        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />,
       },
       {
         content: <NavigationLabel text="delete" />,
@@ -67,11 +55,7 @@ const Page: NextPage<ServerSideProps> = ({
   }, [router, whenDeleted]);
 
   return (
-    <Content
-      topbar={
-        <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
-      }
-    >
+    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />}>
       {accountIsOwner ? (
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <Section header="Delete strategy" color="danger">

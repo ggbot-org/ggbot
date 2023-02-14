@@ -1,5 +1,5 @@
+import { Button, ButtonOnClick } from "@ggbot2/design";
 import { StrategyScheduling } from "@ggbot2/models";
-import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";

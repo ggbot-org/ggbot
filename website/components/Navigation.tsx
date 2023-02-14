@@ -1,4 +1,4 @@
-import { Header, Logo } from "@ggbot2/ui-components";
+import { Header, Logo } from "@ggbot2/design";
 import Link from "next/link";
 import { FC } from "react";
 

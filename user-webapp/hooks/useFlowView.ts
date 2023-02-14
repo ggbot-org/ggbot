@@ -252,7 +252,7 @@ export const useFlowView: UseFlowView = ({ binanceSymbols, containerRef, strateg
     return () => {
       flowViewRef.current?.destroy();
     };
-  }, [flowViewRef, dflow, importFlowView, nodesCatalog]);
+  }, [dflow, importFlowView, nodesCatalog]);
 
   return { flowView: flowViewRef.current, whenUpdated };
 };

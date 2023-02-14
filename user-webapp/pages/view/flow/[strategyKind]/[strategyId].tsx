@@ -1,16 +1,9 @@
-import {
-  BinanceCacheMap,
-  BinanceConnector,
-  BinanceExchange,
-} from "@ggbot2/binance";
+import { BinanceCacheMap, BinanceConnector, BinanceExchange } from "@ggbot2/binance";
 import { readSession } from "@ggbot2/cookies";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
-import {
-  DflowBinanceSymbolInfo,
-  isDflowBinanceSymbolInfo,
-} from "@ggbot2/dflow";
+import { Button, ButtonOnClick } from "@ggbot2/design";
+import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
-import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useMemo, useState, useRef } from "react";
@@ -35,18 +28,12 @@ import {
   strategyKeyFromRouterParams,
 } from "_routing";
 
-type ServerSideProps = Pick<
-  StrategyInfo,
-  "accountIsOwner" | "strategyKey" | "name"
-> & {
+type ServerSideProps = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
   hasSession: boolean;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const session = readSession(req.cookies);
   const hasSession = session !== undefined;
 
@@ -74,9 +61,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       cache: new BinanceCacheMap(),
     });
     const exchangeInfo = await binance.exchangeInfo();
-    const binanceSymbols = exchangeInfo.symbols.filter(
-      isDflowBinanceSymbolInfo
-    );
+    const binanceSymbols = exchangeInfo.symbols.filter(isDflowBinanceSymbolInfo);
     return {
       props: {
         binanceSymbols,
@@ -104,12 +89,7 @@ const Page: NextPage<ServerSideProps> = ({
       ? [
           { content: <NavigationBreadcrumbDashboard isLink /> },
           {
-            content: (
-              <NavigationBreadcrumbStrategy
-                strategyKey={strategyKey}
-                isLink={accountIsOwner}
-              />
-            ),
+            content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink={accountIsOwner} />,
           },
           { content: action, current: true },
         ]
@@ -139,15 +119,10 @@ const Page: NextPage<ServerSideProps> = ({
     flowViewGraph: flowView?.graph,
   });
 
-  const [
-    readStrategyFlow,
-    { data: storedStrategyFlow, isPending: readIsPending },
-  ] = useApiAction.ReadStrategyFlow();
+  const [readStrategyFlow, { data: storedStrategyFlow, isPending: readIsPending }] =
+    useApiAction.ReadStrategyFlow();
 
-  const strategyPathname = useMemo(
-    () => route.viewFlowPage(strategyKey),
-    [strategyKey]
-  );
+  const strategyPathname = useMemo(() => route.viewFlowPage(strategyKey), [strategyKey]);
 
   const onChangeBacktestingCheckbox = useCallback(() => {
     backtestingDispatch({ type: "TOGGLE" });
@@ -195,10 +170,7 @@ const Page: NextPage<ServerSideProps> = ({
         canonical: strategyPathname,
       }}
       topbar={
-        <Navigation
-          breadcrumbs={breadcrumbs}
-          icon={hasSession ? <NavigationSettingsIcon /> : null}
-        />
+        <Navigation breadcrumbs={breadcrumbs} icon={hasSession ? <NavigationSettingsIcon /> : null} />
       }
     >
       <div className="flex h-full flex-col grow">
@@ -210,10 +182,7 @@ const Page: NextPage<ServerSideProps> = ({
           <menu className="flex h-10 flex-row gap-4">
             {backtesting && (
               <li>
-                <BacktestCheckbox
-                  checked={backtesting.isEnabled}
-                  onChange={onChangeBacktestingCheckbox}
-                />
+                <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
               </li>
             )}
             <li>
@@ -221,11 +190,7 @@ const Page: NextPage<ServerSideProps> = ({
             </li>
             {accountIsOwner || (
               <li>
-                <Button
-                  color="primary"
-                  isSpinning={copyIsSpinning}
-                  onClick={onClickCopy}
-                >
+                <Button color="primary" isSpinning={copyIsSpinning} onClick={onClickCopy}>
                   copy
                 </Button>
               </li>
@@ -233,16 +198,9 @@ const Page: NextPage<ServerSideProps> = ({
           </menu>
         </div>
 
-        <BacktestController
-          state={backtesting}
-          dispatch={backtestingDispatch}
-          view={flowView?.graph}
-        />
+        <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
 
-        <div
-          className="mb-2 w-full grow shadow dark:shadow-black"
-          ref={flowViewContainerRef}
-        ></div>
+        <div className="mb-2 w-full grow shadow dark:shadow-black" ref={flowViewContainerRef}></div>
       </div>
     </Content>
   );

@@ -1,6 +1,6 @@
+import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
-import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo, useState } from "react";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { StrategyFlow } from "_routing";

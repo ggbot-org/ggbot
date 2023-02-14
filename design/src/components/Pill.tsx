@@ -1,3 +1,4 @@
+// TODO remove this component, use Tag from trunx
 import { FC, HTMLAttributes, useMemo } from "react";
 import { Color } from "./Color";
 

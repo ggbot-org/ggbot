@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick, Section } from "@ggbot2/ui-components";
+import { Button, ButtonOnClick, Section } from "@ggbot2/design";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";

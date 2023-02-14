@@ -1,8 +1,4 @@
-import {
-  Checkbox,
-  CheckboxOnChange,
-  CheckboxProps,
-} from "@ggbot2/ui-components";
+import { Checkbox, CheckboxOnChange, CheckboxProps } from "@ggbot2/design";
 import { FC, useId, useMemo } from "react";
 
 type Props = Omit<CheckboxProps, "color" | "id">;
@@ -16,9 +12,7 @@ export const LiveCheckbox: FC<Props> = ({ checked, ...props }) => {
     () =>
       [
         "px-2 rounded transition-all ease-in",
-        checked
-          ? "ring-2 ring-yellow-400"
-          : "hover:ring-2 hover:ring-yellow-400",
+        checked ? "ring-2 ring-yellow-400" : "hover:ring-2 hover:ring-yellow-400",
       ].join(" "),
     [checked]
   );

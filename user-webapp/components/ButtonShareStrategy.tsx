@@ -1,5 +1,5 @@
+import { Button, ButtonOnClick } from "@ggbot2/design";
 import { StrategyKey } from "@ggbot2/models";
-import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { FC, useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { route, webappBaseUrl } from "_routing";
@@ -19,11 +19,7 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
   const onClick = useCallback<ButtonOnClick>(async () => {
     try {
       if (!navigator) return;
-      if (
-        "share" in navigator &&
-        "canShare" in navigator &&
-        navigator.canShare(shareData)
-      ) {
+      if ("share" in navigator && "canShare" in navigator && navigator.canShare(shareData)) {
         navigator.share(shareData);
         return;
       }

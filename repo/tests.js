@@ -1,18 +1,13 @@
 import { strict as assert } from "node:assert";
 import rootPackageJson from "../package.json" assert { type: "json" };
 import tsconfigCommon from "../tsconfig.common.json" assert { type: "json" };
-import uiComponentsTsconfig from "../ui-components/tsconfig.json" assert { type: "json" };
+import designTsconfig from "../design/tsconfig.json" assert { type: "json" };
 
 const npmScope = "@ggbot2";
 
 const noBuildWorkspaces = ["admin-webapp", "end-to-end-tests", "website"];
 
-const webappWorkspaces = [
-  "admin-webapp",
-  "ui-components",
-  "user-webapp",
-  "website",
-];
+const webappWorkspaces = ["admin-webapp", "design", "user-webapp", "website"];
 
 const typeChecksNpmScriptKey = "tsc--noEmit";
 
@@ -51,9 +46,7 @@ function testPackageJson({ packageJson, workspace }) {
   });
 
   const requiredNpmScripts = ["test", typeChecksNpmScriptKey];
-  const buildNpmScripts = noBuildWorkspaces.includes(workspace)
-    ? []
-    : ["build", "cleanup"];
+  const buildNpmScripts = noBuildWorkspaces.includes(workspace) ? [] : ["build", "cleanup"];
 
   [...requiredNpmScripts, ...buildNpmScripts].forEach((key) => {
     assert.equal(
@@ -65,22 +58,17 @@ function testPackageJson({ packageJson, workspace }) {
 }
 
 async function testWorkspacePackageJson({ workspace }) {
-  const { default: packageJson } = await import(
-    `../${workspace}/package.json`,
-    {
-      assert: { type: "json" },
-    }
-  );
+  const { default: packageJson } = await import(`../${workspace}/package.json`, {
+    assert: { type: "json" },
+  });
 
   testPackageJson({ packageJson, workspace });
 
   const isWebapp = webappWorkspaces.includes(workspace);
 
-  [{ key: "name", expected: `${npmScope}/${workspace}` }].forEach(
-    ({ key, expected }) => {
-      assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
-    }
-  );
+  [{ key: "name", expected: `${npmScope}/${workspace}` }].forEach(({ key, expected }) => {
+    assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
+  });
 
   if (!isWebapp) {
     [{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
@@ -107,11 +95,7 @@ async function testWorkspacePackageJson({ workspace }) {
       expected: packageScript[typeChecksNpmScriptKey],
     },
   ].forEach(({ key, expected }) => {
-    assert.equal(
-      packageJson.scripts[key],
-      expected,
-      `${workspace}/package.json scripts["${key}"]`
-    );
+    assert.equal(packageJson.scripts[key], expected, `${workspace}/package.json scripts["${key}"]`);
   });
 
   assert.equal(
@@ -121,15 +105,9 @@ async function testWorkspacePackageJson({ workspace }) {
   );
 
   if (isWebapp) {
-    [{ key: "next:build", expected: "next build" }].forEach(
-      ({ key, expected }) => {
-        assert.equal(
-          packageJson.scripts[key],
-          expected,
-          `${workspace}/package.json scripts["${key}"]`
-        );
-      }
-    );
+    [{ key: "next:build", expected: "next build" }].forEach(({ key, expected }) => {
+      assert.equal(packageJson.scripts[key], expected, `${workspace}/package.json scripts["${key}"]`);
+    });
 
     [
       {
@@ -141,27 +119,18 @@ async function testWorkspacePackageJson({ workspace }) {
         expected: `npm run next:build --workspace ${workspace}`,
       },
     ].forEach(({ key, expected }) => {
-      assert.equal(
-        rootPackageJson.scripts[key],
-        expected,
-        `root package.json scripts["${key}"]`
-      );
+      assert.equal(rootPackageJson.scripts[key], expected, `root package.json scripts["${key}"]`);
     });
   }
 
   /// Test packageJson dependencies.
   // // // // // // // // // // ///
 
-  for (const [dependencyKey, dependencyValue] of Object.entries(
-    packageJson.dependencies ?? {}
-  )) {
+  for (const [dependencyKey, dependencyValue] of Object.entries(packageJson.dependencies ?? {})) {
     const filePrefix = "file:";
 
     if (dependencyValue.startsWith(filePrefix)) {
-      const dependency = dependencyValue.substring(
-        filePrefix.length,
-        dependencyValue.length
-      );
+      const dependency = dependencyValue.substring(filePrefix.length, dependencyValue.length);
 
       assert.equal(
         dependencyKey,
@@ -171,9 +140,7 @@ async function testWorkspacePackageJson({ workspace }) {
 
       if (!noBuildWorkspaces.includes(workspace)) {
         assert.equal(
-          rootPackageJson.scripts[`prebuild:${workspace}`].includes(
-            `build:${dependency}`
-          ),
+          rootPackageJson.scripts[`prebuild:${workspace}`].includes(`build:${dependency}`),
           true,
           `root package.json script prebuild:${workspace} dependency ${dependency}"]`
         );
@@ -187,9 +154,7 @@ async function testWorkspacePackageJson({ workspace }) {
 
       if (!noBuildWorkspaces.includes(workspace)) {
         assert.equal(
-          rootPackageJson.scripts[`prebuild:${workspace}`].includes(
-            `build:${dependency}`
-          ),
+          rootPackageJson.scripts[`prebuild:${workspace}`].includes(`build:${dependency}`),
           true,
           `root package.json script prebuild:${workspace} handles dependency ${dependency}"]`
         );
@@ -216,8 +181,8 @@ async function testWorkspaceTsconfig({ workspace }) {
   if (webappWorkspaces.includes(workspace)) {
     assert.equal(
       compilerOptions.target,
-      uiComponentsTsconfig.compilerOptions.target,
-      `${workspace}/tsconfig.json has same compilerOptions.target as ui-components/tsconfig.json`
+      designTsconfig.compilerOptions.target,
+      `${workspace}/tsconfig.json has same compilerOptions.target as design/tsconfig.json`
     );
   }
 
@@ -229,12 +194,9 @@ async function testWorkspaceTsconfig({ workspace }) {
 }
 
 async function testWorkspaceTsconfigBuild({ workspace }) {
-  const { default: tsconfig } = await import(
-    `../${workspace}/tsconfig.build.json`,
-    {
-      assert: { type: "json" },
-    }
-  );
+  const { default: tsconfig } = await import(`../${workspace}/tsconfig.build.json`, {
+    assert: { type: "json" },
+  });
 
   [
     { key: "composite", expected: true },
@@ -258,11 +220,7 @@ function testRootPackageJson() {
     for (const task of ["build", "prebuild", "test"])
       if (key.startsWith(`${task}:`)) {
         const [_, target] = key.split(":");
-        assert.equal(
-          workspaces.includes(target),
-          true,
-          `${task}:${target} targets a workspace`
-        );
+        assert.equal(workspaces.includes(target), true, `${task}:${target} targets a workspace`);
       }
 
   for (const noBuildWorkspace of noBuildWorkspaces)
@@ -288,10 +246,7 @@ async function testWorkspace({ workspace }) {
   await testWorkspaceTsconfig({ workspace });
 
   // tsconfig.build.json
-  if (
-    !noBuildWorkspaces.includes(workspace) &&
-    !webappWorkspaces.includes(workspace)
-  ) {
+  if (!noBuildWorkspaces.includes(workspace) && !webappWorkspaces.includes(workspace)) {
     await testWorkspaceTsconfigBuild({ workspace });
   }
 }
@@ -299,9 +254,7 @@ async function testWorkspace({ workspace }) {
 async function repoTests() {
   testRootPackageJson();
 
-  const workspaces = rootPackageJson.workspaces.filter(
-    (name) => name !== "repo"
-  );
+  const workspaces = rootPackageJson.workspaces.filter((name) => name !== "repo");
 
   for (const workspace of workspaces) await testWorkspace({ workspace });
 }

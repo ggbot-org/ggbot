@@ -1,5 +1,5 @@
 import { isAccountKey } from "@ggbot2/models";
-import { Button } from "@ggbot2/ui-components";
+import { Button } from "@ggbot2/design";
 import { FC, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 import { Account } from "./Account";
@@ -9,9 +9,7 @@ export const Accounts: FC = () => {
 
   const { accountIds, numAccounts } = useMemo(() => {
     const accountIds = Array.isArray(accountKeys)
-      ? accountKeys.map((accountKey) =>
-          isAccountKey(accountKey) ? accountKey.accountId : "unknown"
-        )
+      ? accountKeys.map((accountKey) => (isAccountKey(accountKey) ? accountKey.accountId : "unknown"))
       : [];
     return { accountIds, numAccounts: accountIds.length };
   }, [accountKeys]);

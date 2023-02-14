@@ -1,4 +1,4 @@
-import { Checkmark, CheckmarkProps } from "@ggbot2/ui-components";
+import { Checkmark, CheckmarkProps } from "@ggbot2/design";
 import { ReactNode } from "react";
 import { NextPage } from "next";
 import Head from "next/head";

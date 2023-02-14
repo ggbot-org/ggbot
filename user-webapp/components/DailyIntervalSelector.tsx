@@ -1,4 +1,4 @@
-import { Calendar, CalendarProps, CalendarSetSelectedDay } from "@ggbot2/ui-components";
+import { Calendar, CalendarProps, CalendarSetSelectedDay } from "@ggbot2/design";
 import { Day } from "@ggbot2/time";
 import { FC } from "react";
 

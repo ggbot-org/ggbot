@@ -1,6 +1,6 @@
+import { Button, ButtonOnClick } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy, isName, isStrategyKey } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
-import { Button, ButtonOnClick } from "@ggbot2/ui-components";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";

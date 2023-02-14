@@ -1,15 +1,4 @@
 import {
-  AllowedCountryIsoCode2,
-  isAccount,
-  isAllowedCountryIsoCode2,
-  monthlyPrice,
-  monthlyPriceCurrency,
-  totalPurchase,
-  purchaseMaxNumMonths as maxNumMonths,
-} from "@ggbot2/models";
-import { getTime, now } from "@ggbot2/time";
-import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
-import {
   Button,
   Checkmark,
   DateTime,
@@ -21,16 +10,20 @@ import {
   SelectField,
   SelectOnChange,
   SelectProps,
-} from "@ggbot2/ui-components";
-import { countries } from "country-isocode2/en";
+} from "@ggbot2/design";
 import {
-  FC,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useEffect,
-  useState,
-} from "react";
+  AllowedCountryIsoCode2,
+  isAccount,
+  isAllowedCountryIsoCode2,
+  monthlyPrice,
+  monthlyPriceCurrency,
+  totalPurchase,
+  purchaseMaxNumMonths as maxNumMonths,
+} from "@ggbot2/models";
+import { getTime, now } from "@ggbot2/time";
+import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
+import { countries } from "country-isocode2/en";
+import { FC, ReactNode, useCallback, useMemo, useEffect, useState } from "react";
 import { useApiAction, useSubscription } from "_hooks";
 import { route } from "_routing";
 
@@ -54,9 +47,7 @@ export const BillingSettings: FC = () => {
   const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
   const minNumMonths = 1;
   const defaultNumMonths = 6;
-  const [numMonths, setNumMonths] = useState<number | undefined>(
-    defaultNumMonths
-  );
+  const [numMonths, setNumMonths] = useState<number | undefined>(defaultNumMonths);
 
   const { countryOptions, email, selectCountryIsDisabled } = useMemo<{
     countryOptions: SelectProps["options"];
@@ -78,10 +69,7 @@ export const BillingSettings: FC = () => {
     return {
       countryOptions: account.country
         ? allowedCountryOptions
-        : [
-            { value: "", label: "-- your country --" },
-            ...allowedCountryOptions,
-          ],
+        : [{ value: "", label: "-- your country --" }, ...allowedCountryOptions],
       email: account.email,
       selectCountryIsDisabled: false,
     };
@@ -96,9 +84,7 @@ export const BillingSettings: FC = () => {
         },
         {
           label: endDayLabel,
-          value: subscriptionEnd && (
-            <DateTime format="day" value={subscriptionEnd} />
-          ),
+          value: subscriptionEnd && <DateTime format="day" value={subscriptionEnd} />,
         },
       ].map(({ value, ...rest }) => ({
         value: value ? value : <>&nbsp;</>,
@@ -118,9 +104,7 @@ export const BillingSettings: FC = () => {
   const newSubscriptionEnd = useMemo(() => {
     if (readSubscriptionIsPending) return;
     if (!isNaturalNumber(numMonths)) return;
-    const start = subscriptionEnd
-      ? getTime(subscriptionEnd).plus(1).days()
-      : now();
+    const start = subscriptionEnd ? getTime(subscriptionEnd).plus(1).days() : now();
     return getTime(start)
       .plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
       .months();
@@ -165,8 +149,7 @@ export const BillingSettings: FC = () => {
         const data = await response.json();
         if (isMaybeObject<{ redirectUrl: string }>(data)) {
           const { redirectUrl } = data;
-          if (typeof redirectUrl === "string")
-            window.location.href = redirectUrl;
+          if (typeof redirectUrl === "string") window.location.href = redirectUrl;
         }
       }
     } catch (error) {
@@ -229,9 +212,7 @@ export const BillingSettings: FC = () => {
 
       {canPurchaseSubscription && (
         <Section header="Subscribe">
-          {hasActiveSubscription && (
-            <p>Your subscription will expire soon, please consider renew it.</p>
-          )}
+          {hasActiveSubscription && <p>Your subscription will expire soon, please consider renew it.</p>}
 
           <p>Price for 1 month is {formattedMonthlyPrice}.</p>
 
@@ -240,11 +221,7 @@ export const BillingSettings: FC = () => {
               Go for 12 months subscription and get 1 month for <em>free</em>.
             </div>
             <Checkmark
-              ok={
-                typeof numMonths === "number" && numMonths >= maxNumMonths - 1
-                  ? true
-                  : undefined
-              }
+              ok={typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined}
             />
           </div>
 

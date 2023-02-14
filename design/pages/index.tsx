@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ggbot2 ui-components</title>
+        <title>ggbot2 design</title>
       </Head>
 
       <Navigation />

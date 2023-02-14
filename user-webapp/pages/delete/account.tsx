@@ -1,4 +1,4 @@
-import { Button, Section } from "@ggbot2/ui-components";
+import { Button, Section } from "@ggbot2/design";
 import { NextPage } from "next";
 import { FormEventHandler, useCallback, useMemo } from "react";
 import {
@@ -45,11 +45,7 @@ const Page: NextPage = () => {
   );
 
   return (
-    <Content
-      topbar={
-        <Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />
-      }
-    >
+    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />}>
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <Section header="Account deletion" color="danger">
           <p>Are you sure you want to delete your account?</p>

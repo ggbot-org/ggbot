@@ -1,4 +1,4 @@
-import { Button } from "@ggbot2/ui-components";
+import { Button } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useState } from "react";
 import { SettingsSectionId, route } from "_routing";

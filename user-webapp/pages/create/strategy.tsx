@@ -1,5 +1,5 @@
+import { Button, InputField, Section } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import { Button, InputField, Section } from "@ggbot2/ui-components";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FormEventHandler, useCallback, useEffect } from "react";
@@ -26,13 +26,11 @@ const Page: NextPage = () => {
       try {
         event.preventDefault();
         if (isPending) return;
-        const name = (event.target as EventTarget & { name: { value: string } })
-          .name.value;
+        const name = (event.target as EventTarget & { name: { value: string } }).name.value;
         throwIfInvalidName(name);
         if (isName(name)) create({ kind: "binance", name });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg)
-          toast.error("Invalid strategy name");
+        if (error instanceof ErrorInvalidArg) toast.error("Invalid strategy name");
       }
     },
     [create, isPending]
@@ -55,17 +53,9 @@ const Page: NextPage = () => {
         />
       }
     >
-      <form
-        className="flex flex-col w-full max-w-lg p-4 gap-4"
-        onSubmit={onSubmit}
-      >
+      <form className="flex flex-col w-full max-w-lg p-4 gap-4" onSubmit={onSubmit}>
         <Section header="New strategy">
-          <InputField
-            label="strategy name"
-            name="name"
-            required
-            readOnly={isPending}
-          />
+          <InputField label="strategy name" name="name" required readOnly={isPending} />
           {data ? (
             <div>done</div>
           ) : (
