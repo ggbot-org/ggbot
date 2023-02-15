@@ -13,8 +13,4 @@
       background: rgba(0, 0, 0, 0.7);
     }
   }
-
-  body {
-    @apply bg-light-background text-neutral-900 dark:bg-dark-background dark:text-neutral-50;
-  }
 }

@@ -1,9 +1,12 @@
 // Fonts.
-$family-sans-serif: "Inter", sans-serif;
+$family-sans-serif: var(--family-sans-serif);
 
 // Colors.
+$brand: #09eae5;
 $primary: #22d3ee;
+// TODO detect color scheme in JS and set dark background #4e4d4a
+$body-background-color: #faffff;
 
 // Navbar.
 $navbar-height: 1.5em;
-$navbar-padding-vertical: .1em;
+$navbar-padding-vertical: 0.1em;
