@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/ui-components",
+  "name": "@ggbot2/design",
   "version": "0.0.0",
   "private": true,
   "types": "./dist/index.d.ts",

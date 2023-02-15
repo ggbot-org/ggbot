@@ -1,4 +1,5 @@
-export * from "./Button";
+export { Button, ButtonOnClick } from "trunx";
+
 export * from "./Breadcrumb";
 export * from "./Calendar";
 export * from "./Checkbox";
@@ -9,11 +10,10 @@ export * from "./EditableInput";
 export * from "./Field";
 export * from "./Header";
 export * from "./Icon";
-export * from "./Input";
+export * from "./InputField";
 export * from "./Logo";
 export * from "./Output";
 export * from "./Pill";
 export * from "./Section";
 export * from "./Select";
-export * from "./Spinner";
 export * from "./Table";

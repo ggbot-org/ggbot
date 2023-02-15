@@ -1,13 +1,16 @@
+import { classNames } from "@ggbot2/design";
 import { FC } from "react";
 
 export const Typography: FC = () => {
   return (
     <div>
-      <div className="text-xs">extra small</div>
-      <div className="text-sm">small</div>
-      <div className="text-base">base</div>
-      <div className="text-lg">large</div>
-      <div className="text-xl">extra large</div>
+      <div className={classNames("is-size-1")}>size 1</div>
+      <div className={classNames("is-size-2")}>size 2</div>
+      <div className={classNames("is-size-3")}>size 3</div>
+      <div className={classNames("is-size-4")}>size 4</div>
+      <div className={classNames("is-size-5")}>size 5</div>
+      <div className={classNames("is-size-6")}>size 6</div>
+      <div className={classNames("is-size-7")}>size 7</div>
     </div>
   );
 };

@@ -8,9 +8,8 @@ import {
   ChangeEventHandler,
   KeyboardEventHandler,
 } from "react";
+import { Input, InputProps } from "trunx";
 import { Field, FieldProps } from "./Field";
-import { Input, InputProps } from "./Input";
-import { Spinner } from "./Spinner";
 
 export type EditableInputProps = Omit<
   InputProps,
@@ -72,11 +71,6 @@ export const EditableInput: FC<EditableInputProps> = ({
     [readOnly, onClick, startEditing]
   );
 
-  const icon = useMemo(() => {
-    if (isSpinning) return <Spinner className="text-black" />;
-    return null;
-  }, [isSpinning]);
-
   const onKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (event) => {
       switch (event.key) {
@@ -103,7 +97,6 @@ export const EditableInput: FC<EditableInputProps> = ({
   return (
     <Input
       {...inputProps}
-      icon={icon}
       onBlur={onBlur}
       onChange={onChange}
       onClick={onClickInput}
@@ -115,13 +108,9 @@ export const EditableInput: FC<EditableInputProps> = ({
   );
 };
 
-type EditableInputFieldProps = Omit<FieldProps, "htmlFor"> &
-  Omit<EditableInputProps, "id">;
+type EditableInputFieldProps = Omit<FieldProps, "htmlFor"> & Omit<EditableInputProps, "id">;
 
-export const EditableInputField: FC<EditableInputFieldProps> = ({
-  label,
-  ...props
-}) => {
+export const EditableInputField: FC<EditableInputFieldProps> = ({ label, ...props }) => {
   const id = useId();
   return (
     <Field label={label} htmlFor={id}>
