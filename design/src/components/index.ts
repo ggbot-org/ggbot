@@ -1,4 +1,4 @@
-export { Button, ButtonOnClick } from "trunx";
+export { Button, ButtonOnClick, Input, InputOnChange, Select, SelectOnChange, Section } from "trunx";
 
 export * from "./Breadcrumb";
 export * from "./Calendar";
