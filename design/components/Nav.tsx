@@ -6,7 +6,7 @@ export const Nav: FC = () => {
   return (
     <Navbar color="black">
       <NavbarBrand>
-        <NavbarItem>
+        <NavbarItem className={classNames("is-unselectable")}>
           <Logo size={24} />
           <span>
             ggbot<b className={classNames("has-text-brand")}>2</b>

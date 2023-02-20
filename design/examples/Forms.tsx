@@ -37,16 +37,14 @@ export const SimpleForm: FC = () => {
     [setIsPending]
   );
 
+  // header={
+  //   <div className="inline-flex items-center gap-4">
+  //     <Icon name="account" />
+  //     <span>create account</span>
+  //   </div>
   return (
     <form onSubmit={onSubmit}>
-      <Section
-        header={
-          <div className="inline-flex items-center gap-4">
-            <Icon name="account" />
-            <span>create account</span>
-          </div>
-        }
-      >
+      <Section>
         <InputField name="nick" label="nick" />
         <InputField name="password" label="password" />
         <select id="" name="" value="c" onChange={onChangeGender}>
@@ -67,18 +65,14 @@ export const SimpleForm: FC = () => {
           ]}
         />
         <div className="inline-flex gap-2 my-4">
-          <Checkbox
-            id="consent"
-            checked={hasConsent}
-            onChange={onChangeConsent}
-          />
+          <Checkbox id="consent" checked={hasConsent} onChange={onChangeConsent} />
           <label htmlFor="consent" className="cursor-pointer">
             I agree with Terms of service.
           </label>
         </div>
         <menu className="my-2">
           <li>
-            <Button disabled={!hasConsent} isSpinning={isPending}>
+            <Button disabled={!hasConsent} isLoading={isPending}>
               enter
             </Button>
           </li>

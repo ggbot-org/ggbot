@@ -7,20 +7,16 @@
     ".": {
       "import": "./dist/index.js",
       "style": "./dist/style.css"
-    },
-    "./tailwind.theme": {
-      "require": "./tailwind.theme.js"
     }
   },
   "scripts": {
-    "build": "npm run tsc--build; npm run tailwindcss",
+    "build": "npm run tsc--build",
     "cleanup": "rm -rf dist/ out/ .next/",
     "deploy": "sh deploy.sh",
     "dev": "next dev",
     "lint": "next lint",
     "next:build": "next build",
     "next:export": "next export",
-    "tailwindcss": "tailwindcss --config ./tailwind.build.js --minify --input ./src/tailwind.css --output ./dist/style.css",
     "test": "npm run tsc--noEmit; npm run lint",
     "tsc--build": "tsc --build tsconfig.build.json",
     "tsc--noEmit": "tsc --noEmit --project ."
@@ -34,7 +30,6 @@
     "react-dom": "^18.2.0",
     "recharts": "^2.3.2",
     "sass": "^1.58.0",
-    "tailwindcss": "^3.1.6",
-    "trunx": "^0.42.3"
+    "trunx": "^0.43.1"
   }
 }

@@ -1,27 +1,27 @@
 import { FC } from "react";
-import { Button } from "../src";
+import { Button, Buttons } from "../src";
 
-export const Buttons: FC = () => {
+export const ButtonColors: FC = () => {
   return (
-    <div className="flex flex-row gap-2 wrap">
+    <Buttons>
       <Button>button</Button>
       <Button color="primary">primary</Button>
-      <Button color="danger">danger</Button>
+      <Button color="warning">warning</Button>
       <Button disabled>disabled</Button>
-    </div>
+    </Buttons>
   );
 };
 
 export const LoadingButtons: FC = () => {
   return (
-    <div className="flex flex-row gap-2 wrap">
-      <Button isSpinning>button</Button>
-      <Button isSpinning color="primary">
+    <Buttons>
+      <Button isLoading>button</Button>
+      <Button isLoading color="primary">
         primary
       </Button>
-      <Button isSpinning color="danger">
-        danger
+      <Button isLoading color="warning">
+        warning
       </Button>
-    </div>
+    </Buttons>
   );
 };

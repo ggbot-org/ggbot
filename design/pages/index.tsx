@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import {
-  Buttons,
+  ButtonColors,
   Charts,
   Colors,
   EditableInputs,
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
 
         <SimpleForm />
 
-        <Buttons />
+        <ButtonColors />
 
         <LoadingButtons />
 
