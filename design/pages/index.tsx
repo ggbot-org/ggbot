@@ -14,7 +14,7 @@ import {
   Typography,
 } from "_examples";
 import { Nav } from "_components";
-import { Logo } from "@ggbot2/design";
+import { Columns, Column, Container, Logo } from "@ggbot2/design";
 
 const Home: NextPage = () => {
   return (
@@ -26,28 +26,34 @@ const Home: NextPage = () => {
       <Nav />
 
       <main>
-        <Logo size={71} />
+        <Container>
+          <Logo size={71} />
 
-        <Colors />
+          <Colors />
 
-        <Typography />
+          <Typography />
 
-        <SimpleForm />
+          <Columns isCentered>
+            <Column size="half">
+              <SimpleForm />
+            </Column>
+          </Columns>
 
-        <ButtonColors />
+          <ButtonColors />
 
-        <LoadingButtons />
+          <LoadingButtons />
 
-        <EditableInputs />
+          <EditableInputs />
 
-        <Icons />
+          <Icons />
 
-        <Pills />
-        <GroupedPills />
+          <Pills />
+          <GroupedPills />
 
-        <SimpleTable />
+          <SimpleTable />
 
-        <Charts />
+          <Charts />
+        </Container>
       </main>
     </>
   );

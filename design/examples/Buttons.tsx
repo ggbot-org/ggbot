@@ -5,9 +5,15 @@ export const ButtonColors: FC = () => {
   return (
     <Buttons>
       <Button>button</Button>
-      <Button color="primary">primary</Button>
-      <Button color="warning">warning</Button>
       <Button disabled>disabled</Button>
+      <Button color="primary">primary</Button>
+      <Button disabled color="primary">
+        disabled
+      </Button>
+      <Button color="warning">warning</Button>
+      <Button disabled color="warning">
+        disabled
+      </Button>
     </Buttons>
   );
 };

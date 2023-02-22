@@ -1,13 +1,18 @@
-import { FC, FormEventHandler, useCallback, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import {
   Button,
   Checkbox,
-  CheckboxOnChange,
+  type CheckboxOnChange,
+  Control,
+  Flex,
+  Field,
+  Form,
+  FormOnSubmit,
   Icon,
   InputField,
-  Section,
   SelectField,
   SelectOnChange,
+  classNames,
 } from "../src";
 
 export const SimpleForm: FC = () => {
@@ -29,7 +34,7 @@ export const SimpleForm: FC = () => {
     [setGender]
   );
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
       setIsPending(true);
@@ -37,47 +42,43 @@ export const SimpleForm: FC = () => {
     [setIsPending]
   );
 
-  // header={
-  //   <div className="inline-flex items-center gap-4">
-  //     <Icon name="account" />
-  //     <span>create account</span>
-  //   </div>
   return (
-    <form onSubmit={onSubmit}>
-      <Section>
-        <InputField name="nick" label="nick" />
-        <InputField name="password" label="password" />
-        <select id="" name="" value="c" onChange={onChangeGender}>
-          <option value="a">A</option>
-          <option value="b">Bi</option>
-          <option value="c">Ci</option>
-          <option value="d">Di</option>
-        </select>
-        <SelectField
-          value={gender}
-          name="gender"
-          label="gender"
-          onChange={onChangeGender}
-          options={[
-            { value: "M", label: "Male" },
-            { value: "F", label: "Female" },
-            { value: "X", label: "Other" },
-          ]}
-        />
-        <div className="inline-flex gap-2 my-4">
-          <Checkbox id="consent" checked={hasConsent} onChange={onChangeConsent} />
-          <label htmlFor="consent" className="cursor-pointer">
+    <Form onSubmit={onSubmit}>
+      <Flex direction="row" justify="center" alignItems="center">
+        <span className={classNames("title", "is-4", "mx-2")}>create account</span>
+      </Flex>
+
+      <InputField name="nick" label="nick" />
+
+      <InputField name="password" label="password" />
+
+      <SelectField
+        value={gender}
+        name="gender"
+        label="gender"
+        onChange={onChangeGender}
+        options={[
+          { value: "M", label: "Male" },
+          { value: "F", label: "Female" },
+          { value: "X", label: "Other" },
+        ]}
+      />
+
+      <Field>
+        <Control>
+          <Checkbox checked={hasConsent} onChange={onChangeConsent}>
             I agree with Terms of service.
-          </label>
-        </div>
-        <menu className="my-2">
-          <li>
-            <Button disabled={!hasConsent} isLoading={isPending}>
-              enter
-            </Button>
-          </li>
-        </menu>
-      </Section>
-    </form>
+          </Checkbox>
+        </Control>
+      </Field>
+
+      <Field>
+        <Control>
+          <Button color="primary" disabled={!hasConsent} isLoading={isPending}>
+            Enter
+          </Button>
+        </Control>
+      </Field>
+    </Form>
   );
 };
