@@ -16,11 +16,8 @@ Import styles in your React app.
 ```css
 @import "@ggbot2/design";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+ TODO
 
-@layer utilities {
   /* Make page full height */
   html,
   body,
@@ -28,11 +25,10 @@ Import styles in your React app.
   div#__next {
     height: 100%;
   }
-}
 ```
 
 Import components in your React app.
 
 ```js
-import { Button } from '@ggbot2/design'
+import { Button } from '@ggbot2/design';
 ```

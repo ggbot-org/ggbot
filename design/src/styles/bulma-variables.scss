@@ -3,10 +3,9 @@ $family-sans-serif: var(--family-sans-serif);
 
 // Colors.
 $brand: #09eae5;
-// $primary: $brand;
 $primary: #22d3ee;
+$danger: #ffd971; // Use yellow for danger: red is for sell or down-trend candles.
 $link: $primary;
-$warning: #ffd971;
 // TODO detect color scheme in JS and set dark background #4e4d4a
 $body-background-color: #faffff;
 

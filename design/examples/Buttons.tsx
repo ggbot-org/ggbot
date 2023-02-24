@@ -10,8 +10,8 @@ export const ButtonColors: FC = () => {
       <Button disabled color="primary">
         disabled
       </Button>
-      <Button color="warning">warning</Button>
-      <Button disabled color="warning">
+      <Button color="danger">danger</Button>
+      <Button disabled color="danger">
         disabled
       </Button>
     </Buttons>
@@ -25,8 +25,8 @@ export const LoadingButtons: FC = () => {
       <Button isLoading color="primary">
         primary
       </Button>
-      <Button isLoading color="warning">
-        warning
+      <Button isLoading color="danger">
+        danger
       </Button>
     </Buttons>
   );
