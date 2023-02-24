@@ -3,12 +3,9 @@ import {
   Button,
   Checkbox,
   type CheckboxOnChange,
-  Control,
   Flex,
-  Field,
   Form,
   FormOnSubmit,
-  Icon,
   InputField,
   SelectField,
   SelectOnChange,
@@ -45,17 +42,19 @@ export const SimpleForm: FC = () => {
   return (
     <Form onSubmit={onSubmit}>
       <Flex direction="row" justify="center" alignItems="center">
-        <span className={classNames("title", "is-4", "mx-2")}>create account</span>
+        <span className={classNames("title", "is-4", "mx-2", "my-4")}>create account</span>
       </Flex>
 
-      <InputField name="nick" label="nick" />
+      <InputField name="nick" label="nick" color="success" defaultValue="satoshi" help={<>&nbsp;</>} />
 
-      <InputField name="password" label="password" />
+      <InputField name="password" label="password" help={<>&nbsp;</>} />
 
       <SelectField
         value={gender}
         name="gender"
         label="gender"
+        color="success"
+        help={<>&nbsp;</>}
         onChange={onChangeGender}
         options={[
           { value: "M", label: "Male" },
@@ -64,21 +63,15 @@ export const SimpleForm: FC = () => {
         ]}
       />
 
-      <Field>
-        <Control>
-          <Checkbox checked={hasConsent} onChange={onChangeConsent}>
-            I agree with Terms of service.
-          </Checkbox>
-        </Control>
-      </Field>
+      <Flex alignItems="center" justify="space-between">
+        <Checkbox checked={hasConsent} onChange={onChangeConsent}>
+          <span className={classNames("ml-2")}>I agree with Terms of service.</span>
+        </Checkbox>
 
-      <Field>
-        <Control>
-          <Button color="primary" disabled={!hasConsent} isLoading={isPending}>
-            Enter
-          </Button>
-        </Control>
-      </Field>
+        <Button color="primary" disabled={!hasConsent} isLoading={isPending}>
+          Enter
+        </Button>
+      </Flex>
     </Form>
   );
 };

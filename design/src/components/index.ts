@@ -15,6 +15,9 @@ export {
   Select,
   type SelectOnChange,
   Section,
+  Table,
+  Tags,
+  Tag,
 } from "trunx";
 
 export * from "./Breadcrumb";
@@ -31,5 +34,4 @@ export * from "./InputField";
 export * from "./Logo";
 export * from "./Output";
 export * from "./Pill";
-export * from "./Select";
-export * from "./Table";
+export * from "./SelectField";
