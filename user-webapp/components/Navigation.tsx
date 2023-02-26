@@ -1,129 +1,100 @@
-import { Breadcrumb, BreadcrumbItems, Header, Icon, Logo } from "@ggbot2/design";
+import {
+  Button,
+  Buttons,
+  Logo,
+  Navbar,
+  NavbarBrand,
+  NavbarDropdown,
+  NavbarItem,
+  NavbarItemAnchor,
+  NavbarLink,
+  NavbarMenu,
+  NavbarProps,
+  NavbarStart,
+  classNames,
+} from "@ggbot2/design";
 import { useRouter } from "next/router";
-import { FC, PointerEventHandler, ReactNode, useCallback, useMemo } from "react";
-import { StrategyKey, route } from "_routing";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+import { SettingsSectionId, route } from "_routing";
 
-type NavigationProps = {
-  /** Optionally define navigation. */
-  breadcrumbs?: BreadcrumbItems;
-  /** Optional top-right icon. */
-  icon?: ReactNode;
-};
-
-export const Navigation: FC<NavigationProps> = ({ breadcrumbs, icon }) => {
-  return (
-    <Header>
-      <div className="flex flex-row justify-between">
-        <div className="flex w-fit flex-row items-center gap-1 px-1">
-          <Logo size={24} />
-          <span>
-            ggbot<b className="text-brand">2</b>
-          </span>
-        </div>
-
-        <div className="grow">
-          {breadcrumbs ? <Breadcrumb items={breadcrumbs} /> : <NavigationLabel italic text="crypto flow" />}
-        </div>
-
-        <div className="px-1 flex items-center">{icon}</div>
-      </div>
-    </Header>
-  );
-};
-
-export const NavigationDangerIcon: FC = () => (
-  <span className="text-yellow-400">
-    <Icon name="danger" />
-  </span>
-);
-
-export const NavigationSettingsIcon: FC = () => {
+export const Navigation: FC = memo(() => {
   const router = useRouter();
-  const goToSettings = useCallback(() => {
-    if (router.pathname !== route.settingsPage()) router.push(route.settingsPage());
+  const [menuIsActive, setMenuIsActive] = useState(false);
+
+  const toggleMenu = useCallback<Exclude<NavbarProps["onClick"], undefined>>((event) => {
+    event.stopPropagation();
+    setMenuIsActive((active) => !active);
+  }, []);
+
+  const goToDashboard = useCallback(() => {
+    if (router.pathname !== route.homePage()) router.push(route.homePage());
   }, [router]);
-  return <Icon name="dots-vertical" onClick={goToSettings} />;
-};
 
-type NavigationBreadcrumbItemProps = {
-  isLink?: boolean;
-};
+  const goToExit = useCallback(() => {
+    if (router.pathname !== route.authPage()) router.push(route.authPage());
+  }, [router]);
 
-const itemClassName = ({ isLink }: NavigationBreadcrumbItemProps) =>
-  ["inline-flex items-center transition-all ease-in", isLink ? "cursor-pointer hover:text-brand" : ""].join(
-    " "
-  );
+  const goToCreateStrategy = useCallback(() => {
+    if (router.pathname !== route.createStrategyPage()) router.push(route.createStrategyPage());
+  }, [router]);
 
-type NavigationLabelProps = { text: string; italic?: boolean };
-
-export const NavigationLabel: FC<NavigationLabelProps> = ({ italic, text }) => {
-  const className = useMemo(() => ["text-xs leading-8", italic ? "italic" : ""].join(" "), [italic]);
-  return <span className={className}>{text}</span>;
-};
-
-export const NavigationBreadcrumbDashboard: FC<NavigationBreadcrumbItemProps> = ({ isLink }) => {
-  const router = useRouter();
-  const className = useMemo(() => itemClassName({ isLink }), [isLink]);
-  const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
-    (event) => {
-      event.stopPropagation();
-      if (!isLink) return;
-      if (router.pathname !== route.homePage()) router.push(route.homePage());
+  const goToSettings = useCallback(
+    (section: SettingsSectionId) => () => {
+      // if (router.pathname !== route.settingsPage())
+      router.push(route.settingsPage(section));
     },
-    [isLink, router]
+    [router]
   );
-  return (
-    <div className={className} onClick={onClick}>
-      <NavigationLabel text="dashboard" />
-    </div>
-  );
-};
 
-export const NavigationBreadcrumbSettings: FC<NavigationBreadcrumbItemProps> = ({ isLink }) => {
-  const router = useRouter();
-  const className = useMemo(() => itemClassName({ isLink }), [isLink]);
-  const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
-    (event) => {
-      event.stopPropagation();
-      if (!isLink) return;
-      if (router.pathname !== route.settingsPage()) router.push(route.settingsPage());
-    },
-    [isLink, router]
-  );
-  return (
-    <div className={className} onClick={onClick}>
-      <NavigationLabel text="settings" />
-    </div>
-  );
-};
+  // Close menu on outside click.
+  useEffect(() => {
+    const closeMenu = () => {
+      setMenuIsActive(false);
+    };
+    window.addEventListener("click", closeMenu);
+    return () => {
+      window.removeEventListener("click", closeMenu);
+    };
+  }, []);
 
-type NavigationBreadcrumbStrategyProps = {
-  strategyKey: StrategyKey;
-} & NavigationBreadcrumbItemProps;
-
-export const NavigationBreadcrumbStrategy: FC<NavigationBreadcrumbStrategyProps> = ({
-  isLink,
-  strategyKey,
-}) => {
-  const router = useRouter();
-  const { strategyId } = strategyKey;
-  const id = useMemo(() => strategyId.split("-").shift() ?? "", [strategyId]);
-  const className = useMemo(
-    () => ["flex flex-row items-center gap-2", itemClassName({ isLink })].join(" "),
-    [isLink]
-  );
-  const onClick = useCallback<PointerEventHandler<HTMLDivElement>>(
-    (event) => {
-      event.stopPropagation();
-      if (!isLink) return;
-      if (router.pathname !== route.strategyPage(strategyKey)) router.push(route.strategyPage(strategyKey));
-    },
-    [isLink, router, strategyKey]
-  );
   return (
-    <div className={className} onClick={onClick}>
-      <NavigationLabel text="strategy" />
-      <NavigationLabel text={id} />
-    </div>
+    <Navbar color="black" isFixedTop onClick={toggleMenu}>
+      <NavbarBrand>
+        <NavbarItem className={classNames("is-unselectable")}>
+          <Logo size={24} />
+          <em>
+            ggbot<b className={classNames("has-text-brand")}>2</b>
+          </em>
+        </NavbarItem>
+      </NavbarBrand>
+
+      <NavbarMenu isActive={menuIsActive}>
+        <NavbarStart>
+          <NavbarItemAnchor onClick={goToDashboard}>Dashboard</NavbarItemAnchor>
+
+          <NavbarItem hasDropdown isHoverable>
+            <NavbarLink>Settings</NavbarLink>
+            <NavbarDropdown>
+              <NavbarItemAnchor onClick={goToSettings("account")}>Account</NavbarItemAnchor>
+
+              <NavbarItemAnchor onClick={goToSettings("binance")}>Binance</NavbarItemAnchor>
+
+              <NavbarItemAnchor onClick={goToSettings("billing")}>Billing</NavbarItemAnchor>
+            </NavbarDropdown>
+          </NavbarItem>
+
+          <NavbarItem hasDropdown isHoverable>
+            <NavbarLink>Action</NavbarLink>
+            <NavbarDropdown>
+              <NavbarItemAnchor onClick={goToCreateStrategy}>New Strategy</NavbarItemAnchor>
+
+              <NavbarItemAnchor onClick={goToExit}>Exit</NavbarItemAnchor>
+            </NavbarDropdown>
+          </NavbarItem>
+        </NavbarStart>
+      </NavbarMenu>
+    </Navbar>
   );
-};
+});
+
+Navigation.displayName = "Navigation";

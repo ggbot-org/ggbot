@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Navbar, NavbarBrand, NavbarItem } from "trunx";
-import { Logo, classNames } from "@ggbot2/design";
+import { Logo, Navbar, NavbarBrand, NavbarItem, classNames } from "@ggbot2/design";
 
 export const Nav: FC = () => {
   return (

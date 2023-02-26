@@ -1,4 +1,5 @@
 export {
+  Breadcrumb,
   Button,
   type ButtonOnClick,
   Buttons,
@@ -12,6 +13,15 @@ export {
   Checkbox,
   type CheckboxOnChange,
   type InputOnChange,
+  Navbar,
+  NavbarBrand,
+  NavbarDropdown,
+  NavbarItem,
+  NavbarItemAnchor,
+  NavbarLink,
+  NavbarMenu,
+  type NavbarProps,
+  NavbarStart,
   Select,
   type SelectOnChange,
   Section,
@@ -20,7 +30,6 @@ export {
   Tag,
 } from "trunx";
 
-export * from "./Breadcrumb";
 export * from "./Calendar";
 export * from "./Checkmark";
 export * from "./Color";

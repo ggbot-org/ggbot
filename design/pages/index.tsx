@@ -3,7 +3,6 @@ import Head from "next/head";
 import {
   ButtonColors,
   Charts,
-  Colors,
   EditableInputs,
   Icons,
   LoadingButtons,
@@ -28,8 +27,6 @@ const Home: NextPage = () => {
       <main>
         <Container>
           <Logo size={71} />
-
-          <Colors />
 
           <Typography />
 

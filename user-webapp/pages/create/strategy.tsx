@@ -1,16 +1,10 @@
-import { Button, InputField, Section } from "@ggbot2/design";
+import { Button, InputField, Form, FormOnSubmit, Section } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FormEventHandler, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationLabel,
-  NavigationSettingsIcon,
-} from "_components";
+import { Content, Navigation } from "_components";
 import { useApiAction } from "_hooks";
 import { requireAuthentication, route } from "_routing";
 
@@ -21,7 +15,7 @@ const Page: NextPage = () => {
 
   const [create, { data, isPending }] = useApiAction.CreateStrategy();
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       try {
         event.preventDefault();
@@ -42,33 +36,21 @@ const Page: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={[
-            { content: <NavigationBreadcrumbDashboard isLink /> },
-            { content: <NavigationLabel text="new strategy" />, current: true },
-          ]}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
-      <form className="flex flex-col w-full max-w-lg p-4 gap-4" onSubmit={onSubmit}>
-        <Section header="New strategy">
-          <InputField label="strategy name" name="name" required readOnly={isPending} />
-          {data ? (
-            <div>done</div>
-          ) : (
-            <menu>
-              <li>
-                <Button color="primary" isSpinning={isPending}>
-                  create
-                </Button>
-              </li>
-            </menu>
-          )}
-        </Section>
-      </form>
+    <Content topbar={<Navigation />}>
+      <Form onSubmit={onSubmit}>
+        <InputField label="strategy name" name="name" required readOnly={isPending} />
+        {data ? (
+          <div>done</div>
+        ) : (
+          <menu>
+            <li>
+              <Button color="primary" isLoading={isPending}>
+                Create
+              </Button>
+            </li>
+          </menu>
+        )}
+      </Form>
     </Content>
   );
 };
