@@ -1,41 +1,27 @@
-import { Button, Section } from "@ggbot2/design";
-import { NextPage } from "next";
-import { FormEventHandler, useCallback, useMemo } from "react";
 import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbSettings,
-  NavigationDangerIcon,
-  NavigationLabel,
-} from "_components";
+  Button,
+  Container,
+  Control,
+  Field,
+  FormOnSubmit,
+  Message,
+  Section,
+  classNames,
+} from "@ggbot2/design";
+import { NextPage } from "next";
+import { useCallback } from "react";
+import { Navigation, Page } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
-const Page: NextPage = () => {
+const DeleteAccountPage: NextPage = () => {
   const goBack = useGoBack();
 
   const [deleteAccount, { isPending }] = useApiAction.DeleteAccount();
 
-  const breadcrumbs = useMemo(
-    () => [
-      {
-        content: <NavigationBreadcrumbDashboard isLink />,
-      },
-      {
-        content: <NavigationBreadcrumbSettings isLink />,
-      },
-      {
-        content: <NavigationLabel text="delete account" />,
-        current: true,
-      },
-    ],
-    []
-  );
-
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
       if (isPending) return;
@@ -45,26 +31,31 @@ const Page: NextPage = () => {
   );
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />}>
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <Section header="Account deletion" color="danger">
-          <p>Are you sure you want to delete your account?</p>
-          <menu className="flex flex-row gap-4 justify-between">
-            <li>
-              <Button type="reset" onClick={goBack}>
-                No, go back...
-              </Button>
-            </li>
-            <li>
-              <Button type="submit" color="danger">
-                Yes, delete it!
-              </Button>
-            </li>
-          </menu>
+    <Page topbar={<Navigation />}>
+      <Container maxWidth="desktop">
+        <Section>
+          <h1 className={classNames("title")}>Account deletion</h1>
+          <Message color="danger" header={<>&nbsp;</>}>
+            <p className={classNames("block")}>Are you sure you want to delete your account?</p>
+            <form onSubmit={onSubmit}>
+              <Field isGrouped>
+                <Control>
+                  <Button type="reset" onClick={goBack}>
+                    No, go back...
+                  </Button>
+                </Control>
+                <Control>
+                  <Button type="submit" color="danger">
+                    Yes, delete it!
+                  </Button>
+                </Control>
+              </Field>
+            </form>
+          </Message>
         </Section>
-      </form>
-    </Content>
+      </Container>
+    </Page>
   );
 };
 
-export default Page;
+export default DeleteAccountPage;

@@ -13,6 +13,7 @@ export {
   Checkbox,
   type CheckboxOnChange,
   type InputOnChange,
+  Message,
   Navbar,
   NavbarBrand,
   NavbarDropdown,

@@ -5,6 +5,7 @@ $family-sans-serif: var(--family-sans-serif);
 $brand: #09eae5;
 $primary: #22d3ee;
 $danger: #ffd971; // Use yellow for danger: red is for sell or down-trend candles.
+$success: $primary; // Use primary color for success, green is for buy or up-trend candles.
 $link: $primary;
 // TODO detect color scheme in JS and set dark background #4e4d4a
 $body-background-color: #faffff;

@@ -10,8 +10,8 @@ import {
   Form,
   FormOnReset,
   FormOnSubmit,
-  InputField,
   Logo,
+  InputField,
   Navbar,
   NavbarBrand,
   NavbarItem,
@@ -26,7 +26,6 @@ import {
   Dispatch,
   FC,
   FormEventHandler,
-  ReactNode,
   SetStateAction,
   useCallback,
   useEffect,
@@ -166,17 +165,13 @@ const Exit: FC = () => {
     [account]
   );
 
-  const accountInfo = useMemo<{ label: string; value: ReactNode }[]>(
-    () =>
-      [
-        {
-          label: "Email",
-          value: email,
-        },
-      ].map(({ value, ...rest }) => ({
-        value: value ? value : <>&nbsp;</>,
-        ...rest,
-      })),
+  const accountInfo = useMemo<{ label: string; value: string }[]>(
+    () => [
+      {
+        label: "Email",
+        value: email,
+      },
+    ],
     [email]
   );
 
@@ -202,9 +197,7 @@ const Exit: FC = () => {
   return (
     <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
       {accountInfo.map(({ label, value }, i) => (
-        <OutputField key={i} label={label}>
-          {value}
-        </OutputField>
+        <InputField key={i} label={label} readOnly isStatic defaultValue={value} />
       ))}
 
       <Field isGrouped>
