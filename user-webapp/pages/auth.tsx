@@ -1,5 +1,24 @@
 import { readSession } from "@ggbot2/cookies";
-import { Button, ButtonOnClick, InputField, Logo, OutputField, Section } from "@ggbot2/design";
+import {
+  Button,
+  ButtonOnClick,
+  Column,
+  Columns,
+  Container,
+  Control,
+  Field,
+  Form,
+  FormOnReset,
+  FormOnSubmit,
+  InputField,
+  Logo,
+  Navbar,
+  NavbarBrand,
+  NavbarItem,
+  OutputField,
+  Section,
+  classNames,
+} from "@ggbot2/design";
 import { EmailAddress, isAccount } from "@ggbot2/models";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -7,7 +26,6 @@ import {
   Dispatch,
   FC,
   FormEventHandler,
-  FormHTMLAttributes,
   ReactNode,
   SetStateAction,
   useCallback,
@@ -17,7 +35,7 @@ import {
 } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
 import { ApiVerifyResponseData, isApiVerifyRequestData } from "_api/auth/verify";
-import { Content, Navigation } from "_components";
+import { Page } from "_components";
 import { useApiAction } from "_hooks";
 import { HasSession, route } from "_routing";
 
@@ -36,30 +54,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-type AuthFormProps = FormHTMLAttributes<HTMLFormElement> & {
-  children: ReactNode;
-  message: string;
-};
-
-const AuthForm: FC<AuthFormProps> = ({ children, message, ...props }) => (
-  <form className="flex flex-col w-full p-4 gap-4" {...props}>
-    <Section
-      header={
-        <div className="flex flex-row items-center py-2">
-          <Logo size={171} animated />
-          <span className="text-3xl">{message}</span>
-        </div>
-      }
-    >
-      {children}
-    </Section>
-  </form>
-);
-
-const FeedbackMessages: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="p-6">{children}</div>
-);
-
 const GenericErrorFeedback: FC = () => <div>Something went wrong.</div>;
 
 const InvalidInputFeedback: FC = () => <div>Something went wrong.</div>;
@@ -77,7 +71,7 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
   const [isPending, setIsPending] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
       try {
         event.preventDefault();
@@ -134,24 +128,22 @@ const Enter: FC<EnterProps> = ({ emailSent, setEmail }) => {
   );
 
   return (
-    <>
-      <AuthForm onSubmit={onSubmit} message="enter ggbot2">
-        <InputField label="email" name="email" type="email" readOnly={isPending} required />
-        <menu>
-          <li>
-            <Button color="primary" isSpinning={isPending}>
-              Send
-            </Button>
-          </li>
-        </menu>
-      </AuthForm>
+    <Form onSubmit={onSubmit}>
+      <InputField label="Email" name="email" type="email" readOnly={isPending} required />
+      <Field isGrouped>
+        <Control>
+          <Button color="primary" isLoading={isPending}>
+            Send
+          </Button>
+        </Control>
+      </Field>
 
-      <FeedbackMessages>
+      <>
         {hasGenericError ? <GenericErrorFeedback /> : null}
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
-      </FeedbackMessages>
-    </>
+      </>
+    </Form>
   );
 };
 
@@ -178,7 +170,7 @@ const Exit: FC = () => {
     () =>
       [
         {
-          label: "email",
+          label: "Email",
           value: email,
         },
       ].map(({ value, ...rest }) => ({
@@ -188,7 +180,7 @@ const Exit: FC = () => {
     [email]
   );
 
-  const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onReset = useCallback<FormOnReset>(
     (event) => {
       event.preventDefault();
       router.back();
@@ -208,28 +200,25 @@ const Exit: FC = () => {
   }, [readAccount]);
 
   return (
-    <>
-      <AuthForm action={route.apiExit()} message="Exit ggbot2" onReset={onReset} onSubmit={onSubmit}>
-        <div>
-          {accountInfo.map(({ label, value }, i) => (
-            <OutputField key={i} label={label}>
-              {value}
-            </OutputField>
-          ))}
-        </div>
+    <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
+      {accountInfo.map(({ label, value }, i) => (
+        <OutputField key={i} label={label}>
+          {value}
+        </OutputField>
+      ))}
 
-        <menu className="flex gap-4 justify-between">
-          <li>
-            <Button type="reset">Stay</Button>
-          </li>
-          <li>
-            <Button color="danger" isSpinning={isPending}>
-              Exit
-            </Button>
-          </li>
-        </menu>
-      </AuthForm>
-    </>
+      <Field isGrouped>
+        <Control>
+          <Button type="reset">Stay</Button>
+        </Control>
+
+        <Control>
+          <Button color="danger" isLoading={isPending}>
+            Exit
+          </Button>
+        </Control>
+      </Field>
+    </Form>
   );
 };
 
@@ -319,31 +308,31 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
   );
 
   return (
-    <>
-      <AuthForm message="Enter ggbot2" onSubmit={onSubmit}>
-        <OutputField label="email">{email}</OutputField>
+    <Form onSubmit={onSubmit}>
+      <OutputField label="Email">{email}</OutputField>
 
-        <div>
-          Check your email to get the <em>One Time Password</em>.
-        </div>
+      <div>
+        Check your email to get the <em>One Time Password</em>.
+      </div>
 
-        <InputField
-          label="one time password"
-          name="code"
-          readOnly={isPending}
-          required
-          spellCheck={false}
-          type="text"
-        />
+      <InputField
+        label="One time password"
+        name="code"
+        readOnly={isPending}
+        required
+        spellCheck={false}
+        type="text"
+      />
 
-        <menu>
-          <Button color="primary" isSpinning={isPending}>
+      <Field isGrouped>
+        <Control>
+          <Button color="primary" isLoading={isPending}>
             Enter
           </Button>
-        </menu>
-      </AuthForm>
+        </Control>
+      </Field>
 
-      <FeedbackMessages>
+      <>
         {hasGenericError ? <GenericErrorFeedback /> : null}
         {hasInvalidInput ? <InvalidInputFeedback /> : null}
         {gotTimeout ? <TimeoutFeedback /> : null}
@@ -356,33 +345,63 @@ const Verify: FC<VerifyProps> = ({ setEmail, email }) => {
             </div>
           </div>
         ) : null}
-      </FeedbackMessages>
-    </>
+      </>
+    </Form>
   );
 };
 
-const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
+const AuthPage: NextPage<ServerSideProps> = ({ hasSession }) => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
 
   const emailSent = useMemo(() => email !== undefined, [email]);
 
+  const title = useMemo(() => (hasSession ? "Exit ggbot2" : "Enter ggbot2"), [hasSession]);
+
   return (
-    <Content topbar={<Navigation />}>
-      <div className="flex flex-col items-center w-full max-w-lg p-4 gap-4">
-        {hasSession ? (
-          <Exit />
-        ) : (
-          <>
-            {email ? (
-              <Verify email={email} setEmail={setEmail} />
-            ) : (
-              <Enter emailSent={emailSent} setEmail={setEmail} />
-            )}
-          </>
-        )}
-      </div>
-    </Content>
+    <Page
+      topbar={
+        <Navbar color="black">
+          <NavbarBrand>
+            <NavbarItem className={classNames("is-unselectable")}>
+              <Logo size={24} />
+              <span>
+                ggbot<b className={classNames("has-text-brand")}>2</b>
+              </span>
+            </NavbarItem>
+          </NavbarBrand>
+        </Navbar>
+      }
+    >
+      <Container maxWidth="desktop">
+        <Section>
+          <Columns isCentered>
+            <Column offset="half">
+              <h1 className={classNames("title")}>{title}</h1>
+            </Column>
+          </Columns>
+
+          <Columns isCentered>
+            <Column isNarrow>
+              <Logo size={171} animated />
+            </Column>
+            <Column size="half">
+              {hasSession ? (
+                <Exit />
+              ) : (
+                <>
+                  {email ? (
+                    <Verify email={email} setEmail={setEmail} />
+                  ) : (
+                    <Enter emailSent={emailSent} setEmail={setEmail} />
+                  )}
+                </>
+              )}
+            </Column>
+          </Columns>
+        </Section>
+      </Container>
+    </Page>
   );
 };
 
-export default Page;
+export default AuthPage;

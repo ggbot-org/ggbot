@@ -17,7 +17,7 @@ type Props = {
   message?: ReactNode;
 };
 
-export const Content: FC<Props> = ({
+export const Page: FC<Props> = ({
   children,
   metadata = { title: "ggbot2", description: "crypto flow" },
   message,
@@ -42,10 +42,7 @@ export const Content: FC<Props> = ({
     };
   }, []);
 
-  const canonicalHref = useMemo(
-    () => `${webappBaseUrl}${canonical ?? "/"}`,
-    [canonical]
-  );
+  const canonicalHref = useMemo(() => `${webappBaseUrl}${canonical ?? "/"}`, [canonical]);
 
   return (
     <>
@@ -55,16 +52,14 @@ export const Content: FC<Props> = ({
         <link rel="canonical" href={canonicalHref} />
       </Head>
 
-      {isOffline && (
-        <p className="text-center">The network connection has been lost.</p>
-      )}
-
-      <div className="min-w-screen min-h-screen flex flex-col">
-        {message}
-
+      <div>
         {topbar}
 
-        <div className="flex flex-col grow px-2">{children}</div>
+        {message}
+
+        {isOffline && <p>The network connection has been lost.</p>}
+
+        {children}
       </div>
 
       <Toaster position="top-right" />
