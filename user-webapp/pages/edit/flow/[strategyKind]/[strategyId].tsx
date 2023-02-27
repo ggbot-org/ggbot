@@ -1,6 +1,6 @@
 import { readSession } from "@ggbot2/cookies";
 import { ErrorAccountItemNotFound, readStrategy } from "@ggbot2/database";
-import { Button, ButtonOnClick } from "@ggbot2/design";
+import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@ggbot2/models";
 import { isTime } from "@ggbot2/time";
@@ -13,15 +13,11 @@ import {
   BacktestCheckbox,
   BacktestCheckboxOnChange,
   BacktestController,
-  Content,
   LiveCheckbox,
   LiveCheckboxOnChange,
   MemoryController,
   Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbStrategy,
-  NavigationLabel,
-  NavigationSettingsIcon,
+  Page,
   PleaseConfigureBinanceApi,
   StrategyItem,
   StrategyExecutionLog,
@@ -77,23 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) => {
-  const breadcrumbs = useMemo(
-    () => [
-      {
-        content: <NavigationBreadcrumbDashboard isLink />,
-      },
-      {
-        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />,
-      },
-      {
-        content: <NavigationLabel text="edit" />,
-        current: true,
-      },
-    ],
-    [strategyKey]
-  );
-
+const EditStrategyFlowPage: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) => {
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
@@ -238,62 +218,45 @@ const Page: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) 
   }, [strategyExecution]);
 
   return (
-    <Content
-      topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}
-      message={hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
-    >
-      <div className="flex h-full flex-col grow">
-        <div className="flex flex-col justify-between gap-4 py-3 md:flex-row md:items-center">
-          <div className="grow">
-            <StrategyItem strategyKey={strategyKey}>{name}</StrategyItem>
-          </div>
+    <Page topbar={<Navigation />}>
+      {hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
+      <div>
+        <StrategyItem strategyKey={strategyKey}>{name}</StrategyItem>
 
-          <menu className="flex h-10 flex-row gap-4 self-end">
-            {backtesting && (
-              <li>
-                <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
-              </li>
-            )}
-            <li>
-              <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
-            </li>
-            <li>
-              <Button
-                disabled={runIsDisabled}
-                color="danger"
-                isSpinning={runIsPending}
-                onClick={onClickRun}
-              >
-                run
-              </Button>
-            </li>
-            <li>
-              <Button
-                disabled={saveIsDisabled}
-                color={canSave ? "primary" : undefined}
-                isSpinning={saveIsPending}
-                onClick={onClickSave}
-              >
-                save
-              </Button>
-            </li>
-          </menu>
-        </div>
+        {backtesting && (
+          <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
+        )}
+        <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
 
-        <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
+        <Buttons>
+          <Button disabled={runIsDisabled} color="danger" isLoading={runIsPending} onClick={onClickRun}>
+            Run
+          </Button>
 
-        <div className="w-full grow shadow dark:shadow-black" ref={flowViewContainerRef} />
-
-        <MemoryController />
-
-        <StrategyExecutionLog
-          status={executionStatus}
-          steps={executionSteps}
-          whenUpdated={executionWhenUpdated}
-        />
+          <Button
+            disabled={saveIsDisabled}
+            color={canSave ? "primary" : undefined}
+            isLoading={saveIsPending}
+            onClick={onClickSave}
+          >
+            Save
+          </Button>
+        </Buttons>
       </div>
-    </Content>
+
+      <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
+
+      <div ref={flowViewContainerRef} />
+
+      <MemoryController />
+
+      <StrategyExecutionLog
+        status={executionStatus}
+        steps={executionSteps}
+        whenUpdated={executionWhenUpdated}
+      />
+    </Page>
   );
 };
 
-export default Page;
+export default EditStrategyFlowPage;

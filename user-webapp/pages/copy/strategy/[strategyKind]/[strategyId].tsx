@@ -1,17 +1,10 @@
-import { Button, DateTime, InputField, OutputField, Section } from "@ggbot2/design";
+import { Button, Control, Field, FormOnSubmit, InputField, useFormattedDate } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbStrategy,
-  NavigationLabel,
-  NavigationSettingsIcon,
-} from "_components";
+import { Navigation, Page } from "_components";
 import { useApiAction } from "_hooks";
 import { StrategyInfo, requireAuthenticationAndGetStrategyInfo, route } from "_routing";
 
@@ -19,28 +12,16 @@ type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({ strategyKey, name: strategyName, whenCreated }) => {
+const CopyStrategyPage: NextPage<ServerSideProps> = ({ strategyKey, name: strategyName, whenCreated }) => {
   const router = useRouter();
 
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [copyStrategy, { data: whenCopied, isPending }] = useApiAction.CopyStrategy();
 
-  const breadcrumbs = useMemo(
-    () => [
-      { content: <NavigationBreadcrumbDashboard isLink /> },
-      {
-        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} isLink />,
-      },
-      {
-        content: <NavigationLabel text="copy" />,
-        current: true,
-      },
-    ],
-    [strategyKey]
-  );
+  const formattedWhenCreated = useFormattedDate(whenCreated, "date");
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       try {
         event.preventDefault();
@@ -70,40 +51,37 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, name: strategyName, when
   }, [router, whenCopied]);
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}>
+    <Page topbar={<Navigation />}>
       <form className="flex flex-col w-full max-w-lg p-4 gap-4" onSubmit={onSubmit}>
-        <Section header="Copy strategy">
-          <OutputField label="name">{strategyName}</OutputField>
-          <OutputField label="when created">
-            <DateTime format="time" value={whenCreated} />
-          </OutputField>
+        <h1>Copy strategy</h1>
+        <InputField label="Name" defaultValue={strategyName} />
+        <InputField label="When created" defaultValue={formattedWhenCreated} />
 
-          <p>Choose a new name for the copied strategy.</p>
+        <p>Choose a new name for the copied strategy.</p>
 
-          <InputField
-            onChange={onChangeName}
-            label="new strategy name"
-            name="name"
-            placeholder={strategyName}
-            required
-            readOnly={isPending}
-          />
+        <InputField
+          onChange={onChangeName}
+          label="New strategy name"
+          name="name"
+          placeholder={strategyName}
+          required
+          readOnly={isPending}
+        />
 
-          <menu>
-            <li>
-              {whenCopied ? (
-                <Button color="primary">Done</Button>
-              ) : (
-                <Button isSpinning={isPending} disabled={isDisabled}>
-                  Copy
-                </Button>
-              )}
-            </li>
-          </menu>
-        </Section>
+        <Field>
+          <Control>
+            {whenCopied ? (
+              <Button color="primary">Done</Button>
+            ) : (
+              <Button isLoading={isPending} disabled={isDisabled}>
+                Copy
+              </Button>
+            )}
+          </Control>
+        </Field>
       </form>
-    </Content>
+    </Page>
   );
 };
 
-export default Page;
+export default CopyStrategyPage;

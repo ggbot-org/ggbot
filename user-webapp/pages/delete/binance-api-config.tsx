@@ -1,41 +1,18 @@
-import { Button, Section } from "@ggbot2/design";
+import { Button, Container, FormOnSubmit, Message } from "@ggbot2/design";
 import { NextPage } from "next";
-import { FormEventHandler, useCallback, useMemo } from "react";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbSettings,
-  NavigationDangerIcon,
-  NavigationLabel,
-} from "_components";
+import { useCallback } from "react";
+import { Navigation, Page } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
-const Page: NextPage = () => {
+const DeleteBinanceApiPage: NextPage = () => {
   const goBack = useGoBack();
 
   const [deleteBinanceApiKey, { isPending }] = useApiAction.DeleteBinanceApiConfig();
 
-  const breadcrumbs = useMemo(
-    () => [
-      {
-        content: <NavigationBreadcrumbDashboard isLink />,
-      },
-      {
-        content: <NavigationBreadcrumbSettings isLink />,
-      },
-      {
-        content: <NavigationLabel text="delete Binance API" />,
-        current: true,
-      },
-    ],
-    []
-  );
-
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
       if (isPending) return;
@@ -45,27 +22,29 @@ const Page: NextPage = () => {
   );
 
   return (
-    <Content topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationDangerIcon />} />}>
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <Section header="Delete Binance API key" color="danger">
+    <Page topbar={<Navigation />}>
+      <Container>
+        <Message header="Delete Binance API key">
           <p>Are you sure you want to delete your Binance API key?</p>
 
-          <menu className="flex flex-row gap-4 justify-between">
-            <li>
-              <Button type="reset" onClick={goBack}>
-                No, go back...
-              </Button>
-            </li>
-            <li>
-              <Button type="submit" color="danger">
-                Yes, delete it!
-              </Button>
-            </li>
-          </menu>
-        </Section>
-      </form>
-    </Content>
+          <form onSubmit={onSubmit}>
+            <menu className="flex flex-row gap-4 justify-between">
+              <li>
+                <Button type="reset" onClick={goBack}>
+                  No, go back...
+                </Button>
+              </li>
+              <li>
+                <Button type="submit" color="danger">
+                  Yes, delete it!
+                </Button>
+              </li>
+            </menu>
+          </form>
+        </Message>
+      </Container>
+    </Page>
   );
 };
 
-export default Page;
+export default DeleteBinanceApiPage;

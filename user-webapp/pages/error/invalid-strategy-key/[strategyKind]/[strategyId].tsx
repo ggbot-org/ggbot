@@ -1,24 +1,12 @@
 import { readSession } from "@ggbot2/cookies";
 import { isStrategyKey } from "@ggbot2/models";
 import { GetServerSideProps, NextPage } from "next";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationSettingsIcon,
-} from "_components";
-import {
-  InvalidStrategyKey,
-  redirectToAuthenticationPage,
-  redirectToHomePage,
-} from "_routing";
+import { Navigation, Page } from "_components";
+import { InvalidStrategyKey, redirectToAuthenticationPage, redirectToHomePage } from "_routing";
 
 type ServerSideProps = InvalidStrategyKey;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
   const session = readSession(req.cookies);
   if (!session) return redirectToAuthenticationPage();
 
@@ -32,21 +20,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
+const InvalidStrategyKeyPage: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard isLink /> }]}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
-      <div className="p-4 flex flex-col gap-4">
-        <span className="text-xl">
+    <Page topbar={<Navigation />}>
+      <div>
+        <span>
           Invalid <em>strategy key</em>
         </span>
-        <div className="p-4 shadow">
+        <div>
           <dl>
             <dt>kind</dt>
             <dd>{strategyKind}</dd>
@@ -55,9 +36,8 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
           </dl>
         </div>
       </div>
-    </Content>
+    </Page>
   );
 };
 
-export default Page;
-//
+export default InvalidStrategyKeyPage;

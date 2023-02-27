@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 const dateTimeFormats = ["day", "time"];
 export type DateTimeFormat = typeof dateTimeFormats[number];
 
-export type DateTimeValue = number | string | undefined;
+export type DateTimeValue = number | string | undefined | null;
 
 export const useFormattedDate = (value: DateTimeValue, format: DateTimeFormat): string => {
   const [formattedValue, setFormattedValue] = useState("");
 
   useEffect(() => {
     try {
-      if (value === undefined) return;
+      if (!value) return;
       const date = new Date(value);
       if (isInvalidDate(date)) return;
 

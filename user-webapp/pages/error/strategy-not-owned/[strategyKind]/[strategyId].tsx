@@ -1,31 +1,19 @@
 import { NextPage } from "next";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationSettingsIcon,
-} from "_components";
+import { Navigation, Page } from "_components";
 import { StrategyKey, requireAuthenticationAndGetStrategyKey } from "_routing";
 
 type ServerSideProps = StrategyKey;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyKey;
 
-const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
+const StrategyNotOwnedPage: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
   return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard isLink /> }]}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
+    <Page topbar={<Navigation />}>
       <div className="flex flex-col gap-4 p-4">
-        <span className="text-xl">
+        <span>
           Your account is <b>not</b> <em>owner</em> of this strategy.
         </span>
-        <div className="p-4 shadow">
+        <div>
           <dl>
             <dt>kind</dt>
             <dd>{strategyKind}</dd>
@@ -34,8 +22,8 @@ const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
           </dl>
         </div>
       </div>
-    </Content>
+    </Page>
   );
 };
 
-export default Page;
+export default StrategyNotOwnedPage;

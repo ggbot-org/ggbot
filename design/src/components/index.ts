@@ -42,6 +42,5 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./InputField";
 export * from "./Logo";
-export * from "./Output";
 export * from "./Pill";
 export * from "./SelectField";

@@ -1,27 +1,11 @@
 import { NextPage } from "next";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationSettingsIcon,
-} from "_components";
+import { Navigation, Page } from "_components";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
-const Page: NextPage = () => {
-  return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard isLink /> }]}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
-      Your purchase was canceled.
-    </Content>
-  );
+const SubscriptionCanceledPage: NextPage = () => {
+  return <Page topbar={<Navigation />}>Your purchase was canceled.</Page>;
 };
 
-export default Page;
+export default SubscriptionCanceledPage;

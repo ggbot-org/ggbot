@@ -1,13 +1,10 @@
 import { Button, ButtonOnClick, Section } from "@ggbot2/design";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import {
-  Content,
   Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationBreadcrumbStrategy,
-  NavigationSettingsIcon,
+  Page,
   PleasePurchaseSubscription,
   SchedulingsForm,
   StrategyForm,
@@ -19,25 +16,12 @@ type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
+const StrategyPage: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   const router = useRouter();
 
   const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
   const [hasActiveSubscription, setHasActiveSubscription] = useState<boolean | undefined>();
-
-  const breadcrumbs = useMemo(
-    () => [
-      {
-        content: <NavigationBreadcrumbDashboard isLink />,
-      },
-      {
-        content: <NavigationBreadcrumbStrategy strategyKey={strategyKey} />,
-        current: true,
-      },
-    ],
-    [strategyKey]
-  );
 
   const onClickDelete = useCallback<ButtonOnClick>(
     (event) => {
@@ -49,27 +33,26 @@ const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
   );
 
   return (
-    <Content
-      topbar={<Navigation breadcrumbs={breadcrumbs} icon={<NavigationSettingsIcon />} />}
-      message={hasActiveSubscription === false ? <PleasePurchaseSubscription /> : null}
-    >
-      <div className="flex flex-wrap gap-2">
+    <Page topbar={<Navigation />}>
+      {hasActiveSubscription === false ? <PleasePurchaseSubscription /> : null}
+      <div>
         <StrategyForm strategyKey={strategyKey} whenCreated={whenCreated} />
         <SchedulingsForm setHasActiveSubscription={setHasActiveSubscription} strategyKey={strategyKey} />
         <StrategyProfits strategyKey={strategyKey} />
       </div>
 
-      <Section color="danger" header="Danger zone">
+      <Section>
+        <span>Danger zone</span>
         <menu>
           <li>
-            <Button color="danger" isSpinning={deleteIsSpinning} onClick={onClickDelete}>
+            <Button color="danger" isLoading={deleteIsSpinning} onClick={onClickDelete}>
               Delete strategy
             </Button>
           </li>
         </menu>
       </Section>
-    </Content>
+    </Page>
   );
 };
 
-export default Page;
+export default StrategyPage;
