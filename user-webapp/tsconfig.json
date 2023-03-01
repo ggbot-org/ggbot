@@ -14,6 +14,7 @@
       "_contexts": ["contexts/index.ts"],
       "_flow/*": ["flow/*"],
       "_hooks": ["hooks/index.ts"],
+      "_screens": ["screens/index.ts"],
       "_routing": ["routing/index.ts"]
     },
     "resolveJsonModule": true,
