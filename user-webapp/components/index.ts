@@ -1,4 +1,7 @@
 export * from "./AccountSettings";
+export * from "./AuthEnterForm";
+export * from "./AuthExitForm";
+export * from "./AuthVerifyForm";
 export * from "./BacktestCheckbox";
 export * from "./BacktestController";
 export * from "./BacktestControllerBinance";
@@ -8,6 +11,7 @@ export * from "./ButtonGoSettings";
 export * from "./ButtonShareStrategy";
 export * from "./ChartOhlcv";
 export * from "./DailyIntervalSelector";
+export * from "./ErrorMessages";
 export * from "./FrequencyInput";
 export * from "./LiveCheckbox";
 export * from "./MemoryController";

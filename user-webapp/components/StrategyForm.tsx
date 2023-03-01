@@ -112,7 +112,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <Box>
+    <Box title="Strategy">
       <EditableInputField
         name="name"
         label="Name"

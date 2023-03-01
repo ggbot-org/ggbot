@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick, Section } from "@ggbot2/design";
+import { Button, ButtonOnClick, Control, Field, Form } from "@ggbot2/design";
 import {
   StrategyScheduling,
   isAccountStrategy,
@@ -161,46 +161,44 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   }, [writeData, read]);
 
   return (
-    <Section header="Schedulings">
+    <Form onSubmit={onSubmit} title="Schedulings">
       <SchedulingsStatusBadges schedulings={currentSchedulings} />
-      <form onSubmit={onSubmit}>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4">
-            {schedulingItems.map((scheduling) => {
-              const { id } = scheduling;
-              return (
-                <SchedulingItem
-                  key={id}
-                  scheduling={scheduling}
-                  setFrequency={setSchedulingItemFrequency(id)}
-                  setStatus={setSchedulingItemStatus(id)}
-                  removeScheduling={removeSchedulingItem(id)}
-                />
-              );
-            })}
-          </div>
+      <div>
+        {schedulingItems.map((scheduling) => {
+          const { id } = scheduling;
+          return (
+            <SchedulingItem
+              key={id}
+              scheduling={scheduling}
+              setFrequency={setSchedulingItemFrequency(id)}
+              setStatus={setSchedulingItemStatus(id)}
+              removeScheduling={removeSchedulingItem(id)}
+            />
+          );
+        })}
+      </div>
 
-          <menu className="flex flex-row flex-wrap gap-4">
-            <li>
-              <Button onClick={addSchedulingItem}>Add</Button>
-            </li>
-          </menu>
+      <Field>
+        <Control>
+          <Button onClick={addSchedulingItem} size="small">
+            Add
+          </Button>
+        </Control>
+      </Field>
 
-          <menu className="flex flex-row flex-wrap gap-4">
-            <li>
-              <Button onClick={onClickSave} disabled={!canSubmit} isSpinning={writeIsPending}>
-                Save
-              </Button>
-            </li>
+      <Field isGrouped>
+        <Control>
+          <Button onClick={onClickSave} disabled={!canSubmit} isLoading={writeIsPending} size="small">
+            Save
+          </Button>
+        </Control>
 
-            <li>
-              <Button onClick={onClickCancel} disabled={!canCancel}>
-                Cancel
-              </Button>
-            </li>
-          </menu>
-        </div>
-      </form>
-    </Section>
+        <Control>
+          <Button onClick={onClickCancel} disabled={!canCancel}>
+            Cancel
+          </Button>
+        </Control>
+      </Field>
+    </Form>
   );
 };

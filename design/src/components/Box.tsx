@@ -2,13 +2,13 @@ import { FC, PropsWithChildren } from "react";
 import { classNames } from "../classNames";
 
 export type BoxProps = {
-  title: string;
+  title?: string;
 };
 
 export const Box: FC<PropsWithChildren<BoxProps>> = ({ children, title }) => {
   return (
     <div className={classNames("box")}>
-      <p className={classNames("title", "is-4")}>{title}</p>
+      {title && <p className={classNames("title", "is-4")}>{title}</p>}
       {children}
     </div>
   );

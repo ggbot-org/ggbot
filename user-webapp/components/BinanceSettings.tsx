@@ -160,9 +160,7 @@ export const BinanceSettings: FC = () => {
 
   return (
     <>
-      <Form onSubmit={onSubmit}>
-        <h2 className={classNames("title", "is-4")}>Binance API key</h2>
-
+      <Form onSubmit={onSubmit} title="Binance API">
         {hasBinanceApiConfig && (
           <>
             <InputField label={apiKeyLabel} defaultValue={currentApiKey} readOnly />

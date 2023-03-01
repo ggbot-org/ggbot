@@ -1,6 +1,4 @@
 import {
-  Button,
-  Buttons,
   Logo,
   Navbar,
   NavbarBrand,
@@ -17,7 +15,11 @@ import { useRouter } from "next/router";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 import { SettingsSectionId, route } from "_routing";
 
-export const Navigation: FC = memo(() => {
+type Props = {
+  noMenu?: boolean;
+};
+
+export const Navigation: FC<Props> = memo(({ noMenu }) => {
   const router = useRouter();
   const [menuIsActive, setMenuIsActive] = useState(false);
 
@@ -68,31 +70,33 @@ export const Navigation: FC = memo(() => {
         </NavbarItem>
       </NavbarBrand>
 
-      <NavbarMenu isActive={menuIsActive}>
-        <NavbarStart>
-          <NavbarItemAnchor onClick={goToDashboard}>Dashboard</NavbarItemAnchor>
+      {!noMenu && (
+        <NavbarMenu isActive={menuIsActive}>
+          <NavbarStart>
+            <NavbarItemAnchor onClick={goToDashboard}>Dashboard</NavbarItemAnchor>
 
-          <NavbarItem hasDropdown isHoverable>
-            <NavbarLink>Settings</NavbarLink>
-            <NavbarDropdown>
-              <NavbarItemAnchor onClick={goToSettings("account")}>Account</NavbarItemAnchor>
+            <NavbarItem hasDropdown isHoverable>
+              <NavbarLink>Settings</NavbarLink>
+              <NavbarDropdown>
+                <NavbarItemAnchor onClick={goToSettings("account")}>Account</NavbarItemAnchor>
 
-              <NavbarItemAnchor onClick={goToSettings("binance")}>Binance</NavbarItemAnchor>
+                <NavbarItemAnchor onClick={goToSettings("binance")}>Binance</NavbarItemAnchor>
 
-              <NavbarItemAnchor onClick={goToSettings("billing")}>Billing</NavbarItemAnchor>
-            </NavbarDropdown>
-          </NavbarItem>
+                <NavbarItemAnchor onClick={goToSettings("billing")}>Billing</NavbarItemAnchor>
+              </NavbarDropdown>
+            </NavbarItem>
 
-          <NavbarItem hasDropdown isHoverable>
-            <NavbarLink>Action</NavbarLink>
-            <NavbarDropdown>
-              <NavbarItemAnchor onClick={goToCreateStrategy}>New Strategy</NavbarItemAnchor>
+            <NavbarItem hasDropdown isHoverable>
+              <NavbarLink>Action</NavbarLink>
+              <NavbarDropdown>
+                <NavbarItemAnchor onClick={goToCreateStrategy}>New Strategy</NavbarItemAnchor>
 
-              <NavbarItemAnchor onClick={goToExit}>Exit</NavbarItemAnchor>
-            </NavbarDropdown>
-          </NavbarItem>
-        </NavbarStart>
-      </NavbarMenu>
+                <NavbarItemAnchor onClick={goToExit}>Exit</NavbarItemAnchor>
+              </NavbarDropdown>
+            </NavbarItem>
+          </NavbarStart>
+        </NavbarMenu>
+      )}
     </Navbar>
   );
 });

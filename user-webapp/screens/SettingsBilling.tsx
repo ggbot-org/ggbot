@@ -5,20 +5,21 @@ import { Navigation, Page, SubscriptionInfo, SubscriptionPurchase } from "_compo
 export const SettingsBilling: FC = () => {
   return (
     <Page topbar={<Navigation />}>
-      <Container>
-        <Section>
+      <Section>
+        <Container>
           <h1 className={classNames("title")}>Billing</h1>
+
           <Columns>
-            <Column size="half">
+            <Column>
               <SubscriptionInfo />
             </Column>
 
-            <Column size="half">
+            <Column>
               <SubscriptionPurchase />
             </Column>
           </Columns>
-        </Section>
-      </Container>
+        </Container>
+      </Section>
     </Page>
   );
 };

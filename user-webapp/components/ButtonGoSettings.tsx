@@ -18,7 +18,7 @@ export const ButtonGoSettings: FC<Props> = ({ section }) => {
   }, [router, section, setIsPending]);
 
   return (
-    <Button isSpinning={isPending} onClick={goToSettings}>
+    <Button isLoading={isPending} onClick={goToSettings}>
       Go to Settings
     </Button>
   );
