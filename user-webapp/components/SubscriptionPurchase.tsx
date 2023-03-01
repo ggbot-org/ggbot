@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Checkmark,
   Column,
@@ -11,7 +12,6 @@ import {
   SelectField,
   SelectOnChange,
   SelectProps,
-  classNames,
   useFormattedDate,
   Message,
 } from "@ggbot2/design";
@@ -176,9 +176,7 @@ export const SubscriptionPurchase: FC = () => {
   if (!canPurchaseSubscription) return null;
 
   return (
-    <div className={classNames("box")}>
-      <h2 className={classNames("title", "is-4")}>Purchase</h2>
-
+    <Box title="Purchase">
       {hasActiveSubscription && (
         <Message color="danger">Your subscription will expire soon, please consider renew it.</Message>
       )}
@@ -244,6 +242,6 @@ export const SubscriptionPurchase: FC = () => {
           </Button>
         </Control>
       </Field>
-    </div>
+    </Box>
   );
 };

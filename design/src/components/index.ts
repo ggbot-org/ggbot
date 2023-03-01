@@ -33,6 +33,7 @@ export {
   type SelectOnChange,
 } from "trunx";
 
+export * from "./Box";
 export * from "./Calendar";
 export * from "./Checkmark";
 export * from "./Color";

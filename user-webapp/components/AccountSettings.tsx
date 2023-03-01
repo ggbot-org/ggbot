@@ -1,9 +1,9 @@
 import {
+  Box,
   Button,
   ButtonOnClick,
   EditableInputField,
   InputField,
-  classNames,
   useFormattedDate,
 } from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
@@ -97,7 +97,7 @@ export const AccountSettings: FC = () => {
 
   return (
     <>
-      <div className={classNames("box")}>
+      <Box>
         <EditableInputField
           name="name"
           label="Nick name"
@@ -112,7 +112,7 @@ export const AccountSettings: FC = () => {
             <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
           ))}
         </>
-      </div>
+      </Box>
 
       <Button color="danger" onClick={onClickDelete}>
         Delete account

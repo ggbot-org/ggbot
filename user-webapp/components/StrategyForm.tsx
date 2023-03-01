@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonOnClick,
   Column,
@@ -7,7 +8,6 @@ import {
   EditableInputField,
   Field,
   InputField,
-  classNames,
   useFormattedDate,
 } from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
@@ -112,7 +112,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <div className={classNames("box")}>
+    <Box>
       <EditableInputField
         name="name"
         label="Name"
@@ -149,6 +149,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
           </Button>
         </Control>
       </Field>
-    </div>
+    </Box>
   );
 };
