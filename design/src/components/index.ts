@@ -21,6 +21,7 @@ export {
   NavbarStart,
   Section,
   Select,
+  type SelectProps,
   Table,
   Tag,
   Tags,

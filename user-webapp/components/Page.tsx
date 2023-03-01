@@ -52,7 +52,7 @@ export const Page: FC<Props> = ({
         <link rel="canonical" href={canonicalHref} />
       </Head>
 
-      <div>
+      <>
         {topbar}
 
         {message}
@@ -60,7 +60,7 @@ export const Page: FC<Props> = ({
         {isOffline && <p>The network connection has been lost.</p>}
 
         {children}
-      </div>
+      </>
 
       <Toaster position="top-right" />
     </>

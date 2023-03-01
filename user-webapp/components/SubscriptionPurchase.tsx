@@ -1,15 +1,19 @@
 import {
   Button,
   Checkmark,
-  DateTime,
+  Column,
+  Columns,
+  Control,
+  Field,
+  Flex,
   InputField,
   InputOnChange,
-  OutputField,
-  Pill,
-  Section,
   SelectField,
   SelectOnChange,
   SelectProps,
+  classNames,
+  useFormattedDate,
+  Message,
 } from "@ggbot2/design";
 import {
   AllowedCountryIsoCode2,
@@ -23,20 +27,14 @@ import {
 import { getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
-import { FC, ReactNode, useCallback, useMemo, useEffect, useState } from "react";
-import { useApiAction, useSubscription } from "_hooks";
+import { FC, useCallback, useContext, useMemo, useEffect, useState } from "react";
+import { SubscriptionContext } from "_contexts";
+import { useApiAction } from "_hooks";
 import { route } from "_routing";
 
-export const BillingSettings: FC = () => {
-  const endDayLabel = "end day";
-
-  const {
-    canPurchaseSubscription,
-    hasActiveSubscription,
-    readSubscriptionIsPending,
-    subscriptionEnd,
-    subscriptionPlan,
-  } = useSubscription();
+export const SubscriptionPurchase: FC = () => {
+  const { canPurchaseSubscription, hasActiveSubscription, readSubscriptionIsPending, subscriptionEnd } =
+    useContext(SubscriptionContext);
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
   const [setAccountCountry] = useApiAction.SetAccountCountry();
@@ -75,24 +73,6 @@ export const BillingSettings: FC = () => {
     };
   }, [account]);
 
-  const subscriptionInfo = useMemo<{ label: string; value: ReactNode }[]>(
-    () =>
-      [
-        {
-          label: "plan",
-          value: subscriptionPlan ?? "",
-        },
-        {
-          label: endDayLabel,
-          value: subscriptionEnd && <DateTime format="day" value={subscriptionEnd} />,
-        },
-      ].map(({ value, ...rest }) => ({
-        value: value ? value : <>&nbsp;</>,
-        ...rest,
-      })),
-    [subscriptionEnd, subscriptionPlan]
-  );
-
   const purchaseIsDisabled = useMemo(() => {
     if (!country) return true;
     if (!isNaturalNumber(numMonths)) return true;
@@ -110,6 +90,12 @@ export const BillingSettings: FC = () => {
       .months();
   }, [numMonths, readSubscriptionIsPending, subscriptionEnd]);
 
+  const formattedNewSubscriptionEnd = useFormattedDate(newSubscriptionEnd, "day");
+
+  const isYearlyPurchase = useMemo(
+    () => (typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined),
+    [numMonths]
+  );
   const onChangeNumMonths = useCallback<InputOnChange>(
     (event) => {
       const value = event.target.value;
@@ -187,46 +173,32 @@ export const BillingSettings: FC = () => {
     if (numMonths) setFormattedTotalPrice(format(totalPurchase(numMonths)));
   }, [formattedMonthlyPrice, numMonths]);
 
+  if (!canPurchaseSubscription) return null;
+
   return (
-    <>
+    <div className={classNames("box")}>
+      <h2 className={classNames("title", "is-4")}>Purchase</h2>
+
       {hasActiveSubscription && (
-        <Section
-          header={
-            <div className="inline-flex items-center gap-4">
-              <span>Subscription</span>
-              <div>
-                <Pill color="primary">active</Pill>
-              </div>
-            </div>
-          }
-        >
-          <div>
-            {subscriptionInfo.map(({ label, value }, i) => (
-              <OutputField key={i} label={label}>
-                {value}
-              </OutputField>
-            ))}
-          </div>
-        </Section>
+        <Message color="danger">Your subscription will expire soon, please consider renew it.</Message>
       )}
 
-      {canPurchaseSubscription && (
-        <Section header="Subscribe">
-          {hasActiveSubscription && <p>Your subscription will expire soon, please consider renew it.</p>}
+      <Message>
+        <p>Price for 1 month is {formattedMonthlyPrice}.</p>
 
-          <p>Price for 1 month is {formattedMonthlyPrice}.</p>
+        <Flex>
+          <span>
+            Go for 12 months subscription and get 1 month for <em>free</em>.
+          </span>
 
-          <div className="text-lg flex gap-1 my-2">
-            <div>
-              Go for 12 months subscription and get 1 month for <em>free</em>.
-            </div>
-            <Checkmark
-              ok={typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined}
-            />
-          </div>
+          <Checkmark ok={isYearlyPurchase} />
+        </Flex>
+      </Message>
 
+      <Columns>
+        <Column isNarrow>
           <InputField
-            label="num months"
+            label="Num months"
             value={numMonths}
             type="number"
             onChange={onChangeNumMonths}
@@ -234,37 +206,44 @@ export const BillingSettings: FC = () => {
             max={12}
             step={1}
           />
+        </Column>
 
-          <OutputField label={endDayLabel}>
-            <DateTime format="day" value={newSubscriptionEnd} />
-          </OutputField>
+        <Column>
+          <InputField label="End day" defaultValue={formattedNewSubscriptionEnd} readOnly />
+        </Column>
+      </Columns>
 
-          <SelectField
-            disabled={selectCountryIsDisabled}
-            label="country"
-            name="country"
-            onChange={onChangeCountry}
-            options={countryOptions}
-            value={country}
-          />
+      <SelectField
+        disabled={selectCountryIsDisabled}
+        label="Country"
+        name="country"
+        onChange={onChangeCountry}
+        options={countryOptions}
+        value={country}
+      />
 
-          <OutputField label="email">{email}</OutputField>
+      <InputField label="Email" defaultValue={email} readOnly />
 
-          <OutputField label="Total price">{formattedTotalPrice}</OutputField>
+      <InputField
+        label="Total price"
+        defaultValue={formattedTotalPrice}
+        readOnly
+        color={isYearlyPurchase ? "success" : undefined}
+        help={isYearlyPurchase ? <p>One month for free.</p> : <>&nbsp;</>}
+      />
 
-          <menu>
-            <li>
-              <Button
-                disabled={purchaseIsDisabled}
-                onClick={onClickPurchase}
-                isSpinning={purchaseIsPending}
-              >
-                Purchase
-              </Button>
-            </li>
-          </menu>
-        </Section>
-      )}
-    </>
+      <Field>
+        <Control>
+          <Button
+            color="primary"
+            disabled={purchaseIsDisabled}
+            onClick={onClickPurchase}
+            isLoading={purchaseIsPending}
+          >
+            Purchase
+          </Button>
+        </Control>
+      </Field>
+    </div>
   );
 };

@@ -4,21 +4,24 @@ import {
   ButtonOnClick,
   Checkmark,
   CheckmarkProps,
+  Control,
+  Field,
+  Form,
+  FormOnSubmit,
   InputField,
-  OutputField,
-  Section,
+  classNames,
 } from "@ggbot2/design";
 import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { useRouter } from "next/router";
-import { FC, FormEventHandler, ReactNode, useCallback, useEffect, useMemo } from "react";
+import { FC, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
 
 export const BinanceSettings: FC = () => {
   const router = useRouter();
 
-  const apiKeyLabel = "API Key";
+  const apiKeyLabel = "API key";
 
   const [readConfig, { data: binanceApiConfig, isPending: readIsPending }] =
     useApiAction.ReadBinanceApiConfig();
@@ -119,7 +122,7 @@ export const BinanceSettings: FC = () => {
     [enableSpotAndMarginTrading, enableWithdrawals, enableReading, ipRestrict]
   );
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
       if (isPending) return;
@@ -156,52 +159,45 @@ export const BinanceSettings: FC = () => {
   }, [readConfig]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <form onSubmit={onSubmit}>
+    <>
+      <Form onSubmit={onSubmit}>
+        <h2 className={classNames("title", "is-4")}>Binance API key</h2>
+
         {hasBinanceApiConfig && (
-          <Section header="Binance API">
-            <OutputField label={apiKeyLabel}>{currentApiKey}</OutputField>
+          <>
+            <InputField label={apiKeyLabel} defaultValue={currentApiKey} readOnly />
 
-            <menu className="mb-8">
-              <li>
-                <Button isSpinning={testIsPending}>test</Button>
-              </li>
-            </menu>
+            <Field>
+              <Control>
+                <Button isLoading={testIsPending}>Test</Button>
+              </Control>
+            </Field>
 
-            <div className="flex flex-col gap-2">
+            <div>
               {permissionItems.map(({ description, checkmark: checkmarkProps }, i) => (
-                <div key={i} className="flex justify-between">
+                <div key={i}>
                   {description}
                   <Checkmark {...checkmarkProps} />
                 </div>
               ))}
             </div>
-          </Section>
+          </>
         )}
+
         {hasNoBinanceApiConfig && (
-          <Section header="New Binance API">
+          <>
             <InputField name="apiKey" label={apiKeyLabel} required readOnly={isPending} />
             <InputField label="API Secret" name="apiSecret" required readOnly={isPending} />
-            <menu>
-              <li>
-                <Button isSpinning={createIsPending}>create</Button>
-              </li>
-            </menu>
-          </Section>
+            <Button isLoading={createIsPending}>Create</Button>
+          </>
         )}
-      </form>
+      </Form>
 
       {hasBinanceApiConfig ? (
-        <Section color="danger" header="Danger zone">
-          <menu>
-            <li>
-              <Button color="danger" onClick={onClickDelete}>
-                Delete API key
-              </Button>
-            </li>
-          </menu>
-        </Section>
+        <Button color="danger" onClick={onClickDelete}>
+          Delete API key
+        </Button>
       ) : null}
-    </div>
+    </>
   );
 };

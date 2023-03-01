@@ -1,4 +1,11 @@
-import { Button, ButtonOnClick, EditableInputField, InputField, useFormattedDate } from "@ggbot2/design";
+import {
+  Button,
+  ButtonOnClick,
+  EditableInputField,
+  InputField,
+  classNames,
+  useFormattedDate,
+} from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -89,27 +96,27 @@ export const AccountSettings: FC = () => {
   }, [readAccount]);
 
   return (
-    <div className="box">
-      <span>Profile</span>
+    <>
+      <div className={classNames("box")}>
+        <EditableInputField
+          name="name"
+          label="Nick name"
+          value={currentName}
+          setValue={setName}
+          readOnly={readOnly}
+          isSpinning={renameIsPending}
+        />
 
-      <EditableInputField
-        name="name"
-        label="Nick name"
-        value={currentName}
-        setValue={setName}
-        readOnly={readOnly}
-        isSpinning={renameIsPending}
-      />
-
-      <>
-        {accountInfo.map(({ label, value }, i) => (
-          <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
-        ))}
-      </>
+        <>
+          {accountInfo.map(({ label, value }, i) => (
+            <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
+          ))}
+        </>
+      </div>
 
       <Button color="danger" onClick={onClickDelete}>
         Delete account
       </Button>
-    </div>
+    </>
   );
 };

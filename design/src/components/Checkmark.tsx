@@ -1,4 +1,5 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
+import { classNames } from "../classNames";
 
 export type CheckmarkProps = {
   label?: string;
@@ -6,16 +7,12 @@ export type CheckmarkProps = {
 };
 
 export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => {
-  const className = useMemo(
-    () =>
-      ["mx-2 flex gap-2", ok ? "text-cyan-400" : "text-yellow-400"].join(" "),
-    [ok]
-  );
-
   return ok === undefined ? null : (
-    <div className={className}>
+    <div>
       <span>{label}</span>
-      <span>{ok ? "✓" : "✗"}</span>
+      <span className={classNames({ "has-text-success": ok, "has-text-danger": !ok }, "mx-2")}>
+        {ok ? "✓" : "✗"}
+      </span>
     </div>
   );
 };
