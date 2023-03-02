@@ -28,6 +28,6 @@ export const route = {
   settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) => `/strategy/${strategyKind}/${strategyId}`,
   subscriptionCanceledPage: () => "/subscription/canceled",
-  subscriptionThankYouPage: () => "/subscription/thank-you",
+  subscriptionPurchasedPage: () => "/subscription/purchased",
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) => `/view/flow/${strategyKind}/${strategyId}`,
 };

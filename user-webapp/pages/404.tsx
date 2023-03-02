@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import { PageNotFound } from "_screens";
+import { ErrorPageNotFound } from "_screens";
 
 const Page: NextPage = () => {
-  return <PageNotFound />;
+  return <ErrorPageNotFound />;
 };
 
 export default Page;

@@ -1,29 +1,13 @@
 import { NextPage } from "next";
-import { Navigation, Page } from "_components";
 import { StrategyKey, requireAuthenticationAndGetStrategyKey } from "_routing";
+import { ErrorStrategyNotFound } from "_screens";
 
 type ServerSideProps = StrategyKey;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyKey;
 
-const StrategyNotFoundPage: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
-  return (
-    <Page topbar={<Navigation />}>
-      <div>
-        <span>
-          Strategy <em>not found</em>
-        </span>
-        <div>
-          <dl>
-            <dt>kind</dt>
-            <dd>{strategyKind}</dd>
-            <dt>id</dt>
-            <dd>{strategyId}</dd>
-          </dl>
-        </div>
-      </div>
-    </Page>
-  );
+const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
+  return <ErrorStrategyNotFound strategyKind={strategyKind} strategyId={strategyId} />;
 };
 
-export default StrategyNotFoundPage;
+export default Page;

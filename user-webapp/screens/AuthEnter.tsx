@@ -3,7 +3,7 @@ import { EmailAddress } from "@ggbot2/models";
 import { FC, useMemo, useState } from "react";
 import { AuthEnterForm, AuthVerifyForm, Navigation, Page } from "_components";
 
-export const AuthEnter: FC = () => {
+export const AuthEnterScreen: FC = () => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
 
   const emailSent = useMemo(() => email !== undefined, [email]);

@@ -3,7 +3,7 @@ import { FC, useCallback } from "react";
 import { Navigation, Page } from "_components";
 import { useApiAction, useGoBack } from "_hooks";
 
-export const DeleteBinanceApi: FC = () => {
+export const DeleteBinanceApiConfig: FC = () => {
   const goBack = useGoBack();
 
   const [deleteBinanceApiKey, { isPending }] = useApiAction.DeleteBinanceApiConfig();

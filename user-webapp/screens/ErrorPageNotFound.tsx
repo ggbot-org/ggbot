@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Page, Navigation } from "_components";
 import { useGoBack } from "_hooks";
 
-export const PageNotFound: FC = () => {
+export const ErrorPageNotFound: FC = () => {
   const goBack = useGoBack();
 
   return (
