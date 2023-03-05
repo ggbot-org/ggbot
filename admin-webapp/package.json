@@ -9,7 +9,6 @@
     "cleanup": "rm -rf .next",
     "lint": "next lint",
     "start": "next start",
-    "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {

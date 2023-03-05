@@ -18,7 +18,6 @@
     "next:build": "next build",
     "next:export": "next export",
     "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
-    "test": "npm run tsc--noEmit; npm run lint",
     "tsc--build": "tsc --build tsconfig.build.json",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
