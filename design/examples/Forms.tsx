@@ -10,7 +10,7 @@ import {
   SelectField,
   SelectOnChange,
   classNames,
-} from "../src";
+} from "@ggbot2/design";
 
 export const SimpleForm: FC = () => {
   const [isPending, setIsPending] = useState(false);

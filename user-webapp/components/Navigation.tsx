@@ -1,7 +1,5 @@
 import {
-  Logo,
   Navbar,
-  NavbarBrand,
   NavbarDropdown,
   NavbarItem,
   NavbarItemAnchor,
@@ -9,7 +7,6 @@ import {
   NavbarMenu,
   NavbarProps,
   NavbarStart,
-  classNames,
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, memo, useCallback, useEffect, useState } from "react";
@@ -60,16 +57,7 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   }, []);
 
   return (
-    <Navbar color="black" isFixedTop onClick={toggleMenu}>
-      <NavbarBrand>
-        <NavbarItem className={classNames("is-unselectable")}>
-          <Logo size={24} />
-          <em>
-            ggbot<b className={classNames("has-text-brand")}>2</b>
-          </em>
-        </NavbarItem>
-      </NavbarBrand>
-
+    <Navbar onClick={toggleMenu}>
       {!noMenu && (
         <NavbarMenu isActive={menuIsActive}>
           <NavbarStart>

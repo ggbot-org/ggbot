@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button, Buttons } from "../src";
+import { Button, Buttons } from "@ggbot2/design";
 
 export const ButtonColors: FC = () => {
   return (

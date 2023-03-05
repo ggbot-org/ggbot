@@ -13,8 +13,6 @@ export {
   Input,
   Message,
   type MessageProps,
-  Navbar,
-  NavbarBrand,
   NavbarDropdown,
   NavbarItem,
   NavbarItemAnchor,
@@ -47,5 +45,6 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./InputField";
 export * from "./Logo";
+export * from "./Navbar";
 export * from "./Pill";
 export * from "./SelectField";

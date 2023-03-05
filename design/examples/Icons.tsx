@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { Icon, iconNames } from "../src";
+import { Icon, iconNames } from "@ggbot2/design";
 
 export const Icons: FC = () => {
   return (
-    <div className="flex flex-row p-2">
+    <div>
       {iconNames.map((name) => (
         <Icon key={name} name={name} />
       ))}
