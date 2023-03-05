@@ -5,6 +5,7 @@ import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@g
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
+import Link from "next/link";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -15,12 +16,11 @@ import {
   LiveCheckbox,
   LiveCheckboxOnChange,
   MemoryController,
-  StrategyItem,
   StrategyExecutionLog,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { OneSectionLayout, PageLayout } from "_layouts";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -39,6 +39,8 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
   });
+
+  const strategyHref = useMemo(() => route.strategyPage(strategyKey), [strategyKey]);
 
   const [backtesting, backtestingDispatch] = useBacktesting({
     ...strategyKey,
@@ -192,7 +194,9 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
   return (
     <PageLayout>
       <div>
-        <StrategyItem strategyKey={strategyKey}>{name}</StrategyItem>
+        <Link href={strategyHref} passHref tabIndex={0}>
+          {name}
+        </Link>
 
         {backtesting && (
           <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />

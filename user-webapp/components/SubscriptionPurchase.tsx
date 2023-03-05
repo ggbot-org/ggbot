@@ -9,11 +9,12 @@ import {
   Flex,
   InputField,
   InputOnChange,
+  Message,
   SelectField,
   SelectOnChange,
   SelectProps,
+  Title,
   useFormattedDate,
-  Message,
 } from "@ggbot2/design";
 import {
   AllowedCountryIsoCode2,
@@ -176,7 +177,9 @@ export const SubscriptionPurchase: FC = () => {
   if (!canPurchaseSubscription) return null;
 
   return (
-    <Box title="Purchase">
+    <Box>
+      <Title>Purchase</Title>
+
       {hasActiveSubscription && (
         <Message color="danger">Your subscription will expire soon, please consider renew it.</Message>
       )}

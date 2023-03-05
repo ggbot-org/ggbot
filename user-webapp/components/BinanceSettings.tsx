@@ -9,6 +9,7 @@ import {
   Form,
   FormOnSubmit,
   InputField,
+  Title,
 } from "@ggbot2/design";
 import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
@@ -159,7 +160,9 @@ export const BinanceSettings: FC = () => {
 
   return (
     <>
-      <Form onSubmit={onSubmit} title="Binance API">
+      <Form onSubmit={onSubmit}>
+        <Title>Binance API</Title>
+
         {hasBinanceApiConfig && (
           <>
             <InputField label={apiKeyLabel} defaultValue={currentApiKey} readOnly />

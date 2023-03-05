@@ -7,11 +7,11 @@ type Props = {
   count?: number;
 };
 
-type SchedulingStatusBadgeColor = Extract<TagProps["color"], "primary" | "danger" | "white">;
+type SchedulingStatusBadgeColor = Extract<TagProps["color"], "primary" | "danger" | "light">;
 
 const schedulingStatusColor: Record<SchedulingStatus, SchedulingStatusBadgeColor> = {
   active: "primary",
-  inactive: "white",
+  inactive: "light",
   suspended: "danger",
 };
 
@@ -28,7 +28,7 @@ export const SchedulingStatusBadge: FC<Props> = ({ schedulingStatus, count }) =>
   }>(() => {
     if (!schedulingStatus)
       return {
-        color: "white",
+        color: "light",
         label: <>&npsp;</>,
       };
     const label = schedulingStatusLabel[schedulingStatus];

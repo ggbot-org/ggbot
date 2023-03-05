@@ -1,9 +1,10 @@
+import { Control, Field } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import { FC, useMemo } from "react";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
 type Props = {
-  schedulings: AccountStrategy["schedulings"] | undefined;
+  schedulings: AccountStrategy["schedulings"];
 };
 
 export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
@@ -11,22 +12,32 @@ export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
     let numActive = 0;
     let numInactive = 0;
     let numSuspended = 0;
-    if (!schedulings) return { numActive, numInactive, numSuspended, numSchedulings: 0 };
-    for (const scheduling of schedulings) {
-      if (scheduling.status === "active") numActive++;
-      if (scheduling.status === "inactive") numInactive++;
-      if (scheduling.status === "suspended") numSuspended++;
+
+    for (const { status } of schedulings) {
+      if (status === "active") numActive++;
+      if (status === "inactive") numInactive++;
+      if (status === "suspended") numSuspended++;
     }
     return { numActive, numInactive, numSuspended };
   }, [schedulings]);
 
+  if (schedulings.length === 0) return <SchedulingStatusBadge schedulingStatus="inactive" />;
+
+  if (schedulings.length === 1) return <SchedulingStatusBadge schedulingStatus={schedulings[0].status} />;
+
   return (
-    <div className="flex flex-row gap-2">
-      <SchedulingStatusBadge schedulingStatus="suspended" count={numSuspended} />
+    <Field isGrouped="multiline">
+      <Control>
+        <SchedulingStatusBadge schedulingStatus="suspended" count={numSuspended} />
+      </Control>
 
-      <SchedulingStatusBadge schedulingStatus="inactive" count={numInactive} />
+      <Control>
+        <SchedulingStatusBadge schedulingStatus="inactive" count={numInactive} />
+      </Control>
 
-      <SchedulingStatusBadge schedulingStatus="active" count={numActive} />
-    </div>
+      <Control>
+        <SchedulingStatusBadge schedulingStatus="active" count={numActive} />
+      </Control>
+    </Field>
   );
 };

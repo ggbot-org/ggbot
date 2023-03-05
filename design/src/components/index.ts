@@ -1,4 +1,5 @@
 export {
+  Box,
   Breadcrumb,
   Button,
   Buttons,
@@ -34,7 +35,6 @@ export {
   type SelectOnChange,
 } from "trunx";
 
-export * from "./Box";
 export * from "./Calendar";
 export * from "./Checkmark";
 export * from "./DateTime";
@@ -46,5 +46,5 @@ export * from "./Icon";
 export * from "./InputField";
 export * from "./Logo";
 export * from "./Navbar";
-export * from "./Pill";
 export * from "./SelectField";
+export * from "./Title";

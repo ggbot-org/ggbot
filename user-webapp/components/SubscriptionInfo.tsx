@@ -1,4 +1,4 @@
-import { Box, Control, Field, InputField, Pill, useFormattedDate } from "@ggbot2/design";
+import { Box, Control, Field, InputField, Tag, Title, useFormattedDate } from "@ggbot2/design";
 import { FC, useContext } from "react";
 import { SubscriptionContext } from "_contexts";
 
@@ -8,10 +8,12 @@ export const SubscriptionInfo: FC = () => {
   const formattedSubscriptionEnd = useFormattedDate(subscriptionEnd, "day");
 
   return (
-    <Box title="Subscription">
+    <Box>
+      <Title>Subscription</Title>
+
       <Field>
         <Control>
-          <Pill color="primary">active</Pill>
+          <Tag color="primary">active</Tag>
         </Control>
       </Field>
 
