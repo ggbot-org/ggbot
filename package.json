@@ -56,6 +56,7 @@
     "cleanup:website": "npm run cleanup --workspace website",
     "deploy:design": "npm run deploy --workspace design",
     "deploy:website": "npm run deploy --workspace website",
+    "design": "npm run dev --workspace design",
     "devserver:admin-webapp": "npm run dev --workspace admin-webapp",
     "devserver:design": "npm run dev --workspace design",
     "devserver:user-webapp": "npm run dev --workspace user-webapp",
