@@ -1,15 +1,16 @@
+import { Message } from "@ggbot2/design";
 import { FC } from "react";
-import { Navigation, Page } from "_components";
+import { OneSectionLayout } from "_layouts";
 import { StrategyKey } from "_routing";
 
 type Props = StrategyKey;
 
-export const ErrorStrategyNotFound: FC<Props> = ({ strategyKind, strategyId }) => {
+export const ErrorStrategyNotOwnedPage: FC<Props> = ({ strategyKind, strategyId }) => {
   return (
-    <Page topbar={<Navigation />}>
-      <div>
+    <OneSectionLayout>
+      <Message>
         <span>
-          Strategy <em>not found</em>
+          Your account is <b>not</b> <em>owner</em> of this strategy.
         </span>
         <div>
           <dl>
@@ -19,7 +20,7 @@ export const ErrorStrategyNotFound: FC<Props> = ({ strategyKind, strategyId }) =
             <dd>{strategyId}</dd>
           </dl>
         </div>
-      </div>
-    </Page>
+      </Message>
+    </OneSectionLayout>
   );
 };

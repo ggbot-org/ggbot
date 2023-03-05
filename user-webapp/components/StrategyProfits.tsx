@@ -1,4 +1,3 @@
-import { Section } from "@ggbot2/design";
 import { BalanceChangeEvents, Orders, isOrders, isStrategyBalance } from "@ggbot2/models";
 import { TimeInterval, truncateTime, now, getTime, timeIntervalToDay } from "@ggbot2/time";
 import { FC, useEffect, useMemo } from "react";
@@ -53,13 +52,11 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
   }, [dayInterval, readOrders, strategyKey]);
 
   return (
-    <Section header="Profits">
-      <ProfitSummary
-        balanceHistory={balanceHistory}
-        timeInterval={timeInterval}
-        orderHistory={orderHistory}
-        strategyKind={strategyKind}
-      />
-    </Section>
+    <ProfitSummary
+      balanceHistory={balanceHistory}
+      timeInterval={timeInterval}
+      orderHistory={orderHistory}
+      strategyKind={strategyKind}
+    />
   );
 };

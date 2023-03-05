@@ -1,11 +1,11 @@
 import { NextPage } from "next";
 import { requireAuthentication } from "_routing";
-import { CreateStrategy } from "_screens";
+import { CreateStrategyPage } from "_pages";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return <CreateStrategy />;
+  return <CreateStrategyPage />;
 };
 
 export default Page;

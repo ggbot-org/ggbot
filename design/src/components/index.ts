@@ -3,6 +3,7 @@ export {
   Button,
   Buttons,
   Checkbox,
+  type CheckboxProps,
   Column,
   Columns,
   Container,
@@ -11,6 +12,7 @@ export {
   Flex,
   Input,
   Message,
+  type MessageProps,
   Navbar,
   NavbarBrand,
   NavbarDropdown,
@@ -24,6 +26,7 @@ export {
   type SelectProps,
   Table,
   Tag,
+  type TagProps,
   Tags,
   type ButtonOnClick,
   type ButtonProps,
@@ -36,7 +39,6 @@ export {
 export * from "./Box";
 export * from "./Calendar";
 export * from "./Checkmark";
-export * from "./Color";
 export * from "./DateTime";
 export * from "./EditableInput";
 export * from "./Field";

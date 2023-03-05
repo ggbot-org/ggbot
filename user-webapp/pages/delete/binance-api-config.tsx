@@ -1,11 +1,13 @@
 import { NextPage } from "next";
-import { DeleteBinanceApiConfig } from "_screens";
+import { DeleteBinanceApiConfigPage } from "_pages";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
+// TODO remove this page, use a Modal
+
 const Page: NextPage = () => {
-  return <DeleteBinanceApiConfig />;
+  return <DeleteBinanceApiConfigPage />;
 };
 
 export default Page;

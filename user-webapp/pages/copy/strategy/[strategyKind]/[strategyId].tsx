@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { CopyStrategyScreen } from "_screens";
+import { CopyStrategyPage } from "_pages";
 import { StrategyInfo, requireAuthenticationAndGetStrategyInfo } from "_routing";
 
 type ServerSideProps = StrategyInfo;
@@ -7,7 +7,7 @@ type ServerSideProps = StrategyInfo;
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
 const Page: NextPage<ServerSideProps> = (props) => {
-  return <CopyStrategyScreen {...props} />;
+  return <CopyStrategyPage {...props} />;
 };
 
 export default Page;

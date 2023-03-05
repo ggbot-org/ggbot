@@ -1,11 +1,11 @@
 import { NextPage } from "next";
 import { requireAuthentication } from "_routing";
-import { SubscriptionPurchased } from "_screens";
+import { SubscriptionPurchasedPage } from "_pages";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return <SubscriptionPurchased />;
+  return <SubscriptionPurchasedPage />;
 };
 
 export default Page;

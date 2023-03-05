@@ -7,7 +7,6 @@ export * from "./DeleteBinanceApiConfig";
 export * from "./DeleteStrategy";
 export * from "./EditStrategyFlow";
 export * from "./ErrorInvalidStrategyKey";
-export * from "./ErrorPageNotFound";
 export * from "./ErrorStrategyNotFound";
 export * from "./ErrorStrategyNotOwned";
 export * from "./SettingsAccount";

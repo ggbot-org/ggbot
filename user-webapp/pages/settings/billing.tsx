@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { SubscriptionContext } from "_contexts";
 import { useSubscription } from "_hooks";
-import { SettingsBilling } from "_screens";
+import { SettingsBillingPage } from "_pages";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
@@ -11,7 +11,7 @@ const Page: NextPage = () => {
 
   return (
     <SubscriptionContext.Provider value={subscription}>
-      <SettingsBilling />
+      <SettingsBillingPage />
     </SubscriptionContext.Provider>
   );
 };

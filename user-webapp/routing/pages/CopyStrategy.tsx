@@ -18,7 +18,7 @@ import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const CopyStrategyScreen: FC<Props> = ({ strategyKey, name: strategyName, whenCreated }) => {
+export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, whenCreated }) => {
   const router = useRouter();
 
   const [isDisabled, setIsDisabled] = useState(true);

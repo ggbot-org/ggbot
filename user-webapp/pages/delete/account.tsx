@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import { DeleteAccount } from "_screens";
+import { DeleteAccountPage } from "_pages";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return <DeleteAccount />;
+  return <DeleteAccountPage />;
 };
 
 export default Page;

@@ -1,16 +1,14 @@
+import { Message } from "@ggbot2/design";
 import { FC } from "react";
-import { Navigation, Page } from "_components";
+import { OneSectionLayout } from "_layouts";
 import { InvalidStrategyKey } from "_routing";
 
 type Props = Pick<InvalidStrategyKey, "strategyKind" | "strategyId">;
 
-export const ErrorInvalidStrategyKey: FC<Props> = ({ strategyKind, strategyId }) => {
+export const ErrorInvalidStrategyKeyPage: FC<Props> = ({ strategyKind, strategyId }) => {
   return (
-    <Page topbar={<Navigation />}>
-      <div>
-        <span>
-          Invalid <em>strategy key</em>
-        </span>
+    <OneSectionLayout>
+      <Message header="Invalid strategy key">
         <div>
           <dl>
             <dt>kind</dt>
@@ -19,7 +17,7 @@ export const ErrorInvalidStrategyKey: FC<Props> = ({ strategyKind, strategyId })
             <dd>{strategyId}</dd>
           </dl>
         </div>
-      </div>
-    </Page>
+      </Message>
+    </OneSectionLayout>
   );
 };

@@ -13,8 +13,9 @@
       "_components": ["components/index.ts"],
       "_contexts": ["contexts/index.ts"],
       "_flow/*": ["flow/*"],
+      "_layouts": ["layouts/index.ts"],
       "_hooks": ["hooks/index.ts"],
-      "_screens": ["screens/index.ts"],
+      "_pages": ["routing/pages/index.ts"],
       "_routing": ["routing/index.ts"]
     },
     "resolveJsonModule": true,

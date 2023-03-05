@@ -1,9 +1,8 @@
 // TODO remove this component, use Tag from trunx
 import { FC, HTMLAttributes, useMemo } from "react";
-import { Color } from "./Color";
 
 export type PillProps = Omit<HTMLAttributes<HTMLSpanElement>, "className"> & {
-  color?: Extract<Color, "primary" | "neutral" | "danger">;
+  color?: "primary" | "neutral" | "danger";
 };
 
 function colorClassNames({ color }: Pick<PillProps, "color">) {

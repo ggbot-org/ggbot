@@ -64,7 +64,7 @@ export const Strategies: FC = () => {
         <h2 className="text-xl">strategies</h2>
         <menu>
           <li>
-            <Button isSpinning={newStrategyIsLoading} onClick={onClickNewStrategy}>
+            <Button isLoading={newStrategyIsLoading} onClick={onClickNewStrategy}>
               new strategy
             </Button>
           </li>

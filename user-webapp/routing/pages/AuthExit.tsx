@@ -2,7 +2,7 @@ import { Column, Columns, Container, Section } from "@ggbot2/design";
 import { FC } from "react";
 import { AuthExitForm, Navigation, Page } from "_components";
 
-export const AuthExitScreen: FC = () => {
+export const AuthExitPage: FC = () => {
   return (
     <Page topbar={<Navigation noMenu />}>
       <Container>

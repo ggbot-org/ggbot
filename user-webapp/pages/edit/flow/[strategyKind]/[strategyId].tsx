@@ -11,7 +11,7 @@ import {
   redirectToErrorPageStrategyNotOwned,
   strategyKeyFromRouterParams,
 } from "_routing";
-import { EditStrategyFlow } from "_screens";
+import { EditStrategyFlowPage } from "_pages";
 
 type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
 };
 
 const Page: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) => {
-  return <EditStrategyFlow binanceSymbols={binanceSymbols} name={name} strategyKey={strategyKey} />;
+  return <EditStrategyFlowPage binanceSymbols={binanceSymbols} name={name} strategyKey={strategyKey} />;
 };
 
 export default Page;

@@ -1,5 +1,5 @@
 import { SchedulingStatus } from "@ggbot2/models";
-import { Color, Pill } from "@ggbot2/design";
+import { Tags, Tag, TagProps } from "@ggbot2/design";
 import { FC, ReactNode, useMemo } from "react";
 
 type Props = {
@@ -7,9 +7,11 @@ type Props = {
   count?: number;
 };
 
-const schedulingStatusColor: Record<SchedulingStatus, Color> = {
+type SchedulingStatusBadgeColor = Extract<TagProps["color"], "primary" | "danger" | "white">;
+
+const schedulingStatusColor: Record<SchedulingStatus, SchedulingStatusBadgeColor> = {
   active: "primary",
-  inactive: "neutral",
+  inactive: "white",
   suspended: "danger",
 };
 
@@ -21,12 +23,12 @@ const schedulingStatusLabel: Record<SchedulingStatus, string> = {
 
 export const SchedulingStatusBadge: FC<Props> = ({ schedulingStatus, count }) => {
   const { color, label } = useMemo<{
-    color: Color;
+    color: SchedulingStatusBadgeColor;
     label: ReactNode;
   }>(() => {
     if (!schedulingStatus)
       return {
-        color: "neutral",
+        color: "white",
         label: <>&npsp;</>,
       };
     const label = schedulingStatusLabel[schedulingStatus];
@@ -34,19 +36,14 @@ export const SchedulingStatusBadge: FC<Props> = ({ schedulingStatus, count }) =>
     return { label, color };
   }, [schedulingStatus]);
 
-  if (count === undefined)
-    return (
-      <div>
-        <Pill color={color}>{label}</Pill>
-      </div>
-    );
+  if (count === undefined) return <Tag color={color}>{label}</Tag>;
 
   if (count === 0) return null;
 
   return (
-    <div>
-      <Pill color={color}>{label}</Pill>
-      <Pill color={color}>{count}</Pill>
-    </div>
+    <Tags hasAddons>
+      <Tag color={color}>{label}</Tag>
+      <Tag color={color}>{count}</Tag>
+    </Tags>
   );
 };

@@ -1,7 +1,6 @@
-import { readSession } from "@ggbot2/cookies";
-import { ErrorAccountItemNotFound, readStrategy } from "@ggbot2/database";
+import { ErrorAccountItemNotFound } from "@ggbot2/database";
 import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
-import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@ggbot2/models";
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
@@ -12,72 +11,27 @@ import {
   BacktestCheckbox,
   BacktestCheckboxOnChange,
   BacktestController,
+  ButtonGoSettings,
   LiveCheckbox,
   LiveCheckboxOnChange,
   MemoryController,
-  Navigation,
-  Page,
-  PleaseConfigureBinanceApi,
   StrategyItem,
   StrategyExecutionLog,
 } from "_components";
-import { binance } from "_flow/binance";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
-import {
-  StrategyInfo,
-  redirectToAuthenticationPage,
-  redirectToErrorPageInvalidStrategyKey,
-  redirectToErrorPageStrategyNotFound,
-  redirectToErrorPageStrategyNotOwned,
-  strategyKeyFromRouterParams,
-} from "_routing";
+import { OneSectionLayout, PageLayout } from "_layouts";
+import { StrategyInfo } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
-  const session = readSession(req.cookies);
-  if (!session) return redirectToAuthenticationPage();
-
-  const strategyKey = strategyKeyFromRouterParams(params);
-  if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
-
-  const strategy = await readStrategy(strategyKey);
-  if (!strategy) return redirectToErrorPageStrategyNotFound(strategyKey);
-  const { name } = strategy;
-
-  const accountIsOwner = session.accountId === strategy.accountId;
-  if (!accountIsOwner) return redirectToErrorPageStrategyNotOwned(strategyKey);
-
-  const { strategyKind } = strategyKey;
-
-  if (strategyKind === "binance") {
-    const exchangeInfo = await binance.exchangeInfo();
-    const binanceSymbols = exchangeInfo.symbols.filter(isDflowBinanceSymbolInfo);
-    return {
-      props: {
-        binanceSymbols,
-        strategyKey,
-        name,
-      },
-    };
-  }
-
-  return {
-    props: {
-      strategyKey,
-      name,
-    },
-  };
-};
-
-export const EditStrategyFlow: FC<Props> = ({ binanceSymbols, name, strategyKey }) => {
+export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategyKey }) => {
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [isLive, setIsLive] = useState(false);
-  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState(false);
+  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState<boolean | undefined>();
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
@@ -216,9 +170,27 @@ export const EditStrategyFlow: FC<Props> = ({ binanceSymbols, name, strategyKey 
     if (status === "failure") toast.error("Strategy execution failure");
   }, [strategyExecution]);
 
+  if (hasNoBinanceApiConfig === undefined) return null;
+
+  if (hasNoBinanceApiConfig)
+    // TODO use a modal here
+    return (
+      <OneSectionLayout>
+        <p>You cannot run strategies on Binance yet.</p>
+
+        <p>
+          Please go to <em>settings page</em> and configure your Binance API.
+        </p>
+        <menu>
+          <li>
+            <ButtonGoSettings section="binance" />
+          </li>
+        </menu>
+      </OneSectionLayout>
+    );
+
   return (
-    <Page topbar={<Navigation />}>
-      {hasNoBinanceApiConfig ? <PleaseConfigureBinanceApi /> : null}
+    <PageLayout>
       <div>
         <StrategyItem strategyKey={strategyKey}>{name}</StrategyItem>
 
@@ -254,6 +226,6 @@ export const EditStrategyFlow: FC<Props> = ({ binanceSymbols, name, strategyKey 
         steps={executionSteps}
         whenUpdated={executionWhenUpdated}
       />
-    </Page>
+    </PageLayout>
   );
 };

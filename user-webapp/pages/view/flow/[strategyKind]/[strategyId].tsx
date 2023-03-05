@@ -9,7 +9,7 @@ import {
   redirectToErrorPageStrategyNotFound,
   strategyKeyFromRouterParams,
 } from "_routing";
-import { ViewStrategyFlow } from "_screens";
+import { ViewStrategyFlowPage } from "_pages";
 
 type ServerSideProps = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ 
 };
 
 const Page: NextPage<ServerSideProps> = (props) => {
-  return <ViewStrategyFlow {...props} />;
+  return <ViewStrategyFlowPage {...props} />;
 };
 
 export default Page;

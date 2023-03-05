@@ -13,7 +13,7 @@ type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   hasSession: boolean;
 };
 
-export const ViewStrategyFlow: FC<Props> = ({
+export const ViewStrategyFlowPage: FC<Props> = ({
   accountIsOwner,
   binanceSymbols,
   hasSession,
