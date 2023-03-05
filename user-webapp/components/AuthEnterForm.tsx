@@ -1,4 +1,4 @@
-import { Button, Control, Field, Form, FormOnSubmit, InputField } from "@ggbot2/design";
+import { Button, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
@@ -77,8 +77,11 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
   );
 
   return (
-    <Form onSubmit={onSubmit} title="Enter ggbot2">
+    <Form onSubmit={onSubmit}>
+      <Title>Enter ggbot2</Title>
+
       <InputField label="Email" name="email" type="email" readOnly={isPending} required />
+
       <Field isGrouped>
         <Control>
           <Button color="primary" isLoading={isPending}>

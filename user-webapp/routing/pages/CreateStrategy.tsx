@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Control, Field, Form, FormOnSubmit, InputField } from "@ggbot2/design";
+import { Button, ButtonProps, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo } from "react";
@@ -42,7 +42,9 @@ export const CreateStrategyPage: FC = () => {
 
   return (
     <OneSectionLayout>
-      <Form onSubmit={onSubmit} title="Create strategy">
+      <Form onSubmit={onSubmit}>
+        <Title>Create strategy</Title>
+
         <InputField label="Strategy name" name="name" required readOnly={isPending} />
 
         <Field>

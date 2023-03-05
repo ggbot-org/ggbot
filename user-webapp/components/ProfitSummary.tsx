@@ -1,6 +1,6 @@
 import { add, Decimal } from "@ggbot2/arithmetic";
 import { isBinanceOrderRespFULL } from "@ggbot2/binance";
-import { DateTime, Pill } from "@ggbot2/design";
+import { DateTime, Tag } from "@ggbot2/design";
 import { useIsServerSide } from "@ggbot2/hooks";
 import { Balance, BalanceChangeEvent, Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval, timeToDay } from "@ggbot2/time";
@@ -139,8 +139,8 @@ export const ProfitSummary: FC<Props> = ({ balanceHistory, orderHistory, timeInt
       <div className="flex flex-row gap-2">
         {assets.map((asset) => (
           <div key={asset}>
-            <Pill>{asset}</Pill>
-            <Pill>{totalBalance[asset].free}</Pill>
+            <Tag>{asset}</Tag>
+            <Tag>{totalBalance[asset].free}</Tag>
           </div>
         ))}
       </div>

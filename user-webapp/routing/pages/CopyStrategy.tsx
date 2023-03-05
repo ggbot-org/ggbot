@@ -6,6 +6,7 @@ import {
   FormOnSubmit,
   InputField,
   Message,
+  Title,
   useFormattedDate,
 } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
@@ -57,7 +58,9 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
 
   return (
     <Page topbar={<Navigation />}>
-      <Form onSubmit={onSubmit} title="Copy strategy">
+      <Form onSubmit={onSubmit}>
+        <Title>Copy strategy</Title>
+
         <InputField label="Name" defaultValue={strategyName} />
 
         <InputField label="When created" defaultValue={formattedWhenCreated} />

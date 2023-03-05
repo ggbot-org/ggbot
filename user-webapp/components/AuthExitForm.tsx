@@ -1,4 +1,4 @@
-import { Button, Control, Field, Form, FormOnReset, InputField } from "@ggbot2/design";
+import { Button, Control, Field, Form, FormOnReset, InputField, Title } from "@ggbot2/design";
 import { isAccount } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -54,7 +54,9 @@ export const AuthExitForm: FC = () => {
   }, [readAccount]);
 
   return (
-    <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit} title="Exit ggbot2">
+    <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
+      <Title>Exit ggbot2</Title>
+
       {accountInfo.map(({ label, value }, i) => (
         <InputField key={i} label={label} readOnly isStatic defaultValue={value} />
       ))}

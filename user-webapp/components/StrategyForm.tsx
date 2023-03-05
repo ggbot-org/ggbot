@@ -8,6 +8,7 @@ import {
   EditableInputField,
   Field,
   InputField,
+  Title,
   useFormattedDate,
 } from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
@@ -112,7 +113,9 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <Box title="Strategy">
+    <Box>
+      <Title>Strategy</Title>
+
       <EditableInputField
         name="name"
         label="Name"

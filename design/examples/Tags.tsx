@@ -1,28 +1,28 @@
 import { FC } from "react";
-import { Pill } from "@ggbot2/design";
+import { Tag } from "@ggbot2/design";
 
 export const Tags: FC = () => {
   return (
     <div>
       <div>
-        <Pill>pill</Pill>
+        <Tag>pill</Tag>
       </div>
       <div>
-        <Pill color="primary">primary</Pill>
+        <Tag color="primary">Primary</Tag>
       </div>
       <div>
-        <Pill color="neutral">neutral</Pill>
+        <Tag color="light">Light</Tag>
       </div>
       <div>
-        <Pill color="danger">danger</Pill>
+        <Tag color="danger">Danger</Tag>
       </div>
 
       <div>
         <span>gruped tags</span>
         <div>
-          <Pill>pill</Pill>
-          <Pill color="primary">primary</Pill>
-          <Pill color="neutral">neutral</Pill>
+          <Tag>Tag</Tag>
+          <Tag color="primary">Primary</Tag>
+          <Tag color="light">Light</Tag>
         </div>
       </div>
     </div>

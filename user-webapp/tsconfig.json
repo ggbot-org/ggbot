@@ -10,6 +10,7 @@
     "noEmit": true,
     "paths": {
       "_api/*": ["pages/api/*"],
+      "_classNames": ["styles/classNames.ts"],
       "_components": ["components/index.ts"],
       "_contexts": ["contexts/index.ts"],
       "_flow/*": ["flow/*"],
