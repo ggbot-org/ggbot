@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 
+// TODO remove this, use modals
+
 /**
  * @example
  * ```ts

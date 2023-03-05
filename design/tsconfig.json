@@ -10,7 +10,6 @@
     "noEmit": true,
     "paths": {
       "@ggbot2/design": ["src/index.ts"],
-      "_components": ["components/index.ts"],
       "_examples": ["examples/index.ts"]
     },
     "resolveJsonModule": true,

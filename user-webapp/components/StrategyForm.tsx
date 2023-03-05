@@ -1,4 +1,15 @@
-import { Button, ButtonOnClick, DateTime, EditableInputField, Section, OutputField } from "@ggbot2/design";
+import {
+  Box,
+  Button,
+  ButtonOnClick,
+  Column,
+  Columns,
+  Control,
+  EditableInputField,
+  Field,
+  InputField,
+  useFormattedDate,
+} from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -10,6 +21,8 @@ type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
 export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   const router = useRouter();
+
+  const formattedWhenCreated = useFormattedDate(whenCreated, "time");
 
   const [copyIsSpinning, setCopyIsSpinning] = useState(false);
   const [flowIsSpinning, setFlowIsSpinning] = useState(false);
@@ -99,10 +112,10 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [name, newName, renameStrategy, strategyKey]);
 
   return (
-    <Section header="Strategy">
+    <Box title="Strategy">
       <EditableInputField
         name="name"
-        label="name"
+        label="Name"
         placeholder={inputNamePlaceholder}
         isSpinning={renameIsPending}
         readOnly={readOnly}
@@ -110,29 +123,32 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         value={inputNameValue}
       />
 
-      <OutputField label="When created">
-        <DateTime format="time" value={whenCreated} />
-      </OutputField>
+      <Columns>
+        <Column>
+          <InputField label="When created" defaultValue={formattedWhenCreated} readOnly />
+        </Column>
+        <Column>
+          <InputField label="Strategy id" defaultValue={strategyKey.strategyId} />
+        </Column>
+      </Columns>
 
-      <OutputField label="Strategy id">
-        <code>{strategyKey.strategyId}</code>
-      </OutputField>
-
-      <menu className="flex flex-row flex-wrap gap-4">
-        <li>
-          <Button isSpinning={flowIsSpinning} onClick={onClickFlow} color="primary">
-            flow
+      <Field isGrouped>
+        <Control>
+          <Button isLoading={flowIsSpinning} onClick={onClickFlow} color="primary">
+            Flow
           </Button>
-        </li>
-        <li>
+        </Control>
+
+        <Control>
           <ButtonShareStrategy {...strategyKey} />
-        </li>
-        <li>
-          <Button isSpinning={copyIsSpinning} onClick={onClickCopy}>
-            copy
+        </Control>
+
+        <Control>
+          <Button isLoading={copyIsSpinning} onClick={onClickCopy}>
+            Copy
           </Button>
-        </li>
-      </menu>
-    </Section>
+        </Control>
+      </Field>
+    </Box>
   );
 };

@@ -10,14 +10,14 @@
     }
   },
   "scripts": {
-    "build": "npm run tsc--build",
+    "build": "npm run tsc--build && npm run sass",
     "cleanup": "rm -rf dist/ out/ .next/",
     "deploy": "sh deploy.sh",
     "dev": "next dev",
     "lint": "next lint",
     "next:build": "next build",
     "next:export": "next export",
-    "test": "npm run tsc--noEmit; npm run lint",
+    "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
     "tsc--build": "tsc --build tsconfig.build.json",
     "tsc--noEmit": "tsc --noEmit --project ."
   },

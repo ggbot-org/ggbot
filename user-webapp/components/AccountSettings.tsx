@@ -1,7 +1,14 @@
-import { Button, ButtonOnClick, DateTime, EditableInputField, OutputField, Section } from "@ggbot2/design";
+import {
+  Box,
+  Button,
+  ButtonOnClick,
+  EditableInputField,
+  InputField,
+  useFormattedDate,
+} from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
-import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
 import { route } from "_routing";
 
@@ -32,26 +39,24 @@ export const AccountSettings: FC = () => {
     [account]
   );
 
-  const accountInfo = useMemo<{ label: string; value: ReactNode }[]>(
-    () =>
-      [
-        {
-          label: "email",
-          value: email,
-        },
-        {
-          label: "when created",
-          value: whenCreated && <DateTime format="day" value={whenCreated} />,
-        },
-        {
-          label: "account id",
-          value: accountId && <code>{accountId}</code>,
-        },
-      ].map(({ value, ...rest }) => ({
-        value: value ? value : <>&nbsp;</>,
-        ...rest,
-      })),
-    [accountId, email, whenCreated]
+  const formattedDate = useFormattedDate(whenCreated, "day");
+
+  const accountInfo = useMemo<{ label: string; value: string }[]>(
+    () => [
+      {
+        label: "Email",
+        value: email,
+      },
+      {
+        label: "When created",
+        value: formattedDate,
+      },
+      {
+        label: "Account id",
+        value: accountId,
+      },
+    ],
+    [accountId, email, formattedDate]
   );
 
   const readOnly = useMemo(() => account === undefined || renameIsPending, [account, renameIsPending]);
@@ -75,14 +80,6 @@ export const AccountSettings: FC = () => {
     [router]
   );
 
-  const onClickExit = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      router.push(route.authPage());
-    },
-    [router]
-  );
-
   useEffect(() => {
     if (!newName) return;
     const controller = renameAccount({ name: newName });
@@ -99,43 +96,27 @@ export const AccountSettings: FC = () => {
   }, [readAccount]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <Section header="Profile">
+    <>
+      <Box>
         <EditableInputField
           name="name"
-          label="nick name"
+          label="Nick name"
           value={currentName}
           setValue={setName}
           readOnly={readOnly}
           isSpinning={renameIsPending}
         />
 
-        <div>
+        <>
           {accountInfo.map(({ label, value }, i) => (
-            <OutputField key={i} label={label}>
-              {value}
-            </OutputField>
+            <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
           ))}
-        </div>
+        </>
+      </Box>
 
-        <menu>
-          <li>
-            <Button type="reset" color="danger" onClick={onClickExit}>
-              Exit
-            </Button>
-          </li>
-        </menu>
-      </Section>
-
-      <Section color="danger" header="Danger zone">
-        <menu>
-          <li>
-            <Button color="danger" onClick={onClickDelete}>
-              Delete account
-            </Button>
-          </li>
-        </menu>
-      </Section>
-    </div>
+      <Button color="danger" onClick={onClickDelete}>
+        Delete account
+      </Button>
+    </>
   );
 };

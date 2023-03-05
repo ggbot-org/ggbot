@@ -1,10 +1,7 @@
-import { isLiteralType } from "@ggbot2/type-utils";
 import { StrategyKey, InvalidStrategyKey } from "./types.js";
 
-export const settingsSectionIds = ["account", "binance", "billing"] as const;
+const settingsSectionIds = ["account", "binance", "billing"] as const;
 export type SettingsSectionId = typeof settingsSectionIds[number];
-export const isSettingsSectionId =
-  isLiteralType<SettingsSectionId>(settingsSectionIds);
 
 export const route = {
   apiEnter: () => "/api/auth/enter",
@@ -20,24 +17,17 @@ export const route = {
   deleteBinanceApiConfigPage: () => "/delete/binance-api-config",
   deleteStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/delete/strategy/${strategyKind}/${strategyId}`,
-  editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
-    `/edit/flow/${strategyKind}/${strategyId}`,
-  errorPageInvalidStrategyKey: ({
-    strategyKind,
-    strategyId,
-  }: InvalidStrategyKey) =>
+  editFlowPage: ({ strategyKind, strategyId }: StrategyKey) => `/edit/flow/${strategyKind}/${strategyId}`,
+  errorPageInvalidStrategyKey: ({ strategyKind, strategyId }: InvalidStrategyKey) =>
     `/error/invalid-strategy-key/${strategyKind}/${strategyId}`,
   errorPageStrategyNotFound: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-found/${strategyKind}/${strategyId}`,
   errorPageStrategyNotOwned: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
   homePage: () => "/",
-  settingsPage: (hash?: SettingsSectionId) =>
-    `/settings${hash ? `#${hash}` : ""}`,
-  strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
-    `/strategy/${strategyKind}/${strategyId}`,
+  settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
+  strategyPage: ({ strategyKind, strategyId }: StrategyKey) => `/strategy/${strategyKind}/${strategyId}`,
   subscriptionCanceledPage: () => "/subscription/canceled",
-  subscriptionThankYouPage: () => "/subscription/thank-you",
-  viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
-    `/view/flow/${strategyKind}/${strategyId}`,
+  subscriptionPurchasedPage: () => "/subscription/purchased",
+  viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) => `/view/flow/${strategyKind}/${strategyId}`,
 };

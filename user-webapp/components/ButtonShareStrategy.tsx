@@ -34,5 +34,5 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
     }
   }, [shareData]);
 
-  return <Button onClick={onClick}>share</Button>;
+  return <Button onClick={onClick}>Share</Button>;
 };

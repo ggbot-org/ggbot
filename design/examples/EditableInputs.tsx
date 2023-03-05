@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { EditableInput, EditableInputField, Section } from "../src";
+import { EditableInput, EditableInputField, Section } from "@ggbot2/design";
 
 export const EditableInputs: FC = () => {
   const [value, setValue] = useState("");
@@ -12,12 +12,7 @@ export const EditableInputs: FC = () => {
       </div>
 
       <Section>
-        <EditableInputField
-          label="name"
-          name="name"
-          value={value}
-          setValue={setValue}
-        />
+        <EditableInputField label="name" name="name" value={value} setValue={setValue} />
       </Section>
     </div>
   );

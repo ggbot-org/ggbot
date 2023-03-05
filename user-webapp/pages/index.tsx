@@ -1,28 +1,15 @@
 import { NextPage } from "next";
-import {
-  Content,
-  Navigation,
-  NavigationBreadcrumbDashboard,
-  NavigationSettingsIcon,
-  Strategies,
-} from "_components";
+import { Navigation, Page, Strategies } from "_components";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
-const Page: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
-    <Content
-      topbar={
-        <Navigation
-          breadcrumbs={[{ content: <NavigationBreadcrumbDashboard /> }]}
-          icon={<NavigationSettingsIcon />}
-        />
-      }
-    >
+    <Page topbar={<Navigation />}>
       <Strategies />
-    </Content>
+    </Page>
   );
 };
 
-export default Page;
+export default HomePage;

@@ -3,18 +3,15 @@ import Head from "next/head";
 import {
   ButtonColors,
   Charts,
-  Colors,
   EditableInputs,
   Icons,
   LoadingButtons,
-  GroupedPills,
-  Pills,
+  Tags,
   SimpleForm,
   SimpleTable,
   Typography,
 } from "_examples";
-import { Nav } from "_components";
-import { Columns, Column, Container, Logo } from "@ggbot2/design";
+import { Columns, Column, Container, Logo, Navbar } from "@ggbot2/design";
 
 const Home: NextPage = () => {
   return (
@@ -23,13 +20,11 @@ const Home: NextPage = () => {
         <title>ggbot2 design</title>
       </Head>
 
-      <Nav />
+      <Navbar />
 
       <main>
         <Container>
           <Logo size={71} />
-
-          <Colors />
 
           <Typography />
 
@@ -47,8 +42,7 @@ const Home: NextPage = () => {
 
           <Icons />
 
-          <Pills />
-          <GroupedPills />
+          <Tags />
 
           <SimpleTable />
 

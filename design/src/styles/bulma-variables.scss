@@ -1,15 +1,29 @@
-// Fonts.
+// Fonts
+// -----
+
 $family-sans-serif: var(--family-sans-serif);
 
-// Colors.
+// Colors
+// ------
+
+$black: #000000;
 $brand: #09eae5;
-// $primary: $brand;
 $primary: #22d3ee;
-$link: $primary;
-$warning: #ffd971;
+$danger: #ffd971; // Use yellow for danger: red is for sell or down-trend candles.
+$success: $primary; // Use primary color for success, green is for buy or up-trend candles.
+$link: #0b8eb3;
+
 // TODO detect color scheme in JS and set dark background #4e4d4a
 $body-background-color: #faffff;
 
-// Navbar.
+// Navbar
+// ------
+
 $navbar-height: 1.5em;
 $navbar-padding-vertical: 0.1em;
+
+// Links
+// -----
+
+// Used also by button and pagination components.
+$link-focus-border: $link;

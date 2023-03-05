@@ -45,7 +45,7 @@ function testPackageJson({ packageJson, workspace }) {
     assert.equal(packageJson[key], expected, `package ${name} ${key}`);
   });
 
-  const requiredNpmScripts = ["test", typeChecksNpmScriptKey];
+  const requiredNpmScripts = [typeChecksNpmScriptKey];
   const buildNpmScripts = noBuildWorkspaces.includes(workspace) ? [] : ["build", "cleanup"];
 
   [...requiredNpmScripts, ...buildNpmScripts].forEach((key) => {

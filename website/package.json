@@ -10,7 +10,6 @@
     "next:build": "next build",
     "next:export": "next export",
     "start": "next start",
-    "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {

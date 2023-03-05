@@ -4,9 +4,9 @@ import { DateTime, Pill } from "@ggbot2/design";
 import { useIsServerSide } from "@ggbot2/hooks";
 import { Balance, BalanceChangeEvent, Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval, timeToDay } from "@ggbot2/time";
-import colors from "tailwindcss/colors";
 import { FC, useId, useMemo } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import color from "../styles/colors.module.scss";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
@@ -150,7 +150,7 @@ export const ProfitSummary: FC<Props> = ({ balanceHistory, orderHistory, timeInt
           {assets.map((asset) => (
             <ResponsiveContainer key={asset} width="100%" height={150}>
               <LineChart height={100} data={dailyBalance[asset]} syncId={freeDailyBalanceChartsSyncId}>
-                <Line connectNulls dataKey="free" stroke={colors.purple[500]} type="monotone" />
+                <Line connectNulls dataKey="free" stroke={color.purple} type="monotone" />
                 <XAxis dataKey="name" domain={["dataMin", "dataMax"]} />
                 <YAxis label={{ value: asset, angle: -90, position: "insideLeft" }} />
                 <Tooltip formatter={(value) => [value, asset]} />

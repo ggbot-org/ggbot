@@ -56,6 +56,7 @@
     "cleanup:website": "npm run cleanup --workspace website",
     "deploy:design": "npm run deploy --workspace design",
     "deploy:website": "npm run deploy --workspace website",
+    "design": "npm run dev --workspace design",
     "devserver:admin-webapp": "npm run dev --workspace admin-webapp",
     "devserver:design": "npm run dev --workspace design",
     "devserver:user-webapp": "npm run dev --workspace user-webapp",
@@ -157,7 +158,13 @@
     "eslint": "^8.30.0",
     "eslint-config-next": "^13.0.7",
     "npm-run-all": "^4.1.5",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.7.1",
     "typescript": "^4.9.4"
-  }
+  },
+  "pre-commit": [
+    "tsc--noEmit",
+    "lint",
+    "test"
+  ]
 }

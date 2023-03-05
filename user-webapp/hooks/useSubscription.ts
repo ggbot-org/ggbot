@@ -3,8 +3,6 @@ import { dayToTime, getTime, now } from "@ggbot2/time";
 import { useEffect, useMemo } from "react";
 import { useApiAction } from "./useApiAction";
 
-// TODO cache subscription data in session storage
-// put it in a React context
 export const useSubscription = () => {
   const [readSubscription, { data: subscription, isPending: readSubscriptionIsPending }] =
     useApiAction.ReadSubscription();

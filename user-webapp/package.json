@@ -15,7 +15,6 @@
     "lint": "next lint",
     "next:build": "next build",
     "start": "next start",
-    "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
