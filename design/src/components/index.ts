@@ -14,6 +14,8 @@ export {
   Input,
   Message,
   type MessageProps,
+  Modal,
+  ModalContent,
   NavbarDropdown,
   NavbarItem,
   NavbarItemAnchor,

@@ -12,17 +12,7 @@ export const AuthExitForm: FC = () => {
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
-  const { email } = useMemo(
-    () =>
-      isAccount(account)
-        ? {
-            email: account.email,
-          }
-        : {
-            email: "",
-          },
-    [account]
-  );
+  const email = useMemo(() => (isAccount(account) ? account.email : ""), [account]);
 
   const accountInfo = useMemo<{ label: string; value: string }[]>(
     () => [
