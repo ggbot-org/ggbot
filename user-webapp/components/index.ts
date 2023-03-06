@@ -9,7 +9,6 @@ export * from "./BinanceKlinesChart";
 export * from "./BinanceSettings";
 export * from "./ButtonGoSettings";
 export * from "./ButtonShareStrategy";
-export * from "./ChartOhlcv";
 export * from "./DailyIntervalSelector";
 export * from "./ErrorMessages";
 export * from "./FrequencyInput";

@@ -5,7 +5,7 @@ import designTsconfig from "../design/tsconfig.json" assert { type: "json" };
 
 const npmScope = "@ggbot2";
 
-const noBuildWorkspaces = ["admin-webapp", "end-to-end-tests", "website"];
+const noBuildWorkspaces = ["admin-webapp", "website"];
 
 const webappWorkspaces = ["admin-webapp", "design", "user-webapp", "website"];
 

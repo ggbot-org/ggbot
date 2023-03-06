@@ -7,7 +7,6 @@ import {
   LessThan,
 } from "./nodes/arithmetic.js";
 import { Shift, Pop, Push } from "./nodes/array.js";
-import { CandlesChart } from "./nodes/charts.js";
 import { If } from "./nodes/conditional.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
 import { HeikinAshi } from "./nodes/indicators/candles.js";
@@ -35,8 +34,6 @@ export const nodesCatalog = {
   [Shift.kind]: Shift,
   [Pop.kind]: Pop,
   [Push.kind]: Push,
-  // charts
-  [CandlesChart.kind]: CandlesChart,
   // conditional
   [If.kind]: If,
   // logic
