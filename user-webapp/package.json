@@ -26,7 +26,6 @@
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@utrustdev/utrust-ts-library": "^1.0.4",
     "country-isocode2": "^1.1.0",
-    "lightweight-charts": "^3.8.0",
     "react-hot-toast": "^2.3.0"
   }
 }
