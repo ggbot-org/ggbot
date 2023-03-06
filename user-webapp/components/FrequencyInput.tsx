@@ -1,4 +1,4 @@
-import { InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/design";
+import { Column, Columns, InputField, InputOnChange, SelectField, SelectOnChange } from "@ggbot2/design";
 import { Frequency, isFrequencyInterval } from "@ggbot2/models";
 import { NaturalNumber, isNaturalNumber } from "@ggbot2/type-utils";
 import { FC, useCallback, useMemo } from "react";
@@ -53,17 +53,19 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
   );
 
   return (
-    <div className="flex flex-row gap-1">
-      <div className="w-16">
+    <Columns>
+      <Column size={2}>
         <InputField label="every" value={every} onChange={onChangeFrequencyEvery} min={1} step={1} />
-      </div>
+      </Column>
 
-      <SelectField
-        value={interval}
-        onChange={onChangeFrequencyInterval}
-        options={frequencyIntervalOptions}
-        label="interval"
-      />
-    </div>
+      <Column>
+        <SelectField
+          value={interval}
+          onChange={onChangeFrequencyInterval}
+          options={frequencyIntervalOptions}
+          label="interval"
+        />
+      </Column>
+    </Columns>
   );
 };
