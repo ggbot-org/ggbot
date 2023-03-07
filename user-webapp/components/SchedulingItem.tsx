@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick } from "@ggbot2/design";
+import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
 import { StrategyScheduling } from "@ggbot2/models";
 import { FC, useCallback, useMemo } from "react";
 import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";
@@ -35,22 +35,16 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
   }, [status]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <menu className="flex flex-row flex-wrap items-center gap-4">
-        <li>
-          <SchedulingStatusBadge schedulingStatus={scheduling.status} />
-        </li>
-
-        <li>
-          <Button onClick={removeScheduling}>Remove</Button>
-        </li>
-
-        <li>
-          <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
-        </li>
-      </menu>
+    <div>
+      <SchedulingStatusBadge schedulingStatus={scheduling.status} />
 
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
+
+      <Buttons size="small">
+        <Button onClick={removeScheduling}>Remove</Button>
+
+        <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
+      </Buttons>
     </div>
   );
 };

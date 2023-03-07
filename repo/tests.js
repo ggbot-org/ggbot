@@ -9,14 +9,18 @@ const noBuildWorkspaces = ["admin-webapp", "website"];
 
 const webappWorkspaces = ["admin-webapp", "design", "user-webapp", "website"];
 
-const typeChecksNpmScriptKey = "tsc--noEmit";
+const npmScriptKey = {
+  build: "build",
+  cleanup: "cleanup",
+  typeCheck: "tsc--noEmit",
+};
 
 const packageScript = {
-  build: "tsc --build tsconfig.build.json",
-  cleanup: "rm -rf dist/ test/",
+  [npmScriptKey.build]: "tsc --build tsconfig.build.json",
+  [npmScriptKey.cleanup]: "rm -rf dist/ test/",
   pretest: "tsc --build tsconfig.test.json",
   test: "node --test",
-  "tsc--noEmit": "tsc --noEmit --project .",
+  [npmScriptKey.typeCheck]: "tsc --noEmit --project .",
 };
 
 /**
@@ -45,8 +49,10 @@ function testPackageJson({ packageJson, workspace }) {
     assert.equal(packageJson[key], expected, `package ${name} ${key}`);
   });
 
-  const requiredNpmScripts = [typeChecksNpmScriptKey];
-  const buildNpmScripts = noBuildWorkspaces.includes(workspace) ? [] : ["build", "cleanup"];
+  const requiredNpmScripts = [npmScriptKey.typeCheck];
+  const buildNpmScripts = noBuildWorkspaces.includes(workspace)
+    ? []
+    : [npmScriptKey.build, npmScriptKey.cleanup];
 
   [...requiredNpmScripts, ...buildNpmScripts].forEach((key) => {
     assert.equal(
@@ -79,7 +85,7 @@ async function testWorkspacePackageJson({ workspace }) {
   /// Test packageJson and rootPackageJson scripts.
   // // // // // // // // // // // // // // // ///
 
-  ["build", "cleanup"].forEach((key) => {
+  [npmScriptKey.build, npmScriptKey.cleanup].forEach((key) => {
     if (typeof packageJson.scripts[key] === "string") {
       assert.equal(
         rootPackageJson.scripts[`${key}:${workspace}`],
@@ -91,8 +97,8 @@ async function testWorkspacePackageJson({ workspace }) {
 
   [
     {
-      key: typeChecksNpmScriptKey,
-      expected: packageScript[typeChecksNpmScriptKey],
+      key: npmScriptKey.typeCheck,
+      expected: packageScript[npmScriptKey.typeCheck],
     },
   ].forEach(({ key, expected }) => {
     assert.equal(packageJson.scripts[key], expected, `${workspace}/package.json scripts["${key}"]`);

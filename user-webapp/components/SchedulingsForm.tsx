@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick, Control, Field, Form } from "@ggbot2/design";
+import { Button, ButtonOnClick, Control, Field, Flex, Form, Title } from "@ggbot2/design";
 import {
   StrategyScheduling,
   isAccountStrategy,
@@ -161,22 +161,25 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   }, [writeData, read]);
 
   return (
-    <Form onSubmit={onSubmit} title="Schedulings">
-      <SchedulingsStatusBadges schedulings={currentSchedulings} />
-      <div>
-        {schedulingItems.map((scheduling) => {
-          const { id } = scheduling;
-          return (
-            <SchedulingItem
-              key={id}
-              scheduling={scheduling}
-              setFrequency={setSchedulingItemFrequency(id)}
-              setStatus={setSchedulingItemStatus(id)}
-              removeScheduling={removeSchedulingItem(id)}
-            />
-          );
-        })}
-      </div>
+    <Form onSubmit={onSubmit}>
+      <Flex justify="space-between">
+        <Title>Schedulings</Title>
+
+        <SchedulingsStatusBadges schedulings={currentSchedulings} />
+      </Flex>
+
+      {schedulingItems.map((scheduling) => {
+        const { id } = scheduling;
+        return (
+          <SchedulingItem
+            key={id}
+            scheduling={scheduling}
+            setFrequency={setSchedulingItemFrequency(id)}
+            setStatus={setSchedulingItemStatus(id)}
+            removeScheduling={removeSchedulingItem(id)}
+          />
+        );
+      })}
 
       <Field>
         <Control>
@@ -188,7 +191,7 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
 
       <Field isGrouped>
         <Control>
-          <Button onClick={onClickSave} disabled={!canSubmit} isLoading={writeIsPending} size="small">
+          <Button onClick={onClickSave} disabled={!canSubmit} isLoading={writeIsPending}>
             Save
           </Button>
         </Control>

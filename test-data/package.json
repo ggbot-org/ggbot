@@ -12,7 +12,6 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
-    "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {

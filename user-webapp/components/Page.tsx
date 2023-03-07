@@ -1,10 +1,10 @@
+import { Message, useOfflineDetection } from "@ggbot2/design";
 import Head from "next/head";
-import React, { FC, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { FC, PropsWithChildren, ReactNode, useMemo } from "react";
 import { Toaster } from "react-hot-toast";
 import { webappBaseUrl } from "_routing";
 
 type Props = {
-  children: ReactNode;
   metadata?: {
     /** Tag title content */
     title: string;
@@ -14,33 +14,16 @@ type Props = {
     canonical?: string;
   };
   topbar?: ReactNode;
-  message?: ReactNode;
 };
 
-export const Page: FC<Props> = ({
+export const Page: FC<PropsWithChildren<Props>> = ({
   children,
   metadata = { title: "ggbot2", description: "crypto flow" },
-  message,
   topbar,
 }) => {
   const { title, description, canonical } = metadata;
 
-  const [isOffline, setIsOffline] = useState(false);
-
-  useEffect(() => {
-    const onOffline = () => {
-      setIsOffline(true);
-    };
-    const onOnline = () => {
-      setIsOffline(false);
-    };
-    window.addEventListener("offline", onOffline);
-    window.addEventListener("online", onOnline);
-    return () => {
-      window.removeEventListener("offline", onOffline);
-      window.removeEventListener("online", onOnline);
-    };
-  }, []);
+  const isOffline = useOfflineDetection();
 
   const canonicalHref = useMemo(() => `${webappBaseUrl}${canonical ?? "/"}`, [canonical]);
 
@@ -55,9 +38,11 @@ export const Page: FC<Props> = ({
       <>
         {topbar}
 
-        {message}
-
-        {isOffline && <p>The network connection has been lost.</p>}
+        {isOffline && (
+          <Message>
+            <p>The network connection has been lost.</p>
+          </Message>
+        )}
 
         {children}
       </>
