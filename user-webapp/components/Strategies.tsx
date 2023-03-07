@@ -1,4 +1,4 @@
-import { Box, Columns, Column, Flex, Title } from "@ggbot2/design";
+import { Box, Columns, Column, Flex, Title, classNames } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { FC, useMemo } from "react";
@@ -27,14 +27,14 @@ export const Strategies: FC<Props> = ({ strategies }) => {
       <Columns isMultiline>
         {items.map(({ name, href, schedulings }, i) => (
           <Column key={i} size="half">
-            <Box>
-              <Flex justify="space-between">
-                <Link href={href} passHref tabIndex={0}>
+            <Link href={href} passHref tabIndex={0}>
+              <Box>
+                <Flex justify="space-between">
                   {name}
-                </Link>
-                <SchedulingsStatusBadges schedulings={schedulings} />
-              </Flex>
-            </Box>
+                  <SchedulingsStatusBadges schedulings={schedulings} />
+                </Flex>
+              </Box>
+            </Link>
           </Column>
         ))}
       </Columns>
