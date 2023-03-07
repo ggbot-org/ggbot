@@ -1,20 +1,9 @@
-import {
-  Box,
-  Button,
-  ButtonOnClick,
-  EditableInputField,
-  InputField,
-  useFormattedDate,
-} from "@ggbot2/design";
+import { Box, EditableInputField, InputField, useFormattedDate } from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
-import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
-import { route } from "_routing";
 
 export const AccountSettings: FC = () => {
-  const router = useRouter();
-
   const [newName, setNewName] = useState("");
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
@@ -72,14 +61,6 @@ export const AccountSettings: FC = () => {
     [currentName, readOnly, setNewName]
   );
 
-  const onClickDelete = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      router.push(route.deleteAccountPage());
-    },
-    [router]
-  );
-
   useEffect(() => {
     if (!newName) return;
     const controller = renameAccount({ name: newName });
@@ -96,27 +77,21 @@ export const AccountSettings: FC = () => {
   }, [readAccount]);
 
   return (
-    <>
-      <Box>
-        <EditableInputField
-          name="name"
-          label="Nick name"
-          value={currentName}
-          setValue={setName}
-          readOnly={readOnly}
-          isSpinning={renameIsPending}
-        />
+    <Box>
+      <EditableInputField
+        name="name"
+        label="Nick name"
+        value={currentName}
+        setValue={setName}
+        readOnly={readOnly}
+        isSpinning={renameIsPending}
+      />
 
-        <>
-          {accountInfo.map(({ label, value }, i) => (
-            <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
-          ))}
-        </>
-      </Box>
-
-      <Button color="danger" onClick={onClickDelete}>
-        Delete account
-      </Button>
-    </>
+      <>
+        {accountInfo.map(({ label, value }, i) => (
+          <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
+        ))}
+      </>
+    </Box>
   );
 };
