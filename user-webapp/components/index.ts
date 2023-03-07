@@ -20,6 +20,7 @@ export * from "./MemoryController";
 export * from "./Navigation";
 export * from "./NoStrategy";
 export * from "./Page";
+export * from "./PleasePurchaseModal";
 export * from "./ProfitSummary";
 export * from "./SchedulingItem";
 export * from "./SchedulingStatusBadge";

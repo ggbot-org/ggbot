@@ -1,7 +1,13 @@
 import { Button, ButtonOnClick, Column, Columns, Control, Field, Message, Section } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useState } from "react";
-import { ButtonGoSettings, SchedulingsForm, StrategyForm, StrategyProfits } from "_components";
+import {
+  ButtonGoSettings,
+  PleasePurchaseModal,
+  SchedulingsForm,
+  StrategyForm,
+  StrategyProfits,
+} from "_components";
 import { PageLayout } from "_layouts";
 import { StrategyInfo, route } from "_routing";
 
@@ -25,24 +31,7 @@ export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated }) => {
 
   return (
     <PageLayout>
-      {hasActiveSubscription === false && (
-        /* TODO use a modal here */
-        <>
-          <Message color="warning">
-            <p>You cannot run a strategy without a subscription.</p>
-
-            <p>
-              Please go to <em>Settings</em> and <b>purchase</b> a subscription.
-            </p>
-          </Message>
-
-          <Field>
-            <Control>
-              <ButtonGoSettings section="billing" />
-            </Control>
-          </Field>
-        </>
-      )}
+      {hasActiveSubscription === false && <PleasePurchaseModal />}
 
       <Section>
         <Columns>

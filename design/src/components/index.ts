@@ -15,6 +15,8 @@ export {
   Message,
   type MessageProps,
   Modal,
+  ModalBackground,
+  ModalClose,
   ModalContent,
   NavbarDropdown,
   NavbarItem,
