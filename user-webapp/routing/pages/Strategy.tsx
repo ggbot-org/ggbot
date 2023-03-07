@@ -1,33 +1,21 @@
-import { Button, ButtonOnClick, Column, Columns, Control, Field, Message, Section } from "@ggbot2/design";
-import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { Column, Columns, Section } from "@ggbot2/design";
+import { FC, useState } from "react";
 import {
-  ButtonGoSettings,
+  DeleteStrategy,
   PleasePurchaseModal,
   SchedulingsForm,
   StrategyForm,
   StrategyProfits,
 } from "_components";
 import { PageLayout } from "_layouts";
-import { StrategyInfo, route } from "_routing";
+import { StrategyInfo } from "_routing";
 
-type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
+// TODO create a Strategy Context
+type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated }) => {
-  const router = useRouter();
-
-  const [deleteIsSpinning, setDeleteIsSpinning] = useState(false);
+export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated, name }) => {
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
   const [hasActiveSubscription, setHasActiveSubscription] = useState<boolean | undefined>();
-
-  const onClickDelete = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      setDeleteIsSpinning(true);
-      router.push(route.deleteStrategyPage(strategyKey));
-    },
-    [router, strategyKey]
-  );
 
   return (
     <PageLayout>
@@ -53,9 +41,7 @@ export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated }) => {
       </Section>
 
       <Section>
-        <Button color="danger" isLoading={deleteIsSpinning} onClick={onClickDelete}>
-          Delete strategy
-        </Button>
+        <DeleteStrategy strategyKey={strategyKey} name={name} whenCreated={whenCreated} />
       </Section>
     </PageLayout>
   );

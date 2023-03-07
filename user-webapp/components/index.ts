@@ -13,6 +13,7 @@ export * from "./CreateBinanceApi";
 export * from "./DailyIntervalSelector";
 export * from "./DeleteAccount";
 export * from "./DeleteBinanceApi";
+export * from "./DeleteStrategy";
 export * from "./ErrorMessages";
 export * from "./FrequencyInput";
 export * from "./LiveCheckbox";

@@ -6,8 +6,8 @@ type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated }) => {
-  return <StrategyPage strategyKey={strategyKey} whenCreated={whenCreated} />;
+const Page: NextPage<ServerSideProps> = ({ strategyKey, whenCreated, name }) => {
+  return <StrategyPage strategyKey={strategyKey} whenCreated={whenCreated} name={name} />;
 };
 
 export default Page;
