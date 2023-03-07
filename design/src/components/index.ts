@@ -4,7 +4,6 @@ export {
   Button,
   Buttons,
   Checkbox,
-  type CheckboxProps,
   Column,
   Columns,
   Container,
@@ -13,7 +12,6 @@ export {
   Flex,
   Input,
   Message,
-  type MessageProps,
   Modal,
   ModalBackground,
   ModalClose,
@@ -27,17 +25,20 @@ export {
   NavbarStart,
   Section,
   Select,
-  type SelectProps,
   Table,
   Tag,
-  type TagProps,
   Tags,
+  Title,
   type ButtonOnClick,
   type ButtonProps,
   type CheckboxOnChange,
+  type CheckboxProps,
   type InputOnChange,
+  type MessageProps,
   type NavbarProps,
   type SelectOnChange,
+  type SelectProps,
+  type TagProps,
 } from "trunx";
 
 export * from "./Calendar";
@@ -52,4 +53,3 @@ export * from "./InputField";
 export * from "./Logo";
 export * from "./Navbar";
 export * from "./SelectField";
-export * from "./Title";
