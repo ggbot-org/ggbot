@@ -1,6 +1,7 @@
 import { Button } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useState } from "react";
+import { buttonLabel } from "_i18n";
 import { SettingsSectionId, route } from "_routing";
 
 type Props = {
@@ -19,7 +20,7 @@ export const ButtonGoSettings: FC<Props> = ({ section }) => {
 
   return (
     <Button isLoading={isPending} onClick={goToSettings}>
-      Go to Settings
+      {buttonLabel.goToSettings}
     </Button>
   );
 };

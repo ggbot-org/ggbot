@@ -5,7 +5,9 @@ import { OneSectionLayout } from "_layouts";
 export const SubscriptionCanceledPage: FC = () => {
   return (
     <OneSectionLayout>
-      <Message color="warning">Your purchase was canceled.</Message>
+      <Message>
+        <p>Your purchase was canceled.</p>
+      </Message>
     </OneSectionLayout>
   );
 };

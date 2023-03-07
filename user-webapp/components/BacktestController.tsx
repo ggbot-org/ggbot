@@ -3,6 +3,7 @@ import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
+import { backtestActionLabel } from "_i18n";
 import { StrategyFlow } from "_routing";
 import { BacktestControllerBinance } from "./BacktestControllerBinance";
 import { DailyIntervalSelector } from "./DailyIntervalSelector";
@@ -110,11 +111,10 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     [dayInterval]
   );
 
-  const actionLabel = useMemo(() => {
-    if (isPaused) return "Resume";
-    if (isRunning) return "Pause";
-    if (isEnabled) return "Start";
-  }, [isEnabled, isPaused, isRunning]);
+  let actionLabel = "";
+  if (isPaused) actionLabel = backtestActionLabel.resume;
+  if (isRunning) actionLabel = backtestActionLabel.pause;
+  if (isEnabled) actionLabel = backtestActionLabel.start;
 
   const onClickAction = useCallback(() => {
     if (isRunning) dispatch({ type: "PAUSE" });
@@ -125,7 +125,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   if (!state || !state.isEnabled) return null;
 
   return (
-    <div className="my-2 flex flex-col gap-2">
+    <div>
       <DailyIntervalSelector
         max={maxDay}
         endDay={maxDay}
@@ -135,20 +135,20 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
 
       <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
 
-      <div className="flex flex-col gap-1">
-        <div className="flex gap-1">
+      <div>
+        <div>
           <span>{`${stepIndex} of ${numSteps} intervals`}</span>
           <DateTime format="time" value={currentTimestamp} />
         </div>
 
-        <div className="flex flex-row gap-1">
+        <div>
           <span>Memory</span>
           {memoryItems.length === 0 ? <span>(empty)</span> : null}
         </div>
 
         <div>
           {memoryItems.map(({ key, value }) => (
-            <div key={key} className="flex flex-row gap-1">
+            <div key={key}>
               <span>{key}:</span>
               <pre>
                 <code>{JSON.stringify(value, null, 2)}</code>

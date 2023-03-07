@@ -12,6 +12,7 @@ import {
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback, useMemo } from "react";
 import { useApiAction } from "_hooks";
+import { fieldLabel } from "_i18n";
 
 type Props = {
   apiKey: string;
@@ -100,7 +101,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
     <Form onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
-      <InputField label="API key" defaultValue={apiKey} readOnly />
+      <InputField label={fieldLabel.apiKey} defaultValue={apiKey} readOnly />
 
       <Field>
         <Control>

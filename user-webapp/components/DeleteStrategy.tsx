@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
@@ -48,7 +49,7 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey, name, whenCreated }) =>
   return (
     <>
       <Button color="danger" onClick={toggleModal}>
-        Delete strategy
+        {buttonLabel.deleteStrategy}
       </Button>
 
       <Modal isActive={modalIsActive}>
@@ -62,27 +63,27 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey, name, whenCreated }) =>
           <Box>
             <Columns>
               <Column>
-                <InputField readOnly label="Strategy name" defaultValue={name} />
+                <InputField readOnly label={fieldLabel.strategyName} defaultValue={name} />
               </Column>
             </Columns>
 
             <Columns>
               <Column>
-                <InputField readOnly label="Strategy ID" defaultValue={strategyKey.strategyId} />
+                <InputField readOnly label={fieldLabel.strategyId} defaultValue={strategyKey.strategyId} />
               </Column>
 
               <Column>
-                <InputField readOnly label="When created" defaultValue={formattedWhenCreated} />
+                <InputField readOnly label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} />
               </Column>
             </Columns>
           </Box>
 
           <Buttons>
             <Button color="danger" isLoading={deleteIsPending} onClick={onClickConfirmation}>
-              Yes, delete it!
+              {buttonLabel.yesDelete}
             </Button>
 
-            <Button onClick={toggleModal}>No</Button>
+            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
           </Buttons>
 
           <ModalClose onClick={toggleModal} />

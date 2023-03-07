@@ -19,6 +19,7 @@ export {
   ModalClose,
   ModalContent,
   NavbarDropdown,
+  NavbarEnd,
   NavbarItem,
   NavbarItemAnchor,
   NavbarLink,

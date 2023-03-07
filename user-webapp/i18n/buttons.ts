@@ -1,0 +1,18 @@
+export const buttonLabel = {
+  activate: "Activate",
+  copy: "Copy",
+  create: "Create",
+  deleteAccount: "Delete account",
+  deleteApi: "Delete API",
+  deleteStrategy: "Delete strategy",
+  dismiss: "Dismiss",
+  exit: "Exit",
+  flow: "Flow",
+  goBack: "Go back",
+  goToSettings: "Go to Settings",
+  no: "No",
+  purchase: "Purchase",
+  remove: "Remove",
+  send: "Send",
+  yesDelete: "Yes, delete it!",
+} as const;

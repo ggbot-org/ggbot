@@ -2,6 +2,7 @@ import { Button, Control, Field, Form, FormOnSubmit, InputField, Title } from "@
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { route } from "_routing";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
@@ -80,12 +81,12 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
     <Form onSubmit={onSubmit}>
       <Title>Enter ggbot2</Title>
 
-      <InputField label="Email" name="email" type="email" readOnly={isPending} required />
+      <InputField label={fieldLabel.email} name="email" type="email" readOnly={isPending} required />
 
       <Field isGrouped>
         <Control>
           <Button color="primary" isLoading={isPending}>
-            Send
+            {buttonLabel.send}
           </Button>
         </Control>
       </Field>

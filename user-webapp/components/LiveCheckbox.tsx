@@ -19,12 +19,8 @@ export const LiveCheckbox: FC<Props> = ({ checked, ...props }) => {
 
   return (
     <div className={className}>
-      <label
-        htmlFor={id}
-        className="inline-flex items-center gap-2
-      cursor-pointer"
-      >
-        <span className="select-none text-xs uppercase leading-10">live</span>
+      <label htmlFor={id}>
+        <span>live</span>
         <Checkbox color="danger" id={id} checked={checked} {...props} />
       </label>
     </div>

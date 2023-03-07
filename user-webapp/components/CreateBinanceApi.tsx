@@ -1,6 +1,7 @@
 import { Button, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
 import { FC, useCallback } from "react";
 import { useApiAction } from "_hooks";
+import { buttonLabel, fieldLabel } from "_i18n";
 
 export const CreateBinanceApi: FC = () => {
   const [createConfig, { isPending }] = useApiAction.CreateBinanceApiConfig();
@@ -26,13 +27,13 @@ export const CreateBinanceApi: FC = () => {
     <Form onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
-      <InputField name="apiKey" label="API key" required readOnly={isPending} />
+      <InputField name="apiKey" label={fieldLabel.apiKey} required readOnly={isPending} />
 
-      <InputField label="API Secret" name="apiSecret" required readOnly={isPending} />
+      <InputField label={fieldLabel.apiSecret} name="apiSecret" required readOnly={isPending} />
 
       <Field>
         <Control>
-          <Button isLoading={isPending}>Create</Button>
+          <Button isLoading={isPending}>{buttonLabel.create}</Button>
         </Control>
       </Field>
     </Form>

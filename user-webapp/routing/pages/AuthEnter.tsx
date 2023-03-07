@@ -1,7 +1,7 @@
-import { Column, Columns, Container, Section } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { FC, useMemo, useState } from "react";
-import { AuthEnterForm, AuthVerifyForm, Navigation, Page } from "_components";
+import { AuthEnterForm, AuthVerifyForm } from "_components";
+import { AuthLayout } from "_layouts";
 
 export const AuthEnterPage: FC = () => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
@@ -9,20 +9,12 @@ export const AuthEnterPage: FC = () => {
   const emailSent = useMemo(() => email !== undefined, [email]);
 
   return (
-    <Page topbar={<Navigation noMenu />}>
-      <Container>
-        <Section>
-          <Columns>
-            <Column size="half">
-              {email ? (
-                <AuthVerifyForm email={email} setEmail={setEmail} />
-              ) : (
-                <AuthEnterForm emailSent={emailSent} setEmail={setEmail} />
-              )}
-            </Column>
-          </Columns>
-        </Section>
-      </Container>
-    </Page>
+    <AuthLayout>
+      {email ? (
+        <AuthVerifyForm email={email} setEmail={setEmail} />
+      ) : (
+        <AuthEnterForm emailSent={emailSent} setEmail={setEmail} />
+      )}
+    </AuthLayout>
   );
 };

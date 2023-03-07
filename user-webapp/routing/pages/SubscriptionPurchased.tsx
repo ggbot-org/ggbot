@@ -5,7 +5,9 @@ import { OneSectionLayout } from "_layouts";
 export const SubscriptionPurchasedPage: FC = () => {
   return (
     <OneSectionLayout>
-      <Message color="success">Thank you for your purchase.</Message>
+      <Message color="success">
+        <p>Thank you for your purchase.</p>
+      </Message>
     </OneSectionLayout>
   );
 };

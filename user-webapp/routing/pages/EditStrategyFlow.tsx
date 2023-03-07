@@ -12,14 +12,14 @@ import {
   BacktestCheckbox,
   BacktestCheckboxOnChange,
   BacktestController,
-  ButtonGoSettings,
   LiveCheckbox,
   LiveCheckboxOnChange,
   MemoryController,
+  PleaseConfigureBinanceModal,
   StrategyExecutionLog,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
-import { OneSectionLayout, PageLayout } from "_layouts";
+import { PageLayout } from "_layouts";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
@@ -174,25 +174,10 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
 
   if (hasNoBinanceApiConfig === undefined) return null;
 
-  if (hasNoBinanceApiConfig)
-    // TODO use a modal here
-    return (
-      <OneSectionLayout>
-        <p>You cannot run strategies on Binance yet.</p>
-
-        <p>
-          Please go to <em>settings page</em> and configure your Binance API.
-        </p>
-        <menu>
-          <li>
-            <ButtonGoSettings section="binance" />
-          </li>
-        </menu>
-      </OneSectionLayout>
-    );
-
   return (
     <PageLayout>
+      {hasNoBinanceApiConfig && <PleaseConfigureBinanceModal />}
+
       <div>
         <Link href={strategyHref} passHref tabIndex={0}>
           {name}

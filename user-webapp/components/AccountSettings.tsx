@@ -2,6 +2,7 @@ import { Box, EditableInputField, InputField, useFormattedDate } from "@ggbot2/d
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
+import { fieldLabel } from "_i18n";
 
 export const AccountSettings: FC = () => {
   const [newName, setNewName] = useState("");
@@ -29,24 +30,6 @@ export const AccountSettings: FC = () => {
   );
 
   const formattedDate = useFormattedDate(whenCreated, "day");
-
-  const accountInfo = useMemo<{ label: string; value: string }[]>(
-    () => [
-      {
-        label: "Email",
-        value: email,
-      },
-      {
-        label: "When created",
-        value: formattedDate,
-      },
-      {
-        label: "Account id",
-        value: accountId,
-      },
-    ],
-    [accountId, email, formattedDate]
-  );
 
   const readOnly = useMemo(() => account === undefined || renameIsPending, [account, renameIsPending]);
 
@@ -80,18 +63,18 @@ export const AccountSettings: FC = () => {
     <Box>
       <EditableInputField
         name="name"
-        label="Nick name"
+        label={fieldLabel.nickName}
         value={currentName}
         setValue={setName}
         readOnly={readOnly}
         isSpinning={renameIsPending}
       />
 
-      <>
-        {accountInfo.map(({ label, value }, i) => (
-          <InputField key={i} label={label} defaultValue={value} readOnly isStatic />
-        ))}
-      </>
+      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
+
+      <InputField label={fieldLabel.whenCreated} defaultValue={formattedDate} readOnly />
+
+      <InputField label={fieldLabel.accountId} defaultValue={accountId} readOnly />
     </Box>
   );
 };

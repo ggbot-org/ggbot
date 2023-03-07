@@ -1,4 +1,4 @@
-import { Box, Columns, Column, Flex, Title, classNames } from "@ggbot2/design";
+import { Box, Columns, Column, Flex, Title } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { FC, useMemo } from "react";

@@ -3,6 +3,7 @@ import { EmailAddress } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { Dispatch, FC, FormEventHandler, SetStateAction, useCallback, useState } from "react";
 import { ApiVerifyResponseData, isApiVerifyRequestData } from "_api/auth/verify";
+import { fieldLabel } from "_i18n";
 import { route } from "_routing";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
@@ -95,14 +96,14 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <InputField label="Email" defaultValue={email} readOnly />
+      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
 
       <Message>
         Check your email to get the <em>One Time Password</em>.
       </Message>
 
       <InputField
-        label="One time password"
+        label={fieldLabel.oneTimePassword}
         name="code"
         readOnly={isPending}
         required

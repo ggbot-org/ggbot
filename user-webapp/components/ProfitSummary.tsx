@@ -21,23 +21,17 @@ export const ProfitSummary: FC<Props> = ({ balanceHistory, orderHistory, timeInt
   const isServerSide = useIsServerSide();
   const freeDailyBalanceChartsSyncId = useId();
 
-  const { numBuys, numSells } = useMemo<{
-    numBuys: undefined | number;
-    numSells: undefined | number;
-  }>(() => {
-    let numBuys = 0;
-    let numSells = 0;
-    if (strategyKind === "binance") {
-      for (const { info } of orderHistory) {
-        if (isBinanceOrderRespFULL(info)) {
-          const { side } = info;
-          if (side === "BUY") numBuys++;
-          if (side === "SELL") numSells++;
-        }
+  let numBuys = 0;
+  let numSells = 0;
+  if (strategyKind === "binance") {
+    for (const { info } of orderHistory) {
+      if (isBinanceOrderRespFULL(info)) {
+        const { side } = info;
+        if (side === "BUY") numBuys++;
+        if (side === "SELL") numSells++;
       }
     }
-    return { numBuys, numSells };
-  }, [orderHistory, strategyKind]);
+  }
 
   const { dailyBalance, totalBalance, assets } = useMemo(() => {
     const totalBalancesMap = new Map<Balance["asset"], Pick<Balance, "free">>();

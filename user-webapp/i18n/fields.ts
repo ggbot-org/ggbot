@@ -1,0 +1,18 @@
+export const fieldLabel = {
+  accountId: "Account ID",
+  apiKey: "API key",
+  apiSecret: "API secret",
+  country: "Country",
+  email: "Email",
+  endDay: "End day",
+  nickName: "Nick name",
+  newStrategyName: "New strategy name",
+  numMonths: "Num months",
+  oneTimePassword: "One time password",
+  strategyName: "Strategy name",
+  strategyKind: "Strategy kind",
+  strategyId: "Strategy ID",
+  subscriptionPlan: "Plan",
+  totalPrice: "Total price",
+  whenCreated: "When created",
+} as const;

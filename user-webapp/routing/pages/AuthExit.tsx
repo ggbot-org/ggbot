@@ -1,19 +1,11 @@
-import { Column, Columns, Container, Section } from "@ggbot2/design";
 import { FC } from "react";
-import { AuthExitForm, Navigation, Page } from "_components";
+import { AuthExitForm } from "_components";
+import { AuthLayout } from "_layouts";
 
 export const AuthExitPage: FC = () => {
   return (
-    <Page topbar={<Navigation noMenu />}>
-      <Container>
-        <Section>
-          <Columns>
-            <Column size="half">
-              <AuthExitForm />
-            </Column>
-          </Columns>
-        </Section>
-      </Container>
-    </Page>
+    <AuthLayout>
+      <AuthExitForm />
+    </AuthLayout>
   );
 };

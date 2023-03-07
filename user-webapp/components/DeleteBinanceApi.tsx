@@ -10,6 +10,7 @@ import {
 } from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
 import { useApiAction } from "_hooks";
+import { buttonLabel } from "_i18n";
 
 export const DeleteBinanceApi: FC = () => {
   const [deleteBinanceApi, { isPending: deleteIsPending }] = useApiAction.DeleteBinanceApiConfig();
@@ -30,7 +31,7 @@ export const DeleteBinanceApi: FC = () => {
   return (
     <>
       <Button color="danger" onClick={toggleModal}>
-        Delete API
+        {buttonLabel.deleteApi}
       </Button>
 
       <Modal isActive={modalIsActive}>
@@ -47,10 +48,10 @@ export const DeleteBinanceApi: FC = () => {
 
           <Buttons>
             <Button color="danger" isLoading={deleteIsPending} onClick={onClickConfirmation}>
-              Yes, delete it!
+              {buttonLabel.yesDelete}
             </Button>
 
-            <Button onClick={toggleModal}>No</Button>
+            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
           </Buttons>
 
           <ModalClose onClick={toggleModal} />

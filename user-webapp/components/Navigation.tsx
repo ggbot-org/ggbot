@@ -1,6 +1,7 @@
 import {
   Navbar,
   NavbarDropdown,
+  NavbarEnd,
   NavbarItem,
   NavbarItemAnchor,
   NavbarLink,
@@ -25,7 +26,7 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
     setMenuIsActive((active) => !active);
   }, []);
 
-  const goToDashboard = useCallback(() => {
+  const goToHomePage = useCallback(() => {
     if (router.pathname !== route.homePage()) router.push(route.homePage());
   }, [router]);
 
@@ -39,7 +40,6 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
 
   const goToSettings = useCallback(
     (section: SettingsSectionId) => () => {
-      // if (router.pathname !== route.settingsPage())
       router.push(route.settingsPage(section));
     },
     [router]
@@ -61,7 +61,7 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
       {!noMenu && (
         <NavbarMenu isActive={menuIsActive}>
           <NavbarStart>
-            <NavbarItemAnchor onClick={goToDashboard}>Dashboard</NavbarItemAnchor>
+            <NavbarItemAnchor onClick={goToHomePage}>Strategies</NavbarItemAnchor>
 
             <NavbarItem hasDropdown isHoverable>
               <NavbarLink>Settings</NavbarLink>
@@ -83,6 +83,10 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
               </NavbarDropdown>
             </NavbarItem>
           </NavbarStart>
+
+          <NavbarEnd>
+            <NavbarItemAnchor onClick={goToExit}>Exit</NavbarItemAnchor>
+          </NavbarEnd>
         </NavbarMenu>
       )}
     </Navbar>

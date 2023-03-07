@@ -1,11 +1,4 @@
-import {
-  Day,
-  MonthNum,
-  WeekDayNum,
-  dateToDay,
-  today,
-  weekDayNums,
-} from "@ggbot2/time";
+import { Day, MonthNum, WeekDayNum, dateToDay, today, weekDayNums } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { Icon } from "./Icon";
 
@@ -69,7 +62,7 @@ export const Calendar: FC<CalendarProps> = ({
     return date;
   }, [monthOffset, firstDate]);
 
-  const monthNum = useMemo(() => firstDate.getMonth() as MonthNum, [firstDate]);
+  const monthNum = firstDate.getMonth() as MonthNum;
 
   const datesBeforeFirstDate = useMemo(() => {
     const dates: Date[] = [];
@@ -104,15 +97,11 @@ export const Calendar: FC<CalendarProps> = ({
     return dates;
   }, [lastDate]);
 
-  const isFirstMonth = useMemo(() => {
-    const day = dateToDay(firstDate);
-    return day && min && day <= min;
-  }, [min, firstDate]);
+  const firstDay = dateToDay(firstDate);
+  const isFirstMonth = firstDay && min && firstDay <= min;
 
-  const isLastMonth = useMemo(() => {
-    const day = dateToDay(lastDate);
-    return day && max && day >= max;
-  }, [max, lastDate]);
+  const lastDay = dateToDay(lastDate);
+  const isLastMonth = lastDay && max && lastDay >= max;
 
   const dateCells = useMemo(() => {
     return [
@@ -134,9 +123,7 @@ export const Calendar: FC<CalendarProps> = ({
       .map(({ day, ...rest }) => ({
         selected: day === selectedDay,
         isSelectable:
-          day !== selectedDay &&
-          (min && day ? day >= min : true) &&
-          (max && day ? day <= max : true),
+          day !== selectedDay && (min && day ? day >= min : true) && (max && day ? day <= max : true),
         day,
         ...rest,
       }))
@@ -197,20 +184,14 @@ export const Calendar: FC<CalendarProps> = ({
       <div className="flex flex-row justify-between py-1 my-1 border-b border-neutral-300">
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
-            <Icon
-              name="caret-left"
-              onClick={isFirstMonth ? undefined : onClickPrevious}
-            />
+            <Icon name="caret-left" onClick={isFirstMonth ? undefined : onClickPrevious} />
           </span>
           <span className="font-medium">{monthName[monthNum]}</span>
         </div>
         <div className="flex flex-row items-center gap-2">
           <span className="font-medium">{firstDate.getFullYear()}</span>
           <span className={rightCaretClassName}>
-            <Icon
-              name="caret-right"
-              onClick={isLastMonth ? undefined : onClickNext}
-            />
+            <Icon name="caret-right" onClick={isLastMonth ? undefined : onClickNext} />
           </span>
         </div>
       </div>

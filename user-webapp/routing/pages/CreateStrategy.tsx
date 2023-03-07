@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
+import { fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts";
 import { route } from "_routing";
 
@@ -45,7 +46,7 @@ export const CreateStrategyPage: FC = () => {
       <Form onSubmit={onSubmit}>
         <Title>Create strategy</Title>
 
-        <InputField label="Strategy name" name="name" required readOnly={isPending} />
+        <InputField label={fieldLabel.strategyName} name="name" required readOnly={isPending} />
 
         <Field>
           <Control>

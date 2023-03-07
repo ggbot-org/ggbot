@@ -13,8 +13,9 @@ import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Navigation, Page } from "_components";
 import { useApiAction } from "_hooks";
+import { fieldLabel } from "_i18n";
+import { OneSectionLayout } from "_layouts";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
@@ -57,19 +58,19 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
   }, [router, isDone]);
 
   return (
-    <Page topbar={<Navigation />}>
+    <OneSectionLayout>
       <Form onSubmit={onSubmit}>
         <Title>Copy strategy</Title>
 
-        <InputField label="Name" defaultValue={strategyName} />
+        <InputField label={fieldLabel.strategyName} defaultValue={strategyName} />
 
-        <InputField label="When created" defaultValue={formattedWhenCreated} />
+        <InputField label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} />
 
         <Message>Choose a new name for the copied strategy.</Message>
 
         <InputField
           onChange={onChangeName}
-          label="New strategy name"
+          label={fieldLabel.newStrategyName}
           name="name"
           placeholder={strategyName}
           required
@@ -88,6 +89,6 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
           </Control>
         </Field>
       </Form>
-    </Page>
+    </OneSectionLayout>
   );
 };

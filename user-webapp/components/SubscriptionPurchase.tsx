@@ -31,10 +31,11 @@ import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useMemo, useEffect, useState } from "react";
 import { SubscriptionContext } from "_contexts";
 import { useApiAction } from "_hooks";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { route } from "_routing";
 
 export const SubscriptionPurchase: FC = () => {
-  const { canPurchaseSubscription, hasActiveSubscription, readSubscriptionIsPending, subscriptionEnd } =
+  const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
@@ -74,29 +75,28 @@ export const SubscriptionPurchase: FC = () => {
     };
   }, [account]);
 
-  const purchaseIsDisabled = useMemo(() => {
-    if (!country) return true;
-    if (!isNaturalNumber(numMonths)) return true;
-    if (numMonths < minNumMonths) return true;
-    if (numMonths > maxNumMonths) return true;
-    return false;
-  }, [country, numMonths]);
+  let purchaseIsDisabled = false;
+  if (!country) purchaseIsDisabled = true;
+  if (isNaturalNumber(numMonths)) {
+    if (numMonths < minNumMonths) purchaseIsDisabled = true;
+    if (numMonths > maxNumMonths) purchaseIsDisabled = true;
+  } else {
+    purchaseIsDisabled = true;
+  }
 
-  const newSubscriptionEnd = useMemo(() => {
-    if (readSubscriptionIsPending) return;
-    if (!isNaturalNumber(numMonths)) return;
+  let newSubscriptionEnd;
+  if (isNaturalNumber(numMonths)) {
     const start = subscriptionEnd ? getTime(subscriptionEnd).plus(1).days() : now();
-    return getTime(start)
+    newSubscriptionEnd = getTime(start)
       .plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
       .months();
-  }, [numMonths, readSubscriptionIsPending, subscriptionEnd]);
+  }
 
   const formattedNewSubscriptionEnd = useFormattedDate(newSubscriptionEnd, "day");
 
-  const isYearlyPurchase = useMemo(
-    () => (typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined),
-    [numMonths]
-  );
+  const isYearlyPurchase =
+    typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined;
+
   const onChangeNumMonths = useCallback<InputOnChange>(
     (event) => {
       const value = event.target.value;
@@ -199,7 +199,7 @@ export const SubscriptionPurchase: FC = () => {
       <Columns>
         <Column isNarrow>
           <InputField
-            label="Num months"
+            label={fieldLabel.numMonths}
             value={numMonths}
             type="number"
             onChange={onChangeNumMonths}
@@ -210,23 +210,23 @@ export const SubscriptionPurchase: FC = () => {
         </Column>
 
         <Column>
-          <InputField label="End day" defaultValue={formattedNewSubscriptionEnd} readOnly />
+          <InputField label={fieldLabel.endDay} defaultValue={formattedNewSubscriptionEnd} readOnly />
         </Column>
       </Columns>
 
       <SelectField
         disabled={selectCountryIsDisabled}
-        label="Country"
+        label={fieldLabel.country}
         name="country"
         onChange={onChangeCountry}
         options={countryOptions}
         value={country}
       />
 
-      <InputField label="Email" defaultValue={email} readOnly />
+      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
 
       <InputField
-        label="Total price"
+        label={fieldLabel.totalPrice}
         defaultValue={formattedTotalPrice}
         readOnly
         color={isYearlyPurchase ? "success" : undefined}
@@ -241,7 +241,7 @@ export const SubscriptionPurchase: FC = () => {
             onClick={onClickPurchase}
             isLoading={purchaseIsPending}
           >
-            Purchase
+            {buttonLabel.purchase}
           </Button>
         </Control>
       </Field>

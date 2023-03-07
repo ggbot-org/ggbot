@@ -3,6 +3,7 @@ import { isAccount } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { route } from "_routing";
 
 export const AuthExitForm: FC = () => {
@@ -13,16 +14,6 @@ export const AuthExitForm: FC = () => {
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
   const email = useMemo(() => (isAccount(account) ? account.email : ""), [account]);
-
-  const accountInfo = useMemo<{ label: string; value: string }[]>(
-    () => [
-      {
-        label: "Email",
-        value: email,
-      },
-    ],
-    [email]
-  );
 
   const onReset = useCallback<FormOnReset>(
     (event) => {
@@ -47,19 +38,17 @@ export const AuthExitForm: FC = () => {
     <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
       <Title>Exit ggbot2</Title>
 
-      {accountInfo.map(({ label, value }, i) => (
-        <InputField key={i} label={label} readOnly isStatic defaultValue={value} />
-      ))}
+      <InputField label={fieldLabel.email} readOnly defaultValue={email} />
 
       <Field isGrouped>
         <Control>
-          <Button type="reset">Stay</Button>
+          <Button color="danger" isLoading={isPending}>
+            {buttonLabel.exit}
+          </Button>
         </Control>
 
         <Control>
-          <Button color="danger" isLoading={isPending}>
-            Exit
-          </Button>
+          <Button type="reset">{buttonLabel.goBack}</Button>
         </Control>
       </Field>
     </Form>

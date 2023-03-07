@@ -1,6 +1,7 @@
 import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
 import { StrategyScheduling } from "@ggbot2/models";
 import { FC, useCallback, useMemo } from "react";
+import { buttonLabel } from "_i18n";
 import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
@@ -28,9 +29,9 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
 
   const statusButtonLabel = useMemo(() => {
     if (status !== "active") {
-      return "Activate";
+      return buttonLabel.activate;
     } else {
-      return "Dismiss";
+      return buttonLabel.dismiss;
     }
   }, [status]);
 
@@ -41,7 +42,7 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
 
       <Buttons size="small">
-        <Button onClick={removeScheduling}>Remove</Button>
+        <Button onClick={removeScheduling}>{buttonLabel.remove}</Button>
 
         <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
       </Buttons>

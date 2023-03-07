@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ButtonShareStrategy } from "_components";
 import { useApiAction } from "_hooks";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
@@ -114,11 +115,11 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
   return (
     <Box>
-      <Title>Strategy</Title>
+      <Title>Strategy info</Title>
 
       <EditableInputField
         name="name"
-        label="Name"
+        label={fieldLabel.strategyName}
         placeholder={inputNamePlaceholder}
         isSpinning={renameIsPending}
         readOnly={readOnly}
@@ -128,17 +129,18 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Columns>
         <Column>
-          <InputField label="When created" defaultValue={formattedWhenCreated} readOnly />
+          <InputField label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} readOnly />
         </Column>
+
         <Column>
-          <InputField label="Strategy ID" defaultValue={strategyKey.strategyId} readOnly />
+          <InputField label={fieldLabel.whenCreated} defaultValue={strategyKey.strategyId} readOnly />
         </Column>
       </Columns>
 
       <Field isGrouped>
         <Control>
           <Button isLoading={flowIsSpinning} onClick={onClickFlow} color="primary">
-            Flow
+            {buttonLabel.flow}
           </Button>
         </Control>
 
@@ -148,7 +150,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
         <Control>
           <Button isLoading={copyIsSpinning} onClick={onClickCopy}>
-            Copy
+            {buttonLabel.copy}
           </Button>
         </Control>
       </Field>
