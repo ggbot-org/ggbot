@@ -1,11 +1,13 @@
-import { Button, ButtonOnClick } from "@ggbot2/design";
+import { Button, Buttons, ButtonOnClick, Checkbox, Column, Columns } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useEffect, useCallback, useMemo, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { BacktestCheckbox, BacktestController, ButtonShareStrategy, Navigation, Page } from "_components";
+import { classNames } from "_classNames";
+import { BacktestController, ButtonShareStrategy, Navigation, Page } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
+import { buttonLabel, checkboxLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
@@ -92,36 +94,40 @@ export const ViewStrategyFlowPage: FC<Props> = ({
       }}
       topbar={<Navigation noMenu={!hasSession} />}
     >
-      <div>
-        <div>
+      <Columns>
+        <Column>
           <dl>
             <dt>name</dt>
             <dd>{strategyName}</dd>
           </dl>
+        </Column>
 
-          <menu>
+        <Column>
+          <Buttons>
             {backtesting && (
-              <li>
-                <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
-              </li>
+              <Checkbox
+                checked={backtesting.isEnabled}
+                onChange={onChangeBacktestingCheckbox}
+                className={classNames("py-2", "px-1")}
+              >
+                <span className={classNames("mx-2")}>{checkboxLabel.backtest}</span>
+              </Checkbox>
             )}
-            <li>
-              <ButtonShareStrategy {...strategyKey} />
-            </li>
+
+            <ButtonShareStrategy {...strategyKey} />
+
             {accountIsOwner || (
-              <li>
-                <Button color="primary" isLoading={copyIsSpinning} onClick={onClickCopy}>
-                  copy
-                </Button>
-              </li>
+              <Button color="primary" isLoading={copyIsSpinning} onClick={onClickCopy}>
+                {buttonLabel.copy}
+              </Button>
             )}
-          </menu>
-        </div>
+          </Buttons>
+        </Column>
+      </Columns>
 
-        <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
+      <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
 
-        <div ref={flowViewContainerRef}></div>
-      </div>
+      <div ref={flowViewContainerRef}></div>
     </Page>
   );
 };

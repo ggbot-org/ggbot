@@ -133,7 +133,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         </Column>
 
         <Column>
-          <InputField label={fieldLabel.whenCreated} defaultValue={strategyKey.strategyId} readOnly />
+          <InputField label={fieldLabel.strategyId} defaultValue={strategyKey.strategyId} readOnly />
         </Column>
       </Columns>
 

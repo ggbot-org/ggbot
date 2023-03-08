@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { ChangeEventHandler, FC, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
-import { fieldLabel } from "_i18n";
+import { buttonLabel, fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts";
 import { StrategyInfo, route } from "_routing";
 
@@ -27,7 +27,7 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
 
   const [copyStrategy, { data: isDone, isPending }] = useApiAction.CopyStrategy();
 
-  const formattedWhenCreated = useFormattedDate(whenCreated, "date");
+  const formattedWhenCreated = useFormattedDate(whenCreated, "day");
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -46,8 +46,11 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
-      if (isName(event.target.value)) setIsDisabled(false);
-      else setIsDisabled(true);
+      if (isName(event.target.value)) {
+        setIsDisabled(false);
+      } else {
+        setIsDisabled(true);
+      }
     },
     [setIsDisabled]
   );
@@ -59,7 +62,7 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
 
   return (
     <OneSectionLayout>
-      <Form onSubmit={onSubmit}>
+      <Form box onSubmit={onSubmit}>
         <Title>Copy strategy</Title>
 
         <InputField label={fieldLabel.strategyName} defaultValue={strategyName} />
@@ -74,18 +77,14 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
           name="name"
           placeholder={strategyName}
           required
-          readOnly={isPending}
+          readOnly={isPending ?? isDone}
         />
 
         <Field>
           <Control>
-            {isDone ? (
-              <Button color="primary">Done</Button>
-            ) : (
-              <Button isLoading={isPending} disabled={isDisabled}>
-                Copy
-              </Button>
-            )}
+            <Button isLoading={isPending ?? isDone} disabled={isDisabled}>
+              {buttonLabel.copy}
+            </Button>
           </Control>
         </Field>
       </Form>

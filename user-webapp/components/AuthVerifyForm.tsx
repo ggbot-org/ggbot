@@ -95,7 +95,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
       <InputField label={fieldLabel.email} defaultValue={email} readOnly />
 
       <Message>

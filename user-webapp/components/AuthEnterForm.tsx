@@ -78,7 +78,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
       <Title>Enter ggbot2</Title>
 
       <InputField label={fieldLabel.email} name="email" type="email" readOnly={isPending} required />

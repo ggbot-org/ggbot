@@ -40,7 +40,7 @@ export const SimpleForm: FC = () => {
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
       <Flex direction="row" justify="center" alignItems="center">
         <span className={classNames("title", "is-4", "mx-2", "my-4")}>create account</span>
       </Flex>

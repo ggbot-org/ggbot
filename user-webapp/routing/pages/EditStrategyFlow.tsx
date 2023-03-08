@@ -1,26 +1,22 @@
 import { ErrorAccountItemNotFound } from "@ggbot2/database";
-import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
+import { ButtonOnClick, CheckboxOnChange } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@ggbot2/models";
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
-import Link from "next/link";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-  BacktestCheckbox,
-  BacktestCheckboxOnChange,
   BacktestController,
-  LiveCheckbox,
-  LiveCheckboxOnChange,
+  EditStrategyTopbar,
   MemoryController,
   PleaseConfigureBinanceModal,
   StrategyExecutionLog,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { PageLayout } from "_layouts";
-import { StrategyInfo, route } from "_routing";
+import { StrategyInfo } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -39,8 +35,6 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     binanceSymbols,
     strategyKind: strategyKey.strategyKind,
   });
-
-  const strategyHref = useMemo(() => route.strategyPage(strategyKey), [strategyKey]);
 
   const [backtesting, backtestingDispatch] = useBacktesting({
     ...strategyKey,
@@ -65,12 +59,8 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     return !canSave;
   }, [canSave, flowLoaded, isLive, runIsPending, hasNoBinanceApiConfig, saveIsPending]);
 
-  const runIsDisabled = useMemo(() => {
-    if (runIsPending) return false;
-    return !canRun;
-  }, [canRun, runIsPending]);
-
-  const saveIsDisabled = useMemo(() => backtesting?.isEnabled, [backtesting]);
+  const backtestingIsEnabled = backtesting?.isEnabled;
+  const hasBacktesting = backtesting !== undefined;
 
   const { executionStatus, executionSteps, executionWhenUpdated } = useMemo(() => {
     if (!isMaybeObject<StrategyExecution>(strategyExecution))
@@ -89,7 +79,7 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     };
   }, [strategyExecution]);
 
-  const onChangeBacktestingCheckbox = useCallback<BacktestCheckboxOnChange>(
+  const onChangeBacktestingCheckbox = useCallback<CheckboxOnChange>(
     (event) => {
       const wantBacktesting = event.target.checked;
       backtestingDispatch({ type: "TOGGLE" });
@@ -98,7 +88,7 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     [backtestingDispatch, setIsLive]
   );
 
-  const onChangeLiveCheckbox = useCallback<LiveCheckboxOnChange>(
+  const onChangeLiveCheckbox = useCallback<CheckboxOnChange>(
     (event) => {
       const isLive = event.target.checked;
       setIsLive(isLive);
@@ -172,41 +162,29 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     if (status === "failure") toast.error("Strategy execution failure");
   }, [strategyExecution]);
 
-  if (hasNoBinanceApiConfig === undefined) return null;
-
   return (
     <PageLayout>
       {hasNoBinanceApiConfig && <PleaseConfigureBinanceModal />}
 
-      <div>
-        <Link href={strategyHref} passHref tabIndex={0}>
-          {name}
-        </Link>
-
-        {backtesting && (
-          <BacktestCheckbox checked={backtesting.isEnabled} onChange={onChangeBacktestingCheckbox} />
-        )}
-        <LiveCheckbox checked={isLive} onChange={onChangeLiveCheckbox} />
-
-        <Buttons>
-          <Button disabled={runIsDisabled} color="danger" isLoading={runIsPending} onClick={onClickRun}>
-            Run
-          </Button>
-
-          <Button
-            disabled={saveIsDisabled}
-            color={canSave ? "primary" : undefined}
-            isLoading={saveIsPending}
-            onClick={onClickSave}
-          >
-            Save
-          </Button>
-        </Buttons>
-      </div>
+      <EditStrategyTopbar
+        backtestingIsChecked={backtestingIsEnabled}
+        canRun={canRun}
+        canSave={canSave}
+        hasBacktesting={hasBacktesting}
+        liveIsChecked={isLive}
+        name={name}
+        onChangeBacktestingCheckbox={onChangeBacktestingCheckbox}
+        onChangeLiveCheckbox={onChangeLiveCheckbox}
+        onClickRun={onClickRun}
+        onClickSave={onClickSave}
+        runIsPending={runIsPending}
+        saveIsPending={saveIsPending}
+        strategyKey={strategyKey}
+      />
 
       <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
 
-      <div ref={flowViewContainerRef} />
+      <div ref={flowViewContainerRef} style={{ height: "600px" }} />
 
       <MemoryController />
 

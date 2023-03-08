@@ -2,6 +2,7 @@ import { Button, ButtonOnClick } from "@ggbot2/design";
 import { StrategyKey } from "@ggbot2/models";
 import { FC, useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
+import { buttonLabel } from "_i18n";
 import { route, webappBaseUrl } from "_routing";
 
 type Props = StrategyKey;
@@ -34,5 +35,5 @@ export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
     }
   }, [shareData]);
 
-  return <Button onClick={onClick}>Share</Button>;
+  return <Button onClick={onClick}>{buttonLabel.share}</Button>;
 };

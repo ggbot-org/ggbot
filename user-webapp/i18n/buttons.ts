@@ -13,6 +13,9 @@ export const buttonLabel = {
   no: "No",
   purchase: "Purchase",
   remove: "Remove",
+  run: "Run",
+  save: "Save",
   send: "Send",
+  share: "Share",
   yesDelete: "Yes, delete it!",
 } as const;

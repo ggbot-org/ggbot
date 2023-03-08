@@ -98,7 +98,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
       <InputField label={fieldLabel.apiKey} defaultValue={apiKey} readOnly />

@@ -35,7 +35,7 @@ export const AuthExitForm: FC = () => {
   }, [readAccount]);
 
   return (
-    <Form action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
+    <Form box action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
       <Title>Exit ggbot2</Title>
 
       <InputField label={fieldLabel.email} readOnly defaultValue={email} />

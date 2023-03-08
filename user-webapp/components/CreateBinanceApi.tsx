@@ -24,7 +24,7 @@ export const CreateBinanceApi: FC = () => {
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
       <InputField name="apiKey" label={fieldLabel.apiKey} required readOnly={isPending} />

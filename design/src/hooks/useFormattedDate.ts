@@ -1,7 +1,7 @@
 import { isInvalidDate } from "@ggbot2/time";
 import { useEffect, useState } from "react";
 
-const dateTimeFormats = ["day", "time"];
+const dateTimeFormats = ["day", "time"] as const;
 export type DateTimeFormat = typeof dateTimeFormats[number];
 
 export type DateTimeValue = number | string | undefined | null;

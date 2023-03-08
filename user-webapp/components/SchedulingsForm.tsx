@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick, Control, Field, Flex, Form, Title } from "@ggbot2/design";
+import { Button, ButtonOnClick, Control, Field, Form, Level, LevelItem, Title } from "@ggbot2/design";
 import {
   StrategyScheduling,
   isAccountStrategy,
@@ -161,12 +161,20 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   }, [writeData, read]);
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Flex justify="space-between">
-        <Title>Schedulings</Title>
-
-        <SchedulingsStatusBadges schedulings={currentSchedulings} />
-      </Flex>
+    <Form box onSubmit={onSubmit}>
+      <Level
+        isMobile
+        left={
+          <LevelItem>
+            <Title>Schedulings</Title>
+          </LevelItem>
+        }
+        right={
+          <LevelItem>
+            <SchedulingsStatusBadges schedulings={currentSchedulings} />
+          </LevelItem>
+        }
+      />
 
       {schedulingItems.map((scheduling) => {
         const { id } = scheduling;

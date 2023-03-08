@@ -43,7 +43,7 @@ export const CreateStrategyPage: FC = () => {
 
   return (
     <OneSectionLayout>
-      <Form onSubmit={onSubmit}>
+      <Form box onSubmit={onSubmit}>
         <Title>Create strategy</Title>
 
         <InputField label={fieldLabel.strategyName} name="name" required readOnly={isPending} />
