@@ -2,6 +2,10 @@ import { DflowNode } from "dflow";
 
 const { input, output } = DflowNode;
 
+// TODO serve il nome? Non dovrebbe. Se non serve, togli questo
+// inputArray e usa input("array") direttamente
+export const inputArray = input("array", { name: "array" });
+
 export const inputExecute = input("boolean", {
   name: "execute",
   optional: true,

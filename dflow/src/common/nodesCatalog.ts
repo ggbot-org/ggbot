@@ -20,6 +20,7 @@ import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
 import { InputNumber } from "./nodes/inputs.js";
 import { And, Equal, Not, NullishCoaleshing, Or } from "./nodes/logic.js";
+import { Max, Min } from "./nodes/mathFunctions.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
 import { Time, TimeToDay, TimeMinus, TimePlus, Today } from "./nodes/time.js";
 
@@ -45,8 +46,19 @@ export const nodesCatalog = {
   [Not.kind]: Not,
   [NullishCoaleshing.kind]: NullishCoaleshing,
   [Or.kind]: Or,
+  // indicators
+  [BollingerBands.kind]: BollingerBands,
+  [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
+  [HeikinAshi.kind]: HeikinAshi,
+  [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
+  [SimpleMovingAverage.kind]: SimpleMovingAverage,
+  [TypicalPrice.kind]: TypicalPrice,
+  [WilderMovingAverage.kind]: WilderMovingAverage,
   // inputs
   [InputNumber.kind]: InputNumber,
+  // mathFunctions
+  [Max.kind]: Max,
+  [Min.kind]: Min,
   // memory
   [DeleteMemory.kind]: DeleteMemory,
   [GetMemory.kind]: GetMemory,
@@ -57,12 +69,4 @@ export const nodesCatalog = {
   [TimePlus.kind]: TimePlus,
   [TimeToDay.kind]: TimeToDay,
   [Today.kind]: Today,
-  // indicators
-  [BollingerBands.kind]: BollingerBands,
-  [ExponentialMovingAverage.kind]: ExponentialMovingAverage,
-  [HeikinAshi.kind]: HeikinAshi,
-  [RelativeStrengthIndex.kind]: RelativeStrengthIndex,
-  [SimpleMovingAverage.kind]: SimpleMovingAverage,
-  [TypicalPrice.kind]: TypicalPrice,
-  [WilderMovingAverage.kind]: WilderMovingAverage,
 };

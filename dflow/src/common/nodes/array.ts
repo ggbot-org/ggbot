@@ -1,8 +1,8 @@
 import { DflowNode } from "dflow";
+import { inputArray } from "./commonIO.js";
 
 const { input, output } = DflowNode;
 
-const inputArray = input("array", { name: "array" });
 const inputElement = input([], { name: "element" });
 const outputElement = output([], { name: "element" });
 const outputRest = output("array", { name: "rest" });
@@ -31,12 +31,20 @@ export class Pop extends DflowNode {
 
 export class Push extends DflowNode {
   static kind = "push";
-  static inputs = [inputArray, inputElement];
+  static inputs = [input("array", { name: "array", optional: true }), inputElement];
   static outputs = [outputElement, outputRest];
   run() {
-    const array = (this.input(0).data as unknown[]).slice(0);
+    const maybeArray = this.input(0).data as unknown;
     const element = this.input(1).data as unknown;
-    array.push(element);
-    this.output(0).data = array;
+    // Input array is optional and defaults to an empty array.
+    if (maybeArray === undefined) {
+      this.output(0).data = [element];
+    } else if (Array.isArray(maybeArray)) {
+      const array = maybeArray.slice(0);
+      array.push(element);
+      this.output(0).data = array;
+    } else {
+      this.clearOutputs();
+    }
   }
 }
