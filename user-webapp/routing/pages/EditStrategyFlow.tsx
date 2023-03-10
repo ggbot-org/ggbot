@@ -184,7 +184,7 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
 
       <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
 
-      <div ref={flowViewContainerRef} style={{ height: "600px" }} />
+      <div ref={flowViewContainerRef} style={{ height: "800px" }} />
 
       <MemoryController />
 
