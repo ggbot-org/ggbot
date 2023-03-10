@@ -86,7 +86,12 @@ export const EditStrategyTopbar: FC<Props> = ({
           }
           right={
             <Buttons>
-              <Button color={canRun ? "warning" : undefined} isLoading={runIsPending} onClick={onClickRun}>
+              <Button
+                color={canRun ? "warning" : undefined}
+                isLight
+                isLoading={runIsPending}
+                onClick={onClickRun}
+              >
                 {buttonLabel.run}
               </Button>
 

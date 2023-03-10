@@ -9,6 +9,7 @@ import {
 import { Shift, Pop, Push } from "./nodes/array.js";
 import { If } from "./nodes/conditional.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
+import { CrossOver } from "./nodes/indicators/cross.js";
 import { HeikinAshi } from "./nodes/indicators/candles.js";
 import {
   ExponentialMovingAverage,
@@ -36,6 +37,8 @@ export const nodesCatalog = {
   [Push.kind]: Push,
   // conditional
   [If.kind]: If,
+  // cross
+  [CrossOver.kind]: CrossOver,
   // logic
   [And.kind]: And,
   [Not.kind]: Not,
