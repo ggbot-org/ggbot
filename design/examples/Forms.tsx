@@ -9,6 +9,7 @@ import {
   InputField,
   SelectField,
   SelectOnChange,
+  Title,
   classNames,
 } from "@ggbot2/design";
 
@@ -41,9 +42,7 @@ export const SimpleForm: FC = () => {
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Flex direction="row" justify="center" alignItems="center">
-        <span className={classNames("title", "is-4", "mx-2", "my-4")}>create account</span>
-      </Flex>
+      <Title>Create account</Title>
 
       <InputField name="nick" label="nick" color="success" defaultValue="satoshi" help={<>&nbsp;</>} />
 

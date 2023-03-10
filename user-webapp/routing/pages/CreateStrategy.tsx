@@ -1,4 +1,14 @@
-import { Button, ButtonProps, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
+import {
+  Button,
+  ButtonProps,
+  Control,
+  Field,
+  Form,
+  FormOnSubmit,
+  InputField,
+  Title,
+  formValues,
+} from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo } from "react";
@@ -7,6 +17,11 @@ import { useApiAction } from "_hooks";
 import { fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts";
 import { route } from "_routing";
+
+const fields = ["name"];
+const fieldName = {
+  name: "name",
+} as const satisfies Record<string, typeof fields[number]>;
 
 export const CreateStrategyPage: FC = () => {
   const router = useRouter();
@@ -26,7 +41,7 @@ export const CreateStrategyPage: FC = () => {
       event.preventDefault();
       if (isReadonly) return;
       try {
-        const name = (event.target as EventTarget & { name: { value: string } }).name.value;
+        const { name } = formValues(event, fields);
         throwIfInvalidName(name);
         if (isName(name)) create({ kind: "binance", name });
       } catch (error) {
@@ -46,7 +61,7 @@ export const CreateStrategyPage: FC = () => {
       <Form box onSubmit={onSubmit}>
         <Title>Create strategy</Title>
 
-        <InputField label={fieldLabel.strategyName} name="name" required readOnly={isPending} />
+        <InputField label={fieldLabel.strategyName} name={fieldName.name} required readOnly={isPending} />
 
         <Field>
           <Control>

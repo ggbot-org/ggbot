@@ -1,0 +1,19 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  gap: 2px;
+  border: 1px solid $grey-light;
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__body {
+    display: grid;
+    // One column for every week day.
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+}

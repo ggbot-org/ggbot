@@ -1,6 +1,9 @@
 import { Day, MonthNum, WeekDayNum, dateToDay, today, weekDayNums } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
+import { classNames } from "../classNames";
 import { Icon } from "./Icon";
+
+// TODO remove all tailwind classes
 
 export type CalendarMonthNameRecord = Record<MonthNum, string>;
 
@@ -180,13 +183,13 @@ export const Calendar: FC<CalendarProps> = ({
   }, [setMonthOffset]);
 
   return (
-    <div className="flex flex-col w-64 gap-1">
-      <div className="flex flex-row justify-between py-1 my-1 border-b border-neutral-300">
+    <div className={classNames("calendar")}>
+      <div className={classNames("calendar__head")}>
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
             <Icon name="caret-left" onClick={isFirstMonth ? undefined : onClickPrevious} />
           </span>
-          <span className="font-medium">{monthName[monthNum]}</span>
+          <span>{monthName[monthNum]}</span>
         </div>
         <div className="flex flex-row items-center gap-2">
           <span className="font-medium">{firstDate.getFullYear()}</span>
@@ -195,7 +198,8 @@ export const Calendar: FC<CalendarProps> = ({
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-7">
+
+      <div className={classNames("calendar__body")}>
         {weekDayNums.map((n) => (
           <div key={n} className="text-center select-none">
             {weekDayName[n]}

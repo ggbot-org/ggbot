@@ -6,12 +6,13 @@ import {
   EditableInputs,
   Icons,
   LoadingButtons,
+  SingleCalendar,
   Tags,
   SimpleForm,
   SimpleTable,
   Typography,
 } from "_examples";
-import { Columns, Column, Container, Logo, Navbar } from "@ggbot2/design";
+import { Columns, Column, Container, Logo, Navbar, Section, Title } from "@ggbot2/design";
 
 const Home: NextPage = () => {
   return (
@@ -23,31 +24,89 @@ const Home: NextPage = () => {
       <Navbar />
 
       <main>
-        <Container>
-          <Logo size={71} />
+        <Section>
+          <Container>
+            <Logo size={71} />
+          </Container>
+        </Section>
 
-          <Typography />
+        <Section>
+          <Container>
+            <Title>Typography</Title>
 
-          <Columns isCentered>
-            <Column size="half">
-              <SimpleForm />
-            </Column>
-          </Columns>
+            <Typography />
+          </Container>
+        </Section>
 
-          <ButtonColors />
+        <Section>
+          <Container>
+            <Title>Forms</Title>
 
-          <LoadingButtons />
+            <Columns>
+              <Column size="half">
+                <SimpleForm />
+              </Column>
+            </Columns>
+          </Container>
+        </Section>
 
-          <EditableInputs />
+        <Section>
+          <Container>
+            <Title>Buttons</Title>
 
-          <Icons />
+            <ButtonColors />
 
-          <Tags />
+            <LoadingButtons />
+          </Container>
+        </Section>
 
-          <SimpleTable />
+        <Section>
+          <Container>
+            <Title>Editable input</Title>
 
-          <Charts />
-        </Container>
+            <EditableInputs />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Icons</Title>
+
+            <Icons />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Tags</Title>
+
+            <Tags />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Calendars</Title>
+
+            <SingleCalendar />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Tables</Title>
+
+            <SimpleTable />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Charts</Title>
+
+            <Charts />
+          </Container>
+        </Section>
       </main>
     </>
   );
