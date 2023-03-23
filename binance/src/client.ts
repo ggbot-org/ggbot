@@ -12,8 +12,10 @@ import {
 } from "./types.js";
 import { balanceIsNotEmpty } from "./utils.js";
 
-/** BinanceClient implements private API requests.
-It extends BinanceExchange to be able to use also some public API requests. */
+/**
+ * BinanceClient implements private API requests.
+ * It extends BinanceExchange to be able to use also public API requests.
+ */
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
   apiSecret: string;
@@ -30,16 +32,12 @@ export class BinanceClient extends BinanceExchange {
     params?: BinanceConnectorRequestArg["params"]
   ) {
     const searchParams = new URLSearchParams();
-    if (params)
-      for (const [key, value] of Object.entries(params))
-        searchParams.append(key, String(value));
+    if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value));
 
     const timestamp = Date.now();
     searchParams.append("timestamp", String(timestamp));
 
-    const signature = createHmac("sha256", this.apiSecret)
-      .update(searchParams.toString())
-      .digest("hex");
+    const signature = createHmac("sha256", this.apiSecret).update(searchParams.toString()).digest("hex");
     searchParams.append("signature", signature);
 
     return await super.request<Data>({
@@ -50,14 +48,16 @@ export class BinanceClient extends BinanceExchange {
     });
   }
 
-  /** Account Information (USER_DATA)
-{@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data} */
+  /**
+   * Account Information (USER_DATA)
+   *
+   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
+   */
   async account(): Promise<BinanceAccountInformation> {
-    const { balances, ...rest } =
-      await this.privateRequest<BinanceAccountInformation>(
-        "GET",
-        "/api/v3/account"
-      );
+    const { balances, ...rest } = await this.privateRequest<BinanceAccountInformation>(
+      "GET",
+      "/api/v3/account"
+    );
 
     return {
       // Filter empty balances
@@ -79,113 +79,86 @@ export class BinanceClient extends BinanceExchange {
     }
   }
 
-  /** Send in a new order.
-{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade} */
+  /**
+   * Send in a new order.
+   *
+   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+   */
   async newOrder(
     symbolInput: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
+    return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order", {
+      symbol,
       side,
       type,
-      orderOptions
-    );
-    return await this.privateRequest<BinanceOrderRespFULL>(
-      "POST",
-      "/api/v3/order",
-      {
-        symbol,
-        side,
-        type,
-        ...options,
-      }
-    );
+      ...options,
+    });
   }
 
-  /** Test a new order.
-Binance API will validate new order but will not send it into the matching engine.
-Parameters are the same as `newOrder`. */
+  /**
+   * Test a new order.
+   *
+   * Binance API will validate new order but will not send it into the matching engine.
+   * Parameters are the same as `newOrder`.
+   */
   async newOrderTest(
     symbolInput: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
+    return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order/test", {
+      symbol,
       side,
       type,
-      orderOptions
-    );
-    return await this.privateRequest<BinanceOrderRespFULL>(
-      "POST",
-      "/api/v3/order/test",
-      {
-        symbol,
-        side,
-        type,
-        ...options,
-      }
-    );
+      ...options,
+    });
   }
 
-  /** Send in a new order with type other than MARKET or LIMIT order.
-{@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade} */
+  /**
+   * Send in a new order with type other than MARKET or LIMIT order.
+   *
+   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+   */
   async newOrderACK(
     symbolInput: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
+    return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order", {
+      symbol,
       side,
       type,
-      orderOptions
-    );
-    return await this.privateRequest<BinanceOrderRespACK>(
-      "POST",
-      "/api/v3/order",
-      {
-        symbol,
-        side,
-        type,
-        ...options,
-      }
-    );
+      ...options,
+    });
   }
 
   /**
-Test a new order with type other than MARKET or LIMIT order.
-Binance API will validates new order but will not send it into the matching engine.
-
-Parameters are the same as `newOrderACK`.
-*/
+   * Test a new order with type other than MARKET or LIMIT order.
+   *
+   * Binance API will validates new order but will not send it into the matching engine.
+   * Parameters are the same as `newOrderACK`.
+   */
   async newOrderACKTest(
     symbolInput: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
+    return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order/test", {
+      symbol,
       side,
       type,
-      orderOptions
-    );
-    return await this.privateRequest<BinanceOrderRespACK>(
-      "POST",
-      "/api/v3/order/test",
-      {
-        symbol,
-        side,
-        type,
-        ...options,
-      }
-    );
+      ...options,
+    });
   }
 }
 
