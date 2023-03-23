@@ -1,7 +1,11 @@
 import { ErrorAccountItemNotFound } from "@ggbot2/database";
 import { ButtonOnClick, CheckboxOnChange } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
-import { StrategyExecution, isStrategyExecutionStatus, isStrategyFlow } from "@ggbot2/models";
+import {
+  StrategyExecution,
+  isStrategyExecutionStatus,
+  isStrategyFlow,
+} from "@ggbot2/models";
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
@@ -10,6 +14,7 @@ import { toast } from "react-hot-toast";
 import {
   BacktestController,
   EditStrategyTopbar,
+  FlowViewContainer,
   MemoryController,
   PleaseConfigureBinanceModal,
   StrategyExecutionLog,
@@ -22,12 +27,18 @@ type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategyKey }) => {
+export const EditStrategyFlowPage: FC<Props> = ({
+  binanceSymbols,
+  name,
+  strategyKey,
+}) => {
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [isLive, setIsLive] = useState(false);
-  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState<boolean | undefined>();
+  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState<
+    boolean | undefined
+  >();
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
@@ -42,13 +53,22 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     flowViewGraph: flowView?.graph,
   });
 
-  const [execute, { data: strategyExecution, isPending: runIsPending, error: strategyExecutionError }] =
-    useApiAction.ExecuteStrategy();
+  const [
+    execute,
+    {
+      data: strategyExecution,
+      isPending: runIsPending,
+      error: strategyExecutionError,
+    },
+  ] = useApiAction.ExecuteStrategy();
 
-  const [saveStrategyFlow, { isPending: saveIsPending }] = useApiAction.WriteStrategyFlow();
+  const [saveStrategyFlow, { isPending: saveIsPending }] =
+    useApiAction.WriteStrategyFlow();
 
-  const [readStrategyFlow, { data: storedStrategyFlow, isPending: readIsPending }] =
-    useApiAction.ReadStrategyFlow();
+  const [
+    readStrategyFlow,
+    { data: storedStrategyFlow, isPending: readIsPending },
+  ] = useApiAction.ReadStrategyFlow();
 
   const canRun = useMemo(() => {
     if (!flowLoaded) return false;
@@ -57,27 +77,39 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
     if (runIsPending) return false;
     if (saveIsPending) return false;
     return !canSave;
-  }, [canSave, flowLoaded, isLive, runIsPending, hasNoBinanceApiConfig, saveIsPending]);
+  }, [
+    canSave,
+    flowLoaded,
+    isLive,
+    runIsPending,
+    hasNoBinanceApiConfig,
+    saveIsPending,
+  ]);
 
   const backtestingIsEnabled = backtesting?.isEnabled;
   const hasBacktesting = backtesting !== undefined;
 
-  const { executionStatus, executionSteps, executionWhenUpdated } = useMemo(() => {
-    if (!isMaybeObject<StrategyExecution>(strategyExecution))
+  const { executionStatus, executionSteps, executionWhenUpdated } =
+    useMemo(() => {
+      if (!isMaybeObject<StrategyExecution>(strategyExecution))
+        return {
+          executionWhenUpdated: undefined,
+          executionSteps: undefined,
+          executionStatus: undefined,
+        };
+      const { status, steps, whenUpdated } = strategyExecution;
+      const executionStatus = isStrategyExecutionStatus(status)
+        ? status
+        : undefined;
+      const executionWhenUpdated = isTime(whenUpdated)
+        ? whenUpdated
+        : undefined;
       return {
-        executionWhenUpdated: undefined,
-        executionSteps: undefined,
-        executionStatus: undefined,
+        executionSteps: steps as DflowExecutionNodeInfo[],
+        executionStatus,
+        executionWhenUpdated,
       };
-    const { status, steps, whenUpdated } = strategyExecution;
-    const executionStatus = isStrategyExecutionStatus(status) ? status : undefined;
-    const executionWhenUpdated = isTime(whenUpdated) ? whenUpdated : undefined;
-    return {
-      executionSteps: steps as DflowExecutionNodeInfo[],
-      executionStatus,
-      executionWhenUpdated,
-    };
-  }, [strategyExecution]);
+    }, [strategyExecution]);
 
   const onChangeBacktestingCheckbox = useCallback<CheckboxOnChange>(
     (event) => {
@@ -182,9 +214,13 @@ export const EditStrategyFlowPage: FC<Props> = ({ binanceSymbols, name, strategy
         strategyKey={strategyKey}
       />
 
-      <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
+      <BacktestController
+        state={backtesting}
+        dispatch={backtestingDispatch}
+        view={flowView?.graph}
+      />
 
-      <div ref={flowViewContainerRef} style={{ height: "800px" }} />
+      <FlowViewContainer ref={flowViewContainerRef} />
 
       <MemoryController />
 

@@ -1,13 +1,15 @@
-import { Button, Buttons, ButtonOnClick, Checkbox, Column, Columns } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
-import { useRouter } from "next/router";
-import { FC, useEffect, useCallback, useMemo, useState, useRef } from "react";
+import { FC, useEffect, useCallback, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { classNames } from "_classNames";
-import { BacktestController, ButtonShareStrategy, Navigation, Page } from "_components";
+import {
+  BacktestController,
+  FlowViewContainer,
+  Navigation,
+  Page,
+  ViewStrategyTopbar,
+} from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
-import { buttonLabel, checkboxLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
@@ -22,11 +24,8 @@ export const ViewStrategyFlowPage: FC<Props> = ({
   name: strategyName,
   strategyKey,
 }) => {
-  const router = useRouter();
-
   const { strategyKind } = strategyKey;
 
-  const [copyIsSpinning, setCopyIsSpinning] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
@@ -42,24 +41,19 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     flowViewGraph: flowView?.graph,
   });
 
-  const [readStrategyFlow, { data: storedStrategyFlow, isPending: readIsPending }] =
-    useApiAction.ReadStrategyFlow();
+  const [
+    readStrategyFlow,
+    { data: storedStrategyFlow, isPending: readIsPending },
+  ] = useApiAction.ReadStrategyFlow();
 
-  const strategyPathname = useMemo(() => route.viewFlowPage(strategyKey), [strategyKey]);
+  const strategyPathname = route.viewFlowPage(strategyKey);
+
+  const backtestingIsEnabled = backtesting?.isEnabled;
+  const hasBacktesting = backtesting !== undefined;
 
   const onChangeBacktestingCheckbox = useCallback(() => {
     backtestingDispatch({ type: "TOGGLE" });
   }, [backtestingDispatch]);
-
-  const onClickCopy = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      if (copyIsSpinning) return;
-      setCopyIsSpinning(true);
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [copyIsSpinning, setCopyIsSpinning, router, strategyKey]
-  );
 
   useEffect(() => {
     if (!flowLoaded) readStrategyFlow(strategyKey);
@@ -94,40 +88,22 @@ export const ViewStrategyFlowPage: FC<Props> = ({
       }}
       topbar={<Navigation noMenu={!hasSession} />}
     >
-      <Columns>
-        <Column>
-          <dl>
-            <dt>name</dt>
-            <dd>{strategyName}</dd>
-          </dl>
-        </Column>
+      <ViewStrategyTopbar
+        accountIsOwner={accountIsOwner}
+        backtestingIsChecked={backtestingIsEnabled}
+        hasBacktesting={hasBacktesting}
+        name={strategyName}
+        onChangeBacktestingCheckbox={onChangeBacktestingCheckbox}
+        strategyKey={strategyKey}
+      />
 
-        <Column>
-          <Buttons>
-            {backtesting && (
-              <Checkbox
-                checked={backtesting.isEnabled}
-                onChange={onChangeBacktestingCheckbox}
-                className={classNames("py-2", "px-1")}
-              >
-                <span className={classNames("mx-2")}>{checkboxLabel.backtest}</span>
-              </Checkbox>
-            )}
+      <BacktestController
+        state={backtesting}
+        dispatch={backtestingDispatch}
+        view={flowView?.graph}
+      />
 
-            <ButtonShareStrategy {...strategyKey} />
-
-            {accountIsOwner || (
-              <Button color="primary" isLoading={copyIsSpinning} onClick={onClickCopy}>
-                {buttonLabel.copy}
-              </Button>
-            )}
-          </Buttons>
-        </Column>
-      </Columns>
-
-      <BacktestController state={backtesting} dispatch={backtestingDispatch} view={flowView?.graph} />
-
-      <div ref={flowViewContainerRef}></div>
+      <FlowViewContainer ref={flowViewContainerRef} />
     </Page>
   );
 };
