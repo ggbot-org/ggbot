@@ -40,4 +40,4 @@ export const inputValues2 = input("array", { name: "values2" });
 
 export const outputValue = output([], { name: "value" });
 
-export const outputVolume = input("number", { name: "volume" });
+export const outputVolume = input("array", { name: "volume" });
