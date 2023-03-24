@@ -27,9 +27,6 @@ export const outputLastValue = output("number", { name: "last" });
 export const inputOpen = input("array", { name: "open" });
 export const outputOpen = output("array", { name: "open" });
 
-export const inputTime = input("array", { name: "time" });
-export const outputTime = output("array", { name: "time" });
-
 export const inputPeriod = input("number", { name: "period" });
 
 export const inputValues = input("array", { name: "values" });

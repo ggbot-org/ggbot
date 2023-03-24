@@ -1,5 +1,5 @@
 import { decimalToNumber } from "@ggbot2/arithmetic";
-import { isBinanceKlineInterval } from "@ggbot2/binance";
+import { BinanceKline, isBinanceKlineInterval } from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
 import { BinanceDflowContext as Context } from "../context.js";
 import {
@@ -9,7 +9,6 @@ import {
   outputHigh,
   outputLow,
   outputOpen,
-  outputTime,
   outputVolume,
 } from "./commonIO.js";
 
@@ -20,10 +19,9 @@ export class Candles extends DflowNode {
   static inputs = [
     inputSymbol,
     inputInterval,
-    input("number", { name: "limit" }),
+    input("number", { name: "count" }),
   ];
   static outputs = [
-    outputTime,
     outputOpen,
     outputHigh,
     outputLow,
@@ -34,24 +32,24 @@ export class Candles extends DflowNode {
     const { binance, time: currentTime } = this.host.context as Context;
     const symbol = this.input(0).data as string;
     const interval = this.input(1).data as string;
-    const limit = this.input(2).data as number;
+    const count = this.input(2).data as number;
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
     if (!isBinanceSymbol || !isBinanceKlineInterval(interval))
       return this.clearOutputs();
-    const data = await binance.klines(symbol, interval, {
+    const data: BinanceKline[] = [];
+    const klines = await binance.klines(symbol, interval, {
       endTime: currentTime,
-      limit,
+      limit: count,
     });
-    const { time, open, high, low, close, volume } = data.reduce<{
-      time: number[];
+    data.push(...klines);
+    const { open, high, low, close, volume } = data.reduce<{
       open: number[];
       high: number[];
       low: number[];
       close: number[];
       volume: number[];
     }>(
-      ({ time, open, high, low, close, volume }, kline) => ({
-        time: [...time, decimalToNumber(kline[0])],
+      ({ open, high, low, close, volume }, kline) => ({
         open: [...open, decimalToNumber(kline[1])],
         high: [...high, decimalToNumber(kline[2])],
         low: [...low, decimalToNumber(kline[3])],
@@ -59,7 +57,6 @@ export class Candles extends DflowNode {
         volume: [...volume, decimalToNumber(kline[5])],
       }),
       {
-        time: [],
         open: [],
         high: [],
         low: [],
@@ -67,12 +64,11 @@ export class Candles extends DflowNode {
         volume: [],
       }
     );
-    this.output(0).data = time;
-    this.output(1).data = open;
-    this.output(2).data = high;
-    this.output(3).data = low;
-    this.output(4).data = close;
-    this.output(5).data = volume;
+    this.output(0).data = open;
+    this.output(1).data = high;
+    this.output(2).data = low;
+    this.output(3).data = close;
+    this.output(4).data = volume;
   }
 }
 
