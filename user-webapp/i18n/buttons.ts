@@ -9,6 +9,7 @@ export const buttonLabel = {
   exit: "Exit",
   flow: "Flow",
   goBack: "Go back",
+  goToCreateStrategy: "New Strategy",
   goToSettings: "Go to Settings",
   no: "No",
   purchase: "Purchase",

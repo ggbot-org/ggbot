@@ -8,7 +8,7 @@ import { route } from "_routing";
 
 type Props = StrategyKey;
 
-export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
+export const ShareStrategyButton: FC<Props> = (strategyKey) => {
   const onClick = async () => {
     try {
       const shareData = {

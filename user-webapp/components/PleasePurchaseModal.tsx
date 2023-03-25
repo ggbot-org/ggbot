@@ -1,15 +1,22 @@
-import { Message, Modal, ModalBackground, ModalClose, ModalContent, useStopScroll } from "@ggbot2/design";
-import { FC, useCallback, useState } from "react";
-import { ButtonGoSettings } from "./ButtonGoSettings";
+import {
+  Message,
+  Modal,
+  ModalBackground,
+  ModalClose,
+  ModalContent,
+  useStopScroll,
+} from "@ggbot2/design";
+import { FC, useState } from "react";
+import { GoSettingsButton } from "./GoSettingsButton";
 
 export const PleasePurchaseModal: FC = () => {
   const [isActive, setIsActive] = useState(true);
 
   useStopScroll(isActive);
 
-  const toggleModal = useCallback(() => {
+  const toggleModal = () => {
     setIsActive((active) => !active);
-  }, []);
+  };
 
   return (
     <Modal isActive={isActive}>
@@ -24,7 +31,7 @@ export const PleasePurchaseModal: FC = () => {
           </p>
         </Message>
 
-        <ButtonGoSettings section="billing" />
+        <GoSettingsButton section="billing" />
 
         <ModalClose onClick={toggleModal} />
       </ModalContent>

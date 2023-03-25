@@ -14,7 +14,7 @@ import {
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { ButtonShareStrategy } from "_components";
+import { ShareStrategyButton } from "_components";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
@@ -35,7 +35,8 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     () => copyIsSpinning || flowIsSpinning,
     [copyIsSpinning, flowIsSpinning]
   );
-  const [renameStrategy, { isPending: renameIsPending, data: renameData }] = useApiAction.RenameStrategy();
+  const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
+    useApiAction.RenameStrategy();
 
   const [readStrategy, { data: strategy }] = useApiAction.ReadStrategy();
 
@@ -129,23 +130,35 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Columns>
         <Column>
-          <InputField label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} readOnly />
+          <InputField
+            label={fieldLabel.whenCreated}
+            defaultValue={formattedWhenCreated}
+            readOnly
+          />
         </Column>
 
         <Column>
-          <InputField label={fieldLabel.strategyId} defaultValue={strategyKey.strategyId} readOnly />
+          <InputField
+            label={fieldLabel.strategyId}
+            defaultValue={strategyKey.strategyId}
+            readOnly
+          />
         </Column>
       </Columns>
 
       <Field isGrouped>
         <Control>
-          <Button isLoading={flowIsSpinning} onClick={onClickFlow} color="primary">
+          <Button
+            isLoading={flowIsSpinning}
+            onClick={onClickFlow}
+            color="primary"
+          >
             {buttonLabel.flow}
           </Button>
         </Control>
 
         <Control>
-          <ButtonShareStrategy {...strategyKey} />
+          <ShareStrategyButton {...strategyKey} />
         </Control>
 
         <Control>

@@ -1,6 +1,13 @@
-import { Message, Modal, ModalBackground, ModalClose, ModalContent, useStopScroll } from "@ggbot2/design";
+import {
+  Message,
+  Modal,
+  ModalBackground,
+  ModalClose,
+  ModalContent,
+  useStopScroll,
+} from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
-import { ButtonGoSettings } from "./ButtonGoSettings";
+import { GoSettingsButton } from "./GoSettingsButton";
 
 export const PleaseConfigureBinanceModal: FC = () => {
   const [isActive, setIsActive] = useState(true);
@@ -20,11 +27,12 @@ export const PleaseConfigureBinanceModal: FC = () => {
           <p>You cannot run strategies on Binance yet.</p>
 
           <p>
-            Please go to <em>Settings</em> and configure your <b>Binance</b> API.
+            Please go to <em>Settings</em> and configure your <b>Binance</b>{" "}
+            API.
           </p>
         </Message>
 
-        <ButtonGoSettings section="binance" />
+        <GoSettingsButton section="binance" />
 
         <ModalClose onClick={toggleModal} />
       </ModalContent>

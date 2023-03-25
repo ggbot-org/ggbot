@@ -14,7 +14,7 @@ import { FC, useCallback, useState } from "react";
 import { classNames } from "_classNames";
 import { buttonLabel, checkboxLabel } from "_i18n";
 import { StrategyInfo, route } from "_routing";
-import { ButtonShareStrategy } from "./ButtonShareStrategy";
+import { ShareStrategyButton } from "./ShareStrategyButton";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   backtestingIsChecked?: boolean;
@@ -77,7 +77,7 @@ export const ViewStrategyTopbar: FC<Props> = ({
           }
           right={
             <Buttons>
-              <ButtonShareStrategy {...strategyKey} />
+              <ShareStrategyButton {...strategyKey} />
 
               {accountIsOwner || (
                 <Button

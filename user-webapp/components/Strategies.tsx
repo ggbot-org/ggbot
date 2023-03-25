@@ -1,12 +1,17 @@
-import { Box, Columns, Column, Flex, Title } from "@ggbot2/design";
+import { Box, Columns, Column, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
+import { title } from "_i18n";
 import { FC, useMemo } from "react";
 import { route } from "_routing";
+import { GoCreateStrategyButton } from "./GoCreateStrategyButton";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {
-  strategies: Pick<AccountStrategy, "name" | "strategyId" | "strategyKind" | "schedulings">[];
+  strategies: Pick<
+    AccountStrategy,
+    "name" | "strategyId" | "strategyKind" | "schedulings"
+  >[];
 };
 
 export const Strategies: FC<Props> = ({ strategies }) => {
@@ -22,7 +27,11 @@ export const Strategies: FC<Props> = ({ strategies }) => {
 
   return (
     <>
-      <Title>Strategies</Title>
+      <Title>{title.strategies}</Title>
+
+      {strategies.length === 0 && (
+        <Message color="info">Your strategies list is empty.</Message>
+      )}
 
       <Columns isMultiline>
         {items.map(({ name, href, schedulings }, i) => (
@@ -38,6 +47,8 @@ export const Strategies: FC<Props> = ({ strategies }) => {
           </Column>
         ))}
       </Columns>
+
+      <GoCreateStrategyButton />
     </>
   );
 };
