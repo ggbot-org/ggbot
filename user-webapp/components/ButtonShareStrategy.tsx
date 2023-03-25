@@ -1,39 +1,37 @@
-import { Button, ButtonOnClick } from "@ggbot2/design";
+"use client";
+import { Button } from "@ggbot2/design";
 import { StrategyKey } from "@ggbot2/models";
-import { FC, useCallback, useMemo } from "react";
+import { FC } from "react";
 import { toast } from "react-hot-toast";
 import { buttonLabel } from "_i18n";
-import { route, webappBaseUrl } from "_routing";
+import { route } from "_routing";
 
 type Props = StrategyKey;
 
 export const ButtonShareStrategy: FC<Props> = (strategyKey) => {
-  const shareData = useMemo(
-    () => ({
-      title: "ggbot2",
-      text: `strategy ${strategyKey.strategyId}`,
-      url: `${webappBaseUrl}${route.viewFlowPage(strategyKey)}`,
-    }),
-    [strategyKey]
-  );
-
-  const onClick = useCallback<ButtonOnClick>(async () => {
+  const onClick = async () => {
     try {
-      if (!navigator) return;
-      if ("share" in navigator && "canShare" in navigator && navigator.canShare(shareData)) {
+      const shareData = {
+        title: "ggbot2",
+        text: `strategy ${strategyKey.strategyId}`,
+        url: `${window.location.origin}/${route.viewFlowPage(strategyKey)}`,
+      };
+      if (
+        "share" in navigator &&
+        "canShare" in navigator &&
+        navigator.canShare(shareData)
+      ) {
         navigator.share(shareData);
-        return;
-      }
-      if ("clipboard" in navigator) {
+      } else if ("clipboard" in navigator) {
         navigator.clipboard.writeText(shareData.url);
         toast("Strategy link copied");
-        return;
+      } else {
+        throw new Error("Unable to share strategy");
       }
-      throw new Error("Unable to share strategy");
     } catch {
       toast.error("Please copy URL manually");
     }
-  }, [shareData]);
+  };
 
   return <Button onClick={onClick}>{buttonLabel.share}</Button>;
 };
