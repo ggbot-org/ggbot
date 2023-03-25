@@ -3,6 +3,7 @@ export * from "./binance/client.js";
 export * from "./binance/context.js";
 export * from "./binance/executor.js";
 export * from "./binance/host.js";
+export * from "./binance/klineIntervals.js";
 export * from "./binance/nodesCatalog.js";
 export * from "./binance/symbols.js";
 export * from "./common/context.js";

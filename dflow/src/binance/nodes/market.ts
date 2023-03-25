@@ -1,6 +1,7 @@
 import { decimalToNumber } from "@ggbot2/arithmetic";
 import { BinanceKline, isBinanceKlineInterval } from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
+import { isDflowBinanceKlineInterval } from "../klineIntervals.js";
 import { BinanceDflowContext as Context } from "../context.js";
 import {
   inputInterval,
@@ -34,7 +35,11 @@ export class Candles extends DflowNode {
     const interval = this.input(1).data as string;
     const count = this.input(2).data as number;
     const isBinanceSymbol = await binance.isBinanceSymbol(symbol);
-    if (!isBinanceSymbol || !isBinanceKlineInterval(interval))
+    if (
+      !isBinanceSymbol ||
+      !isBinanceKlineInterval(interval) ||
+      !isDflowBinanceKlineInterval(interval)
+    )
       return this.clearOutputs();
     const data: BinanceKline[] = [];
     const klines = await binance.klines(symbol, interval, {

@@ -7,7 +7,7 @@ import {
   DflowBinanceKlineInterval,
   dflowBinanceKlineIntervals,
   isDflowBinanceKlineInterval,
-} from "./nodesCatalog.js";
+} from "./klineIntervals.js";
 import { Candles } from "./nodes/market.js";
 
 export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"];
@@ -65,13 +65,17 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = (
 ) => {
   const symbols = binanceSymbols.map(({ symbol }) => symbol);
   const result: { symbol: string; interval: BinanceKlineInterval }[] = [];
-  const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] = view.edges.map((edge) => ({
-    sourceId: edge.from[0],
-    targetId: edge.to[0],
-  }));
+  const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] =
+    view.edges.map((edge) => ({
+      sourceId: edge.from[0],
+      targetId: edge.to[0],
+    }));
   for (const node of view.nodes) {
     if (node.text === Candles.kind) {
-      const parentNodeIds = DflowGraph.parentsOfNodeId(node.id, nodeConnections);
+      const parentNodeIds = DflowGraph.parentsOfNodeId(
+        node.id,
+        nodeConnections
+      );
       let symbol;
       let interval;
       for (const parentNodeId of parentNodeIds) {
@@ -81,7 +85,9 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = (
           interval = node.text;
           continue;
         } else {
-          const maybeSymbol = node.text.split(dflowBinanceSymbolSeparator).join("");
+          const maybeSymbol = node.text
+            .split(dflowBinanceSymbolSeparator)
+            .join("");
           if (symbols.includes(maybeSymbol)) symbol = maybeSymbol;
         }
       }
@@ -94,11 +100,18 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = (
     .filter(
       // Remove duplicates.
       ({ symbol, interval }, index, array) =>
-        index === array.findIndex((element) => element.symbol === symbol && element.interval === interval)
+        index ===
+        array.findIndex(
+          (element) =>
+            element.symbol === symbol && element.interval === interval
+        )
     )
     .sort(
       // Sort by symbol and interval.
-      ({ symbol: symbolA, interval: intervalA }, { symbol: symbolB, interval: intervalB }) => {
+      (
+        { symbol: symbolA, interval: intervalA },
+        { symbol: symbolB, interval: intervalB }
+      ) => {
         // TODO improve this, should remove castings
         const intervalIndexA = dflowBinanceKlineIntervals.indexOf(
           intervalA as DflowBinanceKlineInterval
