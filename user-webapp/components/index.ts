@@ -19,7 +19,6 @@ export * from "./GoCreateStrategyButton";
 export * from "./GoSettingsButton";
 export * from "./MemoryController";
 export * from "./Navigation";
-export * from "./NoStrategy";
 export * from "./Page";
 export * from "./PleaseConfigureBinanceModal";
 export * from "./PleasePurchaseModal";

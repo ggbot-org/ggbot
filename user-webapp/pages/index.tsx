@@ -1,7 +1,7 @@
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import { NextPage } from "next";
 import { useEffect, useMemo } from "react";
-import { NoStrategy, Strategies } from "_components";
+import { Strategies } from "_components";
 import { useApiAction } from "_hooks";
 import { OneSectionLayout } from "_layouts";
 import { requireAuthentication } from "_routing";
@@ -9,11 +9,14 @@ import { requireAuthentication } from "_routing";
 export const getServerSideProps = requireAuthentication;
 
 const HomePage: NextPage = () => {
-  const [readStrategies, { data: strategies }] = useApiAction.ReadAccountStrategies();
+  const [readStrategies, { data: strategies }] =
+    useApiAction.ReadAccountStrategies();
 
   const strategyItems = useMemo(() => {
-    const strategyItems: Pick<AccountStrategy, "name" | "strategyId" | "strategyKind" | "schedulings">[] =
-      [];
+    const strategyItems: Pick<
+      AccountStrategy,
+      "name" | "strategyId" | "strategyKind" | "schedulings"
+    >[] = [];
     if (Array.isArray(strategies))
       for (const item of strategies) {
         if (isAccountStrategy(item)) {
@@ -31,19 +34,7 @@ const HomePage: NextPage = () => {
     };
   }, [readStrategies]);
 
-  const noStrategy = useMemo<boolean | undefined>(
-    () => (strategies === undefined ? undefined : strategies === null),
-    [strategies]
-  );
-
-  if (noStrategy === undefined) return <OneSectionLayout />;
-
-  if (noStrategy)
-    return (
-      <OneSectionLayout>
-        <NoStrategy />
-      </OneSectionLayout>
-    );
+  if (strategies === undefined) return <OneSectionLayout />;
 
   return (
     <OneSectionLayout>

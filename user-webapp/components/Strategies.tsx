@@ -8,26 +8,25 @@ import { GoCreateStrategyButton } from "./GoCreateStrategyButton";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {
-  strategies: Pick<
+  strategies?: Pick<
     AccountStrategy,
     "name" | "strategyId" | "strategyKind" | "schedulings"
   >[];
 };
 
 export const Strategies: FC<Props> = ({ strategies }) => {
-  const items = strategies.map(
-    ({ strategyId, strategyKind, name, schedulings }) => ({
+  const items =
+    strategies?.map(({ strategyId, strategyKind, name, schedulings }) => ({
       href: pathname.strategyPage({ strategyId, strategyKind }),
       name,
       schedulings,
-    })
-  );
+    })) ?? [];
 
   return (
     <>
       <Title>{title.strategies}</Title>
 
-      {strategies.length === 0 && (
+      {strategies?.length === 0 && (
         <Message color="info">Your strategies list is empty.</Message>
       )}
 
