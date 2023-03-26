@@ -1,9 +1,17 @@
-import { Button, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
+import {
+  Button,
+  Control,
+  Field,
+  Form,
+  FormOnSubmit,
+  InputField,
+  Title,
+} from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { route } from "_routing";
+import { pathname } from "_routing";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
 type EmailSent = ApiEnterResponseData["emailSent"];
@@ -31,7 +39,10 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         setHasInvalidInput(false);
         setGotTimeout(false);
 
-        const email = (event.target as EventTarget & { email: { value: string } }).email.value;
+        // TODO use trunx formValues helper
+        const email = (
+          event.target as EventTarget & { email: { value: string } }
+        ).email.value;
 
         const requestData = { email };
 
@@ -51,7 +62,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         setIsPending(true);
 
-        const response = await fetch(route.apiEnter(), {
+        const response = await fetch(pathname.apiEnter(), {
           body: JSON.stringify(requestData),
           headers: new Headers({
             "Content-Type": "application/json",
@@ -74,14 +85,28 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         console.error(error);
       }
     },
-    [emailSent, isPending, setEmail, setGotTimeout, setHasGenericError, setHasInvalidInput, setIsPending]
+    [
+      emailSent,
+      isPending,
+      setEmail,
+      setGotTimeout,
+      setHasGenericError,
+      setHasInvalidInput,
+      setIsPending,
+    ]
   );
 
   return (
     <Form box onSubmit={onSubmit}>
       <Title>Enter ggbot2</Title>
 
-      <InputField label={fieldLabel.email} name="email" type="email" readOnly={isPending} required />
+      <InputField
+        label={fieldLabel.email}
+        name="email"
+        type="email"
+        readOnly={isPending}
+        required
+      />
 
       <Field isGrouped>
         <Control>

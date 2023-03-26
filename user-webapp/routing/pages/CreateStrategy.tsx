@@ -11,12 +11,12 @@ import {
 } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { useRouter } from "next/router";
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
-import { fieldLabel } from "_i18n";
+import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts";
-import { route } from "_routing";
+import { pathname } from "_routing";
 
 const fields = ["name"];
 const fieldName = {
@@ -28,13 +28,13 @@ export const CreateStrategyPage: FC = () => {
 
   const [create, { data, isPending }] = useApiAction.CreateStrategy();
 
-  const isDone = useMemo(() => data !== undefined, [data]);
-  const isReadonly = useMemo(() => isDone || isPending, [isDone, isPending]);
+  const isDone = data !== undefined;
+  const isReadonly = isDone || isPending;
 
-  const cta = useMemo<{ color: ButtonProps["color"]; text: string }>(
-    () => ({ color: isDone ? "primary" : undefined, text: isDone ? "Done!" : "Create" }),
-    [isDone]
-  );
+  const cta: { color: ButtonProps["color"]; text: string } = {
+    color: isDone ? "primary" : undefined,
+    text: isDone ? buttonLabel.done : buttonLabel.create,
+  };
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -45,7 +45,8 @@ export const CreateStrategyPage: FC = () => {
         throwIfInvalidName(name);
         if (isName(name)) create({ kind: "binance", name });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg) toast.error("Invalid strategy name");
+        if (error instanceof ErrorInvalidArg)
+          toast.error(errorMessage.invalidStrategyName);
       }
     },
     [create, isReadonly]
@@ -53,7 +54,7 @@ export const CreateStrategyPage: FC = () => {
 
   useEffect(() => {
     if (!data) return;
-    router.push(route.homePage());
+    router.push(pathname.homePage());
   }, [data, router]);
 
   return (
@@ -61,7 +62,12 @@ export const CreateStrategyPage: FC = () => {
       <Form box onSubmit={onSubmit}>
         <Title>Create strategy</Title>
 
-        <InputField label={fieldLabel.strategyName} name={fieldName.name} required readOnly={isPending} />
+        <InputField
+          label={fieldLabel.strategyName}
+          name={fieldName.name}
+          required
+          readOnly={isPending}
+        />
 
         <Field>
           <Control>

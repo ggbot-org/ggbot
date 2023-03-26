@@ -10,7 +10,8 @@ import {
   ViewStrategyTopbar,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
-import { StrategyInfo, route } from "_routing";
+import { errorMessage } from "_i18n";
+import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -46,7 +47,7 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     { data: storedStrategyFlow, isPending: readIsPending },
   ] = useApiAction.ReadStrategyFlow();
 
-  const strategyPathname = route.viewFlowPage(strategyKey);
+  const strategyPathname = pathname.viewFlowPage(strategyKey);
 
   const backtestingIsEnabled = backtesting?.isEnabled;
   const hasBacktesting = backtesting !== undefined;
@@ -75,7 +76,7 @@ export const ViewStrategyFlowPage: FC<Props> = ({
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
-      toast.error("Cannot load flow");
+      toast.error(errorMessage.couldNotLoadFlow);
     }
   }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 

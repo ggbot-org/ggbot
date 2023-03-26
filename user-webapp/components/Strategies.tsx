@@ -2,8 +2,8 @@ import { Box, Columns, Column, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { title } from "_i18n";
-import { FC, useMemo } from "react";
-import { route } from "_routing";
+import { FC } from "react";
+import { pathname } from "_routing";
 import { GoCreateStrategyButton } from "./GoCreateStrategyButton";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
@@ -15,14 +15,12 @@ type Props = {
 };
 
 export const Strategies: FC<Props> = ({ strategies }) => {
-  const items = useMemo(
-    () =>
-      strategies.map(({ strategyId, strategyKind, name, schedulings }) => ({
-        href: route.strategyPage({ strategyId, strategyKind }),
-        name,
-        schedulings,
-      })),
-    [strategies]
+  const items = strategies.map(
+    ({ strategyId, strategyKind, name, schedulings }) => ({
+      href: pathname.strategyPage({ strategyId, strategyKind }),
+      name,
+      schedulings,
+    })
   );
 
   return (

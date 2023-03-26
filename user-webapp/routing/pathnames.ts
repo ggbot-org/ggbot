@@ -3,7 +3,7 @@ import { StrategyKey, InvalidStrategyKey } from "./types.js";
 const settingsSectionIds = ["account", "binance", "billing"] as const;
 export type SettingsSectionId = typeof settingsSectionIds[number];
 
-export const route = {
+export const pathname = {
   apiEnter: () => "/api/auth/enter",
   apiExit: () => "/api/auth/exit",
   apiVerify: () => "/api/auth/verify",
@@ -13,8 +13,12 @@ export const route = {
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,
   createStrategyPage: () => "/create/strategy",
-  editFlowPage: ({ strategyKind, strategyId }: StrategyKey) => `/edit/flow/${strategyKind}/${strategyId}`,
-  errorPageInvalidStrategyKey: ({ strategyKind, strategyId }: InvalidStrategyKey) =>
+  editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/edit/flow/${strategyKind}/${strategyId}`,
+  errorPageInvalidStrategyKey: ({
+    strategyKind,
+    strategyId,
+  }: InvalidStrategyKey) =>
     `/error/invalid-strategy-key/${strategyKind}/${strategyId}`,
   errorPageStrategyNotFound: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-found/${strategyKind}/${strategyId}`,
@@ -22,8 +26,10 @@ export const route = {
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
   homePage: () => "/",
   settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
-  strategyPage: ({ strategyKind, strategyId }: StrategyKey) => `/strategy/${strategyKind}/${strategyId}`,
+  strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/strategy/${strategyKind}/${strategyId}`,
   subscriptionCanceledPage: () => "/subscription/canceled",
   subscriptionPurchasedPage: () => "/subscription/purchased",
-  viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) => `/view/flow/${strategyKind}/${strategyId}`,
+  viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
+    `/view/flow/${strategyKind}/${strategyId}`,
 };

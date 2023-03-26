@@ -1,5 +1,4 @@
 import {
-  Button,
   Buttons,
   Checkbox,
   CheckboxOnChange,
@@ -7,13 +6,12 @@ import {
   Column,
   Flex,
   Level,
-  ButtonOnClick,
 } from "@ggbot2/design";
-import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import { classNames } from "_classNames";
-import { buttonLabel, checkboxLabel } from "_i18n";
-import { StrategyInfo, route } from "_routing";
+import { checkboxLabel } from "_i18n";
+import { StrategyInfo } from "_routing";
+import { GoCopyStrategyButton } from "./GoCopyStrategyButton";
 import { ShareStrategyButton } from "./ShareStrategyButton";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
@@ -30,20 +28,6 @@ export const ViewStrategyTopbar: FC<Props> = ({
   onChangeBacktestingCheckbox,
   strategyKey,
 }) => {
-  const router = useRouter();
-
-  const [copyIsSpinning, setCopyIsSpinning] = useState(false);
-
-  const onClickCopy = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      if (copyIsSpinning) return;
-      setCopyIsSpinning(true);
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [copyIsSpinning, setCopyIsSpinning, router, strategyKey]
-  );
-
   return (
     <Columns className={classNames("is-marginless")}>
       <Column className={classNames("p-0")}>
@@ -77,16 +61,10 @@ export const ViewStrategyTopbar: FC<Props> = ({
           }
           right={
             <Buttons>
-              <ShareStrategyButton {...strategyKey} />
+              <ShareStrategyButton strategyKey={strategyKey} />
 
               {accountIsOwner || (
-                <Button
-                  color="primary"
-                  isLoading={copyIsSpinning}
-                  onClick={onClickCopy}
-                >
-                  {buttonLabel.copy}
-                </Button>
+                <GoCopyStrategyButton strategyKey={strategyKey} />
               )}
             </Buttons>
           }

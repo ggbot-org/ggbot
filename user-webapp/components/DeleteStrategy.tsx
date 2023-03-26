@@ -17,14 +17,19 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { StrategyInfo, route } from "_routing";
+import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const DeleteStrategy: FC<Props> = ({ strategyKey, name, whenCreated }) => {
+export const DeleteStrategy: FC<Props> = ({
+  strategyKey,
+  name,
+  whenCreated,
+}) => {
   const router = useRouter();
 
-  const [deleteStrategy, { isPending: deleteIsPending, data }] = useApiAction.DeleteStrategy();
+  const [deleteStrategy, { isPending: deleteIsPending, data }] =
+    useApiAction.DeleteStrategy();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -41,7 +46,7 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey, name, whenCreated }) =>
 
   useEffect(() => {
     if (!data) return;
-    router.push(route.homePage());
+    router.push(pathname.homePage());
   }, [data, router]);
 
   useStopScroll(modalIsActive);
@@ -63,23 +68,39 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey, name, whenCreated }) =>
           <Box>
             <Columns>
               <Column>
-                <InputField readOnly label={fieldLabel.strategyName} defaultValue={name} />
+                <InputField
+                  readOnly
+                  label={fieldLabel.strategyName}
+                  defaultValue={name}
+                />
               </Column>
             </Columns>
 
             <Columns>
               <Column>
-                <InputField readOnly label={fieldLabel.strategyId} defaultValue={strategyKey.strategyId} />
+                <InputField
+                  readOnly
+                  label={fieldLabel.strategyId}
+                  defaultValue={strategyKey.strategyId}
+                />
               </Column>
 
               <Column>
-                <InputField readOnly label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} />
+                <InputField
+                  readOnly
+                  label={fieldLabel.whenCreated}
+                  defaultValue={formattedWhenCreated}
+                />
               </Column>
             </Columns>
           </Box>
 
           <Buttons>
-            <Button color="danger" isLoading={deleteIsPending} onClick={onClickConfirmation}>
+            <Button
+              color="danger"
+              isLoading={deleteIsPending}
+              onClick={onClickConfirmation}
+            >
               {buttonLabel.yesDelete}
             </Button>
 

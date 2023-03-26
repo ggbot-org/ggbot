@@ -11,21 +11,32 @@ import {
 } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import { useRouter } from "next/router";
-import { ChangeEventHandler, FC, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
-import { buttonLabel, fieldLabel } from "_i18n";
+import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts";
-import { StrategyInfo, route } from "_routing";
+import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, whenCreated }) => {
+export const CopyStrategyPage: FC<Props> = ({
+  strategyKey,
+  name: strategyName,
+  whenCreated,
+}) => {
   const router = useRouter();
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [copyStrategy, { data: isDone, isPending }] = useApiAction.CopyStrategy();
+  const [copyStrategy, { data: isDone, isPending }] =
+    useApiAction.CopyStrategy();
 
   const formattedWhenCreated = useFormattedDate(whenCreated, "day");
 
@@ -34,11 +45,13 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
       try {
         event.preventDefault();
         if (isPending || isDone) return;
-        const name = (event.target as EventTarget & { name: { value: string } }).name.value;
+        const name = (event.target as EventTarget & { name: { value: string } })
+          .name.value;
         throwIfInvalidName(name);
         if (isName(name)) copyStrategy({ name, ...strategyKey });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg) toast.error("Invalid strategy name");
+        if (error instanceof ErrorInvalidArg)
+          toast.error(errorMessage.invalidStrategyName);
       }
     },
     [isPending, strategyKey, copyStrategy, isDone]
@@ -57,7 +70,7 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
 
   useEffect(() => {
     if (!isDone) return;
-    router.push(route.homePage());
+    router.push(pathname.homePage());
   }, [router, isDone]);
 
   return (
@@ -65,9 +78,15 @@ export const CopyStrategyPage: FC<Props> = ({ strategyKey, name: strategyName, w
       <Form box onSubmit={onSubmit}>
         <Title>Copy strategy</Title>
 
-        <InputField label={fieldLabel.strategyName} defaultValue={strategyName} />
+        <InputField
+          label={fieldLabel.strategyName}
+          defaultValue={strategyName}
+        />
 
-        <InputField label={fieldLabel.whenCreated} defaultValue={formattedWhenCreated} />
+        <InputField
+          label={fieldLabel.whenCreated}
+          defaultValue={formattedWhenCreated}
+        />
 
         <Message>Choose a new name for the copied strategy.</Message>
 

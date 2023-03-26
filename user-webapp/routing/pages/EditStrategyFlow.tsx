@@ -20,6 +20,7 @@ import {
   StrategyExecutionLog,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
+import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts";
 import { StrategyInfo } from "_routing";
 
@@ -191,7 +192,8 @@ export const EditStrategyFlowPage: FC<Props> = ({
     if (!isMaybeObject<StrategyExecution>(strategyExecution)) return;
     const { status } = strategyExecution;
     if (!isStrategyExecutionStatus(status)) return;
-    if (status === "failure") toast.error("Strategy execution failure");
+    if (status === "failure")
+      toast.error(errorMessage.strategyExecutionFailure);
   }, [strategyExecution]);
 
   return (

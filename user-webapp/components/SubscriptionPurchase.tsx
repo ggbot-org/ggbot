@@ -28,11 +28,25 @@ import {
 import { getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
-import { FC, useCallback, useContext, useMemo, useEffect, useState } from "react";
+import {
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+  useEffect,
+  useState,
+} from "react";
 import { SubscriptionContext } from "_contexts";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { route } from "_routing";
+import { pathname } from "_routing";
+
+const allowedCountryOptions = Object.entries(countries)
+  .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
+  .map(([isoCode2, country]) => ({
+    value: isoCode2,
+    label: country,
+  }));
 
 export const SubscriptionPurchase: FC = () => {
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
@@ -47,19 +61,15 @@ export const SubscriptionPurchase: FC = () => {
   const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
   const minNumMonths = 1;
   const defaultNumMonths = 6;
-  const [numMonths, setNumMonths] = useState<number | undefined>(defaultNumMonths);
+  const [numMonths, setNumMonths] = useState<number | undefined>(
+    defaultNumMonths
+  );
 
   const { countryOptions, email, selectCountryIsDisabled } = useMemo<{
     countryOptions: SelectProps["options"];
     email: string;
     selectCountryIsDisabled: boolean;
   }>(() => {
-    const allowedCountryOptions = Object.entries(countries)
-      .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
-      .map(([isoCode2, country]) => ({
-        value: isoCode2,
-        label: country,
-      }));
     if (!isAccount(account))
       return {
         countryOptions: [{ value: "", label: "" }],
@@ -69,7 +79,10 @@ export const SubscriptionPurchase: FC = () => {
     return {
       countryOptions: account.country
         ? allowedCountryOptions
-        : [{ value: "", label: "-- your country --" }, ...allowedCountryOptions],
+        : [
+            { value: "", label: "-- your country --" },
+            ...allowedCountryOptions,
+          ],
       email: account.email,
       selectCountryIsDisabled: false,
     };
@@ -86,16 +99,23 @@ export const SubscriptionPurchase: FC = () => {
 
   let newSubscriptionEnd;
   if (isNaturalNumber(numMonths)) {
-    const start = subscriptionEnd ? getTime(subscriptionEnd).plus(1).days() : now();
+    const start = subscriptionEnd
+      ? getTime(subscriptionEnd).plus(1).days()
+      : now();
     newSubscriptionEnd = getTime(start)
       .plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
       .months();
   }
 
-  const formattedNewSubscriptionEnd = useFormattedDate(newSubscriptionEnd, "day");
+  const formattedNewSubscriptionEnd = useFormattedDate(
+    newSubscriptionEnd,
+    "day"
+  );
 
   const isYearlyPurchase =
-    typeof numMonths === "number" && numMonths >= maxNumMonths - 1 ? true : undefined;
+    typeof numMonths === "number" && numMonths >= maxNumMonths - 1
+      ? true
+      : undefined;
 
   const onChangeNumMonths = useCallback<InputOnChange>(
     (event) => {
@@ -123,7 +143,7 @@ export const SubscriptionPurchase: FC = () => {
     if (purchaseIsPending) return;
     setPurchaseIsPending(true);
     try {
-      const response = await fetch(route.apiPurchaseOrder(), {
+      const response = await fetch(pathname.apiPurchaseOrder(), {
         body: JSON.stringify({ country, email, numMonths }),
         credentials: "include",
         headers: new Headers({
@@ -136,7 +156,8 @@ export const SubscriptionPurchase: FC = () => {
         const data = await response.json();
         if (isMaybeObject<{ redirectUrl: string }>(data)) {
           const { redirectUrl } = data;
-          if (typeof redirectUrl === "string") window.location.href = redirectUrl;
+          if (typeof redirectUrl === "string")
+            window.location.href = redirectUrl;
         }
       }
     } catch (error) {
@@ -181,7 +202,9 @@ export const SubscriptionPurchase: FC = () => {
       <Title>Purchase</Title>
 
       {hasActiveSubscription && (
-        <Message color="danger">Your subscription will expire soon, please consider renew it.</Message>
+        <Message color="danger">
+          Your subscription will expire soon, please consider renew it.
+        </Message>
       )}
 
       <Message>
@@ -210,7 +233,11 @@ export const SubscriptionPurchase: FC = () => {
         </Column>
 
         <Column>
-          <InputField label={fieldLabel.endDay} defaultValue={formattedNewSubscriptionEnd} readOnly />
+          <InputField
+            label={fieldLabel.endDay}
+            defaultValue={formattedNewSubscriptionEnd}
+            readOnly
+          />
         </Column>
       </Columns>
 
@@ -235,6 +262,7 @@ export const SubscriptionPurchase: FC = () => {
 
       <Field>
         <Control>
+          {/* TODO SubsscriptionPurchaseButton */}
           <Button
             color="primary"
             disabled={purchaseIsDisabled}

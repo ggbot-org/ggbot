@@ -11,7 +11,7 @@ import {
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, memo, useCallback, useEffect, useState } from "react";
-import { SettingsSectionId, route } from "_routing";
+import { SettingsSectionId, pathname } from "_routing";
 
 type Props = {
   noMenu?: boolean;
@@ -30,16 +30,18 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   );
 
   const goToHomePage = () => {
-    if (router.pathname !== route.homePage()) router.push(route.homePage());
+    if (router.pathname !== pathname.homePage())
+      router.push(pathname.homePage());
   };
 
   const onClickExit = () => {
-    if (router.pathname !== route.authPage()) router.push(route.authPage());
+    if (router.pathname !== pathname.authPage())
+      router.push(pathname.authPage());
   };
 
   const goToSettings = useCallback(
     (section: SettingsSectionId) => () => {
-      router.push(route.settingsPage(section));
+      router.push(pathname.settingsPage(section));
     },
     [router]
   );

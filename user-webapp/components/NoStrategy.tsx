@@ -1,7 +1,7 @@
 import { Button, ButtonOnClick, Message } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useState } from "react";
-import { route } from "_routing";
+import { pathname } from "_routing";
 import { classNames } from "_classNames";
 
 export const NoStrategy: FC = () => {
@@ -13,7 +13,7 @@ export const NoStrategy: FC = () => {
     (event) => {
       event.stopPropagation();
       if (newStrategyIsLoading) return;
-      router.push(route.createStrategyPage());
+      router.push(pathname.createStrategyPage());
       setNewStrategyIsLoading(true);
     },
     [newStrategyIsLoading, setNewStrategyIsLoading, router]
@@ -21,9 +21,15 @@ export const NoStrategy: FC = () => {
 
   return (
     <Message color="info">
-      <p className={classNames("mb-4", "is-size-4")}>You have no strategy yet.</p>
+      <p className={classNames("mb-4", "is-size-4")}>
+        You have no strategy yet.
+      </p>
 
-      <Button color="primary" isLoading={newStrategyIsLoading} onClick={onClickNewStrategy}>
+      <Button
+        color="primary"
+        isLoading={newStrategyIsLoading}
+        onClick={onClickNewStrategy}
+      >
         Create new strategy
       </Button>
     </Message>

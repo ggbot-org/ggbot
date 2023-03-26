@@ -1,10 +1,18 @@
-import { Button, Control, Field, Form, FormOnReset, InputField, Title } from "@ggbot2/design";
+import {
+  Button,
+  Control,
+  Field,
+  Form,
+  FormOnReset,
+  InputField,
+  Title,
+} from "@ggbot2/design";
 import { isAccount } from "@ggbot2/models";
 import { useRouter } from "next/router";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { route } from "_routing";
+import { pathname } from "_routing";
 
 export const AuthExitForm: FC = () => {
   const router = useRouter();
@@ -13,7 +21,7 @@ export const AuthExitForm: FC = () => {
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
-  const email = useMemo(() => (isAccount(account) ? account.email : ""), [account]);
+  const email = isAccount(account) ? account.email : "";
 
   const onReset = useCallback<FormOnReset>(
     (event) => {
@@ -35,7 +43,7 @@ export const AuthExitForm: FC = () => {
   }, [readAccount]);
 
   return (
-    <Form box action={route.apiExit()} onReset={onReset} onSubmit={onSubmit}>
+    <Form box action={pathname.apiExit()} onReset={onReset} onSubmit={onSubmit}>
       <Title>Exit ggbot2</Title>
 
       <InputField label={fieldLabel.email} readOnly defaultValue={email} />

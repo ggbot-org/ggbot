@@ -13,7 +13,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { classNames } from "_classNames";
 import { buttonLabel, checkboxLabel } from "_i18n";
-import { StrategyInfo, route } from "_routing";
+import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   backtestingIsChecked?: boolean;
@@ -45,11 +45,15 @@ export const EditStrategyTopbar: FC<Props> = ({
   strategyKey,
 }) => {
   return (
-    <Columns className={classNames("is-marginless", { "has-background-warning-light": liveIsChecked })}>
+    <Columns
+      className={classNames("is-marginless", {
+        "has-background-warning-light": liveIsChecked,
+      })}
+    >
       <Column className={classNames("p-0")}>
         <Flex>
           <Link
-            href={route.strategyPage(strategyKey)}
+            href={pathname.strategyPage(strategyKey)}
             passHref
             tabIndex={0}
             className={classNames("has-text-dark", "is-size-5", "py-3", "px-3")}
@@ -71,7 +75,9 @@ export const EditStrategyTopbar: FC<Props> = ({
                   onChange={onChangeBacktestingCheckbox}
                   className={classNames("py-2", "px-1")}
                 >
-                  <span className={classNames("mx-2")}>{checkboxLabel.backtest}</span>
+                  <span className={classNames("mx-2")}>
+                    {checkboxLabel.backtest}
+                  </span>
                 </Checkbox>
               )}
 

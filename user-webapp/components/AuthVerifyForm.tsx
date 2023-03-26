@@ -1,10 +1,28 @@
-import { Button, ButtonOnClick, Control, Field, Form, InputField, Message } from "@ggbot2/design";
+import {
+  Button,
+  ButtonOnClick,
+  Control,
+  Field,
+  Form,
+  InputField,
+  Message,
+} from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { useRouter } from "next/router";
-import { Dispatch, FC, FormEventHandler, SetStateAction, useCallback, useState } from "react";
-import { ApiVerifyResponseData, isApiVerifyRequestData } from "_api/auth/verify";
-import { fieldLabel } from "_i18n";
-import { route } from "_routing";
+import {
+  Dispatch,
+  FC,
+  FormEventHandler,
+  SetStateAction,
+  useCallback,
+  useState,
+} from "react";
+import {
+  ApiVerifyResponseData,
+  isApiVerifyRequestData,
+} from "_api/auth/verify";
+import { buttonLabel, fieldLabel } from "_i18n";
+import { pathname } from "_routing";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
@@ -21,15 +39,19 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [gotTimeout, setGotTimeout] = useState(false);
-  const [needToGenerateOneTimePasswordAgain, setNeedToGenerateOneTimePasswordAgain] = useState(false);
+  const [
+    needToGenerateOneTimePasswordAgain,
+    setNeedToGenerateOneTimePasswordAgain,
+  ] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
 
-  const onClickOkGenerateOneTimePasswordAgain = useCallback<ButtonOnClick>(() => {
-    setEmail(undefined);
-  }, [setEmail]);
+  const onClickOkGenerateOneTimePasswordAgain =
+    useCallback<ButtonOnClick>(() => {
+      setEmail(undefined);
+    }, [setEmail]);
 
   const goToHomePage = useCallback(() => {
-    router.push(route.homePage());
+    router.push(pathname.homePage());
   }, [router]);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
@@ -43,7 +65,8 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
         setGotTimeout(false);
         setVerificationFailed(false);
 
-        const code = (event.target as EventTarget & { code: { value: string } }).code.value;
+        const code = (event.target as EventTarget & { code: { value: string } })
+          .code.value;
 
         const requestData = { code, email };
 
@@ -63,7 +86,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         setIsPending(true);
 
-        const response = await fetch(route.apiVerify(), {
+        const response = await fetch(pathname.apiVerify(), {
           body: JSON.stringify(requestData),
           headers: new Headers({
             "Content-Type": "application/json",
@@ -83,7 +106,8 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
         } else {
           setIsPending(false);
           setVerificationFailed(true);
-          if (responseData.verified === undefined) setNeedToGenerateOneTimePasswordAgain(true);
+          if (responseData.verified === undefined)
+            setNeedToGenerateOneTimePasswordAgain(true);
         }
       } catch (error) {
         setHasGenericError(true);
@@ -91,7 +115,15 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
         console.error(error);
       }
     },
-    [email, goToHomePage, isPending, setGotTimeout, setHasGenericError, setHasInvalidInput, setIsPending]
+    [
+      email,
+      goToHomePage,
+      isPending,
+      setGotTimeout,
+      setHasGenericError,
+      setHasInvalidInput,
+      setIsPending,
+    ]
   );
 
   return (
@@ -124,7 +156,9 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         {gotTimeout ? <TimeoutErrorMessage /> : null}
 
-        {verificationFailed ? <Message color="warning">Verification failed</Message> : null}
+        {verificationFailed ? (
+          <Message color="warning">Verification failed</Message>
+        ) : null}
 
         {needToGenerateOneTimePasswordAgain ? (
           <>
@@ -132,7 +166,9 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
             <Field>
               <Control>
-                <Button onClick={onClickOkGenerateOneTimePasswordAgain}>Ok</Button>
+                <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
+                  {buttonLabel.ok}
+                </Button>
               </Control>
             </Field>
           </>

@@ -1,10 +1,10 @@
 import { GetServerSidePropsContext } from "next";
-import { route } from "./pathnames";
+import { pathname } from "./pathnames";
 import { InvalidStrategyKey, StrategyKey } from "./types";
 
 export const redirectToAuthenticationPage = () => ({
   redirect: {
-    destination: route.authPage(),
+    destination: pathname.authPage(),
     permanent: false,
   },
 });
@@ -18,7 +18,7 @@ export const redirectToErrorPageInvalidStrategyKey = (
   };
   return {
     redirect: {
-      destination: route.errorPageInvalidStrategyKey(invalidStrategyKey),
+      destination: pathname.errorPageInvalidStrategyKey(invalidStrategyKey),
       permanent: false,
     },
   };
@@ -29,7 +29,7 @@ export const redirectToErrorPageStrategyNotFound = (
 ) => {
   return {
     redirect: {
-      destination: route.errorPageStrategyNotFound(strategyKey),
+      destination: pathname.errorPageStrategyNotFound(strategyKey),
       permanent: false,
     },
   };
@@ -40,7 +40,7 @@ export const redirectToErrorPageStrategyNotOwned = (
 ) => {
   return {
     redirect: {
-      destination: route.errorPageStrategyNotOwned(strategyKey),
+      destination: pathname.errorPageStrategyNotOwned(strategyKey),
       permanent: false,
     },
   };
@@ -48,7 +48,7 @@ export const redirectToErrorPageStrategyNotOwned = (
 
 export const redirectToHomePage = () => ({
   redirect: {
-    destination: route.homePage(),
+    destination: pathname.homePage(),
     permanent: false,
   },
 });

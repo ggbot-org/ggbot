@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  ButtonOnClick,
   Column,
   Columns,
   Control,
@@ -12,59 +10,30 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
-import { useRouter } from "next/router";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { ShareStrategyButton } from "_components";
 import { useApiAction } from "_hooks";
-import { buttonLabel, fieldLabel } from "_i18n";
-import { StrategyInfo, route } from "_routing";
+import { fieldLabel } from "_i18n";
+import { StrategyInfo } from "_routing";
+import { GoEditStrategyButton } from "./GoEditStrategyButton";
+import { GoCopyStrategyButton } from "./GoCopyStrategyButton";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
 export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
-  const router = useRouter();
-
   const formattedWhenCreated = useFormattedDate(whenCreated, "time");
 
-  const [copyIsSpinning, setCopyIsSpinning] = useState(false);
-  const [flowIsSpinning, setFlowIsSpinning] = useState(false);
   const [name, setName] = useState("");
   const [newName, setNewName] = useState("");
 
-  const someButtonIsSpinning = useMemo(
-    () => copyIsSpinning || flowIsSpinning,
-    [copyIsSpinning, flowIsSpinning]
-  );
   const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
     useApiAction.RenameStrategy();
 
   const [readStrategy, { data: strategy }] = useApiAction.ReadStrategy();
 
-  const readOnly = useMemo(() => {
-    if (!name) return true;
-    if (renameIsPending) return true;
-    return false;
-  }, [name, renameIsPending]);
-
-  const onClickFlow = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      if (someButtonIsSpinning) return;
-      setFlowIsSpinning(true);
-      router.push(route.editFlowPage(strategyKey));
-    },
-    [someButtonIsSpinning, setFlowIsSpinning, router, strategyKey]
-  );
-
-  const onClickCopy = useCallback<ButtonOnClick>(
-    (event) => {
-      event.stopPropagation();
-      if (someButtonIsSpinning) return;
-      setCopyIsSpinning(true);
-      router.push(route.copyStrategyPage(strategyKey));
-    },
-    [someButtonIsSpinning, setCopyIsSpinning, router, strategyKey]
-  );
+  const readOnly = !name ? true : renameIsPending;
+  const inputNameValue = renameIsPending ? "" : name;
+  const inputNamePlaceholder = renameIsPending ? newName : "";
 
   const inputNameSetValue = useCallback<(value: unknown) => void>(
     (value) => {
@@ -76,16 +45,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
     },
     [name, readOnly]
   );
-
-  const inputNameValue = useMemo(() => {
-    if (renameIsPending) return "";
-    return name;
-  }, [name, renameIsPending]);
-
-  const inputNamePlaceholder = useMemo(() => {
-    if (renameIsPending) return newName;
-    return "";
-  }, [newName, renameIsPending]);
 
   useEffect(() => {
     if (isStrategy(strategy)) setName(strategy.name);
@@ -148,23 +107,15 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Field isGrouped>
         <Control>
-          <Button
-            isLoading={flowIsSpinning}
-            onClick={onClickFlow}
-            color="primary"
-          >
-            {buttonLabel.flow}
-          </Button>
+          <GoEditStrategyButton strategyKey={strategyKey} />
         </Control>
 
         <Control>
-          <ShareStrategyButton {...strategyKey} />
+          <ShareStrategyButton strategyKey={strategyKey} />
         </Control>
 
         <Control>
-          <Button isLoading={copyIsSpinning} onClick={onClickCopy}>
-            {buttonLabel.copy}
-          </Button>
+          <GoCopyStrategyButton strategyKey={strategyKey} />
         </Control>
       </Field>
     </Box>
