@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import {
   ButtonColors,
-  Charts,
   EditableInputs,
   Icons,
   LoadingButtons,
@@ -12,7 +11,15 @@ import {
   SimpleTable,
   Typography,
 } from "_examples";
-import { Columns, Column, Container, Logo, Navbar, Section, Title } from "@ggbot2/design";
+import {
+  Columns,
+  Column,
+  Container,
+  Logo,
+  Navbar,
+  Section,
+  Title,
+} from "@ggbot2/design";
 
 const Home: NextPage = () => {
   return (
@@ -97,14 +104,6 @@ const Home: NextPage = () => {
             <Title>Tables</Title>
 
             <SimpleTable />
-          </Container>
-        </Section>
-
-        <Section>
-          <Container>
-            <Title>Charts</Title>
-
-            <Charts />
           </Container>
         </Section>
       </main>

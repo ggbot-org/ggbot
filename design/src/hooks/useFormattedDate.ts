@@ -6,7 +6,10 @@ export type DateTimeFormat = typeof dateTimeFormats[number];
 
 export type DateTimeValue = number | string | undefined | null;
 
-export const useFormattedDate = (value: DateTimeValue, format: DateTimeFormat): string => {
+export const useFormattedDate = (
+  value: DateTimeValue,
+  format: DateTimeFormat
+): string => {
   const [formattedValue, setFormattedValue] = useState("");
 
   useEffect(() => {
@@ -18,14 +21,16 @@ export const useFormattedDate = (value: DateTimeValue, format: DateTimeFormat): 
       if (format === "day")
         setFormattedValue(
           new Intl.DateTimeFormat(window.navigator.language, {
-            weekday: "short",
             year: "numeric",
             month: "short",
             day: "2-digit",
           }).format(date)
         );
 
-      if (format === "time") setFormattedValue(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`);
+      if (format === "time")
+        setFormattedValue(
+          `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+        );
     } catch (error) {
       console.error(error);
     }

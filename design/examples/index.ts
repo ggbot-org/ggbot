@@ -1,6 +1,5 @@
 export * from "./Buttons";
 export * from "./Calendar";
-export * from "./Charts";
 export * from "./EditableInputs";
 export * from "./Forms";
 export * from "./Icons";

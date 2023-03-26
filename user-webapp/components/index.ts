@@ -22,7 +22,6 @@ export * from "./Navigation";
 export * from "./Page";
 export * from "./PleaseConfigureBinanceModal";
 export * from "./PleasePurchaseModal";
-export * from "./ProfitSummary";
 export * from "./SchedulingItem";
 export * from "./SchedulingStatusBadge";
 export * from "./SchedulingsForm";

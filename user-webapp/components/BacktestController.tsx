@@ -16,12 +16,15 @@ type Props = Partial<Pick<StrategyFlow, "view">> & {
 };
 
 export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
-  const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps["frequency"]>(everyOneHour());
+  const [frequencyArg, setFrequencyArg] = useState<
+    FrequencyInputProps["frequency"]
+  >(everyOneHour());
 
   const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
     (frequency) => {
       setFrequencyArg(frequency);
-      if (isFrequency(frequency)) dispatch({ type: "SET_FREQUENCY", frequency });
+      if (isFrequency(frequency))
+        dispatch({ type: "SET_FREQUENCY", frequency });
     },
     [dispatch]
   );
@@ -39,7 +42,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   );
 
   const {
-    balanceHistory,
     currentTimestamp,
     isEnabled,
     isPaused,
@@ -54,7 +56,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
   } = useMemo(() => {
     if (!state)
       return {
-        balanceHistory: [],
         currentTimestamp: undefined,
         isEnabled: false,
         isPaused: false,
@@ -69,7 +70,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         strategyKind: undefined,
       };
     const {
-      balanceHistory,
       dayInterval,
       isEnabled,
       isPaused,
@@ -91,7 +91,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     }));
 
     return {
-      balanceHistory,
       currentTimestamp,
       isEnabled,
       isPaused,
@@ -159,7 +158,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       </div>
 
       <ProfitSummary
-        balanceHistory={balanceHistory}
         orderHistory={orderHistory}
         timeInterval={timeInterval}
         strategyKind={strategyKind}

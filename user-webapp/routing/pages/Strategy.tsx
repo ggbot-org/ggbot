@@ -15,7 +15,9 @@ type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
 export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated, name }) => {
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
-  const [hasActiveSubscription, setHasActiveSubscription] = useState<boolean | undefined>();
+  const [hasActiveSubscription, setHasActiveSubscription] = useState<
+    boolean | undefined
+  >();
 
   return (
     <PageLayout>
@@ -34,14 +36,20 @@ export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated, name }) => {
             />
           </Column>
         </Columns>
+
+        <Columns>
+          <Column>
+            <StrategyProfits strategyKey={strategyKey} />
+          </Column>
+        </Columns>
       </Section>
 
       <Section>
-        <StrategyProfits strategyKey={strategyKey} />
-      </Section>
-
-      <Section>
-        <DeleteStrategy strategyKey={strategyKey} name={name} whenCreated={whenCreated} />
+        <DeleteStrategy
+          strategyKey={strategyKey}
+          name={name}
+          whenCreated={whenCreated}
+        />
       </Section>
     </PageLayout>
   );
