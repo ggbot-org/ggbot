@@ -5,29 +5,18 @@ import {
   NavbarItem,
   NavbarItemAnchor,
   NavbarLink,
-  NavbarMenu,
   NavbarProps,
   NavbarStart,
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
-import { FC, memo, useCallback, useEffect, useState } from "react";
+import { FC, memo, useCallback } from "react";
+import { navigationLabel } from "_i18n";
 import { SettingsSectionId, pathname } from "_routing";
 
-type Props = {
-  noMenu?: boolean;
-};
+type Props = Pick<NavbarProps, "noMenu">;
 
 export const Navigation: FC<Props> = memo(({ noMenu }) => {
   const router = useRouter();
-  const [menuIsActive, setMenuIsActive] = useState(false);
-
-  const toggleMenu = useCallback<Exclude<NavbarProps["onClick"], undefined>>(
-    (event) => {
-      event.stopPropagation();
-      setMenuIsActive((active) => !active);
-    },
-    []
-  );
 
   const goToHomePage = () => {
     if (router.pathname !== pathname.homePage())
@@ -46,48 +35,40 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
     [router]
   );
 
-  // Close menu on outside click.
-  useEffect(() => {
-    const closeMenu = () => {
-      setMenuIsActive(false);
-    };
-    window.addEventListener("click", closeMenu);
-    return () => {
-      window.removeEventListener("click", closeMenu);
-    };
-  }, []);
-
   return (
-    <Navbar onClick={toggleMenu}>
-      {!noMenu && (
-        <NavbarMenu isActive={menuIsActive}>
+    <Navbar noMenu={noMenu}>
+      {noMenu || (
+        <>
           <NavbarStart>
             <NavbarItemAnchor onClick={goToHomePage}>
-              Strategies
+              {navigationLabel.strategies}
             </NavbarItemAnchor>
 
             <NavbarItem hasDropdown isHoverable>
-              <NavbarLink>Settings</NavbarLink>
+              <NavbarLink>{navigationLabel.settings}</NavbarLink>
+
               <NavbarDropdown>
                 <NavbarItemAnchor onClick={goToSettings("account")}>
-                  Account
+                  {navigationLabel.account}
                 </NavbarItemAnchor>
 
                 <NavbarItemAnchor onClick={goToSettings("binance")}>
-                  Binance
+                  {navigationLabel.binance}
                 </NavbarItemAnchor>
 
                 <NavbarItemAnchor onClick={goToSettings("billing")}>
-                  Billing
+                  {navigationLabel.billing}
                 </NavbarItemAnchor>
               </NavbarDropdown>
             </NavbarItem>
           </NavbarStart>
 
           <NavbarEnd>
-            <NavbarItemAnchor onClick={onClickExit}>Exit</NavbarItemAnchor>
+            <NavbarItemAnchor onClick={onClickExit}>
+              {navigationLabel.exit}
+            </NavbarItemAnchor>
           </NavbarEnd>
-        </NavbarMenu>
+        </>
       )}
     </Navbar>
   );
