@@ -1,4 +1,11 @@
-import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
+import {
+  FC,
+  PointerEventHandler,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   Navbar as _Navbar,
   NavbarBrand,
@@ -20,9 +27,14 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
 
-  const onClickBurger = useCallback(() => {
-    setExpanded((expanded) => !expanded);
-  }, []);
+  // TODO import NavbarBurgerOnClick from trunx
+  const onClickBurger = useCallback<PointerEventHandler<HTMLDivElement>>(
+    (event) => {
+      event.stopPropagation();
+      setExpanded((expanded) => !expanded);
+    },
+    []
+  );
 
   // Close menu on outside click.
   useEffect(() => {
