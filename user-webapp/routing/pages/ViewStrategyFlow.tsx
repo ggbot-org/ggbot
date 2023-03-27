@@ -1,16 +1,17 @@
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
-import { FC, useEffect, useCallback, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import {
   BacktestController,
   FlowViewContainer,
   Navigation,
-  Page,
+  ViewStrategyTabs,
   ViewStrategyTopbar,
 } from "_components";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { errorMessage } from "_i18n";
+import { PageLayout } from "_layouts";
 import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
@@ -49,13 +50,6 @@ export const ViewStrategyFlowPage: FC<Props> = ({
 
   const strategyPathname = pathname.viewFlowPage(strategyKey);
 
-  const backtestingIsEnabled = backtesting?.isEnabled;
-  const hasBacktesting = backtesting !== undefined;
-
-  const onChangeBacktestingCheckbox = useCallback(() => {
-    backtestingDispatch({ type: "TOGGLE" });
-  }, [backtestingDispatch]);
-
   useEffect(() => {
     if (!flowLoaded) readStrategyFlow(strategyKey);
   }, [flowLoaded, readStrategyFlow, strategyKey]);
@@ -81,30 +75,35 @@ export const ViewStrategyFlowPage: FC<Props> = ({
   }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
   return (
-    <Page
+    <PageLayout
       metadata={{
-        title: "ggbot2 strategy",
-        description: strategyName,
+        title: strategyName,
         canonical: strategyPathname,
       }}
       topbar={<Navigation noMenu={!hasSession} />}
     >
       <ViewStrategyTopbar
         accountIsOwner={accountIsOwner}
-        backtestingIsChecked={backtestingIsEnabled}
-        hasBacktesting={hasBacktesting}
         name={strategyName}
-        onChangeBacktestingCheckbox={onChangeBacktestingCheckbox}
         strategyKey={strategyKey}
       />
 
-      <BacktestController
-        state={backtesting}
-        dispatch={backtestingDispatch}
-        view={flowView?.graph}
+      <ViewStrategyTabs
+        flow={
+          <>
+            <FlowViewContainer ref={flowViewContainerRef} />
+          </>
+        }
+        backtest={
+          <>
+            <BacktestController
+              state={backtesting}
+              dispatch={backtestingDispatch}
+              view={flowView?.graph}
+            />
+          </>
+        }
       />
-
-      <FlowViewContainer ref={flowViewContainerRef} />
-    </Page>
+    </PageLayout>
   );
 };

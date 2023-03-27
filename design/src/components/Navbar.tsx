@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useCallback, useState } from "react";
+import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import {
   Navbar as _Navbar,
   NavbarBrand,
@@ -22,6 +22,17 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
 
   const onClickBurger = useCallback(() => {
     setExpanded((expanded) => !expanded);
+  }, []);
+
+  // Close menu on outside click.
+  useEffect(() => {
+    const closeMenu = () => {
+      setExpanded(false);
+    };
+    window.addEventListener("click", closeMenu);
+    return () => {
+      window.removeEventListener("click", closeMenu);
+    };
   }, []);
 
   return (

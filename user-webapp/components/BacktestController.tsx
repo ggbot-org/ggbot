@@ -121,8 +121,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     else if (isEnabled) dispatch({ type: "START" });
   }, [dispatch, isEnabled, isPaused, isRunning]);
 
-  if (!state || !state.isEnabled) return null;
-
   return (
     <div>
       <DailyIntervalSelector

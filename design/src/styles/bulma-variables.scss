@@ -20,14 +20,13 @@ $scheme-invert: $black;
 $shadow: 0.1em 0.1em 0.5em -0.1em rgba($scheme-invert, 0.1),
   0 0px 0 1px rgba($scheme-invert, 0.02);
 
-// Navbar
-// ------
-
-// $navbar-height: 1.5em;
-// $navbar-padding-vertical: 0.1em;
-
 // Links
 // -----
 
 // Used also by button and pagination components.
 $link-focus-border: $link;
+
+// Tabs
+// ----
+
+$tabs-boxed-link-active-background-color: $body-background-color;

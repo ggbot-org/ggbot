@@ -3,4 +3,4 @@ export const errorMessage = {
   couldNotShareStrategy: "Could not share strategy. Please copy URL manually.",
   invalidStrategyName: "Invalid strategy name.",
   strategyExecutionFailure: "Strategy execution failure.",
-} as const;
+};

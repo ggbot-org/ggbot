@@ -6,4 +6,4 @@ export const navigationLabel = {
   binance: "Binance",
   billing: "Billing",
   exit: "Exit",
-} as const;
+};

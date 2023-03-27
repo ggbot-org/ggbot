@@ -1,5 +1,5 @@
 import { ErrorAccountItemNotFound } from "@ggbot2/database";
-import { ButtonOnClick, CheckboxOnChange } from "@ggbot2/design";
+import { ButtonOnClick } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import {
   StrategyExecution,
@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 import {
   BacktestController,
   EditStrategyTopbar,
+  EditStrategyTabs,
   FlowViewContainer,
   MemoryController,
   PleaseConfigureBinanceModal,
@@ -33,10 +34,9 @@ export const EditStrategyFlowPage: FC<Props> = ({
   name,
   strategyKey,
 }) => {
+  const [canSave, setCanSave] = useState(false);
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
-  const [canSave, setCanSave] = useState(false);
-  const [isLive, setIsLive] = useState(false);
   const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState<
     boolean | undefined
   >();
@@ -71,24 +71,11 @@ export const EditStrategyFlowPage: FC<Props> = ({
     { data: storedStrategyFlow, isPending: readIsPending },
   ] = useApiAction.ReadStrategyFlow();
 
-  const canRun = useMemo(() => {
-    if (!flowLoaded) return false;
-    if (hasNoBinanceApiConfig) return false;
-    if (!isLive) return false;
-    if (runIsPending) return false;
-    if (saveIsPending) return false;
-    return !canSave;
-  }, [
-    canSave,
-    flowLoaded,
-    isLive,
-    runIsPending,
-    hasNoBinanceApiConfig,
-    saveIsPending,
-  ]);
-
-  const backtestingIsEnabled = backtesting?.isEnabled;
-  const hasBacktesting = backtesting !== undefined;
+  let canRun = !canSave;
+  if (hasNoBinanceApiConfig) canRun = false;
+  if (!flowLoaded) canRun = false;
+  if (runIsPending) canRun = false;
+  if (saveIsPending) canRun = false;
 
   const { executionStatus, executionSteps, executionWhenUpdated } =
     useMemo(() => {
@@ -111,24 +98,6 @@ export const EditStrategyFlowPage: FC<Props> = ({
         executionWhenUpdated,
       };
     }, [strategyExecution]);
-
-  const onChangeBacktestingCheckbox = useCallback<CheckboxOnChange>(
-    (event) => {
-      const wantBacktesting = event.target.checked;
-      backtestingDispatch({ type: "TOGGLE" });
-      if (wantBacktesting) setIsLive(false);
-    },
-    [backtestingDispatch, setIsLive]
-  );
-
-  const onChangeLiveCheckbox = useCallback<CheckboxOnChange>(
-    (event) => {
-      const isLive = event.target.checked;
-      setIsLive(isLive);
-      if (isLive) backtestingDispatch({ type: "DISABLE" });
-    },
-    [backtestingDispatch, setIsLive]
-  );
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
@@ -201,14 +170,9 @@ export const EditStrategyFlowPage: FC<Props> = ({
       {hasNoBinanceApiConfig && <PleaseConfigureBinanceModal />}
 
       <EditStrategyTopbar
-        backtestingIsChecked={backtestingIsEnabled}
         canRun={canRun}
         canSave={canSave}
-        hasBacktesting={hasBacktesting}
-        liveIsChecked={isLive}
         name={name}
-        onChangeBacktestingCheckbox={onChangeBacktestingCheckbox}
-        onChangeLiveCheckbox={onChangeLiveCheckbox}
         onClickRun={onClickRun}
         onClickSave={onClickSave}
         runIsPending={runIsPending}
@@ -216,20 +180,27 @@ export const EditStrategyFlowPage: FC<Props> = ({
         strategyKey={strategyKey}
       />
 
-      <BacktestController
-        state={backtesting}
-        dispatch={backtestingDispatch}
-        view={flowView?.graph}
-      />
-
-      <FlowViewContainer ref={flowViewContainerRef} />
-
-      <MemoryController />
-
-      <StrategyExecutionLog
-        status={executionStatus}
-        steps={executionSteps}
-        whenUpdated={executionWhenUpdated}
+      <EditStrategyTabs
+        flow={
+          <>
+            <FlowViewContainer ref={flowViewContainerRef} />
+            <MemoryController />
+          </>
+        }
+        backtest={
+          <BacktestController
+            state={backtesting}
+            dispatch={backtestingDispatch}
+            view={flowView?.graph}
+          />
+        }
+        executionLog={
+          <StrategyExecutionLog
+            status={executionStatus}
+            steps={executionSteps}
+            whenUpdated={executionWhenUpdated}
+          />
+        }
       />
     </PageLayout>
   );

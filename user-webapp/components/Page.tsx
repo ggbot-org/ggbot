@@ -4,34 +4,34 @@ import React, { FC, PropsWithChildren, ReactNode, useMemo } from "react";
 import { Toaster } from "react-hot-toast";
 import { webappBaseUrl } from "_routing";
 
-type Props = {
+export type PageProps = {
   metadata?: {
     /** Tag title content */
     title: string;
-    /** Meta description */
-    description: string;
     /** Link rel canonical pathname, e.g. `/settings`. */
     canonical?: string;
   };
   topbar?: ReactNode;
 };
 
-export const Page: FC<PropsWithChildren<Props>> = ({
+export const Page: FC<PropsWithChildren<PageProps>> = ({
   children,
-  metadata = { title: "ggbot2", description: "crypto flow" },
+  metadata = { title: "ggbot2" },
   topbar,
 }) => {
-  const { title, description, canonical } = metadata;
+  const { title, canonical } = metadata;
 
   const isOffline = useOfflineDetection();
 
-  const canonicalHref = useMemo(() => `${webappBaseUrl}${canonical ?? "/"}`, [canonical]);
+  const canonicalHref = useMemo(
+    () => `${webappBaseUrl}${canonical ?? "/"}`,
+    [canonical]
+  );
 
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content={description} />
         <link rel="canonical" href={canonicalHref} />
       </Head>
 

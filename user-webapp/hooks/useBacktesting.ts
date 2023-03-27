@@ -72,6 +72,9 @@ type Action =
       type: "DISABLE";
     }
   | {
+      type: "ENABLE";
+    }
+  | {
       type: "END";
     }
   | ({
@@ -112,6 +115,10 @@ const backtestingReducer = (state: State, action: Action) => {
       };
     }
 
+    case "ENABLE": {
+      return { ...state, isEnabled: true };
+    }
+
     case "END": {
       return {
         ...state,
@@ -125,7 +132,9 @@ const backtestingReducer = (state: State, action: Action) => {
       const { balanceChangeEvent, memory, orders } = action;
       return {
         ...state,
-        balanceHistory: balanceChangeEvent ? balanceHistory.concat(balanceChangeEvent) : balanceHistory,
+        balanceHistory: balanceChangeEvent
+          ? balanceHistory.concat(balanceChangeEvent)
+          : balanceHistory,
         memory,
         orderHistory: orderHistory.concat(orders),
         stepIndex: state.stepIndex + 1,
@@ -240,7 +249,10 @@ const getInitialState =
         memory: {},
         orderHistory: [],
         stepIndex: 0,
-        timestamps: computeTimestamps({ dayInterval: persistingState.dayInterval, frequency }),
+        timestamps: computeTimestamps({
+          dayInterval: persistingState.dayInterval,
+          frequency,
+        }),
         ...strategyKey,
       };
     }
@@ -278,7 +290,10 @@ export const useBacktesting: UseBacktesting = ({
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
-  const storageKey = useMemo(() => `backtest:${strategyKind}:${strategyId}`, [strategyKind, strategyId]);
+  const storageKey = useMemo(
+    () => `backtest:${strategyKind}:${strategyId}`,
+    [strategyKind, strategyId]
+  );
 
   const getPersistingState = useCallback<GetPersistingState>(() => {
     try {
@@ -336,7 +351,11 @@ export const useBacktesting: UseBacktesting = ({
           balances: [],
           time,
         });
-        const executor = new BinanceDflowExecutor(binance, binanceSymbols, nodesCatalog);
+        const executor = new BinanceDflowExecutor(
+          binance,
+          binanceSymbols,
+          nodesCatalog
+        );
         const { balances, memory, orders } = await executor.run(
           { input: {}, memory: previousMemory, time },
           flowViewGraph
@@ -359,7 +378,15 @@ export const useBacktesting: UseBacktesting = ({
         dispatch({ type: "END" });
       }
     }
-  }, [binanceSymbols, dispatch, flowViewGraph, nodesCatalog, timestamps, strategyKind, stepIndex]);
+  }, [
+    binanceSymbols,
+    dispatch,
+    flowViewGraph,
+    nodesCatalog,
+    timestamps,
+    strategyKind,
+    stepIndex,
+  ]);
 
   useEffect(() => {
     if (!backtestIsRunning) return;
@@ -371,5 +398,8 @@ export const useBacktesting: UseBacktesting = ({
     setPersistingState({ isEnabled, dayInterval });
   }, [isEnabled, dayInterval, isServerSide, setPersistingState]);
 
-  return useMemo(() => [isServerSide ? undefined : state, dispatch], [isServerSide, dispatch, state]);
+  return useMemo(
+    () => [isServerSide ? undefined : state, dispatch],
+    [isServerSide, dispatch, state]
+  );
 };

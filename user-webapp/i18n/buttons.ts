@@ -21,4 +21,4 @@ export const buttonLabel = {
   send: "Send",
   share: "Share",
   yesDelete: "Yes, delete it!",
-} as const;
+};

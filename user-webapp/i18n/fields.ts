@@ -15,4 +15,4 @@ export const fieldLabel = {
   subscriptionPlan: "Plan",
   totalPrice: "Total price",
   whenCreated: "When created",
-} as const;
+};
