@@ -22,6 +22,6 @@ Check which Node.js version was installed, it should be `v18.x`
 node --version
 ```
 
-Update [NVM](./stack.md#nvm) config with latest version.
+Update [NVM](./tech-stack.md#nvm) config with latest version.
 
 Create an image with a related name, for instance `ggbot2-amazon_linux_2023-nodejs_v18.12.1`.
