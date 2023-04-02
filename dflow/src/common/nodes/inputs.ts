@@ -1,4 +1,4 @@
-import { DflowNode } from "dflow";
+import { Dflow, DflowNode } from "dflow";
 import { DflowCommonContext as Context } from "../context.js";
 import { inputKey } from "./commonIO.js";
 
@@ -12,6 +12,6 @@ export class InputNumber extends DflowNode {
     const key = this.input(0).data as string;
     const defaultValue = this.input(1).data as number;
     const value = (this.host.context as Context).input[key];
-    this.output(0).data = typeof value === "number" ? value : defaultValue;
+    this.output(0).data = Dflow.isNumber(value) ? value : defaultValue;
   }
 }
