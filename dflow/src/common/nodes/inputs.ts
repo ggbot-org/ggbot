@@ -11,7 +11,15 @@ export class InputNumber extends DflowNode {
   run() {
     const key = this.input(0).data as string;
     const defaultValue = this.input(1).data as number;
-    const value = (this.host.context as Context).input[key];
-    this.output(0).data = Dflow.isNumber(value) ? value : defaultValue;
+    const input = (this.host.context as Context).input;
+    let value = defaultValue;
+    if (key in input) {
+      const inputValue = input[key];
+      if (Dflow.isNumber(inputValue)) {
+        value = inputValue;
+      }
+    }
+    if (value === undefined) return this.clearOutputs();
+    this.output(0).data = value;
   }
 }

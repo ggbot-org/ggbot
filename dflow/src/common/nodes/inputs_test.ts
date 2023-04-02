@@ -13,11 +13,13 @@ describe("inputNumber", () => {
           {
             id: "k",
             text: '"num"',
+            ins: [],
             outs: [{ id: "o1" }],
           },
           {
             id: "v",
             text: "2",
+            ins: [],
             outs: [{ id: "o2" }],
           },
           {
