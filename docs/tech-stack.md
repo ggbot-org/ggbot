@@ -14,10 +14,14 @@
 - [nvm](#nvm)
 - Utrust
 - npm packages
-  - aws-sdk
-  - country-isocode2
-  - dflow
-  - flow-view
+  - [@types/node](#typesnode)
+  - [aws-sdk](#aws-sdk)
+  - [country-isocode2](#country-isocode2)
+  - [eslint](#eslint)
+  - [dflow](#dflow)
+  - [flow-view](#flow-view)
+  - [npm-run-all](#npm-run-all)
+  - [typescript](#typescript)
 
 ## Amazon Web Services
 
@@ -92,19 +96,41 @@ See also how to [call `nvm use` automatically in a directory with a *.nvmrc* fil
 
 ## npm packages
 
+### @types/node
+
+https://www.npmjs.com/package/@types/node
+
 ### aws-sdk
 
 https://www.npmjs.com/package/aws-sdk
+
 
 ### country-isocode2
 
 https://www.npmjs.com/package/country-isocode2
 
+
 ### dflow
 
 https://www.npmjs.com/package/dflow
 
+### eslint
+
+https://www.npmjs.com/package/eslint
+
 ### flow-view
 
 https://www.npmjs.com/package/flow-view
+
+### npm-run-all
+
+https://www.npmjs.com/package/npm-run-all
+
+### pre-commit
+
+https://www.npmjs.com/package/pre-commit
+
+### typescript
+
+https://www.npmjs.com/package/typescript
 
