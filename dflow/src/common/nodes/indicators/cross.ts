@@ -1,18 +1,26 @@
 import { DflowNode } from "dflow";
-import { inputValues1, inputValues2, outputLastValue, outputValues } from "../commonIO.js";
+import {
+  inputValues1,
+  inputValues2,
+  outputLastValue,
+  outputValues,
+} from "../commonIO.js";
 
 export const crossOver = (values1: number[], values2: number[]): number[] => {
   const result: number[] = [];
   const size = values1.length;
-  for (let index = 1; index <= size; index++) {
+  for (let index = 1; index < size; index++) {
     const current1 = values1[index];
     const current2 = values2[index];
     const previous1 = values1[index - 1];
     const previous2 = values2[index - 1];
-    if (isNaN(current1) || isNaN(current2) || isNaN(previous1) || isNaN(previous2)) break;
-    if (current1 > current2 && previous1 < previous2) result.push(1);
-    if (current1 < current2 && previous1 > previous2) result.push(-1);
-    result.push(0);
+    if (current1 > current2 && previous1 <= previous2) {
+      result.push(1);
+    } else if (current1 < current2 && previous1 >= previous2) {
+      result.push(-1);
+    } else {
+      result.push(0);
+    }
   }
   return result;
 };
