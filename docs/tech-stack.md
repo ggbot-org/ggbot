@@ -1,5 +1,6 @@
 # ggbot2 Tech stack
 
+- Google Search Console
 - Node.js
 - npm workspaces
 - nvm
@@ -9,7 +10,15 @@
 - flow-view
 - Utrust
 
-### Node.js
+
+## Google Search Console
+
+Created the following properties:
+
+- [ggbot2.com and www.ggbot2.com](https://search.google.com/search-console?resource_id=sc-domain%3Aggbot2.com)
+- [app.ggbot2.com](https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Aapp.ggbot2.com)
+
+## Node.js
 
 https://nodejs.org/it/
 
