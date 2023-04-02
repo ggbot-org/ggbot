@@ -10,7 +10,13 @@ Update all software.
 sudo yum update -y
 ```
 
-Install Node.js
+Install [Git](./tech-stack.md#git)
+
+```sh
+sudo yum install -y git
+```
+
+Install [Node.js](./tech-stack.md#nodejs)
 
 ```sh
 sudo yum install -y nodejs

@@ -1,15 +1,21 @@
 # ggbot2 Tech stack
 
-- Google Search Console
-- Node.js
+- [Git](#git)
+- [Google Search Console](google-search-console)
+- [Node.js](#nodejs)
 - npm workspaces
-- nvm
+- [nvm](#nvm)
 - AWS
-- Next.js
 - dflow
 - flow-view
 - Utrust
 
+
+## Git
+
+> Git is a free and open source distributed version control system
+
+https://git-scm.com/
 
 ## Google Search Console
 
@@ -25,6 +31,12 @@ https://nodejs.org/it/
 To install Node.js locally, use [NVM](#nvm).
 
 Package manager used is *npm*.
+
+## npm workspaces
+
+https://docs.npmjs.com/cli/v7/using-npm/workspaces
+
+See also [npm workspaces internal documentation](./npm-workspaces.md).
 
 ## NVM
 
