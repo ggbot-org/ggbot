@@ -19,10 +19,6 @@
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
     "@ggbot2/http-status-codes": "file:http-status-codes",
-    "@ggbot2/models": "file:models",
-    "isomorphic-fetch": "^3.0.0"
-  },
-  "devDependencies": {
-    "@types/isomorphic-fetch": "^0.0.36"
+    "@ggbot2/models": "file:models"
   }
 }
