@@ -4,17 +4,18 @@ TODO document security groups
 
 ## On local repo
 
-Upload code
+Update code on CodeCommit.
 
 ```sh
-aws s3 rm --recursive s3://code.ggbot2.com/main
-npm run cleanup
-aws s3 sync --exclude '.git*' --exclude 'node_modules/*' . s3://code.ggbot2.com/main/ggbot2/
+git fetch
+git switch main
+git pull origin main
+git push aws_codecommit main
 ```
 
 ## On remote server
 
-Connect with ec2-user to an *Amazon Linux 2 AMI* instance.
+Connect to EC2 instance created from [base AMI](./ec2-base-ami.md).
 
 If services are already configured, and environment is loaded on login,
 create an update.sh script with the following content
@@ -24,11 +25,7 @@ create an update.sh script with the following content
 sudo yum update -y
 
 ### Get code and build
-sudo rm -rf /opt/ggbot2
-sudo mkdir -p /opt/ggbot2
-sudo chown ec2-user:ec2-user /opt/ggbot2
-aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
-cd /opt/ggbot2
+cd ggbot2-monorepo
 npm ci
 export NODE_ENV=production
 npm run build
@@ -45,25 +42,7 @@ Follows steps with details.
 
 Update to latest packages: `sudo yum update -y`.
 
-### Install Node.js v16
-
-NOTA BENE: Node.js v18 requires glibc v2.8, not available yet on Amazon Linux.
-
-```sh
-sudo yum install -y gcc-c++ make
-curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
-sudo yum install -y nodejs
-```
-
 ### Get code and build
-
-```sh
-sudo rm -rf /opt/ggbot2
-sudo mkdir -p /opt/ggbot2
-sudo chown ec2-user:ec2-user /opt/ggbot2
-aws s3 sync s3://code.ggbot2.com/main/ggbot2/ /opt/ggbot2/
-cd /opt/ggbot2
-```
 
 Install deps
 

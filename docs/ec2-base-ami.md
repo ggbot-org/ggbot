@@ -16,6 +16,22 @@ Install [Git](./tech-stack.md#git)
 sudo yum install -y git
 ```
 
+Configure git, setup credentials helper
+
+```sh
+git config --global credential.helper '!aws codecommit credential-helper $@'
+
+git config --global credential.UseHttpPath true
+```
+
+Double check there is a proper IAM role attached to the EC2 instance.
+
+Try to clone repository
+
+```sh
+git clone https://git-codecommit.eu-central-1.amazonaws.com/v1/repos/ggbot2-monorepo
+```
+
 Install [Node.js](./tech-stack.md#nodejs)
 
 ```sh
@@ -30,4 +46,4 @@ node --version
 
 Update [NVM](./tech-stack.md#nvm) config with latest version.
 
-Create an image with a related name, for instance `ggbot2-amazon_linux_2023-nodejs_v18.12.1`.
+Create an image, for instance named as `ggbot2-2023-nodejs-v18.12.1`.
