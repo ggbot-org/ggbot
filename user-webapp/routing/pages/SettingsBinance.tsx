@@ -1,60 +1,62 @@
 import { Column, Columns } from "@ggbot2/design";
 import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { BinanceApi, CreateBinanceApi, DeleteBinanceApi } from "_components";
 import { useApiAction } from "_hooks";
 import { OneSectionLayout } from "_layouts";
 
 const hideApiKey = (apiKey: string) =>
-  `${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 10, apiKey.length)}`;
+  `${apiKey.substring(0, 10)}...${apiKey.substring(
+    apiKey.length - 10,
+    apiKey.length
+  )}`;
 
 export const SettingsBinancePage: FC = () => {
-  const [readConfig, { data: binanceApiConfig }] = useApiAction.ReadBinanceApiConfig();
+  const [READ, { data }] = useApiAction.ReadBinanceApiConfig();
 
-  const { apiKey, hasBinanceApiConfig } = useMemo<{
-    apiKey: string;
-    hasBinanceApiConfig: boolean | undefined;
-  }>(() => {
-    if (binanceApiConfig === undefined)
-      return {
-        apiKey: "",
-        hasBinanceApiConfig: undefined,
-      };
+  const [apiKey, setApiKey] = useState("");
+  const [fetchCounter, setFetchCounter] = useState(1);
 
-    if (
-      isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(binanceApiConfig) &&
-      typeof binanceApiConfig.apiKey === "string"
-    ) {
-      return {
-        apiKey: hideApiKey(binanceApiConfig.apiKey),
-        hasBinanceApiConfig: true,
-      };
-    }
-    return {
-      apiKey: "",
-      hasBinanceApiConfig: false,
-    };
-  }, [binanceApiConfig]);
+  const refetchApiKey = useCallback(() => {
+    setFetchCounter((counter) => counter + 1);
+  }, []);
+
+  const resetApiKey = useCallback(() => {
+    setApiKey("");
+  }, []);
+  console.log("apiKey", apiKey);
 
   useEffect(() => {
-    const controller = readConfig({});
+    if (!fetchCounter) return;
+    const controller = READ({});
     return () => {
       controller.abort();
     };
-  }, [readConfig]);
+  }, [READ, fetchCounter]);
 
-  if (binanceApiConfig === undefined) return <OneSectionLayout />;
+  useEffect(() => {
+    if (isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(data)) {
+      const { apiKey } = data;
+      if (typeof apiKey === "string") setApiKey(hideApiKey(apiKey));
+    }
+  }, [data]);
+
+  if (data === undefined) return <OneSectionLayout />;
 
   return (
     <OneSectionLayout>
       <Columns>
         <Column size="half">
-          {hasBinanceApiConfig ? <BinanceApi apiKey={apiKey} /> : <CreateBinanceApi />}
+          {apiKey ? (
+            <BinanceApi apiKey={apiKey} />
+          ) : (
+            <CreateBinanceApi onCreate={refetchApiKey} />
+          )}
         </Column>
       </Columns>
 
-      {hasBinanceApiConfig && <DeleteBinanceApi />}
+      {apiKey && <DeleteBinanceApi onDelete={resetApiKey} />}
     </OneSectionLayout>
   );
 };

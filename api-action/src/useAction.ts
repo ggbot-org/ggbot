@@ -10,11 +10,12 @@ import { useCallback, useState } from "react";
 import { ApiActionInput } from "./action.js";
 import { ActionError, isApiActionResponseError } from "./errors.js";
 
-type UseActionRequestArg<Input extends OperationInput> = Input extends AccountKey
-  ? Omit<Input, "accountId">
-  : Input;
+type UseActionRequestArg<Input extends OperationInput> =
+  Input extends AccountKey ? Omit<Input, "accountId"> : Input;
 
-type UseActionRequest<Input extends OperationInput> = (arg: UseActionRequestArg<Input>) => AbortController;
+type UseActionRequest<Input extends OperationInput> = (
+  arg: UseActionRequestArg<Input>
+) => AbortController;
 
 type UseActionResponse<Output extends OperationOutput> = {
   error?: ActionError | undefined;
@@ -51,6 +52,20 @@ type UseActionResponse<Output extends OperationOutput> = {
  *   return () => { controller.abort() }
  * }, [request]);
  * ```
+ *
+ * It is a good to:
+ * - use an uppercase name for *request*, for example `CREATE`, `READ`, `UPDATE` or `DELETE`.
+ * - destructuring *response* if used.
+ * - use an empty object as *request* argument if there is no parameter.
+ *
+ * @example
+ * ```ts
+ * const [DELETE, { isPending }] = useApiAction.FooBar();
+ * useEffect(() => {
+ *   const controller = DELETE({});
+ *   return () => { controller.abort() }
+ * }, [DELETE]);
+ * ```
  */
 export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },
@@ -81,7 +96,9 @@ export const useAction = <
     const fetchRequest = async (inputData: Action["in"]) => {
       setResponse({ isPending: true });
       const body =
-        inputData === undefined ? JSON.stringify({ type }) : JSON.stringify({ type, data: inputData });
+        inputData === undefined
+          ? JSON.stringify({ type })
+          : JSON.stringify({ type, data: inputData });
       const response = await fetch("/api/action", {
         body,
         credentials: "include",
@@ -131,7 +148,8 @@ export const useAction = <
       } catch (error) {
         // AbortError is called on component unmount and on request timeout:
         // the signal eventListener on 'abort', set `isPending` to `false`.
-        if (error instanceof DOMException && error.name === "AbortError") return;
+        if (error instanceof DOMException && error.name === "AbortError")
+          return;
         // Fallback for unhandled errors.
         console.error(error);
         setResponse({ error: { name: "GenericError" }, isPending: false });

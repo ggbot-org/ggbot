@@ -1,16 +1,29 @@
-import { Button, Control, Field, Form, FormOnSubmit, InputField, Title } from "@ggbot2/design";
-import { FC, useCallback } from "react";
+import {
+  Button,
+  Control,
+  Field,
+  Form,
+  FormOnSubmit,
+  InputField,
+  Title,
+} from "@ggbot2/design";
+import { FC, useCallback, useEffect } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
 
-export const CreateBinanceApi: FC = () => {
-  const [createConfig, { isPending }] = useApiAction.CreateBinanceApiConfig();
+type Props = {
+  onCreate: () => void;
+};
+
+export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
+  const [CREATE, { data, isPending }] = useApiAction.CreateBinanceApiConfig();
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
       if (isPending) return;
 
+      // TODO use trunx form helpers
       const {
         apiKey: { value: apiKey },
         apiSecret: { value: apiSecret },
@@ -18,18 +31,33 @@ export const CreateBinanceApi: FC = () => {
         apiKey: { value: string };
         apiSecret: { value: string };
       };
-      createConfig({ apiKey, apiSecret });
+      CREATE({ apiKey, apiSecret });
     },
-    [createConfig, isPending]
+    [CREATE, isPending]
   );
+
+  useEffect(() => {
+    if (!data) return;
+    onCreate();
+  }, [data, onCreate]);
 
   return (
     <Form box onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
-      <InputField name="apiKey" label={fieldLabel.apiKey} required readOnly={isPending} />
+      <InputField
+        name="apiKey"
+        label={fieldLabel.apiKey}
+        required
+        readOnly={isPending}
+      />
 
-      <InputField label={fieldLabel.apiSecret} name="apiSecret" required readOnly={isPending} />
+      <InputField
+        label={fieldLabel.apiSecret}
+        name="apiSecret"
+        required
+        readOnly={isPending}
+      />
 
       <Field>
         <Control>

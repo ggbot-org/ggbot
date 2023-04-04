@@ -8,12 +8,16 @@ import {
   ModalContent,
   useStopScroll,
 } from "@ggbot2/design";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel } from "_i18n";
 
-export const DeleteBinanceApi: FC = () => {
-  const [deleteBinanceApi, { isPending: deleteIsPending }] = useApiAction.DeleteBinanceApiConfig();
+type Props = {
+  onDelete: () => void;
+};
+
+export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
+  const [DELETE, { data, isPending }] = useApiAction.DeleteBinanceApiConfig();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -22,11 +26,17 @@ export const DeleteBinanceApi: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (deleteIsPending) return;
-    deleteBinanceApi({});
-  }, [deleteBinanceApi, deleteIsPending]);
+    if (isPending) return;
+    DELETE({});
+  }, [DELETE, isPending]);
 
   useStopScroll(modalIsActive);
+
+  useEffect(() => {
+    if (!data) return;
+    setModalIsActive(false);
+    onDelete();
+  }, [data, onDelete]);
 
   return (
     <>
@@ -39,7 +49,10 @@ export const DeleteBinanceApi: FC = () => {
 
         <ModalContent>
           <Message header="Binance API deletion" color="warning">
-            <p>Are you sure you want to delete your Binance API configuration on ggbot2?</p>
+            <p>
+              Are you sure you want to delete your Binance API configuration on
+              ggbot2?
+            </p>
 
             <p>All your ggbot2 strategies will not able to run.</p>
 
@@ -47,7 +60,11 @@ export const DeleteBinanceApi: FC = () => {
           </Message>
 
           <Buttons>
-            <Button color="danger" isLoading={deleteIsPending} onClick={onClickConfirmation}>
+            <Button
+              color="danger"
+              isLoading={isPending}
+              onClick={onClickConfirmation}
+            >
               {buttonLabel.yesDelete}
             </Button>
 
