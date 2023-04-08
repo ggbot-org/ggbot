@@ -25,6 +25,7 @@ create an update.sh script with the following content
 sudo yum update -y
 
 ### Get code and build
+git clone https://git-codecommit.eu-central-1.amazonaws.com/v1/repos/ggbot2-monorepo
 cd ggbot2-monorepo
 npm ci
 export NODE_ENV=production
@@ -95,7 +96,7 @@ After=network.target
 Type=simple
 User=ec2-user
 Group=ec2-user
-WorkingDirectory=/opt/ggbot2/
+WorkingDirectory=/home/ec2-user/ggbot2-monorepo
 ExecStart=/usr/bin/npm run start:user-webapp
 Restart=on-failure
 RestartSec=10
@@ -176,7 +177,7 @@ After=network.target
 Type=simple
 User=ec2-user
 Group=ec2-user
-WorkingDirectory=/opt/ggbot2/
+WorkingDirectory=/home/ec2-user/ggbot2-monorepo
 ExecStart=/usr/bin/npm run start:executor
 Restart=on-failure
 RestartSec=10

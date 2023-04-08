@@ -47,3 +47,22 @@ node --version
 Update [NVM](./tech-stack.md#nvm) config with latest version.
 
 Create an image, for instance named as `ggbot2-2023-nodejs-v18.12.1`.
+
+TODO
+start from previous image
+add environment variables, systemctl, etc.
+do not enable services at boot
+create image `ggbot2-base-202303`
+
+Start a new instance from latest base image.
+Pull code and build.
+Enable services at boot.
+
+```sh
+sudo systemctl enable ggbot2-user-webapp
+```
+
+```sh
+sudo systemctl enable ggbot2-executor
+```
+
