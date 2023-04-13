@@ -6,7 +6,6 @@ import {
   ModalBackground,
   ModalClose,
   ModalContent,
-  useStopScroll,
 } from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
@@ -29,8 +28,6 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
     if (isPending) return;
     DELETE({});
   }, [DELETE, isPending]);
-
-  useStopScroll(modalIsActive);
 
   useEffect(() => {
     if (!data) return;

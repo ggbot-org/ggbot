@@ -11,7 +11,6 @@ import {
   ModalContent,
   InputField,
   useFormattedDate,
-  useStopScroll,
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
@@ -48,8 +47,6 @@ export const DeleteStrategy: FC<Props> = ({
     if (!data) return;
     router.push(pathname.homePage());
   }, [data, router]);
-
-  useStopScroll(modalIsActive);
 
   return (
     <>

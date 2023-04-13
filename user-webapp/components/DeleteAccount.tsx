@@ -6,14 +6,14 @@ import {
   ModalBackground,
   ModalClose,
   ModalContent,
-  useStopScroll,
 } from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel } from "_i18n";
 
 export const DeleteAccount: FC = () => {
-  const [deleteAccount, { isPending: deleteIsPending }] = useApiAction.DeleteAccount();
+  const [deleteAccount, { isPending: deleteIsPending }] =
+    useApiAction.DeleteAccount();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -25,8 +25,6 @@ export const DeleteAccount: FC = () => {
     if (deleteIsPending) return;
     deleteAccount({});
   }, [deleteAccount, deleteIsPending]);
-
-  useStopScroll(modalIsActive);
 
   return (
     <>
@@ -43,7 +41,11 @@ export const DeleteAccount: FC = () => {
           </Message>
 
           <Buttons>
-            <Button color="danger" isLoading={deleteIsPending} onClick={onClickConfirmation}>
+            <Button
+              color="danger"
+              isLoading={deleteIsPending}
+              onClick={onClickConfirmation}
+            >
               {buttonLabel.yesDelete}
             </Button>
 

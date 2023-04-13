@@ -4,15 +4,12 @@ import {
   ModalBackground,
   ModalClose,
   ModalContent,
-  useStopScroll,
 } from "@ggbot2/design";
 import { FC, useState } from "react";
 import { GoSettingsButton } from "./GoSettingsButton";
 
 export const PleasePurchaseModal: FC = () => {
   const [isActive, setIsActive] = useState(true);
-
-  useStopScroll(isActive);
 
   const toggleModal = () => {
     setIsActive((active) => !active);
