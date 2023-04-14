@@ -44,7 +44,12 @@ export const SimpleForm: FC = () => {
     <Form box onSubmit={onSubmit}>
       <Title>Create account</Title>
 
-      <InputField name="nick" label="nick" color="success" defaultValue="satoshi" help={<>&nbsp;</>} />
+      <InputField
+        name="nick"
+        label="nick"
+        defaultValue="satoshi"
+        help={<>&nbsp;</>}
+      />
 
       <InputField name="password" label="password" help={<>&nbsp;</>} />
 
@@ -52,7 +57,6 @@ export const SimpleForm: FC = () => {
         value={gender}
         name="gender"
         label="gender"
-        color="success"
         help={<>&nbsp;</>}
         onChange={onChangeGender}
         options={[
@@ -64,10 +68,16 @@ export const SimpleForm: FC = () => {
 
       <Flex alignItems="center" justify="space-between">
         <Checkbox checked={hasConsent} onChange={onChangeConsent}>
-          <span className={classNames("ml-2")}>I agree with Terms of service.</span>
+          <span className={classNames("ml-2")}>
+            I agree with Terms of service.
+          </span>
         </Checkbox>
 
-        <Button color="primary" disabled={!hasConsent} isLoading={isPending}>
+        <Button
+          color={hasConsent ? "primary" : undefined}
+          disabled={!hasConsent}
+          isLoading={isPending}
+        >
           Enter
         </Button>
       </Flex>

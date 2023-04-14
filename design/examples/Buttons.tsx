@@ -3,18 +3,39 @@ import { Button, Buttons } from "@ggbot2/design";
 
 export const ButtonColors: FC = () => {
   return (
-    <Buttons>
-      <Button>button</Button>
-      <Button disabled>disabled</Button>
-      <Button color="primary">primary</Button>
-      <Button disabled color="primary">
-        disabled
-      </Button>
-      <Button color="danger">danger</Button>
-      <Button disabled color="danger">
-        disabled
-      </Button>
-    </Buttons>
+    <>
+      <Buttons>
+        <Button>button</Button>
+
+        <Button color="primary">primary</Button>
+
+        <Button color="warning">warning</Button>
+
+        <Button color="danger">danger</Button>
+
+        <Button color="success">success</Button>
+      </Buttons>
+
+      <Buttons>
+        <Button disabled>disabled</Button>
+
+        <Button disabled color="primary">
+          disabled
+        </Button>
+
+        <Button disabled color="warning">
+          disabled
+        </Button>
+
+        <Button disabled color="danger">
+          disabled
+        </Button>
+
+        <Button disabled color="success">
+          disabled
+        </Button>
+      </Buttons>
+    </>
   );
 };
 
@@ -22,11 +43,21 @@ export const LoadingButtons: FC = () => {
   return (
     <Buttons>
       <Button isLoading>button</Button>
+
       <Button isLoading color="primary">
         primary
       </Button>
+
+      <Button isLoading color="warning">
+        warning
+      </Button>
+
       <Button isLoading color="danger">
         danger
+      </Button>
+
+      <Button isLoading color="success">
+        success
       </Button>
     </Buttons>
   );

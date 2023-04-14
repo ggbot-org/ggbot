@@ -1,0 +1,21 @@
+$white: #ffffff;
+$black: #070900;
+$primary: #09eae5;
+$warning: #f6eb4e;
+$danger: #ba007c;
+$success: #00ff00;
+$link: #0b8eb3;
+
+$grey-darker: hsl(180, 7%, 21%);
+$grey-dark: hsl(180, 7%, 29%);
+$grey: hsl(180, 7%, 48%);
+$grey-light: hsl(180, 7%, 71%);
+$grey-lighter: hsl(180, 7%, 86%);
+$grey-lightest: hsl(180, 7%, 93%);
+
+$body-background-color: #faffff;
+
+$scheme-invert: $black;
+
+$shadow: 0.1em 0.1em 0.5em -0.1em rgba($scheme-invert, 0.1),
+  0 0px 0 1px rgba($scheme-invert, 0.02);

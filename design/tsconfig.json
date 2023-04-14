@@ -10,15 +10,13 @@
     "noEmit": true,
     "paths": {
       "@ggbot2/design": ["src/index.ts"],
-      "_examples": ["examples/index.ts"]
+      "_examples/*": ["examples/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "target": "es6"
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "extends": "../tsconfig.common.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

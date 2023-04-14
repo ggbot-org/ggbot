@@ -53,7 +53,7 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
         <NavbarItem className={classNames("is-unselectable")}>
           <Logo size={34} />
           <span className={classNames("is-size-5", "has-text-weight-medium")}>
-            ggbot<b className={classNames("has-text-brand")}>2</b>
+            ggbot<b className={classNames("has-text-primary")}>2</b>
           </span>
         </NavbarItem>
 

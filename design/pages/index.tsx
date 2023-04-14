@@ -1,17 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import {
-  ButtonColors,
-  EditableInputs,
-  Icons,
-  LoadingButtons,
-  SingleCalendar,
-  Tags,
-  SimpleForm,
-  SimpleTable,
-  Typography,
-} from "_examples";
-import {
   Columns,
   Column,
   Container,
@@ -20,6 +9,16 @@ import {
   Section,
   Title,
 } from "@ggbot2/design";
+import { ButtonColors, LoadingButtons } from "_examples/Buttons";
+import { SingleCalendar } from "_examples/Calendar";
+import { EditableInputs } from "_examples/EditableInputs";
+import { SimpleForm } from "_examples/Forms";
+import { Icons } from "_examples/Icons";
+import { InputFields } from "_examples/InputFields";
+import { Palette } from "_examples/Palette";
+import { SimpleTable } from "_examples/Tables";
+import { Tags } from "_examples/Tags";
+import { Typography } from "_examples/Typography";
 
 const Home: NextPage = () => {
   return (
@@ -42,6 +41,26 @@ const Home: NextPage = () => {
             <Title>Typography</Title>
 
             <Typography />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Palette</Title>
+
+            <Palette />
+          </Container>
+        </Section>
+
+        <Section>
+          <Container>
+            <Title>Inputs</Title>
+
+            <Columns>
+              <Column size="half">
+                <InputFields />
+              </Column>
+            </Columns>
           </Container>
         </Section>
 

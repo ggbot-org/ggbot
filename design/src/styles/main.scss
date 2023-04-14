@@ -1,11 +1,10 @@
+// First of all import :root CSS variables.
 @import "root";
 
-// Import bulma variables first,
-@import "bulma-variables";
+// Import bulma theme first,
+@import "./bulma/theme";
 // then all bulma modules.
 @import "bulma/bulma";
 
-@import "brand";
-
 // Components.
-@import "Calendar";
+@import "./components/calendar";
