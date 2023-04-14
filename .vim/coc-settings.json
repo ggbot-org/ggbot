@@ -1,0 +1,6 @@
+{
+  "diagnostic.checkCurrentLine": true,
+  "[json][javascript][scss][typescript][typescriptreact]": {
+    "coc.preferences.formatOnSave": true
+  }
+}
