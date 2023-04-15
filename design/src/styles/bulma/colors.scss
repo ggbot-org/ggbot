@@ -4,7 +4,8 @@ $primary: #09eae5;
 $warning: #f6eb4e;
 $danger: #ba007c;
 $success: #00ff00;
-$link: #0b8eb3;
+// $link is used as focus color for select, input, button, etc.
+$link: $black;
 
 $grey-darker: hsl(180, 7%, 21%);
 $grey-dark: hsl(180, 7%, 29%);
