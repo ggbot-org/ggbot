@@ -2,6 +2,7 @@
   "extends": "next",
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-warning-comments": "off"
+    "no-warning-comments": "off",
+    "react-hooks/exhaustive-deps": "error"
   }
 }

@@ -101,7 +101,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         console.error(error);
       }
     },
-    [emailSent, isPending]
+    [emailSent, isPending, setEmail]
   );
 
   return (
