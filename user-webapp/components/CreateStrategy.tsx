@@ -81,7 +81,7 @@ export const CreateStrategy: FC = () => {
 
           <Field>
             <Control>
-              <Button color="primary" isLoading={isPending}>
+              <Button color="primary" isLoading={isPending || !!data}>
                 {buttonLabel.create}
               </Button>
             </Control>

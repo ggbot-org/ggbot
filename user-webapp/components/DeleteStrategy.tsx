@@ -24,8 +24,7 @@ export const DeleteStrategy: FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  const [deleteStrategy, { isPending: deleteIsPending, data }] =
-    useApiAction.DeleteStrategy();
+  const [DELETE, { isPending, data }] = useApiAction.DeleteStrategy();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -34,9 +33,9 @@ export const DeleteStrategy: FC<Props> = ({
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (deleteIsPending) return;
-    deleteStrategy(strategyKey);
-  }, [deleteStrategy, deleteIsPending, strategyKey]);
+    if (isPending) return;
+    DELETE(strategyKey);
+  }, [DELETE, isPending, strategyKey]);
 
   const formattedWhenCreated = useFormattedDate(whenCreated, "time");
 
@@ -83,7 +82,7 @@ export const DeleteStrategy: FC<Props> = ({
         <Buttons>
           <Button
             color="warning"
-            isLoading={deleteIsPending}
+            isLoading={isPending || !!data}
             onClick={onClickConfirmation}
           >
             {buttonLabel.yesDelete}

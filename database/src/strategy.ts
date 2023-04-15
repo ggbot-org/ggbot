@@ -8,12 +8,14 @@ import {
   ReadStrategy,
   ReadStrategyAccountId,
   RenameStrategy,
+  StrategyFlow,
   StrategyKey,
   isAccountKey,
   newAccountStrategy,
   newStrategy,
   normalizeName,
   throwIfInvalidName,
+  updatedNow,
 } from "@ggbot2/models";
 import {
   deleteObject,
@@ -44,6 +46,35 @@ import { deleteStrategyMemory } from "./strategyMemory.js";
 const strategyAccountIdCache = new CacheMap<Account["id"]>();
 
 /**
+ * Atomic operation to create a strategy.
+ *
+ * It is used internally by
+ * - copyStrategy
+ * - createStrategy
+ *
+ * @throws {ErrorInvalidArg}
+ * @internal
+ */
+const _createStrategy: CreateStrategy["func"] = async ({
+  accountId,
+  kind,
+  name,
+}) => {
+  throwIfInvalidName(name);
+  const strategy = newStrategy({
+    kind,
+    name,
+    accountId,
+  });
+  const strategyKey = { strategyId: strategy.id, strategyKind: kind };
+  const Key = pathname.strategy(strategyKey);
+  await putObject({ Key, data: strategy });
+  const accountStrategy = newAccountStrategy({ name, ...strategyKey });
+  insertAccountStrategiesItem({ accountId, item: accountStrategy });
+  return strategy;
+};
+
+/**
  * @throws {ErrorInvalidArg}
  * @throws {ErrorStrategyItemNotFound}
  */
@@ -52,9 +83,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   name,
   ...strategyKey
 }) => {
-  throwIfInvalidName(name);
-
-  const strategy = await createStrategy({
+  const strategy = await _createStrategy({
     accountId,
     kind: strategyKey.strategyKind,
     name,
@@ -78,6 +107,10 @@ export const copyStrategy: CopyStrategy["func"] = async ({
 /**
  * Create strategy.
  *
+ * It also creates also an empty strategy flow.
+ * If user creates a new strategy, even if the flow was not edited yet,
+ * it will be possible to share it and run it.
+ *
  * @throws {ErrorInvalidArg}
  */
 export const createStrategy: CreateStrategy["func"] = async ({
@@ -85,17 +118,19 @@ export const createStrategy: CreateStrategy["func"] = async ({
   kind,
   name,
 }) => {
-  throwIfInvalidName(name);
-  const strategy = newStrategy({
-    kind,
-    name,
-    accountId,
+  // Create strategy first,
+  const strategy = await _createStrategy({ accountId, kind, name });
+  // then create an empty flow.
+  const strategyFlowKey = pathname.strategyFlow({
+    strategyId: strategy.id,
+    strategyKind: strategy.kind,
   });
-  const strategyKey = { strategyId: strategy.id, strategyKind: kind };
-  const Key = pathname.strategy(strategyKey);
-  await putObject({ Key, data: strategy });
-  const accountStrategy = newAccountStrategy({ name, ...strategyKey });
-  insertAccountStrategiesItem({ accountId, item: accountStrategy });
+  const whenUpdated = updatedNow();
+  const flow: StrategyFlow = {
+    view: { nodes: [], edges: [] },
+    ...whenUpdated,
+  };
+  await putObject({ Key: strategyFlowKey, data: flow });
   return strategy;
 };
 
