@@ -6,7 +6,12 @@ export type InputFieldProps = Omit<InputProps, "id"> & {
   label: string;
 };
 
-export const InputField: FC<InputFieldProps> = ({ color, help, label, ...props }) => {
+export const InputField: FC<InputFieldProps> = ({
+  color,
+  help,
+  label,
+  ...props
+}) => {
   const id = useId();
   return (
     <Field>

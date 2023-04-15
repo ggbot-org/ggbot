@@ -7,7 +7,7 @@ import {
   Field,
   Form,
   FormOnSubmit,
-  InputField,
+  OutputField,
   Title,
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback, useMemo } from "react";
@@ -19,9 +19,15 @@ type Props = {
 };
 
 export const BinanceApi: FC<Props> = ({ apiKey }) => {
-  const [testConfig, { data: permissions, isPending }] = useApiAction.ReadBinanceApiKeyPermissions();
+  const [testConfig, { data: permissions, isPending }] =
+    useApiAction.ReadBinanceApiKeyPermissions();
 
-  const { enableSpotAndMarginTrading, enableWithdrawals, enableReading, ipRestrict } = useMemo(
+  const {
+    enableSpotAndMarginTrading,
+    enableWithdrawals,
+    enableReading,
+    ipRestrict,
+  } = useMemo(
     () =>
       isBinanceApiKeyPermission(permissions)
         ? permissions
@@ -53,7 +59,10 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       {
         checkmark: {
           label: String(enableWithdrawals),
-          ok: typeof enableWithdrawals === "boolean" ? enableWithdrawals === false : undefined,
+          ok:
+            typeof enableWithdrawals === "boolean"
+              ? enableWithdrawals === false
+              : undefined,
         },
         description: (
           <span>
@@ -101,7 +110,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
     <Form box onSubmit={onSubmit}>
       <Title>Binance API</Title>
 
-      <InputField label={fieldLabel.apiKey} defaultValue={apiKey} readOnly />
+      <OutputField label={fieldLabel.apiKey} value={apiKey} />
 
       <Field>
         <Control>
@@ -110,12 +119,14 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       </Field>
 
       <div>
-        {permissionItems.map(({ description, checkmark: checkmarkProps }, i) => (
-          <div key={i}>
-            {description}
-            <Checkmark {...checkmarkProps} />
-          </div>
-        ))}
+        {permissionItems.map(
+          ({ description, checkmark: checkmarkProps }, i) => (
+            <div key={i}>
+              {description}
+              <Checkmark {...checkmarkProps} />
+            </div>
+          )
+        )}
       </div>
     </Form>
   );

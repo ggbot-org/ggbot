@@ -5,7 +5,7 @@ import {
   Control,
   EditableInputField,
   Field,
-  InputField,
+  OutputField,
   Title,
   useFormattedDate,
 } from "@ggbot2/design";
@@ -89,18 +89,16 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Columns>
         <Column>
-          <InputField
+          <OutputField
             label={fieldLabel.whenCreated}
-            defaultValue={formattedWhenCreated}
-            readOnly
+            value={formattedWhenCreated}
           />
         </Column>
 
         <Column>
-          <InputField
+          <OutputField
             label={fieldLabel.strategyId}
-            defaultValue={strategyKey.strategyId}
-            readOnly
+            value={strategyKey.strategyId}
           />
         </Column>
       </Columns>

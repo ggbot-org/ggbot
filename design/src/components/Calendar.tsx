@@ -1,6 +1,12 @@
-import { Day, MonthNum, WeekDayNum, dateToDay, today, weekDayNums } from "@ggbot2/time";
+import {
+  Day,
+  MonthNum,
+  WeekDayNum,
+  dateToDay,
+  today,
+  weekDayNums,
+} from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
-import { classNames } from "../classNames";
 import { Icon } from "./Icon";
 
 // TODO remove all tailwind classes
@@ -126,7 +132,9 @@ export const Calendar: FC<CalendarProps> = ({
       .map(({ day, ...rest }) => ({
         selected: day === selectedDay,
         isSelectable:
-          day !== selectedDay && (min && day ? day >= min : true) && (max && day ? day <= max : true),
+          day !== selectedDay &&
+          (min && day ? day >= min : true) &&
+          (max && day ? day <= max : true),
         day,
         ...rest,
       }))
@@ -183,23 +191,29 @@ export const Calendar: FC<CalendarProps> = ({
   }, [setMonthOffset]);
 
   return (
-    <div className={classNames("calendar")}>
-      <div className={classNames("calendar__head")}>
+    <div className={"calendar"}>
+      <div className={"calendar__head"}>
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
-            <Icon name="caret-left" onClick={isFirstMonth ? undefined : onClickPrevious} />
+            <Icon
+              name="caret-left"
+              onClick={isFirstMonth ? undefined : onClickPrevious}
+            />
           </span>
           <span>{monthName[monthNum]}</span>
         </div>
         <div className="flex flex-row items-center gap-2">
           <span className="font-medium">{firstDate.getFullYear()}</span>
           <span className={rightCaretClassName}>
-            <Icon name="caret-right" onClick={isLastMonth ? undefined : onClickNext} />
+            <Icon
+              name="caret-right"
+              onClick={isLastMonth ? undefined : onClickNext}
+            />
           </span>
         </div>
       </div>
 
-      <div className={classNames("calendar__body")}>
+      <div className={"calendar__body"}>
         {weekDayNums.map((n) => (
           <div key={n} className="text-center select-none">
             {weekDayName[n]}

@@ -9,7 +9,7 @@ import {
   ModalBackground,
   ModalClose,
   ModalContent,
-  InputField,
+  OutputField,
   useFormattedDate,
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
@@ -50,7 +50,7 @@ export const DeleteStrategy: FC<Props> = ({
 
   return (
     <>
-      <Button color="danger" onClick={toggleModal}>
+      <Button color="warning" onClick={toggleModal}>
         {buttonLabel.deleteStrategy}
       </Button>
 
@@ -65,28 +65,22 @@ export const DeleteStrategy: FC<Props> = ({
           <Box>
             <Columns>
               <Column>
-                <InputField
-                  readOnly
-                  label={fieldLabel.strategyName}
-                  defaultValue={name}
-                />
+                <OutputField label={fieldLabel.strategyName} value={name} />
               </Column>
             </Columns>
 
             <Columns>
               <Column>
-                <InputField
-                  readOnly
+                <OutputField
                   label={fieldLabel.strategyId}
-                  defaultValue={strategyKey.strategyId}
+                  value={strategyKey.strategyId}
                 />
               </Column>
 
               <Column>
-                <InputField
-                  readOnly
+                <OutputField
                   label={fieldLabel.whenCreated}
-                  defaultValue={formattedWhenCreated}
+                  value={formattedWhenCreated}
                 />
               </Column>
             </Columns>

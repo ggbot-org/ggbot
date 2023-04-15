@@ -56,5 +56,6 @@ export * from "./Icon";
 export * from "./InputField";
 export * from "./Logo";
 export * from "./Navbar";
+export * from "./OutputField";
 export * from "./SelectField";
 export * from "./Tabs";

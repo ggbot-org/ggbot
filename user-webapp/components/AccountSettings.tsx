@@ -1,4 +1,9 @@
-import { Box, EditableInputField, InputField, useFormattedDate } from "@ggbot2/design";
+import {
+  Box,
+  EditableInputField,
+  OutputField,
+  useFormattedDate,
+} from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useApiAction } from "_hooks";
@@ -9,7 +14,8 @@ export const AccountSettings: FC = () => {
 
   const [readAccount, { data: account }] = useApiAction.ReadAccount();
 
-  const [renameAccount, { isPending: renameIsPending }] = useApiAction.RenameAccount();
+  const [renameAccount, { isPending: renameIsPending }] =
+    useApiAction.RenameAccount();
 
   const { accountId, currentName, email, whenCreated } = useMemo(
     () =>
@@ -31,7 +37,10 @@ export const AccountSettings: FC = () => {
 
   const formattedDate = useFormattedDate(whenCreated, "day");
 
-  const readOnly = useMemo(() => account === undefined || renameIsPending, [account, renameIsPending]);
+  const readOnly = useMemo(
+    () => account === undefined || renameIsPending,
+    [account, renameIsPending]
+  );
 
   const setName = useCallback<(value: unknown) => void>(
     (value) => {
@@ -70,11 +79,11 @@ export const AccountSettings: FC = () => {
         isSpinning={renameIsPending}
       />
 
-      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
+      <OutputField label={fieldLabel.email} value={email} />
 
-      <InputField label={fieldLabel.whenCreated} defaultValue={formattedDate} readOnly />
+      <OutputField label={fieldLabel.whenCreated} value={formattedDate} />
 
-      <InputField label={fieldLabel.accountId} defaultValue={accountId} readOnly />
+      <OutputField label={fieldLabel.accountId} value={accountId} />
     </Box>
   );
 };

@@ -6,6 +6,7 @@ import {
   Form,
   InputField,
   Message,
+  OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { useRouter } from "next/router";
@@ -128,7 +129,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
   return (
     <Form box onSubmit={onSubmit}>
-      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
+      <OutputField label={fieldLabel.email} value={email} />
 
       <Message>
         Check your email to get the <em>One Time Password</em>.

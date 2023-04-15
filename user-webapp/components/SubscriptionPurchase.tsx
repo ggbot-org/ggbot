@@ -10,6 +10,7 @@ import {
   InputField,
   InputOnChange,
   Message,
+  OutputField,
   SelectField,
   SelectOnChange,
   SelectProps,
@@ -233,10 +234,9 @@ export const SubscriptionPurchase: FC = () => {
         </Column>
 
         <Column>
-          <InputField
+          <OutputField
             label={fieldLabel.endDay}
-            defaultValue={formattedNewSubscriptionEnd}
-            readOnly
+            value={formattedNewSubscriptionEnd}
           />
         </Column>
       </Columns>
@@ -250,12 +250,11 @@ export const SubscriptionPurchase: FC = () => {
         value={country}
       />
 
-      <InputField label={fieldLabel.email} defaultValue={email} readOnly />
+      <OutputField label={fieldLabel.email} value={email} />
 
-      <InputField
+      <OutputField
         label={fieldLabel.totalPrice}
-        defaultValue={formattedTotalPrice}
-        readOnly
+        value={formattedTotalPrice}
         color={isYearlyPurchase ? "success" : undefined}
         help={isYearlyPurchase ? <p>One month for free.</p> : <>&nbsp;</>}
       />

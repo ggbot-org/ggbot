@@ -1,4 +1,12 @@
-import { Box, Control, Field, InputField, Tag, Title, useFormattedDate } from "@ggbot2/design";
+import {
+  Box,
+  Control,
+  Field,
+  OutputField,
+  Tag,
+  Title,
+  useFormattedDate,
+} from "@ggbot2/design";
 import { FC, useContext } from "react";
 import { SubscriptionContext } from "_contexts";
 import { fieldLabel } from "_i18n";
@@ -18,9 +26,12 @@ export const SubscriptionInfo: FC = () => {
         </Control>
       </Field>
 
-      <InputField label={fieldLabel.subscriptionPlan} defaultValue={subscriptionPlan} readOnly />
+      <OutputField
+        label={fieldLabel.subscriptionPlan}
+        value={subscriptionPlan}
+      />
 
-      <InputField label={fieldLabel.endDay} defaultValue={formattedSubscriptionEnd} readOnly />
+      <OutputField label={fieldLabel.endDay} value={formattedSubscriptionEnd} />
     </Box>
   );
 };

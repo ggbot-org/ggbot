@@ -4,7 +4,7 @@ import {
   Field,
   Form,
   FormOnReset,
-  InputField,
+  OutputField,
   Title,
 } from "@ggbot2/design";
 import { isAccount } from "@ggbot2/models";
@@ -46,11 +46,11 @@ export const AuthExitForm: FC = () => {
     <Form box action={pathname.apiExit()} onReset={onReset} onSubmit={onSubmit}>
       <Title>Exit ggbot2</Title>
 
-      <InputField label={fieldLabel.email} readOnly defaultValue={email} />
+      <OutputField label={fieldLabel.email} value={email} />
 
       <Field isGrouped>
         <Control>
-          <Button color="danger" isLoading={isPending}>
+          <Button color="warning" isLoading={isPending}>
             {buttonLabel.exit}
           </Button>
         </Control>
