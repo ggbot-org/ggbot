@@ -6,9 +6,6 @@ import {
   Columns,
   Message,
   Modal,
-  ModalBackground,
-  ModalClose,
-  ModalContent,
   OutputField,
   useFormattedDate,
 } from "@ggbot2/design";
@@ -54,52 +51,46 @@ export const DeleteStrategy: FC<Props> = ({
         {buttonLabel.deleteStrategy}
       </Button>
 
-      <Modal isActive={modalIsActive}>
-        <ModalBackground onClick={toggleModal} />
+      <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
+        <Message header="Strategy deletion" color="warning">
+          <p>Are you sure you want to delete this strategy?</p>
+        </Message>
 
-        <ModalContent>
-          <Message header="Strategy deletion" color="warning">
-            <p>Are you sure you want to delete this strategy?</p>
-          </Message>
+        <Box>
+          <Columns>
+            <Column>
+              <OutputField label={fieldLabel.strategyName} value={name} />
+            </Column>
+          </Columns>
 
-          <Box>
-            <Columns>
-              <Column>
-                <OutputField label={fieldLabel.strategyName} value={name} />
-              </Column>
-            </Columns>
+          <Columns>
+            <Column>
+              <OutputField
+                label={fieldLabel.strategyId}
+                value={strategyKey.strategyId}
+              />
+            </Column>
 
-            <Columns>
-              <Column>
-                <OutputField
-                  label={fieldLabel.strategyId}
-                  value={strategyKey.strategyId}
-                />
-              </Column>
+            <Column>
+              <OutputField
+                label={fieldLabel.whenCreated}
+                value={formattedWhenCreated}
+              />
+            </Column>
+          </Columns>
+        </Box>
 
-              <Column>
-                <OutputField
-                  label={fieldLabel.whenCreated}
-                  value={formattedWhenCreated}
-                />
-              </Column>
-            </Columns>
-          </Box>
+        <Buttons>
+          <Button
+            color="danger"
+            isLoading={deleteIsPending}
+            onClick={onClickConfirmation}
+          >
+            {buttonLabel.yesDelete}
+          </Button>
 
-          <Buttons>
-            <Button
-              color="danger"
-              isLoading={deleteIsPending}
-              onClick={onClickConfirmation}
-            >
-              {buttonLabel.yesDelete}
-            </Button>
-
-            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
-          </Buttons>
-
-          <ModalClose onClick={toggleModal} />
-        </ModalContent>
+          <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+        </Buttons>
       </Modal>
     </>
   );

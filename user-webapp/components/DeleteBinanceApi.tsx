@@ -1,12 +1,4 @@
-import {
-  Button,
-  Buttons,
-  Message,
-  Modal,
-  ModalBackground,
-  ModalClose,
-  ModalContent,
-} from "@ggbot2/design";
+import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel } from "_i18n";
@@ -41,35 +33,29 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
         {buttonLabel.deleteApi}
       </Button>
 
-      <Modal isActive={modalIsActive}>
-        <ModalBackground onClick={toggleModal} />
+      <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
+        <Message header="Binance API deletion" color="warning">
+          <p>
+            Are you sure you want to delete your Binance API configuration on
+            ggbot2?
+          </p>
 
-        <ModalContent>
-          <Message header="Binance API deletion" color="warning">
-            <p>
-              Are you sure you want to delete your Binance API configuration on
-              ggbot2?
-            </p>
+          <p>All your ggbot2 strategies will not able to run.</p>
 
-            <p>All your ggbot2 strategies will not able to run.</p>
+          <p>This action will not delete your API key on Binance website.</p>
+        </Message>
 
-            <p>This action will not delete your API key on Binance website.</p>
-          </Message>
+        <Buttons>
+          <Button
+            color="danger"
+            isLoading={isPending}
+            onClick={onClickConfirmation}
+          >
+            {buttonLabel.yesDelete}
+          </Button>
 
-          <Buttons>
-            <Button
-              color="danger"
-              isLoading={isPending}
-              onClick={onClickConfirmation}
-            >
-              {buttonLabel.yesDelete}
-            </Button>
-
-            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
-          </Buttons>
-
-          <ModalClose onClick={toggleModal} />
-        </ModalContent>
+          <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+        </Buttons>
       </Modal>
     </>
   );

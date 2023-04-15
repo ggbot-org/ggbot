@@ -16,10 +16,6 @@ export {
   Level,
   LevelItem,
   Message,
-  Modal,
-  ModalBackground,
-  ModalClose,
-  ModalContent,
   NavbarDropdown,
   NavbarEnd,
   NavbarItem,
@@ -55,6 +51,7 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./InputField";
 export * from "./Logo";
+export * from "./Modal";
 export * from "./Navbar";
 export * from "./OutputField";
 export * from "./SelectField";

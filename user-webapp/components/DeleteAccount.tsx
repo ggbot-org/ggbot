@@ -1,12 +1,4 @@
-import {
-  Button,
-  Buttons,
-  Message,
-  Modal,
-  ModalBackground,
-  ModalClose,
-  ModalContent,
-} from "@ggbot2/design";
+import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel } from "_i18n";
@@ -32,28 +24,22 @@ export const DeleteAccount: FC = () => {
         {buttonLabel.deleteAccount}
       </Button>
 
-      <Modal isActive={modalIsActive}>
-        <ModalBackground onClick={toggleModal} />
+      <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
+        <Message header="Account deletion" color="warning">
+          <p>Are you sure you want to delete your account?</p>
+        </Message>
 
-        <ModalContent>
-          <Message header="Account deletion" color="warning">
-            <p>Are you sure you want to delete your account?</p>
-          </Message>
+        <Buttons>
+          <Button
+            color="danger"
+            isLoading={deleteIsPending}
+            onClick={onClickConfirmation}
+          >
+            {buttonLabel.yesDelete}
+          </Button>
 
-          <Buttons>
-            <Button
-              color="danger"
-              isLoading={deleteIsPending}
-              onClick={onClickConfirmation}
-            >
-              {buttonLabel.yesDelete}
-            </Button>
-
-            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
-          </Buttons>
-
-          <ModalClose onClick={toggleModal} />
-        </ModalContent>
+          <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+        </Buttons>
       </Modal>
     </>
   );
