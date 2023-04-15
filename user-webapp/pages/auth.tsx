@@ -1,6 +1,7 @@
 import { readSession } from "@ggbot2/cookies";
 import { GetServerSideProps, NextPage } from "next";
-import { AuthEnterPage, AuthExitPage } from "_pages";
+import { AuthEnterPage } from "_pages/AuthEnter";
+import { AuthExitPage } from "_pages/AuthExit";
 import { HasSession } from "_routing";
 
 type ServerSideProps = HasSession;

@@ -4,5 +4,6 @@ export * from "./checkboxes";
 export * from "./errors";
 export * from "./fields";
 export * from "./navigation";
+export * from "./schedulintStatusLabel";
 export * from "./tabs";
 export * from "./titles";

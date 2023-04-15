@@ -1,6 +1,9 @@
 import { readSession } from "@ggbot2/cookies";
 import { readStrategy } from "@ggbot2/database";
-import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import {
+  DflowBinanceSymbolInfo,
+  isDflowBinanceSymbolInfo,
+} from "@ggbot2/dflow";
 import { GetServerSideProps, NextPage } from "next";
 import { binance } from "_flow/binance";
 import {
@@ -11,13 +14,16 @@ import {
   redirectToErrorPageStrategyNotOwned,
   strategyKeyFromRouterParams,
 } from "_routing";
-import { EditStrategyFlowPage } from "_pages";
+import { EditStrategyFlowPage } from "_pages/EditStrategyFlow";
 
 type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params, req }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  req,
+}) => {
   const session = readSession(req.cookies);
   if (!session) return redirectToAuthenticationPage();
 
@@ -35,7 +41,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
 
   if (strategyKind === "binance") {
     const exchangeInfo = await binance.exchangeInfo();
-    const binanceSymbols = exchangeInfo.symbols.filter(isDflowBinanceSymbolInfo);
+    const binanceSymbols = exchangeInfo.symbols.filter(
+      isDflowBinanceSymbolInfo
+    );
     return {
       props: {
         binanceSymbols,
@@ -53,8 +61,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({ binanceSymbols, name, strategyKey }) => {
-  return <EditStrategyFlowPage binanceSymbols={binanceSymbols} name={name} strategyKey={strategyKey} />;
+const Page: NextPage<ServerSideProps> = ({
+  binanceSymbols,
+  name,
+  strategyKey,
+}) => {
+  return (
+    <EditStrategyFlowPage
+      binanceSymbols={binanceSymbols}
+      name={name}
+      strategyKey={strategyKey}
+    />
+  );
 };
 
 export default Page;

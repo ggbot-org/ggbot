@@ -4,6 +4,7 @@ import {
   Field,
   Form,
   FormOnSubmit,
+  formValues,
   InputField,
   Title,
 } from "@ggbot2/design";
@@ -15,6 +16,8 @@ type Props = {
   onCreate: () => void;
 };
 
+const fields = ["apiKey", "apiSecret"] as const;
+
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
   const [CREATE, { data, isPending }] = useApiAction.CreateBinanceApiConfig();
 
@@ -23,14 +26,9 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
       event.preventDefault();
       if (isPending) return;
 
-      // TODO use trunx form helpers
-      const {
-        apiKey: { value: apiKey },
-        apiSecret: { value: apiSecret },
-      } = event.target as EventTarget & {
-        apiKey: { value: string };
-        apiSecret: { value: string };
-      };
+      const { apiKey, apiSecret } = formValues(event, fields);
+      if (typeof apiKey !== "string") return;
+      if (typeof apiSecret !== "string") return;
       CREATE({ apiKey, apiSecret });
     },
     [CREATE, isPending]

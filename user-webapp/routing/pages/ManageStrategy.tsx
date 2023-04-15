@@ -13,7 +13,11 @@ import { StrategyInfo } from "_routing";
 // TODO create a Strategy Context
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const StrategyPage: FC<Props> = ({ strategyKey, whenCreated, name }) => {
+export const ManageStrategyPage: FC<Props> = ({
+  strategyKey,
+  whenCreated,
+  name,
+}) => {
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
   const [hasActiveSubscription, setHasActiveSubscription] = useState<
     boolean | undefined

@@ -2,6 +2,7 @@ import {
   Box,
   EditableInputField,
   OutputField,
+  Title,
   useFormattedDate,
 } from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
@@ -70,6 +71,8 @@ export const AccountSettings: FC = () => {
 
   return (
     <Box>
+      <Title>Account</Title>
+
       <EditableInputField
         name="name"
         label={fieldLabel.nickName}

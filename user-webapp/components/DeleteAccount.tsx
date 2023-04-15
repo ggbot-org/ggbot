@@ -25,7 +25,7 @@ export const DeleteAccount: FC = () => {
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Message header="Account deletion" color="warning">
+        <Message header="Account deletion" color="danger">
           <p>Are you sure you want to delete your account?</p>
         </Message>
 

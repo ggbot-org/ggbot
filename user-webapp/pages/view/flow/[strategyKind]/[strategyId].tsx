@@ -1,7 +1,14 @@
-import { BinanceCacheMap, BinanceConnector, BinanceExchange } from "@ggbot2/binance";
+import {
+  BinanceCacheMap,
+  BinanceConnector,
+  BinanceExchange,
+} from "@ggbot2/binance";
 import { readSession } from "@ggbot2/cookies";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
-import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import {
+  DflowBinanceSymbolInfo,
+  isDflowBinanceSymbolInfo,
+} from "@ggbot2/dflow";
 import { GetServerSideProps, NextPage } from "next";
 import {
   StrategyInfo,
@@ -9,14 +16,20 @@ import {
   redirectToErrorPageStrategyNotFound,
   strategyKeyFromRouterParams,
 } from "_routing";
-import { ViewStrategyFlowPage } from "_pages";
+import { ViewStrategyFlowPage } from "_pages/ViewStrategyFlow";
 
-type ServerSideProps = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
+type ServerSideProps = Pick<
+  StrategyInfo,
+  "accountIsOwner" | "strategyKey" | "name"
+> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
   hasSession: boolean;
 };
 
-export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ params, req }) => {
+export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
+  params,
+  req,
+}) => {
   const session = readSession(req.cookies);
   const hasSession = session !== undefined;
 
@@ -44,7 +57,9 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({ 
       cache: new BinanceCacheMap(),
     });
     const exchangeInfo = await binance.exchangeInfo();
-    const binanceSymbols = exchangeInfo.symbols.filter(isDflowBinanceSymbolInfo);
+    const binanceSymbols = exchangeInfo.symbols.filter(
+      isDflowBinanceSymbolInfo
+    );
     return {
       props: {
         binanceSymbols,

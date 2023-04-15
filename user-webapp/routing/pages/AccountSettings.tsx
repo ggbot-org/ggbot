@@ -3,7 +3,7 @@ import { FC } from "react";
 import { AccountSettings, DeleteAccount } from "_components";
 import { OneSectionLayout } from "_layouts";
 
-export const SettingsAccountPage: FC = () => {
+export const AccountSettingsPage: FC = () => {
   return (
     <OneSectionLayout>
       <Columns>

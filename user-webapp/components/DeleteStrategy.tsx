@@ -82,7 +82,7 @@ export const DeleteStrategy: FC<Props> = ({
 
         <Buttons>
           <Button
-            color="danger"
+            color="warning"
             isLoading={deleteIsPending}
             onClick={onClickConfirmation}
           >

@@ -4,13 +4,14 @@ import {
   Field,
   Form,
   FormOnSubmit,
+  formValues,
   InputField,
   Title,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
-import { buttonLabel, fieldLabel } from "_i18n";
+import { buttonLabel, fieldLabel, title } from "_i18n";
 import { pathname } from "_routing";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
@@ -23,11 +24,18 @@ type Props = {
   setEmail: SetEmail;
 };
 
+const fields = ["email"] as const;
+
 export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
-  const [hasGenericError, setHasGenericError] = useState(false);
-  const [hasInvalidInput, setHasInvalidInput] = useState(false);
-  const [isPending, setIsPending] = useState(false);
-  const [gotTimeout, setGotTimeout] = useState(false);
+  const [
+    { gotTimeout, hasGenericError, hasInvalidInput, isPending },
+    setState,
+  ] = useState({
+    gotTimeout: false,
+    hasGenericError: false,
+    hasInvalidInput: false,
+    isPending: false,
+  });
 
   const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
@@ -35,19 +43,21 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         event.preventDefault();
         if (emailSent || isPending) return;
 
-        setHasGenericError(false);
-        setHasInvalidInput(false);
-        setGotTimeout(false);
+        setState((state) => ({
+          ...state,
+          gotTimeout: false,
+          hasGenericError: false,
+          hasInvalidInput: false,
+        }));
 
-        // TODO use trunx formValues helper
-        const email = (
-          event.target as EventTarget & { email: { value: string } }
-        ).email.value;
+        const { email } = formValues(event, fields);
+
+        if (typeof email !== "string") return;
 
         const requestData = { email };
 
         if (!isApiEnterRequestData(requestData)) {
-          setHasInvalidInput(true);
+          setState((state) => ({ ...state, hasInvalidInput: true }));
           return;
         }
 
@@ -56,11 +66,14 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         const timeoutId = setTimeout(() => {
           controller.abort();
-          setGotTimeout(true);
-          setIsPending(false);
+          setState((state) => ({
+            ...state,
+            gotTimeout: true,
+            isPending: false,
+          }));
         }, timeout);
 
-        setIsPending(true);
+        setState((state) => ({ ...state, isPending: true }));
 
         const response = await fetch(pathname.apiEnter(), {
           body: JSON.stringify(requestData),
@@ -71,7 +84,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
           signal: controller.signal,
         });
 
-        setIsPending(false);
+        setState((state) => ({ ...state, isPending: false }));
         clearTimeout(timeoutId);
 
         if (!response.ok) throw new Error();
@@ -80,25 +93,20 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         if (responseData.emailSent) setEmail(email);
       } catch (error) {
-        setHasGenericError(true);
-        setIsPending(false);
+        setState((state) => ({
+          ...state,
+          hasGenericError: true,
+          isPending: false,
+        }));
         console.error(error);
       }
     },
-    [
-      emailSent,
-      isPending,
-      setEmail,
-      setGotTimeout,
-      setHasGenericError,
-      setHasInvalidInput,
-      setIsPending,
-    ]
+    [emailSent, isPending]
   );
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Title>Enter ggbot2</Title>
+      <Title>{title.enterForm}</Title>
 
       <InputField
         label={fieldLabel.email}

@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import { SettingsAccountPage } from "_pages";
+import { AccountSettingsPage } from "_pages/AccountSettings";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return <SettingsAccountPage />;
+  return <AccountSettingsPage />;
 };
 
 export default Page;

@@ -13,7 +13,7 @@ export const ShareStrategyButton: FC<Props> = ({ strategyKey }) => {
       const shareData = {
         title: "ggbot2",
         text: `strategy ${strategyKey.strategyId}`,
-        url: `${window.location.origin}/${pathname.viewFlowPage(strategyKey)}`,
+        url: `${window.location.origin}${pathname.viewFlowPage(strategyKey)}`,
       };
       if (
         "share" in navigator &&

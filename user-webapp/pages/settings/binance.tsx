@@ -1,11 +1,11 @@
 import { NextPage } from "next";
-import { SettingsBinancePage } from "_pages";
+import { BinanceSettingsPage } from "_pages/BinanceSettings";
 import { requireAuthentication } from "_routing";
 
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return <SettingsBinancePage />;
+  return <BinanceSettingsPage />;
 };
 
 export default Page;

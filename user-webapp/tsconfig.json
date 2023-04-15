@@ -17,7 +17,7 @@
       "_i18n": ["i18n/index.ts"],
       "_layouts": ["layouts/index.ts"],
       "_hooks": ["hooks/index.ts"],
-      "_pages": ["routing/pages/index.ts"],
+      "_pages/*": ["routing/pages/*"],
       "_routing": ["routing/index.ts"]
     },
     "resolveJsonModule": true,

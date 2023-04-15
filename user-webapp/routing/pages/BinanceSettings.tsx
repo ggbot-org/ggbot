@@ -12,7 +12,7 @@ const hideApiKey = (apiKey: string) =>
     apiKey.length
   )}`;
 
-export const SettingsBinancePage: FC = () => {
+export const BinanceSettingsPage: FC = () => {
   const [READ, { data }] = useApiAction.ReadBinanceApiConfig();
 
   const [apiKey, setApiKey] = useState("");

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { SubscriptionInfo, SubscriptionPurchase } from "_components";
 import { OneSectionLayout } from "_layouts";
 
-export const SettingsBillingPage: FC = () => {
+export const BillingSettingsPage: FC = () => {
   return (
     <OneSectionLayout>
       <Columns>

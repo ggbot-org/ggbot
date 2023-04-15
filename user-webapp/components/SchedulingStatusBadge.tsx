@@ -1,27 +1,31 @@
 import { SchedulingStatus } from "@ggbot2/models";
 import { Tags, Tag, TagProps } from "@ggbot2/design";
 import { FC, ReactNode, useMemo } from "react";
+import { schedulingStatusLabel } from "_i18n";
 
 type Props = {
   schedulingStatus: SchedulingStatus | undefined;
   count?: number;
 };
 
-type SchedulingStatusBadgeColor = Extract<TagProps["color"], "primary" | "danger" | "light">;
+type SchedulingStatusBadgeColor = Extract<
+  TagProps["color"],
+  "primary" | "danger" | "light"
+>;
 
-const schedulingStatusColor: Record<SchedulingStatus, SchedulingStatusBadgeColor> = {
+const schedulingStatusColor: Record<
+  SchedulingStatus,
+  SchedulingStatusBadgeColor
+> = {
   active: "primary",
   inactive: "light",
   suspended: "danger",
 };
 
-const schedulingStatusLabel: Record<SchedulingStatus, string> = {
-  active: "active",
-  inactive: "inactive",
-  suspended: "suspended",
-};
-
-export const SchedulingStatusBadge: FC<Props> = ({ schedulingStatus, count }) => {
+export const SchedulingStatusBadge: FC<Props> = ({
+  schedulingStatus,
+  count,
+}) => {
   const { color, label } = useMemo<{
     color: SchedulingStatusBadgeColor;
     label: ReactNode;
