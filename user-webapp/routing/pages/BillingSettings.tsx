@@ -1,7 +1,8 @@
 import { Columns, Column } from "@ggbot2/design";
 import { FC } from "react";
-import { SubscriptionInfo, SubscriptionPurchase } from "_components";
-import { OneSectionLayout } from "_layouts";
+import { SubscriptionInfo } from "_components/SubscriptionInfo";
+import { SubscriptionPurchase } from "_components/SubscriptionPurchase";
+import { OneSectionLayout } from "_layouts/OneSection";
 
 export const BillingSettingsPage: FC = () => {
   return (

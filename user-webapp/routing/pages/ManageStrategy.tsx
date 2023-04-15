@@ -1,13 +1,11 @@
 import { Column, Columns, Section } from "@ggbot2/design";
 import { FC, useState } from "react";
-import {
-  DeleteStrategy,
-  PleasePurchaseModal,
-  SchedulingsForm,
-  StrategyForm,
-  StrategyProfits,
-} from "_components";
-import { PageLayout } from "_layouts";
+import { DeleteStrategy } from "_components/DeleteStrategy";
+import { PleasePurchaseModal } from "_components/PleasePurchaseModal";
+import { SchedulingsForm } from "_components/SchedulingsForm";
+import { StrategyForm } from "_components/StrategyForm";
+import { StrategyProfits } from "_components/StrategyProfits";
+import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing";
 
 // TODO create a Strategy Context

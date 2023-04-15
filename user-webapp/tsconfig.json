@@ -11,11 +11,11 @@
     "paths": {
       "_api/*": ["pages/api/*"],
       "_classNames": ["styles/classNames.ts"],
-      "_components": ["components/index.ts"],
+      "_components/*": ["components/*"],
       "_contexts": ["contexts/index.ts"],
       "_flow/*": ["flow/*"],
       "_i18n": ["i18n/index.ts"],
-      "_layouts": ["layouts/index.ts"],
+      "_layouts/*": ["layouts/*"],
       "_hooks": ["hooks/index.ts"],
       "_pages/*": ["routing/pages/*"],
       "_routing": ["routing/index.ts"]

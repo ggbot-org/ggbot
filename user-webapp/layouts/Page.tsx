@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import { classNames } from "_classNames";
-import { Navigation, Page, PageProps } from "_components";
+import { Navigation } from "_components/Navigation";
+import { Page, PageProps } from "_components/Page";
 
 type Props = PageProps;
 

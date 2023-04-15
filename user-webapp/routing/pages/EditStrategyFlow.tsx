@@ -11,18 +11,16 @@ import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import {
-  BacktestController,
-  EditStrategyTopbar,
-  EditStrategyTabs,
-  FlowViewContainer,
-  MemoryController,
-  PleaseConfigureBinanceModal,
-  StrategyExecutionLog,
-} from "_components";
+import { BacktestController } from "_components/BacktestController";
+import { EditStrategyTopbar } from "_components/EditStrategyTopbar";
+import { EditStrategyTabs } from "_components/EditStrategyTabs";
+import { FlowViewContainer } from "_components/FlowViewContainer";
+import { MemoryController } from "_components/MemoryController";
+import { PleaseConfigureBinanceModal } from "_components/PleaseConfigureBinanceModal";
+import { StrategyExecutionLog } from "_components/StrategyExecutionLog";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { errorMessage } from "_i18n";
-import { PageLayout } from "_layouts";
+import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {

@@ -1,7 +1,8 @@
 import { EmailAddress } from "@ggbot2/models";
 import { FC, useMemo, useState } from "react";
-import { AuthEnterForm, AuthVerifyForm } from "_components";
-import { AuthLayout } from "_layouts";
+import { AuthEnterForm } from "_components/AuthEnterForm";
+import { AuthVerifyForm } from "_components/AuthVerifyForm";
+import { AuthLayout } from "_layouts/Auth";
 
 export const AuthEnterPage: FC = () => {
   const [email, setEmail] = useState<EmailAddress | undefined>();

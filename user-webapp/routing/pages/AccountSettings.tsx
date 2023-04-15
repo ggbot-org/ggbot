@@ -1,7 +1,8 @@
 import { Column, Columns } from "@ggbot2/design";
 import { FC } from "react";
-import { AccountSettings, DeleteAccount } from "_components";
-import { OneSectionLayout } from "_layouts";
+import { AccountSettings } from "_components/AccountSettings";
+import { DeleteAccount } from "_components/DeleteAccount";
+import { OneSectionLayout } from "_layouts/OneSection";
 
 export const AccountSettingsPage: FC = () => {
   return (

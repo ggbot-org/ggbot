@@ -2,16 +2,14 @@ import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
 import { FC, useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
-import {
-  BacktestController,
-  FlowViewContainer,
-  Navigation,
-  ViewStrategyTabs,
-  ViewStrategyTopbar,
-} from "_components";
+import { BacktestController } from "_components/BacktestController";
+import { FlowViewContainer } from "_components/FlowViewContainer";
+import { Navigation } from "_components/Navigation";
+import { ViewStrategyTabs } from "_components/ViewStrategyTabs";
+import { ViewStrategyTopbar } from "_components/ViewStrategyTopbar";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { errorMessage } from "_i18n";
-import { PageLayout } from "_layouts";
+import { PageLayout } from "_layouts/Page";
 import { StrategyInfo, pathname } from "_routing";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {

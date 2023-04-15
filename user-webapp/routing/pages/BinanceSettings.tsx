@@ -2,9 +2,11 @@ import { Column, Columns } from "@ggbot2/design";
 import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, useCallback, useEffect, useState } from "react";
-import { BinanceApi, CreateBinanceApi, DeleteBinanceApi } from "_components";
+import { BinanceApi } from "_components/BinanceApi";
+import { CreateBinanceApi } from "_components/CreateBinanceApi";
+import { DeleteBinanceApi } from "_components/DeleteBinanceApi";
 import { useApiAction } from "_hooks";
-import { OneSectionLayout } from "_layouts";
+import { OneSectionLayout } from "_layouts/OneSection";
 
 const hideApiKey = (apiKey: string) =>
   `${apiKey.substring(0, 10)}...${apiKey.substring(
@@ -25,7 +27,6 @@ export const BinanceSettingsPage: FC = () => {
   const resetApiKey = useCallback(() => {
     setApiKey("");
   }, []);
-  console.log("apiKey", apiKey);
 
   useEffect(() => {
     if (!fetchCounter) return;

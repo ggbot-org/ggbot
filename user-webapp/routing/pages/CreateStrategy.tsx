@@ -15,7 +15,7 @@ import { FC, useCallback, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
 import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
-import { OneSectionLayout } from "_layouts";
+import { OneSectionLayout } from "_layouts/OneSection";
 import { pathname } from "_routing";
 
 const fields = ["name"];
