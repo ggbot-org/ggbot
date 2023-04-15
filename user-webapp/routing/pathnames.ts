@@ -12,7 +12,6 @@ export const pathname = {
   apiUtrustCallback: () => "/api/utrust/callback",
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,
-  createStrategyPage: () => "/create/strategy",
   editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/edit/flow/${strategyKind}/${strategyId}`,
   errorPageInvalidStrategyKey: ({

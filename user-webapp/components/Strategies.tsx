@@ -4,7 +4,6 @@ import Link from "next/link";
 import { title } from "_i18n";
 import { FC } from "react";
 import { pathname } from "_routing";
-import { GoCreateStrategyButton } from "./GoCreateStrategyButton";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {
@@ -44,8 +43,6 @@ export const Strategies: FC<Props> = ({ strategies }) => {
           </Column>
         ))}
       </Columns>
-
-      <GoCreateStrategyButton />
     </>
   );
 };

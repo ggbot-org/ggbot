@@ -15,8 +15,18 @@ import {
   normalizeName,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { deleteObject, getObject, listObjects, putObject } from "./_dataBucket.js";
-import { dirnameDelimiter, locatorToItemKey, itemKeyToDirname, pathname } from "./locators.js";
+import {
+  deleteObject,
+  getObject,
+  listObjects,
+  putObject,
+} from "./_dataBucket.js";
+import {
+  dirnameDelimiter,
+  locatorToItemKey,
+  itemKeyToDirname,
+  pathname,
+} from "./locators.js";
 import {
   insertAccountStrategiesItem,
   renameAccountStrategiesItem,
@@ -34,9 +44,14 @@ import { deleteStrategyMemory } from "./strategyMemory.js";
 const strategyAccountIdCache = new CacheMap<Account["id"]>();
 
 /**
-@throws {ErrorInvalidArg}
-@throws {ErrorStrategyItemNotFound} */
-export const copyStrategy: CopyStrategy["func"] = async ({ accountId, name, ...strategyKey }) => {
+ * @throws {ErrorInvalidArg}
+ * @throws {ErrorStrategyItemNotFound}
+ */
+export const copyStrategy: CopyStrategy["func"] = async ({
+  accountId,
+  name,
+  ...strategyKey
+}) => {
   throwIfInvalidName(name);
 
   const strategy = await createStrategy({
@@ -60,8 +75,16 @@ export const copyStrategy: CopyStrategy["func"] = async ({ accountId, name, ...s
   return strategy;
 };
 
-/** @throws {ErrorInvalidArg} */
-export const createStrategy: CreateStrategy["func"] = async ({ accountId, kind, name }) => {
+/**
+ * Create strategy.
+ *
+ * @throws {ErrorInvalidArg}
+ */
+export const createStrategy: CreateStrategy["func"] = async ({
+  accountId,
+  kind,
+  name,
+}) => {
   throwIfInvalidName(name);
   const strategy = newStrategy({
     kind,
@@ -76,7 +99,9 @@ export const createStrategy: CreateStrategy["func"] = async ({ accountId, kind, 
   return strategy;
 };
 
-export const listStrategyKeys: ListStrategyKeys["func"] = async (strategyKey) => {
+export const listStrategyKeys: ListStrategyKeys["func"] = async (
+  strategyKey
+) => {
   const Prefix = itemKeyToDirname.strategy(strategyKey) + dirnameDelimiter;
   const results = await listObjects({ Prefix });
   if (!Array.isArray(results.Contents)) return Promise.resolve([]);
@@ -94,14 +119,20 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
     Key: pathname.strategy(strategyKey),
   });
 
-/** Get `accountId` of strategy.
-@throws {ErrorStrategyItemNotFound} */
-export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (strategyKey) => {
+/**
+ * Get `accountId` of strategy.
+ *
+ * @throws {ErrorStrategyItemNotFound}
+ */
+export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
+  strategyKey
+) => {
   const { strategyId } = strategyKey;
   const cachedData = strategyAccountIdCache.get(strategyId);
   if (cachedData) return cachedData;
   const data = await readStrategy(strategyKey);
-  if (!data) throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
+  if (!data)
+    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   if (!isAccountKey(data))
     throw new ErrorAccountItemNotFound({
       type: "Account",
@@ -112,13 +143,21 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (strat
   return accountId;
 };
 
-/** Rename strategy.
-@throws {ErrorInvalidArg}
-@throws {ErrorStrategyItemNotFound} */
-export const renameStrategy: RenameStrategy["func"] = async ({ accountId, name, ...strategyKey }) => {
+/**
+ * Rename strategy.
+ *
+ * @throws {ErrorInvalidArg}
+ * @throws {ErrorStrategyItemNotFound}
+ */
+export const renameStrategy: RenameStrategy["func"] = async ({
+  accountId,
+  name,
+  ...strategyKey
+}) => {
   throwIfInvalidName(name);
   const strategy = await readStrategy(strategyKey);
-  if (!strategy) throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
+  if (!strategy)
+    throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey });
   const normalizedName = normalizeName(name);
   const { strategyId } = strategyKey;
   if (strategy.accountId === accountId) {
@@ -133,10 +172,14 @@ export const renameStrategy: RenameStrategy["func"] = async ({ accountId, name, 
   });
 };
 
-/** Delete strategy.
-@throws {ErrorPermissionOnStrategyItem}
-*/
-export const deleteStrategy: DeleteStrategy["func"] = async (accountStrategyKey) => {
+/**
+ * Delete strategy.
+ *
+ * @throws {ErrorPermissionOnStrategyItem}
+ */
+export const deleteStrategy: DeleteStrategy["func"] = async (
+  accountStrategyKey
+) => {
   const { accountId, ...strategyKey } = accountStrategyKey;
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)
