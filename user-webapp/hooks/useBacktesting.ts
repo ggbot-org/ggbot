@@ -31,7 +31,6 @@ type State = StrategyKey &
     stepIndex: number;
     balanceHistory: BalanceChangeEvent[];
     frequency: Frequency;
-    isEnabled: boolean;
     isRunning: boolean;
     isPaused: boolean;
     dayInterval: DayInterval;
@@ -41,15 +40,14 @@ type State = StrategyKey &
   };
 export type BacktestingState = State;
 
-type PersistingState = Pick<State, "isEnabled" | "dayInterval">;
+type PersistingState = Pick<State, "dayInterval">;
 
 type GetPersistingState = () => PersistingState | undefined;
 type SetPersistingState = (arg: PersistingState) => void;
 
 const isPersistingState = (arg: unknown): arg is PersistingState => {
   if (!arg || typeof arg !== "object") return false;
-  const { isEnabled } = arg as Partial<PersistingState>;
-  return typeof isEnabled === "boolean";
+  return true;
 };
 
 const computeTimestamps = ({
@@ -68,12 +66,6 @@ const computeTimestamps = ({
 };
 
 type Action =
-  | {
-      type: "DISABLE";
-    }
-  | {
-      type: "ENABLE";
-    }
   | {
       type: "END";
     }
@@ -96,29 +88,12 @@ type Action =
     } & Pick<State, "dayInterval">)
   | {
       type: "START";
-    }
-  | {
-      type: "TOGGLE";
     };
 
 export type BacktestingDispatch = Dispatch<Action>;
 
 const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
-    case "DISABLE": {
-      const { isRunning } = state;
-      return {
-        ...state,
-        isEnabled: false,
-        isRunning: false,
-        isPaused: isRunning,
-      };
-    }
-
-    case "ENABLE": {
-      return { ...state, isEnabled: true };
-    }
-
     case "END": {
       return {
         ...state,
@@ -183,8 +158,6 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "START": {
-      const { isEnabled, isPaused } = state;
-      if (!isEnabled || isPaused) return state;
       return {
         ...state,
         balanceHistory: [],
@@ -194,13 +167,6 @@ const backtestingReducer = (state: State, action: Action) => {
         orderHistory: [],
         stepIndex: 0,
       };
-    }
-
-    case "TOGGLE": {
-      const { isEnabled } = state;
-      return isEnabled
-        ? { ...state, isEnabled: false, isRunning: false, isPaused: true }
-        : { ...state, isEnabled: true };
     }
 
     default:
@@ -261,7 +227,6 @@ const getInitialState =
       balanceHistory: [],
       dayInterval,
       frequency,
-      isEnabled: false,
       isPaused: false,
       isRunning: false,
       memory: {},
@@ -327,7 +292,6 @@ export const useBacktesting: UseBacktesting = ({
 
   const {
     dayInterval,
-    isEnabled,
     isRunning: backtestIsRunning,
     memory: previousMemory,
     stepIndex,
@@ -395,8 +359,8 @@ export const useBacktesting: UseBacktesting = ({
 
   useEffect(() => {
     if (isServerSide) return;
-    setPersistingState({ isEnabled, dayInterval });
-  }, [isEnabled, dayInterval, isServerSide, setPersistingState]);
+    setPersistingState({ dayInterval });
+  }, [dayInterval, isServerSide, setPersistingState]);
 
   return useMemo(
     () => [isServerSide ? undefined : state, dispatch],

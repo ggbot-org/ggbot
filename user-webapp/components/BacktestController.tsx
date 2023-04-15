@@ -43,7 +43,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
 
   const {
     currentTimestamp,
-    isEnabled,
     isPaused,
     isRunning,
     maxDay,
@@ -57,7 +56,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     if (!state)
       return {
         currentTimestamp: undefined,
-        isEnabled: false,
         isPaused: false,
         isRunning: false,
         memoryItems: [],
@@ -71,7 +69,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       };
     const {
       dayInterval,
-      isEnabled,
       isPaused,
       isRunning,
       maxDay,
@@ -92,7 +89,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
 
     return {
       currentTimestamp,
-      isEnabled,
       isPaused,
       isRunning,
       maxDay,
@@ -105,21 +101,22 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
     };
   }, [state]);
 
-  const timeInterval = useMemo(
-    () => (dayInterval ? dayIntervalToTime(dayInterval) : undefined),
-    [dayInterval]
-  );
+  const timeInterval = dayInterval ? dayIntervalToTime(dayInterval) : undefined;
 
   let actionLabel = "";
-  if (isPaused) actionLabel = backtestActionLabel.resume;
-  if (isRunning) actionLabel = backtestActionLabel.pause;
-  if (isEnabled) actionLabel = backtestActionLabel.start;
+  if (isPaused) {
+    actionLabel = backtestActionLabel.resume;
+  } else if (isRunning) {
+    actionLabel = backtestActionLabel.pause;
+  } else {
+    actionLabel = backtestActionLabel.start;
+  }
 
   const onClickAction = useCallback(() => {
     if (isRunning) dispatch({ type: "PAUSE" });
-    if (isPaused) dispatch({ type: "RESUME" });
-    else if (isEnabled) dispatch({ type: "START" });
-  }, [dispatch, isEnabled, isPaused, isRunning]);
+    else if (isPaused) dispatch({ type: "RESUME" });
+    else dispatch({ type: "START" });
+  }, [dispatch, isPaused, isRunning]);
 
   return (
     <div>

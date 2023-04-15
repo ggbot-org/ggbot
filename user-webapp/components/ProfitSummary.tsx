@@ -34,34 +34,28 @@ export const ProfitSummary: FC<Props> = ({
 
   return (
     <Box>
-      <Level
-        isMobile
-        left={
-          <LevelItem>
-            <Title>Profits</Title>
-          </LevelItem>
-        }
-        right={
-          <>
-            <LevelItem hasText="centered">
-              <div>
-                {<p>From</p>}
-                <DateTime format="day" value={timeInterval?.start} />
-              </div>
-            </LevelItem>
-
-            <LevelItem hasText="centered">
-              <div>
-                {<p>To</p>}
-                <DateTime format="day" value={timeInterval?.end} />
-              </div>
-            </LevelItem>
-          </>
-        }
-      />
+      <Title>Profits</Title>
 
       {strategyKind === "binance" && (
-        <Level>
+        <Level
+          left={
+            <>
+              <LevelItem hasText="centered">
+                <div>
+                  {<p>From</p>}
+                  <DateTime format="day" value={timeInterval?.start} />
+                </div>
+              </LevelItem>
+
+              <LevelItem hasText="centered">
+                <div>
+                  {<p>To</p>}
+                  <DateTime format="day" value={timeInterval?.end} />
+                </div>
+              </LevelItem>
+            </>
+          }
+        >
           <LevelItem hasText="centered">
             <div>
               {<p>Num. buys</p>}
