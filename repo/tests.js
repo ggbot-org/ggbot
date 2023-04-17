@@ -169,7 +169,7 @@ async function testWorkspacePackageJson({ workspace }) {
       });
   }
 
-  if (isCodeWorkspace && !isWebapp) {
+  if (isCodeWorkspace) {
     assert.equal(
       packageJson.eslintConfig.extends.includes(workspacesNamespace),
       true,

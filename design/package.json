@@ -35,5 +35,11 @@
     "react-dom": "^18.2.0",
     "sass": "^1.59.3",
     "trunx": "^0.45.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2",
+      "next"
+    ]
   }
 }

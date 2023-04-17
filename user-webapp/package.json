@@ -24,5 +24,14 @@
   "devDependencies": {
     "eslint-config-ggbot2": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2",
+      "next"
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": "error"
+    }
   }
 }

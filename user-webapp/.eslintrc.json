@@ -1,6 +1,0 @@
-{
-  "extends": ["ggbot2", "next"],
-  "rules": {
-    "react-hooks/exhaustive-deps": "error"
-  }
-}
