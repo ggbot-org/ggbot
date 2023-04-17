@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "_components": ["components/index.ts"]
+      "_components/*": ["components/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

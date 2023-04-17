@@ -3,7 +3,7 @@ import {
   DateTimeFormat,
   DateTimeValue,
   useFormattedDate,
-} from "../hooks/useFormattedDate.js";
+} from "../hooks/useFormattedDate";
 
 export type DateTimeProps = {
   value: DateTimeValue;

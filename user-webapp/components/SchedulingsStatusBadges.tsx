@@ -21,18 +21,26 @@ export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
     return { numActive, numInactive, numSuspended };
   }, [schedulings]);
 
-  if (schedulings.length === 0) return <SchedulingStatusBadge schedulingStatus="inactive" />;
+  if (schedulings.length === 0)
+    return <SchedulingStatusBadge schedulingStatus="inactive" />;
 
-  if (schedulings.length === 1) return <SchedulingStatusBadge schedulingStatus={schedulings[0].status} />;
+  if (schedulings.length === 1)
+    return <SchedulingStatusBadge schedulingStatus={schedulings[0].status} />;
 
   return (
     <Field isGrouped="multiline">
       <Control>
-        <SchedulingStatusBadge schedulingStatus="suspended" count={numSuspended} />
+        <SchedulingStatusBadge
+          schedulingStatus="suspended"
+          count={numSuspended}
+        />
       </Control>
 
       <Control>
-        <SchedulingStatusBadge schedulingStatus="inactive" count={numInactive} />
+        <SchedulingStatusBadge
+          schedulingStatus="inactive"
+          count={numInactive}
+        />
       </Control>
 
       <Control>

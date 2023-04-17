@@ -6,7 +6,7 @@
     "dev": "next dev",
     "cleanup": "rm -rf out/ .next/",
     "deploy": "sh deploy.sh",
-    "lint": "next lint",
+    "lint": "eslint **/*.ts **/*.tsx",
     "next:build": "next build",
     "next:export": "next export",
     "start": "next start",
@@ -18,16 +18,12 @@
     "@ggbot2/models": "file:models"
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2",
-      "next"
-    ],
-    "rules": {
-      "import/extensions": "off"
-    }
+      "@ggbot2/eslint-config/react"
+    ]
   }
 }

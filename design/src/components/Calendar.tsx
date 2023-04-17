@@ -7,7 +7,7 @@ import {
   weekDayNums,
 } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
-import { Icon } from "./Icon.js";
+import { Icon } from "./Icon";
 
 // TODO remove all tailwind classes
 

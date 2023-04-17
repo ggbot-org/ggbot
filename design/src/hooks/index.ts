@@ -1,2 +1,2 @@
-export * from "./useFormattedDate.js";
-export * from "./useOfflineDetection.js";
+export * from "./useFormattedDate";
+export * from "./useOfflineDetection";

@@ -13,8 +13,8 @@ import {
   NavbarItem,
   NavbarMenu,
 } from "trunx";
-import { Logo } from "./Logo.js";
-import { classNames } from "../classNames.js";
+import { Logo } from "./Logo";
+import { classNames } from "../classNames";
 
 export type NavbarProps = Partial<{
   noMenu: boolean;

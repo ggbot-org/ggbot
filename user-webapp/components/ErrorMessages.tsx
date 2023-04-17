@@ -6,5 +6,9 @@ export const GenericErrorMessage: FC = () => {
 };
 
 export const TimeoutErrorMessage: FC = () => {
-  return <Message color="warning">Request not sent. Please check connectivity and try again.</Message>;
+  return (
+    <Message color="warning">
+      Request not sent. Please check connectivity and try again.
+    </Message>
+  );
 };

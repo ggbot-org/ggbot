@@ -1,1 +1,1 @@
-export * from "./useIsServerSide.js";
+export * from "./useIsServerSide";

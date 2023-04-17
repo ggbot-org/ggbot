@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import { Accounts, Content } from "_components";
+import { Accounts } from "_components/Accounts";
+import { Content } from "_components/Content";
 
 const Page: NextPage = () => {
   return (

@@ -24,7 +24,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 }) => {
   const closeModal = useCallback(() => {
     setIsActive(false);
-  }, []);
+  }, [setIsActive]);
 
   return (
     <_Modal isActive={isActive}>

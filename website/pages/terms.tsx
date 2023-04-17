@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { Navigation } from "_components";
+import { Navigation } from "_components/Navigation";
 import styles from "../styles/PrivacyAndTerms.module.css";
 
 const Page: NextPage = () => {

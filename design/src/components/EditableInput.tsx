@@ -9,7 +9,7 @@ import {
   KeyboardEventHandler,
 } from "react";
 import { Input, InputProps } from "trunx";
-import { Field, FieldProps } from "./Field.js";
+import { Field, FieldProps } from "./Field";
 
 export type EditableInputProps = Omit<
   InputProps,

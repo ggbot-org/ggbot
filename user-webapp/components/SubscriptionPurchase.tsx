@@ -37,7 +37,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SubscriptionContext } from "_contexts";
+import { SubscriptionContext } from "_contexts/Subscription";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
@@ -261,7 +261,6 @@ export const SubscriptionPurchase: FC = () => {
 
       <Field>
         <Control>
-          {/* TODO SubsscriptionPurchaseButton */}
           <Button
             color="primary"
             disabled={purchaseIsDisabled}

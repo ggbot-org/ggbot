@@ -7,12 +7,12 @@
     "dev": "next dev",
     "next:build": "next build",
     "cleanup": "rm -rf .next",
-    "lint": "next lint",
+    "lint": "eslint **/*.ts **/*.tsx",
     "start": "next start",
     "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
@@ -23,11 +23,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2",
-      "next"
-    ],
-    "rules": {
-      "import/extensions": "off"
-    }
+      "@ggbot2/eslint-config/react"
+    ]
   }
 }

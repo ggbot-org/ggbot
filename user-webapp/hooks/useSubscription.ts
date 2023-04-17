@@ -4,33 +4,40 @@ import { useEffect, useMemo } from "react";
 import { useApiAction } from "./useApiAction";
 
 export const useSubscription = () => {
-  const [readSubscription, { data: subscription, isPending: readSubscriptionIsPending }] =
-    useApiAction.ReadSubscription();
+  const [
+    readSubscription,
+    { data: subscription, isPending: readSubscriptionIsPending },
+  ] = useApiAction.ReadSubscription();
 
-  const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd, subscriptionPlan } =
-    useMemo(() => {
-      if (subscription === undefined) {
-        return {
-          canPurchaseSubscription: undefined,
-          hasActiveSubscription: undefined,
-          subscriptionEnd: undefined,
-          subscriptionPlan: undefined,
-        };
-      }
-      if (!isSubscription(subscription))
-        return {
-          canPurchaseSubscription: true,
-          hasActiveSubscription: false,
-          subscriptionEnd: undefined,
-          subscriptionPlan: undefined,
-        };
+  const {
+    canPurchaseSubscription,
+    hasActiveSubscription,
+    subscriptionEnd,
+    subscriptionPlan,
+  } = useMemo(() => {
+    if (subscription === undefined) {
       return {
-        canPurchaseSubscription: getTime(dayToTime(subscription.end)).minus(30).days() < now(),
-        hasActiveSubscription: subscriptionStatus(subscription) === "active",
-        subscriptionEnd: dayToTime(subscription.end),
-        subscriptionPlan: subscription.plan,
+        canPurchaseSubscription: undefined,
+        hasActiveSubscription: undefined,
+        subscriptionEnd: undefined,
+        subscriptionPlan: undefined,
       };
-    }, [subscription]);
+    }
+    if (!isSubscription(subscription))
+      return {
+        canPurchaseSubscription: true,
+        hasActiveSubscription: false,
+        subscriptionEnd: undefined,
+        subscriptionPlan: undefined,
+      };
+    return {
+      canPurchaseSubscription:
+        getTime(dayToTime(subscription.end)).minus(30).days() < now(),
+      hasActiveSubscription: subscriptionStatus(subscription) === "active",
+      subscriptionEnd: dayToTime(subscription.end),
+      subscriptionPlan: subscription.plan,
+    };
+  }, [subscription]);
 
   useEffect(() => {
     const controller = readSubscription({});

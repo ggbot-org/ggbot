@@ -9,7 +9,9 @@ export const Accounts: FC = () => {
 
   const { accountIds, numAccounts } = useMemo(() => {
     const accountIds = Array.isArray(accountKeys)
-      ? accountKeys.map((accountKey) => (isAccountKey(accountKey) ? accountKey.accountId : "unknown"))
+      ? accountKeys.map((accountKey) =>
+          isAccountKey(accountKey) ? accountKey.accountId : "unknown"
+        )
       : [];
     return { accountIds, numAccounts: accountIds.length };
   }, [accountKeys]);

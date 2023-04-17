@@ -5,7 +5,7 @@
   "scripts": {
     "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "eslint **/*.ts **/*.tsx",
     "next:build": "next build",
     "start": "next start",
     "check_types": "tsc --noEmit --project ."
@@ -22,17 +22,12 @@
     "react-hot-toast": "^2.3.0"
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2",
-      "next"
-    ],
-    "rules": {
-      "import/extensions": "off",
-      "react-hooks/exhaustive-deps": "error"
-    }
+      "@ggbot2/eslint-config/react"
+    ]
   }
 }

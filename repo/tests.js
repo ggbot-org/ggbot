@@ -7,7 +7,7 @@ const workspacesNamespace = "ggbot2";
 const npmScope = `@${workspacesNamespace}`;
 
 const tsconfigPackageName = `${npmScope}/tsconfig`;
-const eslintConfigPackageName = `eslint-config-${workspacesNamespace}`;
+const eslintConfigPackageName = `${npmScope}/eslint-config`;
 
 const noCodeWorkspaces = ["eslint-config", "tsconfig"];
 const noBuildWorkspaces = [
@@ -90,19 +90,11 @@ async function testWorkspacePackageJson({ workspace }) {
   const isWebapp = webappWorkspaces.includes(workspace);
   const isCodeWorkspace = !noCodeWorkspaces.includes(workspace);
 
-  if (
-    workspace !== eslintConfigPackageName.replace(`-${workspacesNamespace}`, "")
-  ) {
-    [{ key: "name", expected: `${npmScope}/${workspace}` }].forEach(
-      ({ key, expected }) => {
-        assert.equal(
-          packageJson[key],
-          expected,
-          `workspace package.json ${key}`
-        );
-      }
-    );
-  }
+  [{ key: "name", expected: `${npmScope}/${workspace}` }].forEach(
+    ({ key, expected }) => {
+      assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
+    }
+  );
 
   if (!isWebapp && isCodeWorkspace) {
     [{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
@@ -171,7 +163,9 @@ async function testWorkspacePackageJson({ workspace }) {
 
   if (isCodeWorkspace) {
     assert.equal(
-      packageJson.eslintConfig.extends.includes(workspacesNamespace),
+      packageJson.eslintConfig.extends.some((item) =>
+        item.startsWith(eslintConfigPackageName)
+      ),
       true,
       `${workspace}/package.json eslintConfig extends ${eslintConfigPackageName}`
     );

@@ -8,7 +8,7 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { FC, useContext } from "react";
-import { SubscriptionContext } from "_contexts";
+import { SubscriptionContext } from "_contexts/Subscription";
 import { fieldLabel } from "_i18n";
 
 export const SubscriptionInfo: FC = () => {

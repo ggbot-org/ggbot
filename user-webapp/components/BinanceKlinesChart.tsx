@@ -39,8 +39,16 @@ const klinesToCandlesAndVolume = (klines: BinanceKline[]) =>
   );
   */
 
-export const BinanceKlinesChart: FC<Props> = ({ binance, start, end, interval, symbol }) => {
-  const [previousTimeInterval, setPreviousTimeInterval] = useState<TimeInterval | undefined>();
+export const BinanceKlinesChart: FC<Props> = ({
+  binance,
+  start,
+  end,
+  interval,
+  symbol,
+}) => {
+  const [previousTimeInterval, setPreviousTimeInterval] = useState<
+    TimeInterval | undefined
+  >();
   const klines = useRef<BinanceKline[]>([]);
 
   const fetchKlines = useCallback(async () => {
@@ -48,7 +56,8 @@ export const BinanceKlinesChart: FC<Props> = ({ binance, start, end, interval, s
     if (klines.current.length > 0) return;
     const data: BinanceKline[] = [];
     let startTime = start;
-    let endTime = getBinanceIntervalTime[interval](startTime).plus(binanceKlineMaxLimit);
+    let endTime =
+      getBinanceIntervalTime[interval](startTime).plus(binanceKlineMaxLimit);
     let shouldFetch = true;
     while (shouldFetch) {
       const klines = await binance.klines(symbol, interval, {
@@ -56,7 +65,10 @@ export const BinanceKlinesChart: FC<Props> = ({ binance, start, end, interval, s
         limit: binanceKlineMaxLimit,
       });
       data.push(...klines);
-      endTime = Math.min(end, getBinanceIntervalTime[interval](endTime).plus(binanceKlineMaxLimit));
+      endTime = Math.min(
+        end,
+        getBinanceIntervalTime[interval](endTime).plus(binanceKlineMaxLimit)
+      );
       shouldFetch = endTime < end;
     }
     klines.current = data;
@@ -66,7 +78,10 @@ export const BinanceKlinesChart: FC<Props> = ({ binance, start, end, interval, s
     if (previousTimeInterval === undefined) {
       setPreviousTimeInterval({ start, end });
       fetchKlines();
-    } else if (start < previousTimeInterval.start || end > previousTimeInterval.end) {
+    } else if (
+      start < previousTimeInterval.start ||
+      end > previousTimeInterval.end
+    ) {
       // Reset klines, and fetch them.
       klines.current = [];
       fetchKlines();

@@ -1,6 +1,6 @@
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import Head from "next/head";
-import React, { FC, PropsWithChildren, ReactNode } from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 
 export type PageProps = {

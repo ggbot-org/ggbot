@@ -12,7 +12,7 @@
       "_api/*": ["pages/api/*"],
       "_classNames": ["styles/classNames.ts"],
       "_components/*": ["components/*"],
-      "_contexts": ["contexts/index.ts"],
+      "_contexts/*": ["contexts/*"],
       "_flow/*": ["flow/*"],
       "_i18n": ["i18n/index.ts"],
       "_layouts/*": ["layouts/*"],

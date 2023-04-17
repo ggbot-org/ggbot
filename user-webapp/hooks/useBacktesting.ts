@@ -347,9 +347,10 @@ export const useBacktesting: UseBacktesting = ({
     dispatch,
     flowViewGraph,
     nodesCatalog,
-    timestamps,
-    strategyKind,
+    previousMemory,
     stepIndex,
+    strategyKind,
+    timestamps,
   ]);
 
   useEffect(() => {

@@ -1,3 +1,3 @@
-export * from "./action.js";
-export * from "./errors.js";
-export * from "./useAction.js";
+export * from "./action";
+export * from "./errors";
+export * from "./useAction";

@@ -1,4 +1,4 @@
-import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types.js";
+import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types";
 
 export const pathname = {
   apiEnter: () => "/api/auth/enter",

@@ -43,6 +43,7 @@ export const ProfitSummary: FC<Props> = ({
               <LevelItem hasText="centered">
                 <div>
                   {<p>From</p>}
+
                   <DateTime format="day" value={timeInterval?.start} />
                 </div>
               </LevelItem>
@@ -50,6 +51,7 @@ export const ProfitSummary: FC<Props> = ({
               <LevelItem hasText="centered">
                 <div>
                   {<p>To</p>}
+
                   <DateTime format="day" value={timeInterval?.end} />
                 </div>
               </LevelItem>
@@ -59,6 +61,7 @@ export const ProfitSummary: FC<Props> = ({
           <LevelItem hasText="centered">
             <div>
               {<p>Num. buys</p>}
+
               <Title>
                 {typeof numBuys === "number" ? <>{numBuys}</> : <>&nbsp;</>}
               </Title>
@@ -68,6 +71,7 @@ export const ProfitSummary: FC<Props> = ({
           <LevelItem hasText="centered">
             <div>
               {<p>Num. sells</p>}
+
               <Title>
                 {typeof numSells === "number" ? <>{numSells}</> : <>&nbsp;</>}
               </Title>

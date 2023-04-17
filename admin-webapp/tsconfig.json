@@ -10,7 +10,7 @@
     "noEmit": true,
     "paths": {
       "_api/*": ["pages/api/*"],
-      "_components": ["components/index.ts"],
+      "_components/*": ["components/*"],
       "_hooks": ["hooks/index.ts"]
     },
     "resolveJsonModule": true,

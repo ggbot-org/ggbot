@@ -16,7 +16,7 @@
     "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
@@ -25,7 +25,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2"
+      "@ggbot2/eslint-config/react"
     ]
   }
 }

@@ -14,7 +14,7 @@
     "cleanup": "rm -rf dist/ out/ .next/",
     "deploy": "sh deploy.sh",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "eslint **/*.ts **/*.tsx",
     "next:build": "next build",
     "next:export": "next export",
     "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
@@ -22,14 +22,13 @@
     "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
     "@ggbot2/time": "file:time",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.7",
-    "eslint-config-next": "^13.3.0",
     "next": "^13.2.4",
     "postcss": "^8.4.18",
     "react-dom": "^18.2.0",
@@ -38,7 +37,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2"
+      "@ggbot2/eslint-config/react"
     ]
   }
 }

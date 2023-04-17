@@ -7,8 +7,8 @@ import {
 } from "@ggbot2/http-status-codes";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
 import { useCallback, useState } from "react";
-import { ApiActionInput } from "./action.js";
-import { ActionError, isApiActionResponseError } from "./errors.js";
+import { ApiActionInput } from "./action";
+import { ActionError, isApiActionResponseError } from "./errors";
 
 type UseActionRequestArg<Input extends OperationInput> =
   Input extends AccountKey ? Omit<Input, "accountId"> : Input;
@@ -80,86 +80,89 @@ export const useAction = <
     isPending: false,
   });
 
-  const request = useCallback<UseActionRequest<Action["in"]>>((arg) => {
-    const controller = new AbortController();
-    const { abort, signal } = controller;
-    const timeout = 10000;
-    const timeoutId = setTimeout(() => {
-      abort();
-      setResponse({ error: { name: "Timeout" }, isPending: false });
-    }, timeout);
-    signal.addEventListener("abort", () => {
-      setResponse({ isPending: false });
-      clearTimeout(timeoutId);
-    });
-
-    const fetchRequest = async (inputData: Action["in"]) => {
-      setResponse({ isPending: true });
-      const body =
-        inputData === undefined
-          ? JSON.stringify({ type })
-          : JSON.stringify({ type, data: inputData });
-      const response = await fetch("/api/action", {
-        body,
-        credentials: "include",
-        headers: new Headers({
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }),
-        method: "POST",
-        signal,
+  const request = useCallback<UseActionRequest<Action["in"]>>(
+    (arg) => {
+      const controller = new AbortController();
+      const { abort, signal } = controller;
+      const timeout = 10000;
+      const timeoutId = setTimeout(() => {
+        abort();
+        setResponse({ error: { name: "Timeout" }, isPending: false });
+      }, timeout);
+      signal.addEventListener("abort", () => {
+        setResponse({ isPending: false });
+        clearTimeout(timeoutId);
       });
-      if (!response.ok) {
-        const { status } = response;
-        if (status === __400__BAD_REQUEST__) {
-          const responseOutput = await response.json();
-          if (isApiActionResponseError(responseOutput)) {
+
+      const fetchRequest = async (inputData: Action["in"]) => {
+        setResponse({ isPending: true });
+        const body =
+          inputData === undefined
+            ? JSON.stringify({ type })
+            : JSON.stringify({ type, data: inputData });
+        const response = await fetch("/api/action", {
+          body,
+          credentials: "include",
+          headers: new Headers({
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          }),
+          method: "POST",
+          signal,
+        });
+        if (!response.ok) {
+          const { status } = response;
+          if (status === __400__BAD_REQUEST__) {
+            const responseOutput = await response.json();
+            if (isApiActionResponseError(responseOutput)) {
+              setResponse({
+                error: responseOutput.error,
+                isPending: false,
+              });
+              return;
+            }
+          }
+          if (status === __401__UNAUTHORIZED__) {
+            setResponse({ error: { name: "Unauthorized" }, isPending: false });
+            return;
+          }
+          if (status === __500__INTERNAL_SERVER_ERROR__) {
             setResponse({
-              error: responseOutput.error,
+              error: { name: InternalServerError.name },
               isPending: false,
             });
             return;
           }
+          // This error should not be thrown.
+          throw new ErrorHTTP(response);
         }
-        if (status === __401__UNAUTHORIZED__) {
-          setResponse({ error: { name: "Unauthorized" }, isPending: false });
-          return;
-        }
-        if (status === __500__INTERNAL_SERVER_ERROR__) {
-          setResponse({
-            error: { name: InternalServerError.name },
-            isPending: false,
-          });
-          return;
-        }
-        // This error should not be thrown.
-        throw new ErrorHTTP(response);
-      }
-      const responseOutput = await response.json();
-      setResponse({
-        data: responseOutput.data,
-        isPending: false,
-      });
-    };
+        const responseOutput = await response.json();
+        setResponse({
+          data: responseOutput.data,
+          isPending: false,
+        });
+      };
 
-    (async function () {
-      try {
-        await fetchRequest(arg);
-      } catch (error) {
-        // AbortError is called on component unmount and on request timeout:
-        // the signal eventListener on 'abort', set `isPending` to `false`.
-        if (error instanceof DOMException && error.name === "AbortError")
-          return;
-        // Fallback for unhandled errors.
-        console.error(error);
-        setResponse({ error: { name: "GenericError" }, isPending: false });
-      } finally {
-        clearTimeout(timeoutId);
-      }
-    })();
+      (async function () {
+        try {
+          await fetchRequest(arg);
+        } catch (error) {
+          // AbortError is called on component unmount and on request timeout:
+          // the signal eventListener on 'abort', set `isPending` to `false`.
+          if (error instanceof DOMException && error.name === "AbortError")
+            return;
+          // Fallback for unhandled errors.
+          console.error(error);
+          setResponse({ error: { name: "GenericError" }, isPending: false });
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      })();
 
-    return controller;
-  }, []);
+      return controller;
+    },
+    [type]
+  );
 
   return [request, response];
 };

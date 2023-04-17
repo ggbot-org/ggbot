@@ -6,8 +6,11 @@ import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";
 import { SchedulingStatusBadge } from "./SchedulingStatusBadge";
 
 export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
-  scheduling: Omit<StrategyScheduling, "frequency"> & Pick<FrequencyInputProps, "frequency">;
-  setStatus: (arg: Extract<StrategyScheduling["status"], "active" | "inactive">) => void;
+  scheduling: Omit<StrategyScheduling, "frequency"> &
+    Pick<FrequencyInputProps, "frequency">;
+  setStatus: (
+    arg: Extract<StrategyScheduling["status"], "active" | "inactive">
+  ) => void;
   removeScheduling: () => void;
 };
 

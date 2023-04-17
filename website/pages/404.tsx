@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Navigation } from "_components";
+import { Navigation } from "_components/Navigation";
 
 const Page: NextPage = () => {
   return (

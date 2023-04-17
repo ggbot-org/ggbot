@@ -92,7 +92,7 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog || !dflow) return;
     const { FlowView } = await import("flow-view");
     const { FlowViewNodeInfo, FlowViewNodeJson } = await import(
-      "../flow/nodes/index.js"
+      "../flow/nodes/index"
     );
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
@@ -248,7 +248,7 @@ export const useFlowView: UseFlowView = ({
       }
     };
     flowView.onChange(onChangeFlowView);
-  }, [containerRef, flowViewRef, nodesCatalog, setWhenUpdated]);
+  }, [containerRef, dflow, flowViewRef, nodesCatalog, setWhenUpdated]);
 
   useEffect(() => {
     if (!whenUpdated) return;

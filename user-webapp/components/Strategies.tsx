@@ -36,6 +36,7 @@ export const Strategies: FC<Props> = ({ strategies }) => {
               <Box>
                 <Flex justify="space-between">
                   {name}
+
                   <SchedulingsStatusBadges schedulings={schedulings} />
                 </Flex>
               </Box>
