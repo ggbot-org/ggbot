@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { SubscriptionContext } from "_contexts";
 import { useSubscription } from "_hooks";
 import { BillingSettingsPage } from "_pages/BillingSettings";
-import { requireAuthentication } from "_routing";
+import { requireAuthentication } from "_routing/serverSide";
 
 export const getServerSideProps = requireAuthentication;
 

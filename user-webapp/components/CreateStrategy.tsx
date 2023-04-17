@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel, errorMessage } from "_i18n";
-import { pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
 
 const fields = ["name"];
 const fieldName = {

@@ -1,7 +1,7 @@
 import { Buttons, Columns, Column, Flex, Level } from "@ggbot2/design";
 import { FC } from "react";
 import { classNames } from "_classNames";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo } from "_routing/types";
 import { GoCopyStrategyButton } from "./GoCopyStrategyButton";
 import { ShareStrategyButton } from "./ShareStrategyButton";
 import { StrategyFlowName } from "./StrategyFlowName";

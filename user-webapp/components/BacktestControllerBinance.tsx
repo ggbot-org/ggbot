@@ -4,13 +4,15 @@ import { TimeInterval, dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { binance } from "_flow/binance";
 import { BacktestingState } from "_hooks";
-import { StrategyFlow } from "_routing";
+import { StrategyFlow } from "_routing/types";
 import { BinanceKlinesChart } from "./BinanceKlinesChart";
 
 type Props = Pick<StrategyFlow, "view"> & Pick<BacktestingState, "dayInterval">;
 
 export const BacktestControllerBinance: FC<Props> = ({ dayInterval, view }) => {
-  const [exchangeInfo, setExchangeInfo] = useState<BinanceExchangeInfo | undefined>();
+  const [exchangeInfo, setExchangeInfo] = useState<
+    BinanceExchangeInfo | undefined
+  >();
 
   const symbolsAndIntervals = useMemo<
     ReturnType<typeof extractBinanceSymbolsAndIntervalsFromFlow> | undefined
@@ -18,10 +20,16 @@ export const BacktestControllerBinance: FC<Props> = ({ dayInterval, view }) => {
     if (!exchangeInfo) return;
     if (!view) return;
 
-    return extractBinanceSymbolsAndIntervalsFromFlow(exchangeInfo.symbols, view);
+    return extractBinanceSymbolsAndIntervalsFromFlow(
+      exchangeInfo.symbols,
+      view
+    );
   }, [exchangeInfo, view]);
 
-  const timeInterval = useMemo<TimeInterval>(() => dayIntervalToTime(dayInterval), [dayInterval]);
+  const timeInterval = useMemo<TimeInterval>(
+    () => dayIntervalToTime(dayInterval),
+    [dayInterval]
+  );
 
   const fetchExchangeInfo = useCallback(async () => {
     const exchangeInfo = await binance.exchangeInfo();

@@ -11,11 +11,11 @@ import {
 } from "@ggbot2/dflow";
 import { GetServerSideProps, NextPage } from "next";
 import {
-  StrategyInfo,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
-  strategyKeyFromRouterParams,
-} from "_routing";
+} from "_routing/redirects";
+import { strategyKeyFromRouterParams } from "_routing/serverSide";
+import { StrategyInfo } from "_routing/types";
 import { ViewStrategyFlowPage } from "_pages/ViewStrategyFlow";
 
 type ServerSideProps = Pick<

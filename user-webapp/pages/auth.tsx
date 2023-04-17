@@ -2,9 +2,9 @@ import { readSession } from "@ggbot2/cookies";
 import { GetServerSideProps, NextPage } from "next";
 import { AuthEnterPage } from "_pages/AuthEnter";
 import { AuthExitPage } from "_pages/AuthExit";
-import { HasSession } from "_routing";
+import { HasSessionProp } from "_routing/types";
 
-type ServerSideProps = HasSession;
+type ServerSideProps = HasSessionProp;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = readSession(req.cookies);

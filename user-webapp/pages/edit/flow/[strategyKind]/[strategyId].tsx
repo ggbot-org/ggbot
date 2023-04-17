@@ -7,13 +7,13 @@ import {
 import { GetServerSideProps, NextPage } from "next";
 import { binance } from "_flow/binance";
 import {
-  StrategyInfo,
   redirectToAuthenticationPage,
   redirectToErrorPageInvalidStrategyKey,
   redirectToErrorPageStrategyNotFound,
   redirectToErrorPageStrategyNotOwned,
-  strategyKeyFromRouterParams,
-} from "_routing";
+} from "_routing/redirects";
+import { strategyKeyFromRouterParams } from "_routing/serverSide";
+import { StrategyInfo } from "_routing/types";
 import { EditStrategyFlowPage } from "_pages/EditStrategyFlow";
 
 type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {

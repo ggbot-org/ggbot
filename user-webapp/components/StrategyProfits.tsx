@@ -8,7 +8,7 @@ import {
 } from "@ggbot2/time";
 import { FC, useEffect, useMemo } from "react";
 import { useApiAction } from "_hooks";
-import { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing/types";
 import { ProfitSummary } from "./ProfitSummary";
 
 type Props = {

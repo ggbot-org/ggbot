@@ -14,6 +14,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
+import { userWebappDomain } from "@ggbot2/infrastructure";
 import {
   AllowedCountryIsoCode2,
   EmailAddress,
@@ -35,7 +36,7 @@ import {
 } from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { NextApiRequest, NextApiResponse } from "next";
-import { pathname, webappBaseUrl } from "_routing";
+import { pathname } from "_routing/pathnames";
 
 type RequestData = {
   country: AllowedCountryIsoCode2;
@@ -111,6 +112,10 @@ export default async function apiHandler(
     // Save reference as stringified purchaseKey.
     const reference = itemKeyToDirname.subscriptionPurchase(purchaseKey);
 
+    // It does not make sense to use localhost even when
+    // `nodeEnvIsProduction` is false. Those URLs will not be reachable.
+    const baseUrl = `https://${userWebappDomain}`;
+
     const order: Order = {
       reference,
       amount: {
@@ -118,10 +123,9 @@ export default async function apiHandler(
         currency: monthlyPriceCurrency,
       },
       return_urls: {
-        // TODO try to get host from headers or origin from request url.
-        callback_url: `${webappBaseUrl}${pathname.apiUtrustCallback()}`,
-        return_url: `${webappBaseUrl}${pathname.subscriptionPurchasedPage()}`,
-        cancel_url: `${webappBaseUrl}${pathname.subscriptionCanceledPage()}`,
+        callback_url: `${baseUrl}${pathname.apiUtrustCallback()}`,
+        return_url: `${baseUrl}${pathname.subscriptionPurchasedPage()}`,
+        cancel_url: `${baseUrl}${pathname.subscriptionCanceledPage()}`,
       },
       line_items: [
         {

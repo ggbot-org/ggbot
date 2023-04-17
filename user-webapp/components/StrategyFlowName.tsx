@@ -2,7 +2,8 @@ import { Column, Flex } from "@ggbot2/design";
 import Link from "next/link";
 import { FC } from "react";
 import { classNames } from "_classNames";
-import { StrategyInfo, pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
+import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name">;
 

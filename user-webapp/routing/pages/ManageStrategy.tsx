@@ -6,7 +6,7 @@ import { SchedulingsForm } from "_components/SchedulingsForm";
 import { StrategyForm } from "_components/StrategyForm";
 import { StrategyProfits } from "_components/StrategyProfits";
 import { PageLayout } from "_layouts/Page";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo } from "_routing/types";
 
 // TODO create a Strategy Context
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;

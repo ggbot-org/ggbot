@@ -1,6 +1,6 @@
 import { NextPage } from "next";
-import { requireAuthentication } from "_routing";
 import { SubscriptionCanceledPage } from "_pages/SubscriptionCanceled";
+import { requireAuthentication } from "_routing/serverSide";
 
 export const getServerSideProps = requireAuthentication;
 

@@ -10,7 +10,7 @@ import {
 import { FC } from "react";
 import { classNames } from "_classNames";
 import { buttonLabel } from "_i18n";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo } from "_routing/types";
 import { StrategyFlowName } from "./StrategyFlowName";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {

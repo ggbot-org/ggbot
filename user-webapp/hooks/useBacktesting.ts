@@ -23,7 +23,7 @@ import {
 import { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
 import { BinanceDflowClient } from "_flow/binance";
-import { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing/types";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
 
 type State = StrategyKey &

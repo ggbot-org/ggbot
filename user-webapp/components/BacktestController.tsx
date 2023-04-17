@@ -4,7 +4,7 @@ import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { BacktestingState, BacktestingDispatch } from "_hooks";
 import { backtestActionLabel } from "_i18n";
-import { StrategyFlow } from "_routing";
+import { StrategyFlow } from "_routing/types";
 import { BacktestControllerBinance } from "./BacktestControllerBinance";
 import { DailyIntervalSelector } from "./DailyIntervalSelector";
 import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput";

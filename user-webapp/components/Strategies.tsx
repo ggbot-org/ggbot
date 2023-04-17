@@ -3,7 +3,7 @@ import { AccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { title } from "_i18n";
 import { FC } from "react";
-import { pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {

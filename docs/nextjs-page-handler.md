@@ -5,7 +5,7 @@ Page that requires authentication and use no *server-side prop*.
 ```ts
 import { NextPage } from "next";
 import { Content } from "_components";
-import { requireAuthentication } from "_routing";
+import { requireAuthentication } from "_routing/serverSide";
 
 export const getServerSideProps = requireAuthentication;
 
@@ -24,8 +24,7 @@ Page with custom *server-side props*.
 
 ```ts
 import { GetServerSideProps, NextPage } from "next";
-import { Content } from "_components";
-import { Foo } from "_routing";
+import { Foo } from "_routing/serverSide";
 
 type ServerSideProps = Foo
 
@@ -37,9 +36,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params, req }) =>
 
 const Page: NextPage<ServerSideProps> = () => {
   return (
-    <Content>
+    <div>
       page content
-    </Content>
+    </div>
   );
 };
 

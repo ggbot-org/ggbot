@@ -1,13 +1,29 @@
-import { Button, ButtonOnClick, Control, Field, Form, Level, LevelItem, Title } from "@ggbot2/design";
+import {
+  Button,
+  ButtonOnClick,
+  Control,
+  Field,
+  Form,
+  Level,
+  LevelItem,
+  Title,
+} from "@ggbot2/design";
 import {
   StrategyScheduling,
   isAccountStrategy,
   isStrategyScheduling,
   newStrategyScheduling,
 } from "@ggbot2/models";
-import { FC, FormEventHandler, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FC,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useApiAction, useSubscription } from "_hooks";
-import { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing/types";
 import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
@@ -16,16 +32,22 @@ type Props = {
   setHasActiveSubscription: (arg: boolean | undefined) => void;
 };
 
-export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyKey }) => {
+export const SchedulingsForm: FC<Props> = ({
+  setHasActiveSubscription,
+  strategyKey,
+}) => {
   const { strategyId } = strategyKey;
 
   const { hasActiveSubscription } = useSubscription();
 
-  const [read, { data: accountStrategies }] = useApiAction.ReadAccountStrategies();
+  const [read, { data: accountStrategies }] =
+    useApiAction.ReadAccountStrategies();
   const [write, { isPending: writeIsPending, data: writeData }] =
     useApiAction.WriteAccountStrategiesItemSchedulings();
 
-  const [schedulingItems, setSchedulingItems] = useState<SchedulingItemProps["scheduling"][]>([]);
+  const [schedulingItems, setSchedulingItems] = useState<
+    SchedulingItemProps["scheduling"][]
+  >([]);
 
   const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
     if (!Array.isArray(accountStrategies)) return [];
@@ -46,15 +68,19 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
     // Here the number of schedulingItem and currentSchedulings is the same.
     // Check every schedulingItem:
     for (const schedulingItem of schedulingItems) {
-      const currentScheduling = currentSchedulings.find(({ id }) => schedulingItem.id === id);
+      const currentScheduling = currentSchedulings.find(
+        ({ id }) => schedulingItem.id === id
+      );
       // if there is no corresponding currentScheduling, it is a new item;
       if (!currentScheduling) return true;
       // check if schedulingItem is valid, and some of its attribute changed.
       if (
         isStrategyScheduling(schedulingItem) &&
         (schedulingItem.status !== currentScheduling.status ||
-          schedulingItem.frequency.every !== currentScheduling.frequency.every ||
-          schedulingItem.frequency.interval !== currentScheduling.frequency.interval)
+          schedulingItem.frequency.every !==
+            currentScheduling.frequency.every ||
+          schedulingItem.frequency.interval !==
+            currentScheduling.frequency.interval)
       )
         return true;
     }
@@ -116,7 +142,10 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   const addSchedulingItem = useCallback(() => {
     setSchedulingItems((schedulingItems) =>
       schedulingItems.concat(
-        newStrategyScheduling({ frequency: { every: 1, interval: "1h" }, status: "inactive" })
+        newStrategyScheduling({
+          frequency: { every: 1, interval: "1h" },
+          status: "inactive",
+        })
       )
     );
   }, []);
@@ -139,7 +168,8 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
   );
 
   useEffect(() => {
-    if (typeof hasActiveSubscription === "boolean") setHasActiveSubscription(hasActiveSubscription);
+    if (typeof hasActiveSubscription === "boolean")
+      setHasActiveSubscription(hasActiveSubscription);
   }, [hasActiveSubscription, setHasActiveSubscription]);
 
   // Fetch accountStrategies on mount.
@@ -199,7 +229,11 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription, strategyK
 
       <Field isGrouped>
         <Control>
-          <Button onClick={onClickSave} disabled={!canSubmit} isLoading={writeIsPending}>
+          <Button
+            onClick={onClickSave}
+            disabled={!canSubmit}
+            isLoading={writeIsPending}
+          >
             Save
           </Button>
         </Control>

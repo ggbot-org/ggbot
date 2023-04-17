@@ -13,7 +13,8 @@ import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { StrategyInfo, pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
+import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 

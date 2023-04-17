@@ -11,7 +11,8 @@ import {
 import { useRouter } from "next/router";
 import { FC, memo, useCallback } from "react";
 import { navigationLabel } from "_i18n";
-import { SettingsSectionId, pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
+import { SettingsSectionId } from "_routing/types";
 
 type Props = Pick<NavbarProps, "noMenu">;
 

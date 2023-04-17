@@ -40,7 +40,7 @@ import {
 import { SubscriptionContext } from "_contexts";
 import { useApiAction } from "_hooks";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
 
 const allowedCountryOptions = Object.entries(countries)
   .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))

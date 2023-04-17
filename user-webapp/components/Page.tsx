@@ -1,15 +1,12 @@
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import Head from "next/head";
-import React, { FC, PropsWithChildren, ReactNode, useMemo } from "react";
+import React, { FC, PropsWithChildren, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
-import { webappBaseUrl } from "_routing";
 
 export type PageProps = {
   metadata?: {
-    /** Tag title content */
+    /** HTML tag `title` content */
     title: string;
-    /** Link rel canonical pathname, e.g. `/settings`. */
-    canonical?: string;
   };
   topbar?: ReactNode;
 };
@@ -19,20 +16,14 @@ export const Page: FC<PropsWithChildren<PageProps>> = ({
   metadata = { title: "ggbot2" },
   topbar,
 }) => {
-  const { title, canonical } = metadata;
+  const { title } = metadata;
 
   const isOffline = useOfflineDetection();
-
-  const canonicalHref = useMemo(
-    () => `${webappBaseUrl}${canonical ?? "/"}`,
-    [canonical]
-  );
 
   return (
     <>
       <Head>
         <title>{title}</title>
-        <link rel="canonical" href={canonicalHref} />
       </Head>
 
       <>

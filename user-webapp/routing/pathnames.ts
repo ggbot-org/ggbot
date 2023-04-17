@@ -1,7 +1,4 @@
-import { StrategyKey, InvalidStrategyKey } from "./types.js";
-
-const settingsSectionIds = ["account", "binance", "billing"] as const;
-export type SettingsSectionId = typeof settingsSectionIds[number];
+import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types.js";
 
 export const pathname = {
   apiEnter: () => "/api/auth/enter",

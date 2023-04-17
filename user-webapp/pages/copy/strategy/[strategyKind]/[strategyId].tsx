@@ -1,9 +1,7 @@
 import { NextPage } from "next";
 import { CopyStrategyPage } from "_pages/CopyStrategy";
-import {
-  StrategyInfo,
-  requireAuthenticationAndGetStrategyInfo,
-} from "_routing";
+import { requireAuthenticationAndGetStrategyInfo } from "_routing/serverSide";
+import { StrategyInfo } from "_routing/types";
 
 type ServerSideProps = StrategyInfo;
 

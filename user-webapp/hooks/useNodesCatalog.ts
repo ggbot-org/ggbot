@@ -4,7 +4,7 @@ import {
 } from "@ggbot2/dflow";
 import { DflowNodesCatalog } from "dflow";
 import { useMemo } from "react";
-import { StrategyKey } from "_routing";
+import { StrategyKey } from "_routing/types";
 
 export type UseNodesCatalogArg = Pick<StrategyKey, "strategyKind"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

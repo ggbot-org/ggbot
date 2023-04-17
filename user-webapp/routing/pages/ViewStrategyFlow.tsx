@@ -10,7 +10,7 @@ import { ViewStrategyTopbar } from "_components/ViewStrategyTopbar";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
-import { StrategyInfo, pathname } from "_routing";
+import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
@@ -46,8 +46,6 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     { data: storedStrategyFlow, isPending: readIsPending },
   ] = useApiAction.ReadStrategyFlow();
 
-  const strategyPathname = pathname.viewFlowPage(strategyKey);
-
   useEffect(() => {
     if (!flowLoaded) readStrategyFlow(strategyKey);
   }, [flowLoaded, readStrategyFlow, strategyKey]);
@@ -76,7 +74,6 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     <PageLayout
       metadata={{
         title: strategyName,
-        canonical: strategyPathname,
       }}
       topbar={<Navigation noMenu={!hasSession} />}
     >

@@ -18,7 +18,7 @@
       "_layouts/*": ["layouts/*"],
       "_hooks": ["hooks/index.ts"],
       "_pages/*": ["routing/pages/*"],
-      "_routing": ["routing/index.ts"]
+      "_routing/*": ["routing/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

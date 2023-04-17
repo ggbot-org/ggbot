@@ -1,11 +1,11 @@
 import { readSession } from "@ggbot2/cookies";
 import { isStrategyKey } from "@ggbot2/models";
 import { GetServerSideProps, NextPage } from "next";
+import { InvalidStrategyKey } from "_routing/types";
 import {
-  InvalidStrategyKey,
   redirectToAuthenticationPage,
   redirectToHomePage,
-} from "_routing";
+} from "_routing/redirects";
 import { ErrorInvalidStrategyKeyPage } from "_pages/ErrorInvalidStrategyKey";
 
 type ServerSideProps = InvalidStrategyKey;

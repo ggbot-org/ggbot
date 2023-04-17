@@ -22,7 +22,8 @@ import { toast } from "react-hot-toast";
 import { useApiAction } from "_hooks";
 import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts/OneSection";
-import { StrategyInfo, pathname } from "_routing";
+import { pathname } from "_routing/pathnames";
+import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 

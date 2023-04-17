@@ -21,7 +21,7 @@ import { StrategyExecutionLog } from "_components/StrategyExecutionLog";
 import { useApiAction, useBacktesting, useFlowView } from "_hooks";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

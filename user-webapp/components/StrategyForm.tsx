@@ -13,7 +13,7 @@ import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useApiAction } from "_hooks";
 import { fieldLabel } from "_i18n";
-import { StrategyInfo } from "_routing";
+import { StrategyInfo } from "_routing/types";
 import { GoEditStrategyButton } from "./GoEditStrategyButton";
 import { GoCopyStrategyButton } from "./GoCopyStrategyButton";
 import { ShareStrategyButton } from "./ShareStrategyButton";
