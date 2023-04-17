@@ -2,5 +2,5 @@
   "compilerOptions": {
     "esModuleInterop": true
   },
-  "extends": "./tsconfig.quality.json"
+  "extends": "./code-quality.json"
 }

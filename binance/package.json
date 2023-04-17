@@ -16,6 +16,9 @@
     "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
     "@ggbot2/http-status-codes": "file:http-status-codes",

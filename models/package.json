@@ -16,6 +16,9 @@
     "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "dependencies": {
     "@ggbot2/time": "file:time",
     "dflow": "^0.42.0",

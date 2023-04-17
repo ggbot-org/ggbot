@@ -17,6 +17,9 @@
     "task:status": "node ./dist/task-status.js",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "dependencies": {
     "@ggbot2/aws": "file:aws"
   }

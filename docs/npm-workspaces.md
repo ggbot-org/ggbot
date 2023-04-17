@@ -70,6 +70,9 @@ temp/
   "dependencies": {
     // Dependency from another workspace package is referenced using `file:` prefix.
     "@ggbot2/another-package": "file:another-package"
+  },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
   }
 }
 ```
@@ -111,7 +114,7 @@ export * from "./foo.js";
     "target": "esnext"
   },
   // Extend common set of `compilerOptions`, used to improve code quality.
-  "extends": "../tsconfig.common.json",
+  "extends": "@ggbot2/tsconfig",
   "include": ["./src/**/*.ts"]
 }
 ```

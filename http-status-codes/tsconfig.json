@@ -6,6 +6,6 @@
     "rootDir": "./src",
     "target": "esnext"
   },
-  "extends": "../tsconfig.common.json",
+  "extends": "@ggbot2/tsconfig",
   "include": ["./src/**/*.ts"]
 }

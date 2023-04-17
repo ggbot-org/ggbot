@@ -12,6 +12,9 @@
     "start": "next start",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "dependencies": {
     "@ggbot2/assets": "file:assets",
     "@ggbot2/design": "file:design",

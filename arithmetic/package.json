@@ -15,5 +15,8 @@
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
+  },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
   }
 }

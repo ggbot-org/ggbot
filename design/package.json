@@ -21,6 +21,9 @@
     "tsc--build": "tsc --build tsconfig.build.json",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
+  "devDependencies": {
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "dependencies": {
     "@ggbot2/time": "file:time",
     "@types/react-dom": "^18.0.6",
