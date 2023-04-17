@@ -9,7 +9,7 @@
     "cleanup": "rm -rf .next",
     "lint": "next lint",
     "start": "next start",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
     "eslint-config-ggbot2": "file:eslint-config",

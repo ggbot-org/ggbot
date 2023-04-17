@@ -10,7 +10,7 @@
     "next:build": "next build",
     "next:export": "next export",
     "start": "next start",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "dependencies": {
     "@ggbot2/assets": "file:assets",

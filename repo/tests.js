@@ -24,7 +24,7 @@ const npmScriptKey = {
   cleanup: "cleanup",
   lint: "lint",
   test: "test",
-  typeCheck: "tsc--noEmit",
+  checkTypes: "check_types",
 };
 
 const packageScript = {
@@ -32,7 +32,7 @@ const packageScript = {
   [npmScriptKey.cleanup]: "rm -rf dist/ test/",
   pretest: "tsc --build tsconfig.test.json",
   test: "node --test",
-  [npmScriptKey.typeCheck]: "tsc --noEmit --project .",
+  [npmScriptKey.checkTypes]: "tsc --noEmit --project .",
 };
 
 /**
@@ -63,7 +63,7 @@ function testPackageJson({ packageJson, workspace }) {
 
   const codeCheckNpmScripts = noCodeWorkspaces.includes(workspace)
     ? []
-    : [npmScriptKey.lint, npmScriptKey.typeCheck];
+    : [npmScriptKey.lint, npmScriptKey.checkTypes];
   const buildNpmScripts = noBuildWorkspaces.includes(workspace)
     ? []
     : [npmScriptKey.build, npmScriptKey.cleanup];
@@ -128,7 +128,7 @@ async function testWorkspacePackageJson({ workspace }) {
   }
 
   if (isCodeWorkspace) {
-    [npmScriptKey.cleanup, npmScriptKey.lint, npmScriptKey.typeCheck].forEach(
+    [npmScriptKey.cleanup, npmScriptKey.lint, npmScriptKey.checkTypes].forEach(
       (key) => {
         assert.equal(
           typeof packageJson.scripts[key] === "string",
@@ -142,8 +142,8 @@ async function testWorkspacePackageJson({ workspace }) {
   if (isCodeWorkspace) {
     [
       {
-        key: npmScriptKey.typeCheck,
-        expected: packageScript[npmScriptKey.typeCheck],
+        key: npmScriptKey.checkTypes,
+        expected: packageScript[npmScriptKey.checkTypes],
       },
     ].forEach(({ key, expected }) => {
       assert.equal(

@@ -16,7 +16,7 @@
     "pretest": "tsc --build tsconfig.test.json",
     "start": "node dist/start",
     "test": "node --test",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
     "eslint-config-ggbot2": "file:eslint-config",

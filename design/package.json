@@ -19,7 +19,7 @@
     "next:export": "next export",
     "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
     "tsc--build": "tsc --build tsconfig.build.json",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
     "eslint-config-ggbot2": "file:eslint-config",

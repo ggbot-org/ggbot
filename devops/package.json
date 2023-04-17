@@ -16,7 +16,7 @@
     "task:create": "node ./dist/task-create.js",
     "task:showDevopsPolicy": "node src/task-showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "devDependencies": {
     "eslint-config-ggbot2": "file:eslint-config",

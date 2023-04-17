@@ -141,7 +141,7 @@
     "test:type-utils": "npm run test --workspace type-utils",
     "test:user-webapp": "npm run test --workspace user-webapp",
     "test:website": "npm run test --workspace website",
-    "tsc--noEmit": "npm run tsc--noEmit --workspaces --if-present"
+    "check_types": "npm run check_types --workspaces --if-present"
   },
   "workspaces": [
     "admin-webapp",
@@ -179,7 +179,7 @@
     "typescript": "^5.0.2"
   },
   "pre-commit": [
-    "tsc--noEmit",
+    "check_types",
     "lint",
     "test"
   ]

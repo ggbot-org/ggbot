@@ -8,7 +8,7 @@
     "lint": "next lint",
     "next:build": "next build",
     "start": "next start",
-    "tsc--noEmit": "tsc --noEmit --project ."
+    "check_types": "tsc --noEmit --project ."
   },
   "dependencies": {
     "@ggbot2/api-action": "file:api-action",
