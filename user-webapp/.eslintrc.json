@@ -1,7 +1,6 @@
 {
   "extends": ["ggbot2", "next"],
   "rules": {
-    "no-warning-comments": "off",
     "react-hooks/exhaustive-deps": "error"
   }
 }

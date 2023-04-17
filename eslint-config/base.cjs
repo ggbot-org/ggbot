@@ -3,5 +3,6 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "no-console": ["error", { allow: ["error", "info", "warn"] }],
+    "no-warning-comments": "warn",
   },
 };
