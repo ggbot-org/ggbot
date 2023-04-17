@@ -4,9 +4,9 @@ import {
   NaturalNumber,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
-import { AccountKey } from "./account";
+import { AccountKey } from "./account.js";
 import { Operation } from "./operation.js";
-import { UpdateTime } from "./time";
+import { UpdateTime } from "./time.js";
 
 export const monthlyPrice = 10; // EUR
 export const monthlyPriceCurrency = "EUR";

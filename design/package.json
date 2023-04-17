@@ -40,6 +40,9 @@
     "extends": [
       "ggbot2",
       "next"
-    ]
+    ],
+    "rules": {
+      "import/extensions": "off"
+    }
   }
 }
