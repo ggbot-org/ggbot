@@ -2,14 +2,7 @@
   "name": "@ggbot2/user-webapp",
   "version": "0.0.0",
   "private": true,
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
-  },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
     "lint": "next lint",
