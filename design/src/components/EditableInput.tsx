@@ -9,7 +9,7 @@ import {
   KeyboardEventHandler,
 } from "react";
 import { Input, InputProps } from "trunx";
-import { Field, FieldProps } from "./Field";
+import { Field, FieldProps } from "./Field.js";
 
 export type EditableInputProps = Omit<
   InputProps,
@@ -108,9 +108,13 @@ export const EditableInput: FC<EditableInputProps> = ({
   );
 };
 
-type EditableInputFieldProps = Omit<FieldProps, "htmlFor"> & Omit<EditableInputProps, "id">;
+type EditableInputFieldProps = Omit<FieldProps, "htmlFor"> &
+  Omit<EditableInputProps, "id">;
 
-export const EditableInputField: FC<EditableInputFieldProps> = ({ label, ...props }) => {
+export const EditableInputField: FC<EditableInputFieldProps> = ({
+  label,
+  ...props
+}) => {
   const id = useId();
   return (
     <Field label={label} htmlFor={id}>

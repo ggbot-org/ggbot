@@ -1,12 +1,16 @@
 import { FC, useMemo } from "react";
-import { DateTimeFormat, DateTimeValue, useFormattedDate } from "../hooks/useFormattedDate";
+import {
+  DateTimeFormat,
+  DateTimeValue,
+  useFormattedDate,
+} from "../hooks/useFormattedDate.js";
 
-type Props = {
+export type DateTimeProps = {
   value: DateTimeValue;
   format: DateTimeFormat;
 };
 
-export const DateTime: FC<Props> = ({ format, value }) => {
+export const DateTime: FC<DateTimeProps> = ({ format, value }) => {
   const dateTimeValue = useMemo(() => value?.toString(), [value]);
   const formattedValue = useFormattedDate(value, format);
   return <time dateTime={dateTimeValue}>{formattedValue}</time>;

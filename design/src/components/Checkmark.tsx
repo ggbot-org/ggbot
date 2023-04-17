@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { classNames } from "../classNames";
+import { classNames } from "../classNames.js";
 
 export type CheckmarkProps = {
   label?: string;
@@ -10,7 +10,12 @@ export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => {
   return ok === undefined ? null : (
     <div>
       <span>{label}</span>
-      <span className={classNames({ "has-text-success": ok, "has-text-danger": !ok }, "mx-2")}>
+      <span
+        className={classNames(
+          { "has-text-success": ok, "has-text-danger": !ok },
+          "mx-2"
+        )}
+      >
         {ok ? "✓" : "✗"}
       </span>
     </div>
