@@ -133,7 +133,7 @@ export const useFlowView: UseFlowView = ({
             switch (type) {
               case "info":
                 break;
-              case "json":
+              case "json": {
                 const outputId = outs?.[0]?.id;
                 dflow.newNode({
                   id,
@@ -141,6 +141,7 @@ export const useFlowView: UseFlowView = ({
                   outputs: [{ id: outputId, data: JSON.parse(text) }],
                 });
                 break;
+              }
               default: {
                 const kind = text;
                 const node = dflow.newNode({
@@ -220,14 +221,12 @@ export const useFlowView: UseFlowView = ({
             if (typeof data !== "object" || data === null) break;
             const edgeId = data.id;
             if (typeof edgeId !== "string") break;
-            try {
-              if (error instanceof DflowErrorCannotConnectPins) {
-                flowView.deleteEdge(edgeId);
-                break;
-              }
-              const viewEdge = flowView.edge(edgeId);
-              viewEdge.hasError = true;
-            } catch (_ignore) {}
+            if (error instanceof DflowErrorCannotConnectPins) {
+              flowView.deleteEdge(edgeId);
+              break;
+            }
+            const viewEdge = flowView.edge(edgeId);
+            viewEdge.hasError = true;
             break;
           }
 
@@ -235,10 +234,8 @@ export const useFlowView: UseFlowView = ({
             if (typeof data !== "object" || data === null) break;
             const nodeId = data.id;
             if (typeof nodeId !== "string") break;
-            try {
-              const viewNode = flowView.node(nodeId);
-              viewNode.hasError = true;
-            } catch (_ignore) {}
+            const viewNode = flowView.node(nodeId);
+            viewNode.hasError = true;
             break;
           }
 

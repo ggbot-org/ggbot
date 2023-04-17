@@ -4,6 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "lint": "eslint **/*.js",
     "test": "node tests.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@ggbot2/eslint-config"
+    ]
   }
 }

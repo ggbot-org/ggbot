@@ -55,7 +55,7 @@ export const BinanceKlinesChart: FC<Props> = ({
     // Do not fetch if there are klines available.
     if (klines.current.length > 0) return;
     const data: BinanceKline[] = [];
-    let startTime = start;
+    const startTime = start;
     let endTime =
       getBinanceIntervalTime[interval](startTime).plus(binanceKlineMaxLimit);
     let shouldFetch = true;

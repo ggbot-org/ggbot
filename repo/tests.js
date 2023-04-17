@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import rootPackageJson from "../package.json" assert { type: "json" };
-import tsconfigBase from "../tsconfig/base.json" assert { type: "json" };
+import tsconfigBase from "../tsconfig/tsconfig.json" assert { type: "json" };
 import designTsconfig from "../design/tsconfig.json" assert { type: "json" };
 
 const workspacesNamespace = "ggbot2";
