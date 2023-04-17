@@ -12,13 +12,20 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint src/**/*.ts",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
     "@types/react": "^18.0.15",
     "react": "^18.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2"
+    ]
   }
 }

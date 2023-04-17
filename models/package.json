@@ -12,16 +12,23 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint src/**/*.ts",
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
     "@ggbot2/time": "file:time",
     "dflow": "^0.42.0",
     "flow-view": "^6.0.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2"
+    ]
   }
 }

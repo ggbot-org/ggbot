@@ -1,7 +1,6 @@
 {
-  "extends": "next",
+  "extends": ["ggbot2", "next"],
   "rules": {
-    "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-warning-comments": "warn"
   }
 }

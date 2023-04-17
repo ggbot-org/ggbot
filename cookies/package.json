@@ -12,14 +12,21 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint src/**/*.ts",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
     "@types/cookie": "^0.5.1",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
     "@ggbot2/models": "file:models",
     "cookie": "^0.5.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2"
+    ]
   }
 }

@@ -20,5 +20,9 @@
     "@utrustdev/utrust-ts-library": "^1.0.4",
     "country-isocode2": "^1.1.0",
     "react-hot-toast": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
   }
 }

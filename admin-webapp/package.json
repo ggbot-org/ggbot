@@ -12,6 +12,7 @@
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {

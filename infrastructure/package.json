@@ -12,14 +12,21 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint src/**/*.ts",
     "tsc--noEmit": "tsc --noEmit --project ."
   },
   "devDependencies": {
+    "eslint-config-ggbot2": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
     "@aws-sdk/client-elastic-load-balancing-v2": "^3.298.0",
     "@aws-sdk/client-s3": "^3.298.0",
     "@ggbot2/env": "file:env"
+  },
+  "eslintConfig": {
+    "extends": [
+      "ggbot2"
+    ]
   }
 }
