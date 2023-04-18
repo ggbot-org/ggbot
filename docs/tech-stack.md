@@ -10,17 +10,25 @@
 - [Git](#git)
 - [Google Search Console](google-search-console)
 - [Node.js](#nodejs)
-- npm workspaces
+- [npm workspaces](#npm-workspaces)
 - [nvm](#nvm)
 - Utrust
 - npm packages
   - [@types/node](#typesnode)
+  - [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
+  - [@typescript-eslint/parser](#typescript-eslintparser)
+  - [@utrustdev/utrust-ts-library](utrustdevutrust-ts-library)
   - [aws-sdk](#aws-sdk)
   - [country-isocode2](#country-isocode2)
   - [eslint](#eslint)
+  - [eslint-plugin-import](#eslint-plugin-import)
+  - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
+  - [eslint-plugin-react](#eslint-plugin-react)
+  - [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
   - [dflow](#dflow)
   - [flow-view](#flow-view)
   - [npm-run-all](#npm-run-all)
+  - [react-hot-toast](#react-hot-toast)
   - [typescript](#typescript)
 
 ## Amazon Web Services
@@ -72,6 +80,8 @@ To install Node.js locally, use [NVM](#nvm).
 
 Package manager used is *npm*.
 
+Node is also used for tests, with `node:test` module: see [Node Test runner documentation](https://nodejs.org/api/test.html).
+
 ## npm workspaces
 
 https://docs.npmjs.com/cli/v7/using-npm/workspaces
@@ -100,6 +110,18 @@ See also how to [call `nvm use` automatically in a directory with a *.nvmrc* fil
 
 https://www.npmjs.com/package/@types/node
 
+### @typescript-eslint/eslint-plugin
+
+https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
+
+### @typescript-eslint/parser
+
+https://www.npmjs.com/package/@typescript-eslint/parser
+
+### @utrustdev/utrust-ts-library
+
+https://www.npmjs.com/package/@utrustdev/utrust-ts-library
+
 ### aws-sdk
 
 https://www.npmjs.com/package/aws-sdk
@@ -118,6 +140,22 @@ https://www.npmjs.com/package/dflow
 
 https://www.npmjs.com/package/eslint
 
+### eslint-plugin-import
+
+https://www.npmjs.com/package eslint-plugin-import
+
+### eslint-plugin-jsx-a11y
+
+https://www.npmjs.com/package eslint-plugin-jsx-a11y
+
+### eslint-plugin-react
+
+https://www.npmjs.com/package/eslint-plugin-react
+
+### eslint-plugin-react-hooks
+
+https://www.npmjs.com/package/eslint-plugin-react-hooks
+
 ### flow-view
 
 https://www.npmjs.com/package/flow-view
@@ -129,6 +167,10 @@ https://www.npmjs.com/package/npm-run-all
 ### pre-commit
 
 https://www.npmjs.com/package/pre-commit
+
+### react-hot-toast
+
+https://www.npmjs.com/package/react-hot-toast
 
 ### typescript
 
