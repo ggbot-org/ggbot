@@ -72,12 +72,14 @@ temp/
     "@ggbot2/another-package": "file:another-package"
   },
   "devDependencies": {
-    "eslint-config-ggbot2": "file:eslint-config",
+    "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "ggbot2"
+      // Extend proper eslint preset,
+      // may be "@ggbot2/eslint-config/react" for frontend packages.
+      "@ggbot2/eslint-config"
     ]
   }
 }
