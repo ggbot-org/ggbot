@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    ".": "./tsconfig.json"
+    ".": "./default.json",
+    "./lambda": "./lambda.json"
   }
 }
