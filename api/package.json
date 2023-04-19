@@ -1,0 +1,31 @@
+{
+  "name": "@ggbot2/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint src/**/*.ts",
+    "check_types": "tsc --noEmit --project ."
+  },
+  "dependencies": {
+    "@ggbot2/api-action": "file:api-action",
+    "@ggbot2/models": "file:models"
+  },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@ggbot2/eslint-config"
+    ]
+  }
+}

@@ -10,6 +10,7 @@
   "scripts": {
     "build": "run-s build:time build:arithmetic build:models build:http-status-codes build:binance build:env build:aws build:database build:executor build:design build:user-webapp build:devops",
     "build:admin-webapp": "npm run build --workspace admin-webapp",
+    "build:api": "npm run build --workspace api",
     "build:api-action": "npm run build --workspace api-action",
     "build:arithmetic": "npm run build --workspace arithmetic",
     "build:assets": "npm run build --workspace assets",
@@ -46,6 +47,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "postnext:build:user-webapp": "npm run generate:user-webapp:env",
     "prebuild:admin-webapp": "run-p build:database build:http-status-codes build:design",
+    "prebuild:api": "run-p build:api-action",
     "prebuild:api-action": "run-p build:database build:http-status-codes",
     "prebuild:assets": "run-p build:infrastructure",
     "prebuild:aws": "run-p build:infrastructure",
@@ -84,6 +86,7 @@
   "workspaces": [
     "admin-webapp",
     "arithmetic",
+    "api",
     "api-action",
     "assets",
     "aws",
