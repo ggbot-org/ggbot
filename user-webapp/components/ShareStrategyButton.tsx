@@ -6,14 +6,19 @@ import { buttonLabel, errorMessage } from "_i18n";
 import { pathname } from "_routing/pathnames";
 import { StrategyInfo } from "_routing/types";
 
-type Props = Pick<StrategyInfo, "strategyKey">;
+type Props = Pick<StrategyInfo, "strategyKey"> & {
+  strategyName: string;
+};
 
-export const ShareStrategyButton: FC<Props> = ({ strategyKey }) => {
+export const ShareStrategyButton: FC<Props> = ({
+  strategyKey,
+  strategyName,
+}) => {
   const onClick = async () => {
     try {
       const shareData = {
         title: "ggbot2",
-        text: `strategy ${strategyKey.strategyId}`,
+        text: strategyName,
         url: `${window.location.origin}${pathname.viewFlowPage(strategyKey)}`,
       };
       if (

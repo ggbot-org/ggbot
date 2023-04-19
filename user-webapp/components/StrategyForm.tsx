@@ -109,7 +109,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         </Control>
 
         <Control>
-          <ShareStrategyButton strategyKey={strategyKey} />
+          <ShareStrategyButton strategyKey={strategyKey} strategyName={name} />
         </Control>
 
         <Control>

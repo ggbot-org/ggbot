@@ -23,7 +23,10 @@ export const ViewStrategyTopbar: FC<Props> = ({
           className={classNames("is-marginless", "p-2")}
           right={
             <Buttons>
-              <ShareStrategyButton strategyKey={strategyKey} />
+              <ShareStrategyButton
+                strategyKey={strategyKey}
+                strategyName={name}
+              />
 
               {accountIsOwner || (
                 <GoCopyStrategyButton strategyKey={strategyKey} />
