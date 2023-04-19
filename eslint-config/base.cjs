@@ -1,8 +1,8 @@
 module.exports = {
-  root: true,
-  parser: "@typescript-eslint/parser",
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint", "import"],
+  root: true,
   rules: {
     "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/no-unused-vars": [

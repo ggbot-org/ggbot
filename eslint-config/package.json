@@ -10,6 +10,9 @@
       "require": "./react.cjs"
     }
   },
+  "scripts": {
+    "lint": "eslint **/*.cjs"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",

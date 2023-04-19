@@ -18,18 +18,14 @@ module.exports = {
     "jsx-a11y/aria-proptypes": "error",
     "jsx-a11y/aria-unsupported-elements": "error",
     "jsx-a11y/role-has-required-aria-props": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
     "react/display-name": "error",
     "react/jsx-key": "error",
     "react/jsx-sort-props": [
       "error",
-      {
-        noSortAlphabetically: true,
-        reservedFirst: true,
-        shorthandFirst: true,
-      },
+      { noSortAlphabetically: true, reservedFirst: true, shorthandFirst: true },
     ],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
   },
   settings: {
     react: {

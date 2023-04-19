@@ -1,12 +1,13 @@
+/* eslint sort-keys: "error" */
 import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types";
 
 export const pathname = {
   apiEnter: () => "/api/auth/enter",
   apiExit: () => "/api/auth/exit",
-  apiVerify: () => "/api/auth/verify",
-  authPage: () => "/auth",
   apiPurchaseOrder: () => "/api/utrust/order",
   apiUtrustCallback: () => "/api/utrust/callback",
+  apiVerify: () => "/api/auth/verify",
+  authPage: () => "/auth",
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,
   editFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>

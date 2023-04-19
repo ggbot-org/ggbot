@@ -1,0 +1,7 @@
+{
+  "env": { "node": true },
+  "extends": ["./base.cjs"],
+  "rules": {
+    "sort-keys": "error"
+  }
+}

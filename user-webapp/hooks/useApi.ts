@@ -1,3 +1,4 @@
+/* eslint sort-keys: "error" */
 import { useAction } from "@ggbot2/api-action";
 import { ApiAction, ApiActionType } from "_api/action";
 
@@ -52,13 +53,13 @@ export const useApi = {
     useAction<ApiAction["ReadStrategyBalances"], ApiActionType>({
       type: "ReadStrategyBalances",
     }),
-  ReadStrategyOrders: () =>
-    useAction<ApiAction["ReadStrategyOrders"], ApiActionType>({
-      type: "ReadStrategyOrders",
-    }),
   ReadStrategyFlow: () =>
     useAction<ApiAction["ReadStrategyFlow"], ApiActionType>({
       type: "ReadStrategyFlow",
+    }),
+  ReadStrategyOrders: () =>
+    useAction<ApiAction["ReadStrategyOrders"], ApiActionType>({
+      type: "ReadStrategyOrders",
     }),
   ReadSubscription: () =>
     useAction<ApiAction["ReadSubscription"], ApiActionType>({
