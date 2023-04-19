@@ -112,8 +112,7 @@ export const Calendar: FC<CalendarProps> = ({
   const lastDay = dateToDay(lastDate);
   const isLastMonth = lastDay && max && lastDay >= max;
 
-  const dateCells = useMemo(() => {
-    return [
+  const dateCells = useMemo(() => [
       ...datesBeforeFirstDate.map((date) => ({
         date,
         isDateOfCurrentMonth: false,
@@ -160,8 +159,7 @@ export const Calendar: FC<CalendarProps> = ({
               }
             : undefined,
         num: date.getDate(),
-      }));
-  }, [
+      })), [
     datesBeforeFirstDate,
     datesOfMonth,
     datesAfterLastDate,

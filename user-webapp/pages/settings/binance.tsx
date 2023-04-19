@@ -4,8 +4,6 @@ import { requireAuthentication } from "_routing/serverSide";
 
 export const getServerSideProps = requireAuthentication;
 
-const Page: NextPage = () => {
-  return <BinanceSettingsPage />;
-};
+const Page: NextPage = () => <BinanceSettingsPage />;
 
 export default Page;

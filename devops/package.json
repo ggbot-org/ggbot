@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint --ext .ts .",
     "task:create": "node ./dist/task-create.js",
     "task:showDevopsPolicy": "node src/task-showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js",

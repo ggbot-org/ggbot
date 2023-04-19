@@ -6,12 +6,10 @@ import { StrategyKey } from "_routing/types";
 
 type Props = StrategyKey;
 
-export const ErrorStrategyNotFoundPage: FC<Props> = (strategyKey) => {
-  return (
+export const ErrorStrategyNotFoundPage: FC<Props> = (strategyKey) => (
     <OneSectionLayout>
       <Message header="Strategy not found">
         <StrategyKeyFields {...strategyKey} />
       </Message>
     </OneSectionLayout>
   );
-};

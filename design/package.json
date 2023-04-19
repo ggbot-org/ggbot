@@ -14,7 +14,7 @@
     "cleanup": "rm -rf dist/ out/ .next/",
     "deploy": "sh deploy.sh",
     "dev": "next dev",
-    "lint": "eslint **/*.ts **/*.tsx",
+    "lint": "eslint --ext .ts --ext .tsx .",
     "next:build": "next build",
     "next:export": "next export",
     "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
@@ -38,6 +38,9 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
+    ],
+    "ignorePatterns": [
+      "dist/"
     ]
   }
 }

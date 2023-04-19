@@ -72,8 +72,8 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   return { props: { ...strategyInfo, hasSession } };
 };
 
-const Page: NextPage<ServerSideProps> = (props) => {
-  return <ViewStrategyFlowPage {...props} />;
-};
+const Page: NextPage<ServerSideProps> = (props) => (
+  <ViewStrategyFlowPage {...props} />
+);
 
 export default Page;

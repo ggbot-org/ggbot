@@ -5,7 +5,7 @@
   "scripts": {
     "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
-    "lint": "eslint **/*.ts **/*.tsx",
+    "lint": "eslint --ext .ts --ext .tsx .",
     "build": "next build",
     "start": "next start",
     "check_types": "tsc --noEmit --project ."

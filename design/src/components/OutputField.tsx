@@ -8,13 +8,11 @@ export type OutputFieldProps = Pick<
   "color" | "help" | "label" | "value"
 >;
 
-export const OutputField: FC<OutputFieldProps> = ({ value, ...props }) => {
-  return (
+export const OutputField: FC<OutputFieldProps> = ({ value, ...props }) => (
     <InputField
+      readOnly
       className={"output-field"}
       defaultValue={value}
-      readOnly
       {...props}
     />
   );
-};

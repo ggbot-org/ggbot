@@ -91,11 +91,11 @@ export const CopyStrategyPage: FC<Props> = ({
         <Message>Choose a new name for the copied strategy.</Message>
 
         <InputField
+          required
           onChange={onChangeName}
           label={fieldLabel.newStrategyName}
           name="name"
           placeholder={strategyName}
-          required
           readOnly={isPending ?? isDone}
         />
 

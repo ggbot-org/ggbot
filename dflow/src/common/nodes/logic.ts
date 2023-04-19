@@ -25,13 +25,16 @@ export class Not extends DflowNode {
   static inputs = [input()];
   static outputs = [output("boolean")];
   run() {
-    this.output(0).data = !!!this.input(0).data;
+    this.output(0).data = !this.input(0).data;
   }
 }
 
 export class NotEqual extends DflowNode {
   static kind = "!=";
-  static inputs = [input([], { optional: true }), input([], { optional: true })];
+  static inputs = [
+    input([], { optional: true }),
+    input([], { optional: true }),
+  ];
   static outputs = [output("boolean")];
   run() {
     const a = this.input(0).data as unknown;
@@ -43,7 +46,10 @@ export class NotEqual extends DflowNode {
 
 export class NullishCoaleshing extends DflowNode {
   static kind = "??";
-  static inputs = [input([], { optional: true }), input([], { optional: true })];
+  static inputs = [
+    input([], { optional: true }),
+    input([], { optional: true }),
+  ];
   static outputs = [output()];
   run() {
     const a = this.input(0).data as unknown;
@@ -58,6 +64,6 @@ export class Or extends DflowNode {
   static inputs = [input(), input()];
   static outputs = [output("boolean")];
   run() {
-    this.output(0).data = !!this.input(0).data || !!this.input(1).data;
+    this.output(0).data = Boolean(this.input(0).data) || Boolean(this.input(1).data);
   }
 }

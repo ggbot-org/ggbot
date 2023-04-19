@@ -6,8 +6,7 @@ export type CheckmarkProps = {
   ok: boolean | undefined;
 };
 
-export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => {
-  return ok === undefined ? null : (
+export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => ok === undefined ? null : (
     <div>
       <span>{label}</span>
       <span
@@ -20,4 +19,3 @@ export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => {
       </span>
     </div>
   );
-};

@@ -1,13 +1,18 @@
+const base = require("./base.cjs");
+
 module.exports = {
   env: { browser: true, es2020: true, node: false },
-  extends: ["./base.cjs", "plugin:react/jsx-runtime"],
+  extends: [...base.extends, "plugin:react/jsx-runtime"],
+  parser: base.parser,
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
   },
-  plugins: ["jsx-a11y", "react", "react-hooks"],
+  plugins: [...base.plugins, "jsx-a11y", "react", "react-hooks"],
+  root: true,
   rules: {
+    ...base.rules,
     "import/extensions": [
       "error",
       "never",

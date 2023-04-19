@@ -2,6 +2,7 @@
   "env": { "node": true },
   "extends": ["./base.cjs"],
   "rules": {
+    "@typescript-eslint/no-var-requires": "off",
     "sort-keys": "error"
   }
 }

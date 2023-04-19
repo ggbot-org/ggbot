@@ -4,8 +4,7 @@ import { AccountSettings } from "_components/AccountSettings";
 import { DeleteAccount } from "_components/DeleteAccount";
 import { OneSectionLayout } from "_layouts/OneSection";
 
-export const AccountSettingsPage: FC = () => {
-  return (
+export const AccountSettingsPage: FC = () => (
     <OneSectionLayout>
       <Columns>
         <Column size="half">
@@ -16,4 +15,3 @@ export const AccountSettingsPage: FC = () => {
       <DeleteAccount />
     </OneSectionLayout>
   );
-};

@@ -6,12 +6,10 @@ import { InvalidStrategyKey } from "_routing/types";
 
 type Props = Pick<InvalidStrategyKey, "strategyKind" | "strategyId">;
 
-export const ErrorInvalidStrategyKeyPage: FC<Props> = (strategyKey) => {
-  return (
+export const ErrorInvalidStrategyKeyPage: FC<Props> = (strategyKey) => (
     <OneSectionLayout>
       <Message header="Invalid strategy key">
         <StrategyKeyFields {...strategyKey} />
       </Message>
     </OneSectionLayout>
   );
-};

@@ -27,13 +27,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => {
-  return (
+const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => (
     <ErrorInvalidStrategyKeyPage
       strategyKind={strategyKind}
       strategyId={strategyId}
     />
   );
-};
 
 export default Page;
