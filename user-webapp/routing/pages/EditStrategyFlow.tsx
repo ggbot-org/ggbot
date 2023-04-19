@@ -18,7 +18,9 @@ import { FlowViewContainer } from "_components/FlowViewContainer";
 import { MemoryController } from "_components/MemoryController";
 import { PleaseConfigureBinanceModal } from "_components/PleaseConfigureBinanceModal";
 import { StrategyExecutionLog } from "_components/StrategyExecutionLog";
-import { useApiAction, useBacktesting, useFlowView } from "_hooks";
+import { useApi } from "_hooks/useApi";
+import { useBacktesting } from "_hooks/useBacktesting";
+import { useFlowView } from "_hooks/useFlowView";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
@@ -53,21 +55,18 @@ export const EditStrategyFlowPage: FC<Props> = ({
   });
 
   const [
-    execute,
+    EXECUTE,
     {
       data: strategyExecution,
       isPending: runIsPending,
       error: strategyExecutionError,
     },
-  ] = useApiAction.ExecuteStrategy();
+  ] = useApi.ExecuteStrategy();
 
-  const [saveStrategyFlow, { isPending: saveIsPending }] =
-    useApiAction.WriteStrategyFlow();
+  const [WRITE, { isPending: saveIsPending }] = useApi.WriteStrategyFlow();
 
-  const [
-    readStrategyFlow,
-    { data: storedStrategyFlow, isPending: readIsPending },
-  ] = useApiAction.ReadStrategyFlow();
+  const [READ, { data: storedStrategyFlow, isPending: readIsPending }] =
+    useApi.ReadStrategyFlow();
 
   let canRun = !canSave;
   if (hasNoBinanceApiConfig) canRun = false;
@@ -99,12 +98,12 @@ export const EditStrategyFlowPage: FC<Props> = ({
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
-    if (canSave) saveStrategyFlow({ ...strategyKey, view: flowView.graph });
-  }, [canSave, flowView, saveStrategyFlow, strategyKey]);
+    if (canSave) WRITE({ ...strategyKey, view: flowView.graph });
+  }, [canSave, flowView, WRITE, strategyKey]);
 
   const onClickRun = useCallback<ButtonOnClick>(() => {
-    if (canRun) execute(strategyKey);
-  }, [canRun, execute, strategyKey]);
+    if (canRun) EXECUTE(strategyKey);
+  }, [canRun, EXECUTE, strategyKey]);
 
   useEffect(() => {
     if (!strategyExecutionError) return;
@@ -117,8 +116,8 @@ export const EditStrategyFlowPage: FC<Props> = ({
   }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);
 
   useEffect(() => {
-    if (!flowLoaded) readStrategyFlow(strategyKey);
-  }, [flowLoaded, readStrategyFlow, strategyKey]);
+    if (!flowLoaded) READ(strategyKey);
+  }, [flowLoaded, READ, strategyKey]);
 
   useEffect(() => {
     try {

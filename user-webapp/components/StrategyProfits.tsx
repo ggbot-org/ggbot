@@ -7,9 +7,9 @@ import {
   timeIntervalToDay,
 } from "@ggbot2/time";
 import { FC, useEffect, useMemo } from "react";
-import { useApiAction } from "_hooks";
+import { ProfitSummary } from "_components/ProfitSummary";
+import { useApi } from "_hooks/useApi";
 import { StrategyKey } from "_routing/types";
-import { ProfitSummary } from "./ProfitSummary";
 
 type Props = {
   strategyKey: StrategyKey;
@@ -27,7 +27,7 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
     return { start, end };
   }, []);
 
-  const [readOrders, { data: orders }] = useApiAction.ReadStrategyOrders();
+  const [READ_ORDERS, { data: orders }] = useApi.ReadStrategyOrders();
 
   const orderHistory = useMemo<Orders>(
     () => (isOrders(orders) ? orders : []),
@@ -40,11 +40,9 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
   );
 
   useEffect(() => {
-    const controller = readOrders({ ...strategyKey, ...dayInterval });
-    return () => {
-      controller.abort();
-    };
-  }, [dayInterval, readOrders, strategyKey]);
+    const controller = READ_ORDERS({ ...strategyKey, ...dayInterval });
+    return () => controller.abort();
+  }, [dayInterval, READ_ORDERS, strategyKey]);
 
   return (
     <ProfitSummary

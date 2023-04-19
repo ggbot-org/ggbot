@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { SubscriptionContext } from "_contexts/Subscription";
-import { useSubscription } from "_hooks";
+import { useSubscription } from "_hooks/useSubscription";
 import { BillingSettingsPage } from "_pages/BillingSettings";
 import { requireAuthentication } from "_routing/serverSide";
 

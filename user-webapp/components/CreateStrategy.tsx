@@ -17,7 +17,7 @@ import {
 } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel, errorMessage } from "_i18n";
 import { pathname } from "_routing/pathnames";
 
@@ -29,7 +29,7 @@ const fieldName = {
 export const CreateStrategy: FC = () => {
   const router = useRouter();
 
-  const [CREATE, { data, isPending }] = useApiAction.CreateStrategy();
+  const [CREATE, { data, isPending }] = useApi.CreateStrategy();
 
   const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");

@@ -11,9 +11,12 @@ import {
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
+import {
+  GenericErrorMessage,
+  TimeoutErrorMessage,
+} from "_components/ErrorMessages";
 import { buttonLabel, fieldLabel, title } from "_i18n";
 import { pathname } from "_routing/pathnames";
-import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
 type EmailSent = ApiEnterResponseData["emailSent"];
 

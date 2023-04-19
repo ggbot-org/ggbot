@@ -1,6 +1,6 @@
 import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel } from "_i18n";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
-  const [DELETE, { data, isPending }] = useApiAction.DeleteBinanceApiConfig();
+  const [DELETE, { data, isPending }] = useApi.DeleteBinanceApiConfig();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 

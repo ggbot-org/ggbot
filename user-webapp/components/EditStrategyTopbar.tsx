@@ -9,9 +9,9 @@ import {
 } from "@ggbot2/design";
 import { FC } from "react";
 import { classNames } from "_classNames";
+import { StrategyFlowName } from "_components/StrategyFlowName";
 import { buttonLabel } from "_i18n";
 import { StrategyInfo } from "_routing/types";
-import { StrategyFlowName } from "./StrategyFlowName";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   canRun: boolean;

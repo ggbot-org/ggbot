@@ -10,7 +10,7 @@ import {
 import { isAccount } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
 
@@ -19,7 +19,7 @@ export const AuthExitForm: FC = () => {
 
   const [isPending, setIsPending] = useState(false);
 
-  const [readAccount, { data: account }] = useApiAction.ReadAccount();
+  const [READ_ACCOUNT, { data: account }] = useApi.ReadAccount();
 
   const email = isAccount(account) ? account.email : "";
 
@@ -36,11 +36,9 @@ export const AuthExitForm: FC = () => {
   }, [setIsPending]);
 
   useEffect(() => {
-    const controller = readAccount({});
-    return () => {
-      controller.abort();
-    };
-  }, [readAccount]);
+    const controller = READ_ACCOUNT({});
+    return () => controller.abort();
+  }, [READ_ACCOUNT]);
 
   return (
     <Form box action={pathname.apiExit()} onReset={onReset} onSubmit={onSubmit}>

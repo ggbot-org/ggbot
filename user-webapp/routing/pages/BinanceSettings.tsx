@@ -5,7 +5,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { BinanceApi } from "_components/BinanceApi";
 import { CreateBinanceApi } from "_components/CreateBinanceApi";
 import { DeleteBinanceApi } from "_components/DeleteBinanceApi";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { OneSectionLayout } from "_layouts/OneSection";
 
 const hideApiKey = (apiKey: string) =>
@@ -15,7 +15,7 @@ const hideApiKey = (apiKey: string) =>
   )}`;
 
 export const BinanceSettingsPage: FC = () => {
-  const [READ, { data }] = useApiAction.ReadBinanceApiConfig();
+  const [READ, { data }] = useApi.ReadBinanceApiConfig();
 
   const [apiKey, setApiKey] = useState("");
   const [fetchCounter, setFetchCounter] = useState(1);
@@ -31,9 +31,7 @@ export const BinanceSettingsPage: FC = () => {
   useEffect(() => {
     if (!fetchCounter) return;
     const controller = READ({});
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, [READ, fetchCounter]);
 
   useEffect(() => {

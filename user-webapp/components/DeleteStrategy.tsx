@@ -11,7 +11,7 @@ import {
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
 import { StrategyInfo } from "_routing/types";
@@ -25,7 +25,7 @@ export const DeleteStrategy: FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  const [DELETE, { isPending, data }] = useApiAction.DeleteStrategy();
+  const [DELETE, { isPending, data }] = useApi.DeleteStrategy();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 

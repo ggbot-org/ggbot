@@ -19,7 +19,7 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
 import { OneSectionLayout } from "_layouts/OneSection";
 import { pathname } from "_routing/pathnames";
@@ -36,8 +36,7 @@ export const CopyStrategyPage: FC<Props> = ({
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [copyStrategy, { data: isDone, isPending }] =
-    useApiAction.CopyStrategy();
+  const [COPY, { data: isDone, isPending }] = useApi.CopyStrategy();
 
   const formattedWhenCreated = useFormattedDate(whenCreated, "day");
 
@@ -49,13 +48,13 @@ export const CopyStrategyPage: FC<Props> = ({
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name)) copyStrategy({ name, ...strategyKey });
+        if (isName(name)) COPY({ name, ...strategyKey });
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
           toast.error(errorMessage.invalidStrategyName);
       }
     },
-    [isPending, strategyKey, copyStrategy, isDone]
+    [isPending, strategyKey, COPY, isDone]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(

@@ -9,7 +9,7 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, useCallback, useEffect } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel } from "_i18n";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 const fields = ["apiKey", "apiSecret"] as const;
 
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
-  const [CREATE, { data, isPending }] = useApiAction.CreateBinanceApiConfig();
+  const [CREATE, { data, isPending }] = useApi.CreateBinanceApiConfig();
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {

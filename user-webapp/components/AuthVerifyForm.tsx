@@ -19,12 +19,15 @@ import {
   useState,
 } from "react";
 import {
+  GenericErrorMessage,
+  TimeoutErrorMessage,
+} from "_components/ErrorMessages";
+import {
   ApiVerifyResponseData,
   isApiVerifyRequestData,
 } from "_api/auth/verify";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
-import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages";
 
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
 

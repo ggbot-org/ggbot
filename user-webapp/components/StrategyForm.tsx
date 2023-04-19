@@ -11,12 +11,12 @@ import {
 } from "@ggbot2/design";
 import { isName, isStrategy, normalizeName } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApiAction } from "_hooks";
+import { GoEditStrategyButton } from "_components/GoEditStrategyButton";
+import { GoCopyStrategyButton } from "_components/GoCopyStrategyButton";
+import { ShareStrategyButton } from "_components/ShareStrategyButton";
+import { useApi } from "_hooks/useApi";
 import { fieldLabel } from "_i18n";
 import { StrategyInfo } from "_routing/types";
-import { GoEditStrategyButton } from "./GoEditStrategyButton";
-import { GoCopyStrategyButton } from "./GoCopyStrategyButton";
-import { ShareStrategyButton } from "./ShareStrategyButton";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
@@ -26,10 +26,10 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   const [name, setName] = useState("");
   const [newName, setNewName] = useState("");
 
-  const [renameStrategy, { isPending: renameIsPending, data: renameData }] =
-    useApiAction.RenameStrategy();
+  const [RENAME, { isPending: renameIsPending, data: renameData }] =
+    useApi.RenameStrategy();
 
-  const [readStrategy, { data: strategy }] = useApiAction.ReadStrategy();
+  const [READ, { data: strategy }] = useApi.ReadStrategy();
 
   const readOnly = !name ? true : renameIsPending;
   const inputNameValue = renameIsPending ? "" : name;
@@ -55,23 +55,19 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
   }, [renameData, newName]);
 
   useEffect(() => {
-    const controller = readStrategy(strategyKey);
-    return () => {
-      controller.abort();
-    };
-  }, [readStrategy, strategyKey]);
+    const controller = READ(strategyKey);
+    return () => controller.abort();
+  }, [READ, strategyKey]);
 
   useEffect(() => {
     if (!newName) return;
     if (name === newName) return;
-    const controller = renameStrategy({
+    const controller = RENAME({
       name: newName,
       ...strategyKey,
     });
-    return () => {
-      controller.abort();
-    };
-  }, [name, newName, renameStrategy, strategyKey]);
+    return () => controller.abort();
+  }, [name, newName, RENAME, strategyKey]);
 
   return (
     <Box>

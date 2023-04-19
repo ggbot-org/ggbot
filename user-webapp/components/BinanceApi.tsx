@@ -11,7 +11,7 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback, useMemo } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { fieldLabel } from "_i18n";
 
 type Props = {
@@ -19,8 +19,8 @@ type Props = {
 };
 
 export const BinanceApi: FC<Props> = ({ apiKey }) => {
-  const [testConfig, { data: permissions, isPending }] =
-    useApiAction.ReadBinanceApiKeyPermissions();
+  const [READ, { data: permissions, isPending }] =
+    useApi.ReadBinanceApiKeyPermissions();
 
   const {
     enableSpotAndMarginTrading,
@@ -100,10 +100,9 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
     (event) => {
       event.preventDefault();
       if (isPending) return;
-
-      testConfig({});
+      READ({});
     },
-    [testConfig, isPending]
+    [READ, isPending]
   );
 
   return (

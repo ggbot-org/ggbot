@@ -1,7 +1,7 @@
 import { useAction } from "@ggbot2/api-action";
 import { ApiAction, ApiActionType } from "_api/action";
 
-export const useApiAction = {
+export const useApi = {
   CopyStrategy: () =>
     useAction<ApiAction["CopyStrategy"], ApiActionType>({
       type: "CopyStrategy",
@@ -30,7 +30,8 @@ export const useApiAction = {
     useAction<ApiAction["ExecuteStrategy"], ApiActionType>({
       type: "ExecuteStrategy",
     }),
-  ReadAccount: () => useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
+  ReadAccount: () =>
+    useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
   ReadAccountStrategies: () =>
     useAction<ApiAction["ReadAccountStrategies"], ApiActionType>({
       type: "ReadAccountStrategies",
@@ -76,7 +77,10 @@ export const useApiAction = {
       type: "SetAccountCountry",
     }),
   WriteAccountStrategiesItemSchedulings: () =>
-    useAction<ApiAction["WriteAccountStrategiesItemSchedulings"], ApiActionType>({
+    useAction<
+      ApiAction["WriteAccountStrategiesItemSchedulings"],
+      ApiActionType
+    >({
       type: "WriteAccountStrategiesItemSchedulings",
     }),
   WriteStrategyFlow: () =>

@@ -1,37 +1,52 @@
 import { Box, Columns, Column, Flex, Message, Title } from "@ggbot2/design";
-import { AccountStrategy } from "@ggbot2/models";
+import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { title } from "_i18n";
-import { FC } from "react";
+import { FC, useEffect, useMemo } from "react";
+import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
+import { useApi } from "_hooks/useApi";
 import { pathname } from "_routing/pathnames";
-import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
-type Props = {
-  strategies?: Pick<
-    AccountStrategy,
-    "name" | "strategyId" | "strategyKind" | "schedulings"
-  >[];
-};
+type StrategyItem = Pick<
+  AccountStrategy,
+  "strategyId" | "name" | "schedulings"
+> & { href: string };
 
-export const Strategies: FC<Props> = ({ strategies }) => {
-  const items =
-    strategies?.map(({ strategyId, strategyKind, name, schedulings }) => ({
-      href: pathname.strategyPage({ strategyId, strategyKind }),
-      name,
-      schedulings,
-    })) ?? [];
+export const Strategies: FC = () => {
+  const [READ, { data }] = useApi.ReadAccountStrategies();
+
+  const items = useMemo(() => {
+    const items: StrategyItem[] = [];
+    if (!Array.isArray(data)) return items;
+    for (const item of data) {
+      if (!isAccountStrategy(item)) continue;
+      const { strategyId, strategyKind, name, schedulings } = item;
+      items.push({
+        href: pathname.strategyPage({ strategyId, strategyKind }),
+        name,
+        schedulings,
+        strategyId,
+      });
+    }
+    return items;
+  }, [data]);
+
+  useEffect(() => {
+    const controller = READ({});
+    return () => controller.abort();
+  }, [READ]);
 
   return (
     <>
       <Title>{title.strategies}</Title>
 
-      {strategies?.length === 0 && (
+      {data !== undefined && items.length === 0 && (
         <Message color="info">Your strategies list is empty.</Message>
       )}
 
       <Columns isMultiline>
-        {items.map(({ name, href, schedulings }, i) => (
-          <Column key={i} size="half">
+        {items.map(({ name, href, schedulings, strategyId }) => (
+          <Column key={strategyId} size="half">
             <Link href={href} passHref tabIndex={0}>
               <Box>
                 <Flex justify="space-between">

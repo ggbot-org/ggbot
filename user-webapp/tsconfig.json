@@ -16,7 +16,7 @@
       "_flow/*": ["flow/*"],
       "_i18n": ["i18n/index.ts"],
       "_layouts/*": ["layouts/*"],
-      "_hooks": ["hooks/index.ts"],
+      "_hooks/*": ["hooks/*"],
       "_pages/*": ["routing/pages/*"],
       "_routing/*": ["routing/*"]
     },

@@ -1,13 +1,11 @@
 import { isSubscription, subscriptionStatus } from "@ggbot2/models";
 import { dayToTime, getTime, now } from "@ggbot2/time";
 import { useEffect, useMemo } from "react";
-import { useApiAction } from "./useApiAction";
+import { useApi } from "_hooks/useApi";
 
 export const useSubscription = () => {
-  const [
-    readSubscription,
-    { data: subscription, isPending: readSubscriptionIsPending },
-  ] = useApiAction.ReadSubscription();
+  const [READ, { data: subscription, isPending: readSubscriptionIsPending }] =
+    useApi.ReadSubscription();
 
   const {
     canPurchaseSubscription,
@@ -40,11 +38,9 @@ export const useSubscription = () => {
   }, [subscription]);
 
   useEffect(() => {
-    const controller = readSubscription({});
-    return () => {
-      controller.abort();
-    };
-  }, [readSubscription]);
+    const controller = READ({});
+    return () => controller.abort();
+  }, [READ]);
 
   return {
     canPurchaseSubscription,

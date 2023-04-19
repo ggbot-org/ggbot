@@ -7,16 +7,16 @@ import {
 } from "@ggbot2/design";
 import { isAccount, isName, normalizeName } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { fieldLabel } from "_i18n";
 
 export const AccountSettings: FC = () => {
   const [newName, setNewName] = useState("");
 
-  const [readAccount, { data: account }] = useApiAction.ReadAccount();
+  const [READ_ACCOUNT, { data: account }] = useApi.ReadAccount();
 
-  const [renameAccount, { isPending: renameIsPending }] =
-    useApiAction.RenameAccount();
+  const [RENAME_ACCOUNT, { isPending: renameIsPending }] =
+    useApi.RenameAccount();
 
   const { accountId, currentName, email, whenCreated } = useMemo(
     () =>
@@ -38,10 +38,7 @@ export const AccountSettings: FC = () => {
 
   const formattedDate = useFormattedDate(whenCreated, "day");
 
-  const readOnly = useMemo(
-    () => account === undefined || renameIsPending,
-    [account, renameIsPending]
-  );
+  const readOnly = account === undefined || renameIsPending;
 
   const setName = useCallback<(value: unknown) => void>(
     (value) => {
@@ -56,18 +53,14 @@ export const AccountSettings: FC = () => {
 
   useEffect(() => {
     if (!newName) return;
-    const controller = renameAccount({ name: newName });
-    return () => {
-      controller.abort();
-    };
-  }, [renameAccount, newName]);
+    const controller = RENAME_ACCOUNT({ name: newName });
+    return () => controller.abort();
+  }, [RENAME_ACCOUNT, newName]);
 
   useEffect(() => {
-    const controller = readAccount({});
-    return () => {
-      controller.abort();
-    };
-  }, [readAccount]);
+    const controller = READ_ACCOUNT({});
+    return () => controller.abort();
+  }, [READ_ACCOUNT]);
 
   return (
     <Box>

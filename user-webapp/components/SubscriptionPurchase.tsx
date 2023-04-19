@@ -38,7 +38,7 @@ import {
   useState,
 } from "react";
 import { SubscriptionContext } from "_contexts/Subscription";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
 
@@ -53,8 +53,8 @@ export const SubscriptionPurchase: FC = () => {
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
-  const [readAccount, { data: account }] = useApiAction.ReadAccount();
-  const [setAccountCountry] = useApiAction.SetAccountCountry();
+  const [READ_ACCOUNT, { data: account }] = useApi.ReadAccount();
+  const [SET_COUNTRY] = useApi.SetAccountCountry();
 
   const [purchaseIsPending, setPurchaseIsPending] = useState(false);
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
@@ -176,16 +176,14 @@ export const SubscriptionPurchase: FC = () => {
     if (!isAccount(account)) return;
     if (!country) return;
     if (account.country !== country) {
-      setAccountCountry({ country });
+      SET_COUNTRY({ country });
     }
-  }, [account, country, setAccountCountry]);
+  }, [account, country, SET_COUNTRY]);
 
   useEffect(() => {
-    const controller = readAccount({});
-    return () => {
-      controller.abort();
-    };
-  }, [readAccount]);
+    const controller = READ_ACCOUNT({});
+    return () => controller.abort();
+  }, [READ_ACCOUNT]);
 
   useEffect(() => {
     const { format } = new Intl.NumberFormat(window.navigator.language, {

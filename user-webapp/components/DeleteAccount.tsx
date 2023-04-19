@@ -1,11 +1,10 @@
 import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { buttonLabel } from "_i18n";
 
 export const DeleteAccount: FC = () => {
-  const [deleteAccount, { isPending: deleteIsPending }] =
-    useApiAction.DeleteAccount();
+  const [DELETE, { isPending }] = useApi.DeleteAccount();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -14,9 +13,9 @@ export const DeleteAccount: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (deleteIsPending) return;
-    deleteAccount({});
-  }, [deleteAccount, deleteIsPending]);
+    if (isPending) return;
+    DELETE({});
+  }, [DELETE, isPending]);
 
   return (
     <>
@@ -32,7 +31,7 @@ export const DeleteAccount: FC = () => {
         <Buttons>
           <Button
             color="danger"
-            isLoading={deleteIsPending}
+            isLoading={isPending}
             onClick={onClickConfirmation}
           >
             {buttonLabel.yesDelete}

@@ -4,6 +4,7 @@ import {
   Control,
   Field,
   Form,
+  FormOnSubmit,
   Level,
   LevelItem,
   Title,
@@ -14,18 +15,15 @@ import {
   isStrategyScheduling,
   newStrategyScheduling,
 } from "@ggbot2/models";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import {
-  FC,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { useApiAction, useSubscription } from "_hooks";
+  SchedulingItem,
+  SchedulingItemProps,
+} from "_components/SchedulingItem";
+import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
+import { useApi } from "_hooks/useApi";
+import { useSubscription } from "_hooks/useSubscription";
 import { StrategyKey } from "_routing/types";
-import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem";
-import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges";
 
 type Props = {
   strategyKey: StrategyKey;
@@ -40,10 +38,9 @@ export const SchedulingsForm: FC<Props> = ({
 
   const { hasActiveSubscription } = useSubscription();
 
-  const [read, { data: accountStrategies }] =
-    useApiAction.ReadAccountStrategies();
-  const [write, { isPending: writeIsPending, data: writeData }] =
-    useApiAction.WriteAccountStrategiesItemSchedulings();
+  const [READ, { data: accountStrategies }] = useApi.ReadAccountStrategies();
+  const [WRITE, { isPending: writeIsPending, data: writeData }] =
+    useApi.WriteAccountStrategiesItemSchedulings();
 
   const [schedulingItems, setSchedulingItems] = useState<
     SchedulingItemProps["scheduling"][]
@@ -87,6 +84,8 @@ export const SchedulingsForm: FC<Props> = ({
     return false;
   }, [currentSchedulings, schedulingItems]);
 
+  const canCancel = someSchedulingChanged;
+
   const wantedSchedulings = useMemo<StrategyScheduling[]>(() => {
     return schedulingItems.filter(isStrategyScheduling);
   }, [schedulingItems]);
@@ -95,10 +94,6 @@ export const SchedulingsForm: FC<Props> = ({
     if (hasActiveSubscription !== true) return false;
     return someSchedulingChanged && schedulingItems.every(isStrategyScheduling);
   }, [someSchedulingChanged, hasActiveSubscription, schedulingItems]);
-
-  const canCancel = useMemo(() => {
-    return someSchedulingChanged;
-  }, [someSchedulingChanged]);
 
   const setSchedulingItemFrequency = useCallback<
     (id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
@@ -152,10 +147,10 @@ export const SchedulingsForm: FC<Props> = ({
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!canSubmit) return;
-    write({ strategyId, schedulings: wantedSchedulings });
-  }, [canSubmit, strategyId, wantedSchedulings, write]);
+    WRITE({ strategyId, schedulings: wantedSchedulings });
+  }, [canSubmit, strategyId, wantedSchedulings, WRITE]);
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>((event) => {
+  const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();
   }, []);
 
@@ -174,11 +169,9 @@ export const SchedulingsForm: FC<Props> = ({
 
   // Fetch accountStrategies on mount.
   useEffect(() => {
-    const controller = read({});
-    return () => {
-      controller.abort();
-    };
-  }, [read]);
+    const controller = READ({});
+    return () => controller.abort();
+  }, [READ]);
 
   // Update schedulings once fetched.
   useEffect(() => {
@@ -187,8 +180,8 @@ export const SchedulingsForm: FC<Props> = ({
 
   // Fetch accountStrategies on updates.
   useEffect(() => {
-    if (writeData) read({});
-  }, [writeData, read]);
+    if (writeData) READ({});
+  }, [writeData, READ]);
 
   return (
     <Form box onSubmit={onSubmit}>

@@ -7,7 +7,9 @@ import { FlowViewContainer } from "_components/FlowViewContainer";
 import { Navigation } from "_components/Navigation";
 import { ViewStrategyTabs } from "_components/ViewStrategyTabs";
 import { ViewStrategyTopbar } from "_components/ViewStrategyTopbar";
-import { useApiAction, useBacktesting, useFlowView } from "_hooks";
+import { useApi } from "_hooks/useApi";
+import { useBacktesting } from "_hooks/useBacktesting";
+import { useFlowView } from "_hooks/useFlowView";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
@@ -41,19 +43,17 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     flowViewGraph: flowView?.graph,
   });
 
-  const [
-    readStrategyFlow,
-    { data: storedStrategyFlow, isPending: readIsPending },
-  ] = useApiAction.ReadStrategyFlow();
+  const [READ, { data: storedStrategyFlow, isPending }] =
+    useApi.ReadStrategyFlow();
 
   useEffect(() => {
-    if (!flowLoaded) readStrategyFlow(strategyKey);
-  }, [flowLoaded, readStrategyFlow, strategyKey]);
+    if (!flowLoaded) READ(strategyKey);
+  }, [flowLoaded, READ, strategyKey]);
 
   useEffect(() => {
     try {
       if (!flowView) return;
-      if (readIsPending) return;
+      if (isPending) return;
       if (storedStrategyFlow === undefined) return;
       if (storedStrategyFlow === null) {
         setFlowLoaded(true);
@@ -68,7 +68,7 @@ export const ViewStrategyFlowPage: FC<Props> = ({
       console.error(error);
       toast.error(errorMessage.couldNotLoadFlow);
     }
-  }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
+  }, [flowView, setFlowLoaded, storedStrategyFlow, isPending]);
 
   return (
     <PageLayout
