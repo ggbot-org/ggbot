@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint **/*.js",
-    "test": "node tests.js"
+    "test": "node --test"
   },
   "eslintConfig": {
     "extends": [

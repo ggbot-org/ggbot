@@ -62,10 +62,10 @@ temp/
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test",
-    "tsc--noEmit": "tsc --noEmit --project ."
   },
   "dependencies": {
     // Dependency from another workspace package is referenced using `file:` prefix.
