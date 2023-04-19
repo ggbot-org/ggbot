@@ -148,9 +148,9 @@ export const EditStrategyFlowPage: FC<Props> = ({
     if (saveIsPending) {
       setCanSave(false);
       setFlowChanged(false);
-    } else {
+    } else if (flowChanged) {
       // Enable Save button when some change on flow happens.
-      if (flowChanged) setCanSave(true);
+      setCanSave(true);
     }
   }, [flowChanged, saveIsPending, setCanSave]);
 

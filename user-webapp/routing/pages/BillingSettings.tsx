@@ -4,8 +4,7 @@ import { SubscriptionInfo } from "_components/SubscriptionInfo";
 import { SubscriptionPurchase } from "_components/SubscriptionPurchase";
 import { OneSectionLayout } from "_layouts/OneSection";
 
-export const BillingSettingsPage: FC = () => {
-  return (
+export const BillingSettingsPage: FC = () => (
     <OneSectionLayout>
       <Columns>
         <Column>
@@ -18,4 +17,3 @@ export const BillingSettingsPage: FC = () => {
       </Columns>
     </OneSectionLayout>
   );
-};

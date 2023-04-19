@@ -65,14 +65,12 @@ const Page: NextPage<ServerSideProps> = ({
   binanceSymbols,
   name,
   strategyKey,
-}) => {
-  return (
+}) => (
     <EditStrategyFlowPage
       binanceSymbols={binanceSymbols}
       name={name}
       strategyKey={strategyKey}
     />
   );
-};
 
 export default Page;

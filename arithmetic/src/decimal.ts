@@ -45,8 +45,8 @@ export const maxNumOfDecimals = (values: MaybeDecimal[]): number =>
   values.reduce<number>((max, num) => Math.max(max, numOfDecimals(num)), 0);
 
 /**
-@throws {ErrorCannotCoerceToDecimal}
-*/
+ * @throws {ErrorCannotCoerceToDecimal}
+ */
 export const coerceToDecimal = (
   arg: unknown,
   numDecimals?: number

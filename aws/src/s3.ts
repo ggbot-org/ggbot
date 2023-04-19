@@ -1,4 +1,6 @@
-import stream from "node:stream";
+// TODO separate frontend from backend and use `node:stream`
+// import stream from "node:stream";
+import stream from "stream";
 import {
   CreateBucketCommand,
   CreateBucketCommandInput,

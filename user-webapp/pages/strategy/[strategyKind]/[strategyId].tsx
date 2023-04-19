@@ -11,14 +11,12 @@ const Page: NextPage<ServerSideProps> = ({
   strategyKey,
   whenCreated,
   name,
-}) => {
-  return (
+}) => (
     <ManageStrategyPage
       strategyKey={strategyKey}
       whenCreated={whenCreated}
       name={name}
     />
   );
-};
 
 export default Page;

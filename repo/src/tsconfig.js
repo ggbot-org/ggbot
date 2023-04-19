@@ -1,9 +1,4 @@
-import {
-  importWorkspaceJson,
-  workspacePackageName,
-} from "./workspacePackage.js";
-
-export const tsconfigPackageName = workspacePackageName("tsconfig");
+import { importWorkspaceJson } from "./workspacePackage.js";
 
 export const importWorkspaceTsconfigJson = importWorkspaceJson("tsconfig.json");
 

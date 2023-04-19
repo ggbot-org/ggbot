@@ -2,8 +2,7 @@ import { FC, SVGProps } from "react";
 
 type Props = SVGProps<SVGSVGElement>;
 
-export const Spinner: FC<Props> = ({ className = "", ...props }: Props) => {
-  return (
+export const Spinner: FC<Props> = ({ className = "", ...props }: Props) => (
     <svg
       className={["animate-spin -ml-1 mr-3 h-5 w-5", className ?? ""].join(" ")}
       fill="none"
@@ -25,4 +24,3 @@ export const Spinner: FC<Props> = ({ className = "", ...props }: Props) => {
       />
     </svg>
   );
-};

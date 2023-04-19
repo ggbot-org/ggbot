@@ -11,6 +11,7 @@ export {
   Field,
   Flex,
   Form,
+  Heading,
   Hero,
   Input,
   Level,
@@ -39,6 +40,7 @@ export {
   type MessageProps,
   type SelectOnChange,
   type SelectProps,
+  type SizeModifierProp,
   type TagProps,
 } from "trunx";
 

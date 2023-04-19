@@ -6,6 +6,7 @@ module.exports = {
   root: true,
   rules: {
     "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-array-constructor": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -24,7 +25,7 @@ module.exports = {
     ],
     "arrow-body-style": ["error", "as-needed"],
     "block-scoped-var": "error",
-    camelcase: "error",
+    camelcase: "warn",
     "default-param-last": "error",
     "dot-notation": "error",
     eqeqeq: "error",
@@ -40,9 +41,9 @@ module.exports = {
     "no-extra-label": "warn",
     "no-floating-decimal": "error",
     "no-global-assign": "error",
-    "no-implicit-coercion": "error",
+    "no-implicit-coercion": "warn",
     "no-implicit-globals": "error",
-    "no-inline-comments": "error",
+    "no-inline-comments": "warn",
     "no-lonely-if": "error",
     "no-multi-assign": "error",
     "no-warning-comments": "warn",

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "cleanup": "rm -rf out/ .next/",
     "deploy": "sh deploy.sh",
-    "lint": "eslint **/*.ts **/*.tsx",
+    "lint": "eslint --ext .ts --ext .tsx .",
     "build": "next build",
     "next:export": "next export",
     "start": "next start",

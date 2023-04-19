@@ -5,8 +5,7 @@ type Props = {
   size?: number;
 };
 
-export const Logo: FC<Props> = ({ animated, size }) => {
-  return (
+export const Logo: FC<Props> = ({ animated, size }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"
@@ -160,4 +159,3 @@ export const Logo: FC<Props> = ({ animated, size }) => {
       <circle cx="285" cy="271" r="9" fill="#333" />
     </svg>
   );
-};

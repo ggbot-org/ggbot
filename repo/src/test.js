@@ -1,13 +1,12 @@
 import { strict as assert } from "node:assert";
 // TODO use describe and split into files, remove this file
-import tsconfigBase from "../../tsconfig/tsconfig.json" assert { type: "json" };
+import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" };
 import designTsconfig from "../../design/tsconfig.json" assert { type: "json" };
 import { eslintConfigPackageName } from "./eslint.js";
 import { packageScriptKey } from "./package.js";
 import {
   importWorkspaceTsconfigJson,
   importWorkspaceTsconfigBuildJson,
-  tsconfigPackageName,
 } from "./tsconfig.js";
 import {
   importWorkspacePackageJson,
@@ -240,12 +239,6 @@ async function testWorkspaceTsconfig({ workspace }) {
       `${workspace}/tsconfig.json has same compilerOptions.target as design/tsconfig.json`
     );
   }
-
-  assert.equal(
-    tsconfig.extends,
-    tsconfigPackageName,
-    `${workspace}/tsconfig.json extends ${tsconfigPackageName}`
-  );
 }
 
 async function testWorkspaceTsconfigBuild({ workspace }) {

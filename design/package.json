@@ -14,7 +14,7 @@
     "cleanup": "rm -rf dist/ out/ .next/",
     "deploy": "sh deploy.sh",
     "dev": "next dev",
-    "lint": "eslint **/*.ts **/*.tsx",
+    "lint": "eslint --ext .ts --ext .tsx .",
     "next:build": "next build",
     "next:export": "next export",
     "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
@@ -33,11 +33,14 @@
     "postcss": "^8.4.18",
     "react-dom": "^18.2.0",
     "sass": "^1.59.3",
-    "trunx": "^0.45.0"
+    "trunx": "^0.45.2"
   },
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
+    ],
+    "ignorePatterns": [
+      "dist/"
     ]
   }
 }

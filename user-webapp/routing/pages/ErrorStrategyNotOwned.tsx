@@ -6,8 +6,7 @@ import { StrategyKey } from "_routing/types";
 
 type Props = StrategyKey;
 
-export const ErrorStrategyNotOwnedPage: FC<Props> = (strategyKey) => {
-  return (
+export const ErrorStrategyNotOwnedPage: FC<Props> = (strategyKey) => (
     <OneSectionLayout>
       <Message>
         <span>
@@ -18,4 +17,3 @@ export const ErrorStrategyNotOwnedPage: FC<Props> = (strategyKey) => {
       </Message>
     </OneSectionLayout>
   );
-};

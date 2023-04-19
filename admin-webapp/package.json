@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "cleanup": "rm -rf .next",
-    "lint": "eslint **/*.ts **/*.tsx",
+    "lint": "eslint --ext .ts --ext .tsx .",
     "start": "next start",
     "check_types": "tsc --noEmit --project ."
   },

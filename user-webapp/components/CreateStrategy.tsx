@@ -1,6 +1,8 @@
 import {
   Button,
   Control,
+  Column,
+  Columns,
   Field,
   Form,
   FormOnSubmit,
@@ -67,7 +69,11 @@ export const CreateStrategy: FC = () => {
 
   return (
     <>
-      <Button onClick={toggleModal}>{buttonLabel.createStrategy}</Button>
+      <Columns>
+        <Column>
+          <Button onClick={toggleModal}>{buttonLabel.createStrategy}</Button>
+        </Column>
+      </Columns>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
         <Form box onSubmit={onSubmit}>
