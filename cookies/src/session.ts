@@ -4,7 +4,6 @@ import {
   isAccountKey,
   isCreationDay,
 } from "@ggbot2/models";
-
 import { objectTypeGuard } from "@ggbot2/type-utils";
 
 export type Session = AccountKey & CreationDay;
