@@ -44,16 +44,16 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
       <Title>Binance API</Title>
 
       <InputField
+        required
         name="apiKey"
         label={fieldLabel.apiKey}
-        required
         readOnly={isPending}
       />
 
       <InputField
+        required
         label={fieldLabel.apiSecret}
         name="apiSecret"
-        required
         readOnly={isPending}
       />
 

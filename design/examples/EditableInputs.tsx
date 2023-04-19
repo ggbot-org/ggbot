@@ -8,7 +8,7 @@ export const EditableInputs: FC = () => {
     <div>
       <div className="max-w-lg flex flex-col gap-2 wrap">
         <EditableInput value={value} setValue={setValue} />
-        <EditableInput value={value} setValue={setValue} isSpinning />
+        <EditableInput isSpinning value={value} setValue={setValue} />
       </div>
 
       <Section>

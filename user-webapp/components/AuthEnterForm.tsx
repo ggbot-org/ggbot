@@ -112,11 +112,11 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
       <Title>{title.enterForm}</Title>
 
       <InputField
+        required
         label={fieldLabel.email}
         name="email"
         type="email"
         readOnly={isPending}
-        required
       />
 
       <Field isGrouped>

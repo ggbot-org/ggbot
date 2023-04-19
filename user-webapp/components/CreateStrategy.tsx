@@ -72,9 +72,9 @@ export const CreateStrategy: FC = () => {
           <Title>Create strategy</Title>
 
           <InputField
+            required
             label={fieldLabel.strategyName}
             name={fieldName.name}
-            required
             readOnly={isPending}
             help={help}
           />

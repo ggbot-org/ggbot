@@ -11,8 +11,8 @@ export const StrategyFlowName: FC<Props> = ({ name, strategyKey }) => (
     <Column className={classNames("p-0")}>
       <Flex>
         <Link
-          href={pathname.strategyPage(strategyKey)}
           passHref
+          href={pathname.strategyPage(strategyKey)}
           tabIndex={0}
           className={classNames("has-text-dark", "is-size-5", "py-3", "px-3")}
         >

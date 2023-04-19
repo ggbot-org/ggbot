@@ -139,10 +139,10 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
       </Message>
 
       <InputField
+        required
         label={fieldLabel.oneTimePassword}
         name="code"
         readOnly={isPending}
-        required
         spellCheck={false}
         type="text"
       />

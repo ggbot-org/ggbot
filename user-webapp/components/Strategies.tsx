@@ -47,7 +47,7 @@ export const Strategies: FC = () => {
       <Columns isMultiline>
         {items.map(({ name, href, schedulings, strategyId }) => (
           <Column key={strategyId} size="half">
-            <Link href={href} passHref tabIndex={0}>
+            <Link passHref href={href} tabIndex={0}>
               <Box>
                 <Flex justify="space-between">
                   {name}
