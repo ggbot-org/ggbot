@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/aws-lambda-auth",
+  "name": "@ggbot2/aws-lambda-user-api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
