@@ -94,14 +94,10 @@ export const dateToTimestamp = (date: Date): Timestamp => {
 };
 
 /** Convert `Day` to `Timestamp`. */
-export const dayToTimestamp = (day: Day): Timestamp => {
-  return new Date(day).toJSON();
-};
+export const dayToTimestamp = (day: Day): Timestamp => new Date(day).toJSON();
 
 /** Convert `Time` to `Date`. */
-export const timeToDate = (time: Time): Date => {
-  return new Date(time);
-};
+export const timeToDate = (time: Time): Date => new Date(time);
 
 /** Convert `Time` to `Timestamp`. */
 export const timeToTimestamp = (time: Time): Timestamp => {
@@ -110,6 +106,4 @@ export const timeToTimestamp = (time: Time): Timestamp => {
 };
 
 /** Convert `Timestamp` to `Date`. */
-export const timestampToDate = (timestamp: Timestamp): Date => {
-  return new Date(timestamp);
-};
+export const timestampToDate = (timestamp: Timestamp): Date => new Date(timestamp);

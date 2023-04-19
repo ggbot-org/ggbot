@@ -31,8 +31,7 @@ export const EditStrategyTopbar: FC<Props> = ({
   runIsPending,
   saveIsPending,
   strategyKey,
-}) => {
-  return (
+}) => (
     <Columns className={classNames("is-marginless")}>
       <StrategyFlowName name={name} strategyKey={strategyKey} />
 
@@ -65,4 +64,3 @@ export const EditStrategyTopbar: FC<Props> = ({
       </Column>
     </Columns>
   );
-};

@@ -7,8 +7,7 @@ import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name">;
 
-export const StrategyFlowName: FC<Props> = ({ name, strategyKey }) => {
-  return (
+export const StrategyFlowName: FC<Props> = ({ name, strategyKey }) => (
     <Column className={classNames("p-0")}>
       <Flex>
         <Link
@@ -22,4 +21,3 @@ export const StrategyFlowName: FC<Props> = ({ name, strategyKey }) => {
       </Flex>
     </Column>
   );
-};

@@ -15,8 +15,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-const Page: NextPage<ServerSideProps> = ({ hasSession }) => {
-  return hasSession ? <AuthExitPage /> : <AuthEnterPage />;
-};
+const Page: NextPage<ServerSideProps> = ({ hasSession }) => hasSession ? <AuthExitPage /> : <AuthEnterPage />;
 
 export default Page;

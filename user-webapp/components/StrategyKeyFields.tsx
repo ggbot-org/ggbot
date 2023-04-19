@@ -5,8 +5,7 @@ import { StrategyKey, InvalidStrategyKey } from "_routing/types";
 
 type Props = StrategyKey | InvalidStrategyKey;
 
-export const StrategyKeyFields: FC<Props> = ({ strategyKind, strategyId }) => {
-  return (
+export const StrategyKeyFields: FC<Props> = ({ strategyKind, strategyId }) => (
     <Columns>
       <Column>
         <OutputField label={fieldLabel.strategyKind} value={strategyKind} />
@@ -17,4 +16,3 @@ export const StrategyKeyFields: FC<Props> = ({ strategyKind, strategyId }) => {
       </Column>
     </Columns>
   );
-};

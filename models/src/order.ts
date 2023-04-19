@@ -16,10 +16,8 @@ export const isOrder = objectTypeGuard<Order>(
 export type Orders = Order[];
 export const isOrders = arrayTypeGuard<Order>(isOrder);
 
-export const newOrder = ({ info }: NewItem<Order>): Order => {
-  return {
+export const newOrder = ({ info }: NewItem<Order>): Order => ({
     ...createdNow(),
     id: newId(),
     info,
-  };
-};
+  });

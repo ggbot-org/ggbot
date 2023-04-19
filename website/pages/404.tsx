@@ -1,8 +1,7 @@
 import { NextPage } from "next";
 import { Navigation } from "_components/Navigation";
 
-const Page: NextPage = () => {
-  return (
+const Page: NextPage = () => (
     <>
       <Navigation />
       <div className="p-4 flex flex-col gap-2">
@@ -10,6 +9,5 @@ const Page: NextPage = () => {
       </div>
     </>
   );
-};
 
 export default Page;

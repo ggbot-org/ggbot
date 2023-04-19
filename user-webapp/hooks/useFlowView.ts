@@ -103,9 +103,7 @@ export const useFlowView: UseFlowView = ({
       FlowViewNodeJson.type,
       FlowViewNodeJson as unknown as FlowViewNode
     );
-    flowView.nodeTextToType((text) => {
-      return nodeTextToViewType(text);
-    });
+    flowView.nodeTextToType((text) => nodeTextToViewType(text));
     flowView.addNodeDefinitions({
       nodes: Object.keys(nodesCatalog)
         .map((kind) => ({ name: kind }))

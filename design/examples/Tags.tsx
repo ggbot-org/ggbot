@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Tag } from "@ggbot2/design";
 
-export const Tags: FC = () => {
-  return (
+export const Tags: FC = () => (
     <div>
       <div>
         <Tag>pill</Tag>
@@ -27,4 +26,3 @@ export const Tags: FC = () => {
       </div>
     </div>
   );
-};

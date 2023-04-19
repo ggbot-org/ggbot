@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Table } from "@ggbot2/design";
 
-export const SimpleTable: FC = () => {
-  return (
+export const SimpleTable: FC = () => (
     <Table>
       <thead>
         <tr>
@@ -22,4 +21,3 @@ export const SimpleTable: FC = () => {
       </tbody>
     </Table>
   );
-};

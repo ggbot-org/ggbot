@@ -26,25 +26,21 @@ export const redirectToErrorPageInvalidStrategyKey = (
 
 export const redirectToErrorPageStrategyNotFound = (
   strategyKey: StrategyKey
-) => {
-  return {
+) => ({
     redirect: {
       destination: pathname.errorPageStrategyNotFound(strategyKey),
       permanent: false,
     },
-  };
-};
+  });
 
 export const redirectToErrorPageStrategyNotOwned = (
   strategyKey: StrategyKey
-) => {
-  return {
+) => ({
     redirect: {
       destination: pathname.errorPageStrategyNotOwned(strategyKey),
       permanent: false,
     },
-  };
-};
+  });
 
 export const redirectToHomePage = () => ({
   redirect: {

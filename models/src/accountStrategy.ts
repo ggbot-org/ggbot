@@ -23,10 +23,8 @@ export const isAccountStrategy = objectTypeGuard<AccountStrategy>(
 export const newAccountStrategy = ({
   name,
   ...strategyKey
-}: Pick<AccountStrategy, "strategyId" | "strategyKind" | "name">): AccountStrategy => {
-  return {
+}: Pick<AccountStrategy, "strategyId" | "strategyKind" | "name">): AccountStrategy => ({
     ...strategyKey,
     name: normalizeName(name),
     schedulings: [],
-  };
-};
+  });

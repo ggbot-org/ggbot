@@ -29,15 +29,13 @@ export const newStrategy = ({
   accountId,
   kind,
   name,
-}: NewItem<Strategy>): Strategy => {
-  return {
+}: NewItem<Strategy>): Strategy => ({
     ...createdNow(),
     id: newId(),
     accountId,
     kind,
     name: normalizeName(name),
-  };
-};
+  });
 
 export type StrategyKey = Readonly<{
   strategyId: Strategy["id"];

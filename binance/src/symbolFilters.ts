@@ -44,6 +44,4 @@ export const lotSizeIsValid = (
 export const minNotionalIsValid = (
   { minNotional }: BinanceSymbolFilterMinNotional,
   value: QuoteOrderQuantity
-) => {
-  return value > minNotional;
-};
+) => value > minNotional;

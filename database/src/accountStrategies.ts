@@ -92,17 +92,15 @@ export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesIt
 export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings["func"] =
   async ({ accountId }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => {
-      return {
-        ...item,
-        schedulings: item.schedulings.map(
-          ({ status: _status, ...scheduling }) => ({
-            ...scheduling,
-            status: "suspended",
-          })
-        ),
-      };
-    });
+    const data = items.map((item) => ({
+      ...item,
+      schedulings: item.schedulings.map(
+        ({ status: _status, ...scheduling }) => ({
+          ...scheduling,
+          status: "suspended",
+        })
+      ),
+    }));
     const Key = pathname.accountStrategies({ accountId });
     await putObject({ Key, data });
     return updatedNow();

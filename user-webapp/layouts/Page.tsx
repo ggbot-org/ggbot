@@ -5,10 +5,8 @@ import { Page, PageProps } from "_components/Page";
 
 type Props = PageProps;
 
-export const PageLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
-  return (
+export const PageLayout: FC<PropsWithChildren<Props>> = ({ children }) => (
     <Page topbar={<Navigation />}>
       <div className={classNames("p-1")}>{children}</div>
     </Page>
   );
-};

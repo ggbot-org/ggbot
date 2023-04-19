@@ -20,8 +20,7 @@ import { SimpleTable } from "_examples/Tables";
 import { Tags } from "_examples/Tags";
 import { Typography } from "_examples/Typography";
 
-const Home: NextPage = () => {
-  return (
+const Home: NextPage = () => (
     <>
       <Head>
         <title>ggbot2 design</title>
@@ -128,6 +127,5 @@ const Home: NextPage = () => {
       </main>
     </>
   );
-};
 
 export default Home;

@@ -3,8 +3,7 @@ import Head from "next/head";
 import { Navigation } from "_components/Navigation";
 import styles from "../styles/PrivacyAndTerms.module.css";
 
-const Page: NextPage = () => {
-  return (
+const Page: NextPage = () => (
     <>
       <Head>
         <title>ggbot2</title>
@@ -34,6 +33,5 @@ const Page: NextPage = () => {
       </main>
     </>
   );
-};
 
 export default Page;

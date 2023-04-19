@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Column, Columns, classNames } from "@ggbot2/design";
 
-export const Palette: FC = () => {
-  return (
+export const Palette: FC = () => (
     <Columns>
       <Column className={classNames("has-background-white")}>white</Column>
       <Column className={classNames("has-background-grey", "has-text-primary")}>
@@ -33,4 +32,3 @@ export const Palette: FC = () => {
       </Column>
     </Columns>
   );
-};

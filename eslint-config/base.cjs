@@ -21,6 +21,7 @@ module.exports = {
         varsIgnorePattern: "^_",
       },
     ],
+    "arrow-body-style": ["error", "as-needed"],
     "import/extensions": ["error", "ignorePackages"],
     "no-console": ["error", { allow: ["error", "info", "warn"] }],
     "no-warning-comments": "warn",

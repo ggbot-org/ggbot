@@ -2,8 +2,7 @@ import { Header, Logo } from "@ggbot2/design";
 import Link from "next/link";
 import { FC } from "react";
 
-export const Navigation: FC = () => {
-  return (
+export const Navigation: FC = () => (
     <Header>
       <div className="flex flex-row gap-2">
         <Link href="/">
@@ -18,4 +17,3 @@ export const Navigation: FC = () => {
       </div>
     </Header>
   );
-};

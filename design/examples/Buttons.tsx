@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Button, Buttons } from "@ggbot2/design";
 
-export const ButtonColors: FC = () => {
-  return (
+export const ButtonColors: FC = () => (
     <>
       <Buttons>
         <Button>button</Button>
@@ -37,10 +36,8 @@ export const ButtonColors: FC = () => {
       </Buttons>
     </>
   );
-};
 
-export const LoadingButtons: FC = () => {
-  return (
+export const LoadingButtons: FC = () => (
     <Buttons>
       <Button isLoading>button</Button>
 
@@ -61,4 +58,3 @@ export const LoadingButtons: FC = () => {
       </Button>
     </Buttons>
   );
-};

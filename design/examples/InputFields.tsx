@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Form, InputField } from "@ggbot2/design";
 
-export const InputFields: FC = () => {
-  return (
+export const InputFields: FC = () => (
     <Form>
       <InputField label="normal" />
 
@@ -15,4 +14,3 @@ export const InputFields: FC = () => {
       <InputField color="success" label="success" />
     </Form>
   );
-};

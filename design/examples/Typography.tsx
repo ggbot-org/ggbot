@@ -1,8 +1,7 @@
 import { classNames } from "@ggbot2/design";
 import { FC } from "react";
 
-export const Typography: FC = () => {
-  return (
+export const Typography: FC = () => (
     <div>
       <div className={classNames("is-size-1")}>size 1</div>
       <div className={classNames("is-size-2")}>size 2</div>
@@ -13,4 +12,3 @@ export const Typography: FC = () => {
       <div className={classNames("is-size-7")}>size 7</div>
     </div>
   );
-};

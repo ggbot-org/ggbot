@@ -12,8 +12,7 @@ export const ViewStrategyTopbar: FC<Props> = ({
   accountIsOwner,
   name,
   strategyKey,
-}) => {
-  return (
+}) => (
     <Columns className={classNames("is-marginless")}>
       <StrategyFlowName name={name} strategyKey={strategyKey} />
 
@@ -39,4 +38,3 @@ export const ViewStrategyTopbar: FC<Props> = ({
       </Column>
     </Columns>
   );
-};

@@ -5,17 +5,15 @@ type Props = {
   children: ReactNode;
 };
 
-export const Content: FC<Props> = ({ children }) => {
-  return (
-    <>
-      <Head>
-        <title>ggbot2 admin</title>
-        <meta name="description" content="crypto flow" />
-      </Head>
+export const Content: FC<Props> = ({ children }) => (
+  <>
+    <Head>
+      <title>ggbot2 admin</title>
+      <meta name="description" content="crypto flow" />
+    </Head>
 
-      <div>
-        <div>{children}</div>
-      </div>
-    </>
-  );
-};
+    <div>
+      <div>{children}</div>
+    </div>
+  </>
+);
