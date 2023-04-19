@@ -76,7 +76,9 @@ export class Executor {
       removeItem: (accountId: AccountKey["accountId"]): void => {
         const items = this.accountKeysCache.get(key);
         if (!items) return;
-        const updatedItems = items.filter((item) => item.accountId !== accountId);
+        const updatedItems = items.filter(
+          (item) => item.accountId !== accountId
+        );
         this.accountKeysCache.set(key, updatedItems);
       },
     };
@@ -95,7 +97,9 @@ export class Executor {
     }
   }
 
-  async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
+  async getAccountStrategies({
+    accountId,
+  }: AccountKey): Promise<AccountStrategy[]> {
     try {
       const key = accountId;
       const { accountStrategiesCache: cache } = this;
@@ -111,7 +115,9 @@ export class Executor {
     }
   }
 
-  async getSubscription({ accountId }: AccountKey): Promise<Subscription | undefined> {
+  async getSubscription({
+    accountId,
+  }: AccountKey): Promise<Subscription | undefined> {
     try {
       const key = accountId;
       const { subscriptionsCache: cache } = this;
@@ -128,7 +134,10 @@ export class Executor {
     }
   }
 
-  async manageStrategyExecution(accountStrategyKey: AccountStrategyKey, scheduling: Scheduling) {
+  async manageStrategyExecution(
+    accountStrategyKey: AccountStrategyKey,
+    scheduling: Scheduling
+  ) {
     const { strategyWhenExecuted } = this;
     const { strategyId } = accountStrategyKey;
     const { status, frequency } = scheduling;
@@ -145,7 +154,9 @@ export class Executor {
   }
 
   managesItem(itemId: Item["id"]) {
-    return Executor.itemIdToNaturalNumber(itemId) % this.capacity === this.index;
+    return (
+      Executor.itemIdToNaturalNumber(itemId) % this.capacity === this.index
+    );
   }
 
   async runTasks() {
@@ -158,7 +169,10 @@ export class Executor {
 
         // Check subscription.
         const subscription = await this.getSubscription(accountKey);
-        if (!isSubscription(subscription) || subscriptionStatus(subscription) !== "active") {
+        if (
+          !isSubscription(subscription) ||
+          subscriptionStatus(subscription) !== "active"
+        ) {
           await this.suspendAccountStrategies(accountKey);
           continue ACCOUNT;
         }
@@ -175,21 +189,21 @@ export class Executor {
             if (!isScheduling(scheduling)) continue SCHEDULING;
 
             // Execute scheduled strategies.
-            try {
-              await this.manageStrategyExecution({ accountId, strategyId, strategyKind }, scheduling);
-            } catch (error) {
-              if (error instanceof ErrorAccountItemNotFound) {
-                if (error.type === "BinanceApiConfig") {
-                  await this.suspendAccountStrategies(accountKey);
-                  continue ACCOUNT;
-                }
-              }
-              log.error(error);
-            }
+            await this.manageStrategyExecution(
+              { accountId, strategyId, strategyKind },
+              scheduling
+            );
           }
         }
       } catch (error) {
         log.error(error);
+
+        if (error instanceof ErrorAccountItemNotFound) {
+          if (error.type === "BinanceApiConfig") {
+            await this.suspendAccountStrategies(accountKey);
+          }
+        }
+
         continue ACCOUNT;
       }
     }

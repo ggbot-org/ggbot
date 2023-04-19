@@ -31,6 +31,8 @@ export const CreateStrategy: FC = () => {
 
   const [CREATE, { data, isPending }] = useApi.CreateStrategy();
 
+  const isLoading = isPending || Boolean(data);
+
   const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");
 
@@ -81,7 +83,7 @@ export const CreateStrategy: FC = () => {
 
           <Field>
             <Control>
-              <Button color="primary" isLoading={isPending || !!data}>
+              <Button color="primary" isLoading={isLoading}>
                 {buttonLabel.create}
               </Button>
             </Control>

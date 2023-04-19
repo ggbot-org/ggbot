@@ -83,7 +83,7 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
     numTrades,
     takerBaseVolume,
     takerQuoteVolume,
-    _unused_field,
+    _unusedField,
   ] = arg;
 
   return (

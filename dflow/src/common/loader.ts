@@ -28,7 +28,7 @@ export interface DflowLoader extends DflowHost {
  * Parse view and load it as a Dflow graph.
  * Unknown nodes and broken connections are ignored.
  */
-export function load({
+export const load = ({
   dflow,
   nodeTextToDflowKind,
   view,
@@ -36,7 +36,7 @@ export function load({
   dflow: DflowLoader;
   nodeTextToDflowKind: NodeTextToDflowKind;
   view: DflowExecutorView;
-}) {
+}) => {
   const nodeKinds = Object.keys(dflow.nodesCatalog);
 
   // Create nodes.
@@ -97,4 +97,4 @@ export function load({
       throw error;
     }
   }
-}
+};

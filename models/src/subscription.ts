@@ -8,8 +8,9 @@ import { AccountKey } from "./account.js";
 import { Operation } from "./operation.js";
 import { UpdateTime } from "./time.js";
 
-export const monthlyPrice = 10; // EUR
+export const monthlyPrice = 10;
 export const monthlyPriceCurrency = "EUR";
+
 export const purchaseMaxNumMonths = 12;
 export const totalPurchase = (numMonths: NaturalNumber) => {
   // if 12 months, apply discount.

@@ -10,24 +10,12 @@ export const getBinanceIntervalTime: Record<
   }
 > = {
   "1s": (time) => ({
-    plus: (num) =>
-      getTime(time)
-        .plus(1 * num)
-        .seconds(),
-    minus: (num) =>
-      getTime(time)
-        .minus(1 * num)
-        .seconds(),
+    plus: (num) => getTime(time).plus(num).seconds(),
+    minus: (num) => getTime(time).minus(num).seconds(),
   }),
   "1m": (time) => ({
-    plus: (num) =>
-      getTime(time)
-        .plus(1 * num)
-        .minutes(),
-    minus: (num) =>
-      getTime(time)
-        .minus(1 * num)
-        .minutes(),
+    plus: (num) => getTime(time).plus(num).minutes(),
+    minus: (num) => getTime(time).minus(num).minutes(),
   }),
   "3m": (time) => ({
     plus: (num) =>
@@ -70,14 +58,8 @@ export const getBinanceIntervalTime: Record<
         .minutes(),
   }),
   "1h": (time) => ({
-    plus: (num) =>
-      getTime(time)
-        .plus(1 * num)
-        .hours(),
-    minus: (num) =>
-      getTime(time)
-        .minus(1 * num)
-        .hours(),
+    plus: (num) => getTime(time).plus(num).hours(),
+    minus: (num) => getTime(time).minus(num).hours(),
   }),
   "2h": (time) => ({
     plus: (num) =>
@@ -130,14 +112,8 @@ export const getBinanceIntervalTime: Record<
         .hours(),
   }),
   "1d": (time) => ({
-    plus: (num) =>
-      getTime(time)
-        .plus(1 * num)
-        .days(),
-    minus: (num) =>
-      getTime(time)
-        .minus(1 * num)
-        .days(),
+    plus: (num) => getTime(time).plus(num).days(),
+    minus: (num) => getTime(time).minus(num).days(),
   }),
   "3d": (time) => ({
     plus: (num) =>
@@ -160,13 +136,7 @@ export const getBinanceIntervalTime: Record<
         .days(),
   }),
   "1M": (time) => ({
-    plus: (num) =>
-      getTime(time)
-        .plus(1 * num)
-        .minutes(),
-    minus: (num) =>
-      getTime(time)
-        .minus(1 * num)
-        .minutes(),
+    plus: (num) => getTime(time).plus(num).minutes(),
+    minus: (num) => getTime(time).minus(num).minutes(),
   }),
 };

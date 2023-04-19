@@ -27,6 +27,8 @@ export const DeleteStrategy: FC<Props> = ({
 
   const [DELETE, { isPending, data }] = useApi.DeleteStrategy();
 
+  const isLoading = isPending || Boolean(data);
+
   const [modalIsActive, setModalIsActive] = useState(false);
 
   const toggleModal = useCallback(() => {
@@ -83,7 +85,7 @@ export const DeleteStrategy: FC<Props> = ({
         <Buttons>
           <Button
             color="warning"
-            isLoading={isPending || !!data}
+            isLoading={isLoading}
             onClick={onClickConfirmation}
           >
             {buttonLabel.yesDelete}

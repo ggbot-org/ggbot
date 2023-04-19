@@ -1,4 +1,5 @@
 module.exports = {
+  env: { browser: true, es2020: true, node: false },
   extends: ["./base.cjs", "plugin:react/jsx-runtime"],
   parserOptions: {
     ecmaFeatures: {

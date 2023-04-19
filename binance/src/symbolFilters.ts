@@ -29,7 +29,8 @@ export const findSymbolFilterMinNotional: FindSymbolFilter<
   filters.find(isBinanceSymbolFilterMinNotional);
 
 export const lotSizeIsValid = (
-  { minQty, maxQty /*stepSize*/ }: BinanceSymbolFilterLotSize,
+  // TODO { minQty, maxQty, stepSize }: BinanceSymbolFilterLotSize,
+  { minQty, maxQty }: BinanceSymbolFilterLotSize,
   value: Quantity | IcebergQty
 ) => {
   if (Number(minQty) !== 0 && value < minQty) return false;
