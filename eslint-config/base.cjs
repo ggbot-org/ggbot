@@ -25,7 +25,6 @@ module.exports = {
     ],
     "arrow-body-style": ["error", "as-needed"],
     "block-scoped-var": "error",
-    camelcase: "warn",
     "default-param-last": "error",
     "dot-notation": "error",
     eqeqeq: "error",
