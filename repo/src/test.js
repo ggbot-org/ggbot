@@ -15,10 +15,11 @@ import {
 import { workspaceNames } from "./workspaces.js";
 import { rootPackageJsonScripts } from "./rootPackage.js";
 
-const noCodeWorkspaces = ["eslint-config", "tsconfig"];
+const noCodeWorkspaces = ["aws-lambda", "eslint-config", "tsconfig"];
 const noTscBuildWorkspaces = [
   ...noCodeWorkspaces,
   "aws-lambda-user-api",
+  "aws-lambda-utrust-api",
   "admin-webapp",
   "repo",
   "user-webapp",
