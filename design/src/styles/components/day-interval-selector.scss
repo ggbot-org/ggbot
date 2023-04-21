@@ -1,0 +1,6 @@
+// No highlight color.
+input::-webkit-datetime-edit-day-field:focus,
+input::-webkit-datetime-edit-month-field:focus,
+input::-webkit-datetime-edit-year-field:focus {
+  background-color: transparent;
+}

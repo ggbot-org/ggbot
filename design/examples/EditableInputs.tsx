@@ -6,13 +6,18 @@ export const EditableInputs: FC = () => {
 
   return (
     <div>
-      <div className="max-w-lg flex flex-col gap-2 wrap">
+      <div>
         <EditableInput value={value} setValue={setValue} />
         <EditableInput isSpinning value={value} setValue={setValue} />
       </div>
 
       <Section>
-        <EditableInputField label="name" name="name" value={value} setValue={setValue} />
+        <EditableInputField
+          label="name"
+          name="name"
+          value={value}
+          setValue={setValue}
+        />
       </Section>
     </div>
   );

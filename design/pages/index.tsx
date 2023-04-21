@@ -11,6 +11,7 @@ import {
 } from "@ggbot2/design";
 import { ButtonColors, LoadingButtons } from "_examples/Buttons";
 import { SingleCalendar } from "_examples/Calendar";
+import { TimeIntervalSelectors } from "_examples/TimeIntervalSelectors";
 import { EditableInputs } from "_examples/EditableInputs";
 import { SimpleForm } from "_examples/Forms";
 import { Icons } from "_examples/Icons";
@@ -21,111 +22,119 @@ import { Tags } from "_examples/Tags";
 import { Typography } from "_examples/Typography";
 
 const Home: NextPage = () => (
-    <>
-      <Head>
-        <title>ggbot2 design</title>
-      </Head>
+  <>
+    <Head>
+      <title>ggbot2 design</title>
+    </Head>
 
-      <Navbar />
+    <Navbar />
 
-      <main>
-        <Section>
-          <Container>
-            <Logo size={71} />
-          </Container>
-        </Section>
+    <main>
+      <Section>
+        <Container>
+          <Logo size={71} />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Typography</Title>
+      <Section>
+        <Container>
+          <Title>Typography</Title>
 
-            <Typography />
-          </Container>
-        </Section>
+          <Typography />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Palette</Title>
+      <Section>
+        <Container>
+          <Title>Palette</Title>
 
-            <Palette />
-          </Container>
-        </Section>
+          <Palette />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Inputs</Title>
+      <Section>
+        <Container>
+          <Title>Inputs</Title>
 
-            <Columns>
-              <Column size="half">
-                <InputFields />
-              </Column>
-            </Columns>
-          </Container>
-        </Section>
+          <Columns>
+            <Column size="half">
+              <InputFields />
+            </Column>
+          </Columns>
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Forms</Title>
+      <Section>
+        <Container>
+          <Title>Forms</Title>
 
-            <Columns>
-              <Column size="half">
-                <SimpleForm />
-              </Column>
-            </Columns>
-          </Container>
-        </Section>
+          <Columns>
+            <Column size="half">
+              <SimpleForm />
+            </Column>
+          </Columns>
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Buttons</Title>
+      <Section>
+        <Container>
+          <Title>Buttons</Title>
 
-            <ButtonColors />
+          <ButtonColors />
 
-            <LoadingButtons />
-          </Container>
-        </Section>
+          <LoadingButtons />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Editable input</Title>
+      <Section>
+        <Container>
+          <Title>Time interval selectors</Title>
 
-            <EditableInputs />
-          </Container>
-        </Section>
+          <TimeIntervalSelectors />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Icons</Title>
+      <Section>
+        <Container>
+          <Title>Editable input</Title>
 
-            <Icons />
-          </Container>
-        </Section>
+          <EditableInputs />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Tags</Title>
+      <Section>
+        <Container>
+          <Title>Icons</Title>
 
-            <Tags />
-          </Container>
-        </Section>
+          <Icons />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Calendars</Title>
+      <Section>
+        <Container>
+          <Title>Tags</Title>
 
-            <SingleCalendar />
-          </Container>
-        </Section>
+          <Tags />
+        </Container>
+      </Section>
 
-        <Section>
-          <Container>
-            <Title>Tables</Title>
+      <Section>
+        <Container>
+          <Title>Calendars</Title>
 
-            <SimpleTable />
-          </Container>
-        </Section>
-      </main>
-    </>
-  );
+          <SingleCalendar />
+        </Container>
+      </Section>
+
+      <Section>
+        <Container>
+          <Title>Tables</Title>
+
+          <SimpleTable />
+        </Container>
+      </Section>
+    </main>
+  </>
+);
 
 export default Home;

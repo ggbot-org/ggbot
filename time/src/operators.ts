@@ -1,10 +1,13 @@
 import {
+  dateToDay,
   dateToTime,
   dateToTimestamp,
+  dayToDate,
   timeToDate,
   timestampToDate,
 } from "./conversions.js";
 import { isInvalidDate } from "./date.js";
+import { Day } from "./day.js";
 import { ErrorInvalidDate } from "./errors.js";
 import { Time } from "./time.js";
 import { Timestamp } from "./timestamp.js";
@@ -92,6 +95,47 @@ export const getDate: TimeTranslator<Date> = (input) => {
   };
 };
 
+/** Translate `Day`. */
+export const getDay: TimeTranslator<Day> = (day) => {
+  const date = dayToDate(day);
+  return {
+    plus: (num) => ({
+      years: () => dateToDay(getDate(date).plus(num).years()),
+      months: () => dateToDay(getDate(date).plus(num).months()),
+      days: () => dateToDay(getDate(date).plus(num).days()),
+      hours: () => dateToDay(getDate(date).plus(num).hours()),
+      minutes: () => dateToDay(getDate(date).plus(num).minutes()),
+      seconds: () => dateToDay(getDate(date).plus(num).seconds()),
+    }),
+    minus: (num) => ({
+      years: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .years(),
+      months: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .months(),
+      days: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .days(),
+      hours: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .hours(),
+      minutes: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .minutes(),
+      seconds: () =>
+        getDay(day)
+          .plus(-1 * num)
+          .seconds(),
+    }),
+  };
+};
+
 /** Translate `Time`. */
 export const getTime: TimeTranslator<Time> = (time) => {
   const date = timeToDate(time);
@@ -133,8 +177,11 @@ export const getTime: TimeTranslator<Time> = (time) => {
   };
 };
 
-/** Truncate `Date`.
-@throws ErrorInvalidDate */
+/**
+ * Truncate `Date`.
+ *
+ * @throws ErrorInvalidDate
+ */
 export const truncateDate: TimeTruncator<Date, Date> = (date) => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return {
