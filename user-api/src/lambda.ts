@@ -1,4 +1,3 @@
-import { isUserApiActionType } from "@ggbot2/api";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -6,6 +5,7 @@ import {
 } from "@ggbot2/http-status-codes";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { isUserApiActionType } from "./actions.js";
 
 export const handler = async (
   event: APIGatewayEvent

@@ -1,4 +1,3 @@
-import { isUserApiActionType } from "@ggbot2/api";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -22,8 +21,6 @@ export const handler = async (
       const action = JSON.parse(event.body);
 
       if (!isMaybeObject<{ type: string }>(action)) return BAD_REQUEST;
-
-      if (!isUserApiActionType(action.type)) return BAD_REQUEST;
 
       return {
         statusCode: __200__OK__,

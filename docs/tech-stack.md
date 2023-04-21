@@ -59,6 +59,10 @@ https://aws.amazon.com/iam/
 
 https://aws.amazon.com/s3/
 
+## AWS Command Line Interface
+
+https://aws.amazon.com/cli/
+
 ## Git
 
 > Git is a free and open source distributed version control system

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/aws-lambda-utrust-api",
+  "name": "@ggbot2/utrust",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,26 +10,32 @@
     }
   },
   "scripts": {
-    "build": "node build.mjs",
+    "build": "npm run bundle && npm run zip",
+    "bundle": "node scripts/bundle.js",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ *.zip",
+    "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --ext .ts .",
     "prebuild": "npm run cleanup",
-    "prezip": "npm run build",
-    "zip": "cd dist; zip -X -r ../build.zip * > /dev/null; cd .."
+    "zip": "sh scripts/zip.sh"
   },
   "dependencies": {
-    "@ggbot2/api": "file:api",
     "@ggbot2/aws-lambda": "file:aws-lambda",
-    "@ggbot2/http-status-codes": "file:http-status-codes"
+    "@ggbot2/http-status-codes": "file:http-status-codes",
+    "aws-lambda": "^1.0.7"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@ggbot2/tsconfig": "file:tsconfig",
+    "@types/aws-lambda": "^8.10.114",
+    "esbuild": "^0.17.17"
   },
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
+    ],
+    "ignorePatterns": [
+      "dist/",
+      "temp/"
     ]
   }
 }

@@ -16,11 +16,10 @@ import { rootPackageJson } from "./rootPackage.js";
 
 const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson;
 
-const noCodeWorkspaces = ["aws-lambda", "eslint-config", "tsconfig"];
+const noCodeWorkspaces = ["eslint-config", "tsconfig"];
 const noTscBuildWorkspaces = [
   ...noCodeWorkspaces,
-  "aws-lambda-user-api",
-  "aws-lambda-utrust-api",
+  "utrust",
   "admin-webapp",
   "repo",
   "user-webapp",

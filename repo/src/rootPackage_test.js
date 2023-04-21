@@ -16,11 +16,11 @@ describe("root package.json", () => {
   describe("scripts", () => {
     it("is sorted by key", () => {
       const keys = Object.keys(scripts);
-      const sortedKeys = keys.slice(0).sort();
+      const sorted = keys.slice(0).sort();
       assert.equal(
         keys.join(),
-        sortedKeys.join(),
-        "script keys are not sorted"
+        sorted.join(),
+        "root package.json scripts are not sorted by key"
       );
     });
 
@@ -68,13 +68,12 @@ describe("root package.json", () => {
   });
 
   describe("workspaces", () => {
-    it("is sorted by key", () => {
-      const keys = Object.keys(scripts);
-      const sortedKeys = keys.slice(0).sort();
+    it("is sorted", () => {
+      const sorted = workspaces.slice(0).sort();
       assert.equal(
-        keys.join(),
-        sortedKeys.join(),
-        "script keys are not sorted"
+        workspaces.join(),
+        sorted.join(),
+        "root package.json workspaces are not sorted"
       );
     });
   });
