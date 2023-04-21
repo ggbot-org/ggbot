@@ -4,9 +4,9 @@ import { packageScriptKey } from "./package.js";
 import {
   rootPackageJson,
   rootPackageJsonScriptWorkspaceTaskKey,
-  rootPackageJsonScripts,
 } from "./rootPackage.js";
-import { workspaceNames } from "./workspaces.js";
+
+const { scripts, workspaces } = rootPackageJson;
 
 describe("root package.json", () => {
   it("is private", () => {
@@ -15,7 +15,7 @@ describe("root package.json", () => {
 
   describe("scripts", () => {
     it("is sorted by key", () => {
-      const keys = Object.keys(rootPackageJsonScripts);
+      const keys = Object.keys(scripts);
       const sortedKeys = keys.slice(0).sort();
       assert.equal(
         keys.join(),
@@ -25,7 +25,7 @@ describe("root package.json", () => {
     });
 
     it("has workspace tasks properly defined", () => {
-      Object.keys(rootPackageJsonScripts).forEach((scriptKey) => {
+      Object.keys(scripts).forEach((scriptKey) => {
         for (const task of [
           packageScriptKey.build,
           packageScriptKey.test,
@@ -37,7 +37,7 @@ describe("root package.json", () => {
             )
           ) {
             assert.ok(
-              workspaceNames
+              workspaces
                 .map((workspace) =>
                   rootPackageJsonScriptWorkspaceTaskKey({ task, workspace })
                 )
@@ -49,21 +49,33 @@ describe("root package.json", () => {
       });
 
       for (const task of [packageScriptKey.build, packageScriptKey.test]) {
-        for (const workspace of workspaceNames) {
+        for (const workspace of workspaces) {
           const key = rootPackageJsonScriptWorkspaceTaskKey({
             task,
             workspace,
           });
           const value = `npm run ${task} --workspace ${workspace}`;
-          if (rootPackageJsonScripts[key]) {
+          if (scripts[key]) {
             assert.equal(
-              rootPackageJsonScripts[key],
+              scripts[key],
               value,
               `script ${key} has not a proper value`
             );
           }
         }
       }
+    });
+  });
+
+  describe("workspaces", () => {
+    it("is sorted by key", () => {
+      const keys = Object.keys(scripts);
+      const sortedKeys = keys.slice(0).sort();
+      assert.equal(
+        keys.join(),
+        sortedKeys.join(),
+        "script keys are not sorted"
+      );
     });
   });
 });

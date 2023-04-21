@@ -5,7 +5,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import { wwwDomain } from "@ggbot2/infrastructure";
+import { wwwDomain } from "@ggbot2/locators";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function apiHandler(

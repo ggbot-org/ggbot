@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/assets",
+  "name": "@ggbot2/locators",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -19,12 +19,13 @@
     "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
-  "dependencies": {
-    "@ggbot2/locators": "file:locators"
-  },
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
+    ],
+    "ignorePatterns": [
+      "dist/",
+      "temp/"
     ]
   }
 }

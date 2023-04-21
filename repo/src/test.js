@@ -12,8 +12,9 @@ import {
   importWorkspacePackageJson,
   workspacePackageName,
 } from "./workspacePackage.js";
-import { workspaceNames } from "./workspaces.js";
-import { rootPackageJsonScripts } from "./rootPackage.js";
+import { rootPackageJson } from "./rootPackage.js";
+
+const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson;
 
 const noCodeWorkspaces = ["aws-lambda", "eslint-config", "tsconfig"];
 const noTscBuildWorkspaces = [
@@ -279,12 +280,12 @@ async function testWorkspace({ workspace }) {
 async function repoTests() {
   for (const workspace of [...noTscBuildWorkspaces, ...webappWorkspaces])
     assert.equal(
-      workspaceNames.includes(workspace),
+      workspaces.includes(workspace),
       true,
       `workspace ${workspace} is included in root package.json workspaces list`
     );
 
-  for (const workspace of workspaceNames) await testWorkspace({ workspace });
+  for (const workspace of workspaces) await testWorkspace({ workspace });
 }
 
 repoTests();

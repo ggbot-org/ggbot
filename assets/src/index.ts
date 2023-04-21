@@ -1,4 +1,4 @@
-import { assetsDomain } from "@ggbot2/infrastructure";
+import { assetsDomain } from "@ggbot2/locators";
 
 export const assetsBaseUrl = `https://${assetsDomain}`;
 const logoBaseUrl = `${assetsBaseUrl}/logo`;

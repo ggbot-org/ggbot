@@ -9,12 +9,6 @@
       "import": "./dist/index.js"
     }
   },
-  "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ *.zip",
-    "lint": "eslint --ext .ts ."
-  },
   "dependencies": {
     "aws-lambda": "^1.0.7"
   },

@@ -14,7 +14,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import { userWebappDomain } from "@ggbot2/infrastructure";
+import { userWebappDomain } from "@ggbot2/locators";
 import {
   AllowedCountryIsoCode2,
   EmailAddress,

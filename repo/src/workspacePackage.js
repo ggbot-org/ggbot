@@ -1,7 +1,11 @@
 import { join } from "node:path";
 import { packageScriptKey } from "./package.js";
-import { rootPackageDir } from "./rootPackage.js";
-import { workspacesNamespace } from "./workspaces.js";
+import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
+
+/**
+ * By convention, workspace package name scope is root package name.
+ */
+const workspacesNamespace = rootPackageJson.name;
 
 export const workspacePackageName = (workspace) =>
   `@${workspacesNamespace}/${workspace}`;

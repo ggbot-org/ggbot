@@ -1,6 +1,6 @@
 import { sendEmail } from "@ggbot2/aws";
 import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
-import { noReplyAddress } from "@ggbot2/infrastructure";
+import { noReplyEmailAddress } from "@ggbot2/locators";
 import {
   CreateOneTimePassword,
   DeleteOneTimePassword,
@@ -49,7 +49,7 @@ export const sendOneTimePassword: SendOneTimePassword["func"] = async ({
   if (isTestAccountEmail(email)) return whenCreated;
   const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
   await sendEmail({
-    source: noReplyAddress,
+    source: noReplyEmailAddress,
     toAddresses: [email],
     ...emailMessage,
   });
