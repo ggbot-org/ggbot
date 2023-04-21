@@ -190,31 +190,11 @@ async function testWorkspacePackageJson({ workspace }) {
         `${dependencyKey} matches ${dependencyValue}`
       );
 
-      // if (!noTscBuildWorkspaces.includes(workspace)) {
-      //   assert.equal(
-      //     rootPackageJsonScripts[`prebuild:${workspace}`].includes(
-      //       `build:${dependency}`
-      //     ),
-      //     true,
-      //     `root package.json script prebuild:${workspace} dependency ${dependency}"]`
-      //   );
-      // }
-
       assert.equal(
         dependencyKey,
         workspacePackageName(dependency),
         `${dependencyKey} matches ${dependencyValue}`
       );
-
-      // if (!noTscBuildWorkspaces.includes(workspace)) {
-      //   assert.equal(
-      //     rootPackageJsonScripts[`prebuild:${workspace}`].includes(
-      //       `build:${dependency}`
-      //     ),
-      //     true,
-      //     `root package.json script prebuild:${workspace} handles dependency ${dependency}"]`
-      //   );
-      // }
     }
   }
 }
