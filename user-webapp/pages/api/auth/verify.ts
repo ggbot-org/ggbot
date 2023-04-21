@@ -6,7 +6,7 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
 import { Session, createSessionCookie } from "@ggbot2/cookies";
-import { nodeEnvIsProduction } from "@ggbot2/env";
+import { ENV } from "@ggbot2/env";
 import {
   createAccount,
   deleteOneTimePassword,
@@ -22,6 +22,8 @@ import {
 import { today } from "@ggbot2/time";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { NextApiRequest, NextApiResponse } from "next";
+
+const { NODE_ENV } = ENV;
 
 export type ApiVerifyRequestData = Pick<OneTimePassword, "code"> & {
   email: EmailAddress;
@@ -63,7 +65,7 @@ export default async function apiHandler(
 
     const createCookye = (session: Session) => {
       const cookie = createSessionCookie(session, {
-        secure: nodeEnvIsProduction,
+        secure: NODE_ENV === "production",
       });
       res.setHeader("Set-Cookie", cookie);
     };

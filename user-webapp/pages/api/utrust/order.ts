@@ -6,7 +6,7 @@ import {
   createMonthlySubscriptionPurchase,
   updateSubscriptionPurchaseInfo,
 } from "@ggbot2/database";
-import { getUtrustApiKey, getUtrustEnvironment } from "@ggbot2/env";
+import { ENV } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -38,6 +38,8 @@ import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { NextApiRequest, NextApiResponse } from "next";
 import { pathname } from "_routing/pathnames";
 
+const { UTRUST_API_KEY, UTRUST_ENVIRONMENT } = ENV;
+
 type RequestData = {
   country: AllowedCountryIsoCode2;
   email: EmailAddress;
@@ -68,10 +70,8 @@ export default async function apiHandler(
     if (!session) return res.status(__401__UNAUTHORIZED__).json({});
     const { accountId } = session;
 
-    const utrustEnvironment = getUtrustEnvironment();
-
-    const apiKey = getUtrustApiKey();
-    const { createOrder } = ApiClient(apiKey, utrustEnvironment);
+    const apiKey = UTRUST_API_KEY;
+    const { createOrder } = ApiClient(apiKey, UTRUST_ENVIRONMENT);
 
     // Check ResponseData is valid
     const input = req.body;

@@ -5,7 +5,7 @@ import {
   writeSubscription,
   updateSubscriptionPurchaseStatus,
 } from "@ggbot2/database";
-import { getUtrustWebhookSecret } from "@ggbot2/env";
+import { ENV } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -17,6 +17,8 @@ import {
   Event as UtrustEvent,
 } from "@utrustdev/utrust-ts-library";
 import { NextApiRequest, NextApiResponse } from "next";
+
+const { UTRUST_WEBHOOK_SECRET } = ENV;
 
 type ResponseData = {
   ok: boolean;
@@ -31,8 +33,7 @@ export default async function apiHandler(
     if (req.method !== "POST")
       return res.status(__405__METHOD_NOT_ALLOWED__).json({ ok: false });
 
-    const webhookSecret = getUtrustWebhookSecret();
-    const { validateSignature } = WebhookValidator(webhookSecret);
+    const { validateSignature } = WebhookValidator(UTRUST_WEBHOOK_SECRET);
     const input = req.body;
     const isValid = validateSignature(input);
     if (!isValid) return res.status(__400__BAD_REQUEST__).json({ ok: false });

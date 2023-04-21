@@ -5,10 +5,10 @@ import {
   designDomain,
   wwwDomain,
 } from "@ggbot2/locators";
-import { getDeployStage } from "@ggbot2/env";
+import { ENV } from "@ggbot2/env";
 import { awsRegion } from "./awsRegion.js";
 
-const defaultDeployStage = getDeployStage();
+const { DEPLOY_STAGE } = ENV;
 
 export const getAssetsBucketName = () => assetsDomain;
 
@@ -16,18 +16,18 @@ export const getAssetsBucketArn = () => `arn:aws:s3:::${getAssetsBucketName()}`;
 
 export const assetsBucketACL = BucketCannedACL.public_read;
 
-export const getDataBucketName = (deployStage = defaultDeployStage) =>
+export const getDataBucketName = (deployStage = DEPLOY_STAGE) =>
   `${deployStage}-data.${awsRegion}.${topLevelDomain}`;
 
-export const getDataBucketArn = (deployStage = defaultDeployStage) =>
+export const getDataBucketArn = (deployStage = DEPLOY_STAGE) =>
   `arn:aws:s3:::${getDataBucketName(deployStage)}`;
 
 export const dataBucketACL = BucketCannedACL.private;
 
-export const getLogsBucketName = (deployStage = defaultDeployStage) =>
+export const getLogsBucketName = (deployStage = DEPLOY_STAGE) =>
   `${deployStage}-logs.${awsRegion}.${topLevelDomain}`;
 
-export const getLogsBucketArn = (deployStage = defaultDeployStage) =>
+export const getLogsBucketArn = (deployStage = DEPLOY_STAGE) =>
   `arn:aws:s3:::${getLogsBucketName(deployStage)}`;
 
 export const logsBucketACL = BucketCannedACL.private;

@@ -1,4 +1,4 @@
-import { DeployStage, getAwsAccountId, getDeployStage } from "@ggbot2/env";
+import { DeployStage, ENV } from "@ggbot2/env";
 import {
   getAssetsBucketArn,
   getDataBucketArn,
@@ -9,7 +9,7 @@ import {
 } from "./s3.js";
 import { getSesIdentityArn } from "./ses.js";
 
-const defaultDeployStage = getDeployStage();
+const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV;
 
 // IAM version
 const Version = "2012-10-17";
@@ -35,10 +35,7 @@ const cross = {
 
 export const getDevopsPolicyName = () => "ggbot2-devops-policy";
 
-export const getDevopsPolicyArn = () => {
-  const awsAccountId = getAwsAccountId();
-  return `arn:aws:iam::${awsAccountId}:policy/${getDevopsPolicyName()}`;
-};
+export const getDevopsPolicyArn = () => `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${getDevopsPolicyName()}`;
 
 export const getDevopsPolicyStatements = () => [
   {
@@ -81,15 +78,12 @@ export const getDevopsPolicy = () => ({
   Statement: getDevopsPolicyStatements(),
 });
 
-export const getSesNoreplyPolicyName = (deployStage = defaultDeployStage) =>
+export const getSesNoreplyPolicyName = (deployStage = DEPLOY_STAGE) =>
   `ggbot2-${deployStage}-ses-noreply-policy`;
 
-export const getSesNoreplyPolicyArn = (deployStage = defaultDeployStage) => {
-  const awsAccountId = getAwsAccountId();
-  return `arn:aws:iam::${awsAccountId}:policy/${getSesNoreplyPolicyName(
+export const getSesNoreplyPolicyArn = (deployStage = DEPLOY_STAGE) => `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${getSesNoreplyPolicyName(
     deployStage
   )}`;
-};
 
 export const getSesNoreplyPolicyStatements = () => [
   {
