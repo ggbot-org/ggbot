@@ -7,9 +7,6 @@ const UTRUST_WEBHOOK_SECRET = process.env.UTRUST_WEBHOOK_SECRET;
 export type DeployStage = "main" | "next";
 export type NodeEnv = "development" | "production";
 
-const utrustEnvironments = ["sandbox", "production"] as const;
-export type UtrustEnvironment = typeof utrustEnvironments[number];
-
 class EnvironmentVariables {
   get AWS_ACCOUNT_ID() {
     if (typeof AWS_ACCOUNT_ID === "string") return AWS_ACCOUNT_ID;
@@ -35,11 +32,6 @@ class EnvironmentVariables {
   get UTRUST_API_KEY() {
     if (typeof UTRUST_API_KEY === "string") return UTRUST_API_KEY;
     return "";
-  }
-
-  get UTRUST_ENVIRONMENT(): UtrustEnvironment {
-    // TODO return deployStageIsMain ? "production" : "sandbox"
-    return "sandbox";
   }
 
   get UTRUST_WEBHOOK_SECRET() {

@@ -1,3 +1,4 @@
+// TODO use "node:crypto"
 import { createHmac } from "crypto";
 import { BinanceConnectorRequestArg } from "./connector.js";
 import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
@@ -32,12 +33,16 @@ export class BinanceClient extends BinanceExchange {
     params?: BinanceConnectorRequestArg["params"]
   ) {
     const searchParams = new URLSearchParams();
-    if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value));
+    if (params)
+      for (const [key, value] of Object.entries(params))
+        searchParams.append(key, String(value));
 
     const timestamp = Date.now();
     searchParams.append("timestamp", String(timestamp));
 
-    const signature = createHmac("sha256", this.apiSecret).update(searchParams.toString()).digest("hex");
+    const signature = createHmac("sha256", this.apiSecret)
+      .update(searchParams.toString())
+      .digest("hex");
     searchParams.append("signature", signature);
 
     return await super.request<Data>({
@@ -54,10 +59,11 @@ export class BinanceClient extends BinanceExchange {
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#account-information-user_data}
    */
   async account(): Promise<BinanceAccountInformation> {
-    const { balances, ...rest } = await this.privateRequest<BinanceAccountInformation>(
-      "GET",
-      "/api/v3/account"
-    );
+    const { balances, ...rest } =
+      await this.privateRequest<BinanceAccountInformation>(
+        "GET",
+        "/api/v3/account"
+      );
 
     return {
       // Filter empty balances
@@ -90,13 +96,22 @@ export class BinanceClient extends BinanceExchange {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
-    return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order", {
-      symbol,
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
       side,
       type,
-      ...options,
-    });
+      orderOptions
+    );
+    return await this.privateRequest<BinanceOrderRespFULL>(
+      "POST",
+      "/api/v3/order",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
   }
 
   /**
@@ -111,13 +126,22 @@ export class BinanceClient extends BinanceExchange {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
-    return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order/test", {
-      symbol,
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
       side,
       type,
-      ...options,
-    });
+      orderOptions
+    );
+    return await this.privateRequest<BinanceOrderRespFULL>(
+      "POST",
+      "/api/v3/order/test",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
   }
 
   /**
@@ -131,13 +155,22 @@ export class BinanceClient extends BinanceExchange {
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
-    return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order", {
-      symbol,
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
       side,
       type,
-      ...options,
-    });
+      orderOptions
+    );
+    return await this.privateRequest<BinanceOrderRespACK>(
+      "POST",
+      "/api/v3/order",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
   }
 
   /**
@@ -152,13 +185,22 @@ export class BinanceClient extends BinanceExchange {
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(symbolInput, side, type, orderOptions);
-    return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order/test", {
-      symbol,
+    const { options, symbol } = await this.prepareOrder(
+      symbolInput,
       side,
       type,
-      ...options,
-    });
+      orderOptions
+    );
+    return await this.privateRequest<BinanceOrderRespACK>(
+      "POST",
+      "/api/v3/order/test",
+      {
+        symbol,
+        side,
+        type,
+        ...options,
+      }
+    );
   }
 }
 

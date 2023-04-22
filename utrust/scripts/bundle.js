@@ -5,6 +5,7 @@ const build = async (target) => {
     entryPoints: [`src/${target}.ts`],
     bundle: true,
     outfile: `temp/${target}/index.js`,
+    platform: "node",
   });
 };
 

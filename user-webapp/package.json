@@ -24,7 +24,6 @@
     "@ggbot2/models": "file:models",
     "@ggbot2/time": "file:time",
     "@ggbot2/type-utils": "file:type-utils",
-    "@utrustdev/utrust-ts-library": "^1.0.4",
     "country-isocode2": "^1.1.0",
     "react-hot-toast": "^2.3.0"
   },

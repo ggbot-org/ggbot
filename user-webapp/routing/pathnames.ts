@@ -4,8 +4,6 @@ import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types";
 export const pathname = {
   apiEnter: () => "/api/auth/enter",
   apiExit: () => "/api/auth/exit",
-  apiPurchaseOrder: () => "/api/utrust/order",
-  apiUtrustCallback: () => "/api/utrust/callback",
   apiVerify: () => "/api/auth/verify",
   authPage: () => "/auth",
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
@@ -25,8 +23,6 @@ export const pathname = {
   settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
-  subscriptionCanceledPage: () => "/subscription/canceled",
-  subscriptionPurchasedPage: () => "/subscription/purchased",
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/view/flow/${strategyKind}/${strategyId}`,
 };

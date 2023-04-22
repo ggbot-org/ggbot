@@ -26,6 +26,7 @@ import {
   totalPurchase,
   purchaseMaxNumMonths as maxNumMonths,
 } from "@ggbot2/models";
+import { apiDomain, pathname } from "@ggbot2/locators";
 import { getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
@@ -40,7 +41,9 @@ import {
 import { SubscriptionContext } from "_contexts/Subscription";
 import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
+
+const apiBaseUrl = `https://${apiDomain}`;
+const apiPurchaseOrderUrl = new URL(pathname.utrustOrder(), apiBaseUrl);
 
 const allowedCountryOptions = Object.entries(countries)
   .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
@@ -144,7 +147,7 @@ export const SubscriptionPurchase: FC = () => {
     if (purchaseIsPending) return;
     setPurchaseIsPending(true);
     try {
-      const response = await fetch(pathname.apiPurchaseOrder(), {
+      const response = await fetch(apiPurchaseOrderUrl, {
         body: JSON.stringify({ country, email, numMonths }),
         credentials: "include",
         headers: new Headers({

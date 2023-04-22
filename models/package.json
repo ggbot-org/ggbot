@@ -22,6 +22,7 @@
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
+    "@ggbot2/arithmetic": "file:arithmetic",
     "@ggbot2/time": "file:time",
     "dflow": "^0.42.0",
     "flow-view": "^6.0.1"
