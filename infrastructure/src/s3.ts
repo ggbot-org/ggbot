@@ -1,10 +1,5 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3";
-import {
-  assetsDomain,
-  topLevelDomain,
-  designDomain,
-  wwwDomain,
-} from "@ggbot2/locators";
+import { assetsDomain, topLevelDomain, wwwDomain } from "@ggbot2/locators";
 import { ENV } from "@ggbot2/env";
 import { awsRegion } from "./awsRegion.js";
 
@@ -38,12 +33,6 @@ export const getNakedDomainBucketArn = () =>
   `arn:aws:s3:::${getNakedDomainBucketName()}`;
 
 export const nakedDomainBucketACL = BucketCannedACL.public_read;
-
-export const getDesignBucketName = () => designDomain;
-
-export const getDesignBucketArn = () => `arn:aws:s3:::${getDesignBucketName()}`;
-
-export const designBucketACL = BucketCannedACL.public_read;
 
 export const getWwwBucketName = () => wwwDomain;
 
