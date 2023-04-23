@@ -1,3 +1,4 @@
+import { Navigation } from "_components/Navigation";
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import Head from "next/head";
 import { FC, PropsWithChildren, ReactNode } from "react";
@@ -14,7 +15,7 @@ export type PageProps = {
 export const Page: FC<PropsWithChildren<PageProps>> = ({
   children,
   metadata = { title: "ggbot2" },
-  topbar,
+  topbar = <Navigation />,
 }) => {
   const { title } = metadata;
 

@@ -1,5 +1,9 @@
 import { decimalToNumber } from "@ggbot2/arithmetic";
-import { BinanceKline, isBinanceKlineInterval } from "@ggbot2/binance";
+import {
+  BinanceKline,
+  binanceKlineMaxLimit,
+  isBinanceKlineInterval,
+} from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js";
 import { BinanceDflowContext as Context } from "../context.js";
@@ -41,10 +45,11 @@ export class Candles extends DflowNode {
       !isDflowBinanceKlineInterval(interval)
     )
       return this.clearOutputs();
+    const limit = Math.max(count, binanceKlineMaxLimit);
     const data: BinanceKline[] = [];
     const klines = await binance.klines(symbol, interval, {
       endTime: currentTime,
-      limit: count,
+      limit,
     });
     data.push(...klines);
     const { open, high, low, close, volume } = data.reduce<{

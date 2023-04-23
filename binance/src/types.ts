@@ -80,7 +80,10 @@ export type BinanceExchangeInfo = {
   rateLimits: BinanceRateLimitInfo[];
 };
 
-export type BinanceFill = Pick<BinanceAccountTrade, "price" | "qty" | "commission" | "commissionAsset"> & {
+export type BinanceFill = Pick<
+  BinanceAccountTrade,
+  "price" | "qty" | "commission" | "commissionAsset"
+> & {
   tradeId: BinanceAccountTrade["id"];
 };
 
@@ -296,7 +299,11 @@ export type BinanceRateLimitInfo = {
 export const binanceRateLimitIntervals = ["SECOND", "MINUTE", "DAY"] as const;
 export type BinanceRateLimitInterval = typeof binanceRateLimitIntervals[number];
 
-export const binanceRateLimitTypes = ["ORDERS", "RAW_REQUESTS", "REQUEST_WEIGHT"] as const;
+export const binanceRateLimitTypes = [
+  "ORDERS",
+  "RAW_REQUESTS",
+  "REQUEST_WEIGHT",
+] as const;
 export type BinanceRateLimitType = typeof binanceRateLimitTypes[number];
 
 export type BinanceSymbolInfo = {

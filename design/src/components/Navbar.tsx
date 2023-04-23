@@ -1,15 +1,9 @@
-import {
-  FC,
-  PointerEventHandler,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import {
   Navbar as _Navbar,
   NavbarBrand,
   NavbarBurger,
+  NavbarBurgerOnClick,
   NavbarItem,
   NavbarMenu,
 } from "trunx";
@@ -25,21 +19,18 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
   noMenu,
   ...props
 }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
-  // TODO import NavbarBurgerOnClick from trunx
-  const onClickBurger = useCallback<PointerEventHandler<HTMLDivElement>>(
-    (event) => {
-      event.stopPropagation();
-      setExpanded((expanded) => !expanded);
-    },
-    []
-  );
+  // TODO remove onClickBurger with next trunx version
+  const onClickBurger = useCallback<NavbarBurgerOnClick>((event) => {
+    event.stopPropagation();
+    setIsActive((isActive) => !isActive);
+  }, []);
 
   // Close menu on outside click.
   useEffect(() => {
     const closeMenu = () => {
-      setExpanded(false);
+      setIsActive(false);
     };
     window.addEventListener("click", closeMenu);
     return () => {
@@ -57,10 +48,10 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
           </span>
         </NavbarItem>
 
-        {noMenu || <NavbarBurger isActive={expanded} onClick={onClickBurger} />}
+        {noMenu || <NavbarBurger isActive={isActive} onClick={onClickBurger} />}
       </NavbarBrand>
 
-      {noMenu || <NavbarMenu isActive={expanded}>{children}</NavbarMenu>}
+      {noMenu || <NavbarMenu isActive={isActive}>{children}</NavbarMenu>}
     </_Navbar>
   );
 };
