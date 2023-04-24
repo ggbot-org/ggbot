@@ -8,5 +8,5 @@ export const rootPackageDir = dirname(
   dirname(dirname(fileURLToPath(import.meta.url)))
 );
 
-export const rootPackageJsonScriptWorkspaceTaskKey = ({ task, workspace }) =>
-  `${task}:${workspace}`;
+export const rootPackageJsonWorkspaceScriptKey = (scriptKey, workspace) =>
+  `${scriptKey}:${workspace}`;

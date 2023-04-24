@@ -1,41 +1,49 @@
-import assert from "node:assert/strict";
+import * as assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { packageScriptKey } from "./package.js";
 import {
   rootPackageJson,
-  rootPackageJsonScriptWorkspaceTaskKey,
+  rootPackageJsonWorkspaceScriptKey,
 } from "./rootPackage.js";
-import { importWorkspacePackageJson } from "./workspacePackage.js";
+import {
+  importWorkspacePackageJson,
+  workspaceExposedScriptKeys,
+} from "./workspacePackage.js";
+import { workspaceNames } from "./workspaces.js";
 
-const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson;
+const { scripts: rootPackageJsonScripts } = rootPackageJson;
 
-rootPackageJsonScripts,
-  workspaces.forEach(async (workspace) => {
-    const packageJson = await importWorkspacePackageJson(workspace);
-    describe(`${workspace} package.json`, () => {
-      it("is private", () => {
-        assert.equal(packageJson.private, true);
-      });
+workspaceNames.forEach(async (workspace) => {
+  const packageJson = await importWorkspacePackageJson(workspace);
 
-      describe("scripts", () => {
-        const { scripts } = packageJson;
+  describe(`${workspace} package.json`, () => {
+    it("is private", () => {
+      assert.equal(
+        packageJson.private,
+        true,
+        `${workspace} package.json is not private`
+      );
+    });
 
-        if (!scripts) return;
+    describe("scripts", () => {
+      const { scripts } = packageJson;
 
-        for (const task of [packageScriptKey.build]) {
-          if (!scripts[task]) continue;
+      if (!scripts) return;
 
-          const rootPackageScriptKey = rootPackageJsonScriptWorkspaceTaskKey({
-            task,
-            workspace,
-          });
-          it(`has ${task} script exposed by root package.json as ${rootPackageScriptKey}`, () => {
-            assert.ok(
-              typeof rootPackageJsonScripts[rootPackageScriptKey] === "string",
-              `script ${task} in ${workspace}/package.json is not exposed by root package.json as ${rootPackageScriptKey}`
-            );
-          });
-        }
-      });
+      for (const scriptKey of workspaceExposedScriptKeys) {
+        if (!scripts[scriptKey]) continue;
+
+        const rootPackageScriptKey = rootPackageJsonWorkspaceScriptKey(
+          scriptKey,
+          workspace
+        );
+
+        it(`has ${scriptKey} script exposed by root package.json as ${rootPackageScriptKey}`, () => {
+          assert.ok(
+            typeof rootPackageJsonScripts[rootPackageScriptKey] === "string",
+            `script ${scriptKey} in ${workspace}/package.json is not exposed by root package.json as ${rootPackageScriptKey}`
+          );
+        });
+      }
     });
   });
+});

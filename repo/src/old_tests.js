@@ -1,3 +1,4 @@
+// TODO port this into TS
 import { strict as assert } from "node:assert";
 // TODO use describe and split into files, remove this file
 import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" };

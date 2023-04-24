@@ -19,7 +19,6 @@ The root package.json exposes also scripts for the workspace, for example
 ```jsonc
   "scripts": {
     "build:foo-bar": "npm run build --workspace foo-bar",
-    "prebuild:foo-bar": "npm run build:another-package && npm run build:yet-another-package",
     "test:foo-bar": "npm run test --workspace foo-bar"
   }
 ```

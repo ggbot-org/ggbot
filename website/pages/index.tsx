@@ -1,4 +1,5 @@
 import { Header, Logo } from "@ggbot2/design";
+import { pathname, userWebappHomepageUrl } from "@ggbot2/locators";
 import { createdNow } from "@ggbot2/models";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -36,15 +37,14 @@ const Page: NextPage = () => {
       </Header>
 
       <main>
-        <Link href="https://app.ggbot2.com">
+        <Link href={userWebappHomepageUrl}>
           <span>Launch App</span>
         </Link>
       </main>
 
       <footer>
-        <Link href="/privacy">Privacy Policy</Link>
-        <Link href="/terms">Terms of Service</Link>
-        <Link href="/roadmap">Roadmap</Link>
+        <Link href={pathname.privacyPolicyPage()}>Privacy Policy</Link>
+        <Link href={pathname.termsOfServicePage()}>Terms of Service</Link>
       </footer>
     </div>
   );

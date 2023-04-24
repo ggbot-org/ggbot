@@ -26,6 +26,9 @@
     "ignorePatterns": [
       "dist/",
       "temp/"
-    ]
+    ],
+    "rules": {
+      "sort-keys": "error"
+    }
   }
 }

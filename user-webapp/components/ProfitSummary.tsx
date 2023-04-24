@@ -16,10 +16,10 @@ import {
   Title,
   SizeModifierProp,
 } from "@ggbot2/design";
-import { useIsServerSide } from "@ggbot2/hooks";
 import { Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
 import { classNames } from "_classNames";
+import { useIsServerSide } from "_hooks/useIsServerSide";
 import { miscellaneousLabel, title } from "_i18n";
 import { FC, Fragment, PropsWithChildren, useEffect } from "react";
 

@@ -1,4 +1,5 @@
-/* eslint sort-keys: "error" */
+// TODO remove this file, import pathname from @ggbot2/locators
+import { pathname as _pathname } from "@ggbot2/locators";
 import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types";
 
 export const pathname = {
@@ -19,7 +20,7 @@ export const pathname = {
     `/error/strategy-not-found/${strategyKind}/${strategyId}`,
   errorPageStrategyNotOwned: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
-  homePage: () => "/",
+  homePage: _pathname.homePage,
   settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,

@@ -23,3 +23,8 @@ export const importWorkspaceJson = (filename) => async (workspace) => {
 };
 
 export const importWorkspacePackageJson = importWorkspaceJson("package.json");
+
+export const workspaceExposedScriptKeys = [
+  packageScriptKey.build,
+  packageScriptKey.test,
+];

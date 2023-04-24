@@ -1,5 +1,6 @@
 # ggbot2 Tech stack
 
+- [AWS Command Line Interface](#aws-command-line-interface)
 - Amazon Web Services
   - [AWS Certificate Manager](#aws-certificate-manager)
   - [AWS CloudFront](#aws-cloudfront)
@@ -31,6 +32,10 @@
   - [react-hot-toast](#react-hot-toast)
   - [typescript](#typescript)
 
+## AWS Command Line Interface
+
+https://aws.amazon.com/cli/
+
 ## Amazon Web Services
 
 ### AWS Certificate Manager
@@ -58,10 +63,6 @@ https://aws.amazon.com/iam/
 ### AWS S3
 
 https://aws.amazon.com/s3/
-
-## AWS Command Line Interface
-
-https://aws.amazon.com/cli/
 
 ## Git
 

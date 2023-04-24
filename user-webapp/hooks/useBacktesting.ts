@@ -1,7 +1,7 @@
 // TODO use markers to show sell and buy
 // https://jsfiddle.net/TradingView/nd80cx1a/
+import { useIsServerSide } from "_hooks/useIsServerSide";
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
-import { useIsServerSide } from "@ggbot2/hooks";
 import {
   BalanceChangeEvent,
   Frequency,

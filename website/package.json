@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "cleanup": "rm -rf out/ .next/",
-    "deploy": "sh deploy.sh",
+    "deploy": "sh scripts/deploy.sh",
     "lint": "eslint --ext .ts --ext .tsx .",
     "build": "next build",
     "next:export": "next export",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@ggbot2/assets": "file:assets",
     "@ggbot2/design": "file:design",
+    "@ggbot2/locators": "file:locators",
     "@ggbot2/models": "file:models"
   },
   "devDependencies": {
