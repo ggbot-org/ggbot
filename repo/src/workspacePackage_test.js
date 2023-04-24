@@ -26,8 +26,17 @@ workspaceNames.forEach(async (workspace) => {
 
     describe("scripts", () => {
       const { scripts } = packageJson;
-
       if (!scripts) return;
+
+      it("is sorted by key", () => {
+        const keys = Object.keys(scripts);
+        const sorted = keys.slice(0).sort();
+        assert.equal(
+          keys.join(),
+          sorted.join(),
+          `${workspace} package.json scripts are not sorted by key`
+        );
+      });
 
       for (const scriptKey of workspaceExposedScriptKeys) {
         if (!scripts[scriptKey]) continue;

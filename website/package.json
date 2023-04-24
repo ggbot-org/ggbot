@@ -3,14 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "build": "next build",
+    "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf out/ .next/",
     "deploy": "sh scripts/deploy.sh",
+    "dev": "next dev",
     "lint": "eslint --ext .ts --ext .tsx .",
-    "build": "next build",
     "next:export": "next export",
-    "start": "next start",
-    "check_types": "tsc --noEmit --project ."
+    "start": "next start"
   },
   "dependencies": {
     "@ggbot2/assets": "file:assets",

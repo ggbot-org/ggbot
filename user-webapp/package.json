@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "next build",
+    "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
     "lint": "eslint --ext .ts --ext .tsx .",
-    "build": "next build",
-    "start": "next start",
-    "check_types": "tsc --noEmit --project ."
+    "start": "next start"
   },
   "dependencies": {
     "@ggbot2/api-action": "file:api-action",
