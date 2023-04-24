@@ -12,7 +12,6 @@
   "scripts": {
     "build": "npm run tsc--build && npm run sass",
     "cleanup": "rm -rf dist/ out/ .next/",
-    "deploy": "sh deploy.sh",
     "dev": "next dev",
     "lint": "eslint --ext .ts --ext .tsx .",
     "next:build": "next build",
