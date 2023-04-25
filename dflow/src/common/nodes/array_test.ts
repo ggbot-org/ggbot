@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 import { now } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";
@@ -97,6 +97,11 @@ describe("push", () => {
       memory: {},
       time: now(),
     });
-    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [1, 2, 3, { foo: true }]);
+    assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [
+      1,
+      2,
+      3,
+      { foo: true },
+    ]);
   });
 });

@@ -1,5 +1,5 @@
+import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
-import assert from "node:assert/strict";
 import { now } from "@ggbot2/time";
 import { DflowNodesCatalog } from "dflow";
 import { ErrorUknownDflowNodes } from "../errors.js";
@@ -46,9 +46,14 @@ describe("dflowValidate", () => {
   });
 
   it("validates json nodes", () => {
-    const dflow = new DflowCommonHostMock({ nodesCatalog: {} }, { input: {}, memory: {}, time: now() });
+    const dflow = new DflowCommonHostMock(
+      { nodesCatalog: {} },
+      { input: {}, memory: {}, time: now() }
+    );
     const view: DflowExecutorView = {
-      nodes: [{ id: "n1", text: '{"message":"hello world"}', outs: [{ id: "o1" }] }],
+      nodes: [
+        { id: "n1", text: '{"message":"hello world"}', outs: [{ id: "o1" }] },
+      ],
       edges: [],
     };
     assert.doesNotThrow(() => {

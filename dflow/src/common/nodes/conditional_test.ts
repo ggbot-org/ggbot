@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 import { now } from "@ggbot2/time";
 import { getDflowExecutionOutputData } from "../executor.js";

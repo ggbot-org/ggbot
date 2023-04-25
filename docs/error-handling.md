@@ -33,7 +33,7 @@ Error `message` is defined as a *static attribute* or a *static method*, it can 
 
 
 ```ts
-import * as assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 
 class ErrorInvalidDate extends Error {

@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 import { BinanceDflowHost } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
