@@ -1,3 +1,8 @@
+// TODO try with TypeScript
+// import {NodeViewType} from '@ggbot2/dflow'
+// and
+// static type: NodeViewType = "info"
+// also for other nodes in this folder
 import { FlowViewNode } from "flow-view";
 
 export class FlowViewNodeInfo extends FlowViewNode {

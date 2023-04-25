@@ -8,4 +8,5 @@ export * from "./binance/nodesCatalog.js";
 export * from "./binance/symbols.js";
 export * from "./common/context.js";
 export * from "./common/nodeResolution.js";
+export * from "./common/nodeTextParser.js";
 export * from "./errors.js";

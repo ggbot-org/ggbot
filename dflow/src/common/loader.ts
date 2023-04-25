@@ -1,7 +1,7 @@
 import { DflowHost, DflowErrorItemNotFound } from "dflow";
 import { DflowExecutorView } from "./executor.js";
 import { NodeTextToDflowKind } from "./nodeResolution.js";
-import { isInfoNode } from "./parser/index.js";
+import { isInfoNode } from "./nodeTextParser.js";
 
 /**
  * A DflowHost that can load a FlowView graph.

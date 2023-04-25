@@ -2,6 +2,7 @@ import {
   BinanceDflowHost,
   BinanceDflowExecutor,
   nodeTextToViewType,
+  parsePercentage,
 } from "@ggbot2/dflow";
 import { UpdateTime } from "@ggbot2/models";
 import { Time, now, truncateTime } from "@ggbot2/time";
@@ -91,9 +92,8 @@ export const useFlowView: UseFlowView = ({
     if (!containerRef.current) return;
     if (!nodesCatalog || !dflow) return;
     const { FlowView } = await import("flow-view");
-    const { FlowViewNodeInfo, FlowViewNodeJson } = await import(
-      "../flow/nodes/index"
-    );
+    const { FlowViewNodeInfo, FlowViewNodeJson, FlowViewNodePercentage } =
+      await import("../flow/nodes/index");
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
       FlowViewNodeInfo.type,
@@ -102,6 +102,10 @@ export const useFlowView: UseFlowView = ({
     flowView.addNodeClass(
       FlowViewNodeJson.type,
       FlowViewNodeJson as unknown as FlowViewNode
+    );
+    flowView.addNodeClass(
+      FlowViewNodePercentage.type,
+      FlowViewNodePercentage as unknown as FlowViewNode
     );
     flowView.nodeTextToType((text) => nodeTextToViewType(text));
     flowView.addNodeDefinitions({
@@ -137,6 +141,15 @@ export const useFlowView: UseFlowView = ({
                   id,
                   kind: "data",
                   outputs: [{ id: outputId, data: JSON.parse(text) }],
+                });
+                break;
+              }
+              case "perc": {
+                const outputId = outs?.[0]?.id;
+                dflow.newNode({
+                  id,
+                  kind: "data",
+                  outputs: [{ id: outputId, data: parsePercentage(text) }],
                 });
                 break;
               }

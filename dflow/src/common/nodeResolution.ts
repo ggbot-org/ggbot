@@ -1,5 +1,6 @@
 import { FlowViewNodeTextToType } from "flow-view";
-import { isInfoNode, isJsonNode } from "./parser/index.js";
+import { isInfoNode, isJsonNode, isPercentageNode } from "./nodeTextParser.js";
+import { NodeViewType } from "./nodeViewTypes.js";
 
 export type NodeTextToViewType = FlowViewNodeTextToType;
 
@@ -7,7 +8,10 @@ export type NodeTextToViewType = FlowViewNodeTextToType;
 export const noOpNodeKinds = ["info"];
 
 /** Resolve node view type by its text. */
-export const nodeTextToViewType: NodeTextToViewType = (text) => {
+export const nodeTextToViewType: NodeTextToViewType = (
+  text
+): NodeViewType | undefined => {
+  if (isPercentageNode(text)) return "perc";
   // Run `isJsonNode` before `isInfoNode` to avoid parse JSON twice.
   if (isJsonNode(text)) return "json";
   if (isInfoNode(text)) return "info";
@@ -24,7 +28,6 @@ export type NodeTextToDflowKind = (text: string) => string;
 export const commonNodeTextToDflowKind: NodeTextToDflowKind = (text) => {
   const type = nodeTextToViewType(text);
   if (!type) return text;
-  if (type === "info") return "info";
   if (type === "json") return "data";
-  return text;
+  return type;
 };
