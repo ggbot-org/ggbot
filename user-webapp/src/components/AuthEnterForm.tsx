@@ -128,9 +128,9 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
       </Field>
 
       <>
-        {(hasGenericError || hasInvalidInput) && <GenericErrorMessage />}
+        {(hasGenericError || hasInvalidInput) ? <GenericErrorMessage /> : null}
 
-        {gotTimeout && <TimeoutErrorMessage />}
+        {gotTimeout ? <TimeoutErrorMessage /> : null}
       </>
     </Form>
   );

@@ -13,28 +13,28 @@ export const ViewStrategyTopbar: FC<Props> = ({
   name,
   strategyKey,
 }) => (
-    <Columns className={classNames("is-marginless")}>
-      <StrategyFlowName name={name} strategyKey={strategyKey} />
+  <Columns className={classNames("is-marginless")}>
+    <StrategyFlowName name={name} strategyKey={strategyKey} />
 
-      <Column isNarrow className={classNames("p-0")}>
-        <Level
-          isMobile
-          className={classNames("is-marginless", "p-2")}
-          right={
-            <Buttons>
-              <ShareStrategyButton
-                strategyKey={strategyKey}
-                strategyName={name}
-              />
+    <Column isNarrow className={classNames("p-0")}>
+      <Level
+        isMobile
+        className={classNames("is-marginless", "p-2")}
+        right={
+          <Buttons>
+            <ShareStrategyButton
+              strategyKey={strategyKey}
+              strategyName={name}
+            />
 
-              {accountIsOwner || (
-                <GoCopyStrategyButton strategyKey={strategyKey} />
-              )}
-            </Buttons>
-          }
-        >
-          <Flex className={classNames("p-4")}></Flex>
-        </Level>
-      </Column>
-    </Columns>
-  );
+            {accountIsOwner || (
+              <GoCopyStrategyButton strategyKey={strategyKey} />
+            )}
+          </Buttons>
+        }
+      >
+        <Flex className={classNames("p-4")} />
+      </Level>
+    </Column>
+  </Columns>
+);

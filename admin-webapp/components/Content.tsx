@@ -9,6 +9,7 @@ export const Content: FC<Props> = ({ children }) => (
   <>
     <Head>
       <title>ggbot2 admin</title>
+
       <meta name="description" content="crypto flow" />
     </Head>
 

@@ -32,35 +32,35 @@ export const EditStrategyTopbar: FC<Props> = ({
   saveIsPending,
   strategyKey,
 }) => (
-    <Columns className={classNames("is-marginless")}>
-      <StrategyFlowName name={name} strategyKey={strategyKey} />
+  <Columns className={classNames("is-marginless")}>
+    <StrategyFlowName name={name} strategyKey={strategyKey} />
 
-      <Column isNarrow className={classNames("p-0")}>
-        <Level
-          isMobile
-          className={classNames("is-marginless", "p-2")}
-          right={
-            <Buttons>
-              <Button
-                color={canRun || runIsPending ? "warning" : undefined}
-                isLoading={runIsPending}
-                onClick={onClickRun}
-              >
-                {buttonLabel.run}
-              </Button>
+    <Column isNarrow className={classNames("p-0")}>
+      <Level
+        isMobile
+        className={classNames("is-marginless", "p-2")}
+        right={
+          <Buttons>
+            <Button
+              color={canRun || runIsPending ? "warning" : undefined}
+              isLoading={runIsPending}
+              onClick={onClickRun}
+            >
+              {buttonLabel.run}
+            </Button>
 
-              <Button
-                color={canSave ? "primary" : undefined}
-                isLoading={saveIsPending}
-                onClick={onClickSave}
-              >
-                {buttonLabel.save}
-              </Button>
-            </Buttons>
-          }
-        >
-          <Flex className={classNames("p-4")}></Flex>
-        </Level>
-      </Column>
-    </Columns>
-  );
+            <Button
+              color={canSave ? "primary" : undefined}
+              isLoading={saveIsPending}
+              onClick={onClickSave}
+            >
+              {buttonLabel.save}
+            </Button>
+          </Buttons>
+        }
+      >
+        <Flex className={classNames("p-4")} />
+      </Level>
+    </Column>
+  </Columns>
+);

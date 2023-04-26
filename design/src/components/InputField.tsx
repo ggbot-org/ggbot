@@ -16,9 +16,11 @@ export const InputField: FC<InputFieldProps> = ({
   return (
     <Field>
       <Label htmlFor={id}>{label}</Label>
+
       <Control>
         <Input id={id} color={color} {...props} />
       </Control>
+
       {help ? <Help color={color}>{help}</Help> : null}
     </Field>
   );

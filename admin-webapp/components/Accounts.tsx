@@ -26,10 +26,13 @@ export const Accounts: FC = () => {
   return (
     <div className="flex flex-col gap-2">
       <div>accounts</div>
+
       <div>
         <Button color="primary">update</Button>
       </div>
+
       <div>{numAccounts}</div>
+
       <div>
         {accountIds.map((accountId) => (
           <Account key={accountId} accountId={accountId} />

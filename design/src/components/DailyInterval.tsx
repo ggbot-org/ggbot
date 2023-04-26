@@ -42,6 +42,7 @@ const DayDropdown: FC<DayDropdownProps> = ({
   return (
     <Field>
       <Label htmlFor={id}>{label}</Label>
+
       <Control>
         <Dropdown isActive={isActive} onClick={onClick}>
           <DropdownTrigger>{formattedDay}</DropdownTrigger>

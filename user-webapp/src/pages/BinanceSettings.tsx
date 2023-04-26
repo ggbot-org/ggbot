@@ -55,7 +55,7 @@ export const BinanceSettingsPage: FC = () => {
         </Column>
       </Columns>
 
-      {apiKey && <DeleteBinanceApi onDelete={resetApiKey} />}
+      {apiKey ? <DeleteBinanceApi onDelete={resetApiKey} /> : null}
     </OneSectionLayout>
   );
 };

@@ -31,6 +31,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       <ModalBackground />
 
       <ModalContent>{children}</ModalContent>
+
       <ModalClose size="large" onClick={closeModal} />
     </_Modal>
   );

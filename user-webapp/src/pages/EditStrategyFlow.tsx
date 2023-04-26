@@ -164,7 +164,7 @@ export const EditStrategyFlowPage: FC<Props> = ({
 
   return (
     <PageLayout>
-      {hasNoBinanceApiConfig && <PleaseConfigureBinanceModal />}
+      {hasNoBinanceApiConfig ? <PleaseConfigureBinanceModal /> : null}
 
       <EditStrategyTopbar
         canRun={canRun}
@@ -181,6 +181,7 @@ export const EditStrategyFlowPage: FC<Props> = ({
         flow={
           <>
             <FlowViewContainer ref={flowViewContainerRef} />
+
             <MemoryController />
           </>
         }

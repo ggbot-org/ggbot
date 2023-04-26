@@ -21,16 +21,19 @@ const Page: NextPage = () => {
     <div>
       <Head>
         <title>ggbot2</title>
+
         <meta name="description" content="crypto flow" />
       </Head>
 
       <Header>
         <div>
           <Logo animated={isFirstPageview} size={400} />
+
           <div>
             <h1>
               ggbot<b>2</b>
             </h1>
+
             <i>crypto flow</i>
           </div>
         </div>
@@ -44,6 +47,7 @@ const Page: NextPage = () => {
 
       <footer>
         <Link href={pathname.privacyPolicyPage()}>Privacy Policy</Link>
+
         <Link href={pathname.termsOfServicePage()}>Terms of Service</Link>
       </footer>
     </div>

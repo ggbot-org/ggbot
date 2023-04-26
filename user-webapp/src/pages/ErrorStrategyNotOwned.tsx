@@ -7,13 +7,13 @@ import { StrategyKey } from "_routing/types";
 type Props = StrategyKey;
 
 export const ErrorStrategyNotOwnedPage: FC<Props> = (strategyKey) => (
-    <OneSectionLayout>
-      <Message>
-        <span>
-          Your account is <b>not</b> <em>owner</em> of this strategy.
-        </span>
+  <OneSectionLayout>
+    <Message>
+      <span>
+        Your account is <b>not</b> <em>owner</em> of this strategy.
+      </span>
 
-        <StrategyKeyFields {...strategyKey} />
-      </Message>
-    </OneSectionLayout>
-  );
+      <StrategyKeyFields {...strategyKey} />
+    </Message>
+  </OneSectionLayout>
+);

@@ -42,7 +42,6 @@ module.exports = {
     "no-global-assign": "error",
     "no-implicit-coercion": "warn",
     "no-implicit-globals": "error",
-    "no-inline-comments": "warn",
     "no-lonely-if": "error",
     "no-multi-assign": "error",
     "no-warning-comments": "warn",

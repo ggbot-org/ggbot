@@ -122,6 +122,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
           ({ description, checkmark: checkmarkProps }, i) => (
             <div key={i}>
               {description}
+
               <Checkmark {...checkmarkProps} />
             </div>
           )

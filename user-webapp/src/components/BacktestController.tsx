@@ -135,11 +135,13 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
       <div>
         <div>
           <span>{`${stepIndex} of ${numSteps} intervals`}</span>
+
           <DateTime format="time" value={currentTimestamp} />
         </div>
 
         <div>
           <span>Memory</span>
+
           {memoryItems.length === 0 ? <span>(empty)</span> : null}
         </div>
 
@@ -147,6 +149,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
           {memoryItems.map(({ key, value }) => (
             <div key={key}>
               <span>{key}:</span>
+
               <pre>
                 <code>{JSON.stringify(value, null, 2)}</code>
               </pre>
@@ -161,9 +164,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         strategyKind={strategyKind}
       />
 
-      {strategyKind === "binance" && view && dayInterval && (
-        <BacktestControllerBinance dayInterval={dayInterval} view={view} />
-      )}
+      {strategyKind === "binance" && view && dayInterval ? <BacktestControllerBinance dayInterval={dayInterval} view={view} /> : null}
 
       <menu>
         <Button onClick={onClickAction}>{actionLabel}</Button>

@@ -5,6 +5,7 @@ import { Content } from "_components/Content";
 const Page: NextPage = () => (
   <Content>
     <h1>ggbot2</h1>
+
     <Accounts />
   </Content>
 );

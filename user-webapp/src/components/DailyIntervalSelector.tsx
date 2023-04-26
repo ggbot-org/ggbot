@@ -29,6 +29,7 @@ export const DailyIntervalSelector: FC<Props> = ({
       selectedDay={startDay}
       setSelectedDay={setStartDay}
     />
+
     <Calendar
       min={startDay}
       max={max}
