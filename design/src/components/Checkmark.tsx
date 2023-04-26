@@ -1,16 +1,17 @@
 import { FC } from "react";
-import { classNames } from "../classNames";
+import { _classNames } from "./_classNames";
 
 export type CheckmarkProps = {
   label?: string;
   ok: boolean | undefined;
 };
 
-export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) => ok === undefined ? null : (
+export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) =>
+  ok === undefined ? null : (
     <div>
       <span>{label}</span>
       <span
-        className={classNames(
+        className={_classNames(
           { "has-text-success": ok, "has-text-danger": !ok },
           "mx-2"
         )}

@@ -46,8 +46,8 @@ export {
 
 export * from "./Calendar";
 export * from "./Checkmark";
+export * from "./DailyInterval";
 export * from "./DateTime";
-export * from "./DayIntervalSelector";
 export * from "./EditableInput";
 export * from "./Field";
 export * from "./Header";

@@ -7,7 +7,13 @@ import {
   weekDayNums,
 } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
+import { _classNames } from "./_classNames";
 import { Icon } from "./Icon";
+
+export type CalendarClassNames =
+  | "Calendar"
+  | "Calendar__body"
+  | "Calendar__head";
 
 // TODO remove all tailwind classes
 
@@ -112,63 +118,67 @@ export const Calendar: FC<CalendarProps> = ({
   const lastDay = dateToDay(lastDate);
   const isLastMonth = lastDay && max && lastDay >= max;
 
-  const dateCells = useMemo(() => [
-      ...datesBeforeFirstDate.map((date) => ({
-        date,
-        isDateOfCurrentMonth: false,
-      })),
-      ...datesOfMonth.map((date) => ({ date, isDateOfCurrentMonth: true })),
-      ...datesAfterLastDate.map((date) => ({
-        date,
-        isDateOfCurrentMonth: false,
-      })),
+  const dateCells = useMemo(
+    () =>
+      [
+        ...datesBeforeFirstDate.map((date) => ({
+          date,
+          isDateOfCurrentMonth: false,
+        })),
+        ...datesOfMonth.map((date) => ({ date, isDateOfCurrentMonth: true })),
+        ...datesAfterLastDate.map((date) => ({
+          date,
+          isDateOfCurrentMonth: false,
+        })),
+      ]
+        .map(({ date, ...rest }) => ({
+          day: dateToDay(date),
+          date,
+          ...rest,
+        }))
+        .map(({ day, ...rest }) => ({
+          selected: day === selectedDay,
+          isSelectable:
+            day !== selectedDay &&
+            (min && day ? day >= min : true) &&
+            (max && day ? day <= max : true),
+          day,
+          ...rest,
+        }))
+        .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
+          className: [
+            "text-center select-none",
+            selected
+              ? "bg-cyan-400 text-white"
+              : isSelectable
+              ? [
+                  isDateOfCurrentMonth
+                    ? "text-neutral-600 dark:text-neutral-300"
+                    : "text-neutral-400 dark:text-neutral-500",
+                  "hover:bg-cyan-100 hover:text-neutral-600",
+                ].join(" ")
+              : "text-neutral-200 dark:text-neutral-500",
+          ].join(" "),
+          onClick:
+            day && isSelectable
+              ? () => {
+                  setSelectedDay?.(day);
+                  setMonthOffset(0);
+                }
+              : undefined,
+          num: date.getDate(),
+        })),
+    [
+      datesBeforeFirstDate,
+      datesOfMonth,
+      datesAfterLastDate,
+      min,
+      max,
+      selectedDay,
+      setSelectedDay,
+      setMonthOffset,
     ]
-      .map(({ date, ...rest }) => ({
-        day: dateToDay(date),
-        date,
-        ...rest,
-      }))
-      .map(({ day, ...rest }) => ({
-        selected: day === selectedDay,
-        isSelectable:
-          day !== selectedDay &&
-          (min && day ? day >= min : true) &&
-          (max && day ? day <= max : true),
-        day,
-        ...rest,
-      }))
-      .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
-        className: [
-          "text-center select-none",
-          selected
-            ? "bg-cyan-400 text-white"
-            : isSelectable
-            ? [
-                isDateOfCurrentMonth
-                  ? "text-neutral-600 dark:text-neutral-300"
-                  : "text-neutral-400 dark:text-neutral-500",
-                "hover:bg-cyan-100 hover:text-neutral-600",
-              ].join(" ")
-            : "text-neutral-200 dark:text-neutral-500",
-        ].join(" "),
-        onClick:
-          day && isSelectable
-            ? () => {
-                setSelectedDay?.(day);
-                setMonthOffset(0);
-              }
-            : undefined,
-        num: date.getDate(),
-      })), [
-    datesBeforeFirstDate,
-    datesOfMonth,
-    datesAfterLastDate,
-    min,
-    max,
-    selectedDay,
-    setSelectedDay,
-    setMonthOffset,
-  ]);
+  );
 
   const leftCaretClassName = useMemo(
     () => ["text-sm", isFirstMonth ? "neutral" : ""].join(" "),
@@ -189,8 +199,8 @@ export const Calendar: FC<CalendarProps> = ({
   }, [setMonthOffset]);
 
   return (
-    <div className={"calendar"}>
-      <div className={"calendar__head"}>
+    <div className={_classNames("Calendar")}>
+      <div className={_classNames("Calendar__head")}>
         <div className="flex flex-row items-center gap-2">
           <span className={leftCaretClassName}>
             <Icon
@@ -211,7 +221,7 @@ export const Calendar: FC<CalendarProps> = ({
         </div>
       </div>
 
-      <div className={"calendar__body"}>
+      <div className={_classNames("Calendar__body")}>
         {weekDayNums.map((n) => (
           <div key={n} className="text-center select-none">
             {weekDayName[n]}

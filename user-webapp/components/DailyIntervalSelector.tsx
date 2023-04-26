@@ -1,3 +1,4 @@
+// TODO remove this
 import {
   Calendar,
   CalendarProps,
@@ -21,18 +22,18 @@ export const DailyIntervalSelector: FC<Props> = ({
   startDay,
   setStartDay,
 }) => (
-    <div className="flex flex-col md:flex-row gap-4">
-      <Calendar
-        min={min}
-        max={endDay}
-        selectedDay={startDay}
-        setSelectedDay={setStartDay}
-      />
-      <Calendar
-        min={startDay}
-        max={max}
-        selectedDay={endDay}
-        setSelectedDay={setEndDay}
-      />
-    </div>
-  );
+  <div className="flex flex-col md:flex-row gap-4">
+    <Calendar
+      min={min}
+      max={endDay}
+      selectedDay={startDay}
+      setSelectedDay={setStartDay}
+    />
+    <Calendar
+      min={startDay}
+      max={max}
+      selectedDay={endDay}
+      setSelectedDay={setEndDay}
+    />
+  </div>
+);

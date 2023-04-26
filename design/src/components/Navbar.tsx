@@ -7,7 +7,7 @@ import {
   NavbarItem,
   NavbarMenu,
 } from "trunx";
-import { classNames } from "../classNames";
+import { _classNames } from "./_classNames";
 import { Logo } from "./Logo";
 
 export type NavbarProps = Partial<{
@@ -41,10 +41,10 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
   return (
     <_Navbar color="black" {...props}>
       <NavbarBrand>
-        <NavbarItem className={classNames("is-unselectable")}>
+        <NavbarItem className={_classNames("is-unselectable")}>
           <Logo size={34} />
-          <span className={classNames("is-size-5", "has-text-weight-medium")}>
-            ggbot<b className={classNames("has-text-primary")}>2</b>
+          <span className={_classNames("is-size-5", "has-text-weight-medium")}>
+            ggbot<b className={_classNames("has-text-primary")}>2</b>
           </span>
         </NavbarItem>
 

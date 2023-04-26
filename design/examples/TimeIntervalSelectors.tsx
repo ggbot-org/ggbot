@@ -1,5 +1,5 @@
 import { today } from "@ggbot2/time";
-import { DayIntervalSelector } from "@ggbot2/design";
+import { DailyInterval } from "@ggbot2/design";
 import { FC, useState } from "react";
 
 export const TimeIntervalSelectors: FC = () => {
@@ -10,7 +10,7 @@ export const TimeIntervalSelectors: FC = () => {
   const [end, setEnd] = useState(max);
 
   return (
-    <DayIntervalSelector
+    <DailyInterval
       start={start}
       end={end}
       labelStart={labelStart}

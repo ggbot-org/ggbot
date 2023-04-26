@@ -1,12 +1,22 @@
-import {
-  BulmaClassName,
-  classNames as _classNames,
-  ClassNamesArg,
-} from "trunx";
+import { BulmaClassName } from "trunx";
 
-export { type ClassNamesArg } from "trunx";
+export { type ClassNamesArg, classNames } from "trunx";
 
 export type ClassName = BulmaClassName;
 
-export const classNames = (...args: ClassNamesArg<ClassName>[]) =>
-  _classNames(...args);
+/**
+ * @example
+ * ```ts
+ * import {
+ *   ClassName as _ClassName,
+ *   classNames as _classNames,
+ *   ClassNamesArg,
+ * } from "@ggbot2/design";
+ *
+ * // Add other classes.
+ * type ClassName = _ClassName | "Foo" | "Bar";
+
+ * export const classNames = (...args: ClassNamesArg<ClassName>[]) =>
+ *   _classNames(...args);
+ * ```
+ */
