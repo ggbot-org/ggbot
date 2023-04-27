@@ -11,7 +11,7 @@ export const allowedCountryIsoCodes2 = [
   "NL",
   "PT",
 ] as const;
-export type AllowedCountryIsoCode2 = typeof allowedCountryIsoCodes2[number];
+export type AllowedCountryIsoCode2 = (typeof allowedCountryIsoCodes2)[number];
 export const isAllowedCountryIsoCode2 = isLiteralType<AllowedCountryIsoCode2>(
   allowedCountryIsoCodes2
 );

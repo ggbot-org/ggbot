@@ -1,16 +1,12 @@
 import { Dflow } from "dflow";
 
-/**
- * A node is a comment if its text contains spaces, newlines.
- */
+/** A node is a comment if its text contains spaces, newlines. */
 export const isInfoNode = (text: string) =>
   (text.indexOf(" ") > -1 || text.indexOf("\n") > -1) &&
   // A JSON could contain spaces, e.g. '{"message":"hello world"}'
   !isJsonNode(text);
 
-/**
- * A node which text is valid JSON is used to store data.
- */
+/** A node which text is valid JSON is used to store data. */
 export const isJsonNode = (text: string) => {
   try {
     JSON.parse(text);

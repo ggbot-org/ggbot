@@ -7,7 +7,7 @@ import { Operation } from "./operation.js";
 import { CreationTime, DeletionTime, UpdateTime, createdNow } from "./time.js";
 
 export const strategyKinds = ["binance"] as const;
-export type StrategyKind = typeof strategyKinds[number];
+export type StrategyKind = (typeof strategyKinds)[number];
 export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 
 export type Strategy = Item &
@@ -30,12 +30,12 @@ export const newStrategy = ({
   kind,
   name,
 }: NewItem<Strategy>): Strategy => ({
-    ...createdNow(),
-    id: newId(),
-    accountId,
-    kind,
-    name: normalizeName(name),
-  });
+  ...createdNow(),
+  id: newId(),
+  accountId,
+  kind,
+  name: normalizeName(name),
+});
 
 export type StrategyKey = Readonly<{
   strategyId: Strategy["id"];
@@ -58,13 +58,13 @@ export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
  * Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.
  *
  * @example
- * Get all strategies with strategyId starting with 'a'.
- * ```json
- * {
+ *   Get all strategies with strategyId starting with 'a'.
+ *   ```json
+ *   {
  *   "strategyKind": "binance",
  *   "strategyId": "a"
- * }
- * ```
+ *   }
+ *   ```
  */
 export type ListStrategyKeys = Operation<
   Pick<StrategyKey, "strategyKind"> & {

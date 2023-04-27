@@ -7,6 +7,8 @@ type ServerSideProps = StrategyInfo;
 
 export const getServerSideProps = requireAuthenticationAndGetStrategyInfo;
 
-const Page: NextPage<ServerSideProps> = (props) => <CopyStrategyPage {...props} />;
+const Page: NextPage<ServerSideProps> = (props) => (
+  <CopyStrategyPage {...props} />
+);
 
 export default Page;

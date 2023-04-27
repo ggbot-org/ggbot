@@ -21,10 +21,7 @@ export const nodeTextToViewType: NodeTextToViewType = (
 /** Resolve node kind by its text. */
 export type NodeTextToDflowKind = (text: string) => string;
 
-/**
- * Resolve common nodes kind.
- * If no match is found, return the input text.
- */
+/** Resolve common nodes kind. If no match is found, return the input text. */
 export const commonNodeTextToDflowKind: NodeTextToDflowKind = (text) => {
   const type = nodeTextToViewType(text);
   if (!type) return text;

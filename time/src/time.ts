@@ -1,10 +1,16 @@
-import { NaturalNumber, isNaturalNumber, objectTypeGuard } from "@ggbot2/type-utils";
+import {
+  NaturalNumber,
+  isNaturalNumber,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 import { Interval } from "./interval.js";
 
 /**
  * Epoch time.
  *
- * The number of milliseconds since the @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.
+ * The number of milliseconds since the
+ *
+ * @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.
  */
 export type Time = NaturalNumber;
 

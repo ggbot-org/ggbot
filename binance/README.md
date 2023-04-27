@@ -8,4 +8,3 @@ See also GitHub repos:
 - [binance/binance-spot-api-docs](https://github.com/binance/binance-spot-api-docs): Official Documentation for the Binance Spot APIs and Streams
 
 Public API definitions are documented [here](https://binance-docs.github.io/apidocs/spot/en/#public-api-definitions).
-

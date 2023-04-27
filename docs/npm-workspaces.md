@@ -5,7 +5,7 @@ This repo uses [npm workspaces](./tech-stack.md#npm-workspaces).
 Every workspace folder has the same name as its package and is a direct child of the project root folder.
 Hence every workspace folder name has lower case letters with hyphen, because it must be a valid npm name. For example: _foo-bar_.
 
-Every workspace folder must be listed in the root *package.json* `workspaces` attribute.
+Every workspace folder must be listed in the root _package.json_ `workspaces` attribute.
 
 ```json
   "workspaces": [
@@ -27,12 +27,12 @@ The root package.json exposes also scripts for the workspace, for example
 
 A basic workspace package is a folder with the following files:
 
-* .gitignore
-* package.json
-* src/index.ts
-* tsconfig.json
-* tsconfig.build.json
-* tsconfig.test.json
+- .gitignore
+- package.json
+- src/index.ts
+- tsconfig.json
+- tsconfig.build.json
+- tsconfig.test.json
 
 ### .gitignore
 
@@ -64,7 +64,7 @@ temp/
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "pretest": "tsc --build tsconfig.test.json",
-    "test": "node --test",
+    "test": "node --test"
   },
   "dependencies": {
     // Dependency from another workspace package is referenced using `file:` prefix.

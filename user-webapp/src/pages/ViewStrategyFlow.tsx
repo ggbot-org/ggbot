@@ -84,15 +84,13 @@ export const ViewStrategyFlowPage: FC<Props> = ({
       />
 
       <ViewStrategyTabs
-        flow={
-          <FlowViewContainer ref={flowViewContainerRef} />
-        }
+        flow={<FlowViewContainer ref={flowViewContainerRef} />}
         backtest={
           <BacktestController
-              state={backtesting}
-              dispatch={backtestingDispatch}
-              view={flowView?.graph}
-            />
+            state={backtesting}
+            dispatch={backtestingDispatch}
+            view={flowView?.graph}
+          />
         }
       />
     </PageLayout>

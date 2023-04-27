@@ -31,41 +31,41 @@ type UseActionResponse<Output extends OperationOutput> = {
  * It returns a `request` and a `response`.
  *
  * @example
- * ```ts
- * const [request, response] = useApiAction.FooBar();
- * ```
+ *   ```ts
+ *   const [request, response] = useApiAction.FooBar();
+ *   ```
  *
- * The `response` can be destructured as follow.
- *
- * @example
- * ```ts
- * const [request, { data, isPending, error }] = useApiAction.FooBar();
- * ```
- *
- * The `request` returns an `AbortController`, it can be used as a `useEffect` destructor.
+ *   The `response` can be destructured as follow.
  *
  * @example
- * ```ts
- * const [request, response] = useApiAction.FooBar();
- * useEffect(() => {
+ *   ```ts
+ *   const [request, { data, isPending, error }] = useApiAction.FooBar();
+ *   ```
+ *
+ *   The `request` returns an `AbortController`, it can be used as a `useEffect` destructor.
+ *
+ * @example
+ *   ```ts
+ *   const [request, response] = useApiAction.FooBar();
+ *   useEffect(() => {
  *   const controller = request({ param });
  *   return () => { controller.abort() }
- * }, [request]);
- * ```
+ *   }, [request]);
+ *   ```
  *
- * It is a good to:
- * - use an uppercase name for *request*, for example `CREATE`, `READ`, `UPDATE` or `DELETE`.
- * - destructuring *response* if used.
- * - use an empty object as *request* argument if there is no parameter.
+ *   It is a good to:
+ *   - use an uppercase name for *request*, for example `CREATE`, `READ`, `UPDATE` or `DELETE`.
+ *   - destructuring *response* if used.
+ *   - use an empty object as *request* argument if there is no parameter.
  *
  * @example
- * ```ts
- * const [DELETE, { isPending }] = useApiAction.FooBar();
- * useEffect(() => {
- *   const controller = DELETE({});
- *   return () => { controller.abort() }
- * }, [DELETE]);
- * ```
+ *   ```ts
+ *   const [DELETE, { isPending }] = useApiAction.FooBar();
+ *   useEffect(() => {
+ *     const controller = DELETE({});
+ *     return () => { controller.abort() }
+ *   }, [DELETE]);
+ *   ```;
  */
 export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },

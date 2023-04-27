@@ -58,10 +58,13 @@ export const StrategyExecutionLog: FC<Props> = ({
 
                 {showPreview ? <span>{preview}</span> : null}
 
-                {showDetails ? <span className="text-primary-800">•</span> : null}
+                {showDetails ? (
+                  <span className="text-primary-800">•</span>
+                ) : null}
               </summary>
 
-              {showDetails ? <div className="py-1 flex flex-col gap-2">
+              {showDetails ? (
+                <div className="py-1 flex flex-col gap-2">
                   {step.o?.map(({ d }, i) => (
                     <pre
                       key={i}
@@ -70,7 +73,8 @@ export const StrategyExecutionLog: FC<Props> = ({
                       <code>{JSON.stringify(d ?? null, null, 2)}</code>
                     </pre>
                   ))}
-                </div> : null}
+                </div>
+              ) : null}
             </details>
           );
         })}

@@ -66,7 +66,8 @@ export const listAccountKeys: ListAccountKeys["func"] = async () => {
 
 /**
  * @throws {ErrorInvalidArg}
- * @throws {ErrorAccountItemNotFound} */
+ * @throws {ErrorAccountItemNotFound}
+ */
 export const renameAccount: RenameAccount["func"] = async ({
   accountId,
   name,

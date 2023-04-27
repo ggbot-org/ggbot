@@ -4,4 +4,5 @@ import { awsRegion } from "./awsRegion.js";
 
 const { AWS_ACCOUNT_ID } = ENV;
 
-export const getSesIdentityArn = () => `arn:aws:ses:${awsRegion}:${AWS_ACCOUNT_ID}:identity/${topLevelDomain}`;
+export const getSesIdentityArn = () =>
+  `arn:aws:ses:${awsRegion}:${AWS_ACCOUNT_ID}:identity/${topLevelDomain}`;

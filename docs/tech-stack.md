@@ -83,7 +83,7 @@ https://nodejs.org/it/
 
 To install Node.js locally, use [NVM](#nvm).
 
-Package manager used is *npm*.
+Package manager used is _npm_.
 
 Node is also used for tests, with `node:test` module: see [Node Test runner documentation](https://nodejs.org/api/test.html).
 
@@ -99,15 +99,15 @@ See also [npm workspaces internal documentation](./npm-workspaces.md).
 
 https://github.com/nvm-sh/nvm
 
-NVM configuration file is *.nvmrc* and it is located in repository root folder.
+NVM configuration file is _.nvmrc_ and it is located in repository root folder.
 
-To install [Node.js](#nodejs) locally,  go to repository root folder and launch:
+To install [Node.js](#nodejs) locally, go to repository root folder and launch:
 
 ```sh
 nvm use
 ```
 
-See also how to [call `nvm use` automatically in a directory with a *.nvmrc* file](https://github.com/nvm-sh/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file).
+See also how to [call `nvm use` automatically in a directory with a _.nvmrc_ file](https://github.com/nvm-sh/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file).
 
 ## npm packages
 
@@ -131,11 +131,9 @@ https://www.npmjs.com/package/@utrustdev/utrust-ts-library
 
 https://www.npmjs.com/package/aws-sdk
 
-
 ### country-isocode2
 
 https://www.npmjs.com/package/country-isocode2
-
 
 ### dflow
 
@@ -180,4 +178,3 @@ https://www.npmjs.com/package/react-hot-toast
 ### typescript
 
 https://www.npmjs.com/package/typescript
-

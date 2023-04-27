@@ -2,8 +2,6 @@
 
 repo here: https://eu-central-1.console.aws.amazon.com/codesuite/codecommit/repositories/ggbot2-monorepo/browse?region=eu-central-1
 
-
-
 ## Add git remote
 
 ```sh

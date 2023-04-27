@@ -30,9 +30,11 @@ export const Page: FC<PropsWithChildren<PageProps>> = ({
       <>
         {topbar}
 
-        {isOffline ? <Message>
+        {isOffline ? (
+          <Message>
             <p>The network connection has been lost.</p>
-          </Message> : null}
+          </Message>
+        ) : null}
 
         {children}
       </>

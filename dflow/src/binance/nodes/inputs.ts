@@ -1,6 +1,12 @@
 import { DflowNode } from "dflow";
 import { BinanceDflowContext as Context } from "../context.js";
-import { inputKey, inputInterval, inputSymbol, outputInterval, outputSymbol } from "./commonIO.js";
+import {
+  inputKey,
+  inputInterval,
+  inputSymbol,
+  outputInterval,
+  outputSymbol,
+} from "./commonIO.js";
 
 export class InputSymbol extends DflowNode {
   static kind = "inputSymbol";

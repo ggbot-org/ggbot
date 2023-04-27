@@ -5,13 +5,13 @@ import { DeleteAccount } from "_components/DeleteAccount";
 import { OneSectionLayout } from "_layouts/OneSection";
 
 export const AccountSettingsPage: FC = () => (
-    <OneSectionLayout>
-      <Columns>
-        <Column size="half">
-          <AccountSettings />
-        </Column>
-      </Columns>
+  <OneSectionLayout>
+    <Columns>
+      <Column size="half">
+        <AccountSettings />
+      </Column>
+    </Columns>
 
-      <DeleteAccount />
-    </OneSectionLayout>
-  );
+    <DeleteAccount />
+  </OneSectionLayout>
+);

@@ -164,7 +164,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         strategyKind={strategyKind}
       />
 
-      {strategyKind === "binance" && view && dayInterval ? <BacktestControllerBinance dayInterval={dayInterval} view={view} /> : null}
+      {strategyKind === "binance" && view && dayInterval ? (
+        <BacktestControllerBinance dayInterval={dayInterval} view={view} />
+      ) : null}
 
       <menu>
         <Button onClick={onClickAction}>{actionLabel}</Button>

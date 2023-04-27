@@ -11,4 +11,4 @@ export const binanceApiEndpoints = [
   "/sapi/v1/account/apiRestrictions",
 ] as const;
 
-export type BinanceApiEndpoint = typeof binanceApiEndpoints[number];
+export type BinanceApiEndpoint = (typeof binanceApiEndpoints)[number];

@@ -1,3 +1,5 @@
+/* eslint no-undef: off */
+
 // Content Security Policy
 // //
 // See also Mozilla documentation:
@@ -24,7 +26,7 @@ const securityHeaders = [
   },
 ];
 
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 module.exports = {
   async headers() {
     return [

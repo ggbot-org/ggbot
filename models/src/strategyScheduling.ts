@@ -8,8 +8,11 @@ export type StrategyScheduling = Item &
     input?: StrategyInput;
   };
 
-export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(({ id, input, ...scheduling }) =>
-  isItemId(id) && isScheduling(scheduling) && input === undefined ? true : isStrategyInput(input)
+export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(
+  ({ id, input, ...scheduling }) =>
+    isItemId(id) && isScheduling(scheduling) && input === undefined
+      ? true
+      : isStrategyInput(input)
 );
 
 export const newStrategyScheduling = ({
@@ -21,4 +24,5 @@ export const newStrategyScheduling = ({
   status,
 });
 
-export const isStrategySchedulings = arrayTypeGuard<StrategyScheduling>(isStrategyScheduling);
+export const isStrategySchedulings =
+  arrayTypeGuard<StrategyScheduling>(isStrategyScheduling);

@@ -2,7 +2,7 @@ module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "import"],
+  plugins: ["@typescript-eslint", "import", "prettier"],
   root: true,
   rules: {
     "@typescript-eslint/ban-ts-comment": "warn",
@@ -45,5 +45,6 @@ module.exports = {
     "no-lonely-if": "error",
     "no-multi-assign": "error",
     "no-warning-comments": "warn",
+    "prettier/prettier": "error",
   },
 };

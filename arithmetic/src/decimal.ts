@@ -1,9 +1,9 @@
 import { ErrorCannotCoerceToDecimal } from "./errors.js";
 
 /**
-Represents a number with decimal digits as a string.
-Exponential notation is not allowed.
-*/
+ * Represents a number with decimal digits as a string. Exponential notation is
+ * not allowed.
+ */
 export type Decimal = string;
 
 export const isDecimal = (arg: unknown): arg is Decimal => {
@@ -44,9 +44,7 @@ export const numOfDecimals = (num: MaybeDecimal): number => {
 export const maxNumOfDecimals = (values: MaybeDecimal[]): number =>
   values.reduce<number>((max, num) => Math.max(max, numOfDecimals(num)), 0);
 
-/**
- * @throws {ErrorCannotCoerceToDecimal}
- */
+/** @throws {ErrorCannotCoerceToDecimal} */
 export const coerceToDecimal = (
   arg: unknown,
   numDecimals?: number

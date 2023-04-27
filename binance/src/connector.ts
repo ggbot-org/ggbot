@@ -8,7 +8,7 @@ const apiClusters = [
   "https://api3.binance.com",
 ];
 const baseUrls = [defaultBaseUrl, ...apiClusters] as const;
-type BaseUrl = typeof baseUrls[number];
+type BaseUrl = (typeof baseUrls)[number];
 
 /** BinanceConnector is a base class for BinanceExchange and BinanceClient. */
 export class BinanceConnector {

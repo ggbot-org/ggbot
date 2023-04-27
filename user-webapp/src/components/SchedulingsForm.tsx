@@ -86,7 +86,10 @@ export const SchedulingsForm: FC<Props> = ({
 
   const canCancel = someSchedulingChanged;
 
-  const wantedSchedulings = useMemo<StrategyScheduling[]>(() => schedulingItems.filter(isStrategyScheduling), [schedulingItems]);
+  const wantedSchedulings = useMemo<StrategyScheduling[]>(
+    () => schedulingItems.filter(isStrategyScheduling),
+    [schedulingItems]
+  );
 
   const canSubmit = useMemo(() => {
     if (hasActiveSubscription !== true) return false;

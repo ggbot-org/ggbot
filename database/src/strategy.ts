@@ -49,8 +49,9 @@ const strategyAccountIdCache = new CacheMap<Account["id"]>();
  * Atomic operation to create a strategy.
  *
  * It is used internally by
- * - copyStrategy
- * - createStrategy
+ *
+ * - CopyStrategy
+ * - CreateStrategy
  *
  * @throws {ErrorInvalidArg}
  * @internal
@@ -107,9 +108,9 @@ export const copyStrategy: CopyStrategy["func"] = async ({
 /**
  * Create strategy.
  *
- * It also creates also an empty strategy flow.
- * If user creates a new strategy, even if the flow was not edited yet,
- * it will be possible to share it and run it.
+ * It also creates also an empty strategy flow. If user creates a new strategy,
+ * even if the flow was not edited yet, it will be possible to share it and run
+ * it.
  *
  * @throws {ErrorInvalidArg}
  */

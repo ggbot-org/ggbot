@@ -1,6 +1,6 @@
 # NextJS Page handler
 
-Page that requires authentication and use no *server-side prop*.
+Page that requires authentication and use no _server-side prop_.
 
 ```ts
 import { NextPage } from "next";
@@ -10,17 +10,13 @@ import { requireAuthentication } from "_routing/serverSide";
 export const getServerSideProps = requireAuthentication;
 
 const Page: NextPage = () => {
-  return (
-    <Content>
-      page content
-    </Content>
-  );
+  return <Content>page content</Content>;
 };
 
 export default Page;
 ```
 
-Page with custom *server-side props*.
+Page with custom _server-side props_.
 
 ```ts
 import { GetServerSideProps, NextPage } from "next";

@@ -12,7 +12,7 @@ export type InvalidStrategyKey = {
 };
 
 const settingsSectionIds = ["account", "binance", "billing"] as const;
-export type SettingsSectionId = typeof settingsSectionIds[number];
+export type SettingsSectionId = (typeof settingsSectionIds)[number];
 
 export type StrategyInfo = {
   accountIsOwner: boolean;

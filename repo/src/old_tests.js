@@ -37,9 +37,7 @@ const packageScript = {
   [packageScriptKey.checkTypes]: "tsc --noEmit --project .",
 };
 
-/**
- * Checks that are in common to package.json workspace.
- */
+/** Checks that are in common to package.json workspace. */
 function testPackageJson({ packageJson, workspace }) {
   const { name } = packageJson;
 

@@ -6,13 +6,13 @@ import { StrategyKey, InvalidStrategyKey } from "_routing/types";
 type Props = StrategyKey | InvalidStrategyKey;
 
 export const StrategyKeyFields: FC<Props> = ({ strategyKind, strategyId }) => (
-    <Columns>
-      <Column>
-        <OutputField label={fieldLabel.strategyKind} value={strategyKind} />
-      </Column>
+  <Columns>
+    <Column>
+      <OutputField label={fieldLabel.strategyKind} value={strategyKind} />
+    </Column>
 
-      <Column>
-        <OutputField label={fieldLabel.strategyId} value={strategyId} />
-      </Column>
-    </Columns>
-  );
+    <Column>
+      <OutputField label={fieldLabel.strategyId} value={strategyId} />
+    </Column>
+  </Columns>
+);

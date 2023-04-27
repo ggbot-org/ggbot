@@ -17,7 +17,7 @@ export const dflowBinanceKlineIntervals = [
 ] as const;
 
 export type DflowBinanceKlineInterval =
-  typeof dflowBinanceKlineIntervals[number];
+  (typeof dflowBinanceKlineIntervals)[number];
 
 export const isDflowBinanceKlineInterval =
   isLiteralType<DflowBinanceKlineInterval>(dflowBinanceKlineIntervals);

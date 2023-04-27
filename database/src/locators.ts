@@ -128,7 +128,7 @@ const fieldNames = [
   ...dayKeyFields,
   ...subscriptionPurchaseKeyFields,
 ] as const;
-type FieldName = typeof fieldNames[number];
+type FieldName = (typeof fieldNames)[number];
 const isFieldName = isLiteralType<FieldName>(fieldNames);
 const fieldSeparator = "=";
 const fieldJoin = (name: FieldName, value: string) =>
@@ -152,7 +152,7 @@ const dirnamePrefixes = [
   "subscriptionPurchase",
 ] as const;
 
-type DirnamePrefix = typeof dirnamePrefixes[number];
+type DirnamePrefix = (typeof dirnamePrefixes)[number];
 
 export const dirnamePrefix: Record<DirnamePrefix, string> = {
   account: "account",

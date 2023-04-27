@@ -29,8 +29,7 @@ export class InternalServerError extends Error {
 
 The constructor need to call `super` first, passing it the error message.
 
-Error `message` is defined as a *static attribute* or a *static method*, it can be used to recognize the error in some contexts, for example when testing.
-
+Error `message` is defined as a _static attribute_ or a _static method_, it can be used to recognize the error in some contexts, for example when testing.
 
 ```ts
 import { strict as assert } from "node:assert";
@@ -85,8 +84,8 @@ export class ErrorItemNotFound extends Error {
   static message(type: ErrorItemNotFound["type"]) {
     return `${type} not found`;
   }
-  id?: unknown
-  type: "User" | "Project" | "Transaction"
+  id?: unknown;
+  type: "User" | "Project" | "Transaction";
   constructor({ id, type }) {
     super(ErrorItemNotFound.message(type));
     this.id = id;
@@ -109,14 +108,14 @@ try {
     // handle it
   }
   // otherwise
-  throw error
+  throw error;
 }
 ```
 
 However, using `error instanceof MyError` can be done only if the error instance
 was created in the same JavaScript context that catches it. This could be not
-the case, not only in client-server model but also when using threads (e.g. *Web
-Workers*).
+the case, not only in client-server model but also when using threads (e.g. _Web
+Workers_).
 An error should also be serializable into JSON, in the following example the
 `toObject()` method return something that can be serialized.
 
@@ -128,16 +127,20 @@ export class MyError extends Error {
   readonly quz: number;
   readonly whenCreated: number;
 
-  static isMyErrorData (arg: unknown): arg is MyErrorData  {
-    if (!arg || typeof arg !== "object") return false
-    const { bar, whenCreated } = arg as Partial<MyErrorData>
-    return typeof bar === "boolean" && typeof whenCreated === "number" && whenCreated > 0;
+  static isMyErrorData(arg: unknown): arg is MyErrorData {
+    if (!arg || typeof arg !== "object") return false;
+    const { bar, whenCreated } = arg as Partial<MyErrorData>;
+    return (
+      typeof bar === "boolean" &&
+      typeof whenCreated === "number" &&
+      whenCreated > 0
+    );
   }
 
   constructor({ bar, quz }: Pick<MyError, "bar" | "quz">) {
     super(MyError.message);
     this.bar = bar;
-    this.quz = quz
+    this.quz = quz;
     this.whenCreated = new Date().getTime();
   }
 
@@ -147,9 +150,9 @@ export class MyError extends Error {
       data: {
         bar: this.bar,
         quz: this.quz,
-        whenCreated: this.whenCreated
-      }
-    }
+        whenCreated: this.whenCreated,
+      },
+    };
   }
 }
 

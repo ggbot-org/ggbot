@@ -19,12 +19,12 @@ export const totalPurchase = (numMonths: NaturalNumber) => {
 };
 
 const subscriptionPlans = ["basic"];
-export type SubscriptionPlan = typeof subscriptionPlans[number];
+export type SubscriptionPlan = (typeof subscriptionPlans)[number];
 export const isSubscriptionPlan =
   isLiteralType<SubscriptionPlan>(subscriptionPlans);
 
 const subscriptionStatuses = ["active", "expired"];
-export type SubscriptionStatus = typeof subscriptionStatuses[number];
+export type SubscriptionStatus = (typeof subscriptionStatuses)[number];
 export const isSubscriptionStatus =
   isLiteralType<SubscriptionStatus>(subscriptionStatuses);
 

@@ -7,26 +7,26 @@ import { isInfoNode } from "./nodeTextParser.js";
  * A DflowHost that can load a FlowView graph.
  *
  * @example
- * ```ts
- * import { DflowLoader, load } from "../path/to/loader.js";
- * class MyDflowHost extends DflowHost implements DflowLoader {
- *   load(view: DflowExecutorView): void {
- *     load({
- *       dflow: this,
- *       nodeTextToDflowKind,
- *       view,
- *     });
+ *   ```ts
+ *   import { DflowLoader, load } from "../path/to/loader.js";
+ *   class MyDflowHost extends DflowHost implements DflowLoader {
+ *     load(view: DflowExecutorView): void {
+ *       load({
+ *         dflow: this,
+ *         nodeTextToDflowKind,
+ *         view,
+ *       });
+ *     }
  *   }
- * }
- * ```
+ *   ```;
  */
 export interface DflowLoader extends DflowHost {
   load(view: DflowExecutorView): void;
 }
 
 /**
- * Parse view and load it as a Dflow graph.
- * Unknown nodes and broken connections are ignored.
+ * Parse view and load it as a Dflow graph. Unknown nodes and broken connections
+ * are ignored.
  */
 export const load = ({
   dflow,

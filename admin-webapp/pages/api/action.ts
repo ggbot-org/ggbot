@@ -23,7 +23,7 @@ export type ApiAction = {
 };
 
 const apiActionTypes = ["ReadAccount", "ListAccountKeys"] as const;
-export type ApiActionType = typeof apiActionTypes[number];
+export type ApiActionType = (typeof apiActionTypes)[number];
 const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
 
 export default async function apiHandler(

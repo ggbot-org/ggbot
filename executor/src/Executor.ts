@@ -33,9 +33,7 @@ import { log } from "./log.js";
 const executorIdFile = join(homedir(), ".ggbot2-executor");
 
 export class Executor {
-  /**
-   * Read `executorId` from local disc or create a new one if it does not exist.
-   */
+  /** Read `executorId` from local disc or create a new one if it does not exist. */
   static async getExecutorId(): Promise<Item["id"]> {
     try {
       const executorId = await readFile(executorIdFile, "utf8");
@@ -161,10 +159,10 @@ export class Executor {
 
   async runTasks() {
     const accountKeys = await this.getAccountKeys();
-    ACCOUNT: for (const accountKey of accountKeys) {
+    for (const accountKey of accountKeys) {
       try {
         // Get account.
-        if (!isAccountKey(accountKey)) continue ACCOUNT;
+        if (!isAccountKey(accountKey)) continue;
         const { accountId } = accountKey;
 
         // Check subscription.
@@ -174,19 +172,19 @@ export class Executor {
           subscriptionStatus(subscription) !== "active"
         ) {
           await this.suspendAccountStrategies(accountKey);
-          continue ACCOUNT;
+          continue;
         }
 
         // Get strategies.
         const accountStrategies = await this.getAccountStrategies(accountKey);
-        if (!Array.isArray(accountStrategies)) continue ACCOUNT;
+        if (!Array.isArray(accountStrategies)) continue;
 
-        STRATEGY: for (const accountStrategy of accountStrategies) {
-          if (!isAccountStrategy(accountStrategy)) continue STRATEGY;
+        for (const accountStrategy of accountStrategies) {
+          if (!isAccountStrategy(accountStrategy)) continue;
           const { strategyId, strategyKind, schedulings } = accountStrategy;
 
-          SCHEDULING: for (const scheduling of schedulings) {
-            if (!isScheduling(scheduling)) continue SCHEDULING;
+          for (const scheduling of schedulings) {
+            if (!isScheduling(scheduling)) continue;
 
             // Execute scheduled strategies.
             await this.manageStrategyExecution(
@@ -204,7 +202,7 @@ export class Executor {
           }
         }
 
-        continue ACCOUNT;
+        continue;
       }
     }
   }

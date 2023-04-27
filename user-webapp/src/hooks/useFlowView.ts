@@ -39,19 +39,19 @@ type UseFlowView = (
 
 /**
  * @example
- * ```ts
- * const containerRef = useRef<HTMLDivElement | null>(null);
+ *   ```ts
+ *   const containerRef = useRef<HTMLDivElement | null>(null);
  *
- * const { flowView, whenUpdated } = useFlowView({
- *   containerRef,
- *   strategyKind: "binance",
- *   binanceSymbols,
- * });
+ *   const { flowView, whenUpdated } = useFlowView({
+ *     containerRef,
+ *     strategyKind: "binance",
+ *     binanceSymbols,
+ *   });
  *
- * return (
- *   <div ref={containerRef}/>
- * )
- * ```
+ *   return (
+ *     <div ref={containerRef}/>
+ *   )
+ *   ```;
  */
 export const useFlowView: UseFlowView = ({
   binanceSymbols,

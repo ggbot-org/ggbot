@@ -5,15 +5,15 @@ import { SubscriptionPurchase } from "_components/SubscriptionPurchase";
 import { OneSectionLayout } from "_layouts/OneSection";
 
 export const BillingSettingsPage: FC = () => (
-    <OneSectionLayout>
-      <Columns>
-        <Column>
-          <SubscriptionInfo />
-        </Column>
+  <OneSectionLayout>
+    <Columns>
+      <Column>
+        <SubscriptionInfo />
+      </Column>
 
-        <Column>
-          <SubscriptionPurchase />
-        </Column>
-      </Columns>
-    </OneSectionLayout>
-  );
+      <Column>
+        <SubscriptionPurchase />
+      </Column>
+    </Columns>
+  </OneSectionLayout>
+);

@@ -1,7 +1,11 @@
 import { Time, TimeInterval } from "@ggbot2/time";
 import { CacheMap } from "@ggbot2/models";
 import { getBinanceIntervalTime } from "./time.js";
-import { BinanceExchangeInfo, BinanceKline, BinanceKlineInterval } from "./types.js";
+import {
+  BinanceExchangeInfo,
+  BinanceKline,
+  BinanceKlineInterval,
+} from "./types.js";
 import { isBinanceKline } from "./typeGuards.js";
 
 type BinanceExchangeInfoCacheProvider = {
@@ -20,7 +24,11 @@ type BinanceKlineCacheProvider = {
     interval: BinanceKlineInterval,
     timeInterval: TimeInterval
   ): BinanceKline[] | undefined;
-  setKlines(symbol: string, interval: BinanceKlineInterval, klines: BinanceKline[]): void;
+  setKlines(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    klines: BinanceKline[]
+  ): void;
 };
 
 export type BinanceCacheProvider = BinanceExchangeInfoCacheProvider &
@@ -36,7 +44,9 @@ export class BinanceCacheMap implements BinanceCacheProvider {
 
   readonly exchangeInfoKey = "exchangeInfo";
 
-  readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(exchangeInfoCacheDuration);
+  readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
+    exchangeInfoCacheDuration
+  );
 
   getExchangeInfo() {
     return this.exchangeInfoMap.get(this.exchangeInfoKey);
@@ -62,13 +72,21 @@ export class BinanceCacheMap implements BinanceCacheProvider {
   // BinanceKlineCacheProvider
   // ///////////////////////////////////////////////////////////////////////////
 
-  static klinesKey(symbol: string, interval: BinanceKlineInterval, openTime: Time) {
+  static klinesKey(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    openTime: Time
+  ) {
     return `${symbol}:${interval}:${openTime}`;
   }
 
   readonly klinesMap = new CacheMap<BinanceKline>("ONE_WEEK");
 
-  getKlines(symbol: string, interval: BinanceKlineInterval, timeInterval: TimeInterval) {
+  getKlines(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    timeInterval: TimeInterval
+  ) {
     const klines: BinanceKline[] = [];
     let openTime = timeInterval.start;
     while (openTime < timeInterval.end) {
@@ -81,7 +99,11 @@ export class BinanceCacheMap implements BinanceCacheProvider {
     return klines;
   }
 
-  setKlines(symbol: string, interval: BinanceKlineInterval, klines: BinanceKline[]) {
+  setKlines(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    klines: BinanceKline[]
+  ) {
     for (const kline of klines) {
       const openTime = kline[0];
       const key = BinanceCacheMap.klinesKey(symbol, interval, openTime);

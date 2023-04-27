@@ -7,6 +7,6 @@ export type UserApiAction = {
 };
 
 export const userApiActionTypes = ["ReadAccount"] as const;
-export type UserApiActionType = typeof userApiActionTypes[number];
+export type UserApiActionType = (typeof userApiActionTypes)[number];
 export const isUserApiActionType =
   isLiteralType<UserApiActionType>(userApiActionTypes);

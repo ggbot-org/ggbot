@@ -74,7 +74,12 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ) {
-    const { options, symbol } = await binance.prepareOrder(symbolInput, side, type, orderOptions);
+    const { options, symbol } = await binance.prepareOrder(
+      symbolInput,
+      side,
+      type,
+      orderOptions
+    );
     const { price } = await this.tickerPrice(symbol);
     let quantity = zero;
     let quoteQuantity = zero;
@@ -130,13 +135,20 @@ export class BinanceDflowClient implements IBinanceDflowClient {
       }
     }
     // If no data was found in cache, fetch it from Binance API.
-    const klines = await binance.klines(symbol, dflowBinanceLowerKlineInterval, {
-      startTime: time,
-      limit: 1,
-    });
+    const klines = await binance.klines(
+      symbol,
+      dflowBinanceLowerKlineInterval,
+      {
+        startTime: time,
+        limit: 1,
+      }
+    );
     const price = klines[0][4];
     return Promise.resolve({ symbol, price });
   }
 }
 
-export type BinanceDflowClientArg = Pick<BinanceDflowClient, "balances" | "time">;
+export type BinanceDflowClientArg = Pick<
+  BinanceDflowClient,
+  "balances" | "time"
+>;

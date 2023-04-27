@@ -7,24 +7,24 @@ import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
-  __500__INTERNAL_SERVER_ERROR__
+  __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // Type input data
 type RequestData = {
-  foo: number
+  foo: number;
 };
 
 type ResponseData = {
-  ok: boolean
+  ok: boolean;
 };
 
 // Also create a type guard for input data
 const isRequestData = (arg: unknown): arg is RequestData => {
-  if (typeof value !== 'object' || value === null) return false
+  if (typeof value !== "object" || value === null) return false;
   // ... validation code
-}
+};
 
 export default async function apiHandler(
   req: NextApiRequest,
@@ -32,13 +32,14 @@ export default async function apiHandler(
 ) {
   try {
     // Handle HTTP method
-    if (req.method !== "POST") return res.status(__405__METHOD_NOT_ALLOWED__).json({});
+    if (req.method !== "POST")
+      return res.status(__405__METHOD_NOT_ALLOWED__).json({});
 
     // Check RequestData is valid
     const input = req.body;
-    if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({})
+    if (!isRequestData(input)) return res.status(__400__BAD_REQUEST__).json({});
 
-    const { foo } = input
+    const { foo } = input;
 
     // ... other code
 

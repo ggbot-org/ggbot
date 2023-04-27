@@ -1,8 +1,8 @@
 # EC2 base AMI
 
-Create a new instance starting from *Amazon Linux 2023 AMI*.
+Create a new instance starting from _Amazon Linux 2023 AMI_.
 
-Connect via SSH with *ec2-user*.
+Connect via SSH with _ec2-user_.
 
 Update all software.
 

@@ -22,7 +22,7 @@ const apiActionErrorNames = [
   ErrorUnimplementedStrategyKind.name,
   InternalServerError.name,
 ] as const;
-export type ApiActionErrorName = typeof apiActionErrorNames[number];
+export type ApiActionErrorName = (typeof apiActionErrorNames)[number];
 
 const isApiActionErrorName = (arg: unknown): arg is ApiActionErrorName => {
   if (typeof arg !== "string") return false;
@@ -52,7 +52,7 @@ export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
 // ////////////
 
 const errorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
-type ErrorName = typeof errorNames[number];
+type ErrorName = (typeof errorNames)[number];
 
 export type ActionError =
   | {

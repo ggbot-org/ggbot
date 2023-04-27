@@ -9,6 +9,7 @@ export const getWebappLoadBalancerName = (deployStage = DEPLOY_STAGE) =>
 
 export const webappLoadBalancerType = LoadBalancerTypeEnum.APPLICATION;
 
-export const getWebappLoadBalancerArnPrefix = (deployStage = DEPLOY_STAGE) => `arn:aws:elasticloadbalancing:${awsRegion}:${AWS_ACCOUNT_ID}:loadbalancer/app/${getWebappLoadBalancerName(
+export const getWebappLoadBalancerArnPrefix = (deployStage = DEPLOY_STAGE) =>
+  `arn:aws:elasticloadbalancing:${awsRegion}:${AWS_ACCOUNT_ID}:loadbalancer/app/${getWebappLoadBalancerName(
     deployStage
   )}`;

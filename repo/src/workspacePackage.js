@@ -2,9 +2,7 @@ import { join } from "node:path";
 import { packageScriptKey } from "./package.js";
 import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
 
-/**
- * By convention, workspace package name scope is root package name.
- */
+/** By convention, workspace package name scope is root package name. */
 const workspacesNamespace = rootPackageJson.name;
 
 export const workspacePackageName = (workspace) =>

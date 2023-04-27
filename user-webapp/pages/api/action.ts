@@ -80,7 +80,9 @@ export type ApiAction = {
   RenameAccount: Action<RenameAccount["in"]>;
   RenameStrategy: Action<RenameStrategy["in"]>;
   SetAccountCountry: Action<SetAccountCountry["in"]>;
-  WriteAccountStrategiesItemSchedulings: Action<WriteAccountStrategiesItemSchedulings["in"]>;
+  WriteAccountStrategiesItemSchedulings: Action<
+    WriteAccountStrategiesItemSchedulings["in"]
+  >;
   WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
@@ -107,7 +109,7 @@ const apiActionTypes = [
   "WriteAccountStrategiesItemSchedulings",
   "WriteStrategyFlow",
 ] as const;
-export type ApiActionType = typeof apiActionTypes[number];
+export type ApiActionType = (typeof apiActionTypes)[number];
 const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
 
 export default async function apiHandler(
@@ -115,13 +117,15 @@ export default async function apiHandler(
   res: NextApiResponse<ApiActionResponseOutput>
 ) {
   try {
-    if (req.method !== "POST") return res.status(__405__METHOD_NOT_ALLOWED__).json({});
+    if (req.method !== "POST")
+      return res.status(__405__METHOD_NOT_ALLOWED__).json({});
 
     const action = req.body;
 
     const { type: actionType } = action;
 
-    if (!isApiActionType(actionType)) return res.status(__400__BAD_REQUEST__).json({});
+    if (!isApiActionType(actionType))
+      return res.status(__400__BAD_REQUEST__).json({});
 
     // Actions that do not require authentication.
     // //////////////////////////////////////////
@@ -152,7 +156,10 @@ export default async function apiHandler(
           }
 
           case "CreateBinanceApiConfig": {
-            const data = await createBinanceApiConfig({ accountId, ...action.data });
+            const data = await createBinanceApiConfig({
+              accountId,
+              ...action.data,
+            });
             return res.status(__200__OK__).json({ data });
           }
 
@@ -211,12 +218,18 @@ export default async function apiHandler(
           }
 
           case "ReadStrategyBalances": {
-            const data = await readStrategyBalances({ accountId, ...action.data });
+            const data = await readStrategyBalances({
+              accountId,
+              ...action.data,
+            });
             return res.status(__200__OK__).json({ data });
           }
 
           case "ReadStrategyOrders": {
-            const data = await readStrategyOrders({ accountId, ...action.data });
+            const data = await readStrategyOrders({
+              accountId,
+              ...action.data,
+            });
             return res.status(__200__OK__).json({ data });
           }
 
@@ -241,7 +254,10 @@ export default async function apiHandler(
           }
 
           case "WriteAccountStrategiesItemSchedulings": {
-            const data = await writeAccountStrategiesItemSchedulings({ accountId, ...action.data });
+            const data = await writeAccountStrategiesItemSchedulings({
+              accountId,
+              ...action.data,
+            });
             return res.status(__200__OK__).json({ data });
           }
 
@@ -264,6 +280,8 @@ export default async function apiHandler(
       return res.status(__400__BAD_REQUEST__).json({ error: error.toObject() });
 
     console.error(error);
-    res.status(__500__INTERNAL_SERVER_ERROR__).json({ error: { name: InternalServerError.name } });
+    res
+      .status(__500__INTERNAL_SERVER_ERROR__)
+      .json({ error: { name: InternalServerError.name } });
   }
 }

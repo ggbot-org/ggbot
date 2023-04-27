@@ -7,12 +7,12 @@
 
 ## Requirements
 
-See [Node.js](./docs/tech-stack.md#nodejs) section in *Tech stack* documentation.
+See [Node.js](./docs/tech-stack.md#nodejs) section in _Tech stack_ documentation.
 
 ### Environment variables
 
-Use [direnv](https://direnv.net/) to load variables from *.envrc* file.
-In the repo root dir, to be able to start development, create a *.envrc* file like the following
+Use [direnv](https://direnv.net/) to load variables from _.envrc_ file.
+In the repo root dir, to be able to start development, create a _.envrc_ file like the following
 
 ```sh
 export AWS_ACCOUNT_ID=123
@@ -32,7 +32,7 @@ See also [internal npm workspaces documentation](./docs/workspaces.md).
 Check deps: `npm outdated`
 Update deps: `npm update`
 
-Notice that npm updates to *minor* versions. It is a good idea to not automate *major* upgrades.
+Notice that npm updates to _minor_ versions. It is a good idea to not automate _major_ upgrades.
 
 ## DevOps
 

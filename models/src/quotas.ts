@@ -6,7 +6,7 @@ export const quotaTypes = [
   "MAX_STRATEGIES_PER_ACCOUNT",
   "MAX_SCHEDULINGS_PER_ACCOUNT",
 ] as const;
-export type QuotaType = typeof quotaTypes[number];
+export type QuotaType = (typeof quotaTypes)[number];
 
 export const quota: Record<
   QuotaType,

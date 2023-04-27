@@ -74,6 +74,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
     switch (event.code) {
       case "Enter":
         this.contentDiv.blur();
+        break;
       default:
         break;
     }

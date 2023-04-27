@@ -4,7 +4,7 @@ import { classNames } from "_classNames";
 import { tabLabel } from "_i18n";
 
 const tabIds = ["flow", "backtest", "executionLog"] as const;
-type TabId = typeof tabIds[number];
+type TabId = (typeof tabIds)[number];
 
 type Props = Record<TabId, ReactNode>;
 

@@ -26,24 +26,26 @@ export const isEmailAddress = (arg: unknown): arg is EmailAddress => {
   return true;
 };
 
-/** Normalize according to how different email providers trait email address.
-If a domain is gmail.com or is handled by Google for Business,
-any "." character in the EmailAddress user part is ignored.
-
-@example
-```
-namesurname@gmail.com is the same as name.surname@gmail.com
-and also the same as n.a.m.e.s.u.r.n.a.m.e@gmail.com
-```
-
-Also users can append labels to the EmailAddress user part after a "+" character.
-
-@example
-```
-name@gmail.com EmailAddress can be used as name+label@gmail.com
-```
-
-@throws {ErrorInvalidArg} */
+/**
+ * Normalize according to how different email providers trait email address. If
+ * a domain is gmail.com or is handled by Google for Business, any "." character
+ * in the EmailAddress user part is ignored.
+ *
+ * @example
+ *   ```
+ *   namesurname@gmail.com is the same as name.surname@gmail.com
+ *   and also the same as n.a.m.e.s.u.r.n.a.m.e@gmail.com
+ *   ```
+ *
+ *   Also users can append labels to the EmailAddress user part after a "+" character.
+ *
+ * @example
+ *   ```
+ *   name@gmail.com EmailAddress can be used as name+label@gmail.com
+ *   ```;
+ *
+ * @throws {ErrorInvalidArg}
+ */
 export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
   // Split EmailAddress
   const [firstPart, domain] = email.split("@");

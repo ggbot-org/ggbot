@@ -8,10 +8,10 @@ type ServerSideProps = StrategyKey;
 export const getServerSideProps = requireAuthenticationAndGetStrategyKey;
 
 const Page: NextPage<ServerSideProps> = ({ strategyKind, strategyId }) => (
-    <ErrorStrategyNotFoundPage
-      strategyKind={strategyKind}
-      strategyId={strategyId}
-    />
-  );
+  <ErrorStrategyNotFoundPage
+    strategyKind={strategyKind}
+    strategyId={strategyId}
+  />
+);
 
 export default Page;

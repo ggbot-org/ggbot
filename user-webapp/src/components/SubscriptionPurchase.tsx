@@ -203,9 +203,11 @@ export const SubscriptionPurchase: FC = () => {
     <Box>
       <Title>Purchase</Title>
 
-      {hasActiveSubscription ? <Message color="danger">
+      {hasActiveSubscription ? (
+        <Message color="danger">
           Your subscription will expire soon, please consider renew it.
-        </Message> : null}
+        </Message>
+      ) : null}
 
       <Message>
         <p>Price for 1 month is {formattedMonthlyPrice}.</p>

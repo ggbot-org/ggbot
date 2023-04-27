@@ -2,7 +2,7 @@ import { isLiteralType } from "@ggbot2/type-utils";
 import { Time } from "./time.js";
 
 export const timeUnits = ["second", "minute", "hour", "day"];
-export type TimeUnit = typeof timeUnits[number];
+export type TimeUnit = (typeof timeUnits)[number];
 export const isTimeUnit = isLiteralType<TimeUnit>(timeUnits);
 
 export const coerceToTimeUnit = (arg: string): TimeUnit | undefined => {

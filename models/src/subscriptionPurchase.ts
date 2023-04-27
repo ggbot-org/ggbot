@@ -34,7 +34,7 @@ export const subscriptionPurchaseStatuses = [
   "pending",
 ] as const;
 export type SubscriptionPurchaseStatus =
-  typeof subscriptionPurchaseStatuses[number];
+  (typeof subscriptionPurchaseStatuses)[number];
 export const isSubscriptionPurchaseStatus =
   isLiteralType<SubscriptionPurchaseStatus>(subscriptionPurchaseStatuses);
 
@@ -142,17 +142,13 @@ export type WriteSubscriptionPurchase = Operation<
   UpdateTime
 >;
 
-/**
- * Create a yearly subscription.
- */
+/** Create a yearly subscription. */
 export type CreateYearlySubscriptionPurchase = Operation<
   AccountKey & NewYearlySubscriptionArg,
   SubscriptionPurchaseKey
 >;
 
-/**
- * Create a monthly subscription.
- */
+/** Create a monthly subscription. */
 export type CreateMonthlySubscriptionPurchase = Operation<
   AccountKey & NewMonthlySubscriptionArg,
   SubscriptionPurchaseKey

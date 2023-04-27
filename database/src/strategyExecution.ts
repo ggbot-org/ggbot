@@ -6,7 +6,11 @@ import {
   BinanceKline,
   BinanceKlineInterval,
 } from "@ggbot2/binance";
-import { BinanceDflowClient, BinanceDflowExecutor, getDflowBinanceNodesCatalog } from "@ggbot2/dflow";
+import {
+  BinanceDflowClient,
+  BinanceDflowExecutor,
+  getDflowBinanceNodesCatalog,
+} from "@ggbot2/dflow";
 import {
   DeleteStrategyExecution,
   ExecuteStrategy,
@@ -40,7 +44,11 @@ class Binance extends BinanceClient implements BinanceDflowClient {
       cache: new BinanceCacheMap(),
     });
   }
-  async candles(symbol: string, interval: BinanceKlineInterval, limit: number): Promise<BinanceKline[]> {
+  async candles(
+    symbol: string,
+    interval: BinanceKlineInterval,
+    limit: number
+  ): Promise<BinanceKline[]> {
     return await this.klines(symbol, interval, { limit });
   }
 }
@@ -49,14 +57,19 @@ class Binance extends BinanceClient implements BinanceDflowClient {
  * Execute a ggbot2 strategy.
  *
  * It can either:
- *   - Point to the actual exchange.
- *   - Simulate an execution with a given balance or at a given time.
+ *
+ * - Point to the actual exchange.
+ * - Simulate an execution with a given balance or at a given time.
  *
  * @throws {ErrorAccountItemNotFound}
  * @throws {ErrorStrategyItemNotFound}
  * @throws {ErrorUnimplementedStrategyKind}
  */
-export const executeStrategy: ExecuteStrategy["func"] = async ({ accountId, strategyId, strategyKind }) => {
+export const executeStrategy: ExecuteStrategy["func"] = async ({
+  accountId,
+  strategyId,
+  strategyKind,
+}) => {
   try {
     const accountStrategyKey = { accountId, strategyKind, strategyId };
     const strategyKey = { strategyKind, strategyId };
@@ -167,14 +180,19 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({ accountId, stra
     }
     throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId });
   } catch (error) {
-    if (error instanceof ErrorAccountItemNotFound || error instanceof ErrorUnimplementedStrategyKind)
+    if (
+      error instanceof ErrorAccountItemNotFound ||
+      error instanceof ErrorUnimplementedStrategyKind
+    )
       throw error;
     console.error(error);
     throw error;
   }
 };
 
-export const readStrategyExecution: ReadStrategyExecution["func"] = async (arg) =>
+export const readStrategyExecution: ReadStrategyExecution["func"] = async (
+  arg
+) =>
   await getObject<ReadStrategyExecution["out"]>({
     Key: pathname.strategyExecution(arg),
   });
@@ -199,5 +217,6 @@ export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
   return whenUpdated;
 };
 
-export const deleteStrategyExecution: DeleteStrategyExecution["func"] = async (arg) =>
-  await deleteObject({ Key: pathname.strategyExecution(arg) });
+export const deleteStrategyExecution: DeleteStrategyExecution["func"] = async (
+  arg
+) => await deleteObject({ Key: pathname.strategyExecution(arg) });

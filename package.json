@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
-    "build": "run-s build:type-utils build:infrastructure build:env build:locators build:time build:arithmetic build:models build:email-messages build:test-data build:http-status-codes build:binance build:dflow build:env build:aws build:database build:cookies build:design build:api-action build:executor build:user-webapp build:devops",
+    "build": "run-s build:type-utils build:env build:locators build:time build:arithmetic build:infrastructure build:models build:email-messages build:test-data build:http-status-codes build:binance build:dflow build:env build:aws build:database build:cookies build:assets build:design build:api-action build:executor build:user-webapp build:devops",
     "build:admin-webapp": "npm run build --workspace admin-webapp",
     "build:api-action": "npm run build --workspace api-action",
     "build:arithmetic": "npm run build --workspace arithmetic",
@@ -45,9 +45,9 @@
     "devserver:website": "npm run dev --workspace website",
     "generate:user-webapp:env": "node scripts/generateUserWebappEnvLocal.js",
     "lint": "npm run lint --workspaces --if-present",
-    "postnext:build:user-webapp": "npm run generate:user-webapp:env",
+    "lint-staged": "lint-staged",
+    "post:build": "npm run generate:user-webapp:env",
     "precleanup": "npm run remove_node_modules",
-    "prenext:build:user-webapp": "run-p build:api-action build:assets build:cookies build:database build:http-status-codes build:design",
     "remove_node_modules": "rm -rf node_modules",
     "start": "npm run devserver:user-webapp",
     "start:executor": "npm run start --workspace executor",
@@ -63,6 +63,36 @@
     "test:models": "npm run test --workspace models",
     "test:repo": "npm run test --workspace repo",
     "test:time": "npm run test --workspace time"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.6",
+    "lint-staged": "^13.2.2",
+    "npm-run-all": "^4.1.5",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.8.8",
+    "prettier-plugin-jsdoc": "^0.4.2",
+    "prettier-plugin-sh": "^0.12.8",
+    "typescript": "^5.0.2"
+  },
+  "lint-staged": {
+    "*.{cjs,js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{css,json,md,scss,sh}": [
+      "prettier --write"
+    ]
+  },
+  "pre-commit": [
+    "lint-staged",
+    "check_types",
+    "test"
+  ],
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-jsdoc",
+      "prettier-plugin-sh"
+    ]
   },
   "workspaces": [
     "admin-webapp",
@@ -93,17 +123,5 @@
     "user-webapp",
     "utrust",
     "website"
-  ],
-  "devDependencies": {
-    "@types/node": "^18.15.6",
-    "npm-run-all": "^4.1.5",
-    "pre-commit": "^1.2.2",
-    "prettier": "^2.7.1",
-    "typescript": "^5.0.2"
-  },
-  "pre-commit": [
-    "check_types",
-    "lint",
-    "test"
   ]
 }

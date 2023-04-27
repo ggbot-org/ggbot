@@ -64,6 +64,7 @@ export class Or extends DflowNode {
   static inputs = [input(), input()];
   static outputs = [output("boolean")];
   run() {
-    this.output(0).data = Boolean(this.input(0).data) || Boolean(this.input(1).data);
+    this.output(0).data =
+      Boolean(this.input(0).data) || Boolean(this.input(1).data);
   }
 }

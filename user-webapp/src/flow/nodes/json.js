@@ -1,4 +1,4 @@
-import { FlowViewNodeEditable } from "./editable.js";
+import { FlowViewNodeEditable } from "./editable";
 
 export class FlowViewNodeJson extends FlowViewNodeEditable {
   static type = "json";

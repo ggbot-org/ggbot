@@ -28,6 +28,6 @@ export const hours = [
 ] as const;
 
 /** String with format HH, from 00 to 23. */
-export type Hour = typeof hours[number];
+export type Hour = (typeof hours)[number];
 
 export const isHour = isLiteralType<Hour>(hours);

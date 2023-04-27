@@ -39,4 +39,3 @@ Enable the service to start at boot:
 sudo systemctl enable ggbot2-executor
 sudo systemctl enable ggbot2-user-webapp
 ```
-

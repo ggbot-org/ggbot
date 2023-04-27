@@ -31,7 +31,10 @@ export class Pop extends DflowNode {
 
 export class Push extends DflowNode {
   static kind = "push";
-  static inputs = [input("array", { name: "array", optional: true }), inputElement];
+  static inputs = [
+    input("array", { name: "array", optional: true }),
+    inputElement,
+  ];
   static outputs = [outputElement, outputRest];
   run() {
     const maybeArray = this.input(0).data as unknown;

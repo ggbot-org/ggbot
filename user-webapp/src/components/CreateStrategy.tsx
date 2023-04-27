@@ -26,7 +26,7 @@ import { pathname } from "_routing/pathnames";
 const fields = ["name"];
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, typeof fields[number]>;
+} as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
   const router = useRouter();

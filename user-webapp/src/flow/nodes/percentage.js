@@ -1,4 +1,4 @@
-import { FlowViewNodeEditable } from "./editable.js";
+import { FlowViewNodeEditable } from "./editable";
 
 export class FlowViewNodePercentage extends FlowViewNodeEditable {
   static type = "perc";

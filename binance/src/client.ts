@@ -14,8 +14,8 @@ import {
 import { balanceIsNotEmpty } from "./utils.js";
 
 /**
- * BinanceClient implements private API requests.
- * It extends BinanceExchange to be able to use also public API requests.
+ * BinanceClient implements private API requests. It extends BinanceExchange to
+ * be able to use also public API requests.
  */
 export class BinanceClient extends BinanceExchange {
   apiKey: string;
@@ -117,8 +117,8 @@ export class BinanceClient extends BinanceExchange {
   /**
    * Test a new order.
    *
-   * Binance API will validate new order but will not send it into the matching engine.
-   * Parameters are the same as `newOrder`.
+   * Binance API will validate new order but will not send it into the matching
+   * engine. Parameters are the same as `newOrder`.
    */
   async newOrderTest(
     symbolInput: string,
@@ -176,8 +176,8 @@ export class BinanceClient extends BinanceExchange {
   /**
    * Test a new order with type other than MARKET or LIMIT order.
    *
-   * Binance API will validates new order but will not send it into the matching engine.
-   * Parameters are the same as `newOrderACK`.
+   * Binance API will validates new order but will not send it into the matching
+   * engine. Parameters are the same as `newOrderACK`.
    */
   async newOrderACKTest(
     symbolInput: string,
