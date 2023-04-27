@@ -1,86 +1,101 @@
 import {
-  Box,
+  Button,
   Column,
   Columns,
   Control,
-  EditableInputField,
   Field,
+  Form,
+  FormOnSubmit,
+  InputField,
+  InputOnChange,
   OutputField,
   Title,
+  formValues,
   useFormattedDate,
 } from "@ggbot2/design";
-import { isName, isStrategy, normalizeName } from "@ggbot2/models";
+import {
+  ErrorInvalidArg,
+  isName,
+  isStrategy,
+  normalizeName,
+  throwIfInvalidName,
+} from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
 import { GoEditStrategyButton } from "_components/GoEditStrategyButton";
 import { GoCopyStrategyButton } from "_components/GoCopyStrategyButton";
 import { ShareStrategyButton } from "_components/ShareStrategyButton";
 import { useApi } from "_hooks/useApi";
-import { fieldLabel } from "_i18n";
+import { buttonLabel, fieldLabel, errorMessage, title } from "_i18n";
 import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
+const fields = ["name"];
+const fieldName = {
+  name: "name",
+} as const satisfies Record<string, (typeof fields)[number]>;
+
 export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
-  const formattedWhenCreated = useFormattedDate(whenCreated, "time");
+  const formattedWhenCreated = useFormattedDate(whenCreated, "day");
 
   const [name, setName] = useState("");
-  const [newName, setNewName] = useState("");
+  const [help, setHelp] = useState("");
 
-  const [RENAME, { isPending: renameIsPending, data: renameData }] =
-    useApi.RenameStrategy();
+  const [RENAME, { isPending: renameIsPending }] = useApi.RenameStrategy();
 
-  const [READ, { data: strategy }] = useApi.ReadStrategy();
+  const [READ, { data: strategy, isPending: readIsPending }] =
+    useApi.ReadStrategy();
 
-  const readOnly = !name ? true : renameIsPending;
-  const inputNameValue = renameIsPending ? "" : name;
-  const inputNamePlaceholder = renameIsPending ? newName : "";
+  const readOnly = readIsPending || renameIsPending;
 
-  const inputNameSetValue = useCallback<(value: unknown) => void>(
-    (value) => {
-      if (readOnly) return;
-      if (!isName(value)) return;
-      const newName = normalizeName(value);
-      if (name === newName) return;
-      setNewName(newName);
+  const onChangeName = useCallback<InputOnChange>((event) => {
+    const value = event.target.value;
+    if (!isName(value)) return;
+    setName(value);
+  }, []);
+
+  const onSubmit = useCallback<FormOnSubmit>(
+    (event) => {
+      event.preventDefault();
+      if (renameIsPending) return;
+      try {
+        const { name } = formValues(event, fields);
+        if (!isName(name)) return;
+        const newName = normalizeName(name);
+        throwIfInvalidName(newName);
+        RENAME({ name: newName, ...strategyKey });
+        setName(newName);
+      } catch (error) {
+        if (error instanceof ErrorInvalidArg)
+          setHelp(errorMessage.invalidStrategyName);
+      }
     },
-    [name, readOnly]
+    [RENAME, renameIsPending, strategyKey]
   );
 
-  useEffect(() => {
-    if (isStrategy(strategy)) setName(strategy.name);
-  }, [strategy]);
-
-  useEffect(() => {
-    if (renameData) setName(newName);
-  }, [renameData, newName]);
-
+  // Read strategy data.
   useEffect(() => {
     const controller = READ(strategyKey);
     return () => controller.abort();
   }, [READ, strategyKey]);
 
+  // Set name on READ.
   useEffect(() => {
-    if (!newName) return;
-    if (name === newName) return;
-    const controller = RENAME({
-      name: newName,
-      ...strategyKey,
-    });
-    return () => controller.abort();
-  }, [name, newName, RENAME, strategyKey]);
+    if (isStrategy(strategy)) setName(strategy.name);
+  }, [strategy]);
 
   return (
-    <Box>
-      <Title>Strategy info</Title>
+    <Form box onSubmit={onSubmit}>
+      <Title>{title.strategyInfo}</Title>
 
-      <EditableInputField
-        name="name"
+      <InputField
+        required
         label={fieldLabel.strategyName}
-        placeholder={inputNamePlaceholder}
-        isSpinning={renameIsPending}
+        help={help}
+        name={fieldName.name}
+        onChange={onChangeName}
         readOnly={readOnly}
-        setValue={inputNameSetValue}
-        value={inputNameValue}
+        value={name}
       />
 
       <Columns>
@@ -101,6 +116,14 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Field isGrouped>
         <Control>
+          <Button isOutlined isLoading={renameIsPending}>
+            {buttonLabel.save}
+          </Button>
+        </Control>
+      </Field>
+
+      <Field isGrouped>
+        <Control>
           <GoEditStrategyButton strategyKey={strategyKey} />
         </Control>
 
@@ -112,6 +135,6 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
           <GoCopyStrategyButton strategyKey={strategyKey} />
         </Control>
       </Field>
-    </Box>
+    </Form>
   );
 };

@@ -12,7 +12,6 @@ import {
 import { ButtonColors, LoadingButtons } from "_examples/Buttons";
 import { SingleCalendar } from "_examples/Calendar";
 import { TimeIntervalSelectors } from "_examples/TimeIntervalSelectors";
-import { EditableInputs } from "_examples/EditableInputs";
 import { SimpleForm } from "_examples/Forms";
 import { Icons } from "_examples/Icons";
 import { InputFields } from "_examples/InputFields";
@@ -91,14 +90,6 @@ const Home: NextPage = () => (
           <Title>Time interval selectors</Title>
 
           <TimeIntervalSelectors />
-        </Container>
-      </Section>
-
-      <Section>
-        <Container>
-          <Title>Editable input</Title>
-
-          <EditableInputs />
         </Container>
       </Section>
 

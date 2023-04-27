@@ -20,7 +20,7 @@ export const GoCopyStrategyButton: FC<Props> = ({ strategyKey }) => {
   };
 
   return (
-    <Button isLoading={isLoading} onClick={onClick}>
+    <Button type="button" isLoading={isLoading} onClick={onClick}>
       {buttonLabel.copy}
     </Button>
   );

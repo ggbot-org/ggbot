@@ -48,8 +48,6 @@ export * from "./Calendar";
 export * from "./Checkmark";
 export * from "./DailyInterval";
 export * from "./DateTime";
-export * from "./EditableInput";
-export * from "./Field";
 export * from "./Header";
 export * from "./Icon";
 export * from "./InputField";

@@ -38,5 +38,9 @@ export const ShareStrategyButton: FC<Props> = ({
     }
   };
 
-  return <Button onClick={onClick}>{buttonLabel.share}</Button>;
+  return (
+    <Button type="button" onClick={onClick}>
+      {buttonLabel.share}
+    </Button>
+  );
 };
