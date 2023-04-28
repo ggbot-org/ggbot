@@ -1,6 +1,6 @@
-import { DateTime, Tag } from "@ggbot2/design";
+import { DateTime, Tag, TagProps } from "@ggbot2/design";
 import { StrategyExecution } from "@ggbot2/models";
-import { FC, ReactNode, useMemo } from "react";
+import { FC } from "react";
 
 type Props = Partial<
   Pick<StrategyExecution, "status" | "steps" | "whenUpdated">
@@ -11,25 +11,24 @@ export const StrategyExecutionLog: FC<Props> = ({
   steps,
   whenUpdated,
 }) => {
-  const statusTag = useMemo<ReactNode>(() => {
-    if (status === "success") return <Tag color="primary">{status}</Tag>;
-    if (status === "failure") return <Tag color="danger">{status}</Tag>;
-    return null;
-  }, [status]);
+  let tagColor: TagProps["color"] | undefined;
+
+  if (status === "success") tagColor = "primary";
+  if (status === "failure") tagColor = "danger";
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-3">
-        <span className="text-lg">Execution</span>
+    <div>
+      <div>
+        <span>Execution</span>
 
-        <div>{statusTag}</div>
+        <div>{tagColor ? <Tag color={tagColor}>{status}</Tag> : null}</div>
       </div>
 
       <div>
         <DateTime format="time" value={whenUpdated} />
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div>
         {steps?.map((step, i) => {
           const kind = step.k;
           const numOutputs = step.o?.length ?? 0;
@@ -43,33 +42,21 @@ export const StrategyExecutionLog: FC<Props> = ({
           const preview = showPreview ? String(firstOutputData) : "";
 
           return (
-            <details
-              key={i}
-              className="cursor-default hover:bg-zinc-100 hover:dark:bg-zinc-800 transition-colors"
-            >
-              <summary
-                className={`flex gap-2 py-1
-              ${showDetails ? "cursor-pointer" : ""}
-              `}
-              >
-                <span className="pl-2 text-gray-500 w-8">{i}</span>
+            <details key={i}>
+              <summary>
+                <span>{i}</span>
 
                 <span>{kind}</span>
 
                 {showPreview ? <span>{preview}</span> : null}
 
-                {showDetails ? (
-                  <span className="text-primary-800">•</span>
-                ) : null}
+                {showDetails ? <span>•</span> : null}
               </summary>
 
               {showDetails ? (
-                <div className="py-1 flex flex-col gap-2">
+                <div>
                   {step.o?.map(({ d }, i) => (
-                    <pre
-                      key={i}
-                      className="pl-10 hover:bg-zinc-200 hover:dark:bg-zinc-900"
-                    >
+                    <pre key={i}>
                       <code>{JSON.stringify(d ?? null, null, 2)}</code>
                     </pre>
                   ))}

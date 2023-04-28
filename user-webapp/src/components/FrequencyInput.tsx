@@ -8,7 +8,7 @@ import {
 } from "@ggbot2/design";
 import { Frequency, isFrequencyInterval } from "@ggbot2/models";
 import { NaturalNumber, isNaturalNumber } from "@ggbot2/type-utils";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback } from "react";
 
 type FrequencyArg = Pick<Frequency, "interval"> & {
   every: NaturalNumber | "";
@@ -19,21 +19,18 @@ export type FrequencyInputProps = {
   setFrequency: (arg: FrequencyArg) => void;
 };
 
+const frequencyIntervalOptions = [
+  {
+    value: "1h",
+    label: "hour",
+  },
+  { value: "1m", label: "minute" },
+];
+
 export const FrequencyInput: FC<FrequencyInputProps> = ({
   frequency: { interval, every },
   setFrequency,
 }) => {
-  const frequencyIntervalOptions = useMemo(
-    () => [
-      {
-        value: "1h",
-        label: "hour",
-      },
-      { value: "1m", label: "minute" },
-    ],
-    []
-  );
-
   const onChangeFrequencyEvery = useCallback<InputOnChange>(
     (event) => {
       const value = event.target.value;

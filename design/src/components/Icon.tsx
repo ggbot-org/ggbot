@@ -1,4 +1,4 @@
-import { FC, ReactNode, SVGAttributes, useMemo } from "react";
+import { FC, ReactNode, SVGAttributes } from "react";
 
 export const iconNames = [
   "account",
@@ -73,12 +73,9 @@ export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 };
 
 export const Icon: FC<IconProps> = ({ name, onClick, size = "1em" }) => {
-  const { viewBox, jsx } = useMemo(() => iconRecord[name], [name]);
+  const { viewBox, jsx } = iconRecord[name];
 
-  const className = useMemo(
-    () => [typeof onClick === "function" ? "cursor-pointer" : ""].join(" "),
-    [onClick]
-  );
+  const className = onClick ? "cursor-pointer" : "";
 
   return (
     <svg

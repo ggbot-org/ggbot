@@ -2,7 +2,7 @@ import { Box, Columns, Column, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import Link from "next/link";
 import { title } from "_i18n";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect } from "react";
 import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
 import { useApi } from "_hooks/useApi";
 import { pathname } from "_routing/pathnames";
@@ -15,9 +15,8 @@ type StrategyItem = Pick<
 export const Strategies: FC = () => {
   const [READ, { data }] = useApi.ReadAccountStrategies();
 
-  const items = useMemo(() => {
-    const items: StrategyItem[] = [];
-    if (!Array.isArray(data)) return items;
+  const items: StrategyItem[] = [];
+  if (Array.isArray(data)) {
     for (const item of data) {
       if (!isAccountStrategy(item)) continue;
       const { strategyId, strategyKind, name, schedulings } = item;
@@ -28,8 +27,7 @@ export const Strategies: FC = () => {
         strategyId,
       });
     }
-    return items;
-  }, [data]);
+  }
 
   useEffect(() => {
     const controller = READ({});

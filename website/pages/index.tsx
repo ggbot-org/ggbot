@@ -1,10 +1,12 @@
 import { Header, Logo } from "@ggbot2/design";
-import { pathname, userWebappHomepageUrl } from "@ggbot2/locators";
+import { pathname, UserWebappHomepageURL } from "@ggbot2/locators";
 import { createdNow } from "@ggbot2/models";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+const userWebappHomepageURL = new UserWebappHomepageURL();
 
 const Page: NextPage = () => {
   const [isFirstPageview, setIsFirstPageview] = useState(false);
@@ -40,7 +42,7 @@ const Page: NextPage = () => {
       </Header>
 
       <main>
-        <Link href={userWebappHomepageUrl}>
+        <Link href={userWebappHomepageURL}>
           <span>Launch App</span>
         </Link>
       </main>

@@ -1,4 +1,7 @@
-import { isBinanceApiKeyPermission } from "@ggbot2/binance";
+import {
+  BinanceApiKeyPermission,
+  isBinanceApiKeyPermission,
+} from "@ggbot2/binance";
 import {
   Button,
   Checkmark,
@@ -10,7 +13,7 @@ import {
   OutputField,
   Title,
 } from "@ggbot2/design";
-import { FC, ReactNode, useCallback, useMemo } from "react";
+import { FC, ReactNode, useCallback } from "react";
 import { useApi } from "_hooks/useApi";
 import { fieldLabel } from "_i18n";
 
@@ -22,79 +25,74 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
   const [READ, { data: permissions, isPending }] =
     useApi.ReadBinanceApiKeyPermissions();
 
-  const {
-    enableSpotAndMarginTrading,
-    enableWithdrawals,
-    enableReading,
-    ipRestrict,
-  } = useMemo(
-    () =>
-      isBinanceApiKeyPermission(permissions)
-        ? permissions
-        : {
-            enableSpotAndMarginTrading: undefined,
-            enableWithdrawals: undefined,
-            enableReading: undefined,
-            ipRestrict: undefined,
-          },
-    [permissions]
-  );
+  let enableSpotAndMarginTrading:
+    | BinanceApiKeyPermission["enableSpotAndMarginTrading"]
+    | undefined;
+  let enableWithdrawals:
+    | BinanceApiKeyPermission["enableWithdrawals"]
+    | undefined;
+  let enableReading: BinanceApiKeyPermission["enableReading"] | undefined;
+  let ipRestrict: BinanceApiKeyPermission["ipRestrict"] | undefined;
+
+  if (isBinanceApiKeyPermission(permissions)) {
+    enableSpotAndMarginTrading = permissions.enableSpotAndMarginTrading;
+    enableWithdrawals = permissions.enableWithdrawals;
+    enableReading = permissions.enableReading;
+    ipRestrict = permissions.ipRestrict;
+  }
 
   const permissionItems: {
     description: ReactNode;
     checkmark: CheckmarkProps;
-  }[] = useMemo(
-    () => [
-      {
-        checkmark: {
-          label: String(enableReading),
-          ok: enableReading,
-        },
-        description: (
-          <span>
-            is <em>reading</em> permission enabled?
-          </span>
-        ),
+  }[] = [
+    {
+      checkmark: {
+        label: String(enableReading),
+        ok: enableReading,
       },
-      {
-        checkmark: {
-          label: String(enableWithdrawals),
-          ok:
-            typeof enableWithdrawals === "boolean"
-              ? enableWithdrawals === false
-              : undefined,
-        },
-        description: (
-          <span>
-            are <em>withdrawals</em> enabled?
-          </span>
-        ),
+      description: (
+        <span>
+          is <em>reading</em> permission enabled?
+        </span>
+      ),
+    },
+    {
+      checkmark: {
+        label: String(enableWithdrawals),
+        ok:
+          typeof enableWithdrawals === "boolean"
+            ? enableWithdrawals === false
+            : undefined,
       },
-      {
-        checkmark: {
-          label: String(enableSpotAndMarginTrading),
-          ok: enableSpotAndMarginTrading,
-        },
-        description: (
-          <span>
-            is <em>Spot and Margin</em> enabled?
-          </span>
-        ),
+      description: (
+        <span>
+          are <em>withdrawals</em> enabled?
+        </span>
+      ),
+    },
+    {
+      checkmark: {
+        label: String(enableSpotAndMarginTrading),
+        ok: enableSpotAndMarginTrading,
       },
-      {
-        checkmark: {
-          label: String(ipRestrict),
-          ok: ipRestrict,
-        },
-        description: (
-          <span>
-            is <em>static IP</em> restriction activated?
-          </span>
-        ),
+      description: (
+        <span>
+          is <em>Spot and Margin</em> enabled?
+        </span>
+      ),
+    },
+    {
+      checkmark: {
+        label: String(ipRestrict),
+        ok: ipRestrict,
       },
-    ],
-    [enableSpotAndMarginTrading, enableWithdrawals, enableReading, ipRestrict]
-  );
+      description: (
+        <span>
+          is <em>static IP</em> restriction activated?
+        </span>
+      ),
+    },
+  ];
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {

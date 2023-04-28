@@ -1,7 +1,14 @@
 import { pathname } from "./pathnames.js";
-import { userWebappBaseUrl } from "./baseURLs.js";
+import { apiBaseURL, userWebappBaseURL } from "./baseURLs.js";
 
-export const userWebappHomepageUrl = new URL(
-  pathname.homePage(),
-  userWebappBaseUrl
-);
+export class ApiPurchaseOrderURL extends URL {
+  constructor() {
+    super(pathname.utrustOrder(), apiBaseURL);
+  }
+}
+
+export class UserWebappHomepageURL extends URL {
+  constructor() {
+    super(pathname.homePage(), userWebappBaseURL);
+  }
+}

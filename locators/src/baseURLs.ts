@@ -1,3 +1,4 @@
-import { userWebappDomain } from "./FQDNs.js";
+import { apiDomain, userWebappDomain } from "./FQDNs.js";
 
-export const userWebappBaseUrl = `https://${userWebappDomain}`;
+export const apiBaseURL = `https://${apiDomain}`;
+export const userWebappBaseURL = `https://${userWebappDomain}`;

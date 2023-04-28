@@ -1,6 +1,6 @@
 import { SchedulingStatus } from "@ggbot2/models";
 import { Tags, Tag, TagProps } from "@ggbot2/design";
-import { FC, ReactNode, useMemo } from "react";
+import { FC, ReactNode } from "react";
 import { schedulingStatusLabel } from "_i18n";
 
 type Props = {
@@ -26,19 +26,13 @@ export const SchedulingStatusBadge: FC<Props> = ({
   schedulingStatus,
   count,
 }) => {
-  const { color, label } = useMemo<{
-    color: SchedulingStatusBadgeColor;
-    label: ReactNode;
-  }>(() => {
-    if (!schedulingStatus)
-      return {
-        color: "light",
-        label: <>&npsp;</>,
-      };
-    const label = schedulingStatusLabel[schedulingStatus];
-    const color = schedulingStatusColor[schedulingStatus];
-    return { label, color };
-  }, [schedulingStatus]);
+  let color: SchedulingStatusBadgeColor = "light";
+  let label: ReactNode = <>&npsp;</>;
+
+  if (schedulingStatus) {
+    label = schedulingStatusLabel[schedulingStatus];
+    color = schedulingStatusColor[schedulingStatus];
+  }
 
   if (count === undefined) return <Tag color={color}>{label}</Tag>;
 

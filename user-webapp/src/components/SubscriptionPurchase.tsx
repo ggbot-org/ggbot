@@ -26,24 +26,16 @@ import {
   totalPurchase,
   purchaseMaxNumMonths as maxNumMonths,
 } from "@ggbot2/models";
-import { apiDomain, pathname } from "@ggbot2/locators";
-import { getTime, now } from "@ggbot2/time";
+import { ApiPurchaseOrderURL } from "@ggbot2/locators";
+import { Time, getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
-import {
-  FC,
-  useCallback,
-  useContext,
-  useMemo,
-  useEffect,
-  useState,
-} from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { SubscriptionContext } from "_contexts/Subscription";
 import { useApi } from "_hooks/useApi";
-import { buttonLabel, fieldLabel } from "_i18n";
+import { buttonLabel, fieldLabel, title } from "_i18n";
 
-const apiBaseUrl = `https://${apiDomain}`;
-const apiPurchaseOrderUrl = new URL(pathname.utrustOrder(), apiBaseUrl);
+const apiPurchaseOrderURL = new ApiPurchaseOrderURL();
 
 const allowedCountryOptions = Object.entries(countries)
   .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
@@ -51,6 +43,9 @@ const allowedCountryOptions = Object.entries(countries)
     value: isoCode2,
     label: country,
   }));
+
+const minNumMonths = 1;
+const defaultNumMonths = 6;
 
 export const SubscriptionPurchase: FC = () => {
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
@@ -63,34 +58,20 @@ export const SubscriptionPurchase: FC = () => {
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
   const [formattedTotalPrice, setFormattedTotalPrice] = useState("");
   const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
-  const minNumMonths = 1;
-  const defaultNumMonths = 6;
   const [numMonths, setNumMonths] = useState<number | undefined>(
     defaultNumMonths
   );
 
-  const { countryOptions, email, selectCountryIsDisabled } = useMemo<{
-    countryOptions: SelectProps["options"];
-    email: string;
-    selectCountryIsDisabled: boolean;
-  }>(() => {
-    if (!isAccount(account))
-      return {
-        countryOptions: [{ value: "", label: "" }],
-        email: "",
-        selectCountryIsDisabled: true,
-      };
-    return {
-      countryOptions: account.country
-        ? allowedCountryOptions
-        : [
-            { value: "", label: "-- your country --" },
-            ...allowedCountryOptions,
-          ],
-      email: account.email,
-      selectCountryIsDisabled: false,
-    };
-  }, [account]);
+  let countryOptions: SelectProps["options"] = [{ value: "", label: "" }];
+  let email = "";
+  let selectCountryIsDisabled = false;
+  if (isAccount(account)) {
+    countryOptions = account.country
+      ? allowedCountryOptions
+      : [{ value: "", label: "-- your country --" }, ...allowedCountryOptions];
+    email = account.email;
+    selectCountryIsDisabled = false;
+  }
 
   let purchaseIsDisabled = false;
   if (!country) purchaseIsDisabled = true;
@@ -101,7 +82,7 @@ export const SubscriptionPurchase: FC = () => {
     purchaseIsDisabled = true;
   }
 
-  let newSubscriptionEnd;
+  let newSubscriptionEnd: Time | undefined;
   if (isNaturalNumber(numMonths)) {
     const start = subscriptionEnd
       ? getTime(subscriptionEnd).plus(1).days()
@@ -147,7 +128,7 @@ export const SubscriptionPurchase: FC = () => {
     if (purchaseIsPending) return;
     setPurchaseIsPending(true);
     try {
-      const response = await fetch(apiPurchaseOrderUrl, {
+      const response = await fetch(apiPurchaseOrderURL, {
         body: JSON.stringify({ country, email, numMonths }),
         credentials: "include",
         headers: new Headers({
@@ -201,7 +182,7 @@ export const SubscriptionPurchase: FC = () => {
 
   return (
     <Box>
-      <Title>Purchase</Title>
+      <Title>{title.purchase}</Title>
 
       {hasActiveSubscription ? (
         <Message color="danger">

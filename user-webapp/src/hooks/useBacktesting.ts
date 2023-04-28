@@ -250,10 +250,7 @@ export const useBacktesting: UseBacktesting = ({
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
-  const storageKey = useMemo(
-    () => `backtest:${strategyKind}:${strategyId}`,
-    [strategyKind, strategyId]
-  );
+  const storageKey = `backtest:${strategyKind}:${strategyId}`;
 
   const getPersistingState = useCallback<GetPersistingState>(() => {
     try {
