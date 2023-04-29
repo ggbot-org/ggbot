@@ -21,7 +21,7 @@ import {
   timestampToTime,
 } from "@ggbot2/time";
 import { FlowViewSerializableGraph } from "flow-view";
-import { Dispatch, useCallback, useEffect, useMemo, useReducer } from "react";
+import { Dispatch, useCallback, useEffect, useReducer } from "react";
 import { BinanceDflowClient } from "_flow/binance";
 import { StrategyKey } from "_routing/types";
 import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
@@ -355,8 +355,5 @@ export const useBacktesting: UseBacktesting = ({
     setPersistingState({ dayInterval });
   }, [dayInterval, isServerSide, setPersistingState]);
 
-  return useMemo(
-    () => [isServerSide ? undefined : state, dispatch],
-    [isServerSide, dispatch, state]
-  );
+  return [isServerSide ? undefined : state, dispatch];
 };

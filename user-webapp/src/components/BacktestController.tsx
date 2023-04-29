@@ -2,7 +2,6 @@ import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
-import { BacktestControllerBinance } from "_components/BacktestControllerBinance";
 import { DailyIntervalSelector } from "_components/DailyIntervalSelector";
 import {
   FrequencyInput,
@@ -11,14 +10,13 @@ import {
 import { ProfitSummary } from "_components/ProfitSummary";
 import { BacktestingState, BacktestingDispatch } from "_hooks/useBacktesting";
 import { backtestActionLabel } from "_i18n";
-import { StrategyFlow } from "_routing/types";
 
-type Props = Partial<Pick<StrategyFlow, "view">> & {
+type Props = {
   state: BacktestingState | undefined;
   dispatch: BacktestingDispatch;
 };
 
-export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
+export const BacktestController: FC<Props> = ({ state, dispatch }) => {
   const [frequencyArg, setFrequencyArg] = useState<
     FrequencyInputProps["frequency"]
   >(everyOneHour());
@@ -163,10 +161,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch, view }) => {
         timeInterval={timeInterval}
         strategyKind={strategyKind}
       />
-
-      {strategyKind === "binance" && view && dayInterval ? (
-        <BacktestControllerBinance dayInterval={dayInterval} view={view} />
-      ) : null}
 
       <menu>
         <Button onClick={onClickAction}>{actionLabel}</Button>

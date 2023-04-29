@@ -189,7 +189,6 @@ export const EditStrategyFlowPage: FC<Props> = ({
           <BacktestController
             state={backtesting}
             dispatch={backtestingDispatch}
-            view={flowView?.graph}
           />
         }
         executionLog={

@@ -3,7 +3,6 @@ import {
   getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
 import { DflowNodesCatalog } from "dflow";
-import { useMemo } from "react";
 import { StrategyKey } from "_routing/types";
 
 export type UseNodesCatalogArg = Pick<StrategyKey, "strategyKind"> & {
@@ -14,13 +13,19 @@ type UseNodesCatalog = (
   arg: UseNodesCatalogArg
 ) => DflowNodesCatalog | undefined;
 
+const nodesCatalogMap = new Map<string, DflowNodesCatalog>();
+
 export const useNodesCatalog: UseNodesCatalog = ({
   strategyKind,
   binanceSymbols,
 }) => {
-  const nodesCatalog = useMemo<DflowNodesCatalog | undefined>(() => {
-    if (strategyKind === "binance" && binanceSymbols)
-      return getDflowBinanceNodesCatalog({ symbols: binanceSymbols });
-  }, [binanceSymbols, strategyKind]);
-  return nodesCatalog;
+  const storedValue = nodesCatalogMap.get(strategyKind);
+  if (storedValue) return storedValue;
+  if (strategyKind === "binance" && binanceSymbols) {
+    const nodesCatalog = getDflowBinanceNodesCatalog({
+      symbols: binanceSymbols,
+    });
+    nodesCatalogMap.set(strategyKind, nodesCatalog);
+    return nodesCatalog;
+  }
 };

@@ -89,7 +89,6 @@ export const ViewStrategyFlowPage: FC<Props> = ({
           <BacktestController
             state={backtesting}
             dispatch={backtestingDispatch}
-            view={flowView?.graph}
           />
         }
       />
