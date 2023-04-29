@@ -1,5 +1,6 @@
 export const buttonLabel = {
   activate: "Activate",
+  cancel: "Cancel",
   copy: "Copy",
   create: "Create",
   createStrategy: "New Strategy",

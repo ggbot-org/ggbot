@@ -1,5 +1,5 @@
 export const backtestActionLabel = {
-  resume: "Resume",
   pause: "Pause",
+  resume: "Resume",
   start: "Start",
 };
