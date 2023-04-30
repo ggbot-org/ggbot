@@ -75,13 +75,15 @@ export type BinanceAvgPrice = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "asset": "BTC",
  *     "free": "0.10189777",
  *     "locked": "0.02466239"
  *   }
  *   ```;
+ * ```
  */
 export type BinanceBalance = {
   asset: string;
@@ -109,7 +111,8 @@ export type BinanceFill = Pick<
  * Klines are uniquely identified by their open time.
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   [
  *     1499040000000,      // Kline open time
  *     "0.01634790",       // Open price
@@ -125,6 +128,7 @@ export type BinanceFill = Pick<
  *     "0"                 // Unused field, ignore.
  *   ]
  *   ```;
+ * ```
  */
 export type BinanceKline = [
   openTime: number,
@@ -365,12 +369,14 @@ export type BinanceSymbolFilter =
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "ICEBERG_PARTS",
  *     "limit": 10,
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterIcebergParts = {
   filterType: "ICEBERG_PARTS";
@@ -389,7 +395,8 @@ export type BinanceSymbolFilterIcebergParts = {
  * - (`quantity` - `minQty`) % `stepSize` == 0
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "LOT_SIZE",
  *     "minQty": "0.00100000",
@@ -397,6 +404,7 @@ export type BinanceSymbolFilterIcebergParts = {
  *     "stepSize": "0.00100000"
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterLotSize = {
   filterType: "LOT_SIZE";
@@ -413,7 +421,8 @@ export type BinanceSymbolFilterLotSize = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "MARKET_LOT_SIZE",
  *     "minQty": "0.00000000",
@@ -421,6 +430,7 @@ export type BinanceSymbolFilterLotSize = {
  *     "stepSize": "0.00000000",
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterMarketLotSize = {
   filterType: "MARKET_LOT_SIZE";
@@ -431,12 +441,14 @@ export type BinanceSymbolFilterMarketLotSize = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "MAX_NUM_ORDERS",
  *     "maxNumOrders": 10,
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterMaxNumOrders = {
   filterType: "MAX_NUM_ORDERS";
@@ -445,12 +457,14 @@ export type BinanceSymbolFilterMaxNumOrders = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "MAX_NUM_ALGO_ORDERS",
  *     "maxNumAlgoOrders": 10,
  *   },
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterMaxNumAlgoOrders = {
   filterType: "MAX_NUM_ALGO_ORDERS";
@@ -470,7 +484,8 @@ export type BinanceSymbolFilterMaxNumAlgoOrders = {
  * calculated over. 0 means the last price is used.
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "MIN_NOTIONAL",
  *     "minNotional": "0.00100000",
@@ -478,6 +493,7 @@ export type BinanceSymbolFilterMaxNumAlgoOrders = {
  *     "avgPriceMins": 5
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterMinNotional = {
   filterType: "MIN_NOTIONAL";
@@ -488,7 +504,8 @@ export type BinanceSymbolFilterMinNotional = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "PERCENT_PRICE",
  *     "multiplierUp": "5",
@@ -496,6 +513,7 @@ export type BinanceSymbolFilterMinNotional = {
  *     "avgPriceMins": 5,
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterPercentPrice = {
   filterType: "PERCENT_PRICE";
@@ -516,7 +534,8 @@ export type BinanceSymbolFilterPercentPrice = {
  * - `price` % `tickSize` == 0
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "filterType": "PRICE_FILTER",
  *     "minPrice": "0.00000100",
@@ -524,6 +543,7 @@ export type BinanceSymbolFilterPercentPrice = {
  *     "tickSize": "0.00000100"
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterPrice = {
   filterType: "PRICE_FILTER";
@@ -546,7 +566,8 @@ export type BinanceSymbolFilterPrice = {
 
 /**
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *      "filterType: "TRAILING_DELTA",
  *      "minTrailingAboveDelta": 10,
@@ -555,6 +576,7 @@ export type BinanceSymbolFilterPrice = {
  *      "maxTrailingBelowDelta": 2000,
  *   }
  *   ```;
+ * ```
  */
 export type BinanceSymbolFilterTrailingDelta = {
   filterType: "TRAILING_DELTA";
@@ -584,7 +606,8 @@ export type BinanceTickerPrice = {
  * 24 hour rolling window price change statistics.
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   {
  *     "symbol": "BNBBTC",
  *     "priceChange": "-94.99999800",
@@ -609,6 +632,7 @@ export type BinanceTickerPrice = {
  *     "count": 76
  *   }
  *   ```;
+ * ```
  */
 export type BinanceTicker24hr = {
   symbol: string;

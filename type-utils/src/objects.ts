@@ -2,7 +2,8 @@
  * Use `isMaybeObject` as a _type guard_ helper.
  *
  * @example
- *   ```ts
+ *
+ * ```ts
  *   type Foo = { bar: boolean };
  *
  *   const isFoo = (arg: unknown): arg is Foo => {
@@ -11,6 +12,7 @@
  *     return typeof bar === "boolean";
  *   }
  *   ```;
+ * ```
  */
 export const isMaybeObject = <T extends object>(
   arg: unknown

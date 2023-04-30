@@ -49,7 +49,8 @@ import {
  * default `BinanceCacheMap` can be used.
  *
  * @example
- *   ```ts
+ *
+ * ```ts
  *   import { truncateDate } from "@ggbot2/time";
  *   import {
  *     BinanceCacheMap,
@@ -63,6 +64,7 @@ import {
  *     cache: new BinanceCacheMap(),
  *   });
  *   ```;
+ * ```
  */
 export class BinanceExchange extends BinanceConnector {
   private readonly cache: BinanceCacheProvider;

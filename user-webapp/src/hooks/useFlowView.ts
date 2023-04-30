@@ -39,7 +39,8 @@ type UseFlowView = (
 
 /**
  * @example
- *   ```ts
+ *
+ * ```ts
  *   const containerRef = useRef<HTMLDivElement | null>(null);
  *
  *   const { flowView, whenUpdated } = useFlowView({
@@ -52,6 +53,7 @@ type UseFlowView = (
  *     <div ref={containerRef}/>
  *   )
  *   ```;
+ * ```
  */
 export const useFlowView: UseFlowView = ({
   binanceSymbols,

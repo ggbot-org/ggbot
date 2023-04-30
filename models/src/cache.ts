@@ -23,7 +23,8 @@ const timeToLiveDuration: Record<TimeToLive, number> = {
  * Implements a simple CacheProvider with Maps.
  *
  * @example
- *   ```ts
+ *
+ * ```ts
  *   const isValidValueCache = new CacheMap<boolean>()
  *
  *   const isValid async (value: unkown): booelan => {
@@ -41,7 +42,7 @@ const timeToLiveDuration: Record<TimeToLive, number> = {
  *   // Finally return result.
  *   return isValid.
  *   }
- *   ```
+ * ```
  */
 export class CacheMap<Data> implements CacheProvider<Data> {
   private itemMap = new Map<string, Data>();

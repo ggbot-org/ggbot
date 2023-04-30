@@ -92,6 +92,17 @@
     "plugins": [
       "prettier-plugin-jsdoc",
       "prettier-plugin-sh"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "options": {
+          "tsdoc": true
+        }
+      }
     ]
   },
   "workspaces": [

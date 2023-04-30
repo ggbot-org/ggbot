@@ -57,14 +57,14 @@ export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
 /**
  * Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.
  *
- * @example
- *   Get all strategies with strategyId starting with 'a'.
- *   ```json
- *   {
+ * @example Get all strategies with strategyId starting with 'a'.
+ *
+ * ```json
+ * {
  *   "strategyKind": "binance",
  *   "strategyId": "a"
- *   }
- *   ```
+ * }
+ * ```
  */
 export type ListStrategyKeys = Operation<
   Pick<StrategyKey, "strategyKind"> & {

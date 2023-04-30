@@ -6,7 +6,8 @@ export type ClassName = BulmaClassName;
 
 /**
  * @example
- *   ```ts
+ *
+ * ```ts
  *   import {
  *     ClassName as _ClassName,
  *     classNames as _classNames,
@@ -19,4 +20,5 @@ export type ClassName = BulmaClassName;
  *   export const classNames = (...args: ClassNamesArg<ClassName>[]) =>
  *     _classNames(...args);
  *   ```;
+ * ```
  */

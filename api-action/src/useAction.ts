@@ -31,41 +31,52 @@ type UseActionResponse<Output extends OperationOutput> = {
  * It returns a `request` and a `response`.
  *
  * @example
- *   ```ts
- *   const [request, response] = useApiAction.FooBar();
- *   ```
  *
- *   The `response` can be destructured as follow.
+ * ```ts
+ * const [request, response] = useApiAction.FooBar();
+ * ```
  *
- * @example
- *   ```ts
- *   const [request, { data, isPending, error }] = useApiAction.FooBar();
- *   ```
- *
- *   The `request` returns an `AbortController`, it can be used as a `useEffect` destructor.
+ * The `response` can be destructured as follow.
  *
  * @example
- *   ```ts
- *   const [request, response] = useApiAction.FooBar();
- *   useEffect(() => {
+ *
+ * ```ts
+ * const [request, { data, isPending, error }] = useApiAction.FooBar();
+ * ```
+ *
+ * The `request` returns an `AbortController`, it can be used as a `useEffect`
+ * destructor.
+ *
+ * @example
+ *
+ * ```ts
+ * const [request, response] = useApiAction.FooBar();
+ * useEffect(() => {
  *   const controller = request({ param });
- *   return () => { controller.abort() }
- *   }, [request]);
- *   ```
+ *   return () => {
+ *     controller.abort();
+ *   };
+ * }, [request]);
+ * ```
  *
- *   It is a good to:
- *   - use an uppercase name for *request*, for example `CREATE`, `READ`, `UPDATE` or `DELETE`.
- *   - destructuring *response* if used.
- *   - use an empty object as *request* argument if there is no parameter.
+ * It is a good to:
+ *
+ * - Use an uppercase name for _request_, for example `CREATE`, `READ`, `UPDATE`
+ *   or `DELETE`.
+ * - Destructuring _response_ if used.
+ * - Use an empty object as _request_ argument if there is no parameter.
+ *
  *
  * @example
- *   ```ts
+ *
+ * ```ts
  *   const [DELETE, { isPending }] = useApiAction.FooBar();
  *   useEffect(() => {
  *     const controller = DELETE({});
  *     return () => { controller.abort() }
  *   }, [DELETE]);
  *   ```;
+ * ```
  */
 export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },

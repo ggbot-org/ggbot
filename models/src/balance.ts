@@ -13,13 +13,17 @@ import {
  * list of balances.
  *
  * @example
- *   ```typescript
- *   const wallet: Balance[] = [];
- *   ```
- *   Then after buying BTC for a worth of 1000 BUSD we have the following balances.
+ *
+ * ```typescript
+ * const wallet: Balance[] = [];
+ * ```
+ *
+ * Then after buying BTC for a worth of 1000 BUSD we have the following
+ * balances.
  *
  * @example
- *   ```json
+ *
+ * ```json
  *   [
  *     {
  *       "asset": "BTC",
@@ -33,6 +37,7 @@ import {
  *     }
  *   ]
  *   ```;
+ * ```
  */
 export type Balance = {
   /** Asset symbol, e.g. BTC, ETH. */

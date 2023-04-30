@@ -5,7 +5,8 @@ import { DflowObject } from "dflow";
  * DflowCommonContext to be shared among all dflow host implementations.
  *
  * @example
- *   ```ts
+ *
+ * ```ts
  *   import { DflowHost, DflowHostConstructorArg } from "dflow";
  *   import { DflowCommonContext } from "@ggbot2/dflow";
  *
@@ -21,6 +22,7 @@ import { DflowObject } from "dflow";
  *     }
  *   }
  *   ```;
+ * ```
  */
 export type DflowCommonContext = {
   /** Used by input nodes: InputBoolean, InputNumber, InputString, etc. */
