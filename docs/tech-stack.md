@@ -1,5 +1,7 @@
 # ggbot2 Tech stack
 
+- [Git](#git)
+- [Markdown](#markdown)
 - [AWS Command Line Interface](#aws-command-line-interface)
 - Amazon Web Services
   - [AWS Certificate Manager](#aws-certificate-manager)
@@ -8,11 +10,11 @@
   - [AWS EC2](#aws-ec2)
   - [AWS IAM](#aws-iam)
   - [AWS S3](#aws-s3)
-- [Git](#git)
 - [Google Search Console](google-search-console)
 - [Node.js](#nodejs)
 - [npm workspaces](#npm-workspaces)
-- [nvm](#nvm)
+- [NVM](#nvm)
+- [React](#react)
 - Utrust
 - npm packages
   - [@types/node](#typesnode)
@@ -31,6 +33,18 @@
   - [npm-run-all](#npm-run-all)
   - [react-hot-toast](#react-hot-toast)
   - [typescript](#typescript)
+
+## Git
+
+> Git is a free and open source distributed version control system
+
+https://git-scm.com/
+
+## Markdown
+
+> Markdown is a lightweight markup language for creating formatted text using a plain-text editor.
+
+https://en.wikipedia.org/wiki/Markdown
 
 ## AWS Command Line Interface
 
@@ -63,12 +77,6 @@ https://aws.amazon.com/iam/
 ### AWS S3
 
 https://aws.amazon.com/s3/
-
-## Git
-
-> Git is a free and open source distributed version control system
-
-https://git-scm.com/
 
 ## Google Search Console
 
@@ -108,6 +116,12 @@ nvm use
 ```
 
 See also how to [call `nvm use` automatically in a directory with a _.nvmrc_ file](https://github.com/nvm-sh/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file).
+
+## React
+
+> The library for web and native user interfaces
+
+https://react.dev/
 
 ## npm packages
 
