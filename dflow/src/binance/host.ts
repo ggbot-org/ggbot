@@ -16,7 +16,8 @@ export class BinanceDflowHost extends DflowHost implements DflowLoader {
   ) {
     super(arg);
     this.context.binance = context.binance;
-    this.context.memory = context.memory ?? {};
+    this.context.input = context.input;
+    this.context.memory = context.memory;
     this.context.memoryChanged = false;
     this.context.time = context.time ?? truncateTime(now()).to.minute();
   }
@@ -30,6 +31,7 @@ export class BinanceDflowHost extends DflowHost implements DflowLoader {
   }
 }
 
-export type BinanceDflowHostContextArg = Partial<
-  Omit<BinanceDflowContext, "memoryChanged">
+export type BinanceDflowHostContextArg = Omit<
+  BinanceDflowContext,
+  "memoryChanged"
 >;

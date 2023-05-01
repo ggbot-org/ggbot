@@ -41,18 +41,15 @@ type UseFlowView = (
  * @example
  *
  * ```ts
- *   const containerRef = useRef<HTMLDivElement | null>(null);
+ * const containerRef = useRef<HTMLDivElement | null>(null);
  *
- *   const { flowView, whenUpdated } = useFlowView({
- *     containerRef,
- *     strategyKind: "binance",
- *     binanceSymbols,
- *   });
+ * const { flowView, whenUpdated } = useFlowView({
+ *   containerRef,
+ *   strategyKind: "binance",
+ *   binanceSymbols,
+ * });
  *
- *   return (
- *     <div ref={containerRef}/>
- *   )
- *   ```;
+ * return <div ref={containerRef} />;
  * ```
  */
 export const useFlowView: UseFlowView = ({
@@ -65,12 +62,19 @@ export const useFlowView: UseFlowView = ({
 
   const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
 
-  const time = useMemo(() => truncateTime(now()).to.minute(), []);
+  const time = truncateTime(now()).to.minute();
 
   const dflow = useMemo<DflowHost | undefined>(() => {
     if (strategyKind !== "binance") return;
     if (!nodesCatalog) return;
-    const dflow = new BinanceDflowHost({ nodesCatalog }, { memory: {}, time });
+    const binance = new BinanceDflowClient({
+      balances: [],
+      time,
+    });
+    const dflow = new BinanceDflowHost(
+      { nodesCatalog },
+      { binance, input: {}, memory: {}, time }
+    );
     return dflow;
   }, [nodesCatalog, strategyKind, time]);
 

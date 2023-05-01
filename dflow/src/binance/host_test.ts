@@ -1,5 +1,6 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+import { now, truncateTime } from "@ggbot2/time";
 import { BinanceDflowHost } from "./host.js";
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 import { BinanceClientMock } from "./mocks/client.js";
@@ -10,7 +11,15 @@ describe("BinanceDflowHost", () => {
       const binance = new BinanceClientMock();
       const { symbols } = await binance.exchangeInfo();
       const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
-      const dflow = new BinanceDflowHost({ nodesCatalog }, { binance });
+      const dflow = new BinanceDflowHost(
+        { nodesCatalog },
+        {
+          binance,
+          input: {},
+          memory: {},
+          time: truncateTime(now()).to.minute(),
+        }
+      );
       dflow.load({
         edges: [],
         nodes: [

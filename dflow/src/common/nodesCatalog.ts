@@ -18,7 +18,7 @@ import {
 } from "./nodes/indicators/movingAverages.js";
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js";
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js";
-import { InputNumber } from "./nodes/inputs.js";
+import { InputBoolean, InputNumber, InputString } from "./nodes/inputs.js";
 import { And, Equal, Not, NullishCoaleshing, Or } from "./nodes/logic.js";
 import { Max, Min } from "./nodes/mathFunctions.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
@@ -55,7 +55,9 @@ export const nodesCatalog = {
   [TypicalPrice.kind]: TypicalPrice,
   [WilderMovingAverage.kind]: WilderMovingAverage,
   // inputs
+  [InputBoolean.kind]: InputBoolean,
   [InputNumber.kind]: InputNumber,
+  [InputString.kind]: InputString,
   // mathFunctions
   [Max.kind]: Max,
   [Min.kind]: Min,

@@ -25,9 +25,9 @@ import { DflowObject } from "dflow";
  * ```
  */
 export type DflowCommonContext = {
-  /** Used by input nodes: InputBoolean, InputNumber, InputString, etc. */
+  /** Used by input nodes: `InputBoolean`, `InputNumber`, `InputString`, etc. */
   input: DflowObject;
-  /** Used by memory nodes: GetMemory, SetMemory, DeleteMemory. */
+  /** Used by memory nodes: `GetMemory`, `SetMemory`, `DeleteMemory`. */
   memory: DflowObject;
   /**
    * The `memoryChanged` attribute is set to true by memory nodes every time
