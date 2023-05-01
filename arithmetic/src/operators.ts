@@ -43,7 +43,7 @@ export const mul: ArithmeticOperator = (a, b, numDecimals) =>
 /**
  * Division operator.
  *
- * @throws {ErrorCannotDivideByZero}
+ * @throws {@link ErrorCannotDivideByZero}
  */
 export const div: ArithmeticOperator = (a, b, numDecimals) => {
   if (equal(b, coerceToDecimal(0, numOfDecimals(b))))

@@ -4,14 +4,13 @@
  * @example
  *
  * ```ts
- *   type Foo = { bar: boolean };
+ * type Foo = { bar: boolean };
  *
- *   const isFoo = (arg: unknown): arg is Foo => {
- *     if (isMaybeObject<Foo>(arg)) return false;
- *     const { bar } = arg;
- *     return typeof bar === "boolean";
- *   }
- *   ```;
+ * const isFoo = (arg: unknown): arg is Foo => {
+ *   if (isMaybeObject<Foo>(arg)) return false;
+ *   const { bar } = arg;
+ *   return typeof bar === "boolean";
+ * };
  * ```
  */
 export const isMaybeObject = <T extends object>(

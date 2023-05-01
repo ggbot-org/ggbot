@@ -17,7 +17,7 @@ import { readStrategyAccountId } from "./strategy.js";
 /**
  * Copy strategy flow.
  *
- * @throws {ErrorStrategyItemNotFound}
+ * @throws {@link ErrorStrategyItemNotFound}
  */
 export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   accountId,
@@ -45,7 +45,7 @@ export const readStrategyFlow: ReadStrategyFlow["func"] = async (arg) =>
 /**
  * Write strategy flow.
  *
- * @throws {ErrorPermissionOnStrategyItem}
+ * @throws {@link ErrorPermissionOnStrategyItem}
  */
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   accountId,
@@ -73,7 +73,7 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
 /**
  * Delete strategy flow.
  *
- * @throws {ErrorPermissionOnStrategyItem}
+ * @throws {@link ErrorPermissionOnStrategyItem}
  */
 export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
   accountId,

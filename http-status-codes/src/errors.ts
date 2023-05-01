@@ -2,9 +2,8 @@
  * @example
  *
  * ```ts
- *   const response = await fetch(url);
- *   if (!response.ok) throw new ErrorHTTP(response);
- *   ```;
+ * const response = await fetch(url);
+ * if (!response.ok) throw new ErrorHTTP(response);
  * ```
  */
 export class ErrorHTTP extends Error {

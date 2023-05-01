@@ -1,6 +1,6 @@
 /**
  * Most of the Binance symbols has precision 8. Others are edge case markets. In
- * `binance.exchangeInfo()`` response, there are over 2000 symbols with values
+ * `binance.exchangeInfo()` response, there are over 2000 symbols with values
  *
  * ```json
  * {

@@ -6,8 +6,7 @@ import { BinanceBalance } from "./types.js";
  * @example
  *
  * ```json
- *   { asset: 'LUNA', free: '0.00000000', locked: '0.00000000' }
- *   ```;
+ * { "asset": "LUNA", "free": "0.00000000", "locked": "0.00000000" }
  * ```
  */
 export const balanceIsNotEmpty = ({ free, locked }: BinanceBalance) =>

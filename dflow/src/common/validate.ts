@@ -6,7 +6,7 @@ import { NodeTextToDflowKind, noOpNodeKinds } from "./nodeResolution.js";
 /**
  * Check if provided `view` is well defined and compatible with `nodesCatalog`.
  *
- * @throws {ErrorUknownDflowNodes}
+ * @throws {@link ErrorUknownDflowNodes}
  */
 export const dflowValidate = ({
   nodesCatalog,

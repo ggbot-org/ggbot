@@ -7,21 +7,20 @@ import { DflowObject } from "dflow";
  * @example
  *
  * ```ts
- *   import { DflowHost, DflowHostConstructorArg } from "dflow";
- *   import { DflowCommonContext } from "@ggbot2/dflow";
+ * import { DflowHost, DflowHostConstructorArg } from "dflow";
+ * import { DflowCommonContext } from "@ggbot2/dflow";
  *
- *   export class MyDflowHost extends DflowHost {
- *     constructor(arg: DflowHostConstructorArg) {
- *       super(arg);
+ * export class MyDflowHost extends DflowHost {
+ *   constructor(arg: DflowHostConstructorArg) {
+ *     super(arg);
  *
- *       const input: DflowCommonContext["input"] = {};
- *       this.context.input = input;
+ *     const input: DflowCommonContext["input"] = {};
+ *     this.context.input = input;
  *
- *       const memory: DflowCommonContext["memory"] = {};
- *       this.context.memory = memory;
- *     }
+ *     const memory: DflowCommonContext["memory"] = {};
+ *     this.context.memory = memory;
  *   }
- *   ```;
+ * }
  * ```
  */
 export type DflowCommonContext = {

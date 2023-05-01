@@ -46,10 +46,9 @@ class EnvironmentVariables {
  * @example
  *
  * ```ts
- *   import { ENV } from "@ggbot2/env";
+ * import { ENV } from "@ggbot2/env";
  *
- *   const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV;
- *   ```;
+ * const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV;
  * ```
  */
 export const ENV = new EnvironmentVariables();

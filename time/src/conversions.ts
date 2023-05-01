@@ -8,7 +8,7 @@ import { Timestamp } from "./timestamp.js";
 /**
  * Convert `Date` to `Time`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dateToTime = (date: Date): Time => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
@@ -18,21 +18,21 @@ export const dateToTime = (date: Date): Time => {
 /**
  * Convert `Day` to `Date`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dayToDate = (day: Day): Date => new Date(day);
 
 /**
  * Convert `Day` to `Time`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dayToTime = (day: Day): Time => dateToTime(dayToDate(day));
 
 /**
  * Convert `DateInterval` to `TimeInterval`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dateIntervalToTime = ({
   start,
@@ -45,7 +45,7 @@ export const dateIntervalToTime = ({
 /**
  * Convert `DayInterval` to `DateInterval`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dayIntervalToDate = ({
   start,
@@ -60,7 +60,7 @@ export const dayIntervalToDate = ({
 /**
  * Convert `DayInterval` to `TimeInterval`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dayIntervalToTime = (dayInterval: DayInterval): TimeInterval => {
   const dateInterval = dayIntervalToDate(dayInterval);
@@ -70,7 +70,7 @@ export const dayIntervalToTime = (dayInterval: DayInterval): TimeInterval => {
 /**
  * Convert `Date` to `Day`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dateToDay = (date: Date): Day => {
   const timestamp = dateToTimestamp(date);
@@ -86,7 +86,7 @@ export const timeToDay = (time: Time): Day => {
 /**
  * Convert `TimeInterval` to `DayInterval`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const timeIntervalToDay = ({
   start,
@@ -109,7 +109,7 @@ export const timestampToTime = (timestamp: Timestamp): Time => {
 /**
  * Convert `Date` to `Timestamp`.
  *
- * @throws {ErrorInvalidDate}
+ * @throws {@link ErrorInvalidDate}
  */
 export const dateToTimestamp = (date: Date): Timestamp => {
   // Invalid dates return a null JSON

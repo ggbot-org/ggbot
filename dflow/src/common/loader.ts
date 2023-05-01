@@ -9,17 +9,16 @@ import { isInfoNode } from "./nodeTextParser.js";
  * @example
  *
  * ```ts
- *   import { DflowLoader, load } from "../path/to/loader.js";
- *   class MyDflowHost extends DflowHost implements DflowLoader {
- *     load(view: DflowExecutorView): void {
- *       load({
- *         dflow: this,
- *         nodeTextToDflowKind,
- *         view,
- *       });
- *     }
+ * import { DflowLoader, load } from "../path/to/loader.js";
+ * class MyDflowHost extends DflowHost implements DflowLoader {
+ *   load(view: DflowExecutorView): void {
+ *     load({
+ *       dflow: this,
+ *       nodeTextToDflowKind,
+ *       view,
+ *     });
  *   }
- *   ```;
+ * }
  * ```
  */
 export interface DflowLoader extends DflowHost {

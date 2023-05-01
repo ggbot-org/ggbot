@@ -53,7 +53,7 @@ const strategyAccountIdCache = new CacheMap<Account["id"]>();
  * - CopyStrategy
  * - CreateStrategy
  *
- * @throws {ErrorInvalidArg}
+ * @throws {@link ErrorInvalidArg}
  * @internal
  */
 const _createStrategy: CreateStrategy["func"] = async ({
@@ -76,8 +76,8 @@ const _createStrategy: CreateStrategy["func"] = async ({
 };
 
 /**
- * @throws {ErrorInvalidArg}
- * @throws {ErrorStrategyItemNotFound}
+ * @throws {@link ErrorInvalidArg}
+ * @throws {@link ErrorStrategyItemNotFound}
  */
 export const copyStrategy: CopyStrategy["func"] = async ({
   accountId,
@@ -112,7 +112,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
  * even if the flow was not edited yet, it will be possible to share it and run
  * it.
  *
- * @throws {ErrorInvalidArg}
+ * @throws {@link ErrorInvalidArg}
  */
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
@@ -158,7 +158,7 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
 /**
  * Get `accountId` of strategy.
  *
- * @throws {ErrorStrategyItemNotFound}
+ * @throws {@link ErrorStrategyItemNotFound}
  */
 export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   strategyKey
@@ -182,8 +182,8 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
 /**
  * Rename strategy.
  *
- * @throws {ErrorInvalidArg}
- * @throws {ErrorStrategyItemNotFound}
+ * @throws {@link ErrorInvalidArg}
+ * @throws {@link ErrorStrategyItemNotFound}
  */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
@@ -211,7 +211,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
 /**
  * Delete strategy.
  *
- * @throws {ErrorPermissionOnStrategyItem}
+ * @throws {@link ErrorPermissionOnStrategyItem}
  */
 export const deleteStrategy: DeleteStrategy["func"] = async (
   accountStrategyKey

@@ -4,10 +4,9 @@
  * @example
  *
  * ```ts
- *   export type MyItems = MyItem[];
+ * export type MyItems = MyItem[];
  *
- *   const isMyItems = arrayTypeGuard<MyItem>(isMyItem);
- *   ```;
+ * const isMyItems = arrayTypeGuard<MyItem>(isMyItem);
  * ```
  */
 export const arrayTypeGuard =

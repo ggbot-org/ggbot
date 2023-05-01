@@ -174,18 +174,16 @@ const backtestingReducer = (state: State, action: Action) => {
   }
 };
 
-/**
- * Generate SHA-256 from string.
- *
- * Credits:
- * https://jameshfisher.com/2017/10/30/web-cryptography-api-hello-world/
- *
- * TODO use this function to generate hash of strategy to know if strategy
- * changed const sha256 = async (arg: string) => { const buffer = await
- * crypto.subtle.digest( "SHA-256", new TextEncoder().encode(arg) ); return
- * Array.from(new Uint8Array(buffer)) .map((element) => element.toString(16))
- * .join(""); };
- */
+// Generate SHA-256 from string.
+//
+// Credits:
+// https://jameshfisher.com/2017/10/30/web-cryptography-api-hello-world/
+//
+// TODO use this function to generate hash of strategy to know if strategy
+// changed const sha256 = async (arg: string) => { const buffer = await
+// crypto.subtle.digest( "SHA-256", new TextEncoder().encode(arg) ); return
+// Array.from(new Uint8Array(buffer)) .map((element) => element.toString(16))
+// .join(""); };
 
 const getInitialState =
   (strategyKey: StrategyKey) =>

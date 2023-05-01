@@ -7,7 +7,7 @@ import {
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 import { ErrorAccountItemNotFound } from "./errors.js";
 
-/** @throws {ErrorAccountItemNotFound} */
+/** @throws {@link ErrorAccountItemNotFound} */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
   async ({ accountId }) => {
     const binanceApiConfig = await readBinanceApiConfig({ accountId });

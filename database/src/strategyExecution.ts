@@ -61,9 +61,9 @@ class Binance extends BinanceClient implements BinanceDflowClient {
  * - Point to the actual exchange.
  * - Simulate an execution with a given balance or at a given time.
  *
- * @throws {ErrorAccountItemNotFound}
- * @throws {ErrorStrategyItemNotFound}
- * @throws {ErrorUnimplementedStrategyKind}
+ * @throws {@link ErrorAccountItemNotFound}
+ * @throws {@link ErrorStrategyItemNotFound}
+ * @throws {@link ErrorUnimplementedStrategyKind}
  */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,

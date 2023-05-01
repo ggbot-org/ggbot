@@ -70,12 +70,13 @@ type UseActionResponse<Output extends OperationOutput> = {
  * @example
  *
  * ```ts
- *   const [DELETE, { isPending }] = useApiAction.FooBar();
- *   useEffect(() => {
- *     const controller = DELETE({});
- *     return () => { controller.abort() }
- *   }, [DELETE]);
- *   ```;
+ * const [DELETE, { isPending }] = useApiAction.FooBar();
+ * useEffect(() => {
+ *   const controller = DELETE({});
+ *   return () => {
+ *     controller.abort();
+ *   };
+ * }, [DELETE]);
  * ```
  */
 export const useAction = <

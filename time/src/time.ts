@@ -10,7 +10,7 @@ import { Interval } from "./interval.js";
  *
  * The number of milliseconds since the
  *
- * @link{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.
+ * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps|ECMAScript epoch}.
  */
 export type Time = NaturalNumber;
 

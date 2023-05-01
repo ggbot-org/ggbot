@@ -24,19 +24,18 @@ import {
  * @example
  *
  * ```json
- *   [
- *     {
- *       "asset": "BTC",
- *       "free": "0.01000000",
- *       "locked": "0"
- *     },
- *     {
- *       "asset": "BUSD",
- *       "free": "-1000.00",
- *       "locked": "0"
- *     }
- *   ]
- *   ```;
+ * [
+ *   {
+ *     "asset": "BTC",
+ *     "free": "0.01000000",
+ *     "locked": "0"
+ *   },
+ *   {
+ *     "asset": "BUSD",
+ *     "free": "-1000.00",
+ *     "locked": "0"
+ *   }
+ * ]
  * ```
  */
 export type Balance = {

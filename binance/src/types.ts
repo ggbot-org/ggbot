@@ -77,12 +77,11 @@ export type BinanceAvgPrice = {
  * @example
  *
  * ```json
- *   {
- *     "asset": "BTC",
- *     "free": "0.10189777",
- *     "locked": "0.02466239"
- *   }
- *   ```;
+ * {
+ *   "asset": "BTC",
+ *   "free": "0.10189777",
+ *   "locked": "0.02466239"
+ * }
  * ```
  */
 export type BinanceBalance = {
@@ -127,7 +126,6 @@ export type BinanceFill = Pick<
  *     "28.46694368",      // Taker buy quote asset volume
  *     "0"                 // Unused field, ignore.
  *   ]
- *   ```;
  * ```
  */
 export type BinanceKline = [
@@ -371,11 +369,10 @@ export type BinanceSymbolFilter =
  * @example
  *
  * ```json
- *   {
- *     "filterType": "ICEBERG_PARTS",
- *     "limit": 10,
- *   }
- *   ```;
+ * {
+ *   "filterType": "ICEBERG_PARTS",
+ *   "limit": 10
+ * }
  * ```
  */
 export type BinanceSymbolFilterIcebergParts = {
@@ -390,20 +387,19 @@ export type BinanceSymbolFilterIcebergParts = {
  * In order to pass the lot size, the following must be true for
  * `quantity`/`icebergQty`:
  *
- * - `quantity` >= `minQtY`
- * - `quantity` <= `maxQty`
- * - (`quantity` - `minQty`) % `stepSize` == 0
+ * - `quantity >= minQtY`
+ * - `quantity <= maxQty`
+ * - `(quantity - minQty) % stepSize == 0`
  *
  * @example
  *
  * ```json
- *   {
- *     "filterType": "LOT_SIZE",
- *     "minQty": "0.00100000",
- *     "maxQty": "100000.00000000",
- *     "stepSize": "0.00100000"
- *   }
- *   ```;
+ * {
+ *   "filterType": "LOT_SIZE",
+ *   "minQty": "0.00100000",
+ *   "maxQty": "100000.00000000",
+ *   "stepSize": "0.00100000"
+ * }
  * ```
  */
 export type BinanceSymbolFilterLotSize = {
@@ -423,13 +419,12 @@ export type BinanceSymbolFilterLotSize = {
  * @example
  *
  * ```json
- *   {
- *     "filterType": "MARKET_LOT_SIZE",
- *     "minQty": "0.00000000",
- *     "maxQty": "1201.84537855",
- *     "stepSize": "0.00000000",
- *   }
- *   ```;
+ * {
+ *   "filterType": "MARKET_LOT_SIZE",
+ *   "minQty": "0.00000000",
+ *   "maxQty": "1201.84537855",
+ *   "stepSize": "0.00000000"
+ * }
  * ```
  */
 export type BinanceSymbolFilterMarketLotSize = {
@@ -443,11 +438,10 @@ export type BinanceSymbolFilterMarketLotSize = {
  * @example
  *
  * ```json
- *   {
- *     "filterType": "MAX_NUM_ORDERS",
- *     "maxNumOrders": 10,
- *   }
- *   ```;
+ * {
+ *   "filterType": "MAX_NUM_ORDERS",
+ *   "maxNumOrders": 10
+ * }
  * ```
  */
 export type BinanceSymbolFilterMaxNumOrders = {
@@ -463,7 +457,6 @@ export type BinanceSymbolFilterMaxNumOrders = {
  *     "filterType": "MAX_NUM_ALGO_ORDERS",
  *     "maxNumAlgoOrders": 10,
  *   },
- *   ```;
  * ```
  */
 export type BinanceSymbolFilterMaxNumAlgoOrders = {
@@ -486,13 +479,12 @@ export type BinanceSymbolFilterMaxNumAlgoOrders = {
  * @example
  *
  * ```json
- *   {
- *     "filterType": "MIN_NOTIONAL",
- *     "minNotional": "0.00100000",
- *     "applyToMarket": true,
- *     "avgPriceMins": 5
- *   }
- *   ```;
+ * {
+ *   "filterType": "MIN_NOTIONAL",
+ *   "minNotional": "0.00100000",
+ *   "applyToMarket": true,
+ *   "avgPriceMins": 5
+ * }
  * ```
  */
 export type BinanceSymbolFilterMinNotional = {
@@ -506,13 +498,12 @@ export type BinanceSymbolFilterMinNotional = {
  * @example
  *
  * ```json
- *   {
- *     "filterType": "PERCENT_PRICE",
- *     "multiplierUp": "5",
- *     "multiplierDown": "0.2",
- *     "avgPriceMins": 5,
- *   }
- *   ```;
+ * {
+ *   "filterType": "PERCENT_PRICE",
+ *   "multiplierUp": "5",
+ *   "multiplierDown": "0.2",
+ *   "avgPriceMins": 5
+ * }
  * ```
  */
 export type BinanceSymbolFilterPercentPrice = {
@@ -529,20 +520,19 @@ export type BinanceSymbolFilterPercentPrice = {
  * `price filter`. In order to pass the `price filter`, the following must be
  * true for `price`/`stopPrice` of the enabled rules:
  *
- * - `price` >= `minPrice`
- * - `price` <= `maxPrice`
- * - `price` % `tickSize` == 0
+ * - `price >= minPrice`
+ * - `price <= maxPrice`
+ * - `price % tickSize == 0`
  *
  * @example
  *
  * ```json
- *   {
- *     "filterType": "PRICE_FILTER",
- *     "minPrice": "0.00000100",
- *     "maxPrice": "100000.00000000",
- *     "tickSize": "0.00000100"
- *   }
- *   ```;
+ * {
+ *   "filterType": "PRICE_FILTER",
+ *   "minPrice": "0.00000100",
+ *   "maxPrice": "100000.00000000",
+ *   "tickSize": "0.00000100"
+ * }
  * ```
  */
 export type BinanceSymbolFilterPrice = {
@@ -575,7 +565,6 @@ export type BinanceSymbolFilterPrice = {
  *      "minTrailingBelowDelta": 10,
  *      "maxTrailingBelowDelta": 2000,
  *   }
- *   ```;
  * ```
  */
 export type BinanceSymbolFilterTrailingDelta = {
@@ -608,30 +597,29 @@ export type BinanceTickerPrice = {
  * @example
  *
  * ```json
- *   {
- *     "symbol": "BNBBTC",
- *     "priceChange": "-94.99999800",
- *     "priceChangePercent": "-95.960",
- *     "weightedAvgPrice": "0.29628482",
- *     "prevClosePrice": "0.10002000",
- *     "lastPrice": "4.00000200",
- *     "lastQty": "200.00000000",
- *     "bidPrice": "4.00000000",
- *     "bidQty": "100.00000000",
- *     "askPrice": "4.00000200",
- *     "askQty": "100.00000000",
- *     "openPrice": "99.00000000",
- *     "highPrice": "100.00000000",
- *     "lowPrice": "0.10000000",
- *     "volume": "8913.30000000",
- *     "quoteVolume": "15.30000000",
- *     "openTime": 1499783499040,
- *     "closeTime": 1499869899040,
- *     "firstId": 28385,
- *     "lastId": 28460,
- *     "count": 76
- *   }
- *   ```;
+ * {
+ *   "symbol": "BNBBTC",
+ *   "priceChange": "-94.99999800",
+ *   "priceChangePercent": "-95.960",
+ *   "weightedAvgPrice": "0.29628482",
+ *   "prevClosePrice": "0.10002000",
+ *   "lastPrice": "4.00000200",
+ *   "lastQty": "200.00000000",
+ *   "bidPrice": "4.00000000",
+ *   "bidQty": "100.00000000",
+ *   "askPrice": "4.00000200",
+ *   "askQty": "100.00000000",
+ *   "openPrice": "99.00000000",
+ *   "highPrice": "100.00000000",
+ *   "lowPrice": "0.10000000",
+ *   "volume": "8913.30000000",
+ *   "quoteVolume": "15.30000000",
+ *   "openTime": 1499783499040,
+ *   "closeTime": 1499869899040,
+ *   "firstId": 28385,
+ *   "lastId": 28460,
+ *   "count": 76
+ * }
  * ```
  */
 export type BinanceTicker24hr = {

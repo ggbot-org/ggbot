@@ -4,8 +4,7 @@
  * @example
  *
  * ```ts
- *   type DateInterval = Interval<Date>;
- *   ```;
+ * type DateInterval = Interval<Date>;
  * ```
  */
 export type Interval<T> = {
