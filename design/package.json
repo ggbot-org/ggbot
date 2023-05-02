@@ -10,14 +10,12 @@
     }
   },
   "scripts": {
-    "build": "npm run tsc--build && npm run sass",
+    "build": "npm run tsc--build",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ out/ .next/",
     "dev": "next dev",
     "lint": "eslint --ext .ts --ext .tsx .",
-    "next:build": "next build",
-    "next:export": "next export",
-    "sass": "sass --load-path=../node_modules/ src/styles/main.scss dist/style.css",
+    "sass": "sass --load-path=../node_modules/ src/styles/example.scss dist/style.css",
     "tsc--build": "tsc --build tsconfig.build.json"
   },
   "devDependencies": {

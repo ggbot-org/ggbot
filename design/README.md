@@ -11,21 +11,22 @@ For instance add the following into the `head` of your HTML page.
 <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
 ```
 
+<!--
 Import styles in your React app.
+
+TODO set sass load-path
+
+See styles/example.scss
+
+TODO remove package.json
+
+      "style": "./dist/style.css"
 
 ```css
 @import "@ggbot2/design";
 
-TODO
-
-  /* Make page full height */
-  html,
-  body,
-  body > div:first-child,
-  div#__next {
-  height: 100%;
-}
 ```
+-->
 
 Import components in your React app.
 
