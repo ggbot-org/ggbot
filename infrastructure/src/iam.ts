@@ -49,6 +49,7 @@ export const getDevopsPolicyStatements = () => [
       "ec2:DescribeAddresses",
       "elasticloadbalancing:DescribeLoadBalancers",
       "iam:GetPolicy",
+      "logs:CreateLogGroup",
     ],
     Resource: "*",
   },

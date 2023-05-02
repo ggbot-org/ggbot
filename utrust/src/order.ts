@@ -11,7 +11,12 @@ import {
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
 } from "@ggbot2/http-status-codes";
-import { apiDomain, userWebappDomain, pathname } from "@ggbot2/locators";
+import {
+  UserWebappBaseURL,
+  UtrustCancelURL,
+  UtrustCallbackURL,
+  UtrustReturnURL,
+} from "@ggbot2/locators";
 import {
   AllowedCountryIsoCode2,
   EmailAddress,
@@ -36,7 +41,7 @@ import {
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-const { UTRUST_API_KEY } = ENV;
+const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
 
 // UTRUST_API_KEY starts with
 // - u_test_api_ on sandbox environment
@@ -44,19 +49,13 @@ const { UTRUST_API_KEY } = ENV;
 const UTRUST_ENVIRONMENT = UTRUST_API_KEY.startsWith("u_live")
   ? "production"
   : "sandbox";
+
 const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT);
 
-const apiBaseUrl = `https://${apiDomain}`;
-const userWebappBaseUrl = `https://${userWebappDomain}`;
-const callbackUrl = new URL(pathname.utrustCallback(), apiBaseUrl).toString();
-const returnUrl = new URL(
-  pathname.subscriptionPurchasedPage(),
-  userWebappBaseUrl
-).toString();
-const cancelUrl = new URL(
-  pathname.subscriptionCanceledPage(),
-  userWebappBaseUrl
-).toString();
+const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE).toString();
+const callbackUrl = new UtrustCallbackURL().toString();
+const cancelUrl = new UtrustCancelURL().toString();
+const returnUrl = new UtrustReturnURL().toString();
 
 const BAD_REQUEST = {
   statusCode: __400__BAD_REQUEST__,
@@ -81,6 +80,18 @@ export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   switch (event.httpMethod) {
+    case "OPTIONS": {
+      return {
+        headers: {
+          "Access-Control-Allow-Headers": "Content-type",
+          "Access-Control-Allow-Methods": "OPTIONS, POST",
+          "Access-Control-Allow-Origin": userWebappBaseURL,
+        },
+        statusCode: __200__OK__,
+        body: JSON.stringify({}),
+      };
+    }
+
     case "POST": {
       if (!event.body) return BAD_REQUEST;
 

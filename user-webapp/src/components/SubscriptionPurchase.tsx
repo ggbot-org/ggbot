@@ -37,6 +37,11 @@ import { buttonLabel, fieldLabel, title } from "_i18n";
 
 const apiPurchaseOrderURL = new ApiPurchaseOrderURL();
 
+const fields = ["country"] as const;
+const fieldName = {
+  country: "country",
+} as const satisfies Record<string, (typeof fields)[number]>;
+
 const allowedCountryOptions = Object.entries(countries)
   .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
   .map(([isoCode2, country]) => ({
@@ -226,7 +231,7 @@ export const SubscriptionPurchase: FC = () => {
       <SelectField
         disabled={selectCountryIsDisabled}
         label={fieldLabel.country}
-        name="country"
+        name={fieldName.country}
         onChange={onChangeCountry}
         options={countryOptions}
         value={country}

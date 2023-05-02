@@ -12,7 +12,9 @@ export const getAssetsBucketArn = () => `arn:aws:s3:::${getAssetsBucketName()}`;
 export const assetsBucketACL = BucketCannedACL.public_read;
 
 export const getDataBucketName = (deployStage = DEPLOY_STAGE) =>
-  `${deployStage}-data.${awsRegion}.${topLevelDomain}`;
+  deployStage === "local"
+    ? `next-data.${awsRegion}.${topLevelDomain}`
+    : `${deployStage}-data.${awsRegion}.${topLevelDomain}`;
 
 export const getDataBucketArn = (deployStage = DEPLOY_STAGE) =>
   `arn:aws:s3:::${getDataBucketName(deployStage)}`;

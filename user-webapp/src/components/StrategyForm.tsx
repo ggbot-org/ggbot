@@ -30,7 +30,7 @@ import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
-const fields = ["name"];
+const fields = ["name"] as const;
 const fieldName = {
   name: "name",
 } as const satisfies Record<string, (typeof fields)[number]>;

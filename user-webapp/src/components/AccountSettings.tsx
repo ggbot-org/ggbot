@@ -22,7 +22,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { useApi } from "_hooks/useApi";
 import { buttonLabel, fieldLabel, errorMessage, title } from "_i18n";
 
-const fields = ["name"];
+const fields = ["name"] as const;
 const fieldName = {
   name: "name",
 } as const satisfies Record<string, (typeof fields)[number]>;

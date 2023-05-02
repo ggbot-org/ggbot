@@ -14,6 +14,8 @@
     "bundle": "node scripts/bundle.js",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
+    "create": "sh scripts/create.sh",
+    "deploy": "sh scripts/deploy.sh",
     "lint": "eslint --ext .ts .",
     "prebuild": "npm run cleanup",
     "zip": "sh scripts/zip.sh"

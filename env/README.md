@@ -5,11 +5,12 @@ The following environment variables are used:
 - Required:
   - `AWS_ACCOUNT_ID`
   - `AWS_ACCESS_KEY_ID`
+  - `AWS_REGION`
   - `AWS_SECRET_ACCESS_KEY`
   - `UTRUST_API_KEY`
   - `UTRUST_WEBHOOK_SECRET`
 - Optional
-  - `DEPLOY_STAGE`: can be `main` or `next`. It defaults to `next` if not provided.
+  - `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
   - `NODE_ENV`: can be `production` or `development`. It defaults to `development` if not provided.
 
 A complete _.envrc_ file for production looks like the following

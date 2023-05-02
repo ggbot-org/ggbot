@@ -1,10 +1,16 @@
-# TODO
-# organize better, put lambda function names in infrastructure package
+source "$(dirname "$0")/_functions.sh"
 
-REGION=eu-central-1
 RUNTIME=nodejs18.x
 ROLE=arn:aws:iam::$AWS_ACCOUNT_ID:role/ggbot2_api_role
 
-aws lambda create-function --region $REGION --function-name ggbot2-utrust-callback --runtime $RUNTIME --handler index.handler --role $ROLE --zip-file fileb://temp/callback/index.zip
+# ggbot2-utrust-callback
 
-aws lambda create-function --region $REGION --function-name ggbot2-utrust-order --runtime $RUNTIME --handler index.handler --role $ROLE --zip-file fileb://temp/order/index.zip
+aws lambda create-function --region $AWS_REGION --function-name $CALLBACK_FUNCTION_NAME --runtime $RUNTIME --handler index.handler --role $ROLE --zip-file $CALLBACK_FUNCTION_ZIP_FILE
+
+aws logs create-log-group --region $AWS_REGION --log-group-name $CALLBACK_FUNCTION_LOG_GROUP_NAME
+
+# ggbot2-utrust-order
+
+aws lambda create-function --region $AWS_REGION --function-name $ORDER_FUNCTION_NAME --runtime $RUNTIME --handler index.handler --role $ROLE --zip-file $ORDER_FUNCTION_ZIP_FILE
+
+aws logs create-log-group --region $AWS_REGION --log-group-name $ORDER_FUNCTION_LOG_GROUP_NAME
