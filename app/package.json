@@ -1,22 +1,31 @@
 {
-  "name": "@ggbot2/website",
+  "name": "@ggbot2/app",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "next build",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf out/ .next/",
-    "deploy": "sh scripts/deploy.sh",
+    "cleanup": "rm -rf dist/ .next/",
     "dev": "next dev",
     "lint": "eslint --ext .ts --ext .tsx .",
-    "next:export": "next export",
     "start": "next start"
   },
   "dependencies": {
+    "@ggbot2/api-action": "file:api-action",
     "@ggbot2/assets": "file:assets",
+    "@ggbot2/binance": "file:binance",
+    "@ggbot2/cookies": "file:cookies",
+    "@ggbot2/database": "file:database",
     "@ggbot2/design": "file:design",
+    "@ggbot2/dflow": "file:dflow",
+    "@ggbot2/env": "file:env",
+    "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/locators": "file:locators",
-    "@ggbot2/models": "file:models"
+    "@ggbot2/models": "file:models",
+    "@ggbot2/time": "file:time",
+    "@ggbot2/type-utils": "file:type-utils",
+    "country-isocode2": "^1.1.0",
+    "react-hot-toast": "^2.3.0"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

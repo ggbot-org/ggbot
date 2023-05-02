@@ -23,7 +23,7 @@ UTRUST_WEBHOOK_SECRET=${UTRUST_WEBHOOK_SECRET}
 const envLocalFilepath = join(
   dirname(fileURLToPath(import.meta.url)),
   "..",
-  "user-webapp",
+  "app",
   ".env.local"
 );
 

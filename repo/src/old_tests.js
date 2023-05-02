@@ -21,13 +21,13 @@ const noCodeWorkspaces = ["eslint-config", "tsconfig"];
 const noTscBuildWorkspaces = [
   ...noCodeWorkspaces,
   "utrust",
-  "admin-webapp",
+  "admin",
   "repo",
-  "user-webapp",
-  "website",
+  "app",
+  "www",
 ];
 
-const webappWorkspaces = ["admin-webapp", "design", "user-webapp", "website"];
+const webappWorkspaces = ["admin", "design", "app", "www"];
 
 const packageScript = {
   [packageScriptKey.build]: "tsc --build tsconfig.build.json",
