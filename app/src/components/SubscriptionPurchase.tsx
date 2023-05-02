@@ -78,13 +78,14 @@ export const SubscriptionPurchase: FC = () => {
     selectCountryIsDisabled = false;
   }
 
+  const accountId = isAccount(account) ? account.id : undefined;
+
   let purchaseIsDisabled = false;
+  if (!accountId) purchaseIsDisabled = true;
   if (!country) purchaseIsDisabled = true;
   if (isNaturalNumber(numMonths)) {
     if (numMonths < minNumMonths) purchaseIsDisabled = true;
     if (numMonths > maxNumMonths) purchaseIsDisabled = true;
-  } else {
-    purchaseIsDisabled = true;
   }
 
   let newSubscriptionEnd: Time | undefined;
@@ -134,8 +135,9 @@ export const SubscriptionPurchase: FC = () => {
     setPurchaseIsPending(true);
     try {
       const response = await fetch(apiPurchaseOrderURL, {
-        body: JSON.stringify({ country, email, numMonths }),
-        credentials: "include",
+        // TODO define fields (and type-guard) in api package, use them also in utrust lambda
+        body: JSON.stringify({ accountId, country, email, numMonths }),
+        credentials: "omit",
         headers: new Headers({
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -154,7 +156,14 @@ export const SubscriptionPurchase: FC = () => {
       console.error(error);
       setPurchaseIsPending(false);
     }
-  }, [country, email, purchaseIsDisabled, purchaseIsPending, numMonths]);
+  }, [
+    accountId,
+    country,
+    email,
+    numMonths,
+    purchaseIsDisabled,
+    purchaseIsPending,
+  ]);
 
   useEffect(() => {
     if (!isAccount(account)) return;

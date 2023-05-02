@@ -1,5 +1,3 @@
-source "$(dirname "$0")/_functions.sh"
+sh "$(dirname "$0")/deploy_callback.sh"
 
-aws lambda update-function-code --region $AWS_REGION --function-name $CALLBACK_FUNCTION_NAME --zip-file $CALLBACK_FUNCTION_ZIP_FILE
-
-aws lambda update-function-code --region $AWS_REGION --function-name $ORDER_FUNCTION_NAME --zip-file $ORDER_FUNCTION_ZIP_FILE
+sh "$(dirname "$0")/deploy_order.sh"

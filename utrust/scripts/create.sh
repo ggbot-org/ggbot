@@ -1,7 +1,4 @@
-source "$(dirname "$0")/_functions.sh"
-
-RUNTIME=nodejs18.x
-ROLE=arn:aws:iam::$AWS_ACCOUNT_ID:role/ggbot2_api_role
+source "$(dirname "$0")/_common_variables.sh"
 
 # ggbot2-utrust-callback
 

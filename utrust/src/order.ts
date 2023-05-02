@@ -52,14 +52,24 @@ const UTRUST_ENVIRONMENT = UTRUST_API_KEY.startsWith("u_live")
 
 const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT);
 
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE).toString();
-const callbackUrl = new UtrustCallbackURL().toString();
-const cancelUrl = new UtrustCancelURL().toString();
-const returnUrl = new UtrustReturnURL().toString();
+const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
+const callbackUrl = new UtrustCallbackURL();
+const cancelUrl = new UtrustCancelURL();
+const returnUrl = new UtrustReturnURL();
 
-const BAD_REQUEST = {
+const accessControlAllowOrigin = {
+  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
+};
+
+const isBase64Encoded = false;
+
+const BAD_REQUEST: APIGatewayProxyResult = {
+  body: "",
+  headers: {
+    ...accessControlAllowOrigin,
+  },
+  isBase64Encoded,
   statusCode: __400__BAD_REQUEST__,
-  body: JSON.stringify({ ok: false }),
 };
 
 type RequestData = AccountKey & {
@@ -82,13 +92,14 @@ export const handler = async (
   switch (event.httpMethod) {
     case "OPTIONS": {
       return {
+        body: "",
         headers: {
           "Access-Control-Allow-Headers": "Content-type",
           "Access-Control-Allow-Methods": "OPTIONS, POST",
-          "Access-Control-Allow-Origin": userWebappBaseURL,
+          ...accessControlAllowOrigin,
         },
+        isBase64Encoded,
         statusCode: __200__OK__,
-        body: JSON.stringify({}),
       };
     }
 
@@ -140,9 +151,9 @@ export const handler = async (
           currency: monthlyPriceCurrency,
         },
         return_urls: {
-          callback_url: callbackUrl,
-          return_url: returnUrl,
-          cancel_url: cancelUrl,
+          callback_url: callbackUrl.toString(),
+          return_url: returnUrl.toString(),
+          cancel_url: cancelUrl.toString(),
         },
         line_items: [
           {
@@ -171,15 +182,24 @@ export const handler = async (
       updateSubscriptionPurchaseInfo({ ...purchaseKey, info: { uuid } });
 
       return {
-        statusCode: __200__OK__,
         body: JSON.stringify({ redirectUrl }),
+        headers: {
+          "Content-Type": "application/json",
+          ...accessControlAllowOrigin,
+        },
+        isBase64Encoded,
+        statusCode: __200__OK__,
       };
     }
 
     default: {
       return {
+        body: "",
+        headers: {
+          ...accessControlAllowOrigin,
+        },
+        isBase64Encoded: false,
         statusCode: __405__METHOD_NOT_ALLOWED__,
-        body: JSON.stringify({}),
       };
     }
   }
