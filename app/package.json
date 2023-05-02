@@ -1,5 +1,6 @@
 {
   "name": "@ggbot2/app",
+  "description": "user webapp",
   "version": "0.0.0",
   "private": true,
   "scripts": {

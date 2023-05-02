@@ -1,5 +1,6 @@
 {
   "name": "@ggbot2/admin",
+  "description": "admin webapp",
   "version": "0.0.0",
   "private": true,
   "type": "module",

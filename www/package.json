@@ -1,5 +1,6 @@
 {
   "name": "@ggbot2/www",
+  "description": "landing page",
   "version": "0.0.0",
   "private": true,
   "scripts": {
