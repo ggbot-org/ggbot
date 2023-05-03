@@ -8,7 +8,7 @@ import { packageScriptKey } from "./package.js";
 import {
   importWorkspaceTsconfigJson,
   importWorkspaceTsconfigBuildJson,
-} from "./tsconfig.js";
+} from "./tsconfigs.js";
 import {
   importWorkspacePackageJson,
   workspacePackageName,
