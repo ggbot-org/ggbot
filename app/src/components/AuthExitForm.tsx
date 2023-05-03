@@ -52,10 +52,6 @@ export const AuthExitForm: FC = () => {
             {buttonLabel.exit}
           </Button>
         </Control>
-
-        <Control>
-          <Button type="reset">{buttonLabel.goBack}</Button>
-        </Control>
       </Field>
     </Form>
   );
