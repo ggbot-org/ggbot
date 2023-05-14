@@ -6,7 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const userWebappHomepageURL = new UserWebappHomepageURL();
+const userWebappHomepageURL = new UserWebappHomepageURL("main");
 
 const Page: NextPage = () => {
   const [isFirstPageview, setIsFirstPageview] = useState(false);

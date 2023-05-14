@@ -5,6 +5,8 @@
 export const topLevelDomain = "ggbot2.com";
 
 export const apiDomain = `api.${topLevelDomain}`;
+export const apiNextDomain = `api-next.${topLevelDomain}`;
+export const apiLocalDomain = `api-local.${topLevelDomain}`;
 
 export const assetsDomain = `assets.${topLevelDomain}`;
 

@@ -1,10 +1,16 @@
 import { DeployStage } from "@ggbot2/env";
-import { apiDomain, userWebappDomain, userWebappNextDomain } from "./FQDNs.js";
+import {
+  apiDomain,
+  apiNextDomain,
+  apiLocalDomain,
+  userWebappDomain,
+  userWebappNextDomain,
+} from "./FQDNs.js";
 
 export class ApiBaseURL extends URL {
-  static local = `https://${apiDomain}/local`;
+  static local = `https://${apiLocalDomain}`;
   static main = `https://${apiDomain}`;
-  static next = `https://${apiDomain}/next`;
+  static next = `https://${apiNextDomain}`;
 
   constructor(deployStage: DeployStage) {
     super(

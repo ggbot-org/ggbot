@@ -12,6 +12,7 @@ import {
   __405__METHOD_NOT_ALLOWED__,
 } from "@ggbot2/http-status-codes";
 import {
+  ApiBaseURL,
   UserWebappBaseURL,
   UtrustCancelURL,
   UtrustCallbackURL,
@@ -53,9 +54,10 @@ const UTRUST_ENVIRONMENT = UTRUST_API_KEY.startsWith("u_live")
 const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT);
 
 const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
-const callbackUrl = new UtrustCallbackURL();
-const cancelUrl = new UtrustCancelURL();
-const returnUrl = new UtrustReturnURL();
+const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE);
+const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString());
+const cancelUrl = new UtrustCancelURL(userWebappBaseURL.toString());
+const returnUrl = new UtrustReturnURL(userWebappBaseURL.toString());
 
 const accessControlAllowOrigin = {
   "Access-Control-Allow-Origin": userWebappBaseURL.origin,

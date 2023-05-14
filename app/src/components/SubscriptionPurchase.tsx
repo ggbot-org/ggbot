@@ -33,15 +33,17 @@ import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { SubscriptionContext } from "_contexts/Subscription";
 import { useApi } from "_hooks/useApi";
+import { useApiBaseURL } from "_hooks/useApiBaseUrl";
 import { buttonLabel, fieldLabel, title } from "_i18n";
-
-const apiPurchaseOrderURL = new ApiPurchaseOrderURL();
 
 const fields = ["country"] as const;
 const fieldName = {
   country: "country",
 } as const satisfies Record<string, (typeof fields)[number]>;
 
+// TODO i18n for country names, and label "-- your country --"
+// do not import country names from "country-isocode2/en",
+// create a map with allowed countries.
 const allowedCountryOptions = Object.entries(countries)
   .filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
   .map(([isoCode2, country]) => ({
@@ -53,6 +55,8 @@ const minNumMonths = 1;
 const defaultNumMonths = 6;
 
 export const SubscriptionPurchase: FC = () => {
+  const apiBaseURL = useApiBaseURL();
+
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
@@ -134,6 +138,8 @@ export const SubscriptionPurchase: FC = () => {
     if (purchaseIsPending) return;
     setPurchaseIsPending(true);
     try {
+      if (!apiBaseURL) return;
+      const apiPurchaseOrderURL = new ApiPurchaseOrderURL(apiBaseURL);
       const response = await fetch(apiPurchaseOrderURL, {
         // TODO define fields (and type-guard) in api package, use them also in utrust lambda
         body: JSON.stringify({ accountId, country, email, numMonths }),
@@ -158,6 +164,7 @@ export const SubscriptionPurchase: FC = () => {
     }
   }, [
     accountId,
+    apiBaseURL,
     country,
     email,
     numMonths,

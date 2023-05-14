@@ -5,4 +5,5 @@ export const title = {
   purchase: "Purchase",
   strategies: "Strategies",
   strategyInfo: "Strategy info",
+  subscription: "Subscription",
 };

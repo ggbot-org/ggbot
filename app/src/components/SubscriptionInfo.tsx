@@ -9,29 +9,41 @@ import {
 } from "@ggbot2/design";
 import { FC, useContext } from "react";
 import { SubscriptionContext } from "_contexts/Subscription";
-import { fieldLabel } from "_i18n";
+import { fieldLabel, title, schedulingStatusLabel } from "_i18n";
 
 export const SubscriptionInfo: FC = () => {
-  const { subscriptionEnd, subscriptionPlan } = useContext(SubscriptionContext);
+  const { hasActiveSubscription, subscriptionEnd, subscriptionPlan } =
+    useContext(SubscriptionContext);
 
   const formattedSubscriptionEnd = useFormattedDate(subscriptionEnd, "day");
 
   return (
     <Box>
-      <Title>Subscription</Title>
+      <Title>{title.subscription}</Title>
 
       <Field>
         <Control>
-          <Tag color="primary">active</Tag>
+          {hasActiveSubscription === true ? (
+            <Tag color="primary">{schedulingStatusLabel.active}</Tag>
+          ) : hasActiveSubscription === false ? (
+            <Tag color="light">{schedulingStatusLabel.inactive}</Tag>
+          ) : null}
         </Control>
       </Field>
 
-      <OutputField
-        label={fieldLabel.subscriptionPlan}
-        value={subscriptionPlan}
-      />
+      {subscriptionPlan ? (
+        <OutputField
+          label={fieldLabel.subscriptionPlan}
+          value={subscriptionPlan}
+        />
+      ) : null}
 
-      <OutputField label={fieldLabel.endDay} value={formattedSubscriptionEnd} />
+      {formattedSubscriptionEnd ? (
+        <OutputField
+          label={fieldLabel.endDay}
+          value={formattedSubscriptionEnd}
+        />
+      ) : null}
     </Box>
   );
 };

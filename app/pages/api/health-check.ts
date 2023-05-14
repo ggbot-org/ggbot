@@ -1,3 +1,4 @@
+// TODO this could be removed when Next.js is removed
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function apiHandler(
