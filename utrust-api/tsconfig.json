@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "es2020"],
+    "rootDir": "./src"
+  },
+  "extends": "@ggbot2/tsconfig/lambda",
+  "include": ["./src/**/*.ts"]
+}

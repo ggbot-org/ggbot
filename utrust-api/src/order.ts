@@ -1,3 +1,4 @@
+import { isApiUtrustOrderRequestData } from "@ggbot2/api";
 import {
   itemKeyToDirname,
   readSubscription,
@@ -19,26 +20,15 @@ import {
   UtrustReturnURL,
 } from "@ggbot2/locators";
 import {
-  AllowedCountryIsoCode2,
-  EmailAddress,
   PaymentProvider,
   SubscriptionPlan,
-  isAllowedCountryIsoCode2,
-  isEmailAddress,
   monthlyPriceCurrency,
   purchaseMaxNumMonths as maxNumMonths,
   totalPurchase,
   isSubscription,
   subscriptionStatus,
-  AccountKey,
-  isAccountKey,
 } from "@ggbot2/models";
 import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
-import {
-  NaturalNumber,
-  isNaturalNumber,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
@@ -63,30 +53,12 @@ const accessControlAllowOrigin = {
   "Access-Control-Allow-Origin": userWebappBaseURL.origin,
 };
 
-const isBase64Encoded = false;
-
 const BAD_REQUEST: APIGatewayProxyResult = {
   body: "",
-  headers: {
-    ...accessControlAllowOrigin,
-  },
-  isBase64Encoded,
+  headers: accessControlAllowOrigin,
+  isBase64Encoded: false,
   statusCode: __400__BAD_REQUEST__,
 };
-
-type RequestData = AccountKey & {
-  country: AllowedCountryIsoCode2;
-  email: EmailAddress;
-  numMonths: NaturalNumber;
-};
-
-const isRequestData = objectTypeGuard<RequestData>(
-  ({ country, email, numMonths, ...accountKey }) =>
-    isAllowedCountryIsoCode2(country) &&
-    isEmailAddress(email) &&
-    isNaturalNumber(numMonths) &&
-    isAccountKey(accountKey)
-);
 
 export const handler = async (
   event: APIGatewayEvent
@@ -100,7 +72,7 @@ export const handler = async (
           "Access-Control-Allow-Methods": "OPTIONS, POST",
           ...accessControlAllowOrigin,
         },
-        isBase64Encoded,
+        isBase64Encoded: false,
         statusCode: __200__OK__,
       };
     }
@@ -109,7 +81,7 @@ export const handler = async (
       if (!event.body) return BAD_REQUEST;
 
       const input = JSON.parse(event.body);
-      if (!isRequestData(input)) return BAD_REQUEST;
+      if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST;
 
       const { accountId, country, email, numMonths } = input;
 
@@ -189,7 +161,7 @@ export const handler = async (
           "Content-Type": "application/json",
           ...accessControlAllowOrigin,
         },
-        isBase64Encoded,
+        isBase64Encoded: false,
         statusCode: __200__OK__,
       };
     }
@@ -197,9 +169,7 @@ export const handler = async (
     default: {
       return {
         body: "",
-        headers: {
-          ...accessControlAllowOrigin,
-        },
+        headers: accessControlAllowOrigin,
         isBase64Encoded: false,
         statusCode: __405__METHOD_NOT_ALLOWED__,
       };
