@@ -1,4 +1,5 @@
 import { DflowNode } from "dflow";
+
 import { inputArray } from "./commonIO.js";
 
 const { output } = DflowNode;

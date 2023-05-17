@@ -1,3 +1,7 @@
+import { SubscriptionContext } from "_contexts/Subscription";
+import { useApi } from "_hooks/useApi";
+import { useApiBaseURL } from "_hooks/useApiBaseUrl";
+import { buttonLabel, fieldLabel, title } from "_i18n";
 import {
   Box,
   Button,
@@ -17,24 +21,20 @@ import {
   Title,
   useFormattedDate,
 } from "@ggbot2/design";
+import { ApiPurchaseOrderURL } from "@ggbot2/locators";
 import {
   AllowedCountryIsoCode2,
   isAccount,
   isAllowedCountryIsoCode2,
   monthlyPrice,
   monthlyPriceCurrency,
-  totalPurchase,
   purchaseMaxNumMonths as maxNumMonths,
+  totalPurchase,
 } from "@ggbot2/models";
-import { ApiPurchaseOrderURL } from "@ggbot2/locators";
-import { Time, getTime, now } from "@ggbot2/time";
+import { getTime, now, Time } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { SubscriptionContext } from "_contexts/Subscription";
-import { useApi } from "_hooks/useApi";
-import { useApiBaseURL } from "_hooks/useApiBaseUrl";
-import { buttonLabel, fieldLabel, title } from "_i18n";
 
 const fields = ["country"] as const;
 const fieldName = {

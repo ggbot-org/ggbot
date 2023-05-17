@@ -1,10 +1,10 @@
-import { Buttons, Columns, Column, Flex, Level } from "@ggbot2/design";
-import { FC } from "react";
 import { classNames } from "_classNames";
 import { GoCopyStrategyButton } from "_components/GoCopyStrategyButton";
 import { ShareStrategyButton } from "_components/ShareStrategyButton";
 import { StrategyFlowName } from "_components/StrategyFlowName";
 import { StrategyInfo } from "_routing/types";
+import { Buttons, Column, Columns, Flex, Level } from "@ggbot2/design";
+import { FC } from "react";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name">;
 

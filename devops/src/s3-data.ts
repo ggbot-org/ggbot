@@ -1,5 +1,6 @@
-import { getDataBucketName, dataBucketACL } from "@ggbot2/infrastructure";
-import { S3BucketStatus, createS3Bucket, getS3BucketStatus } from "./_s3.js";
+import { dataBucketACL, getDataBucketName } from "@ggbot2/infrastructure";
+
+import { createS3Bucket, getS3BucketStatus, S3BucketStatus } from "./_s3.js";
 
 const Bucket = getDataBucketName();
 const ACL = dataBucketACL;

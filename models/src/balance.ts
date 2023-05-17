@@ -1,8 +1,8 @@
 import { Decimal, isDecimal } from "@ggbot2/arithmetic";
 import {
-  NonEmptyString,
   arrayTypeGuard,
   isNonEmptyString,
+  NonEmptyString,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
 

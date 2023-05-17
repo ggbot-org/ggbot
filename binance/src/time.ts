@@ -1,5 +1,6 @@
-import { Time, getTime } from "@ggbot2/time";
+import { getTime, Time } from "@ggbot2/time";
 import { NaturalNumber } from "@ggbot2/type-utils";
+
 import { BinanceKlineInterval } from "./types.js";
 
 export const getBinanceIntervalTime: Record<

@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { InputField, InputFieldProps } from "./InputField";
+
 import { _classNames } from "./_classNames";
+import { InputField, InputFieldProps } from "./InputField";
 
 export type OutputFieldClassNames = "OutputField";
 

@@ -1,5 +1,5 @@
-import { FC } from "react";
 import { Tag } from "@ggbot2/design";
+import { FC } from "react";
 
 export const Tags: FC = () => (
   <div>

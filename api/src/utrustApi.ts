@@ -1,9 +1,4 @@
 import {
-  NaturalNumber,
-  isNaturalNumber,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
-import {
   AccountKey,
   AllowedCountryIsoCode2,
   EmailAddress,
@@ -11,6 +6,11 @@ import {
   isAllowedCountryIsoCode2,
   isEmailAddress,
 } from "@ggbot2/models";
+import {
+  isNaturalNumber,
+  NaturalNumber,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 
 export type ApiUtrustCallabackRequestData = {
   ok: boolean;

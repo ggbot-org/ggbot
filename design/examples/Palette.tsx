@@ -1,5 +1,5 @@
+import { classNames, Column, Columns } from "@ggbot2/design";
 import { FC } from "react";
-import { Column, Columns, classNames } from "@ggbot2/design";
 
 export const Palette: FC = () => (
   <Columns>

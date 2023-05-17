@@ -5,6 +5,7 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
+
 import { BinanceDflowClient } from "../client.js";
 import { accountInfo } from "./accountInfo.js";
 import { exchangeInfo } from "./exchangeInfo.js";

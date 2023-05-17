@@ -1,9 +1,12 @@
+import { classNames } from "_classNames";
+import { useIsServerSide } from "_hooks/useIsServerSide";
+import { miscellaneousLabel, title } from "_i18n";
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic";
 import {
-  BinanceConnector,
-  BinanceSymbolInfo,
-  BinanceExchange,
   BinanceCacheMap,
+  BinanceConnector,
+  BinanceExchange,
+  BinanceSymbolInfo,
   isBinanceOrderRespFULL,
 } from "@ggbot2/binance";
 import {
@@ -13,14 +16,11 @@ import {
   Heading,
   Level,
   LevelItem,
-  Title,
   SizeModifierProp,
+  Title,
 } from "@ggbot2/design";
 import { Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
-import { classNames } from "_classNames";
-import { useIsServerSide } from "_hooks/useIsServerSide";
-import { miscellaneousLabel, title } from "_i18n";
 import { FC, Fragment, PropsWithChildren, useEffect } from "react";
 
 type Props = {

@@ -7,6 +7,7 @@ import {
   NavbarItem,
   NavbarMenu,
 } from "trunx";
+
 import { _classNames } from "./_classNames";
 import { Logo } from "./Logo";
 

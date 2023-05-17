@@ -1,4 +1,5 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { Interval } from "./interval.js";
 
 export const isInvalidDate = (arg: Date) =>

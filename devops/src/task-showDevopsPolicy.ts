@@ -1,4 +1,5 @@
 import { getDevopsPolicy } from "@ggbot2/infrastructure";
+
 import { isMainModule } from "./_isMainModule.js";
 
 if (isMainModule(import.meta.url)) {

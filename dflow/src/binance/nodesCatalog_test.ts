@@ -1,7 +1,8 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
-import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js";
+
 import { BinanceClientMock } from "./mocks/client.js";
+import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js";
 import { DflowBinanceSymbolInfo } from "./symbols.js";
 
 describe("getDflowBinanceDynamicNodesCatalog", () => {

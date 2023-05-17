@@ -1,5 +1,5 @@
-import { FC } from "react";
 import { Table } from "@ggbot2/design";
+import { FC } from "react";
 
 export const SimpleTable: FC = () => (
   <Table>

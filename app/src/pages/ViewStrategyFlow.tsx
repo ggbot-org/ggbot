@@ -1,7 +1,3 @@
-import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
-import { isStrategyFlow } from "@ggbot2/models";
-import { FC, useEffect, useState, useRef } from "react";
-import { toast } from "react-hot-toast";
 import { BacktestController } from "_components/BacktestController";
 import { FlowViewContainer } from "_components/FlowViewContainer";
 import { Navigation } from "_components/Navigation";
@@ -13,6 +9,10 @@ import { useFlowView } from "_hooks/useFlowView";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
+import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import { isStrategyFlow } from "@ggbot2/models";
+import { FC, useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

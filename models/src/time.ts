@@ -1,4 +1,4 @@
-import { Day, Time, isDay, isTime, now } from "@ggbot2/time";
+import { Day, isDay, isTime, now, Time } from "@ggbot2/time";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 
 export type DayKey = { day: Day };

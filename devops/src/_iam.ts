@@ -1,5 +1,6 @@
-import { GetPolicyArgs, getPolicy } from "@ggbot2/aws";
-import { TagsStatus, tagsIncludesProjectTag } from "./_tags.js";
+import { getPolicy, GetPolicyArgs } from "@ggbot2/aws";
+
+import { tagsIncludesProjectTag, TagsStatus } from "./_tags.js";
 
 export type IamPolicyStatus = TagsStatus;
 

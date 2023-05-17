@@ -1,4 +1,5 @@
 import { isLiteralType } from "@ggbot2/type-utils";
+
 import { Time } from "./time.js";
 
 export const timeUnits = ["second", "minute", "hour", "day"];

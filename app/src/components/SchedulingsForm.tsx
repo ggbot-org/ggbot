@@ -1,4 +1,12 @@
 import {
+  SchedulingItem,
+  SchedulingItemProps,
+} from "_components/SchedulingItem";
+import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
+import { useApi } from "_hooks/useApi";
+import { useSubscription } from "_hooks/useSubscription";
+import { StrategyKey } from "_routing/types";
+import {
   Button,
   ButtonOnClick,
   Control,
@@ -10,20 +18,12 @@ import {
   Title,
 } from "@ggbot2/design";
 import {
-  StrategyScheduling,
   isAccountStrategy,
   isStrategyScheduling,
   newStrategyScheduling,
+  StrategyScheduling,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import {
-  SchedulingItem,
-  SchedulingItemProps,
-} from "_components/SchedulingItem";
-import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
-import { useApi } from "_hooks/useApi";
-import { useSubscription } from "_hooks/useSubscription";
-import { StrategyKey } from "_routing/types";
 
 type Props = {
   strategyKey: StrategyKey;

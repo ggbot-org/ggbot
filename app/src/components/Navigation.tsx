@@ -1,3 +1,6 @@
+import { navigationLabel } from "_i18n";
+import { pathname } from "_routing/pathnames";
+import { SettingsSectionId } from "_routing/types";
 import {
   Navbar,
   NavbarDropdown,
@@ -10,9 +13,6 @@ import {
 } from "@ggbot2/design";
 import { useRouter } from "next/router";
 import { FC, memo, useCallback } from "react";
-import { navigationLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
-import { SettingsSectionId } from "_routing/types";
 
 type Props = Pick<NavbarProps, "noMenu">;
 

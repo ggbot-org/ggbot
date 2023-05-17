@@ -1,9 +1,10 @@
 import {
-  CreateEmailAccount,
-  ReadEmailAccount,
   createdNow,
+  CreateEmailAccount,
   EmailAccount,
+  ReadEmailAccount,
 } from "@ggbot2/models";
+
 import { getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 

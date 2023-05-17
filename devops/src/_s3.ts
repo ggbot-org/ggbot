@@ -1,11 +1,12 @@
 import {
+  createBucket,
   CreateBucketArgs,
+  headBucket,
   HeadBucketArgs,
   S3ServiceException,
-  createBucket,
-  headBucket,
   s3ServiceExceptionName,
 } from "@ggbot2/aws";
+
 import { CreateOutput } from "./_create.js";
 
 export type S3BucketStatus = {

@@ -1,5 +1,5 @@
 // @ts-nocheck TODO remove this
-import { Html, Head, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
@@ -8,10 +8,13 @@ export default function Document() {
         <link rel="icon" href="data:;base64,=" />
 
         <link rel="preconnect" href="https://rsms.me" crossOrigin="" />
+
         <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
       </Head>
+
       <body>
         <Main />
+
         <NextScript />
       </body>
     </Html>

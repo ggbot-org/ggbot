@@ -7,8 +7,8 @@ import {
   OK,
 } from "@ggbot2/api-gateway";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
-import { isReadStrategyInput, isReadStrategyFlowInput } from "@ggbot2/models";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { isReadStrategyFlowInput, isReadStrategyInput } from "@ggbot2/models";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

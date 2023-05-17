@@ -1,14 +1,14 @@
 // TODO (see below) import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
 import {
+  isBinanceSymbolFilterLotSize,
+  isBinanceSymbolFilterMinNotional,
+} from "./typeGuards.js";
+import {
   BinanceNewOrderOptions,
   BinanceSymbolFilter,
   BinanceSymbolFilterLotSize,
   BinanceSymbolFilterMinNotional,
 } from "./types.js";
-import {
-  isBinanceSymbolFilterLotSize,
-  isBinanceSymbolFilterMinNotional,
-} from "./typeGuards.js";
 
 type IcebergQty = NonNullable<BinanceNewOrderOptions["icebergQty"]>;
 type Quantity = NonNullable<BinanceNewOrderOptions["quantity"]>;

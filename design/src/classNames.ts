@@ -1,6 +1,6 @@
 import { BulmaClassName } from "trunx";
 
-export { type ClassNamesArg, classNames } from "trunx";
+export { classNames, type ClassNamesArg } from "trunx";
 
 export type ClassName = BulmaClassName;
 

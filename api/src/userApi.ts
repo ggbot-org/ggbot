@@ -23,9 +23,10 @@ import {
 } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow } from "dflow";
+
 import {
-  AuthenticatedApiAction as Action,
   ApiActionInput,
+  AuthenticatedApiAction as Action,
 } from "./apiAction.js";
 
 export const userApiActionTypes = [

@@ -1,15 +1,18 @@
+import { useApi } from "_hooks/useApi";
+import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
+import { pathname } from "_routing/pathnames";
 import {
   Button,
-  Control,
   Column,
   Columns,
+  Control,
   Field,
   Form,
   FormOnSubmit,
+  formValues,
   InputField,
   Modal,
   Title,
-  formValues,
 } from "@ggbot2/design";
 import {
   ErrorInvalidArg,
@@ -19,9 +22,6 @@ import {
 } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, fieldLabel, errorMessage } from "_i18n";
-import { pathname } from "_routing/pathnames";
 
 const fields = ["name"];
 const fieldName = {

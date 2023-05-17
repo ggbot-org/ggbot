@@ -1,7 +1,7 @@
-import { Tabs } from "@ggbot2/design";
-import { FC, ReactNode, useState } from "react";
 import { classNames } from "_classNames";
 import { tabLabel } from "_i18n";
+import { Tabs } from "@ggbot2/design";
+import { FC, ReactNode, useState } from "react";
 
 const tabIds = ["flow", "backtest"] as const;
 type TabId = (typeof tabIds)[number];

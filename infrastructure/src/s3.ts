@@ -1,6 +1,7 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3";
-import { assetsDomain, topLevelDomain, wwwDomain } from "@ggbot2/locators";
 import { ENV } from "@ggbot2/env";
+import { assetsDomain, topLevelDomain, wwwDomain } from "@ggbot2/locators";
+
 import { awsRegion } from "./awsRegion.js";
 
 const { DEPLOY_STAGE } = ENV;

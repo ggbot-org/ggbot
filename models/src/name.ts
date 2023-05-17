@@ -1,4 +1,5 @@
-import { NonEmptyString, isNonEmptyString } from "@ggbot2/type-utils";
+import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils";
+
 import { ErrorInvalidArg } from "./errors.js";
 
 /** A Name is any not empty string, with a max length. */

@@ -1,7 +1,7 @@
+import { fieldLabel } from "_i18n";
+import { InvalidStrategyKey, StrategyKey } from "_routing/types";
 import { Column, Columns, OutputField } from "@ggbot2/design";
 import { FC } from "react";
-import { fieldLabel } from "_i18n";
-import { StrategyKey, InvalidStrategyKey } from "_routing/types";
 
 type Props = StrategyKey | InvalidStrategyKey;
 

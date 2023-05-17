@@ -1,4 +1,5 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { isInvalidDate } from "./date.js";
 import { Interval } from "./interval.js";
 

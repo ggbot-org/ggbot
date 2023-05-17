@@ -1,8 +1,9 @@
-import { objectTypeGuard } from "@ggbot2/type-utils";
 import { isDay } from "@ggbot2/time";
+import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
-import { Order } from "./order.js";
 import { Operation } from "./operation.js";
+import { Order } from "./order.js";
 import { DayKey, UpdateTime } from "./time.js";
 
 /** Daily orders per strategy. */

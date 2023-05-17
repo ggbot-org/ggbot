@@ -64,6 +64,7 @@ temp/
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint --fix --ext .ts .",
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test"
   },
@@ -92,6 +93,7 @@ If package has no test, its `scripts` can be the following
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "rm -rf dist/",
+    "lint": "eslint --fix --ext .ts .",
     "test": "npm run tsc--noEmit",
     "tsc--noEmit": "tsc --noEmit --project ."
   }

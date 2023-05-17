@@ -1,19 +1,20 @@
 // TODO port this into TS
 import { strict as assert } from "node:assert";
+
+import designTsconfig from "../../design/tsconfig.json" assert { type: "json" };
 // TODO use describe and split into files, remove this file
 import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" };
-import designTsconfig from "../../design/tsconfig.json" assert { type: "json" };
 import { eslintConfigPackageName } from "./eslint.js";
 import { packageScriptKey } from "./package.js";
+import { rootPackageJson } from "./rootPackage.js";
 import {
-  importWorkspaceTsconfigJson,
   importWorkspaceTsconfigBuildJson,
+  importWorkspaceTsconfigJson,
 } from "./tsconfigs.js";
 import {
   importWorkspacePackageJson,
   workspacePackageName,
 } from "./workspacePackage.js";
-import { rootPackageJson } from "./rootPackage.js";
 
 const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson;
 

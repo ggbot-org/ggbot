@@ -1,11 +1,12 @@
 import { getDate, truncateDate } from "@ggbot2/time";
+
 import {
-  CreateCookieOptions,
-  SESSION_COOKIE_NAME,
   createCookie,
+  CreateCookieOptions,
   deleteCookie,
+  SESSION_COOKIE_NAME,
 } from "./cookies.js";
-import { Session, isSession, sessionNumDays } from "./session.js";
+import { isSession, Session, sessionNumDays } from "./session.js";
 
 const separator = "_";
 

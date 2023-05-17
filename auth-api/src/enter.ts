@@ -10,7 +10,7 @@ import {
   OK,
 } from "@ggbot2/api-gateway";
 import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

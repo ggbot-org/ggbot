@@ -1,4 +1,5 @@
 import { join } from "node:path";
+
 import { packageScriptKey } from "./package.js";
 import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
 

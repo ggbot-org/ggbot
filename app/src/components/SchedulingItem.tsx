@@ -1,12 +1,12 @@
-import { Button, Buttons, ButtonOnClick } from "@ggbot2/design";
-import { StrategyScheduling } from "@ggbot2/models";
-import { FC, useCallback } from "react";
-import { buttonLabel } from "_i18n";
 import {
   FrequencyInput,
   FrequencyInputProps,
 } from "_components/FrequencyInput";
 import { SchedulingStatusBadge } from "_components/SchedulingStatusBadge";
+import { buttonLabel } from "_i18n";
+import { Button, ButtonOnClick, Buttons } from "@ggbot2/design";
+import { StrategyScheduling } from "@ggbot2/models";
+import { FC, useCallback } from "react";
 
 export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
   scheduling: Omit<StrategyScheduling, "frequency"> &

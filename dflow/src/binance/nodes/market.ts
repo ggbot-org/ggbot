@@ -5,8 +5,9 @@ import {
   isBinanceKlineInterval,
 } from "@ggbot2/binance";
 import { Dflow, DflowNode } from "dflow";
-import { isDflowBinanceKlineInterval } from "../klineIntervals.js";
+
 import { BinanceDflowContext as Context } from "../context.js";
+import { isDflowBinanceKlineInterval } from "../klineIntervals.js";
 import {
   inputInterval,
   inputSymbol,

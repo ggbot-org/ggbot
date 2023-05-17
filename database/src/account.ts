@@ -4,28 +4,29 @@ import {
   CreateAccount,
   DeleteAccount,
   ErrorAccountItemNotFound,
+  isAccountKey,
   ListAccountKeys,
+  newAccount,
   ReadAccount,
   RenameAccount,
   SetAccountCountry,
-  isAccountKey,
-  newAccount,
   throwIfInvalidName,
   updatedNow,
 } from "@ggbot2/models";
+
 import {
   deleteObject,
   getObject,
   listObjects,
   putObject,
 } from "./_dataBucket.js";
+import { createEmailAccount } from "./emailAccount.js";
 import {
   dirnameDelimiter,
   dirnamePrefix,
   locatorToItemKey,
   pathname,
 } from "./locators.js";
-import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
   const account = newAccount({ email });

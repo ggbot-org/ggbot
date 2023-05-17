@@ -1,8 +1,9 @@
 import { DayInterval, isDayInterval } from "@ggbot2/time";
-import { Operation } from "./operation.js";
-import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
-import { StrategyDailyOrders } from "./strategyDailyOrders.js";
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
+import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
+import { Operation } from "./operation.js";
+import { StrategyDailyOrders } from "./strategyDailyOrders.js";
 
 export type ReadStrategyOrders = Operation<
   AccountStrategyKey & DayInterval,

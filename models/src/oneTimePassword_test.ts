@@ -1,10 +1,11 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
-import { createdNow } from "./time.js";
+
 import {
   generateOneTimePassword,
   isOneTimePassword,
 } from "./oneTimePassword.js";
+import { createdNow } from "./time.js";
 
 describe("isOneTimePassword", () => {
   it("validates input if is valid OneTimePassword", () => {

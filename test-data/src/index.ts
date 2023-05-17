@@ -1,8 +1,8 @@
 import {
   Account,
-  OneTimePassword,
   createdNow,
   isEmailAddress,
+  OneTimePassword,
 } from "@ggbot2/models";
 
 export const testOtp: OneTimePassword = {

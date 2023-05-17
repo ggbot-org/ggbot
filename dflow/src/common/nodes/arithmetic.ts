@@ -1,10 +1,10 @@
 import {
-  ErrorCannotDivideByZero,
   add,
-  sub,
-  mul,
-  div,
   decimalToNumber,
+  div,
+  ErrorCannotDivideByZero,
+  mul,
+  sub,
 } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
 

@@ -1,9 +1,9 @@
+import { StrategyKey } from "_routing/types";
 import {
   DflowBinanceSymbolInfo,
   getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
 import { DflowNodesCatalog } from "dflow";
-import { StrategyKey } from "_routing/types";
 
 export type UseNodesCatalogArg = Pick<StrategyKey, "strategyKind"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

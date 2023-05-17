@@ -1,4 +1,4 @@
-import { DflowData, Dflow } from "dflow";
+import { Dflow, DflowData } from "dflow";
 
 export type StrategyInput = {
   [key in string]: DflowData;

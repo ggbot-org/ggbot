@@ -1,6 +1,6 @@
-import { NextPage } from "next";
 import { Accounts } from "_components/Accounts";
 import { Content } from "_components/Content";
+import { NextPage } from "next";
 
 const Page: NextPage = () => (
   <Content>

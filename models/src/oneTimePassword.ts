@@ -1,11 +1,12 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { EmailAddress } from "./email.js";
 import { Operation } from "./operation.js";
 import {
-  CreationTime,
   createdNow,
-  isCreationTime,
+  CreationTime,
   DeletionTime,
+  isCreationTime,
 } from "./time.js";
 
 type OneTimePasswordCode = string;

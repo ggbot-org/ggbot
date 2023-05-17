@@ -1,5 +1,5 @@
-import { FC } from "react";
 import { Form, InputField } from "@ggbot2/design";
+import { FC } from "react";
 
 export const InputFields: FC = () => (
   <Form>

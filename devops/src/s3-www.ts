@@ -1,5 +1,6 @@
 import { getWwwBucketName, wwwBucketACL } from "@ggbot2/infrastructure";
-import { S3BucketStatus, createS3Bucket, getS3BucketStatus } from "./_s3.js";
+
+import { createS3Bucket, getS3BucketStatus, S3BucketStatus } from "./_s3.js";
 
 const Bucket = getWwwBucketName();
 const ACL = wwwBucketACL;

@@ -1,4 +1,5 @@
 import { ErrorHTTP } from "@ggbot2/http";
+
 import { BinanceApiEndpoint } from "./endpoints.js";
 
 const defaultBaseUrl = "https://api.binance.com";

@@ -1,6 +1,7 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
-import { equal, add, sub, div, mul } from "./operators.js";
+
+import { add, div, equal, mul, sub } from "./operators.js";
 
 describe("equal", () => {
   it("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {

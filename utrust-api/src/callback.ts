@@ -1,23 +1,23 @@
 import { ApiUtrustCallabackRequestData } from "@ggbot2/api";
 import {
   BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
   OK,
-  INTERNAL_SERVER_ERROR,
 } from "@ggbot2/api-gateway";
 import {
   locatorToItemKey,
   readSubscription,
   readSubscriptionPurchase,
-  writeSubscription,
   updateSubscriptionPurchaseStatus,
+  writeSubscription,
 } from "@ggbot2/database";
 import { ENV } from "@ggbot2/env";
 import {
-  WebhookValidator,
   Event as UtrustEvent,
+  WebhookValidator,
 } from "@utrustdev/utrust-ts-library";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

@@ -6,18 +6,18 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceKlineInterval,
+  binanceKlineIntervals,
   BinanceKlineOptionalParameters,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
-  binanceKlineIntervals,
 } from "@ggbot2/binance";
 import {
   BinanceDflowClient as IBinanceDflowClient,
-  dflowBinanceZero as zero,
-  dflowBinancePrecision,
   dflowBinanceLowerKlineInterval,
+  dflowBinancePrecision,
+  dflowBinanceZero as zero,
 } from "@ggbot2/dflow";
 import { Time } from "@ggbot2/time";
 

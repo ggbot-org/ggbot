@@ -20,7 +20,7 @@ import { ENV } from "@ggbot2/env";
 import { __200__OK__ } from "@ggbot2/http";
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import { today } from "@ggbot2/time";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

@@ -1,5 +1,6 @@
 import { isStrategyKey } from "@ggbot2/models";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+
 import { redirectToAuthenticationPage } from "./redirects";
 import { StrategyKey } from "./types";
 

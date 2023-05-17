@@ -1,5 +1,6 @@
 import { getDate } from "@ggbot2/time";
-import { Session, isSession, sessionNumDays } from "./session.js";
+
+import { isSession, Session, sessionNumDays } from "./session.js";
 import { readSessionCookie } from "./sessionCookie.js";
 
 export const readSession = (cookies: string): Session | undefined => {

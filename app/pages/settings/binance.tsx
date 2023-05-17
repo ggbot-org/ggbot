@@ -1,6 +1,6 @@
-import { NextPage } from "next";
 import { BinanceSettingsPage } from "_pages/BinanceSettings";
 import { requireAuthentication } from "_routing/serverSide";
+import { NextPage } from "next";
 
 export const getServerSideProps = requireAuthentication;
 

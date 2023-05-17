@@ -1,12 +1,13 @@
 import {
+  dateToDay,
   Day,
   MonthNum,
-  WeekDayNum,
-  dateToDay,
   today,
+  WeekDayNum,
   weekDayNums,
 } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
+
 import { _classNames } from "./_classNames";
 import { Icon } from "./Icon";
 
@@ -208,10 +209,13 @@ export const Calendar: FC<CalendarProps> = ({
               onClick={isFirstMonth ? undefined : onClickPrevious}
             />
           </span>
+
           <span>{monthName[monthNum]}</span>
         </div>
+
         <div className="flex flex-row items-center gap-2">
           <span className="font-medium">{firstDate.getFullYear()}</span>
+
           <span className={rightCaretClassName}>
             <Icon
               name="caret-right"
@@ -227,11 +231,13 @@ export const Calendar: FC<CalendarProps> = ({
             {weekDayName[n]}
           </div>
         ))}
+
         {dateCells.map(({ num, className, onClick }, i) => (
           <div key={i} className={className} onClick={onClick}>
             {num}
           </div>
         ))}
+
         {
           /* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
           dateCells.length === 35

@@ -1,6 +1,12 @@
 import {
-  isApiAuthEnterResponseData,
+  GenericErrorMessage,
+  TimeoutErrorMessage,
+} from "_components/ErrorMessages";
+import { buttonLabel, fieldLabel, title } from "_i18n";
+import { pathname } from "_routing/pathnames";
+import {
   isApiAuthEnterRequestData,
+  isApiAuthEnterResponseData,
 } from "@ggbot2/api";
 import {
   Button,
@@ -14,12 +20,6 @@ import {
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
-import {
-  GenericErrorMessage,
-  TimeoutErrorMessage,
-} from "_components/ErrorMessages";
-import { buttonLabel, fieldLabel, title } from "_i18n";
-import { pathname } from "_routing/pathnames";
 
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
 

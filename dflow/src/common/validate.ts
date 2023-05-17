@@ -1,4 +1,5 @@
-import { DflowNodesCatalog, coreNodesCatalog } from "dflow";
+import { coreNodesCatalog, DflowNodesCatalog } from "dflow";
+
 import { ErrorUknownDflowNodes } from "../errors.js";
 import { DflowExecutorView } from "./executor.js";
 import { NodeTextToDflowKind, noOpNodeKinds } from "./nodeResolution.js";

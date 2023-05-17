@@ -1,7 +1,8 @@
 import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow, DflowObject } from "dflow";
-import { Item, NewItem, isItemId, newId } from "./item.js";
-import { CreationTime, createdNow, isCreationTime } from "./time.js";
+
+import { isItemId, Item, newId, NewItem } from "./item.js";
+import { createdNow, CreationTime, isCreationTime } from "./time.js";
 
 export type Order = Item &
   CreationTime & {

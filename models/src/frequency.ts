@@ -1,8 +1,8 @@
 import { Time, TimeUnit, timeUnitDuration } from "@ggbot2/time";
 import {
-  NaturalNumber,
   isLiteralType,
   isNaturalNumber,
+  NaturalNumber,
 } from "@ggbot2/type-utils";
 
 export const frequencyIntervals = ["1h", "1m"] as const;

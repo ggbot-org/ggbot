@@ -1,7 +1,8 @@
-import { isAccountKey } from "@ggbot2/models";
-import { Button } from "@ggbot2/design";
-import { FC, useEffect } from "react";
 import { useApi } from "_hooks/useApi";
+import { Button } from "@ggbot2/design";
+import { isAccountKey } from "@ggbot2/models";
+import { FC, useEffect } from "react";
+
 import { Account } from "./Account";
 
 export const Accounts: FC = () => {

@@ -1,9 +1,10 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
-import { isStrategy, newStrategy } from "./strategy.js";
+
 import { nullId } from "./item.js";
 import { normalizeName } from "./name.js";
 import { invalidNames } from "./name_test.js";
+import { isStrategy, newStrategy } from "./strategy.js";
 import { createdNow } from "./time.js";
 
 describe("isStrategy", () => {

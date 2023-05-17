@@ -2,7 +2,8 @@ import {
   getWebappLoadBalancerName,
   webappLoadBalancerType,
 } from "@ggbot2/infrastructure";
-import { LoadBalancerStatus, getLoadBalancerStatus } from "./_elb.js";
+
+import { getLoadBalancerStatus, LoadBalancerStatus } from "./_elb.js";
 
 const webappLoadBalancerName = getWebappLoadBalancerName();
 

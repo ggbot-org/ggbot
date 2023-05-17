@@ -1,10 +1,11 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { AccountKey, isAccountKey } from "./account.js";
 import { isName, normalizeName } from "./name.js";
-import { Strategy, StrategyKey, isStrategyKey } from "./strategy.js";
+import { isStrategyKey, Strategy, StrategyKey } from "./strategy.js";
 import {
-  StrategyScheduling,
   isStrategySchedulings,
+  StrategyScheduling,
 } from "./strategyScheduling.js";
 
 export type AccountStrategyKey = AccountKey & StrategyKey;

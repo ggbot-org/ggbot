@@ -1,11 +1,12 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+
 import {
   rootPackageJson,
   rootPackageJsonWorkspaceScriptKey,
 } from "./rootPackage.js";
-import { workspaceNames } from "./workspaces.js";
 import { workspaceExposedScriptKeys } from "./workspacePackage.js";
+import { workspaceNames } from "./workspaces.js";
 
 const { scripts } = rootPackageJson;
 

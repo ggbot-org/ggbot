@@ -1,8 +1,9 @@
 import {
-  NonEmptyString,
   isNonEmptyString,
+  NonEmptyString,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
+
 import { AccountKey, isAccountKey } from "./account.js";
 import { ItemKey } from "./item.js";
 import { Operation } from "./operation.js";

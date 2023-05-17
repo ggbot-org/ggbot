@@ -1,11 +1,11 @@
-import { deleteSessionCookie } from "@ggbot2/cookies";
 import {
   ALLOWED_METHODS,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
 } from "@ggbot2/api-gateway";
+import { deleteSessionCookie } from "@ggbot2/cookies";
 import { __200__OK__ } from "@ggbot2/http";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

@@ -5,13 +5,14 @@ import {
   maxNumOfDecimals,
 } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
+
 import {
-  inputOpen,
+  inputClose,
   inputHigh,
   inputLow,
-  inputClose,
-  outputOpen,
+  inputOpen,
   outputClose,
+  outputOpen,
 } from "../commonIO.js";
 
 /**

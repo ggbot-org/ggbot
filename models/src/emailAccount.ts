@@ -1,4 +1,5 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import { AccountKey, isAccountKey } from "./account.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { ItemKey } from "./item.js";

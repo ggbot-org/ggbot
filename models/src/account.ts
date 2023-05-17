@@ -1,18 +1,19 @@
 import { objectTypeGuard } from "@ggbot2/type-utils";
+
 import {
   AllowedCountryIsoCode2,
   isAllowedCountryIsoCode2,
 } from "./countries.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
-import { Item, ItemKey, NewItem, isItemId, newId } from "./item.js";
-import { Name, isName, normalizeName } from "./name.js";
+import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js";
+import { isName, Name, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
 import {
+  createdNow,
   CreationTime,
   DeletionTime,
-  UpdateTime,
-  createdNow,
   isCreationTime,
+  UpdateTime,
 } from "./time.js";
 
 export type Account = Item &

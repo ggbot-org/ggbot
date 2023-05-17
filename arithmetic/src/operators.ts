@@ -1,8 +1,8 @@
 import {
-  Decimal,
-  MaybeDecimal,
   coerceToDecimal,
+  Decimal,
   maxNumOfDecimals,
+  MaybeDecimal,
   numOfDecimals,
 } from "./decimal.js";
 import { ErrorCannotDivideByZero } from "./errors.js";

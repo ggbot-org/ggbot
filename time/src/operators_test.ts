@@ -1,5 +1,6 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+
 import { ErrorInvalidDate } from "./errors.js";
 import { getDate, truncateDate, truncateTimestamp } from "./operators.js";
 

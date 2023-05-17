@@ -1,24 +1,24 @@
-import { NextPage } from "next";
-import Head from "next/head";
-import {
-  Columns,
-  Column,
-  Container,
-  Logo,
-  Navbar,
-  Section,
-  Title,
-} from "@ggbot2/design";
 import { ButtonColors, LoadingButtons } from "_examples/Buttons";
 import { SingleCalendar } from "_examples/Calendar";
-import { TimeIntervalSelectors } from "_examples/TimeIntervalSelectors";
 import { SimpleForm } from "_examples/Forms";
 import { Icons } from "_examples/Icons";
 import { InputFields } from "_examples/InputFields";
 import { Palette } from "_examples/Palette";
 import { SimpleTable } from "_examples/Tables";
 import { Tags } from "_examples/Tags";
+import { TimeIntervalSelectors } from "_examples/TimeIntervalSelectors";
 import { Typography } from "_examples/Typography";
+import {
+  Column,
+  Columns,
+  Container,
+  Logo,
+  Navbar,
+  Section,
+  Title,
+} from "@ggbot2/design";
+import { NextPage } from "next";
+import Head from "next/head";
 
 const Home: NextPage = () => (
   <>

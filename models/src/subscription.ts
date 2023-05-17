@@ -1,9 +1,10 @@
-import { DayInterval, today, isDay } from "@ggbot2/time";
+import { DayInterval, isDay, today } from "@ggbot2/time";
 import {
   isLiteralType,
   NaturalNumber,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
+
 import { AccountKey } from "./account.js";
 import { Operation } from "./operation.js";
 import { UpdateTime } from "./time.js";

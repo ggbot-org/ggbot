@@ -1,7 +1,7 @@
 import {
-  Decimal,
   add,
   coerceToDecimal,
+  Decimal,
   decimalToNumber,
   div,
   maxNumOfDecimals,
@@ -9,6 +9,7 @@ import {
   sub,
 } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
+
 import {
   inputPeriod,
   inputValues,

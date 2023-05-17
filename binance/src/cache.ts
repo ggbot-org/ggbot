@@ -1,12 +1,13 @@
-import { Time, TimeInterval } from "@ggbot2/time";
 import { CacheMap } from "@ggbot2/models";
+import { Time, TimeInterval } from "@ggbot2/time";
+
 import { getBinanceIntervalTime } from "./time.js";
+import { isBinanceKline } from "./typeGuards.js";
 import {
   BinanceExchangeInfo,
   BinanceKline,
   BinanceKlineInterval,
 } from "./types.js";
-import { isBinanceKline } from "./typeGuards.js";
 
 type BinanceExchangeInfoCacheProvider = {
   getExchangeInfo(): BinanceExchangeInfo | undefined;

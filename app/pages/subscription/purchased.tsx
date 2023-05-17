@@ -1,6 +1,6 @@
-import { NextPage } from "next";
 import { SubscriptionPurchasedPage } from "_pages/SubscriptionPurchased";
 import { requireAuthentication } from "_routing/serverSide";
+import { NextPage } from "next";
 
 export const getServerSideProps = requireAuthentication;
 

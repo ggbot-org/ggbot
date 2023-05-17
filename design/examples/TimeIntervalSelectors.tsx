@@ -1,5 +1,5 @@
-import { today } from "@ggbot2/time";
 import { DailyInterval } from "@ggbot2/design";
+import { today } from "@ggbot2/time";
 import { FC, useState } from "react";
 
 export const TimeIntervalSelectors: FC = () => {

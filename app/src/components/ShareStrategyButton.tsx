@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "@ggbot2/design";
-import { FC } from "react";
-import { toast } from "react-hot-toast";
 import { buttonLabel, errorMessage } from "_i18n";
 import { pathname } from "_routing/pathnames";
 import { StrategyInfo } from "_routing/types";
+import { Button } from "@ggbot2/design";
+import { FC } from "react";
+import { toast } from "react-hot-toast";
 
 type Props = Pick<StrategyInfo, "strategyKey"> & {
   strategyName: string;

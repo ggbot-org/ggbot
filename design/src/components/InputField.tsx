@@ -3,10 +3,10 @@ import {
   Control,
   ControlProps,
   Field,
-  Label,
   Help,
   Input,
   InputProps,
+  Label,
 } from "trunx";
 
 export type InputFieldProps = Pick<ControlProps, "isLoading"> &

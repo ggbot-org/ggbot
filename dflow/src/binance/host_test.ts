@@ -1,9 +1,11 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+
 import { now, truncateTime } from "@ggbot2/time";
+
 import { BinanceDflowHost } from "./host.js";
-import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 import { BinanceClientMock } from "./mocks/client.js";
+import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js";
 
 describe("BinanceDflowHost", () => {
   describe("load()", () => {

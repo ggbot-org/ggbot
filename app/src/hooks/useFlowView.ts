@@ -1,15 +1,17 @@
+import { BinanceDflowClient } from "_flow/binance";
+import { StrategyKey } from "_routing/types";
 import {
-  BinanceDflowHost,
   BinanceDflowExecutor,
+  BinanceDflowHost,
   nodeTextToViewType,
   parsePercentage,
 } from "@ggbot2/dflow";
 import { UpdateTime } from "@ggbot2/models";
-import { Time, now, truncateTime } from "@ggbot2/time";
+import { now, Time, truncateTime } from "@ggbot2/time";
 import {
+  DflowErrorCannotConnectPins,
   DflowHost,
   DflowNodeUnknown,
-  DflowErrorCannotConnectPins,
 } from "dflow";
 import {
   FlowView,
@@ -26,9 +28,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { BinanceDflowClient } from "_flow/binance";
-import { StrategyKey } from "_routing/types";
-import { UseNodesCatalogArg, useNodesCatalog } from "./useNodesCatalog";
+
+import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog";
 
 type UseFlowView = (
   arg: Pick<StrategyKey, "strategyKind"> &

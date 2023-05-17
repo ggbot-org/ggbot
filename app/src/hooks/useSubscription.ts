@@ -1,11 +1,11 @@
+import { useApi } from "_hooks/useApi";
 import {
   isSubscription,
   Subscription,
   subscriptionStatus,
 } from "@ggbot2/models";
-import { Time, dayToTime, getTime, now } from "@ggbot2/time";
+import { dayToTime, getTime, now, Time } from "@ggbot2/time";
 import { useEffect } from "react";
-import { useApi } from "_hooks/useApi";
 
 export const useSubscription = () => {
   const [READ, { data: subscription, isPending: readSubscriptionIsPending }] =

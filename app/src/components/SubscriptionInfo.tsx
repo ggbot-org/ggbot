@@ -1,3 +1,5 @@
+import { SubscriptionContext } from "_contexts/Subscription";
+import { fieldLabel, schedulingStatusLabel, title } from "_i18n";
 import {
   Box,
   Control,
@@ -8,8 +10,6 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { FC, useContext } from "react";
-import { SubscriptionContext } from "_contexts/Subscription";
-import { fieldLabel, title, schedulingStatusLabel } from "_i18n";
 
 export const SubscriptionInfo: FC = () => {
   const { hasActiveSubscription, subscriptionEnd, subscriptionPlan } =

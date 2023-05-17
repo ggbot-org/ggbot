@@ -100,10 +100,6 @@ import {
   AccountStrategyKey,
   DayKey,
   EmailAddress,
-  StrategyDailyBalanceChangesKey,
-  StrategyDailyOrdersKey,
-  StrategyKey,
-  SubscriptionPurchaseKey,
   isAccountDailyOrdersKey,
   isAccountKey,
   isAccountStrategyKey,
@@ -111,8 +107,12 @@ import {
   isStrategyKey,
   isSubscriptionPurchaseKey,
   normalizeEmailAddress,
+  StrategyDailyBalanceChangesKey,
+  StrategyDailyOrdersKey,
+  StrategyKey,
+  SubscriptionPurchaseKey,
 } from "@ggbot2/models";
-import { joinDay, isSplittedDay, splitDay } from "@ggbot2/time";
+import { isSplittedDay, joinDay, splitDay } from "@ggbot2/time";
 import { isLiteralType } from "@ggbot2/type-utils";
 
 export const dirnameDelimiter = "/";

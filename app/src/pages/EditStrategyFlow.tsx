@@ -1,19 +1,6 @@
-import { ButtonOnClick } from "@ggbot2/design";
-import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
-import {
-  ErrorAccountItemNotFound,
-  StrategyExecution,
-  isStrategyExecutionStatus,
-  isStrategyFlow,
-} from "@ggbot2/models";
-import { isTime } from "@ggbot2/time";
-import { isMaybeObject } from "@ggbot2/type-utils";
-import { DflowExecutionNodeInfo } from "dflow";
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
 import { BacktestController } from "_components/BacktestController";
-import { EditStrategyTopbar } from "_components/EditStrategyTopbar";
 import { EditStrategyTabs } from "_components/EditStrategyTabs";
+import { EditStrategyTopbar } from "_components/EditStrategyTopbar";
 import { FlowViewContainer } from "_components/FlowViewContainer";
 import { MemoryController } from "_components/MemoryController";
 import { PleaseConfigureBinanceModal } from "_components/PleaseConfigureBinanceModal";
@@ -24,6 +11,19 @@ import { useFlowView } from "_hooks/useFlowView";
 import { errorMessage } from "_i18n";
 import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
+import { ButtonOnClick } from "@ggbot2/design";
+import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import {
+  ErrorAccountItemNotFound,
+  isStrategyExecutionStatus,
+  isStrategyFlow,
+  StrategyExecution,
+} from "@ggbot2/models";
+import { isTime } from "@ggbot2/time";
+import { isMaybeObject } from "@ggbot2/type-utils";
+import { DflowExecutionNodeInfo } from "dflow";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

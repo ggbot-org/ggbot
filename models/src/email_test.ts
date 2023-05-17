@@ -1,5 +1,6 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+
 import { isEmailAddress, normalizeEmailAddress } from "./email.js";
 import { ErrorInvalidArg } from "./errors.js";
 

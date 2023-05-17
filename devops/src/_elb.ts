@@ -1,9 +1,9 @@
 import {
+  describeLoadBalancers,
   DescribeLoadBalancersArgs,
   ElasticLoadBalancingV2ServiceException,
   LoadBalancer,
   LoadBalancerTypeEnum,
-  describeLoadBalancers,
 } from "@ggbot2/aws";
 
 export type LoadBalancerStatus = { exists: boolean } & Partial<

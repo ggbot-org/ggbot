@@ -1,5 +1,5 @@
 // TODO import { awsRegion } from "@ggbot2/infrastructure"
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
 import { Destination, Message } from "@aws-sdk/client-ses";
 
 // TODO

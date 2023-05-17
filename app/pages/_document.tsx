@@ -1,6 +1,6 @@
 // @ts-nocheck TODO remove this
 import { assetsBaseUrl, favicon, faviconSvg, logoPng180 } from "@ggbot2/assets";
-import { Html, Head, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (

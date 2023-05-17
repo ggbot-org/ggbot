@@ -2,9 +2,10 @@ import {
   DeleteStrategyMemory,
   ReadStrategyMemory,
   StrategyMemory,
-  WriteStrategyMemory,
   updatedNow,
+  WriteStrategyMemory,
 } from "@ggbot2/models";
+
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 

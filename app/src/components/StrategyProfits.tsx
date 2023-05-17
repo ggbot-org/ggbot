@@ -1,15 +1,15 @@
-import { Orders, isOrders } from "@ggbot2/models";
-import {
-  TimeInterval,
-  truncateTime,
-  now,
-  getTime,
-  timeIntervalToDay,
-} from "@ggbot2/time";
-import { FC, useEffect } from "react";
 import { ProfitSummary } from "_components/ProfitSummary";
 import { useApi } from "_hooks/useApi";
 import { StrategyKey } from "_routing/types";
+import { isOrders, Orders } from "@ggbot2/models";
+import {
+  getTime,
+  now,
+  TimeInterval,
+  timeIntervalToDay,
+  truncateTime,
+} from "@ggbot2/time";
+import { FC, useEffect } from "react";
 
 type Props = {
   strategyKey: StrategyKey;

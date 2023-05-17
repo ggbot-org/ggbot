@@ -1,4 +1,4 @@
-import { add, sub, mul } from "@ggbot2/arithmetic";
+import { add, mul, sub } from "@ggbot2/arithmetic";
 import {
   balanceIsNotEmpty,
   BinanceOrderRespFULL,
@@ -6,9 +6,10 @@ import {
 } from "@ggbot2/binance";
 import { Balance } from "@ggbot2/models";
 import { DflowGraphExecutionReport } from "dflow";
+
 import { dflowBinanceZero as zero } from "./arithmetic.js";
+import { BuyMarket, orderOutputPosition, SellMarket } from "./nodes/trade.js";
 import { DflowBinanceSymbolInfo } from "./symbols.js";
-import { BuyMarket, SellMarket, orderOutputPosition } from "./nodes/trade.js";
 
 // TODO remove this
 export const getBalancesFromExecutionSteps = (

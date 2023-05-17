@@ -1,12 +1,14 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
+
 import { now } from "@ggbot2/time";
 import { DflowNodesCatalog } from "dflow";
+
 import { ErrorUknownDflowNodes } from "../errors.js";
 import { DflowExecutorView } from "./executor.js";
+import { DflowCommonHostMock } from "./mocks/host.js";
 import { commonNodeTextToDflowKind } from "./nodeResolution.js";
 import { dflowValidate } from "./validate.js";
-import { DflowCommonHostMock } from "./mocks/host.js";
 
 describe("dflowValidate", () => {
   it("throws ErrorUknownDflowNodes", () => {

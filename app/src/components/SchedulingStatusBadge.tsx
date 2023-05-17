@@ -1,7 +1,7 @@
-import { SchedulingStatus } from "@ggbot2/models";
-import { Tags, Tag, TagProps } from "@ggbot2/design";
-import { FC, ReactNode } from "react";
 import { schedulingStatusLabel } from "_i18n";
+import { Tag, TagProps, Tags } from "@ggbot2/design";
+import { SchedulingStatus } from "@ggbot2/models";
+import { FC, ReactNode } from "react";
 
 type Props = {
   schedulingStatus: SchedulingStatus | undefined;

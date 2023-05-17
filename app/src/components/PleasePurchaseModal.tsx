@@ -1,6 +1,6 @@
+import { GoSettingsButton } from "_components/GoSettingsButton";
 import { Message, Modal } from "@ggbot2/design";
 import { FC, useState } from "react";
-import { GoSettingsButton } from "_components/GoSettingsButton";
 
 export const PleasePurchaseModal: FC = () => {
   const [isActive, setIsActive] = useState(true);

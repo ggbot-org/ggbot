@@ -1,5 +1,6 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
 import pkg from "../../package.json" assert { type: "json" };
 
 export const rootPackageJson = pkg;

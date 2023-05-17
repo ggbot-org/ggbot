@@ -2,6 +2,7 @@ import { BinanceKlineInterval, BinanceSymbolInfo } from "@ggbot2/binance";
 import { StrategyFlow } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { DflowGraph, DflowId } from "dflow";
+
 import { dflowBinancePrecision } from "./arithmetic.js";
 import {
   DflowBinanceKlineInterval,

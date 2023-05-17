@@ -8,9 +8,9 @@ import {
   UNATHORIZED,
 } from "@ggbot2/api-gateway";
 import { readSession } from "@ggbot2/cookies";
-import { readAccount, listAccountKeys } from "@ggbot2/database";
+import { listAccountKeys, readAccount } from "@ggbot2/database";
 import { isReadAccountInput } from "@ggbot2/models";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

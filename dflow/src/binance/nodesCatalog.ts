@@ -1,4 +1,5 @@
-import { DflowNodesCatalog, DflowNode } from "dflow";
+import { DflowNode, DflowNodesCatalog } from "dflow";
+
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js";
 import { dflowBinanceKlineIntervals } from "./klineIntervals.js";
 import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js";

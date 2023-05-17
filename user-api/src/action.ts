@@ -46,7 +46,7 @@ import {
   isWriteAccountStrategiesItemSchedulingsInput,
   isWriteStrategyFlowInput,
 } from "@ggbot2/models";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
   event: APIGatewayEvent

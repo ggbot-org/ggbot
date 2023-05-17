@@ -1,8 +1,9 @@
 import {
-  NaturalNumber,
   isNaturalNumber,
+  NaturalNumber,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
+
 import { Interval } from "./interval.js";
 
 /**

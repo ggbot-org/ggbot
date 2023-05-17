@@ -1,8 +1,8 @@
-import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
-import { GetServerSideProps, NextPage } from "next";
+import { EditStrategyFlowPage } from "_pages/EditStrategyFlow";
 import { redirectToAuthenticationPage } from "_routing/redirects";
 import { StrategyInfo } from "_routing/types";
-import { EditStrategyFlowPage } from "_pages/EditStrategyFlow";
+import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
+import { GetServerSideProps, NextPage } from "next";
 
 type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

@@ -5,12 +5,13 @@ import {
   maxNumOfDecimals,
 } from "@ggbot2/arithmetic";
 import { DflowNode } from "dflow";
+
 import {
+  inputClose,
   inputHigh,
   inputLow,
-  inputClose,
-  outputValues,
   outputLastValue,
+  outputValues,
 } from "../commonIO.js";
 
 export const typicalPrice = (

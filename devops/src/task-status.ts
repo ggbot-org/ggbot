@@ -1,7 +1,7 @@
-import { isMainModule } from "./_isMainModule.js";
 import { OK } from "./_consoleColors.js";
 import { LoadBalancerStatus } from "./_elb.js";
 import { IamPolicyStatus } from "./_iam.js";
+import { isMainModule } from "./_isMainModule.js";
 import { S3BucketStatus } from "./_s3.js";
 import { TaskOptions } from "./_task.js";
 import { ElasticIpStatus, getElasticIps } from "./elasticIp.js";

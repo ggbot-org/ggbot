@@ -2,15 +2,16 @@ import { sendEmail } from "@ggbot2/aws";
 import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages";
 import { noReplyEmailAddress } from "@ggbot2/locators";
 import {
+  createdNow,
   CreateOneTimePassword,
+  deletedNow,
   DeleteOneTimePassword,
+  generateOneTimePassword,
   ReadOneTimePassword,
   SendOneTimePassword,
-  createdNow,
-  generateOneTimePassword,
-  deletedNow,
 } from "@ggbot2/models";
 import { isTestAccountEmail, testOtp } from "@ggbot2/test-data";
+
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 

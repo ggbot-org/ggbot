@@ -1,8 +1,9 @@
 import { DflowNode } from "dflow";
+
 import { BinanceDflowContext as Context } from "../context.js";
 import {
-  inputKey,
   inputInterval,
+  inputKey,
   inputSymbol,
   outputInterval,
   outputSymbol,

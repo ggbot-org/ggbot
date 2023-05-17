@@ -7,10 +7,10 @@ import {
 } from "react";
 import {
   Modal as _Modal,
-  ModalProps as _ModalProps,
   ModalBackground,
   ModalClose,
   ModalContent,
+  ModalProps as _ModalProps,
 } from "trunx";
 
 export type ModalProps = Pick<_ModalProps, "isActive"> & {

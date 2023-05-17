@@ -1,3 +1,6 @@
+import { useApi } from "_hooks/useApi";
+import { buttonLabel, fieldLabel } from "_i18n";
+import { pathname } from "_routing/pathnames";
 import {
   Button,
   Control,
@@ -10,9 +13,6 @@ import {
 import { isAccount } from "@ggbot2/models";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, fieldLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
 
 export const AuthExitForm: FC = () => {
   const router = useRouter();

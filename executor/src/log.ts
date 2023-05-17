@@ -1,5 +1,6 @@
 import { pid } from "node:process";
-import { timeToTimestamp, now } from "@ggbot2/time";
+
+import { now, timeToTimestamp } from "@ggbot2/time";
 
 const timestamp = () => timeToTimestamp(now());
 

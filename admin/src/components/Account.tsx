@@ -1,6 +1,6 @@
+import { useApi } from "_hooks/useApi";
 import { AccountKey, isAccount } from "@ggbot2/models";
 import { FC, useEffect } from "react";
-import { useApi } from "_hooks/useApi";
 
 type Props = AccountKey;
 

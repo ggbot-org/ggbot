@@ -2,7 +2,13 @@ module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "eslint-plugin-tsdoc", "import", "prettier"],
+  plugins: [
+    "@typescript-eslint",
+    "eslint-plugin-tsdoc",
+    "import",
+    "prettier",
+    "simple-import-sort",
+  ],
   root: true,
   rules: {
     "@typescript-eslint/ban-ts-comment": "warn",
@@ -33,7 +39,6 @@ module.exports = {
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-cycle": "error",
-    "import/order": ["error", { "newlines-between": "never" }],
     "max-depth": ["error", 5],
     "no-case-declarations": "error",
     "no-console": ["error", { allow: ["error", "info", "warn"] }],
@@ -46,6 +51,8 @@ module.exports = {
     "no-multi-assign": "error",
     "no-warning-comments": "warn",
     "prettier/prettier": "error",
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error",
     "tsdoc/syntax": "error",
   },
 };

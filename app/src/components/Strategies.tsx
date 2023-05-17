@@ -1,11 +1,11 @@
-import { Box, Columns, Column, Flex, Message, Title } from "@ggbot2/design";
-import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
-import Link from "next/link";
-import { title } from "_i18n";
-import { FC, useEffect } from "react";
 import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
 import { useApi } from "_hooks/useApi";
+import { title } from "_i18n";
 import { pathname } from "_routing/pathnames";
+import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
+import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
+import Link from "next/link";
+import { FC, useEffect } from "react";
 
 type StrategyItem = Pick<
   AccountStrategy,

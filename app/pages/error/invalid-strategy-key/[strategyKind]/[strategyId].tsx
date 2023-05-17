@@ -1,8 +1,8 @@
+import { ErrorInvalidStrategyKeyPage } from "_pages/ErrorInvalidStrategyKey";
+import { redirectToHomePage } from "_routing/redirects";
+import { InvalidStrategyKey } from "_routing/types";
 import { isStrategyKey } from "@ggbot2/models";
 import { GetServerSideProps, NextPage } from "next";
-import { InvalidStrategyKey } from "_routing/types";
-import { redirectToHomePage } from "_routing/redirects";
-import { ErrorInvalidStrategyKeyPage } from "_pages/ErrorInvalidStrategyKey";
 
 type ServerSideProps = InvalidStrategyKey;
 

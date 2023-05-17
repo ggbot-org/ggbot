@@ -1,7 +1,7 @@
-import { NextPage } from "next";
 import { ErrorStrategyNotOwnedPage } from "_pages/ErrorStrategyNotOwned";
-import { StrategyKey } from "_routing/types";
 import { requireAuthenticationAndGetStrategyKey } from "_routing/serverSide";
+import { StrategyKey } from "_routing/types";
+import { NextPage } from "next";
 
 type ServerSideProps = StrategyKey;
 

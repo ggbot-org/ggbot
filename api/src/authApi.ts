@@ -1,10 +1,10 @@
-import { objectTypeGuard } from "@ggbot2/type-utils";
 import {
   EmailAddress,
-  OneTimePassword,
   isEmailAddress,
   isOneTimePasswordCode,
+  OneTimePassword,
 } from "@ggbot2/models";
+import { objectTypeGuard } from "@ggbot2/type-utils";
 
 export type ApiAuthEnterRequestData = {
   email: EmailAddress;

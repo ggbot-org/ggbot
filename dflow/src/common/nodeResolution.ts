@@ -1,4 +1,5 @@
 import { FlowViewNodeTextToType } from "flow-view";
+
 import { isInfoNode, isJsonNode, isPercentageNode } from "./nodeTextParser.js";
 import { NodeViewType } from "./nodeViewTypes.js";
 

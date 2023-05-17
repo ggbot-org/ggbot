@@ -1,3 +1,8 @@
+import { useApi } from "_hooks/useApi";
+import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
+import { OneSectionLayout } from "_layouts/OneSection";
+import { pathname } from "_routing/pathnames";
+import { StrategyInfo } from "_routing/types";
 import {
   Button,
   Control,
@@ -19,11 +24,6 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
-import { OneSectionLayout } from "_layouts/OneSection";
-import { pathname } from "_routing/pathnames";
-import { StrategyInfo } from "_routing/types";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 

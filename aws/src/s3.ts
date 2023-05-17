@@ -1,6 +1,5 @@
 // TODO separate frontend from backend and use `node:stream`
 // import stream from "node:stream";
-import stream from "stream";
 import {
   CreateBucketCommand,
   CreateBucketCommandInput,
@@ -21,6 +20,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
 import { DflowData } from "dflow";
+import stream from "stream";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
 

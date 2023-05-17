@@ -1,16 +1,16 @@
 import {
   Addition,
-  Subtraction,
-  Multiplication,
   Division,
   GreaterThan,
   LessThan,
+  Multiplication,
+  Subtraction,
 } from "./nodes/arithmetic.js";
-import { Shift, Pop, Push } from "./nodes/array.js";
+import { Pop, Push, Shift } from "./nodes/array.js";
 import { If } from "./nodes/conditional.js";
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js";
-import { CrossOver } from "./nodes/indicators/cross.js";
 import { HeikinAshi } from "./nodes/indicators/candles.js";
+import { CrossOver } from "./nodes/indicators/cross.js";
 import {
   ExponentialMovingAverage,
   SimpleMovingAverage,
@@ -22,7 +22,7 @@ import { InputBoolean, InputNumber, InputString } from "./nodes/inputs.js";
 import { And, Equal, Not, NullishCoaleshing, Or } from "./nodes/logic.js";
 import { Max, Min } from "./nodes/mathFunctions.js";
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js";
-import { Time, TimeToDay, TimeMinus, TimePlus, Today } from "./nodes/time.js";
+import { Time, TimeMinus, TimePlus, TimeToDay, Today } from "./nodes/time.js";
 
 export const nodesCatalog = {
   // arithmetic
