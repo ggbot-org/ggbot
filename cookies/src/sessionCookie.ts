@@ -1,6 +1,5 @@
 import { getDate, truncateDate } from "@ggbot2/time";
 import {
-  Cookies,
   CreateCookieOptions,
   SESSION_COOKIE_NAME,
   createCookie,
@@ -30,8 +29,16 @@ export const createSessionCookie = (
   });
 };
 
-export const readSessionCookie = (cookies: Cookies): Session | undefined => {
-  const serializedSession = cookies[SESSION_COOKIE_NAME];
+export const readSessionCookie = (cookies: string): Session | undefined => {
+  let serializedSession: string | undefined;
+  // TODO put this in a getCookieValue(cookies, cookieName) or parseCookies(cookies): {[key in string]: string}
+  for (const cookie of cookies.split(";")) {
+    const [name, value] = cookie.split("=");
+    if (name === SESSION_COOKIE_NAME) {
+      serializedSession = value;
+      break;
+    }
+  }
   if (typeof serializedSession !== "string") return;
   const [accountId, creationDay] = serializedSession.split(separator);
   const session = { accountId, creationDay };

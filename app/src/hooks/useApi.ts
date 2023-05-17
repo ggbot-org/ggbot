@@ -1,5 +1,8 @@
 /* eslint sort-keys: "error" */
-import { UserApiAction as ApiAction, UserApiActionType as ApiActionType } from "@ggbot2/api";
+import {
+  UserApiAction as ApiAction,
+  UserApiActionType as ApiActionType,
+} from "@ggbot2/api";
 import { useAction } from "@ggbot2/use-action";
 
 export const useApi = {

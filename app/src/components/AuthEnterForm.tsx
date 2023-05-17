@@ -1,4 +1,8 @@
 import {
+  isApiAuthEnterResponseData,
+  isApiAuthEnterRequestData,
+} from "@ggbot2/api";
+import {
   Button,
   Control,
   Field,
@@ -10,7 +14,6 @@ import {
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
-import { ApiEnterResponseData, isApiEnterRequestData } from "_api/auth/enter";
 import {
   GenericErrorMessage,
   TimeoutErrorMessage,
@@ -18,12 +21,10 @@ import {
 import { buttonLabel, fieldLabel, title } from "_i18n";
 import { pathname } from "_routing/pathnames";
 
-type EmailSent = ApiEnterResponseData["emailSent"];
-
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
 
 type Props = {
-  emailSent: EmailSent;
+  emailSent: boolean;
   setEmail: SetEmail;
 };
 
@@ -59,7 +60,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         const requestData = { email };
 
-        if (!isApiEnterRequestData(requestData)) {
+        if (!isApiAuthEnterRequestData(requestData)) {
           setState((state) => ({ ...state, hasInvalidInput: true }));
           return;
         }
@@ -92,7 +93,8 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         if (!response.ok) throw new Error();
 
-        const responseData: ApiEnterResponseData = await response.json();
+        const responseData = await response.json();
+        if (!isApiAuthEnterResponseData(requestData)) return;
 
         if (responseData.emailSent) setEmail(email);
       } catch (error) {

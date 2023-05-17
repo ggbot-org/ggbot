@@ -3,7 +3,6 @@ import {
   BinanceConnector,
   BinanceExchange,
 } from "@ggbot2/binance";
-import { readSession } from "@ggbot2/cookies";
 import { readStrategy, readStrategyFlow } from "@ggbot2/database";
 import {
   DflowBinanceSymbolInfo,
@@ -28,11 +27,7 @@ type ServerSideProps = Pick<
 
 export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   params,
-  req,
 }) => {
-  const session = readSession(req.cookies);
-  const hasSession = session !== undefined;
-
   const strategyKey = strategyKeyFromRouterParams(params);
   if (!strategyKey) return redirectToErrorPageInvalidStrategyKey(params);
   const { strategyKind } = strategyKey;
@@ -43,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
   const strategyFlow = await readStrategyFlow(strategyKey);
   if (!strategyFlow) return redirectToErrorPageStrategyNotFound(strategyKey);
 
-  const accountIsOwner = session?.accountId === strategy.accountId;
+  const accountIsOwner = false;
 
   const strategyInfo = {
     accountIsOwner,
@@ -63,13 +58,13 @@ export const getServerSideProps: GetServerSideProps<ServerSideProps> = async ({
     return {
       props: {
         binanceSymbols,
-        hasSession,
+        hasSession: false,
         ...strategyInfo,
       },
     };
   }
 
-  return { props: { ...strategyInfo, hasSession } };
+  return { props: { ...strategyInfo, hasSession: false } };
 };
 
 const Page: NextPage<ServerSideProps> = (props) => (

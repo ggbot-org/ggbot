@@ -1,9 +1,5 @@
+// TODO "cookie" dependency could be removed
 import { CookieSerializeOptions, serialize } from "cookie";
-
-// Copied from NextApiRequest['cookies']
-export type Cookies = Partial<{
-  [key: string]: string;
-}>;
 
 export const SESSION_COOKIE_NAME = "sessionid";
 type CookieName = typeof SESSION_COOKIE_NAME;

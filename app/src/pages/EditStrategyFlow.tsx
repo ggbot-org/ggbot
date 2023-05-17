@@ -1,7 +1,7 @@
-import { ErrorAccountItemNotFound } from "@ggbot2/database";
 import { ButtonOnClick } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import {
+  ErrorAccountItemNotFound,
   StrategyExecution,
   isStrategyExecutionStatus,
   isStrategyFlow,

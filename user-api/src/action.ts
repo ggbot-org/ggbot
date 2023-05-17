@@ -101,7 +101,9 @@ export const handler = async (
 
         if (!isApiActionRequestData(input)) return BAD_REQUEST();
 
-        const session = readSession(req.cookies);
+        const cookies = event.headers.Cookie;
+        if (!cookies) return UNATHORIZED;
+        const session = readSession(cookies);
         if (!session) return UNATHORIZED;
         const { accountId } = session;
 

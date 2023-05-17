@@ -1,9 +1,8 @@
 import { getDate } from "@ggbot2/time";
-import { Cookies } from "./cookies.js";
 import { Session, isSession, sessionNumDays } from "./session.js";
 import { readSessionCookie } from "./sessionCookie.js";
 
-export const readSession = (cookies: Cookies): Session | undefined => {
+export const readSession = (cookies: string): Session | undefined => {
   const session = readSessionCookie(cookies);
   if (!isSession(session)) return;
   const { creationDay } = session;

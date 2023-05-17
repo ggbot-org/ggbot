@@ -1,4 +1,8 @@
 import {
+  isApiAuthVerifyResponseData,
+  isApiAuthVerifyRequestData,
+} from "@ggbot2/api";
+import {
   Button,
   ButtonOnClick,
   Control,
@@ -22,10 +26,6 @@ import {
   GenericErrorMessage,
   TimeoutErrorMessage,
 } from "_components/ErrorMessages";
-import {
-  ApiVerifyResponseData,
-  isApiVerifyRequestData,
-} from "_api/auth/verify";
 import { buttonLabel, fieldLabel } from "_i18n";
 import { pathname } from "_routing/pathnames";
 
@@ -74,7 +74,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         const requestData = { code, email };
 
-        if (!isApiVerifyRequestData(requestData)) {
+        if (!isApiAuthVerifyRequestData(requestData)) {
           setHasInvalidInput(true);
           return;
         }
@@ -103,15 +103,21 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         if (!response.ok) throw new Error(response.statusText);
 
-        const responseData: ApiVerifyResponseData = await response.json();
+        const responseData = await response.json();
 
-        if (responseData.verified) {
-          goToHomePage();
+        if (isApiAuthVerifyResponseData(responseData)) {
+          setIsPending(false);
+          if (responseData.verified) {
+            setVerificationFailed(false);
+            goToHomePage();
+          } else if (responseData.verified === undefined) {
+            setNeedToGenerateOneTimePasswordAgain(true);
+          } else {
+            setVerificationFailed(true);
+          }
         } else {
           setIsPending(false);
           setVerificationFailed(true);
-          if (responseData.verified === undefined)
-            setNeedToGenerateOneTimePasswordAgain(true);
         }
       } catch (error) {
         setHasGenericError(true);

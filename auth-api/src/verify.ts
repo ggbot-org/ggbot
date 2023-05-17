@@ -34,6 +34,16 @@ const BAD_REQUEST: APIGatewayProxyResult = {
   statusCode: __400__BAD_REQUEST__,
 };
 
+const OK = (data: ApiAuthVerifyResponseData): APIGatewayProxyResult => ({
+  body: JSON.stringify({ data }),
+  headers: {
+    "Content-Type": "application/json",
+    ...accessControlAllowOrigin,
+  },
+  isBase64Encoded: false,
+  statusCode: __200__OK__,
+});
+
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -60,6 +70,8 @@ export const handler = async (
         const { code, email } = input;
 
         const storedOneTimePassword = await readOneTimePassword(email);
+
+        if (!storedOneTimePassword) return OK({ verified: null });
 
         const verified = code === storedOneTimePassword?.code;
 
