@@ -17,10 +17,11 @@
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
+    "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models",
     "@ggbot2/type-utils": "file:type-utils",
-    "dflow": "^0.42.0"
+    "dflow": "^0.42.0",
+    "type-fest": "^3.10.0"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

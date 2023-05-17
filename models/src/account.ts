@@ -54,12 +54,27 @@ export type CreateAccount = Operation<NewItem<Account>, Account>;
 
 export type ReadAccount = Operation<AccountKey, Account | null>;
 
+export const isReadAccountInput = objectTypeGuard<AccountKey>((accountKey) =>
+  isAccountKey(accountKey)
+);
+
 export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
+
+export const isRenameAccountInput = objectTypeGuard<RenameAccount["in"]>(
+  ({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
+);
 
 export type SetAccountCountry = Operation<
   AccountKey & { country: AllowedCountryIsoCode2 },
   UpdateTime
 >;
+
+export const isSetAccountCountryInput = objectTypeGuard<
+  SetAccountCountry["in"]
+>(
+  ({ country, ...accountKey }) =>
+    isAllowedCountryIsoCode2(country) && isAccountKey(accountKey)
+);
 
 export type DeleteAccount = Operation<AccountKey, DeletionTime>;
 

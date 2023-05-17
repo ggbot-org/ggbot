@@ -25,9 +25,6 @@
     "@ggbot2/api-gateway": "file:api-gateway",
     "@ggbot2/cookies": "file:cookies",
     "@ggbot2/database": "file:database",
-    "@ggbot2/env": "file:env",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
-    "@ggbot2/locators": "file:locators",
     "@ggbot2/models": "file:models"
   },
   "devDependencies": {

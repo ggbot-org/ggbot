@@ -22,7 +22,11 @@ import {
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
-import { AuthenticatedApiAction as Action, ApiActionInput } from "./apiAction";
+import { Dflow } from "dflow";
+import {
+  AuthenticatedApiAction as Action,
+  ApiActionInput,
+} from "./apiAction.js";
 
 export const userApiActionTypes = [
   "CopyStrategy",
@@ -80,7 +84,8 @@ export type UserApiAction = {
 export type UserApiActionRequestData = ApiActionInput<UserApiActionType>;
 
 export const isUserApiActionRequestData =
-  objectTypeGuard<UserApiActionRequestData>(
-    ({ type }) => isUserApiActionType(type)
-    // TODO check data
+  objectTypeGuard<UserApiActionRequestData>(({ data, type }) =>
+    isUserApiActionType(type) && data === undefined
+      ? true
+      : Dflow.isObject(data)
   );

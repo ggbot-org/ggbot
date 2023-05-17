@@ -1,6 +1,9 @@
 import { ListAccountKeys, ReadAccount } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
-import { AuthenticatedApiAction as Action, ApiActionInput } from "./apiAction";
+import {
+  AuthenticatedApiAction as Action,
+  ApiActionInput,
+} from "./apiAction.js";
 
 export const adminApiActionTypes = ["ListAccountKeys", "ReadAccount"] as const;
 export type AdminApiActionType = (typeof adminApiActionTypes)[number];

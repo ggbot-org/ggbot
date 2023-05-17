@@ -3,6 +3,13 @@ import {
   isApiUtrustOrderRequestData,
 } from "@ggbot2/api";
 import {
+  ALLOWED_METHODS,
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  METHOD_NOT_ALLOWED,
+  OK,
+} from "@ggbot2/api-gateway";
+import {
   itemKeyToDirname,
   readSubscription,
   createYearlySubscriptionPurchase,
@@ -10,12 +17,6 @@ import {
   updateSubscriptionPurchaseInfo,
 } from "@ggbot2/database";
 import { ENV } from "@ggbot2/env";
-import {
-  __200__OK__,
-  __400__BAD_REQUEST__,
-  __405__METHOD_NOT_ALLOWED__,
-  __500__INTERNAL_SERVER_ERROR__,
-} from "@ggbot2/http-status-codes";
 import {
   ApiBaseURL,
   UserWebappBaseURL,
@@ -36,39 +37,18 @@ import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
-
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
-const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE);
-const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString());
-const cancelUrl = new UtrustCancelURL(userWebappBaseURL.toString());
-const returnUrl = new UtrustReturnURL(userWebappBaseURL.toString());
-
-const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
-};
-
-const BAD_REQUEST: APIGatewayProxyResult = {
-  body: "",
-  headers: accessControlAllowOrigin,
-  isBase64Encoded: false,
-  statusCode: __400__BAD_REQUEST__,
-};
-
-const OK = (data: ApiUtrustOrderResponseData): APIGatewayProxyResult => ({
-  body: JSON.stringify(data),
-  headers: {
-    "Content-Type": "application/json",
-    ...accessControlAllowOrigin,
-  },
-  isBase64Encoded: false,
-  statusCode: __200__OK__,
-});
-
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
+    const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
+
+    const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
+    const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE);
+    const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString());
+    const cancelUrl = new UtrustCancelURL(userWebappBaseURL.toString());
+    const returnUrl = new UtrustReturnURL(userWebappBaseURL.toString());
+
     // UTRUST_API_KEY starts with
     // - u_test_api_ on sandbox environment
     // - u_live_api_ on production environment
@@ -79,24 +59,14 @@ export const handler = async (
     const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT);
 
     switch (event.httpMethod) {
-      case "OPTIONS": {
-        return {
-          body: "",
-          headers: {
-            "Access-Control-Allow-Headers": "Content-type",
-            "Access-Control-Allow-Methods": "OPTIONS, POST",
-            ...accessControlAllowOrigin,
-          },
-          isBase64Encoded: false,
-          statusCode: __200__OK__,
-        };
-      }
+      case "OPTIONS":
+        return ALLOWED_METHODS(["POST"]);
 
       case "POST": {
-        if (!event.body) return BAD_REQUEST;
+        if (!event.body) return BAD_REQUEST();
 
         const input = JSON.parse(event.body);
-        if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST;
+        if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST();
 
         const { accountId, country, email, numMonths } = input;
 
@@ -147,6 +117,7 @@ export const handler = async (
           line_items: [
             {
               sku: plan,
+              // TODO translate this, needs lang param
               name: `Subscription (${
                 numMonths >= maxNumMonths - 1 ? "1 year" : `${numMonths} months`
               })`,
@@ -164,31 +135,21 @@ export const handler = async (
 
         const { data } = await createOrder(order, customer);
 
-        if (data === null) return BAD_REQUEST;
+        if (data === null) return BAD_REQUEST();
 
         const { redirectUrl, uuid } = data;
 
         updateSubscriptionPurchaseInfo({ ...purchaseKey, info: { uuid } });
 
-        return OK({ redirectUrl });
+        const output: ApiUtrustOrderResponseData = { redirectUrl };
+        return OK(output);
       }
 
-      default: {
-        return {
-          body: "",
-          headers: accessControlAllowOrigin,
-          isBase64Encoded: false,
-          statusCode: __405__METHOD_NOT_ALLOWED__,
-        };
-      }
+      default:
+        return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
     console.error(error);
-    return {
-      body: "",
-      headers: accessControlAllowOrigin,
-      isBase64Encoded: false,
-      statusCode: __500__INTERNAL_SERVER_ERROR__,
-    };
   }
+  return INTERNAL_SERVER_ERROR;
 };

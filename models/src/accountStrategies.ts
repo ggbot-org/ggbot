@@ -1,11 +1,13 @@
-import { arrayTypeGuard } from "@ggbot2/type-utils";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountKey } from "./account.js";
 import {
   AccountStrategy,
   AccountStrategyKey,
   isAccountStrategy,
 } from "./accountStrategy.js";
+import { isItemId } from "./item.js";
 import { Operation } from "./operation.js";
+import { isStrategySchedulings } from "./strategyScheduling.js";
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 export const isAccountStrategies =
@@ -31,6 +33,15 @@ export type WriteAccountStrategiesItemSchedulings = Operation<
     Pick<AccountStrategy, "schedulings">,
   UpdateTime
 >;
+
+export const isWriteAccountStrategiesItemSchedulingsInput = objectTypeGuard<
+  WriteAccountStrategiesItemSchedulings["in"]
+>(
+  ({ accountId, strategyId, schedulings }) =>
+    isItemId(accountId) &&
+    isItemId(strategyId) &&
+    isStrategySchedulings(schedulings)
+);
 
 export type SuspendAccountStrategiesItemSchedulings = Operation<
   Omit<AccountStrategyKey, "strategyKind">,

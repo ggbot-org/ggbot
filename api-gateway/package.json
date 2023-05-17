@@ -18,7 +18,7 @@
   "dependencies": {
     "@ggbot2/api": "file:api",
     "@ggbot2/env": "file:env",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
+    "@ggbot2/http": "file:http",
     "@ggbot2/locators": "file:locators",
     "aws-lambda": "^1.0.7"
   },

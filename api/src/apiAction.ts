@@ -5,7 +5,7 @@ import {
   __400__BAD_REQUEST__,
   __401__UNAUTHORIZED__,
   __500__INTERNAL_SERVER_ERROR__,
-} from "@ggbot2/http-status-codes";
+} from "@ggbot2/http";
 import {
   AccountKey,
   ErrorAccountItemNotFound,

@@ -1,8 +1,11 @@
 import { ReadStrategyFlow } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
-import { ApiActionInput, ApiAction as Action } from "./apiAction";
+import { ApiActionInput, ApiAction as Action } from "./apiAction.js";
 
-export const publicApiActionTypes = ["ReadStrategyFlow"] as const;
+export const publicApiActionTypes = [
+  "ReadStrategy",
+  "ReadStrategyFlow",
+] as const;
 export type PublicApiActionType = (typeof publicApiActionTypes)[number];
 export const isPublicApiActionType =
   isLiteralType<PublicApiActionType>(publicApiActionTypes);

@@ -85,6 +85,10 @@ export type ListStrategyKeys = Operation<
 
 export type ReadStrategy = Operation<StrategyKey, Strategy | null>;
 
+export const isReadStrategyInput = objectTypeGuard<ReadStrategy["in"]>(
+  (strategyKey) => isStrategyKey(strategyKey)
+);
+
 export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
 
 export type RenameStrategy = Operation<
@@ -92,4 +96,13 @@ export type RenameStrategy = Operation<
   UpdateTime
 >;
 
+export const isRenameStrategyInput = objectTypeGuard<RenameStrategy["in"]>(
+  ({ name, ...accountStrategyKey }) =>
+    isName(name) && isAccountStrategyKey(accountStrategyKey)
+);
+
 export type DeleteStrategy = Operation<AccountStrategyKey, DeletionTime>;
+
+export const isDeleteStrategyInput = objectTypeGuard<DeleteStrategy["in"]>(
+  (accountStrategyKey) => isAccountStrategyKey(accountStrategyKey)
+);

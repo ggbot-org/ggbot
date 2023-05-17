@@ -2,6 +2,13 @@ import {
   ApiAuthVerifyResponseData,
   isApiAuthVerifyRequestData,
 } from "@ggbot2/api";
+import {
+  ALLOWED_METHODS,
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  METHOD_NOT_ALLOWED,
+  OK,
+} from "@ggbot2/api-gateway";
 import { createSessionCookie } from "@ggbot2/cookies";
 import {
   createAccount,
@@ -10,129 +17,90 @@ import {
   readOneTimePassword,
 } from "@ggbot2/database";
 import { ENV } from "@ggbot2/env";
-import {
-  __200__OK__,
-  __400__BAD_REQUEST__,
-  __405__METHOD_NOT_ALLOWED__,
-} from "@ggbot2/http-status-codes";
+import { __200__OK__ } from "@ggbot2/http";
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import { today } from "@ggbot2/time";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-const { DEPLOY_STAGE } = ENV;
-
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
-
-const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
-};
-
-const BAD_REQUEST: APIGatewayProxyResult = {
-  body: "",
-  headers: accessControlAllowOrigin,
-  isBase64Encoded: false,
-  statusCode: __400__BAD_REQUEST__,
-};
-
-const OK = (data: ApiAuthVerifyResponseData): APIGatewayProxyResult => ({
-  body: JSON.stringify({ data }),
-  headers: {
-    "Content-Type": "application/json",
-    ...accessControlAllowOrigin,
-  },
-  isBase64Encoded: false,
-  statusCode: __200__OK__,
-});
-
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
-  switch (event.httpMethod) {
-    case "OPTIONS": {
-      return {
-        body: "",
-        headers: {
-          "Access-Control-Allow-Headers": "Content-type",
-          "Access-Control-Allow-Methods": "OPTIONS, POST",
-          ...accessControlAllowOrigin,
-        },
-        isBase64Encoded: false,
-        statusCode: __200__OK__,
-      };
-    }
+  try {
+    const { DEPLOY_STAGE } = ENV;
 
-    case "POST": {
-      if (!event.body) return BAD_REQUEST;
+    const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
 
-      const input = JSON.parse(event.body);
+    const accessControlAllowOrigin = {
+      "Access-Control-Allow-Origin": userWebappBaseURL.origin,
+    };
 
-      if (isApiAuthVerifyRequestData(input)) {
-        const { code, email } = input;
+    switch (event.httpMethod) {
+      case "OPTIONS":
+        return ALLOWED_METHODS(["POST"]);
 
-        const storedOneTimePassword = await readOneTimePassword(email);
+      case "POST": {
+        if (!event.body) return BAD_REQUEST();
 
-        if (!storedOneTimePassword) return OK({ verified: null });
+        const input = JSON.parse(event.body);
 
-        const verified = code === storedOneTimePassword?.code;
+        if (isApiAuthVerifyRequestData(input)) {
+          const { code, email } = input;
 
-        const responseData: ApiAuthVerifyResponseData = {
-          verified,
-        };
+          const storedOneTimePassword = await readOneTimePassword(email);
 
-        if (!verified)
+          if (!storedOneTimePassword) {
+            return OK(null);
+          }
+
+          const verified = code === storedOneTimePassword?.code;
+
+          const output: ApiAuthVerifyResponseData = {
+            verified,
+          };
+
+          if (!verified) return OK(output);
+
+          await deleteOneTimePassword(email);
+
+          const emailAccount = await readEmailAccount(email);
+
+          const creationDay = today();
+
+          let cookie = "";
+
+          if (emailAccount) {
+            const session = { creationDay, accountId: emailAccount.accountId };
+            cookie = createSessionCookie(session, {
+              secure: DEPLOY_STAGE !== "local",
+            });
+          } else {
+            const account = await createAccount({ email });
+            const session = { creationDay, accountId: account.id };
+            cookie = createSessionCookie(session, {
+              secure: DEPLOY_STAGE !== "local",
+            });
+          }
+
           return {
-            body: JSON.stringify(responseData),
+            body: JSON.stringify(output),
             headers: {
               "Content-Type": "application/json",
+              "Set-Cookie": cookie,
               ...accessControlAllowOrigin,
             },
             isBase64Encoded: false,
             statusCode: __200__OK__,
           };
-
-        await deleteOneTimePassword(email);
-
-        const emailAccount = await readEmailAccount(email);
-
-        const creationDay = today();
-
-        let cookie = "";
-
-        if (emailAccount) {
-          const session = { creationDay, accountId: emailAccount.accountId };
-          cookie = createSessionCookie(session, {
-            secure: DEPLOY_STAGE !== "local",
-          });
-        } else {
-          const account = await createAccount({ email });
-          const session = { creationDay, accountId: account.id };
-          cookie = createSessionCookie(session, {
-            secure: DEPLOY_STAGE !== "local",
-          });
         }
 
-        return {
-          body: JSON.stringify(responseData),
-          headers: {
-            "Content-Type": "application/json",
-            "Set-Cookie": cookie,
-            ...accessControlAllowOrigin,
-          },
-          isBase64Encoded: false,
-          statusCode: __200__OK__,
-        };
+        return BAD_REQUEST();
       }
 
-      return BAD_REQUEST;
+      default:
+        return METHOD_NOT_ALLOWED;
     }
-
-    default: {
-      return {
-        body: "",
-        headers: accessControlAllowOrigin,
-        isBase64Encoded: false,
-        statusCode: __405__METHOD_NOT_ALLOWED__,
-      };
-    }
+  } catch (error) {
+    console.error(error);
   }
+  return INTERNAL_SERVER_ERROR;
 };

@@ -105,19 +105,18 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         const responseData = await response.json();
 
-        if (isApiAuthVerifyResponseData(responseData)) {
-          setIsPending(false);
-          if (responseData.verified) {
+        setIsPending(false);
+
+        if (responseData === null) {
+          setNeedToGenerateOneTimePasswordAgain(true);
+        } else if (isApiAuthVerifyResponseData(responseData)) {
+          const { verified } = responseData;
+          if (verified) {
             setVerificationFailed(false);
             goToHomePage();
-          } else if (responseData.verified === undefined) {
-            setNeedToGenerateOneTimePasswordAgain(true);
           } else {
             setVerificationFailed(true);
           }
-        } else {
-          setIsPending(false);
-          setVerificationFailed(true);
         }
       } catch (error) {
         setHasGenericError(true);

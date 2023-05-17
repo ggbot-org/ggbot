@@ -8,9 +8,8 @@ type ServerSideProps = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  return redirectToAuthenticationPage();
-};
+export const getServerSideProps: GetServerSideProps = async () =>
+  redirectToAuthenticationPage();
 
 const Page: NextPage<ServerSideProps> = ({
   binanceSymbols,

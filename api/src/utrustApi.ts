@@ -12,6 +12,10 @@ import {
   isEmailAddress,
 } from "@ggbot2/models";
 
+export type ApiUtrustCallabackRequestData = {
+  ok: boolean;
+};
+
 export type ApiUtrustOrderRequestData = AccountKey & {
   country: AllowedCountryIsoCode2;
   email: EmailAddress;

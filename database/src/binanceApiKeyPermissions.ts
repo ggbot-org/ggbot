@@ -4,9 +4,7 @@ import {
   BinanceConnector,
   ReadBinanceApiKeyPermissions,
 } from "@ggbot2/binance";
-import {
-  ErrorAccountItemNotFound,
-} from "@ggbot2/models";
+import { ErrorAccountItemNotFound } from "@ggbot2/models";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 
 /** @throws {@link ErrorAccountItemNotFound} */

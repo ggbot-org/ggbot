@@ -1,8 +1,12 @@
+import { isUserApiActionRequestData as isApiActionRequestData } from "@ggbot2/api";
 import {
-  ApiActionResponseData,
-  ApiActionResponseError,
-  isUserApiActionRequestData as isApiActionRequestData,
-} from "@ggbot2/api";
+  ALLOWED_METHODS,
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  METHOD_NOT_ALLOWED,
+  OK,
+  UNATHORIZED,
+} from "@ggbot2/api-gateway";
 import { readSession } from "@ggbot2/cookies";
 import {
   copyStrategy,
@@ -26,56 +30,31 @@ import {
   writeStrategyFlow,
 } from "@ggbot2/database";
 import {
-  __200__OK__,
-  __400__BAD_REQUEST__,
-  __401__UNAUTHORIZED__,
-  __405__METHOD_NOT_ALLOWED__,
-  __500__INTERNAL_SERVER_ERROR__,
-} from "@ggbot2/http-status-codes";
-import {
-  ErrorExceededQuota,
   ErrorAccountItemNotFound,
+  ErrorExceededQuota,
   ErrorUnimplementedStrategyKind,
   isCopyStrategyInput,
   isCreateBinanceApiConfigInput,
   isCreateStrategyInput,
+  isDeleteStrategyInput,
+  isExecuteStrategyInput,
+  isReadStrategyBalancesInput,
+  isReadStrategyOrdersInput,
+  isRenameAccountInput,
+  isRenameStrategyInput,
+  isSetAccountCountryInput,
+  isWriteAccountStrategiesItemSchedulingsInput,
+  isWriteStrategyFlowInput,
 } from "@ggbot2/models";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
-
-const OK = (data: ApiActionResponseData["data"]): APIGatewayProxyResult => ({
-  body: JSON.stringify({ data }),
-  headers: {
-    "Content-Type": "application/json",
-    ...accessControlAllowOrigin,
-  },
-  isBase64Encoded: false,
-  statusCode: __200__OK__,
-});
-
-const UNATHORIZED: APIGatewayProxyResult = {
-  body: "",
-  headers: accessControlAllowOrigin,
-  isBase64Encoded: false,
-  statusCode: __401__UNAUTHORIZED__,
-};
 
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     switch (event.httpMethod) {
-      case "OPTIONS": {
-        return {
-          body: "",
-          headers: {
-            "Access-Control-Allow-Headers": "Content-type",
-            "Access-Control-Allow-Methods": "OPTIONS, POST",
-            ...accessControlAllowOrigin,
-          },
-          isBase64Encoded: false,
-          statusCode: __200__OK__,
-        };
-      }
+      case "OPTIONS":
+        return ALLOWED_METHODS(["POST"]);
 
       case "POST": {
         if (!event.body) return BAD_REQUEST();
@@ -93,6 +72,7 @@ export const handler = async (
 
         switch (action.type) {
           case "CopyStrategy": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
             if (!isCopyStrategyInput(input)) return BAD_REQUEST();
             const output = await copyStrategy(input);
@@ -100,6 +80,7 @@ export const handler = async (
           }
 
           case "CreateBinanceApiConfig": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
             if (!isCreateBinanceApiConfigInput(input)) return BAD_REQUEST();
             const output = await createBinanceApiConfig(input);
@@ -107,6 +88,7 @@ export const handler = async (
           }
 
           case "CreateStrategy": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
             if (!isCreateStrategyInput(input)) return BAD_REQUEST();
             const output = await createStrategy(input);
@@ -124,13 +106,17 @@ export const handler = async (
           }
 
           case "DeleteStrategy": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isDeleteStrategyInput(input)) return BAD_REQUEST();
             const output = await deleteStrategy(input);
             return OK(output);
           }
 
           case "ExecuteStrategy": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isExecuteStrategyInput(input)) return BAD_REQUEST();
             const output = await executeStrategy(input);
             return OK(output);
           }
@@ -160,15 +146,17 @@ export const handler = async (
           }
 
           case "ReadStrategyBalances": {
-            const output = await readStrategyBalances({
-              accountId,
-              ...input.data,
-            });
+            if (!actionData) return BAD_REQUEST();
+            const input = { accountId, ...actionData };
+            if (!isReadStrategyBalancesInput(input)) return BAD_REQUEST();
+            const output = await readStrategyBalances(input);
             return OK(output);
           }
 
           case "ReadStrategyOrders": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isReadStrategyOrdersInput(input)) return BAD_REQUEST();
             const output = await readStrategyOrders(input);
             return OK(output);
           }
@@ -179,31 +167,42 @@ export const handler = async (
           }
 
           case "RenameAccount": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isRenameAccountInput(input)) return BAD_REQUEST();
             const output = await renameAccount(input);
             return OK(output);
           }
 
           case "RenameStrategy": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isRenameStrategyInput(input)) return BAD_REQUEST();
             const output = await renameStrategy(input);
             return OK(output);
           }
 
           case "SetAccountCountry": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isSetAccountCountryInput(input)) return BAD_REQUEST();
             const output = await setAccountCountry(input);
             return OK(output);
           }
 
           case "WriteAccountStrategiesItemSchedulings": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isWriteAccountStrategiesItemSchedulingsInput(input))
+              return BAD_REQUEST();
             const output = await writeAccountStrategiesItemSchedulings(input);
             return OK(output);
           }
 
           case "WriteStrategyFlow": {
+            if (!actionData) return BAD_REQUEST();
             const input = { accountId, ...actionData };
+            if (!isWriteStrategyFlowInput(input)) return BAD_REQUEST();
             const output = await writeStrategyFlow(input);
             return OK(output);
           }
@@ -213,14 +212,8 @@ export const handler = async (
         }
       }
 
-      default: {
-        return {
-          body: "",
-          headers: accessControlAllowOrigin,
-          isBase64Encoded: false,
-          statusCode: __405__METHOD_NOT_ALLOWED__,
-        };
-      }
+      default:
+        return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
     if (
@@ -229,5 +222,7 @@ export const handler = async (
       error instanceof ErrorUnimplementedStrategyKind
     )
       return BAD_REQUEST(error.toObject());
+    console.error(error);
   }
+  return INTERNAL_SERVER_ERROR;
 };

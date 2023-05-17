@@ -17,7 +17,6 @@
     "@ggbot2/design": "file:design",
     "@ggbot2/dflow": "file:dflow",
     "@ggbot2/env": "file:env",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/locators": "file:locators",
     "@ggbot2/models": "file:models",
     "@ggbot2/time": "file:time",

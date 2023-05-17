@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@ggbot2/design": "file:design",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/use-action": "file:use-action"
   },
   "eslintConfig": {

@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@ggbot2/api": "file:api",
-    "@ggbot2/http-status-codes": "file:http-status-codes",
+    "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models",
     "@types/react": "^18.0.15",
     "react": "^18.2.0"

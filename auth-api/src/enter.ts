@@ -2,86 +2,50 @@ import {
   ApiAuthEnterResponseData,
   isApiAuthEnterRequestData,
 } from "@ggbot2/api";
-import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
-import { ENV } from "@ggbot2/env";
 import {
-  __200__OK__,
-  __400__BAD_REQUEST__,
-  __405__METHOD_NOT_ALLOWED__,
-} from "@ggbot2/http-status-codes";
-import { UserWebappBaseURL } from "@ggbot2/locators";
+  ALLOWED_METHODS,
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  METHOD_NOT_ALLOWED,
+  OK,
+} from "@ggbot2/api-gateway";
+import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
-
-const { DEPLOY_STAGE } = ENV;
-
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
-
-const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
-};
-
-const BAD_REQUEST: APIGatewayProxyResult = {
-  body: "",
-  headers: accessControlAllowOrigin,
-  isBase64Encoded: false,
-  statusCode: __400__BAD_REQUEST__,
-};
 
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
-  switch (event.httpMethod) {
-    case "OPTIONS": {
-      return {
-        body: "",
-        headers: {
-          "Access-Control-Allow-Headers": "Content-type",
-          "Access-Control-Allow-Methods": "OPTIONS, POST",
-          ...accessControlAllowOrigin,
-        },
-        isBase64Encoded: false,
-        statusCode: __200__OK__,
-      };
-    }
+  try {
+    switch (event.httpMethod) {
+      case "OPTIONS":
+        return ALLOWED_METHODS(["POST"]);
 
-    case "POST": {
-      if (!event.body) return BAD_REQUEST;
+      case "POST": {
+        if (!event.body) return BAD_REQUEST();
 
-      const headers = {
-        "Content-Type": "application/json",
-        ...accessControlAllowOrigin,
-      };
+        const input = JSON.parse(event.body);
 
-      const input = JSON.parse(event.body);
+        if (isApiAuthEnterRequestData(input)) {
+          const { email } = input;
 
-      if (isApiAuthEnterRequestData(input)) {
-        const { email } = input;
+          const oneTimePassword = await createOneTimePassword(email);
+          await sendOneTimePassword({ email, oneTimePassword });
 
-        const oneTimePassword = await createOneTimePassword(email);
-        await sendOneTimePassword({ email, oneTimePassword });
+          const output: ApiAuthEnterResponseData = {
+            emailSent: true,
+          };
 
-        const responseData: ApiAuthEnterResponseData = {
-          emailSent: true,
-        };
+          return OK(output);
+        }
 
-        return {
-          body: JSON.stringify(responseData),
-          headers,
-          isBase64Encoded: false,
-          statusCode: __200__OK__,
-        };
+        return BAD_REQUEST();
       }
 
-      return BAD_REQUEST;
+      default:
+        return METHOD_NOT_ALLOWED;
     }
-
-    default: {
-      return {
-        body: "",
-        headers: accessControlAllowOrigin,
-        isBase64Encoded: false,
-        statusCode: __405__METHOD_NOT_ALLOWED__,
-      };
-    }
+  } catch (error) {
+    console.error(error);
   }
+  return INTERNAL_SERVER_ERROR;
 };

@@ -1,3 +1,10 @@
+import { ApiUtrustCallabackRequestData } from "@ggbot2/api";
+import {
+  BAD_REQUEST,
+  METHOD_NOT_ALLOWED,
+  OK,
+  INTERNAL_SERVER_ERROR,
+} from "@ggbot2/api-gateway";
 import {
   locatorToItemKey,
   readSubscription,
@@ -6,12 +13,6 @@ import {
   updateSubscriptionPurchaseStatus,
 } from "@ggbot2/database";
 import { ENV } from "@ggbot2/env";
-import {
-  __200__OK__,
-  __400__BAD_REQUEST__,
-  __405__METHOD_NOT_ALLOWED__,
-  __500__INTERNAL_SERVER_ERROR__
-} from "@ggbot2/http-status-codes";
 import {
   WebhookValidator,
   Event as UtrustEvent,
@@ -22,79 +23,62 @@ export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-const { UTRUST_WEBHOOK_SECRET } = ENV;
+    const { UTRUST_WEBHOOK_SECRET } = ENV;
+    switch (event.httpMethod) {
+      case "POST": {
+        if (!event.body) return BAD_REQUEST();
 
-const BAD_REQUEST: APIGatewayProxyResult = {
-  body: JSON.stringify({ ok: false }),
-  isBase64Encoded: false,
-  statusCode: __400__BAD_REQUEST__,
-};
+        const { validateSignature } = WebhookValidator(UTRUST_WEBHOOK_SECRET);
+        const input = JSON.parse(event.body);
+        const isValid = validateSignature(input);
+        if (!isValid) return BAD_REQUEST();
 
-const OK: APIGatewayProxyResult = {
-  body: JSON.stringify({ ok: true }),
-  isBase64Encoded: false,
-  statusCode: __200__OK__,
-};
+        const {
+          event_type,
+          resource: { reference },
+        } = input as UtrustEvent;
 
-  switch (event.httpMethod) {
-    case "POST": {
-      if (!event.body) return BAD_REQUEST;
+        // Nothing to do, the payment is detected on the blockchain.
+        if (event_type === "ORDER.PAYMENT.DETECTED") {
+          const output: ApiUtrustCallabackRequestData = { ok: true };
+          return OK(output);
+        }
 
-      const { validateSignature } = WebhookValidator(UTRUST_WEBHOOK_SECRET);
-      const input = JSON.parse(event.body);
-      const isValid = validateSignature(input);
-      if (!isValid) return BAD_REQUEST;
+        const purchaseKey = locatorToItemKey.subscriptionPurchase(reference);
+        if (!purchaseKey) return BAD_REQUEST();
 
-      const {
-        event_type,
-        resource: { reference },
-      } = input as UtrustEvent;
+        if (event_type === "ORDER.PAYMENT.RECEIVED") {
+          const purchase = await readSubscriptionPurchase(purchaseKey);
+          const { accountId } = purchaseKey;
+          const subscription = await readSubscription({ accountId });
 
-      // Nothing to do, the payment is detected on the blockchain.
-      if (event_type === "ORDER.PAYMENT.DETECTED") return OK;
+          if (!purchase || !subscription) return BAD_REQUEST();
 
-      const purchaseKey = locatorToItemKey.subscriptionPurchase(reference);
-      if (!purchaseKey) return BAD_REQUEST;
+          const { plan } = subscription;
+          const { end } = purchase;
+          await writeSubscription({ accountId, plan, end });
 
-      if (event_type === "ORDER.PAYMENT.RECEIVED") {
-        const purchase = await readSubscriptionPurchase(purchaseKey);
-        const { accountId } = purchaseKey;
-        const subscription = await readSubscription({ accountId });
+          await updateSubscriptionPurchaseStatus({
+            ...purchaseKey,
+            status: "completed",
+          });
+        }
 
-        if (!purchase || !subscription) return BAD_REQUEST;
+        if (event_type === "ORDER.PAYMENT.CANCELLED")
+          await updateSubscriptionPurchaseStatus({
+            ...purchaseKey,
+            status: "canceled",
+          });
 
-        const { plan } = subscription;
-        const { end } = purchase;
-        await writeSubscription({ accountId, plan, end });
-
-        await updateSubscriptionPurchaseStatus({
-          ...purchaseKey,
-          status: "completed",
-        });
+        const output: ApiUtrustCallabackRequestData = { ok: false };
+        return OK(output);
       }
 
-      if (event_type === "ORDER.PAYMENT.CANCELLED")
-        await updateSubscriptionPurchaseStatus({
-          ...purchaseKey,
-          status: "canceled",
-        });
-
-      return OK;
+      default:
+        return METHOD_NOT_ALLOWED;
     }
-
-    default: {
-      return {
-        statusCode: __405__METHOD_NOT_ALLOWED__,
-        body: JSON.stringify({}),
-      };
-    }
-  }
   } catch (error) {
     console.error(error);
-    return {
-      body: "",
-      isBase64Encoded: false,
-      statusCode: __500__INTERNAL_SERVER_ERROR__,
-    };
   }
+  return INTERNAL_SERVER_ERROR;
 };

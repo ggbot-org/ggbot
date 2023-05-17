@@ -1,10 +1,10 @@
-import { Day, DayInterval, isDay } from "@ggbot2/time";
+import { Day, DayInterval, isDay, isDayInterval } from "@ggbot2/time";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import {
   BalanceChangeEvent,
   isBalanceChangeEvents,
 } from "./balanceChangeEvent.js";
-import { AccountStrategyKey } from "./accountStrategy.js";
+import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
 import { Operation } from "./operation.js";
 
 export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] };
@@ -17,3 +17,10 @@ export type ReadStrategyBalances = Operation<
   AccountStrategyKey & DayInterval,
   { day: Day; data: BalanceChangeEvent[] }[]
 >;
+
+export const isReadStrategyBalancesInput = objectTypeGuard<
+  ReadStrategyBalances["in"]
+>(
+  ({ start, end, ...accountStrategyKey }) =>
+    isDayInterval({ start, end }) && isAccountStrategyKey(accountStrategyKey)
+);

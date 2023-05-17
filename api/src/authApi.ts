@@ -34,7 +34,7 @@ export const isApiAuthVerifyRequestData =
   );
 
 export type ApiAuthVerifyResponseData = {
-  verified: boolean | null;
+  verified: boolean;
 };
 
 export const isApiAuthVerifyResponseData =
