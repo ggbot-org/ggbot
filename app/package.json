@@ -12,11 +12,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@ggbot2/api-action": "file:api-action",
     "@ggbot2/assets": "file:assets",
     "@ggbot2/binance": "file:binance",
-    "@ggbot2/cookies": "file:cookies",
-    "@ggbot2/database": "file:database",
     "@ggbot2/design": "file:design",
     "@ggbot2/dflow": "file:dflow",
     "@ggbot2/env": "file:env",
@@ -25,6 +22,7 @@
     "@ggbot2/models": "file:models",
     "@ggbot2/time": "file:time",
     "@ggbot2/type-utils": "file:type-utils",
+    "@ggbot2/use-action": "file:use-action",
     "country-isocode2": "^1.1.0",
     "react-hot-toast": "^2.3.0"
   },

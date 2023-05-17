@@ -1,6 +1,8 @@
 import {
   CopyStrategyFlow,
   DeleteStrategyFlow,
+  ErrorPermissionOnStrategyItem,
+  ErrorStrategyItemNotFound,
   ReadStrategyFlow,
   StrategyFlow,
   WriteStrategyFlow,
@@ -8,10 +10,6 @@ import {
 } from "@ggbot2/models";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
-import {
-  ErrorPermissionOnStrategyItem,
-  ErrorStrategyItemNotFound,
-} from "./errors.js";
 import { readStrategyAccountId } from "./strategy.js";
 
 /**

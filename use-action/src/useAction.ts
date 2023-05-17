@@ -1,3 +1,4 @@
+import { ApiActionClientSideError, ApiActionServerSideError, ApiActionInput, isApiActionResponseError} from "@ggbot2/api";
 import {
   ErrorHTTP,
   InternalServerError,
@@ -7,8 +8,6 @@ import {
 } from "@ggbot2/http-status-codes";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
 import { useCallback, useState } from "react";
-import { ApiActionInput } from "./action";
-import { ActionError, isApiActionResponseError } from "./errors";
 
 type UseActionRequestArg<Input extends OperationInput> =
   Input extends AccountKey ? Omit<Input, "accountId"> : Input;
@@ -18,7 +17,7 @@ type UseActionRequest<Input extends OperationInput> = (
 ) => AbortController;
 
 type UseActionResponse<Output extends OperationOutput> = {
-  error?: ActionError | undefined;
+  error?: ApiActionClientSideError|ApiActionServerSideError | undefined;
   data?: Output | undefined;
   isPending: boolean;
 };

@@ -1,11 +1,11 @@
 import { isAccountKey } from "@ggbot2/models";
 import { Button } from "@ggbot2/design";
 import { FC, useEffect } from "react";
-import { useApiAction } from "_hooks";
+import { useApi } from "_hooks/useApi";
 import { Account } from "./Account";
 
 export const Accounts: FC = () => {
-  const [request, { data: accountKeys }] = useApiAction.ListAccountKeys();
+  const [request, { data: accountKeys }] = useApi.ListAccountKeys();
 
   const accountIds: string[] = [];
 

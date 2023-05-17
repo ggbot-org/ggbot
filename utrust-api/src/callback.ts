@@ -10,6 +10,7 @@ import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
+  __500__INTERNAL_SERVER_ERROR__
 } from "@ggbot2/http-status-codes";
 import {
   WebhookValidator,
@@ -17,21 +18,24 @@ import {
 } from "@utrustdev/utrust-ts-library";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
-const { UTRUST_WEBHOOK_SECRET } = ENV;
-
-const BAD_REQUEST = {
-  statusCode: __400__BAD_REQUEST__,
-  body: JSON.stringify({ ok: false }),
-};
-
-const OK = {
-  statusCode: __200__OK__,
-  body: JSON.stringify({ ok: true }),
-};
-
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
+  try {
+const { UTRUST_WEBHOOK_SECRET } = ENV;
+
+const BAD_REQUEST: APIGatewayProxyResult = {
+  body: JSON.stringify({ ok: false }),
+  isBase64Encoded: false,
+  statusCode: __400__BAD_REQUEST__,
+};
+
+const OK: APIGatewayProxyResult = {
+  body: JSON.stringify({ ok: true }),
+  isBase64Encoded: false,
+  statusCode: __200__OK__,
+};
+
   switch (event.httpMethod) {
     case "POST": {
       if (!event.body) return BAD_REQUEST;
@@ -84,5 +88,13 @@ export const handler = async (
         body: JSON.stringify({}),
       };
     }
+  }
+  } catch (error) {
+    console.error(error);
+    return {
+      body: "",
+      isBase64Encoded: false,
+      statusCode: __500__INTERNAL_SERVER_ERROR__,
+    };
   }
 };

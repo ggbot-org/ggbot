@@ -11,6 +11,7 @@ import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
+  __500__INTERNAL_SERVER_ERROR__
 } from "@ggbot2/http-status-codes";
 import {
   ApiBaseURL,
@@ -32,6 +33,10 @@ import { today, getDate, dayToDate, dateToDay } from "@ggbot2/time";
 import { ApiClient, Order, Customer } from "@utrustdev/utrust-ts-library";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
+export const handler = async (
+  event: APIGatewayEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
 const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
 
 // UTRUST_API_KEY starts with
@@ -60,9 +65,6 @@ const BAD_REQUEST: APIGatewayProxyResult = {
   statusCode: __400__BAD_REQUEST__,
 };
 
-export const handler = async (
-  event: APIGatewayEvent
-): Promise<APIGatewayProxyResult> => {
   switch (event.httpMethod) {
     case "OPTIONS": {
       return {
@@ -174,5 +176,14 @@ export const handler = async (
         statusCode: __405__METHOD_NOT_ALLOWED__,
       };
     }
+  }
+  } catch(error) {
+    console.error(error);
+    return {
+      body: "",
+      headers: accessControlAllowOrigin,
+      isBase64Encoded: false,
+      statusCode: __500__INTERNAL_SERVER_ERROR__,
+    };
   }
 };

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/api-action",
+  "name": "@ggbot2/use-action",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -20,8 +20,9 @@
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
+    "@ggbot2/api": "file:api",
     "@ggbot2/http-status-codes": "file:http-status-codes",
-    "@ggbot2/database": "file:database",
+    "@ggbot2/models": "file:models",
     "@types/react": "^18.0.15",
     "react": "^18.2.0"
   },

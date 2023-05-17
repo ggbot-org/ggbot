@@ -1,7 +1,8 @@
-import { useAction } from "@ggbot2/api-action";
-import { ApiAction, ApiActionType } from "_api/action";
+/* eslint sort-keys: "error" */
+import { AdminApiAction as ApiAction, AdminApiActionType as ApiActionType } from "@ggbot2/api";
+import { useAction } from "@ggbot2/use-action";
 
-export const useApiAction = {
+export const useApi = {
   ReadAccount: () =>
     useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
   ListAccountKeys: () =>

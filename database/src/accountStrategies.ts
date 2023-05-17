@@ -1,5 +1,6 @@
 import {
   DeleteAccountStrategiesItem,
+  ErrorExceededQuota,
   InsertAccountStrategiesItem,
   ReadAccountStrategies,
   RenameAccountStrategiesItem,
@@ -11,7 +12,6 @@ import {
   quota,
   updatedNow,
 } from "@ggbot2/models";
-import { ErrorExceededQuota } from "./errors.js";
 import { getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 import { readSubscriptionPlan } from "./subscription.js";

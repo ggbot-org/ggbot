@@ -9,6 +9,7 @@ import {
   __200__OK__,
   __400__BAD_REQUEST__,
   __405__METHOD_NOT_ALLOWED__,
+  __500__INTERNAL_SERVER_ERROR__
 } from "@ggbot2/http-status-codes";
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import { objectTypeGuard } from "@ggbot2/type-utils";
@@ -40,47 +41,57 @@ const isRequestData = objectTypeGuard<RequestData>(
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
-  switch (event.httpMethod) {
-    case "OPTIONS": {
-      return {
-        body: "",
-        headers: {
-          "Access-Control-Allow-Headers": "Content-type",
-          "Access-Control-Allow-Methods": "OPTIONS, POST",
-          ...accessControlAllowOrigin,
-        },
-        isBase64Encoded: false,
-        statusCode: __200__OK__,
-      };
+  try {
+    switch (event.httpMethod) {
+      case "OPTIONS": {
+        return {
+          body: "",
+          headers: {
+            "Access-Control-Allow-Headers": "Content-type",
+            "Access-Control-Allow-Methods": "OPTIONS, POST",
+            ...accessControlAllowOrigin,
+          },
+          isBase64Encoded: false,
+          statusCode: __200__OK__,
+        };
+      }
+
+      case "POST": {
+        if (!event.body) return BAD_REQUEST;
+
+        const input = JSON.parse(event.body);
+        if (!isRequestData(input)) return BAD_REQUEST;
+
+        const { message } = input;
+
+        return {
+          body: JSON.stringify({ message }),
+          headers: {
+            "Content-Type": "application/json",
+            ...accessControlAllowOrigin,
+          },
+          isBase64Encoded: false,
+          statusCode: __200__OK__,
+        };
+      }
+
+      default: {
+        return {
+          body: "",
+          headers: accessControlAllowOrigin,
+          isBase64Encoded: false,
+          statusCode: __405__METHOD_NOT_ALLOWED__,
+        };
+      }
     }
-
-    case "POST": {
-      if (!event.body) return BAD_REQUEST;
-
-      const input = JSON.parse(event.body);
-      if (!isRequestData(input)) return BAD_REQUEST;
-
-      const { message } = input;
-
-      return {
-        body: JSON.stringify({ message }),
-        headers: {
-          "Content-Type": "application/json",
-          ...accessControlAllowOrigin,
-        },
-        isBase64Encoded: false,
-        statusCode: __200__OK__,
-      };
-    }
-
-    default: {
-      return {
-        body: "",
-        headers: accessControlAllowOrigin,
-        isBase64Encoded: false,
-        statusCode: __405__METHOD_NOT_ALLOWED__,
-      };
-    }
+  } catch (error) {
+    console.error(error);
+    return {
+      body: "",
+      headers: accessControlAllowOrigin,
+      isBase64Encoded: false,
+      statusCode: __500__INTERNAL_SERVER_ERROR__,
+    };
   }
 };
 ```

@@ -1,6 +1,6 @@
 /* eslint sort-keys: "error" */
-import { useAction } from "@ggbot2/api-action";
-import { ApiAction, ApiActionType } from "_api/action";
+import { UserApiAction as ApiAction, UserApiActionType as ApiActionType } from "@ggbot2/api";
+import { useAction } from "@ggbot2/use-action";
 
 export const useApi = {
   CopyStrategy: () =>

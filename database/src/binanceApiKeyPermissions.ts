@@ -4,8 +4,10 @@ import {
   BinanceConnector,
   ReadBinanceApiKeyPermissions,
 } from "@ggbot2/binance";
+import {
+  ErrorAccountItemNotFound,
+} from "@ggbot2/models";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
-import { ErrorAccountItemNotFound } from "./errors.js";
 
 /** @throws {@link ErrorAccountItemNotFound} */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =

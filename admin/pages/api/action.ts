@@ -1,7 +1,6 @@
-import { Action, ApiActionResponseOutput } from "@ggbot2/api-action";
+import { ApiActionResponseOutput } from "@ggbot2/api";
 import { readSession } from "@ggbot2/cookies";
 import {
-  ErrorUnimplementedStrategyKind,
   readAccount,
   listAccountKeys,
 } from "@ggbot2/database";
@@ -13,18 +12,8 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   InternalServerError,
 } from "@ggbot2/http-status-codes";
-import { ReadAccount, ListAccountKeys } from "@ggbot2/models";
-import { isLiteralType } from "@ggbot2/type-utils";
+import { ErrorUnimplementedStrategyKind, } from "@ggbot2/models";
 import { NextApiRequest, NextApiResponse } from "next";
-
-export type ApiAction = {
-  ReadAccount: Action<ReadAccount["in"]>;
-  ListAccountKeys: Action<ListAccountKeys["in"]>;
-};
-
-const apiActionTypes = ["ReadAccount", "ListAccountKeys"] as const;
-export type ApiActionType = (typeof apiActionTypes)[number];
-const isApiActionType = isLiteralType<ApiActionType>(apiActionTypes);
 
 export default async function apiHandler(
   req: NextApiRequest,
@@ -38,7 +27,7 @@ export default async function apiHandler(
 
     const { type: actionType } = action;
 
-    if (!isApiActionType(actionType))
+    if (!isAdminApiActionType(actionType))
       return res.status(__400__BAD_REQUEST__).json({});
 
     const session = readSession(req.cookies);

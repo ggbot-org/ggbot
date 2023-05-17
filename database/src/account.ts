@@ -3,6 +3,7 @@ import {
   AccountKey,
   CreateAccount,
   DeleteAccount,
+  ErrorAccountItemNotFound,
   ListAccountKeys,
   ReadAccount,
   RenameAccount,
@@ -24,7 +25,6 @@ import {
   locatorToItemKey,
   pathname,
 } from "./locators.js";
-import { ErrorAccountItemNotFound } from "./errors.js";
 import { createEmailAccount } from "./emailAccount.js";
 
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
