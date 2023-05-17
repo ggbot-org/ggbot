@@ -16,7 +16,6 @@ import {
   readAccountStrategies,
   readBinanceApiConfig,
   readBinanceApiKeyPermissions,
-  readStrategy,
   readStrategyBalances,
   readStrategyOrders,
   readSubscription,
@@ -26,7 +25,6 @@ import {
   writeAccountStrategiesItemSchedulings,
   writeStrategyFlow,
 } from "@ggbot2/database";
-import { ENV } from "@ggbot2/env";
 import {
   __200__OK__,
   __400__BAD_REQUEST__,
@@ -34,30 +32,15 @@ import {
   __405__METHOD_NOT_ALLOWED__,
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
-import { UserWebappBaseURL } from "@ggbot2/locators";
 import {
   ErrorExceededQuota,
   ErrorAccountItemNotFound,
   ErrorUnimplementedStrategyKind,
+  isCopyStrategyInput,
+  isCreateBinanceApiConfigInput,
+  isCreateStrategyInput,
 } from "@ggbot2/models";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
-
-const { DEPLOY_STAGE } = ENV;
-
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
-
-const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
-};
-
-const BAD_REQUEST = (
-  error?: ApiActionResponseError
-): APIGatewayProxyResult => ({
-  body: error ? JSON.stringify(error) : "",
-  headers: accessControlAllowOrigin,
-  isBase64Encoded: false,
-  statusCode: __400__BAD_REQUEST__,
-});
 
 const OK = (data: ApiActionResponseData["data"]): APIGatewayProxyResult => ({
   body: JSON.stringify({ data }),
@@ -97,9 +80,10 @@ export const handler = async (
       case "POST": {
         if (!event.body) return BAD_REQUEST();
 
-        const input = JSON.parse(event.body);
+        const action = JSON.parse(event.body);
 
-        if (!isApiActionRequestData(input)) return BAD_REQUEST();
+        if (!isApiActionRequestData(action)) return BAD_REQUEST();
+        const actionData = action.data;
 
         const cookies = event.headers.Cookie;
         if (!cookies) return UNATHORIZED;
@@ -107,25 +91,25 @@ export const handler = async (
         if (!session) return UNATHORIZED;
         const { accountId } = session;
 
-        const { type: actionType } = input;
-        const actionData = input.data ?? {};
-
-        switch (actionType) {
+        switch (action.type) {
           case "CopyStrategy": {
-            const output = await copyStrategy({ accountId, ...input.data });
+            const input = { accountId, ...actionData };
+            if (!isCopyStrategyInput(input)) return BAD_REQUEST();
+            const output = await copyStrategy(input);
             return OK(output);
           }
 
           case "CreateBinanceApiConfig": {
-            const output = await createBinanceApiConfig({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            if (!isCreateBinanceApiConfigInput(input)) return BAD_REQUEST();
+            const output = await createBinanceApiConfig(input);
             return OK(output);
           }
 
           case "CreateStrategy": {
-            const output = await createStrategy({ accountId, ...input.data });
+            const input = { accountId, ...actionData };
+            if (!isCreateStrategyInput(input)) return BAD_REQUEST();
+            const output = await createStrategy(input);
             return OK(output);
           }
 
@@ -140,15 +124,14 @@ export const handler = async (
           }
 
           case "DeleteStrategy": {
-            const output = await deleteStrategy({ accountId, ...input.data });
+            const input = { accountId, ...actionData };
+            const output = await deleteStrategy(input);
             return OK(output);
           }
 
           case "ExecuteStrategy": {
-            const output = await executeStrategy({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            const output = await executeStrategy(input);
             return OK(output);
           }
 
@@ -176,11 +159,6 @@ export const handler = async (
             return OK(output);
           }
 
-          case "ReadStrategy": {
-            const output = await readStrategy(input.data);
-            return OK(output);
-          }
-
           case "ReadStrategyBalances": {
             const output = await readStrategyBalances({
               accountId,
@@ -190,10 +168,8 @@ export const handler = async (
           }
 
           case "ReadStrategyOrders": {
-            const output = await readStrategyOrders({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            const output = await readStrategyOrders(input);
             return OK(output);
           }
 
@@ -203,36 +179,32 @@ export const handler = async (
           }
 
           case "RenameAccount": {
-            const output = await renameAccount({ accountId, ...input.data });
+            const input = { accountId, ...actionData };
+            const output = await renameAccount(input);
             return OK(output);
           }
 
           case "RenameStrategy": {
-            const output = await renameStrategy({ accountId, ...input.data });
+            const input = { accountId, ...actionData };
+            const output = await renameStrategy(input);
             return OK(output);
           }
 
           case "SetAccountCountry": {
-            const output = await setAccountCountry({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            const output = await setAccountCountry(input);
             return OK(output);
           }
 
           case "WriteAccountStrategiesItemSchedulings": {
-            const output = await writeAccountStrategiesItemSchedulings({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            const output = await writeAccountStrategiesItemSchedulings(input);
             return OK(output);
           }
 
           case "WriteStrategyFlow": {
-            const output = await writeStrategyFlow({
-              accountId,
-              ...input.data,
-            });
+            const input = { accountId, ...actionData };
+            const output = await writeStrategyFlow(input);
             return OK(output);
           }
 

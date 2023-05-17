@@ -1,6 +1,6 @@
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Account, AccountKey, isAccountKey } from "./account.js";
-import { AccountStrategyKey } from "./accountStrategy.js";
+import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
 import { Item, isItemId, NewItem, newId } from "./item.js";
 import { Name, isName, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
@@ -52,7 +52,17 @@ export type CopyStrategy = Operation<
   Strategy
 >;
 
+export const isCopyStrategyInput = objectTypeGuard<CopyStrategy["in"]>(
+  ({ name, ...accountStrategyKey }) =>
+    isAccountStrategyKey(accountStrategyKey) && isName(name)
+);
+
 export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
+
+export const isCreateStrategyInput = objectTypeGuard<CreateStrategy["in"]>(
+  ({ name, kind, ...accountKey }) =>
+    isAccountKey(accountKey) && isName(name) && isStrategyKind(kind)
+);
 
 /**
  * Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.

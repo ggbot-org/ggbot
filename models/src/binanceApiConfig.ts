@@ -3,7 +3,7 @@ import {
   isNonEmptyString,
   objectTypeGuard,
 } from "@ggbot2/type-utils";
-import { AccountKey } from "./account.js";
+import { AccountKey, isAccountKey } from "./account.js";
 import { ItemKey } from "./item.js";
 import { Operation } from "./operation.js";
 import { CreationTime, DeletionTime } from "./time.js";
@@ -44,6 +44,13 @@ export type CreateBinanceApiConfig = Operation<
   AccountKey & BinanceApiConfig,
   CreationTime
 >;
+
+export const isCreateBinanceApiConfigInput = objectTypeGuard<
+  CreateBinanceApiConfig["in"]
+>(
+  ({ apiKey, apiSecret, ...accountKey }) =>
+    isAccountKey(accountKey) && isBinanceApiConfig({ apiKey, apiSecret })
+);
 
 export type ReadBinanceApiConfig = Operation<
   AccountKey,

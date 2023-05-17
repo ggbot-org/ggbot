@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/user-api",
+  "name": "@ggbot2/api-gateway",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,31 +10,21 @@
     }
   },
   "scripts": {
-    "build": "npm run bundle && npm run zip",
-    "bundle": "node scripts/bundle.js",
+    "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "create": "sh scripts/create.sh",
-    "deploy": "sh scripts/deploy.sh",
-    "lint": "eslint --ext .ts .",
-    "prebuild": "npm run cleanup",
-    "zip": "sh scripts/zip.sh"
+    "lint": "eslint --ext .ts ."
   },
   "dependencies": {
     "@ggbot2/api": "file:api",
-    "@ggbot2/api-gateway": "file:api-gateway",
-    "@ggbot2/cookies": "file:cookies",
-    "@ggbot2/database": "file:database",
     "@ggbot2/env": "file:env",
     "@ggbot2/http-status-codes": "file:http-status-codes",
     "@ggbot2/locators": "file:locators",
-    "@ggbot2/models": "file:models"
+    "aws-lambda": "^1.0.7"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig",
-    "@types/aws-lambda": "^8.10.114",
-    "esbuild": "^0.17.17"
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

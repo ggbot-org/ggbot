@@ -17,7 +17,7 @@ import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 
 export type ApiActionInput<ApiActionType extends string> = {
   type: ApiActionType;
-  data?: OperationInput;
+  data?: DflowObject | undefined;
 };
 
 export type ApiActionResponseError = {

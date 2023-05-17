@@ -1,4 +1,4 @@
-import {  ListAccountKeys,  ReadAccount } from "@ggbot2/models";
+import { ListAccountKeys, ReadAccount } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { AuthenticatedApiAction as Action, ApiActionInput } from "./apiAction";
 
@@ -12,10 +12,9 @@ export type AdminApiAction = {
   ListAccountKeys: Action<ListAccountKeys["in"]>;
 };
 
-export type AdminApiActionRequestData =ApiActionInput<AdminApiActionType>
+export type AdminApiActionRequestData = ApiActionInput<AdminApiActionType>;
 
 export const isAdminApiActionRequestData =
   objectTypeGuard<AdminApiActionRequestData>(({ type }) =>
     isAdminApiActionType(type)
   );
-

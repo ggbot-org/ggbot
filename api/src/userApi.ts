@@ -77,9 +77,10 @@ export type UserApiAction = {
   WriteStrategyFlow: Action<WriteStrategyFlow["in"]>;
 };
 
-export type UserApiActionRequestData = ApiActionInput<UserApiActionType>
+export type UserApiActionRequestData = ApiActionInput<UserApiActionType>;
 
 export const isUserApiActionRequestData =
-  objectTypeGuard<UserApiActionRequestData>(({ type }) =>
-    isUserApiActionType(type)
+  objectTypeGuard<UserApiActionRequestData>(
+    ({ type }) => isUserApiActionType(type)
+    // TODO check data
   );

@@ -26,3 +26,12 @@ export const isApiUtrustOrderRequestData =
       isNaturalNumber(numMonths) &&
       isAccountKey(accountKey)
   );
+
+export type ApiUtrustOrderResponseData = {
+  redirectUrl: string;
+};
+
+export const isApiUtrustOrderResponseData =
+  objectTypeGuard<ApiUtrustOrderResponseData>(
+    ({ redirectUrl }) => typeof redirectUrl === "string"
+  );

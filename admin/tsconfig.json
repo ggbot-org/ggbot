@@ -9,8 +9,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "_api/*": ["pages/api/*"],
-      "_components/*": ["components/*"],
+      "_components/*": ["src/components/*"],
       "_hooks/*": ["src/hooks/*"]
     },
     "resolveJsonModule": true,

@@ -67,11 +67,17 @@ export const handler = async (
         if (!isApiActionRequestData(input)) return BAD_REQUEST();
 
         const { type: actionType } = input;
+        const actionData = action.data;
 
         switch (actionType) {
+          case "ReadStrategy": {
+            const output = await readStrategy(actionData);
+            return OK(output);
+          }
+
           case "ReadStrategyFlow": {
-            const data = await readStrategyFlow(input.data);
-            return OK({ data });
+            const output = await readStrategyFlow(actionData);
+            return OK(output);
           }
 
           default: {
