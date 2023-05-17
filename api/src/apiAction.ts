@@ -10,7 +10,8 @@ import {
   AccountKey,
   ErrorAccountItemNotFound,
   ErrorUnimplementedStrategyKind,
-  OperationInput, OperationOutput
+  OperationInput,
+  OperationOutput,
 } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 
@@ -27,21 +28,26 @@ export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
   ({ error }) => isApiActionServerSideError(error)
 );
 
+export type ApiActionResponseData = {
+  data: OperationOutput;
+};
+
 export type ApiActionResponseOutput =
-  | {
-      data?: OperationOutput;
-    }
+  | ApiActionResponseData
   | ApiActionResponseError;
 
-  export type ApiAction<Input extends OperationInput, Output = OperationOutput> = {
-    in: Input
-    out: Output
-  }
+export type ApiAction<
+  Input extends OperationInput,
+  Output = OperationOutput
+> = {
+  in: Input;
+  out: Output;
+};
 
 // AccountKey is provided by authentication, no need to add it as action input parameter.
 export type AuthenticatedApiAction<Input extends OperationInput> = ApiAction<
   Input extends AccountKey ? Omit<Input, "accountId"> : Input
->
+>;
 
 // Server errors
 // ////////////
@@ -52,32 +58,41 @@ const apiActionServerSideErrorNames = [
   ErrorUnimplementedStrategyKind.name,
   InternalServerError.name,
 ] as const;
-export type ApiActionServerSideErrorName = (typeof apiActionServerSideErrorNames)[number];
-export const isApiActionServerSideErrorName = isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
+export type ApiActionServerSideErrorName =
+  (typeof apiActionServerSideErrorNames)[number];
+export const isApiActionServerSideErrorName =
+  isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames);
 
 export type ApiActionServerSideError = {
   name: ApiActionServerSideErrorName;
   info?: DflowObject;
 };
 
-export const isApiActionServerSideError = objectTypeGuard<ApiActionServerSideError>(
-  ({ name, info }) =>
-    isApiActionServerSideErrorName(name) &&
-    (info === undefined ? true : Dflow.isObject(info))
-);
+export const isApiActionServerSideError =
+  objectTypeGuard<ApiActionServerSideError>(
+    ({ name, info }) =>
+      isApiActionServerSideErrorName(name) &&
+      (info === undefined ? true : Dflow.isObject(info))
+  );
 
 // Client errors
 // ////////////
 
-export const apiActionClientSideErrorNames = ["GenericError", "Timeout", "Unauthorized"] as const;
-export type ApiActionClientSideErrorName = (typeof apiActionClientSideErrorNames)[number];
-export const isApiActionClientSideErrorName = isLiteralType<ApiActionClientSideErrorName>(apiActionClientSideErrorNames)
+export const apiActionClientSideErrorNames = [
+  "GenericError",
+  "Timeout",
+  "Unauthorized",
+] as const;
+export type ApiActionClientSideErrorName =
+  (typeof apiActionClientSideErrorNames)[number];
+export const isApiActionClientSideErrorName =
+  isLiteralType<ApiActionClientSideErrorName>(apiActionClientSideErrorNames);
 
 export type ApiActionClientSideError = {
   name: ApiActionClientSideErrorName;
 };
 
-export const isApiActionClientSideError = objectTypeGuard<ApiActionClientSideError>(
-  ({ name }) =>
+export const isApiActionClientSideError =
+  objectTypeGuard<ApiActionClientSideError>(({ name }) =>
     isApiActionClientSideErrorName(name)
-);
+  );

@@ -1,4 +1,8 @@
-import { ApiActionResponseError, ApiActionResponseOutput, isUserApiActionRequestData as isApiActionRequestData } from "@ggbot2/api";
+import {
+  ApiActionResponseData,
+  ApiActionResponseError,
+  isUserApiActionRequestData as isApiActionRequestData,
+} from "@ggbot2/api";
 import { readSession } from "@ggbot2/cookies";
 import {
   copyStrategy,
@@ -28,10 +32,14 @@ import {
   __400__BAD_REQUEST__,
   __401__UNAUTHORIZED__,
   __405__METHOD_NOT_ALLOWED__,
-  __500__INTERNAL_SERVER_ERROR__
+  __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http-status-codes";
 import { UserWebappBaseURL } from "@ggbot2/locators";
-import { ErrorExceededQuota, ErrorAccountItemNotFound, ErrorUnimplementedStrategyKind } from "@ggbot2/models";
+import {
+  ErrorExceededQuota,
+  ErrorAccountItemNotFound,
+  ErrorUnimplementedStrategyKind,
+} from "@ggbot2/models";
 import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
 const { DEPLOY_STAGE } = ENV;
@@ -42,11 +50,23 @@ const accessControlAllowOrigin = {
   "Access-Control-Allow-Origin": userWebappBaseURL.origin,
 };
 
-const BAD_REQUEST = (error?: ApiActionResponseError): APIGatewayProxyResult => ({
-  body: error? JSON.stringify(error):"",
+const BAD_REQUEST = (
+  error?: ApiActionResponseError
+): APIGatewayProxyResult => ({
+  body: error ? JSON.stringify(error) : "",
   headers: accessControlAllowOrigin,
   isBase64Encoded: false,
   statusCode: __400__BAD_REQUEST__,
+});
+
+const OK = (data: ApiActionResponseData["data"]): APIGatewayProxyResult => ({
+  body: JSON.stringify({ data }),
+  headers: {
+    "Content-Type": "application/json",
+    ...accessControlAllowOrigin,
+  },
+  isBase64Encoded: false,
+  statusCode: __200__OK__,
 });
 
 const UNATHORIZED: APIGatewayProxyResult = {
@@ -56,185 +76,184 @@ const UNATHORIZED: APIGatewayProxyResult = {
   statusCode: __401__UNAUTHORIZED__,
 };
 
-const OK = (output: ApiActionResponseOutput): APIGatewayProxyResult => ({
-  statusCode: __200__OK__,
-  body: JSON.stringify(output),
-})
-
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-  switch (event.httpMethod) {
-    case "OPTIONS": {
-      return {
-        body: "",
-        headers: {
-          "Access-Control-Allow-Headers": "Content-type",
-          "Access-Control-Allow-Methods": "OPTIONS, POST",
-          ...accessControlAllowOrigin,
-        },
-        isBase64Encoded: false,
-        statusCode: __200__OK__,
-      };
-    }
+    switch (event.httpMethod) {
+      case "OPTIONS": {
+        return {
+          body: "",
+          headers: {
+            "Access-Control-Allow-Headers": "Content-type",
+            "Access-Control-Allow-Methods": "OPTIONS, POST",
+            ...accessControlAllowOrigin,
+          },
+          isBase64Encoded: false,
+          statusCode: __200__OK__,
+        };
+      }
 
-    case "POST": {
-      if (!event.body) return BAD_REQUEST();
+      case "POST": {
+        if (!event.body) return BAD_REQUEST();
 
-      const input = JSON.parse(event.body);
+        const input = JSON.parse(event.body);
 
-      if (!isApiActionRequestData(input)) return BAD_REQUEST();
+        if (!isApiActionRequestData(input)) return BAD_REQUEST();
 
-    const { type: actionType, } = input;
-    const actionData = input.data??{}
+        const session = readSession(req.cookies);
+        if (!session) return UNATHORIZED;
+        const { accountId } = session;
 
-    const session = readSession(req.cookies);
-    if (!session) return UNATHORIZED
-    const { accountId } = session;
+        const { type: actionType } = input;
+        const actionData = input.data ?? {};
 
-    switch (actionType) {
-      default: {
         switch (actionType) {
           case "CopyStrategy": {
-            const data = await copyStrategy({ accountId, ...input.data });
-            return OK({ data });
+            const output = await copyStrategy({ accountId, ...input.data });
+            return OK(output);
           }
 
           case "CreateBinanceApiConfig": {
-            const data = await createBinanceApiConfig({
+            const output = await createBinanceApiConfig({
               accountId,
               ...input.data,
             });
-            return OK({ data });
+            return OK(output);
           }
 
           case "CreateStrategy": {
-            const data = await createStrategy({ accountId, ...input.data });
-            return OK({ data });
+            const output = await createStrategy({ accountId, ...input.data });
+            return OK(output);
           }
 
           case "DeleteAccount": {
-            const data = await deleteAccount({ accountId });
-            return OK({ data });
+            const output = await deleteAccount({ accountId });
+            return OK(output);
           }
 
           case "DeleteBinanceApiConfig": {
-            const data = await deleteBinanceApiConfig({ accountId });
-            return OK({ data });
+            const output = await deleteBinanceApiConfig({ accountId });
+            return OK(output);
           }
 
           case "DeleteStrategy": {
-            const data = await deleteStrategy({ accountId, ...input.data });
-            return OK({ data });
+            const output = await deleteStrategy({ accountId, ...input.data });
+            return OK(output);
           }
 
           case "ExecuteStrategy": {
-            const data = await executeStrategy({ accountId, ...input.data });
-            return OK({ data });
+            const output = await executeStrategy({
+              accountId,
+              ...input.data,
+            });
+            return OK(output);
           }
 
           case "ReadAccount": {
-            const data = await readAccount({ accountId });
-            return OK({ data });
+            const output = await readAccount({ accountId });
+            return OK(output);
           }
 
           case "ReadAccountStrategies": {
-            const data = await readAccountStrategies({ accountId });
-            return OK({ data });
+            const output = await readAccountStrategies({ accountId });
+            return OK(output);
           }
 
           case "ReadBinanceApiConfig": {
             const data = await readBinanceApiConfig({ accountId });
-            const apiKey = data?.apiKey;
-            return OK( {
-              // Do not expose apiSecret.
-              data: apiKey ? { apiKey } : null,
-              });
+            if (!data) return OK(null);
+            // Do not expose apiSecret.
+            const { apiKey } = data;
+            const output = { apiKey };
+            return OK(output);
           }
 
           case "ReadBinanceApiKeyPermissions": {
-            const data = await readBinanceApiKeyPermissions({ accountId });
-            return OK({ data });
+            const output = await readBinanceApiKeyPermissions({ accountId });
+            return OK(output);
           }
 
           case "ReadStrategy": {
-            const data = await readStrategy(action.data);
-            return OK({ data });
+            const output = await readStrategy(input.data);
+            return OK(output);
           }
 
           case "ReadStrategyBalances": {
-            const data = await readStrategyBalances({
+            const output = await readStrategyBalances({
               accountId,
               ...input.data,
             });
-            return OK({ data });
+            return OK(output);
           }
 
           case "ReadStrategyOrders": {
-            const data = await readStrategyOrders({
+            const output = await readStrategyOrders({
               accountId,
               ...input.data,
             });
-            return OK({ data });
+            return OK(output);
           }
 
           case "ReadSubscription": {
-            const data = await readSubscription({ accountId });
-            return OK({ data });
+            const output = await readSubscription({ accountId });
+            return OK(output);
           }
 
           case "RenameAccount": {
-            const data = await renameAccount({ accountId, ...input.data });
-            return OK({ data });
+            const output = await renameAccount({ accountId, ...input.data });
+            return OK(output);
           }
 
           case "RenameStrategy": {
-            const data = await renameStrategy({ accountId, ...input.data });
-            return OK({ data });
+            const output = await renameStrategy({ accountId, ...input.data });
+            return OK(output);
           }
 
           case "SetAccountCountry": {
-            const data = await setAccountCountry({ accountId, ...input.data });
-            return OK({ data });
-          }
-
-          case "WriteAccountStrategiesItemSchedulings": {
-            const data = await writeAccountStrategiesItemSchedulings({
+            const output = await setAccountCountry({
               accountId,
               ...input.data,
             });
-            return OK({ data });
+            return OK(output);
+          }
+
+          case "WriteAccountStrategiesItemSchedulings": {
+            const output = await writeAccountStrategiesItemSchedulings({
+              accountId,
+              ...input.data,
+            });
+            return OK(output);
           }
 
           case "WriteStrategyFlow": {
-            const data = await writeStrategyFlow({ accountId, ...input.data });
-            return OK({ data });
+            const output = await writeStrategyFlow({
+              accountId,
+              ...input.data,
+            });
+            return OK(output);
           }
 
           default:
-            return BAD_REQUEST()
+            return BAD_REQUEST();
         }
       }
-    }
-    }
 
-    default: {
-      return {
-        body: "",
-        headers: accessControlAllowOrigin,
-        isBase64Encoded: false,
-        statusCode: __405__METHOD_NOT_ALLOWED__,
-      };
+      default: {
+        return {
+          body: "",
+          headers: accessControlAllowOrigin,
+          isBase64Encoded: false,
+          statusCode: __405__METHOD_NOT_ALLOWED__,
+        };
+      }
     }
-  }
   } catch (error) {
     if (
       error instanceof ErrorAccountItemNotFound ||
       error instanceof ErrorExceededQuota ||
       error instanceof ErrorUnimplementedStrategyKind
     )
-      return res.status(__400__BAD_REQUEST__).json({ error: error.toObject() });
-
+      return BAD_REQUEST(error.toObject());
   }
 };

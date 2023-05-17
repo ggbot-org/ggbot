@@ -53,6 +53,7 @@ temp/
   // Package must be a private module.
   "private": true,
   "type": "module",
+  // Package may not be consumed as a dependency: `types` and `exports` are optional
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
