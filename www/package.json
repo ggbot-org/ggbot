@@ -9,7 +9,7 @@
     "cleanup": "rm -rf out/ .next/",
     "deploy": "sh scripts/deploy.sh",
     "dev": "next dev",
-    "lint": "eslint --ext .ts --ext .tsx .",
+    "lint": "eslint --fix --ext .ts --ext .tsx .",
     "next:export": "next export",
     "start": "next start"
   },

@@ -9,7 +9,7 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf .next",
     "dev": "next dev",
-    "lint": "eslint --ext .ts --ext .tsx .",
+    "lint": "eslint --fix --ext .ts --ext .tsx .",
     "start": "next start"
   },
   "devDependencies": {

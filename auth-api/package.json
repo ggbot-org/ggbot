@@ -16,7 +16,7 @@
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh scripts/create.sh",
     "deploy": "sh scripts/deploy.sh",
-    "lint": "eslint --ext .ts .",
+    "lint": "eslint --fix --ext .ts .",
     "prebuild": "npm run cleanup",
     "zip": "sh scripts/zip.sh"
   },
