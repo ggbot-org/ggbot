@@ -29,14 +29,11 @@
     "@ggbot2/locators": "file:locators",
     "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models",
-    "@ggbot2/time": "file:time",
-    "aws-lambda": "^1.0.7"
+    "@ggbot2/time": "file:time"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig",
-    "@types/aws-lambda": "^8.10.114",
-    "esbuild": "^0.17.17"
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

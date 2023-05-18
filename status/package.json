@@ -1,0 +1,30 @@
+{
+  "name": "@ggbot2/status",
+  "description": "status webapp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check_types": "tsc --noEmit --project .",
+    "generate_html": "node temp/scripts/generateHtml.js",
+    "lint": "eslint --fix --ext .ts --ext .tsx .",
+    "pregenerate_html": "tsc --build tsconfig.scripts.json"
+  },
+  "dependencies": {
+    "@ggbot2/design": "file:design",
+    "@ggbot2/html": "file:html",
+    "@ggbot2/repo": "file:repo"
+  },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@ggbot2/eslint-config/react"
+    ],
+    "ignorePatterns": [
+      "scripts/"
+    ]
+  }
+}

@@ -28,9 +28,7 @@
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig",
-    "@types/aws-lambda": "^8.10.114",
-    "esbuild": "^0.17.17"
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

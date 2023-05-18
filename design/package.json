@@ -18,19 +18,20 @@
     "sass": "sass --load-path=../node_modules/ src/styles/example.scss dist/style.css",
     "tsc--build": "tsc --build tsconfig.build.json"
   },
-  "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
-  },
   "dependencies": {
     "@ggbot2/time": "file:time",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.7",
+    "esbuild": "^0.17.17",
     "next": "^13.2.4",
     "postcss": "^8.4.18",
     "react-dom": "^18.2.0",
     "sass": "^1.59.3",
     "trunx": "^0.45.2"
+  },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

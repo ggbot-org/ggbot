@@ -81,7 +81,9 @@ temp/
       // Extend proper eslint preset,
       // may be "@ggbot2/eslint-config/react" for frontend packages.
       "@ggbot2/eslint-config"
-    ]
+    ],
+    // ESLint should ignore these folders.
+    "ignorePatterns": ["dist/", "temp/"]
   }
 }
 ```

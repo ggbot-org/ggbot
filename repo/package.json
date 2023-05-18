@@ -3,13 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "lint": "eslint --fix --ext .js .",
+    "build": "tsc --build tsconfig.build.json",
+    "check_types": "tsc --noEmit --project .",
+    "cleanup": "rm -rf dist/ temp/",
+    "lint": "eslint --fix --ext .ts .",
+    "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test"
   },
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
+    ],
+    "ignorePatterns": [
+      "dist/",
+      "temp/"
     ]
   }
 }

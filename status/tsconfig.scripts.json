@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./temp",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
+  },
+  "extends": "@ggbot2/tsconfig",
+  "exclude": ["node_modules/", "temp/", "**/*_test.ts"],
+  "include": ["**/*.ts"]
+}
