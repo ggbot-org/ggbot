@@ -1,4 +1,4 @@
-import { basename, dirname, resolve } from "node:path";
+import { basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { filename } from "./filenames.js";
@@ -19,5 +19,3 @@ export const packageRootDir = (caller: string) => {
     throw new Error(`Filename must be ${packageJs}`);
   return dirname(dirname(fileURLToPath(caller)));
 };
-
-export const packagePublicDir = (rootDir: string) => resolve(rootDir, "public");

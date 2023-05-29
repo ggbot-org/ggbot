@@ -4,7 +4,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "target": "esnext"
+    "target": "esnext",
+    "tsBuildInfoFile": "temp/tsconfig.tsbuildinfo"
   },
   "extends": "./code-quality.json"
 }

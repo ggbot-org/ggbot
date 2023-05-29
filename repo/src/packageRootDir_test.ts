@@ -1,8 +1,8 @@
 import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 
-import { packageRootDir } from "./dirnames.js";
 import { filename } from "./filenames.js";
+import { packageRootDir } from "./packageRootDir.js";
 
 describe("packageRootDir", () => {
   it("returns package root dir", () => {

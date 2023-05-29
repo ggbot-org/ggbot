@@ -1,5 +1,5 @@
-import { packagePublicDir, packageRootDir } from "@ggbot2/repo";
+import { packageDir, packageRootDir } from "@ggbot2/repo";
 
 const rootDir = packageRootDir(import.meta.url);
 
-export const publicDir = packagePublicDir(rootDir);
+export const publicDir = packageDir(rootDir, "public");

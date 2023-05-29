@@ -6,47 +6,55 @@ type ScriptTag = {
   src: string;
 };
 
-type HTMLPageContentArgs = {
+type BodyTagArgs = {
+  /** Add a `<div id="root"></div>`. */
+  hasRootDiv?: boolean;
+  scripts: ScriptTag[];
+};
+
+type HeadTagArgs = {
+  /** HTML meta tags. */
   meta: {
     title: string;
   };
   stylesheets: LinkTag[];
-  scripts: ScriptTag[];
 };
+
+type HtmlTagArgs = HeadTagArgs & BodyTagArgs;
 
 const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`;
 
 const scriptTag = ({ src }: ScriptTag) =>
   `<script type="module" src="${src}"></script>`;
 
-const metaTags = ({ title }: HTMLPageContentArgs["meta"]) => [
+const metaTags = ({ title }: HeadTagArgs["meta"]) => [
   '<meta charset="UTF-8" />',
   '<meta name="viewport" content="width=device-width" />',
   `<title>${title}</title>`,
 ];
 
-const headTag = ({
-  meta,
-  stylesheets,
-}: Pick<HTMLPageContentArgs, "meta" | "stylesheets">) => [
+const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
   "<head>",
   ...metaTags(meta),
   ...stylesheets.map(linkTag),
   "</head>",
 ];
 
-const bodyTag = ({ scripts }: Pick<HTMLPageContentArgs, "scripts">) => [
+const bodyTag = ({ hasRootDiv, scripts }: BodyTagArgs) => [
   "<body>",
+  hasRootDiv ? '<div id="root"></div>' : "",
   ...scripts.map(scriptTag),
   "</body>",
 ];
 
-const htmlTag = ({ meta, stylesheets, scripts }: HTMLPageContentArgs) => [
+const htmlTag = ({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) => [
   '<html lang="en">',
   ...headTag({ meta, stylesheets }),
-  ...bodyTag({ scripts }),
+  ...bodyTag({ hasRootDiv, scripts }),
   "</html>",
 ];
 
-export const htmlPageContent = (args: HTMLPageContentArgs) =>
-  ["<!DOCTYPE html>", ...htmlTag(args)].join("\n");
+export const htmlPageContent = (args: HtmlTagArgs) =>
+  ["<!DOCTYPE html>", ...htmlTag(args)]
+    .filter((tag) => Boolean(tag))
+    .join("\n");

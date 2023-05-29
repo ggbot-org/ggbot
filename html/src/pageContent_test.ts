@@ -14,12 +14,14 @@ describe("htmlPageContent", () => {
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="root"></div>
 <script type="module" src="app.js"></script>
 </body>
 </html>`;
 
     assert.equal(
       htmlPageContent({
+        hasRootDiv: true,
         meta: {
           title: "page title",
         },

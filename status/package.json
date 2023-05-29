@@ -5,10 +5,14 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:scripts": "tsc --build tsconfig.scripts.json",
+    "bundle": "node temp/scripts/bundle.js",
     "check_types": "tsc --noEmit --project .",
     "generate_html": "node temp/scripts/generateHtml.js",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
-    "pregenerate_html": "tsc --build tsconfig.scripts.json"
+    "prebundle": "npm run build:scripts",
+    "pregenerate_html": "npm run build:scripts",
+    "servedir": "esbuild --servedir=public"
   },
   "dependencies": {
     "@ggbot2/design": "file:design",
