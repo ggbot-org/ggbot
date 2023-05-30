@@ -1,4 +1,4 @@
-import { Header, Logo } from "@ggbot2/design";
+import { Logo } from "@ggbot2/design";
 import { pathname, UserWebappHomepageURL } from "@ggbot2/locators";
 import { createdNow } from "@ggbot2/models";
 import { NextPage } from "next";
@@ -27,19 +27,17 @@ const Page: NextPage = () => {
         <meta name="description" content="crypto flow" />
       </Head>
 
-      <Header>
+      <div>
+        <Logo animated={isFirstPageview} size={400} />
+
         <div>
-          <Logo animated={isFirstPageview} size={400} />
+          <h1>
+            ggbot<b>2</b>
+          </h1>
 
-          <div>
-            <h1>
-              ggbot<b>2</b>
-            </h1>
-
-            <i>crypto flow</i>
-          </div>
+          <i>crypto flow</i>
         </div>
-      </Header>
+      </div>
 
       <main>
         <Link href={userWebappHomepageURL}>

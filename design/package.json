@@ -2,29 +2,31 @@
   "name": "@ggbot2/design",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "style": "./dist/style.css"
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "build": "npm run tsc--build",
+    "build": "npm run tsc:build",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ out/ .next/",
-    "dev": "next dev",
+    "generateHtml": "node temp/scripts/generateHtml.js",
+    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
+    "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
-    "sass": "sass --load-path=../node_modules/ src/styles/example.scss dist/style.css",
-    "tsc--build": "tsc --build tsconfig.build.json"
+    "pregenerate_public_files": "npm run tsc:scripts",
+    "prestart": "npm run generate_public_files",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
+    "start": "esbuild --servedir=public",
+    "tsc:build": "tsc --build tsconfig.build.json",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
-    "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/time": "file:time",
     "@types/react-dom": "^18.0.6",
-    "autoprefixer": "^10.4.7",
-    "next": "^13.2.4",
-    "postcss": "^8.4.18",
     "react-dom": "^18.2.0",
     "sass": "^1.59.3",
     "trunx": "^0.45.2"

@@ -8,6 +8,8 @@ import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
 // TODO test that a package do not depend on itself,
 // the @ggbot2/html has this issue.
 
+// TODO check there are no duplicates in dependencies and devDependencies
+
 /** By convention, workspace package name scope is root package name. */
 const workspacesNamespace = rootPackageJson.name;
 

@@ -5,14 +5,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:scripts": "tsc --build tsconfig.scripts.json",
-    "bundle": "node temp/scripts/bundle.js",
     "check_types": "tsc --noEmit --project .",
-    "generate_html": "node temp/scripts/generateHtml.js",
+    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
+    "generateHtml": "node temp/scripts/generateHtml.js",
+    "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
-    "prebundle": "npm run build:scripts",
-    "pregenerate_html": "npm run build:scripts",
-    "servedir": "esbuild --servedir=public"
+    "pregenerate_public_files": "npm run tsc:scripts",
+    "prestart": "npm run generate_public_files",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/style.scss public/style.css",
+    "start": "esbuild --servedir=public",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
     "@ggbot2/design": "file:design"
@@ -27,9 +29,6 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
-    ],
-    "ignorePatterns": [
-      "scripts/"
     ]
   }
 }

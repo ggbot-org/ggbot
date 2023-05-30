@@ -17,15 +17,11 @@ import {
   Section,
   Title,
 } from "@ggbot2/design";
-import { NextPage } from "next";
-import Head from "next/head";
+import { FC } from "react";
+import { createRoot } from "react-dom/client";
 
-const Home: NextPage = () => (
+const Page: FC = () => (
   <>
-    <Head>
-      <title>ggbot2 design</title>
-    </Head>
-
     <Navbar />
 
     <main>
@@ -128,4 +124,8 @@ const Home: NextPage = () => (
   </>
 );
 
-export default Home;
+const domNode = document.getElementById("root");
+if (domNode) {
+  const root = createRoot(domNode);
+  root.render(<Page />);
+}

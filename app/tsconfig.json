@@ -1,13 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": ".",
-    "incremental": true,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
     "paths": {
       "_api/*": ["pages/api/*"],
       "_classNames": ["src/styles/classNames.ts"],
@@ -19,12 +12,9 @@
       "_hooks/*": ["src/hooks/*"],
       "_pages/*": ["src/pages/*"],
       "_routing/*": ["src/routing/*"]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "target": "es6"
+    }
   },
   "exclude": ["node_modules"],
-  "extends": "@ggbot2/tsconfig",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "extends": "@ggbot2/tsconfig/react",
+  "include": ["**/*.ts", "**/*.tsx"]
 }

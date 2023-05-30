@@ -5,12 +5,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf .next",
-    "dev": "next dev",
+    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
+    "generateHtml": "node temp/scripts/generateHtml.js",
+    "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
-    "start": "next start"
+    "pregenerate_public_files": "npm run tsc:scripts",
+    "prestart": "npm run generate_public_files",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
+    "start": "esbuild --servedir=public",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
     "@ggbot2/design": "file:design",

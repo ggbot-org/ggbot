@@ -1,9 +1,11 @@
+import { Navbar } from "@ggbot2/design";
+import { FC } from "react";
 import { createRoot } from "react-dom/client";
 
-import { App } from "./App";
+export const Page: FC = () => <Navbar noMenu />;
 
 const domNode = document.getElementById("root");
 if (domNode) {
   const root = createRoot(domNode);
-  root.render(<App />);
+  root.render(<Page />);
 }

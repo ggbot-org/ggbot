@@ -1,16 +1,15 @@
-export * from "./Calendar";
-export * from "./Checkmark";
-export * from "./DailyInterval";
-export * from "./DateTime";
-export * from "./Header";
-export * from "./Icon";
-export * from "./InputField";
-export * from "./Logo";
-export * from "./Modal";
-export * from "./Navbar";
-export * from "./OutputField";
-export * from "./SelectField";
-export * from "./Tabs";
+export * from "./Calendar.js";
+export * from "./Checkmark.js";
+export * from "./DailyInterval.js";
+export * from "./DateTime.js";
+export * from "./Icon.js";
+export * from "./InputField.js";
+export * from "./Logo.js";
+export * from "./Modal.js";
+export * from "./Navbar.js";
+export * from "./OutputField.js";
+export * from "./SelectField.js";
+export * from "./Tabs.js";
 export {
   Box,
   Breadcrumb,

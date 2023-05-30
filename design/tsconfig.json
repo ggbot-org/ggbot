@@ -1,22 +1,12 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": ".",
-    "incremental": true,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
     "paths": {
       "@ggbot2/design": ["src/index.ts"],
-      "_examples/*": ["examples/*"]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "target": "es6"
+      "_examples/*": ["src/examples/*"]
+    }
   },
   "exclude": ["node_modules"],
-  "extends": "@ggbot2/tsconfig",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "extends": "@ggbot2/tsconfig/react",
+  "include": ["**/*.ts", "**/*.tsx"]
 }

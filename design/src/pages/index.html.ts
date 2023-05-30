@@ -14,7 +14,7 @@ export const indexHtmlPageContent = () =>
   htmlPageContent({
     hasRootDiv: true,
     meta: {
-      title: "ggbot2 status page",
+      title: "ggbot2 design",
     },
     stylesheets: [
       {

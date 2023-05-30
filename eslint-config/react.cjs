@@ -17,13 +17,6 @@ module.exports = {
   root: true,
   rules: {
     ...base.rules,
-    "import/extensions": [
-      "error",
-      "never",
-      {
-        css: "always",
-      },
-    ],
     "jsx-a11y/aria-props": "error",
     "jsx-a11y/aria-proptypes": "error",
     "jsx-a11y/aria-unsupported-elements": "error",

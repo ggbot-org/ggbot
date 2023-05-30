@@ -1,9 +1,0 @@
-:root {
-  --family-sans-serif: sans-serif;
-}
-
-@supports (font-variation-settings: normal) {
-  :root {
-    --family-sans-serif: "Inter var", sans-serif;
-  }
-}
