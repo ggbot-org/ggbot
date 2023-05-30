@@ -19,10 +19,10 @@
     "tsc--build": "tsc --build tsconfig.build.json"
   },
   "dependencies": {
+    "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/time": "file:time",
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.7",
-    "esbuild": "^0.17.17",
     "next": "^13.2.4",
     "postcss": "^8.4.18",
     "react-dom": "^18.2.0",
@@ -30,7 +30,10 @@
     "trunx": "^0.45.2"
   },
   "devDependencies": {
+    "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/html": "file:html",
+    "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {

@@ -15,12 +15,13 @@
     "servedir": "esbuild --servedir=public"
   },
   "dependencies": {
-    "@ggbot2/design": "file:design",
-    "@ggbot2/html": "file:html",
-    "@ggbot2/repo": "file:repo"
+    "@ggbot2/design": "file:design"
   },
   "devDependencies": {
+    "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/html": "file:html",
+    "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {

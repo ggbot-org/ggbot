@@ -45,6 +45,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
     selection.removeAllRanges();
     selection.addRange(range);
 
+    // TODO use handleEvent()
     this._onKeydown = this.onKeydown.bind(this);
     contentDiv.addEventListener("keydown", this._onKeydown);
     this._onBlur = this.onBlur.bind(this);

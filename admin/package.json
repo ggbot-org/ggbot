@@ -12,13 +12,16 @@
     "lint": "eslint --fix --ext .ts --ext .tsx .",
     "start": "next start"
   },
-  "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
-  },
   "dependencies": {
     "@ggbot2/design": "file:design",
     "@ggbot2/use-action": "file:use-action"
+  },
+  "devDependencies": {
+    "@ggbot2/esbuild": "file:esbuild",
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/html": "file:html",
+    "@ggbot2/repo": "file:repo",
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

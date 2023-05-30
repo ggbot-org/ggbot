@@ -3,6 +3,11 @@ import { join } from "node:path";
 import { packageScriptKey } from "./package.js";
 import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
 
+// TODO convert this to TS.
+
+// TODO test that a package do not depend on itself,
+// the @ggbot2/html has this issue.
+
 /** By convention, workspace package name scope is root package name. */
 const workspacesNamespace = rootPackageJson.name;
 
