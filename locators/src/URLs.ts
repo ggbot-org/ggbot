@@ -1,31 +1,29 @@
-import { pathname } from "./pathnames.js";
-
 export class ApiPurchaseOrderURL extends URL {
   constructor(apiBaseURL: string) {
-    super(pathname.utrustOrder(), apiBaseURL);
+    super("/utrust/order", apiBaseURL);
   }
 }
 
 export class UserWebappHomepageURL extends URL {
   constructor(userWebappBaseURL: string) {
-    super(pathname.homePage(), userWebappBaseURL);
+    super("/", userWebappBaseURL);
   }
 }
 
 export class UtrustCancelURL extends URL {
   constructor(userWebappBaseURL: string) {
-    super(pathname.subscriptionCanceledPage(), userWebappBaseURL);
+    super("/subscription/canceled", userWebappBaseURL);
   }
 }
 
 export class UtrustCallbackURL extends URL {
   constructor(apiBaseURL: string) {
-    super(pathname.utrustCallback(), apiBaseURL);
+    super("/utrust/callback", apiBaseURL);
   }
 }
 
 export class UtrustReturnURL extends URL {
   constructor(userWebappBaseURL: string) {
-    super(pathname.subscriptionPurchasedPage(), userWebappBaseURL);
+    super("/subscription/purchased", userWebappBaseURL);
   }
 }

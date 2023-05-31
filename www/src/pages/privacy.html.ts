@@ -4,11 +4,11 @@ import { htmlPageContent } from "@ggbot2/html";
 
 import { srcPagesDir } from "../package.js";
 
-export const indexHtmlAppJs = "home.js";
-export const indexHtmlFilename = "index.html";
-export const indexHtmlEntryPoint = join(srcPagesDir, "homepage.tsx");
+export const privacyHtmlAppJs = "privacy.js";
+export const privacyHtmlFilename = "privacy.html";
+export const privacyHtmlEntryPoint = join(srcPagesDir, "privacy.tsx");
 
-export const indexHtmlPageContent = () =>
+export const privacyHtmlPageContent = () =>
   htmlPageContent({
     hasRootDiv: true,
     meta: {
@@ -21,7 +21,7 @@ export const indexHtmlPageContent = () =>
     ],
     scripts: [
       {
-        src: indexHtmlAppJs,
+        src: privacyHtmlAppJs,
       },
     ],
   });
