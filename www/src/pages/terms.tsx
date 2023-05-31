@@ -23,7 +23,6 @@ const Page: FC = () => (
       </p>
 
       <p>Keep your email safe, it is your responsibility.</p>
-
       <h2>Binance API</h2>
 
       <p>

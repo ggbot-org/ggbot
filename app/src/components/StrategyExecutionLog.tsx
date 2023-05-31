@@ -20,7 +20,6 @@ export const StrategyExecutionLog: FC<Props> = ({
     <div>
       <div>
         <span>Execution</span>
-
         <div>{tagColor ? <Tag color={tagColor}>{status}</Tag> : null}</div>
       </div>
 
@@ -45,11 +44,8 @@ export const StrategyExecutionLog: FC<Props> = ({
             <details key={i}>
               <summary>
                 <span>{i}</span>
-
                 <span>{kind}</span>
-
                 {showPreview ? <span>{preview}</span> : null}
-
                 {showDetails ? <span>•</span> : null}
               </summary>
 

@@ -24,9 +24,7 @@ export const Tags: FC = () => (
 
       <div>
         <Tag>Tag</Tag>
-
         <Tag color="primary">Primary</Tag>
-
         <Tag color="light">Light</Tag>
       </div>
     </div>

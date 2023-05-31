@@ -106,7 +106,6 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
   return (
     <Form box onSubmit={onSubmit}>
       <Title>Binance API</Title>
-
       <OutputField label={fieldLabel.apiKey} value={apiKey} />
 
       <Field>
@@ -120,7 +119,6 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
           ({ description, checkmark: checkmarkProps }, i) => (
             <div key={i}>
               {description}
-
               <Checkmark {...checkmarkProps} />
             </div>
           )

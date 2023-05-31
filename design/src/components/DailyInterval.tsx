@@ -18,9 +18,9 @@ import {
   Label,
 } from "trunx";
 
-import { useFormattedDate } from "../hooks/useFormattedDate";
-import { _classNames } from "./_classNames";
-import { Calendar } from "./Calendar";
+import { useFormattedDate } from "../hooks/useFormattedDate.js";
+import { _classNames } from "./_classNames.js";
+import { Calendar } from "./Calendar.js";
 
 // TODO move it to trunx
 type DropdownOnClick = MouseEventHandler<HTMLDivElement>;

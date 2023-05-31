@@ -24,7 +24,6 @@ export const Page: FC<PropsWithChildren<PageProps>> = ({
       ) : null}
 
       {children}
-
       <Toaster position="top-right" />
     </>
   );

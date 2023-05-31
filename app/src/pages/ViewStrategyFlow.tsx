@@ -71,12 +71,7 @@ export const ViewStrategyFlowPage: FC<Props> = ({
   }, [flowView, setFlowLoaded, storedStrategyFlow, isPending]);
 
   return (
-    <PageLayout
-      metadata={{
-        title: strategyName,
-      }}
-      topbar={<Navigation noMenu={!hasSession} />}
-    >
+    <PageLayout topbar={<Navigation noMenu={!hasSession} />}>
       <ViewStrategyTopbar
         accountIsOwner={accountIsOwner}
         name={strategyName}

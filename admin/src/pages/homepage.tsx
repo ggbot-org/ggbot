@@ -5,7 +5,6 @@ import { createRoot } from "react-dom/client";
 export const Page: FC = () => (
   <>
     <h1>ggbot2</h1>
-
     <Accounts />
   </>
 );

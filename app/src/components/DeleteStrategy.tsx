@@ -13,7 +13,6 @@ import {
   OutputField,
   useFormattedDate,
 } from "@ggbot2/design";
-import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
@@ -23,8 +22,6 @@ export const DeleteStrategy: FC<Props> = ({
   name,
   whenCreated,
 }) => {
-  const router = useRouter();
-
   const [DELETE, { isPending, data }] = useApi.DeleteStrategy();
 
   const isLoading = isPending || Boolean(data);
@@ -44,8 +41,8 @@ export const DeleteStrategy: FC<Props> = ({
 
   useEffect(() => {
     if (!data) return;
-    router.push(pathname.homePage());
-  }, [data, router]);
+    window.location.pathname = pathname.homePage();
+  }, [data]);
 
   return (
     <>

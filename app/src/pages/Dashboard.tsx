@@ -8,7 +8,6 @@ import { mount } from "./_mount.js";
 const Page: FC = () => (
   <OneSectionLayout>
     <CreateStrategy />
-
     <Strategies />
   </OneSectionLayout>
 );

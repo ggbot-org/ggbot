@@ -1,6 +1,6 @@
 import { ApiBaseURL } from "@ggbot2/locators";
 
-import { useDeployStage } from "./useDeployStage";
+import { useDeployStage } from "./useDeployStage.js";
 
 export const useApiBaseURL = () => {
   const DEPLOY_STAGE = useDeployStage();

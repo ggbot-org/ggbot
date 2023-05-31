@@ -16,11 +16,8 @@ const Page: FC = () => (
       </p>
 
       <h2>Personal Data</h2>
-
       <p>Your personal data is not shared with third parties.</p>
-
       <p>No personal data is collected other than your account email.</p>
-
       <p>Your email is used for authentication and communications.</p>
 
       <p>

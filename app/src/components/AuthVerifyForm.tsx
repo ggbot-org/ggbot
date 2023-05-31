@@ -19,7 +19,6 @@ import {
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
-import { useRouter } from "next/router";
 import {
   Dispatch,
   FC,
@@ -37,8 +36,6 @@ type Props = {
 };
 
 export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
-  const router = useRouter();
-
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -55,8 +52,8 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
     }, [setEmail]);
 
   const goToHomePage = useCallback(() => {
-    router.push(pathname.homePage());
-  }, [router]);
+    window.location.pathname = pathname.homePage();
+  }, []);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     async (event) => {
@@ -162,7 +159,6 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
       <>
         {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
-
         {gotTimeout ? <TimeoutErrorMessage /> : null}
 
         {verificationFailed ? (

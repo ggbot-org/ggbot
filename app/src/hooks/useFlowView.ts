@@ -29,7 +29,7 @@ import {
   useState,
 } from "react";
 
-import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog";
+import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
 
 type UseFlowView = (
   arg: Pick<StrategyKey, "strategyKind"> &
@@ -100,7 +100,7 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog || !dflow) return;
     const { FlowView } = await import("flow-view");
     const { FlowViewNodeInfo, FlowViewNodeJson, FlowViewNodePercentage } =
-      await import("../flow/nodes/index");
+      await import("../flow/nodes/index.js");
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
       FlowViewNodeInfo.type,

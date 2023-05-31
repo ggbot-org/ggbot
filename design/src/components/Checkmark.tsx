@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { _classNames } from "./_classNames";
+import { _classNames } from "./_classNames.js";
 
 export type CheckmarkProps = {
   label?: string;

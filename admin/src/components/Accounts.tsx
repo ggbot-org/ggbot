@@ -3,7 +3,7 @@ import { Button } from "@ggbot2/design";
 import { isAccountKey } from "@ggbot2/models";
 import { FC, useEffect } from "react";
 
-import { Account } from "./Account";
+import { Account } from "./Account.js";
 
 export const Accounts: FC = () => {
   const [request, { data: accountKeys }] = useApi.ListAccountKeys();

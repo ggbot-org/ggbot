@@ -8,8 +8,8 @@ import {
 } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 
-import { _classNames } from "./_classNames";
-import { Icon } from "./Icon";
+import { _classNames } from "./_classNames.js";
+import { Icon } from "./Icon.js";
 
 export type CalendarClassNames =
   | "Calendar"

@@ -180,7 +180,6 @@ const Page: FC<Props> = ({ binanceSymbols, name, strategyKey }) => {
         flow={
           <>
             <FlowViewContainer ref={flowViewContainerRef} />
-
             <MemoryController />
           </>
         }

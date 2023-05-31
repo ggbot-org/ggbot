@@ -25,7 +25,7 @@ import {
 import { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useReducer } from "react";
 
-import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog";
+import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
 
 type State = StrategyKey &
   Pick<DflowCommonContext, "memory"> & {

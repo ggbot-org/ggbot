@@ -1,5 +1,5 @@
 import { useApi } from "_hooks/useApi";
-import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
+import { buttonLabel, errorMessage, fieldLabel, title } from "_i18n";
 import { OneSectionLayout } from "_layouts/OneSection";
 import { pathname } from "_routing/pathnames";
 import { StrategyInfo } from "_routing/types";
@@ -75,7 +75,7 @@ export const Page: FC<Props> = ({
   return (
     <OneSectionLayout>
       <Form box onSubmit={onSubmit}>
-        <Title>Copy strategy</Title>
+        <Title>{title.copyStrategy}</Title>
 
         <InputField
           label={fieldLabel.strategyName}

@@ -1,5 +1,6 @@
 export const title = {
   account: "Account",
+  copyStrategy: "Copy strategy",
   enterForm: "Enter ggbot2",
   profits: "Profits",
   purchase: "Purchase",

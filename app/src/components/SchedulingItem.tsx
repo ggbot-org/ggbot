@@ -39,12 +39,10 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
   return (
     <div>
       <SchedulingStatusBadge schedulingStatus={scheduling.status} />
-
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
 
       <Buttons size="small">
         <Button onClick={removeScheduling}>{buttonLabel.remove}</Button>
-
         <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
       </Buttons>
     </div>

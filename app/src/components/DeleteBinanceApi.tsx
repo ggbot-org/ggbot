@@ -41,7 +41,6 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
           </p>
 
           <p>All your ggbot2 strategies will not able to run.</p>
-
           <p>This action will not delete your API key on Binance website.</p>
         </Message>
 

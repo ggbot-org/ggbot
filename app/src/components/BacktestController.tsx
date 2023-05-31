@@ -133,13 +133,11 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       <div>
         <div>
           <span>{`${stepIndex} of ${numSteps} intervals`}</span>
-
           <DateTime format="time" value={currentTimestamp} />
         </div>
 
         <div>
           <span>Memory</span>
-
           {memoryItems.length === 0 ? <span>(empty)</span> : null}
         </div>
 

@@ -1,7 +1,7 @@
 // TODO remove this file, import pathname from @ggbot2/locators
 import { pathname as _pathname } from "@ggbot2/locators";
 
-import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types";
+import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types.js";
 
 export const pathname = {
   apiEnter: () => "/api/auth/enter",
