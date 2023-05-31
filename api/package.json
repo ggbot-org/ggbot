@@ -20,8 +20,7 @@
     "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models",
     "@ggbot2/type-utils": "file:type-utils",
-    "dflow": "^0.42.0",
-    "type-fest": "^3.10.0"
+    "dflow": "^0.42.0"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
