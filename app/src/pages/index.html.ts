@@ -4,15 +4,15 @@ import { htmlPageContent } from "@ggbot2/html";
 
 import { srcPagesDir } from "../package.js";
 
-export const indexHtmlAppJs = "app.js";
+export const indexHtmlAppJs = "dashboard.js";
 export const indexHtmlFilename = "index.html";
-export const indexHtmlEntryPoint = join(srcPagesDir, "homepage.tsx");
+export const indexHtmlEntryPoint = join(srcPagesDir, "Dashboard.tsx");
 
 export const indexHtmlPageContent = () =>
   htmlPageContent({
     hasRootDiv: true,
     meta: {
-      title: "ggbot2 status page",
+      title: "ggbot2",
     },
     stylesheets: [
       {

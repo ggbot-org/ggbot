@@ -6,8 +6,6 @@ import { srcPagesDir } from "../package.js";
 
 export const indexHtmlAppJs = "app.js";
 export const indexHtmlFilename = "index.html";
-export const indexHtmlStyleCss = "main.css";
-export const indexHtmlTitle = "";
 export const indexHtmlEntryPoint = join(srcPagesDir, "homepage.tsx");
 
 export const indexHtmlPageContent = () =>
@@ -18,7 +16,7 @@ export const indexHtmlPageContent = () =>
     },
     stylesheets: [
       {
-        href: indexHtmlStyleCss,
+        href: "main.css",
       },
     ],
     scripts: [

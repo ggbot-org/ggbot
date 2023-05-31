@@ -3,6 +3,7 @@
   "description": "user webapp",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit --project .",
     "generateJsBundles": "node temp/scripts/generateJsBundles.js",
