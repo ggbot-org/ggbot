@@ -15,7 +15,6 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import { useRouter } from "next/router";
 import {
   ChangeEventHandler,
   FC,
@@ -25,15 +24,15 @@ import {
 } from "react";
 import { toast } from "react-hot-toast";
 
+import { mount } from "./_mount.js";
+
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const CopyStrategyPage: FC<Props> = ({
+export const Page: FC<Props> = ({
   strategyKey,
   name: strategyName,
   whenCreated,
 }) => {
-  const router = useRouter();
-
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [COPY, { data: isDone, isPending }] = useApi.CopyStrategy();
@@ -70,8 +69,8 @@ export const CopyStrategyPage: FC<Props> = ({
 
   useEffect(() => {
     if (!isDone) return;
-    router.push(pathname.homePage());
-  }, [router, isDone]);
+    window.location.pathname = pathname.homePage();
+  }, [isDone]);
 
   return (
     <OneSectionLayout>
@@ -110,3 +109,5 @@ export const CopyStrategyPage: FC<Props> = ({
     </OneSectionLayout>
   );
 };
+
+mount(Page);

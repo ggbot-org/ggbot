@@ -3,12 +3,19 @@
   "description": "landing page",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "check_types": "tsc --noEmit --project .",
+    "cleanup": "rm -rf dist/ temp/",
     "deploy": "sh scripts/deploy.sh",
+    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
+    "generateHtml": "node temp/scripts/generateHtml.js",
+    "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
-    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/style.scss public/style.css",
+    "pregenerate_public_files": "npm run tsc:scripts",
+    "prestart": "npm run generate_public_files",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
     "start": "esbuild --servedir=public",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
@@ -28,6 +35,10 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
+    ],
+    "ignorePatterns": [
+      "public/",
+      "temp/"
     ]
   }
 }

@@ -20,7 +20,6 @@ import {
   isStrategy,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 
 const fields = ["name"];
@@ -29,8 +28,6 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
-  const router = useRouter();
-
   const [CREATE, { data, isPending }] = useApi.CreateStrategy();
 
   const isLoading = isPending || Boolean(data);
@@ -61,11 +58,12 @@ export const CreateStrategy: FC = () => {
   useEffect(() => {
     if (isStrategy(data)) {
       const { id, kind } = data;
-      router.push(
-        pathname.editFlowPage({ strategyId: id, strategyKind: kind })
-      );
+      window.location.pathname = pathname.editFlowPage({
+        strategyId: id,
+        strategyKind: kind,
+      });
     }
-  }, [data, router]);
+  }, [data]);
 
   return (
     <>

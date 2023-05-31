@@ -12,7 +12,7 @@
     "lint": "eslint --fix --ext .ts --ext .tsx .",
     "pregenerate_public_files": "npm run tsc:scripts",
     "prestart": "npm run generate_public_files",
-    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/style.scss public/style.css",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/style.css",
     "start": "esbuild --servedir=public",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
@@ -29,6 +29,10 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
+    ],
+    "ignorePatterns": [
+      "public/",
+      "temp/"
     ]
   }
 }

@@ -27,7 +27,6 @@ module.exports = {
     "react/hook-use-state": ["error", { allowDestructuredState: true }],
     "react/jsx-boolean-value": "error",
     "react/jsx-key": "error",
-    "react/jsx-newline": "warn",
     "react/jsx-no-comment-textnodes": "error",
     "react/jsx-no-duplicate-props": "error",
     "react/jsx-no-leaked-render": "error",

@@ -12,14 +12,14 @@
   "scripts": {
     "build": "npm run tsc:build",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ out/ .next/",
+    "cleanup": "rm -rf dist/ temp/",
     "generateHtml": "node temp/scripts/generateHtml.js",
     "generateJsBundles": "node temp/scripts/generateJsBundles.js",
     "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
     "pregenerate_public_files": "npm run tsc:scripts",
     "prestart": "npm run generate_public_files",
-    "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
+    "sass": "sass --style=compressed --load-path=../node_modules/ --load-path=. --no-source-map src/webapp/styles/main.scss public/main.css",
     "start": "esbuild --servedir=public",
     "tsc:build": "tsc --build tsconfig.build.json",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
@@ -43,7 +43,9 @@
       "@ggbot2/eslint-config/react"
     ],
     "ignorePatterns": [
-      "dist/"
+      "dist/",
+      "public/",
+      "temp/"
     ]
   }
 }

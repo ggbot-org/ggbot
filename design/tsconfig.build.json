@@ -17,8 +17,7 @@
     "node_modules",
     "./src/package.ts",
     "./src/scripts",
-    "./src/examples",
-    "./src/pages"
+    "./src/webapp"
   ],
   "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

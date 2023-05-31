@@ -8,13 +8,15 @@ import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, useCallback, useEffect, useState } from "react";
 
+import { mount } from "./_mount.js";
+
 const hideApiKey = (apiKey: string) =>
   `${apiKey.substring(0, 10)}...${apiKey.substring(
     apiKey.length - 10,
     apiKey.length
   )}`;
 
-export const BinanceSettingsPage: FC = () => {
+const Page: FC = () => {
   const [READ, { data }] = useApi.ReadBinanceApiConfig();
 
   const [apiKey, setApiKey] = useState("");
@@ -59,3 +61,5 @@ export const BinanceSettingsPage: FC = () => {
     </OneSectionLayout>
   );
 };
+
+mount(Page);

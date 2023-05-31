@@ -4,7 +4,6 @@ import { title } from "_i18n";
 import { pathname } from "_routing/pathnames";
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
-import Link from "next/link";
 import { FC, useEffect } from "react";
 
 type StrategyItem = Pick<
@@ -45,7 +44,7 @@ export const Strategies: FC = () => {
       <Columns isMultiline>
         {items.map(({ name, href, schedulings, strategyId }) => (
           <Column key={strategyId} size="half">
-            <Link passHref href={href} tabIndex={0}>
+            <a href={href} tabIndex={0}>
               <Box>
                 <Flex justify="space-between">
                   {name}
@@ -53,7 +52,7 @@ export const Strategies: FC = () => {
                   <SchedulingsStatusBadges schedulings={schedulings} />
                 </Flex>
               </Box>
-            </Link>
+            </a>
           </Column>
         ))}
       </Columns>

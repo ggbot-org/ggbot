@@ -1,0 +1,20 @@
+main {
+  font-size: 1.25rem;
+  padding: 1rem;
+  max-width: 71ch;
+}
+main h1 {
+  font-size: 2em;
+}
+main h2 {
+  font-size: 1.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.25em;
+}
+main p {
+  padding: 0.5em 1em;
+  line-height: 1.7em;
+}
+main a {
+  text-decoration: underline;
+}

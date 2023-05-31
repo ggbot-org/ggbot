@@ -11,29 +11,26 @@ import {
   NavbarProps,
   NavbarStart,
 } from "@ggbot2/design";
-import { useRouter } from "next/router";
 import { FC, memo, useCallback } from "react";
 
 type Props = Pick<NavbarProps, "noMenu">;
 
 export const Navigation: FC<Props> = memo(({ noMenu }) => {
-  const router = useRouter();
-
   const goToHomePage = () => {
-    if (router.pathname !== pathname.homePage())
-      router.push(pathname.homePage());
+    if (window.location.pathname !== pathname.homePage())
+      window.location.pathname = pathname.homePage();
   };
 
   const onClickExit = () => {
-    if (router.pathname !== pathname.authPage())
-      router.push(pathname.authPage());
+    if (window.location.pathname !== pathname.authPage())
+      window.location.pathname = pathname.authPage();
   };
 
   const goToSettings = useCallback(
     (section: SettingsSectionId) => () => {
-      router.push(pathname.settingsPage(section));
+      window.location.pathname = pathname.settingsPage(section);
     },
-    [router]
+    []
   );
 
   return (

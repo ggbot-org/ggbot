@@ -6,5 +6,5 @@
   },
   "extends": "@ggbot2/tsconfig",
   "exclude": ["node_modules/", "temp/", "**/*_test.ts"],
-  "include": ["src/package.ts", "src/pages/*.ts", "src/scripts/*ts"]
+  "include": ["src/package.ts", "src/webapp/pages/*.ts", "src/scripts/*ts"]
 }

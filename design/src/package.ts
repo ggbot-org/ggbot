@@ -8,4 +8,4 @@ export const publicDir = packageDir(rootDir, "public");
 
 export const srcDir = packageDir(rootDir, "src");
 
-export const srcPagesDir = join(srcDir, "pages");
+export const srcPagesDir = join(srcDir, "webapp", "pages");

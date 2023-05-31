@@ -1,0 +1,12 @@
+// First of all import :root CSS variables.
+@import "styles/root";
+
+// Import bulma theme first,
+@import "styles/bulma/theme";
+// then bulma modules.
+@import "bulma/bulma";
+
+// Components.
+@import "styles/components/Calendar";
+@import "styles/components/DailyInterval";
+@import "styles/components/OutputField";

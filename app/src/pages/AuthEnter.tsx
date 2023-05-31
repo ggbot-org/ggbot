@@ -4,7 +4,9 @@ import { AuthLayout } from "_layouts/Auth";
 import { EmailAddress } from "@ggbot2/models";
 import { FC, useState } from "react";
 
-export const AuthEnterPage: FC = () => {
+import { mount } from "./_mount.js";
+
+const Page: FC = () => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
 
   const emailSent = email !== undefined;
@@ -19,3 +21,5 @@ export const AuthEnterPage: FC = () => {
     </AuthLayout>
   );
 };
+
+mount(Page);

@@ -25,15 +25,14 @@ import { DflowExecutionNodeInfo } from "dflow";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
+import { mount } from "./_mount.js";
+
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
 };
 
-export const EditStrategyFlowPage: FC<Props> = ({
-  binanceSymbols,
-  name,
-  strategyKey,
-}) => {
+const Page: FC<Props> = ({ binanceSymbols, name, strategyKey }) => {
+  // TODO get props client side
   const [canSave, setCanSave] = useState(false);
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
@@ -202,3 +201,5 @@ export const EditStrategyFlowPage: FC<Props> = ({
     </PageLayout>
   );
 };
+
+mount(Page);

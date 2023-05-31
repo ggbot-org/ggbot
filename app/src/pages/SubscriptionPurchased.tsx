@@ -2,10 +2,14 @@ import { OneSectionLayout } from "_layouts/OneSection";
 import { Message } from "@ggbot2/design";
 import { FC } from "react";
 
-export const SubscriptionPurchasedPage: FC = () => (
+import { mount } from "./_mount.js";
+
+const Page: FC = () => (
   <OneSectionLayout>
     <Message color="success">
       <p>Thank you for your purchase.</p>
     </Message>
   </OneSectionLayout>
 );
+
+mount(Page);

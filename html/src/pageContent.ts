@@ -16,6 +16,8 @@ type HeadTagArgs = {
   /** HTML meta tags. */
   meta: {
     title: string;
+    // TODO add optional description
+    // on landing page is "crypto flow"
   };
   stylesheets: LinkTag[];
 };

@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@ggbot2/design": ["src/index.ts"],
-      "_examples/*": ["src/examples/*"]
+      "_examples/*": ["src/webapp/examples/*"]
     }
   },
   "exclude": ["node_modules"],
