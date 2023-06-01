@@ -1,17 +1,11 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "composite": true,
     "declarationMap": true,
-    "importHelpers": true,
-    "jsx": "react-jsx",
-    "lib": ["dom", "es2015"],
-    "module": "ESNext",
-    "moduleResolution": "node",
     "outDir": "./dist",
-    "removeComments": true,
-    "skipLibCheck": true,
-    "sourceMap": false,
-    "target": "ESNext"
+    "rootDir": "./src",
+    "tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo",
+    "stripInternal": true
   },
   "exclude": [
     "node_modules",
@@ -19,5 +13,6 @@
     "./src/scripts",
     "./src/webapp"
   ],
+  "extends": "./tsconfig.json",
   "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

@@ -5,10 +5,9 @@ import { useApi } from "_hooks/useApi";
 import { OneSectionLayout } from "_layouts/OneSection";
 import { Column, Columns } from "@ggbot2/design";
 import { BinanceApiConfig } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, useCallback, useEffect, useState } from "react";
-
-import { mount } from "./_mount.js";
 
 const hideApiKey = (apiKey: string) =>
   `${apiKey.substring(0, 10)}...${apiKey.substring(

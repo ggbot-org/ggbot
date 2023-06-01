@@ -25,11 +25,7 @@
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
-    "@ggbot2/time": "file:time",
-    "@types/react-dom": "^18.0.6",
-    "react-dom": "^18.2.0",
-    "sass": "^1.59.3",
-    "trunx": "^0.45.2"
+    "@ggbot2/react": "file:react"
   },
   "devDependencies": {
     "@ggbot2/esbuild": "file:esbuild",

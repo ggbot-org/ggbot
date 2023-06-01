@@ -6,16 +6,13 @@ import { StrategyProfits } from "_components/StrategyProfits";
 import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
 import { Column, Columns, Section } from "@ggbot2/design";
+import { mount } from "@ggbot2/react";
 import { FC, useState } from "react";
 
 // TODO create a Strategy Context
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 
-export const ManageStrategyPage: FC<Props> = ({
-  strategyKey,
-  whenCreated,
-  name,
-}) => {
+const Page: FC<Props> = ({ strategyKey, whenCreated, name }) => {
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
   const [hasActiveSubscription, setHasActiveSubscription] = useState<
     boolean | undefined
@@ -56,3 +53,5 @@ export const ManageStrategyPage: FC<Props> = ({
     </PageLayout>
   );
 };
+
+mount(Page);

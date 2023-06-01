@@ -1,10 +1,10 @@
 import { Logo } from "@ggbot2/design";
 import { UserWebappHomepageURL } from "@ggbot2/locators";
 import { createdNow } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import { FC, useEffect, useState } from "react";
 
 import { pathname } from "../routing/pathnames.js";
-import { mount } from "./_mount.js";
 
 const userWebappHomepageURL = new UserWebappHomepageURL("main");
 

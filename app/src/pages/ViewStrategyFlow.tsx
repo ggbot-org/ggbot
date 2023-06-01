@@ -11,6 +11,7 @@ import { PageLayout } from "_layouts/Page";
 import { StrategyInfo } from "_routing/types";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -19,7 +20,7 @@ type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   hasSession: boolean;
 };
 
-export const ViewStrategyFlowPage: FC<Props> = ({
+const Page: FC<Props> = ({
   accountIsOwner,
   binanceSymbols,
   hasSession,
@@ -90,3 +91,5 @@ export const ViewStrategyFlowPage: FC<Props> = ({
     </PageLayout>
   );
 };
+
+mount(Page);

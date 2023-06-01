@@ -15,6 +15,7 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import {
   ChangeEventHandler,
   FC,
@@ -23,8 +24,6 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-
-import { mount } from "./_mount.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
 

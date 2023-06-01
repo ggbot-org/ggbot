@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src"
+  },
+  "exclude": ["node_modules"],
+  "extends": "@ggbot2/tsconfig/react",
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

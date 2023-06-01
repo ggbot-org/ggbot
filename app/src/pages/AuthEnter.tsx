@@ -2,9 +2,8 @@ import { AuthEnterForm } from "_components/AuthEnterForm";
 import { AuthVerifyForm } from "_components/AuthVerifyForm";
 import { AuthLayout } from "_layouts/Auth";
 import { EmailAddress } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import { FC, useState } from "react";
-
-import { mount } from "./_mount.js";
 
 const Page: FC = () => {
   const [email, setEmail] = useState<EmailAddress | undefined>();

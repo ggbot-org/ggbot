@@ -19,13 +19,12 @@ import {
   isStrategyFlow,
   StrategyExecution,
 } from "@ggbot2/models";
+import { mount } from "@ggbot2/react";
 import { isTime } from "@ggbot2/time";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-
-import { mount } from "./_mount.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
