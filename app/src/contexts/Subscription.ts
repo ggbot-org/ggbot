@@ -1,5 +1,6 @@
-import { useSubscription } from "_hooks/useSubscription";
 import { createContext } from "react";
+
+import { useSubscription } from "../hooks/useSubscription.js";
 
 type ContextValue = ReturnType<typeof useSubscription>;
 

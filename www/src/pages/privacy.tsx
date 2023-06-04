@@ -1,6 +1,7 @@
-import { Navigation } from "_components/Navigation";
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
+
+import { Navigation } from "../components/Navigation.js";
 
 const Page: FC = () => (
   <>

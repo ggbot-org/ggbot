@@ -1,19 +1,4 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "_api/*": ["pages/api/*"],
-      "_classNames": ["src/styles/classNames.ts"],
-      "_components/*": ["src/components/*"],
-      "_contexts/*": ["src/contexts/*"],
-      "_flow/*": ["src/flow/*"],
-      "_i18n": ["src/i18n/index.ts"],
-      "_layouts/*": ["src/layouts/*"],
-      "_hooks/*": ["src/hooks/*"],
-      "_pages/*": ["src/pages/*"],
-      "_routing/*": ["src/routing/*"]
-    }
-  },
   "exclude": ["node_modules"],
   "extends": "@ggbot2/tsconfig/react",
   "include": ["**/*.ts", "**/*.tsx"]

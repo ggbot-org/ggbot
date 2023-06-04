@@ -1,6 +1,3 @@
-import { classNames } from "_classNames";
-import { useIsServerSide } from "_hooks/useIsServerSide";
-import { miscellaneousLabel, title } from "_i18n";
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic";
 import {
   BinanceCacheMap,
@@ -22,6 +19,10 @@ import {
 import { Order, StrategyKind } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
 import { FC, Fragment, PropsWithChildren, useEffect } from "react";
+
+import { useIsServerSide } from "../hooks/useIsServerSide.js";
+import { miscellaneousLabel, title } from "../i18n/index.js";
+import { classNames } from "../styles/classNames.js";
 
 type Props = {
   timeInterval: TimeInterval | undefined;

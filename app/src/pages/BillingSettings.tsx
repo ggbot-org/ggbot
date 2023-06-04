@@ -1,9 +1,10 @@
-import { SubscriptionInfo } from "_components/SubscriptionInfo";
-import { SubscriptionPurchase } from "_components/SubscriptionPurchase";
-import { OneSectionLayout } from "_layouts/OneSection";
 import { Column, Columns } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
+
+import { SubscriptionInfo } from "../components/SubscriptionInfo.js";
+import { SubscriptionPurchase } from "../components/SubscriptionPurchase.js";
+import { OneSectionLayout } from "../layouts/OneSection.js";
 
 const Page: FC = () => (
   <OneSectionLayout>

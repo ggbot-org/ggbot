@@ -1,10 +1,4 @@
 import {
-  GenericErrorMessage,
-  TimeoutErrorMessage,
-} from "_components/ErrorMessages";
-import { buttonLabel, fieldLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
-import {
   isApiAuthVerifyRequestData,
   isApiAuthVerifyResponseData,
 } from "@ggbot2/api";
@@ -27,6 +21,10 @@ import {
   useCallback,
   useState,
 } from "react";
+
+import { buttonLabel, fieldLabel } from "../i18n/index.js";
+import { pathname } from "../routing/pathnames.js";
+import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
 

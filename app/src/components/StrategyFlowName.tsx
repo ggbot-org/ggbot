@@ -1,8 +1,9 @@
-import { classNames } from "_classNames";
-import { pathname } from "_routing/pathnames";
-import { StrategyInfo } from "_routing/types";
 import { Column, Flex } from "@ggbot2/design";
 import { FC } from "react";
+
+import { pathname } from "../routing/pathnames.js";
+import { StrategyInfo } from "../routing/types.js";
+import { classNames } from "../styles/classNames.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name">;
 

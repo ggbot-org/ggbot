@@ -1,6 +1,3 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, fieldLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
 import {
   Button,
   Control,
@@ -12,6 +9,10 @@ import {
 } from "@ggbot2/design";
 import { isAccount } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel, fieldLabel } from "../i18n/index.js";
+import { pathname } from "../routing/pathnames.js";
 
 export const AuthExitForm: FC = () => {
   const [isPending, setIsPending] = useState(false);

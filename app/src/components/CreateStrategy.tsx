@@ -1,6 +1,3 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, errorMessage, fieldLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
 import {
   Button,
   Column,
@@ -21,6 +18,10 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel, errorMessage, fieldLabel } from "../i18n/index.js";
+import { pathname } from "../routing/pathnames.js";
 
 const fields = ["name"];
 const fieldName = {

@@ -1,8 +1,9 @@
-import { buttonLabel } from "_i18n";
-import { pathname } from "_routing/pathnames";
-import { SettingsSectionId } from "_routing/types";
 import { Button } from "@ggbot2/design";
 import { FC, useState } from "react";
+
+import { buttonLabel } from "../i18n/index.js";
+import { pathname } from "../routing/pathnames.js";
+import { SettingsSectionId } from "../routing/types.js";
 
 type Props = {
   section: SettingsSectionId;

@@ -1,13 +1,3 @@
-import { ButtonColors, LoadingButtons } from "_examples/Buttons";
-import { SingleCalendar } from "_examples/Calendar";
-import { SimpleForm } from "_examples/Forms";
-import { Icons } from "_examples/Icons";
-import { InputFields } from "_examples/InputFields";
-import { Palette } from "_examples/Palette";
-import { SimpleTable } from "_examples/Tables";
-import { Tags } from "_examples/Tags";
-import { TimeIntervalSelectors } from "_examples/TimeIntervalSelectors";
-import { Typography } from "_examples/Typography";
 import {
   Column,
   Columns,
@@ -19,6 +9,17 @@ import {
 } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
+
+import { ButtonColors, LoadingButtons } from "../examples/Buttons.js";
+import { SingleCalendar } from "../examples/Calendar.js";
+import { SimpleForm } from "../examples/Forms.js";
+import { Icons } from "../examples/Icons.js";
+import { InputFields } from "../examples/InputFields.js";
+import { Palette } from "../examples/Palette.js";
+import { SimpleTable } from "../examples/Tables.js";
+import { Tags } from "../examples/Tags.js";
+import { TimeIntervalSelectors } from "../examples/TimeIntervalSelectors.js";
+import { Typography } from "../examples/Typography.js";
 
 const Page: FC = () => (
   <>

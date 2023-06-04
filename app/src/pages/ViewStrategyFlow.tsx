@@ -1,19 +1,20 @@
-import { BacktestController } from "_components/BacktestController";
-import { FlowViewContainer } from "_components/FlowViewContainer";
-import { Navigation } from "_components/Navigation";
-import { ViewStrategyTabs } from "_components/ViewStrategyTabs";
-import { ViewStrategyTopbar } from "_components/ViewStrategyTopbar";
-import { useApi } from "_hooks/useApi";
-import { useBacktesting } from "_hooks/useBacktesting";
-import { useFlowView } from "_hooks/useFlowView";
-import { errorMessage } from "_i18n";
-import { PageLayout } from "_layouts/Page";
-import { StrategyInfo } from "_routing/types";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import { isStrategyFlow } from "@ggbot2/models";
 import { mount } from "@ggbot2/react";
 import { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+
+import { BacktestController } from "../components/BacktestController.js";
+import { FlowViewContainer } from "../components/FlowViewContainer.js";
+import { Navigation } from "../components/Navigation.js";
+import { ViewStrategyTabs } from "../components/ViewStrategyTabs.js";
+import { ViewStrategyTopbar } from "../components/ViewStrategyTopbar.js";
+import { useApi } from "../hooks/useApi.js";
+import { useBacktesting } from "../hooks/useBacktesting.js";
+import { useFlowView } from "../hooks/useFlowView.js";
+import { errorMessage } from "../i18n/index.js";
+import { PageLayout } from "../layouts/Page.js";
+import { StrategyInfo } from "../routing/types.js";
 
 type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

@@ -1,9 +1,3 @@
-import { GoCopyStrategyButton } from "_components/GoCopyStrategyButton";
-import { GoEditStrategyButton } from "_components/GoEditStrategyButton";
-import { ShareStrategyButton } from "_components/ShareStrategyButton";
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, errorMessage, fieldLabel, title } from "_i18n";
-import { StrategyInfo } from "_routing/types";
 import {
   Button,
   Column,
@@ -27,6 +21,13 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
+import { StrategyInfo } from "../routing/types.js";
+import { GoCopyStrategyButton } from "./GoCopyStrategyButton.js";
+import { GoEditStrategyButton } from "./GoEditStrategyButton.js";
+import { ShareStrategyButton } from "./ShareStrategyButton.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 

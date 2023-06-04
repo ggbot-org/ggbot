@@ -25,7 +25,8 @@
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
-    "@ggbot2/react": "file:react"
+    "@ggbot2/react": "file:react",
+    "trunx": "^0.45.2"
   },
   "devDependencies": {
     "@ggbot2/esbuild": "file:esbuild",

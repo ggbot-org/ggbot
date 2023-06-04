@@ -1,16 +1,3 @@
-import { BacktestController } from "_components/BacktestController";
-import { EditStrategyTabs } from "_components/EditStrategyTabs";
-import { EditStrategyTopbar } from "_components/EditStrategyTopbar";
-import { FlowViewContainer } from "_components/FlowViewContainer";
-import { MemoryController } from "_components/MemoryController";
-import { PleaseConfigureBinanceModal } from "_components/PleaseConfigureBinanceModal";
-import { StrategyExecutionLog } from "_components/StrategyExecutionLog";
-import { useApi } from "_hooks/useApi";
-import { useBacktesting } from "_hooks/useBacktesting";
-import { useFlowView } from "_hooks/useFlowView";
-import { errorMessage } from "_i18n";
-import { PageLayout } from "_layouts/Page";
-import { StrategyInfo } from "_routing/types";
 import { ButtonOnClick } from "@ggbot2/design";
 import { DflowBinanceSymbolInfo } from "@ggbot2/dflow";
 import {
@@ -25,6 +12,20 @@ import { isMaybeObject } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo } from "dflow";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+
+import { BacktestController } from "../components/BacktestController.js";
+import { EditStrategyTabs } from "../components/EditStrategyTabs.js";
+import { EditStrategyTopbar } from "../components/EditStrategyTopbar.js";
+import { FlowViewContainer } from "../components/FlowViewContainer.js";
+import { MemoryController } from "../components/MemoryController.js";
+import { PleaseConfigureBinanceModal } from "../components/PleaseConfigureBinanceModal.js";
+import { StrategyExecutionLog } from "../components/StrategyExecutionLog.js";
+import { useApi } from "../hooks/useApi.js";
+import { useBacktesting } from "../hooks/useBacktesting.js";
+import { useFlowView } from "../hooks/useFlowView.js";
+import { errorMessage } from "../i18n/index.js";
+import { PageLayout } from "../layouts/Page.js";
+import { StrategyInfo } from "../routing/types.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];

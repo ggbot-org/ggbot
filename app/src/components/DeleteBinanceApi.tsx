@@ -1,7 +1,8 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel } from "_i18n";
 import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel } from "../i18n/index.js";
 
 type Props = {
   onDelete: () => void;

@@ -1,7 +1,8 @@
-import { Navigation } from "_components/Navigation";
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import { FC, PropsWithChildren, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
+
+import { Navigation } from "./Navigation.js";
 
 export type PageProps = {
   topbar?: ReactNode;

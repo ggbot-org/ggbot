@@ -1,7 +1,8 @@
-import { classNames } from "_classNames";
-import { tabLabel } from "_i18n";
 import { Tabs } from "@ggbot2/design";
 import { FC, ReactNode, useState } from "react";
+
+import { tabLabel } from "../i18n/index.js";
+import { classNames } from "../styles/classNames.js";
 
 const tabIds = ["flow", "backtest", "executionLog"] as const;
 type TabId = (typeof tabIds)[number];

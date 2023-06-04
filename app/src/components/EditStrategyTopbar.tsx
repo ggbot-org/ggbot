@@ -1,7 +1,3 @@
-import { classNames } from "_classNames";
-import { StrategyFlowName } from "_components/StrategyFlowName";
-import { buttonLabel } from "_i18n";
-import { StrategyInfo } from "_routing/types";
 import {
   Button,
   ButtonOnClick,
@@ -12,6 +8,11 @@ import {
   Level,
 } from "@ggbot2/design";
 import { FC } from "react";
+
+import { buttonLabel } from "../i18n/index.js";
+import { StrategyInfo } from "../routing/types.js";
+import { classNames } from "../styles/classNames.js";
+import { StrategyFlowName } from "./StrategyFlowName.js";
 
 type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
   canRun: boolean;

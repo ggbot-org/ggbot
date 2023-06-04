@@ -6,16 +6,16 @@ import { srcPagesDir } from "../package.js";
 import { SettingsSectionId } from "../routing/types.js";
 import { settingsHtmlAppJs, settingsHtmlFilename } from "./_settings.js";
 
-const sectionId: SettingsSectionId = "account";
+const sectionId: SettingsSectionId = "binance";
 
-export const accountSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
-export const accountSettingsHtmlFilename = settingsHtmlFilename(sectionId);
-export const accountSettingsHtmlEntryPoint = join(
+export const binanceSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
+export const binanceSettingsHtmlFilename = settingsHtmlFilename(sectionId);
+export const binanceSettingsHtmlEntryPoint = join(
   srcPagesDir,
-  "AccountSettings.tsx"
+  "BinanceSettings.tsx"
 );
 
-export const accountSettingsHtmlPageContent = () =>
+export const binanceSettingsHtmlPageContent = () =>
   htmlPageContent({
     hasRootDiv: true,
     meta: {
@@ -28,7 +28,7 @@ export const accountSettingsHtmlPageContent = () =>
     ],
     scripts: [
       {
-        src: accountSettingsHtmlAppJs,
+        src: binanceSettingsHtmlAppJs,
       },
     ],
   });

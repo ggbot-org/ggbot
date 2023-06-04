@@ -1,8 +1,9 @@
-import { CreateStrategy } from "_components/CreateStrategy";
-import { Strategies } from "_components/Strategies";
-import { OneSectionLayout } from "_layouts/OneSection";
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
+
+import { CreateStrategy } from "../components/CreateStrategy.js";
+import { Strategies } from "../components/Strategies.js";
+import { OneSectionLayout } from "../layouts/OneSection.js";
 
 const Page: FC = () => (
   <OneSectionLayout>

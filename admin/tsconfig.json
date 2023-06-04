@@ -1,12 +1,4 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "_api/*": ["pages/api/*"],
-      "_components/*": ["src/components/*"],
-      "_hooks/*": ["src/hooks/*"]
-    }
-  },
   "exclude": ["node_modules"],
   "extends": "@ggbot2/tsconfig/react",
   "include": ["**/*.ts", "**/*.tsx"]

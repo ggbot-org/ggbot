@@ -1,5 +1,3 @@
-import { useApi } from "_hooks/useApi";
-import { fieldLabel } from "_i18n";
 import {
   BinanceApiKeyPermission,
   isBinanceApiKeyPermission,
@@ -16,6 +14,9 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { fieldLabel } from "../i18n/index.js";
 
 type Props = {
   apiKey: string;

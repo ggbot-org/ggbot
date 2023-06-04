@@ -1,3 +1,4 @@
+import { settingsHtmlFilename } from "../pages/_settings.js";
 import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types.js";
 
 export const pathname = {
@@ -19,7 +20,8 @@ export const pathname = {
   errorPageStrategyNotOwned: ({ strategyKind, strategyId }: StrategyKey) =>
     `/error/strategy-not-owned/${strategyKind}/${strategyId}`,
   homePage: () => "/",
-  settingsPage: (section: SettingsSectionId) => `/settings/${section}`,
+  settingsPage: (section: SettingsSectionId) =>
+    `/${settingsHtmlFilename(section)}`,
   strategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/strategy/${strategyKind}/${strategyId}`,
   viewFlowPage: ({ strategyKind, strategyId }: StrategyKey) =>

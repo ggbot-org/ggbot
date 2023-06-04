@@ -6,16 +6,16 @@ import { srcPagesDir } from "../package.js";
 import { SettingsSectionId } from "../routing/types.js";
 import { settingsHtmlAppJs, settingsHtmlFilename } from "./_settings.js";
 
-const sectionId: SettingsSectionId = "account";
+const sectionId: SettingsSectionId = "billing";
 
-export const accountSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
-export const accountSettingsHtmlFilename = settingsHtmlFilename(sectionId);
-export const accountSettingsHtmlEntryPoint = join(
+export const billingSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
+export const billingSettingsHtmlFilename = settingsHtmlFilename(sectionId);
+export const billingSettingsHtmlEntryPoint = join(
   srcPagesDir,
-  "AccountSettings.tsx"
+  "BillingSettings.tsx"
 );
 
-export const accountSettingsHtmlPageContent = () =>
+export const billingSettingsHtmlPageContent = () =>
   htmlPageContent({
     hasRootDiv: true,
     meta: {
@@ -28,7 +28,7 @@ export const accountSettingsHtmlPageContent = () =>
     ],
     scripts: [
       {
-        src: accountSettingsHtmlAppJs,
+        src: billingSettingsHtmlAppJs,
       },
     ],
   });

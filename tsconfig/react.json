@@ -4,7 +4,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "esnext"
+    "target": "esnext",
+    "tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
   },
   "extends": "./default.json"
 }

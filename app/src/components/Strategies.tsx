@@ -1,10 +1,11 @@
-import { SchedulingsStatusBadges } from "_components/SchedulingsStatusBadges";
-import { useApi } from "_hooks/useApi";
-import { title } from "_i18n";
-import { pathname } from "_routing/pathnames";
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import { FC, useEffect } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { title } from "../i18n/index.js";
+import { pathname } from "../routing/pathnames.js";
+import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
 
 type StrategyItem = Pick<
   AccountStrategy,

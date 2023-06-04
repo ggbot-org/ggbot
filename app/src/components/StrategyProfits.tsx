@@ -1,6 +1,3 @@
-import { ProfitSummary } from "_components/ProfitSummary";
-import { useApi } from "_hooks/useApi";
-import { StrategyKey } from "_routing/types";
 import { isOrders, Orders } from "@ggbot2/models";
 import {
   getTime,
@@ -10,6 +7,10 @@ import {
   truncateTime,
 } from "@ggbot2/time";
 import { FC, useEffect } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { StrategyKey } from "../routing/types.js";
+import { ProfitSummary } from "./ProfitSummary.js";
 
 type Props = {
   strategyKey: StrategyKey;

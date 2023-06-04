@@ -1,7 +1,8 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel } from "_i18n";
 import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel } from "../i18n/index.js";
 
 export const DeleteAccount: FC = () => {
   const [DELETE, { isPending }] = useApi.DeleteAccount();

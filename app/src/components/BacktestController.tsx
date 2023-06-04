@@ -1,15 +1,16 @@
-import { DailyIntervalSelector } from "_components/DailyIntervalSelector";
-import {
-  FrequencyInput,
-  FrequencyInputProps,
-} from "_components/FrequencyInput";
-import { ProfitSummary } from "_components/ProfitSummary";
-import { BacktestingDispatch, BacktestingState } from "_hooks/useBacktesting";
-import { backtestActionLabel } from "_i18n";
 import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
+
+import {
+  BacktestingDispatch,
+  BacktestingState,
+} from "../hooks/useBacktesting.js";
+import { backtestActionLabel } from "../i18n/index.js";
+import { DailyIntervalSelector } from "./DailyIntervalSelector.js";
+import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput.js";
+import { ProfitSummary } from "./ProfitSummary.js";
 
 type Props = {
   state: BacktestingState | undefined;

@@ -1,5 +1,3 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, errorMessage, fieldLabel, title } from "_i18n";
 import {
   Button,
   Control,
@@ -21,6 +19,9 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
 
 const fields = ["name"] as const;
 const fieldName = {

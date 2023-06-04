@@ -1,5 +1,3 @@
-import { BinanceDflowClient } from "_flow/binance";
-import { StrategyKey } from "_routing/types";
 import {
   BinanceDflowExecutor,
   BinanceDflowHost,
@@ -29,6 +27,8 @@ import {
   useState,
 } from "react";
 
+import { BinanceDflowClient } from "../flow/binance.js";
+import { StrategyKey } from "../routing/types.js";
 import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
 
 type UseFlowView = (

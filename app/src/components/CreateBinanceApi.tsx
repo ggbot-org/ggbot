@@ -1,5 +1,3 @@
-import { useApi } from "_hooks/useApi";
-import { buttonLabel, fieldLabel } from "_i18n";
 import {
   Button,
   Control,
@@ -11,6 +9,9 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, useCallback, useEffect } from "react";
+
+import { useApi } from "../hooks/useApi.js";
+import { buttonLabel, fieldLabel } from "../i18n/index.js";
 
 type Props = {
   onCreate: () => void;

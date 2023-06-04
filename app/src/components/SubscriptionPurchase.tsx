@@ -1,7 +1,3 @@
-import { SubscriptionContext } from "_contexts/Subscription";
-import { useApi } from "_hooks/useApi";
-import { useApiBaseURL } from "_hooks/useApiBaseUrl";
-import { buttonLabel, fieldLabel, title } from "_i18n";
 import {
   Box,
   Button,
@@ -35,6 +31,11 @@ import { getTime, now, Time } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
+
+import { SubscriptionContext } from "../contexts/Subscription.js";
+import { useApi } from "../hooks/useApi.js";
+import { useApiBaseURL } from "../hooks/useApiBaseUrl.js";
+import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
 
 const fields = ["country"] as const;
 const fieldName = {

@@ -1,13 +1,14 @@
-import { DeleteStrategy } from "_components/DeleteStrategy";
-import { PleasePurchaseModal } from "_components/PleasePurchaseModal";
-import { SchedulingsForm } from "_components/SchedulingsForm";
-import { StrategyForm } from "_components/StrategyForm";
-import { StrategyProfits } from "_components/StrategyProfits";
-import { PageLayout } from "_layouts/Page";
-import { StrategyInfo } from "_routing/types";
 import { Column, Columns, Section } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC, useState } from "react";
+
+import { DeleteStrategy } from "../components/DeleteStrategy.js";
+import { PleasePurchaseModal } from "../components/PleasePurchaseModal.js";
+import { SchedulingsForm } from "../components/SchedulingsForm.js";
+import { StrategyForm } from "../components/StrategyForm.js";
+import { StrategyProfits } from "../components/StrategyProfits.js";
+import { PageLayout } from "../layouts/Page.js";
+import { StrategyInfo } from "../routing/types.js";
 
 // TODO create a Strategy Context
 type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;

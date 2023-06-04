@@ -1,7 +1,8 @@
-import { Navigation } from "_components/Navigation";
-import { Page } from "_components/Page";
 import { Column, Columns, Container, Section } from "@ggbot2/design";
 import { FC, PropsWithChildren } from "react";
+
+import { Navigation } from "../components/Navigation.js";
+import { Page } from "../components/Page.js";
 
 export const AuthLayout: FC<PropsWithChildren> = ({ children }) => (
   <Page topbar={<Navigation noMenu />}>
