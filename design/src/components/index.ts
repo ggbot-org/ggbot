@@ -10,6 +10,8 @@ export * from "./Navbar.js";
 export * from "./OutputField.js";
 export * from "./SelectField.js";
 export * from "./Tabs.js";
+export * from "./Tag.js";
+
 export {
   Box,
   Breadcrumb,
@@ -50,7 +52,6 @@ export {
   type SelectProps,
   type SizeModifierProp,
   Table,
-  Tag,
   type TagProps,
   Tags,
   Title,

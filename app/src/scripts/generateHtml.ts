@@ -6,6 +6,14 @@ import {
   accountSettingsHtmlPageContent,
 } from "../pages/account-settings.html.js";
 import {
+  billingSettingsHtmlFilename,
+  billingSettingsHtmlPageContent,
+} from "../pages/billing-settings.html.js";
+import {
+  binanceSettingsHtmlFilename,
+  binanceSettingsHtmlPageContent,
+} from "../pages/binance-settings.html.js";
+import {
   indexHtmlFilename,
   indexHtmlPageContent,
 } from "../pages/index.html.js";
@@ -18,10 +26,23 @@ export const generateHtml = async () => {
     filename: indexHtmlFilename,
     htmlContent: indexHtmlPageContent(),
   });
+
+  // Settings
+
   await generateHtmlPage({
     dirname,
     filename: accountSettingsHtmlFilename,
     htmlContent: accountSettingsHtmlPageContent(),
+  });
+  await generateHtmlPage({
+    dirname,
+    filename: billingSettingsHtmlFilename,
+    htmlContent: billingSettingsHtmlPageContent(),
+  });
+  await generateHtmlPage({
+    dirname,
+    filename: binanceSettingsHtmlFilename,
+    htmlContent: binanceSettingsHtmlPageContent(),
   });
 };
 

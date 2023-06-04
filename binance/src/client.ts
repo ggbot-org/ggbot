@@ -1,5 +1,4 @@
-// TODO use "node:crypto"
-import { createHmac } from "crypto";
+import { createHmac } from "node:crypto";
 
 import { BinanceConnectorRequestArg } from "./connector.js";
 import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
