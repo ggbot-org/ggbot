@@ -2,9 +2,7 @@ import { settingsHtmlFilename } from "../pages/_settings.js";
 import { InvalidStrategyKey, SettingsSectionId, StrategyKey } from "./types.js";
 
 export const pathname = {
-  apiEnter: () => "/api/auth/enter",
-  apiExit: () => "/api/auth/exit",
-  apiVerify: () => "/api/auth/verify",
+  // TODO remove authPage pathname
   authPage: () => "/auth",
   copyStrategyPage: ({ strategyKind, strategyId }: StrategyKey) =>
     `/copy/strategy/${strategyKind}/${strategyId}`,

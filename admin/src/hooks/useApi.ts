@@ -5,11 +5,17 @@ import {
 } from "@ggbot2/api";
 import { useAction } from "@ggbot2/use-action";
 
+import { url } from "../routing/URLs.js";
+
+const endpoint = url.apiAdminAction;
+
 export const useApi = {
   ListAccountKeys: () =>
-    useAction<ApiAction["ListAccountKeys"], ApiActionType>({
+    useAction<ApiAction["ListAccountKeys"], ApiActionType>(endpoint, {
       type: "ListAccountKeys",
     }),
   ReadAccount: () =>
-    useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
+    useAction<ApiAction["ReadAccount"], ApiActionType>(endpoint, {
+      type: "ReadAccount",
+    }),
 };

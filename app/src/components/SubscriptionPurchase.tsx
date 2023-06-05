@@ -17,7 +17,6 @@ import {
   Title,
   useFormattedDate,
 } from "@ggbot2/design";
-import { ApiPurchaseOrderURL } from "@ggbot2/locators";
 import {
   AllowedCountryIsoCode2,
   isAccount,
@@ -34,8 +33,8 @@ import { FC, useCallback, useContext, useEffect, useState } from "react";
 
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
-import { useApiBaseURL } from "../hooks/useApiBaseUrl.js";
 import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
+import { url } from "../routing/URLs.js";
 
 const fields = ["country"] as const;
 const fieldName = {
@@ -56,8 +55,6 @@ const minNumMonths = 1;
 const defaultNumMonths = 6;
 
 export const SubscriptionPurchase: FC = () => {
-  const apiBaseURL = useApiBaseURL();
-
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
@@ -139,9 +136,7 @@ export const SubscriptionPurchase: FC = () => {
     if (purchaseIsPending) return;
     setPurchaseIsPending(true);
     try {
-      if (!apiBaseURL) return;
-      const apiPurchaseOrderURL = new ApiPurchaseOrderURL(apiBaseURL);
-      const response = await fetch(apiPurchaseOrderURL, {
+      const response = await fetch(url.apiPurchaseOrder, {
         // TODO define fields (and type-guard) in api package, use them also in utrust lambda
         body: JSON.stringify({ accountId, country, email, numMonths }),
         credentials: "omit",
@@ -165,7 +160,6 @@ export const SubscriptionPurchase: FC = () => {
     }
   }, [
     accountId,
-    apiBaseURL,
     country,
     email,
     numMonths,

@@ -1,4 +1,3 @@
-// TODO port it to AuthenticationEnterModal
 import {
   isApiAuthEnterRequestData,
   isApiAuthEnterResponseData,
@@ -17,7 +16,7 @@ import { EmailAddress } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
 
 import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { url } from "../routing/URLs.js";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
 type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
@@ -78,7 +77,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         setState((state) => ({ ...state, isPending: true }));
 
-        const response = await fetch(pathname.apiEnter(), {
+        const response = await fetch(url.authenticationEnter, {
           body: JSON.stringify(requestData),
           headers: new Headers({
             "Content-Type": "application/json",

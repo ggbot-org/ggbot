@@ -5,90 +5,99 @@ import {
 } from "@ggbot2/api";
 import { useAction } from "@ggbot2/use-action";
 
+import { url } from "../routing/URLs.js";
+
+const endpoint = url.apiUserAction;
+
 export const useApi = {
   CopyStrategy: () =>
-    useAction<ApiAction["CopyStrategy"], ApiActionType>({
+    useAction<ApiAction["CopyStrategy"], ApiActionType>(endpoint, {
       type: "CopyStrategy",
     }),
   CreateBinanceApiConfig: () =>
-    useAction<ApiAction["CreateBinanceApiConfig"], ApiActionType>({
+    useAction<ApiAction["CreateBinanceApiConfig"], ApiActionType>(endpoint, {
       type: "CreateBinanceApiConfig",
     }),
   CreateStrategy: () =>
-    useAction<ApiAction["CreateStrategy"], ApiActionType>({
+    useAction<ApiAction["CreateStrategy"], ApiActionType>(endpoint, {
       type: "CreateStrategy",
     }),
   DeleteAccount: () =>
-    useAction<ApiAction["DeleteAccount"], ApiActionType>({
+    useAction<ApiAction["DeleteAccount"], ApiActionType>(endpoint, {
       type: "DeleteAccount",
     }),
   DeleteBinanceApiConfig: () =>
-    useAction<ApiAction["DeleteBinanceApiConfig"], ApiActionType>({
+    useAction<ApiAction["DeleteBinanceApiConfig"], ApiActionType>(endpoint, {
       type: "DeleteBinanceApiConfig",
     }),
   DeleteStrategy: () =>
-    useAction<ApiAction["DeleteStrategy"], ApiActionType>({
+    useAction<ApiAction["DeleteStrategy"], ApiActionType>(endpoint, {
       type: "DeleteStrategy",
     }),
   ExecuteStrategy: () =>
-    useAction<ApiAction["ExecuteStrategy"], ApiActionType>({
+    useAction<ApiAction["ExecuteStrategy"], ApiActionType>(endpoint, {
       type: "ExecuteStrategy",
     }),
   ReadAccount: () =>
-    useAction<ApiAction["ReadAccount"], ApiActionType>({ type: "ReadAccount" }),
+    useAction<ApiAction["ReadAccount"], ApiActionType>(endpoint, {
+      type: "ReadAccount",
+    }),
   ReadAccountStrategies: () =>
-    useAction<ApiAction["ReadAccountStrategies"], ApiActionType>({
+    useAction<ApiAction["ReadAccountStrategies"], ApiActionType>(endpoint, {
       type: "ReadAccountStrategies",
     }),
   ReadBinanceApiConfig: () =>
-    useAction<ApiAction["ReadBinanceApiConfig"], ApiActionType>({
+    useAction<ApiAction["ReadBinanceApiConfig"], ApiActionType>(endpoint, {
       type: "ReadBinanceApiConfig",
     }),
   ReadBinanceApiKeyPermissions: () =>
-    useAction<ApiAction["ReadBinanceApiKeyPermissions"], ApiActionType>({
-      type: "ReadBinanceApiKeyPermissions",
-    }),
+    useAction<ApiAction["ReadBinanceApiKeyPermissions"], ApiActionType>(
+      endpoint,
+      {
+        type: "ReadBinanceApiKeyPermissions",
+      }
+    ),
   ReadStrategy: () =>
-    useAction<ApiAction["ReadStrategy"], ApiActionType>({
+    useAction<ApiAction["ReadStrategy"], ApiActionType>(endpoint, {
       type: "ReadStrategy",
     }),
   ReadStrategyBalances: () =>
-    useAction<ApiAction["ReadStrategyBalances"], ApiActionType>({
+    useAction<ApiAction["ReadStrategyBalances"], ApiActionType>(endpoint, {
       type: "ReadStrategyBalances",
     }),
   ReadStrategyFlow: () =>
-    useAction<ApiAction["ReadStrategyFlow"], ApiActionType>({
+    useAction<ApiAction["ReadStrategyFlow"], ApiActionType>(endpoint, {
       type: "ReadStrategyFlow",
     }),
   ReadStrategyOrders: () =>
-    useAction<ApiAction["ReadStrategyOrders"], ApiActionType>({
+    useAction<ApiAction["ReadStrategyOrders"], ApiActionType>(endpoint, {
       type: "ReadStrategyOrders",
     }),
   ReadSubscription: () =>
-    useAction<ApiAction["ReadSubscription"], ApiActionType>({
+    useAction<ApiAction["ReadSubscription"], ApiActionType>(endpoint, {
       type: "ReadSubscription",
     }),
   RenameAccount: () =>
-    useAction<ApiAction["RenameAccount"], ApiActionType>({
+    useAction<ApiAction["RenameAccount"], ApiActionType>(endpoint, {
       type: "RenameAccount",
     }),
   RenameStrategy: () =>
-    useAction<ApiAction["RenameStrategy"], ApiActionType>({
+    useAction<ApiAction["RenameStrategy"], ApiActionType>(endpoint, {
       type: "RenameStrategy",
     }),
   SetAccountCountry: () =>
-    useAction<ApiAction["SetAccountCountry"], ApiActionType>({
+    useAction<ApiAction["SetAccountCountry"], ApiActionType>(endpoint, {
       type: "SetAccountCountry",
     }),
   WriteAccountStrategiesItemSchedulings: () =>
     useAction<
       ApiAction["WriteAccountStrategiesItemSchedulings"],
       ApiActionType
-    >({
+    >(endpoint, {
       type: "WriteAccountStrategiesItemSchedulings",
     }),
   WriteStrategyFlow: () =>
-    useAction<ApiAction["WriteStrategyFlow"], ApiActionType>({
+    useAction<ApiAction["WriteStrategyFlow"], ApiActionType>(endpoint, {
       type: "WriteStrategyFlow",
     }),
 };

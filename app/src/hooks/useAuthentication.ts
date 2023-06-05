@@ -5,12 +5,12 @@ import { useApi } from "../hooks/useApi.js";
 import { localStorage } from "../storages/local.js";
 
 export const useAuthentication = () => {
-  const [READ, response] = useApi.ReadAccount();
+  const [READ, { data, isPending, error, aborted }] = useApi.ReadAccount();
 
   let hasSession: boolean | undefined;
+  let email = localStorage.email;
 
-  const { data, isPending } = response;
-  const responseNotOk = response.aborted || response.error;
+  if (error || aborted) hasSession = false;
 
   if (data === null) {
     hasSession = false;
@@ -19,16 +19,19 @@ export const useAuthentication = () => {
 
   if (isAccount(data)) {
     hasSession = true;
-    localStorage.email = data.email;
+
+    email = data.email;
+    localStorage.email = email;
   }
 
   useEffect(() => {
-    if (hasSession || isPending || responseNotOk) return;
+    if (hasSession || isPending || aborted || error) return;
     const controller = READ({});
     return () => controller.abort();
-  }, [READ, hasSession, isPending, responseNotOk]);
+  }, [READ, aborted, error, hasSession, isPending]);
 
   return {
+    email,
     hasSession,
   };
 };

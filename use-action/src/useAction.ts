@@ -35,10 +35,33 @@ type UseActionResponse<Output extends OperationOutput> = {
  *
  * It returns a `request` and a `response`.
  *
+ * First, define available actions.
+ *
  * @example
  *
  * ```ts
- * const [request, response] = useApiAction.FooBar();
+ * import {
+ *   SomeApiAction as ApiAction,
+ *   SomeApiActionType as ApiActionType,
+ * } from "@ggbot2/api";
+ * import { useAction } from "@ggbot2/use-action";
+ *
+ * const endpoint = "/api/action";
+ *
+ * const useApi = {
+ *   FooBar: () =>
+ *     useAction<ApiAction["FooBar"], ApiActionType>(endpoint, {
+ *       type: "FooBar",
+ *     }),
+ * };
+ * ```
+ *
+ * Then use defined actions.
+ *
+ * @example
+ *
+ * ```ts
+ * const [request, response] = useApi.FooBar();
  * ```
  *
  * The `response` can be destructured as follow.
@@ -46,7 +69,7 @@ type UseActionResponse<Output extends OperationOutput> = {
  * @example
  *
  * ```ts
- * const [request, { data, isPending, error }] = useApiAction.FooBar();
+ * const [request, { data, isPending, error, aborted }] = useApi.FooBar();
  * ```
  *
  * The `request` returns an `AbortController`, it can be used as a `useEffect`
@@ -55,7 +78,7 @@ type UseActionResponse<Output extends OperationOutput> = {
  * @example
  *
  * ```ts
- * const [request, response] = useApiAction.FooBar();
+ * const [request, response] = useApi.FooBar();
  * useEffect(() => {
  *   const controller = request({ param });
  *   return () => {
@@ -75,7 +98,7 @@ type UseActionResponse<Output extends OperationOutput> = {
  * @example
  *
  * ```ts
- * const [DELETE, { isPending }] = useApiAction.FooBar();
+ * const [DELETE, { isPending }] = useApi.FooBar();
  * useEffect(() => {
  *   const controller = DELETE({});
  *   return () => {
@@ -87,9 +110,10 @@ type UseActionResponse<Output extends OperationOutput> = {
 export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },
   ApiActionType extends string
->({
-  type,
-}: Pick<ApiActionInput<ApiActionType>, "type">): [
+>(
+  endpoint: string,
+  { type }: Pick<ApiActionInput<ApiActionType>, "type">
+): [
   request: UseActionRequest<Action["in"]>,
   response: UseActionResponse<Action["out"]>
 ] => {
@@ -121,7 +145,7 @@ export const useAction = <
           inputData === undefined
             ? JSON.stringify({ type })
             : JSON.stringify({ type, data: inputData });
-        const response = await fetch("/api/action", {
+        const response = await fetch(endpoint, {
           body,
           credentials: "include",
           headers: new Headers({
@@ -213,7 +237,7 @@ export const useAction = <
 
       return controller;
     },
-    [type]
+    [endpoint, type]
   );
 
   return [request, response];

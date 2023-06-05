@@ -8,11 +8,10 @@ const mainOrigin = new UserWebappBaseURL("main").origin;
 let deployStage: DeployStage | undefined;
 
 /** Get `DeployStage` from `window.location.origin`. */
-export const useDeployStage = () => {
+export const getDeployStage = () => {
   if (deployStage) return deployStage;
 
-  // TODO try to use `window.location.origin` once Next.js is removed
-  const origin = global.window?.location.origin;
+  const origin = window.location.origin;
 
   if (origin === localOrigin) deployStage = "local";
   if (origin === nextOrigin) deployStage = "next";

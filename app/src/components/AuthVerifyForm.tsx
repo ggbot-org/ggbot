@@ -1,4 +1,3 @@
-// Move this to AuthenticationEnterModal
 import {
   isApiAuthVerifyRequestData,
   isApiAuthVerifyResponseData,
@@ -24,17 +23,20 @@ import {
 } from "react";
 
 import { buttonLabel, fieldLabel } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { url } from "../routing/URLs.js";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
-type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
-
 type Props = {
-  setEmail: SetEmail;
   email: EmailAddress;
+  resetEmail: () => void;
+  setVerified: Dispatch<SetStateAction<boolean>>;
 };
 
-export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
+export const AuthVerifyForm: FC<Props> = ({
+  email,
+  resetEmail,
+  setVerified,
+}) => {
   const [hasGenericError, setHasGenericError] = useState(false);
   const [hasInvalidInput, setHasInvalidInput] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -47,12 +49,8 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
   const onClickOkGenerateOneTimePasswordAgain =
     useCallback<ButtonOnClick>(() => {
-      setEmail(undefined);
-    }, [setEmail]);
-
-  const goToHomePage = useCallback(() => {
-    window.location.pathname = pathname.homePage();
-  }, []);
+      resetEmail;
+    }, [resetEmail]);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     async (event) => {
@@ -86,7 +84,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
 
         setIsPending(true);
 
-        const response = await fetch(pathname.apiVerify(), {
+        const response = await fetch(url.authenticationVerify, {
           body: JSON.stringify(requestData),
           headers: new Headers({
             "Content-Type": "application/json",
@@ -109,7 +107,7 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
           const { verified } = responseData;
           if (verified) {
             setVerificationFailed(false);
-            goToHomePage();
+            setVerified(true);
           } else {
             setVerificationFailed(true);
           }
@@ -122,12 +120,12 @@ export const AuthVerifyForm: FC<Props> = ({ setEmail, email }) => {
     },
     [
       email,
-      goToHomePage,
       isPending,
       setGotTimeout,
       setHasGenericError,
       setHasInvalidInput,
       setIsPending,
+      setVerified,
     ]
   );
 
