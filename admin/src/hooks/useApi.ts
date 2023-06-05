@@ -1,7 +1,9 @@
 /* eslint sort-keys: "error" */
 import {
-  AdminApiAction as ApiAction,
-  AdminApiActionType as ApiActionType,
+  AdminApiAction,
+  AdminApiActionType,
+  PublicApiAction,
+  PublicApiActionType,
 } from "@ggbot2/api";
 import { useAction } from "@ggbot2/use-action";
 
@@ -11,11 +13,22 @@ const endpoint = url.apiAdminAction;
 
 export const useApi = {
   ListAccountKeys: () =>
-    useAction<ApiAction["ListAccountKeys"], ApiActionType>(endpoint, {
+    useAction<AdminApiAction["ListAccountKeys"], AdminApiActionType>(endpoint, {
       type: "ListAccountKeys",
     }),
   ReadAccount: () =>
-    useAction<ApiAction["ReadAccount"], ApiActionType>(endpoint, {
+    useAction<AdminApiAction["ReadAccount"], AdminApiActionType>(endpoint, {
       type: "ReadAccount",
     }),
+  ReadStrategy: () =>
+    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(endpoint, {
+      type: "ReadStrategy",
+    }),
+  ReadStrategyFlow: () =>
+    useAction<PublicApiAction["ReadStrategyFlow"], PublicApiActionType>(
+      endpoint,
+      {
+        type: "ReadStrategyFlow",
+      }
+    ),
 };

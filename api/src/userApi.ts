@@ -10,9 +10,7 @@ import {
   ReadAccount,
   ReadAccountStrategies,
   ReadBinanceApiConfig,
-  ReadStrategy,
   ReadStrategyBalances,
-  ReadStrategyFlow,
   ReadStrategyOrders,
   ReadSubscription,
   RenameAccount,
@@ -68,9 +66,7 @@ export type UserApiAction = {
   ReadAccountStrategies: Action<ReadAccountStrategies["in"]>;
   ReadBinanceApiConfig: Action<ReadBinanceApiConfig["in"]>;
   ReadBinanceApiKeyPermissions: Action<ReadBinanceApiKeyPermissions["in"]>;
-  ReadStrategy: Action<ReadStrategy["in"]>;
   ReadStrategyBalances: Action<ReadStrategyBalances["in"]>;
-  ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
   ReadStrategyOrders: Action<ReadStrategyOrders["in"]>;
   ReadSubscription: Action<ReadSubscription["in"]>;
   RenameAccount: Action<RenameAccount["in"]>;

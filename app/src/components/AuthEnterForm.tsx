@@ -1,3 +1,6 @@
+// TODO auth api should be an action, so it is possible to handle it with useAction by hook/useApi
+// TODO Auth forms are shared among User and Admin webapp, move them to design or to a package auth-ui or authentication
+// also useAuthentication hook and AuthenticationContext could be shared
 import {
   isApiAuthEnterRequestData,
   isApiAuthEnterResponseData,
@@ -89,7 +92,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         setState((state) => ({ ...state, isPending: false }));
         clearTimeout(timeoutId);
 
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw response.status;
 
         const responseData = await response.json();
         if (!isApiAuthEnterResponseData(requestData)) return;
