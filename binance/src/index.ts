@@ -1,6 +1,5 @@
 export * from "./apiKeyPermissions.js";
 export * from "./cache.js";
-export * from "./client.js";
 export * from "./connector.js";
 export * from "./errors.js";
 export * from "./exchange.js";

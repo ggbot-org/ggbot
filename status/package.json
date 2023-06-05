@@ -5,6 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "npm run generate_public_files",
     "check_types": "tsc --noEmit --project .",
     "generateJsBundles": "node temp/scripts/generateJsBundles.js",
     "generateHtml": "node temp/scripts/generateHtml.js",

@@ -33,6 +33,12 @@ export const __400__BAD_REQUEST__ = 400;
 export const __401__UNAUTHORIZED__ = 401;
 
 /**
+ * The requested resource could not be found but may be available in the future.
+ * Subsequent requests by the client are permissible.
+ */
+export const __404__NOT_FOUND__ = 404;
+
+/**
  * A request method is not supported for the requested resource; for example, a
  * GET request on a form that requires data to be presented via POST, or a PUT
  * request on a read-only resource.

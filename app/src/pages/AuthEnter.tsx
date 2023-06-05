@@ -1,3 +1,4 @@
+// Port this page to a modal
 import { EmailAddress } from "@ggbot2/models";
 import { mount } from "@ggbot2/react";
 import { FC, useState } from "react";

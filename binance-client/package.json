@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/database",
+  "name": "@ggbot2/binance-client",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -7,6 +7,10 @@
   "exports": {
     ".": {
       "import": "./dist/index.js"
+    },
+    "./client": {
+      "import": "./dist/client.js",
+      "types": "./dist/client.d.ts"
     }
   },
   "scripts": {
@@ -20,12 +24,7 @@
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/aws": "file:aws",
-    "@ggbot2/binance": "file:binance",
-    "@ggbot2/binance-client": "file:binance-client",
-    "@ggbot2/dflow": "file:dflow",
-    "@ggbot2/email-messages": "file:email-messages",
-    "@ggbot2/test-data": "file:test-data"
+    "@ggbot2/binance": "file:binance"
   },
   "eslintConfig": {
     "extends": [

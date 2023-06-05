@@ -7,8 +7,8 @@ import {
 import {
   __400__BAD_REQUEST__,
   __401__UNAUTHORIZED__,
+  __404__NOT_FOUND__,
   __500__INTERNAL_SERVER_ERROR__,
-  ErrorHTTP,
   InternalServerError,
 } from "@ggbot2/http";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
@@ -22,6 +22,7 @@ type UseActionRequest<Input extends OperationInput> = (
 ) => AbortController;
 
 type UseActionResponse<Output extends OperationOutput> = {
+  aborted?: boolean | undefined;
   error?: ApiActionClientSideError | ApiActionServerSideError | undefined;
   data?: Output | undefined;
   isPending: boolean;
@@ -103,10 +104,14 @@ export const useAction = <
       const timeout = 10000;
       const timeoutId = setTimeout(() => {
         abort();
-        setResponse({ error: { name: "Timeout" }, isPending: false });
+        setResponse({
+          aborted: true,
+          error: { name: "Timeout" },
+          isPending: false,
+        });
       }, timeout);
       signal.addEventListener("abort", () => {
-        setResponse({ isPending: false });
+        setResponse({ aborted: true, isPending: false });
         clearTimeout(timeoutId);
       });
 
@@ -126,50 +131,81 @@ export const useAction = <
           method: "POST",
           signal,
         });
-        if (!response.ok) {
-          const { status } = response;
-          if (status === __400__BAD_REQUEST__) {
-            const responseOutput = await response.json();
-            if (isApiActionResponseError(responseOutput)) {
-              setResponse({
-                error: responseOutput.error,
-                isPending: false,
-              });
-              return;
-            }
-          }
-          if (status === __401__UNAUTHORIZED__) {
-            setResponse({ error: { name: "Unauthorized" }, isPending: false });
-            return;
-          }
-          if (status === __500__INTERNAL_SERVER_ERROR__) {
+
+        const { ok, status } = response;
+
+        if (ok) {
+          const responseOutput = await response.json();
+          setResponse({
+            data: responseOutput.data,
+            isPending: false,
+          });
+        } else if (status === __400__BAD_REQUEST__) {
+          const responseOutput = await response.json();
+          if (isApiActionResponseError(responseOutput)) {
             setResponse({
-              error: { name: InternalServerError.name },
+              error: responseOutput.error,
               isPending: false,
             });
-            return;
           }
-          // This error should not be thrown.
-          throw new ErrorHTTP(response);
+        } else {
+          throw status;
         }
-        const responseOutput = await response.json();
-        setResponse({
-          data: responseOutput.data,
-          isPending: false,
-        });
       };
 
       (async function () {
         try {
+          if (controller.signal.aborted) return;
           await fetchRequest(arg);
         } catch (error) {
-          // AbortError is called on component unmount and on request timeout:
-          // the signal eventListener on 'abort', set `isPending` to `false`.
-          if (error instanceof DOMException && error.name === "AbortError")
-            return;
-          // Fallback for unhandled errors.
-          console.error(error);
-          setResponse({ error: { name: "GenericError" }, isPending: false });
+          switch (true) {
+            case error instanceof DOMException && error.name === "AbortError": {
+              // AbortError is called on component unmount and on request timeout.
+              // The `isPending` status is handled by the signal eventListener:
+              // on 'abort' event, it set `isPending` to `false`.
+              break;
+            }
+
+            case error === __400__BAD_REQUEST__: {
+              setResponse({
+                error: { name: "BadRequest" },
+                isPending: false,
+              });
+              break;
+            }
+
+            case error === __401__UNAUTHORIZED__: {
+              setResponse({
+                error: { name: "Unauthorized" },
+                isPending: false,
+              });
+              break;
+            }
+
+            case error === __404__NOT_FOUND__: {
+              setResponse({
+                error: { name: "NotFound" },
+                isPending: false,
+              });
+              break;
+            }
+
+            case error === __500__INTERNAL_SERVER_ERROR__: {
+              setResponse({
+                error: { name: InternalServerError.name },
+                isPending: false,
+              });
+              break;
+            }
+
+            default: {
+              console.error(error);
+              setResponse({
+                error: { name: "GenericError" },
+                isPending: false,
+              });
+            }
+          }
         } finally {
           clearTimeout(timeoutId);
         }

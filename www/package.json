@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
+    "build": "npm run generate_public_files",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "deploy": "sh scripts/deploy.sh",

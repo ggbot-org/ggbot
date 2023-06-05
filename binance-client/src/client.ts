@@ -1,17 +1,18 @@
 import { createHmac } from "node:crypto";
 
-import { BinanceConnectorRequestArg } from "./connector.js";
-import { BinanceExchange, BinanceExchangeConstructorArg } from "./exchange.js";
 import {
+  balanceIsNotEmpty,
   BinanceAccountInformation,
   BinanceApiKeyPermission,
+  BinanceConnectorRequestArg,
+  BinanceExchange,
+  BinanceExchangeConstructorArg,
   BinanceNewOrderOptions,
   BinanceOrderRespACK,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
-} from "./types.js";
-import { balanceIsNotEmpty } from "./utils.js";
+} from "@ggbot2/binance";
 
 /**
  * BinanceClient implements private API requests. It extends BinanceExchange to

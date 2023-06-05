@@ -1,7 +1,8 @@
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
-import { FC, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 import { title } from "../i18n/index.js";
 import { pathname } from "../routing/pathnames.js";
@@ -13,7 +14,8 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const [READ, { data }] = useApi.ReadAccountStrategies();
+  const { hasSession } = useContext(AuthenticationContext);
+  const [READ, { data, isPending, error }] = useApi.ReadAccountStrategies();
 
   const items: StrategyItem[] = [];
   if (Array.isArray(data)) {
@@ -30,9 +32,10 @@ export const Strategies: FC = () => {
   }
 
   useEffect(() => {
+    if (!hasSession || isPending) return;
     const controller = READ({});
     return () => controller.abort();
-  }, [READ]);
+  }, [READ, error, hasSession, isPending]);
 
   return (
     <>

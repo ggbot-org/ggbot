@@ -1,9 +1,9 @@
 import {
   BinanceCacheMap,
-  BinanceClient,
   BinanceConnector,
   ReadBinanceApiKeyPermissions,
 } from "@ggbot2/binance";
+import { BinanceClient } from "@ggbot2/binance-client";
 import { ErrorAccountItemNotFound } from "@ggbot2/models";
 
 import { readBinanceApiConfig } from "./binanceApiConfig.js";

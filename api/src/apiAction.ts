@@ -79,7 +79,9 @@ export const isApiActionServerSideError =
 // ////////////
 
 export const apiActionClientSideErrorNames = [
+  "BadRequest",
   "GenericError",
+  "NotFound",
   "Timeout",
   "Unauthorized",
 ] as const;

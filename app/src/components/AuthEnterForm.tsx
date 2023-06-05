@@ -1,3 +1,4 @@
+// TODO port it to AuthenticationEnterModal
 import {
   isApiAuthEnterRequestData,
   isApiAuthEnterResponseData,

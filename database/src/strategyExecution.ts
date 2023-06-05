@@ -1,11 +1,13 @@
 import {
   BinanceCacheMap,
-  BinanceClient,
-  BinanceClientConstructorArg,
   BinanceConnector,
   BinanceKline,
   BinanceKlineInterval,
 } from "@ggbot2/binance";
+import {
+  BinanceClient,
+  BinanceClientConstructorArg,
+} from "@ggbot2/binance-client";
 import {
   BinanceDflowClient,
   BinanceDflowExecutor,

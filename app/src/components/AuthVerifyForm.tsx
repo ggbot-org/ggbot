@@ -1,3 +1,4 @@
+// Move this to AuthenticationEnterModal
 import {
   isApiAuthVerifyRequestData,
   isApiAuthVerifyResponseData,
