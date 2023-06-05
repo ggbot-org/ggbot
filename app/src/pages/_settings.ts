@@ -1,7 +1,6 @@
-import { SettingsSectionId } from "../routing/types.js";
+import { SettingsPageId } from "../routing/types.js";
 
-export const settingsHtmlAppJs = (sectionId: SettingsSectionId) =>
-  `${sectionId}-settings.js`;
+export const settingsHtmlAppJs = (id: SettingsPageId) => `${id}-settings.js`;
 
-export const settingsHtmlFilename = (sectionId: SettingsSectionId) =>
-  `${sectionId}-settings.html`;
+export const settingsHtmlFilename = (id: SettingsPageId) =>
+  `${id}-settings.html`;

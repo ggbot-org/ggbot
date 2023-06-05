@@ -3,13 +3,13 @@ import { join } from "node:path";
 import { htmlPageContent } from "@ggbot2/html";
 
 import { srcPagesDir } from "../package.js";
-import { SettingsSectionId } from "../routing/types.js";
+import { SettingsPageId } from "../routing/types.js";
 import { settingsHtmlAppJs, settingsHtmlFilename } from "./_settings.js";
 
-const sectionId: SettingsSectionId = "binance";
+const pageId: SettingsPageId = "binance";
 
-export const binanceSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
-export const binanceSettingsHtmlFilename = settingsHtmlFilename(sectionId);
+export const binanceSettingsHtmlAppJs = settingsHtmlAppJs(pageId);
+export const binanceSettingsHtmlFilename = settingsHtmlFilename(pageId);
 export const binanceSettingsHtmlEntryPoint = join(
   srcPagesDir,
   "BinanceSettings.tsx"

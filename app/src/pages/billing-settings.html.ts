@@ -3,13 +3,13 @@ import { join } from "node:path";
 import { htmlPageContent } from "@ggbot2/html";
 
 import { srcPagesDir } from "../package.js";
-import { SettingsSectionId } from "../routing/types.js";
+import { SettingsPageId } from "../routing/types.js";
 import { settingsHtmlAppJs, settingsHtmlFilename } from "./_settings.js";
 
-const sectionId: SettingsSectionId = "billing";
+const pageId: SettingsPageId = "billing";
 
-export const billingSettingsHtmlAppJs = settingsHtmlAppJs(sectionId);
-export const billingSettingsHtmlFilename = settingsHtmlFilename(sectionId);
+export const billingSettingsHtmlAppJs = settingsHtmlAppJs(pageId);
+export const billingSettingsHtmlFilename = settingsHtmlFilename(pageId);
 export const billingSettingsHtmlEntryPoint = join(
   srcPagesDir,
   "BillingSettings.tsx"
