@@ -9,3 +9,7 @@ export const publicDir = packageDir(rootDir, "public");
 export const srcDir = packageDir(rootDir, "src");
 
 export const srcPagesDir = join(srcDir, "pages");
+
+export const indexHtmlFilename = "index.html";
+export const indexHtmlAppJs = "dashboard.js";
+export const indexHtmlEntryPoint = join(srcPagesDir, "homepage.tsx");

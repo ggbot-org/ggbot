@@ -12,7 +12,7 @@ import { FC, memo, useCallback } from "react";
 
 import { navigationLabel } from "../i18n/index.js";
 import { pathname } from "../routing/pathnames.js";
-import { SettingsSectionId } from "../routing/types.js";
+import { SettingsPageId } from "../routing/types.js";
 
 type Props = Pick<NavbarProps, "noMenu">;
 
@@ -28,8 +28,8 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   };
 
   const goToSettings = useCallback(
-    (section: SettingsSectionId) => () => {
-      window.location.pathname = pathname.settingsPage(section);
+    (settingsPage: SettingsPageId) => () => {
+      window.location.pathname = pathname.settingsPage(settingsPage);
     },
     []
   );

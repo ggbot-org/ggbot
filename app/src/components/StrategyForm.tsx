@@ -20,24 +20,24 @@ import {
   normalizeName,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
-import { StrategyInfo } from "../routing/types.js";
 import { GoCopyStrategyButton } from "./GoCopyStrategyButton.js";
 import { GoEditStrategyButton } from "./GoEditStrategyButton.js";
 import { ShareStrategyButton } from "./ShareStrategyButton.js";
-
-type Props = Pick<StrategyInfo, "strategyKey" | "whenCreated">;
 
 const fields = ["name"] as const;
 const fieldName = {
   name: "name",
 } as const satisfies Record<string, (typeof fields)[number]>;
 
-export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
-  const formattedWhenCreated = useFormattedDate(whenCreated, "day");
+export const StrategyForm: FC = () => {
+  const { strategyWhenCreated, strategyKey } = useContext(StrategyContext);
+
+  const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
@@ -64,7 +64,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         if (!isName(name)) return;
         const newName = normalizeName(name);
         throwIfInvalidName(newName);
-        RENAME({ name: newName, ...strategyKey });
+        if (strategyKey) RENAME({ name: newName, ...strategyKey });
         setName(newName);
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
@@ -76,6 +76,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
   // Read strategy data.
   useEffect(() => {
+    if (!strategyKey) return;
     const controller = READ(strategyKey);
     return () => controller.abort();
   }, [READ, strategyKey]);
@@ -110,7 +111,7 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
         <Column>
           <OutputField
             label={fieldLabel.strategyId}
-            value={strategyKey.strategyId}
+            value={strategyKey?.strategyId}
           />
         </Column>
       </Columns>
@@ -125,15 +126,15 @@ export const StrategyForm: FC<Props> = ({ strategyKey, whenCreated }) => {
 
       <Field isGrouped>
         <Control>
-          <GoEditStrategyButton strategyKey={strategyKey} />
+          <GoEditStrategyButton />
         </Control>
 
         <Control>
-          <ShareStrategyButton strategyKey={strategyKey} strategyName={name} />
+          <ShareStrategyButton />
         </Control>
 
         <Control>
-          <GoCopyStrategyButton strategyKey={strategyKey} />
+          <GoCopyStrategyButton />
         </Control>
       </Field>
     </Form>

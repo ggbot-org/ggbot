@@ -9,20 +9,17 @@ import {
   OutputField,
   useFormattedDate,
 } from "@ggbot2/design";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, fieldLabel } from "../i18n/index.js";
+import { buttonLabel, fieldLabel, messageHeader } from "../i18n/index.js";
 import { pathname } from "../routing/pathnames.js";
-import { StrategyInfo } from "../routing/types.js";
 
-type Props = Pick<StrategyInfo, "strategyKey" | "name" | "whenCreated">;
+export const DeleteStrategy: FC = () => {
+  const { strategyWhenCreated, strategyName, strategyKey } =
+    useContext(StrategyContext);
 
-export const DeleteStrategy: FC<Props> = ({
-  strategyKey,
-  name,
-  whenCreated,
-}) => {
   const [DELETE, { isPending, data }] = useApi.DeleteStrategy();
 
   const isLoading = isPending || Boolean(data);
@@ -35,10 +32,10 @@ export const DeleteStrategy: FC<Props> = ({
 
   const onClickConfirmation = useCallback(() => {
     if (isPending) return;
-    DELETE(strategyKey);
+    if (strategyKey) DELETE(strategyKey);
   }, [DELETE, isPending, strategyKey]);
 
-  const formattedWhenCreated = useFormattedDate(whenCreated, "time");
+  const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "time");
 
   useEffect(() => {
     if (!data) return;
@@ -52,14 +49,17 @@ export const DeleteStrategy: FC<Props> = ({
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Message header="Strategy deletion" color="warning">
+        <Message header={messageHeader.strategyDeletion} color="warning">
           <p>Are you sure you want to delete this strategy?</p>
         </Message>
 
         <Box>
           <Columns>
             <Column>
-              <OutputField label={fieldLabel.strategyName} value={name} />
+              <OutputField
+                label={fieldLabel.strategyName}
+                value={strategyName}
+              />
             </Column>
           </Columns>
 
@@ -67,7 +67,7 @@ export const DeleteStrategy: FC<Props> = ({
             <Column>
               <OutputField
                 label={fieldLabel.strategyId}
-                value={strategyKey.strategyId}
+                value={strategyKey?.strategyId}
               />
             </Column>
 

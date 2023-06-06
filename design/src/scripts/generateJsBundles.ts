@@ -2,11 +2,7 @@ import { join } from "node:path";
 
 import { browserBundle } from "@ggbot2/esbuild";
 
-import { publicDir } from "../package.js";
-import {
-  indexHtmlAppJs,
-  indexHtmlEntryPoint,
-} from "../webapp/pages/index.html.js";
+import { indexHtmlAppJs, indexHtmlEntryPoint, publicDir } from "../package.js";
 
 const generateJsBundles = async () => {
   await browserBundle({

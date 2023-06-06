@@ -1,21 +1,17 @@
 import { Button } from "@ggbot2/design";
-import { FC } from "react";
+import { FC, useCallback, useContext } from "react";
 import { toast } from "react-hot-toast";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel, errorMessage } from "../i18n/index.js";
 import { pathname } from "../routing/pathnames.js";
-import { StrategyInfo } from "../routing/types.js";
 
-type Props = Pick<StrategyInfo, "strategyKey"> & {
-  strategyName: string;
-};
+export const ShareStrategyButton: FC = () => {
+  const { strategyKey, strategyName } = useContext(StrategyContext);
 
-export const ShareStrategyButton: FC<Props> = ({
-  strategyKey,
-  strategyName,
-}) => {
-  const onClick = async () => {
+  const onClick = useCallback(async () => {
     try {
+      if (!strategyKey || strategyName) return;
       const shareData = {
         title: "ggbot2",
         text: strategyName,
@@ -36,7 +32,7 @@ export const ShareStrategyButton: FC<Props> = ({
     } catch {
       toast.error(errorMessage.couldNotShareStrategy);
     }
-  };
+  }, [strategyKey, strategyName]);
 
   return (
     <Button type="button" onClick={onClick}>

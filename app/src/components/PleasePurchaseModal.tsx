@@ -16,7 +16,7 @@ export const PleasePurchaseModal: FC = () => {
         </p>
       </Message>
 
-      <GoSettingsButton section="billing" />
+      <GoSettingsButton settingsPage="billing" />
     </Modal>
   );
 };

@@ -25,7 +25,6 @@ export class ApiBaseURL extends URL {
 }
 
 export class UserWebappBaseURL extends URL {
-  static local = "http://localhost:3000";
   static main = `https://${userWebappDomain}`;
   static next = `https://${userWebappNextDomain}`;
 
@@ -35,7 +34,7 @@ export class UserWebappBaseURL extends URL {
         ? UserWebappBaseURL.main
         : deployStage === "next"
         ? UserWebappBaseURL.next
-        : UserWebappBaseURL.local
+        : window.location.toString()
     );
   }
 }

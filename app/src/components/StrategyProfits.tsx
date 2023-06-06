@@ -6,18 +6,15 @@ import {
   timeIntervalToDay,
   truncateTime,
 } from "@ggbot2/time";
-import { FC, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { StrategyKey } from "../routing/types.js";
 import { ProfitSummary } from "./ProfitSummary.js";
 
-type Props = {
-  strategyKey: StrategyKey;
-};
+export const StrategyProfits: FC = () => {
+  const { strategyKey } = useContext(StrategyContext);
 
-export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
-  const { strategyKind } = strategyKey;
   const numDays = 30;
 
   const end = truncateTime(now()).to.day();
@@ -31,6 +28,7 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
   const dayInterval = timeIntervalToDay(timeInterval);
 
   useEffect(() => {
+    if (!strategyKey) return;
     const controller = READ_ORDERS({ ...strategyKey, ...dayInterval });
     return () => controller.abort();
   }, [dayInterval, READ_ORDERS, strategyKey]);
@@ -39,7 +37,7 @@ export const StrategyProfits: FC<Props> = ({ strategyKey }) => {
     <ProfitSummary
       timeInterval={timeInterval}
       orderHistory={orderHistory}
-      strategyKind={strategyKind}
+      strategyKind={strategyKey?.strategyKind}
     />
   );
 };

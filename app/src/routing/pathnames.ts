@@ -1,8 +1,10 @@
-import { settingsHtmlFilename } from "../pages/_settings.js";
-import { copyStrategyHtmlFilename } from "../pages/copy-strategy.html.js";
-import { editStrategyFlowHtmlFilename } from "../pages/edit-strategy-flow.html.js";
-import { manageStrategyHtmlFilename } from "../pages/manage-strategy.html.js";
-import { viewStrategyFlowHtmlFilename } from "../pages/view-strategy-flow.html.js";
+import {
+  copyStrategyHtmlFilename,
+  editStrategyFlowHtmlFilename,
+  manageStrategyHtmlFilename,
+  settingsHtmlFilename,
+  viewStrategyFlowHtmlFilename,
+} from "./pages.js";
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js";
 import { SettingsPageId, StrategyKey } from "./types.js";
 

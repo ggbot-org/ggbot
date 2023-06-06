@@ -7,6 +7,7 @@ type ContextValue = ReturnType<typeof useStrategy>;
 export const StrategyContext = createContext<ContextValue>({
   strategyKey: undefined,
   strategyName: "",
+  strategyWhenCreated: undefined,
 });
 
 StrategyContext.displayName = "StrategyContext";

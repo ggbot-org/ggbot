@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { BacktestController } from "../components/BacktestController.js";
 import { FlowViewContainer } from "../components/FlowViewContainer.js";
 import { Navigation } from "../components/Navigation.js";
+import { StrategyProvider } from "../components/StrategyProvider.js";
 import { ViewStrategyTabs } from "../components/ViewStrategyTabs.js";
 import { ViewStrategyTopbar } from "../components/ViewStrategyTopbar.js";
 import { useApi } from "../hooks/useApi.js";
@@ -16,18 +17,12 @@ import { errorMessage } from "../i18n/index.js";
 import { PageLayout } from "../layouts/Page.js";
 import { StrategyInfo } from "../routing/types.js";
 
-type Props = Pick<StrategyInfo, "accountIsOwner" | "strategyKey" | "name"> & {
+type Props = Pick<StrategyInfo, "strategyKey"> & {
   binanceSymbols?: DflowBinanceSymbolInfo[];
   hasSession: boolean;
 };
 
-const Page: FC<Props> = ({
-  accountIsOwner,
-  binanceSymbols,
-  hasSession,
-  name: strategyName,
-  strategyKey,
-}) => {
+const Page: FC<Props> = ({ binanceSymbols, hasSession, strategyKey }) => {
   const { strategyKind } = strategyKey;
 
   const [flowLoaded, setFlowLoaded] = useState(false);
@@ -73,23 +68,21 @@ const Page: FC<Props> = ({
   }, [flowView, setFlowLoaded, storedStrategyFlow, isPending]);
 
   return (
-    <PageLayout topbar={<Navigation noMenu={!hasSession} />}>
-      <ViewStrategyTopbar
-        accountIsOwner={accountIsOwner}
-        name={strategyName}
-        strategyKey={strategyKey}
-      />
+    <StrategyProvider>
+      <PageLayout topbar={<Navigation noMenu={!hasSession} />}>
+        <ViewStrategyTopbar />
 
-      <ViewStrategyTabs
-        flow={<FlowViewContainer ref={flowViewContainerRef} />}
-        backtest={
-          <BacktestController
-            state={backtesting}
-            dispatch={backtestingDispatch}
-          />
-        }
-      />
-    </PageLayout>
+        <ViewStrategyTabs
+          flow={<FlowViewContainer ref={flowViewContainerRef} />}
+          backtest={
+            <BacktestController
+              state={backtesting}
+              dispatch={backtestingDispatch}
+            />
+          }
+        />
+      </PageLayout>
+    </StrategyProvider>
   );
 };
 

@@ -1,10 +1,22 @@
-import { generateHtmlPage } from "@ggbot2/html";
+import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 
-import { publicDir } from "../package.js";
 import {
+  indexHtmlAppJs,
   indexHtmlFilename,
-  indexHtmlPageContent,
-} from "../pages/index.html.js";
+  privacyHtmlAppJs,
+  privacyHtmlFilename,
+  publicDir,
+  termsHtmlAppJs,
+  termsHtmlFilename,
+} from "../package.js";
+
+const html = (scriptJs: string) =>
+  htmlPageContent({
+    hasRootDiv: true,
+    meta: { title: "ggbot2" },
+    stylesheets: [{ href: "main.css" }],
+    scripts: [{ src: scriptJs }],
+  });
 
 export const generateHtml = async () => {
   const dirname = publicDir;
@@ -12,7 +24,19 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: indexHtmlFilename,
-    htmlContent: indexHtmlPageContent(),
+    htmlContent: html(indexHtmlAppJs),
+  });
+
+  await generateHtmlPage({
+    dirname,
+    filename: privacyHtmlFilename,
+    htmlContent: html(privacyHtmlAppJs),
+  });
+
+  await generateHtmlPage({
+    dirname,
+    filename: termsHtmlFilename,
+    htmlContent: html(termsHtmlAppJs),
   });
 };
 

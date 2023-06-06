@@ -10,11 +10,10 @@ import {
 import { FC } from "react";
 
 import { buttonLabel } from "../i18n/index.js";
-import { StrategyInfo } from "../routing/types.js";
 import { classNames } from "../styles/classNames.js";
 import { StrategyFlowName } from "./StrategyFlowName.js";
 
-type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
+type Props = {
   canRun: boolean;
   canSave: boolean;
   onClickRun: ButtonOnClick;
@@ -26,15 +25,13 @@ type Props = Pick<StrategyInfo, "strategyKey" | "name"> & {
 export const EditStrategyTopbar: FC<Props> = ({
   canRun,
   canSave,
-  name,
   onClickRun,
   onClickSave,
   runIsPending,
   saveIsPending,
-  strategyKey,
 }) => (
   <Columns className={classNames("is-marginless")}>
-    <StrategyFlowName name={name} strategyKey={strategyKey} />
+    <StrategyFlowName />
 
     <Column isNarrow className={classNames("p-0")}>
       <Level

@@ -41,8 +41,9 @@ export class UserWebappHomepageURL extends URL {
 }
 
 export class UtrustCancelURL extends URL {
+  static htmlFileName = "subscription-canceled.html";
   constructor(userWebappBaseURL: string) {
-    super("/subscription/canceled", userWebappBaseURL);
+    super(`/${UtrustCancelURL.htmlFileName}`, userWebappBaseURL);
   }
 }
 
@@ -53,7 +54,8 @@ export class UtrustCallbackURL extends URL {
 }
 
 export class UtrustReturnURL extends URL {
+  static htmlFileName = "subscription-purchased.html";
   constructor(userWebappBaseURL: string) {
-    super("/subscription/purchased", userWebappBaseURL);
+    super(`/${UtrustReturnURL.htmlFileName}`, userWebappBaseURL);
   }
 }

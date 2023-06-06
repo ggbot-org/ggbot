@@ -9,9 +9,11 @@ export const useStrategy = () => {
 
   const strategyKey = strategyKeyParamsFromCurrentLocation();
   let strategyName: Strategy["name"] = "";
+  let strategyWhenCreated: Strategy["whenCreated"] | undefined;
 
   if (isStrategy(data)) {
     strategyName = data.name;
+    strategyWhenCreated = data.whenCreated;
   }
 
   useEffect(() => {
@@ -21,5 +23,5 @@ export const useStrategy = () => {
     return () => controller.abort();
   }, [READ, aborted, data, error, isPending, strategyKey]);
 
-  return { strategyKey, strategyName };
+  return { strategyKey, strategyName, strategyWhenCreated };
 };

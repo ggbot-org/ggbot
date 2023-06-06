@@ -7,7 +7,7 @@ import { AuthVerifyForm } from "../components/AuthVerifyForm.js";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useAuthentication } from "../hooks/useAuthentication.js";
 
-export const Authentication: FC<PropsWithChildren> = ({ children }) => {
+export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   const authentication = useAuthentication();
   const { hasSession } = authentication;
 

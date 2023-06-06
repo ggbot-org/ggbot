@@ -16,7 +16,7 @@ export const PleaseConfigureBinanceModal: FC = () => {
         </p>
       </Message>
 
-      <GoSettingsButton section="binance" />
+      <GoSettingsButton settingsPage="binance" />
     </Modal>
   );
 };

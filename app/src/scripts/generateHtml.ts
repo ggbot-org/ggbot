@@ -1,48 +1,82 @@
-import { generateHtmlPage } from "@ggbot2/html";
+import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 
-import { publicDir } from "../package.js";
 import {
-  accountSettingsHtmlFilename,
-  accountSettingsHtmlPageContent,
-} from "../pages/account-settings.html.js";
-import {
-  billingSettingsHtmlFilename,
-  billingSettingsHtmlPageContent,
-} from "../pages/billing-settings.html.js";
-import {
-  binanceSettingsHtmlFilename,
-  binanceSettingsHtmlPageContent,
-} from "../pages/binance-settings.html.js";
-import {
+  copyStrategyHtmlAppJs,
+  copyStrategyHtmlFilename,
+  editStrategyFlowHtmlAppJs,
+  editStrategyFlowHtmlFilename,
+  indexHtmlAppJs,
   indexHtmlFilename,
-  indexHtmlPageContent,
-} from "../pages/index.html.js";
+  manageStrategyHtmlAppJs,
+  manageStrategyHtmlFilename,
+  publicDir,
+  settingsHtmlAppJs,
+  settingsHtmlFilename,
+  viewStrategyFlowHtmlAppJs,
+  viewStrategyFlowHtmlFilename,
+} from "../package.js";
+
+const html = (scriptJs: string) =>
+  htmlPageContent({
+    hasRootDiv: true,
+    meta: { title: "ggbot2" },
+    stylesheets: [{ href: "main.css" }],
+    scripts: [{ src: scriptJs }],
+  });
 
 export const generateHtml = async () => {
   const dirname = publicDir;
 
+  // Homepage
+
   await generateHtmlPage({
     dirname,
     filename: indexHtmlFilename,
-    htmlContent: indexHtmlPageContent(),
+    htmlContent: html(indexHtmlAppJs),
+  });
+
+  // Strategy
+
+  await generateHtmlPage({
+    dirname,
+    filename: copyStrategyHtmlFilename,
+    htmlContent: html(copyStrategyHtmlAppJs),
+  });
+  await generateHtmlPage({
+    dirname,
+    filename: manageStrategyHtmlFilename,
+    htmlContent: html(manageStrategyHtmlAppJs),
+  });
+
+  // Strategy flow
+
+  await generateHtmlPage({
+    dirname,
+    filename: editStrategyFlowHtmlFilename,
+    htmlContent: html(editStrategyFlowHtmlAppJs),
+  });
+  await generateHtmlPage({
+    dirname,
+    filename: viewStrategyFlowHtmlFilename,
+    htmlContent: html(viewStrategyFlowHtmlAppJs),
   });
 
   // Settings
 
   await generateHtmlPage({
     dirname,
-    filename: accountSettingsHtmlFilename,
-    htmlContent: accountSettingsHtmlPageContent(),
+    filename: settingsHtmlFilename("account"),
+    htmlContent: html(settingsHtmlAppJs("account")),
   });
   await generateHtmlPage({
     dirname,
-    filename: billingSettingsHtmlFilename,
-    htmlContent: billingSettingsHtmlPageContent(),
+    filename: settingsHtmlFilename("billing"),
+    htmlContent: html(settingsHtmlAppJs("billing")),
   });
   await generateHtmlPage({
     dirname,
-    filename: binanceSettingsHtmlFilename,
-    htmlContent: binanceSettingsHtmlPageContent(),
+    filename: settingsHtmlFilename("binance"),
+    htmlContent: html(settingsHtmlAppJs("binance")),
   });
 };
 

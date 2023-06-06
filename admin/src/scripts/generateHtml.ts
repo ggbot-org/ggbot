@@ -1,17 +1,23 @@
-import { generateHtmlPage } from "@ggbot2/html";
+import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 
-import { publicDir } from "../package.js";
-import {
-  indexHtmlFilename,
-  indexHtmlPageContent,
-} from "../pages/index.html.js";
+import { indexHtmlAppJs, indexHtmlFilename, publicDir } from "../package.js";
+
+const html = (scriptJs: string) =>
+  htmlPageContent({
+    hasRootDiv: true,
+    meta: { title: "ggbot2" },
+    stylesheets: [{ href: "main.css" }],
+    scripts: [{ src: scriptJs }],
+  });
 
 export const generateHtml = async () => {
   const dirname = publicDir;
-  const filename = indexHtmlFilename;
-  const htmlContent = indexHtmlPageContent();
 
-  await generateHtmlPage({ dirname, filename, htmlContent });
+  await generateHtmlPage({
+    dirname,
+    filename: indexHtmlFilename,
+    htmlContent: html(indexHtmlAppJs),
+  });
 };
 
 generateHtml();

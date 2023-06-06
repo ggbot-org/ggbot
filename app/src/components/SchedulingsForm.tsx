@@ -15,24 +15,27 @@ import {
   newStrategyScheduling,
   StrategyScheduling,
 } from "@ggbot2/models";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { useSubscription } from "../hooks/useSubscription.js";
-import { StrategyKey } from "../routing/types.js";
 import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem.js";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
 
 type Props = {
-  strategyKey: StrategyKey;
   setHasActiveSubscription: (arg: boolean | undefined) => void;
 };
 
-export const SchedulingsForm: FC<Props> = ({
-  setHasActiveSubscription,
-  strategyKey,
-}) => {
-  const { strategyId } = strategyKey;
+export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
+  const { strategyKey } = useContext(StrategyContext);
 
   const { hasActiveSubscription } = useSubscription();
 
@@ -45,15 +48,15 @@ export const SchedulingsForm: FC<Props> = ({
   >([]);
 
   const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
-    if (!Array.isArray(accountStrategies)) return [];
+    if (!Array.isArray(accountStrategies) || !strategyKey) return [];
     const schedulings: StrategyScheduling[] = [];
     for (const accountStrategy of accountStrategies) {
       if (!isAccountStrategy(accountStrategy)) continue;
-      if (accountStrategy.strategyId !== strategyId) continue;
+      if (accountStrategy.strategyId !== strategyKey.strategyId) continue;
       schedulings.push(...accountStrategy.schedulings);
     }
     return schedulings;
-  }, [accountStrategies, strategyId]);
+  }, [accountStrategies, strategyKey]);
 
   const someSchedulingChanged = useMemo(() => {
     // Do not know about currentSchedulings yet, data fetch is pending.
@@ -146,8 +149,12 @@ export const SchedulingsForm: FC<Props> = ({
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!canSubmit) return;
-    WRITE({ strategyId, schedulings: wantedSchedulings });
-  }, [canSubmit, strategyId, wantedSchedulings, WRITE]);
+    if (!strategyKey) return;
+    WRITE({
+      strategyId: strategyKey.strategyId,
+      schedulings: wantedSchedulings,
+    });
+  }, [canSubmit, strategyKey, wantedSchedulings, WRITE]);
 
   const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();

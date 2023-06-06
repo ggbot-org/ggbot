@@ -4,7 +4,7 @@ import { FC, useContext, useEffect } from "react";
 
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
-import { title } from "../i18n/index.js";
+import { message, title } from "../i18n/index.js";
 import { pathname } from "../routing/pathnames.js";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
 
@@ -23,7 +23,7 @@ export const Strategies: FC = () => {
       if (!isAccountStrategy(item)) continue;
       const { strategyId, strategyKind, name, schedulings } = item;
       items.push({
-        href: pathname.strategyPage({ strategyId, strategyKind }),
+        href: pathname.manageStrategyPage({ strategyId, strategyKind }),
         name,
         schedulings,
         strategyId,
@@ -42,7 +42,7 @@ export const Strategies: FC = () => {
       <Title>{title.strategies}</Title>
 
       {data !== undefined && items.length === 0 && (
-        <Message color="info">Your strategies list is empty.</Message>
+        <Message color="info">{message.noStrategy}</Message>
       )}
 
       <Columns isMultiline>
