@@ -16,18 +16,17 @@ import {
   SizeModifierProp,
   Title,
 } from "@ggbot2/design";
-import { Order, StrategyKind } from "@ggbot2/models";
+import { Order } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
-import { FC, Fragment, PropsWithChildren, useEffect } from "react";
+import { FC, Fragment, PropsWithChildren, useContext, useEffect } from "react";
 
-import { useIsServerSide } from "../hooks/useIsServerSide.js";
+import { StrategyContext } from "../contexts/Strategy.js";
 import { miscellaneousLabel, title } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
   orderHistory: Order[];
-  strategyKind?: StrategyKind | undefined;
 };
 
 const binanceSymbols = new Map<
@@ -74,12 +73,10 @@ type SymbolStats = {
   quoteQuantity: string;
 };
 
-export const ProfitSummary: FC<Props> = ({
-  orderHistory,
-  timeInterval,
-  strategyKind,
-}) => {
-  const isServerSide = useIsServerSide();
+export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
+  const { strategyKey } = useContext(StrategyContext);
+
+  const strategyKind = strategyKey?.strategyKind;
 
   let numBuys: number | undefined = undefined;
   let numSells: number | undefined = undefined;
@@ -170,8 +167,6 @@ export const ProfitSummary: FC<Props> = ({
       }
     })();
   }, [strategyKind]);
-
-  if (isServerSide) return null;
 
   return (
     <Box>

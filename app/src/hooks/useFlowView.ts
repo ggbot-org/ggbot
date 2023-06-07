@@ -28,14 +28,13 @@ import {
 } from "react";
 
 import { BinanceDflowClient } from "../flow/binance.js";
-import { StrategyKey } from "../routing/types.js";
+import { useBinanceSymbols } from "./useBinanceSymbols.js";
 import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
 
 type UseFlowView = (
-  arg: Pick<StrategyKey, "strategyKind"> &
-    Pick<UseNodesCatalogArg, "binanceSymbols"> & {
-      containerRef: MutableRefObject<HTMLDivElement | null>;
-    }
+  arg: UseNodesCatalogArg & {
+    containerRef: MutableRefObject<HTMLDivElement | null>;
+  }
 ) => { flowView: FlowView | undefined } & Partial<UpdateTime>;
 
 /**
@@ -47,21 +46,17 @@ type UseFlowView = (
  * const { flowView, whenUpdated } = useFlowView({
  *   containerRef,
  *   strategyKind: "binance",
- *   binanceSymbols,
  * });
  *
  * return <div ref={containerRef} />;
  * ```
  */
-export const useFlowView: UseFlowView = ({
-  binanceSymbols,
-  containerRef,
-  strategyKind,
-}) => {
+export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
   const flowViewRef = useRef<FlowView>();
   const [whenUpdated, setWhenUpdated] = useState<Time | undefined>();
 
-  const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
+  const binanceSymbols = useBinanceSymbols({ strategyKind });
+  const nodesCatalog = useNodesCatalog({ strategyKind });
 
   const time = truncateTime(now()).to.minute();
 
@@ -100,6 +95,7 @@ export const useFlowView: UseFlowView = ({
     if (!nodesCatalog || !dflow) return;
     const { FlowView } = await import("flow-view");
     const { FlowViewNodeInfo, FlowViewNodeJson, FlowViewNodePercentage } =
+      // TODO remove dynamic import
       await import("../flow/nodes/index.js");
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(

@@ -7,8 +7,8 @@
   "scripts": {
     "build": "npm run generate_public_files",
     "check_types": "tsc --noEmit --project .",
-    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
     "generateHtml": "node temp/scripts/generateHtml.js",
+    "generateJsBundles": "node temp/scripts/generateJsBundles.js",
     "generate_public_files": "npm run generateHtml && npm run generateJsBundles && npm run sass",
     "lint": "eslint --fix --ext .ts --ext .tsx .",
     "pregenerate_public_files": "npm run tsc:scripts",

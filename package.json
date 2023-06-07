@@ -37,6 +37,7 @@
     "build:public-api": "npm run build --workspace public-api",
     "build:react": "npm run build --workspace react",
     "build:repo": "npm run build --workspace repo",
+    "build:status": "npm run build --workspace status",
     "build:test-data": "npm run build --workspace test-data",
     "build:time": "npm run build --workspace time",
     "build:type-utils": "npm run build --workspace type-utils",

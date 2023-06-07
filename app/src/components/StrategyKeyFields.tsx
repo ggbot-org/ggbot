@@ -1,10 +1,10 @@
 import { Column, Columns, OutputField } from "@ggbot2/design";
+import { StrategyKey } from "@ggbot2/models";
 import { FC } from "react";
 
 import { fieldLabel } from "../i18n/index.js";
-import { InvalidStrategyKey, StrategyKey } from "../routing/types.js";
 
-type Props = StrategyKey | InvalidStrategyKey;
+type Props = StrategyKey;
 
 export const StrategyKeyFields: FC<Props> = ({ strategyKind, strategyId }) => (
   <Columns>

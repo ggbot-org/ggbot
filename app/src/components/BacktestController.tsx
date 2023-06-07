@@ -53,7 +53,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     numSteps,
     orderHistory,
     stepIndex,
-    strategyKind,
   } = useMemo(() => {
     if (!state)
       return {
@@ -67,7 +66,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
         numSteps: undefined,
         orderHistory: [],
         stepIndex: undefined,
-        strategyKind: undefined,
       };
     const {
       dayInterval,
@@ -77,7 +75,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       memory,
       orderHistory,
       stepIndex,
-      strategyKind,
       timestamps,
     } = state;
 
@@ -99,7 +96,6 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       numSteps,
       orderHistory,
       stepIndex,
-      strategyKind,
     };
   }, [state]);
 
@@ -155,11 +151,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
         </div>
       </div>
 
-      <ProfitSummary
-        orderHistory={orderHistory}
-        timeInterval={timeInterval}
-        strategyKind={strategyKind}
-      />
+      <ProfitSummary orderHistory={orderHistory} timeInterval={timeInterval} />
 
       <menu>
         <Button onClick={onClickAction}>{actionLabel}</Button>

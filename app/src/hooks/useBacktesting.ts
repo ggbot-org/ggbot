@@ -23,33 +23,21 @@ import { FlowViewSerializableGraph } from "flow-view";
 import { Dispatch, useCallback, useEffect, useReducer } from "react";
 
 import { BinanceDflowClient } from "../flow/binance.js";
-import { useIsServerSide } from "../hooks/useIsServerSide.js";
-import { StrategyKey } from "../routing/types.js";
+import { useBinanceSymbols } from "./useBinanceSymbols.js";
 import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
 
-type State = StrategyKey &
-  Pick<DflowCommonContext, "memory"> & {
-    stepIndex: number;
-    balanceHistory: BalanceChangeEvent[];
-    frequency: Frequency;
-    isRunning: boolean;
-    isPaused: boolean;
-    dayInterval: DayInterval;
-    orderHistory: Order[];
-    timestamps: Timestamp[];
-    maxDay: Day;
-  };
-export type BacktestingState = State;
-
-type PersistingState = Pick<State, "dayInterval">;
-
-type GetPersistingState = () => PersistingState | undefined;
-type SetPersistingState = (arg: PersistingState) => void;
-
-const isPersistingState = (arg: unknown): arg is PersistingState => {
-  if (!arg || typeof arg !== "object") return false;
-  return true;
+type State = Pick<DflowCommonContext, "memory"> & {
+  stepIndex: number;
+  balanceHistory: BalanceChangeEvent[];
+  frequency: Frequency;
+  isRunning: boolean;
+  isPaused: boolean;
+  dayInterval: DayInterval;
+  orderHistory: Order[];
+  timestamps: Timestamp[];
+  maxDay: Day;
 };
+export type BacktestingState = State;
 
 const computeTimestamps = ({
   dayInterval,
@@ -186,103 +174,44 @@ const backtestingReducer = (state: State, action: Action) => {
 // Array.from(new Uint8Array(buffer)) .map((element) => element.toString(16))
 // .join(""); };
 
-const getInitialState =
-  (strategyKey: StrategyKey) =>
-  (persistingState: PersistingState | undefined): State => {
-    const frequency = everyOneHour();
-    // Max is yesterday.
-    const maxDay = dateToDay(getDate(new Date()).minus(1).days());
-    const dayInterval = {
-      start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
-      end: maxDay,
-    };
-    // PersistingState:
-    // startDay and endDay will always be lower than maxDay.
-    if (persistingState) {
-      return {
-        ...persistingState,
-        balanceHistory: [],
-        frequency,
-        isPaused: false,
-        isRunning: false,
-        maxDay,
-        memory: {},
-        orderHistory: [],
-        stepIndex: 0,
-        timestamps: computeTimestamps({
-          dayInterval: persistingState.dayInterval,
-          frequency,
-        }),
-        ...strategyKey,
-      };
-    }
-    // Default state.
-    return {
-      balanceHistory: [],
-      dayInterval,
-      frequency,
-      isPaused: false,
-      isRunning: false,
-      memory: {},
-      orderHistory: [],
-      stepIndex: 0,
-      timestamps: computeTimestamps({ dayInterval, frequency }),
-      maxDay,
-      ...strategyKey,
-    };
+const getInitialState = (): State => {
+  const frequency = everyOneHour();
+  // Max is yesterday.
+  const maxDay = dateToDay(getDate(new Date()).minus(1).days());
+  const dayInterval = {
+    start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
+    end: maxDay,
   };
+  return {
+    balanceHistory: [],
+    dayInterval,
+    frequency,
+    isPaused: false,
+    isRunning: false,
+    memory: {},
+    orderHistory: [],
+    stepIndex: 0,
+    timestamps: computeTimestamps({ dayInterval, frequency }),
+    maxDay,
+  };
+};
 
 type UseBacktesting = (
-  arg: StrategyKey &
-    Pick<UseNodesCatalogArg, "binanceSymbols"> & {
-      flowViewGraph?: FlowViewSerializableGraph;
-    }
+  arg: UseNodesCatalogArg & {
+    flowViewGraph?: FlowViewSerializableGraph;
+  }
 ) => [state: State | undefined, dispatch: BacktestingDispatch];
 
 export const useBacktesting: UseBacktesting = ({
-  binanceSymbols,
   flowViewGraph,
   strategyKind,
-  strategyId,
 }) => {
-  const isServerSide = useIsServerSide();
+  const binanceSymbols = useBinanceSymbols({ strategyKind });
+  const nodesCatalog = useNodesCatalog({ strategyKind });
 
-  const nodesCatalog = useNodesCatalog({ strategyKind, binanceSymbols });
-
-  const storageKey = `backtest:${strategyKind}:${strategyId}`;
-
-  const getPersistingState = useCallback<GetPersistingState>(() => {
-    try {
-      if (isServerSide) return;
-      const storedState = sessionStorage.getItem(storageKey);
-      if (!storedState) return;
-      const persistingState = JSON.parse(storedState);
-      if (isPersistingState(persistingState)) return persistingState;
-    } catch (error) {
-      console.error(error);
-    }
-  }, [isServerSide, storageKey]);
-
-  const setPersistingState = useCallback<SetPersistingState>(
-    (arg) => {
-      try {
-        if (isServerSide) return;
-        sessionStorage.setItem(storageKey, JSON.stringify(arg));
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [isServerSide, storageKey]
-  );
-
-  const [state, dispatch] = useReducer(
-    backtestingReducer,
-    getPersistingState(),
-    getInitialState({ strategyKind, strategyId })
-  );
+  const [state, dispatch] = useReducer(backtestingReducer, getInitialState());
 
   const {
-    dayInterval,
     isRunning: backtestIsRunning,
     memory: previousMemory,
     stepIndex,
@@ -349,10 +278,5 @@ export const useBacktesting: UseBacktesting = ({
     runBacktest();
   }, [backtestIsRunning, runBacktest]);
 
-  useEffect(() => {
-    if (isServerSide) return;
-    setPersistingState({ dayInterval });
-  }, [dayInterval, isServerSide, setPersistingState]);
-
-  return [isServerSide ? undefined : state, dispatch];
+  return [state, dispatch];
 };

@@ -1,14 +1,10 @@
-import {
-  DflowBinanceSymbolInfo,
-  getDflowBinanceNodesCatalog,
-} from "@ggbot2/dflow";
+import { getDflowBinanceNodesCatalog } from "@ggbot2/dflow";
+import { StrategyKey } from "@ggbot2/models";
 import { DflowNodesCatalog } from "dflow";
 
-import { StrategyKey } from "../routing/types.js";
+import { useBinanceSymbols } from "./useBinanceSymbols.js";
 
-export type UseNodesCatalogArg = Pick<StrategyKey, "strategyKind"> & {
-  binanceSymbols?: DflowBinanceSymbolInfo[];
-};
+export type UseNodesCatalogArg = Partial<Pick<StrategyKey, "strategyKind">>;
 
 type UseNodesCatalog = (
   arg: UseNodesCatalogArg
@@ -16,12 +12,14 @@ type UseNodesCatalog = (
 
 const nodesCatalogMap = new Map<string, DflowNodesCatalog>();
 
-export const useNodesCatalog: UseNodesCatalog = ({
-  strategyKind,
-  binanceSymbols,
-}) => {
-  const storedValue = nodesCatalogMap.get(strategyKind);
+export const useNodesCatalog: UseNodesCatalog = ({ strategyKind }) => {
+  const binanceSymbols = useBinanceSymbols({ strategyKind });
+
+  const storedValue = strategyKind
+    ? nodesCatalogMap.get(strategyKind)
+    : undefined;
   if (storedValue) return storedValue;
+
   if (strategyKind === "binance" && binanceSymbols) {
     const nodesCatalog = getDflowBinanceNodesCatalog({
       symbols: binanceSymbols,

@@ -186,7 +186,9 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
 
   // Fetch accountStrategies on updates.
   useEffect(() => {
-    if (writeData) READ({});
+    if (!writeData) return;
+    const controller = READ({});
+    return () => controller.abort();
   }, [writeData, READ]);
 
   return (
