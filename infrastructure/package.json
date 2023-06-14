@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-elastic-load-balancing-v2": "^3.298.0",
-    "@aws-sdk/client-s3": "^3.298.0",
+    "@ggbot2/aws-s3": "file:aws-s3",
     "@ggbot2/locators": "file:locators",
     "@ggbot2/env": "file:env"
   },

@@ -25,6 +25,8 @@
     "@ggbot2/binance-client": "file:binance-client",
     "@ggbot2/dflow": "file:dflow",
     "@ggbot2/email-messages": "file:email-messages",
+    "@ggbot2/infrastructure": "file:infrastructure",
+    "@ggbot2/locators": "file:dflow",
     "@ggbot2/test-data": "file:test-data"
   },
   "eslintConfig": {

@@ -1,1 +1,2 @@
-export * from "./bundle.js";
+export * from "./awsLambdaBundle.js";
+export * from "./browserBundle.js";

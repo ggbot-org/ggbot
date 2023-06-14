@@ -9,12 +9,14 @@ import { build, BuildOptions } from "esbuild";
  * ```ts
  * import { browserBundle } from "@ggbot2/esbuild";
  *
- * const bundleApp = async () => {
+ * const bundleWebApps = async () => {
  *   await browserBundle({
  *     entryPoints: ["src/app.tsx"],
  *     outfile: "public/app.js",
  *   });
  * };
+ *
+ * bundleWebApps();
  * ```
  */
 export const browserBundle = async ({
@@ -26,7 +28,6 @@ export const browserBundle = async ({
     minify: !ENV.deployStageIsLocal,
     entryPoints,
     outfile,
+    platform: "browser",
   });
 };
-
-// TODO nodeBundle for lambdas

@@ -1,4 +1,4 @@
-import { DeployStage } from "@ggbot2/env";
+import type { DeployStage } from "@ggbot2/env";
 
 import {
   apiDomain,
@@ -9,32 +9,25 @@ import {
 } from "./FQDNs.js";
 
 export class ApiBaseURL extends URL {
-  static local = `https://${apiLocalDomain}`;
-  static main = `https://${apiDomain}`;
-  static next = `https://${apiNextDomain}`;
-
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? ApiBaseURL.main
+        ? `https://${apiDomain}`
         : deployStage === "next"
-        ? ApiBaseURL.next
-        : ApiBaseURL.local
+        ? `https://${apiNextDomain}`
+        : `https://${apiLocalDomain}`
     );
   }
 }
 
 export class UserWebappBaseURL extends URL {
-  static main = `https://${userWebappDomain}`;
-  static next = `https://${userWebappNextDomain}`;
-
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? UserWebappBaseURL.main
+        ? `https://${userWebappDomain}`
         : deployStage === "next"
-        ? UserWebappBaseURL.next
-        : window.location.toString()
+        ? `https://${userWebappNextDomain}`
+        : "http://127.0.0.1:8000/"
     );
   }
 }

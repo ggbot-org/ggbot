@@ -1,11 +1,13 @@
-// TODO import { awsRegion } from "@ggbot2/infrastructure"
-import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
-import { Destination, Message } from "@aws-sdk/client-ses";
+// TODO move to aws-ses package
+import {
+  Destination,
+  Message,
+  SendEmailCommand,
+  SESClient,
+} from "@aws-sdk/client-ses";
+import { awsSesRegion } from "@ggbot2/infrastructure";
 
-// TODO
-// why sending from a region other than us-east-1 does not work?
-// const ses = new SESClient({ apiVersion: "2010-12-01", region: awsRegion });
-const ses = new SESClient({ apiVersion: "2010-12-01", region: "us-east-1" });
+const ses = new SESClient({ apiVersion: "2010-12-01", region: awsSesRegion });
 
 export type SendEmailInput = {
   html: string;

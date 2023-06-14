@@ -23,7 +23,8 @@
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/aws": "file:aws"
+    "@ggbot2/aws": "file:aws",
+    "@ggbot2/infrastructure": "file:infrastructure"
   },
   "eslintConfig": {
     "extends": [

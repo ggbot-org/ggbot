@@ -11,14 +11,16 @@
   },
   "scripts": {
     "build": "npm run bundle && npm run zip",
-    "bundle": "node scripts/bundle.js",
+    "bundle": "node src/scripts/bundle.js",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "create": "sh scripts/create.sh",
-    "deploy": "sh scripts/deploy.sh",
+    "create": "sh src/scripts/create.sh",
+    "deploy": "sh src/scripts/deploy.sh",
     "lint": "eslint --fix --ext .ts .",
     "prebuild": "npm run cleanup",
-    "zip": "sh scripts/zip.sh"
+    "precreate": "npm run build",
+    "predeploy": "npm run build",
+    "zip": "sh src/scripts/zip.sh"
   },
   "dependencies": {
     "@ggbot2/api": "file:api",
