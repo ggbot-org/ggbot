@@ -4,4 +4,4 @@ ROLE=arn:aws:iam::$AWS_ACCOUNT_ID:role/ggbot2_api_role
 
 ACTION_FUNCTION_NAME="ggbot2-${DEPLOY_STAGE}-user-api-action"
 ACTION_FUNCTION_LOG_GROUP_NAME=/aws/lambda/$ACTION_FUNCTION_NAME
-ACTION_FUNCTION_ZIP_FILE=fileb://temp/action/index.zip
+ACTION_FUNCTION_ZIP_FILE=fileb://dist/action.zip

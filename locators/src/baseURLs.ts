@@ -9,25 +9,33 @@ import {
 } from "./FQDNs.js";
 
 export class ApiBaseURL extends URL {
+  static local = `https://${apiLocalDomain}`;
+  static main = `https://${apiDomain}`;
+  static next = `https://${apiNextDomain}`;
+
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? `https://${apiDomain}`
+        ? ApiBaseURL.main
         : deployStage === "next"
-        ? `https://${apiNextDomain}`
-        : `https://${apiLocalDomain}`
+        ? ApiBaseURL.next
+        : ApiBaseURL.local
     );
   }
 }
 
 export class UserWebappBaseURL extends URL {
+  static local = globalThis.location?.toString();
+  static main = `https://${userWebappDomain}`;
+  static next = `https://${userWebappNextDomain}`;
+
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? `https://${userWebappDomain}`
+        ? UserWebappBaseURL.main
         : deployStage === "next"
-        ? `https://${userWebappNextDomain}`
-        : "http://127.0.0.1:8000/"
+        ? UserWebappBaseURL.next
+        : UserWebappBaseURL.local
     );
   }
 }

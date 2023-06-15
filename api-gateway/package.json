@@ -21,8 +21,7 @@
     "@ggbot2/http": "file:http",
     "@ggbot2/locators": "file:locators",
     "@types/aws-lambda": "^8.10.114",
-    "aws-lambda": "^1.0.7",
-    "esbuild": "^0.17.17"
+    "aws-lambda": "^1.0.7"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

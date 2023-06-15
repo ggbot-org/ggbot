@@ -9,14 +9,19 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
 } from "@ggbot2/http";
 import { UserWebappBaseURL } from "@ggbot2/locators";
-import { APIGatewayProxyResult } from "aws-lambda";
+import type { APIGatewayProxyResult } from "aws-lambda";
+
+// TODO APIGatewayProxyResult could be copied here, then remove
+// aws-lambda as a dep, consider keep @types/aws-lambda
 
 const { DEPLOY_STAGE } = ENV;
 
-const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
+const allowedOrigin = ENV.deployStageIsLocal
+  ? "*"
+  : new UserWebappBaseURL(DEPLOY_STAGE).origin;
 
 const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": userWebappBaseURL.origin,
+  "Access-Control-Allow-Origin": allowedOrigin,
 };
 
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({

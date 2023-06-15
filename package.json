@@ -68,6 +68,7 @@
     "prebuild:dflow": "npm run build:binance",
     "prebuild:executor": "npm run build:database",
     "prebuild:infrastructure": "npm run build:locators",
+    "prebuild:locators": "npm run build:env",
     "prebuild:models": "npm run build:arithmetic && npm run build:time",
     "prebuild:public-api": "npm run build:api-gateway npm run build:database",
     "prebuild:time": "npm run build:type-utils",
