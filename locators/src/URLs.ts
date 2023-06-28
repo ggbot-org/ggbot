@@ -22,6 +22,12 @@ export class ApiAdminActionURL extends URL {
   }
 }
 
+export class ApiPublicActionURL extends URL {
+  constructor(apiBaseURL: string) {
+    super("/public/action", apiBaseURL);
+  }
+}
+
 export class ApiUserActionURL extends URL {
   constructor(apiBaseURL: string) {
     super("/user/action", apiBaseURL);
