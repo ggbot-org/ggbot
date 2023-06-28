@@ -59,10 +59,16 @@ export const METHOD_NOT_ALLOWED = {
 };
 
 export const OK = (
-  data: ApiActionResponseData["data"]
+  data: ApiActionResponseData["data"],
+  allowCredentials = true
 ): APIGatewayProxyResult => ({
   body: JSON.stringify({ data }),
   headers: {
+    ...(allowCredentials
+      ? {
+          "Access-Control-Allow-Credentials": "true",
+        }
+      : {}),
     "Content-Type": "application/json",
     ...accessControlAllowOrigin,
   },
