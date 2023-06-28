@@ -70,7 +70,7 @@
     "prebuild:infrastructure": "npm run build:locators",
     "prebuild:locators": "npm run build:env",
     "prebuild:models": "npm run build:arithmetic && npm run build:time",
-    "prebuild:public-api": "npm run build:api-gateway npm run build:database",
+    "prebuild:public-api": "npm run build:api-gateway && npm run build:database",
     "prebuild:time": "npm run build:type-utils",
     "prebuild:use-action": "npm run build:api && npm run build:react",
     "prebuild:user-api": "npm run build:api-gateway && npm run build:cookies && npm run build:database",
