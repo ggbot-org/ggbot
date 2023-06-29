@@ -14,10 +14,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   const [email, setEmail] = useState<EmailAddress | undefined>();
   const [verified, setVerified] = useState(false);
 
-  const setModalIsActive = useCallback(() => {
-    // Use an empty callback, modal cannot be closed by user input.
-  }, []);
-
   const resetEmail = useCallback(() => {
     setEmail(undefined);
   }, [setEmail]);
@@ -31,7 +27,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       {hasSession ? children : null}
 
       {hasSession === false ? (
-        <Modal isActive={!verified} setIsActive={setModalIsActive}>
+        <Modal isActive={!verified}>
           {email ? (
             <AuthVerifyForm
               email={email}

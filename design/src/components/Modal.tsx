@@ -14,7 +14,7 @@ import {
 } from "trunx";
 
 export type ModalProps = Pick<_ModalProps, "isActive"> & {
-  setIsActive: Dispatch<SetStateAction<boolean>>;
+  setIsActive?: Dispatch<SetStateAction<boolean>> | undefined;
 };
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -22,15 +22,23 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   isActive,
   setIsActive,
 }) => {
+  const userCannotCloseModal = setIsActive === undefined;
+
   const closeModal = useCallback(() => {
+    if (userCannotCloseModal) return;
     setIsActive(false);
-  }, [setIsActive]);
+  }, [setIsActive, userCannotCloseModal]);
 
   return (
     <_Modal isActive={isActive}>
       <ModalBackground />
       <ModalContent>{children}</ModalContent>
-      <ModalClose size="large" onClick={closeModal} />
+
+      {
+        /* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
+          <ModalClose size="large" onClick={closeModal} />
+        )
+      }
     </_Modal>
   );
 };
