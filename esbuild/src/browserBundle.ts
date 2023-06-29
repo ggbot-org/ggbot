@@ -1,4 +1,3 @@
-import { ENV } from "@ggbot2/env";
 import { build, BuildOptions } from "esbuild";
 
 /**
@@ -25,7 +24,7 @@ export const browserBundle = async ({
 }: Pick<BuildOptions, "entryPoints" | "outfile">) => {
   build({
     bundle: true,
-    minify: !ENV.deployStageIsLocal,
+    minify: true,
     entryPoints,
     outfile,
     platform: "browser",

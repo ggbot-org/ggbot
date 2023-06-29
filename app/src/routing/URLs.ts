@@ -3,6 +3,7 @@ import {
   ApiAuthenticationExitURL,
   ApiAuthenticationVerifyURL,
   ApiBaseURL,
+  ApiPublicActionURL,
   ApiPurchaseOrderURL,
   ApiUserActionURL,
 } from "@ggbot2/locators";
@@ -11,8 +12,11 @@ import { getDeployStage } from "./deployStage.js";
 
 const DEPLOY_STAGE = getDeployStage();
 
-let apiUserAction = "";
+let apiPublicAction = "";
+
 let apiPurchaseOrder = "";
+let apiUserAction = "";
+
 let authenticationEnter = "";
 let authenticationExit = "";
 let authenticationVerify = "";
@@ -20,8 +24,10 @@ let authenticationVerify = "";
 if (DEPLOY_STAGE) {
   const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString();
 
-  apiUserAction = new ApiUserActionURL(apiBase).toString();
   apiPurchaseOrder = new ApiPurchaseOrderURL(apiBase).toString();
+
+  apiPublicAction = new ApiPublicActionURL(apiBase).toString();
+  apiUserAction = new ApiUserActionURL(apiBase).toString();
 
   authenticationEnter = new ApiAuthenticationEnterURL(apiBase).toString();
   authenticationExit = new ApiAuthenticationExitURL(apiBase).toString();
@@ -29,6 +35,7 @@ if (DEPLOY_STAGE) {
 }
 
 export const url = {
+  apiPublicAction,
   apiPurchaseOrder,
   apiUserAction,
   authenticationEnter,

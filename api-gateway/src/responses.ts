@@ -11,17 +11,8 @@ import {
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import type { APIGatewayProxyResult } from "aws-lambda";
 
-// TODO APIGatewayProxyResult could be copied here, then remove
-// aws-lambda as a dep, consider keep @types/aws-lambda
-
-const { DEPLOY_STAGE } = ENV;
-
-const allowedOrigin = ENV.deployStageIsLocal
-  ? "*"
-  : new UserWebappBaseURL(DEPLOY_STAGE).origin;
-
 const accessControlAllowOrigin = {
-  "Access-Control-Allow-Origin": allowedOrigin,
+  "Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE).origin,
 };
 
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({

@@ -9,118 +9,151 @@ import { useAction } from "@ggbot2/use-action";
 
 import { url } from "../routing/URLs.js";
 
-const endpoint = url.apiUserAction;
+const userEndpoint = url.apiUserAction;
+const publicEndpoint = url.apiPublicAction;
 
-export const useApi = {
+const publicApi = {
+  ReadStrategy: () =>
+    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(
+      publicEndpoint,
+      {
+        type: "ReadStrategy",
+      }
+    ),
+  ReadStrategyFlow: () =>
+    useAction<PublicApiAction["ReadStrategyFlow"], PublicApiActionType>(
+      publicEndpoint,
+      {
+        type: "ReadStrategyFlow",
+      }
+    ),
+};
+
+const userApi = {
   CopyStrategy: () =>
-    useAction<UserApiAction["CopyStrategy"], UserApiActionType>(endpoint, {
+    useAction<UserApiAction["CopyStrategy"], UserApiActionType>(userEndpoint, {
       type: "CopyStrategy",
     }),
   CreateBinanceApiConfig: () =>
     useAction<UserApiAction["CreateBinanceApiConfig"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "CreateBinanceApiConfig",
       }
     ),
   CreateStrategy: () =>
-    useAction<UserApiAction["CreateStrategy"], UserApiActionType>(endpoint, {
-      type: "CreateStrategy",
-    }),
+    useAction<UserApiAction["CreateStrategy"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "CreateStrategy",
+      }
+    ),
   DeleteAccount: () =>
-    useAction<UserApiAction["DeleteAccount"], UserApiActionType>(endpoint, {
+    useAction<UserApiAction["DeleteAccount"], UserApiActionType>(userEndpoint, {
       type: "DeleteAccount",
     }),
   DeleteBinanceApiConfig: () =>
     useAction<UserApiAction["DeleteBinanceApiConfig"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "DeleteBinanceApiConfig",
       }
     ),
   DeleteStrategy: () =>
-    useAction<UserApiAction["DeleteStrategy"], UserApiActionType>(endpoint, {
-      type: "DeleteStrategy",
-    }),
+    useAction<UserApiAction["DeleteStrategy"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "DeleteStrategy",
+      }
+    ),
   ExecuteStrategy: () =>
-    useAction<UserApiAction["ExecuteStrategy"], UserApiActionType>(endpoint, {
-      type: "ExecuteStrategy",
-    }),
+    useAction<UserApiAction["ExecuteStrategy"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "ExecuteStrategy",
+      }
+    ),
   ReadAccount: () =>
-    useAction<UserApiAction["ReadAccount"], UserApiActionType>(endpoint, {
+    useAction<UserApiAction["ReadAccount"], UserApiActionType>(userEndpoint, {
       type: "ReadAccount",
     }),
   ReadAccountStrategies: () =>
     useAction<UserApiAction["ReadAccountStrategies"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "ReadAccountStrategies",
       }
     ),
   ReadBinanceApiConfig: () =>
     useAction<UserApiAction["ReadBinanceApiConfig"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "ReadBinanceApiConfig",
       }
     ),
   ReadBinanceApiKeyPermissions: () =>
     useAction<UserApiAction["ReadBinanceApiKeyPermissions"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "ReadBinanceApiKeyPermissions",
       }
     ),
-  ReadStrategy: () =>
-    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(endpoint, {
-      type: "ReadStrategy",
-    }),
   ReadStrategyBalances: () =>
     useAction<UserApiAction["ReadStrategyBalances"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "ReadStrategyBalances",
       }
     ),
-  ReadStrategyFlow: () =>
-    useAction<PublicApiAction["ReadStrategyFlow"], PublicApiActionType>(
-      endpoint,
-      {
-        type: "ReadStrategyFlow",
-      }
-    ),
   ReadStrategyOrders: () =>
     useAction<UserApiAction["ReadStrategyOrders"], UserApiActionType>(
-      endpoint,
+      userEndpoint,
       {
         type: "ReadStrategyOrders",
       }
     ),
   ReadSubscription: () =>
-    useAction<UserApiAction["ReadSubscription"], UserApiActionType>(endpoint, {
-      type: "ReadSubscription",
-    }),
+    useAction<UserApiAction["ReadSubscription"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "ReadSubscription",
+      }
+    ),
   RenameAccount: () =>
-    useAction<UserApiAction["RenameAccount"], UserApiActionType>(endpoint, {
+    useAction<UserApiAction["RenameAccount"], UserApiActionType>(userEndpoint, {
       type: "RenameAccount",
     }),
   RenameStrategy: () =>
-    useAction<UserApiAction["RenameStrategy"], UserApiActionType>(endpoint, {
-      type: "RenameStrategy",
-    }),
+    useAction<UserApiAction["RenameStrategy"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "RenameStrategy",
+      }
+    ),
   SetAccountCountry: () =>
-    useAction<UserApiAction["SetAccountCountry"], UserApiActionType>(endpoint, {
-      type: "SetAccountCountry",
-    }),
+    useAction<UserApiAction["SetAccountCountry"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "SetAccountCountry",
+      }
+    ),
   WriteAccountStrategiesItemSchedulings: () =>
     useAction<
       UserApiAction["WriteAccountStrategiesItemSchedulings"],
       UserApiActionType
-    >(endpoint, {
+    >(userEndpoint, {
       type: "WriteAccountStrategiesItemSchedulings",
     }),
   WriteStrategyFlow: () =>
-    useAction<UserApiAction["WriteStrategyFlow"], UserApiActionType>(endpoint, {
-      type: "WriteStrategyFlow",
-    }),
+    useAction<UserApiAction["WriteStrategyFlow"], UserApiActionType>(
+      userEndpoint,
+      {
+        type: "WriteStrategyFlow",
+      }
+    ),
+};
+
+export const useApi = {
+  ...publicApi,
+  ...userApi,
 };
