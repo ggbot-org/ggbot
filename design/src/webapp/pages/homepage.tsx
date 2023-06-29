@@ -5,13 +5,12 @@ import {
   Logo,
   Navbar,
   Section,
-  Title,
+  Title as _Title,
 } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { ButtonColors, LoadingButtons } from "../examples/Buttons.js";
-import { SingleCalendar } from "../examples/Calendar.js";
 import { SimpleForm } from "../examples/Forms.js";
 import { Icons } from "../examples/Icons.js";
 import { InputFields } from "../examples/InputFields.js";
@@ -20,6 +19,10 @@ import { SimpleTable } from "../examples/Tables.js";
 import { Tags } from "../examples/Tags.js";
 import { TimeIntervalSelectors } from "../examples/TimeIntervalSelectors.js";
 import { Typography } from "../examples/Typography.js";
+
+const Title: FC<PropsWithChildren> = ({ children }) => (
+  <_Title size={1}>{children}</_Title>
+);
 
 const Page: FC = () => (
   <>
@@ -96,13 +99,6 @@ const Page: FC = () => (
         <Container>
           <Title>Tags</Title>
           <Tags />
-        </Container>
-      </Section>
-
-      <Section>
-        <Container>
-          <Title>Calendars</Title>
-          <SingleCalendar />
         </Container>
       </Section>
 
