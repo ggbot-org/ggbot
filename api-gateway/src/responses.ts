@@ -11,7 +11,8 @@ import {
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import type { APIGatewayProxyResult } from "aws-lambda";
 
-const accessControlAllowOrigin = {
+const commonHeaders = {
+  "Access-Control-Allow-Credentials": "true",
   "Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE).origin,
 };
 
@@ -20,7 +21,7 @@ export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({
   headers: {
     "Access-Control-Allow-Headers": "Content-type",
     "Access-Control-Allow-Methods": ["OPTIONS"].concat(methods).join(),
-    ...accessControlAllowOrigin,
+    ...commonHeaders,
   },
   isBase64Encoded: false,
   statusCode: __200__OK__,
@@ -30,38 +31,32 @@ export const BAD_REQUEST = (
   error?: ApiActionResponseError["error"]
 ): APIGatewayProxyResult => ({
   body: error ? JSON.stringify(error) : "",
-  headers: accessControlAllowOrigin,
+  headers: commonHeaders,
   isBase64Encoded: false,
   statusCode: __400__BAD_REQUEST__,
 });
 
 export const INTERNAL_SERVER_ERROR: APIGatewayProxyResult = {
   body: "",
-  headers: accessControlAllowOrigin,
+  headers: commonHeaders,
   isBase64Encoded: false,
   statusCode: __500__INTERNAL_SERVER_ERROR__,
 };
 
 export const METHOD_NOT_ALLOWED = {
   body: "",
-  headers: accessControlAllowOrigin,
+  headers: commonHeaders,
   isBase64Encoded: false,
   statusCode: __405__METHOD_NOT_ALLOWED__,
 };
 
 export const OK = (
-  data: ApiActionResponseData["data"],
-  allowCredentials = true
+  data: ApiActionResponseData["data"]
 ): APIGatewayProxyResult => ({
   body: JSON.stringify({ data }),
   headers: {
-    ...(allowCredentials
-      ? {
-          "Access-Control-Allow-Credentials": "true",
-        }
-      : {}),
     "Content-Type": "application/json",
-    ...accessControlAllowOrigin,
+    ...commonHeaders,
   },
   isBase64Encoded: false,
   statusCode: __200__OK__,
@@ -69,7 +64,7 @@ export const OK = (
 
 export const UNATHORIZED: APIGatewayProxyResult = {
   body: "",
-  headers: accessControlAllowOrigin,
+  headers: commonHeaders,
   isBase64Encoded: false,
   statusCode: __401__UNAUTHORIZED__,
 };
