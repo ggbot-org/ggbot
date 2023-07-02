@@ -12,6 +12,10 @@ import {
   publicDir,
   settingsHtmlAppJs,
   settingsHtmlFilename,
+  subscriptionCanceledHtmlAppJs,
+  subscriptionCanceledHtmlFilename,
+  subscriptionPurchasedHtmlAppJs,
+  subscriptionPurchasedHtmlFilename,
   viewStrategyFlowHtmlAppJs,
   viewStrategyFlowHtmlFilename,
 } from "../package.js";
@@ -77,6 +81,19 @@ export const generateHtml = async () => {
     dirname,
     filename: settingsHtmlFilename("binance"),
     htmlContent: html(settingsHtmlAppJs("binance")),
+  });
+
+  // Subscription
+
+  await generateHtmlPage({
+    dirname,
+    filename: subscriptionCanceledHtmlFilename,
+    htmlContent: html(subscriptionCanceledHtmlAppJs),
+  });
+  await generateHtmlPage({
+    dirname,
+    filename: subscriptionPurchasedHtmlFilename,
+    htmlContent: html(subscriptionPurchasedHtmlAppJs),
   });
 };
 
