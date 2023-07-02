@@ -1,5 +1,7 @@
 temp/
-*.css
-*.css.map
-*.js
-*.html
+public/*.css
+public/*.css.map
+public/*.js
+public/*.html
+public/translations/*.json
+src/i18n/FormatjsIntlMessageIds.d.ts

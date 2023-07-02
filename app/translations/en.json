@@ -1,0 +1,8 @@
+{
+  "SubscriptionPurchasedMessage.body": {
+    "defaultMessage": "Thank you for your purchase."
+  },
+  "SubscriptionCanceledMessage.body": {
+    "defaultMessage": "Your purchase was canceled."
+  }
+}

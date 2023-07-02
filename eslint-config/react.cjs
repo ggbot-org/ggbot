@@ -13,10 +13,11 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: [...base.plugins, "jsx-a11y", "react", "react-hooks"],
+  plugins: [...base.plugins, "formatjs", "jsx-a11y", "react", "react-hooks"],
   root: true,
   rules: {
     ...base.rules,
+    "formatjs/no-literal-string-in-jsx": "warn",
     "jsx-a11y/aria-props": "error",
     "jsx-a11y/aria-proptypes": "error",
     "jsx-a11y/aria-unsupported-elements": "error",

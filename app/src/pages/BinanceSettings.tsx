@@ -1,9 +1,10 @@
 import { Column, Columns } from "@ggbot2/design";
+import { I18nContextProvider } from "@ggbot2/i18n";
 import { BinanceApiConfig } from "@ggbot2/models";
-import { mount } from "@ggbot2/react";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, useCallback, useEffect, useState } from "react";
 
+import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { BinanceApi } from "../components/BinanceApi.js";
 import { CreateBinanceApi } from "../components/CreateBinanceApi.js";
 import { DeleteBinanceApi } from "../components/DeleteBinanceApi.js";
@@ -16,7 +17,7 @@ const hideApiKey = (apiKey: string) =>
     apiKey.length
   )}`;
 
-const Page: FC = () => {
+export const BinanceSettingsPage: FC = () => {
   const [READ, { data }] = useApi.ReadBinanceApiConfig();
 
   const [apiKey, setApiKey] = useState("");
@@ -46,20 +47,22 @@ const Page: FC = () => {
   if (data === undefined) return <OneSectionLayout />;
 
   return (
-    <OneSectionLayout>
-      <Columns>
-        <Column size="half">
-          {apiKey ? (
-            <BinanceApi apiKey={apiKey} />
-          ) : (
-            <CreateBinanceApi onCreate={refetchApiKey} />
-          )}
-        </Column>
-      </Columns>
+    <I18nContextProvider>
+      <AuthenticationProvider>
+        <OneSectionLayout>
+          <Columns>
+            <Column size="half">
+              {apiKey ? (
+                <BinanceApi apiKey={apiKey} />
+              ) : (
+                <CreateBinanceApi onCreate={refetchApiKey} />
+              )}
+            </Column>
+          </Columns>
 
-      {apiKey ? <DeleteBinanceApi onDelete={resetApiKey} /> : null}
-    </OneSectionLayout>
+          {apiKey ? <DeleteBinanceApi onDelete={resetApiKey} /> : null}
+        </OneSectionLayout>
+      </AuthenticationProvider>
+    </I18nContextProvider>
   );
 };
-
-mount(Page);

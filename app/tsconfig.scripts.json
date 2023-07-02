@@ -9,7 +9,7 @@
   "include": [
     "src/package.ts",
     "src/pages/*.ts",
-    "src/routing/*ts",
-    "src/scripts/*ts"
+    "src/routing/*.ts",
+    "src/scripts/*.ts"
   ]
 }

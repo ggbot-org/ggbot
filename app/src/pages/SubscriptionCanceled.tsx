@@ -1,15 +1,13 @@
-import { Message } from "@ggbot2/design";
-import { mount } from "@ggbot2/react";
+import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
+import { SubscriptionCanceledMessage } from "../components/SubscriptionCanceledMessage.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 
-const Page: FC = () => (
-  <OneSectionLayout>
-    <Message color="warning">
-      <p>Your purchase was canceled.</p>
-    </Message>
-  </OneSectionLayout>
+export const SubscriptionCanceledPage: FC = () => (
+  <I18nContextProvider>
+    <OneSectionLayout>
+      <SubscriptionCanceledMessage />
+    </OneSectionLayout>
+  </I18nContextProvider>
 );
-
-mount(Page);

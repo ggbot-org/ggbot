@@ -1,22 +1,16 @@
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 
 import {
-  copyStrategyHtmlAppJs,
+  appJs,
   copyStrategyHtmlFilename,
-  editStrategyFlowHtmlAppJs,
   editStrategyFlowHtmlFilename,
-  indexHtmlAppJs,
   indexHtmlFilename,
-  manageStrategyHtmlAppJs,
   manageStrategyHtmlFilename,
   publicDir,
-  settingsHtmlAppJs,
   settingsHtmlFilename,
-  subscriptionCanceledHtmlAppJs,
   subscriptionCanceledHtmlFilename,
-  subscriptionPurchasedHtmlAppJs,
   subscriptionPurchasedHtmlFilename,
-  viewStrategyFlowHtmlAppJs,
+  viewJs,
   viewStrategyFlowHtmlFilename,
 } from "../package.js";
 
@@ -36,7 +30,7 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: indexHtmlFilename,
-    htmlContent: html(indexHtmlAppJs),
+    htmlContent: html(appJs),
   });
 
   // Strategy
@@ -44,12 +38,12 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: copyStrategyHtmlFilename,
-    htmlContent: html(copyStrategyHtmlAppJs),
+    htmlContent: html(appJs),
   });
   await generateHtmlPage({
     dirname,
     filename: manageStrategyHtmlFilename,
-    htmlContent: html(manageStrategyHtmlAppJs),
+    htmlContent: html(appJs),
   });
 
   // Strategy flow
@@ -57,12 +51,12 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: editStrategyFlowHtmlFilename,
-    htmlContent: html(editStrategyFlowHtmlAppJs),
+    htmlContent: html(appJs),
   });
   await generateHtmlPage({
     dirname,
     filename: viewStrategyFlowHtmlFilename,
-    htmlContent: html(viewStrategyFlowHtmlAppJs),
+    htmlContent: html(viewJs),
   });
 
   // Settings
@@ -70,17 +64,17 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: settingsHtmlFilename("account"),
-    htmlContent: html(settingsHtmlAppJs("account")),
+    htmlContent: html(appJs),
   });
   await generateHtmlPage({
     dirname,
     filename: settingsHtmlFilename("billing"),
-    htmlContent: html(settingsHtmlAppJs("billing")),
+    htmlContent: html(appJs),
   });
   await generateHtmlPage({
     dirname,
     filename: settingsHtmlFilename("binance"),
-    htmlContent: html(settingsHtmlAppJs("binance")),
+    htmlContent: html(appJs),
   });
 
   // Subscription
@@ -88,12 +82,12 @@ export const generateHtml = async () => {
   await generateHtmlPage({
     dirname,
     filename: subscriptionCanceledHtmlFilename,
-    htmlContent: html(subscriptionCanceledHtmlAppJs),
+    htmlContent: html(appJs),
   });
   await generateHtmlPage({
     dirname,
     filename: subscriptionPurchasedHtmlFilename,
-    htmlContent: html(subscriptionPurchasedHtmlAppJs),
+    htmlContent: html(appJs),
   });
 };
 

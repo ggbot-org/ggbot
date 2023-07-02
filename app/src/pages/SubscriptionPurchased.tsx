@@ -1,15 +1,13 @@
-import { Message } from "@ggbot2/design";
-import { mount } from "@ggbot2/react";
+import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
+import { SubscriptionPurchasedMessage } from "../components/SubscriptionPurchasedMessage.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 
-const Page: FC = () => (
-  <OneSectionLayout>
-    <Message color="success">
-      <p>Thank you for your purchase.</p>
-    </Message>
-  </OneSectionLayout>
+export const SubscriptionPurchasedPage: FC = () => (
+  <I18nContextProvider>
+    <OneSectionLayout>
+      <SubscriptionPurchasedMessage />
+    </OneSectionLayout>
+  </I18nContextProvider>
 );
-
-mount(Page);

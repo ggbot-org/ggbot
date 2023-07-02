@@ -2,6 +2,8 @@ import { UtrustCancelURL, UtrustReturnURL } from "@ggbot2/locators";
 
 import { SettingsPageId } from "./types.js";
 
+export const indexHtmlFilename = "index.html";
+
 export const copyStrategyHtmlFilename = "copy-strategy.html";
 
 export const editStrategyFlowHtmlFilename = "edit.html";

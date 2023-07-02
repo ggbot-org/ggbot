@@ -44,6 +44,9 @@
       "dist/",
       "public/",
       "temp/"
-    ]
+    ],
+    "rules": {
+      "formatjs/no-literal-string-in-jsx": "off"
+    }
   }
 }
