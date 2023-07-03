@@ -25,7 +25,7 @@ export class ApiBaseURL extends URL {
 }
 
 export class UserWebappBaseURL extends URL {
-  static local = "http://localhost:8000"
+  static local = "http://localhost:8000";
   static main = `https://${userWebappDomain}`;
   static next = `https://${userWebappNextDomain}`;
 
