@@ -25,10 +25,9 @@ export const useAuthentication = () => {
   }
 
   useEffect(() => {
-    if (hasSession || isPending || aborted || error) return;
-    const controller = READ({});
-    return () => controller.abort();
-  }, [READ, aborted, error, hasSession, isPending]);
+    if (hasSession || isPending || error) return;
+    READ({});
+  }, [READ, error, hasSession, isPending]);
 
   return {
     email,
