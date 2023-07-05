@@ -1,3 +1,5 @@
+import { fontBaseUrl, fontFaceUrl } from "@ggbot2/assets";
+
 type LinkTag = {
   href: string;
 };
@@ -30,8 +32,8 @@ const scriptTag = ({ src }: ScriptTag) =>
   `<script type="module" src="${src}"></script>`;
 
 const fontTags = [
-  '<link rel="preconnect" href="https://rsms.me" crossorigin="">',
-  '<link href="https://rsms.me/inter/inter.css" rel="stylesheet">',
+  `<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
+  `<link href="${fontFaceUrl}" rel="stylesheet">`,
 ];
 
 const metaTags = ({ title }: HeadTagArgs["meta"]) => [
