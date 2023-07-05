@@ -29,10 +29,16 @@ const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`;
 const scriptTag = ({ src }: ScriptTag) =>
   `<script type="module" src="${src}"></script>`;
 
+const fontTags = [
+  '<link rel="preconnect" href="https://rsms.me" crossorigin="">',
+  '<link href="https://rsms.me/inter/inter.css" rel="stylesheet">',
+];
+
 const metaTags = ({ title }: HeadTagArgs["meta"]) => [
   '<meta charset="UTF-8" />',
   '<meta name="viewport" content="width=device-width" />',
   `<title>${title}</title>`,
+  ...fontTags,
 ];
 
 const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
