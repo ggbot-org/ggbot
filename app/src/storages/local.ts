@@ -1,21 +1,21 @@
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
 
-class LocalStorage {
-  static emailKey = "email";
+const emailKey = "email";
 
+class LocalStorage {
   get email(): EmailAddress | undefined {
-    const value = localStorage.getItem(LocalStorage.emailKey);
+    const value = window.localStorage.getItem(emailKey);
     if (isEmailAddress(value)) return value;
-    if (value !== null) localStorage.removeItem(LocalStorage.emailKey);
+    if (value !== null) window.localStorage.removeItem(emailKey);
   }
 
   set email(value: EmailAddress | undefined) {
     if (value) {
-      localStorage.setItem(LocalStorage.emailKey, value);
+      window.localStorage.setItem(emailKey, value);
     } else {
-      localStorage.removeItem(LocalStorage.emailKey);
+      window.localStorage.removeItem(emailKey);
     }
   }
 }
 
-export const local = new LocalStorage();
+export const localStorage = new LocalStorage();
