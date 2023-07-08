@@ -67,18 +67,15 @@ export const handler = async (
           const creationDay = today();
 
           let cookie = "";
+          const secure = DEPLOY_STAGE !== "local";
 
           if (emailAccount) {
             const session = { creationDay, accountId: emailAccount.accountId };
-            cookie = createSessionCookie(session, {
-              secure: DEPLOY_STAGE !== "local",
-            });
+            cookie = createSessionCookie(session, { secure });
           } else {
             const account = await createAccount({ email });
             const session = { creationDay, accountId: account.id };
-            cookie = createSessionCookie(session, {
-              secure: DEPLOY_STAGE !== "local",
-            });
+            cookie = createSessionCookie(session, { secure });
           }
 
           return {

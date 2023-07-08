@@ -1,10 +1,24 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3";
 import { ENV } from "@ggbot2/env";
-import { assetsDomain, topLevelDomain, wwwDomain } from "@ggbot2/locators";
+import {
+  appDomain,
+  appNextDomain,
+  assetsDomain,
+  topLevelDomain,
+  wwwDomain,
+} from "@ggbot2/locators";
 
 import { awsRegion } from "./awsRegion.js";
 
 const { DEPLOY_STAGE } = ENV;
+
+export const getAppBucketName = (deployStage = DEPLOY_STAGE) =>
+  ["local", "next"].includes(deployStage) ? appNextDomain : appDomain;
+
+export const getAppBucketArn = (deployStage = DEPLOY_STAGE) =>
+  `arn:aws:s3:::${getAppBucketName(deployStage)}`;
+
+export const appBucketACL = BucketCannedACL.public_read;
 
 export const getAssetsBucketName = () => assetsDomain;
 

@@ -8,9 +8,13 @@ export const apiDomain = `api.${topLevelDomain}`;
 export const apiNextDomain = `api-next.${topLevelDomain}`;
 export const apiLocalDomain = `api-local.${topLevelDomain}`;
 
+export const appDomain = `app.${topLevelDomain}`;
+export const appNextDomain = `app-next.${topLevelDomain}`;
+
 export const assetsDomain = `assets.${topLevelDomain}`;
 
 export const userWebappDomain = `app.${topLevelDomain}`;
+
 export const userWebappNextDomain = `app-next.${topLevelDomain}`;
 
 export const wwwDomain = `www.${topLevelDomain}`;

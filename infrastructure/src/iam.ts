@@ -3,6 +3,7 @@ import { DeployStage, ENV } from "@ggbot2/env";
 import { getLogsArn } from "./cloudWatch.js";
 import { lambdaAllArn } from "./lambda.js";
 import {
+  getAppBucketArn,
   getAssetsBucketArn,
   getDataBucketArn,
   getLogsBucketArn,
@@ -17,6 +18,7 @@ const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV;
 const Version = "2012-10-17";
 
 const resources = (deployStage: DeployStage) => ({
+  appBucketArn: getAppBucketArn(deployStage),
   dataBucketArn: getDataBucketArn(deployStage),
   logsBucketArn: getLogsBucketArn(deployStage),
 });
@@ -72,8 +74,10 @@ export const getDevopsPolicyStatements = () => [
       cross.assetsBucketArn,
       cross.nakedDomainBucketArn,
       cross.wwwBucketArn,
+      main.appBucketArn,
       main.dataBucketArn,
       main.logsBucketArn,
+      next.appBucketArn,
       next.dataBucketArn,
       next.logsBucketArn,
     ],
@@ -81,7 +85,14 @@ export const getDevopsPolicyStatements = () => [
   {
     Effect: "Allow",
     Action: ["s3:PutObject"],
-    Resource: [cross.wwwBucketArn, `${cross.wwwBucketArn}/*`],
+    Resource: [
+      cross.wwwBucketArn,
+      `${cross.wwwBucketArn}/*`,
+      main.appBucketArn,
+      `${main.appBucketArn}/*`,
+      next.appBucketArn,
+      `${next.appBucketArn}/*`,
+    ],
   },
 ];
 
