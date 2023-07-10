@@ -1,7 +1,7 @@
 import { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2";
 import { ENV } from "@ggbot2/env";
 
-import { awsRegion } from "./awsRegion.js";
+import { awsRegion } from "./awsRegions.js";
 
 const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV;
 

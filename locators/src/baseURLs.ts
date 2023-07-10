@@ -4,38 +4,45 @@ import {
   apiDomain,
   apiLocalDomain,
   apiNextDomain,
+  authDomain,
+  authLocalDomain,
+  authNextDomain,
   userWebappDomain,
   userWebappNextDomain,
 } from "./FQDNs.js";
 
 export class ApiBaseURL extends URL {
-  static local = `https://${apiLocalDomain}`;
-  static main = `https://${apiDomain}`;
-  static next = `https://${apiNextDomain}`;
-
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? ApiBaseURL.main
+        ? `https://${apiDomain}`
         : deployStage === "next"
-        ? ApiBaseURL.next
-        : ApiBaseURL.local
+        ? `https://${apiNextDomain}`
+        : `https://${apiLocalDomain}`
+    );
+  }
+}
+
+export class AuthBaseURL extends URL {
+  constructor(deployStage: DeployStage) {
+    super(
+      deployStage === "main"
+        ? `https://${authDomain}`
+        : deployStage === "next"
+        ? `https://${authNextDomain}`
+        : `https://${authLocalDomain}`
     );
   }
 }
 
 export class UserWebappBaseURL extends URL {
-  static local = "http://localhost:8000";
-  static main = `https://${userWebappDomain}`;
-  static next = `https://${userWebappNextDomain}`;
-
   constructor(deployStage: DeployStage) {
     super(
       deployStage === "main"
-        ? UserWebappBaseURL.main
+        ? `https://${userWebappDomain}`
         : deployStage === "next"
-        ? UserWebappBaseURL.next
-        : UserWebappBaseURL.local
+        ? `https://${userWebappNextDomain}`
+        : "http://localhost:8000"
     );
   }
 }

@@ -13,6 +13,10 @@ export const appNextDomain = `app-next.${topLevelDomain}`;
 
 export const assetsDomain = `assets.${topLevelDomain}`;
 
+export const authDomain = `auth.${topLevelDomain}`;
+export const authNextDomain = `auth-next.${topLevelDomain}`;
+export const authLocalDomain = `auth-local.${topLevelDomain}`;
+
 export const userWebappDomain = `app.${topLevelDomain}`;
 
 export const userWebappNextDomain = `app-next.${topLevelDomain}`;

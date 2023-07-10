@@ -1,6 +1,6 @@
 import { ENV } from "@ggbot2/env";
 
-import { awsRegion } from "./awsRegion.js";
+import { awsRegion } from "./awsRegions.js";
 
 const { AWS_ACCOUNT_ID } = ENV;
 

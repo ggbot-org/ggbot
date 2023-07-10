@@ -8,7 +8,7 @@ import {
   wwwDomain,
 } from "@ggbot2/locators";
 
-import { awsRegion } from "./awsRegion.js";
+import { awsRegion } from "./awsRegions.js";
 
 const { DEPLOY_STAGE } = ENV;
 

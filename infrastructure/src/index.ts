@@ -1,4 +1,4 @@
-export * from "./awsRegion.js";
+export * from "./awsRegions.js";
 export * from "./ec2.js";
 export * from "./elb.js";
 export * from "./iam.js";
