@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/executor",
+  "name": "@ggbot2/binance-proxy",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,8 +9,7 @@
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts .",
     "pretest": "tsc --build tsconfig.test.json",
-    "start": "node dist/start",
-    "test": "node --test"
+    "start": "node dist/server"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
