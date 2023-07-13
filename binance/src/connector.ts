@@ -2,24 +2,11 @@ import { ErrorHTTP } from "@ggbot2/http";
 
 import { BinanceApiEndpoint } from "./endpoints.js";
 
-const defaultBaseUrl = "https://api.binance.com";
-const apiClusters = [
-  "https://api1.binance.com",
-  "https://api2.binance.com",
-  "https://api3.binance.com",
-];
-const baseUrls = [defaultBaseUrl, ...apiClusters] as const;
-type BaseUrl = (typeof baseUrls)[number];
-
-/** BinanceConnector is a base class for BinanceExchange and BinanceClient. */
+/** BinanceConnector is a base class for Binance clients. */
 export class BinanceConnector {
-  static baseUrls = baseUrls;
-  static defaultBaseUrl = defaultBaseUrl;
-  readonly baseUrl: BaseUrl;
+  readonly baseUrl: string;
 
-  constructor({
-    baseUrl = BinanceConnector.defaultBaseUrl,
-  }: BinanceConnectorConstructorArg) {
+  constructor({ baseUrl }: BinanceConnectorConstructorArg) {
     this.baseUrl = baseUrl;
   }
 

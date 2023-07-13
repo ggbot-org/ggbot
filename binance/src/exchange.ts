@@ -57,11 +57,12 @@ import {
  *   BinanceCacheMap,
  *   BinanceConnector,
  *   BinanceExchange,
+ *   binanceApiDomain,
  * } from "@ggbot2/binance";
  *
  * const cache = new BinanceCacheMap();
  * const binance = new BinanceExchange({
- *   baseUrl: BinanceConnector.defaultBaseUrl,
+ *   baseUrl: `https://${binanceApiDomain}`,
  *   cache: new BinanceCacheMap(),
  * });
  * ```

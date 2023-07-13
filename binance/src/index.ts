@@ -3,6 +3,7 @@ export * from "./cache.js";
 export * from "./connector.js";
 export * from "./errors.js";
 export * from "./exchange.js";
+export * from "./FQDN.js";
 export * from "./time.js";
 export * from "./typeGuards.js";
 export * from "./types.js";
