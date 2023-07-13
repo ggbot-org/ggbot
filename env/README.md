@@ -5,7 +5,6 @@ The following environment variables are used:
 - Required:
   - `AWS_ACCOUNT_ID`
   - `AWS_ACCESS_KEY_ID`
-  - `AWS_REGION`
   - `AWS_SECRET_ACCESS_KEY`
   - `UTRUST_API_KEY`
   - `UTRUST_WEBHOOK_SECRET`

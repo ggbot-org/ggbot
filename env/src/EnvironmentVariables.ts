@@ -1,7 +1,6 @@
 import { ErrorMissingEnvironmentVariable } from "./errors.js";
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
-const AWS_REGION = process.env.AWS_REGION;
 const DEPLOY_STAGE = process.env.DEPLOY_STAGE;
 const NODE_ENV = process.env.NODE_ENV;
 const UTRUST_API_KEY = process.env.UTRUST_API_KEY;
@@ -14,11 +13,6 @@ class EnvironmentVariables {
   get AWS_ACCOUNT_ID() {
     if (typeof AWS_ACCOUNT_ID === "string") return AWS_ACCOUNT_ID;
     throw new ErrorMissingEnvironmentVariable("AWS_ACCOUNT_ID");
-  }
-
-  get AWS_REGION() {
-    if (typeof AWS_REGION === "string") return AWS_REGION;
-    throw new ErrorMissingEnvironmentVariable("AWS_REGION");
   }
 
   get DEPLOY_STAGE() {
