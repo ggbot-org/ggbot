@@ -41,11 +41,6 @@
     "extends": [
       "@ggbot2/eslint-config/react"
     ],
-    "ignorePatterns": [
-      "dist/",
-      "public/",
-      "temp/"
-    ],
     "rules": {
       "formatjs/no-literal-string-in-jsx": "off"
     }

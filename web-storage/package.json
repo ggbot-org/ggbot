@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/env",
+  "name": "@ggbot2/web-storage",
   "version": "0.0.0",
   "private": true,
   "type": "module",

@@ -28,10 +28,6 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
-    ],
-    "ignorePatterns": [
-      "dist/",
-      "temp/"
     ]
   }
 }

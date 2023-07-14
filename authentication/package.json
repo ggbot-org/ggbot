@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/env",
+  "name": "@ggbot2/authentication",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -18,6 +18,9 @@
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
+  },
+  "dependencies": {
+    "@ggbot2/models": "file:models"
   },
   "eslintConfig": {
     "extends": [

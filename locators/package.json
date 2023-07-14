@@ -26,10 +26,6 @@
     "extends": [
       "@ggbot2/eslint-config"
     ],
-    "ignorePatterns": [
-      "dist/",
-      "temp/"
-    ],
     "rules": {
       "sort-keys": "error"
     }
