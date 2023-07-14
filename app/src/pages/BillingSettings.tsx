@@ -2,9 +2,9 @@ import { Column, Columns } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
-import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { SubscriptionInfo } from "../components/SubscriptionInfo.js";
 import { SubscriptionPurchase } from "../components/SubscriptionPurchase.js";
+import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const BillingSettingsPage: FC = () => (

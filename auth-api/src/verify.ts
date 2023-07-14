@@ -8,6 +8,7 @@ import {
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
   OK,
+  responseBody,
 } from "@ggbot2/api-gateway";
 import { createSessionCookie } from "@ggbot2/cookies";
 import {
@@ -26,7 +27,7 @@ export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const { DEPLOY_STAGE } = ENV;
+    const { DEPLOY_STAGE, deployStageIsNotLocal } = ENV;
 
     const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
 
@@ -67,7 +68,7 @@ export const handler = async (
           const creationDay = today();
 
           let cookie = "";
-          const secure = DEPLOY_STAGE !== "local";
+          const secure = deployStageIsNotLocal;
 
           if (emailAccount) {
             const session = { creationDay, accountId: emailAccount.accountId };
@@ -79,7 +80,7 @@ export const handler = async (
           }
 
           return {
-            body: JSON.stringify(output),
+            ...responseBody({ data: output }),
             headers: {
               "Content-Type": "application/json",
               "Set-Cookie": cookie,

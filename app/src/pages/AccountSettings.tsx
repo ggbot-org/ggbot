@@ -3,8 +3,8 @@ import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { AccountSettings } from "../components/AccountSettings.js";
-import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { DeleteAccount } from "../components/DeleteAccount.js";
+import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const AccountSettingsPage: FC = () => (

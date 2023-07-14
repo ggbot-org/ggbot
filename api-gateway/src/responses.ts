@@ -11,6 +11,8 @@ import {
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import type { APIGatewayProxyResult } from "aws-lambda";
 
+import { responseBody } from "./responseBody.js";
+
 const commonHeaders = {
   "Access-Control-Allow-Credentials": "true",
   "Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE).origin,
@@ -30,7 +32,7 @@ export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({
 export const BAD_REQUEST = (
   error?: ApiActionResponseError["error"]
 ): APIGatewayProxyResult => ({
-  body: error ? JSON.stringify(error) : "",
+  ...(error ? responseBody({ error }) : { body: "" }),
   headers: commonHeaders,
   isBase64Encoded: false,
   statusCode: __400__BAD_REQUEST__,
@@ -53,7 +55,7 @@ export const METHOD_NOT_ALLOWED = {
 export const OK = (
   data: ApiActionResponseData["data"]
 ): APIGatewayProxyResult => ({
-  body: JSON.stringify({ data }),
+  ...responseBody({ data }),
   headers: {
     "Content-Type": "application/json",
     ...commonHeaders,

@@ -1,6 +1,6 @@
 // TODO auth api should be an action, so it is possible to handle it with useAction by hook/useApi
 // TODO Auth forms are shared among User and Admin webapp, move them to design or to a package auth-ui or authentication
-// also useAuthentication hook and AuthenticationContext could be shared
+// also AuthenticationContext could be shared
 import {
   isApiAuthEnterRequestData,
   isApiAuthEnterResponseData,
@@ -16,9 +16,17 @@ import {
   Title,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
-import { Dispatch, FC, SetStateAction, useCallback, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  Reducer,
+  SetStateAction,
+  useCallback,
+  useReducer,
+} from "react";
+import { FormattedMessage } from "react-intl";
 
-import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
+import { fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
@@ -29,31 +37,50 @@ type Props = {
   setEmail: SetEmail;
 };
 
+type State = {
+  gotTimeout: boolean;
+  hasGenericError: boolean;
+  hasInvalidInput: boolean;
+  isPending: boolean;
+};
+
 const fields = ["email"] as const;
 
 export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
   const [
     { gotTimeout, hasGenericError, hasInvalidInput, isPending },
-    setState,
-  ] = useState({
-    gotTimeout: false,
-    hasGenericError: false,
-    hasInvalidInput: false,
-    isPending: false,
-  });
+    dispatch,
+  ] = useReducer<
+    Reducer<
+      Partial<State>,
+      | { type: "ENTER_REQUEST" }
+      | { type: "ENTER_RESPONSE" }
+      | { type: "ENTER_FAILURE" }
+      | { type: "ENTER_TIMEOUT" }
+      | { type: "SET_HAS_INVALID_INPUT" }
+    >
+  >((state, action) => {
+    switch (action.type) {
+      case "ENTER_REQUEST":
+        return { isPending: true };
+      case "ENTER_RESPONSE":
+        return {};
+      case "ENTER_FAILURE":
+        return { hasGenericError: true };
+      case "ENTER_TIMEOUT":
+        return { gotTimeout: true };
+      case "SET_HAS_INVALID_INPUT":
+        return { hasInvalidInput: true };
+      default:
+        return state;
+    }
+  }, {});
 
   const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
       try {
         event.preventDefault();
         if (emailSent || isPending) return;
-
-        setState((state) => ({
-          ...state,
-          gotTimeout: false,
-          hasGenericError: false,
-          hasInvalidInput: false,
-        }));
 
         const { email } = formValues(event, fields);
 
@@ -62,7 +89,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
         const requestData = { email };
 
         if (!isApiAuthEnterRequestData(requestData)) {
-          setState((state) => ({ ...state, hasInvalidInput: true }));
+          dispatch({ type: "SET_HAS_INVALID_INPUT" });
           return;
         }
 
@@ -71,14 +98,10 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         const timeoutId = setTimeout(() => {
           controller.abort();
-          setState((state) => ({
-            ...state,
-            gotTimeout: true,
-            isPending: false,
-          }));
+          dispatch({ type: "ENTER_TIMEOUT" });
         }, timeout);
 
-        setState((state) => ({ ...state, isPending: true }));
+        dispatch({ type: "ENTER_REQUEST" });
 
         const response = await fetch(url.authenticationEnter, {
           body: JSON.stringify(requestData),
@@ -89,22 +112,19 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
           signal: controller.signal,
         });
 
-        setState((state) => ({ ...state, isPending: false }));
         clearTimeout(timeoutId);
 
         if (!response.ok) throw response.status;
 
-        const responseData = await response.json();
-        if (!isApiAuthEnterResponseData(requestData)) return;
+        const responseJson = await response.json();
 
-        if (responseData.emailSent) setEmail(email);
+        dispatch({ type: "ENTER_RESPONSE" });
+        if (!isApiAuthEnterResponseData(responseJson.data)) return;
+
+        if (responseJson.data.emailSent) setEmail(email);
       } catch (error) {
-        setState((state) => ({
-          ...state,
-          hasGenericError: true,
-          isPending: false,
-        }));
         console.error(error);
+        dispatch({ type: "ENTER_FAILURE" });
       }
     },
     [emailSent, isPending, setEmail]
@@ -125,7 +145,7 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
       <Field isGrouped>
         <Control>
           <Button color="primary" isLoading={isPending}>
-            {buttonLabel.send}
+            <FormattedMessage id="buttonLabel.send" />
           </Button>
         </Control>
       </Field>

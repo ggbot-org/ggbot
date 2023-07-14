@@ -1,9 +1,9 @@
 import { div, mul } from "@ggbot2/arithmetic";
 import {
   BinanceAccountInformation,
+  binanceApiDomain,
   BinanceBalance,
   BinanceCacheMap,
-  BinanceConnector,
   BinanceExchange,
   BinanceKlineInterval,
   binanceKlineIntervals,
@@ -24,7 +24,7 @@ import { Time } from "@ggbot2/time";
 const cache = new BinanceCacheMap();
 
 export const binance = new BinanceExchange({
-  baseUrl: BinanceConnector.defaultBaseUrl,
+  baseUrl: `https://${binanceApiDomain}`,
   cache,
 });
 

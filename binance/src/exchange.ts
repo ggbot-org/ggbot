@@ -46,8 +46,8 @@ import {
 /**
  * BinanceExchange implements public API requests.
  *
- * Constructor requires a `cache` that implements `BinanceCacheProvider`;
- * default `BinanceCacheMap` can be used.
+ * Constructor accepts a `cache` that implements `BinanceCacheProvider`; default
+ * `BinanceCacheMap` can be used.
  *
  * @example
  *
@@ -68,7 +68,7 @@ import {
  * ```
  */
 export class BinanceExchange extends BinanceConnector {
-  private readonly cache: BinanceCacheProvider;
+  readonly cache?: BinanceCacheProvider | undefined;
 
   constructor({ baseUrl, cache }: BinanceExchangeConstructorArg) {
     super({ baseUrl });
@@ -224,7 +224,7 @@ export class BinanceExchange extends BinanceConnector {
         interval,
         optionalParameters
       );
-    const cached = cache.getKlines(symbol, interval, timeInterval);
+    const cached = cache?.getKlines(symbol, interval, timeInterval);
     if (cached) return cached;
     const klines = await this.publicRequest<BinanceKline[]>(
       "GET",
@@ -235,7 +235,7 @@ export class BinanceExchange extends BinanceConnector {
         ...optionalParameters,
       }
     );
-    cache.setKlines(symbol, interval, klines);
+    cache?.setKlines(symbol, interval, klines);
     return klines;
   }
 
@@ -464,6 +464,5 @@ export class BinanceExchange extends BinanceConnector {
   }
 }
 
-export type BinanceExchangeConstructorArg = BinanceConnectorConstructorArg & {
-  cache: BinanceCacheProvider;
-};
+export type BinanceExchangeConstructorArg = BinanceConnectorConstructorArg &
+  Pick<BinanceExchange, "cache">;

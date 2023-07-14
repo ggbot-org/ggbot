@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, FC, PropsWithChildren } from "react";
 
 import { useStrategy } from "../hooks/useStrategy.js";
 
@@ -11,3 +11,13 @@ export const StrategyContext = createContext<ContextValue>({
 });
 
 StrategyContext.displayName = "StrategyContext";
+
+export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
+  const strategy = useStrategy();
+
+  return (
+    <StrategyContext.Provider value={strategy}>
+      {children}
+    </StrategyContext.Provider>
+  );
+};

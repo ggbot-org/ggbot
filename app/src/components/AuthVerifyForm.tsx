@@ -13,14 +13,8 @@ import {
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
-import {
-  Dispatch,
-  FC,
-  FormEventHandler,
-  SetStateAction,
-  useCallback,
-  useState,
-} from "react";
+import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { buttonLabel, fieldLabel } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
@@ -29,7 +23,16 @@ import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 type Props = {
   email: EmailAddress;
   resetEmail: () => void;
-  setVerified: Dispatch<SetStateAction<boolean>>;
+  setVerified: () => void;
+};
+
+type State = {
+  gotTimeout: boolean;
+  hasGenericError: boolean;
+  hasInvalidInput: boolean;
+  isPending: boolean;
+  needToGenerateOneTimePasswordAgain: boolean;
+  verificationFailed: boolean;
 };
 
 export const AuthVerifyForm: FC<Props> = ({
@@ -37,15 +40,57 @@ export const AuthVerifyForm: FC<Props> = ({
   resetEmail,
   setVerified,
 }) => {
-  const [hasGenericError, setHasGenericError] = useState(false);
-  const [hasInvalidInput, setHasInvalidInput] = useState(false);
-  const [isPending, setIsPending] = useState(false);
-  const [gotTimeout, setGotTimeout] = useState(false);
   const [
-    needToGenerateOneTimePasswordAgain,
-    setNeedToGenerateOneTimePasswordAgain,
-  ] = useState(false);
-  const [verificationFailed, setVerificationFailed] = useState(false);
+    {
+      gotTimeout,
+      hasGenericError,
+      hasInvalidInput,
+      isPending,
+      needToGenerateOneTimePasswordAgain,
+      verificationFailed,
+    },
+    dispatch,
+  ] = useReducer<
+    Reducer<
+      Partial<State>,
+      | { type: "SET_HAS_INVALID_INPUT" }
+      | { type: "VERIFY_REQUEST" }
+      | {
+          type: "VERIFY_RESPONSE";
+          data: Partial<
+            Pick<
+              State,
+              "needToGenerateOneTimePasswordAgain" | "verificationFailed"
+            >
+          >;
+        }
+      | { type: "VERIFY_FAILURE" }
+      | { type: "VERIFY_TIMEOUT" }
+    >
+  >(
+    (state, action) => {
+      switch (action.type) {
+        case "SET_HAS_INVALID_INPUT":
+          return { hasInvalidInput: true };
+
+        case "VERIFY_REQUEST":
+          return { isPending: true };
+
+        case "VERIFY_RESPONSE":
+          return { hasGenericError: true, ...action.data };
+
+        case "VERIFY_FAILURE":
+          return { hasGenericError: true };
+
+        case "VERIFY_TIMEOUT":
+          return { gotTimeout: true };
+
+        default:
+          return state;
+      }
+    },
+    { hasGenericError: false }
+  );
 
   const onClickOkGenerateOneTimePasswordAgain =
     useCallback<ButtonOnClick>(() => {
@@ -58,18 +103,13 @@ export const AuthVerifyForm: FC<Props> = ({
         event.preventDefault();
         if (isPending) return;
 
-        setHasGenericError(false);
-        setHasInvalidInput(false);
-        setGotTimeout(false);
-        setVerificationFailed(false);
-
         const code = (event.target as EventTarget & { code: { value: string } })
           .code.value;
 
         const requestData = { code, email };
 
         if (!isApiAuthVerifyRequestData(requestData)) {
-          setHasInvalidInput(true);
+          dispatch({ type: "SET_HAS_INVALID_INPUT" });
           return;
         }
 
@@ -78,11 +118,10 @@ export const AuthVerifyForm: FC<Props> = ({
 
         const timeoutId = setTimeout(() => {
           controller.abort();
-          setGotTimeout(true);
-          setIsPending(false);
+          dispatch({ type: "VERIFY_TIMEOUT" });
         }, timeout);
 
-        setIsPending(true);
+        dispatch({ type: "VERIFY_REQUEST" });
 
         const response = await fetch(url.authenticationVerify, {
           body: JSON.stringify(requestData),
@@ -97,36 +136,31 @@ export const AuthVerifyForm: FC<Props> = ({
 
         if (!response.ok) throw new Error(response.statusText);
 
-        const responseData = await response.json();
+        const responseJson = await response.json();
 
-        setIsPending(false);
-
-        if (responseData === null) {
-          setNeedToGenerateOneTimePasswordAgain(true);
-        } else if (isApiAuthVerifyResponseData(responseData)) {
-          const { verified } = responseData;
+        if (responseJson.data === null) {
+          dispatch({
+            type: "VERIFY_RESPONSE",
+            data: { needToGenerateOneTimePasswordAgain: true },
+          });
+        } else if (isApiAuthVerifyResponseData(responseJson.data)) {
+          const { verified } = responseJson.data;
           if (verified) {
-            setVerificationFailed(false);
-            setVerified(true);
+            dispatch({ type: "VERIFY_RESPONSE", data: {} });
+            setVerified();
           } else {
-            setVerificationFailed(true);
+            dispatch({
+              type: "VERIFY_RESPONSE",
+              data: { verificationFailed: true },
+            });
           }
         }
       } catch (error) {
-        setHasGenericError(true);
-        setIsPending(false);
+        dispatch({ type: "VERIFY_FAILURE" });
         console.error(error);
       }
     },
-    [
-      email,
-      isPending,
-      setGotTimeout,
-      setHasGenericError,
-      setHasInvalidInput,
-      setIsPending,
-      setVerified,
-    ]
+    [dispatch, email, isPending, setVerified]
   );
 
   return (
@@ -134,7 +168,10 @@ export const AuthVerifyForm: FC<Props> = ({
       <OutputField label={fieldLabel.email} value={email} />
 
       <Message>
-        Check your email to get the <em>One Time Password</em>.
+        <FormattedMessage
+          id="AuthVerifyForm.checkYourEmail"
+          values={{ em: (chunks) => <em>{chunks}</em> }}
+        />
       </Message>
 
       <InputField
@@ -149,7 +186,7 @@ export const AuthVerifyForm: FC<Props> = ({
       <Field isGrouped>
         <Control>
           <Button color="primary" isLoading={isPending}>
-            Enter
+            <FormattedMessage id="buttonLabel.enter" />
           </Button>
         </Control>
       </Field>

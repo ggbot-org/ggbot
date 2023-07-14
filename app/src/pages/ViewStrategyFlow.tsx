@@ -2,8 +2,8 @@ import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { Navigation } from "../components/Navigation.js";
-import { StrategyProvider } from "../components/StrategyProvider.js";
 import { ViewStrategyFlow } from "../components/ViewStrategyFlow.js";
+import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
 export const ViewStrategyFlowPage: FC = () => (

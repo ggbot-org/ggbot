@@ -4,10 +4,10 @@ import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, useCallback, useEffect, useState } from "react";
 
-import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { BinanceApi } from "../components/BinanceApi.js";
 import { CreateBinanceApi } from "../components/CreateBinanceApi.js";
 import { DeleteBinanceApi } from "../components/DeleteBinanceApi.js";
+import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 

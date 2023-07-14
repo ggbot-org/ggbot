@@ -1,6 +1,6 @@
 import {
+  binanceApiDomain,
   BinanceCacheMap,
-  BinanceConnector,
   BinanceKline,
   BinanceKlineInterval,
 } from "@ggbot2/binance";
@@ -41,7 +41,7 @@ class Binance extends BinanceClient implements BinanceDflowClient {
   constructor(arg: Pick<BinanceClientConstructorArg, "apiKey" | "apiSecret">) {
     super({
       ...arg,
-      baseUrl: BinanceConnector.defaultBaseUrl,
+      baseUrl: `https://${binanceApiDomain}`,
       cache: new BinanceCacheMap(),
     });
   }

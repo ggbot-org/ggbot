@@ -9,7 +9,6 @@ import { useFlowView } from "../hooks/useFlowView.js";
 import { errorMessage } from "../i18n/index.js";
 import { BacktestController } from "./BacktestController.js";
 import { FlowViewContainer } from "./FlowViewContainer.js";
-import { StrategyProvider } from "./StrategyProvider.js";
 import { ViewStrategyTabs } from "./ViewStrategyTabs.js";
 import { ViewStrategyTopbar } from "./ViewStrategyTopbar.js";
 
@@ -59,7 +58,7 @@ export const ViewStrategyFlow: FC = () => {
   }, [flowView, setFlowLoaded, storedStrategyFlow, isPending]);
 
   return (
-    <StrategyProvider>
+    <>
       <ViewStrategyTopbar />
 
       <ViewStrategyTabs
@@ -71,6 +70,6 @@ export const ViewStrategyFlow: FC = () => {
           />
         }
       />
-    </StrategyProvider>
+    </>
   );
 };

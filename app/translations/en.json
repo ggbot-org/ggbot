@@ -1,8 +1,17 @@
 {
+  "AuthVerifyForm.checkYourEmail": {
+    "defaultMessage": "Check your email to get the <em>One Time Password</em>."
+  },
   "SubscriptionPurchasedMessage.body": {
     "defaultMessage": "Thank you for your purchase."
   },
   "SubscriptionCanceledMessage.body": {
     "defaultMessage": "Your purchase was canceled."
+  },
+  "buttonLabel.enter": {
+    "defaultMessage": "Enter"
+  },
+  "buttonLabel.send": {
+    "defaultMessage": "Send"
   }
 }

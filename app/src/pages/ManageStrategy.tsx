@@ -2,13 +2,13 @@ import { Column, Columns, Section } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC, useState } from "react";
 
-import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { DeleteStrategy } from "../components/DeleteStrategy.js";
 import { PleasePurchaseModal } from "../components/PleasePurchaseModal.js";
 import { SchedulingsForm } from "../components/SchedulingsForm.js";
 import { StrategyForm } from "../components/StrategyForm.js";
 import { StrategyProfits } from "../components/StrategyProfits.js";
-import { StrategyProvider } from "../components/StrategyProvider.js";
+import { AuthenticationProvider } from "../contexts/Authentication.js";
+import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
 export const ManageStrategyPage: FC = () => {

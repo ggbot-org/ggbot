@@ -1,6 +1,5 @@
 import {
-  BinanceCacheMap,
-  BinanceConnector,
+  binanceApiDomain,
   ReadBinanceApiKeyPermissions,
 } from "@ggbot2/binance";
 import { BinanceClient } from "@ggbot2/binance-client";
@@ -19,10 +18,9 @@ export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] 
       });
     const { apiKey, apiSecret } = binanceApiConfig;
     const client = new BinanceClient({
-      baseUrl: BinanceConnector.defaultBaseUrl,
+      baseUrl: `https://${binanceApiDomain}`,
       apiKey,
       apiSecret,
-      cache: new BinanceCacheMap(),
     });
     const data = await client.apiRestrictions();
     return data;

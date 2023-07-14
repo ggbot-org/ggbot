@@ -1,9 +1,9 @@
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
-import { AuthenticationProvider } from "../components/AuthenticationProvider.js";
 import { EditStrategyFlow } from "../components/EditStrategyFlow.js";
-import { StrategyProvider } from "../components/StrategyProvider.js";
+import { AuthenticationProvider } from "../contexts/Authentication.js";
+import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
 export const EditStrategyFlowPage: FC = () => (

@@ -22,6 +22,10 @@ class EnvironmentVariables {
     throw new ErrorMissingEnvironmentVariable("DEPLOY_STAGE");
   }
 
+  get deployStageIsNotLocal() {
+    return this.DEPLOY_STAGE !== "local";
+  }
+
   get deployStageIsMain() {
     return this.DEPLOY_STAGE === "main";
   }

@@ -1,7 +1,7 @@
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic";
 import {
+  binanceApiDomain,
   BinanceCacheMap,
-  BinanceConnector,
   BinanceExchange,
   BinanceSymbolInfo,
   isBinanceOrderRespFULL,
@@ -157,7 +157,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
     // TODO put Binance Exchange info in some context and
     // also cache it session storage
     const binance = new BinanceExchange({
-      baseUrl: BinanceConnector.defaultBaseUrl,
+      baseUrl: `https://${binanceApiDomain}`,
       cache: new BinanceCacheMap(),
     });
     (async () => {
