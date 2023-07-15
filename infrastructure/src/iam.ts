@@ -64,7 +64,11 @@ export const getDevopsPolicyStatements = () => [
   },
   {
     Effect: "Allow",
-    Action: ["lambda:CreateFunction", "lambda:UpdateFunctionCode"],
+    Action: [
+      "lambda:CreateFunction",
+      "lambda:UpdateFunctionCode",
+      "lambda:UpdateFunctionConfiguration",
+    ],
     Resource: lambdaAllArn,
   },
   {

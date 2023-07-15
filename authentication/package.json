@@ -13,13 +13,17 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts ."
+    "generate_key_pair_environment_variable_files": "node temp/scripts/generate_key_pair_environment_variable_files.js",
+    "lint": "eslint --fix --ext .ts .",
+    "pregenerate_key_pair_environment_variable_files": "npm run tsc:scripts",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
+    "@ggbot2/env": "file:env",
     "@ggbot2/models": "file:models"
   },
   "eslintConfig": {

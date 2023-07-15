@@ -37,13 +37,13 @@ export class Executor {
   /** Read `executorId` from local disc or create a new one if it does not exist. */
   static async getExecutorId(): Promise<Item["id"]> {
     try {
-      const executorId = await readFile(executorIdFile, "utf8");
+      const executorId = await readFile(executorIdFile, { encoding: "utf8" });
       return executorId;
     } catch (error) {
       if (isNodeError(error)) {
         if (error.code === "ENOENT") {
           const executorId = newId();
-          await writeFile(executorIdFile, executorId, "utf8");
+          await writeFile(executorIdFile, executorId, { encoding: "utf8" });
           return executorId;
         }
       }
