@@ -7,7 +7,10 @@ import {
   OK,
   UNATHORIZED,
 } from "@ggbot2/api-gateway";
-import { readSession } from "@ggbot2/cookies";
+import {
+  ErrorUnauthorizedAuthenticationHeader,
+  readSessionFromAuthorizationHeader,
+} from "@ggbot2/authentication";
 import {
   copyStrategy,
   createBinanceApiConfig,
@@ -59,16 +62,14 @@ export const handler = async (
       case "POST": {
         if (!event.body) return BAD_REQUEST();
 
+        const { accountId } = readSessionFromAuthorizationHeader(
+          event.headers.Authorization
+        );
+
         const action = JSON.parse(event.body);
 
         if (!isApiActionRequestData(action)) return BAD_REQUEST();
         const actionData = action.data;
-
-        const cookies = event.headers.Cookie;
-        if (!cookies) return UNATHORIZED;
-        const session = readSession(cookies);
-        if (!session) return UNATHORIZED;
-        const { accountId } = session;
 
         switch (action.type) {
           case "CopyStrategy": {
@@ -216,6 +217,8 @@ export const handler = async (
         return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
+    if (error instanceof ErrorUnauthorizedAuthenticationHeader)
+      return UNATHORIZED;
     if (
       error instanceof ErrorAccountItemNotFound ||
       error instanceof ErrorExceededQuota ||

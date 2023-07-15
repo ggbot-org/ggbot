@@ -1,21 +1,35 @@
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils";
 
 const emailKey = "email";
+const jwtKey = "jwt";
 
-class LocalStorage {
+class LocalWebStorage {
   get email(): EmailAddress | undefined {
     const value = window.localStorage.getItem(emailKey);
     if (isEmailAddress(value)) return value;
-    if (value !== null) window.localStorage.removeItem(emailKey);
   }
 
   set email(value: EmailAddress | undefined) {
-    if (value) {
-      window.localStorage.setItem(emailKey, value);
-    } else {
+    if (!value) {
       window.localStorage.removeItem(emailKey);
+    } else if (isEmailAddress(value)) {
+      window.localStorage.setItem(emailKey, value);
+    }
+  }
+
+  get jwt(): NonEmptyString | undefined {
+    const value = window.localStorage.getItem(jwtKey);
+    if (isNonEmptyString(value)) return value;
+  }
+
+  set jwt(value: NonEmptyString | undefined) {
+    if (!value) {
+      window.localStorage.removeItem(jwtKey);
+    } else if (isNonEmptyString(value)) {
+      window.localStorage.setItem(jwtKey, value);
     }
   }
 }
 
-export const localStorage = new LocalStorage();
+export const localWebStorage = new LocalWebStorage();

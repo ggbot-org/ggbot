@@ -9,24 +9,36 @@ import { useAction } from "@ggbot2/use-action";
 
 import { url } from "../routing/URLs.js";
 
-const endpoint = url.apiAdminAction;
+const adminApiOptions = {
+  endpoint: url.apiAdminAction,
+  withJwt: true,
+};
 
 export const useApi = {
   ListAccountKeys: () =>
-    useAction<AdminApiAction["ListAccountKeys"], AdminApiActionType>(endpoint, {
-      type: "ListAccountKeys",
-    }),
+    useAction<AdminApiAction["ListAccountKeys"], AdminApiActionType>(
+      adminApiOptions,
+      {
+        type: "ListAccountKeys",
+      }
+    ),
   ReadAccount: () =>
-    useAction<AdminApiAction["ReadAccount"], AdminApiActionType>(endpoint, {
-      type: "ReadAccount",
-    }),
+    useAction<AdminApiAction["ReadAccount"], AdminApiActionType>(
+      adminApiOptions,
+      {
+        type: "ReadAccount",
+      }
+    ),
   ReadStrategy: () =>
-    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(endpoint, {
-      type: "ReadStrategy",
-    }),
+    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(
+      adminApiOptions,
+      {
+        type: "ReadStrategy",
+      }
+    ),
   ReadStrategyFlow: () =>
     useAction<PublicApiAction["ReadStrategyFlow"], PublicApiActionType>(
-      endpoint,
+      adminApiOptions,
       {
         type: "ReadStrategyFlow",
       }

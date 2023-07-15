@@ -1,5 +1,6 @@
 import { Modal } from "@ggbot2/design";
 import { EmailAddress, isAccount } from "@ggbot2/models";
+import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
   FC,
@@ -15,8 +16,6 @@ import { AuthEnterForm } from "../components/AuthEnterForm.js";
 import { AuthVerifyForm } from "../components/AuthVerifyForm.js";
 import { SplashScreen } from "../components/SplashScreen.js";
 import { useApi } from "../hooks/useApi.js";
-import { localStorage } from "../storages/local.js";
-import { sessionStorage } from "../storages/session.js";
 
 type State = {
   verified?: boolean | undefined;
@@ -43,35 +42,35 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, {});
 
-  let hasSession: boolean | undefined = sessionStorage.hasSession;
+  let hasSession: boolean | undefined = sessionWebStorage.hasSession;
 
   const [email, setEmail] = useState<EmailAddress | undefined>(
-    localStorage.email
+    localWebStorage.email
   );
 
   const [showSplashScreen, setShowSplashScreen] = useState(!hasSession);
-      setTimeout(() => {
-        setShowSplashScreen(false);
-      }, 1700);
+  setTimeout(() => {
+    setShowSplashScreen(false);
+  }, 1700);
 
   const [READ, { data, error, aborted }] = useApi.ReadAccount();
 
   if (error || aborted) {
     hasSession = false;
-    sessionStorage.hasSession = undefined;
+    sessionWebStorage.hasSession = undefined;
   }
 
   if (data === null) {
     hasSession = false;
-    localStorage.email = undefined;
+    localWebStorage.email = undefined;
   }
 
   if (isAccount(data)) {
     hasSession = true;
-    sessionStorage.hasSession = true;
+    sessionWebStorage.hasSession = true;
 
     setEmail(data.email);
-    localStorage.email = email;
+    localWebStorage.email = email;
   }
 
   const setVerified = useCallback(() => {
@@ -79,14 +78,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-  console.log('verified', verified)
-    if(verified!==false) {
-    READ({});
+    if (verified !== false) {
+      READ({});
     }
-  }, [READ,  verified]);
+  }, [READ, verified]);
 
   const resetEmail = useCallback(() => {
-    localStorage.email = undefined;
+    localWebStorage.email = undefined;
     setEmail(undefined);
   }, [setEmail]);
 

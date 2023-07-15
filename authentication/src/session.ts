@@ -1,16 +1,33 @@
+import { ENV } from "@ggbot2/env";
 import {
-  AccountKey,
-  CreationDay,
-  isAccountKey,
-  isCreationDay,
+  ClientSession,
+  clientSessionNumDays,
+  isClientSession,
 } from "@ggbot2/models";
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { isMaybeObject } from "@ggbot2/type-utils";
+// @ts-ignore
+import jsonwebtoken from "jsonwebtoken";
 
-export type Session = AccountKey & CreationDay;
+import { ErrorUnauthorizedAuthenticationHeader } from "./errors.js";
+import { verifyAuthenticationHeader } from "./header.js";
 
-export const isSession = objectTypeGuard<Session>(
-  ({ accountId, creationDay }) =>
-    isAccountKey({ accountId }) && isCreationDay({ creationDay })
-);
+/** @throws {@link ErrorMissingEnvironmentVariable} */
+export const signSession = (session: ClientSession) =>
+  jsonwebtoken.sign({ data: session }, ENV.JWT_SECRET, {
+    expiresIn: `${clientSessionNumDays} days`,
+  });
 
-export const sessionNumDays = 30;
+/**
+ * @throws {@link ErrorUnauthorizedAuthenticationHeader}
+ * @throws {@link ErrorMissingEnvironmentVariable}
+ */
+export const readSessionFromAuthorizationHeader = (
+  headerContent: unknown
+): ClientSession => {
+  const decoded = verifyAuthenticationHeader(headerContent);
+  if (isMaybeObject<{ data: unknown }>(decoded)) {
+    const { data } = decoded;
+    if (isClientSession(data)) return data;
+  }
+  throw new ErrorUnauthorizedAuthenticationHeader();
+};

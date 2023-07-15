@@ -1,6 +1,6 @@
 const hasSessionKey = "hasSession";
 
-class SessionStorage {
+class SessionWebStorage {
   get hasSession(): boolean | undefined {
     const value = window.sessionStorage.getItem(hasSessionKey);
     if (value) return true;
@@ -16,4 +16,4 @@ class SessionStorage {
   }
 }
 
-export const sessionStorage = new SessionStorage();
+export const sessionWebStorage = new SessionWebStorage();

@@ -13,6 +13,7 @@ import {
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
+import { localWebStorage } from "@ggbot2/web-storage";
 import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -136,16 +137,17 @@ export const AuthVerifyForm: FC<Props> = ({
 
         if (!response.ok) throw new Error(response.statusText);
 
-        const responseJson = await response.json();
+        const { data } = await response.json();
 
-        if (responseJson.data === null) {
+        if (data === null) {
           dispatch({
             type: "VERIFY_RESPONSE",
             data: { needToGenerateOneTimePasswordAgain: true },
           });
-        } else if (isApiAuthVerifyResponseData(responseJson.data)) {
-          const { verified } = responseJson.data;
-          if (verified) {
+        } else if (isApiAuthVerifyResponseData(data)) {
+          const { jwt } = data;
+          if (jwt) {
+            localWebStorage.jwt = jwt;
             dispatch({ type: "VERIFY_RESPONSE", data: {} });
             setVerified();
           } else {

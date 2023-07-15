@@ -7,7 +7,10 @@ import {
   OK,
   UNATHORIZED,
 } from "@ggbot2/api-gateway";
-import { readSession } from "@ggbot2/cookies";
+import {
+  ErrorUnauthorizedAuthenticationHeader,
+  readSessionFromAuthorizationHeader,
+} from "@ggbot2/authentication";
 import { listAccountKeys, readAccount } from "@ggbot2/database";
 import { isReadAccountInput } from "@ggbot2/models";
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
@@ -23,15 +26,12 @@ export const handler = async (
       case "POST": {
         if (!event.body) return BAD_REQUEST();
 
+        readSessionFromAuthorizationHeader(event.headers.Authorization);
+
         const action = JSON.parse(event.body);
 
         if (!isApiActionRequestData(action)) return BAD_REQUEST();
         const actionData = action.data;
-
-        const cookies = event.headers.Cookie;
-        if (!cookies) return UNATHORIZED;
-        const session = readSession(cookies);
-        if (!session) return UNATHORIZED;
 
         switch (action.type) {
           case "ReadAccount": {
@@ -54,6 +54,8 @@ export const handler = async (
         return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
+    if (error instanceof ErrorUnauthorizedAuthenticationHeader)
+      return UNATHORIZED;
     console.error(error);
   }
   return INTERNAL_SERVER_ERROR;

@@ -11,9 +11,7 @@ The following environment variables are used:
 - Optional
   - `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
   - `NODE_ENV`: can be `production` or `development`. It defaults to `development` if not provided.
-- Generated
-  - `GGBOT2_AUTHENTICATION_PRIVATE_KEY`
-  - `GGBOT2_AUTHENTICATION_PUBLIC_KEY`
+  - `JWT_SECRET`: used by APIs for authentication.
 
 A complete _.envrc_ file for production looks like the following
 

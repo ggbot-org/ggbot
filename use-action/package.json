@@ -23,7 +23,8 @@
     "@ggbot2/api": "file:api",
     "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models",
-    "@ggbot2/react": "file:react"
+    "@ggbot2/react": "file:react",
+    "@ggbot2/web-storage": "file:web-storage"
   },
   "eslintConfig": {
     "extends": [

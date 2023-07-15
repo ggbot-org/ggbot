@@ -6,6 +6,7 @@ export * from "./balance.js";
 export * from "./balanceChangeEvent.js";
 export * from "./binanceApiConfig.js";
 export * from "./cache.js";
+export * from "./clientSession.js";
 export * from "./countries.js";
 export * from "./email.js";
 export * from "./emailAccount.js";

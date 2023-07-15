@@ -35,6 +35,7 @@
     "@ggbot2/time": "file:time",
     "@ggbot2/type-utils": "file:type-utils",
     "@ggbot2/use-action": "file:use-action",
+    "@ggbot2/web-storage": "file:web-storage",
     "country-isocode2": "^1.1.0",
     "react-hot-toast": "^2.3.0"
   },

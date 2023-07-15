@@ -21,7 +21,7 @@ const commonHeaders = {
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({
   body: "",
   headers: {
-    "Access-Control-Allow-Headers": "Content-type",
+    "Access-Control-Allow-Headers": "Authorization,Content-type",
     "Access-Control-Allow-Methods": ["OPTIONS"].concat(methods).join(),
     ...commonHeaders,
   },

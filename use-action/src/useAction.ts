@@ -12,6 +12,7 @@ import {
   InternalServerError,
 } from "@ggbot2/http";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
+import { localWebStorage } from "@ggbot2/web-storage";
 import { useCallback, useState } from "react";
 
 type UseActionRequestArg<Input extends OperationInput> =
@@ -111,7 +112,7 @@ export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },
   ApiActionType extends string
 >(
-  endpoint: string,
+  { endpoint, withJwt }: { endpoint: string; withJwt?: boolean },
   { type }: Pick<ApiActionInput<ApiActionType>, "type">
 ): [
   request: UseActionRequest<Action["in"]>,
@@ -140,21 +141,30 @@ export const useAction = <
       });
 
       const fetchRequest = async (inputData: Action["in"]) => {
-        setResponse({ isPending: true });
+        const headers = new Headers({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        });
+        if (withJwt) {
+          const { jwt } = localWebStorage;
+          headers.append("Authorization", `Bearer ${jwt}`);
+        }
+
         const body =
           inputData === undefined
             ? JSON.stringify({ type })
             : JSON.stringify({ type, data: inputData });
-        const response = await fetch(endpoint, {
+
+        const options: RequestInit = {
           body,
-          credentials: "include",
-          headers: new Headers({
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          }),
+          headers,
           method: "POST",
           signal,
-        });
+        };
+        if (withJwt) options.credentials = "include";
+
+        setResponse({ isPending: true });
+        const response = await fetch(endpoint, options);
 
         const { ok, status } = response;
 
@@ -237,7 +247,7 @@ export const useAction = <
 
       return controller;
     },
-    [endpoint, type]
+    [endpoint, type, withJwt]
   );
 
   return [request, response];

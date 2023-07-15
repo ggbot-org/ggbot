@@ -4,7 +4,11 @@ import {
   isOneTimePasswordCode,
   OneTimePassword,
 } from "@ggbot2/models";
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import {
+  isNonEmptyString,
+  NonEmptyString,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 
 export type ApiAuthEnterRequestData = {
   email: EmailAddress;
@@ -34,13 +38,14 @@ export const isApiAuthVerifyRequestData =
   );
 
 export type ApiAuthVerifyResponseData = {
-  verified: boolean;
+  jwt?: NonEmptyString;
 };
 
 export const isApiAuthVerifyResponseData =
-  objectTypeGuard<ApiAuthVerifyResponseData>(
-    ({ verified }) => typeof verified === "boolean"
-  );
+  objectTypeGuard<ApiAuthVerifyResponseData>(({ jwt }) => {
+    if (jwt === undefined) return true;
+    return isNonEmptyString(jwt);
+  });
 
 export type ApiAuthVerifyResponse = {
   data: ApiAuthVerifyResponseData;

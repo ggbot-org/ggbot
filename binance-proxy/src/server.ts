@@ -4,8 +4,8 @@ const PORT = 8080;
 
 http
   .createServer(async (req, res) => {
-    console.log(req.headers);
-    console.log(req.url);
+    console.info(req.headers);
+    console.info(req.url);
 
     res.end("ok");
   })
