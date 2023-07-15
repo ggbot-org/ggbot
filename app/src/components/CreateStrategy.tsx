@@ -21,7 +21,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 
 const fields = ["name"];
 const fieldName = {
@@ -59,7 +59,7 @@ export const CreateStrategy: FC = () => {
   useEffect(() => {
     if (isStrategy(data)) {
       const { id, kind } = data;
-      window.location.pathname = pathname.editFlowPage({
+      window.location.href = href.editFlowPage({
         strategyId: id,
         strategyKind: kind,
       });

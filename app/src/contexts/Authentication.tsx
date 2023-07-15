@@ -1,5 +1,7 @@
 import { Modal } from "@ggbot2/design";
 import { EmailAddress, isAccount } from "@ggbot2/models";
+import { now, Time } from "@ggbot2/time";
+import { NonEmptyString } from "@ggbot2/type-utils";
 import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
@@ -9,106 +11,160 @@ import {
   useCallback,
   useEffect,
   useReducer,
-  useState,
 } from "react";
 
-import { AuthEnterForm } from "../components/AuthEnterForm.js";
-import { AuthVerifyForm } from "../components/AuthVerifyForm.js";
-import { SplashScreen } from "../components/SplashScreen.js";
+import {
+  AuthEnterForm,
+  AuthEnterFormProps,
+} from "../components/AuthEnterForm.js";
+import {
+  AuthVerifyForm,
+  AuthVerifyFormProps,
+} from "../components/AuthVerifyForm.js";
+import {
+  SplashScreen,
+  splashScreenDuration,
+} from "../components/SplashScreen.js";
 import { useApi } from "../hooks/useApi.js";
 
 type State = {
+  email: EmailAddress | undefined;
+  jwt: NonEmptyString | undefined;
+  showSplashScreen: boolean;
   verified?: boolean | undefined;
+  startSession: Time;
 };
 
-type ContextValue = Partial<{
-  email: string;
-  hasSession: boolean;
-}>;
+type ContextValue = Pick<State, "email"> & {
+  exit: () => void;
+};
 
-export const AuthenticationContext = createContext<ContextValue>({});
+export const AuthenticationContext = createContext<ContextValue>({
+  email: undefined,
+  exit: () => {},
+});
 
 AuthenticationContext.displayName = "AuthenticationContext";
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [{ verified }, dispatch] = useReducer<
-    Reducer<State, { type: "SET_VERIFIED"; data: Pick<State, "verified"> }>
-  >((state, action) => {
-    switch (action.type) {
-      case "SET_VERIFIED":
-        return { ...state, ...action.data };
-      default:
-        return state;
+  const isFirstPageView = !sessionWebStorage.gotFirstPageView;
+
+  const [{ email, showSplashScreen, jwt, startSession }, dispatch] = useReducer<
+    Reducer<
+      State,
+      | { type: "HIDE_SPLASH_SCREEN" }
+      | { type: "EXIT" }
+      | { type: "SET_EMAIL"; data: Pick<State, "email"> }
+      | { type: "SET_JWT"; data: Pick<State, "jwt"> }
+    >
+  >(
+    (state, action) => {
+      switch (action.type) {
+        case "EXIT": {
+          sessionWebStorage.email = undefined;
+          localWebStorage.jwt = undefined;
+          return { ...state, email: undefined, jwt: undefined };
+        }
+
+        case "HIDE_SPLASH_SCREEN": {
+          sessionWebStorage.gotFirstPageView = true;
+          return { ...state, showSplashScreen: false };
+        }
+
+        case "SET_EMAIL": {
+          const { email } = action.data;
+          sessionWebStorage.email = email;
+          return { ...state, email };
+        }
+
+        case "SET_JWT": {
+          const { jwt } = action.data;
+          localWebStorage.jwt = jwt;
+          return { ...state, jwt };
+        }
+
+        default:
+          return state;
+      }
+    },
+    {
+      email: sessionWebStorage.email,
+      jwt: localWebStorage.jwt,
+      showSplashScreen: isFirstPageView,
+      startSession: now(),
     }
-  }, {});
-
-  let hasSession: boolean | undefined = sessionWebStorage.hasSession;
-
-  const [email, setEmail] = useState<EmailAddress | undefined>(
-    localWebStorage.email
   );
 
-  const [showSplashScreen, setShowSplashScreen] = useState(!hasSession);
-  setTimeout(() => {
-    setShowSplashScreen(false);
-  }, 1700);
+  const [READ, { data: readAccountData }] = useApi.ReadAccount();
 
-  const [READ, { data, error, aborted }] = useApi.ReadAccount();
+  const setJwt = useCallback<AuthVerifyFormProps["setJwt"]>(
+    (jwt) => {
+      dispatch({ type: "SET_JWT", data: { jwt } });
+    },
+    [dispatch]
+  );
 
-  if (error || aborted) {
-    hasSession = false;
-    sessionWebStorage.hasSession = undefined;
-  }
-
-  if (data === null) {
-    hasSession = false;
-    localWebStorage.email = undefined;
-  }
-
-  if (isAccount(data)) {
-    hasSession = true;
-    sessionWebStorage.hasSession = true;
-
-    setEmail(data.email);
-    localWebStorage.email = email;
-  }
-
-  const setVerified = useCallback(() => {
-    dispatch({ type: "SET_VERIFIED", data: { verified: true } });
+  const unsetEmail = useCallback<AuthVerifyFormProps["unsetEmail"]>(() => {
+    dispatch({ type: "SET_EMAIL", data: { email: undefined } });
   }, [dispatch]);
 
+  const setEmail = useCallback<AuthEnterFormProps["setEmail"]>((email) => {
+    dispatch({ type: "SET_EMAIL", data: { email } });
+  }, []);
+
+  const exit = useCallback(() => {
+    dispatch({ type: "EXIT" });
+  }, []);
+
   useEffect(() => {
-    if (verified !== false) {
-      READ({});
+    if (jwt) READ({});
+  }, [READ, jwt]);
+
+  useEffect(() => {
+    if (jwt !== undefined) return;
+    setTimeout(() => {
+      dispatch({ type: "HIDE_SPLASH_SCREEN" });
+    }, splashScreenDuration);
+  }, [jwt]);
+
+  useEffect(() => {
+    if (readAccountData === undefined) return;
+
+    if (readAccountData === null) {
+      dispatch({ type: "SET_EMAIL", data: { email: undefined } });
     }
-  }, [READ, verified]);
 
-  const resetEmail = useCallback(() => {
-    localWebStorage.email = undefined;
-    setEmail(undefined);
-  }, [setEmail]);
+    if (isAccount(readAccountData)) {
+      dispatch({ type: "SET_EMAIL", data: { email: readAccountData.email } });
 
-  const emailSent = email !== undefined;
+      if (!showSplashScreen) return;
+      setTimeout(() => {
+        dispatch({ type: "HIDE_SPLASH_SCREEN" });
+      }, splashScreenDuration - (now() - startSession));
+    }
+  }, [readAccountData, startSession, showSplashScreen]);
+
+  if (showSplashScreen) return <SplashScreen />;
+
+  if (jwt === undefined) {
+    return (
+      <Modal isActive>
+        {email ? (
+          <AuthVerifyForm
+            email={email}
+            unsetEmail={unsetEmail}
+            setJwt={setJwt}
+          />
+        ) : (
+          <AuthEnterForm setEmail={setEmail} />
+        )}
+      </Modal>
+    );
+  }
 
   return (
-    <AuthenticationContext.Provider value={{ email, hasSession }}>
-      {hasSession ? (
-        children
-      ) : showSplashScreen ? (
-        <SplashScreen />
-      ) : (
-        <Modal isActive={!verified}>
-          {email ? (
-            <AuthVerifyForm
-              email={email}
-              resetEmail={resetEmail}
-              setVerified={setVerified}
-            />
-          ) : (
-            <AuthEnterForm emailSent={emailSent} setEmail={setEmail} />
-          )}
-        </Modal>
-      )}
+    <AuthenticationContext.Provider value={{ email, exit }}>
+      {children}
     </AuthenticationContext.Provider>
   );
 };

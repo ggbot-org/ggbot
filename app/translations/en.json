@@ -11,6 +11,9 @@
   "buttonLabel.enter": {
     "defaultMessage": "Enter"
   },
+  "buttonLabel.reset": {
+    "defaultMessage": "Reset"
+  },
   "buttonLabel.send": {
     "defaultMessage": "Send"
   }

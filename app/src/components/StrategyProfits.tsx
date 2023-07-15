@@ -8,13 +8,11 @@ import {
 } from "@ggbot2/time";
 import { FC, useContext, useEffect } from "react";
 
-import { AuthenticationContext } from "../contexts/Authentication.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { ProfitSummary } from "./ProfitSummary.js";
 
 export const StrategyProfits: FC = () => {
-  const { hasSession } = useContext(AuthenticationContext);
   const { strategyKey } = useContext(StrategyContext);
 
   const numDays = 30;
@@ -30,11 +28,10 @@ export const StrategyProfits: FC = () => {
   const dayInterval = timeIntervalToDay(timeInterval);
 
   useEffect(() => {
-    if (!hasSession) return;
     if (!strategyKey) return;
     const controller = READ_ORDERS({ ...strategyKey, ...dayInterval });
     return () => controller.abort();
-  }, [dayInterval, READ_ORDERS, hasSession, strategyKey]);
+  }, [dayInterval, READ_ORDERS, strategyKey]);
 
   return (
     <ProfitSummary timeInterval={timeInterval} orderHistory={orderHistory} />

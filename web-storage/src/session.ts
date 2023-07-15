@@ -1,17 +1,42 @@
-const hasSessionKey = "hasSession";
+import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+
+const emailKey = "email";
+const gotFirstPageViewKey = "gotFirstPageView";
 
 class SessionWebStorage {
-  get hasSession(): boolean | undefined {
-    const value = window.sessionStorage.getItem(hasSessionKey);
-    if (value) return true;
-    if (value !== null) window.sessionStorage.removeItem(hasSessionKey);
+  getItem(key: string) {
+    return window.sessionStorage.getItem(key);
   }
 
-  set hasSession(value: boolean | undefined) {
+  setItem(key: string, value: string) {
+    window.sessionStorage.setItem(key, value);
+  }
+
+  removeItem(key: string) {
+    window.sessionStorage.removeItem(key);
+  }
+
+  get email(): EmailAddress | undefined {
+    const value = this.getItem(emailKey);
+    if (isEmailAddress(value)) return value;
+  }
+
+  set email(value: EmailAddress | undefined) {
+    if (!value) {
+      this.removeItem(emailKey);
+    } else if (isEmailAddress(value)) {
+      this.setItem(emailKey, value);
+    }
+  }
+
+  get gotFirstPageView(): boolean | undefined {
+    const value = this.getItem(gotFirstPageViewKey);
+    return Boolean(value);
+  }
+
+  set gotFirstPageView(value: boolean) {
     if (value) {
-      window.sessionStorage.setItem(hasSessionKey, String(true));
-    } else {
-      window.sessionStorage.removeItem(hasSessionKey);
+      this.setItem(gotFirstPageViewKey, String(true));
     }
   }
 }

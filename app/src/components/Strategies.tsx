@@ -1,11 +1,10 @@
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
-import { FC, useContext, useEffect } from "react";
+import { FC, useEffect } from "react";
 
-import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 import { message, title } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
 
 type StrategyItem = Pick<
@@ -14,7 +13,6 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const { hasSession } = useContext(AuthenticationContext);
   const [READ, { data, isPending, error }] = useApi.ReadAccountStrategies();
 
   const items: StrategyItem[] = [];
@@ -23,7 +21,7 @@ export const Strategies: FC = () => {
       if (!isAccountStrategy(item)) continue;
       const { strategyId, strategyKind, name, schedulings } = item;
       items.push({
-        href: pathname.manageStrategyPage({ strategyId, strategyKind }),
+        href: href.manageStrategyPage({ strategyId, strategyKind }),
         name,
         schedulings,
         strategyId,
@@ -32,10 +30,10 @@ export const Strategies: FC = () => {
   }
 
   useEffect(() => {
-    if (!hasSession || isPending) return;
+    if (isPending) return;
     const controller = READ({});
     return () => controller.abort();
-  }, [READ, error, hasSession, isPending]);
+  }, [READ, error, isPending]);
 
   return (
     <>

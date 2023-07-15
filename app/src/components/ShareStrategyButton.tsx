@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel, errorMessage } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 
 export const ShareStrategyButton: FC = () => {
   const { strategyKey, strategyName } = useContext(StrategyContext);
@@ -15,7 +15,7 @@ export const ShareStrategyButton: FC = () => {
       const shareData = {
         title: "ggbot2",
         text: strategyName,
-        url: `${window.location.origin}${pathname.viewFlowPage(strategyKey)}`,
+        url: `${window.location.origin}${href.viewFlowPage(strategyKey)}`,
       };
       if (
         "share" in navigator &&

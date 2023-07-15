@@ -3,7 +3,7 @@ import { FC, useCallback, useContext, useState } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 
 export const GoCopyStrategyButton: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
@@ -16,7 +16,7 @@ export const GoCopyStrategyButton: FC = () => {
       if (!strategyKey) return;
       if (isLoading) return;
       setIsLoading(true);
-      window.location.pathname = pathname.copyStrategyPage(strategyKey);
+      window.location.href = href.copyStrategyPage(strategyKey);
     },
     [isLoading, strategyKey]
   );

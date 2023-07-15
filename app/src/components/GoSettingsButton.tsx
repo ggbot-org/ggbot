@@ -2,7 +2,7 @@ import { Button } from "@ggbot2/design";
 import { FC, useState } from "react";
 
 import { buttonLabel } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
 type Props = {
@@ -14,7 +14,7 @@ export const GoSettingsButton: FC<Props> = ({ settingsPage }) => {
 
   const onClick = () => {
     setIsPending(true);
-    window.location.pathname = pathname.settingsPage(settingsPage);
+    window.location.href = href.settingsPage(settingsPage);
   };
 
   return (

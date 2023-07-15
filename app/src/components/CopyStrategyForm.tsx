@@ -23,7 +23,7 @@ import { toast } from "react-hot-toast";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 
 export const CopyStrategyForm: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
@@ -65,7 +65,7 @@ export const CopyStrategyForm: FC = () => {
 
   useEffect(() => {
     if (!isDone) return;
-    window.location.pathname = pathname.homePage();
+    window.location.href = href.homePage();
   }, [isDone]);
 
   return (

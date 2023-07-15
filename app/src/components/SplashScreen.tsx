@@ -3,6 +3,8 @@ import { FC } from "react";
 
 import { classNames } from "../styles/classNames.js";
 
+export const splashScreenDuration = 1700;
+
 export const SplashScreen: FC = () => (
   <Flex direction="column" alignItems="center" spacing={{ py: 5 }}>
     <div>

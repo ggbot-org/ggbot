@@ -8,9 +8,7 @@ import {
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js";
 import { SettingsPageId, StrategyKey } from "./types.js";
 
-export const pathname = {
-  // TODO remove authPage pathname
-  authPage: () => "/auth",
+export const href = {
   copyStrategyPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${copyStrategyHtmlFilename}?${searchParams}`;

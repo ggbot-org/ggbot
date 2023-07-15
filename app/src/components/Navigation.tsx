@@ -8,28 +8,30 @@ import {
   NavbarProps,
   NavbarStart,
 } from "@ggbot2/design";
-import { FC, memo, useCallback } from "react";
+import { FC, memo, useCallback, useContext } from "react";
 
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { navigationLabel } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
 type Props = Pick<NavbarProps, "noMenu">;
 
 export const Navigation: FC<Props> = memo(({ noMenu }) => {
+  const { exit } = useContext(AuthenticationContext);
+
   const goToHomePage = () => {
-    if (window.location.pathname !== pathname.homePage())
-      window.location.pathname = pathname.homePage();
+    if (window.location.href !== href.homePage())
+      window.location.href = href.homePage();
   };
 
-  const onClickExit = () => {
-    if (window.location.pathname !== pathname.authPage())
-      window.location.pathname = pathname.authPage();
-  };
+  const onClickExit = useCallback(() => {
+    exit();
+  }, [exit]);
 
   const goToSettings = useCallback(
     (settingsPage: SettingsPageId) => () => {
-      window.location.pathname = pathname.settingsPage(settingsPage);
+      window.location.href = href.settingsPage(settingsPage);
     },
     []
   );

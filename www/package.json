@@ -24,7 +24,8 @@
     "@ggbot2/assets": "file:assets",
     "@ggbot2/design": "file:design",
     "@ggbot2/locators": "file:locators",
-    "@ggbot2/models": "file:models"
+    "@ggbot2/models": "file:models",
+    "@ggbot2/web-storage": "file:web-storage"
   },
   "devDependencies": {
     "@ggbot2/esbuild": "file:esbuild",

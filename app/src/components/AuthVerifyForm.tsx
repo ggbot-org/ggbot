@@ -13,7 +13,7 @@ import {
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
-import { localWebStorage } from "@ggbot2/web-storage";
+import { NonEmptyString } from "@ggbot2/type-utils";
 import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -21,10 +21,10 @@ import { buttonLabel, fieldLabel } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
-type Props = {
+export type AuthVerifyFormProps = {
   email: EmailAddress;
-  resetEmail: () => void;
-  setVerified: () => void;
+  unsetEmail: () => void;
+  setJwt: (jwt: NonEmptyString) => void;
 };
 
 type State = {
@@ -36,10 +36,10 @@ type State = {
   verificationFailed: boolean;
 };
 
-export const AuthVerifyForm: FC<Props> = ({
+export const AuthVerifyForm: FC<AuthVerifyFormProps> = ({
   email,
-  resetEmail,
-  setVerified,
+  unsetEmail,
+  setJwt,
 }) => {
   const [
     {
@@ -95,8 +95,8 @@ export const AuthVerifyForm: FC<Props> = ({
 
   const onClickOkGenerateOneTimePasswordAgain =
     useCallback<ButtonOnClick>(() => {
-      resetEmail;
-    }, [resetEmail]);
+      unsetEmail();
+    }, [unsetEmail]);
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     async (event) => {
@@ -147,9 +147,7 @@ export const AuthVerifyForm: FC<Props> = ({
         } else if (isApiAuthVerifyResponseData(data)) {
           const { jwt } = data;
           if (jwt) {
-            localWebStorage.jwt = jwt;
-            dispatch({ type: "VERIFY_RESPONSE", data: {} });
-            setVerified();
+            setJwt(jwt);
           } else {
             dispatch({
               type: "VERIFY_RESPONSE",
@@ -162,12 +160,20 @@ export const AuthVerifyForm: FC<Props> = ({
         console.error(error);
       }
     },
-    [dispatch, email, isPending, setVerified]
+    [dispatch, email, isPending, setJwt]
   );
 
   return (
     <Form box onSubmit={onSubmit}>
       <OutputField label={fieldLabel.email} value={email} />
+
+      <Field>
+        <Control>
+          <Button size="small" onClick={unsetEmail}>
+            <FormattedMessage id="buttonLabel.reset" />
+          </Button>
+        </Control>
+      </Field>
 
       <Message>
         <FormattedMessage
@@ -185,7 +191,7 @@ export const AuthVerifyForm: FC<Props> = ({
         type="text"
       />
 
-      <Field isGrouped>
+      <Field>
         <Control>
           <Button color="primary" isLoading={isPending}>
             <FormattedMessage id="buttonLabel.enter" />

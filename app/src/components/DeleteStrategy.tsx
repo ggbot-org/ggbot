@@ -14,7 +14,7 @@ import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, fieldLabel, messageHeader } from "../i18n/index.js";
-import { pathname } from "../routing/pathnames.js";
+import { href } from "../routing/hrefs.js";
 
 export const DeleteStrategy: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
@@ -39,7 +39,7 @@ export const DeleteStrategy: FC = () => {
 
   useEffect(() => {
     if (!data) return;
-    window.location.pathname = pathname.homePage();
+    window.location.href = href.homePage();
   }, [data]);
 
   return (

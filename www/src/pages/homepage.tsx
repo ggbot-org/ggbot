@@ -1,28 +1,24 @@
 import { Logo } from "@ggbot2/design";
 import { UserWebappHomepageURL } from "@ggbot2/locators";
-import { createdNow } from "@ggbot2/models";
 import { mount } from "@ggbot2/react";
-import { FC, useEffect, useState } from "react";
+import { sessionWebStorage } from "@ggbot2/web-storage";
+import { FC, useEffect } from "react";
 
 import { pathname } from "../routing/pathnames.js";
 
 const userWebappHomepageURL = new UserWebappHomepageURL("main");
 
 const Page: FC = () => {
-  const [isFirstPageview, setIsFirstPageview] = useState(false);
+  const gotFirstPageView = sessionWebStorage.gotFirstPageView;
 
   useEffect(() => {
-    const storageKey = "first-page-view";
-    const firstPageView = sessionStorage.getItem(storageKey);
-    if (firstPageView) return;
-    sessionStorage.setItem(storageKey, JSON.stringify(createdNow()));
-    setIsFirstPageview(true);
-  }, [setIsFirstPageview]);
+    if (!gotFirstPageView) sessionWebStorage.gotFirstPageView = true;
+  }, [gotFirstPageView]);
 
   return (
     <div>
       <div>
-        <Logo animated={isFirstPageview} size={400} />
+        <Logo animated={!gotFirstPageView} size={400} />
 
         <div>
           <h1>

@@ -15,25 +15,18 @@ import {
   InputField,
   Title,
 } from "@ggbot2/design";
-import { EmailAddress } from "@ggbot2/models";
-import {
-  Dispatch,
-  FC,
-  Reducer,
-  SetStateAction,
-  useCallback,
-  useReducer,
-} from "react";
+import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+import { isMaybeObject } from "@ggbot2/type-utils";
+import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
 import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
 
-type SetEmail = Dispatch<SetStateAction<EmailAddress | undefined>>;
+type SetEmail = (email: EmailAddress) => void;
 
-type Props = {
-  emailSent: boolean;
+export type AuthEnterFormProps = {
   setEmail: SetEmail;
 };
 
@@ -46,7 +39,7 @@ type State = {
 
 const fields = ["email"] as const;
 
-export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
+export const AuthEnterForm: FC<AuthEnterFormProps> = ({ setEmail }) => {
   const [
     { gotTimeout, hasGenericError, hasInvalidInput, isPending },
     dispatch,
@@ -54,7 +47,6 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
     Reducer<
       Partial<State>,
       | { type: "ENTER_REQUEST" }
-      | { type: "ENTER_RESPONSE" }
       | { type: "ENTER_FAILURE" }
       | { type: "ENTER_TIMEOUT" }
       | { type: "SET_HAS_INVALID_INPUT" }
@@ -63,8 +55,6 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
     switch (action.type) {
       case "ENTER_REQUEST":
         return { isPending: true };
-      case "ENTER_RESPONSE":
-        return {};
       case "ENTER_FAILURE":
         return { hasGenericError: true };
       case "ENTER_TIMEOUT":
@@ -80,11 +70,13 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
     async (event) => {
       try {
         event.preventDefault();
-        if (emailSent || isPending) return;
+        if (isPending) return;
 
         const { email } = formValues(event, fields);
 
-        if (typeof email !== "string") return;
+        if (!isEmailAddress(email)) {
+          return;
+        }
 
         const requestData = { email };
 
@@ -118,16 +110,20 @@ export const AuthEnterForm: FC<Props> = ({ emailSent, setEmail }) => {
 
         const responseJson = await response.json();
 
-        dispatch({ type: "ENTER_RESPONSE" });
-        if (!isApiAuthEnterResponseData(responseJson.data)) return;
-
-        if (responseJson.data.emailSent) setEmail(email);
+        if (isMaybeObject<{ data: unknown }>(responseJson)) {
+          const { data } = responseJson;
+          if (isApiAuthEnterResponseData(data)) {
+            if (data.emailSent) {
+              setEmail(email);
+            }
+          }
+        }
       } catch (error) {
         console.error(error);
         dispatch({ type: "ENTER_FAILURE" });
       }
     },
-    [emailSent, isPending, setEmail]
+    [isPending, setEmail]
   );
 
   return (
