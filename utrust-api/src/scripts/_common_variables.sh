@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 AWS_REGION="eu-central-1"
 RUNTIME="nodejs18.x"
 # TODO create a ggbot2-main-api-role ggbot2-next-api-role ggbot2-local-api-role (copy of next)

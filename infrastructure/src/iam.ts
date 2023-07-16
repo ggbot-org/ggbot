@@ -88,8 +88,10 @@ export const getDevopsPolicyStatements = () => [
   },
   {
     Effect: "Allow",
-    Action: ["s3:PutObject"],
+    Action: ["s3:DeleteObject", "s3:PutObject"],
     Resource: [
+      cross.assetsBucketArn,
+      `${cross.assetsBucketArn}/*`,
       cross.wwwBucketArn,
       `${cross.wwwBucketArn}/*`,
       main.appBucketArn,

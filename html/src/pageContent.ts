@@ -1,4 +1,5 @@
-import { fontBaseUrl, fontFaceUrl } from "@ggbot2/assets";
+// TODO use own assets CDN, now it is https://rsms.me/inter/inter.css
+// import { fontBaseUrl, fontFaceUrl } from "@ggbot2/assets";
 
 type LinkTag = {
   href: string;
@@ -31,16 +32,18 @@ const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`;
 const scriptTag = ({ src }: ScriptTag) =>
   `<script type="module" src="${src}"></script>`;
 
-const fontTags = [
-  `<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
-  `<link href="${fontFaceUrl}" rel="stylesheet">`,
-];
+// TODO use assets CDN
+// const fontTags = [
+//    `<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
+//    `<link href="${fontFaceUrl}" rel="stylesheet">`,
+// ];
 
 const metaTags = ({ title }: HeadTagArgs["meta"]) => [
   '<meta charset="UTF-8" />',
   '<meta name="viewport" content="width=device-width" />',
   `<title>${title}</title>`,
-  ...fontTags,
+  // TODO use assets CDN
+  //  ...fontTags,
 ];
 
 const headTag = ({ meta, stylesheets }: HeadTagArgs) => [

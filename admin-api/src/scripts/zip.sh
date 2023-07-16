@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Cleanup previous .zip files
 
 rm -rf dist/*/index.zip

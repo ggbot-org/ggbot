@@ -11,8 +11,6 @@ describe("htmlPageContent", () => {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
 <title>page title</title>
-<link rel="preconnect" href="https://rsms.me" crossorigin="">
-<link href="https://rsms.me/inter/inter.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>

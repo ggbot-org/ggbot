@@ -21,13 +21,13 @@ const Page: FC = () => (
       <p>Your email is used for authentication and communications.</p>
 
       <p>
-        We store all Personal Data on secure servers administered by Amazon,
-        located in the United States of America.
+        We store all Personal Data on secure servers administered by{" "}
+        <em>AWS</em> (Amazon Web Services).
       </p>
 
       <p>
         No third party service is used for email communications, we are using
-        Amazon&apos;s Simple Email Service.
+        AWS&apos;s <em>Simple Email Service.</em>
       </p>
     </main>
   </>
