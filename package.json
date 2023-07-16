@@ -67,6 +67,7 @@
     "prebuild:authentication-api": "npm run build:api-gateway && npm run build:authentication && npm run build:database",
     "prebuild:aws": "npm run build:infrastructure",
     "prebuild:binance": "npm run build:http && npm run build:models",
+    "prebuild:binance-proxy": "npm run build:binance",
     "prebuild:database": "npm run build:aws && npm run build:binance && npm run build:binance-client && npm run build:dflow && npm run build:email-messages && npm run build:test-data",
     "prebuild:design": "npm run build:time",
     "prebuild:dflow": "npm run build:binance",

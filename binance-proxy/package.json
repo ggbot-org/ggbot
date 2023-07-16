@@ -16,8 +16,8 @@
     "@ggbot2/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/models": "file:models",
-    "@ggbot2/database": "file:database"
+    "@ggbot2/binance": "file:binance",
+    "@ggbot2/http": "file:http"
   },
   "eslintConfig": {
     "extends": [

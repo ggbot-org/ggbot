@@ -1,7 +1,5 @@
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic";
 import {
-  binanceApiDomain,
-  BinanceCacheMap,
   BinanceExchange,
   BinanceSymbolInfo,
   isBinanceOrderRespFULL,
@@ -156,10 +154,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
     if (strategyKind !== "binance") return;
     // TODO put Binance Exchange info in some context and
     // also cache it session storage
-    const binance = new BinanceExchange({
-      baseUrl: `https://${binanceApiDomain}`,
-      cache: new BinanceCacheMap(),
-    });
+    const binance = new BinanceExchange();
     (async () => {
       const { symbols } = await binance.exchangeInfo();
       for (const { symbol, baseAsset, quoteAsset } of symbols) {

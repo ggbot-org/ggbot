@@ -1,15 +1,4 @@
 import {
-  binanceApiDomain,
-  BinanceCacheMap,
-  BinanceKline,
-  BinanceKlineInterval,
-} from "@ggbot2/binance";
-import {
-  BinanceClient,
-  BinanceClientConstructorArg,
-} from "@ggbot2/binance-client";
-import {
-  BinanceDflowClient,
   BinanceDflowExecutor,
   getDflowBinanceNodesCatalog,
 } from "@ggbot2/dflow";
@@ -28,6 +17,7 @@ import {
 } from "@ggbot2/models";
 import { now, timeToDay, today, truncateTime } from "@ggbot2/time";
 
+import { _BinanceClient } from "./_binanceClient.js";
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { appendAccountDailyOrders } from "./accountDailyOrders.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
@@ -36,23 +26,6 @@ import { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges
 import { appendStrategyDailyOrders } from "./strategyDailyOrders.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
-
-class Binance extends BinanceClient implements BinanceDflowClient {
-  constructor(arg: Pick<BinanceClientConstructorArg, "apiKey" | "apiSecret">) {
-    super({
-      ...arg,
-      baseUrl: `https://${binanceApiDomain}`,
-      cache: new BinanceCacheMap(),
-    });
-  }
-  async candles(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    limit: number
-  ): Promise<BinanceKline[]> {
-    return await this.klines(symbol, interval, { limit });
-  }
-}
 
 /**
  * Execute a ggbot2 strategy.
@@ -93,7 +66,8 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
           accountId,
         });
 
-      const binance = new Binance(binanceApiConfig);
+      const { apiKey, apiSecret } = binanceApiConfig;
+      const binance = new _BinanceClient(apiKey, apiSecret);
 
       // Truncate logical time to minute. It is a good compromise also to
       // cache klines data.

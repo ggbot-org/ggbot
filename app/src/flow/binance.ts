@@ -1,7 +1,6 @@
 import { div, mul } from "@ggbot2/arithmetic";
 import {
   BinanceAccountInformation,
-  binanceApiDomain,
   BinanceBalance,
   BinanceCacheMap,
   BinanceExchange,
@@ -21,12 +20,8 @@ import {
 } from "@ggbot2/dflow";
 import { Time } from "@ggbot2/time";
 
+export const binance = new BinanceExchange();
 const cache = new BinanceCacheMap();
-
-export const binance = new BinanceExchange({
-  baseUrl: `https://${binanceApiDomain}`,
-  cache,
-});
 
 export class BinanceDflowClient implements IBinanceDflowClient {
   readonly balances: BinanceBalance[];

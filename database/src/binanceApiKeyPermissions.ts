@@ -1,10 +1,7 @@
-import {
-  binanceApiDomain,
-  ReadBinanceApiKeyPermissions,
-} from "@ggbot2/binance";
-import { BinanceClient } from "@ggbot2/binance-client";
+import { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
 import { ErrorAccountItemNotFound } from "@ggbot2/models";
 
+import { _BinanceClient } from "./_binanceClient.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 
 /** @throws {@link ErrorAccountItemNotFound} */
@@ -17,11 +14,6 @@ export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] 
         accountId,
       });
     const { apiKey, apiSecret } = binanceApiConfig;
-    const client = new BinanceClient({
-      baseUrl: `https://${binanceApiDomain}`,
-      apiKey,
-      apiSecret,
-    });
-    const data = await client.apiRestrictions();
-    return data;
+    const binance = new _BinanceClient(apiKey, apiSecret);
+    return await binance.privateClient.apiRestrictions();
   };

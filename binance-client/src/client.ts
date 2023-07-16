@@ -4,34 +4,31 @@ import {
   balanceIsNotEmpty,
   BinanceAccountInformation,
   BinanceApiKeyPermission,
-  BinanceConnectorRequestArg,
+  BinanceApiRequestMethod,
+  BinanceApiRequestParams,
   BinanceExchange,
-  BinanceExchangeConstructorArg,
   BinanceNewOrderOptions,
   BinanceOrderRespACK,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
+import { BinanceApiPrivateEndpoint } from "@ggbot2/binance/dist/endpoints";
 
-/**
- * BinanceClient implements private API requests. It extends BinanceExchange to
- * be able to use also public API requests.
- */
+/** BinanceClient implements private and public Binance API requests. */
 export class BinanceClient extends BinanceExchange {
-  apiKey: string;
-  apiSecret: string;
+  readonly apiSecret: string;
 
-  constructor({ apiKey, apiSecret, ...arg }: BinanceClientConstructorArg) {
-    super(arg);
-    this.apiKey = apiKey;
+  constructor(apiKey: string, apiSecret: string, baseUrl?: string) {
+    super(baseUrl);
+    this.connector.apiKey = apiKey;
     this.apiSecret = apiSecret;
   }
 
   async privateRequest<Data>(
-    method: BinanceConnectorRequestArg["method"],
-    endpoint: BinanceConnectorRequestArg["endpoint"],
-    params?: BinanceConnectorRequestArg["params"]
+    method: BinanceApiRequestMethod,
+    endpoint: BinanceApiPrivateEndpoint,
+    params?: BinanceApiRequestParams
   ) {
     const searchParams = new URLSearchParams();
     if (params)
@@ -46,12 +43,11 @@ export class BinanceClient extends BinanceExchange {
       .digest("hex");
     searchParams.append("signature", signature);
 
-    return await super.request<Data>({
-      apiKey: this.apiKey,
-      endpoint,
+    return await this.connector.request<Data>(
       method,
-      params: Object.fromEntries(searchParams),
-    });
+      endpoint,
+      Object.fromEntries(searchParams)
+    );
   }
 
   /**
@@ -92,13 +88,13 @@ export class BinanceClient extends BinanceExchange {
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrder(
-    symbolInput: string,
+    symbol: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol: _symbol } = await this.prepareOrder(
+      symbol,
       side,
       type,
       orderOptions
@@ -107,7 +103,7 @@ export class BinanceClient extends BinanceExchange {
       "POST",
       "/api/v3/order",
       {
-        symbol,
+        symbol: _symbol,
         side,
         type,
         ...options,
@@ -122,13 +118,13 @@ export class BinanceClient extends BinanceExchange {
    * engine. Parameters are the same as `newOrder`.
    */
   async newOrderTest(
-    symbolInput: string,
+    symbol: string,
     side: BinanceOrderSide,
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol: _symbol } = await this.prepareOrder(
+      symbol,
       side,
       type,
       orderOptions
@@ -137,7 +133,7 @@ export class BinanceClient extends BinanceExchange {
       "POST",
       "/api/v3/order/test",
       {
-        symbol,
+        symbol: _symbol,
         side,
         type,
         ...options,
@@ -151,13 +147,13 @@ export class BinanceClient extends BinanceExchange {
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async newOrderACK(
-    symbolInput: string,
+    symbol: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol: _symbol } = await this.prepareOrder(
+      symbol,
       side,
       type,
       orderOptions
@@ -166,7 +162,7 @@ export class BinanceClient extends BinanceExchange {
       "POST",
       "/api/v3/order",
       {
-        symbol,
+        symbol: _symbol,
         side,
         type,
         ...options,
@@ -181,13 +177,13 @@ export class BinanceClient extends BinanceExchange {
    * engine. Parameters are the same as `newOrderACK`.
    */
   async newOrderACKTest(
-    symbolInput: string,
+    symbol: string,
     side: BinanceOrderSide,
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol } = await this.prepareOrder(
-      symbolInput,
+    const { options, symbol: _symbol } = await this.prepareOrder(
+      symbol,
       side,
       type,
       orderOptions
@@ -196,7 +192,7 @@ export class BinanceClient extends BinanceExchange {
       "POST",
       "/api/v3/order/test",
       {
-        symbol,
+        symbol: _symbol,
         side,
         type,
         ...options,
@@ -204,6 +200,3 @@ export class BinanceClient extends BinanceExchange {
     );
   }
 }
-
-export type BinanceClientConstructorArg = BinanceExchangeConstructorArg &
-  Pick<BinanceClient, "apiKey" | "apiSecret">;

@@ -1,11 +1,7 @@
 import { Time, TimeInterval, truncateTime } from "@ggbot2/time";
 
 import { BinanceCacheProvider } from "./cache.js";
-import {
-  BinanceConnector,
-  BinanceConnectorConstructorArg,
-  BinanceConnectorRequestArg,
-} from "./connector.js";
+import { BinanceConnector } from "./connector.js";
 import {
   ErrorBinanceCannotTradeSymbol,
   ErrorBinanceInvalidArg,
@@ -46,33 +42,25 @@ import {
 /**
  * BinanceExchange implements public API requests.
  *
- * Constructor accepts a `cache` that implements `BinanceCacheProvider`; default
- * `BinanceCacheMap` can be used.
+ * It can use a `cache` instance, that is any class implementing
+ * `BinanceCacheProvider`, for example `BinanceCacheMap`.
  *
  * @example
  *
  * ```ts
- * import { truncateDate } from "@ggbot2/time";
- * import {
- *   BinanceCacheMap,
- *   BinanceConnector,
- *   BinanceExchange,
- *   binanceApiDomain,
- * } from "@ggbot2/binance";
+ * import { BinanceCacheMap, BinanceExchange } from "@ggbot2/binance";
  *
- * const cache = new BinanceCacheMap();
- * const binance = new BinanceExchange({
- *   baseUrl: `https://${binanceApiDomain}`,
- *   cache: new BinanceCacheMap(),
- * });
+ * const binance = new BinanceExchange();
+ * binance.cache = new BinanceCacheMap();
  * ```
  */
-export class BinanceExchange extends BinanceConnector {
-  readonly cache?: BinanceCacheProvider | undefined;
+export class BinanceExchange {
+  readonly connector: BinanceConnector;
 
-  constructor({ baseUrl, cache }: BinanceExchangeConstructorArg) {
-    super({ baseUrl });
-    this.cache = cache;
+  cache?: BinanceCacheProvider | undefined;
+
+  constructor(baseUrl?: string) {
+    this.connector = new BinanceConnector(baseUrl);
   }
 
   /** @throws {@link ErrorBinanceSymbolFilter} */
@@ -129,14 +117,129 @@ export class BinanceExchange extends BinanceConnector {
     throw new Error();
   }
 
-  async publicRequest<Data>(
-    method: BinanceConnectorRequestArg["method"],
-    endpoint: BinanceConnectorRequestArg["endpoint"],
-    params?: BinanceConnectorRequestArg["params"]
-  ) {
-    return await super.request<Data>({ endpoint, method, params });
-  }
+  /**
+   * Validate order parameters and try to adjust them; otherwise throw an error.
+   *
+   * @throws {@link ErrorBinanceCannotTradeSymbol}
+   * @throws {@link ErrorBinanceInvalidArg}
+   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
+   */
+  async prepareOrder(
+    symbol: string,
+    side: BinanceOrderSide,
+    orderType: BinanceOrderType,
+    orderOptions: BinanceNewOrderOptions
+  ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
+    if (!isBinanceOrderSide(side))
+      throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
+    if (!isBinanceOrderType(orderType))
+      throw new ErrorBinanceInvalidArg({
+        arg: orderType,
+        type: "orderType",
+      });
+    const symbolInfo = await this.symbolInfo(symbol);
+    if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
+      throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
 
+    const { filters } = symbolInfo;
+
+    const lotSizeFilter = findSymbolFilterLotSize(filters);
+    const minNotionalFilter = findSymbolFilterMinNotional(filters);
+
+    const {
+      price,
+      quantity,
+      quoteOrderQty,
+      stopPrice,
+      timeInForce,
+      trailingDelta,
+    } = orderOptions;
+
+    const prepareOptions: Record<
+      BinanceOrderType,
+      () => BinanceNewOrderOptions
+    > = {
+      LIMIT: () => {
+        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (quoteOrderQty === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        if (timeInForce === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        BinanceExchange.throwIfMinNotionalFilterIsInvalid(
+          quoteOrderQty,
+          orderType,
+          minNotionalFilter
+        );
+        return orderOptions;
+      },
+
+      LIMIT_MAKER: () => {
+        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+
+      MARKET: () => {
+        if (quantity === undefined && quoteOrderQty === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        if (quantity) {
+          BinanceExchange.throwIfLotSizeFilterIsInvalid(
+            quantity,
+            lotSizeFilter
+          );
+          return { quantity };
+        }
+        if (quoteOrderQty) {
+          BinanceExchange.throwIfMinNotionalFilterIsInvalid(
+            quoteOrderQty,
+            orderType,
+            minNotionalFilter
+          );
+        }
+        return { quoteOrderQty };
+      },
+
+      STOP_LOSS: () => {
+        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
+        if (stopPrice === undefined && trailingDelta === undefined)
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+
+      STOP_LOSS_LIMIT: () => {
+        if (
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+
+      TAKE_PROFIT: () => {
+        if (
+          quantity === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+
+      TAKE_PROFIT_LIMIT: () => {
+        if (
+          timeInForce === undefined ||
+          quantity === undefined ||
+          price === undefined ||
+          (stopPrice === undefined && trailingDelta === undefined)
+        )
+          throw new ErrorBinanceInvalidOrderOptions();
+        return orderOptions;
+      },
+    };
+
+    return { symbol, options: prepareOptions[orderType]() };
+  }
   /**
    * Current average price for a symbol.
    *
@@ -147,7 +250,7 @@ export class BinanceExchange extends BinanceConnector {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
       throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" });
-    return await this.publicRequest<BinanceAvgPrice>(
+    return await this.connector.request<BinanceAvgPrice>(
       "GET",
       "/api/v3/avgPrice",
       { symbol }
@@ -180,7 +283,7 @@ export class BinanceExchange extends BinanceConnector {
     const { cache } = this;
     const cached = cache?.getExchangeInfo();
     if (cached) return cached;
-    const data = await this.publicRequest<BinanceExchangeInfo>(
+    const data = await this.connector.request<BinanceExchangeInfo>(
       "GET",
       "/api/v3/exchangeInfo"
     );
@@ -226,7 +329,7 @@ export class BinanceExchange extends BinanceConnector {
       );
     const cached = cache?.getKlines(symbol, interval, timeInterval);
     if (cached) return cached;
-    const klines = await this.publicRequest<BinanceKline[]>(
+    const klines = await this.connector.request<BinanceKline[]>(
       "GET",
       "/api/v3/klines",
       {
@@ -283,136 +386,15 @@ export class BinanceExchange extends BinanceConnector {
       interval,
       optionalParameters
     );
-    return await this.publicRequest<BinanceKline[]>("GET", "/api/v3/uiKlines", {
-      symbol,
-      interval,
-      ...optionalParameters,
-    });
-  }
-
-  /**
-   * Validate order parameters and try to adjust them; otherwise throw an error.
-   *
-   * @throws {@link ErrorBinanceCannotTradeSymbol}
-   * @throws {@link ErrorBinanceInvalidArg}
-   * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-   */
-  async prepareOrder(
-    symbol: string,
-    side: BinanceOrderSide,
-    orderType: BinanceOrderType,
-    orderOptions: BinanceNewOrderOptions
-  ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
-    if (!isBinanceOrderSide(side))
-      throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
-    if (!isBinanceOrderType(orderType))
-      throw new ErrorBinanceInvalidArg({
-        arg: orderType,
-        type: "orderType",
-      });
-    const symbolInfo = await this.symbolInfo(symbol);
-    if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
-      throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType });
-
-    const { filters } = symbolInfo;
-
-    const lotSizeFilter = findSymbolFilterLotSize(filters);
-    const minNotionalFilter = findSymbolFilterMinNotional(filters);
-
-    const {
-      price,
-      quantity,
-      quoteOrderQty,
-      stopPrice,
-      timeInForce,
-      trailingDelta,
-    } = orderOptions;
-
-    const prepareOptions: Record<
-      BinanceOrderType,
-      () => Promise<BinanceNewOrderOptions>
-    > = {
-      LIMIT: async () => {
-        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
-        if (quoteOrderQty === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-        if (timeInForce === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-        BinanceExchange.throwIfMinNotionalFilterIsInvalid(
-          quoteOrderQty,
-          orderType,
-          minNotionalFilter
-        );
-        return orderOptions;
-      },
-
-      LIMIT_MAKER: async () => {
-        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
-        if (price === undefined) throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-
-      MARKET: async () => {
-        if (quantity === undefined && quoteOrderQty === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-        if (quantity) {
-          BinanceExchange.throwIfLotSizeFilterIsInvalid(
-            quantity,
-            lotSizeFilter
-          );
-          return { quantity };
-        }
-        if (quoteOrderQty) {
-          BinanceExchange.throwIfMinNotionalFilterIsInvalid(
-            quoteOrderQty,
-            orderType,
-            minNotionalFilter
-          );
-        }
-        return { quoteOrderQty };
-      },
-
-      STOP_LOSS: async () => {
-        if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions();
-        if (stopPrice === undefined && trailingDelta === undefined)
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-
-      STOP_LOSS_LIMIT: async () => {
-        if (
-          timeInForce === undefined ||
-          quantity === undefined ||
-          price === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-
-      TAKE_PROFIT: async () => {
-        if (
-          quantity === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-
-      TAKE_PROFIT_LIMIT: async () => {
-        if (
-          timeInForce === undefined ||
-          quantity === undefined ||
-          price === undefined ||
-          (stopPrice === undefined && trailingDelta === undefined)
-        )
-          throw new ErrorBinanceInvalidOrderOptions();
-        return orderOptions;
-      },
-    };
-
-    const options = await prepareOptions[orderType]();
-    return { symbol, options };
+    return await this.connector.request<BinanceKline[]>(
+      "GET",
+      "/api/v3/uiKlines",
+      {
+        symbol,
+        interval,
+        ...optionalParameters,
+      }
+    );
   }
 
   /**
@@ -439,7 +421,7 @@ export class BinanceExchange extends BinanceConnector {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
       throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" });
-    return await this.publicRequest<BinanceTicker24hr>(
+    return await this.connector.request<BinanceTicker24hr>(
       "GET",
       "/api/v3/ticker/24hr",
       { symbol }
@@ -456,13 +438,10 @@ export class BinanceExchange extends BinanceConnector {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
       throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" });
-    return await this.publicRequest<BinanceTickerPrice>(
+    return await this.connector.request<BinanceTickerPrice>(
       "GET",
       "/api/v3/ticker/price",
       { symbol }
     );
   }
 }
-
-export type BinanceExchangeConstructorArg = BinanceConnectorConstructorArg &
-  Pick<BinanceExchange, "cache">;

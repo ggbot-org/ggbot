@@ -21,4 +21,6 @@ export const userWebappDomain = `app.${topLevelDomain}`;
 
 export const userWebappNextDomain = `app-next.${topLevelDomain}`;
 
+export const binanceProxyDomain = `proxy.${topLevelDomain}`;
+
 export const wwwDomain = `www.${topLevelDomain}`;

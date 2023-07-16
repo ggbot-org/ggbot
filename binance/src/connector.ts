@@ -1,21 +1,31 @@
 import { ErrorHTTP } from "@ggbot2/http";
 
 import { BinanceApiEndpoint } from "./endpoints.js";
+import { binanceApiDomain } from "./FQDN.js";
+import { BinanceRequestHeaders } from "./headers.js";
+import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js";
 
-/** BinanceConnector is a base class for Binance clients. */
+/** BinanceConnector handles requests to Binance API. */
 export class BinanceConnector {
-  readonly baseUrl: string;
+  baseUrl: string;
+  readonly requestHeaders: BinanceRequestHeaders;
 
-  constructor({ baseUrl }: BinanceConnectorConstructorArg) {
+  constructor(baseUrl = `https://${binanceApiDomain}`) {
     this.baseUrl = baseUrl;
+    this.requestHeaders = new BinanceRequestHeaders();
   }
 
-  async request<Data>({
-    apiKey = "",
-    endpoint,
-    method,
-    params = {},
-  }: BinanceConnectorRequestArg) {
+  set apiKey(value: string) {
+    this.requestHeaders.apiKey = value;
+  }
+
+  async request<Data>(
+    method: BinanceApiRequestMethod,
+    endpoint: BinanceApiEndpoint,
+    params: BinanceApiRequestParams = {}
+  ) {
+    const fetchOptions: RequestInit = { headers: this.requestHeaders, method };
+
     const url = new URL(this.baseUrl);
     url.pathname = endpoint;
 
@@ -29,12 +39,6 @@ export class BinanceConnector {
       url.searchParams.append(key, String(valueString));
     }
 
-    const headers = new Headers({
-      ...(apiKey ? { "X-MBX-APIKEY": apiKey } : {}),
-    });
-
-    const fetchOptions: RequestInit = { headers, method };
-
     const response = await fetch(url, fetchOptions);
     if (!response.ok) throw new ErrorHTTP(response);
 
@@ -42,12 +46,3 @@ export class BinanceConnector {
     return data as Data;
   }
 }
-
-export type BinanceConnectorConstructorArg = Pick<BinanceConnector, "baseUrl">;
-
-export type BinanceConnectorRequestArg = {
-  apiKey?: string;
-  endpoint: BinanceApiEndpoint;
-  method: "GET" | "POST";
-  params?: Record<string, string | number>;
-};
