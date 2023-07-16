@@ -1,5 +1,6 @@
 import {
   BinanceAccountInformation,
+  binanceApiDomain,
   BinanceCacheMap,
   BinanceExchange,
   BinanceExchangeInfo,
@@ -14,7 +15,7 @@ import {
 } from "@ggbot2/binance";
 import { BinanceClient } from "@ggbot2/binance-client";
 import { BinanceDflowClient } from "@ggbot2/dflow";
-import { binanceProxyDomain } from "@ggbot2/locators";
+import { ENV } from "@ggbot2/env";
 
 /** A Binance client that uses a proxy for private requests. */
 export class _BinanceClient implements BinanceDflowClient {
@@ -24,10 +25,13 @@ export class _BinanceClient implements BinanceDflowClient {
   constructor(apiKey: string, apiSecret: string) {
     this.publicClient = new BinanceExchange();
     this.publicClient.cache = new BinanceCacheMap();
+
+    const privateClientBaseUrl =
+      ENV.BINANCE_PROXY_BASE_URL ?? `https://${binanceApiDomain}`;
     this.privateClient = new BinanceClient(
       apiKey,
       apiSecret,
-      `https://${binanceProxyDomain}`
+      privateClientBaseUrl
     );
   }
 

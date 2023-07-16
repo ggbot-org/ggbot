@@ -1,6 +1,7 @@
 import { ErrorMissingEnvironmentVariable } from "./errors.js";
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
+const BINANCE_PROXY_BASE_URL = process.env.BINANCE_PROXY_BASE_URL;
 const DEPLOY_STAGE = process.env.DEPLOY_STAGE;
 const NODE_ENV = process.env.NODE_ENV;
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -14,6 +15,12 @@ class EnvironmentVariables {
   get AWS_ACCOUNT_ID() {
     if (typeof AWS_ACCOUNT_ID === "string") return AWS_ACCOUNT_ID;
     throw new ErrorMissingEnvironmentVariable("AWS_ACCOUNT_ID");
+  }
+
+  get BINANCE_PROXY_BASE_URL() {
+    if (typeof BINANCE_PROXY_BASE_URL === "string")
+      return BINANCE_PROXY_BASE_URL;
+    return "";
   }
 
   get DEPLOY_STAGE() {

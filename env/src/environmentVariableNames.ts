@@ -1,8 +1,6 @@
 const environmentVariableNames = [
   "AWS_REGION",
   "AWS_ACCOUNT_ID",
-  "AWS_ACCESS_KEY_ID",
-  "AWS_SECRET_ACCESS_KEY",
   "DEPLOY_STAGE",
   "JWT_SECRET",
   "NODE_ENV",
