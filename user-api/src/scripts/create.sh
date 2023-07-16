@@ -1,6 +1,6 @@
 source "$(dirname "$0")/_common_variables.sh"
 
-# User action
+# action
 
 aws lambda create-function --region $AWS_REGION --function-name $ACTION_FUNCTION_NAME --runtime $RUNTIME --handler index.handler --role $ROLE --zip-file $ACTION_FUNCTION_ZIP_FILE
 

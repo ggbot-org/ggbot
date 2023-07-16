@@ -23,12 +23,13 @@ export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const { UTRUST_WEBHOOK_SECRET } = ENV;
     switch (event.httpMethod) {
       case "POST": {
         if (!event.body) return BAD_REQUEST();
 
-        const { validateSignature } = WebhookValidator(UTRUST_WEBHOOK_SECRET);
+        const { validateSignature } = WebhookValidator(
+          ENV.UTRUST_WEBHOOK_SECRET
+        );
         const input = JSON.parse(event.body);
         const isValid = validateSignature(input);
         if (!isValid) return BAD_REQUEST();
