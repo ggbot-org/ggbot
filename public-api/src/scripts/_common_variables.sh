@@ -1,4 +1,4 @@
-AWS_REGION="us-east-1"
+AWS_REGION="eu-central-1"
 RUNTIME="nodejs18.x"
 # TODO create a ggbot2-main-api-role ggbot2-next-api-role ggbot2-local-api-role (copy of next)
 ROLE="arn:aws:iam::$AWS_ACCOUNT_ID:role/ggbot2_api_role"
