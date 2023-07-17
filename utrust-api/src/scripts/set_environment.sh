@@ -9,4 +9,4 @@ aws lambda update-function-configuration --region $AWS_REGION --function-name $C
 
 # order
 
-aws lambda update-function-configuration --region $AWS_REGION --function-name $ORDER_FUNCTION_NAME --environment "Variables={AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID,DEPLOY_STAGE=$DEPLOY_STAGE,UTRUST_API_KEY=$UTRUST_API_KEY}"
+aws lambda update-function-configuration --region $AWS_REGION --function-name $ORDER_FUNCTION_NAME --environment "Variables={DEPLOY_STAGE=$DEPLOY_STAGE,UTRUST_API_KEY=$UTRUST_API_KEY}"
