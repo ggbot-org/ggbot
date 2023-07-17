@@ -24,11 +24,12 @@
     "@ggbot2/env": "file:env",
     "@ggbot2/locators": "file:locators",
     "@ggbot2/models": "file:models",
-    "@utrustdev/utrust-ts-library": "^1.0.4"
+    "@utrustdev/utrust-ts-library": "1.0.4"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@ggbot2/tsconfig": "file:tsconfig",
+    "@types/aws-lambda": "8.10.114"
   },
   "eslintConfig": {
     "extends": [

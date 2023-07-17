@@ -16,8 +16,8 @@
     "lint": "eslint --fix --ext .ts --ext .tsx ."
   },
   "dependencies": {
-    "@types/react-dom": "^18.2.4",
-    "react-dom": "^18.2.0"
+    "@types/react-dom": "18.2.4",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

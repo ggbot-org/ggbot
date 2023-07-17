@@ -16,7 +16,7 @@
     "lint": "eslint --fix --ext .ts ."
   },
   "dependencies": {
-    "esbuild": "^0.17.17"
+    "esbuild": "0.17.17"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

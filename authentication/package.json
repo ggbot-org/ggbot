@@ -23,7 +23,7 @@
     "@ggbot2/env": "file:env",
     "@ggbot2/models": "file:models",
     "@ggbot2/time": "file:time",
-    "jsonwebtoken": "^9.0.1"
+    "jsonwebtoken": "9.0.1"
   },
   "eslintConfig": {
     "extends": [
