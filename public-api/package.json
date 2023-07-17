@@ -9,7 +9,7 @@
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",
-    "lint": "eslint --fix --ext .ts .",
+    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "precreate": "npm run build",
     "predeploy": "npm run build",
@@ -21,7 +21,8 @@
     "@ggbot2/api": "file:api",
     "@ggbot2/api-gateway": "file:api-gateway",
     "@ggbot2/database": "file:database",
-    "@ggbot2/models": "file:models"
+    "@ggbot2/models": "file:models",
+    "aws-lambda": "1.0.7"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

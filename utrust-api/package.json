@@ -9,7 +9,7 @@
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",
-    "lint": "eslint --fix --ext .ts .",
+    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "precreate": "npm run build",
     "predeploy": "npm run build",
@@ -24,7 +24,8 @@
     "@ggbot2/env": "file:env",
     "@ggbot2/locators": "file:locators",
     "@ggbot2/models": "file:models",
-    "@utrustdev/utrust-ts-library": "1.0.4"
+    "@utrustdev/utrust-ts-library": "1.0.4",
+    "aws-lambda": "1.0.7"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

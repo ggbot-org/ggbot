@@ -29,7 +29,7 @@ class SessionWebStorage {
     }
   }
 
-  get gotFirstPageView(): boolean | undefined {
+  get gotFirstPageView(): boolean {
     const value = this.getItem(gotFirstPageViewKey);
     return Boolean(value);
   }

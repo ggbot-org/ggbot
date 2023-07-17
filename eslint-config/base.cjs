@@ -14,6 +14,7 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/no-array-constructor": "off",
     "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-extra-semi": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -40,6 +41,7 @@ module.exports = {
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-cycle": "error",
+    "import/no-extraneous-dependencies": ["error"],
     "max-depth": ["error", 5],
     "no-case-declarations": "error",
     "no-console": ["error", { allow: ["error", "info", "warn"] }],

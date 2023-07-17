@@ -17,7 +17,7 @@
     "generate_html": "node temp/scripts/generate_html.js",
     "generate_js": "node temp/scripts/generate_js.js",
     "generate_public_files": "npm run generate_html && npm run generate_js && npm run generate_css",
-    "lint": "eslint --fix --ext .ts --ext .tsx .",
+    "lint": "eslint --fix --ext .ts --ext .tsx src/",
     "pregenerate_public_files": "npm run tsc:scripts",
     "prestart": "npm run generate_public_files",
     "sass": "sass --style=compressed --load-path=../node_modules/ --load-path=. --no-source-map src/webapp/styles/main.scss public/main.css",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@ggbot2/react": "file:react",
+    "react": "18.2.0",
     "trunx": "0.45.2"
   },
   "devDependencies": {

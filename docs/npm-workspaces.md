@@ -64,7 +64,7 @@ temp/
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts .",
+    "lint": "eslint --fix --ext .ts src/",
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test"
   },
@@ -81,9 +81,7 @@ temp/
       // Extend proper eslint preset,
       // may be "@ggbot2/eslint-config/react" for frontend packages.
       "@ggbot2/eslint-config"
-    ],
-    // ESLint should ignore these folders.
-    "ignorePatterns": ["dist/", "temp/"]
+    ]
   }
 }
 ```
