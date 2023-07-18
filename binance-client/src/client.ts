@@ -4,6 +4,7 @@ import {
   balanceIsNotEmpty,
   BinanceAccountInformation,
   BinanceApiKeyPermission,
+  BinanceApiPrivateEndpoint,
   BinanceApiRequestMethod,
   BinanceApiRequestParams,
   BinanceExchange,
@@ -13,7 +14,6 @@ import {
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
-import { BinanceApiPrivateEndpoint } from "@ggbot2/binance/dist/endpoints";
 
 /**
  * BinanceClient implements private and public Binance API requests.

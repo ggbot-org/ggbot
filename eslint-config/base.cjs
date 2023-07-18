@@ -42,6 +42,7 @@ module.exports = {
     "import/newline-after-import": "error",
     "import/no-cycle": "error",
     "import/no-extraneous-dependencies": ["error"],
+    "import/no-internal-modules": ["error"],
     "max-depth": ["error", 5],
     "no-case-declarations": "error",
     "no-console": ["error", { allow: ["error", "info", "warn"] }],
