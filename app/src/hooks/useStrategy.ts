@@ -5,7 +5,7 @@ import { useApi } from "../hooks/useApi.js";
 import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js";
 
 export const useStrategy = () => {
-  const [READ, { data, isPending, error, aborted }] = useApi.ReadStrategy();
+  const { request: READ, data, status: readStatus } = useApi.ReadStrategy();
 
   const strategyKey = strategyKeyParamsFromCurrentLocation();
   let strategyName: Strategy["name"] = "";
@@ -18,10 +18,10 @@ export const useStrategy = () => {
 
   useEffect(() => {
     if (strategyKey === undefined) return;
-    if (data !== undefined || isPending || aborted || error) return;
+    if (readStatus) return;
     const controller = READ(strategyKey);
     return () => controller.abort();
-  }, [READ, aborted, data, error, isPending, strategyKey]);
+  }, [READ, readStatus, strategyKey]);
 
   return { strategyKey, strategyName, strategyWhenCreated };
 };

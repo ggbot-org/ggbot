@@ -6,7 +6,7 @@ import { useApi } from "../hooks/useApi.js";
 type Props = AccountKey;
 
 export const Account: FC<Props> = ({ accountId }) => {
-  const [request, { data: account }] = useApi.ReadAccount();
+  const { request, data: account } = useApi.ReadAccount();
 
   let email = "";
 

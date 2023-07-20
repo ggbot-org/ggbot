@@ -20,19 +20,17 @@ type Props = {
 const fields = ["apiKey", "apiSecret"] as const;
 
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
-  const [CREATE, { data, isPending }] = useApi.CreateBinanceApiConfig();
+  const { request: CREATE, data, isPending } = useApi.CreateBinanceApiConfig();
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (isPending) return;
-
       const { apiKey, apiSecret } = formValues(event, fields);
       if (typeof apiKey !== "string") return;
       if (typeof apiSecret !== "string") return;
       CREATE({ apiKey, apiSecret });
     },
-    [CREATE, isPending]
+    [CREATE]
   );
 
   useEffect(() => {

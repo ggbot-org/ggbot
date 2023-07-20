@@ -42,10 +42,14 @@ export const StrategyForm: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-  const [RENAME, { isPending: renameIsPending }] = useApi.RenameStrategy();
+  const { request: RENAME, isPending: renameIsPending } =
+    useApi.RenameStrategy();
 
-  const [READ, { data: strategy, isPending: readIsPending }] =
-    useApi.ReadStrategy();
+  const {
+    request: READ,
+    data: strategy,
+    isPending: readIsPending,
+  } = useApi.ReadStrategy();
 
   const readOnly = readIsPending || renameIsPending;
 
@@ -58,7 +62,6 @@ export const StrategyForm: FC = () => {
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (renameIsPending) return;
       try {
         const { name } = formValues(event, fields);
         if (!isName(name)) return;
@@ -71,7 +74,7 @@ export const StrategyForm: FC = () => {
           setHelp(errorMessage.invalidStrategyName);
       }
     },
-    [RENAME, renameIsPending, strategyKey]
+    [RENAME, strategyKey]
   );
 
   // Read strategy data.

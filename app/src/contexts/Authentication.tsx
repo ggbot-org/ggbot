@@ -96,7 +96,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   );
 
-  const [READ, { data: readAccountData }] = useApi.ReadAccount();
+  const { request: READ, data: account } = useApi.ReadAccount();
 
   const setJwt = useCallback<AuthVerifyFormProps["setJwt"]>(
     (jwt) => {
@@ -134,21 +134,21 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [jwt]);
 
   useEffect(() => {
-    if (readAccountData === undefined) return;
+    if (account === undefined) return;
 
-    if (readAccountData === null) {
+    if (account === null) {
       dispatch({ type: "SET_EMAIL", data: { email: undefined } });
     }
 
-    if (isAccount(readAccountData)) {
-      dispatch({ type: "SET_EMAIL", data: { email: readAccountData.email } });
+    if (isAccount(account)) {
+      dispatch({ type: "SET_EMAIL", data: { email: account.email } });
 
       if (!showSplashScreen) return;
       setTimeout(() => {
         dispatch({ type: "HIDE_SPLASH_SCREEN" });
       }, splashScreenDuration - (now() - startSession));
     }
-  }, [readAccountData, startSession, showSplashScreen]);
+  }, [account, startSession, showSplashScreen]);
 
   if (showSplashScreen) return <SplashScreen />;
 

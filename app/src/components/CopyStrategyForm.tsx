@@ -30,7 +30,7 @@ export const CopyStrategyForm: FC = () => {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [COPY, { data: isDone, isPending }] = useApi.CopyStrategy();
+  const { request: COPY, isDone, isPending } = useApi.CopyStrategy();
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
@@ -38,7 +38,6 @@ export const CopyStrategyForm: FC = () => {
     (event) => {
       try {
         event.preventDefault();
-        if (isPending || isDone) return;
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
@@ -50,7 +49,7 @@ export const CopyStrategyForm: FC = () => {
         }
       }
     },
-    [isPending, strategyKey, COPY, isDone]
+    [strategyKey, COPY]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(

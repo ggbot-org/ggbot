@@ -6,7 +6,7 @@ import { useApi } from "../hooks/useApi.js";
 import { Account } from "./Account.js";
 
 export const Accounts: FC = () => {
-  const [request, { data: accountKeys }] = useApi.ListAccountKeys();
+  const { request, data: accountKeys } = useApi.ListAccountKeys();
 
   const accountIds: string[] = [];
 

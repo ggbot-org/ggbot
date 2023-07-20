@@ -13,7 +13,12 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const [READ, { data, isPending }] = useApi.ReadAccountStrategies();
+  const {
+    request: READ,
+    data,
+    error,
+    isPending,
+  } = useApi.ReadAccountStrategies();
 
   const items: StrategyItem[] = [];
   if (Array.isArray(data)) {
@@ -30,11 +35,10 @@ export const Strategies: FC = () => {
   }
 
   useEffect(() => {
-    if (isPending) return;
-    console.info(READ);
-    // const controller = READ({});
-    // return () => controller.abort();
-  }, [READ, isPending]);
+    if (isPending || data !== undefined) return;
+    const controller = READ({});
+    return () => controller.abort();
+  }, [READ, data, error, isPending]);
 
   return (
     <>

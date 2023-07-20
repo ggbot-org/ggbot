@@ -18,33 +18,37 @@ const hideApiKey = (apiKey: string) =>
   )}`;
 
 export const BinanceSettingsPage: FC = () => {
-  const [READ, { data }] = useApi.ReadBinanceApiConfig();
+  const {
+    request: READ,
+    data: apiConfig,
+    reset: resetRead,
+    status: readStatus,
+  } = useApi.ReadBinanceApiConfig();
 
   const [apiKey, setApiKey] = useState("");
-  const [fetchCounter, setFetchCounter] = useState(1);
 
   const refetchApiKey = useCallback(() => {
-    setFetchCounter((counter) => counter + 1);
-  }, []);
+    resetRead();
+  }, [resetRead]);
 
   const resetApiKey = useCallback(() => {
     setApiKey("");
   }, []);
 
   useEffect(() => {
-    if (!fetchCounter) return;
+    if (readStatus) return;
     const controller = READ({});
     return () => controller.abort();
-  }, [READ, fetchCounter]);
+  }, [READ, readStatus]);
 
   useEffect(() => {
-    if (isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(data)) {
-      const { apiKey } = data;
+    if (isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(apiConfig)) {
+      const { apiKey } = apiConfig;
       if (typeof apiKey === "string") setApiKey(hideApiKey(apiKey));
     }
-  }, [data]);
+  }, [apiConfig]);
 
-  if (data === undefined) return <OneSectionLayout />;
+  if (apiConfig === undefined) return <OneSectionLayout />;
 
   return (
     <I18nContextProvider>

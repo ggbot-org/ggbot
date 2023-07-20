@@ -20,9 +20,9 @@ export const DeleteStrategy: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
 
-  const [DELETE, { isPending, data }] = useApi.DeleteStrategy();
+  const { request: DELETE, isPending, isDone } = useApi.DeleteStrategy();
 
-  const isLoading = isPending || Boolean(data);
+  const isLoading = isPending || isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -31,16 +31,15 @@ export const DeleteStrategy: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (isPending) return;
     if (strategyKey) DELETE(strategyKey);
-  }, [DELETE, isPending, strategyKey]);
+  }, [DELETE, strategyKey]);
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "time");
 
   useEffect(() => {
-    if (!data) return;
+    if (!isDone) return;
     window.location.href = href.homePage();
-  }, [data]);
+  }, [isDone]);
 
   return (
     <>

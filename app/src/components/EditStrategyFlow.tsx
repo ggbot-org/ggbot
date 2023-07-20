@@ -53,19 +53,21 @@ export const EditStrategyFlow: FC = () => {
     strategyKind,
   });
 
-  const [
-    EXECUTE,
-    {
-      data: strategyExecution,
-      isPending: runIsPending,
-      error: strategyExecutionError,
-    },
-  ] = useApi.ExecuteStrategy();
+  const {
+    request: EXECUTE,
+    data: strategyExecution,
+    isPending: runIsPending,
+    error: strategyExecutionError,
+  } = useApi.ExecuteStrategy();
 
-  const [WRITE, { isPending: saveIsPending }] = useApi.WriteStrategyFlow();
+  const { request: WRITE, isPending: saveIsPending } =
+    useApi.WriteStrategyFlow();
 
-  const [READ, { data: storedStrategyFlow, isPending: readIsPending }] =
-    useApi.ReadStrategyFlow();
+  const {
+    request: READ,
+    data: storedStrategyFlow,
+    isPending: readIsPending,
+  } = useApi.ReadStrategyFlow();
 
   let canRun = !canSave;
   if (hasNoBinanceApiConfig) canRun = false;

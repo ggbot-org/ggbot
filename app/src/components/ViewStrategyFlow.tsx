@@ -28,8 +28,11 @@ export const ViewStrategyFlow: FC = () => {
     strategyKind,
   });
 
-  const [READ, { data: storedStrategyFlow, isPending }] =
-    useApi.ReadStrategyFlow();
+  const {
+    request: READ,
+    data: storedStrategyFlow,
+    isPending,
+  } = useApi.ReadStrategyFlow();
 
   useEffect(() => {
     if (!strategyKey) return;

@@ -21,7 +21,7 @@ export const StrategyProfits: FC = () => {
   const start = getTime(end).minus(numDays).days();
   const timeInterval: TimeInterval = { start, end };
 
-  const [READ_ORDERS, { data: orders }] = useApi.ReadStrategyOrders();
+  const { request: READ, data: orders } = useApi.ReadStrategyOrders();
 
   const orderHistory: Orders = isOrders(orders) ? orders : [];
 
@@ -29,9 +29,9 @@ export const StrategyProfits: FC = () => {
 
   useEffect(() => {
     if (!strategyKey) return;
-    const controller = READ_ORDERS({ ...strategyKey, ...dayInterval });
+    const controller = READ({ ...strategyKey, ...dayInterval });
     return () => controller.abort();
-  }, [dayInterval, READ_ORDERS, strategyKey]);
+  }, [dayInterval, READ, strategyKey]);
 
   return (
     <ProfitSummary timeInterval={timeInterval} orderHistory={orderHistory} />

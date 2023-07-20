@@ -39,9 +39,13 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
 
   const { hasActiveSubscription } = useSubscription();
 
-  const [READ, { data: accountStrategies }] = useApi.ReadAccountStrategies();
-  const [WRITE, { isPending: writeIsPending, data: writeData }] =
-    useApi.WriteAccountStrategiesItemSchedulings();
+  const { request: READ, data: accountStrategies } =
+    useApi.ReadAccountStrategies();
+  const {
+    request: WRITE,
+    isPending: writeIsPending,
+    data: writeData,
+  } = useApi.WriteAccountStrategiesItemSchedulings();
 
   const [schedulingItems, setSchedulingItems] = useState<
     SchedulingItemProps["scheduling"][]

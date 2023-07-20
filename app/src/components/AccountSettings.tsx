@@ -32,10 +32,14 @@ export const AccountSettings: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-  const [READ, { data: account, isPending: readIsPending }] =
-    useApi.ReadAccount();
+  const {
+    request: READ,
+    data: account,
+    isPending: readIsPending,
+  } = useApi.ReadAccount();
 
-  const [RENAME, { isPending: renameIsPending }] = useApi.RenameAccount();
+  const { request: RENAME, isPending: renameIsPending } =
+    useApi.RenameAccount();
 
   const readOnly = readIsPending || renameIsPending;
 

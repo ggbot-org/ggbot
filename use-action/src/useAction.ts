@@ -22,19 +22,24 @@ type UseActionRequest<Input extends OperationInput> = (
   arg: UseActionRequestArg<Input>
 ) => AbortController;
 
-type UseActionResponse<Output extends OperationOutput> = {
-  aborted?: boolean | undefined;
-  error?: ApiActionClientSideError | ApiActionServerSideError | undefined;
-  data?: Output | undefined;
-  isPending: boolean;
+type UseActionStatus = "PENDING" | "DONE" | "FAILED" | "ABORTED";
+
+type UseActionResult<Output extends OperationOutput> = Partial<{
+  status: UseActionStatus;
+  error: ApiActionClientSideError | ApiActionServerSideError;
+  data: Output;
+}>;
+
+type UseActionOutput<
+  Action extends { in: OperationInput; out: OperationOutput }
+> = UseActionResult<Action["out"]> & {
+  request: UseActionRequest<Action["in"]>;
 };
 
 /**
  * Hook to use API actions:
  *
  * CREATE_STRATEGY, READ_ACCOUNT, WRITE_STRATEGY_FLOW, etc.
- *
- * It returns a `request` and a `response`.
  *
  * First, define available actions.
  *
@@ -62,50 +67,33 @@ type UseActionResponse<Output extends OperationOutput> = {
  * @example
  *
  * ```ts
- * const [request, response] = useApi.FooBar();
+ * const FooBar = useApi.FooBar();
  * ```
  *
- * The `response` can be destructured as follow.
+ * It can be destructured as follow.
  *
  * @example
  *
  * ```ts
- * const [request, { data, isPending, error, aborted }] = useApi.FooBar();
+ * const { request, data, error, status } = useApi.FooBar();
  * ```
  *
  * The `request` returns an `AbortController`, it can be used as a `useEffect`
- * destructor.
+ * destructor. The `status` starts `undefined`, then can be "PENDING", "DONE",
+ * "FAILED", "ABORTED". It can be also used to avoid re-triggering a
+ * `useEffect`.
  *
  * @example
  *
  * ```ts
- * const [request, response] = useApi.FooBar();
+ * const FooBar = useApi.FooBar();
  * useEffect(() => {
+ *   if (FooBar.status) return;
  *   const controller = request({ param });
  *   return () => {
  *     controller.abort();
  *   };
- * }, [request]);
- * ```
- *
- * It is a good to:
- *
- * - Use an uppercase name for _request_, for example `CREATE`, `READ`, `UPDATE`
- *   or `DELETE`.
- * - Destructuring _response_ if used.
- * - Use an empty object as _request_ argument if there is no parameter.
- *
- *
- * @example
- *
- * ```ts
- * const [DELETE, { isPending }] = useApi.FooBar();
- * useEffect(() => {
- *   const controller = DELETE({});
- *   return () => {
- *     controller.abort();
- *   };
- * }, [DELETE]);
+ * }, [FooBar]);
  * ```
  */
 export const useAction = <
@@ -114,29 +102,38 @@ export const useAction = <
 >(
   { endpoint, withJwt }: { endpoint: string; withJwt?: boolean },
   { type }: Pick<ApiActionInput<ApiActionType>, "type">
-): [
-  request: UseActionRequest<Action["in"]>,
-  response: UseActionResponse<Action["out"]>
-] => {
-  const [response, setResponse] = useState<UseActionResponse<Action["out"]>>({
-    isPending: false,
-  });
+): UseActionOutput<Action> & {
+  isPending: boolean;
+  isDone: boolean;
+  reset: () => void;
+} => {
+  const [{ status, data, error }, setResult] = useState<
+    UseActionResult<Action["out"]>
+  >({});
+
+  const reset = useCallback(() => {
+    setResult({});
+  }, []);
 
   const request = useCallback<UseActionRequest<Action["in"]>>(
     (arg) => {
       const controller = new AbortController();
+
+      // Avoid call request multiple times if status is defined.
+      if (status) return controller;
+
+      // Handle timeout.
       const { abort, signal } = controller;
       const timeout = 10000;
       const timeoutId = setTimeout(() => {
         abort();
-        setResponse({
-          aborted: true,
+        setResult({
+          status: "ABORTED",
           error: { name: "Timeout" },
-          isPending: false,
         });
       }, timeout);
       signal.addEventListener("abort", () => {
-        setResponse({ aborted: true, isPending: false });
+        setResult({ status: "ABORTED" });
         clearTimeout(timeoutId);
       });
 
@@ -163,27 +160,25 @@ export const useAction = <
         };
         if (withJwt) options.credentials = "include";
 
-        setResponse({ isPending: true });
+        setResult({ status: "PENDING" });
         const response = await fetch(endpoint, options);
 
-        const { ok, status } = response;
-
-        if (ok) {
+        if (response.ok) {
           const responseOutput = await response.json();
-          setResponse({
+          setResult({
             data: responseOutput.data,
-            isPending: false,
+            status: "DONE",
           });
-        } else if (status === __400__BAD_REQUEST__) {
+        } else if (response.status === __400__BAD_REQUEST__) {
           const responseOutput = await response.json();
           if (isApiActionResponseError(responseOutput)) {
-            setResponse({
+            setResult({
               error: responseOutput.error,
-              isPending: false,
+              status: "FAILED",
             });
           }
         } else {
-          throw status;
+          throw response.status;
         }
       };
 
@@ -195,48 +190,47 @@ export const useAction = <
           switch (true) {
             case error instanceof DOMException && error.name === "AbortError": {
               // AbortError is called on component unmount and on request timeout.
-              // The `isPending` status is handled by the signal eventListener:
-              // on 'abort' event, it set `isPending` to `false`.
+              // The `status` is handled by the signal eventListener.
               break;
             }
 
             case error === __400__BAD_REQUEST__: {
-              setResponse({
+              setResult({
                 error: { name: "BadRequest" },
-                isPending: false,
+                status: "FAILED",
               });
               break;
             }
 
             case error === __401__UNAUTHORIZED__: {
-              setResponse({
+              setResult({
                 error: { name: "Unauthorized" },
-                isPending: false,
+                status: "FAILED",
               });
               break;
             }
 
             case error === __404__NOT_FOUND__: {
-              setResponse({
+              setResult({
                 error: { name: "NotFound" },
-                isPending: false,
+                status: "FAILED",
               });
               break;
             }
 
             case error === __500__INTERNAL_SERVER_ERROR__: {
-              setResponse({
+              setResult({
                 error: { name: InternalServerError.name },
-                isPending: false,
+                status: "FAILED",
               });
               break;
             }
 
             default: {
               console.error(error);
-              setResponse({
+              setResult({
                 error: { name: "GenericError" },
-                isPending: false,
+                status: "FAILED",
               });
             }
           }
@@ -247,8 +241,16 @@ export const useAction = <
 
       return controller;
     },
-    [endpoint, type, withJwt]
+    [endpoint, status, type, withJwt]
   );
 
-  return [request, response];
+  return {
+    request,
+    status,
+    data,
+    error,
+    isPending: status === "PENDING",
+    isDone: status === "DONE",
+    reset,
+  };
 };

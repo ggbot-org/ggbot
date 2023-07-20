@@ -5,7 +5,7 @@ import { useApi } from "../hooks/useApi.js";
 import { buttonLabel } from "../i18n/index.js";
 
 export const DeleteAccount: FC = () => {
-  const [DELETE, { isPending }] = useApi.DeleteAccount();
+  const { request: DELETE, isPending } = useApi.DeleteAccount();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -14,9 +14,8 @@ export const DeleteAccount: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (isPending) return;
     DELETE({});
-  }, [DELETE, isPending]);
+  }, [DELETE]);
 
   return (
     <>

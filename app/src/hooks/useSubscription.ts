@@ -9,8 +9,7 @@ import { useEffect } from "react";
 import { useApi } from "../hooks/useApi.js";
 
 export const useSubscription = () => {
-  const [READ, { data: subscription, isPending: readSubscriptionIsPending }] =
-    useApi.ReadSubscription();
+  const { request: READ, data: subscription } = useApi.ReadSubscription();
 
   let canPurchaseSubscription: boolean | undefined;
   let hasActiveSubscription: boolean | undefined;
@@ -39,7 +38,6 @@ export const useSubscription = () => {
   return {
     canPurchaseSubscription,
     hasActiveSubscription,
-    readSubscriptionIsPending,
     subscriptionEnd,
     subscriptionPlan,
   };

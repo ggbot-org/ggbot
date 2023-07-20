@@ -58,8 +58,8 @@ export const SubscriptionPurchase: FC = () => {
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
-  const [READ_ACCOUNT, { data: account }] = useApi.ReadAccount();
-  const [SET_COUNTRY] = useApi.SetAccountCountry();
+  const { request: READ_ACCOUNT, data: account } = useApi.ReadAccount();
+  const { request: SET_COUNTRY } = useApi.SetAccountCountry();
 
   const [purchaseIsPending, setPurchaseIsPending] = useState(false);
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");

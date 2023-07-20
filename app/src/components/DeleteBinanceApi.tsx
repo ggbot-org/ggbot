@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
-  const [DELETE, { data, isPending }] = useApi.DeleteBinanceApiConfig();
+  const { request: DELETE, data, isPending } = useApi.DeleteBinanceApiConfig();
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -18,9 +18,8 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (isPending) return;
     DELETE({});
-  }, [DELETE, isPending]);
+  }, [DELETE]);
 
   useEffect(() => {
     if (!data) return;

@@ -30,9 +30,9 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
-  const [CREATE, { data, isPending }] = useApi.CreateStrategy();
+  const { request: CREATE, data, isDone, isPending } = useApi.CreateStrategy();
 
-  const isLoading = isPending || Boolean(data);
+  const isLoading = isPending || isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");
@@ -44,7 +44,6 @@ export const CreateStrategy: FC = () => {
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (isPending) return;
       try {
         const { name } = formValues(event, fields);
         throwIfInvalidName(name);
@@ -54,7 +53,7 @@ export const CreateStrategy: FC = () => {
           setHelp(errorMessage.invalidStrategyName);
       }
     },
-    [CREATE, isPending]
+    [CREATE]
   );
 
   useEffect(() => {
