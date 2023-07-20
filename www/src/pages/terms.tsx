@@ -1,3 +1,5 @@
+// TODO use translations for this page, then remove this eslint-disable comment
+/* eslint-disable react/jsx-newline */
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
 
@@ -23,6 +25,7 @@ const Page: FC = () => (
       </p>
 
       <p>Keep your email safe, it is your responsibility.</p>
+
       <h2>Binance API</h2>
 
       <p>

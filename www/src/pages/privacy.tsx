@@ -1,3 +1,5 @@
+// TODO use translations for this page, then remove this eslint-disable comment
+/* eslint-disable react/jsx-newline */
 import { mount } from "@ggbot2/react";
 import { FC } from "react";
 
@@ -16,8 +18,11 @@ const Page: FC = () => (
       </p>
 
       <h2>Personal Data</h2>
+
       <p>Your personal data is not shared with third parties.</p>
+
       <p>No personal data is collected other than your account email.</p>
+
       <p>Your email is used for authentication and communications.</p>
 
       <p>

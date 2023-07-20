@@ -42,6 +42,7 @@ export const SchedulingStatusBadge: FC<Props> = ({
   return (
     <Tags hasAddons>
       <Tag color={color}>{label}</Tag>
+
       <Tag color={color}>{count}</Tag>
     </Tags>
   );

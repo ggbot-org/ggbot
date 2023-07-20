@@ -20,6 +20,7 @@ export const StrategyExecutionLog: FC<Props> = ({
     <div>
       <div>
         <span>Execution</span>
+
         <div>{tagColor ? <Tag color={tagColor}>{status}</Tag> : null}</div>
       </div>
 
@@ -41,18 +42,21 @@ export const StrategyExecutionLog: FC<Props> = ({
           const preview = showPreview ? String(firstOutputData) : "";
 
           return (
-            <details key={i}>
+            <details key={step.id}>
               <summary>
                 <span>{i}</span>
+
                 <span>{kind}</span>
+
                 {showPreview ? <span>{preview}</span> : null}
+
                 {showDetails ? <span>•</span> : null}
               </summary>
 
               {showDetails ? (
                 <div>
-                  {step.o?.map(({ d }, i) => (
-                    <pre key={i}>
+                  {step.o?.map(({ d, id }) => (
+                    <pre key={id}>
                       <code>{JSON.stringify(d ?? null, null, 2)}</code>
                     </pre>
                   ))}

@@ -13,7 +13,7 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const [READ, { data, isPending, error }] = useApi.ReadAccountStrategies();
+  const [READ, { data, isPending }] = useApi.ReadAccountStrategies();
 
   const items: StrategyItem[] = [];
   if (Array.isArray(data)) {
@@ -31,9 +31,10 @@ export const Strategies: FC = () => {
 
   useEffect(() => {
     if (isPending) return;
-    const controller = READ({});
-    return () => controller.abort();
-  }, [READ, error, isPending]);
+    console.info(READ);
+    // const controller = READ({});
+    // return () => controller.abort();
+  }, [READ, isPending]);
 
   return (
     <>
@@ -50,6 +51,7 @@ export const Strategies: FC = () => {
               <Box>
                 <Flex justify="space-between">
                   {name}
+
                   <SchedulingsStatusBadges schedulings={schedulings} />
                 </Flex>
               </Box>

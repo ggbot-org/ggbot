@@ -14,6 +14,7 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
 import { fieldLabel } from "../i18n/index.js";
@@ -45,8 +46,10 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
   const permissionItems: {
     description: ReactNode;
     checkmark: CheckmarkProps;
+    key: keyof BinanceApiKeyPermission;
   }[] = [
     {
+      key: "enableReading",
       checkmark: {
         label: String(enableReading),
         ok: enableReading,
@@ -58,6 +61,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       ),
     },
     {
+      key: "enableWithdrawals",
       checkmark: {
         label: String(enableWithdrawals),
         ok:
@@ -72,6 +76,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       ),
     },
     {
+      key: "enableSpotAndMarginTrading",
       checkmark: {
         label: String(enableSpotAndMarginTrading),
         ok: enableSpotAndMarginTrading,
@@ -83,6 +88,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       ),
     },
     {
+      key: "ipRestrict",
       checkmark: {
         label: String(ipRestrict),
         ok: ipRestrict,
@@ -106,7 +112,10 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Title>Binance API</Title>
+      <Title>
+        <FormattedMessage id="BinanceApi.title" />
+      </Title>
+
       <OutputField label={fieldLabel.apiKey} value={apiKey} />
 
       <Field>
@@ -117,9 +126,10 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 
       <div>
         {permissionItems.map(
-          ({ description, checkmark: checkmarkProps }, i) => (
-            <div key={i}>
+          ({ key, description, checkmark: checkmarkProps }) => (
+            <div key={key}>
               {description}
+
               <Checkmark {...checkmarkProps} />
             </div>
           )

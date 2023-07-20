@@ -232,8 +232,8 @@ export const Calendar: FC<CalendarProps> = ({
           </div>
         ))}
 
-        {dateCells.map(({ num, className, onClick }, i) => (
-          <div key={i} className={className} onClick={onClick}>
+        {dateCells.map(({ num, className, onClick }) => (
+          <div key={num} className={className} onClick={onClick}>
             {num}
           </div>
         ))}
@@ -241,7 +241,7 @@ export const Calendar: FC<CalendarProps> = ({
         {
           /* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
           dateCells.length === 35
-            ? Array.from({ length: 7 }).map((_, i) => <div key={i}>&nbsp;</div>)
+            ? [0, 1, 2, 3, 4, 5, 6].map((i) => <div key={i}>&nbsp;</div>)
             : null
         }
       </div>

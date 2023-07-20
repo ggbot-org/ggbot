@@ -37,6 +37,7 @@ const Page: FC = () => {
 
       <footer>
         <a href={pathname.privacyPolicyPage()}>Privacy Policy</a>
+
         <a href={pathname.termsOfServicePage()}>Terms of Service</a>
       </footer>
     </div>

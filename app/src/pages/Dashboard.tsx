@@ -11,6 +11,7 @@ export const DashboardPage: FC = () => (
     <AuthenticationProvider>
       <OneSectionLayout>
         <CreateStrategy />
+
         <Strategies />
       </OneSectionLayout>
     </AuthenticationProvider>

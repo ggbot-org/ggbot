@@ -18,6 +18,7 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel } from "../i18n/index.js";
@@ -76,7 +77,9 @@ export const CreateStrategy: FC = () => {
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
         <Form box onSubmit={onSubmit}>
-          <Title>Create strategy</Title>
+          <Title>
+            <FormattedMessage id="CreateStrategy.title" />
+          </Title>
 
           <InputField
             required

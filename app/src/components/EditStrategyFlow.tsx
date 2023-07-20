@@ -185,6 +185,7 @@ export const EditStrategyFlow: FC = () => {
         flow={
           <>
             <FlowViewContainer ref={flowViewContainerRef} />
+
             <MemoryController />
           </>
         }

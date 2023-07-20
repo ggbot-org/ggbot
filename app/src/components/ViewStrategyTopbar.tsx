@@ -17,6 +17,7 @@ export const ViewStrategyTopbar: FC = () => (
         right={
           <Buttons>
             <ShareStrategyButton />
+
             <GoCopyStrategyButton />
           </Buttons>
         }

@@ -90,8 +90,11 @@ export const AccountSettings: FC = () => {
   return (
     <Form box onSubmit={onSubmit}>
       <Title>{title.account}</Title>
+
       <OutputField label={fieldLabel.email} value={email} />
+
       <OutputField label={fieldLabel.whenCreated} value={formattedDate} />
+
       <OutputField label={fieldLabel.accountId} value={accountId} />
 
       <InputField

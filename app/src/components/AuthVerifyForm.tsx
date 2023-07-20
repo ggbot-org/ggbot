@@ -201,6 +201,7 @@ export const AuthVerifyForm: FC<AuthVerifyFormProps> = ({
 
       <>
         {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
+
         {gotTimeout ? <TimeoutErrorMessage /> : null}
 
         {verificationFailed ? (

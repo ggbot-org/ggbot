@@ -32,6 +32,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   return (
     <_Modal isActive={isActive}>
       <ModalBackground />
+
       <ModalContent>{children}</ModalContent>
 
       {

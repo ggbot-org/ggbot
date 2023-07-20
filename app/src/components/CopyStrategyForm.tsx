@@ -72,6 +72,7 @@ export const CopyStrategyForm: FC = () => {
   return (
     <Form box onSubmit={onSubmit}>
       <Title>{title.copyStrategy}</Title>
+
       <InputField label={fieldLabel.strategyName} defaultValue={strategyName} />
 
       <InputField

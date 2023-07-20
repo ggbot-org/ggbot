@@ -2,6 +2,18 @@
   "AuthVerifyForm.checkYourEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
   },
+  "BinanceApi.title": {
+    "defaultMessage": "Binance API"
+  },
+  "CreateStrategy.title": {
+    "defaultMessage": "Create Strategy"
+  },
+  "PleaseConfigureBinanceModal.goToSettings": {
+    "defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
+  },
+  "PleasePurchaseModal.goToSettings": {
+    "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
+  },
   "SubscriptionPurchasedMessage.body": {
     "defaultMessage": "Thank you for your purchase."
   },

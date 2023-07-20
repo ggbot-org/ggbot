@@ -10,6 +10,7 @@ import {
   Reducer,
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
 } from "react";
 
@@ -116,6 +117,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "EXIT" });
   }, []);
 
+  const contextValue = useMemo<ContextValue>(
+    () => ({ email, exit }),
+    [email, exit]
+  );
+
   useEffect(() => {
     if (jwt) READ({});
   }, [READ, jwt]);
@@ -163,7 +169,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   return (
-    <AuthenticationContext.Provider value={{ email, exit }}>
+    <AuthenticationContext.Provider value={contextValue}>
       {children}
     </AuthenticationContext.Provider>
   );

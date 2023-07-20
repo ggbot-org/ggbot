@@ -189,6 +189,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
         <LevelItem hasText="centered">
           <div>
             <_Label size="large">{miscellaneousLabel.numBuys}</_Label>
+
             <_Value size="large">{numBuys}</_Value>
           </div>
         </LevelItem>
@@ -196,6 +197,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
         <LevelItem hasText="centered">
           <div>
             <_Label size="large">{miscellaneousLabel.numSells}</_Label>
+
             <_Value size="large">{numSells}</_Value>
           </div>
         </LevelItem>
@@ -249,6 +251,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
                 <LevelItem hasText="centered">
                   <div>
                     <_Label size="large">{baseAsset}</_Label>
+
                     <_Value size="large">{baseQuantity}</_Value>
                   </div>
                 </LevelItem>
@@ -256,6 +259,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
                 <LevelItem hasText="centered">
                   <div>
                     <_Label size="large">{quoteAsset}</_Label>
+
                     <_Value size="large">{quoteQuantity}</_Value>
                   </div>
                 </LevelItem>
@@ -265,6 +269,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
                 <LevelItem hasText="centered">
                   <div>
                     <_Label>{miscellaneousLabel.minPrice}</_Label>
+
                     <_Value>{minPrice}</_Value>
                   </div>
                 </LevelItem>
@@ -272,6 +277,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
                 <LevelItem hasText="centered">
                   <div>
                     <_Label>{miscellaneousLabel.maxPrice}</_Label>
+
                     <_Value>{maxPrice}</_Value>
                   </div>
                 </LevelItem>
@@ -290,6 +296,7 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
             <LevelItem key={asset} hasText="centered">
               <div>
                 <_Label>{asset}</_Label>
+
                 <_Value>{quantity}</_Value>
               </div>
             </LevelItem>

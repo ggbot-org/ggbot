@@ -38,6 +38,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Typography</Title>
+
           <Typography />
         </Container>
       </Section>
@@ -45,6 +46,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Palette</Title>
+
           <Palette />
         </Container>
       </Section>
@@ -76,7 +78,9 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Buttons</Title>
+
           <ButtonColors />
+
           <LoadingButtons />
         </Container>
       </Section>
@@ -84,6 +88,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Time interval selectors</Title>
+
           <TimeIntervalSelectors />
         </Container>
       </Section>
@@ -91,6 +96,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Icons</Title>
+
           <Icons />
         </Container>
       </Section>
@@ -98,6 +104,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Tags</Title>
+
           <Tags />
         </Container>
       </Section>
@@ -105,6 +112,7 @@ const Page: FC = () => (
       <Section>
         <Container>
           <Title>Tables</Title>
+
           <SimpleTable />
         </Container>
       </Section>

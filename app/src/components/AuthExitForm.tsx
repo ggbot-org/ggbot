@@ -18,6 +18,7 @@ export const AuthExitForm: FC = () => {
   return (
     <Form box action={url.authenticationExit}>
       <Title>{title.exitForm}</Title>
+
       <OutputField label={fieldLabel.email} value={email} />
 
       <Field isGrouped>

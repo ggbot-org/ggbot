@@ -170,6 +170,7 @@ export const Logo: FC<Props> = ({ animated, size }) => (
     />
 
     <circle cx="322" cy="209" r="9" fill="#333" />
+
     <circle cx="285" cy="271" r="9" fill="#333" />
   </svg>
 );
