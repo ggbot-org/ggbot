@@ -17,7 +17,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { toast } from "react-hot-toast";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -139,8 +138,8 @@ export const EditStrategyFlow: FC = () => {
       }
       setFlowLoaded(true);
     } catch (error) {
+      // TODO show error to user
       console.error(error);
-      toast.error("Cannot load flow");
     }
   }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
 
@@ -163,8 +162,10 @@ export const EditStrategyFlow: FC = () => {
     if (!isMaybeObject<StrategyExecution>(strategyExecution)) return;
     const { status } = strategyExecution;
     if (!isStrategyExecutionStatus(status)) return;
-    if (status === "failure")
-      toast.error(errorMessage.strategyExecutionFailure);
+    if (status === "failure") {
+      // TODO show error to user
+      console.error(errorMessage.strategyExecutionFailure);
+    }
   }, [strategyExecution]);
 
   return (

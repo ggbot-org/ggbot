@@ -1,6 +1,5 @@
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import { FC, PropsWithChildren, ReactNode } from "react";
-import { Toaster } from "react-hot-toast";
 
 import { Navigation } from "./Navigation.js";
 
@@ -25,7 +24,6 @@ export const Page: FC<PropsWithChildren<PageProps>> = ({
       ) : null}
 
       {children}
-      <Toaster position="top-right" />
     </>
   );
 };

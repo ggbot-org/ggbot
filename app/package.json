@@ -40,7 +40,6 @@
     "country-isocode2": "1.1.0",
     "flow-view": "6.0.1",
     "react": "18.2.0",
-    "react-hot-toast": "2.3.0",
     "react-intl": "6.4.4"
   },
   "devDependencies": {

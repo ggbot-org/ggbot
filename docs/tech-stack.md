@@ -31,7 +31,6 @@
   - [dflow](#dflow)
   - [flow-view](#flow-view)
   - [npm-run-all](#npm-run-all)
-  - [react-hot-toast](#react-hot-toast)
   - [typescript](#typescript)
 
 ## Git
@@ -184,10 +183,6 @@ https://www.npmjs.com/package/npm-run-all
 ### pre-commit
 
 https://www.npmjs.com/package/pre-commit
-
-### react-hot-toast
-
-https://www.npmjs.com/package/react-hot-toast
 
 ### typescript
 

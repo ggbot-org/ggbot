@@ -1,6 +1,5 @@
 import { Button } from "@ggbot2/design";
 import { FC, useCallback, useContext } from "react";
-import { toast } from "react-hot-toast";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel, errorMessage } from "../i18n/index.js";
@@ -25,12 +24,14 @@ export const ShareStrategyButton: FC = () => {
         navigator.share(shareData);
       } else if ("clipboard" in navigator) {
         navigator.clipboard.writeText(shareData.url);
-        toast("Strategy link copied");
+        // TODO show feedback to user
+        console.info("Strategy link copied");
       } else {
         throw new Error("Could not share strategy");
       }
     } catch {
-      toast.error(errorMessage.couldNotShareStrategy);
+      // TODO show error to user
+      console.error(errorMessage.couldNotShareStrategy);
     }
   }, [strategyKey, strategyName]);
 

@@ -18,7 +18,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { toast } from "react-hot-toast";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -45,8 +44,10 @@ export const CopyStrategyForm: FC = () => {
         throwIfInvalidName(name);
         if (isName(name) && strategyKey) COPY({ name, ...strategyKey });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg)
-          toast.error(errorMessage.invalidStrategyName);
+        if (error instanceof ErrorInvalidArg) {
+          // TODO show error to user
+          console.error(errorMessage.invalidStrategyName);
+        }
       }
     },
     [isPending, strategyKey, COPY, isDone]

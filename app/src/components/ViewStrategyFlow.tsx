@@ -1,6 +1,5 @@
 import { isStrategyFlow } from "@ggbot2/models";
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -53,7 +52,8 @@ export const ViewStrategyFlow: FC = () => {
       setFlowLoaded(true);
     } catch (error) {
       console.error(error);
-      toast.error(errorMessage.couldNotLoadFlow);
+      // TODO show error to user
+      console.error(errorMessage.couldNotLoadFlow);
     }
   }, [flowView, setFlowLoaded, storedStrategyFlow, isPending]);
 
