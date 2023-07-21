@@ -1,8 +1,13 @@
-import { DflowData } from "dflow";
+import { Dflow, DflowData } from "dflow";
 
 export type OperationInput = DflowData | void;
 
 export type OperationOutput = DflowData | null;
+
+export const isOperationOutput = (arg: unknown) => {
+  if (arg === null) return true;
+  return Dflow.isDflowData(arg);
+};
 
 export type Operation<
   Input extends OperationInput,

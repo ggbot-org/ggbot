@@ -9,6 +9,7 @@ import {
   AccountKey,
   ErrorAccountItemNotFound,
   ErrorUnimplementedStrategyKind,
+  isOperationOutput,
   OperationInput,
   OperationOutput,
 } from "@ggbot2/models";
@@ -31,6 +32,10 @@ export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
 export type ApiActionResponseData = {
   data: OperationOutput;
 };
+
+export const isApiActionResponseData = objectTypeGuard<ApiActionResponseData>(
+  ({ data }) => isOperationOutput(data)
+);
 
 export type ApiActionResponseOutput =
   | ApiActionResponseData

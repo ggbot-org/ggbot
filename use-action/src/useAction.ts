@@ -1,7 +1,6 @@
 import {
-  ApiActionClientSideError,
   ApiActionInput,
-  ApiActionServerSideError,
+  isApiActionResponseData,
   isApiActionResponseError,
 } from "@ggbot2/api";
 import {
@@ -12,28 +11,26 @@ import {
   InternalServerError,
 } from "@ggbot2/http";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
-import { localWebStorage } from "@ggbot2/web-storage";
-import { useCallback, useState } from "react";
+import { Reducer, useCallback, useReducer } from "react";
+
+import { UseActionAbortController } from "./controller.js";
+import { UseActionHeaders, UseActionHeadersConstructorArg } from "./headers.js";
+import { UseActionReducerAction, UseActionReducerState } from "./reducer.js";
 
 type UseActionRequestArg<Input extends OperationInput> =
   Input extends AccountKey ? Omit<Input, "accountId"> : Input;
 
-type UseActionRequest<Input extends OperationInput> = (
+type Request<Input extends OperationInput> = (
   arg: UseActionRequestArg<Input>
 ) => AbortController;
 
-type UseActionStatus = "PENDING" | "DONE" | "FAILED" | "ABORTED";
-
-type UseActionResult<Output extends OperationOutput> = Partial<{
-  status: UseActionStatus;
-  error: ApiActionClientSideError | ApiActionServerSideError;
-  data: Output;
-}>;
-
 type UseActionOutput<
   Action extends { in: OperationInput; out: OperationOutput }
-> = UseActionResult<Action["out"]> & {
-  request: UseActionRequest<Action["in"]>;
+> = UseActionReducerState<Action["out"]> & {
+  request: Request<Action["in"]>;
+  isPending: boolean;
+  isDone: boolean;
+  reset: () => void;
 };
 
 /**
@@ -100,82 +97,75 @@ export const useAction = <
   Action extends { in: OperationInput; out: OperationOutput },
   ApiActionType extends string
 >(
-  { endpoint, withJwt }: { endpoint: string; withJwt?: boolean },
+  { endpoint, withJwt }: { endpoint: string } & UseActionHeadersConstructorArg,
   { type }: Pick<ApiActionInput<ApiActionType>, "type">
-): UseActionOutput<Action> & {
-  isPending: boolean;
-  isDone: boolean;
-  reset: () => void;
-} => {
-  const [{ status, data, error }, setResult] = useState<
-    UseActionResult<Action["out"]>
-  >({});
+): UseActionOutput<Action> => {
+  const [{ status, data, error }, dispatch] = useReducer<
+    Reducer<UseActionReducerState<Action["out"]>, UseActionReducerAction>
+  >((state, action) => {
+    switch (action.type) {
+      case "REQUEST":
+        return { status: "PENDING" };
+      case "SUCCESS":
+        return { status: "DONE", data: action.data };
+      case "FAILURE":
+        return {
+          error: action.error,
+          status: "FAILED",
+        };
+      case "TIMEOUT":
+        return {
+          status: "ABORTED",
+          error: { name: "Timeout" },
+        };
+      case "ABORTED":
+        return { status: "ABORTED" };
+      case "RESET":
+        return {};
+      default:
+        return state;
+    }
+  }, {});
 
   const reset = useCallback(() => {
-    setResult({});
+    dispatch({ type: "RESET" });
   }, []);
 
-  const request = useCallback<UseActionRequest<Action["in"]>>(
+  const request = useCallback<Request<Action["in"]>>(
     (arg) => {
-      const controller = new AbortController();
+      const controller = new UseActionAbortController();
 
       // Avoid call request multiple times if status is defined.
       if (status) return controller;
 
       // Handle timeout.
-      const { abort, signal } = controller;
-      const timeout = 10000;
-      const timeoutId = setTimeout(() => {
-        abort();
-        setResult({
-          status: "ABORTED",
-          error: { name: "Timeout" },
-        });
-      }, timeout);
-      signal.addEventListener("abort", () => {
-        setResult({ status: "ABORTED" });
-        clearTimeout(timeoutId);
-      });
+      controller.setTimeout(dispatch);
 
       const fetchRequest = async (inputData: Action["in"]) => {
-        const headers = new Headers({
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        });
-        if (withJwt) {
-          const { jwt } = localWebStorage;
-          headers.append("Authorization", `Bearer ${jwt}`);
-        }
-
-        const body =
-          inputData === undefined
-            ? JSON.stringify({ type })
-            : JSON.stringify({ type, data: inputData });
-
         const options: RequestInit = {
-          body,
-          headers,
+          body:
+            inputData === undefined
+              ? JSON.stringify({ type })
+              : JSON.stringify({ type, data: inputData }),
+          headers: new UseActionHeaders({ withJwt }),
           method: "POST",
-          signal,
+          signal: controller.signal,
         };
-        if (withJwt) options.credentials = "include";
 
-        setResult({ status: "PENDING" });
+        dispatch({ type: "REQUEST" });
         const response = await fetch(endpoint, options);
 
         if (response.ok) {
           const responseOutput = await response.json();
-          setResult({
-            data: responseOutput.data,
-            status: "DONE",
-          });
+          if (isApiActionResponseData(responseOutput))
+            dispatch({
+              type: "SUCCESS",
+              data: responseOutput.data,
+            });
         } else if (response.status === __400__BAD_REQUEST__) {
           const responseOutput = await response.json();
           if (isApiActionResponseError(responseOutput)) {
-            setResult({
-              error: responseOutput.error,
-              status: "FAILED",
-            });
+            dispatch({ type: "FAILURE", error: responseOutput.error });
           }
         } else {
           throw response.status;
@@ -195,47 +185,47 @@ export const useAction = <
             }
 
             case error === __400__BAD_REQUEST__: {
-              setResult({
+              dispatch({
+                type: "FAILURE",
                 error: { name: "BadRequest" },
-                status: "FAILED",
               });
               break;
             }
 
             case error === __401__UNAUTHORIZED__: {
-              setResult({
+              dispatch({
+                type: "FAILURE",
                 error: { name: "Unauthorized" },
-                status: "FAILED",
               });
               break;
             }
 
             case error === __404__NOT_FOUND__: {
-              setResult({
+              dispatch({
+                type: "FAILURE",
                 error: { name: "NotFound" },
-                status: "FAILED",
               });
               break;
             }
 
             case error === __500__INTERNAL_SERVER_ERROR__: {
-              setResult({
+              dispatch({
+                type: "FAILURE",
                 error: { name: InternalServerError.name },
-                status: "FAILED",
               });
               break;
             }
 
             default: {
               console.error(error);
-              setResult({
+              dispatch({
+                type: "FAILURE",
                 error: { name: "GenericError" },
-                status: "FAILED",
               });
             }
           }
         } finally {
-          clearTimeout(timeoutId);
+          controller.clearTimeout();
         }
       })();
 
