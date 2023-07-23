@@ -32,10 +32,12 @@ http
       return;
     }
 
-    const targetHeaders = new Headers();
+    const targetHeaders = new Headers({
+      "User-agent": "ggbot2.com",
+    });
     for (const [key, value] of Object.entries(sourceHeaders)) {
       if (
-        BinanceRequestHeaders.keys.includes(key) &&
+        BinanceRequestHeaders.apiKeyHeader === key &&
         typeof value === "string"
       ) {
         targetHeaders.append(key, value);

@@ -13,7 +13,9 @@ import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
 
 export const AuthExitForm: FC = () => {
-  const { email } = useContext(AuthenticationContext);
+  const { account } = useContext(AuthenticationContext);
+
+  const email = account?.email ?? "";
 
   return (
     <Form box action={url.authenticationExit}>

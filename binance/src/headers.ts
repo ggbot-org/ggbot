@@ -4,23 +4,9 @@
 //      'x-mbx-used-weight-1m' => '1',
 
 export class BinanceRequestHeaders extends Headers {
-  static apiKeyHeaderKey = "X-MBX-APIKEY";
-
-  static initialHeaders = {
-    "Content-Type": "application/json",
-    "User-Agent": "ggbot2.com",
-  };
-
-  static keys = [
-    BinanceRequestHeaders.apiKeyHeaderKey,
-    ...Object.keys(BinanceRequestHeaders.initialHeaders),
-  ];
-
-  constructor() {
-    super(BinanceRequestHeaders.initialHeaders);
-  }
+  static apiKeyHeader = "X-MBX-APIKEY";
 
   set apiKey(value: string) {
-    this.append(BinanceRequestHeaders.apiKeyHeaderKey, value);
+    this.append(BinanceRequestHeaders.apiKeyHeader, value);
   }
 }

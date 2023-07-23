@@ -18,8 +18,9 @@ import {
   normalizeName,
   throwIfInvalidName,
 } from "@ggbot2/models";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
 
@@ -29,19 +30,14 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const AccountSettings: FC = () => {
+  const { account } = useContext(AuthenticationContext);
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
-
-  const {
-    request: READ,
-    data: account,
-    isPending: readIsPending,
-  } = useApi.ReadAccount();
 
   const { request: RENAME, isPending: renameIsPending } =
     useApi.RenameAccount();
 
-  const readOnly = readIsPending || renameIsPending;
+  const readOnly = renameIsPending;
 
   let accountId = "";
   let email = "";
@@ -79,12 +75,6 @@ export const AccountSettings: FC = () => {
     },
     [RENAME, renameIsPending]
   );
-
-  // Read account data.
-  useEffect(() => {
-    const controller = READ({});
-    return () => controller.abort();
-  }, [READ]);
 
   // Set name on READ.
   useEffect(() => {

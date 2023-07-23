@@ -8,14 +8,22 @@ const mainOrigin = new UserWebappBaseURL("main").origin;
 let deployStage: DeployStage | undefined;
 
 /** Get `DeployStage` from `window.location.origin`. */
-export const getDeployStage = () => {
+export const getDeployStage = (): DeployStage => {
   if (deployStage) return deployStage;
 
   const origin = window.location.origin;
 
-  if (origin === localOrigin) deployStage = "local";
-  if (origin === nextOrigin) deployStage = "next";
-  if (origin === mainOrigin) deployStage = "main";
-
-  return deployStage;
+  switch (origin) {
+    case mainOrigin:
+      return "main";
+    case nextOrigin:
+      return "next";
+    case localOrigin:
+      return "local";
+    default: {
+      throw new Error(
+        `Unable to guess DeployStage, local origin must be ${localOrigin}`
+      );
+    }
+  }
 };

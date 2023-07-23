@@ -1,5 +1,5 @@
 import { Modal } from "@ggbot2/design";
-import { EmailAddress, isAccount } from "@ggbot2/models";
+import { Account, EmailAddress, isAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
@@ -36,12 +36,12 @@ type State = {
   startSession: Time;
 };
 
-type ContextValue = Pick<State, "email"> & {
+type ContextValue = {
+  account?: Account | null | undefined;
   exit: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
-  email: undefined,
   exit: () => {},
 });
 
@@ -96,7 +96,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   );
 
-  const { request: READ, data: account } = useApi.ReadAccount();
+  const { request: READ, data: account, canRun } = useApi.ReadAccount();
 
   const setJwt = useCallback<AuthVerifyFormProps["setJwt"]>(
     (jwt) => {
@@ -117,14 +117,14 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "EXIT" });
   }, []);
 
-  const contextValue = useMemo<ContextValue>(
-    () => ({ email, exit }),
-    [email, exit]
-  );
+  const contextValue = useMemo<ContextValue>(() => {
+    if (account === null || isAccount(account)) return { account, exit };
+    return { exit };
+  }, [account, exit]);
 
   useEffect(() => {
-    if (jwt) READ({});
-  }, [READ, jwt]);
+    if (jwt && canRun) READ({});
+  }, [READ, canRun, jwt]);
 
   useEffect(() => {
     if (jwt !== undefined) return;

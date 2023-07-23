@@ -18,8 +18,8 @@ type Props = {
   canSave: boolean;
   onClickRun: ButtonOnClick;
   onClickSave: ButtonOnClick;
-  runIsPending: boolean;
-  saveIsPending: boolean;
+  runIsPending: boolean | undefined;
+  saveIsPending: boolean | undefined;
 };
 
 export const EditStrategyTopbar: FC<Props> = ({
