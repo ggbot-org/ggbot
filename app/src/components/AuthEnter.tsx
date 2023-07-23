@@ -1,4 +1,3 @@
-// TODO auth api should be an action, so it is possible to handle it with useAction by hook/useApi
 // TODO Auth forms are shared among User and Admin webapp, move them to design or to a package auth-ui or authentication
 // also AuthenticationContext could be shared
 import {
@@ -22,11 +21,11 @@ import { FormattedMessage } from "react-intl";
 
 import { fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
-import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
+import { GenericErrorMessage, TimeoutErrorMessage } from "../components/ErrorMessages.js";
 
 type SetEmail = (email: EmailAddress) => void;
 
-export type AuthEnterFormProps = {
+export type AuthEnterProps = {
   setEmail: SetEmail;
 };
 
@@ -39,7 +38,7 @@ type State = {
 
 const fields = ["email"] as const;
 
-export const AuthEnterForm: FC<AuthEnterFormProps> = ({ setEmail }) => {
+export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
   const [
     { gotTimeout, hasGenericError, hasInvalidInput, isPending },
     dispatch,

@@ -6,20 +6,16 @@ import { useApi } from "../hooks/useApi.js";
 type Props = AccountKey;
 
 export const Account: FC<Props> = ({ accountId }) => {
-  const { request, data: account } = useApi.ReadAccount();
+  const {ReadAccount} = useApi
+  const account = ReadAccount.data
 
   let email = "";
 
-  if (isAccount(account)) {
-    email = account.email;
-  }
+  if (isAccount(account)) email = account.email;
 
   useEffect(() => {
-    const controller = request({ accountId });
-    return () => {
-      controller.abort();
-    };
-  }, [accountId, request]);
+  if (ReadAccount.canRun) ReadAccount.request({accountId})
+  }, [accountId, ReadAccount]);
 
   return <div>{email}</div>;
 };

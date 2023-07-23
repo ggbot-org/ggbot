@@ -5,7 +5,7 @@ import { FC, useEffect } from "react";
 import { useApi } from "../hooks/useApi.js";
 import { message, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
-import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
+import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
 
 type StrategyItem = Pick<
   AccountStrategy,
@@ -13,7 +13,8 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const { request: READ, data, canRun } = useApi.ReadAccountStrategies();
+const READ = useApi.ReadAccountStrategies()
+const data = READ.data
 
   const items: StrategyItem[] = [];
   if (Array.isArray(data)) {
@@ -30,8 +31,8 @@ export const Strategies: FC = () => {
   }
 
   useEffect(() => {
-    if (canRun) READ({});
-  }, [READ, canRun]);
+  if (READ.canRun) READ.request()
+  }, [READ]);
 
   return (
     <>

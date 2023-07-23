@@ -21,20 +21,21 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
+import {FormattedMessage} from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
-import { GoCopyStrategyButton } from "./GoCopyStrategyButton.js";
-import { GoEditStrategyButton } from "./GoEditStrategyButton.js";
-import { ShareStrategyButton } from "./ShareStrategyButton.js";
+import { errorMessage, fieldLabel, title } from "../i18n/index.js";
+import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
+import { GoEditStrategy } from "../components/GoEditStrategy.js";
+import { ShareStrategy } from "../components/ShareStrategy.js";
 
 const fields = ["name"] as const;
 const fieldName = {
   name: "name",
 } as const satisfies Record<string, (typeof fields)[number]>;
 
-export const StrategyForm: FC = () => {
+export const StrategyInfo: FC = () => {
   const { strategyWhenCreated, strategyKey } = useContext(StrategyContext);
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
@@ -42,16 +43,13 @@ export const StrategyForm: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-  const { request: RENAME, isPending: renameIsPending } =
-    useApi.RenameStrategy();
+const  READ = useApi.ReadStrategy()
+const RENAME  = useApi.RenameStrategy()
 
-  const {
-    request: READ,
-    data: strategy,
-    isPending: readIsPending,
-  } = useApi.ReadStrategy();
+const isLoading = RENAME.isPending
 
-  const readOnly = readIsPending || renameIsPending;
+  const readOnly = READ.isPending || RENAME.isPending
+  const strategy = READ.data
 
   const onChangeName = useCallback<InputOnChange>((event) => {
     const value = event.target.value;
@@ -67,7 +65,7 @@ export const StrategyForm: FC = () => {
         if (!isName(name)) return;
         const newName = normalizeName(name);
         throwIfInvalidName(newName);
-        if (strategyKey) RENAME({ name: newName, ...strategyKey });
+        if (strategyKey) RENAME.request({ name: newName, ...strategyKey });
         setName(newName);
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
@@ -80,8 +78,7 @@ export const StrategyForm: FC = () => {
   // Read strategy data.
   useEffect(() => {
     if (!strategyKey) return;
-    const controller = READ(strategyKey);
-    return () => controller.abort();
+    if (READ.canRun) READ.request(strategyKey)
   }, [READ, strategyKey]);
 
   // Set name on READ.
@@ -121,23 +118,24 @@ export const StrategyForm: FC = () => {
 
       <Field isGrouped>
         <Control>
-          <Button isOutlined isLoading={renameIsPending}>
-            {buttonLabel.save}
+          <Button isOutlined isLoading={isLoading}>
+          <FormattedMessage
+          id="buttonLabel.save"/>
           </Button>
         </Control>
       </Field>
 
       <Field isGrouped>
         <Control>
-          <GoEditStrategyButton />
+          <GoEditStrategy />
         </Control>
 
         <Control>
-          <ShareStrategyButton />
+          <ShareStrategy />
         </Control>
 
         <Control>
-          <GoCopyStrategyButton />
+          <GoCopyStrategy />
         </Control>
       </Field>
     </Form>

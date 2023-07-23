@@ -34,10 +34,10 @@ export const AccountSettings: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-  const { request: RENAME, isPending: renameIsPending } =
-    useApi.RenameAccount();
+const RENAME = useApi.RenameAccount()
+const isLoading = RENAME.isPending
 
-  const readOnly = renameIsPending;
+  const readOnly = RENAME.isPending;
 
   let accountId = "";
   let email = "";
@@ -60,20 +60,20 @@ export const AccountSettings: FC = () => {
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (renameIsPending) return;
+      if (!RENAME.canRun) return;
       try {
         const { name } = formValues(event, fields);
         if (!isName(name)) return;
         const newName = normalizeName(name);
         throwIfInvalidName(newName);
-        RENAME({ name: newName });
+        RENAME.request({ name: newName });
         setName(newName);
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
           setHelp(errorMessage.invalidAccountName);
       }
     },
-    [RENAME, renameIsPending]
+    [RENAME]
   );
 
   // Set name on READ.
@@ -104,7 +104,7 @@ export const AccountSettings: FC = () => {
 
       <Field isGrouped>
         <Control>
-          <Button isOutlined isLoading={renameIsPending}>
+          <Button isOutlined isLoading={isLoading}>
             {buttonLabel.save}
           </Button>
         </Control>

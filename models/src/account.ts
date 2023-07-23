@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 
 import {
   AllowedCountryIsoCode2,
@@ -51,6 +51,10 @@ export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
   isItemId(accountId)
 );
 
+export type AccountKeys = AccountKey[]
+
+export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey)
+
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 
 export type ReadAccount = Operation<AccountKey, Account | null>;
@@ -79,4 +83,4 @@ export const isSetAccountCountryInput = objectTypeGuard<
 
 export type DeleteAccount = Operation<AccountKey, DeletionTime>;
 
-export type ListAccountKeys = Operation<void, AccountKey[]>;
+export type ListAccountKeys = Operation<void, AccountKeys>;

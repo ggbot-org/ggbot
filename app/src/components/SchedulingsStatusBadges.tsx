@@ -2,7 +2,7 @@ import { Control, Field } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import { FC } from "react";
 
-import { SchedulingStatusBadge } from "./SchedulingStatusBadge.js";
+import { SchedulingStatusBadge } from "../components/SchedulingStatusBadge.js";
 
 type Props = {
   schedulings: AccountStrategy["schedulings"];

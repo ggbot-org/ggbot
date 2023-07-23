@@ -6,7 +6,8 @@ import { useApi } from "../hooks/useApi.js";
 import { Account } from "./Account.js";
 
 export const Accounts: FC = () => {
-  const { request, data: accountKeys } = useApi.ListAccountKeys();
+const {ListAccountKeys} = useApi
+const accountKeys = ListAccountKeys.data
 
   const accountIds: string[] = [];
 
@@ -23,11 +24,8 @@ export const Accounts: FC = () => {
     : undefined;
 
   useEffect(() => {
-    const controller = request();
-    return () => {
-      controller.abort();
-    };
-  }, [request]);
+  if (ListAccountKeys.canRun) ListAccountKeys.request()
+  }, [ListAccountKeys]);
 
   return (
     <div>

@@ -23,7 +23,7 @@ type UseActionRequestArg<Input extends OperationInput> =
 
 type UseActionRequest<Input extends OperationInput> = (
   arg?: UseActionRequestArg<Input> | undefined
-) => AbortController;
+) => void;
 
 type UseActionOutput<
   Action extends { in: OperationInput; out: OperationOutput }
@@ -56,35 +56,19 @@ type UseActionOutput<
  *
  * const endpoint = "/api/action";
  *
- * const useApi = {
- *   FooBar: () =>
- *     useAction<ApiAction["FooBar"], ApiActionType>(endpoint, {
- *       type: "FooBar",
- *     }),
- * };
+ * export const FooBar = useAction<ApiAction["FooBar"], ApiActionType>(
+ *   endpoint,
+ *   { type: "FooBar" }
+ * )
  * ```
  *
- * Then use defined actions.
+ * Then call it in a `useEffect`.
  *
  * @example
  *
  * ```ts
- * const FooBar = useApi.FooBar();
- * ```
- *
- * The `request` returns an `AbortController`, it can be used as a `useEffect`
- * destructor.
- *
- * @example
- *
- * ```ts
- * const FooBar = useApi.FooBar();
  * useEffect(() => {
- *   if (!FooBar.canRun) return;
- *   const controller = FooBar.request({ param });
- *   return () => {
- *     controller.abort();
- *   };
+ *   if (FooBar.canRun) FooBar.request({ param });
  * }, [FooBar]);
  * ```
  */
@@ -109,12 +93,10 @@ export const useAction = <
 
   const request = useCallback<UseActionRequest<Action["in"]>>(
     (inputData) => {
+      (async function () {
       const controller = new UseActionAbortController();
 
-      (async function () {
         try {
-          if (inputData === undefined) return;
-
           const options: RequestInit = {
             body: JSON.stringify({ type, data: inputData }),
             headers: new UseActionHeaders({ withJwt }),
@@ -178,8 +160,6 @@ export const useAction = <
           setIsPending(false);
         }
       })();
-
-      return controller;
     },
     [endpoint, type, withJwt]
   );

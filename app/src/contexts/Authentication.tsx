@@ -15,13 +15,13 @@ import {
 } from "react";
 
 import {
-  AuthEnterForm,
-  AuthEnterFormProps,
-} from "../components/AuthEnterForm.js";
+  AuthEnter,
+  AuthEnterProps,
+} from "../components/AuthEnter.js";
 import {
-  AuthVerifyForm,
-  AuthVerifyFormProps,
-} from "../components/AuthVerifyForm.js";
+  AuthVerify,
+  AuthVerifyProps,
+} from "../components/AuthVerify.js";
 import {
   SplashScreen,
   splashScreenDuration,
@@ -96,20 +96,21 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   );
 
-  const { request: READ, data: account, canRun } = useApi.ReadAccount();
+const READ= useApi.ReadAccount()
+  const account = READ.data
 
-  const setJwt = useCallback<AuthVerifyFormProps["setJwt"]>(
+  const setJwt = useCallback<AuthVerifyProps["setJwt"]>(
     (jwt) => {
       dispatch({ type: "SET_JWT", data: { jwt } });
     },
     [dispatch]
   );
 
-  const unsetEmail = useCallback<AuthVerifyFormProps["unsetEmail"]>(() => {
+  const unsetEmail = useCallback<AuthVerifyProps["unsetEmail"]>(() => {
     dispatch({ type: "SET_EMAIL", data: { email: undefined } });
   }, [dispatch]);
 
-  const setEmail = useCallback<AuthEnterFormProps["setEmail"]>((email) => {
+  const setEmail = useCallback<AuthEnterProps["setEmail"]>((email) => {
     dispatch({ type: "SET_EMAIL", data: { email } });
   }, []);
 
@@ -123,15 +124,14 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [account, exit]);
 
   useEffect(() => {
-    if (jwt && canRun) READ({});
-  }, [READ, canRun, jwt]);
+    if (READ.canRun) READ.request()
+  }, [READ]);
 
   useEffect(() => {
-    if (jwt !== undefined) return;
     setTimeout(() => {
       dispatch({ type: "HIDE_SPLASH_SCREEN" });
     }, splashScreenDuration);
-  }, [jwt]);
+  }, []);
 
   useEffect(() => {
     if (account === undefined) return;
@@ -156,13 +156,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     return (
       <Modal isActive>
         {email ? (
-          <AuthVerifyForm
+          <AuthVerify
             email={email}
             unsetEmail={unsetEmail}
             setJwt={setJwt}
           />
         ) : (
-          <AuthEnterForm setEmail={setEmail} />
+          <AuthEnter setEmail={setEmail} />
         )}
       </Modal>
     );

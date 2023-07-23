@@ -2,25 +2,27 @@ import { Message, Modal } from "@ggbot2/design";
 import { FC, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { GoSettingsButton } from "./GoSettingsButton.js";
+import { GoSettings } from "../components/GoSettings.js";
 
-export const PleaseConfigureBinanceModal: FC = () => {
+export const PleasePurchase: FC = () => {
   const [isActive, setIsActive] = useState(true);
 
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       <Message color="info">
-        <p>You cannot run strategies on Binance yet.</p>
+        <p>
+        <FormattedMessage id="PleasePurchase.message"/>
+        </p>
 
         <p>
           <FormattedMessage
-            id="PleaseConfigureBinanceModal.goToSettings"
+            id="PleasePurchase.goToSettings"
             values={{ em: (chunks) => <em>{chunks}</em> }}
           />
         </p>
       </Message>
 
-      <GoSettingsButton settingsPage="binance" />
+      <GoSettings settingsPage="billing" />
     </Modal>
   );
 };

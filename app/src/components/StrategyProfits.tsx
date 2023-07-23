@@ -8,9 +8,9 @@ import {
 } from "@ggbot2/time";
 import { FC, useContext, useEffect } from "react";
 
+import { ProfitSummary } from "../components/ProfitSummary.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { ProfitSummary } from "./ProfitSummary.js";
 
 export const StrategyProfits: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
@@ -21,19 +21,18 @@ export const StrategyProfits: FC = () => {
   const start = getTime(end).minus(numDays).days();
   const timeInterval: TimeInterval = { start, end };
 
-  const { request: READ, data: orders } = useApi.ReadStrategyOrders();
+  const READ = useApi.ReadStrategyOrders()
 
-  const orderHistory: Orders = isOrders(orders) ? orders : [];
+  const orders: Orders = isOrders(READ.data) ? READ.data : [];
 
   const dayInterval = timeIntervalToDay(timeInterval);
 
   useEffect(() => {
     if (!strategyKey) return;
-    const controller = READ({ ...strategyKey, ...dayInterval });
-    return () => controller.abort();
-  }, [dayInterval, READ, strategyKey]);
+    if (READ.canRun) READ.request({ ...strategyKey, ...dayInterval });
+  }, [READ, dayInterval, strategyKey]);
 
   return (
-    <ProfitSummary timeInterval={timeInterval} orderHistory={orderHistory} />
+    <ProfitSummary timeInterval={timeInterval} orders={orders} />
   );
 };

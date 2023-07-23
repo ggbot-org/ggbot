@@ -5,7 +5,7 @@ import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel, errorMessage } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
-export const ShareStrategyButton: FC = () => {
+export const ShareStrategy: FC = () => {
   const { strategyKey, strategyName } = useContext(StrategyContext);
 
   const onClick = useCallback(async () => {

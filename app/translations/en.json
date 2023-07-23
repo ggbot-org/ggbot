@@ -1,17 +1,32 @@
 {
-  "AuthVerifyForm.checkYourEmail": {
+  "AuthVerify.checkYourEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
   },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
   },
+  "CreateBinanceApi.title": {
+    "defaultMessage": "Binance API"
+  },
   "CreateStrategy.title": {
     "defaultMessage": "Create Strategy"
   },
-  "PleaseConfigureBinanceModal.goToSettings": {
+  "DeleteAccount.buttonLabel": {
+    "defaultMessage": "Delete account"
+  },
+  "DeleteBinanceApi.buttonLabel": {
+    "defaultMessage": "Delete API"
+  },
+  "DeleteStrategy.buttonLabel": {
+    "defaultMessage": "Delete strategy"
+  },
+  "PleaseConfigureBinance.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
   },
-  "PleasePurchaseModal.goToSettings": {
+  "PleasePurchase.message": {
+    "defaultMessage": "You cannot run a strategy without a subscription."
+  },
+  "PleasePurchase.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
   },
   "SubscriptionPurchasedMessage.body": {
@@ -20,13 +35,25 @@
   "SubscriptionCanceledMessage.body": {
     "defaultMessage": "Your purchase was canceled."
   },
+  "buttonLabel.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "buttonLabel.copy": {
+    "defaultMessage": "Copy"
+  },
   "buttonLabel.enter": {
     "defaultMessage": "Enter"
   },
   "buttonLabel.reset": {
     "defaultMessage": "Reset"
   },
+  "buttonLabel.save": {
+    "defaultMessage": "Save"
+  },
   "buttonLabel.send": {
     "defaultMessage": "Send"
+  },
+  "fieldLabel.email": {
+    "defaultMessage": "Email"
   }
 }

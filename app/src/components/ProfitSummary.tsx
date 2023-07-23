@@ -14,7 +14,7 @@ import {
   SizeModifierProp,
   Title,
 } from "@ggbot2/design";
-import { Order } from "@ggbot2/models";
+import { Order, isOrders } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
 import { FC, Fragment, PropsWithChildren, useContext, useEffect } from "react";
 
@@ -24,7 +24,7 @@ import { classNames } from "../styles/classNames.js";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
-  orderHistory: Order[];
+  orders: Order[]
 };
 
 const binanceSymbols = new Map<
@@ -71,7 +71,7 @@ type SymbolStats = {
   quoteQuantity: string;
 };
 
-export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
+export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
   const { strategyKey } = useContext(StrategyContext);
 
   const strategyKind = strategyKey?.strategyKind;
@@ -85,8 +85,8 @@ export const ProfitSummary: FC<Props> = ({ orderHistory, timeInterval }) => {
     Omit<SymbolStats, "symbol">
   >();
 
-  if (strategyKind === "binance") {
-    for (const { info } of orderHistory) {
+  if (strategyKind === "binance" && isOrders(orders)) {
+    for (const { info } of orders) {
       if (isBinanceOrderRespFULL(info)) {
         // TODO assuming type=MARKET status=FILLED
         const { fills, side, symbol } = info;

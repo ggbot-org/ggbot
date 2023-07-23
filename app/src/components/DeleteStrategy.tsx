@@ -10,6 +10,7 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -20,9 +21,9 @@ export const DeleteStrategy: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
 
-  const { request: DELETE, isPending, isDone } = useApi.DeleteStrategy();
-
-  const isLoading = isPending || isDone;
+  const DELETE = useApi.DeleteStrategy()
+  const isLoading = DELETE.isPending||DELETE.isDone
+  const redirectToHomepage = DELETE.isDone
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -31,20 +32,19 @@ export const DeleteStrategy: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (strategyKey) DELETE(strategyKey);
+    if (strategyKey) DELETE.request(strategyKey);
   }, [DELETE, strategyKey]);
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "time");
 
   useEffect(() => {
-    if (!isDone) return;
-    window.location.href = href.homePage();
-  }, [isDone]);
+    if (redirectToHomepage) window.location.href = href.homePage();
+  }, [redirectToHomepage]);
 
   return (
     <>
       <Button color="warning" onClick={toggleModal}>
-        {buttonLabel.deleteStrategy}
+      <FormattedMessage id="DeleteStrategy.buttonLabel"/>
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>

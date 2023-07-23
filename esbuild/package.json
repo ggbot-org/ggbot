@@ -16,6 +16,7 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
+    "@ggbot2/env": "file:env",
     "esbuild": "0.17.17"
   },
   "devDependencies": {

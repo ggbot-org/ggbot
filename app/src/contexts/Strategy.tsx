@@ -1,8 +1,14 @@
-import { createContext, FC, PropsWithChildren } from "react";
+import { isStrategy, Strategy } from "@ggbot2/models";
+import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react";
 
-import { useStrategy } from "../hooks/useStrategy.js";
+import { useApi } from "../hooks/useApi.js";
+import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js";
 
-type ContextValue = ReturnType<typeof useStrategy>;
+type ContextValue = {
+strategyName: string
+strategyKey: ReturnType<typeof strategyKeyParamsFromCurrentLocation>
+strategyWhenCreated: Strategy['whenCreated'] | undefined
+}
 
 export const StrategyContext = createContext<ContextValue>({
   strategyKey: undefined,
@@ -13,10 +19,32 @@ export const StrategyContext = createContext<ContextValue>({
 StrategyContext.displayName = "StrategyContext";
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-  const strategy = useStrategy();
+const READ = useApi.ReadStrategy()
+  const strategy = READ.data
+
+  const strategyKey = strategyKeyParamsFromCurrentLocation();
+
+const contextValue = useMemo<ContextValue>(() => {
+if (isStrategy(strategy)) {return {
+strategyWhenCreated: strategy.whenCreated,
+strategyName: strategy.name,
+strategyKey
+}} else {
+return {
+strategyWhenCreated: undefined,
+strategyName: "",
+strategyKey
+}
+}
+}, [strategy, strategyKey])
+
+useEffect(() => {
+if (!strategyKey) return
+if (READ.canRun) READ.request(strategyKey)
+}, [READ, strategyKey])
 
   return (
-    <StrategyContext.Provider value={strategy}>
+    <StrategyContext.Provider value={contextValue}>
       {children}
     </StrategyContext.Provider>
   );

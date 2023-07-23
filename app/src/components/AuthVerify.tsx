@@ -8,20 +8,21 @@ import {
   Control,
   Field,
   Form,
+  FormOnSubmit,
   InputField,
   Message,
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { NonEmptyString } from "@ggbot2/type-utils";
-import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react";
+import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { buttonLabel, fieldLabel } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
-import { GenericErrorMessage, TimeoutErrorMessage } from "./ErrorMessages.js";
+import { GenericErrorMessage, TimeoutErrorMessage } from "../components/ErrorMessages.js";
 
-export type AuthVerifyFormProps = {
+export type AuthVerifyProps = {
   email: EmailAddress;
   unsetEmail: () => void;
   setJwt: (jwt: NonEmptyString) => void;
@@ -36,7 +37,7 @@ type State = {
   verificationFailed: boolean;
 };
 
-export const AuthVerifyForm: FC<AuthVerifyFormProps> = ({
+export const AuthVerify: FC<AuthVerifyProps> = ({
   email,
   unsetEmail,
   setJwt,
@@ -98,7 +99,7 @@ export const AuthVerifyForm: FC<AuthVerifyFormProps> = ({
       unsetEmail();
     }, [unsetEmail]);
 
-  const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
+  const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
       try {
         event.preventDefault();
@@ -177,7 +178,7 @@ export const AuthVerifyForm: FC<AuthVerifyFormProps> = ({
 
       <Message>
         <FormattedMessage
-          id="AuthVerifyForm.checkYourEmail"
+          id="AuthVerify.checkYourEmail"
           values={{ em: (chunks) => <em>{chunks}</em> }}
         />
       </Message>

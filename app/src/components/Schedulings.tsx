@@ -23,29 +23,27 @@ import {
   useMemo,
   useState,
 } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { useSubscription } from "../hooks/useSubscription.js";
-import { SchedulingItem, SchedulingItemProps } from "./SchedulingItem.js";
-import { SchedulingsStatusBadges } from "./SchedulingsStatusBadges.js";
+import { SchedulingItem, SchedulingItemProps } from "../components/SchedulingItem.js";
+import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
+import {SubscriptionContext} from "../contexts/Subscription.js";
 
 type Props = {
   setHasActiveSubscription: (arg: boolean | undefined) => void;
 };
 
-export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
+export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
   const { strategyKey } = useContext(StrategyContext);
+  const { hasActiveSubscription } = useContext(SubscriptionContext);
 
-  const { hasActiveSubscription } = useSubscription();
+  const READ = useApi.ReadAccountStrategies()
+  const  WRITE = useApi.WriteAccountStrategiesItemSchedulings()
 
-  const { request: READ, data: accountStrategies } =
-    useApi.ReadAccountStrategies();
-  const {
-    request: WRITE,
-    isPending: writeIsPending,
-    data: writeData,
-  } = useApi.WriteAccountStrategiesItemSchedulings();
+  const accountStrategies = READ.data
+  const isLoading = WRITE.isPending
 
   const [schedulingItems, setSchedulingItems] = useState<
     SchedulingItemProps["scheduling"][]
@@ -154,11 +152,11 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!canSubmit) return;
     if (!strategyKey) return;
-    WRITE({
+    WRITE.request({
       strategyId: strategyKey.strategyId,
       schedulings: wantedSchedulings,
     });
-  }, [canSubmit, strategyKey, wantedSchedulings, WRITE]);
+  }, [WRITE,canSubmit, strategyKey, wantedSchedulings ]);
 
   const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();
@@ -177,10 +175,9 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
       setHasActiveSubscription(hasActiveSubscription);
   }, [hasActiveSubscription, setHasActiveSubscription]);
 
-  // Fetch accountStrategies on mount.
+  // Fetch accountStrategies.
   useEffect(() => {
-    const controller = READ({});
-    return () => controller.abort();
+  if (READ.canRun) READ.request()
   }, [READ]);
 
   // Update schedulings once fetched.
@@ -188,12 +185,10 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
     if (currentSchedulings) setSchedulingItems(currentSchedulings);
   }, [currentSchedulings]);
 
-  // Fetch accountStrategies on updates.
+  // Fetch strategies on updates.
   useEffect(() => {
-    if (!writeData) return;
-    const controller = READ({});
-    return () => controller.abort();
-  }, [writeData, READ]);
+  if (WRITE.isDone) READ.reset()
+  }, [READ, WRITE]);
 
   return (
     <Form box onSubmit={onSubmit}>
@@ -237,15 +232,15 @@ export const SchedulingsForm: FC<Props> = ({ setHasActiveSubscription }) => {
           <Button
             onClick={onClickSave}
             disabled={!canSubmit}
-            isLoading={writeIsPending}
+            isLoading={isLoading}
           >
-            Save
+          <FormattedMessage id="buttonLabel.save"/>
           </Button>
         </Control>
 
         <Control>
           <Button onClick={onClickCancel} disabled={!canCancel}>
-            Cancel
+          <FormattedMessage id="buttonLabel.cancel"/>
           </Button>
         </Control>
       </Field>

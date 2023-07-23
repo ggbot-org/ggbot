@@ -23,13 +23,13 @@ import { useApi } from "../hooks/useApi.js";
 import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 import { errorMessage } from "../i18n/index.js";
-import { BacktestController } from "./BacktestController.js";
-import { EditStrategyTabs } from "./EditStrategyTabs.js";
-import { EditStrategyTopbar } from "./EditStrategyTopbar.js";
-import { FlowViewContainer } from "./FlowViewContainer.js";
-import { MemoryController } from "./MemoryController.js";
-import { PleaseConfigureBinanceModal } from "./PleaseConfigureBinanceModal.js";
-import { StrategyExecutionLog } from "./StrategyExecutionLog.js";
+import { BacktestController } from "../components/BacktestController.js";
+import { EditStrategyTabs } from "../components/EditStrategyTabs.js";
+import { EditStrategyTopbar } from "../components/EditStrategyTopbar.js";
+import { FlowViewContainer } from "../components/FlowViewContainer.js";
+import { MemoryController } from "../components/MemoryController.js";
+import { PleaseConfigureBinance } from "../components/PleaseConfigureBinance.js";
+import { StrategyExecutionLog } from "../components/StrategyExecutionLog.js";
 
 export const EditStrategyFlow: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
@@ -53,21 +53,18 @@ export const EditStrategyFlow: FC = () => {
     strategyKind,
   });
 
-  const {
-    request: EXECUTE,
-    data: strategyExecution,
-    isPending: runIsPending,
-    error: strategyExecutionError,
-  } = useApi.ExecuteStrategy();
+const ReadStrategyFlow = useApi.ReadStrategyFlow()
+const EXECUTE = useApi.ExecuteStrategy()
+const WRITE = useApi.WriteStrategyFlow()
 
-  const { request: WRITE, isPending: saveIsPending } =
-    useApi.WriteStrategyFlow();
+const strategyExecution = EXECUTE.data
+const runIsPending = EXECUTE.isPending
+const strategyExecutionError = EXECUTE.error
 
-  const {
-    request: READ,
-    data: storedStrategyFlow,
-    isPending: readIsPending,
-  } = useApi.ReadStrategyFlow();
+const saveIsPending = WRITE.isPending
+
+const storedStrategyFlow = ReadStrategyFlow.data
+const readIsPending = ReadStrategyFlow.isPending
 
   let canRun = !canSave;
   if (hasNoBinanceApiConfig) canRun = false;
@@ -100,13 +97,17 @@ export const EditStrategyFlow: FC = () => {
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
     if (!strategyKey) return;
-    if (canSave) WRITE({ ...strategyKey, view: flowView.graph });
-  }, [canSave, flowView, WRITE, strategyKey]);
+    if (!canSave) return
+    if (WRITE.canRun) WRITE.request(
+    { ...strategyKey, view: flowView.graph }
+    )
+  }, [WRITE, canSave, flowView, strategyKey]);
 
   const onClickRun = useCallback<ButtonOnClick>(() => {
     if (!strategyKey) return;
-    if (canRun) EXECUTE(strategyKey);
-  }, [canRun, EXECUTE, strategyKey]);
+    if (!canRun) return
+    if (EXECUTE.canRun) EXECUTE.request(strategyKey)
+  }, [EXECUTE, canRun, strategyKey]);
 
   useEffect(() => {
     if (!strategyExecutionError) return;
@@ -121,9 +122,8 @@ export const EditStrategyFlow: FC = () => {
   useEffect(() => {
     if (flowLoaded) return;
     if (!strategyKey) return;
-    const controller = READ(strategyKey);
-    return () => controller.abort();
-  }, [flowLoaded, READ, strategyKey]);
+    if (ReadStrategyFlow.canRun) ReadStrategyFlow.request(strategyKey)
+  }, [ReadStrategyFlow, flowLoaded, strategyKey]);
 
   useEffect(() => {
     try {
@@ -172,7 +172,7 @@ export const EditStrategyFlow: FC = () => {
 
   return (
     <>
-      {hasNoBinanceApiConfig ? <PleaseConfigureBinanceModal /> : null}
+      {hasNoBinanceApiConfig ? <PleaseConfigureBinance /> : null}
 
       <EditStrategyTopbar
         canRun={canRun}

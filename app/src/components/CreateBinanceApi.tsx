@@ -9,6 +9,7 @@ import {
   Title,
 } from "@ggbot2/design";
 import { FC, useCallback, useEffect } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, fieldLabel } from "../i18n/index.js";
@@ -20,45 +21,50 @@ type Props = {
 const fields = ["apiKey", "apiSecret"] as const;
 
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
-  const { request: CREATE, data, isPending } = useApi.CreateBinanceApiConfig();
+const CREATE = useApi.CreateBinanceApiConfig()
+  const isLoading = CREATE.isPending
+  const readOnly = CREATE.isPending
+  const isDone = CREATE.isDone
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
+      if (!CREATE.canRun) return
       const { apiKey, apiSecret } = formValues(event, fields);
       if (typeof apiKey !== "string") return;
       if (typeof apiSecret !== "string") return;
-      CREATE({ apiKey, apiSecret });
+      CREATE.request({ apiKey, apiSecret });
     },
     [CREATE]
   );
 
   useEffect(() => {
-    if (!data) return;
-    onCreate();
-  }, [data, onCreate]);
+    if (isDone) onCreate();
+  }, [isDone, onCreate]);
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Title>Binance API</Title>
+      <Title>
+      <FormattedMessage id="CreateBinanceApi.title" />
+      </Title>
 
       <InputField
         required
         name="apiKey"
         label={fieldLabel.apiKey}
-        readOnly={isPending}
+        readOnly={readOnly}
       />
 
       <InputField
         required
         label={fieldLabel.apiSecret}
         name="apiSecret"
-        readOnly={isPending}
+        readOnly={readOnly}
       />
 
       <Field>
         <Control>
-          <Button isLoading={isPending}>{buttonLabel.create}</Button>
+          <Button isLoading={isLoading}>{buttonLabel.create}</Button>
         </Control>
       </Field>
     </Form>

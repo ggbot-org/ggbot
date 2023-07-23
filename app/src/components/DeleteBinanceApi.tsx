@@ -1,5 +1,6 @@
 import { Button, Buttons, Message, Modal } from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel } from "../i18n/index.js";
@@ -9,7 +10,9 @@ type Props = {
 };
 
 export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
-  const { request: DELETE, data, isPending } = useApi.DeleteBinanceApiConfig();
+const DELETE = useApi.DeleteBinanceApiConfig()
+  const canCloseModal = DELETE.isDone
+  const isLoading = DELETE.isPending
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -18,19 +21,20 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    DELETE({});
+  if (DELETE.canRun) DELETE.request();
   }, [DELETE]);
 
   useEffect(() => {
-    if (!data) return;
+  if (canCloseModal) {
     setModalIsActive(false);
     onDelete();
-  }, [data, onDelete]);
+  }
+  }, [canCloseModal, onDelete]);
 
   return (
     <>
       <Button color="danger" onClick={toggleModal}>
-        {buttonLabel.deleteApi}
+      <FormattedMessage id="DeleteBinanceApi.buttonLabel" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
@@ -48,7 +52,7 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
         <Buttons>
           <Button
             color="danger"
-            isLoading={isPending}
+            isLoading={isLoading}
             onClick={onClickConfirmation}
           >
             {buttonLabel.yesDelete}

@@ -9,8 +9,8 @@ import {
 } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
 import { DailyIntervalSelector } from "./DailyIntervalSelector.js";
-import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput.js";
-import { ProfitSummary } from "./ProfitSummary.js";
+import { FrequencyInput, FrequencyInputProps } from "../components/FrequencyInput.js";
+import { ProfitSummary } from "../components/ProfitSummary.js";
 
 type Props = {
   state: BacktestingState | undefined;
@@ -51,7 +51,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     memoryItems,
     dayInterval,
     numSteps,
-    orderHistory,
+    orders,
     stepIndex,
   } = useMemo(() => {
     if (!state)
@@ -64,7 +64,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
         maxDay: undefined,
         dayInterval: undefined,
         numSteps: undefined,
-        orderHistory: [],
+        orders: [],
         stepIndex: undefined,
       };
     const {
@@ -73,7 +73,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       isRunning,
       maxDay,
       memory,
-      orderHistory,
+      orders,
       stepIndex,
       timestamps,
     } = state;
@@ -94,7 +94,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       memoryItems,
       dayInterval,
       numSteps,
-      orderHistory,
+      orders,
       stepIndex,
     };
   }, [state]);
@@ -153,7 +153,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
         </div>
       </div>
 
-      <ProfitSummary orderHistory={orderHistory} timeInterval={timeInterval} />
+      <ProfitSummary orders={orders} timeInterval={timeInterval} />
 
       <menu>
         <Button onClick={onClickAction}>{actionLabel}</Button>

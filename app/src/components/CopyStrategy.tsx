@@ -24,13 +24,16 @@ import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
-export const CopyStrategyForm: FC = () => {
+export const CopyStrategy: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const { request: COPY, isDone, isPending } = useApi.CopyStrategy();
+const COPY = useApi.CopyStrategy()
+const redirectToHomepage = COPY.isDone
+  const readOnly = COPY.isPending || COPY.isDone
+  const isLoading = COPY.isPending || COPY.isDone
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
@@ -38,10 +41,11 @@ export const CopyStrategyForm: FC = () => {
     (event) => {
       try {
         event.preventDefault();
+        if (!COPY.canRun) return
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name) && strategyKey) COPY({ name, ...strategyKey });
+        if (isName(name) && strategyKey) COPY.request({ name, ...strategyKey });
       } catch (error) {
         if (error instanceof ErrorInvalidArg) {
           // TODO show error to user
@@ -49,7 +53,7 @@ export const CopyStrategyForm: FC = () => {
         }
       }
     },
-    [strategyKey, COPY]
+    [COPY, strategyKey ]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -64,9 +68,8 @@ export const CopyStrategyForm: FC = () => {
   );
 
   useEffect(() => {
-    if (!isDone) return;
-    window.location.href = href.homePage();
-  }, [isDone]);
+    if (redirectToHomepage) window.location.href = href.homePage();
+  }, [redirectToHomepage]);
 
   return (
     <Form box onSubmit={onSubmit}>
@@ -87,12 +90,12 @@ export const CopyStrategyForm: FC = () => {
         label={fieldLabel.newStrategyName}
         name="name"
         placeholder={strategyName}
-        readOnly={isPending ?? isDone}
+        readOnly={readOnly}
       />
 
       <Field>
         <Control>
-          <Button isLoading={isPending ?? isDone} disabled={isDisabled}>
+          <Button isLoading={isLoading} disabled={isDisabled}>
             {buttonLabel.copy}
           </Button>
         </Control>

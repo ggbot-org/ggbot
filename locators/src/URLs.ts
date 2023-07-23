@@ -4,12 +4,6 @@ export class ApiAuthenticationEnterURL extends URL {
   }
 }
 
-export class ApiAuthenticationExitURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/exit", apiBaseURL);
-  }
-}
-
 export class ApiAuthenticationVerifyURL extends URL {
   constructor(apiBaseURL: string) {
     super("/verify", apiBaseURL);

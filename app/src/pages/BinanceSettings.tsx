@@ -18,18 +18,15 @@ const hideApiKey = (apiKey: string) =>
   )}`;
 
 export const BinanceSettingsPage: FC = () => {
-  const {
-    request: READ,
-    canRun,
-    data: apiConfig,
-    reset: refetchApiKey,
-  } = useApi.ReadBinanceApiConfig();
+  const  READ = useApi.ReadBinanceApiConfig()
+  const apiConfig=READ.data
+  const refetchApiKey = READ.reset
 
   const [apiKey, setApiKey] = useState("");
 
   useEffect(() => {
-    if (canRun) READ({});
-  }, [canRun, READ]);
+    if (READ.canRun) READ.request();
+  }, [READ]);
 
   useEffect(() => {
     if (isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(apiConfig)) {

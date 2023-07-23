@@ -1,6 +1,5 @@
 import {
   ApiAuthenticationEnterURL,
-  ApiAuthenticationExitURL,
   ApiAuthenticationVerifyURL,
   ApiBaseURL,
   ApiPublicActionURL,
@@ -19,7 +18,6 @@ let apiPurchaseOrder = "";
 let apiUserAction = "";
 
 let authenticationEnter = "";
-let authenticationExit = "";
 let authenticationVerify = "";
 
 if (DEPLOY_STAGE) {
@@ -32,7 +30,6 @@ if (DEPLOY_STAGE) {
   apiUserAction = new ApiUserActionURL(apiBase).toString();
 
   authenticationEnter = new ApiAuthenticationEnterURL(authBase).toString();
-  authenticationExit = new ApiAuthenticationExitURL(authBase).toString();
   authenticationVerify = new ApiAuthenticationVerifyURL(authBase).toString();
 }
 
@@ -41,6 +38,5 @@ export const url = {
   apiPurchaseOrder,
   apiUserAction,
   authenticationEnter,
-  authenticationExit,
   authenticationVerify,
 };

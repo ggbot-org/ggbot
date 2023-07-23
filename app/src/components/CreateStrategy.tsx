@@ -30,9 +30,11 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
-  const { request: CREATE, data, isDone, isPending } = useApi.CreateStrategy();
+const CREATE = useApi.CreateStrategy()
 
-  const isLoading = isPending || isDone;
+const strategy = CREATE.data
+const readOnly = CREATE.isPending
+  const isLoading = CREATE.isPending || CREATE.isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");
@@ -43,11 +45,12 @@ export const CreateStrategy: FC = () => {
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
-      event.preventDefault();
       try {
+      event.preventDefault();
+      if (!CREATE.canRun) return
         const { name } = formValues(event, fields);
         throwIfInvalidName(name);
-        if (isName(name)) CREATE({ kind: "binance", name });
+        if (isName(name)) CREATE.request({ kind: "binance", name });
       } catch (error) {
         if (error instanceof ErrorInvalidArg)
           setHelp(errorMessage.invalidStrategyName);
@@ -57,14 +60,14 @@ export const CreateStrategy: FC = () => {
   );
 
   useEffect(() => {
-    if (isStrategy(data)) {
-      const { id, kind } = data;
+    if (isStrategy(strategy)) {
+      const { id, kind } = strategy;
       window.location.href = href.editFlowPage({
         strategyId: id,
         strategyKind: kind,
       });
     }
-  }, [data]);
+  }, [strategy]);
 
   return (
     <>
@@ -84,7 +87,7 @@ export const CreateStrategy: FC = () => {
             required
             label={fieldLabel.strategyName}
             name={fieldName.name}
-            readOnly={isPending}
+            readOnly={readOnly}
             help={help}
           />
 

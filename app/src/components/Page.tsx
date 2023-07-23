@@ -1,7 +1,7 @@
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import { FC, PropsWithChildren, ReactNode } from "react";
 
-import { Navigation } from "./Navigation.js";
+import { Navigation } from "../components/Navigation.js";
 
 export type PageProps = {
   topbar?: ReactNode;

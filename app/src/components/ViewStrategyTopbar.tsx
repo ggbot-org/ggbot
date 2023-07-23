@@ -2,9 +2,9 @@ import { Buttons, Column, Columns, Flex, Level } from "@ggbot2/design";
 import { FC } from "react";
 
 import { classNames } from "../styles/classNames.js";
-import { GoCopyStrategyButton } from "./GoCopyStrategyButton.js";
-import { ShareStrategyButton } from "./ShareStrategyButton.js";
-import { StrategyFlowName } from "./StrategyFlowName.js";
+import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
+import { ShareStrategy } from "../components/ShareStrategy.js";
+import { StrategyFlowName } from "../components/StrategyFlowName.js";
 
 export const ViewStrategyTopbar: FC = () => (
   <Columns className={classNames("is-marginless")}>
@@ -16,9 +16,9 @@ export const ViewStrategyTopbar: FC = () => (
         className={classNames("is-marginless", "p-2")}
         right={
           <Buttons>
-            <ShareStrategyButton />
+            <ShareStrategy />
 
-            <GoCopyStrategyButton />
+            <GoCopyStrategy />
           </Buttons>
         }
       >

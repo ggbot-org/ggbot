@@ -9,7 +9,7 @@ type Props = {
   settingsPage: SettingsPageId;
 };
 
-export const GoSettingsButton: FC<Props> = ({ settingsPage }) => {
+export const GoSettings: FC<Props> = ({ settingsPage }) => {
   const [isPending, setIsPending] = useState(false);
 
   const onClick = () => {

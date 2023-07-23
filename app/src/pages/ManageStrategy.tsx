@@ -3,9 +3,9 @@ import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC, useState } from "react";
 
 import { DeleteStrategy } from "../components/DeleteStrategy.js";
-import { PleasePurchaseModal } from "../components/PleasePurchaseModal.js";
-import { SchedulingsForm } from "../components/SchedulingsForm.js";
-import { StrategyForm } from "../components/StrategyForm.js";
+import { PleasePurchase } from "../components/PleasePurchase.js";
+import { Schedulings } from "../components/Schedulings.js";
+import { StrategyInfo } from "../components/StrategyInfo.js";
 import { StrategyProfits } from "../components/StrategyProfits.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
@@ -22,16 +22,16 @@ export const ManageStrategyPage: FC = () => {
       <AuthenticationProvider>
         <StrategyProvider>
           <PageLayout>
-            {hasActiveSubscription === false && <PleasePurchaseModal />}
+            {hasActiveSubscription === false && <PleasePurchase />}
 
             <Section>
               <Columns>
                 <Column>
-                  <StrategyForm />
+                  <StrategyInfo />
                 </Column>
 
                 <Column>
-                  <SchedulingsForm
+                  <Schedulings
                     setHasActiveSubscription={setHasActiveSubscription}
                   />
                 </Column>

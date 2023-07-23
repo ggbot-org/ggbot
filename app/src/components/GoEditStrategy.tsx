@@ -5,7 +5,7 @@ import { StrategyContext } from "../contexts/Strategy.js";
 import { buttonLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
-export const GoCopyStrategyButton: FC = () => {
+export const GoEditStrategy: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -16,14 +16,14 @@ export const GoCopyStrategyButton: FC = () => {
       if (!strategyKey) return;
       if (isLoading) return;
       setIsLoading(true);
-      window.location.href = href.copyStrategyPage(strategyKey);
+      window.location.href = href.editFlowPage(strategyKey);
     },
     [isLoading, strategyKey]
   );
 
   return (
     <Button type="button" isLoading={isLoading} onClick={onClick}>
-      {buttonLabel.copy}
+      {buttonLabel.flow}
     </Button>
   );
 };

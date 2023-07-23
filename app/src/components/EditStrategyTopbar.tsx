@@ -11,7 +11,7 @@ import { FC } from "react";
 
 import { buttonLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
-import { StrategyFlowName } from "./StrategyFlowName.js";
+import { StrategyFlowName } from "../components/StrategyFlowName.js";
 
 type Props = {
   canRun: boolean;

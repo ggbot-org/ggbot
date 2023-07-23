@@ -33,7 +33,7 @@ type State = Pick<DflowCommonContext, "memory"> & {
   isRunning: boolean;
   isPaused: boolean;
   dayInterval: DayInterval;
-  orderHistory: Order[];
+  orders: Order[];
   timestamps: Timestamp[];
   maxDay: Day;
 };
@@ -92,15 +92,13 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "NEXT": {
-      const { balanceHistory, orderHistory } = state;
-      const { balanceChangeEvent, memory, orders } = action;
       return {
         ...state,
-        balanceHistory: balanceChangeEvent
-          ? balanceHistory.concat(balanceChangeEvent)
-          : balanceHistory,
-        memory,
-        orderHistory: orderHistory.concat(orders),
+        balanceHistory: action.balanceChangeEvent
+          ? state.balanceHistory.concat(action.balanceChangeEvent)
+          : state.balanceHistory,
+        memory: action.memory,
+        orders: state.orders.concat(action.orders),
         stepIndex: state.stepIndex + 1,
       };
     }
@@ -114,8 +112,7 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "RESUME": {
-      const { isPaused } = state;
-      return isPaused
+      return state.isPaused
         ? {
             ...state,
             isPaused: false,
@@ -125,24 +122,20 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "SET_FREQUENCY": {
-      const { isPaused, isRunning, dayInterval } = state;
-      if (isPaused || isRunning) return state;
-      const { frequency } = action;
+      if (state.isPaused || state.isRunning) return state;
       return {
         ...state,
-        frequency,
-        timestamps: computeTimestamps({ dayInterval, frequency }),
+        frequency: action.frequency,
+        timestamps: computeTimestamps({ dayInterval: state.dayInterval, frequency: action.frequency }),
       };
     }
 
     case "SET_INTERVAL": {
-      const { frequency, isPaused, isRunning } = state;
-      if (isPaused || isRunning) return state;
-      const { dayInterval } = action;
+      if (state.isPaused || state.isRunning) return state;
       return {
         ...state,
-        dayInterval,
-        timestamps: computeTimestamps({ dayInterval, frequency }),
+        dayInterval: action.dayInterval,
+        timestamps: computeTimestamps({ dayInterval: action.dayInterval, frequency:state.frequency }),
       };
     }
 
@@ -153,7 +146,7 @@ const backtestingReducer = (state: State, action: Action) => {
         isPaused: false,
         isRunning: true,
         memory: {},
-        orderHistory: [],
+        orders: [],
         stepIndex: 0,
       };
     }
@@ -189,7 +182,7 @@ const getInitialState = (): State => {
     isPaused: false,
     isRunning: false,
     memory: {},
-    orderHistory: [],
+    orders: [],
     stepIndex: 0,
     timestamps: computeTimestamps({ dayInterval, frequency }),
     maxDay,

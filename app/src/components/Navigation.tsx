@@ -8,9 +8,9 @@ import {
   NavbarProps,
   NavbarStart,
 } from "@ggbot2/design";
-import { FC, memo, useCallback, useContext } from "react";
+import { FC, memo, useCallback, useState } from "react";
 
-import { AuthenticationContext } from "../contexts/Authentication.js";
+import { AuthExit } from "../components/AuthExit.js";
 import { navigationLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
@@ -18,7 +18,7 @@ import { SettingsPageId } from "../routing/types.js";
 type Props = Pick<NavbarProps, "noMenu">;
 
 export const Navigation: FC<Props> = memo(({ noMenu }) => {
-  const { exit } = useContext(AuthenticationContext);
+  const [exitIsActive, setExitIsActive]=useState(false)
 
   const goToHomePage = () => {
     if (window.location.href !== href.homePage())
@@ -26,8 +26,8 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   };
 
   const onClickExit = useCallback(() => {
-    exit();
-  }, [exit]);
+  setExitIsActive(true)
+  }, []);
 
   const goToSettings = useCallback(
     (settingsPage: SettingsPageId) => () => {
@@ -39,6 +39,7 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   return (
     <Navbar noMenu={noMenu}>
       {noMenu || (
+      <>
         <>
           <NavbarStart>
             <NavbarItemAnchor onClick={goToHomePage}>
@@ -70,6 +71,9 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
             </NavbarItemAnchor>
           </NavbarEnd>
         </>
+
+        <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive}/>
+      </>
       )}
     </Navbar>
   );
