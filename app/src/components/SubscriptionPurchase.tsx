@@ -30,6 +30,7 @@ import { getTime, now, Time } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
@@ -204,7 +205,7 @@ export const SubscriptionPurchase: FC = () => {
 
       {hasActiveSubscription ? (
         <Message color="danger">
-          Your subscription will expire soon, please consider renew it.
+          <FormattedMessage id="SubscriptionPurchase.couldRenew" />
         </Message>
       ) : null}
 

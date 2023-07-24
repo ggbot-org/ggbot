@@ -1,4 +1,4 @@
-import { Message, Modal } from "@ggbot2/design";
+import { Buttons, Content, Message, Modal } from "@ggbot2/design";
 import { FC, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -10,17 +10,26 @@ export const PleaseConfigureBinance: FC = () => {
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       <Message color="info">
-        <p>You cannot run strategies on Binance yet.</p>
+        <Content>
+          <p>
+            <FormattedMessage id="PleaseConfigureBinance.message" />
+          </p>
 
-        <p>
-          <FormattedMessage
-            id="PleaseConfigureBinance.goToSettings"
-            values={{ em: (chunks) => <em>{chunks}</em> }}
-          />
-        </p>
+          <p>
+            <FormattedMessage
+              id="PleaseConfigureBinance.goToSettings"
+              values={{
+                b: (chunks) => <b>{chunks}</b>,
+                em: (chunks) => <em>{chunks}</em>,
+              }}
+            />
+          </p>
+        </Content>
+
+        <Buttons>
+          <GoSettings settingsPage="binance" />
+        </Buttons>
       </Message>
-
-      <GoSettings settingsPage="binance" />
     </Modal>
   );
 };

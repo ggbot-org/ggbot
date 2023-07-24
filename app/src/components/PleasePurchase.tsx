@@ -1,4 +1,4 @@
-import { Message, Modal } from "@ggbot2/design";
+import { Buttons, Content, Message, Modal } from "@ggbot2/design";
 import { FC, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -10,19 +10,23 @@ export const PleasePurchase: FC = () => {
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       <Message color="info">
-        <p>
-          <FormattedMessage id="PleasePurchase.message" />
-        </p>
+        <Content>
+          <p>
+            <FormattedMessage id="PleasePurchase.message" />
+          </p>
 
-        <p>
-          <FormattedMessage
-            id="PleasePurchase.goToSettings"
-            values={{ em: (chunks) => <em>{chunks}</em> }}
-          />
-        </p>
+          <p>
+            <FormattedMessage
+              id="PleasePurchase.goToSettings"
+              values={{ em: (chunks) => <em>{chunks}</em> }}
+            />
+          </p>
+        </Content>
+
+        <Buttons>
+          <GoSettings settingsPage="billing" />
+        </Buttons>
       </Message>
-
-      <GoSettings settingsPage="billing" />
     </Modal>
   );
 };

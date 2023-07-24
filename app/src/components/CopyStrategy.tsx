@@ -18,6 +18,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -82,7 +83,9 @@ export const CopyStrategy: FC = () => {
         defaultValue={formattedWhenCreated}
       />
 
-      <Message>Choose a new name for the copied strategy.</Message>
+      <Message>
+        <FormattedMessage id="CopyStrategy.chooseNewName" />
+      </Message>
 
       <InputField
         required

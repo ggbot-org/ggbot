@@ -1,7 +1,7 @@
 import { Button } from "@ggbot2/design";
 import { FC, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
-import { buttonLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
@@ -19,7 +19,7 @@ export const GoSettings: FC<Props> = ({ settingsPage }) => {
 
   return (
     <Button isLoading={isPending} onClick={onClick}>
-      {buttonLabel.goToSettings}
+      <FormattedMessage id="GoSettings.label" />
     </Button>
   );
 };

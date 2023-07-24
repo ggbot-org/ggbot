@@ -1,5 +1,6 @@
 import { Message, useOfflineDetection } from "@ggbot2/design";
 import { FC, PropsWithChildren, ReactNode } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { Navigation } from "../components/Navigation.js";
 
@@ -19,7 +20,7 @@ export const Page: FC<PropsWithChildren<PageProps>> = ({
 
       {isOffline ? (
         <Message>
-          <p>The network connection has been lost.</p>
+          <FormattedMessage id="Page.noNetwork" />
         </Message>
       ) : null}
 

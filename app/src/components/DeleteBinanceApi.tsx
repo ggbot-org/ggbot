@@ -1,6 +1,13 @@
-import { Button, Buttons, Message, Modal } from "@ggbot2/design";
+import {
+  Button,
+  Buttons,
+  Content,
+  MainColor,
+  Message,
+  Modal,
+} from "@ggbot2/design";
 import { FC, useCallback, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel } from "../i18n/index.js";
@@ -10,6 +17,10 @@ type Props = {
 };
 
 export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
+  const color: MainColor = "warning";
+
+  const { formatMessage } = useIntl();
+
   const DELETE = useApi.DeleteBinanceApiConfig();
   const canCloseModal = DELETE.isDone;
   const isLoading = DELETE.isPending;
@@ -33,33 +44,37 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
 
   return (
     <>
-      <Button color="danger" onClick={toggleModal}>
+      <Button color={color} onClick={toggleModal}>
         <FormattedMessage id="DeleteBinanceApi.buttonLabel" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Message header="Binance API deletion" color="warning">
-          <p>
-            Are you sure you want to delete your Binance API configuration on
-            ggbot2?
-          </p>
+        <Message
+          header={formatMessage({ id: "DeleteBinanceApi.title" })}
+          color={color}
+        >
+          <Content>
+            <p>
+              <FormattedMessage id="DeleteBinanceApi.question" />
+            </p>
 
-          <p>All your ggbot2 strategies will not able to run.</p>
+            <p>All your ggbot2 strategies will not able to be run.</p>
 
-          <p>This action will not delete your API key on Binance website.</p>
+            <p>This action will not delete your API key on Binance website.</p>
+          </Content>
+
+          <Buttons>
+            <Button
+              color={color}
+              isLoading={isLoading}
+              onClick={onClickConfirmation}
+            >
+              {buttonLabel.yesDelete}
+            </Button>
+
+            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+          </Buttons>
         </Message>
-
-        <Buttons>
-          <Button
-            color="danger"
-            isLoading={isLoading}
-            onClick={onClickConfirmation}
-          >
-            {buttonLabel.yesDelete}
-          </Button>
-
-          <Button onClick={toggleModal}>{buttonLabel.no}</Button>
-        </Buttons>
       </Modal>
     </>
   );

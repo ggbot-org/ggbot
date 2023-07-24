@@ -5,6 +5,9 @@
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
   },
+  "CopyStrategy.chooseNewName": {
+    "defaultMessage": "Choose a new name for the copied strategy."
+  },
   "CreateBinanceApi.title": {
     "defaultMessage": "Binance API"
   },
@@ -17,8 +20,20 @@
   "DeleteAccount.buttonLabel": {
     "defaultMessage": "Delete account"
   },
+  "DeleteAccount.title": {
+    "defaultMessage": "Account deletion"
+  },
+  "DeleteAccount.question": {
+    "defaultMessage": "Are you sure you want to delete your account?"
+  },
   "DeleteBinanceApi.buttonLabel": {
     "defaultMessage": "Delete API"
+  },
+  "DeleteBinanceApi.title": {
+    "defaultMessage": "Binance API deletion"
+  },
+  "DeleteBinanceApi.question": {
+    "defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
   },
   "DeleteStrategy.buttonLabel.cta": {
     "defaultMessage": "Delete strategy"
@@ -32,8 +47,17 @@
   "DeleteStrategy.title": {
     "defaultMessage": "Strategy deletion"
   },
+  "GoSettings.label": {
+    "defaultMessage": "Go to Settings"
+  },
+  "Page.noNetwork": {
+    "defaultMessage": "The network connection has been lost."
+  },
   "PleaseConfigureBinance.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
+  },
+  "PleaseConfigureBinance.message": {
+    "defaultMessage": "You cannot run strategies on Binance yet."
   },
   "PleasePurchase.message": {
     "defaultMessage": "You cannot run a strategy without a subscription."
@@ -47,11 +71,14 @@
   "Strategies.title": {
     "defaultMessage": "Strategies"
   },
-  "SubscriptionPurchasedMessage.body": {
-    "defaultMessage": "Thank you for your purchase."
-  },
   "SubscriptionCanceledMessage.body": {
     "defaultMessage": "Your purchase was canceled."
+  },
+  "SubscriptionPurchase.couldRenew": {
+    "defaultMessage": "Your subscription will expire soon, please consider renew it."
+  },
+  "SubscriptionPurchasedMessage.body": {
+    "defaultMessage": "Thank you for your purchase."
   },
   "buttonLabel.cancel": {
     "defaultMessage": "Cancel"

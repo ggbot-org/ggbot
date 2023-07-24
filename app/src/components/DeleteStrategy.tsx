@@ -1,9 +1,10 @@
 import {
-  Box,
   Button,
   Buttons,
   Column,
   Columns,
+  Content,
+  MainColor,
   Message,
   Modal,
   OutputField,
@@ -17,9 +18,11 @@ import { useApi } from "../hooks/useApi.js";
 import { href } from "../routing/hrefs.js";
 
 export const DeleteStrategy: FC = () => {
+  const color: MainColor = "warning";
+
   const { formatMessage } = useIntl();
 
-  const { strategyWhenCreated, strategyName, strategyKey } =
+  const { strategyWhenCreated, strategyName, strategyId, strategyKey } =
     useContext(StrategyContext);
 
   const DELETE = useApi.DeleteStrategy();
@@ -44,20 +47,20 @@ export const DeleteStrategy: FC = () => {
 
   return (
     <>
-      <Button color="warning" onClick={toggleModal}>
+      <Button color={color} onClick={toggleModal}>
         <FormattedMessage id="DeleteStrategy.buttonLabel.cta" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
         <Message
           header={formatMessage({ id: "DeleteStrategy.title" })}
-          color="warning"
+          color={color}
         >
-          <p>
-            <FormattedMessage id="DeleteStrategy.message" />
-          </p>
+          <Content>
+            <p>
+              <FormattedMessage id="DeleteStrategy.message" />
+            </p>
 
-          <Box>
             <Columns>
               <Column>
                 <OutputField
@@ -71,7 +74,7 @@ export const DeleteStrategy: FC = () => {
               <Column>
                 <OutputField
                   label={formatMessage({ id: "fieldLabel.strategyId" })}
-                  value={strategyKey?.strategyId}
+                  value={strategyId}
                 />
               </Column>
 
@@ -82,11 +85,11 @@ export const DeleteStrategy: FC = () => {
                 />
               </Column>
             </Columns>
-          </Box>
+          </Content>
 
           <Buttons>
             <Button
-              color="warning"
+              color={color}
               isLoading={isLoading}
               onClick={onClickConfirmation}
             >

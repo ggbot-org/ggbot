@@ -4,8 +4,6 @@ import { FormattedMessage } from "react-intl";
 
 export const SubscriptionCanceledMessage: FC = () => (
   <Message color="warning">
-    <p>
-      <FormattedMessage id="SubscriptionCanceledMessage.body" />
-    </p>
+    <FormattedMessage id="SubscriptionCanceledMessage.body" />
   </Message>
 );

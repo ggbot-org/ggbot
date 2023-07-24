@@ -12,6 +12,7 @@ import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyPara
 
 type ContextValue = {
   strategyName: string;
+  strategyId: string;
   strategyKey: ReturnType<typeof strategyKeyParamsFromCurrentLocation>;
   strategyWhenCreated: Strategy["whenCreated"] | undefined;
 };
@@ -19,6 +20,7 @@ type ContextValue = {
 export const StrategyContext = createContext<ContextValue>({
   strategyKey: undefined,
   strategyName: "",
+  strategyId: "",
   strategyWhenCreated: undefined,
 });
 
@@ -33,15 +35,17 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   const contextValue = useMemo<ContextValue>(() => {
     if (isStrategy(strategy)) {
       return {
-        strategyWhenCreated: strategy.whenCreated,
-        strategyName: strategy.name,
+        strategyId: strategy.id,
         strategyKey,
+        strategyName: strategy.name,
+        strategyWhenCreated: strategy.whenCreated,
       };
     } else {
       return {
-        strategyWhenCreated: undefined,
-        strategyName: "",
+        strategyId: "",
         strategyKey,
+        strategyName: "",
+        strategyWhenCreated: undefined,
       };
     }
   }, [strategy, strategyKey]);

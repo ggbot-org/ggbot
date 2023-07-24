@@ -42,7 +42,7 @@ export const Strategies: FC = () => {
 
       {data !== undefined && items.length === 0 && (
         <Message color="info">
-          {<FormattedMessage id="Strategies.noStrategy" />}
+          <FormattedMessage id="Strategies.noStrategy" />
         </Message>
       )}
 

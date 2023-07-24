@@ -10,7 +10,6 @@ export const buttonLabel = {
   dismiss: "Dismiss",
   exit: "Exit",
   flow: "Flow",
-  goToSettings: "Go to Settings",
   no: "No",
   ok: "Ok",
   purchase: "Purchase",
