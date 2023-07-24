@@ -1,4 +1,3 @@
-import { Day } from "@ggbot2/time";
 import { FC, useId } from "react";
 import {
   Control,
@@ -12,21 +11,23 @@ import {
 
 import { useFormattedDate } from "../hooks/useFormattedDate.js";
 import { _classNames } from "./_classNames.js";
-import { Calendar } from "./Calendar.js";
+import { Calendar, CalendarProps } from "./Calendar.js";
 
 export type DayDropdownProps = Required<
   Pick<DropdownProps, "isActive" | "onClick">
-> & {
-  day: Day;
-  label: string;
-  setDay: (arg: Day) => void;
-};
+> &
+  Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
+    label: string;
+  };
 
 export const DayDropdown: FC<DayDropdownProps> = ({
   day,
-  label,
   isActive,
+  label,
   onClick,
+  setDay,
+  min,
+  max,
 }) => {
   const id = useId();
   const formattedDay = useFormattedDate(day, "day");
@@ -40,7 +41,7 @@ export const DayDropdown: FC<DayDropdownProps> = ({
           <DropdownTrigger>{formattedDay}</DropdownTrigger>
 
           <DropdownMenu>
-            <Calendar />
+            <Calendar day={day} setDay={setDay} min={min} max={max} />
           </DropdownMenu>
         </Dropdown>
       </Control>

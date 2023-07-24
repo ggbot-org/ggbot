@@ -79,7 +79,7 @@ type Action =
       data: Pick<State, "frequency">;
     }
   | {
-      type: "SET_INTERVAL";
+      type: "SET_DAY_INTERVAL";
       data: Pick<State, "dayInterval">;
     }
   | {
@@ -142,7 +142,7 @@ const backtestingReducer = (state: State, action: Action) => {
       };
     }
 
-    case "SET_INTERVAL": {
+    case "SET_DAY_INTERVAL": {
       if (state.isPaused || state.isRunning) return state;
       const { dayInterval } = action.data;
       return {

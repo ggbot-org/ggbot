@@ -1,12 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { InputProps } from "trunx";
 
 import { _classNames } from "./_classNames.js";
 import { DayDropdown, DayDropdownProps } from "./DayDropdown.js";
 
 export type DailyIntervalClassNames = "DailyInterval";
 
-export type DailyIntervalProps = Pick<InputProps, "min" | "max"> & {
+export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
   labelStart: DayDropdownProps["label"];
   labelEnd: DayDropdownProps["label"];
   start: DayDropdownProps["day"];
@@ -18,8 +17,8 @@ export type DailyIntervalProps = Pick<InputProps, "min" | "max"> & {
 export const DailyInterval: FC<DailyIntervalProps> = ({
   labelStart,
   labelEnd,
-  // min,
-  // max,
+  min,
+  max,
   start,
   end,
   setStart,
@@ -56,6 +55,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
     };
   }, []);
 
+  // TODO ??
   // const onChangeStart = useCallback<DaySelectorOnChange>(
   //   (event) => {
   //     const value = event.target.value;
@@ -66,6 +66,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
   //   [end, setStart]
   // );
 
+  // TODO ??
   // const onChangeEnd = useCallback<DaySelectorOnChange>(
   //   (event) => {
   //     const value = event.target.value;
@@ -79,17 +80,21 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
   return (
     <div className={_classNames("DailyInterval")}>
       <DayDropdown
-        isActive={activeDropdown === "start"}
         day={start}
+        isActive={activeDropdown === "start"}
         label={labelStart}
+        max={end}
+        min={min}
         onClick={onClickStart}
         setDay={setStart}
       />
 
       <DayDropdown
-        isActive={activeDropdown === "end"}
         day={end}
+        isActive={activeDropdown === "end"}
         label={labelEnd}
+        min={start}
+        max={max}
         onClick={onClickEnd}
         setDay={setEnd}
       />

@@ -1,7 +1,7 @@
 import {
   Button,
-  CalendarSetSelectedDay,
   DailyInterval,
+  DailyIntervalProps,
   DateTime,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
@@ -43,10 +43,10 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     [dispatch]
   );
 
-  const setEnd = useCallback<CalendarSetSelectedDay>(
+  const setEnd = useCallback<DailyIntervalProps["setEnd"]>(
     (day) => {
       dispatch({
-        type: "SET_INTERVAL",
+        type: "SET_DAY_INTERVAL",
         data: {
           dayInterval: { start: dayInterval.start, end: day },
         },
@@ -55,10 +55,10 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     [dispatch, dayInterval]
   );
 
-  const setStart = useCallback<CalendarSetSelectedDay>(
+  const setStart = useCallback<DailyIntervalProps["setStart"]>(
     (day) => {
       dispatch({
-        type: "SET_INTERVAL",
+        type: "SET_DAY_INTERVAL",
         data: {
           dayInterval: { start: day, end: dayInterval.end },
         },
@@ -129,9 +129,8 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
   return (
     <div>
       <DailyInterval
+        {...dayInterval}
         max={maxDay}
-        end={maxDay}
-        start={dayInterval?.start}
         setStart={setStart}
         setEnd={setEnd}
         labelStart={formatMessage({ id: "fieldLabel.from" })}

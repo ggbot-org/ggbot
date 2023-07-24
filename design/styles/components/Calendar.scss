@@ -8,6 +8,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  &__head-icon {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__head-text {
+    user-select: none;
   }
 
   &__body {

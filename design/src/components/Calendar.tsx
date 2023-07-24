@@ -2,11 +2,10 @@ import {
   dateToDay,
   Day,
   MonthNum,
-  today,
   WeekDayNum,
   weekDayNums,
 } from "@ggbot2/time";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, MouseEventHandler, useCallback, useMemo, useState } from "react";
 
 import { _classNames } from "./_classNames.js";
 import { Icon } from "./Icon.js";
@@ -15,6 +14,8 @@ export type CalendarClassNames =
   | "Calendar"
   | "Calendar__body"
   | "Calendar__head"
+  | "Calendar__head-icon"
+  | "Calendar__head-text"
   | "Calendar__week-day"
   | "Calendar__cell";
 
@@ -22,14 +23,12 @@ export type CalendarMonthNameRecord = Record<MonthNum, string>;
 
 export type CalendarWeekDayNameRecord = Record<WeekDayNum, string>;
 
-export type CalendarSetSelectedDay = (arg: Day) => void;
-
 export type CalendarProps = {
   monthName?: CalendarMonthNameRecord;
   min?: Day;
   max?: Day;
-  selectedDay?: Day;
-  setSelectedDay?: CalendarSetSelectedDay;
+  day: Day;
+  setDay: (arg: Day) => void;
   weekDayName?: CalendarWeekDayNameRecord;
 };
 
@@ -59,8 +58,8 @@ export const Calendar: FC<CalendarProps> = ({
     5: "Fr",
     6: "Sa",
   },
-  selectedDay = today(),
-  setSelectedDay,
+  day: selectedDay,
+  setDay: setSelectedDay,
 }) => {
   const [monthOffset, setMonthOffset] = useState(0);
 
@@ -113,12 +112,6 @@ export const Calendar: FC<CalendarProps> = ({
     return dates;
   }, [lastDate]);
 
-  const firstDay = dateToDay(firstDate);
-  const isFirstMonth = firstDay && min && firstDay <= min;
-
-  const lastDay = dateToDay(lastDate);
-  const isLastMonth = lastDay && max && lastDay >= max;
-
   const dateCells = useMemo(
     () =>
       [
@@ -140,25 +133,39 @@ export const Calendar: FC<CalendarProps> = ({
         .map(({ day, ...rest }) => ({
           selected: day === selectedDay,
           isSelectable:
-            day !== selectedDay &&
             (min && day ? day >= min : true) &&
             (max && day ? day <= max : true),
           day,
           ...rest,
         }))
-        .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
-          day,
-          isDateOfCurrentMonth,
-          onClick:
-            day && isSelectable
-              ? () => {
-                  setSelectedDay?.(day);
-                  setMonthOffset(0);
-                }
-              : undefined,
-          num: date.getDate(),
-          selected,
-        })),
+        .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => {
+          const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
+            if (isSelectable) {
+              setSelectedDay(day);
+              setMonthOffset(0);
+            } else {
+              event.stopPropagation();
+            }
+          };
+          return {
+            day,
+            isDateOfCurrentMonth,
+            isSelectable,
+            num: date.getDate(),
+            onClick,
+            selected,
+
+            // Need a random key, using day and monthNum is not enough,
+            // it can raise React warning:
+            //
+            //     Encountered two children with the same key.
+            //
+            key: Math.random()
+              .toString(36)
+              .replace(/[^a-z]+/g, "")
+              .substring(0, 5),
+          };
+        }),
     [
       datesBeforeFirstDate,
       datesOfMonth,
@@ -171,42 +178,50 @@ export const Calendar: FC<CalendarProps> = ({
     ]
   );
 
-  const leftCaretClassName = useMemo(
-    () => ["text-sm", isFirstMonth ? "neutral" : ""].join(" "),
-    [isFirstMonth]
+  const onClickPrevious = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      event.stopPropagation();
+      setMonthOffset((n) => n - 1);
+    },
+    [setMonthOffset]
   );
 
-  const onClickPrevious = useCallback(() => {
-    setMonthOffset((n) => n - 1);
-  }, [setMonthOffset]);
-
-  const onClickNext = useCallback(() => {
-    setMonthOffset((n) => n + 1);
-  }, [setMonthOffset]);
+  const onClickNext = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      event.stopPropagation();
+      setMonthOffset((n) => n + 1);
+    },
+    [setMonthOffset]
+  );
 
   return (
     <div className={_classNames("Calendar")}>
-      <div className={_classNames("Calendar__head")}>
-        <div>
-          <span className={leftCaretClassName}>
-            <Icon
-              name="caret-left"
-              onClick={isFirstMonth ? undefined : onClickPrevious}
-            />
-          </span>
-
-          <span>{monthName[monthNum]}</span>
+      <div
+        className={_classNames("Calendar__head")}
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        <div
+          className={_classNames("Calendar__head-icon")}
+          onClick={onClickPrevious}
+        >
+          <Icon name="caret-left" />
         </div>
 
-        <div>
-          <span>{firstDate.getFullYear()}</span>
+        <div className={_classNames("Calendar__head-text")}>
+          {monthName[monthNum]}
+        </div>
 
-          <span>
-            <Icon
-              name="caret-right"
-              onClick={isLastMonth ? undefined : onClickNext}
-            />
-          </span>
+        <div className={_classNames("Calendar__head-text")}>
+          {firstDate.getFullYear()}
+        </div>
+
+        <div
+          className={_classNames("Calendar__head-icon")}
+          onClick={onClickNext}
+        >
+          <Icon name="caret-right" />
         </div>
       </div>
 
@@ -217,11 +232,12 @@ export const Calendar: FC<CalendarProps> = ({
           </div>
         ))}
 
-        {dateCells.map(({ day, num, onClick, selected }) => (
+        {dateCells.map(({ isSelectable, key, num, onClick, selected }) => (
           <div
-            key={day}
+            key={key}
             className={_classNames("Calendar__cell", {
               "has-background-primary": selected,
+              "has-text-grey-light": !isSelectable,
             })}
             onClick={onClick}
           >
