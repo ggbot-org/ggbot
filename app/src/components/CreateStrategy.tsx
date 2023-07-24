@@ -18,10 +18,9 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, errorMessage, fieldLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 const fields = ["name"];
@@ -30,6 +29,8 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
+  const { formatMessage } = useIntl();
+
   const CREATE = useApi.CreateStrategy();
 
   const strategy = CREATE.data;
@@ -52,11 +53,14 @@ export const CreateStrategy: FC = () => {
         throwIfInvalidName(name);
         if (isName(name)) CREATE.request({ kind: "binance", name });
       } catch (error) {
-        if (error instanceof ErrorInvalidArg)
-          setHelp(errorMessage.invalidStrategyName);
+        if (error instanceof ErrorInvalidArg) {
+          setHelp(formatMessage({ id: "errorMessage.invalidStrategyName" }));
+          return;
+        }
+        console.error(error);
       }
     },
-    [CREATE]
+    [CREATE, formatMessage]
   );
 
   useEffect(() => {
@@ -73,7 +77,9 @@ export const CreateStrategy: FC = () => {
     <>
       <Columns>
         <Column>
-          <Button onClick={toggleModal}>{buttonLabel.createStrategy}</Button>
+          <Button onClick={toggleModal}>
+            <FormattedMessage id="CreateStrategy.buttonLabel" />
+          </Button>
         </Column>
       </Columns>
 
@@ -85,7 +91,7 @@ export const CreateStrategy: FC = () => {
 
           <InputField
             required
-            label={fieldLabel.strategyName}
+            label={formatMessage({ id: "fieldLabel.strategyName" })}
             name={fieldName.name}
             readOnly={readOnly}
             help={help}
@@ -94,7 +100,7 @@ export const CreateStrategy: FC = () => {
           <Field>
             <Control>
               <Button color="primary" isLoading={isLoading}>
-                {buttonLabel.create}
+                <FormattedMessage id="buttonLabel.create" />
               </Button>
             </Control>
           </Field>

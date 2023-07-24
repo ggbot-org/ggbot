@@ -10,14 +10,15 @@ import {
   useFormattedDate,
 } from "@ggbot2/design";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, fieldLabel, messageHeader } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 export const DeleteStrategy: FC = () => {
+  const { formatMessage } = useIntl();
+
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
 
@@ -44,52 +45,59 @@ export const DeleteStrategy: FC = () => {
   return (
     <>
       <Button color="warning" onClick={toggleModal}>
-        <FormattedMessage id="DeleteStrategy.buttonLabel" />
+        <FormattedMessage id="DeleteStrategy.buttonLabel.cta" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Message header={messageHeader.strategyDeletion} color="warning">
-          <p>Are you sure you want to delete this strategy?</p>
+        <Message
+          header={formatMessage({ id: "DeleteStrategy.title" })}
+          color="warning"
+        >
+          <p>
+            <FormattedMessage id="DeleteStrategy.message" />
+          </p>
+
+          <Box>
+            <Columns>
+              <Column>
+                <OutputField
+                  label={formatMessage({ id: "fieldLabel.strategyName" })}
+                  value={strategyName}
+                />
+              </Column>
+            </Columns>
+
+            <Columns>
+              <Column>
+                <OutputField
+                  label={formatMessage({ id: "fieldLabel.strategyId" })}
+                  value={strategyKey?.strategyId}
+                />
+              </Column>
+
+              <Column>
+                <OutputField
+                  label={formatMessage({ id: "fieldLabel.whenCreated" })}
+                  value={formattedWhenCreated}
+                />
+              </Column>
+            </Columns>
+          </Box>
+
+          <Buttons>
+            <Button
+              color="warning"
+              isLoading={isLoading}
+              onClick={onClickConfirmation}
+            >
+              <FormattedMessage id="DeleteStrategy.buttonLabel.confirmation" />
+            </Button>
+
+            <Button onClick={toggleModal}>
+              <FormattedMessage id="buttonLabel.no" />
+            </Button>
+          </Buttons>
         </Message>
-
-        <Box>
-          <Columns>
-            <Column>
-              <OutputField
-                label={fieldLabel.strategyName}
-                value={strategyName}
-              />
-            </Column>
-          </Columns>
-
-          <Columns>
-            <Column>
-              <OutputField
-                label={fieldLabel.strategyId}
-                value={strategyKey?.strategyId}
-              />
-            </Column>
-
-            <Column>
-              <OutputField
-                label={fieldLabel.whenCreated}
-                value={formattedWhenCreated}
-              />
-            </Column>
-          </Columns>
-        </Box>
-
-        <Buttons>
-          <Button
-            color="warning"
-            isLoading={isLoading}
-            onClick={onClickConfirmation}
-          >
-            {buttonLabel.yesDelete}
-          </Button>
-
-          <Button onClick={toggleModal}>{buttonLabel.no}</Button>
-        </Buttons>
       </Modal>
     </>
   );

@@ -1,10 +1,10 @@
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import { FC, useEffect } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
 import { useApi } from "../hooks/useApi.js";
-import { message, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 type StrategyItem = Pick<
@@ -36,10 +36,14 @@ export const Strategies: FC = () => {
 
   return (
     <>
-      <Title>{title.strategies}</Title>
+      <Title>
+        <FormattedMessage id="Strategies.title" />
+      </Title>
 
       {data !== undefined && items.length === 0 && (
-        <Message color="info">{message.noStrategy}</Message>
+        <Message color="info">
+          {<FormattedMessage id="Strategies.noStrategy" />}
+        </Message>
       )}
 
       <Columns isMultiline>
