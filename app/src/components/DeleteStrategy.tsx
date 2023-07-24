@@ -21,9 +21,9 @@ export const DeleteStrategy: FC = () => {
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
 
-  const DELETE = useApi.DeleteStrategy()
-  const isLoading = DELETE.isPending||DELETE.isDone
-  const redirectToHomepage = DELETE.isDone
+  const DELETE = useApi.DeleteStrategy();
+  const isLoading = DELETE.isPending || DELETE.isDone;
+  const redirectToHomepage = DELETE.isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -44,7 +44,7 @@ export const DeleteStrategy: FC = () => {
   return (
     <>
       <Button color="warning" onClick={toggleModal}>
-      <FormattedMessage id="DeleteStrategy.buttonLabel"/>
+        <FormattedMessage id="DeleteStrategy.buttonLabel" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>

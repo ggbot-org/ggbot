@@ -11,7 +11,7 @@ export const PleasePurchase: FC = () => {
     <Modal isActive={isActive} setIsActive={setIsActive}>
       <Message color="info">
         <p>
-        <FormattedMessage id="PleasePurchase.message"/>
+          <FormattedMessage id="PleasePurchase.message" />
         </p>
 
         <p>

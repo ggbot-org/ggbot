@@ -1,10 +1,10 @@
 import { Buttons, Column, Columns, Flex, Level } from "@ggbot2/design";
 import { FC } from "react";
 
-import { classNames } from "../styles/classNames.js";
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
 import { ShareStrategy } from "../components/ShareStrategy.js";
 import { StrategyFlowName } from "../components/StrategyFlowName.js";
+import { classNames } from "../styles/classNames.js";
 
 export const ViewStrategyTopbar: FC = () => (
   <Columns className={classNames("is-marginless")}>

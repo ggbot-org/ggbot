@@ -2,10 +2,10 @@ import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
 import { FC, useEffect } from "react";
 
+import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
 import { useApi } from "../hooks/useApi.js";
 import { message, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
-import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
 
 type StrategyItem = Pick<
   AccountStrategy,
@@ -13,8 +13,8 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-const READ = useApi.ReadAccountStrategies()
-const data = READ.data
+  const READ = useApi.ReadAccountStrategies();
+  const data = READ.data;
 
   const items: StrategyItem[] = [];
   if (Array.isArray(data)) {
@@ -31,7 +31,7 @@ const data = READ.data
   }
 
   useEffect(() => {
-  if (READ.canRun) READ.request()
+    if (READ.canRun) READ.request();
   }, [READ]);
 
   return (

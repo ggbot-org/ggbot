@@ -6,8 +6,8 @@ import { useApi } from "../hooks/useApi.js";
 import { buttonLabel } from "../i18n/index.js";
 
 export const DeleteAccount: FC = () => {
-const DELETE = useApi.DeleteAccount()
-const isLoading = DELETE.isPending
+  const DELETE = useApi.DeleteAccount();
+  const isLoading = DELETE.isPending;
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -16,13 +16,13 @@ const isLoading = DELETE.isPending
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-  if (DELETE.canRun) DELETE.request()
+    if (DELETE.canRun) DELETE.request();
   }, [DELETE]);
 
   return (
     <>
       <Button color="danger" onClick={toggleModal}>
-      <FormattedMessage id="DeleteAccount.buttonLabel"/>
+        <FormattedMessage id="DeleteAccount.buttonLabel" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>

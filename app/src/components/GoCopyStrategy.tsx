@@ -23,7 +23,7 @@ export const GoCopyStrategy: FC = () => {
 
   return (
     <Button type="button" isLoading={isLoading} onClick={onClick}>
-    <FormattedMessage id="buttonLabel.copy"/>
+      <FormattedMessage id="buttonLabel.copy" />
     </Button>
   );
 };

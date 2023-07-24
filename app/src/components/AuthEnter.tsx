@@ -19,9 +19,12 @@ import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
+import {
+  GenericErrorMessage,
+  TimeoutErrorMessage,
+} from "../components/ErrorMessages.js";
 import { fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
-import { GenericErrorMessage, TimeoutErrorMessage } from "../components/ErrorMessages.js";
 
 type SetEmail = (email: EmailAddress) => void;
 

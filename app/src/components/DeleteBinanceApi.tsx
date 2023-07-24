@@ -10,9 +10,9 @@ type Props = {
 };
 
 export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
-const DELETE = useApi.DeleteBinanceApiConfig()
-  const canCloseModal = DELETE.isDone
-  const isLoading = DELETE.isPending
+  const DELETE = useApi.DeleteBinanceApiConfig();
+  const canCloseModal = DELETE.isDone;
+  const isLoading = DELETE.isPending;
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -21,20 +21,20 @@ const DELETE = useApi.DeleteBinanceApiConfig()
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-  if (DELETE.canRun) DELETE.request();
+    if (DELETE.canRun) DELETE.request();
   }, [DELETE]);
 
   useEffect(() => {
-  if (canCloseModal) {
-    setModalIsActive(false);
-    onDelete();
-  }
+    if (canCloseModal) {
+      setModalIsActive(false);
+      onDelete();
+    }
   }, [canCloseModal, onDelete]);
 
   return (
     <>
       <Button color="danger" onClick={toggleModal}>
-      <FormattedMessage id="DeleteBinanceApi.buttonLabel" />
+        <FormattedMessage id="DeleteBinanceApi.buttonLabel" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>

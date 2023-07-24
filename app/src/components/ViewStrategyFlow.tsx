@@ -1,15 +1,15 @@
 import { isStrategyFlow } from "@ggbot2/models";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 
+import { BacktestController } from "../components/BacktestController.js";
+import { FlowViewContainer } from "../components/FlowViewContainer.js";
+import { ViewStrategyTabs } from "../components/ViewStrategyTabs.js";
+import { ViewStrategyTopbar } from "../components/ViewStrategyTopbar.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 import { errorMessage } from "../i18n/index.js";
-import { BacktestController } from "../components/BacktestController.js";
-import { FlowViewContainer } from "../components/FlowViewContainer.js";
-import { ViewStrategyTabs } from "../components/ViewStrategyTabs.js";
-import { ViewStrategyTopbar } from "../components/ViewStrategyTopbar.js";
 
 export const ViewStrategyFlow: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
@@ -28,14 +28,14 @@ export const ViewStrategyFlow: FC = () => {
     strategyKind,
   });
 
-const READ = useApi.ReadStrategyFlow()
-const storedStrategyFlow = READ.data
-const isPending = READ.isPending
+  const READ = useApi.ReadStrategyFlow();
+  const storedStrategyFlow = READ.data;
+  const isPending = READ.isPending;
 
   useEffect(() => {
     if (!strategyKey) return;
     if (!flowLoaded) {
-    if (READ.canRun) READ.request(strategyKey)
+      if (READ.canRun) READ.request(strategyKey);
     }
   }, [READ, flowLoaded, strategyKey]);
 

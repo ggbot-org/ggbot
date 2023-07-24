@@ -58,11 +58,11 @@ export const SubscriptionPurchase: FC = () => {
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
-// TODO use account from AuthenticationContext
-  const READ = useApi.ReadAccount()
-  const SET_COUNTRY = useApi.SetAccountCountry()
+  // TODO use account from AuthenticationContext
+  const READ = useApi.ReadAccount();
+  const SET_COUNTRY = useApi.SetAccountCountry();
 
-  const account = READ.data
+  const account = READ.data;
 
   const [purchaseIsPending, setPurchaseIsPending] = useState(false);
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
@@ -178,13 +178,13 @@ export const SubscriptionPurchase: FC = () => {
   useEffect(() => {
     if (!isAccount(account)) return;
     if (!country) return;
-    if (account.country === country) return
+    if (account.country === country) return;
 
-    if (SET_COUNTRY.canRun) SET_COUNTRY.request({country})
-  }, [SET_COUNTRY, account, country ]);
+    if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country });
+  }, [SET_COUNTRY, account, country]);
 
   useEffect(() => {
-  if (READ.canRun) READ.request()
+    if (READ.canRun) READ.request();
   }, [READ]);
 
   useEffect(() => {

@@ -25,11 +25,14 @@ import {
 } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { StrategyContext } from "../contexts/Strategy.js";
-import { useApi } from "../hooks/useApi.js";
-import { SchedulingItem, SchedulingItemProps } from "../components/SchedulingItem.js";
+import {
+  SchedulingItem,
+  SchedulingItemProps,
+} from "../components/SchedulingItem.js";
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
-import {SubscriptionContext} from "../contexts/Subscription.js";
+import { StrategyContext } from "../contexts/Strategy.js";
+import { SubscriptionContext } from "../contexts/Subscription.js";
+import { useApi } from "../hooks/useApi.js";
 
 type Props = {
   setHasActiveSubscription: (arg: boolean | undefined) => void;
@@ -39,11 +42,11 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
   const { strategyKey } = useContext(StrategyContext);
   const { hasActiveSubscription } = useContext(SubscriptionContext);
 
-  const READ = useApi.ReadAccountStrategies()
-  const  WRITE = useApi.WriteAccountStrategiesItemSchedulings()
+  const READ = useApi.ReadAccountStrategies();
+  const WRITE = useApi.WriteAccountStrategiesItemSchedulings();
 
-  const accountStrategies = READ.data
-  const isLoading = WRITE.isPending
+  const accountStrategies = READ.data;
+  const isLoading = WRITE.isPending;
 
   const [schedulingItems, setSchedulingItems] = useState<
     SchedulingItemProps["scheduling"][]
@@ -156,7 +159,7 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
       strategyId: strategyKey.strategyId,
       schedulings: wantedSchedulings,
     });
-  }, [WRITE,canSubmit, strategyKey, wantedSchedulings ]);
+  }, [WRITE, canSubmit, strategyKey, wantedSchedulings]);
 
   const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();
@@ -177,7 +180,7 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
 
   // Fetch accountStrategies.
   useEffect(() => {
-  if (READ.canRun) READ.request()
+    if (READ.canRun) READ.request();
   }, [READ]);
 
   // Update schedulings once fetched.
@@ -187,7 +190,7 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
 
   // Fetch strategies on updates.
   useEffect(() => {
-  if (WRITE.isDone) READ.reset()
+    if (WRITE.isDone) READ.reset();
   }, [READ, WRITE]);
 
   return (
@@ -234,13 +237,13 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
             disabled={!canSubmit}
             isLoading={isLoading}
           >
-          <FormattedMessage id="buttonLabel.save"/>
+            <FormattedMessage id="buttonLabel.save" />
           </Button>
         </Control>
 
         <Control>
           <Button onClick={onClickCancel} disabled={!canCancel}>
-          <FormattedMessage id="buttonLabel.cancel"/>
+            <FormattedMessage id="buttonLabel.cancel" />
           </Button>
         </Control>
       </Field>

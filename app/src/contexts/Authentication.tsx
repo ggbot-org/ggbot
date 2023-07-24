@@ -14,14 +14,8 @@ import {
   useReducer,
 } from "react";
 
-import {
-  AuthEnter,
-  AuthEnterProps,
-} from "../components/AuthEnter.js";
-import {
-  AuthVerify,
-  AuthVerifyProps,
-} from "../components/AuthVerify.js";
+import { AuthEnter, AuthEnterProps } from "../components/AuthEnter.js";
+import { AuthVerify, AuthVerifyProps } from "../components/AuthVerify.js";
 import {
   SplashScreen,
   splashScreenDuration,
@@ -96,8 +90,8 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   );
 
-const READ= useApi.ReadAccount()
-  const account = READ.data
+  const READ = useApi.ReadAccount();
+  const account = READ.data;
 
   const setJwt = useCallback<AuthVerifyProps["setJwt"]>(
     (jwt) => {
@@ -124,7 +118,7 @@ const READ= useApi.ReadAccount()
   }, [account, exit]);
 
   useEffect(() => {
-    if (READ.canRun) READ.request()
+    if (READ.canRun) READ.request();
   }, [READ]);
 
   useEffect(() => {
@@ -156,11 +150,7 @@ const READ= useApi.ReadAccount()
     return (
       <Modal isActive>
         {email ? (
-          <AuthVerify
-            email={email}
-            unsetEmail={unsetEmail}
-            setJwt={setJwt}
-          />
+          <AuthVerify email={email} unsetEmail={unsetEmail} setJwt={setJwt} />
         ) : (
           <AuthEnter setEmail={setEmail} />
         )}

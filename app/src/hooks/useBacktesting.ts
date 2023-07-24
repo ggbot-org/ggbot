@@ -126,7 +126,10 @@ const backtestingReducer = (state: State, action: Action) => {
       return {
         ...state,
         frequency: action.frequency,
-        timestamps: computeTimestamps({ dayInterval: state.dayInterval, frequency: action.frequency }),
+        timestamps: computeTimestamps({
+          dayInterval: state.dayInterval,
+          frequency: action.frequency,
+        }),
       };
     }
 
@@ -135,7 +138,10 @@ const backtestingReducer = (state: State, action: Action) => {
       return {
         ...state,
         dayInterval: action.dayInterval,
-        timestamps: computeTimestamps({ dayInterval: action.dayInterval, frequency:state.frequency }),
+        timestamps: computeTimestamps({
+          dayInterval: action.dayInterval,
+          frequency: state.frequency,
+        }),
       };
     }
 

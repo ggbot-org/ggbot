@@ -30,10 +30,10 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const CreateStrategy: FC = () => {
-const CREATE = useApi.CreateStrategy()
+  const CREATE = useApi.CreateStrategy();
 
-const strategy = CREATE.data
-const readOnly = CREATE.isPending
+  const strategy = CREATE.data;
+  const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
@@ -46,8 +46,8 @@ const readOnly = CREATE.isPending
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       try {
-      event.preventDefault();
-      if (!CREATE.canRun) return
+        event.preventDefault();
+        if (!CREATE.canRun) return;
         const { name } = formValues(event, fields);
         throwIfInvalidName(name);
         if (isName(name)) CREATE.request({ kind: "binance", name });

@@ -14,7 +14,7 @@ import {
   SizeModifierProp,
   Title,
 } from "@ggbot2/design";
-import { Order, isOrders } from "@ggbot2/models";
+import { isOrders, Order } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
 import { FC, Fragment, PropsWithChildren, useContext, useEffect } from "react";
 
@@ -24,7 +24,7 @@ import { classNames } from "../styles/classNames.js";
 
 type Props = {
   timeInterval: TimeInterval | undefined;
-  orders: Order[]
+  orders: Order[];
 };
 
 const binanceSymbols = new Map<

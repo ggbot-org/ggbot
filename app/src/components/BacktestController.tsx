@@ -4,13 +4,16 @@ import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 
 import {
+  FrequencyInput,
+  FrequencyInputProps,
+} from "../components/FrequencyInput.js";
+import { ProfitSummary } from "../components/ProfitSummary.js";
+import {
   BacktestingDispatch,
   BacktestingState,
 } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
 import { DailyIntervalSelector } from "./DailyIntervalSelector.js";
-import { FrequencyInput, FrequencyInputProps } from "../components/FrequencyInput.js";
-import { ProfitSummary } from "../components/ProfitSummary.js";
 
 type Props = {
   state: BacktestingState | undefined;

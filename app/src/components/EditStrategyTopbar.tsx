@@ -9,9 +9,9 @@ import {
 } from "@ggbot2/design";
 import { FC } from "react";
 
+import { StrategyFlowName } from "../components/StrategyFlowName.js";
 import { buttonLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
-import { StrategyFlowName } from "../components/StrategyFlowName.js";
 
 type Props = {
   canRun: boolean;

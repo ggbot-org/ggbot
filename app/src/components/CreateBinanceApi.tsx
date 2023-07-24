@@ -21,15 +21,15 @@ type Props = {
 const fields = ["apiKey", "apiSecret"] as const;
 
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
-const CREATE = useApi.CreateBinanceApiConfig()
-  const isLoading = CREATE.isPending
-  const readOnly = CREATE.isPending
-  const isDone = CREATE.isDone
+  const CREATE = useApi.CreateBinanceApiConfig();
+  const isLoading = CREATE.isPending;
+  const readOnly = CREATE.isPending;
+  const isDone = CREATE.isDone;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (!CREATE.canRun) return
+      if (!CREATE.canRun) return;
       const { apiKey, apiSecret } = formValues(event, fields);
       if (typeof apiKey !== "string") return;
       if (typeof apiSecret !== "string") return;
@@ -45,7 +45,7 @@ const CREATE = useApi.CreateBinanceApiConfig()
   return (
     <Form box onSubmit={onSubmit}>
       <Title>
-      <FormattedMessage id="CreateBinanceApi.title" />
+        <FormattedMessage id="CreateBinanceApi.title" />
       </Title>
 
       <InputField

@@ -18,9 +18,12 @@ import { NonEmptyString } from "@ggbot2/type-utils";
 import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
+import {
+  GenericErrorMessage,
+  TimeoutErrorMessage,
+} from "../components/ErrorMessages.js";
 import { buttonLabel, fieldLabel } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
-import { GenericErrorMessage, TimeoutErrorMessage } from "../components/ErrorMessages.js";
 
 export type AuthVerifyProps = {
   email: EmailAddress;

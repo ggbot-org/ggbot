@@ -21,14 +21,14 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import {FormattedMessage} from "react-intl";
+import { FormattedMessage } from "react-intl";
 
-import { StrategyContext } from "../contexts/Strategy.js";
-import { useApi } from "../hooks/useApi.js";
-import { errorMessage, fieldLabel, title } from "../i18n/index.js";
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
 import { GoEditStrategy } from "../components/GoEditStrategy.js";
 import { ShareStrategy } from "../components/ShareStrategy.js";
+import { StrategyContext } from "../contexts/Strategy.js";
+import { useApi } from "../hooks/useApi.js";
+import { errorMessage, fieldLabel, title } from "../i18n/index.js";
 
 const fields = ["name"] as const;
 const fieldName = {
@@ -43,13 +43,13 @@ export const StrategyInfo: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-const  READ = useApi.ReadStrategy()
-const RENAME  = useApi.RenameStrategy()
+  const READ = useApi.ReadStrategy();
+  const RENAME = useApi.RenameStrategy();
 
-const isLoading = RENAME.isPending
+  const isLoading = RENAME.isPending;
 
-  const readOnly = READ.isPending || RENAME.isPending
-  const strategy = READ.data
+  const readOnly = READ.isPending || RENAME.isPending;
+  const strategy = READ.data;
 
   const onChangeName = useCallback<InputOnChange>((event) => {
     const value = event.target.value;
@@ -78,7 +78,7 @@ const isLoading = RENAME.isPending
   // Read strategy data.
   useEffect(() => {
     if (!strategyKey) return;
-    if (READ.canRun) READ.request(strategyKey)
+    if (READ.canRun) READ.request(strategyKey);
   }, [READ, strategyKey]);
 
   // Set name on READ.
@@ -119,8 +119,7 @@ const isLoading = RENAME.isPending
       <Field isGrouped>
         <Control>
           <Button isOutlined isLoading={isLoading}>
-          <FormattedMessage
-          id="buttonLabel.save"/>
+            <FormattedMessage id="buttonLabel.save" />
           </Button>
         </Control>
       </Field>

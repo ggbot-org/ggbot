@@ -30,10 +30,10 @@ export const CopyStrategy: FC = () => {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-const COPY = useApi.CopyStrategy()
-const redirectToHomepage = COPY.isDone
-  const readOnly = COPY.isPending || COPY.isDone
-  const isLoading = COPY.isPending || COPY.isDone
+  const COPY = useApi.CopyStrategy();
+  const redirectToHomepage = COPY.isDone;
+  const readOnly = COPY.isPending || COPY.isDone;
+  const isLoading = COPY.isPending || COPY.isDone;
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
@@ -41,7 +41,7 @@ const redirectToHomepage = COPY.isDone
     (event) => {
       try {
         event.preventDefault();
-        if (!COPY.canRun) return
+        if (!COPY.canRun) return;
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
@@ -53,7 +53,7 @@ const redirectToHomepage = COPY.isDone
         }
       }
     },
-    [COPY, strategyKey ]
+    [COPY, strategyKey]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(

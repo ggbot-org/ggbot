@@ -1,9 +1,9 @@
 import { DeployStage } from "@ggbot2/env";
-import { UserWebappBaseURL } from "@ggbot2/locators";
+import { AdminWebappBaseURL } from "@ggbot2/locators";
 
-const localOrigin = new UserWebappBaseURL("local").origin;
-const nextOrigin = new UserWebappBaseURL("next").origin;
-const mainOrigin = new UserWebappBaseURL("main").origin;
+const localOrigin = new AdminWebappBaseURL("local").origin;
+const nextOrigin = new AdminWebappBaseURL("next").origin;
+const mainOrigin = new AdminWebappBaseURL("main").origin;
 
 let deployStage: DeployStage | undefined;
 

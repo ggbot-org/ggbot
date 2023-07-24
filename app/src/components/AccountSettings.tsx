@@ -34,8 +34,8 @@ export const AccountSettings: FC = () => {
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 
-const RENAME = useApi.RenameAccount()
-const isLoading = RENAME.isPending
+  const RENAME = useApi.RenameAccount();
+  const isLoading = RENAME.isPending;
 
   const readOnly = RENAME.isPending;
 

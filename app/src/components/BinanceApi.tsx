@@ -24,9 +24,9 @@ type Props = {
 };
 
 export const BinanceApi: FC<Props> = ({ apiKey }) => {
-const READ= useApi.ReadBinanceApiKeyPermissions()
-  const permissions = READ.data
-  const isLoading = READ.isPending
+  const READ = useApi.ReadBinanceApiKeyPermissions();
+  const permissions = READ.data;
+  const isLoading = READ.isPending;
 
   let enableSpotAndMarginTrading:
     | BinanceApiKeyPermission["enableSpotAndMarginTrading"]
@@ -105,7 +105,7 @@ const READ= useApi.ReadBinanceApiKeyPermissions()
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      if (READ.canRun) READ.request()
+      if (READ.canRun) READ.request();
     },
     [READ]
   );
