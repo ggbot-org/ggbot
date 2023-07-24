@@ -1,7 +1,13 @@
-import { Button, CalendarSetSelectedDay, DateTime } from "@ggbot2/design";
+import {
+  Button,
+  CalendarSetSelectedDay,
+  DailyInterval,
+  DateTime,
+} from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
+import { useIntl } from "react-intl";
 
 import {
   FrequencyInput,
@@ -13,14 +19,17 @@ import {
   BacktestingState,
 } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
-import { DailyIntervalSelector } from "./DailyIntervalSelector.js";
 
 type Props = {
-  state: BacktestingState | undefined;
+  state: BacktestingState;
   dispatch: BacktestingDispatch;
 };
 
 export const BacktestController: FC<Props> = ({ state, dispatch }) => {
+  const { formatMessage } = useIntl();
+
+  const { dayInterval, maxDay } = state;
+
   const [frequencyArg, setFrequencyArg] = useState<
     FrequencyInputProps["frequency"]
   >(everyOneHour());
@@ -34,27 +43,35 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     [dispatch]
   );
 
-  const setStartDay = useCallback<CalendarSetSelectedDay>(
+  const setEnd = useCallback<CalendarSetSelectedDay>(
     (day) => {
-      const endDay = state?.dayInterval.end;
-      if (!endDay) return;
       dispatch({
         type: "SET_INTERVAL",
         data: {
-          dayInterval: { start: day, end: endDay },
+          dayInterval: { start: dayInterval.start, end: day },
         },
       });
     },
-    [dispatch, state?.dayInterval.end]
+    [dispatch, dayInterval]
+  );
+
+  const setStart = useCallback<CalendarSetSelectedDay>(
+    (day) => {
+      dispatch({
+        type: "SET_INTERVAL",
+        data: {
+          dayInterval: { start: day, end: dayInterval.end },
+        },
+      });
+    },
+    [dispatch, dayInterval]
   );
 
   const {
     currentTimestamp,
     isPaused,
     isRunning,
-    maxDay,
     memoryItems,
-    dayInterval,
     numSteps,
     orders,
     stepIndex,
@@ -62,26 +79,16 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     if (!state)
       return {
         currentTimestamp: undefined,
-        dayInterval: undefined,
         isPaused: false,
         isRunning: false,
-        maxDay: undefined,
         memoryItems: [],
         noMemory: true,
         numSteps: undefined,
         orders: [],
         stepIndex: undefined,
       };
-    const {
-      dayInterval,
-      isPaused,
-      isRunning,
-      maxDay,
-      memory,
-      orders,
-      stepIndex,
-      timestamps,
-    } = state;
+    const { isPaused, isRunning, memory, orders, stepIndex, timestamps } =
+      state;
 
     const currentTimestamp = timestamps[stepIndex];
     const numSteps = timestamps.length;
@@ -93,10 +100,8 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
 
     return {
       currentTimestamp,
-      dayInterval,
       isPaused,
       isRunning,
-      maxDay,
       memoryItems,
       numSteps,
       orders,
@@ -104,7 +109,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     };
   }, [state]);
 
-  const timeInterval = dayInterval ? dayIntervalToTime(dayInterval) : undefined;
+  const timeInterval = dayIntervalToTime(dayInterval);
 
   let actionLabel = "";
   if (isPaused) {
@@ -123,11 +128,14 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
 
   return (
     <div>
-      <DailyIntervalSelector
+      <DailyInterval
         max={maxDay}
-        endDay={maxDay}
-        startDay={dayInterval?.start}
-        setStartDay={setStartDay}
+        end={maxDay}
+        start={dayInterval?.start}
+        setStart={setStart}
+        setEnd={setEnd}
+        labelStart={formatMessage({ id: "fieldLabel.from" })}
+        labelEnd={formatMessage({ id: "fieldLabel.to" })}
       />
 
       <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />

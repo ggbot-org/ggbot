@@ -83,11 +83,17 @@
   "fieldLabel.email": {
     "defaultMessage": "Email"
   },
+  "fieldLabel.from": {
+    "defaultMessage": "From"
+  },
   "fieldLabel.strategyId": {
     "defaultMessage": "Strategy Id"
   },
   "fieldLabel.strategyName": {
     "defaultMessage": "Strategy name"
+  },
+  "fieldLabel.to": {
+    "defaultMessage": "To"
   },
   "fieldLabel.whenCreated": {
     "defaultMessage": "When created"

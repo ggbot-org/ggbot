@@ -1,9 +1,8 @@
 .Calendar {
+  margin: 5px;
   display: flex;
   flex-direction: column;
-  max-width: 200px;
   gap: 2px;
-  border: 1px solid $grey-light;
 
   &__head {
     display: flex;
@@ -15,5 +14,21 @@
     display: grid;
     // One column for every week day.
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  &__week-day {
+    block-margin: 10px;
+    font-weight: 600;
+    font-size: 0.8em;
+    text-align: center;
+    user-select: none;
+  }
+
+  &__cell {
+    text-align: center;
+    user-select: none;
+    font-size: 1.1em;
+    border-radius: $radius-rounded;
+    width: 2.2em;
   }
 }

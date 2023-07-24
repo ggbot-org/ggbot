@@ -14,9 +14,9 @@ import { Icon } from "./Icon.js";
 export type CalendarClassNames =
   | "Calendar"
   | "Calendar__body"
-  | "Calendar__head";
-
-// TODO remove all tailwind classes
+  | "Calendar__head"
+  | "Calendar__week-day"
+  | "Calendar__cell";
 
 export type CalendarMonthNameRecord = Record<MonthNum, string>;
 
@@ -147,19 +147,8 @@ export const Calendar: FC<CalendarProps> = ({
           ...rest,
         }))
         .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
-          className: [
-            "text-center select-none",
-            selected
-              ? "bg-cyan-400 text-white"
-              : isSelectable
-              ? [
-                  isDateOfCurrentMonth
-                    ? "text-neutral-600 dark:text-neutral-300"
-                    : "text-neutral-400 dark:text-neutral-500",
-                  "hover:bg-cyan-100 hover:text-neutral-600",
-                ].join(" ")
-              : "text-neutral-200 dark:text-neutral-500",
-          ].join(" "),
+          day,
+          isDateOfCurrentMonth,
           onClick:
             day && isSelectable
               ? () => {
@@ -168,6 +157,7 @@ export const Calendar: FC<CalendarProps> = ({
                 }
               : undefined,
           num: date.getDate(),
+          selected,
         })),
     [
       datesBeforeFirstDate,
@@ -186,11 +176,6 @@ export const Calendar: FC<CalendarProps> = ({
     [isFirstMonth]
   );
 
-  const rightCaretClassName = useMemo(
-    () => ["text-sm", isLastMonth ? "neutral" : ""].join(" "),
-    [isLastMonth]
-  );
-
   const onClickPrevious = useCallback(() => {
     setMonthOffset((n) => n - 1);
   }, [setMonthOffset]);
@@ -202,7 +187,7 @@ export const Calendar: FC<CalendarProps> = ({
   return (
     <div className={_classNames("Calendar")}>
       <div className={_classNames("Calendar__head")}>
-        <div className="flex flex-row items-center gap-2">
+        <div>
           <span className={leftCaretClassName}>
             <Icon
               name="caret-left"
@@ -213,10 +198,10 @@ export const Calendar: FC<CalendarProps> = ({
           <span>{monthName[monthNum]}</span>
         </div>
 
-        <div className="flex flex-row items-center gap-2">
-          <span className="font-medium">{firstDate.getFullYear()}</span>
+        <div>
+          <span>{firstDate.getFullYear()}</span>
 
-          <span className={rightCaretClassName}>
+          <span>
             <Icon
               name="caret-right"
               onClick={isLastMonth ? undefined : onClickNext}
@@ -227,13 +212,19 @@ export const Calendar: FC<CalendarProps> = ({
 
       <div className={_classNames("Calendar__body")}>
         {weekDayNums.map((n) => (
-          <div key={n} className="text-center select-none">
+          <div key={n} className={_classNames("Calendar__week-day")}>
             {weekDayName[n]}
           </div>
         ))}
 
-        {dateCells.map(({ num, className, onClick }) => (
-          <div key={num} className={className} onClick={onClick}>
+        {dateCells.map(({ day, num, onClick, selected }) => (
+          <div
+            key={day}
+            className={_classNames("Calendar__cell", {
+              "has-background-primary": selected,
+            })}
+            onClick={onClick}
+          >
             {num}
           </div>
         ))}

@@ -209,7 +209,7 @@ type UseBacktesting = (
   arg: UseNodesCatalogArg & {
     flowViewGraph?: FlowViewSerializableGraph;
   }
-) => [state: State | undefined, dispatch: BacktestingDispatch];
+) => [state: State, dispatch: BacktestingDispatch];
 
 export const useBacktesting: UseBacktesting = ({
   flowViewGraph,

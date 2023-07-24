@@ -2,6 +2,7 @@ export * from "./Calendar.js";
 export * from "./Checkmark.js";
 export * from "./DailyInterval.js";
 export * from "./DateTime.js";
+export * from "./DayDropdown.js";
 export * from "./Icon.js";
 export * from "./InputField.js";
 export * from "./Logo.js";

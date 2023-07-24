@@ -1,61 +1,8 @@
-import { Day } from "@ggbot2/time";
-import {
-  FC,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-} from "react";
-import {
-  Control,
-  Dropdown,
-  DropdownMenu,
-  DropdownProps,
-  DropdownTrigger,
-  Field,
-  InputProps,
-  Label,
-} from "trunx";
+import { FC, useCallback, useEffect, useState } from "react";
+import { InputProps } from "trunx";
 
-import { useFormattedDate } from "../hooks/useFormattedDate.js";
 import { _classNames } from "./_classNames.js";
-import { Calendar } from "./Calendar.js";
-
-// TODO move it to trunx
-type DropdownOnClick = MouseEventHandler<HTMLDivElement>;
-
-type DayDropdownProps = Pick<DropdownProps, "isActive" | "onClick"> & {
-  day: Day;
-  label: string;
-  setDay: (arg: Day) => void;
-};
-
-const DayDropdown: FC<DayDropdownProps> = ({
-  day,
-  label,
-  isActive,
-  onClick,
-}) => {
-  const id = useId();
-  const formattedDay = useFormattedDate(day, "day");
-
-  return (
-    <Field>
-      <Label htmlFor={id}>{label}</Label>
-
-      <Control>
-        <Dropdown isActive={isActive} onClick={onClick}>
-          <DropdownTrigger>{formattedDay}</DropdownTrigger>
-
-          <DropdownMenu>
-            <Calendar />
-          </DropdownMenu>
-        </Dropdown>
-      </Control>
-    </Field>
-  );
-};
+import { DayDropdown, DayDropdownProps } from "./DayDropdown.js";
 
 export type DailyIntervalClassNames = "DailyInterval";
 
@@ -82,7 +29,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
     "start" | "end" | undefined
   >();
 
-  const onClickStart = useCallback<DropdownOnClick>((event) => {
+  const onClickStart = useCallback<DayDropdownProps["onClick"]>((event) => {
     event.stopPropagation();
     setActiveDropdown((activeDropdown) => {
       if (activeDropdown === "start") return undefined;
@@ -90,7 +37,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
     });
   }, []);
 
-  const onClickEnd = useCallback<DropdownOnClick>((event) => {
+  const onClickEnd = useCallback<DayDropdownProps["onClick"]>((event) => {
     event.stopPropagation();
     setActiveDropdown((activeDropdown) => {
       if (activeDropdown === "end") return undefined;
