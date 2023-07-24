@@ -1,6 +1,6 @@
 import { Time, TimeInterval, truncateTime } from "@ggbot2/time";
 
-import { BinanceCacheProvider } from "./cache.js";
+import { BinanceCacheProvider } from "./cacheProvider.js";
 import { BinanceConnector } from "./connector.js";
 import {
   ErrorBinanceCannotTradeSymbol,

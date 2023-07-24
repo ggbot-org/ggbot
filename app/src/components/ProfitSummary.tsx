@@ -1,9 +1,5 @@
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic";
-import {
-  BinanceExchange,
-  BinanceSymbolInfo,
-  isBinanceOrderRespFULL,
-} from "@ggbot2/binance";
+import { isBinanceOrderRespFULL } from "@ggbot2/binance";
 import {
   Box,
   DateTime,
@@ -16,9 +12,10 @@ import {
 } from "@ggbot2/design";
 import { isOrders, Order } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
-import { FC, Fragment, PropsWithChildren, useContext, useEffect } from "react";
+import { FC, Fragment, PropsWithChildren, useContext } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
+import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 import { miscellaneousLabel, title } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
@@ -26,11 +23,6 @@ type Props = {
   timeInterval: TimeInterval | undefined;
   orders: Order[];
 };
-
-const binanceSymbols = new Map<
-  BinanceSymbolInfo["symbol"],
-  Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">
->();
 
 const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
   children,
@@ -73,8 +65,9 @@ type SymbolStats = {
 
 export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
   const { strategyKey } = useContext(StrategyContext);
-
   const strategyKind = strategyKey?.strategyKind;
+
+  const binanceSymbols = useBinanceSymbols({ strategyKind });
 
   let numBuys: number | undefined = undefined;
   let numSells: number | undefined = undefined;
@@ -150,19 +143,6 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
     }
   }
 
-  useEffect(() => {
-    if (strategyKind !== "binance") return;
-    // TODO put Binance Exchange info in some context and
-    // also cache it session storage
-    const binance = new BinanceExchange();
-    (async () => {
-      const { symbols } = await binance.exchangeInfo();
-      for (const { symbol, baseAsset, quoteAsset } of symbols) {
-        binanceSymbols.set(symbol, { baseAsset, quoteAsset });
-      }
-    })();
-  }, [strategyKind]);
-
   return (
     <Box>
       <Title>{title.profits}</Title>
@@ -214,7 +194,9 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
         })
       )
         .map(({ symbol, ...rest }) => {
-          const binanceSymbol = binanceSymbols.get(symbol);
+          const binanceSymbol = binanceSymbols?.find(
+            (binanceSymbol) => binanceSymbol.symbol === symbol
+          );
           if (binanceSymbol) {
             const { baseAsset, quoteAsset } = binanceSymbol;
             return {

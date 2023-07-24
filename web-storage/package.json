@@ -15,6 +15,9 @@
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/"
   },
+  "dependencies": {
+    "@ggbot2/binance": "file:binance"
+  },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig"

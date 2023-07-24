@@ -28,8 +28,11 @@ import {
 } from "react";
 
 import { BinanceDflowClient } from "../flow/binance.js";
-import { useBinanceSymbols } from "./useBinanceSymbols.js";
-import { useNodesCatalog, UseNodesCatalogArg } from "./useNodesCatalog.js";
+import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
+import {
+  useNodesCatalog,
+  UseNodesCatalogArg,
+} from "../hooks/useNodesCatalog.js";
 
 type UseFlowView = (
   arg: UseNodesCatalogArg & {

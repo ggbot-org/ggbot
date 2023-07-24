@@ -1,6 +1,7 @@
 import { CacheMap } from "@ggbot2/models";
 import { Time, TimeInterval } from "@ggbot2/time";
 
+import { BinanceCacheProvider } from "./cacheProvider.js";
 import { getBinanceIntervalTime } from "./time.js";
 import { isBinanceKline } from "./typeGuards.js";
 import {
@@ -8,33 +9,6 @@ import {
   BinanceKline,
   BinanceKlineInterval,
 } from "./types.js";
-
-type BinanceExchangeInfoCacheProvider = {
-  getExchangeInfo(): BinanceExchangeInfo | undefined;
-  setExchangeInfo(arg: BinanceExchangeInfo): void;
-};
-
-type BinanceIsValidSymbolCacheProvider = {
-  getIsValidSymbol(symbol: string): boolean | undefined;
-  setIsValidSymbol(symbol: string, value: boolean): void;
-};
-
-type BinanceKlineCacheProvider = {
-  getKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    timeInterval: TimeInterval
-  ): BinanceKline[] | undefined;
-  setKlines(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    klines: BinanceKline[]
-  ): void;
-};
-
-export type BinanceCacheProvider = BinanceExchangeInfoCacheProvider &
-  BinanceIsValidSymbolCacheProvider &
-  BinanceKlineCacheProvider;
 
 // `isValidSymbolMap` and `exchangeInfoMap` are cached with same duration.
 const exchangeInfoCacheDuration = "ONE_DAY";

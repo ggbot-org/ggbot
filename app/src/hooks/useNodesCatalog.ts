@@ -2,7 +2,7 @@ import { getDflowBinanceNodesCatalog } from "@ggbot2/dflow";
 import { StrategyKey } from "@ggbot2/models";
 import { DflowNodesCatalog } from "dflow";
 
-import { useBinanceSymbols } from "./useBinanceSymbols.js";
+import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 
 export type UseNodesCatalogArg = Partial<Pick<StrategyKey, "strategyKind">>;
 

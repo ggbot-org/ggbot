@@ -1,5 +1,6 @@
 export * from "./apiKeyPermissions.js";
-export * from "./cache.js";
+export * from "./cacheMap.js";
+export * from "./cacheProvider.js";
 export * from "./connector.js";
 export * from "./endpoints.js";
 export * from "./errors.js";

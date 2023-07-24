@@ -1,9 +1,11 @@
+// TODO use type-utils
 import { isDecimal } from "@ggbot2/arithmetic";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 
 import {
   BinanceApiKeyPermission,
   BinanceBalance,
+  BinanceExchangeInfo,
   BinanceFill,
   BinanceKline,
   BinanceKlineInterval,
@@ -56,6 +58,22 @@ export const isBinanceBalance = (arg: unknown): arg is BinanceBalance => {
   if (typeof arg !== "object" || arg === null) return false;
   const { asset, free, locked } = arg as Partial<BinanceBalance>;
   return typeof asset === "string" && isDecimal(free) && isDecimal(locked);
+};
+
+export const isBinanceExchangeInfo = (
+  arg: unknown
+): arg is BinanceExchangeInfo => {
+  if (typeof arg !== "object" || arg === null) return false;
+  const { timezone, serverTime, symbols, rateLimits } =
+    arg as Partial<BinanceExchangeInfo>;
+  if (typeof timezone !== "string") return false;
+  if (typeof serverTime !== "number") return false;
+  // TODO better check for
+  // symbols: BinanceSymbolInfo[];
+  // rateLimits: BinanceRateLimitInfo[];
+  if (!Array.isArray(symbols)) return false;
+  if (!Array.isArray(rateLimits)) return false;
+  return true;
 };
 
 export const isBinanceFill = (arg: unknown): arg is BinanceFill => {
