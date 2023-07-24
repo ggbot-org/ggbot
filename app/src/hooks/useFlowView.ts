@@ -28,6 +28,11 @@ import {
 } from "react";
 
 import { BinanceDflowClient } from "../flow/binance.js";
+import {
+  FlowViewNodeInfo,
+  FlowViewNodeJson,
+  FlowViewNodePercentage,
+} from "../flow/nodes/index.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 import {
   useNodesCatalog,
@@ -96,10 +101,6 @@ export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
   const importFlowView = useCallback(async () => {
     if (!containerRef.current) return;
     if (!nodesCatalog || !dflow) return;
-    const { FlowView } = await import("flow-view");
-    const { FlowViewNodeInfo, FlowViewNodeJson, FlowViewNodePercentage } =
-      // TODO remove dynamic import
-      await import("../flow/nodes/index.js");
     const flowView = new FlowView(containerRef.current);
     flowView.addNodeClass(
       FlowViewNodeInfo.type,
