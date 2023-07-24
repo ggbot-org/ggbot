@@ -31,11 +31,11 @@ export const newStrategy = ({
   kind,
   name,
 }: NewItem<Strategy>): Strategy => ({
-  ...createdNow(),
-  id: newId(),
   accountId,
+  id: newId(),
   kind,
   name: normalizeName(name),
+  ...createdNow(),
 });
 
 export type StrategyKey = Readonly<{

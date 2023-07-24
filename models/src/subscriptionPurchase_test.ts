@@ -26,10 +26,10 @@ describe("isSubscriptionPurchase", () => {
     [
       {
         input: newMonthlySubscription({
-          plan,
-          paymentProvider,
-          startDay,
           numMonths: 2,
+          paymentProvider,
+          plan,
+          startDay,
         }),
         output: true,
       },
@@ -44,8 +44,8 @@ describe("isSubscriptionPurchase", () => {
       {
         input: {
           id: nullId,
-          plan,
           paymentProvider,
+          plan,
           status: "completed",
           whenCreated,
           ...dayInterval,
@@ -55,36 +55,36 @@ describe("isSubscriptionPurchase", () => {
       {
         input: {
           id: nullId,
-          plan,
-          paymentProvider,
-          whenCreated,
-          status: "completed",
-          ...dayInterval,
           info: {
             uuid: "xxx",
           },
+          paymentProvider,
+          plan,
+          status: "completed",
+          whenCreated,
+          ...dayInterval,
         },
         output: true,
       },
       {
         input: {
           id: nullId,
-          plan,
-          paymentProvider,
-          whenCreated,
-          status: "completed",
-          ...dayInterval,
           info: "not an object",
+          paymentProvider,
+          plan,
+          status: "completed",
+          whenCreated,
+          ...dayInterval,
         },
         output: false,
       },
       {
         input: {
           id: nullId,
+          paymentProvider,
           plan: "not an plan",
           status: "completed",
           whenCreated,
-          paymentProvider,
           ...dayInterval,
         },
         output: false,
@@ -92,10 +92,10 @@ describe("isSubscriptionPurchase", () => {
       {
         input: {
           id: nullId,
+          paymentProvider,
           plan,
           status: "not a status",
           whenCreated,
-          paymentProvider,
           ...dayInterval,
         },
         output: false,
@@ -103,10 +103,10 @@ describe("isSubscriptionPurchase", () => {
       {
         input: {
           id: nullId,
+          paymentProvider,
           plan,
           status: "completed",
           whenCreated: "not a timestamp",
-          paymentProvider,
           ...dayInterval,
         },
         output: false,
@@ -114,10 +114,10 @@ describe("isSubscriptionPurchase", () => {
       {
         input: {
           id: nullId,
+          paymentProvider: "not a paymentProvider",
           plan,
           status: "completed",
           whenCreated,
-          paymentProvider: "not a paymentProvider",
           ...dayInterval,
         },
         output: false,

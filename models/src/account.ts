@@ -51,9 +51,9 @@ export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
   isItemId(accountId)
 );
 
-export type AccountKeys = AccountKey[]
+export type AccountKeys = AccountKey[];
 
-export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey)
+export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey);
 
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 

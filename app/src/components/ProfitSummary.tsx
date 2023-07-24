@@ -118,24 +118,24 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
               baseQuantity: isBuy
                 ? add(baseQuantity, baseQty)
                 : sub(baseQuantity, baseQty),
-              quoteQuantity: isBuy
-                ? sub(quoteQuantity, quoteQty)
-                : add(quoteQuantity, quoteQty),
-              minPrice:
-                decimalToNumber(price) < decimalToNumber(minPrice)
-                  ? price
-                  : minPrice,
               maxPrice:
                 decimalToNumber(price) > decimalToNumber(maxPrice)
                   ? price
                   : maxPrice,
+              minPrice:
+                decimalToNumber(price) < decimalToNumber(minPrice)
+                  ? price
+                  : minPrice,
+              quoteQuantity: isBuy
+                ? sub(quoteQuantity, quoteQty)
+                : add(quoteQuantity, quoteQty),
             });
           } else {
             symbolStats.set(symbol, {
               baseQuantity: isBuy ? add(0, baseQty) : sub(0, baseQty),
-              quoteQuantity: isBuy ? sub(0, quoteQty) : add(0, quoteQty),
-              minPrice: price,
               maxPrice: price,
+              minPrice: price,
+              quoteQuantity: isBuy ? sub(0, quoteQty) : add(0, quoteQty),
             });
           }
         }
@@ -185,12 +185,12 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
 
       {Array.from(
         symbolStats,
-        ([symbol, { minPrice, maxPrice, baseQuantity, quoteQuantity }]) => ({
-          symbol,
-          minPrice,
-          maxPrice,
+        ([symbol, { baseQuantity, maxPrice, minPrice, quoteQuantity }]) => ({
           baseQuantity,
+          maxPrice,
+          minPrice,
           quoteQuantity,
+          symbol,
         })
       )
         .map(({ symbol, ...rest }) => {

@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { BinanceOrderRespFULL } from "@ggbot2/binance";
 
 export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {

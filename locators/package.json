@@ -25,9 +25,6 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
-    ],
-    "rules": {
-      "sort-keys": "error"
-    }
+    ]
   }
 }

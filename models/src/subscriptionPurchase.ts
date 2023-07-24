@@ -101,8 +101,8 @@ export const newMonthlySubscription = ({
   const dayInterval = { start: startDay, end: endDay };
   return {
     id: newId(),
-    plan,
     paymentProvider,
+    plan,
     status: "pending",
     ...createdNow(),
     ...dayInterval,
@@ -125,8 +125,8 @@ export const newYearlySubscription = ({
   const dayInterval = { start: startDay, end: endDay };
   return {
     id: newId(),
-    plan,
     paymentProvider,
+    plan,
     status: "pending",
     ...createdNow(),
     ...dayInterval,

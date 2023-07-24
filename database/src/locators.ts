@@ -330,8 +330,8 @@ export const dirname = {
 
 const filename = {
   account: "account.json",
-  accountStrategies: "strategies.json",
   accountDailyOrders: "orders.json",
+  accountStrategies: "strategies.json",
   binanceApiConfig: "binance.json",
   emailAccount: "email.json",
   oneTimePassword: "otp.json",
@@ -349,10 +349,10 @@ const filename = {
 export const pathname = {
   account: (arg: AccountKey) =>
     dirJoin([dirname.account(arg), filename.account]),
-  accountStrategies: (arg: AccountKey) =>
-    dirJoin([dirname.accountStrategies(arg), filename.accountStrategies]),
   accountDailyOrders: (arg: AccountDailyOrdersKey) =>
     dirJoin([dirname.accountDailyOrders(arg), filename.accountDailyOrders]),
+  accountStrategies: (arg: AccountKey) =>
+    dirJoin([dirname.accountStrategies(arg), filename.accountStrategies]),
   binanceApiConfig: (arg: AccountKey) =>
     dirJoin([dirname.accountConfig(arg), filename.binanceApiConfig]),
   emailAccount: (arg: EmailAddress) =>

@@ -18,11 +18,11 @@ export const href = {
     return `/${editStrategyFlowHtmlFilename}?${searchParams}`;
   },
   homePage: () => "/",
-  settingsPage: (id: SettingsPageId) => `/${settingsHtmlFilename(id)}`,
   manageStrategyPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${manageStrategyHtmlFilename}?${searchParams}`;
   },
+  settingsPage: (id: SettingsPageId) => `/${settingsHtmlFilename(id)}`,
   viewFlowPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${viewStrategyFlowHtmlFilename}?${searchParams}`;

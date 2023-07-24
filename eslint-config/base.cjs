@@ -57,6 +57,16 @@ module.exports = {
     "prettier/prettier": "error",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        allowLineSeparatedGroups: true,
+        caseSensitive: true,
+        minKeys: 7,
+        natural: true,
+      },
+    ],
     "tsdoc/syntax": "error",
   },
 };

@@ -22,8 +22,6 @@ module.exports = {
     "jsx-a11y/aria-proptypes": "error",
     "jsx-a11y/aria-unsupported-elements": "error",
     "jsx-a11y/role-has-required-aria-props": "error",
-    "react-hooks/exhaustive-deps": "error",
-    "react-hooks/rules-of-hooks": "error",
     "react/display-name": "error",
     "react/hook-use-state": ["error", { allowDestructuredState: true }],
     "react/jsx-boolean-value": "error",
@@ -45,6 +43,8 @@ module.exports = {
     "react/no-deprecated": "error",
     "react/prop-types": "off",
     "react/self-closing-comp": ["error", { component: true, html: true }],
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
   },
   settings: {
     react: {

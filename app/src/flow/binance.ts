@@ -84,18 +84,18 @@ export class BinanceDflowClient implements IBinanceDflowClient {
 
   async account() {
     const accountInfo: BinanceAccountInformation = {
-      makerCommission: 15,
-      takerCommission: 15,
-      buyerCommission: 0,
-      sellerCommission: 0,
-      canTrade: true,
-      canWithdraw: true,
-      canDeposit: true,
-      brokered: false,
-      updateTime: 0,
       accountType: "SPOT",
       balances: this.balances,
+      brokered: false,
+      buyerCommission: 0,
+      canDeposit: true,
+      canTrade: true,
+      canWithdraw: true,
+      makerCommission: 15,
       permissions: ["SPOT"],
+      sellerCommission: 0,
+      takerCommission: 15,
+      updateTime: 0,
     };
     return Promise.resolve(accountInfo);
   }
@@ -138,25 +138,26 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     }
 
     const order: BinanceOrderRespFULL = {
-      symbol,
+      clientOrderId: "",
+      cummulativeQuoteQty: zero,
+      executedQty: quantity,
       orderId: -1,
       orderListId: -1,
-      clientOrderId: "",
-      transactTime: 0,
-      price,
       origQty: quantity,
-      executedQty: quantity,
-      cummulativeQuoteQty: zero,
-      status: "FILLED",
-      timeInForce: "GTC",
-      type,
+      price,
       side,
+      status: "FILLED",
+      symbol,
+      timeInForce: "GTC",
+      transactTime: 0,
+      type,
+
       fills: [
         {
-          price,
-          qty: quantity,
           commission: zero,
           commissionAsset: "BNB",
+          price,
+          qty: quantity,
           tradeId: -1,
         },
       ],
@@ -184,8 +185,8 @@ export class BinanceDflowClient implements IBinanceDflowClient {
       symbol,
       dflowBinanceLowerKlineInterval,
       {
-        startTime: time,
         limit: 1,
+        startTime: time,
       }
     );
     const price = klines[0][4];

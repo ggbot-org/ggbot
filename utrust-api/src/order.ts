@@ -88,15 +88,15 @@ export const handler = async (
           numMonths >= maxNumMonths - 1
             ? await createYearlySubscriptionPurchase({
                 accountId,
-                plan,
                 paymentProvider,
+                plan,
                 startDay,
               })
             : await createMonthlySubscriptionPurchase({
                 accountId,
-                plan,
-                paymentProvider,
                 numMonths,
+                paymentProvider,
+                plan,
                 startDay,
               });
 
@@ -106,31 +106,31 @@ export const handler = async (
         const order: Order = {
           reference,
           amount: {
-            total: totalStr,
             currency: monthlyPriceCurrency,
+            total: totalStr,
           },
           return_urls: {
             callback_url: callbackUrl.toString(),
-            return_url: returnUrl.toString(),
             cancel_url: cancelUrl.toString(),
+            return_url: returnUrl.toString(),
           },
           line_items: [
             {
-              sku: plan,
+              currency: monthlyPriceCurrency,
               // TODO translate this, needs lang param
               name: `Subscription (${
                 numMonths >= maxNumMonths - 1 ? "1 year" : `${numMonths} months`
               })`,
               price: totalStr,
-              currency: monthlyPriceCurrency,
               quantity: 1,
+              sku: plan,
             },
           ],
         };
 
         const customer: Customer = {
-          email,
           country,
+          email,
         };
 
         const { data } = await createOrder(order, customer);

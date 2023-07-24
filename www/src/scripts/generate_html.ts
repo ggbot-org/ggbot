@@ -14,8 +14,8 @@ const html = (scriptJs: string) =>
   htmlPageContent({
     hasRootDiv: true,
     meta: { title: "ggbot2" },
-    stylesheets: [{ href: "main.css" }],
     scripts: [{ src: scriptJs }],
+    stylesheets: [{ href: "main.css" }],
   });
 
 export const generateHtml = async () => {

@@ -1,5 +1,5 @@
+import { ENV } from "@ggbot2/env";
 import { build, BuildOptions } from "esbuild";
-import {ENV} from '@ggbot2/env'
 
 /**
  * Generate bundle for web apps.
@@ -23,11 +23,11 @@ export const browserBundle = async ({
   entryPoints,
   outfile,
 }: Pick<BuildOptions, "entryPoints" | "outfile">) => {
-  const {DEPLOY_STAGE} = ENV
+  const { DEPLOY_STAGE } = ENV;
 
   build({
     bundle: true,
-    minify: DEPLOY_STAGE!=='local',
+    minify: DEPLOY_STAGE !== "local",
     entryPoints,
     outfile,
     platform: "browser",

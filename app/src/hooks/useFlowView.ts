@@ -147,7 +147,12 @@ export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
                 dflow.newNode({
                   id,
                   kind: "data",
-                  outputs: [{ id: outputId, data: JSON.parse(text) }],
+                  outputs: [
+                    {
+                      data: JSON.parse(text),
+                      id: outputId,
+                    },
+                  ],
                 });
                 break;
               }
@@ -156,7 +161,12 @@ export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
                 dflow.newNode({
                   id,
                   kind: "data",
-                  outputs: [{ id: outputId, data: parsePercentage(text) }],
+                  outputs: [
+                    {
+                      data: parsePercentage(text),
+                      id: outputId,
+                    },
+                  ],
                 });
                 break;
               }
@@ -165,6 +175,7 @@ export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
                 const node = dflow.newNode({
                   id,
                   kind,
+
                   inputs: ins?.map(({ id }) => ({ id })),
                   outputs: outs?.map(({ id }) => ({ id })),
                 });

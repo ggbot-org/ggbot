@@ -29,7 +29,7 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     (frequency) => {
       setFrequencyArg(frequency);
       if (isFrequency(frequency))
-        dispatch({ type: "SET_FREQUENCY", frequency });
+        dispatch({ type: "SET_FREQUENCY", data: { frequency } });
     },
     [dispatch]
   );
@@ -40,7 +40,9 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
       if (!endDay) return;
       dispatch({
         type: "SET_INTERVAL",
-        dayInterval: { start: day, end: endDay },
+        data: {
+          dayInterval: { start: day, end: endDay },
+        },
       });
     },
     [dispatch, state?.dayInterval.end]
@@ -60,12 +62,12 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
     if (!state)
       return {
         currentTimestamp: undefined,
+        dayInterval: undefined,
         isPaused: false,
         isRunning: false,
+        maxDay: undefined,
         memoryItems: [],
         noMemory: true,
-        maxDay: undefined,
-        dayInterval: undefined,
         numSteps: undefined,
         orders: [],
         stepIndex: undefined,
@@ -91,11 +93,11 @@ export const BacktestController: FC<Props> = ({ state, dispatch }) => {
 
     return {
       currentTimestamp,
+      dayInterval,
       isPaused,
       isRunning,
       maxDay,
       memoryItems,
-      dayInterval,
       numSteps,
       orders,
       stepIndex,

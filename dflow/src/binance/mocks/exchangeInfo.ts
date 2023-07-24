@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { BinanceExchangeInfo } from "@ggbot2/binance";
 
 export const exchangeInfo: BinanceExchangeInfo = {

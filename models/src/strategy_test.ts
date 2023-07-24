@@ -19,20 +19,30 @@ describe("isStrategy", () => {
         output: true,
       },
       {
-        input: { id: "not an id", kind, accountId, name, whenCreated },
+        input: {
+          accountId,
+          id: "not an id",
+          kind,
+          name,
+          whenCreated,
+        },
         output: false,
       },
       {
-        input: { id: nullId, accountId, whenCreated: "not a timestamp" },
+        input: {
+          accountId,
+          id: nullId,
+          whenCreated: "not a timestamp",
+        },
         output: false,
       },
       ...invalidNames.map((invalidName) => ({
         input: {
+          accountId,
           id: nullId,
           kind,
-          accountId,
-          whenCreated,
           name: normalizeName(invalidName),
+          whenCreated,
         },
         output: false,
       })),

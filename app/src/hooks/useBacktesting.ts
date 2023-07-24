@@ -61,23 +61,27 @@ type Action =
   | {
       type: "END";
     }
-  | ({
+  | {
       type: "NEXT";
-      balanceChangeEvent?: BalanceChangeEvent;
-      orders: Order[];
-    } & Pick<State, "memory">)
+      data: {
+        balanceChangeEvent?: BalanceChangeEvent;
+        orders: Order[];
+      } & Pick<State, "memory">;
+    }
   | {
       type: "PAUSE";
     }
   | {
       type: "RESUME";
     }
-  | ({
+  | {
       type: "SET_FREQUENCY";
-    } & Pick<State, "frequency">)
-  | ({
+      data: Pick<State, "frequency">;
+    }
+  | {
       type: "SET_INTERVAL";
-    } & Pick<State, "dayInterval">)
+      data: Pick<State, "dayInterval">;
+    }
   | {
       type: "START";
     };
@@ -95,13 +99,14 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "NEXT": {
+      const { balanceChangeEvent, memory, orders } = action.data;
       return {
         ...state,
-        balanceHistory: action.balanceChangeEvent
-          ? state.balanceHistory.concat(action.balanceChangeEvent)
+        balanceHistory: balanceChangeEvent
+          ? state.balanceHistory.concat(balanceChangeEvent)
           : state.balanceHistory,
-        memory: action.memory,
-        orders: state.orders.concat(action.orders),
+        memory: memory,
+        orders: state.orders.concat(orders),
         stepIndex: state.stepIndex + 1,
       };
     }
@@ -126,23 +131,25 @@ const backtestingReducer = (state: State, action: Action) => {
 
     case "SET_FREQUENCY": {
       if (state.isPaused || state.isRunning) return state;
+      const { frequency } = action.data;
       return {
         ...state,
-        frequency: action.frequency,
+        frequency,
         timestamps: computeTimestamps({
           dayInterval: state.dayInterval,
-          frequency: action.frequency,
+          frequency,
         }),
       };
     }
 
     case "SET_INTERVAL": {
       if (state.isPaused || state.isRunning) return state;
+      const { dayInterval } = action.data;
       return {
         ...state,
-        dayInterval: action.dayInterval,
+        dayInterval,
         timestamps: computeTimestamps({
-          dayInterval: action.dayInterval,
+          dayInterval,
           frequency: state.frequency,
         }),
       };
@@ -190,11 +197,11 @@ const getInitialState = (): State => {
     frequency,
     isPaused: false,
     isRunning: false,
+    maxDay,
     memory: {},
     orders: [],
     stepIndex: 0,
     timestamps: computeTimestamps({ dayInterval, frequency }),
-    maxDay,
   };
 };
 
@@ -250,14 +257,16 @@ export const useBacktesting: UseBacktesting = ({
           balances.length === 0
             ? undefined
             : {
-                whenCreated: time,
                 balances,
+                whenCreated: time,
               };
         dispatch({
           type: "NEXT",
-          balanceChangeEvent,
-          memory,
-          orders: orders.map(({ info }) => newOrder({ info })),
+          data: {
+            balanceChangeEvent,
+            memory,
+            orders: orders.map(({ info }) => newOrder({ info })),
+          },
         });
       } catch (error) {
         console.error(error);

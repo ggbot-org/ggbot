@@ -59,7 +59,7 @@ type UseActionOutput<
  * export const FooBar = useAction<ApiAction["FooBar"], ApiActionType>(
  *   endpoint,
  *   { type: "FooBar" }
- * )
+ * );
  * ```
  *
  * Then call it in a `useEffect`.
@@ -94,7 +94,7 @@ export const useAction = <
   const request = useCallback<UseActionRequest<Action["in"]>>(
     (inputData) => {
       (async function () {
-      const controller = new UseActionAbortController();
+        const controller = new UseActionAbortController();
 
         try {
           const options: RequestInit = {
@@ -170,12 +170,12 @@ export const useAction = <
 
   return {
     canRun,
-    request,
-    hasError,
     data,
     error,
-    isPending,
+    hasError,
     isDone,
+    isPending,
+    request,
     reset,
   };
 };

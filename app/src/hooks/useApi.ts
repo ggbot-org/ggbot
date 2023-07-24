@@ -1,4 +1,3 @@
-/* eslint sort-keys: "error" */
 import {
   PublicApiAction,
   PublicApiActionType,

@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { decimalToNumber } from "@ggbot2/arithmetic";
 import {
   BinanceKline,
