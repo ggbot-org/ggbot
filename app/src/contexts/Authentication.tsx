@@ -15,6 +15,7 @@ import {
 } from "react";
 
 import { AuthEnter, AuthEnterProps } from "../components/AuthEnter.js";
+import { AuthExit, AuthExitProps } from "../components/AuthExit.js";
 import { AuthVerify, AuthVerifyProps } from "../components/AuthVerify.js";
 import {
   SplashScreen,
@@ -24,6 +25,7 @@ import { useApi } from "../hooks/useApi.js";
 
 type State = {
   email: EmailAddress | undefined;
+  exitIsActive: boolean;
   jwt: NonEmptyString | undefined;
   showSplashScreen: boolean;
   verified?: boolean | undefined;
@@ -32,10 +34,12 @@ type State = {
 
 type ContextValue = {
   account?: Account | null | undefined;
+  openExitModal: () => void;
   exit: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
+  openExitModal: () => {},
   exit: () => {},
 });
 
@@ -44,12 +48,16 @@ AuthenticationContext.displayName = "AuthenticationContext";
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   const isFirstPageView = !sessionWebStorage.gotFirstPageView;
 
-  const [{ email, showSplashScreen, jwt, startSession }, dispatch] = useReducer<
+  const [
+    { email, exitIsActive, showSplashScreen, jwt, startSession },
+    dispatch,
+  ] = useReducer<
     Reducer<
       State,
       | { type: "HIDE_SPLASH_SCREEN" }
       | { type: "EXIT" }
       | { type: "SET_EMAIL"; data: Pick<State, "email"> }
+      | { type: "SET_EXIT_IS_ACTIVE"; data: Pick<State, "exitIsActive"> }
       | { type: "SET_JWT"; data: Pick<State, "jwt"> }
     >
   >(
@@ -72,6 +80,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
           return { ...state, email };
         }
 
+        case "SET_EXIT_IS_ACTIVE": {
+          const { exitIsActive } = action.data;
+          return { ...state, exitIsActive };
+        }
+
         case "SET_JWT": {
           const { jwt } = action.data;
           localWebStorage.jwt = jwt;
@@ -84,6 +97,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     {
       email: sessionWebStorage.email,
+      exitIsActive: false,
       jwt: localWebStorage.jwt,
       showSplashScreen: isFirstPageView,
       startSession: now(),
@@ -108,14 +122,25 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "SET_EMAIL", data: { email } });
   }, []);
 
-  const exit = useCallback(() => {
-    dispatch({ type: "EXIT" });
-  }, []);
+  const setExitIsActive = useCallback<AuthExitProps["setIsActive"]>(
+    (exitIsActive) => {
+      dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive } });
+    },
+    []
+  );
 
-  const contextValue = useMemo<ContextValue>(() => {
-    if (account === null || isAccount(account)) return { account, exit };
-    return { exit };
-  }, [account, exit]);
+  const contextValue = useMemo<ContextValue>(
+    () => ({
+      account: account === null || isAccount(account) ? account : undefined,
+      exit: () => {
+        dispatch({ type: "EXIT" });
+      },
+      openExitModal: () => {
+        dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
+      },
+    }),
+    [account]
+  );
 
   useEffect(() => {
     if (READ.canRun) READ.request();
@@ -161,6 +186,8 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <AuthenticationContext.Provider value={contextValue}>
       {children}
+
+      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
     </AuthenticationContext.Provider>
   );
 };

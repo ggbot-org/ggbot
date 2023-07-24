@@ -1,21 +1,15 @@
-import {
-  Dispatch,
-  FC,
-  PropsWithChildren,
-  SetStateAction,
-  useCallback,
-} from "react";
+import { FC, PropsWithChildren, useCallback } from "react";
 import {
   Modal as _Modal,
   ModalBackground,
   ModalClose,
   ModalContent,
-  ModalProps as _ModalProps,
 } from "trunx";
 
-export type ModalProps = Pick<_ModalProps, "isActive"> & {
-  setIsActive?: Dispatch<SetStateAction<boolean>> | undefined;
-};
+export type ModalProps = Partial<{
+  isActive: boolean;
+  setIsActive: (arg: boolean) => void;
+}>;
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   children,

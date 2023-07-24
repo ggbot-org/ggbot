@@ -8,9 +8,9 @@ import {
   NavbarProps,
   NavbarStart,
 } from "@ggbot2/design";
-import { FC, memo, useCallback, useState } from "react";
+import { FC, memo, useCallback, useContext } from "react";
 
-import { AuthExit } from "../components/AuthExit.js";
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { navigationLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
@@ -18,7 +18,7 @@ import { SettingsPageId } from "../routing/types.js";
 type Props = Pick<NavbarProps, "noMenu">;
 
 export const Navigation: FC<Props> = memo(({ noMenu }) => {
-  const [exitIsActive, setExitIsActive] = useState(false);
+  const { openExitModal } = useContext(AuthenticationContext);
 
   const goToHomePage = () => {
     if (window.location.href !== href.homePage())
@@ -26,8 +26,8 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
   };
 
   const onClickExit = useCallback(() => {
-    setExitIsActive(true);
-  }, []);
+    openExitModal();
+  }, [openExitModal]);
 
   const goToSettings = useCallback(
     (settingsPage: SettingsPageId) => () => {
@@ -40,39 +40,35 @@ export const Navigation: FC<Props> = memo(({ noMenu }) => {
     <Navbar noMenu={noMenu}>
       {noMenu || (
         <>
-          <>
-            <NavbarStart>
-              <NavbarItemAnchor onClick={goToHomePage}>
-                {navigationLabel.strategies}
-              </NavbarItemAnchor>
+          <NavbarStart>
+            <NavbarItemAnchor onClick={goToHomePage}>
+              {navigationLabel.strategies}
+            </NavbarItemAnchor>
 
-              <NavbarItem hasDropdown isHoverable>
-                <NavbarLink>{navigationLabel.settings}</NavbarLink>
+            <NavbarItem hasDropdown isHoverable>
+              <NavbarLink>{navigationLabel.settings}</NavbarLink>
 
-                <NavbarDropdown>
-                  <NavbarItemAnchor onClick={goToSettings("account")}>
-                    {navigationLabel.account}
-                  </NavbarItemAnchor>
+              <NavbarDropdown>
+                <NavbarItemAnchor onClick={goToSettings("account")}>
+                  {navigationLabel.account}
+                </NavbarItemAnchor>
 
-                  <NavbarItemAnchor onClick={goToSettings("binance")}>
-                    {navigationLabel.binance}
-                  </NavbarItemAnchor>
+                <NavbarItemAnchor onClick={goToSettings("binance")}>
+                  {navigationLabel.binance}
+                </NavbarItemAnchor>
 
-                  <NavbarItemAnchor onClick={goToSettings("billing")}>
-                    {navigationLabel.billing}
-                  </NavbarItemAnchor>
-                </NavbarDropdown>
-              </NavbarItem>
-            </NavbarStart>
+                <NavbarItemAnchor onClick={goToSettings("billing")}>
+                  {navigationLabel.billing}
+                </NavbarItemAnchor>
+              </NavbarDropdown>
+            </NavbarItem>
+          </NavbarStart>
 
-            <NavbarEnd>
-              <NavbarItemAnchor onClick={onClickExit}>
-                {navigationLabel.exit}
-              </NavbarItemAnchor>
-            </NavbarEnd>
-          </>
-
-          <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+          <NavbarEnd>
+            <NavbarItemAnchor onClick={onClickExit}>
+              {navigationLabel.exit}
+            </NavbarItemAnchor>
+          </NavbarEnd>
         </>
       )}
     </Navbar>

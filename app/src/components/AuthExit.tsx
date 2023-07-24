@@ -5,7 +5,6 @@ import {
   Form,
   FormOnSubmit,
   Modal,
-  ModalProps,
   OutputField,
   Title,
 } from "@ggbot2/design";
@@ -15,9 +14,10 @@ import { useIntl } from "react-intl";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { buttonLabel, title } from "../i18n/index.js";
 
-export type AuthExitProps = Required<
-  Pick<ModalProps, "isActive" | "setIsActive">
->;
+export type AuthExitProps = {
+  isActive: boolean;
+  setIsActive: (arg: boolean) => void;
+};
 
 export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
   const { formatMessage } = useIntl();
