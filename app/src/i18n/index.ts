@@ -7,5 +7,4 @@ export * from "./miscellaneous.js";
 export * from "./navigation.js";
 export * from "./schedulingStatusLabel.js";
 export * from "./subscriptionStatusLabel.js";
-export * from "./tabs.js";
 export * from "./titles.js";

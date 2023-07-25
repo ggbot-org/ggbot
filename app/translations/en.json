@@ -133,5 +133,11 @@
   },
   "fieldLabel.whenCreated": {
     "defaultMessage": "When created"
+  },
+  "tabLabel.backtest": {
+    "defaultMessage": "Backtest"
+  },
+  "tabLabel.flow": {
+    "defaultMessage": "Flow"
   }
 }
