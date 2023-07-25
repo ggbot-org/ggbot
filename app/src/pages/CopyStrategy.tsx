@@ -1,3 +1,4 @@
+import { ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
@@ -10,9 +11,11 @@ export const CopyStrategyPage: FC = () => (
   <I18nContextProvider>
     <AuthenticationProvider>
       <StrategyProvider>
-        <OneSectionLayout>
-          <CopyStrategy />
-        </OneSectionLayout>
+        <ToastContextProvider>
+          <OneSectionLayout>
+            <CopyStrategy />
+          </OneSectionLayout>
+        </ToastContextProvider>
       </StrategyProvider>
     </AuthenticationProvider>
   </I18nContextProvider>

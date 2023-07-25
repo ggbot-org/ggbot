@@ -1,4 +1,4 @@
-import { Column, Columns } from "@ggbot2/design";
+import { Column, Columns, ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { BinanceApiConfig } from "@ggbot2/models";
 import { isMaybeObject } from "@ggbot2/type-utils";
@@ -40,19 +40,21 @@ export const BinanceSettingsPage: FC = () => {
   return (
     <I18nContextProvider>
       <AuthenticationProvider>
-        <OneSectionLayout>
-          <Columns>
-            <Column size="half">
-              {apiKey ? (
-                <BinanceApi apiKey={apiKey} />
-              ) : (
-                <CreateBinanceApi onCreate={refetchApiKey} />
-              )}
-            </Column>
-          </Columns>
+        <ToastContextProvider>
+          <OneSectionLayout>
+            <Columns>
+              <Column size="half">
+                {apiKey ? (
+                  <BinanceApi apiKey={apiKey} />
+                ) : (
+                  <CreateBinanceApi onCreate={refetchApiKey} />
+                )}
+              </Column>
+            </Columns>
 
-          {apiKey ? <DeleteBinanceApi onDelete={refetchApiKey} /> : null}
-        </OneSectionLayout>
+            {apiKey ? <DeleteBinanceApi onDelete={refetchApiKey} /> : null}
+          </OneSectionLayout>
+        </ToastContextProvider>
       </AuthenticationProvider>
     </I18nContextProvider>
   );

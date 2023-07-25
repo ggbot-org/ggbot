@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-import { _classNames } from "./_classNames.js";
-import { InputField, InputFieldProps } from "./InputField.js";
+import { _classNames } from "../components/_classNames.js";
+import { InputField, InputFieldProps } from "../components/InputField.js";
 
 export type OutputFieldClassNames = "OutputField";
 

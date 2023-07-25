@@ -5,7 +5,7 @@ import {
   PropsWithChildren,
 } from "react";
 
-import { _classNames } from "./_classNames.js";
+import { _classNames } from "../components/_classNames.js";
 
 export type FormProps = FormHTMLAttributes<HTMLFormElement>;
 

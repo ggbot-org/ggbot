@@ -1,3 +1,4 @@
+import { ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
@@ -10,9 +11,11 @@ export const EditStrategyFlowPage: FC = () => (
   <I18nContextProvider>
     <AuthenticationProvider>
       <StrategyProvider>
-        <PageLayout>
-          <EditStrategyFlow />
-        </PageLayout>
+        <ToastContextProvider>
+          <PageLayout>
+            <EditStrategyFlow />
+          </PageLayout>
+        </ToastContextProvider>
       </StrategyProvider>
     </AuthenticationProvider>
   </I18nContextProvider>

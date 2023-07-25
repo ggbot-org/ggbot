@@ -1,4 +1,4 @@
-import { Column, Columns } from "@ggbot2/design";
+import { Column, Columns, ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
@@ -10,17 +10,19 @@ import { OneSectionLayout } from "../layouts/OneSection.js";
 export const BillingSettingsPage: FC = () => (
   <I18nContextProvider>
     <AuthenticationProvider>
-      <OneSectionLayout>
-        <Columns>
-          <Column>
-            <SubscriptionInfo />
-          </Column>
+      <ToastContextProvider>
+        <OneSectionLayout>
+          <Columns>
+            <Column>
+              <SubscriptionInfo />
+            </Column>
 
-          <Column>
-            <SubscriptionPurchase />
-          </Column>
-        </Columns>
-      </OneSectionLayout>
+            <Column>
+              <SubscriptionPurchase />
+            </Column>
+          </Columns>
+        </OneSectionLayout>
+      </ToastContextProvider>
     </AuthenticationProvider>
   </I18nContextProvider>
 );

@@ -7,8 +7,8 @@ import {
 } from "@ggbot2/time";
 import { FC, MouseEventHandler, useCallback, useMemo, useState } from "react";
 
-import { _classNames } from "./_classNames.js";
-import { Icon } from "./Icon.js";
+import { _classNames } from "../components/_classNames.js";
+import { Icon } from "../components/Icon.js";
 
 export type CalendarClassNames =
   | "Calendar"

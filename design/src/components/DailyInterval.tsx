@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from "react";
 
-import { _classNames } from "./_classNames.js";
-import { DayDropdown, DayDropdownProps } from "./DayDropdown.js";
+import { _classNames } from "../components/_classNames.js";
+import { DayDropdown, DayDropdownProps } from "../components/DayDropdown.js";
 
 export type DailyIntervalClassNames = "DailyInterval";
 

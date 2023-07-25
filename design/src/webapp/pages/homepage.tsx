@@ -6,6 +6,7 @@ import {
   Navbar,
   Section,
   Title as _Title,
+  ToastContextProvider,
 } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC, PropsWithChildren } from "react";
@@ -18,6 +19,7 @@ import { Palette } from "../examples/Palette.js";
 import { SimpleTable } from "../examples/Tables.js";
 import { Tags } from "../examples/Tags.js";
 import { TimeIntervalSelectors } from "../examples/TimeIntervalSelectors.js";
+import { ToastExample } from "../examples/Toast.js";
 import { Typography } from "../examples/Typography.js";
 
 const Title: FC<PropsWithChildren> = ({ children }) => (
@@ -25,34 +27,28 @@ const Title: FC<PropsWithChildren> = ({ children }) => (
 );
 
 const Page: FC = () => (
-  <>
+  <ToastContextProvider>
     <Navbar />
 
     <main>
-      <Section>
-        <Container>
+      <Container>
+        <Section>
           <Logo size={71} />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Typography</Title>
 
           <Typography />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Palette</Title>
 
           <Palette />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Inputs</Title>
 
           <Columns>
@@ -60,11 +56,9 @@ const Page: FC = () => (
               <InputFields />
             </Column>
           </Columns>
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Forms</Title>
 
           <Columns>
@@ -72,52 +66,48 @@ const Page: FC = () => (
               <SimpleForm />
             </Column>
           </Columns>
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Buttons</Title>
 
           <ButtonColors />
 
           <LoadingButtons />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Time interval selectors</Title>
 
           <TimeIntervalSelectors />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Icons</Title>
 
           <Icons />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Tags</Title>
 
           <Tags />
-        </Container>
-      </Section>
+        </Section>
 
-      <Section>
-        <Container>
+        <Section>
           <Title>Tables</Title>
 
           <SimpleTable />
-        </Container>
-      </Section>
+        </Section>
+
+        <Section>
+          <Title>Toast</Title>
+
+          <ToastExample />
+        </Section>
+      </Container>
     </main>
-  </>
+  </ToastContextProvider>
 );
 
 mount(Page);

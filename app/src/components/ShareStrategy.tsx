@@ -1,43 +1,58 @@
-import { Button } from "@ggbot2/design";
-import { FC, useCallback, useContext } from "react";
+import { Button, useToast } from "@ggbot2/design";
+import { FC, useCallback, useContext, useMemo } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
-import { buttonLabel, errorMessage } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 export const ShareStrategy: FC = () => {
+  const { formatMessage } = useIntl();
+  const { toast } = useToast();
   const { strategyKey, strategyName } = useContext(StrategyContext);
+
+  const shareData = useMemo<
+    Pick<ShareData, "title" | "text" | "url"> | undefined
+  >(() => {
+    const title = "ggbot2";
+    if (!strategyKey) return;
+    const url = `${window.location.origin}${href.viewFlowPage(strategyKey)}`;
+    if (strategyName) {
+      return {
+        title,
+        url,
+        text: strategyName,
+      };
+    }
+    return {
+      title: "ggbot2",
+      url,
+    };
+  }, [strategyKey, strategyName]);
 
   const onClick = useCallback(async () => {
     try {
-      if (!strategyKey || strategyName) return;
-      const shareData = {
-        title: "ggbot2",
-        text: strategyName,
-        url: `${window.location.origin}${href.viewFlowPage(strategyKey)}`,
-      };
+      if (!shareData) return;
       if (
         "share" in navigator &&
         "canShare" in navigator &&
         navigator.canShare(shareData)
       ) {
         navigator.share(shareData);
-      } else if ("clipboard" in navigator) {
+      } else if ("clipboard" in navigator && shareData.url) {
         navigator.clipboard.writeText(shareData.url);
-        // TODO show feedback to user
-        console.info("Strategy link copied");
+        toast.info(formatMessage({ id: "ShareStrategy.copied" }));
       } else {
-        throw new Error("Could not share strategy");
+        toast.warning(formatMessage({ id: "ShareStrategy.error" }));
       }
-    } catch {
-      // TODO show error to user
-      console.error(errorMessage.couldNotShareStrategy);
+    } catch (error) {
+      console.error(error);
+      toast.warning(formatMessage({ id: "ShareStrategy.error" }));
     }
-  }, [strategyKey, strategyName]);
+  }, [shareData, toast, formatMessage]);
 
   return (
     <Button type="button" onClick={onClick}>
-      {buttonLabel.share}
+      <FormattedMessage id="ShareStrategy.buttonLabel" />
     </Button>
   );
 };

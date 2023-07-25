@@ -1,4 +1,4 @@
-import { Column, Columns, Section } from "@ggbot2/design";
+import { Column, Columns, Section, ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC, useState } from "react";
 
@@ -21,33 +21,35 @@ export const ManageStrategyPage: FC = () => {
     <I18nContextProvider>
       <AuthenticationProvider>
         <StrategyProvider>
-          <PageLayout>
-            {hasActiveSubscription === false && <PleasePurchase />}
+          <ToastContextProvider>
+            <PageLayout>
+              {hasActiveSubscription === false && <PleasePurchase />}
 
-            <Section>
-              <Columns>
-                <Column>
-                  <StrategyInfo />
-                </Column>
+              <Section>
+                <Columns>
+                  <Column>
+                    <StrategyInfo />
+                  </Column>
 
-                <Column>
-                  <Schedulings
-                    setHasActiveSubscription={setHasActiveSubscription}
-                  />
-                </Column>
-              </Columns>
+                  <Column>
+                    <Schedulings
+                      setHasActiveSubscription={setHasActiveSubscription}
+                    />
+                  </Column>
+                </Columns>
 
-              <Columns>
-                <Column>
-                  <StrategyProfits />
-                </Column>
-              </Columns>
-            </Section>
+                <Columns>
+                  <Column>
+                    <StrategyProfits />
+                  </Column>
+                </Columns>
+              </Section>
 
-            <Section>
-              <DeleteStrategy />
-            </Section>
-          </PageLayout>
+              <Section>
+                <DeleteStrategy />
+              </Section>
+            </PageLayout>
+          </ToastContextProvider>
         </StrategyProvider>
       </AuthenticationProvider>
     </I18nContextProvider>

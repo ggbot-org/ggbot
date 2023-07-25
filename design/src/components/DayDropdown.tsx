@@ -9,9 +9,9 @@ import {
   Label,
 } from "trunx";
 
+import { _classNames } from "../components/_classNames.js";
+import { Calendar, CalendarProps } from "../components/Calendar.js";
 import { useFormattedDate } from "../hooks/useFormattedDate.js";
-import { _classNames } from "./_classNames.js";
-import { Calendar, CalendarProps } from "./Calendar.js";
 
 export type DayDropdownProps = Required<
   Pick<DropdownProps, "isActive" | "onClick">

@@ -65,6 +65,15 @@
   "PleasePurchase.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
   },
+  "ShareStrategy.buttonLabel": {
+    "defaultMessage": "Share"
+  },
+  "ShareStrategy.copied": {
+    "defaultMessage": "Strategy link copied."
+  },
+  "ShareStrategy.error": {
+    "defaultMessage": "Could not share strategy. Please copy URL manually."
+  },
   "Strategies.noStrategy": {
     "defaultMessage": "Your strategies list is empty."
   },

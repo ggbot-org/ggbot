@@ -1,3 +1,4 @@
+import { ToastContextProvider } from "@ggbot2/design";
 import { I18nContextProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
@@ -9,9 +10,11 @@ import { PageLayout } from "../layouts/Page.js";
 export const ViewStrategyFlowPage: FC = () => (
   <I18nContextProvider>
     <StrategyProvider>
-      <PageLayout topbar={<Navigation noMenu />}>
-        <ViewStrategyFlow />
-      </PageLayout>
+      <ToastContextProvider>
+        <PageLayout topbar={<Navigation noMenu />}>
+          <ViewStrategyFlow />
+        </PageLayout>
+      </ToastContextProvider>
     </StrategyProvider>
   </I18nContextProvider>
 );
