@@ -8,6 +8,7 @@ import {
 import {
   AccountKey,
   ErrorAccountItemNotFound,
+  ErrorExceededQuota,
   ErrorUnimplementedStrategyKind,
   isOperationOutput,
   OperationInput,
@@ -58,9 +59,12 @@ export type AuthenticatedApiAction<Input extends OperationInput> = ApiAction<
 // ////////////
 
 const apiActionServerSideErrorNames = [
-  ErrorHTTP.name,
+  // Model errors.
   ErrorAccountItemNotFound.name,
+  ErrorExceededQuota.name,
   ErrorUnimplementedStrategyKind.name,
+  // Other errors.
+  ErrorHTTP.name,
   InternalServerError.name,
 ] as const;
 export type ApiActionServerSideErrorName =

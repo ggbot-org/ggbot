@@ -8,10 +8,12 @@ import {
   FormOnSubmit,
   formValues,
   InputField,
+  Message,
   Modal,
   Title,
 } from "@ggbot2/design";
 import {
+  ErrorExceededQuota,
   ErrorInvalidArg,
   isName,
   isStrategy,
@@ -36,6 +38,7 @@ export const CreateStrategy: FC = () => {
   const strategy = CREATE.data;
   const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
+  const error = CREATE.error;
 
   const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");
@@ -105,6 +108,14 @@ export const CreateStrategy: FC = () => {
             </Control>
           </Field>
         </Form>
+
+        {error ? (
+          <Message color="warning">
+            {error.name === ErrorExceededQuota.name ? (
+              <FormattedMessage id="errorMessage.maxStrategiesPerAccount" />
+            ) : null}
+          </Message>
+        ) : null}
       </Modal>
     </>
   );

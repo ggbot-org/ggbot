@@ -122,8 +122,14 @@
   "buttonLabel.send": {
     "defaultMessage": "Send"
   },
+  "errorMessage.generic": {
+    "defaultMessage": "Something went wrong"
+  },
   "errorMessage.invalidStrategyName": {
     "defaultMessage": "Invalid strategy name."
+  },
+  "errorMessage.maxStrategiesPerAccount": {
+    "defaultMessage": "Cannot create more strategies."
   },
   "fieldLabel.email": {
     "defaultMessage": "Email"

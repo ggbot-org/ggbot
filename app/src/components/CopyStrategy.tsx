@@ -8,8 +8,14 @@ import {
   Message,
   Title,
   useFormattedDate,
+  useToast,
 } from "@ggbot2/design";
-import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
+import {
+  ErrorExceededQuota,
+  ErrorInvalidArg,
+  isName,
+  throwIfInvalidName,
+} from "@ggbot2/models";
 import {
   ChangeEventHandler,
   FC,
@@ -18,16 +24,18 @@ import {
   useEffect,
   useState,
 } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
+import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 export const CopyStrategy: FC = () => {
+  const { formatMessage } = useIntl();
   const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
+  const { toast } = useToast();
 
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -35,6 +43,7 @@ export const CopyStrategy: FC = () => {
   const redirectToHomepage = COPY.isDone;
   const readOnly = COPY.isPending || COPY.isDone;
   const isLoading = COPY.isPending || COPY.isDone;
+  const error = COPY.error;
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
@@ -49,12 +58,13 @@ export const CopyStrategy: FC = () => {
         if (isName(name) && strategyKey) COPY.request({ name, ...strategyKey });
       } catch (error) {
         if (error instanceof ErrorInvalidArg) {
-          // TODO show error to user
-          console.error(errorMessage.invalidStrategyName);
+          toast.warning(
+            formatMessage({ id: "errorMessage.invalidStrategyName" })
+          );
         }
       }
     },
-    [COPY, strategyKey]
+    [COPY, formatMessage, strategyKey, toast]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -67,6 +77,17 @@ export const CopyStrategy: FC = () => {
     },
     [setIsDisabled]
   );
+
+  useEffect(() => {
+    if (!error) return;
+    if (error.name === ErrorExceededQuota.name) {
+      toast.warning(
+        formatMessage({ id: "errorMessage.maxStrategiesPerAccount" })
+      );
+    } else {
+      toast.warning(formatMessage({ id: "errorMessage.generic" }));
+    }
+  }, [error, formatMessage, toast]);
 
   useEffect(() => {
     if (redirectToHomepage) window.location.href = href.homePage();
