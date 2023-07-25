@@ -2,8 +2,8 @@ import { Message } from "@ggbot2/design";
 import { FC } from "react";
 import { FormattedMessage } from "react-intl";
 
-export const SubscriptionPurchasedMessage: FC = () => (
+export const SubscriptionPurchased: FC = () => (
   <Message color="success">
-    <FormattedMessage id="SubscriptionPurchasedMessage.body" />
+    <FormattedMessage id="SubscriptionPurchased.message" />
   </Message>
 );

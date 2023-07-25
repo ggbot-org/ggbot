@@ -8,14 +8,12 @@ export const strategyKeyParamsFromCurrentLocation = ():
   | undefined => {
   const url = new URL(window.location.toString());
 
-  const strategyKind = url.searchParams.get(strategyKindKey);
-  const strategyId = url.searchParams.get(strategyIdKey);
-
-  const strategyKey = { strategyId, strategyKind };
+  const strategyKey = {
+    strategyId: url.searchParams.get(strategyIdKey),
+    strategyKind: url.searchParams.get(strategyKindKey),
+  };
 
   if (isStrategyKey(strategyKey)) return strategyKey;
-
-  return undefined;
 };
 
 export const strategyKeyToURLSearchParams = ({

@@ -21,7 +21,7 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
 import { GoEditStrategy } from "../components/GoEditStrategy.js";
@@ -36,6 +36,8 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const StrategyInfo: FC = () => {
+  const { formatMessage } = useIntl();
+
   const { strategyWhenCreated, strategyKey } = useContext(StrategyContext);
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
@@ -103,14 +105,14 @@ export const StrategyInfo: FC = () => {
       <Columns>
         <Column>
           <OutputField
-            label={fieldLabel.whenCreated}
+            label={formatMessage({ id: "fieldLabel.whenCreated" })}
             value={formattedWhenCreated}
           />
         </Column>
 
         <Column>
           <OutputField
-            label={fieldLabel.strategyId}
+            label={formatMessage({ id: "fieldLabel.strategyId" })}
             value={strategyKey?.strategyId}
           />
         </Column>

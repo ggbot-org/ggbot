@@ -15,9 +15,9 @@ import { navigationLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
-type Props = Pick<NavbarProps, "noMenu">;
+export type NavigationProps = Pick<NavbarProps, "noMenu">;
 
-export const Navigation: FC<Props> = memo(({ noMenu }) => {
+export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
   const { openExitModal } = useContext(AuthenticationContext);
 
   const goToHomePage = () => {

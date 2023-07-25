@@ -7,7 +7,8 @@ import { isName, Name, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
-export const strategyKinds = ["binance"] as const;
+export const noneStrategyKind = "none";
+export const strategyKinds = ["binance", noneStrategyKind] as const;
 export type StrategyKind = (typeof strategyKinds)[number];
 export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 

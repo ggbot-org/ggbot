@@ -22,8 +22,10 @@ export const DeleteStrategy: FC = () => {
 
   const { formatMessage } = useIntl();
 
-  const { strategyWhenCreated, strategyName, strategyId, strategyKey } =
+  const { strategyWhenCreated, strategyName, strategyKey } =
     useContext(StrategyContext);
+
+  const { strategyId } = strategyKey;
 
   const DELETE = useApi.DeleteStrategy();
   const isLoading = DELETE.isPending || DELETE.isDone;

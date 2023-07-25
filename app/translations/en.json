@@ -50,6 +50,9 @@
   "GoSettings.label": {
     "defaultMessage": "Go to Settings"
   },
+  "InvalidStrategyKey.message": {
+    "defaultMessage": "Invalid strategy key. Check this URL parameters."
+  },
   "Page.noNetwork": {
     "defaultMessage": "The network connection has been lost."
   },
@@ -80,13 +83,16 @@
   "Strategies.title": {
     "defaultMessage": "Strategies"
   },
-  "SubscriptionCanceledMessage.body": {
+  "StrategyNotFound.title": {
+    "defaultMessage": "Strategy not found."
+  },
+  "SubscriptionCanceled.message": {
     "defaultMessage": "Your purchase was canceled."
   },
   "SubscriptionPurchase.couldRenew": {
     "defaultMessage": "Your subscription will expire soon, please consider renew it."
   },
-  "SubscriptionPurchasedMessage.body": {
+  "SubscriptionPurchased.message": {
     "defaultMessage": "Thank you for your purchase."
   },
   "buttonLabel.cancel": {
@@ -123,7 +129,10 @@
     "defaultMessage": "From"
   },
   "fieldLabel.strategyId": {
-    "defaultMessage": "Strategy Id"
+    "defaultMessage": "Strategy ID"
+  },
+  "fieldLabel.strategyKind": {
+    "defaultMessage": "Strategy kind"
   },
   "fieldLabel.strategyName": {
     "defaultMessage": "Strategy name"

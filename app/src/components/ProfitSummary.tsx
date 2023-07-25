@@ -64,8 +64,9 @@ type SymbolStats = {
 };
 
 export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
-  const { strategyKey } = useContext(StrategyContext);
-  const strategyKind = strategyKey?.strategyKind;
+  const {
+    strategyKey: { strategyKind },
+  } = useContext(StrategyContext);
 
   const binanceSymbols = useBinanceSymbols({ strategyKind });
 
