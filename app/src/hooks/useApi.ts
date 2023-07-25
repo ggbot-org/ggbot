@@ -71,13 +71,6 @@ const userApi = {
         type: "DeleteStrategy",
       }
     ),
-  ExecuteStrategy: () =>
-    useAction<UserApiAction["ExecuteStrategy"], UserApiActionType>(
-      userApiOptions,
-      {
-        type: "ExecuteStrategy",
-      }
-    ),
   ReadAccount: () =>
     useAction<UserApiAction["ReadAccount"], UserApiActionType>(userApiOptions, {
       type: "ReadAccount",

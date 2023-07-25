@@ -1,19 +1,10 @@
 import { ButtonOnClick } from "@ggbot2/design";
-import {
-  ErrorAccountItemNotFound,
-  isStrategyExecutionStatus,
-  isStrategyFlow,
-  StrategyExecution,
-} from "@ggbot2/models";
-import { isTime } from "@ggbot2/time";
-import { isMaybeObject } from "@ggbot2/type-utils";
-import { DflowExecutionNodeInfo } from "dflow";
+import { isStrategyFlow } from "@ggbot2/models";
 import {
   FC,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -23,13 +14,10 @@ import { EditStrategyTabs } from "../components/EditStrategyTabs.js";
 import { EditStrategyTopbar } from "../components/EditStrategyTopbar.js";
 import { FlowViewContainer } from "../components/FlowViewContainer.js";
 import { MemoryController } from "../components/MemoryController.js";
-import { PleaseConfigureBinance } from "../components/PleaseConfigureBinance.js";
-import { StrategyExecutionLog } from "../components/StrategyExecutionLog.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
-import { errorMessage } from "../i18n/index.js";
 
 export const EditStrategyFlow: FC = () => {
   const { strategyKey } = useContext(StrategyContext);
@@ -38,9 +26,6 @@ export const EditStrategyFlow: FC = () => {
   const [canSave, setCanSave] = useState(false);
   const [flowChanged, setFlowChanged] = useState(false);
   const [flowLoaded, setFlowLoaded] = useState(false);
-  const [hasNoBinanceApiConfig, setHasNoBinanceApiConfig] = useState<
-    boolean | undefined
-  >();
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
@@ -53,46 +38,12 @@ export const EditStrategyFlow: FC = () => {
     strategyKind,
   });
 
-  const ReadStrategyFlow = useApi.ReadStrategyFlow();
-  const EXECUTE = useApi.ExecuteStrategy();
+  const READ = useApi.ReadStrategyFlow();
   const WRITE = useApi.WriteStrategyFlow();
 
-  const strategyExecution = EXECUTE.data;
-  const runIsPending = EXECUTE.isPending;
-  const strategyExecutionError = EXECUTE.error;
-
+  const storedStrategyFlow = READ.data;
+  const readIsPending = READ.isPending;
   const saveIsPending = WRITE.isPending;
-
-  const storedStrategyFlow = ReadStrategyFlow.data;
-  const readIsPending = ReadStrategyFlow.isPending;
-
-  let canRun = !canSave;
-  if (hasNoBinanceApiConfig) canRun = false;
-  if (!flowLoaded) canRun = false;
-  if (runIsPending) canRun = false;
-  if (saveIsPending) canRun = false;
-
-  const { executionStatus, executionSteps, executionWhenUpdated } =
-    useMemo(() => {
-      if (!isMaybeObject<StrategyExecution>(strategyExecution))
-        return {
-          executionWhenUpdated: undefined,
-          executionSteps: undefined,
-          executionStatus: undefined,
-        };
-      const { status, steps, whenUpdated } = strategyExecution;
-      const executionStatus = isStrategyExecutionStatus(status)
-        ? status
-        : undefined;
-      const executionWhenUpdated = isTime(whenUpdated)
-        ? whenUpdated
-        : undefined;
-      return {
-        executionSteps: steps as DflowExecutionNodeInfo[],
-        executionStatus,
-        executionWhenUpdated,
-      };
-    }, [strategyExecution]);
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
@@ -101,27 +52,10 @@ export const EditStrategyFlow: FC = () => {
     if (WRITE.canRun) WRITE.request({ ...strategyKey, view: flowView.graph });
   }, [WRITE, canSave, flowView, strategyKey]);
 
-  const onClickRun = useCallback<ButtonOnClick>(() => {
-    if (!strategyKey) return;
-    if (!canRun) return;
-    if (EXECUTE.canRun) EXECUTE.request(strategyKey);
-  }, [EXECUTE, canRun, strategyKey]);
-
   useEffect(() => {
-    if (!strategyExecutionError) return;
-    if (hasNoBinanceApiConfig) return;
-    if (strategyExecutionError.name === ErrorAccountItemNotFound.name) {
-      // TODO type guards or other util for errors
-      // check that strategyExecutionError.info.type === 'BinanceApiConfig'
-      setHasNoBinanceApiConfig(true);
-    }
-  }, [strategyExecutionError, hasNoBinanceApiConfig, setHasNoBinanceApiConfig]);
-
-  useEffect(() => {
-    if (flowLoaded) return;
     if (!strategyKey) return;
-    if (ReadStrategyFlow.canRun) ReadStrategyFlow.request(strategyKey);
-  }, [ReadStrategyFlow, flowLoaded, strategyKey]);
+    if (READ.canRun) READ.request(strategyKey);
+  }, [READ, flowLoaded, strategyKey]);
 
   useEffect(() => {
     try {
@@ -158,26 +92,11 @@ export const EditStrategyFlow: FC = () => {
     }
   }, [flowChanged, saveIsPending, setCanSave]);
 
-  useEffect(() => {
-    if (!isMaybeObject<StrategyExecution>(strategyExecution)) return;
-    const { status } = strategyExecution;
-    if (!isStrategyExecutionStatus(status)) return;
-    if (status === "failure") {
-      // TODO show error to user
-      console.error(errorMessage.strategyExecutionFailure);
-    }
-  }, [strategyExecution]);
-
   return (
     <>
-      {hasNoBinanceApiConfig ? <PleaseConfigureBinance /> : null}
-
       <EditStrategyTopbar
-        canRun={canRun}
         canSave={canSave}
-        onClickRun={onClickRun}
         onClickSave={onClickSave}
-        runIsPending={runIsPending}
         saveIsPending={saveIsPending}
       />
 
@@ -193,13 +112,6 @@ export const EditStrategyFlow: FC = () => {
           <BacktestController
             state={backtesting}
             dispatch={backtestingDispatch}
-          />
-        }
-        executionLog={
-          <StrategyExecutionLog
-            status={executionStatus}
-            steps={executionSteps}
-            whenUpdated={executionWhenUpdated}
           />
         }
       />

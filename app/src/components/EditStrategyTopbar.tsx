@@ -8,26 +8,20 @@ import {
   Level,
 } from "@ggbot2/design";
 import { FC } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategyFlowName } from "../components/StrategyFlowName.js";
-import { buttonLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
-  canRun: boolean;
   canSave: boolean;
-  onClickRun: ButtonOnClick;
   onClickSave: ButtonOnClick;
-  runIsPending: boolean | undefined;
   saveIsPending: boolean | undefined;
 };
 
 export const EditStrategyTopbar: FC<Props> = ({
-  canRun,
   canSave,
-  onClickRun,
   onClickSave,
-  runIsPending,
   saveIsPending,
 }) => (
   <Columns className={classNames("is-marginless")}>
@@ -40,19 +34,11 @@ export const EditStrategyTopbar: FC<Props> = ({
         right={
           <Buttons>
             <Button
-              color={canRun || runIsPending ? "warning" : undefined}
-              isLoading={runIsPending}
-              onClick={onClickRun}
-            >
-              {buttonLabel.run}
-            </Button>
-
-            <Button
               color={canSave ? "primary" : undefined}
               isLoading={saveIsPending}
               onClick={onClickSave}
             >
-              {buttonLabel.save}
+              <FormattedMessage id="buttonLabel.save" />
             </Button>
           </Buttons>
         }

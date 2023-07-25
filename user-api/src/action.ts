@@ -18,7 +18,6 @@ import {
   deleteAccount,
   deleteBinanceApiConfig,
   deleteStrategy,
-  executeStrategy,
   readAccount,
   readAccountStrategies,
   readBinanceApiConfig,
@@ -40,7 +39,6 @@ import {
   isCreateBinanceApiConfigInput,
   isCreateStrategyInput,
   isDeleteStrategyInput,
-  isExecuteStrategyInput,
   isReadStrategyBalancesInput,
   isReadStrategyOrdersInput,
   isRenameAccountInput,
@@ -111,14 +109,6 @@ export const handler = async (
             const input = { accountId, ...actionData };
             if (!isDeleteStrategyInput(input)) return BAD_REQUEST();
             const output = await deleteStrategy(input);
-            return OK(output);
-          }
-
-          case "ExecuteStrategy": {
-            if (!actionData) return BAD_REQUEST();
-            const input = { accountId, ...actionData };
-            if (!isExecuteStrategyInput(input)) return BAD_REQUEST();
-            const output = await executeStrategy(input);
             return OK(output);
           }
 

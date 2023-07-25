@@ -6,7 +6,6 @@ import {
   DeleteAccount,
   DeleteBinanceApiConfig,
   DeleteStrategy,
-  ExecuteStrategy,
   ReadAccount,
   ReadAccountStrategies,
   ReadBinanceApiConfig,
@@ -34,7 +33,6 @@ export const userApiActionTypes = [
   "DeleteAccount",
   "DeleteStrategy",
   "DeleteBinanceApiConfig",
-  "ExecuteStrategy",
   "ReadAccount",
   "ReadAccountStrategies",
   "ReadBinanceApiConfig",
@@ -61,7 +59,6 @@ export type UserApiAction = {
   DeleteAccount: Action<DeleteAccount["in"]>;
   DeleteBinanceApiConfig: Action<DeleteBinanceApiConfig["in"]>;
   DeleteStrategy: Action<DeleteStrategy["in"]>;
-  ExecuteStrategy: Action<ExecuteStrategy["in"]>;
   ReadAccount: Action<ReadAccount["in"]>;
   ReadAccountStrategies: Action<ReadAccountStrategies["in"]>;
   ReadBinanceApiConfig: Action<ReadBinanceApiConfig["in"]>;
