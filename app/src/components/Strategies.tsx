@@ -22,7 +22,7 @@ export const Strategies: FC = () => {
       if (!isAccountStrategy(item)) continue;
       const { strategyId, strategyKind, name, schedulings } = item;
       items.push({
-        href: href.manageStrategyPage({ strategyId, strategyKind }),
+        href: href.strategyPage({ strategyId, strategyKind }),
         name,
         schedulings,
         strategyId,

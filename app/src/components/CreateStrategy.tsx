@@ -69,7 +69,7 @@ export const CreateStrategy: FC = () => {
   useEffect(() => {
     if (isStrategy(strategy)) {
       const { id, kind } = strategy;
-      window.location.href = href.editFlowPage({
+      window.location.href = href.strategyPage({
         strategyId: id,
         strategyKind: kind,
       });

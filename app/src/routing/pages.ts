@@ -6,9 +6,9 @@ export const indexHtmlFilename = "index.html";
 
 export const copyStrategyHtmlFilename = "copy-strategy.html";
 
-export const editStrategyFlowHtmlFilename = "edit.html";
+export const flowHtmlFilename = "flow.html";
 
-export const manageStrategyHtmlFilename = "strategy.html";
+export const strategyHtmlFilename = "strategy.html";
 
 export const settingsHtmlFilename = (id: SettingsPageId) =>
   `${id}-settings.html`;
@@ -16,5 +16,3 @@ export const settingsHtmlFilename = (id: SettingsPageId) =>
 export const subscriptionCanceledHtmlFilename = UtrustCancelURL.htmlFileName;
 
 export const subscriptionPurchasedHtmlFilename = UtrustReturnURL.htmlFileName;
-
-export const viewStrategyFlowHtmlFilename = "view.html";

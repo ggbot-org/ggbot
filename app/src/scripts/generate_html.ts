@@ -3,15 +3,13 @@ import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 import {
   appJs,
   copyStrategyHtmlFilename,
-  editStrategyFlowHtmlFilename,
+  flowHtmlFilename,
   indexHtmlFilename,
-  manageStrategyHtmlFilename,
   publicDir,
   settingsHtmlFilename,
+  strategyHtmlFilename,
   subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
-  viewJs,
-  viewStrategyFlowHtmlFilename,
 } from "../package.js";
 
 const html = (scriptJs: string) =>
@@ -42,21 +40,16 @@ export const generateHtml = async () => {
   });
   await generateHtmlPage({
     dirname,
-    filename: manageStrategyHtmlFilename,
+    filename: strategyHtmlFilename,
     htmlContent: html(appJs),
   });
 
-  // Strategy flow
+  // Flow
 
   await generateHtmlPage({
     dirname,
-    filename: editStrategyFlowHtmlFilename,
+    filename: flowHtmlFilename,
     htmlContent: html(appJs),
-  });
-  await generateHtmlPage({
-    dirname,
-    filename: viewStrategyFlowHtmlFilename,
-    htmlContent: html(viewJs),
   });
 
   // Settings

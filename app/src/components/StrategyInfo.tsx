@@ -24,7 +24,6 @@ import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
-import { GoEditStrategy } from "../components/GoEditStrategy.js";
 import { ShareStrategy } from "../components/ShareStrategy.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
@@ -127,10 +126,6 @@ export const StrategyInfo: FC = () => {
       </Field>
 
       <Field isGrouped>
-        <Control>
-          <GoEditStrategy />
-        </Control>
-
         <Control>
           <ShareStrategy />
         </Control>

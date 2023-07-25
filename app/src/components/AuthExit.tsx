@@ -8,11 +8,11 @@ import {
   OutputField,
   Title,
 } from "@ggbot2/design";
-import { FC, useCallback, useContext } from "react";
-import { useIntl } from "react-intl";
+import { FC, useCallback, useContext, useEffect } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { AuthenticationContext } from "../contexts/Authentication.js";
-import { buttonLabel, title } from "../i18n/index.js";
+import { wwwHomepage } from "../routing/URLs.js";
 
 export type AuthExitProps = {
   isActive: boolean;
@@ -22,7 +22,7 @@ export type AuthExitProps = {
 export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
   const { formatMessage } = useIntl();
 
-  const { account, exit } = useContext(AuthenticationContext);
+  const { account, exit, exited } = useContext(AuthenticationContext);
 
   const email = account?.email ?? "";
 
@@ -35,10 +35,18 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
     [exit, setIsActive]
   );
 
+  useEffect(() => {
+    if (exited) {
+      window.location.href = wwwHomepage;
+    }
+  }, [exited]);
+
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       <Form box onSubmit={onSubmit}>
-        <Title>{title.exitForm}</Title>
+        <Title>
+          <FormattedMessage id="AuthExit.title" />
+        </Title>
 
         <OutputField
           label={formatMessage({ id: "fieldLabel.email" })}
@@ -47,7 +55,9 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
 
         <Field isGrouped>
           <Control>
-            <Button color="warning">{buttonLabel.exit}</Button>
+            <Button color="warning">
+              <FormattedMessage id="AuthExit.buttonLabel" />
+            </Button>
           </Control>
         </Field>
       </Form>

@@ -11,7 +11,7 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
-export const ManageStrategyPage: FC = () => {
+export const StrategyPage: FC = () => {
   // TODO use a context with useSubscription hook rather than drill down prop to SchedulingsForm
   const [hasActiveSubscription, setHasActiveSubscription] = useState<
     boolean | undefined

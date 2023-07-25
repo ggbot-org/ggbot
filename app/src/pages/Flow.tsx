@@ -6,7 +6,7 @@ import { ViewStrategyFlow } from "../components/ViewStrategyFlow.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
-export const ViewStrategyFlowPage: FC = () => (
+export const FlowPage: FC = () => (
   <I18nContextProvider>
     <StrategyProvider>
       <ToastContextProvider>

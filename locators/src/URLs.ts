@@ -1,3 +1,5 @@
+import { wwwDomain } from "./FQDNs.js";
+
 export class ApiAuthenticationEnterURL extends URL {
   constructor(apiBaseURL: string) {
     super("/enter", apiBaseURL);
@@ -57,5 +59,11 @@ export class UtrustReturnURL extends URL {
   static htmlFileName = "subscription-purchased.html";
   constructor(userWebappBaseURL: string) {
     super(`/${UtrustReturnURL.htmlFileName}`, userWebappBaseURL);
+  }
+}
+
+export class WwwHomepageURL extends URL {
+  constructor() {
+    super("/", `https://${wwwDomain}`);
   }
 }

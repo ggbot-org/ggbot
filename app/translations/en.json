@@ -1,4 +1,10 @@
 {
+  "AuthExit.buttonLabel": {
+    "defaultMessage": "Exit"
+  },
+  "AuthExit.title": {
+    "defaultMessage": "Exit ggbot2"
+  },
   "AuthVerify.checkYourEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
   },

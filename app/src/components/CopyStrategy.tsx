@@ -14,6 +14,7 @@ import {
   ErrorExceededQuota,
   ErrorInvalidArg,
   isName,
+  isStrategy,
   throwIfInvalidName,
 } from "@ggbot2/models";
 import {
@@ -40,9 +41,9 @@ export const CopyStrategy: FC = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const COPY = useApi.CopyStrategy();
-  const redirectToHomepage = COPY.isDone;
   const readOnly = COPY.isPending || COPY.isDone;
   const isLoading = COPY.isPending || COPY.isDone;
+  const strategy = COPY.data;
   const error = COPY.error;
 
   const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
@@ -90,8 +91,14 @@ export const CopyStrategy: FC = () => {
   }, [error, formatMessage, toast]);
 
   useEffect(() => {
-    if (redirectToHomepage) window.location.href = href.homePage();
-  }, [redirectToHomepage]);
+    if (isStrategy(strategy)) {
+      const { id, kind } = strategy;
+      window.location.href = href.strategyPage({
+        strategyId: id,
+        strategyKind: kind,
+      });
+    }
+  }, [strategy]);
 
   return (
     <Form box onSubmit={onSubmit}>

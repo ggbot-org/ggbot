@@ -15,7 +15,7 @@ export const ShareStrategy: FC = () => {
   >(() => {
     const title = "ggbot2";
     if (!strategyKey) return;
-    const url = `${window.location.origin}${href.viewFlowPage(strategyKey)}`;
+    const url = `${window.location.origin}${href.flowPage(strategyKey)}`;
     if (strategyName) {
       return {
         title,

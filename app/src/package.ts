@@ -5,13 +5,12 @@ import { today } from "@ggbot2/time";
 
 export {
   copyStrategyHtmlFilename,
-  editStrategyFlowHtmlFilename,
+  flowHtmlFilename,
   indexHtmlFilename,
-  manageStrategyHtmlFilename,
   settingsHtmlFilename,
+  strategyHtmlFilename,
   subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
-  viewStrategyFlowHtmlFilename,
 } from "./routing/pages.js";
 
 const rootDir = packageRootDir(import.meta.url);
@@ -28,5 +27,5 @@ const version = today();
 export const appJs = `app.${version}.js`;
 export const appEntryPoint = join(srcRoutingDir, "AppRouter.tsx");
 
-export const viewJs = `view.${version}.js`;
-export const viewEntryPoint = join(srcRoutingDir, "ViewRouter.tsx");
+export const flowJs = `flow.${version}.js`;
+export const flowEntryPoint = join(srcRoutingDir, "FlowRouter.tsx");

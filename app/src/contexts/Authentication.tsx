@@ -29,9 +29,10 @@ type State = {
   showSplashScreen: boolean;
   verified?: boolean | undefined;
   startSession: Time;
+  exited: boolean;
 };
 
-type ContextValue = {
+type ContextValue = Pick<State, "exited"> & {
   account?: Account | null | undefined;
   openExitModal: () => void;
   exit: () => void;
@@ -40,6 +41,7 @@ type ContextValue = {
 export const AuthenticationContext = createContext<ContextValue>({
   openExitModal: () => {},
   exit: () => {},
+  exited: false,
 });
 
 AuthenticationContext.displayName = "AuthenticationContext";
@@ -48,7 +50,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   const isFirstPageView = !sessionWebStorage.gotFirstPageView;
 
   const [
-    { email, exitIsActive, showSplashScreen, jwt, startSession },
+    { email, exited, exitIsActive, showSplashScreen, jwt, startSession },
     dispatch,
   ] = useReducer<
     Reducer<
@@ -65,7 +67,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
         case "EXIT": {
           sessionWebStorage.email = undefined;
           localWebStorage.jwt = undefined;
-          return { ...state, email: undefined, jwt: undefined };
+          return { ...state, exited: true };
         }
 
         case "HIDE_SPLASH_SCREEN": {
@@ -100,6 +102,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       jwt: localWebStorage.jwt,
       showSplashScreen: isFirstPageView,
       startSession: now(),
+      exited: false,
     }
   );
 
@@ -134,11 +137,12 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       exit: () => {
         dispatch({ type: "EXIT" });
       },
+      exited,
       openExitModal: () => {
         dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
       },
     }),
-    [account]
+    [account, exited]
   );
 
   useEffect(() => {

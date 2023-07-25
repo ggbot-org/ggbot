@@ -6,16 +6,16 @@ import { BillingSettingsPage } from "../pages/BillingSettings.js";
 import { BinanceSettingsPage } from "../pages/BinanceSettings.js";
 import { CopyStrategyPage } from "../pages/CopyStrategy.js";
 import { DashboardPage } from "../pages/Dashboard.js";
-import { EditStrategyFlowPage } from "../pages/EditStrategyFlow.js";
-import { ManageStrategyPage } from "../pages/ManageStrategy.js";
+import { FlowPage } from "../pages/Flow.js";
+import { StrategyPage } from "../pages/Strategy.js";
 import { SubscriptionCanceledPage } from "../pages/SubscriptionCanceled.js";
 import { SubscriptionPurchasedPage } from "../pages/SubscriptionPurchased.js";
 import {
   copyStrategyHtmlFilename,
-  editStrategyFlowHtmlFilename,
+  flowHtmlFilename,
   indexHtmlFilename,
-  manageStrategyHtmlFilename,
   settingsHtmlFilename,
+  strategyHtmlFilename,
   subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
 } from "./pages.js";
@@ -31,11 +31,11 @@ const Router: FC = () => {
     case pathname === `/${copyStrategyHtmlFilename}`:
       return <CopyStrategyPage />;
 
-    case pathname === `/${editStrategyFlowHtmlFilename}`:
-      return <EditStrategyFlowPage />;
+    case pathname === `/${flowHtmlFilename}`:
+      return <FlowPage />;
 
-    case pathname === `/${manageStrategyHtmlFilename}`:
-      return <ManageStrategyPage />;
+    case pathname === `/${strategyHtmlFilename}`:
+      return <StrategyPage />;
 
     case pathname === `/${settingsHtmlFilename("account")}`:
       return <AccountSettingsPage />;

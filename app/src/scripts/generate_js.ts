@@ -5,9 +5,9 @@ import { browserBundle } from "@ggbot2/esbuild";
 import {
   appEntryPoint,
   appJs,
+  flowEntryPoint,
+  flowJs,
   publicDir,
-  viewEntryPoint,
-  viewJs,
 } from "../package.js";
 
 const generateJsBundles = async () => {
@@ -17,8 +17,8 @@ const generateJsBundles = async () => {
   });
 
   await browserBundle({
-    entryPoints: [viewEntryPoint],
-    outfile: join(publicDir, viewJs),
+    entryPoints: [flowEntryPoint],
+    outfile: join(publicDir, flowJs),
   });
 };
 

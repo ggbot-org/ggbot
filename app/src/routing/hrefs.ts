@@ -1,9 +1,8 @@
 import {
   copyStrategyHtmlFilename,
-  editStrategyFlowHtmlFilename,
-  manageStrategyHtmlFilename,
+  flowHtmlFilename,
   settingsHtmlFilename,
-  viewStrategyFlowHtmlFilename,
+  strategyHtmlFilename,
 } from "./pages.js";
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js";
 import { SettingsPageId, StrategyKey } from "./types.js";
@@ -13,18 +12,14 @@ export const href = {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${copyStrategyHtmlFilename}?${searchParams}`;
   },
-  editFlowPage: (strategyKey: StrategyKey) => {
+  flowPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
-    return `/${editStrategyFlowHtmlFilename}?${searchParams}`;
+    return `/${flowHtmlFilename}?${searchParams}`;
   },
   homePage: () => "/",
-  manageStrategyPage: (strategyKey: StrategyKey) => {
+  strategyPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
-    return `/${manageStrategyHtmlFilename}?${searchParams}`;
+    return `/${strategyHtmlFilename}?${searchParams}`;
   },
   settingsPage: (id: SettingsPageId) => `/${settingsHtmlFilename(id)}`,
-  viewFlowPage: (strategyKey: StrategyKey) => {
-    const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
-    return `/${viewStrategyFlowHtmlFilename}?${searchParams}`;
-  },
 };

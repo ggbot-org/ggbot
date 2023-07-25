@@ -3,13 +3,10 @@ import { FC } from "react";
 
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
 import { ShareStrategy } from "../components/ShareStrategy.js";
-import { StrategyFlowName } from "../components/StrategyFlowName.js";
 import { classNames } from "../styles/classNames.js";
 
 export const ViewStrategyTopbar: FC = () => (
   <Columns className={classNames("is-marginless")}>
-    <StrategyFlowName />
-
     <Column isNarrow className={classNames("p-0")}>
       <Level
         isMobile

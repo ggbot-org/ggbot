@@ -10,7 +10,6 @@ import {
 import { FC } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { StrategyFlowName } from "../components/StrategyFlowName.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
@@ -25,8 +24,6 @@ export const EditStrategyTopbar: FC<Props> = ({
   saveIsPending,
 }) => (
   <Columns className={classNames("is-marginless")}>
-    <StrategyFlowName />
-
     <Column isNarrow className={classNames("p-0")}>
       <Level
         isMobile
