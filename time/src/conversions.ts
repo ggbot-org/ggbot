@@ -5,35 +5,19 @@ import { getDate } from "./operators.js";
 import { Time, TimeInterval } from "./time.js";
 import { Timestamp } from "./timestamp.js";
 
-/**
- * Convert `Date` to `Time`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `Date` to `Time`. */
 export const dateToTime = (date: Date): Time => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return date.getTime();
 };
 
-/**
- * Convert `Day` to `Date`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `Day` to `Date`. */
 export const dayToDate = (day: Day): Date => new Date(day);
 
-/**
- * Convert `Day` to `Time`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `Day` to `Time`. */
 export const dayToTime = (day: Day): Time => dateToTime(dayToDate(day));
 
-/**
- * Convert `DateInterval` to `TimeInterval`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `DateInterval` to `TimeInterval`. */
 export const dateIntervalToTime = ({
   start,
   end,
@@ -42,11 +26,7 @@ export const dateIntervalToTime = ({
   end: dateToTime(end),
 });
 
-/**
- * Convert `DayInterval` to `DateInterval`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `DayInterval` to `DateInterval`. */
 export const dayIntervalToDate = ({
   start,
   end,
@@ -57,21 +37,13 @@ export const dayIntervalToDate = ({
     .seconds(),
 });
 
-/**
- * Convert `DayInterval` to `TimeInterval`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `DayInterval` to `TimeInterval`. */
 export const dayIntervalToTime = (dayInterval: DayInterval): TimeInterval => {
   const dateInterval = dayIntervalToDate(dayInterval);
   return dateIntervalToTime(dateInterval);
 };
 
-/**
- * Convert `Date` to `Day`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `Date` to `Day`. */
 export const dateToDay = (date: Date): Day => {
   const timestamp = dateToTimestamp(date);
   return timestampToDay(timestamp);
@@ -83,11 +55,7 @@ export const timeToDay = (time: Time): Day => {
   return dateToDay(date);
 };
 
-/**
- * Convert `TimeInterval` to `DayInterval`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `TimeInterval` to `DayInterval`. */
 export const timeIntervalToDay = ({
   start,
   end,
@@ -106,11 +74,7 @@ export const timestampToTime = (timestamp: Timestamp): Time => {
   return dateToTime(date);
 };
 
-/**
- * Convert `Date` to `Timestamp`.
- *
- * @throws {@link ErrorInvalidDate}
- */
+/** Convert `Date` to `Timestamp`. */
 export const dateToTimestamp = (date: Date): Timestamp => {
   // Invalid dates return a null JSON
   //     new Date('0000-00-00').toJSON() // null

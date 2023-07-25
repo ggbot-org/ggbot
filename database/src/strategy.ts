@@ -15,10 +15,8 @@ import {
   ReadStrategy,
   ReadStrategyAccountId,
   RenameStrategy,
-  StrategyFlow,
   StrategyKey,
   throwIfInvalidName,
-  updatedNow,
 } from "@ggbot2/models";
 
 import {
@@ -47,12 +45,6 @@ const strategyAccountIdCache = new CacheMap<Account["id"]>();
 /**
  * Atomic operation to create a strategy.
  *
- * It is used internally by
- *
- * - CopyStrategy
- * - CreateStrategy
- *
- * @throws {@link ErrorInvalidArg}
  * @internal
  */
 const _createStrategy: CreateStrategy["func"] = async ({
@@ -70,14 +62,10 @@ const _createStrategy: CreateStrategy["func"] = async ({
   const Key = pathname.strategy(strategyKey);
   await putObject({ Key, data: strategy });
   const accountStrategy = newAccountStrategy({ name, ...strategyKey });
-  insertAccountStrategiesItem({ accountId, item: accountStrategy });
+  await insertAccountStrategiesItem({ accountId, item: accountStrategy });
   return strategy;
 };
 
-/**
- * @throws {@link ErrorInvalidArg}
- * @throws {@link ErrorStrategyItemNotFound}
- */
 export const copyStrategy: CopyStrategy["func"] = async ({
   accountId,
   name,
@@ -104,33 +92,27 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   return strategy;
 };
 
-/**
- * Create strategy.
- *
- * It also creates also an empty strategy flow. If user creates a new strategy,
- * even if the flow was not edited yet, it will be possible to share it and run
- * it.
- *
- * @throws {@link ErrorInvalidArg}
- */
 export const createStrategy: CreateStrategy["func"] = async ({
   accountId,
   kind,
   name,
 }) => {
-  // Create strategy first,
   const strategy = await _createStrategy({ accountId, kind, name });
+  // Create strategy first,
+
+  // TODO try to handle empty strategy client side, then delete this commented code.
+  // also, the comment above
   // then create an empty flow.
-  const strategyFlowKey = pathname.strategyFlow({
-    strategyId: strategy.id,
-    strategyKind: strategy.kind,
-  });
-  const whenUpdated = updatedNow();
-  const flow: StrategyFlow = {
-    view: { nodes: [], edges: [] },
-    ...whenUpdated,
-  };
-  await putObject({ Key: strategyFlowKey, data: flow });
+  // const strategyFlowKey = pathname.strategyFlow({
+  //   strategyId: strategy.id,
+  //   strategyKind: strategy.kind,
+  // });
+  // const whenUpdated = updatedNow();
+  // const flow: StrategyFlow = {
+  //   view: { nodes: [], edges: [] },
+  //   ...whenUpdated,
+  // };
+  // await putObject({ Key: strategyFlowKey, data: flow });
   return strategy;
 };
 
@@ -154,11 +136,7 @@ export const readStrategy: ReadStrategy["func"] = async (strategyKey) =>
     Key: pathname.strategy(strategyKey),
   });
 
-/**
- * Get `accountId` of strategy.
- *
- * @throws {@link ErrorStrategyItemNotFound}
- */
+/** Get `accountId` of strategy. */
 export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   strategyKey
 ) => {
@@ -178,12 +156,6 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   return accountId;
 };
 
-/**
- * Rename strategy.
- *
- * @throws {@link ErrorInvalidArg}
- * @throws {@link ErrorStrategyItemNotFound}
- */
 export const renameStrategy: RenameStrategy["func"] = async ({
   accountId,
   name,
@@ -207,11 +179,6 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   });
 };
 
-/**
- * Delete strategy.
- *
- * @throws {@link ErrorPermissionOnStrategyItem}
- */
 export const deleteStrategy: DeleteStrategy["func"] = async (
   accountStrategyKey
 ) => {

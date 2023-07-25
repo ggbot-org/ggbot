@@ -27,18 +27,7 @@ import { appendStrategyDailyOrders } from "./strategyDailyOrders.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
 
-/**
- * Execute a ggbot2 strategy.
- *
- * It can either:
- *
- * - Point to the actual exchange.
- * - Simulate an execution with a given balance or at a given time.
- *
- * @throws {@link ErrorAccountItemNotFound}
- * @throws {@link ErrorStrategyItemNotFound}
- * @throws {@link ErrorUnimplementedStrategyKind}
- */
+/** Execute a ggbot2 strategy. */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   strategyId,
@@ -71,6 +60,8 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
 
       // Truncate logical time to minute. It is a good compromise also to
       // cache klines data.
+      //
+      // TODO is this correct?
       const time = truncateTime(now()).to.minute();
 
       const { symbols } = await binance.exchangeInfo();

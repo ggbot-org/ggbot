@@ -13,11 +13,6 @@ import { deleteObject, getObject, putObject } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 import { readStrategyAccountId } from "./strategy.js";
 
-/**
- * Copy strategy flow.
- *
- * @throws {@link ErrorStrategyItemNotFound}
- */
 export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   accountId,
   source: strategyKey,
@@ -41,11 +36,6 @@ export const readStrategyFlow: ReadStrategyFlow["func"] = async (arg) =>
     Key: pathname.strategyFlow(arg),
   });
 
-/**
- * Write strategy flow.
- *
- * @throws {@link ErrorPermissionOnStrategyItem}
- */
 export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   accountId,
   view,
@@ -69,11 +59,6 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
   return whenUpdated;
 };
 
-/**
- * Delete strategy flow.
- *
- * @throws {@link ErrorPermissionOnStrategyItem}
- */
 export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
   accountId,
   ...strategyKey

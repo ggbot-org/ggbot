@@ -4,11 +4,7 @@ import { ErrorUknownDflowNodes } from "../errors.js";
 import { DflowExecutorView } from "./executor.js";
 import { NodeTextToDflowKind, noOpNodeKinds } from "./nodeResolution.js";
 
-/**
- * Check if provided `view` is well defined and compatible with `nodesCatalog`.
- *
- * @throws {@link ErrorUknownDflowNodes}
- */
+/** Check if provided `view` is well defined and compatible with `nodesCatalog`. */
 export const dflowValidate = ({
   nodesCatalog,
   nodeTextToDflowKind,

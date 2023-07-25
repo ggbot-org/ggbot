@@ -40,11 +40,7 @@ export const mul: ArithmeticOperator = (a, b, numDecimals) =>
     numDecimals ?? maxNumOfDecimals([a, b])
   );
 
-/**
- * Division operator.
- *
- * @throws {@link ErrorCannotDivideByZero}
- */
+/** Division operator. */
 export const div: ArithmeticOperator = (a, b, numDecimals) => {
   if (equal(b, coerceToDecimal(0, numOfDecimals(b))))
     throw new ErrorCannotDivideByZero();

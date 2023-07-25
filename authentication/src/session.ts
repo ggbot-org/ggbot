@@ -11,16 +11,11 @@ import jsonwebtoken from "jsonwebtoken";
 import { ErrorUnauthorizedAuthenticationHeader } from "./errors.js";
 import { verifyAuthenticationHeader } from "./header.js";
 
-/** @throws {@link ErrorMissingEnvironmentVariable} */
 export const signSession = (session: ClientSession) =>
   jsonwebtoken.sign({ data: session }, ENV.JWT_SECRET, {
     expiresIn: `${clientSessionNumDays} days`,
   });
 
-/**
- * @throws {@link ErrorUnauthorizedAuthenticationHeader}
- * @throws {@link ErrorMissingEnvironmentVariable}
- */
 export const readSessionFromAuthorizationHeader = (
   headerContent: unknown
 ): ClientSession => {

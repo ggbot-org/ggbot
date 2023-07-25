@@ -63,7 +63,6 @@ export class BinanceExchange {
     this.connector = new BinanceConnector(baseUrl);
   }
 
-  /** @throws {@link ErrorBinanceSymbolFilter} */
   static throwIfMinNotionalFilterIsInvalid(
     quoteOrderQty: Exclude<BinanceNewOrderOptions["quoteOrderQty"], undefined>,
     type: BinanceOrderType,
@@ -75,7 +74,6 @@ export class BinanceExchange {
       throw new ErrorBinanceSymbolFilter({ filterType: "MIN_NOTIONAL" });
   }
 
-  /** @throws {@link ErrorBinanceSymbolFilter} */
   static throwIfLotSizeFilterIsInvalid(
     quantity: Exclude<BinanceNewOrderOptions["quantity"], undefined>,
     lotSizeFilter?: BinanceSymbolFilterLotSize
@@ -120,8 +118,6 @@ export class BinanceExchange {
   /**
    * Validate order parameters and try to adjust them; otherwise throw an error.
    *
-   * @throws {@link ErrorBinanceCannotTradeSymbol}
-   * @throws {@link ErrorBinanceInvalidArg}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
    */
   async prepareOrder(
@@ -243,7 +239,6 @@ export class BinanceExchange {
   /**
    * Current average price for a symbol.
    *
-   * @throws {@link ErrorInvalidArg}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
    */
   async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
@@ -307,8 +302,6 @@ export class BinanceExchange {
   /**
    * Kline/Candlestick Data.
    *
-   * @throws {@link ErrorBinanceInvalidArg}
-   * @throws {@link ErrorBinanceInvalidKlineOptionalParameters}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
    */
   async klines(
@@ -342,12 +335,7 @@ export class BinanceExchange {
     return klines;
   }
 
-  /**
-   * Validate klines parameters.
-   *
-   * @throws {@link ErrorBinanceInvalidArg}
-   * @throws {@link ErrorBinanceInvalidKlineOptionalParameters}
-   */
+  /** Validate klines parameters. */
   async klinesParametersAreValidOrThrow(
     symbol: string,
     interval: string,
@@ -372,8 +360,6 @@ export class BinanceExchange {
    * but `uiKlines` return modified kline data, optimized for presentation of
    * candlestick charts.
    *
-   * @throws {@link ErrorBinanceInvalidArg}
-   * @throws {@link ErrorBinanceInvalidKlineOptionalParameters}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
    */
   async uiKlines(
@@ -397,11 +383,7 @@ export class BinanceExchange {
     );
   }
 
-  /**
-   * Get `BinanceSymbolInfo` for `symbol`, if any.
-   *
-   * @throws {@link ErrorBinanceInvalidArg}
-   */
+  /** Get `BinanceSymbolInfo` for `symbol`, if any. */
   async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
     const isSymbol = await this.isBinanceSymbol(symbol);
     if (!isSymbol)
@@ -414,7 +396,6 @@ export class BinanceExchange {
   /**
    * 24 hour rolling window price change statistics.
    *
-   * @throws {@link ErrorBinanceInvalidArg}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
    */
   async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
@@ -431,7 +412,6 @@ export class BinanceExchange {
   /**
    * Latest price for a symbol.
    *
-   * @throws {@link ErrorBinanceInvalidArg}
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
    */
   async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {

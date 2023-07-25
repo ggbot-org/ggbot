@@ -40,7 +40,6 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
 export const readAccount: ReadAccount["func"] = async (accountKey) =>
   await getObject<ReadAccount["out"]>({ Key: pathname.account(accountKey) });
 
-/** @throws {@link ErrorAccountItemNotFound} */
 const getAccountOrThrow = async ({
   accountId,
 }: AccountKey): Promise<Account> => {
@@ -65,10 +64,6 @@ export const listAccountKeys: ListAccountKeys["func"] = async () => {
   );
 };
 
-/**
- * @throws {@link ErrorInvalidArg}
- * @throws {@link ErrorAccountItemNotFound}
- */
 export const renameAccount: RenameAccount["func"] = async ({
   accountId,
   name,
@@ -84,7 +79,6 @@ export const renameAccount: RenameAccount["func"] = async ({
   return updatedNow();
 };
 
-/** @throws {@link ErrorAccountItemNotFound} */
 export const setAccountCountry: SetAccountCountry["func"] = async ({
   accountId,
   country,

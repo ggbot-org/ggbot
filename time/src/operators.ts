@@ -31,11 +31,7 @@ type TimeTranslator<TimeType> = (arg: TimeType) => {
   minus: (num: number) => TimeTranslationUnits<TimeType>;
 };
 
-/**
- * Translate `Date`.
- *
- * @throws ErrorInvalidDate
- */
+/** Translate `Date`. */
 export const getDate: TimeTranslator<Date> = (input) => {
   if (isInvalidDate(input)) throw new ErrorInvalidDate();
   const date = new Date(input);
@@ -177,11 +173,7 @@ export const getTime: TimeTranslator<Time> = (time) => {
   };
 };
 
-/**
- * Truncate `Date`.
- *
- * @throws ErrorInvalidDate
- */
+/** Truncate `Date`. */
 export const truncateDate: TimeTruncator<Date, Date> = (date) => {
   if (isInvalidDate(date)) throw new ErrorInvalidDate();
   return {

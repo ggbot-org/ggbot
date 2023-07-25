@@ -4,7 +4,6 @@ import { ErrorAccountItemNotFound } from "@ggbot2/models";
 import { _BinanceClient } from "./_binanceClient.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 
-/** @throws {@link ErrorAccountItemNotFound} */
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
   async ({ accountId }) => {
     const binanceApiConfig = await readBinanceApiConfig({ accountId });
