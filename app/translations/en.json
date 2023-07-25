@@ -53,7 +53,10 @@
   "InvalidStrategyKey.message": {
     "defaultMessage": "Invalid strategy key. Check this URL parameters."
   },
-  "Page.noNetwork": {
+  "NoNetwork.title": {
+    "defaultMessage": "No network"
+  },
+  "NoNetwork.message": {
     "defaultMessage": "The network connection has been lost."
   },
   "PleaseConfigureBinance.goToSettings": {

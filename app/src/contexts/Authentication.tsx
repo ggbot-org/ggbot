@@ -1,4 +1,3 @@
-import { Modal } from "@ggbot2/design";
 import { Account, EmailAddress, isAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
@@ -172,15 +171,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   if (showSplashScreen) return <SplashScreen />;
 
   if (jwt === undefined) {
-    return (
-      <Modal isActive>
-        {email ? (
-          <AuthVerify email={email} unsetEmail={unsetEmail} setJwt={setJwt} />
-        ) : (
-          <AuthEnter setEmail={setEmail} />
-        )}
-      </Modal>
-    );
+    if (email) {
+      return (
+        <AuthVerify email={email} unsetEmail={unsetEmail} setJwt={setJwt} />
+      );
+    } else {
+      return <AuthEnter setEmail={setEmail} />;
+    }
   }
 
   return (

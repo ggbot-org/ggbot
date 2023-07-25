@@ -11,6 +11,7 @@ import {
   FormOnSubmit,
   InputField,
   Message,
+  Modal,
   OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
@@ -168,64 +169,66 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
   );
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <OutputField label={fieldLabel.email} value={email} />
+    <Modal isActive>
+      <Form box onSubmit={onSubmit}>
+        <OutputField label={fieldLabel.email} value={email} />
 
-      <Field>
-        <Control>
-          <Button size="small" onClick={unsetEmail}>
-            <FormattedMessage id="buttonLabel.reset" />
-          </Button>
-        </Control>
-      </Field>
+        <Field>
+          <Control>
+            <Button size="small" onClick={unsetEmail}>
+              <FormattedMessage id="buttonLabel.reset" />
+            </Button>
+          </Control>
+        </Field>
 
-      <Message>
-        <FormattedMessage
-          id="AuthVerify.checkYourEmail"
-          values={{ em: (chunks) => <em>{chunks}</em> }}
+        <Message>
+          <FormattedMessage
+            id="AuthVerify.checkYourEmail"
+            values={{ em: (chunks) => <em>{chunks}</em> }}
+          />
+        </Message>
+
+        <InputField
+          required
+          label={fieldLabel.oneTimePassword}
+          name="code"
+          readOnly={isPending}
+          spellCheck={false}
+          type="text"
         />
-      </Message>
 
-      <InputField
-        required
-        label={fieldLabel.oneTimePassword}
-        name="code"
-        readOnly={isPending}
-        spellCheck={false}
-        type="text"
-      />
+        <Field>
+          <Control>
+            <Button color="primary" isLoading={isPending}>
+              <FormattedMessage id="buttonLabel.enter" />
+            </Button>
+          </Control>
+        </Field>
 
-      <Field>
-        <Control>
-          <Button color="primary" isLoading={isPending}>
-            <FormattedMessage id="buttonLabel.enter" />
-          </Button>
-        </Control>
-      </Field>
+        <>
+          {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
 
-      <>
-        {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
+          {gotTimeout ? <TimeoutErrorMessage /> : null}
 
-        {gotTimeout ? <TimeoutErrorMessage /> : null}
+          {verificationFailed ? (
+            <Message color="warning">Verification failed</Message>
+          ) : null}
 
-        {verificationFailed ? (
-          <Message color="warning">Verification failed</Message>
-        ) : null}
+          {needToGenerateOneTimePasswordAgain ? (
+            <>
+              <Message>Need to generate one time password again.</Message>
 
-        {needToGenerateOneTimePasswordAgain ? (
-          <>
-            <Message>Need to generate one time password again.</Message>
-
-            <Field>
-              <Control>
-                <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
-                  {buttonLabel.ok}
-                </Button>
-              </Control>
-            </Field>
-          </>
-        ) : null}
-      </>
-    </Form>
+              <Field>
+                <Control>
+                  <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
+                    {buttonLabel.ok}
+                  </Button>
+                </Control>
+              </Field>
+            </>
+          ) : null}
+        </>
+      </Form>
+    </Modal>
   );
 };

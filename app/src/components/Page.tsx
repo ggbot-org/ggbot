@@ -1,28 +1,19 @@
-import { Message, useOfflineDetection } from "@ggbot2/design";
 import { FC, PropsWithChildren } from "react";
-import { FormattedMessage } from "react-intl";
 
 import { Navigation, NavigationProps } from "../components/Navigation.js";
+import { NoNetwork } from "../components/NoNetwork.js";
 
 export type PageProps = Pick<NavigationProps, "noMenu">;
 
 export const Page: FC<PropsWithChildren<PageProps>> = ({
   children,
   noMenu,
-}) => {
-  const isOffline = useOfflineDetection();
+}) => (
+  <>
+    <Navigation noMenu={noMenu} />
 
-  return (
-    <>
-      <Navigation noMenu={isOffline ? true : noMenu} />
+    <NoNetwork />
 
-      {isOffline ? (
-        <Message>
-          <FormattedMessage id="Page.noNetwork" />
-        </Message>
-      ) : null}
-
-      {children}
-    </>
-  );
-};
+    {children}
+  </>
+);

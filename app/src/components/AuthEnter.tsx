@@ -1,5 +1,3 @@
-// TODO Auth forms are shared among User and Admin webapp, move them to design or to a package auth-ui or authentication
-// also AuthenticationContext could be shared
 import {
   isApiAuthEnterRequestData,
   isApiAuthEnterResponseData,
@@ -12,6 +10,7 @@ import {
   FormOnSubmit,
   formValues,
   InputField,
+  Modal,
   Title,
 } from "@ggbot2/design";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
@@ -129,30 +128,32 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
   );
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Title>{title.enterForm}</Title>
+    <Modal isActive>
+      <Form box onSubmit={onSubmit}>
+        <Title>{title.enterForm}</Title>
 
-      <InputField
-        required
-        label={fieldLabel.email}
-        name="email"
-        type="email"
-        readOnly={isPending}
-      />
+        <InputField
+          required
+          label={fieldLabel.email}
+          name="email"
+          type="email"
+          readOnly={isPending}
+        />
 
-      <Field isGrouped>
-        <Control>
-          <Button color="primary" isLoading={isPending}>
-            <FormattedMessage id="buttonLabel.send" />
-          </Button>
-        </Control>
-      </Field>
+        <Field isGrouped>
+          <Control>
+            <Button color="primary" isLoading={isPending}>
+              <FormattedMessage id="buttonLabel.send" />
+            </Button>
+          </Control>
+        </Field>
 
-      <>
-        {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
+        <>
+          {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
 
-        {gotTimeout ? <TimeoutErrorMessage /> : null}
-      </>
-    </Form>
+          {gotTimeout ? <TimeoutErrorMessage /> : null}
+        </>
+      </Form>
+    </Modal>
   );
 };
