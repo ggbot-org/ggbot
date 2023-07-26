@@ -53,11 +53,32 @@
   "DeleteStrategy.title": {
     "defaultMessage": "Strategy deletion"
   },
+  "GoCopyStrategy.label": {
+    "defaultMessage": "Copy"
+  },
   "GoSettings.label": {
     "defaultMessage": "Go to Settings"
   },
   "InvalidStrategyKey.message": {
     "defaultMessage": "Invalid strategy key. Check this URL parameters."
+  },
+  "Navigation.account": {
+    "defaultMessage": "Account"
+  },
+  "Navigation.billing": {
+    "defaultMessage": "Billing"
+  },
+  "Navigation.binance": {
+    "defaultMessage": "Binance"
+  },
+  "Navigation.exit": {
+    "defaultMessage": "Exit"
+  },
+  "Navigation.settings": {
+    "defaultMessage": "Settings"
+  },
+  "Navigation.strategies": {
+    "defaultMessage": "Strategies"
   },
   "NoNetwork.title": {
     "defaultMessage": "No network"
@@ -77,6 +98,9 @@
   "PleasePurchase.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
   },
+  "ProfitSummary.title": {
+    "defaultMessage": "Profits"
+  },
   "ShareStrategy.buttonLabel": {
     "defaultMessage": "Share"
   },
@@ -92,8 +116,20 @@
   "Strategies.title": {
     "defaultMessage": "Strategies"
   },
+  "StrategyInfo.title": {
+    "defaultMessage": "Strategy info"
+  },
   "StrategyNotFound.title": {
     "defaultMessage": "Strategy not found."
+  },
+  "StrategyId.label": {
+    "defaultMessage": "Strategy ID"
+  },
+  "StrategyKind.label": {
+    "defaultMessage": "Strategy kind"
+  },
+  "StrategyName.label": {
+    "defaultMessage": "Strategy name"
   },
   "SubscriptionCanceled.message": {
     "defaultMessage": "Your purchase was canceled."
@@ -104,11 +140,11 @@
   "SubscriptionPurchased.message": {
     "defaultMessage": "Thank you for your purchase."
   },
+  "WhenCreated.label": {
+    "defaultMessage": "When created"
+  },
   "buttonLabel.cancel": {
     "defaultMessage": "Cancel"
-  },
-  "buttonLabel.copy": {
-    "defaultMessage": "Copy"
   },
   "buttonLabel.create": {
     "defaultMessage": "Create"
@@ -143,20 +179,11 @@
   "fieldLabel.from": {
     "defaultMessage": "From"
   },
-  "fieldLabel.strategyId": {
-    "defaultMessage": "Strategy ID"
-  },
   "fieldLabel.strategyKind": {
     "defaultMessage": "Strategy kind"
   },
-  "fieldLabel.strategyName": {
-    "defaultMessage": "Strategy name"
-  },
   "fieldLabel.to": {
     "defaultMessage": "To"
-  },
-  "fieldLabel.whenCreated": {
-    "defaultMessage": "When created"
   },
   "tabLabel.backtest": {
     "defaultMessage": "Backtest"

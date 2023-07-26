@@ -6,19 +6,22 @@ import { StrategyContext } from "../contexts/Strategy.js";
 import { href } from "../routing/hrefs.js";
 
 export const GoCopyStrategy: FC = () => {
-  const { strategyKey } = useContext(StrategyContext);
+  const { strategy } = useContext(StrategyContext);
 
   const onClick = useCallback<ButtonOnClick>(
     (event) => {
       event.stopPropagation();
-      window.location.href = href.copyStrategyPage(strategyKey);
+      window.location.href = href.copyStrategyPage({
+        strategyId: strategy.id,
+        strategyKind: strategy.kind,
+      });
     },
-    [strategyKey]
+    [strategy]
   );
 
   return (
     <Button type="button" onClick={onClick}>
-      <FormattedMessage id="buttonLabel.copy" />
+      <FormattedMessage id="GoCopyStrategy.label" />
     </Button>
   );
 };

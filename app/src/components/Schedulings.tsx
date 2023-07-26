@@ -39,7 +39,7 @@ type Props = {
 };
 
 export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
-  const { strategyKey } = useContext(StrategyContext);
+  const { strategy } = useContext(StrategyContext);
   const { hasActiveSubscription } = useContext(SubscriptionContext);
 
   const READ = useApi.ReadAccountStrategies();
@@ -53,15 +53,15 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
   >([]);
 
   const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
-    if (!Array.isArray(accountStrategies) || !strategyKey) return [];
+    if (!Array.isArray(accountStrategies)) return [];
     const schedulings: StrategyScheduling[] = [];
     for (const accountStrategy of accountStrategies) {
       if (!isAccountStrategy(accountStrategy)) continue;
-      if (accountStrategy.strategyId !== strategyKey.strategyId) continue;
+      if (accountStrategy.strategyId !== strategy.id) continue;
       schedulings.push(...accountStrategy.schedulings);
     }
     return schedulings;
-  }, [accountStrategies, strategyKey]);
+  }, [accountStrategies, strategy]);
 
   const someSchedulingChanged = useMemo(() => {
     // Do not know about currentSchedulings yet, data fetch is pending.
@@ -154,12 +154,11 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!canSubmit) return;
-    if (!strategyKey) return;
     WRITE.request({
-      strategyId: strategyKey.strategyId,
+      strategyId: strategy.id,
       schedulings: wantedSchedulings,
     });
-  }, [WRITE, canSubmit, strategyKey, wantedSchedulings]);
+  }, [WRITE, canSubmit, strategy, wantedSchedulings]);
 
   const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();

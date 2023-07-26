@@ -3,9 +3,7 @@ export const title = {
   copyStrategy: "Copy strategy",
   enterForm: "Enter ggbot2",
   exitForm: "Exit ggbot2",
-  profits: "Profits",
   purchase: "Purchase",
   strategies: "Strategies",
-  strategyInfo: "Strategy info",
   subscription: "Subscription",
 };

@@ -94,7 +94,7 @@ export const CreateStrategy: FC = () => {
 
           <InputField
             required
-            label={formatMessage({ id: "fieldLabel.strategyName" })}
+            label={formatMessage({ id: "StrategyName.label" })}
             name={fieldName.name}
             readOnly={readOnly}
             help={help}

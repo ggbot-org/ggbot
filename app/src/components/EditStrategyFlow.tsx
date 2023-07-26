@@ -1,6 +1,5 @@
 // TODO remove this
 import { ButtonOnClick } from "@ggbot2/design";
-import { isStrategyFlow } from "@ggbot2/models";
 import {
   FC,
   useCallback,
@@ -21,62 +20,53 @@ import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 
 export const EditStrategyFlow: FC = () => {
-  const { strategyKey } = useContext(StrategyContext);
-  const strategyKind = strategyKey?.strategyKind;
+  const { strategy, strategyFlow: storedStrategyFlow } =
+    useContext(StrategyContext);
 
   const [canSave, setCanSave] = useState(false);
   const [flowChanged, setFlowChanged] = useState(false);
-  const [flowLoaded, setFlowLoaded] = useState(false);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
     containerRef: flowViewContainerRef,
-    strategyKind,
+    strategyKind: strategy.kind,
   });
 
   const [backtesting, backtestingDispatch] = useBacktesting({
     flowViewGraph: flowView?.graph,
-    strategyKind,
+    strategyKind: strategy.kind,
   });
 
-  const READ = useApi.ReadStrategyFlow();
   const WRITE = useApi.WriteStrategyFlow();
 
-  const storedStrategyFlow = READ.data;
-  const readIsPending = READ.isPending;
   const saveIsPending = WRITE.isPending;
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
     if (!flowView) return;
-    if (!strategyKey) return;
     if (!canSave) return;
-    if (WRITE.canRun) WRITE.request({ ...strategyKey, view: flowView.graph });
-  }, [WRITE, canSave, flowView, strategyKey]);
-
-  useEffect(() => {
-    if (!strategyKey) return;
-    if (READ.canRun) READ.request(strategyKey);
-  }, [READ, flowLoaded, strategyKey]);
+    if (WRITE.canRun)
+      WRITE.request({
+        strategyId: strategy.id,
+        strategyKind: strategy.kind,
+        view: flowView.graph,
+      });
+  }, [WRITE, canSave, flowView, strategy]);
 
   useEffect(() => {
     try {
       if (!flowView) return;
-      if (readIsPending) return;
       if (storedStrategyFlow === undefined) return;
       if (storedStrategyFlow === null) {
-        setFlowLoaded(true);
+        // TODO set Welcome flow
         return;
       }
       flowView.clearGraph();
-      if (isStrategyFlow(storedStrategyFlow)) {
-        flowView.loadGraph(storedStrategyFlow.view);
-      }
-      setFlowLoaded(true);
+      flowView.loadGraph(storedStrategyFlow.view);
     } catch (error) {
       // TODO show error to user
       console.error(error);
     }
-  }, [flowView, setFlowLoaded, storedStrategyFlow, readIsPending]);
+  }, [flowView, storedStrategyFlow]);
 
   useEffect(() => {
     if (whenUpdatedFlow) setFlowChanged(true);

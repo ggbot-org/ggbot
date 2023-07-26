@@ -7,12 +7,13 @@ import {
   MainColor,
   Message,
   Modal,
-  OutputField,
-  useFormattedDate,
 } from "@ggbot2/design";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { StrategyId } from "../components/StrategyId.js";
+import { StrategyName } from "../components/StrategyName.js";
+import { WhenCreated } from "../components/WhenCreated.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { href } from "../routing/hrefs.js";
@@ -22,10 +23,7 @@ export const DeleteStrategy: FC = () => {
 
   const { formatMessage } = useIntl();
 
-  const { strategyWhenCreated, strategyName, strategyKey } =
-    useContext(StrategyContext);
-
-  const { strategyId } = strategyKey;
+  const { strategy } = useContext(StrategyContext);
 
   const DELETE = useApi.DeleteStrategy();
   const isLoading = DELETE.isPending || DELETE.isDone;
@@ -38,10 +36,9 @@ export const DeleteStrategy: FC = () => {
   }, []);
 
   const onClickConfirmation = useCallback(() => {
-    if (strategyKey) DELETE.request(strategyKey);
-  }, [DELETE, strategyKey]);
-
-  const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "time");
+    if (strategy)
+      DELETE.request({ strategyId: strategy.id, strategyKind: strategy.kind });
+  }, [DELETE, strategy]);
 
   useEffect(() => {
     if (redirectToHomepage) window.location.href = href.homePage();
@@ -65,26 +62,17 @@ export const DeleteStrategy: FC = () => {
 
             <Columns>
               <Column>
-                <OutputField
-                  label={formatMessage({ id: "fieldLabel.strategyName" })}
-                  value={strategyName}
-                />
+                <StrategyName value={strategy.name} />
               </Column>
             </Columns>
 
             <Columns>
               <Column>
-                <OutputField
-                  label={formatMessage({ id: "fieldLabel.strategyId" })}
-                  value={strategyId}
-                />
+                <StrategyId value={strategy.id} />
               </Column>
 
               <Column>
-                <OutputField
-                  label={formatMessage({ id: "fieldLabel.whenCreated" })}
-                  value={formattedWhenCreated}
-                />
+                <WhenCreated value={strategy.whenCreated} />
               </Column>
             </Columns>
           </Content>

@@ -7,7 +7,6 @@ import {
   InputField,
   Message,
   Title,
-  useFormattedDate,
   useToast,
 } from "@ggbot2/design";
 import {
@@ -27,6 +26,8 @@ import {
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { StrategyName } from "../components/StrategyName.js";
+import { WhenCreated } from "../components/WhenCreated.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
@@ -34,19 +35,18 @@ import { href } from "../routing/hrefs.js";
 
 export const CopyStrategy: FC = () => {
   const { formatMessage } = useIntl();
-  const { strategyWhenCreated, strategyName, strategyKey } =
-    useContext(StrategyContext);
+
   const { toast } = useToast();
+
+  const { strategy } = useContext(StrategyContext);
 
   const [isDisabled, setIsDisabled] = useState(true);
 
   const COPY = useApi.CopyStrategy();
   const readOnly = COPY.isPending || COPY.isDone;
   const isLoading = COPY.isPending || COPY.isDone;
-  const strategy = COPY.data;
+  const newStrategy = COPY.data;
   const error = COPY.error;
-
-  const formattedWhenCreated = useFormattedDate(strategyWhenCreated, "day");
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -56,7 +56,12 @@ export const CopyStrategy: FC = () => {
         const name = (event.target as EventTarget & { name: { value: string } })
           .name.value;
         throwIfInvalidName(name);
-        if (isName(name) && strategyKey) COPY.request({ name, ...strategyKey });
+        if (isName(name))
+          COPY.request({
+            name,
+            strategyId: strategy.id,
+            strategyKind: strategy.kind,
+          });
       } catch (error) {
         if (error instanceof ErrorInvalidArg) {
           toast.warning(
@@ -65,7 +70,7 @@ export const CopyStrategy: FC = () => {
         }
       }
     },
-    [COPY, formatMessage, strategyKey, toast]
+    [COPY, formatMessage, strategy, toast]
   );
 
   const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -91,25 +96,21 @@ export const CopyStrategy: FC = () => {
   }, [error, formatMessage, toast]);
 
   useEffect(() => {
-    if (isStrategy(strategy)) {
-      const { id, kind } = strategy;
+    if (isStrategy(newStrategy)) {
       window.location.href = href.strategyPage({
-        strategyId: id,
-        strategyKind: kind,
+        strategyId: newStrategy.id,
+        strategyKind: newStrategy.kind,
       });
     }
-  }, [strategy]);
+  }, [newStrategy]);
 
   return (
     <Form box onSubmit={onSubmit}>
       <Title>{title.copyStrategy}</Title>
 
-      <InputField label={fieldLabel.strategyName} defaultValue={strategyName} />
+      <StrategyName value={strategy.name} />
 
-      <InputField
-        label={fieldLabel.whenCreated}
-        defaultValue={formattedWhenCreated}
-      />
+      <WhenCreated value={strategy.whenCreated} />
 
       <Message>
         <FormattedMessage id="CopyStrategy.chooseNewName" />
@@ -120,7 +121,7 @@ export const CopyStrategy: FC = () => {
         onChange={onChangeName}
         label={fieldLabel.newStrategyName}
         name="name"
-        placeholder={strategyName}
+        placeholder={strategy.name}
         readOnly={readOnly}
       />
 

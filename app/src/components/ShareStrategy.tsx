@@ -8,26 +8,21 @@ import { href } from "../routing/hrefs.js";
 export const ShareStrategy: FC = () => {
   const { formatMessage } = useIntl();
   const { toast } = useToast();
-  const { strategyKey, strategyName } = useContext(StrategyContext);
+  const { strategy } = useContext(StrategyContext);
 
   const shareData = useMemo<
     Pick<ShareData, "title" | "text" | "url"> | undefined
-  >(() => {
-    const title = "ggbot2";
-    if (!strategyKey) return;
-    const url = `${window.location.origin}${href.flowPage(strategyKey)}`;
-    if (strategyName) {
-      return {
-        title,
-        url,
-        text: strategyName,
-      };
-    }
-    return {
+  >(
+    () => ({
       title: "ggbot2",
-      url,
-    };
-  }, [strategyKey, strategyName]);
+      url: `${window.location.origin}${href.flowPage({
+        strategyId: strategy.id,
+        strategyKind: strategy.kind,
+      })}`,
+      text: strategy.name,
+    }),
+    [strategy]
+  );
 
   const onClick = useCallback(async () => {
     try {

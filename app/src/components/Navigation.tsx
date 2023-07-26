@@ -9,9 +9,9 @@ import {
   NavbarStart,
 } from "@ggbot2/design";
 import { FC, memo, useCallback, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { AuthenticationContext } from "../contexts/Authentication.js";
-import { navigationLabel } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
@@ -42,23 +42,25 @@ export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
         <>
           <NavbarStart>
             <NavbarItemAnchor onClick={goToHomePage}>
-              {navigationLabel.strategies}
+              <FormattedMessage id="Navigation.strategies" />
             </NavbarItemAnchor>
 
             <NavbarItem hasDropdown isHoverable>
-              <NavbarLink>{navigationLabel.settings}</NavbarLink>
+              <NavbarLink>
+                <FormattedMessage id="Navigation.settings" />
+              </NavbarLink>
 
               <NavbarDropdown>
                 <NavbarItemAnchor onClick={goToSettings("account")}>
-                  {navigationLabel.account}
+                  <FormattedMessage id="Navigation.account" />
                 </NavbarItemAnchor>
 
                 <NavbarItemAnchor onClick={goToSettings("binance")}>
-                  {navigationLabel.binance}
+                  <FormattedMessage id="Navigation.binance" />
                 </NavbarItemAnchor>
 
                 <NavbarItemAnchor onClick={goToSettings("billing")}>
-                  {navigationLabel.billing}
+                  <FormattedMessage id="Navigation.billing" />
                 </NavbarItemAnchor>
               </NavbarDropdown>
             </NavbarItem>
@@ -66,7 +68,7 @@ export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
 
           <NavbarEnd>
             <NavbarItemAnchor onClick={onClickExit}>
-              {navigationLabel.exit}
+              <FormattedMessage id="Navigation.exit" />
             </NavbarItemAnchor>
           </NavbarEnd>
         </>

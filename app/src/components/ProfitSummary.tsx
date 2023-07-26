@@ -13,10 +13,11 @@ import {
 import { isOrders, Order } from "@ggbot2/models";
 import { TimeInterval } from "@ggbot2/time";
 import { FC, Fragment, PropsWithChildren, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
-import { miscellaneousLabel, title } from "../i18n/index.js";
+import { miscellaneousLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
@@ -64,11 +65,9 @@ type SymbolStats = {
 };
 
 export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
-  const {
-    strategyKey: { strategyKind },
-  } = useContext(StrategyContext);
+  const { strategy } = useContext(StrategyContext);
 
-  const binanceSymbols = useBinanceSymbols({ strategyKind });
+  const binanceSymbols = useBinanceSymbols({ strategyKind: strategy.kind });
 
   let numBuys: number | undefined = undefined;
   let numSells: number | undefined = undefined;
@@ -79,7 +78,7 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
     Omit<SymbolStats, "symbol">
   >();
 
-  if (strategyKind === "binance" && isOrders(orders)) {
+  if (strategy.kind === "binance" && isOrders(orders)) {
     for (const { info } of orders) {
       if (isBinanceOrderRespFULL(info)) {
         // TODO assuming type=MARKET status=FILLED
@@ -146,7 +145,9 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
 
   return (
     <Box>
-      <Title>{title.profits}</Title>
+      <Title>
+        <FormattedMessage id="ProfitSummary.title" />
+      </Title>
 
       <Level>
         <LevelItem>

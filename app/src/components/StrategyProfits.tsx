@@ -13,7 +13,7 @@ import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 
 export const StrategyProfits: FC = () => {
-  const { strategyKey } = useContext(StrategyContext);
+  const { strategy } = useContext(StrategyContext);
 
   const numDays = 30;
 
@@ -28,9 +28,13 @@ export const StrategyProfits: FC = () => {
   const dayInterval = timeIntervalToDay(timeInterval);
 
   useEffect(() => {
-    if (!strategyKey) return;
-    if (READ.canRun) READ.request({ ...strategyKey, ...dayInterval });
-  }, [READ, dayInterval, strategyKey]);
+    if (READ.canRun)
+      READ.request({
+        strategyId: strategy.id,
+        strategyKind: strategy.kind,
+        ...dayInterval,
+      });
+  }, [READ, dayInterval, strategy]);
 
   return <ProfitSummary timeInterval={timeInterval} orders={orders} />;
 };

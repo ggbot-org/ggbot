@@ -1,9 +1,9 @@
 import {
   isStrategy,
-  noneStrategyKind,
-  nullId,
+  isStrategyFlow,
+  noneStrategy,
   Strategy,
-  StrategyKey,
+  StrategyFlow,
 } from "@ggbot2/models";
 import {
   createContext,
@@ -21,46 +21,50 @@ import { OneSectionLayout } from "../layouts/OneSection.js";
 import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js";
 
 type ContextValue = {
-  strategyName: string;
-  strategyKey: StrategyKey;
-  strategyWhenCreated: Strategy["whenCreated"];
+  // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
+  strategy: Strategy;
+  // A strategy can have an empty flow: then `strategyFlow` will be `null`.
+  // Also `strategyFlow` is fetched once `strategy` is found: until then `strategyFlow` will be `undefined`.
+  strategyFlow: StrategyFlow | undefined | null;
 };
 
-const initialContextValue: ContextValue = {
-  strategyKey: {
-    strategyId: nullId,
-    strategyKind: noneStrategyKind,
-  },
-  strategyName: "",
-  strategyWhenCreated: 0,
-};
-
-export const StrategyContext = createContext<ContextValue>(initialContextValue);
+export const StrategyContext = createContext<ContextValue>({
+  strategy: noneStrategy,
+  strategyFlow: undefined,
+});
 
 StrategyContext.displayName = "StrategyContext";
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-  const READ = useApi.ReadStrategy();
-  const strategy = READ.data;
+  const READ_STRATEGY = useApi.ReadStrategy();
+  const strategy = READ_STRATEGY.data;
+
+  const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
+  const strategyFlow = READ_STRATEGY_FLOW.data;
 
   const strategyKey = strategyKeyParamsFromCurrentLocation();
 
   const contextValue = useMemo<ContextValue>(
-    () =>
-      strategyKey && isStrategy(strategy)
-        ? {
-            strategyKey,
-            strategyName: strategy.name,
-            strategyWhenCreated: strategy.whenCreated,
-          }
-        : initialContextValue,
-    [strategy, strategyKey]
+    () => ({
+      strategy: isStrategy(strategy) ? strategy : noneStrategy,
+      strategyFlow:
+        isStrategyFlow(strategyFlow) || strategyFlow === null
+          ? strategyFlow
+          : undefined,
+    }),
+    [strategy, strategyFlow]
   );
 
   useEffect(() => {
     if (!strategyKey) return;
-    if (READ.canRun) READ.request(strategyKey);
-  }, [READ, strategyKey]);
+    if (READ_STRATEGY.canRun) READ_STRATEGY.request(strategyKey);
+  }, [READ_STRATEGY, strategyKey]);
+
+  useEffect(() => {
+    if (!strategyKey) return;
+    if (!strategy) return;
+    if (READ_STRATEGY_FLOW.canRun) READ_STRATEGY_FLOW.request(strategyKey);
+  }, [READ_STRATEGY_FLOW, strategy, strategyKey]);
 
   if (!strategyKey)
     return (

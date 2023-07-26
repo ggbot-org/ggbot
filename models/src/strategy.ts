@@ -2,13 +2,12 @@ import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 
 import { Account, AccountKey, isAccountKey } from "./account.js";
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
-import { isItemId, Item, newId, NewItem } from "./item.js";
+import { isItemId, Item, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
-export const noneStrategyKind = "none";
-export const strategyKinds = ["binance", noneStrategyKind] as const;
+export const strategyKinds = ["binance", "_none_"] as const;
 export type StrategyKind = (typeof strategyKinds)[number];
 export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 
@@ -26,6 +25,14 @@ export const isStrategy = objectTypeGuard<Strategy>(
     isStrategyKind(kind) &&
     isName(name)
 );
+
+export const noneStrategy: Strategy = {
+  id: nullId,
+  kind: "_none_",
+  name: "",
+  whenCreated: 0,
+  accountId: nullId,
+} as const;
 
 export const newStrategy = ({
   accountId,
