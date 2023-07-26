@@ -30,22 +30,20 @@ import {
   SchedulingItemProps,
 } from "../components/SchedulingItem.js";
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
+import { AccountStrategiesContext } from "../contexts/AccountStrategies.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
 
-type Props = {
-  setHasActiveSubscription: (arg: boolean | undefined) => void;
-};
-
-export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
+export const Schedulings: FC = () => {
   const { strategy } = useContext(StrategyContext);
   const { hasActiveSubscription } = useContext(SubscriptionContext);
+  const { accountStrategies, refetchAccountStrategies } = useContext(
+    AccountStrategiesContext
+  );
 
-  const READ = useApi.ReadAccountStrategies();
   const WRITE = useApi.WriteAccountStrategiesItemSchedulings();
 
-  const accountStrategies = READ.data;
   const isLoading = WRITE.isPending;
 
   const [schedulingItems, setSchedulingItems] = useState<
@@ -172,16 +170,6 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
     [currentSchedulings]
   );
 
-  useEffect(() => {
-    if (typeof hasActiveSubscription === "boolean")
-      setHasActiveSubscription(hasActiveSubscription);
-  }, [hasActiveSubscription, setHasActiveSubscription]);
-
-  // Fetch accountStrategies.
-  useEffect(() => {
-    if (READ.canRun) READ.request();
-  }, [READ]);
-
   // Update schedulings once fetched.
   useEffect(() => {
     if (currentSchedulings) setSchedulingItems(currentSchedulings);
@@ -189,8 +177,8 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
 
   // Fetch strategies on updates.
   useEffect(() => {
-    if (WRITE.isDone) READ.reset();
-  }, [READ, WRITE]);
+    if (WRITE.isDone) refetchAccountStrategies();
+  }, [refetchAccountStrategies, WRITE]);
 
   return (
     <Form box onSubmit={onSubmit}>
@@ -198,7 +186,9 @@ export const Schedulings: FC<Props> = ({ setHasActiveSubscription }) => {
         isMobile
         left={
           <LevelItem>
-            <Title>Schedulings</Title>
+            <Title>
+              <FormattedMessage id="Schedulings.title" />
+            </Title>
           </LevelItem>
         }
         right={

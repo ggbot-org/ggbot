@@ -26,6 +26,8 @@ export const isEmailAddress = (arg: unknown): arg is EmailAddress => {
   return true;
 };
 
+export const noneEmail: EmailAddress = "user@example.com";
+
 /**
  * Normalize email address.
  *

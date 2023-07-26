@@ -6,7 +6,7 @@ import {
   Navbar,
   Section,
   Title as _Title,
-  ToastContextProvider,
+  ToastProvider,
 } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC, PropsWithChildren } from "react";
@@ -27,7 +27,7 @@ const Title: FC<PropsWithChildren> = ({ children }) => (
 );
 
 const Page: FC = () => (
-  <ToastContextProvider>
+  <ToastProvider>
     <Navbar />
 
     <main>
@@ -107,7 +107,7 @@ const Page: FC = () => (
         </Section>
       </Container>
     </main>
-  </ToastContextProvider>
+  </ToastProvider>
 );
 
 mount(Page);

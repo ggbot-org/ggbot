@@ -4,8 +4,8 @@ import {
   AllowedCountryIsoCode2,
   isAllowedCountryIsoCode2,
 } from "./countries.js";
-import { EmailAddress, isEmailAddress } from "./email.js";
-import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js";
+import { EmailAddress, isEmailAddress, noneEmail } from "./email.js";
+import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
 import {
@@ -31,6 +31,12 @@ export const isAccount = objectTypeGuard<Account>(
     (country === undefined ? true : isAllowedCountryIsoCode2(country)) &&
     (name === undefined ? true : isName(name))
 );
+
+export const noneAccount: Account = {
+  id: nullId,
+  whenCreated: 0,
+  email: noneEmail,
+};
 
 export const newAccount = ({ email, name }: NewItem<Account>): Account => {
   const optionalName =

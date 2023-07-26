@@ -11,6 +11,8 @@ import { Operation } from "./operation.js";
 import { isStrategySchedulings } from "./strategyScheduling.js";
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
+export type AccountStrategies = AccountStrategy[];
+
 export const isAccountStrategies =
   arrayTypeGuard<AccountStrategy>(isAccountStrategy);
 

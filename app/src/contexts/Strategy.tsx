@@ -2,8 +2,8 @@ import {
   isStrategy,
   isStrategyFlow,
   noneStrategy,
+  ReadStrategyFlow,
   Strategy,
-  StrategyFlow,
 } from "@ggbot2/models";
 import {
   createContext,
@@ -23,9 +23,7 @@ import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyPara
 type ContextValue = {
   // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
   strategy: Strategy;
-  // A strategy can have an empty flow: then `strategyFlow` will be `null`.
-  // Also `strategyFlow` is fetched once `strategy` is found: until then `strategyFlow` will be `undefined`.
-  strategyFlow: StrategyFlow | undefined | null;
+  strategyFlow: ReadStrategyFlow["out"] | undefined;
 };
 
 export const StrategyContext = createContext<ContextValue>({

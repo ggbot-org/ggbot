@@ -101,6 +101,9 @@
   "ProfitSummary.title": {
     "defaultMessage": "Profits"
   },
+  "Schedulings.title": {
+    "defaultMessage": "Schedulings"
+  },
   "ShareStrategy.buttonLabel": {
     "defaultMessage": "Share"
   },

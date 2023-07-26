@@ -22,9 +22,7 @@ export type AuthExitProps = {
 export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
   const { formatMessage } = useIntl();
 
-  const { account, exit, exited } = useContext(AuthenticationContext);
-
-  const email = account?.email ?? "";
+  const { email, exit, exited } = useContext(AuthenticationContext);
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {

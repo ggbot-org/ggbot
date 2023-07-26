@@ -11,7 +11,7 @@ import { IntlProvider } from "react-intl";
 
 import { defaultLocale, detectLocale, localeJsonPathname } from "./locales.js";
 
-export const I18nContextProvider: FC<PropsWithChildren> = ({ children }) => {
+export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
   const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] =
     useReducer<
       Reducer<

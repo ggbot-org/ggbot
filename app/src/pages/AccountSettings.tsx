@@ -1,5 +1,5 @@
-import { Column, Columns, ToastContextProvider } from "@ggbot2/design";
-import { I18nContextProvider } from "@ggbot2/i18n";
+import { Column, Columns, ToastProvider } from "@ggbot2/design";
+import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { AccountSettings } from "../components/AccountSettings.js";
@@ -8,9 +8,9 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const AccountSettingsPage: FC = () => (
-  <I18nContextProvider>
+  <I18nProvider>
     <AuthenticationProvider>
-      <ToastContextProvider>
+      <ToastProvider>
         <OneSectionLayout>
           <Columns>
             <Column size="half">
@@ -20,7 +20,7 @@ export const AccountSettingsPage: FC = () => (
 
           <DeleteAccount />
         </OneSectionLayout>
-      </ToastContextProvider>
+      </ToastProvider>
     </AuthenticationProvider>
-  </I18nContextProvider>
+  </I18nProvider>
 );

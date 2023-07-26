@@ -20,7 +20,7 @@ import {
 } from "@ggbot2/models";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 
-import { AuthenticationContext } from "../contexts/Authentication.js";
+import { AccountContext } from "../contexts/Account.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
 
@@ -30,7 +30,7 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const AccountSettings: FC = () => {
-  const { account } = useContext(AuthenticationContext);
+  const { account } = useContext(AccountContext);
   const [name, setName] = useState("");
   const [help, setHelp] = useState("");
 

@@ -33,7 +33,7 @@ type Notification = {
   toast: Omit<ToastProps, "close">;
 };
 
-export const ToastContextProvider: FC<PropsWithChildren> = ({ children }) => {
+export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
   const [notifications, dispatch] = useReducer<
     Reducer<
       Notification[],

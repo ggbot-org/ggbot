@@ -1,10 +1,10 @@
 import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
-import { AccountStrategy, isAccountStrategy } from "@ggbot2/models";
-import { FC, useEffect } from "react";
+import { AccountStrategy, isAccountStrategies } from "@ggbot2/models";
+import { FC, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
-import { useApi } from "../hooks/useApi.js";
+import { AccountStrategiesContext } from "../contexts/AccountStrategies.js";
 import { href } from "../routing/hrefs.js";
 
 type StrategyItem = Pick<
@@ -13,14 +13,16 @@ type StrategyItem = Pick<
 > & { href: string };
 
 export const Strategies: FC = () => {
-  const READ = useApi.ReadAccountStrategies();
-  const data = READ.data;
+  const { accountStrategies } = useContext(AccountStrategiesContext);
 
   const items: StrategyItem[] = [];
-  if (Array.isArray(data)) {
-    for (const item of data) {
-      if (!isAccountStrategy(item)) continue;
-      const { strategyId, strategyKind, name, schedulings } = item;
+  if (isAccountStrategies(accountStrategies)) {
+    for (const {
+      strategyId,
+      strategyKind,
+      name,
+      schedulings,
+    } of accountStrategies) {
       items.push({
         href: href.strategyPage({ strategyId, strategyKind }),
         name,
@@ -30,17 +32,13 @@ export const Strategies: FC = () => {
     }
   }
 
-  useEffect(() => {
-    if (READ.canRun) READ.request();
-  }, [READ]);
-
   return (
     <>
       <Title>
         <FormattedMessage id="Strategies.title" />
       </Title>
 
-      {data !== undefined && items.length === 0 && (
+      {accountStrategies === null && (
         <Message color="info">
           <FormattedMessage id="Strategies.noStrategy" />
         </Message>

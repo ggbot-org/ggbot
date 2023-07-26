@@ -1,4 +1,4 @@
-import { Account, EmailAddress, isAccount } from "@ggbot2/models";
+import { EmailAddress, isAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
@@ -20,6 +20,7 @@ import {
   SplashScreen,
   splashScreenDuration,
 } from "../components/SplashScreen.js";
+import { AccountProvider } from "../contexts/Account.js";
 import { useApi } from "../hooks/useApi.js";
 
 type State = {
@@ -32,13 +33,13 @@ type State = {
   exited: boolean;
 };
 
-type ContextValue = Pick<State, "exited"> & {
-  account?: Account | null | undefined;
+type ContextValue = Pick<State, "email" | "exited"> & {
   openExitModal: () => void;
   exit: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
+  email: undefined,
   openExitModal: () => {},
   exit: () => {},
   exited: false,
@@ -133,7 +134,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue = useMemo<ContextValue>(
     () => ({
-      account: account === null || isAccount(account) ? account : undefined,
+      email,
       exit: () => {
         dispatch({ type: "EXIT" });
       },
@@ -142,7 +143,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
         dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
       },
     }),
-    [account, exited]
+    [email, exited]
   );
 
   useEffect(() => {
@@ -156,8 +157,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (account === undefined) return;
-
     if (account === null) {
       dispatch({ type: "SET_EMAIL", data: { email: undefined } });
     }
@@ -184,11 +183,14 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  return (
-    <AuthenticationContext.Provider value={contextValue}>
-      {children}
+  if (isAccount(account))
+    return (
+      <AuthenticationContext.Provider value={contextValue}>
+        <AccountProvider account={account}>{children}</AccountProvider>
 
-      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
-    </AuthenticationContext.Provider>
-  );
+        <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+      </AuthenticationContext.Provider>
+    );
+
+  return null;
 };
