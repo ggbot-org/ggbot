@@ -35,14 +35,12 @@ http
     const targetHeaders = new Headers({
       "User-agent": "ggbot2.com",
     });
-    for (const [key, value] of Object.entries(sourceHeaders)) {
+    for (const [key, value] of Object.entries(sourceHeaders))
       if (
-        BinanceRequestHeaders.apiKeyHeader === key &&
+        BinanceRequestHeaders.isApiKeyHeader(key) &&
         typeof value === "string"
-      ) {
+      )
         targetHeaders.append(key, value);
-      }
-    }
 
     const proxiedResponse = await fetch(targetUrl, {
       headers: targetHeaders,

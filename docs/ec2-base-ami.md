@@ -122,7 +122,6 @@ This will create a /etc/systemd/system/ggbot2-user-webapp.service.d/override.con
 
 ```
 [Service]
-Environment="AWS_ACCOUNT_ID=xxx"
 Environment="AWS_ACCESS_KEY_ID=xxx"
 Environment="AWS_SECRET_ACCESS_KEY=xxx"
 Environment="DEPLOY_STAGE=main"
@@ -197,7 +196,6 @@ Add content
 
 ```
 [Service]
-Environment="AWS_ACCOUNT_ID=xxx"
 Environment="AWS_ACCESS_KEY_ID=xxx"
 Environment="AWS_SECRET_ACCESS_KEY=xxx"
 Environment="DEPLOY_STAGE=main"
