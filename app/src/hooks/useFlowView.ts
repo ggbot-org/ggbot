@@ -3,7 +3,6 @@ import {
   nodeTextToViewType,
   parsePercentage,
 } from "@ggbot2/dflow";
-import { UpdateTime } from "@ggbot2/models";
 import { now, Time, truncateTime } from "@ggbot2/time";
 import {
   DflowErrorCannotConnectPins,
@@ -17,50 +16,27 @@ import {
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
 } from "flow-view";
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
+import { FlowViewContainerRef } from "../components/FlowViewContainer.js";
+import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceDflowClient } from "../flow/binance.js";
 import {
   FlowViewNodeInfo,
   FlowViewNodeJson,
   FlowViewNodePercentage,
 } from "../flow/nodes/index.js";
-import {
-  useNodesCatalog,
-  UseNodesCatalogArg,
-} from "../hooks/useNodesCatalog.js";
+import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
-type UseFlowView = (
-  arg: UseNodesCatalogArg & {
-    containerRef: MutableRefObject<HTMLDivElement | null>;
-  }
-) => { flowView: FlowView | undefined } & Partial<UpdateTime>;
+export const useFlowView = (containerRef: FlowViewContainerRef) => {
+  const {
+    strategy: { kind: strategyKind },
+  } = useContext(StrategyContext);
 
-/**
- * @example
- *
- * ```ts
- * const containerRef = useRef<HTMLDivElement | null>(null);
- *
- * const { flowView, whenUpdated } = useFlowView({
- *   containerRef,
- *   strategyKind: "binance",
- * });
- *
- * return <div ref={containerRef} />;
- * ```
- */
-export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
   const flowViewRef = useRef<FlowView>();
-  const [whenUpdated, setWhenUpdated] = useState<Time | undefined>();
+  const [whenUpdated, setWhenUpdated] = useState<Time>(0);
 
-  const nodesCatalog = useNodesCatalog({ strategyKind });
+  const nodesCatalog = useNodesCatalog();
 
   const initializeBinanceFlowView = useCallback(
     (nodesCatalog: DflowNodesCatalog) => {
@@ -261,5 +237,5 @@ export const useFlowView: UseFlowView = ({ containerRef, strategyKind }) => {
     };
   }, [initializeBinanceFlowView, nodesCatalog, strategyKind]);
 
-  return { flowView: flowViewRef.current, whenUpdated };
+  return { flowView: flowViewRef.current, whenUpdatedFlow: whenUpdated };
 };

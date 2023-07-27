@@ -1,3 +1,4 @@
+// TODO try to create a general tabs component, StrategyTabs is really similar to this
 import {
   TabContent,
   Tabs,
@@ -12,7 +13,7 @@ type TabId = (typeof tabIds)[number];
 
 type Props = Record<TabId, ReactNode>;
 
-export const ViewStrategyTabs: FC<Props> = (props) => {
+export const TryFlowTabs: FC<Props> = (props) => {
   const { formatMessage } = useIntl();
 
   const [activeTabId, setActiveTabId] = useState<TabId>("flow");

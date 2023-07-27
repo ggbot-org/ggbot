@@ -3,7 +3,7 @@ import { FC } from "react";
 
 import { Backtesting } from "../components/Backtesting.js";
 import { DeleteStrategy } from "../components/DeleteStrategy.js";
-import { FlowViewContainer } from "../components/FlowViewContainer.js";
+import { EditableFlow } from "../components/EditableFlow.js";
 import { Schedulings } from "../components/Schedulings.js";
 import { StrategyInfo } from "../components/StrategyInfo.js";
 import { StrategyProfits } from "../components/StrategyProfits.js";
@@ -11,12 +11,19 @@ import { StrategyTabs } from "../components/StrategyTabs.js";
 import { useStrategyFlow } from "../hooks/useStrategyFlow.js";
 
 export const Strategy: FC = () => {
-  const { backtesting, flowViewContainerRef } = useStrategyFlow();
+  const { backtesting, flowViewContainerRef, flowViewGraph, whenUpdatedFlow } =
+    useStrategyFlow();
 
   return (
     <StrategyTabs
       backtest={<Backtesting {...backtesting} />}
-      flow={<FlowViewContainer ref={flowViewContainerRef} />}
+      flow={
+        <EditableFlow
+          flowViewGraph={flowViewGraph}
+          flowViewContainerRef={flowViewContainerRef}
+          whenUpdatedFlow={whenUpdatedFlow}
+        />
+      }
       manage={
         <>
           <Section>

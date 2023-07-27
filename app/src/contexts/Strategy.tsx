@@ -13,7 +13,7 @@ import {
   useMemo,
 } from "react";
 
-import { EmptyPage } from "../components/EmptyPage.js";
+import { AppShell } from "../components/AppShell.js";
 import { InvalidStrategyKey } from "../components/InvalidStrategyKey.js";
 import { StrategyNotFound } from "../components/StrategyNotFound.js";
 import { useApi } from "../hooks/useApi.js";
@@ -71,7 +71,7 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
       </OneSectionLayout>
     );
 
-  if (strategy === undefined) return <EmptyPage />;
+  if (strategy === undefined) return <AppShell />;
 
   if (strategy === null)
     return (

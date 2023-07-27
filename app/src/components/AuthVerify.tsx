@@ -28,7 +28,7 @@ import { url } from "../routing/URLs.js";
 
 export type AuthVerifyProps = {
   email: EmailAddress;
-  unsetEmail: () => void;
+  resetEmail: () => void;
   setJwt: (jwt: NonEmptyString) => void;
 };
 
@@ -43,7 +43,7 @@ type State = {
 
 export const AuthVerify: FC<AuthVerifyProps> = ({
   email,
-  unsetEmail,
+  resetEmail,
   setJwt,
 }) => {
   const [
@@ -100,8 +100,8 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 
   const onClickOkGenerateOneTimePasswordAgain =
     useCallback<ButtonOnClick>(() => {
-      unsetEmail();
-    }, [unsetEmail]);
+      resetEmail();
+    }, [resetEmail]);
 
   const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
@@ -175,7 +175,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 
         <Field>
           <Control>
-            <Button size="small" onClick={unsetEmail}>
+            <Button size="small" onClick={resetEmail}>
               <FormattedMessage id="buttonLabel.reset" />
             </Button>
           </Control>

@@ -1,12 +1,10 @@
-import { Container, Section } from "@ggbot2/design";
 import { FC, PropsWithChildren } from "react";
 
-import { PageLayout } from "./Page.js";
+import { OneSection } from "../components/OneSection.js";
+import { PageLayout } from "../layouts/Page.js";
 
 export const OneSectionLayout: FC<PropsWithChildren> = ({ children }) => (
   <PageLayout>
-    <Section>
-      <Container maxWidth="desktop">{children}</Container>
-    </Section>
+    <OneSection>{children}</OneSection>
   </PageLayout>
 );

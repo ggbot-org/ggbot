@@ -3,10 +3,10 @@ import {
   Columns,
   Container,
   Logo,
-  Navbar,
   Section,
   Title as _Title,
   ToastProvider,
+  TopNavbar,
 } from "@ggbot2/design";
 import { mount } from "@ggbot2/react";
 import { FC, PropsWithChildren } from "react";
@@ -28,7 +28,7 @@ const Title: FC<PropsWithChildren> = ({ children }) => (
 
 const Page: FC = () => (
   <ToastProvider>
-    <Navbar />
+    <TopNavbar noMenu />
 
     <main>
       <Container>

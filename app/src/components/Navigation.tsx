@@ -1,23 +1,23 @@
 import {
-  Navbar,
   NavbarDropdown,
   NavbarEnd,
   NavbarItem,
   NavbarItemAnchor,
   NavbarLink,
-  NavbarProps,
   NavbarStart,
+  TopNavbar,
+  TopNavbarProps,
 } from "@ggbot2/design";
-import { FC, memo, useCallback, useContext } from "react";
+import { memo, useCallback, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
 
-export type NavigationProps = Pick<NavbarProps, "noMenu">;
+export type NavigationProps = Pick<TopNavbarProps, "noMenu">;
 
-export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
+export const Navigation = memo<NavigationProps>(({ noMenu }) => {
   const { openExitModal } = useContext(AuthenticationContext);
 
   const goToHomePage = () => {
@@ -37,7 +37,7 @@ export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
   );
 
   return (
-    <Navbar noMenu={noMenu}>
+    <TopNavbar noMenu={noMenu}>
       {noMenu || (
         <>
           <NavbarStart>
@@ -73,7 +73,7 @@ export const Navigation: FC<NavigationProps> = memo(({ noMenu }) => {
           </NavbarEnd>
         </>
       )}
-    </Navbar>
+    </TopNavbar>
   );
 });
 

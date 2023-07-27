@@ -2,33 +2,28 @@ import {
   DflowBinanceSymbolInfo,
   isDflowBinanceSymbolInfo,
 } from "@ggbot2/dflow";
-import { StrategyKey } from "@ggbot2/models";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { binance } from "../flow/binance.js";
 
-export type UseBinanceSymbolsArg = Partial<Pick<StrategyKey, "strategyKind">>;
+export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
+  const {
+    strategy: { kind: strategyKind },
+  } = useContext(StrategyContext);
 
-type UseBinanceSymbols = (
-  arg: UseBinanceSymbolsArg
-) => DflowBinanceSymbolInfo[] | undefined;
-
-export const useBinanceSymbols: UseBinanceSymbols = ({ strategyKind }) => {
-  const [binanceSymbols, setBinanceSymbols] = useState<
-    DflowBinanceSymbolInfo[] | undefined
-  >();
+  const binanceSymbolsRef = useRef<DflowBinanceSymbolInfo[]>();
 
   useEffect(() => {
     if (strategyKind !== "binance") return;
-
+    if (binanceSymbolsRef.current) return;
     (async () => {
       const exchangeInfo = await binance.exchangeInfo();
-      const binanceSymbols = exchangeInfo.symbols.filter(
+      binanceSymbolsRef.current = exchangeInfo.symbols.filter(
         isDflowBinanceSymbolInfo
       );
-      setBinanceSymbols(binanceSymbols);
     })();
-  }, [strategyKind]);
+  }, [binanceSymbolsRef, strategyKind]);
 
-  return binanceSymbols;
+  return binanceSymbolsRef.current;
 };

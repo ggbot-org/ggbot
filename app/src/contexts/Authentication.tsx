@@ -13,6 +13,7 @@ import {
   useReducer,
 } from "react";
 
+import { AppShell } from "../components/AppShell.js";
 import { AuthEnter, AuthEnterProps } from "../components/AuthEnter.js";
 import { AuthExit, AuthExitProps } from "../components/AuthExit.js";
 import { AuthVerify, AuthVerifyProps } from "../components/AuthVerify.js";
@@ -117,7 +118,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     [dispatch]
   );
 
-  const unsetEmail = useCallback<AuthVerifyProps["unsetEmail"]>(() => {
+  const resetEmail = useCallback<AuthVerifyProps["resetEmail"]>(() => {
     dispatch({ type: "SET_EMAIL", data: { email: undefined } });
   }, [dispatch]);
 
@@ -176,7 +177,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   if (jwt === undefined) {
     if (email) {
       return (
-        <AuthVerify email={email} unsetEmail={unsetEmail} setJwt={setJwt} />
+        <AuthVerify email={email} resetEmail={resetEmail} setJwt={setJwt} />
       );
     } else {
       return <AuthEnter setEmail={setEmail} />;
@@ -192,5 +193,5 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       </AuthenticationContext.Provider>
     );
 
-  return null;
+  return <AppShell />;
 };

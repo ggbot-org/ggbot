@@ -20,14 +20,18 @@ import {
   timestampToTime,
 } from "@ggbot2/time";
 import { FlowViewSerializableGraph } from "flow-view";
-import { Dispatch, useCallback, useEffect, useReducer } from "react";
+import {
+  Dispatch,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 
+import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceDflowClient } from "../flow/binance.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
-import {
-  useNodesCatalog,
-  UseNodesCatalogArg,
-} from "../hooks/useNodesCatalog.js";
+import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
 type State = Pick<DflowCommonContext, "memory"> & {
   stepIndex: number;
@@ -202,18 +206,15 @@ const getInitialState = (): State => {
   };
 };
 
-export type UseBacktesting = (
-  arg: UseNodesCatalogArg & {
-    flowViewGraph?: FlowViewSerializableGraph;
-  }
-) => { state: State; dispatch: Dispatch<Action> };
+export const useBacktesting = (
+  flowViewGraph: FlowViewSerializableGraph | undefined
+): { state: State; dispatch: Dispatch<Action> } => {
+  const {
+    strategy: { kind: strategyKind },
+  } = useContext(StrategyContext);
 
-export const useBacktesting: UseBacktesting = ({
-  flowViewGraph,
-  strategyKind,
-}) => {
-  const binanceSymbols = useBinanceSymbols({ strategyKind });
-  const nodesCatalog = useNodesCatalog({ strategyKind });
+  const binanceSymbols = useBinanceSymbols();
+  const nodesCatalog = useNodesCatalog();
 
   const [state, dispatch] = useReducer(backtestingReducer, getInitialState());
 
@@ -288,3 +289,5 @@ export const useBacktesting: UseBacktesting = ({
 
   return { state, dispatch };
 };
+
+export type UseBacktesting = typeof useBacktesting;

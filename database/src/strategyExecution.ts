@@ -65,7 +65,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
       const time = truncateTime(now()).to.minute();
 
       const { symbols } = await binance.exchangeInfo();
-      const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
+      const nodesCatalog = getDflowBinanceNodesCatalog(symbols);
 
       const executor = new BinanceDflowExecutor(binance, symbols, nodesCatalog);
       try {

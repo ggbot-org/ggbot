@@ -12,7 +12,7 @@ describe("BinanceDflowHost", () => {
     it("parses a flow view and loads it into a Dflow graph", async () => {
       const binance = new BinanceClientMock();
       const { symbols } = await binance.exchangeInfo();
-      const nodesCatalog = getDflowBinanceNodesCatalog({ symbols });
+      const nodesCatalog = getDflowBinanceNodesCatalog(symbols);
       const dflow = new BinanceDflowHost(
         { nodesCatalog },
         {

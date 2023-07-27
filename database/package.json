@@ -33,20 +33,6 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ],
-        "parserOptions": {
-          "project": "./tsconfig.json"
-        },
-        "rules": {
-          "@typescript-eslint/no-floating-promises": "error"
-        }
-      }
     ]
   }
 }

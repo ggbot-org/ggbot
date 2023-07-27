@@ -10,7 +10,7 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
   it("creates Dflow nodes related with Binance symbols", async () => {
     const binance = new BinanceClientMock();
     const { symbols } = await binance.exchangeInfo();
-    const nodesCatalog = getDflowBinanceDynamicNodesCatalog({ symbols });
+    const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols);
     assert.deepEqual(
       Object.keys(nodesCatalog).sort(),
       [
@@ -121,9 +121,8 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
       },
     ];
 
-    const nodesCatalog = getDflowBinanceDynamicNodesCatalog({
-      symbols: [validSymbol, ...invalidSymbols],
-    });
+    const symbols = [validSymbol, ...invalidSymbols];
+    const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols);
 
     // Valid node.
     assert.ok(nodesCatalog["AAA/BTC"] !== undefined);

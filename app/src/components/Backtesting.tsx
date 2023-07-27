@@ -1,5 +1,6 @@
 import {
   Button,
+  Buttons,
   DailyInterval,
   DailyIntervalProps,
   DateTime,
@@ -13,6 +14,7 @@ import {
   FrequencyInput,
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
+import { OneSection } from "../components/OneSection.js";
 import { ProfitSummary } from "../components/ProfitSummary.js";
 import { UseBacktesting } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
@@ -121,7 +123,7 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
   }, [dispatch, isPaused, isRunning]);
 
   return (
-    <div>
+    <OneSection>
       <DailyInterval
         {...dayInterval}
         max={maxDay}
@@ -159,11 +161,11 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
         </div>
       </div>
 
-      <ProfitSummary orders={orders} timeInterval={timeInterval} />
-
-      <menu>
+      <Buttons>
         <Button onClick={onClickAction}>{actionLabel}</Button>
-      </menu>
-    </div>
+      </Buttons>
+
+      <ProfitSummary orders={orders} timeInterval={timeInterval} />
+    </OneSection>
   );
 };

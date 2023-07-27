@@ -5,25 +5,25 @@ import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 
 export const useStrategyFlow = () => {
-  const { strategy, strategyFlow: flow } = useContext(StrategyContext);
+  const { strategyFlow: flow } = useContext(StrategyContext);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const { flowView } = useFlowView({
-    containerRef: flowViewContainerRef,
-    strategyKind: strategy.kind,
-  });
+  const { flowView, whenUpdatedFlow } = useFlowView(flowViewContainerRef);
 
-  const backtesting = useBacktesting({
-    flowViewGraph: flowView?.graph,
-    strategyKind: strategy.kind,
-  });
+  const backtesting = useBacktesting(flowView?.graph);
 
   useEffect(() => {
     if (!flowView) return;
-    if (!flow) return;
+    if (flow === undefined) return;
+    if (flow === null) return; // TODO set "Welcome flow"
     flowView.clearGraph();
     flowView.loadGraph(flow.view);
   }, [flowView, flow]);
 
-  return { backtesting, flowViewContainerRef };
+  return {
+    backtesting,
+    flowViewContainerRef,
+    flowViewGraph: flowView?.graph,
+    whenUpdatedFlow,
+  };
 };

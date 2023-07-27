@@ -1,3 +1,4 @@
+// TODO add bulma block to trunx, for example as a prop to Flex component
 export * from "./Calendar.js";
 export * from "./Checkmark.js";
 export * from "./DailyInterval.js";
@@ -7,11 +8,11 @@ export * from "./Icon.js";
 export * from "./InputField.js";
 export * from "./Logo.js";
 export * from "./Modal.js";
-export * from "./Navbar.js";
 export * from "./OutputField.js";
 export * from "./SelectField.js";
 export * from "./Tabs.js";
 export * from "./Tag.js";
+export * from "./TopNavbar.js";
 export {
   Box,
   Breadcrumb,
@@ -42,11 +43,13 @@ export {
   type MainColor,
   Message,
   type MessageProps,
+  Navbar,
   NavbarDropdown,
   NavbarEnd,
   NavbarItem,
   NavbarItemAnchor,
   NavbarLink,
+  NavbarMenu,
   NavbarStart,
   Section,
   Select,
