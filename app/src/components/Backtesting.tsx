@@ -14,18 +14,12 @@ import {
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
 import { ProfitSummary } from "../components/ProfitSummary.js";
-import {
-  BacktestingDispatch,
-  BacktestingState,
-} from "../hooks/useBacktesting.js";
+import { UseBacktesting } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
 
-type Props = {
-  state: BacktestingState;
-  dispatch: BacktestingDispatch;
-};
+type Props = ReturnType<UseBacktesting>;
 
-export const BacktestController: FC<Props> = ({ state, dispatch }) => {
+export const Backtesting: FC<Props> = ({ state, dispatch }) => {
   const { formatMessage } = useIntl();
 
   const { dayInterval, maxDay } = state;

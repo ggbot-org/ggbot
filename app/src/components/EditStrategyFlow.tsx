@@ -9,14 +9,9 @@ import {
   useState,
 } from "react";
 
-import { BacktestController } from "../components/BacktestController.js";
-import { EditStrategyTabs } from "../components/EditStrategyTabs.js";
 import { EditStrategyTopbar } from "../components/EditStrategyTopbar.js";
-import { FlowViewContainer } from "../components/FlowViewContainer.js";
-import { MemoryController } from "../components/MemoryController.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 
 export const EditStrategyFlow: FC = () => {
@@ -29,11 +24,6 @@ export const EditStrategyFlow: FC = () => {
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
   const { flowView, whenUpdated: whenUpdatedFlow } = useFlowView({
     containerRef: flowViewContainerRef,
-    strategyKind: strategy.kind,
-  });
-
-  const [backtesting, backtestingDispatch] = useBacktesting({
-    flowViewGraph: flowView?.graph,
     strategyKind: strategy.kind,
   });
 
@@ -84,28 +74,10 @@ export const EditStrategyFlow: FC = () => {
   }, [flowChanged, saveIsPending, setCanSave]);
 
   return (
-    <>
-      <EditStrategyTopbar
-        canSave={canSave}
-        onClickSave={onClickSave}
-        saveIsPending={saveIsPending}
-      />
-
-      <EditStrategyTabs
-        flow={
-          <>
-            <FlowViewContainer ref={flowViewContainerRef} />
-
-            <MemoryController />
-          </>
-        }
-        backtest={
-          <BacktestController
-            state={backtesting}
-            dispatch={backtestingDispatch}
-          />
-        }
-      />
-    </>
+    <EditStrategyTopbar
+      canSave={canSave}
+      onClickSave={onClickSave}
+      saveIsPending={saveIsPending}
+    />
   );
 };

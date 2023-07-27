@@ -40,7 +40,6 @@ type State = Pick<DflowCommonContext, "memory"> & {
   timestamps: Timestamp[];
   maxDay: Day;
 };
-export type BacktestingState = State;
 
 const computeTimestamps = ({
   dayInterval,
@@ -85,8 +84,6 @@ type Action =
   | {
       type: "START";
     };
-
-export type BacktestingDispatch = Dispatch<Action>;
 
 const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -205,11 +202,11 @@ const getInitialState = (): State => {
   };
 };
 
-type UseBacktesting = (
+export type UseBacktesting = (
   arg: UseNodesCatalogArg & {
     flowViewGraph?: FlowViewSerializableGraph;
   }
-) => [state: State, dispatch: BacktestingDispatch];
+) => { state: State; dispatch: Dispatch<Action> };
 
 export const useBacktesting: UseBacktesting = ({
   flowViewGraph,
@@ -289,5 +286,5 @@ export const useBacktesting: UseBacktesting = ({
     runBacktest();
   }, [backtestIsRunning, runBacktest]);
 
-  return [state, dispatch];
+  return { state, dispatch };
 };

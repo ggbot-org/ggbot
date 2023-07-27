@@ -7,12 +7,12 @@ import {
 import { FC, ReactNode, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 
-const tabIds = ["flow", "backtest"] as const;
+const tabIds = ["manage", "flow", "backtest"] as const;
 type TabId = (typeof tabIds)[number];
 
 type Props = Record<TabId, ReactNode>;
 
-export const EditStrategyTabs: FC<Props> = (props) => {
+export const StrategyTabs: FC<Props> = (props) => {
   const { formatMessage } = useIntl();
 
   const [activeTabId, setActiveTabId] = useState<TabId>("flow");

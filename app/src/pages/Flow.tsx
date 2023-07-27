@@ -2,7 +2,7 @@ import { ToastProvider } from "@ggbot2/design";
 import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
-import { ViewStrategyFlow } from "../components/ViewStrategyFlow.js";
+import { TryFlow } from "../components/TryFlow.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
 import { PageLayout } from "../layouts/Page.js";
 
@@ -11,7 +11,7 @@ export const FlowPage: FC = () => (
     <StrategyProvider>
       <ToastProvider>
         <PageLayout noMenu>
-          <ViewStrategyFlow />
+          <TryFlow />
         </PageLayout>
       </ToastProvider>
     </StrategyProvider>
