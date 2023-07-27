@@ -1,16 +1,6 @@
-import { Navbar, NavbarEnd, NavbarItem, NavbarMenu } from "@ggbot2/design";
-import { FC, ReactNode } from "react";
+import { Flex } from "@ggbot2/design";
+import { FC, PropsWithChildren } from "react";
 
-type FlowMenuProps = { actions: { key: string; content: ReactNode }[] };
-
-export const FlowMenu: FC<FlowMenuProps> = ({ actions }) => (
-  <Navbar isTransparent>
-    <NavbarMenu>
-      <NavbarEnd>
-        {actions.map(({ key, content }) => (
-          <NavbarItem key={key}>{content}</NavbarItem>
-        ))}
-      </NavbarEnd>
-    </NavbarMenu>
-  </Navbar>
+export const FlowMenu: FC<PropsWithChildren> = ({ children }) => (
+  <Flex>{children}</Flex>
 );

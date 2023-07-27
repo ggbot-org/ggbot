@@ -1,3 +1,4 @@
+import { BadGatewayError } from "@ggbot2/http";
 import { EmailAddress, isAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
@@ -13,7 +14,6 @@ import {
   useReducer,
 } from "react";
 
-import { AppShell } from "../components/AppShell.js";
 import { AuthEnter, AuthEnterProps } from "../components/AuthEnter.js";
 import { AuthExit, AuthExitProps } from "../components/AuthExit.js";
 import { AuthVerify, AuthVerifyProps } from "../components/AuthVerify.js";
@@ -147,8 +147,24 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     [email, exited]
   );
 
+  // Fetch account.
   useEffect(() => {
     if (READ.canRun) READ.request();
+  }, [READ]);
+
+  // Handle errors.
+  useEffect(() => {
+    if (READ.error) {
+      if (READ.error.name === BadGatewayError.name) {
+        // Re-fetch.
+        const timeoutId = window.setTimeout(() => {
+          READ.reset();
+        }, 5000);
+        return () => {
+          window.clearTimeout(timeoutId);
+        };
+      }
+    }
   }, [READ]);
 
   useEffect(() => {
@@ -193,5 +209,5 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       </AuthenticationContext.Provider>
     );
 
-  return <AppShell />;
+  return null;
 };

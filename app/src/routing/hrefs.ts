@@ -1,8 +1,8 @@
 import {
   copyStrategyHtmlFilename,
-  flowHtmlFilename,
   settingsHtmlFilename,
   strategyHtmlFilename,
+  tryFlowHtmlFilename,
 } from "./pages.js";
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js";
 import { SettingsPageId, StrategyKey } from "./types.js";
@@ -12,9 +12,9 @@ export const href = {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${copyStrategyHtmlFilename}?${searchParams}`;
   },
-  flowPage: (strategyKey: StrategyKey) => {
+  tryFlowPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
-    return `/${flowHtmlFilename}?${searchParams}`;
+    return `/${tryFlowHtmlFilename}?${searchParams}`;
   },
   homePage: () => "/",
   strategyPage: (strategyKey: StrategyKey) => {

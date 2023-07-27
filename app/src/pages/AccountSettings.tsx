@@ -1,26 +1,25 @@
-import { Column, Columns, ToastProvider } from "@ggbot2/design";
-import { I18nProvider } from "@ggbot2/i18n";
+import { Column, Columns, Section } from "@ggbot2/design";
 import { FC } from "react";
 
 import { AccountSettings } from "../components/AccountSettings.js";
 import { DeleteAccount } from "../components/DeleteAccount.js";
+import { PageContainer } from "../components/PageContainer.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
-import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const AccountSettingsPage: FC = () => (
-  <I18nProvider>
+  <PageContainer>
     <AuthenticationProvider>
-      <ToastProvider>
-        <OneSectionLayout>
-          <Columns>
-            <Column size="half">
-              <AccountSettings />
-            </Column>
-          </Columns>
+      <Section>
+        <Columns>
+          <Column size="half">
+            <AccountSettings />
+          </Column>
+        </Columns>
+      </Section>
 
-          <DeleteAccount />
-        </OneSectionLayout>
-      </ToastProvider>
+      <Section>
+        <DeleteAccount />
+      </Section>
     </AuthenticationProvider>
-  </I18nProvider>
+  </PageContainer>
 );

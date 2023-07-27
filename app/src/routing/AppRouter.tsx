@@ -6,13 +6,11 @@ import { BillingSettingsPage } from "../pages/BillingSettings.js";
 import { BinanceSettingsPage } from "../pages/BinanceSettings.js";
 import { CopyStrategyPage } from "../pages/CopyStrategy.js";
 import { DashboardPage } from "../pages/Dashboard.js";
-import { FlowPage } from "../pages/Flow.js";
 import { StrategyPage } from "../pages/Strategy.js";
 import { SubscriptionCanceledPage } from "../pages/SubscriptionCanceled.js";
 import { SubscriptionPurchasedPage } from "../pages/SubscriptionPurchased.js";
 import {
   copyStrategyHtmlFilename,
-  flowHtmlFilename,
   indexHtmlFilename,
   settingsHtmlFilename,
   strategyHtmlFilename,
@@ -30,9 +28,6 @@ const Router: FC = () => {
 
     case pathname === `/${copyStrategyHtmlFilename}`:
       return <CopyStrategyPage />;
-
-    case pathname === `/${flowHtmlFilename}`:
-      return <FlowPage />;
 
     case pathname === `/${strategyHtmlFilename}`:
       return <StrategyPage />;

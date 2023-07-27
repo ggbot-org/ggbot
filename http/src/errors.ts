@@ -1,3 +1,8 @@
+import {
+  __500__INTERNAL_SERVER_ERROR__,
+  __502__BAD_GATEWAY__,
+} from "./codes.js";
+
 /**
  * @example
  *
@@ -24,6 +29,12 @@ export class ErrorHTTP extends Error {
 
 export class InternalServerError extends Error {
   constructor() {
-    super("500");
+    super(String(__500__INTERNAL_SERVER_ERROR__));
+  }
+}
+
+export class BadGatewayError extends Error {
+  constructor() {
+    super(String(__502__BAD_GATEWAY__));
   }
 }

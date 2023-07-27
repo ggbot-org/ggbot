@@ -1,3 +1,4 @@
+import { Section } from "@ggbot2/design";
 import {
   isStrategy,
   isStrategyFlow,
@@ -13,22 +14,20 @@ import {
   useMemo,
 } from "react";
 
-import { AppShell } from "../components/AppShell.js";
 import { InvalidStrategyKey } from "../components/InvalidStrategyKey.js";
 import { StrategyNotFound } from "../components/StrategyNotFound.js";
 import { useApi } from "../hooks/useApi.js";
-import { OneSectionLayout } from "../layouts/OneSection.js";
 import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js";
 
 type ContextValue = {
   // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
   strategy: Strategy;
-  strategyFlow: ReadStrategyFlow["out"] | undefined;
+  flow: ReadStrategyFlow["out"] | undefined;
 };
 
 export const StrategyContext = createContext<ContextValue>({
   strategy: noneStrategy,
-  strategyFlow: undefined,
+  flow: undefined,
 });
 
 StrategyContext.displayName = "StrategyContext";
@@ -38,19 +37,16 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   const strategy = READ_STRATEGY.data;
 
   const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
-  const strategyFlow = READ_STRATEGY_FLOW.data;
+  const flow = READ_STRATEGY_FLOW.data;
 
   const strategyKey = strategyKeyParamsFromCurrentLocation();
 
   const contextValue = useMemo<ContextValue>(
     () => ({
       strategy: isStrategy(strategy) ? strategy : noneStrategy,
-      strategyFlow:
-        isStrategyFlow(strategyFlow) || strategyFlow === null
-          ? strategyFlow
-          : undefined,
+      flow: isStrategyFlow(flow) || flow === null ? flow : undefined,
     }),
-    [strategy, strategyFlow]
+    [strategy, flow]
   );
 
   useEffect(() => {
@@ -66,18 +62,18 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
   if (!strategyKey)
     return (
-      <OneSectionLayout>
+      <Section>
         <InvalidStrategyKey />
-      </OneSectionLayout>
+      </Section>
     );
 
-  if (strategy === undefined) return <AppShell />;
+  if (strategy === undefined) return null;
 
   if (strategy === null)
     return (
-      <OneSectionLayout>
+      <Section>
         <StrategyNotFound {...strategyKey} />
-      </OneSectionLayout>
+      </Section>
     );
 
   return (

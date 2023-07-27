@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import {
-  Navbar,
+  Navbar as _Navbar,
   NavbarBrand,
   NavbarBurger,
   NavbarBurgerOnClick,
@@ -11,11 +11,11 @@ import {
 import { _classNames } from "../components/_classNames.js";
 import { Logo } from "../components/Logo.js";
 
-export type TopNavbarProps = Partial<{
+export type NavbarProps = Partial<{
   noMenu: boolean;
 }>;
 
-export const TopNavbar: FC<PropsWithChildren<TopNavbarProps>> = ({
+export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
   children,
   noMenu,
   ...props
@@ -40,7 +40,7 @@ export const TopNavbar: FC<PropsWithChildren<TopNavbarProps>> = ({
   }, []);
 
   return (
-    <Navbar color="black" {...props}>
+    <_Navbar color="black" {...props}>
       <NavbarBrand>
         <NavbarItem className={_classNames("is-unselectable")}>
           <Logo size={34} />
@@ -54,6 +54,6 @@ export const TopNavbar: FC<PropsWithChildren<TopNavbarProps>> = ({
       </NavbarBrand>
 
       {noMenu || <NavbarMenu isActive={isActive}>{children}</NavbarMenu>}
-    </Navbar>
+    </_Navbar>
   );
 };

@@ -3,13 +3,14 @@ import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 import {
   appJs,
   copyStrategyHtmlFilename,
-  flowHtmlFilename,
   indexHtmlFilename,
   publicDir,
   settingsHtmlFilename,
   strategyHtmlFilename,
   subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
+  tryFlowHtmlFilename,
+  tryFlowJs,
 } from "../package.js";
 
 const html = (scriptJs: string) =>
@@ -48,8 +49,8 @@ export const generateHtml = async () => {
 
   await generateHtmlPage({
     dirname,
-    filename: flowHtmlFilename,
-    htmlContent: html(appJs),
+    filename: tryFlowHtmlFilename,
+    htmlContent: html(tryFlowJs),
   });
 
   // Settings

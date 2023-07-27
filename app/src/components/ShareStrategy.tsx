@@ -15,7 +15,7 @@ export const ShareStrategy: FC = () => {
   >(
     () => ({
       title: "ggbot2",
-      url: `${window.location.origin}${href.flowPage({
+      url: `${window.location.origin}${href.tryFlowPage({
         strategyId: strategy.id,
         strategyKind: strategy.kind,
       })}`,

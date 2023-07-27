@@ -10,6 +10,8 @@ import {
   __401__UNAUTHORIZED__,
   __404__NOT_FOUND__,
   __500__INTERNAL_SERVER_ERROR__,
+  __502__BAD_GATEWAY__,
+  BadGatewayError,
   InternalServerError,
 } from "@ggbot2/http";
 import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
@@ -147,6 +149,11 @@ export const useAction = <
 
             case error === __500__INTERNAL_SERVER_ERROR__: {
               setError({ name: InternalServerError.name });
+              break;
+            }
+
+            case error === __502__BAD_GATEWAY__: {
+              setError({ name: BadGatewayError.name });
               break;
             }
 

@@ -1,13 +1,13 @@
-import { I18nProvider } from "@ggbot2/i18n";
+import { Section } from "@ggbot2/design";
 import { FC } from "react";
 
+import { PageContainer } from "../components/PageContainer.js";
 import { SubscriptionCanceled } from "../components/SubscriptionCanceled.js";
-import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const SubscriptionCanceledPage: FC = () => (
-  <I18nProvider>
-    <OneSectionLayout>
+  <PageContainer>
+    <Section>
       <SubscriptionCanceled />
-    </OneSectionLayout>
-  </I18nProvider>
+    </Section>
+  </PageContainer>
 );

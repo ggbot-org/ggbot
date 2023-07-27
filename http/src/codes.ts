@@ -53,3 +53,11 @@ export const __405__METHOD_NOT_ALLOWED__ = 405;
  * and no more specific message is suitable.
  */
 export const __500__INTERNAL_SERVER_ERROR__ = 500;
+
+/**
+ * The server was acting as a gateway or proxy and received an invalid response
+ * from the upstream server.
+ *
+ * @see {@link https://en.wikipedia.org/wiki/HTTP_502}
+ */
+export const __502__BAD_GATEWAY__ = 502;

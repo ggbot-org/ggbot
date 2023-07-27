@@ -4,6 +4,7 @@ import {
   DailyInterval,
   DailyIntervalProps,
   DateTime,
+  Section,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { dayIntervalToTime } from "@ggbot2/time";
@@ -14,7 +15,6 @@ import {
   FrequencyInput,
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
-import { OneSection } from "../components/OneSection.js";
 import { ProfitSummary } from "../components/ProfitSummary.js";
 import { UseBacktesting } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
@@ -123,49 +123,53 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
   }, [dispatch, isPaused, isRunning]);
 
   return (
-    <OneSection>
-      <DailyInterval
-        {...dayInterval}
-        max={maxDay}
-        setStart={setStart}
-        setEnd={setEnd}
-        labelStart={formatMessage({ id: "fieldLabel.from" })}
-        labelEnd={formatMessage({ id: "fieldLabel.to" })}
-      />
+    <>
+      <Section>
+        <DailyInterval
+          {...dayInterval}
+          max={maxDay}
+          setStart={setStart}
+          setEnd={setEnd}
+          labelStart={formatMessage({ id: "fieldLabel.from" })}
+          labelEnd={formatMessage({ id: "fieldLabel.to" })}
+        />
 
-      <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
-
-      <div>
-        <div>
-          <span>{`${stepIndex} of ${numSteps} intervals`}</span>
-
-          <DateTime format="time" value={currentTimestamp} />
-        </div>
+        <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
 
         <div>
-          <span>Memory</span>
+          <div>
+            <span>{`${stepIndex} of ${numSteps} intervals`}</span>
 
-          {memoryItems.length === 0 ? <span>(empty)</span> : null}
+            <DateTime format="time" value={currentTimestamp} />
+          </div>
+
+          <div>
+            <span>Memory</span>
+
+            {memoryItems.length === 0 ? <span>(empty)</span> : null}
+          </div>
+
+          <div>
+            {memoryItems.map(({ key, value }) => (
+              <div key={key}>
+                <span>{key}:</span>
+
+                <pre>
+                  <code>{JSON.stringify(value, null, 2)}</code>
+                </pre>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div>
-          {memoryItems.map(({ key, value }) => (
-            <div key={key}>
-              <span>{key}:</span>
+        <Buttons>
+          <Button onClick={onClickAction}>{actionLabel}</Button>
+        </Buttons>
+      </Section>
 
-              <pre>
-                <code>{JSON.stringify(value, null, 2)}</code>
-              </pre>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <Buttons>
-        <Button onClick={onClickAction}>{actionLabel}</Button>
-      </Buttons>
-
-      <ProfitSummary orders={orders} timeInterval={timeInterval} />
-    </OneSection>
+      <Section>
+        <ProfitSummary orders={orders} timeInterval={timeInterval} />
+      </Section>
+    </>
   );
 };

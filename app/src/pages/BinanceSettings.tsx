@@ -1,19 +1,16 @@
-import { ToastProvider } from "@ggbot2/design";
-import { I18nProvider } from "@ggbot2/i18n";
+import { Section } from "@ggbot2/design";
 import { FC } from "react";
 
 import { BinanceSettings } from "../components/BinanceSettings.js";
+import { PageContainer } from "../components/PageContainer.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
-import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const BinanceSettingsPage: FC = () => (
-  <I18nProvider>
+  <PageContainer>
     <AuthenticationProvider>
-      <ToastProvider>
-        <OneSectionLayout>
-          <BinanceSettings />
-        </OneSectionLayout>
-      </ToastProvider>
+      <Section>
+        <BinanceSettings />
+      </Section>
     </AuthenticationProvider>
-  </I18nProvider>
+  </PageContainer>
 );

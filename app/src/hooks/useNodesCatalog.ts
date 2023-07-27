@@ -1,26 +1,17 @@
-import { getDflowBinanceNodesCatalog } from "@ggbot2/dflow";
 import { DflowNodesCatalog } from "dflow";
-import { useContext, useEffect } from "react";
+import { useContext, useMemo } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
-import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
-
-const nodesCatalogMap = new Map<string, DflowNodesCatalog>();
+import { useBinanceNodesCatalog } from "../hooks/useBinanceNodesCatalog.js";
 
 export const useNodesCatalog = (): DflowNodesCatalog | undefined => {
   const {
     strategy: { kind: strategyKind },
   } = useContext(StrategyContext);
 
-  const binanceSymbols = useBinanceSymbols();
+  const binanceNodesCatalog = useBinanceNodesCatalog();
 
-  useEffect(() => {
-    if (strategyKind === "binance") {
-      if (!binanceSymbols) return;
-      const nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols);
-      nodesCatalogMap.set(strategyKind, nodesCatalog);
-    }
-  }, [binanceSymbols, strategyKind]);
-
-  return nodesCatalogMap.get(strategyKind);
+  return useMemo(() => {
+    if (strategyKind === "binance") return binanceNodesCatalog;
+  }, [binanceNodesCatalog, strategyKind]);
 };

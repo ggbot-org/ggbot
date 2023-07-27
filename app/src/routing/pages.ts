@@ -6,7 +6,7 @@ export const indexHtmlFilename = "index.html";
 
 export const copyStrategyHtmlFilename = "copy-strategy.html";
 
-export const flowHtmlFilename = "flow.html";
+export const tryFlowHtmlFilename = "flow.html";
 
 export const strategyHtmlFilename = "strategy.html";
 

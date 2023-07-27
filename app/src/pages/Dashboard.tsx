@@ -1,25 +1,22 @@
-import { ToastProvider } from "@ggbot2/design";
-import { I18nProvider } from "@ggbot2/i18n";
+import { Section } from "@ggbot2/design";
 import { FC } from "react";
 
 import { CreateStrategy } from "../components/CreateStrategy.js";
+import { PageContainer } from "../components/PageContainer.js";
 import { Strategies } from "../components/Strategies.js";
 import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
-import { OneSectionLayout } from "../layouts/OneSection.js";
 
 export const DashboardPage: FC = () => (
-  <I18nProvider>
+  <PageContainer>
     <AuthenticationProvider>
       <AccountStrategiesProvider>
-        <ToastProvider>
-          <OneSectionLayout>
-            <CreateStrategy />
+        <Section>
+          <CreateStrategy />
 
-            <Strategies />
-          </OneSectionLayout>
-        </ToastProvider>
+          <Strategies />
+        </Section>
       </AccountStrategiesProvider>
     </AuthenticationProvider>
-  </I18nProvider>
+  </PageContainer>
 );

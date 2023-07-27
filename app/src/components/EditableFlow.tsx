@@ -48,22 +48,15 @@ export const EditableFlow: FC<Props> = ({
 
   return (
     <>
-      <FlowMenu
-        actions={[
-          {
-            key: "save",
-            content: (
-              <Button
-                color={canSave ? "primary" : undefined}
-                isLoading={saveIsPending}
-                onClick={onClickSave}
-              >
-                <FormattedMessage id="buttonLabel.save" />
-              </Button>
-            ),
-          },
-        ]}
-      />
+      <FlowMenu>
+        <Button
+          color={canSave ? "primary" : undefined}
+          isLoading={saveIsPending}
+          onClick={onClickSave}
+        >
+          <FormattedMessage id="buttonLabel.save" />
+        </Button>
+      </FlowMenu>
 
       <FlowViewContainer ref={flowViewContainerRef} />
     </>

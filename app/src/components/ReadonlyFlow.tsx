@@ -1,3 +1,4 @@
+import { Buttons } from "@ggbot2/design";
 import { FC } from "react";
 
 import { FlowMenu } from "../components/FlowMenu.js";
@@ -14,18 +15,13 @@ type Props = {
 
 export const ReadonlyFlow: FC<Props> = ({ flowViewContainerRef }) => (
   <>
-    <FlowMenu
-      actions={[
-        {
-          key: "share",
-          content: <ShareStrategy />,
-        },
-        {
-          key: "copy",
-          content: <GoCopyStrategy />,
-        },
-      ]}
-    />
+    <FlowMenu>
+      <Buttons>
+        <ShareStrategy />
+
+        <GoCopyStrategy />
+      </Buttons>
+    </FlowMenu>
 
     <FlowViewContainer ref={flowViewContainerRef} />
   </>

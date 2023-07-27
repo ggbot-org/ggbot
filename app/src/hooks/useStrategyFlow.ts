@@ -5,10 +5,12 @@ import { useBacktesting } from "../hooks/useBacktesting.js";
 import { useFlowView } from "../hooks/useFlowView.js";
 
 export const useStrategyFlow = () => {
-  const { strategyFlow: flow } = useContext(StrategyContext);
+  const { flow } = useContext(StrategyContext);
 
   const flowViewContainerRef = useRef<HTMLDivElement | null>(null);
-  const { flowView, whenUpdatedFlow } = useFlowView(flowViewContainerRef);
+  const { flowView, whenUpdatedFlow } = useFlowView(
+    flowViewContainerRef.current
+  );
 
   const backtesting = useBacktesting(flowView?.graph);
 

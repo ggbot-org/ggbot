@@ -1,7 +1,5 @@
 import {
   Button,
-  Column,
-  Columns,
   Control,
   Field,
   Form,
@@ -78,13 +76,9 @@ export const CreateStrategy: FC = () => {
 
   return (
     <>
-      <Columns>
-        <Column>
-          <Button onClick={toggleModal}>
-            <FormattedMessage id="CreateStrategy.buttonLabel" />
-          </Button>
-        </Column>
-      </Columns>
+      <Button onClick={toggleModal}>
+        <FormattedMessage id="CreateStrategy.buttonLabel" />
+      </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
         <Form box onSubmit={onSubmit}>

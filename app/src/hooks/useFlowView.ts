@@ -1,8 +1,4 @@
-import {
-  BinanceDflowHost,
-  nodeTextToViewType,
-  parsePercentage,
-} from "@ggbot2/dflow";
+import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow";
 import { now, Time, truncateTime } from "@ggbot2/time";
 import {
   DflowErrorCannotConnectPins,
@@ -11,37 +7,28 @@ import {
 } from "dflow";
 import {
   FlowView,
-  FlowViewNode,
   FlowViewOnChange,
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
 } from "flow-view";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
-import { FlowViewContainerRef } from "../components/FlowViewContainer.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceDflowClient } from "../flow/binance.js";
-import {
-  FlowViewNodeInfo,
-  FlowViewNodeJson,
-  FlowViewNodePercentage,
-} from "../flow/nodes/index.js";
+import { initializeFlowView } from "../flow/initializeFlowView.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
-export const useFlowView = (containerRef: FlowViewContainerRef) => {
+export const useFlowView = (container: HTMLDivElement | null) => {
   const {
     strategy: { kind: strategyKind },
   } = useContext(StrategyContext);
 
-  const flowViewRef = useRef<FlowView>();
   const [whenUpdated, setWhenUpdated] = useState<Time>(0);
 
   const nodesCatalog = useNodesCatalog();
 
   const initializeBinanceFlowView = useCallback(
-    (nodesCatalog: DflowNodesCatalog) => {
-      if (!containerRef.current) return;
-
+    (container: HTMLDivElement, nodesCatalog: DflowNodesCatalog): FlowView => {
       const time = truncateTime(now()).to.minute();
       const binance = new BinanceDflowClient({
         balances: [],
@@ -52,26 +39,7 @@ export const useFlowView = (containerRef: FlowViewContainerRef) => {
         { binance, input: {}, memory: {}, time }
       );
 
-      const flowView = new FlowView(containerRef.current);
-      flowView.addNodeClass(
-        FlowViewNodeInfo.type,
-        FlowViewNodeInfo as unknown as FlowViewNode
-      );
-      flowView.addNodeClass(
-        FlowViewNodeJson.type,
-        FlowViewNodeJson as unknown as FlowViewNode
-      );
-      flowView.addNodeClass(
-        FlowViewNodePercentage.type,
-        FlowViewNodePercentage as unknown as FlowViewNode
-      );
-      flowView.nodeTextToType((text) => nodeTextToViewType(text));
-      flowView.addNodeDefinitions({
-        nodes: Object.keys(nodesCatalog)
-          .map((kind) => ({ name: kind }))
-          .sort(),
-      });
-      flowViewRef.current = flowView;
+      const flowView = initializeFlowView(container, nodesCatalog);
 
       const onChangeFlowView: FlowViewOnChange = ({ action, data }, info) => {
         try {
@@ -224,18 +192,24 @@ export const useFlowView = (containerRef: FlowViewContainerRef) => {
           }
         }
       };
+
       flowView.onChange(onChangeFlowView);
+
+      return flowView;
     },
-    [containerRef, flowViewRef, setWhenUpdated]
+    []
   );
 
-  useEffect(() => {
+  // Initialize.
+  const flowView = useMemo(() => {
     if (!nodesCatalog) return;
-    if (strategyKind === "binance") initializeBinanceFlowView(nodesCatalog);
-    return () => {
-      flowViewRef.current?.destroy();
-    };
-  }, [initializeBinanceFlowView, nodesCatalog, strategyKind]);
+    if (!container) return;
+    if (strategyKind === "binance")
+      return initializeBinanceFlowView(container, nodesCatalog);
+  }, [container, initializeBinanceFlowView, nodesCatalog, strategyKind]);
 
-  return { flowView: flowViewRef.current, whenUpdatedFlow: whenUpdated };
+  // Dispose.
+  useEffect(() => flowView?.destroy, [flowView]);
+
+  return { flowView, whenUpdatedFlow: whenUpdated };
 };
