@@ -1,10 +1,8 @@
 import {
   DescribeLoadBalancersCommand,
-  ElasticLoadBalancingV2Client,
-} from "@aws-sdk/client-elastic-load-balancing-v2";
-import {
   DescribeLoadBalancersCommandInput,
   DescribeLoadBalancersCommandOutput,
+  ElasticLoadBalancingV2Client,
 } from "@aws-sdk/client-elastic-load-balancing-v2";
 import { awsRegion } from "@ggbot2/infrastructure";
 

@@ -1,7 +1,8 @@
-import { DescribeAddressesCommand, EC2Client } from "@aws-sdk/client-ec2";
 import {
+  DescribeAddressesCommand,
   DescribeAddressesCommandInput,
   DescribeAddressesCommandOutput,
+  EC2Client,
 } from "@aws-sdk/client-ec2";
 import { awsRegion } from "@ggbot2/infrastructure";
 

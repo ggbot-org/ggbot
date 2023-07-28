@@ -1,7 +1,8 @@
-import { GetPolicyCommand, IAMClient } from "@aws-sdk/client-iam";
 import {
+  GetPolicyCommand,
   GetPolicyCommandInput,
   GetPolicyCommandOutput,
+  IAMClient,
 } from "@aws-sdk/client-iam";
 import { awsRegion } from "@ggbot2/infrastructure";
 
