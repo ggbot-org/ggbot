@@ -188,7 +188,7 @@
   "fieldLabel.to": {
     "defaultMessage": "To"
   },
-  "tabLabel.backtest": {
+  "tabLabel.backtesting": {
     "defaultMessage": "Backtest"
   },
   "tabLabel.flow": {

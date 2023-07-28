@@ -1,34 +1,31 @@
-import { Tabs } from "@ggbot2/design";
-import { FC, useState } from "react";
-import { useIntl } from "react-intl";
+import { Section } from "@ggbot2/design";
+import { FC } from "react";
 
 import { Backtesting } from "../components/Backtesting.js";
 import { ReadonlyFlow } from "../components/ReadonlyFlow.js";
+import { Tabs } from "../components/Tabs.js";
 import { useStrategyFlow } from "../hooks/useStrategyFlow.js";
 
 export const TryFlow: FC = () => {
-  const { formatMessage } = useIntl();
-
   const { backtesting, flowViewContainerRef } = useStrategyFlow();
 
-  const [activeTabId, setActiveTabId] = useState("flow");
-
   return (
-    <Tabs
-      activeTabId={activeTabId}
-      setActiveTabId={setActiveTabId}
-      tabs={[
-        {
-          tabId: "backtest",
-          selector: formatMessage({ id: "tabLabel.backtest" }),
-          content: <Backtesting {...backtesting} />,
-        },
-        {
-          tabId: "flow",
-          selector: formatMessage({ id: "tabLabel.flow" }),
-          content: <ReadonlyFlow flowViewContainerRef={flowViewContainerRef} />,
-        },
-      ]}
-    />
+    <Section>
+      <Tabs
+        initialTabId="flow"
+        tabs={[
+          {
+            tabId: "backtesting",
+            content: <Backtesting {...backtesting} />,
+          },
+          {
+            tabId: "flow",
+            content: (
+              <ReadonlyFlow flowViewContainerRef={flowViewContainerRef} />
+            ),
+          },
+        ]}
+      />
+    </Section>
   );
 };
