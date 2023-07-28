@@ -20,7 +20,7 @@ class EnvironmentVariables {
   get BINANCE_PROXY_BASE_URL() {
     if (typeof BINANCE_PROXY_BASE_URL === "string")
       return BINANCE_PROXY_BASE_URL;
-    return "";
+    throw new ErrorMissingEnvironmentVariable("BINANCE_PROXY_BASE_URL");
   }
 
   get DEPLOY_STAGE() {

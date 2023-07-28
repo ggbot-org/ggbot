@@ -9,3 +9,4 @@ git remote add aws_codecommit ssh://git-codecommit.eu-central-1.amazonaws.com/v1
 ```
 
 TODO See also ggbot2-codecommit-readonly-policy on IAM
+TODO If CodeCommit does not work just use GitHub

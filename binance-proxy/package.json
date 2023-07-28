@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
+    "@ggbot2/env": "file:env",
     "@ggbot2/http": "file:http"
   },
   "eslintConfig": {
