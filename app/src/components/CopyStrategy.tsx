@@ -108,7 +108,7 @@ export const CopyStrategy: FC = () => {
     <Form box onSubmit={onSubmit}>
       <Title>{title.copyStrategy}</Title>
 
-      <StrategyName value={strategy.name} />
+      <StrategyName readOnly value={strategy.name} />
 
       <WhenCreated value={strategy.whenCreated} />
 

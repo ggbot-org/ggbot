@@ -2,7 +2,13 @@ import { renderTabs, Section } from "@ggbot2/design";
 import { FC, ReactNode, useMemo } from "react";
 import { useIntl } from "react-intl";
 
-export const tabIds = ["manage", "flow", "backtesting"] as const;
+export const tabIds = [
+  "backtesting",
+  "flow",
+  "manage",
+  "newStrategy",
+  "strategies",
+] as const;
 export type TabId = (typeof tabIds)[number];
 
 type TabsProps = {
@@ -17,7 +23,7 @@ export const Tabs: FC<TabsProps> = ({ initialTabId, tabs: tabsContent }) => {
     () =>
       tabsContent.map(({ tabId, content }) => ({
         tabId,
-        selector: formatMessage({ id: `tabLabel.${tabId}` }),
+        selector: formatMessage({ id: `Tabs.${tabId}` }),
         content,
       })),
     [formatMessage, tabsContent]

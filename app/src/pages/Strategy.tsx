@@ -1,7 +1,6 @@
 import { FC } from "react";
 
 import { PageContainer } from "../components/PageContainer.js";
-import { PleasePurchase } from "../components/PleasePurchase.js";
 import { Strategy } from "../components/Strategy.js";
 import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
@@ -15,8 +14,6 @@ export const StrategyPage: FC = () => (
         <SubscriptionProvider>
           <StrategyProvider>
             <Strategy />
-
-            <PleasePurchase />
           </StrategyProvider>
         </SubscriptionProvider>
       </AccountStrategiesProvider>

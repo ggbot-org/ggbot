@@ -9,7 +9,6 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputField,
   Modal,
   Title,
 } from "@ggbot2/design";
@@ -18,11 +17,12 @@ import { isMaybeObject } from "@ggbot2/type-utils";
 import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { Email } from "../components/Email.js";
 import {
   GenericErrorMessage,
   TimeoutErrorMessage,
 } from "../components/ErrorMessages.js";
-import { fieldLabel, title } from "../i18n/index.js";
+import { title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
 
 type SetEmail = (email: EmailAddress) => void;
@@ -130,15 +130,11 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
   return (
     <Modal isActive>
       <Form box onSubmit={onSubmit}>
-        <Title>{title.enterForm}</Title>
+        <Title>
+          <FormattedMessage id="AuthEnter.title" />
+        </Title>
 
-        <InputField
-          required
-          label={fieldLabel.email}
-          name="email"
-          type="email"
-          readOnly={isPending}
-        />
+        <Email required name="email" type="email" readOnly={isPending} />
 
         <Field isGrouped>
           <Control>

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useId } from "react";
+import { FC, ReactNode, useId, useMemo } from "react";
 import {
   Control,
   ControlProps,
@@ -10,7 +10,7 @@ import {
 } from "trunx";
 
 export type InputFieldProps = Pick<ControlProps, "isLoading"> &
-  Omit<InputProps, "id"> & {
+  Omit<InputProps, "id" | "defaultValue"> & {
     help?: ReactNode;
     label: string;
   };
@@ -20,15 +20,29 @@ export const InputField: FC<InputFieldProps> = ({
   help,
   isLoading,
   label,
+  readOnly,
+  value: inputValue,
   ...props
 }) => {
   const id = useId();
+
+  const value = useMemo<
+    Pick<InputProps, "defaultValue" | "readOnly" | "value">
+  >(
+    () => ({
+      defaultValue: readOnly ? inputValue : undefined,
+      readOnly,
+      value: readOnly ? undefined : inputValue,
+    }),
+    [readOnly, inputValue]
+  );
+
   return (
     <Field>
       <Label htmlFor={id}>{label}</Label>
 
       <Control isLoading={isLoading}>
-        <Input id={id} color={color} {...props} />
+        <Input id={id} color={color} {...value} {...props} />
       </Control>
 
       {help ? <Help color={color}>{help}</Help> : null}

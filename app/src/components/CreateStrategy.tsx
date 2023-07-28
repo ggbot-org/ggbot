@@ -7,7 +7,6 @@ import {
   formValues,
   InputField,
   Message,
-  Modal,
   Title,
 } from "@ggbot2/design";
 import {
@@ -38,12 +37,7 @@ export const CreateStrategy: FC = () => {
   const isLoading = CREATE.isPending || CREATE.isDone;
   const error = CREATE.error;
 
-  const [modalIsActive, setModalIsActive] = useState(false);
   const [help, setHelp] = useState("");
-
-  const toggleModal = useCallback(() => {
-    setModalIsActive((active) => !active);
-  }, []);
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -76,41 +70,35 @@ export const CreateStrategy: FC = () => {
 
   return (
     <>
-      <Button onClick={toggleModal}>
-        <FormattedMessage id="CreateStrategy.buttonLabel" />
-      </Button>
+      <Form box onSubmit={onSubmit}>
+        <Title>
+          <FormattedMessage id="CreateStrategy.title" />
+        </Title>
 
-      <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Form box onSubmit={onSubmit}>
-          <Title>
-            <FormattedMessage id="CreateStrategy.title" />
-          </Title>
+        <InputField
+          required
+          label={formatMessage({ id: "StrategyName.label" })}
+          name={fieldName.name}
+          readOnly={readOnly}
+          help={help}
+        />
 
-          <InputField
-            required
-            label={formatMessage({ id: "StrategyName.label" })}
-            name={fieldName.name}
-            readOnly={readOnly}
-            help={help}
-          />
+        <Field>
+          <Control>
+            <Button color="primary" isLoading={isLoading}>
+              <FormattedMessage id="CreateStrategy.button" />
+            </Button>
+          </Control>
+        </Field>
+      </Form>
 
-          <Field>
-            <Control>
-              <Button color="primary" isLoading={isLoading}>
-                <FormattedMessage id="buttonLabel.create" />
-              </Button>
-            </Control>
-          </Field>
-        </Form>
-
-        {error ? (
-          <Message color="warning">
-            {error.name === ErrorExceededQuota.name ? (
-              <FormattedMessage id="errorMessage.maxStrategiesPerAccount" />
-            ) : null}
-          </Message>
-        ) : null}
-      </Modal>
+      {error ? (
+        <Message color="warning">
+          {error.name === ErrorExceededQuota.name ? (
+            <FormattedMessage id="errorMessage.maxStrategiesPerAccount" />
+          ) : null}
+        </Message>
+      ) : null}
     </>
   );
 };

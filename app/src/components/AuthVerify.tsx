@@ -12,13 +12,13 @@ import {
   InputField,
   Message,
   Modal,
-  OutputField,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { Email } from "../components/Email.js";
 import {
   GenericErrorMessage,
   TimeoutErrorMessage,
@@ -171,12 +171,12 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
   return (
     <Modal isActive>
       <Form box onSubmit={onSubmit}>
-        <OutputField label={fieldLabel.email} value={email} />
+        <Email readOnly value={email} />
 
         <Field>
           <Control>
             <Button size="small" onClick={resetEmail}>
-              <FormattedMessage id="buttonLabel.reset" />
+              <FormattedMessage id="AuthVerify.resetEmail" />
             </Button>
           </Control>
         </Field>

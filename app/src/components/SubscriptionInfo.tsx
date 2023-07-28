@@ -2,7 +2,7 @@ import {
   Box,
   Control,
   Field,
-  OutputField,
+  InputField,
   Tag,
   Title,
   useFormattedDate,
@@ -33,16 +33,18 @@ export const SubscriptionInfo: FC = () => {
       </Field>
 
       {subscriptionPlan ? (
-        <OutputField
+        <InputField
+          readOnly
           label={fieldLabel.subscriptionPlan}
-          value={subscriptionPlan}
+          defaultValue={subscriptionPlan}
         />
       ) : null}
 
       {formattedSubscriptionEnd ? (
-        <OutputField
+        <InputField
+          readOnly
           label={fieldLabel.endDay}
-          value={formattedSubscriptionEnd}
+          defaultValue={formattedSubscriptionEnd}
         />
       ) : null}
     </Box>

@@ -19,7 +19,6 @@ import {
 } from "@ggbot2/design";
 import {
   AllowedCountryIsoCode2,
-  isAccount,
   isAllowedCountryIsoCode2,
   monthlyPrice,
   monthlyPriceCurrency,
@@ -31,7 +30,9 @@ import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { AccountContext } from "../contexts/Account.js";
 
+import { Email } from "../components/Email.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
 import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
@@ -56,14 +57,11 @@ const minNumMonths = 1;
 const defaultNumMonths = 6;
 
 export const SubscriptionPurchase: FC = () => {
+  const { account } = useContext(AccountContext);
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 
-  // TODO use account from AuthenticationContext
-  const READ = useApi.ReadAccount();
   const SET_COUNTRY = useApi.SetAccountCountry();
-
-  const account = READ.data;
 
   const [purchaseIsPending, setPurchaseIsPending] = useState(false);
   const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
@@ -73,21 +71,11 @@ export const SubscriptionPurchase: FC = () => {
     defaultNumMonths
   );
 
-  let countryOptions: SelectProps["options"] = [{ value: "", label: "" }];
-  let email = "";
-  let selectCountryIsDisabled = false;
-  if (isAccount(account)) {
-    countryOptions = account.country
-      ? allowedCountryOptions
-      : [{ value: "", label: "-- your country --" }, ...allowedCountryOptions];
-    email = account.email;
-    selectCountryIsDisabled = false;
-  }
+  const countryOptions: SelectProps["options"] = allowedCountryOptions;
 
   const accountId = isAccount(account) ? account.id : undefined;
 
   let purchaseIsDisabled = false;
-  if (!accountId) purchaseIsDisabled = true;
   if (!country) purchaseIsDisabled = true;
   if (isNaturalNumber(numMonths)) {
     if (numMonths < minNumMonths) purchaseIsDisabled = true;
@@ -142,7 +130,12 @@ export const SubscriptionPurchase: FC = () => {
     try {
       const response = await fetch(url.apiPurchaseOrder, {
         // TODO define fields (and type-guard) in api package, use them also in utrust lambda
-        body: JSON.stringify({ accountId, country, email, numMonths }),
+        body: JSON.stringify({
+          accountId: account.id,
+          country,
+          email: account.email,
+          numMonths,
+        }),
         credentials: "omit",
         headers: new Headers({
           Accept: "application/json",
@@ -162,14 +155,7 @@ export const SubscriptionPurchase: FC = () => {
       console.error(error);
       setPurchaseIsPending(false);
     }
-  }, [
-    accountId,
-    country,
-    email,
-    numMonths,
-    purchaseIsDisabled,
-    purchaseIsPending,
-  ]);
+  }, [account, country, numMonths, purchaseIsDisabled, purchaseIsPending]);
 
   useEffect(() => {
     if (!isAccount(account)) return;
@@ -183,10 +169,6 @@ export const SubscriptionPurchase: FC = () => {
 
     if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country });
   }, [SET_COUNTRY, account, country]);
-
-  useEffect(() => {
-    if (READ.canRun) READ.request();
-  }, [READ]);
 
   useEffect(() => {
     const { format } = new Intl.NumberFormat(window.navigator.language, {
@@ -243,7 +225,6 @@ export const SubscriptionPurchase: FC = () => {
       </Columns>
 
       <SelectField
-        disabled={selectCountryIsDisabled}
         label={fieldLabel.country}
         name={fieldName.country}
         onChange={onChangeCountry}
@@ -251,7 +232,7 @@ export const SubscriptionPurchase: FC = () => {
         value={country}
       />
 
-      <OutputField label={fieldLabel.email} value={email} />
+      <Email readOnly value={account.email} />
 
       <OutputField
         label={fieldLabel.totalPrice}

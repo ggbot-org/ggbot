@@ -62,7 +62,7 @@ export const DeleteStrategy: FC = () => {
 
             <Columns>
               <Column>
-                <StrategyName value={strategy.name} />
+                <StrategyName readOnly value={strategy.name} />
               </Column>
             </Columns>
 

@@ -64,9 +64,12 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
 
       <Field>
         <Control>
-          <Button isLoading={isLoading}>{buttonLabel.create}</Button>
+          <Button isLoading={isLoading}>
+            <FormattedMessage id="CreateBinanceApi.button" />
+          </Button>
         </Control>
       </Field>
     </Form>
   );
+  // TODO error feedback
 };

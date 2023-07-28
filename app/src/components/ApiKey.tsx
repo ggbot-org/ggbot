@@ -4,13 +4,10 @@ import { useIntl } from "react-intl";
 
 type Props = Omit<InputFieldProps, "label">;
 
-export const StrategyName: FC<Props> = (props) => {
+export const ApiKey: FC<Props> = (props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <InputField
-      label={formatMessage({ id: "StrategyName.label" })}
-      {...props}
-    />
+    <InputField label={formatMessage({ id: "ApiKey.label" })} {...props} />
   );
 };

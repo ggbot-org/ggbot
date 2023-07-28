@@ -1,5 +1,11 @@
 {
-  "AuthExit.buttonLabel": {
+  "ApiKey.label": {
+    "defaultMessage": "API Key"
+  },
+  "AuthEnter.title": {
+    "defaultMessage": "Enter ggbot2"
+  },
+  "AuthExit.button": {
     "defaultMessage": "Exit"
   },
   "AuthExit.title": {
@@ -8,8 +14,14 @@
   "AuthVerify.checkYourEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
   },
+  "AuthVerify.resetEmail": {
+    "defaultMessage": "Reset"
+  },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
+  },
+  "BinanceApi.test": {
+    "defaultMessage": "Test API"
   },
   "CopyStrategy.chooseNewName": {
     "defaultMessage": "Choose a new name for the copied strategy."
@@ -17,13 +29,16 @@
   "CreateBinanceApi.title": {
     "defaultMessage": "Binance API"
   },
-  "CreateStrategy.buttonLabel": {
-    "defaultMessage": "New strategy"
+  "CreateBinanceApi.button": {
+    "defaultMessage": "Create Binance API"
+  },
+  "CreateStrategy.button": {
+    "defaultMessage": "Create Strategy"
   },
   "CreateStrategy.title": {
     "defaultMessage": "Create Strategy"
   },
-  "DeleteAccount.buttonLabel": {
+  "DeleteAccount.button": {
     "defaultMessage": "Delete account"
   },
   "DeleteAccount.title": {
@@ -32,7 +47,7 @@
   "DeleteAccount.question": {
     "defaultMessage": "Are you sure you want to delete your account?"
   },
-  "DeleteBinanceApi.buttonLabel": {
+  "DeleteBinanceApi.button": {
     "defaultMessage": "Delete API"
   },
   "DeleteBinanceApi.title": {
@@ -52,6 +67,9 @@
   },
   "DeleteStrategy.title": {
     "defaultMessage": "Strategy deletion"
+  },
+  "Email.label": {
+    "defaultMessage": "Email"
   },
   "GoCopyStrategy.label": {
     "defaultMessage": "Copy"
@@ -104,7 +122,7 @@
   "Schedulings.title": {
     "defaultMessage": "Schedulings"
   },
-  "ShareStrategy.buttonLabel": {
+  "ShareStrategy.button": {
     "defaultMessage": "Share"
   },
   "ShareStrategy.copied": {
@@ -143,29 +161,23 @@
   "SubscriptionPurchased.message": {
     "defaultMessage": "Thank you for your purchase."
   },
+  "Tabs.backtesting": {
+    "defaultMessage": "Backtest"
+  },
+  "Tabs.flow": {
+    "defaultMessage": "Flow"
+  },
+  "Tabs.manage": {
+    "defaultMessage": "Manage"
+  },
+  "Tabs.newStrategy": {
+    "defaultMessage": "New strategy"
+  },
+  "Tabs.strategies": {
+    "defaultMessage": "Strategies"
+  },
   "WhenCreated.label": {
     "defaultMessage": "When created"
-  },
-  "buttonLabel.cancel": {
-    "defaultMessage": "Cancel"
-  },
-  "buttonLabel.create": {
-    "defaultMessage": "Create"
-  },
-  "buttonLabel.enter": {
-    "defaultMessage": "Enter"
-  },
-  "buttonLabel.no": {
-    "defaultMessage": "No"
-  },
-  "buttonLabel.reset": {
-    "defaultMessage": "Reset"
-  },
-  "buttonLabel.save": {
-    "defaultMessage": "Save"
-  },
-  "buttonLabel.send": {
-    "defaultMessage": "Send"
   },
   "errorMessage.generic": {
     "defaultMessage": "Something went wrong"
@@ -175,26 +187,5 @@
   },
   "errorMessage.maxStrategiesPerAccount": {
     "defaultMessage": "Cannot create more strategies."
-  },
-  "fieldLabel.email": {
-    "defaultMessage": "Email"
-  },
-  "fieldLabel.from": {
-    "defaultMessage": "From"
-  },
-  "fieldLabel.strategyKind": {
-    "defaultMessage": "Strategy kind"
-  },
-  "fieldLabel.to": {
-    "defaultMessage": "To"
-  },
-  "tabLabel.backtesting": {
-    "defaultMessage": "Backtest"
-  },
-  "tabLabel.flow": {
-    "defaultMessage": "Flow"
-  },
-  "tabLabel.manage": {
-    "defaultMessage": "Manage"
   }
 }

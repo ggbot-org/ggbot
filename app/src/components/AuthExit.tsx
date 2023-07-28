@@ -5,12 +5,12 @@ import {
   Form,
   FormOnSubmit,
   Modal,
-  OutputField,
   Title,
 } from "@ggbot2/design";
 import { FC, useCallback, useContext, useEffect } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
+import { Email } from "../components/Email.js";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { wwwHomepage } from "../routing/URLs.js";
 
@@ -20,8 +20,6 @@ export type AuthExitProps = {
 };
 
 export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
-  const { formatMessage } = useIntl();
-
   const { email, exit, exited } = useContext(AuthenticationContext);
 
   const onSubmit = useCallback<FormOnSubmit>(
@@ -46,15 +44,12 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
           <FormattedMessage id="AuthExit.title" />
         </Title>
 
-        <OutputField
-          label={formatMessage({ id: "fieldLabel.email" })}
-          value={email}
-        />
+        <Email readOnly value={email} />
 
         <Field isGrouped>
           <Control>
             <Button color="warning">
-              <FormattedMessage id="AuthExit.buttonLabel" />
+              <FormattedMessage id="AuthExit.button" />
             </Button>
           </Control>
         </Field>

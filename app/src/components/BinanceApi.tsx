@@ -10,14 +10,13 @@ import {
   Field,
   Form,
   FormOnSubmit,
-  OutputField,
   Title,
 } from "@ggbot2/design";
 import { FC, ReactNode, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { ApiKey } from "../components/ApiKey.js";
 import { useApi } from "../hooks/useApi.js";
-import { fieldLabel } from "../i18n/index.js";
 
 type Props = {
   apiKey: string;
@@ -116,11 +115,13 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
         <FormattedMessage id="BinanceApi.title" />
       </Title>
 
-      <OutputField label={fieldLabel.apiKey} value={apiKey} />
+      <ApiKey value={apiKey} />
 
       <Field>
         <Control>
-          <Button isLoading={isLoading}>Test</Button>
+          <Button isLoading={isLoading}>
+            <FormattedMessage id="BinanceApi.test" />
+          </Button>
         </Control>
       </Field>
 

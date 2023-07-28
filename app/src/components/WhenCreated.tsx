@@ -1,12 +1,8 @@
-import {
-  OutputField,
-  OutputFieldProps,
-  useFormattedDate,
-} from "@ggbot2/design";
+import { InputField, InputFieldProps, useFormattedDate } from "@ggbot2/design";
 import { FC } from "react";
 import { useIntl } from "react-intl";
 
-type Props = Pick<OutputFieldProps, "value">;
+type Props = Omit<InputFieldProps, "label" | "readOnly">;
 
 export const WhenCreated: FC<Props> = ({ value }) => {
   const { formatMessage } = useIntl();
@@ -17,8 +13,9 @@ export const WhenCreated: FC<Props> = ({ value }) => {
   );
 
   return (
-    <OutputField
+    <InputField
       label={formatMessage({ id: "WhenCreated.label" })}
+      readOnly
       value={formattedValue}
     />
   );
