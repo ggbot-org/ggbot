@@ -1,26 +1,21 @@
-import {
-  Box,
-  Control,
-  Field,
-  InputField,
-  Tag,
-  Title,
-  useFormattedDate,
-} from "@ggbot2/design";
+import { Box, Control, Field, Tag, Title } from "@ggbot2/design";
 import { FC, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 
+import { SubscriptionEnd } from "../components/SubscriptionEnd.js";
+import { SubscriptionPlan } from "../components/SubscriptionPlan.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
-import { fieldLabel, schedulingStatusLabel, title } from "../i18n/index.js";
+import { schedulingStatusLabel } from "../i18n/index.js";
 
 export const SubscriptionInfo: FC = () => {
   const { hasActiveSubscription, subscriptionEnd, subscriptionPlan } =
     useContext(SubscriptionContext);
 
-  const formattedSubscriptionEnd = useFormattedDate(subscriptionEnd, "day");
-
   return (
     <Box>
-      <Title>{title.subscription}</Title>
+      <Title>
+        <FormattedMessage id="SubscriptionInfo.title" />
+      </Title>
 
       <Field>
         <Control>
@@ -32,21 +27,9 @@ export const SubscriptionInfo: FC = () => {
         </Control>
       </Field>
 
-      {subscriptionPlan ? (
-        <InputField
-          readOnly
-          label={fieldLabel.subscriptionPlan}
-          defaultValue={subscriptionPlan}
-        />
-      ) : null}
+      <SubscriptionPlan readOnly value={subscriptionPlan} />
 
-      {formattedSubscriptionEnd ? (
-        <InputField
-          readOnly
-          label={fieldLabel.endDay}
-          defaultValue={formattedSubscriptionEnd}
-        />
-      ) : null}
+      <SubscriptionEnd readOnly value={subscriptionEnd} />
     </Box>
   );
 };

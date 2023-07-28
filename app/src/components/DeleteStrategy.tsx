@@ -47,7 +47,7 @@ export const DeleteStrategy: FC = () => {
   return (
     <>
       <Button color={color} onClick={toggleModal}>
-        <FormattedMessage id="DeleteStrategy.buttonLabel.cta" />
+        <FormattedMessage id="DeleteStrategy.button" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
@@ -83,11 +83,11 @@ export const DeleteStrategy: FC = () => {
               isLoading={isLoading}
               onClick={onClickConfirmation}
             >
-              <FormattedMessage id="DeleteStrategy.buttonLabel.confirmation" />
+              <FormattedMessage id="DeleteStrategy.confirmation" />
             </Button>
 
             <Button onClick={toggleModal}>
-              <FormattedMessage id="buttonLabel.no" />
+              <FormattedMessage id="DeleteStrategy.dismiss" />
             </Button>
           </Buttons>
         </Message>

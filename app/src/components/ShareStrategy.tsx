@@ -47,7 +47,7 @@ export const ShareStrategy: FC = () => {
 
   return (
     <Button type="button" onClick={onClick}>
-      <FormattedMessage id="ShareStrategy.buttonLabel" />
+      <FormattedMessage id="ShareStrategy.label" />
     </Button>
   );
 };

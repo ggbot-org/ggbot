@@ -44,12 +44,7 @@ export const SimpleForm: FC = () => {
     <Form box onSubmit={onSubmit}>
       <Title>Create account</Title>
 
-      <InputField
-        name="nick"
-        label="nick"
-        defaultValue="satoshi"
-        help={<>&nbsp;</>}
-      />
+      <InputField name="nick" label="nick" value="satoshi" help={<>&nbsp;</>} />
 
       <InputField name="password" label="password" help={<>&nbsp;</>} />
 

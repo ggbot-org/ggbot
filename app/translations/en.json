@@ -1,6 +1,24 @@
 {
+  "AccountId.label": {
+    "defaultMessage": "Account ID"
+  },
+  "AccountNickName.label": {
+    "defaultMessage": "Nick name"
+  },
+  "AccountSettings.button": {
+    "defaultMessage": "Save"
+  },
+  "AccountSettings.title": {
+    "defaultMessage": "Account"
+  },
   "ApiKey.label": {
-    "defaultMessage": "API Key"
+    "defaultMessage": "API key"
+  },
+  "ApiSecret.label": {
+    "defaultMessage": "API secret"
+  },
+  "AuthEnter.button": {
+    "defaultMessage": "Send"
   },
   "AuthEnter.title": {
     "defaultMessage": "Enter ggbot2"
@@ -10,6 +28,9 @@
   },
   "AuthExit.title": {
     "defaultMessage": "Exit ggbot2"
+  },
+  "AuthVerify.button": {
+    "defaultMessage": "Enter"
   },
   "AuthVerify.checkYourEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
@@ -26,6 +47,15 @@
   "CopyStrategy.chooseNewName": {
     "defaultMessage": "Choose a new name for the copied strategy."
   },
+  "CopyStrategy.newStrategyName": {
+    "defaultMessage": "New strategy name"
+  },
+  "CopyStrategy.title": {
+    "defaultMessage": "Copy strategy"
+  },
+  "CopyStrategy.button": {
+    "defaultMessage": "Copy"
+  },
   "CreateBinanceApi.title": {
     "defaultMessage": "Binance API"
   },
@@ -38,8 +68,20 @@
   "CreateStrategy.title": {
     "defaultMessage": "Create Strategy"
   },
+  "DailyInterval.labelStart": {
+    "defaultMessage": "From"
+  },
+  "DailyInterval.labelEnd": {
+    "defaultMessage": "To"
+  },
   "DeleteAccount.button": {
     "defaultMessage": "Delete account"
+  },
+  "DeleteAccount.confirmation": {
+    "defaultMessage": "Yes delete my account!"
+  },
+  "DeleteAccount.dismiss": {
+    "defaultMessage": "No"
   },
   "DeleteAccount.title": {
     "defaultMessage": "Account deletion"
@@ -50,17 +92,26 @@
   "DeleteBinanceApi.button": {
     "defaultMessage": "Delete API"
   },
+  "DeleteBinanceApi.confirmation": {
+    "defaultMessage": "Yes, delete it"
+  },
+  "DeleteBinanceApi.dismiss": {
+    "defaultMessage": "No"
+  },
   "DeleteBinanceApi.title": {
     "defaultMessage": "Binance API deletion"
   },
   "DeleteBinanceApi.question": {
     "defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
   },
-  "DeleteStrategy.buttonLabel.cta": {
+  "DeleteStrategy.button": {
     "defaultMessage": "Delete strategy"
   },
-  "DeleteStrategy.buttonLabel.confirmation": {
-    "defaultMessage": "Yes, delete it!"
+  "DeleteStrategy.confirmation": {
+    "defaultMessage": "Yes, delete it"
+  },
+  "DeleteStrategy.dismiss": {
+    "defaultMessage": "No"
   },
   "DeleteStrategy.message": {
     "defaultMessage": "Are you sure you want to delete this strategy?"
@@ -68,8 +119,14 @@
   "DeleteStrategy.title": {
     "defaultMessage": "Strategy deletion"
   },
+  "EditableFlow.save": {
+    "defaultMessage": "Save"
+  },
   "Email.label": {
     "defaultMessage": "Email"
+  },
+  "GenericError.message": {
+    "defaultMessage": "Something went wrong."
   },
   "GoCopyStrategy.label": {
     "defaultMessage": "Copy"
@@ -104,6 +161,9 @@
   "NoNetwork.message": {
     "defaultMessage": "The network connection has been lost."
   },
+  "OneTimePassword.label": {
+    "defaultMessage": "One time password"
+  },
   "PleaseConfigureBinance.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
   },
@@ -119,10 +179,25 @@
   "ProfitSummary.title": {
     "defaultMessage": "Profits"
   },
+  "RegenerateOneTimePassword.button": {
+    "defaultMessage": "Ok"
+  },
+  "RegenerateOneTimePassword.message": {
+    "defaultMessage": "Need to generate one time password again."
+  },
   "Schedulings.title": {
     "defaultMessage": "Schedulings"
   },
-  "ShareStrategy.button": {
+  "Schedulings.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "Schedulings.save": {
+    "defaultMessage": "Save"
+  },
+  "SelectCountry.label": {
+    "defaultMessage": "Country"
+  },
+  "ShareStrategy.label": {
     "defaultMessage": "Share"
   },
   "ShareStrategy.copied": {
@@ -136,6 +211,9 @@
   },
   "Strategies.title": {
     "defaultMessage": "Strategies"
+  },
+  "StrategyInfo.save": {
+    "defaultMessage": "Save"
   },
   "StrategyInfo.title": {
     "defaultMessage": "Strategy info"
@@ -155,11 +233,35 @@
   "SubscriptionCanceled.message": {
     "defaultMessage": "Your purchase was canceled."
   },
+  "SubscriptionEnd.label": {
+    "defaultMessage": "End day"
+  },
+  "SubscriptionPlan.label": {
+    "defaultMessage": "Plan"
+  },
+  "SubscriptionInfo.title": {
+    "defaultMessage": "Subscription"
+  },
+  "SubscriptionNumMonths.label": {
+    "defaultMessage": "Num months"
+  },
+  "SubscriptionPurchase.button": {
+    "defaultMessage": "Buy"
+  },
   "SubscriptionPurchase.couldRenew": {
     "defaultMessage": "Your subscription will expire soon, please consider renew it."
   },
+  "SubscriptionPurchase.title": {
+    "defaultMessage": "Purchase"
+  },
   "SubscriptionPurchased.message": {
     "defaultMessage": "Thank you for your purchase."
+  },
+  "SubscriptionTotalPrice.label": {
+    "defaultMessage": "Total price"
+  },
+  "SubscriptionTotalPrice.discount": {
+    "defaultMessage": "One month for free."
   },
   "Tabs.backtesting": {
     "defaultMessage": "Backtest"
@@ -176,11 +278,11 @@
   "Tabs.strategies": {
     "defaultMessage": "Strategies"
   },
+  "TimeoutError.message": {
+    "defaultMessage": "Request not sent. Please check connectivity and try again."
+  },
   "WhenCreated.label": {
     "defaultMessage": "When created"
-  },
-  "errorMessage.generic": {
-    "defaultMessage": "Something went wrong"
   },
   "errorMessage.invalidStrategyName": {
     "defaultMessage": "Invalid strategy name."

@@ -130,8 +130,8 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
           max={maxDay}
           setStart={setStart}
           setEnd={setEnd}
-          labelStart={formatMessage({ id: "fieldLabel.from" })}
-          labelEnd={formatMessage({ id: "fieldLabel.to" })}
+          labelStart={formatMessage({ id: "DailyInterval.labelStart" })}
+          labelEnd={formatMessage({ id: "DailyInterval.labelEnd" })}
         />
 
         <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />

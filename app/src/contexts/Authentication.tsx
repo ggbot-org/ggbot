@@ -37,6 +37,7 @@ type State = {
 type ContextValue = Pick<State, "email" | "exited"> & {
   openExitModal: () => void;
   exit: () => void;
+  resetEmail: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
@@ -44,6 +45,7 @@ export const AuthenticationContext = createContext<ContextValue>({
   openExitModal: () => {},
   exit: () => {},
   exited: false,
+  resetEmail: () => {},
 });
 
 AuthenticationContext.displayName = "AuthenticationContext";
@@ -118,10 +120,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     [dispatch]
   );
 
-  const resetEmail = useCallback<AuthVerifyProps["resetEmail"]>(() => {
-    dispatch({ type: "SET_EMAIL", data: { email: undefined } });
-  }, [dispatch]);
-
   const setEmail = useCallback<AuthEnterProps["setEmail"]>((email) => {
     dispatch({ type: "SET_EMAIL", data: { email } });
   }, []);
@@ -142,6 +140,9 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       exited,
       openExitModal: () => {
         dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
+      },
+      resetEmail: () => {
+        dispatch({ type: "SET_EMAIL", data: { email: undefined } });
       },
     }),
     [email, exited]
@@ -192,9 +193,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   if (jwt === undefined) {
     if (email) {
-      return (
-        <AuthVerify email={email} resetEmail={resetEmail} setJwt={setJwt} />
-      );
+      return <AuthVerify email={email} setJwt={setJwt} />;
     } else {
       return <AuthEnter setEmail={setEmail} />;
     }

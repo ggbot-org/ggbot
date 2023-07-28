@@ -4,31 +4,28 @@ import {
 } from "@ggbot2/api";
 import {
   Button,
-  ButtonOnClick,
   Control,
   Field,
   Form,
   FormOnSubmit,
-  InputField,
   Message,
   Modal,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { NonEmptyString } from "@ggbot2/type-utils";
-import { FC, Reducer, useCallback, useReducer } from "react";
+import { FC, Reducer, useCallback, useContext, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { Email } from "../components/Email.js";
-import {
-  GenericErrorMessage,
-  TimeoutErrorMessage,
-} from "../components/ErrorMessages.js";
-import { buttonLabel, fieldLabel } from "../i18n/index.js";
+import { GenericError } from "../components/GenericError.js";
+import { OneTimePassword } from "../components/OneTimePassword.js";
+import { RegenerateOneTimePassword } from "../components/RegenerateOneTimePassword.js";
+import { TimeoutError } from "../components/TimeoutError.js";
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { url } from "../routing/URLs.js";
 
 export type AuthVerifyProps = {
   email: EmailAddress;
-  resetEmail: () => void;
   setJwt: (jwt: NonEmptyString) => void;
 };
 
@@ -41,11 +38,9 @@ type State = {
   verificationFailed: boolean;
 };
 
-export const AuthVerify: FC<AuthVerifyProps> = ({
-  email,
-  resetEmail,
-  setJwt,
-}) => {
+export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
+  const { resetEmail } = useContext(AuthenticationContext);
+
   const [
     {
       gotTimeout,
@@ -97,11 +92,6 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
     },
     { hasGenericError: false }
   );
-
-  const onClickOkGenerateOneTimePasswordAgain =
-    useCallback<ButtonOnClick>(() => {
-      resetEmail();
-    }, [resetEmail]);
 
   const onSubmit = useCallback<FormOnSubmit>(
     async (event) => {
@@ -188,44 +178,27 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
           />
         </Message>
 
-        <InputField
-          required
-          label={fieldLabel.oneTimePassword}
-          name="code"
-          readOnly={isPending}
-          spellCheck={false}
-          type="text"
-        />
+        <OneTimePassword required name="code" readOnly={isPending} />
 
         <Field>
           <Control>
             <Button color="primary" isLoading={isPending}>
-              <FormattedMessage id="buttonLabel.enter" />
+              <FormattedMessage id="AuthVerify.button" />
             </Button>
           </Control>
         </Field>
 
         <>
-          {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
+          {hasGenericError || (hasInvalidInput && <GenericError />)}
 
-          {gotTimeout ? <TimeoutErrorMessage /> : null}
+          {gotTimeout ? <TimeoutError /> : null}
 
           {verificationFailed ? (
             <Message color="warning">Verification failed</Message>
           ) : null}
 
           {needToGenerateOneTimePasswordAgain ? (
-            <>
-              <Message>Need to generate one time password again.</Message>
-
-              <Field>
-                <Control>
-                  <Button onClick={onClickOkGenerateOneTimePasswordAgain}>
-                    {buttonLabel.ok}
-                  </Button>
-                </Control>
-              </Field>
-            </>
+            <RegenerateOneTimePassword />
           ) : null}
         </>
       </Form>

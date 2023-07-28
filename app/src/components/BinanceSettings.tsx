@@ -8,12 +8,6 @@ import { CreateBinanceApi } from "../components/CreateBinanceApi.js";
 import { DeleteBinanceApi } from "../components/DeleteBinanceApi.js";
 import { useApi } from "../hooks/useApi.js";
 
-const hideApiKey = (apiKey: string) =>
-  `${apiKey.substring(0, 10)}...${apiKey.substring(
-    apiKey.length - 10,
-    apiKey.length
-  )}`;
-
 export const BinanceSettings: FC = () => {
   const READ = useApi.ReadBinanceApiConfig();
   const apiConfig = READ.data;
@@ -26,9 +20,10 @@ export const BinanceSettings: FC = () => {
   }, [READ]);
 
   useEffect(() => {
+    // TODO isReadBinanceApiConfigOutput
     if (isMaybeObject<Pick<BinanceApiConfig, "apiKey">>(apiConfig)) {
       const { apiKey } = apiConfig;
-      if (typeof apiKey === "string") setApiKey(hideApiKey(apiKey));
+      if (typeof apiKey === "string") setApiKey(apiKey);
     }
   }, [apiConfig]);
 
@@ -44,7 +39,7 @@ export const BinanceSettings: FC = () => {
         </Column>
       </Columns>
 
-      {apiKey ? <DeleteBinanceApi onDelete={refetchApiKey} /> : null}
+      {apiConfig ? <DeleteBinanceApi onDelete={refetchApiKey} /> : null}
     </>
   );
 };

@@ -7,15 +7,11 @@ import {
   Control,
   Field,
   Flex,
-  InputField,
   InputOnChange,
   Message,
-  OutputField,
-  SelectField,
   SelectOnChange,
   SelectProps,
   Title,
-  useFormattedDate,
 } from "@ggbot2/design";
 import {
   AllowedCountryIsoCode2,
@@ -25,18 +21,24 @@ import {
   purchaseMaxNumMonths as maxNumMonths,
   totalPurchase,
 } from "@ggbot2/models";
-import { getTime, now, Time } from "@ggbot2/time";
+import { getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { AccountContext } from "../contexts/Account.js";
 
 import { Email } from "../components/Email.js";
+import {
+  SubscriptionEnd,
+  SubscriptionEndProps,
+} from "../components/SubscriptionEnd.js";
+import { SubscriptionNumMonths } from "../components/SubscriptionNumMonths.js";
+import { SubscriptionTotalPrice } from "../components/SubscriptionTotalPrice.js";
+import { AccountContext } from "../contexts/Account.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
 import { url } from "../routing/URLs.js";
+import { SelectCountry } from "./SelectCountry.js";
 
 const fields = ["country"] as const;
 const fieldName = {
@@ -71,9 +73,10 @@ export const SubscriptionPurchase: FC = () => {
     defaultNumMonths
   );
 
+  {
+    /* TODO move it SelectCountry component */
+  }
   const countryOptions: SelectProps["options"] = allowedCountryOptions;
-
-  const accountId = isAccount(account) ? account.id : undefined;
 
   let purchaseIsDisabled = false;
   if (!country) purchaseIsDisabled = true;
@@ -82,7 +85,7 @@ export const SubscriptionPurchase: FC = () => {
     if (numMonths > maxNumMonths) purchaseIsDisabled = true;
   }
 
-  let newSubscriptionEnd: Time | undefined;
+  let newSubscriptionEnd: SubscriptionEndProps["value"];
   if (isNaturalNumber(numMonths)) {
     const start = subscriptionEnd
       ? getTime(subscriptionEnd).plus(1).days()
@@ -92,12 +95,7 @@ export const SubscriptionPurchase: FC = () => {
       .months();
   }
 
-  const formattedNewSubscriptionEnd = useFormattedDate(
-    newSubscriptionEnd,
-    "day"
-  );
-
-  const isYearlyPurchase =
+  const isYearlyPurchase: boolean | undefined =
     typeof numMonths === "number" && numMonths >= maxNumMonths - 1
       ? true
       : undefined;
@@ -158,12 +156,10 @@ export const SubscriptionPurchase: FC = () => {
   }, [account, country, numMonths, purchaseIsDisabled, purchaseIsPending]);
 
   useEffect(() => {
-    if (!isAccount(account)) return;
     if (account.country) setCountry(account.country);
   }, [account, setCountry]);
 
   useEffect(() => {
-    if (!isAccount(account)) return;
     if (!country) return;
     if (account.country === country) return;
 
@@ -183,7 +179,9 @@ export const SubscriptionPurchase: FC = () => {
 
   return (
     <Box>
-      <Title>{title.purchase}</Title>
+      <Title>
+        <FormattedMessage id="SubscriptionPurchase.title" />
+      </Title>
 
       {hasActiveSubscription ? (
         <Message color="danger">
@@ -199,33 +197,24 @@ export const SubscriptionPurchase: FC = () => {
             Go for 12 months subscription and get 1 month for <em>free</em>.
           </span>
 
-          <Checkmark ok={isYearlyPurchase} />
+          <Checkmark ok={isYearlyPurchase || undefined} />
         </Flex>
       </Message>
 
       <Columns>
         <Column isNarrow>
-          <InputField
-            label={fieldLabel.numMonths}
+          <SubscriptionNumMonths
             value={numMonths}
-            type="number"
             onChange={onChangeNumMonths}
-            min={1}
-            max={12}
-            step={1}
           />
         </Column>
 
         <Column>
-          <OutputField
-            label={fieldLabel.endDay}
-            value={formattedNewSubscriptionEnd}
-          />
+          <SubscriptionEnd value={newSubscriptionEnd} />
         </Column>
       </Columns>
 
-      <SelectField
-        label={fieldLabel.country}
+      <SelectCountry
         name={fieldName.country}
         onChange={onChangeCountry}
         options={countryOptions}
@@ -234,11 +223,9 @@ export const SubscriptionPurchase: FC = () => {
 
       <Email readOnly value={account.email} />
 
-      <OutputField
-        label={fieldLabel.totalPrice}
+      <SubscriptionTotalPrice
         value={formattedTotalPrice}
-        color={isYearlyPurchase ? "success" : undefined}
-        help={isYearlyPurchase ? <p>One month for free.</p> : <>&nbsp;</>}
+        isYearlyPurchase={isYearlyPurchase === true}
       />
 
       <Field>
@@ -249,7 +236,7 @@ export const SubscriptionPurchase: FC = () => {
             onClick={onClickPurchase}
             isLoading={purchaseIsPending}
           >
-            {buttonLabel.purchase}
+            <FormattedMessage id="SubscriptionPurchase.button" />
           </Button>
         </Control>
       </Field>

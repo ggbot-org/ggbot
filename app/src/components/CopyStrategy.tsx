@@ -30,7 +30,6 @@ import { StrategyName } from "../components/StrategyName.js";
 import { WhenCreated } from "../components/WhenCreated.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, fieldLabel, title } from "../i18n/index.js";
 import { href } from "../routing/hrefs.js";
 
 export const CopyStrategy: FC = () => {
@@ -91,7 +90,7 @@ export const CopyStrategy: FC = () => {
         formatMessage({ id: "errorMessage.maxStrategiesPerAccount" })
       );
     } else {
-      toast.warning(formatMessage({ id: "errorMessage.generic" }));
+      toast.warning(formatMessage({ id: "GenericError.message" }));
     }
   }, [error, formatMessage, toast]);
 
@@ -106,7 +105,9 @@ export const CopyStrategy: FC = () => {
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Title>{title.copyStrategy}</Title>
+      <Title>
+        <FormattedMessage id="CopyStrategy.title" />
+      </Title>
 
       <StrategyName readOnly value={strategy.name} />
 
@@ -119,7 +120,7 @@ export const CopyStrategy: FC = () => {
       <InputField
         required
         onChange={onChangeName}
-        label={fieldLabel.newStrategyName}
+        label={formatMessage({ id: "CopyStrategy.newStrategyName" })}
         name="name"
         placeholder={strategy.name}
         readOnly={readOnly}
@@ -128,7 +129,7 @@ export const CopyStrategy: FC = () => {
       <Field>
         <Control>
           <Button isLoading={isLoading} disabled={isDisabled}>
-            {buttonLabel.copy}
+            <FormattedMessage id="CopyStrategy.button" />
           </Button>
         </Control>
       </Field>

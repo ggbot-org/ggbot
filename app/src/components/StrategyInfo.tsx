@@ -7,7 +7,6 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputField,
   InputOnChange,
   Title,
 } from "@ggbot2/design";
@@ -23,10 +22,11 @@ import { FormattedMessage } from "react-intl";
 import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
 import { ShareStrategy } from "../components/ShareStrategy.js";
 import { StrategyId } from "../components/StrategyId.js";
+import { StrategyName } from "../components/StrategyName.js";
 import { WhenCreated } from "../components/WhenCreated.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { errorMessage, fieldLabel } from "../i18n/index.js";
+import { errorMessage } from "../i18n/index.js";
 
 const fields = ["name"] as const;
 const fieldName = {
@@ -79,9 +79,8 @@ export const StrategyInfo: FC = () => {
         <FormattedMessage id="StrategyInfo.title" />
       </Title>
 
-      <InputField
+      <StrategyName
         required
-        label={fieldLabel.strategyName}
         help={help}
         name={fieldName.name}
         onChange={onChangeName}
@@ -102,7 +101,7 @@ export const StrategyInfo: FC = () => {
       <Field isGrouped>
         <Control>
           <Button isOutlined isLoading={isLoading}>
-            <FormattedMessage id="buttonLabel.save" />
+            <FormattedMessage id="StrategyInfo.save" />
           </Button>
         </Control>
       </Field>

@@ -5,24 +5,25 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputField,
   InputOnChange,
-  OutputField,
   Title,
-  useFormattedDate,
 } from "@ggbot2/design";
 import {
   ErrorInvalidArg,
-  isAccount,
   isName,
   normalizeName,
   throwIfInvalidName,
 } from "@ggbot2/models";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
+import { AccountId } from "../components/AccountId.js";
+import { AccountNickName } from "../components/AccountNickName.js";
+import { Email } from "../components/Email.js";
+import { WhenCreated } from "../components/WhenCreated.js";
 import { AccountContext } from "../contexts/Account.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, errorMessage, fieldLabel, title } from "../i18n/index.js";
+import { errorMessage } from "../i18n/index.js";
 
 const fields = ["name"] as const;
 const fieldName = {
@@ -31,25 +32,13 @@ const fieldName = {
 
 export const AccountSettings: FC = () => {
   const { account } = useContext(AccountContext);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(account.name ?? "");
   const [help, setHelp] = useState("");
 
   const RENAME = useApi.RenameAccount();
   const isLoading = RENAME.isPending;
 
   const readOnly = RENAME.isPending;
-
-  let accountId = "";
-  let email = "";
-  let whenCreated: number | undefined;
-
-  if (isAccount(account)) {
-    accountId = account.id;
-    email = account.email;
-    whenCreated = account.whenCreated;
-  }
-
-  const formattedDate = useFormattedDate(whenCreated, "day");
 
   const onChangeName = useCallback<InputOnChange>((event) => {
     const value = event.target.value;
@@ -78,24 +67,24 @@ export const AccountSettings: FC = () => {
 
   // Set name on READ.
   useEffect(() => {
-    if (isAccount(account)) setName(account.name ?? "");
+    if (account) setName(account.name ?? "");
   }, [account]);
 
   return (
     <Form box onSubmit={onSubmit}>
-      <Title>{title.account}</Title>
+      <Title>
+        <FormattedMessage id="AccountSettings.title" />
+      </Title>
 
-      <OutputField label={fieldLabel.email} value={email} />
+      <Email readOnly value={account.email} />
 
-      <OutputField label={fieldLabel.whenCreated} value={formattedDate} />
+      <WhenCreated value={account.whenCreated} />
 
-      <OutputField label={fieldLabel.accountId} value={accountId} />
+      <AccountId value={account.id} />
 
-      <InputField
+      <AccountNickName
         required
-        spellCheck="false"
         help={help}
-        label={fieldLabel.nickName}
         name={fieldName.name}
         onChange={onChangeName}
         readOnly={readOnly}
@@ -105,7 +94,7 @@ export const AccountSettings: FC = () => {
       <Field isGrouped>
         <Control>
           <Button isOutlined isLoading={isLoading}>
-            {buttonLabel.save}
+            <FormattedMessage id="AccountSettings.button" />
           </Button>
         </Control>
       </Field>

@@ -18,17 +18,12 @@ import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { Email } from "../components/Email.js";
-import {
-  GenericErrorMessage,
-  TimeoutErrorMessage,
-} from "../components/ErrorMessages.js";
-import { title } from "../i18n/index.js";
+import { GenericError } from "../components/GenericError.js";
+import { TimeoutError } from "../components/TimeoutError.js";
 import { url } from "../routing/URLs.js";
 
-type SetEmail = (email: EmailAddress) => void;
-
 export type AuthEnterProps = {
-  setEmail: SetEmail;
+  setEmail: (email: EmailAddress) => void;
 };
 
 type State = {
@@ -139,15 +134,15 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
         <Field isGrouped>
           <Control>
             <Button color="primary" isLoading={isPending}>
-              <FormattedMessage id="buttonLabel.send" />
+              <FormattedMessage id="AuthEnter.button" />
             </Button>
           </Control>
         </Field>
 
         <>
-          {hasGenericError || hasInvalidInput ? <GenericErrorMessage /> : null}
+          {hasGenericError || (hasInvalidInput && <GenericError />)}
 
-          {gotTimeout ? <TimeoutErrorMessage /> : null}
+          {gotTimeout ? <TimeoutError /> : null}
         </>
       </Form>
     </Modal>

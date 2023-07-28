@@ -10,7 +10,6 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel } from "../i18n/index.js";
 
 type Props = {
   onDelete: () => void;
@@ -45,7 +44,7 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
   return (
     <>
       <Button color={color} onClick={toggleModal}>
-        <FormattedMessage id="DeleteBinanceApi.buttonLabel" />
+        <FormattedMessage id="DeleteBinanceApi.button" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
@@ -69,10 +68,12 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
               isLoading={isLoading}
               onClick={onClickConfirmation}
             >
-              {buttonLabel.yesDelete}
+              <FormattedMessage id="DeleteBinanceApi.confirmation" />
             </Button>
 
-            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+            <Button onClick={toggleModal}>
+              <FormattedMessage id="DeleteBinanceApi.dismiss" />
+            </Button>
           </Buttons>
         </Message>
       </Modal>

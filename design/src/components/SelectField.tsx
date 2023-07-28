@@ -1,7 +1,7 @@
 import { FC, ReactNode, useId } from "react";
 import { Control, Field, Help, Label, Select, SelectProps } from "trunx";
 
-type SelectFieldProps = Omit<SelectProps, "id"> & {
+export type SelectFieldProps = Omit<SelectProps, "id"> & {
   help?: ReactNode;
   label: string;
 };

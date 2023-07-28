@@ -4,14 +4,15 @@ import { useIntl } from "react-intl";
 
 type Props = Omit<InputFieldProps, "label" | "readOnly">;
 
-export const StrategyKind: FC<Props> = ({ value }) => {
+export const StrategyKind: FC<Props> = ({ value, ...props }) => {
   const { formatMessage } = useIntl();
 
   return (
     <InputField
-      label={formatMessage({ id: "StrategyKind.label" })}
       readOnly
+      label={formatMessage({ id: "StrategyKind.label" })}
       value={value}
+      {...props}
     />
   );
 };

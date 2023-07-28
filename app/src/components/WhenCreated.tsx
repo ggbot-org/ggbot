@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 
 type Props = Omit<InputFieldProps, "label" | "readOnly">;
 
-export const WhenCreated: FC<Props> = ({ value }) => {
+export const WhenCreated: FC<Props> = ({ value, ...props }) => {
   const { formatMessage } = useIntl();
 
   const formattedValue = useFormattedDate(
@@ -14,9 +14,10 @@ export const WhenCreated: FC<Props> = ({ value }) => {
 
   return (
     <InputField
-      label={formatMessage({ id: "WhenCreated.label" })}
       readOnly
+      label={formatMessage({ id: "WhenCreated.label" })}
       value={formattedValue}
+      {...props}
     />
   );
 };

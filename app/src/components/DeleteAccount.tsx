@@ -10,7 +10,6 @@ import { FC, useCallback, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel } from "../i18n/index.js";
 
 export const DeleteAccount: FC = () => {
   const color: MainColor = "danger";
@@ -33,7 +32,7 @@ export const DeleteAccount: FC = () => {
   return (
     <>
       <Button color={color} onClick={toggleModal}>
-        <FormattedMessage id="DeleteAccount.buttonLabel" />
+        <FormattedMessage id="DeleteAccount.button" />
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
@@ -47,16 +46,22 @@ export const DeleteAccount: FC = () => {
             </p>
           </Content>
 
+          {/*
+TODO further confirmation checkbox: I understand the consequences.
+*/}
+
           <Buttons>
             <Button
               color={color}
               isLoading={isLoading}
               onClick={onClickConfirmation}
             >
-              {buttonLabel.yesDelete}
+              <FormattedMessage id="DeleteAccount.confirmation" />
             </Button>
 
-            <Button onClick={toggleModal}>{buttonLabel.no}</Button>
+            <Button onClick={toggleModal}>
+              <FormattedMessage id="DeleteAccount.dismiss" />
+            </Button>
           </Buttons>
         </Message>
       </Modal>

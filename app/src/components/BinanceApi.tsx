@@ -115,7 +115,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
         <FormattedMessage id="BinanceApi.title" />
       </Title>
 
-      <ApiKey value={apiKey} />
+      <ApiKey readOnly truncated value={apiKey} />
 
       <Field>
         <Control>

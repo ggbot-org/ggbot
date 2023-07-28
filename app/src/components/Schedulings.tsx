@@ -226,13 +226,13 @@ export const Schedulings: FC = () => {
             disabled={!canSubmit}
             isLoading={isLoading}
           >
-            <FormattedMessage id="buttonLabel.save" />
+            <FormattedMessage id="Schedulings.save" />
           </Button>
         </Control>
 
         <Control>
           <Button onClick={onClickCancel} disabled={!canCancel}>
-            <FormattedMessage id="buttonLabel.cancel" />
+            <FormattedMessage id="Schedulings.cancel" />
           </Button>
         </Control>
       </Field>

@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-import { PageContainer } from "../components/PageContainer.js";
 import { Dashboard } from "../components/Dashboard.js";
+import { PageContainer } from "../components/PageContainer.js";
 import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 

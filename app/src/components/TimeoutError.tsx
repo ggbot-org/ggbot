@@ -2,9 +2,8 @@ import { Message } from "@ggbot2/design";
 import { FC } from "react";
 import { FormattedMessage } from "react-intl";
 
-// TODO rename in purchase canceled
-export const SubscriptionCanceled: FC = () => (
+export const TimeoutError: FC = () => (
   <Message color="warning">
-    <FormattedMessage id="SubscriptionCanceled.message" />
+    <FormattedMessage id="TimeoutError.message" />
   </Message>
 );

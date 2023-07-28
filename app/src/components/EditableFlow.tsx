@@ -54,7 +54,7 @@ export const EditableFlow: FC<Props> = ({
           isLoading={saveIsPending}
           onClick={onClickSave}
         >
-          <FormattedMessage id="buttonLabel.save" />
+          <FormattedMessage id="EditableFlow.save" />
         </Button>
       </FlowMenu>
 

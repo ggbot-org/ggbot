@@ -5,14 +5,14 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputField,
   Title,
 } from "@ggbot2/design";
 import { FC, useCallback, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { ApiKey } from "../components/ApiKey.js";
+import { ApiSecret } from "../components/ApiSecret.js";
 import { useApi } from "../hooks/useApi.js";
-import { buttonLabel, fieldLabel } from "../i18n/index.js";
 
 type Props = {
   onCreate: () => void;
@@ -48,19 +48,9 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
         <FormattedMessage id="CreateBinanceApi.title" />
       </Title>
 
-      <InputField
-        required
-        name="apiKey"
-        label={fieldLabel.apiKey}
-        readOnly={readOnly}
-      />
+      <ApiKey required name="apiKey" readOnly={readOnly} />
 
-      <InputField
-        required
-        label={fieldLabel.apiSecret}
-        name="apiSecret"
-        readOnly={readOnly}
-      />
+      <ApiSecret required name="apiSecret" readOnly={readOnly} />
 
       <Field>
         <Control>

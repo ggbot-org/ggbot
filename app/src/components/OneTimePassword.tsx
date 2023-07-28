@@ -4,8 +4,14 @@ import { useIntl } from "react-intl";
 
 type Props = Omit<InputFieldProps, "label">;
 
-export const Email: FC<Props> = (props) => {
+export const OneTimePassword: FC<Props> = ({ value, ...props }) => {
   const { formatMessage } = useIntl();
 
-  return <InputField label={formatMessage({ id: "Email.label" })} {...props} />;
+  return (
+    <InputField
+      label={formatMessage({ id: "OneTimePassword.label" })}
+      value={value}
+      {...props}
+    />
+  );
 };
