@@ -6,6 +6,7 @@ import {
   ReadStrategyFlow,
   Strategy,
 } from "@ggbot2/models";
+import { localWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
   FC,
@@ -33,32 +34,57 @@ export const StrategyContext = createContext<ContextValue>({
 StrategyContext.displayName = "StrategyContext";
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-  const READ_STRATEGY = useApi.ReadStrategy();
-  const strategy = READ_STRATEGY.data;
-
-  const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
-  const flow = READ_STRATEGY_FLOW.data;
-
   const strategyKey = strategyKeyParamsFromCurrentLocation();
+  const strategyId = strategyKey?.strategyId;
+
+  const READ_STRATEGY = useApi.ReadStrategy();
+  const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
+
+  const strategy = useMemo(() => {
+    if (!strategyId) return noneStrategy;
+    const localStrategy = localWebStorage.getStrategy(strategyId);
+    if (isStrategy(localStrategy)) return localStrategy;
+    const remoteStrategy = READ_STRATEGY.data;
+    if (isStrategy(remoteStrategy)) return remoteStrategy;
+    return noneStrategy;
+  }, [READ_STRATEGY, strategyId]);
+
+  const flow = useMemo(() => {
+    if (
+      isStrategyFlow(READ_STRATEGY_FLOW.data) ||
+      READ_STRATEGY_FLOW.data === null
+    )
+      return READ_STRATEGY_FLOW.data;
+  }, [READ_STRATEGY_FLOW]);
 
   const contextValue = useMemo<ContextValue>(
     () => ({
-      strategy: isStrategy(strategy) ? strategy : noneStrategy,
-      flow: isStrategyFlow(flow) || flow === null ? flow : undefined,
+      strategy,
+      flow,
     }),
     [strategy, flow]
   );
 
+  // Fetch strategy.
   useEffect(() => {
     if (!strategyKey) return;
     if (READ_STRATEGY.canRun) READ_STRATEGY.request(strategyKey);
   }, [READ_STRATEGY, strategyKey]);
 
+  // Cache strategy.
+  useEffect(() => {
+    if (!strategyId) return;
+    const strategy = READ_STRATEGY.data;
+    if (isStrategy(strategy)) localWebStorage.setStrategy(strategy);
+    if (strategy === null) localWebStorage.removeItem(strategyId);
+  }, [READ_STRATEGY, strategyId]);
+
+  // Fetch flow.
   useEffect(() => {
     if (!strategyKey) return;
-    if (!strategy) return;
+    if (!READ_STRATEGY.data) return;
     if (READ_STRATEGY_FLOW.canRun) READ_STRATEGY_FLOW.request(strategyKey);
-  }, [READ_STRATEGY_FLOW, strategy, strategyKey]);
+  }, [READ_STRATEGY, READ_STRATEGY_FLOW, strategyKey]);
 
   if (!strategyKey)
     return (

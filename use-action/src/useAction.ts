@@ -20,6 +20,11 @@ import { useCallback, useState } from "react";
 import { UseActionAbortController } from "./controller.js";
 import { UseActionHeaders, UseActionHeadersConstructorArg } from "./headers.js";
 
+export type UseActionError =
+  | ApiActionClientSideError
+  | ApiActionServerSideError
+  | undefined;
+
 type UseActionRequestArg<Input extends OperationInput> =
   Input extends AccountKey ? Omit<Input, "accountId"> : Input;
 
@@ -30,7 +35,7 @@ type UseActionRequest<Input extends OperationInput> = (
 type UseActionOutput<
   Action extends { in: OperationInput; out: OperationOutput }
 > = {
-  error: ApiActionClientSideError | ApiActionServerSideError | undefined;
+  error: UseActionError;
   data: Action["out"] | undefined;
   request: UseActionRequest<Action["in"]>;
   canRun: boolean;
@@ -82,9 +87,7 @@ export const useAction = <
   { type }: Pick<ApiActionInput<ApiActionType>, "type">
 ): UseActionOutput<Action> => {
   const [data, setData] = useState<Action["out"] | undefined>();
-  const [error, setError] = useState<
-    ApiActionClientSideError | ApiActionServerSideError | undefined
-  >();
+  const [error, setError] = useState<UseActionError>();
   const [isPending, setIsPending] = useState<boolean | undefined>();
 
   const reset = useCallback(() => {

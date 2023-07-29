@@ -6,7 +6,7 @@ export type DateTimeFormat = (typeof dateTimeFormats)[number];
 
 export type DateTimeValue = number | string | undefined | null;
 
-// Remove this hook from here, design should not care about i18n
+// TODO use formatjs , try to remove this hook from desing
 export const useFormattedDate = (
   value: DateTimeValue,
   format: DateTimeFormat

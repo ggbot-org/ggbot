@@ -7,6 +7,9 @@ export const quotaTypes = [
   "MAX_SCHEDULINGS_PER_ACCOUNT",
 ] as const;
 export type QuotaType = (typeof quotaTypes)[number];
+export const quotaType: Record<string, QuotaType> = Object.fromEntries(
+  quotaTypes.map((quotaType) => [quotaType, quotaType])
+);
 
 export const quota: Record<
   QuotaType,

@@ -25,6 +25,7 @@ export {
   Column,
   Columns,
   Container,
+  type ContainerProps,
   Content,
   Control,
   Field,

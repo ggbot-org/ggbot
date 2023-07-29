@@ -1,8 +1,6 @@
 import {
   Button,
   Buttons,
-  Column,
-  Columns,
   Content,
   MainColor,
   Message,
@@ -11,9 +9,7 @@ import {
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { StrategyId } from "../components/StrategyId.js";
-import { StrategyName } from "../components/StrategyName.js";
-import { WhenCreated } from "../components/WhenCreated.js";
+import { StrategyRecord } from "../components/StrategyRecord.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { href } from "../routing/hrefs.js";
@@ -27,7 +23,7 @@ export const DeleteStrategy: FC = () => {
 
   const DELETE = useApi.DeleteStrategy();
   const isLoading = DELETE.isPending || DELETE.isDone;
-  const redirectToHomepage = DELETE.isDone;
+  const redirect = DELETE.isDone;
 
   const [modalIsActive, setModalIsActive] = useState(false);
 
@@ -41,8 +37,8 @@ export const DeleteStrategy: FC = () => {
   }, [DELETE, strategy]);
 
   useEffect(() => {
-    if (redirectToHomepage) window.location.href = href.homePage();
-  }, [redirectToHomepage]);
+    if (redirect) window.location.href = href.homePage();
+  }, [redirect]);
 
   return (
     <>
@@ -60,21 +56,7 @@ export const DeleteStrategy: FC = () => {
               <FormattedMessage id="DeleteStrategy.message" />
             </p>
 
-            <Columns>
-              <Column>
-                <StrategyName readOnly value={strategy.name} />
-              </Column>
-            </Columns>
-
-            <Columns>
-              <Column>
-                <StrategyId value={strategy.id} />
-              </Column>
-
-              <Column>
-                <WhenCreated value={strategy.whenCreated} />
-              </Column>
-            </Columns>
+            <StrategyRecord strategy={strategy} />
           </Content>
 
           <Buttons>

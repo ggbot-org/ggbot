@@ -9,7 +9,7 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { SubscriptionProvider } from "../contexts/Subscription.js";
 
 export const BillingSettingsPage: FC = () => (
-  <PageContainer>
+  <PageContainer maxWidth="widescreen">
     <AuthenticationProvider>
       <SubscriptionProvider>
         <Section>

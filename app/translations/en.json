@@ -105,7 +105,7 @@
     "defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
   },
   "DeleteStrategy.button": {
-    "defaultMessage": "Delete strategy"
+    "defaultMessage": "Delete"
   },
   "DeleteStrategy.confirmation": {
     "defaultMessage": "Yes, delete it"
@@ -185,6 +185,12 @@
   "RegenerateOneTimePassword.message": {
     "defaultMessage": "Need to generate one time password again."
   },
+  "RenameStrategy.button": {
+    "defaultMessage": "Rename"
+  },
+  "RenameStrategy.save": {
+    "defaultMessage": "Save"
+  },
   "Schedulings.title": {
     "defaultMessage": "Schedulings"
   },
@@ -212,11 +218,11 @@
   "Strategies.title": {
     "defaultMessage": "Strategies"
   },
-  "StrategyInfo.save": {
-    "defaultMessage": "Save"
+  "StrategiesQuotaExceededError.message": {
+    "defaultMessage": "Cannot create more strategies."
   },
-  "StrategyInfo.title": {
-    "defaultMessage": "Strategy info"
+  "StrategyActions.title": {
+    "defaultMessage": "Strategy"
   },
   "StrategyNotFound.title": {
     "defaultMessage": "Strategy not found."
@@ -286,8 +292,5 @@
   },
   "errorMessage.invalidStrategyName": {
     "defaultMessage": "Invalid strategy name."
-  },
-  "errorMessage.maxStrategiesPerAccount": {
-    "defaultMessage": "Cannot create more strategies."
   }
 }

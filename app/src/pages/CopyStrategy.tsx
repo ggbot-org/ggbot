@@ -8,7 +8,7 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
 
 export const CopyStrategyPage: FC = () => (
-  <PageContainer>
+  <PageContainer maxWidth="widescreen">
     <AuthenticationProvider>
       <AccountStrategiesProvider>
         <StrategyProvider>

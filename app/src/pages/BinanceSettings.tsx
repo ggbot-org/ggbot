@@ -6,7 +6,7 @@ import { PageContainer } from "../components/PageContainer.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 
 export const BinanceSettingsPage: FC = () => (
-  <PageContainer>
+  <PageContainer maxWidth="widescreen">
     <AuthenticationProvider>
       <Section>
         <BinanceSettings />

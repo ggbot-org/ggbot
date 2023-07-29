@@ -1,14 +1,12 @@
 import {
   Button,
-  Column,
-  Columns,
   Control,
   Field,
   Form,
   FormOnSubmit,
   formValues,
   InputOnChange,
-  Title,
+  Modal,
 } from "@ggbot2/design";
 import {
   ErrorInvalidArg,
@@ -19,11 +17,7 @@ import {
 import { FC, useCallback, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { GoCopyStrategy } from "../components/GoCopyStrategy.js";
-import { ShareStrategy } from "../components/ShareStrategy.js";
-import { StrategyId } from "../components/StrategyId.js";
 import { StrategyName } from "../components/StrategyName.js";
-import { WhenCreated } from "../components/WhenCreated.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { errorMessage } from "../i18n/index.js";
@@ -33,16 +27,20 @@ const fieldName = {
   name: "name",
 } as const satisfies Record<string, (typeof fields)[number]>;
 
-export const StrategyInfo: FC = () => {
+export const RenameStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);
+
+  const [modalIsActive, setModalIsActive] = useState(false);
+
+  const toggleModal = useCallback(() => {
+    setModalIsActive((active) => !active);
+  }, []);
 
   const [name, setName] = useState(strategy.name);
   const [help, setHelp] = useState("");
 
   const RENAME = useApi.RenameStrategy();
-
   const isLoading = RENAME.isPending;
-
   const readOnly = RENAME.isPending;
 
   const onChangeName = useCallback<InputOnChange>((event) => {
@@ -74,47 +72,31 @@ export const StrategyInfo: FC = () => {
   );
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Title>
-        <FormattedMessage id="StrategyInfo.title" />
-      </Title>
+    <>
+      <Button onClick={toggleModal}>
+        <FormattedMessage id="RenameStrategy.button" />
+      </Button>
 
-      <StrategyName
-        required
-        help={help}
-        name={fieldName.name}
-        onChange={onChangeName}
-        readOnly={readOnly}
-        value={name}
-      />
+      <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
+        <Form box onSubmit={onSubmit}>
+          <StrategyName
+            required
+            help={help}
+            name={fieldName.name}
+            onChange={onChangeName}
+            readOnly={readOnly}
+            value={name}
+          />
 
-      <Columns>
-        <Column>
-          <WhenCreated value={strategy.whenCreated} />
-        </Column>
-
-        <Column>
-          <StrategyId value={strategy.id} />
-        </Column>
-      </Columns>
-
-      <Field isGrouped>
-        <Control>
-          <Button isOutlined isLoading={isLoading}>
-            <FormattedMessage id="StrategyInfo.save" />
-          </Button>
-        </Control>
-      </Field>
-
-      <Field isGrouped>
-        <Control>
-          <ShareStrategy />
-        </Control>
-
-        <Control>
-          <GoCopyStrategy />
-        </Control>
-      </Field>
-    </Form>
+          <Field isGrouped>
+            <Control>
+              <Button isOutlined isLoading={isLoading}>
+                <FormattedMessage id="RenameStrategy.save" />
+              </Button>
+            </Control>
+          </Field>
+        </Form>
+      </Modal>
+    </>
   );
 };

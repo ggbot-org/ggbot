@@ -6,7 +6,7 @@ import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 
 export const DashboardPage: FC = () => (
-  <PageContainer>
+  <PageContainer maxWidth="widescreen">
     <AuthenticationProvider>
       <AccountStrategiesProvider>
         <Dashboard />

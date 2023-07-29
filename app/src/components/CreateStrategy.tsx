@@ -5,22 +5,16 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputField,
-  Message,
   Title,
 } from "@ggbot2/design";
-import {
-  ErrorExceededQuota,
-  ErrorInvalidArg,
-  isName,
-  isStrategy,
-  throwIfInvalidName,
-} from "@ggbot2/models";
-import { FC, useCallback, useEffect, useState } from "react";
+import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
+import { FC, useCallback, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { StrategiesQuotaExceededError } from "../components/StrategiesQuotaExceededError.js";
+import { StrategyName } from "../components/StrategyName.js";
 import { useApi } from "../hooks/useApi.js";
-import { href } from "../routing/hrefs.js";
+import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
 
 const fields = ["name"];
 const fieldName = {
@@ -32,7 +26,7 @@ export const CreateStrategy: FC = () => {
 
   const CREATE = useApi.CreateStrategy();
 
-  const strategy = CREATE.data;
+  const newStrategy = CREATE.data;
   const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
   const error = CREATE.error;
@@ -58,15 +52,7 @@ export const CreateStrategy: FC = () => {
     [CREATE, formatMessage]
   );
 
-  useEffect(() => {
-    if (isStrategy(strategy)) {
-      const { id, kind } = strategy;
-      window.location.href = href.strategyPage({
-        strategyId: id,
-        strategyKind: kind,
-      });
-    }
-  }, [strategy]);
+  useRedirectToNewStrategyPage(newStrategy);
 
   return (
     <>
@@ -75,9 +61,8 @@ export const CreateStrategy: FC = () => {
           <FormattedMessage id="CreateStrategy.title" />
         </Title>
 
-        <InputField
+        <StrategyName
           required
-          label={formatMessage({ id: "StrategyName.label" })}
           name={fieldName.name}
           readOnly={readOnly}
           help={help}
@@ -92,13 +77,7 @@ export const CreateStrategy: FC = () => {
         </Field>
       </Form>
 
-      {error ? (
-        <Message color="warning">
-          {error.name === ErrorExceededQuota.name ? (
-            <FormattedMessage id="errorMessage.maxStrategiesPerAccount" />
-          ) : null}
-        </Message>
-      ) : null}
+      <StrategiesQuotaExceededError error={error} />
     </>
   );
 };

@@ -1,6 +1,5 @@
 import {
   BinanceAccountInformation,
-  binanceApiDomain,
   BinanceCacheMap,
   BinanceExchange,
   BinanceExchangeInfo,
@@ -26,12 +25,10 @@ export class _BinanceClient implements BinanceDflowClient {
     this.publicClient = new BinanceExchange();
     this.publicClient.cache = new BinanceCacheMap();
 
-    const privateClientBaseUrl =
-      ENV.BINANCE_PROXY_BASE_URL ?? `https://${binanceApiDomain}`;
     this.privateClient = new BinanceClient(
       apiKey,
       apiSecret,
-      privateClientBaseUrl
+      ENV.BINANCE_PROXY_BASE_URL
     );
   }
 

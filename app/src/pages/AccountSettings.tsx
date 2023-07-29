@@ -7,7 +7,7 @@ import { PageContainer } from "../components/PageContainer.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 
 export const AccountSettingsPage: FC = () => (
-  <PageContainer>
+  <PageContainer maxWidth="widescreen">
     <AuthenticationProvider>
       <Section>
         <Columns>

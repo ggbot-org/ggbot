@@ -1,6 +1,8 @@
+import { isStrategy, Strategy } from "@ggbot2/models";
 import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils";
 
 const jwtKey = "jwt";
+const strategyKey = (id: Strategy["id"]) => `strategy:${id}`;
 
 class LocalWebStorage {
   getItem(key: string) {
@@ -26,6 +28,31 @@ class LocalWebStorage {
     } else if (isNonEmptyString(value)) {
       this.setItem(jwtKey, value);
     }
+  }
+
+  getStrategy(strategyId: Strategy["id"]): Strategy | undefined {
+    const key = strategyKey(strategyId);
+    const value = this.getItem(key);
+    if (value) {
+      try {
+        const strategy = JSON.parse(value);
+        if (isStrategy(strategy)) return strategy;
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          this.removeItem(key);
+          return;
+        }
+        throw error;
+      }
+    }
+  }
+
+  setStrategy(strategy: Strategy) {
+    this.setItem(strategyKey(strategy.id), JSON.stringify(strategy));
+  }
+
+  removeStrategy(strategyId: Strategy["id"]) {
+    this.removeItem(strategyKey(strategyId));
   }
 }
 

@@ -6,31 +6,25 @@ import {
   FormOnSubmit,
   InputField,
   Message,
+  Section,
   Title,
   useToast,
 } from "@ggbot2/design";
-import {
-  ErrorExceededQuota,
-  ErrorInvalidArg,
-  isName,
-  isStrategy,
-  throwIfInvalidName,
-} from "@ggbot2/models";
+import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
 import {
   ChangeEventHandler,
   FC,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { StrategyName } from "../components/StrategyName.js";
-import { WhenCreated } from "../components/WhenCreated.js";
+import { StrategiesQuotaExceededError } from "../components/StrategiesQuotaExceededError.js";
+import { StrategyRecord } from "../components/StrategyRecord.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { href } from "../routing/hrefs.js";
+import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
 
 export const CopyStrategy: FC = () => {
   const { formatMessage } = useIntl();
@@ -83,56 +77,44 @@ export const CopyStrategy: FC = () => {
     [setIsDisabled]
   );
 
-  useEffect(() => {
-    if (!error) return;
-    if (error.name === ErrorExceededQuota.name) {
-      toast.warning(
-        formatMessage({ id: "errorMessage.maxStrategiesPerAccount" })
-      );
-    } else {
-      toast.warning(formatMessage({ id: "GenericError.message" }));
-    }
-  }, [error, formatMessage, toast]);
-
-  useEffect(() => {
-    if (isStrategy(newStrategy)) {
-      window.location.href = href.strategyPage({
-        strategyId: newStrategy.id,
-        strategyKind: newStrategy.kind,
-      });
-    }
-  }, [newStrategy]);
+  useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Title>
-        <FormattedMessage id="CopyStrategy.title" />
-      </Title>
+    <>
+      <Form box onSubmit={onSubmit}>
+        <Section>
+          <Title>
+            <FormattedMessage id="CopyStrategy.title" />
+          </Title>
 
-      <StrategyName readOnly value={strategy.name} />
+          <StrategyRecord strategy={strategy} />
+        </Section>
 
-      <WhenCreated value={strategy.whenCreated} />
+        <Section>
+          <Message>
+            <FormattedMessage id="CopyStrategy.chooseNewName" />
+          </Message>
 
-      <Message>
-        <FormattedMessage id="CopyStrategy.chooseNewName" />
-      </Message>
+          <InputField
+            required
+            onChange={onChangeName}
+            label={formatMessage({ id: "CopyStrategy.newStrategyName" })}
+            name="name"
+            placeholder={strategy.name}
+            readOnly={readOnly}
+          />
 
-      <InputField
-        required
-        onChange={onChangeName}
-        label={formatMessage({ id: "CopyStrategy.newStrategyName" })}
-        name="name"
-        placeholder={strategy.name}
-        readOnly={readOnly}
-      />
+          <Field>
+            <Control>
+              <Button isLoading={isLoading} disabled={isDisabled}>
+                <FormattedMessage id="CopyStrategy.button" />
+              </Button>
+            </Control>
+          </Field>
+        </Section>
+      </Form>
 
-      <Field>
-        <Control>
-          <Button isLoading={isLoading} disabled={isDisabled}>
-            <FormattedMessage id="CopyStrategy.button" />
-          </Button>
-        </Control>
-      </Field>
-    </Form>
+      <StrategiesQuotaExceededError error={error} />
+    </>
   );
 };
