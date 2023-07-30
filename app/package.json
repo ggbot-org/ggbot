@@ -55,6 +55,18 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config/react"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "@typescript-eslint/ban-ts-comment": "off",
+          "no-warning-comments": "off"
+        }
+      }
     ]
   }
 }

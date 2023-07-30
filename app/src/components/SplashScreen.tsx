@@ -1,7 +1,5 @@
-import { Flex, Logo } from "@ggbot2/design";
+import { BrandName, Flex, Logo } from "@ggbot2/design";
 import { FC } from "react";
-
-import { classNames } from "../styles/classNames.js";
 
 export const splashScreenDuration = 1700;
 
@@ -12,9 +10,7 @@ export const SplashScreen: FC = () => (
     </div>
 
     <div>
-      <span className={classNames("is-size-3", "has-text-weight-medium")}>
-        ggbot<b className={classNames("has-text-primary")}>2</b>
-      </span>
+      <BrandName size="medium" />
     </div>
   </Flex>
 );

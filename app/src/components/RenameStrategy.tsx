@@ -5,27 +5,21 @@ import {
   Form,
   FormOnSubmit,
   formValues,
-  InputOnChange,
   Modal,
 } from "@ggbot2/design";
-import {
-  ErrorInvalidArg,
-  isName,
-  normalizeName,
-  throwIfInvalidName,
-} from "@ggbot2/models";
+import { isName } from "@ggbot2/models";
 import { FC, useCallback, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { StrategyName } from "../components/StrategyName.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
-import { errorMessage } from "../i18n/index.js";
 
 const fields = ["name"] as const;
+type Field = (typeof fields)[number];
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, (typeof fields)[number]>;
+} as const satisfies Record<string, Field>;
 
 export const RenameStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);
@@ -36,37 +30,21 @@ export const RenameStrategy: FC = () => {
     setModalIsActive((active) => !active);
   }, []);
 
-  const [name, setName] = useState(strategy.name);
-  const [help, setHelp] = useState("");
-
   const RENAME = useApi.RenameStrategy();
   const isLoading = RENAME.isPending;
   const readOnly = RENAME.isPending;
 
-  const onChangeName = useCallback<InputOnChange>((event) => {
-    const value = event.target.value;
-    if (!isName(value)) return;
-    setName(value);
-  }, []);
-
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      try {
-        const { name } = formValues(event, fields);
-        if (!isName(name)) return;
-        const newName = normalizeName(name);
-        throwIfInvalidName(newName);
+      const { name: newName } = formValues(event, fields);
+      if (!isName(newName)) return;
+      if (RENAME.canRun)
         RENAME.request({
           name: newName,
           strategyId: strategy.id,
           strategyKind: strategy.kind,
         });
-        setName(newName);
-      } catch (error) {
-        if (error instanceof ErrorInvalidArg)
-          setHelp(errorMessage.invalidStrategyName);
-      }
     },
     [RENAME, strategy]
   );
@@ -79,18 +57,11 @@ export const RenameStrategy: FC = () => {
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
         <Form box onSubmit={onSubmit}>
-          <StrategyName
-            required
-            help={help}
-            name={fieldName.name}
-            onChange={onChangeName}
-            readOnly={readOnly}
-            value={name}
-          />
+          <StrategyName required name={fieldName.name} readOnly={readOnly} />
 
           <Field isGrouped>
             <Control>
-              <Button isOutlined isLoading={isLoading}>
+              <Button isLoading={isLoading}>
                 <FormattedMessage id="RenameStrategy.save" />
               </Button>
             </Control>

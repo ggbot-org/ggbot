@@ -32,7 +32,10 @@
   "AuthVerify.button": {
     "defaultMessage": "Enter"
   },
-  "AuthVerify.checkYourEmail": {
+  "AuthVerify.failed": {
+    "defaultMessage": "Verification failed."
+  },
+  "AuthVerify.checkEmail": {
     "defaultMessage": "Check your email to get the <em>One Time Password</em>."
   },
   "AuthVerify.resetEmail": {
@@ -44,11 +47,20 @@
   "BinanceApi.test": {
     "defaultMessage": "Test API"
   },
+  "BinanceApiKeyPermissionEnableReading.description": {
+    "defaultMessage": "is <em>reading</em> permission enabled?"
+  },
+  "BinanceApiKeyPermissionEnableWithdrawals.description": {
+    "defaultMessage": "are <em>withdrawals</em> enabled?"
+  },
+  "BinanceApiKeyPermissionEnableSpotAndMarginTrading.description": {
+    "defaultMessage": "is <em>Spot and Margin</em> enabled?"
+  },
+  "BinanceApiKeyPermissionIpRestrict.description": {
+    "defaultMessage": "is <em>static IP</em> restriction activated?"
+  },
   "CopyStrategy.chooseNewName": {
     "defaultMessage": "Choose a new name for the copied strategy."
-  },
-  "CopyStrategy.newStrategyName": {
-    "defaultMessage": "New strategy name"
   },
   "CopyStrategy.title": {
     "defaultMessage": "Copy strategy"
@@ -104,6 +116,12 @@
   "DeleteBinanceApi.question": {
     "defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
   },
+  "DeleteBinanceApi.warning": {
+    "defaultMessage": "All your ggbot2 strategies will not able to be run"
+  },
+  "DeleteBinanceApi.info": {
+    "defaultMessage": "This action will not delete your API key on Binance website."
+  },
   "DeleteStrategy.button": {
     "defaultMessage": "Delete"
   },
@@ -136,6 +154,12 @@
   },
   "InvalidStrategyKey.message": {
     "defaultMessage": "Invalid strategy key. Check this URL parameters."
+  },
+  "Name.hasSpaces": {
+    "defaultMessage": "Name cannot start or end with spaces."
+  },
+  "Name.invalid": {
+    "defaultMessage": "Invalid name."
   },
   "Navigation.account": {
     "defaultMessage": "Account"
@@ -289,8 +313,5 @@
   },
   "WhenCreated.label": {
     "defaultMessage": "When created"
-  },
-  "errorMessage.invalidStrategyName": {
-    "defaultMessage": "Invalid strategy name."
   }
 }

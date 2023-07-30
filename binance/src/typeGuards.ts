@@ -43,6 +43,7 @@ export const isBinanceApiKeyPermission =
   objectTypeGuard<BinanceApiKeyPermission>(
     ({
       // TODO should I add also other fields?
+      // TODO since this is a subbset of permissions, it should be moved to models or database
       ipRestrict,
       enableWithdrawals,
       enableMargin,

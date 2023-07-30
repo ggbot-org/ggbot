@@ -1,17 +1,14 @@
-import { InputField, InputFieldProps } from "@ggbot2/design";
 import { FC } from "react";
 import { useIntl } from "react-intl";
 
-type Props = Omit<InputFieldProps, "label" | "spellCheck">;
+import { Name, NameProps } from "../components/Name.js";
 
-export const AccountNickName: FC<Props> = (props) => {
+export type AccountNickNameProps = Omit<NameProps, "label">;
+
+export const AccountNickName: FC<AccountNickNameProps> = (props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <InputField
-      label={formatMessage({ id: "AccountNickName.label" })}
-      spellCheck="false"
-      {...props}
-    />
+    <Name label={formatMessage({ id: "AccountNickName.label" })} {...props} />
   );
 };

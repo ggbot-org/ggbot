@@ -173,7 +173,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
 
         <Message>
           <FormattedMessage
-            id="AuthVerify.checkYourEmail"
+            id="AuthVerify.checkEmail"
             values={{ em: (chunks) => <em>{chunks}</em> }}
           />
         </Message>
@@ -194,7 +194,9 @@ export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
           {gotTimeout ? <TimeoutError /> : null}
 
           {verificationFailed ? (
-            <Message color="warning">Verification failed</Message>
+            <Message color="warning">
+              <FormattedMessage id="AuthVerify.failed" />
+            </Message>
           ) : null}
 
           {needToGenerateOneTimePasswordAgain ? (

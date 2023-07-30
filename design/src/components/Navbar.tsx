@@ -9,6 +9,7 @@ import {
 } from "trunx";
 
 import { _classNames } from "../components/_classNames.js";
+import { BrandName } from "../components/BrandName.js";
 import { Logo } from "../components/Logo.js";
 
 export type NavbarProps = Partial<{
@@ -45,9 +46,7 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
         <NavbarItem className={_classNames("is-unselectable")}>
           <Logo size={34} />
 
-          <span className={_classNames("is-size-5", "has-text-weight-medium")}>
-            ggbot<b className={_classNames("has-text-primary")}>2</b>
-          </span>
+          <BrandName />
         </NavbarItem>
 
         {noMenu || <NavbarBurger isActive={isActive} onClick={onClickBurger} />}

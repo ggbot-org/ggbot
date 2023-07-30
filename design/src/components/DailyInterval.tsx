@@ -55,28 +55,6 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
     };
   }, []);
 
-  // TODO ??
-  // const onChangeStart = useCallback<DaySelectorOnChange>(
-  //   (event) => {
-  //     const value = event.target.value;
-  //     if (!isDay(value)) return;
-  //     if (value > end) return;
-  //     setStart(value);
-  //   },
-  //   [end, setStart]
-  // );
-
-  // TODO ??
-  // const onChangeEnd = useCallback<DaySelectorOnChange>(
-  //   (event) => {
-  //     const value = event.target.value;
-  //     if (!isDay(value)) return;
-  //     if (value < start) return;
-  //     setEnd(value);
-  //   },
-  //   [start, setEnd]
-  // );
-
   return (
     <div className={_classNames("DailyInterval")}>
       <DayDropdown

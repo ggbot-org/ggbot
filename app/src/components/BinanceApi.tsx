@@ -4,18 +4,22 @@ import {
 } from "@ggbot2/binance";
 import {
   Button,
-  Checkmark,
-  CheckmarkProps,
   Control,
   Field,
   Form,
   FormOnSubmit,
   Title,
 } from "@ggbot2/design";
-import { FC, ReactNode, useCallback } from "react";
+import { FC, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { ApiKey } from "../components/ApiKey.js";
+import {
+  BinanceApiKeyPermissionEnableReading,
+  BinanceApiKeyPermissionEnableSpotAndMarginTrading,
+  BinanceApiKeyPermissionEnableWithdrawals,
+  BinanceApiKeyPermissionIpRestrict,
+} from "../components/BinanceApiKeyPermissions.js";
 import { useApi } from "../hooks/useApi.js";
 
 type Props = {
@@ -43,64 +47,6 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
     ipRestrict = permissions.ipRestrict;
   }
 
-  const permissionItems: {
-    description: ReactNode;
-    checkmark: CheckmarkProps;
-    key: keyof BinanceApiKeyPermission;
-  }[] = [
-    {
-      key: "enableReading",
-      checkmark: {
-        label: String(enableReading),
-        ok: enableReading,
-      },
-      description: (
-        <span>
-          is <em>reading</em> permission enabled?
-        </span>
-      ),
-    },
-    {
-      key: "enableWithdrawals",
-      checkmark: {
-        label: String(enableWithdrawals),
-        ok:
-          typeof enableWithdrawals === "boolean"
-            ? enableWithdrawals === false
-            : undefined,
-      },
-      description: (
-        <span>
-          are <em>withdrawals</em> enabled?
-        </span>
-      ),
-    },
-    {
-      key: "enableSpotAndMarginTrading",
-      checkmark: {
-        label: String(enableSpotAndMarginTrading),
-        ok: enableSpotAndMarginTrading,
-      },
-      description: (
-        <span>
-          is <em>Spot and Margin</em> enabled?
-        </span>
-      ),
-    },
-    {
-      key: "ipRestrict",
-      checkmark: {
-        label: String(ipRestrict),
-        ok: ipRestrict,
-      },
-      description: (
-        <span>
-          is <em>static IP</em> restriction activated?
-        </span>
-      ),
-    },
-  ];
-
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
@@ -126,15 +72,17 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
       </Field>
 
       <div>
-        {permissionItems.map(
-          ({ key, description, checkmark: checkmarkProps }) => (
-            <div key={key}>
-              {description}
+        <BinanceApiKeyPermissionEnableReading enableReading={enableReading} />
 
-              <Checkmark {...checkmarkProps} />
-            </div>
-          )
-        )}
+        <BinanceApiKeyPermissionEnableWithdrawals
+          enableWithdrawals={enableWithdrawals}
+        />
+
+        <BinanceApiKeyPermissionEnableSpotAndMarginTrading
+          enableSpotAndMarginTrading={enableSpotAndMarginTrading}
+        />
+
+        <BinanceApiKeyPermissionIpRestrict ipRestrict={ipRestrict} />
       </div>
     </Form>
   );

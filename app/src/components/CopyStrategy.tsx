@@ -4,36 +4,30 @@ import {
   Field,
   Form,
   FormOnSubmit,
-  InputField,
+  formValues,
   Message,
   Section,
   Title,
-  useToast,
 } from "@ggbot2/design";
-import { ErrorInvalidArg, isName, throwIfInvalidName } from "@ggbot2/models";
-import {
-  ChangeEventHandler,
-  FC,
-  useCallback,
-  useContext,
-  useState,
-} from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { isName } from "@ggbot2/models";
+import { FC, useCallback, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 
 import { StrategiesQuotaExceededError } from "../components/StrategiesQuotaExceededError.js";
+import { StrategyName } from "../components/StrategyName.js";
 import { StrategyRecord } from "../components/StrategyRecord.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
 
+const fields = ["name"];
+type Field = (typeof fields)[number];
+const fieldName = {
+  name: "name",
+} as const satisfies Record<string, Field>;
+
 export const CopyStrategy: FC = () => {
-  const { formatMessage } = useIntl();
-
-  const { toast } = useToast();
-
   const { strategy } = useContext(StrategyContext);
-
-  const [isDisabled, setIsDisabled] = useState(true);
 
   const COPY = useApi.CopyStrategy();
   const readOnly = COPY.isPending || COPY.isDone;
@@ -43,38 +37,17 @@ export const CopyStrategy: FC = () => {
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
-      try {
-        event.preventDefault();
-        if (!COPY.canRun) return;
-        const name = (event.target as EventTarget & { name: { value: string } })
-          .name.value;
-        throwIfInvalidName(name);
-        if (isName(name))
-          COPY.request({
-            name,
-            strategyId: strategy.id,
-            strategyKind: strategy.kind,
-          });
-      } catch (error) {
-        if (error instanceof ErrorInvalidArg) {
-          toast.warning(
-            formatMessage({ id: "errorMessage.invalidStrategyName" })
-          );
-        }
-      }
+      event.preventDefault();
+      if (!COPY.canRun) return;
+      const { name } = formValues(event, fields);
+      if (isName(name))
+        COPY.request({
+          name,
+          strategyId: strategy.id,
+          strategyKind: strategy.kind,
+        });
     },
-    [COPY, formatMessage, strategy, toast]
-  );
-
-  const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
-      if (isName(event.target.value)) {
-        setIsDisabled(false);
-      } else {
-        setIsDisabled(true);
-      }
-    },
-    [setIsDisabled]
+    [COPY, strategy]
   );
 
   useRedirectToNewStrategyPage(newStrategy);
@@ -95,18 +68,16 @@ export const CopyStrategy: FC = () => {
             <FormattedMessage id="CopyStrategy.chooseNewName" />
           </Message>
 
-          <InputField
+          <StrategyName
             required
-            onChange={onChangeName}
-            label={formatMessage({ id: "CopyStrategy.newStrategyName" })}
-            name="name"
+            name={fieldName.name}
             placeholder={strategy.name}
             readOnly={readOnly}
           />
 
           <Field>
             <Control>
-              <Button isLoading={isLoading} disabled={isDisabled}>
+              <Button isLoading={isLoading}>
                 <FormattedMessage id="CopyStrategy.button" />
               </Button>
             </Control>
