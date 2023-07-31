@@ -1,12 +1,15 @@
-export const locales = ["en"] as const;
-export type Locale = (typeof locales)[number];
-export const defaultLocale = locales[0];
+import { defaultLanguage, languages } from "@ggbot2/models";
 
-export const detectLocale = (): Locale => {
-  for (const locale of locales)
-    if (window.navigator.language.startsWith(locale)) return locale;
+export const defaultLocale = defaultLanguage;
+
+export const detectLocale = () => {
+  // TODO read also from local storage, which is written by SelectLanguage component in Navigation.
+  for (const language of languages)
+    if (window.navigator.language.startsWith(language)) return language;
   return defaultLocale;
 };
+
+export type Locale = ReturnType<typeof detectLocale>;
 
 export const localeJsonPathname = (locale: Locale) =>
   `/translations/${locale}.json`;

@@ -13,6 +13,7 @@ export * from "./emailAccount.js";
 export * from "./errors.js";
 export * from "./frequency.js";
 export * from "./item.js";
+export * from "./languages.js";
 export * from "./name.js";
 export * from "./oneTimePassword.js";
 export * from "./operation.js";

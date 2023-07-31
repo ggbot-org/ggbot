@@ -29,8 +29,11 @@ export const handler = async (
         if (isApiAuthEnterRequestData(input)) {
           const { email } = input;
 
+          // TODO read language from enter request
+          // which reads it from detectLocale
+          const language = "en";
           const oneTimePassword = await createOneTimePassword(email);
-          await sendOneTimePassword({ email, oneTimePassword });
+          await sendOneTimePassword({ language, email, oneTimePassword });
 
           const output: ApiAuthEnterResponseData = {
             emailSent: true,

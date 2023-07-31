@@ -43,12 +43,15 @@ export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
 };
 
 export const sendOneTimePassword: SendOneTimePassword["func"] = async ({
+  language,
   email,
   oneTimePassword,
 }) => {
   const whenCreated = createdNow();
   if (isTestAccountEmail(email)) return whenCreated;
-  const emailMessage = oneTimePasswordEmailMessage({ oneTimePassword });
+  const emailMessage = oneTimePasswordEmailMessage(language, {
+    oneTimePassword,
+  });
   await sendEmail({
     source: noReplyEmailAddress,
     toAddresses: [email],

@@ -71,6 +71,7 @@
     "prebuild:design": "npm run build:time",
     "prebuild:dflow": "npm run build:binance",
     "prebuild:executor": "npm run build:database",
+    "prebuild:i18n": "npm run build:models",
     "prebuild:infrastructure": "npm run build:locators",
     "prebuild:locators": "npm run build:env",
     "prebuild:models": "npm run build:arithmetic && npm run build:time",

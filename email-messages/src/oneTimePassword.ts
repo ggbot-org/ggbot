@@ -1,13 +1,12 @@
-import { OneTimePassword } from "@ggbot2/models";
+import { Language, OneTimePassword } from "@ggbot2/models";
 
-import { EmailMessageContent } from "./emailMessage.js";
+import { EmailMessageContent, GetEmailMessageContent } from "./emailMessage.js";
 
-export const oneTimePasswordEmailMessage = ({
-  oneTimePassword: { code },
-}: {
+export const oneTimePasswordEmailMessage: GetEmailMessageContent<{
   oneTimePassword: OneTimePassword;
-}): EmailMessageContent => {
-  const html = `
+}> = (language, { oneTimePassword: { code } }): EmailMessageContent => {
+  const html: Record<Language, string> = {
+    en: `
 <table>
   <tbody>
     <tr>
@@ -26,17 +25,24 @@ export const oneTimePasswordEmailMessage = ({
       </td>
     </tr>
   </tbody>
-</table>`;
+</table>`,
+  };
 
-  const text = `
+  const text: Record<Language, string> = {
+    en: `
 Copy and paste this ggbot2 "one time password" to get access to your account:
 
 ${code}
-`;
+`,
+  };
+
+  const subject: Record<Language, string> = {
+    en: `ggbot2 · one time password · ${code}`,
+  };
 
   return {
-    html,
-    text,
-    subject: `ggbot2 · one time password · ${code}`,
+    html: html[language],
+    text: text[language],
+    subject: subject[language],
   };
 };
