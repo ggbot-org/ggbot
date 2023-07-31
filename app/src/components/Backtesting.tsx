@@ -7,7 +7,6 @@ import {
   Section,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
-import { dayIntervalToTime } from "@ggbot2/time";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 
@@ -39,7 +38,7 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
     [dispatch]
   );
 
-  const setEnd = useCallback<DailyIntervalProps["setEnd"]>(
+  const setEnd = useCallback<DailyIntervalProps["end"]["setDay"]>(
     (day) => {
       dispatch({
         type: "SET_DAY_INTERVAL",
@@ -51,7 +50,7 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
     [dispatch, dayInterval]
   );
 
-  const setStart = useCallback<DailyIntervalProps["setStart"]>(
+  const setStart = useCallback<DailyIntervalProps["start"]["setDay"]>(
     (day) => {
       dispatch({
         type: "SET_DAY_INTERVAL",
@@ -105,8 +104,6 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
     };
   }, [state]);
 
-  const timeInterval = dayIntervalToTime(dayInterval);
-
   let actionLabel = "";
   if (isPaused) {
     actionLabel = backtestActionLabel.resume;
@@ -126,12 +123,17 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
     <>
       <Section>
         <DailyInterval
-          {...dayInterval}
+          start={{
+            day: dayInterval.start,
+            label: formatMessage({ id: "DailyInterval.labelStart" }),
+            setDay: setStart,
+          }}
+          end={{
+            day: dayInterval.end,
+            label: formatMessage({ id: "DailyInterval.labelEnd" }),
+            setDay: setEnd,
+          }}
           max={maxDay}
-          setStart={setStart}
-          setEnd={setEnd}
-          labelStart={formatMessage({ id: "DailyInterval.labelStart" })}
-          labelEnd={formatMessage({ id: "DailyInterval.labelEnd" })}
         />
 
         <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
@@ -168,7 +170,7 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
       </Section>
 
       <Section>
-        <ProfitSummary orders={orders} timeInterval={timeInterval} />
+        <ProfitSummary orders={orders} dayInterval={dayInterval} />
       </Section>
     </>
   );

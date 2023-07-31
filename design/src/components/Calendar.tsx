@@ -1,11 +1,13 @@
+import { dateToDay, Day, WeekDayNum, weekDayNums } from "@ggbot2/time";
 import {
-  dateToDay,
-  Day,
-  MonthNum,
-  WeekDayNum,
-  weekDayNums,
-} from "@ggbot2/time";
-import { FC, MouseEventHandler, useCallback, useMemo, useState } from "react";
+  FC,
+  memo,
+  MouseEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
+import { useIntl } from "react-intl";
 
 import { _classNames } from "../components/_classNames.js";
 import { Icon } from "../components/Icon.js";
@@ -19,37 +21,9 @@ export type CalendarClassNames =
   | "Calendar__week-day"
   | "Calendar__cell";
 
-export type CalendarMonthNameRecord = Record<MonthNum, string>;
-
-export type CalendarWeekDayNameRecord = Record<WeekDayNum, string>;
-
-export type CalendarProps = {
-  monthName?: CalendarMonthNameRecord;
-  min?: Day;
-  max?: Day;
-  day: Day;
-  setDay: (arg: Day) => void;
-  weekDayName?: CalendarWeekDayNameRecord;
-};
-
-export const Calendar: FC<CalendarProps> = ({
-  min,
-  max,
-  monthName = {
-    0: "January",
-    1: "February",
-    2: "March",
-    3: "April",
-    4: "May",
-    5: "June",
-    6: "July",
-    7: "August",
-    8: "September",
-    9: "October",
-    10: "November",
-    11: "December",
-  },
-  weekDayName = {
+const CalendarWeekDays = memo(() => {
+  // TODO const {formatDate} = useIntl()
+  const weekDayName: Record<WeekDayNum, string> = {
     0: "Su",
     1: "Mo",
     2: "Tu",
@@ -57,10 +31,42 @@ export const Calendar: FC<CalendarProps> = ({
     4: "Th",
     5: "Fr",
     6: "Sa",
-  },
+  };
+
+  return (
+    <>
+      {weekDayNums.map((n) => (
+        <div key={n} className={_classNames("Calendar__week-day")}>
+          {weekDayName[n]}
+        </div>
+      ))}
+    </>
+  );
+});
+
+CalendarWeekDays.displayName = "CalendarWeekDays";
+
+export type CalendarProps = {
+  min?: Day;
+  max?: Day;
+  day: Day;
+  setDay: (arg: Day) => void;
+};
+
+const randomKey = () =>
+  Math.random()
+    .toString(36)
+    .replace(/[^a-z]+/g, "")
+    .substring(0, 5);
+
+export const Calendar: FC<CalendarProps> = ({
+  min,
+  max,
   day: selectedDay,
   setDay: setSelectedDay,
 }) => {
+  const { formatDate } = useIntl();
+
   const [monthOffset, setMonthOffset] = useState(0);
 
   const firstDate = useMemo<Date>(() => {
@@ -76,8 +82,6 @@ export const Calendar: FC<CalendarProps> = ({
     date.setDate(date.getDate() - 1);
     return date;
   }, [monthOffset, firstDate]);
-
-  const monthNum = firstDate.getMonth() as MonthNum;
 
   const datesBeforeFirstDate = useMemo(() => {
     const dates: Date[] = [];
@@ -155,15 +159,11 @@ export const Calendar: FC<CalendarProps> = ({
             onClick,
             selected,
 
-            // Need a random key, using day and monthNum is not enough,
-            // it can raise React warning:
+            // Need a random key, using day is not enough, it can raise React warning:
             //
             //     Encountered two children with the same key.
             //
-            key: Math.random()
-              .toString(36)
-              .replace(/[^a-z]+/g, "")
-              .substring(0, 5),
+            key: randomKey(),
           };
         }),
     [
@@ -210,7 +210,7 @@ export const Calendar: FC<CalendarProps> = ({
         </div>
 
         <div className={_classNames("Calendar__head-text")}>
-          {monthName[monthNum]}
+          {formatDate(firstDate, { month: "long" })}
         </div>
 
         <div className={_classNames("Calendar__head-text")}>
@@ -226,11 +226,7 @@ export const Calendar: FC<CalendarProps> = ({
       </div>
 
       <div className={_classNames("Calendar__body")}>
-        {weekDayNums.map((n) => (
-          <div key={n} className={_classNames("Calendar__week-day")}>
-            {weekDayName[n]}
-          </div>
-        ))}
+        <CalendarWeekDays />
 
         {dateCells.map(({ isSelectable, key, num, onClick, selected }) => (
           <div

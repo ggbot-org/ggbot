@@ -1,31 +1,26 @@
 import { isOrders, Orders } from "@ggbot2/models";
-import {
-  getTime,
-  now,
-  TimeInterval,
-  timeIntervalToDay,
-  truncateTime,
-} from "@ggbot2/time";
-import { FC, useContext, useEffect } from "react";
+import { DayInterval, getDay, today } from "@ggbot2/time";
+import { FC, useContext, useEffect, useMemo } from "react";
 
 import { ProfitSummary } from "../components/ProfitSummary.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 
-export const StrategyProfits: FC = () => {
+type Props = {
+  numDays: number;
+};
+export const StrategyProfits: FC<Props> = ({ numDays }) => {
   const { strategy } = useContext(StrategyContext);
 
-  const numDays = 30;
-
-  const end = truncateTime(now()).to.day();
-  const start = getTime(end).minus(numDays).days();
-  const timeInterval: TimeInterval = { start, end };
+  const dayInterval = useMemo<DayInterval>(() => {
+    const end = today();
+    const start = getDay(end).minus(numDays).days();
+    return { start, end };
+  }, [numDays]);
 
   const READ = useApi.ReadStrategyOrders();
 
   const orders: Orders = isOrders(READ.data) ? READ.data : [];
-
-  const dayInterval = timeIntervalToDay(timeInterval);
 
   useEffect(() => {
     if (READ.canRun)
@@ -36,5 +31,5 @@ export const StrategyProfits: FC = () => {
       });
   }, [READ, dayInterval, strategy]);
 
-  return <ProfitSummary timeInterval={timeInterval} orders={orders} />;
+  return <ProfitSummary dayInterval={dayInterval} orders={orders} />;
 };

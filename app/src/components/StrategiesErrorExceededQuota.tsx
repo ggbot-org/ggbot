@@ -9,16 +9,18 @@ type Props = {
   error: UseActionError;
 };
 
-export const StrategiesQuotaExceededError: FC<Props> = (error) => {
+export const StrategiesErrorExceededQuota: FC<Props> = ({ error }) => {
   if (!isApiActionServerSideError(error)) return null;
+
   if (
     error.name !== ErrorExceededQuota.name &&
     error.info?.type !== quotaType.MAX_STRATEGIES_PER_ACCOUNT
   )
     return null;
+
   return (
     <Message color="warning">
-      <FormattedMessage id="StrategiesQuotaExceededError.message" />
+      <FormattedMessage id="StrategiesErrorExceededQuota.message" />
     </Message>
   );
 };

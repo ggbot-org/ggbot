@@ -6,23 +6,15 @@ import { DayDropdown, DayDropdownProps } from "../components/DayDropdown.js";
 export type DailyIntervalClassNames = "DailyInterval";
 
 export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
-  labelStart: DayDropdownProps["label"];
-  labelEnd: DayDropdownProps["label"];
-  start: DayDropdownProps["day"];
-  end: DayDropdownProps["day"];
-  setStart: DayDropdownProps["setDay"];
-  setEnd: DayDropdownProps["setDay"];
+  start: Pick<DayDropdownProps, "day" | "label" | "setDay">;
+  end: Pick<DayDropdownProps, "day" | "label" | "setDay">;
 };
 
 export const DailyInterval: FC<DailyIntervalProps> = ({
-  labelStart,
-  labelEnd,
   min,
   max,
   start,
   end,
-  setStart,
-  setEnd,
 }) => {
   const [activeDropdown, setActiveDropdown] = useState<
     "start" | "end" | undefined
@@ -58,23 +50,19 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
   return (
     <div className={_classNames("DailyInterval")}>
       <DayDropdown
-        day={start}
         isActive={activeDropdown === "start"}
-        label={labelStart}
-        max={end}
+        max={end.day}
         min={min}
         onClick={onClickStart}
-        setDay={setStart}
+        {...start}
       />
 
       <DayDropdown
-        day={end}
         isActive={activeDropdown === "end"}
-        label={labelEnd}
-        min={start}
+        min={start.day}
         max={max}
         onClick={onClickEnd}
-        setDay={setEnd}
+        {...end}
       />
     </div>
   );

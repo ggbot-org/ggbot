@@ -1,4 +1,4 @@
-import { InputField, InputFieldProps, useFormattedDate } from "@ggbot2/design";
+import { dayFormat, InputField, InputFieldProps } from "@ggbot2/design";
 import { Time } from "@ggbot2/time";
 import { FC } from "react";
 import { useIntl } from "react-intl";
@@ -11,12 +11,12 @@ export const SubscriptionEnd: FC<SubscriptionEndProps> = ({
   value,
   ...props
 }) => {
-  const { formatMessage } = useIntl();
+  const { formatDate, formatMessage } = useIntl();
 
   return (
     <InputField
       label={formatMessage({ id: "SubscriptionEnd.label" })}
-      value={useFormattedDate(value, "day")}
+      value={formatDate(value, dayFormat)}
       {...props}
     />
   );

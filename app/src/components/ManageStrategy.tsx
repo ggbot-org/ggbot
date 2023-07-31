@@ -20,7 +20,7 @@ export const ManageStrategy: FC = () => (
     </Section>
 
     <Section>
-      <StrategyProfits />
+      <StrategyProfits numDays={30} />
     </Section>
   </>
 );

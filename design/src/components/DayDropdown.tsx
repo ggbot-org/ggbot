@@ -1,4 +1,5 @@
 import { FC, useId } from "react";
+import { FormattedDate } from "react-intl";
 import {
   Control,
   Dropdown,
@@ -11,7 +12,6 @@ import {
 
 import { _classNames } from "../components/_classNames.js";
 import { Calendar, CalendarProps } from "../components/Calendar.js";
-import { useFormattedDate } from "../hooks/useFormattedDate.js";
 
 export type DayDropdownProps = Required<
   Pick<DropdownProps, "isActive" | "onClick">
@@ -30,7 +30,6 @@ export const DayDropdown: FC<DayDropdownProps> = ({
   max,
 }) => {
   const id = useId();
-  const formattedDay = useFormattedDate(day, "day");
 
   return (
     <Field>
@@ -38,7 +37,9 @@ export const DayDropdown: FC<DayDropdownProps> = ({
 
       <Control>
         <Dropdown isActive={isActive} onClick={onClick}>
-          <DropdownTrigger>{formattedDay}</DropdownTrigger>
+          <DropdownTrigger>
+            <FormattedDate value={day} year="numeric" />
+          </DropdownTrigger>
 
           <DropdownMenu>
             <Calendar day={day} setDay={setDay} min={min} max={max} />

@@ -11,7 +11,7 @@ import {
   Title,
 } from "@ggbot2/design";
 import { isOrders, Order } from "@ggbot2/models";
-import { TimeInterval } from "@ggbot2/time";
+import { DayInterval } from "@ggbot2/time";
 import { FC, Fragment, PropsWithChildren, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -21,7 +21,7 @@ import { miscellaneousLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
-  timeInterval: TimeInterval | undefined;
+  dayInterval: DayInterval | undefined;
   orders: Order[];
 };
 
@@ -64,7 +64,7 @@ type SymbolStats = {
   quoteQuantity: string;
 };
 
-export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
+export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
   const { strategy } = useContext(StrategyContext);
 
   const binanceSymbols = useBinanceSymbols();
@@ -155,7 +155,7 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
             <_Label>{miscellaneousLabel.from}</_Label>
 
             <_Value>
-              <DateTime format="day" value={timeInterval?.start} />
+              <DateTime format="day" value={dayInterval?.start} />
             </_Value>
           </Flex>
 
@@ -163,7 +163,7 @@ export const ProfitSummary: FC<Props> = ({ orders, timeInterval }) => {
             <_Label>{miscellaneousLabel.to}</_Label>
 
             <_Value>
-              <DateTime format="day" value={timeInterval?.end} />
+              <DateTime format="day" value={dayInterval?.end} />
             </_Value>
           </Flex>
         </LevelItem>

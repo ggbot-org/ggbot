@@ -15,6 +15,7 @@ import {
   newStrategyScheduling,
   StrategyScheduling,
 } from "@ggbot2/models";
+import { UseActionError } from "@ggbot2/use-action";
 import {
   FC,
   useCallback,
@@ -29,6 +30,7 @@ import {
   SchedulingItem,
   SchedulingItemProps,
 } from "../components/SchedulingItem.js";
+import { SchedulingsErrorExceededQuota } from "../components/SchedulingsErrorExceededQuota.js";
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js";
 import { AccountStrategiesContext } from "../contexts/AccountStrategies.js";
 import { StrategyContext } from "../contexts/Strategy.js";
@@ -41,6 +43,8 @@ export const Schedulings: FC = () => {
   const { accountStrategies, refetchAccountStrategies } = useContext(
     AccountStrategiesContext
   );
+
+  const [error, setError] = useState<UseActionError>();
 
   const WRITE = useApi.WriteAccountStrategiesItemSchedulings();
 
@@ -175,67 +179,78 @@ export const Schedulings: FC = () => {
     if (currentSchedulings) setSchedulingItems(currentSchedulings);
   }, [currentSchedulings]);
 
+  useEffect(() => {
+    if (WRITE.error) {
+      setError(WRITE.error);
+      WRITE.reset();
+    }
+  }, [WRITE]);
+
   // Fetch strategies on updates.
   useEffect(() => {
     if (WRITE.isDone) refetchAccountStrategies();
   }, [refetchAccountStrategies, WRITE]);
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Level
-        isMobile
-        left={
-          <LevelItem>
-            <Title>
-              <FormattedMessage id="Schedulings.title" />
-            </Title>
-          </LevelItem>
-        }
-        right={
-          <LevelItem>
-            <SchedulingsStatusBadges schedulings={currentSchedulings} />
-          </LevelItem>
-        }
-      />
+    <>
+      <Form box onSubmit={onSubmit}>
+        <Level
+          isMobile
+          left={
+            <LevelItem>
+              <Title>
+                <FormattedMessage id="Schedulings.title" />
+              </Title>
+            </LevelItem>
+          }
+          right={
+            <LevelItem>
+              <SchedulingsStatusBadges schedulings={currentSchedulings} />
+            </LevelItem>
+          }
+        />
 
-      {schedulingItems.map((scheduling) => {
-        const { id } = scheduling;
-        return (
-          <SchedulingItem
-            key={id}
-            scheduling={scheduling}
-            setFrequency={setSchedulingItemFrequency(id)}
-            setStatus={setSchedulingItemStatus(id)}
-            removeScheduling={removeSchedulingItem(id)}
-          />
-        );
-      })}
+        {schedulingItems.map((scheduling) => {
+          const { id } = scheduling;
+          return (
+            <SchedulingItem
+              key={id}
+              scheduling={scheduling}
+              setFrequency={setSchedulingItemFrequency(id)}
+              setStatus={setSchedulingItemStatus(id)}
+              removeScheduling={removeSchedulingItem(id)}
+            />
+          );
+        })}
 
-      <Field>
-        <Control>
-          <Button onClick={addSchedulingItem} size="small">
-            Add
-          </Button>
-        </Control>
-      </Field>
+        <Field>
+          <Control>
+            <Button onClick={addSchedulingItem} size="small">
+              <FormattedMessage id="Schedulings.add" />
+            </Button>
+          </Control>
+        </Field>
 
-      <Field isGrouped>
-        <Control>
-          <Button
-            onClick={onClickSave}
-            disabled={!canSubmit}
-            isLoading={isLoading}
-          >
-            <FormattedMessage id="Schedulings.save" />
-          </Button>
-        </Control>
+        <Field isGrouped>
+          <Control>
+            <Button
+              onClick={onClickSave}
+              disabled={!canSubmit}
+              isLoading={isLoading}
+            >
+              <FormattedMessage id="Schedulings.save" />
+            </Button>
+          </Control>
 
-        <Control>
-          <Button onClick={onClickCancel} disabled={!canCancel}>
-            <FormattedMessage id="Schedulings.cancel" />
-          </Button>
-        </Control>
-      </Field>
-    </Form>
+          <Control>
+            <Button onClick={onClickCancel} disabled={!canCancel}>
+              <FormattedMessage id="Schedulings.cancel" />
+            </Button>
+          </Control>
+        </Field>
+      </Form>
+
+      <SchedulingsErrorExceededQuota error={error} />
+    </>
   );
 };

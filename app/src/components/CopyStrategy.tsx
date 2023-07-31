@@ -10,10 +10,11 @@ import {
   Title,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
-import { FC, useCallback, useContext } from "react";
+import { UseActionError } from "@ggbot2/use-action";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { StrategiesQuotaExceededError } from "../components/StrategiesQuotaExceededError.js";
+import { StrategiesErrorExceededQuota } from "../components/StrategiesErrorExceededQuota.js";
 import { StrategyName } from "../components/StrategyName.js";
 import { StrategyRecord } from "../components/StrategyRecord.js";
 import { StrategyContext } from "../contexts/Strategy.js";
@@ -29,11 +30,12 @@ const fieldName = {
 export const CopyStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);
 
+  const [error, setError] = useState<UseActionError>();
+
   const COPY = useApi.CopyStrategy();
   const readOnly = COPY.isPending || COPY.isDone;
   const isLoading = COPY.isPending || COPY.isDone;
   const newStrategy = COPY.data;
-  const error = COPY.error;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -50,42 +52,49 @@ export const CopyStrategy: FC = () => {
     [COPY, strategy]
   );
 
+  useEffect(() => {
+    if (COPY.error) {
+      setError(COPY.error);
+      COPY.reset();
+    }
+  }, [COPY]);
+
   useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <>
-      <Form box onSubmit={onSubmit}>
-        <Section>
-          <Title>
-            <FormattedMessage id="CopyStrategy.title" />
-          </Title>
+    <Form box onSubmit={onSubmit}>
+      <Section>
+        <Title>
+          <FormattedMessage id="CopyStrategy.title" />
+        </Title>
 
-          <StrategyRecord strategy={strategy} />
-        </Section>
+        <StrategyRecord strategy={strategy} />
+      </Section>
 
-        <Section>
-          <Message>
-            <FormattedMessage id="CopyStrategy.chooseNewName" />
+      <Section>
+        {error ? null : (
+          <Message color="info">
+            <FormattedMessage id="CopyStrategy.chooseName" />
           </Message>
+        )}
 
-          <StrategyName
-            required
-            name={fieldName.name}
-            placeholder={strategy.name}
-            readOnly={readOnly}
-          />
+        <StrategiesErrorExceededQuota error={error} />
 
-          <Field>
-            <Control>
-              <Button isLoading={isLoading}>
-                <FormattedMessage id="CopyStrategy.button" />
-              </Button>
-            </Control>
-          </Field>
-        </Section>
-      </Form>
+        <StrategyName
+          required
+          name={fieldName.name}
+          placeholder={strategy.name}
+          readOnly={readOnly}
+        />
 
-      <StrategiesQuotaExceededError error={error} />
-    </>
+        <Field>
+          <Control>
+            <Button isLoading={isLoading} color={error ? "warning" : undefined}>
+              <FormattedMessage id="CopyStrategy.button" />
+            </Button>
+          </Control>
+        </Field>
+      </Section>
+    </Form>
   );
 };

@@ -5,13 +5,16 @@ import {
   Form,
   FormOnSubmit,
   formValues,
+  Message,
+  Section,
   Title,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
-import { FC, useCallback } from "react";
+import { UseActionError } from "@ggbot2/use-action";
+import { FC, useCallback, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { StrategiesQuotaExceededError } from "../components/StrategiesQuotaExceededError.js";
+import { StrategiesErrorExceededQuota } from "../components/StrategiesErrorExceededQuota.js";
 import { StrategyName } from "../components/StrategyName.js";
 import { useApi } from "../hooks/useApi.js";
 import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
@@ -25,10 +28,11 @@ const fieldName = {
 export const CreateStrategy: FC = () => {
   const CREATE = useApi.CreateStrategy();
 
+  const [error, setError] = useState<UseActionError>();
+
   const newStrategy = CREATE.data;
   const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
-  const error = CREATE.error;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -40,27 +44,43 @@ export const CreateStrategy: FC = () => {
     [CREATE]
   );
 
+  useEffect(() => {
+    if (CREATE.error) {
+      setError(CREATE.error);
+      CREATE.reset();
+    }
+  }, [CREATE]);
+
   useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <>
-      <Form box onSubmit={onSubmit}>
+    <Form box onSubmit={onSubmit}>
+      <Section>
         <Title>
           <FormattedMessage id="CreateStrategy.title" />
         </Title>
+
+        {error ? null : (
+          <Message color="info">
+            <FormattedMessage
+              id="CreateStrategy.chooseName"
+              values={{ em: (chunks) => <em>{chunks}</em> }}
+            />
+          </Message>
+        )}
+
+        <StrategiesErrorExceededQuota error={error} />
 
         <StrategyName required name={fieldName.name} readOnly={readOnly} />
 
         <Field>
           <Control>
-            <Button color="primary" isLoading={isLoading}>
+            <Button color={error ? "warning" : undefined} isLoading={isLoading}>
               <FormattedMessage id="CreateStrategy.button" />
             </Button>
           </Control>
         </Field>
-      </Form>
-
-      <StrategiesQuotaExceededError error={error} />
-    </>
+      </Section>
+    </Form>
   );
 };

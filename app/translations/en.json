@@ -59,7 +59,7 @@
   "BinanceApiKeyPermissionIpRestrict.description": {
     "defaultMessage": "is <em>static IP</em> restriction activated?"
   },
-  "CopyStrategy.chooseNewName": {
+  "CopyStrategy.chooseName": {
     "defaultMessage": "Choose a new name for the copied strategy."
   },
   "CopyStrategy.title": {
@@ -75,7 +75,10 @@
     "defaultMessage": "Create Binance API"
   },
   "CreateStrategy.button": {
-    "defaultMessage": "Create Strategy"
+    "defaultMessage": "Create"
+  },
+  "CreateStrategy.chooseName": {
+    "defaultMessage": "Choose a name for your <em>brand new</em> strategy."
   },
   "CreateStrategy.title": {
     "defaultMessage": "Create Strategy"
@@ -215,6 +218,9 @@
   "RenameStrategy.save": {
     "defaultMessage": "Save"
   },
+  "Schedulings.add": {
+    "defaultMessage": "Add"
+  },
   "Schedulings.title": {
     "defaultMessage": "Schedulings"
   },
@@ -223,6 +229,9 @@
   },
   "Schedulings.save": {
     "defaultMessage": "Save"
+  },
+  "SchedulingsErrorExceededQuota.message": {
+    "defaultMessage": "Cannot create more schedulings. Check your account quotas."
   },
   "SelectCountry.label": {
     "defaultMessage": "Country"
@@ -242,8 +251,8 @@
   "Strategies.title": {
     "defaultMessage": "Strategies"
   },
-  "StrategiesQuotaExceededError.message": {
-    "defaultMessage": "Cannot create more strategies."
+  "StrategiesErrorExceededQuota.message": {
+    "defaultMessage": "Cannot create more strategies. Check your account quotas."
   },
   "StrategyActions.title": {
     "defaultMessage": "Strategy"

@@ -3,21 +3,23 @@ import { today } from "@ggbot2/time";
 import { FC, useState } from "react";
 
 export const TimeIntervalSelectors: FC = () => {
-  const labelStart = "From";
-  const labelEnd = "To";
   const max = today();
-  const [start, setStart] = useState(max);
-  const [end, setEnd] = useState(max);
+  const [startDay, setStartDay] = useState(max);
+  const [endDay, setEndDay] = useState(max);
 
   return (
     <DailyInterval
-      start={start}
-      end={end}
-      labelStart={labelStart}
-      labelEnd={labelEnd}
+      start={{
+        label: "From",
+        setDay: setStartDay,
+        day: startDay,
+      }}
+      end={{
+        label: "From",
+        setDay: setEndDay,
+        day: endDay,
+      }}
       max={max}
-      setStart={setStart}
-      setEnd={setEnd}
     />
   );
 };

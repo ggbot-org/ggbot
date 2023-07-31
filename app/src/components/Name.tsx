@@ -33,7 +33,7 @@ export const Name: FC<NameProps> = ({
       help = formatMessage({ id: "Name.hasSpaces" });
       color = "warning";
     }
-    if (isName(name)) {
+    if (!isName(name)) {
       help = formatMessage({ id: "Name.invalid" });
       color = "danger";
     }
