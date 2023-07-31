@@ -9,9 +9,9 @@ import {
   HTTP_METHOD,
 } from "@ggbot2/http";
 import { UserWebappBaseURL } from "@ggbot2/locators";
-import type { APIGatewayProxyResult } from "aws-lambda";
 
 import { responseBody } from "./responseBody.js";
+import { APIGatewayProxyResult } from "./types.js";
 
 const commonHeaders = {
   "Access-Control-Allow-Credentials": "true",

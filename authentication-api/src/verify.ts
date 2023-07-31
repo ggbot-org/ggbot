@@ -4,6 +4,8 @@ import {
 } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -18,10 +20,9 @@ import {
 } from "@ggbot2/database";
 import { __200__OK__ } from "@ggbot2/http";
 import { today } from "@ggbot2/time";
-import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
-  event: APIGatewayEvent
+  event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     switch (event.httpMethod) {

@@ -9,26 +9,27 @@ import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
-  OK
+  OK,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
 } from "@ggbot2/api-gateway";
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import { objectTypeGuard } from "@ggbot2/type-utils";
-import { APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 
 type RequestData = {
   message: string;
 };
 
 type ResponseData = {
-  message: string
-}
+  message: string;
+};
 
 const isRequestData = objectTypeGuard<RequestData>(
   ({ message }) => typeof message === "string"
 );
 
 export const handler = async (
-  event: APIGatewayEvent
+  event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     switch (event.httpMethod) {

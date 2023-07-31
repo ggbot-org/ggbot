@@ -4,6 +4,8 @@ import {
 } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -35,10 +37,9 @@ import {
 } from "@ggbot2/models";
 import { dateToDay, dayToDate, getDate, today } from "@ggbot2/time";
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library";
-import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 
 export const handler = async (
-  event: APIGatewayEvent
+  event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;

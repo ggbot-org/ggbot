@@ -1,5 +1,6 @@
 import { ApiActionResponseOutput } from "@ggbot2/api";
-import { APIGatewayProxyResult } from "aws-lambda";
+
+import { APIGatewayProxyResult } from "./types.js";
 
 export const responseBody = (
   output: ApiActionResponseOutput
