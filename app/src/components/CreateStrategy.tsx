@@ -56,7 +56,7 @@ export const CreateStrategy: FC = () => {
     <Container maxWidth="desktop">
       <Form box onSubmit={onSubmit}>
         {error ? null : (
-          <Message color="info">
+          <Message>
             <FormattedMessage
               id="CreateStrategy.chooseName"
               values={{ em: (chunks) => <em>{chunks}</em> }}

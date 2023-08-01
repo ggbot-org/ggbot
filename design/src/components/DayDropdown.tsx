@@ -12,6 +12,7 @@ import {
 
 import { _classNames } from "../components/_classNames.js";
 import { Calendar, CalendarProps } from "../components/Calendar.js";
+import { dayFormat } from "../i18n/formats.js";
 
 export type DayDropdownProps = Required<
   Pick<DropdownProps, "isActive" | "onClick">
@@ -38,7 +39,7 @@ export const DayDropdown: FC<DayDropdownProps> = ({
       <Control>
         <Dropdown isActive={isActive} onClick={onClick}>
           <DropdownTrigger>
-            <FormattedDate value={day} year="numeric" />
+            <FormattedDate value={day} {...dayFormat} />
           </DropdownTrigger>
 
           <DropdownMenu>

@@ -1,3 +1,4 @@
+import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { CopyStrategy } from "../components/CopyStrategy.js";
@@ -7,13 +8,15 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
 
 export const CopyStrategyPage: FC = () => (
-  <PageContainer maxWidth="widescreen">
+  <I18nProvider>
     <AuthenticationProvider>
-      <AccountStrategiesProvider>
-        <StrategyProvider>
-          <CopyStrategy />
-        </StrategyProvider>
-      </AccountStrategiesProvider>
+      <PageContainer maxWidth="widescreen">
+        <AccountStrategiesProvider>
+          <StrategyProvider>
+            <CopyStrategy />
+          </StrategyProvider>
+        </AccountStrategiesProvider>
+      </PageContainer>
     </AuthenticationProvider>
-  </PageContainer>
+  </I18nProvider>
 );

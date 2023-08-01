@@ -1,5 +1,4 @@
 import { Container, ContainerProps, ToastProvider } from "@ggbot2/design";
-import { I18nProvider } from "@ggbot2/i18n";
 import { FC, PropsWithChildren } from "react";
 
 import { Navigation, NavigationProps } from "../components/Navigation.js";
@@ -12,7 +11,7 @@ export const PageContainer: FC<PropsWithChildren<Props>> = ({
   maxWidth,
   noMenu,
 }) => (
-  <I18nProvider>
+  <>
     <Navigation noMenu={noMenu} />
 
     {maxWidth ? (
@@ -28,5 +27,5 @@ export const PageContainer: FC<PropsWithChildren<Props>> = ({
         <ToastProvider>{children}</ToastProvider>
       </>
     )}
-  </I18nProvider>
+  </>
 );

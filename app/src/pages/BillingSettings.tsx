@@ -1,4 +1,5 @@
 import { Column, Columns, Section } from "@ggbot2/design";
+import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { PageContainer } from "../components/PageContainer.js";
@@ -9,21 +10,23 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { SubscriptionProvider } from "../contexts/Subscription.js";
 
 export const BillingSettingsPage: FC = () => (
-  <PageContainer maxWidth="widescreen">
+  <I18nProvider>
     <AuthenticationProvider>
-      <SubscriptionProvider>
-        <Section>
-          <Columns>
-            <Column>
-              <SubscriptionInfo />
-            </Column>
+      <PageContainer maxWidth="widescreen">
+        <SubscriptionProvider>
+          <Section>
+            <Columns>
+              <Column>
+                <SubscriptionInfo />
+              </Column>
 
-            <Column>
-              <SubscriptionPurchase />
-            </Column>
-          </Columns>
-        </Section>
-      </SubscriptionProvider>
+              <Column>
+                <SubscriptionPurchase />
+              </Column>
+            </Columns>
+          </Section>
+        </SubscriptionProvider>
+      </PageContainer>
     </AuthenticationProvider>
-  </PageContainer>
+  </I18nProvider>
 );

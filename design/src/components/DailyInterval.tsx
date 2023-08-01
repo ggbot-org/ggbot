@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import { _classNames } from "../components/_classNames.js";
 import { DayDropdown, DayDropdownProps } from "../components/DayDropdown.js";
@@ -32,17 +32,6 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
       if (activeDropdown === "end") return undefined;
       return "end";
     });
-  }, []);
-
-  // Close dropdowns on outside click.
-  useEffect(() => {
-    const closeDropdowns = () => {
-      setActiveDropdown(undefined);
-    };
-    window.addEventListener("click", closeDropdowns);
-    return () => {
-      window.removeEventListener("click", closeDropdowns);
-    };
   }, []);
 
   return (

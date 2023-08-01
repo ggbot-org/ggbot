@@ -215,6 +215,12 @@
   "RenameStrategy.button": {
     "defaultMessage": "Rename"
   },
+  "RenameStrategy.chooseName": {
+    "defaultMessage": "Choose a new name for your strategy."
+  },
+  "RenameStrategy.title": {
+    "defaultMessage": "Rename strategy"
+  },
   "RenameStrategy.save": {
     "defaultMessage": "Save"
   },

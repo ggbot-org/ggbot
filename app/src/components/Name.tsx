@@ -3,7 +3,7 @@ import { isName, normalizeName } from "@ggbot2/models";
 import { Dispatch, FC, SetStateAction, useCallback } from "react";
 import { useIntl } from "react-intl";
 
-export type NameProps = Omit<InputFieldProps, "color" | "help"> &
+export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
   Partial<{
     setValue: Dispatch<SetStateAction<string>>;
   }>;
@@ -47,6 +47,7 @@ export const Name: FC<NameProps> = ({
       value={value}
       readOnly={readOnly}
       spellCheck="false"
+      type="text"
       {...props}
     />
   );

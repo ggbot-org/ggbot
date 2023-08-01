@@ -135,11 +135,10 @@ export const Calendar: FC<CalendarProps> = ({
         }))
         .map(({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => {
           const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
+            event.stopPropagation();
             if (isSelectable) {
               setSelectedDay(day);
               setMonthOffset(0);
-            } else {
-              event.stopPropagation();
             }
           };
           return {

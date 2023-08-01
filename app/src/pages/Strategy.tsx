@@ -1,3 +1,4 @@
+import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { PageContainer } from "../components/PageContainer.js";
@@ -8,15 +9,17 @@ import { StrategyProvider } from "../contexts/Strategy.js";
 import { SubscriptionProvider } from "../contexts/Subscription.js";
 
 export const StrategyPage: FC = () => (
-  <PageContainer>
+  <I18nProvider>
     <AuthenticationProvider>
-      <AccountStrategiesProvider>
-        <SubscriptionProvider>
-          <StrategyProvider>
-            <Strategy />
-          </StrategyProvider>
-        </SubscriptionProvider>
-      </AccountStrategiesProvider>
+      <PageContainer>
+        <AccountStrategiesProvider>
+          <SubscriptionProvider>
+            <StrategyProvider>
+              <Strategy />
+            </StrategyProvider>
+          </SubscriptionProvider>
+        </AccountStrategiesProvider>
+      </PageContainer>
     </AuthenticationProvider>
-  </PageContainer>
+  </I18nProvider>
 );

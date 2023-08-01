@@ -5,10 +5,12 @@ import {
   Form,
   FormOnSubmit,
   formValues,
+  Message,
   Modal,
+  Title,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
-import { FC, useCallback, useContext, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { StrategyName } from "../components/StrategyName.js";
@@ -49,6 +51,10 @@ export const RenameStrategy: FC = () => {
     [RENAME, strategy]
   );
 
+  useEffect(() => {
+    if (RENAME.isDone) setModalIsActive(false);
+  }, [RENAME]);
+
   return (
     <>
       <Button onClick={toggleModal}>
@@ -56,7 +62,15 @@ export const RenameStrategy: FC = () => {
       </Button>
 
       <Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-        <Form box onSubmit={onSubmit}>
+        <Form box autoComplete="off" onSubmit={onSubmit}>
+          <Title>
+            <FormattedMessage id="RenameStrategy.title" />
+          </Title>
+
+          <Message>
+            <FormattedMessage id="RenameStrategy.chooseName" />
+          </Message>
+
           <StrategyName required name={fieldName.name} readOnly={readOnly} />
 
           <Field isGrouped>
