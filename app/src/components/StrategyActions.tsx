@@ -1,4 +1,4 @@
-import { Box, Buttons, Section, Title } from "@ggbot2/design";
+import { Box, Buttons, Title } from "@ggbot2/design";
 import { FC, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -14,13 +14,11 @@ export const StrategyActions: FC = () => {
 
   return (
     <Box>
-      <Section>
-        <Title>
-          <FormattedMessage id="StrategyActions.title" />
-        </Title>
+      <Title>
+        <FormattedMessage id="StrategyActions.title" />
+      </Title>
 
-        <StrategyRecord strategy={strategy} />
-      </Section>
+      <StrategyRecord strategy={strategy} />
 
       <Buttons>
         <RenameStrategy />

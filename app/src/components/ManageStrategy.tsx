@@ -1,4 +1,4 @@
-import { Column, Columns, Section } from "@ggbot2/design";
+import { Column, Columns, Container } from "@ggbot2/design";
 import { FC } from "react";
 
 import { Schedulings } from "../components/Schedulings.js";
@@ -6,21 +6,21 @@ import { StrategyActions } from "../components/StrategyActions.js";
 import { StrategyProfits } from "../components/StrategyProfits.js";
 
 export const ManageStrategy: FC = () => (
-  <>
-    <Section>
-      <Columns>
-        <Column>
-          <StrategyActions />
-        </Column>
+  <Container maxWidth="desktop">
+    <Columns>
+      <Column>
+        <StrategyActions />
+      </Column>
 
-        <Column>
-          <Schedulings />
-        </Column>
-      </Columns>
-    </Section>
+      <Column>
+        <Schedulings />
+      </Column>
+    </Columns>
 
-    <Section>
-      <StrategyProfits numDays={30} />
-    </Section>
-  </>
+    <Columns>
+      <Column>
+        <StrategyProfits numDays={30} />
+      </Column>
+    </Columns>
+  </Container>
 );

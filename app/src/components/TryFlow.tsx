@@ -1,4 +1,3 @@
-import { Section } from "@ggbot2/design";
 import { FC } from "react";
 
 import { Backtesting } from "../components/Backtesting.js";
@@ -10,22 +9,18 @@ export const TryFlow: FC = () => {
   const { backtesting, flowViewContainerRef } = useStrategyFlow();
 
   return (
-    <Section>
-      <Tabs
-        initialTabId="flow"
-        tabs={[
-          {
-            tabId: "backtesting",
-            content: <Backtesting {...backtesting} />,
-          },
-          {
-            tabId: "flow",
-            content: (
-              <ReadonlyFlow flowViewContainerRef={flowViewContainerRef} />
-            ),
-          },
-        ]}
-      />
-    </Section>
+    <Tabs
+      initialTabId="flow"
+      tabs={[
+        {
+          tabId: "backtesting",
+          content: <Backtesting {...backtesting} />,
+        },
+        {
+          tabId: "flow",
+          content: <ReadonlyFlow flowViewContainerRef={flowViewContainerRef} />,
+        },
+      ]}
+    />
   );
 };

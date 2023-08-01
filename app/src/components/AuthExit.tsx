@@ -20,7 +20,7 @@ export type AuthExitProps = {
 };
 
 export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
-  const { email, exit, exited } = useContext(AuthenticationContext);
+  const { account, exit, exited } = useContext(AuthenticationContext);
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -44,7 +44,7 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
           <FormattedMessage id="AuthExit.title" />
         </Title>
 
-        <Email readOnly value={email} />
+        <Email readOnly value={account.email} />
 
         <Field isGrouped>
           <Control>

@@ -34,7 +34,7 @@ import {
 } from "../components/SubscriptionEnd.js";
 import { SubscriptionNumMonths } from "../components/SubscriptionNumMonths.js";
 import { SubscriptionTotalPrice } from "../components/SubscriptionTotalPrice.js";
-import { AccountContext } from "../contexts/Account.js";
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
 import { url } from "../routing/URLs.js";
@@ -59,7 +59,7 @@ const minNumMonths = 1;
 const defaultNumMonths = 6;
 
 export const SubscriptionPurchase: FC = () => {
-  const { account } = useContext(AccountContext);
+  const { account } = useContext(AuthenticationContext);
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
 

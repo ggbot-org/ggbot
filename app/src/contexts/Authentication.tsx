@@ -1,5 +1,5 @@
 import { BadGatewayError } from "@ggbot2/http";
-import { EmailAddress, isAccount } from "@ggbot2/models";
+import { Account, EmailAddress, isAccount, noneAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
@@ -21,7 +21,6 @@ import {
   SplashScreen,
   splashScreenDuration,
 } from "../components/SplashScreen.js";
-import { AccountProvider } from "../contexts/Account.js";
 import { useApi } from "../hooks/useApi.js";
 
 type State = {
@@ -34,14 +33,15 @@ type State = {
   exited: boolean;
 };
 
-type ContextValue = Pick<State, "email" | "exited"> & {
+type ContextValue = Pick<State, "exited"> & {
+  account: Account;
   openExitModal: () => void;
   exit: () => void;
   resetEmail: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
-  email: undefined,
+  account: noneAccount,
   openExitModal: () => {},
   exit: () => {},
   exited: false,
@@ -69,8 +69,8 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     (state, action) => {
       switch (action.type) {
         case "EXIT": {
-          sessionWebStorage.email = undefined;
-          localWebStorage.jwt = undefined;
+          sessionWebStorage.clear();
+          localWebStorage.clear();
           return { ...state, exited: true };
         }
 
@@ -133,7 +133,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue = useMemo<ContextValue>(
     () => ({
-      email,
+      account: isAccount(account) ? account : noneAccount,
       exit: () => {
         dispatch({ type: "EXIT" });
       },
@@ -145,7 +145,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
         dispatch({ type: "SET_EMAIL", data: { email: undefined } });
       },
     }),
-    [email, exited]
+    [account, exited]
   );
 
   // Fetch account.
@@ -199,14 +199,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  if (isAccount(account))
-    return (
-      <AuthenticationContext.Provider value={contextValue}>
-        <AccountProvider account={account}>{children}</AccountProvider>
+  if (!isAccount(account)) return null;
 
-        <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
-      </AuthenticationContext.Provider>
-    );
+  return (
+    <AuthenticationContext.Provider value={contextValue}>
+      {children}
 
-  return null;
+      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+    </AuthenticationContext.Provider>
+  );
 };

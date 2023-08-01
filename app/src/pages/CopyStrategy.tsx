@@ -1,4 +1,3 @@
-import { Section } from "@ggbot2/design";
 import { FC } from "react";
 
 import { CopyStrategy } from "../components/CopyStrategy.js";
@@ -12,9 +11,7 @@ export const CopyStrategyPage: FC = () => (
     <AuthenticationProvider>
       <AccountStrategiesProvider>
         <StrategyProvider>
-          <Section>
-            <CopyStrategy />
-          </Section>
+          <CopyStrategy />
         </StrategyProvider>
       </AccountStrategiesProvider>
     </AuthenticationProvider>

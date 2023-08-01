@@ -1,4 +1,4 @@
-import { Box, Column, Columns, Flex, Message, Title } from "@ggbot2/design";
+import { Box, Column, Columns, Container, Flex, Message } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategies } from "@ggbot2/models";
 import { FC, useContext } from "react";
 import { FormattedMessage } from "react-intl";
@@ -33,11 +33,7 @@ export const Strategies: FC = () => {
   }
 
   return (
-    <>
-      <Title>
-        <FormattedMessage id="Strategies.title" />
-      </Title>
-
+    <Container maxWidth="desktop">
       {accountStrategies === null && (
         <Message color="info">
           <FormattedMessage id="Strategies.noStrategy" />
@@ -59,6 +55,6 @@ export const Strategies: FC = () => {
           </Column>
         ))}
       </Columns>
-    </>
+    </Container>
   );
 };

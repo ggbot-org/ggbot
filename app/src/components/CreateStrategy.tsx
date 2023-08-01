@@ -1,13 +1,12 @@
 import {
   Button,
+  Container,
   Control,
   Field,
   Form,
   FormOnSubmit,
   formValues,
   Message,
-  Section,
-  Title,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
 import { UseActionError } from "@ggbot2/use-action";
@@ -54,12 +53,8 @@ export const CreateStrategy: FC = () => {
   useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Section>
-        <Title>
-          <FormattedMessage id="CreateStrategy.title" />
-        </Title>
-
+    <Container maxWidth="desktop">
+      <Form box onSubmit={onSubmit}>
         {error ? null : (
           <Message color="info">
             <FormattedMessage
@@ -80,7 +75,7 @@ export const CreateStrategy: FC = () => {
             </Button>
           </Control>
         </Field>
-      </Section>
-    </Form>
+      </Form>
+    </Container>
   );
 };

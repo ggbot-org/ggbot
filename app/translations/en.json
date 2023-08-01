@@ -83,9 +83,6 @@
   "CreateStrategy.chooseName": {
     "defaultMessage": "Choose a name for your <em>brand new</em> strategy."
   },
-  "CreateStrategy.title": {
-    "defaultMessage": "Create Strategy"
-  },
   "DailyInterval.labelStart": {
     "defaultMessage": "From"
   },
@@ -250,9 +247,6 @@
   },
   "Strategies.noStrategy": {
     "defaultMessage": "Your strategies list is empty."
-  },
-  "Strategies.title": {
-    "defaultMessage": "Strategies"
   },
   "StrategiesErrorExceededQuota.message": {
     "defaultMessage": "Cannot create more strategies. Check your account quotas."

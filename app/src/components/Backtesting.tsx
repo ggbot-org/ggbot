@@ -1,10 +1,11 @@
 import {
+  Box,
   Button,
   Buttons,
+  Container,
   DailyInterval,
   DailyIntervalProps,
   DateTime,
-  Section,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
 import { FC, useCallback, useMemo, useState } from "react";
@@ -120,8 +121,8 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
   }, [dispatch, isPaused, isRunning]);
 
   return (
-    <>
-      <Section>
+    <Container maxWidth="desktop">
+      <Box>
         <DailyInterval
           start={{
             day: dayInterval.start,
@@ -167,11 +168,9 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
         <Buttons>
           <Button onClick={onClickAction}>{actionLabel}</Button>
         </Buttons>
-      </Section>
+      </Box>
 
-      <Section>
-        <ProfitSummary orders={orders} dayInterval={dayInterval} />
-      </Section>
-    </>
+      <ProfitSummary orders={orders} dayInterval={dayInterval} />
+    </Container>
   );
 };

@@ -62,45 +62,50 @@ export const CopyStrategy: FC = () => {
   useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <Form box onSubmit={onSubmit}>
-      <Section>
-        <Title>
-          <FormattedMessage id="CopyStrategy.title" />
-        </Title>
-      </Section>
+    <Section>
+      <Form box onSubmit={onSubmit}>
+        <Section>
+          <Title>
+            <FormattedMessage id="CopyStrategy.title" />
+          </Title>
+        </Section>
 
-      <Section>
-        <Message color="info">
-          <FormattedMessage id="CopyStrategy.strategyInfo" />
-        </Message>
-
-        <StrategyRecord strategy={strategy} />
-      </Section>
-
-      <Section>
-        {error ? null : (
+        <Section>
           <Message color="info">
-            <FormattedMessage id="CopyStrategy.chooseName" />
+            <FormattedMessage id="CopyStrategy.strategyInfo" />
           </Message>
-        )}
 
-        <StrategiesErrorExceededQuota error={error} />
+          <StrategyRecord strategy={strategy} />
+        </Section>
 
-        <StrategyName
-          required
-          name={fieldName.name}
-          placeholder={strategy.name}
-          readOnly={readOnly}
-        />
+        <Section>
+          {error ? null : (
+            <Message color="info">
+              <FormattedMessage id="CopyStrategy.chooseName" />
+            </Message>
+          )}
 
-        <Field>
-          <Control>
-            <Button isLoading={isLoading} color={error ? "warning" : undefined}>
-              <FormattedMessage id="CopyStrategy.button" />
-            </Button>
-          </Control>
-        </Field>
-      </Section>
-    </Form>
+          <StrategiesErrorExceededQuota error={error} />
+
+          <StrategyName
+            required
+            name={fieldName.name}
+            placeholder={strategy.name}
+            readOnly={readOnly}
+          />
+
+          <Field>
+            <Control>
+              <Button
+                isLoading={isLoading}
+                color={error ? "warning" : undefined}
+              >
+                <FormattedMessage id="CopyStrategy.button" />
+              </Button>
+            </Control>
+          </Field>
+        </Section>
+      </Form>
+    </Section>
   );
 };

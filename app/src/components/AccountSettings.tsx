@@ -15,7 +15,7 @@ import { AccountId } from "../components/AccountId.js";
 import { AccountNickName } from "../components/AccountNickName.js";
 import { Email } from "../components/Email.js";
 import { WhenCreated } from "../components/WhenCreated.js";
-import { AccountContext } from "../contexts/Account.js";
+import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 
 const fields = ["name"] as const;
@@ -24,7 +24,7 @@ const fieldName = {
 } as const satisfies Record<string, (typeof fields)[number]>;
 
 export const AccountSettings: FC = () => {
-  const { account } = useContext(AccountContext);
+  const { account } = useContext(AuthenticationContext);
   const [name, setName] = useState(account.name ?? "");
 
   const RENAME = useApi.RenameAccount();
