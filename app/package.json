@@ -50,7 +50,7 @@
     "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "esbuild": "0.17.17",
-    "sass": "1.62.1"
+    "sass": "1.64.2"
   },
   "eslintConfig": {
     "extends": [
