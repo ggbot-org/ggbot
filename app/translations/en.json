@@ -62,6 +62,9 @@
   "CopyStrategy.chooseName": {
     "defaultMessage": "Choose a new name for the copied strategy."
   },
+  "CopyStrategy.strategyInfo": {
+    "defaultMessage": "These are the details about the strategy you are going to copy."
+  },
   "CopyStrategy.title": {
     "defaultMessage": "Copy strategy"
   },

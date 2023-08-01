@@ -1,8 +1,19 @@
 import { BulmaClassName, classNames, ClassNamesArg } from "trunx";
 
-import { type CalendarClassNames } from "../components/Calendar.js";
-import { type DailyIntervalClassNames } from "../components/DailyInterval.js";
-import { type ToastContainerClassNames } from "../components/ToastContainer.js";
+type DailyIntervalClassNames = "DailyInterval";
+
+type CalendarClassNames =
+  | "Calendar"
+  | "Calendar__body"
+  | "Calendar__head"
+  | "Calendar__head-icon"
+  | "Calendar__head-text"
+  | "Calendar__week-day"
+  | "Calendar__cell";
+
+type ModalClassNames = "Modal__content";
+
+type ToastContainerClassNames = "ToastContainer";
 
 export { type ClassNamesArg } from "trunx";
 
@@ -10,6 +21,7 @@ export type ClassName =
   | BulmaClassName
   | CalendarClassNames
   | DailyIntervalClassNames
+  | ModalClassNames
   | ToastContainerClassNames;
 
 /**

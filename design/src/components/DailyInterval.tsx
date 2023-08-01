@@ -3,8 +3,6 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { _classNames } from "../components/_classNames.js";
 import { DayDropdown, DayDropdownProps } from "../components/DayDropdown.js";
 
-export type DailyIntervalClassNames = "DailyInterval";
-
 export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
   start: Pick<DayDropdownProps, "day" | "label" | "setDay">;
   end: Pick<DayDropdownProps, "day" | "label" | "setDay">;

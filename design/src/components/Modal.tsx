@@ -6,6 +6,8 @@ import {
   ModalContent,
 } from "trunx";
 
+import { _classNames } from "../components/_classNames.js";
+
 export type ModalProps = Partial<{
   isActive: boolean;
   setIsActive: (arg: boolean) => void;
@@ -27,7 +29,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <_Modal isActive={isActive}>
       <ModalBackground />
 
-      <ModalContent>{children}</ModalContent>
+      <ModalContent className={_classNames("Modal__content")}>
+        {children}
+      </ModalContent>
 
       {
         /* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (

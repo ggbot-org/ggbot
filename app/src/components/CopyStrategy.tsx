@@ -67,6 +67,12 @@ export const CopyStrategy: FC = () => {
         <Title>
           <FormattedMessage id="CopyStrategy.title" />
         </Title>
+      </Section>
+
+      <Section>
+        <Message color="info">
+          <FormattedMessage id="CopyStrategy.strategyInfo" />
+        </Message>
 
         <StrategyRecord strategy={strategy} />
       </Section>

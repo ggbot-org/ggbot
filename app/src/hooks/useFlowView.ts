@@ -11,7 +11,7 @@ import {
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
 } from "flow-view";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceDflowClient } from "../flow/binance.js";
@@ -209,7 +209,8 @@ export const useFlowView = (container: HTMLDivElement | null) => {
   }, [container, initializeBinanceFlowView, nodesCatalog, strategyKind]);
 
   // Dispose.
-  useEffect(() => flowView?.destroy, [flowView]);
+  // TODO
+  // useEffect(() => flowView?.destroy, [flowView]);
 
   return { flowView, whenUpdatedFlow: whenUpdated };
 };

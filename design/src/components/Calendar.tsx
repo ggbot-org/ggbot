@@ -12,15 +12,6 @@ import { useIntl } from "react-intl";
 import { _classNames } from "../components/_classNames.js";
 import { Icon } from "../components/Icon.js";
 
-export type CalendarClassNames =
-  | "Calendar"
-  | "Calendar__body"
-  | "Calendar__head"
-  | "Calendar__head-icon"
-  | "Calendar__head-text"
-  | "Calendar__week-day"
-  | "Calendar__cell";
-
 const CalendarWeekDays = memo(() => {
   // TODO const {formatDate} = useIntl()
   const weekDayName: Record<WeekDayNum, string> = {
