@@ -20,9 +20,9 @@
     "postbuild_translations": "npm run generate_formatjs_types",
     "precheck_types": "npm run generate_formatjs_types",
     "pregenerate_public_files": "npm run cleanup_public_files && npm run tsc:scripts",
-    "prestart": "npm run generate_public_files",
     "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
-    "start": "esbuild --servedir=public",
+    "server": "npm run generate_public_files && esbuild --servedir=public",
+    "start": "onchange --initial --kill 'translations/*.json' 'src/components/' 'src/contexts/' 'src/flow/' 'src/hooks/' 'src/pages/' 'src/routing/' 'src/styles/' -- npm run server",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
@@ -50,6 +50,7 @@
     "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "esbuild": "0.17.17",
+    "onchange": "7.1.0",
     "sass": "1.64.2"
   },
   "eslintConfig": {
