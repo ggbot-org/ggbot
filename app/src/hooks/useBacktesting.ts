@@ -20,13 +20,7 @@ import {
   timestampToTime,
 } from "@ggbot2/time";
 import { FlowViewSerializableGraph } from "flow-view";
-import {
-  Dispatch,
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { useCallback, useContext, useEffect, useReducer } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceDflowClient } from "../flow/binance.js";
@@ -206,9 +200,11 @@ const getInitialState = (): State => {
   };
 };
 
+export { getInitialState as getInitialBacktestingState };
+
 export const useBacktesting = (
   flowViewGraph: FlowViewSerializableGraph | undefined
-): { state: State; dispatch: Dispatch<Action> } => {
+) => {
   const {
     strategy: { kind: strategyKind },
   } = useContext(StrategyContext);
@@ -289,5 +285,3 @@ export const useBacktesting = (
 
   return { state, dispatch };
 };
-
-export type UseBacktesting = typeof useBacktesting;

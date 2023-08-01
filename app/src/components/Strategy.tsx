@@ -1,20 +1,24 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Backtesting } from "../components/Backtesting.js";
 import { EditableFlow } from "../components/EditableFlow.js";
 import { ManageStrategy } from "../components/ManageStrategy.js";
 import { PleasePurchase } from "../components/PleasePurchase.js";
-import { Tabs } from "../components/Tabs.js";
-import { useStrategyFlow } from "../hooks/useStrategyFlow.js";
+import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js";
+
+const pageName = "Strategy";
 
 export const Strategy: FC = () => {
-  const { backtesting, flowViewContainerRef, flowViewGraph, whenUpdatedFlow } =
-    useStrategyFlow();
+  const [activeTabId, setActiveTabId] = useState<TabId>(
+    getStoredTabId(pageName) ?? "backtesting"
+  );
 
   return (
     <>
       <Tabs
-        initialTabId="manage"
+        pageName={pageName}
+        activeTabId={activeTabId}
+        setActiveTabId={setActiveTabId}
         tabs={[
           {
             tabId: "manage",
@@ -22,17 +26,11 @@ export const Strategy: FC = () => {
           },
           {
             tabId: "backtesting",
-            content: <Backtesting {...backtesting} />,
+            content: <Backtesting />,
           },
           {
             tabId: "flow",
-            content: (
-              <EditableFlow
-                flowViewGraph={flowViewGraph}
-                flowViewContainerRef={flowViewContainerRef}
-                whenUpdatedFlow={whenUpdatedFlow}
-              />
-            ),
+            content: <EditableFlow />,
           },
         ]}
       />

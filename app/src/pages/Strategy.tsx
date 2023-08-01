@@ -6,6 +6,7 @@ import { Strategy } from "../components/Strategy.js";
 import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";
 import { StrategyProvider } from "../contexts/Strategy.js";
+import { StrategyFlowProvider } from "../contexts/StrategyFlow.js";
 import { SubscriptionProvider } from "../contexts/Subscription.js";
 
 export const StrategyPage: FC = () => (
@@ -15,7 +16,9 @@ export const StrategyPage: FC = () => (
         <AccountStrategiesProvider>
           <SubscriptionProvider>
             <StrategyProvider>
-              <Strategy />
+              <StrategyFlowProvider>
+                <Strategy />
+              </StrategyFlowProvider>
             </StrategyProvider>
           </SubscriptionProvider>
         </AccountStrategiesProvider>

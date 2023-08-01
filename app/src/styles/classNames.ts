@@ -4,7 +4,7 @@ import {
   ClassNamesArg,
 } from "@ggbot2/design";
 
-import { type FlowViewContainerClassNames } from "../components/FlowViewContainer.js";
+type FlowViewContainerClassNames = "FlowViewContainer";
 
 type ClassName = _ClassName & FlowViewContainerClassNames;
 

@@ -16,7 +16,8 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@ggbot2/binance": "file:binance"
+    "@ggbot2/binance": "file:binance",
+    "@ggbot2/type-utils": "file:type-utils"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

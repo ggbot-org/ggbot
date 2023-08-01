@@ -1,4 +1,4 @@
-import { Box, Column, Columns, Container, Flex, Message } from "@ggbot2/design";
+import { Box, Column, Columns, Flex, Message } from "@ggbot2/design";
 import { AccountStrategy, isAccountStrategies } from "@ggbot2/models";
 import { FC, useContext } from "react";
 import { FormattedMessage } from "react-intl";
@@ -33,7 +33,7 @@ export const Strategies: FC = () => {
   }
 
   return (
-    <Container maxWidth="desktop">
+    <>
       {accountStrategies === null && (
         <Message color="info">
           <FormattedMessage id="Strategies.noStrategy" />
@@ -42,7 +42,18 @@ export const Strategies: FC = () => {
 
       <Columns isMultiline>
         {items.map(({ name, href, schedulings, strategyId }) => (
-          <Column key={strategyId} size="half">
+          <Column
+            key={strategyId}
+            size={{
+              desktop: "half",
+              mobile: "full",
+              tablet: "half",
+              widescreen: "half",
+              fullhd: "one-third",
+              // TODO fix this on trunx, for example touch could be undefined
+              touch: "full",
+            }}
+          >
             <a href={href} tabIndex={0}>
               <Box>
                 <Flex justify="space-between">
@@ -55,6 +66,6 @@ export const Strategies: FC = () => {
           </Column>
         ))}
       </Columns>
-    </Container>
+    </>
   );
 };

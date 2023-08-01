@@ -9,7 +9,7 @@ import { AuthenticationProvider } from "../contexts/Authentication.js";
 export const BinanceSettingsPage: FC = () => (
   <I18nProvider>
     <AuthenticationProvider>
-      <PageContainer maxWidth="widescreen">
+      <PageContainer>
         <Section>
           <BinanceSettings />
         </Section>

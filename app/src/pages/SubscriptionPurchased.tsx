@@ -5,7 +5,7 @@ import { PageContainer } from "../components/PageContainer.js";
 import { SubscriptionPurchased } from "../components/SubscriptionPurchased.js";
 
 export const SubscriptionPurchasedPage: FC = () => (
-  <PageContainer maxWidth="widescreen">
+  <PageContainer>
     <Section>
       <SubscriptionPurchased />
     </Section>

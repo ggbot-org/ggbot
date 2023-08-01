@@ -8,21 +8,24 @@ import {
   DateTime,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
-import { FC, useCallback, useMemo, useState } from "react";
-import { useIntl } from "react-intl";
+import { FC, useCallback, useContext, useMemo, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import {
   FrequencyInput,
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
 import { ProfitSummary } from "../components/ProfitSummary.js";
-import { UseBacktesting } from "../hooks/useBacktesting.js";
+import { StrategyFlowContext } from "../contexts/StrategyFlow.js";
+import { useBacktesting } from "../hooks/useBacktesting.js";
 import { backtestActionLabel } from "../i18n/index.js";
 
-type Props = ReturnType<UseBacktesting>;
-
-export const Backtesting: FC<Props> = ({ state, dispatch }) => {
+export const Backtesting: FC = () => {
   const { formatMessage } = useIntl();
+
+  const { flowViewGraph } = useContext(StrategyFlowContext);
+
+  const { state, dispatch } = useBacktesting(flowViewGraph);
 
   const { dayInterval, maxDay } = state;
 
@@ -141,7 +144,15 @@ export const Backtesting: FC<Props> = ({ state, dispatch }) => {
 
         <div>
           <div>
-            <span>{`${stepIndex} of ${numSteps} intervals`}</span>
+            <div>
+              <FormattedMessage
+                id="Backtesting.progress"
+                values={{
+                  index: stepIndex,
+                  length: numSteps,
+                }}
+              />
+            </div>
 
             <DateTime format="time" value={currentTimestamp} />
           </div>

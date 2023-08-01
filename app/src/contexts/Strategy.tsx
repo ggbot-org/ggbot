@@ -1,11 +1,5 @@
 import { Section } from "@ggbot2/design";
-import {
-  isStrategy,
-  isStrategyFlow,
-  noneStrategy,
-  ReadStrategyFlow,
-  Strategy,
-} from "@ggbot2/models";
+import { isStrategy, noneStrategy, Strategy } from "@ggbot2/models";
 import { localWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
@@ -23,12 +17,10 @@ import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyPara
 type ContextValue = {
   // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
   strategy: Strategy;
-  flow: ReadStrategyFlow["out"] | undefined;
 };
 
 export const StrategyContext = createContext<ContextValue>({
   strategy: noneStrategy,
-  flow: undefined,
 });
 
 StrategyContext.displayName = "StrategyContext";
@@ -38,7 +30,6 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   const strategyId = strategyKey?.strategyId;
 
   const READ_STRATEGY = useApi.ReadStrategy();
-  const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
 
   const strategy = useMemo(() => {
     if (!strategyId) return noneStrategy;
@@ -49,20 +40,11 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
     return noneStrategy;
   }, [READ_STRATEGY, strategyId]);
 
-  const flow = useMemo(() => {
-    if (
-      isStrategyFlow(READ_STRATEGY_FLOW.data) ||
-      READ_STRATEGY_FLOW.data === null
-    )
-      return READ_STRATEGY_FLOW.data;
-  }, [READ_STRATEGY_FLOW]);
-
   const contextValue = useMemo<ContextValue>(
     () => ({
       strategy,
-      flow,
     }),
-    [strategy, flow]
+    [strategy]
   );
 
   // Fetch strategy.
@@ -78,13 +60,6 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
     if (isStrategy(strategy)) localWebStorage.setStrategy(strategy);
     if (strategy === null) localWebStorage.removeItem(strategyId);
   }, [READ_STRATEGY, strategyId]);
-
-  // Fetch flow.
-  useEffect(() => {
-    if (!strategyKey) return;
-    if (!READ_STRATEGY.data) return;
-    if (READ_STRATEGY_FLOW.canRun) READ_STRATEGY_FLOW.request(strategyKey);
-  }, [READ_STRATEGY, READ_STRATEGY_FLOW, strategyKey]);
 
   if (!strategyKey)
     return (

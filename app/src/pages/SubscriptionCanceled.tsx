@@ -7,7 +7,7 @@ import { SubscriptionCanceled } from "../components/SubscriptionCanceled.js";
 
 export const SubscriptionCanceledPage: FC = () => (
   <I18nProvider>
-    <PageContainer maxWidth="widescreen">
+    <PageContainer>
       <Section>
         <SubscriptionCanceled />
       </Section>

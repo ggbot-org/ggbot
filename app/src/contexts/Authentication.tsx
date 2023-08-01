@@ -17,6 +17,7 @@ import {
 import { AuthEnter, AuthEnterProps } from "../components/AuthEnter.js";
 import { AuthExit, AuthExitProps } from "../components/AuthExit.js";
 import { AuthVerify, AuthVerifyProps } from "../components/AuthVerify.js";
+import { Navigation } from "../components/Navigation.js";
 import {
   SplashScreen,
   splashScreenDuration,
@@ -199,13 +200,16 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  if (!isAccount(account)) return null;
+  if (account === undefined) return <Navigation noMenu />;
 
-  return (
-    <AuthenticationContext.Provider value={contextValue}>
-      {children}
+  if (isAccount(account))
+    return (
+      <AuthenticationContext.Provider value={contextValue}>
+        {children}
 
-      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
-    </AuthenticationContext.Provider>
-  );
+        <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+      </AuthenticationContext.Provider>
+    );
+
+  return null;
 };

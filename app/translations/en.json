@@ -41,6 +41,9 @@
   "AuthVerify.resetEmail": {
     "defaultMessage": "Reset"
   },
+  "Backtesting.progress": {
+    "defaultMessage": "{index} of {length} intervals"
+  },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
   },

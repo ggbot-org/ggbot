@@ -1,6 +1,22 @@
-import { renderTabs, Section } from "@ggbot2/design";
-import { FC, ReactNode, useMemo } from "react";
+import {
+  TabContent,
+  TabContentProps,
+  TabSelector,
+  TabSelectorProps,
+  TabSelectors,
+} from "@ggbot2/design";
+import { sessionWebStorage } from "@ggbot2/web-storage";
+import {
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  SetStateAction,
+  useMemo,
+} from "react";
 import { useIntl } from "react-intl";
+
+import { classNames } from "../styles/classNames.js";
 
 export const tabIds = [
   "backtesting",
@@ -11,29 +27,71 @@ export const tabIds = [
 ] as const;
 export type TabId = (typeof tabIds)[number];
 
+export const getStoredTabId = (pageName: string) =>
+  sessionWebStorage.getActiveTabId<TabId>(pageName, tabIds);
+
+type Tab = { tabId: TabId; content: ReactNode };
+
 type TabsProps = {
-  initialTabId: TabId;
-  tabs: { tabId: TabId; content: ReactNode }[];
+  activeTabId: TabId;
+  setActiveTabId: Dispatch<SetStateAction<TabId>>;
+  tabs: Tab[];
+  pageName: string;
 };
 
-export const Tabs: FC<TabsProps> = ({ initialTabId, tabs: tabsContent }) => {
+type ItemList<Props> = (PropsWithChildren<Props> & Pick<Tab, "tabId">)[];
+
+export const Tabs: FC<TabsProps> = ({
+  activeTabId,
+  setActiveTabId,
+  tabs,
+  pageName,
+}) => {
   const { formatMessage } = useIntl();
 
-  const tabs = useMemo(
+  const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
     () =>
-      tabsContent.map(({ tabId, content }) => ({
+      tabs.map(({ tabId }) => ({
         tabId,
-        selector: formatMessage({ id: `Tabs.${tabId}` }),
-        content,
+        isActive: activeTabId === tabId,
+        onClick: (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setActiveTabId(() => {
+            sessionWebStorage.setActiveTabId(pageName, tabId);
+            return tabId;
+          });
+        },
+        children: formatMessage({ id: `Tabs.${tabId}` }),
       })),
-    [formatMessage, tabsContent]
+    [activeTabId, pageName, formatMessage, setActiveTabId, tabs]
   );
 
-  const Component = renderTabs(initialTabId, tabs);
+  const tabContents = useMemo<ItemList<TabContentProps>>(
+    () =>
+      tabs.map(({ tabId, content }) => ({
+        tabId,
+        isActive: activeTabId === tabId,
+        children: content,
+      })),
+    [activeTabId, tabs]
+  );
 
   return (
-    <Section>
-      <Component />
-    </Section>
+    <div className={classNames("m-5")}>
+      <TabSelectors>
+        {tabSelectors.map(({ children, tabId, ...props }) => (
+          <TabSelector key={tabId} {...props}>
+            {children}
+          </TabSelector>
+        ))}
+      </TabSelectors>
+
+      {tabContents.map(({ children, tabId, ...props }) => (
+        <TabContent key={tabId} {...props}>
+          {children}
+        </TabContent>
+      ))}
+    </div>
   );
 };

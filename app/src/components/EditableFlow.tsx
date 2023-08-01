@@ -1,29 +1,17 @@
 // TODO restore Execute button
 import { Button, ButtonOnClick } from "@ggbot2/design";
-import { Time } from "@ggbot2/time";
-import { FlowViewSerializableGraph } from "flow-view";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { FlowMenu } from "../components/FlowMenu.js";
-import {
-  FlowViewContainer,
-  FlowViewContainerRef,
-} from "../components/FlowViewContainer.js";
+import { FlowViewContainer } from "../components/FlowViewContainer.js";
 import { StrategyContext } from "../contexts/Strategy.js";
+import { StrategyFlowContext } from "../contexts/StrategyFlow.js";
 import { useApi } from "../hooks/useApi.js";
 
-type Props = {
-  flowViewContainerRef: FlowViewContainerRef;
-  flowViewGraph: FlowViewSerializableGraph | undefined;
-  whenUpdatedFlow: Time;
-};
-
-export const EditableFlow: FC<Props> = ({
-  flowViewContainerRef,
-  flowViewGraph,
-  whenUpdatedFlow,
-}) => {
+export const EditableFlow: FC = () => {
+  const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =
+    useContext(StrategyFlowContext);
   const { strategy } = useContext(StrategyContext);
 
   const [canSave, setCanSave] = useState(false);
@@ -44,8 +32,8 @@ export const EditableFlow: FC<Props> = ({
   }, [WRITE, canSave, strategy, flowViewGraph]);
 
   useEffect(() => {
-    if (whenUpdatedFlow) setCanSave(true);
-  }, [whenUpdatedFlow]);
+    if (whenUpdatedFlowView) setCanSave(true);
+  }, [whenUpdatedFlowView]);
 
   return (
     <>

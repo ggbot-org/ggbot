@@ -12,7 +12,7 @@ import { SubscriptionProvider } from "../contexts/Subscription.js";
 export const BillingSettingsPage: FC = () => (
   <I18nProvider>
     <AuthenticationProvider>
-      <PageContainer maxWidth="widescreen">
+      <PageContainer>
         <SubscriptionProvider>
           <Section>
             <Columns>

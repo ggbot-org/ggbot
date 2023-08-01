@@ -7,7 +7,8 @@ import { isName, Name, normalizeName } from "./name.js";
 import { Operation } from "./operation.js";
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
-export const strategyKinds = ["binance", "_none_"] as const;
+const noneStrategyKind = "_none_";
+export const strategyKinds = ["binance", noneStrategyKind] as const;
 export type StrategyKind = (typeof strategyKinds)[number];
 export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds);
 
@@ -26,9 +27,14 @@ export const isStrategy = objectTypeGuard<Strategy>(
     isName(name)
 );
 
+export const noneStrategyKey: StrategyKey = {
+  strategyId: nullId,
+  strategyKind: noneStrategyKind,
+};
+
 export const noneStrategy: Strategy = {
   id: nullId,
-  kind: "_none_",
+  kind: noneStrategyKind,
   name: "",
   whenCreated: 0,
   accountId: nullId,

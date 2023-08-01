@@ -1,31 +1,42 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
 import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+import { isLiteralType } from "@ggbot2/type-utils";
 
 const emailKey = "email";
 const gotFirstPageViewKey = "gotFirstPageView";
 const binanceExchangeInfoKey = "binanceExchangeInfo";
-
-const keys = [emailKey, gotFirstPageViewKey, binanceExchangeInfoKey] as const;
-type Key = (typeof keys)[number];
+const activeTabIdKey = (pageName: string) => `${pageName}:activeTab`;
 
 class SessionWebStorage {
   clear() {
     window.localStorage.clear();
   }
 
-  getItem(key: Key) {
+  getItem(key: string) {
     return window.sessionStorage.getItem(key);
   }
 
-  setItem(key: Key, value: string) {
+  setItem(key: string, value: string) {
     window.sessionStorage.setItem(key, value);
   }
 
-  removeItem(key: Key) {
+  removeItem(key: string) {
     if (key === "binanceExchangeInfo")
       this.binanceExchangeInfoIsValid = undefined;
 
     window.sessionStorage.removeItem(key);
+  }
+
+  getActiveTabId<TabId extends string>(
+    pageName: string,
+    tabIds: readonly TabId[]
+  ): TabId | undefined {
+    const value = this.getItem(activeTabIdKey(pageName));
+    if (isLiteralType<TabId>(tabIds)(value)) return value;
+  }
+
+  setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
+    this.setItem(activeTabIdKey(pageName), value);
   }
 
   /** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */

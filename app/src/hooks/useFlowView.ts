@@ -1,4 +1,5 @@
 import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow";
+import { StrategyKind } from "@ggbot2/models";
 import { now, Time, truncateTime } from "@ggbot2/time";
 import {
   DflowErrorCannotConnectPins,
@@ -7,23 +8,37 @@ import {
 } from "dflow";
 import {
   FlowView,
+  FlowViewGraph,
   FlowViewOnChange,
   FlowViewOnChangeDataEdge,
   FlowViewOnChangeDataNode,
+  FlowViewSerializableGraph,
 } from "flow-view";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { StrategyContext } from "../contexts/Strategy.js";
+import { FlowViewContainerElement } from "../components/FlowViewContainer.js";
 import { BinanceDflowClient } from "../flow/binance.js";
 import { initializeFlowView } from "../flow/initializeFlowView.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
-export const useFlowView = (container: HTMLDivElement | null) => {
-  const {
-    strategy: { kind: strategyKind },
-  } = useContext(StrategyContext);
+export type UseFlowViewOutput = {
+  whenUpdatedFlowView: Time;
+  flowViewGraph: FlowViewSerializableGraph | undefined;
+};
 
-  const [whenUpdated, setWhenUpdated] = useState<Time>(0);
+export const useFlowView = ({
+  container,
+  initialGraph,
+  strategyKind,
+}: {
+  container: FlowViewContainerElement;
+  initialGraph: FlowViewGraph | null | undefined;
+  strategyKind: StrategyKind;
+}) => {
+  const [output, setOutput] = useState<UseFlowViewOutput>({
+    whenUpdatedFlowView: 0,
+    flowViewGraph: undefined,
+  });
 
   const nodesCatalog = useNodesCatalog();
 
@@ -51,7 +66,11 @@ export const useFlowView = (container: HTMLDivElement | null) => {
             case "CREATE_EDGE": {
               const { id, from, to } = data as FlowViewOnChangeDataEdge;
               dflow.newEdge({ id, source: from, target: to });
-              if (isUserInput) setWhenUpdated(now());
+              if (isUserInput)
+                setOutput({
+                  whenUpdatedFlowView: now(),
+                  flowViewGraph: flowView.graph,
+                });
               break;
             }
 
@@ -139,24 +158,23 @@ export const useFlowView = (container: HTMLDivElement | null) => {
                   break;
                 }
               }
-              if (isUserInput) setWhenUpdated(now());
+              if (isUserInput)
+                setOutput({
+                  whenUpdatedFlowView: now(),
+                  flowViewGraph: flowView.graph,
+                });
               break;
             }
 
-            case "DELETE_EDGE": {
-              if (isUserInput) setWhenUpdated(now());
+            case "DELETE_EDGE":
+            case "DELETE_NODE":
+            case "UPDATE_NODE":
+              if (isUserInput)
+                setOutput({
+                  whenUpdatedFlowView: now(),
+                  flowViewGraph: flowView.graph,
+                });
               break;
-            }
-
-            case "DELETE_NODE": {
-              if (isUserInput) setWhenUpdated(now());
-              break;
-            }
-
-            case "UPDATE_NODE": {
-              if (isUserInput) setWhenUpdated(now());
-              break;
-            }
 
             default:
               break;
@@ -200,7 +218,7 @@ export const useFlowView = (container: HTMLDivElement | null) => {
     []
   );
 
-  // Initialize.
+  // Initialize flow-view.
   const flowView = useMemo(() => {
     if (!nodesCatalog) return;
     if (!container) return;
@@ -208,9 +226,17 @@ export const useFlowView = (container: HTMLDivElement | null) => {
       return initializeBinanceFlowView(container, nodesCatalog);
   }, [container, initializeBinanceFlowView, nodesCatalog, strategyKind]);
 
+  // Load initial graph.
+  useEffect(() => {
+    if (!flowView) return;
+    if (!initialGraph) return;
+    flowView.clearGraph();
+    flowView.loadGraph(initialGraph);
+  }, [flowView, initialGraph]);
+
   // Dispose.
   // TODO
   // useEffect(() => flowView?.destroy, [flowView]);
 
-  return { flowView, whenUpdatedFlow: whenUpdated };
+  return output;
 };

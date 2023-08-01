@@ -1,10 +1,8 @@
-import { forwardRef, MutableRefObject } from "react";
+import { forwardRef } from "react";
 
 import { classNames } from "../styles/classNames.js";
 
-export type FlowViewContainerClassNames = "FlowViewContainer";
-
-export type FlowViewContainerRef = MutableRefObject<HTMLDivElement | null>;
+export type FlowViewContainerElement = HTMLDivElement | null;
 
 // TODO add typing to flow-view to extends JSX intrinsic elements
 // and try to use it here with <flow-view dark>
