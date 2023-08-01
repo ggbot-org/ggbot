@@ -9,6 +9,10 @@ const keys = [emailKey, gotFirstPageViewKey, binanceExchangeInfoKey] as const;
 type Key = (typeof keys)[number];
 
 class SessionWebStorage {
+  clear() {
+    window.localStorage.clear();
+  }
+
   getItem(key: Key) {
     return window.sessionStorage.getItem(key);
   }

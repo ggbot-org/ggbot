@@ -5,6 +5,10 @@ const jwtKey = "jwt";
 const strategyKey = (id: Strategy["id"]) => `strategy:${id}`;
 
 class LocalWebStorage {
+  clear() {
+    window.localStorage.clear();
+  }
+
   getItem(key: string) {
     return window.localStorage.getItem(key);
   }
