@@ -1,9 +1,6 @@
 import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 
-import {
-  AllowedCountryIsoCode2,
-  isAllowedCountryIsoCode2,
-} from "./countries.js";
+import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js";
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js";
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";

@@ -17,15 +17,16 @@ import {
   AllowedCountryIsoCode2,
   isAllowedCountryIsoCode2,
   monthlyPrice,
-  monthlyPriceCurrency,
+  purchaseCurrency,
+  purchaseDefaultNumMonths as defaultNumMonths,
   purchaseMaxNumMonths as maxNumMonths,
-  totalPurchase,
+  purchaseMinNumMonths as minNumMonths,
 } from "@ggbot2/models";
 import { getTime, now } from "@ggbot2/time";
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils";
 import { countries } from "country-isocode2/en";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { Email } from "../components/Email.js";
 import {
@@ -55,10 +56,9 @@ const allowedCountryOptions = Object.entries(countries)
     label: country,
   }));
 
-const minNumMonths = 1;
-const defaultNumMonths = 6;
-
 export const SubscriptionPurchase: FC = () => {
+  const { formatNumber } = useIntl();
+
   const { account } = useContext(AuthenticationContext);
   const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
     useContext(SubscriptionContext);
@@ -66,15 +66,13 @@ export const SubscriptionPurchase: FC = () => {
   const SET_COUNTRY = useApi.SetAccountCountry();
 
   const [purchaseIsPending, setPurchaseIsPending] = useState(false);
-  const [formattedMonthlyPrice, setFormattedMonthlyPrice] = useState("");
-  const [formattedTotalPrice, setFormattedTotalPrice] = useState("");
   const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("");
   const [numMonths, setNumMonths] = useState<number | undefined>(
     defaultNumMonths
   );
 
   {
-    /* TODO move it SelectCountry component */
+    /* TODO move it to SelectCountry component */
   }
   const countryOptions: SelectProps["options"] = allowedCountryOptions;
 
@@ -166,14 +164,10 @@ export const SubscriptionPurchase: FC = () => {
     if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country });
   }, [SET_COUNTRY, account, country]);
 
-  useEffect(() => {
-    const { format } = new Intl.NumberFormat(window.navigator.language, {
-      style: "currency",
-      currency: monthlyPriceCurrency,
-    });
-    if (!formattedMonthlyPrice) setFormattedMonthlyPrice(format(monthlyPrice));
-    if (numMonths) setFormattedTotalPrice(format(totalPurchase(numMonths)));
-  }, [formattedMonthlyPrice, numMonths]);
+  const formattedMonthlyPrice = formatNumber(monthlyPrice, {
+    style: "currency",
+    currency: purchaseCurrency,
+  });
 
   if (!canPurchaseSubscription) return null;
 
@@ -190,11 +184,21 @@ export const SubscriptionPurchase: FC = () => {
       ) : null}
 
       <Message>
-        <p>Price for 1 month is {formattedMonthlyPrice}.</p>
+        <p>
+          <FormattedMessage
+            id="SubscriptionPurchase.oneMonthPrice"
+            values={{ price: formattedMonthlyPrice }}
+          />
+        </p>
 
         <Flex>
           <span>
-            Go for 12 months subscription and get 1 month for <em>free</em>.
+            <FormattedMessage
+              id="SubscriptionPurchase.hint"
+              values={{
+                em: (chunks) => <em>{chunks}</em>,
+              }}
+            />
           </span>
 
           <Checkmark ok={isYearlyPurchase || undefined} />
@@ -224,8 +228,8 @@ export const SubscriptionPurchase: FC = () => {
       <Email readOnly value={account.email} />
 
       <SubscriptionTotalPrice
-        value={formattedTotalPrice}
         isYearlyPurchase={isYearlyPurchase === true}
+        numMonths={numMonths}
       />
 
       <Field>

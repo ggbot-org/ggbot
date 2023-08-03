@@ -1,13 +1,13 @@
 import { Button, ButtonOnClick, Buttons } from "@ggbot2/design";
 import { StrategyScheduling } from "@ggbot2/models";
 import { FC, useCallback } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import {
   FrequencyInput,
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
 import { SchedulingStatusBadge } from "../components/SchedulingStatusBadge.js";
-import { buttonLabel } from "../i18n/index.js";
 
 export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
   scheduling: Omit<StrategyScheduling, "frequency"> &
@@ -24,6 +24,8 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
   removeScheduling,
   setStatus,
 }) => {
+  const { formatMessage } = useIntl();
+
   const { frequency, status } = scheduling;
 
   const onClickStatusButton = useCallback<ButtonOnClick>(() => {
@@ -35,7 +37,9 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
   }, [status, setStatus]);
 
   const statusButtonLabel =
-    status === "active" ? buttonLabel.dismiss : buttonLabel.activate;
+    status === "active"
+      ? formatMessage({ id: "SchedulingItem.dismiss" })
+      : formatMessage({ id: "SchedulingItem.activate" });
 
   return (
     <div>
@@ -44,7 +48,9 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
 
       <Buttons size="small">
-        <Button onClick={removeScheduling}>{buttonLabel.remove}</Button>
+        <Button onClick={removeScheduling}>
+          <FormattedMessage id="SchedulingItem.remove" />
+        </Button>
 
         <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
       </Buttons>

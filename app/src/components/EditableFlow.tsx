@@ -32,6 +32,13 @@ export const EditableFlow: FC = () => {
   }, [WRITE, canSave, strategy, flowViewGraph]);
 
   useEffect(() => {
+    if (WRITE.isDone) {
+      WRITE.reset();
+      setCanSave(false);
+    }
+  }, [WRITE]);
+
+  useEffect(() => {
     if (whenUpdatedFlowView) setCanSave(true);
   }, [whenUpdatedFlowView]);
 
@@ -39,6 +46,7 @@ export const EditableFlow: FC = () => {
     <>
       <FlowMenu>
         <Button
+          size="small"
           color={canSave ? "primary" : undefined}
           isLoading={saveIsPending}
           onClick={onClickSave}

@@ -28,7 +28,7 @@ export const SchedulingStatusBadge: FC<Props> = ({
   count,
 }) => {
   let color: SchedulingStatusBadgeColor = "light";
-  let label: ReactNode = <>&npsp;</>;
+  let label: ReactNode = "";
 
   if (schedulingStatus) {
     label = schedulingStatusLabel[schedulingStatus];

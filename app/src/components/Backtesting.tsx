@@ -1,14 +1,19 @@
 import {
   Box,
   Button,
+  ButtonProps,
   Buttons,
-  Container,
+  Column,
+  Columns,
   DailyInterval,
   DailyIntervalProps,
   DateTime,
+  Progress,
+  ProgressProps,
+  Title,
 } from "@ggbot2/design";
 import { everyOneHour, isFrequency } from "@ggbot2/models";
-import { FC, useCallback, useContext, useMemo, useState } from "react";
+import { FC, useCallback, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import {
@@ -18,16 +23,31 @@ import {
 import { ProfitSummary } from "../components/ProfitSummary.js";
 import { StrategyFlowContext } from "../contexts/StrategyFlow.js";
 import { useBacktesting } from "../hooks/useBacktesting.js";
-import { backtestActionLabel } from "../i18n/index.js";
+import { Memory } from "./Memory.js";
+
+type ActionProps = {
+  label: string;
+  type: string;
+} & Pick<ButtonProps, "onClick">;
 
 export const Backtesting: FC = () => {
   const { formatMessage } = useIntl();
 
   const { flowViewGraph } = useContext(StrategyFlowContext);
 
-  const { state, dispatch } = useBacktesting(flowViewGraph);
-
-  const { dayInterval, maxDay } = state;
+  const {
+    state: {
+      dayInterval,
+      orders,
+      maxDay,
+      memory,
+      isPaused,
+      isRunning,
+      stepIndex,
+      timestamps,
+    },
+    dispatch,
+  } = useBacktesting(flowViewGraph);
 
   const [frequencyArg, setFrequencyArg] = useState<
     FrequencyInputProps["frequency"]
@@ -66,122 +86,106 @@ export const Backtesting: FC = () => {
     [dispatch, dayInterval]
   );
 
-  const {
-    currentTimestamp,
-    isPaused,
-    isRunning,
-    memoryItems,
-    numSteps,
-    orders,
-    stepIndex,
-  } = useMemo(() => {
-    if (!state)
-      return {
-        currentTimestamp: undefined,
-        isPaused: false,
-        isRunning: false,
-        memoryItems: [],
-        noMemory: true,
-        numSteps: undefined,
-        orders: [],
-        stepIndex: undefined,
-      };
-    const { isPaused, isRunning, memory, orders, stepIndex, timestamps } =
-      state;
+  const timestamp = timestamps[stepIndex];
 
-    const currentTimestamp = timestamps[stepIndex];
-    const numSteps = timestamps.length;
+  const progress: Pick<ProgressProps, "value" | "max"> = {
+    value: stepIndex,
+    max: timestamps.length,
+  };
 
-    const memoryItems = Object.entries(memory).map(([key, value]) => ({
-      key,
-      value,
-    }));
+  let actions: ActionProps[] = [
+    {
+      label: formatMessage({ id: "Backtesting.start" }),
+      onClick: () => {
+        dispatch({ type: "START" });
+      },
+      type: "START",
+    },
+  ];
 
-    return {
-      currentTimestamp,
-      isPaused,
-      isRunning,
-      memoryItems,
-      numSteps,
-      orders,
-      stepIndex,
-    };
-  }, [state]);
+  if (isPaused)
+    actions = [
+      {
+        label: formatMessage({ id: "Backtesting.resume" }),
+        onClick: () => {
+          dispatch({ type: "PAUSE" });
+        },
+        type: "PAUSE",
+      },
+    ];
 
-  let actionLabel = "";
-  if (isPaused) {
-    actionLabel = backtestActionLabel.resume;
-  } else if (isRunning) {
-    actionLabel = backtestActionLabel.pause;
-  } else {
-    actionLabel = backtestActionLabel.start;
-  }
-
-  const onClickAction = useCallback(() => {
-    if (isRunning) dispatch({ type: "PAUSE" });
-    else if (isPaused) dispatch({ type: "RESUME" });
-    else dispatch({ type: "START" });
-  }, [dispatch, isPaused, isRunning]);
+  if (isRunning)
+    actions = [
+      {
+        label: formatMessage({ id: "Backtesting.pause" }),
+        onClick: () => {
+          dispatch({ type: "RESUME" });
+        },
+        type: "RESUME",
+      },
+    ];
 
   return (
-    <Container maxWidth="desktop">
-      <Box>
-        <DailyInterval
-          start={{
-            day: dayInterval.start,
-            label: formatMessage({ id: "DailyInterval.labelStart" }),
-            setDay: setStart,
-          }}
-          end={{
-            day: dayInterval.end,
-            label: formatMessage({ id: "DailyInterval.labelEnd" }),
-            setDay: setEnd,
-          }}
-          max={maxDay}
-        />
+    <>
+      <Columns>
+        <Column size="one-third">
+          <Box>
+            <Title>
+              <FormattedMessage id="Backtesting.title" />
+            </Title>
 
-        <FrequencyInput frequency={frequencyArg} setFrequency={setFrequency} />
+            <DailyInterval
+              start={{
+                day: dayInterval.start,
+                label: formatMessage({ id: "DailyInterval.labelStart" }),
+                setDay: setStart,
+              }}
+              end={{
+                day: dayInterval.end,
+                label: formatMessage({ id: "DailyInterval.labelEnd" }),
+                setDay: setEnd,
+              }}
+              max={maxDay}
+            />
 
-        <div>
-          <div>
-            <div>
-              <FormattedMessage
-                id="Backtesting.progress"
-                values={{
-                  index: stepIndex,
-                  length: numSteps,
-                }}
-              />
-            </div>
+            <FrequencyInput
+              frequency={frequencyArg}
+              setFrequency={setFrequency}
+            />
 
-            <DateTime format="time" value={currentTimestamp} />
-          </div>
+            <Buttons>
+              {actions.map(({ type, onClick, label }) => (
+                <Button key={type} onClick={onClick}>
+                  {label}
+                </Button>
+              ))}
+            </Buttons>
+          </Box>
+        </Column>
 
-          <div>
-            <span>Memory</span>
+        <Column size="one-third">
+          <Memory memory={memory} />
+        </Column>
 
-            {memoryItems.length === 0 ? <span>(empty)</span> : null}
-          </div>
+        <Column>
+          <Box>
+            <Title>
+              <FormattedMessage id="Backtesting.progress" />
+            </Title>
 
-          <div>
-            {memoryItems.map(({ key, value }) => (
-              <div key={key}>
-                <span>{key}:</span>
+            <FormattedMessage
+              id="Backtesting.progressSummary"
+              values={progress}
+            />
 
-                <pre>
-                  <code>{JSON.stringify(value, null, 2)}</code>
-                </pre>
-              </div>
-            ))}
-          </div>
-        </div>
+            <Progress {...progress} />
 
-        <Buttons>
-          <Button onClick={onClickAction}>{actionLabel}</Button>
-        </Buttons>
-      </Box>
+            <DateTime format="time" value={timestamp} />
+          </Box>
+        </Column>
+      </Columns>
 
       <ProfitSummary orders={orders} dayInterval={dayInterval} />
-    </Container>
+    </>
   );
 };

@@ -10,6 +10,7 @@ export * from "./InputField.js";
 export * from "./Logo.js";
 export * from "./Modal.js";
 export * from "./Navbar.js";
+export * from "./Progress.js";
 export * from "./SelectField.js";
 export * from "./Tabs.js";
 export * from "./Tag.js";

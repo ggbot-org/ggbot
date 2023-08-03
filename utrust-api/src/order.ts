@@ -28,9 +28,9 @@ import {
 } from "@ggbot2/locators";
 import {
   isSubscription,
-  monthlyPriceCurrency,
   PaymentProvider,
-  purchaseMaxNumMonths as maxNumMonths,
+  purchaseCurrency,
+  purchaseMaxNumMonths,
   SubscriptionPlan,
   subscriptionStatus,
   totalPurchase,
@@ -86,7 +86,7 @@ export const handler = async (
             : today();
 
         const purchaseKey =
-          numMonths >= maxNumMonths - 1
+          numMonths >= purchaseMaxNumMonths - 1
             ? await createYearlySubscriptionPurchase({
                 accountId,
                 paymentProvider,
@@ -107,7 +107,7 @@ export const handler = async (
         const order: Order = {
           reference,
           amount: {
-            currency: monthlyPriceCurrency,
+            currency: purchaseCurrency,
             total: totalStr,
           },
           return_urls: {
@@ -117,10 +117,12 @@ export const handler = async (
           },
           line_items: [
             {
-              currency: monthlyPriceCurrency,
+              currency: purchaseCurrency,
               // TODO translate this, needs lang param
               name: `Subscription (${
-                numMonths >= maxNumMonths - 1 ? "1 year" : `${numMonths} months`
+                numMonths >= purchaseMaxNumMonths - 1
+                  ? "1 year"
+                  : `${numMonths} months`
               })`,
               price: totalStr,
               quantity: 1,

@@ -39,21 +39,6 @@ type State = Pick<DflowCommonContext, "memory"> & {
   maxDay: Day;
 };
 
-const computeTimestamps = ({
-  dayInterval,
-  frequency,
-}: Pick<State, "dayInterval" | "frequency">): State["timestamps"] => {
-  const { start, end } = dayIntervalToDate(dayInterval);
-  const interval = frequencyIntervalDuration(frequency);
-  const timestamps: Timestamp[] = [];
-  let date = start;
-  while (date < end) {
-    timestamps.push(dateToTimestamp(date));
-    date = new Date(date.getTime() + interval);
-  }
-  return timestamps;
-};
-
 type Action =
   | {
       type: "END";
@@ -82,6 +67,21 @@ type Action =
   | {
       type: "START";
     };
+
+const computeTimestamps = ({
+  dayInterval,
+  frequency,
+}: Pick<State, "dayInterval" | "frequency">): State["timestamps"] => {
+  const { start, end } = dayIntervalToDate(dayInterval);
+  const interval = frequencyIntervalDuration(frequency);
+  const timestamps: Timestamp[] = [];
+  let date = start;
+  while (date < end) {
+    timestamps.push(dateToTimestamp(date));
+    date = new Date(date.getTime() + interval);
+  }
+  return timestamps;
+};
 
 const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -199,8 +199,6 @@ const getInitialState = (): State => {
     timestamps: computeTimestamps({ dayInterval, frequency }),
   };
 };
-
-export { getInitialState as getInitialBacktestingState };
 
 export const useBacktesting = (
   flowViewGraph: FlowViewSerializableGraph | undefined

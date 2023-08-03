@@ -41,8 +41,23 @@
   "AuthVerify.resetEmail": {
     "defaultMessage": "Reset"
   },
+  "Backtesting.resume": {
+    "defaultMessage": "Resume"
+  },
+  "Backtesting.start": {
+    "defaultMessage": "Start"
+  },
+  "Backtesting.pause": {
+    "defaultMessage": "Pause"
+  },
+  "Backtesting.progressSummary": {
+    "defaultMessage": "{value} of {max} intervals"
+  },
   "Backtesting.progress": {
-    "defaultMessage": "{index} of {length} intervals"
+    "defaultMessage": "Progress"
+  },
+  "Backtesting.title": {
+    "defaultMessage": "Backtesting"
   },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
@@ -161,6 +176,12 @@
   "InvalidStrategyKey.message": {
     "defaultMessage": "Invalid strategy key. Check this URL parameters."
   },
+  "Memory.empty": {
+    "defaultMessage": "empty"
+  },
+  "Memory.title": {
+    "defaultMessage": "Memory"
+  },
   "Name.hasSpaces": {
     "defaultMessage": "Name cannot start or end with spaces."
   },
@@ -226,6 +247,15 @@
   },
   "RenameStrategy.save": {
     "defaultMessage": "Save"
+  },
+  "SchedulingItem.activate": {
+    "defaultMessage": "Activate"
+  },
+  "SchedulingItem.dismiss": {
+    "defaultMessage": "Dismiss"
+  },
+  "SchedulingItem.remove": {
+    "defaultMessage": "Remove"
   },
   "Schedulings.add": {
     "defaultMessage": "Add"
@@ -296,6 +326,12 @@
   "SubscriptionPurchase.couldRenew": {
     "defaultMessage": "Your subscription will expire soon, please consider renew it."
   },
+  "SubscriptionPurchase.hint": {
+    "defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."
+  },
+  "SubscriptionPurchase.oneMonthPrice": {
+    "defaultMessage": "Price for one month is {price}."
+  },
   "SubscriptionPurchase.title": {
     "defaultMessage": "Purchase"
   },
@@ -309,7 +345,7 @@
     "defaultMessage": "One month for free."
   },
   "Tabs.backtesting": {
-    "defaultMessage": "Backtest"
+    "defaultMessage": "Backtesting"
   },
   "Tabs.flow": {
     "defaultMessage": "Flow"

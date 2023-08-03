@@ -6,13 +6,17 @@ import {
 } from "@ggbot2/type-utils";
 
 import { AccountKey } from "./account.js";
+import { Currency } from "./currency.js";
 import { Operation } from "./operation.js";
 import { UpdateTime } from "./time.js";
 
 export const monthlyPrice = 10;
-export const monthlyPriceCurrency = "EUR";
 
+export const purchaseCurrency: Currency = "EUR";
+export const purchaseDefaultNumMonths = 6;
 export const purchaseMaxNumMonths = 12;
+export const purchaseMinNumMonths = 1;
+
 export const totalPurchase = (numMonths: NaturalNumber) => {
   // if 12 months, apply discount.
   if (numMonths === 12) return monthlyPrice * 11;
