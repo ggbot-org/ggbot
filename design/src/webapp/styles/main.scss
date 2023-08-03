@@ -1,10 +1,12 @@
-// First of all import :root CSS variables.
+// 0. First of all import :root CSS variables.
 @import "styles/root";
 
-// Import bulma theme first,
+// 1. Import bulma theme first;
 @import "styles/bulma/theme";
-// then bulma modules.
+// 2. then bulma modules;
 @import "bulma/bulma";
+// 3. and finally the overrides.
+@import "styles/bulma/overrides";
 
-// Components.
+// 4. Design Components.
 @import "styles/components/all";

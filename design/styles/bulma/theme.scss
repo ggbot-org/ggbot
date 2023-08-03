@@ -1,10 +1,9 @@
 // Import colors first.
-@import "./colors";
+@import "./theme/colors";
 
-@import "./fonts";
+@import "./theme/fonts";
 
-@import "./button";
-@import "./checkbox";
-@import "./link";
-@import "./input";
-@import "./tabs";
+@import "./theme/button";
+@import "./theme/link";
+@import "./theme/input";
+@import "./theme/tabs";

@@ -20,7 +20,7 @@ export const GoCopyStrategy: FC = () => {
   );
 
   return (
-    <Button type="button" onClick={onClick}>
+    <Button onClick={onClick}>
       <FormattedMessage id="GoCopyStrategy.label" />
     </Button>
   );

@@ -1,13 +1,15 @@
 // First of all import :root CSS variables.
 @import "@ggbot2/design/styles/root";
 
-// Import bulma theme first,
+// 1. Import bulma theme first;
 @import "@ggbot2/design/styles/bulma/theme";
-// then bulma modules.
+// 2. then bulma modules;
 @import "bulma/bulma";
+// 3. and finally the overrides.
+@import "@ggbot2/design/styles/bulma/overrides";
 
-// Design components.
+// 4. Design components.
 @import "@ggbot2/design/styles/components/all";
 
-// Components.
+// 5. App components.
 @import "./components/FlowViewContainer";

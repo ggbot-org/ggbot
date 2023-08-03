@@ -6,6 +6,7 @@ import {
   Form,
   FormOnSubmit,
   formValues,
+  InputOnChange,
   Message,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
@@ -25,6 +26,8 @@ const fieldName = {
 } as const satisfies Record<string, Field>;
 
 export const CreateStrategy: FC = () => {
+  const [canCreate, setCanCreate] = useState(false);
+
   const CREATE = useApi.CreateStrategy();
 
   const [error, setError] = useState<UseActionError>();
@@ -33,14 +36,19 @@ export const CreateStrategy: FC = () => {
   const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
 
+  const onChangeName = useCallback<InputOnChange>((event) => {
+    setCanCreate(isName(event.target.value));
+  }, []);
+
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
+      if (!canCreate) return;
       if (!CREATE.canRun) return;
       const { name } = formValues(event, fields);
       if (isName(name)) CREATE.request({ kind: "binance", name });
     },
-    [CREATE]
+    [CREATE, canCreate]
   );
 
   useEffect(() => {
@@ -49,6 +57,8 @@ export const CreateStrategy: FC = () => {
       CREATE.reset();
     }
   }, [CREATE]);
+
+  const color = canCreate ? (error ? "warning" : "primary") : undefined;
 
   useRedirectToNewStrategyPage(newStrategy);
 
@@ -66,11 +76,21 @@ export const CreateStrategy: FC = () => {
 
         <StrategiesErrorExceededQuota error={error} />
 
-        <StrategyName required name={fieldName.name} readOnly={readOnly} />
+        <StrategyName
+          required
+          name={fieldName.name}
+          readOnly={readOnly}
+          onChange={onChangeName}
+        />
 
         <Field>
           <Control>
-            <Button color={error ? "warning" : undefined} isLoading={isLoading}>
+            <Button
+              isLight={color !== "primary"}
+              isOutlined={color === "primary"}
+              color={color}
+              isLoading={isLoading}
+            >
               <FormattedMessage id="CreateStrategy.button" />
             </Button>
           </Control>

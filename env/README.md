@@ -19,8 +19,10 @@ export AWS_ACCOUNT_ID=12345678
 export AWS_ACCESS_KEY_ID=AKIA123ABCDEFGHIKLMN
 export AWS_SECRET_ACCESS_KEY=O1234567890aBcDeFgHiJkLmNoPqRsTuVwXyZ
 
-export DEPLOY_STAGE=local
+export DEPLOY_STAGE=main
 export JWT_SECRET=s3cret
+
+export BINANCE_PROXY_BASE_URL=http://3.68.165.141:8080
 
 export UTRUST_API_KEY=u_live_api_xxxxxxxx-0000-xxxx-0000-xxxxxxxxxxxx
 export UTRUST_WEBHOOK_SECRET=u_live_webhooks_xxxxxxxx-0000-xxxx-0000-xxxxxxxxxxxx

@@ -46,7 +46,7 @@ export const ShareStrategy: FC = () => {
   }, [shareData, toast, formatMessage]);
 
   return (
-    <Button type="button" onClick={onClick}>
+    <Button isOutlined color="primary" onClick={onClick}>
       <FormattedMessage id="ShareStrategy.label" />
     </Button>
   );

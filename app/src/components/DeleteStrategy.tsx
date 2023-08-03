@@ -42,7 +42,7 @@ export const DeleteStrategy: FC = () => {
 
   return (
     <>
-      <Button color={color} onClick={toggleModal}>
+      <Button isOutlined color={color} onClick={toggleModal}>
         <FormattedMessage id="DeleteStrategy.button" />
       </Button>
 
