@@ -1,5 +1,5 @@
 .Calendar {
-  margin: 5px;
+  margin-inline: 4px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -9,6 +9,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-inline: 4px;
+    line-height: 2;
   }
 
   &__head-icon {
@@ -29,7 +31,7 @@
   }
 
   &__week-day {
-    block-margin: 10px;
+    margin-block: 10px;
     font-weight: 600;
     font-size: 0.8em;
     text-align: center;
@@ -37,10 +39,27 @@
   }
 
   &__cell {
+    margin: 1px;
     text-align: center;
     user-select: none;
     font-size: 1.1em;
-    border-radius: $radius-rounded;
+    border-radius: $radius;
     width: 2.2em;
+
+    &:hover {
+      background: $primary;
+    }
+
+    &--selected {
+      background: $primary;
+    }
+
+    &--disabled {
+      color: $grey-light;
+
+      &:hover {
+        background: transparent;
+      }
+    }
   }
 }

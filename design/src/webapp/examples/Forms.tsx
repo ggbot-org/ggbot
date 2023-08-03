@@ -1,12 +1,13 @@
 import {
   Button,
   Checkbox,
-  type CheckboxOnChange,
+  CheckboxOnChange,
   classNames,
   Flex,
   Form,
   FormOnSubmit,
   InputField,
+  InputOnChange,
   SelectField,
   SelectOnChange,
   Title,
@@ -17,6 +18,8 @@ export const SimpleForm: FC = () => {
   const [isPending, setIsPending] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
   const [gender, setGender] = useState("");
+  const [nick, setNick] = useState("satoshi");
+  const [password, setPassword] = useState("");
 
   const onChangeConsent = useCallback<CheckboxOnChange>(
     (event) => {
@@ -25,12 +28,17 @@ export const SimpleForm: FC = () => {
     [setHasConsent]
   );
 
-  const onChangeGender = useCallback<SelectOnChange>(
-    (event) => {
-      setGender(event.target.value);
-    },
-    [setGender]
-  );
+  const onChangeGender = useCallback<SelectOnChange>((event) => {
+    setGender(event.target.value);
+  }, []);
+
+  const onChangeNick = useCallback<InputOnChange>((event) => {
+    setNick(event.target.value);
+  }, []);
+
+  const onChangePassword = useCallback<InputOnChange>((event) => {
+    setPassword(event.target.value);
+  }, []);
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -44,9 +52,21 @@ export const SimpleForm: FC = () => {
     <Form box onSubmit={onSubmit}>
       <Title>Create account</Title>
 
-      <InputField name="nick" label="nick" value="satoshi" help={<>&nbsp;</>} />
+      <InputField
+        type="text"
+        name="nick"
+        label="nick"
+        value={nick}
+        onChange={onChangeNick}
+      />
 
-      <InputField name="password" label="password" help={<>&nbsp;</>} />
+      <InputField
+        type="password"
+        name="password"
+        label="password"
+        value={password}
+        onChange={onChangePassword}
+      />
 
       <SelectField
         value={gender}

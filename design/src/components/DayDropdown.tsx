@@ -1,4 +1,4 @@
-import { FC, useId } from "react";
+import { FC, useCallback, useId } from "react";
 import { FormattedDate } from "react-intl";
 import {
   Control,
@@ -19,18 +19,27 @@ export type DayDropdownProps = Required<
 > &
   Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
     label: string;
-  };
+  } & { close: () => void };
 
 export const DayDropdown: FC<DayDropdownProps> = ({
+  close,
   day,
   isActive,
   label,
   onClick,
-  setDay,
+  setDay: _setDay,
   min,
   max,
 }) => {
   const id = useId();
+
+  const setDay = useCallback<DayDropdownProps["setDay"]>(
+    (day) => {
+      _setDay(day);
+      close();
+    },
+    [close, _setDay]
+  );
 
   return (
     <Field>

@@ -19,9 +19,9 @@
     "generate_public_files": "npm run generate_html && npm run generate_js && npm run generate_css",
     "lint": "eslint --fix --ext .ts --ext .tsx src/",
     "pregenerate_public_files": "npm run tsc:scripts",
-    "prestart": "npm run generate_public_files",
     "sass": "sass --style=compressed --load-path=../node_modules/ --load-path=. --no-source-map src/webapp/styles/main.scss public/main.css",
-    "start": "esbuild --servedir=public",
+    "server": "npm run build && npm run generate_public_files && esbuild --servedir=public",
+    "start": "onchange --initial --kill 'src/' 'styles/' -- npm run server",
     "tsc:build": "tsc --build tsconfig.build.json",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },

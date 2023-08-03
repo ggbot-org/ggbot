@@ -9,7 +9,9 @@ type CalendarClassNames =
   | "Calendar__head-icon"
   | "Calendar__head-text"
   | "Calendar__week-day"
-  | "Calendar__cell";
+  | "Calendar__cell"
+  | "Calendar__cell--selected"
+  | "Calendar__cell--disabled";
 
 type ModalClassNames = "Modal__content";
 

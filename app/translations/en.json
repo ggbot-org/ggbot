@@ -119,6 +119,9 @@
   "DeleteAccount.title": {
     "defaultMessage": "Account deletion"
   },
+  "DeleteAccount.consent": {
+    "defaultMessage": "I am aware of the consequences of my account deletion."
+  },
   "DeleteAccount.question": {
     "defaultMessage": "Are you sure you want to delete your account?"
   },

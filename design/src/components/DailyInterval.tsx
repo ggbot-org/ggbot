@@ -18,6 +18,10 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
     "start" | "end" | undefined
   >();
 
+  const close = useCallback<DayDropdownProps["close"]>(() => {
+    setActiveDropdown(undefined);
+  }, []);
+
   const onClickStart = useCallback<DayDropdownProps["onClick"]>((event) => {
     event.stopPropagation();
     setActiveDropdown((activeDropdown) => {
@@ -37,6 +41,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
   return (
     <div className={_classNames("DailyInterval")}>
       <DayDropdown
+        close={close}
         isActive={activeDropdown === "start"}
         max={end.day}
         min={min}
@@ -45,6 +50,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
       />
 
       <DayDropdown
+        close={close}
         isActive={activeDropdown === "end"}
         min={start.day}
         max={max}
