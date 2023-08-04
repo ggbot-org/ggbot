@@ -1,6 +1,7 @@
 export * from "./conversions.js";
 export * from "./date.js";
 export * from "./day.js";
+export * from "./dayHelpers.js";
 export * from "./errors.js";
 export * from "./hour.js";
 export * from "./month.js";

@@ -19,8 +19,6 @@ export const isDayInterval = objectTypeGuard<DayInterval>(
   ({ start, end }) => isDay(start) && isDay(end)
 );
 
-export const today = (): Day => new Date().toJSON().substring(0, 10);
-
 type YYYY = string;
 type MM = string;
 type DD = string;
