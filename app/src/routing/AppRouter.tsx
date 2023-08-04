@@ -6,15 +6,15 @@ import { BillingSettingsPage } from "../pages/BillingSettings.js";
 import { BinanceSettingsPage } from "../pages/BinanceSettings.js";
 import { CopyStrategyPage } from "../pages/CopyStrategy.js";
 import { DashboardPage } from "../pages/Dashboard.js";
+import { PurchaseCanceledPage } from "../pages/PurchaseCanceled.js";
 import { StrategyPage } from "../pages/Strategy.js";
-import { SubscriptionCanceledPage } from "../pages/SubscriptionCanceled.js";
 import { SubscriptionPurchasedPage } from "../pages/SubscriptionPurchased.js";
 import {
   copyStrategyHtmlFilename,
   indexHtmlFilename,
+  purchaseCanceledHtmlFilename,
   settingsHtmlFilename,
   strategyHtmlFilename,
-  subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
 } from "./pages.js";
 
@@ -41,8 +41,8 @@ const Router: FC = () => {
     case pathname === `/${settingsHtmlFilename("binance")}`:
       return <BinanceSettingsPage />;
 
-    case pathname === `/${subscriptionCanceledHtmlFilename}`:
-      return <SubscriptionCanceledPage />;
+    case pathname === `/${purchaseCanceledHtmlFilename}`:
+      return <PurchaseCanceledPage />;
 
     case pathname === `/${subscriptionPurchasedHtmlFilename}`:
       return <SubscriptionPurchasedPage />;

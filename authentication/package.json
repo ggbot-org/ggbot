@@ -15,15 +15,15 @@
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/"
   },
-  "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
-  },
   "dependencies": {
     "@ggbot2/env": "file:env",
     "@ggbot2/models": "file:models",
     "@ggbot2/time": "file:time",
     "jsonwebtoken": "9.0.1"
+  },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [

@@ -50,11 +50,14 @@
   "Backtesting.pause": {
     "defaultMessage": "Pause"
   },
+  "Backtesting.progress": {
+    "defaultMessage": "Progress"
+  },
   "Backtesting.progressSummary": {
     "defaultMessage": "{value} of {max} intervals"
   },
-  "Backtesting.progress": {
-    "defaultMessage": "Progress"
+  "Backtesting.waiting": {
+    "defaultMessage": "Waiting for data"
   },
   "Backtesting.title": {
     "defaultMessage": "Backtesting"
@@ -233,6 +236,9 @@
   "ProfitSummary.title": {
     "defaultMessage": "Profits"
   },
+  "PurchaseCanceled.message": {
+    "defaultMessage": "Your purchase was canceled."
+  },
   "RegenerateOneTimePassword.button": {
     "defaultMessage": "Ok"
   },
@@ -307,9 +313,6 @@
   },
   "StrategyName.label": {
     "defaultMessage": "Strategy name"
-  },
-  "SubscriptionCanceled.message": {
-    "defaultMessage": "Your purchase was canceled."
   },
   "SubscriptionEnd.label": {
     "defaultMessage": "End day"

@@ -43,7 +43,7 @@ export class UserWebappHomepageURL extends URL {
 }
 
 export class UtrustCancelURL extends URL {
-  static htmlFileName = "subscription-canceled.html";
+  static htmlFileName = "purchase-canceled.html";
   constructor(userWebappBaseURL: string) {
     super(`/${UtrustCancelURL.htmlFileName}`, userWebappBaseURL);
   }

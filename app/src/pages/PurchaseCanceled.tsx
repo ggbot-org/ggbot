@@ -3,13 +3,13 @@ import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { PageContainer } from "../components/PageContainer.js";
-import { SubscriptionCanceled } from "../components/SubscriptionCanceled.js";
+import { PurchaseCanceled } from "../components/PurchaseCanceled.js";
 
-export const SubscriptionCanceledPage: FC = () => (
+export const PurchaseCanceledPage: FC = () => (
   <I18nProvider>
     <PageContainer>
       <Section>
-        <SubscriptionCanceled />
+        <PurchaseCanceled />
       </Section>
     </PageContainer>
   </I18nProvider>

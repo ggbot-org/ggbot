@@ -8,7 +8,7 @@ const pageName = "TryFlow";
 
 export const TryFlow: FC = () => {
   const [activeTabId, setActiveTabId] = useState<TabId>(
-    getStoredTabId(pageName) ?? "backtesting"
+    getStoredTabId(pageName) ?? "flow"
   );
 
   return (

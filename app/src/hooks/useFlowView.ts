@@ -232,6 +232,10 @@ export const useFlowView = ({
     if (!initialGraph) return;
     flowView.clearGraph();
     flowView.loadGraph(initialGraph);
+    setOutput({
+      whenUpdatedFlowView: now(),
+      flowViewGraph: initialGraph,
+    });
   }, [flowView, initialGraph]);
 
   // Dispose.

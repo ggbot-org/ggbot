@@ -45,13 +45,8 @@ export const Strategies: FC = () => {
           <Column
             key={strategyId}
             size={{
-              desktop: "half",
-              mobile: "full",
               tablet: "half",
-              widescreen: "half",
               fullhd: "one-third",
-              // TODO fix this on trunx, for example touch could be undefined
-              touch: "full",
             }}
           >
             <a href={href} tabIndex={0}>

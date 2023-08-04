@@ -10,14 +10,14 @@ import {
   Order,
 } from "@ggbot2/models";
 import {
-  dateToDay,
   dateToTimestamp,
   Day,
   DayInterval,
   dayIntervalToDate,
-  getDate,
+  getDay,
   Timestamp,
   timestampToTime,
+  yesterday,
 } from "@ggbot2/time";
 import { FlowViewSerializableGraph } from "flow-view";
 import { useCallback, useContext, useEffect, useReducer } from "react";
@@ -28,15 +28,17 @@ import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
 type State = Pick<DflowCommonContext, "memory"> & {
-  stepIndex: number;
   balanceHistory: BalanceChangeEvent[];
-  frequency: Frequency;
-  isRunning: boolean;
-  isPaused: boolean;
   dayInterval: DayInterval;
-  orders: Order[];
-  timestamps: Timestamp[];
+  frequency: Frequency;
+  isPaused: boolean;
+  isPreparing: boolean;
+  isRunning: boolean;
+  isReadOnly: boolean;
   maxDay: Day;
+  orders: Order[];
+  stepIndex: number;
+  timestamps: Timestamp[];
 };
 
 type Action =
@@ -66,7 +68,17 @@ type Action =
     }
   | {
       type: "START";
+    }
+  | {
+      type: "STOP";
     };
+
+const isReadOnlyState = (
+  state: Pick<State, "isRunning" | "isPaused" | "isPreparing">
+) => {
+  if (state.isRunning || state.isPaused || state.isPreparing) return false;
+  return true;
+};
 
 const computeTimestamps = ({
   dayInterval,
@@ -125,7 +137,7 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "SET_FREQUENCY": {
-      if (state.isPaused || state.isRunning) return state;
+      if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       const { frequency } = action.data;
       return {
         ...state,
@@ -138,7 +150,7 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "SET_DAY_INTERVAL": {
-      if (state.isPaused || state.isRunning) return state;
+      if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       const { dayInterval } = action.data;
       return {
         ...state,
@@ -162,43 +174,47 @@ const backtestingReducer = (state: State, action: Action) => {
       };
     }
 
+    case "STOP": {
+      return getInitialState({
+        frequency: state.frequency,
+        dayInterval: state.dayInterval,
+      });
+    }
+
     default:
       return state;
   }
 };
 
-// Generate SHA-256 from string.
-//
-// Credits:
-// https://jameshfisher.com/2017/10/30/web-cryptography-api-hello-world/
-//
-// TODO use this function to generate hash of strategy to know if strategy
-// changed const sha256 = async (arg: string) => { const buffer = await
-// crypto.subtle.digest( "SHA-256", new TextEncoder().encode(arg) ); return
-// Array.from(new Uint8Array(buffer)) .map((element) => element.toString(16))
-// .join(""); };
+const getMaxDay: () => State["maxDay"] = yesterday;
 
-const getInitialState = (): State => {
-  const frequency = everyOneHour();
-  // Max is yesterday.
-  const maxDay = dateToDay(getDate(new Date()).minus(1).days());
-  const dayInterval = {
-    start: dateToDay(getDate(new Date(maxDay)).minus(7).days()),
+const defaultDayInterval = (): State["dayInterval"] => {
+  const maxDay = getMaxDay();
+  return {
+    start: getDay(maxDay).minus(7).days(),
     end: maxDay,
   };
-  return {
-    balanceHistory: [],
-    dayInterval,
-    frequency,
-    isPaused: false,
-    isRunning: false,
-    maxDay,
-    memory: {},
-    orders: [],
-    stepIndex: 0,
-    timestamps: computeTimestamps({ dayInterval, frequency }),
-  };
 };
+
+const defaultFrequency = (): State["frequency"] => everyOneHour();
+
+const getInitialState = ({
+  frequency,
+  dayInterval,
+}: Pick<State, "frequency" | "dayInterval">): State => ({
+  balanceHistory: [],
+  dayInterval,
+  frequency,
+  isPaused: false,
+  isPreparing: false,
+  isReadOnly: false,
+  isRunning: false,
+  maxDay: getMaxDay(),
+  memory: {},
+  orders: [],
+  stepIndex: 0,
+  timestamps: computeTimestamps({ dayInterval, frequency }),
+});
 
 export const useBacktesting = (
   flowViewGraph: FlowViewSerializableGraph | undefined
@@ -210,16 +226,22 @@ export const useBacktesting = (
   const binanceSymbols = useBinanceSymbols();
   const nodesCatalog = useNodesCatalog();
 
-  const [state, dispatch] = useReducer(backtestingReducer, getInitialState());
+  let hasRequiredData = true;
+  if (!nodesCatalog) hasRequiredData = false;
+  if (!flowViewGraph) hasRequiredData = false;
+  if (strategyKind === "binance" && !binanceSymbols) hasRequiredData = false;
 
-  const {
-    isRunning: backtestIsRunning,
-    memory: previousMemory,
-    stepIndex,
-    timestamps,
-  } = state;
+  const [state, dispatch] = useReducer(
+    backtestingReducer,
+    getInitialState({
+      frequency: defaultFrequency(),
+      dayInterval: defaultDayInterval(),
+    })
+  );
 
-  const runBacktest = useCallback(async () => {
+  const { isRunning, memory: previousMemory, stepIndex, timestamps } = state;
+
+  const run = useCallback(async () => {
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
     const timestamp = timestamps[stepIndex];
@@ -277,9 +299,8 @@ export const useBacktesting = (
   ]);
 
   useEffect(() => {
-    if (!backtestIsRunning) return;
-    runBacktest();
-  }, [backtestIsRunning, runBacktest]);
+    if (isRunning) run();
+  }, [isRunning, run]);
 
-  return { state, dispatch };
+  return { state, dispatch, hasRequiredData };
 };

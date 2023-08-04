@@ -5,9 +5,9 @@ import {
   copyStrategyHtmlFilename,
   indexHtmlFilename,
   publicDir,
+  purchaseCanceledHtmlFilename,
   settingsHtmlFilename,
   strategyHtmlFilename,
-  subscriptionCanceledHtmlFilename,
   subscriptionPurchasedHtmlFilename,
   tryFlowHtmlFilename,
   tryFlowJs,
@@ -75,7 +75,7 @@ export const generateHtml = async () => {
 
   await generateHtmlPage({
     dirname,
-    filename: subscriptionCanceledHtmlFilename,
+    filename: purchaseCanceledHtmlFilename,
     htmlContent: html(appJs),
   });
   await generateHtmlPage({

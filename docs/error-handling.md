@@ -6,12 +6,16 @@ Create an error extending the `Error` class.
 
 ```ts
 export class ErrorInvalidArg extends Error {
+  static errorName = "ErrorInvalidArg";
   static message = "Invalid argument";
   constructor() {
     super(ErrorInvalidArg.message);
   }
 }
 ```
+
+Note that a static attribute `errorName` with the name of the error, i.e. the class name,
+is added to be able to serialize the error. Using `ErrorInvalidArg.name` may not work if the code is minified, hence an explicit string must be added.
 
 It is not worth to extend other error classes, (e.g. `TypeError`, `RangeError`)
 as they are used to categorize [errors thrown by JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors) and extending them would pollute what consumers expect to be on that list.
@@ -36,6 +40,7 @@ import { strict as assert } from "node:assert";
 import { describe, it } from "node:test";
 
 class ErrorInvalidDate extends Error {
+  static errorName = "ErrorInvalidDate";
   static message = "Invalid Date";
   constructor() {
     super(ErrorInvalidDate.message);
@@ -81,6 +86,7 @@ Notice some info could be not defined or `unknown`.
 
 ```ts
 export class ErrorItemNotFound extends Error {
+  static errorName = "ErrorItemNotFound";
   static message(type: ErrorItemNotFound["type"]) {
     return `${type} not found`;
   }
@@ -121,6 +127,7 @@ An error should also be serializable into JSON, in the following example the
 
 ```ts
 export class MyError extends Error {
+  static errorName = "MyError";
   static message = "Something went wrong";
 
   readonly bar: boolean;
@@ -146,7 +153,7 @@ export class MyError extends Error {
 
   toObject() {
     return {
-      name: MyError.name,
+      name: MyError.errorName,
       data: {
         bar: this.bar,
         quz: this.quz,

@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  ButtonProps,
   Buttons,
   Column,
   Columns,
@@ -25,11 +24,6 @@ import { StrategyFlowContext } from "../contexts/StrategyFlow.js";
 import { useBacktesting } from "../hooks/useBacktesting.js";
 import { Memory } from "./Memory.js";
 
-type ActionProps = {
-  label: string;
-  type: string;
-} & Pick<ButtonProps, "onClick">;
-
 export const Backtesting: FC = () => {
   const { formatMessage } = useIntl();
 
@@ -47,6 +41,7 @@ export const Backtesting: FC = () => {
       timestamps,
     },
     dispatch,
+    hasRequiredData,
   } = useBacktesting(flowViewGraph);
 
   const [frequencyArg, setFrequencyArg] = useState<
@@ -88,42 +83,25 @@ export const Backtesting: FC = () => {
 
   const timestamp = timestamps[stepIndex];
 
-  const progress: Pick<ProgressProps, "value" | "max"> = {
-    value: stepIndex,
-    max: timestamps.length,
-  };
+  const progress: Pick<ProgressProps, "value" | "max"> | undefined =
+    hasRequiredData
+      ? {
+          value: stepIndex,
+          max: timestamps.length,
+        }
+      : undefined;
 
-  let actions: ActionProps[] = [
-    {
-      label: formatMessage({ id: "Backtesting.start" }),
-      onClick: () => {
-        dispatch({ type: "START" });
-      },
-      type: "START",
-    },
-  ];
+  const onClickStart = useCallback(() => {
+    dispatch({ type: "START" });
+  }, [dispatch]);
 
-  if (isPaused)
-    actions = [
-      {
-        label: formatMessage({ id: "Backtesting.resume" }),
-        onClick: () => {
-          dispatch({ type: "PAUSE" });
-        },
-        type: "PAUSE",
-      },
-    ];
+  const onClickPause = useCallback(() => {
+    dispatch({ type: "PAUSE" });
+  }, [dispatch]);
 
-  if (isRunning)
-    actions = [
-      {
-        label: formatMessage({ id: "Backtesting.pause" }),
-        onClick: () => {
-          dispatch({ type: "RESUME" });
-        },
-        type: "RESUME",
-      },
-    ];
+  const onClickResume = useCallback(() => {
+    dispatch({ type: "RESUME" });
+  }, [dispatch]);
 
   return (
     <>
@@ -154,11 +132,23 @@ export const Backtesting: FC = () => {
             />
 
             <Buttons>
-              {actions.map(({ type, onClick, label }) => (
-                <Button key={type} onClick={onClick}>
-                  {label}
-                </Button>
-              ))}
+              {hasRequiredData ? (
+                isPaused ? (
+                  <Button onClick={onClickPause}>
+                    {formatMessage({ id: "Backtesting.resume" })}
+                  </Button>
+                ) : isRunning ? (
+                  <Button onClick={onClickResume}>
+                    {formatMessage({ id: "Backtesting.pause" })}
+                  </Button>
+                ) : (
+                  <Button onClick={onClickStart}>
+                    {formatMessage({ id: "Backtesting.start" })}
+                  </Button>
+                )
+              ) : (
+                <Button isLoading />
+              )}
             </Buttons>
           </Box>
         </Column>
@@ -173,12 +163,22 @@ export const Backtesting: FC = () => {
               <FormattedMessage id="Backtesting.progress" />
             </Title>
 
-            <FormattedMessage
-              id="Backtesting.progressSummary"
-              values={progress}
-            />
+            {progress ? (
+              <>
+                <FormattedMessage
+                  id="Backtesting.progressSummary"
+                  values={progress}
+                />
 
-            <Progress {...progress} />
+                <Progress {...progress} />
+              </>
+            ) : (
+              <>
+                <FormattedMessage id="Backtesting.waiting" values={progress} />
+
+                <Progress value={undefined} />
+              </>
+            )}
 
             <DateTime format="time" value={timestamp} />
           </Box>

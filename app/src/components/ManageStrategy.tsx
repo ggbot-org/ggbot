@@ -7,25 +7,27 @@ import { StrategyProfits } from "../components/StrategyProfits.js";
 
 export const ManageStrategy: FC = () => (
   <Columns isMultiline>
-    <Column size="half">
+    <Column
+      size={{
+        tablet: "full",
+        desktop: "half",
+        fullhd: "two-fifths",
+      }}
+    >
       <StrategyActions />
     </Column>
 
     <Column
       size={{
+        tablet: "full",
         desktop: "half",
-        mobile: "full",
-        tablet: "half",
-        widescreen: "half",
-        fullhd: "one-third",
-        // TODO fix this on trunx, for example touch could be undefined
-        touch: "full",
+        fullhd: "two-fifths",
       }}
     >
       <Schedulings />
     </Column>
 
-    <Column size="full">
+    <Column size={{ tablet: "full", fullhd: "four-fifths" }}>
       <StrategyProfits numDays={30} />
     </Column>
   </Columns>

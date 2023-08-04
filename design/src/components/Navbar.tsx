@@ -1,9 +1,8 @@
-import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import {
   Navbar as _Navbar,
   NavbarBrand,
   NavbarBurger,
-  NavbarBurgerOnClick,
   NavbarItem,
   NavbarMenu,
 } from "trunx";
@@ -22,12 +21,6 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
   ...props
 }) => {
   const [isActive, setIsActive] = useState(false);
-
-  // TODO remove onClickBurger with next trunx version
-  const onClickBurger = useCallback<NavbarBurgerOnClick>((event) => {
-    event.stopPropagation();
-    setIsActive((isActive) => !isActive);
-  }, []);
 
   // Close menu on outside click.
   useEffect(() => {
@@ -49,7 +42,9 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
           <BrandName />
         </NavbarItem>
 
-        {noMenu || <NavbarBurger isActive={isActive} onClick={onClickBurger} />}
+        {noMenu || (
+          <NavbarBurger isActive={isActive} setIsActive={setIsActive} />
+        )}
       </NavbarBrand>
 
       {noMenu || <NavbarMenu isActive={isActive}>{children}</NavbarMenu>}

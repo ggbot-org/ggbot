@@ -3,7 +3,6 @@ import { I18nProvider } from "@ggbot2/i18n";
 import { FC } from "react";
 
 import { PageContainer } from "../components/PageContainer.js";
-// TODO use trunx Menu to on every settings page
 import { SubscriptionInfo } from "../components/SubscriptionInfo.js";
 import { SubscriptionPurchase } from "../components/SubscriptionPurchase.js";
 import { AuthenticationProvider } from "../contexts/Authentication.js";

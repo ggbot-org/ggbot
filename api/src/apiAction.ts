@@ -60,12 +60,12 @@ export type AuthenticatedApiAction<Input extends OperationInput> = ApiAction<
 
 const apiActionServerSideErrorNames = [
   // Model errors.
-  ErrorAccountItemNotFound.name,
-  ErrorExceededQuota.name,
-  ErrorUnimplementedStrategyKind.name,
+  ErrorAccountItemNotFound.errorName,
+  ErrorExceededQuota.errorName,
+  ErrorUnimplementedStrategyKind.errorName,
   // Other errors.
-  ErrorHTTP.name,
-  InternalServerError.name,
+  ErrorHTTP.errorName,
+  InternalServerError.errorName,
 ] as const;
 export type ApiActionServerSideErrorName =
   (typeof apiActionServerSideErrorNames)[number];

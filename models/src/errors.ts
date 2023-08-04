@@ -3,6 +3,7 @@ import { QuotaType } from "./quotas.js";
 import { StrategyKey } from "./strategy.js";
 
 export class ErrorAccountItemNotFound extends Error {
+  static errorName = "ErrorAccountItemNotFound";
   static message({
     type,
     accountId,
@@ -31,6 +32,7 @@ export class ErrorAccountItemNotFound extends Error {
 }
 
 export class ErrorExceededQuota extends Error {
+  static errorName = "ErrorExceededQuota";
   static message(type: ErrorExceededQuota["type"]) {
     return `${type} quota exceeded`;
   }
@@ -50,6 +52,7 @@ export class ErrorExceededQuota extends Error {
 }
 
 export class ErrorInvalidArg extends Error {
+  static errorName = "ErrorInvalidArg";
   static message(type: ErrorInvalidArg["type"]) {
     return `Invalid ${type}`;
   }
@@ -63,6 +66,7 @@ export class ErrorInvalidArg extends Error {
 }
 
 export class ErrorStrategyItemNotFound extends Error {
+  static errorName = "ErrorStrategyItemNotFound";
   static message({
     type,
     strategyId,
@@ -85,6 +89,7 @@ export class ErrorStrategyItemNotFound extends Error {
 }
 
 export class ErrorPermissionOnStrategyItem extends Error {
+  static errorName = "ErrorPermissionOnStrategyItem";
   static message({
     action,
     type,
@@ -116,6 +121,7 @@ export class ErrorPermissionOnStrategyItem extends Error {
 }
 
 export class ErrorUnimplementedStrategyKind extends Error {
+  static errorName = "ErrorUnimplementedStrategyKind";
   static message(strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]) {
     return `Unimplemented strategyKind ${strategyKind}`;
   }

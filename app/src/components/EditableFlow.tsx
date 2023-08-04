@@ -1,4 +1,3 @@
-// TODO restore Execute button
 import { Button, ButtonOnClick } from "@ggbot2/design";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
@@ -46,7 +45,6 @@ export const EditableFlow: FC = () => {
     <>
       <FlowMenu>
         <Button
-          size="small"
           color={canSave ? "primary" : undefined}
           isLoading={saveIsPending}
           onClick={onClickSave}

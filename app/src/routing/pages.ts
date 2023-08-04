@@ -13,6 +13,6 @@ export const strategyHtmlFilename = "strategy.html";
 export const settingsHtmlFilename = (id: SettingsPageId) =>
   `${id}-settings.html`;
 
-export const subscriptionCanceledHtmlFilename = UtrustCancelURL.htmlFileName;
+export const purchaseCanceledHtmlFilename = UtrustCancelURL.htmlFileName;
 
 export const subscriptionPurchasedHtmlFilename = UtrustReturnURL.htmlFileName;

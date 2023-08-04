@@ -12,6 +12,7 @@ import {
  * ```
  */
 export class ErrorHTTP extends Error {
+  static errorName = "ErrorHTTP";
   static message(status: ErrorHTTP["status"]) {
     return `Server responded with ${status}`;
   }
@@ -28,6 +29,7 @@ export class ErrorHTTP extends Error {
 }
 
 export class InternalServerError extends Error {
+  static errorName = "InternalServerError";
   constructor() {
     super(String(__500__INTERNAL_SERVER_ERROR__));
   }
