@@ -7,6 +7,7 @@
   "scripts": {
     "build": "npm run generate_public_files",
     "check_types": "tsc --noEmit --project .",
+    "cleanup": "npm run cleanup_public_files; rm -rf dist/",
     "cleanup_public_files": "rm -rf public/*.css public/*.js public/*.html public/translations/",
     "compile_translations": "npm run formatjs:compile:en",
     "deploy": "sh src/scripts/deploy.sh",
