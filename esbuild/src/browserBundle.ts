@@ -26,6 +26,10 @@ export const browserBundle = async ({
   const { DEPLOY_STAGE } = ENV;
 
   build({
+    alias: {
+      "@formatjs/icu-messageformat-parser":
+        "@formatjs/icu-messageformat-parser/no-parser",
+    },
     bundle: true,
     minify: DEPLOY_STAGE !== "local",
     entryPoints,
