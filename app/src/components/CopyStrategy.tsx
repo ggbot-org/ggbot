@@ -1,10 +1,13 @@
 import {
+  Box,
   Button,
-  Control,
-  Field,
+  Buttons,
+  Column,
+  Columns,
   Form,
   FormOnSubmit,
   formValues,
+  InputOnChange,
   Message,
   Section,
   Title,
@@ -21,25 +24,32 @@ import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
 
-const fields = ["name"];
-type Field = (typeof fields)[number];
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, Field>;
+};
+const fields = Object.keys(fieldName);
 
 export const CopyStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);
 
   const [error, setError] = useState<UseActionError>();
+  const [canCreate, setCanCreate] = useState(false);
+
+  const color = canCreate ? (error ? "warning" : "primary") : undefined;
 
   const COPY = useApi.CopyStrategy();
   const readOnly = COPY.isPending || COPY.isDone;
   const isLoading = COPY.isPending || COPY.isDone;
   const newStrategy = COPY.data;
 
+  const onChangeName = useCallback<InputOnChange>((event) => {
+    setCanCreate(isName(event.target.value));
+  }, []);
+
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
+      if (!canCreate) return;
       if (!COPY.canRun) return;
       const { name } = formValues(event, fields);
       if (isName(name))
@@ -49,7 +59,7 @@ export const CopyStrategy: FC = () => {
           strategyKind: strategy.kind,
         });
     },
-    [COPY, strategy]
+    [COPY, canCreate, strategy]
   );
 
   useEffect(() => {
@@ -63,47 +73,56 @@ export const CopyStrategy: FC = () => {
 
   return (
     <Section>
-      <Form box onSubmit={onSubmit}>
-        <Section>
-          <Title>
-            <FormattedMessage id="CopyStrategy.title" />
-          </Title>
+      <Columns isMultiline>
+        <Column
+          size={{ tablet: "full", desktop: "three-quarters", fullhd: "half" }}
+        >
+          <Box>
+            <Title>
+              <FormattedMessage id="CopyStrategy.title" />
+            </Title>
 
-          <Message>
-            <FormattedMessage id="CopyStrategy.strategyInfo" />
-          </Message>
-
-          <StrategyRecord strategy={strategy} />
-        </Section>
-
-        <Section>
-          {error ? null : (
-            <Message color="info">
-              <FormattedMessage id="CopyStrategy.chooseName" />
+            <Message>
+              <FormattedMessage id="CopyStrategy.strategyInfo" />
             </Message>
-          )}
 
-          <StrategiesErrorExceededQuota error={error} />
+            <StrategyRecord strategy={strategy} />
+          </Box>
+        </Column>
 
-          <StrategyName
-            required
-            name={fieldName.name}
-            placeholder={strategy.name}
-            readOnly={readOnly}
-          />
+        <Column
+          size={{ tablet: "full", desktop: "three-quarters", fullhd: "half" }}
+        >
+          <Form box onSubmit={onSubmit}>
+            {error ? null : (
+              <Message color="info">
+                <FormattedMessage id="CopyStrategy.chooseName" />
+              </Message>
+            )}
 
-          <Field>
-            <Control>
+            <StrategiesErrorExceededQuota error={error} />
+
+            <StrategyName
+              required
+              name={fieldName.name}
+              onChange={onChangeName}
+              placeholder={strategy.name}
+              readOnly={readOnly}
+            />
+
+            <Buttons>
               <Button
+                color={color}
+                isLight={color !== "primary"}
                 isLoading={isLoading}
-                color={error ? "warning" : undefined}
+                isOutlined={color === "primary"}
               >
                 <FormattedMessage id="CopyStrategy.button" />
               </Button>
-            </Control>
-          </Field>
-        </Section>
-      </Form>
+            </Buttons>
+          </Form>
+        </Column>
+      </Columns>
     </Section>
   );
 };

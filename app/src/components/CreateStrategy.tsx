@@ -1,8 +1,8 @@
 import {
   Button,
-  Container,
-  Control,
-  Field,
+  Buttons,
+  Column,
+  Columns,
   Form,
   FormOnSubmit,
   formValues,
@@ -19,22 +19,21 @@ import { StrategyName } from "../components/StrategyName.js";
 import { useApi } from "../hooks/useApi.js";
 import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
 
-const fields = ["name"];
-type Field = (typeof fields)[number];
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, Field>;
+};
+const fields = Object.keys(fieldName);
 
 export const CreateStrategy: FC = () => {
-  const [canCreate, setCanCreate] = useState(false);
-
   const CREATE = useApi.CreateStrategy();
-
-  const [error, setError] = useState<UseActionError>();
-
   const newStrategy = CREATE.data;
   const readOnly = CREATE.isPending;
   const isLoading = CREATE.isPending || CREATE.isDone;
+
+  const [error, setError] = useState<UseActionError>();
+  const [canCreate, setCanCreate] = useState(false);
+
+  const color = canCreate ? (error ? "warning" : "primary") : undefined;
 
   const onChangeName = useCallback<InputOnChange>((event) => {
     setCanCreate(isName(event.target.value));
@@ -58,44 +57,44 @@ export const CreateStrategy: FC = () => {
     }
   }, [CREATE]);
 
-  const color = canCreate ? (error ? "warning" : "primary") : undefined;
-
   useRedirectToNewStrategyPage(newStrategy);
 
   return (
-    <Container maxWidth="desktop">
-      <Form box onSubmit={onSubmit}>
-        {error ? null : (
-          <Message>
-            <FormattedMessage
-              id="CreateStrategy.chooseName"
-              values={{ em: (chunks) => <em>{chunks}</em> }}
-            />
-          </Message>
-        )}
+    <Columns>
+      <Column
+        size={{ tablet: "full", widescreen: "three-quarters", fullhd: "half" }}
+      >
+        <Form box onSubmit={onSubmit}>
+          {error ? null : (
+            <Message>
+              <FormattedMessage
+                id="CreateStrategy.chooseName"
+                values={{ em: (chunks) => <em>{chunks}</em> }}
+              />
+            </Message>
+          )}
 
-        <StrategiesErrorExceededQuota error={error} />
+          <StrategiesErrorExceededQuota error={error} />
 
-        <StrategyName
-          required
-          name={fieldName.name}
-          readOnly={readOnly}
-          onChange={onChangeName}
-        />
+          <StrategyName
+            required
+            name={fieldName.name}
+            onChange={onChangeName}
+            readOnly={readOnly}
+          />
 
-        <Field>
-          <Control>
+          <Buttons>
             <Button
-              isLight={color !== "primary"}
-              isOutlined={color === "primary"}
               color={color}
+              isLight={color !== "primary"}
               isLoading={isLoading}
+              isOutlined={color === "primary"}
             >
               <FormattedMessage id="CreateStrategy.button" />
             </Button>
-          </Control>
-        </Field>
-      </Form>
-    </Container>
+          </Buttons>
+        </Form>
+      </Column>
+    </Columns>
   );
 };

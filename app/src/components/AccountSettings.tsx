@@ -18,10 +18,10 @@ import { WhenCreated } from "../components/WhenCreated.js";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { useApi } from "../hooks/useApi.js";
 
-const fields = ["name"] as const;
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, (typeof fields)[number]>;
+};
+const fields = Object.keys(fieldName);
 
 export const AccountSettings: FC = () => {
   const { account } = useContext(AuthenticationContext);

@@ -33,7 +33,10 @@ type State = {
   isPending: boolean;
 };
 
-const fields = ["email"] as const;
+const fieldName = {
+  email: "email",
+};
+const fields = Object.keys(fieldName);
 
 export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
   const [
@@ -129,7 +132,12 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
           <FormattedMessage id="AuthEnter.title" />
         </Title>
 
-        <Email required name="email" type="email" readOnly={isPending} />
+        <Email
+          required
+          name={fieldName.email}
+          type="email"
+          readOnly={isPending}
+        />
 
         <Field isGrouped>
           <Control>

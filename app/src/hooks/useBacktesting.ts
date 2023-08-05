@@ -27,6 +27,7 @@ import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
 type State = Pick<DflowCommonContext, "memory"> & {
   balanceHistory: BalanceChangeEvent[];
+  currentTimestamp: Timestamp | undefined;
   dayInterval: DayInterval;
   frequency: Frequency;
   isPaused: boolean;
@@ -38,6 +39,8 @@ type State = Pick<DflowCommonContext, "memory"> & {
   stepIndex: number;
   timestamps: Timestamp[];
 };
+
+export type { State as BacktestingState };
 
 type Action =
   | {
@@ -78,21 +81,6 @@ const isReadOnlyState = (
   return false;
 };
 
-const computeTimestamps = ({
-  dayInterval,
-  frequency,
-}: Pick<State, "dayInterval" | "frequency">): State["timestamps"] => {
-  const { start, end } = dayIntervalToDate(dayInterval);
-  const interval = frequencyIntervalDuration(frequency);
-  const timestamps: Timestamp[] = [];
-  let date = start;
-  while (date < end) {
-    timestamps.push(dateToTimestamp(date));
-    date = new Date(date.getTime() + interval);
-  }
-  return timestamps;
-};
-
 const backtestingReducer = (state: State, action: Action) => {
   switch (action.type) {
     case "END": {
@@ -105,14 +93,17 @@ const backtestingReducer = (state: State, action: Action) => {
 
     case "NEXT": {
       const { balanceChangeEvent, memory, orders } = action.data;
+      const stepIndex = state.stepIndex + 1;
+      const currentTimestamp = state.timestamps[stepIndex];
       return {
         ...state,
         balanceHistory: balanceChangeEvent
           ? state.balanceHistory.concat(balanceChangeEvent)
           : state.balanceHistory,
+        currentTimestamp,
         memory: memory,
         orders: state.orders.concat(orders),
-        stepIndex: state.stepIndex + 1,
+        stepIndex,
       };
     }
 
@@ -137,42 +128,37 @@ const backtestingReducer = (state: State, action: Action) => {
     case "SET_FREQUENCY": {
       if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       const { frequency } = action.data;
-      return {
-        ...state,
+      return getInitialState({
         frequency,
-        timestamps: computeTimestamps({
-          dayInterval: state.dayInterval,
-          frequency,
-        }),
-      };
+        dayInterval: state.dayInterval,
+      });
     }
 
     case "SET_DAY_INTERVAL": {
       if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       const { dayInterval } = action.data;
-      return {
-        ...state,
+      return getInitialState({
+        frequency: state.frequency,
         dayInterval,
-        timestamps: computeTimestamps({
-          dayInterval,
-          frequency: state.frequency,
-        }),
-      };
+      });
     }
 
     case "START": {
+      const stepIndex = 0;
       return {
         ...state,
         balanceHistory: [],
+        currentTimestamp: state.timestamps[stepIndex],
         isPaused: false,
         isRunning: true,
         memory: {},
         orders: [],
-        stepIndex: 0,
+        stepIndex,
       };
     }
 
     case "STOP": {
+      if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       return getInitialState({
         frequency: state.frequency,
         dayInterval: state.dayInterval,
@@ -199,20 +185,33 @@ const defaultFrequency = (): State["frequency"] => everyOneHour();
 const getInitialState = ({
   frequency,
   dayInterval,
-}: Pick<State, "frequency" | "dayInterval">): State => ({
-  balanceHistory: [],
-  dayInterval,
-  frequency,
-  isPaused: false,
-  isPreparing: false,
-  isReadOnly: false,
-  isRunning: false,
-  maxDay: getMaxDay(),
-  memory: {},
-  orders: [],
-  stepIndex: 0,
-  timestamps: computeTimestamps({ dayInterval, frequency }),
-});
+}: Pick<State, "frequency" | "dayInterval">): State => {
+  // Compute timestamps.
+  const { start, end } = dayIntervalToDate(dayInterval);
+  const interval = frequencyIntervalDuration(frequency);
+  const timestamps: Timestamp[] = [];
+  let date = start;
+  while (date < end) {
+    timestamps.push(dateToTimestamp(date));
+    date = new Date(date.getTime() + interval);
+  }
+
+  return {
+    balanceHistory: [],
+    currentTimestamp: undefined,
+    dayInterval,
+    frequency,
+    isPaused: false,
+    isPreparing: false,
+    isReadOnly: false,
+    isRunning: false,
+    maxDay: getMaxDay(),
+    memory: {},
+    orders: [],
+    stepIndex: 0,
+    timestamps,
+  };
+};
 
 export const useBacktesting = (
   flowViewGraph: FlowViewSerializableGraph | undefined
@@ -237,17 +236,23 @@ export const useBacktesting = (
     })
   );
 
-  const { isRunning, memory: previousMemory, stepIndex, timestamps } = state;
+  const {
+    currentTimestamp,
+    isRunning,
+    memory: previousMemory,
+    stepIndex,
+    timestamps,
+  } = state;
 
   const run = useCallback(async () => {
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
-    const timestamp = timestamps[stepIndex];
-    if (!timestamp) {
+    if (timestamps.length === stepIndex) {
       dispatch({ type: "END" });
       return;
     }
-    const time = timestampToTime(timestamp);
+    if (!currentTimestamp) return;
+    const time = timestampToTime(currentTimestamp);
 
     if (strategyKind === "binance") {
       try {
@@ -287,6 +292,7 @@ export const useBacktesting = (
     }
   }, [
     binanceSymbols,
+    currentTimestamp,
     dispatch,
     flowViewGraph,
     nodesCatalog,
@@ -302,3 +308,5 @@ export const useBacktesting = (
 
   return { state, dispatch, hasRequiredData };
 };
+
+export type BacktestingOutput = ReturnType<typeof useBacktesting>;

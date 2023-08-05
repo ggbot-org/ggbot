@@ -41,26 +41,35 @@
   "AuthVerify.resetEmail": {
     "defaultMessage": "Reset"
   },
-  "Backtesting.resume": {
-    "defaultMessage": "Resume"
-  },
-  "Backtesting.start": {
-    "defaultMessage": "Start"
-  },
-  "Backtesting.pause": {
+  "BacktestingActions.pause": {
     "defaultMessage": "Pause"
   },
-  "Backtesting.progress": {
-    "defaultMessage": "Progress"
+  "BacktestingActions.resume": {
+    "defaultMessage": "Resume"
   },
-  "Backtesting.progressSummary": {
-    "defaultMessage": "{value} of {max} intervals"
+  "BacktestingActions.start": {
+    "defaultMessage": "Start"
   },
-  "Backtesting.waiting": {
-    "defaultMessage": "Waiting for data"
+  "BacktestingActions.stop": {
+    "defaultMessage": "Stop"
   },
   "Backtesting.title": {
     "defaultMessage": "Backtesting"
+  },
+  "BacktestingProgress.currentTime": {
+    "defaultMessage": "Current time is {time}"
+  },
+  "BacktestingProgress.dayInterval": {
+    "defaultMessage": "From {start} to {end}"
+  },
+  "BacktestingProgress.title": {
+    "defaultMessage": "Progress"
+  },
+  "BacktestingProgress.intervals": {
+    "defaultMessage": "{value} of {max} intervals"
+  },
+  "BacktestingProgress.waiting": {
+    "defaultMessage": "Waiting for data"
   },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"
@@ -104,10 +113,10 @@
   "CreateStrategy.chooseName": {
     "defaultMessage": "Choose a name for your <em>brand new</em> strategy."
   },
-  "DailyInterval.labelStart": {
+  "DailyInterval.from": {
     "defaultMessage": "From"
   },
-  "DailyInterval.labelEnd": {
+  "DailyInterval.to": {
     "defaultMessage": "To"
   },
   "DeleteAccount.button": {

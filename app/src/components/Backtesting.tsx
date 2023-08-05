@@ -1,20 +1,20 @@
 import {
   Box,
-  Button,
-  Buttons,
   Column,
   Columns,
   DailyInterval,
   DailyIntervalProps,
-  DateTime,
-  Progress,
-  ProgressProps,
   Title,
 } from "@ggbot2/design";
 import { isFrequency } from "@ggbot2/models";
 import { FC, useCallback, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { BacktestingActions } from "../components/BacktestingActions.js";
+import {
+  BacktestingProgress,
+  BacktestingProgressProps,
+} from "../components/BacktestingProgress.js";
 import {
   FrequencyInput,
   FrequencyInputProps,
@@ -31,13 +31,14 @@ export const Backtesting: FC = () => {
 
   const {
     state: {
-      frequency,
       dayInterval,
-      orders,
+      frequency,
+      isPaused,
+      isReadOnly,
+      isRunning,
       maxDay,
       memory,
-      isPaused,
-      isRunning,
+      orders,
       stepIndex,
       timestamps,
     },
@@ -83,13 +84,16 @@ export const Backtesting: FC = () => {
 
   const timestamp = timestamps[stepIndex];
 
-  const progress: Pick<ProgressProps, "value" | "max"> | undefined =
-    hasRequiredData
-      ? {
-          value: stepIndex,
-          max: timestamps.length,
-        }
-      : undefined;
+  const progress: BacktestingProgressProps["progress"] = hasRequiredData
+    ? {
+        value: stepIndex,
+        max: timestamps.length,
+      }
+    : undefined;
+
+  const onClickStop = useCallback(() => {
+    dispatch({ type: "STOP" });
+  }, [dispatch]);
 
   const onClickStart = useCallback(() => {
     dispatch({ type: "START" });
@@ -115,12 +119,12 @@ export const Backtesting: FC = () => {
             <DailyInterval
               start={{
                 day: dayInterval.start,
-                label: formatMessage({ id: "DailyInterval.labelStart" }),
+                label: formatMessage({ id: "DailyInterval.from" }),
                 setDay: setStart,
               }}
               end={{
                 day: dayInterval.end,
-                label: formatMessage({ id: "DailyInterval.labelEnd" }),
+                label: formatMessage({ id: "DailyInterval.to" }),
                 setDay: setEnd,
               }}
               max={maxDay}
@@ -131,25 +135,16 @@ export const Backtesting: FC = () => {
               setFrequency={setFrequency}
             />
 
-            <Buttons>
-              {hasRequiredData ? (
-                isPaused ? (
-                  <Button onClick={onClickPause}>
-                    {formatMessage({ id: "Backtesting.resume" })}
-                  </Button>
-                ) : isRunning ? (
-                  <Button onClick={onClickResume}>
-                    {formatMessage({ id: "Backtesting.pause" })}
-                  </Button>
-                ) : (
-                  <Button onClick={onClickStart}>
-                    {formatMessage({ id: "Backtesting.start" })}
-                  </Button>
-                )
-              ) : (
-                <Button isLoading />
-              )}
-            </Buttons>
+            <BacktestingActions
+              hasRequiredData={hasRequiredData}
+              isPaused={isPaused}
+              isReadOnly={isReadOnly}
+              isRunning={isRunning}
+              onClickPause={onClickPause}
+              onClickResume={onClickResume}
+              onClickStart={onClickStart}
+              onClickStop={onClickStop}
+            />
           </Box>
         </Column>
 
@@ -158,30 +153,11 @@ export const Backtesting: FC = () => {
         </Column>
 
         <Column>
-          <Box>
-            <Title>
-              <FormattedMessage id="Backtesting.progress" />
-            </Title>
-
-            {progress ? (
-              <>
-                <FormattedMessage
-                  id="Backtesting.progressSummary"
-                  values={progress}
-                />
-
-                <Progress {...progress} />
-              </>
-            ) : (
-              <>
-                <FormattedMessage id="Backtesting.waiting" values={progress} />
-
-                <Progress value={undefined} />
-              </>
-            )}
-
-            <DateTime format="time" value={timestamp} />
-          </Box>
+          <BacktestingProgress
+            dayInterval={dayInterval}
+            progress={progress}
+            timestamp={timestamp}
+          />
         </Column>
       </Columns>
 

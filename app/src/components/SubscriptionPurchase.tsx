@@ -41,10 +41,11 @@ import { useApi } from "../hooks/useApi.js";
 import { url } from "../routing/URLs.js";
 import { SelectCountry } from "./SelectCountry.js";
 
-const fields = ["country"] as const;
 const fieldName = {
   country: "country",
-} as const satisfies Record<string, (typeof fields)[number]>;
+};
+// TODO  use Form
+// const fields = Object.keys(fieldName)
 
 // TODO i18n for country names, and label "-- your country --"
 // do not import country names from "country-isocode2/en",

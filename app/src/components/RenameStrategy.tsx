@@ -17,11 +17,10 @@ import { StrategyName } from "../components/StrategyName.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useApi } from "../hooks/useApi.js";
 
-const fields = ["name"] as const;
-type Field = (typeof fields)[number];
 const fieldName = {
   name: "name",
-} as const satisfies Record<string, Field>;
+};
+const fields = Object.keys(fieldName);
 
 export const RenameStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);

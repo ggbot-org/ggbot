@@ -18,7 +18,11 @@ type Props = {
   onCreate: () => void;
 };
 
-const fields = ["apiKey", "apiSecret"] as const;
+const fieldName = {
+  apiKey: "apiKey",
+  apiSecret: "apiSecret",
+};
+const fields = Object.keys(fieldName);
 
 export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
   const CREATE = useApi.CreateBinanceApiConfig();
@@ -48,9 +52,9 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
         <FormattedMessage id="CreateBinanceApi.title" />
       </Title>
 
-      <ApiKey required name="apiKey" readOnly={readOnly} />
+      <ApiKey required name={fieldName.apiKey} readOnly={readOnly} />
 
-      <ApiSecret required name="apiSecret" readOnly={readOnly} />
+      <ApiSecret required name={fieldName.apiSecret} readOnly={readOnly} />
 
       <Field>
         <Control>
