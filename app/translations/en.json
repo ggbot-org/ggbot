@@ -170,6 +170,18 @@
   "Email.label": {
     "defaultMessage": "Email"
   },
+  "FrequencyInput.every": {
+    "defaultMessage": "Every"
+  },
+  "FrequencyInput.interval": {
+    "defaultMessage": "Interval"
+  },
+  "FrequencyInput.hour": {
+    "defaultMessage": "hour"
+  },
+  "FrequencyInput.minute": {
+    "defaultMessage": "minute"
+  },
   "GenericError.message": {
     "defaultMessage": "Something went wrong."
   },

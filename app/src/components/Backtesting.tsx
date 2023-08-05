@@ -11,7 +11,7 @@ import {
   ProgressProps,
   Title,
 } from "@ggbot2/design";
-import { everyOneHour, isFrequency } from "@ggbot2/models";
+import { isFrequency } from "@ggbot2/models";
 import { FC, useCallback, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -31,6 +31,7 @@ export const Backtesting: FC = () => {
 
   const {
     state: {
+      frequency,
       dayInterval,
       orders,
       maxDay,
@@ -44,9 +45,8 @@ export const Backtesting: FC = () => {
     hasRequiredData,
   } = useBacktesting(flowViewGraph);
 
-  const [frequencyArg, setFrequencyArg] = useState<
-    FrequencyInputProps["frequency"]
-  >(everyOneHour());
+  const [frequencyArg, setFrequencyArg] =
+    useState<FrequencyInputProps["frequency"]>(frequency);
 
   const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
     (frequency) => {

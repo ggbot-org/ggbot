@@ -1,5 +1,3 @@
-// TODO use markers to show sell and buy
-// https://jsfiddle.net/TradingView/nd80cx1a/
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
 import {
   BalanceChangeEvent,
@@ -76,8 +74,8 @@ type Action =
 const isReadOnlyState = (
   state: Pick<State, "isRunning" | "isPaused" | "isPreparing">
 ) => {
-  if (state.isRunning || state.isPaused || state.isPreparing) return false;
-  return true;
+  if (state.isRunning || state.isPaused || state.isPreparing) return true;
+  return false;
 };
 
 const computeTimestamps = ({
