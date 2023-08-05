@@ -1,4 +1,4 @@
-import { TimeInterval } from "@ggbot2/time";
+import type { Time } from "@ggbot2/time";
 
 import {
   BinanceExchangeInfo,
@@ -6,29 +6,22 @@ import {
   BinanceKlineInterval,
 } from "./types.js";
 
-type BinanceExchangeInfoCacheProvider = {
+export type BinanceExchangeInfoCacheProvider = {
   getExchangeInfo(): BinanceExchangeInfo | undefined;
   setExchangeInfo(arg: BinanceExchangeInfo): void;
-};
-
-type BinanceIsValidSymbolCacheProvider = {
   getIsValidSymbol(symbol: string): boolean | undefined;
   setIsValidSymbol(symbol: string, value: boolean): void;
 };
 
-type BinanceKlineCacheProvider = {
-  getKlines(
+export type BinanceKlineCacheProvider = {
+  getKline(
     symbol: string,
     interval: BinanceKlineInterval,
-    timeInterval: TimeInterval
-  ): BinanceKline[] | undefined;
-  setKlines(
+    time: Time
+  ): BinanceKline | undefined;
+  setKline(
     symbol: string,
     interval: BinanceKlineInterval,
-    klines: BinanceKline[]
+    kline: BinanceKline
   ): void;
 };
-
-export type BinanceCacheProvider = BinanceExchangeInfoCacheProvider &
-  BinanceIsValidSymbolCacheProvider &
-  BinanceKlineCacheProvider;

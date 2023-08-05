@@ -96,7 +96,7 @@ export const Backtesting: FC = () => {
   }, [dispatch]);
 
   const onClickStart = useCallback(() => {
-    dispatch({ type: "START" });
+    dispatch({ type: "PREPARE" });
   }, [dispatch]);
 
   const onClickPause = useCallback(() => {

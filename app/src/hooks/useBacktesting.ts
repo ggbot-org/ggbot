@@ -1,3 +1,8 @@
+import {
+  BinanceKlineInterval,
+  binanceKlineMaxLimit,
+  getBinanceIntervalTime,
+} from "@ggbot2/binance";
 import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
 import {
   BalanceChangeEvent,
@@ -57,6 +62,9 @@ type Action =
       type: "PAUSE";
     }
   | {
+      type: "PREPARE";
+    }
+  | {
       type: "RESUME";
     }
   | {
@@ -92,6 +100,7 @@ const backtestingReducer = (state: State, action: Action) => {
     }
 
     case "NEXT": {
+      if (!state.isRunning) return state;
       const { balanceChangeEvent, memory, orders } = action.data;
       const stepIndex = state.stepIndex + 1;
       const currentTimestamp = state.timestamps[stepIndex];
@@ -143,22 +152,30 @@ const backtestingReducer = (state: State, action: Action) => {
       });
     }
 
-    case "START": {
+    case "PREPARE": {
       const stepIndex = 0;
       return {
         ...state,
         balanceHistory: [],
         currentTimestamp: state.timestamps[stepIndex],
         isPaused: false,
-        isRunning: true,
+        isPreparing: true,
+        isRunning: false,
         memory: {},
         orders: [],
         stepIndex,
       };
     }
 
+    case "START": {
+      return {
+        ...state,
+        isPreparing: false,
+        isRunning: true,
+      };
+    }
+
     case "STOP": {
-      if (isReadOnlyState(state)) return { ...state, isReadOnly: true };
       return getInitialState({
         frequency: state.frequency,
         dayInterval: state.dayInterval,
@@ -239,10 +256,55 @@ export const useBacktesting = (
   const {
     currentTimestamp,
     isRunning,
+    isPreparing,
     memory: previousMemory,
     stepIndex,
     timestamps,
   } = state;
+
+  const prepare = useCallback(async () => {
+    if (!nodesCatalog) return;
+    if (!flowViewGraph) return;
+    if (strategyKind === "binance") {
+      try {
+        if (!binanceSymbols) return;
+        const firstTimestamp = timestamps[0];
+        const lastTimestamp = timestamps[timestamps.length - 1];
+        const lastTime = timestampToTime(lastTimestamp);
+        let time = timestampToTime(firstTimestamp);
+        while (time < lastTime) {
+          const binance = new BinanceDflowClient({
+            balances: [],
+            time,
+          });
+          const executor = new BinanceDflowExecutor(
+            binance,
+            binanceSymbols,
+            nodesCatalog
+          );
+          await executor.run({ input: {}, memory: {}, time }, flowViewGraph);
+          // TODO get intervals from flow graph
+          // even if not connected to candles directly, they could be in an "if" node or some other logic
+          // it will be a list of intervals
+          const interval: BinanceKlineInterval = "1h";
+          time =
+            getBinanceIntervalTime[interval](time).plus(binanceKlineMaxLimit);
+        }
+      } catch (error) {
+        // TODO show some feedback with a toast
+        console.error(error);
+      }
+    } else {
+      dispatch({ type: "START" });
+    }
+  }, [
+    dispatch,
+    flowViewGraph,
+    strategyKind,
+    timestamps,
+    binanceSymbols,
+    nodesCatalog,
+  ]);
 
   const run = useCallback(async () => {
     if (!nodesCatalog) return;
@@ -286,6 +348,7 @@ export const useBacktesting = (
           },
         });
       } catch (error) {
+        // TODO show some feedback with a toast
         console.error(error);
         dispatch({ type: "END" });
       }
@@ -305,6 +368,10 @@ export const useBacktesting = (
   useEffect(() => {
     if (isRunning) run();
   }, [isRunning, run]);
+
+  useEffect(() => {
+    if (isPreparing) prepare();
+  }, [isPreparing, prepare]);
 
   return { state, dispatch, hasRequiredData };
 };

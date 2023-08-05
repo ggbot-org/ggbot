@@ -16,6 +16,10 @@ export interface BinanceDflowClient
   extends BinanceDflowClientPublic,
     BinanceDflowClientPrivate {}
 
+export type BinanceDflowClientKlinesParameters = Required<
+  Pick<BinanceKlineOptionalParameters, "endTime" | "limit">
+>;
+
 /** Binance Public API used by dflow binance nodes. */
 interface BinanceDflowClientPublic {
   exchangeInfo(): Promise<BinanceExchangeInfo>;
@@ -23,7 +27,7 @@ interface BinanceDflowClientPublic {
   klines(
     symbol: string,
     interval: BinanceKlineInterval,
-    optionalParameters: BinanceKlineOptionalParameters
+    parameters: BinanceDflowClientKlinesParameters
   ): Promise<BinanceKline[]>;
   tickerPrice(symbol: string): Promise<BinanceTickerPrice>;
 }

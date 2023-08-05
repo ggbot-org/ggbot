@@ -1,6 +1,6 @@
 import { Time, TimeInterval, truncateTime } from "@ggbot2/time";
 
-import { BinanceCacheProvider } from "./cacheProvider.js";
+import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js";
 import { BinanceConnector } from "./connector.js";
 import {
   ErrorBinanceCannotTradeSymbol,
@@ -42,22 +42,26 @@ import {
 /**
  * BinanceExchange implements public API requests.
  *
- * It can use a `cache` instance, that is any class implementing
- * `BinanceCacheProvider`, for example `BinanceCacheMap`.
+ * It can use an `exchangeInfoCache` instance, that is any class implementing
+ * `BinanceExchangeInfoCacheProvider`, for example
+ * `BinanceExchangeInfoCacheMap`.
  *
  * @example
  *
  * ```ts
- * import { BinanceCacheMap, BinanceExchange } from "@ggbot2/binance";
+ * import {
+ *   BinanceExchange,
+ *   BinanceExchangeInfoCacheMap,
+ * } from "@ggbot2/binance";
  *
  * const binance = new BinanceExchange();
- * binance.cache = new BinanceCacheMap();
+ * binance.exchangeInfoCache = new BinanceExchangeInfoCacheMap();
  * ```
  */
 export class BinanceExchange {
   readonly connector: BinanceConnector;
 
-  cache?: BinanceCacheProvider | undefined;
+  exchangeInfoCache?: BinanceExchangeInfoCacheProvider | undefined;
 
   constructor(baseUrl?: string) {
     this.connector = new BinanceConnector(baseUrl);
@@ -82,6 +86,7 @@ export class BinanceExchange {
       throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" });
   }
 
+  // TODO this may be removed
   static coerceKlineOptionalParametersToTimeInterval(
     interval: BinanceKlineInterval,
     { startTime, endTime, limit }: BinanceKlineOptionalParameters,
@@ -275,7 +280,7 @@ export class BinanceExchange {
    * @see {@link https://binance-docs.github.io/apidocs/spot/en/#exchange-information}
    */
   async exchangeInfo(): Promise<BinanceExchangeInfo> {
-    const { cache } = this;
+    const { exchangeInfoCache: cache } = this;
     const cached = cache?.getExchangeInfo();
     if (cached) return cached;
     const data = await this.connector.request<BinanceExchangeInfo>(
@@ -290,7 +295,7 @@ export class BinanceExchange {
     if (typeof arg !== "string") return false;
     // All symbols in Binance are in uppercase.
     if (arg.toUpperCase() !== arg) return false;
-    const { cache } = this;
+    const { exchangeInfoCache: cache } = this;
     const cached = cache?.getIsValidSymbol(arg);
     if (cached) return cached;
     const { symbols } = await this.exchangeInfo();
@@ -314,14 +319,6 @@ export class BinanceExchange {
       interval,
       optionalParameters
     );
-    const { cache } = this;
-    const timeInterval =
-      BinanceExchange.coerceKlineOptionalParametersToTimeInterval(
-        interval,
-        optionalParameters
-      );
-    const cached = cache?.getKlines(symbol, interval, timeInterval);
-    if (cached) return cached;
     const klines = await this.connector.request<BinanceKline[]>(
       "GET",
       "/api/v3/klines",
@@ -331,7 +328,6 @@ export class BinanceExchange {
         ...optionalParameters,
       }
     );
-    cache?.setKlines(symbol, interval, klines);
     return klines;
   }
 

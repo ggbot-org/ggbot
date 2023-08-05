@@ -47,7 +47,7 @@ export class Candles extends DflowNode {
       !isDflowBinanceKlineInterval(interval)
     )
       return this.clearOutputs();
-    const limit = Math.max(count, binanceKlineMaxLimit);
+    const limit = Math.min(count, binanceKlineMaxLimit);
     const data: BinanceKline[] = [];
     const klines = await binance.klines(symbol, interval, {
       endTime: currentTime,

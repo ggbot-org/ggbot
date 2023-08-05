@@ -149,6 +149,7 @@ export class Executor {
     }
     strategyWhenExecuted.set(strategyId, time);
     log.info("execute strategy", strategyId);
+    // TODO should pass at least, cached binance exchange info
     await executeStrategy(accountStrategyKey);
   }
 
