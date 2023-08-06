@@ -5,11 +5,13 @@ import {
   Form,
   FormOnSubmit,
   formValues,
+  InputOnChange,
   Message,
   Modal,
   Title,
 } from "@ggbot2/design";
 import { isName } from "@ggbot2/models";
+import { UseActionError } from "@ggbot2/use-action";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -25,7 +27,15 @@ const fields = Object.keys(fieldName);
 export const RenameStrategy: FC = () => {
   const { strategy } = useContext(StrategyContext);
 
+  const [error, setError] = useState<UseActionError>();
+  const [canCreate, setCanCreate] = useState(false);
   const [modalIsActive, setModalIsActive] = useState(false);
+
+  const color = canCreate ? (error ? "warning" : "primary") : undefined;
+
+  const onChangeName = useCallback<InputOnChange>((event) => {
+    setCanCreate(isName(event.target.value));
+  }, []);
 
   const toggleModal = useCallback(() => {
     setModalIsActive((active) => !active);
@@ -51,6 +61,13 @@ export const RenameStrategy: FC = () => {
   );
 
   useEffect(() => {
+    if (RENAME.error) {
+      setError(RENAME.error);
+      RENAME.reset();
+    }
+  }, [RENAME]);
+
+  useEffect(() => {
     if (RENAME.isDone) setModalIsActive(false);
   }, [RENAME]);
 
@@ -70,11 +87,21 @@ export const RenameStrategy: FC = () => {
             <FormattedMessage id="RenameStrategy.chooseName" />
           </Message>
 
-          <StrategyName required name={fieldName.name} readOnly={readOnly} />
+          <StrategyName
+            required
+            name={fieldName.name}
+            onChange={onChangeName}
+            readOnly={readOnly}
+          />
 
           <Field isGrouped>
             <Control>
-              <Button isLoading={isLoading}>
+              <Button
+                color={color}
+                isLight={color !== "primary"}
+                isLoading={isLoading}
+                isOutlined={color === "primary"}
+              >
                 <FormattedMessage id="RenameStrategy.save" />
               </Button>
             </Control>
