@@ -5,7 +5,7 @@ import {
 import { useContext, useEffect, useRef } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
-import { binance } from "../flow/binance.js";
+import { binance } from "../binance/exchange.js";
 
 export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
   const {

@@ -26,7 +26,7 @@ import { FlowViewSerializableGraph } from "flow-view";
 import { useCallback, useContext, useEffect, useReducer } from "react";
 
 import { StrategyContext } from "../contexts/Strategy.js";
-import { BinanceDflowClient } from "../flow/binance.js";
+import { BinanceClient } from "../binance/client.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
@@ -263,6 +263,7 @@ export const useBacktesting = (
   } = state;
 
   const prepare = useCallback(async () => {
+    console.log("prepare");
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
     if (strategyKind === "binance") {
@@ -272,8 +273,10 @@ export const useBacktesting = (
         const lastTimestamp = timestamps[timestamps.length - 1];
         const lastTime = timestampToTime(lastTimestamp);
         let time = timestampToTime(firstTimestamp);
-        while (time < lastTime) {
-          const binance = new BinanceDflowClient({
+        // Run flow with to cache klines.
+        while (time <= lastTime) {
+          console.log("time", time, lastTime, "lastTime");
+          const binance = new BinanceClient({
             balances: [],
             time,
           });
@@ -285,11 +288,13 @@ export const useBacktesting = (
           await executor.run({ input: {}, memory: {}, time }, flowViewGraph);
           // TODO get intervals from flow graph
           // even if not connected to candles directly, they could be in an "if" node or some other logic
-          // it will be a list of intervals
+          // it will be a list of intervals, need to loop over
           const interval: BinanceKlineInterval = "1h";
-          time =
+          const nextTime =
             getBinanceIntervalTime[interval](time).plus(binanceKlineMaxLimit);
+          time = Math.min(nextTime, lastTime);
         }
+        dispatch({ type: "START" });
       } catch (error) {
         // TODO show some feedback with a toast
         console.error(error);
@@ -319,7 +324,7 @@ export const useBacktesting = (
     if (strategyKind === "binance") {
       try {
         if (!binanceSymbols) return;
-        const binance = new BinanceDflowClient({
+        const binance = new BinanceClient({
           balances: [],
           time,
         });

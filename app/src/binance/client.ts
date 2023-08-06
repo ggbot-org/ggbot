@@ -2,11 +2,8 @@ import { div, mul } from "@ggbot2/arithmetic";
 import {
   BinanceAccountInformation,
   BinanceBalance,
-  BinanceExchange,
-  BinanceExchangeInfo,
-  BinanceExchangeInfoCacheProvider,
   BinanceKline,
-  BinanceKlineCacheProvider,
+  BinanceKlinesCacheMap,
   BinanceKlineInterval,
   binanceKlineIntervals,
   binanceKlineMaxLimit,
@@ -17,83 +14,26 @@ import {
   getBinanceIntervalTime,
 } from "@ggbot2/binance";
 import {
-  BinanceDflowClient as IBinanceDflowClient,
+  BinanceDflowClient,
   BinanceDflowClientKlinesParameters,
   dflowBinanceLowerKlineInterval,
   dflowBinancePrecision,
   dflowBinanceZero as zero,
 } from "@ggbot2/dflow";
-import { CacheMap } from "@ggbot2/models";
 import { Time } from "@ggbot2/time";
-import { sessionWebStorage } from "@ggbot2/web-storage";
 
-class BinanceCacheSessionWebStorage
-  implements BinanceExchangeInfoCacheProvider
-{
-  readonly isValidSymbolMap = new CacheMap<boolean>();
+import {binance} from './exchange.js'
 
-  getExchangeInfo(): BinanceExchangeInfo | undefined {
-    return sessionWebStorage.binanceExchangeInfo;
-  }
-
-  setExchangeInfo(arg: BinanceExchangeInfo): void {
-    sessionWebStorage.binanceExchangeInfo = arg;
-  }
-
-  getIsValidSymbol(symbol: string) {
-    return this.isValidSymbolMap.get(symbol);
-  }
-
-  setIsValidSymbol(symbol: string, value: boolean) {
-    this.isValidSymbolMap.set(symbol, value);
-  }
-}
-
-export const binance = new BinanceExchange();
-binance.exchangeInfoCache = new BinanceCacheSessionWebStorage();
-
-// TODO move it into binance package and reuse it in Executor
-class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
-  static klineKey(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    /* THe kline open time. */
-    time: Time
-  ) {
-    return [symbol, interval, time].join(":");
-  }
-
-  private readonly klinesMap = new CacheMap<BinanceKline>("ONE_WEEK");
-
-  getKline(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    time: Time
-  ): BinanceKline | undefined {
-    const key = BinanceKlinesCacheMap.klineKey(symbol, interval, time);
-    const kline = this.klinesMap.get(key);
-    return kline;
-  }
-
-  setKline(
-    symbol: string,
-    interval: BinanceKlineInterval,
-    kline: BinanceKline
-  ): void {
-    const key = BinanceKlinesCacheMap.klineKey(symbol, interval, kline[0]);
-    this.klinesMap.set(key, kline);
-  }
-}
-
-const binanceKlinesCacheMap = new BinanceKlinesCacheMap();
-
-export class BinanceDflowClient implements IBinanceDflowClient {
+export class BinanceClient implements BinanceDflowClient {
   readonly balances: BinanceBalance[];
   readonly time: Time;
+  private readonly klinesCache: BinanceKlinesCacheMap | undefined
 
-  constructor({ balances, time }: BinanceDflowClientArg) {
+  constructor({ balances, time }: Pick< BinanceClient, "balances" | "time"
+>, klinesCache?: BinanceClient['klinesCache'] ) {
     this.balances = balances;
     this.time = time;
+    this.klinesCache= klinesCache
   }
 
   async account() {
@@ -120,13 +60,14 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     { limit, endTime }: BinanceDflowClientKlinesParameters
   ) {
     // Look for cached data.
+    const {klinesCache: cache}=this
     const cachedKlines: BinanceKline[] = [];
     let time = getBinanceIntervalTime[interval](endTime).minus(limit);
     while (time < endTime) {
-      const kline = binanceKlinesCacheMap.getKline(symbol, interval, time);
-      time = getBinanceIntervalTime[interval](time).plus(1);
+      const kline = cache?.getKline(symbol, interval, time);
       if (!kline) break;
       cachedKlines.push(kline);
+      time = getBinanceIntervalTime[interval](time).plus(1);
     }
     if (cachedKlines.length === limit) {
       return cachedKlines;
@@ -138,8 +79,10 @@ export class BinanceDflowClient implements IBinanceDflowClient {
       limit: binanceKlineMaxLimit,
     });
     // Cache all klines.
+    if (cache) {
     for (const kline of klines) {
-      binanceKlinesCacheMap.setKline(symbol, interval, kline);
+      cache.setKline(symbol, interval, kline);
+    }
     }
     // Return only klines asked by limit parameter.
     return klines.slice(-limit);
@@ -210,23 +153,24 @@ export class BinanceDflowClient implements IBinanceDflowClient {
     // Look for cached data. Any binanceKlineInterval is acceptable to get price.
     for (const interval of binanceKlineIntervals) {
       const kline = binanceKlinesCacheMap.getKline(symbol, interval, time);
-      if (kline) {
-        const price = kline[4];
-        return Promise.resolve({ symbol, price });
-      }
+      if (kline)
+        return {
+          symbol,
+          // Price is kline's open.
+          price: kline[1],
+        };
     }
     // If no data was found in cache, fetch it from Binance API.
     const interval = dflowBinanceLowerKlineInterval;
-    const klines = await binance.klines(symbol, interval, {
+    const klines = await this.klines(symbol, interval, {
       limit: 1,
-      startTime: time,
+      endTime: time,
     });
-    const price = klines[0][4];
-    return Promise.resolve({ symbol, price });
+    return {
+      symbol,
+      // Price is kline's close.
+      price: klines[0][4],
+    };
   }
 }
 
-export type BinanceDflowClientArg = Pick<
-  BinanceDflowClient,
-  "balances" | "time"
->;

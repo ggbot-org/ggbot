@@ -26,13 +26,18 @@ import { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges
 import { appendStrategyDailyOrders } from "./strategyDailyOrders.js";
 import { readStrategyFlow } from "./strategyFlow.js";
 import { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js";
+import {BinanceExchangeInfoCacheProvider} from "@ggbot2/binance";
+
+
+// TODO create executeBinanceStrategy which takes exchangeInfoCache as parameter
+// so Executor can have an instance of exchangeInfoCache shared to all strategies
 
 /** Execute a ggbot2 strategy. */
 export const executeStrategy: ExecuteStrategy["func"] = async ({
   accountId,
   strategyId,
   strategyKind,
-}) => {
+}, exchangeInfoCache: BinanceExchangeInfoCacheProvider) => {
   try {
     const accountStrategyKey = { accountId, strategyKind, strategyId };
     const strategyKey = { strategyKind, strategyId };
@@ -56,7 +61,7 @@ export const executeStrategy: ExecuteStrategy["func"] = async ({
         });
 
       const { apiKey, apiSecret } = binanceApiConfig;
-      const binance = new _BinanceClient(apiKey, apiSecret);
+      const binance = new _BinanceClient(apiKey, apiSecret, exchangeInfoCache);
 
       // Truncate logical time to minute. It is a good compromise also to
       // cache klines data.

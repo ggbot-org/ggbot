@@ -1,8 +1,10 @@
 import {
   BinanceAccountInformation,
+  BinanceConnector,
   BinanceExchange,
   BinanceExchangeInfo,
   BinanceExchangeInfoCacheMap,
+  BinanceExchangeInfoCacheProvider,
   BinanceKline,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
@@ -21,9 +23,8 @@ export class _BinanceClient implements BinanceDflowClient {
   readonly privateClient: BinanceClient;
   readonly publicClient: BinanceExchange;
 
-  constructor(apiKey: string, apiSecret: string) {
-    this.publicClient = new BinanceExchange();
-    this.publicClient.exchangeInfoCache = new BinanceExchangeInfoCacheMap();
+  constructor(apiKey: string, apiSecret: string, exchangeInfoCache?: BinanceExchangeInfoCacheProvider) {
+    this.publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl, exchangeInfoCache);
 
     this.privateClient = new BinanceClient(
       apiKey,

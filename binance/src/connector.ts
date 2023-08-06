@@ -7,10 +7,11 @@ import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js";
 
 /** BinanceConnector handles requests to Binance API. */
 export class BinanceConnector {
+  static defaultBaseUrl = `https://${binanceApiDomain}`
   baseUrl: string;
   readonly requestHeaders: BinanceRequestHeaders;
 
-  constructor(baseUrl = `https://${binanceApiDomain}`) {
+  constructor(baseUrl = BinanceConnector.defaultBaseUrl) {
     this.baseUrl = baseUrl;
     this.requestHeaders = new BinanceRequestHeaders();
   }

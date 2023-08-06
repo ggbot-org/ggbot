@@ -15,7 +15,7 @@ export type APIGatewayEventDefaultAuthorizerContext =
   | undefined
   | null
   | {
-      [name: string]: any;
+      [name: string]: unknown;
     };
 
 export interface APIGatewayEventClientCertificate {

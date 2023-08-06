@@ -12,9 +12,9 @@ export class BinanceExchangeInfoCacheMap
   // BinanceExchangeInfoCacheProvider
   // ///////////////////////////////////////////////////////////////////////////
 
-  readonly exchangeInfoKey = "exchangeInfo";
+  private readonly exchangeInfoKey = "exchangeInfo";
 
-  readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
+  private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
     exchangeInfoCacheDuration
   );
 
@@ -26,7 +26,7 @@ export class BinanceExchangeInfoCacheMap
     if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value);
   }
 
-  readonly isValidSymbolMap = new CacheMap<boolean>(exchangeInfoCacheDuration);
+  private readonly isValidSymbolMap = new CacheMap<boolean>(exchangeInfoCacheDuration);
 
   getIsValidSymbol(symbol: string) {
     return this.isValidSymbolMap.get(symbol);

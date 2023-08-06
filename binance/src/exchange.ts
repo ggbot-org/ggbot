@@ -50,21 +50,23 @@ import {
  *
  * ```ts
  * import {
+ *   BinanceConnector,
  *   BinanceExchange,
  *   BinanceExchangeInfoCacheMap,
  * } from "@ggbot2/binance";
  *
- * const binance = new BinanceExchange();
- * binance.exchangeInfoCache = new BinanceExchangeInfoCacheMap();
+ * const exchangeInfoCache = new BinanceExchangeInfoCacheMap();
+ * const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl, exchangeInfoCache);
  * ```
  */
 export class BinanceExchange {
   readonly connector: BinanceConnector;
 
-  exchangeInfoCache?: BinanceExchangeInfoCacheProvider | undefined;
+  private readonly exchangeInfoCache: BinanceExchangeInfoCacheProvider | undefined;
 
-  constructor(baseUrl?: string) {
+  constructor(baseUrl?: string, exchangeInfoCache?: BinanceExchange['exchangeInfoCache']) {
     this.connector = new BinanceConnector(baseUrl);
+    this.exchangeInfoCache = exchangeInfoCache
   }
 
   static throwIfMinNotionalFilterIsInvalid(

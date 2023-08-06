@@ -17,7 +17,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { FlowViewContainerElement } from "../components/FlowViewContainer.js";
-import { BinanceDflowClient } from "../flow/binance.js";
+import { BinanceClient } from "../binance/client.js";
 import { initializeFlowView } from "../flow/initializeFlowView.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
@@ -45,7 +45,7 @@ export const useFlowView = ({
   const initializeBinanceFlowView = useCallback(
     (container: HTMLDivElement, nodesCatalog: DflowNodesCatalog): FlowView => {
       const time = truncateTime(now()).to.minute();
-      const binance = new BinanceDflowClient({
+      const binance = new BinanceClient({
         balances: [],
         time,
       });

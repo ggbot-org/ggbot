@@ -7,6 +7,7 @@ export * from "./exchange.js";
 export * from "./exchangeInfoCacheMap.js";
 export * from "./FQDN.js";
 export * from "./headers.js";
+export * from "./klinesCacheMap.js";
 export * from "./request.js";
 export * from "./time.js";
 export * from "./typeGuards.js";
