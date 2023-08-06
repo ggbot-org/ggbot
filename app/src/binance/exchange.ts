@@ -1,5 +1,8 @@
-import { BinanceExchange } from "@ggbot2/binance";
+import { BinanceConnector, BinanceExchange } from "@ggbot2/binance";
 
-import { BinanceCacheSessionWebStorage } from "./cache.js";
-export const binance = new BinanceExchange();
-binance.exchangeInfoCache = new BinanceCacheSessionWebStorage();
+import { binanceExchangeInfoCacheSessionWebStorage } from "./exchangeInfoCacheSessionWebStorage.js";
+
+export const binance = new BinanceExchange(
+  BinanceConnector.defaultBaseUrl,
+  binanceExchangeInfoCacheSessionWebStorage
+);

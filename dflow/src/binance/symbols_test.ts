@@ -5,9 +5,9 @@ import { describe, it } from "node:test";
 import { StrategyFlow } from "@ggbot2/models";
 
 import { BinanceClientMock } from "./mocks/client.js";
-import { extractBinanceSymbolsAndIntervalsFromFlow } from "./symbols.js";
+import { extractBinanceFlowSymbolsAndIntervalsFromFlow } from "./symbols.js";
 
-describe("extractBinanceSymbolsAndIntervalsFromFlow", () => {
+describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
   it("extracts symbol and interval tuples", async () => {
     const binance = new BinanceClientMock();
     const { symbols } = await binance.exchangeInfo();
@@ -39,10 +39,13 @@ describe("extractBinanceSymbolsAndIntervalsFromFlow", () => {
         { id: "eb2", from: ["b2", "ob2"], to: ["b3", "bi2"] },
       ],
     };
-    assert.deepEqual(extractBinanceSymbolsAndIntervalsFromFlow(symbols, view), [
-      { symbol: "BTCBUSD", interval: "1d" },
-      { symbol: "ETHBTC", interval: "1h" },
-    ]);
+    assert.deepEqual(
+      extractBinanceFlowSymbolsAndIntervalsFromFlow(symbols, view),
+      [
+        { symbol: "BTCBUSD", interval: "1d" },
+        { symbol: "ETHBTC", interval: "1h" },
+      ]
+    );
   });
 
   it("manages duplicates", async () => {
@@ -77,8 +80,9 @@ describe("extractBinanceSymbolsAndIntervalsFromFlow", () => {
         { id: "eb2", from: ["b2", "ob2"], to: ["b3", "bi2"] },
       ],
     };
-    assert.deepEqual(extractBinanceSymbolsAndIntervalsFromFlow(symbols, view), [
-      { symbol: "ETHBTC", interval: "1h" },
-    ]);
+    assert.deepEqual(
+      extractBinanceFlowSymbolsAndIntervalsFromFlow(symbols, view),
+      [{ symbol: "ETHBTC", interval: "1h" }]
+    );
   });
 });

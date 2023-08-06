@@ -5,7 +5,7 @@ import {
 import { CacheMap } from "@ggbot2/models";
 import { sessionWebStorage } from "@ggbot2/web-storage";
 
-export class BinanceCacheSessionWebStorage
+export class BinanceExchangeInfoCacheSessionWebStorage
   implements BinanceExchangeInfoCacheProvider
 {
   readonly isValidSymbolMap = new CacheMap<boolean>();
@@ -27,4 +27,5 @@ export class BinanceCacheSessionWebStorage
   }
 }
 
-
+export const binanceExchangeInfoCacheSessionWebStorage =
+  new BinanceExchangeInfoCacheSessionWebStorage();

@@ -1,9 +1,14 @@
 import {
-  BinanceKlineInterval,
   binanceKlineMaxLimit,
+  BinanceKlinesCacheMap,
   getBinanceIntervalTime,
 } from "@ggbot2/binance";
-import { BinanceDflowExecutor, DflowCommonContext } from "@ggbot2/dflow";
+import {
+  BinanceDflowExecutor,
+  DflowBinanceKlineInterval,
+  DflowCommonContext,
+  extractBinanceFlowSymbolsAndIntervalsFromFlow,
+} from "@ggbot2/dflow";
 import {
   BalanceChangeEvent,
   everyOneHour,
@@ -25,8 +30,8 @@ import {
 import { FlowViewSerializableGraph } from "flow-view";
 import { useCallback, useContext, useEffect, useReducer } from "react";
 
-import { StrategyContext } from "../contexts/Strategy.js";
 import { BinanceClient } from "../binance/client.js";
+import { StrategyContext } from "../contexts/Strategy.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
@@ -81,6 +86,8 @@ type Action =
   | {
       type: "STOP";
     };
+
+const klinesCache = new BinanceKlinesCacheMap();
 
 const isReadOnlyState = (
   state: Pick<State, "isRunning" | "isPaused" | "isPreparing">
@@ -263,37 +270,56 @@ export const useBacktesting = (
   } = state;
 
   const prepare = useCallback(async () => {
-    console.log("prepare");
     if (!nodesCatalog) return;
     if (!flowViewGraph) return;
     if (strategyKind === "binance") {
       try {
         if (!binanceSymbols) return;
-        const firstTimestamp = timestamps[0];
-        const lastTimestamp = timestamps[timestamps.length - 1];
-        const lastTime = timestampToTime(lastTimestamp);
-        let time = timestampToTime(firstTimestamp);
-        // Run flow with to cache klines.
-        while (time <= lastTime) {
-          console.log("time", time, lastTime, "lastTime");
-          const binance = new BinanceClient({
-            balances: [],
-            time,
-          });
-          const executor = new BinanceDflowExecutor(
-            binance,
+        // Run flow to cache market data.
+        const symbolsAndIntervals =
+          extractBinanceFlowSymbolsAndIntervalsFromFlow(
             binanceSymbols,
-            nodesCatalog
+            flowViewGraph
           );
-          await executor.run({ input: {}, memory: {}, time }, flowViewGraph);
-          // TODO get intervals from flow graph
-          // even if not connected to candles directly, they could be in an "if" node or some other logic
-          // it will be a list of intervals, need to loop over
-          const interval: BinanceKlineInterval = "1h";
-          const nextTime =
-            getBinanceIntervalTime[interval](time).plus(binanceKlineMaxLimit);
-          time = Math.min(nextTime, lastTime);
+        const firstTime = timestampToTime(timestamps[0]);
+        const lastTime = timestampToTime(timestamps[timestamps.length - 1]);
+        // TODO sort it by interval duration, so prices are cached with lower interval
+        const intervals: DflowBinanceKlineInterval[] = symbolsAndIntervals
+          .map(({ interval }) => interval)
+          .filter((element, index, array) => array.indexOf(element) === index);
+        for (const interval of intervals) {
+          let startTime = firstTime;
+          while (startTime < lastTime) {
+            const endTime = Math.min(
+              lastTime,
+              getBinanceIntervalTime[interval](startTime).plus(
+                binanceKlineMaxLimit
+              )
+            );
+            const binance = new BinanceClient(
+              {
+                balances: [],
+                time: endTime,
+              },
+              klinesCache,
+              {
+                klinesInterval: interval,
+                klinesParameters: { startTime, endTime },
+              }
+            );
+            const executor = new BinanceDflowExecutor(
+              binance,
+              binanceSymbols,
+              nodesCatalog
+            );
+            await executor.run(
+              { input: {}, memory: {}, time: endTime },
+              flowViewGraph
+            );
+            startTime = endTime;
+          }
         }
+        // Once market data is cached, backtesting can start.
         dispatch({ type: "START" });
       } catch (error) {
         // TODO show some feedback with a toast
@@ -324,10 +350,13 @@ export const useBacktesting = (
     if (strategyKind === "binance") {
       try {
         if (!binanceSymbols) return;
-        const binance = new BinanceClient({
-          balances: [],
-          time,
-        });
+        const binance = new BinanceClient(
+          {
+            balances: [],
+            time,
+          },
+          klinesCache
+        );
         const executor = new BinanceDflowExecutor(
           binance,
           binanceSymbols,

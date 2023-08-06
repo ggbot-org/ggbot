@@ -1,3 +1,4 @@
+import { BinanceKlinesCacheMap } from "@ggbot2/binance";
 import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow";
 import { StrategyKind } from "@ggbot2/models";
 import { now, Time, truncateTime } from "@ggbot2/time";
@@ -16,8 +17,8 @@ import {
 } from "flow-view";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { FlowViewContainerElement } from "../components/FlowViewContainer.js";
 import { BinanceClient } from "../binance/client.js";
+import { FlowViewContainerElement } from "../components/FlowViewContainer.js";
 import { initializeFlowView } from "../flow/initializeFlowView.js";
 import { useNodesCatalog } from "../hooks/useNodesCatalog.js";
 
@@ -45,10 +46,14 @@ export const useFlowView = ({
   const initializeBinanceFlowView = useCallback(
     (container: HTMLDivElement, nodesCatalog: DflowNodesCatalog): FlowView => {
       const time = truncateTime(now()).to.minute();
-      const binance = new BinanceClient({
-        balances: [],
-        time,
-      });
+      const binance = new BinanceClient(
+        {
+          balances: [],
+          time,
+        },
+        // Actually klines cache is not used here.
+        new BinanceKlinesCacheMap()
+      );
       const dflow = new BinanceDflowHost(
         { nodesCatalog },
         { binance, input: {}, memory: {}, time }

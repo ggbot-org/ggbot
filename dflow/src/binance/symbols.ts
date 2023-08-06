@@ -1,4 +1,4 @@
-import { BinanceKlineInterval, BinanceSymbolInfo } from "@ggbot2/binance";
+import { BinanceSymbolInfo } from "@ggbot2/binance";
 import { StrategyFlow } from "@ggbot2/models";
 import { objectTypeGuard } from "@ggbot2/type-utils";
 import { DflowGraph, DflowId } from "dflow";
@@ -60,12 +60,25 @@ export const getDflowBinanceNodeSymbolKind = ({
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
   [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator);
 
-export const extractBinanceSymbolsAndIntervalsFromFlow = (
+export type BinanceDflowSymbolAndInterval = {
+  symbol: string;
+  interval: DflowBinanceKlineInterval;
+};
+
+export const isBinanceDflowSymbolAndInterval =
+  objectTypeGuard<BinanceDflowSymbolAndInterval>(({ symbol, interval }) => {
+    if (typeof symbol !== "string") return false;
+    if (!isDflowBinanceKlineInterval(interval)) return false;
+    return true;
+  });
+
+// TODO it checks Candles nodes, should also check (add testss too) price nodes.
+export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
   binanceSymbols: DflowBinanceSymbolInfo[],
   view: StrategyFlow["view"]
-) => {
+): BinanceDflowSymbolAndInterval[] => {
   const symbols = binanceSymbols.map(({ symbol }) => symbol);
-  const result: { symbol: string; interval: BinanceKlineInterval }[] = [];
+  const symbolsAndIntervals: BinanceDflowSymbolAndInterval[] = [];
   const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] =
     view.edges.map((edge) => ({
       sourceId: edge.from[0],
@@ -77,27 +90,31 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = (
         node.id,
         nodeConnections
       );
-      let symbol;
-      let interval;
+      // TODO try MayObject<T> to be implemented in type-utils
+      const maybeSymbolAndInterval: { symbol: unknown; interval: unknown } = {
+        symbol: undefined,
+        interval: undefined,
+      };
       for (const parentNodeId of parentNodeIds) {
         const node = view.nodes.find(({ id }) => id === parentNodeId);
         if (!node) continue;
         if (isDflowBinanceKlineInterval(node.text)) {
-          interval = node.text;
+          maybeSymbolAndInterval.interval = node.text;
           continue;
         } else {
           const maybeSymbol = node.text
             .split(dflowBinanceSymbolSeparator)
             .join("");
-          if (symbols.includes(maybeSymbol)) symbol = maybeSymbol;
+          if (symbols.includes(maybeSymbol))
+            maybeSymbolAndInterval.symbol = maybeSymbol;
         }
       }
-      if (symbol && interval) {
-        result.push({ symbol, interval });
+      if (isBinanceDflowSymbolAndInterval(maybeSymbolAndInterval)) {
+        symbolsAndIntervals.push(maybeSymbolAndInterval);
       }
     }
   }
-  return result
+  return symbolsAndIntervals
     .filter(
       // Remove duplicates.
       ({ symbol, interval }, index, array) =>

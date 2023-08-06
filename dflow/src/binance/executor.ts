@@ -16,14 +16,15 @@ import {
 import { BinanceDflowHost } from "./host.js";
 import { DflowBinanceSymbolInfo } from "./symbols.js";
 
-type BinanceDflowExecutorOutput = DflowCommonExecutorOutput & {
+type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
   balances: Balance[];
   orders: Pick<Order, "info">[];
 };
 
+// TODO rename in DflowBinanceExecuter
 export class BinanceDflowExecutor
   implements
-    DflowExecutor<DflowCommonExecutorContext, BinanceDflowExecutorOutput>
+    DflowExecutor<DflowCommonExecutorContext, DflowBinanceExecutorOutput>
 {
   constructor(
     readonly binance: BinanceDflowClient,

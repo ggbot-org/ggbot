@@ -13,13 +13,17 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import type { BacktestingState } from "../hooks/useBacktesting";
 
-export type BacktestingProgressProps = Pick<BacktestingState, "dayInterval"> & {
+export type BacktestingProgressProps = Pick<
+  BacktestingState,
+  "dayInterval" | "isPreparing"
+> & {
   progress: Pick<ProgressProps, "value" | "max"> | undefined;
   timestamp: Timestamp | undefined;
 };
 
 export const BacktestingProgress: FC<BacktestingProgressProps> = ({
   dayInterval,
+  isPreparing,
   progress,
   timestamp,
 }) => {
@@ -44,10 +48,17 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
         <>
           <Progress value={undefined} />
 
-          <FormattedMessage
-            id="BacktestingProgress.waiting"
-            values={progress}
-          />
+          {isPreparing ? (
+            <FormattedMessage
+              id="BacktestingProgress.preparing"
+              values={progress}
+            />
+          ) : (
+            <FormattedMessage
+              id="BacktestingProgress.waiting"
+              values={progress}
+            />
+          )}
         </>
       )}
 

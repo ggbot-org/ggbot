@@ -69,7 +69,10 @@
     "defaultMessage": "{value} of {max} intervals"
   },
   "BacktestingProgress.waiting": {
-    "defaultMessage": "Waiting for data"
+    "defaultMessage": "Waiting for strategy flow"
+  },
+  "BacktestingProgress.preparing": {
+    "defaultMessage": "Preparing backtesting data"
   },
   "BinanceApi.title": {
     "defaultMessage": "Binance API"

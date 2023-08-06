@@ -34,6 +34,7 @@ export const Backtesting: FC = () => {
       dayInterval,
       frequency,
       isPaused,
+      isPreparing,
       isReadOnly,
       isRunning,
       maxDay,
@@ -155,6 +156,7 @@ export const Backtesting: FC = () => {
         <Column>
           <BacktestingProgress
             dayInterval={dayInterval}
+            isPreparing={isPreparing}
             progress={progress}
             timestamp={timestamp}
           />
