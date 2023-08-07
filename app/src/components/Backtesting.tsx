@@ -31,6 +31,7 @@ export const Backtesting: FC = () => {
 
   const {
     state: {
+      currentTimestamp,
       dayInterval,
       frequency,
       isPaused,
@@ -83,14 +84,10 @@ export const Backtesting: FC = () => {
     [dispatch, dayInterval]
   );
 
-  const timestamp = timestamps[stepIndex];
-
-  const progress: BacktestingProgressProps["progress"] = hasRequiredData
-    ? {
-        value: stepIndex,
-        max: timestamps.length,
-      }
-    : undefined;
+  const progress: BacktestingProgressProps["progress"] = {
+    value: stepIndex,
+    max: timestamps.length,
+  };
 
   const onClickStop = useCallback(() => {
     dispatch({ type: "STOP" });
@@ -156,9 +153,10 @@ export const Backtesting: FC = () => {
         <Column>
           <BacktestingProgress
             dayInterval={dayInterval}
+            hasRequiredData={hasRequiredData}
             isPreparing={isPreparing}
             progress={progress}
-            timestamp={timestamp}
+            currentTimestamp={currentTimestamp}
           />
         </Column>
       </Columns>

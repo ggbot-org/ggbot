@@ -7,25 +7,28 @@ import {
   timeFormat,
   Title,
 } from "@ggbot2/design";
-import { Timestamp } from "@ggbot2/time";
 import { FC } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import type { BacktestingState } from "../hooks/useBacktesting";
+import type {
+  BacktestingOutput,
+  BacktestingState,
+} from "../hooks/useBacktesting";
 
 export type BacktestingProgressProps = Pick<
   BacktestingState,
-  "dayInterval" | "isPreparing"
-> & {
-  progress: Pick<ProgressProps, "value" | "max"> | undefined;
-  timestamp: Timestamp | undefined;
-};
+  "currentTimestamp" | "dayInterval" | "isPreparing"
+> &
+  Pick<BacktestingOutput, "hasRequiredData"> & {
+    progress: Pick<ProgressProps, "value" | "max">;
+  };
 
 export const BacktestingProgress: FC<BacktestingProgressProps> = ({
   dayInterval,
+  hasRequiredData,
   isPreparing,
   progress,
-  timestamp,
+  currentTimestamp,
 }) => {
   const { formatDate } = useIntl();
 
@@ -35,30 +38,34 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
         <FormattedMessage id="BacktestingProgress.title" />
       </Title>
 
-      {progress ? (
-        <>
-          <Progress {...progress} />
+      {hasRequiredData === true ? (
+        isPreparing ? (
+          <>
+            <Progress />
 
-          <FormattedMessage
-            id="BacktestingProgress.intervals"
-            values={progress}
-          />
-        </>
-      ) : (
-        <>
-          <Progress value={undefined} />
-
-          {isPreparing ? (
             <FormattedMessage
               id="BacktestingProgress.preparing"
               values={progress}
             />
-          ) : (
+          </>
+        ) : (
+          <>
+            <Progress {...progress} />
+
             <FormattedMessage
-              id="BacktestingProgress.waiting"
+              id="BacktestingProgress.intervals"
               values={progress}
             />
-          )}
+          </>
+        )
+      ) : (
+        <>
+          <Progress />
+
+          <FormattedMessage
+            id="BacktestingProgress.waiting"
+            values={progress}
+          />
         </>
       )}
 
@@ -73,12 +80,12 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
           />
         </Flex>
 
-        {timestamp ? (
+        {currentTimestamp ? (
           <Flex>
             <FormattedMessage
               id="BacktestingProgress.currentTime"
               values={{
-                time: formatDate(timestamp, timeFormat),
+                time: formatDate(currentTimestamp, timeFormat),
               }}
             />
           </Flex>

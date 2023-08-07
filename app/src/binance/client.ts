@@ -5,7 +5,6 @@ import {
   BinanceKline,
   BinanceKlineInterval,
   binanceKlineIntervals,
-  BinanceKlineOptionalParameters,
   BinanceKlinesCacheMap,
   BinanceNewOrderOptions,
   BinanceOrderRespFULL,
@@ -16,6 +15,7 @@ import {
 import {
   BinanceDflowClient,
   BinanceDflowClientKlinesParameters,
+  BinanceDflowSymbolAndInterval,
   DflowBinanceKlineInterval,
   dflowBinanceLowerKlineInterval,
   dflowBinancePrecision,
@@ -34,12 +34,9 @@ export class BinanceClient implements BinanceDflowClient {
 
   /* Optional parameters used during backtesting preparation. */
   private readonly backtestingPreparation:
-    | {
-        klinesParameters: Required<
-          Pick<BinanceKlineOptionalParameters, "startTime" | "endTime">
-        >;
-        klinesInterval: DflowBinanceKlineInterval | undefined;
-      }
+    | ({
+        klinesParameters: BinanceDflowClientKlinesParameters;
+      } & BinanceDflowSymbolAndInterval)
     | undefined;
 
   constructor(
@@ -89,10 +86,10 @@ export class BinanceClient implements BinanceDflowClient {
     // If all klines wanted are found in cache, it's done!
     if (cachedKlines.length === limit) return cachedKlines;
     // If no data was found in cache, fetch it from Binance API.
-    const klinesParameters: BinanceKlineOptionalParameters =
-      backtestingPreparation
-        ? backtestingPreparation.klinesParameters
-        : { endTime, limit };
+    const klinesParameters = backtestingPreparation?.klinesParameters ?? {
+      endTime,
+      limit,
+    };
     const klines = await binance.klines(symbol, interval, klinesParameters);
     // Cache all klines found.
     for (const kline of klines) cache.setKline(symbol, interval, kline);
@@ -172,15 +169,16 @@ export class BinanceClient implements BinanceDflowClient {
           price: kline[1],
         };
     }
+    let interval: DflowBinanceKlineInterval = dflowBinanceLowerKlineInterval;
+    if (backtestingPreparation) {
+      if (backtestingPreparation.symbol === symbol)
+        interval = backtestingPreparation.interval;
+    }
     // If no data was found in cache, fetch it from Binance API.
-    const klines = await this.klines(
-      symbol,
-      backtestingPreparation?.klinesInterval ?? dflowBinanceLowerKlineInterval,
-      {
-        limit: 1,
-        endTime: time,
-      }
-    );
+    const klines = await this.klines(symbol, interval, {
+      limit: 1,
+      endTime: time,
+    });
     return {
       symbol,
       // Price is kline's close. TODO is this correct? double check

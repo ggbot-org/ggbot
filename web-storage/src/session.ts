@@ -9,7 +9,7 @@ const activeTabIdKey = (pageName: string) => `${pageName}:activeTab`;
 
 class SessionWebStorage {
   clear() {
-    window.localStorage.clear();
+    window.sessionStorage.clear();
   }
 
   getItem(key: string) {

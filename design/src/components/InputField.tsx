@@ -42,7 +42,13 @@ export const InputField: FC<InputFieldProps> = ({
       <Label htmlFor={id}>{label}</Label>
 
       <Control isLoading={isLoading}>
-        <Input id={id} color={color} {...value} {...props} />
+        <Input
+          id={id}
+          color={color}
+          readOnly={readOnly}
+          {...value}
+          {...props}
+        />
       </Control>
 
       {help ? <Help color={color}>{help}</Help> : null}
