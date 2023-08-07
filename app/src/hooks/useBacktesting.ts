@@ -6,6 +6,7 @@ import {
 import {
   BinanceDflowExecutor,
   DflowBinanceKlineInterval,
+  dflowBinanceKlineIntervals,
   DflowCommonContext,
   extractBinanceFlowSymbolsAndIntervalsFromFlow,
 } from "@ggbot2/dflow";
@@ -285,8 +286,14 @@ export const useBacktesting = (
         const lastTime = timestampToTime(timestamps[timestamps.length - 1]);
         // TODO sort it by interval duration, so prices are cached with lower interval
         const intervals: DflowBinanceKlineInterval[] = symbolsAndIntervals
+          .sort(
+            (a, b) =>
+              dflowBinanceKlineIntervals.indexOf(a.interval) -
+              dflowBinanceKlineIntervals.indexOf(b.interval)
+          )
           .map(({ interval }) => interval)
           .filter((element, index, array) => array.indexOf(element) === index);
+
         for (const interval of intervals) {
           let startTime = firstTime;
           while (startTime < lastTime) {

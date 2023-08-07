@@ -3,7 +3,6 @@ import {
   BinanceConnector,
   BinanceExchange,
   BinanceExchangeInfo,
-  BinanceExchangeInfoCacheMap,
   BinanceExchangeInfoCacheProvider,
   BinanceKline,
   BinanceKlineInterval,
@@ -19,12 +18,19 @@ import { BinanceDflowClient } from "@ggbot2/dflow";
 import { ENV } from "@ggbot2/env";
 
 /** A Binance client that uses a proxy for private requests. */
-export class _BinanceClient implements BinanceDflowClient {
+export class Binance implements BinanceDflowClient {
   readonly privateClient: BinanceClient;
   readonly publicClient: BinanceExchange;
 
-  constructor(apiKey: string, apiSecret: string, exchangeInfoCache?: BinanceExchangeInfoCacheProvider) {
-    this.publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl, exchangeInfoCache);
+  constructor(
+    apiKey: string,
+    apiSecret: string,
+    exchangeInfoCache?: BinanceExchangeInfoCacheProvider
+  ) {
+    this.publicClient = new BinanceExchange(
+      BinanceConnector.defaultBaseUrl,
+      exchangeInfoCache
+    );
 
     this.privateClient = new BinanceClient(
       apiKey,

@@ -1,7 +1,7 @@
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { DflowExecutionNodeInfo, DflowGraph } from "dflow";
 
-import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
+import { AccountStrategyKey } from "./accountStrategy.js";
 import { Balances, isBalances } from "./balance.js";
 import { Operation } from "./operation.js";
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js";
@@ -39,15 +39,6 @@ export type ReadStrategyExecution = Operation<
   AccountStrategyKey,
   StrategyExecution | null
 >;
-
-export type ExecuteStrategy = Operation<
-  AccountStrategyKey,
-  Pick<StrategyExecution, "status" | "whenUpdated">
->;
-
-export const isExecuteStrategyInput = objectTypeGuard<ExecuteStrategy["in"]>(
-  (accountStrategyKey) => isAccountStrategyKey(accountStrategyKey)
-);
 
 export type WriteStrategyExecution = Operation<
   AccountStrategyKey & Omit<StrategyExecution, "whenUpdated">,

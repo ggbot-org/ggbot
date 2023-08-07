@@ -1,5 +1,4 @@
 import {
-  executeStrategy,
   listAccountKeys,
   readAccountStrategies,
   readSubscription,
@@ -29,6 +28,7 @@ import { readFile, writeFile } from "fs/promises";
 import { homedir } from "os";
 import { join } from "path";
 
+import { executeBinanceStrategy } from "./executeBinanceStrategy.js";
 import { log } from "./log.js";
 
 const executorIdFile = join(homedir(), ".ggbot2-executor");
@@ -149,8 +149,7 @@ export class Executor {
     }
     strategyWhenExecuted.set(strategyId, time);
     log.info("execute strategy", strategyId);
-    // TODO should pass at least, cached binance exchange info
-    await executeStrategy(accountStrategyKey);
+    await executeBinanceStrategy(accountStrategyKey);
   }
 
   managesItem(itemId: Item["id"]) {

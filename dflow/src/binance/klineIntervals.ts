@@ -1,5 +1,23 @@
 import { isLiteralType } from "@ggbot2/type-utils";
 
+/**
+ * Binance kline intervals supported by ggbot2 dflow implementation.
+ *
+ * Note that the items are in ascending cronological order, so they can be used
+ * to sort by intervals.
+ *
+ * @example
+ *
+ * ```ts
+ * const values = [{ interval: "1d" }, { interval: "1h" }];
+ * const sortedValues = values.toSorted(
+ *   (a, b) =>
+ *     dflowBinanceKlineIntervals.indexOf(a.interval) -
+ *     dflowBinanceKlineIntervals.indexOf(b.interval)
+ * );
+ * console.log(sortedValues); // [ { interval: '1h' }, { interval: '1d' } ];
+ * ```
+ */
 export const dflowBinanceKlineIntervals = [
   "5m",
   "15m",
