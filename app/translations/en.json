@@ -257,6 +257,21 @@
   "PleasePurchase.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
   },
+  "ProfitSummary.fees": {
+    "defaultMessage": "Fees"
+  },
+  "ProfitSummary.minPrice": {
+    "defaultMessage": "Min. price"
+  },
+  "ProfitSummary.maxPrice": {
+    "defaultMessage": "Max. price"
+  },
+  "ProfitSummary.numBuys": {
+    "defaultMessage": "Num. buys"
+  },
+  "ProfitSummary.numSells": {
+    "defaultMessage": "Num. sells"
+  },
   "ProfitSummary.title": {
     "defaultMessage": "Profits"
   },
@@ -304,6 +319,15 @@
   },
   "SchedulingsErrorExceededQuota.message": {
     "defaultMessage": "Cannot create more schedulings. Check your account quotas."
+  },
+  "SchedulingStatus.active": {
+    "defaultMessage": "Active"
+  },
+  "SchedulingStatus.inactive": {
+    "defaultMessage": "Inactive"
+  },
+  "SchedulingStatus.suspended": {
+    "defaultMessage": "Suspended"
   },
   "SelectCountry.label": {
     "defaultMessage": "Country"
@@ -367,6 +391,12 @@
   },
   "SubscriptionPurchased.message": {
     "defaultMessage": "Thank you for your purchase."
+  },
+  "SubscriptionStatus.active": {
+    "defaultMessage": "Active"
+  },
+  "SubscriptionStatus.expired": {
+    "defaultMessage": "Expired"
   },
   "SubscriptionTotalPrice.label": {
     "defaultMessage": "Total price"

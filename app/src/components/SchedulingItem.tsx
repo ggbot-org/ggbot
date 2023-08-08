@@ -7,7 +7,7 @@ import {
   FrequencyInput,
   FrequencyInputProps,
 } from "../components/FrequencyInput.js";
-import { SchedulingStatusBadge } from "../components/SchedulingStatusBadge.js";
+import { SchedulingStatus } from "../components/SchedulingStatus.js";
 
 export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
   scheduling: Omit<StrategyScheduling, "frequency"> &
@@ -43,7 +43,7 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
 
   return (
     <div>
-      <SchedulingStatusBadge schedulingStatus={scheduling.status} />
+      <SchedulingStatus status={scheduling.status} />
 
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
 

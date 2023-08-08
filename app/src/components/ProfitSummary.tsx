@@ -17,7 +17,6 @@ import { FormattedMessage } from "react-intl";
 
 import { StrategyContext } from "../contexts/Strategy.js";
 import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js";
-import { miscellaneousLabel } from "../i18n/index.js";
 import { classNames } from "../styles/classNames.js";
 
 type Props = {
@@ -152,7 +151,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
       <Level>
         <LevelItem>
           <Flex direction="column" spacing={{ mx: 2 }}>
-            <_Label>{miscellaneousLabel.from}</_Label>
+            <_Label>
+              <FormattedMessage id="DailyInterval.from" />
+            </_Label>
 
             <_Value>
               <DateTime format="day" value={dayInterval?.start} />
@@ -160,7 +161,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
           </Flex>
 
           <Flex direction="column" spacing={{ mx: 2 }}>
-            <_Label>{miscellaneousLabel.to}</_Label>
+            <_Label>
+              <FormattedMessage id="DailyInterval.to" />
+            </_Label>
 
             <_Value>
               <DateTime format="day" value={dayInterval?.end} />
@@ -170,7 +173,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 
         <LevelItem hasText="centered">
           <div>
-            <_Label size="large">{miscellaneousLabel.numBuys}</_Label>
+            <_Label size="large">
+              <FormattedMessage id="ProfitSummary.numBuys" />
+            </_Label>
 
             <_Value size="large">{numBuys}</_Value>
           </div>
@@ -178,7 +183,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 
         <LevelItem hasText="centered">
           <div>
-            <_Label size="large">{miscellaneousLabel.numSells}</_Label>
+            <_Label size="large">
+              <FormattedMessage id="ProfitSummary.numSells" />
+            </_Label>
 
             <_Value size="large">{numSells}</_Value>
           </div>
@@ -252,7 +259,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
               <Level>
                 <LevelItem hasText="centered">
                   <div>
-                    <_Label>{miscellaneousLabel.minPrice}</_Label>
+                    <_Label>
+                      <FormattedMessage id="ProfitSummary.minPrice" />
+                    </_Label>
 
                     <_Value>{minPrice}</_Value>
                   </div>
@@ -260,7 +269,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 
                 <LevelItem hasText="centered">
                   <div>
-                    <_Label>{miscellaneousLabel.maxPrice}</_Label>
+                    <_Label>
+                      <FormattedMessage id="ProfitSummary.maxPrice" />
+                    </_Label>
 
                     <_Value>{maxPrice}</_Value>
                   </div>
@@ -272,7 +283,9 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 
       <Level>
         <LevelItem>
-          <Heading>{miscellaneousLabel.fees}</Heading>
+          <Heading>
+            <FormattedMessage id="ProfitSummary.fees" />
+          </Heading>
         </LevelItem>
 
         {Array.from(fees, ([asset, quantity]) => ({ asset, quantity })).map(

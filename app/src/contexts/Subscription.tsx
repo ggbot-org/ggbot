@@ -1,7 +1,8 @@
 import {
   isSubscription,
+  statusOfSubscription,
   SubscriptionPlan,
-  subscriptionStatus,
+  SubscriptionStatus,
 } from "@ggbot2/models";
 import { dayToTime, getTime, now, Time } from "@ggbot2/time";
 import {
@@ -14,19 +15,15 @@ import {
 
 import { useApi } from "../hooks/useApi.js";
 
-type ContextValue = {
-  canPurchaseSubscription: boolean | undefined;
-  hasActiveSubscription: boolean | undefined;
-  subscriptionEnd: Time | undefined;
-  subscriptionPlan: SubscriptionPlan | undefined;
-};
+type ContextValue = Partial<{
+  canPurchaseSubscription: boolean;
+  hasActiveSubscription: boolean;
+  subscriptionEnd: Time;
+  subscriptionStatus: SubscriptionStatus;
+  subscriptionPlan: SubscriptionPlan;
+}>;
 
-export const SubscriptionContext = createContext<ContextValue>({
-  canPurchaseSubscription: undefined,
-  hasActiveSubscription: undefined,
-  subscriptionEnd: undefined,
-  subscriptionPlan: undefined,
-});
+export const SubscriptionContext = createContext<ContextValue>({});
 
 SubscriptionContext.displayName = "SubscriptionContext";
 
@@ -35,23 +32,22 @@ export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
   const subscription = READ.data;
 
   const contextValue = useMemo(() => {
-    if (isSubscription(subscription)) {
+    if (subscription === null)
       return {
-        // TODO 30 should not be hardocoded, put it in models
-        canPurchaseSubscription:
-          getTime(dayToTime(subscription.end)).minus(30).days() < now(),
-        hasActiveSubscription: subscriptionStatus(subscription) === "active",
-        subscriptionEnd: dayToTime(subscription.end),
-        subscriptionPlan: subscription.plan,
+        canPurchaseSubscription: true,
+        hasActiveSubscription: false,
       };
-    } else {
-      return {
-        canPurchaseSubscription: undefined,
-        hasActiveSubscription: undefined,
-        subscriptionEnd: undefined,
-        subscriptionPlan: undefined,
-      };
-    }
+    if (!isSubscription(subscription)) return {};
+    const subscriptionStatus = statusOfSubscription(subscription);
+    return {
+      // TODO 30 should not be hardocoded, put it in models
+      canPurchaseSubscription:
+        getTime(dayToTime(subscription.end)).minus(30).days() < now(),
+      hasActiveSubscription: subscriptionStatus === "active",
+      subscriptionEnd: dayToTime(subscription.end),
+      subscriptionStatus,
+      subscriptionPlan: subscription.plan,
+    };
   }, [subscription]);
 
   useEffect(() => {

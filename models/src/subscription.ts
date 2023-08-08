@@ -23,12 +23,12 @@ export const totalPurchase = (numMonths: NaturalNumber) => {
   return numMonths * monthlyPrice;
 };
 
-const subscriptionPlans = ["basic"];
+const subscriptionPlans = ["basic"] as const;
 export type SubscriptionPlan = (typeof subscriptionPlans)[number];
 export const isSubscriptionPlan =
   isLiteralType<SubscriptionPlan>(subscriptionPlans);
 
-const subscriptionStatuses = ["active", "expired"];
+export const subscriptionStatuses = ["active", "expired"] as const;
 export type SubscriptionStatus = (typeof subscriptionStatuses)[number];
 export const isSubscriptionStatus =
   isLiteralType<SubscriptionStatus>(subscriptionStatuses);
@@ -41,7 +41,7 @@ export const isSubscription = objectTypeGuard<Subscription>(
   ({ plan, end }) => isSubscriptionPlan(plan) && isDay(end)
 );
 
-export const subscriptionStatus = ({
+export const statusOfSubscription = ({
   end,
 }: Pick<Subscription, "end">): SubscriptionStatus =>
   end > today() ? "active" : "expired";

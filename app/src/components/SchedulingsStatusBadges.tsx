@@ -2,7 +2,7 @@ import { Control, Field } from "@ggbot2/design";
 import { AccountStrategy } from "@ggbot2/models";
 import { FC } from "react";
 
-import { SchedulingStatusBadge } from "../components/SchedulingStatusBadge.js";
+import { SchedulingStatus } from "../components/SchedulingStatus.js";
 
 type Props = {
   schedulings: AccountStrategy["schedulings"];
@@ -19,30 +19,23 @@ export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
     if (status === "suspended") numSuspended++;
   }
 
-  if (schedulings.length === 0)
-    return <SchedulingStatusBadge schedulingStatus="inactive" />;
+  if (schedulings.length === 0) return <SchedulingStatus status="inactive" />;
 
   if (schedulings.length === 1)
-    return <SchedulingStatusBadge schedulingStatus={schedulings[0].status} />;
+    return <SchedulingStatus status={schedulings[0].status} />;
 
   return (
     <Field isGrouped="multiline">
       <Control>
-        <SchedulingStatusBadge
-          schedulingStatus="suspended"
-          count={numSuspended}
-        />
+        <SchedulingStatus status="suspended" count={numSuspended} />
       </Control>
 
       <Control>
-        <SchedulingStatusBadge
-          schedulingStatus="inactive"
-          count={numInactive}
-        />
+        <SchedulingStatus status="inactive" count={numInactive} />
       </Control>
 
       <Control>
-        <SchedulingStatusBadge schedulingStatus="active" count={numActive} />
+        <SchedulingStatus status="active" count={numActive} />
       </Control>
     </Field>
   );

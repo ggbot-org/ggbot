@@ -31,8 +31,8 @@ import {
   PaymentProvider,
   purchaseCurrency,
   purchaseMaxNumMonths,
+  statusOfSubscription,
   SubscriptionPlan,
-  subscriptionStatus,
   totalPurchase,
 } from "@ggbot2/models";
 import { dateToDay, dayToDate, getDate, today } from "@ggbot2/time";
@@ -81,7 +81,7 @@ export const handler = async (
         const subscription = await readSubscription({ accountId });
         const startDay =
           isSubscription(subscription) &&
-          subscriptionStatus({ end: subscription.end }) === "active"
+          statusOfSubscription({ end: subscription.end }) === "active"
             ? dateToDay(getDate(dayToDate(subscription.end)).plus(1).days())
             : today();
 

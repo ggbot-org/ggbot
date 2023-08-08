@@ -20,8 +20,8 @@ import {
   itemIdCharacters,
   newId,
   Scheduling,
+  statusOfSubscription,
   Subscription,
-  subscriptionStatus,
 } from "@ggbot2/models";
 import { now, Time, truncateTime } from "@ggbot2/time";
 import { readFile, writeFile } from "fs/promises";
@@ -170,7 +170,7 @@ export class Executor {
         const subscription = await this.getSubscription(accountKey);
         if (
           !isSubscription(subscription) ||
-          subscriptionStatus(subscription) !== "active"
+          statusOfSubscription(subscription) !== "active"
         ) {
           await this.suspendAccountStrategies(accountKey);
           continue;
