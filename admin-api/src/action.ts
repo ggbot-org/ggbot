@@ -1,8 +1,7 @@
 import { isAdminApiActionRequestData as isApiActionRequestData } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -16,9 +15,7 @@ import {
 import { listAccountKeys, readAccount } from "@ggbot2/database";
 import { isReadAccountInput } from "@ggbot2/models";
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
       case "OPTIONS":

@@ -4,8 +4,7 @@ import {
 } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -21,9 +20,7 @@ import {
 import { __200__OK__ } from "@ggbot2/http";
 import { today } from "@ggbot2/time";
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
       case "OPTIONS":

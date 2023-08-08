@@ -140,3 +140,7 @@ export type APIGatewayProxyResult = {
   body: string;
   isBase64Encoded?: boolean | undefined;
 };
+
+export type APIGatewayProxyHandler = (
+  event: APIGatewayProxyEvent
+) => Promise<APIGatewayProxyResult>;

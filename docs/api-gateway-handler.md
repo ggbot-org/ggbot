@@ -10,8 +10,7 @@ import {
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
   OK,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
 } from "@ggbot2/api-gateway";
 import { UserWebappBaseURL } from "@ggbot2/locators";
 import { objectTypeGuard } from "@ggbot2/type-utils";
@@ -28,9 +27,7 @@ const isRequestData = objectTypeGuard<RequestData>(
   ({ message }) => typeof message === "string"
 );
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
       case "OPTIONS":

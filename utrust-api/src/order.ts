@@ -4,8 +4,7 @@ import {
 } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -38,9 +37,7 @@ import {
 import { dateToDay, dayToDate, getDate, today } from "@ggbot2/time";
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library";
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
 

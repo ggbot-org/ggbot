@@ -1,7 +1,6 @@
 import { ApiUtrustCallabackRequestData } from "@ggbot2/api";
 import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -20,9 +19,7 @@ import {
   WebhookValidator,
 } from "@utrustdev/utrust-ts-library";
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
       case "POST": {

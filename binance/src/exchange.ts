@@ -1,5 +1,3 @@
-import { Time, TimeInterval, truncateTime } from "@ggbot2/time";
-
 import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js";
 import { BinanceConnector } from "./connector.js";
 import {
@@ -15,7 +13,6 @@ import {
   lotSizeIsValid,
   minNotionalIsValid,
 } from "./symbolFilters.js";
-import { getBinanceIntervalTime } from "./time.js";
 import {
   isBinanceKlineInterval,
   isBinanceKlineOptionalParameters,
@@ -26,7 +23,6 @@ import {
   BinanceAvgPrice,
   BinanceExchangeInfo,
   BinanceKline,
-  binanceKlineDefaultLimit,
   BinanceKlineInterval,
   BinanceKlineOptionalParameters,
   BinanceNewOrderOptions,
@@ -56,17 +52,25 @@ import {
  * } from "@ggbot2/binance";
  *
  * const exchangeInfoCache = new BinanceExchangeInfoCacheMap();
- * const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl, exchangeInfoCache);
+ * const binance = new BinanceExchange(
+ *   BinanceConnector.defaultBaseUrl,
+ *   exchangeInfoCache
+ * );
  * ```
  */
 export class BinanceExchange {
   readonly connector: BinanceConnector;
 
-  private readonly exchangeInfoCache: BinanceExchangeInfoCacheProvider | undefined;
+  private readonly exchangeInfoCache:
+    | BinanceExchangeInfoCacheProvider
+    | undefined;
 
-  constructor(baseUrl?: string, exchangeInfoCache?: BinanceExchange['exchangeInfoCache']) {
+  constructor(
+    baseUrl?: string,
+    exchangeInfoCache?: BinanceExchange["exchangeInfoCache"]
+  ) {
     this.connector = new BinanceConnector(baseUrl);
-    this.exchangeInfoCache = exchangeInfoCache
+    this.exchangeInfoCache = exchangeInfoCache;
   }
 
   static throwIfMinNotionalFilterIsInvalid(
@@ -86,40 +90,6 @@ export class BinanceExchange {
   ) {
     if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
       throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" });
-  }
-
-  // TODO this may be removed
-  static coerceKlineOptionalParametersToTimeInterval(
-    interval: BinanceKlineInterval,
-    { startTime, endTime, limit }: BinanceKlineOptionalParameters,
-    currentTime?: Time
-  ): TimeInterval {
-    if (startTime) {
-      if (endTime) {
-        return { start: startTime, end: endTime };
-      } else {
-        return {
-          start: startTime,
-          end: getBinanceIntervalTime[interval](startTime).plus(
-            limit ?? binanceKlineDefaultLimit
-          ),
-        };
-      }
-    } else if (endTime) {
-      return {
-        start: getBinanceIntervalTime[interval](endTime).minus(
-          limit ?? binanceKlineDefaultLimit
-        ),
-        end: endTime,
-      };
-    } else if (limit && currentTime) {
-      const endTime = truncateTime(currentTime).to.second();
-      return {
-        start: getBinanceIntervalTime[interval](endTime).minus(limit),
-        end: endTime,
-      };
-    }
-    throw new Error();
   }
 
   /**

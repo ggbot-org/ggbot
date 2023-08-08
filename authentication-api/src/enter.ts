@@ -4,8 +4,7 @@ import {
 } from "@ggbot2/api";
 import {
   ALLOWED_METHODS,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyHandler,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   METHOD_NOT_ALLOWED,
@@ -13,9 +12,7 @@ import {
 } from "@ggbot2/api-gateway";
 import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database";
 
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
       case "OPTIONS":
