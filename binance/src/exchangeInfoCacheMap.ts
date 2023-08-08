@@ -26,7 +26,9 @@ export class BinanceExchangeInfoCacheMap
     if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value);
   }
 
-  private readonly isValidSymbolMap = new CacheMap<boolean>(exchangeInfoCacheDuration);
+  private readonly isValidSymbolMap = new CacheMap<boolean>(
+    exchangeInfoCacheDuration
+  );
 
   getIsValidSymbol(symbol: string) {
     return this.isValidSymbolMap.get(symbol);

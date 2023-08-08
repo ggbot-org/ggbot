@@ -35,5 +35,3 @@ export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
     this.klinesMap.set(key, kline);
   }
 }
-
-

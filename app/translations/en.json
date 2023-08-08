@@ -33,10 +33,16 @@
     "defaultMessage": "Verification failed."
   },
   "AuthVerify.checkEmail": {
-    "defaultMessage": "Check your email to get the <em>One Time Password</em>."
+    "defaultMessage": "Check your email to get the <em>One Time Password</em>. If the email is not correct, click the {resetEmail} button."
+  },
+  "AuthVerify.enterOneTimePassword": {
+    "defaultMessage": "Enter the 6-digits <em>One Time Password</em> you find in your email."
   },
   "AuthVerify.resetEmail": {
     "defaultMessage": "Reset"
+  },
+  "AuthVerify.title": {
+    "defaultMessage": "Account verification"
   },
   "BacktestingActions.pause": {
     "defaultMessage": "Pause"

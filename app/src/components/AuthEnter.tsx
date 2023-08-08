@@ -132,12 +132,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
           <FormattedMessage id="AuthEnter.title" />
         </Title>
 
-        <Email
-          required
-          name={fieldName.email}
-          type="email"
-          readOnly={isPending}
-        />
+        <Email required name={fieldName.email} readOnly={isPending} />
 
         <Field isGrouped>
           <Control>

@@ -4,19 +4,24 @@ import {
 } from "@ggbot2/api";
 import {
   Button,
+  Column,
+  Columns,
   Control,
   Field,
   Form,
+  FormOnReset,
   FormOnSubmit,
+  Input,
+  Label,
   Message,
   Modal,
+  Title,
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { FC, Reducer, useCallback, useContext, useReducer } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
-import { Email } from "../components/Email.js";
 import { GenericError } from "../components/GenericError.js";
 import { OneTimePassword } from "../components/OneTimePassword.js";
 import { RegenerateOneTimePassword } from "../components/RegenerateOneTimePassword.js";
@@ -39,6 +44,7 @@ type State = {
 };
 
 export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
+  const { formatMessage } = useIntl();
   const { resetEmail } = useContext(AuthenticationContext);
 
   const [
@@ -91,6 +97,14 @@ export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
       }
     },
     { hasGenericError: false }
+  );
+
+  const onReset = useCallback<FormOnReset>(
+    (event) => {
+      event.preventDefault();
+      resetEmail();
+    },
+    [resetEmail]
   );
 
   const onSubmit = useCallback<FormOnSubmit>(
@@ -160,25 +174,55 @@ export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
 
   return (
     <Modal isActive>
-      <Form box onSubmit={onSubmit}>
-        <Email readOnly value={email} />
-
-        <Field>
-          <Control>
-            <Button size="small" onClick={resetEmail}>
-              <FormattedMessage id="AuthVerify.resetEmail" />
-            </Button>
-          </Control>
-        </Field>
+      <Form box onSubmit={onSubmit} onReset={onReset}>
+        <Title>
+          <FormattedMessage id="AuthVerify.title" />
+        </Title>
 
         <Message>
           <FormattedMessage
             id="AuthVerify.checkEmail"
+            values={{
+              em: (chunks) => <em>{chunks}</em>,
+              resetEmail: formatMessage({ id: "AuthVerify.resetEmail" }),
+            }}
+          />
+        </Message>
+
+        <Columns>
+          <Column size={{ desktop: "half" }}>
+            <Label htmlFor="email">
+              <FormattedMessage id="Email.label" />
+            </Label>
+
+            <Field hasAddons>
+              <Control isExpanded>
+                <Input isStatic id="email" defaultValue={email} />
+              </Control>
+
+              <Control>
+                <Button type="reset" onClick={resetEmail}>
+                  <FormattedMessage id="AuthVerify.resetEmail" />
+                </Button>
+              </Control>
+            </Field>
+          </Column>
+        </Columns>
+
+        <Message>
+          <FormattedMessage
+            id="AuthVerify.enterOneTimePassword"
             values={{ em: (chunks) => <em>{chunks}</em> }}
           />
         </Message>
 
-        <OneTimePassword required name="code" readOnly={isPending} />
+        <Columns>
+          <Column size={{ desktop: "half" }}>
+            <OneTimePassword required name="code" readOnly={isPending} />
+          </Column>
+
+          <Column size="half" />
+        </Columns>
 
         <Field>
           <Control>
