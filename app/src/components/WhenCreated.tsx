@@ -3,7 +3,7 @@ import { Time } from "@ggbot2/time";
 import { FC } from "react";
 import { useIntl } from "react-intl";
 
-type Props = Omit<InputFieldProps, "label" | "readOnly" | "value"> & {
+type Props = Omit<InputFieldProps, "label" | "value" | "isStatic"> & {
   value: Time;
 };
 
@@ -12,7 +12,7 @@ export const WhenCreated: FC<Props> = ({ value, ...props }) => {
 
   return (
     <InputField
-      readOnly
+      isStatic
       label={formatMessage({ id: "WhenCreated.label" })}
       value={formatDate(value, dayFormat)}
       {...props}

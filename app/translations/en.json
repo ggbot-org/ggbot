@@ -20,6 +20,9 @@
   "AuthExit.button": {
     "defaultMessage": "Exit"
   },
+  "AuthExit.message": {
+    "defaultMessage": "Exit from your current account session."
+  },
   "AuthExit.title": {
     "defaultMessage": "Exit ggbot2"
   },
@@ -364,6 +367,9 @@
   },
   "SubscriptionInfo.title": {
     "defaultMessage": "Subscription"
+  },
+  "SubscriptionInfo.pleasePurchase": {
+    "defaultMessage": "Please purchase a subscription."
   },
   "SubscriptionNumMonths.label": {
     "defaultMessage": "Num months"

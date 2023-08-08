@@ -12,7 +12,7 @@ export const StrategyRecord: FC<Props> = ({ strategy }) => (
   <>
     <Columns>
       <Column>
-        <StrategyName readOnly value={strategy.name} />
+        <StrategyName isStatic value={strategy.name} />
       </Column>
     </Columns>
 

@@ -206,6 +206,15 @@ export const SubscriptionPurchase: FC = () => {
         </Flex>
       </Message>
 
+      <Email isStatic value={account.email} />
+
+      <SelectCountry
+        name={fieldName.country}
+        onChange={onChangeCountry}
+        options={countryOptions}
+        value={country}
+      />
+
       <Columns>
         <Column isNarrow>
           <SubscriptionNumMonths
@@ -215,21 +224,12 @@ export const SubscriptionPurchase: FC = () => {
         </Column>
 
         <Column>
-          <SubscriptionEnd value={newSubscriptionEnd} />
+          <SubscriptionEnd isStatic value={newSubscriptionEnd} />
         </Column>
       </Columns>
 
-      <SelectCountry
-        name={fieldName.country}
-        onChange={onChangeCountry}
-        options={countryOptions}
-        value={country}
-      />
-
-      <Email readOnly value={account.email} />
-
       <SubscriptionTotalPrice
-        isYearlyPurchase={isYearlyPurchase === true}
+        isYearlyPurchase={isYearlyPurchase}
         numMonths={numMonths}
       />
 

@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useIntl } from "react-intl";
 
 type Props = Omit<InputFieldProps, "color" | "help" | "label" | "readOnly"> & {
-  isYearlyPurchase: boolean;
+  isYearlyPurchase: boolean | undefined;
   numMonths: number | undefined;
 };
 
@@ -16,9 +16,9 @@ export const SubscriptionTotalPrice: FC<Props> = ({
 
   return (
     <InputField
-      readOnly
+      isStatic
       label={formatMessage({ id: "SubscriptionTotalPrice.label" })}
-      color={isYearlyPurchase ? "success" : undefined}
+      color={isYearlyPurchase ? "primary" : undefined}
       value={
         numMonths
           ? formatNumber(totalPurchase(numMonths), {

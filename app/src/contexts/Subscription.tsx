@@ -1,10 +1,11 @@
 import {
   isSubscription,
+  shouldPurchaseSubscription,
   statusOfSubscription,
   SubscriptionPlan,
   SubscriptionStatus,
 } from "@ggbot2/models";
-import { dayToTime, getTime, now, Time } from "@ggbot2/time";
+import { dayToTime, Time } from "@ggbot2/time";
 import {
   createContext,
   FC,
@@ -40,9 +41,7 @@ export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!isSubscription(subscription)) return {};
     const subscriptionStatus = statusOfSubscription(subscription);
     return {
-      // TODO 30 should not be hardocoded, put it in models
-      canPurchaseSubscription:
-        getTime(dayToTime(subscription.end)).minus(30).days() < now(),
+      canPurchaseSubscription: shouldPurchaseSubscription(subscription),
       hasActiveSubscription: subscriptionStatus === "active",
       subscriptionEnd: dayToTime(subscription.end),
       subscriptionStatus,

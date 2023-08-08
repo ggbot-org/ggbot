@@ -15,7 +15,7 @@ import { isLiteralType } from "@ggbot2/type-utils";
  *     dflowBinanceKlineIntervals.indexOf(a.interval) -
  *     dflowBinanceKlineIntervals.indexOf(b.interval)
  * );
- * console.log(sortedValues); // [ { interval: '1h' }, { interval: '1d' } ];
+ * console.info(sortedValues); // [ { interval: '1h' }, { interval: '1d' } ];
  * ```
  */
 export const dflowBinanceKlineIntervals = [

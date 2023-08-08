@@ -1,4 +1,4 @@
-import { FC, ReactNode, useId, useMemo } from "react";
+import { FC, ReactNode, useId } from "react";
 import {
   Control,
   ControlProps,
@@ -21,21 +21,20 @@ export const InputField: FC<InputFieldProps> = ({
   isLoading,
   label,
   readOnly,
+  isStatic,
   value: inputValue,
   ...props
 }) => {
   const id = useId();
 
-  const value = useMemo<
-    Pick<InputProps, "defaultValue" | "readOnly" | "value">
-  >(
-    () => ({
-      defaultValue: readOnly ? inputValue : undefined,
-      readOnly,
-      value: readOnly ? undefined : inputValue,
-    }),
-    [readOnly, inputValue]
-  );
+  let isReadOnly = readOnly;
+  if (isStatic) isReadOnly = true;
+
+  const value: Pick<InputProps, "defaultValue" | "readOnly" | "value"> = {
+    defaultValue: isReadOnly ? inputValue : undefined,
+    readOnly: isReadOnly,
+    value: isReadOnly ? undefined : inputValue,
+  };
 
   return (
     <Field>
@@ -46,6 +45,7 @@ export const InputField: FC<InputFieldProps> = ({
           id={id}
           color={color}
           readOnly={readOnly}
+          isStatic={isStatic}
           {...value}
           {...props}
         />

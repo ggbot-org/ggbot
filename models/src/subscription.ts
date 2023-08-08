@@ -1,4 +1,11 @@
-import { DayInterval, isDay, today } from "@ggbot2/time";
+import {
+  DayInterval,
+  dayToTime,
+  getTime,
+  isDay,
+  now,
+  today,
+} from "@ggbot2/time";
 import {
   isLiteralType,
   NaturalNumber,
@@ -16,6 +23,17 @@ export const purchaseCurrency: Currency = "EUR";
 export const purchaseDefaultNumMonths = 6;
 export const purchaseMaxNumMonths = 12;
 export const purchaseMinNumMonths = 1;
+
+export const shouldPurchaseSubscription = (
+  subscription: Subscription
+): boolean => {
+  const numDaysBeforeSubscriptionEnd = 30;
+  return (
+    getTime(dayToTime(subscription.end))
+      .minus(numDaysBeforeSubscriptionEnd)
+      .days() < now()
+  );
+};
 
 export const totalPurchase = (numMonths: NaturalNumber) => {
   // if 12 months, apply discount.

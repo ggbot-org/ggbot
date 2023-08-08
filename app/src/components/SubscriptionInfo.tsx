@@ -1,4 +1,4 @@
-import { Box, Control, Field, Title } from "@ggbot2/design";
+import { Box, Control, Field, Message, Title } from "@ggbot2/design";
 import { FC, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -8,8 +8,34 @@ import { SubscriptionStatus } from "../components/SubscriptionStatus.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 
 export const SubscriptionInfo: FC = () => {
-  const { subscriptionEnd, subscriptionPlan, subscriptionStatus } =
-    useContext(SubscriptionContext);
+  const {
+    subscriptionEnd,
+    subscriptionPlan,
+    subscriptionStatus,
+    hasActiveSubscription,
+  } = useContext(SubscriptionContext);
+
+  if (hasActiveSubscription === undefined)
+    return (
+      <Box>
+        <Title>
+          <FormattedMessage id="SubscriptionInfo.title" />
+        </Title>
+      </Box>
+    );
+
+  if (hasActiveSubscription === false)
+    return (
+      <Box>
+        <Title>
+          <FormattedMessage id="SubscriptionInfo.title" />
+        </Title>
+
+        <Message color="info">
+          <FormattedMessage id="SubscriptionInfo.pleasePurchase" />
+        </Message>
+      </Box>
+    );
 
   return (
     <Box>
@@ -25,9 +51,9 @@ export const SubscriptionInfo: FC = () => {
         </Control>
       </Field>
 
-      <SubscriptionPlan readOnly value={subscriptionPlan} />
+      <SubscriptionPlan isStatic value={subscriptionPlan} />
 
-      <SubscriptionEnd readOnly value={subscriptionEnd} />
+      <SubscriptionEnd isStatic value={subscriptionEnd} />
     </Box>
   );
 };

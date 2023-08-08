@@ -1,9 +1,12 @@
 import {
   Button,
+  Column,
+  Columns,
   Control,
   Field,
   Form,
   FormOnSubmit,
+  Message,
   Modal,
   Title,
 } from "@ggbot2/design";
@@ -45,9 +48,19 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
           <FormattedMessage id="AuthExit.title" />
         </Title>
 
-        <Email readOnly value={account.email} />
+        <Message>
+          <FormattedMessage id="AuthExit.message" />
+        </Message>
 
-        <AccountId value={account.id} />
+        <Columns>
+          <Column size="half">
+            <Email isStatic value={account.email} />
+          </Column>
+
+          <Column size="half">
+            <AccountId value={account.id} />
+          </Column>
+        </Columns>
 
         <Field isGrouped>
           <Control>

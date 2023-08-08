@@ -16,7 +16,7 @@ export const AccountSettings: FC = () => {
         <FormattedMessage id="AccountSettings.title" />
       </Title>
 
-      <Email readOnly value={account.email} />
+      <Email isStatic value={account.email} />
 
       <WhenCreated value={account.whenCreated} />
 

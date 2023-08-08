@@ -11,7 +11,7 @@ export const FlowMenu: FC<PropsWithChildren> = ({ children }) => {
     <Flex
       alignItems="center"
       justify="space-between"
-      spacing={{ mb: 3, pl: 5 }}
+      spacing={{ mb: 5, pl: 5 }}
     >
       <div>
         <span>{strategy.name}</span>
