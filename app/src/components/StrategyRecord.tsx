@@ -3,7 +3,6 @@ import { Strategy } from "@ggbot2/models";
 import { FC } from "react";
 
 import { StrategyId } from "../components/StrategyId.js";
-import { StrategyKind } from "../components/StrategyKind.js";
 import { StrategyName } from "../components/StrategyName.js";
 import { WhenCreated } from "../components/WhenCreated.js";
 
@@ -18,10 +17,6 @@ export const StrategyRecord: FC<Props> = ({ strategy }) => (
     </Columns>
 
     <Columns>
-      <Column>
-        <StrategyKind value={strategy.kind} />
-      </Column>
-
       <Column>
         <StrategyId value={strategy.id} />
       </Column>
