@@ -1,7 +1,5 @@
 # EC2 service
 
-Start from latest image created with steps described in [EC2 base AMI](./ec2-base-ami.md).
-
 EC2 services that powers ggbot2 are implemented by the following workspaces:
 
 - [binance-proxy](../binance-proxy/)
@@ -15,9 +13,13 @@ Every EC2 instance run only one of those services, the following instructions di
 
 Since there is one service per EC2 instance, the service name will be always _ggbot2_.
 
+Start from latest image created with steps described in [EC2 base AMI](./ec2-base-ami.md).
+
+See [how to launch EC2 instance](./ec2-launch-instance.md).
+
 ## Deploy stage
 
-First of all, define the _Deploy stage_: it can be `main` or `local`.
+First of all, define the _Deploy stage_: it can be `main` or `next`.
 
 ## Update code
 
@@ -44,7 +46,7 @@ Set `SERVICE` either to:
 Then run the following.
 
 ```sh
-sudo -c cat << EOF > /lib/systemd/system/ggbot2.service
+cat << EOF > /lib/systemd/system/ggbot2.service
 [Unit]
 Description=crypto flow
 Documentation=https://ggbot2.com
@@ -104,14 +106,14 @@ Tell _systemd_ that there is a new service or that configuration was updated.
 sudo systemctl daemon-reload
 ```
 
-## Add service aliases
+## Create AMI
+
+Create an image, with name
 
 ```sh
-mkdir -p ~/.bashrc.d
-
-cat << EOF > ~/.bashrc.d/ggbot2-aliases.sh
-alias start='sudo systemctl start ggbot2'
-alias stop='sudo systemctl stop ggbot2'
-alias status='sudo systemctl status ggbot2'
-EOF
+ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYYYMMDD}
 ```
+
+for example `ggbot2_next_executor_2023-08-04`.
+
+Go to [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)

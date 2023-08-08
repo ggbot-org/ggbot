@@ -4,7 +4,7 @@
 
 Create a new instance starting from _Amazon Linux 2023 AMI_.
 
-Connect via SSH with _ec2-user_.
+See [how to launch EC2 instance](./ec2-launch-instance.md).
 
 Update all software.
 
@@ -22,28 +22,17 @@ sudo yum install -y git
 
 Configure git, setup credentials.
 
-<!--
-TODO: Does CodeCommit work? Use GitHub keys or CodeCommit
-
-
-
 ```sh
 git config --global credential.helper '!aws codecommit credential-helper $@'
 
 git config --global credential.UseHttpPath true
 ```
 
-Double check there is a proper IAM role attached to the EC2 instance.
-
--->
-
 Clone repository
 
-<!--
 ```sh
 git clone https://git-codecommit.eu-central-1.amazonaws.com/v1/repos/ggbot2-monorepo
 ```
--->
 
 ## Node
 
@@ -61,10 +50,30 @@ node --version
 
 Update [NVM](./tech-stack.md#nvm) config with latest version.
 
-Create an image, for instance named as `ggbot2-2023-nodejs-v18.12.1`.
+## Add service aliases
+
+```sh
+mkdir -p ~/.bashrc.d
+
+cat << EOF > ~/.bashrc.d/ggbot2-aliases.sh
+alias start='sudo systemctl start ggbot2'
+alias stop='sudo systemctl stop ggbot2'
+alias status='sudo systemctl status ggbot2'
+EOF
+```
+
+## Create AMI
+
+Create an image, with name
+
+```sh
+ggbot2_base_${YYYYMMDD}
+```
+
+for example `ggbot2_base_2023-04-02`.
 
 Go to [EC2 service]
 
 ## Setup service
 
-Go to [EC2 service](./ec2-service.md).
+Go to [EC2 services](./ec2-services.md).
