@@ -48,7 +48,7 @@ Check which Node.js version was installed, it should be `v18.x`
 node --version
 ```
 
-Update [NVM](./tech-stack.md#nvm) config with latest version.
+Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 
 ## Add service aliases
 

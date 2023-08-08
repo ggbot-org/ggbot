@@ -94,6 +94,11 @@ Package manager used is _npm_.
 
 Node is also used for tests, with `node:test` module: see [Node Test runner documentation](https://nodejs.org/api/test.html).
 
+Current Node.js version used on AWS AMI is `v18.2.1`.
+Local Node.js version used for development is `>20` cause it is using latest Node TestRunner.
+
+Node version currently
+
 ## npm workspaces
 
 https://docs.npmjs.com/cli/v7/using-npm/workspaces
