@@ -25,16 +25,22 @@ const fieldName = {
 const fields = Object.keys(fieldName);
 
 export const RenameStrategy: FC = () => {
-  const { strategy } = useContext(StrategyContext);
+  const { strategy, updateStrategyName } = useContext(StrategyContext);
 
   const [error, setError] = useState<UseActionError>();
   const [canCreate, setCanCreate] = useState(false);
+  const [name, setName] = useState("");
   const [modalIsActive, setModalIsActive] = useState(false);
 
   const color = canCreate ? (error ? "warning" : "primary") : undefined;
 
   const onChangeName = useCallback<InputOnChange>((event) => {
-    setCanCreate(isName(event.target.value));
+    const value = event.target.value;
+    const canCreate = isName(value);
+    if (canCreate) {
+      setCanCreate(true);
+      setName(value);
+    }
   }, []);
 
   const toggleModal = useCallback(() => {
@@ -42,8 +48,7 @@ export const RenameStrategy: FC = () => {
   }, []);
 
   const RENAME = useApi.RenameStrategy();
-  const isLoading = RENAME.isPending;
-  const readOnly = RENAME.isPending;
+  const isPending = RENAME.isPending;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -68,8 +73,12 @@ export const RenameStrategy: FC = () => {
   }, [RENAME]);
 
   useEffect(() => {
-    if (RENAME.isDone) setModalIsActive(false);
-  }, [RENAME]);
+    if (RENAME.isDone) {
+      RENAME.reset();
+      updateStrategyName(name);
+      setModalIsActive(false);
+    }
+  }, [RENAME, updateStrategyName, name]);
 
   return (
     <>
@@ -89,9 +98,10 @@ export const RenameStrategy: FC = () => {
 
           <StrategyName
             required
+            placeholder={strategy.name}
             name={fieldName.name}
             onChange={onChangeName}
-            readOnly={readOnly}
+            readOnly={isPending}
           />
 
           <Field isGrouped>
@@ -99,7 +109,7 @@ export const RenameStrategy: FC = () => {
               <Button
                 color={color}
                 isLight={color !== "primary"}
-                isLoading={isLoading}
+                isLoading={isPending}
                 isOutlined={color === "primary"}
               >
                 <FormattedMessage id="RenameStrategy.save" />

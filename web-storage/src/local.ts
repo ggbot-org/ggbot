@@ -5,20 +5,20 @@ const jwtKey = "jwt";
 const strategyKey = (id: Strategy["id"]) => `strategy:${id}`;
 
 class LocalWebStorage {
-  clear() {
-    window.localStorage.clear();
-  }
-
-  getItem(key: string) {
+  private getItem(key: string) {
     return window.localStorage.getItem(key);
   }
 
-  setItem(key: string, value: string) {
+  private setItem(key: string, value: string) {
     window.localStorage.setItem(key, value);
   }
 
-  removeItem(key: string) {
+  private removeItem(key: string) {
     window.localStorage.removeItem(key);
+  }
+
+  clear() {
+    window.localStorage.clear();
   }
 
   get jwt(): NonEmptyString | undefined {

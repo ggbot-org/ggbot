@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 
 import { InvalidStrategyKey } from "../components/InvalidStrategyKey.js";
@@ -18,13 +19,12 @@ import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyPara
 type ContextValue = {
   // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
   strategy: Strategy;
-
-  updateName: (name: string) => void;
+  updateStrategyName: (name: string) => void;
 };
 
 export const StrategyContext = createContext<ContextValue>({
   strategy: noneStrategy,
-  updateName: () => {},
+  updateStrategyName: () => {},
 });
 
 StrategyContext.displayName = "StrategyContext";
@@ -33,27 +33,35 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   const strategyKey = strategyKeyParamsFromCurrentLocation();
   const strategyId = strategyKey?.strategyId;
 
+  const [name, setName] = useState("");
+
   const READ_STRATEGY = useApi.ReadStrategy();
+  const remoteStrategy = READ_STRATEGY.data;
 
   const strategy = useMemo(() => {
     if (!strategyId) return noneStrategy;
-    const remoteStrategy = READ_STRATEGY.data;
-    if (isStrategy(remoteStrategy)) return remoteStrategy;
+    if (isStrategy(remoteStrategy))
+      return name ? { ...remoteStrategy, name } : remoteStrategy;
     const localStrategy = localWebStorage.getStrategy(strategyId);
-    if (isStrategy(localStrategy)) return localStrategy;
+    if (isStrategy(localStrategy))
+      return name ? { ...localStrategy, name } : localStrategy;
     return noneStrategy;
-  }, [READ_STRATEGY, strategyId]);
+  }, [remoteStrategy, strategyId, name]);
 
-  const updateName = useCallback(() => {
-    READ_STRATEGY.reset();
-  }, [READ_STRATEGY]);
+  const updateStrategyName = useCallback<ContextValue["updateStrategyName"]>(
+    (name) => {
+      setName(name);
+      localWebStorage.setStrategy({ ...strategy, name });
+    },
+    [strategy]
+  );
 
   const contextValue = useMemo<ContextValue>(
     () => ({
       strategy,
-      updateName,
+      updateStrategyName,
     }),
-    [strategy, updateName]
+    [strategy, updateStrategyName]
   );
 
   // Fetch strategy.
@@ -65,10 +73,9 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   // Cache strategy.
   useEffect(() => {
     if (!strategyId) return;
-    const strategy = READ_STRATEGY.data;
-    if (isStrategy(strategy)) localWebStorage.setStrategy(strategy);
-    if (strategy === null) localWebStorage.removeItem(strategyId);
-  }, [READ_STRATEGY, strategyId]);
+    if (isStrategy(remoteStrategy)) localWebStorage.setStrategy(remoteStrategy);
+    if (remoteStrategy === null) localWebStorage.removeStrategy(strategyId);
+  }, [remoteStrategy, strategyId]);
 
   if (!strategyKey)
     return (

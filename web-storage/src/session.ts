@@ -9,23 +9,23 @@ const binanceExchangeInfoKey = "binanceExchangeInfo";
 const activeTabIdKey = (pageName: string) => `${pageName}:activeTab`;
 
 class SessionWebStorage {
-  clear() {
-    window.sessionStorage.clear();
-  }
-
-  getItem(key: string) {
+  private getItem(key: string) {
     return window.sessionStorage.getItem(key);
   }
 
-  setItem(key: string, value: string) {
+  private setItem(key: string, value: string) {
     window.sessionStorage.setItem(key, value);
   }
 
-  removeItem(key: string) {
+  private removeItem(key: string) {
     if (key === "binanceExchangeInfo")
       this.binanceExchangeInfoIsValid = undefined;
 
     window.sessionStorage.removeItem(key);
+  }
+
+  clear() {
+    window.sessionStorage.clear();
   }
 
   getActiveTabId<TabId extends string>(
