@@ -5,6 +5,7 @@ import {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useEffect,
   useMemo,
 } from "react";
@@ -17,10 +18,13 @@ import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyPara
 type ContextValue = {
   // If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
   strategy: Strategy;
+
+  updateName: (name: string) => void;
 };
 
 export const StrategyContext = createContext<ContextValue>({
   strategy: noneStrategy,
+  updateName: () => {},
 });
 
 StrategyContext.displayName = "StrategyContext";
@@ -33,18 +37,23 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const strategy = useMemo(() => {
     if (!strategyId) return noneStrategy;
-    const localStrategy = localWebStorage.getStrategy(strategyId);
-    if (isStrategy(localStrategy)) return localStrategy;
     const remoteStrategy = READ_STRATEGY.data;
     if (isStrategy(remoteStrategy)) return remoteStrategy;
+    const localStrategy = localWebStorage.getStrategy(strategyId);
+    if (isStrategy(localStrategy)) return localStrategy;
     return noneStrategy;
   }, [READ_STRATEGY, strategyId]);
+
+  const updateName = useCallback(() => {
+    READ_STRATEGY.reset();
+  }, [READ_STRATEGY]);
 
   const contextValue = useMemo<ContextValue>(
     () => ({
       strategy,
+      updateName,
     }),
-    [strategy]
+    [strategy, updateName]
   );
 
   // Fetch strategy.

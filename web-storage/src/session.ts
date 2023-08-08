@@ -4,6 +4,7 @@ import { isLiteralType } from "@ggbot2/type-utils";
 
 const emailKey = "email";
 const gotFirstPageViewKey = "gotFirstPageView";
+const doNotShowPleasePurchaseKey = "doNotShowPleasePurchase";
 const binanceExchangeInfoKey = "binanceExchangeInfo";
 const activeTabIdKey = (pageName: string) => `${pageName}:activeTab`;
 
@@ -91,15 +92,20 @@ class SessionWebStorage {
     }
   }
 
+  get doNotShowPleasePurchase(): boolean {
+    return Boolean(this.getItem(doNotShowPleasePurchaseKey));
+  }
+
+  set doNotShowPleasePurchase(value: boolean) {
+    this.setItem(doNotShowPleasePurchaseKey, String(value));
+  }
+
   get gotFirstPageView(): boolean {
-    const value = this.getItem(gotFirstPageViewKey);
-    return Boolean(value);
+    return Boolean(this.getItem(gotFirstPageViewKey));
   }
 
   set gotFirstPageView(value: boolean) {
-    if (value) {
-      this.setItem(gotFirstPageViewKey, String(true));
-    }
+    this.setItem(gotFirstPageViewKey, String(value));
   }
 }
 

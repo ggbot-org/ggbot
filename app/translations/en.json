@@ -254,11 +254,17 @@
   "PleaseConfigureBinance.message": {
     "defaultMessage": "You cannot run strategies on Binance yet."
   },
+  "PleasePurchase.doNotShow": {
+    "defaultMessage": "Do not show this message for a while."
+  },
   "PleasePurchase.message": {
     "defaultMessage": "You cannot run a strategy without a subscription."
   },
   "PleasePurchase.goToSettings": {
     "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
+  },
+  "PleasePurchase.title": {
+    "defaultMessage": "Please purchase"
   },
   "ProfitSummary.fees": {
     "defaultMessage": "Fees"
