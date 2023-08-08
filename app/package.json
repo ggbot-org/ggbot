@@ -13,7 +13,7 @@
     "deploy": "sh src/scripts/deploy.sh",
     "formatjs:compile:en": "formatjs compile translations/en.json --ast --out-file public/translations/en.json",
     "generate_css": "npm run sass",
-    "generate_formatjs_types": "node src/scripts/generate_formatjs_types.js",
+    "generate_formatjs_types": "node temp/scripts/generate_formatjs_types.js",
     "generate_html": "node temp/scripts/generate_html.js",
     "generate_js": "node temp/scripts/generate_js.js",
     "generate_public_files": "npm run compile_translations && npm run generate_html && npm run generate_js && npm run generate_css",

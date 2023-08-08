@@ -5,7 +5,7 @@ import { today } from "@ggbot2/time";
 
 export * from "./routing/pages.js";
 
-const rootDir = packageRootDir(import.meta.url);
+export const rootDir = packageRootDir(import.meta.url);
 
 export const publicDir = packageDir(rootDir, "public");
 
