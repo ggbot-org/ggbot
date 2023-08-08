@@ -10,6 +10,7 @@ import {
 import { FC, useCallback, useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { AccountId } from "../components/AccountId.js";
 import { Email } from "../components/Email.js";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { wwwHomepage } from "../routing/URLs.js";
@@ -45,6 +46,8 @@ export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
         </Title>
 
         <Email readOnly value={account.email} />
+
+        <AccountId value={account.id} />
 
         <Field isGrouped>
           <Control>

@@ -2,12 +2,6 @@
   "AccountId.label": {
     "defaultMessage": "Account ID"
   },
-  "AccountNickName.label": {
-    "defaultMessage": "Nick name"
-  },
-  "AccountSettings.button": {
-    "defaultMessage": "Save"
-  },
   "AccountSettings.title": {
     "defaultMessage": "Account"
   },
