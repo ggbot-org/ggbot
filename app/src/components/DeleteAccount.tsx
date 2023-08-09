@@ -25,12 +25,13 @@ export const DeleteAccount: FC = () => {
   const [hasConsent, setHasConsent] = useState(false);
   const [modalIsActive, setModalIsActive] = useState(false);
 
-  const _setModalIsActive = useCallback<
-    Exclude<ModalProps["setIsActive"], undefined>
-  >((isActive) => {
-    setModalIsActive(isActive);
-    setHasConsent(false);
-  }, []);
+  const _setModalIsActive = useCallback<NonNullable<ModalProps["setIsActive"]>>(
+    (isActive) => {
+      setModalIsActive(isActive);
+      setHasConsent(false);
+    },
+    []
+  );
 
   const onChangeConsent = useCallback<CheckboxOnChange>(
     (event) => {

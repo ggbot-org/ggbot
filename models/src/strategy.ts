@@ -98,7 +98,7 @@ export type ListStrategyKeys = Operation<
   StrategyKey[]
 >;
 
-export type ReadStrategy = Operation<StrategyKey, Strategy | null>;
+export type ReadStrategy = Operation<StrategyKey, Strategy>;
 
 export const isReadStrategyInput = objectTypeGuard<ReadStrategy["in"]>(
   (strategyKey) => isStrategyKey(strategyKey)

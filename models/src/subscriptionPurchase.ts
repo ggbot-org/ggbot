@@ -18,16 +18,10 @@ import { DflowObject } from "dflow";
 
 import { AccountKey } from "./account.js";
 import { isItemId, Item, newId, NewItem } from "./item.js";
-import { Operation } from "./operation.js";
+import { Operation, ReadOperation, UpdateOperation } from "./operation.js";
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js";
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js";
-import {
-  createdNow,
-  CreationTime,
-  DayKey,
-  isCreationTime,
-  UpdateTime,
-} from "./time.js";
+import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js";
 
 export const subscriptionPurchaseStatuses = [
   "completed",
@@ -133,14 +127,13 @@ export const newYearlySubscription = ({
   };
 };
 
-export type ReadSubscriptionPurchase = Operation<
+export type ReadSubscriptionPurchase = ReadOperation<
   SubscriptionPurchaseKey,
-  SubscriptionPurchase | null
+  SubscriptionPurchase
 >;
 
-export type WriteSubscriptionPurchase = Operation<
-  SubscriptionPurchaseKey & SubscriptionPurchase,
-  UpdateTime
+export type WriteSubscriptionPurchase = UpdateOperation<
+  SubscriptionPurchaseKey & SubscriptionPurchase
 >;
 
 /** Create a yearly subscription. */
@@ -155,12 +148,10 @@ export type CreateMonthlySubscriptionPurchase = Operation<
   SubscriptionPurchaseKey
 >;
 
-export type UpdateSubscriptionPurchaseInfo = Operation<
-  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info">,
-  UpdateTime
+export type UpdateSubscriptionPurchaseInfo = UpdateOperation<
+  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info">
 >;
 
-export type UpdateSubscriptionPurchaseStatus = Operation<
-  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "status">,
-  UpdateTime
+export type UpdateSubscriptionPurchaseStatus = UpdateOperation<
+  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "status">
 >;

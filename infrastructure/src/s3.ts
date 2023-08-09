@@ -12,10 +12,10 @@ import { awsRegion } from "./awsRegions.js";
 
 const { DEPLOY_STAGE } = ENV;
 
-export const getAppBucketName = (deployStage = DEPLOY_STAGE) =>
+export const getAppBucketName = (deployStage = DEPLOY_STAGE()) =>
   ["local", "next"].includes(deployStage) ? appNextDomain : appDomain;
 
-export const getAppBucketArn = (deployStage = DEPLOY_STAGE) =>
+export const getAppBucketArn = (deployStage = DEPLOY_STAGE()) =>
   `arn:aws:s3:::${getAppBucketName(deployStage)}`;
 
 export const appBucketACL = BucketCannedACL.public_read;
@@ -26,20 +26,20 @@ export const getAssetsBucketArn = () => `arn:aws:s3:::${getAssetsBucketName()}`;
 
 export const assetsBucketACL = BucketCannedACL.public_read;
 
-export const getDataBucketName = (deployStage = DEPLOY_STAGE) =>
+export const getDataBucketName = (deployStage = DEPLOY_STAGE()) =>
   deployStage === "local"
     ? `next-data.${awsRegion}.${topLevelDomain}`
     : `${deployStage}-data.${awsRegion}.${topLevelDomain}`;
 
-export const getDataBucketArn = (deployStage = DEPLOY_STAGE) =>
+export const getDataBucketArn = (deployStage = DEPLOY_STAGE()) =>
   `arn:aws:s3:::${getDataBucketName(deployStage)}`;
 
 export const dataBucketACL = BucketCannedACL.private;
 
-export const getLogsBucketName = (deployStage = DEPLOY_STAGE) =>
+export const getLogsBucketName = (deployStage = DEPLOY_STAGE()) =>
   `${deployStage}-logs.${awsRegion}.${topLevelDomain}`;
 
-export const getLogsBucketArn = (deployStage = DEPLOY_STAGE) =>
+export const getLogsBucketArn = (deployStage = DEPLOY_STAGE()) =>
   `arn:aws:s3:::${getLogsBucketName(deployStage)}`;
 
 export const logsBucketACL = BucketCannedACL.private;

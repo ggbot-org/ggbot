@@ -3,8 +3,12 @@ import { DflowExecutionNodeInfo, DflowGraph } from "dflow";
 
 import { AccountStrategyKey } from "./accountStrategy.js";
 import { Balances, isBalances } from "./balance.js";
-import { Operation } from "./operation.js";
-import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js";
+import {
+  DeleteOperation,
+  ReadOperation,
+  UpdateOperation,
+} from "./operation.js";
+import { isUpdateTime, UpdateTime } from "./time.js";
 
 export type StrategyExecutionStatus = Extract<
   DflowGraph["runStatus"],
@@ -35,17 +39,13 @@ export const isStrategyExecution = objectTypeGuard<StrategyExecution>(
     Array.isArray(steps)
 );
 
-export type ReadStrategyExecution = Operation<
+export type ReadStrategyExecution = ReadOperation<
   AccountStrategyKey,
-  StrategyExecution | null
+  StrategyExecution
 >;
 
-export type WriteStrategyExecution = Operation<
-  AccountStrategyKey & Omit<StrategyExecution, "whenUpdated">,
-  UpdateTime
+export type WriteStrategyExecution = UpdateOperation<
+  AccountStrategyKey & Omit<StrategyExecution, "whenUpdated">
 >;
 
-export type DeleteStrategyExecution = Operation<
-  AccountStrategyKey,
-  DeletionTime
->;
+export type DeleteStrategyExecution = DeleteOperation<AccountStrategyKey>;

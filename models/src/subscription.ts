@@ -14,8 +14,7 @@ import {
 
 import { AccountKey } from "./account.js";
 import { Currency } from "./currency.js";
-import { Operation } from "./operation.js";
-import { UpdateTime } from "./time.js";
+import { ReadOperation, UpdateOperation } from "./operation.js";
 
 export const monthlyPrice = 10;
 
@@ -64,14 +63,8 @@ export const statusOfSubscription = ({
 }: Pick<Subscription, "end">): SubscriptionStatus =>
   end > today() ? "active" : "expired";
 
-export type ReadSubscription = Operation<AccountKey, Subscription | null>;
+export type ReadSubscription = ReadOperation<AccountKey, Subscription>;
 
-export type WriteSubscription = Operation<
-  AccountKey & Subscription,
-  UpdateTime
->;
+export type WriteSubscription = UpdateOperation<AccountKey & Subscription>;
 
-export type ReadSubscriptionPlan = Operation<
-  AccountKey,
-  SubscriptionPlan | null
->;
+export type ReadSubscriptionPlan = ReadOperation<AccountKey, SubscriptionPlan>;

@@ -2,13 +2,8 @@ import { objectTypeGuard } from "@ggbot2/type-utils";
 
 import { EmailAddress } from "./email.js";
 import { Language } from "./languages.js";
-import { Operation } from "./operation.js";
-import {
-  createdNow,
-  CreationTime,
-  DeletionTime,
-  isCreationTime,
-} from "./time.js";
+import { DeleteOperation, Operation, ReadOperation } from "./operation.js";
+import { createdNow, CreationTime, isCreationTime } from "./time.js";
 
 type OneTimePasswordCode = string;
 
@@ -37,12 +32,9 @@ export const generateOneTimePassword = (): OneTimePassword => {
 
 export type CreateOneTimePassword = Operation<EmailAddress, OneTimePassword>;
 
-export type ReadOneTimePassword = Operation<
-  EmailAddress,
-  OneTimePassword | null
->;
+export type ReadOneTimePassword = ReadOperation<EmailAddress, OneTimePassword>;
 
-export type DeleteOneTimePassword = Operation<EmailAddress, DeletionTime>;
+export type DeleteOneTimePassword = DeleteOperation<EmailAddress>;
 
 export type SendOneTimePassword = Operation<
   { email: EmailAddress; oneTimePassword: OneTimePassword; language: Language },

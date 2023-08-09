@@ -6,8 +6,8 @@ import {
 
 import { AccountKey, isAccountKey } from "./account.js";
 import { ItemKey } from "./item.js";
-import { Operation } from "./operation.js";
-import { CreationTime, DeletionTime } from "./time.js";
+import { DeleteOperation, Operation, ReadOperation } from "./operation.js";
+import { CreationTime } from "./time.js";
 
 export type BinanceApiConfig = ItemKey<{
   apiKey: NonEmptyString;
@@ -53,9 +53,11 @@ export const isCreateBinanceApiConfigInput = objectTypeGuard<
     isAccountKey(accountKey) && isBinanceApiConfig({ apiKey, apiSecret })
 );
 
-export type ReadBinanceApiConfig = Operation<
+export type ReadBinanceApiConfig = ReadOperation<AccountKey, BinanceApiConfig>;
+
+export type ReadBinanceApiKey = ReadOperation<
   AccountKey,
-  BinanceApiConfig | null
+  Pick<BinanceApiConfig, "apiKey">
 >;
 
-export type DeleteBinanceApiConfig = Operation<AccountKey, DeletionTime>;
+export type DeleteBinanceApiConfig = DeleteOperation<AccountKey>;

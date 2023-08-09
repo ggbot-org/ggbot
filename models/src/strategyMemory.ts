@@ -1,21 +1,24 @@
 import { DflowObject } from "dflow";
 
 import { AccountStrategyKey } from "./accountStrategy.js";
-import { Operation } from "./operation.js";
-import { DeletionTime, UpdateTime } from "./time.js";
+import {
+  DeleteOperation,
+  ReadOperation,
+  UpdateOperation,
+} from "./operation.js";
+import { UpdateTime } from "./time.js";
 
 export type StrategyMemory = UpdateTime & {
   memory: DflowObject;
 };
 
-export type ReadStrategyMemory = Operation<
+export type ReadStrategyMemory = ReadOperation<
   AccountStrategyKey,
-  StrategyMemory | null
+  StrategyMemory
 >;
 
-export type WriteStrategyMemory = Operation<
-  AccountStrategyKey & Omit<StrategyMemory, "whenUpdated">,
-  UpdateTime
+export type WriteStrategyMemory = UpdateOperation<
+  AccountStrategyKey & Omit<StrategyMemory, "whenUpdated">
 >;
 
-export type DeleteStrategyMemory = Operation<AccountStrategyKey, DeletionTime>;
+export type DeleteStrategyMemory = DeleteOperation<AccountStrategyKey>;

@@ -5,6 +5,7 @@ import {
   createdNow,
   DeleteBinanceApiConfig,
   ReadBinanceApiConfig,
+  ReadBinanceApiKey,
 } from "@ggbot2/models";
 
 import { deleteObject, getObject, putObject } from "./_dataBucket.js";
@@ -32,6 +33,15 @@ export const readBinanceApiConfig: ReadBinanceApiConfig["func"] = async ({
   if (!data) return null;
   binanceApiConfigCache.set(accountId, data);
   return data;
+};
+
+export const readBinanceApiKey: ReadBinanceApiKey["func"] = async ({
+  accountId,
+}) => {
+  const data = await readBinanceApiConfig({ accountId });
+  if (!data) return null;
+  const { apiKey } = data;
+  return { apiKey };
 };
 
 export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = async ({

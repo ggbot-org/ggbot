@@ -4,7 +4,6 @@ import {
   CreateBucketCommand,
   CreateBucketCommandInput,
   DeleteObjectCommand,
-  DeleteObjectCommandOutput,
   GetObjectCommand,
   HeadBucketCommand,
   HeadBucketCommandOutput,
@@ -17,7 +16,15 @@ import {
   S3ServiceException,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
+import {
+  deletedNow,
+  DeleteOperationOutput,
+  OperationOutput,
+  ReadOperationOutput,
+} from "@ggbot2/models";
 import { DflowData } from "dflow";
+
+import { ErrorInvalidData } from "./errors.js";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
 
@@ -60,31 +67,32 @@ const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
 
 export type GetObjectArgs = S3Path;
 
-export const getObject = async <Data>({
-  Bucket,
-  Key,
-}: GetObjectArgs): Promise<Data | null> => {
-  try {
-    const command = new GetObjectCommand({ Bucket, Key });
-    const output = await client.send(command);
-    const body = output?.Body;
-    if (!(body instanceof stream.Readable)) return null;
-    const json = await streamToString(body);
-    const data = JSON.parse(json);
-    return data;
-  } catch (error) {
-    if (error instanceof S3ServiceException) {
-      if (error.name === s3ServiceExceptionName.NoSuchKey) return null;
+export const getObject =
+  (Bucket: S3Path["Bucket"]) =>
+  async <Data extends OperationOutput>(
+    isData: (arg: unknown) => arg is Data,
+    Key: S3Path["Key"]
+  ): Promise<ReadOperationOutput<Data>> => {
+    try {
+      const command = new GetObjectCommand({ Bucket, Key });
+      const output = await client.send(command);
+      const body = output?.Body;
+      if (!(body instanceof stream.Readable)) return null;
+      const json = await streamToString(body);
+      const data = JSON.parse(json);
+      if (isData(data)) return data;
+      throw new ErrorInvalidData();
+    } catch (error) {
+      if (error instanceof S3ServiceException) {
+        if (error.name === s3ServiceExceptionName.NoSuchKey) return null;
+      }
+      throw error;
     }
-    throw error;
-  }
-};
+  };
 
-export type HeadBucketArgs = Pick<S3Path, "Bucket">;
-
-export const headBucket = async ({
-  Bucket,
-}: HeadBucketArgs): Promise<HeadBucketCommandOutput> => {
+export const headBucket = async (
+  Bucket: S3Path["Bucket"]
+): Promise<HeadBucketCommandOutput> => {
   const command = new HeadBucketCommand({ Bucket });
   return await client.send(command);
 };
@@ -94,68 +102,60 @@ type ListObjectsOutput = Pick<
   "Contents" | "CommonPrefixes"
 >;
 
-export type ListObjectsArgs = Pick<S3Path, "Bucket"> &
-  Pick<
+export const listObjects =
+  (Bucket: S3Path["Bucket"]) =>
+  async ({
+    ContinuationToken,
+    Contents: previousContents = [],
+    CommonPrefixes: previousCommonPrefixes = [],
+    ...params
+  }: Pick<
     ListObjectsV2CommandInput,
     "ContinuationToken" | "Delimiter" | "MaxKeys" | "Prefix" | "StartAfter"
   > &
-  ListObjectsOutput;
-
-export const listObjects = async ({
-  Bucket,
-  ContinuationToken,
-  Contents: previousContents = [],
-  CommonPrefixes: previousCommonPrefixes = [],
-  ...params
-}: ListObjectsArgs): Promise<ListObjectsOutput> => {
-  const command = new ListObjectsV2Command({
-    Bucket,
-    ContinuationToken,
-    ...params,
-  });
-  const {
-    CommonPrefixes: CurrentCommonPrefixes = [],
-    Contents: CurrentContents = [],
-    IsTruncated,
-    NextContinuationToken,
-  } = await client.send(command);
-
-  const CommonPrefixes = previousCommonPrefixes.concat(CurrentCommonPrefixes);
-  const Contents = previousContents.concat(CurrentContents);
-
-  if (!IsTruncated) return { Contents, CommonPrefixes };
-
-  const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } =
-    await listObjects({
+    ListObjectsOutput): Promise<ListObjectsOutput> => {
+    const command = new ListObjectsV2Command({
       Bucket,
-      CommonPrefixes,
-      Contents,
-      ContinuationToken: NextContinuationToken,
+      ContinuationToken,
+      ...params,
     });
-  return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes };
-};
+    const {
+      CommonPrefixes: CurrentCommonPrefixes = [],
+      Contents: CurrentContents = [],
+      IsTruncated,
+      NextContinuationToken,
+    } = await client.send(command);
 
-export type PutObjectArgs = S3Path & {
-  data: DflowData;
-};
+    const CommonPrefixes = previousCommonPrefixes.concat(CurrentCommonPrefixes);
+    const Contents = previousContents.concat(CurrentContents);
 
-export const putObject = async ({
-  Bucket,
-  Key,
-  data,
-}: PutObjectArgs): Promise<PutObjectCommandOutput> => {
-  const json = JSON.stringify(data);
-  const Body = Buffer.from(json);
-  const command = new PutObjectCommand({ Body, Bucket, Key });
-  return await client.send(command);
-};
+    if (!IsTruncated) return { Contents, CommonPrefixes };
 
-export type DeleteObjectArgs = S3Path;
+    const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } =
+      await listObjects(Bucket)({
+        CommonPrefixes,
+        Contents,
+        ContinuationToken: NextContinuationToken,
+      });
+    return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes };
+  };
 
-export const deleteObject = async ({
-  Bucket,
-  Key,
-}: DeleteObjectArgs): Promise<DeleteObjectCommandOutput> => {
-  const command = new DeleteObjectCommand({ Bucket, Key });
-  return await client.send(command);
-};
+export const putObject =
+  (Bucket: S3Path["Bucket"]) =>
+  async (
+    Key: S3Path["Key"],
+    data: DflowData
+  ): Promise<PutObjectCommandOutput> => {
+    const json = JSON.stringify(data);
+    const Body = Buffer.from(json);
+    const command = new PutObjectCommand({ Body, Bucket, Key });
+    return await client.send(command);
+  };
+
+export const deleteObject =
+  (Bucket: S3Path["Bucket"]) =>
+  async (Key: S3Path["Key"]): Promise<DeleteOperationOutput> => {
+    const command = new DeleteObjectCommand({ Bucket, Key });
+    await client.send(command);
+    return deletedNow();
+  };

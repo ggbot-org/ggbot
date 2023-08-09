@@ -3,7 +3,5 @@ import { topLevelDomain } from "@ggbot2/locators";
 
 import { awsRegion } from "./awsRegions.js";
 
-const { AWS_ACCOUNT_ID } = ENV;
-
 export const getSesIdentityArn = () =>
-  `arn:aws:ses:${awsRegion}:${AWS_ACCOUNT_ID}:identity/${topLevelDomain}`;
+  `arn:aws:ses:${awsRegion}:${ENV.AWS_ACCOUNT_ID()}:identity/${topLevelDomain}`;

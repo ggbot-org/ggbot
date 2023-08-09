@@ -4,6 +4,7 @@ import {
   CreateAccount,
   DeleteAccount,
   ErrorAccountItemNotFound,
+  isAccount,
   isAccountKey,
   ListAccountKeys,
   newAccount,
@@ -14,12 +15,7 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 
-import {
-  deleteObject,
-  getObject,
-  listObjects,
-  putObject,
-} from "./_dataBucket.js";
+import { DELETE, GET, listObjects, putObject } from "./_dataBucket.js";
 import { createEmailAccount } from "./emailAccount.js";
 import {
   dirnameDelimiter,
@@ -37,8 +33,8 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
   return account;
 };
 
-export const readAccount: ReadAccount["func"] = async (accountKey) =>
-  await getObject<ReadAccount["out"]>({ Key: pathname.account(accountKey) });
+export const readAccount: ReadAccount["func"] = (accountKey) =>
+  GET<ReadAccount["out"]>(isAccount, pathname.account(accountKey));
 
 const getAccountOrThrow = async ({
   accountId,
@@ -93,5 +89,5 @@ export const setAccountCountry: SetAccountCountry["func"] = async ({
   return updatedNow();
 };
 
-export const deleteAccount: DeleteAccount["func"] = async (arg) =>
-  await deleteObject({ Key: pathname.account(arg) });
+export const deleteAccount: DeleteAccount["func"] = (arg) =>
+  DELETE(pathname.account(arg));

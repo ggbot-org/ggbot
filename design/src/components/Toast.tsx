@@ -34,9 +34,7 @@ export const Toast: FC<ToastProps> = ({ close, color, message }) => {
     window.clearTimeout(timeoutIdRef.current);
   }, [timeoutIdRef]);
 
-  const onClickClose = useCallback<
-    Exclude<ButtonDeleteProps["onClick"], undefined>
-  >(
+  const onClickClose = useCallback<NonNullable<ButtonDeleteProps["onClick"]>>(
     (event) => {
       event.stopPropagation();
       close();

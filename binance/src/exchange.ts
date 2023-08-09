@@ -74,7 +74,7 @@ export class BinanceExchange {
   }
 
   static throwIfMinNotionalFilterIsInvalid(
-    quoteOrderQty: Exclude<BinanceNewOrderOptions["quoteOrderQty"], undefined>,
+    quoteOrderQty: NonNullable<BinanceNewOrderOptions["quoteOrderQty"]>,
     type: BinanceOrderType,
     minNotionalFilter?: BinanceSymbolFilterMinNotional
   ) {
@@ -85,7 +85,7 @@ export class BinanceExchange {
   }
 
   static throwIfLotSizeFilterIsInvalid(
-    quantity: Exclude<BinanceNewOrderOptions["quantity"], undefined>,
+    quantity: NonNullable<BinanceNewOrderOptions["quantity"]>,
     lotSizeFilter?: BinanceSymbolFilterLotSize
   ) {
     if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))

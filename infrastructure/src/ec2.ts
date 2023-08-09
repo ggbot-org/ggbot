@@ -1,7 +1,6 @@
+// TODO should not be hardcoded, for example read them from environment variable
 export const elasticIpAddresses = [
-  "18.207.7.215",
-  "3.94.235.65",
-  "44.208.206.203",
-  "44.208.82.121",
-  "50.16.48.253",
+  "3.77.223.177",
+  "3.68.165.141",
+  "3.65.45.176",
 ];

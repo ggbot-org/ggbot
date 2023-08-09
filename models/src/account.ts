@@ -4,14 +4,13 @@ import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js";
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js";
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";
-import { Operation } from "./operation.js";
 import {
-  createdNow,
-  CreationTime,
-  DeletionTime,
-  isCreationTime,
-  UpdateTime,
-} from "./time.js";
+  DeleteOperation,
+  Operation,
+  ReadOperation,
+  UpdateOperation,
+} from "./operation.js";
+import { createdNow, CreationTime, isCreationTime } from "./time.js";
 
 export type Account = Item &
   CreationTime & {
@@ -60,21 +59,20 @@ export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey);
 
 export type CreateAccount = Operation<NewItem<Account>, Account>;
 
-export type ReadAccount = Operation<AccountKey, Account | null>;
+export type ReadAccount = ReadOperation<AccountKey, Account>;
 
 export const isReadAccountInput = objectTypeGuard<AccountKey>((accountKey) =>
   isAccountKey(accountKey)
 );
 
-export type RenameAccount = Operation<AccountKey & { name: Name }, UpdateTime>;
+export type RenameAccount = UpdateOperation<AccountKey & { name: Name }>;
 
 export const isRenameAccountInput = objectTypeGuard<RenameAccount["in"]>(
   ({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
 );
 
-export type SetAccountCountry = Operation<
-  AccountKey & { country: AllowedCountryIsoCode2 },
-  UpdateTime
+export type SetAccountCountry = UpdateOperation<
+  AccountKey & { country: AllowedCountryIsoCode2 }
 >;
 
 export const isSetAccountCountryInput = objectTypeGuard<
@@ -84,6 +82,6 @@ export const isSetAccountCountryInput = objectTypeGuard<
     isAllowedCountryIsoCode2(country) && isAccountKey(accountKey)
 );
 
-export type DeleteAccount = Operation<AccountKey, DeletionTime>;
+export type DeleteAccount = DeleteOperation<AccountKey>;
 
-export type ListAccountKeys = Operation<void, AccountKeys>;
+export type ListAccountKeys = ReadOperation<void, AccountKeys>;

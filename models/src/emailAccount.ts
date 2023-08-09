@@ -3,7 +3,7 @@ import { objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountKey, isAccountKey } from "./account.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { ItemKey } from "./item.js";
-import { Operation } from "./operation.js";
+import { Operation, ReadOperation } from "./operation.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
 export type EmailAccount = AccountKey &
@@ -22,4 +22,4 @@ export type CreateEmailAccount = Operation<
   CreationTime
 >;
 
-export type ReadEmailAccount = Operation<EmailAddress, EmailAccount | null>;
+export type ReadEmailAccount = ReadOperation<EmailAddress, EmailAccount>;

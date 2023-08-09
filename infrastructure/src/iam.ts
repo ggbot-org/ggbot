@@ -23,7 +23,7 @@ const resources = (deployStage: DeployStage) => ({
   logsBucketArn: getLogsBucketArn(deployStage),
 });
 
-const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID}:role/ggbot2_api_role`;
+const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID()}:role/ggbot2_api_role`;
 
 // DeployStage main and next resources
 const main = resources("main");
@@ -43,7 +43,7 @@ const cross = {
 export const getDevopsPolicyName = () => "ggbot2-devops-policy";
 
 export const getDevopsPolicyArn = () =>
-  `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${getDevopsPolicyName()}`;
+  `arn:aws:iam::${AWS_ACCOUNT_ID()}:policy/${getDevopsPolicyName()}`;
 
 export const getDevopsPolicyStatements = () => [
   {
@@ -107,11 +107,11 @@ export const getDevopsPolicy = () => ({
   Statement: getDevopsPolicyStatements(),
 });
 
-export const getSesNoreplyPolicyName = (deployStage = DEPLOY_STAGE) =>
+export const getSesNoreplyPolicyName = (deployStage = DEPLOY_STAGE()) =>
   `ggbot2-${deployStage}-ses-noreply-policy`;
 
-export const getSesNoreplyPolicyArn = (deployStage = DEPLOY_STAGE) =>
-  `arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${getSesNoreplyPolicyName(
+export const getSesNoreplyPolicyArn = (deployStage = DEPLOY_STAGE()) =>
+  `arn:aws:iam::${AWS_ACCOUNT_ID()}:policy/${getSesNoreplyPolicyName(
     deployStage
   )}`;
 
