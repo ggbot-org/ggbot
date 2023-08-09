@@ -4,6 +4,7 @@ import { isLiteralType } from "@ggbot2/type-utils";
 
 const emailKey = "email";
 const gotFirstPageViewKey = "gotFirstPageView";
+const doNotShowPleaseConfigureBinanceKey = "doNotShowPleaseConfigureBinance";
 const doNotShowPleasePurchaseKey = "doNotShowPleasePurchase";
 const binanceExchangeInfoKey = "binanceExchangeInfo";
 const activeTabIdKey = (pageName: string) => `${pageName}:activeTab`;
@@ -90,6 +91,14 @@ class SessionWebStorage {
     } else {
       this.removeItem(emailKey);
     }
+  }
+
+  get doNotShowPleaseConfigureBinance(): boolean {
+    return Boolean(this.getItem(doNotShowPleaseConfigureBinanceKey));
+  }
+
+  set doNotShowPleaseConfigureBinance(value: boolean) {
+    this.setItem(doNotShowPleaseConfigureBinanceKey, String(value));
   }
 
   get doNotShowPleasePurchase(): boolean {

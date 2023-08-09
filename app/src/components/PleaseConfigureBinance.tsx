@@ -1,15 +1,35 @@
-import { Buttons, Content, Message, Modal } from "@ggbot2/design";
-import { FC, useState } from "react";
+import {
+  Buttons,
+  Checkbox,
+  CheckboxOnChange,
+  Content,
+  Message,
+  Modal,
+} from "@ggbot2/design";
+import { sessionWebStorage } from "@ggbot2/web-storage";
+import { FC, useCallback, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { GoSettings } from "../components/GoSettings.js";
 
-// TODO create a Binance context
-// cache binance config like strategy context
-// then show this message when user schedules.
-// ts-prune-ignore-next
 export const PleaseConfigureBinance: FC = () => {
   const [isActive, setIsActive] = useState(true);
+  const [doNotShow, setDoNotShow] = useState(false);
+
+  // TODO const { hasBinanceConfiguration } = useContext(BinanceContext);
+
+  const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
+    const checked = event.target.checked;
+    setDoNotShow(checked);
+    sessionWebStorage.doNotShowPleaseConfigureBinance = checked;
+  }, []);
+
+  useEffect(() => {
+    if (sessionWebStorage.doNotShowPleaseConfigureBinance) return;
+    // Show PleasePurchase first, then PleaseConfigureBinance.
+    if (!sessionWebStorage.doNotShowPleasePurchase) return;
+    setIsActive(true);
+  }, []);
 
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
@@ -28,6 +48,10 @@ export const PleaseConfigureBinance: FC = () => {
               }}
             />
           </p>
+
+          <Checkbox checked={doNotShow} onChange={onChangeDoNotShow}>
+            <FormattedMessage id="PleasePurchase.doNotShow" />
+          </Checkbox>
         </Content>
 
         <Buttons>

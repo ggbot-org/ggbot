@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { Backtesting } from "../components/Backtesting.js";
 import { EditableFlow } from "../components/EditableFlow.js";
 import { ManageStrategy } from "../components/ManageStrategy.js";
+import { PleaseConfigureBinance } from "../components/PleaseConfigureBinance.js";
 import { PleasePurchase } from "../components/PleasePurchase.js";
 import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js";
 
@@ -34,6 +35,8 @@ export const Strategy: FC = () => {
           },
         ]}
       />
+
+      <PleaseConfigureBinance />
 
       <PleasePurchase />
     </>

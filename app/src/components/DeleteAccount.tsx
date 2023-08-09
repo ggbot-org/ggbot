@@ -13,7 +13,6 @@ import { FC, useCallback, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useApi } from "../hooks/useApi.js";
-import { classNames } from "../styles/classNames.js";
 
 export const DeleteAccount: FC = () => {
   const color: MainColor = "danger";
@@ -76,9 +75,7 @@ export const DeleteAccount: FC = () => {
               color="danger"
             />
 
-            <span className={classNames("ml-2")}>
-              <FormattedMessage id="DeleteAccount.consent" />
-            </span>
+            <FormattedMessage id="DeleteAccount.consent" />
           </Content>
 
           <Buttons>

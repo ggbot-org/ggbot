@@ -1,6 +1,7 @@
 // TODO add bulma block to trunx, for example as a prop to Flex component
 export * from "./BrandName.js";
 export * from "./Calendar.js";
+export * from "./Checkbox.js";
 export * from "./Checkmark.js";
 export * from "./DailyInterval.js";
 export * from "./DateTime.js";
@@ -21,9 +22,6 @@ export {
   type ButtonOnClick,
   type ButtonProps,
   Buttons,
-  Checkbox,
-  type CheckboxOnChange,
-  type CheckboxProps,
   Column,
   Columns,
   Container,

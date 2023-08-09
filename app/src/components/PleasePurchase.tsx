@@ -12,27 +12,20 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import { GoSettings } from "../components/GoSettings.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
-import { classNames } from "../styles/classNames.js";
 
 export const PleasePurchase: FC = () => {
   const { formatMessage } = useIntl();
 
   const { hasActiveSubscription } = useContext(SubscriptionContext);
 
-  const [
-    doNotShowPleasePurchaseIsChecked,
-    setDoNotShowPleasePurchaseIsChecked,
-  ] = useState(false);
+  const [doNotShow, setDoNotShow] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
-  const onChangeDoNotShowPleasePurchase = useCallback<CheckboxOnChange>(
-    (event) => {
-      const checked = event.target.checked;
-      setDoNotShowPleasePurchaseIsChecked(checked);
-      sessionWebStorage.doNotShowPleasePurchase = checked;
-    },
-    []
-  );
+  const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
+    const checked = event.target.checked;
+    setDoNotShow(checked);
+    sessionWebStorage.doNotShowPleasePurchase = checked;
+  }, []);
 
   useEffect(() => {
     if (sessionWebStorage.doNotShowPleasePurchase) return;
@@ -60,13 +53,8 @@ export const PleasePurchase: FC = () => {
             />
           </p>
 
-          <Checkbox
-            checked={doNotShowPleasePurchaseIsChecked}
-            onChange={onChangeDoNotShowPleasePurchase}
-          >
-            <span className={classNames("ml-2")}>
-              <FormattedMessage id="PleasePurchase.doNotShow" />
-            </span>
+          <Checkbox checked={doNotShow} onChange={onChangeDoNotShow}>
+            <FormattedMessage id="PleasePurchase.doNotShow" />
           </Checkbox>
         </Content>
 
