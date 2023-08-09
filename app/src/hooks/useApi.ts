@@ -1,5 +1,6 @@
 import { PublicApiActionType, UserApiActionType } from "@ggbot2/api";
 import {
+  AccountKey,
   CopyStrategy,
   CreateBinanceApiConfig,
   CreateStrategy,
@@ -21,6 +22,7 @@ import {
   WriteStrategyFlow,
 } from "@ggbot2/models";
 import { useAction } from "@ggbot2/use-action";
+import { EmptyObject } from "type-fest";
 
 import { url } from "../routing/URLs.js";
 
@@ -40,88 +42,105 @@ const publicApi = {
     ),
 };
 
+type Authenticated<Operation extends (arg: any) => Promise<any>> = Omit<
+  Parameters<Operation>[0],
+  "accountId"
+> extends EmptyObject
+  ? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
+  : Parameters<Operation>[0] extends AccountKey
+  ? (
+      arg: Omit<Parameters<Operation>[0], "accountId">
+    ) => Promise<Awaited<ReturnType<Operation>>>
+  : never;
+
 const userApi = {
   CopyStrategy: () =>
-    useAction<CopyStrategy, UserApiActionType>(userApiOptions, "CopyStrategy"),
+    useAction<Authenticated<CopyStrategy>, UserApiActionType>(
+      userApiOptions,
+      "CopyStrategy"
+    ),
   CreateBinanceApiConfig: () =>
-    useAction<CreateBinanceApiConfig, UserApiActionType>(
+    useAction<Authenticated<CreateBinanceApiConfig>, UserApiActionType>(
       userApiOptions,
       "CreateBinanceApiConfig"
     ),
   CreateStrategy: () =>
-    useAction<CreateStrategy, UserApiActionType>(
+    useAction<Authenticated<CreateStrategy>, UserApiActionType>(
       userApiOptions,
       "CreateStrategy"
     ),
   DeleteAccount: () =>
-    useAction<DeleteAccount, UserApiActionType>(
+    useAction<Authenticated<DeleteAccount>, UserApiActionType>(
       userApiOptions,
       "DeleteAccount"
     ),
   DeleteBinanceApiConfig: () =>
-    useAction<DeleteBinanceApiConfig, UserApiActionType>(
+    useAction<Authenticated<DeleteBinanceApiConfig>, UserApiActionType>(
       userApiOptions,
       "DeleteBinanceApiConfig"
     ),
   DeleteStrategy: () =>
-    useAction<DeleteStrategy, UserApiActionType>(
+    useAction<Authenticated<DeleteStrategy>, UserApiActionType>(
       userApiOptions,
       "DeleteStrategy"
     ),
   ReadAccount: () =>
-    useAction<ReadAccount, UserApiActionType>(userApiOptions, "ReadAccount"),
+    useAction<Authenticated<ReadAccount>, UserApiActionType>(
+      userApiOptions,
+      "ReadAccount"
+    ),
   ReadAccountStrategies: () =>
-    useAction<ReadAccountStrategies, UserApiActionType>(
+    useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
       userApiOptions,
       "ReadAccountStrategies"
     ),
   ReadBinanceApiConfig: () =>
-    useAction<ReadBinanceApiConfig, UserApiActionType>(
+    useAction<Authenticated<ReadBinanceApiConfig>, UserApiActionType>(
       userApiOptions,
       "ReadBinanceApiConfig"
     ),
   ReadBinanceApiKeyPermissions: () =>
-    useAction<ReadBinanceApiKeyPermissions, UserApiActionType>(
+    useAction<Authenticated<ReadBinanceApiKeyPermissions>, UserApiActionType>(
       userApiOptions,
       "ReadBinanceApiKeyPermissions"
     ),
   ReadStrategyBalances: () =>
-    useAction<ReadStrategyBalances, UserApiActionType>(
+    useAction<Authenticated<ReadStrategyBalances>, UserApiActionType>(
       userApiOptions,
       "ReadStrategyBalances"
     ),
   ReadStrategyOrders: () =>
-    useAction<ReadStrategyOrders, UserApiActionType>(
+    useAction<Authenticated<ReadStrategyOrders>, UserApiActionType>(
       userApiOptions,
       "ReadStrategyOrders"
     ),
   ReadSubscription: () =>
-    useAction<ReadSubscription, UserApiActionType>(
+    useAction<Authenticated<ReadSubscription>, UserApiActionType>(
       userApiOptions,
       "ReadSubscription"
     ),
   RenameAccount: () =>
-    useAction<RenameAccount, UserApiActionType>(
+    useAction<Authenticated<RenameAccount>, UserApiActionType>(
       userApiOptions,
       "RenameAccount"
     ),
   RenameStrategy: () =>
-    useAction<RenameStrategy, UserApiActionType>(
+    useAction<Authenticated<RenameStrategy>, UserApiActionType>(
       userApiOptions,
       "RenameStrategy"
     ),
   SetAccountCountry: () =>
-    useAction<SetAccountCountry, UserApiActionType>(
+    useAction<Authenticated<SetAccountCountry>, UserApiActionType>(
       userApiOptions,
       "SetAccountCountry"
     ),
   WriteAccountStrategiesItemSchedulings: () =>
-    useAction<WriteAccountStrategiesItemSchedulings, UserApiActionType>(
-      userApiOptions,
-      "WriteAccountStrategiesItemSchedulings"
-    ),
+    useAction<
+      Authenticated<WriteAccountStrategiesItemSchedulings>,
+      UserApiActionType
+    >(userApiOptions, "WriteAccountStrategiesItemSchedulings"),
   WriteStrategyFlow: () =>
-    useAction<WriteStrategyFlow, UserApiActionType>(
+    useAction<Authenticated<WriteStrategyFlow>, UserApiActionType>(
       userApiOptions,
       "WriteStrategyFlow"
     ),

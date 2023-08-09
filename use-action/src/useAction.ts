@@ -21,8 +21,6 @@ export type UseActionError =
   | ApiActionServerSideError
   | undefined;
 
-type AsyncFunction = (...arguments_: any[]) => Promise<unknown>;
-
 /**
  * Hook to use API actions:
  *
@@ -51,7 +49,7 @@ type AsyncFunction = (...arguments_: any[]) => Promise<unknown>;
  * ```
  */
 export const useAction = <
-  Operation extends AsyncFunction,
+  Operation extends (arg: any) => Promise<any>,
   ActionType extends string
 >(
   { endpoint, withJwt }: { endpoint: string } & UseActionHeadersConstructorArg,
@@ -70,7 +68,7 @@ export const useAction = <
   }, []);
 
   const request = useCallback(
-    (inputData: unknown) => {
+    (inputData: Parameters<Operation>[0]) => {
       (async function () {
         const controller = new UseActionAbortController();
 

@@ -54,7 +54,8 @@
     "esbuild": "0.17.17",
     "onchange": "7.1.0",
     "sass": "1.64.2",
-    "ts-prune": "0.10.3"
+    "ts-prune": "0.10.3",
+    "type-fest": "4.2.0"
   },
   "eslintConfig": {
     "extends": [
