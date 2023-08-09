@@ -31,6 +31,7 @@
   - [dflow](#dflow)
   - [flow-view](#flow-view)
   - [npm-run-all](#npm-run-all)
+  - [ts-prune](#ts-prune)
   - [typescript](#typescript)
 
 ## Git
@@ -188,6 +189,10 @@ https://www.npmjs.com/package/npm-run-all
 ### pre-commit
 
 https://www.npmjs.com/package/pre-commit
+
+### ts-prune
+
+https://www.npmjs.com/package/ts-prune
 
 ### typescript
 

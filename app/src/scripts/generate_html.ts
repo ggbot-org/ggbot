@@ -21,7 +21,7 @@ const html = (scriptJs: string) =>
     stylesheets: [{ href: "main.css" }],
   });
 
-export const generateHtml = async () => {
+const generateHtml = async () => {
   const dirname = publicDir;
 
   // Homepage

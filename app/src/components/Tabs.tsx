@@ -18,7 +18,7 @@ import { useIntl } from "react-intl";
 
 import { classNames } from "../styles/classNames.js";
 
-export const tabIds = [
+const tabIds = [
   "backtesting",
   "flow",
   "manage",

@@ -4,6 +4,10 @@ import { FormattedMessage } from "react-intl";
 
 import { GoSettings } from "../components/GoSettings.js";
 
+// TODO create a Binance context
+// cache binance config like strategy context
+// then show this message when user schedules.
+// ts-prune-ignore-next
 export const PleaseConfigureBinance: FC = () => {
   const [isActive, setIsActive] = useState(true);
 

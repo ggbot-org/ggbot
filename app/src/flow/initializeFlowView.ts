@@ -2,11 +2,9 @@ import { nodeTextToViewType } from "@ggbot2/dflow";
 import { DflowNodesCatalog } from "dflow";
 import { FlowView, FlowViewNode } from "flow-view";
 
-import {
-  FlowViewNodeInfo,
-  FlowViewNodeJson,
-  FlowViewNodePercentage,
-} from "../flow/nodes/index.js";
+import { FlowViewNodeInfo } from "../flow/nodes/info.js";
+import { FlowViewNodeJson } from "../flow/nodes/json.js";
+import { FlowViewNodePercentage } from "../flow/nodes/percentage.js";
 
 export const initializeFlowView = (
   container: HTMLDivElement,

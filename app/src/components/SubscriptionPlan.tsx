@@ -2,7 +2,7 @@ import { InputField, InputFieldProps } from "@ggbot2/design";
 import { FC } from "react";
 import { useIntl } from "react-intl";
 
-export type Props = Omit<InputFieldProps, "label">;
+type Props = Omit<InputFieldProps, "label">;
 
 export const SubscriptionPlan: FC<Props> = (props) => {
   const { formatMessage } = useIntl();

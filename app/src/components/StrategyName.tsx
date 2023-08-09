@@ -3,9 +3,9 @@ import { useIntl } from "react-intl";
 
 import { Name, NameProps } from "../components/Name.js";
 
-export type StrategyNameProps = Omit<NameProps, "label">;
+type Props = Omit<NameProps, "label">;
 
-export const StrategyName: FC<StrategyNameProps> = (props) => {
+export const StrategyName: FC<Props> = (props) => {
   const { formatMessage } = useIntl();
 
   return (

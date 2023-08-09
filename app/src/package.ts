@@ -11,8 +11,7 @@ export const publicDir = packageDir(rootDir, "public");
 
 export const srcDir = packageDir(rootDir, "src");
 
-export const srcPagesDir = join(srcDir, "pages");
-export const srcRoutingDir = join(srcDir, "routing");
+const srcRoutingDir = join(srcDir, "routing");
 
 const version = today();
 

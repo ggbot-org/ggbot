@@ -114,7 +114,8 @@
     "test:html": "npm run test --workspace html",
     "test:models": "npm run test --workspace models",
     "test:repo": "npm run test --workspace repo",
-    "test:time": "npm run test --workspace time"
+    "test:time": "npm run test --workspace time",
+    "ts-prune": "npm run ts-prune --workspaces --if-present"
   },
   "devDependencies": {
     "@types/node": "18.15.6",
@@ -136,6 +137,7 @@
   },
   "pre-commit": [
     "lint-staged",
+    "ts-prune",
     "check_types",
     "test"
   ],
