@@ -1,10 +1,10 @@
-/* eslint sort-keys: "error" */
+import { AdminApiActionType, PublicApiActionType } from "@ggbot2/api";
 import {
-  AdminApiAction,
-  AdminApiActionType,
-  PublicApiAction,
-  PublicApiActionType,
-} from "@ggbot2/api";
+  ListAccountKeys,
+  ReadAccount,
+  ReadStrategy,
+  ReadStrategyFlow,
+} from "@ggbot2/models";
 import { useAction } from "@ggbot2/use-action";
 
 import { url } from "../routing/URLs.js";
@@ -17,36 +17,25 @@ const adminApiOptions = {
 
 const publicApi = {
   ReadStrategy: () =>
-    useAction<PublicApiAction["ReadStrategy"], PublicApiActionType>(
+    useAction<ReadStrategy, PublicApiActionType>(
       publicApiOptions,
-      {
-        type: "ReadStrategy",
-      }
+      "ReadStrategy"
     ),
   ReadStrategyFlow: () =>
-    useAction<PublicApiAction["ReadStrategyFlow"], PublicApiActionType>(
+    useAction<ReadStrategyFlow, PublicApiActionType>(
       publicApiOptions,
-      {
-        type: "ReadStrategyFlow",
-      }
+      "ReadStrategyFlow"
     ),
 };
 
 export const adminApi = {
   ListAccountKeys: () =>
-    useAction<AdminApiAction["ListAccountKeys"], AdminApiActionType>(
+    useAction<ListAccountKeys, AdminApiActionType>(
       adminApiOptions,
-      {
-        type: "ListAccountKeys",
-      }
+      "ListAccountKeys"
     ),
   ReadAccount: () =>
-    useAction<AdminApiAction["ReadAccount"], AdminApiActionType>(
-      adminApiOptions,
-      {
-        type: "ReadAccount",
-      }
-    ),
+    useAction<ReadAccount, AdminApiActionType>(adminApiOptions, "ReadAccount"),
 };
 
 export const useApi = {

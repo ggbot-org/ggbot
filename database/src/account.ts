@@ -24,7 +24,7 @@ import {
   pathname,
 } from "./locators.js";
 
-export const createAccount: CreateAccount["func"] = async ({ email }) => {
+export const createAccount: CreateAccount = async ({ email }) => {
   const account = newAccount({ email });
   const accountId = account.id;
   await UPDATE(pathname.account({ accountId }), account);
@@ -32,8 +32,8 @@ export const createAccount: CreateAccount["func"] = async ({ email }) => {
   return account;
 };
 
-export const readAccount: ReadAccount["func"] = (arg) =>
-  READ<ReadAccount["out"]>(isAccount, pathname.account(arg));
+export const readAccount: ReadAccount = (arg) =>
+  READ<ReadAccount>(isAccount, pathname.account(arg));
 
 const getAccountOrThrow = async ({
   accountId,
@@ -44,7 +44,7 @@ const getAccountOrThrow = async ({
   return account;
 };
 
-export const listAccountKeys: ListAccountKeys["func"] = async () => {
+export const listAccountKeys: ListAccountKeys = async () => {
   const Prefix = dirnamePrefix.account + dirnameDelimiter;
   const results = await LIST({
     Prefix,
@@ -59,10 +59,7 @@ export const listAccountKeys: ListAccountKeys["func"] = async () => {
   );
 };
 
-export const renameAccount: RenameAccount["func"] = async ({
-  accountId,
-  name,
-}) => {
+export const renameAccount: RenameAccount = async ({ accountId, name }) => {
   throwIfInvalidName(name);
   const account = await getAccountOrThrow({ accountId });
   const data: Account = {
@@ -73,7 +70,7 @@ export const renameAccount: RenameAccount["func"] = async ({
   return updatedNow();
 };
 
-export const setAccountCountry: SetAccountCountry["func"] = async ({
+export const setAccountCountry: SetAccountCountry = async ({
   accountId,
   country,
 }) => {
@@ -86,5 +83,5 @@ export const setAccountCountry: SetAccountCountry["func"] = async ({
   return updatedNow();
 };
 
-export const deleteAccount: DeleteAccount["func"] = (arg) =>
+export const deleteAccount: DeleteAccount = (arg) =>
   DELETE(pathname.account(arg));

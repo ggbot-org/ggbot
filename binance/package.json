@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
-    "@ggbot2/http": "file:http",
-    "@ggbot2/models": "file:models"
+    "@ggbot2/cache": "file:cache",
+    "@ggbot2/http": "file:http"
   },
   "eslintConfig": {
     "extends": [

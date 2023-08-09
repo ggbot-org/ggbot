@@ -13,36 +13,30 @@ import {
 } from "@ggbot2/models";
 import { isTestAccountEmail, testOtp } from "@ggbot2/test-data";
 
-import { DELETE, putObject, READ } from "./_dataBucket.js";
+import { DELETE, READ, WRITE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const createOneTimePassword: CreateOneTimePassword["func"] = async (
-  email
-) => {
+export const createOneTimePassword: CreateOneTimePassword = async (email) => {
   if (isTestAccountEmail(email)) return testOtp;
   const data = generateOneTimePassword();
-  await putObject(pathname.oneTimePassword(email), data);
+  await WRITE(pathname.oneTimePassword(email), data);
   return data;
 };
 
-export const readOneTimePassword: ReadOneTimePassword["func"] = async (
-  email
-) => {
+export const readOneTimePassword: ReadOneTimePassword = async (email) => {
   if (isTestAccountEmail(email)) return testOtp;
-  return await READ<ReadOneTimePassword["out"]>(
+  return await READ<ReadOneTimePassword>(
     isOneTimePassword,
     pathname.oneTimePassword(email)
   );
 };
 
-export const deleteOneTimePassword: DeleteOneTimePassword["func"] = async (
-  arg
-) => {
+export const deleteOneTimePassword: DeleteOneTimePassword = async (arg) => {
   if (isTestAccountEmail(arg)) return deletedNow();
   return await DELETE(pathname.oneTimePassword(arg));
 };
 
-export const sendOneTimePassword: SendOneTimePassword["func"] = async ({
+export const sendOneTimePassword: SendOneTimePassword = async ({
   language,
   email,
   oneTimePassword,

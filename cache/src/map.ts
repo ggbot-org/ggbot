@@ -1,13 +1,4 @@
-import { Time } from "@ggbot2/time";
-
-export interface CacheProvider<Data> {
-  /** Read item from cache, if any. */
-  get(key: string): Data | undefined;
-  /** Add item `value` to cache. No `timeToLive` means item is cached for ever. */
-  set(key: string, value: Data, timeToLive?: Time): void;
-  /** Remove item from cache. */
-  delete(key: string): void;
-}
+import { CacheProvider } from "./provider.js";
 
 type TimeToLive = "FIVE_MINUTES" | "ONE_HOUR" | "ONE_DAY" | "ONE_WEEK";
 

@@ -1,6 +1,6 @@
+import { CacheMap } from "@ggbot2/cache";
 import {
   Account,
-  CacheMap,
   CopyStrategy,
   CreateStrategy,
   DeleteStrategy,
@@ -20,7 +20,7 @@ import {
   throwIfInvalidName,
 } from "@ggbot2/models";
 
-import { DELETE, LIST, putObject, READ } from "./_dataBucket.js";
+import { DELETE, LIST, READ, WRITE } from "./_dataBucket.js";
 import {
   deleteAccountStrategiesItem,
   insertAccountStrategiesItem,
@@ -38,12 +38,7 @@ import { deleteStrategyMemory } from "./strategyMemory.js";
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>();
 
-/**
- * Atomic operation to create a strategy.
- *
- * @internal
- */
-const _createStrategy: CreateStrategy["func"] = async ({
+export const createStrategy: CreateStrategy = async ({
   accountId,
   kind,
   name,
@@ -55,18 +50,18 @@ const _createStrategy: CreateStrategy["func"] = async ({
     accountId,
   });
   const strategyKey = { strategyId: strategy.id, strategyKind: kind };
-  await putObject(pathname.strategy(strategyKey), strategy);
+  await WRITE(pathname.strategy(strategyKey), strategy);
   const accountStrategy = newAccountStrategy({ name, ...strategyKey });
   await insertAccountStrategiesItem({ accountId, item: accountStrategy });
   return strategy;
 };
 
-export const copyStrategy: CopyStrategy["func"] = async ({
+export const copyStrategy: CopyStrategy = async ({
   accountId,
   name,
   ...strategyKey
 }) => {
-  const strategy = await _createStrategy({
+  const strategy = await createStrategy({
     accountId,
     kind: strategyKey.strategyKind,
     name,
@@ -87,33 +82,7 @@ export const copyStrategy: CopyStrategy["func"] = async ({
   return strategy;
 };
 
-export const createStrategy: CreateStrategy["func"] = async ({
-  accountId,
-  kind,
-  name,
-}) => {
-  const strategy = await _createStrategy({ accountId, kind, name });
-  // Create strategy first,
-
-  // TODO try to handle empty strategy client side, then delete this commented code.
-  // also, the comment above
-  // then create an empty flow.
-  // const strategyFlowKey = pathname.strategyFlow({
-  //   strategyId: strategy.id,
-  //   strategyKind: strategy.kind,
-  // });
-  // const whenUpdated = updatedNow();
-  // const flow: StrategyFlow = {
-  //   view: { nodes: [], edges: [] },
-  //   ...whenUpdated,
-  // };
-  // await putObject({ Key: strategyFlowKey, data: flow });
-  return strategy;
-};
-
-export const listStrategyKeys: ListStrategyKeys["func"] = async (
-  strategyKey
-) => {
+export const listStrategyKeys: ListStrategyKeys = async (strategyKey) => {
   const Prefix = itemKeyToDirname.strategy(strategyKey) + dirnameDelimiter;
   const results = await LIST({ Prefix });
   if (!Array.isArray(results.Contents)) return Promise.resolve([]);
@@ -126,11 +95,11 @@ export const listStrategyKeys: ListStrategyKeys["func"] = async (
   );
 };
 
-export const readStrategy: ReadStrategy["func"] = (arg) =>
-  READ<ReadStrategy["out"]>(isStrategy, pathname.strategy(arg));
+export const readStrategy: ReadStrategy = (arg) =>
+  READ<ReadStrategy>(isStrategy, pathname.strategy(arg));
 
 /** Get `accountId` of strategy. */
-export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
+export const readStrategyAccountId: ReadStrategyAccountId = async (
   strategyKey
 ) => {
   const { strategyId } = strategyKey;
@@ -149,7 +118,7 @@ export const readStrategyAccountId: ReadStrategyAccountId["func"] = async (
   return accountId;
 };
 
-export const renameStrategy: RenameStrategy["func"] = async ({
+export const renameStrategy: RenameStrategy = async ({
   accountId,
   name,
   ...strategyKey
@@ -162,7 +131,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   const { strategyId } = strategyKey;
   if (strategy.accountId === accountId) {
     const renamedStrategy = { ...strategy, name: normalizedName };
-    await putObject(pathname.strategy(strategyKey), renamedStrategy);
+    await WRITE(pathname.strategy(strategyKey), renamedStrategy);
   }
   return await renameAccountStrategiesItem({
     accountId,
@@ -171,9 +140,7 @@ export const renameStrategy: RenameStrategy["func"] = async ({
   });
 };
 
-export const deleteStrategy: DeleteStrategy["func"] = async (
-  accountStrategyKey
-) => {
+export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
   const { accountId, ...strategyKey } = accountStrategyKey;
   const ownerId = await readStrategyAccountId(strategyKey);
   if (accountId !== ownerId)

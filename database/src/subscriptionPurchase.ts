@@ -3,38 +3,39 @@ import {
   CreateMonthlySubscriptionPurchase,
   CreateYearlySubscriptionPurchase,
   ErrorAccountItemNotFound,
+  isSubscriptionPurchase,
   newMonthlySubscription,
   newSubscriptionPurchaseKey,
   newYearlySubscription,
   ReadSubscriptionPurchase,
   SubscriptionPurchase,
   SubscriptionPurchaseKey,
-  updatedNow,
   UpdateSubscriptionPurchaseInfo,
   UpdateSubscriptionPurchaseStatus,
   WriteSubscriptionPurchase,
 } from "@ggbot2/models";
 
-import { getObject, putObject } from "./_dataBucket.js";
+import { READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const readSubscriptionPurchase: ReadSubscriptionPurchase["func"] =
-  async (arg) =>
-    await getObject<ReadSubscriptionPurchase["out"]>({
-      Key: pathname.subscriptionPurchase(arg),
-    });
+export const readSubscriptionPurchase: ReadSubscriptionPurchase = (arg) =>
+  READ<ReadSubscriptionPurchase>(
+    isSubscriptionPurchase,
+    pathname.subscriptionPurchase(arg)
+  );
 
-export const writeSubscriptionPurchase: WriteSubscriptionPurchase["func"] =
-  async ({ accountId, purchaseId, day, ...purchase }) => {
-    const Key = pathname.subscriptionPurchase({ accountId, purchaseId, day });
-    await putObject({
-      Key,
-      data: purchase,
-    });
-    return updatedNow();
-  };
+export const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
+  accountId,
+  purchaseId,
+  day,
+  ...purchase
+}) =>
+  UPDATE(
+    pathname.subscriptionPurchase({ accountId, purchaseId, day }),
+    purchase
+  );
 
-export const updateSubscriptionPurchaseInfo: UpdateSubscriptionPurchaseInfo["func"] =
+export const updateSubscriptionPurchaseInfo: UpdateSubscriptionPurchaseInfo =
   async ({ info, ...key }) => {
     const purchase = await readSubscriptionPurchase(key);
     if (!purchase)
@@ -49,7 +50,7 @@ export const updateSubscriptionPurchaseInfo: UpdateSubscriptionPurchaseInfo["fun
     });
   };
 
-export const updateSubscriptionPurchaseStatus: UpdateSubscriptionPurchaseStatus["func"] =
+export const updateSubscriptionPurchaseStatus: UpdateSubscriptionPurchaseStatus =
   async ({ status, ...key }) => {
     const purchase = await readSubscriptionPurchase(key);
     if (!purchase)
@@ -78,13 +79,13 @@ const writeNewSubscriptionPurchase = async ({
   return key;
 };
 
-export const createMonthlySubscriptionPurchase: CreateMonthlySubscriptionPurchase["func"] =
+export const createMonthlySubscriptionPurchase: CreateMonthlySubscriptionPurchase =
   async ({ accountId, ...arg }) => {
     const purchase = newMonthlySubscription(arg);
     return await writeNewSubscriptionPurchase({ accountId, purchase });
   };
 
-export const createYearlySubscriptionPurchase: CreateYearlySubscriptionPurchase["func"] =
+export const createYearlySubscriptionPurchase: CreateYearlySubscriptionPurchase =
   async ({ accountId, ...arg }) => {
     const purchase = newYearlySubscription(arg);
     return await writeNewSubscriptionPurchase({ accountId, purchase });

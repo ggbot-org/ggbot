@@ -6,26 +6,14 @@ import {
   DeleteObjectCommand,
   GetObjectCommand,
   HeadBucketCommand,
-  HeadBucketCommandOutput,
   ListObjectsV2Command,
   ListObjectsV2CommandInput,
   ListObjectsV2CommandOutput,
   PutObjectCommand,
-  PutObjectCommandOutput,
   S3Client,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
 import { awsRegion } from "@ggbot2/infrastructure";
-import {
-  deletedNow,
-  DeleteOperationOutput,
-  ReadOperationOutput,
-  updatedNow,
-  UpdateOperationOutput,
-} from "@ggbot2/models";
-import { DflowData } from "dflow";
-
-import { ErrorInvalidData } from "./errors.js";
 
 export { S3ServiceException } from "@aws-sdk/client-s3";
 
@@ -66,20 +54,13 @@ const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
   });
 
 export const getObject =
-  (Bucket: S3Path["Bucket"]) =>
-  async <Data extends DflowData>(
-    isData: (arg: unknown) => arg is Data,
-    Key: S3Path["Key"]
-  ): Promise<ReadOperationOutput<Data>> => {
+  (Bucket: S3Path["Bucket"]) => async (Key: S3Path["Key"]) => {
     try {
       const command = new GetObjectCommand({ Bucket, Key });
       const output = await client.send(command);
       const body = output?.Body;
       if (!(body instanceof stream.Readable)) return null;
-      const json = await streamToString(body);
-      const data = JSON.parse(json);
-      if (isData(data)) return data;
-      throw new ErrorInvalidData();
+      return await streamToString(body);
     } catch (error) {
       if (error instanceof S3ServiceException) {
         if (error.name === s3ServiceExceptionName.NoSuchKey) return null;
@@ -88,9 +69,7 @@ export const getObject =
     }
   };
 
-export const headBucket = async (
-  Bucket: S3Path["Bucket"]
-): Promise<HeadBucketCommandOutput> => {
+export const headBucket = async (Bucket: S3Path["Bucket"]) => {
   const command = new HeadBucketCommand({ Bucket });
   return await client.send(command);
 };
@@ -139,31 +118,14 @@ export const listObjects =
   };
 
 export const putObject =
-  (Bucket: S3Path["Bucket"]) =>
-  async (
-    Key: S3Path["Key"],
-    data: DflowData
-  ): Promise<PutObjectCommandOutput> => {
-    const json = JSON.stringify(data);
-    const Body = Buffer.from(json);
+  (Bucket: S3Path["Bucket"]) => async (Key: S3Path["Key"], data: string) => {
+    const Body = Buffer.from(data);
     const command = new PutObjectCommand({ Body, Bucket, Key });
     return await client.send(command);
   };
 
-export const updateObject =
-  (Bucket: S3Path["Bucket"]) =>
-  async (
-    Key: S3Path["Key"],
-    data: DflowData
-  ): Promise<UpdateOperationOutput> => {
-    await putObject(Bucket)(Key, data);
-    return updatedNow();
-  };
-
 export const deleteObject =
-  (Bucket: S3Path["Bucket"]) =>
-  async (Key: S3Path["Key"]): Promise<DeleteOperationOutput> => {
+  (Bucket: S3Path["Bucket"]) => async (Key: S3Path["Key"]) => {
     const command = new DeleteObjectCommand({ Bucket, Key });
-    await client.send(command);
-    return deletedNow();
+    return await client.send(command);
   };

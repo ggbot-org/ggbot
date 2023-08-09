@@ -1,10 +1,14 @@
-import { ReadBinanceApiKeyPermissions } from "@ggbot2/binance";
-import { ErrorAccountItemNotFound } from "@ggbot2/models";
+import { BinanceApiKeyPermission } from "@ggbot2/binance";
+import { AccountKey, ErrorAccountItemNotFound } from "@ggbot2/models";
 
 import { Binance } from "./binance.js";
 import { readBinanceApiConfig } from "./binanceApiConfig.js";
 
-export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions["func"] =
+export type ReadBinanceApiKeyPermissions = (
+  arg: AccountKey
+) => Promise<BinanceApiKeyPermission>;
+
+export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions =
   async ({ accountId }) => {
     const binanceApiConfig = await readBinanceApiConfig({ accountId });
     if (!binanceApiConfig)

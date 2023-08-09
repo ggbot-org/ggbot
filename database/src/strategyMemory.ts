@@ -1,20 +1,19 @@
 import {
   DeleteStrategyMemory,
+  isStrategyMemory,
   ReadStrategyMemory,
   StrategyMemory,
   updatedNow,
   WriteStrategyMemory,
 } from "@ggbot2/models";
 
-import { DELETE, getObject, putObject } from "./_dataBucket.js";
+import { DELETE, READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const readStrategyMemory: ReadStrategyMemory["func"] = async (arg) =>
-  await getObject<ReadStrategyMemory["out"]>({
-    Key: pathname.strategyMemory(arg),
-  });
+export const readStrategyMemory: ReadStrategyMemory = (arg) =>
+  READ<ReadStrategyMemory>(isStrategyMemory, pathname.strategyMemory(arg));
 
-export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
+export const writeStrategyMemory: WriteStrategyMemory = async ({
   accountId,
   strategyKind,
   strategyId,
@@ -25,14 +24,15 @@ export const writeStrategyMemory: WriteStrategyMemory["func"] = async ({
     ...rest,
     ...whenUpdated,
   };
-  const Key = pathname.strategyMemory({
-    accountId,
-    strategyKind,
-    strategyId,
-  });
-  await putObject({ Key, data });
-  return whenUpdated;
+  return UPDATE(
+    pathname.strategyMemory({
+      accountId,
+      strategyKind,
+      strategyId,
+    }),
+    data
+  );
 };
 
-export const deleteStrategyMemory: DeleteStrategyMemory["func"] = (arg) =>
+export const deleteStrategyMemory: DeleteStrategyMemory = (arg) =>
   DELETE(pathname.strategyMemory(arg));

@@ -3,7 +3,6 @@ import { objectTypeGuard } from "@ggbot2/type-utils";
 import { AccountKey, isAccountKey } from "./account.js";
 import { EmailAddress, isEmailAddress } from "./email.js";
 import { ItemKey } from "./item.js";
-import { Operation, ReadOperation } from "./operation.js";
 import { CreationTime, isCreationTime } from "./time.js";
 
 export type EmailAccount = AccountKey &
@@ -17,9 +16,12 @@ export const isEmailAccount = objectTypeGuard<EmailAccount>(
     isEmailAddress(email)
 );
 
-export type CreateEmailAccount = Operation<
-  Omit<EmailAccount, "whenCreated">,
-  CreationTime
->;
+export type CreateEmailAccountInput = Omit<EmailAccount, "whenCreated">;
 
-export type ReadEmailAccount = ReadOperation<EmailAddress, EmailAccount>;
+export type CreateEmailAccount = (
+  arg: CreateEmailAccountInput
+) => Promise<CreationTime>;
+
+export type ReadEmailAccount = (
+  arg: EmailAddress
+) => Promise<EmailAccount | null>;

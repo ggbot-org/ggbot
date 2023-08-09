@@ -4,7 +4,6 @@ import { Account, AccountKey, isAccountKey } from "./account.js";
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js";
 import { isItemId, Item, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";
-import { Operation } from "./operation.js";
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js";
 
 const noneStrategyKind = "_none_";
@@ -62,22 +61,26 @@ export const isStrategyKey = objectTypeGuard<StrategyKey>(
     isItemId(strategyId) && isStrategyKind(strategyKind)
 );
 
-export type CopyStrategy = Operation<
-  AccountStrategyKey & Pick<Strategy, "name">,
-  Strategy
->;
+export type CopyStrategyInput = AccountStrategyKey & Pick<Strategy, "name">;
 
-export const isCopyStrategyInput = objectTypeGuard<CopyStrategy["in"]>(
+export const isCopyStrategyInput = objectTypeGuard<CopyStrategyInput>(
   ({ name, ...accountStrategyKey }) =>
     isAccountStrategyKey(accountStrategyKey) && isName(name)
 );
 
-export type CreateStrategy = Operation<NewItem<Strategy>, Strategy>;
+export type CopyStrategy = (arg: CopyStrategyInput) => Promise<Strategy>;
 
-export const isCreateStrategyInput = objectTypeGuard<CreateStrategy["in"]>(
-  ({ name, kind, ...accountKey }) =>
-    isAccountKey(accountKey) && isName(name) && isStrategyKind(kind)
+export type CreateStrategyInput = NewItem<Strategy>;
+
+export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
+  (arg) => isStrategy({ ...arg, id: nullId, whenCreated: 1 })
 );
+
+export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>;
+
+export type ListStrategyKeysInput = Pick<StrategyKey, "strategyKind"> & {
+  strategyId: string;
+};
 
 /**
  * Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.
@@ -91,33 +94,27 @@ export const isCreateStrategyInput = objectTypeGuard<CreateStrategy["in"]>(
  * }
  * ```
  */
-export type ListStrategyKeys = Operation<
-  Pick<StrategyKey, "strategyKind"> & {
-    strategyId: string;
-  },
-  StrategyKey[]
->;
+export type ListStrategyKeys = (
+  arg: ListStrategyKeysInput
+) => Promise<StrategyKey[]>;
 
-export type ReadStrategy = Operation<StrategyKey, Strategy>;
+export type ReadStrategy = (arg: StrategyKey) => Promise<Strategy | null>;
 
-export const isReadStrategyInput = objectTypeGuard<ReadStrategy["in"]>(
-  (strategyKey) => isStrategyKey(strategyKey)
-);
+export const isReadStrategyInput = isStrategyKey;
 
-export type ReadStrategyAccountId = Operation<StrategyKey, Account["id"]>;
+export type ReadStrategyAccountId = (
+  arg: StrategyKey
+) => Promise<Account["id"] | null>;
 
-export type RenameStrategy = Operation<
-  AccountStrategyKey & Pick<Strategy, "name">,
-  UpdateTime
->;
+export type RenameStrategyInput = AccountStrategyKey & Pick<Strategy, "name">;
 
-export const isRenameStrategyInput = objectTypeGuard<RenameStrategy["in"]>(
+export const isRenameStrategyInput = objectTypeGuard<RenameStrategyInput>(
   ({ name, ...accountStrategyKey }) =>
     isName(name) && isAccountStrategyKey(accountStrategyKey)
 );
 
-export type DeleteStrategy = Operation<AccountStrategyKey, DeletionTime>;
+export type RenameStrategy = (arg: RenameStrategyInput) => Promise<UpdateTime>;
 
-export const isDeleteStrategyInput = objectTypeGuard<DeleteStrategy["in"]>(
-  (accountStrategyKey) => isAccountStrategyKey(accountStrategyKey)
-);
+export type DeleteStrategy = (arg: AccountStrategyKey) => Promise<DeletionTime>;
+
+export const isDeleteStrategyInput = isAccountStrategyKey;

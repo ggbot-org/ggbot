@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/models";
+import { CacheMap } from "@ggbot2/cache";
 
 import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js";
 import { BinanceExchangeInfo } from "./types.js";

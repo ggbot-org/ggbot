@@ -1,5 +1,5 @@
 import { BadGatewayError } from "@ggbot2/http";
-import { Account, EmailAddress, isAccount, noneAccount } from "@ggbot2/models";
+import { Account, EmailAddress, noneAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
 import { localWebStorage, sessionWebStorage } from "@ggbot2/web-storage";
@@ -134,7 +134,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue = useMemo<ContextValue>(
     () => ({
-      account: isAccount(account) ? account : noneAccount,
+      account: account ?? noneAccount,
       exit: () => {
         dispatch({ type: "EXIT" });
       },
@@ -176,23 +176,24 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (account === undefined) return;
+
     if (account === null) {
       dispatch({ type: "SET_EMAIL", data: { email: undefined } });
+      return;
     }
 
-    if (isAccount(account)) {
-      dispatch({ type: "SET_EMAIL", data: { email: account.email } });
+    dispatch({ type: "SET_EMAIL", data: { email: account.email } });
 
-      if (!showSplashScreen) return;
-      setTimeout(() => {
-        dispatch({ type: "HIDE_SPLASH_SCREEN" });
-      }, splashScreenDuration - (now() - startSession));
-    }
+    if (!showSplashScreen) return;
+    setTimeout(() => {
+      dispatch({ type: "HIDE_SPLASH_SCREEN" });
+    }, splashScreenDuration - (now() - startSession));
   }, [account, startSession, showSplashScreen]);
 
   if (showSplashScreen) return <SplashScreen />;
 
-  if (jwt === undefined) {
+  if (account === null || jwt === undefined) {
     if (email) {
       return <AuthVerify email={email} setJwt={setJwt} />;
     } else {
@@ -202,14 +203,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   if (account === undefined) return <Navigation noMenu />;
 
-  if (isAccount(account))
-    return (
-      <AuthenticationContext.Provider value={contextValue}>
-        {children}
+  return (
+    <AuthenticationContext.Provider value={contextValue}>
+      {children}
 
-        <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
-      </AuthenticationContext.Provider>
-    );
-
-  return null;
+      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+    </AuthenticationContext.Provider>
+  );
 };

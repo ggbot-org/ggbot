@@ -11,11 +11,11 @@ import {
   WriteStrategyFlow,
 } from "@ggbot2/models";
 
-import { DELETE, putObject, READ } from "./_dataBucket.js";
+import { DELETE, READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 import { readStrategyAccountId } from "./strategy.js";
 
-export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
+export const copyStrategyFlow: CopyStrategyFlow = async ({
   accountId,
   source: strategyKey,
   target,
@@ -34,10 +34,10 @@ export const copyStrategyFlow: CopyStrategyFlow["func"] = async ({
   return createdNow();
 };
 
-export const readStrategyFlow: ReadStrategyFlow["func"] = (arg) =>
-  READ<ReadStrategyFlow["out"]>(isStrategyFlow, pathname.strategyFlow(arg));
+export const readStrategyFlow: ReadStrategyFlow = (arg) =>
+  READ<ReadStrategyFlow>(isStrategyFlow, pathname.strategyFlow(arg));
 
-export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
+export const writeStrategyFlow: WriteStrategyFlow = async ({
   accountId,
   view,
   ...strategyKey
@@ -50,16 +50,14 @@ export const writeStrategyFlow: WriteStrategyFlow["func"] = async ({
       accountId,
       ...strategyKey,
     });
-  const whenUpdated = updatedNow();
   const data: StrategyFlow = {
     view,
-    ...whenUpdated,
+    ...updatedNow(),
   };
-  await putObject(pathname.strategyFlow(strategyKey), data);
-  return whenUpdated;
+  return await UPDATE(pathname.strategyFlow(strategyKey), data);
 };
 
-export const deleteStrategyFlow: DeleteStrategyFlow["func"] = async ({
+export const deleteStrategyFlow: DeleteStrategyFlow = async ({
   accountId,
   ...strategyKey
 }) => {

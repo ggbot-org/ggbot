@@ -1,7 +1,6 @@
-import { ReadStrategy, ReadStrategyFlow } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 
-import { ApiAction as Action, ApiActionInput } from "./apiAction.js";
+import { ApiActionInput } from "./apiAction.js";
 
 export const publicApiActionTypes = [
   "ReadStrategy",
@@ -10,11 +9,6 @@ export const publicApiActionTypes = [
 export type PublicApiActionType = (typeof publicApiActionTypes)[number];
 export const isPublicApiActionType =
   isLiteralType<PublicApiActionType>(publicApiActionTypes);
-
-export type PublicApiAction = {
-  ReadStrategy: Action<ReadStrategy["in"]>;
-  ReadStrategyFlow: Action<ReadStrategyFlow["in"]>;
-};
 
 export type PublicApiActionRequestData = ApiActionInput<PublicApiActionType>;
 

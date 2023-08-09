@@ -18,10 +18,15 @@ import { DflowObject } from "dflow";
 
 import { AccountKey } from "./account.js";
 import { isItemId, Item, newId, NewItem } from "./item.js";
-import { Operation, ReadOperation, UpdateOperation } from "./operation.js";
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js";
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js";
-import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js";
+import {
+  createdNow,
+  CreationTime,
+  DayKey,
+  isCreationTime,
+  UpdateTime,
+} from "./time.js";
 
 export const subscriptionPurchaseStatuses = [
   "completed",
@@ -127,31 +132,43 @@ export const newYearlySubscription = ({
   };
 };
 
-export type ReadSubscriptionPurchase = ReadOperation<
-  SubscriptionPurchaseKey,
-  SubscriptionPurchase
->;
+export type ReadSubscriptionPurchase = (
+  arg: SubscriptionPurchaseKey
+) => Promise<SubscriptionPurchase | null>;
 
-export type WriteSubscriptionPurchase = UpdateOperation<
-  SubscriptionPurchaseKey & SubscriptionPurchase
->;
+export type WriteSubscriptionPurchaseInput = SubscriptionPurchaseKey &
+  SubscriptionPurchase;
+
+export type WriteSubscriptionPurchase = (
+  arg: WriteSubscriptionPurchaseInput
+) => Promise<UpdateTime>;
+
+export type CreateYearlySubscriptionPurchaseInput = AccountKey &
+  NewYearlySubscriptionArg;
 
 /** Create a yearly subscription. */
-export type CreateYearlySubscriptionPurchase = Operation<
-  AccountKey & NewYearlySubscriptionArg,
-  SubscriptionPurchaseKey
->;
+export type CreateYearlySubscriptionPurchase = (
+  arg: CreateYearlySubscriptionPurchaseInput
+) => Promise<SubscriptionPurchaseKey>;
+
+export type CreateMonthlySubscriptionPurchaseInput = AccountKey &
+  NewMonthlySubscriptionArg;
 
 /** Create a monthly subscription. */
-export type CreateMonthlySubscriptionPurchase = Operation<
-  AccountKey & NewMonthlySubscriptionArg,
-  SubscriptionPurchaseKey
->;
+export type CreateMonthlySubscriptionPurchase = (
+  arg: CreateMonthlySubscriptionPurchaseInput
+) => Promise<SubscriptionPurchaseKey>;
 
-export type UpdateSubscriptionPurchaseInfo = UpdateOperation<
-  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info">
->;
+export type UpdateSubscriptionPurchaseInfoInput = SubscriptionPurchaseKey &
+  Pick<SubscriptionPurchase, "info">;
 
-export type UpdateSubscriptionPurchaseStatus = UpdateOperation<
-  SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "status">
->;
+export type UpdateSubscriptionPurchaseInfo = (
+  arg: UpdateSubscriptionPurchaseInfoInput
+) => Promise<UpdateTime>;
+
+export type UpdateSubscriptionPurchaseStatusInput = SubscriptionPurchaseKey &
+  Pick<SubscriptionPurchase, "status">;
+
+export type UpdateSubscriptionPurchaseStatus = (
+  arg: UpdateSubscriptionPurchaseStatusInput
+) => Promise<UpdateTime>;

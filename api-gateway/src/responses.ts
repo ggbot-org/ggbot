@@ -15,7 +15,8 @@ import { APIGatewayProxyResult } from "./types.js";
 
 const commonHeaders = {
   "Access-Control-Allow-Credentials": "true",
-  "Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE).origin,
+  "Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE())
+    .origin,
 };
 
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({

@@ -1,5 +1,5 @@
 import { Section } from "@ggbot2/design";
-import { isStrategy, noneStrategy, Strategy } from "@ggbot2/models";
+import { noneStrategy, Strategy } from "@ggbot2/models";
 import { localWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
@@ -40,11 +40,10 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const strategy = useMemo(() => {
     if (!strategyId) return noneStrategy;
-    if (isStrategy(remoteStrategy))
+    if (remoteStrategy)
       return name ? { ...remoteStrategy, name } : remoteStrategy;
     const localStrategy = localWebStorage.getStrategy(strategyId);
-    if (isStrategy(localStrategy))
-      return name ? { ...localStrategy, name } : localStrategy;
+    if (localStrategy) return name ? { ...localStrategy, name } : localStrategy;
     return noneStrategy;
   }, [remoteStrategy, strategyId, name]);
 
@@ -73,7 +72,7 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   // Cache strategy.
   useEffect(() => {
     if (!strategyId) return;
-    if (isStrategy(remoteStrategy)) localWebStorage.setStrategy(remoteStrategy);
+    if (remoteStrategy) localWebStorage.setStrategy(remoteStrategy);
     if (remoteStrategy === null) localWebStorage.removeStrategy(strategyId);
   }, [remoteStrategy, strategyId]);
 

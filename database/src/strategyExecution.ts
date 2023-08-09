@@ -10,13 +10,13 @@ import {
 import { DELETE, READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const readStrategyExecution: ReadStrategyExecution["func"] = (arg) =>
-  READ<ReadStrategyExecution["out"]>(
+export const readStrategyExecution: ReadStrategyExecution = (arg) =>
+  READ<ReadStrategyExecution>(
     isStrategyExecution,
     pathname.strategyExecution(arg)
   );
 
-export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
+export const writeStrategyExecution: WriteStrategyExecution = async ({
   accountId,
   strategyKind,
   strategyId,
@@ -38,5 +38,5 @@ export const writeStrategyExecution: WriteStrategyExecution["func"] = async ({
   return whenUpdated;
 };
 
-export const deleteStrategyExecution: DeleteStrategyExecution["func"] = (arg) =>
+export const deleteStrategyExecution: DeleteStrategyExecution = (arg) =>
   DELETE(pathname.strategyExecution(arg));

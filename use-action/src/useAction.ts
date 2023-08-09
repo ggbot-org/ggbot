@@ -1,9 +1,6 @@
 import {
   ApiActionClientSideError,
-  ApiActionInput,
   ApiActionServerSideError,
-  isApiActionResponseData,
-  isApiActionResponseError,
 } from "@ggbot2/api";
 import {
   __400__BAD_REQUEST__,
@@ -14,7 +11,6 @@ import {
   BadGatewayError,
   InternalServerError,
 } from "@ggbot2/http";
-import { AccountKey, OperationInput, OperationOutput } from "@ggbot2/models";
 import { useCallback, useState } from "react";
 
 import { UseActionAbortController } from "./controller.js";
@@ -25,25 +21,7 @@ export type UseActionError =
   | ApiActionServerSideError
   | undefined;
 
-type UseActionRequestArg<Input extends OperationInput> =
-  Input extends AccountKey ? Omit<Input, "accountId"> : Input;
-
-type UseActionRequest<Input extends OperationInput> = (
-  arg?: UseActionRequestArg<Input> | undefined
-) => void;
-
-type UseActionOutput<
-  Action extends { in: OperationInput; out: OperationOutput }
-> = {
-  error: UseActionError;
-  data: Action["out"] | undefined;
-  request: UseActionRequest<Action["in"]>;
-  canRun: boolean;
-  hasError: boolean | undefined;
-  isPending: boolean | undefined;
-  isDone: boolean | undefined;
-  reset: () => void;
-};
+type AsyncFunction = (...arguments_: any[]) => Promise<unknown>;
 
 /**
  * Hook to use API actions:
@@ -55,18 +33,11 @@ type UseActionOutput<
  * @example
  *
  * ```ts
- * import {
- *   SomeApiAction as ApiAction,
- *   SomeApiActionType as ApiActionType,
- * } from "@ggbot2/api";
  * import { useAction } from "@ggbot2/use-action";
  *
  * const endpoint = "/api/action";
  *
- * export const FooBar = useAction<ApiAction["FooBar"], ApiActionType>(
- *   endpoint,
- *   { type: "FooBar" }
- * );
+ * export const FooBar = useAction({ endpoint }, "FooBar");
  * ```
  *
  * Then call it in a `useEffect`.
@@ -80,13 +51,15 @@ type UseActionOutput<
  * ```
  */
 export const useAction = <
-  Action extends { in: OperationInput; out: OperationOutput },
-  ApiActionType extends string
+  Operation extends AsyncFunction,
+  ActionType extends string
 >(
   { endpoint, withJwt }: { endpoint: string } & UseActionHeadersConstructorArg,
-  { type }: Pick<ApiActionInput<ApiActionType>, "type">
-): UseActionOutput<Action> => {
-  const [data, setData] = useState<Action["out"] | undefined>();
+  type: ActionType
+) => {
+  const [data, setData] = useState<
+    Awaited<ReturnType<Operation>> | undefined
+  >();
   const [error, setError] = useState<UseActionError>();
   const [isPending, setIsPending] = useState<boolean | undefined>();
 
@@ -96,8 +69,8 @@ export const useAction = <
     setIsPending(undefined);
   }, []);
 
-  const request = useCallback<UseActionRequest<Action["in"]>>(
-    (inputData) => {
+  const request = useCallback(
+    (inputData: unknown) => {
       (async function () {
         const controller = new UseActionAbortController();
 
@@ -114,12 +87,10 @@ export const useAction = <
 
           if (response.ok) {
             const responseOutput = await response.json();
-            if (isApiActionResponseData(responseOutput))
-              setData(responseOutput.data);
+            setData(responseOutput.data);
           } else if (response.status === __400__BAD_REQUEST__) {
             const responseOutput = await response.json();
-            if (isApiActionResponseError(responseOutput))
-              setError(responseOutput.error);
+            setError(responseOutput.error);
           } else {
             throw response.status;
           }

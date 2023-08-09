@@ -6,20 +6,16 @@ import {
   InternalServerError,
 } from "@ggbot2/http";
 import {
-  AccountKey,
   ErrorAccountItemNotFound,
   ErrorExceededQuota,
   ErrorUnimplementedStrategyKind,
-  isOperationOutput,
-  OperationInput,
-  OperationOutput,
 } from "@ggbot2/models";
 import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
 import { Dflow, DflowObject } from "dflow";
 
 export type ApiActionInput<ApiActionType extends string> = {
   type: ApiActionType;
-  data?: DflowObject | undefined;
+  data?: unknown;
 };
 
 export type ApiActionResponseError = {
@@ -31,29 +27,16 @@ export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
 );
 
 export type ApiActionResponseData = {
-  data: OperationOutput;
+  data: unknown;
 };
 
 export const isApiActionResponseData = objectTypeGuard<ApiActionResponseData>(
-  ({ data }) => isOperationOutput(data)
+  ({ data }) => data !== undefined
 );
 
 export type ApiActionResponseOutput =
   | ApiActionResponseData
   | ApiActionResponseError;
-
-export type ApiAction<
-  Input extends OperationInput,
-  Output = OperationOutput
-> = {
-  in: Input;
-  out: Output;
-};
-
-// AccountKey is provided by authentication, no need to add it as action input parameter.
-export type AuthenticatedApiAction<Input extends OperationInput> = ApiAction<
-  Input extends AccountKey ? Omit<Input, "accountId"> : Input
->;
 
 // Server errors
 // ////////////

@@ -3,12 +3,12 @@ import { dateToDay, dayToDate, getDate } from "@ggbot2/time";
 
 import { readStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js";
 
-export const readStrategyBalances: ReadStrategyBalances["func"] = async ({
+export const readStrategyBalances: ReadStrategyBalances = async ({
   start,
   end,
   ...key
 }) => {
-  const result: ReadStrategyBalances["out"] = [];
+  const result: Awaited<ReturnType<ReadStrategyBalances>> = [];
   let date = dayToDate(start);
   while (date <= dayToDate(end)) {
     const day = dateToDay(date);

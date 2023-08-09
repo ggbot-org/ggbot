@@ -1,6 +1,6 @@
+import { CacheMap } from "@ggbot2/cache";
 import {
   BinanceApiConfig,
-  CacheMap,
   CreateBinanceApiConfig,
   createdNow,
   DeleteBinanceApiConfig,
@@ -9,43 +9,41 @@ import {
   ReadBinanceApiKey,
 } from "@ggbot2/models";
 
-import { DELETE, putObject, READ } from "./_dataBucket.js";
+import { DELETE, READ, WRITE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
 const binanceApiConfigCache = new CacheMap<BinanceApiConfig>();
 
-export const createBinanceApiConfig: CreateBinanceApiConfig["func"] = async ({
+export const createBinanceApiConfig: CreateBinanceApiConfig = async ({
   accountId,
   apiKey,
   apiSecret,
 }) => {
-  await putObject(pathname.binanceApiConfig({ accountId }), {
+  await WRITE(pathname.binanceApiConfig({ accountId }), {
     apiKey,
     apiSecret,
   });
   return createdNow();
 };
 
-export const readBinanceApiConfig: ReadBinanceApiConfig["func"] = async ({
+export const readBinanceApiConfig: ReadBinanceApiConfig = async ({
   accountId,
 }) => {
   const cachedData = binanceApiConfigCache.get(accountId);
   if (cachedData) return cachedData;
   const Key = pathname.binanceApiConfig({ accountId });
-  const data = await READ<ReadBinanceApiConfig["out"]>(isBinanceApiConfig, Key);
+  const data = await READ<ReadBinanceApiConfig>(isBinanceApiConfig, Key);
   if (!data) return null;
   binanceApiConfigCache.set(accountId, data);
   return data;
 };
 
-export const readBinanceApiKey: ReadBinanceApiKey["func"] = async ({
-  accountId,
-}) => {
+export const readBinanceApiKey: ReadBinanceApiKey = async ({ accountId }) => {
   const data = await readBinanceApiConfig({ accountId });
   if (!data) return null;
   const { apiKey } = data;
   return { apiKey };
 };
 
-export const deleteBinanceApiConfig: DeleteBinanceApiConfig["func"] = (arg) =>
+export const deleteBinanceApiConfig: DeleteBinanceApiConfig = (arg) =>
   DELETE(pathname.binanceApiConfig(arg));

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/use-action",
+  "name": "@ggbot2/cache",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -16,21 +16,15 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@ggbot2/api": "file:api",
-    "@ggbot2/http": "file:http",
-    "@ggbot2/react": "file:react",
-    "@ggbot2/web-storage": "file:web-storage",
-    "react": "18.2.0",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp'"
+    "@ggbot2/time": "file:time"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig",
-    "ts-prune": "0.10.3"
+    "@ggbot2/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config/react"
+      "@ggbot2/eslint-config"
     ]
   }
 }

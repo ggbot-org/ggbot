@@ -5,12 +5,12 @@ import { EmailAddress, isEmailAddress, noneEmail } from "./email.js";
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js";
 import { isName, Name, normalizeName } from "./name.js";
 import {
-  DeleteOperation,
-  Operation,
-  ReadOperation,
-  UpdateOperation,
-} from "./operation.js";
-import { createdNow, CreationTime, isCreationTime } from "./time.js";
+  createdNow,
+  CreationTime,
+  DeletionTime,
+  isCreationTime,
+  UpdateTime,
+} from "./time.js";
 
 export type Account = Item &
   CreationTime & {
@@ -57,31 +57,36 @@ export type AccountKeys = AccountKey[];
 
 export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey);
 
-export type CreateAccount = Operation<NewItem<Account>, Account>;
+export type CreateAccount = (arg: NewItem<Account>) => Promise<Account>;
 
-export type ReadAccount = ReadOperation<AccountKey, Account>;
+export type ReadAccountOutput = Account | null;
+export type ReadAccount = (arg: AccountKey) => Promise<Account | null>;
 
 export const isReadAccountInput = objectTypeGuard<AccountKey>((accountKey) =>
   isAccountKey(accountKey)
 );
 
-export type RenameAccount = UpdateOperation<AccountKey & { name: Name }>;
+export type RenameAccountInput = AccountKey & { name: Name };
 
-export const isRenameAccountInput = objectTypeGuard<RenameAccount["in"]>(
+export const isRenameAccountInput = objectTypeGuard<RenameAccountInput>(
   ({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
 );
 
-export type SetAccountCountry = UpdateOperation<
-  AccountKey & { country: AllowedCountryIsoCode2 }
->;
+export type RenameAccount = (arg: RenameAccountInput) => Promise<UpdateTime>;
 
-export const isSetAccountCountryInput = objectTypeGuard<
-  SetAccountCountry["in"]
->(
+export type SetAccountCountryInput = AccountKey & {
+  country: AllowedCountryIsoCode2;
+};
+
+export const isSetAccountCountryInput = objectTypeGuard<SetAccountCountryInput>(
   ({ country, ...accountKey }) =>
     isAllowedCountryIsoCode2(country) && isAccountKey(accountKey)
 );
 
-export type DeleteAccount = DeleteOperation<AccountKey>;
+export type SetAccountCountry = (
+  arg: SetAccountCountryInput
+) => Promise<UpdateTime>;
 
-export type ListAccountKeys = ReadOperation<void, AccountKeys>;
+export type DeleteAccount = (arg: AccountKey) => Promise<DeletionTime>;
+
+export type ListAccountKeys = () => Promise<AccountKeys>;

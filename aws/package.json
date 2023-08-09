@@ -25,8 +25,7 @@
     "@aws-sdk/client-iam": "3.379.1",
     "@aws-sdk/client-s3": "3.379.1",
     "@aws-sdk/client-ses": "3.379.1",
-    "@ggbot2/infrastructure": "file:infrastructure",
-    "@ggbot2/models": "file:models"
+    "@ggbot2/infrastructure": "file:infrastructure"
   },
   "eslintConfig": {
     "extends": [

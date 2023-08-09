@@ -4,17 +4,17 @@ import {
   ReadStrategyDailyBalanceChanges,
 } from "@ggbot2/models";
 
-import { READ, UPDATE } from "./_dataBucket.js";
+import { READ_ARRAY, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const readStrategyDailyBalanceChanges: ReadStrategyDailyBalanceChanges["func"] =
+export const readStrategyDailyBalanceChanges: ReadStrategyDailyBalanceChanges =
   (arg) =>
-    READ<ReadStrategyDailyBalanceChanges["out"]>(
+    READ_ARRAY<ReadStrategyDailyBalanceChanges>(
       isBalanceChangeEvents,
       pathname.strategyDailyBalanceChanges(arg)
     );
 
-export const appendStrategyDailyBalanceChanges: AppendStrategyDailyBalanceChanges["func"] =
+export const appendStrategyDailyBalanceChanges: AppendStrategyDailyBalanceChanges =
   async ({ items, ...key }) => {
     const currentItems = await readStrategyDailyBalanceChanges(key);
     const data = currentItems ? [...currentItems, ...items] : items;

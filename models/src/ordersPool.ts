@@ -1,15 +1,16 @@
 import { AccountStrategyKey } from "./accountStrategy.js";
-import { ReadOperation, UpdateOperation } from "./operation.js";
 import { Order } from "./order.js";
+import { UpdateTime } from "./time.js";
 
 /** Contains orders in a temporary state. */
 export type OrdersPool = Order[];
 
-export type ReadStrategyOrdersPool = ReadOperation<
-  AccountStrategyKey,
-  OrdersPool
->;
+export type ReadStrategyOrdersPool = (
+  arg: AccountStrategyKey
+) => Promise<OrdersPool>;
 
-export type WriteStrategyOrdersPool = UpdateOperation<
-  AccountStrategyKey & OrdersPool
->;
+export type WriteStrategyOrdersPoolInput = AccountStrategyKey & OrdersPool;
+
+export type WriteStrategyOrdersPool = (
+  arg: WriteStrategyOrdersPoolInput
+) => Promise<UpdateTime>;

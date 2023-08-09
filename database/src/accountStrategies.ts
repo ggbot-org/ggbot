@@ -13,40 +13,46 @@ import {
   WriteAccountStrategiesItemSchedulings,
 } from "@ggbot2/models";
 
-import { putObject, READ, UPDATE } from "./_dataBucket.js";
+import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
-import { readSubscriptionPlan } from "./subscription.js";
+import { readSubscription } from "./subscription.js";
 
-export const readAccountStrategies: ReadAccountStrategies["func"] = (arg) =>
-  READ<ReadAccountStrategies["out"]>(
+export const readAccountStrategies: ReadAccountStrategies = (arg) =>
+  READ_ARRAY<ReadAccountStrategies>(
     isAccountStrategies,
     pathname.accountStrategies(arg)
   );
 
-export const insertAccountStrategiesItem: InsertAccountStrategiesItem["func"] =
-  async ({ accountId, item }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const subscriptionPlan = await readSubscriptionPlan({ accountId });
-    const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan);
-    if (items.length >= numMaxStrategies)
-      throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" });
-    const data = [...items, item];
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject(Key, data);
-    return createdNow();
-  };
+export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
+  accountId,
+  item,
+}) => {
+  const items = (await readAccountStrategies({ accountId })) ?? [];
+  const subscription = await readSubscription({ accountId });
 
-export const renameAccountStrategiesItem: RenameAccountStrategiesItem["func"] =
-  async ({ accountId, strategyId, name }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => {
-      if (item.strategyId !== strategyId) return item;
-      return { ...item, name };
-    });
-    return await UPDATE(pathname.accountStrategies({ accountId }), data);
-  };
+  const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(subscription?.plan);
+  if (items.length >= numMaxStrategies)
+    throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" });
+  const data = [...items, item];
+  const Key = pathname.accountStrategies({ accountId });
+  await WRITE(Key, data);
+  return createdNow();
+};
 
-export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings["func"] =
+export const renameAccountStrategiesItem: RenameAccountStrategiesItem = async ({
+  accountId,
+  strategyId,
+  name,
+}) => {
+  const items = (await readAccountStrategies({ accountId })) ?? [];
+  const data = items.map((item) => {
+    if (item.strategyId !== strategyId) return item;
+    return { ...item, name };
+  });
+  return await UPDATE(pathname.accountStrategies({ accountId }), data);
+};
+
+export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings =
   async ({ accountId, strategyId, schedulings }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
     const data = items.map((item) => {
@@ -56,18 +62,19 @@ export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSc
     return await UPDATE(pathname.accountStrategies({ accountId }), data);
   };
 
-export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem["func"] =
-  async ({ accountId, strategyId }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.filter((item) => item.strategyId !== strategyId);
-    if (data.length !== items.length) {
-      const Key = pathname.accountStrategies({ accountId });
-      await putObject({ Key, data });
-    }
-    return deletedNow();
-  };
+export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
+  accountId,
+  strategyId,
+}) => {
+  const items = (await readAccountStrategies({ accountId })) ?? [];
+  const data = items.filter((item) => item.strategyId !== strategyId);
+  if (data.length !== items.length) {
+    await WRITE(pathname.accountStrategies({ accountId }), data);
+  }
+  return deletedNow();
+};
 
-export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesItemSchedulings["func"] =
+export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesItemSchedulings =
   async ({ accountId, strategyId }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
     const data = items.map((item) => {
@@ -80,10 +87,10 @@ export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesIt
         })),
       };
     });
-    await UPDATE(pathname.accountStrategies({ accountId }), data);
+    return await UPDATE(pathname.accountStrategies({ accountId }), data);
   };
 
-export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings["func"] =
+export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings =
   async ({ accountId }) => {
     const items = (await readAccountStrategies({ accountId })) ?? [];
     const data = items.map((item) => ({

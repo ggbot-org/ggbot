@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/models";
+import { CacheMap } from "@ggbot2/cache";
 import { Time } from "@ggbot2/time";
 
 import { BinanceKlineCacheProvider } from "./cacheProviders.js";

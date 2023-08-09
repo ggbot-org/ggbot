@@ -6,8 +6,7 @@ import {
 
 import { AccountKey, isAccountKey } from "./account.js";
 import { ItemKey } from "./item.js";
-import { DeleteOperation, Operation, ReadOperation } from "./operation.js";
-import { CreationTime } from "./time.js";
+import { CreationTime, DeletionTime } from "./time.js";
 
 export type BinanceApiConfig = ItemKey<{
   apiKey: NonEmptyString;
@@ -41,23 +40,26 @@ export const binanceApiKeyPermissionsAreValid = ({
   return enableReading && enableSpotAndMarginTrading && ipRestrict;
 };
 
-export type CreateBinanceApiConfig = Operation<
-  AccountKey & BinanceApiConfig,
-  CreationTime
->;
+export type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig;
 
-export const isCreateBinanceApiConfigInput = objectTypeGuard<
-  CreateBinanceApiConfig["in"]
->(
-  ({ apiKey, apiSecret, ...accountKey }) =>
-    isAccountKey(accountKey) && isBinanceApiConfig({ apiKey, apiSecret })
-);
+export const isCreateBinanceApiConfigInput =
+  objectTypeGuard<CreateBinanceApiConfigInput>(
+    ({ apiKey, apiSecret, ...accountKey }) =>
+      isAccountKey(accountKey) && isBinanceApiConfig({ apiKey, apiSecret })
+  );
 
-export type ReadBinanceApiConfig = ReadOperation<AccountKey, BinanceApiConfig>;
+export type CreateBinanceApiConfig = (
+  arg: CreateBinanceApiConfigInput
+) => Promise<CreationTime>;
 
-export type ReadBinanceApiKey = ReadOperation<
-  AccountKey,
-  Pick<BinanceApiConfig, "apiKey">
->;
+export type ReadBinanceApiConfig = (
+  arg: AccountKey
+) => Promise<BinanceApiConfig | null>;
 
-export type DeleteBinanceApiConfig = DeleteOperation<AccountKey>;
+export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">;
+
+export type ReadBinanceApiKey = (
+  arg: AccountKey
+) => Promise<BinanceApiKey | null>;
+
+export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>;
