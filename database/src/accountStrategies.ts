@@ -4,25 +4,24 @@ import {
   deletedNow,
   ErrorExceededQuota,
   InsertAccountStrategiesItem,
+  isAccountStrategies,
   quota,
   ReadAccountStrategies,
   RenameAccountStrategiesItem,
   SuspendAccountStrategiesItemSchedulings,
   SuspendAccountStrategiesSchedulings,
-  updatedNow,
   WriteAccountStrategiesItemSchedulings,
 } from "@ggbot2/models";
 
-import { getObject, putObject } from "./_dataBucket.js";
+import { putObject, READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 import { readSubscriptionPlan } from "./subscription.js";
 
-export const readAccountStrategies: ReadAccountStrategies["func"] = async (
-  key
-) =>
-  await getObject<ReadAccountStrategies["out"]>({
-    Key: pathname.accountStrategies(key),
-  });
+export const readAccountStrategies: ReadAccountStrategies["func"] = (arg) =>
+  READ<ReadAccountStrategies["out"]>(
+    isAccountStrategies,
+    pathname.accountStrategies(arg)
+  );
 
 export const insertAccountStrategiesItem: InsertAccountStrategiesItem["func"] =
   async ({ accountId, item }) => {
@@ -33,7 +32,7 @@ export const insertAccountStrategiesItem: InsertAccountStrategiesItem["func"] =
       throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" });
     const data = [...items, item];
     const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
+    await putObject(Key, data);
     return createdNow();
   };
 
@@ -44,9 +43,7 @@ export const renameAccountStrategiesItem: RenameAccountStrategiesItem["func"] =
       if (item.strategyId !== strategyId) return item;
       return { ...item, name };
     });
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
+    return await UPDATE(pathname.accountStrategies({ accountId }), data);
   };
 
 export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings["func"] =
@@ -56,9 +53,7 @@ export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSc
       if (item.strategyId !== strategyId) return item;
       return { ...item, schedulings };
     });
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
+    return await UPDATE(pathname.accountStrategies({ accountId }), data);
   };
 
 export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem["func"] =
@@ -85,9 +80,7 @@ export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesIt
         })),
       };
     });
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
+    await UPDATE(pathname.accountStrategies({ accountId }), data);
   };
 
 export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings["func"] =
@@ -102,7 +95,5 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
         })
       ),
     }));
-    const Key = pathname.accountStrategies({ accountId });
-    await putObject({ Key, data });
-    return updatedNow();
+    return await UPDATE(pathname.accountStrategies({ accountId }), data);
   };

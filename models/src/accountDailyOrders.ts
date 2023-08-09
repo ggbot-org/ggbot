@@ -1,14 +1,21 @@
 import { isDay } from "@ggbot2/time";
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
 
 import { AccountKey, isAccountKey } from "./account.js";
 import { ReadOperation, UpdateOperation } from "./operation.js";
-import { Order } from "./order.js";
-import { StrategyKey } from "./strategy.js";
+import { isOrder, Order } from "./order.js";
+import { isStrategyKey, StrategyKey } from "./strategy.js";
 import { DayKey } from "./time.js";
 
+export type AccountDailyOrder = StrategyKey & { order: Order };
+export const isAccountDailyOrder = objectTypeGuard<AccountDailyOrder>(
+  ({ order, ...strategyKey }) => isOrder(order) && isStrategyKey(strategyKey)
+);
+
 /** Daily orders per account. */
-export type AccountDailyOrders = (StrategyKey & { order: Order })[];
+export type AccountDailyOrders = AccountDailyOrder[];
+export const isAccountDailyOrders =
+  arrayTypeGuard<AccountDailyOrder>(isAccountDailyOrder);
 
 export type AccountDailyOrdersKey = AccountKey & DayKey;
 

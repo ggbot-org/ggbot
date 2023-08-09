@@ -1,24 +1,21 @@
 import {
   AppendAccountDailyOrders,
+  isAccountDailyOrders,
   ReadAccountDailyOrders,
-  updatedNow,
 } from "@ggbot2/models";
 
-import { getObject, putObject } from "./_dataBucket.js";
+import { READ, UPDATE } from "./_dataBucket.js";
 import { pathname } from "./locators.js";
 
-export const readAccountDailyOrders: ReadAccountDailyOrders["func"] = async (
-  arg
-) =>
-  await getObject<ReadAccountDailyOrders["out"]>({
-    Key: pathname.accountDailyOrders(arg),
-  });
+export const readAccountDailyOrders: ReadAccountDailyOrders["func"] = (arg) =>
+  READ<ReadAccountDailyOrders["out"]>(
+    isAccountDailyOrders,
+    pathname.accountDailyOrders(arg)
+  );
 
 export const appendAccountDailyOrders: AppendAccountDailyOrders["func"] =
   async ({ items, ...key }) => {
     const currentItems = await readAccountDailyOrders(key);
-    const Key = pathname.accountDailyOrders(key);
     const data = currentItems ? [...currentItems, ...items] : items;
-    await putObject({ Key, data });
-    return updatedNow();
+    return await UPDATE(pathname.accountDailyOrders(key), data);
   };

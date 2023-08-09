@@ -15,7 +15,7 @@ import {
   updatedNow,
 } from "@ggbot2/models";
 
-import { DELETE, GET, listObjects, putObject } from "./_dataBucket.js";
+import { DELETE, LIST, READ, UPDATE } from "./_dataBucket.js";
 import { createEmailAccount } from "./emailAccount.js";
 import {
   dirnameDelimiter,
@@ -27,14 +27,13 @@ import {
 export const createAccount: CreateAccount["func"] = async ({ email }) => {
   const account = newAccount({ email });
   const accountId = account.id;
-  const Key = pathname.account({ accountId });
-  await putObject({ Key, data: account });
+  await UPDATE(pathname.account({ accountId }), account);
   await createEmailAccount({ accountId, email });
   return account;
 };
 
-export const readAccount: ReadAccount["func"] = (accountKey) =>
-  GET<ReadAccount["out"]>(isAccount, pathname.account(accountKey));
+export const readAccount: ReadAccount["func"] = (arg) =>
+  READ<ReadAccount["out"]>(isAccount, pathname.account(arg));
 
 const getAccountOrThrow = async ({
   accountId,
@@ -47,7 +46,7 @@ const getAccountOrThrow = async ({
 
 export const listAccountKeys: ListAccountKeys["func"] = async () => {
   const Prefix = dirnamePrefix.account + dirnameDelimiter;
-  const results = await listObjects({
+  const results = await LIST({
     Prefix,
   });
   if (!Array.isArray(results.Contents)) return Promise.resolve([]);
@@ -66,12 +65,11 @@ export const renameAccount: RenameAccount["func"] = async ({
 }) => {
   throwIfInvalidName(name);
   const account = await getAccountOrThrow({ accountId });
-  const Key = pathname.account({ accountId });
   const data: Account = {
     ...account,
     name,
   };
-  await putObject({ Key, data });
+  await UPDATE(pathname.account({ accountId }), data);
   return updatedNow();
 };
 
@@ -80,12 +78,11 @@ export const setAccountCountry: SetAccountCountry["func"] = async ({
   country,
 }) => {
   const account = await getAccountOrThrow({ accountId });
-  const Key = pathname.account({ accountId });
   const data: Account = {
     ...account,
     country,
   };
-  await putObject({ Key, data });
+  await UPDATE(pathname.account({ accountId }), data);
   return updatedNow();
 };
 

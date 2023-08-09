@@ -19,8 +19,9 @@ import { awsRegion } from "@ggbot2/infrastructure";
 import {
   deletedNow,
   DeleteOperationOutput,
-  OperationOutput,
   ReadOperationOutput,
+  updatedNow,
+  UpdateOperationOutput,
 } from "@ggbot2/models";
 import { DflowData } from "dflow";
 
@@ -36,7 +37,6 @@ export const s3ServiceExceptionName = {
 const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
 
 // Bucket and Key types are defined by @aws-sdk/client-s3 as string | undefined
-// See for example GetObjectCommandInput
 // Redefine them here, in our use case an undefined Bucket or Key does not make sense.
 type S3Path = {
   Bucket: string;
@@ -65,11 +65,9 @@ const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
     stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
   });
 
-export type GetObjectArgs = S3Path;
-
 export const getObject =
   (Bucket: S3Path["Bucket"]) =>
-  async <Data extends OperationOutput>(
+  async <Data extends DflowData>(
     isData: (arg: unknown) => arg is Data,
     Key: S3Path["Key"]
   ): Promise<ReadOperationOutput<Data>> => {
@@ -150,6 +148,16 @@ export const putObject =
     const Body = Buffer.from(json);
     const command = new PutObjectCommand({ Body, Bucket, Key });
     return await client.send(command);
+  };
+
+export const updateObject =
+  (Bucket: S3Path["Bucket"]) =>
+  async (
+    Key: S3Path["Key"],
+    data: DflowData
+  ): Promise<UpdateOperationOutput> => {
+    await putObject(Bucket)(Key, data);
+    return updatedNow();
   };
 
 export const deleteObject =
