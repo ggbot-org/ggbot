@@ -27,27 +27,27 @@ class LocalWebStorage {
   }
 
   set jwt(value: NonEmptyString | undefined) {
+    // TODO better to create removeX removeY methods so setters do not accept undefined
     if (!value) {
       this.removeItem(jwtKey);
-    } else if (isNonEmptyString(value)) {
-      this.setItem(jwtKey, value);
+      return;
     }
+    if (isNonEmptyString(value)) this.setItem(jwtKey, value);
   }
 
   getStrategy(strategyId: Strategy["id"]): Strategy | undefined {
     const key = strategyKey(strategyId);
     const value = this.getItem(key);
-    if (value) {
-      try {
-        const strategy = JSON.parse(value);
-        if (isStrategy(strategy)) return strategy;
-      } catch (error) {
-        if (error instanceof SyntaxError) {
-          this.removeItem(key);
-          return;
-        }
-        throw error;
+    if (!value) return;
+    try {
+      const strategy = JSON.parse(value);
+      if (isStrategy(strategy)) return strategy;
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        this.removeItem(key);
+        return;
       }
+      throw error;
     }
   }
 

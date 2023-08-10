@@ -11,7 +11,7 @@ export const userApiActionTypes = [
   "DeleteBinanceApiConfig",
   "ReadAccount",
   "ReadAccountStrategies",
-  "ReadBinanceApiConfig",
+  "ReadBinanceApiKey",
   "ReadBinanceApiKeyPermissions",
   "ReadStrategy",
   "ReadStrategyBalances",

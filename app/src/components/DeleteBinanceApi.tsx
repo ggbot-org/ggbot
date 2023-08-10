@@ -6,16 +6,15 @@ import {
   Message,
   Modal,
 } from "@ggbot2/design";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 import { useApi } from "../hooks/useApi.js";
 
-type Props = {
-  onDelete: () => void;
-};
+export const DeleteBinanceApi: FC = () => {
+  const { refetchApiKey, hasApiKey } = useContext(BinanceApiConfigContext);
 
-export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
   const color: MainColor = "warning";
 
   const { formatMessage } = useIntl();
@@ -37,9 +36,11 @@ export const DeleteBinanceApi: FC<Props> = ({ onDelete }) => {
   useEffect(() => {
     if (canCloseModal) {
       setModalIsActive(false);
-      onDelete();
+      refetchApiKey();
     }
-  }, [canCloseModal, onDelete]);
+  }, [canCloseModal, refetchApiKey]);
+
+  if (!hasApiKey) return null;
 
   return (
     <>

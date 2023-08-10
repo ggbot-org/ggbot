@@ -7,16 +7,13 @@ import {
   formValues,
   Title,
 } from "@ggbot2/design";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback, useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { ApiKey } from "../components/ApiKey.js";
 import { ApiSecret } from "../components/ApiSecret.js";
+import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 import { useApi } from "../hooks/useApi.js";
-
-type Props = {
-  onCreate: () => void;
-};
 
 const fieldName = {
   apiKey: "apiKey",
@@ -24,7 +21,9 @@ const fieldName = {
 };
 const fields = Object.keys(fieldName);
 
-export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
+export const CreateBinanceApi: FC = () => {
+  const { hasApiKey, refetchApiKey } = useContext(BinanceApiConfigContext);
+
   const CREATE = useApi.CreateBinanceApiConfig();
   const isLoading = CREATE.isPending;
   const readOnly = CREATE.isPending;
@@ -43,8 +42,10 @@ export const CreateBinanceApi: FC<Props> = ({ onCreate }) => {
   );
 
   useEffect(() => {
-    if (isDone) onCreate();
-  }, [isDone, onCreate]);
+    if (isDone) refetchApiKey();
+  }, [isDone, refetchApiKey]);
+
+  if (hasApiKey === undefined || hasApiKey) return null;
 
   return (
     <Form box onSubmit={onSubmit}>

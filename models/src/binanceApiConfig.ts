@@ -56,7 +56,15 @@ export type ReadBinanceApiConfig = (
   arg: AccountKey
 ) => Promise<BinanceApiConfig | null>;
 
+/**
+ * To be used to display BinanceApiConfig client-side, the `apiSecret` is
+ * omitted and `apiKey` may be truncated.
+ */
 export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">;
+
+export const isBinanceApiKey = objectTypeGuard<BinanceApiKey>(({ apiKey }) =>
+  isNonEmptyString(apiKey)
+);
 
 export type ReadBinanceApiKey = (
   arg: AccountKey

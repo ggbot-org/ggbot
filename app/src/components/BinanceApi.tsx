@@ -10,7 +10,7 @@ import {
   FormOnSubmit,
   Title,
 } from "@ggbot2/design";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { ApiKey } from "../components/ApiKey.js";
@@ -20,13 +20,12 @@ import {
   BinanceApiKeyPermissionEnableWithdrawals,
   BinanceApiKeyPermissionIpRestrict,
 } from "../components/BinanceApiKeyPermissions.js";
+import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 import { useApi } from "../hooks/useApi.js";
 
-type Props = {
-  apiKey: string;
-};
+export const BinanceApi: FC = () => {
+  const { apiKey, hasApiKey } = useContext(BinanceApiConfigContext);
 
-export const BinanceApi: FC<Props> = ({ apiKey }) => {
   const READ = useApi.ReadBinanceApiKeyPermissions();
   const permissions = READ.data;
   const isLoading = READ.isPending;
@@ -54,6 +53,8 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
     },
     [READ]
   );
+
+  if (!hasApiKey) return null;
 
   return (
     <Form box onSubmit={onSubmit}>

@@ -7,16 +7,17 @@ import {
   Modal,
 } from "@ggbot2/design";
 import { sessionWebStorage } from "@ggbot2/web-storage";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { GoSettings } from "../components/GoSettings.js";
+import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 
 export const PleaseConfigureBinance: FC = () => {
+  const { hasApiKey } = useContext(BinanceApiConfigContext);
+
   const [isActive, setIsActive] = useState(true);
   const [doNotShow, setDoNotShow] = useState(false);
-
-  // TODO const { hasBinanceConfiguration } = useContext(BinanceContext);
 
   const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
     const checked = event.target.checked;
@@ -26,10 +27,17 @@ export const PleaseConfigureBinance: FC = () => {
 
   useEffect(() => {
     if (sessionWebStorage.doNotShowPleaseConfigureBinance) return;
-    // Show PleasePurchase first, then PleaseConfigureBinance.
+    // Show PleasePurchase first, then show PleaseConfigureBinance after a while.
     if (!sessionWebStorage.doNotShowPleasePurchase) return;
-    setIsActive(true);
+    const timeoutId = window.setTimeout(() => {
+      setIsActive(true);
+    }, 17000);
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
+
+  if (hasApiKey === undefined || hasApiKey) return null;
 
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>

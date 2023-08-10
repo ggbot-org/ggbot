@@ -68,8 +68,7 @@
           "*.tsx"
         ],
         "rules": {
-          "@typescript-eslint/ban-ts-comment": "off",
-          "no-warning-comments": "off"
+          "@typescript-eslint/ban-ts-comment": "off"
         }
       }
     ]

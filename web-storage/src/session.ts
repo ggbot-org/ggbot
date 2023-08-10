@@ -1,7 +1,13 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
-import { EmailAddress, isEmailAddress } from "@ggbot2/models";
+import {
+  BinanceApiKey,
+  EmailAddress,
+  isBinanceApiKey,
+  isEmailAddress,
+} from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
 
+const binanceApiKeyKey = "binanceApiKey";
 const emailKey = "email";
 const gotFirstPageViewKey = "gotFirstPageView";
 const doNotShowPleaseConfigureBinanceKey = "doNotShowPleaseConfigureBinance";
@@ -18,6 +24,7 @@ class SessionWebStorage {
     window.sessionStorage.setItem(key, value);
   }
 
+  // TODO better to create removeX removeY methods so setters do not accept undefined
   private removeItem(key: string) {
     if (key === "binanceExchangeInfo")
       this.binanceExchangeInfoIsValid = undefined;
@@ -41,42 +48,67 @@ class SessionWebStorage {
     this.setItem(activeTabIdKey(pageName), value);
   }
 
+  get binanceApiKey(): BinanceApiKey | undefined {
+    const value = this.getItem(binanceApiKeyKey);
+    if (!value) return;
+    try {
+      const binanceApiKey = JSON.parse(value);
+      if (isBinanceApiKey(binanceApiKey)) return binanceApiKey;
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        this.removeItem(binanceApiKeyKey);
+        return;
+      }
+      throw error;
+    }
+  }
+
+  set binanceApiKey(value: BinanceApiKey | undefined) {
+    if (!value) {
+      this.removeItem(binanceExchangeInfoKey);
+      return;
+    }
+    try {
+      this.setItem(binanceApiKeyKey, JSON.stringify(value));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   /** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
   private binanceExchangeInfoIsValid: boolean | undefined;
 
   get binanceExchangeInfo(): BinanceExchangeInfo | undefined {
     const value = this.getItem(binanceExchangeInfoKey);
-    if (value) {
-      try {
-        const binanceExchangeInfo = JSON.parse(value);
-        if (this.binanceExchangeInfoIsValid) {
-          return binanceExchangeInfo as BinanceExchangeInfo;
-        }
-        if (isBinanceExchangeInfo(binanceExchangeInfo)) {
-          this.binanceExchangeInfoIsValid = true;
-          return binanceExchangeInfo;
-        }
-      } catch (error) {
-        if (error instanceof SyntaxError) {
-          this.removeItem(binanceExchangeInfoKey);
-          return;
-        }
-        throw error;
+    if (!value) return;
+    try {
+      const binanceExchangeInfo = JSON.parse(value);
+      if (this.binanceExchangeInfoIsValid) {
+        return binanceExchangeInfo as BinanceExchangeInfo;
       }
+      if (isBinanceExchangeInfo(binanceExchangeInfo)) {
+        this.binanceExchangeInfoIsValid = true;
+        return binanceExchangeInfo;
+      }
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        this.removeItem(binanceExchangeInfoKey);
+        return;
+      }
+      throw error;
     }
   }
 
   set binanceExchangeInfo(value: BinanceExchangeInfo | undefined) {
-    if (value) {
-      try {
-        this.setItem(binanceExchangeInfoKey, JSON.stringify(value));
-        this.binanceExchangeInfoIsValid = true;
-      } catch (error) {
-        if (error instanceof SyntaxError) return;
-        throw error;
-      }
-    } else {
+    if (!value) {
       this.removeItem(binanceExchangeInfoKey);
+      return;
+    }
+    try {
+      this.setItem(binanceExchangeInfoKey, JSON.stringify(value));
+      this.binanceExchangeInfoIsValid = true;
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -86,11 +118,11 @@ class SessionWebStorage {
   }
 
   set email(value: EmailAddress | undefined) {
-    if (value) {
-      this.setItem(emailKey, value);
-    } else {
+    if (!value) {
       this.removeItem(emailKey);
+      return;
     }
+    this.setItem(emailKey, value);
   }
 
   get doNotShowPleaseConfigureBinance(): boolean {

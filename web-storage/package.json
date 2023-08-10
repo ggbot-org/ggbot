@@ -13,7 +13,8 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts src/"
+    "lint": "eslint --fix --ext .ts src/",
+    "ts-prune": "ts-prune --error --ignore 'dist|temp|src/index\\.ts'"
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
@@ -21,7 +22,8 @@
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@ggbot2/tsconfig": "file:tsconfig",
+    "ts-prune": "0.10.3"
   },
   "eslintConfig": {
     "extends": [
