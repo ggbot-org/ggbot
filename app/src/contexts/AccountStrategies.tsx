@@ -1,4 +1,4 @@
-import { isAccountStrategies, ReadAccountStrategies } from "@ggbot2/models";
+import { AccountStrategies, isAccountStrategies } from "@ggbot2/models";
 import {
   createContext,
   FC,
@@ -10,7 +10,7 @@ import {
 import { useApi } from "../hooks/useApi.js";
 
 type ContextValue = {
-  accountStrategies: ReadAccountStrategies["out"] | undefined;
+  accountStrategies: AccountStrategies | undefined;
   refetchAccountStrategies: () => void;
 };
 

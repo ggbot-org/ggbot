@@ -15,6 +15,9 @@ module.exports = {
     "@typescript-eslint/no-array-constructor": "off",
     "@typescript-eslint/no-duplicate-imports": "error",
     "@typescript-eslint/no-empty-function": "off",
+    // Accept expressions like
+    // type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
+    "@typescript-eslint/no-explicit-any": ["warn", { ignoreRestArgs: true }],
     "@typescript-eslint/no-extra-semi": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",

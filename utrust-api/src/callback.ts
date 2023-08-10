@@ -26,7 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         if (!event.body) return BAD_REQUEST();
 
         const { validateSignature } = WebhookValidator(
-          ENV.UTRUST_WEBHOOK_SECRET
+          ENV.UTRUST_WEBHOOK_SECRET()
         );
         const input = JSON.parse(event.body);
         const isValid = validateSignature(input);

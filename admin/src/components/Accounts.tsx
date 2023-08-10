@@ -1,13 +1,13 @@
 import { Button } from "@ggbot2/design";
 import { isAccountKey } from "@ggbot2/models";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
-import { useApi } from "../hooks/useApi.js";
+// import { useApi } from "../hooks/useApi.js";
 import { Account } from "./Account.js";
 
 export const Accounts: FC = () => {
-  const ListAccountKeys = useApi.ListAccountKeys();
-  const accountKeys = ListAccountKeys.data;
+  // const ListAccountKeys = useApi.ListAccountKeys();
+  const accountKeys: unknown[] = []; // ListAccountKeys.data;
 
   const accountIds: string[] = [];
 
@@ -23,9 +23,9 @@ export const Accounts: FC = () => {
     ? accountIds.length
     : undefined;
 
-  useEffect(() => {
-    if (ListAccountKeys.canRun) ListAccountKeys.request();
-  }, [ListAccountKeys]);
+  // useEffect(() => {
+  //   if (ListAccountKeys.canRun) ListAccountKeys.request();
+  // }, [ListAccountKeys]);
 
   return (
     <div>

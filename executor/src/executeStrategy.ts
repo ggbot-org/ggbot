@@ -1,10 +1,10 @@
-import {
-  AccountStrategyKey,
-  Operation,
-  StrategyExecution,
-} from "@ggbot2/models";
+import { AccountStrategyKey, StrategyExecution } from "@ggbot2/models";
 
-export type ExecuteStrategy = Operation<
-  AccountStrategyKey,
-  Pick<StrategyExecution, "status" | "whenUpdated">
+export type ExecuteStrategyOutput = Pick<
+  StrategyExecution,
+  "status" | "whenUpdated"
 >;
+
+export type ExecuteStrategy = (
+  arg: AccountStrategyKey
+) => Promise<ExecuteStrategyOutput>;

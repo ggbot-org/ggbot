@@ -1,4 +1,5 @@
 import { PublicApiActionType, UserApiActionType } from "@ggbot2/api";
+import { ReadBinanceApiKeyPermissions } from "@ggbot2/database";
 import {
   AccountKey,
   CopyStrategy,
@@ -42,16 +43,14 @@ const publicApi = {
     ),
 };
 
-type Authenticated<Operation extends (arg: any) => Promise<any>> = Omit<
-  Parameters<Operation>[0],
-  "accountId"
-> extends EmptyObject
-  ? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
-  : Parameters<Operation>[0] extends AccountKey
-  ? (
-      arg: Omit<Parameters<Operation>[0], "accountId">
-    ) => Promise<Awaited<ReturnType<Operation>>>
-  : never;
+type Authenticated<Operation extends (...args: any[]) => Promise<unknown>> =
+  Omit<Parameters<Operation>[0], "accountId"> extends EmptyObject
+    ? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
+    : Parameters<Operation>[0] extends AccountKey
+    ? (
+        arg: Omit<Parameters<Operation>[0], "accountId">
+      ) => Promise<Awaited<ReturnType<Operation>>>
+    : never;
 
 const userApi = {
   CopyStrategy: () =>

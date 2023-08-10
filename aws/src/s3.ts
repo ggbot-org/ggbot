@@ -26,7 +26,7 @@ const client = new S3Client({ apiVersion: "2006-03-01", region: awsRegion });
 
 // Bucket and Key types are defined by @aws-sdk/client-s3 as string | undefined
 // Redefine them here, in our use case an undefined Bucket or Key does not make sense.
-type S3Path = {
+export type S3Path = {
   Bucket: string;
   Key: string;
 };
@@ -69,8 +69,10 @@ export const getObject =
     }
   };
 
-export const headBucket = async (Bucket: S3Path["Bucket"]) => {
-  const command = new HeadBucketCommand({ Bucket });
+export type HeadBucketArgs = Pick<S3Path, "Bucket">;
+
+export const headBucket = async (args: HeadBucketArgs) => {
+  const command = new HeadBucketCommand(args);
   return await client.send(command);
 };
 

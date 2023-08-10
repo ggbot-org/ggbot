@@ -23,15 +23,13 @@ export const browserBundle = async ({
   entryPoints,
   outfile,
 }: Pick<BuildOptions, "entryPoints" | "outfile">) => {
-  const { DEPLOY_STAGE } = ENV;
-
   build({
     alias: {
       "@formatjs/icu-messageformat-parser":
         "@formatjs/icu-messageformat-parser/no-parser",
     },
     bundle: true,
-    minify: DEPLOY_STAGE !== "local",
+    minify: ENV.DEPLOY_STAGE() !== "local",
     entryPoints,
     outfile,
     platform: "browser",

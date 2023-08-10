@@ -19,7 +19,7 @@ export const isAccountStrategies =
 
 export type ReadAccountStrategies = (
   arg: AccountKey
-) => Promise<AccountStrategy[]>;
+) => Promise<AccountStrategies>;
 
 export type InsertAccountStrategiesItemInput = AccountKey & {
   item: AccountStrategy;

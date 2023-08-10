@@ -1,3 +1,4 @@
+import { CacheMap } from "@ggbot2/cache";
 import {
   listAccountKeys,
   readAccountStrategies,
@@ -8,7 +9,6 @@ import {
   AccountKey,
   AccountStrategy,
   AccountStrategyKey,
-  CacheMap,
   ErrorAccountItemNotFound,
   frequencyIntervalDuration,
   isAccountKey,

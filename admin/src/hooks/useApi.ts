@@ -1,6 +1,6 @@
 import { AdminApiActionType, PublicApiActionType } from "@ggbot2/api";
 import {
-  ListAccountKeys,
+  // ListAccountKeys,
   ReadAccount,
   ReadStrategy,
   ReadStrategyFlow,
@@ -29,11 +29,11 @@ const publicApi = {
 };
 
 export const adminApi = {
-  ListAccountKeys: () =>
-    useAction<ListAccountKeys, AdminApiActionType>(
-      adminApiOptions,
-      "ListAccountKeys"
-    ),
+  // ListAccountKeys: () =>
+  //   useAction<ListAccountKeys, AdminApiActionType>(
+  //     adminApiOptions,
+  //     "ListAccountKeys"
+  //   ),
   ReadAccount: () =>
     useAction<ReadAccount, AdminApiActionType>(adminApiOptions, "ReadAccount"),
 };

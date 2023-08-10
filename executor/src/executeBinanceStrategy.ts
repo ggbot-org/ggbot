@@ -27,7 +27,7 @@ import { ExecuteStrategy } from "./executeStrategy.js";
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap();
 
-export const executeBinanceStrategy: ExecuteStrategy["func"] = async ({
+export const executeBinanceStrategy: ExecuteStrategy = async ({
   accountId,
   strategyId,
   strategyKind,

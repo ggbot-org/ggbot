@@ -39,7 +39,8 @@ import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
-    const { DEPLOY_STAGE, UTRUST_API_KEY } = ENV;
+    const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
+    const UTRUST_API_KEY = ENV.UTRUST_API_KEY();
 
     const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE);
     const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE);
