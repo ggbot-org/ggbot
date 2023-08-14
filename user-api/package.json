@@ -14,6 +14,8 @@
     "precreate": "npm run build",
     "predeploy": "npm run build",
     "set_environment": "sh src/scripts/set_environment.sh",
+    "set_memory_size": "sh src/scripts/set_memory_size.sh",
+    "set_timeout": "sh src/scripts/set_timeout.sh",
     "tsc:build": "tsc --build tsconfig.build.json",
     "zip": "sh src/scripts/zip.sh"
   },

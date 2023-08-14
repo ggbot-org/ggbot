@@ -13,8 +13,6 @@ Every EC2 instance run only one of those services, the following instructions di
 
 Since there is one service per EC2 instance, the service name will be always _ggbot2_.
 
-Start from latest image created with steps described in [EC2 base AMI](./ec2-base-ami.md).
-
 See [how to launch EC2 instance](./ec2-launch-instance.md).
 
 ## Deploy stage
@@ -96,16 +94,11 @@ This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add 
 
 ```
 [Service]
-Environment="AWS_ACCESS_KEY_ID=xxx"
-Environment="AWS_SECRET_ACCESS_KEY=xxx"
 Environment="DEPLOY_STAGE=main"
-Environment="BINANCE_PROXY_BASE_URL=http://3.68.165.141:8080"
+Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 ```
 
-Notice that:
-
-- Services use a different set of environment variables, those not used can be removed or ignored even if wrong. For example for _binance-proxy_ service `AWS_ACCESS_KEY_ID=anyvalue` is fine.
-- Command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
+Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 
 ## Enable service
 

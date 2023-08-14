@@ -1,53 +1,50 @@
+import { EnvironmentVariableName } from "./environmentVariableNames.js";
 import { ErrorMissingEnvironmentVariable } from "./errors.js";
-
-const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
-const BINANCE_PROXY_BASE_URL = process.env.BINANCE_PROXY_BASE_URL;
-const DEPLOY_STAGE = process.env.DEPLOY_STAGE;
-const NODE_ENV = process.env.NODE_ENV;
-const JWT_SECRET = process.env.JWT_SECRET;
-const UTRUST_API_KEY = process.env.UTRUST_API_KEY;
-const UTRUST_WEBHOOK_SECRET = process.env.UTRUST_WEBHOOK_SECRET;
 
 export type DeployStage = "main" | "next" | "local";
 export type NodeEnv = "development" | "production";
 
+const getVariable = (VARIABLE_NAME: EnvironmentVariableName) => {
+  const VALUE = process.env[VARIABLE_NAME];
+  if (typeof VALUE === "string") return VALUE;
+  throw new ErrorMissingEnvironmentVariable(VARIABLE_NAME);
+};
+
 class EnvironmentVariables {
   AWS_ACCOUNT_ID() {
-    if (typeof AWS_ACCOUNT_ID === "string") return AWS_ACCOUNT_ID;
-    throw new ErrorMissingEnvironmentVariable("AWS_ACCOUNT_ID");
+    return getVariable("AWS_ACCOUNT_ID");
   }
 
   BINANCE_PROXY_BASE_URL() {
-    if (typeof BINANCE_PROXY_BASE_URL === "string")
-      return BINANCE_PROXY_BASE_URL;
-    throw new ErrorMissingEnvironmentVariable("BINANCE_PROXY_BASE_URL");
+    return getVariable("BINANCE_PROXY_BASE_URL");
   }
 
-  DEPLOY_STAGE() {
-    if (DEPLOY_STAGE === "main") return "main";
-    if (DEPLOY_STAGE === "next") return "next";
-    if (DEPLOY_STAGE === "local") return "local";
-    throw new ErrorMissingEnvironmentVariable("DEPLOY_STAGE");
+  DEPLOY_STAGE(): DeployStage {
+    const VARIABLE_NAME: EnvironmentVariableName = "DEPLOY_STAGE";
+    const VALUE = process.env[VARIABLE_NAME];
+    if (VALUE === "main") return "main";
+    if (VALUE === "next") return "next";
+    if (VALUE === "local") return "local";
+    throw new ErrorMissingEnvironmentVariable(VARIABLE_NAME);
   }
 
   JWT_SECRET() {
-    if (typeof JWT_SECRET === "string") return JWT_SECRET;
-    throw new ErrorMissingEnvironmentVariable("JWT_SECRET");
+    return getVariable("JWT_SECRET");
   }
 
   NODE_ENV(): NodeEnv {
-    if (NODE_ENV === "production") return "production";
+    const VARIABLE_NAME: EnvironmentVariableName = "NODE_ENV";
+    const VALUE = process.env[VARIABLE_NAME];
+    if (VALUE === "production") return "production";
     return "development";
   }
 
   UTRUST_API_KEY() {
-    if (typeof UTRUST_API_KEY === "string") return UTRUST_API_KEY;
-    return "";
+    return getVariable("UTRUST_API_KEY");
   }
 
   UTRUST_WEBHOOK_SECRET() {
-    if (typeof UTRUST_WEBHOOK_SECRET === "string") return UTRUST_WEBHOOK_SECRET;
-    return "";
+    return getVariable("UTRUST_WEBHOOK_SECRET");
   }
 }
 

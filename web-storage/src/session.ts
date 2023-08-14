@@ -1,8 +1,6 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
-import { BinanceApiKey, isBinanceApiKey } from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
 
-const binanceApiKeyKey = "binanceApiKey";
 const gotFirstPageViewKey = "gotFirstPageView";
 const doNotShowPleaseConfigureBinanceKey = "doNotShowPleaseConfigureBinance";
 const doNotShowPleasePurchaseKey = "doNotShowPleasePurchase";
@@ -40,33 +38,6 @@ class SessionWebStorage {
 
   setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
     this.setItem(activeTabIdKey(pageName), value);
-  }
-
-  get binanceApiKey(): BinanceApiKey | undefined {
-    const value = this.getItem(binanceApiKeyKey);
-    if (!value) return;
-    try {
-      const binanceApiKey = JSON.parse(value);
-      if (isBinanceApiKey(binanceApiKey)) return binanceApiKey;
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        this.removeItem(binanceApiKeyKey);
-        return;
-      }
-      throw error;
-    }
-  }
-
-  set binanceApiKey(value: BinanceApiKey | undefined) {
-    if (!value) {
-      this.removeItem(binanceExchangeInfoKey);
-      return;
-    }
-    try {
-      this.setItem(binanceApiKeyKey, JSON.stringify(value));
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   /** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */

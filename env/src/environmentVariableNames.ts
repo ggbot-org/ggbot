@@ -1,5 +1,4 @@
 const environmentVariableNames = [
-  "AWS_REGION",
   "AWS_ACCOUNT_ID",
   "BINANCE_PROXY_BASE_URL",
   "DEPLOY_STAGE",

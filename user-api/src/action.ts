@@ -209,7 +209,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
   } catch (error) {
     if (error instanceof ErrorUnauthorizedAuthenticationHeader) {
-      if (isDev) console.info(ErrorUnauthorizedAuthenticationHeader.errorName);
       return UNATHORIZED;
     }
     if (

@@ -5,14 +5,9 @@ import {
   BinanceRequestHeaders,
   isBinanceApiPrivateEndoint,
 } from "@ggbot2/binance";
-import { ENV } from "@ggbot2/env";
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@ggbot2/http";
 
-const proxyUrl = new URL(ENV.BINANCE_PROXY_BASE_URL());
-const PORT = proxyUrl.port;
-const ELASTIC_IP = proxyUrl.hostname;
-
-// TODO get Elastic IP from proxyUrl.hostname and attach it to this instance.
+const PORT = 3000;
 
 createServer(async (request, response) => {
   const { headers: sourceHeaders, url: sourceUrl } = request;
@@ -52,5 +47,4 @@ createServer(async (request, response) => {
   response.end();
 }).listen(PORT, () => {
   console.info(`Server running on port ${PORT}`);
-  console.info(`Elastic IP is ${ELASTIC_IP}`);
 });

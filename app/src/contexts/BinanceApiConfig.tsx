@@ -1,9 +1,9 @@
 import { BinanceApiKey } from "@ggbot2/models";
-import { sessionWebStorage } from "@ggbot2/web-storage";
 import {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useEffect,
   useMemo,
 } from "react";
@@ -28,15 +28,14 @@ export const BinanceApiConfigProvider: FC<PropsWithChildren> = ({
 }) => {
   const READ_API_KEY = useApi.ReadBinanceApiKey();
   const remoteApiKey = READ_API_KEY.data;
-  const refetchApiKey = READ_API_KEY.reset;
+
+  const refetchApiKey = useCallback(() => {
+    READ_API_KEY.reset();
+  }, [READ_API_KEY]);
 
   const contextValue = useMemo<ContextValue>(() => {
-    const localApiKey = sessionWebStorage.binanceApiKey;
-    const apiKey = localApiKey
-      ? localApiKey.apiKey
-      : remoteApiKey === undefined
-      ? undefined
-      : remoteApiKey?.apiKey ?? "";
+    const apiKey =
+      remoteApiKey === undefined ? undefined : remoteApiKey?.apiKey ?? "";
     return {
       apiKey,
       hasApiKey: apiKey === undefined ? undefined : Boolean(apiKey),
@@ -48,12 +47,6 @@ export const BinanceApiConfigProvider: FC<PropsWithChildren> = ({
   useEffect(() => {
     if (READ_API_KEY.canRun) READ_API_KEY.request();
   }, [READ_API_KEY]);
-
-  // Cache apiKey.
-  useEffect(() => {
-    if (remoteApiKey) sessionWebStorage.binanceApiKey = remoteApiKey;
-    if (remoteApiKey === null) sessionWebStorage.binanceApiKey = undefined;
-  }, [remoteApiKey]);
 
   return (
     <BinanceApiConfigContext.Provider value={contextValue}>
