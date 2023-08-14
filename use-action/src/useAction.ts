@@ -9,7 +9,10 @@ import {
   __500__INTERNAL_SERVER_ERROR__,
   __502__BAD_GATEWAY__,
   BadGatewayError,
+  BadRequestError,
   InternalServerError,
+  NotFoundError,
+  UnauthorizedError,
 } from "@ggbot2/http";
 import { useCallback, useState } from "react";
 
@@ -105,17 +108,17 @@ export const useAction = <
             }
 
             case error === __400__BAD_REQUEST__: {
-              setError({ name: "BadRequest" });
+              setError({ name: BadRequestError.errorName });
               break;
             }
 
             case error === __401__UNAUTHORIZED__: {
-              setError({ name: "Unauthorized" });
+              setError({ name: UnauthorizedError.errorName });
               break;
             }
 
             case error === __404__NOT_FOUND__: {
-              setError({ name: "NotFound" });
+              setError({ name: NotFoundError.errorName });
               break;
             }
 

@@ -15,7 +15,7 @@ cd -
 
 # Copy internal deps.
 
-for INTERNAL_DEP in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http infrastructure locators models test-data time type-utils; do
+for INTERNAL_DEP in api api-gateway arithmetic authentication aws binance binance-client cache database dflow env email-messages http infrastructure locators models test-data time type-utils; do
   mkdir -p temp/node_modules/@ggbot2/$INTERNAL_DEP/dist
   cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@ggbot2/$INTERNAL_DEP/dist/
   cp ../$INTERNAL_DEP/package.json temp/node_modules/@ggbot2/$INTERNAL_DEP/

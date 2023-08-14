@@ -12,7 +12,7 @@ export const verifyAuthenticationHeader = (headerContent: unknown) => {
   if (token.length === 0) throw new ErrorUnauthorizedAuthenticationHeader();
 
   try {
-    const decoded = jsonwebtoken.verify(token, ENV.JWT_SECRET);
+    const decoded = jsonwebtoken.verify(token, ENV.JWT_SECRET());
     return decoded;
   } catch (_ignore) {
     throw new ErrorUnauthorizedAuthenticationHeader();

@@ -2,8 +2,12 @@ import {
   __400__BAD_REQUEST__,
   __401__UNAUTHORIZED__,
   __500__INTERNAL_SERVER_ERROR__,
+  BadGatewayError,
+  BadRequestError,
   ErrorHTTP,
   InternalServerError,
+  NotFoundError,
+  UnauthorizedError,
 } from "@ggbot2/http";
 import {
   ErrorAccountItemNotFound,
@@ -47,7 +51,8 @@ const apiActionServerSideErrorNames = [
   ErrorExceededQuota.errorName,
   ErrorUnimplementedStrategyKind.errorName,
   // Other errors.
-  ErrorHTTP.errorName,
+  BadGatewayError.errorName,
+  ErrorHTTP.errorName, // TODO is this server side?
   InternalServerError.errorName,
 ] as const;
 export type ApiActionServerSideErrorName =
@@ -71,11 +76,11 @@ export const isApiActionServerSideError =
 // ////////////
 
 export const apiActionClientSideErrorNames = [
-  "BadRequest",
+  BadRequestError.errorName,
+  UnauthorizedError.errorName,
+  NotFoundError.errorName,
   "GenericError",
-  "NotFound",
   "Timeout",
-  "Unauthorized",
 ] as const;
 export type ApiActionClientSideErrorName =
   (typeof apiActionClientSideErrorNames)[number];

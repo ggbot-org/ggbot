@@ -1,14 +1,8 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
-import {
-  BinanceApiKey,
-  EmailAddress,
-  isBinanceApiKey,
-  isEmailAddress,
-} from "@ggbot2/models";
+import { BinanceApiKey, isBinanceApiKey } from "@ggbot2/models";
 import { isLiteralType } from "@ggbot2/type-utils";
 
 const binanceApiKeyKey = "binanceApiKey";
-const emailKey = "email";
 const gotFirstPageViewKey = "gotFirstPageView";
 const doNotShowPleaseConfigureBinanceKey = "doNotShowPleaseConfigureBinance";
 const doNotShowPleasePurchaseKey = "doNotShowPleasePurchase";
@@ -110,19 +104,6 @@ class SessionWebStorage {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  get email(): EmailAddress | undefined {
-    const value = this.getItem(emailKey);
-    if (isEmailAddress(value)) return value;
-  }
-
-  set email(value: EmailAddress | undefined) {
-    if (!value) {
-      this.removeItem(emailKey);
-      return;
-    }
-    this.setItem(emailKey, value);
   }
 
   get doNotShowPleaseConfigureBinance(): boolean {

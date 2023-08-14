@@ -19,19 +19,19 @@ import {
 } from "@ggbot2/design";
 import { EmailAddress } from "@ggbot2/models";
 import { NonEmptyString } from "@ggbot2/type-utils";
-import { FC, Reducer, useCallback, useContext, useReducer } from "react";
+import { FC, Reducer, useCallback, useReducer } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { GenericError } from "../components/GenericError.js";
 import { OneTimePassword } from "../components/OneTimePassword.js";
 import { RegenerateOneTimePassword } from "../components/RegenerateOneTimePassword.js";
 import { TimeoutError } from "../components/TimeoutError.js";
-import { AuthenticationContext } from "../contexts/Authentication.js";
 import { url } from "../routing/URLs.js";
 
 export type AuthVerifyProps = {
   email: EmailAddress;
   setJwt: (jwt: NonEmptyString) => void;
+  resetEmail: () => void;
 };
 
 type State = {
@@ -43,9 +43,12 @@ type State = {
   verificationFailed: boolean;
 };
 
-export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
+export const AuthVerify: FC<AuthVerifyProps> = ({
+  email,
+  resetEmail,
+  setJwt,
+}) => {
   const { formatMessage } = useIntl();
-  const { resetEmail } = useContext(AuthenticationContext);
 
   const [
     {
@@ -244,7 +247,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({ email, setJwt }) => {
           ) : null}
 
           {needToGenerateOneTimePasswordAgain ? (
-            <RegenerateOneTimePassword />
+            <RegenerateOneTimePassword onClick={resetEmail} />
           ) : null}
         </>
       </Form>

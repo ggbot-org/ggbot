@@ -21,7 +21,7 @@ import {
   deleteStrategy,
   readAccount,
   readAccountStrategies,
-  readBinanceApiConfig,
+  readBinanceApiKey,
   readBinanceApiKeyPermissions,
   readStrategyBalances,
   readStrategyOrders,
@@ -32,6 +32,7 @@ import {
   writeAccountStrategiesItemSchedulings,
   writeStrategyFlow,
 } from "@ggbot2/database";
+import { ENV } from "@ggbot2/env";
 import {
   ErrorAccountItemNotFound,
   ErrorExceededQuota,
@@ -49,6 +50,9 @@ import {
   isWriteStrategyFlowInput,
 } from "@ggbot2/models";
 
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
+const isDev = DEPLOY_STAGE !== "main";
+
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     switch (event.httpMethod) {
@@ -56,6 +60,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         return ALLOWED_METHODS(["POST"]);
 
       case "POST": {
+        if (isDev)
+          console.info("httpMethod", event.httpMethod, "body", event.body);
         if (!event.body) return BAD_REQUEST();
 
         const { accountId } = readSessionFromAuthorizationHeader(
@@ -120,12 +126,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             return OK(output);
           }
 
-          case "ReadBinanceApiConfig": {
-            const data = await readBinanceApiConfig({ accountId });
-            if (!data) return OK(null);
-            // Do not expose apiSecret.
-            const { apiKey } = data;
-            const output = { apiKey };
+          case "ReadBinanceApiKey": {
+            const output = await readBinanceApiKey({ accountId });
+            if (!output) return OK(null);
             return OK(output);
           }
 
@@ -205,8 +208,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
-    if (error instanceof ErrorUnauthorizedAuthenticationHeader)
+    if (error instanceof ErrorUnauthorizedAuthenticationHeader) {
+      if (isDev) console.info(ErrorUnauthorizedAuthenticationHeader.errorName);
       return UNATHORIZED;
+    }
     if (
       error instanceof ErrorAccountItemNotFound ||
       error instanceof ErrorExceededQuota ||

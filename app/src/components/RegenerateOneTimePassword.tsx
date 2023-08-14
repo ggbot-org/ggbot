@@ -1,25 +1,21 @@
-import { Button, Control, Field, Message } from "@ggbot2/design";
-import { FC, useContext } from "react";
+import { Button, ButtonProps, Control, Field, Message } from "@ggbot2/design";
+import { FC } from "react";
 import { FormattedMessage } from "react-intl";
 
-import { AuthenticationContext } from "../contexts/Authentication.js";
+type Props = Pick<ButtonProps, "onClick">;
 
-export const RegenerateOneTimePassword: FC = () => {
-  const { resetEmail } = useContext(AuthenticationContext);
+export const RegenerateOneTimePassword: FC<Props> = ({ onClick }) => (
+  <>
+    <Message>
+      <FormattedMessage id="RegenerateOneTimePassword.message" />
+    </Message>
 
-  return (
-    <>
-      <Message>
-        <FormattedMessage id="RegenerateOneTimePassword.message" />
-      </Message>
-
-      <Field>
-        <Control>
-          <Button onClick={resetEmail}>
-            <FormattedMessage id="RegenerateOneTimePassword.button" />
-          </Button>
-        </Control>
-      </Field>
-    </>
-  );
-};
+    <Field>
+      <Control>
+        <Button onClick={onClick}>
+          <FormattedMessage id="RegenerateOneTimePassword.button" />
+        </Button>
+      </Control>
+    </Field>
+  </>
+);

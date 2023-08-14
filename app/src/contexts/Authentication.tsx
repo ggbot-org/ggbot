@@ -1,4 +1,4 @@
-import { BadGatewayError } from "@ggbot2/http";
+import { BadGatewayError, UnauthorizedError } from "@ggbot2/http";
 import { Account, EmailAddress, noneAccount } from "@ggbot2/models";
 import { now, Time } from "@ggbot2/time";
 import { NonEmptyString } from "@ggbot2/type-utils";
@@ -38,7 +38,6 @@ type ContextValue = Pick<State, "exited"> & {
   account: Account;
   openExitModal: () => void;
   exit: () => void;
-  resetEmail: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
@@ -46,7 +45,6 @@ export const AuthenticationContext = createContext<ContextValue>({
   openExitModal: () => {},
   exit: () => {},
   exited: false,
-  resetEmail: () => {},
 });
 
 AuthenticationContext.displayName = "AuthenticationContext";
@@ -71,7 +69,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       switch (action.type) {
         case "EXIT": {
           sessionWebStorage.clear();
-          localWebStorage.clear();
           return { ...state, exited: true };
         }
 
@@ -82,7 +79,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
         case "SET_EMAIL": {
           const { email } = action.data;
-          sessionWebStorage.email = email;
           return { ...state, email };
         }
 
@@ -94,7 +90,12 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
         case "SET_JWT": {
           const { jwt } = action.data;
           localWebStorage.jwt = jwt;
-          return { ...state, jwt };
+          return {
+            ...state,
+            // Need also to reset email whenever jwt changes.
+            email: undefined,
+            jwt,
+          };
         }
 
         default:
@@ -102,7 +103,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     },
     {
-      email: sessionWebStorage.email,
+      email: undefined,
       exitIsActive: false,
       jwt: localWebStorage.jwt,
       showSplashScreen: isFirstPageView,
@@ -116,13 +117,18 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const setJwt = useCallback<AuthVerifyProps["setJwt"]>(
     (jwt) => {
+      READ.reset();
       dispatch({ type: "SET_JWT", data: { jwt } });
     },
-    [dispatch]
+    [dispatch, READ]
   );
 
   const setEmail = useCallback<AuthEnterProps["setEmail"]>((email) => {
     dispatch({ type: "SET_EMAIL", data: { email } });
+  }, []);
+
+  const resetEmail = useCallback<AuthVerifyProps["resetEmail"]>(() => {
+    dispatch({ type: "SET_EMAIL", data: { email: undefined } });
   }, []);
 
   const setExitIsActive = useCallback<AuthExitProps["setIsActive"]>(
@@ -142,22 +148,24 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       openExitModal: () => {
         dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
       },
-      resetEmail: () => {
-        dispatch({ type: "SET_EMAIL", data: { email: undefined } });
-      },
     }),
     [account, exited]
   );
 
   // Fetch account.
   useEffect(() => {
+    if (!jwt) return;
     if (READ.canRun) READ.request();
-  }, [READ]);
+  }, [READ, jwt]);
 
   // Handle errors.
   useEffect(() => {
     if (READ.error) {
-      if (READ.error.name === BadGatewayError.name) {
+      if (READ.error.name === UnauthorizedError.errorName) {
+        if (jwt) dispatch({ type: "SET_JWT", data: { jwt: undefined } });
+      }
+
+      if (READ.error.name === BadGatewayError.errorName) {
         // Re-fetch.
         const timeoutId = window.setTimeout(() => {
           READ.reset();
@@ -167,7 +175,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
         };
       }
     }
-  }, [READ]);
+  }, [READ, dispatch, jwt]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -195,7 +203,9 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
   if (account === null || jwt === undefined) {
     if (email) {
-      return <AuthVerify email={email} setJwt={setJwt} />;
+      return (
+        <AuthVerify email={email} setJwt={setJwt} resetEmail={resetEmail} />
+      );
     } else {
       return <AuthEnter setEmail={setEmail} />;
     }

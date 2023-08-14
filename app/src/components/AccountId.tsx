@@ -2,7 +2,10 @@ import { InputField, InputFieldProps } from "@ggbot2/design";
 import { FC } from "react";
 import { useIntl } from "react-intl";
 
-type Props = Omit<InputFieldProps, "label" | "isStatic">;
+type Props = Omit<
+  InputFieldProps,
+  "label" | "isStatic" | "defaultValue" | "onChange"
+>;
 
 export const AccountId: FC<Props> = ({ value, ...props }) => {
   const { formatMessage } = useIntl();
@@ -11,7 +14,7 @@ export const AccountId: FC<Props> = ({ value, ...props }) => {
     <InputField
       isStatic
       label={formatMessage({ id: "AccountId.label" })}
-      value={value}
+      defaultValue={value}
       {...props}
     />
   );

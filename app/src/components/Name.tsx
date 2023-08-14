@@ -9,8 +9,9 @@ export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
   }>;
 
 export const Name: FC<NameProps> = ({
-  setValue,
+  isStatic,
   readOnly,
+  setValue,
   value,
   ...props
 }) => {
@@ -41,13 +42,15 @@ export const Name: FC<NameProps> = ({
 
   return (
     <InputField
-      onChange={setValue ? onChange : undefined}
       color={color}
       help={help}
-      value={value}
+      isStatic={isStatic}
+      onChange={isStatic ? undefined : setValue ? onChange : undefined}
       readOnly={readOnly}
       spellCheck="false"
       type="text"
+      defaultValue={isStatic ? value : undefined}
+      value={isStatic ? undefined : value}
       {...props}
     />
   );
