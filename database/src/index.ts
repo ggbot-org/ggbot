@@ -3,7 +3,6 @@ export * from "./accountDailyOrders.js";
 export * from "./accountStrategies.js";
 export * from "./binance.js";
 export * from "./binanceApiConfig.js";
-export * from "./binanceApiKeyPermissions.js";
 export * from "./emailAccount.js";
 export * from "./locators.js";
 export * from "./oneTimePassword.js";

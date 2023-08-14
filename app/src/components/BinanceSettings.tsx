@@ -1,22 +1,23 @@
 import { Column, Columns } from "@ggbot2/design";
-import { FC } from "react";
+import { FC, useContext } from "react";
 
 import { BinanceApi } from "../components/BinanceApi.js";
 import { CreateBinanceApi } from "../components/CreateBinanceApi.js";
 import { DeleteBinanceApi } from "../components/DeleteBinanceApi.js";
+import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 
-export const BinanceSettings: FC = () => (
-  <>
-    <Columns isMultiline>
-      <Column size="half">
-        <BinanceApi />
-      </Column>
+export const BinanceSettings: FC = () => {
+  const { hasApiKey } = useContext(BinanceApiConfigContext);
 
-      <Column size="half">
-        <CreateBinanceApi />
-      </Column>
-    </Columns>
+  return (
+    <>
+      <Columns isMultiline>
+        <Column size="half">
+          {hasApiKey ? <BinanceApi /> : <CreateBinanceApi />}
+        </Column>
+      </Columns>
 
-    <DeleteBinanceApi />
-  </>
-);
+      <DeleteBinanceApi />
+    </>
+  );
+};

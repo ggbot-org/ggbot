@@ -50,18 +50,6 @@ node --version
 
 Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 
-## Add service aliases
-
-```sh
-mkdir -p ~/.bashrc.d
-
-cat << EOF > ~/.bashrc.d/ggbot2-aliases.sh
-alias start='sudo systemctl start ggbot2'
-alias stop='sudo systemctl stop ggbot2'
-alias status='sudo systemctl status ggbot2'
-EOF
-```
-
 ## Create AMI
 
 Create an image, with name

@@ -30,6 +30,20 @@ export type BinanceApiKeyPermissionCriteria = {
   ipRestrict: boolean;
 };
 
+export const isBinanceApiKeyPermissionCriteria =
+  objectTypeGuard<BinanceApiKeyPermissionCriteria>(
+    ({
+      ipRestrict,
+      enableWithdrawals,
+      enableReading,
+      enableSpotAndMarginTrading,
+    }) =>
+      typeof ipRestrict === "boolean" &&
+      typeof enableWithdrawals === "boolean" &&
+      typeof enableReading === "boolean" &&
+      typeof enableSpotAndMarginTrading === "boolean"
+  );
+
 export const binanceApiKeyPermissionsAreValid = ({
   enableReading,
   enableSpotAndMarginTrading,
@@ -71,3 +85,7 @@ export type ReadBinanceApiKey = (
 ) => Promise<BinanceApiKey | null>;
 
 export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>;
+
+export type ReadBinanceApiKeyPermissions = (
+  arg: AccountKey
+) => Promise<BinanceApiKeyPermissionCriteria>;

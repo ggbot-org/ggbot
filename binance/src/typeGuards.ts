@@ -1,9 +1,8 @@
 // TODO use type-utils
 import { isDecimal } from "@ggbot2/arithmetic";
-import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
+import { isLiteralType } from "@ggbot2/type-utils";
 
 import {
-  BinanceApiKeyPermission,
   BinanceBalance,
   BinanceExchangeInfo,
   BinanceFill,
@@ -38,22 +37,6 @@ import {
 } from "./types.js";
 
 // TODO use objectTypeGuard for all type guards
-
-export const isBinanceApiKeyPermission =
-  objectTypeGuard<BinanceApiKeyPermission>(
-    ({
-      // TODO should I add also other fields?
-      // TODO since this is a subbset of permissions, it should be moved to models or database
-      ipRestrict,
-      enableWithdrawals,
-      enableMargin,
-      enableSpotAndMarginTrading,
-    }) =>
-      typeof ipRestrict === "boolean" &&
-      typeof enableWithdrawals === "boolean" &&
-      typeof enableMargin === "boolean" &&
-      typeof enableSpotAndMarginTrading === "boolean"
-  );
 
 export const isBinanceBalance = (arg: unknown): arg is BinanceBalance => {
   if (typeof arg !== "object" || arg === null) return false;

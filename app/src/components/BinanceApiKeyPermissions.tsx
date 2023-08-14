@@ -1,13 +1,13 @@
-import { BinanceApiKeyPermission } from "@ggbot2/binance";
 import { Checkmark } from "@ggbot2/design";
+import { BinanceApiKeyPermissionCriteria } from "@ggbot2/models";
 import { FC } from "react";
 import { FormattedMessage } from "react-intl";
 
 type BinanceApiKeyPermissionEnableReadingProps = Partial<
-  Pick<BinanceApiKeyPermission, "enableReading">
+  Pick<BinanceApiKeyPermissionCriteria, "enableReading">
 >;
 
-export const BinanceApiKeyPermissionEnableReading: FC<
+const BinanceApiKeyPermissionEnableReading: FC<
   BinanceApiKeyPermissionEnableReadingProps
 > = ({ enableReading }) => {
   if (enableReading === undefined) return null;
@@ -27,10 +27,10 @@ export const BinanceApiKeyPermissionEnableReading: FC<
 };
 
 type BinanceApiKeyPermissionEnableSpotAndMarginTradingProps = Partial<
-  Pick<BinanceApiKeyPermission, "enableSpotAndMarginTrading">
+  Pick<BinanceApiKeyPermissionCriteria, "enableSpotAndMarginTrading">
 >;
 
-export const BinanceApiKeyPermissionEnableSpotAndMarginTrading: FC<
+const BinanceApiKeyPermissionEnableSpotAndMarginTrading: FC<
   BinanceApiKeyPermissionEnableSpotAndMarginTradingProps
 > = ({ enableSpotAndMarginTrading }) => (
   <span>
@@ -44,10 +44,10 @@ export const BinanceApiKeyPermissionEnableSpotAndMarginTrading: FC<
 );
 
 type BinanceApiKeyPermissionEnableWithdrawalsProps = Partial<
-  Pick<BinanceApiKeyPermission, "enableWithdrawals">
+  Pick<BinanceApiKeyPermissionCriteria, "enableWithdrawals">
 >;
 
-export const BinanceApiKeyPermissionEnableWithdrawals: FC<
+const BinanceApiKeyPermissionEnableWithdrawals: FC<
   BinanceApiKeyPermissionEnableWithdrawalsProps
 > = ({ enableWithdrawals }) => (
   <span>
@@ -67,9 +67,10 @@ export const BinanceApiKeyPermissionEnableWithdrawals: FC<
 );
 
 type BinanceApiKeyPermissionIpRestrictProps = Partial<
-  Pick<BinanceApiKeyPermission, "ipRestrict">
+  Pick<BinanceApiKeyPermissionCriteria, "ipRestrict">
 >;
-export const BinanceApiKeyPermissionIpRestrict: FC<
+
+const BinanceApiKeyPermissionIpRestrict: FC<
   BinanceApiKeyPermissionIpRestrictProps
 > = ({ ipRestrict }) => {
   if (ipRestrict === undefined) return null;
@@ -83,5 +84,38 @@ export const BinanceApiKeyPermissionIpRestrict: FC<
 
       <Checkmark ok={ipRestrict} />
     </span>
+  );
+};
+
+type BinanceApiKeyPermissionsProps = {
+  permissions: BinanceApiKeyPermissionCriteria | undefined;
+};
+
+export const BinanceApiKeyPermissions: FC<BinanceApiKeyPermissionsProps> = ({
+  permissions,
+}) => {
+  if (!permissions) return null;
+
+  const {
+    enableReading,
+    enableWithdrawals,
+    enableSpotAndMarginTrading,
+    ipRestrict,
+  } = permissions;
+
+  return (
+    <div>
+      <BinanceApiKeyPermissionEnableReading enableReading={enableReading} />
+
+      <BinanceApiKeyPermissionEnableWithdrawals
+        enableWithdrawals={enableWithdrawals}
+      />
+
+      <BinanceApiKeyPermissionEnableSpotAndMarginTrading
+        enableSpotAndMarginTrading={enableSpotAndMarginTrading}
+      />
+
+      <BinanceApiKeyPermissionIpRestrict ipRestrict={ipRestrict} />
+    </div>
   );
 };

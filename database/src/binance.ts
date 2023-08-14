@@ -16,6 +16,7 @@ import {
 import { BinanceClient } from "@ggbot2/binance-client";
 import { BinanceDflowClient } from "@ggbot2/dflow";
 import { ENV } from "@ggbot2/env";
+import { BinanceApiKeyPermissionCriteria } from "@ggbot2/models";
 
 /** A Binance client that uses a proxy for private requests. */
 export class Binance implements BinanceDflowClient {
@@ -41,6 +42,16 @@ export class Binance implements BinanceDflowClient {
 
   async account(): Promise<BinanceAccountInformation> {
     return await this.privateClient.account();
+  }
+
+  async apiRestrictions(): Promise<BinanceApiKeyPermissionCriteria> {
+    const data = await this.privateClient.apiRestrictions();
+    return {
+      enableReading: data.enableReading,
+      enableSpotAndMarginTrading: data.enableSpotAndMarginTrading,
+      ipRestrict: data.ipRestrict,
+      enableWithdrawals: data.enableWithdrawals,
+    };
   }
 
   async candles(

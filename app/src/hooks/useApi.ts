@@ -1,5 +1,4 @@
 import { PublicApiActionType, UserApiActionType } from "@ggbot2/api";
-import { ReadBinanceApiKeyPermissions } from "@ggbot2/database";
 import {
   AccountKey,
   CopyStrategy,
@@ -11,6 +10,7 @@ import {
   ReadAccount,
   ReadAccountStrategies,
   ReadBinanceApiKey,
+  ReadBinanceApiKeyPermissions,
   ReadStrategy,
   ReadStrategyBalances,
   ReadStrategyFlow,

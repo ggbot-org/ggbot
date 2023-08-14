@@ -1,8 +1,4 @@
 import {
-  BinanceApiKeyPermission,
-  isBinanceApiKeyPermission,
-} from "@ggbot2/binance";
-import {
   Button,
   Control,
   Field,
@@ -14,37 +10,16 @@ import { FC, useCallback, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { ApiKey } from "../components/ApiKey.js";
-import {
-  BinanceApiKeyPermissionEnableReading,
-  BinanceApiKeyPermissionEnableSpotAndMarginTrading,
-  BinanceApiKeyPermissionEnableWithdrawals,
-  BinanceApiKeyPermissionIpRestrict,
-} from "../components/BinanceApiKeyPermissions.js";
+import { BinanceApiKeyPermissions } from "../components/BinanceApiKeyPermissions.js";
 import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 import { useApi } from "../hooks/useApi.js";
 
 export const BinanceApi: FC = () => {
-  const { apiKey, hasApiKey } = useContext(BinanceApiConfigContext);
+  const { apiKey } = useContext(BinanceApiConfigContext);
 
   const READ = useApi.ReadBinanceApiKeyPermissions();
-  const permissions = READ.data;
   const isLoading = READ.isPending;
-
-  let enableSpotAndMarginTrading:
-    | BinanceApiKeyPermission["enableSpotAndMarginTrading"]
-    | undefined;
-  let enableWithdrawals:
-    | BinanceApiKeyPermission["enableWithdrawals"]
-    | undefined;
-  let enableReading: BinanceApiKeyPermission["enableReading"] | undefined;
-  let ipRestrict: BinanceApiKeyPermission["ipRestrict"] | undefined;
-
-  if (isBinanceApiKeyPermission(permissions)) {
-    enableSpotAndMarginTrading = permissions.enableSpotAndMarginTrading;
-    enableWithdrawals = permissions.enableWithdrawals;
-    enableReading = permissions.enableReading;
-    ipRestrict = permissions.ipRestrict;
-  }
+  const permissions = READ.data;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -54,15 +29,13 @@ export const BinanceApi: FC = () => {
     [READ]
   );
 
-  if (!hasApiKey) return null;
-
   return (
     <Form box onSubmit={onSubmit}>
       <Title>
         <FormattedMessage id="BinanceApi.title" />
       </Title>
 
-      <ApiKey readOnly truncated value={apiKey} />
+      <ApiKey isStatic value={apiKey} />
 
       <Field>
         <Control>
@@ -72,19 +45,7 @@ export const BinanceApi: FC = () => {
         </Control>
       </Field>
 
-      <div>
-        <BinanceApiKeyPermissionEnableReading enableReading={enableReading} />
-
-        <BinanceApiKeyPermissionEnableWithdrawals
-          enableWithdrawals={enableWithdrawals}
-        />
-
-        <BinanceApiKeyPermissionEnableSpotAndMarginTrading
-          enableSpotAndMarginTrading={enableSpotAndMarginTrading}
-        />
-
-        <BinanceApiKeyPermissionIpRestrict ipRestrict={ipRestrict} />
-      </div>
+      <BinanceApiKeyPermissions permissions={permissions} />
     </Form>
   );
 };

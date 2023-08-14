@@ -115,6 +115,19 @@ Tell _systemd_ that configuration was updated.
 sudo systemctl daemon-reload
 ```
 
+## Add service aliases
+
+```sh
+mkdir -p ~/.bashrc.d
+
+cat << EOF > ~/.bashrc.d/ggbot2-aliases.sh
+alias start='sudo systemctl start ggbot2'
+alias stop='sudo systemctl stop ggbot2'
+alias status='sudo systemctl status ggbot2'
+alias logs='journalctl --follow --unit ggbot2.service'
+EOF
+```
+
 ## Create AMI
 
 Create an image, with name

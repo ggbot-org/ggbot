@@ -4,12 +4,15 @@ import {
   CreateBinanceApiConfig,
   createdNow,
   DeleteBinanceApiConfig,
+  ErrorAccountItemNotFound,
   isBinanceApiConfig,
   ReadBinanceApiConfig,
   ReadBinanceApiKey,
+  ReadBinanceApiKeyPermissions,
 } from "@ggbot2/models";
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js";
+import { Binance } from "./binance.js";
 import { pathname } from "./locators.js";
 
 const binanceApiConfigCache = new CacheMap<BinanceApiConfig>();
@@ -47,3 +50,16 @@ export const readBinanceApiKey: ReadBinanceApiKey = async ({ accountId }) => {
 
 export const deleteBinanceApiConfig: DeleteBinanceApiConfig = (arg) =>
   DELETE(pathname.binanceApiConfig(arg));
+
+export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions =
+  async ({ accountId }) => {
+    const binanceApiConfig = await readBinanceApiConfig({ accountId });
+    if (!binanceApiConfig)
+      throw new ErrorAccountItemNotFound({
+        type: "BinanceApiConfig",
+        accountId,
+      });
+    const { apiKey, apiSecret } = binanceApiConfig;
+    const binance = new Binance(apiKey, apiSecret);
+    return await binance.apiRestrictions();
+  };
