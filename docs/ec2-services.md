@@ -126,9 +126,9 @@ EOF
 Create an image, with name
 
 ```sh
-ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYYYMMDD}
+ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYMMDD}
 ```
 
-for example `ggbot2_next_executor_2023-08-04`.
+for example `ggbot2_next_executor_230804`.
 
 Go to [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)

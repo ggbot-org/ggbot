@@ -18,6 +18,11 @@ createServer(async (request, response) => {
     return;
   }
 
+  if (sourceUrl === "/health-check") {
+    response.end("OK");
+    return;
+  }
+
   if (sourceUrl === "/robots.txt") {
     response.end("User-agent: *\nDisallow: /");
     return;

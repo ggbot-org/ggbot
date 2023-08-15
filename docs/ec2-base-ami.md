@@ -55,12 +55,10 @@ Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 Create an image, with name
 
 ```sh
-ggbot2_base_${YYYYMMDD}
+ggbot2_base_${YYMMDD}
 ```
 
-for example `ggbot2_base_2023-04-02`.
-
-Go to [EC2 service]
+for example `ggbot2_base_230402`.
 
 ## Setup service
 
