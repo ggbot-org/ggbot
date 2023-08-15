@@ -1,5 +1,31 @@
 import { BinanceOrderType, BinanceSymbolFilter } from "./types.js";
 
+export class ErrorBinanceBadRequest extends Error {
+  static errorName = "ErrorBinanceBadRequest";
+  static message({
+    status,
+    statusText,
+    url,
+  }: Pick<Response, "status" | "statusText" | "url">) {
+    return `Server responded with status=${status} statusText=${statusText} on URL=${url}`;
+  }
+  pathname: string;
+  constructor(response: Response) {
+    super(ErrorBinanceBadRequest.message(response));
+    const url = new URL(response.url);
+    // Hide search params, which contains signature, and host which may point to BINANCE_PROXY_BASE_URL.
+    this.pathname = url.pathname;
+  }
+  toObject() {
+    return {
+      name: ErrorBinanceBadRequest.errorName,
+      info: {
+        pathname: this.pathname,
+      },
+    };
+  }
+}
+
 export class ErrorBinanceCannotTradeSymbol extends Error {
   static errorName = "ErrorBinanceCannotTradeSymbol";
   static message = "Binance cannot trade this symbol";

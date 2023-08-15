@@ -7,7 +7,7 @@ export class BinanceRequestHeaders extends Headers {
   static apiKeyHeader = "X-MBX-APIKEY";
 
   static isApiKeyHeader(arg: unknown): boolean {
-    if (arg !== "string") return false;
+    if (typeof arg !== "string") return false;
     // Headers may be in lower or upper case.
     return (
       BinanceRequestHeaders.apiKeyHeader.toLowerCase() === arg.toLowerCase()

@@ -22,7 +22,7 @@ export class ErrorAccountItemNotFound extends Error {
   }
   toObject() {
     return {
-      name: ErrorAccountItemNotFound.name,
+      name: ErrorAccountItemNotFound.errorName,
       info: {
         accountId: String(this.accountId),
         type: this.type,
@@ -43,7 +43,7 @@ export class ErrorExceededQuota extends Error {
   }
   toObject() {
     return {
-      name: ErrorExceededQuota.name,
+      name: ErrorExceededQuota.errorName,
       info: {
         type: this.type,
       },
@@ -132,7 +132,7 @@ export class ErrorUnimplementedStrategyKind extends Error {
   }
   toObject() {
     return {
-      name: ErrorUnimplementedStrategyKind.name,
+      name: ErrorUnimplementedStrategyKind.errorName,
       info: {
         strategyKind: String(this.strategyKind),
       },

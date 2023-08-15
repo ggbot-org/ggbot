@@ -12,6 +12,7 @@ import {
   ErrorUnauthorizedAuthenticationHeader,
   readSessionFromAuthorizationHeader,
 } from "@ggbot2/authentication";
+import { ErrorBinanceBadRequest } from "@ggbot2/binance";
 import {
   copyStrategy,
   createBinanceApiConfig,
@@ -208,15 +209,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         return METHOD_NOT_ALLOWED;
     }
   } catch (error) {
-    if (error instanceof ErrorUnauthorizedAuthenticationHeader) {
+    if (error instanceof ErrorUnauthorizedAuthenticationHeader)
       return UNATHORIZED;
-    }
     if (
       error instanceof ErrorAccountItemNotFound ||
+      error instanceof ErrorBinanceBadRequest ||
       error instanceof ErrorExceededQuota ||
       error instanceof ErrorUnimplementedStrategyKind
     )
       return BAD_REQUEST(error.toObject());
+    // Fallback to print error if not handled.
     console.error(error);
   }
   return INTERNAL_SERVER_ERROR;
