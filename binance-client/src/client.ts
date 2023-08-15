@@ -7,13 +7,17 @@ import {
   BinanceApiPrivateEndpoint,
   BinanceApiRequestMethod,
   BinanceApiRequestParams,
+  BinanceConnector,
   BinanceExchange,
+  BinanceExchangeInfoCacheMap,
   BinanceNewOrderOptions,
   BinanceOrderRespACK,
   BinanceOrderRespFULL,
   BinanceOrderSide,
   BinanceOrderType,
 } from "@ggbot2/binance";
+
+const exchangeInfoCache = new BinanceExchangeInfoCacheMap();
 
 /**
  * BinanceClient implements private and public Binance API requests.
@@ -30,13 +34,20 @@ import {
  * Notice that the _trusted IP_ must be configured on the Binance account for
  * the given `apiKey` provided as parameter to the constructor.
  */
-export class BinanceClient extends BinanceExchange {
+export class BinanceClient {
   readonly apiSecret: string;
+  readonly connector: BinanceConnector;
+  readonly exchange: BinanceExchange;
 
   constructor(apiKey: string, apiSecret: string, baseUrl: string) {
-    super(baseUrl);
-    this.connector.apiKey = apiKey;
+    const connector = new BinanceConnector(baseUrl);
+    connector.apiKey = apiKey;
+    this.connector = connector;
     this.apiSecret = apiSecret;
+    this.exchange = new BinanceExchange(
+      BinanceConnector.defaultBaseUrl,
+      exchangeInfoCache
+    );
   }
 
   async privateRequest<Data>(
@@ -107,7 +118,7 @@ export class BinanceClient extends BinanceExchange {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol: _symbol } = await this.prepareOrder(
+    const { options, symbol: _symbol } = await this.exchange.prepareOrder(
       symbol,
       side,
       type,
@@ -137,7 +148,7 @@ export class BinanceClient extends BinanceExchange {
     type: Extract<BinanceOrderType, "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespFULL> {
-    const { options, symbol: _symbol } = await this.prepareOrder(
+    const { options, symbol: _symbol } = await this.exchange.prepareOrder(
       symbol,
       side,
       type,
@@ -166,7 +177,7 @@ export class BinanceClient extends BinanceExchange {
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol: _symbol } = await this.prepareOrder(
+    const { options, symbol: _symbol } = await this.exchange.prepareOrder(
       symbol,
       side,
       type,
@@ -196,7 +207,7 @@ export class BinanceClient extends BinanceExchange {
     type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
     orderOptions: BinanceNewOrderOptions
   ): Promise<BinanceOrderRespACK> {
-    const { options, symbol: _symbol } = await this.prepareOrder(
+    const { options, symbol: _symbol } = await this.exchange.prepareOrder(
       symbol,
       side,
       type,

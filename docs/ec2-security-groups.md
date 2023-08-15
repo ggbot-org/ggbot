@@ -7,6 +7,11 @@ Create a _Security Group_ with name `ggbot2-base-ec2-sg` with
 Inbound rule: type SSH with source _My IP_.
 Outbound rule: _All Traffic_.
 
+## executor
+
+Create a _Security Group_ with name `ggbot2-executor-ec2-sg` with same rules as [EC2 base](#ec2-base).
+Description can be: ggbot2 executor EC2 service.
+
 ## binance-proxy
 
 Create a _Security Group_ with name `ggbot2-binance-proxy-ec2-sg` with same rules as [EC2 base](#ec2-base).

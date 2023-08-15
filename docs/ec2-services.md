@@ -95,6 +95,8 @@ This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add 
 ```
 [Service]
 Environment="DEPLOY_STAGE=main"
+Environment="AWS_ACCOUNT_ID=888671539518"
+Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 ```
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.

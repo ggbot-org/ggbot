@@ -103,6 +103,7 @@ export class BinanceExchange {
     orderType: BinanceOrderType,
     orderOptions: BinanceNewOrderOptions
   ): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
+    // TODO should be moved in binance-client package?
     if (!isBinanceOrderSide(side))
       throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" });
     if (!isBinanceOrderType(orderType))
