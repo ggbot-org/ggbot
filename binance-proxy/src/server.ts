@@ -49,7 +49,15 @@ createServer(async (request, response) => {
   });
 
   response.writeHead(proxiedResponse.status);
-  response.end();
+
+  if (!proxiedResponse.ok) {
+    response.end();
+    return;
+  }
+
+  const data = await proxiedResponse.json();
+  const json = JSON.stringify(data);
+  response.end(json);
 }).listen(PORT, () => {
   console.info(`Server running on port ${PORT}`);
 });

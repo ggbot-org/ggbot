@@ -7,10 +7,10 @@ Every one of the [EC2 services](./ec2_services.md) has an [Auto Scaling group](h
 Create a _Launch template_ with name
 
 ```sh
-ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYMMDD}_lt
+ggbot2_${SERVICE}_${YYMMDD}_lt
 ```
 
-for example `ggbot2_next_executor_230808_lt`.
+for example `ggbot2_executor_230808_lt`.
 
 Choose properly the following settings:
 
