@@ -132,10 +132,10 @@
     "defaultMessage": "Delete account"
   },
   "DeleteAccount.confirmation": {
-    "defaultMessage": "Yes delete my account!"
+    "defaultMessage": "Yes, delete my account!"
   },
   "DeleteAccount.dismiss": {
-    "defaultMessage": "No"
+    "defaultMessage": "No, close this message"
   },
   "DeleteAccount.title": {
     "defaultMessage": "Account deletion"

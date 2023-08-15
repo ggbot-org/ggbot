@@ -7,11 +7,14 @@ import {
   Title,
   useToast,
 } from "@ggbot2/design";
-import { FC, useCallback, useContext, useEffect } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { ApiKey } from "../components/ApiKey.js";
-import { BinanceApiKeyPermissions } from "../components/BinanceApiKeyPermissions.js";
+import {
+  BinanceApiKeyPermissions,
+  BinanceApiKeyPermissionsProps,
+} from "../components/BinanceApiKeyPermissions.js";
 import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js";
 import { useApi } from "../hooks/useApi.js";
 
@@ -20,9 +23,11 @@ export const BinanceApi: FC = () => {
   const { toast } = useToast();
   const { apiKey } = useContext(BinanceApiConfigContext);
 
+  const [permissions, setPermissions] =
+    useState<BinanceApiKeyPermissionsProps["permissions"]>();
+
   const READ = useApi.ReadBinanceApiKeyPermissions();
   const isLoading = READ.isPending;
-  const permissions = READ.data;
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
@@ -33,6 +38,10 @@ export const BinanceApi: FC = () => {
   );
 
   useEffect(() => {
+    if (READ.isDone) {
+      setPermissions(READ.data);
+      READ.reset();
+    }
     if (READ.error) {
       READ.reset();
       toast.warning(formatMessage({ id: "BinanceApi.error" }));

@@ -12,7 +12,13 @@ export const BinanceSettings: FC = () => {
   return (
     <>
       <Columns isMultiline>
-        <Column size="half">
+        <Column
+          size={{
+            tablet: "half",
+            desktop: "two-thirds",
+            widescreen: "one-third",
+          }}
+        >
           {hasApiKey ? <BinanceApi /> : <CreateBinanceApi />}
         </Column>
       </Columns>
