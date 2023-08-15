@@ -2,6 +2,8 @@
 
 Every one of the [EC2 services](./ec2_services.md) has an [Auto Scaling group](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto_scaling_groups.html) associated.
 
+## Launch Template
+
 Create a _Launch template_ with name
 
 ```sh
@@ -9,6 +11,28 @@ ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYMMDD}_lt
 ```
 
 for example `ggbot2_next_executor_230808_lt`.
+
+Choose properly the following settings:
+
+- Instance type
+- Key pair (login)
+- Security groups
+
+In _Advanced Details_: select _IAM instance profile_, and in _User data_ add a script like the following
+
+```sh
+cat << EOF > /etc/systemd/system/ggbot2.service.d/override.conf
+[Service]
+Environment="DEPLOY_STAGE=next"
+EOF
+
+systemctl daemon-reload
+systemctl enable ggbot2
+systemctl stop ggbot2
+systemctl start ggbot2
+```
+
+## Auto Scaling group
 
 Create _Auto Scaling group_ with name
 

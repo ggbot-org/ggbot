@@ -8,10 +8,16 @@ TODO: cleanup these roles
 - ggbot2-next-ec2-role
 - ggbot2_api_role
 
-When creating a IAM role for a service, select:
+When creating a IAM role for an EC2 service, select:
 
 - Trusted entity type: _AWS service_
 - Use case: _EC2_.
+
+### ec2-base
+
+Create a IAM role to be used on AMI creation with name `ggbot2-ec2-base-role`.
+
+Add [CodeCommit policy](#codecommit-policy).
 
 ### binance-proxy
 
