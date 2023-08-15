@@ -10,36 +10,33 @@ import {
   Modal,
   Title,
 } from "@ggbot2/design";
-import { FC, useCallback, useContext, useEffect } from "react";
+import { FC, useCallback, useContext } from "react";
 import { FormattedMessage } from "react-intl";
 
 import { AccountId } from "../components/AccountId.js";
 import { Email } from "../components/Email.js";
 import { AuthenticationContext } from "../contexts/Authentication.js";
-import { wwwHomepage } from "../routing/URLs.js";
 
 export type AuthExitProps = {
   isActive: boolean;
   setIsActive: (arg: boolean) => void;
+  exit: () => void;
 };
 
-export const AuthExit: FC<AuthExitProps> = ({ isActive, setIsActive }) => {
-  const { account, exit, exited } = useContext(AuthenticationContext);
+export const AuthExit: FC<AuthExitProps> = ({
+  isActive,
+  setIsActive,
+  exit,
+}) => {
+  const { account } = useContext(AuthenticationContext);
 
   const onSubmit = useCallback<FormOnSubmit>(
     (event) => {
       event.preventDefault();
-      setIsActive(false);
       exit();
     },
-    [exit, setIsActive]
+    [exit]
   );
-
-  useEffect(() => {
-    if (exited) {
-      window.location.href = wwwHomepage;
-    }
-  }, [exited]);
 
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>

@@ -6,7 +6,6 @@ import {
   ApiPurchaseOrderURL,
   ApiUserActionURL,
   AuthBaseURL,
-  WwwHomepageURL,
 } from "@ggbot2/locators";
 
 import { getDeployStage } from "./deployStage.js";
@@ -20,8 +19,6 @@ let apiUserAction = "";
 
 let authenticationEnter = "";
 let authenticationVerify = "";
-
-export const wwwHomepage = new WwwHomepageURL().toString();
 
 if (DEPLOY_STAGE) {
   const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString();
@@ -42,5 +39,4 @@ export const url = {
   apiUserAction,
   authenticationEnter,
   authenticationVerify,
-  wwwHomepage,
 };

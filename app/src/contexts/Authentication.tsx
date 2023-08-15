@@ -27,24 +27,21 @@ import { useApi } from "../hooks/useApi.js";
 type State = {
   email: EmailAddress | undefined;
   exitIsActive: boolean;
+  exited: boolean;
   jwt: NonEmptyString | undefined;
   showSplashScreen: boolean;
   verified?: boolean | undefined;
   startSession: Time;
-  exited: boolean;
 };
 
-type ContextValue = Pick<State, "exited"> & {
+type ContextValue = {
   account: Account;
   openExitModal: () => void;
-  exit: () => void;
 };
 
 export const AuthenticationContext = createContext<ContextValue>({
   account: noneAccount,
   openExitModal: () => {},
-  exit: () => {},
-  exited: false,
 });
 
 AuthenticationContext.displayName = "AuthenticationContext";
@@ -68,8 +65,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     (state, action) => {
       switch (action.type) {
         case "EXIT": {
+          localWebStorage.clear();
           sessionWebStorage.clear();
-          return { ...state, exited: true };
+          // Do not re-trigger first page view.
+          sessionWebStorage.gotFirstPageView = true;
+          return { ...state, exited: true, exitIsActive: false };
         }
 
         case "HIDE_SPLASH_SCREEN": {
@@ -104,11 +104,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     {
       email: undefined,
+      exited: false,
       exitIsActive: false,
       jwt: localWebStorage.jwt,
       showSplashScreen: isFirstPageView,
       startSession: now(),
-      exited: false,
     }
   );
 
@@ -131,6 +131,10 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "SET_EMAIL", data: { email: undefined } });
   }, []);
 
+  const exit = useCallback<AuthExitProps["exit"]>(() => {
+    dispatch({ type: "EXIT" });
+  }, []);
+
   const setExitIsActive = useCallback<AuthExitProps["setIsActive"]>(
     (exitIsActive) => {
       dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive } });
@@ -144,12 +148,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       exit: () => {
         dispatch({ type: "EXIT" });
       },
-      exited,
       openExitModal: () => {
         dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive: true } });
       },
     }),
-    [account, exited]
+    [account]
   );
 
   // Fetch account.
@@ -199,6 +202,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     }, splashScreenDuration - (now() - startSession));
   }, [account, startSession, showSplashScreen]);
 
+  // Refresh page on exit.
+  useEffect(() => {
+    if (exited) window.location.reload();
+  }, [exited]);
+
   if (showSplashScreen) return <SplashScreen />;
 
   if (account === null || jwt === undefined) {
@@ -217,7 +225,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
     <AuthenticationContext.Provider value={contextValue}>
       {children}
 
-      <AuthExit isActive={exitIsActive} setIsActive={setExitIsActive} />
+      <AuthExit
+        isActive={exitIsActive}
+        setIsActive={setExitIsActive}
+        exit={exit}
+      />
     </AuthenticationContext.Provider>
   );
 };
