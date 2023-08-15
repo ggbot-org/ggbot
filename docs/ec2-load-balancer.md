@@ -41,3 +41,15 @@ Select `ggbot2-binance-proxy-alb-sg` _Security group_ (remove default _Security 
 In _Listeners and routing_ add a routing from protocol HTTPS to corresponding _Target Group_.
 
 Select default SSL certificate from _ACM_ (choose ggbot2.com certificate).
+
+## Update DNS
+
+To be able to use ggbot2.com SSL certificate, add a DSN entry for the Load Balancer, for instance on Route 53.
+
+- Record name: `binance-proxy`
+- Flag _Alias_
+- Route traffic to _Alias to Application and Classic Load Balancer_
+- Region: Frankfurt
+- Select the Load Balancer name in the dropdown
+
+Finally, update environment variable `BINANCE_PROXY_BASE_URL` accordingly.

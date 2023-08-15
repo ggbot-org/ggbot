@@ -18,6 +18,8 @@ Choose properly the following settings:
 - Key pair (login)
 - Security groups
 
+TODO: try this (only for executor)
+
 In _Advanced Details_: select _IAM instance profile_, and in _User data_ add a script like the following
 
 ```sh
@@ -34,16 +36,17 @@ systemctl start ggbot2
 
 ## Auto Scaling group
 
+If service is _binance-proxy_ create an [EC2 Load Balancer](./ec2-load-balancer.md) first.
+
 Create _Auto Scaling group_ with name
 
 ```sh
-ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYMMDD}_asg
+ggbot2_${SERVICE}_${YYMMDD}_asg
 ```
 
-for example `ggbot2_next_executor_230808_asg`.
+for example `ggbot2_binance-proxy_230815_asg`.
 
 Select _Launch template_.
 Select all _Availability zones and subnets_.
-Select _No load balancer_.
-
-If service is _binance-proxy_ go to [EC2 Load Balancer](./ec2-load-balancer.md)
+If service is _binance-proxy_, select _Attach to an existing load balancer_ and select a proper _Target group_ from _Existing load balancer target groups_; otherwise select _No load balancer_.
+Flag also _Turn on Elastic Load Balancing health checks_.

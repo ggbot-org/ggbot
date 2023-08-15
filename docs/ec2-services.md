@@ -95,7 +95,6 @@ This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add 
 ```
 [Service]
 Environment="DEPLOY_STAGE=main"
-Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 ```
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
@@ -126,9 +125,9 @@ EOF
 Create an image, with name
 
 ```sh
-ggbot2_${DEPLOY_STAGE}_${SERVICE}_${YYMMDD}
+ggbot2_${SERVICE}_${YYMMDD}
 ```
 
-for example `ggbot2_next_executor_230804`.
+for example `ggbot2_executor_230804`.
 
 Go to [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)
