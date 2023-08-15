@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useCallback } from "react";
+import { FC, PropsWithChildren, useCallback, useEffect } from "react";
 import {
   Modal as _Modal,
   ModalBackground,
@@ -25,9 +25,29 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     setIsActive(false);
   }, [setIsActive, userCannotCloseModal]);
 
+  const onKeydown = useCallback(
+    (event: KeyboardEvent) => {
+      if (userCannotCloseModal) return;
+      if (event.code === "Escape") setIsActive(false);
+    },
+    [setIsActive, userCannotCloseModal]
+  );
+
+  useEffect(() => {
+    if (userCannotCloseModal) return;
+    if (isActive) {
+      window.addEventListener("keydown", onKeydown);
+    } else {
+      window.removeEventListener("keydown", onKeydown);
+    }
+    return () => {
+      window.removeEventListener("keydown", onKeydown);
+    };
+  }, [userCannotCloseModal, isActive, onKeydown]);
+
   return (
     <_Modal isActive={isActive}>
-      <ModalBackground />
+      <ModalBackground onClick={closeModal} />
 
       <ModalContent className={_classNames("Modal__content")}>
         {children}
@@ -35,7 +55,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 
       {
         /* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
-          <ModalClose size="large" onClick={closeModal} />
+          <ModalClose onClick={closeModal} />
         )
       }
     </_Modal>
