@@ -6,11 +6,11 @@ import { StrategyActions } from "../components/StrategyActions.js";
 import { StrategyProfits } from "../components/StrategyProfits.js";
 
 export const ManageStrategy: FC = () => (
-  <Columns isMultiline>
+  <Columns isMultiline isVcentered>
     <Column
       size={{
         tablet: "full",
-        desktop: "half",
+        desktop: "one-third",
         fullhd: "two-fifths",
       }}
     >
@@ -20,15 +20,15 @@ export const ManageStrategy: FC = () => (
     <Column
       size={{
         tablet: "full",
-        desktop: "half",
-        fullhd: "two-fifths",
+        desktop: "two-thirds",
+        fullhd: "three-fifths",
       }}
     >
-      <Schedulings />
+      <StrategyProfits numDays={30} />
     </Column>
 
-    <Column size={{ tablet: "full", fullhd: "four-fifths" }}>
-      <StrategyProfits numDays={30} />
+    <Column>
+      <Schedulings />
     </Column>
   </Columns>
 );

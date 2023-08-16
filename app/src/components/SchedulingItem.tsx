@@ -1,4 +1,11 @@
-import { Button, ButtonOnClick, Buttons } from "@ggbot2/design";
+import {
+  Box,
+  Button,
+  ButtonOnClick,
+  Buttons,
+  Level,
+  LevelItem,
+} from "@ggbot2/design";
 import { StrategyScheduling } from "@ggbot2/models";
 import { FC, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -42,18 +49,27 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
       : formatMessage({ id: "SchedulingItem.activate" });
 
   return (
-    <div>
-      <SchedulingStatus status={scheduling.status} />
+    <Box>
+      <Level
+        left={
+          <LevelItem>
+            <Buttons size="small">
+              <Button onClick={removeScheduling}>
+                <FormattedMessage id="SchedulingItem.remove" />
+              </Button>
+
+              <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
+            </Buttons>
+          </LevelItem>
+        }
+        right={
+          <LevelItem>
+            <SchedulingStatus status={scheduling.status} />
+          </LevelItem>
+        }
+      />
 
       <FrequencyInput frequency={frequency} setFrequency={setFrequency} />
-
-      <Buttons size="small">
-        <Button onClick={removeScheduling}>
-          <FormattedMessage id="SchedulingItem.remove" />
-        </Button>
-
-        <Button onClick={onClickStatusButton}>{statusButtonLabel}</Button>
-      </Buttons>
-    </div>
+    </Box>
   );
 };

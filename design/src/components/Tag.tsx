@@ -7,7 +7,7 @@ export const Tag: FC<PropsWithChildren<TagProps>> = ({
   children,
   ...props
 }) => (
-  <_Tag isLight isRounded {...props}>
+  <_Tag isLight {...props}>
     {children}
   </_Tag>
 );

@@ -1,12 +1,9 @@
 import { Tag, TagProps, Tags } from "@ggbot2/design";
 import { SchedulingStatus as Status } from "@ggbot2/models";
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { useIntl } from "react-intl";
 
-type Props = {
-  status: Status | undefined;
-  count?: number;
-};
+import { classNames } from "../styles/classNames.js";
 
 type SchedulingStatusColor = Extract<
   TagProps["color"],
@@ -19,26 +16,39 @@ const colorOf: Record<Status, SchedulingStatusColor> = {
   suspended: "danger",
 };
 
-export const SchedulingStatus: FC<Props> = ({ status, count }) => {
+type _TagLabelProps = {
+  status: Status | undefined;
+};
+
+const _TagLabel: FC<_TagLabelProps> = ({ status }) => {
   const { formatMessage } = useIntl();
 
-  let color: SchedulingStatusColor | undefined;
-  let label: ReactNode = "";
+  if (!status) return null;
 
-  if (status) {
-    color = colorOf[status];
-    label = formatMessage({ id: `SchedulingStatus.${status}` });
-  }
+  return (
+    <Tag className={classNames("is-uppercase")} color={colorOf[status]}>
+      {formatMessage({ id: `SchedulingStatus.${status}` })}
+    </Tag>
+  );
+};
 
-  if (count === undefined) return <Tag color={color}>{label}</Tag>;
+type SchedulingStatusProps = Pick<_TagLabelProps, "status"> & {
+  count?: number;
+};
+
+export const SchedulingStatus: FC<SchedulingStatusProps> = ({
+  status,
+  count,
+}) => {
+  if (count === undefined) return <_TagLabel status={status} />;
 
   if (count === 0) return null;
 
   return (
     <Tags hasAddons>
-      <Tag color={color}>{label}</Tag>
+      <_TagLabel status={status} />
 
-      <Tag color={color}>{count}</Tag>
+      <Tag color={status ? colorOf[status] : undefined}>{count}</Tag>
     </Tags>
   );
 };

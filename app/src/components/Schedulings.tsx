@@ -1,8 +1,9 @@
 import {
   Button,
   ButtonOnClick,
-  Control,
-  Field,
+  Buttons,
+  Column,
+  Columns,
   Form,
   FormOnSubmit,
   Level,
@@ -10,12 +11,10 @@ import {
   Title,
 } from "@ggbot2/design";
 import {
-  isAccountStrategy,
   isStrategyScheduling,
   newStrategyScheduling,
   StrategyScheduling,
 } from "@ggbot2/models";
-import { UseActionError } from "@ggbot2/use-action";
 import {
   FC,
   useCallback,
@@ -36,34 +35,35 @@ import { AccountStrategiesContext } from "../contexts/AccountStrategies.js";
 import { StrategyContext } from "../contexts/Strategy.js";
 import { SubscriptionContext } from "../contexts/Subscription.js";
 import { useApi } from "../hooks/useApi.js";
+import { classNames } from "../styles/classNames.js";
 
 export const Schedulings: FC = () => {
-  const { strategy } = useContext(StrategyContext);
+  const {
+    strategy: { id: strategyId },
+  } = useContext(StrategyContext);
   const { hasActiveSubscription } = useContext(SubscriptionContext);
   const { accountStrategies, refetchAccountStrategies } = useContext(
     AccountStrategiesContext
   );
 
-  const [error, setError] = useState<UseActionError>();
-
   const WRITE = useApi.WriteAccountStrategiesItemSchedulings();
-
+  const isDone = WRITE.isDone;
   const isLoading = WRITE.isPending;
+  const error = WRITE.error;
 
   const [schedulingItems, setSchedulingItems] = useState<
     SchedulingItemProps["scheduling"][]
   >([]);
 
   const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
-    if (!Array.isArray(accountStrategies)) return [];
-    const schedulings: StrategyScheduling[] = [];
-    for (const accountStrategy of accountStrategies) {
-      if (!isAccountStrategy(accountStrategy)) continue;
-      if (accountStrategy.strategyId !== strategy.id) continue;
-      schedulings.push(...accountStrategy.schedulings);
-    }
-    return schedulings;
-  }, [accountStrategies, strategy]);
+    if (!accountStrategies) return [];
+    return accountStrategies
+      .filter((accountStrategy) => accountStrategy.strategyId === strategyId)
+      .reduce<StrategyScheduling[]>(
+        (list, accountStrategy) => list.concat(accountStrategy.schedulings),
+        []
+      );
+  }, [accountStrategies, strategyId]);
 
   const someSchedulingChanged = useMemo(() => {
     // Do not know about currentSchedulings yet, data fetch is pending.
@@ -99,7 +99,7 @@ export const Schedulings: FC = () => {
     [schedulingItems]
   );
 
-  const canSubmit = useMemo(() => {
+  const canSave = useMemo(() => {
     if (hasActiveSubscription !== true) return false;
     return someSchedulingChanged && schedulingItems.every(isStrategyScheduling);
   }, [someSchedulingChanged, hasActiveSubscription, schedulingItems]);
@@ -155,12 +155,12 @@ export const Schedulings: FC = () => {
   }, []);
 
   const onClickSave = useCallback<ButtonOnClick>(() => {
-    if (!canSubmit) return;
+    if (!canSave) return;
     WRITE.request({
-      strategyId: strategy.id,
+      strategyId: strategyId,
       schedulings: wantedSchedulings,
     });
-  }, [WRITE, canSubmit, strategy, wantedSchedulings]);
+  }, [WRITE, canSave, strategyId, wantedSchedulings]);
 
   const onSubmit = useCallback<FormOnSubmit>((event) => {
     event.preventDefault();
@@ -180,75 +180,77 @@ export const Schedulings: FC = () => {
   }, [currentSchedulings]);
 
   useEffect(() => {
-    if (WRITE.error) {
-      setError(WRITE.error);
-      WRITE.reset();
-    }
+    if (WRITE.error) WRITE.reset();
   }, [WRITE]);
 
   // Fetch strategies on updates.
   useEffect(() => {
-    if (WRITE.isDone) refetchAccountStrategies();
-  }, [refetchAccountStrategies, WRITE]);
+    if (isDone) refetchAccountStrategies();
+  }, [refetchAccountStrategies, isDone]);
 
   return (
     <>
-      <Form box onSubmit={onSubmit}>
-        <Level
-          isMobile
-          left={
-            <LevelItem>
-              <Title>
-                <FormattedMessage id="Schedulings.title" />
-              </Title>
-            </LevelItem>
-          }
-          right={
-            <LevelItem>
-              <SchedulingsStatusBadges schedulings={currentSchedulings} />
-            </LevelItem>
-          }
-        />
-
-        {schedulingItems.map((scheduling) => {
-          const { id } = scheduling;
-          return (
-            <SchedulingItem
-              key={id}
-              scheduling={scheduling}
-              setFrequency={setSchedulingItemFrequency(id)}
-              setStatus={setSchedulingItemStatus(id)}
-              removeScheduling={removeSchedulingItem(id)}
+      <Columns isMultiline>
+        <Column isNarrow>
+          <Form box onSubmit={onSubmit}>
+            <Level
+              isMobile
+              left={
+                <LevelItem>
+                  <Title>
+                    <FormattedMessage id="Schedulings.title" />
+                  </Title>
+                </LevelItem>
+              }
+              right={
+                <LevelItem className={classNames("ml-5")}>
+                  <SchedulingsStatusBadges schedulings={currentSchedulings} />
+                </LevelItem>
+              }
             />
-          );
-        })}
 
-        <Field>
-          <Control>
-            <Button onClick={addSchedulingItem} size="small">
-              <FormattedMessage id="Schedulings.add" />
-            </Button>
-          </Control>
-        </Field>
+            <Level
+              left={
+                <LevelItem>
+                  <Buttons>
+                    <Button
+                      onClick={onClickSave}
+                      color={canSave ? "primary" : undefined}
+                      isLoading={isLoading}
+                    >
+                      <FormattedMessage id="Schedulings.save" />
+                    </Button>
 
-        <Field isGrouped>
-          <Control>
-            <Button
-              onClick={onClickSave}
-              disabled={!canSubmit}
-              isLoading={isLoading}
-            >
-              <FormattedMessage id="Schedulings.save" />
-            </Button>
-          </Control>
+                    <Button onClick={onClickCancel} disabled={!canCancel}>
+                      <FormattedMessage id="Schedulings.cancel" />
+                    </Button>
+                  </Buttons>
+                </LevelItem>
+              }
+              right={
+                <LevelItem>
+                  <Buttons>
+                    <Button onClick={addSchedulingItem} size="small">
+                      <FormattedMessage id="Schedulings.add" />
+                    </Button>
+                  </Buttons>
+                </LevelItem>
+              }
+            />
+          </Form>
+        </Column>
 
-          <Control>
-            <Button onClick={onClickCancel} disabled={!canCancel}>
-              <FormattedMessage id="Schedulings.cancel" />
-            </Button>
-          </Control>
-        </Field>
-      </Form>
+        {schedulingItems.map((scheduling) => (
+          <Column key={scheduling.id} isNarrow>
+            <SchedulingItem
+              scheduling={scheduling}
+              setFrequency={setSchedulingItemFrequency(scheduling.id)}
+              setStatus={setSchedulingItemStatus(scheduling.id)}
+              removeScheduling={removeSchedulingItem(scheduling.id)}
+            />
+          </Column>
+        ))}
+      </Columns>
 
       <SchedulingsErrorExceededQuota error={error} />
     </>

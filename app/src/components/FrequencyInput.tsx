@@ -67,8 +67,8 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
   );
 
   return (
-    <Columns>
-      <Column size={2}>
+    <Columns isMobile>
+      <Column size="one-third">
         <InputField
           label={formatMessage({ id: "FrequencyInput.every" })}
           onChange={onChangeFrequencyEvery}
@@ -78,7 +78,7 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
         />
       </Column>
 
-      <Column>
+      <Column size="half">
         <SelectField
           label={formatMessage({ id: "FrequencyInput.interval" })}
           onChange={onChangeFrequencyInterval}
