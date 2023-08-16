@@ -4,6 +4,8 @@ import { SettingsPageId } from "./types.js";
 
 export const indexHtmlFilename = "index.html";
 
+export const adminDashboardHtmlFilename = "admin.html";
+
 export const copyStrategyHtmlFilename = "copy-strategy.html";
 
 export const tryFlowHtmlFilename = "flow.html";

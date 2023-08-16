@@ -4,9 +4,9 @@ import {
   ClassNamesArg,
 } from "@ggbot2/design";
 
-type FlowViewContainerClassNames = "FlowViewContainer";
+type FlowViewContainerClassName = "FlowViewContainer";
 
-type ClassName = _ClassName & FlowViewContainerClassNames;
+type ClassName = _ClassName | FlowViewContainerClassName;
 
 export const classNames = (...args: ClassNamesArg<ClassName>[]) =>
   _classNames(...args);

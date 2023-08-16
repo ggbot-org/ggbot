@@ -8,6 +8,7 @@ import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js";
 import { SettingsPageId, StrategyKey } from "./types.js";
 
 export const href = {
+  adminPage: () => "/admin.html",
   copyStrategyPage: (strategyKey: StrategyKey) => {
     const searchParams = strategyKeyToURLSearchParams(strategyKey).toString();
     return `/${copyStrategyHtmlFilename}?${searchParams}`;

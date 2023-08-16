@@ -16,7 +16,7 @@ import {
   settingsHtmlFilename,
   strategyHtmlFilename,
   subscriptionPurchasedHtmlFilename,
-} from "./pages.js";
+} from "../routing/pages.js";
 
 const Router: FC = () => {
   const pathname = window.location.pathname;

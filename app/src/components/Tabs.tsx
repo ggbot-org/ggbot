@@ -19,10 +19,12 @@ import { useIntl } from "react-intl";
 import { classNames } from "../styles/classNames.js";
 
 const tabIds = [
+  "accounts",
   "backtesting",
   "flow",
   "manage",
   "newStrategy",
+  "orders",
   "strategies",
 ] as const;
 export type TabId = (typeof tabIds)[number];

@@ -5,6 +5,7 @@ import { EditableFlow } from "../components/EditableFlow.js";
 import { ManageStrategy } from "../components/ManageStrategy.js";
 import { PleaseConfigureBinance } from "../components/PleaseConfigureBinance.js";
 import { PleasePurchase } from "../components/PleasePurchase.js";
+import { StrategyOrders } from "../components/StrategyOrders.js";
 import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js";
 
 const pageName = "Strategy";
@@ -24,6 +25,10 @@ export const Strategy: FC = () => {
           {
             tabId: "manage",
             content: <ManageStrategy />,
+          },
+          {
+            tabId: "orders",
+            content: <StrategyOrders />,
           },
           {
             tabId: "backtesting",

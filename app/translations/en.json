@@ -227,6 +227,9 @@
   "Navigation.account": {
     "defaultMessage": "Account"
   },
+  "Navigation.admin": {
+    "defaultMessage": "Admin"
+  },
   "Navigation.billing": {
     "defaultMessage": "Billing"
   },
@@ -419,6 +422,9 @@
   "SubscriptionTotalPrice.discount": {
     "defaultMessage": "One month for free."
   },
+  "Tabs.accounts": {
+    "defaultMessage": "Accounts"
+  },
   "Tabs.backtesting": {
     "defaultMessage": "Backtesting"
   },
@@ -430,6 +436,9 @@
   },
   "Tabs.newStrategy": {
     "defaultMessage": "New strategy"
+  },
+  "Tabs.orders": {
+    "defaultMessage": "Orders"
   },
   "Tabs.strategies": {
     "defaultMessage": "Strategies"

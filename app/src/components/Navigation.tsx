@@ -14,11 +14,19 @@ import { FormattedMessage } from "react-intl";
 import { AuthenticationContext } from "../contexts/Authentication.js";
 import { href } from "../routing/hrefs.js";
 import { SettingsPageId } from "../routing/types.js";
+import { classNames } from "../styles/classNames.js";
 
 export type NavigationProps = Pick<NavbarProps, "noMenu">;
 
 export const Navigation = memo<NavigationProps>(({ noMenu }) => {
-  const { openExitModal } = useContext(AuthenticationContext);
+  const { account, openExitModal } = useContext(AuthenticationContext);
+
+  const isAdmin = account.role === "admin";
+
+  const goToAdminPage = () => {
+    if (window.location.href !== href.homePage())
+      window.location.href = href.homePage();
+  };
 
   const goToHomePage = () => {
     if (window.location.href !== href.homePage())
@@ -67,6 +75,15 @@ export const Navigation = memo<NavigationProps>(({ noMenu }) => {
           </NavbarStart>
 
           <NavbarEnd>
+            {isAdmin ? (
+              <NavbarItemAnchor
+                className={classNames("has-text-primary")}
+                onClick={goToAdminPage}
+              >
+                <FormattedMessage id="Navigation.admin" />
+              </NavbarItemAnchor>
+            ) : null}
+
             <NavbarItemAnchor onClick={onClickExit}>
               <FormattedMessage id="Navigation.exit" />
             </NavbarItemAnchor>

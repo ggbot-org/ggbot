@@ -18,5 +18,8 @@ const version = today();
 export const appJs = `app.${version}.js`;
 export const appEntryPoint = join(srcRoutingDir, "AppRouter.tsx");
 
+export const adminDashboardJs = `admin.${version}.js`;
+export const adminDashboardEntryPoint = join(srcRoutingDir, "AdminRouter.tsx");
+
 export const tryFlowJs = `flow.${version}.js`;
 export const tryFlowEntryPoint = join(srcRoutingDir, "TryFlowRouter.tsx");

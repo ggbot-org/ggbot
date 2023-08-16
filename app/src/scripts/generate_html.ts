@@ -1,6 +1,8 @@
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
 
 import {
+  adminDashboardHtmlFilename,
+  adminDashboardJs,
   appJs,
   copyStrategyHtmlFilename,
   indexHtmlFilename,
@@ -30,6 +32,14 @@ const generateHtml = async () => {
     dirname,
     filename: indexHtmlFilename,
     htmlContent: html(appJs),
+  });
+
+  // Admin
+
+  await generateHtmlPage({
+    dirname,
+    filename: adminDashboardHtmlFilename,
+    htmlContent: html(adminDashboardJs),
   });
 
   // Strategy

@@ -1,4 +1,8 @@
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
+import {
+  arrayTypeGuard,
+  isLiteralType,
+  objectTypeGuard,
+} from "@ggbot2/type-utils";
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js";
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js";
@@ -12,20 +16,27 @@ import {
   UpdateTime,
 } from "./time.js";
 
+const accountRoles = ["admin"] as const;
+export type AccountRole = (typeof accountRoles)[number];
+export const isAccountRole = isLiteralType<AccountRole>(accountRoles);
+
 export type Account = Item &
   CreationTime & {
-    country?: AllowedCountryIsoCode2;
-    name?: undefined | Name;
     email: EmailAddress;
-  };
+  } & Partial<{
+    country: AllowedCountryIsoCode2;
+    name: Name;
+    role: AccountRole;
+  }>;
 
 export const isAccount = objectTypeGuard<Account>(
-  ({ id, country, email, name, ...creationTime }) =>
+  ({ id, country, email, name, role, ...creationTime }) =>
     isItemId(id) &&
     isEmailAddress(email) &&
     isCreationTime(creationTime) &&
     (country === undefined ? true : isAllowedCountryIsoCode2(country)) &&
-    (name === undefined ? true : isName(name))
+    (name === undefined ? true : isName(name)) &&
+    (role === undefined ? true : isAccountRole(role))
 );
 
 export const noneAccount: Account = {
