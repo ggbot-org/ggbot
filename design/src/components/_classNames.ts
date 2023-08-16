@@ -1,8 +1,8 @@
 import { BulmaClassName, classNames, ClassNamesArg } from "trunx";
 
-type DailyIntervalClassNames = "DailyInterval";
+type DailyIntervalClassName = "DailyInterval";
 
-type CalendarClassNames =
+type CalendarClassName =
   | "Calendar"
   | "Calendar__body"
   | "Calendar__head"
@@ -13,18 +13,18 @@ type CalendarClassNames =
   | "Calendar__cell--selected"
   | "Calendar__cell--disabled";
 
-type ModalClassNames = "Modal__content";
+type ModalClassName = "Modal__content";
 
-type ToastContainerClassNames = "ToastContainer";
+type ToastContainerClassName = "ToastContainer";
 
 export { type ClassNamesArg } from "trunx";
 
 export type ClassName =
   | BulmaClassName
-  | CalendarClassNames
-  | DailyIntervalClassNames
-  | ModalClassNames
-  | ToastContainerClassNames;
+  | CalendarClassName
+  | DailyIntervalClassName
+  | ModalClassName
+  | ToastContainerClassName;
 
 /**
  * CSS class helper.
