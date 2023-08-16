@@ -20,12 +20,12 @@ class EnvironmentVariables {
   }
 
   DEPLOY_STAGE(): DeployStage {
-    const VARIABLE_NAME: EnvironmentVariableName = "DEPLOY_STAGE";
-    const VALUE = process.env[VARIABLE_NAME];
+    // Use explicit `process.env.DEPLOY_STAGE` in order to make it visible by esbuild.
+    const VALUE = process.env.DEPLOY_STAGE;
     if (VALUE === "main") return "main";
     if (VALUE === "next") return "next";
     if (VALUE === "local") return "local";
-    throw new ErrorMissingEnvironmentVariable(VARIABLE_NAME);
+    throw new ErrorMissingEnvironmentVariable("DEPLOY_STAGE");
   }
 
   JWT_SECRET() {

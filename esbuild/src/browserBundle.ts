@@ -1,6 +1,8 @@
 import { ENV } from "@ggbot2/env";
 import { build, BuildOptions } from "esbuild";
 
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
+
 /**
  * Generate bundle for web apps.
  *
@@ -29,8 +31,9 @@ export const browserBundle = async ({
         "@formatjs/icu-messageformat-parser/no-parser",
     },
     bundle: true,
-    minify: ENV.DEPLOY_STAGE() !== "local",
+    define: { "process.env.DEPLOY_STAGE": `"${DEPLOY_STAGE}"` },
     entryPoints,
+    minify: DEPLOY_STAGE !== "local",
     outfile,
     platform: "browser",
   });

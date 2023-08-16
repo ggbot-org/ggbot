@@ -2,6 +2,7 @@ import {
   ApiActionClientSideError,
   ApiActionServerSideError,
 } from "@ggbot2/api";
+import { ENV } from "@ggbot2/env";
 import {
   __400__BAD_REQUEST__,
   __401__UNAUTHORIZED__,
@@ -23,6 +24,8 @@ export type UseActionError =
   | ApiActionClientSideError
   | ApiActionServerSideError
   | undefined;
+
+const isDev = ENV.DEPLOY_STAGE() !== "main";
 
 /**
  * Hook to use API actions:
@@ -88,11 +91,15 @@ export const useAction = <
 
           if (response.ok) {
             const responseOutput = await response.json();
+            if (isDev)
+              console.info("use-action", type, inputData, responseOutput.data);
             setData(responseOutput.data);
           } else if (response.status === __400__BAD_REQUEST__) {
             const responseOutput = await response.json();
+            console.error("use-action", type, inputData, responseOutput.error);
             setError(responseOutput.error);
           } else {
+            console.error("use-action", type, response.status);
             throw response.status;
           }
         } catch (error) {
