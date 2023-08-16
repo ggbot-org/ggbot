@@ -1,13 +1,7 @@
 import { FC, ReactNode, useId } from "react";
-import {
-  Control,
-  ControlProps,
-  Field,
-  Help,
-  Input,
-  InputProps,
-  Label,
-} from "trunx";
+import { Control, ControlProps, Field, Help, Input, InputProps } from "trunx";
+
+import { Label } from "../components/Label.js";
 
 export type InputFieldProps = Pick<ControlProps, "isLoading"> &
   Omit<InputProps, "id"> & {

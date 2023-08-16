@@ -1,5 +1,7 @@
 import { FC, ReactNode, useId } from "react";
-import { Control, Field, Help, Label, Select, SelectProps } from "trunx";
+import { Control, Field, Help, Select, SelectProps } from "trunx";
+
+import { Label } from "../components/Label.js";
 
 export type SelectFieldProps = Omit<SelectProps, "id"> & {
   help?: ReactNode;

@@ -8,6 +8,7 @@ export * from "./DateTime.js";
 export * from "./DayDropdown.js";
 export * from "./Icon.js";
 export * from "./InputField.js";
+export * from "./Label.js";
 export * from "./Logo.js";
 export * from "./Modal.js";
 export * from "./Navbar.js";
@@ -38,7 +39,6 @@ export {
   Hero,
   Input,
   type InputOnChange,
-  Label,
   Level,
   LevelItem,
   type MainColor,
