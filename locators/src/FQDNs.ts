@@ -24,3 +24,4 @@ export const userWebappDomain = `app.${topLevelDomain}`;
 export const userWebappNextDomain = `app-next.${topLevelDomain}`;
 
 export const wwwDomain = `www.${topLevelDomain}`;
+export const wwwNextDomain = `www-next.${topLevelDomain}`;

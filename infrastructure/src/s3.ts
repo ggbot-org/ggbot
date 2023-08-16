@@ -6,6 +6,7 @@ import {
   assetsDomain,
   topLevelDomain,
   wwwDomain,
+  wwwNextDomain,
 } from "@ggbot2/locators";
 
 import { awsRegion } from "./awsRegions.js";
@@ -51,8 +52,10 @@ export const getNakedDomainBucketArn = () =>
 
 export const nakedDomainBucketACL = BucketCannedACL.public_read;
 
-export const getWwwBucketName = () => wwwDomain;
+export const getWwwBucketName = (deployStage = DEPLOY_STAGE()) =>
+  ["local", "next"].includes(deployStage) ? wwwNextDomain : wwwDomain;
 
-export const getWwwBucketArn = () => `arn:aws:s3:::${getWwwBucketName()}`;
+export const getWwwBucketArn = (deployStage = DEPLOY_STAGE()) =>
+  `arn:aws:s3:::${getWwwBucketName(deployStage)}`;
 
 export const wwwBucketACL = BucketCannedACL.public_read;

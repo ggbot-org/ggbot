@@ -21,6 +21,7 @@ const resources = (deployStage: DeployStage) => ({
   appBucketArn: getAppBucketArn(deployStage),
   dataBucketArn: getDataBucketArn(deployStage),
   logsBucketArn: getLogsBucketArn(deployStage),
+  wwwBucketArn: getWwwBucketArn(deployStage),
 });
 
 const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID()}:role/ggbot2_api_role`;
@@ -35,7 +36,6 @@ const cross = {
   // S3
   assetsBucketArn: getAssetsBucketArn(),
   nakedDomainBucketArn: getNakedDomainBucketArn(),
-  wwwBucketArn: getWwwBucketArn(),
   // SES
   sesIdentityArn: getSesIdentityArn(),
 };
@@ -77,13 +77,14 @@ export const getDevopsPolicyStatements = () => [
     Resource: [
       cross.assetsBucketArn,
       cross.nakedDomainBucketArn,
-      cross.wwwBucketArn,
       main.appBucketArn,
       main.dataBucketArn,
       main.logsBucketArn,
+      main.wwwBucketArn,
       next.appBucketArn,
       next.dataBucketArn,
       next.logsBucketArn,
+      next.wwwBucketArn,
     ],
   },
   {
@@ -92,12 +93,14 @@ export const getDevopsPolicyStatements = () => [
     Resource: [
       cross.assetsBucketArn,
       `${cross.assetsBucketArn}/*`,
-      cross.wwwBucketArn,
-      `${cross.wwwBucketArn}/*`,
       main.appBucketArn,
       `${main.appBucketArn}/*`,
       next.appBucketArn,
       `${next.appBucketArn}/*`,
+      main.wwwBucketArn,
+      `${main.wwwBucketArn}/*`,
+      next.wwwBucketArn,
+      `${next.wwwBucketArn}/*`,
     ],
   },
 ];
