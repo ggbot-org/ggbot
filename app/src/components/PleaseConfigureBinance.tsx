@@ -22,7 +22,7 @@ export const PleaseConfigureBinance: FC = () => {
   const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
     const checked = event.target.checked;
     setDoNotShow(checked);
-    sessionWebStorage.doNotShowPleaseConfigureBinance = checked;
+    sessionWebStorage.doNotShowPleaseConfigureBinance.set(checked);
   }, []);
 
   useEffect(() => {

@@ -68,12 +68,12 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
           localWebStorage.clear();
           sessionWebStorage.clear();
           // Do not re-trigger first page view.
-          sessionWebStorage.gotFirstPageView = true;
+          sessionWebStorage.gotFirstPageView.set(true);
           return { ...state, exited: true, exitIsActive: false };
         }
 
         case "HIDE_SPLASH_SCREEN": {
-          sessionWebStorage.gotFirstPageView = true;
+          sessionWebStorage.gotFirstPageView.set(true);
           return { ...state, showSplashScreen: false };
         }
 
@@ -89,7 +89,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
         case "SET_JWT": {
           const { jwt } = action.data;
-          localWebStorage.jwt = jwt;
+          localWebStorage.jwt.set(jwt);
           return {
             ...state,
             // Need also to reset email whenever jwt changes.
@@ -106,7 +106,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
       email: undefined,
       exited: false,
       exitIsActive: false,
-      jwt: localWebStorage.jwt,
+      jwt: localWebStorage.jwt.get(),
       showSplashScreen: isFirstPageView,
       startSession: now(),
     }

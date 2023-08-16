@@ -42,7 +42,7 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!strategyId) return noneStrategy;
     if (remoteStrategy)
       return name ? { ...remoteStrategy, name } : remoteStrategy;
-    const localStrategy = localWebStorage.getStrategy(strategyId);
+    const localStrategy = localWebStorage.strategy.get(strategyId);
     if (localStrategy) return name ? { ...localStrategy, name } : localStrategy;
     return noneStrategy;
   }, [remoteStrategy, strategyId, name]);
@@ -50,7 +50,7 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   const updateStrategyName = useCallback<ContextValue["updateStrategyName"]>(
     (name) => {
       setName(name);
-      localWebStorage.setStrategy({ ...strategy, name });
+      localWebStorage.strategy.set({ ...strategy, name });
     },
     [strategy]
   );
@@ -72,8 +72,8 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
   // Cache strategy.
   useEffect(() => {
     if (!strategyId) return;
-    if (remoteStrategy) localWebStorage.setStrategy(remoteStrategy);
-    if (remoteStrategy === null) localWebStorage.removeStrategy(strategyId);
+    if (remoteStrategy) localWebStorage.strategy.set(remoteStrategy);
+    if (remoteStrategy === null) localWebStorage.strategy.delete(strategyId);
   }, [remoteStrategy, strategyId]);
 
   if (!strategyKey)

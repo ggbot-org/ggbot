@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
+    "@ggbot2/cache": "file:cache",
     "@ggbot2/env": "file:env",
     "@ggbot2/type-utils": "file:type-utils"
   },

@@ -1,12 +1,10 @@
 import { deleteObject, getObject, listObjects, putObject } from "@ggbot2/aws";
-import { ENV } from "@ggbot2/env";
+import { isDev } from "@ggbot2/env";
 import { getDataBucketName } from "@ggbot2/infrastructure";
 import { deletedNow, updatedNow } from "@ggbot2/models";
 import { DflowArray, DflowObject } from "dflow";
 
 import { ErrorInvalidData } from "./errors.js";
-
-const isDev = ENV.DEPLOY_STAGE() !== "main";
 
 const Bucket = getDataBucketName();
 
@@ -21,11 +19,17 @@ export const READ = async <Operation extends AsyncFunction>(
   try {
     const json = await getObject(Bucket)(Key);
     if (!json) {
-      if (isDev) console.info("READ", Key, "null");
+      if (isDev) console.info("READ", Key, json);
       return null;
     }
     const data = JSON.parse(json);
-    if (isDev) console.info("READ", Key, `isData=${isData(data)}`, data);
+    if (isDev)
+      console.info(
+        "READ",
+        Key,
+        `isData=${isData(data)}`,
+        JSON.stringify(data, null, 2)
+      );
     if (isData(data)) return data;
     throw new ErrorInvalidData();
   } catch (error) {
@@ -41,11 +45,17 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
   try {
     const json = await getObject(Bucket)(Key);
     if (!json) {
-      if (isDev) console.info("READ_ARRAY", Key, "[]");
+      if (isDev) console.info("READ_ARRAY", Key, json);
       return [] as Awaited<ReturnType<Operation>>;
     }
     const data = JSON.parse(json);
-    if (isDev) console.info("READ_ARRAY", Key, `isData=${isData(data)}`, data);
+    if (isDev)
+      console.info(
+        "READ_ARRAY",
+        Key,
+        `isData=${isData(data)}`,
+        JSON.stringify(data, null, 2)
+      );
     if (isData(data)) return data;
     throw new ErrorInvalidData();
   } catch (error) {
@@ -69,7 +79,7 @@ export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 };
 
 export const WRITE = async (Key: string, data: DflowArray | DflowObject) => {
-  if (isDev) console.info("WRITE", Key, data);
+  if (isDev) console.info("WRITE", Key, JSON.stringify(data, null, 2));
   const json = JSON.stringify(data);
   await putObject(Bucket)(Key, json);
 };

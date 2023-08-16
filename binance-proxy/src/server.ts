@@ -5,13 +5,10 @@ import {
   BinanceRequestHeaders,
   isBinanceApiPrivateEndoint,
 } from "@ggbot2/binance";
-import { ENV } from "@ggbot2/env";
+import { isDev } from "@ggbot2/env";
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@ggbot2/http";
 
-const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
 const PORT = 3000;
-
-const isDev = DEPLOY_STAGE !== "main";
 
 createServer(async (request, response) => {
   const { headers: sourceHeaders, url: sourceUrl } = request;
@@ -68,5 +65,5 @@ createServer(async (request, response) => {
   const json = JSON.stringify(data);
   response.end(json);
 }).listen(PORT, () => {
-  console.info(`Server running on port ${PORT}`);
+  if (isDev) console.info(`Server running on port ${PORT}`);
 });

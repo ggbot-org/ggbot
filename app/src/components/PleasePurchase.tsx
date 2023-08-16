@@ -24,7 +24,7 @@ export const PleasePurchase: FC = () => {
   const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
     const checked = event.target.checked;
     setDoNotShow(checked);
-    sessionWebStorage.doNotShowPleasePurchase = checked;
+    sessionWebStorage.doNotShowPleasePurchase.set(checked);
   }, []);
 
   useEffect(() => {

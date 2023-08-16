@@ -60,3 +60,6 @@ class EnvironmentVariables {
  * ```
  */
 export const ENV = new EnvironmentVariables();
+
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
+export const isDev = DEPLOY_STAGE !== "main";

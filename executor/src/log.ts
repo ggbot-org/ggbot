@@ -1,5 +1,6 @@
 import { pid } from "node:process";
 
+import { isDev } from "@ggbot2/env";
 import { now, timeToTimestamp } from "@ggbot2/time";
 
 const timestamp = () => timeToTimestamp(now());
@@ -12,6 +13,7 @@ export const log = {
     else console.error(...prefix(), arg);
   },
   info(...args: unknown[]) {
+    if (!isDev) return;
     console.info(...prefix(), ...args);
   },
 };

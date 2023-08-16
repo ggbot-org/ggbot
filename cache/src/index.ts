@@ -1,2 +1,2 @@
 export * from "./map.js";
-export * from "./provider.js";
+export * from "./providers.js";

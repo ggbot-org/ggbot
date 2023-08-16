@@ -33,7 +33,7 @@ import {
   writeAccountStrategiesItemSchedulings,
   writeStrategyFlow,
 } from "@ggbot2/database";
-import { ENV } from "@ggbot2/env";
+import { isDev } from "@ggbot2/env";
 import {
   ErrorAccountItemNotFound,
   ErrorExceededQuota,
@@ -50,9 +50,6 @@ import {
   isWriteAccountStrategiesItemSchedulingsInput,
   isWriteStrategyFlowInput,
 } from "@ggbot2/models";
-
-const DEPLOY_STAGE = ENV.DEPLOY_STAGE();
-const isDev = DEPLOY_STAGE !== "main";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {

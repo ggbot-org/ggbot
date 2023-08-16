@@ -1,16 +1,19 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
+import type { ManagedCacheProvider } from "@ggbot2/cache";
+import { isDev } from "@ggbot2/env";
 import { isLiteralType } from "@ggbot2/type-utils";
 
-import { isDev } from "./isDev.js";
+import { cachedBoolean } from "./cachedBoolean.js";
 import { itemKey } from "./itemKeys.js";
+import type { WebStorageProvider } from "./provider.js";
 
-class SessionWebStorage {
-  private getItem(key: string) {
+class SessionWebStorage implements WebStorageProvider {
+  getItem(key: string) {
     if (isDev) console.info("web-storage", "session", "getItem", key);
     return window.sessionStorage.getItem(key);
   }
 
-  private setItem(key: string, value: string) {
+  setItem(key: string, value: string) {
     if (isDev)
       console.info(
         "web-storage",
@@ -22,8 +25,7 @@ class SessionWebStorage {
     window.sessionStorage.setItem(key, value);
   }
 
-  // TODO better to create removeX removeY methods so setters do not accept undefined
-  private removeItem(key: string) {
+  removeItem(key: string) {
     if (isDev) console.info("web-storage", "session", "removeItem", key);
     if (key === itemKey.binanceExchangeInfo())
       this.binanceExchangeInfoIsValid = undefined;
@@ -126,28 +128,16 @@ class SessionWebStorage {
     }
   }
 
-  get doNotShowPleaseConfigureBinance(): boolean {
-    return Boolean(this.getItem(itemKey.doNotShowPleaseConfigureBinance()));
+  get doNotShowPleaseConfigureBinance() {
+    return cachedBoolean(this, itemKey.doNotShowPleaseConfigureBinance());
   }
 
-  set doNotShowPleaseConfigureBinance(value: boolean) {
-    this.setItem(itemKey.doNotShowPleaseConfigureBinance(), String(value));
+  get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
+    return cachedBoolean(this, itemKey.doNotShowPleasePurchase());
   }
 
-  get doNotShowPleasePurchase(): boolean {
-    return Boolean(this.getItem(itemKey.doNotShowPleasePurchase()));
-  }
-
-  set doNotShowPleasePurchase(value: boolean) {
-    this.setItem(itemKey.doNotShowPleasePurchase(), String(value));
-  }
-
-  get gotFirstPageView(): boolean {
-    return Boolean(this.getItem(itemKey.gotFirstPageView()));
-  }
-
-  set gotFirstPageView(value: boolean) {
-    this.setItem(itemKey.gotFirstPageView(), String(value));
+  get gotFirstPageView(): ManagedCacheProvider<boolean> {
+    return cachedBoolean(this, itemKey.gotFirstPageView());
   }
 }
 

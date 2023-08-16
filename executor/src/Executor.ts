@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/cache";
+import { CacheMap, ManagedCacheProvider } from "@ggbot2/cache";
 import {
   listAccountKeys,
   readAccountStrategies,
@@ -14,7 +14,6 @@ import {
   isAccountKey,
   isAccountStrategy,
   isNodeError,
-  isScheduling,
   isSubscription,
   Item,
   itemIdCharacters,
@@ -67,12 +66,12 @@ export class Executor {
 
   constructor(readonly capacity: number, readonly index: number) {}
 
-  get cachedAccountKeys() {
+  get cachedAccountKeys(): ManagedCacheProvider<AccountKey[]> {
     const key = "accountKeys";
     return {
       get: (): AccountKey[] | undefined => this.accountKeysCache.get(key),
       set: (data: AccountKey[]): void => this.accountKeysCache.set(key, data),
-      removeItem: (accountId: AccountKey["accountId"]): void => {
+      delete: (accountId: AccountKey["accountId"]): void => {
         const items = this.accountKeysCache.get(key);
         if (!items) return;
         const updatedItems = items.filter(
@@ -123,10 +122,10 @@ export class Executor {
       const cached = cache.get(key);
       if (cached) return cached;
       log.info("readSubscription", accountId);
-      const data = await readSubscription({ accountId });
-      if (isSubscription(data)) {
-        cache.set(key, data);
-        return data;
+      const subscription = await readSubscription({ accountId });
+      if (subscription) {
+        cache.set(key, subscription);
+        return subscription;
       }
     } catch (error) {
       log.error(error);
@@ -178,15 +177,12 @@ export class Executor {
 
         // Get strategies.
         const accountStrategies = await this.getAccountStrategies(accountKey);
-        if (!Array.isArray(accountStrategies)) continue;
 
         for (const accountStrategy of accountStrategies) {
           if (!isAccountStrategy(accountStrategy)) continue;
           const { strategyId, strategyKind, schedulings } = accountStrategy;
 
           for (const scheduling of schedulings) {
-            if (!isScheduling(scheduling)) continue;
-
             // Execute scheduled strategies.
             await this.manageStrategyExecution(
               { accountId, strategyId, strategyKind },
@@ -213,7 +209,7 @@ export class Executor {
       log.info(`Suspend all strategies accountId=${accountId}`);
 
       // Cleanup cache locally.
-      this.cachedAccountKeys.removeItem(accountId);
+      this.cachedAccountKeys.delete(accountId);
       this.accountStrategiesCache.delete(accountId);
 
       // Update database remotely.

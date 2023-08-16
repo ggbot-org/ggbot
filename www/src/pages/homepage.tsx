@@ -9,10 +9,10 @@ import { pathname } from "../routing/pathnames.js";
 const userWebappHomepageURL = new UserWebappHomepageURL("main");
 
 const Page: FC = () => {
-  const gotFirstPageView = sessionWebStorage.gotFirstPageView;
+  const gotFirstPageView = sessionWebStorage.gotFirstPageView.get();
 
   useEffect(() => {
-    if (!gotFirstPageView) sessionWebStorage.gotFirstPageView = true;
+    if (!gotFirstPageView) sessionWebStorage.gotFirstPageView.set(true);
   }, [gotFirstPageView]);
 
   return (

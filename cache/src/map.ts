@@ -1,4 +1,4 @@
-import { CacheProvider } from "./provider.js";
+import type { CacheProvider } from "./providers.js";
 
 type TimeToLive = "FIVE_MINUTES" | "ONE_HOUR" | "ONE_DAY" | "ONE_WEEK";
 
