@@ -12,6 +12,14 @@ Update all software.
 sudo yum update -y
 ```
 
+Check also if there is a new Amazon Linux release, run
+
+```sh
+/usr/bin/dnf check-release-update
+```
+
+or check the shell prompt on SSH login.
+
 ## Git
 
 Install [Git](./tech-stack.md#git)
