@@ -31,10 +31,10 @@ export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
     baseAsset,
     baseAssetPrecision,
     baseCommissionPrecision,
+    isSpotTradingAllowed,
     quoteAsset,
     quoteAssetPrecision,
     quotePrecision,
-    isSpotTradingAllowed,
     status,
     symbol,
   }) =>

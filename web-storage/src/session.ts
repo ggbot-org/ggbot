@@ -82,16 +82,42 @@ class SessionWebStorage {
     try {
       // TODO storing the whole value (more than 3.7 MB) will raise an exceeded quota error.
       // By now filter only the data needed.
+      // Fields used are those required by isDflowBinanceSymbolInfo,
+      // should use also something like isDflowBinanceExchangeInfo instead of isBinanceExchangeInfo
+      // Also filters applied are same as isDflowBinanceSymbolInfo.
       const { symbols, ...rest } = value;
       this.setItem(
         key,
         JSON.stringify({
           ...rest,
-          symbols: symbols.map(({ symbol, baseAsset, quoteAsset }) => ({
-            symbol,
-            baseAsset,
-            quoteAsset,
-          })),
+          symbols: symbols
+            .filter(
+              ({ isSpotTradingAllowed, status }) =>
+                isSpotTradingAllowed === true && status === "TRADING"
+            )
+            .map(
+              ({
+                baseAsset,
+                baseAssetPrecision,
+                baseCommissionPrecision,
+                isSpotTradingAllowed,
+                quoteAsset,
+                quoteAssetPrecision,
+                quotePrecision,
+                status,
+                symbol,
+              }) => ({
+                baseAsset,
+                baseAssetPrecision,
+                baseCommissionPrecision,
+                isSpotTradingAllowed,
+                quoteAsset,
+                quoteAssetPrecision,
+                quotePrecision,
+                status,
+                symbol,
+              })
+            ),
         })
       );
       this.binanceExchangeInfoIsValid = true;
