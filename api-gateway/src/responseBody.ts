@@ -1,7 +1,7 @@
-import { ApiActionResponseOutput } from "@ggbot2/api";
+import { ApiActionResponseOutput } from "@ggbot2/api"
 
-import { APIGatewayProxyResult } from "./types.js";
+import { APIGatewayProxyResult } from "./types.js"
 
 export const responseBody = (
-  output: ApiActionResponseOutput
-): Pick<APIGatewayProxyResult, "body"> => ({ body: JSON.stringify(output) });
+	output: ApiActionResponseOutput
+): Pick<APIGatewayProxyResult, "body"> => ({ body: JSON.stringify(output) })

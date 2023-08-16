@@ -1,3 +1,3 @@
-import { FC } from "react";
+import { FC } from "react"
 
-export const StrategyOrders: FC = () => null;
+export const StrategyOrders: FC = () => null

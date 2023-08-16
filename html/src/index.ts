@@ -1,2 +1,2 @@
-export * from "./generateHtmlPage.js";
-export * from "./pageContent.js";
+export * from "./generateHtmlPage.js"
+export * from "./pageContent.js"

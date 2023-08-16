@@ -1,4 +1,4 @@
-import { BinanceBalance } from "./types.js";
+import { BinanceBalance } from "./types.js"
 
 /**
  * An empty balance looks like
@@ -10,4 +10,4 @@ import { BinanceBalance } from "./types.js";
  * ```
  */
 export const balanceIsNotEmpty = ({ free, locked }: BinanceBalance) =>
-  Number(free) + Number(locked) > 0;
+	Number(free) + Number(locked) > 0

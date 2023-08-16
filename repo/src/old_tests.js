@@ -1,270 +1,280 @@
 // TODO port this into TS
-import { strict as assert } from "node:assert";
+import { strict as assert } from "node:assert"
 
-import designTsconfig from "../../design/tsconfig.json" assert { type: "json" };
+// eslint-disable-next-line
+import designTsconfig from "../../design/tsconfig.json" assert { type: "json" }
 // TODO use describe and split into files, remove this file
-import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" };
-import { eslintConfigPackageName } from "./eslint.js";
-import { packageScriptKey } from "./package.js";
-import { rootPackageJson } from "./rootPackage.js";
+// eslint-disable-next-line
+import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" }
+import { eslintConfigPackageName } from "./eslint.js"
+import { packageScriptKey } from "./package.js"
+import { rootPackageJson } from "./rootPackage.js"
 import {
-  importWorkspaceTsconfigBuildJson,
-  importWorkspaceTsconfigJson,
-} from "./tsconfigs.js";
+	importWorkspaceTsconfigBuildJson,
+	importWorkspaceTsconfigJson
+} from "./tsconfigs.js"
 import {
-  importWorkspacePackageJson,
-  workspacePackageName,
-} from "./workspacePackage.js";
+	importWorkspacePackageJson,
+	workspacePackageName
+} from "./workspacePackage.js"
 
-const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson;
+const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson
 
-const noCodeWorkspaces = ["eslint-config", "tsconfig"];
+const noCodeWorkspaces = ["eslint-config", "tsconfig"]
 const noTscBuildWorkspaces = [
-  ...noCodeWorkspaces,
-  "utrust",
-  "admin",
-  "repo",
-  "app",
-  "www",
-];
+	...noCodeWorkspaces,
+	"utrust",
+	"admin",
+	"repo",
+	"app",
+	"www"
+]
 
-const webappWorkspaces = ["admin", "design", "app", "www"];
+const webappWorkspaces = ["admin", "design", "app", "www"]
 
 const packageScript = {
-  [packageScriptKey.build]: "tsc --build tsconfig.build.json",
-  [packageScriptKey.cleanup]: "rm -rf dist/ test/",
-  pretest: "tsc --build tsconfig.test.json",
-  test: "node --test",
-  [packageScriptKey.checkTypes]: "tsc --noEmit --project .",
-};
+	[packageScriptKey.build]: "tsc --build tsconfig.build.json",
+	[packageScriptKey.cleanup]: "rm -rf dist/ test/",
+	pretest: "tsc --build tsconfig.test.json",
+	test: "node --test",
+	[packageScriptKey.checkTypes]: "tsc --noEmit --project ."
+}
 
 /** Checks that are in common to package.json workspace. */
 function testPackageJson({ packageJson, workspace }) {
-  const { name } = packageJson;
+	const { name } = packageJson
 
-  [
-    {
-      key: "keywords",
-      expected: undefined,
-    },
-    {
-      key: "private",
-      expected: true,
-    },
-  ].forEach(({ key, expected }) => {
-    assert.equal(packageJson[key], expected, `package ${name} ${key}`);
-  });
+	;[
+		{
+			key: "keywords",
+			expected: undefined
+		},
+		{
+			key: "private",
+			expected: true
+		}
+	].forEach(({ key, expected }) => {
+		assert.equal(packageJson[key], expected, `package ${name} ${key}`)
+	})
 
-  const codeCheckNpmScripts = noTscBuildWorkspaces.includes(workspace)
-    ? []
-    : [packageScriptKey.lint, packageScriptKey.checkTypes];
-  const buildNpmScripts = noTscBuildWorkspaces.includes(workspace)
-    ? []
-    : [packageScriptKey.build, packageScriptKey.cleanup];
+	const codeCheckNpmScripts = noTscBuildWorkspaces.includes(workspace)
+		? []
+		: [packageScriptKey.lint, packageScriptKey.checkTypes]
+	const buildNpmScripts = noTscBuildWorkspaces.includes(workspace)
+		? []
+		: [packageScriptKey.build, packageScriptKey.cleanup]
 
-  [...codeCheckNpmScripts, ...buildNpmScripts].forEach((key) => {
-    assert.equal(
-      typeof packageJson.scripts[key] === "string",
-      true,
-      `package ${name} has scripts["${key}"]`
-    );
-  });
+	;[...codeCheckNpmScripts, ...buildNpmScripts].forEach((key) => {
+		assert.equal(
+			typeof packageJson.scripts[key] === "string",
+			true,
+			`package ${name} has scripts["${key}"]`
+		)
+	})
 }
 
 async function testWorkspacePackageJson({ workspace }) {
-  const packageJson = await importWorkspacePackageJson(workspace);
+	const packageJson = await importWorkspacePackageJson(workspace)
 
-  testPackageJson({ packageJson, workspace });
+	testPackageJson({ packageJson, workspace })
 
-  const isWebapp = webappWorkspaces.includes(workspace);
-  const isCodeWorkspace = !noCodeWorkspaces.includes(workspace);
-  const packageJsonHasScripts = Array.isArray(packageJson.scripts);
-  const packageJsonHasScriptTest =
-    packageJsonHasScripts &&
-    typeof packageJson.scripts[packageScriptKey.test] === "string";
+	const isWebapp = webappWorkspaces.includes(workspace)
+	const isCodeWorkspace = !noCodeWorkspaces.includes(workspace)
+	const packageJsonHasScripts = Array.isArray(packageJson.scripts)
+	const packageJsonHasScriptTest =
+		packageJsonHasScripts &&
+		typeof packageJson.scripts[packageScriptKey.test] === "string"
 
-  [{ key: "name", expected: workspacePackageName(workspace) }].forEach(
-    ({ key, expected }) => {
-      assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
-    }
-  );
+	;[{ key: "name", expected: workspacePackageName(workspace) }].forEach(
+		({ key, expected }) => {
+			assert.equal(
+				packageJson[key],
+				expected,
+				`workspace package.json ${key}`
+			)
+		}
+	)
 
-  if (!isWebapp && isCodeWorkspace) {
-    [{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
-      assert.equal(packageJson[key], expected, `workspace package.json ${key}`);
-    });
-  }
+	if (!isWebapp && isCodeWorkspace) {
+		;[{ key: "type", expected: "module" }].forEach(({ key, expected }) => {
+			assert.equal(
+				packageJson[key],
+				expected,
+				`workspace package.json ${key}`
+			)
+		})
+	}
 
-  /// Test packageJson and rootPackageJson scripts.
-  // // // // // // // // // // // // // // // ///
+	/// Test packageJson and rootPackageJson scripts.
+	// // // // // // // // // // // // // // // ///
 
-  if (isCodeWorkspace && workspace !== "repo") {
-    [
-      packageScriptKey.cleanup,
-      packageScriptKey.lint,
-      packageScriptKey.checkTypes,
-    ].forEach((key) => {
-      assert.equal(
-        typeof packageJson.scripts[key] === "string",
-        true,
-        `${workspace}/package.json has scripts["${key}"]`
-      );
-    });
-  }
+	if (isCodeWorkspace && workspace !== "repo") {
+		;[
+			packageScriptKey.cleanup,
+			packageScriptKey.lint,
+			packageScriptKey.checkTypes
+		].forEach((key) => {
+			assert.equal(
+				typeof packageJson.scripts[key] === "string",
+				true,
+				`${workspace}/package.json has scripts["${key}"]`
+			)
+		})
+	}
 
-  if (isCodeWorkspace && workspace !== "repo") {
-    [
-      {
-        key: packageScriptKey.checkTypes,
-        expected: packageScript[packageScriptKey.checkTypes],
-      },
-    ].forEach(({ key, expected }) => {
-      assert.equal(
-        packageJson.scripts[key],
-        expected,
-        `${workspace}/package.json scripts["${key}"] has expected value`
-      );
-    });
-  }
+	if (isCodeWorkspace && workspace !== "repo") {
+		;[
+			{
+				key: packageScriptKey.checkTypes,
+				expected: packageScript[packageScriptKey.checkTypes]
+			}
+		].forEach(({ key, expected }) => {
+			assert.equal(
+				packageJson.scripts[key],
+				expected,
+				`${workspace}/package.json scripts["${key}"] has expected value`
+			)
+		})
+	}
 
-  if (isCodeWorkspace) {
-    const scripts = [];
+	if (isCodeWorkspace) {
+		const scripts = []
 
-    // Script "test" is optional,
-    // check it in rootPackageJson only if it is defined in packageJson.
-    if (packageJson.scripts[packageScriptKey.test])
-      scripts.push(packageScriptKey.test);
+		// Script "test" is optional,
+		// check it in rootPackageJson only if it is defined in packageJson.
+		if (packageJson.scripts[packageScriptKey.test])
+			scripts.push(packageScriptKey.test)
 
-    // Check scripts in rootPackageJson.
-    scripts
-      .map((key) => ({
-        key: `${key}:${workspace}`,
-        expected: `npm run ${key} --workspace ${workspace}`,
-      }))
-      .forEach(({ key, expected }) => {
-        assert.equal(
-          rootPackageJsonScripts[key],
-          expected,
-          `script ${key} is defined in root package.json`
-        );
-      });
-  }
+		// Check scripts in rootPackageJson.
+		scripts
+			.map((key) => ({
+				key: `${key}:${workspace}`,
+				expected: `npm run ${key} --workspace ${workspace}`
+			}))
+			.forEach(({ key, expected }) => {
+				assert.equal(
+					rootPackageJsonScripts[key],
+					expected,
+					`script ${key} is defined in root package.json`
+				)
+			})
+	}
 
-  if (packageJsonHasScriptTest) {
-    const key = `${packageScriptKey.test}:${workspace}`;
-    assert.equal(
-      rootPackageJsonScripts[key],
-      undefined,
-      `script ${key} is defined in root package.json but not in ${workspace} package.json`
-    );
-  }
+	if (packageJsonHasScriptTest) {
+		const key = `${packageScriptKey.test}:${workspace}`
+		assert.equal(
+			rootPackageJsonScripts[key],
+			undefined,
+			`script ${key} is defined in root package.json but not in ${workspace} package.json`
+		)
+	}
 
-  if (isCodeWorkspace) {
-    assert.equal(
-      packageJson.eslintConfig.extends.some((item) =>
-        item.startsWith(eslintConfigPackageName)
-      ),
-      true,
-      `${workspace}/package.json eslintConfig extends ${eslintConfigPackageName}`
-    );
-  }
+	if (isCodeWorkspace) {
+		assert.equal(
+			packageJson.eslintConfig.extends.some((item) =>
+				item.startsWith(eslintConfigPackageName)
+			),
+			true,
+			`${workspace}/package.json eslintConfig extends ${eslintConfigPackageName}`
+		)
+	}
 
-  /// Test packageJson dependencies.
-  // // // // // // // // // // ///
+	/// Test packageJson dependencies.
+	// // // // // // // // // // ///
 
-  for (const [dependencyKey, dependencyValue] of Object.entries(
-    packageJson.dependencies ?? {}
-  )) {
-    const filePrefix = "file:";
+	for (const [dependencyKey, dependencyValue] of Object.entries(
+		packageJson.dependencies ?? {}
+	)) {
+		const filePrefix = "file:"
 
-    if (dependencyValue.startsWith(filePrefix)) {
-      const dependency = dependencyValue.substring(
-        filePrefix.length,
-        dependencyValue.length
-      );
+		if (dependencyValue.startsWith(filePrefix)) {
+			const dependency = dependencyValue.substring(
+				filePrefix.length,
+				dependencyValue.length
+			)
 
-      assert.equal(
-        dependencyKey,
-        workspacePackageName(dependency),
-        `${dependencyKey} matches ${dependencyValue}`
-      );
+			assert.equal(
+				dependencyKey,
+				workspacePackageName(dependency),
+				`${dependencyKey} matches ${dependencyValue}`
+			)
 
-      assert.equal(
-        dependencyKey,
-        workspacePackageName(dependency),
-        `${dependencyKey} matches ${dependencyValue}`
-      );
-    }
-  }
+			assert.equal(
+				dependencyKey,
+				workspacePackageName(dependency),
+				`${dependencyKey} matches ${dependencyValue}`
+			)
+		}
+	}
 }
 
 async function testWorkspaceTsconfig({ workspace }) {
-  if (noCodeWorkspaces.includes(workspace) || workspace === "repo") return;
+	if (noCodeWorkspaces.includes(workspace) || workspace === "repo") return
 
-  const tsconfig = await importWorkspaceTsconfigJson(workspace);
+	const tsconfig = await importWorkspaceTsconfigJson(workspace)
 
-  const { compilerOptions } = tsconfig;
+	const { compilerOptions } = tsconfig
 
-  for (const compilerOption of Object.keys(tsconfigBase.compilerOptions)) {
-    assert.equal(
-      compilerOptions[compilerOption] === undefined,
-      true,
-      `${workspace}/tsconfig.json does not override common compiler option ${compilerOption}`
-    );
-  }
+	for (const compilerOption of Object.keys(tsconfigBase.compilerOptions)) {
+		assert.equal(
+			compilerOptions[compilerOption] === undefined,
+			true,
+			`${workspace}/tsconfig.json does not override common compiler option ${compilerOption}`
+		)
+	}
 
-  if (webappWorkspaces.includes(workspace)) {
-    assert.equal(
-      compilerOptions.target,
-      designTsconfig.compilerOptions.target,
-      `${workspace}/tsconfig.json has same compilerOptions.target as design/tsconfig.json`
-    );
-  }
+	if (webappWorkspaces.includes(workspace)) {
+		assert.equal(
+			compilerOptions.target,
+			designTsconfig.compilerOptions.target,
+			`${workspace}/tsconfig.json has same compilerOptions.target as design/tsconfig.json`
+		)
+	}
 }
 
 async function testWorkspaceTsconfigBuild({ workspace }) {
-  const tsconfig = await importWorkspaceTsconfigBuildJson(workspace);
+	const tsconfig = await importWorkspaceTsconfigBuildJson(workspace)
 
-  [
-    { key: "composite", expected: true },
-    { key: "declarationMap", expected: true },
-    { key: "outDir", expected: "./dist" },
-    { key: "tsBuildInfoFile", expected: "temp/tsconfig.build.tsbuildinfo" },
-    { key: "stripInternal", expected: true },
-  ].forEach(({ key, expected }) => {
-    assert.equal(
-      tsconfig.compilerOptions[key],
-      expected,
-      `${workspace}/tsconfig.build.json compilerOptions.${key}`
-    );
-  });
+	;[
+		{ key: "composite", expected: true },
+		{ key: "declarationMap", expected: true },
+		{ key: "outDir", expected: "./dist" },
+		{ key: "tsBuildInfoFile", expected: "temp/tsconfig.build.tsbuildinfo" },
+		{ key: "stripInternal", expected: true }
+	].forEach(({ key, expected }) => {
+		assert.equal(
+			tsconfig.compilerOptions[key],
+			expected,
+			`${workspace}/tsconfig.build.json compilerOptions.${key}`
+		)
+	})
 }
 
 async function testWorkspace({ workspace }) {
-  // package.json
-  await testWorkspacePackageJson({ workspace });
+	// package.json
+	await testWorkspacePackageJson({ workspace })
 
-  // tsconfig.json
-  await testWorkspaceTsconfig({ workspace });
+	// tsconfig.json
+	await testWorkspaceTsconfig({ workspace })
 
-  // tsconfig.build.json
-  if (
-    !noTscBuildWorkspaces.includes(workspace) &&
-    !webappWorkspaces.includes(workspace)
-  ) {
-    await testWorkspaceTsconfigBuild({ workspace });
-  }
+	// tsconfig.build.json
+	if (
+		!noTscBuildWorkspaces.includes(workspace) &&
+		!webappWorkspaces.includes(workspace)
+	) {
+		await testWorkspaceTsconfigBuild({ workspace })
+	}
 }
 
 async function repoTests() {
-  for (const workspace of [...noTscBuildWorkspaces, ...webappWorkspaces])
-    assert.equal(
-      workspaces.includes(workspace),
-      true,
-      `workspace ${workspace} is included in root package.json workspaces list`
-    );
+	for (const workspace of [...noTscBuildWorkspaces, ...webappWorkspaces])
+		assert.equal(
+			workspaces.includes(workspace),
+			true,
+			`workspace ${workspace} is included in root package.json workspaces list`
+		)
 
-  for (const workspace of workspaces) await testWorkspace({ workspace });
+	for (const workspace of workspaces) await testWorkspace({ workspace })
 }
 
-repoTests();
+repoTests()

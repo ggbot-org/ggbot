@@ -1,7 +1,7 @@
-import { basename, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { basename, dirname } from "node:path"
+import { fileURLToPath } from "node:url"
 
-import { filename } from "./filenames.js";
+import { filename } from "./filenames.js"
 
 /**
  * Resolve package directory.
@@ -9,13 +9,13 @@ import { filename } from "./filenames.js";
  * Create a _src/package.ts_ file, then do
  *
  * ```ts
- * const rootDir = packageRootDir(import.meta.url);
+ * const rootDir = packageRootDir(import.meta.url)
  * ```
  */
 export const packageRootDir = (caller: string) => {
-  const callerPathname = fileURLToPath(caller);
-  const { packageJs } = filename;
-  if (basename(callerPathname) !== packageJs)
-    throw new Error(`Filename must be ${packageJs}`);
-  return dirname(dirname(fileURLToPath(caller)));
-};
+	const callerPathname = fileURLToPath(caller)
+	const { packageJs } = filename
+	if (basename(callerPathname) !== packageJs)
+		throw new Error(`Filename must be ${packageJs}`)
+	return dirname(dirname(fileURLToPath(caller)))
+}

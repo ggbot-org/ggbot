@@ -1,10 +1,10 @@
-import { Decimal, isDecimal } from "@ggbot2/arithmetic";
+import { Decimal, isDecimal } from "@ggbot2/arithmetic"
 import {
-  arrayTypeGuard,
-  isNonEmptyString,
-  NonEmptyString,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
+	arrayTypeGuard,
+	isNonEmptyString,
+	NonEmptyString,
+	objectTypeGuard
+} from "@ggbot2/type-utils"
 
 /**
  * A Balance is an abstract representation of an asset owned.
@@ -15,7 +15,7 @@ import {
  * @example
  *
  * ```typescript
- * const wallet: Balance[] = [];
+ * const wallet: Balance[] = []
  * ```
  *
  * Then after buying BTC for a worth of 1000 BUSD we have the following
@@ -39,19 +39,19 @@ import {
  * ```
  */
 export type Balance = {
-  /** Asset symbol, e.g. BTC, ETH. */
-  asset: NonEmptyString;
-  /** Free value available. */
-  free: Decimal;
-  /** Locked value, for example via staking or a limit order. */
-  locked: Decimal;
-};
+	/** Asset symbol, e.g. BTC, ETH. */
+	asset: NonEmptyString
+	/** Free value available. */
+	free: Decimal
+	/** Locked value, for example via staking or a limit order. */
+	locked: Decimal
+}
 
 export const isBalance = objectTypeGuard<Balance>(
-  ({ asset, free, locked }) =>
-    isNonEmptyString(asset) && isDecimal(free) && isDecimal(locked)
-);
+	({ asset, free, locked }) =>
+		isNonEmptyString(asset) && isDecimal(free) && isDecimal(locked)
+)
 
-export type Balances = Balance[];
+export type Balances = Balance[]
 
-export const isBalances = arrayTypeGuard<Balance>(isBalance);
+export const isBalances = arrayTypeGuard<Balance>(isBalance)

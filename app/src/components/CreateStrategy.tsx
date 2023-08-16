@@ -1,100 +1,104 @@
 import {
-  Button,
-  Buttons,
-  Column,
-  Columns,
-  Form,
-  FormOnSubmit,
-  formValues,
-  InputOnChange,
-  Message,
-} from "@ggbot2/design";
-import { isName } from "@ggbot2/models";
-import { UseActionError } from "@ggbot2/use-action";
-import { FC, useCallback, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+	Button,
+	Buttons,
+	Column,
+	Columns,
+	Form,
+	FormOnSubmit,
+	formValues,
+	InputOnChange,
+	Message
+} from "@ggbot2/design"
+import { isName } from "@ggbot2/models"
+import { UseActionError } from "@ggbot2/use-action"
+import { FC, useCallback, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
 
-import { StrategiesErrorExceededQuota } from "../components/StrategiesErrorExceededQuota.js";
-import { StrategyName } from "../components/StrategyName.js";
-import { useApi } from "../hooks/useApi.js";
-import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js";
+import { StrategiesErrorExceededQuota } from "../components/StrategiesErrorExceededQuota.js"
+import { StrategyName } from "../components/StrategyName.js"
+import { useApi } from "../hooks/useApi.js"
+import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js"
 
 const fieldName = {
-  name: "name",
-};
-const fields = Object.keys(fieldName);
+	name: "name"
+}
+const fields = Object.keys(fieldName)
 
 export const CreateStrategy: FC = () => {
-  const CREATE = useApi.CreateStrategy();
-  const newStrategy = CREATE.data;
-  const readOnly = CREATE.isPending;
-  const isLoading = CREATE.isPending || CREATE.isDone;
+	const CREATE = useApi.CreateStrategy()
+	const newStrategy = CREATE.data
+	const readOnly = CREATE.isPending
+	const isLoading = CREATE.isPending || CREATE.isDone
 
-  const [error, setError] = useState<UseActionError>();
-  const [canCreate, setCanCreate] = useState(false);
+	const [error, setError] = useState<UseActionError>()
+	const [canCreate, setCanCreate] = useState(false)
 
-  const color = canCreate ? (error ? "warning" : "primary") : undefined;
+	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-  const onChangeName = useCallback<InputOnChange>((event) => {
-    setCanCreate(isName(event.target.value));
-  }, []);
+	const onChangeName = useCallback<InputOnChange>((event) => {
+		setCanCreate(isName(event.target.value))
+	}, [])
 
-  const onSubmit = useCallback<FormOnSubmit>(
-    (event) => {
-      event.preventDefault();
-      if (!canCreate) return;
-      if (!CREATE.canRun) return;
-      const { name } = formValues(event, fields);
-      if (isName(name)) CREATE.request({ kind: "binance", name });
-    },
-    [CREATE, canCreate]
-  );
+	const onSubmit = useCallback<FormOnSubmit>(
+		(event) => {
+			event.preventDefault()
+			if (!canCreate) return
+			if (!CREATE.canRun) return
+			const { name } = formValues(event, fields)
+			if (isName(name)) CREATE.request({ kind: "binance", name })
+		},
+		[CREATE, canCreate]
+	)
 
-  useEffect(() => {
-    if (CREATE.error) {
-      setError(CREATE.error);
-      CREATE.reset();
-    }
-  }, [CREATE]);
+	useEffect(() => {
+		if (CREATE.error) {
+			setError(CREATE.error)
+			CREATE.reset()
+		}
+	}, [CREATE])
 
-  useRedirectToNewStrategyPage(newStrategy);
+	useRedirectToNewStrategyPage(newStrategy)
 
-  return (
-    <Columns>
-      <Column
-        size={{ tablet: "full", widescreen: "three-quarters", fullhd: "half" }}
-      >
-        <Form box onSubmit={onSubmit}>
-          {error ? null : (
-            <Message>
-              <FormattedMessage
-                id="CreateStrategy.chooseName"
-                values={{ em: (chunks) => <em>{chunks}</em> }}
-              />
-            </Message>
-          )}
+	return (
+		<Columns>
+			<Column
+				size={{
+					tablet: "full",
+					widescreen: "three-quarters",
+					fullhd: "half"
+				}}
+			>
+				<Form box onSubmit={onSubmit}>
+					{error ? null : (
+						<Message>
+							<FormattedMessage
+								id="CreateStrategy.chooseName"
+								values={{ em: (chunks) => <em>{chunks}</em> }}
+							/>
+						</Message>
+					)}
 
-          <StrategiesErrorExceededQuota error={error} />
+					<StrategiesErrorExceededQuota error={error} />
 
-          <StrategyName
-            required
-            name={fieldName.name}
-            onChange={onChangeName}
-            readOnly={readOnly}
-          />
+					<StrategyName
+						required
+						name={fieldName.name}
+						onChange={onChangeName}
+						readOnly={readOnly}
+					/>
 
-          <Buttons>
-            <Button
-              color={color}
-              isLight={color !== "primary"}
-              isLoading={isLoading}
-              isOutlined={color === "primary"}
-            >
-              <FormattedMessage id="CreateStrategy.button" />
-            </Button>
-          </Buttons>
-        </Form>
-      </Column>
-    </Columns>
-  );
-};
+					<Buttons>
+						<Button
+							color={color}
+							isLight={color !== "primary"}
+							isLoading={isLoading}
+							isOutlined={color === "primary"}
+						>
+							<FormattedMessage id="CreateStrategy.button" />
+						</Button>
+					</Buttons>
+				</Form>
+			</Column>
+		</Columns>
+	)
+}

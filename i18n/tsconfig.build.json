@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo",
-    "stripInternal": true
-  },
-  "exclude": ["node_modules"],
-  "extends": "./tsconfig.json",
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+	"compilerOptions": {
+		"composite": true,
+		"declarationMap": true,
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo",
+		"stripInternal": true
+	},
+	"exclude": ["node_modules"],
+	"extends": "./tsconfig.json",
+	"include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

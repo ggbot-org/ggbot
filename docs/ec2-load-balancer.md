@@ -46,10 +46,10 @@ Select default SSL certificate from _ACM_ (choose ggbot2.com certificate).
 
 To be able to use ggbot2.com SSL certificate, add a DSN entry for the Load Balancer, for instance on Route 53.
 
-- Record name: `binance-proxy`
-- Flag _Alias_
-- Route traffic to _Alias to Application and Classic Load Balancer_
-- Region: Frankfurt
-- Select the Load Balancer name in the dropdown
+-   Record name: `binance-proxy`
+-   Flag _Alias_
+-   Route traffic to _Alias to Application and Classic Load Balancer_
+-   Region: Frankfurt
+-   Select the Load Balancer name in the dropdown
 
 Finally, update environment variable `BINANCE_PROXY_BASE_URL` accordingly.

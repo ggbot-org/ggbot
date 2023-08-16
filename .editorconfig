@@ -13,5 +13,11 @@ trim_trailing_whitespace = true
 # Configurable Prettier behaviors
 # (change these if your Prettier config differs)
 end_of_line = lf
+indent_style = tab
+indent_size = 4
+
+[{package,package-lock}.json]
+# Same as npm.
 indent_style = space
 indent_size = 2
+

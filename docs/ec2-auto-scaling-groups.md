@@ -14,9 +14,9 @@ for example `ggbot2_executor_230808_lt`.
 
 Choose properly the following settings:
 
-- Instance type
-- Key pair (login)
-- Security groups
+-   Instance type
+-   Key pair (login)
+-   Security groups
 
 TODO: try this (only for executor)
 

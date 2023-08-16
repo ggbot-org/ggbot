@@ -1,31 +1,31 @@
 import {
-  BinanceExchangeInfo,
-  BinanceExchangeInfoCacheProvider,
-} from "@ggbot2/binance";
-import { CacheMap } from "@ggbot2/cache";
-import { sessionWebStorage } from "@ggbot2/web-storage";
+	BinanceExchangeInfo,
+	BinanceExchangeInfoCacheProvider
+} from "@ggbot2/binance"
+import { CacheMap } from "@ggbot2/cache"
+import { sessionWebStorage } from "@ggbot2/web-storage"
 
 class BinanceExchangeInfoCacheSessionWebStorage
-  implements BinanceExchangeInfoCacheProvider
+	implements BinanceExchangeInfoCacheProvider
 {
-  readonly isValidSymbolMap = new CacheMap<boolean>();
+	readonly isValidSymbolMap = new CacheMap<boolean>()
 
-  getExchangeInfo(): BinanceExchangeInfo | undefined {
-    return sessionWebStorage.binanceExchangeInfo;
-  }
+	getExchangeInfo(): BinanceExchangeInfo | undefined {
+		return sessionWebStorage.binanceExchangeInfo
+	}
 
-  setExchangeInfo(arg: BinanceExchangeInfo): void {
-    sessionWebStorage.binanceExchangeInfo = arg;
-  }
+	setExchangeInfo(arg: BinanceExchangeInfo): void {
+		sessionWebStorage.binanceExchangeInfo = arg
+	}
 
-  getIsValidSymbol(symbol: string) {
-    return this.isValidSymbolMap.get(symbol);
-  }
+	getIsValidSymbol(symbol: string) {
+		return this.isValidSymbolMap.get(symbol)
+	}
 
-  setIsValidSymbol(symbol: string, value: boolean) {
-    this.isValidSymbolMap.set(symbol, value);
-  }
+	setIsValidSymbol(symbol: string, value: boolean) {
+		this.isValidSymbolMap.set(symbol, value)
+	}
 }
 
 export const binanceExchangeInfoCacheSessionWebStorage =
-  new BinanceExchangeInfoCacheSessionWebStorage();
+	new BinanceExchangeInfoCacheSessionWebStorage()

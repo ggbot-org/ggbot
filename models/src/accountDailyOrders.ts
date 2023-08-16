@@ -1,35 +1,35 @@
-import { isDay } from "@ggbot2/time";
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
+import { isDay } from "@ggbot2/time"
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
 
-import { AccountKey, isAccountKey } from "./account.js";
-import { isOrder, Order } from "./order.js";
-import { isStrategyKey, StrategyKey } from "./strategy.js";
-import { DayKey, UpdateTime } from "./time.js";
+import { AccountKey, isAccountKey } from "./account.js"
+import { isOrder, Order } from "./order.js"
+import { isStrategyKey, StrategyKey } from "./strategy.js"
+import { DayKey, UpdateTime } from "./time.js"
 
-export type AccountDailyOrder = StrategyKey & { order: Order };
+export type AccountDailyOrder = StrategyKey & { order: Order }
 export const isAccountDailyOrder = objectTypeGuard<AccountDailyOrder>(
-  ({ order, ...strategyKey }) => isOrder(order) && isStrategyKey(strategyKey)
-);
+	({ order, ...strategyKey }) => isOrder(order) && isStrategyKey(strategyKey)
+)
 
 /** Daily orders per account. */
-export type AccountDailyOrders = AccountDailyOrder[];
+export type AccountDailyOrders = AccountDailyOrder[]
 export const isAccountDailyOrders =
-  arrayTypeGuard<AccountDailyOrder>(isAccountDailyOrder);
+	arrayTypeGuard<AccountDailyOrder>(isAccountDailyOrder)
 
-export type AccountDailyOrdersKey = AccountKey & DayKey;
+export type AccountDailyOrdersKey = AccountKey & DayKey
 
 export const isAccountDailyOrdersKey = objectTypeGuard<AccountDailyOrdersKey>(
-  ({ day, ...key }) => isDay(day) && isAccountKey(key)
-);
+	({ day, ...key }) => isDay(day) && isAccountKey(key)
+)
 
 export type ReadAccountDailyOrders = (
-  arg: AccountDailyOrdersKey
-) => Promise<AccountDailyOrders>;
+	arg: AccountDailyOrdersKey
+) => Promise<AccountDailyOrders>
 
 export type AppendAccountDailyOrdersInput = AccountDailyOrdersKey & {
-  items: AccountDailyOrders;
-};
+	items: AccountDailyOrders
+}
 
 export type AppendAccountDailyOrders = (
-  arg: AppendAccountDailyOrdersInput
-) => Promise<UpdateTime>;
+	arg: AppendAccountDailyOrdersInput
+) => Promise<UpdateTime>

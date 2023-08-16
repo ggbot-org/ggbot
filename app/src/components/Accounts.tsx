@@ -1,3 +1,3 @@
-import { FC } from "react";
+import { FC } from "react"
 
-export const Accounts: FC = () => null;
+export const Accounts: FC = () => null

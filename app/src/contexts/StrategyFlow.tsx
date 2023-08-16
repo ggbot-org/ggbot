@@ -1,70 +1,70 @@
-import { isStrategyFlow } from "@ggbot2/models";
+import { isStrategyFlow } from "@ggbot2/models"
 import {
-  createContext,
-  FC,
-  MutableRefObject,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+	createContext,
+	FC,
+	MutableRefObject,
+	PropsWithChildren,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef
+} from "react"
 
-import { FlowViewContainerElement } from "../components/FlowViewContainer.js";
-import { StrategyContext } from "../contexts/Strategy.js";
-import { useApi } from "../hooks/useApi.js";
-import { useFlowView, UseFlowViewOutput } from "../hooks/useFlowView.js";
+import { FlowViewContainerElement } from "../components/FlowViewContainer.js"
+import { StrategyContext } from "../contexts/Strategy.js"
+import { useApi } from "../hooks/useApi.js"
+import { useFlowView, UseFlowViewOutput } from "../hooks/useFlowView.js"
 
 type ContextValue = UseFlowViewOutput & {
-  flowViewContainerRef: MutableRefObject<FlowViewContainerElement>;
-};
+	flowViewContainerRef: MutableRefObject<FlowViewContainerElement>
+}
 
 export const StrategyFlowContext = createContext<ContextValue>({
-  whenUpdatedFlowView: 0,
-  flowViewGraph: undefined,
-  flowViewContainerRef: { current: null },
-});
+	whenUpdatedFlowView: 0,
+	flowViewGraph: undefined,
+	flowViewContainerRef: { current: null }
+})
 
-StrategyFlowContext.displayName = "StrategyFlowContext";
+StrategyFlowContext.displayName = "StrategyFlowContext"
 
 export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { strategy } = useContext(StrategyContext);
+	const { strategy } = useContext(StrategyContext)
 
-  const flowViewContainerRef = useRef<FlowViewContainerElement>(null);
+	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
 
-  const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow();
+	const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow()
 
-  const flow = useMemo(() => {
-    if (
-      isStrategyFlow(READ_STRATEGY_FLOW.data) ||
-      READ_STRATEGY_FLOW.data === null
-    )
-      return READ_STRATEGY_FLOW.data;
-  }, [READ_STRATEGY_FLOW]);
+	const flow = useMemo(() => {
+		if (
+			isStrategyFlow(READ_STRATEGY_FLOW.data) ||
+			READ_STRATEGY_FLOW.data === null
+		)
+			return READ_STRATEGY_FLOW.data
+	}, [READ_STRATEGY_FLOW])
 
-  const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
-    container: flowViewContainerRef.current,
-    initialGraph: flow?.view,
-    strategyKind: strategy.kind,
-  });
+	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
+		container: flowViewContainerRef.current,
+		initialGraph: flow?.view,
+		strategyKind: strategy.kind
+	})
 
-  const contextValue = useMemo<ContextValue>(
-    () => ({ whenUpdatedFlowView, flowViewGraph, flowViewContainerRef }),
-    [whenUpdatedFlowView, flowViewGraph, flowViewContainerRef]
-  );
+	const contextValue = useMemo<ContextValue>(
+		() => ({ whenUpdatedFlowView, flowViewGraph, flowViewContainerRef }),
+		[whenUpdatedFlowView, flowViewGraph, flowViewContainerRef]
+	)
 
-  // Fetch flow.
-  useEffect(() => {
-    if (READ_STRATEGY_FLOW.canRun)
-      READ_STRATEGY_FLOW.request({
-        strategyId: strategy.id,
-        strategyKind: strategy.kind,
-      });
-  }, [READ_STRATEGY_FLOW, strategy]);
+	// Fetch flow.
+	useEffect(() => {
+		if (READ_STRATEGY_FLOW.canRun)
+			READ_STRATEGY_FLOW.request({
+				strategyId: strategy.id,
+				strategyKind: strategy.kind
+			})
+	}, [READ_STRATEGY_FLOW, strategy])
 
-  return (
-    <StrategyFlowContext.Provider value={contextValue}>
-      {children}
-    </StrategyFlowContext.Provider>
-  );
-};
+	return (
+		<StrategyFlowContext.Provider value={contextValue}>
+			{children}
+		</StrategyFlowContext.Provider>
+	)
+}

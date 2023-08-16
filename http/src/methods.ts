@@ -5,14 +5,14 @@
  */
 
 export const httpMethods = [
-  "GET",
-  "HEAD",
-  "POST",
-  "PUT",
-  "DELETE",
-  "CONNECT",
-  "OPTIONS",
-  "TRACE",
-  "PATCH",
-] as const;
-export type HTTP_METHOD = (typeof httpMethods)[number];
+	"GET",
+	"HEAD",
+	"POST",
+	"PUT",
+	"DELETE",
+	"CONNECT",
+	"OPTIONS",
+	"TRACE",
+	"PATCH"
+] as const
+export type HTTP_METHOD = (typeof httpMethods)[number]

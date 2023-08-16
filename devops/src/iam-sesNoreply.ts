@@ -1,8 +1,8 @@
-import { getSesNoreplyPolicyArn } from "@ggbot2/infrastructure";
+import { getSesNoreplyPolicyArn } from "@ggbot2/infrastructure"
 
-import { getIamPolicyStatus } from "./_iam.js";
+import { getIamPolicyStatus } from "./_iam.js"
 
-const PolicyArn = getSesNoreplyPolicyArn();
+const PolicyArn = getSesNoreplyPolicyArn()
 
 export const getSesNoreplyPolicyStatus = async () =>
-  await getIamPolicyStatus({ PolicyArn });
+	await getIamPolicyStatus({ PolicyArn })

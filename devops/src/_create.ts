@@ -1,4 +1,4 @@
 export type CreateOutput = {
-  exists: boolean;
-  created: boolean;
-};
+	exists: boolean
+	created: boolean
+}

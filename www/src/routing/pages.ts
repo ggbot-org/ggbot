@@ -1,2 +1,2 @@
-export const privacyHtmlFilename = "privacy.html";
-export const termsHtmlFilename = "terms.html";
+export const privacyHtmlFilename = "privacy.html"
+export const termsHtmlFilename = "terms.html"

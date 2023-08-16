@@ -1,14 +1,14 @@
-import { BrandName, Logo } from "@ggbot2/design";
-import { FC } from "react";
+import { BrandName, Logo } from "@ggbot2/design"
+import { FC } from "react"
 
 export const Navigation: FC = () => (
-  <div>
-    <a href="/">
-      <Logo size={24} />
+	<div>
+		<a href="/">
+			<Logo size={24} />
 
-      <BrandName />
-    </a>
+			<BrandName />
+		</a>
 
-    <em>crypto flow</em>
-  </div>
-);
+		<em>crypto flow</em>
+	</div>
+)

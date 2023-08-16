@@ -1,27 +1,27 @@
-import { objectTypeGuard } from "@ggbot2/type-utils";
+import { objectTypeGuard } from "@ggbot2/type-utils"
 
-import { AccountKey, isAccountKey } from "./account.js";
-import { EmailAddress, isEmailAddress } from "./email.js";
-import { ItemKey } from "./item.js";
-import { CreationTime, isCreationTime } from "./time.js";
+import { AccountKey, isAccountKey } from "./account.js"
+import { EmailAddress, isEmailAddress } from "./email.js"
+import { ItemKey } from "./item.js"
+import { CreationTime, isCreationTime } from "./time.js"
 
 export type EmailAccount = AccountKey &
-  ItemKey<{ email: EmailAddress }> &
-  CreationTime;
+	ItemKey<{ email: EmailAddress }> &
+	CreationTime
 
 export const isEmailAccount = objectTypeGuard<EmailAccount>(
-  ({ accountId, email, ...creationTime }) =>
-    isAccountKey({ accountId }) &&
-    isCreationTime(creationTime) &&
-    isEmailAddress(email)
-);
+	({ accountId, email, ...creationTime }) =>
+		isAccountKey({ accountId }) &&
+		isCreationTime(creationTime) &&
+		isEmailAddress(email)
+)
 
-export type CreateEmailAccountInput = Omit<EmailAccount, "whenCreated">;
+export type CreateEmailAccountInput = Omit<EmailAccount, "whenCreated">
 
 export type CreateEmailAccount = (
-  arg: CreateEmailAccountInput
-) => Promise<CreationTime>;
+	arg: CreateEmailAccountInput
+) => Promise<CreationTime>
 
 export type ReadEmailAccount = (
-  arg: EmailAddress
-) => Promise<EmailAccount | null>;
+	arg: EmailAddress
+) => Promise<EmailAccount | null>

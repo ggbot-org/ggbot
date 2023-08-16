@@ -18,5 +18,6 @@ $body-background-color: #faffff;
 
 $scheme-invert: $black;
 
-$shadow: 0.1em 0.1em 0.5em -0.1em rgba($scheme-invert, 0.1),
-  0 0px 0 1px rgba($scheme-invert, 0.02);
+$shadow:
+	0.1em 0.1em 0.5em -0.1em rgba($scheme-invert, 0.1),
+	0 0px 0 1px rgba($scheme-invert, 0.02);

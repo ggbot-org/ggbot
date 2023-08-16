@@ -1,15 +1,15 @@
 import {
-  getWebappLoadBalancerName,
-  webappLoadBalancerType,
-} from "@ggbot2/infrastructure";
+	getWebappLoadBalancerName,
+	webappLoadBalancerType
+} from "@ggbot2/infrastructure"
 
-import { getLoadBalancerStatus, LoadBalancerStatus } from "./_elb.js";
+import { getLoadBalancerStatus, LoadBalancerStatus } from "./_elb.js"
 
-const webappLoadBalancerName = getWebappLoadBalancerName();
+const webappLoadBalancerName = getWebappLoadBalancerName()
 
 export const getWebappLoadBalancerStatus =
-  async (): Promise<LoadBalancerStatus> =>
-    await getLoadBalancerStatus(
-      { Names: [webappLoadBalancerName] },
-      { wantedType: webappLoadBalancerType }
-    );
+	async (): Promise<LoadBalancerStatus> =>
+		await getLoadBalancerStatus(
+			{ Names: [webappLoadBalancerName] },
+			{ wantedType: webappLoadBalancerType }
+		)

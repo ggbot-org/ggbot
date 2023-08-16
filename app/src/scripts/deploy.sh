@@ -3,12 +3,12 @@
 BUCKET=""
 
 if [ "$DEPLOY_STAGE" == "main" ]; then
-  BUCKET=app.ggbot2.com
+	BUCKET=app.ggbot2.com
 elif [ "$DEPLOY_STAGE" == "next" ]; then
-  BUCKET=app-next.ggbot2.com
+	BUCKET=app-next.ggbot2.com
 else
-  echo DEPLOY_STAGE must be main or next
-  exit
+	echo DEPLOY_STAGE must be main or next
+	exit
 fi
 
 SCRIPTS_DIR=$(dirname "$0")

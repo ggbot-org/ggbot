@@ -1,5 +1,5 @@
-import { mount } from "@ggbot2/react";
+import { mount } from "@ggbot2/react"
 
-import { TryFlowPage } from "../pages/TryFlow.js";
+import { TryFlowPage } from "../pages/TryFlow.js"
 
-mount(TryFlowPage);
+mount(TryFlowPage)

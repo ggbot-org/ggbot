@@ -1,22 +1,22 @@
 import {
-  isNonEmptyString,
-  NonEmptyString,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
+	isNonEmptyString,
+	NonEmptyString,
+	objectTypeGuard
+} from "@ggbot2/type-utils"
 
-import { AccountKey, isAccountKey } from "./account.js";
-import { ItemKey } from "./item.js";
-import { CreationTime, DeletionTime } from "./time.js";
+import { AccountKey, isAccountKey } from "./account.js"
+import { ItemKey } from "./item.js"
+import { CreationTime, DeletionTime } from "./time.js"
 
 export type BinanceApiConfig = ItemKey<{
-  apiKey: NonEmptyString;
-  apiSecret: NonEmptyString;
-}>;
+	apiKey: NonEmptyString
+	apiSecret: NonEmptyString
+}>
 
 export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
-  ({ apiKey, apiSecret }) =>
-    isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
-);
+	({ apiKey, apiSecret }) =>
+		isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
+)
 
 /**
  * BinanceApiKeyPermissionCriteria defines a set of conditions that validate if
@@ -24,68 +24,69 @@ export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
  * withdrawals MUST not be enabled for security reasons.
  */
 export type BinanceApiKeyPermissionCriteria = {
-  enableReading: boolean;
-  enableSpotAndMarginTrading: boolean;
-  enableWithdrawals: boolean;
-  ipRestrict: boolean;
-};
+	enableReading: boolean
+	enableSpotAndMarginTrading: boolean
+	enableWithdrawals: boolean
+	ipRestrict: boolean
+}
 
 export const isBinanceApiKeyPermissionCriteria =
-  objectTypeGuard<BinanceApiKeyPermissionCriteria>(
-    ({
-      ipRestrict,
-      enableWithdrawals,
-      enableReading,
-      enableSpotAndMarginTrading,
-    }) =>
-      typeof ipRestrict === "boolean" &&
-      typeof enableWithdrawals === "boolean" &&
-      typeof enableReading === "boolean" &&
-      typeof enableSpotAndMarginTrading === "boolean"
-  );
+	objectTypeGuard<BinanceApiKeyPermissionCriteria>(
+		({
+			ipRestrict,
+			enableWithdrawals,
+			enableReading,
+			enableSpotAndMarginTrading
+		}) =>
+			typeof ipRestrict === "boolean" &&
+			typeof enableWithdrawals === "boolean" &&
+			typeof enableReading === "boolean" &&
+			typeof enableSpotAndMarginTrading === "boolean"
+	)
 
 export const binanceApiKeyPermissionsAreValid = ({
-  enableReading,
-  enableSpotAndMarginTrading,
-  enableWithdrawals,
-  ipRestrict,
+	enableReading,
+	enableSpotAndMarginTrading,
+	enableWithdrawals,
+	ipRestrict
 }: BinanceApiKeyPermissionCriteria): boolean => {
-  if (enableWithdrawals) return false;
-  return enableReading && enableSpotAndMarginTrading && ipRestrict;
-};
+	if (enableWithdrawals) return false
+	return enableReading && enableSpotAndMarginTrading && ipRestrict
+}
 
-export type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig;
+export type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig
 
 export const isCreateBinanceApiConfigInput =
-  objectTypeGuard<CreateBinanceApiConfigInput>(
-    ({ apiKey, apiSecret, ...accountKey }) =>
-      isAccountKey(accountKey) && isBinanceApiConfig({ apiKey, apiSecret })
-  );
+	objectTypeGuard<CreateBinanceApiConfigInput>(
+		({ apiKey, apiSecret, ...accountKey }) =>
+			isAccountKey(accountKey) &&
+			isBinanceApiConfig({ apiKey, apiSecret })
+	)
 
 export type CreateBinanceApiConfig = (
-  arg: CreateBinanceApiConfigInput
-) => Promise<CreationTime>;
+	arg: CreateBinanceApiConfigInput
+) => Promise<CreationTime>
 
 export type ReadBinanceApiConfig = (
-  arg: AccountKey
-) => Promise<BinanceApiConfig | null>;
+	arg: AccountKey
+) => Promise<BinanceApiConfig | null>
 
 /**
  * To be used to display BinanceApiConfig client-side, the `apiSecret` is
  * omitted and `apiKey` may be truncated.
  */
-export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">;
+export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">
 
 export const isBinanceApiKey = objectTypeGuard<BinanceApiKey>(({ apiKey }) =>
-  isNonEmptyString(apiKey)
-);
+	isNonEmptyString(apiKey)
+)
 
 export type ReadBinanceApiKey = (
-  arg: AccountKey
-) => Promise<BinanceApiKey | null>;
+	arg: AccountKey
+) => Promise<BinanceApiKey | null>
 
-export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>;
+export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>
 
 export type ReadBinanceApiKeyPermissions = (
-  arg: AccountKey
-) => Promise<BinanceApiKeyPermissionCriteria>;
+	arg: AccountKey
+) => Promise<BinanceApiKeyPermissionCriteria>

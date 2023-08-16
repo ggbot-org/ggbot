@@ -1,11 +1,11 @@
 {
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "esnext",
-    "tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
-  },
-  "extends": "./default.json"
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
+	},
+	"extends": "./default.json"
 }

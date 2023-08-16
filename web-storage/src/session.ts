@@ -1,144 +1,145 @@
-import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance";
-import type { ManagedCacheProvider } from "@ggbot2/cache";
-import { isDev } from "@ggbot2/env";
-import { isLiteralType } from "@ggbot2/type-utils";
+import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance"
+import type { ManagedCacheProvider } from "@ggbot2/cache"
+import { isDev } from "@ggbot2/env"
+import { isLiteralType } from "@ggbot2/type-utils"
 
-import { cachedBoolean } from "./cachedBoolean.js";
-import { itemKey } from "./itemKeys.js";
-import type { WebStorageProvider } from "./provider.js";
+import { cachedBoolean } from "./cachedBoolean.js"
+import { itemKey } from "./itemKeys.js"
+import type { WebStorageProvider } from "./provider.js"
 
 class SessionWebStorage implements WebStorageProvider {
-  getItem(key: string) {
-    if (isDev) console.info("web-storage", "session", "getItem", key);
-    return window.sessionStorage.getItem(key);
-  }
+	getItem(key: string) {
+		if (isDev) console.info("web-storage", "session", "getItem", key)
+		return window.sessionStorage.getItem(key)
+	}
 
-  setItem(key: string, value: string) {
-    if (isDev)
-      console.info(
-        "web-storage",
-        "session",
-        "setItem",
-        key,
-        value.length > 170 ? "" : value
-      );
-    window.sessionStorage.setItem(key, value);
-  }
+	setItem(key: string, value: string) {
+		if (isDev)
+			console.info(
+				"web-storage",
+				"session",
+				"setItem",
+				key,
+				value.length > 170 ? "" : value
+			)
+		window.sessionStorage.setItem(key, value)
+	}
 
-  removeItem(key: string) {
-    if (isDev) console.info("web-storage", "session", "removeItem", key);
-    if (key === itemKey.binanceExchangeInfo())
-      this.binanceExchangeInfoIsValid = undefined;
+	removeItem(key: string) {
+		if (isDev) console.info("web-storage", "session", "removeItem", key)
+		if (key === itemKey.binanceExchangeInfo())
+			this.binanceExchangeInfoIsValid = undefined
 
-    window.sessionStorage.removeItem(key);
-  }
+		window.sessionStorage.removeItem(key)
+	}
 
-  clear() {
-    if (isDev) console.info("web-storage", "session", "clear");
-    window.sessionStorage.clear();
-  }
+	clear() {
+		if (isDev) console.info("web-storage", "session", "clear")
+		window.sessionStorage.clear()
+	}
 
-  getActiveTabId<TabId extends string>(
-    pageName: string,
-    tabIds: readonly TabId[]
-  ): TabId | undefined {
-    const value = this.getItem(itemKey.activeTabId(pageName));
-    if (isLiteralType<TabId>(tabIds)(value)) return value;
-  }
+	getActiveTabId<TabId extends string>(
+		pageName: string,
+		tabIds: readonly TabId[]
+	): TabId | undefined {
+		const value = this.getItem(itemKey.activeTabId(pageName))
+		if (isLiteralType<TabId>(tabIds)(value)) return value
+	}
 
-  setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
-    this.setItem(itemKey.activeTabId(pageName), value);
-  }
+	setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
+		this.setItem(itemKey.activeTabId(pageName), value)
+	}
 
-  /** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
-  private binanceExchangeInfoIsValid: boolean | undefined;
+	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
+	private binanceExchangeInfoIsValid: boolean | undefined
 
-  get binanceExchangeInfo(): BinanceExchangeInfo | undefined {
-    const key = itemKey.binanceExchangeInfo();
-    const value = this.getItem(key);
-    if (!value) return;
-    try {
-      const binanceExchangeInfo = JSON.parse(value);
-      if (this.binanceExchangeInfoIsValid) {
-        return binanceExchangeInfo as BinanceExchangeInfo;
-      }
-      if (isBinanceExchangeInfo(binanceExchangeInfo)) {
-        this.binanceExchangeInfoIsValid = true;
-        return binanceExchangeInfo;
-      }
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        this.removeItem(key);
-        return;
-      }
-      throw error;
-    }
-  }
+	get binanceExchangeInfo(): BinanceExchangeInfo | undefined {
+		const key = itemKey.binanceExchangeInfo()
+		const value = this.getItem(key)
+		if (!value) return
+		try {
+			const binanceExchangeInfo = JSON.parse(value)
+			if (this.binanceExchangeInfoIsValid) {
+				return binanceExchangeInfo as BinanceExchangeInfo
+			}
+			if (isBinanceExchangeInfo(binanceExchangeInfo)) {
+				this.binanceExchangeInfoIsValid = true
+				return binanceExchangeInfo
+			}
+		} catch (error) {
+			if (error instanceof SyntaxError) {
+				this.removeItem(key)
+				return
+			}
+			throw error
+		}
+	}
 
-  set binanceExchangeInfo(value: BinanceExchangeInfo | undefined) {
-    const key = itemKey.binanceExchangeInfo();
-    if (!value) {
-      this.removeItem(key);
-      return;
-    }
-    try {
-      // TODO storing the whole value (more than 3.7 MB) will raise an exceeded quota error.
-      // By now filter only the data needed.
-      // Fields used are those required by isDflowBinanceSymbolInfo,
-      // should use also something like isDflowBinanceExchangeInfo instead of isBinanceExchangeInfo
-      // Also filters applied are same as isDflowBinanceSymbolInfo.
-      const { symbols, ...rest } = value;
-      this.setItem(
-        key,
-        JSON.stringify({
-          ...rest,
-          symbols: symbols
-            .filter(
-              ({ isSpotTradingAllowed, status }) =>
-                isSpotTradingAllowed === true && status === "TRADING"
-            )
-            .map(
-              ({
-                baseAsset,
-                baseAssetPrecision,
-                baseCommissionPrecision,
-                isSpotTradingAllowed,
-                quoteAsset,
-                quoteAssetPrecision,
-                quotePrecision,
-                status,
-                symbol,
-              }) => ({
-                baseAsset,
-                baseAssetPrecision,
-                baseCommissionPrecision,
-                isSpotTradingAllowed,
-                quoteAsset,
-                quoteAssetPrecision,
-                quotePrecision,
-                status,
-                symbol,
-              })
-            ),
-        })
-      );
-      this.binanceExchangeInfoIsValid = true;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	set binanceExchangeInfo(value: BinanceExchangeInfo | undefined) {
+		const key = itemKey.binanceExchangeInfo()
+		if (!value) {
+			this.removeItem(key)
+			return
+		}
+		try {
+			// TODO storing the whole value (more than 3.7 MB) will raise an exceeded quota error.
+			// By now filter only the data needed.
+			// Fields used are those required by isDflowBinanceSymbolInfo,
+			// should use also something like isDflowBinanceExchangeInfo instead of isBinanceExchangeInfo
+			// Also filters applied are same as isDflowBinanceSymbolInfo.
+			const { symbols, ...rest } = value
+			this.setItem(
+				key,
+				JSON.stringify({
+					...rest,
+					symbols: symbols
+						.filter(
+							({ isSpotTradingAllowed, status }) =>
+								isSpotTradingAllowed === true &&
+								status === "TRADING"
+						)
+						.map(
+							({
+								baseAsset,
+								baseAssetPrecision,
+								baseCommissionPrecision,
+								isSpotTradingAllowed,
+								quoteAsset,
+								quoteAssetPrecision,
+								quotePrecision,
+								status,
+								symbol
+							}) => ({
+								baseAsset,
+								baseAssetPrecision,
+								baseCommissionPrecision,
+								isSpotTradingAllowed,
+								quoteAsset,
+								quoteAssetPrecision,
+								quotePrecision,
+								status,
+								symbol
+							})
+						)
+				})
+			)
+			this.binanceExchangeInfoIsValid = true
+		} catch (error) {
+			console.error(error)
+		}
+	}
 
-  get doNotShowPleaseConfigureBinance() {
-    return cachedBoolean(this, itemKey.doNotShowPleaseConfigureBinance());
-  }
+	get doNotShowPleaseConfigureBinance() {
+		return cachedBoolean(this, itemKey.doNotShowPleaseConfigureBinance())
+	}
 
-  get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
-    return cachedBoolean(this, itemKey.doNotShowPleasePurchase());
-  }
+	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this, itemKey.doNotShowPleasePurchase())
+	}
 
-  get gotFirstPageView(): ManagedCacheProvider<boolean> {
-    return cachedBoolean(this, itemKey.gotFirstPageView());
-  }
+	get gotFirstPageView(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this, itemKey.gotFirstPageView())
+	}
 }
 
-export const sessionWebStorage = new SessionWebStorage();
+export const sessionWebStorage = new SessionWebStorage()

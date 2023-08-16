@@ -1,27 +1,27 @@
 import {
-  createdNow,
-  CreateEmailAccount,
-  EmailAccount,
-  isEmailAccount,
-  ReadEmailAccount,
-} from "@ggbot2/models";
+	createdNow,
+	CreateEmailAccount,
+	EmailAccount,
+	isEmailAccount,
+	ReadEmailAccount
+} from "@ggbot2/models"
 
-import { READ, WRITE } from "./_dataBucket.js";
-import { pathname } from "./locators.js";
+import { READ, WRITE } from "./_dataBucket.js"
+import { pathname } from "./locators.js"
 
 export const createEmailAccount: CreateEmailAccount = async ({
-  accountId,
-  email,
+	accountId,
+	email
 }) => {
-  const creationTime = createdNow();
-  const data: EmailAccount = {
-    accountId,
-    email,
-    ...creationTime,
-  };
-  await WRITE(pathname.emailAccount(email), data);
-  return creationTime;
-};
+	const creationTime = createdNow()
+	const data: EmailAccount = {
+		accountId,
+		email,
+		...creationTime
+	}
+	await WRITE(pathname.emailAccount(email), data)
+	return creationTime
+}
 
 export const readEmailAccount: ReadEmailAccount = (arg) =>
-  READ<ReadEmailAccount>(isEmailAccount, pathname.emailAccount(arg));
+	READ<ReadEmailAccount>(isEmailAccount, pathname.emailAccount(arg))

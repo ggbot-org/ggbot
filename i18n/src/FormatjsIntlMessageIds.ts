@@ -1,7 +1,7 @@
-export const FormatjsIntlMessageIdsFilename = "FormatjsIntlMessageIds.d.ts";
+export const FormatjsIntlMessageIdsFilename = "FormatjsIntlMessageIds.d.ts"
 
 export const FormatjsIntlMessageIdsContent = (
-  translationKeys: string[]
+	translationKeys: string[]
 ) => `// prettier-ignore
 // ts-prune-ignore-next
 export declare type FormatjsIntlMessageId =
@@ -14,4 +14,4 @@ declare global {
     }
   }
 }
-`;
+`

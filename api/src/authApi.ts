@@ -1,56 +1,57 @@
 import {
-  EmailAddress,
-  isEmailAddress,
-  isOneTimePasswordCode,
-  OneTimePassword,
-} from "@ggbot2/models";
+	EmailAddress,
+	isEmailAddress,
+	isOneTimePasswordCode,
+	OneTimePassword
+} from "@ggbot2/models"
 import {
-  isNonEmptyString,
-  NonEmptyString,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
+	isNonEmptyString,
+	NonEmptyString,
+	objectTypeGuard
+} from "@ggbot2/type-utils"
 
 export type ApiAuthEnterRequestData = {
-  email: EmailAddress;
-};
+	email: EmailAddress
+}
 
 export const isApiAuthEnterRequestData =
-  objectTypeGuard<ApiAuthEnterRequestData>(({ email }) =>
-    isEmailAddress(email)
-  );
+	objectTypeGuard<ApiAuthEnterRequestData>(({ email }) =>
+		isEmailAddress(email)
+	)
 
 export type ApiAuthEnterResponseData = {
-  emailSent: boolean;
-};
+	emailSent: boolean
+}
 
 export const isApiAuthEnterResponseData =
-  objectTypeGuard<ApiAuthEnterResponseData>(
-    ({ emailSent }) => typeof emailSent === "boolean"
-  );
+	objectTypeGuard<ApiAuthEnterResponseData>(
+		({ emailSent }) => typeof emailSent === "boolean"
+	)
 
 export type ApiAuthVerifyRequestData = Pick<OneTimePassword, "code"> & {
-  email: EmailAddress;
-};
+	email: EmailAddress
+}
 
 export const isApiAuthVerifyRequestData =
-  objectTypeGuard<ApiAuthVerifyRequestData>(
-    ({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)
-  );
+	objectTypeGuard<ApiAuthVerifyRequestData>(
+		({ code, email }) =>
+			isOneTimePasswordCode(code) && isEmailAddress(email)
+	)
 
 export type ApiAuthVerifyResponseData = {
-  jwt?: NonEmptyString;
-};
+	jwt?: NonEmptyString
+}
 
 export const isApiAuthVerifyResponseData =
-  objectTypeGuard<ApiAuthVerifyResponseData>(({ jwt }) => {
-    if (jwt === undefined) return true;
-    return isNonEmptyString(jwt);
-  });
+	objectTypeGuard<ApiAuthVerifyResponseData>(({ jwt }) => {
+		if (jwt === undefined) return true
+		return isNonEmptyString(jwt)
+	})
 
 export type ApiAuthVerifyResponse = {
-  data: ApiAuthVerifyResponseData;
-};
+	data: ApiAuthVerifyResponseData
+}
 
 export const isApiAuthVerifyResponse = objectTypeGuard<ApiAuthVerifyResponse>(
-  ({ data }) => isApiAuthEnterResponseData(data)
-);
+	({ data }) => isApiAuthEnterResponseData(data)
+)

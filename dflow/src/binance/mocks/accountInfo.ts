@@ -1,16 +1,16 @@
-import { BinanceAccountInformation } from "@ggbot2/binance";
+import { BinanceAccountInformation } from "@ggbot2/binance"
 
 export const accountInfo: BinanceAccountInformation = {
-  accountType: "SPOT",
-  balances: [],
-  brokered: false,
-  buyerCommission: 0,
-  canDeposit: true,
-  canTrade: true,
-  canWithdraw: true,
-  makerCommission: 15,
-  permissions: ["SPOT"],
-  sellerCommission: 0,
-  takerCommission: 15,
-  updateTime: 0,
-};
+	accountType: "SPOT",
+	balances: [],
+	brokered: false,
+	buyerCommission: 0,
+	canDeposit: true,
+	canTrade: true,
+	canWithdraw: true,
+	makerCommission: 15,
+	permissions: ["SPOT"],
+	sellerCommission: 0,
+	takerCommission: 15,
+	updateTime: 0
+}

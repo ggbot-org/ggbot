@@ -1,13 +1,13 @@
-import { getPolicy, GetPolicyArgs } from "@ggbot2/aws";
+import { getPolicy, GetPolicyArgs } from "@ggbot2/aws"
 
-import { tagsIncludesProjectTag, TagsStatus } from "./_tags.js";
+import { tagsIncludesProjectTag, TagsStatus } from "./_tags.js"
 
-export type IamPolicyStatus = TagsStatus;
+export type IamPolicyStatus = TagsStatus
 
 export const getIamPolicyStatus = async ({
-  PolicyArn,
+	PolicyArn
 }: GetPolicyArgs): Promise<IamPolicyStatus> => {
-  const { Policy } = await getPolicy({ PolicyArn });
-  const hasProjectTag = tagsIncludesProjectTag(Policy?.Tags ?? []);
-  return { hasProjectTag };
-};
+	const { Policy } = await getPolicy({ PolicyArn })
+	const hasProjectTag = tagsIncludesProjectTag(Policy?.Tags ?? [])
+	return { hasProjectTag }
+}

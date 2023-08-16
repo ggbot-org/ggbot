@@ -1,98 +1,98 @@
-import { generateHtmlPage, htmlPageContent } from "@ggbot2/html";
+import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
 import {
-  adminDashboardHtmlFilename,
-  adminDashboardJs,
-  appJs,
-  copyStrategyHtmlFilename,
-  indexHtmlFilename,
-  publicDir,
-  purchaseCanceledHtmlFilename,
-  settingsHtmlFilename,
-  strategyHtmlFilename,
-  subscriptionPurchasedHtmlFilename,
-  tryFlowHtmlFilename,
-  tryFlowJs,
-} from "../package.js";
+	adminDashboardHtmlFilename,
+	adminDashboardJs,
+	appJs,
+	copyStrategyHtmlFilename,
+	indexHtmlFilename,
+	publicDir,
+	purchaseCanceledHtmlFilename,
+	settingsHtmlFilename,
+	strategyHtmlFilename,
+	subscriptionPurchasedHtmlFilename,
+	tryFlowHtmlFilename,
+	tryFlowJs
+} from "../package.js"
 
 const html = (scriptJs: string) =>
-  htmlPageContent({
-    hasRootDiv: true,
-    meta: { title: "ggbot2" },
-    scripts: [{ src: scriptJs }],
-    stylesheets: [{ href: "main.css" }],
-  });
+	htmlPageContent({
+		hasRootDiv: true,
+		meta: { title: "ggbot2" },
+		scripts: [{ src: scriptJs }],
+		stylesheets: [{ href: "main.css" }]
+	})
 
 const generateHtml = async () => {
-  const dirname = publicDir;
+	const dirname = publicDir
 
-  // Homepage
+	// Homepage
 
-  await generateHtmlPage({
-    dirname,
-    filename: indexHtmlFilename,
-    htmlContent: html(appJs),
-  });
+	await generateHtmlPage({
+		dirname,
+		filename: indexHtmlFilename,
+		htmlContent: html(appJs)
+	})
 
-  // Admin
+	// Admin
 
-  await generateHtmlPage({
-    dirname,
-    filename: adminDashboardHtmlFilename,
-    htmlContent: html(adminDashboardJs),
-  });
+	await generateHtmlPage({
+		dirname,
+		filename: adminDashboardHtmlFilename,
+		htmlContent: html(adminDashboardJs)
+	})
 
-  // Strategy
+	// Strategy
 
-  await generateHtmlPage({
-    dirname,
-    filename: copyStrategyHtmlFilename,
-    htmlContent: html(appJs),
-  });
-  await generateHtmlPage({
-    dirname,
-    filename: strategyHtmlFilename,
-    htmlContent: html(appJs),
-  });
+	await generateHtmlPage({
+		dirname,
+		filename: copyStrategyHtmlFilename,
+		htmlContent: html(appJs)
+	})
+	await generateHtmlPage({
+		dirname,
+		filename: strategyHtmlFilename,
+		htmlContent: html(appJs)
+	})
 
-  // Flow
+	// Flow
 
-  await generateHtmlPage({
-    dirname,
-    filename: tryFlowHtmlFilename,
-    htmlContent: html(tryFlowJs),
-  });
+	await generateHtmlPage({
+		dirname,
+		filename: tryFlowHtmlFilename,
+		htmlContent: html(tryFlowJs)
+	})
 
-  // Settings
+	// Settings
 
-  await generateHtmlPage({
-    dirname,
-    filename: settingsHtmlFilename("account"),
-    htmlContent: html(appJs),
-  });
-  await generateHtmlPage({
-    dirname,
-    filename: settingsHtmlFilename("billing"),
-    htmlContent: html(appJs),
-  });
-  await generateHtmlPage({
-    dirname,
-    filename: settingsHtmlFilename("binance"),
-    htmlContent: html(appJs),
-  });
+	await generateHtmlPage({
+		dirname,
+		filename: settingsHtmlFilename("account"),
+		htmlContent: html(appJs)
+	})
+	await generateHtmlPage({
+		dirname,
+		filename: settingsHtmlFilename("billing"),
+		htmlContent: html(appJs)
+	})
+	await generateHtmlPage({
+		dirname,
+		filename: settingsHtmlFilename("binance"),
+		htmlContent: html(appJs)
+	})
 
-  // Subscription
+	// Subscription
 
-  await generateHtmlPage({
-    dirname,
-    filename: purchaseCanceledHtmlFilename,
-    htmlContent: html(appJs),
-  });
-  await generateHtmlPage({
-    dirname,
-    filename: subscriptionPurchasedHtmlFilename,
-    htmlContent: html(appJs),
-  });
-};
+	await generateHtmlPage({
+		dirname,
+		filename: purchaseCanceledHtmlFilename,
+		htmlContent: html(appJs)
+	})
+	await generateHtmlPage({
+		dirname,
+		filename: subscriptionPurchasedHtmlFilename,
+		htmlContent: html(appJs)
+	})
+}
 
-generateHtml();
+generateHtml()

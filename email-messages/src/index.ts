@@ -1,1 +1,1 @@
-export * from "./oneTimePassword.js";
+export * from "./oneTimePassword.js"

@@ -1,63 +1,63 @@
-import { FC, PropsWithChildren, useCallback, useEffect } from "react";
+import { FC, PropsWithChildren, useCallback, useEffect } from "react"
 import {
-  Modal as _Modal,
-  ModalBackground,
-  ModalClose,
-  ModalContent,
-} from "trunx";
+	Modal as _Modal,
+	ModalBackground,
+	ModalClose,
+	ModalContent
+} from "trunx"
 
-import { _classNames } from "../components/_classNames.js";
+import { _classNames } from "../components/_classNames.js"
 
 export type ModalProps = Partial<{
-  isActive: boolean;
-  setIsActive: (arg: boolean) => void;
-}>;
+	isActive: boolean
+	setIsActive: (arg: boolean) => void
+}>
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
-  children,
-  isActive,
-  setIsActive,
+	children,
+	isActive,
+	setIsActive
 }) => {
-  const userCannotCloseModal = setIsActive === undefined;
+	const userCannotCloseModal = setIsActive === undefined
 
-  const closeModal = useCallback(() => {
-    if (userCannotCloseModal) return;
-    setIsActive(false);
-  }, [setIsActive, userCannotCloseModal]);
+	const closeModal = useCallback(() => {
+		if (userCannotCloseModal) return
+		setIsActive(false)
+	}, [setIsActive, userCannotCloseModal])
 
-  const onKeydown = useCallback(
-    (event: KeyboardEvent) => {
-      if (userCannotCloseModal) return;
-      if (event.code === "Escape") setIsActive(false);
-    },
-    [setIsActive, userCannotCloseModal]
-  );
+	const onKeydown = useCallback(
+		(event: KeyboardEvent) => {
+			if (userCannotCloseModal) return
+			if (event.code === "Escape") setIsActive(false)
+		},
+		[setIsActive, userCannotCloseModal]
+	)
 
-  useEffect(() => {
-    if (userCannotCloseModal) return;
-    if (isActive) {
-      window.addEventListener("keydown", onKeydown);
-    } else {
-      window.removeEventListener("keydown", onKeydown);
-    }
-    return () => {
-      window.removeEventListener("keydown", onKeydown);
-    };
-  }, [userCannotCloseModal, isActive, onKeydown]);
+	useEffect(() => {
+		if (userCannotCloseModal) return
+		if (isActive) {
+			window.addEventListener("keydown", onKeydown)
+		} else {
+			window.removeEventListener("keydown", onKeydown)
+		}
+		return () => {
+			window.removeEventListener("keydown", onKeydown)
+		}
+	}, [userCannotCloseModal, isActive, onKeydown])
 
-  return (
-    <_Modal isActive={isActive}>
-      <ModalBackground onClick={closeModal} />
+	return (
+		<_Modal isActive={isActive}>
+			<ModalBackground onClick={closeModal} />
 
-      <ModalContent className={_classNames("Modal__content")}>
-        {children}
-      </ModalContent>
+			<ModalContent className={_classNames("Modal__content")}>
+				{children}
+			</ModalContent>
 
-      {
-        /* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
-          <ModalClose onClick={closeModal} />
-        )
-      }
-    </_Modal>
-  );
-};
+			{
+				/* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
+					<ModalClose onClick={closeModal} />
+				)
+			}
+		</_Modal>
+	)
+}

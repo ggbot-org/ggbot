@@ -1,11 +1,11 @@
-import { strict as assert } from "node:assert";
-import { describe, it } from "node:test";
+import { strict as assert } from "node:assert"
+import { describe, it } from "node:test"
 
-import { htmlPageContent } from "./pageContent.js";
+import { htmlPageContent } from "./pageContent.js"
 
 describe("htmlPageContent", () => {
-  it("works", () => {
-    const html = `<!DOCTYPE html>
+	it("works", () => {
+		const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -17,26 +17,26 @@ describe("htmlPageContent", () => {
 <div id="root"></div>
 <script type="module" src="app.js"></script>
 </body>
-</html>`;
+</html>`
 
-    assert.equal(
-      htmlPageContent({
-        hasRootDiv: true,
-        meta: {
-          title: "page title",
-        },
-        stylesheets: [
-          {
-            href: "style.css",
-          },
-        ],
-        scripts: [
-          {
-            src: "app.js",
-          },
-        ],
-      }),
-      html
-    );
-  });
-});
+		assert.equal(
+			htmlPageContent({
+				hasRootDiv: true,
+				meta: {
+					title: "page title"
+				},
+				stylesheets: [
+					{
+						href: "style.css"
+					}
+				],
+				scripts: [
+					{
+						src: "app.js"
+					}
+				]
+			}),
+			html
+		)
+	})
+})

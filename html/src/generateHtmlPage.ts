@@ -1,17 +1,17 @@
-import { writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { writeFile } from "node:fs/promises"
+import { join } from "node:path"
 
 type GenerageHtmlPageArgs = {
-  dirname: string;
-  filename: string;
-  htmlContent: string;
-};
+	dirname: string
+	filename: string
+	htmlContent: string
+}
 
 export const generateHtmlPage = async ({
-  dirname,
-  filename,
-  htmlContent,
+	dirname,
+	filename,
+	htmlContent
 }: GenerageHtmlPageArgs) => {
-  const pathname = join(dirname, filename);
-  await writeFile(pathname, htmlContent, { encoding: "utf8" });
-};
+	const pathname = join(dirname, filename)
+	await writeFile(pathname, htmlContent, { encoding: "utf8" })
+}

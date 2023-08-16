@@ -1,38 +1,38 @@
 # ggbot2 Tech stack
 
-- [Git](#git)
-- [Markdown](#markdown)
-- [AWS Command Line Interface](#aws-command-line-interface)
-- Amazon Web Services
-  - [AWS Certificate Manager](#aws-certificate-manager)
-  - [AWS CloudFront](#aws-cloudfront)
-  - [AWS CodeCommit](#aws-codecommit)
-  - [AWS EC2](#aws-ec2)
-  - [AWS IAM](#aws-iam)
-  - [AWS S3](#aws-s3)
-- [Google Search Console](google-search-console)
-- [Node.js](#nodejs)
-- [npm workspaces](#npm-workspaces)
-- [NVM](#nvm)
-- [React](#react)
-- Utrust
-- npm packages
-  - [@types/node](#typesnode)
-  - [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
-  - [@typescript-eslint/parser](#typescript-eslintparser)
-  - [@utrustdev/utrust-ts-library](utrustdevutrust-ts-library)
-  - [aws-sdk](#aws-sdk)
-  - [country-isocode2](#country-isocode2)
-  - [eslint](#eslint)
-  - [eslint-plugin-import](#eslint-plugin-import)
-  - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
-  - [eslint-plugin-react](#eslint-plugin-react)
-  - [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
-  - [dflow](#dflow)
-  - [flow-view](#flow-view)
-  - [npm-run-all](#npm-run-all)
-  - [ts-prune](#ts-prune)
-  - [typescript](#typescript)
+-   [Git](#git)
+-   [Markdown](#markdown)
+-   [AWS Command Line Interface](#aws-command-line-interface)
+-   Amazon Web Services
+    -   [AWS Certificate Manager](#aws-certificate-manager)
+    -   [AWS CloudFront](#aws-cloudfront)
+    -   [AWS CodeCommit](#aws-codecommit)
+    -   [AWS EC2](#aws-ec2)
+    -   [AWS IAM](#aws-iam)
+    -   [AWS S3](#aws-s3)
+-   [Google Search Console](google-search-console)
+-   [Node.js](#nodejs)
+-   [npm workspaces](#npm-workspaces)
+-   [NVM](#nvm)
+-   [React](#react)
+-   Utrust
+-   npm packages
+    -   [@types/node](#typesnode)
+    -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
+    -   [@typescript-eslint/parser](#typescript-eslintparser)
+    -   [@utrustdev/utrust-ts-library](utrustdevutrust-ts-library)
+    -   [aws-sdk](#aws-sdk)
+    -   [country-isocode2](#country-isocode2)
+    -   [eslint](#eslint)
+    -   [eslint-plugin-import](#eslint-plugin-import)
+    -   [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
+    -   [eslint-plugin-react](#eslint-plugin-react)
+    -   [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
+    -   [dflow](#dflow)
+    -   [flow-view](#flow-view)
+    -   [npm-run-all](#npm-run-all)
+    -   [ts-prune](#ts-prune)
+    -   [typescript](#typescript)
 
 ## Git
 
@@ -82,8 +82,8 @@ https://aws.amazon.com/s3/
 
 Created the following properties:
 
-- [ggbot2.com and www.ggbot2.com](https://search.google.com/search-console?resource_id=sc-domain%3Aggbot2.com)
-- [app.ggbot2.com](https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Aapp.ggbot2.com)
+-   [ggbot2.com and www.ggbot2.com](https://search.google.com/search-console?resource_id=sc-domain%3Aggbot2.com)
+-   [app.ggbot2.com](https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Aapp.ggbot2.com)
 
 ## Node.js
 

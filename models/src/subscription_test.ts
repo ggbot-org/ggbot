@@ -1,24 +1,24 @@
-import { strict as assert } from "node:assert";
-import { describe, it } from "node:test";
+import { strict as assert } from "node:assert"
+import { describe, it } from "node:test"
 
-import { isSubscription } from "./subscription.js";
+import { isSubscription } from "./subscription.js"
 
 describe("isSubscription", () => {
-  it("validates Subscription", () => {
-    [
-      {
-        input: {
-          plan: "basic",
-          end: "2022-01-01",
-        },
-        output: true,
-      },
-    ].forEach(({ input, output }) => {
-      assert.equal(
-        isSubscription(input),
-        output,
-        `isSubscription(${JSON.stringify(input)}) !== ${output}`
-      );
-    });
-  });
-});
+	it("validates Subscription", () => {
+		;[
+			{
+				input: {
+					plan: "basic",
+					end: "2022-01-01"
+				},
+				output: true
+			}
+		].forEach(({ input, output }) => {
+			assert.equal(
+				isSubscription(input),
+				output,
+				`isSubscription(${JSON.stringify(input)}) !== ${output}`
+			)
+		})
+	})
+})

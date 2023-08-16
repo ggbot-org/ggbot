@@ -1,7 +1,7 @@
-import { join } from "node:path";
+import { join } from "node:path"
 
-import { packageScriptKey } from "./package.js";
-import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
+import { packageScriptKey } from "./package.js"
+import { rootPackageDir, rootPackageJson } from "./rootPackage.js"
 
 // TODO convert this to TS.
 
@@ -11,26 +11,26 @@ import { rootPackageDir, rootPackageJson } from "./rootPackage.js";
 // TODO check there are no duplicates in dependencies and devDependencies
 
 /** By convention, workspace package name scope is root package name. */
-const workspacesNamespace = rootPackageJson.name;
+const workspacesNamespace = rootPackageJson.name
 
 export const workspacePackageName = (workspace) =>
-  `@${workspacesNamespace}/${workspace}`;
+	`@${workspacesNamespace}/${workspace}`
 
-export const workspacePackageTasks = [packageScriptKey.checkTypes];
+export const workspacePackageTasks = [packageScriptKey.checkTypes]
 
 export const importWorkspaceJson = (filename) => async (workspace) => {
-  const { default: json } = await import(
-    join(rootPackageDir, workspace, filename),
-    {
-      assert: { type: "json" },
-    }
-  );
-  return json;
-};
+	const { default: json } = await import(
+		join(rootPackageDir, workspace, filename),
+		{
+			assert: { type: "json" }
+		}
+	)
+	return json
+}
 
-export const importWorkspacePackageJson = importWorkspaceJson("package.json");
+export const importWorkspacePackageJson = importWorkspaceJson("package.json")
 
 export const workspaceExposedScriptKeys = [
-  packageScriptKey.build,
-  packageScriptKey.test,
-];
+	packageScriptKey.build,
+	packageScriptKey.test
+]

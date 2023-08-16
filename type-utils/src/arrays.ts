@@ -4,12 +4,12 @@
  * @example
  *
  * ```ts
- * export type MyItems = MyItem[];
+ * export type MyItems = MyItem[]
  *
- * const isMyItems = arrayTypeGuard<MyItem>(isMyItem);
+ * const isMyItems = arrayTypeGuard<MyItem>(isMyItem)
  * ```
  */
 export const arrayTypeGuard =
-  <T>(check: (item: unknown) => item is T) =>
-  (arg: unknown): arg is T[] =>
-    Array.isArray(arg) && arg.every((item) => check(item));
+	<T>(check: (item: unknown) => item is T) =>
+	(arg: unknown): arg is T[] =>
+		Array.isArray(arg) && arg.every((item) => check(item))

@@ -1,64 +1,64 @@
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils";
+import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
 
-import { AccountKey } from "./account.js";
+import { AccountKey } from "./account.js"
 import {
-  AccountStrategy,
-  AccountStrategyKey,
-  isAccountStrategy,
-} from "./accountStrategy.js";
-import { isItemId } from "./item.js";
-import { isStrategySchedulings } from "./strategyScheduling.js";
-import { CreationTime, DeletionTime, UpdateTime } from "./time.js";
+	AccountStrategy,
+	AccountStrategyKey,
+	isAccountStrategy
+} from "./accountStrategy.js"
+import { isItemId } from "./item.js"
+import { isStrategySchedulings } from "./strategyScheduling.js"
+import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
-export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">;
+export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
-export type AccountStrategies = AccountStrategy[];
+export type AccountStrategies = AccountStrategy[]
 
 export const isAccountStrategies =
-  arrayTypeGuard<AccountStrategy>(isAccountStrategy);
+	arrayTypeGuard<AccountStrategy>(isAccountStrategy)
 
 export type ReadAccountStrategies = (
-  arg: AccountKey
-) => Promise<AccountStrategies>;
+	arg: AccountKey
+) => Promise<AccountStrategies>
 
 export type InsertAccountStrategiesItemInput = AccountKey & {
-  item: AccountStrategy;
-};
+	item: AccountStrategy
+}
 
 export type InsertAccountStrategiesItem = (
-  arg: InsertAccountStrategiesItemInput
-) => Promise<CreationTime>;
+	arg: InsertAccountStrategiesItemInput
+) => Promise<CreationTime>
 
 export type RenameAccountStrategiesItemInput = AccountStrategyItemKey &
-  Pick<AccountStrategy, "name">;
+	Pick<AccountStrategy, "name">
 
 export type RenameAccountStrategiesItem = (
-  arg: RenameAccountStrategiesItemInput
-) => Promise<UpdateTime>;
+	arg: RenameAccountStrategiesItemInput
+) => Promise<UpdateTime>
 
 export type WriteAccountStrategiesItemSchedulingsInput =
-  AccountStrategyItemKey & Pick<AccountStrategy, "schedulings">;
+	AccountStrategyItemKey & Pick<AccountStrategy, "schedulings">
 
 export const isWriteAccountStrategiesItemSchedulingsInput =
-  objectTypeGuard<WriteAccountStrategiesItemSchedulingsInput>(
-    ({ accountId, strategyId, schedulings }) =>
-      isItemId(accountId) &&
-      isItemId(strategyId) &&
-      isStrategySchedulings(schedulings)
-  );
+	objectTypeGuard<WriteAccountStrategiesItemSchedulingsInput>(
+		({ accountId, strategyId, schedulings }) =>
+			isItemId(accountId) &&
+			isItemId(strategyId) &&
+			isStrategySchedulings(schedulings)
+	)
 
 export type WriteAccountStrategiesItemSchedulings = (
-  arg: WriteAccountStrategiesItemSchedulingsInput
-) => Promise<UpdateTime>;
+	arg: WriteAccountStrategiesItemSchedulingsInput
+) => Promise<UpdateTime>
 
 export type SuspendAccountStrategiesItemSchedulings = (
-  arg: AccountStrategyItemKey
-) => Promise<UpdateTime>;
+	arg: AccountStrategyItemKey
+) => Promise<UpdateTime>
 
 export type DeleteAccountStrategiesItem = (
-  arg: AccountStrategyItemKey
-) => Promise<DeletionTime>;
+	arg: AccountStrategyItemKey
+) => Promise<DeletionTime>
 
 export type SuspendAccountStrategiesSchedulings = (
-  arg: AccountKey
-) => Promise<UpdateTime>;
+	arg: AccountKey
+) => Promise<UpdateTime>

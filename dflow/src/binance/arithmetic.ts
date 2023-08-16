@@ -4,14 +4,14 @@
  *
  * ```json
  * {
- *   "baseAssetPrecision": 8,
- *   "baseCommissionPrecision": 8,
- *   "quoteAssetPrecision": 8,
- *   "quoteCommissionPrecision": 8,
- *   "quotePrecision": 8
+ * 	"baseAssetPrecision": 8,
+ * 	"baseCommissionPrecision": 8,
+ * 	"quoteAssetPrecision": 8,
+ * 	"quoteCommissionPrecision": 8,
+ * 	"quotePrecision": 8
  * }
  * ```
  */
-export const dflowBinancePrecision = 8;
+export const dflowBinancePrecision = 8
 
-export const dflowBinanceZero = "0.00000000";
+export const dflowBinanceZero = "0.00000000"

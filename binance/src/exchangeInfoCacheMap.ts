@@ -1,40 +1,40 @@
-import { CacheMap } from "@ggbot2/cache";
+import { CacheMap } from "@ggbot2/cache"
 
-import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js";
-import { BinanceExchangeInfo } from "./types.js";
+import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
+import { BinanceExchangeInfo } from "./types.js"
 
 // `isValidSymbolMap` and `exchangeInfoMap` are cached with same duration.
-const exchangeInfoCacheDuration = "ONE_DAY";
+const exchangeInfoCacheDuration = "ONE_DAY"
 
 export class BinanceExchangeInfoCacheMap
-  implements BinanceExchangeInfoCacheProvider
+	implements BinanceExchangeInfoCacheProvider
 {
-  // BinanceExchangeInfoCacheProvider
-  // ///////////////////////////////////////////////////////////////////////////
+	// BinanceExchangeInfoCacheProvider
+	// ///////////////////////////////////////////////////////////////////////////
 
-  private readonly exchangeInfoKey = "exchangeInfo";
+	private readonly exchangeInfoKey = "exchangeInfo"
 
-  private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
-    exchangeInfoCacheDuration
-  );
+	private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
+		exchangeInfoCacheDuration
+	)
 
-  getExchangeInfo() {
-    return this.exchangeInfoMap.get(this.exchangeInfoKey);
-  }
+	getExchangeInfo() {
+		return this.exchangeInfoMap.get(this.exchangeInfoKey)
+	}
 
-  setExchangeInfo(value: BinanceExchangeInfo | undefined) {
-    if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value);
-  }
+	setExchangeInfo(value: BinanceExchangeInfo | undefined) {
+		if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value)
+	}
 
-  private readonly isValidSymbolMap = new CacheMap<boolean>(
-    exchangeInfoCacheDuration
-  );
+	private readonly isValidSymbolMap = new CacheMap<boolean>(
+		exchangeInfoCacheDuration
+	)
 
-  getIsValidSymbol(symbol: string) {
-    return this.isValidSymbolMap.get(symbol);
-  }
+	getIsValidSymbol(symbol: string) {
+		return this.isValidSymbolMap.get(symbol)
+	}
 
-  setIsValidSymbol(symbol: string, value: boolean) {
-    this.isValidSymbolMap.set(symbol, value);
-  }
+	setIsValidSymbol(symbol: string, value: boolean) {
+		this.isValidSymbolMap.set(symbol, value)
+	}
 }

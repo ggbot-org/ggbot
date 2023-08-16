@@ -1,40 +1,40 @@
-import { DflowNode } from "dflow";
+import { DflowNode } from "dflow"
 
-const { input, output } = DflowNode;
+const { input, output } = DflowNode
 
 // TODO serve il nome? Non dovrebbe. Se non serve, togli questo
 // inputArray e usa input("array") direttamente
-export const inputArray = input("array", { name: "array" });
+export const inputArray = input("array", { name: "array" })
 
 export const inputExecute = input("boolean", {
-  name: "execute",
-  optional: true,
-});
+	name: "execute",
+	optional: true
+})
 
-export const inputClose = input("array", { name: "close" });
-export const outputClose = output("array", { name: "close" });
+export const inputClose = input("array", { name: "close" })
+export const outputClose = output("array", { name: "close" })
 
-export const inputHigh = input("array", { name: "high" });
-export const outputHigh = output("array", { name: "high" });
+export const inputHigh = input("array", { name: "high" })
+export const outputHigh = output("array", { name: "high" })
 
-export const inputKey = input("string", { name: "key" });
+export const inputKey = input("string", { name: "key" })
 
-export const inputLow = input("array", { name: "low" });
-export const outputLow = output("array", { name: "low" });
+export const inputLow = input("array", { name: "low" })
+export const outputLow = output("array", { name: "low" })
 
-export const outputLastValue = output("number", { name: "last" });
+export const outputLastValue = output("number", { name: "last" })
 
-export const inputOpen = input("array", { name: "open" });
-export const outputOpen = output("array", { name: "open" });
+export const inputOpen = input("array", { name: "open" })
+export const outputOpen = output("array", { name: "open" })
 
-export const inputPeriod = input("number", { name: "period" });
+export const inputPeriod = input("number", { name: "period" })
 
-export const inputValues = input("array", { name: "values" });
-export const outputValues = output("array", { name: "values" });
+export const inputValues = input("array", { name: "values" })
+export const outputValues = output("array", { name: "values" })
 
-export const inputValues1 = input("array", { name: "values1" });
-export const inputValues2 = input("array", { name: "values2" });
+export const inputValues1 = input("array", { name: "values1" })
+export const inputValues2 = input("array", { name: "values2" })
 
-export const outputValue = output([], { name: "value" });
+export const outputValue = output([], { name: "value" })
 
-export const outputVolume = input("array", { name: "volume" });
+export const outputVolume = input("array", { name: "volume" })

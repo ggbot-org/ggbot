@@ -2,14 +2,14 @@
 
 EC2 services that powers ggbot2 are implemented by the following workspaces:
 
-- [binance-proxy](../binance-proxy/)
-- [executor](../executor/)
+-   [binance-proxy](../binance-proxy/)
+-   [executor](../executor/)
 
 Every EC2 instance run only one of those services, the following instructions differ by:
 
-- The npm commands to build and start the service.
-- The environment variables required by the service.
-- The AMI permissions that the service needs to be granted.
+-   The npm commands to build and start the service.
+-   The environment variables required by the service.
+-   The AMI permissions that the service needs to be granted.
 
 Since there is one service per EC2 instance, the service name will be always _ggbot2_.
 
@@ -29,8 +29,8 @@ npm ci
 
 ## Build
 
-- binance-proxy: `npm run build:binance-proxy`
-- executor: `npm run build:executor`
+-   binance-proxy: `npm run build:binance-proxy`
+-   executor: `npm run build:executor`
 
 ## Create service
 
@@ -38,8 +38,8 @@ Switch to **root** user: `sudo su -`.
 
 Set `SERVICE` either to:
 
-- `export SERVICE=binance-proxy`
-- `export SERVICE=executor`
+-   `export SERVICE=binance-proxy`
+-   `export SERVICE=executor`
 
 Then run the following.
 

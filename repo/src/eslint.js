@@ -1,3 +1,3 @@
-import { workspacePackageName } from "./workspacePackage.js";
+import { workspacePackageName } from "./workspacePackage.js"
 
-export const eslintConfigPackageName = workspacePackageName("eslint-config");
+export const eslintConfigPackageName = workspacePackageName("eslint-config")

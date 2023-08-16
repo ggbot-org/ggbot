@@ -16,19 +16,19 @@ cd -
 # Copy internal deps.
 
 for INTERNAL_DEP in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http infrastructure locators models test-data time type-utils; do
-  mkdir -p temp/node_modules/@ggbot2/$INTERNAL_DEP/dist
-  cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@ggbot2/$INTERNAL_DEP/dist/
-  cp ../$INTERNAL_DEP/package.json temp/node_modules/@ggbot2/$INTERNAL_DEP/
+	mkdir -p temp/node_modules/@ggbot2/$INTERNAL_DEP/dist
+	cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@ggbot2/$INTERNAL_DEP/dist/
+	cp ../$INTERNAL_DEP/package.json temp/node_modules/@ggbot2/$INTERNAL_DEP/
 done
 
 # Zip lambdas.
 
 for LAMBDA in action; do
-  mkdir -p dist/$LAMBDA/node_modules
-  cp temp/${LAMBDA}.js dist/$LAMBDA/index.js
-  cp temp/package.json dist/$LAMBDA/
-  cp -R temp/node_modules/* dist/$LAMBDA/node_modules/
-  cd dist/$LAMBDA
-  zip -X -r ../${LAMBDA}.zip * > /dev/null
-  cd -
+	mkdir -p dist/$LAMBDA/node_modules
+	cp temp/${LAMBDA}.js dist/$LAMBDA/index.js
+	cp temp/package.json dist/$LAMBDA/
+	cp -R temp/node_modules/* dist/$LAMBDA/node_modules/
+	cd dist/$LAMBDA
+	zip -X -r ../${LAMBDA}.zip * > /dev/null
+	cd -
 done

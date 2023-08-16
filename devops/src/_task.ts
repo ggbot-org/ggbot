@@ -1,1 +1,1 @@
-export type TaskOptions = { verbose?: boolean | undefined };
+export type TaskOptions = { verbose?: boolean | undefined }

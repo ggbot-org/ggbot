@@ -1,6 +1,6 @@
-import { privacyHtmlFilename, termsHtmlFilename } from "./pages.js";
+import { privacyHtmlFilename, termsHtmlFilename } from "./pages.js"
 
 export const pathname = {
-  privacyPolicyPage: () => `${privacyHtmlFilename}`,
-  termsOfServicePage: () => `/${termsHtmlFilename}`,
-};
+	privacyPolicyPage: () => `${privacyHtmlFilename}`,
+	termsOfServicePage: () => `/${termsHtmlFilename}`
+}

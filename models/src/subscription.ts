@@ -1,74 +1,72 @@
 import {
-  DayInterval,
-  dayToTime,
-  getTime,
-  isDay,
-  now,
-  today,
-} from "@ggbot2/time";
+	DayInterval,
+	dayToTime,
+	getTime,
+	isDay,
+	now,
+	today
+} from "@ggbot2/time"
 import {
-  isLiteralType,
-  NaturalNumber,
-  objectTypeGuard,
-} from "@ggbot2/type-utils";
+	isLiteralType,
+	NaturalNumber,
+	objectTypeGuard
+} from "@ggbot2/type-utils"
 
-import { AccountKey } from "./account.js";
-import { Currency } from "./currency.js";
-import { UpdateTime } from "./time.js";
+import { AccountKey } from "./account.js"
+import { Currency } from "./currency.js"
+import { UpdateTime } from "./time.js"
 
-export const monthlyPrice = 10;
+export const monthlyPrice = 10
 
-export const purchaseCurrency: Currency = "EUR";
-export const purchaseDefaultNumMonths = 6;
-export const purchaseMaxNumMonths = 12;
-export const purchaseMinNumMonths = 1;
+export const purchaseCurrency: Currency = "EUR"
+export const purchaseDefaultNumMonths = 6
+export const purchaseMaxNumMonths = 12
+export const purchaseMinNumMonths = 1
 
 export const shouldPurchaseSubscription = (
-  subscription: Subscription
+	subscription: Subscription
 ): boolean => {
-  const numDaysBeforeSubscriptionEnd = 30;
-  return (
-    getTime(dayToTime(subscription.end))
-      .minus(numDaysBeforeSubscriptionEnd)
-      .days() < now()
-  );
-};
+	const numDaysBeforeSubscriptionEnd = 30
+	return (
+		getTime(dayToTime(subscription.end))
+			.minus(numDaysBeforeSubscriptionEnd)
+			.days() < now()
+	)
+}
 
 export const totalPurchase = (numMonths: NaturalNumber) => {
-  // if 12 months, apply discount.
-  if (numMonths === 12) return monthlyPrice * 11;
-  return numMonths * monthlyPrice;
-};
+	// if 12 months, apply discount.
+	if (numMonths === 12) return monthlyPrice * 11
+	return numMonths * monthlyPrice
+}
 
-const subscriptionPlans = ["basic"] as const;
-export type SubscriptionPlan = (typeof subscriptionPlans)[number];
+const subscriptionPlans = ["basic"] as const
+export type SubscriptionPlan = (typeof subscriptionPlans)[number]
 export const isSubscriptionPlan =
-  isLiteralType<SubscriptionPlan>(subscriptionPlans);
+	isLiteralType<SubscriptionPlan>(subscriptionPlans)
 
-export const subscriptionStatuses = ["active", "expired"] as const;
-export type SubscriptionStatus = (typeof subscriptionStatuses)[number];
+export const subscriptionStatuses = ["active", "expired"] as const
+export type SubscriptionStatus = (typeof subscriptionStatuses)[number]
 export const isSubscriptionStatus =
-  isLiteralType<SubscriptionStatus>(subscriptionStatuses);
+	isLiteralType<SubscriptionStatus>(subscriptionStatuses)
 
 export type Subscription = Pick<DayInterval, "end"> & {
-  plan: SubscriptionPlan;
-};
+	plan: SubscriptionPlan
+}
 
 export const isSubscription = objectTypeGuard<Subscription>(
-  ({ plan, end }) => isSubscriptionPlan(plan) && isDay(end)
-);
+	({ plan, end }) => isSubscriptionPlan(plan) && isDay(end)
+)
 
 export const statusOfSubscription = ({
-  end,
+	end
 }: Pick<Subscription, "end">): SubscriptionStatus =>
-  end > today() ? "active" : "expired";
+	end > today() ? "active" : "expired"
 
-export type ReadSubscription = (
-  arg: AccountKey
-) => Promise<Subscription | null>;
+export type ReadSubscription = (arg: AccountKey) => Promise<Subscription | null>
 
-export type WriteSubscriptionInput = AccountKey & Subscription;
+export type WriteSubscriptionInput = AccountKey & Subscription
 
 export type WriteSubscription = (
-  arg: WriteSubscriptionInput
-) => Promise<UpdateTime>;
+	arg: WriteSubscriptionInput
+) => Promise<UpdateTime>

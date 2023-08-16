@@ -1,11 +1,11 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "target": "esnext",
-    "tsBuildInfoFile": "temp/tsconfig.tsbuildinfo"
-  },
-  "extends": "./code-quality.json"
+	"compilerOptions": {
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"skipLibCheck": true,
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.tsbuildinfo"
+	},
+	"extends": "./code-quality.json"
 }

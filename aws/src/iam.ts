@@ -1,18 +1,18 @@
 import {
-  GetPolicyCommand,
-  GetPolicyCommandInput,
-  GetPolicyCommandOutput,
-  IAMClient,
-} from "@aws-sdk/client-iam";
-import { awsRegion } from "@ggbot2/infrastructure";
+	GetPolicyCommand,
+	GetPolicyCommandInput,
+	GetPolicyCommandOutput,
+	IAMClient
+} from "@aws-sdk/client-iam"
+import { awsRegion } from "@ggbot2/infrastructure"
 
-const client = new IAMClient({ region: awsRegion });
+const client = new IAMClient({ region: awsRegion })
 
-export type GetPolicyArgs = GetPolicyCommandInput;
+export type GetPolicyArgs = GetPolicyCommandInput
 
 export const getPolicy = async (
-  args: GetPolicyArgs
+	args: GetPolicyArgs
 ): Promise<GetPolicyCommandOutput> => {
-  const command = new GetPolicyCommand(args);
-  return await client.send(command);
-};
+	const command = new GetPolicyCommand(args)
+	return await client.send(command)
+}

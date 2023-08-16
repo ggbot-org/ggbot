@@ -1,91 +1,91 @@
 import {
-  Column,
-  Columns,
-  InputField,
-  InputOnChange,
-  SelectField,
-  SelectOnChange,
-} from "@ggbot2/design";
+	Column,
+	Columns,
+	InputField,
+	InputOnChange,
+	SelectField,
+	SelectOnChange
+} from "@ggbot2/design"
 import {
-  Frequency,
-  FrequencyInterval,
-  isFrequencyInterval,
-} from "@ggbot2/models";
-import { isNaturalNumber, NaturalNumber } from "@ggbot2/type-utils";
-import { FC, useCallback } from "react";
-import { useIntl } from "react-intl";
+	Frequency,
+	FrequencyInterval,
+	isFrequencyInterval
+} from "@ggbot2/models"
+import { isNaturalNumber, NaturalNumber } from "@ggbot2/type-utils"
+import { FC, useCallback } from "react"
+import { useIntl } from "react-intl"
 
 export type FrequencyInputProps = {
-  frequency: Pick<Frequency, "interval"> & {
-    every: NaturalNumber | "";
-  };
-  setFrequency: (arg: FrequencyInputProps["frequency"]) => void;
-};
+	frequency: Pick<Frequency, "interval"> & {
+		every: NaturalNumber | ""
+	}
+	setFrequency: (arg: FrequencyInputProps["frequency"]) => void
+}
 
 type FrequencyIntervalOption = {
-  value: FrequencyInterval;
-  label: string;
-};
+	value: FrequencyInterval
+	label: string
+}
 
 export const FrequencyInput: FC<FrequencyInputProps> = ({
-  frequency: { interval, every },
-  setFrequency,
+	frequency: { interval, every },
+	setFrequency
 }) => {
-  const { formatMessage } = useIntl();
+	const { formatMessage } = useIntl()
 
-  const frequencyIntervalOptions: FrequencyIntervalOption[] = [
-    {
-      value: "1h",
-      label: formatMessage({ id: "FrequencyInput.hour" }),
-    },
-    { value: "1m", label: formatMessage({ id: "FrequencyInput.minute" }) },
-  ];
+	const frequencyIntervalOptions: FrequencyIntervalOption[] = [
+		{
+			value: "1h",
+			label: formatMessage({ id: "FrequencyInput.hour" })
+		},
+		{ value: "1m", label: formatMessage({ id: "FrequencyInput.minute" }) }
+	]
 
-  const onChangeFrequencyEvery = useCallback<InputOnChange>(
-    (event) => {
-      const value = event.target.value;
-      const every = value === "" ? value : Number(value);
-      if (isNaturalNumber(every) || every === "")
-        setFrequency({
-          interval,
-          every,
-        });
-    },
-    [interval, setFrequency]
-  );
+	const onChangeFrequencyEvery = useCallback<InputOnChange>(
+		(event) => {
+			const value = event.target.value
+			const every = value === "" ? value : Number(value)
+			if (isNaturalNumber(every) || every === "")
+				setFrequency({
+					interval,
+					every
+				})
+		},
+		[interval, setFrequency]
+	)
 
-  const onChangeFrequencyInterval = useCallback<SelectOnChange>(
-    (event) => {
-      const value = event.target.value;
-      if (isFrequencyInterval(value))
-        setFrequency({
-          every,
-          interval: value,
-        });
-    },
-    [every, setFrequency]
-  );
+	const onChangeFrequencyInterval = useCallback<SelectOnChange>(
+		(event) => {
+			const value = event.target.value
+			if (isFrequencyInterval(value))
+				setFrequency({
+					every,
+					interval: value
+				})
+		},
+		[every, setFrequency]
+	)
 
-  return (
-    <Columns isMobile>
-      <Column size="one-third">
-        <InputField
-          label={formatMessage({ id: "FrequencyInput.every" })}
-          onChange={onChangeFrequencyEvery}
-          min={1}
-          step={1}
-          value={every}
-        />
-      </Column>
+	return (
+		<Columns isMobile>
+			<Column size="one-third">
+				<InputField
+					label={formatMessage({ id: "FrequencyInput.every" })}
+					onChange={onChangeFrequencyEvery}
+					min={1}
+					step={1}
+					value={every}
+				/>
+			</Column>
 
-      <Column size="half">
-        <SelectField
-          label={formatMessage({ id: "FrequencyInput.interval" })}
-          onChange={onChangeFrequencyInterval}
-          options={frequencyIntervalOptions}
-          value={interval}
-        />
-      </Column>
-    </Columns>
-  );
-};
+			<Column size="half">
+				<SelectField
+					label={formatMessage({ id: "FrequencyInput.interval" })}
+					onChange={onChangeFrequencyInterval}
+					options={frequencyIntervalOptions}
+					value={interval}
+				/>
+			</Column>
+		</Columns>
+	)
+}

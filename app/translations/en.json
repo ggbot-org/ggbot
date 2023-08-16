@@ -1,452 +1,452 @@
 {
-  "AccountId.label": {
-    "defaultMessage": "Account ID"
-  },
-  "AccountSettings.title": {
-    "defaultMessage": "Account"
-  },
-  "ApiKey.label": {
-    "defaultMessage": "API key"
-  },
-  "ApiSecret.label": {
-    "defaultMessage": "API secret"
-  },
-  "AuthEnter.button": {
-    "defaultMessage": "Send"
-  },
-  "AuthEnter.title": {
-    "defaultMessage": "Enter ggbot2"
-  },
-  "AuthExit.button": {
-    "defaultMessage": "Exit"
-  },
-  "AuthExit.message": {
-    "defaultMessage": "Exit from your current account session."
-  },
-  "AuthExit.title": {
-    "defaultMessage": "Exit ggbot2"
-  },
-  "AuthVerify.button": {
-    "defaultMessage": "Enter"
-  },
-  "AuthVerify.failed": {
-    "defaultMessage": "Verification failed."
-  },
-  "AuthVerify.checkEmail": {
-    "defaultMessage": "Check your email to get the <em>One Time Password</em>. If the email is not correct, click the {resetEmail} button."
-  },
-  "AuthVerify.enterOneTimePassword": {
-    "defaultMessage": "Enter the 6-digits <em>One Time Password</em> you find in your email."
-  },
-  "AuthVerify.resetEmail": {
-    "defaultMessage": "Reset"
-  },
-  "AuthVerify.title": {
-    "defaultMessage": "Account verification"
-  },
-  "BacktestingActions.pause": {
-    "defaultMessage": "Pause"
-  },
-  "BacktestingActions.resume": {
-    "defaultMessage": "Resume"
-  },
-  "BacktestingActions.start": {
-    "defaultMessage": "Start"
-  },
-  "BacktestingActions.stop": {
-    "defaultMessage": "Stop"
-  },
-  "Backtesting.title": {
-    "defaultMessage": "Backtesting"
-  },
-  "BacktestingProgress.currentTime": {
-    "defaultMessage": "Current time is {time}"
-  },
-  "BacktestingProgress.dayInterval": {
-    "defaultMessage": "From {start} to {end}"
-  },
-  "BacktestingProgress.title": {
-    "defaultMessage": "Progress"
-  },
-  "BacktestingProgress.intervals": {
-    "defaultMessage": "{value} of {max} intervals"
-  },
-  "BacktestingProgress.waiting": {
-    "defaultMessage": "Waiting for strategy flow"
-  },
-  "BacktestingProgress.preparing": {
-    "defaultMessage": "Preparing backtesting data"
-  },
-  "BinanceApi.error": {
-    "defaultMessage": "Could not test Binance API."
-  },
-  "BinanceApi.title": {
-    "defaultMessage": "Binance API"
-  },
-  "BinanceApi.test": {
-    "defaultMessage": "Test API"
-  },
-  "BinanceApiKeyPermissionEnableReading.description": {
-    "defaultMessage": "is <em>reading</em> permission enabled?"
-  },
-  "BinanceApiKeyPermissionEnableWithdrawals.description": {
-    "defaultMessage": "are <em>withdrawals</em> enabled?"
-  },
-  "BinanceApiKeyPermissionEnableSpotAndMarginTrading.description": {
-    "defaultMessage": "is <em>Spot and Margin</em> enabled?"
-  },
-  "BinanceApiKeyPermissionIpRestrict.description": {
-    "defaultMessage": "is <em>static IP</em> restriction activated?"
-  },
-  "CopyStrategy.chooseName": {
-    "defaultMessage": "Choose a new name for the copied strategy."
-  },
-  "CopyStrategy.strategyInfo": {
-    "defaultMessage": "These are the details about the strategy you are going to copy."
-  },
-  "CopyStrategy.title": {
-    "defaultMessage": "Copy strategy"
-  },
-  "CopyStrategy.button": {
-    "defaultMessage": "Copy"
-  },
-  "CreateBinanceApi.title": {
-    "defaultMessage": "Binance API"
-  },
-  "CreateBinanceApi.button": {
-    "defaultMessage": "Create Binance API"
-  },
-  "CreateStrategy.button": {
-    "defaultMessage": "Create"
-  },
-  "CreateStrategy.chooseName": {
-    "defaultMessage": "Choose a name for your <em>brand new</em> strategy."
-  },
-  "DailyInterval.from": {
-    "defaultMessage": "From"
-  },
-  "DailyInterval.to": {
-    "defaultMessage": "To"
-  },
-  "DeleteAccount.button": {
-    "defaultMessage": "Delete account"
-  },
-  "DeleteAccount.confirmation": {
-    "defaultMessage": "Yes, delete my account!"
-  },
-  "DeleteAccount.dismiss": {
-    "defaultMessage": "No, close this message"
-  },
-  "DeleteAccount.title": {
-    "defaultMessage": "Account deletion"
-  },
-  "DeleteAccount.consent": {
-    "defaultMessage": "I am aware of the consequences of my account deletion."
-  },
-  "DeleteAccount.question": {
-    "defaultMessage": "Are you sure you want to delete your account?"
-  },
-  "DeleteBinanceApi.button": {
-    "defaultMessage": "Delete API"
-  },
-  "DeleteBinanceApi.confirmation": {
-    "defaultMessage": "Yes, delete it"
-  },
-  "DeleteBinanceApi.dismiss": {
-    "defaultMessage": "No, close this message"
-  },
-  "DeleteBinanceApi.title": {
-    "defaultMessage": "Binance API deletion"
-  },
-  "DeleteBinanceApi.question": {
-    "defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
-  },
-  "DeleteBinanceApi.warning": {
-    "defaultMessage": "All your ggbot2 strategies will not able to be run"
-  },
-  "DeleteBinanceApi.info": {
-    "defaultMessage": "This action will not delete your API key on Binance website."
-  },
-  "DeleteStrategy.button": {
-    "defaultMessage": "Delete"
-  },
-  "DeleteStrategy.confirmation": {
-    "defaultMessage": "Yes, delete it"
-  },
-  "DeleteStrategy.dismiss": {
-    "defaultMessage": "No"
-  },
-  "DeleteStrategy.message": {
-    "defaultMessage": "Are you sure you want to delete this strategy?"
-  },
-  "DeleteStrategy.title": {
-    "defaultMessage": "Strategy deletion"
-  },
-  "EditableFlow.save": {
-    "defaultMessage": "Save"
-  },
-  "Email.label": {
-    "defaultMessage": "Email"
-  },
-  "FrequencyInput.every": {
-    "defaultMessage": "Every"
-  },
-  "FrequencyInput.interval": {
-    "defaultMessage": "Interval"
-  },
-  "FrequencyInput.hour": {
-    "defaultMessage": "hour"
-  },
-  "FrequencyInput.minute": {
-    "defaultMessage": "minute"
-  },
-  "GenericError.message": {
-    "defaultMessage": "Something went wrong."
-  },
-  "GoCopyStrategy.label": {
-    "defaultMessage": "Copy"
-  },
-  "GoSettings.label": {
-    "defaultMessage": "Go to Settings"
-  },
-  "InvalidStrategyKey.message": {
-    "defaultMessage": "Invalid strategy key. Check this URL parameters."
-  },
-  "Memory.empty": {
-    "defaultMessage": "empty"
-  },
-  "Memory.title": {
-    "defaultMessage": "Memory"
-  },
-  "Name.hasSpaces": {
-    "defaultMessage": "Name cannot start or end with spaces."
-  },
-  "Name.invalid": {
-    "defaultMessage": "Invalid name."
-  },
-  "Navigation.account": {
-    "defaultMessage": "Account"
-  },
-  "Navigation.admin": {
-    "defaultMessage": "Admin"
-  },
-  "Navigation.billing": {
-    "defaultMessage": "Billing"
-  },
-  "Navigation.binance": {
-    "defaultMessage": "Binance"
-  },
-  "Navigation.exit": {
-    "defaultMessage": "Exit"
-  },
-  "Navigation.settings": {
-    "defaultMessage": "Settings"
-  },
-  "Navigation.strategies": {
-    "defaultMessage": "Strategies"
-  },
-  "NoNetwork.title": {
-    "defaultMessage": "No network"
-  },
-  "NoNetwork.message": {
-    "defaultMessage": "The network connection has been lost."
-  },
-  "OneTimePassword.label": {
-    "defaultMessage": "One time password"
-  },
-  "PleaseConfigureBinance.goToSettings": {
-    "defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
-  },
-  "PleaseConfigureBinance.message": {
-    "defaultMessage": "You cannot run strategies on Binance yet."
-  },
-  "PleasePurchase.doNotShow": {
-    "defaultMessage": "Do not show this message for a while."
-  },
-  "PleasePurchase.message": {
-    "defaultMessage": "You cannot run a strategy without a subscription."
-  },
-  "PleasePurchase.goToSettings": {
-    "defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
-  },
-  "PleasePurchase.title": {
-    "defaultMessage": "Please purchase"
-  },
-  "ProfitSummary.fees": {
-    "defaultMessage": "Fees"
-  },
-  "ProfitSummary.minPrice": {
-    "defaultMessage": "Min. price"
-  },
-  "ProfitSummary.maxPrice": {
-    "defaultMessage": "Max. price"
-  },
-  "ProfitSummary.numBuys": {
-    "defaultMessage": "Num. buys"
-  },
-  "ProfitSummary.numSells": {
-    "defaultMessage": "Num. sells"
-  },
-  "ProfitSummary.title": {
-    "defaultMessage": "Profits"
-  },
-  "PurchaseCanceled.message": {
-    "defaultMessage": "Your purchase was canceled."
-  },
-  "RegenerateOneTimePassword.button": {
-    "defaultMessage": "Ok"
-  },
-  "RegenerateOneTimePassword.message": {
-    "defaultMessage": "Need to generate one time password again."
-  },
-  "RenameStrategy.button": {
-    "defaultMessage": "Rename"
-  },
-  "RenameStrategy.chooseName": {
-    "defaultMessage": "Choose a new name for your strategy."
-  },
-  "RenameStrategy.title": {
-    "defaultMessage": "Rename strategy"
-  },
-  "RenameStrategy.save": {
-    "defaultMessage": "Save"
-  },
-  "SchedulingItem.activate": {
-    "defaultMessage": "Activate"
-  },
-  "SchedulingItem.dismiss": {
-    "defaultMessage": "Dismiss"
-  },
-  "SchedulingItem.remove": {
-    "defaultMessage": "Remove"
-  },
-  "Schedulings.add": {
-    "defaultMessage": "Add"
-  },
-  "Schedulings.title": {
-    "defaultMessage": "Schedulings"
-  },
-  "Schedulings.cancel": {
-    "defaultMessage": "Cancel"
-  },
-  "Schedulings.save": {
-    "defaultMessage": "Save"
-  },
-  "SchedulingsErrorExceededQuota.message": {
-    "defaultMessage": "Cannot create more schedulings. Check your account quotas."
-  },
-  "SchedulingStatus.active": {
-    "defaultMessage": "Active"
-  },
-  "SchedulingStatus.inactive": {
-    "defaultMessage": "Inactive"
-  },
-  "SchedulingStatus.suspended": {
-    "defaultMessage": "Suspended"
-  },
-  "SelectCountry.label": {
-    "defaultMessage": "Country"
-  },
-  "ShareStrategy.label": {
-    "defaultMessage": "Share"
-  },
-  "ShareStrategy.copied": {
-    "defaultMessage": "Strategy link copied."
-  },
-  "ShareStrategy.error": {
-    "defaultMessage": "Could not share strategy. Please copy URL manually."
-  },
-  "Strategies.noStrategy": {
-    "defaultMessage": "Your strategies list is empty."
-  },
-  "StrategiesErrorExceededQuota.message": {
-    "defaultMessage": "Cannot create more strategies. Check your account quotas."
-  },
-  "StrategyActions.title": {
-    "defaultMessage": "Strategy"
-  },
-  "StrategyNotFound.title": {
-    "defaultMessage": "Strategy not found."
-  },
-  "StrategyId.label": {
-    "defaultMessage": "Strategy ID"
-  },
-  "StrategyKind.label": {
-    "defaultMessage": "Strategy kind"
-  },
-  "StrategyName.label": {
-    "defaultMessage": "Strategy name"
-  },
-  "SubscriptionEnd.label": {
-    "defaultMessage": "End day"
-  },
-  "SubscriptionPlan.label": {
-    "defaultMessage": "Plan"
-  },
-  "SubscriptionInfo.title": {
-    "defaultMessage": "Subscription"
-  },
-  "SubscriptionInfo.pleasePurchase": {
-    "defaultMessage": "Please purchase a subscription."
-  },
-  "SubscriptionNumMonths.label": {
-    "defaultMessage": "Num months"
-  },
-  "SubscriptionPurchase.button": {
-    "defaultMessage": "Buy"
-  },
-  "SubscriptionPurchase.couldRenew": {
-    "defaultMessage": "Your subscription will expire soon, please consider renew it."
-  },
-  "SubscriptionPurchase.hint": {
-    "defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."
-  },
-  "SubscriptionPurchase.oneMonthPrice": {
-    "defaultMessage": "Price for one month is {price}."
-  },
-  "SubscriptionPurchase.title": {
-    "defaultMessage": "Purchase"
-  },
-  "SubscriptionPurchased.message": {
-    "defaultMessage": "Thank you for your purchase."
-  },
-  "SubscriptionStatus.active": {
-    "defaultMessage": "Active"
-  },
-  "SubscriptionStatus.expired": {
-    "defaultMessage": "Expired"
-  },
-  "SubscriptionTotalPrice.label": {
-    "defaultMessage": "Total price"
-  },
-  "SubscriptionTotalPrice.discount": {
-    "defaultMessage": "One month for free."
-  },
-  "Tabs.accounts": {
-    "defaultMessage": "Accounts"
-  },
-  "Tabs.backtesting": {
-    "defaultMessage": "Backtesting"
-  },
-  "Tabs.flow": {
-    "defaultMessage": "Flow"
-  },
-  "Tabs.manage": {
-    "defaultMessage": "Manage"
-  },
-  "Tabs.newStrategy": {
-    "defaultMessage": "New strategy"
-  },
-  "Tabs.orders": {
-    "defaultMessage": "Orders"
-  },
-  "Tabs.strategies": {
-    "defaultMessage": "Strategies"
-  },
-  "TimeoutError.message": {
-    "defaultMessage": "Request not sent. Please check connectivity and try again."
-  },
-  "WhenCreated.label": {
-    "defaultMessage": "When created"
-  }
+	"AccountId.label": {
+		"defaultMessage": "Account ID"
+	},
+	"AccountSettings.title": {
+		"defaultMessage": "Account"
+	},
+	"ApiKey.label": {
+		"defaultMessage": "API key"
+	},
+	"ApiSecret.label": {
+		"defaultMessage": "API secret"
+	},
+	"AuthEnter.button": {
+		"defaultMessage": "Send"
+	},
+	"AuthEnter.title": {
+		"defaultMessage": "Enter ggbot2"
+	},
+	"AuthExit.button": {
+		"defaultMessage": "Exit"
+	},
+	"AuthExit.message": {
+		"defaultMessage": "Exit from your current account session."
+	},
+	"AuthExit.title": {
+		"defaultMessage": "Exit ggbot2"
+	},
+	"AuthVerify.button": {
+		"defaultMessage": "Enter"
+	},
+	"AuthVerify.failed": {
+		"defaultMessage": "Verification failed."
+	},
+	"AuthVerify.checkEmail": {
+		"defaultMessage": "Check your email to get the <em>One Time Password</em>. If the email is not correct, click the {resetEmail} button."
+	},
+	"AuthVerify.enterOneTimePassword": {
+		"defaultMessage": "Enter the 6-digits <em>One Time Password</em> you find in your email."
+	},
+	"AuthVerify.resetEmail": {
+		"defaultMessage": "Reset"
+	},
+	"AuthVerify.title": {
+		"defaultMessage": "Account verification"
+	},
+	"BacktestingActions.pause": {
+		"defaultMessage": "Pause"
+	},
+	"BacktestingActions.resume": {
+		"defaultMessage": "Resume"
+	},
+	"BacktestingActions.start": {
+		"defaultMessage": "Start"
+	},
+	"BacktestingActions.stop": {
+		"defaultMessage": "Stop"
+	},
+	"Backtesting.title": {
+		"defaultMessage": "Backtesting"
+	},
+	"BacktestingProgress.currentTime": {
+		"defaultMessage": "Current time is {time}"
+	},
+	"BacktestingProgress.dayInterval": {
+		"defaultMessage": "From {start} to {end}"
+	},
+	"BacktestingProgress.title": {
+		"defaultMessage": "Progress"
+	},
+	"BacktestingProgress.intervals": {
+		"defaultMessage": "{value} of {max} intervals"
+	},
+	"BacktestingProgress.waiting": {
+		"defaultMessage": "Waiting for strategy flow"
+	},
+	"BacktestingProgress.preparing": {
+		"defaultMessage": "Preparing backtesting data"
+	},
+	"BinanceApi.error": {
+		"defaultMessage": "Could not test Binance API."
+	},
+	"BinanceApi.title": {
+		"defaultMessage": "Binance API"
+	},
+	"BinanceApi.test": {
+		"defaultMessage": "Test API"
+	},
+	"BinanceApiKeyPermissionEnableReading.description": {
+		"defaultMessage": "is <em>reading</em> permission enabled?"
+	},
+	"BinanceApiKeyPermissionEnableWithdrawals.description": {
+		"defaultMessage": "are <em>withdrawals</em> enabled?"
+	},
+	"BinanceApiKeyPermissionEnableSpotAndMarginTrading.description": {
+		"defaultMessage": "is <em>Spot and Margin</em> enabled?"
+	},
+	"BinanceApiKeyPermissionIpRestrict.description": {
+		"defaultMessage": "is <em>static IP</em> restriction activated?"
+	},
+	"CopyStrategy.chooseName": {
+		"defaultMessage": "Choose a new name for the copied strategy."
+	},
+	"CopyStrategy.strategyInfo": {
+		"defaultMessage": "These are the details about the strategy you are going to copy."
+	},
+	"CopyStrategy.title": {
+		"defaultMessage": "Copy strategy"
+	},
+	"CopyStrategy.button": {
+		"defaultMessage": "Copy"
+	},
+	"CreateBinanceApi.title": {
+		"defaultMessage": "Binance API"
+	},
+	"CreateBinanceApi.button": {
+		"defaultMessage": "Create Binance API"
+	},
+	"CreateStrategy.button": {
+		"defaultMessage": "Create"
+	},
+	"CreateStrategy.chooseName": {
+		"defaultMessage": "Choose a name for your <em>brand new</em> strategy."
+	},
+	"DailyInterval.from": {
+		"defaultMessage": "From"
+	},
+	"DailyInterval.to": {
+		"defaultMessage": "To"
+	},
+	"DeleteAccount.button": {
+		"defaultMessage": "Delete account"
+	},
+	"DeleteAccount.confirmation": {
+		"defaultMessage": "Yes, delete my account!"
+	},
+	"DeleteAccount.dismiss": {
+		"defaultMessage": "No, close this message"
+	},
+	"DeleteAccount.title": {
+		"defaultMessage": "Account deletion"
+	},
+	"DeleteAccount.consent": {
+		"defaultMessage": "I am aware of the consequences of my account deletion."
+	},
+	"DeleteAccount.question": {
+		"defaultMessage": "Are you sure you want to delete your account?"
+	},
+	"DeleteBinanceApi.button": {
+		"defaultMessage": "Delete API"
+	},
+	"DeleteBinanceApi.confirmation": {
+		"defaultMessage": "Yes, delete it"
+	},
+	"DeleteBinanceApi.dismiss": {
+		"defaultMessage": "No, close this message"
+	},
+	"DeleteBinanceApi.title": {
+		"defaultMessage": "Binance API deletion"
+	},
+	"DeleteBinanceApi.question": {
+		"defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
+	},
+	"DeleteBinanceApi.warning": {
+		"defaultMessage": "All your ggbot2 strategies will not able to be run"
+	},
+	"DeleteBinanceApi.info": {
+		"defaultMessage": "This action will not delete your API key on Binance website."
+	},
+	"DeleteStrategy.button": {
+		"defaultMessage": "Delete"
+	},
+	"DeleteStrategy.confirmation": {
+		"defaultMessage": "Yes, delete it"
+	},
+	"DeleteStrategy.dismiss": {
+		"defaultMessage": "No"
+	},
+	"DeleteStrategy.message": {
+		"defaultMessage": "Are you sure you want to delete this strategy?"
+	},
+	"DeleteStrategy.title": {
+		"defaultMessage": "Strategy deletion"
+	},
+	"EditableFlow.save": {
+		"defaultMessage": "Save"
+	},
+	"Email.label": {
+		"defaultMessage": "Email"
+	},
+	"FrequencyInput.every": {
+		"defaultMessage": "Every"
+	},
+	"FrequencyInput.interval": {
+		"defaultMessage": "Interval"
+	},
+	"FrequencyInput.hour": {
+		"defaultMessage": "hour"
+	},
+	"FrequencyInput.minute": {
+		"defaultMessage": "minute"
+	},
+	"GenericError.message": {
+		"defaultMessage": "Something went wrong."
+	},
+	"GoCopyStrategy.label": {
+		"defaultMessage": "Copy"
+	},
+	"GoSettings.label": {
+		"defaultMessage": "Go to Settings"
+	},
+	"InvalidStrategyKey.message": {
+		"defaultMessage": "Invalid strategy key. Check this URL parameters."
+	},
+	"Memory.empty": {
+		"defaultMessage": "empty"
+	},
+	"Memory.title": {
+		"defaultMessage": "Memory"
+	},
+	"Name.hasSpaces": {
+		"defaultMessage": "Name cannot start or end with spaces."
+	},
+	"Name.invalid": {
+		"defaultMessage": "Invalid name."
+	},
+	"Navigation.account": {
+		"defaultMessage": "Account"
+	},
+	"Navigation.admin": {
+		"defaultMessage": "Admin"
+	},
+	"Navigation.billing": {
+		"defaultMessage": "Billing"
+	},
+	"Navigation.binance": {
+		"defaultMessage": "Binance"
+	},
+	"Navigation.exit": {
+		"defaultMessage": "Exit"
+	},
+	"Navigation.settings": {
+		"defaultMessage": "Settings"
+	},
+	"Navigation.strategies": {
+		"defaultMessage": "Strategies"
+	},
+	"NoNetwork.title": {
+		"defaultMessage": "No network"
+	},
+	"NoNetwork.message": {
+		"defaultMessage": "The network connection has been lost."
+	},
+	"OneTimePassword.label": {
+		"defaultMessage": "One time password"
+	},
+	"PleaseConfigureBinance.goToSettings": {
+		"defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
+	},
+	"PleaseConfigureBinance.message": {
+		"defaultMessage": "You cannot run strategies on Binance yet."
+	},
+	"PleasePurchase.doNotShow": {
+		"defaultMessage": "Do not show this message for a while."
+	},
+	"PleasePurchase.message": {
+		"defaultMessage": "You cannot run a strategy without a subscription."
+	},
+	"PleasePurchase.goToSettings": {
+		"defaultMessage": "Please go to <em>Settings</em> and <b>purchase</b> a subscription."
+	},
+	"PleasePurchase.title": {
+		"defaultMessage": "Please purchase"
+	},
+	"ProfitSummary.fees": {
+		"defaultMessage": "Fees"
+	},
+	"ProfitSummary.minPrice": {
+		"defaultMessage": "Min. price"
+	},
+	"ProfitSummary.maxPrice": {
+		"defaultMessage": "Max. price"
+	},
+	"ProfitSummary.numBuys": {
+		"defaultMessage": "Num. buys"
+	},
+	"ProfitSummary.numSells": {
+		"defaultMessage": "Num. sells"
+	},
+	"ProfitSummary.title": {
+		"defaultMessage": "Profits"
+	},
+	"PurchaseCanceled.message": {
+		"defaultMessage": "Your purchase was canceled."
+	},
+	"RegenerateOneTimePassword.button": {
+		"defaultMessage": "Ok"
+	},
+	"RegenerateOneTimePassword.message": {
+		"defaultMessage": "Need to generate one time password again."
+	},
+	"RenameStrategy.button": {
+		"defaultMessage": "Rename"
+	},
+	"RenameStrategy.chooseName": {
+		"defaultMessage": "Choose a new name for your strategy."
+	},
+	"RenameStrategy.title": {
+		"defaultMessage": "Rename strategy"
+	},
+	"RenameStrategy.save": {
+		"defaultMessage": "Save"
+	},
+	"SchedulingItem.activate": {
+		"defaultMessage": "Activate"
+	},
+	"SchedulingItem.dismiss": {
+		"defaultMessage": "Dismiss"
+	},
+	"SchedulingItem.remove": {
+		"defaultMessage": "Remove"
+	},
+	"Schedulings.add": {
+		"defaultMessage": "Add"
+	},
+	"Schedulings.title": {
+		"defaultMessage": "Schedulings"
+	},
+	"Schedulings.cancel": {
+		"defaultMessage": "Cancel"
+	},
+	"Schedulings.save": {
+		"defaultMessage": "Save"
+	},
+	"SchedulingsErrorExceededQuota.message": {
+		"defaultMessage": "Cannot create more schedulings. Check your account quotas."
+	},
+	"SchedulingStatus.active": {
+		"defaultMessage": "Active"
+	},
+	"SchedulingStatus.inactive": {
+		"defaultMessage": "Inactive"
+	},
+	"SchedulingStatus.suspended": {
+		"defaultMessage": "Suspended"
+	},
+	"SelectCountry.label": {
+		"defaultMessage": "Country"
+	},
+	"ShareStrategy.label": {
+		"defaultMessage": "Share"
+	},
+	"ShareStrategy.copied": {
+		"defaultMessage": "Strategy link copied."
+	},
+	"ShareStrategy.error": {
+		"defaultMessage": "Could not share strategy. Please copy URL manually."
+	},
+	"Strategies.noStrategy": {
+		"defaultMessage": "Your strategies list is empty."
+	},
+	"StrategiesErrorExceededQuota.message": {
+		"defaultMessage": "Cannot create more strategies. Check your account quotas."
+	},
+	"StrategyActions.title": {
+		"defaultMessage": "Strategy"
+	},
+	"StrategyNotFound.title": {
+		"defaultMessage": "Strategy not found."
+	},
+	"StrategyId.label": {
+		"defaultMessage": "Strategy ID"
+	},
+	"StrategyKind.label": {
+		"defaultMessage": "Strategy kind"
+	},
+	"StrategyName.label": {
+		"defaultMessage": "Strategy name"
+	},
+	"SubscriptionEnd.label": {
+		"defaultMessage": "End day"
+	},
+	"SubscriptionPlan.label": {
+		"defaultMessage": "Plan"
+	},
+	"SubscriptionInfo.title": {
+		"defaultMessage": "Subscription"
+	},
+	"SubscriptionInfo.pleasePurchase": {
+		"defaultMessage": "Please purchase a subscription."
+	},
+	"SubscriptionNumMonths.label": {
+		"defaultMessage": "Num months"
+	},
+	"SubscriptionPurchase.button": {
+		"defaultMessage": "Buy"
+	},
+	"SubscriptionPurchase.couldRenew": {
+		"defaultMessage": "Your subscription will expire soon, please consider renew it."
+	},
+	"SubscriptionPurchase.hint": {
+		"defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."
+	},
+	"SubscriptionPurchase.oneMonthPrice": {
+		"defaultMessage": "Price for one month is {price}."
+	},
+	"SubscriptionPurchase.title": {
+		"defaultMessage": "Purchase"
+	},
+	"SubscriptionPurchased.message": {
+		"defaultMessage": "Thank you for your purchase."
+	},
+	"SubscriptionStatus.active": {
+		"defaultMessage": "Active"
+	},
+	"SubscriptionStatus.expired": {
+		"defaultMessage": "Expired"
+	},
+	"SubscriptionTotalPrice.label": {
+		"defaultMessage": "Total price"
+	},
+	"SubscriptionTotalPrice.discount": {
+		"defaultMessage": "One month for free."
+	},
+	"Tabs.accounts": {
+		"defaultMessage": "Accounts"
+	},
+	"Tabs.backtesting": {
+		"defaultMessage": "Backtesting"
+	},
+	"Tabs.flow": {
+		"defaultMessage": "Flow"
+	},
+	"Tabs.manage": {
+		"defaultMessage": "Manage"
+	},
+	"Tabs.newStrategy": {
+		"defaultMessage": "New strategy"
+	},
+	"Tabs.orders": {
+		"defaultMessage": "Orders"
+	},
+	"Tabs.strategies": {
+		"defaultMessage": "Strategies"
+	},
+	"TimeoutError.message": {
+		"defaultMessage": "Request not sent. Please check connectivity and try again."
+	},
+	"WhenCreated.label": {
+		"defaultMessage": "When created"
+	}
 }

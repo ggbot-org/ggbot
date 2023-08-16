@@ -1,106 +1,108 @@
 import {
-  createdNow,
-  DeleteAccountStrategiesItem,
-  deletedNow,
-  ErrorExceededQuota,
-  InsertAccountStrategiesItem,
-  isAccountStrategies,
-  quota,
-  ReadAccountStrategies,
-  RenameAccountStrategiesItem,
-  SuspendAccountStrategiesItemSchedulings,
-  SuspendAccountStrategiesSchedulings,
-  WriteAccountStrategiesItemSchedulings,
-} from "@ggbot2/models";
+	createdNow,
+	DeleteAccountStrategiesItem,
+	deletedNow,
+	ErrorExceededQuota,
+	InsertAccountStrategiesItem,
+	isAccountStrategies,
+	quota,
+	ReadAccountStrategies,
+	RenameAccountStrategiesItem,
+	SuspendAccountStrategiesItemSchedulings,
+	SuspendAccountStrategiesSchedulings,
+	WriteAccountStrategiesItemSchedulings
+} from "@ggbot2/models"
 
-import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js";
-import { pathname } from "./locators.js";
-import { readSubscription } from "./subscription.js";
+import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
+import { pathname } from "./locators.js"
+import { readSubscription } from "./subscription.js"
 
 export const readAccountStrategies: ReadAccountStrategies = (arg) =>
-  READ_ARRAY<ReadAccountStrategies>(
-    isAccountStrategies,
-    pathname.accountStrategies(arg)
-  );
+	READ_ARRAY<ReadAccountStrategies>(
+		isAccountStrategies,
+		pathname.accountStrategies(arg)
+	)
 
 export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
-  accountId,
-  item,
+	accountId,
+	item
 }) => {
-  const items = (await readAccountStrategies({ accountId })) ?? [];
-  const subscription = await readSubscription({ accountId });
+	const items = (await readAccountStrategies({ accountId })) ?? []
+	const subscription = await readSubscription({ accountId })
 
-  const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(subscription?.plan);
-  if (items.length >= numMaxStrategies)
-    throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" });
-  const data = [...items, item];
-  const Key = pathname.accountStrategies({ accountId });
-  await WRITE(Key, data);
-  return createdNow();
-};
+	const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(
+		subscription?.plan
+	)
+	if (items.length >= numMaxStrategies)
+		throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" })
+	const data = [...items, item]
+	const Key = pathname.accountStrategies({ accountId })
+	await WRITE(Key, data)
+	return createdNow()
+}
 
 export const renameAccountStrategiesItem: RenameAccountStrategiesItem = async ({
-  accountId,
-  strategyId,
-  name,
+	accountId,
+	strategyId,
+	name
 }) => {
-  const items = (await readAccountStrategies({ accountId })) ?? [];
-  const data = items.map((item) => {
-    if (item.strategyId !== strategyId) return item;
-    return { ...item, name };
-  });
-  return await UPDATE(pathname.accountStrategies({ accountId }), data);
-};
+	const items = (await readAccountStrategies({ accountId })) ?? []
+	const data = items.map((item) => {
+		if (item.strategyId !== strategyId) return item
+		return { ...item, name }
+	})
+	return await UPDATE(pathname.accountStrategies({ accountId }), data)
+}
 
 export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings =
-  async ({ accountId, strategyId, schedulings }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => {
-      if (item.strategyId !== strategyId) return item;
-      return { ...item, schedulings };
-    });
-    return await UPDATE(pathname.accountStrategies({ accountId }), data);
-  };
+	async ({ accountId, strategyId, schedulings }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => {
+			if (item.strategyId !== strategyId) return item
+			return { ...item, schedulings }
+		})
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}
 
 export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
-  accountId,
-  strategyId,
+	accountId,
+	strategyId
 }) => {
-  const items = (await readAccountStrategies({ accountId })) ?? [];
-  const data = items.filter((item) => item.strategyId !== strategyId);
-  if (data.length !== items.length) {
-    await WRITE(pathname.accountStrategies({ accountId }), data);
-  }
-  return deletedNow();
-};
+	const items = (await readAccountStrategies({ accountId })) ?? []
+	const data = items.filter((item) => item.strategyId !== strategyId)
+	if (data.length !== items.length) {
+		await WRITE(pathname.accountStrategies({ accountId }), data)
+	}
+	return deletedNow()
+}
 
 export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesItemSchedulings =
-  async ({ accountId, strategyId }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => {
-      if (item.strategyId !== strategyId) return item;
-      return {
-        ...item,
-        schedulings: item.schedulings.map((scheduling) => ({
-          ...scheduling,
-          status: "suspended",
-        })),
-      };
-    });
-    return await UPDATE(pathname.accountStrategies({ accountId }), data);
-  };
+	async ({ accountId, strategyId }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => {
+			if (item.strategyId !== strategyId) return item
+			return {
+				...item,
+				schedulings: item.schedulings.map((scheduling) => ({
+					...scheduling,
+					status: "suspended"
+				}))
+			}
+		})
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}
 
 export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings =
-  async ({ accountId }) => {
-    const items = (await readAccountStrategies({ accountId })) ?? [];
-    const data = items.map((item) => ({
-      ...item,
-      schedulings: item.schedulings.map(
-        ({ status: _status, ...scheduling }) => ({
-          ...scheduling,
-          status: "suspended",
-        })
-      ),
-    }));
-    return await UPDATE(pathname.accountStrategies({ accountId }), data);
-  };
+	async ({ accountId }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => ({
+			...item,
+			schedulings: item.schedulings.map(
+				({ status: _status, ...scheduling }) => ({
+					...scheduling,
+					status: "suspended"
+				})
+			)
+		}))
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}

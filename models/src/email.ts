@@ -1,32 +1,32 @@
-import { ErrorInvalidArg } from "./errors.js";
+import { ErrorInvalidArg } from "./errors.js"
 
-export type EmailAddress = string;
+export type EmailAddress = string
 
 export const isEmailAddress = (arg: unknown): arg is EmailAddress => {
-  // EmailAddress is a string.
-  if (typeof arg !== "string") return false;
+	// EmailAddress is a string.
+	if (typeof arg !== "string") return false
 
-  // EmailAddress contains two parts separated by '@'.
-  const parts = arg.split("@");
-  if (parts.length !== 2) return false;
+	// EmailAddress contains two parts separated by '@'.
+	const parts = arg.split("@")
+	if (parts.length !== 2) return false
 
-  const [firstPart, domain] = parts;
+	const [firstPart, domain] = parts
 
-  // EmailAddress first part is not empty.
-  if (firstPart === "") return false;
+	// EmailAddress first part is not empty.
+	if (firstPart === "") return false
 
-  // EmailAddress domain has at least one ".".
-  const domainParts = domain.split(".");
-  if (domainParts.length < 2) return false;
+	// EmailAddress domain has at least one ".".
+	const domainParts = domain.split(".")
+	if (domainParts.length < 2) return false
 
-  // EmailAddress domain extension is not empty.
-  const domainExtension = domainParts.pop();
-  if (domainExtension === "") return false;
+	// EmailAddress domain extension is not empty.
+	const domainExtension = domainParts.pop()
+	if (domainExtension === "") return false
 
-  return true;
-};
+	return true
+}
 
-export const noneEmail: EmailAddress = "user@example.com";
+export const noneEmail: EmailAddress = "user@example.com"
 
 /**
  * Normalize email address.
@@ -43,15 +43,15 @@ export const noneEmail: EmailAddress = "user@example.com";
  * `Name@gmail.com` can be used as `name+label@gmail.com`
  */
 export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
-  // Split EmailAddress
-  const [firstPart, domain] = email.split("@");
-  // Remove labels
-  const [user] = firstPart.split("+");
-  // Remove dots
-  const userWithNoDots = user.replace(/\./g, "");
-  // Return normalized email as a lowercase string
-  const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase();
-  if (!isEmailAddress(normalizeEmail))
-    throw new ErrorInvalidArg({ type: "EmailAddress", arg: normalizeEmail });
-  return normalizeEmail;
-};
+	// Split EmailAddress
+	const [firstPart, domain] = email.split("@")
+	// Remove labels
+	const [user] = firstPart.split("+")
+	// Remove dots
+	const userWithNoDots = user.replace(/\./g, "")
+	// Return normalized email as a lowercase string
+	const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase()
+	if (!isEmailAddress(normalizeEmail))
+		throw new ErrorInvalidArg({ type: "EmailAddress", arg: normalizeEmail })
+	return normalizeEmail
+}

@@ -1,26 +1,26 @@
-import { FC, useState } from "react";
+import { FC, useState } from "react"
 
-import { Accounts } from "../components/Accounts.js";
-import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js";
+import { Accounts } from "../components/Accounts.js"
+import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js"
 
-const pageName = "AdminDashboard";
+const pageName = "AdminDashboard"
 
 export const AdminDashboard: FC = () => {
-  const [activeTabId, setActiveTabId] = useState<TabId>(
-    getStoredTabId(pageName) ?? "accounts"
-  );
+	const [activeTabId, setActiveTabId] = useState<TabId>(
+		getStoredTabId(pageName) ?? "accounts"
+	)
 
-  return (
-    <Tabs
-      pageName={pageName}
-      activeTabId={activeTabId}
-      setActiveTabId={setActiveTabId}
-      tabs={[
-        {
-          tabId: "accounts",
-          content: <Accounts />,
-        },
-      ]}
-    />
-  );
-};
+	return (
+		<Tabs
+			pageName={pageName}
+			activeTabId={activeTabId}
+			setActiveTabId={setActiveTabId}
+			tabs={[
+				{
+					tabId: "accounts",
+					content: <Accounts />
+				}
+			]}
+		/>
+	)
+}

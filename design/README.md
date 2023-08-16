@@ -31,5 +31,5 @@ TODO remove package.json
 Import components in your React app.
 
 ```js
-import { Button } from "@ggbot2/design";
+import { Button } from "@ggbot2/design"
 ```

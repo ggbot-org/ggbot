@@ -1,18 +1,18 @@
-import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils";
+import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils"
 
-import { ApiActionInput } from "./apiAction.js";
+import { ApiActionInput } from "./apiAction.js"
 
 export const publicApiActionTypes = [
-  "ReadStrategy",
-  "ReadStrategyFlow",
-] as const;
-export type PublicApiActionType = (typeof publicApiActionTypes)[number];
+	"ReadStrategy",
+	"ReadStrategyFlow"
+] as const
+export type PublicApiActionType = (typeof publicApiActionTypes)[number]
 export const isPublicApiActionType =
-  isLiteralType<PublicApiActionType>(publicApiActionTypes);
+	isLiteralType<PublicApiActionType>(publicApiActionTypes)
 
-export type PublicApiActionRequestData = ApiActionInput<PublicApiActionType>;
+export type PublicApiActionRequestData = ApiActionInput<PublicApiActionType>
 
 export const isPublicApiActionRequestData =
-  objectTypeGuard<PublicApiActionRequestData>(({ type }) =>
-    isPublicApiActionType(type)
-  );
+	objectTypeGuard<PublicApiActionRequestData>(({ type }) =>
+		isPublicApiActionType(type)
+	)

@@ -1,69 +1,69 @@
-import { wwwDomain } from "./FQDNs.js";
+import { wwwDomain } from "./FQDNs.js"
 
 export class ApiAuthenticationEnterURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/enter", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/enter", apiBaseURL)
+	}
 }
 
 export class ApiAuthenticationVerifyURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/verify", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/verify", apiBaseURL)
+	}
 }
 
 export class ApiAdminActionURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/admin/action", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/admin/action", apiBaseURL)
+	}
 }
 
 export class ApiPublicActionURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/public/action", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/public/action", apiBaseURL)
+	}
 }
 
 export class ApiUserActionURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/user/action", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/user/action", apiBaseURL)
+	}
 }
 
 export class ApiPurchaseOrderURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/utrust/order", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/utrust/order", apiBaseURL)
+	}
 }
 
 export class UserWebappHomepageURL extends URL {
-  constructor(userWebappBaseURL: string) {
-    super("/", userWebappBaseURL);
-  }
+	constructor(userWebappBaseURL: string) {
+		super("/", userWebappBaseURL)
+	}
 }
 
 export class UtrustCancelURL extends URL {
-  static htmlFileName = "purchase-canceled.html";
-  constructor(userWebappBaseURL: string) {
-    super(`/${UtrustCancelURL.htmlFileName}`, userWebappBaseURL);
-  }
+	static htmlFileName = "purchase-canceled.html"
+	constructor(userWebappBaseURL: string) {
+		super(`/${UtrustCancelURL.htmlFileName}`, userWebappBaseURL)
+	}
 }
 
 export class UtrustCallbackURL extends URL {
-  constructor(apiBaseURL: string) {
-    super("/utrust/callback", apiBaseURL);
-  }
+	constructor(apiBaseURL: string) {
+		super("/utrust/callback", apiBaseURL)
+	}
 }
 
 export class UtrustReturnURL extends URL {
-  static htmlFileName = "subscription-purchased.html";
-  constructor(userWebappBaseURL: string) {
-    super(`/${UtrustReturnURL.htmlFileName}`, userWebappBaseURL);
-  }
+	static htmlFileName = "subscription-purchased.html"
+	constructor(userWebappBaseURL: string) {
+		super(`/${UtrustReturnURL.htmlFileName}`, userWebappBaseURL)
+	}
 }
 
 export class WwwHomepageURL extends URL {
-  constructor() {
-    super("/", `https://${wwwDomain}`);
-  }
+	constructor() {
+		super("/", `https://${wwwDomain}`)
+	}
 }

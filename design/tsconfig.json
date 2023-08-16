@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules"],
-  "extends": "@ggbot2/tsconfig/react",
-  "include": ["**/*.ts", "**/*.tsx"]
+	"exclude": ["node_modules"],
+	"extends": "@ggbot2/tsconfig/react",
+	"include": ["**/*.ts", "**/*.tsx"]
 }
