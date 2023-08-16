@@ -1,42 +1,46 @@
 import { isStrategy, Strategy } from "@ggbot2/models";
 import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils";
 
-const jwtKey = "jwt";
-const strategyKey = (id: Strategy["id"]) => `strategy:${id}`;
+import { isDev } from "./isDev.js";
+import { itemKey } from "./itemKeys.js";
 
 class LocalWebStorage {
   private getItem(key: string) {
+    if (isDev) console.info("web-storage", "local", "getItem", key);
     return window.localStorage.getItem(key);
   }
 
   private setItem(key: string, value: string) {
+    if (isDev) console.info("web-storage", "local", "setItem", key, value);
     window.localStorage.setItem(key, value);
   }
 
   private removeItem(key: string) {
+    if (isDev) console.info("web-storage", "local", "removeItem", key);
     window.localStorage.removeItem(key);
   }
 
   clear() {
+    if (isDev) console.info("web-storage", "local", "clear");
     window.localStorage.clear();
   }
 
   get jwt(): NonEmptyString | undefined {
-    const value = this.getItem(jwtKey);
+    const value = this.getItem(itemKey.jwt());
     if (isNonEmptyString(value)) return value;
   }
 
   set jwt(value: NonEmptyString | undefined) {
     // TODO better to create removeX removeY methods so setters do not accept undefined
     if (!value) {
-      this.removeItem(jwtKey);
+      this.removeItem(itemKey.jwt());
       return;
     }
-    if (isNonEmptyString(value)) this.setItem(jwtKey, value);
+    if (isNonEmptyString(value)) this.setItem(itemKey.jwt(), value);
   }
 
   getStrategy(strategyId: Strategy["id"]): Strategy | undefined {
-    const key = strategyKey(strategyId);
+    const key = itemKey.strategy(strategyId);
     const value = this.getItem(key);
     if (!value) return;
     try {
@@ -52,11 +56,11 @@ class LocalWebStorage {
   }
 
   setStrategy(strategy: Strategy) {
-    this.setItem(strategyKey(strategy.id), JSON.stringify(strategy));
+    this.setItem(itemKey.strategy(strategy.id), JSON.stringify(strategy));
   }
 
   removeStrategy(strategyId: Strategy["id"]) {
-    this.removeItem(strategyKey(strategyId));
+    this.removeItem(itemKey.strategy(strategyId));
   }
 }
 
