@@ -11,7 +11,14 @@ class SessionWebStorage {
   }
 
   private setItem(key: string, value: string) {
-    if (isDev) console.info("web-storage", "session", "setItem", key, value);
+    if (isDev)
+      console.info(
+        "web-storage",
+        "session",
+        "setItem",
+        key,
+        value.length > 170 ? "" : value
+      );
     window.sessionStorage.setItem(key, value);
   }
 
@@ -73,7 +80,20 @@ class SessionWebStorage {
       return;
     }
     try {
-      this.setItem(key, JSON.stringify(value));
+      // TODO storing the whole value (more than 3.7 MB) will raise an exceeded quota error.
+      // By now filter only the data needed.
+      const { symbols, ...rest } = value;
+      this.setItem(
+        key,
+        JSON.stringify({
+          ...rest,
+          symbols: symbols.map(({ symbol, baseAsset, quoteAsset }) => ({
+            symbol,
+            baseAsset,
+            quoteAsset,
+          })),
+        })
+      );
       this.binanceExchangeInfoIsValid = true;
     } catch (error) {
       console.error(error);
