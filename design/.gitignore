@@ -1,4 +1,5 @@
 temp/
-*.css
-*.js
-*.html
+public/*.css
+public/*.css.map
+public/*.js
+public/*.html

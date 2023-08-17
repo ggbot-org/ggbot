@@ -1,0 +1,9 @@
+/* Hide scrollbar on Chrome. */
+.tabs::-webkit-scrollbar {
+	width: 0 !important;
+}
+
+/* Hide scrollbar on Firefox. */
+.tabs {
+	overflow: -moz-scrollbars-none;
+}
