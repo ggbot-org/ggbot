@@ -17,7 +17,6 @@ describe("getDate", () => {
 		)
 	})
 
-	// TODO more test cases
 	it("works both with plus() and minus()", () => {
 		// plus minutes
 		;[

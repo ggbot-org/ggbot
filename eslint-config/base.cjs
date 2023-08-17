@@ -6,7 +6,6 @@ module.exports = {
 		"@typescript-eslint",
 		"eslint-plugin-tsdoc",
 		"import",
-		"prettier",
 		"simple-import-sort"
 	],
 	root: true,
@@ -64,7 +63,6 @@ module.exports = {
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
 		"no-warning-comments": "error",
-		"prettier/prettier": "error",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
 		"sort-keys": [

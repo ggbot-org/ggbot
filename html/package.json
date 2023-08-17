@@ -26,6 +26,17 @@
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "no-warning-comments": "off"
+        }
+      }
     ]
   }
 }
