@@ -28,7 +28,7 @@ export const READ = async <Operation extends AsyncFunction>(
 				"READ",
 				Key,
 				`isData=${isData(data)}`,
-				JSON.stringify(data, null, 2)
+				json.length > 170 ? "" : JSON.stringify(data, null, 2)
 			)
 		if (isData(data)) return data
 		throw new ErrorInvalidData()
