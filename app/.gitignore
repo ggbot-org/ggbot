@@ -4,4 +4,4 @@ public/*.css.map
 public/*.js
 public/*.html
 public/translations/*.json
-src/i18n/FormatjsIntlMessageIds.d.ts
+src/types/FormatjsIntlMessageIds.d.ts
