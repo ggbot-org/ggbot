@@ -26,8 +26,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				if (isApiAuthEnterRequestData(input)) {
 					const { email } = input
 
-					// TODO read language from enter request
-					// which reads it from detectLocale
 					const language = "en"
 					const oneTimePassword = await createOneTimePassword(email)
 					await sendOneTimePassword({

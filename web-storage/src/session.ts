@@ -1,5 +1,6 @@
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance"
 import type { ManagedCacheProvider } from "@ggbot2/cache"
+import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@ggbot2/dflow"
 import { isDev } from "@ggbot2/env"
 import { isLiteralType } from "@ggbot2/type-utils"
 
@@ -82,44 +83,14 @@ class SessionWebStorage implements WebStorageProvider {
 			return
 		}
 		try {
-			// TODO storing the whole value (more than 3.7 MB) will raise an exceeded quota error.
-			// By now filter only the data needed.
-			// Fields used are those required by isDflowBinanceSymbolInfo,
-			// should use also something like isDflowBinanceExchangeInfo instead of isBinanceExchangeInfo
-			// Also filters applied are same as isDflowBinanceSymbolInfo.
 			const { symbols, ...rest } = value
 			this.setItem(
 				key,
 				JSON.stringify({
 					...rest,
-					symbols: symbols
-						.filter(
-							({ isSpotTradingAllowed, status }) =>
-								isSpotTradingAllowed === true &&
-								status === "TRADING"
-						)
-						.map(
-							({
-								baseAsset,
-								baseAssetPrecision,
-								baseCommissionPrecision,
-								isSpotTradingAllowed,
-								quoteAsset,
-								quoteAssetPrecision,
-								quotePrecision,
-								status,
-								symbol
-							}) => ({
-								baseAsset,
-								baseAssetPrecision,
-								baseCommissionPrecision,
-								isSpotTradingAllowed,
-								quoteAsset,
-								quoteAssetPrecision,
-								quotePrecision,
-								status,
-								symbol
-							})
+					symbols:
+						binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
+							symbols
 						)
 				})
 			)

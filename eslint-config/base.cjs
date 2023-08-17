@@ -63,7 +63,7 @@ module.exports = {
 		// This behavior is known as [SmartTabs](https://www.emacswiki.org/emacs/SmartTabs).
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
-		"no-warning-comments": "warn",
+		"no-warning-comments": "error",
 		"prettier/prettier": "error",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",

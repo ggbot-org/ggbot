@@ -41,6 +41,17 @@
     "extends": [
       "@ggbot2/eslint-config/react"
     ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "no-warning-comments": "off"
+        }
+      }
+    ],
     "rules": {
       "formatjs/no-literal-string-in-jsx": "off"
     }

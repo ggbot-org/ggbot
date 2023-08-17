@@ -1,4 +1,3 @@
-// TODO add bulma block to trunx, for example as a prop to Flex component
 export * from "./BrandName.js"
 export * from "./Calendar.js"
 export * from "./Checkbox.js"

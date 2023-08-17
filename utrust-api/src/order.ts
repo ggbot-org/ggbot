@@ -122,7 +122,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					line_items: [
 						{
 							currency: purchaseCurrency,
-							// TODO translate this, needs lang param
 							name: `Subscription (${
 								numMonths >= purchaseMaxNumMonths - 1
 									? "1 year"

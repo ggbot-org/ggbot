@@ -1,4 +1,4 @@
-import { BinanceSymbolInfo } from "@ggbot2/binance"
+import { BinanceExchangeInfo, BinanceSymbolInfo } from "@ggbot2/binance"
 import { StrategyFlow } from "@ggbot2/models"
 import { objectTypeGuard } from "@ggbot2/type-utils"
 import { DflowGraph, DflowId } from "dflow"
@@ -51,6 +51,35 @@ export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
 		quoteAssetPrecision === dflowBinancePrecision &&
 		quotePrecision === dflowBinancePrecision
 )
+
+export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
+	symbols: BinanceExchangeInfo["symbols"]
+): DflowBinanceSymbolInfo[] =>
+	symbols
+		.filter(isDflowBinanceSymbolInfo)
+		.map(
+			({
+				baseAsset,
+				baseAssetPrecision,
+				baseCommissionPrecision,
+				isSpotTradingAllowed,
+				quoteAsset,
+				quoteAssetPrecision,
+				quotePrecision,
+				status,
+				symbol
+			}) => ({
+				baseAsset,
+				baseAssetPrecision,
+				baseCommissionPrecision,
+				isSpotTradingAllowed,
+				quoteAsset,
+				quoteAssetPrecision,
+				quotePrecision,
+				status,
+				symbol
+			})
+		)
 
 const dflowBinanceSymbolSeparator = "/"
 

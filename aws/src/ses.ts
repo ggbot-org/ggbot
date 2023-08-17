@@ -1,4 +1,3 @@
-// TODO move to aws-ses package
 import {
 	Destination,
 	Message,
