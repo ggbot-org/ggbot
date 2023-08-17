@@ -1,9 +1,9 @@
 import { coerceToDecimal } from "@ggbot2/arithmetic"
 import { DflowNode } from "dflow"
 
+import { inputExecute } from "../../common/nodes/commonIO.js"
 import { dflowBinancePrecision } from "../arithmetic.js"
 import { BinanceDflowContext as Context } from "../context.js"
-import { inputExecute } from "./commonIO.js"
 
 const { input, output } = DflowNode
 
@@ -13,7 +13,7 @@ const marketOrderInputs = [
 	input("number", { name: "quoteOrderQty", optional: true }),
 	inputExecute
 ]
-export const orderOutput = output("object", { name: "order" })
+const orderOutput = output("object", { name: "order" })
 export const orderOutputPosition = 0
 const outputs = new Array()
 outputs[orderOutputPosition] = orderOutput

@@ -9,7 +9,7 @@ import {
 } from "react"
 import { Notification } from "trunx"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 import { Toast, ToastProps } from "../components/Toast.js"
 
 type CreateToast = (message: ToastProps["message"]) => void
@@ -85,7 +85,7 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
 		<ToastContext.Provider value={contextValue}>
 			{children}
 
-			<div className={_classNames("ToastContainer")}>
+			<div className={classNames("ToastContainer")}>
 				{notifications.map(({ id, toast: { message, color } }) => (
 					<Toast
 						key={id}

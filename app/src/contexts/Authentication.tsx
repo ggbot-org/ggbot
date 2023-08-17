@@ -1,3 +1,4 @@
+import { isDev } from "@ggbot2/env"
 import { BadGatewayError, UnauthorizedError } from "@ggbot2/http"
 import { Account, EmailAddress, noneAccount } from "@ggbot2/models"
 import { now, Time } from "@ggbot2/time"
@@ -58,11 +59,20 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 			| { type: "HIDE_SPLASH_SCREEN" }
 			| { type: "EXIT" }
 			| { type: "SET_EMAIL"; data: Pick<State, "email"> }
-			| { type: "SET_EXIT_IS_ACTIVE"; data: Pick<State, "exitIsActive"> }
-			| { type: "SET_JWT"; data: Pick<State, "jwt"> }
+			| {
+					type: "SET_EXIT_IS_ACTIVE"
+					data: Pick<State, "exitIsActive">
+			  }
+			| {
+					type: "SET_JWT"
+					data: NonNullable<Pick<State, "jwt">>
+			  }
+			| { type: "RESET_JWT" }
 		>
 	>(
 		(state, action) => {
+			if (isDev)
+				console.info("Authentication", JSON.stringify(action, null, 2))
 			switch (action.type) {
 				case "EXIT": {
 					localWebStorage.clear()
@@ -75,6 +85,16 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 				case "HIDE_SPLASH_SCREEN": {
 					sessionWebStorage.gotFirstPageView.set(true)
 					return { ...state, showSplashScreen: false }
+				}
+
+				case "RESET_JWT": {
+					localWebStorage.jwt.delete()
+					return {
+						...state,
+						// Need also to reset email togetcher with jwt.
+						email: undefined,
+						jwt: undefined
+					}
 				}
 
 				case "SET_EMAIL": {
@@ -168,7 +188,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (READ.error) {
 			if (READ.error.name === UnauthorizedError.errorName) {
-				if (jwt) dispatch({ type: "SET_JWT", data: { jwt: undefined } })
+				if (jwt) dispatch({ type: "RESET_JWT" })
 			}
 
 			if (READ.error.name === BadGatewayError.errorName) {

@@ -32,6 +32,19 @@ const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`
 const scriptTag = ({ src }: ScriptTag) =>
 	`<script type="module" src="${src}"></script>`
 
+type StyleTag = {
+	content: string
+}
+
+const styleTag = ({ content }: StyleTag) => `<style>${content}</style>`
+
+const baseStyle = () =>
+	[
+		// React root element id is "root", it is defined in @ggbo2/react package.
+		// Make its height at least the whole page.
+		`html, body, #root { min-height: 100vh; }`
+	].join("\n")
+
 // TODO use assets CDN
 // const fontTags = [
 //    `<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
@@ -49,6 +62,7 @@ const metaTags = ({ title }: HeadTagArgs["meta"]) => [
 const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
 	"<head>",
 	...metaTags(meta),
+	styleTag({ content: baseStyle() }),
 	...stylesheets.map(linkTag),
 	"</head>"
 ]

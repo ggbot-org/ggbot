@@ -7,17 +7,16 @@ import {
 } from "@ggbot2/binance"
 import { Dflow, DflowNode } from "dflow"
 
-import { BinanceDflowContext as Context } from "../context.js"
-import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 import {
-	inputInterval,
-	inputSymbol,
 	outputClose,
 	outputHigh,
 	outputLow,
 	outputOpen,
 	outputVolume
-} from "./commonIO.js"
+} from "../../common/nodes/commonIO.js"
+import { BinanceDflowContext as Context } from "../context.js"
+import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
+import { inputInterval, inputSymbol } from "./commonIO.js"
 
 const { input, output } = DflowNode
 

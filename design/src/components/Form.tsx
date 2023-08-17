@@ -5,7 +5,7 @@ import {
 	PropsWithChildren
 } from "react"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 
 export type FormProps = FormHTMLAttributes<HTMLFormElement>
 
@@ -13,7 +13,7 @@ export const Form: FC<PropsWithChildren<FormProps>> = ({
 	children,
 	...props
 }) => (
-	<form className={_classNames("box")} {...props}>
+	<form className={classNames("box")} {...props}>
 		{children}
 	</form>
 )

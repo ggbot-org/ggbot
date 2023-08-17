@@ -1,6 +1,7 @@
-import { Container, ToastProvider } from "@ggbot2/design"
+import { Page, ToastProvider } from "@ggbot2/design"
 import { FC, PropsWithChildren } from "react"
 
+import { Footer } from "../components/Footer.js"
 import { Navigation, NavigationProps } from "../components/Navigation.js"
 import { NoNetwork } from "../components/NoNetwork.js"
 
@@ -10,13 +11,11 @@ export const PageContainer: FC<PropsWithChildren<Props>> = ({
 	children,
 	noMenu
 }) => (
-	<>
+	<Page footer={<Footer />}>
 		<Navigation noMenu={noMenu} />
 
-		<Container maxWidth="desktop">
-			<NoNetwork />
-		</Container>
+		<NoNetwork />
 
 		<ToastProvider>{children}</ToastProvider>
-	</>
+	</Page>
 )

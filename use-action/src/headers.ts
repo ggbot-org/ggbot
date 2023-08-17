@@ -11,8 +11,7 @@ export class UseActionHeaders extends Headers {
 			"Content-Type": "application/json"
 		})
 		if (withJwt) {
-			const { jwt } = localWebStorage
-			this.append("Authorization", `Bearer ${jwt}`)
+			this.append("Authorization", `Bearer ${localWebStorage.jwt.get()}`)
 		}
 	}
 }

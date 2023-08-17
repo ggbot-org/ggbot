@@ -9,7 +9,7 @@ import {
 } from "react"
 import { useIntl } from "react-intl"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 import { Icon } from "../components/Icon.js"
 
 const randomKey = () =>
@@ -37,7 +37,7 @@ const CalendarWeekDays = memo(() => {
 	return (
 		<>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={_classNames("Calendar__week-day")}>
+				<div key={day} className={classNames("Calendar__week-day")}>
 					{label}
 				</div>
 			))}
@@ -190,42 +190,42 @@ export const Calendar: FC<CalendarProps> = ({
 	)
 
 	return (
-		<div className={_classNames("Calendar")}>
+		<div className={classNames("Calendar")}>
 			<div
-				className={_classNames("Calendar__head")}
+				className={classNames("Calendar__head")}
 				onClick={(event) => {
 					event.stopPropagation()
 				}}
 			>
 				<div
-					className={_classNames("Calendar__head-icon")}
+					className={classNames("Calendar__head-icon")}
 					onClick={onClickPrevious}
 				>
 					<Icon name="caret-left" />
 				</div>
 
-				<div className={_classNames("Calendar__head-text")}>
+				<div className={classNames("Calendar__head-text")}>
 					{monthName}
 				</div>
 
-				<div className={_classNames("Calendar__head-text")}>{year}</div>
+				<div className={classNames("Calendar__head-text")}>{year}</div>
 
 				<div
-					className={_classNames("Calendar__head-icon")}
+					className={classNames("Calendar__head-icon")}
 					onClick={onClickNext}
 				>
 					<Icon name="caret-right" />
 				</div>
 			</div>
 
-			<div className={_classNames("Calendar__body")}>
+			<div className={classNames("Calendar__body")}>
 				<CalendarWeekDays />
 
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
 							key={key}
-							className={_classNames("Calendar__cell", {
+							className={classNames("Calendar__cell", {
 								"Calendar__cell--selected": selected,
 								"Calendar__cell--disabled": !isSelectable
 							})}

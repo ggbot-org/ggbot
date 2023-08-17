@@ -2,7 +2,6 @@ import {
 	Button,
 	Checkbox,
 	CheckboxOnChange,
-	classNames,
 	Flex,
 	Form,
 	FormOnSubmit,
@@ -13,6 +12,8 @@ import {
 	Title
 } from "@ggbot2/design"
 import { FC, useCallback, useState } from "react"
+
+import { classNames } from "../styles/classNames.js"
 
 export const SimpleForm: FC = () => {
 	const [isPending, setIsPending] = useState(false)

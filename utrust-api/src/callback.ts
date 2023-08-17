@@ -13,7 +13,7 @@ import {
 	updateSubscriptionPurchaseStatus,
 	writeSubscription
 } from "@ggbot2/database"
-import { ENV } from "@ggbot2/env"
+import { ENV, isDev } from "@ggbot2/env"
 import {
 	Event as UtrustEvent,
 	WebhookValidator
@@ -36,6 +36,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					event_type,
 					resource: { reference }
 				} = input as UtrustEvent
+				if (isDev) console.info("input", JSON.stringify(input, null, 2))
 
 				// Nothing to do, the payment is detected on the blockchain.
 				if (event_type === "ORDER.PAYMENT.DETECTED") {

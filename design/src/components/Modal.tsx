@@ -6,7 +6,7 @@ import {
 	ModalContent
 } from "trunx"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 
 export type ModalProps = Partial<{
 	isActive: boolean
@@ -49,7 +49,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 		<_Modal isActive={isActive}>
 			<ModalBackground onClick={closeModal} />
 
-			<ModalContent className={_classNames("Modal__content")}>
+			<ModalContent className={classNames("Modal__content")}>
 				{children}
 			</ModalContent>
 

@@ -17,6 +17,7 @@ import {
 	Modal,
 	Title
 } from "@ggbot2/design"
+import { isDev } from "@ggbot2/env"
 import { EmailAddress } from "@ggbot2/models"
 import { NonEmptyString } from "@ggbot2/type-utils"
 import { FC, Reducer, useCallback, useReducer } from "react"
@@ -80,6 +81,8 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		>
 	>(
 		(state, action) => {
+			if (isDev)
+				console.info("AuthVerify", JSON.stringify(action, null, 2))
 			switch (action.type) {
 				case "SET_HAS_INVALID_INPUT":
 					return { hasInvalidInput: true }

@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 
 export type CheckmarkProps = {
 	label?: string
@@ -13,7 +13,7 @@ export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) =>
 			<span>{label}</span>
 
 			<span
-				className={_classNames(
+				className={classNames(
 					{ "has-text-success": ok, "has-text-danger": !ok },
 					"mx-2"
 				)}

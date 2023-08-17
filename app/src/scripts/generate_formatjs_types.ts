@@ -8,7 +8,7 @@ import {
 	localeJsonPathname
 } from "@ggbot2/i18n"
 
-import { rootDir, srcDir } from "../package.js"
+import { rootDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(
 	join(rootDir, localeJsonPathname(defaultLocale)),
@@ -17,7 +17,7 @@ const defaultTranslation = await readFile(
 
 const translation = JSON.parse(defaultTranslation)
 
-const pathname = join(srcDir, "i18n", FormatjsIntlMessageIdsFilename)
+const pathname = join(typesDir, FormatjsIntlMessageIdsFilename)
 
 const translationKeys = Object.keys(translation)
 

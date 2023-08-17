@@ -6,8 +6,6 @@ import {
 	NotificationProps
 } from "trunx"
 
-import { _classNames } from "../components/_classNames.js"
-
 export type ToastProps = {
 	close: () => void
 	color: Extract<NotificationProps["color"], "info" | "danger" | "warning">

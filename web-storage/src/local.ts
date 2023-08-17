@@ -8,8 +8,9 @@ import type { WebStorageProvider } from "./provider.js"
 
 class LocalWebStorage implements WebStorageProvider {
 	getItem(key: string) {
-		if (isDev) console.info("web-storage", "local", "getItem", key)
-		return window.localStorage.getItem(key)
+		const value = window.localStorage.getItem(key)
+		if (isDev) console.info("web-storage", "local", "getItem", key, value)
+		return value
 	}
 
 	setItem(key: string, value: string) {

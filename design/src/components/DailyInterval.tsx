@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react"
 
-import { _classNames } from "../components/_classNames.js"
+import { classNames } from "../components/classNames.js"
 import { DayDropdown, DayDropdownProps } from "../components/DayDropdown.js"
 
 export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
@@ -39,7 +39,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 	}, [])
 
 	return (
-		<div className={_classNames("DailyInterval")}>
+		<div className={classNames("DailyInterval")}>
 			<DayDropdown
 				close={close}
 				isActive={activeDropdown === "start"}

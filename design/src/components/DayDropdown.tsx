@@ -9,7 +9,6 @@ import {
 	Field
 } from "trunx"
 
-import { _classNames } from "../components/_classNames.js"
 import { Calendar, CalendarProps } from "../components/Calendar.js"
 import { Label } from "../components/Label.js"
 import { dayFormat } from "../i18n/formats.js"

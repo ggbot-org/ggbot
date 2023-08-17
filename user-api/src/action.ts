@@ -60,10 +60,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			case "POST": {
 				if (isDev)
 					console.info(
-						"httpMethod",
 						event.httpMethod,
-						"body",
-						event.body
+						JSON.stringify(event.body, null, 2)
 					)
 				if (!event.body) return BAD_REQUEST()
 
@@ -82,6 +80,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isCopyStrategyInput(input)) return BAD_REQUEST()
 						const output = await copyStrategy(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -91,6 +94,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isCreateBinanceApiConfigInput(input))
 							return BAD_REQUEST()
 						const output = await createBinanceApiConfig(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -99,11 +107,21 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isCreateStrategyInput(input)) return BAD_REQUEST()
 						const output = await createStrategy(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
 					case "DeleteAccount": {
 						const output = await deleteAccount({ accountId })
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -111,6 +129,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const output = await deleteBinanceApiConfig({
 							accountId
 						})
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -119,11 +142,21 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isDeleteStrategyInput(input)) return BAD_REQUEST()
 						const output = await deleteStrategy(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
 					case "ReadAccount": {
 						const output = await readAccount({ accountId })
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -131,12 +164,21 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const output = await readAccountStrategies({
 							accountId
 						})
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
 					case "ReadBinanceApiKey": {
 						const output = await readBinanceApiKey({ accountId })
-						if (!output) return OK(null)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -144,6 +186,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const output = await readBinanceApiKeyPermissions({
 							accountId
 						})
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -153,6 +200,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isReadStrategyBalancesInput(input))
 							return BAD_REQUEST()
 						const output = await readStrategyBalances(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -162,11 +214,21 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isReadStrategyOrdersInput(input))
 							return BAD_REQUEST()
 						const output = await readStrategyOrders(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
 					case "ReadSubscription": {
 						const output = await readSubscription({ accountId })
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -175,6 +237,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isRenameAccountInput(input)) return BAD_REQUEST()
 						const output = await renameAccount(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -183,6 +250,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isRenameStrategyInput(input)) return BAD_REQUEST()
 						const output = await renameStrategy(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -192,6 +264,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isSetAccountCountryInput(input))
 							return BAD_REQUEST()
 						const output = await setAccountCountry(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -204,6 +281,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 							return BAD_REQUEST()
 						const output =
 							await writeAccountStrategiesItemSchedulings(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -213,6 +295,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isWriteStrategyFlowInput(input))
 							return BAD_REQUEST()
 						const output = await writeStrategyFlow(input)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 

@@ -7,8 +7,8 @@ import {
 	NavbarMenu
 } from "trunx"
 
-import { _classNames } from "../components/_classNames.js"
 import { BrandName } from "../components/BrandName.js"
+import { classNames } from "../components/classNames.js"
 import { Logo } from "../components/Logo.js"
 
 export type NavbarProps = Partial<{
@@ -36,7 +36,7 @@ export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
 	return (
 		<_Navbar color="black" {...props}>
 			<NavbarBrand>
-				<NavbarItem className={_classNames("is-unselectable")}>
+				<NavbarItem className={classNames("is-unselectable")}>
 					<Logo size={34} />
 
 					<BrandName />

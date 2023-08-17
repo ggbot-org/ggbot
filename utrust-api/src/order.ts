@@ -17,7 +17,7 @@ import {
 	readSubscription,
 	updateSubscriptionPurchaseInfo
 } from "@ggbot2/database"
-import { ENV } from "@ggbot2/env"
+import { ENV, isDev } from "@ggbot2/env"
 import {
 	ApiBaseURL,
 	UserWebappBaseURL,
@@ -66,6 +66,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 				const input = JSON.parse(event.body)
 				if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST()
+				if (isDev) console.info(JSON.stringify(input, null, 2))
 
 				const { accountId, country, email, numMonths } = input
 
@@ -139,7 +140,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					email
 				}
 
+				if (isDev) console.info("order", JSON.stringify(order, null, 2))
+				if (isDev)
+					console.info("customer", JSON.stringify(customer, null, 2))
+
 				const { data } = await createOrder(order, customer)
+				if (isDev)
+					console.info("created order", JSON.stringify(data, null, 2))
 
 				if (data === null) return BAD_REQUEST()
 
@@ -151,6 +158,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				})
 
 				const output: ApiUtrustOrderResponseData = { redirectUrl }
+				if (isDev) console.info(JSON.stringify(output, null, 2))
 				return OK(output)
 			}
 

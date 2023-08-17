@@ -11,6 +11,7 @@ describe("htmlPageContent", () => {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
 <title>page title</title>
+<style>html, body, #root { min-height: 100vh; }</style>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>

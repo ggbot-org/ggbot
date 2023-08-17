@@ -35,6 +35,4 @@ export const outputValues = output("array", { name: "values" })
 export const inputValues1 = input("array", { name: "values1" })
 export const inputValues2 = input("array", { name: "values2" })
 
-export const outputValue = output([], { name: "value" })
-
 export const outputVolume = input("array", { name: "volume" })

@@ -15,16 +15,18 @@
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/",
     "pretest": "tsc --build tsconfig.test.json",
-    "test": "node --test"
-  },
-  "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "test": "node --test",
+    "ts-prune": "ts-prune --error --ignore 'dist|temp|src/index\\.ts'"
   },
   "dependencies": {
     "@ggbot2/binance": "file:binance",
     "@ggbot2/time": "file:time",
     "flow-view": "6.0.1"
+  },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig",
+    "ts-prune": "0.10.3"
   },
   "eslintConfig": {
     "extends": [

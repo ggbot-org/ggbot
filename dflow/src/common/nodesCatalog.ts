@@ -19,7 +19,14 @@ import {
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js"
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js"
 import { InputBoolean, InputNumber, InputString } from "./nodes/inputs.js"
-import { And, Equal, Not, NullishCoaleshing, Or } from "./nodes/logic.js"
+import {
+	And,
+	Equal,
+	Not,
+	NotEqual,
+	NullishCoaleshing,
+	Or
+} from "./nodes/logic.js"
 import { Max, Min } from "./nodes/mathFunctions.js"
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js"
 import { Time, TimeMinus, TimePlus, TimeToDay, Today } from "./nodes/time.js"
@@ -44,6 +51,7 @@ export const nodesCatalog = {
 	[And.kind]: And,
 	[Equal.kind]: Equal,
 	[Not.kind]: Not,
+	[NotEqual.kind]: NotEqual,
 	[NullishCoaleshing.kind]: NullishCoaleshing,
 	[Or.kind]: Or,
 	// indicators

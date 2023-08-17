@@ -8,6 +8,7 @@ import {
 	OK
 } from "@ggbot2/api-gateway"
 import { readStrategy, readStrategyFlow } from "@ggbot2/database"
+import { isDev } from "@ggbot2/env"
 import { isReadStrategyFlowInput, isReadStrategyInput } from "@ggbot2/models"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -29,6 +30,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isReadStrategyInput(actionData))
 							return BAD_REQUEST()
 						const output = await readStrategy(actionData)
+						if (isDev)
+							console.info(
+								action.type,
+								JSON.stringify(output, null, 2)
+							)
 						return OK(output)
 					}
 
@@ -36,6 +42,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isReadStrategyFlowInput(actionData))
 							return BAD_REQUEST()
 						const output = await readStrategyFlow(actionData)
+						// Omit StrategyFlow
+						if (isDev)
+							console.info(
+								action.type,
+								output === null ? output : ""
+							)
 						return OK(output)
 					}
 

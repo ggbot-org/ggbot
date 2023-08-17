@@ -22,6 +22,7 @@
   "dependencies": {
     "@ggbot2/api": "file:api",
     "@ggbot2/api-gateway": "file:api-gateway",
+    "@ggbot2/env": "file:env",
     "@ggbot2/database": "file:database",
     "@ggbot2/models": "file:models"
   },

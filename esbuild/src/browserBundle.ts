@@ -1,6 +1,8 @@
 import { ENV } from "@ggbot2/env"
 import { build, BuildOptions } from "esbuild"
 
+import { buildDefinitions } from "./definitions.js"
+
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 
 /**
@@ -31,7 +33,7 @@ export const browserBundle = async ({
 				"@formatjs/icu-messageformat-parser/no-parser"
 		},
 		bundle: true,
-		define: { "process.env.DEPLOY_STAGE": `"${DEPLOY_STAGE}"` },
+		define: buildDefinitions,
 		entryPoints,
 		minify: DEPLOY_STAGE !== "local",
 		outfile,

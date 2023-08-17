@@ -1,5 +1,6 @@
-import { classNames } from "@ggbot2/design"
 import { FC } from "react"
+
+import { classNames } from "../styles/classNames.js"
 
 export const Typography: FC = () => (
 	<div>

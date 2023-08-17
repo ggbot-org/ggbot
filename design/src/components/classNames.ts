@@ -1,4 +1,8 @@
-import { BulmaClassName, classNames, ClassNamesArg } from "trunx"
+import {
+	_classNames,
+	type _ClassNamesArg,
+	type BulmaClassName
+} from "../classNames.js"
 
 type DailyIntervalClassName = "DailyInterval"
 
@@ -15,15 +19,16 @@ type CalendarClassName =
 
 type ModalClassName = "Modal__content"
 
+type PageClassName = "Page" | "Page_content" | "Page_footer"
+
 type ToastContainerClassName = "ToastContainer"
 
-export { type ClassNamesArg } from "trunx"
-
-export type ClassName =
+type ClassName =
 	| BulmaClassName
 	| CalendarClassName
 	| DailyIntervalClassName
 	| ModalClassName
+	| PageClassName
 	| ToastContainerClassName
 
 /**
@@ -31,5 +36,5 @@ export type ClassName =
  *
  * @internal
  */
-export const _classNames = (...args: ClassNamesArg<ClassName>[]) =>
-	classNames(...args)
+export const classNames = (...args: _ClassNamesArg<ClassName>[]) =>
+	_classNames(...args)

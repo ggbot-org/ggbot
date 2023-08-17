@@ -188,6 +188,9 @@
 	"Email.label": {
 		"defaultMessage": "Email"
 	},
+	"Footer.lastUpdate": {
+		"defaultMessage": "Last update: {day}"
+	},
 	"FrequencyInput.every": {
 		"defaultMessage": "Every"
 	},
