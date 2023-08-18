@@ -1,8 +1,8 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { now } from "@ggbot2/time"
 import { DflowNodesCatalog } from "dflow"
+import { now } from "minimal-time-helpers"
 
 import { ErrorUknownDflowNodes } from "../errors.js"
 import { DflowExecutorView } from "./executor.js"

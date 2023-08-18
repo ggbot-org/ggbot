@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { now, truncateTime } from "@ggbot2/time"
+import { now, truncateTime } from "minimal-time-helpers"
 
 import { BinanceDflowHost } from "./host.js"
 import { BinanceClientMock } from "./mocks/client.js"

@@ -17,6 +17,7 @@ import {
 	newOrder,
 	Order
 } from "@ggbot2/models"
+import { FlowViewSerializableGraph } from "flow-view"
 import {
 	dateToTimestamp,
 	Day,
@@ -26,8 +27,7 @@ import {
 	Timestamp,
 	timestampToTime,
 	yesterday
-} from "@ggbot2/time"
-import { FlowViewSerializableGraph } from "flow-view"
+} from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useReducer } from "react"
 
 import { BinanceClient } from "../binance/client.js"

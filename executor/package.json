@@ -18,10 +18,11 @@
   },
   "dependencies": {
     "@ggbot2/cache": "file:cache",
+    "@ggbot2/database": "file:database",
     "@ggbot2/env": "file:env",
     "@ggbot2/models": "file:models",
-    "@ggbot2/database": "file:database",
-    "flow-view": "6.0.1"
+    "flow-view": "6.0.1",
+    "minimal-time-helpers": "0.1.0"
   },
   "eslintConfig": {
     "extends": [

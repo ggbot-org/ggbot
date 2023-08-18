@@ -1,9 +1,9 @@
-import { DayInterval, getDay, isDay, today } from "@ggbot2/time"
 import {
 	isLiteralType,
 	NaturalNumber,
 	objectTypeGuard
 } from "@ggbot2/type-utils"
+import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
 
 import { AccountKey } from "./account.js"
 import { Currency } from "./currency.js"

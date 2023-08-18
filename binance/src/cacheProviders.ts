@@ -1,5 +1,3 @@
-import type { Time } from "@ggbot2/time"
-
 import {
 	BinanceExchangeInfo,
 	BinanceKline,
@@ -17,7 +15,7 @@ export type BinanceKlineCacheProvider = {
 	getKline(
 		symbol: string,
 		interval: BinanceKlineInterval,
-		time: Time
+		time: number
 	): BinanceKline | undefined
 	setKline(
 		symbol: string,

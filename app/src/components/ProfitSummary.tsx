@@ -11,7 +11,7 @@ import {
 	Title
 } from "@ggbot2/design"
 import { isOrders, Order } from "@ggbot2/models"
-import { DayInterval } from "@ggbot2/time"
+import { DayInterval } from "minimal-time-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

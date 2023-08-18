@@ -1,5 +1,5 @@
-import { now, truncateTime } from "@ggbot2/time"
 import { DflowHost, DflowHostConstructorArg } from "dflow"
+import { now, truncateTime } from "minimal-time-helpers"
 
 import { DflowExecutorView } from "../common/executor.js"
 import { DflowLoader, load } from "../common/loader.js"

@@ -33,8 +33,8 @@ import {
 	SubscriptionPlan,
 	totalPurchase
 } from "@ggbot2/models"
-import { getDay, today } from "@ggbot2/time"
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
+import { getDay, today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { now } from "@ggbot2/time"
+import { now } from "minimal-time-helpers"
 
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"

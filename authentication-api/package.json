@@ -27,8 +27,7 @@
     "@ggbot2/env": "file:env",
     "@ggbot2/locators": "file:locators",
     "@ggbot2/http": "file:http",
-    "@ggbot2/models": "file:models",
-    "@ggbot2/time": "file:time"
+    "@ggbot2/models": "file:models"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

@@ -1,5 +1,5 @@
 import { ReadStrategyOrders } from "@ggbot2/models"
-import { dateToDay, dayToDate, getDate } from "@ggbot2/time"
+import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
 
 import { readStrategyDailyOrders } from "./strategyDailyOrders.js"
 

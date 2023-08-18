@@ -18,7 +18,7 @@ import {
 	readOneTimePassword
 } from "@ggbot2/database"
 import { __200__OK__ } from "@ggbot2/http"
-import { today } from "@ggbot2/time"
+import { today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

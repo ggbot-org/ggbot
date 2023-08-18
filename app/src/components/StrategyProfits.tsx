@@ -1,5 +1,5 @@
 import { isOrders, Orders } from "@ggbot2/models"
-import { DayInterval, getDay, today } from "@ggbot2/time"
+import { DayInterval, getDay, today } from "minimal-time-helpers"
 import { FC, useContext, useEffect, useMemo } from "react"
 
 import { ProfitSummary } from "../components/ProfitSummary.js"

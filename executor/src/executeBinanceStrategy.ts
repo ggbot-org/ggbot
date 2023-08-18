@@ -21,7 +21,7 @@ import {
 	newOrder,
 	updatedNow
 } from "@ggbot2/models"
-import { now, timeToDay, today, truncateTime } from "@ggbot2/time"
+import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
 import { ExecuteStrategy } from "./executeStrategy.js"
 

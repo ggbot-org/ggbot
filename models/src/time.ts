@@ -1,5 +1,5 @@
-import { Day, isDay, isTime, now, Time } from "@ggbot2/time"
 import { objectTypeGuard } from "@ggbot2/type-utils"
+import { Day, isDay, isTime, now, Time } from "minimal-time-helpers"
 
 export type DayKey = { day: Day }
 

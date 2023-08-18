@@ -22,8 +22,8 @@ import {
 	statusOfSubscription,
 	Subscription
 } from "@ggbot2/models"
-import { now, Time, truncateTime } from "@ggbot2/time"
 import { readFile, writeFile } from "fs/promises"
+import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"
 import { join } from "path"
 

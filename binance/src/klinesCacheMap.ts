@@ -1,5 +1,4 @@
 import { CacheMap } from "@ggbot2/cache"
-import { Time } from "@ggbot2/time"
 
 import { BinanceKlineCacheProvider } from "./cacheProviders.js"
 import { BinanceKline, BinanceKlineInterval } from "./types.js"
@@ -9,7 +8,7 @@ export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
 		symbol: string,
 		interval: BinanceKlineInterval,
 		/* THe kline open time. */
-		time: Time
+		time: number
 	) {
 		return [symbol, interval, time].join(":")
 	}
@@ -19,7 +18,7 @@ export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
 	getKline(
 		symbol: string,
 		interval: BinanceKlineInterval,
-		time: Time
+		time: number
 	): BinanceKline | undefined {
 		const key = this.klineKey(symbol, interval, time)
 		const kline = this.klinesMap.get(key)

@@ -1,5 +1,5 @@
-import { getDay, today } from "@ggbot2/time"
 import { objectTypeGuard } from "@ggbot2/type-utils"
+import { getDay, today } from "minimal-time-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { CreationDay, isCreationDay } from "./time.js"

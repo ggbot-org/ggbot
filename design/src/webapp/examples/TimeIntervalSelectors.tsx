@@ -1,5 +1,5 @@
 import { DailyInterval } from "@ggbot2/design"
-import { getDay, today } from "@ggbot2/time"
+import { getDay, today } from "minimal-time-helpers"
 import { FC, useState } from "react"
 
 export const TimeIntervalSelectors: FC = () => {

@@ -1,3 +1,4 @@
+import { DflowNode } from "dflow"
 import {
 	getTime,
 	isTime,
@@ -5,8 +6,7 @@ import {
 	timeToDay,
 	timeToTimestamp,
 	TimeUnit
-} from "@ggbot2/time"
-import { DflowNode } from "dflow"
+} from "minimal-time-helpers"
 
 import { DflowCommonContext as Context } from "../context.js"
 

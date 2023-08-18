@@ -1,5 +1,5 @@
-import { Time } from "@ggbot2/time"
 import { DflowObject } from "dflow"
+import { Time } from "minimal-time-helpers"
 
 /**
  * DflowCommonContext to be shared among all dflow host implementations.

@@ -1,5 +1,5 @@
-import { isDay } from "@ggbot2/time"
 import { objectTypeGuard } from "@ggbot2/type-utils"
+import { isDay } from "minimal-time-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
 import { BalanceChangeEvents } from "./balanceChangeEvent.js"

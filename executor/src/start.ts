@@ -1,5 +1,7 @@
 import { exit } from "node:process"
 
+import { Item } from "@ggbot2/models"
+
 import { Executor } from "./Executor.js"
 import { log } from "./log.js"
 
@@ -8,7 +10,7 @@ const sleep = (delay: number) =>
 		setTimeout(resolve, delay)
 	})
 
-async function start() {
+const start = async () => {
 	// TODO if it is a dedicated server, it will run only strategies of one account
 	// how to get the account id?
 	const capacity = 1
@@ -16,7 +18,7 @@ async function start() {
 	// TODO how to get the index of this host?
 	const executor = new Executor(capacity, hostIndex)
 
-	let executorId
+	let executorId: undefined | Item["id"]
 	try {
 		executorId = await Executor.getExecutorId()
 	} catch (error) {

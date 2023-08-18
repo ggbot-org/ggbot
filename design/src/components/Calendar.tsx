@@ -1,4 +1,4 @@
-import { dateToDay, Day } from "@ggbot2/time"
+import { dateToDay, Day } from "minimal-time-helpers"
 import {
 	FC,
 	memo,

@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
-import { getTime, Time } from "@ggbot2/time"
 import { NaturalNumber } from "@ggbot2/type-utils"
+import { getTime, Time } from "minimal-time-helpers"
 
 import { BinanceKlineInterval } from "./types.js"
 

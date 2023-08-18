@@ -22,9 +22,9 @@ import {
 	purchaseMaxNumMonths as maxNumMonths,
 	purchaseMinNumMonths as minNumMonths
 } from "@ggbot2/models"
-import { getTime, now } from "@ggbot2/time"
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils"
 import { countries } from "country-isocode2/en"
+import { getTime, now } from "minimal-time-helpers"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

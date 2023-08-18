@@ -5,7 +5,7 @@ import {
 	SubscriptionPlan,
 	SubscriptionStatus
 } from "@ggbot2/models"
-import { dayToTime, Time } from "@ggbot2/time"
+import { dayToTime, Time } from "minimal-time-helpers"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 import { useUserApi } from "../hooks/useUserApi.js"

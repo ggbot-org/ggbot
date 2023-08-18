@@ -21,7 +21,7 @@ import {
 	dflowBinancePrecision,
 	dflowBinanceZero as zero
 } from "@ggbot2/dflow"
-import { Time } from "@ggbot2/time"
+import { Time } from "minimal-time-helpers"
 
 import { binance } from "./exchange.js"
 

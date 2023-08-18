@@ -1,4 +1,4 @@
-import { Day, Timestamp } from "@ggbot2/time"
+import { Day, Timestamp } from "minimal-time-helpers"
 import { FC, TimeHTMLAttributes, useMemo } from "react"
 import { FormattedDate } from "react-intl"
 

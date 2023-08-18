@@ -1,7 +1,6 @@
 import { BinanceKlinesCacheMap } from "@ggbot2/binance"
 import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow"
 import { StrategyKind } from "@ggbot2/models"
-import { now, Time, truncateTime } from "@ggbot2/time"
 import {
 	DflowErrorCannotConnectPins,
 	DflowNodesCatalog,
@@ -15,6 +14,7 @@ import {
 	FlowViewOnChangeDataNode,
 	FlowViewSerializableGraph
 } from "flow-view"
+import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { BinanceClient } from "../binance/client.js"

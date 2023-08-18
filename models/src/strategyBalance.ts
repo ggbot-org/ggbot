@@ -1,5 +1,5 @@
-import { Day, DayInterval, isDay, isDayInterval } from "@ggbot2/time"
 import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
+import { Day, DayInterval, isDay, isDayInterval } from "minimal-time-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
 import {

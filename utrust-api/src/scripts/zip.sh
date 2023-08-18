@@ -8,14 +8,14 @@ rm -rf dist/*/index.zip
 
 ### TODO generate temp/package.json file reading from other package.json
 #        files, use a node script
-echo '{ "name": "lambda", "type": "module", "dependencies": { "@utrustdev/utrust-ts-library": "1.0.4", "@aws-sdk/client-ec2": "3.379.1", "@aws-sdk/client-iam": "3.379.1", "@aws-sdk/client-s3": "3.379.1", "@aws-sdk/client-ses": "3.379.1", "dflow": "0.42.0", "flow-view": "6.0.1" } }' > temp/package.json
+echo '{ "name": "lambda", "type": "module", "dependencies": { "@utrustdev/utrust-ts-library": "1.0.4", "@aws-sdk/client-ec2": "3.379.1", "@aws-sdk/client-iam": "3.379.1", "@aws-sdk/client-s3": "3.379.1", "@aws-sdk/client-ses": "3.379.1", "dflow": "0.42.0", "flow-view": "6.0.1", "minimal-time-helpers": "0.1.0" } }' > temp/package.json
 cd temp
 npm install
 cd -
 
 # Copy internal deps.
 
-for INTERNAL_DEP in api api-gateway arithmetic aws binance binance-client database dflow env email-messages http infrastructure locators models test-data time type-utils; do
+for INTERNAL_DEP in api api-gateway arithmetic aws binance binance-client database dflow env email-messages http infrastructure locators models test-data type-utils; do
 	mkdir -p temp/node_modules/@ggbot2/$INTERNAL_DEP/dist
 	cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@ggbot2/$INTERNAL_DEP/dist/
 	cp ../$INTERNAL_DEP/package.json temp/node_modules/@ggbot2/$INTERNAL_DEP/

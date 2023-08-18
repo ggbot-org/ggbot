@@ -23,9 +23,8 @@
   },
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
-    "@ggbot2/time": "file:time",
-    "dflow": "0.42.0",
-    "flow-view": "6.0.1"
+    "flow-view": "6.0.1",
+    "minimal-time-helpers": "0.1.0"
   },
   "eslintConfig": {
     "extends": [

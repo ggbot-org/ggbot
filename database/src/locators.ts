@@ -112,8 +112,8 @@ import {
 	StrategyKey,
 	SubscriptionPurchaseKey
 } from "@ggbot2/models"
-import { isSplittedDay, joinDay, splitDay } from "@ggbot2/time"
 import { isLiteralType } from "@ggbot2/type-utils"
+import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
 
 export const dirnameDelimiter = "/"
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)

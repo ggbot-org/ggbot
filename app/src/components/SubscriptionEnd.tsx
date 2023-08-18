@@ -1,5 +1,5 @@
 import { dayFormat, InputField, InputFieldProps } from "@ggbot2/design"
-import { Time } from "@ggbot2/time"
+import { Time } from "minimal-time-helpers"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

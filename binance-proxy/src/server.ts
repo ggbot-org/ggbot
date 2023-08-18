@@ -58,7 +58,11 @@ createServer(async (request, response) => {
 	response.writeHead(proxiedResponse.status)
 
 	if (!proxiedResponse.ok) {
-		if (isDev) console.info(proxiedResponse.status)
+		console.error(
+			proxiedResponse.status,
+			proxiedResponse.statusText,
+			targetUrl.toString()
+		)
 		response.end(proxiedResponse.statusText)
 		return
 	}

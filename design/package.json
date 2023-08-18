@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@ggbot2/react": "file:react",
-    "@ggbot2/time": "file:time",
+    "minimal-time-helpers": "0.1.0",
     "react": "18.2.0",
     "react-intl": "6.4.4",
     "trunx": "0.45.3"

@@ -1,4 +1,11 @@
 import {
+	isLiteralType,
+	isMaybeObject,
+	NaturalNumber,
+	objectTypeGuard
+} from "@ggbot2/type-utils"
+import { DflowObject } from "dflow"
+import {
 	dateToDay,
 	Day,
 	DayInterval,
@@ -7,14 +14,7 @@ import {
 	isDay,
 	isDayInterval,
 	today
-} from "@ggbot2/time"
-import {
-	isLiteralType,
-	isMaybeObject,
-	NaturalNumber,
-	objectTypeGuard
-} from "@ggbot2/type-utils"
-import { DflowObject } from "dflow"
+} from "minimal-time-helpers"
 
 import { AccountKey } from "./account.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"

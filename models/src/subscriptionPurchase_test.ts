@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { dateToDay, dayToDate, getDate, today } from "@ggbot2/time"
+import { dateToDay, dayToDate, getDate, today } from "minimal-time-helpers"
 
 import { nullId } from "./item.js"
 import {

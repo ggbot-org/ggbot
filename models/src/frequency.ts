@@ -1,9 +1,9 @@
-import { Time, TimeUnit, timeUnitDuration } from "@ggbot2/time"
 import {
 	isLiteralType,
 	isNaturalNumber,
 	NaturalNumber
 } from "@ggbot2/type-utils"
+import { Time, TimeUnit, timeUnitDuration } from "minimal-time-helpers"
 
 export const frequencyIntervals = ["1h", "1m"] as const
 export type FrequencyInterval = (typeof frequencyIntervals)[number]
