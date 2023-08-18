@@ -7,8 +7,8 @@ import { Strategy } from "../components/Strategy.js"
 import { AccountStrategiesProvider } from "../contexts/AccountStrategies.js"
 import { BinanceApiConfigProvider } from "../contexts/BinanceApiConfig.js"
 import { StrategyProvider } from "../contexts/Strategy.js"
-import { StrategyFlowProvider } from "../contexts/StrategyFlow.js"
 import { SubscriptionProvider } from "../contexts/Subscription.js"
+import { StrategyFlowProvider } from "../public/contexts/StrategyFlow.js"
 
 export const StrategyPage: FC = () => (
 	<I18nProvider>

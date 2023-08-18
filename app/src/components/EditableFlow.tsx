@@ -5,8 +5,8 @@ import { FormattedMessage } from "react-intl"
 import { FlowMenu } from "../components/FlowMenu.js"
 import { FlowViewContainer } from "../components/FlowViewContainer.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
 import { useUserApi } from "../hooks/useUserApi.js"
+import { StrategyFlowContext } from "../public/contexts/StrategyFlow.js"
 
 export const EditableFlow: FC = () => {
 	const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =

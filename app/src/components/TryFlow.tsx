@@ -1,8 +1,8 @@
 import { FC, useState } from "react"
 
-import { Backtesting } from "../components/Backtesting.js"
-import { ReadonlyFlow } from "../components/ReadonlyFlow.js"
-import { getStoredTabId, TabId, Tabs } from "../components/Tabs.js"
+import { Backtesting } from "./Backtesting.js"
+import { ReadonlyFlow } from "./ReadonlyFlow.js"
+import { getStoredTabId, TabId, Tabs } from "./Tabs.js"
 
 const pageName = "TryFlow"
 

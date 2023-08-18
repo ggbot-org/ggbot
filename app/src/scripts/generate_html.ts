@@ -6,14 +6,18 @@ import { adminHtmlFilenames } from "../admin/routing/pages.js"
 import {
 	adminJs,
 	appJs,
+	landingJs,
 	publicAdminDir,
 	publicDir,
 	tryFlowJs
 } from "../package.js"
 import {
+	landingHtmlFilenames,
+	tryFlowHtmlFilename
+} from "../public/routing/pages.js"
+import {
 	purchaseCanceledHtmlFilename,
 	subscriptionPurchasedHtmlFilename,
-	tryFlowHtmlFilename,
 	userHtmlFilenames
 } from "../routing/pages.js"
 
@@ -32,6 +36,11 @@ const generateHtml = async () => {
 		join(publicDir, tryFlowHtmlFilename),
 		html(tryFlowJs)
 	)
+
+	// Landing pages.
+
+	for (const filename of landingHtmlFilenames)
+		await generateHtmlPage(join(publicDir, filename), html(landingJs))
 
 	// Admin app.
 

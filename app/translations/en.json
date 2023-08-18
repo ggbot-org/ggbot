@@ -33,7 +33,7 @@
 		"defaultMessage": "Enter"
 	},
 	"AuthVerify.failed": {
-		"defaultMessage": "Verification failed."
+		"defaultMessage": "Verification failed. Check you <em>One Time Password</em>."
 	},
 	"AuthVerify.checkEmail": {
 		"defaultMessage": "Check your email to get the <em>One Time Password</em>. If the email is not correct, click the {resetEmail} button."
@@ -280,6 +280,12 @@
 	},
 	"PleasePurchase.title": {
 		"defaultMessage": "Please purchase"
+	},
+	"Privacy.title": {
+		"defaultMessage": "Privacy Policy"
+	},
+	"Privacy.welcome": {
+		"defaultMessage": "Welcome to <em>ggbot2</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot2</em> website."
 	},
 	"ProfitSummary.fees": {
 		"defaultMessage": "Fees"

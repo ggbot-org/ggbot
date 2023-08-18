@@ -3,7 +3,7 @@ import { FC, useCallback, useContext, useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { StrategyContext } from "../contexts/Strategy.js"
-import { href } from "../routing/hrefs.js"
+import { href } from "../public/routing/hrefs.js"
 
 export const ShareStrategy: FC = () => {
 	const { formatMessage } = useIntl()

@@ -3,8 +3,8 @@ import { StrategyKey } from "@ggbot2/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 
-import { StrategyId } from "../components/StrategyId.js"
-import { StrategyKind } from "../components/StrategyKind.js"
+import { StrategyId } from "./StrategyId.js"
+import { StrategyKind } from "./StrategyKind.js"
 
 type Props = StrategyKey
 

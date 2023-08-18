@@ -4,8 +4,7 @@ import { adminDashboardHtmlPathname } from "../admin/routing/pages.js"
 import {
 	copyStrategyHtmlFilename,
 	settingsHtmlFilename,
-	strategyHtmlFilename,
-	tryFlowHtmlFilename
+	strategyHtmlFilename
 } from "./pages.js"
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js"
 import { SettingsPageId } from "./types.js"
@@ -18,11 +17,6 @@ export const href = {
 		return `/${copyStrategyHtmlFilename}?${searchParams}`
 	},
 	dashboardPage: () => "/",
-	tryFlowPage: (strategyKey: StrategyKey) => {
-		const searchParams =
-			strategyKeyToURLSearchParams(strategyKey).toString()
-		return `/${tryFlowHtmlFilename}?${searchParams}`
-	},
 	strategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()

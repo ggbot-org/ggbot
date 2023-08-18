@@ -6,8 +6,6 @@ export const dashboardHtmlFilename = "index.html"
 
 export const copyStrategyHtmlFilename = "copy-strategy.html"
 
-export const tryFlowHtmlFilename = "flow.html"
-
 export const strategyHtmlFilename = "strategy.html"
 
 export const settingsHtmlFilename = (id: SettingsPageId) =>

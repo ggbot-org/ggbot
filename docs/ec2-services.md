@@ -73,15 +73,6 @@ System service can be edited also by _ec2-user_ with this command:
 sudo vi /lib/systemd/system/ggbot2.service
 ```
 
-## Enable service
-
-Tell _systemd_ there is a new service and to launch it at boot.
-
-```sh
-sudo systemctl daemon-reload
-sudo systemctl enable ggbot2
-```
-
 ## Edit environment variables
 
 Add more environment variables via systemd override.
@@ -101,12 +92,20 @@ Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 
-## Enable service
+## Update configuration
 
 Tell _systemd_ that configuration was updated.
 
 ```sh
 sudo systemctl daemon-reload
+```
+
+## Enable service
+
+Tell _systemd_ there is a new service and to launch it at boot.
+
+```sh
+sudo systemctl enable ggbot2
 ```
 
 ## Add service aliases

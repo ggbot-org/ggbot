@@ -10,10 +10,10 @@ import {
 	useRef
 } from "react"
 
-import { FlowViewContainerElement } from "../components/FlowViewContainer.js"
-import { StrategyContext } from "../contexts/Strategy.js"
-import { useFlowView, UseFlowViewOutput } from "../hooks/useFlowView.js"
-import { usePublicApi } from "../public/hooks/usePublicApi.js"
+import { FlowViewContainerElement } from "../../components/FlowViewContainer.js"
+import { StrategyContext } from "../../contexts/Strategy.js"
+import { useFlowView, UseFlowViewOutput } from "../../hooks/useFlowView.js"
+import { usePublicApi } from "../hooks/usePublicApi.js"
 
 type ContextValue = UseFlowViewOutput & {
 	flowViewContainerRef: MutableRefObject<FlowViewContainerElement>

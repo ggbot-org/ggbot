@@ -1,11 +1,11 @@
 import { Buttons } from "@ggbot2/design"
 import { FC, useContext } from "react"
 
-import { FlowMenu } from "../components/FlowMenu.js"
-import { FlowViewContainer } from "../components/FlowViewContainer.js"
-import { GoCopyStrategy } from "../components/GoCopyStrategy.js"
-import { ShareStrategy } from "../components/ShareStrategy.js"
-import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
+import { StrategyFlowContext } from "../public/contexts/StrategyFlow.js"
+import { FlowMenu } from "./FlowMenu.js"
+import { FlowViewContainer } from "./FlowViewContainer.js"
+import { GoCopyStrategy } from "./GoCopyStrategy.js"
+import { ShareStrategy } from "./ShareStrategy.js"
 
 export const ReadonlyFlow: FC = () => {
 	const { flowViewContainerRef } = useContext(StrategyFlowContext)

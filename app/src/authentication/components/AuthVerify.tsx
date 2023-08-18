@@ -257,7 +257,10 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 
 					{verificationFailed ? (
 						<Message color="warning">
-							<FormattedMessage id="AuthVerify.failed" />
+							<FormattedMessage
+								id="AuthVerify.failed"
+								values={{ em: (chunks) => <em>{chunks}</em> }}
+							/>
 						</Message>
 					) : null}
 
