@@ -4,7 +4,7 @@ import { FC, useState } from "react"
 
 export const TimeIntervalSelectors: FC = () => {
 	const max = today()
-	const [startDay, setStartDay] = useState(getDay(max).minus(45).days())
+	const [startDay, setStartDay] = useState(getDay(max).minus(45).days)
 	const [endDay, setEndDay] = useState(max)
 
 	return (

@@ -48,7 +48,7 @@ export const useFlowView = ({
 			container: HTMLDivElement,
 			nodesCatalog: DflowNodesCatalog
 		): FlowView => {
-			const time = truncateTime(now()).to.minute()
+			const time = truncateTime(now()).to.minute
 			const binance = new BinanceClient(
 				{
 					balances: [],

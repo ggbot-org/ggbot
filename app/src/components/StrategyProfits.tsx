@@ -14,7 +14,7 @@ export const StrategyProfits: FC<Props> = ({ numDays }) => {
 
 	const dayInterval = useMemo<DayInterval>(() => {
 		const end = today()
-		const start = getDay(end).minus(numDays).days()
+		const start = getDay(end).minus(numDays).days
 		return { start, end }
 	}, [numDays])
 

@@ -61,7 +61,7 @@ export const executeBinanceStrategy: ExecuteStrategy = async ({
 			// cache klines data.
 			//
 			// TODO is this correct?
-			const time = truncateTime(now()).to.minute()
+			const time = truncateTime(now()).to.minute
 
 			const { symbols } = await binance.exchangeInfo()
 			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
@@ -128,7 +128,7 @@ export const executeBinanceStrategy: ExecuteStrategy = async ({
 
 				if (balances.length > 0) {
 					const { whenCreated } = createdNow()
-					const day = timeToDay(truncateTime(whenCreated).to.day())
+					const day = timeToDay(truncateTime(whenCreated).to.day)
 					await appendStrategyDailyBalanceChanges({
 						accountId,
 						strategyKind,

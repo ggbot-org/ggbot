@@ -152,7 +152,7 @@ export class Executor {
 		const { status, frequency } = scheduling
 		if (status !== "active") return
 		const whenExecuted = strategyWhenExecuted.get(strategyId)
-		const time = truncateTime(now()).to.minute()
+		const time = truncateTime(now()).to.minute
 		if (whenExecuted) {
 			const pauseDuration = frequencyIntervalDuration(frequency)
 			if (whenExecuted + pauseDuration > time) return

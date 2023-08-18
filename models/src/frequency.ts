@@ -15,10 +15,13 @@ export type Frequency = {
 	interval: FrequencyInterval
 }
 
-const frequencyIntervalTimeUnit: Record<FrequencyInterval, TimeUnit> = {
-	"1m": "minute",
-	"1h": "hour"
-}
+type FrequencyTimeUnit = Extract<TimeUnit, "minute" | "hour">
+
+const frequencyIntervalTimeUnit: Record<FrequencyInterval, FrequencyTimeUnit> =
+	{
+		"1m": "minute",
+		"1h": "hour"
+	}
 
 export const frequencyIntervalDuration = ({
 	every,

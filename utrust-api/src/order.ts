@@ -26,7 +26,6 @@ import {
 	UtrustReturnURL
 } from "@ggbot2/locators"
 import {
-	isSubscription,
 	PaymentProvider,
 	purchaseCurrency,
 	purchaseMaxNumMonths,
@@ -34,7 +33,7 @@ import {
 	SubscriptionPlan,
 	totalPurchase
 } from "@ggbot2/models"
-import { dateToDay, dayToDate, getDate, today } from "@ggbot2/time"
+import { getDay, today } from "@ggbot2/time"
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -79,13 +78,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 				const subscription = await readSubscription({ accountId })
 				const startDay =
-					isSubscription(subscription) &&
-					statusOfSubscription({ end: subscription.end }) === "active"
-						? dateToDay(
-								getDate(dayToDate(subscription.end))
-									.plus(1)
-									.days()
-						  )
+					subscription &&
+					statusOfSubscription(subscription) === "active"
+						? getDay(subscription.end).plusOne.day
 						: today()
 
 				const purchaseKey =

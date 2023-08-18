@@ -199,7 +199,7 @@ const getMaxDay: () => State["maxDay"] = yesterday
 const defaultDayInterval = (): State["dayInterval"] => {
 	const maxDay = getMaxDay()
 	return {
-		start: getDay(maxDay).minus(7).days(),
+		start: getDay(maxDay).minus(7).days,
 		end: maxDay
 	}
 }

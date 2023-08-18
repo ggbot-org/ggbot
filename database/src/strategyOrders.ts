@@ -15,7 +15,7 @@ export const readStrategyOrders: ReadStrategyOrders = async ({
 		const orders = await readStrategyDailyOrders({ day, ...key })
 		if (!orders) continue
 		for (const order of orders) result.push(order)
-		date = getDate(date).plus(1).days()
+		date = getDate(date).plusOne.day
 	}
 	return result
 }

@@ -19,7 +19,7 @@ describe("BinanceDflowHost", () => {
 					binance,
 					input: {},
 					memory: {},
-					time: truncateTime(now()).to.minute()
+					time: truncateTime(now()).to.minute
 				}
 			)
 			dflow.load({

@@ -32,9 +32,7 @@ export const dayIntervalToDate = ({
 	end
 }: DayInterval): DateInterval => ({
 	start: dayToDate(start),
-	end: getDate(getDate(dayToDate(end)).plus(1).days())
-		.minus(1)
-		.seconds()
+	end: getDate(getDate(dayToDate(end)).plusOne.day).minus(1).seconds
 })
 
 /** Convert `DayInterval` to `TimeInterval`. */

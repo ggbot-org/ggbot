@@ -103,7 +103,7 @@ export const newMonthlySubscription = ({
 	numMonths
 }: NewMonthlySubscriptionArg): SubscriptionPurchase => {
 	const startDate = dayToDate(startDay)
-	const endDate = getDate(startDate).plus(numMonths).months()
+	const endDate = getDate(startDate).plus(numMonths).months
 	const endDay = dateToDay(endDate)
 	const dayInterval = { start: startDay, end: endDay }
 	return {
@@ -127,7 +127,7 @@ export const newYearlySubscription = ({
 	startDay
 }: NewYearlySubscriptionArg): SubscriptionPurchase => {
 	const startDate = dayToDate(startDay)
-	const endDate = getDate(startDate).plus(1).years()
+	const endDate = getDate(startDate).plusOne.year
 	const endDay = dateToDay(endDate)
 	const dayInterval = { start: startDay, end: endDay }
 	return {

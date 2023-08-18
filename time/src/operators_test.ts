@@ -3,12 +3,14 @@ import { describe, it } from "node:test"
 
 import { ErrorInvalidDate } from "./errors.js"
 import { getDate, truncateDate, truncateTimestamp } from "./operators.js"
+import { Timestamp } from "./timestamp.js"
+import { TimeUnit } from "./units.js"
 
 describe("getDate", () => {
 	it("throws ErrorInvalidDate", () => {
 		assert.throws(
 			() => {
-				getDate(new Date("0000-00-00")).plus(2).days()
+				getDate(new Date("0000-00-00")).plus(2).days
 			},
 			{
 				name: "Error",
@@ -29,7 +31,7 @@ describe("getDate", () => {
 				output: new Date("1978-12-31T00:01")
 			}
 		].forEach(({ input: { num, date }, output }) => {
-			assert.deepEqual(getDate(date).plus(num).minutes(), output)
+			assert.deepEqual(getDate(date).plus(num).minutes, output)
 		})
 
 		// plus days
@@ -51,7 +53,7 @@ describe("getDate", () => {
 				output: new Date(1665187200000 + 86400 * 1000 * 2)
 			}
 		].forEach(({ input: { num, date }, output }) => {
-			assert.deepEqual(getDate(date).plus(num).days(), output)
+			assert.deepEqual(getDate(date).plus(num).days, output)
 		})
 
 		// minus days
@@ -69,7 +71,7 @@ describe("getDate", () => {
 				output: new Date(1665187200000 - 86400 * 1000 * 2)
 			}
 		].forEach(({ input: { num, date }, output }) => {
-			assert.deepEqual(getDate(date).minus(num).days(), output)
+			assert.deepEqual(getDate(date).minus(num).days, output)
 		})
 
 		// plus years
@@ -83,7 +85,7 @@ describe("getDate", () => {
 				output: new Date("1980-12-31")
 			}
 		].forEach(({ input: { num, date }, output }) => {
-			assert.deepEqual(getDate(date).plus(num).years(), output)
+			assert.deepEqual(getDate(date).plus(num).years, output)
 		})
 	})
 })
@@ -92,7 +94,7 @@ describe("truncateDate", () => {
 	it("throws ErrorInvalidDate", () => {
 		assert.throws(
 			() => {
-				truncateDate(new Date("0000-00-00")).to.day()
+				truncateDate(new Date("0000-00-00")).to.day
 			},
 			{
 				name: "Error",
@@ -104,7 +106,16 @@ describe("truncateDate", () => {
 
 describe("truncateTimestamp", () => {
 	it("truncates a timestamp to given granularity", () => {
-		;[
+		const testData: {
+			input: {
+				timestamp: Timestamp
+				truncation: Extract<
+					TimeUnit,
+					"second" | "minute" | "hour" | "day"
+				>
+			}
+			output: Timestamp
+		}[] = [
 			{
 				input: {
 					timestamp: "2022-07-23T11:43:05.841Z",
@@ -133,8 +144,9 @@ describe("truncateTimestamp", () => {
 				},
 				output: "2022-07-23T00:00:00.000Z"
 			}
-		].forEach(({ input: { timestamp, truncation }, output }) => {
-			assert.equal(truncateTimestamp(timestamp).to[truncation](), output)
+		]
+		testData.forEach(({ input: { timestamp, truncation }, output }) => {
+			assert.equal(truncateTimestamp(timestamp).to[truncation], output)
 		})
 	})
 })

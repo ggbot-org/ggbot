@@ -4,4 +4,4 @@ import { getDay } from "./operators.js"
 
 export const today = (): Day => dateToDay(new Date())
 
-export const yesterday = (): Day => getDay(today()).minus(1).days()
+export const yesterday = (): Day => getDay(today()).minusOne.day

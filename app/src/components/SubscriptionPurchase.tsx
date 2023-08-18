@@ -87,11 +87,11 @@ export const SubscriptionPurchase: FC = () => {
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
 	if (isNaturalNumber(numMonths)) {
 		const start = subscriptionEnd
-			? getTime(subscriptionEnd).plus(1).days()
+			? getTime(subscriptionEnd).plusOne.day
 			: now()
-		newSubscriptionEnd = getTime(start)
-			.plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths)
-			.months()
+		newSubscriptionEnd = getTime(start).plus(
+			numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths
+		).months
 	}
 
 	const isYearlyPurchase: boolean | undefined =

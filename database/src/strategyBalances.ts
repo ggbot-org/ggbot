@@ -15,7 +15,7 @@ export const readStrategyBalances: ReadStrategyBalances = async ({
 		const data =
 			(await readStrategyDailyBalanceChanges({ day, ...key })) ?? []
 		result.push({ day, data })
-		date = getDate(date).plus(1).days()
+		date = getDate(date).plusOne.day
 	}
 	return result
 }

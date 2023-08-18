@@ -16,6 +16,6 @@ export const clientSessionNumDays = 30
 export const clientSessionIsExpired = ({
 	creationDay
 }: Pick<ClientSession, "creationDay">) => {
-	const expirationDay = getDay(creationDay).plus(clientSessionNumDays).days()
+	const expirationDay = getDay(creationDay).plus(clientSessionNumDays).days
 	return expirationDay < today()
 }

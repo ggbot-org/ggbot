@@ -14,21 +14,25 @@ import { Timestamp } from "./timestamp.js"
 import { TimeUnit } from "./units.js"
 
 type TimeTruncator<Input, Output> = (arg: Input) => {
-	to: Record<TimeUnit, () => Output>
+	to: Record<Extract<TimeUnit, "second" | "minute" | "hour" | "day">, Output>
 }
 
-type TimeTranslationUnits<TimeType> = {
-	years: () => TimeType
-	months: () => TimeType
-	days: () => TimeType
-	hours: () => TimeType
-	minutes: () => TimeType
-	seconds: () => TimeType
+type TimeTranslationUnits<TimeType> = Record<TimeUnit, TimeType>
+
+type TimeTranslationPluralUnits<TimeType> = {
+	years: TimeType
+	months: TimeType
+	days: TimeType
+	hours: TimeType
+	minutes: TimeType
+	seconds: TimeType
 }
 
 type TimeTranslator<TimeType> = (arg: TimeType) => {
-	plus: (num: number) => TimeTranslationUnits<TimeType>
-	minus: (num: number) => TimeTranslationUnits<TimeType>
+	plus: (num: number) => TimeTranslationPluralUnits<TimeType>
+	plusOne: TimeTranslationUnits<TimeType>
+	minus: (num: number) => TimeTranslationPluralUnits<TimeType>
+	minusOne: TimeTranslationUnits<TimeType>
 }
 
 /** Translate `Date`. */
@@ -37,57 +41,95 @@ export const getDate: TimeTranslator<Date> = (input) => {
 	const date = new Date(input)
 	return {
 		plus: (num) => ({
-			years: () => {
+			get years() {
 				date.setFullYear(date.getFullYear() + num)
 				return date
 			},
-			months: () => {
+			get months() {
 				date.setMonth(date.getMonth() + num)
 				return date
 			},
-			days: () => {
+			get days() {
 				date.setDate(date.getDate() + num)
 				return date
 			},
-			hours: () => {
+			get hours() {
 				date.setHours(date.getHours() + num)
 				return date
 			},
-			minutes: () => {
+			get minutes() {
 				date.setMinutes(date.getMinutes() + num)
 				return date
 			},
-			seconds: () => {
+			get seconds() {
 				date.setSeconds(date.getSeconds() + num)
 				return date
 			}
 		}),
+		get plusOne() {
+			return {
+				get year() {
+					return getDate(date).plus(1).years
+				},
+				get month() {
+					return getDate(date).plus(1).months
+				},
+				get day() {
+					return getDate(date).plus(1).days
+				},
+				get hour() {
+					return getDate(date).plus(1).hours
+				},
+				get minute() {
+					return getDate(date).plus(1).minutes
+				},
+				get second() {
+					return getDate(date).plus(1).seconds
+				}
+			}
+		},
 		minus: (num) => ({
-			years: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.years(),
-			months: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.months(),
-			days: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.days(),
-			hours: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.hours(),
-			minutes: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.minutes(),
-			seconds: () =>
-				getDate(date)
-					.plus(-1 * num)
-					.seconds()
-		})
+			get years() {
+				return getDate(date).plus(-1 * num).years
+			},
+			get months() {
+				return getDate(date).plus(-1 * num).months
+			},
+			get days() {
+				return getDate(date).plus(-1 * num).days
+			},
+			get hours() {
+				return getDate(date).plus(-1 * num).hours
+			},
+			get minutes() {
+				return getDate(date).plus(-1 * num).minutes
+			},
+			get seconds() {
+				return getDate(date).plus(-1 * num).seconds
+			}
+		}),
+		get minusOne() {
+			return {
+				get year() {
+					return getDate(date).minus(1).years
+				},
+				get month() {
+					return getDate(date).minus(1).months
+				},
+				get day() {
+					return getDate(date).minus(1).days
+				},
+				get hour() {
+					return getDate(date).minus(1).hours
+				},
+				get minute() {
+					return getDate(date).minus(1).minutes
+				},
+				get second() {
+					return getDate(date).minus(1).seconds
+				}
+			}
+		}
 	}
 }
 
@@ -96,39 +138,89 @@ export const getDay: TimeTranslator<Day> = (day) => {
 	const date = dayToDate(day)
 	return {
 		plus: (num) => ({
-			years: () => dateToDay(getDate(date).plus(num).years()),
-			months: () => dateToDay(getDate(date).plus(num).months()),
-			days: () => dateToDay(getDate(date).plus(num).days()),
-			hours: () => dateToDay(getDate(date).plus(num).hours()),
-			minutes: () => dateToDay(getDate(date).plus(num).minutes()),
-			seconds: () => dateToDay(getDate(date).plus(num).seconds())
+			get years() {
+				return dateToDay(getDate(date).plus(num).years)
+			},
+			get months() {
+				return dateToDay(getDate(date).plus(num).months)
+			},
+			get days() {
+				return dateToDay(getDate(date).plus(num).days)
+			},
+			get hours() {
+				return dateToDay(getDate(date).plus(num).hours)
+			},
+			get minutes() {
+				return dateToDay(getDate(date).plus(num).minutes)
+			},
+			get seconds() {
+				return dateToDay(getDate(date).plus(num).seconds)
+			}
 		}),
+		get plusOne() {
+			return {
+				get year() {
+					return dateToDay(getDate(date).plusOne.year)
+				},
+				get month() {
+					return dateToDay(getDate(date).plusOne.month)
+				},
+				get day() {
+					return dateToDay(getDate(date).plusOne.day)
+				},
+				get hour() {
+					return dateToDay(getDate(date).plusOne.hour)
+				},
+				get minute() {
+					return dateToDay(getDate(date).plusOne.minute)
+				},
+				get second() {
+					return dateToDay(getDate(date).plusOne.second)
+				}
+			}
+		},
 		minus: (num) => ({
-			years: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.years(),
-			months: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.months(),
-			days: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.days(),
-			hours: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.hours(),
-			minutes: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.minutes(),
-			seconds: () =>
-				getDay(day)
-					.plus(-1 * num)
-					.seconds()
-		})
+			get years() {
+				return dateToDay(getDate(date).minus(num).years)
+			},
+			get months() {
+				return dateToDay(getDate(date).minus(num).months)
+			},
+			get days() {
+				return dateToDay(getDate(date).minus(num).days)
+			},
+			get hours() {
+				return dateToDay(getDate(date).minus(num).hours)
+			},
+			get minutes() {
+				return dateToDay(getDate(date).minus(num).minutes)
+			},
+			get seconds() {
+				return dateToDay(getDate(date).minus(num).seconds)
+			}
+		}),
+		get minusOne() {
+			return {
+				get year() {
+					return dateToDay(getDate(date).minusOne.year)
+				},
+				get month() {
+					return dateToDay(getDate(date).minusOne.month)
+				},
+				get day() {
+					return dateToDay(getDate(date).minusOne.day)
+				},
+				get hour() {
+					return dateToDay(getDate(date).minusOne.hour)
+				},
+				get minute() {
+					return dateToDay(getDate(date).minusOne.minute)
+				},
+				get second() {
+					return dateToDay(getDate(date).minusOne.second)
+				}
+			}
+		}
 	}
 }
 
@@ -137,39 +229,89 @@ export const getTime: TimeTranslator<Time> = (time) => {
 	const date = timeToDate(time)
 	return {
 		plus: (num) => ({
-			years: () => dateToTime(getDate(date).plus(num).years()),
-			months: () => dateToTime(getDate(date).plus(num).months()),
-			days: () => dateToTime(getDate(date).plus(num).days()),
-			hours: () => dateToTime(getDate(date).plus(num).hours()),
-			minutes: () => dateToTime(getDate(date).plus(num).minutes()),
-			seconds: () => dateToTime(getDate(date).plus(num).seconds())
+			get years() {
+				return dateToTime(getDate(date).plus(num).years)
+			},
+			get months() {
+				return dateToTime(getDate(date).plus(num).months)
+			},
+			get days() {
+				return dateToTime(getDate(date).plus(num).days)
+			},
+			get hours() {
+				return dateToTime(getDate(date).plus(num).hours)
+			},
+			get minutes() {
+				return dateToTime(getDate(date).plus(num).minutes)
+			},
+			get seconds() {
+				return dateToTime(getDate(date).plus(num).seconds)
+			}
 		}),
+		get plusOne() {
+			return {
+				get year() {
+					return dateToTime(getDate(date).plusOne.year)
+				},
+				get month() {
+					return dateToTime(getDate(date).plusOne.month)
+				},
+				get day() {
+					return dateToTime(getDate(date).plusOne.day)
+				},
+				get hour() {
+					return dateToTime(getDate(date).plusOne.hour)
+				},
+				get minute() {
+					return dateToTime(getDate(date).plusOne.minute)
+				},
+				get second() {
+					return dateToTime(getDate(date).plusOne.second)
+				}
+			}
+		},
 		minus: (num) => ({
-			years: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.years(),
-			months: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.months(),
-			days: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.days(),
-			hours: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.hours(),
-			minutes: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.minutes(),
-			seconds: () =>
-				getTime(time)
-					.plus(-1 * num)
-					.seconds()
-		})
+			get years() {
+				return dateToTime(getDate(date).minus(num).years)
+			},
+			get months() {
+				return dateToTime(getDate(date).minus(num).months)
+			},
+			get days() {
+				return dateToTime(getDate(date).minus(num).days)
+			},
+			get hours() {
+				return dateToTime(getDate(date).minus(num).hours)
+			},
+			get minutes() {
+				return dateToTime(getDate(date).minus(num).minutes)
+			},
+			get seconds() {
+				return dateToTime(getDate(date).minus(num).seconds)
+			}
+		}),
+		get minusOne() {
+			return {
+				get year() {
+					return dateToTime(getDate(date).minusOne.year)
+				},
+				get month() {
+					return dateToTime(getDate(date).minusOne.month)
+				},
+				get day() {
+					return dateToTime(getDate(date).minusOne.day)
+				},
+				get hour() {
+					return dateToTime(getDate(date).minusOne.hour)
+				},
+				get minute() {
+					return dateToTime(getDate(date).minusOne.minute)
+				},
+				get second() {
+					return dateToTime(getDate(date).minusOne.second)
+				}
+			}
+		}
 	}
 }
 
@@ -178,22 +320,22 @@ export const truncateDate: TimeTruncator<Date, Date> = (date) => {
 	if (isInvalidDate(date)) throw new ErrorInvalidDate()
 	return {
 		to: {
-			second: () => {
+			get second() {
 				date.setMilliseconds(0)
 				return date
 			},
-			minute: () => {
+			get minute() {
 				date.setMilliseconds(0)
 				date.setUTCSeconds(0)
 				return date
 			},
-			hour: () => {
+			get hour() {
 				date.setMilliseconds(0)
 				date.setUTCSeconds(0)
 				date.setUTCMinutes(0)
 				return date
 			},
-			day: () => {
+			get day() {
 				date.setMilliseconds(0)
 				date.setUTCSeconds(0)
 				date.setUTCMinutes(0)
@@ -209,10 +351,18 @@ export const truncateTime: TimeTruncator<Time, Time> = (time) => {
 	const date = timeToDate(time)
 	return {
 		to: {
-			second: () => dateToTime(truncateDate(date).to.second()),
-			minute: () => dateToTime(truncateDate(date).to.minute()),
-			hour: () => dateToTime(truncateDate(date).to.hour()),
-			day: () => dateToTime(truncateDate(date).to.day())
+			get second() {
+				return dateToTime(truncateDate(date).to.second)
+			},
+			get minute() {
+				return dateToTime(truncateDate(date).to.minute)
+			},
+			get hour() {
+				return dateToTime(truncateDate(date).to.hour)
+			},
+			get day() {
+				return dateToTime(truncateDate(date).to.day)
+			}
 		}
 	}
 }
@@ -224,10 +374,18 @@ export const truncateTimestamp: TimeTruncator<Timestamp, Timestamp> = (
 	const date = timestampToDate(timestamp)
 	return {
 		to: {
-			second: () => dateToTimestamp(truncateDate(date).to.second()),
-			minute: () => dateToTimestamp(truncateDate(date).to.minute()),
-			hour: () => dateToTimestamp(truncateDate(date).to.hour()),
-			day: () => dateToTimestamp(truncateDate(date).to.day())
+			get second() {
+				return dateToTimestamp(truncateDate(date).to.second)
+			},
+			get minute() {
+				return dateToTimestamp(truncateDate(date).to.minute)
+			},
+			get hour() {
+				return dateToTimestamp(truncateDate(date).to.hour)
+			},
+			get day() {
+				return dateToTimestamp(truncateDate(date).to.day)
+			}
 		}
 	}
 }

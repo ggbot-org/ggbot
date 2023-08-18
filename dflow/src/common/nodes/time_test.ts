@@ -5,6 +5,25 @@ import { dayToTime } from "@ggbot2/time"
 
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
+import { coerceToTimeUnit } from "./time.js"
+
+describe("coerceToTimeUnit", () => {
+	it("works", () => {
+		;[
+			{ input: "not a TimeUnit", output: undefined },
+			{ input: "seconds", output: "second" },
+			{ input: "1s", output: "second" },
+			{ input: "minutes", output: "minute" },
+			{ input: "1m", output: "minute" },
+			{ input: "hours", output: "hour" },
+			{ input: "1h", output: "hour" },
+			{ input: "days", output: "day" },
+			{ input: "1d", output: "day" }
+		].forEach(({ input, output }) => {
+			assert.equal(coerceToTimeUnit(input), output)
+		})
+	})
+})
 
 describe("today", () => {
 	it("reads context timestamp", async () => {

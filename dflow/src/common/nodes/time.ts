@@ -1,9 +1,10 @@
 import {
-	coerceToTimeUnit,
 	getTime,
 	isTime,
+	isTimeUnit,
 	timeToDay,
-	timeToTimestamp
+	timeToTimestamp,
+	TimeUnit
 } from "@ggbot2/time"
 import { DflowNode } from "dflow"
 
@@ -20,6 +21,15 @@ const inputTimeUnit = input("string", { name: "timeUnit" })
 
 const timeOutputs = [outputTime, output("string", { name: "timestamp" })]
 
+export const coerceToTimeUnit = (arg: string): TimeUnit | undefined => {
+	if (isTimeUnit(arg)) return arg
+	if (["1s", "seconds"].includes(arg)) return "second"
+	if (["1m", "minutes"].includes(arg)) return "minute"
+	if (["1h", "hours"].includes(arg)) return "hour"
+	if (["1d", "days"].includes(arg)) return "day"
+	return
+}
+
 const timeTranslatorInputs = [
 	inputTime,
 	inputTimeUnit,
@@ -35,13 +45,13 @@ const translateTime = (
 	const timeUnit = coerceToTimeUnit(timeUnitStr)
 	switch (timeUnit) {
 		case "second":
-			return getTime(time).plus(num).seconds()
+			return getTime(time).plus(num).seconds
 		case "minute":
-			return getTime(time).plus(num).minutes()
+			return getTime(time).plus(num).minutes
 		case "hour":
-			return getTime(time).plus(num).hours()
+			return getTime(time).plus(num).hours
 		case "day":
-			return getTime(time).plus(num).days()
+			return getTime(time).plus(num).days
 		default:
 			return
 	}
