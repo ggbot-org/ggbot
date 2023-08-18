@@ -17,7 +17,7 @@ import { FormattedMessage } from "react-intl"
 
 import { StrategyName } from "../components/StrategyName.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 const fieldName = {
 	name: "name"
@@ -47,7 +47,7 @@ export const RenameStrategy: FC = () => {
 		setModalIsActive((active) => !active)
 	}, [])
 
-	const RENAME = useApi.RenameStrategy()
+	const RENAME = useUserApi.RenameStrategy()
 	const isPending = RENAME.isPending
 
 	const onSubmit = useCallback<FormOnSubmit>(

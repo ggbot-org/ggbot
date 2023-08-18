@@ -9,7 +9,6 @@
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
     "build": "npm run build:binance-proxy && npm run build:executor && npm run build:app && npm run build:authentication-api && npm run build:user-api && npm run build:public-api",
-    "build:admin": "npm run build --workspace admin",
     "build:admin-api": "npm run build --workspace admin-api",
     "build:api": "npm run build --workspace api",
     "build:api-gateway": "npm run build --workspace api-gateway",
@@ -174,7 +173,6 @@
     ]
   },
   "workspaces": [
-    "admin",
     "admin-api",
     "api",
     "api-gateway",

@@ -1,98 +1,59 @@
+import { join } from "node:path"
+
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
+import { adminHtmlFilenames } from "../admin/routing/pages.js"
 import {
-	adminDashboardHtmlFilename,
-	adminDashboardJs,
+	adminJs,
 	appJs,
-	copyStrategyHtmlFilename,
-	indexHtmlFilename,
+	publicAdminDir,
 	publicDir,
-	purchaseCanceledHtmlFilename,
-	settingsHtmlFilename,
-	strategyHtmlFilename,
-	subscriptionPurchasedHtmlFilename,
-	tryFlowHtmlFilename,
 	tryFlowJs
 } from "../package.js"
+import {
+	purchaseCanceledHtmlFilename,
+	subscriptionPurchasedHtmlFilename,
+	tryFlowHtmlFilename,
+	userHtmlFilenames
+} from "../routing/pages.js"
 
 const html = (scriptJs: string) =>
 	htmlPageContent({
 		hasRootDiv: true,
 		meta: { title: "ggbot2" },
 		scripts: [{ src: scriptJs }],
-		stylesheets: [{ href: "main.css" }]
+		stylesheets: [{ href: "/main.css" }]
 	})
 
 const generateHtml = async () => {
-	const dirname = publicDir
-
-	// Homepage
-
-	await generateHtmlPage({
-		dirname,
-		filename: indexHtmlFilename,
-		htmlContent: html(appJs)
-	})
-
-	// Admin
-
-	await generateHtmlPage({
-		dirname,
-		filename: adminDashboardHtmlFilename,
-		htmlContent: html(adminDashboardJs)
-	})
-
-	// Strategy
-
-	await generateHtmlPage({
-		dirname,
-		filename: copyStrategyHtmlFilename,
-		htmlContent: html(appJs)
-	})
-	await generateHtmlPage({
-		dirname,
-		filename: strategyHtmlFilename,
-		htmlContent: html(appJs)
-	})
-
 	// Flow
 
-	await generateHtmlPage({
-		dirname,
-		filename: tryFlowHtmlFilename,
-		htmlContent: html(tryFlowJs)
-	})
+	await generateHtmlPage(
+		join(publicDir, tryFlowHtmlFilename),
+		html(tryFlowJs)
+	)
 
-	// Settings
+	// Admin app.
 
-	await generateHtmlPage({
-		dirname,
-		filename: settingsHtmlFilename("account"),
-		htmlContent: html(appJs)
-	})
-	await generateHtmlPage({
-		dirname,
-		filename: settingsHtmlFilename("billing"),
-		htmlContent: html(appJs)
-	})
-	await generateHtmlPage({
-		dirname,
-		filename: settingsHtmlFilename("binance"),
-		htmlContent: html(appJs)
-	})
+	for (const filename of adminHtmlFilenames)
+		await generateHtmlPage(join(publicAdminDir, filename), html(adminJs))
+
+	// User app.
+
+	for (const filename of userHtmlFilenames)
+		await generateHtmlPage(join(publicDir, filename), html(appJs))
 
 	// Subscription
 
-	await generateHtmlPage({
-		dirname,
-		filename: purchaseCanceledHtmlFilename,
-		htmlContent: html(appJs)
-	})
-	await generateHtmlPage({
-		dirname,
-		filename: subscriptionPurchasedHtmlFilename,
-		htmlContent: html(appJs)
-	})
+	await generateHtmlPage(
+		join(publicDir, purchaseCanceledHtmlFilename),
+		html(appJs)
+	)
+
+	await generateHtmlPage(
+		join(publicDir, subscriptionPurchasedHtmlFilename),
+		html(appJs)
+	)
 }
 
 generateHtml()

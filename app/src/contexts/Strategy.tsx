@@ -13,7 +13,7 @@ import {
 
 import { InvalidStrategyKey } from "../components/InvalidStrategyKey.js"
 import { StrategyNotFound } from "../components/StrategyNotFound.js"
-import { useApi } from "../hooks/useApi.js"
+import { usePublicApi } from "../public/hooks/usePublicApi.js"
 import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js"
 
 type ContextValue = {
@@ -35,7 +35,7 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const [name, setName] = useState("")
 
-	const READ_STRATEGY = useApi.ReadStrategy()
+	const READ_STRATEGY = usePublicApi.ReadStrategy()
 	const remoteStrategy = READ_STRATEGY.data
 
 	const strategy = useMemo(() => {

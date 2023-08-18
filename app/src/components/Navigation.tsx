@@ -11,7 +11,7 @@ import {
 import { memo, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { AuthenticationContext } from "../contexts/Authentication.js"
+import { AuthenticationContext } from "../authentication/contexts/Authentication.js"
 import { href } from "../routing/hrefs.js"
 import { SettingsPageId } from "../routing/types.js"
 import { classNames } from "../styles/classNames.js"
@@ -24,13 +24,13 @@ export const Navigation = memo<NavigationProps>(({ noMenu }) => {
 	const isAdmin = account.role === "admin"
 
 	const goToAdminPage = () => {
-		if (window.location.href !== href.homePage())
-			window.location.href = href.homePage()
+		if (window.location.href !== href.adminPage())
+			window.location.href = href.adminPage()
 	}
 
-	const goToHomePage = () => {
-		if (window.location.href !== href.homePage())
-			window.location.href = href.homePage()
+	const goToDashboardPage = () => {
+		if (window.location.href !== href.dashboardPage())
+			window.location.href = href.dashboardPage()
 	}
 
 	const onClickExit = useCallback(() => {
@@ -49,8 +49,8 @@ export const Navigation = memo<NavigationProps>(({ noMenu }) => {
 			{noMenu || (
 				<>
 					<NavbarStart>
-						<NavbarItemAnchor onClick={goToHomePage}>
-							<FormattedMessage id="Navigation.strategies" />
+						<NavbarItemAnchor onClick={goToDashboardPage}>
+							<FormattedMessage id="Navigation.dashboard" />
 						</NavbarItemAnchor>
 
 						<NavbarItem hasDropdown isHoverable>

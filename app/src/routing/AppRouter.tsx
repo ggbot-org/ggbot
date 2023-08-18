@@ -11,7 +11,7 @@ import { StrategyPage } from "../pages/Strategy.js"
 import { SubscriptionPurchasedPage } from "../pages/SubscriptionPurchased.js"
 import {
 	copyStrategyHtmlFilename,
-	indexHtmlFilename,
+	dashboardHtmlFilename,
 	purchaseCanceledHtmlFilename,
 	settingsHtmlFilename,
 	strategyHtmlFilename,
@@ -23,7 +23,7 @@ const Router: FC = () => {
 
 	switch (true) {
 		case pathname === "/":
-		case pathname === `/${indexHtmlFilename}`:
+		case pathname === `/${dashboardHtmlFilename}`:
 			return <DashboardPage />
 
 		case pathname === `/${copyStrategyHtmlFilename}`:

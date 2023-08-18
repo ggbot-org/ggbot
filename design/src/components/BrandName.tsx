@@ -9,9 +9,10 @@ export const BrandName: FC<BrandNameProps> = ({ size = "normal" }) => (
 	<span
 		className={classNames("has-text-weight-medium", {
 			"is-size-3": size === "medium",
-			"is-size-5": size === "normal"
+			"is-size-5": size === "normal",
+			"mb-1": size === "normal"
 		})}
 	>
-		ggbot<b className={classNames("has-text-primary")}>2</b>
+		ggbot
 	</span>
 )

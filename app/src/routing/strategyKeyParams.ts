@@ -1,4 +1,4 @@
-import { isStrategyKey, StrategyKey } from "./types.js"
+import { isStrategyKey, StrategyKey } from "@ggbot2/models"
 
 const strategyKindKey = "strategyKind"
 const strategyIdKey = "strategyId"

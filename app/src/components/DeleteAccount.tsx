@@ -12,14 +12,14 @@ import {
 import { FC, useCallback, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 export const DeleteAccount: FC = () => {
 	const color: MainColor = "danger"
 
 	const { formatMessage } = useIntl()
 
-	const DELETE = useApi.DeleteAccount()
+	const DELETE = useUserApi.DeleteAccount()
 	const isLoading = DELETE.isPending
 
 	const [hasConsent, setHasConsent] = useState(false)

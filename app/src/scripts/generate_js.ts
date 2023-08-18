@@ -3,8 +3,8 @@ import { join } from "node:path"
 import { browserBundle } from "@ggbot2/esbuild"
 
 import {
-	adminDashboardEntryPoint,
-	adminDashboardJs,
+	adminEntryPoint,
+	adminJs,
 	appEntryPoint,
 	appJs,
 	publicDir,
@@ -19,8 +19,8 @@ const generateJsBundles = async () => {
 	})
 
 	await browserBundle({
-		entryPoints: [adminDashboardEntryPoint],
-		outfile: join(publicDir, adminDashboardJs)
+		entryPoints: [adminEntryPoint],
+		outfile: join(publicDir, adminJs)
 	})
 
 	await browserBundle({

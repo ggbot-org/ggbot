@@ -8,7 +8,7 @@ import {
 	useMemo
 } from "react"
 
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 type ContextValue = Partial<BinanceApiKey> & {
 	hasApiKey: undefined | boolean
@@ -26,7 +26,7 @@ BinanceApiConfigContext.displayName = "BinanceApiConfigContext"
 export const BinanceApiConfigProvider: FC<PropsWithChildren> = ({
 	children
 }) => {
-	const READ_API_KEY = useApi.ReadBinanceApiKey()
+	const READ_API_KEY = useUserApi.ReadBinanceApiKey()
 	const remoteApiKey = READ_API_KEY.data
 
 	const refetchApiKey = useCallback(() => {

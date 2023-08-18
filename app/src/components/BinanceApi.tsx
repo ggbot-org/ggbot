@@ -16,7 +16,7 @@ import {
 	BinanceApiKeyPermissionsProps
 } from "../components/BinanceApiKeyPermissions.js"
 import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 export const BinanceApi: FC = () => {
 	const { formatMessage } = useIntl()
@@ -26,7 +26,7 @@ export const BinanceApi: FC = () => {
 	const [permissions, setPermissions] =
 		useState<BinanceApiKeyPermissionsProps["permissions"]>()
 
-	const READ = useApi.ReadBinanceApiKeyPermissions()
+	const READ = useUserApi.ReadBinanceApiKeyPermissions()
 	const isLoading = READ.isPending
 
 	const onSubmit = useCallback<FormOnSubmit>(

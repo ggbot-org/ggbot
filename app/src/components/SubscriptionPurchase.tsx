@@ -28,6 +28,7 @@ import { countries } from "country-isocode2/en"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { AuthenticationContext } from "../authentication/contexts/Authentication.js"
 import { Email } from "../components/Email.js"
 import {
 	SubscriptionEnd,
@@ -35,9 +36,8 @@ import {
 } from "../components/SubscriptionEnd.js"
 import { SubscriptionNumMonths } from "../components/SubscriptionNumMonths.js"
 import { SubscriptionTotalPrice } from "../components/SubscriptionTotalPrice.js"
-import { AuthenticationContext } from "../contexts/Authentication.js"
 import { SubscriptionContext } from "../contexts/Subscription.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 import { url } from "../routing/URLs.js"
 import { SelectCountry } from "./SelectCountry.js"
 
@@ -64,7 +64,7 @@ export const SubscriptionPurchase: FC = () => {
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
 		useContext(SubscriptionContext)
 
-	const SET_COUNTRY = useApi.SetAccountCountry()
+	const SET_COUNTRY = useUserApi.SetAccountCountry()
 
 	const [purchaseIsPending, setPurchaseIsPending] = useState(false)
 	const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("")

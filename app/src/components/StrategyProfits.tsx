@@ -4,7 +4,7 @@ import { FC, useContext, useEffect, useMemo } from "react"
 
 import { ProfitSummary } from "../components/ProfitSummary.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 type Props = {
 	numDays: number
@@ -18,7 +18,7 @@ export const StrategyProfits: FC<Props> = ({ numDays }) => {
 		return { start, end }
 	}, [numDays])
 
-	const READ = useApi.ReadStrategyOrders()
+	const READ = useUserApi.ReadStrategyOrders()
 
 	const orders: Orders = isOrders(READ.data) ? READ.data : []
 

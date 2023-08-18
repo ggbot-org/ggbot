@@ -16,7 +16,7 @@ import {
 	UpdateTime
 } from "./time.js"
 
-const accountRoles = ["admin"] as const
+const accountRoles = ["admin", "user"] as const
 export type AccountRole = (typeof accountRoles)[number]
 export const isAccountRole = isLiteralType<AccountRole>(accountRoles)
 
@@ -26,6 +26,7 @@ export type Account = Item &
 	} & Partial<{
 		country: AllowedCountryIsoCode2
 		name: Name
+		/** The account role, defaults to "user" if omitted. */
 		role: AccountRole
 	}>
 
@@ -38,6 +39,12 @@ export const isAccount = objectTypeGuard<Account>(
 		(name === undefined ? true : isName(name)) &&
 		(role === undefined ? true : isAccountRole(role))
 )
+
+export const isAdminAccount = ({ role }: Pick<Account, "role">): boolean =>
+	role === "admin"
+
+export const isUserAccount = ({ role }: Pick<Account, "role">): boolean =>
+	role ? role === "user" : true
 
 export const noneAccount: Account = {
 	id: nullId,

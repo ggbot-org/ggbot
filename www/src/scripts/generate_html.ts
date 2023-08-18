@@ -1,3 +1,5 @@
+import { join } from "node:path"
+
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
 import {
@@ -19,25 +21,20 @@ const html = (scriptJs: string) =>
 	})
 
 const generateHtml = async () => {
-	const dirname = publicDir
+	await generateHtmlPage(
+		join(publicDir, indexHtmlFilename),
+		html(indexHtmlAppJs)
+	)
 
-	await generateHtmlPage({
-		dirname,
-		filename: indexHtmlFilename,
-		htmlContent: html(indexHtmlAppJs)
-	})
+	await generateHtmlPage(
+		join(publicDir, privacyHtmlFilename),
+		html(privacyHtmlAppJs)
+	)
 
-	await generateHtmlPage({
-		dirname,
-		filename: privacyHtmlFilename,
-		htmlContent: html(privacyHtmlAppJs)
-	})
-
-	await generateHtmlPage({
-		dirname,
-		filename: termsHtmlFilename,
-		htmlContent: html(termsHtmlAppJs)
-	})
+	await generateHtmlPage(
+		join(publicDir, termsHtmlFilename),
+		html(termsHtmlAppJs)
+	)
 }
 
 generateHtml()

@@ -1,10 +1,8 @@
 import { UtrustCancelURL, UtrustReturnURL } from "@ggbot2/locators"
 
-import { SettingsPageId } from "./types.js"
+import { SettingsPageId, settingsPageIds } from "./types.js"
 
-export const indexHtmlFilename = "index.html"
-
-export const adminDashboardHtmlFilename = "admin.html"
+export const dashboardHtmlFilename = "index.html"
 
 export const copyStrategyHtmlFilename = "copy-strategy.html"
 
@@ -18,3 +16,10 @@ export const settingsHtmlFilename = (id: SettingsPageId) =>
 export const purchaseCanceledHtmlFilename = UtrustCancelURL.htmlFileName
 
 export const subscriptionPurchasedHtmlFilename = UtrustReturnURL.htmlFileName
+
+export const userHtmlFilenames = [
+	dashboardHtmlFilename,
+	copyStrategyHtmlFilename,
+	strategyHtmlFilename,
+	...settingsPageIds.map(settingsHtmlFilename)
+]

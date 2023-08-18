@@ -13,7 +13,7 @@ import { FormattedMessage } from "react-intl"
 import { ApiKey } from "../components/ApiKey.js"
 import { ApiSecret } from "../components/ApiSecret.js"
 import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 const fieldName = {
 	apiKey: "apiKey",
@@ -24,7 +24,7 @@ const fields = Object.keys(fieldName)
 export const CreateBinanceApi: FC = () => {
 	const { hasApiKey, refetchApiKey } = useContext(BinanceApiConfigContext)
 
-	const CREATE = useApi.CreateBinanceApiConfig()
+	const CREATE = useUserApi.CreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending
 	const isDone = CREATE.isDone

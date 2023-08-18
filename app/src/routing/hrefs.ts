@@ -1,3 +1,6 @@
+import { StrategyKey } from "@ggbot2/models"
+
+import { adminDashboardHtmlPathname } from "../admin/routing/pages.js"
 import {
 	copyStrategyHtmlFilename,
 	settingsHtmlFilename,
@@ -5,21 +8,21 @@ import {
 	tryFlowHtmlFilename
 } from "./pages.js"
 import { strategyKeyToURLSearchParams } from "./strategyKeyParams.js"
-import { SettingsPageId, StrategyKey } from "./types.js"
+import { SettingsPageId } from "./types.js"
 
 export const href = {
-	adminPage: () => "/admin.html",
+	adminPage: () => `/${adminDashboardHtmlPathname}`,
 	copyStrategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()
 		return `/${copyStrategyHtmlFilename}?${searchParams}`
 	},
+	dashboardPage: () => "/",
 	tryFlowPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()
 		return `/${tryFlowHtmlFilename}?${searchParams}`
 	},
-	homePage: () => "/",
 	strategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()

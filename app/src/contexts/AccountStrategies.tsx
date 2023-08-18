@@ -1,7 +1,7 @@
 import { AccountStrategies, isAccountStrategies } from "@ggbot2/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 type ContextValue = {
 	accountStrategies: AccountStrategies | undefined
@@ -18,7 +18,7 @@ AccountStrategiesContext.displayName = "AccountStrategies"
 export const AccountStrategiesProvider: FC<PropsWithChildren> = ({
 	children
 }) => {
-	const READ = useApi.ReadAccountStrategies()
+	const READ = useUserApi.ReadAccountStrategies()
 
 	const contextValue = useMemo(
 		() => ({

@@ -1,3 +1,5 @@
+import { join } from "node:path"
+
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
 import { indexHtmlAppJs, indexHtmlFilename, publicDir } from "../package.js"
@@ -11,13 +13,10 @@ const html = (scriptJs: string) =>
 	})
 
 export const generateHtml = async () => {
-	const dirname = publicDir
-
-	await generateHtmlPage({
-		dirname,
-		filename: indexHtmlFilename,
-		htmlContent: html(indexHtmlAppJs)
-	})
+	await generateHtmlPage(
+		join(publicDir, indexHtmlFilename),
+		html(indexHtmlAppJs)
+	)
 }
 
 generateHtml()

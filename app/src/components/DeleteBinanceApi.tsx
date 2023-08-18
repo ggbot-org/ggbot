@@ -10,7 +10,7 @@ import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { BinanceApiConfigContext } from "../contexts/BinanceApiConfig.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 export const DeleteBinanceApi: FC = () => {
 	const { refetchApiKey, hasApiKey } = useContext(BinanceApiConfigContext)
@@ -19,7 +19,7 @@ export const DeleteBinanceApi: FC = () => {
 
 	const { formatMessage } = useIntl()
 
-	const DELETE = useApi.DeleteBinanceApiConfig()
+	const DELETE = useUserApi.DeleteBinanceApiConfig()
 	const canCloseModal = DELETE.isDone
 	const isLoading = DELETE.isPending
 

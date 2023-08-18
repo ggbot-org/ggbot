@@ -1,7 +1,5 @@
 import { resolve } from "node:path"
 
-import { PackageDirname } from "./packageDirnames.js"
-
 /**
  * Resolve package directory.
  *
@@ -16,5 +14,5 @@ import { PackageDirname } from "./packageDirnames.js"
  * export const srcDir = packageDir(rootDir, "src")
  * ```
  */
-export const packageDir = (rootDir: string, dirname: PackageDirname) =>
+export const packageDir = (rootDir: string, dirname: string) =>
 	resolve(rootDir, dirname)

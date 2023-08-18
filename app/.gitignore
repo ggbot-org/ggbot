@@ -3,5 +3,6 @@ public/*.css
 public/*.css.map
 public/*.js
 public/*.html
+public/admin/
 public/translations/*.json
 src/types/FormatjsIntlMessageIds.d.ts

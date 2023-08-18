@@ -2,6 +2,9 @@
 	"AccountId.label": {
 		"defaultMessage": "Account ID"
 	},
+	"AccountNotFound.title": {
+		"defaultMessage": "Account not found."
+	},
 	"AccountSettings.title": {
 		"defaultMessage": "Account"
 	},
@@ -212,6 +215,9 @@
 	"GoSettings.label": {
 		"defaultMessage": "Go to Settings"
 	},
+	"InvalidAccountKey.message": {
+		"defaultMessage": "Invalid account key. Check this URL parameters."
+	},
 	"InvalidStrategyKey.message": {
 		"defaultMessage": "Invalid strategy key. Check this URL parameters."
 	},
@@ -239,14 +245,14 @@
 	"Navigation.binance": {
 		"defaultMessage": "Binance"
 	},
+	"Navigation.dashboard": {
+		"defaultMessage": "Strategies"
+	},
 	"Navigation.exit": {
 		"defaultMessage": "Exit"
 	},
 	"Navigation.settings": {
 		"defaultMessage": "Settings"
-	},
-	"Navigation.strategies": {
-		"defaultMessage": "Strategies"
 	},
 	"NoNetwork.title": {
 		"defaultMessage": "No network"

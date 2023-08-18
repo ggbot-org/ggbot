@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { StrategyRecord } from "../components/StrategyRecord.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 import { href } from "../routing/hrefs.js"
 
 export const DeleteStrategy: FC = () => {
@@ -21,7 +21,7 @@ export const DeleteStrategy: FC = () => {
 
 	const { strategy } = useContext(StrategyContext)
 
-	const DELETE = useApi.DeleteStrategy()
+	const DELETE = useUserApi.DeleteStrategy()
 	const isLoading = DELETE.isPending || DELETE.isDone
 	const redirect = DELETE.isDone
 
@@ -40,7 +40,7 @@ export const DeleteStrategy: FC = () => {
 	}, [DELETE, strategy])
 
 	useEffect(() => {
-		if (redirect) window.location.href = href.homePage()
+		if (redirect) window.location.href = href.dashboardPage()
 	}, [redirect])
 
 	return (

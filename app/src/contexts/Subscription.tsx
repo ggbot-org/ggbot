@@ -8,7 +8,7 @@ import {
 import { dayToTime, Time } from "@ggbot2/time"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 type ContextValue = Partial<{
 	canPurchaseSubscription: boolean
@@ -23,7 +23,7 @@ export const SubscriptionContext = createContext<ContextValue>({})
 SubscriptionContext.displayName = "SubscriptionContext"
 
 export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
-	const READ = useApi.ReadSubscription()
+	const READ = useUserApi.ReadSubscription()
 	const subscription = READ.data
 
 	const contextValue = useMemo(() => {

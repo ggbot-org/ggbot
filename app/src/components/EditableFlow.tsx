@@ -6,7 +6,7 @@ import { FlowMenu } from "../components/FlowMenu.js"
 import { FlowViewContainer } from "../components/FlowViewContainer.js"
 import { StrategyContext } from "../contexts/Strategy.js"
 import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 export const EditableFlow: FC = () => {
 	const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =
@@ -15,7 +15,7 @@ export const EditableFlow: FC = () => {
 
 	const [canSave, setCanSave] = useState(false)
 
-	const WRITE = useApi.WriteStrategyFlow()
+	const WRITE = useUserApi.WriteStrategyFlow()
 
 	const saveIsPending = WRITE.isPending
 

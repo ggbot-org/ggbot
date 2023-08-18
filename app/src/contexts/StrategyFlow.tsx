@@ -12,8 +12,8 @@ import {
 
 import { FlowViewContainerElement } from "../components/FlowViewContainer.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useApi } from "../hooks/useApi.js"
 import { useFlowView, UseFlowViewOutput } from "../hooks/useFlowView.js"
+import { usePublicApi } from "../public/hooks/usePublicApi.js"
 
 type ContextValue = UseFlowViewOutput & {
 	flowViewContainerRef: MutableRefObject<FlowViewContainerElement>
@@ -32,7 +32,7 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
 
-	const READ_STRATEGY_FLOW = useApi.ReadStrategyFlow()
+	const READ_STRATEGY_FLOW = usePublicApi.ReadStrategyFlow()
 
 	const flow = useMemo(() => {
 		if (

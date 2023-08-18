@@ -34,7 +34,7 @@ import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.j
 import { AccountStrategiesContext } from "../contexts/AccountStrategies.js"
 import { StrategyContext } from "../contexts/Strategy.js"
 import { SubscriptionContext } from "../contexts/Subscription.js"
-import { useApi } from "../hooks/useApi.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 import { classNames } from "../styles/classNames.js"
 
 export const Schedulings: FC = () => {
@@ -46,7 +46,7 @@ export const Schedulings: FC = () => {
 		AccountStrategiesContext
 	)
 
-	const WRITE = useApi.WriteAccountStrategiesItemSchedulings()
+	const WRITE = useUserApi.WriteAccountStrategiesItemSchedulings()
 	const isDone = WRITE.isDone
 	const isLoading = WRITE.isPending
 	const error = WRITE.error

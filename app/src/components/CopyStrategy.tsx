@@ -21,8 +21,8 @@ import { StrategiesErrorExceededQuota } from "../components/StrategiesErrorExcee
 import { StrategyName } from "../components/StrategyName.js"
 import { StrategyRecord } from "../components/StrategyRecord.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useApi } from "../hooks/useApi.js"
 import { useRedirectToNewStrategyPage } from "../hooks/useRedirectToNewStrategyPage.js"
+import { useUserApi } from "../hooks/useUserApi.js"
 
 const fieldName = {
 	name: "name"
@@ -37,7 +37,7 @@ export const CopyStrategy: FC = () => {
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-	const COPY = useApi.CopyStrategy()
+	const COPY = useUserApi.CopyStrategy()
 	const readOnly = COPY.isPending || COPY.isDone
 	const isLoading = COPY.isPending || COPY.isDone
 	const newStrategy = COPY.data
