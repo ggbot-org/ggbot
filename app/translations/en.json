@@ -458,6 +458,9 @@
 	"Tabs.strategies": {
 		"defaultMessage": "Strategies"
 	},
+	"Terms.title": {
+		"defaultMessage": "Terms of Service"
+	},
 	"TimeoutError.message": {
 		"defaultMessage": "Request not sent. Please check connectivity and try again."
 	},

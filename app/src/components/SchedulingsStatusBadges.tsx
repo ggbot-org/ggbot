@@ -2,7 +2,7 @@ import { Control, Field } from "@ggbot2/design"
 import { AccountStrategy } from "@ggbot2/models"
 import { FC } from "react"
 
-import { SchedulingStatus } from "../components/SchedulingStatus.js"
+import { SchedulingStatus } from "./SchedulingStatus.js"
 
 type Props = {
 	schedulings: AccountStrategy["schedulings"]

@@ -2,10 +2,10 @@ import { Box, Control, Field, Message, Title } from "@ggbot2/design"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { SubscriptionEnd } from "../components/SubscriptionEnd.js"
-import { SubscriptionPlan } from "../components/SubscriptionPlan.js"
-import { SubscriptionStatus } from "../components/SubscriptionStatus.js"
-import { SubscriptionContext } from "../contexts/Subscription.js"
+import { SubscriptionContext } from "../contexts/user/Subscription.js"
+import { SubscriptionEnd } from "./SubscriptionEnd.js"
+import { SubscriptionPlan } from "./SubscriptionPlan.js"
+import { SubscriptionStatus } from "./SubscriptionStatus.js"
 
 export const SubscriptionInfo: FC = () => {
 	const {

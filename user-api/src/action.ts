@@ -160,7 +160,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						return OK(output)
 					}
 
-					case "ReadAccountStrategies": {
+					case "ReadStrategies": {
 						const output = await readAccountStrategies({
 							accountId
 						})
@@ -272,7 +272,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						return OK(output)
 					}
 
-					case "WriteAccountStrategiesItemSchedulings": {
+					case "WriteStrategiesItemSchedulings": {
 						if (!actionData) return BAD_REQUEST()
 						const input = { accountId, ...actionData }
 						if (

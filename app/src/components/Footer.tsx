@@ -9,6 +9,16 @@ export const Footer = memo(() => {
 
 	return (
 		<footer className={classNames("footer")}>
+			<ul>
+				<li>
+					<FormattedMessage id="Privacy.title" />
+				</li>
+
+				<li>
+					<FormattedMessage id="Terms.title" />
+				</li>
+			</ul>
+
 			<FormattedMessage
 				id="Footer.lastUpdate"
 				values={{ day: formatDate(BUILD_DATE, dayFormat) }}

@@ -2,7 +2,7 @@ import { join } from "node:path"
 
 import { packageDir, packageRootDir } from "@ggbot2/repo"
 
-import { adminDirname } from "./admin/routing/pages.js"
+import { adminDirname } from "./routing/admin/pages.js"
 
 export const rootDir = packageRootDir(import.meta.url)
 

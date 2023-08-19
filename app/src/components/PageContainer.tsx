@@ -1,18 +1,13 @@
 import { Page, ToastProvider } from "@ggbot2/design"
 import { FC, PropsWithChildren } from "react"
 
-import { Footer } from "../components/Footer.js"
-import { Navigation, NavigationProps } from "../components/Navigation.js"
-import { NoNetwork } from "../components/NoNetwork.js"
+import { Footer } from "./Footer.js"
+import { Navigation } from "./Navigation.js"
+import { NoNetwork } from "./NoNetwork.js"
 
-type Props = Pick<NavigationProps, "noMenu">
-
-export const PageContainer: FC<PropsWithChildren<Props>> = ({
-	children,
-	noMenu
-}) => (
+export const PageContainer: FC<PropsWithChildren> = ({ children }) => (
 	<Page footer={<Footer />}>
-		<Navigation noMenu={noMenu} />
+		<Navigation />
 
 		<NoNetwork />
 

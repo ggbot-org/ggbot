@@ -10,7 +10,7 @@ export const userApiActionTypes = [
 	"DeleteStrategy",
 	"DeleteBinanceApiConfig",
 	"ReadAccount",
-	"ReadAccountStrategies",
+	"ReadStrategies",
 	"ReadBinanceApiKey",
 	"ReadBinanceApiKeyPermissions",
 	"ReadStrategy",
@@ -21,7 +21,7 @@ export const userApiActionTypes = [
 	"RenameStrategy",
 	"RenameAccount",
 	"SetAccountCountry",
-	"WriteAccountStrategiesItemSchedulings",
+	"WriteStrategiesItemSchedulings",
 	"WriteStrategyFlow"
 ] as const
 export type UserApiActionType = (typeof userApiActionTypes)[number]

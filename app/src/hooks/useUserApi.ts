@@ -23,7 +23,7 @@ import {
 import { useAction } from "@ggbot2/use-action"
 import { EmptyObject } from "type-fest"
 
-import { url } from "../routing/URLs.js"
+import { url } from "../routing/user/URLs.js"
 
 const apiOptions = { endpoint: url.apiUserAction, withJwt: true }
 
@@ -72,11 +72,6 @@ export const useUserApi = {
 			apiOptions,
 			"ReadAccount"
 		),
-	ReadAccountStrategies: () =>
-		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
-			apiOptions,
-			"ReadAccountStrategies"
-		),
 	ReadBinanceApiKey: () =>
 		useAction<Authenticated<ReadBinanceApiKey>, UserApiActionType>(
 			apiOptions,
@@ -87,6 +82,11 @@ export const useUserApi = {
 			Authenticated<ReadBinanceApiKeyPermissions>,
 			UserApiActionType
 		>(apiOptions, "ReadBinanceApiKeyPermissions"),
+	ReadStrategies: () =>
+		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
+			apiOptions,
+			"ReadStrategies"
+		),
 	ReadStrategyBalances: () =>
 		useAction<Authenticated<ReadStrategyBalances>, UserApiActionType>(
 			apiOptions,
@@ -121,7 +121,7 @@ export const useUserApi = {
 		useAction<
 			Authenticated<WriteAccountStrategiesItemSchedulings>,
 			UserApiActionType
-		>(apiOptions, "WriteAccountStrategiesItemSchedulings"),
+		>(apiOptions, "WriteStrategiesItemSchedulings"),
 	WriteStrategyFlow: () =>
 		useAction<Authenticated<WriteStrategyFlow>, UserApiActionType>(
 			apiOptions,

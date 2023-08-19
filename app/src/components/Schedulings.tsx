@@ -31,9 +31,9 @@ import {
 } from "../components/SchedulingItem.js"
 import { SchedulingsErrorExceededQuota } from "../components/SchedulingsErrorExceededQuota.js"
 import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js"
-import { AccountStrategiesContext } from "../contexts/AccountStrategies.js"
 import { StrategyContext } from "../contexts/Strategy.js"
-import { SubscriptionContext } from "../contexts/Subscription.js"
+import { StrategiesContext } from "../contexts/user/Strategies.js"
+import { SubscriptionContext } from "../contexts/user/Subscription.js"
 import { useUserApi } from "../hooks/useUserApi.js"
 import { classNames } from "../styles/classNames.js"
 
@@ -42,9 +42,8 @@ export const Schedulings: FC = () => {
 		strategy: { id: strategyId }
 	} = useContext(StrategyContext)
 	const { hasActiveSubscription } = useContext(SubscriptionContext)
-	const { accountStrategies, refetchAccountStrategies } = useContext(
-		AccountStrategiesContext
-	)
+	const { accountStrategies, refetchAccountStrategies } =
+		useContext(StrategiesContext)
 
 	const WRITE = useUserApi.WriteAccountStrategiesItemSchedulings()
 	const isDone = WRITE.isDone

@@ -1,7 +1,7 @@
 import { Buttons } from "@ggbot2/design"
 import { FC, useContext } from "react"
 
-import { StrategyFlowContext } from "../public/contexts/StrategyFlow.js"
+import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
 import { FlowMenu } from "./FlowMenu.js"
 import { FlowViewContainer } from "./FlowViewContainer.js"
 import { GoCopyStrategy } from "./GoCopyStrategy.js"

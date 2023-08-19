@@ -2,8 +2,8 @@ import { Button } from "@ggbot2/design"
 import { FC, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { href } from "../routing/hrefs.js"
-import { SettingsPageId } from "../routing/types.js"
+import { href } from "../routing/user/hrefs.js"
+import { SettingsPageId } from "../routing/user/types.js"
 
 type Props = {
 	settingsPage: SettingsPageId

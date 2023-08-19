@@ -2,7 +2,6 @@ import { join } from "node:path"
 
 import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
-import { adminHtmlFilenames } from "../admin/routing/pages.js"
 import {
 	adminJs,
 	appJs,
@@ -11,15 +10,16 @@ import {
 	publicDir,
 	tryFlowJs
 } from "../package.js"
+import { adminHtmlFilenames } from "../routing/admin/pages.js"
 import {
 	landingHtmlFilenames,
 	tryFlowHtmlFilename
-} from "../public/routing/pages.js"
+} from "../routing/public/pages.js"
 import {
 	purchaseCanceledHtmlFilename,
 	subscriptionPurchasedHtmlFilename,
 	userHtmlFilenames
-} from "../routing/pages.js"
+} from "../routing/user/pages.js"
 
 const html = (scriptJs: string) =>
 	htmlPageContent({
