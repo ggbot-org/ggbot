@@ -2,14 +2,18 @@ import { StrategyKey } from "@ggbot2/models"
 
 import {strategyKeyToURLSearchParams} from "../../routing/strategyKeyParams.js"
 import {
-	tryFlowHtmlFilename
+	privacyHtmlFilename,
+	strategyHtmlFilename,
+	termsHtmlFilename
 } from "./pages.js"
 
 export const href = {
 	homePage: () => "/",
-	tryFlowPage: (strategyKey: StrategyKey) => {
+	privacyPage: () => `/${privacyHtmlFilename}`,
+	termsPage: () => `/${termsHtmlFilename}`,
+	strategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()
-		return `/${tryFlowHtmlFilename}?${searchParams}`
+		return `/${strategyHtmlFilename}?${searchParams}`
 	},
 }

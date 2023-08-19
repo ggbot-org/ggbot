@@ -2,6 +2,7 @@ import { dayFormat } from "@ggbot2/design"
 import { memo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+import { href } from "../routing/public/hrefs.js"
 import { classNames } from "../styles/classNames.js"
 
 export const Footer = memo(() => {
@@ -11,11 +12,15 @@ export const Footer = memo(() => {
 		<footer className={classNames("footer")}>
 			<ul>
 				<li>
-					<FormattedMessage id="Privacy.title" />
+					<a href={href.privacyPage()}>
+						<FormattedMessage id="Privacy.title" />
+					</a>
 				</li>
 
 				<li>
-					<FormattedMessage id="Terms.title" />
+					<a href={href.termsPage()}>
+						<FormattedMessage id="Terms.title" />
+					</a>
 				</li>
 			</ul>
 

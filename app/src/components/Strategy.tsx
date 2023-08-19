@@ -4,9 +4,9 @@ import { Backtesting } from "./Backtesting.js"
 import { ReadonlyFlow } from "./ReadonlyFlow.js"
 import { getStoredTabId, TabId, Tabs } from "./Tabs.js"
 
-const pageName = "TryFlow"
+const pageName = "Strategy"
 
-export const TryFlow: FC = () => {
+export const Strategy: FC = () => {
 	const [activeTabId, setActiveTabId] = useState<TabId>(
 		getStoredTabId(pageName) ?? "flow"
 	)

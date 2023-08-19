@@ -8,10 +8,11 @@ import {
 	landingEntryPoint,
 	landingJs,
 	publicDir,
-	tryFlowEntryPoint,
-	tryFlowJs,
+	strategyEntryPoint,
+	strategyJs,
 	userEntryPoint,
-	userJs} from "../package.js"
+	userJs
+} from "../package.js"
 
 const generateJsBundles = async () => {
 	await browserBundle({
@@ -20,8 +21,8 @@ const generateJsBundles = async () => {
 	})
 
 	await browserBundle({
-		entryPoints: [tryFlowEntryPoint],
-		outfile: join(publicDir, tryFlowJs)
+		entryPoints: [strategyEntryPoint],
+		outfile: join(publicDir, strategyJs)
 	})
 
 	await browserBundle({

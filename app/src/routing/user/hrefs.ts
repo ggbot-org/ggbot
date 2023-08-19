@@ -5,7 +5,8 @@ import { strategyKeyToURLSearchParams } from "../strategyKeyParams.js"
 import {
 	copyStrategyHtmlFilename,
 	settingsHtmlFilename,
-	strategyHtmlFilename
+	strategyHtmlFilename,
+	userDashboardHtmlFilename
 } from "./pages.js"
 import { SettingsPageId } from "./types.js"
 
@@ -16,7 +17,7 @@ export const href = {
 			strategyKeyToURLSearchParams(strategyKey).toString()
 		return `/${copyStrategyHtmlFilename}?${searchParams}`
 	},
-	dashboardPage: () => "/",
+	dashboardPage: () => `/${userDashboardHtmlFilename}`,
 	strategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()

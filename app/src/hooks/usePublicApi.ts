@@ -2,7 +2,7 @@ import { PublicApiActionType } from "@ggbot2/api"
 import { ReadStrategy, ReadStrategyFlow } from "@ggbot2/models"
 import { useAction } from "@ggbot2/use-action"
 
-import { url } from "../routing/public/URLs"
+import { url } from "../routing/public/URLs.js"
 
 const apiOptions = { endpoint: url.apiPublicAction }
 

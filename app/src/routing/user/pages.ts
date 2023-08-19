@@ -4,7 +4,7 @@ import { SettingsPageId, settingsPageIds } from "./types.js"
 
 export const userDirname = "user"
 
-export const userDashboardHtmlFilename = "index.html"
+export const userDashboardHtmlFilename = "dashboard.html"
 export const userDashboardHtmlPathname = `${userDirname}/${userDashboardHtmlFilename}`
 
 export const copyStrategyHtmlFilename = "copy-strategy.html"
@@ -22,9 +22,9 @@ export const purchaseCanceledHtmlFilename = UtrustCancelURL.htmlFileName
 
 export const subscriptionPurchasedHtmlFilename = UtrustReturnURL.htmlFileName
 
-export const userHtmlFilenames = [
-	userDashboardHtmlFilename,
-	copyStrategyHtmlFilename,
-	strategyHtmlFilename,
-	...settingsPageIds.map(settingsHtmlFilename)
+export const userHtmlPathnames = [
+	userDashboardHtmlPathname,
+	copyStrategyHtmlPathname,
+	strategyHtmlPathname,
+	...settingsPageIds.map(settingsHtmlPathname)
 ]

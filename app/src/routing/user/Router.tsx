@@ -10,7 +10,7 @@ import {
 	PurchaseCanceledPage,
 	StrategyPage,
 	SubscriptionPurchasedPage
-} from "../../pages/user/index"
+} from "../../pages/user/index.js"
 import {
 	copyStrategyHtmlPathname,
 	purchaseCanceledHtmlFilename,
@@ -18,7 +18,7 @@ import {
 	strategyHtmlPathname,
 	subscriptionPurchasedHtmlFilename,
 	userDashboardHtmlPathname
-} from "./pages"
+} from "./pages.js"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname

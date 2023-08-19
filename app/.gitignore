@@ -4,5 +4,6 @@ public/*.css.map
 public/*.js
 public/*.html
 public/admin/
+public/user/
 public/translations/*.json
 src/types/FormatjsIntlMessageIds.d.ts

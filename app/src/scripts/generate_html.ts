@@ -5,20 +5,19 @@ import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 import {
 	adminJs,
 	landingJs,
-	publicAdminDir,
 	publicDir,
-	tryFlowJs,
+	strategyJs,
 	userJs
 } from "../package.js"
-import { adminHtmlFilenames } from "../routing/admin/pages.js"
+import { adminHtmlPathnames } from "../routing/admin/pages.js"
 import {
 	landingHtmlFilenames,
-	tryFlowHtmlFilename
+	strategyHtmlFilename
 } from "../routing/public/pages.js"
 import {
 	purchaseCanceledHtmlFilename,
 	subscriptionPurchasedHtmlFilename,
-	userHtmlFilenames
+	userHtmlPathnames
 } from "../routing/user/pages.js"
 
 const html = (scriptJs: string) =>
@@ -35,22 +34,22 @@ const generateHtml = async () => {
 	for (const filename of landingHtmlFilenames)
 		await generateHtmlPage(join(publicDir, filename), html(landingJs))
 
-	// Flow
+	// Try strategy.
 
 	await generateHtmlPage(
-		join(publicDir, tryFlowHtmlFilename),
-		html(tryFlowJs)
+		join(publicDir, strategyHtmlFilename),
+		html(strategyJs)
 	)
 
 	// Admin app.
 
-	for (const filename of adminHtmlFilenames)
-		await generateHtmlPage(join(publicAdminDir, filename), html(adminJs))
+	for (const pathname of adminHtmlPathnames)
+		await generateHtmlPage(join(publicDir, pathname), html(adminJs))
 
 	// User app.
 
-	for (const filename of userHtmlFilenames)
-		await generateHtmlPage(join(publicDir, filename), html(userJs))
+	for (const pathname of userHtmlPathnames)
+		await generateHtmlPage(join(publicDir, pathname), html(userJs))
 
 	// Subscription
 

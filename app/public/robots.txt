@@ -2,7 +2,7 @@
 
 User-agent: *
 Allow: /
-Allow: /flow.html
 Disallow: /admin/
+Disallow: /user/
 
 Sitemap: https://app.ggbot2.com/sitemap.xml
