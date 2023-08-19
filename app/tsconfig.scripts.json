@@ -8,11 +8,10 @@
 	"exclude": ["node_modules/", "temp/", "**/*_test.ts"],
 	"include": [
 		"src/package.ts",
-		"src/admin/routing/pages.ts",
-		"src/public/routing/pages.ts",
-		"src/routing/pages.ts",
-		"src/routing/types.ts",
-		"src/pages/*.ts",
+		"src/routing/admin/pages.ts",
+		"src/routing/public/pages.ts",
+		"src/routing/user/pages.ts",
+		"src/routing/user/types.ts",
 		"src/scripts/*.ts"
 	]
 }

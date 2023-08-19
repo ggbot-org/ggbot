@@ -5,15 +5,13 @@ import { AccountDetailsPage } from "../../pages/admin/AccountDetails.js"
 import { DashboardPage } from "../../pages/admin/Dashboard.js"
 import {
 	adminAccountDetailsHtmlPathname,
-	adminDashboardHtmlPathname,
-	adminDirname
+	adminDashboardHtmlPathname
 } from "../../routing/admin/pages.js"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
 	switch (true) {
-		case pathname === `/${adminDirname}/`:
 		case pathname === `/${adminDashboardHtmlPathname}`:
 			return <DashboardPage />
 

@@ -2,10 +2,7 @@ import { Button, ButtonProps, Buttons } from "@ggbot2/design"
 import { FC, memo } from "react"
 import { useIntl } from "react-intl"
 
-import type {
-	BacktestingOutput,
-	BacktestingState
-} from "../hooks/useBacktesting.js"
+import type { BacktestingState } from "../hooks/useBacktesting.js"
 
 const PauseButton: FC<ButtonProps> = (props) => {
 	const { formatMessage } = useIntl()
@@ -43,17 +40,15 @@ const StopButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-type Props = Pick<BacktestingState, "isPaused" | "isRunning" | "isReadOnly"> &
-	Pick<BacktestingOutput, "hasRequiredData"> & {
-		onClickPause: ButtonProps["onClick"]
-		onClickResume: ButtonProps["onClick"]
-		onClickStart: ButtonProps["onClick"]
-		onClickStop: ButtonProps["onClick"]
-	}
+type Props = Pick<BacktestingState, "isPaused" | "isRunning" | "isReadOnly"> & {
+	onClickPause: ButtonProps["onClick"]
+	onClickResume: ButtonProps["onClick"]
+	onClickStart: ButtonProps["onClick"]
+	onClickStop: ButtonProps["onClick"]
+}
 
 export const BacktestingActions = memo<Props>(
 	({
-		hasRequiredData,
 		isPaused,
 		isReadOnly,
 		isRunning,
@@ -80,15 +75,9 @@ export const BacktestingActions = memo<Props>(
 				</Buttons>
 			)
 
-		return (
-			<StartButton
-				onClick={hasRequiredData ? onClickStart : undefined}
-				disabled={isReadOnly}
-			/>
-		)
+		return <StartButton onClick={onClickStart} disabled={isReadOnly} />
 	},
 	(prevProps, nextProps) =>
-		prevProps.hasRequiredData === nextProps.hasRequiredData &&
 		prevProps.isPaused === nextProps.isPaused &&
 		prevProps.isReadOnly === nextProps.isReadOnly &&
 		prevProps.isRunning === nextProps.isRunning

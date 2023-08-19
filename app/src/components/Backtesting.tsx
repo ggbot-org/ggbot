@@ -91,8 +91,9 @@ export const Backtesting: FC = () => {
 	}, [dispatch])
 
 	const onClickStart = useCallback(() => {
+		if (!hasRequiredData) return
 		dispatch({ type: "PREPARE" })
-	}, [dispatch])
+	}, [dispatch, hasRequiredData])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: "PAUSE" })
@@ -135,7 +136,6 @@ export const Backtesting: FC = () => {
 						/>
 
 						<BacktestingActions
-							hasRequiredData={hasRequiredData}
 							isPaused={isPaused}
 							isReadOnly={isReadOnly}
 							isRunning={isRunning}

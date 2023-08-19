@@ -215,7 +215,11 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 							</Control>
 
 							<Control>
-								<Button type="reset" onClick={resetEmail}>
+								<Button
+									type="reset"
+									onClick={resetEmail}
+									size="small"
+								>
 									<FormattedMessage id="AuthVerify.resetEmail" />
 								</Button>
 							</Control>

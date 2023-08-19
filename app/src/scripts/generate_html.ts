@@ -4,11 +4,11 @@ import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
 
 import {
 	adminJs,
-	appJs,
 	landingJs,
 	publicAdminDir,
 	publicDir,
-	tryFlowJs
+	tryFlowJs,
+	userJs
 } from "../package.js"
 import { adminHtmlFilenames } from "../routing/admin/pages.js"
 import {
@@ -30,17 +30,17 @@ const html = (scriptJs: string) =>
 	})
 
 const generateHtml = async () => {
+	// Landing pages.
+
+	for (const filename of landingHtmlFilenames)
+		await generateHtmlPage(join(publicDir, filename), html(landingJs))
+
 	// Flow
 
 	await generateHtmlPage(
 		join(publicDir, tryFlowHtmlFilename),
 		html(tryFlowJs)
 	)
-
-	// Landing pages.
-
-	for (const filename of landingHtmlFilenames)
-		await generateHtmlPage(join(publicDir, filename), html(landingJs))
 
 	// Admin app.
 
@@ -50,18 +50,18 @@ const generateHtml = async () => {
 	// User app.
 
 	for (const filename of userHtmlFilenames)
-		await generateHtmlPage(join(publicDir, filename), html(appJs))
+		await generateHtmlPage(join(publicDir, filename), html(userJs))
 
 	// Subscription
 
 	await generateHtmlPage(
 		join(publicDir, purchaseCanceledHtmlFilename),
-		html(appJs)
+		html(userJs)
 	)
 
 	await generateHtmlPage(
 		join(publicDir, subscriptionPurchasedHtmlFilename),
-		html(appJs)
+		html(userJs)
 	)
 }
 

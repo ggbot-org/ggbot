@@ -18,19 +18,22 @@ const routingDirname = "routing"
 
 const srcRoutingDir = join(srcDir, routingDirname)
 
-const srcAdminDir = join(srcDir, adminDirname)
-const srcAdminRoutingDir = join(srcAdminDir, routingDirname)
-
-const srcPublicDir = join(srcDir, "public")
-const srcPublicRoutingDir = join(srcPublicDir, routingDirname)
-
 export const landingJs = "/landing.js"
+export const landingEntryPoint = join(
+	srcRoutingDir,
+	"public",
+	"LandingRouter.tsx"
+)
 
-export const appJs = `/app.js`
-export const appEntryPoint = join(srcRoutingDir, "AppRouter.tsx")
+export const tryFlowJs = "flow.js"
+export const tryFlowEntryPoint = join(
+	srcRoutingDir,
+	"public",
+	"TryFlowRouter.tsx"
+)
+
+export const userJs = `/app.js`
+export const userEntryPoint = join(srcRoutingDir, "user", "Router.tsx")
 
 export const adminJs = `/${adminDirname}/app.js`
-export const adminEntryPoint = join(srcAdminRoutingDir, "Router.tsx")
-
-export const tryFlowJs = `flow.js`
-export const tryFlowEntryPoint = join(srcPublicRoutingDir, "TryFlowRouter.tsx")
+export const adminEntryPoint = join(srcRoutingDir, "admin", "Router.tsx")

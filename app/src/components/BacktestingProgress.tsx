@@ -32,38 +32,43 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 }) => {
 	const { formatDate } = useIntl()
 
+	if (!hasRequiredData)
+		return (
+			<Box>
+				<Title>
+					<FormattedMessage id="BacktestingProgress.title" />
+				</Title>
+
+				<Progress />
+
+				<FormattedMessage
+					id="BacktestingProgress.waiting"
+					values={progress}
+				/>
+			</Box>
+		)
+
 	return (
 		<Box>
 			<Title>
 				<FormattedMessage id="BacktestingProgress.title" />
 			</Title>
 
-			{hasRequiredData === true ? (
-				isPreparing ? (
-					<>
-						<Progress />
-
-						<FormattedMessage
-							id="BacktestingProgress.preparing"
-							values={progress}
-						/>
-					</>
-				) : (
-					<>
-						<Progress {...progress} />
-
-						<FormattedMessage
-							id="BacktestingProgress.intervals"
-							values={progress}
-						/>
-					</>
-				)
-			) : (
+			{isPreparing ? (
 				<>
 					<Progress />
 
 					<FormattedMessage
-						id="BacktestingProgress.waiting"
+						id="BacktestingProgress.preparing"
+						values={progress}
+					/>
+				</>
+			) : (
+				<>
+					<Progress {...progress} />
+
+					<FormattedMessage
+						id="BacktestingProgress.intervals"
 						values={progress}
 					/>
 				</>
