@@ -1,8 +1,8 @@
 import { Section } from "@ggbot2/design"
 import { FC } from "react"
 
-import { PageContainer } from "../../components/PageContainer.js"
 import { SubscriptionPurchased } from "../../components/user/SubscriptionPurchased.js"
+import { PageContainer } from "./PageContainer.js"
 
 export const SubscriptionPurchasedPage: FC = () => (
 	<PageContainer>

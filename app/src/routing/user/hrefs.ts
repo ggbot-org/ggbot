@@ -3,25 +3,25 @@ import { StrategyKey } from "@ggbot2/models"
 import { adminDashboardHtmlPathname } from "../admin/pages.js"
 import { strategyKeyToURLSearchParams } from "../strategyKeyParams.js"
 import {
-	copyStrategyHtmlFilename,
-	settingsHtmlFilename,
-	strategyHtmlFilename,
-	userDashboardHtmlFilename
+	copyStrategyHtmlPathname,
+	settingsHtmlPathname,
+	strategyHtmlPathname,
+	userDashboardHtmlPathname
 } from "./pages.js"
 import { SettingsPageId } from "./types.js"
 
 export const href = {
-	adminPage: () => `/${adminDashboardHtmlPathname}`,
+	adminPage: () => adminDashboardHtmlPathname,
 	copyStrategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()
-		return `/${copyStrategyHtmlFilename}?${searchParams}`
+		return `${copyStrategyHtmlPathname}?${searchParams}`
 	},
-	dashboardPage: () => `/${userDashboardHtmlFilename}`,
+	dashboardPage: () => userDashboardHtmlPathname,
 	strategyPage: (strategyKey: StrategyKey) => {
 		const searchParams =
 			strategyKeyToURLSearchParams(strategyKey).toString()
-		return `/${strategyHtmlFilename}?${searchParams}`
+		return `${strategyHtmlPathname}?${searchParams}`
 	},
-	settingsPage: (id: SettingsPageId) => `/${settingsHtmlFilename(id)}`
+	settingsPage: (id: SettingsPageId) => settingsHtmlPathname(id)
 }

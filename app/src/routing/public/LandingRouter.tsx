@@ -4,20 +4,20 @@ import { FC } from "react"
 import { HomePage } from "../../pages/HomePage.js"
 import { PrivacyPage } from "../../pages/Privacy.js"
 import { TermsPage } from "../../pages/Terms.js"
-import { homepageHtmlFilename, privacyHtmlFilename, termsHtmlFilename}from "./pages.js"
+import { homepageHtmlPathname, privacyHtmlPathname, termsHtmlPathname}from "./pages.js"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
 	switch (true) {
 		case pathname === "/":
-		case pathname === `/${homepageHtmlFilename}`:
+		case pathname === homepageHtmlPathname:
 			return <HomePage />
 
-		case pathname === `/${termsHtmlFilename}`:
+		case pathname === termsHtmlPathname:
 			return <TermsPage />
 
-		case pathname === `/${privacyHtmlFilename}`:
+		case pathname === privacyHtmlPathname:
 			return <PrivacyPage />
 
 		default:

@@ -4,23 +4,18 @@ import { SettingsPageId, settingsPageIds } from "./types.js"
 
 export const userDirname = "user"
 
-export const userDashboardHtmlFilename = "dashboard.html"
-export const userDashboardHtmlPathname = `${userDirname}/${userDashboardHtmlFilename}`
+export const userDashboardHtmlPathname = `/${userDirname}/dashboard.html`
 
-export const copyStrategyHtmlFilename = "copy-strategy.html"
-export const copyStrategyHtmlPathname = `${userDirname}/${copyStrategyHtmlFilename}`
+export const copyStrategyHtmlPathname = `/${userDirname}/copy-strategy.html`
 
-export const strategyHtmlFilename = "strategy.html"
-export const strategyHtmlPathname = `${userDirname}/${strategyHtmlFilename}`
+export const strategyHtmlPathname = `${userDirname}/strategy.html`
 
-export const settingsHtmlFilename = (pageId: SettingsPageId) =>
-	`${pageId}-settings.html`
 export const settingsHtmlPathname = (pageId: SettingsPageId) =>
-	`${userDirname}/${settingsHtmlFilename(pageId)}`
+	`/${userDirname}/${pageId}-settings.html`
 
-export const purchaseCanceledHtmlFilename = UtrustCancelURL.htmlFileName
+export const purchaseCanceledHtmlPathname = `/${UtrustCancelURL.htmlFileName}`
 
-export const subscriptionPurchasedHtmlFilename = UtrustReturnURL.htmlFileName
+export const subscriptionPurchasedHtmlPathname = `/${UtrustReturnURL.htmlFileName}`
 
 export const userHtmlPathnames = [
 	userDashboardHtmlPathname,

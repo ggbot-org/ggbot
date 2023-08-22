@@ -1,6 +1,5 @@
 import { Section } from "@ggbot2/design"
 import { noneStrategy, Strategy } from "@ggbot2/models"
-import { localWebStorage } from "@ggbot2/web-storage"
 import {
 	createContext,
 	FC,
@@ -15,6 +14,7 @@ import { InvalidStrategyKey } from "../../components/InvalidStrategyKey.js"
 import { StrategyNotFound } from "../../components/StrategyNotFound.js"
 import { usePublicApi } from "../../hooks/usePublicApi.js"
 import { strategyKeyParamsFromCurrentLocation } from "../../routing/strategyKeyParams.js"
+import { localWebStorage } from "../../storages/local.js"
 
 type ContextValue = {
 	// If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.

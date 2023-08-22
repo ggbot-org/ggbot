@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
+    "@ggbot2/type-utils": "file:type-utils",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0"
   },

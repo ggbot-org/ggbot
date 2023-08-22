@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /user/
 
-Sitemap: https://app.ggbot2.com/sitemap.xml
+Sitemap: https://www.ggbot2.com/sitemap.xml

@@ -11,12 +11,12 @@ import {
 } from "../package.js"
 import { adminHtmlPathnames } from "../routing/admin/pages.js"
 import {
-	landingHtmlFilenames,
-	strategyHtmlFilename
+	landingHtmlPathnames,
+	strategyHtmlPathname
 } from "../routing/public/pages.js"
 import {
-	purchaseCanceledHtmlFilename,
-	subscriptionPurchasedHtmlFilename,
+	purchaseCanceledHtmlPathname,
+	subscriptionPurchasedHtmlPathname,
 	userHtmlPathnames
 } from "../routing/user/pages.js"
 
@@ -31,13 +31,13 @@ const html = (scriptJs: string) =>
 const generateHtml = async () => {
 	// Landing pages.
 
-	for (const filename of landingHtmlFilenames)
-		await generateHtmlPage(join(publicDir, filename), html(landingJs))
+	for (const pathname of landingHtmlPathnames)
+		await generateHtmlPage(join(publicDir, pathname), html(landingJs))
 
 	// Try strategy.
 
 	await generateHtmlPage(
-		join(publicDir, strategyHtmlFilename),
+		join(publicDir, strategyHtmlPathname),
 		html(strategyJs)
 	)
 
@@ -54,12 +54,12 @@ const generateHtml = async () => {
 	// Subscription
 
 	await generateHtmlPage(
-		join(publicDir, purchaseCanceledHtmlFilename),
+		join(publicDir, purchaseCanceledHtmlPathname),
 		html(userJs)
 	)
 
 	await generateHtmlPage(
-		join(publicDir, subscriptionPurchasedHtmlFilename),
+		join(publicDir, subscriptionPurchasedHtmlPathname),
 		html(userJs)
 	)
 }

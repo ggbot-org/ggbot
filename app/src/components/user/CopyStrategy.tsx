@@ -13,11 +13,11 @@ import {
 	Title
 } from "@ggbot2/design"
 import { isName } from "@ggbot2/models"
-import { UseActionError } from "@ggbot2/use-action"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { StrategyContext } from "../../contexts/user/Strategy.js"
+import { UseActionError } from "../../hooks/useAction.js"
 import { useRedirectToNewStrategyPage } from "../../hooks/useRedirectToNewStrategyPage.js"
 import { useUserApi } from "../../hooks/useUserApi.js"
 import { StrategyName } from "../StrategyName.js"

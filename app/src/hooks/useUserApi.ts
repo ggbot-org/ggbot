@@ -20,9 +20,9 @@ import {
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
 } from "@ggbot2/models"
-import { useAction } from "@ggbot2/use-action"
 import { EmptyObject } from "type-fest"
 
+import { useAction } from "../hooks/useAction.js"
 import { url } from "../routing/user/URLs.js"
 
 const apiOptions = { endpoint: url.apiUserAction, withJwt: true }

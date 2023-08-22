@@ -12,10 +12,10 @@ const Router: FC = () => {
 	const pathname = window.location.pathname
 
 	switch (true) {
-		case pathname === `/${adminDashboardHtmlPathname}`:
+		case pathname === adminDashboardHtmlPathname:
 			return <DashboardPage />
 
-		case pathname === `/${adminAccountDetailsHtmlPathname}`:
+		case pathname === adminAccountDetailsHtmlPathname:
 			return <AccountDetailsPage />
 
 		default:

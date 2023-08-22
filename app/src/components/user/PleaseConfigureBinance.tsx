@@ -6,11 +6,11 @@ import {
 	Message,
 	Modal
 } from "@ggbot2/design"
-import { sessionWebStorage } from "@ggbot2/web-storage"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
+import { sessionWebStorage } from "../../storages/session.js"
 import { GoSettings } from "../GoSettings.js"
 
 export const PleaseConfigureBinance: FC = () => {

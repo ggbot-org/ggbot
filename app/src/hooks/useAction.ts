@@ -14,8 +14,43 @@ import {
 } from "@ggbot2/http"
 import { useCallback, useState } from "react"
 
-import { UseActionAbortController } from "./controller.js"
-import { UseActionHeaders, UseActionHeadersConstructorArg } from "./headers.js"
+import { localWebStorage } from "../storages/local.js"
+
+type UseActionHeadersConstructorArg = {
+	withJwt?: boolean
+}
+
+class UseActionHeaders extends Headers {
+	constructor({ withJwt = false }: UseActionHeadersConstructorArg) {
+		super({
+			Accept: "application/json",
+			"Content-Type": "application/json"
+		})
+		if (withJwt) {
+			this.append("Authorization", `Bearer ${localWebStorage.jwt.get()}`)
+		}
+	}
+}
+
+class UseActionAbortController extends AbortController {
+	timeoutId = 0
+
+	constructor() {
+		super()
+
+		this.timeoutId = window.setTimeout(() => {
+			this.abort()
+		}, 10000)
+
+		this.signal.addEventListener("abort", () => {
+			this.clearTimeout()
+		})
+	}
+
+	clearTimeout() {
+		window.clearTimeout(this.timeoutId)
+	}
+}
 
 export type UseActionError =
 	| ApiActionClientSideError

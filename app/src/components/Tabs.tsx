@@ -5,7 +5,6 @@ import {
 	TabSelectorProps,
 	TabSelectors
 } from "@ggbot2/design"
-import { sessionWebStorage } from "@ggbot2/web-storage"
 import {
 	Dispatch,
 	FC,
@@ -16,6 +15,7 @@ import {
 } from "react"
 import { useIntl } from "react-intl"
 
+import { sessionWebStorage } from "../storages/session.js"
 import { classNames } from "../styles/classNames.js"
 
 const tabIds = [

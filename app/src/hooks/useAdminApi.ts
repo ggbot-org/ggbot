@@ -3,8 +3,8 @@ import {
 	// ListAccountKeys,
 	ReadAccount
 } from "@ggbot2/models"
-import { useAction } from "@ggbot2/use-action"
 
+import { useAction } from "../hooks/useAction.js"
 import { url } from "../routing/admin/URLs.js"
 
 const apiOptions = {

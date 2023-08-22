@@ -1,12 +1,12 @@
-export const homepageHtmlFilename = "index.html"
+export const homepageHtmlPathname = "/index.html"
 
-export const strategyHtmlFilename = "strategy.html"
+export const strategyHtmlPathname = "/strategy.html"
 
-export const privacyHtmlFilename = "privacy.html"
-export const termsHtmlFilename = "terms.html"
+export const privacyHtmlPathname = "/privacy.html"
+export const termsHtmlPathname = "/terms.html"
 
-export const landingHtmlFilenames = [
-	homepageHtmlFilename,
-	privacyHtmlFilename,
-	termsHtmlFilename
+export const landingHtmlPathnames = [
+	homepageHtmlPathname,
+	privacyHtmlPathname,
+	termsHtmlPathname
 ]

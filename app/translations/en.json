@@ -215,6 +215,9 @@
 	"GoSettings.label": {
 		"defaultMessage": "Go to Settings"
 	},
+	"HomePage.callToAction": {
+		"defaultMessage": "Launch App"
+	},
 	"InvalidAccountKey.message": {
 		"defaultMessage": "Invalid account key. Check this URL parameters."
 	},
@@ -286,6 +289,24 @@
 	},
 	"Privacy.welcome": {
 		"defaultMessage": "Welcome to <em>ggbot2</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot2</em> website."
+	},
+	"Privacy.personalData": {
+		"defaultMessage": "Personal Data"
+	},
+	"Privacy.personalDataNotShared": {
+		"defaultMessage": "Your <em>Personal Data</em> is not shared with third parties."
+	},
+	"Privacy.personalDataOnlyEmail": {
+		"defaultMessage": "No <em>Personal Data</em> is collected other than your account email."
+	},
+	"Privacy.personalDataEmailUsage": {
+		"defaultMessage": "Your account email is used for authentication and communications."
+	},
+	"Privacy.personalDataSecureStorage": {
+		"defaultMessage": "We store all <em>Personal Data</em> on secure servers administered by <em>AWS</em> (Amazon Web Services)."
+	},
+	"Privacy.personalDataEmailService": {
+		"defaultMessage": "No third party service is used for email communications, we are using AWS <em>Simple Email Service.</em>"
 	},
 	"ProfitSummary.fees": {
 		"defaultMessage": "Fees"
@@ -458,8 +479,35 @@
 	"Tabs.strategies": {
 		"defaultMessage": "Strategies"
 	},
+	"Terms.welcome": {
+		"defaultMessage": "Welcome to <em>ggbot2</em>. Please read this <em>Terms of Service</em> carefully as you agree to be bound by it while using the <em>ggbot2</em> website."
+	},
 	"Terms.title": {
 		"defaultMessage": "Terms of Service"
+	},
+	"Terms.access": {
+		"defaultMessage": "Website access"
+	},
+	"Terms.accessWithEmail": {
+		"defaultMessage": "You access <em>ggbot2</em> website with your account email. Keep your email safe, it is your responsibility."
+	},
+	"Terms.binance": {
+		"defaultMessage": "Binance API"
+	},
+	"Terms.binanceApi": {
+		"defaultMessage": "The <em>ggbot2</em> engine needs your grant to access your Binance account using Binance API key."
+	},
+	"Terms.binanceNoWithdrawals": {
+		"defaultMessage": "It is crucial to understand that <em>ggbot2</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot2</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
+	},
+	"Terms.pricing": {
+		"defaultMessage": "Product pricing"
+	},
+	"Terms.pricingVat": {
+		"defaultMessage": "All prices shown on the website include the applicable VAT rate. Depending on your country of purchase, other local charges and taxes may also apply."
+	},
+	"Terms.privacy": {
+		"defaultMessage": "Please review our <a>Privacy Policy</a> as it governs the privacy practices undertaken by <em>ggbot2</em>."
 	},
 	"TimeoutError.message": {
 		"defaultMessage": "Request not sent. Please check connectivity and try again."

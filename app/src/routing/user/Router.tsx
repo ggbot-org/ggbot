@@ -13,10 +13,10 @@ import {
 } from "../../pages/user/index.js"
 import {
 	copyStrategyHtmlPathname,
-	purchaseCanceledHtmlFilename,
+	purchaseCanceledHtmlPathname,
 	settingsHtmlPathname,
 	strategyHtmlPathname,
-	subscriptionPurchasedHtmlFilename,
+	subscriptionPurchasedHtmlPathname,
 	userDashboardHtmlPathname
 } from "./pages.js"
 
@@ -24,28 +24,28 @@ const Router: FC = () => {
 	const pathname = window.location.pathname
 
 	switch (true) {
-		case pathname === `/${userDashboardHtmlPathname}`:
+		case pathname === userDashboardHtmlPathname:
 			return <DashboardPage />
 
-		case pathname === `/${copyStrategyHtmlPathname}`:
+		case pathname === copyStrategyHtmlPathname:
 			return <CopyStrategyPage />
 
-		case pathname === `/${strategyHtmlPathname}`:
+		case pathname === strategyHtmlPathname:
 			return <StrategyPage />
 
-		case pathname === `/${settingsHtmlPathname("account")}`:
+		case pathname === settingsHtmlPathname("account"):
 			return <AccountSettingsPage />
 
-		case pathname === `/${settingsHtmlPathname("billing")}`:
+		case pathname === settingsHtmlPathname("billing"):
 			return <BillingSettingsPage />
 
-		case pathname === `/${settingsHtmlPathname("binance")}`:
+		case pathname === settingsHtmlPathname("binance"):
 			return <BinanceSettingsPage />
 
-		case pathname === `/${purchaseCanceledHtmlFilename}`:
+		case pathname === purchaseCanceledHtmlPathname:
 			return <PurchaseCanceledPage />
 
-		case pathname === `/${subscriptionPurchasedHtmlFilename}`:
+		case pathname === subscriptionPurchasedHtmlPathname:
 			return <SubscriptionPurchasedPage />
 
 		default:

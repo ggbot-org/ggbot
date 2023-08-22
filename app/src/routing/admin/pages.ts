@@ -1,10 +1,8 @@
 export const adminDirname = "admin"
 
-const adminDashboardHtmlFilename = "dashboard.html"
-export const adminDashboardHtmlPathname = `${adminDirname}/${adminDashboardHtmlFilename}`
+export const adminDashboardHtmlPathname = `${adminDirname}/dashboard.html`
 
-const adminAccountDetailsHtmlFilename = "account-details.html"
-export const adminAccountDetailsHtmlPathname = `${adminDirname}/${adminAccountDetailsHtmlFilename}`
+export const adminAccountDetailsHtmlPathname = `${adminDirname}/account-details.html`
 
 export const adminHtmlPathnames = [
 	adminDashboardHtmlPathname,

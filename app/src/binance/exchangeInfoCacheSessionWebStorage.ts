@@ -3,7 +3,8 @@ import {
 	BinanceExchangeInfoCacheProvider
 } from "@ggbot2/binance"
 import { CacheMap } from "@ggbot2/cache"
-import { sessionWebStorage } from "@ggbot2/web-storage"
+
+import { sessionWebStorage } from "../storages/session.js"
 
 class BinanceExchangeInfoCacheSessionWebStorage
 	implements BinanceExchangeInfoCacheProvider

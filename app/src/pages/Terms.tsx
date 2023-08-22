@@ -1,18 +1,83 @@
 import { Content, Title } from "@ggbot2/design"
-import { I18nProvider } from "@ggbot2/i18n"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { PageContainer } from "../components/PageContainer.js"
+import { href } from "../routing/public/hrefs.js"
+import { PageContainer } from "./PageContainer.js"
 
 export const TermsPage: FC = () => (
-	<I18nProvider>
-		<PageContainer>
-			<Content>
-				<Title>
-					<FormattedMessage id="Terms.title" />
-				</Title>
-			</Content>
-		</PageContainer>
-	</I18nProvider>
+	<PageContainer>
+		<Content>
+			<Title>
+				<FormattedMessage id="Terms.title" />
+			</Title>
+
+			<p>
+				<FormattedMessage
+					id="Terms.welcome"
+					values={{
+						em: (chuncks) => <em>{chuncks}</em>
+					}}
+				/>
+			</p>
+
+			<h2>
+				<FormattedMessage id="Terms.access" />
+			</h2>
+
+			<p>
+				<FormattedMessage
+					id="Terms.accessWithEmail"
+					values={{
+						em: (chunks) => <em>{chunks}</em>
+					}}
+				/>
+			</p>
+
+			<h2>
+				<FormattedMessage id="Terms.binance" />
+			</h2>
+
+			<p>
+				<FormattedMessage
+					id="Terms.binanceApi"
+					values={{
+						em: (chunks) => <em>{chunks}</em>
+					}}
+				/>
+			</p>
+
+			<p>
+				<FormattedMessage
+					id="Terms.binanceNoWithdrawals"
+					values={{
+						b: (chunks) => <b>{chunks}</b>,
+						em: (chunks) => <em>{chunks}</em>
+					}}
+				/>
+			</p>
+
+			<h2>
+				<FormattedMessage id="Terms.pricing" />
+			</h2>
+
+			<p>
+				<FormattedMessage id="Terms.pricingVat" />
+			</p>
+
+			<h2>
+				<FormattedMessage id="Privacy.title" />
+			</h2>
+
+			<p>
+				<FormattedMessage
+					id="Terms.privacy"
+					values={{
+						a: (text) => <a href={href.privacyPage()}>{text}</a>,
+						em: (chunks) => <em>{chunks}</em>
+					}}
+				/>
+			</p>
+		</Content>
+	</PageContainer>
 )
