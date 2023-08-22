@@ -218,6 +218,9 @@
 	"HomePage.callToAction": {
 		"defaultMessage": "Launch App"
 	},
+	"HomePage.tagline": {
+		"defaultMessage": "crypto flow"
+	},
 	"InvalidAccountKey.message": {
 		"defaultMessage": "Invalid account key. Check this URL parameters."
 	},

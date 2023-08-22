@@ -57,7 +57,7 @@
     "prebuild:admin-api": "npm run build:api-gateway && npm run build:authentication && npm run build:database",
     "prebuild:api": "npm run build:binance",
     "prebuild:api-gateway": "npm run build:api && npm run build:locators && npm run build:http",
-    "prebuild:app": "npm run build:cache && npm run build:design && npm run build:dflow && npm run build:assets && npm run build:repo && npm run build:esbuild && npm run build:html && npm run build:i18n",
+    "prebuild:app": "npm run build:logging && npm run build:cache && npm run build:design && npm run build:dflow && npm run build:assets && npm run build:repo && npm run build:esbuild && npm run build:html && npm run build:i18n",
     "prebuild:assets": "npm run build:locators",
     "prebuild:authentication": "npm run build:models",
     "prebuild:authentication-api": "npm run build:api-gateway && npm run build:authentication && npm run build:database",

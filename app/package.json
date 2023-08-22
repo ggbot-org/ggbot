@@ -36,12 +36,14 @@
     "@ggbot2/env": "file:env",
     "@ggbot2/i18n": "file:i18n",
     "@ggbot2/locators": "file:locators",
+    "@workspace/logging": "file:logging",
     "@ggbot2/models": "file:models",
     "@ggbot2/type-utils": "file:type-utils",
     "country-isocode2": "1.1.0",
     "flow-view": "6.0.1",
     "react": "18.2.0",
-    "react-intl": "6.4.4"
+    "react-intl": "6.4.4",
+    "trunx": "0.45.3"
   },
   "devDependencies": {
     "@ggbot2/esbuild": "file:esbuild",
