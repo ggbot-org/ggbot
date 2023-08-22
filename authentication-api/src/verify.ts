@@ -6,7 +6,6 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@ggbot2/api-gateway"
-import { signSession } from "@ggbot2/authentication"
 import {
 	createAccount,
 	deleteOneTimePassword,
@@ -18,6 +17,7 @@ import {
 	ApiAuthVerifyResponseData,
 	isApiAuthVerifyRequestData
 } from "@workspace/api"
+import { signSession } from "@workspace/authentication"
 import { today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {

@@ -7,10 +7,6 @@ import {
 	OK,
 	UNATHORIZED
 } from "@ggbot2/api-gateway"
-import {
-	ErrorUnauthorizedAuthenticationHeader,
-	readSessionFromAuthorizationHeader
-} from "@ggbot2/authentication"
 import { ErrorBinanceBadRequest } from "@ggbot2/binance"
 import {
 	copyStrategy,
@@ -49,6 +45,10 @@ import {
 	isWriteStrategyFlowInput
 } from "@ggbot2/models"
 import { isUserApiActionRequestData as isApiActionRequestData } from "@workspace/api"
+import {
+	ErrorUnauthorizedAuthenticationHeader,
+	readSessionFromAuthorizationHeader
+} from "@workspace/authentication"
 import { logging } from "@workspace/logging"
 
 const info = logging("user-api").info

@@ -7,13 +7,13 @@ import {
 	OK,
 	UNATHORIZED
 } from "@ggbot2/api-gateway"
-import {
-	ErrorUnauthorizedAuthenticationHeader,
-	readSessionFromAuthorizationHeader
-} from "@ggbot2/authentication"
 import { listAccountKeys, readAccount } from "@ggbot2/database"
 import { isReadAccountInput } from "@ggbot2/models"
 import { isAdminApiActionRequestData as isApiActionRequestData } from "@workspace/api"
+import {
+	ErrorUnauthorizedAuthenticationHeader,
+	readSessionFromAuthorizationHeader
+} from "@workspace/authentication"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

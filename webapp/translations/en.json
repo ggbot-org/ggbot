@@ -18,7 +18,7 @@
 		"defaultMessage": "Send"
 	},
 	"AuthEnter.title": {
-		"defaultMessage": "Enter ggbot2"
+		"defaultMessage": "Enter ggbot"
 	},
 	"AuthExit.button": {
 		"defaultMessage": "Exit"
@@ -27,7 +27,7 @@
 		"defaultMessage": "Exit from your current account session."
 	},
 	"AuthExit.title": {
-		"defaultMessage": "Exit ggbot2"
+		"defaultMessage": "Exit ggbot"
 	},
 	"AuthVerify.button": {
 		"defaultMessage": "Enter"
@@ -162,10 +162,10 @@
 		"defaultMessage": "Binance API deletion"
 	},
 	"DeleteBinanceApi.question": {
-		"defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot2?"
+		"defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot?"
 	},
 	"DeleteBinanceApi.warning": {
-		"defaultMessage": "All your ggbot2 strategies will not able to be run"
+		"defaultMessage": "All your ggbot strategies will not able to be run"
 	},
 	"DeleteBinanceApi.info": {
 		"defaultMessage": "This action will not delete your API key on Binance website."
@@ -291,7 +291,7 @@
 		"defaultMessage": "Privacy Policy"
 	},
 	"Privacy.welcome": {
-		"defaultMessage": "Welcome to <em>ggbot2</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot2</em> website."
+		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot</em> website."
 	},
 	"Privacy.personalData": {
 		"defaultMessage": "Personal Data"
@@ -483,7 +483,7 @@
 		"defaultMessage": "Strategies"
 	},
 	"Terms.welcome": {
-		"defaultMessage": "Welcome to <em>ggbot2</em>. Please read this <em>Terms of Service</em> carefully as you agree to be bound by it while using the <em>ggbot2</em> website."
+		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this <em>Terms of Service</em> carefully as you agree to be bound by it while using the <em>ggbot</em> website."
 	},
 	"Terms.title": {
 		"defaultMessage": "Terms of Service"
@@ -492,16 +492,16 @@
 		"defaultMessage": "Website access"
 	},
 	"Terms.accessWithEmail": {
-		"defaultMessage": "You access <em>ggbot2</em> website with your account email. Keep your email safe, it is your responsibility."
+		"defaultMessage": "You access <em>ggbot</em> website with your account email. Keep your email safe, it is your responsibility."
 	},
 	"Terms.binance": {
 		"defaultMessage": "Binance API"
 	},
 	"Terms.binanceApi": {
-		"defaultMessage": "The <em>ggbot2</em> engine needs your grant to access your Binance account using Binance API key."
+		"defaultMessage": "The <em>ggbot</em> engine needs your grant to access your Binance account using Binance API key."
 	},
 	"Terms.binanceNoWithdrawals": {
-		"defaultMessage": "It is crucial to understand that <em>ggbot2</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot2</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
+		"defaultMessage": "It is crucial to understand that <em>ggbot</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
 	},
 	"Terms.pricing": {
 		"defaultMessage": "Product pricing"
@@ -510,7 +510,7 @@
 		"defaultMessage": "All prices shown on the website include the applicable VAT rate. Depending on your country of purchase, other local charges and taxes may also apply."
 	},
 	"Terms.privacy": {
-		"defaultMessage": "Please review our <a>Privacy Policy</a> as it governs the privacy practices undertaken by <em>ggbot2</em>."
+		"defaultMessage": "Please review our <a>Privacy Policy</a> as it governs the privacy practices undertaken by <em>ggbot</em>."
 	},
 	"TimeoutError.message": {
 		"defaultMessage": "Request not sent. Please check connectivity and try again."

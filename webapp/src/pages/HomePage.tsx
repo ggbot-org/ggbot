@@ -1,7 +1,4 @@
-import { BrandName, Logo } from "@ggbot2/design"
-import { FC, useCallback } from "react"
-import { FormattedMessage } from "react-intl"
-
+import { classNames } from "_/classNames"
 import {
 	Button,
 	Column,
@@ -10,10 +7,13 @@ import {
 	Hero,
 	Level,
 	LevelItem
-} from "../components/library/index.js"
-import { useGotFirstPageView } from "../hooks/useGotFirstPageView.js"
+} from "_/components/library"
+import { useGotFirstPageView } from "_/hooks/useGotFirstPageView.js"
+import { BrandName, Logo } from "@ggbot2/design"
+import { FC, useCallback } from "react"
+import { FormattedMessage } from "react-intl"
+
 import { href } from "../routing/public/hrefs.js"
-import { classNames } from "../styles/classNames.js"
 import { PageContainer } from "./PageContainer.js"
 
 export const HomePage: FC = () => {
