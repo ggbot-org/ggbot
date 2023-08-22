@@ -7,8 +7,11 @@
 	"extends": "@ggbot2/tsconfig",
 	"exclude": ["node_modules/", "temp/", "**/*_test.ts"],
 	"include": [
+		"src/esbuild/*.ts",
+		"src/html/*.ts",
 		"src/package.ts",
 		"src/routing/admin/pages.ts",
+		"src/routing/design/pages.ts",
 		"src/routing/public/pages.ts",
 		"src/routing/user/pages.ts",
 		"src/routing/user/types.ts",

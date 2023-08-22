@@ -21,7 +21,6 @@ import { SimpleTable } from "../examples/Tables.js"
 import { Tags } from "../examples/Tags.js"
 import { TimeIntervalSelectors } from "../examples/TimeIntervalSelectors.js"
 import { ToastExample } from "../examples/Toast.js"
-import { Typography } from "../examples/Typography.js"
 
 const Title: FC<PropsWithChildren> = ({ children }) => (
 	<_Title size={1}>{children}</_Title>
@@ -36,12 +35,6 @@ const Page: FC = () => (
 				<Container>
 					<Section>
 						<Logo size={71} />
-					</Section>
-
-					<Section>
-						<Title>Typography</Title>
-
-						<Typography />
 					</Section>
 
 					<Section>

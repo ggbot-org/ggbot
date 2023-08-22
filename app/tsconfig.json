@@ -1,4 +1,10 @@
 {
+	"compilerOptions": {
+		"paths": {
+			"_/classNames": ["./src/styles/classNames.ts"],
+			"_/components/library": ["./src/components/library/index.ts"]
+		}
+	},
 	"exclude": ["node_modules"],
 	"extends": "@ggbot2/tsconfig/react",
 	"include": ["**/*.ts", "**/*.tsx"]

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/repo",
+  "name": "@workspace/package",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,19 +17,13 @@
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test"
   },
+  "devDependencies": {
+    "@ggbot2/eslint-config": "file:eslint-config",
+    "@ggbot2/tsconfig": "file:tsconfig"
+  },
   "eslintConfig": {
     "extends": [
       "@ggbot2/eslint-config"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.js"
-        ],
-        "rules": {
-          "no-warning-comments": "off"
-        }
-      }
     ]
   }
 }

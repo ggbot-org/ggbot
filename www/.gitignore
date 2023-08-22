@@ -1,7 +1,0 @@
-temp/
-public/*.css
-public/*.css.map
-public/*.js
-public/*.html
-public/translations/*.json
-src/i18n/FormatjsIntlMessageIds.d.ts

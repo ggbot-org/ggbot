@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"lib": ["es2015"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"rootDir": "./src",
+		"target": "esnext"
+	},
+	"extends": "@ggbot2/tsconfig",
+	"include": ["./src/**/*.ts"]
+}

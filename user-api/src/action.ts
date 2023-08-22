@@ -32,7 +32,6 @@ import {
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
 } from "@ggbot2/database"
-import { isDev } from "@ggbot2/env"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,

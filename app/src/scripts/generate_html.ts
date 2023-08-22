@@ -1,15 +1,17 @@
 import { join } from "node:path"
 
-import { generateHtmlPage, htmlPageContent } from "@ggbot2/html"
-
+import { htmlPageContent } from "../html/content.js"
+import { generateHtmlPage } from "../html/generate.js"
 import {
 	adminJs,
+	designJs,
 	landingJs,
 	publicDir,
 	strategyJs,
 	userJs
 } from "../package.js"
 import { adminHtmlPathnames } from "../routing/admin/pages.js"
+import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
 import {
 	landingHtmlPathnames,
 	strategyHtmlPathname
@@ -51,7 +53,7 @@ const generateHtml = async () => {
 	for (const pathname of userHtmlPathnames)
 		await generateHtmlPage(join(publicDir, pathname), html(userJs))
 
-	// Subscription
+	// Subscription pages.
 
 	await generateHtmlPage(
 		join(publicDir, purchaseCanceledHtmlPathname),
@@ -61,6 +63,13 @@ const generateHtml = async () => {
 	await generateHtmlPage(
 		join(publicDir, subscriptionPurchasedHtmlPathname),
 		html(userJs)
+	)
+
+	// Design.
+
+	await generateHtmlPage(
+		join(publicDir, designShowcaseHtmlPathname),
+		html(designJs)
 	)
 }
 

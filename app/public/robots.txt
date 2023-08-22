@@ -3,6 +3,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /design/
 Disallow: /user/
 
 Sitemap: https://www.ggbot2.com/sitemap.xml

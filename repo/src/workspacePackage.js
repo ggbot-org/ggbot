@@ -6,7 +6,7 @@ import { rootPackageDir, rootPackageJson } from "./rootPackage.js"
 // TODO convert this to TS.
 
 // TODO test that a package do not depend on itself,
-// the @ggbot2/html has this issue.
+// actually a package had this issue.
 
 // TODO check there are no duplicates in dependencies and devDependencies
 
@@ -30,7 +30,4 @@ export const importWorkspaceJson = (filename) => async (workspace) => {
 
 export const importWorkspacePackageJson = importWorkspaceJson("package.json")
 
-export const workspaceExposedScriptKeys = [
-	packageScriptKey.build,
-	packageScriptKey.test
-]
+export const workspaceExposedScriptKeys = [packageScriptKey.build]

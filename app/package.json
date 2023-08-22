@@ -46,9 +46,10 @@
     "trunx": "0.45.3"
   },
   "devDependencies": {
+    "@workspace/package": "file:package",
+    "@ggbot2/env": "file:env",
     "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/html": "file:html",
     "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "esbuild": "0.17.17",

@@ -14,9 +14,8 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "generate_css": "npm run sass",
-    "generate_html": "node temp/scripts/generate_html.js",
     "generate_js": "node temp/scripts/generate_js.js",
-    "generate_public_files": "npm run generate_html && npm run generate_js && npm run generate_css",
+    "generate_public_files": "npm run generate_js && npm run generate_css",
     "lint": "eslint --fix --ext .ts --ext .tsx src/",
     "pregenerate_public_files": "npm run tsc:scripts",
     "sass": "sass --style=compressed --load-path=../node_modules/ --load-path=. --no-source-map src/webapp/styles/main.scss public/main.css",
@@ -33,9 +32,7 @@
     "trunx": "0.45.3"
   },
   "devDependencies": {
-    "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/html": "file:html",
     "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "sass": "1.64.2"

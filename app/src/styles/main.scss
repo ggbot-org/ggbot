@@ -1,12 +1,21 @@
 // First of all import :root CSS variables.
-@import "@ggbot2/design/styles/root";
+@import "./root";
 
-// 1. Import bulma theme first;
-@import "@ggbot2/design/styles/bulma/theme";
-// 2. then bulma modules;
+// 1. Import bulma theme, colors and fonts first;
+@import "./bulma/theme/colors";
+@import "./bulma/theme/fonts";
+// 2. other bulma theme imports;
+@import "./bulma/theme/button";
+@import "./bulma/theme/footer";
+@import "./bulma/theme/input";
+@import "./bulma/theme/link";
+@import "./bulma/theme/tabs";
+// 3. then bulma modules;
 @import "bulma/bulma";
-// 3. and finally the overrides.
-@import "@ggbot2/design/styles/bulma/overrides";
+// 4. and finally the overrides.
+@import "./bulma/overrides/button";
+@import "./bulma/overrides/checkbox";
+@import "./bulma/overrides/tabs";
 
 // 4. Design components.
 @import "@ggbot2/design/styles/components/all";
