@@ -1,4 +1,3 @@
-import { ApiUtrustCallabackRequestData } from "@ggbot2/api"
 import {
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
@@ -18,6 +17,7 @@ import {
 	Event as UtrustEvent,
 	WebhookValidator
 } from "@utrustdev/utrust-ts-library"
+import { ApiUtrustCallabackRequestData } from "@workspace/api"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

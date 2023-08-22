@@ -1,4 +1,3 @@
-import { isPublicApiActionRequestData as isApiActionRequestData } from "@ggbot2/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -10,6 +9,7 @@ import {
 import { readStrategy, readStrategyFlow } from "@ggbot2/database"
 import { isDev } from "@ggbot2/env"
 import { isReadStrategyFlowInput, isReadStrategyInput } from "@ggbot2/models"
+import { isPublicApiActionRequestData as isApiActionRequestData } from "@workspace/api"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

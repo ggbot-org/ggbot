@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/authentication-api",
+  "name": "@workspace/authentication-api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -20,7 +20,7 @@
     "zip": "sh src/scripts/zip.sh"
   },
   "dependencies": {
-    "@ggbot2/api": "file:api",
+    "@workspace/api": "file:api",
     "@ggbot2/api-gateway": "file:api-gateway",
     "@ggbot2/authentication": "file:authentication",
     "@ggbot2/database": "file:database",

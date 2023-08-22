@@ -5,8 +5,9 @@ import {
 	BinanceRequestHeaders,
 	isBinanceApiPrivateEndoint
 } from "@ggbot2/binance"
-import { isDev } from "@ggbot2/env"
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@ggbot2/http"
+
+import { info } from "./logging.js"
 
 const PORT = 3000
 
@@ -19,7 +20,7 @@ createServer(async (request, response) => {
 		return
 	}
 
-	if (isDev) console.info("sourceUrl", sourceUrl)
+	info("sourceUrl", sourceUrl)
 
 	if (sourceUrl === "/health-check") {
 		response.end("OK")
@@ -34,7 +35,7 @@ createServer(async (request, response) => {
 	const targetUrl = new URL(sourceUrl, `https://${binanceApiDomain}`)
 
 	if (!isBinanceApiPrivateEndoint(targetUrl.pathname)) {
-		if (isDev) console.info(__400__BAD_REQUEST__, targetUrl.pathname)
+		info(__400__BAD_REQUEST__, targetUrl.pathname)
 		response.writeHead(__404__NOT_FOUND__)
 		response.end()
 		return
@@ -68,9 +69,9 @@ createServer(async (request, response) => {
 	}
 
 	const data = await proxiedResponse.json()
-	if (isDev) console.info(data)
+	info(data)
 	const json = JSON.stringify(data)
 	response.end(json)
 }).listen(PORT, () => {
-	if (isDev) console.info(`Server running on port ${PORT}`)
+	info(`Server running on port ${PORT}`)
 })

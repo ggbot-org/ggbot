@@ -1,8 +1,4 @@
 import {
-	ApiUtrustOrderResponseData,
-	isApiUtrustOrderRequestData
-} from "@ggbot2/api"
-import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
@@ -34,6 +30,10 @@ import {
 	totalPurchase
 } from "@ggbot2/models"
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
+import {
+	ApiUtrustOrderResponseData,
+	isApiUtrustOrderRequestData
+} from "@workspace/api"
 import { getDay, today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {

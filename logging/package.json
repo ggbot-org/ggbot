@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/api-gateway",
+  "name": "@workspace/logging",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -16,10 +16,7 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@workspace/api": "file:api",
-    "@ggbot2/env": "file:env",
-    "@ggbot2/http": "file:http",
-    "@ggbot2/locators": "file:locators"
+    "@ggbot2/env": "file:env"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

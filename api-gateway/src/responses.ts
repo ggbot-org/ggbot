@@ -1,4 +1,3 @@
-import { ApiActionResponseData, ApiActionResponseError } from "@ggbot2/api"
 import { ENV } from "@ggbot2/env"
 import {
 	__200__OK__,
@@ -9,6 +8,7 @@ import {
 	HTTP_METHOD
 } from "@ggbot2/http"
 import { UserWebappBaseURL } from "@ggbot2/locators"
+import { ApiActionResponseData, ApiActionResponseError } from "@workspace/api"
 
 import { responseBody } from "./responseBody.js"
 import { APIGatewayProxyResult } from "./types.js"

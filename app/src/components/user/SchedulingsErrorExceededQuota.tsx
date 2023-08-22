@@ -1,10 +1,10 @@
-import { isApiActionServerSideError } from "@ggbot2/api"
 import { Message } from "@ggbot2/design"
 import { ErrorExceededQuota, quotaType } from "@ggbot2/models"
+import { isApiActionServerSideError } from "@workspace/api"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { UseActionError } from "../hooks/useAction.js"
+import { UseActionError } from "../../hooks/useAction.js"
 
 type Props = {
 	error: UseActionError

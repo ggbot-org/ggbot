@@ -1,4 +1,4 @@
-# ggbot2 npm workspaces
+# npm workspaces
 
 This repo uses [npm workspaces](./tech-stack.md#npm-workspaces).
 
@@ -47,8 +47,8 @@ temp/
 
 ```jsonc
 {
-	// Package name, for instance `foo-bar`, prefixed by `@ggbot2` project namespace.
-	"name": "@ggbot2/foo-bar",
+	// Package name, for instance `foo-bar`, prefixed by `@workspace` project namespace.
+	"name": "@workspace/foo-bar",
 	"version": "0.1.0",
 	// Package must be a private module.
 	"private": true,
@@ -70,17 +70,17 @@ temp/
 	},
 	"dependencies": {
 		// Dependency from another workspace package is referenced using `file:` prefix.
-		"@ggbot2/another-package": "file:another-package"
+		"@workspace/another-package": "file:another-package"
 	},
 	"devDependencies": {
-		"@ggbot2/eslint-config": "file:eslint-config",
-		"@ggbot2/tsconfig": "file:tsconfig"
+		"@workspace/eslint-config": "file:eslint-config",
+		"@workspace/tsconfig": "file:tsconfig"
 	},
 	"eslintConfig": {
 		"extends": [
 			// Extend proper eslint preset,
-			// may be "@ggbot2/eslint-config/react" for frontend packages.
-			"@ggbot2/eslint-config"
+			// may be "@workspace/eslint-config/react" for frontend packages.
+			"@workspace/eslint-config"
 		]
 	}
 }
@@ -124,7 +124,7 @@ export * from "./foo.js"
 		"target": "esnext"
 	},
 	// Extend common set of `compilerOptions`, used to improve code quality.
-	"extends": "@ggbot2/tsconfig",
+	"extends": "@workspace/tsconfig",
 	"include": ["./src/**/*.ts"]
 }
 ```

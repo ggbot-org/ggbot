@@ -1,4 +1,3 @@
-import { UserApiActionType } from "@ggbot2/api"
 import {
 	AccountKey,
 	CopyStrategy,
@@ -20,6 +19,7 @@ import {
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
 } from "@ggbot2/models"
+import { UserApiActionType } from "@workspace/api"
 import { EmptyObject } from "type-fest"
 
 import { useAction } from "../hooks/useAction.js"

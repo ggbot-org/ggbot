@@ -1,4 +1,4 @@
-import { ApiActionResponseOutput } from "@ggbot2/api"
+import { ApiActionResponseOutput } from "@workspace/api"
 
 import { APIGatewayProxyResult } from "./types.js"
 

@@ -1,8 +1,4 @@
 import {
-	isApiAuthVerifyRequestData,
-	isApiAuthVerifyResponseData
-} from "@ggbot2/api"
-import {
 	Button,
 	Column,
 	Columns,
@@ -20,6 +16,10 @@ import {
 import { isDev } from "@ggbot2/env"
 import { EmailAddress } from "@ggbot2/models"
 import { NonEmptyString } from "@ggbot2/type-utils"
+import {
+	isApiAuthVerifyRequestData,
+	isApiAuthVerifyResponseData
+} from "@workspace/api"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

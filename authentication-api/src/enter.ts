@@ -1,8 +1,4 @@
 import {
-	ApiAuthEnterResponseData,
-	isApiAuthEnterRequestData
-} from "@ggbot2/api"
-import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
@@ -11,6 +7,10 @@ import {
 	OK
 } from "@ggbot2/api-gateway"
 import { createOneTimePassword, sendOneTimePassword } from "@ggbot2/database"
+import {
+	ApiAuthEnterResponseData,
+	isApiAuthEnterRequestData
+} from "@workspace/api"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

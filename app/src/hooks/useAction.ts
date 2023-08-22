@@ -1,4 +1,3 @@
-import { ApiActionClientSideError, ApiActionServerSideError } from "@ggbot2/api"
 import { ENV } from "@ggbot2/env"
 import {
 	__400__BAD_REQUEST__,
@@ -12,6 +11,10 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@ggbot2/http"
+import {
+	ApiActionClientSideError,
+	ApiActionServerSideError
+} from "@workspace/api"
 import { useCallback, useState } from "react"
 
 import { localWebStorage } from "../storages/local.js"
@@ -69,8 +72,6 @@ const isDev = ENV.DEPLOY_STAGE() !== "main"
  * @example
  *
  * ```ts
- * import { useAction } from "@ggbot2/use-action"
- *
  * const endpoint = "/api/action"
  *
  * export const FooBar = useAction({ endpoint }, "FooBar")

@@ -12,7 +12,12 @@ export const PrivacyPage: FC = () => (
 			</Title>
 
 			<p>
-				<FormattedMessage id="Privacy.welcome" />
+				<FormattedMessage
+					id="Privacy.welcome"
+					values={{
+						em: (chunks) => <em>{chunks}</em>
+					}}
+				/>
 			</p>
 
 			<h2>

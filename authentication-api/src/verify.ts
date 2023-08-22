@@ -1,8 +1,4 @@
 import {
-	ApiAuthVerifyResponseData,
-	isApiAuthVerifyRequestData
-} from "@ggbot2/api"
-import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
@@ -18,6 +14,10 @@ import {
 	readOneTimePassword
 } from "@ggbot2/database"
 import { __200__OK__ } from "@ggbot2/http"
+import {
+	ApiAuthVerifyResponseData,
+	isApiAuthVerifyRequestData
+} from "@workspace/api"
 import { today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {

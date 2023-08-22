@@ -1,8 +1,8 @@
-import { AdminApiActionType } from "@ggbot2/api"
 import {
 	// ListAccountKeys,
 	ReadAccount
 } from "@ggbot2/models"
+import { AdminApiActionType } from "@workspace/api"
 
 import { useAction } from "../hooks/useAction.js"
 import { url } from "../routing/admin/URLs.js"

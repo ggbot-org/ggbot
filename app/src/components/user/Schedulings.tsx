@@ -25,17 +25,14 @@ import {
 } from "react"
 import { FormattedMessage } from "react-intl"
 
-import {
-	SchedulingItem,
-	SchedulingItemProps
-} from "../components/SchedulingItem.js"
-import { SchedulingsErrorExceededQuota } from "../components/SchedulingsErrorExceededQuota.js"
-import { SchedulingsStatusBadges } from "../components/SchedulingsStatusBadges.js"
-import { StrategyContext } from "../contexts/Strategy.js"
-import { StrategiesContext } from "../contexts/user/Strategies.js"
-import { SubscriptionContext } from "../contexts/user/Subscription.js"
-import { useUserApi } from "../hooks/useUserApi.js"
-import { classNames } from "../styles/classNames.js"
+import { StrategiesContext } from "../../contexts/user/Strategies.js"
+import { StrategyContext } from "../../contexts/user/Strategy.js"
+import { SubscriptionContext } from "../../contexts/user/Subscription.js"
+import { useUserApi } from "../../hooks/useUserApi.js"
+import { classNames } from "../../styles/classNames.js"
+import { SchedulingItem, SchedulingItemProps } from "../SchedulingItem.js"
+import { SchedulingsStatusBadges } from "../SchedulingsStatusBadges.js"
+import { SchedulingsErrorExceededQuota } from "./SchedulingsErrorExceededQuota.js"
 
 export const Schedulings: FC = () => {
 	const {

@@ -1,4 +1,3 @@
-import { isAdminApiActionRequestData as isApiActionRequestData } from "@ggbot2/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -14,6 +13,7 @@ import {
 } from "@ggbot2/authentication"
 import { listAccountKeys, readAccount } from "@ggbot2/database"
 import { isReadAccountInput } from "@ggbot2/models"
+import { isAdminApiActionRequestData as isApiActionRequestData } from "@workspace/api"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

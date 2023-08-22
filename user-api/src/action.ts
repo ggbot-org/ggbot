@@ -1,4 +1,3 @@
-import { isUserApiActionRequestData as isApiActionRequestData } from "@ggbot2/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -50,6 +49,7 @@ import {
 	isWriteAccountStrategiesItemSchedulingsInput,
 	isWriteStrategyFlowInput
 } from "@ggbot2/models"
+import { isUserApiActionRequestData as isApiActionRequestData } from "@workspace/api"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

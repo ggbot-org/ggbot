@@ -1,8 +1,4 @@
 import {
-	isApiAuthEnterRequestData,
-	isApiAuthEnterResponseData
-} from "@ggbot2/api"
-import {
 	Button,
 	Control,
 	Field,
@@ -14,6 +10,10 @@ import {
 } from "@ggbot2/design"
 import { EmailAddress, isEmailAddress } from "@ggbot2/models"
 import { isMaybeObject } from "@ggbot2/type-utils"
+import {
+	isApiAuthEnterRequestData,
+	isApiAuthEnterResponseData
+} from "@workspace/api"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
