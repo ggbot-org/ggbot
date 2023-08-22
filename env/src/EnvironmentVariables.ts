@@ -28,6 +28,10 @@ class EnvironmentVariables {
 		throw new ErrorMissingEnvironmentVariable("DEPLOY_STAGE")
 	}
 
+	DNS_DOMAIN() {
+		return getVariable("DNS_DOMAIN")
+	}
+
 	JWT_SECRET() {
 		return getVariable("JWT_SECRET")
 	}

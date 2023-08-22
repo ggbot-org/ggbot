@@ -1,23 +1,15 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3"
 import { ENV } from "@ggbot2/env"
 import {
-	appDomain,
-	appNextDomain,
 	assetsDomain,
+	nextWebappDomain,
 	topLevelDomain,
-	wwwDomain,
-	wwwNextDomain
+	webappDomain
 } from "@ggbot2/locators"
 
 import { awsRegion } from "./awsRegions.js"
 
 const { DEPLOY_STAGE } = ENV
-
-export const getAppBucketName = (deployStage = DEPLOY_STAGE()) =>
-	["local", "next"].includes(deployStage) ? appNextDomain : appDomain
-
-export const getAppBucketArn = (deployStage = DEPLOY_STAGE()) =>
-	`arn:aws:s3:::${getAppBucketName(deployStage)}`
 
 export const appBucketACL = BucketCannedACL.public_read
 
@@ -52,10 +44,10 @@ export const getNakedDomainBucketArn = () =>
 
 export const nakedDomainBucketACL = BucketCannedACL.public_read
 
-export const getWwwBucketName = (deployStage = DEPLOY_STAGE()) =>
-	["local", "next"].includes(deployStage) ? wwwNextDomain : wwwDomain
+export const getWebappBucketName = (deployStage = DEPLOY_STAGE()) =>
+	["local", "next"].includes(deployStage) ? nextWebappDomain : webappDomain
 
-export const getWwwBucketArn = (deployStage = DEPLOY_STAGE()) =>
-	`arn:aws:s3:::${getWwwBucketName(deployStage)}`
+export const getWebappBucketArn = (deployStage = DEPLOY_STAGE()) =>
+	`arn:aws:s3:::${getWebappBucketName(deployStage)}`
 
-export const wwwBucketACL = BucketCannedACL.public_read
+export const webappBucketACL = BucketCannedACL.public_read

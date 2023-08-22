@@ -1,4 +1,4 @@
-import { wwwDomain } from "./FQDNs.js"
+import { webappDomain } from "./FQDNs.js"
 
 export class ApiAuthenticationEnterURL extends URL {
 	constructor(apiBaseURL: string) {
@@ -62,8 +62,8 @@ export class UtrustReturnURL extends URL {
 	}
 }
 
-export class WwwHomepageURL extends URL {
+export class HomepageURL extends URL {
 	constructor() {
-		super("/", `https://${wwwDomain}`)
+		super("/", `https://${webappDomain}`)
 	}
 }

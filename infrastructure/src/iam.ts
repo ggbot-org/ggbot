@@ -3,12 +3,11 @@ import { DeployStage, ENV } from "@ggbot2/env"
 import { getLogsArn } from "./cloudWatch.js"
 import { lambdaAllArn } from "./lambda.js"
 import {
-	getAppBucketArn,
 	getAssetsBucketArn,
 	getDataBucketArn,
 	getLogsBucketArn,
 	getNakedDomainBucketArn,
-	getWwwBucketArn
+	getWebappBucketArn
 } from "./s3.js"
 import { getSesIdentityArn } from "./ses.js"
 
@@ -18,10 +17,9 @@ const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV
 const Version = "2012-10-17"
 
 const resources = (deployStage: DeployStage) => ({
-	appBucketArn: getAppBucketArn(deployStage),
 	dataBucketArn: getDataBucketArn(deployStage),
 	logsBucketArn: getLogsBucketArn(deployStage),
-	wwwBucketArn: getWwwBucketArn(deployStage)
+	webappBucketArn: getWebappBucketArn(deployStage)
 })
 
 const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID()}:role/ggbot2_api_role`
@@ -77,14 +75,12 @@ export const getDevopsPolicyStatements = () => [
 		Resource: [
 			cross.assetsBucketArn,
 			cross.nakedDomainBucketArn,
-			main.appBucketArn,
 			main.dataBucketArn,
 			main.logsBucketArn,
-			main.wwwBucketArn,
-			next.appBucketArn,
+			main.webappBucketArn,
 			next.dataBucketArn,
 			next.logsBucketArn,
-			next.wwwBucketArn
+			next.webappBucketArn
 		]
 	},
 	{
@@ -93,14 +89,10 @@ export const getDevopsPolicyStatements = () => [
 		Resource: [
 			cross.assetsBucketArn,
 			`${cross.assetsBucketArn}/*`,
-			main.appBucketArn,
-			`${main.appBucketArn}/*`,
-			next.appBucketArn,
-			`${next.appBucketArn}/*`,
-			main.wwwBucketArn,
-			`${main.wwwBucketArn}/*`,
-			next.wwwBucketArn,
-			`${next.wwwBucketArn}/*`
+			main.webappBucketArn,
+			`${main.webappBucketArn}/*`,
+			next.webappBucketArn,
+			`${next.webappBucketArn}/*`
 		]
 	}
 ]

@@ -1,11 +1,12 @@
-import { getWwwBucketName, wwwBucketACL } from "@ggbot2/infrastructure"
+import { getWebappBucketName, webappBucketACL } from "@ggbot2/infrastructure"
 
 import { createS3Bucket, getS3BucketStatus, S3BucketStatus } from "./_s3.js"
 
-const Bucket = getWwwBucketName()
-const ACL = wwwBucketACL
+const Bucket = getWebappBucketName()
+const ACL = webappBucketACL
 
-export const getWwwBucketStatus = async (): Promise<S3BucketStatus> =>
+export const getWebappBucketStatus = async (): Promise<S3BucketStatus> =>
 	await getS3BucketStatus({ Bucket })
 
-export const createWwwBucket = async () => await createS3Bucket({ ACL, Bucket })
+export const createWebappBucket = async () =>
+	await createS3Bucket({ ACL, Bucket })

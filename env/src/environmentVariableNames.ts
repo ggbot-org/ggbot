@@ -2,6 +2,7 @@ const environmentVariableNames = [
 	"AWS_ACCOUNT_ID",
 	"BINANCE_PROXY_BASE_URL",
 	"DEPLOY_STAGE",
+	"DNS_DOMAIN",
 	"JWT_SECRET",
 	"NODE_ENV",
 	"UTRUST_API_KEY",

@@ -3,7 +3,6 @@ import { LoadBalancerStatus } from "./_elb.js"
 import { IamPolicyStatus } from "./_iam.js"
 import { isMainModule } from "./_isMainModule.js"
 import { S3BucketStatus } from "./_s3.js"
-import { TaskOptions } from "./_task.js"
 import { ElasticIpStatus, getElasticIps } from "./elasticIp.js"
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js"
 import { getDevopsPolicyStatus } from "./iam-devops.js"
@@ -15,7 +14,7 @@ import { getLogsBucketStatus } from "./s3-logs.js"
 // import { getNakedDomainBucketStatus } from "./s3-nakedDomain.js";
 // import { getWwwBucketStatus } from "./s3-www.js";
 
-type TaskStatus = (options: TaskOptions) => Promise<{
+type TaskStatus = () => Promise<{
 	// IAM
 	devopsPolicy: IamPolicyStatus
 	sesNoreplyPolicy: IamPolicyStatus
@@ -62,52 +61,52 @@ const s3BucketReport = (reportKey: string, s3Bucket: S3BucketStatus) => {
 	console.info(reportKey, "exists", OK(s3Bucket.exists))
 }
 
-export const taskStatus: TaskStatus = async ({ verbose }) => {
+export const taskStatus: TaskStatus = async () => {
 	// //////////////////////////////////////////////////////////////////
-	if (verbose) console.info("IAM")
+	console.info("IAM")
 	// //////////////////////////////////////////////////////////////////
 
 	const devopsPolicy = await getDevopsPolicyStatus()
-	if (verbose) iamPolicyReport("devopsPolicy", devopsPolicy)
+	iamPolicyReport("devopsPolicy", devopsPolicy)
 
 	const sesNoreplyPolicy = await getSesNoreplyPolicyStatus()
-	if (verbose) iamPolicyReport("sesNoReplyPolicy", sesNoreplyPolicy)
+	iamPolicyReport("sesNoReplyPolicy", sesNoreplyPolicy)
 
 	// //////////////////////////////////////////////////////////////////
-	if (verbose) console.info("S3")
+	console.info("S3")
 	// //////////////////////////////////////////////////////////////////
 
 	// TODO how to check bucket in other region
 	// const assetsBucket = await getAssetsBucketStatus();
-	// if (verbose) s3BucketReport("assetsDomainBucket", assetsBucket);
+	// s3BucketReport("assetsDomainBucket", assetsBucket);
 
 	const dataBucket = await getDataBucketStatus()
-	if (verbose) s3BucketReport("dataBucket", dataBucket)
+	s3BucketReport("dataBucket", dataBucket)
 
 	const logsBucket = await getLogsBucketStatus()
-	if (verbose) s3BucketReport("logsBucket", logsBucket)
+	s3BucketReport("logsBucket", logsBucket)
 
 	// TODO how to check bucket in other region
 	// const nakedDomainBucket = await getNakedDomainBucketStatus();
-	// if (verbose) s3BucketReport("nakedDomainBucket", nakedDomainBucket);
+	// s3BucketReport("nakedDomainBucket", nakedDomainBucket);
 
 	// TODO how to check bucket in other region
 	// const wwwBucket = await getWwwBucketStatus();
-	// if (verbose) s3BucketReport("wwwBucket", wwwBucket);
+	// s3BucketReport("wwwBucket", wwwBucket);
 
 	// //////////////////////////////////////////////////////////////////
-	if (verbose) console.info("ELB")
+	console.info("ELB")
 	// //////////////////////////////////////////////////////////////////
 
 	const webappLoadBalancer = await getWebappLoadBalancerStatus()
-	if (verbose) loadBalancerReport("webappLoadBalancer", webappLoadBalancer)
+	loadBalancerReport("webappLoadBalancer", webappLoadBalancer)
 
 	// //////////////////////////////////////////////////////////////////
-	if (verbose) console.info("EC2")
+	console.info("EC2")
 	// //////////////////////////////////////////////////////////////////
 
 	const elasticIps = await getElasticIps()
-	if (verbose) elasticIpsReport("elasticIp", elasticIps)
+	elasticIpsReport("elasticIp", elasticIps)
 
 	// //////////////////////////////////////////////////////////////////
 	return {
@@ -121,4 +120,4 @@ export const taskStatus: TaskStatus = async ({ verbose }) => {
 	}
 }
 
-if (isMainModule(import.meta.url)) await taskStatus({ verbose: true })
+if (isMainModule(import.meta.url)) await taskStatus()
