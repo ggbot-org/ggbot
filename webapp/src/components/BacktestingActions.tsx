@@ -1,8 +1,7 @@
-import { Button, ButtonProps, Buttons } from "@ggbot2/design"
+import { Button, ButtonProps, Buttons } from "_/components/library"
+import type { BacktestingState } from "_/hooks/useBacktesting.js"
 import { FC, memo } from "react"
 import { useIntl } from "react-intl"
-
-import type { BacktestingState } from "../hooks/useBacktesting.js"
 
 const PauseButton: FC<ButtonProps> = (props) => {
 	const { formatMessage } = useIntl()

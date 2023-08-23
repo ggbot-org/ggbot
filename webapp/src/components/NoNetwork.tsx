@@ -1,4 +1,5 @@
-import { Message, Modal, useOfflineDetection } from "@ggbot2/design"
+import { Message, Modal } from "_/components/library"
+import { useOfflineDetection } from "_/hooks/useOfflineDetection"
 import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

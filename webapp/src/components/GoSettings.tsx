@@ -1,4 +1,4 @@
-import { Button } from "@ggbot2/design"
+import { Button } from "_/components/library"
 import { FC, useState } from "react"
 import { FormattedMessage } from "react-intl"
 

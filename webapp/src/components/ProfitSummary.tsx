@@ -1,3 +1,5 @@
+import { classNames } from "_/classNames"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
 import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic"
 import { isBinanceOrderRespFULL } from "@ggbot2/binance"
 import {
@@ -16,8 +18,6 @@ import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { StrategyContext } from "../contexts/Strategy.js"
-import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js"
-import { classNames } from "../styles/classNames.js"
 
 type Props = {
 	dayInterval: DayInterval | undefined

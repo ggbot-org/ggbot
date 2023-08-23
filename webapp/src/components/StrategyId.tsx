@@ -1,4 +1,4 @@
-import { InputField, InputFieldProps } from "@ggbot2/design"
+import { InputField, InputFieldProps } from "_/components/library"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

@@ -2,9 +2,9 @@ import { Column, Columns } from "@ggbot2/design"
 import { Strategy } from "@ggbot2/models"
 import { FC } from "react"
 
-import { StrategyId } from "../components/StrategyId.js"
-import { StrategyName } from "../components/StrategyName.js"
-import { WhenCreated } from "../components/WhenCreated.js"
+import { StrategyId } from "./StrategyId.js"
+import { StrategyName } from "./StrategyName.js"
+import { WhenCreated } from "./WhenCreated.js"
 
 type Props = { strategy: Strategy }
 

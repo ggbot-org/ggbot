@@ -1,4 +1,4 @@
-import { Box, Flex, Title } from "@ggbot2/design"
+import { Box, Flex, Title } from "_/components/library"
 import { DflowCommonContext } from "@ggbot2/dflow"
 import { DflowData } from "dflow"
 import { FC, useMemo } from "react"

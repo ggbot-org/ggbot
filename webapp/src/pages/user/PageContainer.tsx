@@ -1,11 +1,11 @@
-import { Page, ToastProvider } from "@ggbot2/design"
-import { I18nProvider } from "@ggbot2/i18n"
+import { Footer } from "_/components/Footer.js"
+import { Page } from "_/components/library"
+import { NoNetwork } from "_/components/NoNetwork.js"
+import { Navigation } from "_/components/user/Navigation.js"
+import { AuthenticationProvider } from "_/contexts/Authentication.js"
+import { I18nProvider } from "_/contexts/I18n"
+import { ToastProvider } from "_/contexts/Toast.js"
 import { FC, PropsWithChildren } from "react"
-
-import { Footer } from "../../components/Footer.js"
-import { NoNetwork } from "../../components/NoNetwork.js"
-import { Navigation } from "../../components/user/Navigation.js"
-import { AuthenticationProvider } from "../../contexts/Authentication.js"
 
 export const PageContainer: FC<PropsWithChildren> = ({ children }) => (
 	<I18nProvider>

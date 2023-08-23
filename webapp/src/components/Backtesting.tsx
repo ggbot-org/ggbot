@@ -5,13 +5,13 @@ import {
 	DailyInterval,
 	DailyIntervalProps,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { useBacktesting } from "_/hooks/useBacktesting.js"
 import { isFrequency } from "@ggbot2/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
-import { useBacktesting } from "../hooks/useBacktesting.js"
 import { BacktestingActions } from "./BacktestingActions.js"
 import {
 	BacktestingProgress,

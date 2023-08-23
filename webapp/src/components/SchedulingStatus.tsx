@@ -1,9 +1,8 @@
+import { classNames } from "_/classNames"
 import { Tag, TagProps, Tags } from "@ggbot2/design"
 import { SchedulingStatus as Status } from "@ggbot2/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
-
-import { classNames } from "../styles/classNames.js"
 
 type SchedulingStatusColor = Extract<
 	TagProps["color"],

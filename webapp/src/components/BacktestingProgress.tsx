@@ -1,19 +1,11 @@
-import {
-	Box,
-	dayFormat,
-	Flex,
-	Progress,
-	ProgressProps,
-	timeFormat,
-	Title
-} from "@ggbot2/design"
-import { FC } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
-
+import { Box, Flex, Progress, ProgressProps, Title } from "_/components/library"
 import type {
 	BacktestingOutput,
 	BacktestingState
-} from "../hooks/useBacktesting"
+} from "_/hooks/useBacktesting"
+import { dayFormat, timeFormat } from "_/i18n/formats.js"
+import { FC } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 export type BacktestingProgressProps = Pick<
 	BacktestingState,

@@ -1,4 +1,8 @@
-import { InputField, InputFieldProps, InputOnChange } from "@ggbot2/design"
+import {
+	InputField,
+	InputFieldProps,
+	InputOnChange
+} from "_/components/library"
 import { isName, normalizeName } from "@ggbot2/models"
 import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { useIntl } from "react-intl"

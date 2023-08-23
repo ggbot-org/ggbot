@@ -1,4 +1,4 @@
-import { Button, ButtonOnClick } from "@ggbot2/design"
+import { Button, ButtonOnClick } from "_/components/library"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

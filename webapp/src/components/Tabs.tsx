@@ -1,3 +1,5 @@
+import { classNames } from "_/classNames"
+import { sessionWebStorage } from "_/storages/session.js"
 import {
 	TabContent,
 	TabContentProps,
@@ -14,9 +16,6 @@ import {
 	useMemo
 } from "react"
 import { useIntl } from "react-intl"
-
-import { sessionWebStorage } from "../storages/session.js"
-import { classNames } from "../styles/classNames.js"
 
 const tabIds = [
 	"accounts",

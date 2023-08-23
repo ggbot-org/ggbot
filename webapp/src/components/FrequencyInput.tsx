@@ -5,7 +5,7 @@ import {
 	InputOnChange,
 	SelectField,
 	SelectOnChange
-} from "@ggbot2/design"
+} from "_/components/library"
 import {
 	Frequency,
 	FrequencyInterval,

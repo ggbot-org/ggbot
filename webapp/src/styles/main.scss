@@ -17,8 +17,8 @@
 @import "./bulma/overrides/checkbox";
 @import "./bulma/overrides/tabs";
 
-// 4. Design components.
-@import "@ggbot2/design/styles/components/all";
-
-// 5. App components.
+@import "./components/Calendar";
 @import "./components/FlowViewContainer";
+@import "./components/Modal";
+@import "./components/Page";
+@import "./components/ToastContainer";

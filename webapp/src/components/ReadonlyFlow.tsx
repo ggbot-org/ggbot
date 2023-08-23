@@ -1,4 +1,4 @@
-import { Buttons } from "@ggbot2/design"
+import { Buttons } from "_/components/library"
 import { FC, useContext } from "react"
 
 import { StrategyFlowContext } from "../contexts/StrategyFlow.js"

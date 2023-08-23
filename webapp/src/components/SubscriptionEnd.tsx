@@ -1,4 +1,5 @@
-import { dayFormat, InputField, InputFieldProps } from "@ggbot2/design"
+import { InputField, InputFieldProps } from "_/components/library"
+import { dayFormat } from "_/i18n/formats.js"
 import { Time } from "minimal-time-helpers"
 import { FC } from "react"
 import { useIntl } from "react-intl"
