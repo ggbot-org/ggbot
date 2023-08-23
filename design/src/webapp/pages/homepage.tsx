@@ -9,7 +9,6 @@ import {
 	ToastProvider
 } from "@ggbot2/design"
 import { I18nProvider } from "@ggbot2/i18n"
-import { mount } from "@ggbot2/react"
 import { FC, PropsWithChildren } from "react"
 
 import { ButtonColors, LoadingButtons } from "../examples/Buttons.js"
@@ -26,7 +25,7 @@ const Title: FC<PropsWithChildren> = ({ children }) => (
 	<_Title size={1}>{children}</_Title>
 )
 
-const Page: FC = () => (
+export const Page: FC = () => (
 	<I18nProvider>
 		<ToastProvider>
 			<Navbar noMenu />
@@ -105,5 +104,3 @@ const Page: FC = () => (
 		</ToastProvider>
 	</I18nProvider>
 )
-
-mount(Page)

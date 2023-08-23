@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@workspace/api": "file:api",
+    "@workspace/env": "file:env",
     "@workspace/logging": "file:logging",
     "@ggbot2/api-gateway": "file:api-gateway",
     "@workspace/authentication": "file:authentication",

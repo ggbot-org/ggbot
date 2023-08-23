@@ -28,6 +28,7 @@ import {
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
 } from "@ggbot2/database"
+import { isDev } from "@ggbot2/env"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -51,7 +52,7 @@ import {
 } from "@workspace/authentication"
 import { logging } from "@workspace/logging"
 
-const info = logging("user-api").info
+const info = logging("user-api", isDev).info
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

@@ -7,6 +7,7 @@
 			"_/contexts/*": ["./src/contexts/*"],
 			"_/hooks/*": ["./src/hooks/*"],
 			"_/i18n/*": ["./src/i18n/*"],
+			"_/react/mount": ["./src/react/mount.tsx"],
 			"_/storages/*": ["./src/storages/*"]
 		}
 	},

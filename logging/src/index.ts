@@ -1,7 +1,5 @@
-import { isDev } from "@ggbot2/env"
-
-export const logging = (prefix: string) => ({
+export const logging = (prefix: string, enabled: unknown) => ({
 	info: (...args: unknown[]) => {
-		if (isDev) console.info(prefix, ...args)
+		if (enabled) console.info(prefix, ...args)
 	}
 })

@@ -36,6 +36,12 @@ module.exports = {
 				}
 			}
 		],
+		"import/no-internal-modules": [
+			"error",
+			{
+				allow: ["react-dom/client"]
+			}
+		],
 		"jsx-a11y/aria-props": "error",
 		"jsx-a11y/aria-proptypes": "error",
 		"jsx-a11y/aria-unsupported-elements": "error",

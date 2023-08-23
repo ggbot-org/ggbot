@@ -8,7 +8,7 @@ import { cachedBoolean } from "./cachedBoolean.js"
 import { itemKey } from "./itemKeys.js"
 import type { WebStorageProvider } from "./provider.js"
 
-const info = logging("session-storage").info
+const info = logging("session-storage", IS_DEV).info
 
 class SessionWebStorage implements WebStorageProvider {
 	getItem(key: string) {

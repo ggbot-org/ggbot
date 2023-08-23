@@ -1,4 +1,4 @@
-import { mount } from "@ggbot2/react"
+import { mount } from "_/react/mount"
 import { FC } from "react"
 
 import { HomePage } from "../../pages/HomePage.js"

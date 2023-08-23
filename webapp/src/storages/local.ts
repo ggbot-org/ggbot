@@ -6,7 +6,7 @@ import { logging } from "@workspace/logging"
 import { itemKey } from "./itemKeys.js"
 import type { WebStorageProvider } from "./provider.js"
 
-const info = logging("local-storage").info
+const info = logging("local-storage", IS_DEV).info
 
 class LocalWebStorage implements WebStorageProvider {
 	getItem(key: string) {
