@@ -2,12 +2,10 @@ import { readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 
 import {
-	defaultLocale,
 	FormatjsIntlMessageIdsContent,
-	FormatjsIntlMessageIdsFilename,
-	localeJsonPathname
-} from "@ggbot2/i18n"
-
+	FormatjsIntlMessageIdsFilename
+} from "../i18n/FormatjsIntlMessageIds.js"
+import { defaultLocale, localeJsonPathname } from "../i18n/locales.js"
 import { rootDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(

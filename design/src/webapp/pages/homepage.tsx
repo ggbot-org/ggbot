@@ -8,7 +8,6 @@ import {
 	Title as _Title,
 	ToastProvider
 } from "@ggbot2/design"
-import { I18nProvider } from "@ggbot2/i18n"
 import { FC, PropsWithChildren } from "react"
 
 import { ButtonColors, LoadingButtons } from "../examples/Buttons.js"
@@ -26,81 +25,79 @@ const Title: FC<PropsWithChildren> = ({ children }) => (
 )
 
 export const Page: FC = () => (
-	<I18nProvider>
-		<ToastProvider>
-			<Navbar noMenu />
+	<ToastProvider>
+		<Navbar noMenu />
 
-			<main>
-				<Container>
-					<Section>
-						<Logo size={71} />
-					</Section>
+		<main>
+			<Container>
+				<Section>
+					<Logo size={71} />
+				</Section>
 
-					<Section>
-						<Title>Palette</Title>
+				<Section>
+					<Title>Palette</Title>
 
-						<Palette />
-					</Section>
+					<Palette />
+				</Section>
 
-					<Section>
-						<Title>Inputs</Title>
+				<Section>
+					<Title>Inputs</Title>
 
-						<Columns>
-							<Column size="half">
-								<InputFields />
-							</Column>
-						</Columns>
-					</Section>
+					<Columns>
+						<Column size="half">
+							<InputFields />
+						</Column>
+					</Columns>
+				</Section>
 
-					<Section>
-						<Title>Forms</Title>
+				<Section>
+					<Title>Forms</Title>
 
-						<Columns>
-							<Column size="half">
-								<SimpleForm />
-							</Column>
-						</Columns>
-					</Section>
+					<Columns>
+						<Column size="half">
+							<SimpleForm />
+						</Column>
+					</Columns>
+				</Section>
 
-					<Section>
-						<Title>Buttons</Title>
+				<Section>
+					<Title>Buttons</Title>
 
-						<ButtonColors />
+					<ButtonColors />
 
-						<LoadingButtons />
-					</Section>
+					<LoadingButtons />
+				</Section>
 
-					<Section>
-						<Title>Time interval selectors</Title>
+				<Section>
+					<Title>Time interval selectors</Title>
 
-						<TimeIntervalSelectors />
-					</Section>
+					<TimeIntervalSelectors />
+				</Section>
 
-					<Section>
-						<Title>Icons</Title>
+				<Section>
+					<Title>Icons</Title>
 
-						<Icons />
-					</Section>
+					<Icons />
+				</Section>
 
-					<Section>
-						<Title>Tags</Title>
+				<Section>
+					<Title>Tags</Title>
 
-						<Tags />
-					</Section>
+					<Tags />
+				</Section>
 
-					<Section>
-						<Title>Tables</Title>
+				<Section>
+					<Title>Tables</Title>
 
-						<SimpleTable />
-					</Section>
+					<SimpleTable />
+				</Section>
 
-					<Section>
-						<Title>Toast</Title>
+				<Section>
+					<Title>Toast</Title>
 
-						<ToastExample />
-					</Section>
-				</Container>
-			</main>
-		</ToastProvider>
-	</I18nProvider>
+					<ToastExample />
+				</Section>
+			</Container>
+		</main>
+	</ToastProvider>
 )

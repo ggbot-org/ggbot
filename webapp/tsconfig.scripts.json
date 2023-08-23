@@ -9,6 +9,8 @@
 	"include": [
 		"src/esbuild/*.ts",
 		"src/html/*.ts",
+		"src/i18n/FormatjsIntlMessageIds.ts",
+		"src/i18n/locales.ts",
 		"src/package.ts",
 		"src/routing/admin/pages.ts",
 		"src/routing/design/pages.ts",
