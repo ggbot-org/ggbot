@@ -7,6 +7,8 @@ import {
 } from "./codes.js"
 
 /**
+ * Generic HTTP Error.
+ *
  * @example
  *
  * ```ts

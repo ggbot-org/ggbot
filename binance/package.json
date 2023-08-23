@@ -24,7 +24,7 @@
   "dependencies": {
     "@ggbot2/arithmetic": "file:arithmetic",
     "@ggbot2/cache": "file:cache",
-    "@ggbot2/http": "file:http"
+    "@workspace/http": "file:http"
   },
   "eslintConfig": {
     "extends": [

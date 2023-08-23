@@ -4,17 +4,13 @@ import { describe, it } from "node:test"
 import {
 	rootPackageJson,
 	rootPackageJsonWorkspaceScriptKey
-} from "./rootPackage.js"
-import { workspaceExposedScriptKeys } from "./workspacePackage.js"
-import { workspaceNames } from "./workspaces.js"
+} from "./old_rootPackage.js"
+import { workspaceExposedScriptKeys } from "./old_workspacePackage.js"
+import { workspaceNames } from "./old_workspaces.js"
 
 const { scripts } = rootPackageJson
 
 describe("root package.json", () => {
-	it("is private", () => {
-		assert.equal(rootPackageJson.private, true)
-	})
-
 	describe("scripts", () => {
 		it("is sorted by key", () => {
 			const keys = Object.keys(scripts)

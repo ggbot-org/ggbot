@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "sass": "1.64.2"
   },

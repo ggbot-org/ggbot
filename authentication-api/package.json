@@ -26,7 +26,6 @@
     "@ggbot2/database": "file:database",
     "@ggbot2/env": "file:env",
     "@ggbot2/locators": "file:locators",
-    "@ggbot2/http": "file:http",
     "@ggbot2/models": "file:models"
   },
   "devDependencies": {

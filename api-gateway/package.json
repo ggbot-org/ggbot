@@ -18,7 +18,7 @@
   "dependencies": {
     "@workspace/api": "file:api",
     "@ggbot2/env": "file:env",
-    "@ggbot2/http": "file:http",
+    "@workspace/http": "file:http",
     "@ggbot2/locators": "file:locators"
   },
   "devDependencies": {

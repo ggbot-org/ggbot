@@ -1,7 +1,7 @@
 import { join } from "node:path"
 
-import { packageScriptKey } from "./package.js"
-import { rootPackageDir, rootPackageJson } from "./rootPackage.js"
+import { packageScriptKey } from "./old_packageScriptkey.js"
+import { rootPackageDir, rootPackageJson } from "./old_rootPackage.js"
 
 // TODO convert this to TS.
 

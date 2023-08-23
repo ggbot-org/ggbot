@@ -23,6 +23,7 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * bundleWebApps()
  * ```
  */
+
 export const browserBundle = async ({
 	entryPoints,
 	outfile

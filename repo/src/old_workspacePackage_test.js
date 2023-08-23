@@ -4,12 +4,12 @@ import { describe, it } from "node:test"
 import {
 	rootPackageJson,
 	rootPackageJsonWorkspaceScriptKey
-} from "./rootPackage.js"
+} from "./old_rootPackage.js"
 import {
 	importWorkspacePackageJson,
 	workspaceExposedScriptKeys
-} from "./workspacePackage.js"
-import { workspaceNames } from "./workspaces.js"
+} from "./old_workspacePackage.js"
+import { workspaceNames } from "./old_workspaces.js"
 
 const { scripts: rootPackageJsonScripts } = rootPackageJson
 

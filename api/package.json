@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@ggbot2/database": "file:database",
-    "@ggbot2/http": "file:http",
+    "@workspace/http": "file:http",
     "@ggbot2/models": "file:models",
     "@ggbot2/type-utils": "file:type-utils",
     "dflow": "0.42.0"

@@ -1,7 +1,7 @@
 import { writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
 
-import { createDir } from "@workspace/package"
+import { createDir } from "@workspace/repo"
 
 export const generateHtmlPage = async (
 	pathname: string,

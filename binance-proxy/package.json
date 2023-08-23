@@ -15,7 +15,7 @@
     "@ggbot2/binance": "file:binance",
     "@ggbot2/env": "file:env",
     "@ggbot2/logging": "file:logging",
-    "@ggbot2/http": "file:http"
+    "@workspace/http": "file:http"
   },
   "devDependencies": {
     "@ggbot2/eslint-config": "file:eslint-config",

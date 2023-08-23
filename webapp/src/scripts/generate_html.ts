@@ -2,14 +2,7 @@ import { join } from "node:path"
 
 import { htmlPageContent } from "../html/content.js"
 import { generateHtmlPage } from "../html/generate.js"
-import {
-	adminJs,
-	designJs,
-	landingJs,
-	publicDir,
-	strategyJs,
-	userJs
-} from "../package.js"
+import { publicDir, webappConfig } from "../package.js"
 import { adminHtmlPathnames } from "../routing/admin/pages.js"
 import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
 import {
@@ -21,6 +14,14 @@ import {
 	subscriptionPurchasedHtmlPathname,
 	userHtmlPathnames
 } from "../routing/user/pages.js"
+
+const jsPath = (path: string[]) => `/${path.join("/")}`
+
+const adminJs = jsPath(webappConfig.admin.jsPath)
+const designJs = jsPath(webappConfig.design.jsPath)
+const landingJs = jsPath(webappConfig.landing.jsPath)
+const strategyJs = jsPath(webappConfig.strategy.jsPath)
+const userJs = jsPath(webappConfig.user.jsPath)
 
 const html = (scriptJs: string) =>
 	htmlPageContent({

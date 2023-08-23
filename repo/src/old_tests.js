@@ -6,17 +6,17 @@ import designTsconfig from "../../design/tsconfig.json" assert { type: "json" }
 // TODO use describe and split into files, remove this file
 // eslint-disable-next-line
 import tsconfigBase from "../../tsconfig/default.json" assert { type: "json" }
-import { eslintConfigPackageName } from "./eslint.js"
-import { packageScriptKey } from "./package.js"
-import { rootPackageJson } from "./rootPackage.js"
+import { eslintConfigPackageName } from "./old_eslint.js"
+import { packageScriptKey } from "./old_packageScriptkey.js"
+import { rootPackageJson } from "./old_rootPackage.js"
 import {
 	importWorkspaceTsconfigBuildJson,
 	importWorkspaceTsconfigJson
-} from "./tsconfigs.js"
+} from "./old_tsconfigs.js"
 import {
 	importWorkspacePackageJson,
 	workspacePackageName
-} from "./workspacePackage.js"
+} from "./old_workspacePackage.js"
 
 const { scripts: rootPackageJsonScripts, workspaces } = rootPackageJson
 

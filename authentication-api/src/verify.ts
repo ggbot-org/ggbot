@@ -12,7 +12,6 @@ import {
 	readEmailAccount,
 	readOneTimePassword
 } from "@ggbot2/database"
-import { __200__OK__ } from "@ggbot2/http"
 import {
 	ApiAuthVerifyResponseData,
 	isApiAuthVerifyRequestData

@@ -37,6 +37,7 @@
     "@ggbot2/i18n": "file:i18n",
     "@ggbot2/locators": "file:locators",
     "@workspace/logging": "file:logging",
+    "@workspace/http": "file:http",
     "@ggbot2/models": "file:models",
     "@ggbot2/type-utils": "file:type-utils",
     "country-isocode2": "1.1.0",
@@ -46,11 +47,10 @@
     "trunx": "0.45.3"
   },
   "devDependencies": {
-    "@workspace/package": "file:package",
+    "@workspace/repo": "file:repo",
     "@ggbot2/env": "file:env",
     "@ggbot2/esbuild": "file:esbuild",
     "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/repo": "file:repo",
     "@ggbot2/tsconfig": "file:tsconfig",
     "esbuild": "0.17.17",
     "onchange": "7.1.0",

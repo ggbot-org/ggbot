@@ -1,7 +1,7 @@
 import { isDev } from "@ggbot2/env"
-import { BadGatewayError, UnauthorizedError } from "@ggbot2/http"
 import { Account, EmailAddress, noneAccount } from "@ggbot2/models"
 import { NonEmptyString } from "@ggbot2/type-utils"
+import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,

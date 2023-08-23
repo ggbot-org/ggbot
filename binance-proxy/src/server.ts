@@ -5,7 +5,7 @@ import {
 	BinanceRequestHeaders,
 	isBinanceApiPrivateEndoint
 } from "@ggbot2/binance"
-import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@ggbot2/http"
+import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
 
 import { info } from "./logging.js"
 

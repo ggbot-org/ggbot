@@ -1,4 +1,4 @@
-import { __400__BAD_REQUEST__, ErrorHTTP } from "@ggbot2/http"
+import { __400__BAD_REQUEST__, ErrorHTTP } from "@workspace/http"
 
 import { BinanceApiEndpoint } from "./endpoints.js"
 import { ErrorBinanceBadRequest } from "./errors.js"

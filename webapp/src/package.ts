@@ -1,6 +1,6 @@
 import { join } from "node:path"
 
-import { packageRootDir } from "@workspace/package"
+import { packageRootDir } from "@workspace/repo"
 
 import { adminDirname } from "./routing/admin/pages.js"
 import { designDirname } from "./routing/design/pages.js"
@@ -18,25 +18,33 @@ const routingDirname = "routing"
 
 const srcRoutingDir = join(srcDir, routingDirname)
 
-export const landingJs = "landing.js"
-export const landingEntryPoint = join(
-	srcRoutingDir,
-	"public",
-	"LandingRouter.tsx"
-)
+const srcPublicRoutingDir = join(srcRoutingDir, "public")
 
-export const strategyJs = "strategy.js"
-export const strategyEntryPoint = join(
-	srcRoutingDir,
-	"public",
-	"StrategyRouter.tsx"
-)
-
-export const userJs = `/${userDirname}/app.js`
-export const userEntryPoint = join(srcRoutingDir, "user", "Router.tsx")
-
-export const adminJs = `/${adminDirname}/app.js`
-export const adminEntryPoint = join(srcRoutingDir, adminDirname, "Router.tsx")
-
-export const designJs = `/${designDirname}/app.js`
-export const designEntryPoint = join(srcRoutingDir, "design", "Router.tsx")
+export const webappConfig: Record<
+	string,
+	{
+		entryPoint: string
+		jsPath: string[]
+	}
+> = {
+	landing: {
+		entryPoint: join(srcPublicRoutingDir, "LandingRouter.tsx"),
+		jsPath: ["landing.js"]
+	},
+	strategy: {
+		entryPoint: join(srcPublicRoutingDir, "StrategyRouter.tsx"),
+		jsPath: ["strategy.js"]
+	},
+	user: {
+		entryPoint: join(srcRoutingDir, userDirname, "Router.tsx"),
+		jsPath: [userDirname, "app.js"]
+	},
+	admin: {
+		entryPoint: join(srcRoutingDir, adminDirname, "Router.tsx"),
+		jsPath: [adminDirname, "app.js"]
+	},
+	design: {
+		entryPoint: join(srcRoutingDir, designDirname, "Router.tsx"),
+		jsPath: [designDirname, "app.js"]
+	}
+}
