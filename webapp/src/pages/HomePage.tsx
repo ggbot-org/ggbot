@@ -1,13 +1,5 @@
 import { classNames } from "_/classNames"
-import {
-	Button,
-	Column,
-	Columns,
-	Flex,
-	Hero,
-	Level,
-	LevelItem
-} from "_/components/library"
+import { Button, Flex, Hero, Level, LevelItem } from "_/components/library"
 import { useGotFirstPageView } from "_/hooks/useGotFirstPageView.js"
 import { BrandName, Logo } from "@ggbot2/design"
 import { FC, useCallback } from "react"
@@ -44,25 +36,21 @@ export const HomePage: FC = () => {
 					</Flex>
 				}
 			>
-				<Columns>
-					<Column size={{ desktop: "half" }}>
-						<Level>
-							<LevelItem>
-								<Logo animated={!gotFirstPageView} size={200} />
-							</LevelItem>
+				<Level>
+					<LevelItem>
+						<Logo animated={!gotFirstPageView} size={200} />
+					</LevelItem>
 
-							<LevelItem>
-								<Flex direction="column">
-									<BrandName size="large" />
+					<LevelItem>
+						<Flex direction="column">
+							<BrandName size="large" />
 
-									<i>
-										<FormattedMessage id="HomePage.tagline" />
-									</i>
-								</Flex>
-							</LevelItem>
-						</Level>
-					</Column>
-				</Columns>
+							<i>
+								<FormattedMessage id="HomePage.tagline" />
+							</i>
+						</Flex>
+					</LevelItem>
+				</Level>
 			</Hero>
 		</PageContainer>
 	)

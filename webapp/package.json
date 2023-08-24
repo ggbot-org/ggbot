@@ -53,6 +53,7 @@
     "@ggbot2/eslint-config": "file:eslint-config",
     "@ggbot2/tsconfig": "file:tsconfig",
     "@types/react-dom": "18.2.7",
+    "@formatjs/cli": "6.1.3",
     "@workspace/repo": "file:repo",
     "esbuild": "0.17.17",
     "onchange": "7.1.0",
