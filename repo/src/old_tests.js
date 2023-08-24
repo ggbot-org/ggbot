@@ -144,20 +144,6 @@ async function testWorkspacePackageJson({ workspace }) {
 		// check it in rootPackageJson only if it is defined in packageJson.
 		if (packageJson.scripts[packageScriptKey.test])
 			scripts.push(packageScriptKey.test)
-
-		// Check scripts in rootPackageJson.
-		scripts
-			.map((key) => ({
-				key: `${key}:${workspace}`,
-				expected: `npm run ${key} --workspace ${workspace}`
-			}))
-			.forEach(({ key, expected }) => {
-				assert.equal(
-					rootPackageJsonScripts[key],
-					expected,
-					`script ${key} is defined in root package.json`
-				)
-			})
 	}
 
 	if (packageJsonHasScriptTest) {

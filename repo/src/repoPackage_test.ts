@@ -1,8 +1,11 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { repoPackage } from "./repoPackage.js"
+import { repoDir } from "./repoDir.js"
 import { RepoPackageJson } from "./RepoPackageJson.js"
+
+const repoPackage = new RepoPackageJson(repoDir)
+await repoPackage.read()
 
 describe("repo package.json", () => {
 	it("is private", () => {
@@ -10,15 +13,19 @@ describe("repo package.json", () => {
 	})
 
 	describe("script", () => {
-		for (const workspace of repoPackage.workspaces) {
+		for (const workspaceDir of repoPackage.workspaces) {
 			const buildScript =
-				repoPackage.workspaceBuildScriptCommand(workspace)
+				repoPackage.workspaceBuildScriptCommand(workspaceDir)
 			if (!buildScript) continue
-			describe(RepoPackageJson.workspaceBuildScriptKey(workspace), () => {
+			const buildScriptKey =
+				RepoPackageJson.workspaceBuildScriptKey(workspaceDir)
+			describe(buildScriptKey, () => {
+				const assertionError = `check root package.json ${buildScriptKey} script`
 				it("has expected command", () => {
-					assert(
-						RepoPackageJson.workspaceBuildCommand(workspace),
-						buildScript
+					assert.equal(
+						RepoPackageJson.workspaceBuildCommand(workspaceDir),
+						buildScript,
+						assertionError
 					)
 				})
 			})

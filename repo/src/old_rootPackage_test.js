@@ -47,22 +47,6 @@ describe("root package.json", () => {
 					)
 				}
 			})
-
-			for (const workspaceScriptKey of workspaceExposedScriptKeys) {
-				for (const workspace of workspaceNames) {
-					const scriptKey = rootPackageJsonWorkspaceScriptKey(
-						workspaceScriptKey,
-						workspace
-					)
-					if (!scripts[scriptKey]) return
-					const value = `npm run ${workspaceScriptKey} --workspace ${workspace}`
-					assert.equal(
-						scripts[scriptKey],
-						value,
-						`script ${scriptKey} has no proper value`
-					)
-				}
-			}
 		})
 	})
 

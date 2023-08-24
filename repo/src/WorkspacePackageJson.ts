@@ -10,7 +10,9 @@ export class WorkspacePackageJson implements JsonFile {
 	filename = "package.json"
 
 	packageName: PackageJson["name"] = ""
+	isPrivate: PackageJson["private"]
 	dependencies: PackageJson["dependencies"] = {}
+	devDependencies: PackageJson["devDependencies"] = {}
 
 	constructor(dirPathname: string) {
 		this.dirPathname = dirPathname
@@ -21,8 +23,15 @@ export class WorkspacePackageJson implements JsonFile {
 			join(this.dirPathname, this.filename),
 			"utf-8"
 		)
-		const { name, dependencies } = JSON.parse(text) as PackageJson
+		const {
+			name,
+			private: isPrivate,
+			dependencies,
+			devDependencies
+		} = JSON.parse(text) as PackageJson
 		this.packageName = name
+		this.isPrivate = isPrivate
 		this.dependencies = dependencies
+		this.devDependencies = devDependencies
 	}
 }

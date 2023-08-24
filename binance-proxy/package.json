@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/binance-proxy",
+  "name": "@workspace/binance-proxy",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,6 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/",
-    "pretest": "tsc --build tsconfig.test.json",
     "start": "node dist/server"
   },
   "dependencies": {
