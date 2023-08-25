@@ -2,19 +2,21 @@ import { BinanceOrderType, BinanceSymbolFilter } from "./types.js"
 
 export class ErrorBinanceBadRequest extends Error {
 	static errorName = "ErrorBinanceBadRequest"
+	pathname: string
+
+	constructor(response: Response) {
+		super(ErrorBinanceBadRequest.message(response))
+		const url = new URL(response.url)
+		// Hide search params, which contains signature, and host which may point to BINANCE_PROXY_BASE_URL.
+		this.pathname = url.pathname
+	}
+
 	static message({
 		status,
 		statusText,
 		url
 	}: Pick<Response, "status" | "statusText" | "url">) {
 		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
-	}
-	pathname: string
-	constructor(response: Response) {
-		super(ErrorBinanceBadRequest.message(response))
-		const url = new URL(response.url)
-		// Hide search params, which contains signature, and host which may point to BINANCE_PROXY_BASE_URL.
-		this.pathname = url.pathname
 	}
 	toObject() {
 		return {
@@ -55,13 +57,13 @@ export class ErrorBinanceInvalidArg extends Error {
 
 export class ErrorBinanceSymbolFilter extends Error {
 	static errorName = ErrorBinanceSymbolFilter
-	static message(filterType: ErrorBinanceSymbolFilter["filterType"]) {
-		return `Binance filter ${filterType} violated`
-	}
 	filterType: BinanceSymbolFilter["filterType"]
 	constructor({ filterType }: Pick<ErrorBinanceSymbolFilter, "filterType">) {
 		super(ErrorBinanceSymbolFilter.message(filterType))
 		this.filterType = filterType
+	}
+	static message(filterType: ErrorBinanceSymbolFilter["filterType"]) {
+		return `Binance filter ${filterType} violated`
 	}
 }
 

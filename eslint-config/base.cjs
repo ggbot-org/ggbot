@@ -11,6 +11,7 @@ module.exports = {
 	root: true,
 	rules: {
 		"@typescript-eslint/ban-ts-comment": "warn",
+		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-array-constructor": "off",
 		"@typescript-eslint/no-duplicate-imports": "error",
 		"@typescript-eslint/no-empty-function": "off",

@@ -33,6 +33,35 @@ import { log } from "./log.js"
 const executorIdFile = join(homedir(), ".ggbot2-executor")
 
 export class Executor {
+	accountKeysCache = new CacheMap<AccountKey[]>("ONE_HOUR")
+	accountStrategiesCache = new CacheMap<AccountStrategy[]>("FIVE_MINUTES")
+	subscriptionsCache = new CacheMap<Subscription>("ONE_HOUR")
+
+	// TODO should also write somewhere this info, in case server restarts.
+	strategyWhenExecuted = new Map<string, Time>()
+
+	constructor(
+		readonly capacity: number,
+		readonly index: number
+	) {}
+
+	get cachedAccountKeys(): ManagedCacheProvider<AccountKey[]> {
+		const key = "accountKeys"
+		return {
+			get: (): AccountKey[] | undefined => this.accountKeysCache.get(key),
+			set: (data: AccountKey[]): void =>
+				this.accountKeysCache.set(key, data),
+			delete: (accountId: AccountKey["accountId"]): void => {
+				const items = this.accountKeysCache.get(key)
+				if (!items) return
+				const updatedItems = items.filter(
+					(item) => item.accountId !== accountId
+				)
+				this.accountKeysCache.set(key, updatedItems)
+			}
+		}
+	}
+
 	/**
 	 * Read `executorId` from local disc or create a new one if it does not
 	 * exist.
@@ -63,36 +92,6 @@ export class Executor {
 			if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
 		throw new TypeError()
 	}
-
-	accountKeysCache = new CacheMap<AccountKey[]>("ONE_HOUR")
-	accountStrategiesCache = new CacheMap<AccountStrategy[]>("FIVE_MINUTES")
-	subscriptionsCache = new CacheMap<Subscription>("ONE_HOUR")
-
-	// TODO should also write somewhere this info, in case server restarts.
-	strategyWhenExecuted = new Map<string, Time>()
-
-	constructor(
-		readonly capacity: number,
-		readonly index: number
-	) {}
-
-	get cachedAccountKeys(): ManagedCacheProvider<AccountKey[]> {
-		const key = "accountKeys"
-		return {
-			get: (): AccountKey[] | undefined => this.accountKeysCache.get(key),
-			set: (data: AccountKey[]): void =>
-				this.accountKeysCache.set(key, data),
-			delete: (accountId: AccountKey["accountId"]): void => {
-				const items = this.accountKeysCache.get(key)
-				if (!items) return
-				const updatedItems = items.filter(
-					(item) => item.accountId !== accountId
-				)
-				this.accountKeysCache.set(key, updatedItems)
-			}
-		}
-	}
-
 	async getAccountKeys(): Promise<AccountKey[]> {
 		try {
 			const cached = this.cachedAccountKeys.get()

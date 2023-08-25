@@ -4,15 +4,6 @@ import { BinanceKlineCacheProvider } from "./cacheProviders.js"
 import { BinanceKline, BinanceKlineInterval } from "./types.js"
 
 export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
-	private klineKey(
-		symbol: string,
-		interval: BinanceKlineInterval,
-		/* THe kline open time. */
-		time: number
-	) {
-		return [symbol, interval, time].join(":")
-	}
-
 	private readonly klinesMap = new CacheMap<BinanceKline>("ONE_WEEK")
 
 	getKline(
@@ -32,5 +23,14 @@ export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
 	): void {
 		const key = this.klineKey(symbol, interval, kline[0])
 		this.klinesMap.set(key, kline)
+	}
+
+	private klineKey(
+		symbol: string,
+		interval: BinanceKlineInterval,
+		/* THe kline open time. */
+		time: number
+	) {
+		return [symbol, interval, time].join(":")
 	}
 }

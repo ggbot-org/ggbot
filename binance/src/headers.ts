@@ -6,6 +6,10 @@
 export class BinanceRequestHeaders extends Headers {
 	static apiKeyHeader = "X-MBX-APIKEY"
 
+	set apiKey(value: string) {
+		this.append(BinanceRequestHeaders.apiKeyHeader, value)
+	}
+
 	static isApiKeyHeader(arg: unknown): boolean {
 		if (typeof arg !== "string") return false
 		// Headers may be in lower or upper case.
@@ -13,9 +17,5 @@ export class BinanceRequestHeaders extends Headers {
 			BinanceRequestHeaders.apiKeyHeader.toLowerCase() ===
 			arg.toLowerCase()
 		)
-	}
-
-	set apiKey(value: string) {
-		this.append(BinanceRequestHeaders.apiKeyHeader, value)
 	}
 }

@@ -9,27 +9,6 @@ import type { WebStorageProvider } from "./provider.js"
 const info = logging("local-storage", IS_DEV).info
 
 class LocalWebStorage implements WebStorageProvider {
-	getItem(key: string) {
-		const value = window.localStorage.getItem(key)
-		info("getItem", key, value)
-		return value
-	}
-
-	setItem(key: string, value: string) {
-		info("setItem", key, value)
-		window.localStorage.setItem(key, value)
-	}
-
-	removeItem(key: string) {
-		info("removeItem", key)
-		window.localStorage.removeItem(key)
-	}
-
-	clear() {
-		info("clear")
-		window.localStorage.clear()
-	}
-
 	get jwt(): ManagedCacheProvider<NonEmptyString> {
 		const key = itemKey.jwt()
 		return {
@@ -73,6 +52,27 @@ class LocalWebStorage implements WebStorageProvider {
 				this.removeItem(itemKey.strategy(strategyId))
 			}
 		}
+	}
+
+	getItem(key: string) {
+		const value = window.localStorage.getItem(key)
+		info("getItem", key, value)
+		return value
+	}
+
+	setItem(key: string, value: string) {
+		info("setItem", key, value)
+		window.localStorage.setItem(key, value)
+	}
+
+	removeItem(key: string) {
+		info("removeItem", key)
+		window.localStorage.removeItem(key)
+	}
+
+	clear() {
+		info("clear")
+		window.localStorage.clear()
 	}
 }
 

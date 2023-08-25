@@ -18,13 +18,6 @@ import {
  */
 export class ErrorHTTP extends Error {
 	static errorName = "ErrorHTTP"
-	static message({
-		status,
-		statusText,
-		url
-	}: Pick<Response, "status" | "statusText" | "url">) {
-		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
-	}
 	status: Response["status"]
 	statusText: Response["statusText"]
 	url: Response["url"]
@@ -34,6 +27,13 @@ export class ErrorHTTP extends Error {
 		this.statusText = response.statusText
 		const url = new URL(response.url)
 		this.url = `${url.origin}${url.pathname}`
+	}
+	static message({
+		status,
+		statusText,
+		url
+	}: Pick<Response, "status" | "statusText" | "url">) {
+		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
 	}
 	toObject() {
 		return {

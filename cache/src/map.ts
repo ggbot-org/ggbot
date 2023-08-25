@@ -36,10 +36,11 @@ const timeToLiveDuration: Record<TimeToLive, number> = {
  * ```
  */
 export class CacheMap<Data> implements CacheProvider<Data> {
+	readonly timeToLive: TimeToLive | undefined
+
 	private itemMap = new Map<string, Data>()
 	private timeToLiveMap = new Map<string, number>()
 	private whenUpdatedMap = new Map<string, number>()
-	readonly timeToLive: TimeToLive | undefined
 
 	constructor(timeToLive?: TimeToLive) {
 		this.timeToLive = timeToLive

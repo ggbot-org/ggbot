@@ -9,12 +9,13 @@ const exchangeInfoCacheDuration = "ONE_DAY"
 export class BinanceExchangeInfoCacheMap
 	implements BinanceExchangeInfoCacheProvider
 {
-	// BinanceExchangeInfoCacheProvider
-	// ///////////////////////////////////////////////////////////////////////////
-
 	private readonly exchangeInfoKey = "exchangeInfo"
 
 	private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(
+		exchangeInfoCacheDuration
+	)
+
+	private readonly isValidSymbolMap = new CacheMap<boolean>(
 		exchangeInfoCacheDuration
 	)
 
@@ -25,10 +26,6 @@ export class BinanceExchangeInfoCacheMap
 	setExchangeInfo(value: BinanceExchangeInfo | undefined) {
 		if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value)
 	}
-
-	private readonly isValidSymbolMap = new CacheMap<boolean>(
-		exchangeInfoCacheDuration
-	)
 
 	getIsValidSymbol(symbol: string) {
 		return this.isValidSymbolMap.get(symbol)
