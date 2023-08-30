@@ -10,12 +10,15 @@ export class ErrorInvalidArg extends Error {
 	static message = "Invalid argument"
 	constructor() {
 		super(ErrorInvalidArg.message)
+		this.name = ErrorInvalidArg.errorName
 	}
 }
 ```
 
 Note that a static attribute `errorName` with the name of the error, i.e. the class name,
 is added to be able to serialize the error. Using `ErrorInvalidArg.name` may not work if the code is minified, hence an explicit string must be added.
+
+After calling `super` in the constructor, set the `name` as the static `errorName` otherwise the error instance will have default name "Error".
 
 It is not worth to extend other error classes, (e.g. `TypeError`, `RangeError`)
 as they are used to categorize [errors thrown by JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors) and extending them would pollute what consumers expect to be on that list.
@@ -33,7 +36,7 @@ export class InternalServerError extends Error {
 
 The constructor need to call `super` first, passing it the error message.
 
-Error `message` is defined as a _static attribute_ or a _static method_, it can be used to recognize the error in some contexts, for example when testing.
+Error `message` is defined as a _static method_, it can be used to recognize the error in some contexts, for example when testing.
 
 ```ts
 import { strict as assert } from "node:assert";
@@ -41,9 +44,9 @@ import { describe, it } from "node:test";
 
 class ErrorInvalidDate extends Error {
   static errorName = "ErrorInvalidDate";
-  static message = "Invalid Date";
+  static message () { return "Invalid Date" };
   constructor() {
-    super(ErrorInvalidDate.message);
+    super(ErrorInvalidDate.message());
   }
 }
 
@@ -59,8 +62,8 @@ describe("truncateDate", () => {
         truncateDate(new Date("0000-00-00"));
       },
       {
-        name: "Error",
-        message: ErrorInvalidDate.message
+        name: ErrorInvalidDate.errorName,
+        message: ErrorInvalidDate.message()
       }
     );
   });
@@ -123,16 +126,17 @@ was created in the same JavaScript context that catches it. This could be not
 the case, not only in client-server model but also when using threads (e.g. _Web
 Workers_).
 An error should also be serializable into JSON, in the following example the
-`toObject()` method return something that can be serialized.
+`toValue()` method return something that can be serialized; furthermore a `toJSON()`
+method is defined, it will be internally called by `JSON.stringify`.
 
 ```ts
 export class MyError extends Error {
-	static errorName = "MyError"
-	static message = "Something went wrong"
-
 	readonly bar: boolean
 	readonly quz: number
 	readonly whenCreated: number
+
+	static errorName = "MyError"
+	static message () { return "Something went wrong" }
 
 	static isMyErrorData(arg: unknown): arg is MyErrorData {
 		if (!arg || typeof arg !== "object") return false
@@ -151,7 +155,11 @@ export class MyError extends Error {
 		this.whenCreated = new Date().getTime()
 	}
 
-	toObject() {
+	toJSON() {
+	  return this.toValue()
+	}
+
+	toValue() {
 		return {
 			name: MyError.errorName,
 			data: {

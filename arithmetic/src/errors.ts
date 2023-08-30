@@ -1,16 +1,23 @@
 export class ErrorCannotDivideByZero extends Error {
-	static message = "Cannot divide by zero"
+	static message() {
+		return "Cannot divide by zero"
+	}
+	static errorName = "ErrorCannotDivideByZero"
 	constructor() {
-		super(ErrorCannotDivideByZero.message)
+		super(ErrorCannotDivideByZero.message())
+		this.name = ErrorCannotDivideByZero.errorName
 	}
 }
 
 export class ErrorCannotCoerceToDecimal extends Error {
-	static message = "Cannot convert to Decimal"
+	static message() {
+		return "Cannot convert to Decimal"
+	}
+	static errorName = "ErrorCannotCoerceToDecimal"
 	readonly arg: unknown
 	constructor(arg: unknown) {
-		super(ErrorCannotCoerceToDecimal.message)
-		this.name = ErrorCannotCoerceToDecimal.name
+		super(ErrorCannotCoerceToDecimal.message())
 		this.arg = arg
+		this.name = ErrorCannotCoerceToDecimal.errorName
 	}
 }

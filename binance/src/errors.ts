@@ -9,6 +9,7 @@ export class ErrorBinanceBadRequest extends Error {
 		const url = new URL(response.url)
 		// Hide search params, which contains signature, and host which may point to BINANCE_PROXY_BASE_URL.
 		this.pathname = url.pathname
+		this.name = ErrorBinanceBadRequest.errorName
 	}
 
 	static message({
@@ -18,7 +19,10 @@ export class ErrorBinanceBadRequest extends Error {
 	}: Pick<Response, "status" | "statusText" | "url">) {
 		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
 	}
-	toObject() {
+	toJSON() {
+		return this.toValue()
+	}
+	toValue() {
 		return {
 			name: ErrorBinanceBadRequest.errorName,
 			info: {
@@ -30,37 +34,44 @@ export class ErrorBinanceBadRequest extends Error {
 
 export class ErrorBinanceCannotTradeSymbol extends Error {
 	static errorName = "ErrorBinanceCannotTradeSymbol"
-	static message = "Binance cannot trade this symbol"
+	static message() {
+		return "Binance cannot trade this symbol"
+	}
 	readonly symbol: unknown
 	readonly orderType: BinanceOrderType
 	constructor({
 		symbol,
 		orderType
 	}: Pick<ErrorBinanceCannotTradeSymbol, "symbol" | "orderType">) {
-		super(ErrorBinanceCannotTradeSymbol.message)
+		super(ErrorBinanceCannotTradeSymbol.message())
 		this.symbol = symbol
 		this.orderType = orderType
+		this.name = ErrorBinanceCannotTradeSymbol.errorName
 	}
 }
 
 export class ErrorBinanceInvalidArg extends Error {
 	static errorName = "ErrorBinanceInvalidArg"
-	static message = "Invalid Binance argument"
+	static message() {
+		return "Invalid Binance argument"
+	}
 	arg: unknown
 	type: "klineInterval" | "orderType" | "orderSide" | "symbol"
 	constructor({ arg, type }: Pick<ErrorBinanceInvalidArg, "arg" | "type">) {
-		super(ErrorBinanceInvalidArg.message)
+		super(ErrorBinanceInvalidArg.message())
 		this.arg = arg
 		this.type = type
+		this.name = ErrorBinanceInvalidArg.errorName
 	}
 }
 
 export class ErrorBinanceSymbolFilter extends Error {
-	static errorName = ErrorBinanceSymbolFilter
+	static errorName = "ErrorBinanceSymbolFilter"
 	filterType: BinanceSymbolFilter["filterType"]
 	constructor({ filterType }: Pick<ErrorBinanceSymbolFilter, "filterType">) {
 		super(ErrorBinanceSymbolFilter.message(filterType))
 		this.filterType = filterType
+		this.name = ErrorBinanceSymbolFilter.errorName
 	}
 	static message(filterType: ErrorBinanceSymbolFilter["filterType"]) {
 		return `Binance filter ${filterType} violated`
@@ -69,16 +80,22 @@ export class ErrorBinanceSymbolFilter extends Error {
 
 export class ErrorBinanceInvalidOrderOptions extends Error {
 	static errorName = "ErrorBinanceInvalidOrderOptions"
-	static message = "Invalid Binance order options"
+	static message() {
+		return "Invalid Binance order options"
+	}
 	constructor() {
-		super(ErrorBinanceInvalidOrderOptions.message)
+		super(ErrorBinanceInvalidOrderOptions.message())
+		this.name = ErrorBinanceInvalidOrderOptions.errorName
 	}
 }
 
 export class ErrorBinanceInvalidKlineOptionalParameters extends Error {
 	static errorName = "ErrorBinanceInvalidKlineOptionalParameters"
-	static message = "Invalid kline optional parameters"
+	static message() {
+		return "Invalid kline optional parameters"
+	}
 	constructor() {
-		super(ErrorBinanceInvalidKlineOptionalParameters.message)
+		super(ErrorBinanceInvalidKlineOptionalParameters.message())
+		this.name = ErrorBinanceInvalidKlineOptionalParameters.errorName
 	}
 }
