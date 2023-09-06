@@ -1,26 +1,25 @@
+import { ApiKey } from "_/components/ApiKey.js"
 import {
 	Button,
 	Control,
 	Field,
 	Form,
 	FormOnSubmit,
-	Title,
-	useToast
-} from "@ggbot2/design"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
-
-import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { ApiKey } from "../ApiKey.js"
+	Title
+} from "_/components/library"
 import {
 	BinanceApiKeyPermissions,
 	BinanceApiKeyPermissionsProps
-} from "./BinanceApiKeyPermissions.js"
+} from "_/components/user/BinanceApiKeyPermissions.js"
+import { ToastContext } from "_/contexts/Toast.js"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 export const BinanceApi: FC = () => {
 	const { formatMessage } = useIntl()
-	const { toast } = useToast()
+	const { toast } = useContext(ToastContext)
 	const { apiKey } = useContext(BinanceApiConfigContext)
 
 	const [permissions, setPermissions] =

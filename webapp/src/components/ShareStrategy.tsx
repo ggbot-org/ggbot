@@ -1,13 +1,13 @@
-import { Button, useToast } from "@ggbot2/design"
+import { Button } from "_/components/library"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { ToastContext } from "_/contexts/Toast.js"
+import { href } from "_/routing/public/hrefs.js"
 import { FC, useCallback, useContext, useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-import { StrategyContext } from "../contexts/Strategy.js"
-import { href } from "../routing/public/hrefs.js"
-
 export const ShareStrategy: FC = () => {
 	const { formatMessage } = useIntl()
-	const { toast } = useToast()
+	const { toast } = useContext(ToastContext)
 	const { strategy } = useContext(StrategyContext)
 
 	const shareData = useMemo<

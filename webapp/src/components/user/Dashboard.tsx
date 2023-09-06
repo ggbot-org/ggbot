@@ -1,8 +1,7 @@
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
+import { CreateStrategy } from "_/components/user/CreateStrategy.js"
+import { Strategies } from "_/components/user/Strategies.js"
 import { FC, useState } from "react"
-
-import { getStoredTabId, TabId, Tabs } from "../Tabs.js"
-import { CreateStrategy } from "./CreateStrategy.js"
-import { Strategies } from "./Strategies.js"
 
 const pageName = "Dashboard"
 

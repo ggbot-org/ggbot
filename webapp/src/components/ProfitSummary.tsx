@@ -1,7 +1,4 @@
 import { classNames } from "_/classNames"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
-import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic"
-import { isBinanceOrderRespFULL } from "@ggbot2/binance"
 import {
 	Box,
 	DateTime,
@@ -11,13 +8,15 @@ import {
 	LevelItem,
 	SizeModifierProp,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
+import { add, decimalToNumber, mul, sub } from "@ggbot2/arithmetic"
+import { isBinanceOrderRespFULL } from "@ggbot2/binance"
 import { isOrders, Order } from "@ggbot2/models"
 import { DayInterval } from "minimal-time-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategyContext } from "../contexts/Strategy.js"
 
 type Props = {
 	dayInterval: DayInterval | undefined

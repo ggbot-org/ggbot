@@ -1,3 +1,13 @@
+import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter.js"
+import { AuthExit, AuthExitProps } from "_/components/authentication/Exit.js"
+import {
+	AuthVerify,
+	AuthVerifyProps
+} from "_/components/authentication/Verify.js"
+import { Navigation } from "_/components/Navigation.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
+import { localWebStorage } from "_/storages/local.js"
+import { sessionWebStorage } from "_/storages/session.js"
 import { isDev } from "@ggbot2/env"
 import { Account, EmailAddress, noneAccount } from "@ggbot2/models"
 import { NonEmptyString } from "@ggbot2/type-utils"
@@ -13,20 +23,6 @@ import {
 	useMemo,
 	useReducer
 } from "react"
-
-import {
-	AuthEnter,
-	AuthEnterProps
-} from "../components/authentication/Enter.js"
-import { AuthExit, AuthExitProps } from "../components/authentication/Exit.js"
-import {
-	AuthVerify,
-	AuthVerifyProps
-} from "../components/authentication/Verify.js"
-import { Navigation } from "../components/Navigation.js"
-import { useUserApi } from "../hooks/useUserApi.js"
-import { localWebStorage } from "../storages/local.js"
-import { sessionWebStorage } from "../storages/session.js"
 
 type State = {
 	email: EmailAddress | undefined

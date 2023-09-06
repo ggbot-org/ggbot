@@ -1,10 +1,9 @@
-import { AccountKey } from "@ggbot2/models"
-
-import { accountKeyToURLSearchParams } from "./accountKeyParams.js"
+import { accountKeyToURLSearchParams } from "_/routing/admin/accountKeyParams.js"
 import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
-} from "./pages.js"
+} from "_/routing/admin/pages.js"
+import { AccountKey } from "@ggbot2/models"
 
 export const href = {
 	dashboardPage: () => `/${adminDashboardHtmlPathname}`,

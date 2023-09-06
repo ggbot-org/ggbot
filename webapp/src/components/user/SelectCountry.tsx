@@ -1,4 +1,4 @@
-import { SelectField, SelectFieldProps } from "@ggbot2/design"
+import { SelectField, SelectFieldProps } from "_/components/library"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

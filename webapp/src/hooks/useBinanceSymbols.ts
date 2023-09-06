@@ -1,8 +1,7 @@
+import { binance } from "_/binance/exchange.js"
+import { StrategyContext } from "_/contexts/Strategy.js"
 import { DflowBinanceSymbolInfo, isDflowBinanceSymbolInfo } from "@ggbot2/dflow"
 import { useContext, useEffect, useRef } from "react"
-
-import { binance } from "../binance/exchange.js"
-import { StrategyContext } from "../contexts/Strategy.js"
 
 export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
 	const {

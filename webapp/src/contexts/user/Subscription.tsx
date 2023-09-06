@@ -1,3 +1,4 @@
+import { useUserApi } from "_/hooks/useUserApi.js"
 import {
 	isSubscription,
 	shouldPurchaseSubscription,
@@ -7,8 +8,6 @@ import {
 } from "@ggbot2/models"
 import { dayToTime, Time } from "minimal-time-helpers"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
-
-import { useUserApi } from "../../hooks/useUserApi.js"
 
 type ContextValue = Partial<{
 	canPurchaseSubscription: boolean

@@ -1,8 +1,7 @@
+import { AccountDetails } from "_/components/admin/AccountDetails.js"
+import { PageContainer } from "_/components/admin/PageContainer.js"
+import { AccountProvider } from "_/contexts/admin/Account.js"
 import { FC } from "react"
-
-import { AccountDetails } from "../../components/admin/AccountDetails.js"
-import { AccountProvider } from "../../contexts/admin/Account.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const AccountDetailsPage: FC = () => (
 	<PageContainer>

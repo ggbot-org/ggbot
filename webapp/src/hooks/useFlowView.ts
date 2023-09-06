@@ -1,3 +1,7 @@
+import { BinanceClient } from "_/binance/client.js"
+import { FlowViewContainerElement } from "_/components/FlowViewContainer.js"
+import { initializeFlowView } from "_/flow/initializeFlowView.js"
+import { useNodesCatalog } from "_/hooks/useNodesCatalog.js"
 import { BinanceKlinesCacheMap } from "@ggbot2/binance"
 import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow"
 import { StrategyKind } from "@ggbot2/models"
@@ -16,11 +20,6 @@ import {
 } from "flow-view"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
-
-import { BinanceClient } from "../binance/client.js"
-import { FlowViewContainerElement } from "../components/FlowViewContainer.js"
-import { initializeFlowView } from "../flow/initializeFlowView.js"
-import { useNodesCatalog } from "../hooks/useNodesCatalog.js"
 
 export type UseFlowViewOutput = {
 	whenUpdatedFlowView: Time

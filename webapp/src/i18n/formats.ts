@@ -1,4 +1,4 @@
-type DayFormat = Required<
+export type DayFormat = Required<
 	Pick<Intl.DateTimeFormatOptions, "year" | "month" | "day">
 >
 
@@ -8,7 +8,7 @@ export const dayFormat: DayFormat = {
 	day: "2-digit"
 }
 
-type TimeFormat = DayFormat &
+export type TimeFormat = DayFormat &
 	Required<Pick<Intl.DateTimeFormatOptions, "minute" | "hour" | "second">>
 
 export const timeFormat: TimeFormat = {

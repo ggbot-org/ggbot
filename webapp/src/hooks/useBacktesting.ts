@@ -1,3 +1,7 @@
+import { BinanceClient } from "_/binance/client.js"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
+import { useNodesCatalog } from "_/hooks/useNodesCatalog.js"
 import {
 	binanceKlineMaxLimit,
 	BinanceKlinesCacheMap,
@@ -29,11 +33,6 @@ import {
 	yesterday
 } from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useReducer } from "react"
-
-import { BinanceClient } from "../binance/client.js"
-import { StrategyContext } from "../contexts/Strategy.js"
-import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js"
-import { useNodesCatalog } from "../hooks/useNodesCatalog.js"
 
 type State = Pick<DflowCommonContext, "memory"> & {
 	balanceHistory: BalanceChangeEvent[]

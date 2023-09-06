@@ -1,14 +1,8 @@
+import { Container, Content, Section, Title } from "_/components/library"
+import { PageContainer } from "_/components/PageContainer.js"
+import { href } from "_/routing/public/hrefs.js"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
-
-import {
-	Container,
-	Content,
-	Section,
-	Title
-} from "../components/library/index.js"
-import { href } from "../routing/public/hrefs.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const TermsPage: FC = () => (
 	<PageContainer>

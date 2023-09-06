@@ -1,9 +1,8 @@
-import { Column, Columns, Content, Message } from "@ggbot2/design"
+import { AccountId } from "_/components/AccountId.js"
+import { Column, Columns, Content, Message } from "_/components/library"
 import { AccountKey } from "@ggbot2/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
-
-import { AccountId } from "../AccountId.js"
 
 type Props = AccountKey
 

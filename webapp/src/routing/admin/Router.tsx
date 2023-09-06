@@ -1,12 +1,11 @@
+import { AccountDetailsPage } from "_/pages/admin/AccountDetails.js"
+import { DashboardPage } from "_/pages/admin/Dashboard.js"
 import { mount } from "_/react/mount"
-import { FC } from "react"
-
-import { AccountDetailsPage } from "../../pages/admin/AccountDetails.js"
-import { DashboardPage } from "../../pages/admin/Dashboard.js"
 import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
-} from "../../routing/admin/pages.js"
+} from "_/routing/admin/pages.js"
+import { FC } from "react"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname

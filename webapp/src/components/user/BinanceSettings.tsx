@@ -1,10 +1,9 @@
-import { Column, Columns } from "@ggbot2/design"
+import { Column, Columns } from "_/components/library"
+import { BinanceApi } from "_/components/user/BinanceApi.js"
+import { CreateBinanceApi } from "_/components/user/CreateBinanceApi.js"
+import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi.js"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
 import { FC, useContext } from "react"
-
-import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
-import { BinanceApi } from "./BinanceApi.js"
-import { CreateBinanceApi } from "./CreateBinanceApi.js"
-import { DeleteBinanceApi } from "./DeleteBinanceApi.js"
 
 export const BinanceSettings: FC = () => {
 	const { hasApiKey } = useContext(BinanceApiConfigContext)

@@ -1,12 +1,12 @@
 import { classNames } from "_/classNames"
-import { sessionWebStorage } from "_/storages/session.js"
 import {
 	TabContent,
 	TabContentProps,
 	TabSelector,
 	TabSelectorProps,
 	TabSelectors
-} from "@ggbot2/design"
+} from "_/components/library"
+import { sessionWebStorage } from "_/storages/session.js"
 import {
 	Dispatch,
 	FC,

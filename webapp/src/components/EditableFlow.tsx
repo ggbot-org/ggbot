@@ -1,12 +1,11 @@
+import { FlowMenu } from "_/components/FlowMenu.js"
+import { FlowViewContainer } from "_/components/FlowViewContainer.js"
+import { Button, ButtonOnClick } from "_/components/library"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { Button, ButtonOnClick } from "@ggbot2/design"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategyContext } from "../contexts/Strategy.js"
-import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
-import { FlowMenu } from "./FlowMenu.js"
-import { FlowViewContainer } from "./FlowViewContainer.js"
 
 export const EditableFlow: FC = () => {
 	const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =

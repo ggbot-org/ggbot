@@ -1,8 +1,7 @@
+import { Dashboard } from "_/components/user/Dashboard.js"
+import { PageContainer } from "_/components/user/PageContainer.js"
+import { StrategiesProvider } from "_/contexts/user/Strategies.js"
 import { FC } from "react"
-
-import { Dashboard } from "../../components/user/Dashboard.js"
-import { StrategiesProvider } from "../../contexts/user/Strategies.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const DashboardPage: FC = () => (
 	<PageContainer>

@@ -1,3 +1,4 @@
+import { classNames } from "_/classNames"
 import {
 	Button,
 	ButtonOnClick,
@@ -9,7 +10,17 @@ import {
 	Level,
 	LevelItem,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import {
+	SchedulingItem,
+	SchedulingItemProps
+} from "_/components/SchedulingItem.js"
+import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges.js"
+import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota.js"
+import { StrategiesContext } from "_/contexts/user/Strategies.js"
+import { StrategyContext } from "_/contexts/user/Strategy.js"
+import { SubscriptionContext } from "_/contexts/user/Subscription.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import {
 	isStrategyScheduling,
 	newStrategyScheduling,
@@ -24,15 +35,6 @@ import {
 	useState
 } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategiesContext } from "../../contexts/user/Strategies.js"
-import { StrategyContext } from "../../contexts/user/Strategy.js"
-import { SubscriptionContext } from "../../contexts/user/Subscription.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { classNames } from "../../styles/classNames.js"
-import { SchedulingItem, SchedulingItemProps } from "../SchedulingItem.js"
-import { SchedulingsStatusBadges } from "../SchedulingsStatusBadges.js"
-import { SchedulingsErrorExceededQuota } from "./SchedulingsErrorExceededQuota.js"
 
 export const Schedulings: FC = () => {
 	const {

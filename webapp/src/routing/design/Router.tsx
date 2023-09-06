@@ -1,5 +1,4 @@
+import { ShowcasePage } from "_/pages/design/Showcase.js"
 import { mount } from "_/react/mount"
-
-import { ShowcasePage } from "../../pages/design/Showcase.js"
 
 mount(ShowcasePage)

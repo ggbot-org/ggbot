@@ -1,13 +1,12 @@
-import { Box, Buttons, Title } from "@ggbot2/design"
+import { GoCopyStrategy } from "_/components/GoCopyStrategy.js"
+import { Box, Buttons, Title } from "_/components/library"
+import { ShareStrategy } from "_/components/ShareStrategy.js"
+import { StrategyRecord } from "_/components/StrategyRecord.js"
+import { DeleteStrategy } from "_/components/user/DeleteStrategy.js"
+import { RenameStrategy } from "_/components/user/RenameStrategy.js"
+import { StrategyContext } from "_/contexts/user/Strategy.js"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategyContext } from "../../contexts/user/Strategy.js"
-import { GoCopyStrategy } from "../GoCopyStrategy.js"
-import { ShareStrategy } from "../ShareStrategy.js"
-import { StrategyRecord } from "../StrategyRecord.js"
-import { DeleteStrategy } from "./DeleteStrategy.js"
-import { RenameStrategy } from "./RenameStrategy.js"
 
 export const StrategyActions: FC = () => {
 	const { strategy } = useContext(StrategyContext)

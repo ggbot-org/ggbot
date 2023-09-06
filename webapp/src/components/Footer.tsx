@@ -1,9 +1,8 @@
 import { classNames } from "_/classNames"
-import { dayFormat } from "@ggbot2/design"
+import { dayFormat } from "_/i18n/formats.js"
+import { href } from "_/routing/public/hrefs.js"
 import { memo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { href } from "../routing/public/hrefs.js"
 
 export const Footer = memo(() => {
 	const { formatDate } = useIntl()

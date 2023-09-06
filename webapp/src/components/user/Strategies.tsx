@@ -1,11 +1,10 @@
-import { Box, Column, Columns, Flex, Message } from "@ggbot2/design"
+import { Box, Column, Columns, Flex, Message } from "_/components/library"
+import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges.js"
+import { StrategiesContext } from "_/contexts/user/Strategies.js"
+import { href } from "_/routing/user/hrefs.js"
 import { AccountStrategy, isAccountStrategies } from "@ggbot2/models"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategiesContext } from "../../contexts/user/Strategies.js"
-import { href } from "../../routing/user/hrefs.js"
-import { SchedulingsStatusBadges } from "../SchedulingsStatusBadges.js"
 
 type StrategyItem = Pick<
 	AccountStrategy,

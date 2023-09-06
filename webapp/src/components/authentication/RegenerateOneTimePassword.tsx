@@ -1,4 +1,10 @@
-import { Button, ButtonProps, Control, Field, Message } from "@ggbot2/design"
+import {
+	Button,
+	ButtonProps,
+	Control,
+	Field,
+	Message
+} from "_/components/library"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 

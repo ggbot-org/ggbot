@@ -1,3 +1,5 @@
+import { Email } from "_/components/Email.js"
+import { GenericError } from "_/components/GenericError.js"
 import {
 	Button,
 	Control,
@@ -7,7 +9,9 @@ import {
 	formValues,
 	Modal,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { TimeoutError } from "_/components/TimeoutError.js"
+import { url } from "_/routing/authentication/URLs.js"
 import { EmailAddress, isEmailAddress } from "@ggbot2/models"
 import { isMaybeObject } from "@ggbot2/type-utils"
 import {
@@ -16,11 +20,6 @@ import {
 } from "@workspace/api"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { Email } from "../../components/Email.js"
-import { GenericError } from "../../components/GenericError.js"
-import { TimeoutError } from "../../components/TimeoutError.js"
-import { url } from "../../routing/authentication/URLs.js"
 
 export type AuthEnterProps = {
 	setEmail: (email: EmailAddress) => void

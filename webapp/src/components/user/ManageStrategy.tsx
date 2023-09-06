@@ -1,9 +1,8 @@
-import { Column, Columns } from "@ggbot2/design"
+import { Column, Columns } from "_/components/library"
+import { Schedulings } from "_/components/user/Schedulings.js"
+import { StrategyActions } from "_/components/user/StrategyActions.js"
+import { StrategyProfits } from "_/components/user/StrategyProfits.js"
 import { FC } from "react"
-
-import { Schedulings } from "./Schedulings.js"
-import { StrategyActions } from "./StrategyActions.js"
-import { StrategyProfits } from "./StrategyProfits.js"
 
 export const ManageStrategy: FC = () => (
 	<Columns isMultiline isVcentered>

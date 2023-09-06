@@ -1,3 +1,5 @@
+import { AccountId } from "_/components/AccountId.js"
+import { Email } from "_/components/Email.js"
 import {
 	Button,
 	Column,
@@ -9,13 +11,10 @@ import {
 	Message,
 	Modal,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { AuthenticationContext } from "_/contexts/Authentication.js"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { AccountId } from "../../components/AccountId.js"
-import { Email } from "../../components/Email.js"
-import { AuthenticationContext } from "../../contexts/Authentication.js"
 
 export type AuthExitProps = {
 	isActive: boolean

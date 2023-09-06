@@ -1,3 +1,4 @@
+import { classNames } from "_/classNames"
 import {
 	Navbar,
 	NavbarDropdown,
@@ -6,14 +7,12 @@ import {
 	NavbarItemAnchor,
 	NavbarLink,
 	NavbarStart
-} from "@ggbot2/design"
+} from "_/components/library"
+import { AuthenticationContext } from "_/contexts/Authentication.js"
+import { href } from "_/routing/user/hrefs.js"
+import { SettingsPageId } from "_/routing/user/types.js"
 import { memo, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { AuthenticationContext } from "../../contexts/Authentication.js"
-import { href } from "../../routing/user/hrefs.js"
-import { SettingsPageId } from "../../routing/user/types.js"
-import { classNames } from "../../styles/classNames.js"
 
 export const Navigation = memo(() => {
 	const { account, showAuthExit } = useContext(AuthenticationContext)

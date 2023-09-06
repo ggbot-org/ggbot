@@ -1,10 +1,9 @@
-import { Column, Columns, Content, Message } from "@ggbot2/design"
+import { Column, Columns, Content, Message } from "_/components/library"
+import { StrategyId } from "_/components/StrategyId.js"
+import { StrategyKind } from "_/components/StrategyKind.js"
 import { StrategyKey } from "@ggbot2/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
-
-import { StrategyId } from "./StrategyId.js"
-import { StrategyKind } from "./StrategyKind.js"
 
 type Props = StrategyKey
 

@@ -1,9 +1,8 @@
 import { Button } from "_/components/library"
+import { href } from "_/routing/user/hrefs.js"
+import { SettingsPageId } from "_/routing/user/types.js"
 import { FC, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { href } from "../routing/user/hrefs.js"
-import { SettingsPageId } from "../routing/user/types.js"
 
 type Props = {
 	settingsPage: SettingsPageId

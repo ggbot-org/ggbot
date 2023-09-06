@@ -4,12 +4,6 @@ import { StrategyKey } from "./strategy.js"
 
 export class ErrorAccountItemNotFound extends Error {
 	static errorName = "ErrorAccountItemNotFound"
-	static message({
-		type,
-		accountId
-	}: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
-		return `${type} not found, accountId=${accountId}`
-	}
 	readonly type: "Account" | "BinanceApiConfig" | "SubscriptionPurchase"
 	readonly accountId: unknown
 	constructor({
@@ -20,7 +14,13 @@ export class ErrorAccountItemNotFound extends Error {
 		this.type = type
 		this.accountId = accountId
 	}
-	toObject() {
+	static message({
+		type,
+		accountId
+	}: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
+		return `${type} not found, accountId=${accountId}`
+	}
+	toValue() {
 		return {
 			name: ErrorAccountItemNotFound.errorName,
 			info: {
@@ -33,15 +33,15 @@ export class ErrorAccountItemNotFound extends Error {
 
 export class ErrorExceededQuota extends Error {
 	static errorName = "ErrorExceededQuota"
-	static message(type: ErrorExceededQuota["type"]) {
-		return `${type} quota exceeded`
-	}
 	readonly type: QuotaType
 	constructor({ type }: Pick<ErrorExceededQuota, "type">) {
 		super(ErrorExceededQuota.message(type))
 		this.type = type
 	}
-	toObject() {
+	static message(type: ErrorExceededQuota["type"]) {
+		return `${type} quota exceeded`
+	}
+	toValue() {
 		return {
 			name: ErrorExceededQuota.errorName,
 			info: {
@@ -53,9 +53,6 @@ export class ErrorExceededQuota extends Error {
 
 export class ErrorInvalidArg extends Error {
 	static errorName = "ErrorInvalidArg"
-	static message(type: ErrorInvalidArg["type"]) {
-		return `Invalid ${type}`
-	}
 	readonly arg: unknown
 	readonly type: "EmailAddress" | "Name"
 	constructor({ arg, type }: Pick<ErrorInvalidArg, "arg" | "type">) {
@@ -63,16 +60,13 @@ export class ErrorInvalidArg extends Error {
 		this.arg = arg
 		this.type = type
 	}
+	static message(type: ErrorInvalidArg["type"]) {
+		return `Invalid ${type}`
+	}
 }
 
 export class ErrorStrategyItemNotFound extends Error {
 	static errorName = "ErrorStrategyItemNotFound"
-	static message({
-		type,
-		strategyId
-	}: Pick<ErrorStrategyItemNotFound, "type" | "strategyId">) {
-		return `${type} not found, strategyId=${strategyId}`
-	}
 	readonly type: "Strategy" | "StrategyFlow"
 	readonly strategyKind: unknown
 	readonly strategyId: unknown
@@ -89,16 +83,16 @@ export class ErrorStrategyItemNotFound extends Error {
 		this.strategyKind = strategyKind
 		this.strategyId = strategyId
 	}
+	static message({
+		type,
+		strategyId
+	}: Pick<ErrorStrategyItemNotFound, "type" | "strategyId">) {
+		return `${type} not found, strategyId=${strategyId}`
+	}
 }
 
 export class ErrorPermissionOnStrategyItem extends Error {
 	static errorName = "ErrorPermissionOnStrategyItem"
-	static message({
-		action,
-		type
-	}: Pick<ErrorPermissionOnStrategyItem, "action" | "type">) {
-		return `Cannot ${action} ${type}`
-	}
 	readonly accountId: AccountKey["accountId"]
 	readonly strategyKind: StrategyKey["strategyKind"]
 	readonly strategyId: StrategyKey["strategyId"]
@@ -121,21 +115,27 @@ export class ErrorPermissionOnStrategyItem extends Error {
 		this.strategyKind = strategyKind
 		this.strategyId = strategyId
 	}
+	static message({
+		action,
+		type
+	}: Pick<ErrorPermissionOnStrategyItem, "action" | "type">) {
+		return `Cannot ${action} ${type}`
+	}
 }
 
 export class ErrorUnimplementedStrategyKind extends Error {
 	static errorName = "ErrorUnimplementedStrategyKind"
-	static message(
-		strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]
-	) {
-		return `Unimplemented strategyKind ${strategyKind}`
-	}
 	readonly strategyKind?: unknown
 	constructor(strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]) {
 		super(ErrorUnimplementedStrategyKind.message(strategyKind))
 		this.strategyKind = strategyKind
 	}
-	toObject() {
+	static message(
+		strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]
+	) {
+		return `Unimplemented strategyKind ${strategyKind}`
+	}
+	toValue() {
 		return {
 			name: ErrorUnimplementedStrategyKind.errorName,
 			info: {

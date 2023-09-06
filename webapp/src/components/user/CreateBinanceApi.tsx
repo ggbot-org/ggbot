@@ -1,3 +1,4 @@
+import { ApiKey } from "_/components/ApiKey.js"
 import {
 	Button,
 	Control,
@@ -6,14 +7,12 @@ import {
 	FormOnSubmit,
 	formValues,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { ApiSecret } from "_/components/user/ApiSecret.js"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { FC, useCallback, useContext, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { ApiKey } from "../ApiKey.js"
-import { ApiSecret } from "./ApiSecret.js"
 
 const fieldName = {
 	apiKey: "apiKey",

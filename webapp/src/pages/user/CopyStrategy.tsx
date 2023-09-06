@@ -1,9 +1,8 @@
+import { CopyStrategy } from "_/components/user/CopyStrategy.js"
+import { PageContainer } from "_/components/user/PageContainer.js"
+import { StrategiesProvider } from "_/contexts/user/Strategies.js"
+import { StrategyProvider } from "_/contexts/user/Strategy.js"
 import { FC } from "react"
-
-import { CopyStrategy } from "../../components/user/CopyStrategy.js"
-import { StrategiesProvider } from "../../contexts/user/Strategies.js"
-import { StrategyProvider } from "../../contexts/user/Strategy.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const CopyStrategyPage: FC = () => (
 	<PageContainer>

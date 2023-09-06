@@ -1,12 +1,11 @@
+import { Backtesting } from "_/components/Backtesting.js"
+import { EditableFlow } from "_/components/EditableFlow.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
+import { ManageStrategy } from "_/components/user/ManageStrategy.js"
+import { PleaseConfigureBinance } from "_/components/user/PleaseConfigureBinance.js"
+import { PleasePurchase } from "_/components/user/PleasePurchase.js"
+import { StrategyOrders } from "_/components/user/StrategyOrders.js"
 import { FC, useState } from "react"
-
-import { Backtesting } from "../Backtesting.js"
-import { EditableFlow } from "../EditableFlow.js"
-import { getStoredTabId, TabId, Tabs } from "../Tabs.js"
-import { ManageStrategy } from "./ManageStrategy.js"
-import { PleaseConfigureBinance } from "./PleaseConfigureBinance.js"
-import { PleasePurchase } from "./PleasePurchase.js"
-import { StrategyOrders } from "./StrategyOrders.js"
 
 const pageName = "Strategy"
 

@@ -1,3 +1,4 @@
+import { Email } from "_/components/Email.js"
 import {
 	Box,
 	Button,
@@ -12,7 +13,18 @@ import {
 	SelectOnChange,
 	SelectProps,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import {
+	SubscriptionEnd,
+	SubscriptionEndProps
+} from "_/components/SubscriptionEnd.js"
+import { SubscriptionNumMonths } from "_/components/SubscriptionNumMonths.js"
+import { SelectCountry } from "_/components/user/SelectCountry.js"
+import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice.js"
+import { AuthenticationContext } from "_/contexts/Authentication.js"
+import { SubscriptionContext } from "_/contexts/user/Subscription.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
+import { url } from "_/routing/user/URLs.js"
 import {
 	AllowedCountryIsoCode2,
 	isAllowedCountryIsoCode2,
@@ -27,16 +39,6 @@ import { countries } from "country-isocode2/en"
 import { getTime, now } from "minimal-time-helpers"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { AuthenticationContext } from "../../contexts/Authentication.js"
-import { SubscriptionContext } from "../../contexts/user/Subscription.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { url } from "../../routing/user/URLs.js"
-import { Email } from "../Email.js"
-import { SubscriptionEnd, SubscriptionEndProps } from "../SubscriptionEnd.js"
-import { SubscriptionNumMonths } from "../SubscriptionNumMonths.js"
-import { SelectCountry } from "./SelectCountry.js"
-import { SubscriptionTotalPrice } from "./SubscriptionTotalPrice.js"
 
 const fieldName = {
 	country: "country"

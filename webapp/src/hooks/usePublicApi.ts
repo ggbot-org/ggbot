@@ -1,8 +1,7 @@
+import { useAction } from "_/hooks/useAction.js"
+import { url } from "_/routing/public/URLs.js"
 import { ReadStrategy, ReadStrategyFlow } from "@ggbot2/models"
 import { PublicApiActionType } from "@workspace/api"
-
-import { useAction } from "../hooks/useAction.js"
-import { url } from "../routing/public/URLs.js"
 
 const apiOptions = { endpoint: url.apiPublicAction }
 

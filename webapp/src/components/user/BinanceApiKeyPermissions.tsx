@@ -1,4 +1,4 @@
-import { Checkmark, CheckmarkProps, Flex } from "@ggbot2/design"
+import { Checkmark, CheckmarkProps, Flex } from "_/components/library"
 import { BinanceApiKeyPermissionCriteria } from "@ggbot2/models"
 import { FC, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"

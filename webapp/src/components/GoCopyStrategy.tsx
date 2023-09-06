@@ -1,9 +1,8 @@
 import { Button, ButtonOnClick } from "_/components/library"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { href } from "_/routing/user/hrefs.js"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategyContext } from "../contexts/Strategy.js"
-import { href } from "../routing/user/hrefs.js"
 
 export const GoCopyStrategy: FC = () => {
 	const { strategy } = useContext(StrategyContext)

@@ -1,7 +1,6 @@
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { AccountStrategies, isAccountStrategies } from "@ggbot2/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
-
-import { useUserApi } from "../../hooks/useUserApi.js"
 
 type ContextValue = {
 	accountStrategies: AccountStrategies | undefined

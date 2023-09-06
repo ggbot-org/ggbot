@@ -1,7 +1,6 @@
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
 import { getDflowBinanceNodesCatalog } from "@ggbot2/dflow"
 import { useMemo } from "react"
-
-import { useBinanceSymbols } from "../hooks/useBinanceSymbols.js"
 
 export const useBinanceNodesCatalog = () => {
 	const symbols = useBinanceSymbols()

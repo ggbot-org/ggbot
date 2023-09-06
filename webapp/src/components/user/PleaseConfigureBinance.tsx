@@ -1,3 +1,4 @@
+import { GoSettings } from "_/components/GoSettings.js"
 import {
 	Buttons,
 	Checkbox,
@@ -5,13 +6,11 @@ import {
 	Content,
 	Message,
 	Modal
-} from "@ggbot2/design"
+} from "_/components/library"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
+import { sessionWebStorage } from "_/storages/session.js"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
-import { sessionWebStorage } from "../../storages/session.js"
-import { GoSettings } from "../GoSettings.js"
 
 export const PleaseConfigureBinance: FC = () => {
 	const { hasApiKey } = useContext(BinanceApiConfigContext)

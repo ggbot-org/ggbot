@@ -1,4 +1,4 @@
-import { Message } from "@ggbot2/design"
+import { Message } from "_/components/library"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 

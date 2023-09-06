@@ -1,3 +1,4 @@
+import { GoSettings } from "_/components/GoSettings.js"
 import {
 	Buttons,
 	Checkbox,
@@ -5,13 +6,11 @@ import {
 	Content,
 	Message,
 	Modal
-} from "@ggbot2/design"
+} from "_/components/library"
+import { SubscriptionContext } from "_/contexts/user/Subscription.js"
+import { sessionWebStorage } from "_/storages/session.js"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { SubscriptionContext } from "../../contexts/user/Subscription.js"
-import { sessionWebStorage } from "../../storages/session.js"
-import { GoSettings } from "../GoSettings.js"
 
 export const PleasePurchase: FC = () => {
 	const { formatMessage } = useIntl()

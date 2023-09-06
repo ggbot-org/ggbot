@@ -1,8 +1,7 @@
 import { Container, Content, Section, Title } from "_/components/library"
+import { PageContainer } from "_/components/PageContainer.js"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { PageContainer } from "./PageContainer.js"
 
 export const PrivacyPage: FC = () => (
 	<PageContainer>

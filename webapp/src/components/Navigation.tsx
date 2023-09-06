@@ -1,4 +1,4 @@
-import { Navbar } from "@ggbot2/design"
+import { Navbar } from "_/components/library"
 import { memo } from "react"
 
 export const Navigation = memo(() => {

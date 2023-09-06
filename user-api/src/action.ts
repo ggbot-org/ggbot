@@ -247,7 +247,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			error instanceof ErrorExceededQuota ||
 			error instanceof ErrorUnimplementedStrategyKind
 		)
-			return BAD_REQUEST(error.toObject())
+			return BAD_REQUEST(error.toValue())
 		// Fallback to print error if not handled.
 		console.error(error)
 	}

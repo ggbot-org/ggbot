@@ -1,3 +1,4 @@
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { BinanceApiKey } from "@ggbot2/models"
 import {
 	createContext,
@@ -7,8 +8,6 @@ import {
 	useEffect,
 	useMemo
 } from "react"
-
-import { useUserApi } from "../../hooks/useUserApi.js"
 
 type ContextValue = Partial<BinanceApiKey> & {
 	hasApiKey: undefined | boolean

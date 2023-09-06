@@ -1,7 +1,6 @@
+import { AccountStrategies } from "_/components/admin/AccountStrategies.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
 import { FC, useState } from "react"
-
-import { getStoredTabId, TabId, Tabs } from "../Tabs.js"
-import { AccountStrategies } from "./AccountStrategies.js"
 
 const pageName = "AdminAccountDetails"
 

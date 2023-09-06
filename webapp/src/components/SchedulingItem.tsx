@@ -1,17 +1,19 @@
 import {
+	FrequencyInput,
+	FrequencyInputProps
+} from "_/components/FrequencyInput.js"
+import {
 	Box,
 	Button,
 	ButtonOnClick,
 	Buttons,
 	Level,
 	LevelItem
-} from "@ggbot2/design"
+} from "_/components/library"
+import { SchedulingStatus } from "_/components/SchedulingStatus.js"
 import { StrategyScheduling } from "@ggbot2/models"
 import { FC, useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput.js"
-import { SchedulingStatus } from "./SchedulingStatus.js"
 
 export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
 	scheduling: Omit<StrategyScheduling, "frequency"> &

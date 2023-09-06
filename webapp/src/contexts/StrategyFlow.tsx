@@ -1,3 +1,7 @@
+import { FlowViewContainerElement } from "_/components/FlowViewContainer.js"
+import { StrategyContext } from "_/contexts/Strategy.js"
+import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView.js"
+import { usePublicApi } from "_/hooks/usePublicApi.js"
 import { isStrategyFlow } from "@ggbot2/models"
 import {
 	createContext,
@@ -9,11 +13,6 @@ import {
 	useMemo,
 	useRef
 } from "react"
-
-import { FlowViewContainerElement } from "../components/FlowViewContainer.js"
-import { StrategyContext } from "../contexts/Strategy.js"
-import { useFlowView, UseFlowViewOutput } from "../hooks/useFlowView.js"
-import { usePublicApi } from "../hooks/usePublicApi.js"
 
 type ContextValue = UseFlowViewOutput & {
 	flowViewContainerRef: MutableRefObject<FlowViewContainerElement>

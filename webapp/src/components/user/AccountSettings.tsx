@@ -1,11 +1,10 @@
-import { Box, Title } from "@ggbot2/design"
+import { AccountId } from "_/components/AccountId.js"
+import { Email } from "_/components/Email.js"
+import { Box, Title } from "_/components/library"
+import { WhenCreated } from "_/components/WhenCreated.js"
+import { AuthenticationContext } from "_/contexts/Authentication.js"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { AuthenticationContext } from "../../contexts/Authentication.js"
-import { AccountId } from "../AccountId.js"
-import { Email } from "../Email.js"
-import { WhenCreated } from "../WhenCreated.js"
 
 export const AccountSettings: FC = () => {
 	const { account } = useContext(AuthenticationContext)

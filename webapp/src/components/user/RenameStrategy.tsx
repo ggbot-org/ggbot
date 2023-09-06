@@ -9,15 +9,14 @@ import {
 	Message,
 	Modal,
 	Title
-} from "@ggbot2/design"
+} from "_/components/library"
+import { StrategyName } from "_/components/StrategyName.js"
+import { StrategyContext } from "_/contexts/user/Strategy.js"
+import { UseActionError } from "_/hooks/useAction.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { isName } from "@ggbot2/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-import { StrategyContext } from "../../contexts/user/Strategy.js"
-import { UseActionError } from "../../hooks/useAction.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { StrategyName } from "../StrategyName.js"
 
 const fieldName = {
 	name: "name"

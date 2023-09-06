@@ -1,7 +1,6 @@
+import { Accounts } from "_/components/admin/Accounts.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
 import { FC, useState } from "react"
-
-import { getStoredTabId, TabId, Tabs } from "../../components/Tabs.js"
-import { Accounts } from "./Accounts.js"
 
 const pageName = "AdminDashboard"
 

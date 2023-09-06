@@ -5,12 +5,11 @@ import {
 	MainColor,
 	Message,
 	Modal
-} from "@ggbot2/design"
+} from "_/components/library"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { BinanceApiConfigContext } from "../../contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
 
 export const DeleteBinanceApi: FC = () => {
 	const { refetchApiKey, hasApiKey } = useContext(BinanceApiConfigContext)

@@ -1,4 +1,7 @@
-import { _classNames, _ClassNamesArg, BulmaClassName } from "@ggbot2/design"
+import {
+	BulmaClassName,
+	classNames as _classNames,
+	ClassNamesArg as _ClassNamesArg} from "trunx"
 
 type FlowViewContainerClassName = "FlowViewContainer"
 

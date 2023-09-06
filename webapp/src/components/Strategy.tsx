@@ -1,8 +1,7 @@
+import { Backtesting } from "_/components/Backtesting.js"
+import { ReadonlyFlow } from "_/components/ReadonlyFlow.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
 import { FC, useState } from "react"
-
-import { Backtesting } from "./Backtesting.js"
-import { ReadonlyFlow } from "./ReadonlyFlow.js"
-import { getStoredTabId, TabId, Tabs } from "./Tabs.js"
 
 const pageName = "Strategy"
 

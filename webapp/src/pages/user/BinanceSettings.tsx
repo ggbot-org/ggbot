@@ -1,9 +1,8 @@
-import { Section } from "@ggbot2/design"
+import { Section } from "_/components/library"
+import { PageContainer } from "_/components/PageContainer.js"
+import { BinanceSettings } from "_/components/user/BinanceSettings.js"
+import { BinanceApiConfigProvider } from "_/contexts/user/BinanceApiConfig.js"
 import { FC } from "react"
-
-import { BinanceSettings } from "../../components/user/BinanceSettings.js"
-import { BinanceApiConfigProvider } from "../../contexts/user/BinanceApiConfig.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const BinanceSettingsPage: FC = () => (
 	<PageContainer>

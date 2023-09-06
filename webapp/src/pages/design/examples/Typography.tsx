@@ -1,6 +1,5 @@
+import { classNames } from "_/classNames"
 import { FC } from "react"
-
-import { classNames } from "../../../styles/classNames.js"
 
 export const Typography: FC = () => (
 	<div>

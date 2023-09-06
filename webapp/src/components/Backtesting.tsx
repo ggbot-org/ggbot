@@ -1,3 +1,12 @@
+import { BacktestingActions } from "_/components/BacktestingActions.js"
+import {
+	BacktestingProgress,
+	BacktestingProgressProps
+} from "_/components/BacktestingProgress.js"
+import {
+	FrequencyInput,
+	FrequencyInputProps
+} from "_/components/FrequencyInput.js"
 import {
 	Box,
 	Column,
@@ -6,20 +15,13 @@ import {
 	DailyIntervalProps,
 	Title
 } from "_/components/library"
+import { Memory } from "_/components/Memory.js"
+import { ProfitSummary } from "_/components/ProfitSummary.js"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow.js"
 import { useBacktesting } from "_/hooks/useBacktesting.js"
 import { isFrequency } from "@ggbot2/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { StrategyFlowContext } from "../contexts/StrategyFlow.js"
-import { BacktestingActions } from "./BacktestingActions.js"
-import {
-	BacktestingProgress,
-	BacktestingProgressProps
-} from "./BacktestingProgress.js"
-import { FrequencyInput, FrequencyInputProps } from "./FrequencyInput.js"
-import { Memory } from "./Memory.js"
-import { ProfitSummary } from "./ProfitSummary.js"
 
 export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()

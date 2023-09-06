@@ -1,14 +1,13 @@
-import { StrategyKey } from "@ggbot2/models"
-
-import { adminDashboardHtmlPathname } from "../admin/pages.js"
-import { strategyKeyToURLSearchParams } from "../strategyKeyParams.js"
+import { adminDashboardHtmlPathname } from "_/routing/admin/pages.js"
+import { strategyKeyToURLSearchParams } from "_/routing/strategyKeyParams.js"
 import {
 	copyStrategyHtmlPathname,
 	settingsHtmlPathname,
 	strategyHtmlPathname,
 	userDashboardHtmlPathname
-} from "./pages.js"
-import { SettingsPageId } from "./types.js"
+} from "_/routing/user/pages.js"
+import { SettingsPageId } from "_/routing/user/types.js"
+import { StrategyKey } from "@ggbot2/models"
 
 export const href = {
 	adminPage: () => adminDashboardHtmlPathname,

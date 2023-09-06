@@ -1,12 +1,11 @@
+import { PageContainer } from "_/components/user/PageContainer.js"
+import { Strategy } from "_/components/user/Strategy.js"
+import { StrategyFlowProvider } from "_/contexts/StrategyFlow.js"
+import { BinanceApiConfigProvider } from "_/contexts/user/BinanceApiConfig.js"
+import { StrategiesProvider } from "_/contexts/user/Strategies.js"
+import { StrategyProvider } from "_/contexts/user/Strategy.js"
+import { SubscriptionProvider } from "_/contexts/user/Subscription.js"
 import { FC } from "react"
-
-import { Strategy } from "../../components/user/Strategy.js"
-import { StrategyFlowProvider } from "../../contexts/StrategyFlow.js"
-import { BinanceApiConfigProvider } from "../../contexts/user/BinanceApiConfig.js"
-import { StrategiesProvider } from "../../contexts/user/Strategies.js"
-import { StrategyProvider } from "../../contexts/user/Strategy.js"
-import { SubscriptionProvider } from "../../contexts/user/Subscription.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const StrategyPage: FC = () => (
 	<PageContainer>

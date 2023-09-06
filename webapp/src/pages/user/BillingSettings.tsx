@@ -1,10 +1,9 @@
-import { Column, Columns, Section } from "@ggbot2/design"
+import { Column, Columns, Section } from "_/components/library"
+import { SubscriptionInfo } from "_/components/SubscriptionInfo.js"
+import { PageContainer } from "_/components/user/PageContainer.js"
+import { SubscriptionPurchase } from "_/components/user/SubscriptionPurchase.js"
+import { SubscriptionProvider } from "_/contexts/user/Subscription.js"
 import { FC } from "react"
-
-import { SubscriptionInfo } from "../../components/SubscriptionInfo.js"
-import { SubscriptionPurchase } from "../../components/user/SubscriptionPurchase.js"
-import { SubscriptionProvider } from "../../contexts/user/Subscription.js"
-import { PageContainer } from "./PageContainer.js"
 
 export const BillingSettingsPage: FC = () => (
 	<PageContainer>

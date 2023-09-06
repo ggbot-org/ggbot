@@ -1,6 +1,5 @@
+import { sessionWebStorage } from "_/storages/session.js"
 import { useEffect } from "react"
-
-import { sessionWebStorage } from "../storages/session.js"
 
 export const useGotFirstPageView = () => {
 	const gotFirstPageView = sessionWebStorage.gotFirstPageView.get()

@@ -1,4 +1,4 @@
-import { Tag, TagProps } from "@ggbot2/design"
+import { Tag, TagProps } from "_/components/library"
 import { SubscriptionStatus as Status } from "@ggbot2/models"
 import { FC, ReactNode } from "react"
 import { useIntl } from "react-intl"

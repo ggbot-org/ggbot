@@ -1,11 +1,10 @@
-import { Section } from "@ggbot2/design"
+import { InvalidStrategyKey } from "_/components/InvalidStrategyKey.js"
+import { Section } from "_/components/library"
+import { StrategyNotFound } from "_/components/StrategyNotFound.js"
+import { usePublicApi } from "_/hooks/usePublicApi.js"
+import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams.js"
 import { noneStrategy, Strategy } from "@ggbot2/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
-
-import { InvalidStrategyKey } from "../components/InvalidStrategyKey.js"
-import { StrategyNotFound } from "../components/StrategyNotFound.js"
-import { usePublicApi } from "../hooks/usePublicApi.js"
-import { strategyKeyParamsFromCurrentLocation } from "../routing/strategyKeyParams.js"
 
 type ContextValue = {
 	// If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.

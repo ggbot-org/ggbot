@@ -1,11 +1,10 @@
-import { Section } from "@ggbot2/design"
+import { AccountNotFound } from "_/components/admin/AccountNotFound.js"
+import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey.js"
+import { Section } from "_/components/library"
+import { useAdminApi } from "_/hooks/useAdminApi.js"
+import { accountKeyParamsFromCurrentLocation } from "_/routing/admin/accountKeyParams.js"
 import { Account, noneAccount } from "@ggbot2/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
-
-import { AccountNotFound } from "../../components/admin/AccountNotFound.js"
-import { InvalidAccountKey } from "../../components/admin/InvalidAccountKey.js"
-import { useAdminApi } from "../../hooks/useAdminApi.js"
-import { accountKeyParamsFromCurrentLocation } from "../../routing/admin/accountKeyParams.js"
 
 type ContextValue = {
 	// If `accountKey` is not valid or no `account` was found, `children` are not rendered.

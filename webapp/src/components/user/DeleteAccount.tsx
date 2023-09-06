@@ -8,11 +8,10 @@ import {
 	Message,
 	Modal,
 	ModalProps
-} from "@ggbot2/design"
+} from "_/components/library"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { FC, useCallback, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-import { useUserApi } from "../../hooks/useUserApi.js"
 
 export const DeleteAccount: FC = () => {
 	const color: MainColor = "danger"

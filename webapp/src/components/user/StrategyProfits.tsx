@@ -1,10 +1,9 @@
+import { ProfitSummary } from "_/components/ProfitSummary.js"
+import { StrategyContext } from "_/contexts/user/Strategy.js"
+import { useUserApi } from "_/hooks/useUserApi.js"
 import { isOrders, Orders } from "@ggbot2/models"
 import { DayInterval, getDay, today } from "minimal-time-helpers"
 import { FC, useContext, useEffect, useMemo } from "react"
-
-import { StrategyContext } from "../../contexts/user/Strategy.js"
-import { useUserApi } from "../../hooks/useUserApi.js"
-import { ProfitSummary } from "../ProfitSummary.js"
 
 type Props = {
 	numDays: number
