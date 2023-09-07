@@ -1,5 +1,6 @@
 import { classNames } from "_/classNames"
 import { FC } from "react"
+import { FormattedMessage } from "react-intl"
 import { SizeModifierProp } from "trunx"
 
 export type BrandNameProps = SizeModifierProp<"medium" | "normal" | "large">
@@ -15,6 +16,6 @@ export const BrandName: FC<BrandNameProps> = ({ size = "normal" }) => (
 			"mb-1": size === "normal"
 		})}
 	>
-		ggbot
+		<FormattedMessage id="BrandName.label" />
 	</span>
 )

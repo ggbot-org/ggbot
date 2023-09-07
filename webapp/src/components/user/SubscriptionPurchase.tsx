@@ -11,7 +11,6 @@ import {
 	InputOnChange,
 	Message,
 	SelectOnChange,
-	SelectProps,
 	Title
 } from "_/components/library"
 import {
@@ -35,7 +34,6 @@ import {
 	purchaseMinNumMonths as minNumMonths
 } from "@ggbot2/models"
 import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils"
-import { countries } from "country-isocode2/en"
 import { getTime, now } from "minimal-time-helpers"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -45,16 +43,6 @@ const fieldName = {
 }
 // TODO  use Form
 // const fields = Object.keys(fieldName)
-
-// TODO i18n for country names, and label "-- your country --"
-// do not import country names from "country-isocode2/en",
-// create a map with allowed countries.
-const allowedCountryOptions = Object.entries(countries)
-	.filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
-	.map(([isoCode2, country]) => ({
-		value: isoCode2,
-		label: country
-	}))
 
 export const SubscriptionPurchase: FC = () => {
 	const { formatNumber } = useIntl()
@@ -70,11 +58,6 @@ export const SubscriptionPurchase: FC = () => {
 	const [numMonths, setNumMonths] = useState<number | undefined>(
 		defaultNumMonths
 	)
-
-	{
-		/* TODO move it to SelectCountry component */
-	}
-	const countryOptions: SelectProps["options"] = allowedCountryOptions
 
 	let purchaseIsDisabled = false
 	if (!country) purchaseIsDisabled = true
@@ -210,7 +193,6 @@ export const SubscriptionPurchase: FC = () => {
 			<SelectCountry
 				name={fieldName.country}
 				onChange={onChangeCountry}
-				options={countryOptions}
 				value={country}
 			/>
 

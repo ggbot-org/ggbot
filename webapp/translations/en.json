@@ -101,6 +101,9 @@
 	"BinanceApiKeyPermissionIpRestrict.description": {
 		"defaultMessage": "is <em>static IP</em> restriction activated?"
 	},
+	"BrandName.label": {
+		"defaultMessage": "ggbot"
+	},
 	"CopyStrategy.chooseName": {
 		"defaultMessage": "Choose a new name for the copied strategy."
 	},

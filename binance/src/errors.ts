@@ -34,9 +34,6 @@ export class ErrorBinanceBadRequest extends Error {
 
 export class ErrorBinanceCannotTradeSymbol extends Error {
 	static errorName = "ErrorBinanceCannotTradeSymbol"
-	static message() {
-		return "Binance cannot trade this symbol"
-	}
 	readonly symbol: unknown
 	readonly orderType: BinanceOrderType
 	constructor({
@@ -48,13 +45,13 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
 		this.orderType = orderType
 		this.name = ErrorBinanceCannotTradeSymbol.errorName
 	}
+	static message() {
+		return "Binance cannot trade this symbol"
+	}
 }
 
 export class ErrorBinanceInvalidArg extends Error {
 	static errorName = "ErrorBinanceInvalidArg"
-	static message() {
-		return "Invalid Binance argument"
-	}
 	arg: unknown
 	type: "klineInterval" | "orderType" | "orderSide" | "symbol"
 	constructor({ arg, type }: Pick<ErrorBinanceInvalidArg, "arg" | "type">) {
@@ -62,6 +59,9 @@ export class ErrorBinanceInvalidArg extends Error {
 		this.arg = arg
 		this.type = type
 		this.name = ErrorBinanceInvalidArg.errorName
+	}
+	static message() {
+		return "Invalid Binance argument"
 	}
 }
 
@@ -80,22 +80,22 @@ export class ErrorBinanceSymbolFilter extends Error {
 
 export class ErrorBinanceInvalidOrderOptions extends Error {
 	static errorName = "ErrorBinanceInvalidOrderOptions"
-	static message() {
-		return "Invalid Binance order options"
-	}
 	constructor() {
 		super(ErrorBinanceInvalidOrderOptions.message())
 		this.name = ErrorBinanceInvalidOrderOptions.errorName
+	}
+	static message() {
+		return "Invalid Binance order options"
 	}
 }
 
 export class ErrorBinanceInvalidKlineOptionalParameters extends Error {
 	static errorName = "ErrorBinanceInvalidKlineOptionalParameters"
-	static message() {
-		return "Invalid kline optional parameters"
-	}
 	constructor() {
 		super(ErrorBinanceInvalidKlineOptionalParameters.message())
 		this.name = ErrorBinanceInvalidKlineOptionalParameters.errorName
+	}
+	static message() {
+		return "Invalid kline optional parameters"
 	}
 }

@@ -22,7 +22,8 @@ export type {
 	InputOnChange,
 	MainColor,
 	ProgressProps,
-	SelectOnChange
+	SelectOnChange,
+	SizeModifierProp
 } from "trunx"
 export {
 	Box,
@@ -45,7 +46,6 @@ export {
 	Level,
 	LevelItem,
 	Message,
-	Modal,
 	NavbarDropdown,
 	NavbarEnd,
 	NavbarItem,
@@ -56,4 +56,5 @@ export {
 	Section,
 	Table,
 	Tags,
-	Title} from "trunx"
+	Title
+} from "trunx"

@@ -15,6 +15,10 @@ export class RepoPackageJson implements JsonFile {
 	scripts: NonNullable<PackageJson["scripts"]> = {}
 	workspaces: PackageJson.WorkspacePattern[] = []
 
+	constructor(dirPathname: string) {
+		this.dirPathname = dirPathname
+	}
+
 	static workspaceBuildScriptKey(workspace: string) {
 		return `build:${workspace}`
 	}
@@ -28,10 +32,6 @@ export class RepoPackageJson implements JsonFile {
 				RepoPackageJson.workspaceBuildCommand(workspace)
 			)
 			.join(" && ")
-	}
-
-	constructor(dirPathname: string) {
-		this.dirPathname = dirPathname
 	}
 
 	async read() {

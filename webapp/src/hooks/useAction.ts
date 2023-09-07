@@ -87,7 +87,7 @@ const isDev = ENV.DEPLOY_STAGE() !== "main"
  * ```
  */
 export const useAction = <
-	Operation extends (arg: any) => Promise<any>,
+	Operation extends (...args: any[]) => Promise<unknown>,
 	ActionType extends string
 >(
 	{

@@ -17,7 +17,10 @@ export const Checkmark: FC<CheckmarkProps> = ({ label, ok }) =>
 					"mx-2"
 				)}
 			>
-				{ok ? "✓" : "✗"}
+				{
+					/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */
+					ok ? "✓" : "✗"
+				}
 			</span>
 		</div>
 	)
