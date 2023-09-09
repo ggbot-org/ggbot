@@ -8,7 +8,7 @@ export const userDashboardHtmlPathname = `/${userDirname}/dashboard.html`
 
 export const copyStrategyHtmlPathname = `/${userDirname}/copy-strategy.html`
 
-export const strategyHtmlPathname = `${userDirname}/strategy.html`
+export const strategyHtmlPathname = `/${userDirname}/strategy.html`
 
 export const settingsHtmlPathname = (pageId: SettingsPageId) =>
 	`/${userDirname}/${pageId}-settings.html`

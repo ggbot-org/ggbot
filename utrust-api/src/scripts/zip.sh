@@ -15,13 +15,13 @@ cd -
 
 # Copy workspaces.
 
-for INTERNAL_DEP in api-gateway arithmetic aws binance binance-client database dflow env email-messages http infrastructure locators models test-data type-utils; do
+for INTERNAL_DEP in api-gateway arithmetic aws binance binance-client database dflow env email-messages infrastructure locators models test-data type-utils; do
 	mkdir -p temp/node_modules/@ggbot2/$INTERNAL_DEP/dist
 	cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@ggbot2/$INTERNAL_DEP/dist/
 	cp ../$INTERNAL_DEP/package.json temp/node_modules/@ggbot2/$INTERNAL_DEP/
 done
 
-for WORKSPACE in api; do
+for WORKSPACE in api http; do
 	mkdir -p temp/node_modules/@workspace/$WORKSPACE/dist
 	cp -R ../$WORKSPACE/dist/* temp/node_modules/@workspace/$WORKSPACE/dist/
 	cp ../$WORKSPACE/package.json temp/node_modules/@workspace/$WORKSPACE/

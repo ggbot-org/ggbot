@@ -30,7 +30,6 @@ StrategyContext.displayName = "StrategyContext"
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const strategyKey = strategyKeyParamsFromCurrentLocation()
-	const strategyId = strategyKey?.strategyId
 
 	const [name, setName] = useState("")
 
@@ -38,14 +37,20 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const remoteStrategy = READ_STRATEGY.data
 
 	const strategy = useMemo(() => {
-		if (!strategyId) return noneStrategy
+		if (!strategyKey) return noneStrategy
 		if (remoteStrategy)
 			return name ? { ...remoteStrategy, name } : remoteStrategy
-		const localStrategy = localWebStorage.strategy.get(strategyId)
+		const localStrategy = localWebStorage.strategy.get(
+			strategyKey.strategyId
+		)
 		if (localStrategy)
 			return name ? { ...localStrategy, name } : localStrategy
-		return noneStrategy
-	}, [remoteStrategy, strategyId, name])
+		return {
+			...noneStrategy,
+			id: strategyKey.strategyId,
+			kind: strategyKey.strategyKind
+		}
+	}, [remoteStrategy, strategyKey, name])
 
 	const updateStrategyName = useCallback<ContextValue["updateStrategyName"]>(
 		(name) => {
@@ -71,10 +76,11 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Cache strategy.
 	useEffect(() => {
-		if (!strategyId) return
+		if (!strategyKey) return
 		if (remoteStrategy) localWebStorage.strategy.set(remoteStrategy)
-		if (remoteStrategy === null) localWebStorage.strategy.delete(strategyId)
-	}, [remoteStrategy, strategyId])
+		if (remoteStrategy === null)
+			localWebStorage.strategy.delete(strategyKey.strategyId)
+	}, [remoteStrategy, strategyKey])
 
 	if (!strategyKey)
 		return (

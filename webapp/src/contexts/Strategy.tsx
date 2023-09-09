@@ -21,13 +21,17 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const strategyKey = strategyKeyParamsFromCurrentLocation()
 
 	const READ_STRATEGY = usePublicApi.ReadStrategy()
-	const strategy = READ_STRATEGY.data ?? noneStrategy
+	const strategy = READ_STRATEGY.data
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			strategy
+			strategy: strategy ?? {
+				...noneStrategy,
+				id: strategyKey?.strategyId ?? noneStrategy.id,
+				kind: strategyKey?.strategyKind ?? noneStrategy.kind
+			}
 		}),
-		[strategy]
+		[strategy, strategyKey]
 	)
 
 	// Fetch strategy.

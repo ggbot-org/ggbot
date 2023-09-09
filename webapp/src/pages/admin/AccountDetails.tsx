@@ -1,12 +1,31 @@
-import { AccountDetails } from "_/components/admin/AccountDetails.js"
+import { AccountStrategies } from "_/components/admin/AccountStrategies.js"
 import { PageContainer } from "_/components/admin/PageContainer.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
 import { AccountProvider } from "_/contexts/admin/Account.js"
-import { FC } from "react"
+import { FC, useState } from "react"
 
-export const AccountDetailsPage: FC = () => (
-	<PageContainer>
-		<AccountProvider>
-			<AccountDetails />
-		</AccountProvider>
-	</PageContainer>
-)
+const pageName = "AdminAccountDetails"
+
+export const AccountDetailsPage: FC = () => {
+	const [activeTabId, setActiveTabId] = useState<TabId>(
+		getStoredTabId(pageName) ?? "strategies"
+	)
+
+	return (
+		<PageContainer>
+			<AccountProvider>
+				<Tabs
+					pageName={pageName}
+					activeTabId={activeTabId}
+					setActiveTabId={setActiveTabId}
+					tabs={[
+						{
+							tabId: "manage",
+							content: <AccountStrategies />
+						}
+					]}
+				/>
+			</AccountProvider>
+		</PageContainer>
+	)
+}
