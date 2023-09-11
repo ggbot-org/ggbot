@@ -1,4 +1,4 @@
-import { getSesNoreplyPolicyArn } from "@ggbot2/infrastructure"
+import { getSesNoreplyPolicyArn } from "@workspace/infrastructure"
 
 import { getIamPolicyStatus } from "./_iam.js"
 

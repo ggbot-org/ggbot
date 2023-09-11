@@ -1,4 +1,4 @@
-import { AccountStrategyKey, StrategyExecution } from "@ggbot2/models"
+import { AccountStrategyKey, StrategyExecution } from "@workspace/models"
 
 export type ExecuteStrategyOutput = Pick<
 	StrategyExecution,

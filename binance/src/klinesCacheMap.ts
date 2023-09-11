@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/cache"
+import { CacheMap } from "@workspace/cache"
 
 import { BinanceKlineCacheProvider } from "./cacheProviders.js"
 import { BinanceKline, BinanceKlineInterval } from "./types.js"

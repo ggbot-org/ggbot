@@ -4,7 +4,7 @@ import {
 	DescribeAddressesCommandOutput,
 	EC2Client
 } from "@aws-sdk/client-ec2"
-import { awsRegion } from "@ggbot2/infrastructure"
+import { awsRegion } from "@workspace/infrastructure"
 
 export type { Address as ElasticIp } from "@aws-sdk/client-ec2"
 

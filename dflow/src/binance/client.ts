@@ -9,7 +9,7 @@ import {
 	BinanceOrderSide,
 	BinanceOrderType,
 	BinanceTickerPrice
-} from "@ggbot2/binance"
+} from "@workspace/binance"
 
 /** Binance API used by dflow binance nodes. */
 export interface BinanceDflowClient

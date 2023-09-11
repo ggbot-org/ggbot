@@ -4,7 +4,7 @@ import {
 	SendEmailCommand,
 	SESClient
 } from "@aws-sdk/client-ses"
-import { awsSesRegion } from "@ggbot2/infrastructure"
+import { awsSesRegion } from "@workspace/infrastructure"
 
 const ses = new SESClient({ apiVersion: "2010-12-01", region: awsSesRegion })
 

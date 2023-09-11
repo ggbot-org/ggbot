@@ -1,4 +1,4 @@
-import { ReadStrategyBalances } from "@ggbot2/models"
+import { ReadStrategyBalances } from "@workspace/models"
 import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
 
 import { readStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js"

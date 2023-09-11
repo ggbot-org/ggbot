@@ -2,7 +2,7 @@ import {
 	AppendStrategyDailyBalanceChanges,
 	isBalanceChangeEvents,
 	ReadStrategyDailyBalanceChanges
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { READ_ARRAY, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

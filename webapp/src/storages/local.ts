@@ -1,7 +1,7 @@
-import type { ManagedCacheProvider } from "@ggbot2/cache"
-import { isStrategy, Strategy } from "@ggbot2/models"
-import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils"
+import type { ManagedCacheProvider } from "@workspace/cache"
 import { logging } from "@workspace/logging"
+import { isStrategy, Strategy } from "@workspace/models"
+import { isNonEmptyString, NonEmptyString } from "@workspace/type-utils"
 
 import { itemKey } from "./itemKeys.js"
 import type { WebStorageProvider } from "./provider.js"

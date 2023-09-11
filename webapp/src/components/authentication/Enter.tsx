@@ -12,12 +12,12 @@ import {
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError.js"
 import { url } from "_/routing/authentication/URLs.js"
-import { EmailAddress, isEmailAddress } from "@ggbot2/models"
-import { isMaybeObject } from "@ggbot2/type-utils"
 import {
 	isApiAuthEnterRequestData,
 	isApiAuthEnterResponseData
 } from "@workspace/api"
+import { EmailAddress, isEmailAddress } from "@workspace/models"
+import { isMaybeObject } from "@workspace/type-utils"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 

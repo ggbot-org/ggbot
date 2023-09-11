@@ -14,7 +14,7 @@ import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorE
 import { UseActionError } from "_/hooks/useAction.js"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { isName } from "@ggbot2/models"
+import { isName } from "@workspace/models"
 import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 

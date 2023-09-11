@@ -2,7 +2,7 @@ import {
 	isLiteralType,
 	NaturalNumber,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
 
 import { AccountKey } from "./account.js"

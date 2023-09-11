@@ -1,22 +1,22 @@
 import {
+	ApiAuthVerifyResponseData,
+	isApiAuthVerifyRequestData
+} from "@workspace/api"
+import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
 	INTERNAL_SERVER_ERROR,
 	METHOD_NOT_ALLOWED,
 	OK
-} from "@ggbot2/api-gateway"
+} from "@workspace/api-gateway"
+import { signSession } from "@workspace/authentication"
 import {
 	createAccount,
 	deleteOneTimePassword,
 	readEmailAccount,
 	readOneTimePassword
-} from "@ggbot2/database"
-import {
-	ApiAuthVerifyResponseData,
-	isApiAuthVerifyRequestData
-} from "@workspace/api"
-import { signSession } from "@workspace/authentication"
+} from "@workspace/database"
 import { today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {

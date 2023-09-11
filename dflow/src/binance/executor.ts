@@ -1,4 +1,4 @@
-import { Balance, Order } from "@ggbot2/models"
+import { Balance, Order } from "@workspace/models"
 import { DflowNodesCatalog } from "dflow"
 
 import {

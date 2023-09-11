@@ -1,6 +1,5 @@
-import { ENV } from "@ggbot2/env"
-import { UserWebappBaseURL } from "@ggbot2/locators"
 import { ApiActionResponseData, ApiActionResponseError } from "@workspace/api"
+import { ENV } from "@workspace/env"
 import {
 	__200__OK__,
 	__400__BAD_REQUEST__,
@@ -9,6 +8,7 @@ import {
 	__500__INTERNAL_SERVER_ERROR__,
 	HTTP_METHOD
 } from "@workspace/http"
+import { UserWebappBaseURL } from "@workspace/locators"
 
 import { responseBody } from "./responseBody.js"
 import { APIGatewayProxyResult } from "./types.js"

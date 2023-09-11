@@ -1,10 +1,10 @@
-import { add, mul, sub } from "@ggbot2/arithmetic"
+import { add, mul, sub } from "@workspace/arithmetic"
 import {
 	balanceIsNotEmpty,
 	BinanceOrderRespFULL,
 	isBinanceOrderRespFULL
-} from "@ggbot2/binance"
-import { Balance } from "@ggbot2/models"
+} from "@workspace/binance"
+import { Balance } from "@workspace/models"
 import { DflowGraphExecutionReport } from "dflow"
 
 import { dflowBinanceZero as zero } from "./arithmetic.js"

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/infrastructure",
+  "name": "@workspace/infrastructure",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -21,16 +21,16 @@
     "@aws-sdk/client-iam": "3.379.1",
     "@aws-sdk/client-s3": "3.379.1",
     "@aws-sdk/client-ses": "3.379.1",
-    "@ggbot2/env": "file:env",
-    "@ggbot2/locators": "file:locators"
+    "@workspace/env": "file:env",
+    "@workspace/locators": "file:locators"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

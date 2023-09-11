@@ -2,7 +2,7 @@ import {
 	ApiBaseURL,
 	ApiPurchaseOrderURL,
 	ApiUserActionURL
-} from "@ggbot2/locators"
+} from "@workspace/locators"
 
 const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString()
 

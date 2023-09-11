@@ -1,4 +1,4 @@
-import { Strategy } from "@ggbot2/models"
+import { Strategy } from "@workspace/models"
 
 const itemKeys = [
 	"activeTabId",

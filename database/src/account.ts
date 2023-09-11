@@ -13,7 +13,7 @@ import {
 	SetAccountCountry,
 	throwIfInvalidName,
 	updatedNow
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { DELETE, LIST, READ, UPDATE } from "./_dataBucket.js"
 import { createEmailAccount } from "./emailAccount.js"

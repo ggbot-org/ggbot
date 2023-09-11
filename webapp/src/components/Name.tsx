@@ -3,7 +3,7 @@ import {
 	InputFieldProps,
 	InputOnChange
 } from "_/components/library"
-import { isName, normalizeName } from "@ggbot2/models"
+import { isName, normalizeName } from "@workspace/models"
 import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { useIntl } from "react-intl"
 

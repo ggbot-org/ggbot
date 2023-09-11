@@ -1,6 +1,6 @@
 import { pid } from "node:process"
 
-import { isDev } from "@ggbot2/env"
+import { isDev } from "@workspace/env"
 import { now, timeToTimestamp } from "minimal-time-helpers"
 
 const timestamp = () => timeToTimestamp(now())

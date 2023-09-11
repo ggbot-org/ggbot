@@ -1,5 +1,5 @@
 // TODO try with TypeScript
-// import {NodeViewType} from '@ggbot2/dflow'
+// import {NodeViewType} from '@workspace/dflow'
 // and
 // static type: NodeViewType = "info"
 // also for other nodes in this folder

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/test-data",
+  "name": "@workspace/test-data",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -16,15 +16,15 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/models": "file:models"
+    "@workspace/models": "file:models"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

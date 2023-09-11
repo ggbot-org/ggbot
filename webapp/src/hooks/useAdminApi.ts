@@ -1,10 +1,10 @@
 import { useAction } from "_/hooks/useAction.js"
 import { url } from "_/routing/admin/URLs.js"
+import { AdminApiActionType } from "@workspace/api"
 import {
 	// ListAccountKeys,
 	ReadAccount
-} from "@ggbot2/models"
-import { AdminApiActionType } from "@workspace/api"
+} from "@workspace/models"
 
 const apiOptions = {
 	endpoint: url.apiAdminAction,

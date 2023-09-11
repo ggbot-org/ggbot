@@ -1,4 +1,4 @@
-import { isMaybeObject, objectTypeGuard } from "@ggbot2/type-utils"
+import { isMaybeObject, objectTypeGuard } from "@workspace/type-utils"
 import { FlowViewSerializableGraph } from "flow-view"
 
 import { AccountKey } from "./account.js"

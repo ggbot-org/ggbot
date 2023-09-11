@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/dflow",
+  "name": "@workspace/dflow",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -19,17 +19,17 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp|src/index\\.ts'"
   },
   "dependencies": {
-    "@ggbot2/binance": "file:binance",
+    "@workspace/binance": "file:binance",
     "flow-view": "6.0.1"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig",
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig",
     "ts-prune": "0.10.3"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

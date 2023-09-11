@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/devops",
+  "name": "@workspace/devops",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -19,16 +19,16 @@
     "task:status": "node ./dist/task-status.js"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/aws": "file:aws",
-    "@ggbot2/infrastructure": "file:infrastructure"
+    "@workspace/aws": "file:aws",
+    "@workspace/infrastructure": "file:infrastructure"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

@@ -2,7 +2,7 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { StrategyFlow } from "@ggbot2/models"
+import { StrategyFlow } from "@workspace/models"
 
 import { BinanceClientMock } from "./mocks/client.js"
 import { extractBinanceFlowSymbolsAndIntervalsFromFlow } from "./symbols.js"

@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import { BinanceExchangeInfo } from "@ggbot2/binance"
+import { BinanceExchangeInfo } from "@workspace/binance"
 
 export const exchangeInfo: BinanceExchangeInfo = {
 	timezone: "UTC",

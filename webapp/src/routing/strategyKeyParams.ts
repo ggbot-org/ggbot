@@ -1,4 +1,4 @@
-import { isStrategyKey, StrategyKey } from "@ggbot2/models"
+import { isStrategyKey, StrategyKey } from "@workspace/models"
 
 const strategyKindKey = "strategyKind"
 const strategyIdKey = "strategyId"

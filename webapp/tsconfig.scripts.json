@@ -4,7 +4,7 @@
 		"rootDir": "./src",
 		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
 	},
-	"extends": "@ggbot2/tsconfig",
+	"extends": "@workspace/tsconfig",
 	"exclude": ["node_modules/", "temp/", "**/*_test.ts"],
 	"include": [
 		"src/esbuild/*.ts",

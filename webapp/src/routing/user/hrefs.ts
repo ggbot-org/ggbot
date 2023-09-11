@@ -7,7 +7,7 @@ import {
 	userDashboardHtmlPathname
 } from "_/routing/user/pages.js"
 import { SettingsPageId } from "_/routing/user/types.js"
-import { StrategyKey } from "@ggbot2/models"
+import { StrategyKey } from "@workspace/models"
 
 export const href = {
 	adminPage: () => adminDashboardHtmlPathname,

@@ -1,23 +1,23 @@
 import {
+	Event as UtrustEvent,
+	WebhookValidator
+} from "@utrustdev/utrust-ts-library"
+import { ApiUtrustCallabackRequestData } from "@workspace/api"
+import {
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
 	INTERNAL_SERVER_ERROR,
 	METHOD_NOT_ALLOWED,
 	OK
-} from "@ggbot2/api-gateway"
+} from "@workspace/api-gateway"
 import {
 	locatorToItemKey,
 	readSubscription,
 	readSubscriptionPurchase,
 	updateSubscriptionPurchaseStatus,
 	writeSubscription
-} from "@ggbot2/database"
-import { ENV, isDev } from "@ggbot2/env"
-import {
-	Event as UtrustEvent,
-	WebhookValidator
-} from "@utrustdev/utrust-ts-library"
-import { ApiUtrustCallabackRequestData } from "@workspace/api"
+} from "@workspace/database"
+import { ENV, isDev } from "@workspace/env"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

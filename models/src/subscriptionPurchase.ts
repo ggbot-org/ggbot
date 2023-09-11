@@ -3,7 +3,7 @@ import {
 	isMaybeObject,
 	NaturalNumber,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 import { DflowObject } from "dflow"
 import {
 	dateToDay,

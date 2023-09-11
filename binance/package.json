@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/binance",
+  "name": "@workspace/binance",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -18,17 +18,17 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/arithmetic": "file:arithmetic",
-    "@ggbot2/cache": "file:cache",
+    "@workspace/arithmetic": "file:arithmetic",
+    "@workspace/cache": "file:cache",
     "@workspace/http": "file:http"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

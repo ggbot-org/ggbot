@@ -1,4 +1,4 @@
-import { StrategyKey } from "@ggbot2/models"
+import { StrategyKey } from "@workspace/models"
 
 import { strategyKeyToURLSearchParams } from "../../routing/strategyKeyParams.js"
 import { userDashboardHtmlPathname } from "../user/pages.js"

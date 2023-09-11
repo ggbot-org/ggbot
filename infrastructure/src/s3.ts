@@ -1,11 +1,11 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3"
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 import {
 	assetsDomain,
 	nextWebappDomain,
 	topLevelDomain,
 	webappDomain
-} from "@ggbot2/locators"
+} from "@workspace/locators"
 
 import { awsRegion } from "./awsRegions.js"
 

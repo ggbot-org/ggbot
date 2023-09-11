@@ -32,8 +32,8 @@ import {
 	purchaseDefaultNumMonths as defaultNumMonths,
 	purchaseMaxNumMonths as maxNumMonths,
 	purchaseMinNumMonths as minNumMonths
-} from "@ggbot2/models"
-import { isMaybeObject, isNaturalNumber } from "@ggbot2/type-utils"
+} from "@workspace/models"
+import { isMaybeObject, isNaturalNumber } from "@workspace/type-utils"
 import { getTime, now } from "minimal-time-helpers"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"

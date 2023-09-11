@@ -1,5 +1,5 @@
 import { Checkmark, CheckmarkProps, Flex } from "_/components/library"
-import { BinanceApiKeyPermissionCriteria } from "@ggbot2/models"
+import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 import { FC, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 

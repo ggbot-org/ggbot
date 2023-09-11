@@ -22,17 +22,17 @@
   "dependencies": {
     "@workspace/api": "file:api",
     "@workspace/authentication": "file:authentication",
-    "@ggbot2/api-gateway": "file:api-gateway",
-    "@ggbot2/database": "file:database",
-    "@ggbot2/models": "file:models"
+    "@workspace/api-gateway": "file:api-gateway",
+    "@workspace/database": "file:database",
+    "@workspace/models": "file:models"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

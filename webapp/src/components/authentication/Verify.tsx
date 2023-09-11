@@ -18,13 +18,13 @@ import {
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError.js"
 import { url } from "_/routing/authentication/URLs.js"
-import { isDev } from "@ggbot2/env"
-import { EmailAddress } from "@ggbot2/models"
-import { NonEmptyString } from "@ggbot2/type-utils"
 import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
+import { isDev } from "@workspace/env"
+import { EmailAddress } from "@workspace/models"
+import { NonEmptyString } from "@workspace/type-utils"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

@@ -2,7 +2,7 @@ import {
 	isLiteralType,
 	isNaturalNumber,
 	NaturalNumber
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 import { Time, TimeUnit, timeUnitDuration } from "minimal-time-helpers"
 
 export const frequencyIntervals = ["1h", "1m"] as const

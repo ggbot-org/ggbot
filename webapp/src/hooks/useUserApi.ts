@@ -1,5 +1,6 @@
 import { useAction } from "_/hooks/useAction.js"
 import { url } from "_/routing/user/URLs.js"
+import { UserApiActionType } from "@workspace/api"
 import {
 	AccountKey,
 	CopyStrategy,
@@ -20,8 +21,7 @@ import {
 	SetAccountCountry,
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
-} from "@ggbot2/models"
-import { UserApiActionType } from "@workspace/api"
+} from "@workspace/models"
 import { EmptyObject } from "type-fest"
 
 const apiOptions = { endpoint: url.apiUserAction, withJwt: true }

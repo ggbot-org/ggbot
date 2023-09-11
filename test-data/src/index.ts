@@ -3,7 +3,7 @@ import {
 	createdNow,
 	isEmailAddress,
 	OneTimePassword
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 export const testOtp: OneTimePassword = {
 	code: "abcdef",
@@ -12,7 +12,7 @@ export const testOtp: OneTimePassword = {
 
 export const testAccount1: Account = {
 	id: "test1",
-	email: "test@ggbot2.com",
+	email: "test@workspace.com",
 	whenCreated: 1669636196576
 }
 

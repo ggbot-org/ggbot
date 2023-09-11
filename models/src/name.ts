@@ -1,4 +1,4 @@
-import { isNonEmptyString, NonEmptyString } from "@ggbot2/type-utils"
+import { isNonEmptyString, NonEmptyString } from "@workspace/type-utils"
 
 import { ErrorInvalidArg } from "./errors.js"
 

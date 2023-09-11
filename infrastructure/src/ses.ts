@@ -1,5 +1,5 @@
-import { ENV } from "@ggbot2/env"
-import { topLevelDomain } from "@ggbot2/locators"
+import { ENV } from "@workspace/env"
+import { topLevelDomain } from "@workspace/locators"
 
 import { awsRegion } from "./awsRegions.js"
 

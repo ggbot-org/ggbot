@@ -2,8 +2,8 @@ import { sessionWebStorage } from "_/storages/session.js"
 import {
 	BinanceExchangeInfo,
 	BinanceExchangeInfoCacheProvider
-} from "@ggbot2/binance"
-import { CacheMap } from "@ggbot2/cache"
+} from "@workspace/binance"
+import { CacheMap } from "@workspace/cache"
 
 class BinanceExchangeInfoCacheSessionWebStorage
 	implements BinanceExchangeInfoCacheProvider

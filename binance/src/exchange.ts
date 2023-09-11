@@ -49,7 +49,7 @@ import {
  * 	BinanceConnector,
  * 	BinanceExchange,
  * 	BinanceExchangeInfoCacheMap
- * } from "@ggbot2/binance"
+ * } from "@workspace/binance"
  *
  * const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
  * const binance = new BinanceExchange(

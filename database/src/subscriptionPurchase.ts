@@ -13,7 +13,7 @@ import {
 	UpdateSubscriptionPurchaseInfo,
 	UpdateSubscriptionPurchaseStatus,
 	WriteSubscriptionPurchase
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { READ, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

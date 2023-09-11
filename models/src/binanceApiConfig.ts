@@ -2,7 +2,7 @@ import {
 	isNonEmptyString,
 	NonEmptyString,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { ItemKey } from "./item.js"

@@ -1,5 +1,5 @@
 import { href } from "_/routing/user/hrefs.js"
-import { isStrategy } from "@ggbot2/models"
+import { isStrategy } from "@workspace/models"
 import { useEffect } from "react"
 
 export const useRedirectToNewStrategyPage = (strategy: unknown) => {

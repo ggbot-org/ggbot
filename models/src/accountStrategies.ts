@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
 
 import { AccountKey } from "./account.js"
 import {

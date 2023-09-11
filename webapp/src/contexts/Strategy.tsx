@@ -3,7 +3,7 @@ import { Section } from "_/components/library"
 import { StrategyNotFound } from "_/components/StrategyNotFound.js"
 import { usePublicApi } from "_/hooks/usePublicApi.js"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams.js"
-import { noneStrategy, Strategy } from "@ggbot2/models"
+import { noneStrategy, Strategy } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {

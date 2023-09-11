@@ -1,4 +1,4 @@
-import { DeployStage, ENV } from "@ggbot2/env"
+import { DeployStage, ENV } from "@workspace/env"
 
 import { getLogsArn } from "./cloudWatch.js"
 import { lambdaAllArn } from "./lambda.js"

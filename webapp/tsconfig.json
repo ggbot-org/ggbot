@@ -16,6 +16,6 @@
 		}
 	},
 	"exclude": ["node_modules"],
-	"extends": "@ggbot2/tsconfig/react",
+	"extends": "@workspace/tsconfig/react",
 	"include": ["**/*.ts", "**/*.tsx"]
 }

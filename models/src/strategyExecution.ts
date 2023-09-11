@@ -1,4 +1,4 @@
-import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils"
+import { isLiteralType, objectTypeGuard } from "@workspace/type-utils"
 import { DflowExecutionNodeInfo, DflowGraph } from "dflow"
 
 import { AccountStrategyKey } from "./accountStrategy.js"

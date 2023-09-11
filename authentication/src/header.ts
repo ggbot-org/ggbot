@@ -1,4 +1,4 @@
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 // @ts-ignore
 import jsonwebtoken from "jsonwebtoken"
 

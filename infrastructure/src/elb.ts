@@ -1,5 +1,5 @@
 import { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2"
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 
 import { awsRegion } from "./awsRegions.js"
 

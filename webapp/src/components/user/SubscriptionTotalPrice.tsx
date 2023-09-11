@@ -1,5 +1,5 @@
 import { InputField, InputFieldProps } from "_/components/library"
-import { purchaseCurrency, totalPurchase } from "@ggbot2/models"
+import { purchaseCurrency, totalPurchase } from "@workspace/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

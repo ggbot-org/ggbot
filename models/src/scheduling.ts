@@ -1,4 +1,4 @@
-import { isLiteralType, objectTypeGuard } from "@ggbot2/type-utils"
+import { isLiteralType, objectTypeGuard } from "@workspace/type-utils"
 
 import { Frequency, isFrequency } from "./frequency.js"
 

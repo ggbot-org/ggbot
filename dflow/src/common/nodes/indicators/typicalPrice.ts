@@ -1,4 +1,9 @@
-import { add, decimalToNumber, div, maxNumOfDecimals } from "@ggbot2/arithmetic"
+import {
+	add,
+	decimalToNumber,
+	div,
+	maxNumOfDecimals
+} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 import {

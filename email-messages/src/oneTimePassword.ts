@@ -1,4 +1,4 @@
-import { Language, OneTimePassword } from "@ggbot2/models"
+import { Language, OneTimePassword } from "@workspace/models"
 
 import { EmailMessageContent, GetEmailMessageContent } from "./emailMessage.js"
 

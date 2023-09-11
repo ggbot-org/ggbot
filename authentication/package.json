@@ -16,17 +16,17 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@ggbot2/env": "file:env",
-    "@ggbot2/models": "file:models",
+    "@workspace/env": "file:env",
+    "@workspace/models": "file:models",
     "jsonwebtoken": "9.0.1"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

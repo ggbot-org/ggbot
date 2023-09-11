@@ -1,4 +1,4 @@
-import type { DeployStage } from "@ggbot2/env"
+import type { DeployStage } from "@workspace/env"
 
 import {
 	adminWebappDomain,

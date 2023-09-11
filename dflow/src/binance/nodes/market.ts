@@ -1,10 +1,10 @@
 /* eslint-disable sort-keys */
-import { decimalToNumber } from "@ggbot2/arithmetic"
+import { decimalToNumber } from "@workspace/arithmetic"
 import {
 	BinanceKline,
 	binanceKlineMaxLimit,
 	isBinanceKlineInterval
-} from "@ggbot2/binance"
+} from "@workspace/binance"
 import { Dflow, DflowNode } from "dflow"
 
 import {

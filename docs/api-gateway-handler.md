@@ -11,9 +11,9 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK,
 	APIGatewayProxyHandler
-} from "@ggbot2/api-gateway"
-import { UserWebappBaseURL } from "@ggbot2/locators"
-import { objectTypeGuard } from "@ggbot2/type-utils"
+} from "@workspace/api-gateway"
+import { UserWebappBaseURL } from "@workspace/locators"
+import { objectTypeGuard } from "@workspace/type-utils"
 
 type RequestData = {
 	message: string

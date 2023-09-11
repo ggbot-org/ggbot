@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils"
+import { objectTypeGuard } from "@workspace/type-utils"
 import { Dflow, DflowObject } from "dflow"
 
 import { AccountStrategyKey } from "./accountStrategy.js"

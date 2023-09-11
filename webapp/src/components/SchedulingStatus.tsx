@@ -1,6 +1,6 @@
 import { classNames } from "_/classNames"
 import { Tag, TagProps, Tags } from "_/components/library"
-import { SchedulingStatus as Status } from "@ggbot2/models"
+import { SchedulingStatus as Status } from "@workspace/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

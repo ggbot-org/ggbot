@@ -2,7 +2,7 @@
 //
 // See also https://en.wikipedia.org/wiki/Fully_qualified_domain_name
 
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 
 export const topLevelDomain = ENV.DNS_DOMAIN()
 

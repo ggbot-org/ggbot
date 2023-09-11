@@ -13,7 +13,7 @@ import {
 	S3Client,
 	S3ServiceException
 } from "@aws-sdk/client-s3"
-import { awsRegion } from "@ggbot2/infrastructure"
+import { awsRegion } from "@workspace/infrastructure"
 
 export { S3ServiceException } from "@aws-sdk/client-s3"
 

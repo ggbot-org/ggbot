@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
 
 import { isItemId, Item, newId } from "./item.js"
 import { isScheduling, Scheduling } from "./scheduling.js"

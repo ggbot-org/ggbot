@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils"
+import { objectTypeGuard } from "@workspace/type-utils"
 import { getDay, today } from "minimal-time-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"

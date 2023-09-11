@@ -1,4 +1,4 @@
-import { coerceToDecimal } from "@ggbot2/arithmetic"
+import { coerceToDecimal } from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"

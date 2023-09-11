@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils"
+import { objectTypeGuard } from "@workspace/type-utils"
 
 import { EmailAddress } from "./email.js"
 import { Language } from "./languages.js"

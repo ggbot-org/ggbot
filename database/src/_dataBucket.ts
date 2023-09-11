@@ -1,7 +1,7 @@
-import { deleteObject, getObject, listObjects, putObject } from "@ggbot2/aws"
-import { isDev } from "@ggbot2/env"
-import { getDataBucketName } from "@ggbot2/infrastructure"
-import { deletedNow, updatedNow } from "@ggbot2/models"
+import { deleteObject, getObject, listObjects, putObject } from "@workspace/aws"
+import { isDev } from "@workspace/env"
+import { getDataBucketName } from "@workspace/infrastructure"
+import { deletedNow, updatedNow } from "@workspace/models"
 import { DflowArray, DflowObject } from "dflow"
 
 import { ErrorInvalidData } from "./errors.js"

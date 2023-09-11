@@ -1,4 +1,4 @@
-import { div, mul } from "@ggbot2/arithmetic"
+import { div, mul } from "@workspace/arithmetic"
 import {
 	BinanceAccountInformation,
 	BinanceBalance,
@@ -11,7 +11,7 @@ import {
 	BinanceOrderSide,
 	BinanceOrderType,
 	getBinanceIntervalTime
-} from "@ggbot2/binance"
+} from "@workspace/binance"
 import {
 	BinanceDflowClient,
 	BinanceDflowClientKlinesParameters,
@@ -20,7 +20,7 @@ import {
 	dflowBinanceLowerKlineInterval,
 	dflowBinancePrecision,
 	dflowBinanceZero as zero
-} from "@ggbot2/dflow"
+} from "@workspace/dflow"
 import { Time } from "minimal-time-helpers"
 
 import { binance } from "./exchange.js"

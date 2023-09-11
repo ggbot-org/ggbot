@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/api-gateway",
+  "name": "@workspace/api-gateway",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,17 +17,17 @@
   },
   "dependencies": {
     "@workspace/api": "file:api",
-    "@ggbot2/env": "file:env",
+    "@workspace/env": "file:env",
     "@workspace/http": "file:http",
-    "@ggbot2/locators": "file:locators"
+    "@workspace/locators": "file:locators"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

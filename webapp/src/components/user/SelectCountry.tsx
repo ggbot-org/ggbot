@@ -1,5 +1,5 @@
 import { SelectField, SelectFieldProps } from "_/components/library"
-import { isAllowedCountryIsoCode2 } from "@ggbot2/models"
+import { isAllowedCountryIsoCode2 } from "@workspace/models"
 import { countries } from "country-isocode2/en"
 import { FC } from "react"
 import { useIntl } from "react-intl"

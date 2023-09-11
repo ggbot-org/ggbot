@@ -1,4 +1,4 @@
-import { getWebappBucketName, webappBucketACL } from "@ggbot2/infrastructure"
+import { getWebappBucketName, webappBucketACL } from "@workspace/infrastructure"
 
 import { createS3Bucket, getS3BucketStatus, S3BucketStatus } from "./_s3.js"
 

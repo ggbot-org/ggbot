@@ -1,4 +1,4 @@
-import { getPolicy, GetPolicyArgs } from "@ggbot2/aws"
+import { getPolicy, GetPolicyArgs } from "@workspace/aws"
 
 import { tagsIncludesProjectTag, TagsStatus } from "./_tags.js"
 

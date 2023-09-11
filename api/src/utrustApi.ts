@@ -5,12 +5,12 @@ import {
 	isAccountKey,
 	isAllowedCountryIsoCode2,
 	isEmailAddress
-} from "@ggbot2/models"
+} from "@workspace/models"
 import {
 	isNaturalNumber,
 	NaturalNumber,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 
 export type ApiUtrustCallabackRequestData = {
 	ok: boolean

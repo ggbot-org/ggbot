@@ -1,4 +1,4 @@
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 import { build, BuildOptions } from "esbuild"
 
 import { esbuildDefinitions } from "./definitions.js"
@@ -11,7 +11,7 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * @example
  *
  * ```ts
- * import { browserBundle } from "@ggbot2/esbuild"
+ * import { browserBundle } from "@workspace/esbuild"
  *
  * const bundleWebApps = async () => {
  * 	await browserBundle({

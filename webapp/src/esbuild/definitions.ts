@@ -1,4 +1,4 @@
-import { DeployStage, ENV, isDev } from "@ggbot2/env"
+import { DeployStage, ENV, isDev } from "@workspace/env"
 
 const DEPLOY_STAGE = `"${ENV.DEPLOY_STAGE()}"` as DeployStage
 

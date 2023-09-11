@@ -1,4 +1,4 @@
-import { defaultLanguage, Language, languages } from "@ggbot2/models"
+import { defaultLanguage, Language, languages } from "@workspace/models"
 
 export type Locale = Language
 

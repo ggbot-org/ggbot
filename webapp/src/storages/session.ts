@@ -1,8 +1,8 @@
-import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@ggbot2/binance"
-import type { ManagedCacheProvider } from "@ggbot2/cache"
-import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@ggbot2/dflow"
-import { isLiteralType } from "@ggbot2/type-utils"
+import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@workspace/binance"
+import type { ManagedCacheProvider } from "@workspace/cache"
+import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@workspace/dflow"
 import { logging } from "@workspace/logging"
+import { isLiteralType } from "@workspace/type-utils"
 
 import { cachedBoolean } from "./cachedBoolean.js"
 import { itemKey } from "./itemKeys.js"

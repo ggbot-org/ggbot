@@ -61,7 +61,7 @@ class EnvironmentVariables {
  * @example
  *
  * ```ts
- * import { ENV } from "@ggbot2/env"
+ * import { ENV } from "@workspace/env"
  *
  * console.info("DeployStage", ENV.DEPLOY_STAGE())
  * ```

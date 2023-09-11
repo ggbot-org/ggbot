@@ -1,5 +1,5 @@
 // TODO use own assets CDN, now it is https://rsms.me/inter/inter.css
-// import { fontBaseUrl, fontFaceUrl } from "@ggbot2/assets";
+// import { fontBaseUrl, fontFaceUrl } from "@workspace/assets";
 
 type LinkTag = {
 	href: string

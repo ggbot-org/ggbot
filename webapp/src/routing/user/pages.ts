@@ -1,4 +1,4 @@
-import { UtrustCancelURL, UtrustReturnURL } from "@ggbot2/locators"
+import { UtrustCancelURL, UtrustReturnURL } from "@workspace/locators"
 
 import { SettingsPageId, settingsPageIds } from "./types.js"
 

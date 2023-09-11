@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import { BinanceOrderRespFULL } from "@ggbot2/binance"
+import { BinanceOrderRespFULL } from "@workspace/binance"
 
 export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {
 	symbol: "BTCBUSD",

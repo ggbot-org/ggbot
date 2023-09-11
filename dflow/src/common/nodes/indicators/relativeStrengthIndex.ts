@@ -7,7 +7,7 @@ import {
 	maxNumOfDecimals,
 	mul,
 	sub
-} from "@ggbot2/arithmetic"
+} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 import {

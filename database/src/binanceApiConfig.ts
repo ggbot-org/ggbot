@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/cache"
+import { CacheMap } from "@workspace/cache"
 import {
 	BinanceApiConfig,
 	CreateBinanceApiConfig,
@@ -9,7 +9,7 @@ import {
 	ReadBinanceApiConfig,
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
 import { Binance } from "./binance.js"

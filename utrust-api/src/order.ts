@@ -1,3 +1,8 @@
+import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
+import {
+	ApiUtrustOrderResponseData,
+	isApiUtrustOrderRequestData
+} from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -5,22 +10,22 @@ import {
 	INTERNAL_SERVER_ERROR,
 	METHOD_NOT_ALLOWED,
 	OK
-} from "@ggbot2/api-gateway"
+} from "@workspace/api-gateway"
 import {
 	createMonthlySubscriptionPurchase,
 	createYearlySubscriptionPurchase,
 	itemKeyToDirname,
 	readSubscription,
 	updateSubscriptionPurchaseInfo
-} from "@ggbot2/database"
-import { ENV, isDev } from "@ggbot2/env"
+} from "@workspace/database"
+import { ENV, isDev } from "@workspace/env"
 import {
 	ApiBaseURL,
 	UserWebappBaseURL,
 	UtrustCallbackURL,
 	UtrustCancelURL,
 	UtrustReturnURL
-} from "@ggbot2/locators"
+} from "@workspace/locators"
 import {
 	PaymentProvider,
 	purchaseCurrency,
@@ -28,12 +33,7 @@ import {
 	statusOfSubscription,
 	SubscriptionPlan,
 	totalPurchase
-} from "@ggbot2/models"
-import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
-import {
-	ApiUtrustOrderResponseData,
-	isApiUtrustOrderRequestData
-} from "@workspace/api"
+} from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
 
 export const handler: APIGatewayProxyHandler = async (event) => {

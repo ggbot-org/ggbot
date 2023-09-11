@@ -11,18 +11,18 @@
     "start": "node dist/server"
   },
   "dependencies": {
-    "@ggbot2/binance": "file:binance",
-    "@ggbot2/env": "file:env",
+    "@workspace/binance": "file:binance",
+    "@workspace/env": "file:env",
     "@workspace/logging": "file:logging",
     "@workspace/http": "file:http"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ]
   }
 }

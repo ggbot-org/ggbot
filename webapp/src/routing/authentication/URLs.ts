@@ -2,7 +2,7 @@ import {
 	ApiAuthenticationEnterURL,
 	ApiAuthenticationVerifyURL,
 	AuthBaseURL
-} from "@ggbot2/locators"
+} from "@workspace/locators"
 
 const authBase = new AuthBaseURL(DEPLOY_STAGE).toString()
 

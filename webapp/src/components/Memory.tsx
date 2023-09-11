@@ -1,5 +1,5 @@
 import { Box, Flex, Title } from "_/components/library"
-import { DflowCommonContext } from "@ggbot2/dflow"
+import { DflowCommonContext } from "@workspace/dflow"
 import { DflowData } from "dflow"
 import { FC, useMemo } from "react"
 import { FormattedMessage } from "react-intl"

@@ -6,13 +6,13 @@ import {
 	binanceKlineMaxLimit,
 	BinanceKlinesCacheMap,
 	getBinanceIntervalTime
-} from "@ggbot2/binance"
+} from "@workspace/binance"
 import {
 	BinanceDflowExecutor,
 	dflowBinanceKlineIntervals,
 	DflowCommonContext,
 	extractBinanceFlowSymbolsAndIntervalsFromFlow
-} from "@ggbot2/dflow"
+} from "@workspace/dflow"
 import {
 	BalanceChangeEvent,
 	everyOneHour,
@@ -20,7 +20,7 @@ import {
 	frequencyIntervalDuration,
 	newOrder,
 	Order
-} from "@ggbot2/models"
+} from "@workspace/models"
 import { FlowViewSerializableGraph } from "flow-view"
 import {
 	dateToTimestamp,

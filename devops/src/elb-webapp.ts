@@ -1,7 +1,7 @@
 import {
 	getWebappLoadBalancerName,
 	webappLoadBalancerType
-} from "@ggbot2/infrastructure"
+} from "@workspace/infrastructure"
 
 import { getLoadBalancerStatus, LoadBalancerStatus } from "./_elb.js"
 

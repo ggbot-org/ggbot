@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@ggbot2/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
 import { Day, DayInterval, isDay, isDayInterval } from "minimal-time-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"

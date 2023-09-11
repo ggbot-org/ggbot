@@ -2,9 +2,9 @@ import { BinanceClient } from "_/binance/client.js"
 import { FlowViewContainerElement } from "_/components/FlowViewContainer.js"
 import { initializeFlowView } from "_/flow/initializeFlowView.js"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog.js"
-import { BinanceKlinesCacheMap } from "@ggbot2/binance"
-import { BinanceDflowHost, parsePercentage } from "@ggbot2/dflow"
-import { StrategyKind } from "@ggbot2/models"
+import { BinanceKlinesCacheMap } from "@workspace/binance"
+import { BinanceDflowHost, parsePercentage } from "@workspace/dflow"
+import { StrategyKind } from "@workspace/models"
 import {
 	DflowErrorCannotConnectPins,
 	DflowNodesCatalog,

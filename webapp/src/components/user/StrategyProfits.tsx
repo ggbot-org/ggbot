@@ -1,7 +1,7 @@
 import { ProfitSummary } from "_/components/ProfitSummary.js"
 import { StrategyContext } from "_/contexts/user/Strategy.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { isOrders, Orders } from "@ggbot2/models"
+import { isOrders, Orders } from "@workspace/models"
 import { DayInterval, getDay, today } from "minimal-time-helpers"
 import { FC, useContext, useEffect, useMemo } from "react"
 

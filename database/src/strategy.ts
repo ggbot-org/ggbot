@@ -1,4 +1,4 @@
-import { CacheMap } from "@ggbot2/cache"
+import { CacheMap } from "@workspace/cache"
 import {
 	Account,
 	CopyStrategy,
@@ -18,7 +18,7 @@ import {
 	RenameStrategy,
 	StrategyKey,
 	throwIfInvalidName
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { DELETE, LIST, READ, WRITE } from "./_dataBucket.js"
 import {

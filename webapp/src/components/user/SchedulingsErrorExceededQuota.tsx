@@ -1,7 +1,7 @@
 import { Message } from "_/components/library"
 import { UseActionError } from "_/hooks/useAction.js"
-import { ErrorExceededQuota, quotaType } from "@ggbot2/models"
 import { isApiActionServerSideError } from "@workspace/api"
+import { ErrorExceededQuota, quotaType } from "@workspace/models"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 

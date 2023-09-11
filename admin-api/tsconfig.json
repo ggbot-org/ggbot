@@ -6,6 +6,6 @@
 		"rootDir": "./src",
 		"target": "esnext"
 	},
-	"extends": "@ggbot2/tsconfig/lambda",
+	"extends": "@workspace/tsconfig/lambda",
 	"include": ["./src/**/*.ts"]
 }

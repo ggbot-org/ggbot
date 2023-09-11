@@ -8,10 +8,10 @@ import { Navigation } from "_/components/Navigation.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
 import { localWebStorage } from "_/storages/local.js"
 import { sessionWebStorage } from "_/storages/session.js"
-import { isDev } from "@ggbot2/env"
-import { Account, EmailAddress, noneAccount } from "@ggbot2/models"
-import { NonEmptyString } from "@ggbot2/type-utils"
+import { isDev } from "@workspace/env"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
+import { Account, EmailAddress, noneAccount } from "@workspace/models"
+import { NonEmptyString } from "@workspace/type-utils"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,

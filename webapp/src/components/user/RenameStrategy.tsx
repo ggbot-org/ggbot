@@ -14,7 +14,7 @@ import { StrategyName } from "_/components/StrategyName.js"
 import { StrategyContext } from "_/contexts/user/Strategy.js"
 import { UseActionError } from "_/hooks/useAction.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { isName } from "@ggbot2/models"
+import { isName } from "@workspace/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 

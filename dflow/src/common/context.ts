@@ -8,7 +8,7 @@ import { Time } from "minimal-time-helpers"
  *
  * ```ts
  * import { DflowHost, DflowHostConstructorArg } from "dflow"
- * import { DflowCommonContext } from "@ggbot2/dflow"
+ * import { DflowCommonContext } from "@workspace/dflow"
  *
  * export class MyDflowHost extends DflowHost {
  * 	constructor(arg: DflowHostConstructorArg) {

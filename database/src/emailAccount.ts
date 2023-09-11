@@ -4,7 +4,7 @@ import {
 	EmailAccount,
 	isEmailAccount,
 	ReadEmailAccount
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { READ, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

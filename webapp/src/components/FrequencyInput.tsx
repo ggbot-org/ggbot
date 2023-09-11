@@ -10,8 +10,8 @@ import {
 	Frequency,
 	FrequencyInterval,
 	isFrequencyInterval
-} from "@ggbot2/models"
-import { isNaturalNumber, NaturalNumber } from "@ggbot2/type-utils"
+} from "@workspace/models"
+import { isNaturalNumber, NaturalNumber } from "@workspace/type-utils"
 import { FC, useCallback } from "react"
 import { useIntl } from "react-intl"
 

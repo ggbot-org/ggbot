@@ -4,7 +4,7 @@ import { StrategyNotFound } from "_/components/StrategyNotFound.js"
 import { usePublicApi } from "_/hooks/usePublicApi.js"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams.js"
 import { localWebStorage } from "_/storages/local.js"
-import { noneStrategy, Strategy } from "@ggbot2/models"
+import { noneStrategy, Strategy } from "@workspace/models"
 import {
 	createContext,
 	FC,

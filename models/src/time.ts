@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@ggbot2/type-utils"
+import { objectTypeGuard } from "@workspace/type-utils"
 import { Day, isDay, isTime, now, Time } from "minimal-time-helpers"
 
 export type DayKey = { day: Day }

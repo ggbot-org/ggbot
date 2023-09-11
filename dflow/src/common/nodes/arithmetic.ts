@@ -5,7 +5,7 @@ import {
 	ErrorCannotDivideByZero,
 	mul,
 	sub
-} from "@ggbot2/arithmetic"
+} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 const { input, output } = DflowNode

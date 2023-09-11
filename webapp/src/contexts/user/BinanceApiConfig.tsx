@@ -1,5 +1,5 @@
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { BinanceApiKey } from "@ggbot2/models"
+import { BinanceApiKey } from "@workspace/models"
 import {
 	createContext,
 	FC,

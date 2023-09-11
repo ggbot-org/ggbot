@@ -19,7 +19,7 @@ import { Memory } from "_/components/Memory.js"
 import { ProfitSummary } from "_/components/ProfitSummary.js"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow.js"
 import { useBacktesting } from "_/hooks/useBacktesting.js"
-import { isFrequency } from "@ggbot2/models"
+import { isFrequency } from "@workspace/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

@@ -1,4 +1,4 @@
-import { Language } from "@ggbot2/models"
+import { Language } from "@workspace/models"
 
 export type EmailMessageContent = {
 	html: string

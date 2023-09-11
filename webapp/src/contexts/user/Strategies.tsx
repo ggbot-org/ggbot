@@ -1,5 +1,5 @@
 import { useUserApi } from "_/hooks/useUserApi.js"
-import { AccountStrategies, isAccountStrategies } from "@ggbot2/models"
+import { AccountStrategies, isAccountStrategies } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {

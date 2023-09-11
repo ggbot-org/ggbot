@@ -1,4 +1,4 @@
-// TODO (see below) import { decimalToNumber, div, sub } from "@ggbot2/arithmetic";
+// TODO (see below) import { decimalToNumber, div, sub } from "@workspace/arithmetic";
 import {
 	isBinanceSymbolFilterLotSize,
 	isBinanceSymbolFilterMinNotional

@@ -1,5 +1,5 @@
 {
-  "name": "@ggbot2/models",
+  "name": "@workspace/models",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -18,18 +18,18 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "dependencies": {
-    "@ggbot2/arithmetic": "file:arithmetic",
-    "@ggbot2/type-utils": "file:type-utils",
+    "@workspace/arithmetic": "file:arithmetic",
+    "@workspace/type-utils": "file:type-utils",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

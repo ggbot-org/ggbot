@@ -1,4 +1,4 @@
-import { ApiBaseURL, ApiPublicActionURL } from "@ggbot2/locators"
+import { ApiBaseURL, ApiPublicActionURL } from "@workspace/locators"
 
 const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString()
 

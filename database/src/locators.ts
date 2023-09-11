@@ -111,8 +111,8 @@ import {
 	StrategyDailyOrdersKey,
 	StrategyKey,
 	SubscriptionPurchaseKey
-} from "@ggbot2/models"
-import { isLiteralType } from "@ggbot2/type-utils"
+} from "@workspace/models"
+import { isLiteralType } from "@workspace/type-utils"
 import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
 
 export const dirnameDelimiter = "/"

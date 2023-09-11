@@ -5,7 +5,7 @@ import {
 	HeadBucketArgs,
 	S3ServiceException,
 	s3ServiceExceptionName
-} from "@ggbot2/aws"
+} from "@workspace/aws"
 
 import { CreateOutput } from "./_create.js"
 

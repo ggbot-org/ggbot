@@ -1,4 +1,4 @@
-import { isLiteralType } from "@ggbot2/type-utils"
+import { isLiteralType } from "@workspace/type-utils"
 
 export const binanceApiPrivateEndpoints = [
 	"/api/v3/account",

@@ -1,10 +1,10 @@
-import { ENV } from "@ggbot2/env"
+import { ENV } from "@workspace/env"
 import {
 	ClientSession,
 	clientSessionNumDays,
 	isClientSession
-} from "@ggbot2/models"
-import { isMaybeObject } from "@ggbot2/type-utils"
+} from "@workspace/models"
+import { isMaybeObject } from "@workspace/type-utils"
 // @ts-ignore
 import jsonwebtoken from "jsonwebtoken"
 

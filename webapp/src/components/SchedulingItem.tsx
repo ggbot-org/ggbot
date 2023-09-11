@@ -11,7 +11,7 @@ import {
 	LevelItem
 } from "_/components/library"
 import { SchedulingStatus } from "_/components/SchedulingStatus.js"
-import { StrategyScheduling } from "@ggbot2/models"
+import { StrategyScheduling } from "@workspace/models"
 import { FC, useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

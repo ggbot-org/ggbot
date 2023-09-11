@@ -3,7 +3,7 @@ import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
 } from "_/routing/admin/pages.js"
-import { AccountKey } from "@ggbot2/models"
+import { AccountKey } from "@workspace/models"
 
 export const href = {
 	dashboardPage: () => `/${adminDashboardHtmlPathname}`,

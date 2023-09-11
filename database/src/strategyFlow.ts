@@ -9,7 +9,7 @@ import {
 	StrategyFlow,
 	updatedNow,
 	WriteStrategyFlow
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { DELETE, READ, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

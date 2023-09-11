@@ -1,4 +1,4 @@
-import type { ManagedCacheProvider } from "@ggbot2/cache"
+import type { ManagedCacheProvider } from "@workspace/cache"
 
 import type { WebStorageProvider } from "./provider.js"
 

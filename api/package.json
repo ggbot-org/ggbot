@@ -16,19 +16,19 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@ggbot2/database": "file:database",
+    "@workspace/database": "file:database",
     "@workspace/http": "file:http",
-    "@ggbot2/models": "file:models",
-    "@ggbot2/type-utils": "file:type-utils",
+    "@workspace/models": "file:models",
+    "@workspace/type-utils": "file:type-utils",
     "dflow": "0.42.0"
   },
   "devDependencies": {
-    "@ggbot2/eslint-config": "file:eslint-config",
-    "@ggbot2/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "file:eslint-config",
+    "@workspace/tsconfig": "file:tsconfig"
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

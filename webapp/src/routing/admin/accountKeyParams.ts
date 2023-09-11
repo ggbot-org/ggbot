@@ -1,4 +1,4 @@
-import { AccountKey, isAccountKey } from "@ggbot2/models"
+import { AccountKey, isAccountKey } from "@workspace/models"
 
 const accountIdKey = "accountId"
 

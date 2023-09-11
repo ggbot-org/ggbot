@@ -3,7 +3,7 @@ import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey.js"
 import { Section } from "_/components/library"
 import { useAdminApi } from "_/hooks/useAdminApi.js"
 import { accountKeyParamsFromCurrentLocation } from "_/routing/admin/accountKeyParams.js"
-import { Account, noneAccount } from "@ggbot2/models"
+import { Account, noneAccount } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {

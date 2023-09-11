@@ -5,7 +5,7 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType
-} from "@ggbot2/binance"
+} from "@workspace/binance"
 
 import { BinanceDflowClient } from "../client.js"
 import { accountInfo } from "./accountInfo.js"

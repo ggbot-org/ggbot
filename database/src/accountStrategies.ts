@@ -11,7 +11,7 @@ import {
 	SuspendAccountStrategiesItemSchedulings,
 	SuspendAccountStrategiesSchedulings,
 	WriteAccountStrategiesItemSchedulings
-} from "@ggbot2/models"
+} from "@workspace/models"
 
 import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

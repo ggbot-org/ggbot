@@ -1,6 +1,6 @@
 import { exit } from "node:process"
 
-import { Item } from "@ggbot2/models"
+import { Item } from "@workspace/models"
 
 import { Executor } from "./Executor.js"
 import { log } from "./log.js"

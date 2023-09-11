@@ -1,5 +1,5 @@
-import { describeElasticIps } from "@ggbot2/aws"
-import { elasticIpAddresses } from "@ggbot2/infrastructure"
+import { describeElasticIps } from "@workspace/aws"
+import { elasticIpAddresses } from "@workspace/infrastructure"
 
 export type ElasticIpStatus = {
 	InstanceId?: string

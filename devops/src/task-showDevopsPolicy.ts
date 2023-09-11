@@ -1,4 +1,4 @@
-import { getDevopsPolicy } from "@ggbot2/infrastructure"
+import { getDevopsPolicy } from "@workspace/infrastructure"
 
 import { isMainModule } from "./_isMainModule.js"
 

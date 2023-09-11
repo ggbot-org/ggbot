@@ -3,12 +3,12 @@ import {
 	isEmailAddress,
 	isOneTimePasswordCode,
 	OneTimePassword
-} from "@ggbot2/models"
+} from "@workspace/models"
 import {
 	isNonEmptyString,
 	NonEmptyString,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 
 export type ApiAuthEnterRequestData = {
 	email: EmailAddress

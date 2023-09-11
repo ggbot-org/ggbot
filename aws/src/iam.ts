@@ -4,7 +4,7 @@ import {
 	GetPolicyCommandOutput,
 	IAMClient
 } from "@aws-sdk/client-iam"
-import { awsRegion } from "@ggbot2/infrastructure"
+import { awsRegion } from "@workspace/infrastructure"
 
 const client = new IAMClient({ region: awsRegion })
 

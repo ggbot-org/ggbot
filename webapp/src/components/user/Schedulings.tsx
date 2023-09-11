@@ -25,7 +25,7 @@ import {
 	isStrategyScheduling,
 	newStrategyScheduling,
 	StrategyScheduling
-} from "@ggbot2/models"
+} from "@workspace/models"
 import {
 	FC,
 	useCallback,

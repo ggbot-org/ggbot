@@ -1,6 +1,6 @@
 import { Control, Field } from "_/components/library"
 import { SchedulingStatus } from "_/components/SchedulingStatus.js"
-import { AccountStrategy } from "@ggbot2/models"
+import { AccountStrategy } from "@workspace/models"
 import { FC } from "react"
 
 type Props = {

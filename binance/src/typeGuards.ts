@@ -1,6 +1,6 @@
 // TODO use type-utils
-import { isDecimal } from "@ggbot2/arithmetic"
-import { isLiteralType } from "@ggbot2/type-utils"
+import { isDecimal } from "@workspace/arithmetic"
+import { isLiteralType } from "@workspace/type-utils"
 
 import {
 	BinanceBalance,

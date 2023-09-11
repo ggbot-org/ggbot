@@ -1,10 +1,10 @@
-import { Decimal, isDecimal } from "@ggbot2/arithmetic"
+import { Decimal, isDecimal } from "@workspace/arithmetic"
 import {
 	arrayTypeGuard,
 	isNonEmptyString,
 	NonEmptyString,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 
 /**
  * A Balance is an abstract representation of an asset owned.

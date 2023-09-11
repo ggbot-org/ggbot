@@ -4,7 +4,7 @@ import {
 	ElasticLoadBalancingV2ServiceException,
 	LoadBalancer,
 	LoadBalancerTypeEnum
-} from "@ggbot2/aws"
+} from "@workspace/aws"
 
 export type LoadBalancerStatus = { exists: boolean } & Partial<
 	Pick<LoadBalancer, "Type"> & {

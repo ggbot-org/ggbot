@@ -1,6 +1,6 @@
-import { sendEmail } from "@ggbot2/aws"
-import { oneTimePasswordEmailMessage } from "@ggbot2/email-messages"
-import { noReplyEmailAddress } from "@ggbot2/locators"
+import { sendEmail } from "@workspace/aws"
+import { oneTimePasswordEmailMessage } from "@workspace/email-messages"
+import { noReplyEmailAddress } from "@workspace/locators"
 import {
 	createdNow,
 	CreateOneTimePassword,
@@ -10,8 +10,8 @@ import {
 	isOneTimePassword,
 	ReadOneTimePassword,
 	SendOneTimePassword
-} from "@ggbot2/models"
-import { isTestAccountEmail, testOtp } from "@ggbot2/test-data"
+} from "@workspace/models"
+import { isTestAccountEmail, testOtp } from "@workspace/test-data"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

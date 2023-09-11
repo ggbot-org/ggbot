@@ -12,11 +12,11 @@ import {
 	BinanceOrderSide,
 	BinanceOrderType,
 	BinanceTickerPrice
-} from "@ggbot2/binance"
-import { BinanceClient } from "@ggbot2/binance-client"
-import { BinanceDflowClient } from "@ggbot2/dflow"
-import { ENV } from "@ggbot2/env"
-import { BinanceApiKeyPermissionCriteria } from "@ggbot2/models"
+} from "@workspace/binance"
+import { BinanceClient } from "@workspace/binance-client"
+import { BinanceDflowClient } from "@workspace/dflow"
+import { ENV } from "@workspace/env"
+import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 
 /** A Binance client that uses a proxy for private requests. */
 export class Binance implements BinanceDflowClient {

@@ -2,7 +2,7 @@ import { Box, Column, Columns, Flex, Message } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges.js"
 import { StrategiesContext } from "_/contexts/user/Strategies.js"
 import { href } from "_/routing/user/hrefs.js"
-import { AccountStrategy, isAccountStrategies } from "@ggbot2/models"
+import { AccountStrategy, isAccountStrategies } from "@workspace/models"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

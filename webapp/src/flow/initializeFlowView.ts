@@ -1,7 +1,7 @@
 import { FlowViewNodeInfo } from "_/flow/nodes/info.js"
 import { FlowViewNodeJson } from "_/flow/nodes/json.js"
 import { FlowViewNodePercentage } from "_/flow/nodes/percentage.js"
-import { nodeTextToViewType } from "@ggbot2/dflow"
+import { nodeTextToViewType } from "@workspace/dflow"
 import { DflowNodesCatalog } from "dflow"
 import { FlowView, FlowViewNode } from "flow-view"
 

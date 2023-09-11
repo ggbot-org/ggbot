@@ -1,3 +1,4 @@
+import { isUserApiActionRequestData as isApiActionRequestData } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -6,8 +7,12 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK,
 	UNATHORIZED
-} from "@ggbot2/api-gateway"
-import { ErrorBinanceBadRequest } from "@ggbot2/binance"
+} from "@workspace/api-gateway"
+import {
+	ErrorUnauthorizedAuthenticationHeader,
+	readSessionFromAuthorizationHeader
+} from "@workspace/authentication"
+import { ErrorBinanceBadRequest } from "@workspace/binance"
 import {
 	copyStrategy,
 	createBinanceApiConfig,
@@ -27,8 +32,9 @@ import {
 	setAccountCountry,
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
-} from "@ggbot2/database"
-import { isDev } from "@ggbot2/env"
+} from "@workspace/database"
+import { isDev } from "@workspace/env"
+import { logging } from "@workspace/logging"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -44,13 +50,7 @@ import {
 	isSetAccountCountryInput,
 	isWriteAccountStrategiesItemSchedulingsInput,
 	isWriteStrategyFlowInput
-} from "@ggbot2/models"
-import { isUserApiActionRequestData as isApiActionRequestData } from "@workspace/api"
-import {
-	ErrorUnauthorizedAuthenticationHeader,
-	readSessionFromAuthorizationHeader
-} from "@workspace/authentication"
-import { logging } from "@workspace/logging"
+} from "@workspace/models"
 
 const info = logging("user-api", isDev).info
 

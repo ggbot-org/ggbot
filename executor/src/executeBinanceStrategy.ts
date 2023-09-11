@@ -1,4 +1,4 @@
-import { BinanceExchangeInfoCacheMap } from "@ggbot2/binance"
+import { BinanceExchangeInfoCacheMap } from "@workspace/binance"
 import {
 	appendAccountDailyOrders,
 	appendStrategyDailyBalanceChanges,
@@ -8,11 +8,11 @@ import {
 	readStrategyFlow,
 	readStrategyMemory,
 	writeStrategyMemory
-} from "@ggbot2/database"
+} from "@workspace/database"
 import {
 	BinanceDflowExecutor,
 	getDflowBinanceNodesCatalog
-} from "@ggbot2/dflow"
+} from "@workspace/dflow"
 import {
 	createdNow,
 	ErrorAccountItemNotFound,
@@ -20,7 +20,7 @@ import {
 	ErrorUnimplementedStrategyKind,
 	newOrder,
 	updatedNow
-} from "@ggbot2/models"
+} from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
 import { ExecuteStrategy } from "./executeStrategy.js"

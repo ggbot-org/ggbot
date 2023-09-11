@@ -1,4 +1,4 @@
-import { assetsDomain } from "@ggbot2/locators"
+import { assetsDomain } from "@workspace/locators"
 
 export const assetsBaseUrl = `https://${assetsDomain}`
 const logoBaseUrl = `${assetsBaseUrl}/logo`

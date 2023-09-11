@@ -2,7 +2,7 @@ import {
 	arrayTypeGuard,
 	isLiteralType,
 	objectTypeGuard
-} from "@ggbot2/type-utils"
+} from "@workspace/type-utils"
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js"

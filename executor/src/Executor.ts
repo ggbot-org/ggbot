@@ -1,10 +1,10 @@
-import { CacheMap, ManagedCacheProvider } from "@ggbot2/cache"
+import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import {
 	listAccountKeys,
 	readAccountStrategies,
 	readSubscription,
 	suspendAccountStrategiesSchedulings
-} from "@ggbot2/database"
+} from "@workspace/database"
 import {
 	AccountKey,
 	AccountStrategy,
@@ -21,7 +21,7 @@ import {
 	Scheduling,
 	statusOfSubscription,
 	Subscription
-} from "@ggbot2/models"
+} from "@workspace/models"
 import { readFile, writeFile } from "fs/promises"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"

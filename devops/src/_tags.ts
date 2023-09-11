@@ -1,4 +1,4 @@
-export { tagsIncludesProjectTag } from "@ggbot2/infrastructure"
+export { tagsIncludesProjectTag } from "@workspace/infrastructure"
 
 export type TagsStatus = {
 	hasProjectTag: boolean
