@@ -26,7 +26,6 @@
     "@workspace/api-gateway": "file:api-gateway",
     "@workspace/authentication": "file:authentication",
     "@workspace/database": "file:database",
-    "@workspace/env": "file:env",
     "@workspace/models": "file:models"
   },
   "devDependencies": {

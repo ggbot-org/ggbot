@@ -58,7 +58,8 @@ describe("repo package.json", () => {
 							RepoPackageJson.workspacePrebuildCommandSequence(
 								internalDependenciesChain,
 								workspaceMap
-							)
+							),
+							assertionError
 						)
 					}
 				})

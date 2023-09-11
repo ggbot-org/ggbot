@@ -16,7 +16,6 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@workspace/database": "file:database",
     "@workspace/http": "file:http",
     "@workspace/models": "file:models",
     "@workspace/type-utils": "file:type-utils",
