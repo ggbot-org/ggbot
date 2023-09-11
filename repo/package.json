@@ -19,7 +19,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "@ggbot2/eslint-config"
+      "@workspace/eslint-config"
     ],
     "overrides": [
       {

@@ -1,28 +1,10 @@
 import { strict as assert } from "node:assert"
-import { join } from "node:path"
 import { describe, it } from "node:test"
 
-import { PackageJson } from "type-fest"
-
-import { repoDir } from "./repoDir.js"
-import { RepoPackageJson } from "./RepoPackageJson.js"
+import { repoPackages } from "./repoPackages.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-const repoPackage = new RepoPackageJson(repoDir)
-await repoPackage.read()
-
-const workspaceMap = new Map<
-	PackageJson.WorkspacePattern,
-	WorkspacePackageJson
->()
-
-for (const workspaceDir of repoPackage.workspaces) {
-	const workspacePackageJson = new WorkspacePackageJson(
-		join(repoDir, workspaceDir)
-	)
-	await workspacePackageJson.read()
-	workspaceMap.set(workspaceDir, workspacePackageJson)
-}
+const { workspaceMap } = await repoPackages()
 
 describe("workspace", () => {
 	for (const [workspaceDir, workspacePackageJson] of workspaceMap.entries()) {
@@ -40,6 +22,13 @@ describe("workspace", () => {
 
 			it("has name", () => {
 				assert.ok(packageName !== "", assertionError)
+			})
+
+			it("has scope", () => {
+				assert.ok(
+					packageName.startsWith(`${WorkspacePackageJson.scope}/`),
+					assertionError
+				)
 			})
 
 			it("is private", () => {

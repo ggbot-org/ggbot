@@ -4,6 +4,7 @@ import { join } from "node:path"
 import { PackageJson } from "type-fest"
 
 import { JsonFile } from "./JsonFile.js"
+import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
 export class RepoPackageJson implements JsonFile {
 	dirPathname: string
@@ -19,19 +20,37 @@ export class RepoPackageJson implements JsonFile {
 		this.dirPathname = dirPathname
 	}
 
-	static workspaceBuildScriptKey(workspace: string) {
-		return `build:${workspace}`
-	}
-	static workspaceBuildCommand(workspace: string) {
-		return `npm run build -w ${workspace}`
+	static workspaceBuildScriptKey(workspaceDir: PackageJson.WorkspacePattern) {
+		return `build:${workspaceDir}`
 	}
 
-	static workspaceBuildCommandSequence(workspaces: string[]) {
-		return workspaces
-			.map((workspace) =>
-				RepoPackageJson.workspaceBuildCommand(workspace)
+	static workspaceBuildCommand(workspaceDir: PackageJson.WorkspacePattern) {
+		return `npm run build -w ${workspaceDir}`
+	}
+
+	static workspacePrebuildCommandSequence(
+		internalDependenciesChain: string[],
+		workspaceMap: Map<PackageJson.WorkspacePattern, WorkspacePackageJson>
+	) {
+		return internalDependenciesChain
+			.map((internalDependency) =>
+				WorkspacePackageJson.workspaceDirFromInternalDependency(
+					internalDependency
+				)
 			)
+			.filter((workspaceDir) => {
+				const workspace = workspaceMap.get(workspaceDir)
+				if (!workspace) throw Error()
+				return workspace.buildScriptCommand
+			})
+			.map((workspaceDir) => `npm run build -w ${workspaceDir}`)
 			.join(" && ")
+	}
+
+	static workspacePrebuildScriptKey(
+		workspaceDir: PackageJson.WorkspacePattern
+	) {
+		return `prebuild:${workspaceDir}`
 	}
 
 	async read() {
@@ -53,7 +72,15 @@ export class RepoPackageJson implements JsonFile {
 		if (scripts) this.scripts = scripts
 	}
 
-	workspaceBuildScriptCommand(workspace: string) {
-		return this.scripts[RepoPackageJson.workspaceBuildScriptKey(workspace)]
+	workspaceBuildScriptCommand(workspaceDir: string) {
+		return this.scripts[
+			RepoPackageJson.workspaceBuildScriptKey(workspaceDir)
+		]
+	}
+
+	workspacePrebuildScriptCommand(workspaceDir: string) {
+		return this.scripts[
+			RepoPackageJson.workspacePrebuildScriptKey(workspaceDir)
+		]
 	}
 }
