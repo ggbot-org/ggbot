@@ -11,9 +11,7 @@ import {
 	Title
 } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName.js"
-import { StrategyContext } from "_/contexts/user/Strategy.js"
-import { UseActionError } from "_/hooks/useAction.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { ManageStrategyContext } from "_/contexts/user/ManageStrategy.js"
 import { isName } from "@workspace/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -24,60 +22,40 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export const RenameStrategy: FC = () => {
-	const { strategy, updateStrategyName } = useContext(StrategyContext)
+	const {
+		renameIsPending: isPending,
+		renameStrategy,
+		renameIsDone,
+		renameError: error,
+		strategyName
+	} = useContext(ManageStrategyContext)
 
-	const [error, setError] = useState<UseActionError>()
 	const [canCreate, setCanCreate] = useState(false)
-	const [name, setName] = useState("")
 	const [modalIsActive, setModalIsActive] = useState(false)
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
 	const onChangeName = useCallback<InputOnChange>((event) => {
-		const value = event.target.value
-		const canCreate = isName(value)
-		if (canCreate) {
-			setCanCreate(true)
-			setName(value)
-		}
+		if (isName(event.target.value)) setCanCreate(true)
 	}, [])
 
 	const toggleModal = useCallback(() => {
 		setModalIsActive((active) => !active)
 	}, [])
 
-	const RENAME = useUserApi.RenameStrategy()
-	const isPending = RENAME.isPending
-
 	const onSubmit = useCallback<FormOnSubmit>(
 		(event) => {
 			event.preventDefault()
 			const { name: newName } = formValues(event, fields)
 			if (!isName(newName)) return
-			if (RENAME.canRun)
-				RENAME.request({
-					name: newName,
-					strategyId: strategy.id,
-					strategyKind: strategy.kind
-				})
+			renameStrategy(newName)
 		},
-		[RENAME, strategy]
+		[renameStrategy]
 	)
 
 	useEffect(() => {
-		if (RENAME.error) {
-			setError(RENAME.error)
-			RENAME.reset()
-		}
-	}, [RENAME])
-
-	useEffect(() => {
-		if (RENAME.isDone) {
-			RENAME.reset()
-			updateStrategyName(name)
-			setModalIsActive(false)
-		}
-	}, [RENAME, updateStrategyName, name])
+		if (renameIsDone) setModalIsActive(false)
+	}, [renameIsDone])
 
 	return (
 		<>
@@ -97,7 +75,7 @@ export const RenameStrategy: FC = () => {
 
 					<StrategyName
 						required
-						placeholder={strategy.name}
+						placeholder={strategyName}
 						name={fieldName.name}
 						onChange={onChangeName}
 						readOnly={isPending}

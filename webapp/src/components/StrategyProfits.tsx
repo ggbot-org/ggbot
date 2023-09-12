@@ -1,5 +1,5 @@
 import { ProfitSummary } from "_/components/ProfitSummary.js"
-import { StrategyContext } from "_/contexts/user/Strategy.js"
+import { StrategyContext } from "_/contexts/Strategy.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
 import { isOrders, Orders } from "@workspace/models"
 import { DayInterval, getDay, today } from "minimal-time-helpers"

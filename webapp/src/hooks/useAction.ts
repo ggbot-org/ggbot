@@ -127,6 +127,7 @@ export const useAction = <
 					if (response.ok) {
 						const responseOutput = await response.json()
 						if (isDev)
+							// TODO use logging workspace
 							console.info(
 								"use-action",
 								type,
@@ -136,6 +137,7 @@ export const useAction = <
 						setData(responseOutput.data)
 					} else if (response.status === __400__BAD_REQUEST__) {
 						const responseOutput = await response.json()
+							// TODO use logging workspace
 						console.error(
 							"use-action",
 							type,
@@ -160,21 +162,25 @@ export const useAction = <
 							break
 						}
 
+							// TODO consider using a toast to display: Something went wrong
 						case error === __400__BAD_REQUEST__: {
 							setError({ name: BadRequestError.errorName })
 							break
 						}
 
+							// TODO should logout user
 						case error === __401__UNAUTHORIZED__: {
 							setError({ name: UnauthorizedError.errorName })
 							break
 						}
 
+							// TODO consider using a toast to display: Something went wrong
 						case error === __404__NOT_FOUND__: {
 							setError({ name: NotFoundError.errorName })
 							break
 						}
 
+							// TODO consider using a toast to display: Something went wrong
 						case error === __500__INTERNAL_SERVER_ERROR__: {
 							setError({ name: InternalServerError.name })
 							break

@@ -15,7 +15,7 @@ import {
 import { StrategyName } from "_/components/StrategyName.js"
 import { StrategyRecord } from "_/components/StrategyRecord.js"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota.js"
-import { StrategyContext } from "_/contexts/user/Strategy.js"
+import { StrategyContext } from "_/contexts/Strategy.js"
 import { UseActionError } from "_/hooks/useAction.js"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage.js"
 import { useUserApi } from "_/hooks/useUserApi.js"
@@ -89,7 +89,7 @@ export const CopyStrategy: FC = () => {
 							<FormattedMessage id="CopyStrategy.strategyInfo" />
 						</Message>
 
-						<StrategyRecord strategy={strategy} />
+						<StrategyRecord />
 					</Box>
 				</Column>
 

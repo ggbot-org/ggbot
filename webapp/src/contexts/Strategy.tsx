@@ -3,6 +3,7 @@ import { Section } from "_/components/library"
 import { StrategyNotFound } from "_/components/StrategyNotFound.js"
 import { usePublicApi } from "_/hooks/usePublicApi.js"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams.js"
+import { localWebStorage } from "_/storages/local.js"
 import { noneStrategy, Strategy } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
@@ -21,17 +22,27 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const strategyKey = strategyKeyParamsFromCurrentLocation()
 
 	const READ_STRATEGY = usePublicApi.ReadStrategy()
-	const strategy = READ_STRATEGY.data
+	const remoteStrategy = READ_STRATEGY.data
+
+	const strategy = useMemo(() => {
+		if (!strategyKey) return noneStrategy
+		if (remoteStrategy) return remoteStrategy
+		const localStrategy = localWebStorage.strategy.get(
+			strategyKey.strategyId
+		)
+		if (localStrategy) return localStrategy
+		return {
+			...noneStrategy,
+			id: strategyKey.strategyId,
+			kind: strategyKey.strategyKind
+		}
+	}, [remoteStrategy, strategyKey])
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			strategy: strategy ?? {
-				...noneStrategy,
-				id: strategyKey?.strategyId ?? noneStrategy.id,
-				kind: strategyKey?.strategyKind ?? noneStrategy.kind
-			}
+			strategy: strategy
 		}),
-		[strategy, strategyKey]
+		[strategy]
 	)
 
 	// Fetch strategy.
@@ -39,6 +50,14 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 		if (!strategyKey) return
 		if (READ_STRATEGY.canRun) READ_STRATEGY.request(strategyKey)
 	}, [READ_STRATEGY, strategyKey])
+
+	// Cache strategy.
+	useEffect(() => {
+		if (!strategyKey) return
+		if (remoteStrategy) localWebStorage.strategy.set(remoteStrategy)
+		if (remoteStrategy === null)
+			localWebStorage.strategy.delete(strategyKey.strategyId)
+	}, [remoteStrategy, strategyKey])
 
 	if (!strategyKey)
 		return (
