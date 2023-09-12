@@ -6,7 +6,7 @@ import { isNonEmptyString, NonEmptyString } from "@workspace/type-utils"
 import { itemKey } from "./itemKeys.js"
 import type { WebStorageProvider } from "./provider.js"
 
-const info = logging("local-storage", IS_DEV).info
+const { info } = logging("local-storage", IS_DEV)
 
 class LocalWebStorage implements WebStorageProvider {
 	get jwt(): ManagedCacheProvider<NonEmptyString> {

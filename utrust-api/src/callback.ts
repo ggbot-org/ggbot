@@ -18,11 +18,15 @@ import {
 	writeSubscription
 } from "@workspace/database"
 import { ENV, isDev } from "@workspace/env"
+import { logging } from "@workspace/logging"
+
+const { info } = logging("user-api", isDev)
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {
 			case "POST": {
+				info(event.httpMethod, JSON.stringify(event.body, null, 2))
 				if (!event.body) return BAD_REQUEST()
 
 				const { validateSignature } = WebhookValidator(
@@ -36,7 +40,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					event_type,
 					resource: { reference }
 				} = input as UtrustEvent
-				if (isDev) console.info("input", JSON.stringify(input, null, 2))
+				info("input", JSON.stringify(input, null, 2))
 
 				// Nothing to do, the payment is detected on the blockchain.
 				if (event_type === "ORDER.PAYMENT.DETECTED") {
@@ -72,6 +76,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					})
 
 				const output: ApiUtrustCallabackRequestData = { ok: false }
+				info(JSON.stringify(output, null, 2))
 				return OK(output)
 			}
 

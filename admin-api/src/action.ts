@@ -13,8 +13,11 @@ import {
 	readSessionFromAuthorizationHeader
 } from "@workspace/authentication"
 import { listAccountKeys, readAccount } from "@workspace/database"
+import { isDev } from "@workspace/env"
+import { logging } from "@workspace/logging"
 import { isReadAccountInput } from "@workspace/models"
 
+const { info } = logging("user-api", isDev)
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {
@@ -22,6 +25,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return ALLOWED_METHODS(["POST"])
 
 			case "POST": {
+				info(event.httpMethod, JSON.stringify(event.body, null, 2))
 				if (!event.body) return BAD_REQUEST()
 
 				readSessionFromAuthorizationHeader(event.headers.Authorization)
@@ -36,11 +40,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						if (!isReadAccountInput(actionData))
 							return BAD_REQUEST()
 						const output = await readAccount(actionData)
+						info(action.type, JSON.stringify(output, null, 2))
 						return OK(output)
 					}
 
 					case "ListAccountKeys": {
 						const output = await listAccountKeys()
+						info(action.type, JSON.stringify(output, null, 2))
 						return OK(output)
 					}
 

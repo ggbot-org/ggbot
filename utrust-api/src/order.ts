@@ -26,6 +26,7 @@ import {
 	UtrustCancelURL,
 	UtrustReturnURL
 } from "@workspace/locators"
+import { logging } from "@workspace/logging"
 import {
 	PaymentProvider,
 	purchaseCurrency,
@@ -35,6 +36,8 @@ import {
 	totalPurchase
 } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
+
+const { info } = logging("user-api", isDev)
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
@@ -61,11 +64,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return ALLOWED_METHODS(["POST"])
 
 			case "POST": {
+				info(event.httpMethod, JSON.stringify(event.body, null, 2))
 				if (!event.body) return BAD_REQUEST()
 
 				const input = JSON.parse(event.body)
 				if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST()
-				if (isDev) console.info(JSON.stringify(input, null, 2))
+				info(JSON.stringify(input, null, 2))
 
 				const { accountId, country, email, numMonths } = input
 
@@ -134,13 +138,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					email
 				}
 
-				if (isDev) console.info("order", JSON.stringify(order, null, 2))
-				if (isDev)
-					console.info("customer", JSON.stringify(customer, null, 2))
+				info("order", JSON.stringify(order, null, 2))
+				info("customer", JSON.stringify(customer, null, 2))
 
 				const { data } = await createOrder(order, customer)
-				if (isDev)
-					console.info("created order", JSON.stringify(data, null, 2))
+				info("created order", JSON.stringify(data, null, 2))
 
 				if (data === null) return BAD_REQUEST()
 
@@ -152,7 +154,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				})
 
 				const output: ApiUtrustOrderResponseData = { redirectUrl }
-				if (isDev) console.info(JSON.stringify(output, null, 2))
+				info(JSON.stringify(output, null, 2))
 				return OK(output)
 			}
 

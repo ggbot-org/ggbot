@@ -52,7 +52,7 @@ import {
 	isWriteStrategyFlowInput
 } from "@workspace/models"
 
-const info = logging("user-api", isDev).info
+const { info } = logging("user-api", isDev)
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

@@ -8,7 +8,7 @@ import { cachedBoolean } from "./cachedBoolean.js"
 import { itemKey } from "./itemKeys.js"
 import type { WebStorageProvider } from "./provider.js"
 
-const info = logging("session-storage", IS_DEV).info
+const { info } = logging("session-storage", IS_DEV)
 
 class SessionWebStorage implements WebStorageProvider {
 	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
