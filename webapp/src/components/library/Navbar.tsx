@@ -11,11 +11,11 @@ import {
 import { BrandName } from "./BrandName"
 import { Logo } from "./Logo"
 
-export type NavbarProps = Partial<{
+type Props = Partial<{
 	noMenu: boolean
 }>
 
-export const Navbar: FC<PropsWithChildren<NavbarProps>> = ({
+export const Navbar: FC<PropsWithChildren<Props>> = ({
 	children,
 	noMenu,
 	...props

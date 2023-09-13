@@ -4,9 +4,9 @@ import { FC, TimeHTMLAttributes, useMemo } from "react"
 import { FormattedDate } from "react-intl"
 
 const dateTimeFormats = ["day", "time"] as const
-export type DateTimeFormat = (typeof dateTimeFormats)[number]
+type DateTimeFormat = (typeof dateTimeFormats)[number]
 
-export type DateTimeProps = {
+type Props = {
 	format: DateTimeFormat
 } & Omit<TimeHTMLAttributes<HTMLTimeElement>, "dateTime"> &
 	Partial<{
@@ -22,7 +22,7 @@ export type DateTimeProps = {
 		value: Day | Timestamp
 	}>
 
-export const DateTime: FC<DateTimeProps> = ({ format, value }) => {
+export const DateTime: FC<Props> = ({ format, value }) => {
 	const formatOptions = useMemo<DayFormat | TimeFormat>(() => {
 		if (format === "day") return dayFormat
 		if (format === "time") return timeFormat

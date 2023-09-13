@@ -7,7 +7,7 @@ export const iconNames = [
 	"danger",
 	"dots-vertical"
 ] as const
-export type IconName = (typeof iconNames)[number]
+type IconName = (typeof iconNames)[number]
 
 type IconDefinition = {
 	jsx: ReactNode
@@ -63,7 +63,7 @@ const iconRecord: Record<IconName, IconDefinition> = {
 	}
 }
 
-export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
+type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 	name: IconName
 	/**
 	 * Icon `size` can be a number to represent pixel units, or a string to

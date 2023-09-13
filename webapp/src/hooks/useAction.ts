@@ -126,7 +126,7 @@ export const useAction = <
 
 					if (response.ok) {
 						const responseOutput = await response.json()
-						info(type, inputData, responseOutput.data)
+						info(type, inputData ?? "", responseOutput.data)
 						setData(responseOutput.data)
 					} else if (response.status === __400__BAD_REQUEST__) {
 						const responseOutput = await response.json()

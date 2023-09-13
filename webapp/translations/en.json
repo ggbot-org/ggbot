@@ -8,6 +8,9 @@
 	"AccountSettings.title": {
 		"defaultMessage": "Account"
 	},
+	"AdminNavigation.dashboard": {
+		"defaultMessage": "Accounts"
+	},
 	"ApiKey.label": {
 		"defaultMessage": "API key"
 	},

@@ -1,6 +1,5 @@
-import { Footer } from "_/components/Footer"
+import { Navigation } from "_/components/admin/Navigation"
 import { Page } from "_/components/library"
-import { Navigation } from "_/components/Navigation"
 import { NoNetwork } from "_/components/NoNetwork"
 import { AuthenticationProvider } from "_/contexts/Authentication"
 import { I18nProvider } from "_/contexts/I18n"
@@ -10,7 +9,7 @@ import { FC, PropsWithChildren } from "react"
 export const PageContainer: FC<PropsWithChildren> = ({ children }) => (
 	<I18nProvider>
 		<AuthenticationProvider>
-			<Page footer={<Footer />}>
+			<Page>
 				<Navigation />
 
 				<NoNetwork />

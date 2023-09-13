@@ -1,15 +1,17 @@
 import { readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 
+import { defaultLanguage } from "@workspace/models"
+
 import {
 	FormatjsIntlMessageIdsContent,
 	FormatjsIntlMessageIdsFilename
 } from "../i18n/FormatjsIntlMessageIds.js"
-import { defaultLocale, localeJsonPathname } from "../i18n/locales.js"
+import { translationPathname } from "../i18n/locales.js"
 import { rootDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(
-	join(rootDir, localeJsonPathname(defaultLocale)),
+	join(rootDir, translationPathname(defaultLanguage)),
 	{ encoding: "utf8" }
 )
 

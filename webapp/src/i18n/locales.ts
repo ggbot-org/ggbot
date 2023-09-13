@@ -1,14 +1,10 @@
 import { defaultLanguage, Language, languages } from "@workspace/models"
 
-export type Locale = Language
-
-export const defaultLocale: Locale = defaultLanguage
-
-export const detectLocale = (): Locale => {
+export const detectLanguage = (): Language => {
 	for (const language of languages)
 		if (window.navigator.language.startsWith(language)) return language
-	return defaultLocale
+	return defaultLanguage
 }
 
-export const localeJsonPathname = (locale: Locale) =>
-	`/translations/${locale}.json`
+export const translationPathname = (language: Language) =>
+	`/translations/${language}.json`

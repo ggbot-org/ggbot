@@ -3,9 +3,9 @@ import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 import { SizeModifierProp } from "trunx"
 
-export type BrandNameProps = SizeModifierProp<"medium" | "normal" | "large">
+type Props = SizeModifierProp<"medium" | "normal" | "large">
 
-export const BrandName: FC<BrandNameProps> = ({ size = "normal" }) => (
+export const BrandName: FC<Props> = ({ size = "normal" }) => (
 	<span
 		className={classNames({
 			"is-size-1": size === "large",

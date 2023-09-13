@@ -1,4 +1,5 @@
-import { defaultLocale, detectLocale, localeJsonPathname } from "_/i18n/locales"
+import { detectLanguage, translationPathname } from "_/i18n/locales"
+import { defaultLanguage } from "@workspace/models"
 import {
 	FC,
 	PropsWithChildren,
@@ -52,13 +53,12 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const intlMessages = useRef()
 
-	const locale = detectLocale()
+	const language = detectLanguage()
 
 	const readIntlMessages = useCallback(async () => {
 		try {
 			dispatch({ type: "READ_INTL_MESSAGES_REQUEST" })
-			const pathname = localeJsonPathname(locale)
-			const response = await fetch(pathname)
+			const response = await fetch(translationPathname(language))
 			const json = await response.json()
 			intlMessages.current = json
 			dispatch({ type: "READ_INTL_MESSAGES_SUCCESS" })
@@ -66,7 +66,7 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 			console.error(error)
 			dispatch({ type: "READ_INTL_MESSAGES_FAILURE" })
 		}
-	}, [locale])
+	}, [language])
 
 	useEffect(() => {
 		if (readIntlMessagesIsPending !== undefined) return
@@ -76,8 +76,8 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	return intlMessagesLoaded ? (
 		<IntlProvider
-			locale={locale}
-			defaultLocale={defaultLocale}
+			locale={language}
+			defaultLocale={defaultLanguage}
 			messages={intlMessages.current}
 		>
 			{children}

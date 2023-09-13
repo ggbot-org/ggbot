@@ -1,14 +1,11 @@
 import { classNames } from "_/classNames"
 import { FC, PropsWithChildren, ReactNode } from "react"
 
-export type PageProps = {
+type Props = {
 	footer?: ReactNode
 }
 
-export const Page: FC<PropsWithChildren<PageProps>> = ({
-	children,
-	footer
-}) => (
+export const Page: FC<PropsWithChildren<Props>> = ({ children, footer }) => (
 	<div className={classNames("Page")}>
 		<div className={classNames("Page_content")}>{children}</div>
 
