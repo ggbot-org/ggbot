@@ -1,7 +1,6 @@
 import { OK } from "./_consoleColors.js"
 import { isMainModule } from "./_isMainModule.js"
 import { CreateS3BucketOutput } from "./_s3.js"
-import { createAssetsBucket } from "./s3-assets.js"
 import { createDataBucket } from "./s3-data.js"
 import { createLogsBucket } from "./s3-logs.js"
 import { createNakedDomainBucket } from "./s3-nakedDomain.js"
@@ -17,9 +16,6 @@ const s3BucketReport = (reportKey: string, s3Bucket: CreateS3BucketOutput) => {
 }
 
 export const taskCreate: TaskCreate = async () => {
-	const assetsBucket = await createAssetsBucket()
-	s3BucketReport("create assetsBucket", assetsBucket)
-
 	const dataBucket = await createDataBucket()
 	s3BucketReport("create dataBucket", dataBucket)
 

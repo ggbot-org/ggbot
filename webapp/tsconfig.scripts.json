@@ -16,6 +16,7 @@
 		"src/i18n/FormatjsIntlMessageIds.ts",
 		"src/i18n/locales.ts",
 		"src/package.ts",
+		"src/react/root.ts",
 		"src/routing/admin/pages.ts",
 		"src/routing/design/pages.ts",
 		"src/routing/public/pages.ts",

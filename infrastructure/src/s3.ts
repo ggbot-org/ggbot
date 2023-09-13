@@ -1,7 +1,6 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3"
 import { ENV } from "@workspace/env"
 import {
-	assetsDomain,
 	nextWebappDomain,
 	topLevelDomain,
 	webappDomain
@@ -12,12 +11,6 @@ import { awsRegion } from "./awsRegions.js"
 const { DEPLOY_STAGE } = ENV
 
 export const appBucketACL = BucketCannedACL.public_read
-
-export const getAssetsBucketName = () => assetsDomain
-
-export const getAssetsBucketArn = () => `arn:aws:s3:::${getAssetsBucketName()}`
-
-export const assetsBucketACL = BucketCannedACL.public_read
 
 export const getDataBucketName = (deployStage = DEPLOY_STAGE()) =>
 	deployStage === "local"

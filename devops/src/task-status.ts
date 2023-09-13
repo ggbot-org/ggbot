@@ -10,7 +10,6 @@ import { getSesNoreplyPolicyStatus } from "./iam-sesNoreply.js"
 import { getDataBucketStatus } from "./s3-data.js"
 import { getLogsBucketStatus } from "./s3-logs.js"
 // TODO how to check bucket in other region
-// import { getAssetsBucketStatus } from "./s3-assets.js";
 // import { getNakedDomainBucketStatus } from "./s3-nakedDomain.js";
 // import { getWwwBucketStatus } from "./s3-www.js";
 
@@ -19,7 +18,6 @@ type TaskStatus = () => Promise<{
 	devopsPolicy: IamPolicyStatus
 	sesNoreplyPolicy: IamPolicyStatus
 	// S3
-	// assetsBucket: S3BucketStatus;
 	// TODO how to check bucket in other region
 	dataBucket: S3BucketStatus
 	logsBucket: S3BucketStatus
@@ -76,10 +74,6 @@ export const taskStatus: TaskStatus = async () => {
 	console.info("S3")
 	// //////////////////////////////////////////////////////////////////
 
-	// TODO how to check bucket in other region
-	// const assetsBucket = await getAssetsBucketStatus();
-	// s3BucketReport("assetsDomainBucket", assetsBucket);
-
 	const dataBucket = await getDataBucketStatus()
 	s3BucketReport("dataBucket", dataBucket)
 
@@ -110,7 +104,6 @@ export const taskStatus: TaskStatus = async () => {
 
 	// //////////////////////////////////////////////////////////////////
 	return {
-		// assetsBucket,
 		dataBucket,
 		devopsPolicy,
 		logsBucket,

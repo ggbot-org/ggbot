@@ -3,7 +3,6 @@ import { DeployStage, ENV } from "@workspace/env"
 import { getLogsArn } from "./cloudWatch.js"
 import { lambdaAllArn } from "./lambda.js"
 import {
-	getAssetsBucketArn,
 	getDataBucketArn,
 	getLogsBucketArn,
 	getNakedDomainBucketArn,
@@ -32,7 +31,6 @@ const cross = {
 	// CloudWatch
 	logsArn: getLogsArn(),
 	// S3
-	assetsBucketArn: getAssetsBucketArn(),
 	nakedDomainBucketArn: getNakedDomainBucketArn(),
 	// SES
 	sesIdentityArn: getSesIdentityArn()
@@ -73,7 +71,6 @@ export const getDevopsPolicyStatements = () => [
 		Effect: "Allow",
 		Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
 		Resource: [
-			cross.assetsBucketArn,
 			cross.nakedDomainBucketArn,
 			main.dataBucketArn,
 			main.logsBucketArn,
@@ -87,8 +84,6 @@ export const getDevopsPolicyStatements = () => [
 		Effect: "Allow",
 		Action: ["s3:DeleteObject", "s3:PutObject"],
 		Resource: [
-			cross.assetsBucketArn,
-			`${cross.assetsBucketArn}/*`,
 			main.webappBucketArn,
 			`${main.webappBucketArn}/*`,
 			next.webappBucketArn,

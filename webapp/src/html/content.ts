@@ -1,5 +1,4 @@
-// TODO use own assets CDN, now it is https://rsms.me/inter/inter.css
-// import { fontBaseUrl, fontFaceUrl } from "@workspace/assets";
+import { reactRootId } from "../react/root.js"
 
 type LinkTag = {
 	href: string
@@ -27,6 +26,13 @@ type HeadTagArgs = {
 
 type HtmlTagArgs = HeadTagArgs & BodyTagArgs
 
+const logoBaseUrl = "/logo"
+const faviconIcoUrl = `${logoBaseUrl}/favicon.ico`
+const faviconSvgUrl = `${logoBaseUrl}/favicon.svg`
+
+const fontBaseUrl = "https://rsms.me"
+const fontFaceUrl = `${fontBaseUrl}/inter/inter.css`
+
 const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`
 
 const scriptTag = ({ src }: ScriptTag) =>
@@ -39,24 +45,24 @@ type StyleTag = {
 const styleTag = ({ content }: StyleTag) => `<style>${content}</style>`
 
 const baseStyle = () =>
-	[
-		// React root element id is "root", it is defined in @ggbo2/react package.
-		// Make its height at least the whole page.
-		`html, body, #root { min-height: 100vh; }`
-	].join("\n")
+	[`html, body, #${reactRootId} { min-height: 100vh; }`].join("\n")
 
-// TODO use assets CDN
-// const fontTags = [
-//    `<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
-//    `<link href="${fontFaceUrl}" rel="stylesheet">`,
-// ];
+const faviconTags = [
+	`<link rel="icon" href="${faviconIcoUrl}" sizes="any">`,
+	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`
+]
+
+const fontTags = [
+	`<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
+	`<link href="${fontFaceUrl}" rel="stylesheet">`
+]
 
 const metaTags = ({ title }: HeadTagArgs["meta"]) => [
 	'<meta charset="UTF-8" />',
 	'<meta name="viewport" content="width=device-width" />',
-	`<title>${title}</title>`
-	// TODO use assets CDN
-	//  ...fontTags,
+	`<title>${title}</title>`,
+	...faviconTags,
+	...fontTags
 ]
 
 const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
@@ -69,7 +75,7 @@ const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
 
 const bodyTag = ({ hasRootDiv, scripts }: BodyTagArgs) => [
 	"<body>",
-	hasRootDiv ? '<div id="root"></div>' : "",
+	hasRootDiv ? `<div id="${reactRootId}"></div>` : "",
 	...scripts.map(scriptTag),
 	"</body>"
 ]

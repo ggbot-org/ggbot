@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@workspace/api": "file:api",
-    "@workspace/assets": "file:assets",
     "@workspace/binance": "file:binance",
     "@workspace/dflow": "file:dflow",
     "@workspace/env": "file:env",
