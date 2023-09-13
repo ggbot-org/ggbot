@@ -23,8 +23,11 @@
 	"AuthEnter.title": {
 		"defaultMessage": "Enter ggbot"
 	},
-	"AuthExit.button": {
+	"AuthExit.submit": {
 		"defaultMessage": "Exit"
+	},
+	"AuthExit.reset": {
+		"defaultMessage": "Cancel"
 	},
 	"AuthExit.message": {
 		"defaultMessage": "Exit from your current account session."

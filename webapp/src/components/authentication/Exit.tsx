@@ -2,11 +2,11 @@ import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import {
 	Button,
+	Buttons,
 	Column,
 	Columns,
-	Control,
-	Field,
 	Form,
+	FormOnReset,
 	FormOnSubmit,
 	Message,
 	Modal,
@@ -37,9 +37,17 @@ export const AuthExit: FC<AuthExitProps> = ({
 		[exit]
 	)
 
+	const onReset = useCallback<FormOnReset>(
+		(event) => {
+			event.preventDefault()
+			setIsActive(false)
+		},
+		[setIsActive]
+	)
+
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
-			<Form box onSubmit={onSubmit}>
+			<Form box onSubmit={onSubmit} onReset={onReset}>
 				<Title>
 					<FormattedMessage id="AuthExit.title" />
 				</Title>
@@ -58,13 +66,15 @@ export const AuthExit: FC<AuthExitProps> = ({
 					</Column>
 				</Columns>
 
-				<Field isGrouped>
-					<Control>
-						<Button color="warning">
-							<FormattedMessage id="AuthExit.button" />
-						</Button>
-					</Control>
-				</Field>
+				<Buttons>
+					<Button type="submit" color="warning">
+						<FormattedMessage id="AuthExit.submit" />
+					</Button>
+
+					<Button type="reset">
+						<FormattedMessage id="AuthExit.reset" />
+					</Button>
+				</Buttons>
 			</Form>
 		</Modal>
 	)

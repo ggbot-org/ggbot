@@ -1,6 +1,6 @@
 import { Section } from "_/components/library"
-import { PageContainer } from "_/components/PageContainer"
 import { BinanceSettings } from "_/components/user/BinanceSettings"
+import { PageContainer } from "_/components/user/PageContainer"
 import { BinanceApiConfigProvider } from "_/contexts/user/BinanceApiConfig"
 import { FC } from "react"
 
