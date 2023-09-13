@@ -1,28 +1,28 @@
-import { GoCopyStrategy } from "_/components/GoCopyStrategy.js"
+import { GoCopyStrategy } from "_/components/GoCopyStrategy"
 import { Box, Buttons, Title } from "_/components/library"
-import { ShareStrategy } from "_/components/ShareStrategy.js"
-import { StrategyRecord } from "_/components/StrategyRecord.js"
-import { DeleteStrategy } from "_/components/user/DeleteStrategy.js"
-import { RenameStrategy } from "_/components/user/RenameStrategy.js"
+import { ShareStrategy } from "_/components/ShareStrategy"
+import { StrategyRecord } from "_/components/StrategyRecord"
+import { DeleteStrategy } from "_/components/user/DeleteStrategy"
+import { RenameStrategy } from "_/components/user/RenameStrategy"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const StrategyActions: FC = () => (
-		<Box>
-			<Title>
-				<FormattedMessage id="StrategyActions.title" />
-			</Title>
+	<Box>
+		<Title>
+			<FormattedMessage id="StrategyActions.title" />
+		</Title>
 
-			<StrategyRecord />
+		<StrategyRecord />
 
-			<Buttons>
-				<RenameStrategy />
+		<Buttons>
+			<RenameStrategy />
 
-				<ShareStrategy />
+			<ShareStrategy />
 
-				<GoCopyStrategy />
+			<GoCopyStrategy />
 
-				<DeleteStrategy />
-			</Buttons>
-		</Box>
-	)
+			<DeleteStrategy />
+		</Buttons>
+	</Box>
+)

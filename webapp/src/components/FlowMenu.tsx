@@ -1,5 +1,5 @@
 import { Flex } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy.js"
+import { StrategyContext } from "_/contexts/Strategy"
 import { FC, PropsWithChildren, useContext } from "react"
 
 export const FlowMenu: FC<PropsWithChildren> = ({ children }) => {

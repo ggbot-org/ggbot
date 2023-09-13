@@ -1,12 +1,12 @@
-import { adminDashboardHtmlPathname } from "_/routing/admin/pages.js"
-import { strategyKeyToURLSearchParams } from "_/routing/strategyKeyParams.js"
+import { adminDashboardHtmlPathname } from "_/routing/admin/pages"
+import { strategyKeyToURLSearchParams } from "_/routing/strategyKeyParams"
 import {
 	copyStrategyHtmlPathname,
 	settingsHtmlPathname,
 	strategyHtmlPathname,
 	userDashboardHtmlPathname
-} from "_/routing/user/pages.js"
-import { SettingsPageId } from "_/routing/user/types.js"
+} from "_/routing/user/pages"
+import { SettingsPageId } from "_/routing/user/types"
 import { StrategyKey } from "@workspace/models"
 
 export const href = {

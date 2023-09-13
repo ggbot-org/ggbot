@@ -1,7 +1,7 @@
 import { classNames } from "_/classNames"
 import { FC, useCallback, useState } from "react"
 
-import { DayDropdown, DayDropdownProps } from "./DayDropdown.js"
+import { DayDropdown, DayDropdownProps } from "./DayDropdown"
 
 export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
 	start: Pick<DayDropdownProps, "day" | "label" | "setDay">

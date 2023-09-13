@@ -1,10 +1,10 @@
-import { AccountDetailsPage } from "_/pages/admin/AccountDetails.js"
-import { DashboardPage } from "_/pages/admin/Dashboard.js"
+import { AccountDetailsPage } from "_/pages/admin/AccountDetails"
+import { DashboardPage } from "_/pages/admin/Dashboard"
 import { mount } from "_/react/mount"
 import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
-} from "_/routing/admin/pages.js"
+} from "_/routing/admin/pages"
 import { FC } from "react"
 
 const Router: FC = () => {

@@ -1,7 +1,7 @@
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { UseActionError } from "_/hooks/useAction.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
-import { localWebStorage } from "_/storages/local.js"
+import { StrategyContext } from "_/contexts/Strategy"
+import { UseActionError } from "_/hooks/useAction"
+import { useUserApi } from "_/hooks/useUserApi"
+import { localWebStorage } from "_/storages/local"
 import {
 	createContext,
 	FC,

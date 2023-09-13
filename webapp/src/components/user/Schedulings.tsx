@@ -14,13 +14,13 @@ import {
 import {
 	SchedulingItem,
 	SchedulingItemProps
-} from "_/components/SchedulingItem.js"
-import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges.js"
-import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { StrategiesContext } from "_/contexts/user/Strategies.js"
-import { SubscriptionContext } from "_/contexts/user/Subscription.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+} from "_/components/SchedulingItem"
+import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
+import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
+import { StrategyContext } from "_/contexts/Strategy"
+import { StrategiesContext } from "_/contexts/user/Strategies"
+import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { useUserApi } from "_/hooks/useUserApi"
 import {
 	isStrategyScheduling,
 	newStrategyScheduling,

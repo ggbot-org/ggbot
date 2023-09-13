@@ -10,7 +10,7 @@ import {
 } from "react"
 import { useIntl } from "react-intl"
 
-import { Icon } from "./Icon.js"
+import { Icon } from "./Icon"
 
 const randomKey = () =>
 	Math.random()

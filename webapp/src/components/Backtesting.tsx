@@ -1,12 +1,12 @@
-import { BacktestingActions } from "_/components/BacktestingActions.js"
+import { BacktestingActions } from "_/components/BacktestingActions"
 import {
 	BacktestingProgress,
 	BacktestingProgressProps
-} from "_/components/BacktestingProgress.js"
+} from "_/components/BacktestingProgress"
 import {
 	FrequencyInput,
 	FrequencyInputProps
-} from "_/components/FrequencyInput.js"
+} from "_/components/FrequencyInput"
 import {
 	Box,
 	Column,
@@ -15,10 +15,10 @@ import {
 	DailyIntervalProps,
 	Title
 } from "_/components/library"
-import { Memory } from "_/components/Memory.js"
-import { ProfitSummary } from "_/components/ProfitSummary.js"
-import { StrategyFlowContext } from "_/contexts/StrategyFlow.js"
-import { useBacktesting } from "_/hooks/useBacktesting.js"
+import { Memory } from "_/components/Memory"
+import { ProfitSummary } from "_/components/ProfitSummary"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow"
+import { useBacktesting } from "_/hooks/useBacktesting"
 import { isFrequency } from "@workspace/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"

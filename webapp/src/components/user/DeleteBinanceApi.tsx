@@ -6,8 +6,8 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
+import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

@@ -1,5 +1,5 @@
-import { Email } from "_/components/Email.js"
-import { GenericError } from "_/components/GenericError.js"
+import { Email } from "_/components/Email"
+import { GenericError } from "_/components/GenericError"
 import {
 	Button,
 	Control,
@@ -10,8 +10,8 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { TimeoutError } from "_/components/TimeoutError.js"
-import { url } from "_/routing/authentication/URLs.js"
+import { TimeoutError } from "_/components/TimeoutError"
+import { url } from "_/routing/authentication/URLs"
 import {
 	isApiAuthEnterRequestData,
 	isApiAuthEnterResponseData

@@ -3,8 +3,8 @@ import { logging } from "@workspace/logging"
 import { isStrategy, Strategy } from "@workspace/models"
 import { isNonEmptyString, NonEmptyString } from "@workspace/type-utils"
 
-import { itemKey } from "./itemKeys.js"
-import type { WebStorageProvider } from "./provider.js"
+import { itemKey } from "./itemKeys"
+import type { WebStorageProvider } from "./provider"
 
 const { info } = logging("local-storage", IS_DEV)
 

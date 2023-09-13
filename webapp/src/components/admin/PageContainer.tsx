@@ -1,10 +1,10 @@
-import { Footer } from "_/components/Footer.js"
+import { Footer } from "_/components/Footer"
 import { Page } from "_/components/library"
-import { Navigation } from "_/components/Navigation.js"
-import { NoNetwork } from "_/components/NoNetwork.js"
-import { AuthenticationProvider } from "_/contexts/Authentication.js"
+import { Navigation } from "_/components/Navigation"
+import { NoNetwork } from "_/components/NoNetwork"
+import { AuthenticationProvider } from "_/contexts/Authentication"
 import { I18nProvider } from "_/contexts/I18n"
-import { ToastProvider } from "_/contexts/Toast.js"
+import { ToastProvider } from "_/contexts/Toast"
 import { FC, PropsWithChildren } from "react"
 
 export const PageContainer: FC<PropsWithChildren> = ({ children }) => (

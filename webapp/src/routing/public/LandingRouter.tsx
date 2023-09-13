@@ -1,10 +1,10 @@
 import { mount } from "_/react/mount"
 import { FC } from "react"
 
-import { HomePage } from "../../pages/HomePage.js"
-import { PrivacyPage } from "../../pages/Privacy.js"
-import { TermsPage } from "../../pages/Terms.js"
-import { homepageHtmlPathname, privacyHtmlPathname, termsHtmlPathname}from "./pages.js"
+import { HomePage } from "../../pages/HomePage"
+import { PrivacyPage } from "../../pages/Privacy"
+import { TermsPage } from "../../pages/Terms"
+import { homepageHtmlPathname, privacyHtmlPathname, termsHtmlPathname}from "./pages"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname

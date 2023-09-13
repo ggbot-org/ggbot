@@ -1,5 +1,5 @@
-import { AccountId } from "_/components/AccountId.js"
-import { Email } from "_/components/Email.js"
+import { AccountId } from "_/components/AccountId"
+import { Email } from "_/components/Email"
 import {
 	Button,
 	Column,
@@ -12,7 +12,7 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication.js"
+import { AuthenticationContext } from "_/contexts/Authentication"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

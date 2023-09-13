@@ -1,8 +1,8 @@
-import { accountKeyToURLSearchParams } from "_/routing/admin/accountKeyParams.js"
+import { accountKeyToURLSearchParams } from "_/routing/admin/accountKeyParams"
 import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
-} from "_/routing/admin/pages.js"
+} from "_/routing/admin/pages"
 import { AccountKey } from "@workspace/models"
 
 export const href = {

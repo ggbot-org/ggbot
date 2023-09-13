@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Buttons } from "_/components/library"
-import type { BacktestingState } from "_/hooks/useBacktesting.js"
+import type { BacktestingState } from "_/hooks/useBacktesting"
 import { FC, memo } from "react"
 import { useIntl } from "react-intl"
 

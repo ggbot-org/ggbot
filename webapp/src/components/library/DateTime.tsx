@@ -1,4 +1,4 @@
-import { DayFormat, dayFormat, TimeFormat, timeFormat } from "_/i18n/formats.js"
+import { DayFormat, dayFormat, TimeFormat, timeFormat } from "_/i18n/formats"
 import { Day, Timestamp } from "minimal-time-helpers"
 import { FC, TimeHTMLAttributes, useMemo } from "react"
 import { FormattedDate } from "react-intl"

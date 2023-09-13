@@ -4,9 +4,9 @@ import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@wo
 import { logging } from "@workspace/logging"
 import { isLiteralType } from "@workspace/type-utils"
 
-import { cachedBoolean } from "./cachedBoolean.js"
-import { itemKey } from "./itemKeys.js"
-import type { WebStorageProvider } from "./provider.js"
+import { cachedBoolean } from "./cachedBoolean"
+import { itemKey } from "./itemKeys"
+import type { WebStorageProvider } from "./provider"
 
 const { info } = logging("session-storage", IS_DEV)
 

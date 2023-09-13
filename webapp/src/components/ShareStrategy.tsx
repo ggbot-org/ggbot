@@ -1,7 +1,7 @@
 import { Button } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { ToastContext } from "_/contexts/Toast.js"
-import { href } from "_/routing/public/hrefs.js"
+import { StrategyContext } from "_/contexts/Strategy"
+import { ToastContext } from "_/contexts/Toast"
+import { href } from "_/routing/public/hrefs"
 import { FC, useCallback, useContext, useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

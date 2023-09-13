@@ -1,4 +1,4 @@
-import { dayFormat } from "_/i18n/formats.js"
+import { dayFormat } from "_/i18n/formats"
 import { FC, useCallback, useId } from "react"
 import { FormattedDate } from "react-intl"
 import {
@@ -10,8 +10,8 @@ import {
 	Field
 } from "trunx"
 
-import { Calendar, CalendarProps } from "./Calendar.js"
-import { Label } from "./Label.js"
+import { Calendar, CalendarProps } from "./Calendar"
+import { Label } from "./Label"
 
 export type DayDropdownProps = Required<
 	Pick<DropdownProps, "isActive" | "onClick">

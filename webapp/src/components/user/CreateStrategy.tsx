@@ -9,11 +9,11 @@ import {
 	InputOnChange,
 	Message
 } from "_/components/library"
-import { StrategyName } from "_/components/StrategyName.js"
-import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota.js"
-import { UseActionError } from "_/hooks/useAction.js"
-import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { StrategyName } from "_/components/StrategyName"
+import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
+import { UseActionError } from "_/hooks/useAction"
+import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
+import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
 import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"

@@ -16,7 +16,7 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * const bundleWebApps = async () => {
  * 	await browserBundle({
  * 		entryPoints: ["src/app.tsx"],
- * 		outfile: "public/app.js"
+ * 		outfile: "public/app"
  * 	})
  * }
  *

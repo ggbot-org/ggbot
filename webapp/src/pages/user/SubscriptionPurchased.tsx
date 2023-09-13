@@ -1,6 +1,6 @@
 import { Section } from "_/components/library"
-import { PageContainer } from "_/components/user/PageContainer.js"
-import { SubscriptionPurchased } from "_/components/user/SubscriptionPurchased.js"
+import { PageContainer } from "_/components/user/PageContainer"
+import { SubscriptionPurchased } from "_/components/user/SubscriptionPurchased"
 import { FC } from "react"
 
 export const SubscriptionPurchasedPage: FC = () => (

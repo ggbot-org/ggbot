@@ -1,6 +1,6 @@
-import { OneTimePassword } from "_/components/authentication/OneTimePassword.js"
-import { RegenerateOneTimePassword } from "_/components/authentication/RegenerateOneTimePassword.js"
-import { GenericError } from "_/components/GenericError.js"
+import { OneTimePassword } from "_/components/authentication/OneTimePassword"
+import { RegenerateOneTimePassword } from "_/components/authentication/RegenerateOneTimePassword"
+import { GenericError } from "_/components/GenericError"
 import {
 	Button,
 	Column,
@@ -16,8 +16,8 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { TimeoutError } from "_/components/TimeoutError.js"
-import { url } from "_/routing/authentication/URLs.js"
+import { TimeoutError } from "_/components/TimeoutError"
+import { url } from "_/routing/authentication/URLs"
 import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData

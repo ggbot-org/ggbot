@@ -1,4 +1,4 @@
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { getDflowBinanceNodesCatalog } from "@workspace/dflow"
 import { useMemo } from "react"
 

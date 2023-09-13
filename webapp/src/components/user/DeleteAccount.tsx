@@ -9,7 +9,7 @@ import {
 	Modal,
 	ModalProps
 } from "_/components/library"
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useCallback, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

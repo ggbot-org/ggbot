@@ -1,4 +1,4 @@
-import { sessionWebStorage } from "_/storages/session.js"
+import { sessionWebStorage } from "_/storages/session"
 import {
 	BinanceExchangeInfo,
 	BinanceExchangeInfoCacheProvider

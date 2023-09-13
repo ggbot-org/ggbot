@@ -1,4 +1,4 @@
-import { ApiKey } from "_/components/ApiKey.js"
+import { ApiKey } from "_/components/ApiKey"
 import {
 	Button,
 	Control,
@@ -10,10 +10,10 @@ import {
 import {
 	BinanceApiKeyPermissions,
 	BinanceApiKeyPermissionsProps
-} from "_/components/user/BinanceApiKeyPermissions.js"
-import { ToastContext } from "_/contexts/Toast.js"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+} from "_/components/user/BinanceApiKeyPermissions"
+import { ToastContext } from "_/contexts/Toast"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
+import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

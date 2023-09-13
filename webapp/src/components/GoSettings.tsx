@@ -1,6 +1,6 @@
 import { Button } from "_/components/library"
-import { href } from "_/routing/user/hrefs.js"
-import { SettingsPageId } from "_/routing/user/types.js"
+import { href } from "_/routing/user/hrefs"
+import { SettingsPageId } from "_/routing/user/types"
 import { FC, useState } from "react"
 import { FormattedMessage } from "react-intl"
 

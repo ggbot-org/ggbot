@@ -1,6 +1,6 @@
 import { classNames } from "_/classNames"
-import { dayFormat } from "_/i18n/formats.js"
-import { href } from "_/routing/public/hrefs.js"
+import { dayFormat } from "_/i18n/formats"
+import { href } from "_/routing/public/hrefs"
 import { memo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

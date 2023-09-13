@@ -1,4 +1,4 @@
-import { localWebStorage } from "_/storages/local.js"
+import { localWebStorage } from "_/storages/local"
 import {
 	ApiActionClientSideError,
 	ApiActionServerSideError

@@ -3,7 +3,7 @@ import type {
 	BacktestingOutput,
 	BacktestingState
 } from "_/hooks/useBacktesting"
-import { dayFormat, timeFormat } from "_/i18n/formats.js"
+import { dayFormat, timeFormat } from "_/i18n/formats"
 import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

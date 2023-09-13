@@ -1,8 +1,8 @@
-import { AccountId } from "_/components/AccountId.js"
-import { Email } from "_/components/Email.js"
+import { AccountId } from "_/components/AccountId"
+import { Email } from "_/components/Email"
 import { Box, Title } from "_/components/library"
-import { WhenCreated } from "_/components/WhenCreated.js"
-import { AuthenticationContext } from "_/contexts/Authentication.js"
+import { WhenCreated } from "_/components/WhenCreated"
+import { AuthenticationContext } from "_/contexts/Authentication"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

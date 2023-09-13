@@ -1,4 +1,4 @@
-import { GoSettings } from "_/components/GoSettings.js"
+import { GoSettings } from "_/components/GoSettings"
 import {
 	Buttons,
 	Checkbox,
@@ -7,8 +7,8 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { SubscriptionContext } from "_/contexts/user/Subscription.js"
-import { sessionWebStorage } from "_/storages/session.js"
+import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { sessionWebStorage } from "_/storages/session"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

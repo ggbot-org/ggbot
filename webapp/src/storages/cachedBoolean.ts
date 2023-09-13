@@ -1,6 +1,6 @@
 import type { ManagedCacheProvider } from "@workspace/cache"
 
-import type { WebStorageProvider } from "./provider.js"
+import type { WebStorageProvider } from "./provider"
 
 export const cachedBoolean = (
 	storage: WebStorageProvider,

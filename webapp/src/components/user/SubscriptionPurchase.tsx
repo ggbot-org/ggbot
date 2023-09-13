@@ -1,4 +1,4 @@
-import { Email } from "_/components/Email.js"
+import { Email } from "_/components/Email"
 import {
 	Box,
 	Button,
@@ -16,14 +16,14 @@ import {
 import {
 	SubscriptionEnd,
 	SubscriptionEndProps
-} from "_/components/SubscriptionEnd.js"
-import { SubscriptionNumMonths } from "_/components/SubscriptionNumMonths.js"
-import { SelectCountry } from "_/components/user/SelectCountry.js"
-import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice.js"
-import { AuthenticationContext } from "_/contexts/Authentication.js"
-import { SubscriptionContext } from "_/contexts/user/Subscription.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
-import { url } from "_/routing/user/URLs.js"
+} from "_/components/SubscriptionEnd"
+import { SubscriptionNumMonths } from "_/components/SubscriptionNumMonths"
+import { SelectCountry } from "_/components/user/SelectCountry"
+import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
+import { AuthenticationContext } from "_/contexts/Authentication"
+import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { useUserApi } from "_/hooks/useUserApi"
+import { url } from "_/routing/user/URLs"
 import {
 	AllowedCountryIsoCode2,
 	isAllowedCountryIsoCode2,

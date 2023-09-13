@@ -1,5 +1,5 @@
-import { useAction } from "_/hooks/useAction.js"
-import { url } from "_/routing/public/URLs.js"
+import { useAction } from "_/hooks/useAction"
+import { url } from "_/routing/public/URLs"
 import { PublicApiActionType } from "@workspace/api"
 import { ReadStrategy, ReadStrategyFlow } from "@workspace/models"
 

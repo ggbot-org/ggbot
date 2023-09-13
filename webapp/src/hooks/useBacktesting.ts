@@ -1,7 +1,7 @@
-import { BinanceClient } from "_/binance/client.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
-import { useNodesCatalog } from "_/hooks/useNodesCatalog.js"
+import { BinanceClient } from "_/binance/client"
+import { StrategyContext } from "_/contexts/Strategy"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
+import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import {
 	binanceKlineMaxLimit,
 	BinanceKlinesCacheMap,

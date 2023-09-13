@@ -6,10 +6,10 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { StrategyRecord } from "_/components/StrategyRecord.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
-import { href } from "_/routing/user/hrefs.js"
+import { StrategyRecord } from "_/components/StrategyRecord"
+import { StrategyContext } from "_/contexts/Strategy"
+import { useUserApi } from "_/hooks/useUserApi"
+import { href } from "_/routing/user/hrefs"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

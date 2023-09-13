@@ -1,9 +1,9 @@
-import { FlowMenu } from "_/components/FlowMenu.js"
-import { FlowViewContainer } from "_/components/FlowViewContainer.js"
-import { GoCopyStrategy } from "_/components/GoCopyStrategy.js"
+import { FlowMenu } from "_/components/FlowMenu"
+import { FlowViewContainer } from "_/components/FlowViewContainer"
+import { GoCopyStrategy } from "_/components/GoCopyStrategy"
 import { Buttons } from "_/components/library"
-import { ShareStrategy } from "_/components/ShareStrategy.js"
-import { StrategyFlowContext } from "_/contexts/StrategyFlow.js"
+import { ShareStrategy } from "_/components/ShareStrategy"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { FC, useContext } from "react"
 
 export const ReadonlyFlow: FC = () => {

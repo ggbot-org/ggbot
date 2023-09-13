@@ -1,7 +1,7 @@
 import { Column, Columns } from "_/components/library"
-import { StrategyProfits } from "_/components/StrategyProfits.js"
-import { Schedulings } from "_/components/user/Schedulings.js"
-import { StrategyActions } from "_/components/user/StrategyActions.js"
+import { StrategyProfits } from "_/components/StrategyProfits"
+import { Schedulings } from "_/components/user/Schedulings"
+import { StrategyActions } from "_/components/user/StrategyActions"
 import { FC } from "react"
 
 export const ManageStrategy: FC = () => (

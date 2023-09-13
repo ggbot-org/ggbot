@@ -1,8 +1,8 @@
-import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
-import { CreateStrategy } from "_/components/user/CreateStrategy.js"
-import { PageContainer } from "_/components/user/PageContainer.js"
-import { Strategies } from "_/components/user/Strategies.js"
-import { StrategiesProvider } from "_/contexts/user/Strategies.js"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
+import { CreateStrategy } from "_/components/user/CreateStrategy"
+import { PageContainer } from "_/components/user/PageContainer"
+import { Strategies } from "_/components/user/Strategies"
+import { StrategiesProvider } from "_/contexts/user/Strategies"
 import { FC, useState } from "react"
 
 const pageName = "Dashboard"

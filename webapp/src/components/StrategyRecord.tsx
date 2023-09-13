@@ -1,8 +1,8 @@
 import { Column, Columns } from "_/components/library"
-import { StrategyId } from "_/components/StrategyId.js"
-import { StrategyName } from "_/components/StrategyName.js"
-import { WhenCreated } from "_/components/WhenCreated.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
+import { StrategyId } from "_/components/StrategyId"
+import { StrategyName } from "_/components/StrategyName"
+import { WhenCreated } from "_/components/WhenCreated"
+import { StrategyContext } from "_/contexts/Strategy"
 import { FC, useContext } from "react"
 
 export const StrategyRecord: FC = () => {

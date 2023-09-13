@@ -10,8 +10,8 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { StrategyName } from "_/components/StrategyName.js"
-import { ManageStrategyContext } from "_/contexts/user/ManageStrategy.js"
+import { StrategyName } from "_/components/StrategyName"
+import { ManageStrategyContext } from "_/contexts/user/ManageStrategy"
 import { isName } from "@workspace/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"

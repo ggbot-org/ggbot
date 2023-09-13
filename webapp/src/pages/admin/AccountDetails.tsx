@@ -1,7 +1,7 @@
-import { AccountStrategies } from "_/components/admin/AccountStrategies.js"
-import { PageContainer } from "_/components/admin/PageContainer.js"
-import { getStoredTabId, TabId, Tabs } from "_/components/Tabs.js"
-import { AccountProvider } from "_/contexts/admin/Account.js"
+import { AccountStrategies } from "_/components/admin/AccountStrategies"
+import { PageContainer } from "_/components/admin/PageContainer"
+import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
+import { AccountProvider } from "_/contexts/admin/Account"
 import { FC, useState } from "react"
 
 const pageName = "AdminAccountDetails"

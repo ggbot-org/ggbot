@@ -1,5 +1,5 @@
 import { Message } from "_/components/library"
-import { UseActionError } from "_/hooks/useAction.js"
+import { UseActionError } from "_/hooks/useAction"
 import { isApiActionServerSideError } from "@workspace/api"
 import { ErrorExceededQuota, quotaType } from "@workspace/models"
 import { FC } from "react"

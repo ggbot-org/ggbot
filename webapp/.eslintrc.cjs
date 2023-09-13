@@ -76,7 +76,6 @@ module.exports = {
 			}
 		],
 		"func-style": ["warn", "expression"],
-		"import/extensions": ["error", "ignorePackages"],
 		"import/first": "error",
 		"import/newline-after-import": "error",
 		"import/no-cycle": "error",

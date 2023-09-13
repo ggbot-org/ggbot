@@ -1,6 +1,6 @@
 import { Button, ButtonOnClick } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { href } from "_/routing/user/hrefs.js"
+import { StrategyContext } from "_/contexts/Strategy"
+import { href } from "_/routing/user/hrefs"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

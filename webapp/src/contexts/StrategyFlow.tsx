@@ -1,7 +1,7 @@
-import { FlowViewContainerElement } from "_/components/FlowViewContainer.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView.js"
-import { usePublicApi } from "_/hooks/usePublicApi.js"
+import { FlowViewContainerElement } from "_/components/FlowViewContainer"
+import { StrategyContext } from "_/contexts/Strategy"
+import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView"
+import { usePublicApi } from "_/hooks/usePublicApi"
 import { isStrategyFlow } from "@workspace/models"
 import {
 	createContext,

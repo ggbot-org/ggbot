@@ -1,4 +1,4 @@
-import { ApiKey } from "_/components/ApiKey.js"
+import { ApiKey } from "_/components/ApiKey"
 import {
 	Button,
 	Control,
@@ -8,9 +8,9 @@ import {
 	formValues,
 	Title
 } from "_/components/library"
-import { ApiSecret } from "_/components/user/ApiSecret.js"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { ApiSecret } from "_/components/user/ApiSecret"
+import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
+import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useCallback, useContext, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 

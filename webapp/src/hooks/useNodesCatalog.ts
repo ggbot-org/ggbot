@@ -1,5 +1,5 @@
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { useBinanceNodesCatalog } from "_/hooks/useBinanceNodesCatalog.js"
+import { StrategyContext } from "_/contexts/Strategy"
+import { useBinanceNodesCatalog } from "_/hooks/useBinanceNodesCatalog"
 import { DflowNodesCatalog } from "dflow"
 import { useContext, useMemo } from "react"
 

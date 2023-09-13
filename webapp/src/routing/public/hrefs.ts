@@ -1,12 +1,12 @@
 import { StrategyKey } from "@workspace/models"
 
-import { strategyKeyToURLSearchParams } from "../../routing/strategyKeyParams.js"
-import { userDashboardHtmlPathname } from "../user/pages.js"
+import { strategyKeyToURLSearchParams } from "../../routing/strategyKeyParams"
+import { userDashboardHtmlPathname } from "../user/pages"
 import {
 	privacyHtmlPathname,
 	strategyHtmlPathname,
 	termsHtmlPathname
-} from "./pages.js"
+} from "./pages"
 
 export const href = {
 	homePage: () => "/",

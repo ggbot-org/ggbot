@@ -1,6 +1,6 @@
 import { Container, Content, Section, Title } from "_/components/library"
-import { PageContainer } from "_/components/PageContainer.js"
-import { href } from "_/routing/public/hrefs.js"
+import { PageContainer } from "_/components/PageContainer"
+import { href } from "_/routing/public/hrefs"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 

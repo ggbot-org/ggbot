@@ -1,11 +1,11 @@
-import { AccountSettingsPage } from "_/pages/user/AccountSettings.js"
-import { BillingSettingsPage } from "_/pages/user/BillingSettings.js"
-import { BinanceSettingsPage } from "_/pages/user/BinanceSettings.js"
-import { CopyStrategyPage } from "_/pages/user/CopyStrategy.js"
-import { DashboardPage } from "_/pages/user/Dashboard.js"
-import { PurchaseCanceledPage } from "_/pages/user/PurchaseCanceled.js"
-import { StrategyPage } from "_/pages/user/Strategy.js"
-import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased.js"
+import { AccountSettingsPage } from "_/pages/user/AccountSettings"
+import { BillingSettingsPage } from "_/pages/user/BillingSettings"
+import { BinanceSettingsPage } from "_/pages/user/BinanceSettings"
+import { CopyStrategyPage } from "_/pages/user/CopyStrategy"
+import { DashboardPage } from "_/pages/user/Dashboard"
+import { PurchaseCanceledPage } from "_/pages/user/PurchaseCanceled"
+import { StrategyPage } from "_/pages/user/Strategy"
+import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
 import {
 	copyStrategyHtmlPathname,
@@ -14,7 +14,7 @@ import {
 	strategyHtmlPathname,
 	subscriptionPurchasedHtmlPathname,
 	userDashboardHtmlPathname
-} from "_/routing/user/pages.js"
+} from "_/routing/user/pages"
 import { FC } from "react"
 
 const Router: FC = () => {

@@ -6,7 +6,7 @@ import {
 	TabSelectorProps,
 	TabSelectors
 } from "_/components/library"
-import { sessionWebStorage } from "_/storages/session.js"
+import { sessionWebStorage } from "_/storages/session"
 import {
 	Dispatch,
 	FC,

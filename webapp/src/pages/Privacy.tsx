@@ -1,5 +1,5 @@
 import { Container, Content, Section, Title } from "_/components/library"
-import { PageContainer } from "_/components/PageContainer.js"
+import { PageContainer } from "_/components/PageContainer"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 

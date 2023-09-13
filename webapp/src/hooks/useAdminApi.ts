@@ -1,5 +1,5 @@
-import { useAction } from "_/hooks/useAction.js"
-import { url } from "_/routing/admin/URLs.js"
+import { useAction } from "_/hooks/useAction"
+import { url } from "_/routing/admin/URLs"
 import { AdminApiActionType } from "@workspace/api"
 import {
 	// ListAccountKeys,

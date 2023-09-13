@@ -1,4 +1,4 @@
-import { AccountId } from "_/components/AccountId.js"
+import { AccountId } from "_/components/AccountId"
 import { Column, Columns, Content, Message } from "_/components/library"
 import { AccountKey } from "@workspace/models"
 import { FC } from "react"

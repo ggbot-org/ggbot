@@ -23,7 +23,7 @@ import {
 } from "@workspace/dflow"
 import { Time } from "minimal-time-helpers"
 
-import { binance } from "./exchange.js"
+import { binance } from "./exchange"
 
 export class BinanceClient implements BinanceDflowClient {
 	readonly balances: BinanceBalance[]

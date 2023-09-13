@@ -1,4 +1,4 @@
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { useUserApi } from "_/hooks/useUserApi"
 import { AccountStrategies, isAccountStrategies } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 

@@ -9,8 +9,8 @@ import {
 	SizeModifierProp,
 	Title
 } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy.js"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols.js"
+import { StrategyContext } from "_/contexts/Strategy"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { add, decimalToNumber, mul, sub } from "@workspace/arithmetic"
 import { isBinanceOrderRespFULL } from "@workspace/binance"
 import { isOrders, Order } from "@workspace/models"

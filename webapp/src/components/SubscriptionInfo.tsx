@@ -1,8 +1,8 @@
 import { Box, Control, Field, Message, Title } from "_/components/library"
-import { SubscriptionEnd } from "_/components/SubscriptionEnd.js"
-import { SubscriptionPlan } from "_/components/SubscriptionPlan.js"
-import { SubscriptionStatus } from "_/components/SubscriptionStatus.js"
-import { SubscriptionContext } from "_/contexts/user/Subscription.js"
+import { SubscriptionEnd } from "_/components/SubscriptionEnd"
+import { SubscriptionPlan } from "_/components/SubscriptionPlan"
+import { SubscriptionStatus } from "_/components/SubscriptionStatus"
+import { SubscriptionContext } from "_/contexts/user/Subscription"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

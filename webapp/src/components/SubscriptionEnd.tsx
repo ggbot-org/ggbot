@@ -1,5 +1,5 @@
 import { InputField, InputFieldProps } from "_/components/library"
-import { dayFormat } from "_/i18n/formats.js"
+import { dayFormat } from "_/i18n/formats"
 import { Time } from "minimal-time-helpers"
 import { FC } from "react"
 import { useIntl } from "react-intl"

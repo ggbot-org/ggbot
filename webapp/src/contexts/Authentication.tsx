@@ -1,13 +1,10 @@
-import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter.js"
-import { AuthExit, AuthExitProps } from "_/components/authentication/Exit.js"
-import {
-	AuthVerify,
-	AuthVerifyProps
-} from "_/components/authentication/Verify.js"
-import { Navigation } from "_/components/Navigation.js"
-import { useUserApi } from "_/hooks/useUserApi.js"
-import { localWebStorage } from "_/storages/local.js"
-import { sessionWebStorage } from "_/storages/session.js"
+import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
+import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
+import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
+import { Navigation } from "_/components/Navigation"
+import { useUserApi } from "_/hooks/useUserApi"
+import { localWebStorage } from "_/storages/local"
+import { sessionWebStorage } from "_/storages/session"
 import { isDev } from "@workspace/env"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { Account, EmailAddress, noneAccount } from "@workspace/models"

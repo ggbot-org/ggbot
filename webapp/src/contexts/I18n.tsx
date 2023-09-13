@@ -1,8 +1,4 @@
-import {
-	defaultLocale,
-	detectLocale,
-	localeJsonPathname
-} from "_/i18n/locales.js"
+import { defaultLocale, detectLocale, localeJsonPathname } from "_/i18n/locales"
 import {
 	FC,
 	PropsWithChildren,

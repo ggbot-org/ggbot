@@ -6,10 +6,11 @@ import {
 	Hero,
 	Level,
 	LevelItem,
-	Logo} from "_/components/library"
-import { PageContainer } from "_/components/PageContainer.js"
-import { useGotFirstPageView } from "_/hooks/useGotFirstPageView.js"
-import { href } from "_/routing/public/hrefs.js"
+	Logo
+} from "_/components/library"
+import { PageContainer } from "_/components/PageContainer"
+import { useGotFirstPageView } from "_/hooks/useGotFirstPageView"
+import { href } from "_/routing/public/hrefs"
 import { FC, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 

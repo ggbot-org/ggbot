@@ -1,4 +1,4 @@
-import { Name, NameProps } from "_/components/Name.js"
+import { Name, NameProps } from "_/components/Name"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 

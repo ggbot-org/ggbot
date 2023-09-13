@@ -8,8 +8,8 @@ import {
 	NavbarMenu
 } from "trunx"
 
-import { BrandName } from "./BrandName.js"
-import { Logo } from "./Logo.js"
+import { BrandName } from "./BrandName"
+import { Logo } from "./Logo"
 
 export type NavbarProps = Partial<{
 	noMenu: boolean

@@ -1,5 +1,5 @@
-import { binance } from "_/binance/exchange.js"
-import { StrategyContext } from "_/contexts/Strategy.js"
+import { binance } from "_/binance/exchange"
+import { StrategyContext } from "_/contexts/Strategy"
 import {
 	DflowBinanceSymbolInfo,
 	isDflowBinanceSymbolInfo

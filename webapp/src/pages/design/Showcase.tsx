@@ -1,17 +1,17 @@
 import { Column, Columns, Logo, Section, Title } from "_/components/library"
-import { PageContainer } from "_/components/PageContainer.js"
+import { PageContainer } from "_/components/PageContainer"
 import { FC } from "react"
 
-import { ButtonColors, LoadingButtons } from "./examples/Buttons.js"
-import { SimpleForm } from "./examples/Forms.js"
-import { Icons } from "./examples/Icons.js"
-import { InputFields } from "./examples/InputFields.js"
-import { Palette } from "./examples/Palette.js"
-import { SimpleTable } from "./examples/Tables.js"
-import { Tags } from "./examples/Tags.js"
-import { TimeIntervalSelectors } from "./examples/TimeIntervalSelectors.js"
-import { ToastExample } from "./examples/Toast.js"
-import { Typography } from "./examples/Typography.js"
+import { ButtonColors, LoadingButtons } from "./examples/Buttons"
+import { SimpleForm } from "./examples/Forms"
+import { Icons } from "./examples/Icons"
+import { InputFields } from "./examples/InputFields"
+import { Palette } from "./examples/Palette"
+import { SimpleTable } from "./examples/Tables"
+import { Tags } from "./examples/Tags"
+import { TimeIntervalSelectors } from "./examples/TimeIntervalSelectors"
+import { ToastExample } from "./examples/Toast"
+import { Typography } from "./examples/Typography"
 
 export const ShowcasePage: FC = () => (
 	<PageContainer>

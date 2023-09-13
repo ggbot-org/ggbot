@@ -1,6 +1,6 @@
 import { Column, Columns, Content, Message } from "_/components/library"
-import { StrategyId } from "_/components/StrategyId.js"
-import { StrategyKind } from "_/components/StrategyKind.js"
+import { StrategyId } from "_/components/StrategyId"
+import { StrategyKind } from "_/components/StrategyKind"
 import { StrategyKey } from "@workspace/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"

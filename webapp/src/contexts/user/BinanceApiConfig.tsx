@@ -1,4 +1,4 @@
-import { useUserApi } from "_/hooks/useUserApi.js"
+import { useUserApi } from "_/hooks/useUserApi"
 import { BinanceApiKey } from "@workspace/models"
 import {
 	createContext,

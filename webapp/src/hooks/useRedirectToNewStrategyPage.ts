@@ -1,4 +1,4 @@
-import { href } from "_/routing/user/hrefs.js"
+import { href } from "_/routing/user/hrefs"
 import { isStrategy } from "@workspace/models"
 import { useEffect } from "react"
 

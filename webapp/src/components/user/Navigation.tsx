@@ -8,9 +8,9 @@ import {
 	NavbarLink,
 	NavbarStart
 } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication.js"
-import { href } from "_/routing/user/hrefs.js"
-import { SettingsPageId } from "_/routing/user/types.js"
+import { AuthenticationContext } from "_/contexts/Authentication"
+import { href } from "_/routing/user/hrefs"
+import { SettingsPageId } from "_/routing/user/types"
 import { memo, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
