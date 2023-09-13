@@ -6,7 +6,7 @@ import { ErrorInvalidArg } from "./errors.js"
 
 describe("normalizeEmailAddress", () => {
 	it("returns email in lowercase", () => {
-		;[
+		[
 			{ input: "lower@example.com", output: "lower@example.com" },
 			{ input: "MiXeD@example.com", output: "mixed@example.com" }
 		].forEach(({ input, output }) => {
@@ -16,7 +16,7 @@ describe("normalizeEmailAddress", () => {
 	})
 
 	it("removes period characters", () => {
-		;[
+		[
 			{ input: "john.smith@gmail.com", output: "johnsmith@gmail.com" },
 			{ input: "jOhN.sMiTh@gmail.com", output: "johnsmith@gmail.com" },
 			{
@@ -31,7 +31,7 @@ describe("normalizeEmailAddress", () => {
 	})
 
 	it("removes labels", () => {
-		;[
+		[
 			{ input: "user+label@example.com", output: "user@example.com" }
 		].forEach(({ input, output }) => {
 			if (!isEmailAddress(input)) throw new Error()
@@ -40,7 +40,7 @@ describe("normalizeEmailAddress", () => {
 	})
 
 	it("throws ErrorInvalidArg", () => {
-		;["", "@@", "not an email", "john.smith at gmail.com"].forEach(
+		["", "@@", "not an email", "john.smith at gmail.com"].forEach(
 			(value) => {
 				assert.throws(
 					() => {
@@ -58,7 +58,7 @@ describe("normalizeEmailAddress", () => {
 
 describe("isEmailAddress", () => {
 	it("validates email", () => {
-		;[
+		[
 			{ input: undefined, output: false },
 			{ input: "not an email", output: false },
 			{ input: "john.smith at gmail.com", output: false },

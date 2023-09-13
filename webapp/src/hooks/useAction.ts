@@ -110,7 +110,7 @@ export const useAction = <
 
 	const request = useCallback(
 		(inputData: Parameters<Operation>[0]) => {
-			;(async function () {
+			(async function () {
 				const controller = new UseActionAbortController()
 
 				try {

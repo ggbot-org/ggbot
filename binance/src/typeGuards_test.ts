@@ -11,7 +11,7 @@ import {
 
 describe("isBinanceKline", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: [
 					1674259200000,
@@ -36,7 +36,7 @@ describe("isBinanceKline", () => {
 })
 describe("isBinanceKlineInterval", () => {
 	it("works", () => {
-		;[
+		[
 			{ input: "xx", output: false },
 			{ input: "1m", output: true },
 			{ input: "3m", output: true },
@@ -61,7 +61,7 @@ describe("isBinanceKlineInterval", () => {
 
 describe("isBinanceKlineOptionalParameters", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: {
 					startTime: undefined,
@@ -135,7 +135,7 @@ describe("isBinanceKlineOptionalParameters", () => {
 
 describe("isBinanceSymbolFilterLotSize", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: {
 					filterType: "LOT_SIZE",
@@ -189,7 +189,7 @@ describe("isBinanceSymbolFilterLotSize", () => {
 
 describe("isBinanceSymbolFilterMinNotional", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: {
 					filterType: "MIN_NOTIONAL",

@@ -9,7 +9,7 @@ import { createdNow } from "./time.js"
 
 describe("isOneTimePassword", () => {
 	it("validates input if is valid OneTimePassword", () => {
-		;[
+		[
 			{
 				input: { code: "123456", ...createdNow() },
 				output: true

@@ -5,7 +5,7 @@ import { isStrategyInput } from "./strategyInput.js"
 
 describe("isStrategyInput", () => {
 	it("validates StrategyInput", () => {
-		;[
+		[
 			{
 				input: {
 					"input 1": true,

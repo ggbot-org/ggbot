@@ -1,5 +1,3 @@
-const base = require("./base.cjs")
-
 module.exports = {
 	env: { browser: true, es2020: true, node: false },
 	extends: [
@@ -29,7 +27,6 @@ module.exports = {
 		"@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-array-constructor": "off",
-		"@typescript-eslint/no-duplicate-imports": "error",
 		"@typescript-eslint/no-empty-function": "off",
 		// Accept expressions like
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
@@ -107,7 +104,7 @@ module.exports = {
 		// This behavior is known as [SmartTabs](https://www.emacswiki.org/emacs/SmartTabs).
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
-		"no-warning-comments": "error",
+		"no-warning-comments": "warn",
 		"react/display-name": "error",
 		"react/hook-use-state": ["error", { allowDestructuredState: true }],
 		"react/jsx-boolean-value": "error",

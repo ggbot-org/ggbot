@@ -5,7 +5,7 @@ import { bollingerBands } from "./bollingerBands.js"
 
 describe("Bollinger Bands", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: { values: [], period: 1, amplitude: 2 },
 				output: [[], [], []]

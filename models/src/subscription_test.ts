@@ -5,7 +5,7 @@ import { isSubscription } from "./subscription.js"
 
 describe("isSubscription", () => {
 	it("validates Subscription", () => {
-		;[
+		[
 			{
 				input: {
 					plan: "basic",

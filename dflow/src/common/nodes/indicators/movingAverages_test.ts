@@ -9,7 +9,7 @@ import {
 
 describe("Exponential Moving Average", () => {
 	it("works", () => {
-		;[
+		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
 				input: {
@@ -32,7 +32,7 @@ describe("Exponential Moving Average", () => {
 
 describe("Simple Moving Average", () => {
 	it("works", () => {
-		;[
+		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
 				input: {
@@ -55,7 +55,7 @@ describe("Simple Moving Average", () => {
 
 describe("Wilder's smoothing", () => {
 	it("works", () => {
-		;[
+		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
 				input: {

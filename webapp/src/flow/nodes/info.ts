@@ -1,8 +1,3 @@
-// TODO try with TypeScript
-// import {NodeViewType} from '@workspace/dflow'
-// and
-// static type: NodeViewType = "info"
-// also for other nodes in this folder
 import { FlowViewNode } from "flow-view"
 
 export class FlowViewNodeInfo extends FlowViewNode {

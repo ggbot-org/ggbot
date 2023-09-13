@@ -43,7 +43,7 @@ describe("getBalancesFromExecutionSteps", () => {
 
 describe("getOrdersFromExecutionSteps", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: [],
 				output: []

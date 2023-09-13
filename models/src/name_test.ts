@@ -9,7 +9,7 @@ export const invalidNames = ["", "     ", nameTooLong]
 
 describe("isName", () => {
 	it("validates string as name or throws", () => {
-		;[
+		[
 			{ input: "valid name", output: true },
 			...invalidNames
 				.map(normalizeName)
@@ -22,7 +22,7 @@ describe("isName", () => {
 
 describe("throwIfInvalidName", () => {
 	it("throws ErrorInvalidArg", () => {
-		;[...invalidNames.map(normalizeName)].forEach((value) => {
+		[...invalidNames.map(normalizeName)].forEach((value) => {
 			assert.throws(
 				() => {
 					throwIfInvalidName(value)

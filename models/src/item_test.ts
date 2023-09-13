@@ -5,7 +5,7 @@ import { isItemId, nullId } from "./item.js"
 
 describe("isItemId", () => {
 	it("validates id as UUID", () => {
-		;[
+		[
 			{ input: undefined, output: false },
 			{ input: 1000, output: false },
 			{ input: "", output: false },

@@ -5,7 +5,7 @@ import { add, div, equal, mul, sub } from "./operators.js"
 
 describe("equal", () => {
 	it("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {
-		;[
+		[
 			{ input: { a: "0.00", b: 0 }, output: true },
 			{ input: { a: "0.001", b: 0 }, output: false },
 			{ input: { a: "1", b: "-1" }, output: false },
@@ -21,7 +21,7 @@ describe("equal", () => {
 
 describe("add", () => {
 	it("implements addition", () => {
-		;[
+		[
 			{
 				input: { a: "0", b: "1", numDecimals: 2 },
 				output: "1.00"
@@ -34,7 +34,7 @@ describe("add", () => {
 
 describe("sub", () => {
 	it("implements subtraction", () => {
-		;[
+		[
 			{
 				input: { a: "0", b: "1", numDecimals: 2 },
 				output: "-1.00"
@@ -47,7 +47,7 @@ describe("sub", () => {
 
 describe("mul", () => {
 	it("implements multiplication", () => {
-		;[
+		[
 			{
 				input: { a: "1", b: "1", numDecimals: 2 },
 				output: "1.00"
@@ -68,7 +68,7 @@ describe("mul", () => {
 
 describe("div", () => {
 	it("implements division", () => {
-		;[
+		[
 			{
 				input: { a: "1", b: "1", numDecimals: 2 },
 				output: "1.00"

@@ -13,7 +13,6 @@ module.exports = {
 		"@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-array-constructor": "off",
-		"@typescript-eslint/no-duplicate-imports": "error",
 		"@typescript-eslint/no-empty-function": "off",
 		// Accept expressions like
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>

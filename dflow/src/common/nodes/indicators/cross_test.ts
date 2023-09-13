@@ -5,7 +5,7 @@ import { crossOver } from "./cross.js"
 
 describe("CrossOver", () => {
 	it("works", () => {
-		;[
+		[
 			{ input: { values1: [], values2: [] }, output: [] },
 			{
 				input: {

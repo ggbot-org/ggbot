@@ -5,7 +5,7 @@ import { relativeStrengthIndex } from "./relativeStrengthIndex.js"
 
 describe("Relative Strength Index", () => {
 	it("works", () => {
-		;[
+		[
 			{
 				input: {
 					values: [1, 2],

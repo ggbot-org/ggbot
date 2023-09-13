@@ -27,7 +27,7 @@ const invalidDecimals = [
 
 describe("Decimal", () => {
 	it('supports "Greater than" operator', () => {
-		;[
+		[
 			{
 				input1: "0",
 				input2: "1",
@@ -49,7 +49,7 @@ describe("Decimal", () => {
 	})
 
 	it('supports "Less than" operator', () => {
-		;[
+		[
 			{
 				input1: "1",
 				input2: "0",
@@ -94,7 +94,7 @@ describe("isMaybeDecimal", () => {
 
 describe("numOfDecimals", () => {
 	it("return number of digits in mantissa part", () => {
-		;[
+		[
 			{ input: "0", output: 0 },
 			{ input: "0.0", output: 0 },
 			{ input: "1.00", output: 0 },
