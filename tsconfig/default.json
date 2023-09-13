@@ -1,11 +1,17 @@
 {
 	"compilerOptions": {
 		"composite": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
 		"module": "esnext",
 		"moduleResolution": "node",
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"skipLibCheck": true,
+		"strict": true,
 		"target": "esnext",
-		"tsBuildInfoFile": "temp/tsconfig.tsbuildinfo"
-	},
-	"extends": "./code-quality.json"
+		"tsBuildInfoFile": "temp/tsconfig.tsbuildinfo",
+		"useDefineForClassFields": true
+	}
 }

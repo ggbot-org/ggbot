@@ -29,16 +29,16 @@
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
+    "@workspace/api": "file:api",
     "@workspace/assets": "file:assets",
     "@workspace/binance": "file:binance",
     "@workspace/dflow": "file:dflow",
     "@workspace/env": "file:env",
+    "@workspace/http": "file:http",
     "@workspace/locators": "file:locators",
+    "@workspace/logging": "file:logging",
     "@workspace/models": "file:models",
     "@workspace/type-utils": "file:type-utils",
-    "@workspace/api": "file:api",
-    "@workspace/http": "file:http",
-    "@workspace/logging": "file:logging",
     "country-isocode2": "1.1.0",
     "flow-view": "6.0.1",
     "react": "18.2.0",
@@ -47,41 +47,24 @@
     "trunx": "0.45.3"
   },
   "devDependencies": {
-    "@workspace/env": "file:env",
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig",
-    "@types/react-dom": "18.2.7",
     "@formatjs/cli": "6.1.3",
+    "@types/react-dom": "18.2.7",
+    "@typescript-eslint/eslint-plugin": "6.7.0",
+    "@typescript-eslint/parser": "6.7.0",
+    "@workspace/env": "file:env",
     "@workspace/repo": "file:repo",
     "esbuild": "0.17.17",
+    "eslint": "8.49.0",
+    "eslint-plugin-formatjs": "4.10.3",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-tsdoc": "0.2.17",
     "onchange": "7.1.0",
     "sass": "1.64.2",
     "ts-prune": "0.10.3",
     "type-fest": "4.2.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@workspace/eslint-config/react"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ],
-        "rules": {
-          "@typescript-eslint/ban-ts-comment": "off",
-          "no-warning-comments": "off"
-        }
-      },
-      {
-        "files": [
-          "src/pages/design/**/*.tsx"
-        ],
-        "rules": {
-          "formatjs/no-literal-string-in-jsx": "off"
-        }
-      }
-    ]
   }
 }

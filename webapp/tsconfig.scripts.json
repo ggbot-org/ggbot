@@ -1,10 +1,14 @@
 {
 	"compilerOptions": {
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
 		"outDir": "./temp",
 		"rootDir": "./src",
+		"skipLibCheck": true,
+		"target": "esnext",
 		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
 	},
-	"extends": "@workspace/tsconfig",
 	"exclude": ["node_modules/", "temp/", "**/*_test.ts"],
 	"include": [
 		"src/esbuild/*.ts",

@@ -1,5 +1,15 @@
 {
 	"compilerOptions": {
+		"composite": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"jsx": "react-jsx",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"paths": {
 			"_/binance/*": ["./src/binance/*"],
 			"_/classNames": ["./src/styles/classNames.ts"],
@@ -13,9 +23,13 @@
 			"_/react/mount": ["./src/react/mount.tsx"],
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"]
-		}
+		},
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo",
+		"useDefineForClassFields": true
 	},
 	"exclude": ["node_modules"],
-	"extends": "@workspace/tsconfig/react",
 	"include": ["**/*.ts", "**/*.tsx"]
 }
