@@ -26,7 +26,7 @@ import { isDev } from "@workspace/env"
 import { EmailAddress } from "@workspace/models"
 import { NonEmptyString } from "@workspace/type-utils"
 import { FC, Reducer, useCallback, useReducer } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export type AuthVerifyProps = {
 	email: EmailAddress
@@ -48,8 +48,6 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 	resetEmail,
 	setJwt
 }) => {
-	const { formatMessage } = useIntl()
-
 	const [
 		{
 			gotTimeout,
@@ -190,10 +188,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 					<FormattedMessage
 						id="AuthVerify.checkEmail"
 						values={{
-							em: (chunks) => <em>{chunks}</em>,
-							resetEmail: formatMessage({
-								id: "AuthVerify.resetEmail"
-							})
+							em: (chunks) => <em>{chunks}</em>
 						}}
 					/>
 				</Message>
@@ -214,11 +209,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 							</Control>
 
 							<Control>
-								<Button
-									type="reset"
-									onClick={resetEmail}
-									size="small"
-								>
+								<Button type="reset" onClick={resetEmail}>
 									<FormattedMessage id="AuthVerify.resetEmail" />
 								</Button>
 							</Control>

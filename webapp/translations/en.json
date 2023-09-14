@@ -20,6 +20,9 @@
 	"AuthEnter.button": {
 		"defaultMessage": "Send"
 	},
+	"AuthEnter.info": {
+		"defaultMessage": "Use your email to access ggbot."
+	},
 	"AuthEnter.title": {
 		"defaultMessage": "Enter ggbot"
 	},
@@ -42,7 +45,7 @@
 		"defaultMessage": "Verification failed. Check you <em>One Time Password</em>."
 	},
 	"AuthVerify.checkEmail": {
-		"defaultMessage": "Check your email to get the <em>One Time Password</em>. If the email is not correct, click the {resetEmail} button."
+		"defaultMessage": "Check your email to get the <em>One Time Password</em>."
 	},
 	"AuthVerify.enterOneTimePassword": {
 		"defaultMessage": "Enter the 6-digits <em>One Time Password</em> you find in your email."
@@ -51,7 +54,7 @@
 		"defaultMessage": "Reset"
 	},
 	"AuthVerify.title": {
-		"defaultMessage": "Account verification"
+		"defaultMessage": "Email verification"
 	},
 	"BacktestingActions.pause": {
 		"defaultMessage": "Pause"

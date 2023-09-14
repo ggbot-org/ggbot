@@ -2,11 +2,14 @@ import { Email } from "_/components/Email"
 import { GenericError } from "_/components/GenericError"
 import {
 	Button,
+	Column,
+	Columns,
 	Control,
 	Field,
 	Form,
 	FormOnSubmit,
 	formValues,
+	Message,
 	Modal,
 	Title
 } from "_/components/library"
@@ -131,7 +134,24 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 					<FormattedMessage id="AuthEnter.title" />
 				</Title>
 
-				<Email required name={fieldName.email} readOnly={isPending} />
+				<Message>
+					<FormattedMessage
+						id="AuthEnter.info"
+						values={{
+							em: (chunks) => <em>{chunks}</em>
+						}}
+					/>
+				</Message>
+
+				<Columns>
+					<Column size={{ desktop: "half" }}>
+						<Email
+							required
+							name={fieldName.email}
+							readOnly={isPending}
+						/>
+					</Column>
+				</Columns>
 
 				<Field isGrouped>
 					<Control>
