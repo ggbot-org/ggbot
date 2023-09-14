@@ -3,6 +3,7 @@ import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
 import { Navigation } from "_/components/Navigation"
 import { useUserApi } from "_/hooks/useUserApi"
+import { href } from "_/routing/public/hrefs"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 import { isDev } from "@workspace/env"
@@ -199,9 +200,9 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		dispatch({ type: "SET_EMAIL", data: { email: account.email } })
 	}, [account, startSession])
 
-	// Refresh page on exit.
+	// Go to Homepage on exit.
 	useEffect(() => {
-		if (exited) window.location.reload()
+		if (exited) window.location.href = href.homePage()
 	}, [exited])
 
 	if (account === null || jwt === undefined) {
