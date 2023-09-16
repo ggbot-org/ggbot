@@ -419,6 +419,24 @@
 	"StrategyNotFound.title": {
 		"defaultMessage": "Strategy not found."
 	},
+	"StrategyOrders.noOrder": {
+		"defaultMessage": "No order found"
+	},
+	"StrategyOrders.side": {
+		"defaultMessage": "Side"
+	},
+	"StrategyOrders.time": {
+		"defaultMessage": "Time"
+	},
+	"StrategyOrders.symbol": {
+		"defaultMessage": "Symbol"
+	},
+	"StrategyOrders.quoteQuantity": {
+		"defaultMessage": "Quote quantity"
+	},
+	"StrategyOrders.baseQuantity": {
+		"defaultMessage": "Quantity"
+	},
 	"StrategyId.label": {
 		"defaultMessage": "Strategy ID"
 	},

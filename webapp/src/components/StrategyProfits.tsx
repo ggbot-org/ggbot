@@ -8,6 +8,7 @@ import { FC, useContext, useEffect, useMemo } from "react"
 type Props = {
 	numDays: number
 }
+
 export const StrategyProfits: FC<Props> = ({ numDays }) => {
 	const { strategy } = useContext(StrategyContext)
 
