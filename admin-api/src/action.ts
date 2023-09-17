@@ -16,7 +16,7 @@ import { listAccountKeys, readAccount } from "@workspace/database"
 import { logging } from "@workspace/logging"
 import { isReadAccountInput } from "@workspace/models"
 
-const { info } = logging("user-api")
+const { info } = logging("admin-api")
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

@@ -11,6 +11,7 @@
     "start": "node dist/server"
   },
   "dependencies": {
+    "@workspace/aws": "file:aws",
     "@workspace/binance": "file:binance",
     "@workspace/env": "file:env",
     "@workspace/logging": "file:logging",

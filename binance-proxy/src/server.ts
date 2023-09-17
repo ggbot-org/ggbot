@@ -1,13 +1,22 @@
 import { createServer } from "node:http"
 
+import { describeElasticIps } from "@workspace/aws"
 import {
 	binanceApiDomain,
 	BinanceRequestHeaders,
 	isBinanceApiPrivateEndoint
 } from "@workspace/binance"
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
+import { logging } from "@workspace/logging"
 
-import { info } from "./logging.js"
+import {
+	ErrorCannotGetInstanceId,
+	ErrorCannotParseStaticIps
+} from "./errors.js"
+import { getInstanceId } from "./getInstanceId.js"
+import { parseStaticIps } from "./parseStaticIps.js"
+
+const { info, warn } = logging("binance-proxy")
 
 const PORT = 3000
 
@@ -72,6 +81,24 @@ createServer(async (request, response) => {
 	info(data)
 	const json = JSON.stringify(data)
 	response.end(json)
-}).listen(PORT, () => {
-	info(`Server running on port ${PORT}`)
+}).listen(PORT, async () => {
+	info("Server running on port", PORT)
+
+	try {
+		const instanceId = await getInstanceId
+		info("Got instanceId", instanceId)
+
+		const staticIps = parseStaticIps()
+		const elasticIps = await describeElasticIps({ PublicIps: staticIps })
+		info(elasticIps)
+	} catch (error) {
+		if (
+			error instanceof ErrorCannotGetInstanceId ||
+			error instanceof ErrorCannotParseStaticIps
+		) {
+			warn(error.message)
+		} else {
+			console.error(error)
+		}
+	}
 })

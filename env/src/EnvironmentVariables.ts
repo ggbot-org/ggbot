@@ -19,6 +19,10 @@ class EnvironmentVariables {
 		return getVariable("BINANCE_PROXY_BASE_URL")
 	}
 
+	BINANCE_PROXY_STATIC_IPS() {
+		return getVariable("BINANCE_PROXY_STATIC_IPS")
+	}
+
 	DEPLOY_STAGE(): DeployStage {
 		return getVariable("DEPLOY_STAGE") as DeployStage
 	}
