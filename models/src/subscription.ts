@@ -1,12 +1,9 @@
-import {
-	isLiteralType,
-	NaturalNumber,
-	objectTypeGuard
-} from "@workspace/type-utils"
 import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
+import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { Currency } from "./currency.js"
+import { NaturalNumber } from "./numbers.js"
 import { UpdateTime } from "./time.js"
 
 export const monthlyPrice = 10

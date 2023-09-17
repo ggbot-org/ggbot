@@ -13,7 +13,7 @@ import {
 	APIGatewayProxyHandler
 } from "@workspace/api-gateway"
 import { UserWebappBaseURL } from "@workspace/locators"
-import { objectTypeGuard } from "@workspace/type-utils"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 type RequestData = {
 	message: string

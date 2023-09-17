@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@workspace/binance": "file:binance",
-    "flow-view": "6.0.1"
+    "flow-view": "6.0.1",
+    "minimal-type-guard-helpers": "0.1.1"
   },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",

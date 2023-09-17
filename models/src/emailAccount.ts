@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@workspace/type-utils"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { EmailAddress, isEmailAddress } from "./email.js"

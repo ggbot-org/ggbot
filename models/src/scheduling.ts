@@ -1,4 +1,4 @@
-import { isLiteralType, objectTypeGuard } from "@workspace/type-utils"
+import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Frequency, isFrequency } from "./frequency.js"
 

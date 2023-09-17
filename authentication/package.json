@@ -18,7 +18,8 @@
   "dependencies": {
     "@workspace/env": "file:env",
     "@workspace/models": "file:models",
-    "jsonwebtoken": "9.0.1"
+    "jsonwebtoken": "9.0.1",
+    "minimal-type-guard-helpers": "0.1.1"
   },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",

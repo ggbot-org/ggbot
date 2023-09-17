@@ -112,8 +112,8 @@ import {
 	StrategyKey,
 	SubscriptionPurchaseKey
 } from "@workspace/models"
-import { isLiteralType } from "@workspace/type-utils"
 import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
+import { isLiteralType } from "minimal-type-guard-helpers"
 
 export const dirnameDelimiter = "/"
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)

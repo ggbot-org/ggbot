@@ -4,13 +4,11 @@ import {
 	EmailAddress,
 	isAccountKey,
 	isAllowedCountryIsoCode2,
-	isEmailAddress
-} from "@workspace/models"
-import {
+	isEmailAddress,
 	isNaturalNumber,
-	NaturalNumber,
-	objectTypeGuard
-} from "@workspace/type-utils"
+	NaturalNumber
+} from "@workspace/models"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 export type ApiUtrustCallabackRequestData = {
 	ok: boolean

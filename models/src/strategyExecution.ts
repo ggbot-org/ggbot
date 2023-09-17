@@ -1,5 +1,5 @@
-import { isLiteralType, objectTypeGuard } from "@workspace/type-utils"
 import { DflowExecutionNodeInfo, DflowGraph } from "dflow"
+import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey } from "./accountStrategy.js"
 import { Balances, isBalances } from "./balance.js"

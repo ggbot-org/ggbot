@@ -1,5 +1,5 @@
-import { objectTypeGuard } from "@workspace/type-utils"
 import { Day, isDay, isTime, now, Time } from "minimal-time-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 export type DayKey = { day: Day }
 

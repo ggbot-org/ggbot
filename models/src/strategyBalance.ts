@@ -1,5 +1,5 @@
-import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
 import { Day, DayInterval, isDay, isDayInterval } from "minimal-time-helpers"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
 import {

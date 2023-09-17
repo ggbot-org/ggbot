@@ -1,5 +1,5 @@
-import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
 import { Dflow, DflowObject } from "dflow"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isItemId, Item, newId, NewItem } from "./item.js"
 import { createdNow, CreationTime, isCreationTime } from "./time.js"

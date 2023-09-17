@@ -20,7 +20,7 @@ import {
 	isApiAuthEnterResponseData
 } from "@workspace/api"
 import { EmailAddress, isEmailAddress } from "@workspace/models"
-import { isMaybeObject } from "@workspace/type-utils"
+import { isMaybeObject } from "minimal-type-guard-helpers"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 

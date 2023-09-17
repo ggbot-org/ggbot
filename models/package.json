@@ -23,9 +23,9 @@
   },
   "dependencies": {
     "@workspace/arithmetic": "file:arithmetic",
-    "@workspace/type-utils": "file:type-utils",
     "flow-view": "6.0.1",
-    "minimal-time-helpers": "0.1.0"
+    "minimal-time-helpers": "0.1.0",
+    "minimal-type-guard-helpers": "0.1.1"
   },
   "eslintConfig": {
     "extends": [

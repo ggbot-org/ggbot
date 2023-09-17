@@ -33,8 +33,9 @@ import {
 	purchaseMaxNumMonths as maxNumMonths,
 	purchaseMinNumMonths as minNumMonths
 } from "@workspace/models"
-import { isMaybeObject, isNaturalNumber } from "@workspace/type-utils"
+import { isNaturalNumber } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
+import { isMaybeObject } from "minimal-type-guard-helpers"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

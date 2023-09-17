@@ -1,5 +1,5 @@
-import { objectTypeGuard } from "@workspace/type-utils"
 import { Dflow, DflowObject } from "dflow"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey } from "./accountStrategy.js"
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js"

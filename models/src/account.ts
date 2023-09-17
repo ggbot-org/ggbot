@@ -2,7 +2,7 @@ import {
 	arrayTypeGuard,
 	isLiteralType,
 	objectTypeGuard
-} from "@workspace/type-utils"
+} from "minimal-type-guard-helpers"
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js"

@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isItemId, Item, newId } from "./item.js"
 import { isScheduling, Scheduling } from "./scheduling.js"

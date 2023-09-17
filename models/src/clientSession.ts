@@ -1,5 +1,5 @@
-import { objectTypeGuard } from "@workspace/type-utils"
 import { getDay, today } from "minimal-time-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { CreationDay, isCreationDay } from "./time.js"

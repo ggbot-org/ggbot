@@ -4,9 +4,9 @@ import {
 	clientSessionNumDays,
 	isClientSession
 } from "@workspace/models"
-import { isMaybeObject } from "@workspace/type-utils"
 // @ts-ignore
 import jsonwebtoken from "jsonwebtoken"
+import { isMaybeObject } from "minimal-type-guard-helpers"
 
 import { ErrorUnauthorizedAuthenticationHeader } from "./errors.js"
 import { verifyAuthenticationHeader } from "./header.js"

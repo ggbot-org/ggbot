@@ -25,7 +25,8 @@
     "@workspace/env": "file:env",
     "@workspace/infrastructure": "file:infrastructure",
     "@workspace/locators": "file:dflow",
-    "@workspace/test-data": "file:test-data"
+    "@workspace/test-data": "file:test-data",
+    "minimal-type-guard-helpers": "0.1.1"
   },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",

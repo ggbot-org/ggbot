@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Balances, isBalances } from "./balance.js"
 import { CreationTime, isCreationTime } from "./time.js"

@@ -18,8 +18,8 @@
   "dependencies": {
     "@workspace/http": "file:http",
     "@workspace/models": "file:models",
-    "@workspace/type-utils": "file:type-utils",
-    "dflow": "0.42.0"
+    "dflow": "0.42.0",
+    "minimal-type-guard-helpers": "0.1.1"
   },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",

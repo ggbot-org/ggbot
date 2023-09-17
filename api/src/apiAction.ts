@@ -14,8 +14,8 @@ import {
 	ErrorExceededQuota,
 	ErrorUnimplementedStrategyKind
 } from "@workspace/models"
-import { isLiteralType, objectTypeGuard } from "@workspace/type-utils"
 import { Dflow, DflowObject } from "dflow"
+import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 export type ApiActionInput<ApiActionType extends string> = {
 	type: ApiActionType

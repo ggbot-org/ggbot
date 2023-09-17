@@ -1,5 +1,5 @@
-import { isMaybeObject, objectTypeGuard } from "@workspace/type-utils"
 import { FlowViewSerializableGraph } from "flow-view"
+import { isMaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"

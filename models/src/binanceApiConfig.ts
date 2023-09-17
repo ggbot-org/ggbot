@@ -1,11 +1,8 @@
-import {
-	isNonEmptyString,
-	NonEmptyString,
-	objectTypeGuard
-} from "@workspace/type-utils"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { ItemKey } from "./item.js"
+import { isNonEmptyString, NonEmptyString } from "./strings.js"
 import { CreationTime, DeletionTime } from "./time.js"
 
 export type BinanceApiConfig = ItemKey<{

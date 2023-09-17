@@ -1,7 +1,7 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
 import { StrategyFlow } from "@workspace/models"
-import { objectTypeGuard } from "@workspace/type-utils"
 import { DflowGraph, DflowId } from "dflow"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { dflowBinancePrecision } from "./arithmetic.js"
 import {
@@ -119,7 +119,7 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 				node.id,
 				nodeConnections
 			)
-			// TODO try MayObject<T> to be implemented in type-utils
+			// TODO try MayObject<T> from minimal-type-guard-helpers
 			const maybeSymbolAndInterval: {
 				symbol: unknown
 				interval: unknown

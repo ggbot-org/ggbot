@@ -1,6 +1,6 @@
-// TODO use type-utils
+// TODO use minimal-type-guard-helpers
 import { isDecimal } from "@workspace/arithmetic"
-import { isLiteralType } from "@workspace/type-utils"
+import { isLiteralType } from "minimal-type-guard-helpers"
 
 import {
 	BinanceBalance,

@@ -1,14 +1,12 @@
 import {
 	EmailAddress,
 	isEmailAddress,
+	isNonEmptyString,
 	isOneTimePasswordCode,
+	NonEmptyString,
 	OneTimePassword
 } from "@workspace/models"
-import {
-	isNonEmptyString,
-	NonEmptyString,
-	objectTypeGuard
-} from "@workspace/type-utils"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 export type ApiAuthEnterRequestData = {
 	email: EmailAddress

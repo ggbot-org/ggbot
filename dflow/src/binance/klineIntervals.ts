@@ -1,4 +1,4 @@
-import { isLiteralType } from "@workspace/type-utils"
+import { isLiteralType } from "minimal-type-guard-helpers"
 
 /**
  * Binance kline intervals supported by ggbot2 dflow implementation.

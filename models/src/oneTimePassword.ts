@@ -1,4 +1,4 @@
-import { objectTypeGuard } from "@workspace/type-utils"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { EmailAddress } from "./email.js"
 import { Language } from "./languages.js"

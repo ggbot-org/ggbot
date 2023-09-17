@@ -1,10 +1,7 @@
 import { Decimal, isDecimal } from "@workspace/arithmetic"
-import {
-	arrayTypeGuard,
-	isNonEmptyString,
-	NonEmptyString,
-	objectTypeGuard
-} from "@workspace/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
+
+import { isNonEmptyString, NonEmptyString } from "./strings.js"
 
 /**
  * A Balance is an abstract representation of an asset owned.

@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "@workspace/type-utils"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import {

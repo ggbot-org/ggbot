@@ -1,9 +1,7 @@
-import {
-	isLiteralType,
-	isNaturalNumber,
-	NaturalNumber
-} from "@workspace/type-utils"
 import { Time, TimeUnit, timeUnitDuration } from "minimal-time-helpers"
+import { isLiteralType } from "minimal-type-guard-helpers"
+
+import { isNaturalNumber, NaturalNumber } from "./numbers.js"
 
 export const frequencyIntervals = ["1h", "1m"] as const
 export type FrequencyInterval = (typeof frequencyIntervals)[number]

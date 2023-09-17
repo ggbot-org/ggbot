@@ -9,9 +9,10 @@ import {
 import {
 	Frequency,
 	FrequencyInterval,
-	isFrequencyInterval
+	isFrequencyInterval,
+	isNaturalNumber,
+	NaturalNumber
 } from "@workspace/models"
-import { isNaturalNumber, NaturalNumber } from "@workspace/type-utils"
 import { FC, useCallback } from "react"
 import { useIntl } from "react-intl"
 

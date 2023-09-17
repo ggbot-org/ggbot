@@ -1,4 +1,4 @@
-import { isLiteralType } from "@workspace/type-utils"
+import { isLiteralType } from "minimal-type-guard-helpers"
 
 const paymentProviders = ["utrust"]
 export type PaymentProvider = (typeof paymentProviders)[number]

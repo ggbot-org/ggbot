@@ -1,7 +1,11 @@
 import { logging } from "_/logging"
 import type { ManagedCacheProvider } from "@workspace/cache"
-import { isStrategy, Strategy } from "@workspace/models"
-import { isNonEmptyString, NonEmptyString } from "@workspace/type-utils"
+import {
+	isNonEmptyString,
+	isStrategy,
+	NonEmptyString,
+	Strategy
+} from "@workspace/models"
 
 import { itemKey } from "./itemKeys"
 import type { WebStorageProvider } from "./provider"

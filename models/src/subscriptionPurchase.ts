@@ -1,9 +1,3 @@
-import {
-	isLiteralType,
-	isMaybeObject,
-	NaturalNumber,
-	objectTypeGuard
-} from "@workspace/type-utils"
 import { DflowObject } from "dflow"
 import {
 	dateToDay,
@@ -15,9 +9,15 @@ import {
 	isDayInterval,
 	today
 } from "minimal-time-helpers"
+import {
+	isLiteralType,
+	isMaybeObject,
+	objectTypeGuard
+} from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
+import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
 import {

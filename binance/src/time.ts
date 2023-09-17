@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys */
-import { NaturalNumber } from "@workspace/type-utils"
 import { getTime, Time } from "minimal-time-helpers"
 
 import { BinanceKlineInterval } from "./types.js"
@@ -7,8 +6,8 @@ import { BinanceKlineInterval } from "./types.js"
 export const getBinanceIntervalTime: Record<
 	BinanceKlineInterval,
 	(time: Time) => {
-		plus: (num: NaturalNumber) => Time
-		minus: (num: NaturalNumber) => Time
+		plus: (num: number) => Time
+		minus: (num: number) => Time
 	}
 > = {
 	"1s": (time) => ({

@@ -22,8 +22,7 @@ import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
-import { EmailAddress } from "@workspace/models"
-import { NonEmptyString } from "@workspace/type-utils"
+import { EmailAddress, NonEmptyString } from "@workspace/models"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
