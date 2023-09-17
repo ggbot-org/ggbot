@@ -1,3 +1,1 @@
-import { topLevelDomain } from "./FQDNs.js"
-
-export const noReplyEmailAddress = `noreply@${topLevelDomain}`
+export const noReplyEmailAddress = (dnsDomain: string) => `noreply@${dnsDomain}`

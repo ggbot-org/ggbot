@@ -20,19 +20,11 @@ class EnvironmentVariables {
 	}
 
 	DEPLOY_STAGE(): DeployStage {
-		// Use explicit `process.env.DEPLOY_STAGE` in order to make it visible to JS bundlers.
-		const VALUE = process.env.DEPLOY_STAGE
-		if (VALUE === "main") return "main"
-		if (VALUE === "next") return "next"
-		if (VALUE === "local") return "local"
-		throw new ErrorMissingEnvironmentVariable("DEPLOY_STAGE")
+		return getVariable("DEPLOY_STAGE") as DeployStage
 	}
 
 	DNS_DOMAIN() {
-		// Use explicit `process.env.DEPLOY_STAGE` in order to make it visible to JS bundlers.
-		const VALUE = process.env.DNS_DOMAIN
-		if (typeof VALUE === "string") return VALUE
-		throw new ErrorMissingEnvironmentVariable("DNS_DOMAIN")
+		return getVariable("DNS_DOMAIN")
 	}
 
 	JWT_SECRET() {
@@ -40,8 +32,7 @@ class EnvironmentVariables {
 	}
 
 	NODE_ENV(): NodeEnv {
-		const VARIABLE_NAME: EnvironmentVariableName = "NODE_ENV"
-		const VALUE = process.env[VARIABLE_NAME]
+		const VALUE = getVariable("NODE_ENV")
 		if (VALUE === "production") return "production"
 		return "development"
 	}
@@ -67,6 +58,3 @@ class EnvironmentVariables {
  * ```
  */
 export const ENV = new EnvironmentVariables()
-
-const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
-export const isDev = DEPLOY_STAGE !== "main"

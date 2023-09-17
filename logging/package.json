@@ -15,6 +15,9 @@
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/"
   },
+  "dependencies": {
+    "@workspace/env": "file:env"
+  },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",
     "@workspace/tsconfig": "file:tsconfig"

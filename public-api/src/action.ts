@@ -8,11 +8,10 @@ import {
 	OK
 } from "@workspace/api-gateway"
 import { readStrategy, readStrategyFlow } from "@workspace/database"
-import { isDev } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import { isReadStrategyFlowInput, isReadStrategyInput } from "@workspace/models"
 
-const { info } = logging("user-api", isDev)
+const { info } = logging("user-api")
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

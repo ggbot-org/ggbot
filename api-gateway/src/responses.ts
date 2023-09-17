@@ -8,14 +8,16 @@ import {
 	__500__INTERNAL_SERVER_ERROR__,
 	HTTP_METHOD
 } from "@workspace/http"
-import { WebappBaseURL } from "@workspace/locators"
+import { FQDN, WebappBaseURL } from "@workspace/locators"
 
 import { responseBody } from "./responseBody.js"
 import { APIGatewayProxyResult } from "./types.js"
 
+const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+
 const commonHeaders = {
 	"Access-Control-Allow-Credentials": "true",
-	"Access-Control-Allow-Origin": new WebappBaseURL(ENV.DEPLOY_STAGE()).origin
+	"Access-Control-Allow-Origin": new WebappBaseURL(fqdn).origin
 }
 
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({

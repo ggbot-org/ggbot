@@ -1,5 +1,4 @@
 import { deleteObject, getObject, listObjects, putObject } from "@workspace/aws"
-import { isDev } from "@workspace/env"
 import { getDataBucketName } from "@workspace/infrastructure"
 import { logging } from "@workspace/logging"
 import { deletedNow, updatedNow } from "@workspace/models"
@@ -7,7 +6,7 @@ import { DflowArray, DflowObject } from "dflow"
 
 import { ErrorInvalidData } from "./errors.js"
 
-const { info } = logging("database", isDev)
+const { info } = logging("database")
 
 const Bucket = getDataBucketName()
 

@@ -1,21 +1,18 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3"
 import { ENV } from "@workspace/env"
-import {
-	topLevelDomain,
-	webappDomain,
-	webappNextDomain
-} from "@workspace/locators"
+import { FQDN } from "@workspace/locators"
 
 import { awsRegion } from "./awsRegions.js"
 
 const { DEPLOY_STAGE } = ENV
+const DNS_DOMAIN = ENV.DNS_DOMAIN()
 
 export const appBucketACL = BucketCannedACL.public_read
 
 export const getDataBucketName = (deployStage = DEPLOY_STAGE()) =>
 	deployStage === "local"
-		? `next-data.${awsRegion}.${topLevelDomain}`
-		: `${deployStage}-data.${awsRegion}.${topLevelDomain}`
+		? `next-data.${awsRegion}.${DNS_DOMAIN}`
+		: `${deployStage}-data.${awsRegion}.${DNS_DOMAIN}`
 
 export const getDataBucketArn = (deployStage = DEPLOY_STAGE()) =>
 	`arn:aws:s3:::${getDataBucketName(deployStage)}`
@@ -23,14 +20,14 @@ export const getDataBucketArn = (deployStage = DEPLOY_STAGE()) =>
 export const dataBucketACL = BucketCannedACL.private
 
 export const getLogsBucketName = (deployStage = DEPLOY_STAGE()) =>
-	`${deployStage}-logs.${awsRegion}.${topLevelDomain}`
+	`${deployStage}-logs.${awsRegion}.${DNS_DOMAIN}`
 
 export const getLogsBucketArn = (deployStage = DEPLOY_STAGE()) =>
 	`arn:aws:s3:::${getLogsBucketName(deployStage)}`
 
 export const logsBucketACL = BucketCannedACL.private
 
-export const getNakedDomainBucketName = () => topLevelDomain
+export const getNakedDomainBucketName = () => DNS_DOMAIN
 
 export const getNakedDomainBucketArn = () =>
 	`arn:aws:s3:::${getNakedDomainBucketName()}`
@@ -38,7 +35,7 @@ export const getNakedDomainBucketArn = () =>
 export const nakedDomainBucketACL = BucketCannedACL.public_read
 
 export const getWebappBucketName = (deployStage = DEPLOY_STAGE()) =>
-	["local", "next"].includes(deployStage) ? webappNextDomain : webappDomain
+	new FQDN(deployStage, DNS_DOMAIN).webappDomain
 
 export const getWebappBucketArn = (deployStage = DEPLOY_STAGE()) =>
 	`arn:aws:s3:::${getWebappBucketName(deployStage)}`

@@ -11,14 +11,12 @@ describe("workspace", () => {
 		const assertionError = `check ${workspaceDir}/package.json`
 
 		describe(`${workspaceDir} package.json`, () => {
-			const packageName = workspacePackageJson.packageName ?? ""
+			const packageName = workspacePackageJson.packageName
 
-			const dependencies = workspacePackageJson.dependencies ?? {}
-			const devDependencies = workspacePackageJson.devDependencies ?? {}
-			const allDependencyKeys = Object.keys({
-				...dependencies,
-				...devDependencies
-			})
+			const allDependencyKeys = [
+				...Array.from(workspacePackageJson.dependencies.keys()),
+				...Array.from(workspacePackageJson.devDependencies.keys())
+			]
 
 			it("has name", () => {
 				assert.ok(packageName !== "", assertionError)
@@ -40,6 +38,15 @@ describe("workspace", () => {
 					!allDependencyKeys.includes(packageName),
 					assertionError
 				)
+			})
+
+			it("does not have duplicated dependencies", () => {
+				const seenDependency = new Set()
+				for (const dependency of allDependencyKeys) {
+					if (seenDependency.has(dependency))
+						assert.fail(assertionError)
+					seenDependency.add(dependency)
+				}
 			})
 		})
 	}

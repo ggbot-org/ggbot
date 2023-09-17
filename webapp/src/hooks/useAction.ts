@@ -1,3 +1,4 @@
+import { logging } from "_/logging"
 import { localWebStorage } from "_/storages/local"
 import {
 	ApiActionClientSideError,
@@ -15,10 +16,9 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import { useCallback, useState } from "react"
 
-const { info, warn } = logging("use-action", IS_DEV)
+const { info, warn } = logging("use-action")
 
 type UseActionHeadersConstructorArg = {
 	withJwt?: boolean

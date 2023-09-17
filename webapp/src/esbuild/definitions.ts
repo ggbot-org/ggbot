@@ -1,11 +1,15 @@
-import { DeployStage, ENV, isDev } from "@workspace/env"
+import { DeployStage } from "@workspace/models"
 
-const DEPLOY_STAGE = `"${ENV.DEPLOY_STAGE()}"` as DeployStage
+import { EnvironmentVariables } from "./EnvironmentVariables.js"
+
+const ENV = new EnvironmentVariables()
+
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
+const isDev = DEPLOY_STAGE !== "main"
 
 export const esbuildDefinitions = {
 	BUILD_DATE: `"${new Date().toJSON().substring(0, 10)}"`,
-	IS_DEV: `${isDev}`,
-	DEPLOY_STAGE,
-	"process.env.DEPLOY_STAGE": `"${ENV.DEPLOY_STAGE()}"`,
-	"process.env.DNS_DOMAIN": `"${ENV.DNS_DOMAIN()}"`
+	DEPLOY_STAGE: `"${DEPLOY_STAGE}"` as DeployStage,
+	DNS_DOMAIN: `"${ENV.DNS_DOMAIN()}"`,
+	IS_DEV: `${isDev}`
 }

@@ -1,9 +1,14 @@
 // eslint-disable no-console
-export const logging = (prefix: string, enabled: unknown) => ({
+import { ENV } from "@workspace/env"
+
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
+const isDev = DEPLOY_STAGE !== "main"
+
+export const logging = (prefix: string) => ({
 	info: (...args: unknown[]) => {
-		if (enabled) console.info(new Date().toJSON(), prefix, ...args)
+		if (isDev) console.info(new Date().toJSON(), prefix, ...args)
 	},
 	warn: (...args: unknown[]) => {
-		if (enabled) console.warn(new Date().toJSON(), prefix, ...args)
+		if (isDev) console.warn(new Date().toJSON(), prefix, ...args)
 	}
 })

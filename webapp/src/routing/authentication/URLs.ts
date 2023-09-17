@@ -1,10 +1,8 @@
+import { authBase } from "_/routing/api"
 import {
 	ApiAuthenticationEnterURL,
-	ApiAuthenticationVerifyURL,
-	AuthBaseURL
+	ApiAuthenticationVerifyURL
 } from "@workspace/locators"
-
-const authBase = new AuthBaseURL(DEPLOY_STAGE).toString()
 
 export const url = {
 	authenticationEnter: new ApiAuthenticationEnterURL(authBase).toString(),

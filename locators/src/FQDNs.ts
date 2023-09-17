@@ -1,18 +1,57 @@
-// Fully qualified domain names.
-//
-// See also https://en.wikipedia.org/wiki/Fully_qualified_domain_name
+import { DeployStage } from "@workspace/models"
 
-import { ENV } from "@workspace/env"
+/**
+ * Fully qualified domain names.
+ *
+ * @example
+ *
+ * ```ts
+ * import { ENV } from "@workspace/env"
+ *
+ * const dnsDomain = ENV.DNS_DOMAIN()
+ * const deployStage = ENV.DEPLOY_STAGE()
+ *
+ * const fqdn = new FQDN(deployStage, dnsDomain)
+ * ```
+ *
+ * @see {@link https://en.wikipedia.org/wiki/Fully_qualified_domain_name}
+ */
+export class FQDN {
+	readonly deployStage: DeployStage
+	readonly dnsDomain: string
 
-export const topLevelDomain = ENV.DNS_DOMAIN()
+	constructor(deployStage: DeployStage, dnsDomain: string) {
+		this.deployStage = deployStage
+		this.dnsDomain = dnsDomain
+	}
 
-export const apiDomain = `api.${topLevelDomain}`
-export const apiNextDomain = `api-next.${topLevelDomain}`
-export const apiLocalDomain = `api-local.${topLevelDomain}`
+	get apiDomain(): string {
+		const { deployStage, dnsDomain } = this
+		switch (deployStage) {
+			case "main":
+				return `api.${dnsDomain}`
+			case "next":
+				return `api-next.${dnsDomain}`
+			case "local":
+				return `api-local.${dnsDomain}`
+		}
+	}
 
-export const authDomain = `auth.${topLevelDomain}`
-export const authNextDomain = `auth-next.${topLevelDomain}`
-export const authLocalDomain = `auth-local.${topLevelDomain}`
+	get authDomain(): string {
+		const { deployStage, dnsDomain } = this
+		switch (deployStage) {
+			case "main":
+				return `auth.${dnsDomain}`
+			case "next":
+				return `auth-next.${dnsDomain}`
+			case "local":
+				return `auth-local.${dnsDomain}`
+		}
+	}
 
-export const webappDomain = `www.${topLevelDomain}`
-export const webappNextDomain = `next.${topLevelDomain}`
+	get webappDomain(): string {
+		const { deployStage, dnsDomain } = this
+		if (deployStage === "main") return `www.${dnsDomain}`
+		return `next.${dnsDomain}`
+	}
+}

@@ -1,12 +1,11 @@
-import { join } from "node:path"
-
-import { packageRootDir } from "@workspace/repo"
+import { dirname, join, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 
 import { adminDirname } from "./routing/admin/pages.js"
 import { designDirname } from "./routing/design/pages.js"
 import { userDirname } from "./routing/user/pages.js"
 
-export const rootDir = packageRootDir(import.meta.url)
+export const rootDir = resolve(dirname(dirname(fileURLToPath(import.meta.url))))
 
 export const publicDir = join(rootDir, "public")
 

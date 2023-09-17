@@ -1,14 +1,14 @@
+import { logging } from "_/logging"
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@workspace/binance"
 import type { ManagedCacheProvider } from "@workspace/cache"
 import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@workspace/dflow"
-import { logging } from "@workspace/logging"
 import { isLiteralType } from "@workspace/type-utils"
 
 import { cachedBoolean } from "./cachedBoolean"
 import { itemKey } from "./itemKeys"
 import type { WebStorageProvider } from "./provider"
 
-const { info, warn } = logging("session-storage", IS_DEV)
+const { info, warn } = logging("session-storage")
 
 class SessionWebStorage implements WebStorageProvider {
 	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */

@@ -1,10 +1,5 @@
-import {
-	ApiBaseURL,
-	ApiPurchaseOrderURL,
-	ApiUserActionURL
-} from "@workspace/locators"
-
-const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString()
+import { apiBase } from "_/routing/api"
+import { ApiPurchaseOrderURL, ApiUserActionURL } from "@workspace/locators"
 
 export const url = {
 	apiPurchaseOrder: new ApiPurchaseOrderURL(apiBase).toString(),

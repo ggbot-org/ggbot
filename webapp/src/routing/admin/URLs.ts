@@ -1,6 +1,5 @@
-import { ApiAdminActionURL, ApiBaseURL } from "@workspace/locators"
-
-const apiBase = new ApiBaseURL(DEPLOY_STAGE).toString()
+import { apiBase } from "_/routing/api"
+import { ApiAdminActionURL } from "@workspace/locators"
 
 export const url = {
 	apiAdminAction: new ApiAdminActionURL(apiBase).toString()

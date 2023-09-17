@@ -13,11 +13,11 @@ import {
 	readSessionFromAuthorizationHeader
 } from "@workspace/authentication"
 import { listAccountKeys, readAccount } from "@workspace/database"
-import { isDev } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import { isReadAccountInput } from "@workspace/models"
 
-const { info } = logging("user-api", isDev)
+const { info } = logging("user-api")
+
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

@@ -12,7 +12,7 @@ import {
 	ErrorUnauthorizedAuthenticationHeader,
 	readSessionFromAuthorizationHeader
 } from "@workspace/authentication"
-import { ErrorBinanceBadRequest } from "@workspace/binance"
+import { ErrorBinanceHTTP } from "@workspace/binance"
 import {
 	copyStrategy,
 	createBinanceApiConfig,
@@ -33,7 +33,6 @@ import {
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
 } from "@workspace/database"
-import { isDev } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import {
 	ErrorAccountItemNotFound,
@@ -52,7 +51,7 @@ import {
 	isWriteStrategyFlowInput
 } from "@workspace/models"
 
-const { info } = logging("user-api", isDev)
+const { info } = logging("user-api")
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
@@ -243,7 +242,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			return UNATHORIZED
 		if (
 			error instanceof ErrorAccountItemNotFound ||
-			error instanceof ErrorBinanceBadRequest ||
+			error instanceof ErrorBinanceHTTP ||
 			error instanceof ErrorExceededQuota ||
 			error instanceof ErrorUnimplementedStrategyKind
 		)

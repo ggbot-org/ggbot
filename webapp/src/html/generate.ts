@@ -1,12 +1,13 @@
+import { existsSync, mkdirSync } from "node:fs"
 import { writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
-
-import { createDir } from "@workspace/repo"
 
 export const generateHtmlPage = async (
 	pathname: string,
 	htmlContent: string
 ) => {
-	createDir(dirname(pathname))
+	const dir = dirname(pathname)
+	// Create directory if it does not exist.
+	if (!existsSync(dir)) mkdirSync(dir)
 	await writeFile(pathname, htmlContent, { encoding: "utf8" })
 }

@@ -1,32 +1,48 @@
 import { BinanceOrderType, BinanceSymbolFilter } from "./types.js"
 
-export class ErrorBinanceBadRequest extends Error {
-	static errorName = "ErrorBinanceBadRequest"
-	pathname: string
+export class ErrorBinanceHTTP extends Error {
+	static errorName = "ErrorBinanceHTTP"
+	endpoint: string
+	status: Response["status"]
+	statusText: Response["statusText"]
 
 	constructor(response: Response) {
-		super(ErrorBinanceBadRequest.message(response))
-		const url = new URL(response.url)
-		// Hide search params, which contains signature, and host which may point to BINANCE_PROXY_BASE_URL.
-		this.pathname = url.pathname
-		this.name = ErrorBinanceBadRequest.errorName
+		super(ErrorBinanceHTTP.message(response))
+		this.name = ErrorBinanceHTTP.errorName
+		const { endpoint, status, statusText } =
+			ErrorBinanceHTTP.responseInfo(response)
+		this.endpoint = endpoint
+		this.status = status
+		this.statusText = statusText
 	}
 
-	static message({
-		status,
-		statusText,
-		url
-	}: Pick<Response, "status" | "statusText" | "url">) {
-		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
+	static responseInfo(response: Response) {
+		const url = new URL(response.url)
+		return {
+			status: response.status,
+			statusText: response.statusText,
+			// Hide search params, they may contain signature.
+			endpoint: url.pathname
+		}
 	}
+
+	static message(response: Response) {
+		const { status, statusText, endpoint } =
+			ErrorBinanceHTTP.responseInfo(response)
+		return `Server responded with status=${status} statusText=${statusText} on endpoint=${endpoint}`
+	}
+
 	toJSON() {
 		return this.toValue()
 	}
+
 	toValue() {
 		return {
-			name: ErrorBinanceBadRequest.errorName,
+			name: ErrorBinanceHTTP.errorName,
 			info: {
-				pathname: this.pathname
+				endpoint: this.endpoint,
+				status: this.status,
+				statusText: this.statusText
 			}
 		}
 	}

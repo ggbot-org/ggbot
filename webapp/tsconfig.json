@@ -19,6 +19,7 @@
 			"_/flow/*": ["./src/flow/*"],
 			"_/hooks/*": ["./src/hooks/*"],
 			"_/i18n/*": ["./src/i18n/*"],
+			"_/logging": ["./src/logging.ts"],
 			"_/pages/*": ["./src/pages/*"],
 			"_/react/mount": ["./src/react/mount.tsx"],
 			"_/routing/*": ["./src/routing/*"],

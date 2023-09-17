@@ -1,5 +1,3 @@
-import { webappDomain } from "./FQDNs.js"
-
 export class ApiAuthenticationEnterURL extends URL {
 	constructor(apiBaseURL: string) {
 		super("/enter", apiBaseURL)
@@ -36,12 +34,6 @@ export class ApiPurchaseOrderURL extends URL {
 	}
 }
 
-export class UserWebappHomepageURL extends URL {
-	constructor(userWebappBaseURL: string) {
-		super("/", userWebappBaseURL)
-	}
-}
-
 export class UtrustCancelURL extends URL {
 	static htmlFileName = "purchase-canceled.html"
 	constructor(userWebappBaseURL: string) {
@@ -59,11 +51,5 @@ export class UtrustReturnURL extends URL {
 	static htmlFileName = "subscription-purchased.html"
 	constructor(userWebappBaseURL: string) {
 		super(`/${UtrustReturnURL.htmlFileName}`, userWebappBaseURL)
-	}
-}
-
-export class HomepageURL extends URL {
-	constructor() {
-		super("/", `https://${webappDomain}`)
 	}
 }

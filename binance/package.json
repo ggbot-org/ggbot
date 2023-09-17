@@ -23,8 +23,7 @@
   },
   "dependencies": {
     "@workspace/arithmetic": "file:arithmetic",
-    "@workspace/cache": "file:cache",
-    "@workspace/http": "file:http"
+    "@workspace/cache": "file:cache"
   },
   "eslintConfig": {
     "extends": [

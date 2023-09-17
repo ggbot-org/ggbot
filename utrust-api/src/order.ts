@@ -18,15 +18,15 @@ import {
 	readSubscription,
 	updateSubscriptionPurchaseInfo
 } from "@workspace/database"
-import { ENV, isDev } from "@workspace/env"
+import { ENV } from "@workspace/env"
 import {
 	ApiBaseURL,
+	FQDN,
 	UtrustCallbackURL,
 	UtrustCancelURL,
 	UtrustReturnURL,
 	WebappBaseURL
 } from "@workspace/locators"
-import { logging } from "@workspace/logging"
 import {
 	PaymentProvider,
 	purchaseCurrency,
@@ -37,19 +37,18 @@ import {
 } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
 
-const { info } = logging("user-api", isDev)
+import { info } from "./logging.js"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
-		const UTRUST_API_KEY = ENV.UTRUST_API_KEY()
-
-		const webappBaseURL = new WebappBaseURL(DEPLOY_STAGE)
-		const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE)
+		const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+		const webappBaseURL = new WebappBaseURL(fqdn)
+		const apiBaseURL = new ApiBaseURL(fqdn)
 		const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString())
 		const cancelUrl = new UtrustCancelURL(webappBaseURL.toString())
 		const returnUrl = new UtrustReturnURL(webappBaseURL.toString())
 
+		const UTRUST_API_KEY = ENV.UTRUST_API_KEY()
 		// UTRUST_API_KEY starts with
 		// - u_test_api_ on sandbox environment
 		// - u_live_api_ on production environment

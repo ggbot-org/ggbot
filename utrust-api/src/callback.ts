@@ -17,10 +17,9 @@ import {
 	updateSubscriptionPurchaseStatus,
 	writeSubscription
 } from "@workspace/database"
-import { ENV, isDev } from "@workspace/env"
-import { logging } from "@workspace/logging"
+import { ENV } from "@workspace/env"
 
-const { info } = logging("user-api", isDev)
+import { info } from "./logging.js"
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {

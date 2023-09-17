@@ -1,7 +1,5 @@
-import { __400__BAD_REQUEST__, ErrorHTTP } from "@workspace/http"
-
 import { BinanceApiEndpoint } from "./endpoints.js"
-import { ErrorBinanceBadRequest } from "./errors.js"
+import { ErrorBinanceHTTP } from "./errors.js"
 import { binanceApiDomain } from "./FQDN.js"
 import { BinanceRequestHeaders } from "./headers.js"
 import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js"
@@ -45,11 +43,7 @@ export class BinanceConnector {
 		}
 
 		const response = await fetch(url, fetchOptions)
-		if (!response.ok) {
-			if (response.status === __400__BAD_REQUEST__)
-				throw new ErrorBinanceBadRequest(response)
-			throw new ErrorHTTP(response)
-		}
+		if (!response.ok) throw new ErrorBinanceHTTP(response)
 
 		const data = await response.json()
 		return data as Data

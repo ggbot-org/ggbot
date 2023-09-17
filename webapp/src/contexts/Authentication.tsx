@@ -3,11 +3,11 @@ import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
 import { Navigation } from "_/components/Navigation"
 import { useUserApi } from "_/hooks/useUserApi"
+import { logging } from "_/logging"
 import { href } from "_/routing/public/hrefs"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import { Account, EmailAddress, noneAccount } from "@workspace/models"
 import { NonEmptyString } from "@workspace/type-utils"
 import { now, Time } from "minimal-time-helpers"
@@ -36,7 +36,7 @@ type ContextValue = {
 	showAuthExit: () => void
 }
 
-const { info } = logging("authentication", IS_DEV)
+const { info } = logging("authentication")
 
 export const AuthenticationContext = createContext<ContextValue>({
 	account: noneAccount,
