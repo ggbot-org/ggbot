@@ -14,7 +14,7 @@ Every workspace folder must be listed in the root _package.json_ `workspaces` at
   ]
 ```
 
-The root package.json exposes also scripts for the workspace, for example
+The root package.json can expose scripts for the workspace, for example
 
 ```jsonc
   "scripts": {

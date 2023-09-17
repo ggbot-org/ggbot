@@ -8,7 +8,7 @@ import { cachedBoolean } from "./cachedBoolean"
 import { itemKey } from "./itemKeys"
 import type { WebStorageProvider } from "./provider"
 
-const { info } = logging("session-storage", IS_DEV)
+const { info, warn } = logging("session-storage", IS_DEV)
 
 class SessionWebStorage implements WebStorageProvider {
 	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
@@ -68,7 +68,7 @@ class SessionWebStorage implements WebStorageProvider {
 			)
 			this.binanceExchangeInfoIsValid = true
 		} catch (error) {
-			console.error(error)
+			warn(error)
 		}
 	}
 

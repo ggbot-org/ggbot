@@ -21,10 +21,10 @@ import {
 import { ENV, isDev } from "@workspace/env"
 import {
 	ApiBaseURL,
-	UserWebappBaseURL,
 	UtrustCallbackURL,
 	UtrustCancelURL,
-	UtrustReturnURL
+	UtrustReturnURL,
+	WebappBaseURL
 } from "@workspace/locators"
 import { logging } from "@workspace/logging"
 import {
@@ -44,11 +44,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 		const UTRUST_API_KEY = ENV.UTRUST_API_KEY()
 
-		const userWebappBaseURL = new UserWebappBaseURL(DEPLOY_STAGE)
+		const webappBaseURL = new WebappBaseURL(DEPLOY_STAGE)
 		const apiBaseURL = new ApiBaseURL(DEPLOY_STAGE)
 		const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString())
-		const cancelUrl = new UtrustCancelURL(userWebappBaseURL.toString())
-		const returnUrl = new UtrustReturnURL(userWebappBaseURL.toString())
+		const cancelUrl = new UtrustCancelURL(webappBaseURL.toString())
+		const returnUrl = new UtrustReturnURL(webappBaseURL.toString())
 
 		// UTRUST_API_KEY starts with
 		// - u_test_api_ on sandbox environment

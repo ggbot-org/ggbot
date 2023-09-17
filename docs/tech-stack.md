@@ -30,7 +30,6 @@
     -   [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
     -   [dflow](#dflow)
     -   [flow-view](#flow-view)
-    -   [npm-run-all](#npm-run-all)
     -   [ts-prune](#ts-prune)
     -   [typescript](#typescript)
 
@@ -181,10 +180,6 @@ https://www.npmjs.com/package/eslint-plugin-react-hooks
 ### flow-view
 
 https://www.npmjs.com/package/flow-view
-
-### npm-run-all
-
-https://www.npmjs.com/package/npm-run-all
 
 ### pre-commit
 

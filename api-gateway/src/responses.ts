@@ -8,15 +8,14 @@ import {
 	__500__INTERNAL_SERVER_ERROR__,
 	HTTP_METHOD
 } from "@workspace/http"
-import { UserWebappBaseURL } from "@workspace/locators"
+import { WebappBaseURL } from "@workspace/locators"
 
 import { responseBody } from "./responseBody.js"
 import { APIGatewayProxyResult } from "./types.js"
 
 const commonHeaders = {
 	"Access-Control-Allow-Credentials": "true",
-	"Access-Control-Allow-Origin": new UserWebappBaseURL(ENV.DEPLOY_STAGE())
-		.origin
+	"Access-Control-Allow-Origin": new WebappBaseURL(ENV.DEPLOY_STAGE()).origin
 }
 
 export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({

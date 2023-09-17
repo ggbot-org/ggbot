@@ -47,7 +47,7 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 	}
 
 	get currentTimestamp() {
-		return new Date().getTime()
+		return Date.now()
 	}
 
 	set(key: string, value: Data) {

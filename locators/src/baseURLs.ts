@@ -1,29 +1,15 @@
 import type { DeployStage } from "@workspace/env"
 
 import {
-	adminWebappDomain,
-	adminWebappNextDomain,
 	apiDomain,
 	apiLocalDomain,
 	apiNextDomain,
 	authDomain,
 	authLocalDomain,
 	authNextDomain,
-	userWebappDomain,
-	userWebappNextDomain
+	webappDomain,
+	webappNextDomain
 } from "./FQDNs.js"
-
-export class AdminWebappBaseURL extends URL {
-	constructor(deployStage: DeployStage) {
-		super(
-			deployStage === "main"
-				? `https://${adminWebappDomain}`
-				: deployStage === "next"
-				? `https://${adminWebappNextDomain}`
-				: "http://localhost:8000"
-		)
-	}
-}
 
 export class ApiBaseURL extends URL {
 	constructor(deployStage: DeployStage) {
@@ -49,13 +35,13 @@ export class AuthBaseURL extends URL {
 	}
 }
 
-export class UserWebappBaseURL extends URL {
+export class WebappBaseURL extends URL {
 	constructor(deployStage: DeployStage) {
 		super(
 			deployStage === "main"
-				? `https://${userWebappDomain}`
+				? `https://${webappDomain}`
 				: deployStage === "next"
-				? `https://${userWebappNextDomain}`
+				? `https://${webappNextDomain}`
 				: "http://localhost:8000"
 		)
 	}

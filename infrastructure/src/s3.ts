@@ -1,9 +1,9 @@
 import { BucketCannedACL } from "@aws-sdk/client-s3"
 import { ENV } from "@workspace/env"
 import {
-	nextWebappDomain,
 	topLevelDomain,
-	webappDomain
+	webappDomain,
+	webappNextDomain
 } from "@workspace/locators"
 
 import { awsRegion } from "./awsRegions.js"
@@ -38,7 +38,7 @@ export const getNakedDomainBucketArn = () =>
 export const nakedDomainBucketACL = BucketCannedACL.public_read
 
 export const getWebappBucketName = (deployStage = DEPLOY_STAGE()) =>
-	["local", "next"].includes(deployStage) ? nextWebappDomain : webappDomain
+	["local", "next"].includes(deployStage) ? webappNextDomain : webappDomain
 
 export const getWebappBucketArn = (deployStage = DEPLOY_STAGE()) =>
 	`arn:aws:s3:::${getWebappBucketName(deployStage)}`

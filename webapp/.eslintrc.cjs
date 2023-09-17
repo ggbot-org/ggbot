@@ -92,7 +92,7 @@ module.exports = {
 		"jsx-a11y/role-has-required-aria-props": "error",
 		"max-depth": ["error", 5],
 		"no-case-declarations": "error",
-		"no-console": ["error", { allow: ["error", "info", "warn"] }],
+		"no-console": ["error", { allow: ["error"] }],
 		"no-extra-label": "warn",
 		"no-floating-decimal": "error",
 		"no-global-assign": "error",

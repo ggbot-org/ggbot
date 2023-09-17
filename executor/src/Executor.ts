@@ -28,7 +28,7 @@ import { homedir } from "os"
 import { join } from "path"
 
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { log } from "./log.js"
+import { info, warn } from "./logging.js"
 
 const executorIdFile = join(homedir(), ".ggbot2-executor")
 
@@ -100,7 +100,7 @@ export class Executor {
 			this.cachedAccountKeys.set(data)
 			return data
 		} catch (error) {
-			log.error(error)
+			warn(error)
 			return []
 		}
 	}
@@ -113,12 +113,12 @@ export class Executor {
 			const { accountStrategiesCache: cache } = this
 			const cached = cache.get(key)
 			if (cached) return cached
-			log.info("readAccountStrategies")
+			info("readAccountStrategies")
 			const data = (await readAccountStrategies({ accountId })) ?? []
 			cache.set(key, data)
 			return data
 		} catch (error) {
-			log.error(error)
+			warn(error)
 			return []
 		}
 	}
@@ -131,14 +131,14 @@ export class Executor {
 			const { subscriptionsCache: cache } = this
 			const cached = cache.get(key)
 			if (cached) return cached
-			log.info("readSubscription", accountId)
+			info("readSubscription", accountId)
 			const subscription = await readSubscription({ accountId })
 			if (subscription) {
 				cache.set(key, subscription)
 				return subscription
 			}
 		} catch (error) {
-			log.error(error)
+			warn(error)
 		}
 	}
 
@@ -157,7 +157,7 @@ export class Executor {
 			if (whenExecuted + pauseDuration > time) return
 		}
 		strategyWhenExecuted.set(strategyId, time)
-		log.info("execute strategy", strategyId)
+		info("execute strategy", strategyId)
 		await executeBinanceStrategy(accountStrategyKey)
 	}
 
@@ -204,7 +204,7 @@ export class Executor {
 					}
 				}
 			} catch (error) {
-				log.error(error)
+				warn(error)
 
 				if (error instanceof ErrorAccountItemNotFound) {
 					if (error.type === "BinanceApiConfig") {
@@ -219,7 +219,7 @@ export class Executor {
 
 	async suspendAccountStrategies({ accountId }: AccountKey) {
 		try {
-			log.info(`Suspend all strategies accountId=${accountId}`)
+			info(`Suspend all strategies accountId=${accountId}`)
 
 			// Cleanup cache locally.
 			this.cachedAccountKeys.delete(accountId)
@@ -228,7 +228,7 @@ export class Executor {
 			// Update database remotely.
 			await suspendAccountStrategiesSchedulings({ accountId })
 		} catch (error) {
-			log.error(error)
+			warn(error)
 		}
 	}
 }

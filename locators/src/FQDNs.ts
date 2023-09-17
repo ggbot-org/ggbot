@@ -14,11 +14,5 @@ export const authDomain = `auth.${topLevelDomain}`
 export const authNextDomain = `auth-next.${topLevelDomain}`
 export const authLocalDomain = `auth-local.${topLevelDomain}`
 
-export const adminWebappDomain = `admin.${topLevelDomain}`
-export const adminWebappNextDomain = `admin-next.${topLevelDomain}`
-
-export const userWebappDomain = `app.${topLevelDomain}`
-export const userWebappNextDomain = `app-next.${topLevelDomain}`
-
 export const webappDomain = `www.${topLevelDomain}`
-export const nextWebappDomain = `next.${topLevelDomain}`
+export const webappNextDomain = `next.${topLevelDomain}`

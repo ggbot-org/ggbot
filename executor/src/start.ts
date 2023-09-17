@@ -3,7 +3,7 @@ import { exit } from "node:process"
 import { Item } from "@workspace/models"
 
 import { Executor } from "./Executor.js"
-import { log } from "./log.js"
+import { info, warn } from "./logging.js"
 
 const sleep = (delay: number) =>
 	new Promise((resolve) => {
@@ -22,11 +22,11 @@ const start = async () => {
 	try {
 		executorId = await Executor.getExecutorId()
 	} catch (error) {
-		log.error(error)
+		warn(error)
 		exit(1)
 	}
 
-	log.info("executorId", executorId)
+	info("executorId", executorId)
 
 	let canRun = true
 	let gotSIGINT = false
@@ -34,27 +34,27 @@ const start = async () => {
 	let gotSIGTERM = false
 
 	const terminate = () => {
-		log.info("terminating")
+		warn("terminating")
 		canRun = false
 	}
 
 	process.on("SIGHUP", () => {
 		if (gotSIGHUP) return
 		gotSIGHUP = true
-		log.info("got SIGHUP")
+		warn("got SIGHUP")
 	})
 
 	process.on("SIGINT", () => {
 		if (gotSIGINT) return
 		gotSIGINT = true
-		log.info("got SIGINT")
+		warn("got SIGINT")
 		terminate()
 	})
 
 	process.on("SIGTERM", () => {
 		if (gotSIGTERM) return
 		gotSIGTERM = true
-		log.info("got SIGTERM")
+		warn("got SIGTERM")
 		terminate()
 	})
 

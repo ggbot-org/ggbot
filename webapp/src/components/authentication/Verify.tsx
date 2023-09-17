@@ -22,7 +22,6 @@ import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
-import { isDev } from "@workspace/env"
 import { EmailAddress } from "@workspace/models"
 import { NonEmptyString } from "@workspace/type-utils"
 import { FC, Reducer, useCallback, useReducer } from "react"
@@ -34,14 +33,29 @@ export type AuthVerifyProps = {
 	resetEmail: () => void
 }
 
-type State = {
+type State = Partial<{
 	gotTimeout: boolean
 	hasGenericError: boolean
 	hasInvalidInput: boolean
 	isPending: boolean
 	needToGenerateOneTimePasswordAgain: boolean
 	verificationFailed: boolean
-}
+}>
+
+type Action =
+	| { type: "SET_HAS_INVALID_INPUT" }
+	| { type: "VERIFY_REQUEST" }
+	| {
+			type: "VERIFY_RESPONSE"
+			data: Partial<
+				Pick<
+					State,
+					"needToGenerateOneTimePasswordAgain" | "verificationFailed"
+				>
+			>
+	  }
+	| { type: "VERIFY_FAILURE" }
+	| { type: "VERIFY_TIMEOUT" }
 
 export const AuthVerify: FC<AuthVerifyProps> = ({
 	email,
@@ -58,50 +72,27 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 			verificationFailed
 		},
 		dispatch
-	] = useReducer<
-		Reducer<
-			Partial<State>,
-			| { type: "SET_HAS_INVALID_INPUT" }
-			| { type: "VERIFY_REQUEST" }
-			| {
-					type: "VERIFY_RESPONSE"
-					data: Partial<
-						Pick<
-							State,
-							| "needToGenerateOneTimePasswordAgain"
-							| "verificationFailed"
-						>
-					>
-			  }
-			| { type: "VERIFY_FAILURE" }
-			| { type: "VERIFY_TIMEOUT" }
-		>
-	>(
-		(state, action) => {
-			if (isDev)
-				console.info("AuthVerify", JSON.stringify(action, null, 2))
-			switch (action.type) {
-				case "SET_HAS_INVALID_INPUT":
-					return { hasInvalidInput: true }
+	] = useReducer<Reducer<State, Action>>((state, action) => {
+		switch (action.type) {
+			case "SET_HAS_INVALID_INPUT":
+				return { hasInvalidInput: true }
 
-				case "VERIFY_REQUEST":
-					return { isPending: true }
+			case "VERIFY_REQUEST":
+				return { isPending: true }
 
-				case "VERIFY_RESPONSE":
-					return { hasGenericError: true, ...action.data }
+			case "VERIFY_RESPONSE":
+				return { hasGenericError: true, ...action.data }
 
-				case "VERIFY_FAILURE":
-					return { hasGenericError: true }
+			case "VERIFY_FAILURE":
+				return { hasGenericError: true }
 
-				case "VERIFY_TIMEOUT":
-					return { gotTimeout: true }
+			case "VERIFY_TIMEOUT":
+				return { gotTimeout: true }
 
-				default:
-					return state
-			}
-		},
-		{ hasGenericError: false }
-	)
+			default:
+				return state
+		}
+	}, {})
 
 	const onReset = useCallback<FormOnReset>(
 		(event) => {

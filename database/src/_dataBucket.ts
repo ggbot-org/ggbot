@@ -1,10 +1,13 @@
 import { deleteObject, getObject, listObjects, putObject } from "@workspace/aws"
 import { isDev } from "@workspace/env"
 import { getDataBucketName } from "@workspace/infrastructure"
+import { logging } from "@workspace/logging"
 import { deletedNow, updatedNow } from "@workspace/models"
 import { DflowArray, DflowObject } from "dflow"
 
 import { ErrorInvalidData } from "./errors.js"
+
+const { info } = logging("database", isDev)
 
 const Bucket = getDataBucketName()
 
@@ -19,17 +22,16 @@ export const READ = async <Operation extends AsyncFunction>(
 	try {
 		const json = await getObject(Bucket)(Key)
 		if (!json) {
-			if (isDev) console.info("READ", Key, json)
+			info("READ", Key, json)
 			return null
 		}
 		const data = JSON.parse(json)
-		if (isDev)
-			console.info(
-				"READ",
-				Key,
-				`isData=${isData(data)}`,
-				json.length > 170 ? "" : JSON.stringify(data, null, 2)
-			)
+		info(
+			"READ",
+			Key,
+			`isData=${isData(data)}`,
+			json.length > 170 ? "" : JSON.stringify(data, null, 2)
+		)
 		if (isData(data)) return data
 		throw new ErrorInvalidData()
 	} catch (error) {
@@ -45,17 +47,16 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 	try {
 		const json = await getObject(Bucket)(Key)
 		if (!json) {
-			if (isDev) console.info("READ_ARRAY", Key, json)
+			info("READ_ARRAY", Key, json)
 			return [] as Awaited<ReturnType<Operation>>
 		}
 		const data = JSON.parse(json)
-		if (isDev)
-			console.info(
-				"READ_ARRAY",
-				Key,
-				`isData=${isData(data)}`,
-				JSON.stringify(data, null, 2)
-			)
+		info(
+			"READ_ARRAY",
+			Key,
+			`isData=${isData(data)}`,
+			JSON.stringify(data, null, 2)
+		)
 		if (isData(data)) return data
 		throw new ErrorInvalidData()
 	} catch (error) {
@@ -66,7 +67,7 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 }
 
 export const DELETE = async (Key: string) => {
-	if (isDev) console.info("DELETE", Key)
+	info("DELETE", Key)
 	await deleteObject(Bucket)(Key)
 	return deletedNow()
 }
@@ -79,7 +80,7 @@ export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 }
 
 export const WRITE = async (Key: string, data: DflowArray | DflowObject) => {
-	if (isDev) console.info("WRITE", Key, JSON.stringify(data, null, 2))
+	info("WRITE", Key, JSON.stringify(data, null, 2))
 	const json = JSON.stringify(data)
 	await putObject(Bucket)(Key, json)
 }
