@@ -1,11 +1,11 @@
-export class ErrorCannotGetInstanceId extends Error {
+export class ErrorCannotParseElasticIps extends Error {
 	constructor() {
-		super("Cannot get instance id")
+		super("Cannot parse static IPs")
 	}
 }
 
-export class ErrorCannotParseStaticIps extends Error {
+export class ErrorCannotReleaseElasticIp extends Error {
 	constructor() {
-		super("Cannot parse static IPs")
+		super("Cannot release static IP")
 	}
 }

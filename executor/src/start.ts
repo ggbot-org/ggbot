@@ -69,4 +69,12 @@ const start = async () => {
 	}
 }
 
+process.on("exit", () => {
+	warn("Exit")
+})
+
+process.on("uncaughtException", (error) => {
+	if (error instanceof Error) warn("Uncaught Exception", error.message)
+})
+
 start()
