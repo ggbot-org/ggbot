@@ -18,11 +18,11 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
   },
   "dependencies": {
-    "@workspace/arithmetic": "file:arithmetic",
+    "@workspace/arithmetic": "0.0.0",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.1.1"

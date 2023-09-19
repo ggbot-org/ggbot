@@ -4,7 +4,6 @@
   "private": true,
   "exports": {
     ".": "./default.json",
-    "./lambda": "./lambda.json",
-    "./react": "./react.json"
+    "./lambda": "./lambda.json"
   }
 }

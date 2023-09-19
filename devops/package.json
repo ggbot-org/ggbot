@@ -18,13 +18,13 @@
     "task:showDevopsPolicy": "node dist/task-showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js"
   },
-  "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig"
-  },
   "dependencies": {
-    "@workspace/aws": "file:aws",
-    "@workspace/infrastructure": "file:infrastructure"
+    "@workspace/aws": "0.0.0",
+    "@workspace/infrastructure": "0.0.0"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
   },
   "eslintConfig": {
     "extends": [

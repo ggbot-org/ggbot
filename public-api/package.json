@@ -21,15 +21,15 @@
     "zip": "sh src/scripts/zip.sh"
   },
   "dependencies": {
-    "@workspace/api": "file:api",
-    "@workspace/api-gateway": "file:api-gateway",
-    "@workspace/env": "file:env",
-    "@workspace/database": "file:database",
-    "@workspace/models": "file:models"
+    "@workspace/api": "0.0.0",
+    "@workspace/api-gateway": "0.0.0",
+    "@workspace/env": "0.0.0",
+    "@workspace/database": "0.0.0",
+    "@workspace/models": "0.0.0"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
   },
   "eslintConfig": {
     "extends": [

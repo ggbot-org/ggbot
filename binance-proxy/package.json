@@ -12,15 +12,15 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "dependencies": {
-    "@workspace/aws": "file:aws",
-    "@workspace/binance": "file:binance",
-    "@workspace/env": "file:env",
-    "@workspace/logging": "file:logging",
-    "@workspace/http": "file:http"
+    "@workspace/aws": "0.0.0",
+    "@workspace/binance": "0.0.0",
+    "@workspace/env": "0.0.0",
+    "@workspace/logging": "0.0.0",
+    "@workspace/http": "0.0.0"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig",
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0",
     "ts-prune": "0.10.3"
   },
   "eslintConfig": {

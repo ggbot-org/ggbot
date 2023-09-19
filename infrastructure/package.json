@@ -21,8 +21,8 @@
     "@aws-sdk/client-iam": "3.379.1",
     "@aws-sdk/client-s3": "3.379.1",
     "@aws-sdk/client-ses": "3.379.1",
-    "@workspace/env": "file:env",
-    "@workspace/locators": "file:locators"
+    "@workspace/env": "0.0.0",
+    "@workspace/locators": "0.0.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "file:eslint-config",

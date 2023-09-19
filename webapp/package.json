@@ -29,12 +29,12 @@
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
-    "@workspace/api": "file:api",
-    "@workspace/binance": "file:binance",
-    "@workspace/dflow": "file:dflow",
-    "@workspace/http": "file:http",
-    "@workspace/locators": "file:locators",
-    "@workspace/models": "file:models",
+    "@workspace/api": "0.0.0",
+    "@workspace/binance": "0.0.0",
+    "@workspace/dflow": "0.0.0",
+    "@workspace/http": "0.0.0",
+    "@workspace/locators": "0.0.0",
+    "@workspace/models": "0.0.0",
     "country-isocode2": "1.1.0",
     "flow-view": "6.0.1",
     "minimal-type-guard-helpers": "0.1.1",

@@ -13,14 +13,14 @@
     "test": "node --test"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
   },
   "dependencies": {
-    "@workspace/cache": "file:cache",
-    "@workspace/database": "file:database",
-    "@workspace/env": "file:env",
-    "@workspace/models": "file:models",
+    "@workspace/cache": "0.0.0",
+    "@workspace/database": "0.0.0",
+    "@workspace/env": "0.0.0",
+    "@workspace/models": "0.0.0",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0"
   },

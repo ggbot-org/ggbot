@@ -69,12 +69,11 @@ temp/
 		"test": "node --test"
 	},
 	"dependencies": {
-		// Dependency from another workspace package is referenced using `file:` prefix.
-		"@workspace/another-package": "file:another-package"
+		"@workspace/another-package": "0.0.0"
 	},
 	"devDependencies": {
-		"@workspace/eslint-config": "file:eslint-config",
-		"@workspace/tsconfig": "file:tsconfig"
+		"@workspace/eslint-config": "0.0.0",
+		"@workspace/tsconfig": "0.0.0"
 	},
 	"eslintConfig": {
 		"extends": [

@@ -17,11 +17,11 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp|src/index\\.ts'"
   },
   "dependencies": {
-    "@workspace/models": "file:models"
+    "@workspace/models": "0.0.0"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "file:eslint-config",
-    "@workspace/tsconfig": "file:tsconfig"
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
   },
   "eslintConfig": {
     "extends": [
