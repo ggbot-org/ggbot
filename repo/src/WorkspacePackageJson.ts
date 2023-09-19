@@ -3,9 +3,9 @@ import { join } from "node:path"
 
 import { PackageJson } from "type-fest"
 
-import { JsonFile } from "./JsonFile.js"
+import { TextFile } from "./TextFile.js"
 
-export class WorkspacePackageJson implements JsonFile {
+export class WorkspacePackageJson implements TextFile {
 	static scope = "@workspace"
 
 	static buildScriptKey = "build"

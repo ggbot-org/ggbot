@@ -13,7 +13,9 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts src/"
+    "lint": "eslint --fix --ext .ts src/",
+    "pretest_infrastructure": "tsc --build tsconfig.test.json",
+    "test_infrastructure": "node --test"
   },
   "dependencies": {
     "@aws-sdk/client-ec2": "3.379.1",

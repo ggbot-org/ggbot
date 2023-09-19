@@ -3,9 +3,9 @@ import { join } from "node:path"
 
 import { TsConfigJson } from "type-fest"
 
-import { JsonFile } from "./JsonFile.js"
+import { TextFile } from "./TextFile.js"
 
-export class WorkspaceTsConfigJson implements JsonFile {
+export class WorkspaceTsConfigJson implements TextFile {
 	dirPathname: string
 	filename = "tsconfig.json"
 

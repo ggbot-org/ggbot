@@ -65,6 +65,7 @@
     "task:create": "npm run task:create -w devops",
     "task:showDevopsPolicy": "npm run task:showDevopsPolicy -w devops",
     "test": "npm run test --workspaces --if-present 1> /dev/null",
+    "test_infrastructure": "npm run test_infrastructure -w infrastructure",
     "test:arithmetic": "npm run test -w arithmetic",
     "test:binance": "npm run test -w binance",
     "test:dflow": "npm run test -w dflow",

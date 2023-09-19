@@ -35,7 +35,7 @@ export class ErrorHTTP extends Error {
 	}: Pick<Response, "status" | "statusText" | "url">) {
 		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
 	}
-	toObject() {
+	toValue() {
 		return {
 			name: ErrorHTTP.errorName,
 			info: {

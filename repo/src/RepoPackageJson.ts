@@ -3,10 +3,10 @@ import { join } from "node:path"
 
 import { PackageJson } from "type-fest"
 
-import { JsonFile } from "./JsonFile.js"
+import { TextFile } from "./TextFile.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-export class RepoPackageJson implements JsonFile {
+export class RepoPackageJson implements TextFile {
 	dirPathname: string
 	filename = "package.json"
 
