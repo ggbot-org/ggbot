@@ -101,7 +101,7 @@ Node version currently
 
 ## npm workspaces
 
-https://docs.npmjs.com/cli/v7/using-npm/workspaces
+https://docs.npmjs.com/cli/using-npm/workspaces
 
 See also [npm workspaces internal documentation](./npm-workspaces.md).
 
