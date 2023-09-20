@@ -81,12 +81,25 @@ Add more environment variables via systemd override.
 sudo systemctl edit ggbot2
 ```
 
-This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add the following variables with proper values.
+This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add environment variables with proper values.
+
+For example for _binance-proxy_ service
 
 ```
 [Service]
-Environment="DEPLOY_STAGE=main"
 Environment="AWS_ACCOUNT_ID=888671539518"
+Environment="DEPLOY_STAGE=main"
+Environment="DNS_DOMAIN=ggbot2.com"
+Environment="BINANCE_PROXY_ELASTIC_IPS=3.65.45.176,3.77.223.177"
+```
+
+For example for _executor_ service
+
+```
+[Service]
+Environment="AWS_ACCOUNT_ID=888671539518"
+Environment="DEPLOY_STAGE=main"
+Environment="DNS_DOMAIN=ggbot2.com"
 Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 ```
 

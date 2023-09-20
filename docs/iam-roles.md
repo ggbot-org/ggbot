@@ -1,12 +1,6 @@
 # IAM roles
 
-## Roles
-
-TODO: cleanup these roles
-
--   ggbot2-main-ec2-role
--   ggbot2-next-ec2-role
--   ggbot2_api_role
+## EC2 Roles
 
 When creating a IAM role for an EC2 service, select:
 
@@ -23,7 +17,10 @@ Add [CodeCommit policy](#codecommit-policy).
 
 Create a IAM role for _binance-proxy_ service with name `ggbot2-binance-proxy-role`.
 
-Add [CodeCommit policy](#codecommit-policy).
+Add policies:
+
+-   [CodeCommit policy](#codecommit-policy)
+-   [S3 data policy](#elastic-ips)
 
 ### executor
 
@@ -32,19 +29,9 @@ Create a IAM role for _executor_ service with name `ggbot2-executor-role`.
 Add policies:
 
 -   [CodeCommit policy](#codecommit-policy)
--   [S3 data policy](#s3-data)
+-   [Elastic IPs policy](#s3-data)
 
 ## Policies
-
-TODO: cleanup these policies (among others)
-
--   ggbot2-codecommit-readonly-policy
--   ggbot2-main-s3-readwrite-data-policy
--   ggbot2-next-s3-readwrite-data-policy
--   ggbot2-lambda-ses-policy
--   ggbot2-next-ses-noreply-policy
--   ggbot2-devops-policy
--   ggbot2_lambda_invoke_policy
 
 ### CodeCommit
 
@@ -58,6 +45,32 @@ Create a IAM policy with name `ggbot2-codecommit-readonly-policy`.
 			"Effect": "Allow",
 			"Action": "codecommit:GitPull",
 			"Resource": "arn:aws:codecommit:eu-central-1:888671539518:ggbot2-monorepo"
+		}
+	]
+}
+```
+
+### Elastic IPs
+
+Create a IAM policy with name `ggbot2-elastic-ips-policy`
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": ["ec2:ReleaseAddress", "ec2:AssociateAddress"],
+			"Resource": [
+				"arn:aws:ec2:*:888671539518:network-interface/*",
+				"arn:aws:ec2:*:888671539518:elastic-ip/*",
+				"arn:aws:ec2:*:888671539518:instance/*"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ec2:DescribeAddresses",
+			"Resource": "*"
 		}
 	]
 }
