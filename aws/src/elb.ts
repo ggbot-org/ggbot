@@ -4,24 +4,29 @@ import {
 	DescribeLoadBalancersCommandOutput,
 	ElasticLoadBalancingV2Client
 } from "@aws-sdk/client-elastic-load-balancing-v2"
-import { awsRegion } from "@workspace/infrastructure"
+
+import { AwsClientConfigRegion } from "./region.js"
 
 export type {
-	LoadBalancer,
-	LoadBalancerTypeEnum
+	ElasticLoadBalancingV2ServiceException,
+	LoadBalancer
 } from "@aws-sdk/client-elastic-load-balancing-v2"
-export { ElasticLoadBalancingV2ServiceException } from "@aws-sdk/client-elastic-load-balancing-v2"
+export { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2"
 
-const client = new ElasticLoadBalancingV2Client({ region: awsRegion })
+type ElasticLoadBalancingV2ClientArgs = AwsClientConfigRegion
 
-export type DescribeLoadBalancersArgs = Pick<
-	DescribeLoadBalancersCommandInput,
-	"Names"
+const elbClient = (args: ElasticLoadBalancingV2ClientArgs) =>
+	new ElasticLoadBalancingV2Client(args)
+
+export type DescribeLoadBalancersArgs = Required<
+	Pick<DescribeLoadBalancersCommandInput, "Names">
 >
 
 export const describeLoadBalancers = async (
-	args: DescribeLoadBalancersArgs
+	clientArgs: ElasticLoadBalancingV2ClientArgs,
+	commandArgs: DescribeLoadBalancersArgs
 ): Promise<DescribeLoadBalancersCommandOutput> => {
-	const command = new DescribeLoadBalancersCommand(args)
+	const command = new DescribeLoadBalancersCommand(commandArgs)
+	const client = elbClient(clientArgs)
 	return await client.send(command)
 }

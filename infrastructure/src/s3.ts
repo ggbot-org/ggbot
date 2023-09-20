@@ -1,4 +1,4 @@
-import { BucketCannedACL } from "@aws-sdk/client-s3"
+import { BucketCannedACL } from "@workspace/aws"
 import { ENV } from "@workspace/env"
 import { FQDN } from "@workspace/locators"
 

@@ -1,4 +1,4 @@
-import { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2"
+import { LoadBalancerTypeEnum } from "@workspace/aws"
 import { ENV } from "@workspace/env"
 
 import { awsRegion } from "./awsRegions.js"

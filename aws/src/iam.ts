@@ -4,15 +4,17 @@ import {
 	GetPolicyCommandOutput,
 	IAMClient
 } from "@aws-sdk/client-iam"
-import { awsRegion } from "@workspace/infrastructure"
 
-const client = new IAMClient({ region: awsRegion })
+export type { Tag } from "@aws-sdk/client-iam"
 
-export type GetPolicyArgs = GetPolicyCommandInput
+const iamClient = () => new IAMClient({})
+
+export type GetPolicyArgs = Required<Pick<GetPolicyCommandInput, "PolicyArn">>
 
 export const getPolicy = async (
-	args: GetPolicyArgs
+	commandArgs: GetPolicyArgs
 ): Promise<GetPolicyCommandOutput> => {
-	const command = new GetPolicyCommand(args)
+	const command = new GetPolicyCommand(commandArgs)
+	const client = iamClient()
 	return await client.send(command)
 }

@@ -21,8 +21,7 @@
     "@aws-sdk/client-elastic-load-balancing-v2": "3.379.1",
     "@aws-sdk/client-iam": "3.379.1",
     "@aws-sdk/client-s3": "3.379.1",
-    "@aws-sdk/client-ses": "3.379.1",
-    "@workspace/infrastructure": "0.0.0"
+    "@aws-sdk/client-ses": "3.379.1"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",

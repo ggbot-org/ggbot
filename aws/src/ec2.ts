@@ -12,22 +12,26 @@ import {
 	ReleaseAddressCommandInput,
 	ReleaseAddressCommandOutput
 } from "@aws-sdk/client-ec2"
-import { awsRegion } from "@workspace/infrastructure"
 
 import { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
+import { AwsClientConfigRegion } from "./region.js"
 
 export type { Address as ElasticIp } from "@aws-sdk/client-ec2"
 
-const client = new EC2Client({ region: awsRegion })
+type EC2ClientArgs = AwsClientConfigRegion
+
+const ec2Client = (args: EC2ClientArgs) => new EC2Client(args)
 
 export type AssociateElasticIpsArgs = Required<
 	Pick<AssociateAddressCommandInput, "AllocationId" | "InstanceId">
 >
 
 export const associateElasticIp = async (
-	args: AssociateElasticIpsArgs
+	clientArgs: EC2ClientArgs,
+	commandArgs: AssociateElasticIpsArgs
 ): Promise<AssociateAddressCommandOutput> => {
-	const command = new AssociateAddressCommand(args)
+	const command = new AssociateAddressCommand(commandArgs)
+	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }
 
@@ -36,9 +40,11 @@ export type DescribeElasticIpsArgs = Required<
 >
 
 export const describeElasticIps = async (
-	args: DescribeElasticIpsArgs
+	clientArgs: EC2ClientArgs,
+	commandArgs: DescribeElasticIpsArgs
 ): Promise<DescribeAddressesCommandOutput> => {
-	const command = new DescribeAddressesCommand(args)
+	const command = new DescribeAddressesCommand(commandArgs)
+	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }
 
@@ -75,8 +81,10 @@ export type ReleaseElasticIpArgs = Required<
 >
 
 export const releaseElasticIp = async (
-	args: ReleaseElasticIpArgs
+	clientArgs: EC2ClientArgs,
+	commandArgs: ReleaseElasticIpArgs
 ): Promise<ReleaseAddressCommandOutput> => {
-	const command = new ReleaseAddressCommand(args)
+	const command = new ReleaseAddressCommand(commandArgs)
+	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }

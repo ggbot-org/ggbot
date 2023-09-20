@@ -13,7 +13,6 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts src/",
     "task:create": "node ./dist/task-create.js",
     "task:showDevopsPolicy": "node dist/task-showDevopsPolicy.js",
     "task:status": "node ./dist/task-status.js"

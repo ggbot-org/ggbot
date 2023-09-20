@@ -1,6 +1,6 @@
 # npm dependencies
 
-This is the internal dependencies graph: it shows how workspaces depend on each other
+This is the internal dependencies graph: it shows how workspaces depend on each other.
 
 ```mermaid
 graph LR
@@ -8,6 +8,7 @@ graph LR
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/api-gateway
     workspace/admin-api --- workspace/database
+    workspace/admin-api --- workspace/logging
     workspace/admin-api --- workspace/models
     workspace/api --- workspace/http
     workspace/api --- workspace/models
@@ -24,7 +25,6 @@ graph LR
     workspace/authentication-api --- workspace/env
     workspace/authentication-api --- workspace/locators
     workspace/authentication-api --- workspace/models
-    workspace/aws --- workspace/infrastructure
     workspace/binance --- workspace/arithmetic
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
@@ -41,14 +41,13 @@ graph LR
     workspace/database --- workspace/env
     workspace/database --- workspace/infrastructure
     workspace/database --- workspace/locators
-    workspace/devops --- workspace/aws
-    workspace/devops --- workspace/infrastructure
     workspace/dflow --- workspace/binance
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/cache
     workspace/executor --- workspace/database
     workspace/executor --- workspace/env
     workspace/executor --- workspace/models
+    workspace/infrastructure --- workspace/aws
     workspace/infrastructure --- workspace/env
     workspace/infrastructure --- workspace/locators
     workspace/locators --- workspace/models
@@ -58,6 +57,7 @@ graph LR
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/env
     workspace/public-api --- workspace/database
+    workspace/public-api --- workspace/logging
     workspace/public-api --- workspace/models
     workspace/user-api --- workspace/api
     workspace/user-api --- workspace/env
@@ -71,6 +71,7 @@ graph LR
     workspace/utrust-api --- workspace/database
     workspace/utrust-api --- workspace/env
     workspace/utrust-api --- workspace/locators
+    workspace/utrust-api --- workspace/logging
     workspace/utrust-api --- workspace/models
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/binance

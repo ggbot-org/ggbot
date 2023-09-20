@@ -1,5 +1,5 @@
 import { deleteObject, getObject, listObjects, putObject } from "@workspace/aws"
-import { getDataBucketName } from "@workspace/infrastructure"
+import { awsRegion, getDataBucketName } from "@workspace/infrastructure"
 import { logging } from "@workspace/logging"
 import { deletedNow, updatedNow } from "@workspace/models"
 import { DflowArray, DflowObject } from "dflow"
@@ -19,7 +19,13 @@ export const READ = async <Operation extends AsyncFunction>(
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>> | null> => {
 	try {
-		const json = await getObject(Bucket)(Key)
+		// TODO
+		// import {DataBucket} from '@workspace/infrastructure'
+		// dataBucket = new DataBucket()
+		// const json = await getObject({Bucket: dataBucket.name, region: dataBucket.region})(Key)
+		//
+		// furthemore database should not depend on aws workspace
+		const json = await getObject({ Bucket, region: awsRegion })(Key)
 		if (!json) {
 			info("READ", Key, json)
 			return null
@@ -44,7 +50,7 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>>> => {
 	try {
-		const json = await getObject(Bucket)(Key)
+		const json = await getObject({ Bucket, region: awsRegion })(Key)
 		if (!json) {
 			info("READ_ARRAY", Key, json)
 			return [] as Awaited<ReturnType<Operation>>
@@ -67,11 +73,11 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 
 export const DELETE = async (Key: string) => {
 	info("DELETE", Key)
-	await deleteObject(Bucket)(Key)
+	await deleteObject({ Bucket, region: awsRegion })(Key)
 	return deletedNow()
 }
 
-export const LIST = listObjects(Bucket)
+export const LIST = listObjects({ Bucket, region: awsRegion })
 
 export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 	await WRITE(Key, data)
@@ -81,5 +87,5 @@ export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 export const WRITE = async (Key: string, data: DflowArray | DflowObject) => {
 	info("WRITE", Key, JSON.stringify(data, null, 2))
 	const json = JSON.stringify(data)
-	await putObject(Bucket)(Key, json)
+	await putObject({ Bucket, region: awsRegion })(Key, json)
 }

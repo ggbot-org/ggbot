@@ -1,9 +1,11 @@
 import {
 	associateElasticIp,
 	describeElasticIps,
-	getOwnEc2InstanceId
+	getOwnEc2InstanceId,
+	releaseElasticIp
 } from "@workspace/aws"
 import { ENV } from "@workspace/env"
+import { awsRegion } from "@workspace/infrastructure"
 
 import { ErrorCannotParseElasticIps } from "./errors.js"
 import { info, warn } from "./logging.js"
@@ -11,6 +13,7 @@ import { info, warn } from "./logging.js"
 const elasticIpsEnv = ENV.BINANCE_PROXY_ELASTIC_IPS()
 
 let elasticIp = ""
+let allocationId = ""
 
 export const getElasticIp = () => elasticIp
 
@@ -30,7 +33,10 @@ export const associateIp = async () => {
 	const elasticIps = parseElasticIpsFromEnv()
 	info("Elastic IPs", elasticIps)
 
-	const { Addresses } = await describeElasticIps({ PublicIps: elasticIps })
+	const { Addresses } = await describeElasticIps(
+		{ region: awsRegion },
+		{ PublicIps: elasticIps }
+	)
 	if (!Addresses) {
 		warn("Cannot associate Elastic IP, empty address list")
 		return
@@ -43,9 +49,18 @@ export const associateIp = async () => {
 
 		if (!AllocationId || !PublicIp) continue
 
-		await associateElasticIp({ AllocationId, InstanceId })
+		await associateElasticIp(
+			{ region: awsRegion },
+			{ AllocationId, InstanceId }
+		)
 		elasticIp = PublicIp
-		info("Elastic IP associated", elasticIp)
+		allocationId = AllocationId
+		info(
+			"Elastic IP associated",
+			elasticIp,
+			"with AllocationId",
+			allocationId
+		)
 	}
 
 	if (!elasticIp)
@@ -53,8 +68,10 @@ export const associateIp = async () => {
 }
 
 export const releaseIp = async () => {
-	if (!elasticIp) return
-	info("Release IP", elasticIp)
-
-	throw new ErrorCannotParseElasticIps()
+	if (!elasticIp || !allocationId) return
+	info("Release IP", elasticIp, "from AllocationId", allocationId)
+	await releaseElasticIp(
+		{ region: awsRegion },
+		{ AllocationId: allocationId }
+	)
 }
