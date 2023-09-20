@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { repoPackages } from "./repoPackages.js"
+import { repositoryPackageJsons } from "./repositoryPackages.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-const { workspaceMap } = await repoPackages()
+const { workspaceMap } = await repositoryPackageJsons()
 
 describe("workspace", () => {
 	for (const [workspaceDir, workspacePackageJson] of workspaceMap.entries()) {

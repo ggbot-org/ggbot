@@ -12,9 +12,12 @@
   "scripts": {
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
+    "generate_docs": "node temp/scripts/generate_npm_dependencies_doc.js",
     "lint": "eslint --fix --ext .ts src/",
+    "pregenerate_docs": "npm run tsc:scripts",
     "pretest": "tsc --build tsconfig.test.json",
-    "test": "node --test"
+    "test": "node --test",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "eslintConfig": {
     "extends": [

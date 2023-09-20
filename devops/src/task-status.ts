@@ -3,7 +3,6 @@ import { LoadBalancerStatus } from "./_elb.js"
 import { IamPolicyStatus } from "./_iam.js"
 import { isMainModule } from "./_isMainModule.js"
 import { S3BucketStatus } from "./_s3.js"
-import { ElasticIpStatus, getElasticIps } from "./elasticIp.js"
 import { getWebappLoadBalancerStatus } from "./elb-webapp.js"
 import { getDevopsPolicyStatus } from "./iam-devops.js"
 import { getSesNoreplyPolicyStatus } from "./iam-sesNoreply.js"
@@ -26,19 +25,21 @@ type TaskStatus = () => Promise<{
 	webappLoadBalancer: LoadBalancerStatus
 }>
 
-const elasticIpsReport = (reportKey: string, elasticIps: ElasticIpStatus[]) => {
-	for (const elasticIp of elasticIps) {
-		const { PublicIp } = elasticIp
-		console.info(reportKey, PublicIp, "exists", OK(elasticIp.exists))
-		if (elasticIp.InstanceId)
-			console.info(
-				reportKey,
-				PublicIp,
-				"InstanceId",
-				elasticIp.InstanceId
-			)
-	}
-}
+// TODO move this to @workspace/infrastructure test
+// import { ElasticIpStatus, getElasticIps } from "./elasticIp.js"
+// const elasticIpsReport = (reportKey: string, elasticIps: ElasticIpStatus[]) => {
+// 	for (const elasticIp of elasticIps) {
+// 		const { PublicIp } = elasticIp
+// 		console.info(reportKey, PublicIp, "exists", OK(elasticIp.exists))
+// 		if (elasticIp.InstanceId)
+// 			console.info(
+// 				reportKey,
+// 				PublicIp,
+// 				"InstanceId",
+// 				elasticIp.InstanceId
+// 			)
+// 	}
+// }
 
 const iamPolicyReport = (reportKey: string, iamPolicy: IamPolicyStatus) => {
 	console.info(reportKey, "hasProjectTag", OK(iamPolicy.hasProjectTag))
@@ -99,8 +100,8 @@ export const taskStatus: TaskStatus = async () => {
 	console.info("EC2")
 	// //////////////////////////////////////////////////////////////////
 
-	const elasticIps = await getElasticIps()
-	elasticIpsReport("elasticIp", elasticIps)
+	// const elasticIps = await getElasticIps()
+	// elasticIpsReport("elasticIp", elasticIps)
 
 	// //////////////////////////////////////////////////////////////////
 	return {

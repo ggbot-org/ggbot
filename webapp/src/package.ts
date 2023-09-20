@@ -5,11 +5,13 @@ import { adminDirname } from "./routing/admin/pages.js"
 import { designDirname } from "./routing/design/pages.js"
 import { userDirname } from "./routing/user/pages.js"
 
-export const rootDir = resolve(dirname(dirname(fileURLToPath(import.meta.url))))
+export const packageDir = resolve(
+	dirname(dirname(fileURLToPath(import.meta.url)))
+)
 
-export const publicDir = join(rootDir, "public")
+export const publicDir = join(packageDir, "public")
 
-const srcDir = join(rootDir, "src")
+const srcDir = join(packageDir, "src")
 
 export const typesDir = join(srcDir, "types")
 

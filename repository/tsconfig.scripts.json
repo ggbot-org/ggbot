@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"outDir": "./temp",
+		"rootDir": "./src",
+		"skipLibCheck": true,
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
+	},
+	"exclude": ["node_modules/", "temp/", "**/*_test.ts"]
+}

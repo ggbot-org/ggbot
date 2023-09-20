@@ -3,10 +3,10 @@ import { join } from "node:path"
 
 import { PackageJson } from "type-fest"
 
-import { TextFile } from "./TextFile.js"
+import { FileProvider } from "./FileProvider.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-export class RepoPackageJson implements TextFile {
+export class RepositoryPackageJson implements FileProvider {
 	dirPathname: string
 	filename = "package.json"
 
@@ -74,13 +74,13 @@ export class RepoPackageJson implements TextFile {
 
 	workspaceBuildScriptCommand(workspaceDir: string) {
 		return this.scripts[
-			RepoPackageJson.workspaceBuildScriptKey(workspaceDir)
+			RepositoryPackageJson.workspaceBuildScriptKey(workspaceDir)
 		]
 	}
 
 	workspacePrebuildScriptCommand(workspaceDir: string) {
 		return this.scripts[
-			RepoPackageJson.workspacePrebuildScriptKey(workspaceDir)
+			RepositoryPackageJson.workspacePrebuildScriptKey(workspaceDir)
 		]
 	}
 }

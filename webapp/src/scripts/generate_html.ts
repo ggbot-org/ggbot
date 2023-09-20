@@ -31,47 +31,40 @@ const html = (scriptJs: string) =>
 		stylesheets: [{ href: "/main.css" }]
 	})
 
-const generateHtml = async () => {
-	// Landing pages.
+// Landing pages.
 
-	for (const pathname of landingHtmlPathnames)
-		await generateHtmlPage(join(publicDir, pathname), html(landingJs))
+for (const pathname of landingHtmlPathnames)
+	await generateHtmlPage(join(publicDir, pathname), html(landingJs))
 
-	// Try strategy.
+// Try strategy.
 
-	await generateHtmlPage(
-		join(publicDir, strategyHtmlPathname),
-		html(strategyJs)
-	)
+await generateHtmlPage(join(publicDir, strategyHtmlPathname), html(strategyJs))
 
-	// Admin app.
+// Admin app.
 
-	for (const pathname of adminHtmlPathnames)
-		await generateHtmlPage(join(publicDir, pathname), html(adminJs))
+for (const pathname of adminHtmlPathnames)
+	await generateHtmlPage(join(publicDir, pathname), html(adminJs))
 
-	// User app.
+// User app.
 
-	for (const pathname of userHtmlPathnames)
-		await generateHtmlPage(join(publicDir, pathname), html(userJs))
+for (const pathname of userHtmlPathnames)
+	await generateHtmlPage(join(publicDir, pathname), html(userJs))
 
-	// Subscription pages.
+// Subscription pages.
 
-	await generateHtmlPage(
-		join(publicDir, purchaseCanceledHtmlPathname),
-		html(userJs)
-	)
+await generateHtmlPage(
+	join(publicDir, purchaseCanceledHtmlPathname),
+	html(userJs)
+)
 
-	await generateHtmlPage(
-		join(publicDir, subscriptionPurchasedHtmlPathname),
-		html(userJs)
-	)
+await generateHtmlPage(
+	join(publicDir, subscriptionPurchasedHtmlPathname),
+	html(userJs)
+)
 
-	// Design.
+// Design.
 
-	await generateHtmlPage(
-		join(publicDir, designShowcaseHtmlPathname),
-		html(designJs)
-	)
-}
-
-generateHtml()
+await generateHtmlPage(
+	join(publicDir, designShowcaseHtmlPathname),
+	html(designJs)
+)

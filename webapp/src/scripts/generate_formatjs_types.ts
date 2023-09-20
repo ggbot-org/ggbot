@@ -8,10 +8,10 @@ import {
 	FormatjsIntlMessageIdsFilename
 } from "../i18n/FormatjsIntlMessageIds.js"
 import { translationPathname } from "../i18n/locales.js"
-import { rootDir, typesDir } from "../package.js"
+import { packageDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(
-	join(rootDir, translationPathname(defaultLanguage)),
+	join(packageDir, translationPathname(defaultLanguage)),
 	{ encoding: "utf8" }
 )
 

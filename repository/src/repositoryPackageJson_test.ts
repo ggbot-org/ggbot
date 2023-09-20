@@ -1,24 +1,24 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { RepoPackageJson } from "./RepoPackageJson.js"
-import { repoPackages } from "./repoPackages.js"
+import { RepositoryPackageJson } from "./RepositoryPackageJson.js"
+import { repositoryPackageJsons } from "./repositoryPackages.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-const { repoPackage, workspaceMap } = await repoPackages()
+const { repositoryPackageJson, workspaceMap } = await repositoryPackageJsons()
 
-describe("repo package.json", () => {
+describe("repository package.json", () => {
 	it("is private", () => {
-		assert.equal(repoPackage.isPrivate, true)
+		assert.equal(repositoryPackageJson.isPrivate, true)
 	})
 
 	describe("script", () => {
-		for (const workspaceDir of repoPackage.workspaces) {
+		for (const workspaceDir of repositoryPackageJson.workspaces) {
 			const buildScript =
-				repoPackage.workspaceBuildScriptCommand(workspaceDir)
+				repositoryPackageJson.workspaceBuildScriptCommand(workspaceDir)
 			if (!buildScript) continue
 			const buildScriptKey =
-				RepoPackageJson.workspaceBuildScriptKey(workspaceDir)
+				RepositoryPackageJson.workspaceBuildScriptKey(workspaceDir)
 			describe(buildScriptKey, () => {
 				const assertionError = `check root package.json ${buildScriptKey} script`
 				it("has expected command", () => {
@@ -26,7 +26,9 @@ describe("repo package.json", () => {
 					if (!workspace) throw Error()
 					if (workspace.buildScriptCommand) {
 						assert.equal(
-							RepoPackageJson.workspaceBuildCommand(workspaceDir),
+							RepositoryPackageJson.workspaceBuildCommand(
+								workspaceDir
+							),
 							buildScript,
 							assertionError
 						)
@@ -37,17 +39,19 @@ describe("repo package.json", () => {
 			})
 
 			const prebuildScriptKey =
-				RepoPackageJson.workspacePrebuildScriptKey(workspaceDir)
+				RepositoryPackageJson.workspacePrebuildScriptKey(workspaceDir)
 			describe(prebuildScriptKey, () => {
 				const assertionError = `check root package.json ${prebuildScriptKey} script`
 				it("has expected command", () => {
 					const workspace = workspaceMap.get(workspaceDir)
 					if (!workspace) throw Error()
 					const prebuildScript =
-						repoPackage.workspacePrebuildScriptCommand(workspaceDir)
+						repositoryPackageJson.workspacePrebuildScriptCommand(
+							workspaceDir
+						)
 					if (workspace.internalDependencies.size === 0) {
 						assert.equal(prebuildScript, undefined, assertionError)
-					} else if (prebuildScript) {
+					} else {
 						const internalDependenciesChain =
 							WorkspacePackageJson.internalDependenciesChain(
 								workspaceDir,
@@ -55,7 +59,7 @@ describe("repo package.json", () => {
 							)
 						assert.equal(
 							prebuildScript,
-							RepoPackageJson.workspacePrebuildCommandSequence(
+							RepositoryPackageJson.workspacePrebuildCommandSequence(
 								internalDependenciesChain,
 								workspaceMap
 							),
