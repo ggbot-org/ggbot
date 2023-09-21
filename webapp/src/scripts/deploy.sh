@@ -3,7 +3,7 @@
 BUCKET=""
 
 if [ "$DEPLOY_STAGE" == "main" ]; then
-	BUCKET=app.ggbot2.com
+	BUCKET=www.ggbot2.com
 elif [ "$DEPLOY_STAGE" == "next" ]; then
 	BUCKET=next.ggbot2.com
 else
