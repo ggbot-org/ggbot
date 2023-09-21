@@ -29,17 +29,6 @@
   "eslintConfig": {
     "extends": [
       "@workspace/eslint-config"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ],
-        "rules": {
-          "no-warning-comments": "off"
-        }
-      }
     ]
   }
 }

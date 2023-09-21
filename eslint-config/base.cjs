@@ -62,19 +62,9 @@ module.exports = {
 		// This behavior is known as [SmartTabs](https://www.emacswiki.org/emacs/SmartTabs).
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
-		"no-warning-comments": "error",
+		"no-warning-comments": "warn",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
-		"sort-keys": [
-			"error",
-			"asc",
-			{
-				allowLineSeparatedGroups: true,
-				caseSensitive: true,
-				minKeys: 7,
-				natural: true
-			}
-		],
 		"tsdoc/syntax": "error"
 	}
 }

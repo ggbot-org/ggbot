@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys */
 import { decimalToNumber } from "@workspace/arithmetic"
 import {
 	BinanceKline,
