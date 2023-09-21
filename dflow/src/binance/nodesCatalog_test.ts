@@ -138,19 +138,6 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 				filters: []
 			},
 			{
-				symbol: "XXDYYY",
-				status: "TRADING",
-				baseAsset: "XXD",
-				baseAssetPrecision: 8,
-				// quoteAsset is not in dflowBinanceQuoteAssets list
-				quoteAsset: "YYY",
-				quotePrecision: 8,
-				quoteAssetPrecision: 8,
-				baseCommissionPrecision: 8,
-				isSpotTradingAllowed: true,
-				filters: []
-			},
-			{
 				// symbol mismatch with baseAsset/quoteAsset
 				symbol: "XXXBUSD",
 				status: "TRADING",

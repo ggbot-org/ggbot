@@ -11,8 +11,6 @@ import {
 } from "./klineIntervals.js"
 import { Candles } from "./nodes/market.js"
 
-export const dflowBinanceQuoteAssets = ["BNB", "BTC", "BUSD", "ETH"]
-
 export type DflowBinanceSymbolInfo = Pick<
 	BinanceSymbolInfo,
 	| "baseAsset"
@@ -45,7 +43,6 @@ export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
 		typeof baseAsset === "string" &&
 		typeof quoteAsset === "string" &&
 		symbol === `${baseAsset}${quoteAsset}` &&
-		dflowBinanceQuoteAssets.includes(quoteAsset) &&
 		// Most of the Binance symbols has precision 8. Others are edge case markets.
 		// TODO remove this
 		baseAssetPrecision === dflowBinancePrecision &&
