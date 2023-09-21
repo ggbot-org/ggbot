@@ -19,7 +19,7 @@ type ItemKey = (typeof itemKeys)[number]
  */
 export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	activeTabId: (pageName: string) => `${pageName}:activeTab:v1`,
-	binanceExchangeInfo: () => "binanceExchangeInfo:v1",
+	binanceExchangeInfo: () => "binanceExchangeInfo:v1.1.0",
 	doNotShowPleaseConfigureBinance: () => "doNotShowPleaseConfigureBinance:v1",
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",

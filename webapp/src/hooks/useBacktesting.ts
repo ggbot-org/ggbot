@@ -2,6 +2,7 @@ import { BinanceClient } from "_/binance/client"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
+import { logging } from "_/logging"
 import {
 	binanceKlineMaxLimit,
 	BinanceKlinesCacheMap,
@@ -33,6 +34,8 @@ import {
 	yesterday
 } from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useReducer } from "react"
+
+const { info } = logging("backtesting")
 
 type State = Pick<DflowCommonContext, "memory"> & {
 	balanceHistory: BalanceChangeEvent[]
@@ -96,6 +99,8 @@ const isReadOnlyState = (
 }
 
 const backtestingReducer = (state: State, action: Action) => {
+	info(action.type)
+
 	switch (action.type) {
 		case "END": {
 			return {

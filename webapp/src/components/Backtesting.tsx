@@ -93,9 +93,10 @@ export const Backtesting: FC = () => {
 	}, [dispatch])
 
 	const onClickStart = useCallback(() => {
-		if (!hasRequiredData) return
+		// TODO why this is not working? it is always false
+		// if (!hasRequiredData) return
 		dispatch({ type: "PREPARE" })
-	}, [dispatch, hasRequiredData])
+	}, [dispatch /*hasRequiredData*/])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: "PAUSE" })

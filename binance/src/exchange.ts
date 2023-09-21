@@ -114,7 +114,13 @@ export class BinanceExchange {
 				type: "orderType"
 			})
 		const symbolInfo = await this.symbolInfo(symbol)
-		if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
+		// TODO
+		// this.canTradeSymbol should be optional here or it should be done by the caller
+		// otherwise we need to cache too much data in exchangeInfoCache
+		// if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
+		// 	throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
+
+		if (!symbolInfo)
 			throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
 
 		const { filters } = symbolInfo

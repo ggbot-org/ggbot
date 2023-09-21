@@ -18,6 +18,7 @@ export type DflowBinanceSymbolInfo = Pick<
 	| "baseAsset"
 	| "baseAssetPrecision"
 	| "baseCommissionPrecision"
+	| "filters"
 	| "isSpotTradingAllowed"
 	| "quoteAsset"
 	| "quoteAssetPrecision"
@@ -46,6 +47,7 @@ export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
 		symbol === `${baseAsset}${quoteAsset}` &&
 		dflowBinanceQuoteAssets.includes(quoteAsset) &&
 		// Most of the Binance symbols has precision 8. Others are edge case markets.
+		// TODO remove this
 		baseAssetPrecision === dflowBinancePrecision &&
 		baseCommissionPrecision === dflowBinancePrecision &&
 		quoteAssetPrecision === dflowBinancePrecision &&
@@ -62,6 +64,7 @@ export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
 				baseAsset,
 				baseAssetPrecision,
 				baseCommissionPrecision,
+				filters,
 				isSpotTradingAllowed,
 				quoteAsset,
 				quoteAssetPrecision,
@@ -72,6 +75,7 @@ export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
 				baseAsset,
 				baseAssetPrecision,
 				baseCommissionPrecision,
+				filters,
 				isSpotTradingAllowed,
 				quoteAsset,
 				quoteAssetPrecision,
