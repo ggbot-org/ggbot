@@ -2,13 +2,13 @@ import { FQDN } from "./FQDNs.js"
 
 export class ApiBaseURL extends URL {
 	constructor(fqdn: FQDN) {
-		super(fqdn.apiDomain)
+		super(`https://${fqdn.apiDomain}`)
 	}
 }
 
 export class AuthBaseURL extends URL {
 	constructor(fqdn: FQDN) {
-		super(fqdn.apiDomain)
+		super(`https://${fqdn.authDomain}`)
 	}
 }
 
@@ -17,7 +17,7 @@ export class WebappBaseURL extends URL {
 		super(
 			fqdn.deployStage === "local"
 				? "http://localhost:8000"
-				: fqdn.webappDomain
+				: `https://${fqdn.webappDomain}`
 		)
 	}
 }
