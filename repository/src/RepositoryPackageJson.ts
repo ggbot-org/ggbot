@@ -3,11 +3,12 @@ import { join } from "node:path"
 
 import { PackageJson } from "type-fest"
 
-import { FileProvider } from "./FileProvider.js"
+import { FileProvider } from "./filesystemProviders.js"
+import type { Repository } from "./Repository.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
 export class RepositoryPackageJson implements FileProvider {
-	dirPathname: string
+	directoryPathname: string
 	filename = "package.json"
 
 	packageName: PackageJson["name"] = ""
@@ -16,46 +17,50 @@ export class RepositoryPackageJson implements FileProvider {
 	scripts: NonNullable<PackageJson["scripts"]> = {}
 	workspaces: PackageJson.WorkspacePattern[] = []
 
-	constructor(dirPathname: string) {
-		this.dirPathname = dirPathname
+	constructor(directoryPathname: string) {
+		this.directoryPathname = directoryPathname
 	}
 
-	static workspaceBuildScriptKey(workspaceDir: PackageJson.WorkspacePattern) {
-		return `build:${workspaceDir}`
+	static workspaceBuildScriptKey(
+		workspacePathname: PackageJson.WorkspacePattern
+	) {
+		return `build:${workspacePathname}`
 	}
 
-	static workspaceBuildCommand(workspaceDir: PackageJson.WorkspacePattern) {
-		return `npm run build -w ${workspaceDir}`
+	static workspaceBuildCommand(
+		workspacePathname: PackageJson.WorkspacePattern
+	) {
+		return `npm run build -w ${workspacePathname}`
 	}
 
 	static workspacePrebuildCommandSequence(
 		internalDependenciesChain: string[],
-		workspaceMap: Map<PackageJson.WorkspacePattern, WorkspacePackageJson>
+		workspaces: Repository["workspaces"]
 	) {
 		return internalDependenciesChain
 			.map((internalDependency) =>
-				WorkspacePackageJson.workspaceDirFromInternalDependency(
+				WorkspacePackageJson.workspacePathnameFromInternalDependency(
 					internalDependency
 				)
 			)
-			.filter((workspaceDir) => {
-				const workspace = workspaceMap.get(workspaceDir)
+			.filter((workspacePathname) => {
+				const workspace = workspaces.get(workspacePathname)
 				if (!workspace) throw Error()
-				return workspace.buildScriptCommand
+				return workspace.packageJson.buildScriptCommand
 			})
-			.map((workspaceDir) => `npm run build -w ${workspaceDir}`)
+			.map((workspacePathname) => `npm run build -w ${workspacePathname}`)
 			.join(" && ")
 	}
 
 	static workspacePrebuildScriptKey(
-		workspaceDir: PackageJson.WorkspacePattern
+		workspacePathname: PackageJson.WorkspacePattern
 	) {
-		return `prebuild:${workspaceDir}`
+		return `prebuild:${workspacePathname}`
 	}
 
 	async read() {
 		const text = await readFile(
-			join(this.dirPathname, this.filename),
+			join(this.directoryPathname, this.filename),
 			"utf-8"
 		)
 		const {

@@ -3,21 +3,21 @@ import { join } from "node:path"
 
 import { TsConfigJson } from "type-fest"
 
-import { FileProvider } from "./FileProvider.js"
+import { FileProvider } from "./filesystemProviders.js"
 
 export class WorkspaceTsConfigJson implements FileProvider {
-	dirPathname: string
+	directoryPathname: string
 	filename = "tsconfig.json"
 
 	compilerOptions: TsConfigJson["compilerOptions"] = {}
 
-	constructor(dirPathname: string) {
-		this.dirPathname = dirPathname
+	constructor(directoryPathname: string) {
+		this.directoryPathname = directoryPathname
 	}
 
 	async read() {
 		const text = await readFile(
-			join(this.dirPathname, this.filename),
+			join(this.directoryPathname, this.filename),
 			"utf-8"
 		)
 		const { compilerOptions } = JSON.parse(text)

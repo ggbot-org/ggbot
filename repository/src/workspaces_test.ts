@@ -1,18 +1,21 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { repositoryPackageJsons } from "./repositoryPackages.js"
+import { Repository } from "./Repository.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 
-const { workspaceMap } = await repositoryPackageJsons()
+const repository = new Repository()
+await repository.read()
 
 describe("workspace", () => {
-	for (const [workspaceDir, workspacePackageJson] of workspaceMap.entries()) {
-		const assertionError = `check ${workspaceDir}/package.json`
+	for (const [
+		workspacePathname,
+		{ packageJson }
+	] of repository.workspaces.entries()) {
+		const assertionError = `check ${workspacePathname}/package.json`
 
-		describe(`${workspaceDir} package.json`, () => {
-			const { packageName, dependencies, devDependencies } =
-				workspacePackageJson
+		describe(`${workspacePathname} package.json`, () => {
+			const { packageName, dependencies, devDependencies } = packageJson
 
 			const allDependencyKeys = [
 				...Array.from(dependencies.keys()),
@@ -31,7 +34,7 @@ describe("workspace", () => {
 			})
 
 			test("is private", () => {
-				assert.ok(workspacePackageJson.isPrivate, assertionError)
+				assert.ok(packageJson.isPrivate, assertionError)
 			})
 
 			test("does not depend on itself", () => {

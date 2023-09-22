@@ -1,16 +1,16 @@
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
 
-import { PackageJson } from "type-fest"
-
-import { FileProvider } from "./FileProvider.js"
+import { FileProvider } from "./filesystemProviders.js"
+import type { Repository } from "./Repository.js"
+import type { Workspace } from "./Workspace.js"
 
 export class WorkspacePackageJson implements FileProvider {
 	static scope = "@workspace"
 
 	static buildScriptKey = "build"
 
-	dirPathname: string
+	directoryPathname: string
 	filename = "package.json"
 
 	packageName = ""
@@ -27,34 +27,39 @@ export class WorkspacePackageJson implements FileProvider {
 	/** Can be a dependency or a dev dependency. */
 	internalDependencies = new Set<string>()
 
-	constructor(dirPathname: string) {
-		this.dirPathname = dirPathname
+	constructor(directoryPathname: string) {
+		this.directoryPathname = directoryPathname
 	}
 
-	static workspaceDirFromInternalDependency(internalDependency: string) {
-		const workspaceDir = internalDependency.split("/").pop()
-		if (!workspaceDir) throw new Error()
-		return workspaceDir
+	static workspacePathnameFromInternalDependency(
+		internalDependency: string
+	): Workspace["pathname"] {
+		const workspacePathname = internalDependency.split("/").pop()
+		if (!workspacePathname) throw new Error()
+		return workspacePathname
 	}
 
 	static internalDependenciesChain(
-		workspaceDir: PackageJson.WorkspacePattern,
-		workspaceMap: Map<PackageJson.WorkspacePattern, WorkspacePackageJson>
+		workspacePathname: Workspace["pathname"],
+		workspaces: Repository["workspaces"]
 	) {
-		const workspace = workspaceMap.get(workspaceDir)
+		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error()
-		let result = Array.from(workspace.internalDependencies)
+		let result = Array.from(workspace.packageJson.internalDependencies)
 		for (const internalDependency of result) {
-			const dependencyWorkspaceDir =
-				WorkspacePackageJson.workspaceDirFromInternalDependency(
+			const dependencyWorkspacePathname =
+				WorkspacePackageJson.workspacePathnameFromInternalDependency(
 					internalDependency
 				)
-			const dependencyWorkspace = workspaceMap.get(dependencyWorkspaceDir)
+			const dependencyWorkspace = workspaces.get(
+				dependencyWorkspacePathname
+			)
 			if (!dependencyWorkspace) throw Error()
-			if (dependencyWorkspace.internalDependencies.size === 0) continue
+			if (dependencyWorkspace.packageJson.internalDependencies.size === 0)
+				continue
 			result = WorkspacePackageJson.internalDependenciesChain(
-				dependencyWorkspaceDir,
-				workspaceMap
+				dependencyWorkspacePathname,
+				workspaces
 			).concat(result)
 		}
 		return [...new Set(result)]
@@ -62,7 +67,7 @@ export class WorkspacePackageJson implements FileProvider {
 
 	async read() {
 		const text = await readFile(
-			join(this.dirPathname, this.filename),
+			join(this.directoryPathname, this.filename),
 			"utf-8"
 		)
 		const packageContent = JSON.parse(text)

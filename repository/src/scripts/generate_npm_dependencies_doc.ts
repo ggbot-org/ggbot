@@ -1,11 +1,12 @@
 import { writeFile } from "node:fs/promises"
 import { join } from "node:path"
 
-import { repositoryDocsDir } from "../repository.js"
-import { repositoryPackageJsons } from "../repositoryPackages.js"
+import { Repository } from "../Repository.js"
 import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
 
-const { workspaceMap } = await repositoryPackageJsons()
+const repository = new Repository()
+await repository.read()
+const repositoryDocsDir = join(repository.pathname, "docs")
 
 const pathname = join(repositoryDocsDir, "npm-dependencies.md")
 
@@ -18,7 +19,8 @@ const packageGraphNode = (packageName: string) =>
 const isInternalDependency = (packageName: string) =>
 	packageName.startsWith(WorkspacePackageJson.scope)
 
-for (const workspacePackageJson of workspaceMap.values()) {
+for (const workspace of repository.workspaces.values()) {
+	const workspacePackageJson = workspace.packageJson
 	const packageName = workspacePackageJson.packageName
 	for (const dependency of workspacePackageJson.dependencies.keys())
 		if (isInternalDependency(dependency))
