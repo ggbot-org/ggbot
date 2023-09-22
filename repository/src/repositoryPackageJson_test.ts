@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { RepositoryPackageJson } from "./RepositoryPackageJson.js"
 import { repositoryPackageJsons } from "./repositoryPackages.js"
@@ -8,7 +8,7 @@ import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 const { repositoryPackageJson, workspaceMap } = await repositoryPackageJsons()
 
 describe("repository package.json", () => {
-	it("is private", () => {
+	test("is private", () => {
 		assert.equal(repositoryPackageJson.isPrivate, true)
 	})
 
@@ -21,7 +21,7 @@ describe("repository package.json", () => {
 				RepositoryPackageJson.workspaceBuildScriptKey(workspaceDir)
 			describe(buildScriptKey, () => {
 				const assertionError = `check root package.json ${buildScriptKey} script`
-				it("has expected command", () => {
+				test("has expected command", () => {
 					const workspace = workspaceMap.get(workspaceDir)
 					if (!workspace) throw Error()
 					if (workspace.buildScriptCommand) {
@@ -42,7 +42,7 @@ describe("repository package.json", () => {
 				RepositoryPackageJson.workspacePrebuildScriptKey(workspaceDir)
 			describe(prebuildScriptKey, () => {
 				const assertionError = `check root package.json ${prebuildScriptKey} script`
-				it("has expected command", () => {
+				test("has expected command", () => {
 					const workspace = workspaceMap.get(workspaceDir)
 					if (!workspace) throw Error()
 					const prebuildScript =
