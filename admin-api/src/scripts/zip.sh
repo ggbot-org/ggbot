@@ -13,7 +13,7 @@ cd -
 
 # Copy workspaces.
 
-for WORKSPACE in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http infrastructure locators logging models; do
+for WORKSPACE in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http locators logging models; do
 	mkdir -p temp/node_modules/@workspace/$WORKSPACE/dist
 	cp -R ../$WORKSPACE/dist/* temp/node_modules/@workspace/$WORKSPACE/dist/
 	cp ../$WORKSPACE/package.json temp/node_modules/@workspace/$WORKSPACE/

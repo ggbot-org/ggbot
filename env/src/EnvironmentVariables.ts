@@ -15,6 +15,18 @@ class EnvironmentVariables {
 		return getVariable("AWS_ACCOUNT_ID")
 	}
 
+	AWS_BINANCE_PROXY_REGION() {
+		return getVariable("AWS_BINANCE_PROXY_REGION")
+	}
+
+	AWS_DATA_REGION() {
+		return getVariable("AWS_DATA_REGION")
+	}
+
+	AWS_SES_REGION() {
+		return getVariable("AWS_SES_REGION")
+	}
+
 	BINANCE_PROXY_BASE_URL() {
 		return getVariable("BINANCE_PROXY_BASE_URL")
 	}

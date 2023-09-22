@@ -1,7 +1,6 @@
 import { sendEmail } from "@workspace/aws"
 import { oneTimePasswordEmailMessage } from "@workspace/email-messages"
 import { ENV } from "@workspace/env"
-import { awsSesRegion } from "@workspace/infrastructure"
 import { noReplyEmailAddress } from "@workspace/locators"
 import {
 	createdNow,
@@ -41,7 +40,7 @@ export const sendOneTimePassword: SendOneTimePassword = async ({
 		oneTimePassword
 	})
 	await sendEmail(
-		{ region: awsSesRegion },
+		{ region: ENV.AWS_DATA_REGION() },
 		{
 			source: noReplyEmailAddress(ENV.DNS_DOMAIN()),
 			toAddresses: [email],

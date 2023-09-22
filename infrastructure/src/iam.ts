@@ -4,7 +4,7 @@ import { getLogsArn } from "./cloudWatch.js"
 import { lambdaAllArn } from "./lambda.js"
 import {
 	getDataBucketArn,
-	getLogsBucketArn,
+	// TODO getLogsBucketArn,
 	getNakedDomainBucketArn,
 	getWebappBucketArn
 } from "./s3.js"
@@ -17,7 +17,7 @@ const Version = "2012-10-17"
 
 const resources = (deployStage: DeployStage) => ({
 	dataBucketArn: getDataBucketArn(deployStage),
-	logsBucketArn: getLogsBucketArn(deployStage),
+	// TODO logsBucketArn: getLogsBucketArn(deployStage),
 	webappBucketArn: getWebappBucketArn(deployStage)
 })
 
@@ -73,10 +73,10 @@ export const getDevopsPolicyStatements = () => [
 		Resource: [
 			cross.nakedDomainBucketArn,
 			main.dataBucketArn,
-			main.logsBucketArn,
+			// TODO main.logsBucketArn,
 			main.webappBucketArn,
 			next.dataBucketArn,
-			next.logsBucketArn,
+			// TODO next.logsBucketArn,
 			next.webappBucketArn
 		]
 	},

@@ -5,12 +5,12 @@ import {
 	releaseElasticIp
 } from "@workspace/aws"
 import { ENV } from "@workspace/env"
-import { awsRegion } from "@workspace/infrastructure"
 
 import { ErrorCannotParseElasticIps } from "./errors.js"
 import { info, warn } from "./logging.js"
 
-const elasticIpsEnv = ENV.BINANCE_PROXY_ELASTIC_IPS()
+const BINANCE_PROXY_ELASTIC_IPS = ENV.BINANCE_PROXY_ELASTIC_IPS()
+const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
 
 let elasticIp = ""
 let allocationId = ""
@@ -20,7 +20,7 @@ export const getElasticIp = () => elasticIp
 const looksLikeIp = (ip: unknown) => typeof ip === "string"
 
 const parseElasticIpsFromEnv = () => {
-	const elasticIpList = elasticIpsEnv.split(",")
+	const elasticIpList = BINANCE_PROXY_ELASTIC_IPS.split(",")
 	if (Array.isArray(elasticIpList) && elasticIpList.every(looksLikeIp))
 		return elasticIpList
 	throw new ErrorCannotParseElasticIps()
@@ -34,7 +34,7 @@ export const associateIp = async () => {
 	info("Elastic IPs", elasticIps)
 
 	const { Addresses } = await describeElasticIps(
-		{ region: awsRegion },
+		{ region: AWS_BINANCE_PROXY_REGION },
 		{ PublicIps: elasticIps }
 	)
 	if (!Addresses) {
@@ -50,7 +50,7 @@ export const associateIp = async () => {
 		if (!AllocationId || !PublicIp) continue
 
 		await associateElasticIp(
-			{ region: awsRegion },
+			{ region: AWS_BINANCE_PROXY_REGION },
 			{ AllocationId, InstanceId }
 		)
 		elasticIp = PublicIp
@@ -71,7 +71,7 @@ export const releaseIp = async () => {
 	if (!elasticIp || !allocationId) return
 	info("Release IP", elasticIp, "from AllocationId", allocationId)
 	await releaseElasticIp(
-		{ region: awsRegion },
+		{ region: AWS_BINANCE_PROXY_REGION },
 		{ AllocationId: allocationId }
 	)
 }

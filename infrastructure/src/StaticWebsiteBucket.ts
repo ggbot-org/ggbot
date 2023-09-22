@@ -1,4 +1,4 @@
-import { S3Bucket, S3BucketACL } from "./S3Bucket.js"
+import { S3Bucket, S3BucketACL } from "@workspace/aws"
 
 export class StaticWebsiteBucket extends S3Bucket {
 	readonly ACL: S3BucketACL
@@ -9,6 +9,6 @@ export class StaticWebsiteBucket extends S3Bucket {
 	}
 
 	async createIfItDoesExist() {
-		await super.createIfItDoesExist({ ACL: this.ACL })
+		await super.create(this.ACL)
 	}
 }

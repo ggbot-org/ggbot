@@ -39,8 +39,8 @@ graph LR
     workspace/database --- workspace/dflow
     workspace/database --- workspace/email-messages
     workspace/database --- workspace/env
-    workspace/database --- workspace/infrastructure
     workspace/database --- workspace/locators
+    workspace/database --- workspace/logging
     workspace/dflow --- workspace/binance
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/cache
@@ -49,6 +49,7 @@ graph LR
     workspace/executor --- workspace/models
     workspace/infrastructure --- workspace/aws
     workspace/infrastructure --- workspace/env
+    workspace/infrastructure --- workspace/database
     workspace/infrastructure --- workspace/locators
     workspace/locators --- workspace/models
     workspace/logging --- workspace/env

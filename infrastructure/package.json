@@ -23,6 +23,7 @@
   "dependencies": {
     "@workspace/aws": "0.0.0",
     "@workspace/env": "0.0.0",
+    "@workspace/database": "0.0.0",
     "@workspace/locators": "0.0.0"
   },
   "devDependencies": {

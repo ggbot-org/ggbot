@@ -1,14 +1,16 @@
-import { deleteObject, getObject, listObjects, putObject } from "@workspace/aws"
-import { awsRegion, getDataBucketName } from "@workspace/infrastructure"
+import { S3IOClient } from "@workspace/aws"
+import { ENV } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import { deletedNow, updatedNow } from "@workspace/models"
 import { DflowArray, DflowObject } from "dflow"
 
 import { ErrorInvalidData } from "./errors.js"
+import { getDataBucketName } from "./S3DataProvider.js"
 
 const { info } = logging("database")
 
 const Bucket = getDataBucketName()
+const s3 = new S3IOClient(ENV.AWS_DATA_REGION(), Bucket)
 
 type AsyncFunction = (...arguments_: any[]) => Promise<unknown>
 
@@ -19,13 +21,7 @@ export const READ = async <Operation extends AsyncFunction>(
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>> | null> => {
 	try {
-		// TODO
-		// import {DataBucket} from '@workspace/infrastructure'
-		// dataBucket = new DataBucket()
-		// const json = await getObject({Bucket: dataBucket.name, region: dataBucket.region})(Key)
-		//
-		// furthemore database should not depend on aws workspace
-		const json = await getObject({ Bucket, region: awsRegion })(Key)
+		const json = await s3.getObject(Key)
 		if (!json) {
 			info("READ", Key, json)
 			return null
@@ -50,7 +46,7 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>>> => {
 	try {
-		const json = await getObject({ Bucket, region: awsRegion })(Key)
+		const json = await s3.getObject(Key)
 		if (!json) {
 			info("READ_ARRAY", Key, json)
 			return [] as Awaited<ReturnType<Operation>>
@@ -73,11 +69,11 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 
 export const DELETE = async (Key: string) => {
 	info("DELETE", Key)
-	await deleteObject({ Bucket, region: awsRegion })(Key)
+	await s3.deleteObject(Key)
 	return deletedNow()
 }
 
-export const LIST = listObjects({ Bucket, region: awsRegion })
+export const LIST = s3.listObjects
 
 export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 	await WRITE(Key, data)
@@ -87,5 +83,5 @@ export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 export const WRITE = async (Key: string, data: DflowArray | DflowObject) => {
 	info("WRITE", Key, JSON.stringify(data, null, 2))
 	const json = JSON.stringify(data)
-	await putObject({ Bucket, region: awsRegion })(Key, json)
+	await s3.putObject(Key, json)
 }

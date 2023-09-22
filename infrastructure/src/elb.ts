@@ -1,7 +1,7 @@
 import { LoadBalancerTypeEnum } from "@workspace/aws"
 import { ENV } from "@workspace/env"
 
-import { awsRegion } from "./awsRegions.js"
+import { staticWebsiteAwsRegion } from "./awsRegions.js"
 
 const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV
 
@@ -11,6 +11,6 @@ export const getWebappLoadBalancerName = (deployStage = DEPLOY_STAGE()) =>
 export const webappLoadBalancerType = LoadBalancerTypeEnum.APPLICATION
 
 export const getWebappLoadBalancerArnPrefix = (deployStage = DEPLOY_STAGE()) =>
-	`arn:aws:elasticloadbalancing:${awsRegion}:${AWS_ACCOUNT_ID()}:loadbalancer/app/${getWebappLoadBalancerName(
+	`arn:aws:elasticloadbalancing:${staticWebsiteAwsRegion}:${AWS_ACCOUNT_ID()}:loadbalancer/app/${getWebappLoadBalancerName(
 		deployStage
 	)}`

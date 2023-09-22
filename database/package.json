@@ -23,7 +23,6 @@
     "@workspace/dflow": "0.0.0",
     "@workspace/email-messages": "0.0.0",
     "@workspace/env": "0.0.0",
-    "@workspace/infrastructure": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/logging": "0.0.0",
     "minimal-type-guard-helpers": "0.1.1"
