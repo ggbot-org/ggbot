@@ -6,8 +6,6 @@ rm -rf dist/*/index.zip
 
 # Install external deps.
 
-### TODO generate temp/package.json file reading from other package.json
-#        files, use a node script
 echo '{ "name": "lambda", "type": "module", "dependencies": { "@aws-sdk/client-ec2": "3.379.1", "@aws-sdk/client-iam": "3.379.1", "@aws-sdk/client-s3": "3.379.1", "@aws-sdk/client-ses": "3.379.1", "jsonwebtoken": "9.0.1", "dflow": "0.42.0", "flow-view": "6.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
 cd temp
 npm install
@@ -15,13 +13,7 @@ cd -
 
 # Copy workspaces.
 
-for INTERNAL_DEP in api-gateway arithmetic aws binance binance-client database dflow env email-messages infrastructure locators models; do
-	mkdir -p temp/node_modules/@workspace/$INTERNAL_DEP/dist
-	cp -R ../$INTERNAL_DEP/dist/* temp/node_modules/@workspace/$INTERNAL_DEP/dist/
-	cp ../$INTERNAL_DEP/package.json temp/node_modules/@workspace/$INTERNAL_DEP/
-done
-
-for WORKSPACE in api authentication http; do
+for WORKSPACE in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http infrastructure locators logging models; do
 	mkdir -p temp/node_modules/@workspace/$WORKSPACE/dist
 	cp -R ../$WORKSPACE/dist/* temp/node_modules/@workspace/$WORKSPACE/dist/
 	cp ../$WORKSPACE/package.json temp/node_modules/@workspace/$WORKSPACE/
