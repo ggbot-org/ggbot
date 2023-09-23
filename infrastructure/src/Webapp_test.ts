@@ -8,16 +8,15 @@ const webapp = new Webapp()
 
 describe("Webapp", () => {
 	describe("S3 Bucket", () => {
-		test("exists", async () => {
-			const exists = await webapp.s3Bucket.exists()
-			assert.ok(exists)
+		const { s3Bucket } = webapp
+
+		test(`${s3Bucket.name} exists`, async () => {
+			const exists = await s3Bucket.exists()
+			assert.ok(exists, `S3 bucket ${s3Bucket.name} does not exist`)
 		})
 
-		test("create", ACTIVE_TEST, async () => {
-			const exists = await webapp.s3Bucket.exists()
-			if (!exists) {
-				await webapp.s3Bucket.createIfItDoesExist()
-			}
+		test(`create ${s3Bucket.name}`, ACTIVE_TEST, async () => {
+			await s3Bucket.create()
 			assert.ok(true)
 		})
 	})

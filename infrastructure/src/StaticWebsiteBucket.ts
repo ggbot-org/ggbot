@@ -8,7 +8,7 @@ export class StaticWebsiteBucket extends S3Bucket {
 		this.ACL = "public-read"
 	}
 
-	async createIfItDoesExist() {
+	async create() {
 		await super.create(this.ACL)
 	}
 }

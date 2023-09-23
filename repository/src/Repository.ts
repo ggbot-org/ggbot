@@ -6,15 +6,16 @@ import { RepositoryPackageJson } from "./RepositoryPackageJson.js"
 import { Workspace } from "./Workspace.js"
 
 export class Repository implements DirectoryProvider {
+	static pathname: Repository["pathname"] = resolve(
+		dirname(dirname(dirname(fileURLToPath(import.meta.url))))
+	)
+
 	pathname: string
 	packageJson: RepositoryPackageJson
 	workspaces: Map<Workspace["pathname"], Workspace>
 
 	constructor() {
-		this.pathname = resolve(
-			dirname(dirname(dirname(fileURLToPath(import.meta.url))))
-		)
-
+		this.pathname = Repository.pathname
 		this.packageJson = new RepositoryPackageJson(this.pathname)
 		this.workspaces = new Map()
 	}

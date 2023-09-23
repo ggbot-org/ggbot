@@ -1,3 +1,5 @@
+import { webappWorkspace } from "@workspace/repository"
+
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
 import { fqdn } from "./fqdn.js"
 import { StaticWebsite } from "./StaticWebsite.js"
@@ -8,4 +10,8 @@ export class Webapp implements StaticWebsite {
 		staticWebsiteAwsRegion,
 		fqdn.webappDomain
 	)
+	workspace = webappWorkspace
+	async read() {
+		await this.workspace.read()
+	}
 }

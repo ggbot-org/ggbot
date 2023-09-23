@@ -1,2 +1,2 @@
-dist/
 temp/
+# dist/ folder is omitted: infrastructure package is not consumed.

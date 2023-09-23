@@ -51,6 +51,7 @@ graph LR
     workspace/infrastructure --- workspace/env
     workspace/infrastructure --- workspace/database
     workspace/infrastructure --- workspace/locators
+    workspace/infrastructure --- workspace/repository
     workspace/locators --- workspace/models
     workspace/logging --- workspace/env
     workspace/models --- workspace/arithmetic
