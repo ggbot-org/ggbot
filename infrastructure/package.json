@@ -11,8 +11,7 @@
     "prepush_infrastructure": "npm run tsc:test",
     "pretest_infrastructure": "npm run tsc:test",
     "test_infrastructure": "node --test",
-    "tsc:test": "tsc --build tsconfig.test.json",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp'"
+    "tsc:test": "tsc --build tsconfig.test.json"
   },
   "dependencies": {
     "@workspace/aws": "0.0.0",
@@ -23,8 +22,7 @@
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
-    "@workspace/tsconfig": "0.0.0",
-    "ts-prune": "0.10.3"
+    "@workspace/tsconfig": "0.0.0"
   },
   "eslintConfig": {
     "extends": [

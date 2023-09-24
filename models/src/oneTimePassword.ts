@@ -11,7 +11,7 @@ import {
 
 type OneTimePasswordCode = string
 
-export const oneTimePasswordCodeLength = 6
+const oneTimePasswordCodeLength = 6
 
 export const isOneTimePasswordCode = (
 	arg: unknown

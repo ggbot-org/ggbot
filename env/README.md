@@ -12,7 +12,6 @@ The following environment variables are used:
 -   `BINANCE_PROXY_ELASTIC_IPS`: for example `3.65.45.176,3.68.165.141`.
 -   `UTRUST_API_KEY` and `UTRUST_WEBHOOK_SECRET`: used by Utrust APIs for payments.
 -   `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
--   `NODE_ENV`: can be `production` or `development`. It defaults to `development` if not provided.
 -   `JWT_SECRET`: used by APIs for authentication.
 
 # .envrc file

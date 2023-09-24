@@ -16,8 +16,6 @@ import {
 import { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
 import { AwsClientConfigRegion } from "./region.js"
 
-export type { Address as ElasticIp } from "@aws-sdk/client-ec2"
-
 type EC2ClientArgs = AwsClientConfigRegion
 
 const ec2Client = (args: EC2ClientArgs) => new EC2Client(args)

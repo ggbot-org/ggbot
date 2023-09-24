@@ -2,7 +2,6 @@ import { EnvironmentVariableName } from "./environmentVariableNames.js"
 import { ErrorMissingEnvironmentVariable } from "./errors.js"
 
 export type DeployStage = "main" | "next" | "local"
-export type NodeEnv = "development" | "production"
 
 const getVariable = (VARIABLE_NAME: EnvironmentVariableName) => {
 	const VALUE = process.env[VARIABLE_NAME]
@@ -45,12 +44,6 @@ class EnvironmentVariables {
 
 	JWT_SECRET() {
 		return getVariable("JWT_SECRET")
-	}
-
-	NODE_ENV(): NodeEnv {
-		const VALUE = getVariable("NODE_ENV")
-		if (VALUE === "production") return "production"
-		return "development"
 	}
 
 	UTRUST_API_KEY() {

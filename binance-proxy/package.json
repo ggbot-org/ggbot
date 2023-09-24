@@ -8,8 +8,7 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/",
-    "start": "node dist/server",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp'"
+    "start": "node dist/server"
   },
   "dependencies": {
     "@workspace/aws": "0.0.0",
@@ -20,8 +19,7 @@
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
-    "@workspace/tsconfig": "0.0.0",
-    "ts-prune": "0.10.3"
+    "@workspace/tsconfig": "0.0.0"
   },
   "eslintConfig": {
     "extends": [

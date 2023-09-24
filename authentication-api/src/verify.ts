@@ -19,6 +19,7 @@ import {
 } from "@workspace/database"
 import { today } from "minimal-time-helpers"
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

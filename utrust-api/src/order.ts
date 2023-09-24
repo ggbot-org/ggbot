@@ -39,6 +39,7 @@ import { getDay, today } from "minimal-time-helpers"
 
 import { info } from "./logging.js"
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())

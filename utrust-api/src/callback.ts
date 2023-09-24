@@ -21,6 +21,7 @@ import { ENV } from "@workspace/env"
 
 import { info } from "./logging.js"
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

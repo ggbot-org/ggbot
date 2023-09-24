@@ -53,6 +53,7 @@ import {
 
 const { info } = logging("user-api")
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

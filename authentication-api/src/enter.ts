@@ -12,6 +12,7 @@ import {
 } from "@workspace/api-gateway"
 import { createOneTimePassword, sendOneTimePassword } from "@workspace/database"
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

@@ -14,12 +14,6 @@
 /** Standard response for successful HTTP requests. */
 export const __200__OK__ = 200
 
-/**
- * The server successfully processed the request, and is not returning any
- * content.
- */
-export const __204__NO_CONTENT__ = 204
-
 // 4XX client errors
 // ///////////////////////////////////////////////////////////////////
 

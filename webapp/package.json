@@ -24,7 +24,6 @@
     "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
     "server": "npm run generate_public_files && esbuild --servedir=public",
     "start": "onchange --initial --kill 'translations/*.json' 'src/components/' 'src/contexts/' 'src/flow/' 'src/hooks/' 'src/pages/' 'src/routing/' 'src/styles/' -- npm run server",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp'",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
   "dependencies": {
@@ -47,6 +46,7 @@
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "6.7.0",
     "@typescript-eslint/parser": "6.7.0",
+    "@workspace/env": "0.0.0",
     "esbuild": "0.17.17",
     "eslint": "8.49.0",
     "eslint-plugin-formatjs": "4.10.3",
@@ -58,7 +58,6 @@
     "eslint-plugin-tsdoc": "0.2.17",
     "onchange": "7.1.0",
     "sass": "1.64.2",
-    "ts-prune": "0.10.3",
     "type-fest": "4.2.0"
   }
 }

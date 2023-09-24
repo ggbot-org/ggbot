@@ -1,0 +1,38 @@
+{
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"paths": {
+			"@workspace/api": ["./api/src/index.ts"],
+			"@workspace/api-gateway": ["./api-gateway/src/index.ts"],
+			"@workspace/authentication": ["./authentication/src/index.ts"],
+			"@workspace/aws": ["./aws/src/index.ts"],
+			"@workspace/binance": ["./binance/src/index.ts"],
+			"@workspace/database": ["./database/src/index.ts"],
+			"@workspace/dflow": ["./dflow/src/index.ts"],
+			"@workspace/env": ["./env/src/index.ts"],
+			"@workspace/http": ["./http/src/index.ts"],
+			"@workspace/locators": ["./locators/src/index.ts"],
+			"@workspace/models": ["./models/src/index.ts"],
+			"@workspace/repository": ["./repository/src/index.ts"],
+			"_/binance/*": ["./webapp/src/binance/*"],
+			"_/classNames": ["./webapp/src/styles/classNames.ts"],
+			"_/components/library": [
+				"./webapp/src/components/library/index.ts"
+			],
+			"_/components/*": ["./webapp/src/components/*"],
+			"_/contexts/*": ["./webapp/src/contexts/*"],
+			"_/flow/*": ["./webapp/src/flow/*"],
+			"_/hooks/*": ["./webapp/src/hooks/*"],
+			"_/i18n/*": ["./webapp/src/i18n/*"],
+			"_/logging": ["./webapp/src/logging.ts"],
+			"_/pages/*": ["./webapp/src/pages/*"],
+			"_/react/mount": ["./webapp/src/react/mount.tsx"],
+			"_/routing/*": ["./webapp/src/routing/*"],
+			"_/storages/*": ["./webapp/src/storages/*"]
+		}
+	},
+	"extends": "./tsconfig/code-quality.json"
+}

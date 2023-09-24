@@ -18,6 +18,7 @@ import { isReadAccountInput } from "@workspace/models"
 
 const { info } = logging("admin-api")
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {
