@@ -1,25 +1,24 @@
 import { DeployStage, ENV } from "@workspace/env"
 
-import { getLogsArn } from "./cloudWatch.js"
+import { Database } from "./Database.js"
+import { fqdn } from "./fqdn.js"
 import { lambdaAllArn } from "./lambda.js"
-import {
-	getDataBucketArn,
-	// TODO getLogsBucketArn,
-	getNakedDomainBucketArn,
-	getWebappBucketArn
-} from "./s3.js"
 import { getSesIdentityArn } from "./ses.js"
+import { Webapp } from "./Webapp.js"
 
 const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV
 
 // IAM version
 const Version = "2012-10-17"
 
-const resources = (deployStage: DeployStage) => ({
-	dataBucketArn: getDataBucketArn(deployStage),
-	// TODO logsBucketArn: getLogsBucketArn(deployStage),
-	webappBucketArn: getWebappBucketArn(deployStage)
-})
+const resources = (deployStage: DeployStage) => {
+	const database = new Database(deployStage)
+	const webapp = new Webapp(deployStage)
+	return {
+		dataBucketArn: database.s3Bucket.arn,
+		webappBucketArn: webapp.s3Bucket.arn
+	}
+}
 
 const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID()}:role/ggbot2_api_role`
 
@@ -28,10 +27,8 @@ const main = resources("main")
 const next = resources("next")
 // Cross deployStage resources
 const cross = {
-	// CloudWatch
-	logsArn: getLogsArn(),
 	// S3
-	nakedDomainBucketArn: getNakedDomainBucketArn(),
+	nakedDomainBucketArn: fqdn.urlShortenerDomain,
 	// SES
 	sesIdentityArn: getSesIdentityArn()
 }

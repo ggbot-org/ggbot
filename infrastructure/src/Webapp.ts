@@ -1,3 +1,5 @@
+import { ENV } from "@workspace/env"
+import { FQDN } from "@workspace/locators"
 import { webappWorkspace } from "@workspace/repository"
 
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
@@ -11,6 +13,13 @@ export class Webapp implements StaticWebsite {
 		fqdn.webappDomain
 	)
 	workspace = webappWorkspace
+	constructor(deployStage = ENV.DEPLOY_STAGE()) {
+		this.s3Bucket = new StaticWebsiteBucket(
+			staticWebsiteAwsRegion,
+			FQDN.webappDomain(deployStage, ENV.DNS_DOMAIN())
+		)
+		this.workspace = webappWorkspace
+	}
 	async read() {
 		await this.workspace.read()
 	}

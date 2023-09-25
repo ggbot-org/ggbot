@@ -25,7 +25,7 @@ export class FQDN {
 		this.dnsDomain = dnsDomain
 	}
 
-	get apiDomain(): string {
+	get apiDomain() {
 		const { deployStage, dnsDomain } = this
 		switch (deployStage) {
 			case "main":
@@ -37,7 +37,7 @@ export class FQDN {
 		}
 	}
 
-	get authDomain(): string {
+	get authDomain() {
 		const { deployStage, dnsDomain } = this
 		switch (deployStage) {
 			case "main":
@@ -49,8 +49,16 @@ export class FQDN {
 		}
 	}
 
-	get webappDomain(): string {
+	get webappDomain() {
 		const { deployStage, dnsDomain } = this
+		return FQDN.webappDomain(deployStage, dnsDomain)
+	}
+
+	get urlShortenerDomain() {
+		return this.dnsDomain
+	}
+
+	static webappDomain(deployStage: DeployStage, dnsDomain: string) {
 		if (deployStage === "main") return `www.${dnsDomain}`
 		return `next.${dnsDomain}`
 	}

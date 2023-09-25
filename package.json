@@ -143,6 +143,7 @@
     "public-api",
     "repository",
     "tsconfig",
+    "url-shortener",
     "user-api",
     "utrust-api",
     "webapp"
