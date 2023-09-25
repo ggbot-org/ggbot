@@ -51,7 +51,7 @@ export const binanceApiKeyPermissionsAreValid = ({
 	return enableReading && enableSpotAndMarginTrading && ipRestrict
 }
 
-export type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig
+type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig
 
 export const isCreateBinanceApiConfigInput =
 	objectTypeGuard<CreateBinanceApiConfigInput>(

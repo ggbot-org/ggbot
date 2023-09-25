@@ -1,2 +1,2 @@
-export const currencies = ["EUR"] as const
+const currencies = ["EUR"] as const
 export type Currency = (typeof currencies)[number]

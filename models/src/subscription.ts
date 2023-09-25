@@ -2,16 +2,7 @@ import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
-import { Currency } from "./currency.js"
-import { NaturalNumber } from "./numbers.js"
 import { UpdateTime } from "./time.js"
-
-export const monthlyPrice = 10
-
-export const purchaseCurrency: Currency = "EUR"
-export const purchaseDefaultNumMonths = 6
-export const purchaseMaxNumMonths = 12
-export const purchaseMinNumMonths = 1
 
 export const shouldPurchaseSubscription = (
 	subscription: Subscription
@@ -23,18 +14,12 @@ export const shouldPurchaseSubscription = (
 	)
 }
 
-export const totalPurchase = (numMonths: NaturalNumber) => {
-	// if 12 months, apply discount.
-	if (numMonths === 12) return monthlyPrice * 11
-	return numMonths * monthlyPrice
-}
-
 const subscriptionPlans = ["basic"] as const
 export type SubscriptionPlan = (typeof subscriptionPlans)[number]
 export const isSubscriptionPlan =
 	isLiteralType<SubscriptionPlan>(subscriptionPlans)
 
-export const subscriptionStatuses = ["active", "expired"] as const
+const subscriptionStatuses = ["active", "expired"] as const
 export type SubscriptionStatus = (typeof subscriptionStatuses)[number]
 export const isSubscriptionStatus =
 	isLiteralType<SubscriptionStatus>(subscriptionStatuses)
@@ -54,7 +39,7 @@ export const statusOfSubscription = ({
 
 export type ReadSubscription = (arg: AccountKey) => Promise<Subscription | null>
 
-export type WriteSubscriptionInput = AccountKey & Subscription
+type WriteSubscriptionInput = AccountKey & Subscription
 
 export type WriteSubscription = (
 	arg: WriteSubscriptionInput

@@ -17,7 +17,7 @@ export const isStrategyFlow = objectTypeGuard<StrategyFlow>(
 	//TODO is FlowViewSerializableGraph(view)
 )
 
-export type CopyStrategyFlowInput = AccountKey & {
+type CopyStrategyFlowInput = AccountKey & {
 	source: StrategyKey
 	target: StrategyKey
 }
@@ -32,7 +32,7 @@ export type ReadStrategyFlow = (
 	arg: StrategyKey
 ) => Promise<StrategyFlow | null>
 
-export type WriteStrategyFlowInput = AccountStrategyKey &
+type WriteStrategyFlowInput = AccountStrategyKey &
 	Omit<StrategyFlow, "whenUpdated">
 
 //TODO is FlowViewSerializableGraph(view)

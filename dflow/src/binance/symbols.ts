@@ -90,13 +90,13 @@ export const getDflowBinanceNodeSymbolKind = ({
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
 	[baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
 
-export type BinanceDflowSymbolAndInterval = {
+export type DflowBinanceSymbolAndInterval = {
 	symbol: string
 	interval: DflowBinanceKlineInterval
 }
 
-export const isBinanceDflowSymbolAndInterval =
-	objectTypeGuard<BinanceDflowSymbolAndInterval>(({ symbol, interval }) => {
+const isDflowBinanceSymbolAndInterval =
+	objectTypeGuard<DflowBinanceSymbolAndInterval>(({ symbol, interval }) => {
 		if (typeof symbol !== "string") return false
 		if (!isDflowBinanceKlineInterval(interval)) return false
 		return true
@@ -106,9 +106,9 @@ export const isBinanceDflowSymbolAndInterval =
 export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	view: StrategyFlow["view"]
-): BinanceDflowSymbolAndInterval[] => {
+): DflowBinanceSymbolAndInterval[] => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
-	const symbolsAndIntervals: BinanceDflowSymbolAndInterval[] = []
+	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
 	const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] =
 		view.edges.map((edge) => ({
 			sourceId: edge.from[0],
@@ -142,7 +142,7 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 						maybeSymbolAndInterval.symbol = maybeSymbol
 				}
 			}
-			if (isBinanceDflowSymbolAndInterval(maybeSymbolAndInterval)) {
+			if (isDflowBinanceSymbolAndInterval(maybeSymbolAndInterval)) {
 				symbolsAndIntervals.push(maybeSymbolAndInterval)
 			}
 		}

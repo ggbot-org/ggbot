@@ -1,6 +1,6 @@
 import { DflowCommonContext } from "../common/context.js"
-import { BinanceDflowClient } from "./client.js"
+import { DflowBinanceClient } from "./client.js"
 
-export type BinanceDflowContext = DflowCommonContext & {
-	binance: BinanceDflowClient
+export type DflowBinanceContext = DflowCommonContext & {
+	binance: DflowBinanceClient
 }

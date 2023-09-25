@@ -11,7 +11,7 @@ type SESClientArgs = AwsClientConfigRegion & Omit<SESClientConfig, "apiVersion">
 const sesClient = (args: SESClientArgs) =>
 	new SESClient({ apiVersion: "2010-12-01", ...args })
 
-export type SendEmailInput = {
+type SendEmailInput = {
 	html: string
 	source: string
 	subject: string

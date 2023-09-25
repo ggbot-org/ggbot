@@ -9,7 +9,7 @@ import {
 	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
-	BinanceDflowExecutor,
+	DflowBinanceExecutor,
 	dflowBinanceKlineIntervals,
 	DflowCommonContext,
 	extractBinanceFlowSymbolsAndIntervalsFromFlow
@@ -335,7 +335,7 @@ export const useBacktesting = (
 								}
 							}
 						)
-						const executor = new BinanceDflowExecutor(
+						const executor = new DflowBinanceExecutor(
 							binance,
 							binanceSymbols,
 							nodesCatalog
@@ -385,7 +385,7 @@ export const useBacktesting = (
 					},
 					klinesCache
 				)
-				const executor = new BinanceDflowExecutor(
+				const executor = new DflowBinanceExecutor(
 					binance,
 					binanceSymbols,
 					nodesCatalog

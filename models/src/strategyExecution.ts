@@ -5,13 +5,14 @@ import { AccountStrategyKey } from "./accountStrategy.js"
 import { Balances, isBalances } from "./balance.js"
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
-export type StrategyExecutionStatus = Extract<
+type StrategyExecutionStatus = Extract<
 	DflowGraph["runStatus"],
 	"success" | "failure"
 >
-export const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>(
-	["success", "failure"]
-)
+const isStrategyExecutionStatus = isLiteralType<StrategyExecutionStatus>([
+	"success",
+	"failure"
+])
 
 export type StrategyExecution = UpdateTime & {
 	/**
@@ -38,7 +39,7 @@ export type ReadStrategyExecution = (
 	arg: AccountStrategyKey
 ) => Promise<StrategyExecution | null>
 
-export type WriteStrategyExecutionInput = AccountStrategyKey &
+type WriteStrategyExecutionInput = AccountStrategyKey &
 	Omit<StrategyExecution, "whenUpdated">
 
 export type WriteStrategyExecution = (

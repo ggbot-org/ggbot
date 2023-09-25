@@ -60,7 +60,7 @@ const s3BucketReport = (reportKey: string, s3Bucket: S3BucketStatus) => {
 	console.info(reportKey, "exists", OK(s3Bucket.exists))
 }
 
-export const taskStatus: TaskStatus = async () => {
+const taskStatus: TaskStatus = async () => {
 	// //////////////////////////////////////////////////////////////////
 	console.info("IAM")
 	// //////////////////////////////////////////////////////////////////

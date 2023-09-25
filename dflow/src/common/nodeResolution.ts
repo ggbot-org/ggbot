@@ -3,7 +3,7 @@ import { FlowViewNodeTextToType } from "flow-view"
 import { isInfoNode, isJsonNode, isPercentageNode } from "./nodeTextParser.js"
 import { NodeViewType } from "./nodeViewTypes.js"
 
-export type NodeTextToViewType = FlowViewNodeTextToType
+type NodeTextToViewType = FlowViewNodeTextToType
 
 /** Node kinds to be ignored during execution. */
 export const noOpNodeKinds = ["info"]

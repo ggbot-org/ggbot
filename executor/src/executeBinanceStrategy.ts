@@ -10,7 +10,7 @@ import {
 	writeStrategyMemory
 } from "@workspace/database"
 import {
-	BinanceDflowExecutor,
+	DflowBinanceExecutor,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import {
@@ -66,7 +66,7 @@ export const executeBinanceStrategy: ExecuteStrategy = async ({
 			const { symbols } = await binance.exchangeInfo()
 			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
-			const executor = new BinanceDflowExecutor(
+			const executor = new DflowBinanceExecutor(
 				binance,
 				symbols,
 				nodesCatalog

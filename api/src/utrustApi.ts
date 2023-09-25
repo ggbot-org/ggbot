@@ -14,7 +14,7 @@ export type ApiUtrustCallabackRequestData = {
 	ok: boolean
 }
 
-export type ApiUtrustOrderRequestData = AccountKey & {
+type ApiUtrustOrderRequestData = AccountKey & {
 	country: AllowedCountryIsoCode2
 	email: EmailAddress
 	numMonths: NaturalNumber
@@ -32,8 +32,3 @@ export const isApiUtrustOrderRequestData =
 export type ApiUtrustOrderResponseData = {
 	redirectUrl: string
 }
-
-export const isApiUtrustOrderResponseData =
-	objectTypeGuard<ApiUtrustOrderResponseData>(
-		({ redirectUrl }) => typeof redirectUrl === "string"
-	)

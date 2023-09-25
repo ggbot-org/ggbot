@@ -13,7 +13,7 @@ import {
 	outputOpen,
 	outputVolume
 } from "../../common/nodes/commonIO.js"
-import { BinanceDflowContext as Context } from "../context.js"
+import { DflowBinanceContext as Context } from "../context.js"
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 import { inputInterval, inputSymbol } from "./commonIO.js"
 

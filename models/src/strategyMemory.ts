@@ -17,7 +17,7 @@ export type ReadStrategyMemory = (
 	arg: AccountStrategyKey
 ) => Promise<StrategyMemory | null>
 
-export type WriteStrategyMemoryInput = AccountStrategyKey &
+type WriteStrategyMemoryInput = AccountStrategyKey &
 	Omit<StrategyMemory, "whenUpdated">
 
 export type WriteStrategyMemory = (

@@ -8,7 +8,7 @@ import {
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-export type ApiAuthEnterRequestData = {
+type ApiAuthEnterRequestData = {
 	email: EmailAddress
 }
 
@@ -26,7 +26,7 @@ export const isApiAuthEnterResponseData =
 		({ emailSent }) => typeof emailSent === "boolean"
 	)
 
-export type ApiAuthVerifyRequestData = Pick<OneTimePassword, "code"> & {
+type ApiAuthVerifyRequestData = Pick<OneTimePassword, "code"> & {
 	email: EmailAddress
 }
 
@@ -45,11 +45,3 @@ export const isApiAuthVerifyResponseData =
 		if (jwt === undefined) return true
 		return isNonEmptyString(jwt)
 	})
-
-export type ApiAuthVerifyResponse = {
-	data: ApiAuthVerifyResponseData
-}
-
-export const isApiAuthVerifyResponse = objectTypeGuard<ApiAuthVerifyResponse>(
-	({ data }) => isApiAuthEnterResponseData(data)
-)

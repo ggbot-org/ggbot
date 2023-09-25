@@ -17,8 +17,9 @@ export type ReadStrategyDailyBalanceChanges = (
 	arg: StrategyDailyBalanceChangesKey
 ) => Promise<BalanceChangeEvents>
 
-export type AppendStrategyDailyBalanceChangesInput =
-	StrategyDailyBalanceChangesKey & { items: BalanceChangeEvents }
+type AppendStrategyDailyBalanceChangesInput = StrategyDailyBalanceChangesKey & {
+	items: BalanceChangeEvents
+}
 
 export type AppendStrategyDailyBalanceChanges = (
 	arg: AppendStrategyDailyBalanceChangesInput

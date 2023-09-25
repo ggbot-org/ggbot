@@ -9,16 +9,16 @@ import {
 
 export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
 
-export const isStrategyBalance = objectTypeGuard<StrategyBalance>(
+const isStrategyBalance = objectTypeGuard<StrategyBalance>(
 	({ day, data }) => isDay(day) && isBalanceChangeEvents(data)
 )
 
-export type StrategyBalances = StrategyBalance[]
+type StrategyBalances = StrategyBalance[]
 
 export const isStrategyBalances =
 	arrayTypeGuard<StrategyBalance>(isStrategyBalance)
 
-export type ReadStrategyBalancesInput = AccountStrategyKey & DayInterval
+type ReadStrategyBalancesInput = AccountStrategyKey & DayInterval
 
 export const isReadStrategyBalancesInput =
 	objectTypeGuard<ReadStrategyBalancesInput>(

@@ -7,13 +7,13 @@ import {
 	DflowExecutor,
 	DflowExecutorView
 } from "../common/executor.js"
-import { BinanceDflowClient } from "./client.js"
-import { BinanceDflowContext } from "./context.js"
+import { DflowBinanceClient } from "./client.js"
+import { DflowBinanceContext } from "./context.js"
 import {
 	getBalancesFromExecutionSteps,
 	getOrdersFromExecutionSteps
 } from "./execution.js"
-import { BinanceDflowHost } from "./host.js"
+import { DflowBinanceHost } from "./host.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
@@ -21,13 +21,12 @@ type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
 	orders: Pick<Order, "info">[]
 }
 
-// TODO rename in DflowBinanceExecuter
-export class BinanceDflowExecutor
+export class DflowBinanceExecutor
 	implements
 		DflowExecutor<DflowCommonExecutorContext, DflowBinanceExecutorOutput>
 {
 	constructor(
-		readonly binance: BinanceDflowClient,
+		readonly binance: DflowBinanceClient,
 		readonly binanceSymbols: DflowBinanceSymbolInfo[],
 		readonly nodesCatalog: DflowNodesCatalog
 	) {}
@@ -35,7 +34,7 @@ export class BinanceDflowExecutor
 	/** Execute flow on given context. */
 	async run(context: DflowCommonExecutorContext, view: DflowExecutorView) {
 		const { binance, binanceSymbols, nodesCatalog } = this
-		const dflow = new BinanceDflowHost(
+		const dflow = new DflowBinanceHost(
 			{ nodesCatalog },
 			{ binance, ...context }
 		)
@@ -43,7 +42,7 @@ export class BinanceDflowExecutor
 		await dflow.run()
 		const execution = dflow.executionReport
 		const { memory, memoryChanged } = dflow.context as Pick<
-			BinanceDflowContext,
+			DflowBinanceContext,
 			"memory" | "memoryChanged"
 		>
 		const balances = execution

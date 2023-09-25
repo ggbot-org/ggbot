@@ -6,7 +6,7 @@ import { isOrder, Order } from "./order.js"
 import { DayKey, UpdateTime } from "./time.js"
 
 export type StrategyDailyOrder = Order
-export const isStrategyDailyOrder = (arg: unknown): arg is StrategyDailyOrder =>
+const isStrategyDailyOrder = (arg: unknown): arg is StrategyDailyOrder =>
 	isOrder(arg)
 
 /** Daily orders per strategy. */
@@ -24,7 +24,7 @@ export type ReadStrategyDailyOrders = (
 	arg: StrategyDailyOrdersKey
 ) => Promise<StrategyDailyOrders>
 
-export type AppendStrategyDailyOrdersInput = StrategyDailyOrdersKey & {
+type AppendStrategyDailyOrdersInput = StrategyDailyOrdersKey & {
 	items: StrategyDailyOrders
 }
 

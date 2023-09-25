@@ -16,7 +16,7 @@ export const isEmailAccount = objectTypeGuard<EmailAccount>(
 		isEmailAddress(email)
 )
 
-export type CreateEmailAccountInput = Omit<EmailAccount, "whenCreated">
+type CreateEmailAccountInput = Omit<EmailAccount, "whenCreated">
 
 export type CreateEmailAccount = (
 	arg: CreateEmailAccountInput

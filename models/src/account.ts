@@ -17,7 +17,7 @@ import {
 } from "./time.js"
 
 const accountRoles = ["admin", "user"] as const
-export type AccountRole = (typeof accountRoles)[number]
+type AccountRole = (typeof accountRoles)[number]
 export const isAccountRole = isLiteralType<AccountRole>(accountRoles)
 
 export type Account = Item &
@@ -71,20 +71,17 @@ export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
 	isItemId(accountId)
 )
 
-export type AccountKeys = AccountKey[]
-
 export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey)
 
 export type CreateAccount = (arg: NewItem<Account>) => Promise<Account>
 
-export type ReadAccountOutput = Account | null
 export type ReadAccount = (arg: AccountKey) => Promise<Account | null>
 
 export const isReadAccountInput = objectTypeGuard<AccountKey>((accountKey) =>
 	isAccountKey(accountKey)
 )
 
-export type RenameAccountInput = AccountKey & { name: Name }
+type RenameAccountInput = AccountKey & { name: Name }
 
 export const isRenameAccountInput = objectTypeGuard<RenameAccountInput>(
 	({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
@@ -92,7 +89,7 @@ export const isRenameAccountInput = objectTypeGuard<RenameAccountInput>(
 
 export type RenameAccount = (arg: RenameAccountInput) => Promise<UpdateTime>
 
-export type SetAccountCountryInput = AccountKey & {
+type SetAccountCountryInput = AccountKey & {
 	country: AllowedCountryIsoCode2
 }
 
@@ -107,4 +104,4 @@ export type SetAccountCountry = (
 
 export type DeleteAccount = (arg: AccountKey) => Promise<DeletionTime>
 
-export type ListAccountKeys = () => Promise<AccountKeys>
+export type ListAccountKeys = () => Promise<AccountKey[]>

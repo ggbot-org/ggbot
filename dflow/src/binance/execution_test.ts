@@ -5,12 +5,12 @@ import {
 	getBalancesFromExecutionSteps,
 	getOrdersFromExecutionSteps
 } from "./execution.js"
-import { BinanceClientMock } from "./mocks/client.js"
+import { DflowBinanceClientMock } from "./mocks/client.js"
 import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js"
 
 describe("getBalancesFromExecutionSteps", () => {
 	it("works", async () => {
-		const binance = new BinanceClientMock()
+		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		;[
 			{

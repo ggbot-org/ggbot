@@ -2,13 +2,13 @@
 import { strict as assert } from "node:assert"
 import { describe, it } from "node:test"
 
-import { BinanceClientMock } from "./mocks/client.js"
+import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 describe("getDflowBinanceDynamicNodesCatalog", () => {
 	it("creates Dflow nodes related with Binance symbols", async () => {
-		const binance = new BinanceClientMock()
+		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols)
 		assert.deepEqual(

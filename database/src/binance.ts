@@ -14,12 +14,12 @@ import {
 	BinanceTickerPrice
 } from "@workspace/binance"
 import { BinanceClient } from "@workspace/binance-client"
-import { BinanceDflowClient } from "@workspace/dflow"
+import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
 import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 
 /** A Binance client that uses a proxy for private requests. */
-export class Binance implements BinanceDflowClient {
+export class Binance implements DflowBinanceClient {
 	readonly privateClient: BinanceClient
 	readonly publicClient: BinanceExchange
 

@@ -3,7 +3,7 @@ import { DflowNode } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"
 import { dflowBinancePrecision } from "../arithmetic.js"
-import { BinanceDflowContext as Context } from "../context.js"
+import { DflowBinanceContext as Context } from "../context.js"
 
 const { input, output } = DflowNode
 

@@ -5,8 +5,7 @@ import { Frequency, isFrequency } from "./frequency.js"
 export const SchedulingStatuses = ["active", "inactive", "suspended"] as const
 export type SchedulingStatus = (typeof SchedulingStatuses)[number]
 
-export const isSchedulingStatus =
-	isLiteralType<SchedulingStatus>(SchedulingStatuses)
+const isSchedulingStatus = isLiteralType<SchedulingStatus>(SchedulingStatuses)
 
 export type Scheduling = {
 	frequency: Frequency

@@ -1,7 +1,7 @@
 import { DflowNode } from "dflow"
 
 import { inputKey } from "../../common/nodes/commonIO.js"
-import { BinanceDflowContext as Context } from "../context.js"
+import { DflowBinanceContext as Context } from "../context.js"
 import {
 	inputInterval,
 	inputSymbol,

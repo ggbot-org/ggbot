@@ -21,7 +21,7 @@ export type ReadAccountStrategies = (
 	arg: AccountKey
 ) => Promise<AccountStrategies>
 
-export type InsertAccountStrategiesItemInput = AccountKey & {
+type InsertAccountStrategiesItemInput = AccountKey & {
 	item: AccountStrategy
 }
 

@@ -11,8 +11,6 @@ export const isAccountDailyOrder = objectTypeGuard<AccountDailyOrder>(
 	({ order, ...strategyKey }) => isOrder(order) && isStrategyKey(strategyKey)
 )
 
-/** Daily orders per account. */
-export type AccountDailyOrders = AccountDailyOrder[]
 export const isAccountDailyOrders =
 	arrayTypeGuard<AccountDailyOrder>(isAccountDailyOrder)
 
@@ -24,10 +22,10 @@ export const isAccountDailyOrdersKey = objectTypeGuard<AccountDailyOrdersKey>(
 
 export type ReadAccountDailyOrders = (
 	arg: AccountDailyOrdersKey
-) => Promise<AccountDailyOrders>
+) => Promise<AccountDailyOrder[]>
 
-export type AppendAccountDailyOrdersInput = AccountDailyOrdersKey & {
-	items: AccountDailyOrders
+type AppendAccountDailyOrdersInput = AccountDailyOrdersKey & {
+	items: AccountDailyOrder[]
 }
 
 export type AppendAccountDailyOrders = (

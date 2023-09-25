@@ -16,6 +16,7 @@ import {
 } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
+import { Currency } from "./currency.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
 import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
@@ -28,15 +29,21 @@ import {
 	UpdateTime
 } from "./time.js"
 
+export const monthlyPrice = 10
+export const purchaseCurrency: Currency = "EUR"
+export const purchaseDefaultNumMonths = 6
+export const purchaseMaxNumMonths = 12
+export const purchaseMinNumMonths = 1
+
 export const subscriptionPurchaseStatuses = [
 	"completed",
 	"canceled",
 	"pending"
 ] as const
-export type SubscriptionPurchaseStatus =
-	(typeof subscriptionPurchaseStatuses)[number]
-export const isSubscriptionPurchaseStatus =
-	isLiteralType<SubscriptionPurchaseStatus>(subscriptionPurchaseStatuses)
+type SubscriptionPurchaseStatus = (typeof subscriptionPurchaseStatuses)[number]
+const isSubscriptionPurchaseStatus = isLiteralType<SubscriptionPurchaseStatus>(
+	subscriptionPurchaseStatuses
+)
 
 export type SubscriptionPurchase = Item &
 	CreationTime &
@@ -140,18 +147,24 @@ export const newYearlySubscription = ({
 	}
 }
 
+export const totalPurchase = (numMonths: NaturalNumber) => {
+	// if 12 months, apply discount.
+	if (numMonths === 12) return monthlyPrice * 11
+	return numMonths * monthlyPrice
+}
+
 export type ReadSubscriptionPurchase = (
 	arg: SubscriptionPurchaseKey
 ) => Promise<SubscriptionPurchase | null>
 
-export type WriteSubscriptionPurchaseInput = SubscriptionPurchaseKey &
+type WriteSubscriptionPurchaseInput = SubscriptionPurchaseKey &
 	SubscriptionPurchase
 
 export type WriteSubscriptionPurchase = (
 	arg: WriteSubscriptionPurchaseInput
 ) => Promise<UpdateTime>
 
-export type CreateYearlySubscriptionPurchaseInput = AccountKey &
+type CreateYearlySubscriptionPurchaseInput = AccountKey &
 	NewYearlySubscriptionArg
 
 /** Create a yearly subscription. */
@@ -159,7 +172,7 @@ export type CreateYearlySubscriptionPurchase = (
 	arg: CreateYearlySubscriptionPurchaseInput
 ) => Promise<SubscriptionPurchaseKey>
 
-export type CreateMonthlySubscriptionPurchaseInput = AccountKey &
+type CreateMonthlySubscriptionPurchaseInput = AccountKey &
 	NewMonthlySubscriptionArg
 
 /** Create a monthly subscription. */
@@ -167,14 +180,14 @@ export type CreateMonthlySubscriptionPurchase = (
 	arg: CreateMonthlySubscriptionPurchaseInput
 ) => Promise<SubscriptionPurchaseKey>
 
-export type UpdateSubscriptionPurchaseInfoInput = SubscriptionPurchaseKey &
+type UpdateSubscriptionPurchaseInfoInput = SubscriptionPurchaseKey &
 	Pick<SubscriptionPurchase, "info">
 
 export type UpdateSubscriptionPurchaseInfo = (
 	arg: UpdateSubscriptionPurchaseInfoInput
 ) => Promise<UpdateTime>
 
-export type UpdateSubscriptionPurchaseStatusInput = SubscriptionPurchaseKey &
+type UpdateSubscriptionPurchaseStatusInput = SubscriptionPurchaseKey &
 	Pick<SubscriptionPurchase, "status">
 
 export type UpdateSubscriptionPurchaseStatus = (

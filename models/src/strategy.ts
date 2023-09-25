@@ -7,9 +7,9 @@ import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
 const noneStrategyKind = "_none_"
-export const strategyKinds = ["binance", noneStrategyKind] as const
+const strategyKinds = ["binance", noneStrategyKind] as const
 export type StrategyKind = (typeof strategyKinds)[number]
-export const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds)
+const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds)
 
 export type Strategy = Item &
 	CreationTime &
@@ -25,11 +25,6 @@ export const isStrategy = objectTypeGuard<Strategy>(
 		isStrategyKind(kind) &&
 		isName(name)
 )
-
-export const noneStrategyKey: StrategyKey = {
-	strategyId: nullId,
-	strategyKind: noneStrategyKind
-}
 
 export const noneStrategy: Strategy = {
 	id: nullId,
@@ -61,7 +56,7 @@ export const isStrategyKey = objectTypeGuard<StrategyKey>(
 		isItemId(strategyId) && isStrategyKind(strategyKind)
 )
 
-export type CopyStrategyInput = AccountStrategyKey & Pick<Strategy, "name">
+type CopyStrategyInput = AccountStrategyKey & Pick<Strategy, "name">
 
 export const isCopyStrategyInput = objectTypeGuard<CopyStrategyInput>(
 	({ name, ...accountStrategyKey }) =>
@@ -70,7 +65,7 @@ export const isCopyStrategyInput = objectTypeGuard<CopyStrategyInput>(
 
 export type CopyStrategy = (arg: CopyStrategyInput) => Promise<Strategy>
 
-export type CreateStrategyInput = NewItem<Strategy>
+type CreateStrategyInput = NewItem<Strategy>
 
 export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
 	(arg) => isStrategy({ ...arg, id: nullId, whenCreated: 1 })
@@ -78,7 +73,7 @@ export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
 
 export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>
 
-export type ListStrategyKeysInput = Pick<StrategyKey, "strategyKind"> & {
+type ListStrategyKeysInput = Pick<StrategyKey, "strategyKind"> & {
 	strategyId: string
 }
 

@@ -11,14 +11,14 @@
 //
 // So, the lambda creation should specify payloadFormatVersion = '2.0' and then it would be possible to migrate.
 
-export type APIGatewayEventDefaultAuthorizerContext =
+type APIGatewayEventDefaultAuthorizerContext =
 	| undefined
 	| null
 	| {
 			[name: string]: unknown
 	  }
 
-export interface APIGatewayEventClientCertificate {
+type APIGatewayEventClientCertificate = {
 	clientCertPem: string
 	serialNumber: string
 	subjectDN: string
@@ -101,7 +101,7 @@ type APIGatewayProxyEventMultiValueHeaders = {
 	[name: string]: string[] | undefined
 }
 
-export type APIGatewayProxyEventBase<TAuthorizerContext> = {
+type APIGatewayProxyEventBase<TAuthorizerContext> = {
 	body: string | null
 	headers: APIGatewayProxyEventHeaders
 	multiValueHeaders: APIGatewayProxyEventMultiValueHeaders
@@ -122,7 +122,7 @@ export type APIGatewayProxyEventBase<TAuthorizerContext> = {
  *
  * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
  */
-export type APIGatewayProxyEvent =
+type APIGatewayProxyEvent =
 	APIGatewayProxyEventBase<APIGatewayEventDefaultAuthorizerContext>
 
 export type APIGatewayProxyResult = {

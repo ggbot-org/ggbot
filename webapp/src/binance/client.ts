@@ -13,19 +13,19 @@ import {
 	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
-	BinanceDflowClient,
-	BinanceDflowClientKlinesParameters,
-	BinanceDflowSymbolAndInterval,
+	DflowBinanceClient,
+	DflowBinanceClientKlinesParameters,
 	DflowBinanceKlineInterval,
 	dflowBinanceLowerKlineInterval,
 	dflowBinancePrecision,
+	DflowBinanceSymbolAndInterval,
 	dflowBinanceZero as zero
 } from "@workspace/dflow"
 import { Time } from "minimal-time-helpers"
 
 import { binance } from "./exchange"
 
-export class BinanceClient implements BinanceDflowClient {
+export class BinanceClient implements DflowBinanceClient {
 	readonly balances: BinanceBalance[]
 
 	readonly time: Time
@@ -35,8 +35,8 @@ export class BinanceClient implements BinanceDflowClient {
 	/* Optional parameters used during backtesting preparation. */
 	private readonly backtestingPreparation:
 		| ({
-				klinesParameters: BinanceDflowClientKlinesParameters
-		  } & BinanceDflowSymbolAndInterval)
+				klinesParameters: DflowBinanceClientKlinesParameters
+		  } & DflowBinanceSymbolAndInterval)
 		| undefined
 
 	constructor(
@@ -71,7 +71,7 @@ export class BinanceClient implements BinanceDflowClient {
 	async klines(
 		symbol: string,
 		interval: BinanceKlineInterval,
-		{ limit, endTime }: BinanceDflowClientKlinesParameters
+		{ limit, endTime }: DflowBinanceClientKlinesParameters
 	) {
 		// Look for cached data.
 		const { backtestingPreparation, klinesCache: cache } = this

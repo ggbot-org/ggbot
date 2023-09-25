@@ -24,7 +24,7 @@ export const readSubscriptionPurchase: ReadSubscriptionPurchase = (arg) =>
 		pathname.subscriptionPurchase(arg)
 	)
 
-export const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
+const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
 	accountId,
 	purchaseId,
 	day,

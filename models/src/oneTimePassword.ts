@@ -44,7 +44,7 @@ export type ReadOneTimePassword = (
 
 export type DeleteOneTimePassword = (arg: EmailAddress) => Promise<DeletionTime>
 
-export type SendOneTimePasswordInput = {
+type SendOneTimePasswordInput = {
 	email: EmailAddress
 	oneTimePassword: OneTimePassword
 	language: Language

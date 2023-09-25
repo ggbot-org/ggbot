@@ -2,7 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ApiActionInput } from "./apiAction.js"
 
-export const userApiActionTypes = [
+const userApiActionTypes = [
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
 	"CreateStrategy",
@@ -25,8 +25,7 @@ export const userApiActionTypes = [
 	"WriteStrategyFlow"
 ] as const
 export type UserApiActionType = (typeof userApiActionTypes)[number]
-export const isUserApiActionType =
-	isLiteralType<UserApiActionType>(userApiActionTypes)
+const isUserApiActionType = isLiteralType<UserApiActionType>(userApiActionTypes)
 
 export type UserApiActionRequestData = ApiActionInput<UserApiActionType>
 

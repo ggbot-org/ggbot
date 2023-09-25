@@ -4,12 +4,12 @@ import { describe, it } from "node:test"
 
 import { StrategyFlow } from "@workspace/models"
 
-import { BinanceClientMock } from "./mocks/client.js"
+import { DflowBinanceClientMock } from "./mocks/client.js"
 import { extractBinanceFlowSymbolsAndIntervalsFromFlow } from "./symbols.js"
 
 describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
 	it("extracts symbol and interval tuples", async () => {
-		const binance = new BinanceClientMock()
+		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const view: StrategyFlow["view"] = {
 			nodes: [
@@ -55,7 +55,7 @@ describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
 	})
 
 	it("manages duplicates", async () => {
-		const binance = new BinanceClientMock()
+		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const view: StrategyFlow["view"] = {
 			nodes: [

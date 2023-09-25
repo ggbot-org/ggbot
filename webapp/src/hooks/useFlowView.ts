@@ -3,7 +3,7 @@ import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import { BinanceKlinesCacheMap } from "@workspace/binance"
-import { BinanceDflowHost, parsePercentage } from "@workspace/dflow"
+import { DflowBinanceHost, parsePercentage } from "@workspace/dflow"
 import { StrategyKind } from "@workspace/models"
 import {
 	DflowErrorCannotConnectPins,
@@ -56,7 +56,7 @@ export const useFlowView = ({
 				// Actually klines cache is not used here.
 				new BinanceKlinesCacheMap()
 			)
-			const dflow = new BinanceDflowHost(
+			const dflow = new DflowBinanceHost(
 				{ nodesCatalog },
 				{ binance, input: {}, memory: {}, time }
 			)

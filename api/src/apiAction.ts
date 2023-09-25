@@ -26,17 +26,9 @@ export type ApiActionResponseError = {
 	error: ApiActionServerSideError
 }
 
-export const isApiActionResponseError = objectTypeGuard<ApiActionResponseError>(
-	({ error }) => isApiActionServerSideError(error)
-)
-
 export type ApiActionResponseData = {
 	data: unknown
 }
-
-export const isApiActionResponseData = objectTypeGuard<ApiActionResponseData>(
-	({ data }) => data !== undefined
-)
 
 export type ApiActionResponseOutput =
 	| ApiActionResponseData
@@ -55,7 +47,7 @@ const apiActionServerSideErrorNames = [
 	ErrorHTTP.errorName, // TODO is this server side?
 	InternalServerError.errorName
 ] as const
-export type ApiActionServerSideErrorName =
+type ApiActionServerSideErrorName =
 	(typeof apiActionServerSideErrorNames)[number]
 export const isApiActionServerSideErrorName =
 	isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)

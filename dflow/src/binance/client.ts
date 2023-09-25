@@ -12,28 +12,28 @@ import {
 } from "@workspace/binance"
 
 /** Binance API used by dflow binance nodes. */
-export interface BinanceDflowClient
-	extends BinanceDflowClientPublic,
-		BinanceDflowClientPrivate {}
+export interface DflowBinanceClient
+	extends DflowBinanceClientPublic,
+		DflowBinanceClientPrivate {}
 
-export type BinanceDflowClientKlinesParameters = Required<
+export type DflowBinanceClientKlinesParameters = Required<
 	Pick<BinanceKlineOptionalParameters, "endTime" | "limit">
 >
 
 /** Binance Public API used by dflow binance nodes. */
-interface BinanceDflowClientPublic {
+interface DflowBinanceClientPublic {
 	exchangeInfo(): Promise<BinanceExchangeInfo>
 	isBinanceSymbol(arg: unknown): Promise<boolean>
 	klines(
 		symbol: string,
 		interval: BinanceKlineInterval,
-		parameters: BinanceDflowClientKlinesParameters
+		parameters: DflowBinanceClientKlinesParameters
 	): Promise<BinanceKline[]>
 	tickerPrice(symbol: string): Promise<BinanceTickerPrice>
 }
 
 /** Binance Private API used by dflow binance nodes. */
-interface BinanceDflowClientPrivate {
+interface DflowBinanceClientPrivate {
 	account(): Promise<BinanceAccountInformation>
 	newOrder(
 		symbol: string,

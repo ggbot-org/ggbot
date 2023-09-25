@@ -3,17 +3,17 @@ import { describe, it } from "node:test"
 
 import { now, truncateTime } from "minimal-time-helpers"
 
-import { BinanceDflowHost } from "./host.js"
-import { BinanceClientMock } from "./mocks/client.js"
+import { DflowBinanceHost } from "./host.js"
+import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 
-describe("BinanceDflowHost", () => {
+describe("DflowBinanceHost", () => {
 	describe("load()", () => {
 		it("parses a flow view and loads it into a Dflow graph", async () => {
-			const binance = new BinanceClientMock()
+			const binance = new DflowBinanceClientMock()
 			const { symbols } = await binance.exchangeInfo()
 			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
-			const dflow = new BinanceDflowHost(
+			const dflow = new DflowBinanceHost(
 				{ nodesCatalog },
 				{
 					binance,

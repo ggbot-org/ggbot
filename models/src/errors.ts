@@ -145,7 +145,7 @@ export class ErrorUnimplementedStrategyKind extends Error {
 	}
 }
 
-export type NodeError = Error & {
+type NodeError = Error & {
 	code?: string
 }
 

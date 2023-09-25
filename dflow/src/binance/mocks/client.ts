@@ -6,12 +6,12 @@ import {
 	BinanceOrderType
 } from "@workspace/binance"
 
-import { BinanceDflowClient } from "../client.js"
+import { DflowBinanceClient } from "../client.js"
 import { accountInfo } from "./accountInfo.js"
 import { exchangeInfo } from "./exchangeInfo.js"
 import { kline } from "./klines.js"
 
-export class BinanceClientMock implements BinanceDflowClient {
+export class DflowBinanceClientMock implements DflowBinanceClient {
 	async account() {
 		return Promise.resolve(accountInfo)
 	}
