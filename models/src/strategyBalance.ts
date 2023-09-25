@@ -1,22 +1,12 @@
-import { Day, DayInterval, isDay, isDayInterval } from "minimal-time-helpers"
-import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
+import { Day, DayInterval, isDayInterval } from "minimal-time-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import {
-	BalanceChangeEvent,
-	isBalanceChangeEvents
-} from "./balanceChangeEvent.js"
+import { BalanceChangeEvent } from "./balanceChangeEvent.js"
 
 export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
 
-const isStrategyBalance = objectTypeGuard<StrategyBalance>(
-	({ day, data }) => isDay(day) && isBalanceChangeEvents(data)
-)
-
 type StrategyBalances = StrategyBalance[]
-
-export const isStrategyBalances =
-	arrayTypeGuard<StrategyBalance>(isStrategyBalance)
 
 type ReadStrategyBalancesInput = AccountStrategyKey & DayInterval
 

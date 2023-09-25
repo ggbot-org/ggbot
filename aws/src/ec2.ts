@@ -20,28 +20,25 @@ type EC2ClientArgs = AwsClientConfigRegion
 
 const ec2Client = (args: EC2ClientArgs) => new EC2Client(args)
 
-export type AssociateElasticIpsArgs = Required<
-	Pick<AssociateAddressCommandInput, "AllocationId" | "InstanceId">
->
-
 export const associateElasticIp = async (
 	clientArgs: EC2ClientArgs,
-	commandArgs: AssociateElasticIpsArgs
+	{
+		AllocationId,
+		InstanceId
+	}: Required<
+		Pick<AssociateAddressCommandInput, "AllocationId" | "InstanceId">
+	>
 ): Promise<AssociateAddressCommandOutput> => {
-	const command = new AssociateAddressCommand(commandArgs)
+	const command = new AssociateAddressCommand({ AllocationId, InstanceId })
 	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }
 
-export type DescribeElasticIpsArgs = Required<
-	Pick<DescribeAddressesCommandInput, "PublicIps">
->
-
 export const describeElasticIps = async (
 	clientArgs: EC2ClientArgs,
-	commandArgs: DescribeElasticIpsArgs
+	{ PublicIps }: Required<Pick<DescribeAddressesCommandInput, "PublicIps">>
 ): Promise<DescribeAddressesCommandOutput> => {
-	const command = new DescribeAddressesCommand(commandArgs)
+	const command = new DescribeAddressesCommand({ PublicIps })
 	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }
@@ -74,15 +71,11 @@ export const getOwnEc2InstanceId = new Promise<string>((resolve, reject) => {
 	})
 })
 
-export type ReleaseElasticIpArgs = Required<
-	Pick<ReleaseAddressCommandInput, "AllocationId">
->
-
 export const releaseElasticIp = async (
 	clientArgs: EC2ClientArgs,
-	commandArgs: ReleaseElasticIpArgs
+	{ AllocationId }: Required<Pick<ReleaseAddressCommandInput, "AllocationId">>
 ): Promise<ReleaseAddressCommandOutput> => {
-	const command = new ReleaseAddressCommand(commandArgs)
+	const command = new ReleaseAddressCommand({ AllocationId })
 	const client = ec2Client(clientArgs)
 	return await client.send(command)
 }

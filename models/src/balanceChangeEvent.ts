@@ -7,7 +7,7 @@ export type BalanceChangeEvent = CreationTime & {
 	balances: Balances
 }
 
-export const isBalanceChangeEvent = objectTypeGuard<BalanceChangeEvent>(
+const isBalanceChangeEvent = objectTypeGuard<BalanceChangeEvent>(
 	({ balances, ...creationTime }) =>
 		isCreationTime(creationTime) && isBalances(balances)
 )

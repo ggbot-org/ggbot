@@ -1,3 +1,16 @@
+import {
+	binanceKlineIntervals,
+	binanceOrderRespTypes,
+	binanceOrderSides,
+	binanceOrderStatuses,
+	binanceOrderTypes,
+	binancePermissions,
+	binanceRateLimitIntervals,
+	binanceRateLimitTypes,
+	binanceSymbolStatuses,
+	binanceTimeInForces
+} from "./constants.js"
+
 export type BinanceAccountInformation = {
 	accountType: string
 	balances: BinanceBalance[]
@@ -143,24 +156,6 @@ export type BinanceKline = [
 	_unused_field: string
 ]
 
-export const binanceKlineIntervals = [
-	"1s",
-	"1m",
-	"3m",
-	"5m",
-	"15m",
-	"30m",
-	"1h",
-	"2h",
-	"4h",
-	"6h",
-	"8h",
-	"12h",
-	"1d",
-	"3d",
-	"1w",
-	"1M"
-] as const
 export type BinanceKlineInterval = (typeof binanceKlineIntervals)[number]
 
 export type BinanceKlineOptionalParameters = Partial<{
@@ -169,9 +164,6 @@ export type BinanceKlineOptionalParameters = Partial<{
 	/** Default 500; max 1000. */
 	limit: number
 }>
-
-export const binanceKlineMaxLimit = 1000
-export const binanceKlineDefaultLimit = 500
 
 export type BinanceNewOrderOptions = Partial<{
 	timeInForce: BinanceTimeInForce
@@ -268,50 +260,14 @@ export type BinanceOrderRespFULL = Pick<
 	fills: BinanceFill[]
 }
 
-export const binanceOrderRespTypes = ["ACK", "RESULT", "FULL"] as const
 export type BinanceOrderRespType = (typeof binanceOrderRespTypes)[number]
 
-export const binanceOrderSides = ["BUY", "SELL"] as const
 export type BinanceOrderSide = (typeof binanceOrderSides)[number]
 
-export const binanceOrderStatuses = [
-	// The order has been accepted by the engine.
-	"NEW",
-	// A part of the order has been filled.
-	"PARTIALLY_FILLED",
-	// The order has been completed.
-	"FILLED",
-	// The order has been canceled by the user.
-	"CANCELED",
-	// Currently unused
-	"PENDING_CANCEL",
-	// The order was not accepted by the engine and not processed.
-	"REJECTED",
-	// The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill) or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance)
-	"EXPIRED"
-] as const
 export type BinanceOrderStatus = (typeof binanceOrderStatuses)[number]
 
-export const binanceOrderTypes = [
-	"LIMIT",
-	"LIMIT_MAKER",
-	"MARKET",
-	"STOP_LOSS",
-	"STOP_LOSS_LIMIT",
-	"TAKE_PROFIT",
-	"TAKE_PROFIT_LIMIT"
-] as const
 export type BinanceOrderType = (typeof binanceOrderTypes)[number]
 
-export const binancePermissions = [
-	"SPOT",
-	"MARGIN",
-	"LEVERAGED",
-	"TRD_GRP_002",
-	"TRD_GRP_003",
-	"TRD_GRP_004",
-	"TRD_GRP_005"
-] as const
 export type BinancePermission = (typeof binancePermissions)[number]
 
 export type BinanceRateLimitInfo = {
@@ -321,15 +277,9 @@ export type BinanceRateLimitInfo = {
 	limit: number
 }
 
-export const binanceRateLimitIntervals = ["SECOND", "MINUTE", "DAY"] as const
 export type BinanceRateLimitInterval =
 	(typeof binanceRateLimitIntervals)[number]
 
-export const binanceRateLimitTypes = [
-	"ORDERS",
-	"RAW_REQUESTS",
-	"REQUEST_WEIGHT"
-] as const
 export type BinanceRateLimitType = (typeof binanceRateLimitTypes)[number]
 
 export type BinanceSymbolInfo = {
@@ -427,7 +377,7 @@ export type BinanceSymbolFilterLotSize = {
  * }
  * ```
  */
-export type BinanceSymbolFilterMarketLotSize = {
+type BinanceSymbolFilterMarketLotSize = {
 	filterType: "MARKET_LOT_SIZE"
 	minQty: string
 	maxQty: string
@@ -575,15 +525,6 @@ export type BinanceSymbolFilterTrailingDelta = {
 	maxTrailingBelowDelta: number
 }
 
-export const binanceSymbolStatuses = [
-	"PRE_TRADING",
-	"TRADING",
-	"POST_TRADING",
-	"END_OF_DAY",
-	"HALT",
-	"AUCTION_MATCH",
-	"BREAK"
-] as const
 export type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
 
 export type BinanceTickerPrice = {
@@ -649,21 +590,4 @@ export type BinanceTicker24hr = {
 	count: number
 }
 
-export const binanceTimeInForces = [
-	/**
-	 * Good Til Canceled. An order will be on the book unless the order is
-	 * canceled.
-	 */
-	"GTC",
-	/**
-	 * Immediate Or Cancel. An order will try to fill the order as much as it
-	 * can before the order expires.
-	 */
-	"IOC",
-	/**
-	 * Fill or Kill. An order will expire if the full order cannot be filled
-	 * upon execution.
-	 */
-	"FOK"
-] as const
 export type BinanceTimeInForce = (typeof binanceTimeInForces)[number]

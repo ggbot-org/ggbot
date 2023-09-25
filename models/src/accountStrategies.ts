@@ -10,7 +10,7 @@ import { isItemId } from "./item.js"
 import { isStrategySchedulings } from "./strategyScheduling.js"
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
-export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
+type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
 export type AccountStrategies = AccountStrategy[]
 
@@ -29,15 +29,15 @@ export type InsertAccountStrategiesItem = (
 	arg: InsertAccountStrategiesItemInput
 ) => Promise<CreationTime>
 
-export type RenameAccountStrategiesItemInput = AccountStrategyItemKey &
+type RenameAccountStrategiesItemInput = AccountStrategyItemKey &
 	Pick<AccountStrategy, "name">
 
 export type RenameAccountStrategiesItem = (
 	arg: RenameAccountStrategiesItemInput
 ) => Promise<UpdateTime>
 
-export type WriteAccountStrategiesItemSchedulingsInput =
-	AccountStrategyItemKey & Pick<AccountStrategy, "schedulings">
+type WriteAccountStrategiesItemSchedulingsInput = AccountStrategyItemKey &
+	Pick<AccountStrategy, "schedulings">
 
 export const isWriteAccountStrategiesItemSchedulingsInput =
 	objectTypeGuard<WriteAccountStrategiesItemSchedulingsInput>(

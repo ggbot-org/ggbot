@@ -1,4 +1,3 @@
-import { getDay, today } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
@@ -12,10 +11,3 @@ export const isClientSession = objectTypeGuard<ClientSession>(
 )
 
 export const clientSessionNumDays = 30
-
-export const clientSessionIsExpired = ({
-	creationDay
-}: Pick<ClientSession, "creationDay">) => {
-	const expirationDay = getDay(creationDay).plus(clientSessionNumDays).days
-	return expirationDay < today()
-}

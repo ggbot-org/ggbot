@@ -1,1 +1,1 @@
-export * from "./client.js"
+export { BinanceClient } from "./client.js"

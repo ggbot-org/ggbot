@@ -6,7 +6,6 @@ export type {
 	DflowBinanceClient,
 	DflowBinanceClientKlinesParameters
 } from "./binance/client.js"
-export type { DflowBinanceContext } from "./binance/context.js"
 export { DflowBinanceExecutor } from "./binance/executor.js"
 export { DflowBinanceHost } from "./binance/host.js"
 export type { DflowBinanceKlineInterval } from "./binance/klineIntervals.js"
@@ -14,10 +13,7 @@ export {
 	dflowBinanceKlineIntervals,
 	dflowBinanceLowerKlineInterval
 } from "./binance/klineIntervals.js"
-export {
-	getDflowBinanceDynamicNodesCatalog,
-	getDflowBinanceNodesCatalog
-} from "./binance/nodesCatalog.js"
+export { getDflowBinanceNodesCatalog } from "./binance/nodesCatalog.js"
 export type {
 	DflowBinanceSymbolAndInterval,
 	DflowBinanceSymbolInfo

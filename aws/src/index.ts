@@ -1,15 +1,9 @@
-export type {
-	AssociateElasticIpsArgs,
-	DescribeElasticIpsArgs,
-	ReleaseElasticIpArgs
-} from "./ec2.js"
 export {
 	associateElasticIp,
 	describeElasticIps,
 	getOwnEc2InstanceId,
 	releaseElasticIp
 } from "./ec2.js"
-export type { DescribeLoadBalancersArgs } from "./elb.js"
 export { LoadBalancerTypeEnum } from "./elb.js"
 export { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
 export type { Tag } from "./iam.js"

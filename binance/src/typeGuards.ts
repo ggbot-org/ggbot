@@ -1,39 +1,38 @@
-// TODO use minimal-type-guard-helpers
 import { isDecimal } from "@workspace/arithmetic"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
+import {
+	binanceKlineIntervals,
+	binanceKlineMaxLimit,
+	binanceOrderRespTypes,
+	binanceOrderSides,
+	binanceOrderStatuses,
+	binanceOrderTypes,
+	binanceRateLimitIntervals,
+	binanceRateLimitTypes,
+	binanceSymbolStatuses,
+	binanceTimeInForces
+} from "./constants.js"
 import {
 	BinanceBalance,
 	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
-	binanceKlineIntervals,
-	binanceKlineMaxLimit,
 	BinanceKlineOptionalParameters,
 	BinanceOrderRespACK,
 	BinanceOrderRespFULL,
 	BinanceOrderRespRESULT,
 	BinanceOrderRespType,
-	binanceOrderRespTypes,
 	BinanceOrderSide,
-	binanceOrderSides,
 	BinanceOrderStatus,
-	binanceOrderStatuses,
 	BinanceOrderType,
-	binanceOrderTypes,
-	BinancePermission,
-	binancePermissions,
 	BinanceRateLimitInterval,
-	binanceRateLimitIntervals,
 	BinanceRateLimitType,
-	binanceRateLimitTypes,
 	BinanceSymbolFilterLotSize,
 	BinanceSymbolFilterMinNotional,
 	BinanceSymbolStatus,
-	binanceSymbolStatuses,
-	BinanceTimeInForce,
-	binanceTimeInForces
+	BinanceTimeInForce
 } from "./types.js"
 
 // TODO use objectTypeGuard for all type guards
@@ -153,9 +152,6 @@ export const isBinanceOrderRespFULL = (
 	if (!Array.isArray(fills)) return false
 	return fills.every((fill) => isBinanceFill(fill))
 }
-
-export const isBinancePermission =
-	isLiteralType<BinancePermission>(binancePermissions)
 
 export const isBinanceOrderStatus =
 	isLiteralType<BinanceOrderStatus>(binanceOrderStatuses)

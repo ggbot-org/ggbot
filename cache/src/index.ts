@@ -1,2 +1,2 @@
-export * from "./map.js"
-export * from "./providers.js"
+export { CacheMap } from "./map.js"
+export type { ManagedCacheProvider } from "./providers.js"

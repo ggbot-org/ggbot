@@ -49,7 +49,7 @@ const apiActionServerSideErrorNames = [
 ] as const
 type ApiActionServerSideErrorName =
 	(typeof apiActionServerSideErrorNames)[number]
-export const isApiActionServerSideErrorName =
+const isApiActionServerSideErrorName =
 	isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
 
 export type ApiActionServerSideError = {
@@ -67,16 +67,16 @@ export const isApiActionServerSideError =
 // Client errors
 // ////////////
 
-export const apiActionClientSideErrorNames = [
+const apiActionClientSideErrorNames = [
 	BadRequestError.errorName,
 	UnauthorizedError.errorName,
 	NotFoundError.errorName,
 	"GenericError",
 	"Timeout"
 ] as const
-export type ApiActionClientSideErrorName =
+type ApiActionClientSideErrorName =
 	(typeof apiActionClientSideErrorNames)[number]
-export const isApiActionClientSideErrorName =
+const isApiActionClientSideErrorName =
 	isLiteralType<ApiActionClientSideErrorName>(apiActionClientSideErrorNames)
 
 export type ApiActionClientSideError = {

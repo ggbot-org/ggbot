@@ -22,7 +22,6 @@ export {
 	noneAccount
 } from "./account.js"
 export type {
-	AccountDailyOrder,
 	AccountDailyOrdersKey,
 	AppendAccountDailyOrders,
 	ReadAccountDailyOrders
@@ -53,12 +52,8 @@ export {
 	newAccountStrategy
 } from "./accountStrategy.js"
 export type { Balance } from "./balance.js"
-export { isBalance, isBalances } from "./balance.js"
 export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
-export {
-	isBalanceChangeEvent,
-	isBalanceChangeEvents
-} from "./balanceChangeEvent.js"
+export { isBalanceChangeEvents } from "./balanceChangeEvent.js"
 export type {
 	BinanceApiConfig,
 	BinanceApiKey,
@@ -72,14 +67,12 @@ export type {
 export {
 	isBinanceApiConfig,
 	isBinanceApiKey,
-	isBinanceApiKeyPermissionCriteria,
 	isCreateBinanceApiConfigInput
 } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"
 export { isAllowedCountryIsoCode2 } from "./country.js"
-export type { Currency } from "./currency.js"
 export type { EmailAddress } from "./email.js"
 export { isEmailAddress, normalizeEmailAddress } from "./email.js"
 export type {
@@ -129,11 +122,7 @@ export { isOrders, newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
 export type { QuotaType } from "./quotas.js"
 export { quota, quotaType, quotaTypes } from "./quotas.js"
-export type {
-	Scheduling,
-	SchedulingStatus,
-	SchedulingStatuses
-} from "./scheduling.js"
+export type { Scheduling, SchedulingStatus } from "./scheduling.js"
 export type {
 	CopyStrategy,
 	CreateStrategy,
@@ -173,7 +162,8 @@ export type {
 	ReadStrategyDailyOrders,
 	StrategyDailyOrder,
 	StrategyDailyOrders,
-	StrategyDailyOrdersKey} from "./strategyDailyOrders.js"
+	StrategyDailyOrdersKey
+} from "./strategyDailyOrders.js"
 export {
 	isStrategyDailyOrders,
 	isStrategyDailyOrdersKey
@@ -223,9 +213,9 @@ export type {
 } from "./subscription.js"
 export {
 	isSubscription,
-	isSubscriptionStatus,
 	shouldPurchaseSubscription,
-	statusOfSubscription} from "./subscription.js"
+	statusOfSubscription
+} from "./subscription.js"
 export type {
 	CreateMonthlySubscriptionPurchase,
 	CreateYearlySubscriptionPurchase,

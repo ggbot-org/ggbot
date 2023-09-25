@@ -101,7 +101,7 @@ export type ReadStrategyAccountId = (
 	arg: StrategyKey
 ) => Promise<Account["id"] | null>
 
-export type RenameStrategyInput = AccountStrategyKey & Pick<Strategy, "name">
+type RenameStrategyInput = AccountStrategyKey & Pick<Strategy, "name">
 
 export const isRenameStrategyInput = objectTypeGuard<RenameStrategyInput>(
 	({ name, ...accountStrategyKey }) =>

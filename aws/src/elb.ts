@@ -18,15 +18,11 @@ type ElasticLoadBalancingV2ClientArgs = AwsClientConfigRegion
 const elbClient = (args: ElasticLoadBalancingV2ClientArgs) =>
 	new ElasticLoadBalancingV2Client(args)
 
-export type DescribeLoadBalancersArgs = Required<
-	Pick<DescribeLoadBalancersCommandInput, "Names">
->
-
 export const describeLoadBalancers = async (
 	clientArgs: ElasticLoadBalancingV2ClientArgs,
-	commandArgs: DescribeLoadBalancersArgs
+	{ Names }: Required<Pick<DescribeLoadBalancersCommandInput, "Names">>
 ): Promise<DescribeLoadBalancersCommandOutput> => {
-	const command = new DescribeLoadBalancersCommand(commandArgs)
+	const command = new DescribeLoadBalancersCommand({ Names })
 	const client = elbClient(clientArgs)
 	return await client.send(command)
 }
