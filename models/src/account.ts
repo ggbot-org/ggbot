@@ -1,8 +1,4 @@
-import {
-	arrayTypeGuard,
-	isLiteralType,
-	objectTypeGuard
-} from "minimal-type-guard-helpers"
+import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { EmailAddress, isEmailAddress, noneEmail } from "./email.js"
@@ -70,8 +66,6 @@ export type AccountKey = ItemKey<{
 export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
 	isItemId(accountId)
 )
-
-export const isAccountKeys = arrayTypeGuard<AccountKey>(isAccountKey)
 
 export type CreateAccount = (arg: NewItem<Account>) => Promise<Account>
 

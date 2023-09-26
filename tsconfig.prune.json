@@ -11,6 +11,7 @@
 			"@workspace/authentication": ["./authentication/src/index.ts"],
 			"@workspace/aws": ["./aws/src/index.ts"],
 			"@workspace/binance": ["./binance/src/index.ts"],
+			"@workspace/binance-client": ["./binance-client/src/index.ts"],
 			"@workspace/cache": ["./cache/src/index.ts"],
 			"@workspace/database": ["./database/src/index.ts"],
 			"@workspace/dflow": ["./dflow/src/index.ts"],

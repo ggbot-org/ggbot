@@ -281,7 +281,7 @@ export const itemKeyToDirname = {
 		])
 }
 
-export const dirname = {
+const dirname = {
 	account: (arg: AccountKey) =>
 		dirJoin([
 			`${dirnamePrefix.account}`,

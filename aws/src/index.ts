@@ -1,3 +1,4 @@
+export type { AwsResource } from "./AwsResource.js"
 export {
 	associateElasticIp,
 	describeElasticIps,

@@ -1,7 +1,6 @@
-import { isDay } from "minimal-time-helpers"
-import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
+import { arrayTypeGuard } from "minimal-type-guard-helpers"
 
-import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
+import { AccountStrategyKey } from "./accountStrategy.js"
 import { isOrder, Order } from "./order.js"
 import { DayKey, UpdateTime } from "./time.js"
 
@@ -15,10 +14,6 @@ export const isStrategyDailyOrders =
 	arrayTypeGuard<StrategyDailyOrder>(isStrategyDailyOrder)
 
 export type StrategyDailyOrdersKey = AccountStrategyKey & DayKey
-
-export const isStrategyDailyOrdersKey = objectTypeGuard<StrategyDailyOrdersKey>(
-	({ day, ...key }) => isDay(day) && isAccountStrategyKey(key)
-)
 
 export type ReadStrategyDailyOrders = (
 	arg: StrategyDailyOrdersKey

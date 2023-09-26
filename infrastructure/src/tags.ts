@@ -1,6 +1,6 @@
 import { Tag } from "@workspace/aws"
 
-export const projectTag: Tag = { Key: "Project", Value: "ggbot2" }
+const projectTag: Tag = { Key: "Project", Value: "ggbot2" }
 
 export const tagsIncludesProjectTag = (tags: Tag[]) =>
 	tags.findIndex(

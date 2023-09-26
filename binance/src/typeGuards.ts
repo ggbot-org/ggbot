@@ -14,7 +14,6 @@ import {
 	binanceTimeInForces
 } from "./constants.js"
 import {
-	BinanceBalance,
 	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,
@@ -37,12 +36,6 @@ import {
 
 // TODO use objectTypeGuard for all type guards
 
-export const isBinanceBalance = (arg: unknown): arg is BinanceBalance => {
-	if (typeof arg !== "object" || arg === null) return false
-	const { asset, free, locked } = arg as Partial<BinanceBalance>
-	return typeof asset === "string" && isDecimal(free) && isDecimal(locked)
-}
-
 export const isBinanceExchangeInfo = (
 	arg: unknown
 ): arg is BinanceExchangeInfo => {
@@ -59,7 +52,7 @@ export const isBinanceExchangeInfo = (
 	return true
 }
 
-export const isBinanceFill = (arg: unknown): arg is BinanceFill => {
+const isBinanceFill = (arg: unknown): arg is BinanceFill => {
 	if (typeof arg !== "object" || arg === null) return false
 	const { price, qty, commission, commissionAsset } =
 		arg as Partial<BinanceFill>
@@ -103,9 +96,7 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 	)
 }
 
-export const isBinanceOrderRespACK = (
-	arg: unknown
-): arg is BinanceOrderRespACK => {
+const isBinanceOrderRespACK = (arg: unknown): arg is BinanceOrderRespACK => {
 	if (typeof arg !== "object" || arg === null) return false
 	const { symbol, orderId, orderListId, clientOrderId, transactTime } =
 		arg as Partial<BinanceOrderRespACK>
@@ -153,7 +144,7 @@ export const isBinanceOrderRespFULL = (
 	return fills.every((fill) => isBinanceFill(fill))
 }
 
-export const isBinanceOrderStatus =
+const isBinanceOrderStatus =
 	isLiteralType<BinanceOrderStatus>(binanceOrderStatuses)
 
 export const isBinanceOrderType =

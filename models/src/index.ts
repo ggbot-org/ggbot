@@ -11,7 +11,6 @@ export type {
 export {
 	isAccount,
 	isAccountKey,
-	isAccountKeys,
 	isAccountRole,
 	isAdminAccount,
 	isReadAccountInput,
@@ -164,10 +163,7 @@ export type {
 	StrategyDailyOrders,
 	StrategyDailyOrdersKey
 } from "./strategyDailyOrders.js"
-export {
-	isStrategyDailyOrders,
-	isStrategyDailyOrdersKey
-} from "./strategyDailyOrders.js"
+export { isStrategyDailyOrders } from "./strategyDailyOrders.js"
 export type {
 	DeleteStrategyExecution,
 	ReadStrategyExecution,

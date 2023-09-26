@@ -197,7 +197,7 @@ export type BinanceNewOrderOptions = Partial<{
 	recvWindow: number
 }>
 
-export type BinanceOrder = {
+type BinanceOrder = {
 	symbol: string
 	orderId: number
 	orderListId: number
@@ -268,9 +268,9 @@ export type BinanceOrderStatus = (typeof binanceOrderStatuses)[number]
 
 export type BinanceOrderType = (typeof binanceOrderTypes)[number]
 
-export type BinancePermission = (typeof binancePermissions)[number]
+type BinancePermission = (typeof binancePermissions)[number]
 
-export type BinanceRateLimitInfo = {
+type BinanceRateLimitInfo = {
 	rateLimitType: BinanceRateLimitType
 	interval: BinanceRateLimitInterval
 	intervalNum: number
@@ -325,7 +325,7 @@ export type BinanceSymbolFilter =
  * }
  * ```
  */
-export type BinanceSymbolFilterIcebergParts = {
+type BinanceSymbolFilterIcebergParts = {
 	filterType: "ICEBERG_PARTS"
 	limit: number
 }
@@ -394,7 +394,7 @@ type BinanceSymbolFilterMarketLotSize = {
  * }
  * ```
  */
-export type BinanceSymbolFilterMaxNumOrders = {
+type BinanceSymbolFilterMaxNumOrders = {
 	filterType: "MAX_NUM_ORDERS"
 	maxNumOrders: number
 }
@@ -409,7 +409,7 @@ export type BinanceSymbolFilterMaxNumOrders = {
  *   },
  * ```
  */
-export type BinanceSymbolFilterMaxNumAlgoOrders = {
+type BinanceSymbolFilterMaxNumAlgoOrders = {
 	filterType: "MAX_NUM_ALGO_ORDERS"
 	maxNumAlgoOrders: number
 }
@@ -456,7 +456,7 @@ export type BinanceSymbolFilterMinNotional = {
  * }
  * ```
  */
-export type BinanceSymbolFilterPercentPrice = {
+type BinanceSymbolFilterPercentPrice = {
 	filterType: "PERCENT_PRICE"
 	multiplierUp: string
 	multiplierDown: string
@@ -485,7 +485,7 @@ export type BinanceSymbolFilterPercentPrice = {
  * }
  * ```
  */
-export type BinanceSymbolFilterPrice = {
+type BinanceSymbolFilterPrice = {
 	filterType: "PRICE_FILTER"
 	/**
 	 * Defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice`
@@ -517,7 +517,7 @@ export type BinanceSymbolFilterPrice = {
  *   }
  * ```
  */
-export type BinanceSymbolFilterTrailingDelta = {
+type BinanceSymbolFilterTrailingDelta = {
 	filterType: "TRAILING_DELTA"
 	minTrailingAboveDelta: number
 	maxTrailingAboveDelta: number

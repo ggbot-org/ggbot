@@ -7,8 +7,8 @@ import { DflowBinanceContext } from "./context.js"
 import { binanceNodeTextToDflowKind } from "./nodeResolution.js"
 
 /**
- * `DflowBinanceHost` extends `DflowHost` adding ggbot2 DflowCommonContext and
- * an instance of Binance client.
+ * `DflowBinanceHost` extends `DflowHost` adding DflowCommonContext and an
+ * instance of Binance client.
  */
 export class DflowBinanceHost extends DflowHost implements DflowLoader {
 	constructor(

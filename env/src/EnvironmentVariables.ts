@@ -46,6 +46,10 @@ class EnvironmentVariables {
 		return getVariable("JWT_SECRET")
 	}
 
+	PROJECT_SHORT_NAME() {
+		return getVariable("PROJECT_SHORT_NAME")
+	}
+
 	UTRUST_API_KEY() {
 		return getVariable("UTRUST_API_KEY")
 	}

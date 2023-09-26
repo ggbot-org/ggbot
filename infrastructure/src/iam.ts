@@ -1,8 +1,9 @@
 import { DeployStage, ENV } from "@workspace/env"
 
+import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 import { Database } from "./Database.js"
 import { fqdn } from "./fqdn.js"
-import { lambdaAllArn } from "./lambda.js"
+import { LambdaFunction } from "./LambdaFunction.js"
 import { getSesIdentityArn } from "./ses.js"
 import { Webapp } from "./Webapp.js"
 
@@ -33,7 +34,7 @@ const cross = {
 	sesIdentityArn: getSesIdentityArn()
 }
 
-export const getDevopsPolicyName = () => "ggbot2-devops-policy"
+const getDevopsPolicyName = () => "ggbot2-devops-policy"
 
 export const getDevopsPolicyArn = () =>
 	`arn:aws:iam::${AWS_ACCOUNT_ID()}:policy/${getDevopsPolicyName()}`
@@ -43,11 +44,16 @@ export const getDevopsPolicyStatements = () => [
 		Effect: "Allow",
 		Action: [
 			"ec2:DescribeAddresses",
-			"elasticloadbalancing:DescribeLoadBalancers",
+			// "elasticloadbalancing:DescribeLoadBalancers",
 			"iam:GetPolicy",
 			"logs:CreateLogGroup"
 		],
 		Resource: "*"
+	},
+	{
+		Effect: "Allow",
+		Action: ["elasticloadbalancing:DescribeLoadBalancers"],
+		Resource: BinanceProxyLoadBalancer.arn("*")
 	},
 	// iam:PassRole is needed by lambda:CreateFunction
 	{
@@ -62,7 +68,7 @@ export const getDevopsPolicyStatements = () => [
 			"lambda:UpdateFunctionCode",
 			"lambda:UpdateFunctionConfiguration"
 		],
-		Resource: lambdaAllArn
+		Resource: `${LambdaFunction.arn("*")}`
 	},
 	{
 		Effect: "Allow",

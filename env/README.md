@@ -13,6 +13,7 @@ The following environment variables are used:
 -   `UTRUST_API_KEY` and `UTRUST_WEBHOOK_SECRET`: used by Utrust APIs for payments.
 -   `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
 -   `JWT_SECRET`: used by APIs for authentication.
+-   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
 
 # .envrc file
 
@@ -20,6 +21,8 @@ A complete _.envrc_ file looks like the following
 
 ```sh
 export DNS_DOMAIN=example.org
+
+export PROJECT_SHORT_NAME=brand
 
 export AWS_ACCOUNT_ID=12345678
 export AWS_ACCESS_KEY_ID=AKIA123ABCDEFGHIKLMN

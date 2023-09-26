@@ -17,13 +17,7 @@ export {
 	isBinanceApiPrivateEndoint,
 	isBinanceApiPublicEndoint
 } from "./endpoints.js"
-export {
-	ErrorBinanceHTTP,
-	ErrorBinanceInvalidArg,
-	ErrorBinanceInvalidKlineOptionalParameters,
-	ErrorBinanceInvalidOrderOptions,
-	ErrorBinanceSymbolFilter
-} from "./errors.js"
+export { ErrorBinanceHTTP } from "./errors.js"
 export { BinanceExchange } from "./exchange.js"
 export { BinanceExchangeInfoCacheMap } from "./exchangeInfoCacheMap.js"
 export { binanceApiClusters, binanceApiDomain } from "./FQDN.js"
@@ -35,22 +29,9 @@ export type {
 } from "./request.js"
 export { getBinanceIntervalTime } from "./time.js"
 export {
-	isBinanceBalance,
 	isBinanceExchangeInfo,
-	isBinanceFill,
-	isBinanceKline,
 	isBinanceKlineInterval,
-	isBinanceKlineOptionalParameters,
-	isBinanceOrderRespACK,
 	isBinanceOrderRespFULL,
-	isBinanceOrderRespRESULT,
-	isBinanceOrderRespType,
-	isBinanceOrderSide,
-	isBinanceOrderStatus,
-	isBinanceOrderType,
-	isBinanceRateLimitInterval,
-	isBinanceRateLimitType,
-	isBinanceSymbolFilterLotSize,
 	isBinanceSymbolStatus,
 	isBinanceTimeInForce
 } from "./typeGuards.js"
@@ -60,34 +41,15 @@ export type {
 	BinanceApiKeyPermission,
 	BinanceBalance,
 	BinanceExchangeInfo,
-	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
 	BinanceKlineOptionalParameters,
 	BinanceNewOrderOptions,
-	BinanceOrder,
 	BinanceOrderRespACK,
 	BinanceOrderRespFULL,
-	BinanceOrderRespRESULT,
-	BinanceOrderRespType,
 	BinanceOrderSide,
-	BinanceOrderStatus,
 	BinanceOrderType,
-	BinancePermission,
-	BinanceRateLimitInfo,
-	BinanceRateLimitInterval,
-	BinanceRateLimitType,
-	BinanceSymbolFilter,
-	BinanceSymbolFilterIcebergParts,
-	BinanceSymbolFilterMaxNumAlgoOrders,
-	BinanceSymbolFilterMaxNumOrders,
-	BinanceSymbolFilterMinNotional,
-	BinanceSymbolFilterPercentPrice,
-	BinanceSymbolFilterPrice,
-	BinanceSymbolFilterTrailingDelta,
 	BinanceSymbolInfo,
-	BinanceSymbolStatus,
-	BinanceTickerPrice,
-	BinanceTimeInForce
+	BinanceTickerPrice
 } from "./types.js"
 export { balanceIsNotEmpty } from "./utils.js"

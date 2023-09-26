@@ -22,8 +22,7 @@ export const binanceApiPublicEndpoints = [
 	"/api/v3/uiKlines"
 ] as const
 
-export type BinanceApiPublicEndpoint =
-	(typeof binanceApiPublicEndpoints)[number]
+type BinanceApiPublicEndpoint = (typeof binanceApiPublicEndpoints)[number]
 
 export const isBinanceApiPublicEndoint =
 	isLiteralType<BinanceApiPublicEndpoint>(binanceApiPublicEndpoints)
