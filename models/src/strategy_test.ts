@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
@@ -8,7 +8,7 @@ import { isStrategy, newStrategy } from "./strategy.js"
 import { createdNow } from "./time.js"
 
 describe("isStrategy", () => {
-	it("validates Strategy", () => {
+	test("validates Strategy", () => {
 		const accountId = nullId
 		const kind = "binance"
 		const name = "Name"

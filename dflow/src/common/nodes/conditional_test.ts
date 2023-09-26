@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
@@ -7,7 +7,7 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
 describe("if", () => {
-	it("implements `if` condition", async () => {
+	test("implements `if` condition", async () => {
 		const nodeId = "if"
 		const executor = new DflowExecutorMock({
 			view: {

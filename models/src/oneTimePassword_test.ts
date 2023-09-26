@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import {
 	generateOneTimePassword,
@@ -8,7 +8,7 @@ import {
 import { createdNow } from "./time.js"
 
 describe("isOneTimePassword", () => {
-	it("validates input if is valid OneTimePassword", () => {
+	test("validates input if is valid OneTimePassword", () => {
 		[
 			{
 				input: { code: "123456", ...createdNow() },
@@ -21,7 +21,7 @@ describe("isOneTimePassword", () => {
 })
 
 describe("generateOneTimePassword", () => {
-	it("generates a OneTimePassword", () => {
+	test("generates a OneTimePassword", () => {
 		assert.ok(isOneTimePassword(generateOneTimePassword()))
 	})
 })

@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { isDecimal, isMaybeDecimal, numOfDecimals } from "./decimal.js"
 
@@ -26,7 +26,7 @@ const invalidDecimals = [
 ]
 
 describe("Decimal", () => {
-	it('supports "Greater than" operator', () => {
+	test('supports "Greater than" operator', () => {
 		[
 			{
 				input1: "0",
@@ -48,7 +48,7 @@ describe("Decimal", () => {
 		})
 	})
 
-	it('supports "Less than" operator', () => {
+	test('supports "Less than" operator', () => {
 		[
 			{
 				input1: "1",
@@ -67,7 +67,7 @@ describe("Decimal", () => {
 })
 
 describe("isDecimal", () => {
-	it("checks that argument is a Decimal", () => {
+	test("checks that argument is a Decimal", () => {
 		const validArgs = [...validDecimals]
 		const invalidArgs = [...invalidDecimals]
 		;[
@@ -80,7 +80,7 @@ describe("isDecimal", () => {
 })
 
 describe("isMaybeDecimal", () => {
-	it("checks that argument can be converted to Decimal", () => {
+	test("checks that argument can be converted to Decimal", () => {
 		const validArgs = [1, -1, ...validDecimals]
 		const invalidArgs = [...invalidDecimals]
 		;[
@@ -93,7 +93,7 @@ describe("isMaybeDecimal", () => {
 })
 
 describe("numOfDecimals", () => {
-	it("return number of digits in mantissa part", () => {
+	test("return number of digits in mantissa part", () => {
 		[
 			{ input: "0", output: 0 },
 			{ input: "0.0", output: 0 },

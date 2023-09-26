@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
@@ -7,7 +7,7 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
 describe("inputBoolean", () => {
-	it("reads context inputs", async () => {
+	test("reads context inputs", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -46,7 +46,7 @@ describe("inputBoolean", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	it("use default input if context input is not available", async () => {
+	test("use default input if context input is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -84,7 +84,7 @@ describe("inputBoolean", () => {
 })
 
 describe("inputNumber", () => {
-	it("reads context inputs", async () => {
+	test("reads context inputs", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -123,7 +123,7 @@ describe("inputNumber", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	it("use default input if context input is not available", async () => {
+	test("use default input if context input is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -161,7 +161,7 @@ describe("inputNumber", () => {
 })
 
 describe("inputString", () => {
-	it("reads context inputs", async () => {
+	test("reads context inputs", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -200,7 +200,7 @@ describe("inputString", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	it("use default input if context input is not available", async () => {
+	test("use default input if context input is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {

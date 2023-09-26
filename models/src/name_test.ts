@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { ErrorInvalidArg } from "./errors.js"
 import { isName, normalizeName, throwIfInvalidName } from "./name.js"
@@ -8,7 +8,7 @@ const nameTooLong = "x".repeat(999)
 export const invalidNames = ["", "     ", nameTooLong]
 
 describe("isName", () => {
-	it("validates string as name or throws", () => {
+	test("validates string as name or throws", () => {
 		[
 			{ input: "valid name", output: true },
 			...invalidNames
@@ -21,7 +21,7 @@ describe("isName", () => {
 })
 
 describe("throwIfInvalidName", () => {
-	it("throws ErrorInvalidArg", () => {
+	test("throws ErrorInvalidArg", () => {
 		[...invalidNames.map(normalizeName)].forEach((value) => {
 			assert.throws(
 				() => {

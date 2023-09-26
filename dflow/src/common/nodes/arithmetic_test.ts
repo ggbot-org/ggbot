@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
@@ -7,7 +7,7 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
 describe("add", () => {
-	it("implements addition", async () => {
+	test("implements addition", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -44,7 +44,7 @@ describe("add", () => {
 })
 
 describe("sub", () => {
-	it("implements multiplication", async () => {
+	test("implements multiplication", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -81,7 +81,7 @@ describe("sub", () => {
 })
 
 describe("mul", () => {
-	it("implements multiplication", async () => {
+	test("implements multiplication", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -118,7 +118,7 @@ describe("mul", () => {
 })
 
 describe("div", () => {
-	it("implements multiplication", async () => {
+	test("implements multiplication", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {

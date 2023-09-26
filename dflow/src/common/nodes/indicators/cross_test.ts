@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { crossOver } from "./cross.js"
 
 describe("CrossOver", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: { values1: [], values2: [] }, output: [] },
 			{

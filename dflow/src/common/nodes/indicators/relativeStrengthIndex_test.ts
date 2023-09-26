@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { relativeStrengthIndex } from "./relativeStrengthIndex.js"
 
 describe("Relative Strength Index", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: {

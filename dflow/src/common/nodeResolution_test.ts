@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import {
 	commonNodeTextToDflowKind,
@@ -7,7 +7,7 @@ import {
 } from "./nodeResolution.js"
 
 describe("commonNodeTextToDflowKind", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: "this is a comment", output: "info" },
 			{ input: "foo", output: "foo" },
@@ -20,7 +20,7 @@ describe("commonNodeTextToDflowKind", () => {
 })
 
 describe("nodeTextToViewType", () => {
-	it("resolves node containing comments to `info` type", () => {
+	test("resolves node containing comments to `info` type", () => {
 		[
 			{ input: "this is a comment, it contains spaces", output: "info" },
 			{ input: "this\nis\na\ncomment", output: "info" }
@@ -31,7 +31,7 @@ describe("nodeTextToViewType", () => {
 		assert.equal(nodeTextToViewType("thisCouldBeSomeNode"), undefined)
 	})
 
-	it("resolves node containing JSON to `json` type", () => {
+	test("resolves node containing JSON to `json` type", () => {
 		[
 			{ input: "1", output: "json" },
 			{ input: "true", output: "json" },
@@ -43,7 +43,7 @@ describe("nodeTextToViewType", () => {
 		})
 	})
 
-	it("resolves node containing a percentage to `percentage` type", () => {
+	test("resolves node containing a percentage to `percentage` type", () => {
 		[
 			{ input: "1%", output: "perc" },
 			{ input: "0%", output: "perc" },

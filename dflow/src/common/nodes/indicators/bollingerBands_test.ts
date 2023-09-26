@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { bollingerBands } from "./bollingerBands.js"
 
 describe("Bollinger Bands", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: { values: [], period: 1, amplitude: 2 },

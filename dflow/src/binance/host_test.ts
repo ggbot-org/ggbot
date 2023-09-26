@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now, truncateTime } from "minimal-time-helpers"
 
@@ -9,7 +9,7 @@ import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 
 describe("DflowBinanceHost", () => {
 	describe("load()", () => {
-		it("parses a flow view and loads it into a Dflow graph", async () => {
+		test("parses a flow view and loads it into a Dflow graph", async () => {
 			const binance = new DflowBinanceClientMock()
 			const { symbols } = await binance.exchangeInfo()
 			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)

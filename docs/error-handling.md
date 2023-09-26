@@ -40,7 +40,7 @@ Error `message` is defined as a _static method_, it can be used to recognize the
 
 ```ts
 import { strict as assert } from "node:assert";
-import { describe, it } from "node:test";
+import { describe, test } from "node:test";
 
 class ErrorInvalidDate extends Error {
   static errorName = "ErrorInvalidDate";
@@ -56,7 +56,7 @@ const truncateDate = (arg: Date) {
 }
 
 describe("truncateDate", () => {
-  it("throws ErrorInvalidDate", () => {
+  test("throws ErrorInvalidDate", () => {
     assert.throws(
       () => {
         truncateDate(new Date("0000-00-00"));
@@ -136,7 +136,9 @@ export class MyError extends Error {
 	readonly whenCreated: number
 
 	static errorName = "MyError"
-	static message () { return "Something went wrong" }
+	static message() {
+		return "Something went wrong"
+	}
 
 	static isMyErrorData(arg: unknown): arg is MyErrorData {
 		if (!arg || typeof arg !== "object") return false
@@ -156,7 +158,7 @@ export class MyError extends Error {
 	}
 
 	toJSON() {
-	  return this.toValue()
+		return this.toValue()
 	}
 
 	toValue() {

@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys */
 import { getTime, Time } from "minimal-time-helpers"
 
 import { BinanceKlineInterval } from "./types.js"

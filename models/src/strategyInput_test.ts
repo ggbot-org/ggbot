@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { isStrategyInput } from "./strategyInput.js"
 
 describe("isStrategyInput", () => {
-	it("validates StrategyInput", () => {
+	test("validates StrategyInput", () => {
 		[
 			{
 				input: {

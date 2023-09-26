@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
@@ -7,7 +7,7 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
 describe("deleteMemory", () => {
-	it("can delete context memory", async () => {
+	test("can delete context memory", async () => {
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
@@ -36,7 +36,7 @@ describe("deleteMemory", () => {
 })
 
 describe("getMemory", () => {
-	it("can read context memory", async () => {
+	test("can read context memory", async () => {
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
@@ -67,7 +67,7 @@ describe("getMemory", () => {
 })
 
 describe("setMemory", () => {
-	it("can set context memory", async () => {
+	test("can set context memory", async () => {
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [

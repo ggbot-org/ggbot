@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
@@ -7,7 +7,7 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
 describe("shift", () => {
-	it("implements Array.prototype.shift()", async () => {
+	test("implements Array.prototype.shift()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -42,7 +42,7 @@ describe("shift", () => {
 })
 
 describe("pop", () => {
-	it("implements Array.prototype.pop()", async () => {
+	test("implements Array.prototype.pop()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -77,7 +77,7 @@ describe("pop", () => {
 })
 
 describe("push", () => {
-	it("implements Array.prototype.push()", async () => {
+	test("implements Array.prototype.push()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
 			view: {

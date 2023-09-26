@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { dateToDay, dayToDate, getDate, today } from "minimal-time-helpers"
 
@@ -12,7 +12,7 @@ import {
 import { createdNow } from "./time.js"
 
 describe("isSubscriptionPurchase", () => {
-	it("validates SubscriptionPurchase", () => {
+	test("validates SubscriptionPurchase", () => {
 		const paymentProvider = "utrust"
 		const plan = "basic"
 		const startDay = today()

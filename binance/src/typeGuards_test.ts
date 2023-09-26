@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import {
 	isBinanceKline,
@@ -10,7 +10,7 @@ import {
 } from "./typeGuards.js"
 
 describe("isBinanceKline", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: [
@@ -35,7 +35,7 @@ describe("isBinanceKline", () => {
 	})
 })
 describe("isBinanceKlineInterval", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: "xx", output: false },
 			{ input: "1m", output: true },
@@ -60,7 +60,7 @@ describe("isBinanceKlineInterval", () => {
 })
 
 describe("isBinanceKlineOptionalParameters", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: {
@@ -134,7 +134,7 @@ describe("isBinanceKlineOptionalParameters", () => {
 })
 
 describe("isBinanceSymbolFilterLotSize", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: {
@@ -188,7 +188,7 @@ describe("isBinanceSymbolFilterLotSize", () => {
 })
 
 describe("isBinanceSymbolFilterMinNotional", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: {

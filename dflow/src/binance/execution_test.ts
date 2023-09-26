@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import {
 	getBalancesFromExecutionSteps,
@@ -9,7 +9,7 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js"
 
 describe("getBalancesFromExecutionSteps", () => {
-	it("works", async () => {
+	test("works", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		;[
@@ -42,7 +42,7 @@ describe("getBalancesFromExecutionSteps", () => {
 })
 
 describe("getOrdersFromExecutionSteps", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{
 				input: [],

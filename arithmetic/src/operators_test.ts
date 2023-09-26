@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { add, div, equal, mul, sub } from "./operators.js"
 
 describe("equal", () => {
-	it("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {
+	test("checks if two MaybeDecimal values are equal considering their actual number of decimals", () => {
 		[
 			{ input: { a: "0.00", b: 0 }, output: true },
 			{ input: { a: "0.001", b: 0 }, output: false },
@@ -20,7 +20,7 @@ describe("equal", () => {
 })
 
 describe("add", () => {
-	it("implements addition", () => {
+	test("implements addition", () => {
 		[
 			{
 				input: { a: "0", b: "1", numDecimals: 2 },
@@ -33,7 +33,7 @@ describe("add", () => {
 })
 
 describe("sub", () => {
-	it("implements subtraction", () => {
+	test("implements subtraction", () => {
 		[
 			{
 				input: { a: "0", b: "1", numDecimals: 2 },
@@ -46,7 +46,7 @@ describe("sub", () => {
 })
 
 describe("mul", () => {
-	it("implements multiplication", () => {
+	test("implements multiplication", () => {
 		[
 			{
 				input: { a: "1", b: "1", numDecimals: 2 },
@@ -67,7 +67,7 @@ describe("mul", () => {
 })
 
 describe("div", () => {
-	it("implements division", () => {
+	test("implements division", () => {
 		[
 			{
 				input: { a: "1", b: "1", numDecimals: 2 },

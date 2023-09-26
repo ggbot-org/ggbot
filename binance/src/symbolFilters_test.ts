@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js"
 import {
@@ -8,7 +8,7 @@ import {
 } from "./types.js"
 
 describe("lotSizeIsValid", () => {
-	it("applies LOT_SIZE symbol filter", () => {
+	test("applies LOT_SIZE symbol filter", () => {
 		const filter: BinanceSymbolFilterLotSize = {
 			filterType: "LOT_SIZE",
 			minQty: "0.00010000",
@@ -40,7 +40,7 @@ describe("lotSizeIsValid", () => {
 })
 
 describe("minNotionalIsValid", () => {
-	it("applies MIN_NOTIONAL symbol filter", () => {
+	test("applies MIN_NOTIONAL symbol filter", () => {
 		const filter: BinanceSymbolFilterMinNotional = {
 			filterType: "MIN_NOTIONAL",
 			minNotional: "0.00010000",

@@ -1,13 +1,12 @@
-/* eslint-disable sort-keys */
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 describe("getDflowBinanceDynamicNodesCatalog", () => {
-	it("creates Dflow nodes related with Binance symbols", async () => {
+	test("creates Dflow nodes related with Binance symbols", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols)
@@ -44,7 +43,7 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 		)
 	})
 
-	it("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", async () => {
+	test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", async () => {
 		const validSymbol: DflowBinanceSymbolInfo = {
 			symbol: "AAABTC",
 			status: "TRADING",

@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { dayToTime } from "minimal-time-helpers"
 
@@ -8,7 +8,7 @@ import { DflowExecutorMock } from "../mocks/executor.js"
 import { coerceToTimeUnit } from "./time.js"
 
 describe("coerceToTimeUnit", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: "not a TimeUnit", output: undefined },
 			{ input: "seconds", output: "second" },
@@ -26,7 +26,7 @@ describe("coerceToTimeUnit", () => {
 })
 
 describe("today", () => {
-	it("reads context timestamp", async () => {
+	test("reads context timestamp", async () => {
 		const day = "1978-12-31"
 		const nodeId = "a"
 		const executor = new DflowExecutorMock({

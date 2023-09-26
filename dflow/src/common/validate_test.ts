@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { DflowNodesCatalog } from "dflow"
 import { now } from "minimal-time-helpers"
@@ -11,7 +11,7 @@ import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 import { dflowValidate } from "./validate.js"
 
 describe("dflowValidate", () => {
-	it("throws ErrorUknownDflowNodes", () => {
+	test("throws ErrorUknownDflowNodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
 		const view: DflowExecutorView = {
 			nodes: [{ id: "n1", text: "unknownNode" }],
@@ -32,7 +32,7 @@ describe("dflowValidate", () => {
 		)
 	})
 
-	it("ignores info nodes", () => {
+	test("ignores info nodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
 		const view: DflowExecutorView = {
 			nodes: [{ id: "n1", text: "this is a comment" }],
@@ -47,7 +47,7 @@ describe("dflowValidate", () => {
 		}, Error)
 	})
 
-	it("validates json nodes", () => {
+	test("validates json nodes", () => {
 		const dflow = new DflowCommonHostMock(
 			{ nodesCatalog: {} },
 			{ input: {}, memory: {}, time: now() }

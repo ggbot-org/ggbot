@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import {
 	exponentialMovingAverage,
@@ -8,7 +8,7 @@ import {
 } from "./movingAverages.js"
 
 describe("Exponential Moving Average", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -31,7 +31,7 @@ describe("Exponential Moving Average", () => {
 })
 
 describe("Simple Moving Average", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -54,7 +54,7 @@ describe("Simple Moving Average", () => {
 })
 
 describe("Wilder's smoothing", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{

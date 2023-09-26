@@ -1,6 +1,5 @@
-/* eslint-disable sort-keys */
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { StrategyFlow } from "@workspace/models"
 
@@ -8,7 +7,7 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { extractBinanceFlowSymbolsAndIntervalsFromFlow } from "./symbols.js"
 
 describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
-	it("extracts symbol and interval tuples", async () => {
+	test("extracts symbol and interval tuples", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const view: StrategyFlow["view"] = {
@@ -54,7 +53,7 @@ describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
 		)
 	})
 
-	it("manages duplicates", async () => {
+	test("manages duplicates", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const view: StrategyFlow["view"] = {

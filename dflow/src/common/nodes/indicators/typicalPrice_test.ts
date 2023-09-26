@@ -1,10 +1,10 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { typicalPrice } from "./typicalPrice.js"
 
 describe("Typical Price", () => {
-	it("works", () => {
+	test("works", () => {
 		[
 			{ input: { high: 0, low: 0, close: 0 }, output: 0 },
 			{ input: { high: 10, low: 20, close: 30 }, output: 20 },
