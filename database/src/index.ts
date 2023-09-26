@@ -12,7 +12,6 @@ export {
 } from "./accountDailyOrders.js"
 export {
 	readAccountStrategies,
-	renameAccountStrategiesItem,
 	suspendAccountStrategiesSchedulings,
 	writeAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"

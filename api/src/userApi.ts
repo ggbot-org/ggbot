@@ -27,7 +27,7 @@ const userApiActionTypes = [
 export type UserApiActionType = (typeof userApiActionTypes)[number]
 const isUserApiActionType = isLiteralType<UserApiActionType>(userApiActionTypes)
 
-export type UserApiActionRequestData = ApiActionInput<UserApiActionType>
+type UserApiActionRequestData = ApiActionInput<UserApiActionType>
 
 export const isUserApiActionRequestData =
 	objectTypeGuard<UserApiActionRequestData>(({ type }) =>

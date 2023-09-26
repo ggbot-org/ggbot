@@ -5,7 +5,7 @@ import {
 	ElasticLoadBalancingV2Client
 } from "@aws-sdk/client-elastic-load-balancing-v2"
 
-import { AwsClientConfigRegion } from "./region.js"
+import { AwsRegion } from "./region.js"
 
 export type {
 	ElasticLoadBalancingV2ServiceException,
@@ -13,16 +13,14 @@ export type {
 } from "@aws-sdk/client-elastic-load-balancing-v2"
 export { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2"
 
-type ElasticLoadBalancingV2ClientArgs = AwsClientConfigRegion
-
-const elbClient = (args: ElasticLoadBalancingV2ClientArgs) =>
-	new ElasticLoadBalancingV2Client(args)
+const elbClient = (region: AwsRegion) =>
+	new ElasticLoadBalancingV2Client({ apiVersion: "2015-12-08", region })
 
 export const describeLoadBalancers = async (
-	clientArgs: ElasticLoadBalancingV2ClientArgs,
+	region: AwsRegion,
 	{ Names }: Required<Pick<DescribeLoadBalancersCommandInput, "Names">>
 ): Promise<DescribeLoadBalancersCommandOutput> => {
 	const command = new DescribeLoadBalancersCommand({ Names })
-	const client = elbClient(clientArgs)
+	const client = elbClient(region)
 	return await client.send(command)
 }

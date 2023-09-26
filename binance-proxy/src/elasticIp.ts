@@ -33,10 +33,9 @@ export const associateIp = async () => {
 	const elasticIps = parseElasticIpsFromEnv()
 	info("Elastic IPs", elasticIps)
 
-	const { Addresses } = await describeElasticIps(
-		{ region: AWS_BINANCE_PROXY_REGION },
-		{ PublicIps: elasticIps }
-	)
+	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, {
+		PublicIps: elasticIps
+	})
 	if (!Addresses) {
 		warn("Cannot associate Elastic IP, empty address list")
 		return
@@ -49,10 +48,10 @@ export const associateIp = async () => {
 
 		if (!AllocationId || !PublicIp) continue
 
-		await associateElasticIp(
-			{ region: AWS_BINANCE_PROXY_REGION },
-			{ AllocationId, InstanceId }
-		)
+		await associateElasticIp(AWS_BINANCE_PROXY_REGION, {
+			AllocationId,
+			InstanceId
+		})
 		elasticIp = PublicIp
 		allocationId = AllocationId
 		info(
@@ -70,8 +69,7 @@ export const associateIp = async () => {
 export const releaseIp = async () => {
 	if (!elasticIp || !allocationId) return
 	info("Release IP", elasticIp, "from AllocationId", allocationId)
-	await releaseElasticIp(
-		{ region: AWS_BINANCE_PROXY_REGION },
-		{ AllocationId: allocationId }
-	)
+	await releaseElasticIp(AWS_BINANCE_PROXY_REGION, {
+		AllocationId: allocationId
+	})
 }

@@ -1,18 +1,12 @@
-import { DeployStage, ENV } from "@workspace/env"
+import { iamVersion } from "@workspace/aws"
+import { DeployStage } from "@workspace/env"
 
-import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 import { Database } from "./Database.js"
 import { fqdn } from "./fqdn.js"
-import { LambdaFunction } from "./LambdaFunction.js"
 import { SesIdentity } from "./SesIdentity.js"
 import { Webapp } from "./Webapp.js"
 
-const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV
-
 const sesIdentity = new SesIdentity()
-
-// IAM version
-const Version = "2012-10-17"
 
 const resources = (deployStage: DeployStage) => {
 	const database = new Database(deployStage)
@@ -23,8 +17,6 @@ const resources = (deployStage: DeployStage) => {
 	}
 }
 
-const apiRole = `arn:aws:iam::${AWS_ACCOUNT_ID()}:role/ggbot2_api_role`
-
 // DeployStage main and next resources
 const main = resources("main")
 const next = resources("next")
@@ -33,11 +25,6 @@ const cross = {
 	// S3
 	nakedDomainBucketArn: fqdn.urlShortenerDomain
 }
-
-const getDevopsPolicyName = () => "ggbot2-devops-policy"
-
-export const getDevopsPolicyArn = () =>
-	`arn:aws:iam::${AWS_ACCOUNT_ID()}:policy/${getDevopsPolicyName()}`
 
 export const getDevopsPolicyStatements = () => [
 	{
@@ -49,26 +36,6 @@ export const getDevopsPolicyStatements = () => [
 			"logs:CreateLogGroup"
 		],
 		Resource: "*"
-	},
-	{
-		Effect: "Allow",
-		Action: ["elasticloadbalancing:DescribeLoadBalancers"],
-		Resource: BinanceProxyLoadBalancer.arn("*")
-	},
-	// iam:PassRole is needed by lambda:CreateFunction
-	{
-		Effect: "Allow",
-		Action: ["iam:PassRole"],
-		Resource: apiRole
-	},
-	{
-		Effect: "Allow",
-		Action: [
-			"lambda:CreateFunction",
-			"lambda:UpdateFunctionCode",
-			"lambda:UpdateFunctionConfiguration"
-		],
-		Resource: `${LambdaFunction.arn("*")}`
 	},
 	{
 		Effect: "Allow",
@@ -94,17 +61,9 @@ export const getDevopsPolicyStatements = () => [
 ]
 
 export const getDevopsPolicy = () => ({
-	Version,
+	Version: iamVersion,
 	Statement: getDevopsPolicyStatements()
 })
-
-export const getSesNoreplyPolicyName = (deployStage = DEPLOY_STAGE()) =>
-	`ggbot2-${deployStage}-ses-noreply-policy`
-
-export const getSesNoreplyPolicyArn = (deployStage = DEPLOY_STAGE()) =>
-	`arn:aws:iam::${AWS_ACCOUNT_ID()}:policy/${getSesNoreplyPolicyName(
-		deployStage
-	)}`
 
 export const getSesNoreplyPolicyStatements = () => [
 	{
@@ -115,6 +74,6 @@ export const getSesNoreplyPolicyStatements = () => [
 ]
 
 export const getSesNoreplyPolicy = () => ({
-	Version,
+	Version: iamVersion,
 	Statement: getSesNoreplyPolicyStatements()
 })

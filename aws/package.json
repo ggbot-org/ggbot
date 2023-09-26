@@ -16,6 +16,7 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
+    "@aws-sdk/client-acm": "3.418.0",
     "@aws-sdk/client-ec2": "3.379.1",
     "@aws-sdk/client-elastic-load-balancing-v2": "3.379.1",
     "@aws-sdk/client-iam": "3.379.1",

@@ -5,16 +5,20 @@ import {
 	IAMClient
 } from "@aws-sdk/client-iam"
 
-export type { Tag } from "@aws-sdk/client-iam"
+import { AwsRegion } from "./region.js"
 
-const iamClient = () => new IAMClient({})
+export type { Policy, Tag } from "@aws-sdk/client-iam"
 
-export const getPolicy = async ({
-	PolicyArn
-}: Required<
-	Pick<GetPolicyCommandInput, "PolicyArn">
->): Promise<GetPolicyCommandOutput> => {
+export const iamVersion = "2012-10-17"
+
+const iamClient = (region: AwsRegion) =>
+	new IAMClient({ apiVersion: iamVersion, region })
+
+export const getPolicy = async (
+	region: AwsRegion,
+	PolicyArn: NonNullable<GetPolicyCommandInput["PolicyArn"]>
+): Promise<GetPolicyCommandOutput> => {
 	const command = new GetPolicyCommand({ PolicyArn })
-	const client = iamClient()
+	const client = iamClient(region)
 	return await client.send(command)
 }

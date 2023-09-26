@@ -1,15 +1,9 @@
-import {
-	SendEmailCommand,
-	SESClient,
-	SESClientConfig
-} from "@aws-sdk/client-ses"
+import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses"
 
-import { AwsClientConfigRegion } from "./region.js"
+import { AwsRegion } from "./region.js"
 
-type SESClientArgs = AwsClientConfigRegion & Omit<SESClientConfig, "apiVersion">
-
-const sesClient = (args: SESClientArgs) =>
-	new SESClient({ apiVersion: "2010-12-01", ...args })
+const sesClient = (region: AwsRegion) =>
+	new SESClient({ apiVersion: "2010-12-01", region })
 
 type SendEmailInput = {
 	html: string
@@ -20,7 +14,7 @@ type SendEmailInput = {
 }
 
 export const sendEmail = async (
-	clientArgs: SESClientArgs,
+	region: AwsRegion,
 	{ html, source, subject, toAddresses, text }: SendEmailInput
 ) => {
 	const Charset = "UTF-8"
@@ -37,6 +31,6 @@ export const sendEmail = async (
 		},
 		Source: source
 	})
-	const client = sesClient(clientArgs)
+	const client = sesClient(region)
 	return await client.send(command)
 }
