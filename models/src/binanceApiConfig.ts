@@ -27,16 +27,6 @@ export type BinanceApiKeyPermissionCriteria = {
 	ipRestrict: boolean
 }
 
-export const binanceApiKeyPermissionsAreValid = ({
-	enableReading,
-	enableSpotAndMarginTrading,
-	enableWithdrawals,
-	ipRestrict
-}: BinanceApiKeyPermissionCriteria): boolean => {
-	if (enableWithdrawals) return false
-	return enableReading && enableSpotAndMarginTrading && ipRestrict
-}
-
 type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig
 
 export const isCreateBinanceApiConfigInput =

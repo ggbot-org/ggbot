@@ -2,7 +2,7 @@ import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import { StrategyDailyOrders } from "./strategyDailyOrders.js"
+import { StrategyDailyOrder } from "./strategyDailyOrders.js"
 
 type ReadStrategyOrdersInput = AccountStrategyKey & DayInterval
 
@@ -15,4 +15,4 @@ export const isReadStrategyOrdersInput =
 
 export type ReadStrategyOrders = (
 	arg: ReadStrategyOrdersInput
-) => Promise<StrategyDailyOrders>
+) => Promise<StrategyDailyOrder[]>

@@ -4,10 +4,12 @@ import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 import { Database } from "./Database.js"
 import { fqdn } from "./fqdn.js"
 import { LambdaFunction } from "./LambdaFunction.js"
-import { getSesIdentityArn } from "./ses.js"
+import { SesIdentity } from "./SesIdentity.js"
 import { Webapp } from "./Webapp.js"
 
 const { AWS_ACCOUNT_ID, DEPLOY_STAGE } = ENV
+
+const sesIdentity = new SesIdentity()
 
 // IAM version
 const Version = "2012-10-17"
@@ -29,9 +31,7 @@ const next = resources("next")
 // Cross deployStage resources
 const cross = {
 	// S3
-	nakedDomainBucketArn: fqdn.urlShortenerDomain,
-	// SES
-	sesIdentityArn: getSesIdentityArn()
+	nakedDomainBucketArn: fqdn.urlShortenerDomain
 }
 
 const getDevopsPolicyName = () => "ggbot2-devops-policy"
@@ -76,10 +76,8 @@ export const getDevopsPolicyStatements = () => [
 		Resource: [
 			cross.nakedDomainBucketArn,
 			main.dataBucketArn,
-			// TODO main.logsBucketArn,
 			main.webappBucketArn,
 			next.dataBucketArn,
-			// TODO next.logsBucketArn,
 			next.webappBucketArn
 		]
 	},
@@ -112,7 +110,7 @@ export const getSesNoreplyPolicyStatements = () => [
 	{
 		Effect: "Allow",
 		Action: ["SES:SendEmail", "SES:SendRawEmail"],
-		Resource: cross.sesIdentityArn
+		Resource: sesIdentity.arn
 	}
 ]
 

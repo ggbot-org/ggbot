@@ -1,3 +1,2 @@
-export * from "./errors.js"
-export * from "./header.js"
-export * from "./session.js"
+export { ErrorUnauthorizedAuthenticationHeader } from "./errors.js"
+export { readSessionFromAuthorizationHeader, signSession } from "./session.js"

@@ -8,8 +8,6 @@ export type StrategyDailyOrder = Order
 const isStrategyDailyOrder = (arg: unknown): arg is StrategyDailyOrder =>
 	isOrder(arg)
 
-/** Daily orders per strategy. */
-export type StrategyDailyOrders = Order[]
 export const isStrategyDailyOrders =
 	arrayTypeGuard<StrategyDailyOrder>(isStrategyDailyOrder)
 
@@ -17,10 +15,10 @@ export type StrategyDailyOrdersKey = AccountStrategyKey & DayKey
 
 export type ReadStrategyDailyOrders = (
 	arg: StrategyDailyOrdersKey
-) => Promise<StrategyDailyOrders>
+) => Promise<StrategyDailyOrder[]>
 
 type AppendStrategyDailyOrdersInput = StrategyDailyOrdersKey & {
-	items: StrategyDailyOrders
+	items: StrategyDailyOrder[]
 }
 
 export type AppendStrategyDailyOrders = (

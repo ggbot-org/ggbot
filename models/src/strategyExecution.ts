@@ -2,7 +2,7 @@ import { DflowExecutionNodeInfo, DflowGraph } from "dflow"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountStrategyKey } from "./accountStrategy.js"
-import { Balances, isBalances } from "./balance.js"
+import { Balance, isBalances } from "./balance.js"
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
 type StrategyExecutionStatus = Extract<
@@ -19,7 +19,7 @@ export type StrategyExecution = UpdateTime & {
 	 * If a strategy execution do some transaction, the result can be reported
 	 * as a `balances` attribute.
 	 */
-	balances: Balances
+	balances: Balance[]
 
 	steps: DflowExecutionNodeInfo[]
 

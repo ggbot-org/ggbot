@@ -1,4 +1,3 @@
-import { Decimal, isDecimal } from "@workspace/arithmetic"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isNonEmptyString, NonEmptyString } from "./strings.js"
@@ -39,16 +38,13 @@ export type Balance = {
 	/** Asset symbol, e.g. BTC, ETH. */
 	asset: NonEmptyString
 	/** Free value available. */
-	free: Decimal
+	free: NonEmptyString
 	/** Locked value, for example via staking or a limit order. */
-	locked: Decimal
+	locked: NonEmptyString
 }
 
-export const isBalance = objectTypeGuard<Balance>(
-	({ asset, free, locked }) =>
-		isNonEmptyString(asset) && isDecimal(free) && isDecimal(locked)
+export const isBalance = objectTypeGuard<Balance>(({ asset, free, locked }) =>
+	[asset, free, locked].every(isNonEmptyString)
 )
-
-export type Balances = Balance[]
 
 export const isBalances = arrayTypeGuard<Balance>(isBalance)

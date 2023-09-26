@@ -1,10 +1,10 @@
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { Balances, isBalances } from "./balance.js"
+import { Balance, isBalances } from "./balance.js"
 import { CreationTime, isCreationTime } from "./time.js"
 
 export type BalanceChangeEvent = CreationTime & {
-	balances: Balances
+	balances: Balance[]
 }
 
 const isBalanceChangeEvent = objectTypeGuard<BalanceChangeEvent>(

@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { isAccount, newAccount } from "./account.js"
 import { nullId } from "./item.js"
@@ -8,7 +8,7 @@ import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
 
 describe("isAccount", () => {
-	it("validates Account, name is optional", () => {
+	test("validates Account, name is optional", () => {
 		const email = "user@example.com"
 		const { whenCreated } = createdNow()
 		;[

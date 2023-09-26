@@ -119,8 +119,7 @@ export {
 export type { Order, Orders } from "./order.js"
 export { isOrders, newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
-export type { QuotaType } from "./quotas.js"
-export { quota, quotaType, quotaTypes } from "./quotas.js"
+export { quota, quotaType } from "./quotas.js"
 export type { Scheduling, SchedulingStatus } from "./scheduling.js"
 export type {
 	CopyStrategy,
@@ -159,8 +158,6 @@ export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.
 export type {
 	AppendStrategyDailyOrders,
 	ReadStrategyDailyOrders,
-	StrategyDailyOrder,
-	StrategyDailyOrders,
 	StrategyDailyOrdersKey
 } from "./strategyDailyOrders.js"
 export { isStrategyDailyOrders } from "./strategyDailyOrders.js"

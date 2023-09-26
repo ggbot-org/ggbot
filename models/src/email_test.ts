@@ -1,11 +1,11 @@
 import { strict as assert } from "node:assert"
-import { describe, it } from "node:test"
+import { describe, test } from "node:test"
 
 import { isEmailAddress, normalizeEmailAddress } from "./email.js"
 import { ErrorInvalidArg } from "./errors.js"
 
 describe("normalizeEmailAddress", () => {
-	it("returns email in lowercase", () => {
+	test("returns email in lowercase", () => {
 		[
 			{ input: "lower@example.com", output: "lower@example.com" },
 			{ input: "MiXeD@example.com", output: "mixed@example.com" }
@@ -15,7 +15,7 @@ describe("normalizeEmailAddress", () => {
 		})
 	})
 
-	it("removes period characters", () => {
+	test("removes period characters", () => {
 		[
 			{ input: "john.smith@gmail.com", output: "johnsmith@gmail.com" },
 			{ input: "jOhN.sMiTh@gmail.com", output: "johnsmith@gmail.com" },
@@ -30,7 +30,7 @@ describe("normalizeEmailAddress", () => {
 		})
 	})
 
-	it("removes labels", () => {
+	test("removes labels", () => {
 		[
 			{ input: "user+label@example.com", output: "user@example.com" }
 		].forEach(({ input, output }) => {
@@ -39,7 +39,7 @@ describe("normalizeEmailAddress", () => {
 		})
 	})
 
-	it("throws ErrorInvalidArg", () => {
+	test("throws ErrorInvalidArg", () => {
 		["", "@@", "not an email", "john.smith at gmail.com"].forEach(
 			(value) => {
 				assert.throws(
@@ -57,7 +57,7 @@ describe("normalizeEmailAddress", () => {
 })
 
 describe("isEmailAddress", () => {
-	it("validates email", () => {
+	test("validates email", () => {
 		[
 			{ input: undefined, output: false },
 			{ input: "not an email", output: false },

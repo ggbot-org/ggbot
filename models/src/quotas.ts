@@ -1,6 +1,6 @@
 import { SubscriptionPlan } from "./subscription.js"
 
-export const quotaTypes = [
+const quotaTypes = [
 	"NUM_DAYS_TRANSACTIONS_HISTORY",
 	"MAX_ORDERS_IN_ORDERS_POOL",
 	"MAX_STRATEGIES_PER_ACCOUNT",
