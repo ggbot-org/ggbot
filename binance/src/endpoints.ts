@@ -27,12 +27,9 @@ type BinanceApiPublicEndpoint = (typeof binanceApiPublicEndpoints)[number]
 export const isBinanceApiPublicEndoint =
 	isLiteralType<BinanceApiPublicEndpoint>(binanceApiPublicEndpoints)
 
-export const binanceApiEndpoints = [
+const binanceApiEndpoints = [
 	...binanceApiPublicEndpoints,
 	...binanceApiPrivateEndpoints
 ] as const
 
 export type BinanceApiEndpoint = (typeof binanceApiEndpoints)[number]
-
-export const isBinanceApiEndoint =
-	isLiteralType<BinanceApiEndpoint>(binanceApiEndpoints)

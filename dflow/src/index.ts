@@ -24,6 +24,5 @@ export {
 	isDflowBinanceSymbolInfo
 } from "./binance/symbols.js"
 export type { DflowCommonContext } from "./common/context.js"
-export type { NodeTextToDflowKind } from "./common/nodeResolution.js"
 export { nodeTextToViewType } from "./common/nodeResolution.js"
 export { parsePercentage } from "./common/nodeTextParser.js"

@@ -4,7 +4,7 @@ import { objectTypeGuard } from "minimal-type-guard-helpers"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
 import { BalanceChangeEvent } from "./balanceChangeEvent.js"
 
-export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
+type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
 
 type StrategyBalances = StrategyBalance[]
 

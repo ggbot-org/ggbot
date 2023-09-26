@@ -1,12 +1,13 @@
 import { BinanceApiEndpoint } from "./endpoints.js"
 import { ErrorBinanceHTTP } from "./errors.js"
-import { binanceApiDomain } from "./FQDN.js"
+import { BinanceApiDomain, binanceApiDomain } from "./FQDN.js"
 import { BinanceRequestHeaders } from "./headers.js"
 import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js"
 
 /** BinanceConnector handles requests to Binance API. */
 export class BinanceConnector {
-	static defaultBaseUrl = `https://${binanceApiDomain}`
+	static defaultBaseUrl = BinanceConnector.baseUrl(binanceApiDomain)
+
 	baseUrl: string
 	readonly requestHeaders: BinanceRequestHeaders
 
@@ -17,6 +18,10 @@ export class BinanceConnector {
 
 	set apiKey(value: string) {
 		this.requestHeaders.apiKey = value
+	}
+
+	static baseUrl(apiDomain: BinanceApiDomain) {
+		return `https://${apiDomain}`
 	}
 
 	async request<Data>(

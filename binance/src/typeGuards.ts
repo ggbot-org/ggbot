@@ -8,7 +8,6 @@ import {
 	binanceOrderSides,
 	binanceOrderStatuses,
 	binanceOrderTypes,
-	binanceRateLimitIntervals,
 	binanceRateLimitTypes,
 	binanceSymbolStatuses,
 	binanceTimeInForces
@@ -26,7 +25,6 @@ import {
 	BinanceOrderSide,
 	BinanceOrderStatus,
 	BinanceOrderType,
-	BinanceRateLimitInterval,
 	BinanceRateLimitType,
 	BinanceSymbolFilterLotSize,
 	BinanceSymbolFilterMinNotional,
@@ -150,9 +148,6 @@ const isBinanceOrderStatus =
 export const isBinanceOrderType =
 	isLiteralType<BinanceOrderType>(binanceOrderTypes)
 
-export const isBinanceRateLimitInterval =
-	isLiteralType<BinanceRateLimitInterval>(binanceRateLimitIntervals)
-
 export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
 	binanceOrderRespTypes
 )
@@ -230,5 +225,5 @@ export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
 	binanceSymbolStatuses
 )
 
-export const isBinanceTimeInForce =
+const isBinanceTimeInForce =
 	isLiteralType<BinanceTimeInForce>(binanceTimeInForces)

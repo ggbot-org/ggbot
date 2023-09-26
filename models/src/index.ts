@@ -100,7 +100,6 @@ export type { Item } from "./item.js"
 export { itemIdCharacters, newId } from "./item.js"
 export type { Language } from "./languages.js"
 export { defaultLanguage, languages } from "./languages.js"
-export type { Name } from "./name.js"
 export { isName, normalizeName, throwIfInvalidName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
 export { isNaturalNumber } from "./numbers.js"
@@ -144,10 +143,7 @@ export {
 	newStrategy,
 	noneStrategy
 } from "./strategy.js"
-export type {
-	ReadStrategyBalances,
-	StrategyBalance
-} from "./strategyBalance.js"
+export type { ReadStrategyBalances } from "./strategyBalance.js"
 export { isReadStrategyBalancesInput } from "./strategyBalance.js"
 export type {
 	AppendStrategyDailyBalanceChanges,
@@ -230,7 +226,6 @@ export {
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,
 	purchaseMinNumMonths,
-	subscriptionPurchaseStatuses,
 	totalPurchase
 } from "./subscriptionPurchase.js"
 export type { DayKey } from "./time.js"

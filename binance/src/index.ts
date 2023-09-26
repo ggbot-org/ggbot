@@ -3,17 +3,11 @@ export type {
 	BinanceKlineCacheProvider
 } from "./cacheProviders.js"
 export { BinanceConnector } from "./connector.js"
-export {
-	binanceKlineDefaultLimit,
-	binanceKlineIntervals,
-	binanceKlineMaxLimit
-} from "./constants.js"
+export { binanceKlineIntervals, binanceKlineMaxLimit } from "./constants.js"
 export type { BinanceApiPrivateEndpoint } from "./endpoints.js"
 export {
-	binanceApiEndpoints,
 	binanceApiPrivateEndpoints,
 	binanceApiPublicEndpoints,
-	isBinanceApiEndoint,
 	isBinanceApiPrivateEndoint,
 	isBinanceApiPublicEndoint
 } from "./endpoints.js"
@@ -32,8 +26,7 @@ export {
 	isBinanceExchangeInfo,
 	isBinanceKlineInterval,
 	isBinanceOrderRespFULL,
-	isBinanceSymbolStatus,
-	isBinanceTimeInForce
+	isBinanceSymbolStatus
 } from "./typeGuards.js"
 export type {
 	BinanceAccountInformation,

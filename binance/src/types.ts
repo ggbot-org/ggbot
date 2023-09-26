@@ -277,8 +277,7 @@ type BinanceRateLimitInfo = {
 	limit: number
 }
 
-export type BinanceRateLimitInterval =
-	(typeof binanceRateLimitIntervals)[number]
+type BinanceRateLimitInterval = (typeof binanceRateLimitIntervals)[number]
 
 export type BinanceRateLimitType = (typeof binanceRateLimitTypes)[number]
 

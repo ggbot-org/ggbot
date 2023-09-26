@@ -26,7 +26,7 @@ const cross = {
 	nakedDomainBucketArn: fqdn.urlShortenerDomain
 }
 
-export const getDevopsPolicyStatements = () => [
+const getDevopsPolicyStatements = () => [
 	{
 		Effect: "Allow",
 		Action: [
@@ -65,7 +65,7 @@ export const getDevopsPolicy = () => ({
 	Statement: getDevopsPolicyStatements()
 })
 
-export const getSesNoreplyPolicyStatements = () => [
+const getSesNoreplyPolicyStatements = () => [
 	{
 		Effect: "Allow",
 		Action: ["SES:SendEmail", "SES:SendRawEmail"],

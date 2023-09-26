@@ -7,10 +7,6 @@ import {
 
 import { AwsRegion } from "./region.js"
 
-export type {
-	ElasticLoadBalancingV2ServiceException,
-	LoadBalancer
-} from "@aws-sdk/client-elastic-load-balancing-v2"
 export { LoadBalancerTypeEnum } from "@aws-sdk/client-elastic-load-balancing-v2"
 
 const elbClient = (region: AwsRegion) =>

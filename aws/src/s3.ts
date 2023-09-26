@@ -2,8 +2,6 @@ import { BucketCannedACL, S3Client } from "@aws-sdk/client-s3"
 
 import { AwsRegion } from "./region.js"
 
-export { S3ServiceException } from "@aws-sdk/client-s3"
-
 export type S3BucketProvider = {
 	readonly region: AwsRegion
 	readonly Bucket: string

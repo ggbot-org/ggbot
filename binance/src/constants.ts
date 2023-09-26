@@ -1,4 +1,3 @@
-export const binanceKlineDefaultLimit = 500
 export const binanceKlineIntervals = [
 	"1s",
 	"1m",
