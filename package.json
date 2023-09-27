@@ -66,7 +66,6 @@
     "start:binance-proxy": "npm run start -w binance-proxy",
     "start:executor": "npm run start -w executor",
     "start:webapp": "npm run start -w webapp",
-    "task:create": "npm run task:create -w devops",
     "test": "npm run test --workspaces --if-present 1> /dev/null",
     "test_infrastructure": "npm run test_infrastructure -w infrastructure",
     "test_repository": "npm run test -w repository",
