@@ -48,30 +48,42 @@ export class DevopsPolicy extends IamPolicy {
 		}
 	}
 
+	get manageLambdasStatementActions(): PolicyDocumentStatementAction[] {
+		return [
+			"lambda:CreateFunction",
+			"lambda:UpdateFunctionCode",
+			"lambda:UpdateFunctionConfiguration"
+		]
+	}
+
+	get manageLambdasStatementPassRoleAction(): PolicyDocumentStatementAction[] {
+		// iam:PassRole is needed by lambda:CreateFunction
+		return ["iam:PassRole"]
+	}
+
 	get manageLambdasStatements(): PolicyDocumentStatement[] {
 		return [
 			{
 				Effect: "Allow",
-				Action: [
-					"lambda:CreateFunction",
-					"lambda:UpdateFunctionCode",
-					"lambda:UpdateFunctionConfiguration"
-				],
+				Action: this.manageLambdasStatementActions,
 				Resource: `${LambdaFunction.arn("*")}`
 			},
-			// iam:PassRole is needed by lambda:CreateFunction
 			{
 				Effect: "Allow",
-				Action: ["iam:PassRole"],
+				Action: this.manageLambdasStatementPassRoleAction,
 				Resource: this.apiRole.arn
 			}
 		]
 	}
 
+	get createBucketsStatementActions(): PolicyDocumentStatementAction[] {
+		return ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"]
+	}
+
 	get createBucketsStatement() {
 		return {
 			Effect: "Allow",
-			Action: ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"],
+			Action: this.createBucketsStatementActions,
 			Resource: [
 				// TODO
 				// cross.nakedDomainBucketArn,
@@ -83,10 +95,14 @@ export class DevopsPolicy extends IamPolicy {
 		}
 	}
 
+	get deployStaticWebsitesStatementActions(): PolicyDocumentStatementAction[] {
+		return ["s3:DeleteObject", "s3:PutObject"]
+	}
+
 	get deployStaticWebsitesStatement() {
 		return {
 			Effect: "Allow",
-			Action: ["s3:DeleteObject", "s3:PutObject"],
+			Action: this.deployStaticWebsitesStatementActions,
 			Resource: [
 				// TODO
 				// main.webappBucketArn,

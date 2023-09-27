@@ -62,7 +62,6 @@ export type {
 } from "./binanceApiConfig.js"
 export {
 	isBinanceApiConfig,
-	isBinanceApiKey,
 	isCreateBinanceApiConfigInput
 } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
@@ -80,7 +79,6 @@ export { isEmailAccount } from "./emailAccount.js"
 export {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorInvalidArg,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
 	ErrorUnimplementedStrategyKind,

@@ -15,7 +15,7 @@ export type {
 	PolicyDocumentStatementAction,
 	Tag
 } from "./iam.js"
-export { getPolicy, getPolicyVersion, iamVersion } from "./iam.js"
+export { getPolicy, getPolicyVersion } from "./iam.js"
 export type { AwsRegion } from "./region.js"
 export type { S3BucketACL } from "./s3.js"
 export { S3Bucket } from "./S3Bucket.js"
