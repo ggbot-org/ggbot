@@ -39,9 +39,6 @@ export const isAccount = objectTypeGuard<Account>(
 export const isAdminAccount = ({ role }: Pick<Account, "role">): boolean =>
 	role === "admin"
 
-export const isUserAccount = ({ role }: Pick<Account, "role">): boolean =>
-	role ? role === "user" : true
-
 export const noneAccount: Account = {
 	id: nullId,
 	whenCreated: 0,

@@ -1,3 +1,7 @@
+import {
+	PolicyDocumentStatement,
+	PolicyDocumentStatementAction
+} from "@workspace/aws"
 import { ENV } from "@workspace/env"
 
 import { ApiRole } from "./ApiRole.js"
@@ -19,19 +23,24 @@ export class DevopsPolicy extends IamPolicy {
 		this.apiRole = new ApiRole()
 	}
 
-	get readResourcesStatement() {
+	get readResourcesStatementActions(): PolicyDocumentStatementAction[] {
+		return [
+			"acm:ListCertificates",
+			"ec2:DescribeAddresses",
+			"iam:GetPolicy",
+			"iam:GetPolicyVersion"
+		]
+	}
+
+	get readResourcesStatement(): PolicyDocumentStatement {
 		return {
 			Effect: "Allow",
-			Action: [
-				"acm:ListCertificates",
-				"ec2:DescribeAddresses",
-				"iam:GetPolicy"
-			],
+			Action: this.readResourcesStatementActions,
 			Resource: "*"
 		}
 	}
 
-	get binanceProxyStatement() {
+	get binanceProxyStatement(): PolicyDocumentStatement {
 		return {
 			Effect: "Allow",
 			Action: ["elasticloadbalancing:DescribeLoadBalancers"],
@@ -39,7 +48,7 @@ export class DevopsPolicy extends IamPolicy {
 		}
 	}
 
-	get manageLambdasStatements() {
+	get manageLambdasStatements(): PolicyDocumentStatement[] {
 		return [
 			{
 				Effect: "Allow",

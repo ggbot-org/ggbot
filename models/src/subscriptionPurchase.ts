@@ -35,7 +35,7 @@ export const purchaseDefaultNumMonths = 6
 export const purchaseMaxNumMonths = 12
 export const purchaseMinNumMonths = 1
 
-export const subscriptionPurchaseStatuses = [
+const subscriptionPurchaseStatuses = [
 	"completed",
 	"canceled",
 	"pending"

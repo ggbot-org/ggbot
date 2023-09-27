@@ -7,7 +7,7 @@ import { isStrategyKey, StrategyKey } from "./strategy.js"
 import { DayKey, UpdateTime } from "./time.js"
 
 type AccountDailyOrder = StrategyKey & { order: Order }
-export const isAccountDailyOrder = objectTypeGuard<AccountDailyOrder>(
+const isAccountDailyOrder = objectTypeGuard<AccountDailyOrder>(
 	({ order, ...strategyKey }) => isOrder(order) && isStrategyKey(strategyKey)
 )
 

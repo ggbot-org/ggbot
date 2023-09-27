@@ -11,12 +11,10 @@ export type {
 export {
 	isAccount,
 	isAccountKey,
-	isAccountRole,
 	isAdminAccount,
 	isReadAccountInput,
 	isRenameAccountInput,
 	isSetAccountCountryInput,
-	isUserAccount,
 	newAccount,
 	noneAccount
 } from "./account.js"
@@ -26,7 +24,6 @@ export type {
 	ReadAccountDailyOrders
 } from "./accountDailyOrders.js"
 export {
-	isAccountDailyOrder,
 	isAccountDailyOrders,
 	isAccountDailyOrdersKey
 } from "./accountDailyOrders.js"

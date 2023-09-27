@@ -8,8 +8,14 @@ export {
 } from "./ec2.js"
 export { LoadBalancerTypeEnum } from "./elb.js"
 export { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
-export type { Policy, Tag } from "./iam.js"
-export { getPolicy, iamVersion } from "./iam.js"
+export type {
+	Policy,
+	PolicyDocument,
+	PolicyDocumentStatement,
+	PolicyDocumentStatementAction,
+	Tag
+} from "./iam.js"
+export { getPolicy, getPolicyVersion, iamVersion } from "./iam.js"
 export type { AwsRegion } from "./region.js"
 export type { S3BucketACL } from "./s3.js"
 export { S3Bucket } from "./S3Bucket.js"
