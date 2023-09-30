@@ -1,4 +1,4 @@
-import { reactRootId } from "../react/root.js"
+import { reactRootId } from "./react/root.js"
 
 type LinkTag = {
 	href: string
@@ -92,7 +92,15 @@ const htmlTag = ({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) => [
 	"</html>"
 ]
 
-export const htmlPageContent = (args: HtmlTagArgs) =>
+const htmlPageContent = (args: HtmlTagArgs) =>
 	["<!DOCTYPE html>", ...htmlTag(args)]
 		.filter((tag) => Boolean(tag))
 		.join("\n")
+
+export const html = (scriptJs: string) =>
+	htmlPageContent({
+		hasRootDiv: true,
+		meta: { title: "ggbot2" },
+		scripts: [{ src: scriptJs }],
+		stylesheets: [{ href: "/main.css" }]
+	})

@@ -12,7 +12,7 @@
 	"exclude": ["node_modules/", "temp/", "**/*_test.ts"],
 	"include": [
 		"src/esbuild/*.ts",
-		"src/html/*.ts",
+		"src/html.ts",
 		"src/i18n/FormatjsIntlMessageIds.ts",
 		"src/i18n/locales.ts",
 		"src/package.ts",
