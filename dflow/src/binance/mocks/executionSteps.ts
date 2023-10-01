@@ -15,6 +15,7 @@ export const executionStepsBuyBTCUSD: DflowGraphExecutionReport["steps"] = [
 	},
 	{
 		id: "qqpmg",
+		// LOL: BUSD is delisted now.
 		k: "BTC/BUSD",
 		o: [
 			{

@@ -26,7 +26,7 @@ export type BinanceAccountInformation = {
 	updateTime: number
 }
 
-export type BinanceAccountTrade = {
+type BinanceAccountTrade = {
 	symbol: string
 	id: number
 	orderId: number
@@ -224,23 +224,6 @@ export type BinanceOrderRespACK = Pick<
 	"symbol" | "orderId" | "orderListId" | "clientOrderId" | "transactTime"
 >
 
-export type BinanceOrderRespRESULT = Pick<
-	BinanceOrder,
-	| "symbol"
-	| "orderId"
-	| "orderListId"
-	| "clientOrderId"
-	| "transactTime"
-	| "price"
-	| "origQty"
-	| "executedQty"
-	| "cummulativeQuoteQty"
-	| "status"
-	| "timeInForce"
-	| "type"
-	| "side"
->
-
 export type BinanceOrderRespFULL = Pick<
 	BinanceOrder,
 	| "symbol"
@@ -260,11 +243,11 @@ export type BinanceOrderRespFULL = Pick<
 	fills: BinanceFill[]
 }
 
-export type BinanceOrderRespType = (typeof binanceOrderRespTypes)[number]
+type BinanceOrderRespType = (typeof binanceOrderRespTypes)[number]
 
 export type BinanceOrderSide = (typeof binanceOrderSides)[number]
 
-export type BinanceOrderStatus = (typeof binanceOrderStatuses)[number]
+type BinanceOrderStatus = (typeof binanceOrderStatuses)[number]
 
 export type BinanceOrderType = (typeof binanceOrderTypes)[number]
 
@@ -279,7 +262,7 @@ type BinanceRateLimitInfo = {
 
 type BinanceRateLimitInterval = (typeof binanceRateLimitIntervals)[number]
 
-export type BinanceRateLimitType = (typeof binanceRateLimitTypes)[number]
+type BinanceRateLimitType = (typeof binanceRateLimitTypes)[number]
 
 export type BinanceSymbolInfo = {
 	allowTrailingStop: boolean
@@ -524,7 +507,7 @@ type BinanceSymbolFilterTrailingDelta = {
 	maxTrailingBelowDelta: number
 }
 
-export type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
+type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
 
 export type BinanceTickerPrice = {
 	symbol: string
@@ -589,4 +572,4 @@ export type BinanceTicker24hr = {
 	count: number
 }
 
-export type BinanceTimeInForce = (typeof binanceTimeInForces)[number]
+type BinanceTimeInForce = (typeof binanceTimeInForces)[number]

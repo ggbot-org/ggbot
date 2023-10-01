@@ -50,10 +50,6 @@ export type ReadBinanceApiConfig = (
  */
 export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">
 
-export const isBinanceApiKey = objectTypeGuard<BinanceApiKey>(({ apiKey }) =>
-	isNonEmptyString(apiKey)
-)
-
 export type ReadBinanceApiKey = (
 	arg: AccountKey
 ) => Promise<BinanceApiKey | null>

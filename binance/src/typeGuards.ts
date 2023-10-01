@@ -4,13 +4,8 @@ import { isLiteralType } from "minimal-type-guard-helpers"
 import {
 	binanceKlineIntervals,
 	binanceKlineMaxLimit,
-	binanceOrderRespTypes,
 	binanceOrderSides,
-	binanceOrderStatuses,
-	binanceOrderTypes,
-	binanceRateLimitTypes,
-	binanceSymbolStatuses,
-	binanceTimeInForces
+	binanceOrderTypes
 } from "./constants.js"
 import {
 	BinanceExchangeInfo,
@@ -18,18 +13,11 @@ import {
 	BinanceKline,
 	BinanceKlineInterval,
 	BinanceKlineOptionalParameters,
-	BinanceOrderRespACK,
 	BinanceOrderRespFULL,
-	BinanceOrderRespRESULT,
-	BinanceOrderRespType,
 	BinanceOrderSide,
-	BinanceOrderStatus,
 	BinanceOrderType,
-	BinanceRateLimitType,
 	BinanceSymbolFilterLotSize,
-	BinanceSymbolFilterMinNotional,
-	BinanceSymbolStatus,
-	BinanceTimeInForce
+	BinanceSymbolFilterMinNotional
 } from "./types.js"
 
 // TODO use objectTypeGuard for all type guards
@@ -94,45 +82,6 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 	)
 }
 
-const isBinanceOrderRespACK = (arg: unknown): arg is BinanceOrderRespACK => {
-	if (typeof arg !== "object" || arg === null) return false
-	const { symbol, orderId, orderListId, clientOrderId, transactTime } =
-		arg as Partial<BinanceOrderRespACK>
-	return (
-		typeof symbol === "string" &&
-		typeof orderId === "number" &&
-		typeof orderListId === "number" &&
-		typeof clientOrderId === "string" &&
-		typeof transactTime === "number"
-	)
-}
-
-export const isBinanceOrderRespRESULT = (
-	arg: unknown
-): arg is BinanceOrderRespRESULT => {
-	if (!isBinanceOrderRespACK(arg)) return false
-	const {
-		price,
-		origQty,
-		executedQty,
-		cummulativeQuoteQty,
-		status,
-		timeInForce,
-		type,
-		side
-	} = arg as Partial<BinanceOrderRespRESULT>
-	return (
-		isDecimal(price) &&
-		isDecimal(origQty) &&
-		isDecimal(executedQty) &&
-		isDecimal(cummulativeQuoteQty) &&
-		isBinanceOrderStatus(status) &&
-		isBinanceTimeInForce(timeInForce) &&
-		isBinanceOrderType(type) &&
-		isBinanceOrderSide(side)
-	)
-}
-
 export const isBinanceOrderRespFULL = (
 	arg: unknown
 ): arg is BinanceOrderRespFULL => {
@@ -142,22 +91,11 @@ export const isBinanceOrderRespFULL = (
 	return fills.every((fill) => isBinanceFill(fill))
 }
 
-const isBinanceOrderStatus =
-	isLiteralType<BinanceOrderStatus>(binanceOrderStatuses)
-
 export const isBinanceOrderType =
 	isLiteralType<BinanceOrderType>(binanceOrderTypes)
 
-export const isBinanceOrderRespType = isLiteralType<BinanceOrderRespType>(
-	binanceOrderRespTypes
-)
-
 export const isBinanceOrderSide =
 	isLiteralType<BinanceOrderSide>(binanceOrderSides)
-
-export const isBinanceRateLimitType = isLiteralType<BinanceRateLimitType>(
-	binanceRateLimitTypes
-)
 
 export const isBinanceSymbolFilterLotSize = (
 	arg: unknown
@@ -220,10 +158,3 @@ export const isBinanceKlineOptionalParameters = (
 	// limit threeshold? If yes, will need the interval as param.
 	return true
 }
-
-export const isBinanceSymbolStatus = isLiteralType<BinanceSymbolStatus>(
-	binanceSymbolStatuses
-)
-
-const isBinanceTimeInForce =
-	isLiteralType<BinanceTimeInForce>(binanceTimeInForces)
