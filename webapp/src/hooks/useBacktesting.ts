@@ -390,9 +390,26 @@ export const useBacktesting = (
 					binanceSymbols,
 					nodesCatalog
 				)
-				const { balances, memory, orders } = await executor.run(
-					{ input: {}, memory: previousMemory, time },
-					flowViewGraph
+				const { balances, memory, orders, execution } =
+					await executor.run(
+						{ input: {}, memory: previousMemory, time },
+						flowViewGraph
+					)
+				info("memory", JSON.stringify(memory, null, 2))
+				info(
+					"execution steps",
+					JSON.stringify(
+						execution?.steps.map(
+							({ id, k, o }) =>
+								`[${id}] ${k} ${o?.map(({ d }) =>
+									typeof d === "string"
+										? d
+										: JSON.stringify(d)
+								)}`
+						),
+						null,
+						2
+					)
 				)
 				const balanceChangeEvent =
 					balances.length === 0
