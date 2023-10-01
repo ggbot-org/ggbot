@@ -5,8 +5,8 @@ import {
 	S3ServiceException
 } from "@aws-sdk/client-s3"
 
-import { AwsResource } from "./AwsResource.js"
 import { S3BucketACL, s3Client, s3ServiceExceptionName } from "./s3.js"
+import { AwsResource } from "./types.js"
 
 export class S3Bucket implements AwsResource {
 	readonly name: string

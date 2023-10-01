@@ -14,7 +14,7 @@ import {
 } from "@aws-sdk/client-ec2"
 
 import { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
-import { AwsRegion } from "./region.js"
+import { AwsRegion } from "./types.js"
 
 const ec2Client = (region: AwsRegion) =>
 	new EC2Client({ apiVersion: "2010-12-01", region })

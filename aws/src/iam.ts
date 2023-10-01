@@ -8,14 +8,12 @@ import {
 	IAMClient
 } from "@aws-sdk/client-iam"
 
-import { AwsResource } from "./AwsResource.js"
-import { AwsRegion } from "./region.js"
+import { AwsRegion, AwsResource } from "./types.js"
 
-export type { Policy, Tag } from "@aws-sdk/client-iam"
+export type { Policy } from "@aws-sdk/client-iam"
 
-export const iamVersion = "2012-10-17"
+const iamVersion = "2012-10-17"
 
-// TODO add more permissions
 const policyDocumentStatementActions = [
 	"acm:ListCertificates",
 	"ec2:DescribeAddresses",

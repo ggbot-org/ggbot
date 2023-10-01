@@ -1,6 +1,8 @@
 import { AwsResource } from "@workspace/aws"
 import { ENV } from "@workspace/env"
 
+// TODO generalize it and move it to aws workspace (without specific ENV stuff)
+// so it could be imported also by public-api, user-api, etc. deploy script
 export class LambdaFunction implements AwsResource {
 	static arnPrefix = "arn:aws:lambda:*:*:function"
 
@@ -18,6 +20,10 @@ export class LambdaFunction implements AwsResource {
 		return `${
 			LambdaFunction.arnPrefix
 		}:${LambdaFunction.namespacedFunctionName(functionName)}`
+	}
+
+	static everyArn() {
+		return LambdaFunction.arn("*")
 	}
 
 	static namespacedFunctionName(functionName: string) {

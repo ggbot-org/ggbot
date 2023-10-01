@@ -76,14 +76,7 @@ const apiActionClientSideErrorNames = [
 ] as const
 type ApiActionClientSideErrorName =
 	(typeof apiActionClientSideErrorNames)[number]
-const isApiActionClientSideErrorName =
-	isLiteralType<ApiActionClientSideErrorName>(apiActionClientSideErrorNames)
 
 export type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName
 }
-
-export const isApiActionClientSideError =
-	objectTypeGuard<ApiActionClientSideError>(({ name }) =>
-		isApiActionClientSideErrorName(name)
-	)

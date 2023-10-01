@@ -3,3 +3,9 @@ export class ErrorCannotGetOwnEc2InstanceId extends Error {
 		super("Cannot get own EC2 instance-id")
 	}
 }
+
+export class ErrorCannotLoadBalancerDescription extends Error {
+	constructor() {
+		super("Cannot get loadBalancer description")
+	}
+}

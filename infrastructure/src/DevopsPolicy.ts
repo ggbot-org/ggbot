@@ -1,4 +1,5 @@
 import {
+	IamPolicy,
 	PolicyDocumentStatement,
 	PolicyDocumentStatementAction
 } from "@workspace/aws"
@@ -7,7 +8,6 @@ import { ENV } from "@workspace/env"
 import { ApiRole } from "./ApiRole.js"
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
 import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
-import { IamPolicy } from "./IamPolicy.js"
 import { LambdaFunction } from "./LambdaFunction.js"
 
 export class DevopsPolicy extends IamPolicy {
@@ -15,9 +15,9 @@ export class DevopsPolicy extends IamPolicy {
 
 	constructor() {
 		super(
+			ENV.AWS_ACCOUNT_ID(),
 			staticWebsiteAwsRegion,
-			// TODO `${ENV.PROJECT_SHORT_NAME()}-devops-policy`
-			`${ENV.PROJECT_SHORT_NAME()}2-devops-policy`
+			`${ENV.PROJECT_SHORT_NAME()}-devops-policy`
 		)
 
 		this.apiRole = new ApiRole()
@@ -44,7 +44,7 @@ export class DevopsPolicy extends IamPolicy {
 		return {
 			Effect: "Allow",
 			Action: ["elasticloadbalancing:DescribeLoadBalancers"],
-			Resource: BinanceProxyLoadBalancer.arn("*")
+			Resource: BinanceProxyLoadBalancer.everyArn()
 		}
 	}
 
@@ -66,7 +66,7 @@ export class DevopsPolicy extends IamPolicy {
 			{
 				Effect: "Allow",
 				Action: this.manageLambdasStatementActions,
-				Resource: `${LambdaFunction.arn("*")}`
+				Resource: `${LambdaFunction.everyArn()}`
 			},
 			{
 				Effect: "Allow",

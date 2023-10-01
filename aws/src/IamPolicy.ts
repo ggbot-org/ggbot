@@ -1,26 +1,26 @@
-import {
-	AwsRegion,
-	AwsResource,
-	getPolicy,
-	getPolicyVersion,
-	Policy,
-	PolicyDocument
-} from "@workspace/aws"
-import { ENV } from "@workspace/env"
+import { getPolicy, getPolicyVersion,Policy, PolicyDocument } from "./iam.js"
+import { AwsAccountId, AwsRegion, AwsResource } from "./types.js"
 
 export class IamPolicy implements AwsResource {
-	readonly policyName: string
+	readonly accountId: AwsAccountId
 	readonly region: AwsRegion
+
+	readonly policyName: string
 	policy: Policy | undefined
 	policyDocument: PolicyDocument | undefined
 
-	constructor(region: AwsRegion, policyName: IamPolicy["policyName"]) {
+	constructor(
+		accountId: AwsAccountId,
+		region: AwsRegion,
+		policyName: IamPolicy["policyName"]
+	) {
+		this.accountId = accountId
 		this.region = region
 		this.policyName = policyName
 	}
 
 	get arn() {
-		return `arn:aws:iam::${ENV.AWS_ACCOUNT_ID()}:policy/${this.policyName}`
+		return `arn:aws:iam::${this.accountId}:policy/${this.policyName}`
 	}
 
 	static parsePolicyVersionDocument(policyVersionDocument: string) {

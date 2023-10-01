@@ -5,7 +5,7 @@ import {
 	ListCertificatesCommandOutput
 } from "@aws-sdk/client-acm"
 
-import { AwsRegion } from "./region.js"
+import { AwsRegion } from "./types.js"
 
 const acmClient = (region: AwsRegion) =>
 	new ACMClient({ apiVersion: "2015-12-08", region })

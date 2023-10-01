@@ -1,6 +1,6 @@
 import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses"
 
-import { AwsRegion } from "./region.js"
+import { AwsRegion } from "./types.js"
 
 const sesClient = (region: AwsRegion) =>
 	new SESClient({ apiVersion: "2010-12-01", region })
