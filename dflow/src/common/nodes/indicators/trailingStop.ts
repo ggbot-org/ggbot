@@ -1,13 +1,20 @@
 import { DflowNode } from "dflow"
-import { isLiteralType } from "minimal-type-guard-helpers"
 
 const { input, output } = DflowNode
 
+const inputs = [
+	input("number", { name: "marketPrice" }),
+	input("number", { name: "stopPrice" }),
+	input("number", { name: "percentageDelta" })
+]
+
+const outputs = [
+	output("boolean", { name: "exitTrailing" }),
+	output("number", { name: "stopPrice" })
+]
+
 const trailingStopInputDirections = ["UP", "DOWN"] as const
 type TrailingStopInputDirection = (typeof trailingStopInputDirections)[number]
-const isTrailingStopInputDirection = isLiteralType<TrailingStopInputDirection>(
-	trailingStopInputDirections
-)
 
 export type TrailingStopInput = {
 	direction: TrailingStopInputDirection
@@ -24,39 +31,70 @@ export type TrailingStopOutput = {
 export const trailingStop = ({
 	direction,
 	marketPrice,
+	percentageDelta,
 	stopPrice
 }: TrailingStopInput): TrailingStopOutput => {
-	// If `direction` is "UP" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
-	if (direction === "UP" && marketPrice >= stopPrice)
-		return { exitTrailing: true, stopPrice }
-	// If `direction` is "DOWN" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
-	if (direction === "DOWN" && marketPrice <= stopPrice)
-		return { exitTrailing: true, stopPrice }
+	if (direction === "UP") {
+		// If `direction` is "UP" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
+		if (marketPrice <= stopPrice) return { exitTrailing: true, stopPrice }
+
+		return {
+			exitTrailing: false,
+			// Compute next `stopPrice`.
+			stopPrice: marketPrice - marketPrice * percentageDelta
+		}
+	}
+
+	if (direction === "DOWN") {
+		// If `direction` is "DOWN" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
+		if (marketPrice >= stopPrice) return { exitTrailing: true, stopPrice }
+
+		return {
+			exitTrailing: false,
+			// Compute next `stopPrice`.
+			stopPrice: marketPrice + marketPrice * percentageDelta
+		}
+	}
+
 	return { exitTrailing: false, stopPrice }
 }
 
-export class TrailingStop extends DflowNode {
-	static kind = "trailingStop"
-	static inputs = [input("string", { name: "direction" })]
-	static outputs = [output("boolean", { name: "exitTrailing" })]
+export class TrailingStopUp extends DflowNode {
+	static kind = "trailingStopUp"
+	static inputs = inputs
+	static outputs = outputs
 	async run() {
-		const direction = this.input(0).data as string
-		const marketPrice = undefined
-		const percentageDelta = undefined
-		const stopPrice = undefined
-		if (
-			!isTrailingStopInputDirection(direction) ||
-			typeof marketPrice !== "number" ||
-			typeof percentageDelta !== "number" ||
-			typeof stopPrice !== "number"
-		)
-			return
-		const { exitTrailing } = trailingStop({
+		const direction: TrailingStopInputDirection = "UP"
+		const marketPrice = this.input(0).data as number
+		const stopPrice = this.input(1).data as number
+		const percentageDelta = this.input(2).data as number
+		const result = trailingStop({
 			direction,
 			marketPrice,
 			percentageDelta,
 			stopPrice
 		})
-		this.output(0).data = exitTrailing
+		this.output(0).data = result.exitTrailing
+		this.output(1).data = result.stopPrice
+	}
+}
+
+export class TrailingStopDown extends DflowNode {
+	static kind = "trailingStopDown"
+	static inputs = inputs
+	static outputs = outputs
+	async run() {
+		const direction: TrailingStopInputDirection = "DOWN"
+		const marketPrice = this.input(0).data as number
+		const stopPrice = this.input(1).data as number
+		const percentageDelta = this.input(2).data as number
+		const result = trailingStop({
+			direction,
+			marketPrice,
+			percentageDelta,
+			stopPrice
+		})
+		this.output(0).data = result.exitTrailing
+		this.output(1).data = result.stopPrice
 	}
 }

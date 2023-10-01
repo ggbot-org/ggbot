@@ -17,7 +17,10 @@ import {
 	WilderMovingAverage
 } from "./nodes/indicators/movingAverages.js"
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js"
-import { TrailingStop } from "./nodes/indicators/trailingStop.js"
+import {
+	TrailingStopDown,
+	TrailingStopUp
+} from "./nodes/indicators/trailingStop.js"
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js"
 import { InputBoolean, InputNumber, InputString } from "./nodes/inputs.js"
 import {
@@ -61,7 +64,8 @@ export const nodesCatalog = {
 	[HeikinAshi.kind]: HeikinAshi,
 	[RelativeStrengthIndex.kind]: RelativeStrengthIndex,
 	[SimpleMovingAverage.kind]: SimpleMovingAverage,
-	[TrailingStop.kind]: TrailingStop,
+	[TrailingStopDown.kind]: TrailingStopDown,
+	[TrailingStopUp.kind]: TrailingStopUp,
 	[TypicalPrice.kind]: TypicalPrice,
 	[WilderMovingAverage.kind]: WilderMovingAverage,
 	// inputs
