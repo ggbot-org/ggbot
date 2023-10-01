@@ -51,10 +51,6 @@ export type WriteAccountStrategiesItemSchedulings = (
 	arg: WriteAccountStrategiesItemSchedulingsInput
 ) => Promise<UpdateTime>
 
-export type SuspendAccountStrategiesItemSchedulings = (
-	arg: AccountStrategyItemKey
-) => Promise<UpdateTime>
-
 export type DeleteAccountStrategiesItem = (
 	arg: AccountStrategyItemKey
 ) => Promise<DeletionTime>

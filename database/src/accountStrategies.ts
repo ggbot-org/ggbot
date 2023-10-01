@@ -8,7 +8,6 @@ import {
 	quota,
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
-	SuspendAccountStrategiesItemSchedulings,
 	SuspendAccountStrategiesSchedulings,
 	WriteAccountStrategiesItemSchedulings
 } from "@workspace/models"
@@ -75,22 +74,6 @@ export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
 	}
 	return deletedNow()
 }
-
-export const suspendAccountStrategiesItemSchedulings: SuspendAccountStrategiesItemSchedulings =
-	async ({ accountId, strategyId }) => {
-		const items = (await readAccountStrategies({ accountId })) ?? []
-		const data = items.map((item) => {
-			if (item.strategyId !== strategyId) return item
-			return {
-				...item,
-				schedulings: item.schedulings.map((scheduling) => ({
-					...scheduling,
-					status: "suspended"
-				}))
-			}
-		})
-		return await UPDATE(pathname.accountStrategies({ accountId }), data)
-	}
 
 export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings =
 	async ({ accountId }) => {

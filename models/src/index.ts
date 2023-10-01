@@ -33,7 +33,6 @@ export type {
 	InsertAccountStrategiesItem,
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
-	SuspendAccountStrategiesItemSchedulings,
 	SuspendAccountStrategiesSchedulings,
 	WriteAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
@@ -119,7 +118,6 @@ export type {
 	CopyStrategy,
 	CreateStrategy,
 	DeleteStrategy,
-	ListStrategyKeys,
 	ReadStrategy,
 	ReadStrategyAccountId,
 	RenameStrategy,
@@ -164,6 +162,8 @@ export {
 	isStrategyFlow,
 	isWriteStrategyFlowInput
 } from "./strategyFlow.js"
+// TODO remove this ignore comment, use StrategyInput for multiple schedulings
+// ts-prune-ignore-next
 export type { StrategyInput } from "./strategyInput.js"
 export type {
 	DeleteStrategyMemory,

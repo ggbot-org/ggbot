@@ -69,7 +69,7 @@
     "test": "npm run test --workspaces --if-present 1> /dev/null",
     "test_infrastructure": "npm run test_infrastructure -w infrastructure",
     "test_repository": "npm run test -w repository",
-    "ts-prune": "ts-prune --ignore 'dist|temp' --project ./tsconfig.prune.json"
+    "ts-prune": "ts-prune --error --ignore 'dist|temp' --project ./tsconfig.prune.json"
   },
   "devDependencies": {
     "@types/node": "20.4.9",

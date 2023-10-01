@@ -9,29 +9,22 @@ import {
 	ErrorStrategyItemNotFound,
 	isAccountKey,
 	isStrategy,
-	ListStrategyKeys,
 	newAccountStrategy,
 	newStrategy,
 	normalizeName,
 	ReadStrategy,
 	ReadStrategyAccountId,
 	RenameStrategy,
-	StrategyKey,
 	throwIfInvalidName
 } from "@workspace/models"
 
-import { DELETE, LIST, READ, WRITE } from "./_dataBucket.js"
+import { DELETE, READ, WRITE } from "./_dataBucket.js"
 import {
 	deleteAccountStrategiesItem,
 	insertAccountStrategiesItem,
 	renameAccountStrategiesItem
 } from "./accountStrategies.js"
-import {
-	dirnameDelimiter,
-	itemKeyToDirname,
-	locatorToItemKey,
-	pathname
-} from "./locators.js"
+import { pathname } from "./locators.js"
 import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
 import { deleteStrategyMemory } from "./strategyMemory.js"
 
@@ -76,19 +69,6 @@ export const copyStrategy: CopyStrategy = async ({
 	})
 
 	return strategy
-}
-
-export const listStrategyKeys: ListStrategyKeys = async (strategyKey) => {
-	const Prefix = itemKeyToDirname.strategy(strategyKey) + dirnameDelimiter
-	const results = await LIST({ Prefix })
-	if (!Array.isArray(results.Contents)) return Promise.resolve([])
-	return (
-		results.Contents.reduce<StrategyKey[]>((list, { Key }) => {
-			if (typeof Key !== "string") return list
-			const itemKey = locatorToItemKey.strategy(Key)
-			return isAccountKey(itemKey) ? list.concat(itemKey) : list
-		}, []) ?? []
-	)
 }
 
 export const readStrategy: ReadStrategy = (arg) =>

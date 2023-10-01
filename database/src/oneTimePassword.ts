@@ -39,7 +39,7 @@ export const sendOneTimePassword: SendOneTimePassword = async ({
 	const emailMessage = oneTimePasswordEmailMessage(language, {
 		oneTimePassword
 	})
-	await sendEmail(ENV.AWS_DATA_REGION(), {
+	await sendEmail(ENV.AWS_SES_REGION(), {
 		source: noReplyEmailAddress(ENV.DNS_DOMAIN()),
 		toAddresses: [email],
 		...emailMessage

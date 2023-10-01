@@ -7,7 +7,7 @@ import {
 import { READ_ARRAY, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
-export const readAccountDailyOrders: ReadAccountDailyOrders = (arg) =>
+const readAccountDailyOrders: ReadAccountDailyOrders = (arg) =>
 	READ_ARRAY<ReadAccountDailyOrders>(
 		isAccountDailyOrders,
 		pathname.accountDailyOrders(arg)

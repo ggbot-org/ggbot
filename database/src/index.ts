@@ -6,10 +6,7 @@ export {
 	renameAccount,
 	setAccountCountry
 } from "./account.js"
-export {
-	appendAccountDailyOrders,
-	readAccountDailyOrders
-} from "./accountDailyOrders.js"
+export { appendAccountDailyOrders } from "./accountDailyOrders.js"
 export {
 	readAccountStrategies,
 	suspendAccountStrategiesSchedulings,
@@ -40,14 +37,8 @@ export {
 	renameStrategy
 } from "./strategy.js"
 export { readStrategyBalances } from "./strategyBalances.js"
-export {
-	appendStrategyDailyBalanceChanges,
-	readStrategyDailyBalanceChanges
-} from "./strategyDailyBalanceChanges.js"
-export {
-	appendStrategyDailyOrders,
-	readStrategyDailyOrders
-} from "./strategyDailyOrders.js"
+export { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js"
+export { appendStrategyDailyOrders } from "./strategyDailyOrders.js"
 export { readStrategyFlow, writeStrategyFlow } from "./strategyFlow.js"
 export { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js"
 export { readStrategyOrders } from "./strategyOrders.js"
