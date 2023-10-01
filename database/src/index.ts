@@ -48,10 +48,6 @@ export {
 	appendStrategyDailyOrders,
 	readStrategyDailyOrders
 } from "./strategyDailyOrders.js"
-export {
-	readStrategyExecution,
-	writeStrategyExecution
-} from "./strategyExecution.js"
 export { readStrategyFlow, writeStrategyFlow } from "./strategyFlow.js"
 export { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js"
 export { readStrategyOrders } from "./strategyOrders.js"

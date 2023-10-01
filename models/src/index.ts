@@ -153,13 +153,6 @@ export type {
 } from "./strategyDailyOrders.js"
 export { isStrategyDailyOrders } from "./strategyDailyOrders.js"
 export type {
-	DeleteStrategyExecution,
-	ReadStrategyExecution,
-	StrategyExecution,
-	WriteStrategyExecution
-} from "./strategyExecution.js"
-export { isStrategyExecution } from "./strategyExecution.js"
-export type {
 	CopyStrategyFlow,
 	DeleteStrategyFlow,
 	ReadStrategyFlow,

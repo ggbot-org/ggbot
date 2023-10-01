@@ -19,6 +19,7 @@
   "dependencies": {
     "@workspace/cache": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/dflow": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/models": "0.0.0",
     "flow-view": "6.0.1",

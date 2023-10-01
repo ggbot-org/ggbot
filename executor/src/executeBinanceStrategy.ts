@@ -18,12 +18,12 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
 	ErrorUnimplementedStrategyKind,
-	newOrder,
-	updatedNow
+	newOrder
 } from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
 import { ExecuteStrategy } from "./executeStrategy.js"
+import { warn } from "./logging.js"
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 
@@ -140,17 +140,13 @@ export const executeBinanceStrategy: ExecuteStrategy = async ({
 
 				const status =
 					execution?.status === "success" ? "success" : "failure"
-				const steps = execution?.steps ?? []
 
-				return { status, memory: memoryOutput, steps, ...updatedNow() }
+				if (status === "failure")
+					warn(`strategy ${strategyId} execution failed`)
 			} catch (error) {
+				// TODO write errors on database
+				// throw error and manage strategy accordingly
 				console.error(error)
-				return {
-					status: "failure",
-					memory: {},
-					steps: [],
-					...updatedNow()
-				}
 			}
 		}
 		throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId })

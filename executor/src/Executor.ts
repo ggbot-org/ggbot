@@ -30,7 +30,7 @@ import { join } from "path"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
 import { info, warn } from "./logging.js"
 
-const executorIdFile = join(homedir(), ".ggbot2-executor")
+const executorIdFile = join(homedir(), ".ggbot-executor")
 
 export class Executor {
 	accountKeysCache = new CacheMap<AccountKey[]>("ONE_HOUR")

@@ -32,7 +32,6 @@ import {
 	locatorToItemKey,
 	pathname
 } from "./locators.js"
-import { deleteStrategyExecution } from "./strategyExecution.js"
 import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
 import { deleteStrategyMemory } from "./strategyMemory.js"
 
@@ -154,7 +153,6 @@ export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
 			...strategyKey
 		})
 	await DELETE(pathname.strategy(strategyKey))
-	await deleteStrategyExecution(accountStrategyKey)
 	await deleteStrategyFlow(accountStrategyKey)
 	await deleteStrategyMemory(accountStrategyKey)
 	return await deleteAccountStrategiesItem(accountStrategyKey)

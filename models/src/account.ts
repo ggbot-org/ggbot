@@ -14,7 +14,7 @@ import {
 
 const accountRoles = ["admin", "user"] as const
 type AccountRole = (typeof accountRoles)[number]
-export const isAccountRole = isLiteralType<AccountRole>(accountRoles)
+const isAccountRole = isLiteralType<AccountRole>(accountRoles)
 
 export type Account = Item &
 	CreationTime & {
