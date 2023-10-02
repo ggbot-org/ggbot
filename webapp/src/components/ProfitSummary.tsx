@@ -76,7 +76,7 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 		Omit<SymbolStats, "symbol">
 	>()
 
-	if (strategy.kind === "binance" && isOrders(orders)) {
+	if (strategy?.kind === "binance" && isOrders(orders)) {
 		for (const { info } of orders) {
 			if (isBinanceOrderRespFULL(info)) {
 				// TODO assuming type=MARKET status=FILLED

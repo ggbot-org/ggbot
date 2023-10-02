@@ -48,6 +48,7 @@ export const CopyStrategy: FC = () => {
 	const onSubmit = useCallback<FormOnSubmit>(
 		(event) => {
 			event.preventDefault()
+			if (!strategy) return
 			if (!canCreate) return
 			if (!COPY.canRun) return
 			const { name } = formValues(event, fields)
@@ -113,7 +114,7 @@ export const CopyStrategy: FC = () => {
 							required
 							name={fieldName.name}
 							onChange={onChangeName}
-							placeholder={strategy.name}
+							placeholder={strategy?.name}
 							readOnly={readOnly}
 						/>
 

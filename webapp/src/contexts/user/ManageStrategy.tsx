@@ -41,6 +41,7 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const renameStrategy = useCallback<ContextValue["renameStrategy"]>(
 		(newName) => {
+			if (!strategy) return
 			setNewStrategyName(newName)
 			if (RENAME.canRun)
 				RENAME.request({
@@ -58,7 +59,7 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 			renameIsDone,
 			renameError,
 			renameIsPending,
-			strategyName: newStrategyName ?? strategy.name
+			strategyName: newStrategyName ?? strategy?.name ?? ""
 		}),
 		[
 			renameStrategy,

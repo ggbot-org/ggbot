@@ -4,16 +4,15 @@ import { StrategyNotFound } from "_/components/StrategyNotFound"
 import { usePublicApi } from "_/hooks/usePublicApi"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams"
 import { localWebStorage } from "_/storages/local"
-import { noneStrategy, Strategy } from "@workspace/models"
+import { Strategy } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
-	// If `strategyKey` is not valid or no `strategy` was found, `children` are not rendered.
-	strategy: Strategy
+	strategy: Strategy | null | undefined
 }
 
 export const StrategyContext = createContext<ContextValue>({
-	strategy: noneStrategy
+	strategy: undefined
 })
 
 StrategyContext.displayName = "StrategyContext"
@@ -24,23 +23,18 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ_STRATEGY = usePublicApi.ReadStrategy()
 	const remoteStrategy = READ_STRATEGY.data
 
-	const strategy = useMemo(() => {
-		if (!strategyKey) return noneStrategy
+	const strategy = useMemo<ContextValue["strategy"]>(() => {
+		if (!strategyKey) return undefined
 		if (remoteStrategy) return remoteStrategy
 		const localStrategy = localWebStorage.strategy.get(
 			strategyKey.strategyId
 		)
 		if (localStrategy) return localStrategy
-		return {
-			...noneStrategy,
-			id: strategyKey.strategyId,
-			kind: strategyKey.strategyKind
-		}
 	}, [remoteStrategy, strategyKey])
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			strategy: strategy
+			strategy
 		}),
 		[strategy]
 	)

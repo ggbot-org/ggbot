@@ -10,6 +10,7 @@ export const GoCopyStrategy: FC = () => {
 	const onClick = useCallback<ButtonOnClick>(
 		(event) => {
 			event.stopPropagation()
+			if (!strategy) return
 			window.location.href = href.copyStrategyPage({
 				strategyId: strategy.id,
 				strategyKind: strategy.kind

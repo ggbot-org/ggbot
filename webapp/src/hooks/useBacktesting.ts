@@ -244,9 +244,7 @@ const getInitialState = ({
 export const useBacktesting = (
 	flowViewGraph: FlowViewSerializableGraph | undefined
 ) => {
-	const {
-		strategy: { kind: strategyKind }
-	} = useContext(StrategyContext)
+	const { strategy } = useContext(StrategyContext)
 
 	const binanceSymbols = useBinanceSymbols()
 	const nodesCatalog = useNodesCatalog()
@@ -254,7 +252,7 @@ export const useBacktesting = (
 	let hasRequiredData = true
 	if (!nodesCatalog) hasRequiredData = false
 	if (!flowViewGraph) hasRequiredData = false
-	if (strategyKind === "binance" && !binanceSymbols) hasRequiredData = false
+	if (strategy?.kind === "binance" && !binanceSymbols) hasRequiredData = false
 
 	const [state, dispatch] = useReducer(
 		backtestingReducer,
@@ -276,7 +274,7 @@ export const useBacktesting = (
 	const prepare = useCallback(async () => {
 		if (!nodesCatalog) return
 		if (!flowViewGraph) return
-		if (strategyKind === "binance") {
+		if (strategy?.kind === "binance") {
 			try {
 				// Run flow to cache market data.
 				if (!binanceSymbols) return
@@ -359,7 +357,7 @@ export const useBacktesting = (
 	}, [
 		dispatch,
 		flowViewGraph,
-		strategyKind,
+		strategy,
 		timestamps,
 		binanceSymbols,
 		nodesCatalog
@@ -375,7 +373,7 @@ export const useBacktesting = (
 		if (!currentTimestamp) return
 		const time = timestampToTime(currentTimestamp)
 
-		if (strategyKind === "binance") {
+		if (strategy?.kind === "binance") {
 			try {
 				if (!binanceSymbols) return
 				const binance = new BinanceClient(
@@ -440,7 +438,7 @@ export const useBacktesting = (
 		nodesCatalog,
 		previousMemory,
 		stepIndex,
-		strategyKind,
+		strategy,
 		timestamps
 	])
 

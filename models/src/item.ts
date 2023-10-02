@@ -4,6 +4,8 @@ export const itemIdCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 type ItemId = string
 
+const nullId = "00000000"
+
 export const isItemId = (arg: unknown): arg is ItemId =>
 	typeof arg === "string" && arg.length === nullId.length
 
@@ -14,8 +16,6 @@ export type ItemKey<Key> = Readonly<Key extends object ? Key : never>
 export type Item = ItemKey<{
 	id: ItemId
 }>
-
-export const nullId = "00000000"
 
 export const newId = (): ItemId =>
 	nullId.replace(/0/g, () =>

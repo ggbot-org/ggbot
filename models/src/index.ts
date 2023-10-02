@@ -15,8 +15,7 @@ export {
 	isReadAccountInput,
 	isRenameAccountInput,
 	isSetAccountCountryInput,
-	newAccount,
-	noneAccount
+	newAccount
 } from "./account.js"
 export type {
 	AccountDailyOrdersKey,
@@ -133,8 +132,7 @@ export {
 	isRenameStrategyInput,
 	isStrategy,
 	isStrategyKey,
-	newStrategy,
-	noneStrategy
+	newStrategy
 } from "./strategy.js"
 export type { ReadStrategyBalances } from "./strategyBalance.js"
 export { isReadStrategyBalancesInput } from "./strategyBalance.js"

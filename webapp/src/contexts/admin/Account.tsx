@@ -3,16 +3,15 @@ import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey"
 import { Section } from "_/components/library"
 import { useAdminApi } from "_/hooks/useAdminApi"
 import { accountKeyParamsFromCurrentLocation } from "_/routing/admin/accountKeyParams"
-import { Account, noneAccount } from "@workspace/models"
+import { Account } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
-	// If `accountKey` is not valid or no `account` was found, `children` are not rendered.
-	account: Account
+	account: Account | undefined | null
 }
 
 const AccountContext = createContext<ContextValue>({
-	account: noneAccount
+	account: undefined
 })
 
 AccountContext.displayName = "AccountContext"
@@ -25,7 +24,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			account: account ?? noneAccount
+			account
 		}),
 		[account]
 	)

@@ -19,6 +19,7 @@ export const EditableFlow: FC = () => {
 	const saveIsPending = WRITE.isPending
 
 	const onClickSave = useCallback<ButtonOnClick>(() => {
+		if (!strategy) return
 		if (!canSave) return
 		if (!WRITE.canRun) return
 		if (!flowViewGraph) return

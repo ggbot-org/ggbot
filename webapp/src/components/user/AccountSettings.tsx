@@ -15,11 +15,11 @@ export const AccountSettings: FC = () => {
 				<FormattedMessage id="AccountSettings.title" />
 			</Title>
 
-			<Email isStatic value={account.email} />
+			<Email isStatic value={account?.email ?? ""} />
 
-			<WhenCreated value={account.whenCreated} />
+			<WhenCreated value={account?.whenCreated ?? 0} />
 
-			<AccountId value={account.id} />
+			<AccountId value={account?.id ?? ""} />
 		</Box>
 	)
 }

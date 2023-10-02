@@ -3,7 +3,6 @@ import { describe, test } from "node:test"
 
 import { dateToDay, dayToDate, getDate, today } from "minimal-time-helpers"
 
-import { nullId } from "./item.js"
 import {
 	isSubscriptionPurchase,
 	newMonthlySubscription,
@@ -43,7 +42,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					paymentProvider,
 					plan,
 					status: "completed",
@@ -54,7 +53,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					info: {
 						uuid: "xxx"
 					},
@@ -68,7 +67,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					info: "not an object",
 					paymentProvider,
 					plan,
@@ -80,7 +79,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					paymentProvider,
 					plan: "not an plan",
 					status: "completed",
@@ -91,7 +90,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					paymentProvider,
 					plan,
 					status: "not a status",
@@ -102,7 +101,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					paymentProvider,
 					plan,
 					status: "completed",
@@ -113,7 +112,7 @@ describe("isSubscriptionPurchase", () => {
 			},
 			{
 				input: {
-					id: nullId,
+					id: "00000000",
 					paymentProvider: "not a paymentProvider",
 					plan,
 					status: "completed",

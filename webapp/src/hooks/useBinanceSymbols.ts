@@ -7,14 +7,12 @@ import {
 import { useContext, useEffect, useRef } from "react"
 
 export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
-	const {
-		strategy: { kind: strategyKind }
-	} = useContext(StrategyContext)
+	const { strategy } = useContext(StrategyContext)
 
 	const binanceSymbolsRef = useRef<DflowBinanceSymbolInfo[]>()
 
 	useEffect(() => {
-		if (strategyKind !== "binance") return
+		if (strategy?.kind !== "binance") return
 		if (binanceSymbolsRef.current) return
 		;(async () => {
 			const exchangeInfo = await binance.exchangeInfo()
@@ -22,7 +20,7 @@ export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
 				isDflowBinanceSymbolInfo
 			)
 		})()
-	}, [binanceSymbolsRef, strategyKind])
+	}, [binanceSymbolsRef, strategy])
 
 	return binanceSymbolsRef.current
 }

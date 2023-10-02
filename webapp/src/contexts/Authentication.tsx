@@ -8,12 +8,7 @@ import { href } from "_/routing/public/hrefs"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import {
-	Account,
-	EmailAddress,
-	noneAccount,
-	NonEmptyString
-} from "@workspace/models"
+import { Account, EmailAddress, NonEmptyString } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,
@@ -36,14 +31,14 @@ type State = {
 }
 
 type ContextValue = {
-	account: Account
+	account: Account | null | undefined
 	showAuthExit: () => void
 }
 
 const { info } = logging("authentication")
 
 export const AuthenticationContext = createContext<ContextValue>({
-	account: noneAccount,
+	account: undefined,
 	showAuthExit: () => {}
 })
 
@@ -152,7 +147,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			account: account ?? noneAccount,
+			account: account,
 			exit: () => {
 				dispatch({ type: "EXIT" })
 			},

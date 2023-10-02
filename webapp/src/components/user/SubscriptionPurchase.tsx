@@ -104,6 +104,7 @@ export const SubscriptionPurchase: FC = () => {
 	)
 
 	const onClickPurchase = useCallback(async () => {
+		if (!account) return
 		if (purchaseIsDisabled) return
 		if (purchaseIsPending) return
 		setPurchaseIsPending(true)
@@ -138,10 +139,12 @@ export const SubscriptionPurchase: FC = () => {
 	}, [account, country, numMonths, purchaseIsDisabled, purchaseIsPending])
 
 	useEffect(() => {
+		if (!account) return
 		if (account.country) setCountry(account.country)
 	}, [account, setCountry])
 
 	useEffect(() => {
+		if (!account) return
 		if (!country) return
 		if (account.country === country) return
 
@@ -189,7 +192,7 @@ export const SubscriptionPurchase: FC = () => {
 				</Flex>
 			</Message>
 
-			<Email isStatic value={account.email} />
+			<Email isStatic value={account?.email || ""} />
 
 			<SelectCountry
 				name={fieldName.country}

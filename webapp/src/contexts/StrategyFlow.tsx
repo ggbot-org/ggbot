@@ -44,7 +44,7 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
 		container: flowViewContainerRef.current,
 		initialGraph: flow?.view,
-		strategyKind: strategy.kind
+		strategyKind: strategy?.kind
 	})
 
 	const contextValue = useMemo<ContextValue>(
@@ -54,6 +54,7 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Fetch flow.
 	useEffect(() => {
+		if (!strategy) return
 		if (READ_STRATEGY_FLOW.canRun)
 			READ_STRATEGY_FLOW.request({
 				strategyId: strategy.id,

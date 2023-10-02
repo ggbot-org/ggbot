@@ -12,17 +12,17 @@ export const ShareStrategy: FC = () => {
 
 	const shareData = useMemo<
 		Pick<ShareData, "title" | "text" | "url"> | undefined
-	>(
-		() => ({
-			title: "ggbot2",
+	>(() => {
+		if (!strategy) return
+		return {
+			title: "ggbot",
 			url: `${window.location.origin}${href.strategyPage({
 				strategyId: strategy.id,
 				strategyKind: strategy.kind
 			})}`,
 			text: strategy.name
-		}),
-		[strategy]
-	)
+		}
+	}, [strategy])
 
 	const onClick = useCallback(async () => {
 		try {

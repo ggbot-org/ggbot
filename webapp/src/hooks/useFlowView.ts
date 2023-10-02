@@ -33,7 +33,7 @@ export const useFlowView = ({
 }: {
 	container: FlowViewContainerElement
 	initialGraph: FlowViewGraph | null | undefined
-	strategyKind: StrategyKind
+	strategyKind?: StrategyKind
 }) => {
 	const [output, setOutput] = useState<UseFlowViewOutput>({
 		whenUpdatedFlowView: 0,

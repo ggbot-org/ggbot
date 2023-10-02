@@ -12,7 +12,7 @@ export const FlowMenu: FC<PropsWithChildren> = ({ children }) => {
 			spacing={{ mb: 5, pl: 5 }}
 		>
 			<div>
-				<span>{strategy.name}</span>
+				<span>{strategy?.name || ""}</span>
 			</div>
 
 			<div>{children}</div>

@@ -2,7 +2,6 @@ import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
 import { isAccount, newAccount } from "./account.js"
-import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
@@ -25,16 +24,20 @@ describe("isAccount", () => {
 				output: false
 			},
 			{
-				input: { id: nullId, email: "not an email", whenCreated },
+				input: { id: "00000000", email: "not an email", whenCreated },
 				output: false
 			},
 			{
-				input: { id: nullId, email, whenCreated: "not a timestamp" },
+				input: {
+					id: "00000000",
+					email,
+					whenCreated: "not a timestamp"
+				},
 				output: false
 			},
 			...invalidNames.map((invalidName) => ({
 				input: {
-					id: nullId,
+					id: "00000000",
 					email,
 					whenCreated,
 					name: normalizeName(invalidName)

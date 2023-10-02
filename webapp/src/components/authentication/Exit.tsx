@@ -13,7 +13,7 @@ import {
 	Title
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
-import { FC, useCallback, useContext } from "react"
+import { FC, useCallback, useContext, useMemo } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthExitProps = {
@@ -28,6 +28,11 @@ export const AuthExit: FC<AuthExitProps> = ({
 	exit
 }) => {
 	const { account } = useContext(AuthenticationContext)
+
+	const { accountId, email } = useMemo(() => {
+		if (!account) return { accountId: "", email: "" }
+		return { accountId: account.id, email: account.email }
+	}, [account])
 
 	const onSubmit = useCallback<FormOnSubmit>(
 		(event) => {
@@ -58,11 +63,11 @@ export const AuthExit: FC<AuthExitProps> = ({
 
 				<Columns>
 					<Column size="half">
-						<Email isStatic value={account.email} />
+						<Email isStatic value={email} />
 					</Column>
 
 					<Column size="half">
-						<AccountId value={account.id} />
+						<AccountId value={accountId} />
 					</Column>
 				</Columns>
 

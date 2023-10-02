@@ -2,12 +2,11 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Account, AccountKey, isAccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import { isItemId, Item, newId, NewItem, nullId } from "./item.js"
+import { isItemId, Item, newId, NewItem } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
-const noneStrategyKind = "_none_"
-const strategyKinds = ["binance", noneStrategyKind] as const
+const strategyKinds = ["binance"] as const
 export type StrategyKind = (typeof strategyKinds)[number]
 const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds)
 
@@ -25,14 +24,6 @@ export const isStrategy = objectTypeGuard<Strategy>(
 		isStrategyKind(kind) &&
 		isName(name)
 )
-
-export const noneStrategy: Strategy = {
-	id: nullId,
-	kind: noneStrategyKind,
-	name: "",
-	whenCreated: 0,
-	accountId: nullId
-} as const
 
 export const newStrategy = ({
 	accountId,
@@ -68,7 +59,7 @@ export type CopyStrategy = (arg: CopyStrategyInput) => Promise<Strategy>
 type CreateStrategyInput = NewItem<Strategy>
 
 export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
-	(arg) => isStrategy({ ...arg, id: nullId, whenCreated: 1 })
+	(arg) => isStrategy({ ...arg, id: "00000000", whenCreated: 1 })
 )
 
 export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>

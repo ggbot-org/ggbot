@@ -1,8 +1,8 @@
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
-import { EmailAddress, isEmailAddress, noneEmail } from "./email.js"
-import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
+import { EmailAddress, isEmailAddress } from "./email.js"
+import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import {
 	createdNow,
@@ -38,12 +38,6 @@ export const isAccount = objectTypeGuard<Account>(
 
 export const isAdminAccount = ({ role }: Pick<Account, "role">): boolean =>
 	role === "admin"
-
-export const noneAccount: Account = {
-	id: nullId,
-	whenCreated: 0,
-	email: noneEmail
-}
 
 export const newAccount = ({ email, name }: NewItem<Account>): Account => {
 	const optionalName =

@@ -1,7 +1,6 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { isStrategy, newStrategy } from "./strategy.js"
@@ -9,7 +8,7 @@ import { createdNow } from "./time.js"
 
 describe("isStrategy", () => {
 	test("validates Strategy", () => {
-		const accountId = nullId
+		const accountId = "00000000"
 		const kind = "binance"
 		const name = "Name"
 		const { whenCreated } = createdNow()
@@ -31,7 +30,7 @@ describe("isStrategy", () => {
 			{
 				input: {
 					accountId,
-					id: nullId,
+					id: "00000000",
 					whenCreated: "not a timestamp"
 				},
 				output: false
@@ -39,7 +38,7 @@ describe("isStrategy", () => {
 			...invalidNames.map((invalidName) => ({
 				input: {
 					accountId,
-					id: nullId,
+					id: "00000000",
 					kind,
 					name: normalizeName(invalidName),
 					whenCreated

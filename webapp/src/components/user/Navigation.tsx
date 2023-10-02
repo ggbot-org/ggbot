@@ -68,7 +68,7 @@ export const Navigation = memo(() => {
 			</NavbarStart>
 
 			<NavbarEnd>
-				{isAdminAccount(account) ? (
+				{account && isAdminAccount(account) ? (
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
 						onClick={goToAdminPage}

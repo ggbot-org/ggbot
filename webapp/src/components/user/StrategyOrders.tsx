@@ -78,6 +78,7 @@ export const StrategyOrders: FC = () => {
 	}, [orders])
 
 	useEffect(() => {
+		if (!strategy) return
 		if (READ.canRun)
 			READ.request({
 				strategyId: strategy.id,

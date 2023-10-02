@@ -23,6 +23,7 @@ export const StrategyProfits: FC<Props> = ({ numDays }) => {
 	const orders: Orders = isOrders(READ.data) ? READ.data : []
 
 	useEffect(() => {
+		if (!strategy) return
 		if (READ.canRun)
 			READ.request({
 				strategyId: strategy.id,
