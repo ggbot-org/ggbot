@@ -12,14 +12,12 @@ import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
 type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
-export type AccountStrategies = AccountStrategy[]
-
 export const isAccountStrategies =
 	arrayTypeGuard<AccountStrategy>(isAccountStrategy)
 
 export type ReadAccountStrategies = (
 	arg: AccountKey
-) => Promise<AccountStrategies>
+) => Promise<AccountStrategy[]>
 
 type InsertAccountStrategiesItemInput = AccountKey & {
 	item: AccountStrategy

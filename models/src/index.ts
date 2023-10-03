@@ -27,7 +27,6 @@ export {
 	isAccountDailyOrdersKey
 } from "./accountDailyOrders.js"
 export type {
-	AccountStrategies,
 	DeleteAccountStrategiesItem,
 	InsertAccountStrategiesItem,
 	ReadAccountStrategies,

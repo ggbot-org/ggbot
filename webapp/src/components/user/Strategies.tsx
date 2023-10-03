@@ -2,7 +2,7 @@ import { Box, Column, Columns, Flex, Message } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { href } from "_/routing/user/hrefs"
-import { AccountStrategy, isAccountStrategies } from "@workspace/models"
+import { AccountStrategy } from "@workspace/models"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -15,7 +15,7 @@ export const Strategies: FC = () => {
 	const { accountStrategies } = useContext(StrategiesContext)
 
 	const items: StrategyItem[] = []
-	if (isAccountStrategies(accountStrategies)) {
+	if (accountStrategies) {
 		for (const {
 			strategyId,
 			strategyKind,

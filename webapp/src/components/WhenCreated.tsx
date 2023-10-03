@@ -8,7 +8,7 @@ type Props = Omit<
 	InputFieldProps,
 	"label" | "defaultValue" | "value" | "isStatic"
 > & {
-	value: Time
+	value: Time | undefined
 }
 
 export const WhenCreated: FC<Props> = ({ value, ...props }) => {
@@ -18,7 +18,7 @@ export const WhenCreated: FC<Props> = ({ value, ...props }) => {
 		<InputField
 			isStatic
 			label={formatMessage({ id: "WhenCreated.label" })}
-			defaultValue={formatDate(value, dayFormat)}
+			defaultValue={value ? formatDate(value, dayFormat) : ""}
 			{...props}
 		/>
 	)

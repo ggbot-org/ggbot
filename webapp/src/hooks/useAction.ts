@@ -30,9 +30,8 @@ class UseActionHeaders extends Headers {
 			Accept: "application/json",
 			"Content-Type": "application/json"
 		})
-		if (withJwt) {
+		if (withJwt)
 			this.append("Authorization", `Bearer ${localWebStorage.jwt.get()}`)
-		}
 	}
 }
 
@@ -126,11 +125,19 @@ export const useAction = <
 
 					if (response.ok) {
 						const responseOutput = await response.json()
-						info(type, inputData ?? "", responseOutput.data)
+						info(
+							type,
+							JSON.stringify(inputData),
+							JSON.stringify(responseOutput.data)
+						)
 						setData(responseOutput.data)
 					} else if (response.status === __400__BAD_REQUEST__) {
 						const responseOutput = await response.json()
-						warn(type, inputData, responseOutput.error)
+						warn(
+							type,
+							JSON.stringify(inputData),
+							JSON.stringify(responseOutput.error)
+						)
 						setError(responseOutput.error)
 					} else {
 						warn(type, response.status)

@@ -45,6 +45,7 @@ graph LR
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/cache
     workspace/executor --- workspace/database
+    workspace/executor --- workspace/dflow
     workspace/executor --- workspace/env
     workspace/executor --- workspace/models
     workspace/infrastructure --- workspace/aws

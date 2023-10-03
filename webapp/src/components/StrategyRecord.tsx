@@ -12,17 +12,17 @@ export const StrategyRecord: FC = () => {
 		<>
 			<Columns>
 				<Column>
-					<StrategyName isStatic value={strategy?.name ?? ""} />
+					<StrategyName isStatic value={strategy?.name} />
 				</Column>
 			</Columns>
 
 			<Columns>
 				<Column>
-					<StrategyId value={strategy?.id ?? ""} />
+					<StrategyId value={strategy?.id} />
 				</Column>
 
 				<Column>
-					<WhenCreated value={strategy?.whenCreated ?? 0} />
+					<WhenCreated value={strategy?.whenCreated} />
 				</Column>
 			</Columns>
 		</>
