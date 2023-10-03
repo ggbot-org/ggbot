@@ -10,25 +10,52 @@ import type { WebStorageProvider } from "./provider"
 
 const { info, warn } = logging("session-storage")
 
-class SessionWebStorage implements WebStorageProvider {
+class SessionWebStorageProvider implements WebStorageProvider {
+	getItem(key: string) {
+		info("getItem", key)
+		return window.sessionStorage.getItem(key)
+	}
+
+	setItem(key: string, value: string) {
+		info("setItem", key, value.length > 170 ? "" : value)
+		window.sessionStorage.setItem(key, value)
+	}
+
+	removeItem(key: string) {
+		info("removeItem", key)
+		window.sessionStorage.removeItem(key)
+	}
+
+	clear() {
+		info("clear")
+		window.sessionStorage.clear()
+	}
+}
+
+class SessionWebStorage {
+	private storage = new SessionWebStorageProvider()
+
 	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
 	private binanceExchangeInfoIsValid: boolean | undefined
 
 	get doNotShowPleaseConfigureBinance() {
-		return cachedBoolean(this, itemKey.doNotShowPleaseConfigureBinance())
+		return cachedBoolean(
+			this.storage,
+			itemKey.doNotShowPleaseConfigureBinance()
+		)
 	}
 
 	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this, itemKey.doNotShowPleasePurchase())
+		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
 	}
 
 	get gotFirstPageView(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this, itemKey.gotFirstPageView())
+		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
 	}
 
 	get binanceExchangeInfo(): BinanceExchangeInfo | undefined {
 		const key = itemKey.binanceExchangeInfo()
-		const value = this.getItem(key)
+		const value = this.storage.getItem(key)
 		if (!value) return
 		try {
 			const binanceExchangeInfo = JSON.parse(value)
@@ -41,7 +68,7 @@ class SessionWebStorage implements WebStorageProvider {
 			}
 		} catch (error) {
 			if (error instanceof SyntaxError) {
-				this.removeItem(key)
+				this.storage.removeItem(key)
 				return
 			}
 			throw error
@@ -51,12 +78,13 @@ class SessionWebStorage implements WebStorageProvider {
 	set binanceExchangeInfo(value: BinanceExchangeInfo | undefined) {
 		const key = itemKey.binanceExchangeInfo()
 		if (!value) {
-			this.removeItem(key)
+			this.binanceExchangeInfoIsValid = undefined
+			this.storage.removeItem(key)
 			return
 		}
 		try {
 			const { symbols, ...rest } = value
-			this.setItem(
+			this.storage.setItem(
 				key,
 				JSON.stringify({
 					...rest,
@@ -72,39 +100,20 @@ class SessionWebStorage implements WebStorageProvider {
 		}
 	}
 
-	private getItem(key: string) {
-		info("getItem", key)
-		return window.sessionStorage.getItem(key)
-	}
-
-	private setItem(key: string, value: string) {
-		info("setItem", key, value.length > 170 ? "" : value)
-		window.sessionStorage.setItem(key, value)
-	}
-
-	private removeItem(key: string) {
-		info("removeItem", key)
-		if (key === itemKey.binanceExchangeInfo())
-			this.binanceExchangeInfoIsValid = undefined
-
-		window.sessionStorage.removeItem(key)
-	}
-
 	clear() {
-		info("clear")
-		window.sessionStorage.clear()
+		this.storage.clear()
 	}
 
 	getActiveTabId<TabId extends string>(
 		pageName: string,
 		tabIds: readonly TabId[]
 	): TabId | undefined {
-		const value = this.getItem(itemKey.activeTabId(pageName))
+		const value = this.storage.getItem(itemKey.activeTabId(pageName))
 		if (isLiteralType<TabId>(tabIds)(value)) return value
 	}
 
 	setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
-		this.setItem(itemKey.activeTabId(pageName), value)
+		this.storage.setItem(itemKey.activeTabId(pageName), value)
 	}
 }
 
