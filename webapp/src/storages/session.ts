@@ -72,17 +72,17 @@ class SessionWebStorage implements WebStorageProvider {
 		}
 	}
 
-	getItem(key: string) {
+	private getItem(key: string) {
 		info("getItem", key)
 		return window.sessionStorage.getItem(key)
 	}
 
-	setItem(key: string, value: string) {
+	private setItem(key: string, value: string) {
 		info("setItem", key, value.length > 170 ? "" : value)
 		window.sessionStorage.setItem(key, value)
 	}
 
-	removeItem(key: string) {
+	private removeItem(key: string) {
 		info("removeItem", key)
 		if (key === itemKey.binanceExchangeInfo())
 			this.binanceExchangeInfoIsValid = undefined

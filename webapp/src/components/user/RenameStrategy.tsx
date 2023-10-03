@@ -15,6 +15,7 @@ import { ManageStrategyContext } from "_/contexts/user/ManageStrategy"
 import { isName } from "@workspace/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { StrategyContext } from "_/contexts/Strategy"
 
 const fieldName = {
 	name: "name"
@@ -22,12 +23,12 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export const RenameStrategy: FC = () => {
+	const { strategy } = useContext(StrategyContext)
 	const {
 		renameIsPending: isPending,
 		renameStrategy,
 		renameIsDone,
-		renameError: error,
-		strategyName
+		renameError: error
 	} = useContext(ManageStrategyContext)
 
 	const [canCreate, setCanCreate] = useState(false)
@@ -75,7 +76,7 @@ export const RenameStrategy: FC = () => {
 
 					<StrategyName
 						required
-						placeholder={strategyName}
+						placeholder={strategy?.name}
 						name={fieldName.name}
 						onChange={onChangeName}
 						readOnly={isPending}

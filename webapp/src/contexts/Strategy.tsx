@@ -5,14 +5,23 @@ import { usePublicApi } from "_/hooks/usePublicApi"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams"
 import { localWebStorage } from "_/storages/local"
 import { Strategy } from "@workspace/models"
-import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
+import {
+	FC,
+	PropsWithChildren,
+	createContext,
+	useCallback,
+	useEffect,
+	useMemo
+} from "react"
 
 type ContextValue = {
 	strategy: Strategy | null | undefined
+	refetchStrategy: () => void
 }
 
 export const StrategyContext = createContext<ContextValue>({
-	strategy: undefined
+	strategy: undefined,
+	refetchStrategy: () => {}
 })
 
 StrategyContext.displayName = "StrategyContext"
@@ -20,8 +29,14 @@ StrategyContext.displayName = "StrategyContext"
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const strategyKey = strategyKeyParamsFromCurrentLocation()
 
-	const READ_STRATEGY = usePublicApi.ReadStrategy()
-	const remoteStrategy = READ_STRATEGY.data
+	const READ = usePublicApi.ReadStrategy()
+	const remoteStrategy = READ.data
+
+	const refetchStrategy = useCallback(() => {
+		if (!strategyKey) return
+		localWebStorage.strategy.delete(strategyKey.strategyId)
+		READ.reset()
+	}, [READ, strategyKey])
 
 	const strategy = useMemo<ContextValue["strategy"]>(() => {
 		if (!strategyKey) return undefined
@@ -34,16 +49,17 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			strategy
+			strategy,
+			refetchStrategy
 		}),
-		[strategy]
+		[strategy, refetchStrategy]
 	)
 
 	// Fetch strategy.
 	useEffect(() => {
 		if (!strategyKey) return
-		if (READ_STRATEGY.canRun) READ_STRATEGY.request(strategyKey)
-	}, [READ_STRATEGY, strategyKey])
+		if (READ.canRun) READ.request(strategyKey)
+	}, [READ, strategyKey])
 
 	// Cache strategy.
 	useEffect(() => {

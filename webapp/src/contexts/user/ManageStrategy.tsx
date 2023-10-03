@@ -1,7 +1,6 @@
 import { StrategyContext } from "_/contexts/Strategy"
 import { UseActionError } from "_/hooks/useAction"
 import { useUserApi } from "_/hooks/useUserApi"
-import { localWebStorage } from "_/storages/local"
 import {
 	createContext,
 	FC,
@@ -16,22 +15,19 @@ import {
 type ContextValue = {
 	renameStrategy: (name: string) => void
 	renameIsDone: boolean
-	strategyName: string
 	renameIsPending?: boolean | undefined
 	renameError?: UseActionError
 }
 
 export const ManageStrategyContext = createContext<ContextValue>({
 	renameStrategy: () => {},
-	strategyName: "",
 	renameIsDone: false
 })
 
 ManageStrategyContext.displayName = "ManageStrategyContext"
 
 export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [newStrategyName, setNewStrategyName] = useState("")
-	const { strategy } = useContext(StrategyContext)
+	const { strategy, refetchStrategy } = useContext(StrategyContext)
 
 	const [renameError, setRenameError] = useState<UseActionError>()
 
@@ -42,7 +38,6 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const renameStrategy = useCallback<ContextValue["renameStrategy"]>(
 		(newName) => {
 			if (!strategy) return
-			setNewStrategyName(newName)
 			if (RENAME.canRun)
 				RENAME.request({
 					name: newName,
@@ -58,25 +53,17 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 			renameStrategy,
 			renameIsDone,
 			renameError,
-			renameIsPending,
-			strategyName: newStrategyName ?? strategy?.name ?? ""
-		}),
-		[
-			renameStrategy,
-			newStrategyName,
-			strategy,
-			renameError,
-			renameIsDone,
 			renameIsPending
-		]
+		}),
+		[renameStrategy, renameError, renameIsDone, renameIsPending]
 	)
 
 	useEffect(() => {
 		if (RENAME.isDone) {
 			RENAME.reset()
-			localWebStorage.strategy.set({ ...strategy, name: newStrategyName })
+			refetchStrategy()
 		}
-	}, [RENAME, newStrategyName, strategy])
+	}, [RENAME, refetchStrategy, strategy])
 
 	useEffect(() => {
 		if (RENAME.error) {

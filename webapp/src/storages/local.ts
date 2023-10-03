@@ -58,18 +58,18 @@ class LocalWebStorage implements WebStorageProvider {
 		}
 	}
 
-	getItem(key: string) {
+	private getItem(key: string) {
 		const value = window.localStorage.getItem(key)
 		info("getItem", key, value)
 		return value
 	}
 
-	setItem(key: string, value: string) {
+	private setItem(key: string, value: string) {
 		info("setItem", key, value)
 		window.localStorage.setItem(key, value)
 	}
 
-	removeItem(key: string) {
+	private removeItem(key: string) {
 		info("removeItem", key)
 		window.localStorage.removeItem(key)
 	}
