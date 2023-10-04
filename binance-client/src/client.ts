@@ -28,8 +28,8 @@ const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
  * - `https://api.binance.com`: if the process run on a server with a trusted IP
  *   associated. In this case it could be also `https://api1.binance.com` or any
  *   other Binance API cluster.
- * - Something like `https://1.2.3.4:8080`: if the process run elsewhere and the
- *   proxy has a trusted IP associated.
+ * - Something like `https://my-proxy.example.com`: if the process run elsewhere
+ *   and the proxy has a trusted IP associated.
  *
  * Notice that the _trusted IP_ must be configured on the Binance account for
  * the given `apiKey` provided as parameter to the constructor.
@@ -63,6 +63,9 @@ export class BinanceClient {
 		const timestamp = Date.now()
 		searchParams.append("timestamp", String(timestamp))
 
+		// TODO can this be achieved with Web Crypto API?
+		// For example
+		// globalThis.crypto.subtle.digest()
 		const signature = createHmac("sha256", this.apiSecret)
 			.update(searchParams.toString())
 			.digest("hex")
