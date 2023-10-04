@@ -1,7 +1,3 @@
-export {
-	dflowBinancePrecision,
-	dflowBinanceZero
-} from "./binance/arithmetic.js"
 export type {
 	DflowBinanceClient,
 	DflowBinanceClientKlinesParameters

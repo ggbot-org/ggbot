@@ -1,4 +1,3 @@
-import { div, mul } from "@workspace/arithmetic"
 import {
 	BinanceAccountInformation,
 	BinanceBalance,
@@ -17,10 +16,9 @@ import {
 	DflowBinanceClientKlinesParameters,
 	DflowBinanceKlineInterval,
 	dflowBinanceLowerKlineInterval,
-	dflowBinancePrecision,
-	DflowBinanceSymbolAndInterval,
-	dflowBinanceZero as zero
+	DflowBinanceSymbolAndInterval
 } from "@workspace/dflow"
+import { div, mul } from "arithmetica"
 import { Time } from "minimal-time-helpers"
 
 import { binance } from "./exchange"
@@ -114,20 +112,20 @@ export class BinanceClient implements DflowBinanceClient {
 			orderOptions
 		)
 		const { price } = await this.tickerPrice(symbol)
-		let quantity = zero
-		let quoteQuantity = zero
+		let quantity = "0"
+		let quoteQuantity = "0"
 		if (options.quantity !== undefined) {
 			quantity = options.quantity
-			quoteQuantity = mul(quantity, price, dflowBinancePrecision)
+			quoteQuantity = mul(quantity, price)
 		}
 		if (options.quoteOrderQty !== undefined) {
 			quoteQuantity = options.quoteOrderQty
-			quantity = div(quoteQuantity, price, dflowBinancePrecision)
+			quantity = div(quoteQuantity, price)
 		}
 
 		const order: BinanceOrderRespFULL = {
 			clientOrderId: "",
-			cummulativeQuoteQty: zero,
+			cummulativeQuoteQty: "0",
 			executedQty: quantity,
 			orderId: -1,
 			orderListId: -1,
@@ -142,7 +140,7 @@ export class BinanceClient implements DflowBinanceClient {
 
 			fills: [
 				{
-					commission: zero,
+					commission: "0",
 					commissionAsset: "BNB",
 					price,
 					qty: quantity,

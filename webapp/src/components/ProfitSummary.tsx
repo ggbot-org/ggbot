@@ -11,9 +11,9 @@ import {
 } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { add, decimalToNumber, mul, sub } from "@workspace/arithmetic"
 import { isBinanceOrderRespFULL } from "@workspace/binance"
 import { isOrders, Order } from "@workspace/models"
+import { add, gt, lt, mul, neg, sub } from "arithmetica"
 import { DayInterval } from "minimal-time-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"
@@ -120,30 +120,18 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 							baseQuantity: isBuy
 								? add(baseQuantity, baseQty)
 								: sub(baseQuantity, baseQty),
-							maxPrice:
-								decimalToNumber(price) >
-								decimalToNumber(maxPrice)
-									? price
-									: maxPrice,
-							minPrice:
-								decimalToNumber(price) <
-								decimalToNumber(minPrice)
-									? price
-									: minPrice,
+							maxPrice: gt(price, maxPrice) ? price : maxPrice,
+							minPrice: lt(price, minPrice) ? price : minPrice,
 							quoteQuantity: isBuy
 								? sub(quoteQuantity, quoteQty)
 								: add(quoteQuantity, quoteQty)
 						})
 					} else {
 						symbolStats.set(symbol, {
-							baseQuantity: isBuy
-								? add(0, baseQty)
-								: sub(0, baseQty),
+							baseQuantity: isBuy ? baseQty : neg(baseQty),
 							maxPrice: price,
 							minPrice: price,
-							quoteQuantity: isBuy
-								? sub(0, quoteQty)
-								: add(0, quoteQty)
+							quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
 						})
 					}
 				}

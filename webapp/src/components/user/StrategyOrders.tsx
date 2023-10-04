@@ -1,7 +1,6 @@
 import { Message, Table } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
-import { Decimal } from "@workspace/arithmetic"
 import { isOrders, Orders } from "@workspace/models"
 import { DayInterval, getDay, today } from "minimal-time-helpers"
 import { isMaybeObject } from "minimal-type-guard-helpers"
@@ -15,8 +14,8 @@ type Row = {
 	side: string
 	symbol: string
 	time: string
-	baseQuantity: Decimal
-	quoteQuantity: Decimal
+	baseQuantity: string
+	quoteQuantity: string
 }
 
 export const StrategyOrders: FC = () => {
