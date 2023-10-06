@@ -1,5 +1,6 @@
-import { writeFile } from "node:fs/promises"
 import { join } from "node:path"
+
+import write from "write-file-utf8"
 
 import { Repository } from "../Repository.js"
 import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
@@ -102,4 +103,4 @@ ${graphRows.join("\n")}
 
 `
 
-await writeFile(pathname, content, { encoding: "utf8" })
+await write(pathname, content)

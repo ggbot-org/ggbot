@@ -37,6 +37,7 @@ graph LR
     workspace/logging --- workspace/env
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/database
+    workspace/url-shortener --- workspace/locators
     workspace/user-api --- workspace/api-gateway
     workspace/user-api --- workspace/authentication
     workspace/user-api --- workspace/database

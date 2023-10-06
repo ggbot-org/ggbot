@@ -3,10 +3,22 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "check_types": "tsc --noEmit --project .",
+    "cleanup": "rm -rf temp/",
+    "generate_shortened_urls": "node temp/scripts/generate_shortened_urls.js",
+    "lint": "eslint --fix --ext .ts src/",
+    "pregenerate_shortened_urls": "npm run tsc:scripts",
+    "tsc:scripts": "tsc --build tsconfig.scripts.json"
+  },
+  "dependencies": {
+    "@workspace/env": "0.0.0",
+    "@workspace/locators": "0.0.0"
+  },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
-    "@workspace/tsconfig": "0.0.0"
+    "@workspace/tsconfig": "0.0.0",
+    "write-file-utf8": "3.0.2"
   },
   "eslintConfig": {
     "extends": [
