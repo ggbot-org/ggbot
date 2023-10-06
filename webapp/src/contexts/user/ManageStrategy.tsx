@@ -27,7 +27,7 @@ export const ManageStrategyContext = createContext<ContextValue>({
 ManageStrategyContext.displayName = "ManageStrategyContext"
 
 export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-	const { strategy, refetchStrategy } = useContext(StrategyContext)
+	const { strategyKey, refetchStrategy } = useContext(StrategyContext)
 
 	const [renameError, setRenameError] = useState<UseActionError>()
 
@@ -37,15 +37,14 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const renameStrategy = useCallback<ContextValue["renameStrategy"]>(
 		(newName) => {
-			if (!strategy) return
+			if (!strategyKey) return
 			if (RENAME.canRun)
 				RENAME.request({
 					name: newName,
-					strategyId: strategy.id,
-					strategyKind: strategy.kind
+					...strategyKey
 				})
 		},
-		[RENAME, strategy]
+		[RENAME, strategyKey]
 	)
 
 	const contextValue = useMemo<ContextValue>(
@@ -63,7 +62,7 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 			RENAME.reset()
 			refetchStrategy()
 		}
-	}, [RENAME, refetchStrategy, strategy])
+	}, [RENAME, refetchStrategy])
 
 	useEffect(() => {
 		if (RENAME.error) {

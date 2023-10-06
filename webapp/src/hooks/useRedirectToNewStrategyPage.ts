@@ -5,10 +5,9 @@ import { useEffect } from "react"
 export const useRedirectToNewStrategyPage = (strategy: unknown) => {
 	useEffect(() => {
 		if (isStrategy(strategy)) {
-			const { id, kind } = strategy
 			window.location.href = href.strategyPage({
-				strategyId: id,
-				strategyKind: kind
+				strategyId: strategy.id,
+				strategyKind: strategy.kind
 			})
 		}
 	}, [strategy])

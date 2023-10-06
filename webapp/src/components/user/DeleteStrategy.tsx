@@ -19,7 +19,7 @@ export const DeleteStrategy: FC = () => {
 
 	const { formatMessage } = useIntl()
 
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const DELETE = useUserApi.DeleteStrategy()
 	const isLoading = DELETE.isPending || DELETE.isDone
@@ -32,12 +32,8 @@ export const DeleteStrategy: FC = () => {
 	}, [])
 
 	const onClickConfirmation = useCallback(() => {
-		if (strategy)
-			DELETE.request({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind
-			})
-	}, [DELETE, strategy])
+		if (strategyKey) DELETE.request(strategyKey)
+	}, [DELETE, strategyKey])
 
 	useEffect(() => {
 		if (redirect) window.location.href = href.dashboardPage()

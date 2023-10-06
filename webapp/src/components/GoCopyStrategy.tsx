@@ -5,18 +5,15 @@ import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const GoCopyStrategy: FC = () => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const onClick = useCallback<ButtonOnClick>(
 		(event) => {
 			event.stopPropagation()
-			if (!strategy) return
-			window.location.href = href.copyStrategyPage({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind
-			})
+			if (!strategyKey) return
+			window.location.href = href.copyStrategyPage(strategyKey)
 		},
-		[strategy]
+		[strategyKey]
 	)
 
 	return (

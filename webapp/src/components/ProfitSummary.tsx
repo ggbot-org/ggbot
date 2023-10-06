@@ -63,7 +63,7 @@ type SymbolStats = {
 }
 
 export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKind } = useContext(StrategyContext)
 
 	const binanceSymbols = useBinanceSymbols()
 
@@ -76,10 +76,11 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 		Omit<SymbolStats, "symbol">
 	>()
 
-	if (strategy?.kind === "binance" && isOrders(orders)) {
+	if (strategyKind === "binance" && isOrders(orders)) {
 		for (const { info } of orders) {
 			if (isBinanceOrderRespFULL(info)) {
-				// TODO assuming type=MARKET status=FILLED
+				if (info.status !== "FILLED") continue
+				if (info.type !== "MARKET") continue
 				const { fills, side, symbol } = info
 
 				const isBuy = side === "BUY"

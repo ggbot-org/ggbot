@@ -10,7 +10,7 @@ import { FormattedMessage } from "react-intl"
 export const EditableFlow: FC = () => {
 	const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =
 		useContext(StrategyFlowContext)
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const [canSave, setCanSave] = useState(false)
 
@@ -19,16 +19,15 @@ export const EditableFlow: FC = () => {
 	const saveIsPending = WRITE.isPending
 
 	const onClickSave = useCallback<ButtonOnClick>(() => {
-		if (!strategy) return
+		if (!strategyKey) return
 		if (!canSave) return
 		if (!WRITE.canRun) return
 		if (!flowViewGraph) return
 		WRITE.request({
-			strategyId: strategy.id,
-			strategyKind: strategy.kind,
+			...strategyKey,
 			view: flowViewGraph
 		})
-	}, [WRITE, canSave, strategy, flowViewGraph])
+	}, [WRITE, canSave, flowViewGraph, strategyKey])
 
 	useEffect(() => {
 		if (WRITE.isDone) {

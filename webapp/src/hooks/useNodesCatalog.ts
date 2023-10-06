@@ -4,11 +4,11 @@ import { DflowNodesCatalog } from "dflow"
 import { useContext, useMemo } from "react"
 
 export const useNodesCatalog = (): DflowNodesCatalog | undefined => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKind } = useContext(StrategyContext)
 
 	const binanceNodesCatalog = useBinanceNodesCatalog()
 
 	return useMemo(() => {
-		if (strategy?.kind === "binance") return binanceNodesCatalog
-	}, [binanceNodesCatalog, strategy])
+		if (strategyKind === "binance") return binanceNodesCatalog
+	}, [binanceNodesCatalog, strategyKind])
 }

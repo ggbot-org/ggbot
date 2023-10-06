@@ -29,7 +29,7 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export const CopyStrategy: FC = () => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey, strategyName } = useContext(StrategyContext)
 
 	const [error, setError] = useState<UseActionError>()
 	const [canCreate, setCanCreate] = useState(false)
@@ -48,18 +48,17 @@ export const CopyStrategy: FC = () => {
 	const onSubmit = useCallback<FormOnSubmit>(
 		(event) => {
 			event.preventDefault()
-			if (!strategy) return
+			if (!strategyKey) return
 			if (!canCreate) return
 			if (!COPY.canRun) return
 			const { name } = formValues(event, fields)
 			if (isName(name))
 				COPY.request({
 					name,
-					strategyId: strategy.id,
-					strategyKind: strategy.kind
+					...strategyKey
 				})
 		},
-		[COPY, canCreate, strategy]
+		[COPY, canCreate, strategyKey]
 	)
 
 	useEffect(() => {
@@ -114,7 +113,7 @@ export const CopyStrategy: FC = () => {
 							required
 							name={fieldName.name}
 							onChange={onChangeName}
-							placeholder={strategy?.name}
+							placeholder={strategyName}
 							readOnly={readOnly}
 						/>
 
