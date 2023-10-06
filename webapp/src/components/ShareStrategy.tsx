@@ -8,21 +8,18 @@ import { FormattedMessage, useIntl } from "react-intl"
 export const ShareStrategy: FC = () => {
 	const { formatMessage } = useIntl()
 	const { toast } = useContext(ToastContext)
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey, strategyName } = useContext(StrategyContext)
 
 	const shareData = useMemo<
 		Pick<ShareData, "title" | "text" | "url"> | undefined
 	>(() => {
-		if (!strategy) return
+		if (!strategyKey) return
 		return {
 			title: "ggbot",
-			url: `${window.location.origin}${href.strategyPage({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind
-			})}`,
-			text: strategy.name
+			url: `${window.location.origin}${href.strategyPage(strategyKey)}`,
+			text: strategyName
 		}
-	}, [strategy])
+	}, [strategyKey, strategyName])
 
 	const onClick = useCallback(async () => {
 		try {

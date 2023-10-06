@@ -37,7 +37,7 @@ import {
 import { FormattedMessage } from "react-intl"
 
 export const Schedulings: FC = () => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyId } = useContext(StrategyContext)
 	const { hasActiveSubscription } = useContext(SubscriptionContext)
 	const { accountStrategies, refetchAccountStrategies } =
 		useContext(StrategiesContext)
@@ -55,14 +55,14 @@ export const Schedulings: FC = () => {
 		if (!accountStrategies) return []
 		return accountStrategies
 			.filter(
-				(accountStrategy) => accountStrategy.strategyId === strategy?.id
+				(accountStrategy) => accountStrategy.strategyId === strategyId
 			)
 			.reduce<StrategyScheduling[]>(
 				(list, accountStrategy) =>
 					list.concat(accountStrategy.schedulings),
 				[]
 			)
-	}, [accountStrategies, strategy])
+	}, [accountStrategies, strategyId])
 
 	const someSchedulingChanged = useMemo(() => {
 		// Do not know about currentSchedulings yet, data fetch is pending.
@@ -160,13 +160,13 @@ export const Schedulings: FC = () => {
 	}, [])
 
 	const onClickSave = useCallback<ButtonOnClick>(() => {
-		if (!strategy) return
+		if (!strategyId) return
 		if (!canSave) return
 		WRITE.request({
-			strategyId: strategy.id,
+			strategyId,
 			schedulings: wantedSchedulings
 		})
-	}, [WRITE, canSave, strategy, wantedSchedulings])
+	}, [WRITE, canSave, strategyId, wantedSchedulings])
 
 	const onSubmit = useCallback<FormOnSubmit>((event) => {
 		event.preventDefault()

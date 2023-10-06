@@ -1,4 +1,3 @@
-import { isDecimal } from "@workspace/arithmetic"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
 import {
@@ -22,6 +21,9 @@ import {
 
 // TODO use objectTypeGuard for all type guards
 
+const isStringyNumber = (arg: unknown): boolean =>
+	typeof arg === "string" && !isNaN(Number(arg))
+
 export const isBinanceExchangeInfo = (
 	arg: unknown
 ): arg is BinanceExchangeInfo => {
@@ -43,9 +45,9 @@ const isBinanceFill = (arg: unknown): arg is BinanceFill => {
 	const { price, qty, commission, commissionAsset } =
 		arg as Partial<BinanceFill>
 	return (
-		isDecimal(price) &&
-		isDecimal(qty) &&
-		isDecimal(commission) &&
+		isStringyNumber(price) &&
+		isStringyNumber(qty) &&
+		isStringyNumber(commission) &&
 		typeof commissionAsset === "string"
 	)
 }
@@ -69,16 +71,16 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 
 	return (
 		typeof openTime === "number" &&
-		typeof open === "string" &&
-		typeof high === "string" &&
-		typeof low === "string" &&
-		typeof close === "string" &&
-		typeof volume === "string" &&
+		isStringyNumber(open) &&
+		isStringyNumber(high) &&
+		isStringyNumber(low) &&
+		isStringyNumber(close) &&
+		isStringyNumber(volume) &&
 		typeof closeTime === "number" &&
-		typeof quoteVolume === "string" &&
+		isStringyNumber(quoteVolume) &&
 		typeof numTrades === "number" &&
-		typeof takerBaseVolume === "string" &&
-		typeof takerQuoteVolume === "string"
+		isStringyNumber(takerBaseVolume) &&
+		isStringyNumber(takerQuoteVolume)
 	)
 }
 
@@ -105,9 +107,9 @@ export const isBinanceSymbolFilterLotSize = (
 		arg as Partial<BinanceSymbolFilterLotSize>
 	return (
 		filterType === "LOT_SIZE" &&
-		isDecimal(minQty) &&
-		isDecimal(maxQty) &&
-		isDecimal(stepSize)
+		isStringyNumber(minQty) &&
+		isStringyNumber(maxQty) &&
+		isStringyNumber(stepSize)
 	)
 }
 
@@ -119,7 +121,7 @@ export const isBinanceSymbolFilterMinNotional = (
 		arg as Partial<BinanceSymbolFilterMinNotional>
 	return (
 		filterType === "MIN_NOTIONAL" &&
-		isDecimal(minNotional) &&
+		isStringyNumber(minNotional) &&
 		typeof applyToMarket === "boolean" &&
 		typeof avgPriceMins === "number"
 	)

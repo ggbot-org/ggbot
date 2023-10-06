@@ -201,7 +201,7 @@ export class BinanceClient {
 	/**
 	 * Test a new order with type other than MARKET or LIMIT order.
 	 *
-	 * Binance API will validates new order but will not send it into the
+	 * Binance API will validate new order but will not send it into the
 	 * matching engine. Parameters are the same as `newOrderACK`.
 	 */
 	async newOrderACKTest(

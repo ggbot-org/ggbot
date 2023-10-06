@@ -4,11 +4,11 @@ import { StrategyNotFound } from "_/components/StrategyNotFound"
 import { usePublicApi } from "_/hooks/usePublicApi"
 import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams"
 import { localWebStorage } from "_/storages/local"
-import { Strategy } from "@workspace/models"
+import { Strategy, StrategyKey, StrategyKind } from "@workspace/models"
 import {
+	createContext,
 	FC,
 	PropsWithChildren,
-	createContext,
 	useCallback,
 	useEffect,
 	useMemo
@@ -16,11 +16,19 @@ import {
 
 type ContextValue = {
 	strategy: Strategy | null | undefined
+	strategyKey: StrategyKey | undefined
+	strategyKind: StrategyKind | undefined
+	strategyId: Strategy["id"] | undefined
+	strategyName: string
 	refetchStrategy: () => void
 }
 
 export const StrategyContext = createContext<ContextValue>({
 	strategy: undefined,
+	strategyKey: undefined,
+	strategyKind: undefined,
+	strategyId: undefined,
+	strategyName: "",
 	refetchStrategy: () => {}
 })
 
@@ -50,6 +58,12 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const contextValue = useMemo<ContextValue>(
 		() => ({
 			strategy,
+			strategyKey: strategy
+				? { strategyId: strategy.id, strategyKind: strategy.kind }
+				: undefined,
+			strategyKind: strategy?.kind,
+			strategyId: strategy?.id,
+			strategyName: strategy?.name ?? "",
 			refetchStrategy
 		}),
 		[strategy, refetchStrategy]

@@ -4,82 +4,45 @@ This is the internal dependencies graph: it shows how workspaces depend on each 
 
 ```mermaid
 graph LR
-    workspace/admin-api --- workspace/api
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/api-gateway
     workspace/admin-api --- workspace/database
-    workspace/admin-api --- workspace/logging
-    workspace/admin-api --- workspace/models
     workspace/api --- workspace/http
     workspace/api --- workspace/models
     workspace/api-gateway --- workspace/api
-    workspace/api-gateway --- workspace/env
-    workspace/api-gateway --- workspace/http
     workspace/api-gateway --- workspace/locators
     workspace/authentication --- workspace/env
     workspace/authentication --- workspace/models
-    workspace/authentication-api --- workspace/api
     workspace/authentication-api --- workspace/api-gateway
     workspace/authentication-api --- workspace/authentication
     workspace/authentication-api --- workspace/database
-    workspace/authentication-api --- workspace/env
-    workspace/authentication-api --- workspace/locators
-    workspace/authentication-api --- workspace/models
-    workspace/binance --- workspace/arithmetic
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
     workspace/binance-proxy --- workspace/aws
     workspace/binance-proxy --- workspace/binance
-    workspace/binance-proxy --- workspace/env
     workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/http
     workspace/database --- workspace/aws
-    workspace/database --- workspace/binance
     workspace/database --- workspace/binance-client
     workspace/database --- workspace/dflow
     workspace/database --- workspace/email-messages
-    workspace/database --- workspace/env
     workspace/database --- workspace/locators
     workspace/database --- workspace/logging
     workspace/dflow --- workspace/binance
     workspace/email-messages --- workspace/models
-    workspace/executor --- workspace/cache
     workspace/executor --- workspace/database
-    workspace/executor --- workspace/dflow
-    workspace/executor --- workspace/env
-    workspace/executor --- workspace/models
-    workspace/infrastructure --- workspace/aws
-    workspace/infrastructure --- workspace/env
     workspace/infrastructure --- workspace/database
-    workspace/infrastructure --- workspace/locators
     workspace/infrastructure --- workspace/repository
     workspace/locators --- workspace/env
     workspace/logging --- workspace/env
-    workspace/models --- workspace/arithmetic
-    workspace/public-api --- workspace/api
     workspace/public-api --- workspace/api-gateway
-    workspace/public-api --- workspace/env
     workspace/public-api --- workspace/database
-    workspace/public-api --- workspace/logging
-    workspace/public-api --- workspace/models
-    workspace/user-api --- workspace/api
-    workspace/user-api --- workspace/env
-    workspace/user-api --- workspace/logging
     workspace/user-api --- workspace/api-gateway
     workspace/user-api --- workspace/authentication
     workspace/user-api --- workspace/database
-    workspace/user-api --- workspace/models
-    workspace/utrust-api --- workspace/api
     workspace/utrust-api --- workspace/api-gateway
     workspace/utrust-api --- workspace/database
-    workspace/utrust-api --- workspace/env
-    workspace/utrust-api --- workspace/locators
-    workspace/utrust-api --- workspace/logging
-    workspace/utrust-api --- workspace/models
     workspace/webapp --- workspace/api
-    workspace/webapp --- workspace/binance
     workspace/webapp --- workspace/dflow
-    workspace/webapp --- workspace/http
     workspace/webapp --- workspace/locators
-    workspace/webapp --- workspace/models
 ```

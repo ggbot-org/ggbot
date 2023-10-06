@@ -19,7 +19,7 @@ type Row = {
 }
 
 export const StrategyOrders: FC = () => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const dayInterval = useMemo<DayInterval>(() => {
 		const end = today()
@@ -77,14 +77,13 @@ export const StrategyOrders: FC = () => {
 	}, [orders])
 
 	useEffect(() => {
-		if (!strategy) return
+		if (!strategyKey) return
 		if (READ.canRun)
 			READ.request({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind,
-				...dayInterval
+				...dayInterval,
+				...strategyKey
 			})
-	}, [READ, dayInterval, strategy])
+	}, [READ, dayInterval, strategyKey])
 
 	if (!isDone) return null
 

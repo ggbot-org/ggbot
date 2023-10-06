@@ -22,7 +22,6 @@
     "@workspace/tsconfig": "0.0.0"
   },
   "dependencies": {
-    "@workspace/arithmetic": "0.0.0",
     "@workspace/cache": "0.0.0",
     "minimal-type-guard-helpers": "0.1.1"
   },

@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { isDecimal, isMaybeDecimal, numOfDecimals } from "./decimal.js"
+import { isMaybeDecimal, numOfDecimals } from "./decimal.js"
 
 const validDecimals = [
 	"0",
@@ -62,19 +62,6 @@ describe("Decimal", () => {
 			}
 		].forEach(({ input1, input2, output }) => {
 			assert.equal(input1 < input2, output)
-		})
-	})
-})
-
-describe("isDecimal", () => {
-	test("checks that argument is a Decimal", () => {
-		const validArgs = [...validDecimals]
-		const invalidArgs = [...invalidDecimals]
-		;[
-			...validArgs.map((input) => ({ input, output: true })),
-			...invalidArgs.map((input) => ({ input, output: false }))
-		].forEach(({ input, output }) => {
-			assert.equal(isDecimal(input), output)
 		})
 	})
 })

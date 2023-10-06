@@ -10,7 +10,7 @@ type Props = {
 }
 
 export const StrategyProfits: FC<Props> = ({ numDays }) => {
-	const { strategy } = useContext(StrategyContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const dayInterval = useMemo<DayInterval>(() => {
 		const end = today()
@@ -23,14 +23,13 @@ export const StrategyProfits: FC<Props> = ({ numDays }) => {
 	const orders: Orders = isOrders(READ.data) ? READ.data : []
 
 	useEffect(() => {
-		if (!strategy) return
+		if (!strategyKey) return
 		if (READ.canRun)
 			READ.request({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind,
-				...dayInterval
+				...dayInterval,
+				...strategyKey
 			})
-	}, [READ, dayInterval, strategy])
+	}, [READ, dayInterval, strategyKey])
 
 	return <ProfitSummary dayInterval={dayInterval} orders={orders} />
 }
