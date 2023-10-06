@@ -4,13 +4,18 @@ import { join } from "node:path"
 import { Repository } from "../Repository.js"
 import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
 
+type InternalDependencyRelation = [string, string]
+
+type InternalDependencyGraph = InternalDependencyRelation[]
+
+const internalDependencyGraph: InternalDependencyGraph = []
+const graphInternalDependencyRows: string[] = []
+
 const repository = new Repository()
 await repository.read()
 const repositoryDocsDir = join(repository.pathname, "docs")
 
 const pathname = join(repositoryDocsDir, "npm-dependencies.md")
-
-const graphInternalDependencyRows: string[] = []
 
 // Node text cannot contain `@`
 const packageGraphNode = (packageName: string) =>
@@ -24,11 +29,15 @@ for (const workspace of repository.workspaces.values()) {
 	const packageName = workspacePackageJson.packageName
 	for (const dependency of workspacePackageJson.dependencies.keys())
 		if (isInternalDependency(dependency))
-			graphInternalDependencyRows.push(
-				`    ${packageGraphNode(packageName)} --- ${packageGraphNode(
-					dependency
-				)}`
-			)
+			internalDependencyGraph.push([packageName, dependency])
+}
+
+for (const [packageName, dependency] of internalDependencyGraph) {
+	graphInternalDependencyRows.push(
+		`    ${packageGraphNode(packageName)} --- ${packageGraphNode(
+			dependency
+		)}`
+	)
 }
 
 const graphRows = [

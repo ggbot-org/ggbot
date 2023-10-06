@@ -6,11 +6,6 @@ import { ErrorCannotCoerceToDecimal } from "./errors.js"
  */
 export type Decimal = string
 
-export const isDecimal = (arg: unknown): arg is Decimal => {
-	if (typeof arg !== "string") return false
-	return isMaybeDecimal(arg)
-}
-
 export type MaybeDecimal = Decimal | number
 
 export const isMaybeDecimal = (arg: unknown): arg is MaybeDecimal => {

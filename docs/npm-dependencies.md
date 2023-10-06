@@ -25,7 +25,6 @@ graph LR
     workspace/authentication-api --- workspace/env
     workspace/authentication-api --- workspace/locators
     workspace/authentication-api --- workspace/models
-    workspace/binance --- workspace/arithmetic
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
     workspace/binance-proxy --- workspace/aws
@@ -55,7 +54,6 @@ graph LR
     workspace/infrastructure --- workspace/repository
     workspace/locators --- workspace/env
     workspace/logging --- workspace/env
-    workspace/models --- workspace/arithmetic
     workspace/public-api --- workspace/api
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/env
