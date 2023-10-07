@@ -1,34 +1,42 @@
 import {
-	AccountKey,
 	AllowedCountryIsoCode2,
 	EmailAddress,
-	isAccountKey,
 	isAllowedCountryIsoCode2,
 	isEmailAddress,
 	isNaturalNumber,
-	NaturalNumber
+	isSubscriptionPlan,
+	NaturalNumber,
+	SubscriptionPlan
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-export type ApiUtrustCallabackRequestData = {
+export type UtrustApiCallabackRequestData = {
 	ok: boolean
 }
 
-type ApiUtrustOrderRequestData = AccountKey & {
+export type UtrustApiOrderRequestData = {
 	country: AllowedCountryIsoCode2
 	email: EmailAddress
+	itemName: string
 	numMonths: NaturalNumber
+	plan: SubscriptionPlan
 }
 
-export const isApiUtrustOrderRequestData =
-	objectTypeGuard<ApiUtrustOrderRequestData>(
-		({ country, email, numMonths, ...accountKey }) =>
+export const isUtrustApiOrderRequestData =
+	objectTypeGuard<UtrustApiOrderRequestData>(
+		({ country, email, itemName, numMonths, plan }) =>
 			isAllowedCountryIsoCode2(country) &&
 			isEmailAddress(email) &&
+			typeof itemName === "string" &&
 			isNaturalNumber(numMonths) &&
-			isAccountKey(accountKey)
+			isSubscriptionPlan(plan)
 	)
 
-export type ApiUtrustOrderResponseData = {
+export type UtrustApiOrderResponseData = {
 	redirectUrl: string
 }
+
+export const isUtrustApiOrderResponseData =
+	objectTypeGuard<UtrustApiOrderResponseData>(
+		({ redirectUrl }) => typeof redirectUrl === "string"
+	)

@@ -1,13 +1,14 @@
 import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import { Box, Title } from "_/components/library"
+import { SelectCountry } from "_/components/user/SelectCountry"
 import { WhenCreated } from "_/components/WhenCreated"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const AccountSettings: FC = () => {
-	const { account } = useContext(AuthenticationContext)
+	const { account, accountEmail } = useContext(AuthenticationContext)
 
 	return (
 		<Box>
@@ -15,7 +16,9 @@ export const AccountSettings: FC = () => {
 				<FormattedMessage id="AccountSettings.title" />
 			</Title>
 
-			<Email isStatic value={account?.email} />
+			<Email isStatic value={accountEmail} />
+
+			<SelectCountry />
 
 			<WhenCreated value={account?.whenCreated} />
 

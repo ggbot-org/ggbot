@@ -2,7 +2,7 @@ import {
 	Event as UtrustEvent,
 	WebhookValidator
 } from "@utrustdev/utrust-ts-library"
-import { ApiUtrustCallabackRequestData } from "@workspace/api"
+import { UtrustApiCallabackRequestData } from "@workspace/api"
 import {
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
@@ -44,7 +44,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 				// Nothing to do, the payment is detected on the blockchain.
 				if (event_type === "ORDER.PAYMENT.DETECTED") {
-					const output: ApiUtrustCallabackRequestData = { ok: true }
+					const output: UtrustApiCallabackRequestData = { ok: true }
 					return OK(output)
 				}
 
@@ -75,7 +75,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						status: "canceled"
 					})
 
-				const output: ApiUtrustCallabackRequestData = { ok: false }
+				const output: UtrustApiCallabackRequestData = { ok: false }
 				info(JSON.stringify(output, null, 2))
 				return OK(output)
 			}

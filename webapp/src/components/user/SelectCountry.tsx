@@ -1,31 +1,82 @@
-import { SelectField, SelectFieldProps } from "_/components/library"
-import { isAllowedCountryIsoCode2 } from "@workspace/models"
-import { countries } from "country-isocode2/en"
-import { FC } from "react"
+import {
+	SelectField,
+	SelectFieldProps,
+	SelectOnChange
+} from "_/components/library"
+import { AuthenticationContext } from "_/contexts/Authentication"
+import { useUserApi } from "_/hooks/useUserApi"
+import {
+	AllowedCountryIsoCode2,
+	allowedCountryIsoCodes2,
+	isAllowedCountryIsoCode2
+} from "@workspace/models"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
-
-// TODO i18n for country names, and label "-- your country --"
-// do not import country names from "country-isocode2/en",
-// create a map with allowed countries.
-const allowedCountryOptions = Object.entries(countries)
-	.filter(([isoCode2]) => isAllowedCountryIsoCode2(isoCode2))
-	.map(([isoCode2, country]) => ({
-		value: isoCode2,
-		label: country
-	}))
 
 type Props = Omit<SelectFieldProps, "label" | "options">
 
-const countryOptions: SelectFieldProps["options"] = allowedCountryOptions
-
-export const SelectCountry: FC<Props> = (props) => {
+export const SelectCountry: FC<Props> = ({ name }) => {
 	const { formatMessage } = useIntl()
+
+	const countryName: Record<AllowedCountryIsoCode2, string> = {
+		AT: formatMessage({ id: "SelectCountry.AT" }),
+		FR: formatMessage({ id: "SelectCountry.FR" }),
+		IT: formatMessage({ id: "SelectCountry.IT" }),
+		DE: formatMessage({ id: "SelectCountry.DE" }),
+		ES: formatMessage({ id: "SelectCountry.ES" }),
+		GR: formatMessage({ id: "SelectCountry.GR" }),
+		NL: formatMessage({ id: "SelectCountry.NL" }),
+		PT: formatMessage({ id: "SelectCountry.PT" })
+	}
+
+	const { account } = useContext(AuthenticationContext)
+
+	const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("")
+
+	const allowedCountryOptions: SelectFieldProps["options"] =
+		allowedCountryIsoCodes2.map((countryIsocode) => ({
+			value: countryIsocode,
+			label: countryName[countryIsocode]
+		}))
+
+	// It is not allowed to unset the country.
+	const countryOptions: SelectFieldProps["options"] = country
+		? allowedCountryOptions
+		: [
+				{
+					value: "",
+					label: formatMessage({ id: "SelectCountry.noValue" })
+				},
+				...allowedCountryOptions
+		  ]
+
+	const SET_COUNTRY = useUserApi.SetAccountCountry()
+
+	const onChange = useCallback<SelectOnChange>((event) => {
+		const value = event.target.value
+		if (isAllowedCountryIsoCode2(value)) setCountry(value)
+	}, [])
+
+	useEffect(() => {
+		if (!account) return
+		if (account.country) setCountry(account.country)
+	}, [account, setCountry])
+
+	useEffect(() => {
+		if (!account) return
+		if (!country) return
+		if (account.country === country) return
+
+		if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country })
+	}, [SET_COUNTRY, account, country])
 
 	return (
 		<SelectField
 			label={formatMessage({ id: "SelectCountry.label" })}
 			options={countryOptions}
-			{...props}
+			onChange={onChange}
+			value={country}
+			name={name}
 		/>
 	)
 }

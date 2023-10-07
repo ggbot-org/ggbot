@@ -16,6 +16,7 @@ export const SubscriptionEnd: FC<SubscriptionEndProps> = ({
 
 	return (
 		<InputField
+			readOnly
 			label={formatMessage({ id: "SubscriptionEnd.label" })}
 			value={formatDate(value, dayFormat)}
 			{...props}

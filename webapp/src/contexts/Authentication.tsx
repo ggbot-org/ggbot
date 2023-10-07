@@ -32,6 +32,7 @@ type State = {
 
 type ContextValue = {
 	account: Account | null | undefined
+	accountEmail: Account["email"] | ""
 	showAuthExit: () => void
 }
 
@@ -39,6 +40,7 @@ const { info } = logging("authentication")
 
 export const AuthenticationContext = createContext<ContextValue>({
 	account: undefined,
+	accountEmail: "",
 	showAuthExit: () => {}
 })
 
@@ -148,6 +150,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const contextValue = useMemo<ContextValue>(
 		() => ({
 			account: account,
+			accountEmail: account?.email ?? "",
 			exit: () => {
 				dispatch({ type: "EXIT" })
 			},

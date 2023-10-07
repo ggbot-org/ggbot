@@ -1,71 +1,61 @@
 import { Email } from "_/components/Email"
 import {
-	Box,
 	Button,
+	Buttons,
 	Checkmark,
 	Column,
 	Columns,
-	Control,
-	Field,
 	Flex,
-	InputOnChange,
+	Form,
+	FormOnSubmit,
+	formValues,
 	Message,
-	SelectOnChange,
 	Title
 } from "_/components/library"
+import { SelectCountry } from "_/components/user/SelectCountry"
 import {
 	SubscriptionEnd,
 	SubscriptionEndProps
-} from "_/components/SubscriptionEnd"
-import { SubscriptionNumMonths } from "_/components/SubscriptionNumMonths"
-import { SelectCountry } from "_/components/user/SelectCountry"
+} from "_/components/user/SubscriptionEnd"
+import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { SubscriptionContext } from "_/contexts/user/Subscription"
-import { useUserApi } from "_/hooks/useUserApi"
 import { url } from "_/routing/user/URLs"
 import {
-	AllowedCountryIsoCode2,
+	isUtrustApiOrderResponseData,
+	UtrustApiOrderRequestData
+} from "@workspace/api"
+import {
 	isAllowedCountryIsoCode2,
+	isNaturalNumber,
 	monthlyPrice,
 	purchaseCurrency,
 	purchaseDefaultNumMonths as defaultNumMonths,
 	purchaseMaxNumMonths as maxNumMonths,
 	purchaseMinNumMonths as minNumMonths
 } from "@workspace/models"
-import { isNaturalNumber } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
-import { isMaybeObject } from "minimal-type-guard-helpers"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
-	country: "country"
+	country: "country",
+	numMonths: "numMonths"
 }
-// TODO  use Form
-// const fields = Object.keys(fieldName)
+const fields = Object.keys(fieldName)
 
 export const SubscriptionPurchase: FC = () => {
-	const { formatNumber } = useIntl()
+	const { formatNumber, formatMessage } = useIntl()
 
-	const { account } = useContext(AuthenticationContext)
+	const { accountEmail } = useContext(AuthenticationContext)
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
 		useContext(SubscriptionContext)
 
-	const SET_COUNTRY = useUserApi.SetAccountCountry()
-
 	const [purchaseIsPending, setPurchaseIsPending] = useState(false)
-	const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("")
 	const [numMonths, setNumMonths] = useState<number | undefined>(
 		defaultNumMonths
 	)
-
-	let purchaseIsDisabled = false
-	if (!country) purchaseIsDisabled = true
-	if (isNaturalNumber(numMonths)) {
-		if (numMonths < minNumMonths) purchaseIsDisabled = true
-		if (numMonths > maxNumMonths) purchaseIsDisabled = true
-	}
 
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
 	if (isNaturalNumber(numMonths)) {
@@ -82,74 +72,67 @@ export const SubscriptionPurchase: FC = () => {
 			? true
 			: undefined
 
-	const onChangeNumMonths = useCallback<InputOnChange>(
-		(event) => {
-			const value = event.target.value
-			if (value === "") {
-				setNumMonths(undefined)
-				return
+	let itemName = ""
+	if (isYearlyPurchase)
+		itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
+	if (numMonths)
+		itemName = formatMessage(
+			{
+				id: "SubscriptionPurchase.monthlyItemName"
+			},
+			{ numMonths }
+		)
+
+	const onSubmit = useCallback<FormOnSubmit>(
+		async (event) => {
+			event.preventDefault()
+			if (!accountEmail) return
+			if (purchaseIsPending) return
+
+			const { country, numMonths } = formValues(event, fields)
+
+			let purchaseIsDisabled = false
+			if (!country) purchaseIsDisabled = true
+			if (isNaturalNumber(numMonths)) {
+				if (numMonths < minNumMonths) purchaseIsDisabled = true
+				if (numMonths > maxNumMonths) purchaseIsDisabled = true
 			}
-			const num = Number(value)
-			if (num >= minNumMonths && num <= maxNumMonths) setNumMonths(num)
-		},
-		[setNumMonths]
-	)
+			if (purchaseIsDisabled) return
 
-	const onChangeCountry = useCallback<SelectOnChange>(
-		(event) => {
-			const country = event.target.value
-			if (isAllowedCountryIsoCode2(country)) setCountry(country)
-		},
-		[setCountry]
-	)
+			if (typeof numMonths !== "number") return
+			if (!isAllowedCountryIsoCode2(country)) return
 
-	const onClickPurchase = useCallback(async () => {
-		if (!account) return
-		if (purchaseIsDisabled) return
-		if (purchaseIsPending) return
-		setPurchaseIsPending(true)
-		try {
-			const response = await fetch(url.apiPurchaseOrder, {
-				// TODO define fields (and type-guard) in api package, use them also in utrust lambda
-				body: JSON.stringify({
-					accountId: account.id,
-					country,
-					email: account.email,
-					numMonths
-				}),
-				credentials: "omit",
-				headers: new Headers({
-					Accept: "application/json",
-					"Content-Type": "application/json"
-				}),
-				method: "POST"
-			})
-			if (response.ok) {
-				const data = await response.json()
-				if (isMaybeObject<{ redirectUrl: string }>(data)) {
-					const { redirectUrl } = data
-					if (typeof redirectUrl === "string")
-						window.location.href = redirectUrl
+			const requestData: UtrustApiOrderRequestData = {
+				country,
+				email: accountEmail,
+				itemName,
+				numMonths,
+				plan: "basic"
+			}
+			setPurchaseIsPending(true)
+
+			try {
+				const response = await fetch(url.apiPurchaseOrder, {
+					body: JSON.stringify(requestData),
+					credentials: "omit",
+					headers: new Headers({
+						Accept: "application/json",
+						"Content-Type": "application/json"
+					}),
+					method: "POST"
+				})
+				if (response.ok) {
+					const data = await response.json()
+					if (isUtrustApiOrderResponseData(data))
+						window.location.href = data.redirectUrl
 				}
+			} catch (error) {
+				console.error(error)
+				setPurchaseIsPending(false)
 			}
-		} catch (error) {
-			console.error(error)
-			setPurchaseIsPending(false)
-		}
-	}, [account, country, numMonths, purchaseIsDisabled, purchaseIsPending])
-
-	useEffect(() => {
-		if (!account) return
-		if (account.country) setCountry(account.country)
-	}, [account, setCountry])
-
-	useEffect(() => {
-		if (!account) return
-		if (!country) return
-		if (account.country === country) return
-
-		if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country })
-	}, [SET_COUNTRY, account, country])
+		},
+		[accountEmail, itemName, purchaseIsPending]
+	)
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {
 		style: "currency",
@@ -159,7 +142,7 @@ export const SubscriptionPurchase: FC = () => {
 	if (!canPurchaseSubscription) return null
 
 	return (
-		<Box>
+		<Form box onSubmit={onSubmit}>
 			<Title>
 				<FormattedMessage id="SubscriptionPurchase.title" />
 			</Title>
@@ -192,19 +175,16 @@ export const SubscriptionPurchase: FC = () => {
 				</Flex>
 			</Message>
 
-			<Email isStatic value={account?.email || ""} />
+			<Email isStatic value={accountEmail} />
 
-			<SelectCountry
-				name={fieldName.country}
-				onChange={onChangeCountry}
-				value={country}
-			/>
+			<SelectCountry />
 
 			<Columns>
 				<Column isNarrow>
 					<SubscriptionNumMonths
+						name={fieldName.numMonths}
+						setValue={setNumMonths}
 						value={numMonths}
-						onChange={onChangeNumMonths}
 					/>
 				</Column>
 
@@ -213,23 +193,15 @@ export const SubscriptionPurchase: FC = () => {
 				</Column>
 			</Columns>
 
-			<SubscriptionTotalPrice
-				isYearlyPurchase={isYearlyPurchase}
-				numMonths={numMonths}
-			/>
+			<SubscriptionTotalPrice numMonths={numMonths} />
 
-			<Field>
-				<Control>
-					<Button
-						color="primary"
-						disabled={purchaseIsDisabled}
-						onClick={onClickPurchase}
-						isLoading={purchaseIsPending}
-					>
-						<FormattedMessage id="SubscriptionPurchase.button" />
-					</Button>
-				</Control>
-			</Field>
-		</Box>
+			<Title size={5}>{itemName}</Title>
+
+			<Buttons>
+				<Button color="primary" isLoading={purchaseIsPending}>
+					<FormattedMessage id="SubscriptionPurchase.button" />
+				</Button>
+			</Buttons>
+		</Form>
 	)
 }

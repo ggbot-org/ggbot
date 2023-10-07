@@ -395,8 +395,35 @@
 	"SchedulingStatus.suspended": {
 		"defaultMessage": "Suspended"
 	},
+	"SelectCountry.AT": {
+		"defaultMessage": "Austria"
+	},
+	"SelectCountry.FR": {
+		"defaultMessage": "France"
+	},
+	"SelectCountry.IT": {
+		"defaultMessage": "Italy"
+	},
+	"SelectCountry.DE": {
+		"defaultMessage": "Germany"
+	},
+	"SelectCountry.ES": {
+		"defaultMessage": "Spain"
+	},
+	"SelectCountry.GR": {
+		"defaultMessage": "Greece"
+	},
+	"SelectCountry.NL": {
+		"defaultMessage": "Netherlands"
+	},
+	"SelectCountry.PT": {
+		"defaultMessage": "Portugal"
+	},
 	"SelectCountry.label": {
 		"defaultMessage": "Country"
+	},
+	"SelectCountry.noValue": {
+		"defaultMessage": "-- Select country --"
 	},
 	"ShareStrategy.label": {
 		"defaultMessage": "Share"
@@ -449,9 +476,6 @@
 	"SubscriptionEnd.label": {
 		"defaultMessage": "End day"
 	},
-	"SubscriptionPlan.label": {
-		"defaultMessage": "Plan"
-	},
 	"SubscriptionInfo.title": {
 		"defaultMessage": "Subscription"
 	},
@@ -461,11 +485,20 @@
 	"SubscriptionNumMonths.label": {
 		"defaultMessage": "Num months"
 	},
+	"SubscriptionPlan.label": {
+		"defaultMessage": "Plan"
+	},
 	"SubscriptionPurchase.button": {
 		"defaultMessage": "Buy"
 	},
 	"SubscriptionPurchase.couldRenew": {
 		"defaultMessage": "Your subscription will expire soon, please consider renew it."
+	},
+	"SubscriptionPurchase.monthlyItemName": {
+		"defaultMessage": "Monthly subscription, {numMonths, plural, =1 {# month} other {# months} }"
+	},
+	"SubscriptionPurchase.yearlyItemName": {
+		"defaultMessage": "One year subscription"
 	},
 	"SubscriptionPurchase.hint": {
 		"defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."
@@ -487,9 +520,6 @@
 	},
 	"SubscriptionTotalPrice.label": {
 		"defaultMessage": "Total price"
-	},
-	"SubscriptionTotalPrice.discount": {
-		"defaultMessage": "One month for free."
 	},
 	"Tabs.accounts": {
 		"defaultMessage": "Accounts"

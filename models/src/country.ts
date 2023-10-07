@@ -1,12 +1,11 @@
 import { isLiteralType } from "minimal-type-guard-helpers"
 
-const allowedCountryIsoCodes2 = [
+export const allowedCountryIsoCodes2 = [
 	"AT",
 	"FR",
 	"IT",
 	"DE",
 	"ES",
-	"GB",
 	"GR",
 	"NL",
 	"PT"

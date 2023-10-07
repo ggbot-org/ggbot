@@ -32,7 +32,14 @@ import {
 export const monthlyPrice = 10
 export const purchaseCurrency: Currency = "EUR"
 export const purchaseDefaultNumMonths = 6
+/**
+ * Maximum number of purchase months.
+ *
+ * It is bounded in order to renew conditions periodically. For example the
+ * purchase may be blocked if the user needs to update its API settings.
+ */
 export const purchaseMaxNumMonths = 12
+/** Minimum number of purchase months. */
 export const purchaseMinNumMonths = 1
 
 const subscriptionPurchaseStatuses = [

@@ -12,6 +12,7 @@ export const Email: FC<Props> = ({ isStatic, value, ...props }) => {
 			type={isStatic ? "text" : "email"}
 			label={formatMessage({ id: "Email.label" })}
 			isStatic={isStatic}
+			readOnly={isStatic}
 			value={isStatic ? undefined : value}
 			defaultValue={isStatic ? value : undefined}
 			{...props}

@@ -1,24 +1,20 @@
-import { InputField, InputFieldProps } from "_/components/library"
+import { InputField } from "_/components/library"
 import { purchaseCurrency, totalPurchase } from "@workspace/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 
-type Props = Omit<InputFieldProps, "color" | "help" | "label" | "readOnly"> & {
-	isYearlyPurchase: boolean | undefined
+type Props = {
 	numMonths: number | undefined
 }
 
-export const SubscriptionTotalPrice: FC<Props> = ({
-	isYearlyPurchase,
-	numMonths
-}) => {
+export const SubscriptionTotalPrice: FC<Props> = ({ numMonths }) => {
 	const { formatMessage, formatNumber } = useIntl()
 
 	return (
 		<InputField
 			isStatic
+			readOnly
 			label={formatMessage({ id: "SubscriptionTotalPrice.label" })}
-			color={isYearlyPurchase ? "primary" : undefined}
 			value={
 				numMonths
 					? formatNumber(totalPurchase(numMonths), {
@@ -26,11 +22,6 @@ export const SubscriptionTotalPrice: FC<Props> = ({
 							currency: purchaseCurrency
 					  })
 					: ""
-			}
-			help={
-				isYearlyPurchase
-					? formatMessage({ id: "SubscriptionTotalPrice.discount" })
-					: undefined
 			}
 		/>
 	)

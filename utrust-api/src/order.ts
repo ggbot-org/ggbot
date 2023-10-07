@@ -1,7 +1,7 @@
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
 import {
-	ApiUtrustOrderResponseData,
-	isApiUtrustOrderRequestData
+	isUtrustApiOrderRequestData,
+	UtrustApiOrderResponseData
 } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
@@ -9,8 +9,13 @@ import {
 	BAD_REQUEST,
 	INTERNAL_SERVER_ERROR,
 	METHOD_NOT_ALLOWED,
-	OK
+	OK,
+	UNATHORIZED
 } from "@workspace/api-gateway"
+import {
+	ErrorUnauthorizedAuthenticationHeader,
+	readSessionFromAuthorizationHeader
+} from "@workspace/authentication"
 import {
 	createMonthlySubscriptionPurchase,
 	createYearlySubscriptionPurchase,
@@ -32,7 +37,6 @@ import {
 	purchaseCurrency,
 	purchaseMaxNumMonths,
 	statusOfSubscription,
-	SubscriptionPlan,
 	totalPurchase
 } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
@@ -67,16 +71,19 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				info(event.httpMethod, JSON.stringify(event.body, null, 2))
 				if (!event.body) return BAD_REQUEST()
 
+				const { accountId } = readSessionFromAuthorizationHeader(
+					event.headers.Authorization
+				)
+
 				const input = JSON.parse(event.body)
-				if (!isApiUtrustOrderRequestData(input)) return BAD_REQUEST()
+				if (!isUtrustApiOrderRequestData(input)) return BAD_REQUEST()
 				info(JSON.stringify(input, null, 2))
 
-				const { accountId, country, email, numMonths } = input
+				const { country, email, itemName, numMonths, plan } = input
 
 				const numDecimals = 2
 				const totalNum = totalPurchase(numMonths)
 				const totalStr = totalNum.toFixed(numDecimals)
-				const plan: SubscriptionPlan = "basic"
 
 				const paymentProvider: PaymentProvider = "utrust"
 
@@ -121,11 +128,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					line_items: [
 						{
 							currency: purchaseCurrency,
-							name: `Subscription (${
-								numMonths >= purchaseMaxNumMonths - 1
-									? "1 year"
-									: `${numMonths} months`
-							})`,
+							name: itemName,
 							price: totalStr,
 							quantity: 1,
 							sku: plan
@@ -153,7 +156,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					info: { uuid }
 				})
 
-				const output: ApiUtrustOrderResponseData = { redirectUrl }
+				const output: UtrustApiOrderResponseData = { redirectUrl }
 				info(JSON.stringify(output, null, 2))
 				return OK(output)
 			}
@@ -162,6 +165,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return METHOD_NOT_ALLOWED
 		}
 	} catch (error) {
+		if (error instanceof ErrorUnauthorizedAuthenticationHeader)
+			return UNATHORIZED
+		// Fallback to print error if not handled.
 		console.error(error)
 	}
 	return INTERNAL_SERVER_ERROR
