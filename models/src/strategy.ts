@@ -64,28 +64,6 @@ export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
 
 export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>
 
-// TODO restore this?
-//
-// type ListStrategyKeysInput = Pick<StrategyKey, "strategyKind"> & {
-// 	strategyId: string
-// }
-//
-// /**
-//  * Input `StrategyKey` has `strategyKind` and maybe truncated `strategyId`.
-//  *
-//  * @example Get all strategies with strategyId starting with 'a'.
-//  *
-//  * ```json
-//  * {
-//  * 	"strategyKind": "binance",
-//  * 	"strategyId": "a"
-//  * }
-//  * ```
-//  */
-// export type ListStrategyKeys = (
-// 	arg: ListStrategyKeysInput
-// ) => Promise<StrategyKey[]>
-
 export type ReadStrategy = (arg: StrategyKey) => Promise<Strategy | null>
 
 export const isReadStrategyInput = isStrategyKey

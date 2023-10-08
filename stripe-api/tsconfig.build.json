@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"outDir": "./temp",
+		"tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo"
+	},
+	"extends": "./tsconfig.json",
+	"exclude": ["node_modules"]
+}

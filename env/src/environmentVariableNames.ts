@@ -10,6 +10,8 @@ const environmentVariableNames = [
 	"JWT_SECRET",
 	"NODE_ENV",
 	"PROJECT_SHORT_NAME",
+	"STRIPE_SECRET_KEY",
+	"STRIPE_WEBHOOK_SECRET",
 	"UTRUST_API_KEY",
 	"UTRUST_WEBHOOK_SECRET"
 ] as const

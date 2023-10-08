@@ -12,7 +12,6 @@ import {
 	OK,
 	APIGatewayProxyHandler
 } from "@workspace/api-gateway"
-import { UserWebappBaseURL } from "@workspace/locators"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 type RequestData = {
@@ -27,6 +26,7 @@ const isRequestData = objectTypeGuard<RequestData>(
 	({ message }) => typeof message === "string"
 )
 
+// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		switch (event.httpMethod) {

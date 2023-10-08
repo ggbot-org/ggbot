@@ -14,7 +14,6 @@ export const isStrategyFlow = objectTypeGuard<StrategyFlow>(
 	({ view, ...updateTime }) =>
 		isMaybeObject<FlowViewSerializableGraph>(view) &&
 		isUpdateTime(updateTime)
-	//TODO is FlowViewSerializableGraph(view)
 )
 
 type CopyStrategyFlowInput = AccountKey & {
@@ -35,7 +34,6 @@ export type ReadStrategyFlow = (
 type WriteStrategyFlowInput = AccountStrategyKey &
 	Omit<StrategyFlow, "whenUpdated">
 
-//TODO is FlowViewSerializableGraph(view)
 export const isWriteStrategyFlowInput = objectTypeGuard<WriteStrategyFlowInput>(
 	({ view, ...accountStrategyKey }) =>
 		isMaybeObject<FlowViewSerializableGraph>(view) &&
