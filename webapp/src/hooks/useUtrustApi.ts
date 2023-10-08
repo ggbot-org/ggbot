@@ -6,7 +6,7 @@ import { CreateUtrustOrder } from "@workspace/models"
 export const useUtrustApi = {
 	CreateUtrustOrder: () =>
 		useAction<Authenticated<CreateUtrustOrder>, UtrustApiActionType>(
-			{ endpoint: url.apiUtrustOrder },
+			{ endpoint: url.apiUtrustOrder, withJwt: true },
 			"CreateUtrustOrder"
 		)
 }

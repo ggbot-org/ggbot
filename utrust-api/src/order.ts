@@ -20,7 +20,7 @@ import {
 	readSubscription,
 	updateSubscriptionPurchaseInfo
 } from "@workspace/database"
-import { ENV } from "@workspace/env"
+import { DeployStage, ENV } from "@workspace/env"
 import {
 	ApiBaseURL,
 	FQDN,
@@ -29,6 +29,7 @@ import {
 	UtrustReturnURL,
 	WebappBaseURL
 } from "@workspace/locators"
+import { logging } from "@workspace/logging"
 import {
 	CreateUtrustOrder,
 	isCreateUtrustOrderInput,
@@ -40,9 +41,15 @@ import {
 } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
 
-import { info } from "./logging.js"
+const { info, warn } = logging("utrust")
 
-const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
+// If deployStage is "local", set it to "next".
+// Both `cancelUrl` and `returnUrl` cannot point to localhost.
+const deployStage: DeployStage =
+	DEPLOY_STAGE === "local" ? "next" : DEPLOY_STAGE
+
+const fqdn = new FQDN(deployStage, ENV.DNS_DOMAIN())
 const webappBaseURL = new WebappBaseURL(fqdn)
 const apiBaseURL = new ApiBaseURL(fqdn)
 const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString())
@@ -128,16 +135,20 @@ const createUtrustOrder: CreateUtrustOrder = async ({
 	info("order", JSON.stringify(order, null, 2))
 	info("customer", JSON.stringify(customer, null, 2))
 
-	const { data } = await createOrder(order, customer)
-	info("created order", JSON.stringify(data, null, 2))
+	const { data, status, errors } = await createOrder(order, customer)
 
-	if (data === null) return null
+	if (data === null) {
+		warn("could not create order", status, errors)
+		return null
+	}
+
+	info("created order", JSON.stringify(data, null, 2))
 
 	const { redirectUrl, uuid } = data
 
 	if (typeof redirectUrl !== "string") return null
 
-	updateSubscriptionPurchaseInfo({
+	await updateSubscriptionPurchaseInfo({
 		...purchaseKey,
 		// Account could change country and even email after purchasing.
 		info: { country, email, total, uuid }
@@ -154,7 +165,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return ALLOWED_METHODS(["POST"])
 
 			case "POST": {
-				info(event.httpMethod, JSON.stringify(event.body, null, 2))
 				if (!event.body) return BAD_REQUEST()
 
 				const { accountId } = readSessionFromAuthorizationHeader(
@@ -172,7 +182,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						const input = { accountId, ...actionData }
 						if (!isCreateUtrustOrderInput(input))
 							return BAD_REQUEST()
-						const output = createUtrustOrder(input)
+						const output = await createUtrustOrder(input)
 						info(action.type, JSON.stringify(output, null, 2))
 						if (output === null) return BAD_REQUEST()
 						return OK(output)

@@ -18,8 +18,9 @@ import {
 	writeSubscription
 } from "@workspace/database"
 import { ENV } from "@workspace/env"
+import { logging } from "@workspace/logging"
 
-import { info } from "./logging.js"
+const { info } = logging("utrust")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {

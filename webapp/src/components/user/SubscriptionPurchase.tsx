@@ -124,7 +124,6 @@ export const SubscriptionPurchase: FC = () => {
 
 	useEffect(() => {
 		if (!data) return
-		window.location.href = data.redirectUrl
 	}, [data])
 
 	if (!canPurchaseSubscription) return null
