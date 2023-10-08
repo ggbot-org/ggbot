@@ -8,7 +8,7 @@ rm -rf dist/*/index.zip
 
 ### TODO generate temp/package.json file reading from other package.json
 #        files, use a node script
-echo '{ "name": "lambda", "type": "module", "dependencies": { "@aws-sdk/client-ec2": "3.379.1", "@aws-sdk/client-iam": "3.379.1", "@aws-sdk/client-s3": "3.379.1", "@aws-sdk/client-ses": "3.379.1", "jsonwebtoken": "9.0.1", "dflow": "0.42.0", "flow-view": "6.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
+echo '{ "name": "lambda", "type": "module", "dependencies": { "@aws-sdk/client-ec2": "3.427.0", "@aws-sdk/client-iam": "3.379.1", "@aws-sdk/client-s3": "3.427.0", "@aws-sdk/client-ses": "3.427.0", "jsonwebtoken": "9.0.1", "dflow": "0.42.0", "flow-view": "6.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
 cd temp
 npm install
 cd -

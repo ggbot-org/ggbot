@@ -95,6 +95,7 @@ export { defaultLanguage, languages } from "./languages.js"
 export { isName, normalizeName, throwIfInvalidName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
 export { isNaturalNumber } from "./numbers.js"
+export type { EmptyObject } from "./objects.js"
 export type {
 	CreateOneTimePassword,
 	DeleteOneTimePassword,

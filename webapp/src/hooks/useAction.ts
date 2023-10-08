@@ -16,9 +16,8 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
-import { AccountKey } from "@workspace/models"
+import { AccountKey, EmptyObject } from "@workspace/models"
 import { useCallback, useState } from "react"
-import { EmptyObject } from "type-fest"
 
 const { info, warn } = logging("use-action")
 
