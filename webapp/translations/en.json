@@ -498,7 +498,7 @@
 		"defaultMessage": "Your subscription will expire soon, please consider renew it."
 	},
 	"SubscriptionPurchase.monthlyItemName": {
-		"defaultMessage": "Monthly subscription, {numMonths, plural, =1 {# month} other {# months} }"
+		"defaultMessage": "Monthly subscription ({numMonths, plural, =1 {# month} other {# months}})"
 	},
 	"SubscriptionPurchase.yearlyItemName": {
 		"defaultMessage": "One year subscription"

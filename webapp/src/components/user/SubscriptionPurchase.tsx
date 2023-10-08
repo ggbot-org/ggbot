@@ -72,9 +72,9 @@ export const SubscriptionPurchase: FC = () => {
 			: undefined
 
 	let itemName = ""
-	if (isYearlyPurchase)
+	if (isYearlyPurchase) {
 		itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
-	if (numMonths)
+	} else if (numMonths)
 		itemName = formatMessage(
 			{
 				id: "SubscriptionPurchase.monthlyItemName"
@@ -88,7 +88,12 @@ export const SubscriptionPurchase: FC = () => {
 			if (!accountEmail) return
 			if (!CREATE_ORDER.canRun) return
 
-			const { country, numMonths } = formValues(event, fields)
+			const { country, numMonths: numMonthsStr } = formValues(
+				event,
+				fields
+			)
+
+			const numMonths = Number(numMonthsStr)
 
 			let purchaseIsDisabled = false
 			if (!country) purchaseIsDisabled = true
@@ -160,7 +165,7 @@ export const SubscriptionPurchase: FC = () => {
 
 			<Email isStatic value={accountEmail} />
 
-			<SelectCountry />
+			<SelectCountry name={fieldName.country} />
 
 			<Columns>
 				<Column isNarrow>

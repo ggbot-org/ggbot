@@ -13,7 +13,7 @@ import {
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
 
-type Props = Omit<SelectFieldProps, "label" | "options">
+type Props = Pick<SelectFieldProps, "name">
 
 export const SelectCountry: FC<Props> = ({ name }) => {
 	const { formatMessage } = useIntl()
@@ -52,10 +52,17 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 
 	const SET_COUNTRY = useUserApi.SetAccountCountry()
 
-	const onChange = useCallback<SelectOnChange>((event) => {
-		const value = event.target.value
-		if (isAllowedCountryIsoCode2(value)) setCountry(value)
-	}, [])
+	const onChange = useCallback<SelectOnChange>(
+		(event) => {
+			const value = event.target.value
+			if (!SET_COUNTRY.canRun) return
+			if (isAllowedCountryIsoCode2(value)) {
+				SET_COUNTRY.request({ country: value })
+				setCountry(value)
+			}
+		},
+		[SET_COUNTRY]
+	)
 
 	useEffect(() => {
 		if (!account) return
@@ -63,12 +70,8 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 	}, [account, setCountry])
 
 	useEffect(() => {
-		if (!account) return
-		if (!country) return
-		if (account.country === country) return
-
-		if (SET_COUNTRY.canRun) SET_COUNTRY.request({ country })
-	}, [SET_COUNTRY, account, country])
+		if (SET_COUNTRY.isDone) SET_COUNTRY.reset()
+	}, [SET_COUNTRY])
 
 	return (
 		<SelectField

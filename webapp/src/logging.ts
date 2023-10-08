@@ -38,6 +38,8 @@ export const logging = (prefix: string) => ({
 	}
 })
 
-if (IS_DEV) log.enable()
+if (IS_DEV) {
+	log.enable()
+}
 
 window.log = log
