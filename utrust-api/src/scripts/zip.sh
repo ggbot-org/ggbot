@@ -6,7 +6,7 @@ rm -rf dist/*/index.zip
 
 # Install external deps.
 
-echo '{ "name": "lambda", "type": "module", "dependencies": { "@utrustdev/utrust-ts-library": "1.0.4", "@aws-sdk/client-ec2": "3.427.0", "@aws-sdk/client-iam": "3.427.0", "@aws-sdk/client-s3": "3.427.0", "@aws-sdk/client-ses": "3.427.0", "dflow": "0.42.0", "flow-view": "6.0.1", "jsonwebtoken": "9.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
+echo '{ "name": "lambda", "type": "module", "dependencies": { "@utrustdev/utrust-ts-library": "1.0.4", "@aws-sdk/client-iam": "3.427.0", "@aws-sdk/client-s3": "3.427.0", "@aws-sdk/client-ses": "3.427.0", "dflow": "0.42.0", "flow-view": "6.0.1", "jsonwebtoken": "9.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
 cd temp
 npm install
 cd -
