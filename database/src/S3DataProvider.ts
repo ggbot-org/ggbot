@@ -1,4 +1,4 @@
-import { DeployStage,ENV } from "@workspace/env"
+import { DeployStage, ENV } from "@workspace/env"
 
 const { DEPLOY_STAGE } = ENV
 const DNS_DOMAIN = ENV.DNS_DOMAIN()

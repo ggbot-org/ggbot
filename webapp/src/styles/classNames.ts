@@ -1,7 +1,8 @@
 import {
 	BulmaClassName,
 	classNames as _classNames,
-	ClassNamesArg as _ClassNamesArg} from "trunx"
+	ClassNamesArg as _ClassNamesArg
+} from "trunx"
 
 type FlowViewContainerClassName = "FlowViewContainer"
 

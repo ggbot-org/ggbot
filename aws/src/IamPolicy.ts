@@ -1,4 +1,4 @@
-import { getPolicy, getPolicyVersion,Policy, PolicyDocument } from "./iam.js"
+import { getPolicy, getPolicyVersion, Policy, PolicyDocument } from "./iam.js"
 import { AwsAccountId, AwsRegion, AwsResource } from "./types.js"
 
 export class IamPolicy implements AwsResource {

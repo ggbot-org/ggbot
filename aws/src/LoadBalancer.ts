@@ -4,7 +4,7 @@ import {
 	LoadBalancerTypeEnum
 } from "@aws-sdk/client-elastic-load-balancing-v2"
 
-import { elbClient,LoadBalancerDescription } from "./elb.js"
+import { elbClient, LoadBalancerDescription } from "./elb.js"
 import { ErrorCannotLoadBalancerDescription } from "./errors.js"
 import { AwsAccountId, AwsRegion, AwsResource } from "./types.js"
 
