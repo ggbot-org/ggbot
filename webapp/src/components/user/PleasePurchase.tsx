@@ -27,7 +27,7 @@ export const PleasePurchase: FC = () => {
 	}, [])
 
 	useEffect(() => {
-		if (sessionWebStorage.doNotShowPleasePurchase) return
+		if (sessionWebStorage.doNotShowPleasePurchase.get()) return
 		if (hasActiveSubscription === false) setIsActive(true)
 	}, [hasActiveSubscription])
 

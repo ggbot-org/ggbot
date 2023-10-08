@@ -4,9 +4,10 @@ import { ReadonlyFlow } from "_/components/ReadonlyFlow"
 import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
+import { PageName } from "_/routing/pageNames"
 import { FC, useState } from "react"
 
-const pageName = "Strategy"
+const pageName: PageName = "Strategy"
 
 export const StrategyPage: FC = () => {
 	const [activeTabId, setActiveTabId] = useState<TabId>(

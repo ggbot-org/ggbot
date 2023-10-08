@@ -18,6 +18,7 @@ import {
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
+import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { SubscriptionContext } from "_/contexts/user/Subscription"
 import { useUserApi } from "_/hooks/useUserApi"
@@ -34,13 +35,16 @@ import {
 	useMemo,
 	useState
 } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 export const Schedulings: FC = () => {
+	const { formatMessage } = useIntl()
+
 	const { strategyId } = useContext(StrategyContext)
 	const { hasActiveSubscription } = useContext(SubscriptionContext)
 	const { accountStrategies, refetchAccountStrategies } =
 		useContext(StrategiesContext)
+	const { toast } = useContext(ToastContext)
 
 	const WRITE = useUserApi.WriteAccountStrategiesItemSchedulings()
 	const isDone = WRITE.isDone
@@ -149,6 +153,12 @@ export const Schedulings: FC = () => {
 	)
 
 	const addSchedulingItem = useCallback(() => {
+		if (!hasActiveSubscription) {
+			toast.warning(
+				formatMessage({ id: "Schedulings.noActiveSubscription" })
+			)
+			return
+		}
 		setSchedulingItems((schedulingItems) =>
 			schedulingItems.concat(
 				newStrategyScheduling({
@@ -157,16 +167,30 @@ export const Schedulings: FC = () => {
 				})
 			)
 		)
-	}, [])
+	}, [formatMessage, hasActiveSubscription, toast])
 
 	const onClickSave = useCallback<ButtonOnClick>(() => {
 		if (!strategyId) return
+		if (!hasActiveSubscription) {
+			toast.warning(
+				formatMessage({ id: "Schedulings.noActiveSubscription" })
+			)
+			return
+		}
 		if (!canSave) return
 		WRITE.request({
 			strategyId,
 			schedulings: wantedSchedulings
 		})
-	}, [WRITE, canSave, strategyId, wantedSchedulings])
+	}, [
+		WRITE,
+		canSave,
+		formatMessage,
+		hasActiveSubscription,
+		strategyId,
+		toast,
+		wantedSchedulings
+	])
 
 	const onSubmit = useCallback<FormOnSubmit>((event) => {
 		event.preventDefault()

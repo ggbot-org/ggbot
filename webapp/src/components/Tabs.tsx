@@ -6,6 +6,7 @@ import {
 	TabSelectorProps,
 	TabSelectors
 } from "_/components/library"
+import { PageName } from "_/routing/pageNames"
 import { sessionWebStorage } from "_/storages/session"
 import {
 	Dispatch,
@@ -28,7 +29,7 @@ const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-export const getStoredTabId = (pageName: string) =>
+export const getStoredTabId = (pageName: PageName) =>
 	sessionWebStorage.getActiveTabId<TabId>(pageName, tabIds)
 
 type Tab = { tabId: TabId; content: ReactNode }
@@ -37,7 +38,7 @@ type TabsProps = {
 	activeTabId: TabId
 	setActiveTabId: Dispatch<SetStateAction<TabId>>
 	tabs: Tab[]
-	pageName: string
+	pageName: PageName
 }
 
 type ItemList<Props> = (PropsWithChildren<Props> & Pick<Tab, "tabId">)[]

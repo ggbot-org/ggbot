@@ -12,9 +12,10 @@ import { BinanceApiConfigProvider } from "_/contexts/user/BinanceApiConfig"
 import { ManageStrategyProvider } from "_/contexts/user/ManageStrategy"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
 import { SubscriptionProvider } from "_/contexts/user/Subscription"
+import { PageName } from "_/routing/pageNames"
 import { FC, useState } from "react"
 
-const pageName = "Strategy"
+const pageName: PageName = "Strategy"
 
 export const StrategyPage: FC = () => {
 	const [activeTabId, setActiveTabId] = useState<TabId>(

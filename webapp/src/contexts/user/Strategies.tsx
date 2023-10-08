@@ -24,9 +24,6 @@ export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
 		if (Array.isArray(data)) {
 			for (const item of data)
 				if (isAccountStrategy(item)) accountStrategies.push(item)
-			// TODO if it is not an account strategy it may be some corrupted item
-			// show a feedback or show it somewhere and handle it some how.
-			// For example on next stage I got a strategy with strategyKind _none_
 			return {
 				accountStrategies,
 				refetchAccountStrategies: reset
@@ -34,7 +31,7 @@ export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 
 		return {
-			accountStrategies: data === null ? [] : undefined,
+			accountStrategies: undefined,
 			refetchAccountStrategies: reset
 		}
 	}, [READ])

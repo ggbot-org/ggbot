@@ -14,6 +14,7 @@ import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorE
 import { UseActionError } from "_/hooks/useAction"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
 import { useUserApi } from "_/hooks/useUserApi"
+import { sessionWebStorage } from "_/storages/session"
 import { isName } from "@workspace/models"
 import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -56,6 +57,9 @@ export const CreateStrategy: FC = () => {
 		}
 	}, [CREATE])
 
+	useEffect(() => {
+		sessionWebStorage.setActiveTabId("Dashboard", "strategies")
+	}, [newStrategy])
 	useRedirectToNewStrategyPage(newStrategy)
 
 	return (

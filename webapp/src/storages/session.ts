@@ -1,4 +1,5 @@
 import { logging } from "_/logging"
+import { PageName } from "_/routing/pageNames"
 import { BinanceExchangeInfo, isBinanceExchangeInfo } from "@workspace/binance"
 import type { ManagedCacheProvider } from "@workspace/cache"
 import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@workspace/dflow"
@@ -71,10 +72,6 @@ class SessionWebStorage {
 		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
 	}
 
-	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
-	}
-
 	get gotFirstPageView(): ManagedCacheProvider<boolean> {
 		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
 	}
@@ -109,14 +106,14 @@ class SessionWebStorage {
 	}
 
 	getActiveTabId<TabId extends string>(
-		pageName: string,
+		pageName: PageName,
 		tabIds: readonly TabId[]
 	): TabId | undefined {
 		const value = this.storage.getItem(itemKey.activeTabId(pageName))
 		if (isLiteralType<TabId>(tabIds)(value)) return value
 	}
 
-	setActiveTabId<TabId extends string>(pageName: string, value: TabId) {
+	setActiveTabId<TabId extends string>(pageName: PageName, value: TabId) {
 		this.storage.setItem(itemKey.activeTabId(pageName), value)
 	}
 }

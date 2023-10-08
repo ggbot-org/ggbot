@@ -380,6 +380,9 @@
 	"Schedulings.cancel": {
 		"defaultMessage": "Cancel"
 	},
+	"Schedulings.noActiveSubscription": {
+		"defaultMessage": "Cannot manage schedulings without a subscription."
+	},
 	"Schedulings.save": {
 		"defaultMessage": "Save"
 	},
@@ -435,7 +438,7 @@
 		"defaultMessage": "Could not share strategy. Please copy URL manually."
 	},
 	"Strategies.noStrategy": {
-		"defaultMessage": "Your strategies list is empty."
+		"defaultMessage": "You have no strategy yet. Create a new strategy or copy one from a shared link."
 	},
 	"Strategies.hideInactive": {
 		"defaultMessage": "Hide inactive strategies."

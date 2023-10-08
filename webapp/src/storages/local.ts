@@ -7,6 +7,7 @@ import {
 	Strategy
 } from "@workspace/models"
 
+import { cachedBoolean } from "./cachedBoolean"
 import { itemKey } from "./itemKeys"
 import type { WebStorageProvider } from "./provider"
 
@@ -37,6 +38,10 @@ class LocalWebStorageProvider implements WebStorageProvider {
 
 class LocalWebStorage {
 	private storage = new LocalWebStorageProvider()
+
+	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
+	}
 
 	get jwt(): ManagedCacheProvider<NonEmptyString> {
 		const key = itemKey.jwt()

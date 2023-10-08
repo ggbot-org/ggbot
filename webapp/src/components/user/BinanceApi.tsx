@@ -19,6 +19,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 export const BinanceApi: FC = () => {
 	const { formatMessage } = useIntl()
+
 	const { toast } = useContext(ToastContext)
 	const { apiKey } = useContext(BinanceApiConfigContext)
 

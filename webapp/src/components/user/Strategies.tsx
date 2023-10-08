@@ -10,7 +10,7 @@ import {
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { href } from "_/routing/user/hrefs"
-import { sessionWebStorage } from "_/storages/session"
+import { localWebStorage } from "_/storages/local"
 import { AccountStrategy } from "@workspace/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -23,7 +23,7 @@ type StrategyItem = Pick<
 export const Strategies: FC = () => {
 	const { accountStrategies } = useContext(StrategiesContext)
 	const [hideInactive, setHideInactive] = useState(
-		sessionWebStorage.hideInactiveStrategies.get()
+		localWebStorage.hideInactiveStrategies.get()
 	)
 	let numInactive = 0
 
@@ -54,10 +54,12 @@ export const Strategies: FC = () => {
 	const onChangeHideInactive = useCallback<CheckboxOnChange>((event) => {
 		const checked = event.target.checked
 		setHideInactive(checked)
-		sessionWebStorage.hideInactiveStrategies.set(checked)
+		localWebStorage.hideInactiveStrategies.set(checked)
 	}, [])
 
-	if (accountStrategies === null)
+	if (accountStrategies === undefined) return null
+
+	if (accountStrategies.length === 0)
 		return (
 			<Message color="info">
 				<FormattedMessage id="Strategies.noStrategy" />

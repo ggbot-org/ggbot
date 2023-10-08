@@ -3,9 +3,10 @@ import { CreateStrategy } from "_/components/user/CreateStrategy"
 import { PageContainer } from "_/components/user/PageContainer"
 import { Strategies } from "_/components/user/Strategies"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
+import { PageName } from "_/routing/pageNames"
 import { FC, useState } from "react"
 
-const pageName = "Dashboard"
+const pageName: PageName = "Dashboard"
 
 export const DashboardPage: FC = () => {
 	const [activeTabId, setActiveTabId] = useState<TabId>(
