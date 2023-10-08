@@ -21,11 +21,7 @@ import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { SubscriptionContext } from "_/contexts/user/Subscription"
-import { url } from "_/routing/user/URLs"
-import {
-	isUtrustApiOrderResponseData,
-	UtrustApiOrderRequestData
-} from "@workspace/api"
+import { useUtrustApi } from "_/hooks/useUtrustApi"
 import {
 	isAllowedCountryIsoCode2,
 	isNaturalNumber,
@@ -36,7 +32,7 @@ import {
 	purchaseMinNumMonths as minNumMonths
 } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
-import { FC, useCallback, useContext, useState } from "react"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
@@ -52,10 +48,13 @@ export const SubscriptionPurchase: FC = () => {
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
 		useContext(SubscriptionContext)
 
-	const [purchaseIsPending, setPurchaseIsPending] = useState(false)
 	const [numMonths, setNumMonths] = useState<number | undefined>(
 		defaultNumMonths
 	)
+
+	const CREATE_ORDER = useUtrustApi.CreateUtrustOrder()
+	const isLoading = CREATE_ORDER.isPending
+	const data = CREATE_ORDER.data
 
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
 	if (isNaturalNumber(numMonths)) {
@@ -87,7 +86,7 @@ export const SubscriptionPurchase: FC = () => {
 		async (event) => {
 			event.preventDefault()
 			if (!accountEmail) return
-			if (purchaseIsPending) return
+			if (!CREATE_ORDER.canRun) return
 
 			const { country, numMonths } = formValues(event, fields)
 
@@ -102,42 +101,26 @@ export const SubscriptionPurchase: FC = () => {
 			if (typeof numMonths !== "number") return
 			if (!isAllowedCountryIsoCode2(country)) return
 
-			const requestData: UtrustApiOrderRequestData = {
+			CREATE_ORDER.request({
 				country,
 				email: accountEmail,
 				itemName,
 				numMonths,
 				plan: "basic"
-			}
-			setPurchaseIsPending(true)
-
-			try {
-				const response = await fetch(url.apiPurchaseOrder, {
-					body: JSON.stringify(requestData),
-					credentials: "omit",
-					headers: new Headers({
-						Accept: "application/json",
-						"Content-Type": "application/json"
-					}),
-					method: "POST"
-				})
-				if (response.ok) {
-					const data = await response.json()
-					if (isUtrustApiOrderResponseData(data))
-						window.location.href = data.redirectUrl
-				}
-			} catch (error) {
-				console.error(error)
-				setPurchaseIsPending(false)
-			}
+			})
 		},
-		[accountEmail, itemName, purchaseIsPending]
+		[CREATE_ORDER, accountEmail, itemName]
 	)
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {
 		style: "currency",
 		currency: purchaseCurrency
 	})
+
+	useEffect(() => {
+		if (!data) return
+		window.location.href = data.redirectUrl
+	}, [data])
 
 	if (!canPurchaseSubscription) return null
 
@@ -198,7 +181,7 @@ export const SubscriptionPurchase: FC = () => {
 			<Title size={5}>{itemName}</Title>
 
 			<Buttons>
-				<Button color="primary" isLoading={purchaseIsPending}>
+				<Button color="primary" isLoading={isLoading}>
 					<FormattedMessage id="SubscriptionPurchase.button" />
 				</Button>
 			</Buttons>

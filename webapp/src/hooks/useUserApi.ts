@@ -1,8 +1,7 @@
-import { useAction } from "_/hooks/useAction"
+import { Authenticated, useAction } from "_/hooks/useAction"
 import { url } from "_/routing/user/URLs"
 import { UserApiActionType } from "@workspace/api"
 import {
-	AccountKey,
 	CopyStrategy,
 	CreateBinanceApiConfig,
 	CreateStrategy,
@@ -22,18 +21,8 @@ import {
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
 } from "@workspace/models"
-import { EmptyObject } from "type-fest"
 
 const apiOptions = { endpoint: url.apiUserAction, withJwt: true }
-
-type Authenticated<Operation extends (...args: any[]) => Promise<unknown>> =
-	Omit<Parameters<Operation>[0], "accountId"> extends EmptyObject
-		? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
-		: Parameters<Operation>[0] extends AccountKey
-		? (
-				arg: Omit<Parameters<Operation>[0], "accountId">
-		  ) => Promise<Awaited<ReturnType<Operation>>>
-		: never
 
 export const useUserApi = {
 	CopyStrategy: () =>

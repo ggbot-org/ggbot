@@ -1,8 +1,5 @@
 import { ApiClient, Customer, Order } from "@utrustdev/utrust-ts-library"
-import {
-	isUtrustApiOrderRequestData,
-	UtrustApiOrderResponseData
-} from "@workspace/api"
+import { isUtrustApiActionRequestData as isApiActionRequestData } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -33,6 +30,8 @@ import {
 	WebappBaseURL
 } from "@workspace/locators"
 import {
+	CreateUtrustOrder,
+	isCreateUtrustOrderInput,
 	PaymentProvider,
 	purchaseCurrency,
 	purchaseMaxNumMonths,
@@ -43,26 +42,113 @@ import { getDay, today } from "minimal-time-helpers"
 
 import { info } from "./logging.js"
 
+const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+const webappBaseURL = new WebappBaseURL(fqdn)
+const apiBaseURL = new ApiBaseURL(fqdn)
+const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString())
+const cancelUrl = new UtrustCancelURL(webappBaseURL.toString())
+const returnUrl = new UtrustReturnURL(webappBaseURL.toString())
+
+const UTRUST_API_KEY = ENV.UTRUST_API_KEY()
+// UTRUST_API_KEY starts with
+// - u_test_api_ on sandbox environment
+// - u_live_api_ on production environment
+const UTRUST_ENVIRONMENT = UTRUST_API_KEY.startsWith("u_live")
+	? "production"
+	: "sandbox"
+
+const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT)
+
+const createUtrustOrder: CreateUtrustOrder = async ({
+	accountId,
+	country,
+	email,
+	itemName,
+	numMonths,
+	plan
+}) => {
+	const numDecimals = 2
+	const totalNum = totalPurchase(numMonths)
+	const total = totalNum.toFixed(numDecimals)
+
+	const paymentProvider: PaymentProvider = "utrust"
+
+	const subscription = await readSubscription({ accountId })
+	const startDay =
+		subscription && statusOfSubscription(subscription) === "active"
+			? getDay(subscription.end).plusOne.day
+			: today()
+
+	const purchaseKey =
+		numMonths >= purchaseMaxNumMonths - 1
+			? await createYearlySubscriptionPurchase({
+					accountId,
+					paymentProvider,
+					plan,
+					startDay
+			  })
+			: await createMonthlySubscriptionPurchase({
+					accountId,
+					numMonths,
+					paymentProvider,
+					plan,
+					startDay
+			  })
+
+	// Save reference as stringified purchaseKey.
+	const reference = itemKeyToDirname.subscriptionPurchase(purchaseKey)
+
+	const order: Order = {
+		reference,
+		amount: {
+			currency: purchaseCurrency,
+			total
+		},
+		return_urls: {
+			callback_url: callbackUrl.toString(),
+			cancel_url: cancelUrl.toString(),
+			return_url: returnUrl.toString()
+		},
+		line_items: [
+			{
+				currency: purchaseCurrency,
+				name: itemName,
+				price: total,
+				quantity: 1,
+				sku: plan
+			}
+		]
+	}
+
+	const customer: Customer = {
+		country,
+		email
+	}
+
+	info("order", JSON.stringify(order, null, 2))
+	info("customer", JSON.stringify(customer, null, 2))
+
+	const { data } = await createOrder(order, customer)
+	info("created order", JSON.stringify(data, null, 2))
+
+	if (data === null) return null
+
+	const { redirectUrl, uuid } = data
+
+	if (typeof redirectUrl !== "string") return null
+
+	updateSubscriptionPurchaseInfo({
+		...purchaseKey,
+		// Account could change country and even email after purchasing.
+		info: { country, email, total, uuid }
+	})
+
+	return { redirectUrl }
+}
+
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
-		const webappBaseURL = new WebappBaseURL(fqdn)
-		const apiBaseURL = new ApiBaseURL(fqdn)
-		const callbackUrl = new UtrustCallbackURL(apiBaseURL.toString())
-		const cancelUrl = new UtrustCancelURL(webappBaseURL.toString())
-		const returnUrl = new UtrustReturnURL(webappBaseURL.toString())
-
-		const UTRUST_API_KEY = ENV.UTRUST_API_KEY()
-		// UTRUST_API_KEY starts with
-		// - u_test_api_ on sandbox environment
-		// - u_live_api_ on production environment
-		const UTRUST_ENVIRONMENT = UTRUST_API_KEY.startsWith("u_live")
-			? "production"
-			: "sandbox"
-
-		const { createOrder } = ApiClient(UTRUST_API_KEY, UTRUST_ENVIRONMENT)
-
 		switch (event.httpMethod) {
 			case "OPTIONS":
 				return ALLOWED_METHODS(["POST"])
@@ -75,90 +161,26 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					event.headers.Authorization
 				)
 
-				const input = JSON.parse(event.body)
-				if (!isUtrustApiOrderRequestData(input)) return BAD_REQUEST()
-				info(JSON.stringify(input, null, 2))
+				const action = JSON.parse(event.body)
 
-				const { country, email, itemName, numMonths, plan } = input
+				if (!isApiActionRequestData(action)) return BAD_REQUEST()
+				const actionData = action.data
 
-				const numDecimals = 2
-				const totalNum = totalPurchase(numMonths)
-				const totalStr = totalNum.toFixed(numDecimals)
+				switch (action.type) {
+					case "CreateUtrustOrder": {
+						if (!actionData) return BAD_REQUEST()
+						const input = { accountId, ...actionData }
+						if (!isCreateUtrustOrderInput(input))
+							return BAD_REQUEST()
+						const output = createUtrustOrder(input)
+						info(action.type, JSON.stringify(output, null, 2))
+						if (output === null) return BAD_REQUEST()
+						return OK(output)
+					}
 
-				const paymentProvider: PaymentProvider = "utrust"
-
-				const subscription = await readSubscription({ accountId })
-				const startDay =
-					subscription &&
-					statusOfSubscription(subscription) === "active"
-						? getDay(subscription.end).plusOne.day
-						: today()
-
-				const purchaseKey =
-					numMonths >= purchaseMaxNumMonths - 1
-						? await createYearlySubscriptionPurchase({
-								accountId,
-								paymentProvider,
-								plan,
-								startDay
-						  })
-						: await createMonthlySubscriptionPurchase({
-								accountId,
-								numMonths,
-								paymentProvider,
-								plan,
-								startDay
-						  })
-
-				// Save reference as stringified purchaseKey.
-				const reference =
-					itemKeyToDirname.subscriptionPurchase(purchaseKey)
-
-				const order: Order = {
-					reference,
-					amount: {
-						currency: purchaseCurrency,
-						total: totalStr
-					},
-					return_urls: {
-						callback_url: callbackUrl.toString(),
-						cancel_url: cancelUrl.toString(),
-						return_url: returnUrl.toString()
-					},
-					line_items: [
-						{
-							currency: purchaseCurrency,
-							name: itemName,
-							price: totalStr,
-							quantity: 1,
-							sku: plan
-						}
-					]
+					default:
+						return BAD_REQUEST()
 				}
-
-				const customer: Customer = {
-					country,
-					email
-				}
-
-				info("order", JSON.stringify(order, null, 2))
-				info("customer", JSON.stringify(customer, null, 2))
-
-				const { data } = await createOrder(order, customer)
-				info("created order", JSON.stringify(data, null, 2))
-
-				if (data === null) return BAD_REQUEST()
-
-				const { redirectUrl, uuid } = data
-
-				updateSubscriptionPurchaseInfo({
-					...purchaseKey,
-					info: { uuid }
-				})
-
-				const output: UtrustApiOrderResponseData = { redirectUrl }
-				info(JSON.stringify(output, null, 2))
-				return OK(output)
 			}
 
 			default:

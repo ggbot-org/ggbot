@@ -16,7 +16,9 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
+import { AccountKey } from "@workspace/models"
 import { useCallback, useState } from "react"
+import { EmptyObject } from "type-fest"
 
 const { info, warn } = logging("use-action")
 
@@ -214,3 +216,17 @@ export const useAction = <
 		reset
 	}
 }
+
+/**
+ * Helper to create an operation where authentication context is provided
+ * implicitly.
+ */
+export type Authenticated<
+	Operation extends (...args: any[]) => Promise<unknown>
+> = Omit<Parameters<Operation>[0], "accountId"> extends EmptyObject
+	? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
+	: Parameters<Operation>[0] extends AccountKey
+	? (
+			arg: Omit<Parameters<Operation>[0], "accountId">
+	  ) => Promise<Awaited<ReturnType<Operation>>>
+	: never

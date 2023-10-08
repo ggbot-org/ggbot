@@ -1,7 +1,7 @@
 import { apiBase } from "_/routing/api"
-import { ApiPurchaseOrderURL, ApiUserActionURL } from "@workspace/locators"
+import { ApiUserActionURL, ApiUtrustOrderURL } from "@workspace/locators"
 
 export const url = {
-	apiPurchaseOrder: new ApiPurchaseOrderURL(apiBase).toString(),
+	apiUtrustOrder: new ApiUtrustOrderURL(apiBase).toString(),
 	apiUserAction: new ApiUserActionURL(apiBase).toString()
 }

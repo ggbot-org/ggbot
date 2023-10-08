@@ -28,7 +28,7 @@ export class ApiUserActionURL extends URL {
 	}
 }
 
-export class ApiPurchaseOrderURL extends URL {
+export class ApiUtrustOrderURL extends URL {
 	constructor(apiBaseURL: string) {
 		super("/utrust/order", apiBaseURL)
 	}

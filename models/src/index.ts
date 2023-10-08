@@ -187,7 +187,6 @@ export type {
 } from "./subscription.js"
 export {
 	isSubscription,
-	isSubscriptionPlan,
 	shouldPurchaseSubscription,
 	statusOfSubscription
 } from "./subscription.js"
@@ -216,3 +215,5 @@ export {
 } from "./subscriptionPurchase.js"
 export type { DayKey } from "./time.js"
 export { createdNow, deletedNow, updatedNow } from "./time.js"
+export type { CreateUtrustOrder } from "./utrust.js"
+export { isCreateUtrustOrderInput } from "./utrust.js"

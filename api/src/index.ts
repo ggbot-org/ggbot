@@ -23,11 +23,7 @@ export { isPublicApiActionRequestData } from "./publicApi.js"
 export type { UserApiActionType } from "./userApi.js"
 export { isUserApiActionRequestData } from "./userApi.js"
 export type {
-	UtrustApiCallabackRequestData,
-	UtrustApiOrderRequestData,
-	UtrustApiOrderResponseData
+	UtrustApiActionType,
+	UtrustApiCallabackRequestData
 } from "./utrustApi.js"
-export {
-	isUtrustApiOrderRequestData,
-	isUtrustApiOrderResponseData
-} from "./utrustApi.js"
+export { isUtrustApiActionRequestData } from "./utrustApi.js"
