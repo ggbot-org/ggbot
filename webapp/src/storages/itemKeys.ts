@@ -6,6 +6,7 @@ const itemKeys = [
 	"doNotShowPleaseConfigureBinance",
 	"doNotShowPleasePurchase",
 	"gotFirstPageView",
+	"hideInactiveStrategies",
 	"jwt",
 	"strategy"
 ] as const
@@ -23,6 +24,7 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	doNotShowPleaseConfigureBinance: () => "doNotShowPleaseConfigureBinance:v1",
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",
+	hideInactiveStrategies: () => "hideInactiveStrategies:v1",
 	jwt: () => "jwt:v1",
 	strategy: (id: Strategy["id"]) => `strategy:${id}:v1`
 }

@@ -1,3 +1,7 @@
+input[type="checkbox"] {
+	margin-right: 0.5em;
+}
+
 input[type="checkbox"][color="danger"] {
 	accent-color: $danger;
 }

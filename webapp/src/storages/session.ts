@@ -38,21 +38,6 @@ class SessionWebStorage {
 	/** Avoids running `isBinanceExchangeInfo` type-guard multiple times. */
 	private binanceExchangeInfoIsValid: boolean | undefined
 
-	get doNotShowPleaseConfigureBinance() {
-		return cachedBoolean(
-			this.storage,
-			itemKey.doNotShowPleaseConfigureBinance()
-		)
-	}
-
-	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
-	}
-
-	get gotFirstPageView(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
-	}
-
 	get binanceExchangeInfo(): BinanceExchangeInfo | undefined {
 		const key = itemKey.binanceExchangeInfo()
 		const value = this.storage.getItem(key)
@@ -73,6 +58,25 @@ class SessionWebStorage {
 			}
 			throw error
 		}
+	}
+
+	get doNotShowPleaseConfigureBinance() {
+		return cachedBoolean(
+			this.storage,
+			itemKey.doNotShowPleaseConfigureBinance()
+		)
+	}
+
+	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
+	}
+
+	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
+	}
+
+	get gotFirstPageView(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
 	}
 
 	set binanceExchangeInfo(value: BinanceExchangeInfo | undefined) {

@@ -437,6 +437,9 @@
 	"Strategies.noStrategy": {
 		"defaultMessage": "Your strategies list is empty."
 	},
+	"Strategies.hideInactive": {
+		"defaultMessage": "Hide inactive strategies."
+	},
 	"StrategiesErrorExceededQuota.message": {
 		"defaultMessage": "Cannot create more strategies. Check your account quotas."
 	},
