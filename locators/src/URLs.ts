@@ -28,6 +28,12 @@ export class ApiUserActionURL extends URL {
 	}
 }
 
+export class ApiStripeWebhookURL extends URL {
+	constructor(apiBaseURL: string) {
+		super("/stripe/webhook", apiBaseURL)
+	}
+}
+
 export class ApiUtrustOrderURL extends URL {
 	constructor(apiBaseURL: string) {
 		super("/utrust/order", apiBaseURL)
