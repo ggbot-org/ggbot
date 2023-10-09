@@ -5,13 +5,15 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { ENV } from "@workspace/env"
 import { logging } from "@workspace/logging"
-import Stripe from "stripe"
+import {
+	StripeClient,
+	StripeSignatureVerificationError
+} from "@workspace/stripe"
 
 const { info, warn } = logging("stripe-api")
 
-const stripe = new Stripe(ENV.STRIPE_SECRET_KEY(), { apiVersion: "2023-08-16" })
+const stripe = new StripeClient()
 
 type ResponseData = {
 	received: boolean
@@ -27,10 +29,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				const signature = event.headers["stripe-signature"]
 				if (typeof signature !== "string") return BAD_REQUEST()
 
-				const stripeEvent = stripe.webhooks.constructEvent(
+				const stripeEvent = stripe.getWebhookEvent(
 					event.body,
-					signature,
-					ENV.STRIPE_WEBHOOK_SECRET()
+					signature
 				)
 
 				info(stripeEvent)
@@ -49,7 +50,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return METHOD_NOT_ALLOWED
 		}
 	} catch (error) {
-		if (error instanceof Stripe.errors.StripeSignatureVerificationError)
+		if (error instanceof StripeSignatureVerificationError)
 			return BAD_REQUEST()
 		console.error(error)
 	}

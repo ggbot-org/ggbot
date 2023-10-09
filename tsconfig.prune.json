@@ -22,6 +22,7 @@
 			"@workspace/logging": ["./logging/src/index.ts"],
 			"@workspace/models": ["./models/src/index.ts"],
 			"@workspace/repository": ["./repository/src/index.ts"],
+			"@workspace/stripe": ["./stripe/src/index.ts"],
 			"_/binance/*": ["./webapp/src/binance/*"],
 			"_/classNames": ["./webapp/src/styles/classNames.ts"],
 			"_/components/library": [
