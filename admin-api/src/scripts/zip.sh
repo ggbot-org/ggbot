@@ -23,7 +23,7 @@ done
 
 for LAMBDA in action; do
 	mkdir -p dist/$LAMBDA/node_modules
-	cp temp/${LAMBDA}.js dist/$LAMBDA/index.js
+	cp temp/lambdas/${LAMBDA}/*.js dist/$LAMBDA/
 	cp temp/package.json dist/$LAMBDA/
 	cp -R temp/node_modules/* dist/$LAMBDA/node_modules/
 	cd dist/$LAMBDA

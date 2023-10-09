@@ -15,7 +15,7 @@
 -   [npm workspaces](#npm-workspaces)
 -   [NVM](#nvm)
 -   [React](#react)
--   Utrust
+-   [Stripe](#stripe)
 -   npm packages
     -   [@types/node](#typesnode)
     -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
@@ -47,7 +47,16 @@ https://en.wikipedia.org/wiki/Markdown
 
 ## AWS Command Line Interface
 
-https://aws.amazon.com/cli/
+> The AWS Command Line Interface (AWS CLI) is a unified tool to manage your AWS services.
+
+Easiest way to install it on MacOS is to use [awscli Homebrew Formula](https://formulae.brew.sh/formula/awscli)
+
+```sh
+brew install awscli
+```
+
+-   [AWS CLI Homepage](https://aws.amazon.com/cli/)
+-   [Get started with the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)
 
 ## Amazon Web Services
 
@@ -126,6 +135,12 @@ See also how to [call `nvm use` automatically in a directory with a _.nvmrc_ fil
 > The library for web and native user interfaces
 
 https://react.dev/
+
+## Stripe
+
+> Payments infrastructure for the internet
+
+https://stripe.com/
 
 ## npm packages
 
