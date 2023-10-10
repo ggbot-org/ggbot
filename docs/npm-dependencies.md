@@ -28,15 +28,21 @@ graph LR
     workspace/database --- workspace/email-messages
     workspace/database --- workspace/locators
     workspace/database --- workspace/logging
+    workspace/dflow --- workspace/arithmetic
     workspace/dflow --- workspace/binance
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/database
     workspace/infrastructure --- workspace/database
     workspace/infrastructure --- workspace/repository
+    workspace/infrastructure --- workspace/stripe
     workspace/locators --- workspace/env
     workspace/logging --- workspace/env
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/database
+    workspace/stripe --- workspace/env
+    workspace/stripe-api --- workspace/api-gateway
+    workspace/stripe-api --- workspace/database
+    workspace/stripe-api --- workspace/stripe
     workspace/url-shortener --- workspace/locators
     workspace/user-api --- workspace/api-gateway
     workspace/user-api --- workspace/authentication
