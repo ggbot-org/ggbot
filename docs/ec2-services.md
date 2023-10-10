@@ -88,9 +88,11 @@ For example for _binance-proxy_ service
 ```
 [Service]
 Environment="AWS_ACCOUNT_ID=888671539518"
+Environment="AWS_DATA_REGION=eu-central-1"
+Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 Environment="DEPLOY_STAGE=main"
 Environment="DNS_DOMAIN=ggbot2.com"
-Environment="BINANCE_PROXY_ELASTIC_IPS=3.65.45.176,3.77.223.177"
+Environment="PROJECT_SHORT_NAME=ggbot2"
 ```
 
 For example for _executor_ service

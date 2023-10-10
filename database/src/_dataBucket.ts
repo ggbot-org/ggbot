@@ -73,7 +73,8 @@ export const DELETE = async (Key: string) => {
 	return deletedNow()
 }
 
-export const LIST = s3.listObjects
+export const LIST = async ({ Prefix }: { Prefix: string }) =>
+	s3.listObjects({ Prefix })
 
 export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
 	await WRITE(Key, data)
