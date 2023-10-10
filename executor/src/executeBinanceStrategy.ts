@@ -143,6 +143,8 @@ export const executeBinanceStrategy: ExecuteStrategy = async ({
 
 				if (status === "failure")
 					warn(`strategy ${strategyId} execution failed`)
+
+				return
 			} catch (error) {
 				// TODO write errors on database
 				// throw error and manage strategy accordingly
