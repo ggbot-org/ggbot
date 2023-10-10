@@ -16,7 +16,8 @@ import {
 
 type ExecuteTrailingStopInput = Omit<TrailingStopInput, "direction"> &
 	Pick<DflowCommonContext, "memory">
-type ExecuteTrailingStopOutput = Partial<TrailingStopOutput>
+type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
+	Pick<DflowCommonContext, "memory" | "memoryChanged">
 
 type TrailingStopTestData = {
 	input: ExecuteTrailingStopInput
@@ -29,7 +30,7 @@ const executeTrailingStop = async (
 		marketPrice,
 		stopPrice,
 		percentageDelta,
-		memory
+		memory: memoryInput
 	}: ExecuteTrailingStopInput
 ): Promise<ExecuteTrailingStopOutput> => {
 	const nodeId = "testId"
@@ -72,9 +73,13 @@ const executeTrailingStop = async (
 			]
 		}
 	})
-	const { execution } = await executor.run({
+	const {
+		execution,
+		memory: memoryOutput,
+		memoryChanged
+	} = await executor.run({
 		input: {},
-		memory,
+		memory: memoryInput,
 		time: now()
 	})
 
@@ -82,7 +87,9 @@ const executeTrailingStop = async (
 
 	return {
 		exitTrailing:
-			typeof exitTrailing === "boolean" ? exitTrailing : undefined
+			typeof exitTrailing === "boolean" ? exitTrailing : undefined,
+		memory: memoryOutput,
+		memoryChanged
 	}
 }
 
@@ -93,18 +100,22 @@ describe("Trailing Stop", () => {
 				input: {
 					marketPrice: 100,
 					stopPrice: 90,
-					percentageDelta: 1,
+					percentageDelta: 0,
 					memory: {}
 				},
-				output: { exitTrailing: false }
+				output: {
+					exitTrailing: false,
+					memory: {},
+					memoryChanged: false
+				}
 			}
 		]
 		for (const { input, output } of testData) {
-			const { exitTrailing } = await executeTrailingStop(
-				TrailingStopUp.kind,
-				input
-			)
-			assert.ok(exitTrailing === output.exitTrailing)
+			const { exitTrailing, memory, memoryChanged } =
+				await executeTrailingStop(TrailingStopUp.kind, input)
+			assert.equal(exitTrailing, output.exitTrailing)
+			assert.equal(memoryChanged, output.memoryChanged)
+			assert.deepEqual(memory, output.memory)
 		}
 	})
 
@@ -114,18 +125,22 @@ describe("Trailing Stop", () => {
 				input: {
 					marketPrice: 100,
 					stopPrice: 110,
-					percentageDelta: 1,
+					percentageDelta: 0,
 					memory: {}
 				},
-				output: { exitTrailing: false }
+				output: {
+					exitTrailing: false,
+					memory: {},
+					memoryChanged: false
+				}
 			}
 		]
 		for (const { input, output } of testData) {
-			const { exitTrailing } = await executeTrailingStop(
-				TrailingStopDown.kind,
-				input
-			)
-			assert.ok(exitTrailing === output.exitTrailing)
+			const { exitTrailing, memory, memoryChanged } =
+				await executeTrailingStop(TrailingStopDown.kind, input)
+			assert.equal(exitTrailing, output.exitTrailing)
+			assert.equal(memoryChanged, output.memoryChanged)
+			assert.deepEqual(memory, output.memory)
 		}
 	})
 
@@ -170,6 +185,25 @@ describe("Trailing Stop", () => {
 					marketPrice: 100,
 					percentageDelta: 0.01,
 					stopPrice: 150
+				},
+				output: { exitTrailing: false, stopPrice: 101 }
+			},
+			// Leave `stopPrice` as is when `marketPrice` gets closer.
+			{
+				input: {
+					direction: "UP",
+					marketPrice: 100,
+					percentageDelta: 0.02,
+					stopPrice: 99
+				},
+				output: { exitTrailing: false, stopPrice: 99 }
+			},
+			{
+				input: {
+					direction: "DOWN",
+					marketPrice: 100,
+					percentageDelta: 0.02,
+					stopPrice: 101
 				},
 				output: { exitTrailing: false, stopPrice: 101 }
 			}

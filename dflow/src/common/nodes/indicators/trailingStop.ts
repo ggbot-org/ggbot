@@ -41,7 +41,10 @@ export const trailingStop = ({
 		return {
 			exitTrailing: false,
 			// Compute next `stopPrice`.
-			stopPrice: marketPrice - marketPrice * percentageDelta
+			stopPrice: Math.max(
+				stopPrice,
+				marketPrice - marketPrice * percentageDelta
+			)
 		}
 	}
 
@@ -52,7 +55,10 @@ export const trailingStop = ({
 		return {
 			exitTrailing: false,
 			// Compute next `stopPrice`.
-			stopPrice: marketPrice + marketPrice * percentageDelta
+			stopPrice: Math.min(
+				stopPrice,
+				marketPrice + marketPrice * percentageDelta
+			)
 		}
 	}
 
