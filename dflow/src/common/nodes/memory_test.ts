@@ -1,6 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { DflowData } from "dflow"
 import { now } from "minimal-time-helpers"
 
 import { getDflowExecutionOutputData } from "../executor.js"
@@ -37,32 +38,38 @@ describe("deleteMemory", () => {
 
 describe("getMemory", () => {
 	test("can read context memory", async () => {
-		const executor = new DflowExecutorMock({
-			view: {
-				nodes: [
-					{
-						id: "a",
-						text: '"key1"',
-						outs: [{ id: "b" }]
-					},
-					{
-						id: "c",
-						text: "getMemory",
-						ins: [{ id: "d" }]
-					}
-				],
-				edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }]
-			}
-		})
-		const value = "value1"
-		const { execution, memory, memoryChanged } = await executor.run({
-			input: {},
-			memory: { key1: value },
-			time: now()
-		})
-		assert.equal(memoryChanged, false)
-		assert.equal(memory.key1, value)
-		assert.equal(getDflowExecutionOutputData(execution, "c", 0), value)
+		const testValues: { value: DflowData }[] = [
+			{ value: 42 },
+			{ value: "a string" },
+			{ value: ["a", "b"] }
+		]
+		for (const { value } of testValues) {
+			const executor = new DflowExecutorMock({
+				view: {
+					nodes: [
+						{
+							id: "a",
+							text: '"key1"',
+							outs: [{ id: "b" }]
+						},
+						{
+							id: "c",
+							text: "getMemory",
+							ins: [{ id: "d" }]
+						}
+					],
+					edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }]
+				}
+			})
+			const { execution, memory, memoryChanged } = await executor.run({
+				input: {},
+				memory: { key1: value },
+				time: now()
+			})
+			assert.equal(memoryChanged, false)
+			assert.deepEqual(memory.key1, value)
+			assert.equal(getDflowExecutionOutputData(execution, "c", 0), value)
+		}
 	})
 })
 

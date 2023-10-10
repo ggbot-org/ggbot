@@ -10,12 +10,17 @@ import {
 	trailingStop,
 	TrailingStopDown,
 	TrailingStopInput,
+	trailingStopMemoryKeys,
 	TrailingStopOutput,
-	TrailingStopUp
-} from "./trailingStop.js"
+	TrailingStopUp} from "./trailingStop.js"
 
-type ExecuteTrailingStopInput = Omit<TrailingStopInput, "direction"> &
-	Pick<DflowCommonContext, "memory">
+type ExecuteTrailingStopInput = Pick<
+	TrailingStopInput,
+	"marketPrice" | "percentageDelta"
+> &
+	Pick<DflowCommonContext, "memory"> & {
+		memoryLabel: string
+	}
 type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
 	Pick<DflowCommonContext, "memory" | "memoryChanged">
 
@@ -24,11 +29,17 @@ type TrailingStopTestData = {
 	output: ExecuteTrailingStopOutput
 }
 
+const invalidPercentageDeltaValues = [0, 1]
+
+const exitTrailingAssertionError = "check exitTrailing"
+const memoryAssertionError = "check memory"
+const memoryChangedAssertionError = "check memoryChanged"
+
 const executeTrailingStop = async (
 	nodeKind: typeof TrailingStopUp.kind | typeof TrailingStopDown.kind,
 	{
+		memoryLabel,
 		marketPrice,
-		stopPrice,
 		percentageDelta,
 		memory: memoryInput
 	}: ExecuteTrailingStopInput
@@ -38,13 +49,13 @@ const executeTrailingStop = async (
 		view: {
 			nodes: [
 				{
-					id: "marketPrice",
-					text: JSON.stringify(marketPrice),
+					id: "memoryLabel",
+					text: JSON.stringify(memoryLabel),
 					outs: [{ id: "o1" }]
 				},
 				{
-					id: "stopPrice",
-					text: JSON.stringify(stopPrice),
+					id: "marketPrice",
+					text: JSON.stringify(marketPrice),
 					outs: [{ id: "o2" }]
 				},
 				{
@@ -59,12 +70,12 @@ const executeTrailingStop = async (
 				}
 			],
 			edges: [
+				{ id: "e1", from: ["memoryLabel", "o1"], to: [nodeId, "i1"] },
 				{
-					id: "e1",
-					from: ["marketPrice", "o1"],
-					to: [nodeId, "i1"]
+					id: "e2",
+					from: ["marketPrice", "o2"],
+					to: [nodeId, "i2"]
 				},
-				{ id: "e2", from: ["stopPrice", "o2"], to: [nodeId, "i2"] },
 				{
 					id: "e3",
 					from: ["percentageDelta", "o3"],
@@ -95,52 +106,236 @@ const executeTrailingStop = async (
 
 describe("Trailing Stop", () => {
 	test("TrailingStopUp", async () => {
+		const memoryLabel = "test"
+		const { entryPriceMemoryKey, stopPriceMemoryKey } =
+			trailingStopMemoryKeys(memoryLabel)
+
 		const testData: TrailingStopTestData[] = [
+			// If percentageDelta is not valid, algorithm does not run.
+			...invalidPercentageDeltaValues.map((percentageDelta) => ({
+				input: {
+					memoryLabel,
+					marketPrice: 100,
+					percentageDelta,
+					memory: {}
+				},
+				output: {
+					exitTrailing: undefined,
+					memory: {},
+					memoryChanged: false
+				}
+			})),
+
+			// If there no memory on input, it gets initialized on first run.
 			{
 				input: {
+					memoryLabel,
 					marketPrice: 100,
-					stopPrice: 90,
-					percentageDelta: 0,
+					percentageDelta: 0.01,
 					memory: {}
 				},
 				output: {
 					exitTrailing: false,
-					memory: {},
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99
+					},
+					memoryChanged: true
+				}
+			},
+
+			// stopPrice is read from memory as input and written as output
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 106,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99
+					}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 104.94
+					},
+					memoryChanged: true
+				}
+			},
+
+			// stopPrice does not change if marketPrice gets closer.
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 105,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 104.94
+					}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 104.94
+					},
 					memoryChanged: false
+				}
+			},
+
+			// If marketPrice goes beyond stopPrice then exitTrailing is true and memory is cleaned up
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 104.8,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 104.94
+					}
+				},
+				output: {
+					exitTrailing: true,
+					memory: {},
+					memoryChanged: true
 				}
 			}
 		]
+
 		for (const { input, output } of testData) {
 			const { exitTrailing, memory, memoryChanged } =
 				await executeTrailingStop(TrailingStopUp.kind, input)
-			assert.equal(exitTrailing, output.exitTrailing)
-			assert.equal(memoryChanged, output.memoryChanged)
-			assert.deepEqual(memory, output.memory)
+			assert.equal(
+				exitTrailing,
+				output.exitTrailing,
+				exitTrailingAssertionError
+			)
+			assert.equal(
+				memoryChanged,
+				output.memoryChanged,
+				memoryChangedAssertionError
+			)
+			assert.deepEqual(memory, output.memory, memoryAssertionError)
 		}
 	})
 
 	test("TrailingStopDown", async () => {
+		const memoryLabel = "test"
+		const { entryPriceMemoryKey, stopPriceMemoryKey } =
+			trailingStopMemoryKeys(memoryLabel)
+
 		const testData: TrailingStopTestData[] = [
+			// If percentageDelta is not valid, algorithm does not run.
+			...invalidPercentageDeltaValues.map((percentageDelta) => ({
+				input: {
+					memoryLabel,
+					marketPrice: 100,
+					percentageDelta,
+					memory: {}
+				},
+				output: {
+					exitTrailing: undefined,
+					memory: {},
+					memoryChanged: false
+				}
+			})),
+
+			// If there no memory on input, it gets initialized on first run.
 			{
 				input: {
+					memoryLabel,
 					marketPrice: 100,
-					stopPrice: 110,
-					percentageDelta: 0,
+					percentageDelta: 0.01,
 					memory: {}
 				},
 				output: {
 					exitTrailing: false,
-					memory: {},
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 101
+					},
+					memoryChanged: true
+				}
+			},
+
+			// stopPrice is read from memory as input and written as output
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 94,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99
+					}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 94.94
+					},
+					memoryChanged: true
+				}
+			},
+
+			// stopPrice does not change if marketPrice gets closer.
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 94.9,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 94.94
+					}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 94.94
+					},
 					memoryChanged: false
+				}
+			},
+
+			// If marketPrice goes beyond stopPrice then exitTrailing is true and memory is cleaned up
+			{
+				input: {
+					memoryLabel,
+					marketPrice: 94.98,
+					percentageDelta: 0.01,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 94.94
+					}
+				},
+				output: {
+					exitTrailing: true,
+					memory: {},
+					memoryChanged: true
 				}
 			}
 		]
+
 		for (const { input, output } of testData) {
 			const { exitTrailing, memory, memoryChanged } =
 				await executeTrailingStop(TrailingStopDown.kind, input)
-			assert.equal(exitTrailing, output.exitTrailing)
-			assert.equal(memoryChanged, output.memoryChanged)
-			assert.deepEqual(memory, output.memory)
+			assert.equal(
+				exitTrailing,
+				output.exitTrailing,
+				exitTrailingAssertionError
+			)
+			assert.equal(
+				memoryChanged,
+				output.memoryChanged,
+				memoryChangedAssertionError
+			)
+			assert.deepEqual(memory, output.memory, memoryAssertionError)
 		}
 	})
 
