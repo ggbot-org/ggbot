@@ -1,14 +1,135 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { now } from "minimal-time-helpers"
+
+import { DflowCommonContext } from "../../context.js"
+import { getDflowExecutionOutputData } from "../../executor.js"
+import { DflowExecutorMock } from "../../mocks/executor.js"
 import {
 	trailingStop,
+	TrailingStopDown,
 	TrailingStopInput,
-	TrailingStopOutput
+	TrailingStopOutput,
+	TrailingStopUp
 } from "./trailingStop.js"
 
+type ExecuteTrailingStopInput = Omit<TrailingStopInput, "direction"> &
+	Pick<DflowCommonContext, "memory">
+type ExecuteTrailingStopOutput = Partial<TrailingStopOutput>
+
+type TrailingStopTestData = {
+	input: ExecuteTrailingStopInput
+	output: ExecuteTrailingStopOutput
+}
+
+const executeTrailingStop = async (
+	nodeKind: typeof TrailingStopUp.kind | typeof TrailingStopDown.kind,
+	{
+		marketPrice,
+		stopPrice,
+		percentageDelta,
+		memory
+	}: ExecuteTrailingStopInput
+): Promise<ExecuteTrailingStopOutput> => {
+	const nodeId = "testId"
+	const executor = new DflowExecutorMock({
+		view: {
+			nodes: [
+				{
+					id: "marketPrice",
+					text: JSON.stringify(marketPrice),
+					outs: [{ id: "o1" }]
+				},
+				{
+					id: "stopPrice",
+					text: JSON.stringify(stopPrice),
+					outs: [{ id: "o2" }]
+				},
+				{
+					id: "percentageDelta",
+					text: JSON.stringify(percentageDelta),
+					outs: [{ id: "o3" }]
+				},
+				{
+					id: nodeId,
+					text: nodeKind,
+					ins: [{ id: "i1" }, { id: "i2" }, { id: "i3" }]
+				}
+			],
+			edges: [
+				{
+					id: "e1",
+					from: ["marketPrice", "o1"],
+					to: [nodeId, "i1"]
+				},
+				{ id: "e2", from: ["stopPrice", "o2"], to: [nodeId, "i2"] },
+				{
+					id: "e3",
+					from: ["percentageDelta", "o3"],
+					to: [nodeId, "i3"]
+				}
+			]
+		}
+	})
+	const { execution } = await executor.run({
+		input: {},
+		memory,
+		time: now()
+	})
+
+	const exitTrailing = getDflowExecutionOutputData(execution, nodeId, 0)
+
+	return {
+		exitTrailing:
+			typeof exitTrailing === "boolean" ? exitTrailing : undefined
+	}
+}
+
 describe("Trailing Stop", () => {
-	test("works", () => {
+	test("TrailingStopUp", async () => {
+		const testData: TrailingStopTestData[] = [
+			{
+				input: {
+					marketPrice: 100,
+					stopPrice: 90,
+					percentageDelta: 1,
+					memory: {}
+				},
+				output: { exitTrailing: false }
+			}
+		]
+		for (const { input, output } of testData) {
+			const { exitTrailing } = await executeTrailingStop(
+				TrailingStopUp.kind,
+				input
+			)
+			assert.ok(exitTrailing === output.exitTrailing)
+		}
+	})
+
+	test("TrailingStopDown", async () => {
+		const testData: TrailingStopTestData[] = [
+			{
+				input: {
+					marketPrice: 100,
+					stopPrice: 110,
+					percentageDelta: 1,
+					memory: {}
+				},
+				output: { exitTrailing: false }
+			}
+		]
+		for (const { input, output } of testData) {
+			const { exitTrailing } = await executeTrailingStop(
+				TrailingStopDown.kind,
+				input
+			)
+			assert.ok(exitTrailing === output.exitTrailing)
+		}
+	})
+
+	test("trailingStop", () => {
 		const testData: {
 			input: TrailingStopInput
 			output: TrailingStopOutput

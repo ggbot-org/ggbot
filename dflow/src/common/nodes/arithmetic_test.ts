@@ -9,17 +9,19 @@ import { DflowExecutorMock } from "../mocks/executor.js"
 describe("add", () => {
 	test("implements addition", async () => {
 		const nodeId = "operator"
+		const a = 2
+		const b = 3
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
 					{
 						id: "i1",
-						text: "2",
+						text: JSON.stringify(a),
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "i2",
-						text: "3",
+						text: JSON.stringify(b),
 						outs: [{ id: "o2" }]
 					},
 					{
@@ -44,24 +46,26 @@ describe("add", () => {
 })
 
 describe("sub", () => {
-	test("implements multiplication", async () => {
+	test("implements subtraction", async () => {
 		const nodeId = "operator"
+		const a = 2
+		const b = 3
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
 					{
 						id: "i1",
-						text: "2",
+						text: JSON.stringify(a),
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "i2",
-						text: "3",
+						text: JSON.stringify(b),
 						outs: [{ id: "o2" }]
 					},
 					{
 						id: nodeId,
-						text: "mul",
+						text: "sub",
 						ins: [{ id: "a" }, { id: "b" }]
 					}
 				],
@@ -76,24 +80,26 @@ describe("sub", () => {
 			memory: {},
 			time: now()
 		})
-		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6)
+		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), a - b)
 	})
 })
 
 describe("mul", () => {
 	test("implements multiplication", async () => {
 		const nodeId = "operator"
+		const a = 2
+		const b = 3
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
 					{
 						id: "i1",
-						text: "2",
+						text: JSON.stringify(a),
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "i2",
-						text: "3",
+						text: JSON.stringify(b),
 						outs: [{ id: "o2" }]
 					},
 					{
@@ -113,24 +119,26 @@ describe("mul", () => {
 			memory: {},
 			time: now()
 		})
-		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 6)
+		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), a * b)
 	})
 })
 
 describe("div", () => {
 	test("implements multiplication", async () => {
 		const nodeId = "operator"
+		const a = 3
+		const b = 2
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
 					{
 						id: "i1",
-						text: "3",
+						text: JSON.stringify(a),
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "i2",
-						text: "2",
+						text: JSON.stringify(b),
 						outs: [{ id: "o2" }]
 					},
 					{
@@ -150,6 +158,6 @@ describe("div", () => {
 			memory: {},
 			time: now()
 		})
-		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 1.5)
+		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), a / b)
 	})
 })
