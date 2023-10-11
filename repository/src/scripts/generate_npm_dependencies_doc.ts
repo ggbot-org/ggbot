@@ -86,20 +86,17 @@ for (const dependencyRelation of internalDependencyGraph)
 			)} --- ${packageGraphNode(dependencyRelation[1])}`
 		)
 
-const graphRows = [
-	"```mermaid",
-	"graph LR",
-	...graphInternalDependencyRows,
-	"```",
-	""
-]
+const graphRows = (graphInternalDependencyRows: string[]) =>
+	["```mermaid", "graph LR", ...graphInternalDependencyRows, "```", ""].join(
+		"\n"
+	)
 
 const content = `
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.
 
-${graphRows.join("\n")}
+${graphRows(graphInternalDependencyRows)}
 
 `
 
