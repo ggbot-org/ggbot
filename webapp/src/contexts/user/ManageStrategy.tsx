@@ -31,6 +31,8 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const [renameError, setRenameError] = useState<UseActionError>()
 
+	// TODO is there one memory for every scheduling?
+	// const READ_MEMORY = useUserApi.ReadStrategyMemory()
 	const RENAME = useUserApi.RenameStrategy()
 	const renameIsDone = RENAME.isDone
 	const renameIsPending = RENAME.isPending

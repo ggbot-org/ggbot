@@ -1,7 +1,7 @@
 import { Dflow, DflowObject } from "dflow"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { AccountStrategyKey } from "./accountStrategy.js"
+import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
 import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
 export type StrategyMemory = UpdateTime & {
@@ -13,8 +13,12 @@ export const isStrategyMemory = objectTypeGuard<StrategyMemory>(
 		Dflow.isObject(memory) && isUpdateTime(updateTime)
 )
 
+type ReadStrategyMemoryInput = AccountStrategyKey
+
+export const isReadStrategyMemoryInput = isAccountStrategyKey
+
 export type ReadStrategyMemory = (
-	arg: AccountStrategyKey
+	arg: ReadStrategyMemoryInput
 ) => Promise<StrategyMemory | null>
 
 type WriteStrategyMemoryInput = AccountStrategyKey &

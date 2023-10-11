@@ -1,38 +1,25 @@
-import { Box, Flex, Title } from "_/components/library"
+import { Box, Title } from "_/components/library"
 import { DflowCommonContext } from "@workspace/dflow"
-import { DflowData } from "dflow"
-import { FC, useMemo } from "react"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
+
+import { MemoryItem, MemoryItemProps } from "./MemoryItem"
 
 type Props = { memory: DflowCommonContext["memory"] | undefined }
 
-type MemoryItemProps = { name: string; value: DflowData | undefined }
-
-const MemoryItem: FC<MemoryItemProps> = ({ name, value }) => {
-	const formattedValue = useMemo<string>(() => {
-		if (value === undefined) return ""
-		return JSON.stringify(value, null, 2)
-	}, [value])
-
-	return (
-		<Flex>
-			<span>{name}</span>
-
-			<pre>
-				<code>{formattedValue}</code>
-			</pre>
-		</Flex>
-	)
-}
-
 export const Memory: FC<Props> = ({ memory }) => {
-	const memoryItems = useMemo<MemoryItemProps[]>(() => {
-		if (!memory) return []
-		return Object.entries(memory).map(([name, value]) => ({
-			name,
-			value
-		}))
-	}, [memory])
+	const memoryItems: MemoryItemProps[] = [
+		{
+			name: "foo",
+			value: "bar"
+		},
+		{ name: "num", value: 42 },
+		{ name: "obj", value: { foo: true, bar: [1, 2, 3] } }
+	]
+	if (memory)
+		for (const [name, value] of Object.entries(memory)) {
+			memoryItems.push({ name, value })
+		}
 
 	return (
 		<Box>

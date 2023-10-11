@@ -16,6 +16,7 @@ const userApiActionTypes = [
 	"ReadStrategy",
 	"ReadStrategyBalances",
 	"ReadStrategyFlow",
+	"ReadStrategyMemory",
 	"ReadStrategyOrders",
 	"ReadSubscription",
 	"RenameStrategy",

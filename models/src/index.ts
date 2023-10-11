@@ -170,7 +170,9 @@ export type {
 	StrategyMemory,
 	WriteStrategyMemory
 } from "./strategyMemory.js"
-export { isStrategyMemory } from "./strategyMemory.js"
+export {
+	isReadStrategyMemoryInput,
+	isStrategyMemory} from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"
