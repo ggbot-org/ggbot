@@ -16,4 +16,4 @@ SRC_DIR=$(dirname "$SCRIPTS_DIR")
 PACKAGE_DIR=$(dirname "$SRC_DIR")
 PUBLIC_DIR=$PACKAGE_DIR/public
 
-aws s3 sync $PUBLIC_DIR/ s3://$BUCKET
+aws s3 sync $PUBLIC_DIR/ s3://$BUCKET --cache-control max-age=3600
