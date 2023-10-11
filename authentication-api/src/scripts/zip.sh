@@ -14,11 +14,11 @@ for LAMBDA in enter verify; do
 	cd -
 
 	# Copy internal deps.
-	for WORKSPACE in api api-gateway arithmetic authentication aws binance binance-client cache database dflow env email-messages http locators logging models; do
-		WORKSPACE_DIST_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE/dist
-		mkdir -p $WORKSPACE_DIST_DIR
-		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIST_DIR
-		cp ../$WORKSPACE/package.json $WORKSPACE_DIST_DIR
+	for WORKSPACE in api api-gateway arithmetic authentication aws-s3 aws-ses binance binance-client cache database dflow env email-messages http locators logging models; do
+		WORKSPACE_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE
+		mkdir -p $WORKSPACE_DIR/dist
+		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIR/dist
+		cp ../$WORKSPACE/package.json $WORKSPACE_DIR
 	done
 
 	# Zip lambda.

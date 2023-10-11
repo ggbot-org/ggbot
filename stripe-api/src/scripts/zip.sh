@@ -14,11 +14,11 @@ for LAMBDA in webhook; do
 	cd -
 
 	# Copy internal deps.
-	for WORKSPACE in api api-gateway database env http logging models stripe; do
-		WORKSPACE_DIST_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE/dist
-		mkdir -p $WORKSPACE_DIST_DIR
-		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIST_DIR
-		cp ../$WORKSPACE/package.json $WORKSPACE_DIST_DIR
+	for WORKSPACE in api api-gateway aws-s3 database env http logging models stripe; do
+		WORKSPACE_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE
+		mkdir -p $WORKSPACE_DIR/dist
+		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIR/dist
+		cp ../$WORKSPACE/package.json $WORKSPACE_DIR
 	done
 
 	# Zip lambda.
