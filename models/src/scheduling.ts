@@ -16,3 +16,8 @@ export const isScheduling = objectTypeGuard<Scheduling>(
 	({ frequency, status }) =>
 		isFrequency(frequency) && isSchedulingStatus(status)
 )
+
+export const schedulingsAreInactive = (schedulings: Scheduling[]) => {
+	if (schedulings.length === 0) return true
+	return schedulings.every(({ status }) => status === "inactive")
+}

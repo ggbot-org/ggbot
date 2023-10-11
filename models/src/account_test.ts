@@ -1,7 +1,9 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { isAccount, newAccount } from "./account.js"
+import { MaybeObject } from "minimal-type-guard-helpers"
+
+import { Account, isAccount, newAccount } from "./account.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
@@ -10,7 +12,10 @@ describe("isAccount", () => {
 	test("validates Account, name is optional", () => {
 		const email = "user@example.com"
 		const { whenCreated } = createdNow()
-		;[
+		const testData: Array<{
+			input: MaybeObject<Account>
+			output: boolean
+		}> = [
 			{
 				input: newAccount({ email }),
 				output: true
@@ -44,7 +49,9 @@ describe("isAccount", () => {
 				},
 				output: false
 			}))
-		].forEach(({ input, output }) => {
+		]
+
+		testData.forEach(({ input, output }) => {
 			assert.equal(
 				isAccount(input),
 				output,

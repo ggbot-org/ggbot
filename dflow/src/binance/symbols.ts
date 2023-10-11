@@ -1,7 +1,7 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
 import { StrategyFlow } from "@workspace/models"
 import { DflowGraph, DflowId } from "dflow"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { MaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { dflowBinancePrecision } from "./arithmetic.js"
 import {
@@ -120,14 +120,11 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 				node.id,
 				nodeConnections
 			)
-			// TODO try MayObject<T> from minimal-type-guard-helpers
-			const maybeSymbolAndInterval: {
-				symbol: unknown
-				interval: unknown
-			} = {
-				symbol: undefined,
-				interval: undefined
-			}
+			const maybeSymbolAndInterval: MaybeObject<DflowBinanceSymbolAndInterval> =
+				{
+					symbol: undefined,
+					interval: undefined
+				}
 			for (const parentNodeId of parentNodeIds) {
 				const node = view.nodes.find(({ id }) => id === parentNodeId)
 				if (!node) continue

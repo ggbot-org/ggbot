@@ -11,7 +11,7 @@ import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { href } from "_/routing/user/hrefs"
 import { localWebStorage } from "_/storages/local"
-import { AccountStrategy } from "@workspace/models"
+import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -39,7 +39,7 @@ export const Strategies: FC = () => {
 			name,
 			schedulings
 		} of accountStrategies) {
-			const isInactive = schedulings.length === 0
+			const isInactive = schedulingsAreInactive(schedulings)
 			if (isInactive) numInactive++
 			if (hideInactive && isInactive && !allAreInactive) continue
 			items.push({

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@workspace/cache": "0.0.0",
-    "minimal-type-guard-helpers": "0.1.1"
+    "minimal-type-guard-helpers": "0.2.0"
   },
   "eslintConfig": {
     "extends": [

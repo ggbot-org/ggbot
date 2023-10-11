@@ -1,6 +1,6 @@
 import { Control, Field } from "_/components/library"
 import { SchedulingStatus } from "_/components/SchedulingStatus"
-import { AccountStrategy } from "@workspace/models"
+import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import { FC } from "react"
 
 type Props = {
@@ -18,7 +18,8 @@ export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
 		if (status === "suspended") numSuspended++
 	}
 
-	if (schedulings.length === 0) return <SchedulingStatus status="inactive" />
+	if (schedulingsAreInactive(schedulings))
+		return <SchedulingStatus status="inactive" />
 
 	if (schedulings.length === 1)
 		return <SchedulingStatus status={schedulings[0].status} />

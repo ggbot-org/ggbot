@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "author": "Gianluca Casati (http://fibo.github.io/)",
   "scripts": {
-    "build": "npm run build -w repository && npm run build:binance-proxy && npm run build:executor && npm run build:webapp && npm run build_api",
+    "build": "npm run build -w repository && npm run build:binance-proxy && npm run build:executor && npm run build:webapp && npm run build:infrastructure && npm run build_api",
     "build_api": "npm run build:authentication-api && npm run build:public-api && npm run build:stripe-api && npm run build:user-api",
     "build:admin-api": "npm run build -w admin-api",
     "build:authentication-api": "npm run build -w authentication-api",

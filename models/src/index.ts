@@ -113,6 +113,7 @@ export { isOrders, newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
 export { quota, quotaType } from "./quotas.js"
 export type { Scheduling, SchedulingStatus } from "./scheduling.js"
+export { schedulingsAreInactive } from "./scheduling.js"
 export type {
 	CopyStrategy,
 	CreateStrategy,
