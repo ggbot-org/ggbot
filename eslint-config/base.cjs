@@ -1,6 +1,6 @@
 module.exports = {
 	env: { browser: true, es2020: true, node: true },
-	extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	extends: ["eslint:recommended", "plugin:@typescript-eslint/strict"],
 	parser: "@typescript-eslint/parser",
 	plugins: [
 		"@typescript-eslint",
@@ -11,17 +11,15 @@ module.exports = {
 	root: true,
 	rules: {
 		"@typescript-eslint/array-type": ["error", { default: "array-simple" }],
-		"@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/member-ordering": "error",
-		"@typescript-eslint/no-array-constructor": "off",
-		"@typescript-eslint/no-empty-function": "off",
+		"@typescript-eslint/no-empty-function": "error",
 		// Accept expressions like
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
 		"@typescript-eslint/no-explicit-any": [
 			"warn",
 			{ ignoreRestArgs: true }
 		],
-		"@typescript-eslint/no-extra-semi": "off",
+		"@typescript-eslint/no-extra-semi": "error",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{
@@ -38,6 +36,7 @@ module.exports = {
 				varsIgnorePattern: "^_"
 			}
 		],
+		"@typescript-eslint/no-useless-empty-export": "error",
 		"arrow-body-style": ["error", "as-needed"],
 		"block-scoped-var": "error",
 		"default-param-last": "error",
@@ -66,6 +65,11 @@ module.exports = {
 		"no-warning-comments": "warn",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
+		"sort-keys": [
+			"error",
+			"asc",
+			{ caseSensitive: true, natural: true, minKeys: 20 }
+		],
 		"tsdoc/syntax": "error"
 	}
 }

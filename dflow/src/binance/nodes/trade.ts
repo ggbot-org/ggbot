@@ -1,5 +1,5 @@
 import { coerceToDecimal } from "@workspace/arithmetic"
-import { DflowNode } from "dflow"
+import { DflowNode, DflowOutputDefinition } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"
 import { dflowBinancePrecision } from "../arithmetic.js"
@@ -15,7 +15,7 @@ const marketOrderInputs = [
 ]
 const orderOutput = output("object", { name: "order" })
 export const orderOutputPosition = 0
-const outputs = new Array()
+const outputs: DflowOutputDefinition[] = []
 outputs[orderOutputPosition] = orderOutput
 
 export class BuyMarket extends DflowNode {

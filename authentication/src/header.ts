@@ -1,5 +1,5 @@
 import { ENV } from "@workspace/env"
-// @ts-ignore
+// @ts-expect-error jsonwebtoken is broken
 import jsonwebtoken from "jsonwebtoken"
 
 import { ErrorUnauthorizedAuthenticationHeader } from "./errors.js"

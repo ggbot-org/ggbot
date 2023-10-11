@@ -126,7 +126,9 @@ export class TrailingStopUp extends DflowNode {
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			// Cleanup memory.
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete (this.host.context as Context).memory[entryPriceMemoryKey]
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete (this.host.context as Context).memory[stopPriceMemoryKey]
 			;(this.host.context as Context).memoryChanged = true
 		} else if (stopPrice !== nextStopPrice) {
@@ -174,7 +176,9 @@ export class TrailingStopDown extends DflowNode {
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			// Cleanup memory.
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete (this.host.context as Context).memory[entryPriceMemoryKey]
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete (this.host.context as Context).memory[stopPriceMemoryKey]
 			;(this.host.context as Context).memoryChanged = true
 		} else if (stopPrice !== nextStopPrice) {

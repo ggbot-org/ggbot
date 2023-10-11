@@ -4,7 +4,7 @@ import {
 	clientSessionNumDays,
 	isClientSession
 } from "@workspace/models"
-// @ts-ignore
+// @ts-expect-error jsonwebtoken is broken
 import jsonwebtoken from "jsonwebtoken"
 import { isMaybeObject } from "minimal-type-guard-helpers"
 
