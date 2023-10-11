@@ -18,7 +18,7 @@ import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
 	balances: Balance[]
-	orders: Pick<Order, "info">[]
+	orders: Array<Pick<Order, "info">>
 }
 
 export class DflowBinanceExecutor

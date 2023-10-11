@@ -6,8 +6,6 @@ import { BalanceChangeEvent } from "./balanceChangeEvent.js"
 
 type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
 
-type StrategyBalances = StrategyBalance[]
-
 type ReadStrategyBalancesInput = AccountStrategyKey & DayInterval
 
 export const isReadStrategyBalancesInput =
@@ -19,4 +17,4 @@ export const isReadStrategyBalancesInput =
 
 export type ReadStrategyBalances = (
 	arg: ReadStrategyBalancesInput
-) => Promise<StrategyBalances>
+) => Promise<StrategyBalance[]>

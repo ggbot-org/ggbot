@@ -28,7 +28,7 @@ const extractUnknownNodes = ({
 	nodesCatalog,
 	view,
 	nodeTextToDflowKind
-}: DflowValidateArg): { id: string; text: string }[] => {
+}: DflowValidateArg): Array<{ id: string; text: string }> => {
 	const nodeKinds = Object.keys({ ...nodesCatalog, ...coreNodesCatalog })
 	const viewNodeKinds = view.nodes.map(({ id, text }) => ({
 		id,

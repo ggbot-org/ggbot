@@ -12,7 +12,8 @@ import {
 	TrailingStopInput,
 	trailingStopMemoryKeys,
 	TrailingStopOutput,
-	TrailingStopUp} from "./trailingStop.js"
+	TrailingStopUp
+} from "./trailingStop.js"
 
 type ExecuteTrailingStopInput = Pick<
 	TrailingStopInput,
@@ -340,10 +341,10 @@ describe("Trailing Stop", () => {
 	})
 
 	test("trailingStop", () => {
-		const testData: {
+		const testData: Array<{
 			input: TrailingStopInput
 			output: TrailingStopOutput
-		}[] = [
+		}> = [
 			// If `direction` is "UP" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
 			{
 				input: {

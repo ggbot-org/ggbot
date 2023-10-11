@@ -10,6 +10,7 @@ module.exports = {
 	],
 	root: true,
 	rules: {
+		"@typescript-eslint/array-type": ["error", { default: "array-simple" }],
 		"@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-array-constructor": "off",

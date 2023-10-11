@@ -8,8 +8,9 @@ const apiBase = new ApiBaseURL(fqdn).toString()
 export class StripeWebhook {
 	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion =
 		"2023-08-16"
-	static enabledEvents: Array<Stripe.WebhookEndpointCreateParams.EnabledEvent> =
-		["payment_intent.succeeded"]
+	static enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
+		"payment_intent.succeeded"
+	]
 
 	endpoint: Stripe.WebhookEndpoint | undefined
 	private stripe = newStripe()

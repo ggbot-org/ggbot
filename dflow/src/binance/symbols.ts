@@ -109,7 +109,7 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 ): DflowBinanceSymbolAndInterval[] => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
-	const nodeConnections: { sourceId: DflowId; targetId: DflowId }[] =
+	const nodeConnections: Array<{ sourceId: DflowId; targetId: DflowId }> =
 		view.edges.map((edge) => ({
 			sourceId: edge.from[0],
 			targetId: edge.to[0]

@@ -38,7 +38,7 @@ describe("deleteMemory", () => {
 
 describe("getMemory", () => {
 	test("can read context memory", async () => {
-		const testValues: { value: DflowData }[] = [
+		const testValues: Array<{ value: DflowData }> = [
 			{ value: 42 },
 			{ value: "a string" },
 			{ value: ["a", "b"] }
