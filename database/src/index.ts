@@ -25,8 +25,7 @@ export { itemKeyToDirname, locatorToItemKey } from "./locators.js"
 export {
 	createOneTimePassword,
 	deleteOneTimePassword,
-	readOneTimePassword,
-	sendOneTimePassword
+	readOneTimePassword
 } from "./oneTimePassword.js"
 export { getDataBucketName } from "./S3DataProvider.js"
 export {

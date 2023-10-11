@@ -11,7 +11,7 @@
     "start": "node dist/server"
   },
   "dependencies": {
-    "@workspace/aws": "0.0.0",
+    "@workspace/aws-ec2": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/logging": "0.0.0",

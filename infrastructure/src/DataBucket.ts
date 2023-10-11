@@ -1,4 +1,4 @@
-import { S3Bucket, S3BucketACL } from "@workspace/aws"
+import { S3Bucket, S3BucketACL } from "@workspace/aws-s3"
 
 export class DataBucket extends S3Bucket {
 	readonly ACL: S3BucketACL

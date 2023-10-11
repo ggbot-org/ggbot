@@ -1,32 +1,29 @@
 #!/usr/bin/env bash
 
-# Cleanup previous .zip files
-
-rm -rf dist/*/index.zip
-
-# Install external deps.
-
-echo '{ "name": "lambda", "type": "module", "dependencies": { "@aws-sdk/client-iam": "3.427.0", "@aws-sdk/client-s3": "3.427.0", "@aws-sdk/client-ses": "3.427.0", "jsonwebtoken": "9.0.1", "dflow": "0.42.0", "flow-view": "6.0.1", "minimal-time-helpers": "0.1.0", "minimal-type-guard-helpers": "0.1.1" } }' > temp/package.json
-cd temp
-npm install
-cd -
-
-# Copy workspaces.
-
-for WORKSPACE in api api-gateway arithmetic authentication aws binance binance-client database dflow env email-messages http locators logging models; do
-	mkdir -p temp/node_modules/@workspace/$WORKSPACE/dist
-	cp -R ../$WORKSPACE/dist/* temp/node_modules/@workspace/$WORKSPACE/dist/
-	cp ../$WORKSPACE/package.json temp/node_modules/@workspace/$WORKSPACE/
-done
-
-# Zip lambdas.
-
 for LAMBDA in action; do
-	mkdir -p dist/$LAMBDA/node_modules
-	cp temp/lambdas/${LAMBDA}/*.js dist/$LAMBDA/
-	cp temp/package.json dist/$LAMBDA/
-	cp -R temp/node_modules/* dist/$LAMBDA/node_modules/
-	cd dist/$LAMBDA
+	DIST_DIR=dist/$LAMBDA
+
+	# Cleanup previous .zip file.
+	rm -rf dist/${LAMBDA}.zip
+
+	# Install external deps.
+	mkdir -p $DIST_DIR
+	cp src/lambdas/$LAMBDA/external-dependencies.json $DIST_DIR/package.json
+	cd $DIST_DIR
+	npm install
+	cd -
+
+	# Copy internal deps.
+	for WORKSPACE in api api-gateway arithmetic aws binance binance-client cache database dflow env email-messages http locators logging models; do
+		WORKSPACE_DIST_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE/dist
+		mkdir -p $WORKSPACE_DIST_DIR
+		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIST_DIR
+		cp ../$WORKSPACE/package.json $WORKSPACE_DIST_DIR
+	done
+
+	# Zip lambda.
+	cp temp/lambdas/${LAMBDA}/*.js $DIST_DIR
+	cd $DIST_DIR
 	zip -X -r ../${LAMBDA}.zip * > /dev/null
 	cd -
 done

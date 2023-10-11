@@ -25,6 +25,7 @@
     "@workspace/authentication": "0.0.0",
     "@workspace/api-gateway": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/email-messages": "0.0.0",
     "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0"
   },

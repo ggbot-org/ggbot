@@ -1,9 +1,5 @@
-import {
-	AwsAccountId,
-	AwsRegion,
-	LoadBalancer,
-	LoadBalancerTypeEnum
-} from "@workspace/aws"
+import { LoadBalancer, LoadBalancerTypeEnum } from "@workspace/aws-elb"
+import { AwsAccountId, AwsRegion } from "@workspace/aws-types"
 import { ENV } from "@workspace/env"
 
 export class BinanceProxyLoadBalancer extends LoadBalancer {

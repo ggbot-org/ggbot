@@ -15,14 +15,14 @@ for LAMBDA in action; do
 
 	# Copy internal deps.
 	for WORKSPACE in api api-gateway arithmetic aws binance binance-client cache database dflow env email-messages http locators logging models; do
-		WORKSPACE_DIST_DIR=dist/$LAMBDA/node_modules/@workspace/$WORKSPACE/dist
+		WORKSPACE_DIST_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE/dist
 		mkdir -p $WORKSPACE_DIST_DIR
 		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIST_DIR
 		cp ../$WORKSPACE/package.json $WORKSPACE_DIST_DIR
 	done
 
 	# Zip lambda.
-	cp temp/lambdas/${LAMBDA}/*.js dist/$LAMBDA/
+	cp temp/lambdas/${LAMBDA}/*.js $DIST_DIR
 	cd $DIST_DIR
 	zip -X -r ../${LAMBDA}.zip * > /dev/null
 	cd -

@@ -1,7 +1,11 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { listCertificates } from "@workspace/aws"
+import {
+	CertificateStatus,
+	listCertificates,
+	RenewalEligibility
+} from "@workspace/aws-acm"
 import { ENV } from "@workspace/env"
 
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
@@ -22,10 +26,12 @@ describe(`SSL certificate for domain ${DNS_DOMAIN} on region ${staticWebsiteAwsR
 	})
 
 	test("status is ISSUED", () => {
-		assert.ok(certificate?.Status === "ISSUED")
+		assert.ok(certificate?.Status === CertificateStatus.ISSUED)
 	})
 
 	test("is ELIGIBLE for renewal", () => {
-		assert.ok(certificate?.RenewalEligibility === "ELIGIBLE")
+		assert.ok(
+			certificate?.RenewalEligibility === RenewalEligibility.ELIGIBLE
+		)
 	})
 })

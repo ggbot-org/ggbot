@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf temp/",
     "lint": "eslint --fix --ext .ts src/",
@@ -14,9 +15,15 @@
     "tsc:test": "tsc --build tsconfig.test.json"
   },
   "dependencies": {
-    "@workspace/aws": "0.0.0",
-    "@workspace/env": "0.0.0",
+    "@workspace/aws-acm": "0.0.0",
+    "@workspace/aws-ec2": "0.0.0",
+    "@workspace/aws-elb": "0.0.0",
+    "@workspace/aws-iam": "0.0.0",
+    "@workspace/aws-s3": "0.0.0",
+    "@workspace/aws-ses": "0.0.0",
+    "@workspace/aws-types": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/repository": "0.0.0",
     "@workspace/stripe": "0.0.0"

@@ -1,4 +1,4 @@
-import { AwsResource } from "@workspace/aws"
+import { AwsResource } from "@workspace/aws-types"
 import { ENV } from "@workspace/env"
 
 // TODO generalize it and move it to aws workspace (without specific ENV stuff)

@@ -3,7 +3,7 @@ import {
 	describeElasticIps,
 	getOwnEc2InstanceId,
 	releaseElasticIp
-} from "@workspace/aws"
+} from "@workspace/aws-ec2"
 import { ENV } from "@workspace/env"
 
 import { ErrorCannotParseElasticIps } from "./errors.js"

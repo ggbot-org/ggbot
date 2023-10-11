@@ -2,7 +2,7 @@ import {
 	IamPolicy,
 	PolicyDocumentStatement,
 	PolicyDocumentStatementAction
-} from "@workspace/aws"
+} from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
 import { ApiRole } from "./ApiRole.js"

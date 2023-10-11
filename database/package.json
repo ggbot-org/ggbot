@@ -16,11 +16,10 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
-    "@workspace/aws": "0.0.0",
+    "@workspace/aws-s3": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/binance-client": "0.0.0",
     "@workspace/dflow": "0.0.0",
-    "@workspace/email-messages": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/logging": "0.0.0",

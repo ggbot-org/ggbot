@@ -72,18 +72,47 @@ describe("truncateDate", () => {
 
 Optionally add info attributes to the class, for example
 
-```ts
+````ts
+/**
+ * Generic HTTP Error.
+ *
+ * @example
+ * 	;```ts
+ * 	const response = await fetch(url)
+ * 	if (!response.ok) throw new ErrorHTTP(response)
+ * 	```
+ */
 export class ErrorHTTP extends Error {
-	static message(status: ErrorHTTP["status"]) {
-		return `Server responded with ${status}`
+	static errorName = "ErrorHTTP"
+	status: Response["status"]
+	statusText: Response["statusText"]
+	url: Response["url"]
+	constructor(response: Response) {
+		super(ErrorHTTP.message(response))
+		this.status = response.status
+		this.statusText = response.statusText
+		const url = new URL(response.url)
+		this.url = `${url.origin}${url.pathname}`
 	}
-	readonly status: number
-	constructor(status: ErrorHTTP["status"]) {
-		super(ErrorHttp.message(status))
-		this.status = status
+	static message({
+		status,
+		statusText,
+		url
+	}: Pick<Response, "status" | "statusText" | "url">) {
+		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
+	}
+	toValue() {
+		return {
+			name: ErrorHTTP.errorName,
+			info: {
+				status: this.status,
+				statusText: this.statusText,
+				url: this.url
+			}
+		}
 	}
 }
-```
+````
 
 Notice some info could be not defined or `unknown`.
 

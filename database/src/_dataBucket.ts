@@ -1,4 +1,4 @@
-import { S3IOClient } from "@workspace/aws"
+import { S3IOClient } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import { deletedNow, updatedNow } from "@workspace/models"

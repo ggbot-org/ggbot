@@ -1,4 +1,4 @@
-import { IamPolicy } from "@workspace/aws"
+import { IamPolicy } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
 import { SesIdentity } from "./SesIdentity.js"

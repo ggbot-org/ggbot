@@ -7,6 +7,7 @@ graph LR
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/api-gateway
     workspace/admin-api --- workspace/database
+    workspace/admin-api --- workspace/email-messages
     workspace/api --- workspace/http
     workspace/api --- workspace/models
     workspace/api-gateway --- workspace/api
@@ -15,23 +16,36 @@ graph LR
     workspace/authentication --- workspace/models
     workspace/authentication-api --- workspace/api-gateway
     workspace/authentication-api --- workspace/authentication
+    workspace/authentication-api --- workspace/aws-ses
     workspace/authentication-api --- workspace/database
+    workspace/authentication-api --- workspace/email-messages
+    workspace/aws-acm --- workspace/aws-types
+    workspace/aws-ec2 --- workspace/aws-types
+    workspace/aws-elb --- workspace/aws-types
+    workspace/aws-iam --- workspace/aws-types
+    workspace/aws-s3 --- workspace/aws-types
+    workspace/aws-ses --- workspace/aws-types
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
-    workspace/binance-proxy --- workspace/aws
+    workspace/binance-proxy --- workspace/aws-ec2
     workspace/binance-proxy --- workspace/binance
     workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/http
-    workspace/database --- workspace/aws
+    workspace/database --- workspace/aws-s3
     workspace/database --- workspace/binance-client
     workspace/database --- workspace/dflow
-    workspace/database --- workspace/email-messages
     workspace/database --- workspace/locators
     workspace/database --- workspace/logging
     workspace/dflow --- workspace/arithmetic
     workspace/dflow --- workspace/binance
+    workspace/dflow --- workspace/models
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/database
+    workspace/infrastructure --- workspace/aws-acm
+    workspace/infrastructure --- workspace/aws-ec2
+    workspace/infrastructure --- workspace/aws-elb
+    workspace/infrastructure --- workspace/aws-iam
+    workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
     workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/stripe
@@ -47,8 +61,6 @@ graph LR
     workspace/user-api --- workspace/api-gateway
     workspace/user-api --- workspace/authentication
     workspace/user-api --- workspace/database
-    workspace/utrust-api --- workspace/api-gateway
-    workspace/utrust-api --- workspace/database
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/dflow
     workspace/webapp --- workspace/locators

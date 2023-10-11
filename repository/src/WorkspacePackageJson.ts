@@ -35,7 +35,10 @@ export class WorkspacePackageJson implements FileProvider {
 		internalDependency: string
 	): Workspace["pathname"] {
 		const workspacePathname = internalDependency.split("/").pop()
-		if (!workspacePathname) throw new Error()
+		if (!workspacePathname)
+			throw new Error(
+				`Cannot get workspace pathname from ${internalDependency}`
+			)
 		return workspacePathname
 	}
 
@@ -44,7 +47,7 @@ export class WorkspacePackageJson implements FileProvider {
 		workspaces: Repository["workspaces"]
 	) {
 		const workspace = workspaces.get(workspacePathname)
-		if (!workspace) throw Error()
+		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
 		let result = Array.from(workspace.packageJson.internalDependencies)
 		for (const internalDependency of result) {
 			const dependencyWorkspacePathname =
@@ -54,7 +57,8 @@ export class WorkspacePackageJson implements FileProvider {
 			const dependencyWorkspace = workspaces.get(
 				dependencyWorkspacePathname
 			)
-			if (!dependencyWorkspace) throw Error()
+			if (!dependencyWorkspace)
+				throw Error(`Cannot get workspace ${dependencyWorkspace}`)
 			if (dependencyWorkspace.packageJson.internalDependencies.size === 0)
 				continue
 			result = WorkspacePackageJson.internalDependenciesChain(
@@ -66,13 +70,11 @@ export class WorkspacePackageJson implements FileProvider {
 	}
 
 	async read() {
-		const text = await readFile(
-			join(this.directoryPathname, this.filename),
-			"utf-8"
-		)
+		const pathname = join(this.directoryPathname, this.filename)
+		const text = await readFile(pathname, "utf-8")
 		const packageContent = JSON.parse(text)
 		if (!packageContent || typeof packageContent !== "object")
-			throw new TypeError()
+			throw new Error(`JSON file ${pathname} is not an object`)
 		const {
 			name = "",
 			private: isPrivate,

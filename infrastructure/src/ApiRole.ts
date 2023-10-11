@@ -1,4 +1,4 @@
-import { AwsResource } from "@workspace/aws"
+import { AwsResource } from "@workspace/aws-types"
 import { ENV } from "@workspace/env"
 
 export class ApiRole implements AwsResource {

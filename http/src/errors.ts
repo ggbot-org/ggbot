@@ -6,47 +6,6 @@ import {
 	__502__BAD_GATEWAY__
 } from "./codes.js"
 
-/**
- * Generic HTTP Error.
- *
- * @example
- *
- * ```ts
- * const response = await fetch(url)
- * if (!response.ok) throw new ErrorHTTP(response)
- * ```
- */
-export class ErrorHTTP extends Error {
-	static errorName = "ErrorHTTP"
-	status: Response["status"]
-	statusText: Response["statusText"]
-	url: Response["url"]
-	constructor(response: Response) {
-		super(ErrorHTTP.message(response))
-		this.status = response.status
-		this.statusText = response.statusText
-		const url = new URL(response.url)
-		this.url = `${url.origin}${url.pathname}`
-	}
-	static message({
-		status,
-		statusText,
-		url
-	}: Pick<Response, "status" | "statusText" | "url">) {
-		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
-	}
-	toValue() {
-		return {
-			name: ErrorHTTP.errorName,
-			info: {
-				status: this.status,
-				statusText: this.statusText,
-				url: this.url
-			}
-		}
-	}
-}
-
 export class BadRequestError extends Error {
 	static errorName = "BadRequest"
 	constructor() {

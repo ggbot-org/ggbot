@@ -2,7 +2,6 @@
 	"name": "lambda",
 	"type": "module",
 	"dependencies": {
-		"@aws-sdk/client-iam": "3.379.1",
 		"@aws-sdk/client-s3": "3.427.0",
 		"@aws-sdk/client-ses": "3.427.0",
 		"jsonwebtoken": "9.0.1",

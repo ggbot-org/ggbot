@@ -4,7 +4,6 @@ import {
 	__500__INTERNAL_SERVER_ERROR__,
 	BadGatewayError,
 	BadRequestError,
-	ErrorHTTP,
 	InternalServerError,
 	NotFoundError,
 	UnauthorizedError
@@ -44,7 +43,6 @@ const apiActionServerSideErrorNames = [
 	ErrorUnimplementedStrategyKind.errorName,
 	// Other errors.
 	BadGatewayError.errorName,
-	ErrorHTTP.errorName, // TODO is this server side?
 	InternalServerError.errorName
 ] as const
 type ApiActionServerSideErrorName =

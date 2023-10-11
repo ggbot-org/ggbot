@@ -1,6 +1,6 @@
 import { createServer } from "node:http"
 
-import { ErrorCannotGetOwnEc2InstanceId } from "@workspace/aws"
+import { ErrorCannotGetOwnEc2InstanceId } from "@workspace/aws-ec2"
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
 
 import { associateIp, releaseIp } from "./elasticIp.js"

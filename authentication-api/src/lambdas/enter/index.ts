@@ -10,7 +10,9 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { createOneTimePassword, sendOneTimePassword } from "@workspace/database"
+import { createOneTimePassword } from "@workspace/database"
+
+import { sendOneTimePassword } from "./sendOneTimePassword.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
