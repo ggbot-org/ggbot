@@ -1,14 +1,82 @@
-import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { Scheduling, schedulingsAreInactive } from "./scheduling.js"
+import { assertDeepEqual, assertEqual } from "./assertions.js"
+import {
+	getSchedulingSummary,
+	Scheduling,
+	schedulingsAreInactive,
+	SchedulingSummary
+} from "./scheduling.js"
+
+describe("getSchedulingSummary", () => {
+	test("return a SchedulingSummary", () => {
+		assertDeepEqual<Scheduling[], SchedulingSummary>(getSchedulingSummary, [
+			{
+				input: [],
+				output: {
+					active: 0,
+					inactive: 0,
+					suspended: 0
+				}
+			},
+			{
+				input: [
+					{
+						status: "inactive",
+						frequency: { every: 1, interval: "1h" }
+					}
+				],
+				output: {
+					active: 0,
+					inactive: 1,
+					suspended: 0
+				}
+			},
+			{
+				input: [
+					{
+						status: "inactive",
+						frequency: { every: 2, interval: "1h" }
+					},
+					{
+						status: "active",
+						frequency: { every: 3, interval: "1h" }
+					}
+				],
+				output: {
+					active: 1,
+					inactive: 1,
+					suspended: 0
+				}
+			},
+			{
+				input: [
+					{
+						status: "inactive",
+						frequency: { every: 2, interval: "1h" }
+					},
+					{
+						status: "inactive",
+						frequency: { every: 3, interval: "1h" }
+					},
+					{
+						status: "suspended",
+						frequency: { every: 3, interval: "1h" }
+					}
+				],
+				output: {
+					active: 0,
+					inactive: 2,
+					suspended: 1
+				}
+			}
+		])
+	})
+})
 
 describe("schedulingsAreInactive", () => {
 	test("checks if schedulings are inactive overall", () => {
-		const testData: Array<{
-			input: Scheduling[]
-			output: boolean
-		}> = [
+		assertEqual<Scheduling[], boolean>(schedulingsAreInactive, [
 			{
 				input: [],
 				output: true
@@ -48,14 +116,6 @@ describe("schedulingsAreInactive", () => {
 				],
 				output: true
 			}
-		]
-
-		testData.forEach(({ input, output }) => {
-			assert.equal(
-				schedulingsAreInactive(input),
-				output,
-				`schedulingsAreInactive(${JSON.stringify(input)}) !== ${output}`
-			)
-		})
+		])
 	})
 })

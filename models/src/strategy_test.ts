@@ -1,9 +1,11 @@
-import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { MaybeObject } from "minimal-type-guard-helpers"
+
+import { assertEqual } from "./assertions.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
-import { isStrategy, newStrategy } from "./strategy.js"
+import { isStrategy, newStrategy, Strategy } from "./strategy.js"
 import { createdNow } from "./time.js"
 
 describe("isStrategy", () => {
@@ -12,7 +14,7 @@ describe("isStrategy", () => {
 		const kind = "binance"
 		const name = "Name"
 		const { whenCreated } = createdNow()
-		;[
+		assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [
 			{
 				input: newStrategy({ accountId, kind, name }),
 				output: true
@@ -45,12 +47,6 @@ describe("isStrategy", () => {
 				},
 				output: false
 			}))
-		].forEach(({ input, output }) => {
-			assert.equal(
-				isStrategy(input),
-				output,
-				`isStrategy(${JSON.stringify(input)}) !== ${output}`
-			)
-		})
+		])
 	})
 })

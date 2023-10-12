@@ -161,9 +161,6 @@ export {
 	isStrategyFlow,
 	isWriteStrategyFlowInput
 } from "./strategyFlow.js"
-// TODO remove this ignore comment, use StrategyInput for multiple schedulings
-// ts-prune-ignore-next
-export type { StrategyInput } from "./strategyInput.js"
 export type {
 	DeleteStrategyMemory,
 	ReadStrategyMemory,
@@ -172,7 +169,8 @@ export type {
 } from "./strategyMemory.js"
 export {
 	isReadStrategyMemoryInput,
-	isStrategyMemory} from "./strategyMemory.js"
+	isStrategyMemory
+} from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"

@@ -1,19 +1,19 @@
-import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { assertEqual } from "./assertions.js"
 import { Balance, isBalance } from "./balance.js"
 
 describe("isBalance", () => {
 	test("validates Balance", () => {
-		const testData: Balance[] = [
+		assertEqual<Balance, boolean>(isBalance, [
 			{
-				asset: "BUSD",
-				free: "-1000.00",
-				locked: "0"
+				input: {
+					asset: "BUSD",
+					free: "-1000.00",
+					locked: "0"
+				},
+				output: true
 			}
-		]
-		testData.forEach((balance) => {
-			assert.ok(isBalance(balance))
-		})
+		])
 	})
 })

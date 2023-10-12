@@ -1,22 +1,24 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { MaybeObject } from "minimal-type-guard-helpers"
+
+import { assertEqual } from "./assertions.js"
 import {
 	generateOneTimePassword,
-	isOneTimePassword
+	isOneTimePassword,
+	OneTimePassword
 } from "./oneTimePassword.js"
 import { createdNow } from "./time.js"
 
 describe("isOneTimePassword", () => {
 	test("validates input if is valid OneTimePassword", () => {
-		[
+		assertEqual<MaybeObject<OneTimePassword>, boolean>(isOneTimePassword, [
 			{
 				input: { code: "123456", ...createdNow() },
 				output: true
 			}
-		].forEach(({ input, output }) => {
-			assert.equal(isOneTimePassword(input), output)
-		})
+		])
 	})
 })
 

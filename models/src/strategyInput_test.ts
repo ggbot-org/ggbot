@@ -1,11 +1,11 @@
-import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { isStrategyInput } from "./strategyInput.js"
+import { assertEqual } from "./assertions.js"
+import { isStrategyInput, StrategyInput } from "./strategyInput.js"
 
 describe("isStrategyInput", () => {
 	test("validates StrategyInput", () => {
-		[
+		assertEqual<StrategyInput, boolean>(isStrategyInput, [
 			{
 				input: {
 					"input 1": true,
@@ -14,12 +14,6 @@ describe("isStrategyInput", () => {
 				},
 				output: true
 			}
-		].forEach(({ input, output }) => {
-			assert.equal(
-				isStrategyInput(input),
-				output,
-				`isStrategyInput(${JSON.stringify(input)}) !== ${output}`
-			)
-		})
+		])
 	})
 })

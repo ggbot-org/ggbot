@@ -1,6 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+// TODO use assertEqual
 import { isEmailAddress, normalizeEmailAddress } from "./email.js"
 import { ErrorInvalidArg } from "./errors.js"
 
