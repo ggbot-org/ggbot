@@ -1,6 +1,6 @@
 type FiniteString = string
 
-const stringMaxLength = 256
+const stringMaxLength = 80
 
 const isFiniteString = (arg: unknown): arg is FiniteString =>
 	typeof arg === "string" && arg.length <= stringMaxLength
