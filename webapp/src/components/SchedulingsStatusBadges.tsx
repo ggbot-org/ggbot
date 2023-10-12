@@ -1,6 +1,10 @@
 import { Control, Field } from "_/components/library"
 import { SchedulingStatus } from "_/components/SchedulingStatus"
-import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
+import {
+	AccountStrategy,
+	getSchedulingSummary,
+	schedulingsAreInactive,
+	schedulingStatuses} from "@workspace/models"
 import { FC } from "react"
 
 type Props = {
@@ -8,15 +12,7 @@ type Props = {
 }
 
 export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
-	let numActive = 0
-	let numInactive = 0
-	let numSuspended = 0
-
-	for (const { status } of schedulings) {
-		if (status === "active") numActive++
-		if (status === "inactive") numInactive++
-		if (status === "suspended") numSuspended++
-	}
+	const schedulingSummary = getSchedulingSummary(schedulings)
 
 	if (schedulingsAreInactive(schedulings))
 		return <SchedulingStatus status="inactive" />
@@ -26,17 +22,14 @@ export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
 
 	return (
 		<Field isGrouped="multiline">
-			<Control>
-				<SchedulingStatus status="suspended" count={numSuspended} />
-			</Control>
-
-			<Control>
-				<SchedulingStatus status="inactive" count={numInactive} />
-			</Control>
-
-			<Control>
-				<SchedulingStatus status="active" count={numActive} />
-			</Control>
+			{schedulingStatuses.map((schedulingStatus) => (
+				<Control key={schedulingStatus}>
+					<SchedulingStatus
+						status={schedulingStatus}
+						count={schedulingSummary[schedulingStatus]}
+					/>
+				</Control>
+			))}
 		</Field>
 	)
 }

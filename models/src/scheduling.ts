@@ -3,7 +3,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 import { Frequency, isFrequency } from "./frequency.js"
 import { isStrategyInput, StrategyInput } from "./strategyInput.js"
 
-const schedulingStatuses = ["active", "inactive", "suspended"] as const
+export const schedulingStatuses = ["active", "inactive", "suspended"] as const
 export type SchedulingStatus = (typeof schedulingStatuses)[number]
 
 const isSchedulingStatus = isLiteralType<SchedulingStatus>(schedulingStatuses)

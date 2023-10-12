@@ -14,6 +14,25 @@ const s3 = new S3IOClient(ENV.AWS_DATA_REGION(), Bucket)
 
 type AsyncFunction = (...arguments_: any[]) => Promise<unknown>
 
+// TODO non serve fare READ e READ_ARRAY
+// non serve che ReadStrategy sia definita come Promise, potrebbe non esserlo
+// serve che ReadStrategy sia definita come
+//
+// ReadStrategy = Operation<Input extends SerializableData, Output extends null | SerializableObject> = {
+// }
+//
+// dove Input e Output sono serializable, come JsonValue di type-fest ma da copiare dentro models, con i type-guard tipo dflow
+// cosi tolgo dflow come dipendenza da models
+// ed ho tutte le Operation
+//
+// poi posso definire ad esempio PublicApiServer come type
+// e su public-api lambda, ho un file api.ts con class Api implements PublicApiServer
+//
+// in questo modo posso mockare tutto dopo averlo definito in maniera astratta
+//
+// type PublicApiServer = {
+//   ReadStrategy: (input: unknown}): ReadStrategy.output
+// }
 export const READ = async <Operation extends AsyncFunction>(
 	isData: (
 		arg: unknown
