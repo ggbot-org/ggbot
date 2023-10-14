@@ -3,17 +3,19 @@ import {
 	listAccountKeys,
 	readAccountStrategies,
 	readSubscription,
-	suspendAccountStrategiesSchedulings
+	suspendAccountStrategiesSchedulings,
+	suspendAccountStrategySchedulings
 } from "@workspace/database"
 import {
 	AccountKey,
 	AccountStrategy,
 	AccountStrategyKey,
 	ErrorAccountItemNotFound,
+	ErrorStrategyItemNotFound,
+	ErrorUnimplementedStrategyKind,
 	frequencyIntervalDuration,
 	isAccountKey,
 	isAccountStrategy,
-	isNodeError,
 	isSubscription,
 	Item,
 	itemIdCharacters,
@@ -27,6 +29,7 @@ import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"
 import { join } from "path"
 
+import { ErrorExecutionStrategy, isNodeError } from "./errors.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
 import { info, warn } from "./logging.js"
 
@@ -92,6 +95,7 @@ export class Executor {
 			if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
 		throw new TypeError()
 	}
+
 	async getAccountKeys(): Promise<AccountKey[]> {
 		try {
 			const cached = this.cachedAccountKeys.get()
@@ -108,6 +112,7 @@ export class Executor {
 	async getAccountStrategies({
 		accountId
 	}: AccountKey): Promise<AccountStrategy[]> {
+		const accountStrategies: AccountStrategy[] = []
 		try {
 			const key = accountId
 			const { accountStrategiesCache: cache } = this
@@ -115,33 +120,47 @@ export class Executor {
 			if (cached) return cached
 			info("readAccountStrategies")
 			const data = (await readAccountStrategies({ accountId })) ?? []
-			cache.set(key, data)
-			return data
+			if (!Array.isArray(data)) return accountStrategies
+			for (const item of data)
+				if (isAccountStrategy(item)) accountStrategies.push(item)
+			cache.set(key, accountStrategies)
+			return accountStrategies
 		} catch (error) {
 			warn(error)
-			return []
+			return accountStrategies
 		}
 	}
 
-	async getSubscription({
-		accountId
-	}: AccountKey): Promise<Subscription | undefined> {
+	/**
+	 * Check if subscription is active.
+	 *
+	 * ```ts
+	 * const hasActiveSubscription = await this.checkSubscription({
+	 * 	accountId
+	 * })
+	 * ```
+	 */
+	async checkSubscription({ accountId }: AccountKey): Promise<boolean> {
 		try {
 			const key = accountId
 			const { subscriptionsCache: cache } = this
 			const cached = cache.get(key)
-			if (cached) return cached
+			if (cached) return statusOfSubscription(cached) === "active"
 			info("readSubscription", accountId)
 			const subscription = await readSubscription({ accountId })
-			if (subscription) {
-				cache.set(key, subscription)
-				return subscription
-			}
+			if (!isSubscription(subscription)) return false
+			cache.set(key, subscription)
+			return statusOfSubscription(subscription) === "active"
 		} catch (error) {
 			warn(error)
+			return false
 		}
 	}
 
+	/**
+	 * Execute strategies if scheduling is active and accorging to scheduling
+	 * frequency.
+	 */
 	async manageStrategyExecution(
 		accountStrategyKey: AccountStrategyKey,
 		scheduling: Scheduling
@@ -158,7 +177,14 @@ export class Executor {
 		}
 		strategyWhenExecuted.set(strategyId, time)
 		info("execute strategy", strategyId)
-		await executeBinanceStrategy(accountStrategyKey)
+		if (accountStrategyKey.strategyKind === "binance") {
+			await executeBinanceStrategy(accountStrategyKey)
+			return
+		}
+		throw new ErrorUnimplementedStrategyKind({
+			strategyKind: accountStrategyKey.strategyKind,
+			strategyId: accountStrategyKey.strategyId
+		})
 	}
 
 	managesItem(itemId: Item["id"]) {
@@ -176,12 +202,10 @@ export class Executor {
 				if (!isAccountKey(accountKey)) continue
 				const { accountId } = accountKey
 
-				// Check subscription.
-				const subscription = await this.getSubscription(accountKey)
-				if (
-					!isSubscription(subscription) ||
-					statusOfSubscription(subscription) !== "active"
-				) {
+				// Check subscription or suspend account strategies.
+				const hasActiveSubscription =
+					await this.checkSubscription(accountKey)
+				if (!hasActiveSubscription) {
 					await this.suspendAccountStrategies(accountKey)
 					continue
 				}
@@ -190,28 +214,38 @@ export class Executor {
 				const accountStrategies =
 					await this.getAccountStrategies(accountKey)
 
-				for (const accountStrategy of accountStrategies) {
-					if (!isAccountStrategy(accountStrategy)) continue
-					const { strategyId, strategyKind, schedulings } =
-						accountStrategy
-
+				for (const {
+					strategyId,
+					strategyKind,
+					schedulings
+				} of accountStrategies)
 					for (const scheduling of schedulings) {
-						// Execute scheduled strategies.
 						await this.manageStrategyExecution(
 							{ accountId, strategyId, strategyKind },
 							scheduling
 						)
 					}
-				}
 			} catch (error) {
-				warn(error)
+				if (
+					error instanceof ErrorUnimplementedStrategyKind ||
+					error instanceof ErrorStrategyItemNotFound ||
+					error instanceof ErrorExecutionStrategy
+				) {
+					await this.suspendAccountStrategySchedulings({
+						accountId: accountKey.accountId,
+						strategyId: error.strategyId
+					})
+					continue
+				}
 
 				if (error instanceof ErrorAccountItemNotFound) {
 					if (error.type === "BinanceApiConfig") {
 						await this.suspendAccountStrategies(accountKey)
+						continue
 					}
 				}
 
+				warn(error)
 				continue
 			}
 		}
@@ -227,6 +261,28 @@ export class Executor {
 
 			// Update database remotely.
 			await suspendAccountStrategiesSchedulings({ accountId })
+		} catch (error) {
+			warn(error)
+		}
+	}
+
+	async suspendAccountStrategySchedulings({
+		accountId,
+		strategyId
+	}: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
+		try {
+			info(
+				`Suspend strategy accountId=${accountId} strategyId=${strategyId}`
+			)
+
+			// Cleanup cache locally.
+			this.accountStrategiesCache.delete(accountId)
+
+			// Update database remotely.
+			await suspendAccountStrategySchedulings({
+				accountId,
+				strategyId
+			})
 		} catch (error) {
 			warn(error)
 		}

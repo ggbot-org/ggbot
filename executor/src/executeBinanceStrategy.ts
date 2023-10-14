@@ -14,151 +14,125 @@ import {
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import {
+	AccountStrategyKey,
 	createdNow,
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
-	ErrorUnimplementedStrategyKind,
-	newOrder
+	newOrder,
+	StrategyKind
 } from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
-import { ExecuteStrategy } from "./executeStrategy.js"
-import { warn } from "./logging.js"
+import { ErrorExecutionStrategy } from "./errors.js"
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 
-export const executeBinanceStrategy: ExecuteStrategy = async ({
+export const executeBinanceStrategy = async ({
 	accountId,
-	strategyId,
-	strategyKind
-}) => {
-	try {
-		const accountStrategyKey = { accountId, strategyKind, strategyId }
-		const strategyKey = { strategyKind, strategyId }
+	strategyId
+}: Omit<AccountStrategyKey, "strategyKind">) => {
+	const strategyKind: StrategyKind = "binance"
+	const accountStrategyKey = { accountId, strategyKind, strategyId }
+	const strategyKey = { strategyKind, strategyId }
 
-		const strategyFlow = await readStrategyFlow(accountStrategyKey)
-		if (!strategyFlow)
-			throw new ErrorStrategyItemNotFound({
-				type: "StrategyFlow",
-				...strategyKey
-			})
+	const strategyFlow = await readStrategyFlow(accountStrategyKey)
+	if (!strategyFlow)
+		throw new ErrorStrategyItemNotFound({
+			type: "StrategyFlow",
+			...strategyKey
+		})
 
-		const strategyMemory = await readStrategyMemory(accountStrategyKey)
-		const memoryInput = strategyMemory?.memory ?? {}
+	const strategyMemory = await readStrategyMemory(accountStrategyKey)
+	const memoryInput = strategyMemory?.memory ?? {}
 
-		if (strategyKind === "binance") {
-			const binanceApiConfig = await readBinanceApiConfig({ accountId })
-			if (!binanceApiConfig)
-				throw new ErrorAccountItemNotFound({
-					type: "BinanceApiConfig",
-					accountId
-				})
+	const binanceApiConfig = await readBinanceApiConfig({ accountId })
+	if (!binanceApiConfig)
+		throw new ErrorAccountItemNotFound({
+			type: "BinanceApiConfig",
+			accountId
+		})
 
-			const { apiKey, apiSecret } = binanceApiConfig
-			const binance = new Binance(apiKey, apiSecret, exchangeInfoCache)
+	const { apiKey, apiSecret } = binanceApiConfig
+	const binance = new Binance(apiKey, apiSecret, exchangeInfoCache)
 
-			// Truncate logical time to minute. It is a good compromise also to
-			// cache klines data.
-			//
-			// TODO is this correct?
-			const time = truncateTime(now()).to.minute
+	// Truncate logical time to minute. It is a good compromise also to
+	// cache klines data.
+	//
+	// TODO is this correct?
+	const time = truncateTime(now()).to.minute
 
-			const { symbols } = await binance.exchangeInfo()
-			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
+	const { symbols } = await binance.exchangeInfo()
+	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
-			const executor = new DflowBinanceExecutor(
-				binance,
-				symbols,
-				nodesCatalog
-			)
-			try {
-				const {
-					balances,
-					execution,
-					memory: memoryOutput,
-					memoryChanged,
-					orders
-				} = await executor.run(
-					{
-						input: {},
-						memory: memoryInput,
-						time
-					},
-					strategyFlow.view
-				)
+	const executor = new DflowBinanceExecutor(binance, symbols, nodesCatalog)
+	const {
+		balances,
+		execution,
+		memory: memoryOutput,
+		memoryChanged,
+		orders
+	} = await executor.run(
+		{
+			input: {},
+			memory: memoryInput,
+			time
+		},
+		strategyFlow.view
+	)
 
-				// Handle memory changes.
-				if (memoryChanged)
-					await writeStrategyMemory({
-						accountId,
-						strategyKind,
-						strategyId,
-						memory: memoryOutput
-					})
+	// Handle memory changes.
+	if (memoryChanged)
+		await writeStrategyMemory({
+			accountId,
+			strategyKind,
+			strategyId,
+			memory: memoryOutput
+		})
 
-				// TODO extract orders from execution
-				// update order pools with orders that has temporary state
-				// write other orders (e.g. filled) in history
+	// TODO extract orders from execution
+	// update order pools with orders that has temporary state
+	// write other orders (e.g. filled) in history
 
-				if (orders.length > 0) {
-					const day = today()
-					// TODO filter orders that are not filled, e.g. limit orders
-					const strategyOrders = orders.map((info) => newOrder(info))
+	if (orders.length > 0) {
+		const day = today()
+		// TODO filter orders that are not filled, e.g. limit orders
+		const strategyOrders = orders.map((info) => newOrder(info))
 
-					await appendStrategyDailyOrders({
-						accountId,
-						strategyKind,
-						strategyId,
-						day,
-						items: strategyOrders
-					})
+		await appendStrategyDailyOrders({
+			accountId,
+			strategyKind,
+			strategyId,
+			day,
+			items: strategyOrders
+		})
 
-					const accountOrders = strategyOrders.map((order) => ({
-						order,
-						strategyKind,
-						strategyId
-					}))
+		const accountOrders = strategyOrders.map((order) => ({
+			order,
+			strategyKind,
+			strategyId
+		}))
 
-					await appendAccountDailyOrders({
-						accountId,
-						day,
-						items: accountOrders
-					})
-				}
-
-				if (balances.length > 0) {
-					const { whenCreated } = createdNow()
-					const day = timeToDay(truncateTime(whenCreated).to.day)
-					await appendStrategyDailyBalanceChanges({
-						accountId,
-						strategyKind,
-						strategyId,
-						day,
-						items: [{ whenCreated, balances }]
-					})
-				}
-
-				const status =
-					execution?.status === "success" ? "success" : "failure"
-
-				if (status === "failure")
-					warn(`strategy ${strategyId} execution failed`)
-
-				return
-			} catch (error) {
-				// TODO write errors on database
-				// throw error and manage strategy accordingly
-				console.error(error)
-			}
-		}
-		throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId })
-	} catch (error) {
-		if (
-			error instanceof ErrorAccountItemNotFound ||
-			error instanceof ErrorUnimplementedStrategyKind
-		)
-			throw error
-		console.error(error)
-		throw error
+		await appendAccountDailyOrders({
+			accountId,
+			day,
+			items: accountOrders
+		})
 	}
+
+	if (balances.length > 0) {
+		const { whenCreated } = createdNow()
+		const day = timeToDay(truncateTime(whenCreated).to.day)
+		await appendStrategyDailyBalanceChanges({
+			accountId,
+			strategyKind,
+			strategyId,
+			day,
+			items: [{ whenCreated, balances }]
+		})
+	}
+
+	const status = execution?.status === "success" ? "success" : "failure"
+
+	if (status === "failure")
+		throw new ErrorExecutionStrategy({ strategyKind, strategyId })
 }

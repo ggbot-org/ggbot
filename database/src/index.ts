@@ -10,6 +10,7 @@ export { appendAccountDailyOrders } from "./accountDailyOrders.js"
 export {
 	readAccountStrategies,
 	suspendAccountStrategiesSchedulings,
+	suspendAccountStrategySchedulings,
 	writeAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
 export { Binance } from "./binance.js"

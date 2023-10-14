@@ -29,25 +29,22 @@ const isRequestData = objectTypeGuard<RequestData>(
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		switch (event.httpMethod) {
-			case "OPTIONS":
-				return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS")
+			return ALLOWED_METHODS(["POST"])
 
-			case "POST": {
-				if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === "POST")
+			if (!event.body) return BAD_REQUEST()
 
-				const input = JSON.parse(event.body)
-				if (!isRequestData(input)) return BAD_REQUEST()
+			const input = JSON.parse(event.body)
+			if (!isRequestData(input)) return BAD_REQUEST()
 
-				const { message } = input
+			const { message } = input
 
-				const output: ResponseData = { message }
-				return OK(output)
-			}
-
-			default:
-				return METHOD_NOT_ALLOWED
+			const output: ResponseData = { message }
+			return OK(output)
 		}
+
+		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		console.error(error)
 	}

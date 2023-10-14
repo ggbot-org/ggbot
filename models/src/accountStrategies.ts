@@ -12,6 +12,9 @@ import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
 type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
+// TODO this should be removed
+// there could be mixed versions of account strategies in Array
+// it must be handled (by consumer) item by item with isAccountStrategy
 export const isAccountStrategies =
 	arrayTypeGuard<AccountStrategy>(isAccountStrategy)
 
@@ -52,6 +55,10 @@ export type WriteAccountStrategiesItemSchedulings = (
 export type DeleteAccountStrategiesItem = (
 	arg: AccountStrategyItemKey
 ) => Promise<DeletionTime>
+
+export type SuspendAccountStrategySchedulings = (
+	arg: AccountStrategyItemKey
+) => Promise<UpdateTime>
 
 export type SuspendAccountStrategiesSchedulings = (
 	arg: AccountKey

@@ -10,16 +10,12 @@ import { FC } from "react"
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
-	switch (true) {
-		case pathname === adminDashboardHtmlPathname:
-			return <DashboardPage />
+	if (pathname === adminDashboardHtmlPathname) return <DashboardPage />
 
-		case pathname === adminAccountDetailsHtmlPathname:
-			return <AccountDetailsPage />
+	if (pathname === adminAccountDetailsHtmlPathname)
+		return <AccountDetailsPage />
 
-		default:
-			return null
-	}
+	return null
 }
 
 mount(Router)

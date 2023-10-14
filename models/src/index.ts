@@ -32,6 +32,7 @@ export type {
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
+	SuspendAccountStrategySchedulings,
 	WriteAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
 export {
@@ -78,8 +79,7 @@ export {
 	ErrorExceededQuota,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	ErrorUnimplementedStrategyKind,
-	isNodeError
+	ErrorUnimplementedStrategyKind
 } from "./errors.js"
 export type { Frequency, FrequencyInterval } from "./frequency.js"
 export {
@@ -171,10 +171,7 @@ export type {
 	StrategyMemory,
 	WriteStrategyMemory
 } from "./strategyMemory.js"
-export {
-	isReadStrategyMemoryInput,
-	isStrategyMemory
-} from "./strategyMemory.js"
+export { isStrategyMemory } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"

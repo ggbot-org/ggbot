@@ -6,7 +6,8 @@ module.exports = {
 		"@typescript-eslint",
 		"eslint-plugin-tsdoc",
 		"import",
-		"simple-import-sort"
+		"simple-import-sort",
+		"smells"
 	],
 	root: true,
 	rules: {
@@ -65,6 +66,8 @@ module.exports = {
 		"no-warning-comments": "warn",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
+		// TODO remove all switches then set it to error
+		"smells/no-switch": "warn",
 		"sort-keys": [
 			"error",
 			"asc",

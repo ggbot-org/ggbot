@@ -9,6 +9,7 @@ import {
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
+	SuspendAccountStrategySchedulings,
 	WriteAccountStrategiesItemSchedulings
 } from "@workspace/models"
 
@@ -86,6 +87,24 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
 					status: "suspended"
 				})
 			)
+		}))
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}
+
+export const suspendAccountStrategySchedulings: SuspendAccountStrategySchedulings =
+	async ({ accountId, strategyId }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map(
+							({ status: _status, ...scheduling }) => ({
+								...scheduling,
+								status: "suspended"
+							})
+					  )
+					: item.schedulings
 		}))
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}

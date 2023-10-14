@@ -39,12 +39,12 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
 	ErrorUnimplementedStrategyKind,
+	isAccountStrategyKey,
 	isCopyStrategyInput,
 	isCreateBinanceApiConfigInput,
 	isCreateStrategyInput,
 	isDeleteStrategyInput,
 	isReadStrategyBalancesInput,
-	isReadStrategyMemoryInput,
 	isReadStrategyOrdersInput,
 	isRenameAccountInput,
 	isRenameStrategyInput,
@@ -168,8 +168,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					case "ReadStrategyMemory": {
 						if (!actionData) return BAD_REQUEST()
 						const input = { accountId, ...actionData }
-						if (!isReadStrategyMemoryInput(input))
-							return BAD_REQUEST()
+						if (!isAccountStrategyKey(input)) return BAD_REQUEST()
 						const output = await readStrategyMemory(input)
 						info(action.type, JSON.stringify(output, null, 2))
 						return OK(output)

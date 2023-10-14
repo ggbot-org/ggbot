@@ -1,6 +1,6 @@
 import { AccountKey } from "./account.js"
 import { QuotaType } from "./quotas.js"
-import { StrategyKey } from "./strategy.js"
+import { Strategy, StrategyKey } from "./strategy.js"
 
 export class ErrorAccountItemNotFound extends Error {
 	static errorName = "ErrorAccountItemNotFound"
@@ -69,7 +69,7 @@ export class ErrorStrategyItemNotFound extends Error {
 	static errorName = "ErrorStrategyItemNotFound"
 	readonly type: "Strategy" | "StrategyFlow"
 	readonly strategyKind: unknown
-	readonly strategyId: unknown
+	readonly strategyId: Strategy["id"]
 	constructor({
 		type,
 		strategyKind,
@@ -125,10 +125,15 @@ export class ErrorPermissionOnStrategyItem extends Error {
 
 export class ErrorUnimplementedStrategyKind extends Error {
 	static errorName = "ErrorUnimplementedStrategyKind"
-	readonly strategyKind?: unknown
-	constructor(strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]) {
+	readonly strategyKind: string
+	readonly strategyId: Strategy["id"]
+	constructor({
+		strategyKind,
+		strategyId
+	}: Pick<ErrorUnimplementedStrategyKind, "strategyKind" | "strategyId">) {
 		super(ErrorUnimplementedStrategyKind.message(strategyKind))
 		this.strategyKind = strategyKind
+		this.strategyId = strategyId
 	}
 	static message(
 		strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]
@@ -139,18 +144,9 @@ export class ErrorUnimplementedStrategyKind extends Error {
 		return {
 			name: ErrorUnimplementedStrategyKind.errorName,
 			info: {
-				strategyKind: String(this.strategyKind)
+				strategyKind: this.strategyKind,
+				strategyId: this.strategyId
 			}
 		}
 	}
-}
-
-type NodeError = Error & {
-	code?: string
-}
-
-export const isNodeError = (arg: unknown): arg is NodeError => {
-	if (!(arg instanceof Error)) return false
-	const { code } = arg as Partial<NodeError>
-	return typeof code === "string"
 }
