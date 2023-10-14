@@ -1,6 +1,7 @@
 import { describe, test } from "node:test"
 
-import { assertEqual } from "./assertions.js"
+import { assertEqual } from "minimal-assertion-helpers"
+
 import { Balance, isBalance } from "./balance.js"
 
 describe("isBalance", () => {

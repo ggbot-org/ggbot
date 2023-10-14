@@ -1,7 +1,8 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { assertEqual } from "./assertions.js"
+import { assertEqual } from "minimal-assertion-helpers"
+
 import { ErrorInvalidArg } from "./errors.js"
 import { isName, normalizeName, throwIfInvalidName } from "./name.js"
 

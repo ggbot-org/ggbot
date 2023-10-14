@@ -1,6 +1,6 @@
 import { describe, test } from "node:test"
 
-import { assertDeepEqual } from "@workspace/models"
+import { assertDeepEqual } from "minimal-assertion-helpers"
 
 import {
 	DflowBinanceKlineInterval,

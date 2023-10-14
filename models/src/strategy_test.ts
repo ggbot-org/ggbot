@@ -1,8 +1,8 @@
 import { describe, test } from "node:test"
 
+import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { assertEqual } from "./assertions.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { isStrategy, newStrategy, Strategy } from "./strategy.js"

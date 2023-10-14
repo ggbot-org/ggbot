@@ -51,7 +51,6 @@ export {
 	isAccountStrategyKey,
 	newAccountStrategy
 } from "./accountStrategy.js"
-export { assertDeepEqual } from "./assertions.js"
 export type { Balance } from "./balance.js"
 export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
 export { isBalanceChangeEvents } from "./balanceChangeEvent.js"

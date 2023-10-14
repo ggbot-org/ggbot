@@ -1,6 +1,7 @@
 import { describe, test } from "node:test"
 
-import { assertEqual } from "./assertions.js"
+import { assertEqual } from "minimal-assertion-helpers"
+
 import { isSubscription, Subscription } from "./subscription.js"
 
 describe("isSubscription", () => {

@@ -1,9 +1,9 @@
 import { describe, test } from "node:test"
 
+import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { Account, isAccount, newAccount } from "./account.js"
-import { assertEqual } from "./assertions.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"

@@ -1,6 +1,7 @@
 import { describe, test } from "node:test"
 
-import { assertDeepEqual, assertEqual } from "./assertions.js"
+import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
+
 import {
 	getSchedulingSummary,
 	Scheduling,

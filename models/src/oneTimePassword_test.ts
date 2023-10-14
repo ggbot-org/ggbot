@@ -1,9 +1,9 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { assertEqual } from "./assertions.js"
 import {
 	generateOneTimePassword,
 	isOneTimePassword,

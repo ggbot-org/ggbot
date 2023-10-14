@@ -1,9 +1,9 @@
 import { describe, test } from "node:test"
 
+import { assertEqual } from "minimal-assertion-helpers"
 import { dateToDay, dayToDate, getDate, today } from "minimal-time-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { assertEqual } from "./assertions.js"
 import {
 	isSubscriptionPurchase,
 	newMonthlySubscription,
