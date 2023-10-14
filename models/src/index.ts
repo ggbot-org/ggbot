@@ -32,19 +32,26 @@ export type {
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
+	SuspendAccountStrategyScheduling,
 	SuspendAccountStrategySchedulings,
+	UpdateAccountStrategySchedulingMemory,
 	WriteAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
 export {
 	isAccountStrategies,
 	isWriteAccountStrategiesItemSchedulingsInput
 } from "./accountStrategies.js"
-export type { AccountStrategy, AccountStrategyKey } from "./accountStrategy.js"
+export type {
+	AccountStrategy,
+	AccountStrategyKey,
+	AccountStrategySchedulingKey
+} from "./accountStrategy.js"
 export {
 	isAccountStrategy,
 	isAccountStrategyKey,
 	newAccountStrategy
 } from "./accountStrategy.js"
+export { assertDeepEqual } from "./assertions.js"
 export type { Balance } from "./balance.js"
 export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
 export { isBalanceChangeEvents } from "./balanceChangeEvent.js"
@@ -165,8 +172,16 @@ export {
 	isStrategyFlow,
 	isWriteStrategyFlowInput
 } from "./strategyFlow.js"
+export type { StrategyMemory, StrategyMemoryValue } from "./strategyMemory.js"
+export { isStrategyMemoryKey, isStrategyMemoryValue } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
+export type { StrategyParameters } from "./strategyParameters.js"
+export {
+	isStrategyParameterKey,
+	isStrategyParameterNumber,
+	isStrategyParameterString
+} from "./strategyParameters.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"
 export {
 	isStrategyScheduling,

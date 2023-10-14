@@ -75,7 +75,7 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp' --project ./tsconfig.prune.json"
   },
   "devDependencies": {
-    "@types/node": "20.4.9",
+    "@types/node": "20.8.6",
     "lint-staged": "13.2.2",
     "pre-commit": "1.2.2",
     "prettier": "3.0.3",

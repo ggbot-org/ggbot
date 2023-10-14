@@ -58,7 +58,7 @@ export const useFlowView = ({
 			)
 			const dflow = new DflowBinanceHost(
 				{ nodesCatalog },
-				{ binance, input: {}, memory: {}, time }
+				{ binance, params: {}, memory: {}, time }
 			)
 
 			const flowView = initializeFlowView(container, nodesCatalog)

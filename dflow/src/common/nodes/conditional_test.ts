@@ -45,7 +45,7 @@ describe("if", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})

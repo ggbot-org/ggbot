@@ -5,12 +5,11 @@ import {
 	appendStrategyDailyOrders,
 	Binance,
 	readBinanceApiConfig,
-	readStrategyFlow,
-	readStrategyMemory,
-	writeStrategyMemory
+	readStrategyFlow
 } from "@workspace/database"
 import {
 	DflowBinanceExecutor,
+	DflowCommonContext,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import {
@@ -19,18 +18,19 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
 	newOrder,
-	StrategyKind
+	StrategyKind,
+	StrategyScheduling
 } from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
-import { ErrorExecutionStrategy } from "./errors.js"
-
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 
-export const executeBinanceStrategy = async ({
-	accountId,
-	strategyId
-}: Omit<AccountStrategyKey, "strategyKind">) => {
+export const executeBinanceStrategy = async (
+	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
+	scheduling: StrategyScheduling
+): Promise<
+	{ success: boolean } & Pick<DflowCommonContext, "memory" | "memoryChanged">
+> => {
 	const strategyKind: StrategyKind = "binance"
 	const accountStrategyKey = { accountId, strategyKind, strategyId }
 	const strategyKey = { strategyKind, strategyId }
@@ -42,8 +42,8 @@ export const executeBinanceStrategy = async ({
 			...strategyKey
 		})
 
-	const strategyMemory = await readStrategyMemory(accountStrategyKey)
-	const memoryInput = strategyMemory?.memory ?? {}
+	const memoryInput = scheduling.memory ?? {}
+	const params = scheduling.params ?? {}
 
 	const binanceApiConfig = await readBinanceApiConfig({ accountId })
 	if (!binanceApiConfig)
@@ -73,29 +73,15 @@ export const executeBinanceStrategy = async ({
 		orders
 	} = await executor.run(
 		{
-			input: {},
+			params,
 			memory: memoryInput,
 			time
 		},
 		strategyFlow.view
 	)
 
-	// Handle memory changes.
-	if (memoryChanged)
-		await writeStrategyMemory({
-			accountId,
-			strategyKind,
-			strategyId,
-			memory: memoryOutput
-		})
-
-	// TODO extract orders from execution
-	// update order pools with orders that has temporary state
-	// write other orders (e.g. filled) in history
-
 	if (orders.length > 0) {
 		const day = today()
-		// TODO filter orders that are not filled, e.g. limit orders
 		const strategyOrders = orders.map((info) => newOrder(info))
 
 		await appendStrategyDailyOrders({
@@ -131,8 +117,9 @@ export const executeBinanceStrategy = async ({
 		})
 	}
 
-	const status = execution?.status === "success" ? "success" : "failure"
-
-	if (status === "failure")
-		throw new ErrorExecutionStrategy({ strategyKind, strategyId })
+	return {
+		success: execution?.status === "success",
+		memoryChanged,
+		memory: memoryOutput
+	}
 }

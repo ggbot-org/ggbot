@@ -2,22 +2,24 @@ import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isItemId, Item, newId } from "./item.js"
 import { isScheduling, Scheduling } from "./scheduling.js"
-import { isStrategyInput, StrategyInput } from "./strategyInput.js"
 import { isStrategyMemory, StrategyMemory } from "./strategyMemory.js"
+import {
+	isStrategyParameters,
+	StrategyParameters
+} from "./strategyParameters.js"
 
 export type StrategyScheduling = Item &
 	Scheduling & {
-		input?: StrategyInput
+		params?: StrategyParameters
 		memory?: StrategyMemory
 	}
 
 export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(
-	({ id, input, memory, ...scheduling }) =>
-		isItemId(id) && isScheduling(scheduling) && input === undefined
-			? true
-			: isStrategyInput(input) && memory === undefined
-			? true
-			: isStrategyMemory(memory)
+	({ id, memory, params, ...scheduling }) =>
+		isItemId(id) &&
+		isScheduling(scheduling) &&
+		(params === undefined ? true : isStrategyParameters(params)) &&
+		(memory === undefined ? true : isStrategyMemory(memory))
 )
 
 export const newStrategyScheduling = ({

@@ -2,7 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Account, AccountKey, isAccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import { isItemId, Item, newId, NewItem } from "./item.js"
+import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
@@ -37,7 +37,7 @@ export const newStrategy = ({
 	...createdNow()
 })
 
-export type StrategyKey = Readonly<{
+export type StrategyKey = ItemKey<{
 	strategyId: Strategy["id"]
 	strategyKind: Strategy["kind"]
 }>

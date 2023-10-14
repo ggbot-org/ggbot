@@ -4,9 +4,11 @@ import { AccountKey } from "./account.js"
 import {
 	AccountStrategy,
 	AccountStrategyKey,
+	AccountStrategySchedulingKey,
 	isAccountStrategy
 } from "./accountStrategy.js"
 import { isItemId } from "./item.js"
+import { StrategyMemory } from "./strategyMemory.js"
 import { isStrategySchedulings } from "./strategyScheduling.js"
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
@@ -56,10 +58,18 @@ export type DeleteAccountStrategiesItem = (
 	arg: AccountStrategyItemKey
 ) => Promise<DeletionTime>
 
+export type SuspendAccountStrategyScheduling = (
+	arg: AccountStrategySchedulingKey
+) => Promise<UpdateTime>
+
 export type SuspendAccountStrategySchedulings = (
 	arg: AccountStrategyItemKey
 ) => Promise<UpdateTime>
 
 export type SuspendAccountStrategiesSchedulings = (
 	arg: AccountKey
+) => Promise<UpdateTime>
+
+export type UpdateAccountStrategySchedulingMemory = (
+	arg: AccountStrategySchedulingKey & { memory: StrategyMemory }
 ) => Promise<UpdateTime>

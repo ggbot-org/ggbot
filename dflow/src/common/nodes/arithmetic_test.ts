@@ -37,7 +37,7 @@ describe("add", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -76,7 +76,7 @@ describe("sub", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -115,7 +115,7 @@ describe("mul", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -154,7 +154,7 @@ describe("div", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})

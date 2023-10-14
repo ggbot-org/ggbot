@@ -29,7 +29,7 @@ describe("shift", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -64,7 +64,7 @@ describe("pop", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -109,7 +109,7 @@ describe("push", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})

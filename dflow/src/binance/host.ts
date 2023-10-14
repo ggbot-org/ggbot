@@ -17,7 +17,7 @@ export class DflowBinanceHost extends DflowHost implements DflowLoader {
 	) {
 		super(arg)
 		this.context.binance = context.binance
-		this.context.input = context.input
+		this.context.params = context.params
 		this.context.memory = context.memory
 		this.context.memoryChanged = false
 		this.context.time = context.time ?? truncateTime(now()).to.minute

@@ -339,7 +339,7 @@ export const useBacktesting = (
 							nodesCatalog
 						)
 						await executor.run(
-							{ input: {}, memory: {}, time: endTime },
+							{ params: {}, memory: {}, time: endTime },
 							flowViewGraph
 						)
 						startTime = endTime
@@ -390,7 +390,7 @@ export const useBacktesting = (
 				)
 				const { balances, memory, orders, execution } =
 					await executor.run(
-						{ input: {}, memory: previousMemory, time },
+						{ params: {}, memory: previousMemory, time },
 						flowViewGraph
 					)
 				info("memory", JSON.stringify(memory, null, 2))

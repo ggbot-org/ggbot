@@ -3,8 +3,8 @@ import { DflowNode, DflowNodesCatalog } from "dflow"
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js"
 import { dflowBinanceKlineIntervals } from "./klineIntervals.js"
 import { pinIntervalName, pinSymbolName } from "./nodes/commonIO.js"
-import { InputInterval, InputSymbol } from "./nodes/inputs.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
+import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import {
 	DflowBinanceSymbolInfo,
@@ -69,12 +69,12 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
 	symbols
 ) => {
 	const staticNodes = {
-		// inputs
-		[InputInterval.kind]: InputInterval,
-		[InputSymbol.kind]: InputSymbol,
 		// market
 		[Candles.kind]: Candles,
 		[TickerPrice.kind]: TickerPrice,
+		// parameters
+		[IntervalParameter.kind]: IntervalParameter,
+		[SymbolParameter.kind]: SymbolParameter,
 		// trade
 		[BuyMarket.kind]: BuyMarket,
 		[SellMarket.kind]: SellMarket,

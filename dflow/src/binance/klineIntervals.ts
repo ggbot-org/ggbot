@@ -10,11 +10,13 @@ import { isLiteralType } from "minimal-type-guard-helpers"
  *
  * ```ts
  * const values = [{ interval: "1d" }, { interval: "1h" }]
- * const sortedValues = values.toSorted(
- * 	(a, b) =>
- * 		dflowBinanceKlineIntervals.indexOf(a.interval) -
- * 		dflowBinanceKlineIntervals.indexOf(b.interval)
- * )
+ * const sortedValues = values
+ * 	.slice()
+ * 	.sort(
+ * 		(a, b) =>
+ * 			dflowBinanceKlineIntervals.indexOf(a.interval) -
+ * 			dflowBinanceKlineIntervals.indexOf(b.interval)
+ * 	)
  * console.info(sortedValues) // [ { interval: '1h' }, { interval: '1d' } ];
  * ```
  */

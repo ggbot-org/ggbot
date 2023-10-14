@@ -1,4 +1,4 @@
-import { DflowObject } from "dflow"
+import { StrategyMemory, StrategyParameters } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
 /**
@@ -25,9 +25,9 @@ import { Time } from "minimal-time-helpers"
  */
 export type DflowCommonContext = {
 	/** Used by input nodes: `InputBoolean`, `InputNumber`, `InputString`, etc. */
-	input: DflowObject
+	params: StrategyParameters
 	/** Used by memory nodes: `GetMemory`, `SetMemory`, `DeleteMemory`. */
-	memory: DflowObject
+	memory: StrategyMemory
 	/**
 	 * The `memoryChanged` attribute is set to true by memory nodes every time
 	 * there is a change (e.g. update or delete) in memory.

@@ -6,4 +6,4 @@ export const isNaturalNumber = (arg: unknown): arg is NaturalNumber =>
 export type FiniteNumber = number
 
 export const isFiniteNumber = (arg: unknown): arg is FiniteNumber =>
-	typeof arg === "number" && Number.isFinite(arg) && arg > 0
+	typeof arg === "number" && Number.isFinite(arg)

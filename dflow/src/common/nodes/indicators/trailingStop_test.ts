@@ -90,7 +90,7 @@ const executeTrailingStop = async (
 		memory: memoryOutput,
 		memoryChanged
 	} = await executor.run({
-		input: {},
+		params: {},
 		memory: memoryInput,
 		time: now()
 	})

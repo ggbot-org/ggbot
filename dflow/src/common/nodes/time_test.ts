@@ -41,7 +41,7 @@ describe("today", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: dayToTime(day)
 		})

@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { DflowData } from "dflow"
+import { StrategyMemoryValue } from "@workspace/models"
 import { now } from "minimal-time-helpers"
 
 import { getDflowExecutionOutputData } from "../executor.js"
@@ -27,7 +27,7 @@ describe("deleteMemory", () => {
 			}
 		})
 		const { memory, memoryChanged } = await executor.run({
-			input: {},
+			params: {},
 			memory: { key1: "value1" },
 			time: now()
 		})
@@ -38,12 +38,8 @@ describe("deleteMemory", () => {
 
 describe("getMemory", () => {
 	test("can read context memory", async () => {
-		const testValues: Array<{ value: DflowData }> = [
-			{ value: 42 },
-			{ value: "a string" },
-			{ value: ["a", "b"] }
-		]
-		for (const { value } of testValues) {
+		const testValues: StrategyMemoryValue[] = [42, "a string"]
+		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
 				view: {
 					nodes: [
@@ -62,7 +58,7 @@ describe("getMemory", () => {
 				}
 			})
 			const { execution, memory, memoryChanged } = await executor.run({
-				input: {},
+				params: {},
 				memory: { key1: value },
 				time: now()
 			})
@@ -101,7 +97,7 @@ describe("setMemory", () => {
 			}
 		})
 		const { memory, memoryChanged } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})

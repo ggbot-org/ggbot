@@ -6,8 +6,8 @@ import { now } from "minimal-time-helpers"
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
-describe("inputBoolean", () => {
-	test("reads context inputs", async () => {
+describe("booleanParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -26,7 +26,7 @@ describe("inputBoolean", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputBoolean",
+						text: "booleanParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -39,14 +39,14 @@ describe("inputBoolean", () => {
 		})
 		const value = false
 		const { execution } = await executor.run({
-			input: { foo: value },
+			params: { foo: value },
 			memory: {},
 			time: now()
 		})
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	test("use default input if context input is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -63,7 +63,7 @@ describe("inputBoolean", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputBoolean",
+						text: "booleanParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -75,7 +75,7 @@ describe("inputBoolean", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -83,8 +83,8 @@ describe("inputBoolean", () => {
 	})
 })
 
-describe("inputNumber", () => {
-	test("reads context inputs", async () => {
+describe("numberParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -103,7 +103,7 @@ describe("inputNumber", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputNumber",
+						text: "numberParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -116,14 +116,14 @@ describe("inputNumber", () => {
 		})
 		const value = 10
 		const { execution } = await executor.run({
-			input: { foo: value },
+			params: { foo: value },
 			memory: {},
 			time: now()
 		})
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	test("use default input if context input is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -140,7 +140,7 @@ describe("inputNumber", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputNumber",
+						text: "numberParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -152,7 +152,7 @@ describe("inputNumber", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})
@@ -160,8 +160,8 @@ describe("inputNumber", () => {
 	})
 })
 
-describe("inputString", () => {
-	test("reads context inputs", async () => {
+describe("stringParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -180,7 +180,7 @@ describe("inputString", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputString",
+						text: "stringParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -193,14 +193,14 @@ describe("inputString", () => {
 		})
 		const value = "bar"
 		const { execution } = await executor.run({
-			input: { foo: value },
+			params: { foo: value },
 			memory: {},
 			time: now()
 		})
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	test("use default input if context input is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -217,7 +217,7 @@ describe("inputString", () => {
 					},
 					{
 						id: nodeId,
-						text: "inputString",
+						text: "stringParameter",
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -229,7 +229,7 @@ describe("inputString", () => {
 			}
 		})
 		const { execution } = await executor.run({
-			input: {},
+			params: {},
 			memory: {},
 			time: now()
 		})

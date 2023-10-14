@@ -22,7 +22,6 @@ import {
 	TrailingStopUp
 } from "./nodes/indicators/trailingStop.js"
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js"
-import { InputBoolean, InputNumber, InputString } from "./nodes/inputs.js"
 import {
 	And,
 	Equal,
@@ -33,6 +32,11 @@ import {
 } from "./nodes/logic.js"
 import { Max, Min } from "./nodes/mathFunctions.js"
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js"
+import {
+	BooleanParameter,
+	NumberParameter,
+	StringParameter
+} from "./nodes/parameters.js"
 import { Time, TimeMinus, TimePlus, TimeToDay, Today } from "./nodes/time.js"
 
 export const nodesCatalog = {
@@ -68,10 +72,6 @@ export const nodesCatalog = {
 	[TrailingStopUp.kind]: TrailingStopUp,
 	[TypicalPrice.kind]: TypicalPrice,
 	[WilderMovingAverage.kind]: WilderMovingAverage,
-	// inputs
-	[InputBoolean.kind]: InputBoolean,
-	[InputNumber.kind]: InputNumber,
-	[InputString.kind]: InputString,
 	// mathFunctions
 	[Max.kind]: Max,
 	[Min.kind]: Min,
@@ -79,6 +79,10 @@ export const nodesCatalog = {
 	[DeleteMemory.kind]: DeleteMemory,
 	[GetMemory.kind]: GetMemory,
 	[SetMemory.kind]: SetMemory,
+	// parameters
+	[BooleanParameter.kind]: BooleanParameter,
+	[NumberParameter.kind]: NumberParameter,
+	[StringParameter.kind]: StringParameter,
 	// time
 	[Time.kind]: Time,
 	[TimeMinus.kind]: TimeMinus,

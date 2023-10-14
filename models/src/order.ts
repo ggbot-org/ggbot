@@ -1,3 +1,4 @@
+// TODO remove dflow (also as a models dependency)
 import { Dflow, DflowObject } from "dflow"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 

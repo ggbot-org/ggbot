@@ -1,6 +1,7 @@
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
+import { ItemKey } from "./item.js"
 import { isName, normalizeName } from "./name.js"
 import { isStrategyKey, Strategy, StrategyKey } from "./strategy.js"
 import {
@@ -38,3 +39,9 @@ export const newAccountStrategy = ({
 	name: normalizeName(name),
 	schedulings: []
 })
+
+export type AccountStrategySchedulingKey = Pick<
+	AccountStrategyKey,
+	"accountId" | "strategyId"
+> &
+	ItemKey<{ schedulingId: StrategyScheduling["id"] }>

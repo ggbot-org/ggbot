@@ -4,12 +4,15 @@ import {
 	readAccountStrategies,
 	readSubscription,
 	suspendAccountStrategiesSchedulings,
-	suspendAccountStrategySchedulings
+	suspendAccountStrategyScheduling,
+	suspendAccountStrategySchedulings,
+	updateAccountStrategySchedulingMemory
 } from "@workspace/database"
 import {
 	AccountKey,
 	AccountStrategy,
 	AccountStrategyKey,
+	AccountStrategySchedulingKey,
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
 	ErrorUnimplementedStrategyKind,
@@ -20,8 +23,9 @@ import {
 	Item,
 	itemIdCharacters,
 	newId,
-	Scheduling,
 	statusOfSubscription,
+	StrategyMemory,
+	StrategyScheduling,
 	Subscription
 } from "@workspace/models"
 import { readFile, writeFile } from "fs/promises"
@@ -29,7 +33,7 @@ import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"
 import { join } from "path"
 
-import { ErrorExecutionStrategy, isNodeError } from "./errors.js"
+import { isNodeError } from "./errors.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
 import { info, warn } from "./logging.js"
 
@@ -162,12 +166,12 @@ export class Executor {
 	 * frequency.
 	 */
 	async manageStrategyExecution(
-		accountStrategyKey: AccountStrategyKey,
-		scheduling: Scheduling
+		{ accountId, strategyKind, strategyId }: AccountStrategyKey,
+		scheduling: StrategyScheduling
 	) {
 		const { strategyWhenExecuted } = this
-		const { strategyId } = accountStrategyKey
 		const { status, frequency } = scheduling
+		const schedulingId = scheduling.id
 		if (status !== "active") return
 		const whenExecuted = strategyWhenExecuted.get(strategyId)
 		const time = truncateTime(now()).to.minute
@@ -177,14 +181,30 @@ export class Executor {
 		}
 		strategyWhenExecuted.set(strategyId, time)
 		info("execute strategy", strategyId)
-		if (accountStrategyKey.strategyKind === "binance") {
-			await executeBinanceStrategy(accountStrategyKey)
-			return
+		if (strategyKind === "binance") {
+			const { memory, memoryChanged, success } =
+				await executeBinanceStrategy(
+					{ accountId, strategyId },
+					scheduling
+				)
+			// Suspend strategy scheduling if execution failed.
+			if (!success) {
+				await this.suspendAccountStrategyScheduling({
+					accountId,
+					strategyId,
+					schedulingId
+				})
+				return
+			}
+			if (memoryChanged) {
+				await this.updateAccountStrategySchedulingMemory(
+					{ accountId, strategyId, schedulingId },
+					memory
+				)
+				return
+			}
 		}
-		throw new ErrorUnimplementedStrategyKind({
-			strategyKind: accountStrategyKey.strategyKind,
-			strategyId: accountStrategyKey.strategyId
-		})
+		throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId })
 	}
 
 	managesItem(itemId: Item["id"]) {
@@ -228,8 +248,7 @@ export class Executor {
 			} catch (error) {
 				if (
 					error instanceof ErrorUnimplementedStrategyKind ||
-					error instanceof ErrorStrategyItemNotFound ||
-					error instanceof ErrorExecutionStrategy
+					error instanceof ErrorStrategyItemNotFound
 				) {
 					await this.suspendAccountStrategySchedulings({
 						accountId: accountKey.accountId,
@@ -252,39 +271,69 @@ export class Executor {
 	}
 
 	async suspendAccountStrategies({ accountId }: AccountKey) {
-		try {
-			info(`Suspend all strategies accountId=${accountId}`)
+		info(`Suspend all strategies accountId=${accountId}`)
 
-			// Cleanup cache locally.
-			this.cachedAccountKeys.delete(accountId)
-			this.accountStrategiesCache.delete(accountId)
+		// Cleanup cache locally.
+		this.cachedAccountKeys.delete(accountId)
+		this.accountStrategiesCache.delete(accountId)
 
-			// Update database remotely.
-			await suspendAccountStrategiesSchedulings({ accountId })
-		} catch (error) {
-			warn(error)
-		}
+		// Update database remotely.
+		await suspendAccountStrategiesSchedulings({ accountId })
+	}
+
+	async suspendAccountStrategyScheduling({
+		accountId,
+		strategyId,
+		schedulingId
+	}: AccountStrategySchedulingKey) {
+		info(
+			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
+		)
+
+		// Cleanup cache locally.
+		this.accountStrategiesCache.delete(accountId)
+
+		// Update database remotely.
+		await suspendAccountStrategyScheduling({
+			accountId,
+			strategyId,
+			schedulingId
+		})
 	}
 
 	async suspendAccountStrategySchedulings({
 		accountId,
 		strategyId
 	}: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
-		try {
-			info(
-				`Suspend strategy accountId=${accountId} strategyId=${strategyId}`
-			)
+		info(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
-			// Cleanup cache locally.
-			this.accountStrategiesCache.delete(accountId)
+		// Cleanup cache locally.
+		this.accountStrategiesCache.delete(accountId)
 
-			// Update database remotely.
-			await suspendAccountStrategySchedulings({
-				accountId,
-				strategyId
-			})
-		} catch (error) {
-			warn(error)
-		}
+		// Update database remotely.
+		await suspendAccountStrategySchedulings({
+			accountId,
+			strategyId
+		})
+	}
+
+	async updateAccountStrategySchedulingMemory(
+		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey,
+		memory: StrategyMemory
+	) {
+		info(
+			`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
+		)
+
+		// Cleanup cache locally.
+		this.accountStrategiesCache.delete(accountId)
+
+		// Update database remotely.
+		await updateAccountStrategySchedulingMemory({
+			accountId,
+			strategyId,
+			schedulingId,
+			memory
+		})
 	}
 }

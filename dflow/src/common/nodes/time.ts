@@ -61,7 +61,7 @@ export class Time extends DflowNode {
 	static kind = "time"
 	static outputs = timeOutputs
 	run() {
-		const time = (this.host.context as Context).time
+		const { time } = this.host.context as Context
 		const timestamp = timeToTimestamp(time)
 		this.output(0).data = time
 		this.output(1).data = timestamp
@@ -111,7 +111,7 @@ export class Today extends DflowNode {
 	static kind = "today"
 	static outputs = [outputDay]
 	run() {
-		const time = (this.host.context as Context).time
+		const { time } = this.host.context as Context
 		const day = timeToDay(time)
 		this.output(0).data = day
 	}

@@ -9,7 +9,9 @@ import {
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
+	SuspendAccountStrategyScheduling,
 	SuspendAccountStrategySchedulings,
+	UpdateAccountStrategySchedulingMemory,
 	WriteAccountStrategiesItemSchedulings
 } from "@workspace/models"
 
@@ -91,6 +93,27 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
+// TODO move many of this logic into models (except data service) and test it!!!
+
+export const suspendAccountStrategyScheduling: SuspendAccountStrategyScheduling =
+	async ({ accountId, strategyId, schedulingId }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map(({ status, ...scheduling }) => ({
+							...scheduling,
+							status:
+								schedulingId === scheduling.id
+									? "suspended"
+									: status
+					  }))
+					: item.schedulings
+		}))
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}
+
 export const suspendAccountStrategySchedulings: SuspendAccountStrategySchedulings =
 	async ({ accountId, strategyId }) => {
 		const items = (await readAccountStrategies({ accountId })) ?? []
@@ -104,6 +127,25 @@ export const suspendAccountStrategySchedulings: SuspendAccountStrategyScheduling
 								status: "suspended"
 							})
 					  )
+					: item.schedulings
+		}))
+		return await UPDATE(pathname.accountStrategies({ accountId }), data)
+	}
+
+export const updateAccountStrategySchedulingMemory: UpdateAccountStrategySchedulingMemory =
+	async ({ accountId, strategyId, schedulingId, memory }) => {
+		const items = (await readAccountStrategies({ accountId })) ?? []
+		const data = items.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map((scheduling) => ({
+							...scheduling,
+							memory:
+								schedulingId === scheduling.id
+									? memory
+									: scheduling.memory
+					  }))
 					: item.schedulings
 		}))
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
