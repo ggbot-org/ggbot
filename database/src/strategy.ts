@@ -26,7 +26,6 @@ import {
 } from "./accountStrategies.js"
 import { pathname } from "./locators.js"
 import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
-import { deleteStrategyMemory } from "./strategyMemory.js"
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>()
 
@@ -134,6 +133,5 @@ export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
 		})
 	await DELETE(pathname.strategy(strategyKey))
 	await deleteStrategyFlow(accountStrategyKey)
-	await deleteStrategyMemory(accountStrategyKey)
 	return await deleteAccountStrategiesItem(accountStrategyKey)
 }

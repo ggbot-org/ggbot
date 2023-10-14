@@ -1,26 +1,16 @@
-import { Dflow, DflowObject } from "dflow"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { Dflow, DflowData } from "dflow"
 
-import { AccountStrategyKey } from "./accountStrategy.js"
-import { DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
+import { isNonEmptyString, NonEmptyString } from "./strings.js"
 
-export type StrategyMemory = UpdateTime & {
-	memory: DflowObject
+export type StrategyMemory = {
+	[key in NonEmptyString]: DflowData
 }
 
-export const isStrategyMemory = objectTypeGuard<StrategyMemory>(
-	({ memory, ...updateTime }) =>
-		Dflow.isObject(memory) && isUpdateTime(updateTime)
-)
-
-export type ReadStrategyMemory = (
-	arg: AccountStrategyKey
-) => Promise<StrategyMemory | null>
-
-export type WriteStrategyMemory = (
-	arg: AccountStrategyKey & Omit<StrategyMemory, "whenUpdated">
-) => Promise<UpdateTime>
-
-export type DeleteStrategyMemory = (
-	arg: AccountStrategyKey
-) => Promise<DeletionTime>
+export const isStrategyMemory = (arg: unknown): arg is StrategyMemory => {
+	if (arg === null || typeof arg !== "object" || Array.isArray(arg))
+		return false
+	return (
+		Object.keys(arg).every(isNonEmptyString) &&
+		Object.values(arg).every((value) => Dflow.isDflowData(value))
+	)
+}

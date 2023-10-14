@@ -165,13 +165,6 @@ export {
 	isStrategyFlow,
 	isWriteStrategyFlowInput
 } from "./strategyFlow.js"
-export type {
-	DeleteStrategyMemory,
-	ReadStrategyMemory,
-	StrategyMemory,
-	WriteStrategyMemory
-} from "./strategyMemory.js"
-export { isStrategyMemory } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"

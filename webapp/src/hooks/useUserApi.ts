@@ -13,7 +13,6 @@ import {
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions,
 	ReadStrategyBalances,
-	ReadStrategyMemory,
 	ReadStrategyOrders,
 	ReadSubscription,
 	RenameAccount,
@@ -80,11 +79,6 @@ export const useUserApi = {
 		useAction<Authenticated<ReadStrategyBalances>, UserApiActionType>(
 			apiOptions,
 			"ReadStrategyBalances"
-		),
-	ReadStrategyMemory: () =>
-		useAction<Authenticated<ReadStrategyMemory>, UserApiActionType>(
-			apiOptions,
-			"ReadStrategyMemory"
 		),
 	ReadStrategyOrders: () =>
 		useAction<Authenticated<ReadStrategyOrders>, UserApiActionType>(

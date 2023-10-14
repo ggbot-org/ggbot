@@ -76,12 +76,6 @@
  │     └╴strategyId=XXX/
  │       └╴orders.json
  │
- ├╴strategyMemory/
- │ └╴accountId=XXX/
- │   └╴strategyKind=XXX/
- │     └╴strategyId=XXX/
- │       └╴memory.json
- │
  ├╴subscription
  │ └╴accountId=XXX/
  │   └╴subscription.json
@@ -146,7 +140,6 @@ const dirnamePrefixes = [
 	"strategyDailyOrders",
 	"strategyExecution",
 	"strategyFlow",
-	"strategyMemory",
 	"strategyOrdersPool",
 	"subscription",
 	"subscriptionPurchase"
@@ -166,7 +159,6 @@ export const dirnamePrefix: Record<DirnamePrefix, string> = {
 	strategyDailyOrders: "strategyOrders",
 	strategyExecution: "strategyExecution",
 	strategyFlow: "strategyFlow",
-	strategyMemory: "strategyMemory",
 	strategyOrdersPool: "strategyOrdersPool",
 	subscription: "subscription",
 	subscriptionPurchase: "subscriptionPurchase"
@@ -320,8 +312,6 @@ const dirname = {
 		]),
 	strategyFlow: (arg: StrategyKey) =>
 		dirJoin([dirnamePrefix.strategyFlow, itemKeyToDirname.strategy(arg)]),
-	strategyMemory: (arg: StrategyKey) =>
-		dirJoin([dirnamePrefix.strategyMemory, itemKeyToDirname.strategy(arg)]),
 	strategyOrdersPool: (arg: StrategyKey) =>
 		dirJoin([
 			dirnamePrefix.strategyOrdersPool,
@@ -351,7 +341,6 @@ const filename = {
 	strategyDailyOrders: "orders.json",
 	strategyExecution: "execution.json",
 	strategyFlow: "flow.json",
-	strategyMemory: "memory.json",
 	strategyOrdersPool: "orders.json",
 	subscription: "subscription.json",
 	subscriptionPurchase: "purchases.json"
@@ -394,8 +383,6 @@ export const pathname = {
 		dirJoin([dirname.strategyExecution(arg), filename.strategyExecution]),
 	strategyFlow: (arg: StrategyKey) =>
 		dirJoin([dirname.strategyFlow(arg), filename.strategyFlow]),
-	strategyMemory: (arg: AccountStrategyKey) =>
-		dirJoin([dirname.strategyMemory(arg), filename.strategyMemory]),
 	strategyOrdersPool: (arg: AccountStrategyKey) =>
 		dirJoin([dirname.strategyOrdersPool(arg), filename.strategyOrdersPool]),
 	subscription: (arg: AccountKey) =>

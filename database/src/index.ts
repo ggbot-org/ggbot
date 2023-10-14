@@ -40,7 +40,6 @@ export { readStrategyBalances } from "./strategyBalances.js"
 export { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js"
 export { appendStrategyDailyOrders } from "./strategyDailyOrders.js"
 export { readStrategyFlow, writeStrategyFlow } from "./strategyFlow.js"
-export { readStrategyMemory, writeStrategyMemory } from "./strategyMemory.js"
 export { readStrategyOrders } from "./strategyOrders.js"
 export { readSubscription, writeSubscription } from "./subscription.js"
 export {
