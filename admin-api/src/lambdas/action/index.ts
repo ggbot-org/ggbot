@@ -12,10 +12,13 @@ import {
 	ErrorUnauthorizedAuthenticationHeader,
 	readSessionFromAuthorizationHeader
 } from "@workspace/authentication"
-import { listAccountKeys, readAccount } from "@workspace/database"
+import { BadGatewayError } from "@workspace/http"
 import { logging } from "@workspace/logging"
-import { isReadAccountInput } from "@workspace/models"
 
+import { dataProvider } from "./dataProvider.js"
+import { ApiService } from "./service.js"
+
+const apiService = new ApiService(dataProvider)
 const { info } = logging("admin-api")
 
 // ts-prune-ignore-next
@@ -34,24 +37,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			if (!isApiActionRequestData(action)) return BAD_REQUEST()
 			const actionData = action.data
 
-			if (action.type === "ReadAccount") {
-				if (!isReadAccountInput(actionData)) return BAD_REQUEST()
-				const output = await readAccount(actionData)
-				info(action.type, JSON.stringify(output, null, 2))
-				return OK(output)
-			}
-
-			if (action.type === "ListAccountKeys") {
-				const output = await listAccountKeys()
-				info(action.type, JSON.stringify(output, null, 2))
-				return OK(output)
-			}
-
-			return BAD_REQUEST()
+			const output = await apiService[action.type](actionData)
+			info(action.type, JSON.stringify(output, null, 2))
+			return OK(output)
 		}
 
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
+		if (error instanceof BadGatewayError) return BAD_REQUEST()
 		if (error instanceof ErrorUnauthorizedAuthenticationHeader)
 			return UNATHORIZED
 		console.error(error)

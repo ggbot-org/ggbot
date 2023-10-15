@@ -3,7 +3,7 @@ import { isMaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import { isStrategyKey, StrategyKey } from "./strategy.js"
+import { StrategyKey } from "./strategy.js"
 import { CreationTime, DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
 export type StrategyFlow = UpdateTime & {
@@ -24,8 +24,6 @@ type CopyStrategyFlowInput = AccountKey & {
 export type CopyStrategyFlow = (
 	arg: CopyStrategyFlowInput
 ) => Promise<CreationTime>
-
-export const isReadStrategyFlowInput = isStrategyKey
 
 export type ReadStrategyFlow = (
 	arg: StrategyKey

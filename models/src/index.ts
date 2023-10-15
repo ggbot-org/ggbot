@@ -12,7 +12,6 @@ export {
 	isAccount,
 	isAccountKey,
 	isAdminAccount,
-	isReadAccountInput,
 	isRenameAccountInput,
 	isSetAccountCountryInput,
 	newAccount
@@ -166,11 +165,7 @@ export type {
 	StrategyFlow,
 	WriteStrategyFlow
 } from "./strategyFlow.js"
-export {
-	isReadStrategyFlowInput,
-	isStrategyFlow,
-	isWriteStrategyFlowInput
-} from "./strategyFlow.js"
+export { isStrategyFlow, isWriteStrategyFlowInput } from "./strategyFlow.js"
 export type { StrategyMemory, StrategyMemoryValue } from "./strategyMemory.js"
 export { isStrategyMemoryKey, isStrategyMemoryValue } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"

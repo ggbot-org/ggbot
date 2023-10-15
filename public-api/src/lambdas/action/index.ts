@@ -7,54 +7,37 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { readStrategy, readStrategyFlow } from "@workspace/database"
+import { BadGatewayError } from "@workspace/http"
 import { logging } from "@workspace/logging"
-import { isReadStrategyFlowInput, isReadStrategyInput } from "@workspace/models"
 
+import { dataProvider } from "./dataProvider.js"
+import { ApiService } from "./service.js"
+
+const apiService = new ApiService(dataProvider)
 const { info } = logging("user-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		switch (event.httpMethod) {
-			case "OPTIONS":
-				return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
 
-			case "POST": {
-				info(event.httpMethod, JSON.stringify(event.body, null, 2))
-				if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === "POST") {
+			info(event.httpMethod, JSON.stringify(event.body, null, 2))
+			if (!event.body) return BAD_REQUEST()
 
-				const action = JSON.parse(event.body)
+			const action = JSON.parse(event.body)
 
-				if (!isApiActionRequestData(action)) return BAD_REQUEST()
-				const actionData = action.data
+			if (!isApiActionRequestData(action)) return BAD_REQUEST()
+			const actionData = action.data
 
-				switch (action.type) {
-					case "ReadStrategy": {
-						if (!isReadStrategyInput(actionData))
-							return BAD_REQUEST()
-						const output = await readStrategy(actionData)
-						info(action.type, JSON.stringify(output, null, 2))
-						return OK(output)
-					}
-
-					case "ReadStrategyFlow": {
-						if (!isReadStrategyFlowInput(actionData))
-							return BAD_REQUEST()
-						const output = await readStrategyFlow(actionData)
-						// Omit StrategyFlow
-						info(action.type, output === null ? output : "")
-						return OK(output)
-					}
-
-					default:
-						return BAD_REQUEST()
-				}
-			}
-			default:
-				METHOD_NOT_ALLOWED
+			const output = await apiService[action.type](actionData)
+			info(action.type, JSON.stringify(output, null, 2))
+			return OK(output)
 		}
+
+		return METHOD_NOT_ALLOWED
 	} catch (error) {
+		if (error instanceof BadGatewayError) return BAD_REQUEST()
 		console.error(error)
 	}
 	return INTERNAL_SERVER_ERROR

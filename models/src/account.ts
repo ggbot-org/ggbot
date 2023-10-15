@@ -62,10 +62,6 @@ export type CreateAccount = (arg: NewItem<Account>) => Promise<Account>
 
 export type ReadAccount = (arg: AccountKey) => Promise<Account | null>
 
-export const isReadAccountInput = objectTypeGuard<AccountKey>((accountKey) =>
-	isAccountKey(accountKey)
-)
-
 type RenameAccountInput = AccountKey & { name: Name }
 
 export const isRenameAccountInput = objectTypeGuard<RenameAccountInput>(

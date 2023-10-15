@@ -1,4 +1,8 @@
-export type { AdminApiActionType } from "./adminApi.js"
+export type {
+	AdminApiActionType,
+	AdminApiDataProvider,
+	AdminApiService
+} from "./adminApi.js"
 export { isAdminApiActionRequestData } from "./adminApi.js"
 export type {
 	ApiActionClientSideError,
@@ -18,7 +22,11 @@ export {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "./authApi.js"
-export type { PublicApiActionType } from "./publicApi.js"
+export type {
+	PublicApiActionType,
+	PublicApiDataProvider,
+	PublicApiService
+} from "./publicApi.js"
 export { isPublicApiActionRequestData } from "./publicApi.js"
 export type { UserApiActionType } from "./userApi.js"
 export { isUserApiActionRequestData } from "./userApi.js"
