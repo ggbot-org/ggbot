@@ -1,10 +1,14 @@
 import {
 	Box,
+	Button,
+	Buttons,
 	Checkbox,
 	CheckboxOnChange,
 	Column,
 	Columns,
 	Flex,
+	Form,
+	FormOnSubmit,
 	Message
 } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
@@ -20,7 +24,11 @@ type StrategyItem = Pick<
 	"strategyId" | "name" | "schedulings"
 > & { href: string }
 
-export const Strategies: FC = () => {
+export type StrategiesProps = {
+	goCreateStrategy: FormOnSubmit
+}
+
+export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 	const { accountStrategies } = useContext(StrategiesContext)
 	const [hideInactive, setHideInactive] = useState(
 		localWebStorage.hideInactiveStrategies.get()
@@ -61,9 +69,27 @@ export const Strategies: FC = () => {
 
 	if (accountStrategies.length === 0)
 		return (
-			<Message color="info">
-				<FormattedMessage id="Strategies.noStrategy" />
-			</Message>
+			<Columns>
+				<Column
+					size={{
+						tablet: "full",
+						widescreen: "three-quarters",
+						fullhd: "half"
+					}}
+				>
+					<Form box onSubmit={goCreateStrategy}>
+						<Message color="info">
+							<FormattedMessage id="Strategies.noStrategy" />
+						</Message>
+
+						<Buttons>
+							<Button>
+								<FormattedMessage id="Tabs.newStrategy" />
+							</Button>
+						</Buttons>
+					</Form>
+				</Column>
+			</Columns>
 		)
 
 	return (
