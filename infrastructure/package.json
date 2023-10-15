@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@workspace/aws-acm": "0.0.0",
+    "@workspace/aws-api-gateway": "0.0.0",
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/aws-elb": "0.0.0",
     "@workspace/aws-iam": "0.0.0",

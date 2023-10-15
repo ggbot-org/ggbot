@@ -1,6 +1,8 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { IamPolicy } from "@workspace/aws-iam"
+
 import { DevopsPolicy } from "./DevopsPolicy.js"
 
 const devopsPolicy = new DevopsPolicy()
@@ -26,19 +28,26 @@ describe("DevopsPolicy", () => {
 	}
 
 	if (policyDocument) {
-		const readResourcesStatement = policyDocument.Statement.find(
-			({ Action }) => {
-				Action.sort().join() ===
-					devopsPolicy.readResourcesStatementActions.join()
-			}
-		)
+		const findStatementByActions =
+			IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
 
-		describe("read resouce statement", () => {
-			test("exists", () => {
-				assert.ok(!readResourcesStatement)
+		for (const [statementName, actionList] of Object.entries(
+			devopsPolicy.statementAction
+		)) {
+			const statement = findStatementByActions(actionList)
+			const exists = statement !== undefined
+			describe(statementName, () => {
+				test("exists", () => {
+					assert.ok(
+						exists,
+						`devopsPolicy ${statementName} statement actions should be ${JSON.stringify(
+							actionList
+						)}`
+					)
+				})
 			})
-		})
 
-		// TODO check all other statements
+			// TODO if exists, check Resource
+		}
 	}
 })

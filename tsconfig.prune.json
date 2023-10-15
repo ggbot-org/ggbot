@@ -10,6 +10,7 @@
 			"@workspace/arithmetic": ["./arithmetic/src/index.ts"],
 			"@workspace/authentication": ["./authentication/src/index.ts"],
 			"@workspace/aws-acm": ["./aws-acm/src/index.ts"],
+			"@workspace/aws-api-gateway": ["./aws-api-gateway/src/index.ts"],
 			"@workspace/aws-ec2": ["./aws-ec2/src/index.ts"],
 			"@workspace/aws-elb": ["./aws-elb/src/index.ts"],
 			"@workspace/aws-iam": ["./aws-iam/src/index.ts"],

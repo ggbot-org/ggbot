@@ -6,6 +6,7 @@ export type { Policy } from "@aws-sdk/client-iam"
 
 const policyDocumentStatementActions = [
 	"acm:ListCertificates",
+	"apigateway:GET",
 	"ec2:DescribeAddresses",
 	"elasticloadbalancing:DescribeLoadBalancers",
 	"iam:GetPolicy",
@@ -26,7 +27,7 @@ export type PolicyDocumentStatementAction =
 export type PolicyDocumentStatement = {
 	Action: PolicyDocumentStatementAction[]
 	Effect: "Allow"
-	Resource: AwsResource["arn"]
+	Resource: AwsResource["arn"] | Array<AwsResource["arn"]>
 }
 
 export type PolicyDocument = {

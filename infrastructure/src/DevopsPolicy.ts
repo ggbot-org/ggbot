@@ -1,14 +1,22 @@
-import {
-	IamPolicy,
-	PolicyDocumentStatement,
-	PolicyDocumentStatementAction
-} from "@workspace/aws-iam"
+import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
 import { ApiRole } from "./ApiRole.js"
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
 import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 import { LambdaFunction } from "./LambdaFunction.js"
+import { WebappApiGatewayDomain } from "./WebappApiGatewayDomain.js"
+
+const statementNames = [
+	"binanceProxy",
+	"createBuckets",
+	"deployStaticWebsites",
+	"manageLambdas",
+	"manageLambdasPassRole",
+	"readResources",
+	"webappApiGatewayDomain"
+] as const
+type DevopsPolicyStatementName = (typeof statementNames)[number]
 
 export class DevopsPolicy extends IamPolicy {
 	apiRole: ApiRole
@@ -23,103 +31,83 @@ export class DevopsPolicy extends IamPolicy {
 		this.apiRole = new ApiRole()
 	}
 
-	get readResourcesStatementActions(): PolicyDocumentStatementAction[] {
-		return [
-			"acm:ListCertificates",
-			"ec2:DescribeAddresses",
-			"iam:GetPolicy",
-			"iam:GetPolicyVersion"
-		]
-	}
-
-	get readResourcesStatement(): PolicyDocumentStatement {
+	get statementAction(): Record<
+		DevopsPolicyStatementName,
+		PolicyDocumentStatement["Action"]
+	> {
 		return {
-			Effect: "Allow",
-			Action: this.readResourcesStatementActions,
-			Resource: "*"
+			binanceProxy: ["elasticloadbalancing:DescribeLoadBalancers"],
+			createBuckets: [
+				"s3:CreateBucket",
+				"s3:GetBucketAcl",
+				"s3:ListBucket"
+			],
+			deployStaticWebsites: ["s3:DeleteObject", "s3:PutObject"],
+			manageLambdas: [
+				"lambda:CreateFunction",
+				"lambda:UpdateFunctionCode",
+				"lambda:UpdateFunctionConfiguration"
+			],
+			// iam:PassRole is needed by lambda:CreateFunction
+			manageLambdasPassRole: ["iam:PassRole"],
+			readResources: [
+				"acm:ListCertificates",
+				"ec2:DescribeAddresses",
+				"iam:GetPolicy",
+				"iam:GetPolicyVersion"
+			],
+			webappApiGatewayDomain: ["apigateway:GET"]
 		}
 	}
 
-	get binanceProxyStatement(): PolicyDocumentStatement {
+	get statementResource(): Record<
+		DevopsPolicyStatementName,
+		PolicyDocumentStatement["Resource"]
+	> {
 		return {
-			Effect: "Allow",
-			Action: ["elasticloadbalancing:DescribeLoadBalancers"],
-			Resource: BinanceProxyLoadBalancer.everyArn()
-		}
-	}
-
-	get manageLambdasStatementActions(): PolicyDocumentStatementAction[] {
-		return [
-			"lambda:CreateFunction",
-			"lambda:UpdateFunctionCode",
-			"lambda:UpdateFunctionConfiguration"
-		]
-	}
-
-	get manageLambdasStatementPassRoleAction(): PolicyDocumentStatementAction[] {
-		// iam:PassRole is needed by lambda:CreateFunction
-		return ["iam:PassRole"]
-	}
-
-	get manageLambdasStatements(): PolicyDocumentStatement[] {
-		return [
-			{
-				Effect: "Allow",
-				Action: this.manageLambdasStatementActions,
-				Resource: `${LambdaFunction.everyArn()}`
-			},
-			{
-				Effect: "Allow",
-				Action: this.manageLambdasStatementPassRoleAction,
-				Resource: this.apiRole.arn
-			}
-		]
-	}
-
-	get createBucketsStatementActions(): PolicyDocumentStatementAction[] {
-		return ["s3:CreateBucket", "s3:GetBucketAcl", "s3:ListBucket"]
-	}
-
-	get createBucketsStatement() {
-		return {
-			Effect: "Allow",
-			Action: this.createBucketsStatementActions,
-			Resource: [
+			binanceProxy: BinanceProxyLoadBalancer.everyArn(),
+			createBuckets: [
 				// TODO
 				// cross.nakedDomainBucketArn,
 				// main.dataBucketArn,
 				// main.webappBucketArn,
 				// next.dataBucketArn,
 				// next.webappBucketArn
-			]
-		}
-	}
-
-	get deployStaticWebsitesStatementActions(): PolicyDocumentStatementAction[] {
-		return ["s3:DeleteObject", "s3:PutObject"]
-	}
-
-	get deployStaticWebsitesStatement() {
-		return {
-			Effect: "Allow",
-			Action: this.deployStaticWebsitesStatementActions,
-			Resource: [
+			],
+			deployStaticWebsites: [
 				// TODO
 				// main.webappBucketArn,
 				// `${main.webappBucketArn}/*`,
 				// next.webappBucketArn,
 				// `${next.webappBucketArn}/*`
-			]
+			],
+			manageLambdas: LambdaFunction.everyArn(),
+			manageLambdasPassRole: this.apiRole.arn,
+			readResources: "*",
+			webappApiGatewayDomain: WebappApiGatewayDomain.everyArn()
 		}
 	}
 
-	get statements() {
-		return [
-			this.readResourcesStatement,
-			this.binanceProxyStatement,
-			this.manageLambdasStatements,
-			this.createBucketsStatement,
-			this.deployStaticWebsitesStatement
-		]
+	get statement(): Record<
+		DevopsPolicyStatementName,
+		PolicyDocumentStatement
+	> {
+		const allow = (
+			statementName: DevopsPolicyStatementName
+		): PolicyDocumentStatement => ({
+			Effect: "Allow",
+			Action: this.statementAction[statementName],
+			Resource: this.statementAction[statementName]
+		})
+
+		return {
+			binanceProxy: allow("binanceProxy"),
+			createBuckets: allow("createBuckets"),
+			deployStaticWebsites: allow("deployStaticWebsites"),
+			manageLambdas: allow("manageLambdas"),
+			manageLambdasPassRole: allow("manageLambdasPassRole"),
+			readResources: allow("readResources"),
+			webappApiGatewayDomain: allow("webappApiGatewayDomain")
+		}
 	}
 }
