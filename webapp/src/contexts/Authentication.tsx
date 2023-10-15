@@ -30,6 +30,19 @@ type State = {
 	startSession: Time
 }
 
+type Action =
+	| { type: "EXIT" }
+	| { type: "SET_EMAIL"; data: Pick<State, "email"> }
+	| {
+			type: "SET_EXIT_IS_ACTIVE"
+			data: Pick<State, "exitIsActive">
+	  }
+	| {
+			type: "SET_JWT"
+			data: NonNullable<Pick<State, "jwt">>
+	  }
+	| { type: "RESET_JWT" }
+
 type ContextValue = {
 	account: Account | null | undefined
 	accountEmail: Account["email"] | ""
@@ -48,24 +61,9 @@ AuthenticationContext.displayName = "AuthenticationContext"
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [{ email, exited, exitIsActive, jwt, startSession }, dispatch] =
-		useReducer<
-			Reducer<
-				State,
-				| { type: "EXIT" }
-				| { type: "SET_EMAIL"; data: Pick<State, "email"> }
-				| {
-						type: "SET_EXIT_IS_ACTIVE"
-						data: Pick<State, "exitIsActive">
-				  }
-				| {
-						type: "SET_JWT"
-						data: NonNullable<Pick<State, "jwt">>
-				  }
-				| { type: "RESET_JWT" }
-			>
-		>(
+		useReducer<Reducer<State, Action>>(
 			(state, action) => {
-				info("Authentication", JSON.stringify(action, null, 2))
+				info("AuthenticationProvider", JSON.stringify(action, null, 2))
 				switch (action.type) {
 					case "EXIT": {
 						localWebStorage.clear()

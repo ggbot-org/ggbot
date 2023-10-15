@@ -17,6 +17,7 @@ import {
 	Title
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
+import { logging } from "_/logging"
 import { url } from "_/routing/authentication/URLs"
 import {
 	isApiAuthVerifyRequestData,
@@ -56,6 +57,8 @@ type Action =
 	| { type: "VERIFY_FAILURE" }
 	| { type: "VERIFY_TIMEOUT" }
 
+const { info, warn } = logging("authentication")
+
 export const AuthVerify: FC<AuthVerifyProps> = ({
 	email,
 	resetEmail,
@@ -72,6 +75,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		},
 		dispatch
 	] = useReducer<Reducer<State, Action>>((state, action) => {
+		info("AuthVerify", JSON.stringify(action, null, 2))
 		switch (action.type) {
 			case "SET_HAS_INVALID_INPUT":
 				return { hasInvalidInput: true }
@@ -161,7 +165,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				}
 			} catch (error) {
 				dispatch({ type: "VERIFY_FAILURE" })
-				console.error(error)
+				warn(error)
 			}
 		},
 		[dispatch, email, isPending, setJwt]

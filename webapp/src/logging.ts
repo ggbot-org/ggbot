@@ -30,11 +30,13 @@ const log: LoggingController = {
 }
 
 export const logging = (prefix: string) => ({
+	/** Prints log with "Info" level, only on deploy stages `local` and `next`. */
 	info: (...args: unknown[]) => {
 		if (enabled) console.info(prefix, ...args)
 	},
+	/** Prints log with "Warn" level, on any deploy stage. */
 	warn: (...args: unknown[]) => {
-		if (enabled) console.warn(prefix, ...args)
+		console.warn(prefix, ...args)
 	}
 })
 

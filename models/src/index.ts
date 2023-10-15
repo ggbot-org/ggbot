@@ -118,7 +118,7 @@ export type { Order, Orders } from "./order.js"
 export { isOrders, newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
 export { quota, quotaType } from "./quotas.js"
-export type { Scheduling, SchedulingStatus } from "./scheduling.js"
+export type { SchedulingStatus } from "./scheduling.js"
 export {
 	getSchedulingSummary,
 	schedulingsAreInactive,

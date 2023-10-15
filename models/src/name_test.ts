@@ -6,7 +6,7 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { ErrorInvalidArg } from "./errors.js"
 import { isName, normalizeName, throwIfInvalidName } from "./name.js"
 
-const nameTooLong = "x".repeat(99)
+const nameTooLong = "x".repeat(999)
 export const invalidNames = ["", "     ", nameTooLong]
 
 describe("isName", () => {

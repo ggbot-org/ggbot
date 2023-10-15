@@ -8,7 +8,7 @@ import {
 	StrategyParameters
 } from "./strategyParameters.js"
 
-const keyTooLong = "x".repeat(99)
+const keyTooLong = "x".repeat(999)
 const invalidKeys = ["", keyTooLong]
 const invalidValues = ["", Infinity, []]
 

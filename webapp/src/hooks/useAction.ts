@@ -187,7 +187,7 @@ export const useAction = <
 						}
 
 						default: {
-							console.error(error)
+							warn(error)
 							setError({ name: "GenericError" })
 						}
 					}
