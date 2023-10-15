@@ -6,9 +6,9 @@ import {
 import { AccountKey } from "@workspace/models"
 
 export const href = {
-	accountsPage: () => `/${adminDashboardHtmlPathname}`,
+	accountsPage: () => `${adminDashboardHtmlPathname}`,
 	accountDetailsPage: (accountKey: AccountKey) => {
 		const searchParams = accountKeyToURLSearchParams(accountKey).toString()
-		return `/${adminAccountDetailsHtmlPathname}?${searchParams}`
+		return `${adminAccountDetailsHtmlPathname}?${searchParams}`
 	}
 }

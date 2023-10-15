@@ -19,6 +19,7 @@ import {
 import { useIntl } from "react-intl"
 
 const tabIds = [
+	"account",
 	"accounts",
 	"backtesting",
 	"flow",

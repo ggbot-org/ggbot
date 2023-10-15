@@ -10,7 +10,7 @@ type ContextValue = {
 	account: Account | undefined | null
 }
 
-const AccountContext = createContext<ContextValue>({
+export const AccountContext = createContext<ContextValue>({
 	account: undefined
 })
 
