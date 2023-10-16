@@ -45,7 +45,8 @@ export const READ = async <Operation extends AsyncFunction>(
 			info("READ", Key, json)
 			return null
 		}
-		const data = JSON.parse(json)
+		// TODO should be parseSerializedString imported from models
+		const data: unknown = JSON.parse(json)
 		info(
 			"READ",
 			Key,
@@ -70,7 +71,8 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 			info("READ_ARRAY", Key, json)
 			return [] as Awaited<ReturnType<Operation>>
 		}
-		const data = JSON.parse(json)
+		// TODO should be parseSerializedString imported from models
+		const data: unknown = JSON.parse(json)
 		info(
 			"READ_ARRAY",
 			Key,

@@ -24,10 +24,5 @@
     "@workspace/models": "0.0.0",
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@workspace/eslint-config"
-    ]
   }
 }

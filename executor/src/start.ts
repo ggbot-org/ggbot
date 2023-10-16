@@ -77,4 +77,4 @@ process.on("uncaughtException", (error) => {
 	if (error instanceof Error) warn("Uncaught Exception", error.message)
 })
 
-start()
+await start()
