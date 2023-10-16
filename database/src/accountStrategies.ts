@@ -1,11 +1,10 @@
 import {
+	accountStrategiesModifier,
 	createdNow,
 	DeleteAccountStrategiesItem,
 	deletedNow,
-	ErrorExceededQuota,
 	InsertAccountStrategiesItem,
 	isAccountStrategies,
-	quota,
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
@@ -29,15 +28,13 @@ export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
 	accountId,
 	item
 }) => {
-	const items = (await readAccountStrategies({ accountId })) ?? []
+	const items = await readAccountStrategies({ accountId })
 	const subscription = await readSubscription({ accountId })
-
-	const numMaxStrategies = quota.MAX_STRATEGIES_PER_ACCOUNT(
+	const data = accountStrategiesModifier.insertItem(
+		items,
+		item,
 		subscription?.plan
 	)
-	if (items.length >= numMaxStrategies)
-		throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" })
-	const data = [...items, item]
 	const Key = pathname.accountStrategies({ accountId })
 	await WRITE(Key, data)
 	return createdNow()
@@ -92,8 +89,6 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
 		}))
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
-
-// TODO move many of this logic into models (except data service) and test it!!!
 
 export const suspendAccountStrategyScheduling: SuspendAccountStrategyScheduling =
 	async ({ accountId, strategyId, schedulingId }) => {

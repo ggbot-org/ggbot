@@ -36,6 +36,7 @@ export type {
 	UpdateAccountStrategySchedulingMemory,
 	WriteAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
+export { accountStrategiesModifier } from "./accountStrategies.js"
 export {
 	isAccountStrategies,
 	isWriteAccountStrategiesItemSchedulingsInput
@@ -116,7 +117,7 @@ export {
 export type { Order, Orders } from "./order.js"
 export { isOrders, newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
-export { quota, quotaType } from "./quotas.js"
+export { quotaType } from "./quotas.js"
 export type { SchedulingStatus } from "./scheduling.js"
 export {
 	getSchedulingSummary,
@@ -138,7 +139,6 @@ export type {
 export {
 	isCopyStrategyInput,
 	isCreateStrategyInput,
-	isDeleteStrategyInput,
 	isReadStrategyInput,
 	isRenameStrategyInput,
 	isStrategy,

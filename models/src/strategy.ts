@@ -82,5 +82,3 @@ export const isRenameStrategyInput = objectTypeGuard<RenameStrategyInput>(
 export type RenameStrategy = (arg: RenameStrategyInput) => Promise<UpdateTime>
 
 export type DeleteStrategy = (arg: AccountStrategyKey) => Promise<DeletionTime>
-
-export const isDeleteStrategyInput = isAccountStrategyKey
