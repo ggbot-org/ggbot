@@ -1,6 +1,7 @@
-type FiniteString = string
+// TODO Check also strings has no line terminator
+export type FiniteString = string
 
-const stringMaxLength = 256
+export const stringMaxLength = 256
 
 const isFiniteString = (arg: unknown): arg is FiniteString =>
 	typeof arg === "string" && arg.length <= stringMaxLength

@@ -13,12 +13,15 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts src/"
+    "lint": "eslint --fix --ext .ts src/",
+    "pretest": "tsc --build tsconfig.test.json",
+    "test": "node --test"
   },
   "dependencies": {
     "@workspace/http": "0.0.0",
     "@workspace/models": "0.0.0",
     "dflow": "0.42.0",
+    "minimal-assertion-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {

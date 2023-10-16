@@ -21,6 +21,15 @@ export type ApiActionInput<ApiActionType extends string> = {
 	data?: unknown
 }
 
+export const isApiActionInput = <ApiActionType extends string>(
+	actionTypes: readonly ApiActionType[]
+) =>
+	objectTypeGuard<ApiActionInput<ApiActionType>>(({ type }) =>
+		isLiteralType<ApiActionType>(actionTypes)(type)
+	)
+
+// TODO ho tolto Request, togli anche Response
+// solo Input e Output, la Request e la Response fanno parte del trasporto http
 export type ApiActionResponseError = {
 	error: ApiActionServerSideError
 }

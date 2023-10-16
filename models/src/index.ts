@@ -123,6 +123,7 @@ export {
 	schedulingsAreInactive,
 	schedulingStatuses
 } from "./scheduling.js"
+export type { Service } from "./service.js"
 export type {
 	CopyStrategy,
 	CreateStrategy,
@@ -182,6 +183,7 @@ export {
 	newStrategyScheduling
 } from "./strategyScheduling.js"
 export type { NonEmptyString } from "./strings.js"
+export { stringMaxLength } from "./strings.js"
 export { isNonEmptyString } from "./strings.js"
 export type {
 	ReadSubscription,

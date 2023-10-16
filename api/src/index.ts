@@ -3,7 +3,7 @@ export type {
 	AdminApiDataProvider,
 	AdminApiService
 } from "./adminApi.js"
-export { isAdminApiActionRequestData } from "./adminApi.js"
+export { adminApiActionTypes } from "./adminApi.js"
 export type {
 	ApiActionClientSideError,
 	ApiActionResponseData,
@@ -11,6 +11,7 @@ export type {
 	ApiActionResponseOutput,
 	ApiActionServerSideError
 } from "./apiAction.js"
+export { isApiActionInput } from "./apiAction.js"
 export { isApiActionServerSideError } from "./apiAction.js"
 export type {
 	ApiAuthEnterResponseData,
@@ -27,7 +28,7 @@ export type {
 	PublicApiDataProvider,
 	PublicApiService
 } from "./publicApi.js"
-export { isPublicApiActionRequestData } from "./publicApi.js"
+export { publicApiActionTypes } from "./publicApi.js"
 export type { UserApiActionType } from "./userApi.js"
 export { isUserApiActionRequestData } from "./userApi.js"
 export type {

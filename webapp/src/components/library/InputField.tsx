@@ -1,3 +1,4 @@
+import { stringMaxLength } from "@workspace/models"
 import { FC, ReactNode, useId } from "react"
 import { Control, ControlProps, Field, Help, Input, InputProps } from "trunx"
 
@@ -14,6 +15,7 @@ export const InputField: FC<InputFieldProps> = ({
 	help,
 	isLoading,
 	label,
+	type,
 	...props
 }) => {
 	const id = useId()
@@ -23,7 +25,13 @@ export const InputField: FC<InputFieldProps> = ({
 			<Label htmlFor={id}>{label}</Label>
 
 			<Control isLoading={isLoading}>
-				<Input id={id} color={color} {...props} />
+				<Input
+					id={id}
+					color={color}
+					maxLength={type === "text" ? stringMaxLength : undefined}
+					type={type}
+					{...props}
+				/>
 			</Control>
 
 			{help ? <Help color={color}>{help}</Help> : null}
