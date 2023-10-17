@@ -1,35 +1,61 @@
-import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
+import {
+	CopyStrategy,
+	CreateBinanceApiConfig,
+	CreateStrategy,
+	DeleteAccount,
+	DeleteBinanceApiConfig,
+	DeleteStrategy,
+	ReadAccount,
+	ReadAccountStrategies,
+	ReadStrategyOrders,
+	ReadSubscription,
+	RenameAccount,
+	RenameStrategy,
+	Service,
+	WriteAccountStrategiesItemSchedulings,
+	WriteStrategyFlow
+} from "@workspace/models"
 
-import { ApiActionInput } from "./apiAction.js"
-
-const userApiActionTypes = [
+export const userApiActionTypes = [
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
 	"CreateStrategy",
 	"DeleteAccount",
-	"DeleteStrategy",
 	"DeleteBinanceApiConfig",
+	"DeleteStrategy",
 	"ReadAccount",
-	"ReadStrategies",
 	"ReadBinanceApiKey",
 	"ReadBinanceApiKeyPermissions",
-	"ReadStrategy",
+	"ReadStrategies",
 	"ReadStrategyBalances",
-	"ReadStrategyFlow",
 	"ReadStrategyOrders",
 	"ReadSubscription",
-	"RenameStrategy",
 	"RenameAccount",
+	"RenameStrategy",
 	"SetAccountCountry",
 	"WriteStrategiesItemSchedulings",
 	"WriteStrategyFlow"
 ] as const
 export type UserApiActionType = (typeof userApiActionTypes)[number]
-const isUserApiActionType = isLiteralType<UserApiActionType>(userApiActionTypes)
 
-type UserApiActionRequestData = ApiActionInput<UserApiActionType>
+export type UserApiDataProvider = {
+	copyStrategy: CopyStrategy
+	createBinanceApiConfig: CreateBinanceApiConfig
+	createStrategy: CreateStrategy
+	deleteAccount: DeleteAccount
+	deleteBinanceApiConfig: DeleteBinanceApiConfig
+	deleteStrategy: DeleteStrategy
+	readAccount: ReadAccount
+	readAccountStrategies: ReadAccountStrategies
+	readStrategyOrders: ReadStrategyOrders
+	readSubscription: ReadSubscription
+	renameAccount: RenameAccount
+	renameStrategy:RenameStrategy
+	writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings
+	writeStrategyFlow: WriteStrategyFlow
+}
 
-export const isUserApiActionRequestData =
-	objectTypeGuard<UserApiActionRequestData>(({ type }) =>
-		isUserApiActionType(type)
-	)
+export type UserApiService = Service<
+	UserApiActionType,
+	UserApiDataProvider
+>

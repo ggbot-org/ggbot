@@ -33,6 +33,7 @@ const computeStopPriceUp: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
 }) => marketPrice - marketPrice * percentageDelta
+// TODO con  queste operazioni genera troppi decimali, usa il package arithmetica
 const computeStopPriceDown: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta

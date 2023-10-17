@@ -29,8 +29,11 @@ export type {
 	PublicApiService
 } from "./publicApi.js"
 export { publicApiActionTypes } from "./publicApi.js"
-export type { UserApiActionType } from "./userApi.js"
-export { isUserApiActionRequestData } from "./userApi.js"
+export { userApiActionTypes } from "./userApi.js"
+export type { UserApiActionType,
+	UserApiDataProvider,
+	UserApiService
+} from "./userApi.js"
 export type {
 	UtrustApiActionType,
 	UtrustApiCallabackRequestData
