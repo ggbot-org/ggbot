@@ -8,13 +8,18 @@ import {
 	deleteStrategy,
 	readAccount,
 	readAccountStrategies,
+	readBinanceApiKey,
+	readStrategyBalances,
 	readStrategyOrders,
 	readSubscription,
 	renameAccount,
 	renameStrategy,
+	setAccountCountry,
 	writeAccountStrategiesItemSchedulings,
-	writeStrategyFlow,
+	writeStrategyFlow
 } from "@workspace/database"
+
+import { readBinanceApiKeyPermissions } from "./binance.js"
 
 export const dataProvider: UserApiDataProvider = {
 	copyStrategy,
@@ -25,10 +30,14 @@ export const dataProvider: UserApiDataProvider = {
 	deleteStrategy,
 	readAccount,
 	readAccountStrategies,
+	readBinanceApiKey,
+	readBinanceApiKeyPermissions,
+	readStrategyBalances,
 	readStrategyOrders,
 	readSubscription,
 	renameAccount,
 	renameStrategy,
+	setAccountCountry,
 	writeAccountStrategiesItemSchedulings,
-	writeStrategyFlow,
+	writeStrategyFlow
 }

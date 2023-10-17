@@ -1,8 +1,9 @@
 // Credits:
 // inspired by `JsonValue` in type-fest package
 // https://github.com/sindresorhus/type-fest/tree/main
-import { FiniteNumber } from "./numbers.js"
-import { FiniteString } from "./strings.js"
+// ///
+import { FiniteNumber, isFiniteNumber } from "./numbers.js"
+import { FiniteString, isFiniteString } from "./strings.js"
 
 type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
 
@@ -15,8 +16,28 @@ export type SerializableObject = { [Key in FiniteString]: SerializableData } & {
 	[Key in FiniteString]?: SerializableData | undefined
 }
 
-/** Serializable data. */
+/** Serializable data, can be stringified into JSON. */
 export type SerializableData =
 	| SerializablePrimitive
 	| SerializableArray
 	| SerializableObject
+
+const isSerializableArray = (arg: unknown): arg is SerializableArray =>
+	Array.isArray(arg) && arg.every(isSerializableData)
+
+const isSerializableData = (arg: unknown): arg is SerializableData => {
+	if (arg === undefined) return false
+	return (
+		isFiniteNumber(arg) ||
+		isFiniteString(arg) ||
+		typeof arg === "boolean" ||
+		isSerializableArray(arg) ||
+		isSerializableObject(arg)
+	)
+}
+
+export const isSerializableObject = (arg: unknown): arg is SerializableObject =>
+	typeof arg === "object" &&
+	arg !== null &&
+	!Array.isArray(arg) &&
+	Object.values(arg).every(isSerializableData)

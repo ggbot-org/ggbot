@@ -11,8 +11,6 @@ export const ButtonColors: FC = () => (
 			<Button color="warning">warning</Button>
 
 			<Button color="danger">danger</Button>
-
-			<Button color="success">success</Button>
 		</Buttons>
 
 		<Buttons>
@@ -27,10 +25,6 @@ export const ButtonColors: FC = () => (
 			</Button>
 
 			<Button disabled color="danger">
-				disabled
-			</Button>
-
-			<Button disabled color="success">
 				disabled
 			</Button>
 		</Buttons>
@@ -51,10 +45,6 @@ export const LoadingButtons: FC = () => (
 
 		<Button isLoading color="danger">
 			danger
-		</Button>
-
-		<Button isLoading color="success">
-			success
 		</Button>
 	</Buttons>
 )

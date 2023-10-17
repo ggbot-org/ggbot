@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { StrategyFlow } from "@workspace/models"
+import { FlowViewSerializableGraph } from "flow-view"
 
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { extractBinanceFlowSymbolsAndIntervalsFromFlow } from "./symbols.js"
@@ -10,7 +10,7 @@ describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
 	test("extracts symbol and interval tuples", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
-		const view: StrategyFlow["view"] = {
+		const view: FlowViewSerializableGraph = {
 			nodes: [
 				{
 					id: "a1",
@@ -56,7 +56,7 @@ describe("extractBinanceFlowSymbolsAndIntervalsFromFlow", () => {
 	test("manages duplicates", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
-		const view: StrategyFlow["view"] = {
+		const view: FlowViewSerializableGraph = {
 			nodes: [
 				{
 					id: "a1",

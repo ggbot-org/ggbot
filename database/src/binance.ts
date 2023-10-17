@@ -16,7 +16,6 @@ import {
 import { BinanceClient } from "@workspace/binance-client"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
-import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 
 /** A Binance client that uses a proxy for private requests. */
 export class Binance implements DflowBinanceClient {
@@ -42,16 +41,6 @@ export class Binance implements DflowBinanceClient {
 
 	async account(): Promise<BinanceAccountInformation> {
 		return await this.privateClient.account()
-	}
-
-	async apiRestrictions(): Promise<BinanceApiKeyPermissionCriteria> {
-		const data = await this.privateClient.apiRestrictions()
-		return {
-			enableReading: data.enableReading,
-			enableSpotAndMarginTrading: data.enableSpotAndMarginTrading,
-			ipRestrict: data.ipRestrict,
-			enableWithdrawals: data.enableWithdrawals
-		}
 	}
 
 	async candles(

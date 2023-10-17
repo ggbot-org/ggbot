@@ -1,6 +1,6 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
-import { StrategyFlow } from "@workspace/models"
 import { DflowGraph, DflowId } from "dflow"
+import { FlowViewSerializableGraph } from "flow-view"
 import { MaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { dflowBinancePrecision } from "./arithmetic.js"
@@ -105,7 +105,7 @@ const isDflowBinanceSymbolAndInterval =
 // TODO it checks Candles nodes, should also check (add testss too) price nodes.
 export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	view: StrategyFlow["view"]
+	view: FlowViewSerializableGraph
 ): DflowBinanceSymbolAndInterval[] => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []

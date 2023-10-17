@@ -20,8 +20,7 @@ export {
 	createBinanceApiConfig,
 	deleteBinanceApiConfig,
 	readBinanceApiConfig,
-	readBinanceApiKey,
-	readBinanceApiKeyPermissions
+	readBinanceApiKey
 } from "./binanceApiConfig.js"
 export { readEmailAccount } from "./emailAccount.js"
 export { itemKeyToDirname, locatorToItemKey } from "./locators.js"

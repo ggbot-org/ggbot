@@ -1,5 +1,3 @@
-// TODO remove dflow (also as a models dependency)
-import { DflowObject } from "dflow"
 import {
 	dateToDay,
 	Day,
@@ -21,6 +19,7 @@ import { Currency } from "./currency.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
 import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
+import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
 import {
 	createdNow,
@@ -56,7 +55,7 @@ const isSubscriptionPurchaseStatus = isLiteralType<SubscriptionPurchaseStatus>(
 export type SubscriptionPurchase = Item &
 	CreationTime &
 	DayInterval & {
-		info?: DflowObject
+		info?: SerializableObject
 		plan: SubscriptionPlan
 		paymentProvider: PaymentProvider
 		status: SubscriptionPurchaseStatus

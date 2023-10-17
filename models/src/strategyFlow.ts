@@ -1,19 +1,18 @@
-import { FlowViewSerializableGraph } from "flow-view"
-import { isMaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
+import { isSerializableObject, SerializableObject } from "./serializable.js"
 import { StrategyKey } from "./strategy.js"
 import { CreationTime, DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
 export type StrategyFlow = UpdateTime & {
-	view: FlowViewSerializableGraph
+	view: SerializableObject
 }
 
 export const isStrategyFlow = objectTypeGuard<StrategyFlow>(
 	({ view, ...updateTime }) =>
-		isMaybeObject<FlowViewSerializableGraph>(view) &&
-		isUpdateTime(updateTime)
+		isSerializableObject(view) && isUpdateTime(updateTime)
 )
 
 type CopyStrategyFlowInput = AccountKey & {
@@ -34,8 +33,7 @@ type WriteStrategyFlowInput = AccountStrategyKey &
 
 export const isWriteStrategyFlowInput = objectTypeGuard<WriteStrategyFlowInput>(
 	({ view, ...accountStrategyKey }) =>
-		isMaybeObject<FlowViewSerializableGraph>(view) &&
-		isAccountStrategyKey(accountStrategyKey)
+		isSerializableObject(view) && isAccountStrategyKey(accountStrategyKey)
 )
 
 export type WriteStrategyFlow = (

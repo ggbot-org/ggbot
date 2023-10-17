@@ -3,6 +3,7 @@ import { StrategyContext } from "_/contexts/Strategy"
 import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView"
 import { usePublicApi } from "_/hooks/usePublicApi"
 import { isStrategyFlow } from "@workspace/models"
+import { FlowViewSerializableGraph } from "flow-view"
 import {
 	createContext,
 	FC,
@@ -43,7 +44,8 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
 		container: flowViewContainerRef.current,
-		initialGraph: flow?.view,
+		// TODO need isFlowViewSerializableGraph
+		initialGraph: flow?.view as FlowViewSerializableGraph,
 		strategyKind
 	})
 

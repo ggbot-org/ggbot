@@ -7,11 +7,15 @@ import {
 	DeleteStrategy,
 	ReadAccount,
 	ReadAccountStrategies,
+	ReadBinanceApiKey,
+	ReadBinanceApiKeyPermissions,
+	ReadStrategyBalances,
 	ReadStrategyOrders,
 	ReadSubscription,
 	RenameAccount,
 	RenameStrategy,
 	Service,
+	SetAccountCountry,
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
 } from "@workspace/models"
@@ -33,7 +37,7 @@ export const userApiActionTypes = [
 	"RenameAccount",
 	"RenameStrategy",
 	"SetAccountCountry",
-	"WriteStrategiesItemSchedulings",
+	"WriteAccountStrategiesItemSchedulings",
 	"WriteStrategyFlow"
 ] as const
 export type UserApiActionType = (typeof userApiActionTypes)[number]
@@ -47,15 +51,16 @@ export type UserApiDataProvider = {
 	deleteStrategy: DeleteStrategy
 	readAccount: ReadAccount
 	readAccountStrategies: ReadAccountStrategies
+	readBinanceApiKey: ReadBinanceApiKey
+	readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions
+	readStrategyBalances: ReadStrategyBalances
 	readStrategyOrders: ReadStrategyOrders
 	readSubscription: ReadSubscription
 	renameAccount: RenameAccount
-	renameStrategy:RenameStrategy
+	renameStrategy: RenameStrategy
+	setAccountCountry: SetAccountCountry
 	writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings
 	writeStrategyFlow: WriteStrategyFlow
 }
 
-export type UserApiService = Service<
-	UserApiActionType,
-	UserApiDataProvider
->
+export type UserApiService = Service<UserApiActionType, UserApiDataProvider>
