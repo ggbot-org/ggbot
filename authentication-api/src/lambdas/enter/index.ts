@@ -11,46 +11,42 @@ import {
 	OK
 } from "@workspace/api-gateway"
 import { createOneTimePassword } from "@workspace/database"
+import { BadGatewayError } from "@workspace/http"
 
 import { sendOneTimePassword } from "./sendOneTimePassword.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		switch (event.httpMethod) {
-			case "OPTIONS":
-				return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
 
-			case "POST": {
-				if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === "POST") {
+			if (!event.body) return BAD_REQUEST()
 
-				const input = JSON.parse(event.body)
+			const input: unknown = JSON.parse(event.body)
 
-				if (isApiAuthEnterRequestData(input)) {
-					const { email } = input
+			if (isApiAuthEnterRequestData(input)) {
+				const { email } = input
 
-					const language = "en"
-					const oneTimePassword = await createOneTimePassword(email)
-					await sendOneTimePassword({
-						language,
-						email,
-						oneTimePassword
-					})
+				const language = "en"
+				const oneTimePassword = await createOneTimePassword(email)
+				await sendOneTimePassword({
+					language,
+					email,
+					oneTimePassword
+				})
 
-					const output: ApiAuthEnterResponseData = {
-						emailSent: true
-					}
-
-					return OK(output)
+				const output: ApiAuthEnterResponseData = {
+					emailSent: true
 				}
 
-				return BAD_REQUEST()
+				return OK(output)
 			}
-
-			default:
-				return METHOD_NOT_ALLOWED
 		}
+
+		return METHOD_NOT_ALLOWED
 	} catch (error) {
+		if (error instanceof BadGatewayError) return BAD_REQUEST()
 		console.error(error)
 	}
 	return INTERNAL_SERVER_ERROR

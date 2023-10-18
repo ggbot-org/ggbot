@@ -109,7 +109,7 @@ export const useUserApi = {
 		useAction<
 			Authenticated<WriteAccountStrategiesItemSchedulings>,
 			UserApiActionType
-		>(apiOptions, "WriteStrategiesItemSchedulings"),
+		>(apiOptions, "WriteAccountStrategiesItemSchedulings"),
 	WriteStrategyFlow: () =>
 		useAction<Authenticated<WriteStrategyFlow>, UserApiActionType>(
 			apiOptions,

@@ -10,7 +10,8 @@ import {
 import {
 	DflowBinanceExecutor,
 	DflowCommonContext,
-	getDflowBinanceNodesCatalog
+	getDflowBinanceNodesCatalog,
+	isDflowExecutorView
 } from "@workspace/dflow"
 import {
 	AccountStrategyKey,
@@ -64,7 +65,16 @@ export const executeBinanceStrategy = async (
 	const { symbols } = await binance.exchangeInfo()
 	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
+	const { view } = strategyFlow
+	if (!isDflowExecutorView(view))
+		return {
+			success: false,
+			memoryChanged: false,
+			memory: {}
+		}
+
 	const executor = new DflowBinanceExecutor(binance, symbols, nodesCatalog)
+
 	const {
 		balances,
 		execution,
@@ -77,7 +87,7 @@ export const executeBinanceStrategy = async (
 			memory: memoryInput,
 			time
 		},
-		strategyFlow.view
+		view
 	)
 
 	if (orders.length > 0) {

@@ -1,5 +1,6 @@
 import { DflowGraphExecutionReport, DflowNodesCatalog } from "dflow"
 import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { DflowCommonContext } from "./context.js"
 
@@ -20,6 +21,11 @@ export type DflowExecutorView = {
 	edges: Array<Pick<FlowViewSerializableEdge, "id" | "from" | "to">>
 	nodes: Array<Pick<FlowViewSerializableNode, "id" | "ins" | "outs" | "text">>
 }
+
+// TODO Improve this
+export const isDflowExecutorView = objectTypeGuard<DflowExecutorView>(
+	({ edges, nodes }) => Array.isArray(edges) && Array.isArray(nodes)
+)
 
 export interface DflowExecutor<
 	RunContext extends DflowCommonExecutorContext,

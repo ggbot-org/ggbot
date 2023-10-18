@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const input = JSON.parse(event.body)
+			const input: unknown = JSON.parse(event.body)
 			if (!isApiActionInput(publicApiActionTypes)(input))
 				return BAD_REQUEST()
 

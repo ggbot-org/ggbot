@@ -1,8 +1,7 @@
 import { S3IOClient } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 import { logging } from "@workspace/logging"
-import { deletedNow, updatedNow } from "@workspace/models"
-import { DflowArray, DflowObject } from "dflow"
+import { deletedNow, SerializableData, updatedNow } from "@workspace/models"
 
 import { ErrorInvalidData } from "./errors.js"
 import { getDataBucketName } from "./S3DataProvider.js"
@@ -97,12 +96,12 @@ export const DELETE = async (Key: string) => {
 export const LIST = async ({ Prefix }: { Prefix: string }) =>
 	s3.listObjects({ Prefix })
 
-export const UPDATE = async (Key: string, data: DflowArray | DflowObject) => {
+export const UPDATE = async (Key: string, data: SerializableData) => {
 	await WRITE(Key, data)
 	return updatedNow()
 }
 
-export const WRITE = async (Key: string, data: DflowArray | DflowObject) => {
+export const WRITE = async (Key: string, data: SerializableData) => {
 	info("WRITE", Key, JSON.stringify(data, null, 2))
 	const json = JSON.stringify(data)
 	await s3.putObject(Key, json)

@@ -17,64 +17,63 @@ import {
 	readEmailAccount,
 	readOneTimePassword
 } from "@workspace/database"
+import { BadGatewayError } from "@workspace/http"
 import { today } from "minimal-time-helpers"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		switch (event.httpMethod) {
-			case "OPTIONS":
-				return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
 
-			case "POST": {
-				if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === "POST") {
+			if (!event.body) return BAD_REQUEST()
 
-				const input = JSON.parse(event.body)
+			const input: unknown = JSON.parse(event.body)
 
-				if (isApiAuthVerifyRequestData(input)) {
-					const { code, email } = input
+			if (isApiAuthVerifyRequestData(input)) {
+				const { code, email } = input
 
-					const storedOneTimePassword =
-						await readOneTimePassword(email)
+				const storedOneTimePassword = await readOneTimePassword(email)
 
-					if (!storedOneTimePassword) {
-						return OK(null)
-					}
-
-					const verified = code === storedOneTimePassword?.code
-
-					const output: ApiAuthVerifyResponseData = {}
-
-					if (!verified) return OK(output)
-
-					await deleteOneTimePassword(email)
-
-					const emailAccount = await readEmailAccount(email)
-
-					const creationDay = today()
-
-					if (emailAccount) {
-						const session = {
-							creationDay,
-							accountId: emailAccount.accountId
-						}
-						output.jwt = signSession(session)
-					} else {
-						const account = await createAccount({ email })
-						const session = { creationDay, accountId: account.id }
-						output.jwt = signSession(session)
-					}
-
-					return OK(output)
+				if (!storedOneTimePassword) {
+					return OK(null)
 				}
 
-				return BAD_REQUEST()
-			}
+				const verified = code === storedOneTimePassword?.code
 
-			default:
-				return METHOD_NOT_ALLOWED
+				const output: ApiAuthVerifyResponseData = {}
+
+				if (!verified) return OK(output)
+
+				await deleteOneTimePassword(email)
+
+				const emailAccount = await readEmailAccount(email)
+
+				const creationDay = today()
+
+				if (emailAccount) {
+					const session = {
+						creationDay,
+						accountId: emailAccount.accountId
+					}
+					const jwt: unknown = signSession(session)
+					if (typeof jwt !== "string") return INTERNAL_SERVER_ERROR
+					output.jwt = jwt
+				} else {
+					const account = await createAccount({ email })
+					const session = { creationDay, accountId: account.id }
+					const jwt: unknown = signSession(session)
+					if (typeof jwt !== "string") return INTERNAL_SERVER_ERROR
+					output.jwt = jwt
+				}
+
+				return OK(output)
+			}
 		}
+
+		return METHOD_NOT_ALLOWED
 	} catch (error) {
+		if (error instanceof BadGatewayError) return BAD_REQUEST()
 		console.error(error)
 	}
 	return INTERNAL_SERVER_ERROR
