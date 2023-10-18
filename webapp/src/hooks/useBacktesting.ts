@@ -3,6 +3,7 @@ import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import { logging } from "_/logging"
+import { Backtesting } from "@workspace/backtesting"
 import {
 	binanceKlineMaxLimit,
 	BinanceKlinesCacheMap,
@@ -157,6 +158,7 @@ const backtestingReducer = (state: State, action: Action) => {
 		case "SET_DAY_INTERVAL": {
 			if (isReadOnlyState(state)) return { ...state, isReadOnly: true }
 			const { dayInterval } = action.data
+			backtesting.dayInterval = dayInterval
 			return getInitialState({
 				frequency: state.frequency,
 				dayInterval
@@ -207,6 +209,10 @@ const defaultDayInterval = (): State["dayInterval"] => {
 		end: maxDay
 	}
 }
+
+const backtesting = new Backtesting({
+	dayInterval: defaultDayInterval()
+})
 
 const defaultFrequency = (): State["frequency"] => everyOneHour()
 

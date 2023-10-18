@@ -20,6 +20,7 @@ graph LR
     workspace/authentication-api --- workspace/database
     workspace/authentication-api --- workspace/email-messages
     workspace/aws-acm --- workspace/aws-types
+    workspace/aws-api-gateway --- workspace/aws-types
     workspace/aws-ec2 --- workspace/aws-types
     workspace/aws-elb --- workspace/aws-types
     workspace/aws-iam --- workspace/aws-types
@@ -42,6 +43,7 @@ graph LR
     workspace/email-messages --- workspace/models
     workspace/executor --- workspace/database
     workspace/infrastructure --- workspace/aws-acm
+    workspace/infrastructure --- workspace/aws-api-gateway
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-elb
     workspace/infrastructure --- workspace/aws-iam
@@ -62,6 +64,7 @@ graph LR
     workspace/user-api --- workspace/authentication
     workspace/user-api --- workspace/database
     workspace/webapp --- workspace/api
+    workspace/webapp --- workspace/backtesting
     workspace/webapp --- workspace/dflow
     workspace/webapp --- workspace/locators
 ```

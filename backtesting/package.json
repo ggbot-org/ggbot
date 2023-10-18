@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/env",
+  "name": "@workspace/backtesting",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,6 +14,9 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/"
+  },
+  "dependencies": {
+    "minimal-time-helpers": "0.1.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",

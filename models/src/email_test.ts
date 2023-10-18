@@ -1,19 +1,17 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-// TODO use assertEqual
-import { isEmailAddress, normalizeEmailAddress } from "./email.js"
+import { assertEqual } from "minimal-assertion-helpers"
+
+import { EmailAddress, isEmailAddress, normalizeEmailAddress } from "./email.js"
 import { ErrorInvalidArg } from "./errors.js"
 
 describe("normalizeEmailAddress", () => {
 	test("returns email in lowercase", () => {
-		[
+		assertEqual<EmailAddress, EmailAddress>(normalizeEmailAddress, [
 			{ input: "lower@example.com", output: "lower@example.com" },
 			{ input: "MiXeD@example.com", output: "mixed@example.com" }
-		].forEach(({ input, output }) => {
-			if (!isEmailAddress(input)) throw new Error()
-			assert.equal(normalizeEmailAddress(input), output)
-		})
+		])
 	})
 
 	test("removes period characters", () => {
