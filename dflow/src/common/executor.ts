@@ -27,10 +27,10 @@ export const isDflowExecutorView = objectTypeGuard<DflowExecutorView>(
 	({ edges, nodes }) => Array.isArray(edges) && Array.isArray(nodes)
 )
 
-export interface DflowExecutor<
-	RunContext extends DflowCommonExecutorContext,
-	RunOutput extends DflowCommonExecutorOutput
-> {
+export type DflowExecutor<
+	RunContext extends DflowCommonExecutorContext = DflowCommonExecutorContext,
+	RunOutput extends DflowCommonExecutorOutput = DflowCommonExecutorOutput
+> = {
 	readonly nodesCatalog: DflowNodesCatalog
 	run(context: RunContext, view: DflowExecutorView): Promise<RunOutput>
 }

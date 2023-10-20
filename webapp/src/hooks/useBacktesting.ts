@@ -30,11 +30,12 @@ import {
 	DayInterval,
 	dayIntervalToDate,
 	getDay,
+	now,
 	Timestamp,
 	timestampToTime,
 	yesterday
 } from "minimal-time-helpers"
-import { useCallback, useContext, useEffect, useReducer } from "react"
+import { useCallback, useContext, useEffect, useReducer,useRef } from "react"
 
 const { info } = logging("backtesting")
 
@@ -158,7 +159,6 @@ const backtestingReducer = (state: State, action: Action) => {
 		case "SET_DAY_INTERVAL": {
 			if (isReadOnlyState(state)) return { ...state, isReadOnly: true }
 			const { dayInterval } = action.data
-			backtesting.dayInterval = dayInterval
 			return getInitialState({
 				frequency: state.frequency,
 				dayInterval
@@ -210,10 +210,6 @@ const defaultDayInterval = (): State["dayInterval"] => {
 	}
 }
 
-const backtesting = new Backtesting({
-	dayInterval: defaultDayInterval()
-})
-
 const defaultFrequency = (): State["frequency"] => everyOneHour()
 
 const getInitialState = ({
@@ -254,6 +250,8 @@ export const useBacktesting = (
 
 	const binanceSymbols = useBinanceSymbols()
 	const nodesCatalog = useNodesCatalog()
+
+	const backtestingRef = useRef<Backtesting>()
 
 	let hasRequiredData = true
 	if (!nodesCatalog) hasRequiredData = false
@@ -326,7 +324,6 @@ export const useBacktesting = (
 						)
 						const binance = new BinanceClient(
 							{
-								balances: [],
 								time: endTime
 							},
 							klinesCache,
@@ -384,8 +381,7 @@ export const useBacktesting = (
 				if (!binanceSymbols) return
 				const binance = new BinanceClient(
 					{
-						balances: [],
-						time
+						time: now()
 					},
 					klinesCache
 				)
@@ -455,6 +451,28 @@ export const useBacktesting = (
 	useEffect(() => {
 		if (isPreparing) prepare()
 	}, [isPreparing, prepare])
+
+	useEffect(() => {
+		if (backtestingRef.current) return
+		if (!binanceSymbols) return
+		if (!nodesCatalog) return
+		const binance = new BinanceClient(
+			{
+				time: now()
+			},
+			klinesCache
+		)
+		const executor = new DflowBinanceExecutor(
+			binance,
+			binanceSymbols,
+			nodesCatalog
+		)
+		const backtesting = new Backtesting({
+			dayInterval: defaultDayInterval(),
+			executor
+		})
+		backtestingRef.current = backtesting
+	}, [backtestingRef, binanceSymbols, nodesCatalog])
 
 	return { state, dispatch, hasRequiredData }
 }

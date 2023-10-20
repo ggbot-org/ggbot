@@ -50,10 +50,9 @@ export const useFlowView = ({
 			const time = truncateTime(now()).to.minute
 			const binance = new BinanceClient(
 				{
-					balances: [],
 					time
 				},
-				// Actually klines cache is not used here.
+				//  TODO Actually klines cache is not used here.
 				new BinanceKlinesCacheMap()
 			)
 			const dflow = new DflowBinanceHost(

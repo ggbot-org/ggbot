@@ -22,7 +22,6 @@ export {
 export type {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
-	BinanceBalance,
 	BinanceExchangeInfo,
 	BinanceKline,
 	BinanceKlineInterval,

@@ -1,5 +1,6 @@
-// Consider removing this if not used, it may be replaced by backtesting workspace binance client
 import {
+	BinanceConnector,
+	BinanceExchange,
 	BinanceKline,
 	BinanceKlineInterval,
 	binanceKlineIntervals,
@@ -8,40 +9,35 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
+	BinanceTickerPrice,
 	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
 	DflowBinanceClient,
 	DflowBinanceClientKlinesParameters,
 	DflowBinanceKlineInterval,
-	dflowBinanceLowerKlineInterval,
-	DflowBinanceSymbolAndInterval
+	dflowBinanceLowerKlineInterval
 } from "@workspace/dflow"
 import { div, mul } from "arithmetica"
 import { Time } from "minimal-time-helpers"
 
-import { binance } from "./exchange"
+export const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
-export class BinanceClient implements DflowBinanceClient {
+export class BacktestingBinanceClient implements DflowBinanceClient {
 	readonly time: Time
 
-	private readonly klinesCache: BinanceKlinesCacheMap
+	private readonly klinesCache: BinanceKlinesCacheMap | undefined
 
-	/* Optional parameters used during backtesting preparation. */
-	private readonly backtestingPreparation:
-		| ({
-				klinesParameters: DflowBinanceClientKlinesParameters
-		  } & DflowBinanceSymbolAndInterval)
-		| undefined
-
-	constructor(
-		{ time }: Pick<BinanceClient, "time">,
-		klinesCache: BinanceClient["klinesCache"],
-		backtestingPreparation?: BinanceClient["backtestingPreparation"]
-	) {
+	constructor(time: Time) {
 		this.time = time
-		this.klinesCache = klinesCache
-		this.backtestingPreparation = backtestingPreparation
+	}
+
+	async exchangeInfo() {
+		return await binance.exchangeInfo()
+	}
+
+	async isBinanceSymbol(arg: unknown) {
+		return await binance.isBinanceSymbol(arg)
 	}
 
 	async klines(
@@ -50,31 +46,28 @@ export class BinanceClient implements DflowBinanceClient {
 		{ limit, endTime }: DflowBinanceClientKlinesParameters
 	) {
 		// Look for cached data.
-		const { backtestingPreparation, klinesCache: cache } = this
+		const { klinesCache: cache } = this
 		const cachedKlines: BinanceKline[] = []
 		let time = getBinanceIntervalTime[interval](endTime).minus(limit)
-		while (time < endTime) {
-			const kline = cache.getKline(symbol, interval, time)
-			if (!kline) break
-			cachedKlines.push(kline)
-			time = getBinanceIntervalTime[interval](time).plus(1)
-		}
+		if (cache)
+			while (time < endTime) {
+				const kline = cache.getKline(symbol, interval, time)
+				if (!kline) break
+				cachedKlines.push(kline)
+				time = getBinanceIntervalTime[interval](time).plus(1)
+			}
 		// If all klines wanted are found in cache, it's done!
 		if (cachedKlines.length === limit) return cachedKlines
 		// If no data was found in cache, fetch it from Binance API.
-		const klinesParameters = backtestingPreparation?.klinesParameters ?? {
+		const klines = await binance.klines(symbol, interval, {
 			endTime,
 			limit
-		}
-		const klines = await binance.klines(symbol, interval, klinesParameters)
+		})
 		// Cache all klines found.
-		for (const kline of klines) cache.setKline(symbol, interval, kline)
+		if (cache)
+			for (const kline of klines) cache.setKline(symbol, interval, kline)
 		// Return only klines asked by limit parameter.
 		return klines.slice(-limit)
-	}
-
-	async exchangeInfo() {
-		return await binance.exchangeInfo()
 	}
 
 	async newOrder(
@@ -129,27 +122,20 @@ export class BinanceClient implements DflowBinanceClient {
 		return Promise.resolve(order)
 	}
 
-	async isBinanceSymbol(arg: unknown) {
-		return await binance.isBinanceSymbol(arg)
-	}
-
-	async tickerPrice(symbol: string) {
-		const { backtestingPreparation, klinesCache: cache, time } = this
+	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
+		const { klinesCache: cache, time } = this
 		// Look for cached data.
-		for (const interval of binanceKlineIntervals) {
-			const kline = cache.getKline(symbol, interval, time)
-			if (kline)
-				return {
-					symbol,
-					// Price is kline's open.
-					price: kline[1]
-				}
-		}
-		let interval: DflowBinanceKlineInterval = dflowBinanceLowerKlineInterval
-		if (backtestingPreparation) {
-			if (backtestingPreparation.symbol === symbol)
-				interval = backtestingPreparation.interval
-		}
+		if (cache)
+			for (const interval of binanceKlineIntervals) {
+				const kline = cache.getKline(symbol, interval, time)
+				if (kline)
+					return {
+						symbol,
+						// Price is kline's open.
+						price: kline[1]
+					}
+			}
+		const interval: DflowBinanceKlineInterval = dflowBinanceLowerKlineInterval
 		// If no data was found in cache, fetch it from Binance API.
 		const klines = await this.klines(symbol, interval, {
 			limit: 1,

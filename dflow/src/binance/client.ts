@@ -1,5 +1,4 @@
 import {
-	BinanceAccountInformation,
 	BinanceExchangeInfo,
 	BinanceKline,
 	BinanceKlineInterval,
@@ -34,7 +33,6 @@ interface DflowBinanceClientPublic {
 
 /** Binance Private API used by dflow binance nodes. */
 interface DflowBinanceClientPrivate {
-	account(): Promise<BinanceAccountInformation>
 	newOrder(
 		symbol: string,
 		side: BinanceOrderSide,

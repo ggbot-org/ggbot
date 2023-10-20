@@ -20,6 +20,7 @@ export {
 	isDflowBinanceSymbolInfo
 } from "./binance/symbols.js"
 export type { DflowCommonContext } from "./common/context.js"
+export type { DflowExecutor } from "./common/executor.js"
 export { isDflowExecutorView } from "./common/executor.js"
 export { nodeTextToViewType } from "./common/nodeResolution.js"
 export { parsePercentage } from "./common/nodeTextParser.js"

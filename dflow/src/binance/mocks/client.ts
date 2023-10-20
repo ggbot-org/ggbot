@@ -7,15 +7,10 @@ import {
 } from "@workspace/binance"
 
 import { DflowBinanceClient } from "../client.js"
-import { accountInfo } from "./accountInfo.js"
 import { exchangeInfo } from "./exchangeInfo.js"
 import { kline } from "./klines.js"
 
 export class DflowBinanceClientMock implements DflowBinanceClient {
-	async account() {
-		return Promise.resolve(accountInfo)
-	}
-
 	async tickerPrice(symbol: string) {
 		return Promise.resolve({ symbol, price: "0" })
 	}
