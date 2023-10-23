@@ -11,9 +11,11 @@ import {
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnimplementedStrategyKind
+	ErrorUnimplementedStrategyKind,
+	isSerializableObject,
+	SerializableData,
+	SerializableObject
 } from "@workspace/models"
-import { Dflow, DflowObject } from "dflow"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 export type ApiActionInput<ApiActionType extends string> = {
@@ -28,19 +30,15 @@ export const isApiActionInput = <ApiActionType extends string>(
 		isLiteralType<ApiActionType>(actionTypes)(type)
 	)
 
-// TODO ho tolto Request, togli anche Response
-// solo Input e Output, la Request e la Response fanno parte del trasporto http
-export type ApiActionResponseError = {
+export type ApiActionOutputError = {
 	error: ApiActionServerSideError
 }
 
-export type ApiActionResponseData = {
-	data: unknown
+export type ApiActionOutputData = {
+	data: SerializableData
 }
 
-export type ApiActionResponseOutput =
-	| ApiActionResponseData
-	| ApiActionResponseError
+export type ApiActionOutput = ApiActionOutputData | ApiActionOutputError
 
 // Server errors
 // ////////////
@@ -61,14 +59,14 @@ const isApiActionServerSideErrorName =
 
 export type ApiActionServerSideError = {
 	name: ApiActionServerSideErrorName
-	info?: DflowObject
+	info?: SerializableObject
 }
 
 export const isApiActionServerSideError =
 	objectTypeGuard<ApiActionServerSideError>(
 		({ name, info }) =>
 			isApiActionServerSideErrorName(name) &&
-			(info === undefined ? true : Dflow.isObject(info))
+			(info === undefined ? true : isSerializableObject(info))
 	)
 
 // Client errors

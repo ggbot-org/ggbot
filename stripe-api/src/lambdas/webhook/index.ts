@@ -20,7 +20,7 @@ type ResponseData = {
 }
 
 // ts-prune-ignore-next
-export const handler: APIGatewayProxyHandler = async (event) => {
+export const handler: APIGatewayProxyHandler = (event) => {
 	try {
 		switch (event.httpMethod) {
 			case "POST": {

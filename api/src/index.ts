@@ -6,9 +6,9 @@ export type {
 export { adminApiActionTypes } from "./adminApi.js"
 export type {
 	ApiActionClientSideError,
-	ApiActionResponseData,
-	ApiActionResponseError,
-	ApiActionResponseOutput,
+	ApiActionOutput,
+	ApiActionOutputData,
+	ApiActionOutputError,
 	ApiActionServerSideError
 } from "./apiAction.js"
 export { isApiActionInput } from "./apiAction.js"
@@ -29,7 +29,8 @@ export type {
 	PublicApiService
 } from "./publicApi.js"
 export { publicApiActionTypes } from "./publicApi.js"
-export type { UserApiActionType,
+export type {
+	UserApiActionType,
 	UserApiDataProvider,
 	UserApiService
 } from "./userApi.js"

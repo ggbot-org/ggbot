@@ -124,7 +124,8 @@ export {
 	schedulingsAreInactive,
 	schedulingStatuses
 } from "./scheduling.js"
-export type { SerializableData } from "./serializable.js"
+export type { SerializableData, SerializableObject } from "./serializable.js"
+export { isSerializableObject } from "./serializable.js"
 export type { Service } from "./service.js"
 export type {
 	CopyStrategy,

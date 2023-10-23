@@ -20,7 +20,6 @@
   "dependencies": {
     "@workspace/http": "0.0.0",
     "@workspace/models": "0.0.0",
-    "dflow": "0.42.0",
     "minimal-assertion-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.2.0"
   },

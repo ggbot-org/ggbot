@@ -26,6 +26,7 @@ graph LR
     workspace/aws-iam --- workspace/aws-types
     workspace/aws-s3 --- workspace/aws-types
     workspace/aws-ses --- workspace/aws-types
+    workspace/backtesting --- workspace/dflow
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
     workspace/binance-proxy --- workspace/aws-ec2
@@ -65,6 +66,5 @@ graph LR
     workspace/user-api --- workspace/database
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/backtesting
-    workspace/webapp --- workspace/dflow
     workspace/webapp --- workspace/locators
 ```

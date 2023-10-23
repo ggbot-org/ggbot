@@ -1,4 +1,4 @@
-import { ApiActionResponseData, ApiActionResponseError } from "@workspace/api"
+import { ApiActionOutputData, ApiActionOutputError } from "@workspace/api"
 import { ENV } from "@workspace/env"
 import {
 	__200__OK__,
@@ -32,7 +32,7 @@ export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({
 })
 
 export const BAD_REQUEST = (
-	error?: ApiActionResponseError["error"]
+	error?: ApiActionOutputError["error"]
 ): APIGatewayProxyResult => ({
 	...(error ? responseBody({ error }) : { body: "" }),
 	headers: commonHeaders,
@@ -55,7 +55,7 @@ export const METHOD_NOT_ALLOWED = {
 }
 
 export const OK = (
-	data: ApiActionResponseData["data"]
+	data: ApiActionOutputData["data"]
 ): APIGatewayProxyResult => ({
 	...responseBody({ data }),
 	headers: {
