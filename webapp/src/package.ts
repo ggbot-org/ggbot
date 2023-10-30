@@ -15,13 +15,13 @@ const srcDir = join(packageDir, "src")
 
 export const typesDir = join(srcDir, "types")
 
-const routingDirname = "routing"
-
-const srcRoutingDir = join(srcDir, routingDirname)
-
+const srcRoutingDir = join(srcDir, "routing")
 const srcPublicRoutingDir = join(srcRoutingDir, "public")
 
-export const webappConfig: Record<
+const workersDirname = "workers"
+const srcWorkersDir = join(srcDir, workersDirname)
+
+export const webappEcmaScriptsConfig: Record<
 	string,
 	{
 		entryPoint: string
@@ -47,5 +47,9 @@ export const webappConfig: Record<
 	design: {
 		entryPoint: join(srcRoutingDir, designDirname, "Router.tsx"),
 		jsPath: [designDirname, "app.js"]
+	},
+	backtesting: {
+		entryPoint: join(srcWorkersDir, "backtesting.ts"),
+		jsPath: [workersDirname, "backtesting.js"]
 	}
 }

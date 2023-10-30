@@ -1,23 +1,47 @@
-import { Item, newId } from "@workspace/models"
+import {
+	Frequency,
+	StrategyMemory,
+	StrategyParameters,
+	StrategyScheduling
+} from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
-export class BacktestingSession implements BacktestingStatusController {
+export class BacktestingSession
+	implements
+		BacktestingStatusController,
+		Pick<BacktestingStrategy, "strategyId">,
+		Required<Pick<StrategyScheduling, "frequency" | "params">>
+{
 	readonly dayInterval: DayInterval
-	readonly id: Item["id"]
 	status: BacktestingStatus
 	strategy: BacktestingStrategy
 
+	readonly frequency: Frequency
+	params: StrategyParameters
+	memory: StrategyMemory
+
 	constructor({
 		dayInterval,
+		frequency,
+		params,
 		strategy
-	}: Pick<BacktestingSession, "dayInterval" | "strategy">) {
+	}: Pick<
+		BacktestingSession,
+		"dayInterval" | "frequency" | "params" | "strategy"
+	>) {
 		this.dayInterval = dayInterval
 		this.status = "ready"
 		this.strategy = strategy
-		this.id = newId()
+		this.frequency = frequency
+		this.params = params
+		this.memory = {}
+	}
+
+	get strategyId() {
+		return this.strategy.strategyId
 	}
 
 	pause() {

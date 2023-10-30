@@ -1,9 +1,12 @@
 import { classNames } from "_/classNames"
 import { Flex } from "_/components/library"
-import { DflowData } from "dflow"
+import { StrategyMemoryValue } from "@workspace/models"
 import { FC } from "react"
 
-export type MemoryItemProps = { name: string; value: DflowData | undefined }
+export type MemoryItemProps = {
+	name: string
+	value: StrategyMemoryValue | undefined
+}
 
 export const MemoryItem: FC<MemoryItemProps> = ({ name, value }) => {
 	const formattedValue =
