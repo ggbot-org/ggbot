@@ -3,7 +3,6 @@ import {
 	BinanceConnector,
 	BinanceExchange,
 	BinanceExchangeInfo,
-	BinanceExchangeInfoCacheProvider,
 	BinanceKline,
 	BinanceKlineInterval,
 	BinanceKlineOptionalParameters,
@@ -17,20 +16,22 @@ import { BinanceClient } from "@workspace/binance-client"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
 
-/** A Binance client that uses a proxy for private requests. */
+/**
+ * A Binance client that uses a proxy for private requests.
+ *
+ * @example
+ *
+ * ```ts
+ * const binance = new Binance({ apiKey, apiSecret })
+ * binance.publicClient.exchangeInfoCache = exchangeInfoCache
+ * ```
+ */
 export class Binance implements DflowBinanceClient {
 	readonly privateClient: BinanceClient
 	readonly publicClient: BinanceExchange
 
-	constructor(
-		apiKey: string,
-		apiSecret: string,
-		exchangeInfoCache?: BinanceExchangeInfoCacheProvider
-	) {
-		this.publicClient = new BinanceExchange(
-			BinanceConnector.defaultBaseUrl,
-			exchangeInfoCache
-		)
+	constructor(apiKey: string, apiSecret: string) {
+		this.publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
 		this.privateClient = new BinanceClient(
 			apiKey,

@@ -35,11 +35,12 @@ export type BacktestingMessageIn =
 			type: "SET_DAY_INTERVAL"
 			dayInterval: DayInterval
 	  }
+
+export type BacktestingMessageOut =
+	| {
+			type: "STATUS_CHANGED"
+			status: BacktestingStatus
+	  }
 	| (BacktestingSessionUpdatedResultData & {
 			type: "UPDATED_RESULT"
 	  })
-
-export type BacktestingMessageOut = {
-	type: "STATUS_CHANGED"
-	status: BacktestingStatus
-}

@@ -33,6 +33,6 @@ export type DflowCommonContext = {
 	 * there is a change (e.g. update or delete) in memory.
 	 */
 	memoryChanged?: undefined | boolean
-	/** Time related nodes read the `time` value. */
+	/** Used by time nodes: `timeMinus`, `timePlus`, `today`, etc. */
 	time: Time
 }

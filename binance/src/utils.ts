@@ -1,7 +1,9 @@
 import { BinanceBalance } from "./types.js"
 
 /**
- * An empty balance looks like
+ * Check if a balance is not empty.
+ *
+ * An empty balance looks like this.
  *
  * @example
  *

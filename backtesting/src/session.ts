@@ -3,12 +3,14 @@ import {
 	Frequency,
 	frequencyIntervalDuration,
 	Order,
-	StrategyMemory} from "@workspace/models"
+	StrategyMemory
+} from "@workspace/models"
 import {
 	dateToTime,
 	DayInterval,
 	dayIntervalToDate,
-	Time} from "minimal-time-helpers"
+	Time
+} from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -37,6 +39,11 @@ export class BacktestingSession implements BacktestingStatusController {
 		if (this.times.length === 0) return false
 		if (!this.strategy) return false
 		return true
+	}
+
+	get completionPercentage(): number {
+		if (this.stepIndex === 0) return 0
+		return Math.floor(this.times.length / this.stepIndex)
 	}
 
 	get nextTime() {
