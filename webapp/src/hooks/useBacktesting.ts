@@ -6,6 +6,7 @@ import { logging } from "_/logging"
 import {
 	BacktestingMessageIn,
 	BacktestingMessageOut,
+	BacktestingSession,
 	BacktestingStatus
 } from "@workspace/backtesting"
 import { DflowCommonContext } from "@workspace/dflow"
@@ -14,7 +15,8 @@ import {
 	everyOneHour,
 	Frequency,
 	frequencyIntervalDuration,
-	Order} from "@workspace/models"
+	Order
+} from "@workspace/models"
 import { FlowViewSerializableGraph } from "flow-view"
 import {
 	dateToTimestamp,
@@ -75,13 +77,10 @@ type Action =
 	| {
 			type: "STOP"
 	  }
-
-const isReadOnlyState = (
-	state: Pick<State, "isRunning" | "isPaused" | "isPreparing">
-) => {
-	if (state.isRunning || state.isPaused || state.isPreparing) return true
-	return false
-}
+	| {
+			type: "STATUS_CHANGED"
+			data: Pick<BacktestingSession, "status">
+	  }
 
 const getMaxDay: () => State["maxDay"] = yesterday
 
@@ -111,7 +110,7 @@ const getInitialState = ({
 
 	return {
 		balanceHistory: [],
-		status: "ready",
+		status: "initial",
 		currentTimestamp: undefined,
 		dayInterval,
 		frequency,
@@ -127,7 +126,7 @@ const getInitialState = ({
 	}
 }
 
-const backtesting = new SharedWorker("/workers/backtesting.js")
+const backtesting = new Worker("/workers/backtesting.js")
 
 export const useBacktesting = (
 	flowViewGraph: FlowViewSerializableGraph | undefined
@@ -149,96 +148,40 @@ export const useBacktesting = (
 		(state: State, action: Action) => {
 			info(action.type)
 
-			if (action.type === "DONE") {
-				toast.info(formatMessage({ id: "Backtesting.done" }))
+			if (["PAUSE", "RESUME", "START", "STOP"].includes(action.type)) {
+				backtesting.postMessage(action)
 				return state
 			}
 
-			switch (action.type) {
-				case "PAUSE": {
-					const message: BacktestingMessageIn = {
-						type: "PAUSE"
-					}
-					backtesting.port.postMessage(message)
-					return {
-						...state,
-						isPaused: true,
-						isRunning: false
-					}
+			if (action.type === "SET_DAY_INTERVAL") {
+				const message: BacktestingMessageIn = {
+					type: "SET_DAY_INTERVAL",
+					...action.data
 				}
-
-				case "RESUME": {
-					return state.isPaused
-						? {
-								...state,
-								isPaused: false,
-								isRunning: true
-						  }
-						: state
-				}
-
-				case "SET_FREQUENCY": {
-					if (isReadOnlyState(state))
-						return { ...state, isReadOnly: true }
-					const { frequency } = action.data
-					return getInitialState({
-						frequency,
-						dayInterval: state.dayInterval
-					})
-				}
-
-				case "SET_DAY_INTERVAL": {
-					if (isReadOnlyState(state))
-						return { ...state, isReadOnly: true }
-					const { dayInterval } = action.data
-					return getInitialState({
-						frequency: state.frequency,
-						dayInterval
-					})
-				}
-
-				// TODO remove this?
-				case "PREPARE": {
-					const stepIndex = 0
-					return {
-						...state,
-						balanceHistory: [],
-						currentTimestamp: state.timestamps[stepIndex],
-						isPaused: false,
-						isPreparing: true,
-						isRunning: false,
-						memory: {},
-						orders: [],
-						stepIndex
-					}
-				}
-
-				case "START": {
-					const message: BacktestingMessageIn = {
-						type: "START"
-					}
-					backtesting.port.postMessage(message)
-					return {
-						...state,
-						isPreparing: false,
-						isRunning: true
-					}
-				}
-
-				case "STOP": {
-					const message: BacktestingMessageIn = {
-						type: "STOP"
-					}
-					backtesting.port.postMessage(message)
-					return getInitialState({
-						frequency: state.frequency,
-						dayInterval: state.dayInterval
-					})
-				}
-
-				default:
-					return state
+				backtesting.postMessage(message)
+				return state
 			}
+
+			if (action.type === "SET_FREQUENCY") {
+				const message: BacktestingMessageIn = {
+					type: "SET_FREQUENCY",
+					...action.data
+				}
+				backtesting.postMessage(message)
+				return state
+			}
+
+			if (action.type === "STATUS_CHANGED") {
+				const { status } = action.data
+				if (status === "done")
+					toast.info(formatMessage({ id: "Backtesting.done" }))
+				return {
+					...state,
+					status
+				}
+			}
+
+			return state
 		},
 		getInitialState({
 			frequency: defaultFrequency(),
@@ -247,13 +190,19 @@ export const useBacktesting = (
 	)
 
 	useEffect(() => {
-		backtesting.port.onmessage = (
+		backtesting.onmessage = (
 			event: MessageEvent<BacktestingMessageOut>
 		) => {
-			const messageType = event.data.type
-			if (messageType === "DONE") {
-				dispatch({ type: "DONE" })
-			}
+			const message = event.data
+			if (message.type === "STATUS_CHANGED")
+				dispatch({
+					type: "STATUS_CHANGED",
+					data: { status: message.status }
+				})
+		}
+
+		return () => {
+			backtesting.terminate()
 		}
 	}, [dispatch])
 

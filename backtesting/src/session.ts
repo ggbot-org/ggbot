@@ -1,62 +1,76 @@
 import {
+	BalanceChangeEvent,
 	Frequency,
+	Order,
 	StrategyMemory,
-	StrategyParameters,
-	StrategyScheduling
+	StrategyParameters
 } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
-export class BacktestingSession
-	implements
-		BacktestingStatusController,
-		Pick<BacktestingStrategy, "strategyId">,
-		Required<Pick<StrategyScheduling, "frequency" | "params">>
-{
-	readonly dayInterval: DayInterval
-	status: BacktestingStatus
-	strategy: BacktestingStrategy
-
-	readonly frequency: Frequency
-	params: StrategyParameters
+export class BacktestingSession implements BacktestingStatusController {
+	balanceHistory: BalanceChangeEvent[]
+	dayInterval: DayInterval | undefined
+	frequency: Frequency | undefined
 	memory: StrategyMemory
+	orders: Order[]
+	params: StrategyParameters
+	status: BacktestingStatus
+	strategy: BacktestingStrategy | undefined
 
-	constructor({
-		dayInterval,
-		frequency,
-		params,
-		strategy
-	}: Pick<
-		BacktestingSession,
-		"dayInterval" | "frequency" | "params" | "strategy"
-	>) {
-		this.dayInterval = dayInterval
-		this.status = "ready"
-		this.strategy = strategy
-		this.frequency = frequency
-		this.params = params
+	constructor() {
+		this.balanceHistory = []
 		this.memory = {}
+		this.orders = []
+		this.params = {}
+		this.status = "initial"
 	}
 
-	get strategyId() {
-		return this.strategy.strategyId
+	get canRun(): boolean {
+		if (!this.dayInterval) return false
+		if (!this.frequency) return false
+		if (!this.strategy) return false
+		return true
 	}
 
 	pause() {
-		if (this.status === "running") this.status = "paused"
+		if (this.status === "running") {
+			this.status = "paused"
+			return true
+		}
+		return false
 	}
 
 	resume() {
-		if (this.status === "paused") this.status = "running"
+		if (!this.canRun) return false
+		if (this.status === "paused") {
+			this.status = "running"
+			return true
+		}
+		return false
 	}
 
 	start() {
-		if (this.status === "ready") this.status = "running"
+		if (!this.canRun) return false
+		// Can start only if status is "initial" or "done".
+		// In case status is "done" and input parameters are unchanged
+		// it will run again and (hopefully :) produce same results.
+		if (this.status !== "initial" && this.status !== "done") return false
+		this.status = "running"
+		// Reset before run.
+		this.balanceHistory = []
+		this.memory = {}
+		this.orders = []
+		return true
 	}
 
 	stop() {
-		if (this.status === "running") this.status = "ready"
+		if (this.status === "running") {
+			this.status = "initial"
+			return true
+		}
+		return false
 	}
 }

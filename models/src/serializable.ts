@@ -9,12 +9,11 @@ export type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
 
 export const isSerializablePrimitive = (
 	arg: unknown
-): arg is SerializablePrimitive => (
-		isFiniteNumber(arg) ||
-		isFiniteString(arg) ||
-		typeof arg === "boolean" ||
-		arg === null
-	)
+): arg is SerializablePrimitive =>
+	isFiniteNumber(arg) ||
+	isFiniteString(arg) ||
+	typeof arg === "boolean" ||
+	arg === null
 
 export type SerializableArray = SerializableData[] | readonly SerializableData[]
 
