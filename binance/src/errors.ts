@@ -32,6 +32,10 @@ export class ErrorBinanceHTTP extends Error {
 		return `Server responded with status=${status} statusText=${statusText} on endpoint=${endpoint}`
 	}
 
+	toJSON() {
+		return this.toValue()
+	}
+
 	toValue() {
 		return {
 			name: ErrorBinanceHTTP.errorName,

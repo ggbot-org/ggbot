@@ -1,7 +1,18 @@
 import { Frequency } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 
+import { BacktestingSession } from "./session.js"
 import { BacktestingStatus } from "./status.js"
+
+type BacktestingSessionStartData = Pick<
+	BacktestingSession,
+	"dayInterval" | "frequency" | "strategy"
+>
+
+type BacktestingSessionUpdatedResultData = Pick<
+	BacktestingSession,
+	"balanceHistory" | "memory" | "orders"
+>
 
 export type BacktestingMessageIn =
 	| {
@@ -10,9 +21,9 @@ export type BacktestingMessageIn =
 	| {
 			type: "RESUME"
 	  }
-	| {
+	| (BacktestingSessionStartData & {
 			type: "START"
-	  }
+	  })
 	| {
 			type: "STOP"
 	  }
@@ -24,6 +35,9 @@ export type BacktestingMessageIn =
 			type: "SET_DAY_INTERVAL"
 			dayInterval: DayInterval
 	  }
+	| (BacktestingSessionUpdatedResultData & {
+			type: "UPDATED_RESULT"
+	  })
 
 export type BacktestingMessageOut = {
 	type: "STATUS_CHANGED"

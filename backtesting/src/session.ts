@@ -1,11 +1,14 @@
 import {
 	BalanceChangeEvent,
 	Frequency,
+	frequencyIntervalDuration,
 	Order,
-	StrategyMemory,
-	StrategyParameters
-} from "@workspace/models"
-import { DayInterval } from "minimal-time-helpers"
+	StrategyMemory} from "@workspace/models"
+import {
+	dateToTime,
+	DayInterval,
+	dayIntervalToDate,
+	Time} from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -16,23 +19,31 @@ export class BacktestingSession implements BacktestingStatusController {
 	frequency: Frequency | undefined
 	memory: StrategyMemory
 	orders: Order[]
-	params: StrategyParameters
 	status: BacktestingStatus
+	stepIndex: number
 	strategy: BacktestingStrategy | undefined
+	times: Time[]
 
 	constructor() {
 		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
-		this.params = {}
 		this.status = "initial"
+		this.stepIndex = 0
+		this.times = []
 	}
 
 	get canRun(): boolean {
-		if (!this.dayInterval) return false
-		if (!this.frequency) return false
+		if (this.times.length === 0) return false
 		if (!this.strategy) return false
 		return true
+	}
+
+	get nextTime() {
+		const time = this.times[this.stepIndex]
+		this.stepIndex++
+		if (this.times.length === this.stepIndex) this.status === "done"
+		return time
 	}
 
 	pause() {
@@ -63,6 +74,7 @@ export class BacktestingSession implements BacktestingStatusController {
 		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
+		this.stepIndex = 0
 		return true
 	}
 
@@ -72,5 +84,20 @@ export class BacktestingSession implements BacktestingStatusController {
 			return true
 		}
 		return false
+	}
+
+	computeTimes() {
+		const { dayInterval, frequency } = this
+		if (!dayInterval || !frequency) return
+		this.times = []
+		const { start, end } = dayIntervalToDate(dayInterval)
+		const interval = frequencyIntervalDuration(frequency)
+		let date = start
+		let time
+		while (date < end) {
+			time = dateToTime(date)
+			this.times.push(time)
+			date = new Date(time + interval)
+		}
 	}
 }
