@@ -1,12 +1,16 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
 import { DflowCommonContext } from "../../context.js"
 import { getDflowExecutionOutputData } from "../../executor.js"
 import { DflowExecutorMock } from "../../mocks/executor.js"
 import {
+	ComputeStopPriceArg,
+	computeStopPriceDown,
+	computeStopPriceUp,
 	trailingStop,
 	TrailingStopDown,
 	TrailingStopInput,
@@ -407,5 +411,27 @@ describe("Trailing Stop", () => {
 		testData.forEach(({ input, output }) => {
 			assert.deepEqual(trailingStop(input), output)
 		})
+	})
+})
+
+describe("computeStopPriceDown", () => {
+	test("does not increase number of decimals", () => {
+		assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
+			{
+				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+				output: 12222.2221
+			}
+		])
+	})
+})
+
+describe("computeStopPriceUp", () => {
+	test("does not increase number of decimals", () => {
+		assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
+			{
+				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+				output: 12469.1357
+			}
+		])
 	})
 })

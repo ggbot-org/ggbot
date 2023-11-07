@@ -1,3 +1,4 @@
+import { add, decimalToNumber,mul, sub } from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../../context.js"
@@ -26,22 +27,25 @@ export type TrailingStopOutput = Pick<TrailingStopInput, "stopPrice"> & {
 	exitTrailing: boolean
 }
 
+export type ComputeStopPriceArg = Pick<
+	TrailingStopInput,
+	"marketPrice" | "percentageDelta"
+>
 type ComputeStopPrice = (
-	arg: Pick<TrailingStopInput, "marketPrice" | "percentageDelta">
+	arg: ComputeStopPriceArg
 ) => TrailingStopInput["stopPrice"]
-const computeStopPriceUp: ComputeStopPrice = ({
+export const computeStopPriceDown: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}) => marketPrice - marketPrice * percentageDelta
-// TODO con  queste operazioni genera troppi decimali, usa il package arithmetica
-const computeStopPriceDown: ComputeStopPrice = ({
+}) => decimalToNumber(sub(marketPrice, mul(marketPrice, percentageDelta)))
+export const computeStopPriceUp: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}) => marketPrice + marketPrice * percentageDelta
+}) => decimalToNumber(add(marketPrice, mul(marketPrice, percentageDelta)))
 
 /**
- * Prevent percentageDelta from be 0 or negative or greater than 1, otherwise
- * algorithm does not make sense.
+ * Prevent percentageDelta from be zero or negative or one or greater than one,
+ * otherwise algorithm does not make sense.
  */
 const isValidPercentageDelta = (percentageDelta: number) => {
 	if (percentageDelta <= 0) return false
