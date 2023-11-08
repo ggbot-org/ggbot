@@ -25,6 +25,8 @@ type ExecuteTrailingStopInput = Pick<
 > &
 	Pick<DflowCommonContext, "memory"> & {
 		memoryLabel: string
+	} & {
+		enterTrailing: unknown
 	}
 type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
 	Pick<DflowCommonContext, "memory" | "memoryChanged">

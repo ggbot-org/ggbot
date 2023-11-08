@@ -1,4 +1,4 @@
-import { add, decimalToNumber,mul, sub } from "@workspace/arithmetic"
+import { add, decimalToNumber, mul, sub } from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../../context.js"
@@ -6,6 +6,7 @@ import { DflowCommonContext as Context } from "../../context.js"
 const { input, output } = DflowNode
 
 const inputs = [
+	input([], { name: "enterTrailing", optional: true }),
 	input("string", { name: "memoryLabel" }),
 	input("number", { name: "marketPrice" }),
 	input("number", { name: "percentageDelta" })
@@ -101,20 +102,22 @@ export class TrailingStopUp extends DflowNode {
 	static outputs = outputs
 	async run() {
 		const direction: TrailingStopInputDirection = "UP"
-		const memoryLabel = this.input(0).data as string
-		const marketPrice = this.input(1).data as number
-		const percentageDelta = this.input(2).data as number
+		const enterTrailing = this.input(0).data
+		const memoryLabel = this.input(1).data as string
+		const marketPrice = this.input(2).data as number
+		const percentageDelta = this.input(3).data as number
 		if (!isValidPercentageDelta(percentageDelta)) return
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 		const stopPriceInMemory = (this.host.context as Context).memory[
 			stopPriceMemoryKey
 		]
-		const isFirstIteration = typeof stopPriceInMemory !== "number"
-		const stopPrice = isFirstIteration
-			? computeStopPriceUp({ marketPrice, percentageDelta })
-			: stopPriceInMemory
-		if (isFirstIteration) {
+		let stopPrice = stopPriceInMemory
+		if (stopPrice === undefined) {
+			if (!enterTrailing) return
+			stopPrice = computeStopPriceUp({ marketPrice, percentageDelta })
+		}
+		if (enterTrailing) {
 			// Save entryPrice and stopPrice.
 			(this.host.context as Context).memoryChanged = true
 			;(this.host.context as Context).memory[entryPriceMemoryKey] =
@@ -151,20 +154,22 @@ export class TrailingStopDown extends DflowNode {
 	static outputs = outputs
 	async run() {
 		const direction: TrailingStopInputDirection = "DOWN"
-		const memoryLabel = this.input(0).data as string
-		const marketPrice = this.input(1).data as number
-		const percentageDelta = this.input(2).data as number
+		const enterTrailing = this.input(0).data
+		const memoryLabel = this.input(1).data as string
+		const marketPrice = this.input(2).data as number
+		const percentageDelta = this.input(3).data as number
 		if (!isValidPercentageDelta(percentageDelta)) return
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 		const stopPriceInMemory = (this.host.context as Context).memory[
 			stopPriceMemoryKey
 		]
-		const isFirstIteration = typeof stopPriceInMemory !== "number"
-		const stopPrice = isFirstIteration
-			? computeStopPriceDown({ marketPrice, percentageDelta })
-			: stopPriceInMemory
-		if (isFirstIteration) {
+		let stopPrice = stopPriceInMemory
+		if (stopPrice === undefined) {
+			if (!enterTrailing) return
+			stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
+		}
+		if (enterTrailing) {
 			// Save entryPrice and stopPrice.
 			(this.host.context as Context).memoryChanged = true
 			;(this.host.context as Context).memory[entryPriceMemoryKey] =
