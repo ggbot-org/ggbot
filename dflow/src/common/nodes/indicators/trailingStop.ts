@@ -117,6 +117,7 @@ export class TrailingStopUp extends DflowNode {
 			if (!enterTrailing) return
 			stopPrice = computeStopPriceUp({ marketPrice, percentageDelta })
 		}
+		if (typeof stopPrice !== "number") return
 		if (enterTrailing) {
 			// Save entryPrice and stopPrice.
 			(this.host.context as Context).memoryChanged = true
@@ -169,6 +170,7 @@ export class TrailingStopDown extends DflowNode {
 			if (!enterTrailing) return
 			stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
 		}
+		if (typeof stopPrice !== "number") return
 		if (enterTrailing) {
 			// Save entryPrice and stopPrice.
 			(this.host.context as Context).memoryChanged = true

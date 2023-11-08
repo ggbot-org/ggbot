@@ -19,15 +19,11 @@ import {
 	TrailingStopUp
 } from "./trailingStop.js"
 
-type ExecuteTrailingStopInput = Pick<
-	TrailingStopInput,
-	"marketPrice" | "percentageDelta"
-> &
-	Pick<DflowCommonContext, "memory"> & {
-		memoryLabel: string
-	} & {
-		enterTrailing: unknown
-	}
+type ExecuteTrailingStopInput = {
+	enterTrailing?: unknown
+	memoryLabel: string
+} & Pick<TrailingStopInput, "marketPrice" | "percentageDelta"> &
+	Pick<DflowCommonContext, "memory">
 type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
 	Pick<DflowCommonContext, "memory" | "memoryChanged">
 
@@ -45,6 +41,7 @@ const memoryChangedAssertionError = "check memoryChanged"
 const executeTrailingStop = async (
 	nodeKind: typeof TrailingStopUp.kind | typeof TrailingStopDown.kind,
 	{
+		enterTrailing,
 		memoryLabel,
 		marketPrice,
 		percentageDelta,
@@ -56,37 +53,48 @@ const executeTrailingStop = async (
 		view: {
 			nodes: [
 				{
+					id: "enterTrailing",
+					text: JSON.stringify(enterTrailing),
+					outs: [{ id: "o1" }]
+				},
+				{
 					id: "memoryLabel",
 					text: JSON.stringify(memoryLabel),
-					outs: [{ id: "o1" }]
+					outs: [{ id: "o2" }]
 				},
 				{
 					id: "marketPrice",
 					text: JSON.stringify(marketPrice),
-					outs: [{ id: "o2" }]
+					outs: [{ id: "o3" }]
 				},
 				{
 					id: "percentageDelta",
 					text: JSON.stringify(percentageDelta),
-					outs: [{ id: "o3" }]
+					outs: [{ id: "o4" }]
 				},
 				{
 					id: nodeId,
 					text: nodeKind,
-					ins: [{ id: "i1" }, { id: "i2" }, { id: "i3" }]
+					ins: [
+						{ id: "i1" },
+						{ id: "i2" },
+						{ id: "i3" },
+						{ id: "i4" }
+					]
 				}
 			],
 			edges: [
-				{ id: "e1", from: ["memoryLabel", "o1"], to: [nodeId, "i1"] },
-				{
-					id: "e2",
-					from: ["marketPrice", "o2"],
-					to: [nodeId, "i2"]
-				},
+				{ id: "e1", from: ["enterTrailing", "o1"], to: [nodeId, "i1"] },
+				{ id: "e2", from: ["memoryLabel", "o2"], to: [nodeId, "i2"] },
 				{
 					id: "e3",
-					from: ["percentageDelta", "o3"],
+					from: ["marketPrice", "o3"],
 					to: [nodeId, "i3"]
+				},
+				{
+					id: "e4",
+					from: ["percentageDelta", "o4"],
+					to: [nodeId, "i4"]
 				}
 			]
 		}
@@ -121,6 +129,7 @@ describe("Trailing Stop", () => {
 			// If percentageDelta is not valid, algorithm does not run.
 			...invalidPercentageDeltaValues.map((percentageDelta) => ({
 				input: {
+					enterTrailing: true,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta,
@@ -133,9 +142,11 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// If there no memory on input, it gets initialized on first run.
+			// If `enterTrailing` is true, it gets initialized.
 			{
 				input: {
+					// TODO map with truthy values: for example an order
+					enterTrailing: true,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -151,6 +162,21 @@ describe("Trailing Stop", () => {
 				}
 			},
 
+			// If `enterTrailing` is not true, it does not get initialized.
+			{
+				input: {
+					// TODO map with falsy values: false, undefined, etc
+					enterTrailing: undefined,
+					memoryLabel,
+					marketPrice: 100,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {}
+				}
+			},
 			// stopPrice is read from memory as input and written as output
 			{
 				input: {
