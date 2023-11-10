@@ -34,6 +34,9 @@ type TrailingStopTestData = {
 
 const invalidPercentageDeltaValues = [0, 1]
 
+const falsyValues = [false, undefined]
+const truthyValues = [true, "ok", 1, { order: "BTC" }]
+
 const exitTrailingAssertionError = "check exitTrailing"
 const memoryAssertionError = "check memory"
 const memoryChangedAssertionError = "check memoryChanged"
@@ -142,11 +145,10 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// If `enterTrailing` is true, it gets initialized.
-			{
+			// If `enterTrailing` is truthy, it gets initialized.
+			...truthyValues.map((enterTrailing) => ({
 				input: {
-					// TODO map with truthy values: for example an order
-					enterTrailing: true,
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -160,13 +162,12 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: true
 				}
-			},
+			})),
 
-			// If `enterTrailing` is not true, it does not get initialized.
-			{
+			// If `enterTrailing` is falsy, it does not get initialized.
+			...falsyValues.map((enterTrailing) => ({
 				input: {
-					// TODO map with falsy values: false, undefined, etc
-					enterTrailing: undefined,
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -177,7 +178,7 @@ describe("Trailing Stop", () => {
 					memory: {},
 					memoryChanged: false
 				}
-			},
+			})),
 
 			// stopPrice is read from memory as input and written as output
 			{
@@ -278,11 +279,10 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// If `enterTrailing` is true, it gets initialized.
-			{
+			// If `enterTrailing` is truthy, it gets initialized.
+			...truthyValues.map((enterTrailing) => ({
 				input: {
-					// TODO map with truthy values: for example an order
-					enterTrailing: true,
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -296,13 +296,12 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: true
 				}
-			},
+			})),
 
-			// If `enterTrailing` is not true, it does not get initialized.
-			{
+			// If `enterTrailing` is falsy, it does not get initialized.
+			...falsyValues.map((enterTrailing) => ({
 				input: {
-					// TODO map with falsy values: false, undefined, etc
-					enterTrailing: undefined,
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -313,7 +312,7 @@ describe("Trailing Stop", () => {
 					memory: {},
 					memoryChanged: false
 				}
-			},
+			})),
 
 			// stopPrice is read from memory as input and written as output
 			{
