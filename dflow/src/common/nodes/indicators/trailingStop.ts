@@ -38,11 +38,11 @@ type ComputeStopPrice = (
 export const computeStopPriceDown: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}) => decimalToNumber(sub(marketPrice, mul(marketPrice, percentageDelta)))
+}) => decimalToNumber(add(marketPrice, mul(marketPrice, percentageDelta)))
 export const computeStopPriceUp: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}) => decimalToNumber(add(marketPrice, mul(marketPrice, percentageDelta)))
+}) => decimalToNumber(sub(marketPrice, mul(marketPrice, percentageDelta)))
 
 /**
  * Prevent percentageDelta from be zero or negative or one or greater than one,

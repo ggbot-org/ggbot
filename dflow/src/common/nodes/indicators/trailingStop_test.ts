@@ -54,7 +54,7 @@ const executeTrailingStop = async (
 			nodes: [
 				{
 					id: "enterTrailing",
-					text: JSON.stringify(enterTrailing),
+					text: JSON.stringify(enterTrailing ?? false),
 					outs: [{ id: "o1" }]
 				},
 				{
@@ -173,10 +173,12 @@ describe("Trailing Stop", () => {
 					memory: {}
 				},
 				output: {
-					exitTrailing: false,
-					memory: {}
+					exitTrailing: undefined,
+					memory: {},
+					memoryChanged: false
 				}
 			},
+
 			// stopPrice is read from memory as input and written as output
 			{
 				input: {
@@ -276,9 +278,11 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// If there no memory on input, it gets initialized on first run.
+			// If `enterTrailing` is true, it gets initialized.
 			{
 				input: {
+					// TODO map with truthy values: for example an order
+					enterTrailing: true,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta: 0.01,
@@ -291,6 +295,23 @@ describe("Trailing Stop", () => {
 						[stopPriceMemoryKey]: 101
 					},
 					memoryChanged: true
+				}
+			},
+
+			// If `enterTrailing` is not true, it does not get initialized.
+			{
+				input: {
+					// TODO map with falsy values: false, undefined, etc
+					enterTrailing: undefined,
+					memoryLabel,
+					marketPrice: 100,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: undefined,
+					memory: {},
+					memoryChanged: false
 				}
 			},
 
@@ -387,6 +408,7 @@ describe("Trailing Stop", () => {
 				},
 				output: { exitTrailing: true, stopPrice: 100 }
 			},
+
 			// If `direction` is "DOWN" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
 			{
 				input: {
@@ -397,6 +419,7 @@ describe("Trailing Stop", () => {
 				},
 				output: { exitTrailing: true, stopPrice: 100 }
 			},
+
 			// Return adjusted `stopPrice` according to `percentageDelta`.
 			{
 				input: {
@@ -416,6 +439,7 @@ describe("Trailing Stop", () => {
 				},
 				output: { exitTrailing: false, stopPrice: 101 }
 			},
+
 			// Leave `stopPrice` as is when `marketPrice` gets closer.
 			{
 				input: {
@@ -447,7 +471,7 @@ describe("computeStopPriceDown", () => {
 		assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
 			{
 				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
-				output: 12222.2221
+				output: 12469.1357
 			}
 		])
 	})
@@ -458,7 +482,7 @@ describe("computeStopPriceUp", () => {
 		assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
 			{
 				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
-				output: 12469.1357
+				output: 12222.2221
 			}
 		])
 	})
