@@ -180,9 +180,11 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// stopPrice is read from memory as input and written as output
-			{
+			// Regardless of `enterTrailing`,
+			// `stopPrice` is read from memory as input and written as output.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 106,
 					percentageDelta: 0.01,
@@ -199,11 +201,13 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: true
 				}
-			},
+			})),
 
-			// stopPrice does not change if marketPrice gets closer.
-			{
+			// Regardless of `enterTrailing`,
+			// `stopPrice` does not change if `marketPrice` gets closer.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 105,
 					percentageDelta: 0.01,
@@ -220,11 +224,14 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: false
 				}
-			},
+			})),
 
-			// If marketPrice goes beyond stopPrice then exitTrailing is true and memory is cleaned up
-			{
+			// Regardless of `enterTrailing`,
+			// if `marketPrice` goes beyond `stopPrice`
+			// then `exitTrailing` is true and memory is cleaned up.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 104.8,
 					percentageDelta: 0.01,
@@ -238,7 +245,7 @@ describe("Trailing Stop", () => {
 					memory: {},
 					memoryChanged: true
 				}
-			}
+			}))
 		]
 
 		for (const { input, output } of testData) {
@@ -314,9 +321,11 @@ describe("Trailing Stop", () => {
 				}
 			})),
 
-			// stopPrice is read from memory as input and written as output
-			{
+			// Regardless of `enterTrailing`,
+			// `stopPrice` is read from memory as input and written as output.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 94,
 					percentageDelta: 0.01,
@@ -333,11 +342,13 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: true
 				}
-			},
+			})),
 
-			// stopPrice does not change if marketPrice gets closer.
-			{
+			// Regardless of `enterTrailing`,
+			// `stopPrice` does not change if `marketPrice` gets closer.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 94.9,
 					percentageDelta: 0.01,
@@ -354,11 +365,14 @@ describe("Trailing Stop", () => {
 					},
 					memoryChanged: false
 				}
-			},
+			})),
 
-			// If marketPrice goes beyond stopPrice then exitTrailing is true and memory is cleaned up
-			{
+			// Regardless of `enterTrailing`,
+			// if `marketPrice` goes beyond `stopPrice`
+			// then `exitTrailing` is true and memory is cleaned up.
+			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
 				input: {
+					enterTrailing,
 					memoryLabel,
 					marketPrice: 94.98,
 					percentageDelta: 0.01,
@@ -372,7 +386,7 @@ describe("Trailing Stop", () => {
 					memory: {},
 					memoryChanged: true
 				}
-			}
+			}))
 		]
 
 		for (const { input, output } of testData) {

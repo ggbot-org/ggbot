@@ -106,25 +106,27 @@ export class TrailingStopUp extends DflowNode {
 		const memoryLabel = this.input(1).data as string
 		const marketPrice = this.input(2).data as number
 		const percentageDelta = this.input(3).data as number
+		const context = this.host.context as Context
 		if (!isValidPercentageDelta(percentageDelta)) return
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
-		const stopPriceInMemory = (this.host.context as Context).memory[
-			stopPriceMemoryKey
-		]
+		const stopPriceInMemory = context.memory[stopPriceMemoryKey]
+		const entryPriceInMemory = context.memory[entryPriceMemoryKey]
 		let stopPrice = stopPriceInMemory
 		if (stopPrice === undefined) {
 			if (!enterTrailing) return
 			stopPrice = computeStopPriceUp({ marketPrice, percentageDelta })
 		}
 		if (typeof stopPrice !== "number") return
-		if (enterTrailing) {
+		if (
+			enterTrailing &&
+			entryPriceInMemory === undefined &&
+			stopPriceInMemory === undefined
+		) {
 			// Save entryPrice and stopPrice.
-			(this.host.context as Context).memoryChanged = true
-			;(this.host.context as Context).memory[entryPriceMemoryKey] =
-				marketPrice
-			;(this.host.context as Context).memory[stopPriceMemoryKey] =
-				stopPrice
+			context.memoryChanged = true
+			context.memory[entryPriceMemoryKey] = marketPrice
+			context.memory[stopPriceMemoryKey] = stopPrice
 		}
 		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({
 			direction,
@@ -135,16 +137,13 @@ export class TrailingStopUp extends DflowNode {
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			// Cleanup memory.
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-			delete (this.host.context as Context).memory[entryPriceMemoryKey]
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-			delete (this.host.context as Context).memory[stopPriceMemoryKey]
-			;(this.host.context as Context).memoryChanged = true
+			delete context.memory[entryPriceMemoryKey]
+			delete context.memory[stopPriceMemoryKey]
+			context.memoryChanged = true
 		} else if (stopPrice !== nextStopPrice) {
 			// Save next stopPrice
-			(this.host.context as Context).memoryChanged = true
-			;(this.host.context as Context).memory[stopPriceMemoryKey] =
-				nextStopPrice
+			context.memoryChanged = true
+			context.memory[stopPriceMemoryKey] = nextStopPrice
 		}
 	}
 }
@@ -159,25 +158,27 @@ export class TrailingStopDown extends DflowNode {
 		const memoryLabel = this.input(1).data as string
 		const marketPrice = this.input(2).data as number
 		const percentageDelta = this.input(3).data as number
+		const context = this.host.context as Context
 		if (!isValidPercentageDelta(percentageDelta)) return
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
-		const stopPriceInMemory = (this.host.context as Context).memory[
-			stopPriceMemoryKey
-		]
+		const stopPriceInMemory = context.memory[stopPriceMemoryKey]
+		const entryPriceInMemory = context.memory[entryPriceMemoryKey]
 		let stopPrice = stopPriceInMemory
 		if (stopPrice === undefined) {
 			if (!enterTrailing) return
 			stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
 		}
 		if (typeof stopPrice !== "number") return
-		if (enterTrailing) {
+		if (
+			enterTrailing &&
+			entryPriceInMemory === undefined &&
+			stopPriceInMemory === undefined
+		) {
 			// Save entryPrice and stopPrice.
-			(this.host.context as Context).memoryChanged = true
-			;(this.host.context as Context).memory[entryPriceMemoryKey] =
-				marketPrice
-			;(this.host.context as Context).memory[stopPriceMemoryKey] =
-				stopPrice
+			context.memoryChanged = true
+			context.memory[entryPriceMemoryKey] = marketPrice
+			context.memory[stopPriceMemoryKey] = stopPrice
 		}
 		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({
 			direction,
@@ -188,16 +189,13 @@ export class TrailingStopDown extends DflowNode {
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			// Cleanup memory.
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-			delete (this.host.context as Context).memory[entryPriceMemoryKey]
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-			delete (this.host.context as Context).memory[stopPriceMemoryKey]
-			;(this.host.context as Context).memoryChanged = true
+			delete context.memory[entryPriceMemoryKey]
+			delete context.memory[stopPriceMemoryKey]
+			context.memoryChanged = true
 		} else if (stopPrice !== nextStopPrice) {
 			// Save next stopPrice
-			(this.host.context as Context).memoryChanged = true
-			;(this.host.context as Context).memory[stopPriceMemoryKey] =
-				nextStopPrice
+			context.memoryChanged = true
+			context.memory[stopPriceMemoryKey] = nextStopPrice
 		}
 	}
 }

@@ -13,6 +13,7 @@ module.exports = {
 	rules: {
 		"@typescript-eslint/array-type": ["error", { default: "array-simple" }],
 		"@typescript-eslint/member-ordering": "error",
+		"@typescript-eslint/no-dynamic-delete": "off",
 		"@typescript-eslint/no-empty-function": "error",
 		// Accept expressions like
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
