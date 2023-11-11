@@ -65,5 +65,11 @@ Buy a domain, for instance _example.com_ and set the `DNS_DOMAIN` environment va
 
 ## SSL certificate
 
-Go to [AWS Certficate Manager](https://aws.amazon.com/certificate-manager/) and create an SSL certificate.
-TODO add instructions
+Create an SSL certificate with [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) (ACM).
+
+Go to ACM on AWS console, check that you are in the wanted AWS region, for instance, _eu-central-1 Europe (Frankfurt)_.
+Click on "Request a certificate", flag "Request a public certificate" and click "Next".
+Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.org`.
+Click on "Add another name to this certificate" and add a third level domain _wildcard_, for instance, `*.ggbot.org`.
+Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
+Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.
