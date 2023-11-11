@@ -61,16 +61,10 @@ import {
 export class BinanceExchange {
 	readonly connector: BinanceConnector
 
-	private readonly exchangeInfoCache:
-		| BinanceExchangeInfoCacheProvider
-		| undefined
+	exchangeInfoCache: BinanceExchangeInfoCacheProvider | undefined
 
-	constructor(
-		baseUrl?: string,
-		exchangeInfoCache?: BinanceExchange["exchangeInfoCache"]
-	) {
+	constructor(baseUrl?: string) {
 		this.connector = new BinanceConnector(baseUrl)
-		this.exchangeInfoCache = exchangeInfoCache
 	}
 
 	static throwIfMinNotionalFilterIsInvalid(

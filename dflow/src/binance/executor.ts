@@ -21,22 +21,28 @@ type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
 	orders: Array<Pick<Order, "info">>
 }
 
+type DflowBinanceExecutorContext = DflowCommonExecutorContext & {
+	binance: DflowBinanceClient
+}
+
 export class DflowBinanceExecutor
 	implements
-		DflowExecutor<DflowCommonExecutorContext, DflowBinanceExecutorOutput>
+		DflowExecutor<DflowBinanceExecutorContext, DflowBinanceExecutorOutput>
 {
-	constructor(
-		readonly binance: DflowBinanceClient,
-		readonly binanceSymbols: DflowBinanceSymbolInfo[],
-		readonly nodesCatalog: DflowNodesCatalog
-	) {}
+	nodesCatalog: DflowNodesCatalog
+	binanceSymbols: DflowBinanceSymbolInfo[]
+
+	constructor() {
+		this.binanceSymbols = []
+		this.nodesCatalog = {}
+	}
 
 	/** Execute flow on given context. */
-	async run(context: DflowCommonExecutorContext, view: DflowExecutorView) {
-		const { binance, binanceSymbols, nodesCatalog } = this
+	async run(context: DflowBinanceExecutorContext, view: DflowExecutorView) {
+		const { binance } = context
 		const dflow = new DflowBinanceHost(
-			{ nodesCatalog },
-			{ binance, ...context }
+			{ nodesCatalog: this.nodesCatalog },
+			context
 		)
 		dflow.load(view)
 		await dflow.run()
@@ -45,8 +51,9 @@ export class DflowBinanceExecutor
 			DflowBinanceContext,
 			"memory" | "memoryChanged"
 		>
+		const { symbols } = await binance.exchangeInfo()
 		const balances = execution
-			? getBalancesFromExecutionSteps(binanceSymbols, execution.steps)
+			? getBalancesFromExecutionSteps(symbols, execution.steps)
 			: []
 		const orders = execution
 			? getOrdersFromExecutionSteps(execution.steps).map((info) => ({

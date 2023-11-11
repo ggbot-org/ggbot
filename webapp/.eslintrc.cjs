@@ -15,12 +15,13 @@ module.exports = {
 	plugins: [
 		"@typescript-eslint",
 		"eslint-plugin-tsdoc",
-		"import",
-		"simple-import-sort",
 		"formatjs",
+		"import",
 		"jsx-a11y",
 		"react",
-		"react-hooks"
+		"react-hooks",
+		"simple-import-sort",
+		"smells"
 	],
 	root: true,
 	rules: {
@@ -133,6 +134,8 @@ module.exports = {
 		"react-hooks/rules-of-hooks": "error",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
+		// TODO remove all switches then set it to error
+		"smells/no-switch": "warn",
 		"tsdoc/syntax": "error"
 	},
 	settings: {

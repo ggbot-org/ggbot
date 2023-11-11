@@ -31,6 +31,6 @@
 		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo",
 		"useDefineForClassFields": true
 	},
-	"exclude": ["node_modules"],
+	"exclude": ["node_modules", "src/workers/"],
 	"include": ["**/*.ts", "**/*.tsx"]
 }

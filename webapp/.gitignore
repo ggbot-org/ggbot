@@ -7,4 +7,5 @@ public/admin/
 public/design/
 public/user/
 public/translations/*.json
+public/workers/
 src/types/FormatjsIntlMessageIds.d.ts

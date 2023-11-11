@@ -19,36 +19,30 @@ type ResponseData = {
 	received: boolean
 }
 
-// ts-prune-ignore-next
+// @ts-expect-error TODO use async/await ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = (event) => {
 	try {
-		switch (event.httpMethod) {
-			case "POST": {
-				if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === "POST") {
+			if (!event.body) return BAD_REQUEST()
 
-				const signature = event.headers["stripe-signature"]
-				if (typeof signature !== "string") return BAD_REQUEST()
+			const signature = event.headers["stripe-signature"]
+			if (typeof signature !== "string") return BAD_REQUEST()
 
-				const stripeEvent = stripe.getWebhookEvent(
-					event.body,
-					signature
-				)
+			const stripeEvent = stripe.getWebhookEvent(event.body, signature)
 
-				info(stripeEvent)
+			info(stripeEvent)
 
-				switch (stripeEvent.type) {
-					default: {
-						warn(`Unhandled event type ${stripeEvent.type}`)
-					}
+			switch (stripeEvent.type) {
+				default: {
+					warn(`Unhandled event type ${stripeEvent.type}`)
 				}
-
-				const output: ResponseData = { received: true }
-				return OK(output)
 			}
 
-			default:
-				return METHOD_NOT_ALLOWED
+			const output: ResponseData = { received: true }
+			return OK(output)
 		}
+
+		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError)
 			return BAD_REQUEST()

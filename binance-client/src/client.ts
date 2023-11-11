@@ -44,10 +44,8 @@ export class BinanceClient {
 		connector.apiKey = apiKey
 		this.connector = connector
 		this.apiSecret = apiSecret
-		this.exchange = new BinanceExchange(
-			BinanceConnector.defaultBaseUrl,
-			exchangeInfoCache
-		)
+		this.exchange = new BinanceExchange(BinanceConnector.defaultBaseUrl)
+		this.exchange.exchangeInfoCache = exchangeInfoCache
 	}
 
 	async privateRequest<Data>(

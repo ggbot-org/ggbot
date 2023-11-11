@@ -1,6 +1,6 @@
 import { Button, ButtonProps, Buttons } from "_/components/library"
 import type { BacktestingState } from "_/hooks/useBacktesting"
-import { FC, memo } from "react"
+import { FC } from "react"
 import { useIntl } from "react-intl"
 
 const PauseButton: FC<ButtonProps> = (props) => {
@@ -46,40 +46,32 @@ type Props = Pick<BacktestingState, "isPaused" | "isRunning" | "isReadOnly"> & {
 	onClickStop: ButtonProps["onClick"]
 }
 
-export const BacktestingActions = memo<Props>(
-	({
-		isPaused,
-		isReadOnly,
-		isRunning,
-		onClickPause,
-		onClickResume,
-		onClickStart,
-		onClickStop
-	}) => {
-		if (isPaused)
-			return (
-				<Buttons>
-					<StopButton onClick={onClickStop} />
+export const BacktestingActions: FC<Props> = ({
+	isPaused,
+	isReadOnly,
+	isRunning,
+	onClickPause,
+	onClickResume,
+	onClickStart,
+	onClickStop
+}) => {
+	if (isPaused)
+		return (
+			<Buttons>
+				<StopButton onClick={onClickStop} />
 
-					<ResumeButton onClick={onClickResume} />
-				</Buttons>
-			)
+				<ResumeButton onClick={onClickResume} />
+			</Buttons>
+		)
 
-		if (isRunning)
-			return (
-				<Buttons>
-					<StopButton onClick={onClickStop} />
+	if (isRunning)
+		return (
+			<Buttons>
+				<StopButton onClick={onClickStop} />
 
-					<PauseButton onClick={onClickPause} />
-				</Buttons>
-			)
+				<PauseButton onClick={onClickPause} />
+			</Buttons>
+		)
 
-		return <StartButton onClick={onClickStart} disabled={isReadOnly} />
-	},
-	(prevProps, nextProps) =>
-		prevProps.isPaused === nextProps.isPaused &&
-		prevProps.isReadOnly === nextProps.isReadOnly &&
-		prevProps.isRunning === nextProps.isRunning
-)
-
-BacktestingActions.displayName = "BacktestingActions"
+	return <StartButton onClick={onClickStart} disabled={isReadOnly} />
+}

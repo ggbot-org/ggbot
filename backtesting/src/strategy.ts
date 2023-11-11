@@ -1,17 +1,21 @@
-import { Strategy, StrategyFlow, StrategyScheduling } from "@workspace/models"
+import {
+	StrategyFlow,
+	StrategyKey,
+	StrategyParameters
+} from "@workspace/models"
 
-export class BacktestingStrategy
-	implements Pick<Strategy, "kind">, Pick<StrategyFlow, "view">
-{
-	readonly kind: Strategy["kind"]
-
+export class BacktestingStrategy {
+	readonly params: StrategyParameters
+	readonly strategyKey: StrategyKey
 	readonly view: StrategyFlow["view"]
 
-	readonly schedulings: Map<StrategyScheduling["id"], StrategyScheduling>
-
-	constructor({ kind, view }: Pick<BacktestingStrategy, "kind" | "view">) {
-		this.schedulings = new Map()
-		this.kind = kind
+	constructor({
+		params,
+		strategyKey,
+		view
+	}: Pick<BacktestingStrategy, "params" | "strategyKey" | "view">) {
+		this.params = params
+		this.strategyKey = strategyKey
 		this.view = view
 	}
 }

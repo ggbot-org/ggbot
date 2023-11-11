@@ -8,17 +8,11 @@ import { MemoryItem, MemoryItemProps } from "./MemoryItem"
 type Props = { memory: DflowCommonContext["memory"] | undefined }
 
 export const Memory: FC<Props> = ({ memory }) => {
-	const memoryItems: MemoryItemProps[] = [
-		{
-			name: "foo",
-			value: "bar"
-		},
-		{ name: "num", value: 42 },
-		{ name: "obj", value: { foo: true, bar: [1, 2, 3] } }
-	]
+	const memoryItems: MemoryItemProps[] = []
+
 	if (memory)
-		for (const [name, value] of Object.entries(memory)) {
-			memoryItems.push({ name, value })
+		for (const [key, value] of Object.entries(memory)) {
+			memoryItems.push({ name: key, value })
 		}
 
 	return (

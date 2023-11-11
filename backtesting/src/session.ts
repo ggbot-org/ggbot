@@ -1,38 +1,110 @@
-import { Item, newId } from "@workspace/models"
-import { DayInterval } from "minimal-time-helpers"
+import {
+	BalanceChangeEvent,
+	Frequency,
+	frequencyIntervalDuration,
+	Order,
+	StrategyMemory
+} from "@workspace/models"
+import {
+	dateToTime,
+	DayInterval,
+	dayIntervalToDate,
+	Time
+} from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
 export class BacktestingSession implements BacktestingStatusController {
-	readonly dayInterval: DayInterval
-	readonly id: Item["id"]
+	balanceHistory: BalanceChangeEvent[]
+	dayInterval: DayInterval | undefined
+	frequency: Frequency | undefined
+	memory: StrategyMemory
+	orders: Order[]
 	status: BacktestingStatus
-	strategy: BacktestingStrategy
+	stepIndex: number
+	strategy: BacktestingStrategy | undefined
+	times: Time[]
 
-	constructor({
-		dayInterval,
-		strategy
-	}: Pick<BacktestingSession, "dayInterval" | "strategy">) {
-		this.dayInterval = dayInterval
-		this.status = "ready"
-		this.strategy = strategy
-		this.id = newId()
+	constructor() {
+		this.balanceHistory = []
+		this.memory = {}
+		this.orders = []
+		this.status = "initial"
+		this.stepIndex = 0
+		this.times = []
+	}
+
+	get canRun(): boolean {
+		if (this.times.length === 0) return false
+		if (!this.strategy) return false
+		return true
+	}
+
+	get completionPercentage(): number {
+		if (this.stepIndex === 0) return 0
+		return Math.floor(this.times.length / this.stepIndex)
+	}
+
+	get nextTime() {
+		const time = this.times[this.stepIndex]
+		this.stepIndex++
+		if (this.times.length === this.stepIndex) this.status === "done"
+		return time
 	}
 
 	pause() {
-		if (this.status === "running") this.status = "paused"
+		if (this.status === "running") {
+			this.status = "paused"
+			return true
+		}
+		return false
 	}
 
 	resume() {
-		if (this.status === "paused") this.status = "running"
+		if (!this.canRun) return false
+		if (this.status === "paused") {
+			this.status = "running"
+			return true
+		}
+		return false
 	}
 
 	start() {
-		if (this.status === "ready") this.status = "running"
+		if (!this.canRun) return false
+		// Can start only if status is "initial" or "done".
+		// In case status is "done" and input parameters are unchanged
+		// it will run again and (hopefully :) produce same results.
+		if (this.status !== "initial" && this.status !== "done") return false
+		this.status = "running"
+		// Reset before run.
+		this.balanceHistory = []
+		this.memory = {}
+		this.orders = []
+		this.stepIndex = 0
+		return true
 	}
 
 	stop() {
-		if (this.status === "running") this.status = "ready"
+		if (this.status === "running") {
+			this.status = "initial"
+			return true
+		}
+		return false
+	}
+
+	computeTimes() {
+		const { dayInterval, frequency } = this
+		if (!dayInterval || !frequency) return
+		this.times = []
+		const { start, end } = dayIntervalToDate(dayInterval)
+		const interval = frequencyIntervalDuration(frequency)
+		let date = start
+		let time
+		while (date < end) {
+			time = dateToTime(date)
+			this.times.push(time)
+			date = new Date(time + interval)
+		}
 	}
 }

@@ -21,16 +21,13 @@ import {
 import { div, mul } from "arithmetica"
 import { Time } from "minimal-time-helpers"
 
-export const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
+import { ErrorBacktestingBinanceClientUndefinedTime } from "./errors.js"
+
+const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
 export class BacktestingBinanceClient implements DflowBinanceClient {
-	readonly time: Time
-
-	private readonly klinesCache: BinanceKlinesCacheMap | undefined
-
-	constructor(time: Time) {
-		this.time = time
-	}
+	klinesCache: BinanceKlinesCacheMap | undefined
+	time: Time | undefined
 
 	async exchangeInfo() {
 		return await binance.exchangeInfo()
@@ -124,6 +121,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
 		const { klinesCache: cache, time } = this
+		if (!time) throw new ErrorBacktestingBinanceClientUndefinedTime()
 		// Look for cached data.
 		if (cache)
 			for (const interval of binanceKlineIntervals) {
@@ -135,7 +133,8 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 						price: kline[1]
 					}
 			}
-		const interval: DflowBinanceKlineInterval = dflowBinanceLowerKlineInterval
+		const interval: DflowBinanceKlineInterval =
+			dflowBinanceLowerKlineInterval
 		// If no data was found in cache, fetch it from Binance API.
 		const klines = await this.klines(symbol, interval, {
 			limit: 1,

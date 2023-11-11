@@ -11,7 +11,6 @@ import { dflowBinanceZero as zero } from "./arithmetic.js"
 import { BuyMarket, orderOutputPosition, SellMarket } from "./nodes/trade.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
-// TODO remove this
 export const getBalancesFromExecutionSteps = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	steps: DflowGraphExecutionReport["steps"]
@@ -32,7 +31,6 @@ export const getBalancesFromExecutionSteps = (
 			free: zero,
 			locked: zero
 		}
-		// TODO how to emulate other order types?
 		if (type === "MARKET") {
 			if (side === "BUY") {
 				balanceMap.set(baseAsset, {
@@ -53,7 +51,6 @@ export const getBalancesFromExecutionSteps = (
 				free: sub(zero, commission),
 				locked: zero
 			}
-			// TODO how to emulate other order types?
 			if (type === "MARKET") {
 				const quoteQuantity = mul(qty, price)
 				if (side === "BUY") {

@@ -3,7 +3,7 @@ import { join } from "node:path"
 import write from "write-file-utf8"
 
 import { html } from "../html.js"
-import { publicDir, webappConfig } from "../package.js"
+import { publicDir, webappEcmaScriptsConfig } from "../package.js"
 import { adminHtmlPathnames } from "../routing/admin/pages.js"
 import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
 import {
@@ -18,11 +18,11 @@ import {
 
 const jsPath = (path: string[]) => `/${path.join("/")}`
 
-const adminJs = jsPath(webappConfig.admin.jsPath)
-const designJs = jsPath(webappConfig.design.jsPath)
-const landingJs = jsPath(webappConfig.landing.jsPath)
-const strategyJs = jsPath(webappConfig.strategy.jsPath)
-const userJs = jsPath(webappConfig.user.jsPath)
+const adminJs = jsPath(webappEcmaScriptsConfig.admin.jsPath)
+const designJs = jsPath(webappEcmaScriptsConfig.design.jsPath)
+const landingJs = jsPath(webappEcmaScriptsConfig.landing.jsPath)
+const strategyJs = jsPath(webappEcmaScriptsConfig.strategy.jsPath)
+const userJs = jsPath(webappEcmaScriptsConfig.user.jsPath)
 
 // Landing pages.
 

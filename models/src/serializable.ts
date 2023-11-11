@@ -5,7 +5,15 @@
 import { FiniteNumber, isFiniteNumber } from "./numbers.js"
 import { FiniteString, isFiniteString } from "./strings.js"
 
-type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
+export type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
+
+export const isSerializablePrimitive = (
+	arg: unknown
+): arg is SerializablePrimitive =>
+	isFiniteNumber(arg) ||
+	isFiniteString(arg) ||
+	typeof arg === "boolean" ||
+	arg === null
 
 export type SerializableArray = SerializableData[] | readonly SerializableData[]
 
@@ -28,9 +36,7 @@ const isSerializableArray = (arg: unknown): arg is SerializableArray =>
 const isSerializableData = (arg: unknown): arg is SerializableData => {
 	if (arg === undefined) return false
 	return (
-		isFiniteNumber(arg) ||
-		isFiniteString(arg) ||
-		typeof arg === "boolean" ||
+		isSerializablePrimitive(arg) ||
 		isSerializableArray(arg) ||
 		isSerializableObject(arg)
 	)

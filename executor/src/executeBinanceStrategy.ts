@@ -54,7 +54,8 @@ export const executeBinanceStrategy = async (
 		})
 
 	const { apiKey, apiSecret } = binanceApiConfig
-	const binance = new Binance(apiKey, apiSecret, exchangeInfoCache)
+	const binance = new Binance(apiKey, apiSecret)
+	binance.publicClient.exchangeInfoCache = exchangeInfoCache
 
 	// Truncate logical time to minute. It is a good compromise also to
 	// cache klines data.
@@ -73,7 +74,8 @@ export const executeBinanceStrategy = async (
 			memory: {}
 		}
 
-	const executor = new DflowBinanceExecutor(binance, symbols, nodesCatalog)
+	const executor = new DflowBinanceExecutor()
+	executor.nodesCatalog = nodesCatalog
 
 	const {
 		balances,
@@ -83,6 +85,7 @@ export const executeBinanceStrategy = async (
 		orders
 	} = await executor.run(
 		{
+			binance,
 			params,
 			memory: memoryInput,
 			time

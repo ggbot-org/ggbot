@@ -68,6 +68,9 @@
 	"BacktestingActions.stop": {
 		"defaultMessage": "Stop"
 	},
+	"Backtesting.done": {
+		"defaultMessage": "Backtesting completed"
+	},
 	"Backtesting.title": {
 		"defaultMessage": "Backtesting"
 	},

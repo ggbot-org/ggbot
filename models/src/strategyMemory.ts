@@ -1,18 +1,13 @@
-import { FiniteNumber, isFiniteNumber } from "./numbers.js"
+import {
+	isSerializablePrimitive,
+	SerializablePrimitive} from "./serializable.js"
 import { isNonEmptyString, NonEmptyString } from "./strings.js"
 
-export type StrategyMemoryValue = boolean | NonEmptyString | FiniteNumber
+export type StrategyMemoryValue = SerializablePrimitive
 
 export const isStrategyMemoryKey = isNonEmptyString
 
-export const isStrategyMemoryValue = (
-	arg: unknown
-): arg is StrategyMemoryValue => {
-	if (typeof arg === "boolean") return true
-	if (isNonEmptyString(arg)) return true
-	if (isFiniteNumber(arg)) return true
-	return false
-}
+export const isStrategyMemoryValue = isSerializablePrimitive
 
 export type StrategyMemory = {
 	[key in NonEmptyString]: StrategyMemoryValue

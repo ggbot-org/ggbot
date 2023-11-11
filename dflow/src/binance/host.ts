@@ -1,5 +1,4 @@
 import { DflowHost, DflowHostConstructorArg } from "dflow"
-import { now, truncateTime } from "minimal-time-helpers"
 
 import { DflowExecutorView } from "../common/executor.js"
 import { DflowLoader, load } from "../common/loader.js"
@@ -20,7 +19,7 @@ export class DflowBinanceHost extends DflowHost implements DflowLoader {
 		this.context.params = context.params
 		this.context.memory = context.memory
 		this.context.memoryChanged = false
-		this.context.time = context.time ?? truncateTime(now()).to.minute
+		this.context.time = context.time
 	}
 
 	load(view: DflowExecutorView): void {
