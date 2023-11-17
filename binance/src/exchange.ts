@@ -51,11 +51,8 @@ import {
  * 	BinanceExchangeInfoCacheMap
  * } from "@workspace/binance"
  *
- * const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
- * const binance = new BinanceExchange(
- * 	BinanceConnector.defaultBaseUrl,
- * 	exchangeInfoCache
- * )
+ * const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
+ * binance.exchangeInfoCache = new BinanceExchangeInfoCacheMap()
  * ```
  */
 export class BinanceExchange {

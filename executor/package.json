@@ -23,6 +23,8 @@
     "@workspace/env": "0.0.0",
     "@workspace/models": "0.0.0",
     "flow-view": "6.0.1",
-    "minimal-time-helpers": "0.1.0"
+    "minimal-time-helpers": "0.1.0",
+    "read-file-utf8": "3.0.0",
+    "write-file-utf8": "3.0.2"
   }
 }

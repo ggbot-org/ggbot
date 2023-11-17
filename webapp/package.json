@@ -60,6 +60,7 @@
     "eslint-plugin-smells": "1.0.1",
     "eslint-plugin-tsdoc": "0.2.17",
     "onchange": "7.1.0",
+    "read-file-utf8": "3.0.0",
     "sass": "1.69.0",
     "write-file-utf8": "3.0.2"
   }

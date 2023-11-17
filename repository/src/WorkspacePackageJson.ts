@@ -1,5 +1,6 @@
-import { readFile } from "node:fs/promises"
 import { join } from "node:path"
+
+import readFile from "read-file-utf8"
 
 import { FileProvider } from "./filesystemProviders.js"
 import type { Repository } from "./Repository.js"
@@ -71,8 +72,7 @@ export class WorkspacePackageJson implements FileProvider {
 
 	async read() {
 		const pathname = join(this.directoryPathname, this.filename)
-		const text = await readFile(pathname, "utf-8")
-		const packageContent = JSON.parse(text)
+		const packageContent = await readFile(pathname)
 		if (!packageContent || typeof packageContent !== "object")
 			throw new Error(`JSON file ${pathname} is not an object`)
 		const {

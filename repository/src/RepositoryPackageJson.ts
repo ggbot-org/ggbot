@@ -1,6 +1,6 @@
-import { readFile } from "node:fs/promises"
 import { join } from "node:path"
 
+import readFile from "read-file-utf8"
 import { PackageJson } from "type-fest"
 
 import { FileProvider } from "./filesystemProviders.js"
@@ -59,17 +59,15 @@ export class RepositoryPackageJson implements FileProvider {
 	}
 
 	async read() {
-		const text = await readFile(
-			join(this.directoryPathname, this.filename),
-			"utf-8"
-		)
 		const {
 			name,
 			dependencies,
 			private: isPrivate,
 			scripts,
 			workspaces
-		} = JSON.parse(text) as PackageJson
+		} = (await readFile(
+			join(this.directoryPathname, this.filename)
+		)) as PackageJson
 		this.packageName = name
 		this.dependencies = dependencies
 		this.isPrivate = isPrivate

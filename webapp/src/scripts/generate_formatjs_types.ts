@@ -1,7 +1,8 @@
-import { readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 
 import { defaultLanguage } from "@workspace/models"
+import readFile from "read-file-utf8"
+import writeFile from "write-file-utf8"
 
 import {
 	FormatjsIntlMessageIdsContent,
@@ -11,16 +12,13 @@ import { translationPathname } from "../i18n/locales.js"
 import { packageDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(
-	join(packageDir, translationPathname(defaultLanguage)),
-	{ encoding: "utf8" }
+	join(packageDir, translationPathname(defaultLanguage))
 )
-
-const translation = JSON.parse(defaultTranslation)
 
 const pathname = join(typesDir, FormatjsIntlMessageIdsFilename)
 
-const translationKeys = Object.keys(translation)
+const translationKeys = Object.keys(defaultTranslation)
 
 const content = FormatjsIntlMessageIdsContent(translationKeys)
 
-await writeFile(pathname, content, { encoding: "utf8" })
+await writeFile(pathname, content)
