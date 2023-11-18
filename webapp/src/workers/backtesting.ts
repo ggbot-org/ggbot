@@ -50,6 +50,14 @@ const updatedResultMessage = (
 self.onmessage = async (event: MessageEvent<BacktestingMessageIn>) => {
 	const message = event.data
 
+	if (message.type === "SET_DAY_INTERVAL") {
+		session.dayInterval = message.dayInterval
+	}
+
+	if (message.type === "SET_FREQUENCY") {
+		session.frequency = message.frequency
+	}
+
 	if (message.type === "START") {
 		const { dayInterval, frequency, strategy } = message
 		// Set session `strategy`.
