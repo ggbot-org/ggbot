@@ -6,6 +6,8 @@
 	},
 	"extends": "@workspace/tsconfig",
 	"include": [
+		"src/dirnames.ts",
+		"src/ecmaScripts.ts",
 		"src/esbuild/*.ts",
 		"src/html.ts",
 		"src/i18n/FormatjsIntlMessageIds.ts",

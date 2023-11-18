@@ -1,8 +1,7 @@
 import { UtrustCancelURL, UtrustReturnURL } from "@workspace/locators"
 
+import { userDirname } from "../../dirnames.js"
 import { SettingsPageId, settingsPageIds } from "./types.js"
-
-export const userDirname = "user"
 
 export const userDashboardHtmlPathname = `/${userDirname}/dashboard.html`
 

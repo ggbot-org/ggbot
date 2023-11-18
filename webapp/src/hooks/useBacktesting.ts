@@ -27,8 +27,10 @@ import {
 	Timestamp,
 	yesterday
 } from "minimal-time-helpers"
-import { useContext, useEffect, useReducer } from "react"
+import { Reducer, useContext, useEffect, useReducer } from "react"
 import { useIntl } from "react-intl"
+
+import { ecmaScriptPath } from "../ecmaScripts"
 
 const { info } = logging("backtesting")
 
@@ -126,7 +128,7 @@ const getInitialState = ({
 	}
 }
 
-const backtesting = new Worker("/workers/backtesting.js")
+const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
 
 export const useBacktesting = (
 	flowViewGraph: FlowViewSerializableGraph | undefined
@@ -144,8 +146,8 @@ export const useBacktesting = (
 	if (!flowViewGraph) hasRequiredData = false
 	if (strategy?.kind === "binance" && !binanceSymbols) hasRequiredData = false
 
-	const [state, dispatch] = useReducer(
-		(state: State, action: Action) => {
+	const [state, dispatch] = useReducer<Reducer<State, Action>>(
+		(state, action) => {
 			info(action.type)
 
 			if (["PAUSE", "RESUME", "START", "STOP"].includes(action.type)) {

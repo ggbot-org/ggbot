@@ -1,9 +1,13 @@
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { adminDirname } from "./routing/admin/pages.js"
-import { designDirname } from "./routing/design/pages.js"
-import { userDirname } from "./routing/user/pages.js"
+import {
+	adminDirname,
+	designDirname,
+	userDirname,
+	workersDirname
+} from "./dirnames.js"
+import { EcmaScriptName, ecmaScriptPath } from "./ecmaScripts.js"
 
 export const packageDir = resolve(
 	dirname(dirname(fileURLToPath(import.meta.url)))
@@ -18,11 +22,10 @@ export const typesDir = join(srcDir, "types")
 const srcRoutingDir = join(srcDir, "routing")
 const srcPublicRoutingDir = join(srcRoutingDir, "public")
 
-const workersDirname = "workers"
 const srcWorkersDir = join(srcDir, workersDirname)
 
 export const webappEcmaScriptsConfig: Record<
-	string,
+	EcmaScriptName,
 	{
 		entryPoint: string
 		jsPath: string[]
@@ -30,26 +33,26 @@ export const webappEcmaScriptsConfig: Record<
 > = {
 	landing: {
 		entryPoint: join(srcPublicRoutingDir, "LandingRouter.tsx"),
-		jsPath: ["landing.js"]
+		jsPath: ecmaScriptPath.landing
 	},
 	strategy: {
 		entryPoint: join(srcPublicRoutingDir, "StrategyRouter.tsx"),
-		jsPath: ["strategy.js"]
+		jsPath: ecmaScriptPath.strategy
 	},
 	user: {
 		entryPoint: join(srcRoutingDir, userDirname, "Router.tsx"),
-		jsPath: [userDirname, "app.js"]
+		jsPath: ecmaScriptPath.user
 	},
 	admin: {
 		entryPoint: join(srcRoutingDir, adminDirname, "Router.tsx"),
-		jsPath: [adminDirname, "app.js"]
+		jsPath: ecmaScriptPath.admin
 	},
 	design: {
 		entryPoint: join(srcRoutingDir, designDirname, "Router.tsx"),
-		jsPath: [designDirname, "app.js"]
+		jsPath: ecmaScriptPath.design
 	},
 	backtesting: {
 		entryPoint: join(srcWorkersDir, "backtesting.ts"),
-		jsPath: [workersDirname, "backtesting.js"]
+		jsPath: ecmaScriptPath.backtesting
 	}
 }

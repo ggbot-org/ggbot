@@ -1,4 +1,4 @@
-export const adminDirname = "admin"
+import { adminDirname } from "../../dirnames.js"
 
 export const adminDashboardHtmlPathname = `/${adminDirname}/dashboard.html`
 
