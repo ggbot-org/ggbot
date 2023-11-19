@@ -1,4 +1,4 @@
-# ggbot2
+# ggbot
 
 > crypto flow
 

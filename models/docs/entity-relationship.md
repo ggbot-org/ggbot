@@ -15,5 +15,5 @@ erDiagram
 	Strategy ||--|| StrategyFlow: "has"
 	StrategyScheduling ||--o| StrategyParams: "contains"
 	StrategyScheduling ||--o| StrategyMemory: "contains"
-	Executor ||--o{ StrategyFlow: "executes by given scheduling"
+	Executor ||--o{ StrategyFlow: "executes flow by given scheduling"
 ```
