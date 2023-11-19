@@ -1,7 +1,7 @@
+import { DeployStage } from "@workspace/models"
+
 import { EnvironmentVariableName } from "./environmentVariableNames.js"
 import { ErrorMissingEnvironmentVariable } from "./errors.js"
-
-export type DeployStage = "main" | "next" | "local"
 
 const getVariable = (VARIABLE_NAME: EnvironmentVariableName) => {
 	const VALUE = process.env[VARIABLE_NAME]

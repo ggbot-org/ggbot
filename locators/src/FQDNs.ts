@@ -1,4 +1,4 @@
-import { DeployStage } from "@workspace/env"
+import { DeployStage } from "@workspace/models"
 
 /**
  * Fully qualified domain names.
@@ -6,10 +6,10 @@ import { DeployStage } from "@workspace/env"
  * @example
  *
  * ```ts
- * import { ENV } from "@workspace/env"
+ * import { DeployStage } from "@workspace/models"
  *
- * const dnsDomain = ENV.DNS_DOMAIN()
- * const deployStage = ENV.DEPLOY_STAGE()
+ * const dnsDomain = "example.com"
+ * const deployStage: DeployStage = "main"
  *
  * const fqdn = new FQDN(deployStage, dnsDomain)
  * ```

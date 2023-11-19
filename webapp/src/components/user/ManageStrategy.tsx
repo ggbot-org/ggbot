@@ -5,7 +5,7 @@ import { StrategyActions } from "_/components/user/StrategyActions"
 import { FC } from "react"
 
 export const ManageStrategy: FC = () => (
-	<Columns isMultiline isVcentered>
+	<Columns isMultiline>
 		<Column
 			size={{
 				tablet: "full",

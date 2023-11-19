@@ -1,4 +1,4 @@
-import { DeployStage } from "@workspace/env"
+import { DeployStage } from "@workspace/models"
 
 import { EnvironmentVariables } from "./EnvironmentVariables.js"
 
