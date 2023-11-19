@@ -36,7 +36,6 @@ graph LR
     workspace/database --- workspace/aws-s3
     workspace/database --- workspace/binance-client
     workspace/database --- workspace/dflow
-    workspace/database --- workspace/locators
     workspace/database --- workspace/logging
     workspace/dflow --- workspace/arithmetic
     workspace/dflow --- workspace/binance
@@ -50,6 +49,7 @@ graph LR
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
+    workspace/infrastructure --- workspace/locators
     workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/stripe
     workspace/locators --- workspace/env
