@@ -3,6 +3,7 @@ import { describe, test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
+import { nullId } from "./item.js"
 import {
 	isStrategyScheduling,
 	StrategyScheduling
@@ -15,7 +16,7 @@ describe("isStrategyScheduling", () => {
 			[
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						status: "active",
 						frequency: { every: 1, interval: "1h" }
 					},
@@ -23,7 +24,7 @@ describe("isStrategyScheduling", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						status: "active",
 						frequency: { every: 1, interval: "1h" },
 						params: {
@@ -34,7 +35,7 @@ describe("isStrategyScheduling", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						status: "active",
 						frequency: { every: 1, interval: "1h" },
 						memory: {

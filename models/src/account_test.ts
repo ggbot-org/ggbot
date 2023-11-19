@@ -4,6 +4,7 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { Account, isAccount, newAccount } from "./account.js"
+import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
@@ -26,12 +27,12 @@ describe("isAccount", () => {
 				output: false
 			},
 			{
-				input: { id: "00000000", email: "not an email", whenCreated },
+				input: { id: nullId, email: "not an email", whenCreated },
 				output: false
 			},
 			{
 				input: {
-					id: "00000000",
+					id: nullId,
 					email,
 					whenCreated: "not a timestamp"
 				},
@@ -39,7 +40,7 @@ describe("isAccount", () => {
 			},
 			...invalidNames.map((invalidName) => ({
 				input: {
-					id: "00000000",
+					id: nullId,
 					email,
 					whenCreated,
 					name: normalizeName(invalidName)

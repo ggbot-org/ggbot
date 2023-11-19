@@ -4,7 +4,7 @@ export const itemIdCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 type ItemId = string
 
-const nullId = "00000000"
+export const nullId = "00000000"
 
 export const isItemId = (arg: unknown): arg is ItemId =>
 	typeof arg === "string" && arg.length === nullId.length

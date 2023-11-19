@@ -4,6 +4,7 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { dateToDay, dayToDate, getDate, today } from "minimal-time-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
+import { nullId } from "./item.js"
 import {
 	isSubscriptionPurchase,
 	newMonthlySubscription,
@@ -47,7 +48,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						paymentProvider,
 						plan,
 						status: "completed",
@@ -58,7 +59,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						info: {
 							uuid: "xxx"
 						},
@@ -72,7 +73,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						info: "not an object",
 						paymentProvider,
 						plan,
@@ -84,7 +85,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						paymentProvider,
 						plan: "not an plan",
 						status: "completed",
@@ -95,7 +96,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						paymentProvider,
 						plan,
 						status: "not a status",
@@ -106,7 +107,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						paymentProvider,
 						plan,
 						status: "completed",
@@ -117,7 +118,7 @@ describe("isSubscriptionPurchase", () => {
 				},
 				{
 					input: {
-						id: "00000000",
+						id: nullId,
 						paymentProvider: "not a paymentProvider",
 						plan,
 						status: "completed",

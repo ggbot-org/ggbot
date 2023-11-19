@@ -30,13 +30,13 @@ export type StrategiesProps = {
 
 export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 	const { accountStrategies } = useContext(StrategiesContext)
-	const [hideInactive, setHideInactive] = useState(
+
+	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
 		localWebStorage.hideInactiveStrategies.get()
 	)
-	let numInactive = 0
 
-	const allAreInactive = accountStrategies?.every(
-		({ schedulings }) => schedulings.length === 0
+	const allAreInactive = accountStrategies?.every(({ schedulings }) =>
+		schedulingsAreInactive(schedulings)
 	)
 
 	const items: StrategyItem[] = []
@@ -48,7 +48,6 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 			schedulings
 		} of accountStrategies) {
 			const isInactive = schedulingsAreInactive(schedulings)
-			if (isInactive) numInactive++
 			if (hideInactive && isInactive && !allAreInactive) continue
 			items.push({
 				href: href.strategyPage({ strategyId, strategyKind }),
@@ -94,16 +93,14 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 
 	return (
 		<>
-			{!allAreInactive && numInactive > 0 && (
-				<Flex spacing={{ mb: 5, ml: 3 }}>
-					<Checkbox
-						checked={hideInactive}
-						onChange={onChangeHideInactive}
-					>
-						<FormattedMessage id="Strategies.hideInactive" />
-					</Checkbox>
-				</Flex>
-			)}
+			<Flex spacing={{ mb: 5, ml: 3 }}>
+				<Checkbox
+					checked={hideInactive}
+					onChange={onChangeHideInactive}
+				>
+					<FormattedMessage id="Strategies.hideInactive" />
+				</Checkbox>
+			</Flex>
 
 			<Columns isMultiline>
 				{items.map(({ name, href, schedulings, strategyId }) => (

@@ -141,6 +141,7 @@ export type {
 export {
 	isCopyStrategyInput,
 	isCreateStrategyInput,
+	isDeleteStrategyInput,
 	isReadStrategyInput,
 	isRenameStrategyInput,
 	isStrategy,
@@ -168,7 +169,11 @@ export type {
 	StrategyFlow,
 	WriteStrategyFlow
 } from "./strategyFlow.js"
-export { isStrategyFlow, isWriteStrategyFlowInput } from "./strategyFlow.js"
+export {
+	isStrategyFlow,
+	isWriteStrategyFlowInput,
+	welcomeFlow
+} from "./strategyFlow.js"
 export type { StrategyMemory, StrategyMemoryValue } from "./strategyMemory.js"
 export { isStrategyMemoryKey, isStrategyMemoryValue } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"

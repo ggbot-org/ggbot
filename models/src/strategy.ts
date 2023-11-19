@@ -2,7 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Account, AccountKey, isAccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
-import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js"
+import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
@@ -59,7 +59,7 @@ export type CopyStrategy = (arg: CopyStrategyInput) => Promise<Strategy>
 type CreateStrategyInput = NewItem<Strategy>
 
 export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
-	(arg) => isStrategy({ ...arg, id: "00000000", whenCreated: 1 })
+	(arg) => isStrategy({ ...arg, id: nullId, whenCreated: 1 })
 )
 
 export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>
@@ -81,4 +81,10 @@ export const isRenameStrategyInput = objectTypeGuard<RenameStrategyInput>(
 
 export type RenameStrategy = (arg: RenameStrategyInput) => Promise<UpdateTime>
 
-export type DeleteStrategy = (arg: AccountStrategyKey) => Promise<DeletionTime>
+type DeleteStrategyInput = AccountStrategyKey
+
+export const isDeleteStrategyInput = objectTypeGuard<DeleteStrategyInput>(
+	({ ...accountStrategyKey }) => isAccountStrategyKey(accountStrategyKey)
+)
+
+export type DeleteStrategy = (arg: DeleteStrategyInput) => Promise<DeletionTime>

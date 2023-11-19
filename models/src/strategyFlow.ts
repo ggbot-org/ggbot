@@ -6,13 +6,17 @@ import { isSerializableObject, SerializableObject } from "./serializable.js"
 import { StrategyKey } from "./strategy.js"
 import { CreationTime, DeletionTime, isUpdateTime, UpdateTime } from "./time.js"
 
+export type StrategyFlowView = SerializableObject
+
+export const isStrategyFlowView = isSerializableObject
+
 export type StrategyFlow = UpdateTime & {
-	view: SerializableObject
+	view: StrategyFlowView
 }
 
 export const isStrategyFlow = objectTypeGuard<StrategyFlow>(
 	({ view, ...updateTime }) =>
-		isSerializableObject(view) && isUpdateTime(updateTime)
+		isStrategyFlowView(view) && isUpdateTime(updateTime)
 )
 
 type CopyStrategyFlowInput = AccountKey & {
@@ -43,3 +47,43 @@ export type WriteStrategyFlow = (
 export type DeleteStrategyFlow = (
 	arg: AccountStrategyKey
 ) => Promise<DeletionTime>
+
+// TODO welcomeFlow should contain "docs" node
+export const welcomeFlow: StrategyFlowView = {
+	nodes: [
+		{
+			id: "aaaaa",
+			text: "candles",
+			ins: [
+				{
+					id: "i0"
+				},
+				{
+					id: "i1"
+				},
+				{
+					id: "i2"
+				}
+			],
+			outs: [
+				{
+					id: "o0"
+				},
+				{
+					id: "o1"
+				},
+				{
+					id: "o2"
+				},
+				{
+					id: "o3"
+				},
+				{
+					id: "o4"
+				}
+			],
+			x: 100,
+			y: 100
+		}
+	]
+}
