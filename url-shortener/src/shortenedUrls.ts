@@ -1,5 +1,6 @@
-import { DeployStage, ENV } from "@workspace/env"
+import { ENV } from "@workspace/env"
 import { FQDN, WebappBaseURL } from "@workspace/locators"
+import { DeployStage } from "@workspace/models"
 
 const dnsDomain = ENV.DNS_DOMAIN()
 const deployStage: DeployStage = "main"

@@ -1,4 +1,5 @@
-import { DeployStage, ENV } from "@workspace/env"
+import { ENV } from "@workspace/env"
+import { DeployStage } from "@workspace/models"
 
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 const DNS_DOMAIN = ENV.DNS_DOMAIN()
