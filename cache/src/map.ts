@@ -1,15 +1,5 @@
 import type { CacheProvider } from "./providers.js"
 
-type TimeToLive = "FIVE_MINUTES" | "ONE_HOUR" | "ONE_DAY" | "ONE_WEEK"
-
-/** A set of time durations expressed in milliseconds. */
-const timeToLiveDuration: Record<TimeToLive, number> = {
-	FIVE_MINUTES: 300_000,
-	ONE_HOUR: 3_600_000,
-	ONE_DAY: 86_400_000,
-	ONE_WEEK: 604_800_000
-}
-
 /**
  * Implements a simple CacheProvider with Maps.
  *
@@ -19,30 +9,42 @@ const timeToLiveDuration: Record<TimeToLive, number> = {
  *   const isValidValueCache = new CacheMap<boolean>()
  *
  *   const isValid async (value: unkown): booelan => {
- *   if (typeof value !== 'string') return false;
- *   // Here the value is used also as its key.
- *   // Return cached value, if any.
- *   const cached = isValidValueCache.get(value);
- *   // Notice that in this case data type is `boolean` so it is necessary to check that
- *   // it is not `undefined`. In most cases `if (cached) return cached;` will be enough.
- *   if (cached !== undefined) return cached;
- *   // Validate value with some logic.
- *   const isValid = await validateValue(value);
- *   // Add result to cache.
- *   isValidValueCache.set(value, isValid);
- *   // Finally return result.
- *   return isValid.
+ *     if (typeof value !== 'string') return false;
+ *     // Here the value is used also as its key.
+ *     // Return cached value, if any.
+ *     const cached = isValidValueCache.get(value);
+ *     // Notice that in this case data type is `boolean` so it is necessary to check that
+ *     // it is not `undefined`. In most cases `if (cached) return cached;` will be enough.
+ *     if (cached !== undefined) return cached;
+ *     // Validate value with some logic.
+ *     const isValid = await validateValue(value);
+ *     // Add result to cache.
+ *     isValidValueCache.set(value, isValid);
+ *     // Finally return result.
+ *     return isValid.
  *   }
  * ```
  */
 export class CacheMap<Data> implements CacheProvider<Data> {
-	readonly timeToLive: TimeToLive | undefined
+	/**
+	 * A time duration expressed in milliseconds.
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const FIVE_MINUTES = 300_000
+	 * const ONE_HOUR = 3_600_000
+	 * const ONE_DAY = 86_400_000
+	 * const ONE_WEEK = 604_800_000
+	 * ```
+	 */
+	readonly timeToLive: number | undefined
 
 	private itemMap = new Map<string, Data>()
 	private timeToLiveMap = new Map<string, number>()
 	private whenUpdatedMap = new Map<string, number>()
 
-	constructor(timeToLive?: TimeToLive) {
+	constructor(timeToLive?: number) {
 		this.timeToLive = timeToLive
 	}
 
@@ -65,7 +67,7 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 			this.delete(key)
 			return
 		}
-		const cacheDuration = timeToLiveDuration[this.timeToLive]
+		const cacheDuration = this.timeToLive
 		const isUpToDate = whenUpdated + cacheDuration > this.currentTimestamp
 		if (!isUpToDate) {
 			this.delete(key)

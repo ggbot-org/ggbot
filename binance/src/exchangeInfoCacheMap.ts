@@ -4,7 +4,8 @@ import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
 import { BinanceExchangeInfo } from "./types.js"
 
 // `isValidSymbolMap` and `exchangeInfoMap` are cached with same duration.
-const exchangeInfoCacheDuration = "ONE_DAY"
+const ONE_DAY = 86_400_000
+const exchangeInfoCacheDuration = ONE_DAY
 
 export class BinanceExchangeInfoCacheMap
 	implements BinanceExchangeInfoCacheProvider

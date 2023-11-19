@@ -3,8 +3,10 @@ import { CacheMap } from "@workspace/cache"
 import { BinanceKlineCacheProvider } from "./cacheProviders.js"
 import { BinanceKline, BinanceKlineInterval } from "./types.js"
 
+const ONE_WEEK = 604_800_000
+
 export class BinanceKlinesCacheMap implements BinanceKlineCacheProvider {
-	private readonly klinesMap = new CacheMap<BinanceKline>("ONE_WEEK")
+	private readonly klinesMap = new CacheMap<BinanceKline>(ONE_WEEK)
 
 	getKline(
 		symbol: string,

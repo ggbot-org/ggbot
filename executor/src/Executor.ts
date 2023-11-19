@@ -40,10 +40,13 @@ import { info, warn } from "./logging.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
+const FIVE_MINUTES = 300_000
+const ONE_HOUR = 3_600_000
+
 export class Executor {
-	accountKeysCache = new CacheMap<AccountKey[]>("ONE_HOUR")
-	accountStrategiesCache = new CacheMap<AccountStrategy[]>("FIVE_MINUTES")
-	subscriptionsCache = new CacheMap<Subscription>("ONE_HOUR")
+	accountKeysCache = new CacheMap<AccountKey[]>(ONE_HOUR)
+	accountStrategiesCache = new CacheMap<AccountStrategy[]>(FIVE_MINUTES)
+	subscriptionsCache = new CacheMap<Subscription>(ONE_HOUR)
 
 	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
