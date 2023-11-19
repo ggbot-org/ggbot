@@ -201,8 +201,8 @@ export class Executor {
 					{ accountId, strategyId, schedulingId },
 					memory
 				)
-				return
 			}
+			return
 		}
 		throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId })
 	}
@@ -286,7 +286,7 @@ export class Executor {
 		strategyId,
 		schedulingId
 	}: AccountStrategySchedulingKey) {
-		info(
+		warn(
 			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
 		)
 
