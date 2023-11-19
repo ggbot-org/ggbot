@@ -60,6 +60,11 @@ export const useUserApi = {
 			apiOptions,
 			"ReadAccount"
 		),
+	ReadAccountStrategies: () =>
+		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
+			apiOptions,
+			"ReadAccountStrategies"
+		),
 	ReadBinanceApiKey: () =>
 		useAction<Authenticated<ReadBinanceApiKey>, UserApiActionType>(
 			apiOptions,
@@ -70,11 +75,6 @@ export const useUserApi = {
 			Authenticated<ReadBinanceApiKeyPermissions>,
 			UserApiActionType
 		>(apiOptions, "ReadBinanceApiKeyPermissions"),
-	ReadStrategies: () =>
-		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
-			apiOptions,
-			"ReadStrategies"
-		),
 	ReadStrategyBalances: () =>
 		useAction<Authenticated<ReadStrategyBalances>, UserApiActionType>(
 			apiOptions,

@@ -15,7 +15,7 @@ export const StrategiesContext = createContext<ContextValue>({
 StrategiesContext.displayName = "Strategies"
 
 export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
-	const READ = useUserApi.ReadStrategies()
+	const READ = useUserApi.ReadAccountStrategies()
 
 	const contextValue = useMemo(() => {
 		const accountStrategies: AccountStrategy[] = []

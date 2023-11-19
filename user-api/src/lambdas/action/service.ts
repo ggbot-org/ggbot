@@ -54,8 +54,8 @@ export class ApiService implements UserApiService {
 		return this.dataProvider.readAccount(this.accountKey)
 	}
 
-	ReadStrategies() {
-		return this.dataProvider.readAccount(this.accountKey)
+	ReadAccountStrategies() {
+		return this.dataProvider.readAccountStrategies(this.accountKey)
 	}
 
 	ReadBinanceApiKey() {
