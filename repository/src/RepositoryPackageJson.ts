@@ -65,9 +65,9 @@ export class RepositoryPackageJson implements FileProvider {
 			private: isPrivate,
 			scripts,
 			workspaces
-		} = (await readFile(
+		} = await readFile<PackageJson>(
 			join(this.directoryPathname, this.filename)
-		)) as PackageJson
+		)
 		this.packageName = name
 		this.dependencies = dependencies
 		this.isPrivate = isPrivate

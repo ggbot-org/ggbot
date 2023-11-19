@@ -30,5 +30,8 @@
     "extends": [
       "@workspace/eslint-config"
     ]
+  },
+  "dependencies": {
+    "type-fest": "4.8.1"
   }
 }
