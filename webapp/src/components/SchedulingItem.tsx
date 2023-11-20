@@ -53,11 +53,11 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
 				left={
 					<LevelItem>
 						<Buttons size="small">
-							<Button onClick={removeScheduling}>
+							<Button isRounded onClick={removeScheduling}>
 								<FormattedMessage id="SchedulingItem.remove" />
 							</Button>
 
-							<Button onClick={onClickStatusButton}>
+							<Button isRounded onClick={onClickStatusButton}>
 								{statusButtonLabel}
 							</Button>
 						</Buttons>

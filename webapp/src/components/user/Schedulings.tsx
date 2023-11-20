@@ -268,6 +268,7 @@ export const Schedulings: FC = () => {
 								<LevelItem>
 									<Buttons>
 										<Button
+											isRounded
 											onClick={addSchedulingItem}
 											size="small"
 										>
