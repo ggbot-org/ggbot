@@ -54,7 +54,7 @@ export const Backtesting: FC = () => {
 		(frequency) => {
 			setFrequencyArg(frequency)
 			if (isFrequency(frequency))
-				dispatch({ type: "SET_FREQUENCY", data: { frequency } })
+				dispatch({ type: "SET_FREQUENCY", frequency })
 		},
 		[dispatch]
 	)
@@ -63,9 +63,7 @@ export const Backtesting: FC = () => {
 		(day) => {
 			dispatch({
 				type: "SET_DAY_INTERVAL",
-				data: {
-					dayInterval: { start: dayInterval.start, end: day }
-				}
+				dayInterval: { start: dayInterval.start, end: day }
 			})
 		},
 		[dispatch, dayInterval]
@@ -75,9 +73,7 @@ export const Backtesting: FC = () => {
 		(day) => {
 			dispatch({
 				type: "SET_DAY_INTERVAL",
-				data: {
-					dayInterval: { start: day, end: dayInterval.end }
-				}
+				dayInterval: { start: day, end: dayInterval.end }
 			})
 		},
 		[dispatch, dayInterval]
@@ -93,10 +89,14 @@ export const Backtesting: FC = () => {
 	}, [dispatch])
 
 	const onClickStart = useCallback(() => {
-		// TODO why this is not working? it is always false
-		// if (!hasRequiredData) return
-		dispatch({ type: "PREPARE" })
-	}, [dispatch /*hasRequiredData*/])
+		dispatch({
+			type: "START",
+			dayInterval,
+			frequency,
+			// TODO set strategy
+			strategy: undefined
+		})
+	}, [dispatch, dayInterval, frequency])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: "PAUSE" })

@@ -54,20 +54,18 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	pause() {
-		if (this.status === "running") {
-			this.status = "paused"
-			return true
-		}
-		return false
+		// Can pause only if status is "running".
+		if (this.status !== "running") return false
+		this.status = "paused"
+		return true
 	}
 
 	resume() {
 		if (!this.canRun) return false
-		if (this.status === "paused") {
-			this.status = "running"
-			return true
-		}
-		return false
+		// Can resume only if status is "paused".
+		if (this.status !== "paused") return false
+		this.status = "running"
+		return true
 	}
 
 	start() {

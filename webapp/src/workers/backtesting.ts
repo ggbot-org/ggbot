@@ -4,7 +4,7 @@
 
 import {
 	BacktestingBinanceClient,
-	BacktestingMessageIn,
+	BacktestingMessageInData,
 	BacktestingMessageOut,
 	BacktestingSession
 } from "@workspace/backtesting"
@@ -47,15 +47,27 @@ const updatedResultMessage = (
 	orders: session.orders
 })
 
-self.onmessage = async (event: MessageEvent<BacktestingMessageIn>) => {
-	const message = event.data
-
+self.onmessage = async ({
+	data: message
+}: MessageEvent<BacktestingMessageInData>) => {
 	if (message.type === "SET_DAY_INTERVAL") {
-		session.dayInterval = message.dayInterval
+		const { dayInterval } = message
+		session.dayInterval = dayInterval
+		self.postMessage({
+			type: "UPDATED_DAY_INTERVAL",
+			dayInterval
+		} satisfies BacktestingMessageOut)
+		return
 	}
 
 	if (message.type === "SET_FREQUENCY") {
-		session.frequency = message.frequency
+		const { frequency } = message
+		session.frequency = frequency
+		self.postMessage({
+			type: "UPDATED_FREQUENCY",
+			frequency
+		} satisfies BacktestingMessageOut)
+		return
 	}
 
 	if (message.type === "START") {
@@ -156,11 +168,13 @@ self.onmessage = async (event: MessageEvent<BacktestingMessageIn>) => {
 		// End session and notify UI.
 		if (session.status === "done")
 			self.postMessage({ type: "STATUS_CHANGED", status: "done" })
+		return
 	}
 
 	if (message.type === "STOP") {
 		const statusChanged = session.stop()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		return
 	}
 
 	if (message.type === "PAUSE") {
@@ -169,10 +183,12 @@ self.onmessage = async (event: MessageEvent<BacktestingMessageIn>) => {
 		// and notify changed status.
 		const statusChanged = session.pause()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		return
 	}
 
 	if (message.type === "RESUME") {
 		const statusChanged = session.resume()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		return
 	}
 }

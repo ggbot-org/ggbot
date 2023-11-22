@@ -4,9 +4,8 @@ import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import { logging } from "_/logging"
 import {
-	BacktestingMessageIn,
-	BacktestingMessageOut,
-	BacktestingSession,
+	BacktestingMessageInData,
+	BacktestingMessageOutData,
 	BacktestingStatus
 } from "@workspace/backtesting"
 import { DflowCommonContext } from "@workspace/dflow"
@@ -51,38 +50,6 @@ type State = Pick<DflowCommonContext, "memory"> & {
 }
 
 export type { State as BacktestingState }
-
-type Action =
-	| {
-			type: "DONE"
-	  }
-	| {
-			type: "PAUSE"
-	  }
-	| {
-			type: "PREPARE"
-	  }
-	| {
-			type: "RESUME"
-	  }
-	| {
-			type: "SET_FREQUENCY"
-			data: Pick<State, "frequency">
-	  }
-	| {
-			type: "SET_DAY_INTERVAL"
-			data: Pick<State, "dayInterval">
-	  }
-	| {
-			type: "START"
-	  }
-	| {
-			type: "STOP"
-	  }
-	| {
-			type: "STATUS_CHANGED"
-			data: Pick<BacktestingSession, "status">
-	  }
 
 const getMaxDay: () => State["maxDay"] = yesterday
 
@@ -146,35 +113,28 @@ export const useBacktesting = (
 	if (!flowViewGraph) hasRequiredData = false
 	if (strategy?.kind === "binance" && !binanceSymbols) hasRequiredData = false
 
-	const [state, dispatch] = useReducer<Reducer<State, Action>>(
+	const [state, dispatch] = useReducer<
+		Reducer<State, BacktestingMessageInData | BacktestingMessageOutData>
+	>(
 		(state, action) => {
 			info(action.type)
 
-			if (["PAUSE", "RESUME", "START", "STOP"].includes(action.type)) {
+			if (
+				[
+					"PAUSE",
+					"RESUME",
+					"START",
+					"STOP",
+					"SET_DAY_INTERVAL",
+					"SET_FREQUENCY"
+				].includes(action.type)
+			) {
 				backtesting.postMessage(action)
 				return state
 			}
 
-			if (action.type === "SET_DAY_INTERVAL") {
-				const message: BacktestingMessageIn = {
-					type: "SET_DAY_INTERVAL",
-					...action.data
-				}
-				backtesting.postMessage(message)
-				return state
-			}
-
-			if (action.type === "SET_FREQUENCY") {
-				const message: BacktestingMessageIn = {
-					type: "SET_FREQUENCY",
-					...action.data
-				}
-				backtesting.postMessage(message)
-				return state
-			}
-
 			if (action.type === "STATUS_CHANGED") {
-				const { status } = action.data
+				const { status } = action
 				if (status === "done")
 					toast.info(formatMessage({ id: "Backtesting.done" }))
 				return {
@@ -182,6 +142,18 @@ export const useBacktesting = (
 					status
 				}
 			}
+
+			if (action.type === "UPDATED_DAY_INTERVAL")
+				return {
+					...state,
+					dayInterval: action.dayInterval
+				}
+
+			if (action.type === "UPDATED_FREQUENCY")
+				return {
+					...state,
+					frequency: action.frequency
+				}
 
 			return state
 		},
@@ -192,15 +164,10 @@ export const useBacktesting = (
 	)
 
 	useEffect(() => {
-		backtesting.onmessage = (
-			event: MessageEvent<BacktestingMessageOut>
-		) => {
-			const message = event.data
-			if (message.type === "STATUS_CHANGED")
-				dispatch({
-					type: "STATUS_CHANGED",
-					data: { status: message.status }
-				})
+		backtesting.onmessage = ({
+			data: action
+		}: MessageEvent<BacktestingMessageOutData>) => {
+			dispatch(action)
 		}
 
 		return () => {

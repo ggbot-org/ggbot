@@ -14,7 +14,18 @@ type BacktestingSessionUpdatedResultData = Pick<
 	"balanceHistory" | "memory" | "orders"
 >
 
-export type BacktestingMessageIn =
+/**
+ * @example
+ *
+ * ```ts
+ *  // File implementing Worker backtesting.js
+ *
+ *  self.onmessage = (event: MessageEvent<BacktestingMessageInData>) => {
+ *    console.log(event.data)
+ *  })
+ * ```
+ */
+export type BacktestingMessageInData =
 	| {
 			type: "PAUSE"
 	  }
@@ -28,15 +39,34 @@ export type BacktestingMessageIn =
 			type: "STOP"
 	  }
 	| {
-			type: "SET_FREQUENCY"
-			frequency: Frequency
-	  }
-	| {
 			type: "SET_DAY_INTERVAL"
 			dayInterval: DayInterval
 	  }
+	| {
+			type: "SET_FREQUENCY"
+			frequency: Frequency
+	  }
 
-export type BacktestingMessageOut =
+/**
+ * @example
+ *
+ * ```ts
+ *  const backtesting = new Worker("/path/to/worker/backtesting.js")
+ *
+ *  backtesting.onmessage = (event: MessageEvent<BacktestingMessageOutData>) => {
+ *    console.log(event.data)
+ *  })
+ * ```
+ */
+export type BacktestingMessageOutData =
+	| {
+			type: "UPDATED_DAY_INTERVAL"
+			dayInterval: DayInterval
+	  }
+	| {
+			type: "UPDATED_FREQUENCY"
+			frequency: Frequency
+	  }
 	| {
 			type: "STATUS_CHANGED"
 			status: BacktestingStatus
