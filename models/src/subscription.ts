@@ -14,7 +14,7 @@ export const shouldPurchaseSubscription = (
 	)
 }
 
-const subscriptionPlans = ["basic"] as const
+const subscriptionPlans = ["basic", "pro"] as const
 export type SubscriptionPlan = (typeof subscriptionPlans)[number]
 export const isSubscriptionPlan =
 	isLiteralType<SubscriptionPlan>(subscriptionPlans)

@@ -15,10 +15,12 @@ export const quota: Record<
 > = {
 	MAX_STRATEGIES_PER_ACCOUNT: (plan) => {
 		if (plan === "basic") return 20
+		if (plan === "pro") return 50
 		return 2
 	},
 	MAX_SCHEDULINGS_PER_ACCOUNT: (plan) => {
 		if (plan === "basic") return 10
+		if (plan === "pro") return 30
 		return 0
 	}
 }

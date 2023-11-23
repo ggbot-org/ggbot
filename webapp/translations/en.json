@@ -497,6 +497,12 @@
 	"SubscriptionPlan.label": {
 		"defaultMessage": "Plan"
 	},
+	"SubscriptionPlan.basic": {
+		"defaultMessage": "Basic"
+	},
+	"SubscriptionPlan.pro": {
+		"defaultMessage": "Pro"
+	},
 	"SubscriptionPurchase.button": {
 		"defaultMessage": "Buy"
 	},

@@ -14,6 +14,8 @@ export const SubscriptionEnd: FC<SubscriptionEndProps> = ({
 }) => {
 	const { formatDate, formatMessage } = useIntl()
 
+	if (!value) return null
+
 	return (
 		<InputField
 			readOnly
