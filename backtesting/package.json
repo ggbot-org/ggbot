@@ -13,7 +13,9 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "rm -rf dist/ temp/",
-    "lint": "eslint --fix --ext .ts src/"
+    "lint": "eslint --fix --ext .ts src/",
+    "pretest": "tsc --build tsconfig.test.json",
+    "test": "node --test"
   },
   "dependencies": {
     "@workspace/binance": "0.0.0",

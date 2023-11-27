@@ -6,7 +6,7 @@ import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
-const strategyKinds = ["binance"] as const
+const strategyKinds = ["binance", "test"] as const
 export type StrategyKind = (typeof strategyKinds)[number]
 const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds)
 

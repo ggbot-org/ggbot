@@ -17,8 +17,6 @@ import { BacktestingStrategy } from "./strategy.js"
 
 export class BacktestingSession implements BacktestingStatusController {
 	balanceHistory: BalanceChangeEvent[]
-	dayInterval: DayInterval | undefined
-	frequency: Frequency | undefined
 	memory: StrategyMemory
 	orders: Order[]
 	status: BacktestingStatus
@@ -26,7 +24,12 @@ export class BacktestingSession implements BacktestingStatusController {
 	strategy: BacktestingStrategy | undefined
 	times: Time[]
 
+	private _dayInterval: DayInterval | undefined
+	private _frequency: Frequency | undefined
+
 	constructor() {
+		this._dayInterval = undefined
+		this._frequency = undefined
 		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
@@ -46,11 +49,29 @@ export class BacktestingSession implements BacktestingStatusController {
 		return Math.floor(this.times.length / this.stepIndex)
 	}
 
+	get dayInterval(): DayInterval | undefined {
+		return this._dayInterval
+	}
+
+	get frequency(): Frequency | undefined {
+		return this._frequency
+	}
+
 	get nextTime() {
 		const time = this.times[this.stepIndex]
 		this.stepIndex++
 		if (this.times.length === this.stepIndex) this.status === "done"
 		return time
+	}
+
+	set dayInterval(value: DayInterval) {
+		if (this.status !== "initial") return
+		this._dayInterval = value
+	}
+
+	set frequency(value: Frequency) {
+		if (this.status !== "initial") return
+		this._frequency = value
 	}
 
 	pause() {
