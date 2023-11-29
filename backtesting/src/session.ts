@@ -9,8 +9,7 @@ import {
 	dateToTime,
 	DayInterval,
 	dayIntervalToDate,
-	Time
-} from "minimal-time-helpers"
+	Time} from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -58,10 +57,11 @@ export class BacktestingSession implements BacktestingStatusController {
 		return this._frequency
 	}
 
-	get nextTime() {
+	get nextTime(): Time | undefined {
+		if (this.status !== "running") return
 		const time = this.times[this.stepIndex]
 		this.stepIndex++
-		if (this.times.length === this.stepIndex) this.status === "done"
+		if (this.times.length === this.stepIndex) this.status = "done"
 		return time
 	}
 

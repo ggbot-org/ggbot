@@ -2,7 +2,7 @@ import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
 import { Frequency } from "@workspace/models"
-import { DayInterval } from "minimal-time-helpers"
+import { DayInterval, isTime,Time } from "minimal-time-helpers"
 
 import { BacktestingSession } from "./session.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -26,6 +26,21 @@ const newSession = ({
 }
 
 void describe("BacktestingSession", () => {
+	void test("`canRun` is true only when `dayInterval`, `frequency` and `strategy` are provided", () => {
+		const session = new BacktestingSession()
+		assert.ok(!session.canRun)
+		session.dayInterval = {
+			start: "2000-01-01",
+			end: "2001-01-01"
+		}
+		session.frequency = { every: 1, interval: "1h" }
+		assert.ok(!session.canRun)
+		session.strategy = emptyStrategy()
+		assert.ok(!session.canRun)
+		session.computeTimes()
+		assert.ok(session.canRun)
+	})
+
 	void test('cannot set `dayInterval` while `status` is "running"', () => {
 		const dayInterval1: DayInterval = {
 			start: "2000-01-01",
@@ -124,5 +139,27 @@ void describe("BacktestingSession", () => {
 		session.stop()
 		session.strategy = strategy2
 		assert.deepEqual(session.strategy?.toValue(), strategy2.toValue())
+	})
+
+	void test('`nextTime` return Time if status is "running"', () => {
+		const session = newSession({
+			dayInterval: {
+				start: "2000-01-01",
+				end: "2000-01-01"
+			},
+			frequency: { every: 1, interval: "1h" },
+			strategy: emptyStrategy()
+		})
+		assert.equal(session.nextTime, undefined)
+		session.start()
+		let hour = 1
+		let time: Time | undefined
+		while ((time = session.nextTime)) {
+			assert.ok(isTime(time))
+			if (!time) continue
+			assert.equal(new Date(time).getHours(), hour % 24)
+			hour++
+		}
+		assert.equal(session.status, "done")
 	})
 })
