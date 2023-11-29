@@ -5,6 +5,7 @@ import { Frequency } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 
 import { BacktestingSession } from "./session.js"
+import { BacktestingStrategy } from "./strategy.js"
 import { emptyStrategy } from "./strategy_test.js"
 
 const newSession = ({
@@ -14,7 +15,7 @@ const newSession = ({
 }: {
 	dayInterval: NonNullable<BacktestingSession["dayInterval"]>
 	frequency: NonNullable<BacktestingSession["frequency"]>
-	strategy: BacktestingSession["strategy"]
+	strategy: NonNullable<BacktestingSession["strategy"]>
 }) => {
 	const session = new BacktestingSession()
 	session.strategy = strategy
@@ -89,5 +90,39 @@ void describe("BacktestingSession", () => {
 		session.stop()
 		session.frequency = frequency2
 		assert.deepEqual(session.frequency, frequency2)
+	})
+
+	void test('cannot set `strategy` while `status` is "running"', () => {
+		const strategy1 = emptyStrategy()
+		const strategy2 = new BacktestingStrategy({
+			params: {},
+			strategyKey: { strategyKind: "test", strategyId: "01010101" },
+			view: { nodes: [{ id: "a", text: "true" }], edges: [] }
+		})
+		const session = newSession({
+			dayInterval: {
+				start: "2000-01-01",
+				end: "2001-01-01"
+			},
+			frequency: { every: 1, interval: "1h" },
+			strategy: strategy1
+		})
+		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		// Session is "running", `strategy` modifier does not apply.
+		session.start()
+		session.strategy = strategy2
+		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		// Session is "paused", `strategy` modifier does not apply.
+		session.pause()
+		session.strategy = strategy2
+		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		// Session is resumed, so it is "running" again, `strategy` modifier does not apply.
+		session.resume()
+		session.strategy = strategy2
+		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		// Session is not "running" nor "paused", `strategy` modifier can set new value.
+		session.stop()
+		session.strategy = strategy2
+		assert.deepEqual(session.strategy?.toValue(), strategy2.toValue())
 	})
 })

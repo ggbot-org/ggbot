@@ -21,15 +21,16 @@ export class BacktestingSession implements BacktestingStatusController {
 	orders: Order[]
 	status: BacktestingStatus
 	stepIndex: number
-	strategy: BacktestingStrategy | undefined
 	times: Time[]
 
 	private _dayInterval: DayInterval | undefined
 	private _frequency: Frequency | undefined
+	private _strategy: BacktestingStrategy | undefined
 
 	constructor() {
 		this._dayInterval = undefined
 		this._frequency = undefined
+		this._strategy = undefined
 		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
@@ -40,7 +41,7 @@ export class BacktestingSession implements BacktestingStatusController {
 
 	get canRun(): boolean {
 		if (this.times.length === 0) return false
-		if (!this.strategy) return false
+		if (!this._strategy) return false
 		return true
 	}
 
@@ -64,6 +65,10 @@ export class BacktestingSession implements BacktestingStatusController {
 		return time
 	}
 
+	get strategy(): BacktestingStrategy | undefined {
+		return this._strategy
+	}
+
 	set dayInterval(value: DayInterval) {
 		if (this.status !== "initial") return
 		this._dayInterval = value
@@ -72,6 +77,11 @@ export class BacktestingSession implements BacktestingStatusController {
 	set frequency(value: Frequency) {
 		if (this.status !== "initial") return
 		this._frequency = value
+	}
+
+	set strategy(value: BacktestingStrategy) {
+		if (this.status !== "initial") return
+		this._strategy = value
 	}
 
 	pause() {
