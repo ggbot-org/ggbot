@@ -4,12 +4,10 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { isStrategyMemory, StrategyMemory } from "./strategyMemory.js"
+import { invalidIdentifierStrings } from "./strings_test.js"
 
-const keyTooLong = "x".repeat(999)
-const invalidKeys = ["", keyTooLong]
-
-describe("isStrategyMemory", () => {
-	test("validates StrategyMemory", () => {
+void describe("isStrategyMemory", () => {
+	void test("validates StrategyMemory", () => {
 		assertEqual<MaybeObject<StrategyMemory>, boolean>(isStrategyMemory, [
 			{
 				input: {},
@@ -23,8 +21,8 @@ describe("isStrategyMemory", () => {
 				},
 				output: true
 			},
-			...invalidKeys.map((invalidKey) => ({
-				input: { [invalidKey]: "value" },
+			...invalidIdentifierStrings.map((key) => ({
+				input: { [key]: "value" },
 				output: false
 			}))
 		])

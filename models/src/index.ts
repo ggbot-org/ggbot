@@ -101,7 +101,7 @@ export type { Language } from "./languages.js"
 export { defaultLanguage, languages } from "./languages.js"
 export { isName, normalizeName, throwIfInvalidName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
-export { isNaturalNumber } from "./numbers.js"
+export { isFiniteNumber, isNaturalNumber } from "./numbers.js"
 export type { EmptyObject } from "./objects.js"
 export type {
 	CreateOneTimePassword,
@@ -125,8 +125,15 @@ export {
 	schedulingsAreInactive,
 	schedulingStatuses
 } from "./scheduling.js"
-export type { SerializableData, SerializableObject } from "./serializable.js"
-export { isSerializableObject } from "./serializable.js"
+export type {
+	SerializableData,
+	SerializableObject,
+	SerializablePrimitive
+} from "./serializable.js"
+export {
+	isSerializableObject,
+	isSerializablePrimitive
+} from "./serializable.js"
 export type { Service } from "./service.js"
 export type {
 	CopyStrategy,
@@ -175,24 +182,21 @@ export {
 	isWriteStrategyFlowInput,
 	welcomeFlow
 } from "./strategyFlow.js"
-export type { StrategyMemory, StrategyMemoryValue } from "./strategyMemory.js"
-export { isStrategyMemoryKey, isStrategyMemoryValue } from "./strategyMemory.js"
+export type { StrategyMemory } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"
 export type { StrategyParameters } from "./strategyParameters.js"
-export {
-	isStrategyParameterKey,
-	isStrategyParameterNumber,
-	isStrategyParameterString
-} from "./strategyParameters.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"
 export {
 	isStrategyScheduling,
 	newStrategyScheduling
 } from "./strategyScheduling.js"
 export type { NonEmptyString } from "./strings.js"
-export { stringMaxLength } from "./strings.js"
-export { isNonEmptyString } from "./strings.js"
+export {
+	isIdentifierString,
+	isNonEmptyString,
+	stringMaxLength
+} from "./strings.js"
 export type {
 	ReadSubscription,
 	Subscription,

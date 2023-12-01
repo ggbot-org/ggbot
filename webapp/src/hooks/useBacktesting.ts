@@ -1,7 +1,6 @@
 import { StrategyContext } from "_/contexts/Strategy"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import { logging } from "_/logging"
 import {
 	BacktestingMessageInData,
@@ -16,7 +15,6 @@ import {
 	frequencyIntervalDuration,
 	Order
 } from "@workspace/models"
-import { FlowViewSerializableGraph } from "flow-view"
 import {
 	dateToTimestamp,
 	Day,
@@ -40,7 +38,6 @@ type State = Pick<DflowCommonContext, "memory"> & {
 	dayInterval: DayInterval
 	frequency: Frequency
 	isPaused: boolean
-	isPreparing: boolean
 	isRunning: boolean
 	isReadOnly: boolean
 	maxDay: Day
@@ -84,7 +81,6 @@ const getInitialState = ({
 		dayInterval,
 		frequency,
 		isPaused: false,
-		isPreparing: false,
 		isReadOnly: false,
 		isRunning: false,
 		maxDay: getMaxDay(),
@@ -97,21 +93,15 @@ const getInitialState = ({
 
 const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
 
-export const useBacktesting = (
-	flowViewGraph: FlowViewSerializableGraph | undefined
-) => {
+export const useBacktesting = () => {
 	const { formatMessage } = useIntl()
 
+	const { strategyKey } = useContext(StrategyContext)
+	const { flowViewGraph } = useContext(StrategyFlowContext)
 	const { toast } = useContext(ToastContext)
-	const { strategy } = useContext(StrategyContext)
-
-	const binanceSymbols = useBinanceSymbols()
-	const nodesCatalog = useNodesCatalog()
 
 	let hasRequiredData = true
-	if (!nodesCatalog) hasRequiredData = false
 	if (!flowViewGraph) hasRequiredData = false
-	if (strategy?.kind === "binance" && !binanceSymbols) hasRequiredData = false
 
 	const [state, dispatch] = useReducer<
 		Reducer<State, BacktestingMessageInData | BacktestingMessageOutData>
@@ -126,7 +116,9 @@ export const useBacktesting = (
 					"START",
 					"STOP",
 					"SET_DAY_INTERVAL",
-					"SET_FREQUENCY"
+					"SET_FREQUENCY",
+					"SET_STRATEGY",
+					"SET_STRATEGY_VIEW"
 				].includes(action.type)
 			) {
 				backtesting.postMessage(action)
@@ -162,6 +154,17 @@ export const useBacktesting = (
 			dayInterval: defaultDayInterval()
 		})
 	)
+
+	useEffect(() => {
+		if (!strategyKey) return
+		dispatch({ type: "SET_STRATEGY_KEY", strategyKey })
+	}, [dispatch, strategyKey])
+
+	useEffect(() => {
+		if (!strategyKey) return
+		if (!flowViewGraph) return
+		dispatch({ type: "SET_STRATEGY_VIEW", view: flowViewGraph })
+	}, [dispatch, flowViewGraph, strategyKey])
 
 	useEffect(() => {
 		backtesting.onmessage = ({

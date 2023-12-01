@@ -1,6 +1,7 @@
 import {
-	isStrategyParameterKey,
-	isStrategyParameterString
+	isNonEmptyString,
+	isSerializablePrimitive,
+	SerializablePrimitive
 } from "@workspace/models"
 import { DflowNode } from "dflow"
 
@@ -22,15 +23,12 @@ export class SymbolParameter extends DflowNode {
 		const { binance, params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (
-			!isStrategyParameterKey(key) ||
-			!isStrategyParameterString(defaultValue)
-		)
+		if (!isNonEmptyString(key) || !isSerializablePrimitive(defaultValue))
 			return this.clearOutputs()
-		let value = defaultValue
+		let value: SerializablePrimitive = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
-			if (isStrategyParameterString(inputValue)) value = inputValue
+			if (isSerializablePrimitive(inputValue)) value = inputValue
 		}
 		const isBinanceSymbol = await binance.isBinanceSymbol(value)
 		if (!isBinanceSymbol) return this.clearOutputs()
@@ -46,15 +44,12 @@ export class IntervalParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (
-			!isStrategyParameterKey(key) ||
-			!isStrategyParameterString(defaultValue)
-		)
+		if (!isNonEmptyString(key) || !isSerializablePrimitive(defaultValue))
 			return this.clearOutputs()
-		let value = defaultValue
+		let value: SerializablePrimitive = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
-			if (isStrategyParameterString(inputValue)) value = inputValue
+			if (isSerializablePrimitive(inputValue)) value = inputValue
 		}
 		if (!isDflowBinanceKlineInterval(value)) return this.clearOutputs()
 		this.output(0).data = value

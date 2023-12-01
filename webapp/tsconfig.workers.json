@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"lib": ["esnext"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"noFallthroughCasesInSwitch": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.workers.tsbuildinfo",
+		"useDefineForClassFields": true
+	},
+	"exclude": ["node_modules"],
+	"include": ["src/workers/*.ts"]
+}

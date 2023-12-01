@@ -5,7 +5,6 @@ import { BacktestingStrategy } from "./strategy.js"
 
 export const emptyStrategy = () =>
 	new BacktestingStrategy({
-		params: {},
 		strategyKey: { strategyKind: "test", strategyId: "00000000" },
 		view: { nodes: [], edges: [] }
 	})

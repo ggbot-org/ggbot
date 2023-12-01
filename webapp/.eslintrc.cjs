@@ -11,7 +11,9 @@ module.exports = {
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true
-		}
+		},
+		project: ["./tsconfig.json", "./tsconfig.workers.json"],
+		tsconfigRootDir: __dirname
 	},
 	plugins: [
 		"@typescript-eslint",
@@ -53,6 +55,12 @@ module.exports = {
 				varsIgnorePattern: "^_"
 			}
 		],
+		// @typescript-eslint/unbound-method rule is not compatible with hooks,
+		// it reports this as an error:
+		// ```ts
+		// const { formatMessage } = useIntl()
+		// ```
+		"@typescript-eslint/unbound-method": "off",
 		"arrow-body-style": ["error", "as-needed"],
 		"block-scoped-var": "error",
 		"default-param-last": "error",

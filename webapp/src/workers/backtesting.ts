@@ -5,8 +5,9 @@
 import {
 	BacktestingBinanceClient,
 	BacktestingMessageInData,
-	BacktestingMessageOut,
-	BacktestingSession
+	BacktestingMessageOutData,
+	BacktestingSession,
+	BacktestingStrategy
 } from "@workspace/backtesting"
 import {
 	binanceKlineMaxLimit,
@@ -16,11 +17,13 @@ import {
 import {
 	DflowBinanceExecutor,
 	DflowExecutorView,
+	emptyFlow,
 	extractBinanceFlowSymbolsAndIntervalsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import { newOrder } from "@workspace/models"
 import { FlowViewSerializableGraph } from "flow-view"
+import { Time } from "minimal-time-helpers"
 
 let binanceNodesCatalogShouldBeInitialized = false
 const binanceClient = new BacktestingBinanceClient()
@@ -33,14 +36,14 @@ const session = new BacktestingSession()
 
 const statusChangedMessage = (
 	session: BacktestingSession
-): BacktestingMessageOut => ({
+): BacktestingMessageOutData => ({
 	type: "STATUS_CHANGED",
 	status: session.status
 })
 
 const updatedResultMessage = (
 	session: BacktestingSession
-): BacktestingMessageOut => ({
+): BacktestingMessageOutData => ({
 	type: "UPDATED_RESULT",
 	balanceHistory: session.balanceHistory,
 	memory: session.memory,
@@ -56,7 +59,7 @@ self.onmessage = async ({
 		self.postMessage({
 			type: "UPDATED_DAY_INTERVAL",
 			dayInterval
-		} satisfies BacktestingMessageOut)
+		} satisfies BacktestingMessageOutData)
 		return
 	}
 
@@ -66,27 +69,39 @@ self.onmessage = async ({
 		self.postMessage({
 			type: "UPDATED_FREQUENCY",
 			frequency
-		} satisfies BacktestingMessageOut)
+		} satisfies BacktestingMessageOutData)
+		return
+	}
+
+	if (message.type === "SET_STRATEGY_KEY") {
+		const { strategyKey } = message
+		const strategy = new BacktestingStrategy({
+			strategyKey,
+			view: emptyFlow()
+		})
+		session.strategy = strategy
+		return
+	}
+
+	if (message.type === "SET_STRATEGY_VIEW") {
+		const { view } = message
+		const { strategy } = session
+		if (strategy) strategy.view = view
 		return
 	}
 
 	if (message.type === "START") {
-		const { dayInterval, frequency, strategy } = message
-		// Set session `strategy`.
-		if (!strategy) return
-		session.strategy = strategy
-		const {
-			strategyKey: { strategyKind }
-		} = strategy
-		// Set session `frequency` and `dayInterval`, then compute timestamps.
-		if (!frequency || !dayInterval) return
-		session.dayInterval = message.dayInterval
-		session.frequency = message.frequency
-		session.computeTimes()
-		// Start session and notify UI.
+		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		if (!session.canRun) return
 		// Run backtesting according to given `strategyKind`.
+		const { strategy } = session
+		if (!strategy) return
+		const {
+			strategyKey: { strategyKind },
+			view
+		} = strategy
 		const percentageStep = 5
 		let completionPercentage = percentageStep
 		if (strategyKind === "binance") {
@@ -109,7 +124,7 @@ self.onmessage = async ({
 				extractBinanceFlowSymbolsAndIntervalsFromFlow(
 					binanceSymbols,
 					// TODO should not use a cast,
-					session.strategy.view as FlowViewSerializableGraph
+					view as FlowViewSerializableGraph
 				)
 
 			const firstTime = session.times[0]
@@ -123,7 +138,7 @@ self.onmessage = async ({
 							binanceKlineMaxLimit
 						)
 					)
-					binanceClient.klines(symbol, interval, {
+					await binanceClient.klines(symbol, interval, {
 						limit: binanceKlineMaxLimit,
 						endTime
 					})
@@ -132,9 +147,9 @@ self.onmessage = async ({
 			// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
 			// TODO
 
-			while (session.status === "running") {
+			let time: Time | undefined
+			while ((time = session.nextTime)) {
 				// Run executor.
-				const time = session.nextTime
 				binanceClient.time = time
 				const { balances, memory, orders } = await binanceExecutor.run(
 					{
@@ -145,7 +160,7 @@ self.onmessage = async ({
 					},
 					// TODO should not use a cast,
 					// also DflowExecutorView is not a nice name
-					session.strategy.view as DflowExecutorView
+					view as DflowExecutorView
 				)
 				if (balances.length > 0)
 					session.balanceHistory.push({

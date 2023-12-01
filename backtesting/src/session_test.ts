@@ -2,7 +2,7 @@ import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
 import { Frequency } from "@workspace/models"
-import { DayInterval, isTime,Time } from "minimal-time-helpers"
+import { DayInterval, isTime, Time } from "minimal-time-helpers"
 
 import { BacktestingSession } from "./session.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -110,7 +110,6 @@ void describe("BacktestingSession", () => {
 	void test('cannot set `strategy` while `status` is "running"', () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
-			params: {},
 			strategyKey: { strategyKind: "test", strategyId: "01010101" },
 			view: { nodes: [{ id: "a", text: "true" }], edges: [] }
 		})
@@ -122,23 +121,62 @@ void describe("BacktestingSession", () => {
 			frequency: { every: 1, interval: "1h" },
 			strategy: strategy1
 		})
-		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
+		assert.deepEqual(session.strategy?.view, strategy1.view)
 		// Session is "running", `strategy` modifier does not apply.
 		session.start()
 		session.strategy = strategy2
-		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
+		assert.deepEqual(session.strategy?.view, strategy1.view)
 		// Session is "paused", `strategy` modifier does not apply.
 		session.pause()
 		session.strategy = strategy2
-		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
+		assert.deepEqual(session.strategy?.view, strategy1.view)
 		// Session is resumed, so it is "running" again, `strategy` modifier does not apply.
 		session.resume()
 		session.strategy = strategy2
-		assert.deepEqual(session.strategy?.toValue(), strategy1.toValue())
+		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
+		assert.deepEqual(session.strategy?.view, strategy1.view)
 		// Session is not "running" nor "paused", `strategy` modifier can set new value.
 		session.stop()
 		session.strategy = strategy2
-		assert.deepEqual(session.strategy?.toValue(), strategy2.toValue())
+		assert.deepEqual(session.strategy?.strategyKey, strategy2.strategyKey)
+		assert.deepEqual(session.strategy?.view, strategy2.view)
+	})
+
+	void test('cannot set `strategyView` while `status` is "running"', () => {
+		const strategy = emptyStrategy()
+		const strategyView1 = strategy.view
+		const strategyView2: BacktestingStrategy["view"] = {
+			nodes: [{ id: "a", text: "true" }],
+			edges: []
+		}
+		const session = newSession({
+			dayInterval: {
+				start: "2000-01-01",
+				end: "2001-01-01"
+			},
+			frequency: { every: 1, interval: "1h" },
+			strategy
+		})
+		assert.deepEqual(session.strategy?.view, strategyView1)
+		// Session is "running", `strategy` modifier does not apply.
+		session.start()
+		session.strategyView = strategyView2
+		assert.deepEqual(session.strategy?.view, strategyView1)
+		// Session is "paused", `strategy` modifier does not apply.
+		session.pause()
+		session.strategyView = strategyView2
+		assert.deepEqual(session.strategy?.view, strategyView1)
+		// Session is resumed, so it is "running" again, `strategy` modifier does not apply.
+		session.resume()
+		session.strategyView = strategyView2
+		assert.deepEqual(session.strategy?.view, strategyView1)
+		// Session is not "running" nor "paused", `strategy` modifier can set new value.
+		session.stop()
+		session.strategyView = strategyView2
+		assert.deepEqual(session.strategy?.view, strategyView2)
 	})
 
 	void test('`nextTime` return Time if status is "running"', () => {

@@ -1,4 +1,3 @@
-// TODO Check also strings has no line terminator
 export type FiniteString = string
 
 export const stringMaxLength = 256
@@ -11,3 +10,12 @@ export type NonEmptyString<T = string> = T extends "" ? never : T
 export const isNonEmptyString = (
 	arg: unknown
 ): arg is NonEmptyString<FiniteString> => isFiniteString(arg) && arg !== ""
+
+/**
+ * A string is an `IdentifierString` if it is finite, not empty and has no line
+ * break.
+ */
+export type IdentifierString = NonEmptyString<FiniteString>
+
+export const isIdentifierString = (arg: unknown): arg is IdentifierString =>
+	isNonEmptyString(arg) && arg === arg.replace(/[\r\n]/gm, "")

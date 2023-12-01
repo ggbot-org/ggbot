@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 export type BacktestingProgressProps = Pick<
 	BacktestingState,
-	"currentTimestamp" | "dayInterval" | "isPreparing"
+	"currentTimestamp" | "dayInterval"
 > &
 	Pick<BacktestingOutput, "hasRequiredData"> & {
 		progress: Pick<ProgressProps, "value" | "max">
@@ -18,7 +18,6 @@ export type BacktestingProgressProps = Pick<
 export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 	dayInterval,
 	hasRequiredData,
-	isPreparing,
 	progress,
 	currentTimestamp
 }) => {
@@ -46,25 +45,12 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 				<FormattedMessage id="BacktestingProgress.title" />
 			</Title>
 
-			{isPreparing ? (
-				<>
-					<Progress />
+			<Progress {...progress} />
 
-					<FormattedMessage
-						id="BacktestingProgress.preparing"
-						values={progress}
-					/>
-				</>
-			) : (
-				<>
-					<Progress {...progress} />
-
-					<FormattedMessage
-						id="BacktestingProgress.intervals"
-						values={progress}
-					/>
-				</>
-			)}
+			<FormattedMessage
+				id="BacktestingProgress.intervals"
+				values={progress}
+			/>
 
 			<Flex direction="column" spacing={{ my: 2 }}>
 				<Flex>

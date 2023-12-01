@@ -1,14 +1,14 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { StrategyMemoryValue } from "@workspace/models"
+import { SerializablePrimitive } from "@workspace/models"
 import { now } from "minimal-time-helpers"
 
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
-describe("deleteMemory", () => {
-	test("can delete context memory", async () => {
+void describe("deleteMemory", () => {
+	void test("can delete context memory", async () => {
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [
@@ -36,9 +36,9 @@ describe("deleteMemory", () => {
 	})
 })
 
-describe("getMemory", () => {
-	test("can read context memory", async () => {
-		const testValues: StrategyMemoryValue[] = [42, "a string"]
+void describe("getMemory", () => {
+	void test("can read context memory", async () => {
+		const testValues: SerializablePrimitive[] = [42, "a string"]
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
 				view: {
@@ -69,8 +69,8 @@ describe("getMemory", () => {
 	})
 })
 
-describe("setMemory", () => {
-	test("can set context memory", async () => {
+void describe("setMemory", () => {
+	void test("can set context memory", async () => {
 		const executor = new DflowExecutorMock({
 			view: {
 				nodes: [

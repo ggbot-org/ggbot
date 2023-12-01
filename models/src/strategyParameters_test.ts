@@ -7,13 +7,12 @@ import {
 	isStrategyParameters,
 	StrategyParameters
 } from "./strategyParameters.js"
+import { invalidIdentifierStrings } from "./strings_test.js"
 
-const keyTooLong = "x".repeat(999)
-const invalidKeys = ["", keyTooLong]
 const invalidValues = ["", Infinity, []]
 
-describe("isStrategyParameters", () => {
-	test("validates StrategyParams", () => {
+void describe("isStrategyParameters", () => {
+	void test("validates StrategyParams", () => {
 		assertEqual<MaybeObject<StrategyParameters>, boolean>(
 			isStrategyParameters,
 			[
@@ -29,8 +28,8 @@ describe("isStrategyParameters", () => {
 					},
 					output: true
 				},
-				...invalidKeys.map((invalidKey) => ({
-					input: { [invalidKey]: "value" },
+				...invalidIdentifierStrings.map((key) => ({
+					input: { [key]: "value" },
 					output: false
 				})),
 				...invalidValues.map((invalidValue) => ({

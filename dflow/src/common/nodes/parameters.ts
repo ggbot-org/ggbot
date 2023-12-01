@@ -1,7 +1,7 @@
 import {
-	isStrategyParameterKey,
-	isStrategyParameterNumber,
-	isStrategyParameterString
+	isFiniteNumber,
+	isIdentifierString,
+	isNonEmptyString
 } from "@workspace/models"
 import { DflowNode } from "dflow"
 
@@ -18,7 +18,7 @@ export class BooleanParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isStrategyParameterKey(key) || typeof defaultValue !== "boolean")
+		if (!isIdentifierString(key) || typeof defaultValue !== "boolean")
 			return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
@@ -37,15 +37,12 @@ export class NumberParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (
-			!isStrategyParameterKey(key) ||
-			!isStrategyParameterNumber(defaultValue)
-		)
+		if (!isIdentifierString(key) || !isFiniteNumber(defaultValue))
 			return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
-			if (isStrategyParameterNumber(inputValue)) value = inputValue
+			if (isFiniteNumber(inputValue)) value = inputValue
 		}
 		this.output(0).data = value
 	}
@@ -59,15 +56,12 @@ export class StringParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (
-			!isStrategyParameterKey(key) ||
-			!isStrategyParameterString(defaultValue)
-		)
+		if (!isIdentifierString(key) || !isNonEmptyString(defaultValue))
 			return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
-			if (isStrategyParameterString(inputValue)) value = inputValue
+			if (isNonEmptyString(inputValue)) value = inputValue
 		}
 		this.output(0).data = value
 	}

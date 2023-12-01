@@ -9,7 +9,8 @@ import {
 	dateToTime,
 	DayInterval,
 	dayIntervalToDate,
-	Time} from "minimal-time-helpers"
+	Time
+} from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
@@ -84,14 +85,34 @@ export class BacktestingSession implements BacktestingStatusController {
 		this._strategy = value
 	}
 
-	pause() {
+	set strategyView(value: BacktestingStrategy["view"]) {
+		if (this.status !== "initial") return
+		if (this._strategy === undefined) return
+		this._strategy.view = value
+	}
+
+	/**
+	 * @example
+	 *
+	 * ```ts
+	 * const statusChanged = session.pause()
+	 * ```
+	 */
+	pause(): boolean {
 		// Can pause only if status is "running".
 		if (this.status !== "running") return false
 		this.status = "paused"
 		return true
 	}
 
-	resume() {
+	/**
+	 * @example
+	 *
+	 * ```ts
+	 * const statusChanged = session.resume()
+	 * ```
+	 */
+	resume(): boolean {
 		if (!this.canRun) return false
 		// Can resume only if status is "paused".
 		if (this.status !== "paused") return false
@@ -99,7 +120,14 @@ export class BacktestingSession implements BacktestingStatusController {
 		return true
 	}
 
-	start() {
+	/**
+	 * @example
+	 *
+	 * ```ts
+	 * const statusChanged = session.start()
+	 * ```
+	 */
+	start(): boolean {
 		if (!this.canRun) return false
 		// Can start only if status is "initial" or "done".
 		// In case status is "done" and input parameters are unchanged
@@ -114,7 +142,14 @@ export class BacktestingSession implements BacktestingStatusController {
 		return true
 	}
 
-	stop() {
+	/**
+	 * @example
+	 *
+	 * ```ts
+	 * const statusChanged = session.stop()
+	 * ```
+	 */
+	stop(): boolean {
 		if (this.status === "running") {
 			this.status = "initial"
 			return true

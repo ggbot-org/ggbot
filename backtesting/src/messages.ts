@@ -3,16 +3,7 @@ import { DayInterval } from "minimal-time-helpers"
 
 import { BacktestingSession } from "./session.js"
 import { BacktestingStatus } from "./status.js"
-
-type BacktestingSessionStartData = Pick<
-	BacktestingSession,
-	"dayInterval" | "frequency" | "strategy"
->
-
-type BacktestingSessionUpdatedResultData = Pick<
-	BacktestingSession,
-	"balanceHistory" | "memory" | "orders"
->
+import { BacktestingStrategy } from "./strategy.js"
 
 /**
  * @example
@@ -32,9 +23,9 @@ export type BacktestingMessageInData =
 	| {
 			type: "RESUME"
 	  }
-	| (BacktestingSessionStartData & {
+	| {
 			type: "START"
-	  })
+	  }
 	| {
 			type: "STOP"
 	  }
@@ -46,6 +37,12 @@ export type BacktestingMessageInData =
 			type: "SET_FREQUENCY"
 			frequency: Frequency
 	  }
+	| (Pick<BacktestingStrategy, "strategyKey"> & {
+			type: "SET_STRATEGY_KEY"
+	  })
+	| (Pick<BacktestingStrategy, "view"> & {
+			type: "SET_STRATEGY_VIEW"
+	  })
 
 /**
  * @example
@@ -60,6 +57,10 @@ export type BacktestingMessageInData =
  */
 export type BacktestingMessageOutData =
 	| {
+			type: "STATUS_CHANGED"
+			status: BacktestingStatus
+	  }
+	| {
 			type: "UPDATED_DAY_INTERVAL"
 			dayInterval: DayInterval
 	  }
@@ -67,10 +68,6 @@ export type BacktestingMessageOutData =
 			type: "UPDATED_FREQUENCY"
 			frequency: Frequency
 	  }
-	| {
-			type: "STATUS_CHANGED"
-			status: BacktestingStatus
-	  }
-	| (BacktestingSessionUpdatedResultData & {
+	| (Pick<BacktestingSession, "balanceHistory" | "memory" | "orders"> & {
 			type: "UPDATED_RESULT"
 	  })

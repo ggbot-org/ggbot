@@ -1,11 +1,11 @@
 import { classNames } from "_/classNames"
 import { Flex } from "_/components/library"
-import { StrategyMemoryValue } from "@workspace/models"
+import { SerializablePrimitive } from "@workspace/models"
 import { FC } from "react"
 
 export type MemoryItemProps = {
 	name: string
-	value: StrategyMemoryValue | undefined
+	value: SerializablePrimitive | undefined
 }
 
 export const MemoryItem: FC<MemoryItemProps> = ({ name, value }) => {
