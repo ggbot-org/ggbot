@@ -8,11 +8,9 @@ import {
 	OK,
 	UNATHORIZED
 } from "@workspace/api-gateway"
-import {
-	ErrorUnauthorizedAuthenticationHeader,
-	readSessionFromAuthorizationHeader
-} from "@workspace/authentication"
+import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { ErrorBinanceHTTP } from "@workspace/binance"
+import { UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 import {
 	ErrorAccountItemNotFound,
@@ -53,8 +51,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
-		if (error instanceof ErrorUnauthorizedAuthenticationHeader)
-			return UNATHORIZED
+		if (error instanceof UnauthorizedError) return UNATHORIZED
 		if (
 			error instanceof ErrorAccountItemNotFound ||
 			error instanceof ErrorBinanceHTTP ||

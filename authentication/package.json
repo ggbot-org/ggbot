@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@workspace/env": "0.0.0",
+    "@workspace/http": "0.0.0",
     "@workspace/models": "0.0.0",
     "jsonwebtoken": "9.0.1",
     "minimal-type-guard-helpers": "0.2.0"

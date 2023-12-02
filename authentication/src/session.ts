@@ -1,4 +1,5 @@
 import { ENV } from "@workspace/env"
+import { UnauthorizedError } from "@workspace/http"
 import {
 	ClientSession,
 	clientSessionNumDays,
@@ -8,7 +9,6 @@ import {
 import jsonwebtoken from "jsonwebtoken"
 import { isMaybeObject } from "minimal-type-guard-helpers"
 
-import { ErrorUnauthorizedAuthenticationHeader } from "./errors.js"
 import { verifyAuthenticationHeader } from "./header.js"
 
 export const signSession = (session: ClientSession) =>
@@ -24,5 +24,5 @@ export const readSessionFromAuthorizationHeader = (
 		const { data } = decoded
 		if (isClientSession(data)) return data
 	}
-	throw new ErrorUnauthorizedAuthenticationHeader()
+	throw new UnauthorizedError()
 }

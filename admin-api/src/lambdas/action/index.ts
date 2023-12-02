@@ -8,11 +8,8 @@ import {
 	OK,
 	UNATHORIZED
 } from "@workspace/api-gateway"
-import {
-	ErrorUnauthorizedAuthenticationHeader,
-	readSessionFromAuthorizationHeader
-} from "@workspace/authentication"
-import { BadGatewayError } from "@workspace/http"
+import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
+import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 
 import { dataProvider } from "./dataProvider.js"
@@ -44,8 +41,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		if (error instanceof BadGatewayError) return BAD_REQUEST()
-		if (error instanceof ErrorUnauthorizedAuthenticationHeader)
-			return UNATHORIZED
+		if (error instanceof UnauthorizedError) return UNATHORIZED
 		console.error(error)
 	}
 	return INTERNAL_SERVER_ERROR

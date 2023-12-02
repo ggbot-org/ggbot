@@ -22,11 +22,12 @@
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
-    "@workspace/env": "0.0.0",
-    "@workspace/logging": "0.0.0",
     "@workspace/api-gateway": "0.0.0",
     "@workspace/authentication": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/env": "0.0.0",
+    "@workspace/http": "0.0.0",
+    "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0"
   },
   "devDependencies": {
