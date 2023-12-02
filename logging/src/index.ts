@@ -21,11 +21,11 @@ const isDev = DEPLOY_STAGE !== "main"
  */
 
 export const logging = (prefix: string) => ({
-	/** Prints log to stdout, only on deploy stages `local` and `next`. */
+	/** Prints log to STDOUT, only on deploy stages `local` and `next`. */
 	info: (...args: unknown[]) => {
 		if (isDev) console.info(new Date().toJSON(), prefix, ...args)
 	},
-	/** Prints log to stderr, on any deploy stage. */
+	/** Prints log to STDERR, on any deploy stage. */
 	warn: (...args: unknown[]) => {
 		console.warn(new Date().toJSON(), prefix, ...args)
 	}

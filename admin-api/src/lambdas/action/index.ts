@@ -10,13 +10,12 @@ import {
 } from "@workspace/api-gateway"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 
 import { dataProvider } from "./dataProvider.js"
+import { info, warn } from "./logging.js"
 import { ApiService } from "./service.js"
 
 const apiService = new ApiService(dataProvider)
-const { info } = logging("admin-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -42,7 +41,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 	} catch (error) {
 		if (error instanceof BadGatewayError) return BAD_REQUEST()
 		if (error instanceof UnauthorizedError) return UNATHORIZED
-		console.error(error)
+		// Fallback to print error if not handled.
+		if (error instanceof Error) warn(error.message)
+		else warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

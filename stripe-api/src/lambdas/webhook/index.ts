@@ -5,13 +5,12 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { logging } from "@workspace/logging"
 import {
 	StripeClient,
 	StripeSignatureVerificationError
 } from "@workspace/stripe"
 
-const { info, warn } = logging("stripe-api")
+import { info, warn } from "./logging.js"
 
 const stripe = new StripeClient()
 
@@ -46,7 +45,9 @@ export const handler: APIGatewayProxyHandler = (event) => {
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError)
 			return BAD_REQUEST()
-		console.error(error)
+		// Fallback to print error if not handled.
+		if (error instanceof Error) warn(error.message)
+		else warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

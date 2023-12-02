@@ -11,7 +11,6 @@ import {
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { ErrorBinanceHTTP } from "@workspace/binance"
 import { UnauthorizedError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -19,9 +18,8 @@ import {
 } from "@workspace/models"
 
 import { dataProvider } from "./dataProvider.js"
+import { info, warn } from "./logging.js"
 import { ApiService } from "./service.js"
-
-const { info } = logging("user-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -60,7 +58,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		)
 			return BAD_REQUEST(error.toValue())
 		// Fallback to print error if not handled.
-		console.error(error)
+		if (error instanceof Error) warn(error.message)
+		else warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }
