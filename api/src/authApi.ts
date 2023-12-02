@@ -1,9 +1,7 @@
 import {
 	EmailAddress,
 	isEmailAddress,
-	isNonEmptyString,
 	isOneTimePasswordCode,
-	NonEmptyString,
 	OneTimePassword
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -37,11 +35,10 @@ export const isApiAuthVerifyRequestData =
 	)
 
 export type ApiAuthVerifyResponseData = {
-	jwt?: NonEmptyString
+	token?: string
 }
 
 export const isApiAuthVerifyResponseData =
-	objectTypeGuard<ApiAuthVerifyResponseData>(({ jwt }) => {
-		if (jwt === undefined) return true
-		return isNonEmptyString(jwt)
-	})
+	objectTypeGuard<ApiAuthVerifyResponseData>(({ token }) =>
+		token === undefined ? true : typeof token === "string"
+	)

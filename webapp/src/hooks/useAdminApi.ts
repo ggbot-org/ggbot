@@ -1,11 +1,11 @@
-import { useAction } from "_/hooks/useAction"
+import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { url } from "_/routing/admin/URLs"
 import { AdminApiActionType } from "@workspace/api"
 import { ListAccountKeys, ReadAccount } from "@workspace/models"
 
-const apiOptions = {
+const apiOptions: UseActionApiArg = {
 	endpoint: url.apiAdminAction,
-	withJwt: true
+	withAuth: true
 }
 
 export const useAdminApi = {

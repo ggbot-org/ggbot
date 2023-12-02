@@ -1,4 +1,5 @@
 const environmentVariableNames = [
+	"AUTHENTICATION_SECRET",
 	"AWS_ACCOUNT_ID",
 	"AWS_BINANCE_PROXY_REGION",
 	"AWS_DATA_REGION",
@@ -7,7 +8,6 @@ const environmentVariableNames = [
 	"BINANCE_PROXY_ELASTIC_IPS",
 	"DEPLOY_STAGE",
 	"DNS_DOMAIN",
-	"JWT_SECRET",
 	"NODE_ENV",
 	"PROJECT_SHORT_NAME",
 	"STRIPE_SECRET_KEY",

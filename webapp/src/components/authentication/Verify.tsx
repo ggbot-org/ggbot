@@ -23,13 +23,13 @@ import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
-import { EmailAddress, NonEmptyString } from "@workspace/models"
+import { EmailAddress } from "@workspace/models"
 import { FC, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthVerifyProps = {
 	email: EmailAddress
-	setJwt: (jwt: NonEmptyString) => void
+	setToken: (token: string) => void
 	resetEmail: () => void
 }
 
@@ -62,7 +62,7 @@ const { info, warn } = logging("authentication")
 export const AuthVerify: FC<AuthVerifyProps> = ({
 	email,
 	resetEmail,
-	setJwt
+	setToken
 }) => {
 	const [
 		{
@@ -76,25 +76,19 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		dispatch
 	] = useReducer<Reducer<State, Action>>((state, action) => {
 		info("AuthVerify", JSON.stringify(action, null, 2))
-		switch (action.type) {
-			case "SET_HAS_INVALID_INPUT":
-				return { hasInvalidInput: true }
+		if (action.type === "SET_HAS_INVALID_INPUT")
+			return { hasInvalidInput: true }
 
-			case "VERIFY_REQUEST":
-				return { isPending: true }
+		if (action.type === "VERIFY_REQUEST") return { isPending: true }
 
-			case "VERIFY_RESPONSE":
-				return { hasGenericError: true, ...action.data }
+		if (action.type === "VERIFY_RESPONSE")
+			return { hasGenericError: true, ...action.data }
 
-			case "VERIFY_FAILURE":
-				return { hasGenericError: true }
+		if (action.type === "VERIFY_FAILURE") return { hasGenericError: true }
 
-			case "VERIFY_TIMEOUT":
-				return { gotTimeout: true }
+		if (action.type === "VERIFY_TIMEOUT") return { gotTimeout: true }
 
-			default:
-				return state
-		}
+		return state
 	}, {})
 
 	const onReset = useCallback<FormOnReset>(
@@ -153,9 +147,9 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 						data: { needToGenerateOneTimePasswordAgain: true }
 					})
 				} else if (isApiAuthVerifyResponseData(data)) {
-					const { jwt } = data
-					if (jwt) {
-						setJwt(jwt)
+					const { token } = data
+					if (token) {
+						setToken(token)
 					} else {
 						dispatch({
 							type: "VERIFY_RESPONSE",
@@ -168,7 +162,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				warn(error)
 			}
 		},
-		[dispatch, email, isPending, setJwt]
+		[dispatch, email, isPending, setToken]
 	)
 
 	return (

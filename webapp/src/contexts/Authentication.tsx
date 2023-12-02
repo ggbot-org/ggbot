@@ -8,7 +8,7 @@ import { href } from "_/routing/public/hrefs"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { Account, EmailAddress, NonEmptyString } from "@workspace/models"
+import { Account, EmailAddress } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,
@@ -25,7 +25,7 @@ type State = {
 	email: EmailAddress | undefined
 	exitIsActive: boolean
 	exited: boolean
-	jwt: NonEmptyString | undefined
+	token: string | undefined
 	verified?: boolean | undefined
 	startSession: Time
 }
@@ -38,14 +38,14 @@ type Action =
 			data: Pick<State, "exitIsActive">
 	  }
 	| {
-			type: "SET_JWT"
-			data: NonNullable<Pick<State, "jwt">>
+			type: "SET_TOKEN"
+			data: NonNullable<Pick<State, "token">>
 	  }
-	| { type: "RESET_JWT" }
+	| { type: "RESET_TOKEN" }
 
 type ContextValue = {
 	account: Account | null | undefined
-	accountEmail: Account["email"] | ""
+	accountEmail: string
 	showAuthExit: () => void
 }
 
@@ -60,57 +60,55 @@ export const AuthenticationContext = createContext<ContextValue>({
 AuthenticationContext.displayName = "AuthenticationContext"
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [{ email, exited, exitIsActive, jwt, startSession }, dispatch] =
+	const [{ email, exited, exitIsActive, startSession, token }, dispatch] =
 		useReducer<Reducer<State, Action>>(
 			(state, action) => {
 				info("AuthenticationProvider", JSON.stringify(action, null, 2))
-				switch (action.type) {
-					case "EXIT": {
-						localWebStorage.clear()
-						sessionWebStorage.clear()
-						return { ...state, exited: true, exitIsActive: false }
-					}
 
-					case "RESET_JWT": {
-						localWebStorage.jwt.delete()
-						return {
-							...state,
-							// Need also to reset email togetcher with jwt.
-							email: undefined,
-							jwt: undefined
-						}
-					}
-
-					case "SET_EMAIL": {
-						const { email } = action.data
-						return { ...state, email }
-					}
-
-					case "SET_EXIT_IS_ACTIVE": {
-						const { exitIsActive } = action.data
-						return { ...state, exitIsActive }
-					}
-
-					case "SET_JWT": {
-						const { jwt } = action.data
-						localWebStorage.jwt.set(jwt)
-						return {
-							...state,
-							// Need also to reset email whenever jwt changes.
-							email: undefined,
-							jwt
-						}
-					}
-
-					default:
-						return state
+				if (action.type === "EXIT") {
+					localWebStorage.clear()
+					sessionWebStorage.clear()
+					return { ...state, exited: true, exitIsActive: false }
 				}
+
+				if (action.type === "RESET_TOKEN") {
+					localWebStorage.authToken.delete()
+					return {
+						...state,
+						// Need also to reset `email` together with `token`.
+						email: undefined,
+						token: undefined
+					}
+				}
+
+				if (action.type === "SET_EMAIL") {
+					const { email } = action.data
+					return { ...state, email }
+				}
+
+				if (action.type === "SET_EXIT_IS_ACTIVE") {
+					const { exitIsActive } = action.data
+					return { ...state, exitIsActive }
+				}
+
+				if (action.type === "SET_TOKEN") {
+					const { token } = action.data
+					localWebStorage.authToken.set(token)
+					return {
+						...state,
+						// Need also to reset `email` whenever `token` changes.
+						email: undefined,
+						token
+					}
+				}
+
+				return state
 			},
 			{
 				email: undefined,
 				exited: false,
 				exitIsActive: false,
-				jwt: localWebStorage.jwt.get(),
+				token: localWebStorage.authToken.get(),
 				startSession: now()
 			}
 		)
@@ -118,10 +116,10 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ = useUserApi.ReadAccount()
 	const account = READ.data
 
-	const setJwt = useCallback<AuthVerifyProps["setJwt"]>(
-		(jwt) => {
+	const setToken = useCallback<AuthVerifyProps["setToken"]>(
+		(token) => {
 			READ.reset()
-			dispatch({ type: "SET_JWT", data: { jwt } })
+			dispatch({ type: "SET_TOKEN", data: { token } })
 		},
 		[dispatch, READ]
 	)
@@ -164,16 +162,15 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Fetch account.
 	useEffect(() => {
-		if (!jwt) return
+		if (!token) return
 		if (READ.canRun) READ.request()
-	}, [READ, jwt])
+	}, [READ, token])
 
 	// Handle errors.
 	useEffect(() => {
 		if (READ.error) {
-			if (READ.error.name === UnauthorizedError.errorName) {
-				if (jwt) dispatch({ type: "RESET_JWT" })
-			}
+			if (READ.error.name === UnauthorizedError.errorName)
+				if (token) dispatch({ type: "RESET_TOKEN" })
 
 			if (READ.error.name === BadGatewayError.errorName) {
 				// Re-fetch.
@@ -185,7 +182,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 				}
 			}
 		}
-	}, [READ, dispatch, jwt])
+	}, [READ, dispatch, token])
 
 	useEffect(() => {
 		if (account === undefined) return
@@ -203,12 +200,12 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		if (exited) window.location.href = href.homePage()
 	}, [exited])
 
-	if (account === null || jwt === undefined) {
+	if (account === null || token === undefined) {
 		if (email) {
 			return (
 				<AuthVerify
 					email={email}
-					setJwt={setJwt}
+					setToken={setToken}
 					resetEmail={resetEmail}
 				/>
 			)

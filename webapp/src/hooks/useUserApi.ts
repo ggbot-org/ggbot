@@ -1,4 +1,4 @@
-import { Authenticated, useAction } from "_/hooks/useAction"
+import { Authenticated, useAction, UseActionApiArg } from "_/hooks/useAction"
 import { url } from "_/routing/user/URLs"
 import { UserApiActionType } from "@workspace/api"
 import {
@@ -22,7 +22,10 @@ import {
 	WriteStrategyFlow
 } from "@workspace/models"
 
-const apiOptions = { endpoint: url.apiUserAction, withJwt: true }
+const apiOptions: UseActionApiArg = {
+	endpoint: url.apiUserAction,
+	withAuth: true
+}
 
 export const useUserApi = {
 	CopyStrategy: () =>

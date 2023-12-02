@@ -1,9 +1,9 @@
-import { useAction } from "_/hooks/useAction"
+import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { url } from "_/routing/public/URLs"
 import { PublicApiActionType } from "@workspace/api"
 import { ReadStrategy, ReadStrategyFlow } from "@workspace/models"
 
-const apiOptions = { endpoint: url.apiPublicAction }
+const apiOptions: UseActionApiArg = { endpoint: url.apiPublicAction }
 
 export const usePublicApi = {
 	ReadStrategy: () =>

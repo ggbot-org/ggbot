@@ -21,18 +21,21 @@ import { useCallback, useState } from "react"
 
 const { info, warn } = logging("use-action")
 
-type UseActionHeadersConstructorArg = {
-	withJwt?: boolean
+type ActionHeadersConstructorArg = {
+	withAuth?: boolean
 }
 
-class UseActionHeaders extends Headers {
-	constructor({ withJwt = false }: UseActionHeadersConstructorArg) {
+class ActionHeaders extends Headers {
+	constructor({ withAuth }: ActionHeadersConstructorArg) {
 		super({
 			Accept: "application/json",
 			"Content-Type": "application/json"
 		})
-		if (withJwt)
-			this.append("Authorization", `Bearer ${localWebStorage.jwt.get()}`)
+		if (withAuth)
+			this.append(
+				"Authorization",
+				`Bearer ${localWebStorage.authToken.get()}`
+			)
 	}
 }
 
@@ -60,6 +63,8 @@ export type UseActionError =
 	| ApiActionClientSideError
 	| ApiActionServerSideError
 	| undefined
+
+export type UseActionApiArg = { endpoint: string } & ActionHeadersConstructorArg
 
 /**
  * Hook to use API actions:
@@ -90,10 +95,7 @@ export const useAction = <
 	Operation extends (...args: any[]) => Promise<unknown>,
 	ActionType extends string
 >(
-	{
-		endpoint,
-		withJwt
-	}: { endpoint: string } & UseActionHeadersConstructorArg,
+	{ endpoint, withAuth }: UseActionApiArg,
 	type: ActionType
 ) => {
 	const [data, setData] = useState<
@@ -116,7 +118,7 @@ export const useAction = <
 				try {
 					const options: RequestInit = {
 						body: JSON.stringify({ type, data: inputData }),
-						headers: new UseActionHeaders({ withJwt }),
+						headers: new ActionHeaders({ withAuth }),
 						method: "POST",
 						signal: controller.signal
 					}
@@ -125,21 +127,21 @@ export const useAction = <
 					const response = await fetch(endpoint, options)
 
 					if (response.ok) {
-						const responseOutput = await response.json()
+						const { data: outputData } = await response.json()
 						info(
 							type,
 							JSON.stringify(inputData),
-							JSON.stringify(responseOutput.data)
+							JSON.stringify(outputData)
 						)
-						setData(responseOutput.data)
+						setData(outputData)
 					} else if (response.status === __400__BAD_REQUEST__) {
-						const responseOutput = await response.json()
+						const { error } = await response.json()
 						warn(
 							type,
 							JSON.stringify(inputData),
-							JSON.stringify(responseOutput.error)
+							JSON.stringify(error)
 						)
-						setError(responseOutput.error)
+						setError(error)
 					} else {
 						warn(type, response.status)
 						throw response.status
@@ -195,9 +197,12 @@ export const useAction = <
 					controller.clearTimeout()
 					setIsPending(false)
 				}
-			})()
+			})().catch((error) => {
+				warn(error)
+				setError({ name: "GenericError" })
+			})
 		},
-		[endpoint, type, withJwt]
+		[endpoint, type, withAuth]
 	)
 
 	const isDone = data !== undefined

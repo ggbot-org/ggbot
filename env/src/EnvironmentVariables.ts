@@ -10,6 +10,10 @@ const getVariable = (VARIABLE_NAME: EnvironmentVariableName) => {
 }
 
 class EnvironmentVariables {
+	AUTHENTICATION_SECRET() {
+		return getVariable("AUTHENTICATION_SECRET")
+	}
+
 	AWS_ACCOUNT_ID() {
 		return getVariable("AWS_ACCOUNT_ID")
 	}
@@ -40,10 +44,6 @@ class EnvironmentVariables {
 
 	DNS_DOMAIN() {
 		return getVariable("DNS_DOMAIN")
-	}
-
-	JWT_SECRET() {
-		return getVariable("JWT_SECRET")
 	}
 
 	PROJECT_SHORT_NAME() {

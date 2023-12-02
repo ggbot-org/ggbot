@@ -5,24 +5,24 @@ import {
 	clientSessionNumDays,
 	isClientSession
 } from "@workspace/models"
-// @ts-expect-error jsonwebtoken is broken
-import jsonwebtoken from "jsonwebtoken"
-import { isMaybeObject } from "minimal-type-guard-helpers"
+import { getDay, today } from "minimal-time-helpers"
 
-import { verifyAuthenticationHeader } from "./header.js"
+import { decrypt, encrypt } from "./crypto.js"
+import { extractAuthenticationHeaderToken } from "./header.js"
 
-export const signSession = (session: ClientSession) =>
-	jsonwebtoken.sign({ data: session }, ENV.JWT_SECRET(), {
-		expiresIn: `${clientSessionNumDays} days`
-	})
+export const signSession = async (session: ClientSession) =>
+	await encrypt(JSON.stringify(session), ENV.AUTHENTICATION_SECRET())
 
-export const readSessionFromAuthorizationHeader = (
+export const readSessionFromAuthorizationHeader = async (
 	headerContent: unknown
-): ClientSession => {
-	const decoded = verifyAuthenticationHeader(headerContent)
-	if (isMaybeObject<{ data: unknown }>(decoded)) {
-		const { data } = decoded
-		if (isClientSession(data)) return data
-	}
-	throw new UnauthorizedError()
+): Promise<ClientSession> => {
+	const token = extractAuthenticationHeaderToken(headerContent)
+	const sessionJson = await decrypt(token, ENV.AUTHENTICATION_SECRET())
+	const session: unknown = JSON.parse(sessionJson)
+	if (!isClientSession(session)) throw new UnauthorizedError()
+	const expirationDay = getDay(session.creationDay).plus(
+		clientSessionNumDays
+	).days
+	if (expirationDay > today()) throw new UnauthorizedError()
+	return session
 }

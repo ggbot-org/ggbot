@@ -39,6 +39,8 @@ module.exports = {
 			{ ignoreRestArgs: true }
 		],
 		"@typescript-eslint/no-extra-semi": "off",
+		"@typescript-eslint/no-unsafe-argument": "off",
+		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{

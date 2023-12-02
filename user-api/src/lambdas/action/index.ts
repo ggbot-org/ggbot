@@ -32,7 +32,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const { accountId } = readSessionFromAuthorizationHeader(
+			const { accountId } = await readSessionFromAuthorizationHeader(
 				event.headers.Authorization
 			)
 

@@ -9,4 +9,4 @@ aws lambda update-function-configuration --region $AWS_REGION --function-name $E
 
 # verify
 
-aws lambda update-function-configuration --region $AWS_REGION --function-name $VERIFY_FUNCTION_NAME --environment "Variables={AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID,AWS_DATA_REGION=$AWS_DATA_REGION,DNS_DOMAIN=$DNS_DOMAIN,DEPLOY_STAGE=$DEPLOY_STAGE,JWT_SECRET=$JWT_SECRET}"
+aws lambda update-function-configuration --region $AWS_REGION --function-name $VERIFY_FUNCTION_NAME --environment "Variables={AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID,AWS_DATA_REGION=$AWS_DATA_REGION,DNS_DOMAIN=$DNS_DOMAIN,DEPLOY_STAGE=$DEPLOY_STAGE,AUTHENTICATION_SECRET=$AUTHENTICATION_SECRET}"

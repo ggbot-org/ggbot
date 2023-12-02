@@ -6,7 +6,7 @@ sequenceDiagram
     participant Enter
 	participant Verify
     Client->>Enter: Email
-    Enter->>Client: OTP
-    Client->>Verify: OTP
-    Verify->>Client: JWT
+    Enter->>Client: One time password
+    Client->>Verify: One time password
+    Verify->>Client: Authentication token
 ```

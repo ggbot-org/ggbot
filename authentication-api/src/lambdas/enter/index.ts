@@ -13,6 +13,7 @@ import {
 import { createOneTimePassword } from "@workspace/database"
 import { BadGatewayError } from "@workspace/http"
 
+import { warn } from "./logging.js"
 import { sendOneTimePassword } from "./sendOneTimePassword.js"
 
 // ts-prune-ignore-next
@@ -47,7 +48,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		if (error instanceof BadGatewayError) return BAD_REQUEST()
-		console.error(error)
+		// Fallback to print error if not handled.
+		if (error instanceof Error) warn(error.message)
+		else warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

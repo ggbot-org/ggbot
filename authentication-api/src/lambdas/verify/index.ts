@@ -20,6 +20,8 @@ import {
 import { BadGatewayError } from "@workspace/http"
 import { today } from "minimal-time-helpers"
 
+import { warn } from "./logging.js"
+
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
@@ -56,15 +58,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						creationDay,
 						accountId: emailAccount.accountId
 					}
-					const jwt: unknown = signSession(session)
-					if (typeof jwt !== "string") return INTERNAL_SERVER_ERROR
-					output.jwt = jwt
+					const token = await signSession(session)
+					output.token = token
 				} else {
 					const account = await createAccount({ email })
 					const session = { creationDay, accountId: account.id }
-					const jwt: unknown = signSession(session)
-					if (typeof jwt !== "string") return INTERNAL_SERVER_ERROR
-					output.jwt = jwt
+					const token = await signSession(session)
+					output.token = token
 				}
 
 				return OK(output)
@@ -74,7 +74,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		if (error instanceof BadGatewayError) return BAD_REQUEST()
-		console.error(error)
+		// Fallback to print error if not handled.
+		if (error instanceof Error) warn(error.message)
+		else warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

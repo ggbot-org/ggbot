@@ -8,17 +8,6 @@ const initializationVectorLength = 12
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 
-const base64ToArrayBuffer = (base64Encoded: string) =>
-	Uint8Array.from(atob(base64Encoded), (value) => value.charCodeAt(0))
-
-const arrayBufferToBase64 = (arrayBuffer: ArrayBufferLike) =>
-	btoa(
-		new Uint8Array(arrayBuffer).reduce(
-			(data, byte) => data + String.fromCharCode(byte),
-			""
-		)
-	)
-
 const deriveKey = (
 	passwordBasedKey: CryptoKey,
 	salt: BufferSource,
@@ -46,12 +35,16 @@ const getPasswordBasedKey = (password: string) =>
 		["deriveKey"]
 	)
 
+/** Decrypt data, assumes input is a base64 encoded string. */
 export const decrypt = async (
 	encryptedData: string,
 	password: string
 ): Promise<string> => {
 	try {
-		const inputVector = base64ToArrayBuffer(encryptedData)
+		// Convert base64 string to Uint8Array.
+		const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
+			value.charCodeAt(0)
+		)
 		const saltVector = inputVector.slice(0, saltVectorLength)
 		const initializationVector = inputVector.slice(
 			saltVectorLength,
@@ -78,6 +71,7 @@ export const decrypt = async (
 	}
 }
 
+/** Encrypt data, outputs a base64 encoded string. */
 export const encrypt = async (
 	data: string,
 	password: string
@@ -89,7 +83,7 @@ export const encrypt = async (
 		)
 		const passwordBasedKey = await getPasswordBasedKey(password)
 		const aesKey = await deriveKey(passwordBasedKey, saltVector, "encrypt")
-		const encryptedContentArrayBuffer = await webcrypto.subtle.encrypt(
+		const encryptedDataVector = await webcrypto.subtle.encrypt(
 			{
 				name: "AES-GCM",
 				iv: initializationVector
@@ -97,21 +91,25 @@ export const encrypt = async (
 			aesKey,
 			encoder.encode(data)
 		)
-		const encryptedContentUint8Array = new Uint8Array(
-			encryptedContentArrayBuffer
-		)
-		const arrayBuffer = new Uint8Array(
+		const encryptedDataUint8Array = new Uint8Array(encryptedDataVector)
+		const outputVector = new Uint8Array(
 			saltVector.byteLength +
 				initializationVector.byteLength +
-				encryptedContentUint8Array.byteLength
+				encryptedDataUint8Array.byteLength
 		)
-		arrayBuffer.set(saltVector, 0)
-		arrayBuffer.set(initializationVector, saltVector.byteLength)
-		arrayBuffer.set(
-			encryptedContentUint8Array,
+		outputVector.set(saltVector, 0)
+		outputVector.set(initializationVector, saltVector.byteLength)
+		outputVector.set(
+			encryptedDataUint8Array,
 			saltVector.byteLength + initializationVector.byteLength
 		)
-		return arrayBufferToBase64(arrayBuffer)
+		// Convert Uint8Array to base64 encoded string.
+		return btoa(
+			outputVector.reduce(
+				(data, byte) => data + String.fromCharCode(byte),
+				""
+			)
+		)
 	} catch (error) {
 		if (error instanceof Error) warn(error.message)
 		else warn(error)

@@ -1,11 +1,6 @@
 import { logging } from "_/logging"
 import type { ManagedCacheProvider } from "@workspace/cache"
-import {
-	isNonEmptyString,
-	isStrategy,
-	NonEmptyString,
-	Strategy
-} from "@workspace/models"
+import { isStrategy, Strategy } from "@workspace/models"
 
 import { cachedBoolean } from "./cachedBoolean"
 import { itemKey } from "./itemKeys"
@@ -39,24 +34,24 @@ class LocalWebStorageProvider implements WebStorageProvider {
 class LocalWebStorage {
 	private storage = new LocalWebStorageProvider()
 
-	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
-		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
-	}
-
-	get jwt(): ManagedCacheProvider<NonEmptyString> {
-		const key = itemKey.jwt()
+	get authToken(): ManagedCacheProvider<string> {
+		const key = itemKey.authToken()
 		return {
 			get: () => {
 				const value = this.storage.getItem(key)
-				if (isNonEmptyString(value)) return value
+				if (value) return value
 			},
-			set: (value: NonEmptyString) => {
+			set: (value: string) => {
 				this.storage.setItem(key, value)
 			},
 			delete: () => {
 				this.storage.removeItem(key)
 			}
 		}
+	}
+
+	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
+		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
 	}
 
 	get strategy(): ManagedCacheProvider<Strategy> {
@@ -66,7 +61,7 @@ class LocalWebStorage {
 				const value = this.storage.getItem(key)
 				if (!value) return
 				try {
-					const strategy = JSON.parse(value)
+					const strategy: unknown = JSON.parse(value)
 					if (isStrategy(strategy)) return strategy
 				} catch (error) {
 					if (error instanceof SyntaxError) {
