@@ -20,9 +20,9 @@ export const readSessionFromAuthorizationHeader = async (
 	const sessionJson = await decrypt(token, ENV.AUTHENTICATION_SECRET())
 	const session: unknown = JSON.parse(sessionJson)
 	if (!isClientSession(session)) throw new UnauthorizedError()
-	const expirationDay = getDay(session.creationDay).plus(
-		clientSessionNumDays
-	).days
-	if (expirationDay > today()) throw new UnauthorizedError()
+	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays`
+	// is not in the past yet.
+	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today())
+		throw new UnauthorizedError()
 	return session
 }

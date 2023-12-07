@@ -191,7 +191,6 @@ export {
 	isStrategyScheduling,
 	newStrategyScheduling
 } from "./strategyScheduling.js"
-export type { NonEmptyString } from "./strings.js"
 export {
 	isIdentifierString,
 	isNonEmptyString,
