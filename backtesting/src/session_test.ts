@@ -190,14 +190,39 @@ void describe("BacktestingSession", () => {
 		})
 		assert.equal(session.nextTime, undefined)
 		session.start()
-		let hour = 1
 		let time: Time | undefined
+		const dateIsoStrings: string[] = []
 		while ((time = session.nextTime)) {
 			assert.ok(isTime(time))
 			if (!time) continue
-			assert.equal(new Date(time).getHours(), hour % 24)
-			hour++
+			dateIsoStrings.push(new Date(time).toISOString())
 		}
+		assert.deepEqual(dateIsoStrings, [
+			"2000-01-01T00:00:00.000Z",
+			"2000-01-01T01:00:00.000Z",
+			"2000-01-01T02:00:00.000Z",
+			"2000-01-01T03:00:00.000Z",
+			"2000-01-01T04:00:00.000Z",
+			"2000-01-01T05:00:00.000Z",
+			"2000-01-01T06:00:00.000Z",
+			"2000-01-01T07:00:00.000Z",
+			"2000-01-01T08:00:00.000Z",
+			"2000-01-01T09:00:00.000Z",
+			"2000-01-01T10:00:00.000Z",
+			"2000-01-01T11:00:00.000Z",
+			"2000-01-01T12:00:00.000Z",
+			"2000-01-01T13:00:00.000Z",
+			"2000-01-01T14:00:00.000Z",
+			"2000-01-01T15:00:00.000Z",
+			"2000-01-01T16:00:00.000Z",
+			"2000-01-01T17:00:00.000Z",
+			"2000-01-01T18:00:00.000Z",
+			"2000-01-01T19:00:00.000Z",
+			"2000-01-01T20:00:00.000Z",
+			"2000-01-01T21:00:00.000Z",
+			"2000-01-01T22:00:00.000Z",
+			"2000-01-01T23:00:00.000Z"
+		])
 		assert.equal(session.status, "done")
 	})
 })
