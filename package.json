@@ -21,7 +21,7 @@
     "build:webapp": "npm run build -w webapp",
     "check_types": "npm run check_types --workspaces --if-present",
     "cleanup": "npm run cleanup --workspaces --if-present",
-    "deploy_api": "npm run deploy:admin-api && npm run deploy:authentication-api && npm run build:public-api",
+    "deploy_api": "npm run deploy:admin-api && npm run deploy:authentication-api && npm run build:public-api && npm run build:user-api",
     "deploy:admin-api": "npm run deploy -w admin-api",
     "deploy:authentication-api": "npm run deploy -w authentication-api",
     "deploy:public-api": "npm run deploy -w public-api",
