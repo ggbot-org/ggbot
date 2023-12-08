@@ -8,7 +8,6 @@ import {
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
 	isAccountKey,
-	isStrategy,
 	newAccountStrategy,
 	newStrategy,
 	normalizeName,
@@ -71,7 +70,7 @@ export const copyStrategy: CopyStrategy = async ({
 }
 
 export const readStrategy: ReadStrategy = (arg) =>
-	READ<ReadStrategy>(isStrategy, pathname.strategy(arg))
+	READ<ReadStrategy>(pathname.strategy(arg))
 
 /** Get `accountId` of strategy. */
 export const readStrategyAccountId: ReadStrategyAccountId = async (

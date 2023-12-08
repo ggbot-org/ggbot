@@ -1,14 +1,10 @@
-import {
-	isSubscription,
-	ReadSubscription,
-	WriteSubscription
-} from "@workspace/models"
+import { ReadSubscription, WriteSubscription } from "@workspace/models"
 
 import { READ, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
 export const readSubscription: ReadSubscription = (arg) =>
-	READ<ReadSubscription>(isSubscription, pathname.subscription(arg))
+	READ<ReadSubscription>(pathname.subscription(arg))
 
 export const writeSubscription: WriteSubscription = ({
 	accountId,

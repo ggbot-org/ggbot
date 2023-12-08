@@ -1,6 +1,5 @@
 import {
 	AppendStrategyDailyOrders,
-	isStrategyDailyOrders,
 	ReadStrategyDailyOrders
 } from "@workspace/models"
 
@@ -8,10 +7,7 @@ import { READ_ARRAY, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
 export const readStrategyDailyOrders: ReadStrategyDailyOrders = (arg) =>
-	READ_ARRAY<ReadStrategyDailyOrders>(
-		isStrategyDailyOrders,
-		pathname.strategyDailyOrders(arg)
-	)
+	READ_ARRAY<ReadStrategyDailyOrders>(pathname.strategyDailyOrders(arg))
 
 export const appendStrategyDailyOrders: AppendStrategyDailyOrders = async ({
 	items,

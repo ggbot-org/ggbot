@@ -9,7 +9,6 @@ export type {
 	SetAccountCountry
 } from "./account.js"
 export {
-	isAccount,
 	isAccountKey,
 	isAdminAccount,
 	isRenameAccountInput,
@@ -21,10 +20,7 @@ export type {
 	AppendAccountDailyOrders,
 	ReadAccountDailyOrders
 } from "./accountDailyOrders.js"
-export {
-	isAccountDailyOrders,
-	isAccountDailyOrdersKey
-} from "./accountDailyOrders.js"
+export { isAccountDailyOrdersKey } from "./accountDailyOrders.js"
 export type {
 	DeleteAccountStrategiesItem,
 	InsertAccountStrategiesItem,
@@ -37,10 +33,7 @@ export type {
 	WriteAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
 export { accountStrategiesModifier } from "./accountStrategies.js"
-export {
-	isAccountStrategies,
-	isWriteAccountStrategiesItemSchedulingsInput
-} from "./accountStrategies.js"
+export { isWriteAccountStrategiesItemSchedulingsInput } from "./accountStrategies.js"
 export type {
 	AccountStrategy,
 	AccountStrategyKey,
@@ -53,7 +46,6 @@ export {
 } from "./accountStrategy.js"
 export type { Balance } from "./balance.js"
 export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
-export { isBalanceChangeEvents } from "./balanceChangeEvent.js"
 export type {
 	BinanceApiConfig,
 	BinanceApiKey,
@@ -64,10 +56,7 @@ export type {
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions
 } from "./binanceApiConfig.js"
-export {
-	isBinanceApiConfig,
-	isCreateBinanceApiConfigInput
-} from "./binanceApiConfig.js"
+export { isCreateBinanceApiConfigInput } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"
@@ -80,7 +69,6 @@ export type {
 	EmailAccount,
 	ReadEmailAccount
 } from "./emailAccount.js"
-export { isEmailAccount } from "./emailAccount.js"
 export {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -112,7 +100,6 @@ export type {
 } from "./oneTimePassword.js"
 export {
 	generateOneTimePassword,
-	isOneTimePassword,
 	isOneTimePasswordCode
 } from "./oneTimePassword.js"
 export type { Order, Orders } from "./order.js"
@@ -169,7 +156,6 @@ export type {
 	ReadStrategyDailyOrders,
 	StrategyDailyOrdersKey
 } from "./strategyDailyOrders.js"
-export { isStrategyDailyOrders } from "./strategyDailyOrders.js"
 export type {
 	CopyStrategyFlow,
 	DeleteStrategyFlow,
@@ -219,7 +205,6 @@ export type {
 	WriteSubscriptionPurchase
 } from "./subscriptionPurchase.js"
 export {
-	isSubscriptionPurchase,
 	isSubscriptionPurchaseKey,
 	monthlyPrice,
 	newMonthlySubscription,

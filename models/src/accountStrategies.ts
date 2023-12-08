@@ -1,11 +1,10 @@
-import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import {
 	AccountStrategy,
 	AccountStrategyKey,
-	AccountStrategySchedulingKey,
-	isAccountStrategy
+	AccountStrategySchedulingKey
 } from "./accountStrategy.js"
 import { ErrorExceededQuota } from "./errors.js"
 import { isItemId } from "./item.js"
@@ -17,12 +16,6 @@ import { SubscriptionPlan } from "./subscription.js"
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
 type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
-
-// TODO this should be removed
-// there could be mixed versions of account strategies in Array
-// it must be handled (by consumer) item by item with isAccountStrategy
-export const isAccountStrategies =
-	arrayTypeGuard<AccountStrategy>(isAccountStrategy)
 
 export type ReadAccountStrategies = (
 	arg: AccountKey

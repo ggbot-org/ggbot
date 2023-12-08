@@ -3,7 +3,6 @@ import { ENV } from "@workspace/env"
 import { logging } from "@workspace/logging"
 import { deletedNow, SerializableData, updatedNow } from "@workspace/models"
 
-import { ErrorInvalidData } from "./errors.js"
 import { getDataBucketName } from "./S3DataProvider.js"
 
 const { info } = logging("database")
@@ -32,10 +31,8 @@ type AsyncFunction = (...arguments_: any[]) => Promise<unknown>
 // type PublicApiServer = {
 //   ReadStrategy: (input: unknown}): ReadStrategy.output
 // }
+
 export const READ = async <Operation extends AsyncFunction>(
-	isData: (
-		arg: unknown
-	) => arg is Exclude<Awaited<ReturnType<Operation>>, null>,
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>> | null> => {
 	try {
@@ -44,16 +41,13 @@ export const READ = async <Operation extends AsyncFunction>(
 			info("READ", Key, json)
 			return null
 		}
-		// TODO should be parseSerializedString imported from models
 		const data: unknown = JSON.parse(json)
 		info(
 			"READ",
 			Key,
-			`isData=${isData(data)}`,
 			json.length > 170 ? "" : JSON.stringify(data, null, 2)
 		)
-		if (isData(data)) return data
-		throw new ErrorInvalidData()
+		return data as Awaited<ReturnType<Operation>>
 	} catch (error) {
 		if (error instanceof SyntaxError) return null
 		throw error
@@ -61,7 +55,6 @@ export const READ = async <Operation extends AsyncFunction>(
 }
 
 export const READ_ARRAY = async <Operation extends AsyncFunction>(
-	isData: (arg: unknown) => arg is Awaited<ReturnType<Operation>>,
 	Key: string
 ): Promise<Awaited<ReturnType<Operation>>> => {
 	try {
@@ -75,11 +68,9 @@ export const READ_ARRAY = async <Operation extends AsyncFunction>(
 		info(
 			"READ_ARRAY",
 			Key,
-			`isData=${isData(data)}`,
-			JSON.stringify(data, null, 2)
+			json.length > 170 ? "" : JSON.stringify(data, null, 2)
 		)
-		if (isData(data)) return data
-		throw new ErrorInvalidData()
+		return data as Awaited<ReturnType<Operation>>
 	} catch (error) {
 		if (error instanceof SyntaxError)
 			return [] as Awaited<ReturnType<Operation>>

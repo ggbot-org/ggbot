@@ -4,7 +4,6 @@ import {
 	DeleteStrategyFlow,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	isStrategyFlow,
 	ReadStrategyFlow,
 	StrategyFlow,
 	updatedNow,
@@ -35,7 +34,7 @@ export const copyStrategyFlow: CopyStrategyFlow = async ({
 }
 
 export const readStrategyFlow: ReadStrategyFlow = (arg) =>
-	READ<ReadStrategyFlow>(isStrategyFlow, pathname.strategyFlow(arg))
+	READ<ReadStrategyFlow>(pathname.strategyFlow(arg))
 
 export const writeStrategyFlow: WriteStrategyFlow = async ({
 	accountId,

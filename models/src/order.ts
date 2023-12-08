@@ -9,7 +9,7 @@ export type Order = Item &
 		info: SerializableObject
 	}
 
-export const isOrder = objectTypeGuard<Order>(
+const isOrder = objectTypeGuard<Order>(
 	({ id, info, ...creationTime }) =>
 		isItemId(id) &&
 		isCreationTime(creationTime) &&

@@ -3,7 +3,6 @@ import {
 	CreateMonthlySubscriptionPurchase,
 	CreateYearlySubscriptionPurchase,
 	ErrorAccountItemNotFound,
-	isSubscriptionPurchase,
 	newMonthlySubscription,
 	newSubscriptionPurchaseKey,
 	newYearlySubscription,
@@ -19,10 +18,7 @@ import { READ, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
 export const readSubscriptionPurchase: ReadSubscriptionPurchase = (arg) =>
-	READ<ReadSubscriptionPurchase>(
-		isSubscriptionPurchase,
-		pathname.subscriptionPurchase(arg)
-	)
+	READ<ReadSubscriptionPurchase>(pathname.subscriptionPurchase(arg))
 
 const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
 	accountId,

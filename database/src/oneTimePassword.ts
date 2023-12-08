@@ -2,7 +2,6 @@ import {
 	CreateOneTimePassword,
 	DeleteOneTimePassword,
 	generateOneTimePassword,
-	isOneTimePassword,
 	ReadOneTimePassword
 } from "@workspace/models"
 
@@ -16,10 +15,7 @@ export const createOneTimePassword: CreateOneTimePassword = async (email) => {
 }
 
 export const readOneTimePassword: ReadOneTimePassword = async (email) =>
-	await READ<ReadOneTimePassword>(
-		isOneTimePassword,
-		pathname.oneTimePassword(email)
-	)
+	await READ<ReadOneTimePassword>(pathname.oneTimePassword(email))
 
 export const deleteOneTimePassword: DeleteOneTimePassword = async (arg) =>
 	await DELETE(pathname.oneTimePassword(arg))

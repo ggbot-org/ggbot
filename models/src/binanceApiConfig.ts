@@ -10,7 +10,7 @@ export type BinanceApiConfig = ItemKey<{
 	apiSecret: NonEmptyString
 }>
 
-export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
+const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
 	({ apiKey, apiSecret }) =>
 		isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
 )

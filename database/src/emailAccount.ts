@@ -2,7 +2,6 @@ import {
 	createdNow,
 	CreateEmailAccount,
 	EmailAccount,
-	isEmailAccount,
 	ReadEmailAccount
 } from "@workspace/models"
 
@@ -24,4 +23,4 @@ export const createEmailAccount: CreateEmailAccount = async ({
 }
 
 export const readEmailAccount: ReadEmailAccount = (arg) =>
-	READ<ReadEmailAccount>(isEmailAccount, pathname.emailAccount(arg))
+	READ<ReadEmailAccount>(pathname.emailAccount(arg))

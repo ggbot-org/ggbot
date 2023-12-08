@@ -1,4 +1,4 @@
-import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isNonEmptyString, NonEmptyString } from "./strings.js"
 
@@ -46,5 +46,3 @@ export type Balance = {
 export const isBalance = objectTypeGuard<Balance>(({ asset, free, locked }) =>
 	[asset, free, locked].every(isNonEmptyString)
 )
-
-export const isBalances = arrayTypeGuard<Balance>(isBalance)

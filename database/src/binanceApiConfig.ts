@@ -4,7 +4,6 @@ import {
 	CreateBinanceApiConfig,
 	createdNow,
 	DeleteBinanceApiConfig,
-	isBinanceApiConfig,
 	ReadBinanceApiConfig,
 	ReadBinanceApiKey
 } from "@workspace/models"
@@ -32,7 +31,6 @@ export const readBinanceApiConfig: ReadBinanceApiConfig = async ({
 	const cachedData = binanceApiConfigCache.get(accountId)
 	if (cachedData) return cachedData
 	const data = await READ<ReadBinanceApiConfig>(
-		isBinanceApiConfig,
 		pathname.binanceApiConfig({ accountId })
 	)
 	if (!data) return null

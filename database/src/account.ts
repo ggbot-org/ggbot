@@ -4,7 +4,6 @@ import {
 	CreateAccount,
 	DeleteAccount,
 	ErrorAccountItemNotFound,
-	isAccount,
 	isAccountKey,
 	ListAccountKeys,
 	newAccount,
@@ -33,7 +32,7 @@ export const createAccount: CreateAccount = async ({ email }) => {
 }
 
 export const readAccount: ReadAccount = (arg) =>
-	READ<ReadAccount>(isAccount, pathname.account(arg))
+	READ<ReadAccount>(pathname.account(arg))
 
 const getAccountOrThrow = async ({
 	accountId

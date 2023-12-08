@@ -1,6 +1,5 @@
 import {
 	AppendStrategyDailyBalanceChanges,
-	isBalanceChangeEvents,
 	ReadStrategyDailyBalanceChanges
 } from "@workspace/models"
 
@@ -10,7 +9,6 @@ import { pathname } from "./locators.js"
 export const readStrategyDailyBalanceChanges: ReadStrategyDailyBalanceChanges =
 	(arg) =>
 		READ_ARRAY<ReadStrategyDailyBalanceChanges>(
-			isBalanceChangeEvents,
 			pathname.strategyDailyBalanceChanges(arg)
 		)
 

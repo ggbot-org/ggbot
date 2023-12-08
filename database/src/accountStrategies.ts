@@ -4,7 +4,6 @@ import {
 	DeleteAccountStrategiesItem,
 	deletedNow,
 	InsertAccountStrategiesItem,
-	isAccountStrategies,
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
 	SuspendAccountStrategiesSchedulings,
@@ -19,10 +18,7 @@ import { pathname } from "./locators.js"
 import { readSubscription } from "./subscription.js"
 
 export const readAccountStrategies: ReadAccountStrategies = (arg) =>
-	READ_ARRAY<ReadAccountStrategies>(
-		isAccountStrategies,
-		pathname.accountStrategies(arg)
-	)
+	READ_ARRAY<ReadAccountStrategies>(pathname.accountStrategies(arg))
 
 export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
 	accountId,
