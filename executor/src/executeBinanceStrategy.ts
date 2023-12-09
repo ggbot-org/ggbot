@@ -3,7 +3,6 @@ import {
 	appendAccountDailyOrders,
 	appendStrategyDailyBalanceChanges,
 	appendStrategyDailyOrders,
-	Binance,
 	readBinanceApiConfig,
 	readStrategyFlow
 } from "@workspace/database"
@@ -23,6 +22,8 @@ import {
 	StrategyScheduling
 } from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
+
+import { Binance } from "./binance.js"
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 

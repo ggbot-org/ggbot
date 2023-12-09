@@ -15,7 +15,6 @@ export {
 	updateAccountStrategySchedulingMemory,
 	writeAccountStrategiesItemSchedulings
 } from "./accountStrategies.js"
-export { Binance } from "./binance.js"
 export {
 	createBinanceApiConfig,
 	deleteBinanceApiConfig,

@@ -4,8 +4,8 @@ This is the internal dependencies graph: it shows how workspaces depend on each 
 
 ```mermaid
 graph LR
-    workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/api-gateway
+    workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/database
     workspace/admin-api --- workspace/email-messages
     workspace/api --- workspace/http
@@ -13,7 +13,8 @@ graph LR
     workspace/api-gateway --- workspace/api
     workspace/api-gateway --- workspace/env
     workspace/api-gateway --- workspace/locators
-    workspace/authentication --- workspace/env
+    workspace/authentication --- workspace/http
+    workspace/authentication --- workspace/logging
     workspace/authentication-api --- workspace/api-gateway
     workspace/authentication-api --- workspace/authentication
     workspace/authentication-api --- workspace/aws-ses
@@ -34,7 +35,6 @@ graph LR
     workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/http
     workspace/database --- workspace/aws-s3
-    workspace/database --- workspace/binance-client
     workspace/database --- workspace/dflow
     workspace/database --- workspace/logging
     workspace/dflow --- workspace/arithmetic
@@ -42,6 +42,7 @@ graph LR
     workspace/dflow --- workspace/models
     workspace/email-messages --- workspace/models
     workspace/env --- workspace/models
+    workspace/executor --- workspace/binance-client
     workspace/executor --- workspace/database
     workspace/infrastructure --- workspace/aws-acm
     workspace/infrastructure --- workspace/aws-api-gateway
