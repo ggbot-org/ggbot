@@ -23,15 +23,22 @@ export class DeleteMemory extends DflowNode {
 
 export class GetMemory extends DflowNode {
 	static kind = "getMemory"
-	static inputs = [inputKey]
+	static inputs = [inputKey, input([], { name: "default", optional: true })]
 	static outputs = [output([], { name: "value" })]
 	run() {
 		const context = this.host.context as Context
 		const key = this.input(0).data
+		const defaultValue = this.input(1).data
 		if (!isIdentifierString(key)) return
 		const value = context.memory[key]
-		if (!isSerializablePrimitive(value)) return this.clearOutputs()
-		this.output(0).data = value
+		if (value === undefined) {
+			if (!isSerializablePrimitive(defaultValue))
+				return this.clearOutputs()
+			this.output(0).data = defaultValue
+		} else {
+			if (!isSerializablePrimitive(value)) return this.clearOutputs()
+			this.output(0).data = value
+		}
 	}
 }
 

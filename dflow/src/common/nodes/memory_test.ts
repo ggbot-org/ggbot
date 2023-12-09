@@ -7,101 +7,217 @@ import { now } from "minimal-time-helpers"
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
+const testValues: SerializablePrimitive[] = [42, "a string"]
+
 void describe("deleteMemory", () => {
 	void test("can delete context memory", async () => {
-		const executor = new DflowExecutorMock({
-			view: {
-				nodes: [
-					{
-						id: "a",
-						text: '"key1"',
-						outs: [{ id: "b" }]
-					},
-					{
-						id: "c",
-						text: "deleteMemory",
-						ins: [{ id: "d" }]
-					}
-				],
-				edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }]
-			}
-		})
-		const { memory, memoryChanged } = await executor.run({
-			params: {},
-			memory: { key1: "value1" },
-			time: now()
-		})
-		assert.equal(memoryChanged, true)
-		assert.equal(memory.key1, undefined)
-	})
-})
-
-void describe("getMemory", () => {
-	void test("can read context memory", async () => {
-		const testValues: SerializablePrimitive[] = [42, "a string"]
+		const nodeId = "test"
+		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
 				view: {
 					nodes: [
 						{
-							id: "a",
-							text: '"key1"',
-							outs: [{ id: "b" }]
+							id: "key",
+							text: JSON.stringify(key),
+							outs: [{ id: "out" }]
 						},
 						{
-							id: "c",
-							text: "getMemory",
-							ins: [{ id: "d" }]
+							id: nodeId,
+							text: "deleteMemory",
+							ins: [{ id: "key" }]
 						}
 					],
-					edges: [{ id: "e", from: ["a", "b"], to: ["c", "d"] }]
+					edges: [
+						{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+					]
+				}
+			})
+			const { memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: { [key]: value },
+				time: now()
+			})
+			assert.equal(memoryChanged, true)
+			assert.equal(memory[key], undefined)
+		}
+	})
+})
+
+void describe("getMemory", () => {
+	void test("can read context memory", async () => {
+		const nodeId = "test"
+		const key = "memory key"
+		for (const value of testValues) {
+			const executor = new DflowExecutorMock({
+				view: {
+					nodes: [
+						{
+							id: "key",
+							text: JSON.stringify(key),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: nodeId,
+							text: "getMemory",
+							ins: [{ id: "key" }, { id: "default" }]
+						}
+					],
+					edges: [
+						{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+					]
 				}
 			})
 			const { execution, memory, memoryChanged } = await executor.run({
 				params: {},
-				memory: { key1: value },
+				memory: { [key]: value },
 				time: now()
 			})
 			assert.equal(memoryChanged, false)
-			assert.deepEqual(memory.key1, value)
-			assert.equal(getDflowExecutionOutputData(execution, "c", 0), value)
+			assert.deepEqual(memory[key], value)
+			assert.equal(
+				getDflowExecutionOutputData(execution, nodeId, 0),
+				value
+			)
+		}
+	})
+
+	void test("can fallback to default", async () => {
+		const nodeId = "test"
+		const key = "memory key"
+		for (const value of testValues) {
+			const executor = new DflowExecutorMock({
+				view: {
+					nodes: [
+						{
+							id: "key",
+							text: JSON.stringify(key),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: "default",
+							text: JSON.stringify(value),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: nodeId,
+							text: "getMemory",
+							ins: [{ id: "key" }, { id: "default" }]
+						}
+					],
+					edges: [
+						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+						{
+							id: "e2",
+							from: ["default", "out"],
+							to: [nodeId, "default"]
+						}
+					]
+				}
+			})
+			const { execution, memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: {},
+				time: now()
+			})
+			assert.equal(memoryChanged, false)
+			assert.equal(memory[key], undefined)
+			assert.equal(
+				getDflowExecutionOutputData(execution, nodeId, 0),
+				value
+			)
+		}
+	})
+
+	void test("default value is ignored if memory is defined", async () => {
+		const nodeId = "test"
+		const key = "memory key"
+		for (const value of testValues) {
+			const executor = new DflowExecutorMock({
+				view: {
+					nodes: [
+						{
+							id: "key",
+							text: JSON.stringify(key),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: "default",
+							text: "my default value",
+							outs: [{ id: "out" }]
+						},
+						{
+							id: nodeId,
+							text: "getMemory",
+							ins: [{ id: "key" }, { id: "default" }]
+						}
+					],
+					edges: [
+						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+						{
+							id: "e2",
+							from: ["default", "out"],
+							to: [nodeId, "default"]
+						}
+					]
+				}
+			})
+			const { execution, memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: { [key]: value },
+				time: now()
+			})
+			assert.equal(memoryChanged, false)
+			assert.equal(memory[key], value)
+			assert.equal(
+				getDflowExecutionOutputData(execution, nodeId, 0),
+				value
+			)
 		}
 	})
 })
 
 void describe("setMemory", () => {
 	void test("can set context memory", async () => {
-		const executor = new DflowExecutorMock({
-			view: {
-				nodes: [
-					{
-						id: "a",
-						text: '"key1"',
-						outs: [{ id: "b" }]
-					},
-					{
-						id: "c",
-						text: "1.2",
-						outs: [{ id: "d" }]
-					},
-					{
-						id: "e",
-						text: "setMemory",
-						ins: [{ id: "f" }, { id: "g" }]
-					}
-				],
-				edges: [
-					{ id: "h", from: ["a", "b"], to: ["e", "f"] },
-					{ id: "i", from: ["c", "d"], to: ["e", "g"] }
-				]
-			}
-		})
-		const { memory, memoryChanged } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
-		assert.equal(memoryChanged, true)
-		assert.equal(memory.key1, 1.2)
+		const nodeId = "test"
+		const key = "memory key"
+		for (const value of testValues) {
+			const executor = new DflowExecutorMock({
+				view: {
+					nodes: [
+						{
+							id: "key",
+							text: JSON.stringify(key),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: "value",
+							text: JSON.stringify(value),
+							outs: [{ id: "out" }]
+						},
+						{
+							id: nodeId,
+							text: "setMemory",
+							ins: [{ id: "key" }, { id: "value" }]
+						}
+					],
+					edges: [
+						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+						{
+							id: "e2",
+							from: ["value", "out"],
+							to: [nodeId, "value"]
+						}
+					]
+				}
+			})
+			const { memory, memoryChanged } = await executor.run({
+				params: {},
+				memory: {},
+				time: now()
+			})
+			assert.equal(memoryChanged, true)
+			assert.deepEqual(memory[key], value)
+		}
 	})
 })
