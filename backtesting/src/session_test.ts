@@ -111,7 +111,7 @@ void describe("BacktestingSession", () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
 			strategyKey: { strategyKind: "test", strategyId: "01010101" },
-			view: { nodes: [{ id: "a", text: "true" }], edges: [] }
+			view: { nodes: [{ id: "a", text: "true", x: 0, y: 0 }], edges: [] }
 		})
 		const session = newSession({
 			dayInterval: {
@@ -149,7 +149,7 @@ void describe("BacktestingSession", () => {
 		const strategy = emptyStrategy()
 		const strategyView1 = strategy.view
 		const strategyView2: BacktestingStrategy["view"] = {
-			nodes: [{ id: "a", text: "true" }],
+			nodes: [{ id: "a", text: "true", x: 0, y: 0 }],
 			edges: []
 		}
 		const session = newSession({

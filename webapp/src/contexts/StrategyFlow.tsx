@@ -1,9 +1,11 @@
 import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { StrategyContext } from "_/contexts/Strategy"
-import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView"
+import {
+	useFlowView,
+	UseFlowViewArg,
+	UseFlowViewOutput
+} from "_/hooks/useFlowView"
 import { usePublicApi } from "_/hooks/usePublicApi"
-import { isStrategyFlow } from "@workspace/models"
-import { FlowViewSerializableGraph } from "flow-view"
 import {
 	createContext,
 	FC,
@@ -20,7 +22,7 @@ type ContextValue = UseFlowViewOutput & {
 }
 
 export const StrategyFlowContext = createContext<ContextValue>({
-	whenUpdatedFlowView: 0,
+	whenUpdatedFlowView: undefined,
 	flowViewGraph: undefined,
 	flowViewContainerRef: { current: null }
 })
@@ -32,20 +34,15 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
 
-	const READ_STRATEGY_FLOW = usePublicApi.ReadStrategyFlow()
+	const READ = usePublicApi.ReadStrategyFlow()
 
-	const flow = useMemo(() => {
-		if (
-			isStrategyFlow(READ_STRATEGY_FLOW.data) ||
-			READ_STRATEGY_FLOW.data === null
-		)
-			return READ_STRATEGY_FLOW.data
-	}, [READ_STRATEGY_FLOW])
+	let initialFlowViewGraph: UseFlowViewArg["initialFlowViewGraph"]
+	if (READ.data === null) initialFlowViewGraph = null
+	if (READ.data) initialFlowViewGraph = READ.data.view
 
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
 		container: flowViewContainerRef.current,
-		// TODO need isFlowViewSerializableGraph
-		initialGraph: flow?.view as FlowViewSerializableGraph,
+		initialFlowViewGraph,
 		strategyKind
 	})
 
@@ -57,8 +54,8 @@ export const StrategyFlowProvider: FC<PropsWithChildren> = ({ children }) => {
 	// Fetch flow.
 	useEffect(() => {
 		if (!strategyKey) return
-		if (READ_STRATEGY_FLOW.canRun) READ_STRATEGY_FLOW.request(strategyKey)
-	}, [READ_STRATEGY_FLOW, strategyKey])
+		if (READ.canRun) READ.request(strategyKey)
+	}, [READ, strategyKey])
 
 	return (
 		<StrategyFlowContext.Provider value={contextValue}>

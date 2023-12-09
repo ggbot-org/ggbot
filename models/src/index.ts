@@ -163,11 +163,7 @@ export type {
 	StrategyFlow,
 	WriteStrategyFlow
 } from "./strategyFlow.js"
-export {
-	isStrategyFlow,
-	isWriteStrategyFlowInput,
-	welcomeFlow
-} from "./strategyFlow.js"
+export { isWriteStrategyFlowInput, welcomeFlow } from "./strategyFlow.js"
 export type { StrategyMemory } from "./strategyMemory.js"
 export type { ReadStrategyOrders } from "./strategyOrders.js"
 export { isReadStrategyOrdersInput } from "./strategyOrders.js"

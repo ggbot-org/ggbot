@@ -17,14 +17,15 @@
     "pretest": "tsc --build tsconfig.test.json",
     "test": "node --test"
   },
+  "dependencies": {
+    "flow-view": "6.0.1",
+    "minimal-time-helpers": "0.1.0",
+    "minimal-type-guard-helpers": "0.2.0"
+  },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
     "minimal-assertion-helpers": "0.1.0"
-  },
-  "dependencies": {
-    "minimal-time-helpers": "0.1.0",
-    "minimal-type-guard-helpers": "0.2.0"
   },
   "eslintConfig": {
     "extends": [

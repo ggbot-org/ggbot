@@ -34,8 +34,4 @@ export const deletedNow = (): DeletionTime => ({ whenDeleted: now() })
 
 export type UpdateTime = { readonly whenUpdated: Time }
 
-export const isUpdateTime = objectTypeGuard<UpdateTime>(({ whenUpdated }) =>
-	isTime(whenUpdated)
-)
-
 export const updatedNow = (): UpdateTime => ({ whenUpdated: now() })

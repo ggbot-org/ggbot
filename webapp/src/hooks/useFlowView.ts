@@ -12,7 +12,6 @@ import {
 } from "dflow"
 import {
 	FlowView,
-	FlowViewGraph,
 	FlowViewOnChange,
 	FlowViewOnChangeDataEdge,
 	FlowViewOnChangeDataNode,
@@ -21,22 +20,24 @@ import {
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
+export type UseFlowViewArg = {
+	container: FlowViewContainerElement
+	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined
+	strategyKind?: StrategyKind
+}
+
 export type UseFlowViewOutput = {
-	whenUpdatedFlowView: Time
+	whenUpdatedFlowView: Time | undefined
 	flowViewGraph: FlowViewSerializableGraph | undefined
 }
 
-export const useFlowView = ({
+export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 	container,
-	initialGraph,
+	initialFlowViewGraph,
 	strategyKind
-}: {
-	container: FlowViewContainerElement
-	initialGraph: FlowViewGraph | null | undefined
-	strategyKind?: StrategyKind
 }) => {
 	const [output, setOutput] = useState<UseFlowViewOutput>({
-		whenUpdatedFlowView: 0,
+		whenUpdatedFlowView: undefined,
 		flowViewGraph: undefined
 	})
 
@@ -242,14 +243,14 @@ export const useFlowView = ({
 	// Load initial graph.
 	useEffect(() => {
 		if (!flowView) return
-		if (!initialGraph) return
+		if (!initialFlowViewGraph) return
 		flowView.clearGraph()
-		flowView.loadGraph(initialGraph)
+		flowView.loadGraph(initialFlowViewGraph)
 		setOutput({
 			whenUpdatedFlowView: now(),
-			flowViewGraph: initialGraph
+			flowViewGraph: initialFlowViewGraph
 		})
-	}, [flowView, initialGraph])
+	}, [flowView, initialFlowViewGraph])
 
 	// Dispose.
 	// TODO
