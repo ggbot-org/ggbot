@@ -17,13 +17,18 @@ import {
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
+import { StrategyContext } from "_/contexts/Strategy"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { useBacktesting } from "_/hooks/useBacktesting"
 import { isFrequency } from "@workspace/models"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
+
+	const { flowViewGraph } = useContext(StrategyFlowContext)
+	const { strategyKey } = useContext(StrategyContext)
 
 	const {
 		state: {
@@ -85,10 +90,16 @@ export const Backtesting: FC = () => {
 	}, [dispatch])
 
 	const onClickStart = useCallback(() => {
+		if (!flowViewGraph) return
+		if (!strategyKey) return
 		dispatch({
-			type: "START"
+			type: "START",
+			dayInterval,
+			frequency,
+			strategyKey,
+			view: flowViewGraph
 		})
-	}, [dispatch])
+	}, [dispatch, flowViewGraph, dayInterval, frequency, strategyKey])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: "PAUSE" })

@@ -10,29 +10,23 @@ import {
 	BacktestingStrategy
 } from "@workspace/backtesting"
 import {
-	binanceKlineMaxLimit,
-	BinanceKlinesCacheMap,
-	getBinanceIntervalTime
+	// TODO prefetch binanceKlineMaxLimit,
+	BinanceKlinesCacheMap
+	// TODO prefetch getBinanceIntervalTime
 } from "@workspace/binance"
 import {
 	DflowBinanceExecutor,
 	DflowExecutorView,
-	emptyFlow,
-	extractBinanceFlowSymbolsAndIntervalsFromFlow,
+	// TODO prefetch extractBinanceFlowSymbolsAndIntervalsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import { newOrder } from "@workspace/models"
-import { FlowViewSerializableGraph } from "flow-view"
 import { Time } from "minimal-time-helpers"
 
 let binanceNodesCatalogShouldBeInitialized = false
 const binanceClient = new BacktestingBinanceClient()
 binanceClient.klinesCache = new BinanceKlinesCacheMap()
 const binanceExecutor = new DflowBinanceExecutor()
-
-// TODO try two backtests,  open two browser tabs on two different strategies or on the same strategy
-// is this `session` shared?
-const session = new BacktestingSession()
 
 const statusChangedMessage = (
 	session: BacktestingSession
@@ -53,9 +47,12 @@ const updatedResultMessage = (
 self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
+	const session = new BacktestingSession()
+
 	if (message.type === "SET_DAY_INTERVAL") {
 		const { dayInterval } = message
-		session.dayInterval = dayInterval
+		// TODO remove this block
+		// session.dayInterval = dayInterval
 		self.postMessage({
 			type: "UPDATED_DAY_INTERVAL",
 			dayInterval
@@ -65,7 +62,8 @@ self.onmessage = async ({
 
 	if (message.type === "SET_FREQUENCY") {
 		const { frequency } = message
-		session.frequency = frequency
+		// TODO remove this block
+		// session.frequency = frequency
 		self.postMessage({
 			type: "UPDATED_FREQUENCY",
 			frequency
@@ -73,35 +71,23 @@ self.onmessage = async ({
 		return
 	}
 
-	if (message.type === "SET_STRATEGY_KEY") {
-		const { strategyKey } = message
+	if (message.type === "START") {
+		const { strategyKey, view, dayInterval, frequency } = message
+		session.dayInterval = dayInterval
+		session.frequency = frequency
+		session.computeTimes()
 		const strategy = new BacktestingStrategy({
 			strategyKey,
-			view: emptyFlow()
+			view
 		})
 		session.strategy = strategy
-		return
-	}
-
-	if (message.type === "SET_STRATEGY_VIEW") {
-		const { view } = message
-		const { strategy } = session
-		if (strategy) strategy.view = view
-		return
-	}
-
-	if (message.type === "START") {
+		session.computeTimes()
 		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
 		if (!session.canRun) return
 		// Run backtesting according to given `strategyKind`.
-		const { strategy } = session
-		if (!strategy) return
-		const {
-			strategyKey: { strategyKind },
-			view
-		} = strategy
+		const { strategyKind } = strategyKey
 		const percentageStep = 5
 		let completionPercentage = percentageStep
 		if (strategyKind === "binance") {
@@ -113,40 +99,41 @@ self.onmessage = async ({
 					getDflowBinanceNodesCatalog(binanceSymbols)
 				binanceNodesCatalogShouldBeInitialized = false
 			}
-			// TODO pre-fetch  could also get data from indexed db
 
 			// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
+
 			// TODO
 			//
-			// binanceClient.klinesCache?.setKline(symbol,)
-			//
-			const symbolsAndIntervals =
-				extractBinanceFlowSymbolsAndIntervalsFromFlow(
-					binanceSymbols,
-					// TODO should not use a cast,
-					view as FlowViewSerializableGraph
-				)
+			// const symbolsAndIntervals =
+			// 	extractBinanceFlowSymbolsAndIntervalsFromFlow(
+			// 		binanceSymbols,
+			// 		view
+			// 	)
 
-			const firstTime = session.times[0]
-			const lastTime = session.times[session.times.length - 1]
-			for (const { interval, symbol } of symbolsAndIntervals) {
-				const startTime = firstTime
-				while (startTime < lastTime) {
-					const endTime = Math.min(
-						lastTime,
-						getBinanceIntervalTime[interval](startTime).plus(
-							binanceKlineMaxLimit
-						)
-					)
-					await binanceClient.klines(symbol, interval, {
-						limit: binanceKlineMaxLimit,
-						endTime
-					})
-				}
-			}
+			// const firstTime = session.times[0]
+			// const lastTime = session.times[session.times.length - 1]
+			// for (const { interval, symbol } of symbolsAndIntervals) {
+			// 	let startTime = firstTime
+			// 	while (startTime < lastTime) {
+			// 		const endTime = Math.min(
+			// 			lastTime,
+			// 			getBinanceIntervalTime[interval](startTime).plus(
+			// 				binanceKlineMaxLimit
+			// 			)
+			// 		)
+			// 		startTime = endTime
+			// 		await binanceClient.klines(symbol, interval, {
+			// 			limit: binanceKlineMaxLimit,
+			// 			endTime
+			// 		})
+			// 	}
+			// }
+
 			// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
 			// TODO
 
+			// TODO pre-fetch  could also get data from indexed db
+			//
 			let time: Time | undefined
 			while ((time = session.nextTime)) {
 				// Run executor.

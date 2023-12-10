@@ -1,4 +1,3 @@
-import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { logging } from "_/logging"
@@ -24,12 +23,17 @@ import {
 	Timestamp,
 	yesterday
 } from "minimal-time-helpers"
-import { Reducer, useContext, useEffect, useReducer } from "react"
+import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
 import { useIntl } from "react-intl"
 
 import { ecmaScriptPath } from "../ecmaScripts"
 
-const { info } = logging("backtesting")
+type Action =
+	| BacktestingMessageInData
+	| BacktestingMessageOutData
+	| {
+			type: "INITALIZED"
+	  }
 
 type State = Pick<DflowCommonContext, "memory"> & {
 	status: BacktestingStatus
@@ -46,7 +50,15 @@ type State = Pick<DflowCommonContext, "memory"> & {
 	timestamps: Timestamp[]
 }
 
-export type { State as BacktestingState }
+export type UseBacktestingOutput = {
+	state: State
+	dispatch: Dispatch<Action>
+	hasRequiredData: boolean
+}
+
+const { info } = logging("backtesting")
+
+const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
 
 const getMaxDay: () => State["maxDay"] = yesterday
 
@@ -60,11 +72,11 @@ const defaultDayInterval = (): State["dayInterval"] => {
 
 const defaultFrequency = (): State["frequency"] => everyOneHour()
 
-const getInitialState = ({
+const initializer = ({
 	frequency,
 	dayInterval
 }: Pick<State, "frequency" | "dayInterval">): State => {
-	// Compute timestamps.
+	// TODO remove this Compute timestamps.
 	const { start, end } = dayIntervalToDate(dayInterval)
 	const interval = frequencyIntervalDuration(frequency)
 	const timestamps: Timestamp[] = []
@@ -91,21 +103,17 @@ const getInitialState = ({
 	}
 }
 
-const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
-
-export const useBacktesting = () => {
+export const useBacktesting = (): UseBacktestingOutput => {
 	const { formatMessage } = useIntl()
 
-	const { strategyKey } = useContext(StrategyContext)
 	const { flowViewGraph } = useContext(StrategyFlowContext)
 	const { toast } = useContext(ToastContext)
 
+	// TODO hasRequiredData could be removed
 	let hasRequiredData = true
 	if (!flowViewGraph) hasRequiredData = false
 
-	const [state, dispatch] = useReducer<
-		Reducer<State, BacktestingMessageInData | BacktestingMessageOutData>
-	>(
+	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
 			info(action.type)
 
@@ -113,12 +121,10 @@ export const useBacktesting = () => {
 				[
 					"PAUSE",
 					"RESUME",
-					"START",
 					"STOP",
+					"START",
 					"SET_DAY_INTERVAL",
-					"SET_FREQUENCY",
-					"SET_STRATEGY",
-					"SET_STRATEGY_VIEW"
+					"SET_FREQUENCY"
 				].includes(action.type)
 			) {
 				backtesting.postMessage(action)
@@ -149,23 +155,13 @@ export const useBacktesting = () => {
 
 			return state
 		},
-		getInitialState({
+		initializer({
 			frequency: defaultFrequency(),
 			dayInterval: defaultDayInterval()
 		})
 	)
 
-	useEffect(() => {
-		if (!strategyKey) return
-		dispatch({ type: "SET_STRATEGY_KEY", strategyKey })
-	}, [dispatch, strategyKey])
-
-	useEffect(() => {
-		if (!strategyKey) return
-		if (!flowViewGraph) return
-		dispatch({ type: "SET_STRATEGY_VIEW", view: flowViewGraph })
-	}, [dispatch, flowViewGraph, strategyKey])
-
+	// Dispatch action on every backtesting message received.
 	useEffect(() => {
 		backtesting.onmessage = ({
 			data: action
@@ -173,6 +169,7 @@ export const useBacktesting = () => {
 			dispatch(action)
 		}
 
+		// Terminate backtesting worker on onmount.
 		return () => {
 			backtesting.terminate()
 		}
@@ -180,5 +177,3 @@ export const useBacktesting = () => {
 
 	return { state, dispatch, hasRequiredData }
 }
-
-export type BacktestingOutput = ReturnType<typeof useBacktesting>

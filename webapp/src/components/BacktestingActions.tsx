@@ -1,5 +1,5 @@
 import { Button, ButtonProps, Buttons } from "_/components/library"
-import type { BacktestingState } from "_/hooks/useBacktesting"
+import type { UseBacktestingOutput } from "_/hooks/useBacktesting"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 
@@ -39,7 +39,10 @@ const StopButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-type Props = Pick<BacktestingState, "isPaused" | "isRunning" | "isReadOnly"> & {
+type Props = Pick<
+	UseBacktestingOutput["state"],
+	"isPaused" | "isRunning" | "isReadOnly"
+> & {
 	onClickPause: ButtonProps["onClick"]
 	onClickResume: ButtonProps["onClick"]
 	onClickStart: ButtonProps["onClick"]

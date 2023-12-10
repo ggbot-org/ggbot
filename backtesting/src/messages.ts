@@ -24,9 +24,6 @@ export type BacktestingMessageInData =
 			type: "RESUME"
 	  }
 	| {
-			type: "START"
-	  }
-	| {
 			type: "STOP"
 	  }
 	| {
@@ -37,12 +34,11 @@ export type BacktestingMessageInData =
 			type: "SET_FREQUENCY"
 			frequency: Frequency
 	  }
-	| (Pick<BacktestingStrategy, "strategyKey"> & {
-			type: "SET_STRATEGY_KEY"
-	  })
-	| (Pick<BacktestingStrategy, "view"> & {
-			type: "SET_STRATEGY_VIEW"
-	  })
+	| ({
+			type: "START"
+			dayInterval: DayInterval
+			frequency: Frequency
+	  } & Pick<BacktestingStrategy, "strategyKey" | "view">)
 
 /**
  * @example

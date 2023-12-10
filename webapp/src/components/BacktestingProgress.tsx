@@ -1,17 +1,14 @@
 import { Box, Flex, Progress, ProgressProps, Title } from "_/components/library"
-import type {
-	BacktestingOutput,
-	BacktestingState
-} from "_/hooks/useBacktesting"
+import type { UseBacktestingOutput } from "_/hooks/useBacktesting"
 import { dayFormat, timeFormat } from "_/i18n/formats"
 import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export type BacktestingProgressProps = Pick<
-	BacktestingState,
+	UseBacktestingOutput["state"],
 	"currentTimestamp" | "dayInterval"
 > &
-	Pick<BacktestingOutput, "hasRequiredData"> & {
+	Pick<UseBacktestingOutput, "hasRequiredData"> & {
 		progress: Pick<ProgressProps, "value" | "max">
 	}
 
