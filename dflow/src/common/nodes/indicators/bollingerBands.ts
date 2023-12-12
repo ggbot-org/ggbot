@@ -58,7 +58,7 @@ export class BollingerBands extends DflowNode {
 		output("array", { name: "middle" }),
 		output("array", { name: "upper" })
 	]
-	async run() {
+	run() {
 		const values = this.input(0).data as number[]
 		const period = this.input(1).data as number
 		const amplitude = this.input(2).data as number | undefined

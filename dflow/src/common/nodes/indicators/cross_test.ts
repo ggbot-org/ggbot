@@ -3,8 +3,8 @@ import { describe, test } from "node:test"
 
 import { crossOver } from "./cross.js"
 
-describe("CrossOver", () => {
-	test("works", () => {
+void describe("CrossOver", () => {
+	void test("works", () => {
 		[
 			{ input: { values1: [], values2: [] }, output: [] },
 			{

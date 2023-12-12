@@ -7,8 +7,8 @@ import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 import { coerceToTimeUnit } from "./time.js"
 
-describe("coerceToTimeUnit", () => {
-	test("works", () => {
+void describe("coerceToTimeUnit", () => {
+	void test("works", () => {
 		[
 			{ input: "not a TimeUnit", output: undefined },
 			{ input: "seconds", output: "second" },
@@ -25,8 +25,8 @@ describe("coerceToTimeUnit", () => {
 	})
 })
 
-describe("today", () => {
-	test("reads context timestamp", async () => {
+void describe("today", () => {
+	void test("reads context timestamp", async () => {
 		const day = "1978-12-31"
 		const nodeId = "a"
 		const executor = new DflowExecutorMock({

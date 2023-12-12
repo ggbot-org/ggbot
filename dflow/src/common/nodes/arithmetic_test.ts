@@ -6,8 +6,8 @@ import { now } from "minimal-time-helpers"
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
-describe("add", () => {
-	test("implements addition", async () => {
+void describe("add", () => {
+	void test("implements addition", async () => {
 		const nodeId = "operator"
 		const a = 2
 		const b = 3
@@ -45,8 +45,8 @@ describe("add", () => {
 	})
 })
 
-describe("sub", () => {
-	test("implements subtraction", async () => {
+void describe("sub", () => {
+	void test("implements subtraction", async () => {
 		const nodeId = "operator"
 		const a = 2
 		const b = 3
@@ -84,8 +84,8 @@ describe("sub", () => {
 	})
 })
 
-describe("mul", () => {
-	test("implements multiplication", async () => {
+void describe("mul", () => {
+	void test("implements multiplication", async () => {
 		const nodeId = "operator"
 		const a = 2
 		const b = 3
@@ -123,8 +123,8 @@ describe("mul", () => {
 	})
 })
 
-describe("div", () => {
-	test("implements multiplication", async () => {
+void describe("div", () => {
+	void test("implements multiplication", async () => {
 		const nodeId = "operator"
 		const a = 3
 		const b = 2

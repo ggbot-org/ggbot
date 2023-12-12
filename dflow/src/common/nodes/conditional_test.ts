@@ -6,8 +6,8 @@ import { now } from "minimal-time-helpers"
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
-describe("if", () => {
-	test("implements `if` condition", async () => {
+void describe("if", () => {
+	void test("implements `if` condition", async () => {
 		const nodeId = "if"
 		const executor = new DflowExecutorMock({
 			view: {

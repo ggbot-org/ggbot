@@ -42,7 +42,7 @@ const memoryAssertionError = "check memory"
 const memoryChangedAssertionError = "check memoryChanged"
 
 const executeTrailingStop = async (
-	nodeKind: typeof TrailingStopUp.kind | typeof TrailingStopDown.kind,
+	nodeKind: typeof TrailingStopUp.kind,
 	{
 		enterTrailing,
 		memoryLabel,
@@ -122,8 +122,8 @@ const executeTrailingStop = async (
 	}
 }
 
-describe("Trailing Stop", () => {
-	test("TrailingStopUp", async () => {
+void describe("Trailing Stop", () => {
+	void test("TrailingStopUp", async () => {
 		const memoryLabel = "test"
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
@@ -265,7 +265,7 @@ describe("Trailing Stop", () => {
 		}
 	})
 
-	test("TrailingStopDown", async () => {
+	void test("TrailingStopDown", async () => {
 		const memoryLabel = "test"
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
@@ -406,7 +406,7 @@ describe("Trailing Stop", () => {
 		}
 	})
 
-	test("trailingStop", () => {
+	void test("trailingStop", () => {
 		const testData: Array<{
 			input: TrailingStopInput
 			output: TrailingStopOutput
@@ -479,8 +479,8 @@ describe("Trailing Stop", () => {
 	})
 })
 
-describe("computeStopPriceDown", () => {
-	test("does not increase number of decimals", () => {
+void describe("computeStopPriceDown", () => {
+	void test("does not increase number of decimals", () => {
 		assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
 			{
 				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
@@ -490,8 +490,8 @@ describe("computeStopPriceDown", () => {
 	})
 })
 
-describe("computeStopPriceUp", () => {
-	test("does not increase number of decimals", () => {
+void describe("computeStopPriceUp", () => {
+	void test("does not increase number of decimals", () => {
 		assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
 			{
 				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },

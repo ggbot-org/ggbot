@@ -7,8 +7,8 @@ import {
 	wilderSmoothing
 } from "./movingAverages.js"
 
-describe("Exponential Moving Average", () => {
-	test("works", () => {
+void describe("Exponential Moving Average", () => {
+	void test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -30,8 +30,8 @@ describe("Exponential Moving Average", () => {
 	})
 })
 
-describe("Simple Moving Average", () => {
-	test("works", () => {
+void describe("Simple Moving Average", () => {
+	void test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -53,8 +53,8 @@ describe("Simple Moving Average", () => {
 	})
 })
 
-describe("Wilder's smoothing", () => {
-	test("works", () => {
+void describe("Wilder's smoothing", () => {
+	void test("works", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{

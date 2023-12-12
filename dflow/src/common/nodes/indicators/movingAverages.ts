@@ -47,7 +47,7 @@ export class ExponentialMovingAverage extends DflowNode {
 	static kind = "EMA"
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
-	async run() {
+	run() {
 		const values = this.input(0).data as number[]
 		const period = this.input(1).data as number
 		const result = exponentialMovingAverage(values, period)
@@ -74,7 +74,7 @@ export class SimpleMovingAverage extends DflowNode {
 	static kind = "SMA"
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
-	async run() {
+	run() {
 		const values = this.input(0).data as number[]
 		const period = this.input(1).data as number
 		const result = simpleMovingAverage(values, period)
@@ -107,7 +107,7 @@ export class WilderMovingAverage extends DflowNode {
 	static kind = "WilderMA"
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
-	async run() {
+	run() {
 		const values = this.input(0).data as number[]
 		const period = this.input(1).data as number
 		const result = wilderSmoothing(values, period)

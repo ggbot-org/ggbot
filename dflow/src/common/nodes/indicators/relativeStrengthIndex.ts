@@ -4,6 +4,7 @@ import {
 	Decimal,
 	decimalToNumber,
 	div,
+	ErrorCannotDivideByZero,
 	maxNumOfDecimals,
 	mul,
 	sub
@@ -74,11 +75,16 @@ export class RelativeStrengthIndex extends DflowNode {
 	static kind = "RSI"
 	static inputs = [inputValues, inputPeriod]
 	static outputs = [outputValues, outputLastValue]
-	async run() {
-		const values = this.input(0).data as number[]
-		const period = this.input(1).data as number
-		const result = relativeStrengthIndex(values, period)
-		this.output(0).data = result
-		this.output(1).data = result.slice(-1).pop()
+	run() {
+		try {
+			const values = this.input(0).data as number[]
+			const period = this.input(1).data as number
+			const result = relativeStrengthIndex(values, period)
+			this.output(0).data = result
+			this.output(1).data = result.slice(-1).pop()
+		} catch (error) {
+			if (error instanceof ErrorCannotDivideByZero) return
+			throw error
+		}
 	}
 }

@@ -100,7 +100,7 @@ export class TrailingStopUp extends DflowNode {
 	static kind = "trailingStopUp"
 	static inputs = inputs
 	static outputs = outputs
-	async run() {
+	run() {
 		const direction: TrailingStopInputDirection = "UP"
 		const enterTrailing = this.input(0).data
 		const memoryLabel = this.input(1).data as string
@@ -152,7 +152,7 @@ export class TrailingStopDown extends DflowNode {
 	static kind = "trailingStopDown"
 	static inputs = inputs
 	static outputs = outputs
-	async run() {
+	run() {
 		const direction: TrailingStopInputDirection = "DOWN"
 		const enterTrailing = this.input(0).data
 		const memoryLabel = this.input(1).data as string
@@ -167,7 +167,10 @@ export class TrailingStopDown extends DflowNode {
 		let stopPrice = stopPriceInMemory
 		if (stopPrice === undefined) {
 			if (!enterTrailing) return
-			stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
+			stopPrice = computeStopPriceDown({
+				marketPrice,
+				percentageDelta
+			})
 		}
 		if (typeof stopPrice !== "number") return
 		if (

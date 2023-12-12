@@ -51,16 +51,13 @@ export class Division extends DflowNode {
 	static inputs = [input("number"), input("number")]
 	static outputs = [output("number")]
 	run() {
-		const a = this.input(0).data as number
-		const b = this.input(1).data as number
 		try {
+			const a = this.input(0).data as number
+			const b = this.input(1).data as number
 			const output: number = decimalToNumber(div(a, b))
 			this.output(0).data = output
 		} catch (error) {
-			if (error instanceof ErrorCannotDivideByZero) {
-				this.clearOutputs()
-				return
-			}
+			if (error instanceof ErrorCannotDivideByZero) return
 			throw error
 		}
 	}

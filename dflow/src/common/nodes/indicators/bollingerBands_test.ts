@@ -3,8 +3,8 @@ import { describe, test } from "node:test"
 
 import { bollingerBands } from "./bollingerBands.js"
 
-describe("Bollinger Bands", () => {
-	test("works", () => {
+void describe("Bollinger Bands", () => {
+	void test("works", () => {
 		[
 			{
 				input: { values: [], period: 1, amplitude: 2 },

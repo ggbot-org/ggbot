@@ -24,7 +24,7 @@ export class HeikinAshi extends DflowNode {
 	static kind = "Heikin-Ashi"
 	static inputs = [inputOpen, inputHigh, inputLow, inputClose]
 	static outputs = [outputOpen, outputClose]
-	async run() {
+	run() {
 		const open = this.input(0).data as number[]
 		const high = this.input(1).data as number[]
 		const low = this.input(2).data as number[]

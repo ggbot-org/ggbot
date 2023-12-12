@@ -30,7 +30,7 @@ export class CrossOver extends DflowNode {
 	static kind = "crossOver"
 	static inputs = [inputValues1, inputValues2]
 	static outputs = [outputValues, outputLastValue]
-	async run() {
+	run() {
 		const values1 = this.input(0).data as number[]
 		const values2 = this.input(1).data as number[]
 		const result = crossOver(values1, values2)

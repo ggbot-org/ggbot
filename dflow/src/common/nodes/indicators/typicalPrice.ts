@@ -28,7 +28,7 @@ export class TypicalPrice extends DflowNode {
 	static kind = "typicalPrice"
 	static inputs = [inputHigh, inputLow, inputClose]
 	static outputs = [outputValues, outputLastValue]
-	async run() {
+	run() {
 		const high = this.input(0).data as number[]
 		const low = this.input(1).data as number[]
 		const close = this.input(2).data as number[]
