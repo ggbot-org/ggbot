@@ -90,7 +90,7 @@ export const getDflowBinanceNodeSymbolKind = ({
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
 	[baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
 
-export type DflowBinanceSymbolAndInterval = {
+type DflowBinanceSymbolAndInterval = {
 	symbol: string
 	interval: DflowBinanceKlineInterval
 }
@@ -161,16 +161,12 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 				{ symbol: symbolA, interval: intervalA },
 				{ symbol: symbolB, interval: intervalB }
 			) => {
-				// TODO improve this, should remove castings
-				const intervalIndexA = dflowBinanceKlineIntervals.indexOf(
-					intervalA as DflowBinanceKlineInterval
-				) as number
-				const intervalIndexB = dflowBinanceKlineIntervals.indexOf(
-					intervalB as DflowBinanceKlineInterval
-				) as number
 				if (symbolA > symbolB) return 1
 				if (symbolA < symbolB) return -1
-				return intervalIndexA > intervalIndexB ? 1 : -1
+				return dflowBinanceKlineIntervals.indexOf(intervalA) >
+					dflowBinanceKlineIntervals.indexOf(intervalB)
+					? 1
+					: -1
 			}
 		)
 }

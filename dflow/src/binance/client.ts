@@ -40,3 +40,62 @@ interface DflowBinanceClientPrivate {
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespFULL>
 }
+
+export class DflowBinanceClientDummy implements DflowBinanceClient {
+	async exchangeInfo(): Promise<BinanceExchangeInfo> {
+		return Promise.resolve({
+			timezone: "UTC",
+			serverTime: 0,
+			rateLimits: [],
+			symbols: []
+		})
+	}
+
+	async isBinanceSymbol(_arg: unknown): Promise<boolean> {
+		return Promise.resolve(false)
+	}
+
+	async klines(
+		_symbol: string,
+		_interval: BinanceKlineInterval,
+		_parameters: DflowBinanceClientKlinesParameters
+	): Promise<BinanceKline[]> {
+		return Promise.resolve([])
+	}
+
+	async newOrder(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Extract<BinanceOrderType, "MARKET">,
+		_orderOptions: BinanceNewOrderOptions
+	): Promise<BinanceOrderRespFULL> {
+		return Promise.resolve({
+			clientOrderId: "",
+			cummulativeQuoteQty: "0",
+			executedQty: "0",
+			orderId: -1,
+			orderListId: -1,
+			origQty: "0",
+			price: "0",
+			side,
+			status: "FILLED",
+			symbol,
+			timeInForce: "GTC",
+			transactTime: 0,
+			type,
+			fills: [
+				{
+					commission: "0",
+					commissionAsset: "BNB",
+					price: "0",
+					qty: "0",
+					tradeId: -1
+				}
+			]
+		})
+	}
+
+	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
+		return Promise.resolve({ symbol, price: "0" })
+	}
+}

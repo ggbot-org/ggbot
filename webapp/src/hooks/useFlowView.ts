@@ -1,9 +1,13 @@
-import { BinanceClient } from "_/binance/client"
+import { binance } from "_/binance/exchange"
 import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
-import { BinanceKlinesCacheMap } from "@workspace/binance"
-import { DflowBinanceHost, parsePercentage } from "@workspace/dflow"
+import {
+	DflowBinanceClient,
+	DflowBinanceClientDummy,
+	DflowBinanceHost,
+	parsePercentage
+} from "@workspace/dflow"
 import { StrategyKind } from "@workspace/models"
 import {
 	DflowErrorCannotConnectPins,
@@ -31,6 +35,19 @@ export type UseFlowViewOutput = {
 	flowViewGraph: FlowViewSerializableGraph | undefined
 }
 
+class BinanceClient
+	extends DflowBinanceClientDummy
+	implements DflowBinanceClient
+{
+	async exchangeInfo() {
+		return binance.exchangeInfo()
+	}
+
+	async isBinanceSymbol(arg: unknown) {
+		return binance.isBinanceSymbol(arg)
+	}
+}
+
 export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 	container,
 	initialFlowViewGraph,
@@ -49,13 +66,7 @@ export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 			nodesCatalog: DflowNodesCatalog
 		): FlowView => {
 			const time = truncateTime(now()).to.minute
-			const binance = new BinanceClient(
-				{
-					time
-				},
-				//  TODO Actually klines cache is not used here.
-				new BinanceKlinesCacheMap()
-			)
+			const binance = new BinanceClient()
 			const dflow = new DflowBinanceHost(
 				{ nodesCatalog },
 				{ binance, params: {}, memory: {}, time }
