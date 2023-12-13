@@ -74,7 +74,7 @@ export class ApiService implements UserApiService {
 	}
 
 	ReadBinanceApiKeyPermissions() {
-		return this.dataProvider.readBinanceApiKey(this.accountKey)
+		return this.dataProvider.readBinanceApiKeyPermissions(this.accountKey)
 	}
 
 	ReadStrategyBalances(arg: unknown) {
