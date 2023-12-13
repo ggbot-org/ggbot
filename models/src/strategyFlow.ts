@@ -23,14 +23,14 @@ export type ReadStrategyFlow = (
 	arg: StrategyKey
 ) => Promise<StrategyFlow | null>
 
-type WriteStrategyFlowInput = AccountStrategyKey &
+export type WriteStrategyFlowInput = AccountStrategyKey &
 	Omit<StrategyFlow, "whenUpdated">
 
 // TODO this should be implemented by flow-view
 // it is also a dummy implementation
 const isFlowViewSerializableGraph = (
 	arg: unknown
-): arg is FlowViewSerializableGraph => !arg
+): arg is FlowViewSerializableGraph => Boolean(arg)
 
 export const isWriteStrategyFlowInput = objectTypeGuard<WriteStrategyFlowInput>(
 	({ view, ...accountStrategyKey }) =>

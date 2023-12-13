@@ -6,8 +6,8 @@ import { isItemId } from "./item.js"
 
 export const invalidId = "not an id"
 
-describe("isItemId", () => {
-	test("validates id as UUID", () => {
+void describe("isItemId", () => {
+	void test("validates id as UUID", () => {
 		assertEqual<unknown, boolean>(isItemId, [
 			{ input: undefined, output: false },
 			{ input: 1000, output: false },

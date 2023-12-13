@@ -42,9 +42,9 @@ const accountStrategy4: AccountStrategy = {
 	]
 }
 
-describe("accountStrategiesModifier", () => {
-	describe("insertItem", () => {
-		test("inserts a new item", () => {
+void describe("accountStrategiesModifier", () => {
+	void describe("insertItem", () => {
+		void test("inserts a new item", () => {
 			assertDeepEqual<
 				Parameters<typeof accountStrategiesModifier.insertItem>,
 				ReturnType<typeof accountStrategiesModifier.insertItem>
@@ -65,7 +65,7 @@ describe("accountStrategiesModifier", () => {
 			)
 		})
 
-		test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
+		void test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertItem(
@@ -83,7 +83,7 @@ describe("accountStrategiesModifier", () => {
 			)
 		})
 
-		test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
+		void test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertItem(

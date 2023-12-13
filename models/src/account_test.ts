@@ -3,14 +3,16 @@ import { describe, test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { Account, isAccount, newAccount } from "./account.js"
+import { Account, AccountKey, isAccount, newAccount } from "./account.js"
 import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
 
-describe("isAccount", () => {
-	test("validates Account, name is optional", () => {
+export const accountKey: AccountKey = { accountId: nullId }
+
+void describe("isAccount", () => {
+	void test("validates Account, name is optional", () => {
 		const email = "user@example.com"
 		const { whenCreated } = createdNow()
 		assertEqual<MaybeObject<Account>, boolean>(isAccount, [

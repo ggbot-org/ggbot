@@ -9,8 +9,8 @@ import { isName, normalizeName, throwIfInvalidName } from "./name.js"
 const nameTooLong = "x".repeat(999)
 export const invalidNames = ["", "     ", nameTooLong]
 
-describe("isName", () => {
-	test("validates string as name or throws", () => {
+void describe("isName", () => {
+	void test("validates string as name or throws", () => {
 		assertEqual<string, boolean>(isName, [
 			{ input: "valid name", output: true },
 			...invalidNames.map((input) => ({ input, output: false }))
@@ -19,8 +19,8 @@ describe("isName", () => {
 })
 
 // TODO assertThrows
-describe("throwIfInvalidName", () => {
-	test("throws ErrorInvalidArg", () => {
+void describe("throwIfInvalidName", () => {
+	void test("throws ErrorInvalidArg", () => {
 		[...invalidNames.map(normalizeName)].forEach((value) => {
 			assert.throws(
 				() => {

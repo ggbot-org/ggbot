@@ -5,7 +5,7 @@ import { Strategy, StrategyKey } from "./strategy.js"
 export class ErrorAccountItemNotFound extends Error {
 	static errorName = "ErrorAccountItemNotFound"
 	readonly type: "Account" | "BinanceApiConfig" | "SubscriptionPurchase"
-	readonly accountId: unknown
+	readonly accountId: AccountKey["accountId"]
 	constructor({
 		type,
 		accountId
@@ -18,6 +18,7 @@ export class ErrorAccountItemNotFound extends Error {
 		type,
 		accountId
 	}: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
+		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		return `${type} not found, accountId=${accountId}`
 	}
 	toJSON() {

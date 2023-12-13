@@ -4,10 +4,8 @@ import {
 	CopyStrategy,
 	CreateStrategy,
 	DeleteStrategy,
-	ErrorAccountItemNotFound,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	isAccountKey,
 	newAccountStrategy,
 	newStrategy,
 	normalizeName,
@@ -84,11 +82,6 @@ export const readStrategyAccountId: ReadStrategyAccountId = async (
 		throw new ErrorStrategyItemNotFound({
 			type: "Strategy",
 			...strategyKey
-		})
-	if (!isAccountKey(data))
-		throw new ErrorAccountItemNotFound({
-			type: "Account",
-			accountId: undefined
 		})
 	const { accountId } = data
 	strategyAccountIdCache.set(strategyId, accountId)

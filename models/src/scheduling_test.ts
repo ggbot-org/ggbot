@@ -9,8 +9,8 @@ import {
 	SchedulingSummary
 } from "./scheduling.js"
 
-describe("getSchedulingSummary", () => {
-	test("return a SchedulingSummary", () => {
+void describe("getSchedulingSummary", () => {
+	void test("return a SchedulingSummary", () => {
 		assertDeepEqual<Scheduling[], SchedulingSummary>(getSchedulingSummary, [
 			{
 				input: [],
@@ -75,8 +75,8 @@ describe("getSchedulingSummary", () => {
 	})
 })
 
-describe("schedulingsAreInactive", () => {
-	test("checks if schedulings are inactive overall", () => {
+void describe("schedulingsAreInactive", () => {
+	void test("checks if schedulings are inactive overall", () => {
 		assertEqual<Scheduling[], boolean>(schedulingsAreInactive, [
 			{
 				input: [],

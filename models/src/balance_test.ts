@@ -4,8 +4,8 @@ import { assertEqual } from "minimal-assertion-helpers"
 
 import { Balance, isBalance } from "./balance.js"
 
-describe("isBalance", () => {
-	test("validates Balance", () => {
+void describe("isBalance", () => {
+	void test("validates Balance", () => {
 		assertEqual<Balance, boolean>(isBalance, [
 			{
 				input: {

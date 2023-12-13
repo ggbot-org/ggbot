@@ -13,8 +13,8 @@ import {
 } from "./subscriptionPurchase.js"
 import { createdNow } from "./time.js"
 
-describe("isSubscriptionPurchase", () => {
-	test("validates SubscriptionPurchase", () => {
+void describe("isSubscriptionPurchase", () => {
+	void test("validates SubscriptionPurchase", () => {
 		const paymentProvider = "utrust"
 		const plan = "basic"
 		const startDay = today()

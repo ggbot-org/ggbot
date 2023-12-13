@@ -5,8 +5,8 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { quota } from "./quotas.js"
 import { SubscriptionPlan } from "./subscription.js"
 
-describe("quota", () => {
-	test("MAX_SCHEDULINGS_PER_ACCOUNT", () => {
+void describe("quota", () => {
+	void test("MAX_SCHEDULINGS_PER_ACCOUNT", () => {
 		assertEqual<SubscriptionPlan | undefined, number>(
 			quota.MAX_SCHEDULINGS_PER_ACCOUNT,
 			[
@@ -26,7 +26,7 @@ describe("quota", () => {
 		)
 	})
 
-	test("MAX_STRATEGIES_PER_ACCOUNT", () => {
+	void test("MAX_STRATEGIES_PER_ACCOUNT", () => {
 		assertEqual<SubscriptionPlan | undefined, number>(
 			quota.MAX_STRATEGIES_PER_ACCOUNT,
 			[

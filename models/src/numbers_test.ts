@@ -6,8 +6,8 @@ import { isFiniteNumber, isNaturalNumber } from "./numbers.js"
 
 const notAllowed = [NaN, Infinity]
 
-describe("isFiniteNumber", () => {
-	test("validates FiniteNumber", () => {
+void describe("isFiniteNumber", () => {
+	void test("validates FiniteNumber", () => {
 		assertEqual<unknown, boolean>(isFiniteNumber, [
 			{
 				input: 1,
@@ -22,8 +22,8 @@ describe("isFiniteNumber", () => {
 	})
 })
 
-describe("isNaturalNumber", () => {
-	test("validates NaturalNumber", () => {
+void describe("isNaturalNumber", () => {
+	void test("validates NaturalNumber", () => {
 		assertEqual<unknown, boolean>(isNaturalNumber, [
 			{
 				input: 1,

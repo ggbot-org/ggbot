@@ -4,8 +4,8 @@ import { assertEqual } from "minimal-assertion-helpers"
 
 import { isSubscription, Subscription } from "./subscription.js"
 
-describe("isSubscription", () => {
-	test("validates Subscription", () => {
+void describe("isSubscription", () => {
+	void test("validates Subscription", () => {
 		assertEqual<Subscription, boolean>(
 			isSubscription,
 
