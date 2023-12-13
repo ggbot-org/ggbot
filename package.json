@@ -1,7 +1,7 @@
 {
-  "name": "ggbot2",
+  "name": "ggbot",
   "description": "crypto flow",
-  "homepage": "http://ggbot2.com",
+  "homepage": "https://ggbot.org",
   "version": "0.0.0",
   "private": true,
   "type": "module",
