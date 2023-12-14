@@ -1,21 +1,17 @@
 import { Subscription } from "@workspace/models"
 
-import { IDBObjectStoreProvider, IDBProvider } from "./provider.js"
+import { IDBObjectStoreProvider, IDBProvider } from "./IndexedDB.js"
 
 const databaseName = "user"
-const databaseVersion = 1
+const databaseVersion1 = 1
 
 const subscriptionObjectStore: IDBObjectStoreProvider = {
 	name: "subscription",
 	parameters: { autoIncrement: false }
 }
 
-class UserDB implements IDBProvider {
+class UserDB extends EventTarget implements IDBProvider {
 	private db: IDBDatabase | undefined
-
-	get isOpen() {
-		return this.db !== undefined
-	}
 
 	get subscription(): Subscription | null | undefined {
 		const { db } = this
@@ -24,18 +20,20 @@ class UserDB implements IDBProvider {
 	}
 
 	open() {
-		if (this.isOpen) return
-		const request = indexedDB.open(databaseName, databaseVersion)
+		if (this.db) return
+		const request = indexedDB.open(databaseName, databaseVersion1)
 		request.onsuccess = () => {
 			this.db = request.result
 		}
-		request.onupgradeneeded = () => {
-			const { db } = this
-			if (!db) return
-			db.createObjectStore(
-				subscriptionObjectStore.name,
-				subscriptionObjectStore.parameters
-			)
+		request.onupgradeneeded = (event) => {
+			const { newVersion, oldVersion } = event
+			const db = request.result
+			if (oldVersion === null && newVersion === 1) {
+				db.createObjectStore(
+					subscriptionObjectStore.name,
+					subscriptionObjectStore.parameters
+				)
+			}
 		}
 	}
 }

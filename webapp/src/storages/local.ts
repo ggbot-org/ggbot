@@ -2,9 +2,7 @@ import { logging } from "_/logging"
 import type { ManagedCacheProvider } from "@workspace/cache"
 import { isStrategy, Strategy } from "@workspace/models"
 
-import { cachedBoolean } from "./cachedBoolean"
-import { itemKey } from "./itemKeys"
-import type { WebStorageProvider } from "./provider"
+import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
 
 const { info } = logging("local-storage")
 

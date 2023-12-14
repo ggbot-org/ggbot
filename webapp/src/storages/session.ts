@@ -5,9 +5,7 @@ import type { ManagedCacheProvider } from "@workspace/cache"
 import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "@workspace/dflow"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
-import { cachedBoolean } from "./cachedBoolean"
-import { itemKey } from "./itemKeys"
-import type { WebStorageProvider } from "./provider"
+import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
 
 const { info, warn } = logging("session-storage")
 
