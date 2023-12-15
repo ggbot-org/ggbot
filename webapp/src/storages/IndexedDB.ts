@@ -1,8 +1,10 @@
 export type IDBProvider = {
-	open: () => void
+	readonly name: string
+	readonly version: number
+	open(): void
 }
 
 export type IDBObjectStoreProvider = {
 	readonly name: string
-	readonly parameters: IDBObjectStoreParameters
+	create(db: IDBDatabase): void
 }

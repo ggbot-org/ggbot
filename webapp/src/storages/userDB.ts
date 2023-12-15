@@ -1,17 +1,47 @@
-import { Subscription } from "@workspace/models"
+import { SerializableData, Subscription } from "@workspace/models"
 
 import { IDBObjectStoreProvider, IDBProvider } from "./IndexedDB.js"
 
-const databaseName = "user"
-const databaseVersion1 = 1
+type UserObjectType = "subscription"
 
-const subscriptionObjectStore: IDBObjectStoreProvider = {
-	name: "subscription",
-	parameters: { autoIncrement: false }
+type UserObject = {
+	type: UserObjectType
+	data: SerializableData
 }
 
-class UserDB extends EventTarget implements IDBProvider {
+class UserObjectStore implements IDBObjectStoreProvider {
+	readonly name: string
+
+	constructor(version: UserDB["version"]) {
+		this.name = `user-v${version}`
+	}
+
+	create(db: IDBDatabase) {
+		db.createObjectStore(this.name, {
+			autoIncrement: false
+		})
+	}
+
+	get(_type: UserObjectType): UserObject["data"] {
+		return null
+	}
+
+	set(_obj: UserObject): void {}
+}
+
+class UserDB implements IDBProvider {
+	readonly version: number
+	readonly name: string
+
+	readonly objectStore: UserObjectStore
+
 	private db: IDBDatabase | undefined
+
+	constructor() {
+		this.name = "user"
+		this.version = 1
+		this.objectStore = new UserObjectStore(this.version)
+	}
 
 	get subscription(): Subscription | null | undefined {
 		const { db } = this
@@ -21,18 +51,15 @@ class UserDB extends EventTarget implements IDBProvider {
 
 	open() {
 		if (this.db) return
-		const request = indexedDB.open(databaseName, databaseVersion1)
+		const request = indexedDB.open(this.name, this.version)
 		request.onsuccess = () => {
 			this.db = request.result
 		}
-		request.onupgradeneeded = (event) => {
-			const { newVersion, oldVersion } = event
+		request.onupgradeneeded = ({ newVersion }) => {
 			const db = request.result
-			if (oldVersion === null && newVersion === 1) {
-				db.createObjectStore(
-					subscriptionObjectStore.name,
-					subscriptionObjectStore.parameters
-				)
+			// Every UserDB new version creates a new UserObjectStore.
+			if (newVersion === this.version) {
+				this.objectStore.create(db)
 			}
 		}
 	}
