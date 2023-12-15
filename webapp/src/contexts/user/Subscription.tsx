@@ -8,7 +8,15 @@ import {
 	SubscriptionStatus
 } from "@workspace/models"
 import { dayToTime, Time } from "minimal-time-helpers"
-import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
+import {
+	createContext,
+	FC,
+	PropsWithChildren,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState
+} from "react"
 
 type ContextValue = Partial<{
 	canPurchaseSubscription: boolean
@@ -23,8 +31,9 @@ export const SubscriptionContext = createContext<ContextValue>({})
 SubscriptionContext.displayName = "SubscriptionContext"
 
 const subscriptionToContext = (
-	subscription: Subscription | null
+	subscription: Subscription | null | undefined
 ): ContextValue => {
+	if (subscription === undefined) return {}
 	if (subscription === null)
 		return {
 			canPurchaseSubscription: true,
@@ -43,27 +52,39 @@ const subscriptionToContext = (
 export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ = useUserApi.ReadSubscription()
 	const subscription = READ.data
+	const [userDBIsOpen, setUserDBIsOpen] = useState(false)
+	const [storedSubscription, setStoredSubscription] = useState<
+		Subscription | null | undefined
+	>()
+
+	const onOpenUserDB = useCallback(() => {
+		setUserDBIsOpen(true)
+	}, [])
 
 	const contextValue = useMemo<ContextValue>(() => {
-		if (subscription === undefined) {
-			const storedSubscription = userDB.subscription
-			if (!storedSubscription) return {}
-			return subscriptionToContext(storedSubscription)
-		}
-		if (subscription === null) {
-			// TODO userDB.subscription = null
-			return {
-				canPurchaseSubscription: true,
-				hasActiveSubscription: false
-			}
-		}
-		// TODO userDB.subscription = subscription
+		if (storedSubscription) return subscriptionToContext(storedSubscription)
 		return subscriptionToContext(subscription)
-	}, [subscription])
+	}, [subscription, storedSubscription])
 
 	useEffect(() => {
 		if (READ.canRun) READ.request()
 	}, [READ])
+
+	useEffect(() => {
+		if (userDBIsOpen)
+			userDB.readSubscription().then(setStoredSubscription).catch()
+	}, [userDBIsOpen])
+
+	useEffect(() => {
+		userDB.writeSubscription(subscription)
+	}, [subscription])
+
+	useEffect(() => {
+		userDB.addEventListener("open", onOpenUserDB)
+		return () => {
+			userDB.removeEventListener("open", onOpenUserDB)
+		}
+	}, [onOpenUserDB])
 
 	return (
 		<SubscriptionContext.Provider value={contextValue}>
