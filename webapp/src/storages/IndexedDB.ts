@@ -73,29 +73,31 @@ export class IDBProvider implements Pick<IDBInstance, "isOpen"> {
 		return this.db !== undefined
 	}
 
-	open({
-		databaseName,
-		databaseVersion,
-		databaseUpgrade
-	}: Pick<
-		IDBInstance,
-		"databaseName" | "databaseVersion" | "databaseUpgrade"
-	>) {
+	open(
+		instance: Pick<
+			IDBInstance,
+			"databaseName" | "databaseVersion" | "databaseUpgrade"
+		>
+	) {
 		if (this.isOpen) return
 		if (this.openRequestState === "pending") return
-		const request = indexedDB.open(databaseName, databaseVersion)
+		const request = indexedDB.open(
+			instance.databaseName,
+			instance.databaseVersion
+		)
 		this.openRequestState = request.readyState
 		let updgradeGotError = false
 		request.onsuccess = () => {
 			if (updgradeGotError) return
 			this.db = request.result
+			this.openRequestState = request.readyState
 			this.eventTarget.dispatchEvent(new CustomEvent("open"))
 		}
 		request.onupgradeneeded = ({ oldVersion, newVersion }) => {
-			if (!newVersion) return
+			if (newVersion === null) return
 			for (let i = oldVersion + 1; i <= newVersion; i++) {
 				try {
-					databaseUpgrade(request.result, newVersion)
+					instance.databaseUpgrade(request.result, newVersion)
 				} catch (error) {
 					warn(error)
 					updgradeGotError = true

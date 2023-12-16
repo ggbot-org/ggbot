@@ -69,8 +69,9 @@ export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [subscription, storedSubscription])
 
 	useEffect(() => {
+		if (userDBIsAvailable === undefined) return
 		if (READ.canRun) READ.request()
-	}, [READ])
+	}, [READ, userDBIsAvailable])
 
 	useEffect(() => {
 		if (userDBIsAvailable)
@@ -83,6 +84,7 @@ export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [userDBIsAvailable])
 
 	useEffect(() => {
+		if (subscription === undefined) return
 		if (userDBIsAvailable)
 			userDB.writeSubscription(subscription).catch(() => {
 				setUserDBIsAvailable(false)

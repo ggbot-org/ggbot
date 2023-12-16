@@ -1,5 +1,5 @@
 import { logging } from "_/logging"
-import { SerializableData, Subscription } from "@workspace/models"
+import { BinanceApiKey, Subscription } from "@workspace/models"
 
 import {
 	IDBInstance,
@@ -9,12 +9,18 @@ import {
 
 const { warn } = logging("userDB")
 
-type UserObjectType = "subscription"
-
-type UserObject<Data extends SerializableData> = {
-	type: UserObjectType
-	data: Data
+type UserStore = {
+	BinanceApiKey: {
+		type: "BinanceApiKey"
+		data: BinanceApiKey | null | undefined
+	}
+	Subscription: {
+		type: "Subscription"
+		data: Subscription | null | undefined
+	}
 }
+
+type UserObjectType = keyof UserStore
 
 class UserObjectStore implements IDBObjectStoreProvider {
 	readonly storeName: string
@@ -23,18 +29,9 @@ class UserObjectStore implements IDBObjectStoreProvider {
 		this.storeName = `user-v${databaseVersion}`
 	}
 
-	static subscriptionObject(
-		data: Subscription | null
-	): UserObject<Subscription | null> {
-		return {
-			type: "subscription",
-			data
-		}
-	}
-
 	create(db: IDBDatabase) {
 		db.createObjectStore(this.storeName, {
-			autoIncrement: false
+			keyPath: "type"
 		})
 	}
 }
@@ -43,21 +40,36 @@ class UserDB extends IDBProvider implements IDBInstance {
 	readonly databaseName: string
 	readonly databaseVersion: number
 	private objectStore: UserObjectStore
-	private databaseProvider: IDBProvider
 
 	constructor() {
 		super()
-		this.databaseProvider = new IDBProvider()
 		this.databaseName = "user"
 		this.databaseVersion = 1
 		this.objectStore = new UserObjectStore(this.databaseVersion)
 	}
 
-	readSubscription(): Promise<Subscription | null | undefined> {
+	databaseUpgrade(db: IDBDatabase, version: number) {
+		// Every UserDB new version creates a new UserObjectStore.
+		if (this.databaseVersion === version) this.objectStore.create(db)
+	}
+
+	open() {
+		super.open(this)
+	}
+
+	readSubscription() {
+		return this.read<UserStore["Subscription"]["data"]>("Subscription")
+	}
+
+	writeSubscription(data: UserStore["Subscription"]["data"]) {
+		return this.write({ type: "Subscription", data })
+	}
+
+	private read<Data>(type: UserObjectType): Promise<Data | undefined> {
 		return new Promise((resolve, reject) => {
 			try {
 				const {
-					databaseProvider: { db },
+					db,
 					objectStore: { storeName }
 				} = this
 				if (!db) {
@@ -66,14 +78,13 @@ class UserDB extends IDBProvider implements IDBInstance {
 				}
 				const transaction = db.transaction(storeName, "readonly")
 				const objectStore = transaction.objectStore(storeName)
-				const request: IDBRequest<UserObject<Subscription | null>> =
-					objectStore.get("subscription")
+				const request: IDBRequest<{ data: Data } | undefined> =
+					objectStore.get(type)
 				request.onerror = () => {
 					reject(undefined)
 				}
-				// TODO should resolve event.target.result
-				request.onsuccess = (_event) => {
-					resolve(undefined)
+				request.onsuccess = () => {
+					resolve(request.result?.data)
 				}
 			} catch (error) {
 				warn(error)
@@ -82,7 +93,9 @@ class UserDB extends IDBProvider implements IDBInstance {
 		})
 	}
 
-	writeSubscription(value: Subscription | null | undefined): Promise<void> {
+	private write<Type extends UserObjectType>(
+		value: UserStore[Type]
+	): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (value === undefined) {
@@ -90,27 +103,18 @@ class UserDB extends IDBProvider implements IDBInstance {
 					return
 				}
 				const {
-					databaseProvider: { db },
+					db,
 					objectStore: { storeName }
 				} = this
 				if (!db) return
 				const transaction = db.transaction(storeName, "readwrite")
 				const objectStore = transaction.objectStore(storeName)
-				objectStore.put(UserObjectStore.subscriptionObject(value))
+				objectStore.put(value)
 			} catch (error) {
 				warn(error)
 				reject()
 			}
 		})
-	}
-
-	databaseUpgrade(db: IDBDatabase, version: number) {
-		// Every UserDB `newVersion` creates a new UserObjectStore.
-		if (version === this.databaseVersion) this.objectStore.create(db)
-	}
-
-	open() {
-		this.databaseProvider.open(this)
 	}
 }
 
