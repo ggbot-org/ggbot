@@ -52,13 +52,15 @@ const subscriptionToContext = (
 export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ = useUserApi.ReadSubscription()
 	const subscription = READ.data
-	const [userDBIsOpen, setUserDBIsOpen] = useState(false)
+	const [userDBIsAvailable, setUserDBIsAvailable] = useState<
+		boolean | undefined
+	>(userDB.isOpen)
 	const [storedSubscription, setStoredSubscription] = useState<
 		Subscription | null | undefined
 	>()
 
 	const onOpenUserDB = useCallback(() => {
-		setUserDBIsOpen(true)
+		setUserDBIsAvailable(true)
 	}, [])
 
 	const contextValue = useMemo<ContextValue>(() => {
@@ -71,13 +73,21 @@ export const SubscriptionProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [READ])
 
 	useEffect(() => {
-		if (userDBIsOpen)
-			userDB.readSubscription().then(setStoredSubscription).catch()
-	}, [userDBIsOpen])
+		if (userDBIsAvailable)
+			userDB
+				.readSubscription()
+				.then(setStoredSubscription)
+				.catch(() => {
+					setUserDBIsAvailable(false)
+				})
+	}, [userDBIsAvailable])
 
 	useEffect(() => {
-		userDB.writeSubscription(subscription)
-	}, [subscription])
+		if (userDBIsAvailable)
+			userDB.writeSubscription(subscription).catch(() => {
+				setUserDBIsAvailable(false)
+			})
+	}, [subscription, userDBIsAvailable])
 
 	useEffect(() => {
 		userDB.addEventListener("open", onOpenUserDB)
