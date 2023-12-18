@@ -5,8 +5,8 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
-describe("getDflowBinanceDynamicNodesCatalog", () => {
-	test("creates Dflow nodes related with Binance symbols", async () => {
+void describe("getDflowBinanceDynamicNodesCatalog", () => {
+	void test("creates Dflow nodes related with Binance symbols", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols)
@@ -15,9 +15,9 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 			[
 				// intervals
 				// ////////
-				// "1s",
-				// "1m",
-				// "3m",
+				// "1s", // excluded from `binanceKlineIntervals`
+				"1m",
+				"3m",
 				"5m",
 				"15m",
 				"30m",
@@ -28,9 +28,10 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 				"8h",
 				"12h",
 				"1d",
-				"1w",
-				"3d",
-				"1M",
+				// "1w", // excluded from `binanceKlineIntervals`
+				// "3d", // excluded from `binanceKlineIntervals`
+				// "1M", // excluded from `binanceKlineIntervals`
+
 				// symbols
 				// //////
 				"BNB/BTC",
@@ -43,7 +44,7 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 		)
 	})
 
-	test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", async () => {
+	void test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", () => {
 		const validSymbol: DflowBinanceSymbolInfo = {
 			symbol: "AAABTC",
 			status: "TRADING",

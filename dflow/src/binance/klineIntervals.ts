@@ -21,6 +21,8 @@ import { isLiteralType } from "minimal-type-guard-helpers"
  * ```
  */
 export const dflowBinanceKlineIntervals = [
+	"1m",
+	"3m",
 	"5m",
 	"15m",
 	"30m",
@@ -30,10 +32,7 @@ export const dflowBinanceKlineIntervals = [
 	"6h",
 	"8h",
 	"12h",
-	"1d",
-	"3d",
-	"1w",
-	"1M"
+	"1d"
 ] as const
 
 export type DflowBinanceKlineInterval =
