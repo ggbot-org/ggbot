@@ -1,12 +1,16 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import type {
+	FlowViewSerializableEdge,
+	FlowViewSerializableNode
+} from "flow-view"
 import { assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
-import { DflowCommonContext } from "../../context.js"
-import { getDflowExecutionOutputData } from "../../executor.js"
-import { DflowExecutorMock } from "../../mocks/executor.js"
+import { DflowCommonContext } from "../context.js"
+import { getDflowExecutionOutputData } from "../executor.js"
+import { DflowExecutorMock } from "../mocks/executor.js"
 import {
 	ComputeStopPriceArg,
 	computeStopPriceDown,
@@ -20,8 +24,10 @@ import {
 } from "./trailingStop.js"
 
 type ExecuteTrailingStopInput = {
-	enterTrailing?: unknown
+	enterTrailing: unknown
+	resetTrailing?: unknown
 	memoryLabel: string
+	initialStopPrice?: number | undefined
 } & Pick<TrailingStopInput, "marketPrice" | "percentageDelta"> &
 	Pick<DflowCommonContext, "memory">
 type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
@@ -34,8 +40,10 @@ type TrailingStopTestData = {
 
 const invalidPercentageDeltaValues = [0, 1]
 
-const falsyValues = [false, undefined]
+const falsyValues = [false, 0, null, ""]
 const truthyValues = [true, "ok", 1, { order: "BTC" }]
+
+const memoryLabel = "test"
 
 const exitTrailingAssertionError = "check exitTrailing"
 const memoryAssertionError = "check memory"
@@ -48,60 +56,99 @@ const executeTrailingStop = async (
 		memoryLabel,
 		marketPrice,
 		percentageDelta,
+		initialStopPrice,
+		resetTrailing,
 		memory: memoryInput
 	}: ExecuteTrailingStopInput
 ): Promise<ExecuteTrailingStopOutput> => {
 	const nodeId = "testId"
-	const executor = new DflowExecutorMock({
-		view: {
-			nodes: [
-				{
-					id: "enterTrailing",
-					text: JSON.stringify(enterTrailing ?? false),
-					outs: [{ id: "o1" }]
-				},
-				{
-					id: "memoryLabel",
-					text: JSON.stringify(memoryLabel),
-					outs: [{ id: "o2" }]
-				},
-				{
-					id: "marketPrice",
-					text: JSON.stringify(marketPrice),
-					outs: [{ id: "o3" }]
-				},
-				{
-					id: "percentageDelta",
-					text: JSON.stringify(percentageDelta),
-					outs: [{ id: "o4" }]
-				},
-				{
-					id: nodeId,
-					text: nodeKind,
-					ins: [
-						{ id: "i1" },
-						{ id: "i2" },
-						{ id: "i3" },
-						{ id: "i4" }
-					]
-				}
-			],
-			edges: [
-				{ id: "e1", from: ["enterTrailing", "o1"], to: [nodeId, "i1"] },
-				{ id: "e2", from: ["memoryLabel", "o2"], to: [nodeId, "i2"] },
-				{
-					id: "e3",
-					from: ["marketPrice", "o3"],
-					to: [nodeId, "i3"]
-				},
-				{
-					id: "e4",
-					from: ["percentageDelta", "o4"],
-					to: [nodeId, "i4"]
-				}
+	const hasInitialStopPrice = typeof initialStopPrice === "number"
+	const hasResetTrailing = typeof resetTrailing !== "undefined"
+
+	const nodes: Array<Pick<
+		FlowViewSerializableNode,
+		"id" | "text" | "ins" | "outs"
+	>> = [
+		{
+			id: "enterTrailing",
+			text: JSON.stringify(enterTrailing),
+			outs: [{ id: "o" }]
+		},
+		{
+			id: "memoryLabel",
+			text: JSON.stringify(memoryLabel),
+			outs: [{ id: "o" }]
+		},
+		{
+			id: "marketPrice",
+			text: JSON.stringify(marketPrice),
+			outs: [{ id: "o" }]
+		},
+		{
+			id: "percentageDelta",
+			text: JSON.stringify(percentageDelta),
+			outs: [{ id: "o" }]
+		},
+		{
+			id: nodeId,
+			text: nodeKind,
+			ins: [
+				{ id: "i1" },
+				{ id: "i2" },
+				{ id: "i3" },
+				{ id: "i4" },
+				{ id: "i5" },
+				{ id: "i6" }
 			]
 		}
-	})
+	]
+
+	if (hasInitialStopPrice)
+		nodes.push({
+			id: "initialStopPrice",
+			text: JSON.stringify(initialStopPrice),
+			outs: [{ id: "o" }]
+		})
+	if (hasResetTrailing)
+		nodes.push({
+			id: "resetTrailing",
+			text: JSON.stringify(resetTrailing),
+			outs: [{ id: "o" }]
+		})
+
+	const edges: Array<Pick<FlowViewSerializableEdge, "id" | "from" | "to">> = [
+		{
+			id: "e1",
+			from: ["enterTrailing", "o"],
+			to: [nodeId, "i1"]
+		},
+		{ id: "e2", from: ["memoryLabel", "o"], to: [nodeId, "i2"] },
+		{
+			id: "e3",
+			from: ["marketPrice", "o"],
+			to: [nodeId, "i3"]
+		},
+		{
+			id: "e4",
+			from: ["percentageDelta", "o"],
+			to: [nodeId, "i4"]
+		}
+	]
+
+	if (hasInitialStopPrice)
+		edges.push({
+			id: "e5",
+			from: ["initialStopPrice", "o"],
+			to: [nodeId, "i5"]
+		})
+	if (hasResetTrailing)
+		edges.push({
+			id: "e6",
+			from: ["resetTrailing", "o"],
+			to: [nodeId, "i6"]
+		})
+
+	const executor = new DflowExecutorMock({ view: { nodes, edges } })
 	const {
 		execution,
 		memory: memoryOutput,
@@ -124,7 +171,6 @@ const executeTrailingStop = async (
 
 void describe("Trailing Stop", () => {
 	void test("TrailingStopUp", async () => {
-		const memoryLabel = "test"
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 
@@ -163,6 +209,52 @@ void describe("Trailing Stop", () => {
 					memoryChanged: true
 				}
 			})),
+
+			// If `initialStopPrice` is provided
+			// and it is lower then `marketPrice`
+			// then it is used instead of `percentageDelta`
+			// to set `stopPriceMemoryKey`.
+			{
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					initialStopPrice: 99.5,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99.5
+					},
+					memoryChanged: true
+				}
+			},
+
+			// If `initialStopPrice` is provided
+			// and it is greater (or equal) then `marketPrice`
+			// then it is ignored
+			// and `percentageDelta` is used to set `stopPriceMemoryKey`.
+			{
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					initialStopPrice: 100.5,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99
+					},
+					memoryChanged: true
+				}
+			},
 
 			// If `enterTrailing` is falsy, it does not get initialized.
 			...falsyValues.map((enterTrailing) => ({
@@ -245,6 +337,28 @@ void describe("Trailing Stop", () => {
 					memory: {},
 					memoryChanged: true
 				}
+			})),
+
+			// If `resetTrailing` is truthy, it cleans up memory.
+			...truthyValues.map((resetTrailing) => ({
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
+					percentageDelta: invalidPercentageDeltaValues[0],
+					initialStopPrice: 99.5,
+					resetTrailing,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 99
+					}
+				},
+				output: {
+					exitTrailing: undefined,
+					memory: {},
+					memoryChanged: true
+				}
 			}))
 		]
 
@@ -266,7 +380,6 @@ void describe("Trailing Stop", () => {
 	})
 
 	void test("TrailingStopDown", async () => {
-		const memoryLabel = "test"
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 
@@ -274,6 +387,7 @@ void describe("Trailing Stop", () => {
 			// If percentageDelta is not valid, algorithm does not run.
 			...invalidPercentageDeltaValues.map((percentageDelta) => ({
 				input: {
+					enterTrailing: true,
 					memoryLabel,
 					marketPrice: 100,
 					percentageDelta,
@@ -304,6 +418,52 @@ void describe("Trailing Stop", () => {
 					memoryChanged: true
 				}
 			})),
+
+			// If `initialStopPrice` is provided
+			// and it is greater then `marketPrice`
+			// then it is used instead of `percentageDelta`
+			// to set `stopPriceMemoryKey`.
+			{
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					initialStopPrice: 100.5,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 100.5
+					},
+					memoryChanged: true
+				}
+			},
+
+			// If `initialStopPrice` is provided
+			// and it is lower (or equal) then `marketPrice`
+			// then it is ignored
+			// and `percentageDelta` is used to set `stopPriceMemoryKey`.
+			{
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					initialStopPrice: 99.5,
+					percentageDelta: 0.01,
+					memory: {}
+				},
+				output: {
+					exitTrailing: false,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 101
+					},
+					memoryChanged: true
+				}
+			},
 
 			// If `enterTrailing` is falsy, it does not get initialized.
 			...falsyValues.map((enterTrailing) => ({
@@ -383,6 +543,28 @@ void describe("Trailing Stop", () => {
 				},
 				output: {
 					exitTrailing: true,
+					memory: {},
+					memoryChanged: true
+				}
+			})),
+
+			// If `resetTrailing` is truthy, it cleans up memory.
+			...truthyValues.map((resetTrailing) => ({
+				input: {
+					enterTrailing: true,
+					memoryLabel,
+					marketPrice: 100,
+					// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
+					percentageDelta: invalidPercentageDeltaValues[0],
+					initialStopPrice: 100.5,
+					resetTrailing,
+					memory: {
+						[entryPriceMemoryKey]: 100,
+						[stopPriceMemoryKey]: 101
+					}
+				},
+				output: {
+					exitTrailing: undefined,
 					memory: {},
 					memoryChanged: true
 				}

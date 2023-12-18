@@ -17,10 +17,6 @@ import {
 	WilderMovingAverage
 } from "./nodes/indicators/movingAverages.js"
 import { RelativeStrengthIndex } from "./nodes/indicators/relativeStrengthIndex.js"
-import {
-	TrailingStopDown,
-	TrailingStopUp
-} from "./nodes/indicators/trailingStop.js"
 import { TypicalPrice } from "./nodes/indicators/typicalPrice.js"
 import {
 	And,
@@ -38,6 +34,7 @@ import {
 	StringParameter
 } from "./nodes/parameters.js"
 import { Time, TimeMinus, TimePlus, TimeToDay, Today } from "./nodes/time.js"
+import { TrailingStopDown, TrailingStopUp } from "./nodes/trailingStop.js"
 
 export const nodesCatalog = {
 	// arithmetic
