@@ -73,7 +73,12 @@ module.exports = {
 		"sort-keys": [
 			"error",
 			"asc",
-			{ caseSensitive: true, natural: true, minKeys: 20 }
+			{
+				allowLineSeparatedGroups: true,
+				caseSensitive: true,
+				natural: true,
+				minKeys: 10
+			}
 		],
 		"tsdoc/syntax": "error"
 	}
