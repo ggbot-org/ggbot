@@ -5,10 +5,10 @@ import {
 } from "./types.js"
 
 export type BinanceExchangeInfoCacheProvider = {
-	getExchangeInfo(): BinanceExchangeInfo | undefined
-	setExchangeInfo(arg: BinanceExchangeInfo): void
-	getIsValidSymbol(symbol: string): boolean | undefined
-	setIsValidSymbol(symbol: string, value: boolean): void
+	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined>
+	setExchangeInfo(value: BinanceExchangeInfo): Promise<void>
+	getIsValidSymbol(symbol: string): Promise<boolean | undefined>
+	setIsValidSymbol(symbol: string, value: boolean): Promise<void>
 }
 
 export type BinanceKlineCacheProvider = {

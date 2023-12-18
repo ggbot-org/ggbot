@@ -20,19 +20,21 @@ export class BinanceExchangeInfoCacheMap
 		exchangeInfoCacheDuration
 	)
 
-	getExchangeInfo() {
-		return this.exchangeInfoMap.get(this.exchangeInfoKey)
+	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
+		return Promise.resolve(this.exchangeInfoMap.get(this.exchangeInfoKey))
 	}
 
-	setExchangeInfo(value: BinanceExchangeInfo | undefined) {
-		if (value) this.exchangeInfoMap.set(this.exchangeInfoKey, value)
+	setExchangeInfo(value: BinanceExchangeInfo): Promise<void> {
+		return Promise.resolve(
+			this.exchangeInfoMap.set(this.exchangeInfoKey, value)
+		)
 	}
 
-	getIsValidSymbol(symbol: string) {
-		return this.isValidSymbolMap.get(symbol)
+	getIsValidSymbol(symbol: string): Promise<boolean | undefined> {
+		return Promise.resolve(this.isValidSymbolMap.get(symbol))
 	}
 
-	setIsValidSymbol(symbol: string, value: boolean) {
-		this.isValidSymbolMap.set(symbol, value)
+	setIsValidSymbol(symbol: string, value: boolean): Promise<void> {
+		return Promise.resolve(this.isValidSymbolMap.set(symbol, value))
 	}
 }

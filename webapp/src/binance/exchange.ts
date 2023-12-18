@@ -1,6 +1,6 @@
 import { BinanceConnector, BinanceExchange } from "@workspace/binance"
 
-import { binanceExchangeInfoCacheSessionWebStorage } from "./exchangeInfoCacheSessionWebStorage"
+import { binanceExchangeInfoCache } from "./exchangeInfoCache"
 
 export const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
-binance.exchangeInfoCache = binanceExchangeInfoCacheSessionWebStorage
+binance.exchangeInfoCache = binanceExchangeInfoCache

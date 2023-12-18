@@ -257,7 +257,7 @@ export class BinanceExchange {
 	 */
 	async exchangeInfo(): Promise<BinanceExchangeInfo> {
 		const { exchangeInfoCache: cache } = this
-		const cached = cache?.getExchangeInfo()
+		const cached = await cache?.getExchangeInfo()
 		if (cached) return cached
 		const data = await this.connector.request<BinanceExchangeInfo>(
 			"GET",
@@ -272,7 +272,7 @@ export class BinanceExchange {
 		// All symbols in Binance are in uppercase.
 		if (arg.toUpperCase() !== arg) return false
 		const { exchangeInfoCache: cache } = this
-		const cached = cache?.getIsValidSymbol(arg)
+		const cached = await cache?.getIsValidSymbol(arg)
 		if (cached) return cached
 		const { symbols } = await this.exchangeInfo()
 		const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1

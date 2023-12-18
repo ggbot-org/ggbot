@@ -9,8 +9,8 @@ import {
 	isBinanceSymbolFilterMinNotional
 } from "./typeGuards.js"
 
-describe("isBinanceKline", () => {
-	test("works", () => {
+void describe("isBinanceKline", () => {
+	void test("works", () => {
 		[
 			{
 				input: [
@@ -34,8 +34,9 @@ describe("isBinanceKline", () => {
 		})
 	})
 })
-describe("isBinanceKlineInterval", () => {
-	test("works", () => {
+
+void describe("isBinanceKlineInterval", () => {
+	void test("works", () => {
 		[
 			{ input: "xx", output: false },
 			{ input: "1m", output: true },
@@ -59,8 +60,8 @@ describe("isBinanceKlineInterval", () => {
 	})
 })
 
-describe("isBinanceKlineOptionalParameters", () => {
-	test("works", () => {
+void describe("isBinanceKlineOptionalParameters", () => {
+	void test("works", () => {
 		[
 			{
 				input: {
@@ -133,8 +134,8 @@ describe("isBinanceKlineOptionalParameters", () => {
 	})
 })
 
-describe("isBinanceSymbolFilterLotSize", () => {
-	test("works", () => {
+void describe("isBinanceSymbolFilterLotSize", () => {
+	void test("works", () => {
 		[
 			{
 				input: {
@@ -187,8 +188,8 @@ describe("isBinanceSymbolFilterLotSize", () => {
 	})
 })
 
-describe("isBinanceSymbolFilterMinNotional", () => {
-	test("works", () => {
+void describe("isBinanceSymbolFilterMinNotional", () => {
+	void test("works", () => {
 		[
 			{
 				input: {

@@ -1,10 +1,11 @@
 import { logging } from "_/logging"
+// TODO is it correct to use ManagedCacheProvider? Why not a CacheProvider?
 import type { ManagedCacheProvider } from "@workspace/cache"
 import { isStrategy, Strategy } from "@workspace/models"
 
 import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
 
-const { info } = logging("local-storage")
+const { info } = logging("localStorage")
 
 class LocalWebStorageProvider implements WebStorageProvider {
 	getItem(key: string) {

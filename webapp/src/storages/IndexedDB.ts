@@ -1,3 +1,4 @@
+import { SerializableData } from "@workspace/models/dist/serializable"
 import { logging } from "_/logging"
 
 type IDBEventType = "open"
@@ -29,11 +30,10 @@ type IDBEventListenerOrEventListenerObject =
  *
  * 	constructor() {
  * 		super()
+ * 		// Define database name (should not change) and current database version.
  * 		this.databaseName = "myDatabase"
  * 		this.databaseVersion = 1
- * 	}
- *
- * 	open() {
+ * 		// Open database on instantiation.
  * 		super.open(this)
  * 	}
  *
@@ -51,7 +51,6 @@ export type IDBInstance = {
 		db: IDBDatabase,
 		version: IDBInstance["databaseVersion"]
 	): void
-	open(): void
 }
 
 export type IDBObjectStoreProvider = {
@@ -118,5 +117,88 @@ export class IDBProvider implements Pick<IDBInstance, "isOpen"> {
 		callback: IDBEventListenerOrEventListenerObject
 	): void {
 		this.eventTarget.removeEventListener(type, callback)
+	}
+}
+
+export class CacheObjectStore<
+	Schema extends Record<
+		string,
+		{
+			type: string
+			data: SerializableData
+		}
+	>
+> implements IDBObjectStoreProvider
+{
+	readonly storeName: string
+
+	static storeName(
+		storeBasename: string,
+		databaseVersion: IDBInstance["databaseVersion"]
+	) {
+		return `${storeBasename}-${databaseVersion}`
+	}
+
+	constructor(
+		storeBasename: string,
+		databaseVersion: IDBInstance["databaseVersion"]
+	) {
+		this.storeName = CacheObjectStore.storeName(
+			storeBasename,
+			databaseVersion
+		)
+	}
+
+	create(db: IDBDatabase) {
+		db.createObjectStore(this.storeName, {
+			keyPath: "type"
+		})
+	}
+
+	read<Data extends Schema[keyof Schema]["data"]>(
+		db: IDBDatabase,
+		type: Schema[keyof Schema]["type"]
+	): Promise<Data | undefined> {
+		return new Promise((resolve, reject) => {
+			try {
+				const { storeName } = this
+				const transaction = db.transaction(storeName, "readonly")
+				const objectStore = transaction.objectStore(storeName)
+				const request: IDBRequest<{ data: Data } | undefined> =
+					objectStore.get(type)
+				request.onerror = () => {
+					reject(undefined)
+				}
+				request.onsuccess = () => {
+					resolve(request.result?.data)
+				}
+			} catch (error) {
+				warn(error)
+				reject(undefined)
+			}
+		})
+	}
+
+	write<Type extends keyof Schema>(
+		db: IDBDatabase,
+		data: Schema[Type]
+	): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const { storeName } = this
+				const transaction = db.transaction(storeName, "readwrite")
+				const objectStore = transaction.objectStore(storeName)
+				const request = objectStore.put(data)
+				request.onerror = () => {
+					reject()
+				}
+				request.onsuccess = () => {
+					resolve()
+				}
+			} catch (error) {
+				warn(error)
+				reject()
+			}
+		})
 	}
 }
