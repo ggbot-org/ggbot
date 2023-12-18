@@ -132,6 +132,7 @@ void describe("getMemory", () => {
 	void test("default value is ignored if memory is defined", async () => {
 		const nodeId = "test"
 		const key = "memory key"
+		const defaultValue = "my default value"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
 				view: {
@@ -143,7 +144,7 @@ void describe("getMemory", () => {
 						},
 						{
 							id: "default",
-							text: "my default value",
+							text: JSON.stringify(defaultValue),
 							outs: [{ id: "out" }]
 						},
 						{
