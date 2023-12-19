@@ -18,14 +18,6 @@ class UserDB extends IDBProvider implements IDBInstance {
 	readonly databaseVersion: number
 	private objectStore: CacheObjectStore<Schema>
 
-	static databaseName() {
-		return "user"
-	}
-
-	static cacheObjectStoreBasename() {
-		return UserDB.databaseName()
-	}
-
 	constructor() {
 		super()
 		this.databaseName = "user"
@@ -35,6 +27,14 @@ class UserDB extends IDBProvider implements IDBInstance {
 			this.databaseVersion
 		)
 		super.open(this)
+	}
+
+	static databaseName() {
+		return "user"
+	}
+
+	static cacheObjectStoreBasename() {
+		return UserDB.databaseName()
 	}
 
 	databaseUpgrade(db: IDBDatabase, version: number) {

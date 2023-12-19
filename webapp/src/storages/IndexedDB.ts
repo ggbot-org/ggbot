@@ -1,5 +1,5 @@
-import { SerializableData } from "@workspace/models/dist/serializable"
 import { logging } from "_/logging"
+import { SerializableData } from "@workspace/models"
 
 type IDBEventType = "open"
 
@@ -53,7 +53,7 @@ export type IDBInstance = {
 	): void
 }
 
-export type IDBObjectStoreProvider = {
+type IDBObjectStoreProvider = {
 	readonly storeName: string
 	create(db: IDBDatabase): void
 }
@@ -132,13 +132,6 @@ export class CacheObjectStore<
 {
 	readonly storeName: string
 
-	static storeName(
-		storeBasename: string,
-		databaseVersion: IDBInstance["databaseVersion"]
-	) {
-		return `${storeBasename}-${databaseVersion}`
-	}
-
 	constructor(
 		storeBasename: string,
 		databaseVersion: IDBInstance["databaseVersion"]
@@ -147,6 +140,13 @@ export class CacheObjectStore<
 			storeBasename,
 			databaseVersion
 		)
+	}
+
+	static storeName(
+		storeBasename: string,
+		databaseVersion: IDBInstance["databaseVersion"]
+	) {
+		return `${storeBasename}-${databaseVersion}`
 	}
 
 	create(db: IDBDatabase) {

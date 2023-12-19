@@ -1,5 +1,5 @@
 import { DayFormat, dayFormat, TimeFormat, timeFormat } from "_/i18n/formats"
-import { Day, Timestamp } from "minimal-time-helpers"
+import { Day } from "minimal-time-helpers"
 import { FC, TimeHTMLAttributes, useMemo } from "react"
 import { FormattedDate } from "react-intl"
 
@@ -19,7 +19,7 @@ type Props = {
 		 * attribute type and its valid values.
 		 * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time#valid_datetime_values}
 		 */
-		value: Day | Timestamp
+		value: Day
 	}>
 
 export const DateTime: FC<Props> = ({ format, value }) => {

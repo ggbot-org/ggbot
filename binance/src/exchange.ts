@@ -263,7 +263,7 @@ export class BinanceExchange {
 			"GET",
 			"/api/v3/exchangeInfo"
 		)
-		cache?.setExchangeInfo(data)
+		await cache?.setExchangeInfo(data)
 		return data
 	}
 
@@ -276,7 +276,7 @@ export class BinanceExchange {
 		if (cached) return cached
 		const { symbols } = await this.exchangeInfo()
 		const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1
-		cache?.setIsValidSymbol(arg, isValid)
+		await cache?.setIsValidSymbol(arg, isValid)
 		return isValid
 	}
 

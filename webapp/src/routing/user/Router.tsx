@@ -20,34 +20,28 @@ import { FC } from "react"
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
-	switch (true) {
-		case pathname === userDashboardHtmlPathname:
-			return <DashboardPage />
+	if (pathname === userDashboardHtmlPathname) return <DashboardPage />
 
-		case pathname === copyStrategyHtmlPathname:
-			return <CopyStrategyPage />
+	if (pathname === copyStrategyHtmlPathname) return <CopyStrategyPage />
 
-		case pathname === strategyHtmlPathname:
-			return <StrategyPage />
+	if (pathname === strategyHtmlPathname) return <StrategyPage />
 
-		case pathname === settingsHtmlPathname("account"):
-			return <AccountSettingsPage />
+	if (pathname === settingsHtmlPathname("account"))
+		return <AccountSettingsPage />
 
-		case pathname === settingsHtmlPathname("billing"):
-			return <BillingSettingsPage />
+	if (pathname === settingsHtmlPathname("billing"))
+		return <BillingSettingsPage />
 
-		case pathname === settingsHtmlPathname("binance"):
-			return <BinanceSettingsPage />
+	if (pathname === settingsHtmlPathname("binance"))
+		return <BinanceSettingsPage />
 
-		case pathname === purchaseCanceledHtmlPathname:
-			return <PurchaseCanceledPage />
+	if (pathname === purchaseCanceledHtmlPathname)
+		return <PurchaseCanceledPage />
 
-		case pathname === subscriptionPurchasedHtmlPathname:
-			return <SubscriptionPurchasedPage />
+	if (pathname === subscriptionPurchasedHtmlPathname)
+		return <SubscriptionPurchasedPage />
 
-		default:
-			return null
-	}
+	return null
 }
 
 mount(Router)

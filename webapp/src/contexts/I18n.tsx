@@ -1,4 +1,5 @@
 import { detectLanguage, translationPathname } from "_/i18n/locales"
+import { logging } from "_/logging"
 import { defaultLanguage } from "@workspace/models"
 import {
 	FC,
@@ -10,6 +11,8 @@ import {
 	useRef
 } from "react"
 import { IntlProvider } from "react-intl"
+
+const { warn } = logging("i18n")
 
 export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] =
@@ -71,7 +74,7 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (readIntlMessagesIsPending !== undefined) return
 		if (intlMessagesLoaded) return
-		readIntlMessages()
+		readIntlMessages().catch(warn)
 	}, [readIntlMessages, intlMessagesLoaded, readIntlMessagesIsPending])
 
 	return intlMessagesLoaded ? (

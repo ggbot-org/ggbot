@@ -23,7 +23,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
 
 		if (event.httpMethod === "POST") {
-			readSessionFromAuthorizationHeader(event.headers.Authorization)
+			await readSessionFromAuthorizationHeader(
+				event.headers.Authorization
+			)
 
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))

@@ -24,10 +24,10 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * ```
  */
 
-export const browserBundle = async ({
+export const browserBundle = ({
 	entryPoints,
 	outfile
-}: Pick<BuildOptions, "entryPoints" | "outfile">) => {
+}: Pick<BuildOptions, "entryPoints" | "outfile">) =>
 	build({
 		alias: {
 			"@formatjs/icu-messageformat-parser":
@@ -40,4 +40,3 @@ export const browserBundle = async ({
 		outfile,
 		platform: "browser"
 	})
-}

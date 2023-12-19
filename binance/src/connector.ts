@@ -34,8 +34,7 @@ export class BinanceConnector {
 			method
 		}
 
-		const url = new URL(this.baseUrl)
-		url.pathname = endpoint
+		const url = new URL(endpoint, this.baseUrl)
 
 		for (const [key, value] of Object.entries(params)) {
 			if (value === undefined) continue
@@ -50,7 +49,6 @@ export class BinanceConnector {
 		const response = await fetch(url, fetchOptions)
 		if (!response.ok) throw new ErrorBinanceHTTP(response)
 
-		const data = await response.json()
-		return data as Data
+		return (await response.json()) as Data
 	}
 }

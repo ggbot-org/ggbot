@@ -7,7 +7,6 @@ import {
 	binanceOrderTypes
 } from "./constants.js"
 import {
-	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
@@ -23,22 +22,6 @@ import {
 
 const isStringyNumber = (arg: unknown): boolean =>
 	typeof arg === "string" && !isNaN(Number(arg))
-
-export const isBinanceExchangeInfo = (
-	arg: unknown
-): arg is BinanceExchangeInfo => {
-	if (typeof arg !== "object" || arg === null) return false
-	const { timezone, serverTime, symbols, rateLimits } =
-		arg as Partial<BinanceExchangeInfo>
-	if (typeof timezone !== "string") return false
-	if (typeof serverTime !== "number") return false
-	// TODO better check for
-	// symbols: BinanceSymbolInfo[];
-	// rateLimits: BinanceRateLimitInfo[];
-	if (!Array.isArray(symbols)) return false
-	if (!Array.isArray(rateLimits)) return false
-	return true
-}
 
 const isBinanceFill = (arg: unknown): arg is BinanceFill => {
 	if (typeof arg !== "object" || arg === null) return false
@@ -67,7 +50,7 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 		takerBaseVolume,
 		takerQuoteVolume,
 		_unusedField
-	] = arg
+	] = arg as unknown[]
 
 	return (
 		typeof openTime === "number" &&

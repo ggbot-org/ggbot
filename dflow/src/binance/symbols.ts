@@ -3,7 +3,6 @@ import { DflowGraph, DflowId } from "dflow"
 import { FlowViewSerializableGraph } from "flow-view"
 import { MaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { dflowBinancePrecision } from "./arithmetic.js"
 import {
 	DflowBinanceKlineInterval,
 	dflowBinanceKlineIntervals,
@@ -26,29 +25,13 @@ export type DflowBinanceSymbolInfo = Pick<
 >
 
 export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
-	({
-		baseAsset,
-		baseAssetPrecision,
-		baseCommissionPrecision,
-		isSpotTradingAllowed,
-		quoteAsset,
-		quoteAssetPrecision,
-		quotePrecision,
-		status,
-		symbol
-	}) =>
+	({ baseAsset, isSpotTradingAllowed, quoteAsset, status, symbol }) =>
 		isSpotTradingAllowed === true &&
 		status === "TRADING" &&
 		typeof symbol === "string" &&
 		typeof baseAsset === "string" &&
 		typeof quoteAsset === "string" &&
-		symbol === `${baseAsset}${quoteAsset}` &&
-		// Most of the Binance symbols has precision 8. Others are edge case markets.
-		// TODO remove this
-		baseAssetPrecision === dflowBinancePrecision &&
-		baseCommissionPrecision === dflowBinancePrecision &&
-		quoteAssetPrecision === dflowBinancePrecision &&
-		quotePrecision === dflowBinancePrecision
+		symbol === `${baseAsset}${quoteAsset}`
 )
 
 export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (

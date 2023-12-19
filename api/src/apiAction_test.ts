@@ -5,8 +5,8 @@ import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { ApiActionInput, isApiActionInput } from "./apiAction.js"
 
-describe("isApiActionInput", () => {
-	test("validates ApiActionInput<ApiActionType>", () => {
+void describe("isApiActionInput", () => {
+	void test("validates ApiActionInput<ApiActionType>", () => {
 		const myApiActionTypes = ["foo", "bar"] as const
 		type MyApiActionType = (typeof myApiActionTypes)[number]
 		type MyApiActionInput = ApiActionInput<MyApiActionType>

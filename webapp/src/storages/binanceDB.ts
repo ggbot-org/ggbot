@@ -1,4 +1,5 @@
 import { BinanceExchangeInfo } from "@workspace/binance"
+
 import { CacheObjectStore, IDBInstance, IDBProvider } from "./IndexedDB.js"
 
 type InfoSchema = {
@@ -11,11 +12,8 @@ type InfoSchema = {
 class BinanceDB extends IDBProvider implements IDBInstance {
 	readonly databaseName: string
 	readonly databaseVersion: number
-	private infoObjectStore: CacheObjectStore<InfoSchema>
 
-	static databaseName() {
-		return "binance"
-	}
+	private infoObjectStore: CacheObjectStore<InfoSchema>
 
 	constructor() {
 		super()
@@ -26,6 +24,10 @@ class BinanceDB extends IDBProvider implements IDBInstance {
 			this.databaseVersion
 		)
 		super.open(this)
+	}
+
+	static databaseName() {
+		return "binance"
 	}
 
 	databaseUpgrade(db: IDBDatabase, version: number) {
