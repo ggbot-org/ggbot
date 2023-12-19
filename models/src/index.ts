@@ -21,6 +21,7 @@ export type {
 	ReadAccountDailyOrders
 } from "./accountDailyOrders.js"
 export { isAccountDailyOrdersKey } from "./accountDailyOrders.js"
+export type { AccountInfo, ReadAccountInfo } from "./accountInfo.js"
 export type {
 	DeleteAccountStrategiesItem,
 	InsertAccountStrategiesItem,

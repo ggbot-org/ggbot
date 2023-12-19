@@ -8,7 +8,7 @@ import { href } from "_/routing/public/hrefs"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { Account, EmailAddress } from "@workspace/models"
+import { AccountInfo, EmailAddress } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,
@@ -44,7 +44,8 @@ type Action =
 	| { type: "RESET_TOKEN" }
 
 type ContextValue = {
-	account: Account | null | undefined
+	account: AccountInfo | null | undefined
+	accountId: string
 	accountEmail: string
 	showAuthExit: () => void
 }
@@ -53,6 +54,7 @@ const { info } = logging("authentication")
 
 export const AuthenticationContext = createContext<ContextValue>({
 	account: undefined,
+	accountId: "",
 	accountEmail: "",
 	showAuthExit: () => {}
 })
@@ -113,7 +115,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 			}
 		)
 
-	const READ = useUserApi.ReadAccount()
+	const READ = useUserApi.ReadAccountInfo()
 	const account = READ.data
 
 	const setToken = useCallback<AuthVerifyProps["setToken"]>(
@@ -145,8 +147,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			account: account,
-			accountEmail: account?.email ?? "",
+			...(account === undefined || account === null
+				? { account, accountId: "", accountEmail: "" }
+				: {
+						account,
+						accountId: account.id,
+						accountEmail: account.email
+				  }),
 			exit: () => {
 				dispatch({ type: "EXIT" })
 			},

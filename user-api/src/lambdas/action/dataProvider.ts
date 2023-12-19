@@ -7,6 +7,7 @@ import {
 	deleteBinanceApiConfig,
 	deleteStrategy,
 	readAccount,
+	readAccountOrThrow,
 	readAccountStrategies,
 	readBinanceApiKey,
 	readStrategyBalances,
@@ -18,7 +19,7 @@ import {
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
 } from "@workspace/database"
-import { welcomeFlow } from "@workspace/models"
+import { ErrorAccountItemNotFound, welcomeFlow } from "@workspace/models"
 
 import { readBinanceApiKeyPermissions } from "./binance.js"
 
@@ -34,6 +35,25 @@ const createStrategyWithWelcomeFlow: UserApiDataProvider["createStrategy"] =
 		return strategy
 	}
 
+const readAccountInfo: UserApiDataProvider["readAccountInfo"] = async (
+	accountKey
+) => {
+	try {
+		const account = await readAccountOrThrow(accountKey)
+		const binance = await readBinanceApiKey(accountKey)
+		const subscription = await readSubscription(accountKey)
+		return {
+			...account,
+			binance,
+			subscription
+		}
+	} catch (error) {
+		if (error instanceof ErrorAccountItemNotFound)
+			if (error.type === "Account") return null
+		throw error
+	}
+}
+
 export const dataProvider: UserApiDataProvider = {
 	copyStrategy,
 	createBinanceApiConfig,
@@ -42,6 +62,7 @@ export const dataProvider: UserApiDataProvider = {
 	deleteBinanceApiConfig,
 	deleteStrategy,
 	readAccount,
+	readAccountInfo,
 	readAccountStrategies,
 	readBinanceApiKey,
 	readBinanceApiKeyPermissions,

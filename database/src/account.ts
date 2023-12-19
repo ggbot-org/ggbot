@@ -34,7 +34,7 @@ export const createAccount: CreateAccount = async ({ email }) => {
 export const readAccount: ReadAccount = (arg) =>
 	READ<ReadAccount>(pathname.account(arg))
 
-const getAccountOrThrow = async ({
+export const readAccountOrThrow = async ({
 	accountId
 }: AccountKey): Promise<Account> => {
 	const account = await readAccount({ accountId })
@@ -60,7 +60,7 @@ export const listAccountKeys: ListAccountKeys = async () => {
 
 export const renameAccount: RenameAccount = async ({ accountId, name }) => {
 	throwIfInvalidName(name)
-	const account = await getAccountOrThrow({ accountId })
+	const account = await readAccountOrThrow({ accountId })
 	const data: Account = {
 		...account,
 		name
@@ -73,7 +73,7 @@ export const setAccountCountry: SetAccountCountry = async ({
 	accountId,
 	country
 }) => {
-	const account = await getAccountOrThrow({ accountId })
+	const account = await readAccountOrThrow({ accountId })
 	const data: Account = {
 		...account,
 		country

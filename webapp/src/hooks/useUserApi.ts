@@ -9,6 +9,7 @@ import {
 	DeleteBinanceApiConfig,
 	DeleteStrategy,
 	ReadAccount,
+	ReadAccountInfo,
 	ReadAccountStrategies,
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions,
@@ -62,6 +63,11 @@ export const useUserApi = {
 		useAction<Authenticated<ReadAccount>, UserApiActionType>(
 			apiOptions,
 			"ReadAccount"
+		),
+	ReadAccountInfo: () =>
+		useAction<Authenticated<ReadAccountInfo>, UserApiActionType>(
+			apiOptions,
+			"ReadAccountInfo"
 		),
 	ReadAccountStrategies: () =>
 		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(

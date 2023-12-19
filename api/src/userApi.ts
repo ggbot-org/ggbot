@@ -6,6 +6,7 @@ import {
 	DeleteBinanceApiConfig,
 	DeleteStrategy,
 	ReadAccount,
+	ReadAccountInfo,
 	ReadAccountStrategies,
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions,
@@ -28,6 +29,7 @@ export const userApiActionTypes = [
 	"DeleteBinanceApiConfig",
 	"DeleteStrategy",
 	"ReadAccount",
+	"ReadAccountInfo",
 	"ReadAccountStrategies",
 	"ReadBinanceApiKey",
 	"ReadBinanceApiKeyPermissions",
@@ -50,6 +52,7 @@ export type UserApiDataProvider = {
 	deleteBinanceApiConfig: DeleteBinanceApiConfig
 	deleteStrategy: DeleteStrategy
 	readAccount: ReadAccount
+	readAccountInfo: ReadAccountInfo
 	readAccountStrategies: ReadAccountStrategies
 	readBinanceApiKey: ReadBinanceApiKey
 	readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions

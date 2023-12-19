@@ -8,7 +8,9 @@ import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const AccountSettings: FC = () => {
-	const { account, accountEmail } = useContext(AuthenticationContext)
+	const { account, accountEmail, accountId } = useContext(
+		AuthenticationContext
+	)
 
 	return (
 		<Box>
@@ -22,7 +24,7 @@ export const AccountSettings: FC = () => {
 
 			<WhenCreated value={account?.whenCreated} />
 
-			<AccountId value={account?.id} />
+			<AccountId value={accountId} />
 		</Box>
 	)
 }
