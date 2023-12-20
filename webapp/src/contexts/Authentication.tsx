@@ -5,8 +5,8 @@ import { Navigation } from "_/components/Navigation"
 import { useUserApi } from "_/hooks/useUserApi"
 import { logging } from "_/logging"
 import { href } from "_/routing/public/hrefs"
+import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
-import { sessionWebStorage } from "_/storages/session"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { AccountInfo, EmailAddress } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
@@ -68,8 +68,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 				info("AuthenticationProvider", JSON.stringify(action, null, 2))
 
 				if (action.type === "EXIT") {
-					localWebStorage.clear()
-					sessionWebStorage.clear()
+					clearStorages()
 					return { ...state, exited: true, exitIsActive: false }
 				}
 
@@ -145,6 +144,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		[]
 	)
 
+	// Handle case when `authToken` is deleted from localWebStorage in other tabs.
+	const onLocalStorageChange = useCallback(() => {
+		if (!token) return
+		const authToken = localWebStorage.authToken.get()
+		if (!authToken) exit()
+	}, [token, exit])
+
 	const contextValue = useMemo<ContextValue>(
 		() => ({
 			...(account === undefined || account === null
@@ -154,9 +160,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 						accountId: account.id,
 						accountEmail: account.email
 				  }),
-			exit: () => {
-				dispatch({ type: "EXIT" })
-			},
+			exit,
 			showAuthExit: () => {
 				dispatch({
 					type: "SET_EXIT_IS_ACTIVE",
@@ -164,7 +168,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 				})
 			}
 		}),
-		[account]
+		[account, exit]
 	)
 
 	// Fetch account.
@@ -206,6 +210,20 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (exited) window.location.href = href.homePage()
 	}, [exited])
+
+	useEffect(() => {
+		localWebStorage.addEventListener("authTokenDeleted", exit)
+		return () => {
+			localWebStorage.removeEventListener("authTokenDeleted", exit)
+		}
+	}, [exit])
+
+	useEffect(() => {
+		window.addEventListener("storage", onLocalStorageChange)
+		return () => {
+			window.removeEventListener("storage", onLocalStorageChange)
+		}
+	}, [onLocalStorageChange])
 
 	if (account === null || token === undefined) {
 		if (email) {

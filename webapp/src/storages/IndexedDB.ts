@@ -46,7 +46,6 @@ type IDBEventListenerOrEventListenerObject =
 export type IDBInstance = {
 	readonly databaseName: string
 	readonly databaseVersion: number
-	readonly isOpen: boolean | undefined
 	databaseUpgrade(
 		db: IDBDatabase,
 		version: IDBInstance["databaseVersion"]
@@ -58,7 +57,7 @@ type IDBObjectStoreProvider = {
 	create(db: IDBDatabase): void
 }
 
-export class IDBProvider implements Pick<IDBInstance, "isOpen"> {
+export class IDBProvider {
 	db: IDBDatabase | undefined
 	private openRequestState: IDBRequestReadyState | undefined
 	private eventTarget: EventTarget
@@ -70,6 +69,21 @@ export class IDBProvider implements Pick<IDBInstance, "isOpen"> {
 	get isOpen(): boolean | undefined {
 		if (this.openRequestState !== "done") return
 		return this.db !== undefined
+	}
+
+	deleteDatabase() {
+		const databaseName = this.db?.name
+		if (!databaseName) return
+		const request = indexedDB.deleteDatabase(databaseName)
+		const cleanup = () => {
+			this.db = undefined
+			this.openRequestState = undefined
+		}
+		request.onerror = () => {
+			warn(`Cannot delete database ${databaseName}`)
+			cleanup()
+		}
+		request.onsuccess = cleanup
 	}
 
 	open(

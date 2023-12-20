@@ -27,6 +27,7 @@ export const AuthExit: FC<AuthExitProps> = ({
 	setIsActive,
 	exit
 }) => {
+	// TODO can I get `exit` from context here? Instead of a prop (looks duplicated)
 	const { account } = useContext(AuthenticationContext)
 
 	const { accountId, email } = useMemo(() => {

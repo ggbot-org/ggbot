@@ -7,6 +7,8 @@ import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
 
 const { info } = logging("localStorage")
 
+type LocalWebStorageEventType = "authTokenDeleted"
+
 class LocalWebStorageProvider implements WebStorageProvider {
 	getItem(key: string) {
 		const value = window.localStorage.getItem(key)
@@ -32,6 +34,7 @@ class LocalWebStorageProvider implements WebStorageProvider {
 
 class LocalWebStorage {
 	private storage = new LocalWebStorageProvider()
+	private eventTarget = new EventTarget()
 
 	get authToken(): ManagedCacheProvider<string> {
 		const key = itemKey.authToken()
@@ -41,10 +44,15 @@ class LocalWebStorage {
 				if (value) return value
 			},
 			set: (value: string) => {
+				info(`set ${key}`)
 				this.storage.setItem(key, value)
 			},
 			delete: () => {
+				info(`delete ${key}`)
 				this.storage.removeItem(key)
+				this.eventTarget.dispatchEvent(
+					new CustomEvent("authTokenDeleted")
+				)
 			}
 		}
 	}
@@ -80,6 +88,20 @@ class LocalWebStorage {
 				this.storage.removeItem(itemKey.strategy(strategyId))
 			}
 		}
+	}
+
+	addEventListener(
+		type: LocalWebStorageEventType,
+		callback: EventListenerOrEventListenerObject
+	): void {
+		this.eventTarget.addEventListener(type, callback)
+	}
+
+	removeEventListener(
+		type: LocalWebStorageEventType,
+		callback: EventListenerOrEventListenerObject
+	): void {
+		this.eventTarget.removeEventListener(type, callback)
 	}
 
 	clear() {

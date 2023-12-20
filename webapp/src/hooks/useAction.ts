@@ -147,52 +147,39 @@ export const useAction = <
 						throw response.status
 					}
 				} catch (error) {
-					switch (true) {
-						case error instanceof DOMException &&
-							error.name === "AbortError": {
-							// This AbortError is called on component unmount.
-							break
-						}
+					// This AbortError is called on component unmount.
+					if (
+						error instanceof DOMException &&
+						error.name === "AbortError"
+					)
+						return
 
-						case controller.signal.aborted: {
-							setError({ name: "Timeout" })
-							break
-						}
+					if (controller.signal.aborted)
+						return setError({ name: "Timeout" })
 
-						// TODO consider using a toast to display: Something went wrong
-						case error === __400__BAD_REQUEST__: {
-							setError({ name: BadRequestError.errorName })
-							break
-						}
+					// TODO consider using a toast to display: Something went wrong
+					if (error === __400__BAD_REQUEST__)
+						return setError({ name: BadRequestError.errorName })
 
-						// TODO should logout user
-						case error === __401__UNAUTHORIZED__: {
-							setError({ name: UnauthorizedError.errorName })
-							break
-						}
-
-						// TODO consider using a toast to display: Something went wrong
-						case error === __404__NOT_FOUND__: {
-							setError({ name: NotFoundError.errorName })
-							break
-						}
-
-						// TODO consider using a toast to display: Something went wrong
-						case error === __500__INTERNAL_SERVER_ERROR__: {
-							setError({ name: InternalServerError.name })
-							break
-						}
-
-						case error === __502__BAD_GATEWAY__: {
-							setError({ name: BadGatewayError.name })
-							break
-						}
-
-						default: {
-							warn(error)
-							setError({ name: "GenericError" })
-						}
+					// TODO should logout user
+					if (error === __401__UNAUTHORIZED__) {
+						localWebStorage.authToken.delete()
+						return setError({ name: UnauthorizedError.errorName })
 					}
+
+					// TODO consider using a toast to display: Something went wrong
+					if (error === __404__NOT_FOUND__)
+						return setError({ name: NotFoundError.errorName })
+
+					// TODO consider using a toast to display: Something went wrong
+					if (error === __500__INTERNAL_SERVER_ERROR__)
+						return setError({ name: InternalServerError.name })
+
+					if (error === __502__BAD_GATEWAY__)
+						return setError({ name: BadGatewayError.name })
+
+					warn(error)
+					setError({ name: "GenericError" })
 				} finally {
 					controller.clearTimeout()
 					setIsPending(false)
