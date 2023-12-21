@@ -8,7 +8,7 @@ import { href } from "_/routing/public/hrefs"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { AccountInfo, EmailAddress } from "@workspace/models"
+import { AccountInfo, EmailAddress, Subscription } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
 import {
 	createContext,
@@ -47,6 +47,7 @@ type ContextValue = {
 	account: AccountInfo | null | undefined
 	accountId: string
 	accountEmail: string
+	subscription: Subscription | null | undefined
 	showAuthExit: () => void
 }
 
@@ -56,6 +57,7 @@ export const AuthenticationContext = createContext<ContextValue>({
 	account: undefined,
 	accountId: "",
 	accountEmail: "",
+	subscription: undefined,
 	showAuthExit: () => {}
 })
 
@@ -153,12 +155,18 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			...(account === undefined || account === null
-				? { account, accountId: "", accountEmail: "" }
-				: {
+			...(account
+				? {
 						account,
 						accountId: account.id,
-						accountEmail: account.email
+						accountEmail: account.email,
+						subscription: account.subscription
+				  }
+				: {
+						account,
+						accountId: "",
+						accountEmail: "",
+						subscription: undefined
 				  }),
 			exit,
 			showAuthExit: () => {
@@ -171,9 +179,10 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		[account, exit]
 	)
 
-	// Fetch account.
 	useEffect(() => {
-		if (!token) return
+		// If `token` is defined, user should be already authenticated.
+		if (token !== undefined) return
+		// Fetch account info.
 		if (READ.canRun) READ.request()
 	}, [READ, token])
 

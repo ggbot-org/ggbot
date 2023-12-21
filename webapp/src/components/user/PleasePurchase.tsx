@@ -7,15 +7,15 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { useSubscription } from "_/hooks/useSubscription"
 import { sessionWebStorage } from "_/storages/session"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const PleasePurchase: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { hasActiveSubscription } = useContext(SubscriptionContext)
+	const { hasActiveSubscription } = useSubscription()
 
 	const [doNotShow, setDoNotShow] = useState(false)
 	const [isActive, setIsActive] = useState(false)

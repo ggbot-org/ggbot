@@ -11,7 +11,6 @@ import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
 import { BinanceApiConfigProvider } from "_/contexts/user/BinanceApiConfig"
 import { ManageStrategyProvider } from "_/contexts/user/ManageStrategy"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
-import { SubscriptionProvider } from "_/contexts/user/Subscription"
 import { PageName } from "_/routing/pageNames"
 import { FC, useState } from "react"
 
@@ -25,43 +24,41 @@ export const StrategyPage: FC = () => {
 	return (
 		<PageContainer>
 			<StrategiesProvider>
-				<SubscriptionProvider>
-					<BinanceApiConfigProvider>
-						<StrategyProvider>
-							<StrategyFlowProvider>
-								<ManageStrategyProvider>
-									<Tabs
-										pageName={pageName}
-										activeTabId={activeTabId}
-										setActiveTabId={setActiveTabId}
-										tabs={[
-											{
-												tabId: "manage",
-												content: <ManageStrategy />
-											},
-											{
-												tabId: "orders",
-												content: <StrategyOrders />
-											},
-											{
-												tabId: "backtesting",
-												content: <Backtesting />
-											},
-											{
-												tabId: "flow",
-												content: <EditableFlow />
-											}
-										]}
-									/>
+				<BinanceApiConfigProvider>
+					<StrategyProvider>
+						<StrategyFlowProvider>
+							<ManageStrategyProvider>
+								<Tabs
+									pageName={pageName}
+									activeTabId={activeTabId}
+									setActiveTabId={setActiveTabId}
+									tabs={[
+										{
+											tabId: "manage",
+											content: <ManageStrategy />
+										},
+										{
+											tabId: "orders",
+											content: <StrategyOrders />
+										},
+										{
+											tabId: "backtesting",
+											content: <Backtesting />
+										},
+										{
+											tabId: "flow",
+											content: <EditableFlow />
+										}
+									]}
+								/>
 
-									<PleaseConfigureBinance />
+								<PleaseConfigureBinance />
 
-									<PleasePurchase />
-								</ManageStrategyProvider>
-							</StrategyFlowProvider>
-						</StrategyProvider>
-					</BinanceApiConfigProvider>
-				</SubscriptionProvider>
+								<PleasePurchase />
+							</ManageStrategyProvider>
+						</StrategyFlowProvider>
+					</StrategyProvider>
+				</BinanceApiConfigProvider>
 			</StrategiesProvider>
 		</PageContainer>
 	)

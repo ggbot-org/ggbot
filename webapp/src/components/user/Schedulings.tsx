@@ -20,7 +20,7 @@ import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErro
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
-import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
 	isStrategyScheduling,
@@ -41,7 +41,7 @@ export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
 	const { strategyId } = useContext(StrategyContext)
-	const { hasActiveSubscription } = useContext(SubscriptionContext)
+	const { hasActiveSubscription } = useSubscription()
 	const { accountStrategies, refetchAccountStrategies } =
 		useContext(StrategiesContext)
 	const { toast } = useContext(ToastContext)

@@ -2,8 +2,8 @@ import { Box, Control, Field, Message, Title } from "_/components/library"
 import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
 import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
-import { SubscriptionContext } from "_/contexts/user/Subscription"
-import { FC, useContext } from "react"
+import { useSubscription } from "_/hooks/useSubscription"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const SubscriptionInfo: FC = () => {
@@ -12,7 +12,7 @@ export const SubscriptionInfo: FC = () => {
 		subscriptionPlan,
 		subscriptionStatus,
 		hasActiveSubscription
-	} = useContext(SubscriptionContext)
+	} = useSubscription()
 
 	if (hasActiveSubscription === undefined)
 		return (

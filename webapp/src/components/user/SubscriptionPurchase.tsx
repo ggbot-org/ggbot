@@ -20,7 +20,7 @@ import {
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
-import { SubscriptionContext } from "_/contexts/user/Subscription"
+import { useSubscription } from "_/hooks/useSubscription"
 import { useUtrustApi } from "_/hooks/useUtrustApi"
 import {
 	isAllowedCountryIsoCode2,
@@ -46,7 +46,7 @@ export const SubscriptionPurchase: FC = () => {
 
 	const { accountEmail } = useContext(AuthenticationContext)
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
-		useContext(SubscriptionContext)
+		useSubscription()
 
 	const [numMonths, setNumMonths] = useState<number | undefined>(
 		defaultNumMonths
@@ -83,7 +83,7 @@ export const SubscriptionPurchase: FC = () => {
 		)
 
 	const onSubmit = useCallback<FormOnSubmit>(
-		async (event) => {
+		(event) => {
 			event.preventDefault()
 			if (!accountEmail) return
 			if (!CREATE_ORDER.canRun) return
