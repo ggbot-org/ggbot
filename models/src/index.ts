@@ -49,7 +49,6 @@ export type { Balance } from "./balance.js"
 export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
 export type {
 	BinanceApiConfig,
-	BinanceApiKey,
 	BinanceApiKeyPermissionCriteria,
 	CreateBinanceApiConfig,
 	DeleteBinanceApiConfig,

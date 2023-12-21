@@ -2,11 +2,25 @@ import { Column, Columns } from "_/components/library"
 import { BinanceApi } from "_/components/user/BinanceApi"
 import { CreateBinanceApi } from "_/components/user/CreateBinanceApi"
 import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
-import { FC, useContext } from "react"
+import { useUserApi } from "_/hooks/useUserApi"
+import { FC, useCallback, useEffect } from "react"
 
 export const BinanceSettings: FC = () => {
-	const { hasApiKey } = useContext(BinanceApiConfigContext)
+	const READ_API_KEY = useUserApi.ReadBinanceApiKey()
+	const remoteApiKey = READ_API_KEY.data
+
+	const refetchApiKey = useCallback(() => {
+		READ_API_KEY.reset()
+	}, [READ_API_KEY])
+
+	let apiKey
+	if (remoteApiKey === null) apiKey = null
+	if (remoteApiKey) apiKey = remoteApiKey.apiKey
+
+	// Fetch apiKey.
+	useEffect(() => {
+		if (READ_API_KEY.canRun) READ_API_KEY.request()
+	}, [READ_API_KEY])
 
 	return (
 		<>
@@ -18,11 +32,15 @@ export const BinanceSettings: FC = () => {
 						widescreen: "one-third"
 					}}
 				>
-					{hasApiKey ? <BinanceApi /> : <CreateBinanceApi />}
+					{apiKey ? <BinanceApi apiKey={apiKey} /> : null}
+
+					{apiKey === null && (
+						<CreateBinanceApi refetchApiKey={refetchApiKey} />
+					)}
 				</Column>
 			</Columns>
 
-			<DeleteBinanceApi />
+			{apiKey ? <DeleteBinanceApi refetchApiKey={refetchApiKey} /> : null}
 		</>
 	)
 }

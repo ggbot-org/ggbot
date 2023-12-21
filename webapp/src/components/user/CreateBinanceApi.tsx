@@ -9,9 +9,8 @@ import {
 	Title
 } from "_/components/library"
 import { ApiSecret } from "_/components/user/ApiSecret"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useContext, useEffect } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -20,9 +19,11 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const CreateBinanceApi: FC = () => {
-	const { hasApiKey, refetchApiKey } = useContext(BinanceApiConfigContext)
+type Props = {
+	refetchApiKey: () => void
+}
 
+export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 	const CREATE = useUserApi.CreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending
@@ -43,8 +44,6 @@ export const CreateBinanceApi: FC = () => {
 	useEffect(() => {
 		if (isDone) refetchApiKey()
 	}, [isDone, refetchApiKey])
-
-	if (hasApiKey === undefined || hasApiKey) return null
 
 	return (
 		<Form box onSubmit={onSubmit}>

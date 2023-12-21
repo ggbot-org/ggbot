@@ -12,16 +12,18 @@ import {
 	BinanceApiKeyPermissionsProps
 } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
 import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const BinanceApi: FC = () => {
+type Props = {
+	apiKey: string
+}
+
+export const BinanceApi: FC<Props> = ({ apiKey }) => {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
-	const { apiKey } = useContext(BinanceApiConfigContext)
 
 	const [permissions, setPermissions] =
 		useState<BinanceApiKeyPermissionsProps["permissions"]>()

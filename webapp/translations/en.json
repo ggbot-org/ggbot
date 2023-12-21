@@ -284,12 +284,6 @@
 	"OneTimePassword.label": {
 		"defaultMessage": "One time password"
 	},
-	"PleaseConfigureBinance.goToSettings": {
-		"defaultMessage": "Please go to <em>Settings</em> and configure your <b>Binance</b> API."
-	},
-	"PleaseConfigureBinance.message": {
-		"defaultMessage": "You cannot run strategies on Binance yet."
-	},
 	"PleasePurchase.doNotShow": {
 		"defaultMessage": "Do not show this message for a while."
 	},

@@ -32,13 +32,6 @@ class SessionWebStorageProvider implements WebStorageProvider {
 class SessionWebStorage {
 	private storage = new SessionWebStorageProvider()
 
-	get doNotShowPleaseConfigureBinance() {
-		return cachedBoolean(
-			this.storage,
-			itemKey.doNotShowPleaseConfigureBinance()
-		)
-	}
-
 	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
 		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
 	}

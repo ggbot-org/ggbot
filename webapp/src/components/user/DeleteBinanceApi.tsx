@@ -6,14 +6,15 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { BinanceApiConfigContext } from "_/contexts/user/BinanceApiConfig"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const DeleteBinanceApi: FC = () => {
-	const { refetchApiKey, hasApiKey } = useContext(BinanceApiConfigContext)
+type Props = {
+	refetchApiKey: () => void
+}
 
+export const DeleteBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 	const color: MainColor = "warning"
 
 	const { formatMessage } = useIntl()
@@ -38,8 +39,6 @@ export const DeleteBinanceApi: FC = () => {
 			refetchApiKey()
 		}
 	}, [canCloseModal, refetchApiKey])
-
-	if (!hasApiKey) return null
 
 	return (
 		<>
