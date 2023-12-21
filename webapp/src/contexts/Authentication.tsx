@@ -179,10 +179,9 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		[account, exit]
 	)
 
+	// Fetch account info.
 	useEffect(() => {
-		// If `token` is defined, user should be already authenticated.
-		if (token !== undefined) return
-		// Fetch account info.
+		if (token === undefined) return
 		if (READ.canRun) READ.request()
 	}, [READ, token])
 
