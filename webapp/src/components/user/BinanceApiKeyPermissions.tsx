@@ -66,7 +66,10 @@ const BinanceApiKeyPermissionEnableWithdrawals: FC<
 	>
 		<FormattedMessage
 			id="BinanceApiKeyPermissionEnableWithdrawals.description"
-			values={{ em: (chunks) => <em>{chunks}</em> }}
+			values={{
+				b: (chunks) => <b>{chunks}</b>,
+				em: (chunks) => <em>{chunks}</em>
+			}}
 		/>
 	</BinanceApiKeyPermission>
 )

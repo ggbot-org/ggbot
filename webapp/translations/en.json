@@ -102,16 +102,16 @@
 		"defaultMessage": "Test API"
 	},
 	"BinanceApiKeyPermissionEnableReading.description": {
-		"defaultMessage": "is <em>reading</em> permission enabled?"
+		"defaultMessage": "<em>Reading</em> permission is enabled."
 	},
 	"BinanceApiKeyPermissionEnableWithdrawals.description": {
-		"defaultMessage": "are <em>withdrawals</em> enabled?"
+		"defaultMessage": "<em>Withdrawals</em> are <b>not</b> enabled."
 	},
 	"BinanceApiKeyPermissionEnableSpotAndMarginTrading.description": {
-		"defaultMessage": "is <em>Spot and Margin</em> enabled?"
+		"defaultMessage": "<em>Spot & Margin Trading</em> permission is enabled."
 	},
 	"BinanceApiKeyPermissionIpRestrict.description": {
-		"defaultMessage": "is <em>static IP</em> restriction activated?"
+		"defaultMessage": "<em>IP access restrictions</em> are activated."
 	},
 	"BrandName.label": {
 		"defaultMessage": "ggbot"

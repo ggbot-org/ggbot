@@ -1,5 +1,5 @@
 import { useUserApi } from "_/hooks/useUserApi"
-import { AccountStrategy, isAccountStrategy } from "@workspace/models"
+import { AccountStrategy } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
@@ -17,24 +17,10 @@ StrategiesContext.displayName = "Strategies"
 export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ = useUserApi.ReadAccountStrategies()
 
-	const contextValue = useMemo(() => {
-		const accountStrategies: AccountStrategy[] = []
-		const { data, reset } = READ
-
-		if (Array.isArray(data)) {
-			for (const item of data)
-				if (isAccountStrategy(item)) accountStrategies.push(item)
-			return {
-				accountStrategies,
-				refetchAccountStrategies: reset
-			}
-		}
-
-		return {
-			accountStrategies: undefined,
-			refetchAccountStrategies: reset
-		}
-	}, [READ])
+	const contextValue = useMemo(() => ({
+			accountStrategies: READ.data,
+			refetchAccountStrategies: READ.reset
+		}), [READ])
 
 	useEffect(() => {
 		if (READ.canRun) READ.request()
