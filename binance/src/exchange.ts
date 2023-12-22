@@ -1,9 +1,13 @@
-import { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
+import { Time } from "minimal-time-helpers"
+
+import {
+	BinanceExchangeInfoCacheProvider,
+	BinanceKlinesCacheProvider
+} from "./cacheProviders.js"
 import { BinanceConnector } from "./connector.js"
 import {
 	ErrorBinanceCannotTradeSymbol,
 	ErrorBinanceInvalidArg,
-	ErrorBinanceInvalidKlineOptionalParameters,
 	ErrorBinanceInvalidOrderOptions,
 	ErrorBinanceSymbolFilter
 } from "./errors.js"
@@ -13,12 +17,8 @@ import {
 	lotSizeIsValid,
 	minNotionalIsValid
 } from "./symbolFilters.js"
-import {
-	isBinanceKlineInterval,
-	isBinanceKlineOptionalParameters,
-	isBinanceOrderSide,
-	isBinanceOrderType
-} from "./typeGuards.js"
+import { getBinanceIntervalTime } from "./time.js"
+import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js"
 import {
 	BinanceAvgPrice,
 	BinanceExchangeInfo,
@@ -42,23 +42,29 @@ import {
  * `BinanceExchangeInfoCacheProvider`, for example
  * `BinanceExchangeInfoCacheMap`.
  *
+ * It can use a `klinesCache` instance, that is any class implementing
+ * `BinanceKlineInterval`, for example `BinanceKlinesCacheMap`.
+ *
  * @example
  *
  * ```ts
  * import {
  * 	BinanceConnector,
  * 	BinanceExchange,
- * 	BinanceExchangeInfoCacheMap
+ * 	BinanceExchangeInfoCacheMap,
+ * 	BinanceKlinesCacheMap
  * } from "@workspace/binance"
  *
  * const binance = new BinanceExchange(BinanceConnector.defaultBaseUrl)
  * binance.exchangeInfoCache = new BinanceExchangeInfoCacheMap()
+ * binance.klinesCache = new BinanceKlinesCacheMap()
  * ```
  */
 export class BinanceExchange {
 	readonly connector: BinanceConnector
 
 	exchangeInfoCache: BinanceExchangeInfoCacheProvider | undefined
+	klinesCache: BinanceKlinesCacheProvider | undefined
 
 	constructor(baseUrl?: string) {
 		this.connector = new BinanceConnector(baseUrl)
@@ -290,11 +296,25 @@ export class BinanceExchange {
 		interval: BinanceKlineInterval,
 		optionalParameters: BinanceKlineOptionalParameters
 	): Promise<BinanceKline[]> {
-		await this.klinesParametersAreValidOrThrow(
-			symbol,
-			interval,
-			optionalParameters
-		)
+		// Look for cached data.
+		const { klinesCache: cache } = this
+		const cachedKlines: BinanceKline[] = []
+		const { limit, endTime } = optionalParameters
+		let time: Time | undefined
+		if (limit && endTime)
+			time = getBinanceIntervalTime[interval](endTime).minus(limit)
+		if (cache && time) {
+			if (endTime)
+				while (time < endTime) {
+					const kline = await cache.getKline(symbol, interval, time)
+					if (!kline) break
+					cachedKlines.push(kline)
+					time = getBinanceIntervalTime[interval](time).plus(1)
+				}
+		}
+		// If all klines wanted are found in cache, it's done!
+		if (cachedKlines.length === limit) return cachedKlines
+		// If any data was not found in cache, fetch it from Binance API.
 		const klines = await this.connector.request<BinanceKline[]>(
 			"GET",
 			"/api/v3/klines",
@@ -304,25 +324,11 @@ export class BinanceExchange {
 				...optionalParameters
 			}
 		)
+		// Cache all klines found.
+		if (cache)
+			for (const kline of klines)
+				await cache.setKline(symbol, interval, kline)
 		return klines
-	}
-
-	/** Validate klines parameters. */
-	async klinesParametersAreValidOrThrow(
-		symbol: string,
-		interval: string,
-		optionalParameters: BinanceKlineOptionalParameters
-	): Promise<void> {
-		if (!isBinanceKlineInterval(interval))
-			throw new ErrorBinanceInvalidArg({
-				arg: interval,
-				type: "klineInterval"
-			})
-		if (!isBinanceKlineOptionalParameters(optionalParameters))
-			throw new ErrorBinanceInvalidKlineOptionalParameters()
-		const isSymbol = await this.isBinanceSymbol(symbol)
-		if (!isSymbol)
-			throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" })
 	}
 
 	/**
@@ -339,11 +345,6 @@ export class BinanceExchange {
 		interval: string,
 		optionalParameters: BinanceKlineOptionalParameters
 	): Promise<BinanceKline[]> {
-		await this.klinesParametersAreValidOrThrow(
-			symbol,
-			interval,
-			optionalParameters
-		)
 		return await this.connector.request<BinanceKline[]>(
 			"GET",
 			"/api/v3/uiKlines",
@@ -357,9 +358,6 @@ export class BinanceExchange {
 
 	/** Get `BinanceSymbolInfo` for `symbol`, if any. */
 	async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
-		const isSymbol = await this.isBinanceSymbol(symbol)
-		if (!isSymbol)
-			throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" })
 		const { symbols } = await this.exchangeInfo()
 		const symbolInfo = symbols.find((info) => info.symbol === symbol)
 		return symbolInfo
@@ -371,9 +369,6 @@ export class BinanceExchange {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
 	 */
 	async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
-		const isSymbol = await this.isBinanceSymbol(symbol)
-		if (!isSymbol)
-			throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" })
 		return await this.connector.request<BinanceTicker24hr>(
 			"GET",
 			"/api/v3/ticker/24hr",
@@ -387,9 +382,6 @@ export class BinanceExchange {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
 	 */
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		const isSymbol = await this.isBinanceSymbol(symbol)
-		if (!isSymbol)
-			throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" })
 		return await this.connector.request<BinanceTickerPrice>(
 			"GET",
 			"/api/v3/ticker/price",

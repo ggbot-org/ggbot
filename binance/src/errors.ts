@@ -104,14 +104,3 @@ export class ErrorBinanceInvalidOrderOptions extends Error {
 		return "Invalid Binance order options"
 	}
 }
-
-export class ErrorBinanceInvalidKlineOptionalParameters extends Error {
-	static errorName = "ErrorBinanceInvalidKlineOptionalParameters"
-	constructor() {
-		super(ErrorBinanceInvalidKlineOptionalParameters.message())
-		this.name = ErrorBinanceInvalidKlineOptionalParameters.errorName
-	}
-	static message() {
-		return "Invalid kline optional parameters"
-	}
-}

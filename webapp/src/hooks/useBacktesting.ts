@@ -3,8 +3,7 @@ import { ToastContext } from "_/contexts/Toast"
 import { logging } from "_/logging"
 import {
 	BacktestingMessageInData,
-	BacktestingMessageOutData,
-	BacktestingStatus
+	BacktestingMessageOutData
 } from "@workspace/backtesting"
 import { DflowCommonContext } from "@workspace/dflow"
 import {
@@ -36,14 +35,12 @@ type Action =
 	  }
 
 type State = Pick<DflowCommonContext, "memory"> & {
-	status: BacktestingStatus
 	balanceHistory: BalanceChangeEvent[]
 	currentTimestamp: Timestamp | undefined
 	dayInterval: DayInterval
 	frequency: Frequency
 	isPaused: boolean
 	isRunning: boolean
-	isReadOnly: boolean
 	maxDay: Day
 	orders: Order[]
 	stepIndex: number
@@ -88,12 +85,10 @@ const initializer = ({
 
 	return {
 		balanceHistory: [],
-		status: "initial",
 		currentTimestamp: undefined,
 		dayInterval,
 		frequency,
 		isPaused: false,
-		isReadOnly: false,
 		isRunning: false,
 		maxDay: getMaxDay(),
 		memory: {},
@@ -137,7 +132,8 @@ export const useBacktesting = (): UseBacktestingOutput => {
 					toast.info(formatMessage({ id: "Backtesting.done" }))
 				return {
 					...state,
-					status
+					isPaused: status === "paused",
+					isRunning: status === "running"
 				}
 			}
 

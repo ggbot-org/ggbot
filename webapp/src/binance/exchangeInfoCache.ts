@@ -5,7 +5,9 @@ import {
 } from "@workspace/binance"
 import { CacheMap } from "@workspace/cache"
 
-class BinanceExchangeInfoCache implements BinanceExchangeInfoCacheProvider {
+export class BinanceExchangeInfoCache
+	implements BinanceExchangeInfoCacheProvider
+{
 	private readonly isValidSymbolMap = new CacheMap<boolean>()
 
 	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {

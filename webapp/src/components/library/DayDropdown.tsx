@@ -13,9 +13,8 @@ import {
 import { Calendar, CalendarProps } from "./Calendar"
 import { Label } from "./Label"
 
-export type DayDropdownProps = Required<
-	Pick<DropdownProps, "isActive" | "onClick">
-> &
+export type DayDropdownProps = Partial<{ disabled: boolean }> &
+	Required<Pick<DropdownProps, "isActive" | "onClick">> &
 	Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
 		label: string
 	} & { close: () => void }
@@ -23,6 +22,7 @@ export type DayDropdownProps = Required<
 export const DayDropdown: FC<DayDropdownProps> = ({
 	close,
 	day,
+	disabled,
 	isActive,
 	label,
 	onClick,
@@ -34,8 +34,11 @@ export const DayDropdown: FC<DayDropdownProps> = ({
 		<Label>{label}</Label>
 
 		<Control>
-			<Dropdown isActive={isActive} onClick={onClick}>
-				<DropdownTrigger>
+			<Dropdown
+				isActive={disabled ? undefined : isActive}
+				onClick={disabled ? undefined : onClick}
+			>
+				<DropdownTrigger disabled={disabled}>
 					<FormattedDate value={day} {...dayFormat} />
 				</DropdownTrigger>
 

@@ -39,10 +39,7 @@ const StopButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-type Props = Pick<
-	UseBacktestingOutput["state"],
-	"isPaused" | "isRunning" | "isReadOnly"
-> & {
+type Props = Pick<UseBacktestingOutput["state"], "isPaused" | "isRunning"> & {
 	onClickPause: ButtonProps["onClick"]
 	onClickResume: ButtonProps["onClick"]
 	onClickStart: ButtonProps["onClick"]
@@ -51,7 +48,6 @@ type Props = Pick<
 
 export const BacktestingActions: FC<Props> = ({
 	isPaused,
-	isReadOnly,
 	isRunning,
 	onClickPause,
 	onClickResume,
@@ -76,5 +72,5 @@ export const BacktestingActions: FC<Props> = ({
 			</Buttons>
 		)
 
-	return <StartButton onClick={onClickStart} disabled={isReadOnly} />
+	return <StartButton onClick={onClickStart} />
 }

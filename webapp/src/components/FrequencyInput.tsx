@@ -16,7 +16,7 @@ import {
 import { FC, useCallback } from "react"
 import { useIntl } from "react-intl"
 
-export type FrequencyInputProps = {
+export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
 	frequency: Pick<Frequency, "interval"> & {
 		every: NaturalNumber | ""
 	}
@@ -29,6 +29,7 @@ type FrequencyIntervalOption = {
 }
 
 export const FrequencyInput: FC<FrequencyInputProps> = ({
+	disabled,
 	frequency: { interval, every },
 	setFrequency
 }) => {
@@ -71,6 +72,7 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 		<Columns isMobile>
 			<Column size="one-third">
 				<InputField
+					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.every" })}
 					onChange={onChangeFrequencyEvery}
 					min={1}
@@ -81,6 +83,7 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 
 			<Column size="half">
 				<SelectField
+					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.interval" })}
 					onChange={onChangeFrequencyInterval}
 					options={frequencyIntervalOptions}

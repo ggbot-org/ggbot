@@ -23,9 +23,15 @@ import {
 import { newOrder } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
+import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
+import { logging } from "../logging"
+
+const { warn } = logging("backtesting")
+
 let binanceNodesCatalogShouldBeInitialized = false
-const binanceClient = new BacktestingBinanceClient()
-binanceClient.klinesCache = new BinanceKlinesCacheMap()
+const binance = new BacktestingBinanceClient()
+binance.klinesCache = new BinanceKlinesCacheMap()
+binance.exchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceExecutor = new DflowBinanceExecutor()
 
 const statusChangedMessage = (
@@ -71,6 +77,11 @@ self.onmessage = async ({
 		return
 	}
 
+	const stop = () => {
+		const statusChanged = session.stop()
+		if (statusChanged) self.postMessage(statusChangedMessage(session))
+	}
+
 	if (message.type === "START") {
 		const { strategyKey, view, dayInterval, frequency } = message
 		session.dayInterval = dayInterval
@@ -91,8 +102,7 @@ self.onmessage = async ({
 		const percentageStep = 5
 		let completionPercentage = percentageStep
 		if (strategyKind === "binance") {
-			const { symbols: binanceSymbols } =
-				await binanceClient.exchangeInfo()
+			const { symbols: binanceSymbols } = await binance.exchangeInfo()
 			// Initialize `nodesCatalog`.
 			if (binanceNodesCatalogShouldBeInitialized) {
 				binanceExecutor.nodesCatalog =
@@ -122,7 +132,7 @@ self.onmessage = async ({
 			// 			)
 			// 		)
 			// 		startTime = endTime
-			// 		await binanceClient.klines(symbol, interval, {
+			// 		await binance.klines(symbol, interval, {
 			// 			limit: binanceKlineMaxLimit,
 			// 			endTime
 			// 		})
@@ -137,27 +147,33 @@ self.onmessage = async ({
 			let time: Time | undefined
 			while ((time = session.nextTime)) {
 				// Run executor.
-				binanceClient.time = time
-				const { balances, memory, orders } = await binanceExecutor.run(
-					{
-						binance: binanceClient,
-						params: {},
-						memory: session.memory,
-						time
-					},
-					// TODO should not use a cast,
-					// also DflowExecutorView is not a nice name
-					view as DflowExecutorView
-				)
-				if (balances.length > 0)
-					session.balanceHistory.push({
-						balances,
-						whenCreated: time
-					})
-				session.memory = memory
-				session.orders.push(
-					...orders.map(({ info }) => newOrder({ info }))
-				)
+				binance.time = time
+				try {
+					const { balances, memory, orders } =
+						await binanceExecutor.run(
+							{
+								binance,
+								params: {},
+								memory: session.memory,
+								time
+							},
+							// TODO should not use a cast,
+							// also DflowExecutorView is not a nice name
+							view as DflowExecutorView
+						)
+					if (balances.length > 0)
+						session.balanceHistory.push({
+							balances,
+							whenCreated: time
+						})
+					session.memory = memory
+					session.orders.push(
+						...orders.map(({ info }) => newOrder({ info }))
+					)
+				} catch (error) {
+					warn(error)
+					stop()
+				}
 
 				// Update UI with current results on every `percentageStep`.
 				if (session.completionPercentage > completionPercentage) {
@@ -169,15 +185,11 @@ self.onmessage = async ({
 		}
 		// End session and notify UI.
 		if (session.status === "done")
-			self.postMessage({ type: "STATUS_CHANGED", status: "done" })
+			self.postMessage(updatedResultMessage(session))
 		return
 	}
 
-	if (message.type === "STOP") {
-		const statusChanged = session.stop()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
-		return
-	}
+	if (message.type === "STOP") stop()
 
 	if (message.type === "PAUSE") {
 		// Update UI with latest results,
@@ -185,12 +197,10 @@ self.onmessage = async ({
 		// and notify changed status.
 		const statusChanged = session.pause()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
-		return
 	}
 
 	if (message.type === "RESUME") {
 		const statusChanged = session.resume()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
-		return
 	}
 }

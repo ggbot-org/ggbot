@@ -2,7 +2,6 @@ import { isLiteralType } from "minimal-type-guard-helpers"
 
 import {
 	binanceKlineIntervals,
-	binanceKlineMaxLimit,
 	binanceOrderSides,
 	binanceOrderTypes
 } from "./constants.js"
@@ -10,7 +9,6 @@ import {
 	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
-	BinanceKlineOptionalParameters,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
@@ -113,33 +111,3 @@ export const isBinanceSymbolFilterMinNotional = (
 export const isBinanceKlineInterval = isLiteralType<BinanceKlineInterval>(
 	binanceKlineIntervals
 )
-
-export const isBinanceKlineOptionalParameters = (
-	arg: unknown
-): arg is BinanceKlineOptionalParameters => {
-	if (typeof arg !== "object" || arg === null) return false
-	const { startTime, endTime, limit } =
-		arg as Partial<BinanceKlineOptionalParameters>
-	const startTimeIsNum = typeof startTime === "number"
-	const endTimeIsNum = typeof endTime === "number"
-	const limitIsNum = typeof limit === "number"
-	// All parameters are optional.
-	if ([startTime, endTime, limit].every((param) => param === undefined))
-		return true
-	// If a parameter is defined it must be a number.
-	if (startTime !== undefined && !startTimeIsNum) return false
-	if (endTime !== undefined && !endTimeIsNum) return false
-	if (limit !== undefined && !limitIsNum) return false
-	// If a parameter is number, it must be positive.
-	if (startTimeIsNum && startTime < 0) return false
-	if (endTimeIsNum && endTime < 0) return false
-	if (limitIsNum && limit < 0) return false
-	// `startTime` must preceed `endTime`.
-	if (startTimeIsNum && endTimeIsNum) if (startTime > endTime) return false
-	if (startTimeIsNum && endTimeIsNum) return true
-	// `limit` is below its threeshold.
-	if (limitIsNum && limit > binanceKlineMaxLimit) return false
-	// TODO also need to check that `startTime` and `endTime` duration is below
-	// limit threeshold? If yes, will need the interval as param.
-	return true
-}

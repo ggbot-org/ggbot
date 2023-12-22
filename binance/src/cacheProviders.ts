@@ -11,15 +11,15 @@ export type BinanceExchangeInfoCacheProvider = {
 	setIsValidSymbol(symbol: string, value: boolean): Promise<void>
 }
 
-export type BinanceKlineCacheProvider = {
+export type BinanceKlinesCacheProvider = {
 	getKline(
 		symbol: string,
 		interval: BinanceKlineInterval,
 		time: number
-	): BinanceKline | undefined
+	): Promise<BinanceKline | undefined>
 	setKline(
 		symbol: string,
 		interval: BinanceKlineInterval,
 		kline: BinanceKline
-	): void
+	): Promise<void>
 }

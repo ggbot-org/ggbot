@@ -36,7 +36,6 @@ export const Backtesting: FC = () => {
 			dayInterval,
 			frequency,
 			isPaused,
-			isReadOnly,
 			isRunning,
 			maxDay,
 			memory,
@@ -47,6 +46,9 @@ export const Backtesting: FC = () => {
 		dispatch,
 		hasRequiredData
 	} = useBacktesting()
+
+	let disabled = false
+	if (isRunning || isPaused) disabled = true
 
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
@@ -119,6 +121,7 @@ export const Backtesting: FC = () => {
 						</Title>
 
 						<DailyInterval
+							disabled={disabled}
 							start={{
 								day: dayInterval.start,
 								label: formatMessage({
@@ -137,13 +140,13 @@ export const Backtesting: FC = () => {
 						/>
 
 						<FrequencyInput
+							disabled={disabled}
 							frequency={frequencyArg}
 							setFrequency={setFrequency}
 						/>
 
 						<BacktestingActions
 							isPaused={isPaused}
-							isReadOnly={isReadOnly}
 							isRunning={isRunning}
 							onClickPause={onClickPause}
 							onClickResume={onClickResume}

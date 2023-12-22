@@ -3,12 +3,16 @@ import { FC, useCallback, useState } from "react"
 
 import { DayDropdown, DayDropdownProps } from "./DayDropdown"
 
-export type DailyIntervalProps = Pick<DayDropdownProps, "min" | "max"> & {
+export type DailyIntervalProps = Pick<
+	DayDropdownProps,
+	"disabled" | "min" | "max"
+> & {
 	start: Pick<DayDropdownProps, "day" | "label" | "setDay">
 	end: Pick<DayDropdownProps, "day" | "label" | "setDay">
 }
 
 export const DailyInterval: FC<DailyIntervalProps> = ({
+	disabled,
 	min,
 	max,
 	start,
@@ -42,6 +46,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 		<div className={classNames("DailyInterval")}>
 			<DayDropdown
 				close={close}
+				disabled={disabled}
 				isActive={activeDropdown === "start"}
 				max={end.day}
 				min={min}
@@ -51,6 +56,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 
 			<DayDropdown
 				close={close}
+				disabled={disabled}
 				isActive={activeDropdown === "end"}
 				min={start.day}
 				max={max}

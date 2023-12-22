@@ -1,4 +1,4 @@
-import { BinanceBalance } from "./types.js"
+import { BinanceBalance, BinanceKlineInterval } from "./types.js"
 
 /**
  * Check if a balance is not empty.
@@ -13,3 +13,10 @@ import { BinanceBalance } from "./types.js"
  */
 export const balanceIsNotEmpty = ({ free, locked }: BinanceBalance) =>
 	Number(free) + Number(locked) > 0
+
+export const binanceKlineKey = (
+	symbol: string,
+	interval: BinanceKlineInterval,
+	/* THe kline open time. */
+	time: number
+) => [symbol, interval, time].join(":")
