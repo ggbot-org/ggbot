@@ -36,6 +36,12 @@ class BinanceDB extends IDBProvider implements IDBInstance {
 		}
 	}
 
+	deleteExchangeInfo(): Promise<void> {
+		const { db, infoObjectStore: objectStore } = this
+		if (!db) return Promise.reject()
+		return objectStore.delete(db, "BinanceExchangeInfo")
+	}
+
 	readExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
 		const { db, infoObjectStore: objectStore } = this
 		if (!db) return Promise.reject()

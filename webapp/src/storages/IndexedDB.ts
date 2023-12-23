@@ -160,12 +160,28 @@ export class CacheObjectStore<
 		storeBasename: string,
 		databaseVersion: IDBInstance["databaseVersion"]
 	) {
-		return `${storeBasename}-${databaseVersion}`
+		return `${storeBasename}-v${databaseVersion}`
 	}
 
 	create(db: IDBDatabase) {
 		db.createObjectStore(this.storeName, {
 			keyPath: "type"
+		})
+	}
+
+	delete(db: IDBDatabase, type: Schema[keyof Schema]["type"]): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const { storeName } = this
+				const transaction = db.transaction(storeName, "readwrite")
+				const objectStore = transaction.objectStore(storeName)
+				const request: IDBRequest<undefined> = objectStore.delete(type)
+				request.onerror = () => reject()
+				request.onsuccess = () => resolve()
+			} catch (error) {
+				warn(error)
+				reject(undefined)
+			}
 		})
 	}
 
@@ -180,12 +196,8 @@ export class CacheObjectStore<
 				const objectStore = transaction.objectStore(storeName)
 				const request: IDBRequest<{ data: Data } | undefined> =
 					objectStore.get(type)
-				request.onerror = () => {
-					reject(undefined)
-				}
-				request.onsuccess = () => {
-					resolve(request.result?.data)
-				}
+				request.onerror = () => reject(undefined)
+				request.onsuccess = () => resolve(request.result?.data)
 			} catch (error) {
 				warn(error)
 				reject(undefined)
@@ -203,12 +215,8 @@ export class CacheObjectStore<
 				const transaction = db.transaction(storeName, "readwrite")
 				const objectStore = transaction.objectStore(storeName)
 				const request = objectStore.put(data)
-				request.onerror = () => {
-					reject()
-				}
-				request.onsuccess = () => {
-					resolve()
-				}
+				request.onerror = () => reject()
+				request.onsuccess = () => resolve()
 			} catch (error) {
 				warn(error)
 				reject()

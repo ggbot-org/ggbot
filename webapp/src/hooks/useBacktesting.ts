@@ -137,6 +137,12 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				}
 			}
 
+			if (action.type === "UPDATED_RESULT") {
+				return {
+					...state
+				}
+			}
+
 			if (action.type === "UPDATED_DAY_INTERVAL")
 				return {
 					...state,

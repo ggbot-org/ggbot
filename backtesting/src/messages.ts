@@ -64,6 +64,9 @@ export type BacktestingMessageOutData =
 			type: "UPDATED_FREQUENCY"
 			frequency: Frequency
 	  }
-	| (Pick<BacktestingSession, "balanceHistory" | "memory" | "orders"> & {
+	| (Pick<
+			BacktestingSession,
+			"balanceHistory" | "memory" | "orders" | "status"
+	  > & {
 			type: "UPDATED_RESULT"
 	  })

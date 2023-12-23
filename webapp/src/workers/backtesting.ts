@@ -10,17 +10,17 @@ import {
 	BacktestingStrategy
 } from "@workspace/backtesting"
 import {
-	// TODO prefetch binanceKlineMaxLimit,
-	BinanceKlinesCacheMap
-	// TODO prefetch getBinanceIntervalTime
+	binanceKlineMaxLimit,
+	BinanceKlinesCacheMap,
+	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
 	DflowBinanceExecutor,
-	DflowExecutorView,
-	// TODO prefetch extractBinanceFlowSymbolsAndIntervalsFromFlow,
+	// DflowExecutorView,
+	extractBinanceFlowSymbolsAndIntervalsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
-import { newOrder } from "@workspace/models"
+// import { newOrder } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
 import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
@@ -47,7 +47,8 @@ const updatedResultMessage = (
 	type: "UPDATED_RESULT",
 	balanceHistory: session.balanceHistory,
 	memory: session.memory,
-	orders: session.orders
+	orders: session.orders,
+	status: session.status
 })
 
 self.onmessage = async ({
@@ -112,32 +113,30 @@ self.onmessage = async ({
 
 			// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
 
-			// TODO
-			//
-			// const symbolsAndIntervals =
-			// 	extractBinanceFlowSymbolsAndIntervalsFromFlow(
-			// 		binanceSymbols,
-			// 		view
-			// 	)
+			const symbolsAndIntervals =
+				extractBinanceFlowSymbolsAndIntervalsFromFlow(
+					binanceSymbols,
+					view
+				)
 
-			// const firstTime = session.times[0]
-			// const lastTime = session.times[session.times.length - 1]
-			// for (const { interval, symbol } of symbolsAndIntervals) {
-			// 	let startTime = firstTime
-			// 	while (startTime < lastTime) {
-			// 		const endTime = Math.min(
-			// 			lastTime,
-			// 			getBinanceIntervalTime[interval](startTime).plus(
-			// 				binanceKlineMaxLimit
-			// 			)
-			// 		)
-			// 		startTime = endTime
-			// 		await binance.klines(symbol, interval, {
-			// 			limit: binanceKlineMaxLimit,
-			// 			endTime
-			// 		})
-			// 	}
-			// }
+			const firstTime = session.times[0]
+			const lastTime = session.times[session.times.length - 1]
+			for (const { interval /*, symbol */ } of symbolsAndIntervals) {
+				let startTime = firstTime
+				while (startTime < lastTime) {
+					const endTime = Math.min(
+						lastTime,
+						getBinanceIntervalTime[interval](startTime).plus(
+							binanceKlineMaxLimit
+						)
+					)
+					startTime = endTime
+					// 		await binance.klines(symbol, interval, {
+					// 			limit: binanceKlineMaxLimit,
+					// 			endTime
+					// 		})
+				}
+			}
 
 			// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
 			// TODO
@@ -149,27 +148,27 @@ self.onmessage = async ({
 				// Run executor.
 				binance.time = time
 				try {
-					const { balances, memory, orders } =
-						await binanceExecutor.run(
-							{
-								binance,
-								params: {},
-								memory: session.memory,
-								time
-							},
-							// TODO should not use a cast,
-							// also DflowExecutorView is not a nice name
-							view as DflowExecutorView
-						)
-					if (balances.length > 0)
-						session.balanceHistory.push({
-							balances,
-							whenCreated: time
-						})
-					session.memory = memory
-					session.orders.push(
-						...orders.map(({ info }) => newOrder({ info }))
-					)
+					// const { balances, memory, orders } =
+					// 	await binanceExecutor.run(
+					// 		{
+					// 			binance,
+					// 			params: {},
+					// 			memory: session.memory,
+					// 			time
+					// 		},
+					// 		// TODO should not use a cast,
+					// 		// also DflowExecutorView is not a nice name
+					// 		view as DflowExecutorView
+					// 	)
+					// if (balances.length > 0)
+					// 	session.balanceHistory.push({
+					// 		balances,
+					// 		whenCreated: time
+					// 	})
+					// session.memory = memory
+					// session.orders.push(
+					// 	...orders.map(({ info }) => newOrder({ info }))
+					// )
 				} catch (error) {
 					warn(error)
 					stop()
@@ -183,10 +182,9 @@ self.onmessage = async ({
 				}
 			}
 		}
-		// End session and notify UI.
-		if (session.status === "done")
-			self.postMessage(updatedResultMessage(session))
-		return
+		// Session is "done", notify UI.
+		self.postMessage(updatedResultMessage(session))
+		self.postMessage(statusChangedMessage(session))
 	}
 
 	if (message.type === "STOP") stop()
