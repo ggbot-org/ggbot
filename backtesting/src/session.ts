@@ -154,7 +154,7 @@ export class BacktestingSession implements BacktestingStatusController {
 	 * ```
 	 */
 	stop(): boolean {
-		if (this.status === "running") {
+		if (["paused", "running"].includes(this.status)) {
 			this.status = "initial"
 			return true
 		}

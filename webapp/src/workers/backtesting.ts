@@ -34,6 +34,8 @@ binance.klinesCache = new BinanceKlinesCacheMap()
 binance.exchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceExecutor = new DflowBinanceExecutor()
 
+const session = new BacktestingSession()
+
 const statusChangedMessage = (
 	session: BacktestingSession
 ): BacktestingMessageOutData => ({
@@ -56,8 +58,6 @@ const updatedResultMessage = (
 self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
-	const session = new BacktestingSession()
-
 	if (message.type === "SET_DAY_INTERVAL") {
 		const { dayInterval } = message
 		// TODO remove this block
@@ -78,11 +78,6 @@ self.onmessage = async ({
 			frequency
 		} satisfies BacktestingMessageOutData)
 		return
-	}
-
-	const stop = () => {
-		const statusChanged = session.stop()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
 	}
 
 	if (message.type === "START") {
@@ -173,7 +168,9 @@ self.onmessage = async ({
 					// )
 				} catch (error) {
 					warn(error)
-					stop()
+					const statusChanged = session.stop()
+					if (statusChanged)
+						self.postMessage(statusChangedMessage(session))
 				}
 
 				// Update UI with current results on every `percentageStep`.
@@ -181,15 +178,21 @@ self.onmessage = async ({
 					completionPercentage =
 						session.completionPercentage + percentageStep
 					self.postMessage(updatedResultMessage(session))
+					break
 				}
 			}
 		}
-		// Session is "done", notify UI.
-		self.postMessage(updatedResultMessage(session))
-		self.postMessage(statusChangedMessage(session))
+		// If session is "done", notify UI.
+		if (session.status === "done") {
+			self.postMessage(updatedResultMessage(session))
+			self.postMessage(statusChangedMessage(session))
+		}
 	}
 
-	if (message.type === "STOP") stop()
+	if (message.type === "STOP") {
+		const statusChanged = session.stop()
+		if (statusChanged) self.postMessage(statusChangedMessage(session))
+	}
 
 	if (message.type === "PAUSE") {
 		// Update UI with latest results,
