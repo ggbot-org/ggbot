@@ -41,7 +41,7 @@ export const Backtesting: FC = () => {
 			memory,
 			orders,
 			stepIndex,
-			timestamps
+			numSteps
 		},
 		dispatch,
 		hasRequiredData
@@ -84,7 +84,7 @@ export const Backtesting: FC = () => {
 
 	const progress: BacktestingProgressProps["progress"] = {
 		value: stepIndex,
-		max: timestamps.length
+		max: numSteps
 	}
 
 	const onClickStop = useCallback(() => {

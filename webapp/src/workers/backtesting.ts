@@ -48,7 +48,9 @@ const updatedResultMessage = (
 	balanceHistory: session.balanceHistory,
 	memory: session.memory,
 	orders: session.orders,
-	status: session.status
+	status: session.status,
+	stepIndex: session.stepIndex,
+	numSteps: session.numSteps
 })
 
 self.onmessage = async ({

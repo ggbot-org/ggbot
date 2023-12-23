@@ -10,14 +10,11 @@ import {
 	BalanceChangeEvent,
 	everyOneHour,
 	Frequency,
-	frequencyIntervalDuration,
 	Order
 } from "@workspace/models"
 import {
-	dateToTimestamp,
 	Day,
 	DayInterval,
-	dayIntervalToDate,
 	getDay,
 	Timestamp,
 	yesterday
@@ -43,8 +40,8 @@ type State = Pick<DflowCommonContext, "memory"> & {
 	isRunning: boolean
 	maxDay: Day
 	orders: Order[]
+	numSteps: number
 	stepIndex: number
-	timestamps: Timestamp[]
 }
 
 export type UseBacktestingOutput = {
@@ -72,18 +69,7 @@ const defaultFrequency = (): State["frequency"] => everyOneHour()
 const initializer = ({
 	frequency,
 	dayInterval
-}: Pick<State, "frequency" | "dayInterval">): State => {
-	// TODO remove this Compute timestamps.
-	const { start, end } = dayIntervalToDate(dayInterval)
-	const interval = frequencyIntervalDuration(frequency)
-	const timestamps: Timestamp[] = []
-	let date = start
-	while (date < end) {
-		timestamps.push(dateToTimestamp(date))
-		date = new Date(date.getTime() + interval)
-	}
-
-	return {
+}: Pick<State, "frequency" | "dayInterval">): State => ({
 		balanceHistory: [],
 		currentTimestamp: undefined,
 		dayInterval,
@@ -94,9 +80,8 @@ const initializer = ({
 		memory: {},
 		orders: [],
 		stepIndex: 0,
-		timestamps
-	}
-}
+		numSteps: 0
+	})
 
 export const useBacktesting = (): UseBacktestingOutput => {
 	const { formatMessage } = useIntl()
@@ -138,8 +123,11 @@ export const useBacktesting = (): UseBacktestingOutput => {
 			}
 
 			if (action.type === "UPDATED_RESULT") {
+				const { numSteps, stepIndex } = action
 				return {
-					...state
+					...state,
+					numSteps,
+					stepIndex
 				}
 			}
 

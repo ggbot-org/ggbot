@@ -46,8 +46,8 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	get completionPercentage(): number {
-		if (this.stepIndex === 0) return 0
-		return Math.floor(this.times.length / this.stepIndex)
+		if (this.times.length === 0) return 0
+		return Math.floor((100 * this.stepIndex) / this.times.length)
 	}
 
 	get dayInterval(): DayInterval | undefined {
@@ -64,6 +64,10 @@ export class BacktestingSession implements BacktestingStatusController {
 		this.stepIndex++
 		if (this.times.length === this.stepIndex) this.status = "done"
 		return time
+	}
+
+	get numSteps() {
+		return this.times.length
 	}
 
 	get strategy(): BacktestingStrategy | undefined {
