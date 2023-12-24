@@ -40,43 +40,36 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 	 */
 	readonly timeToLive: number | undefined
 
-	private itemMap: Map<string, Data>
-	private timeToLiveMap: Map<string, number>
-	private whenUpdatedMap: Map<string, number>
+	private itemMap = new Map<string, Data>()
+	private timeToLiveMap = new Map<string, number>()
+	private whenUpdatedMap = new Map<string, number>()
 
-	constructor(timeToLive?: number) {
+	constructor(timeToLive?: CacheMap<Data>["timeToLive"]) {
 		this.timeToLive = timeToLive
-		this.itemMap = new Map<string, Data>()
-		this.timeToLiveMap = new Map<string, number>()
-		this.whenUpdatedMap = new Map<string, number>()
-	}
-
-	get currentTimestamp() {
-		return Date.now()
 	}
 
 	set(key: string, value: Data) {
 		this.itemMap.set(key, value)
-		if (this.timeToLive) this.whenUpdatedMap.set(key, this.currentTimestamp)
+		if (this.timeToLive) this.whenUpdatedMap.set(key, Date.now())
 	}
 
 	get(key: string) {
-		if (!this.itemMap.has(key)) return
+		const { itemMap, timeToLive, whenUpdatedMap } = this
+		if (!itemMap.has(key)) return
 		// No `timeToLive` found means item is cached for ever.
-		if (!this.timeToLive) return this.itemMap.get(key) as Data
+		if (!timeToLive) return itemMap.get(key)
 		// No `whenUpdated` found means it is not possible to know if `isUpToDate`.
-		const whenUpdated = this.whenUpdatedMap.get(key)
+		const whenUpdated = whenUpdatedMap.get(key)
 		if (!whenUpdated) {
 			this.delete(key)
 			return
 		}
-		const cacheDuration = this.timeToLive
-		const isUpToDate = whenUpdated + cacheDuration > this.currentTimestamp
-		if (!isUpToDate) {
+		// If is not up to date, delete item and return.
+		if (whenUpdated + timeToLive > Date.now()) {
 			this.delete(key)
 			return
 		}
-		return this.itemMap.get(key) as Data
+		return this.itemMap.get(key)
 	}
 
 	delete(key: string) {

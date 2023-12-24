@@ -4,10 +4,8 @@ import { BinanceKlinesCacheProvider } from "./cacheProviders.js"
 import { BinanceKline, BinanceKlineInterval } from "./types.js"
 import { binanceKlineKey } from "./utils.js"
 
-const ONE_WEEK = 604_800_000
-
 export class BinanceKlinesCacheMap implements BinanceKlinesCacheProvider {
-	private readonly klinesMap = new CacheMap<BinanceKline>(ONE_WEEK)
+	private readonly klinesMap = new CacheMap<BinanceKline>()
 
 	getKline(
 		symbol: string,

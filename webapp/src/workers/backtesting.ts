@@ -16,7 +16,7 @@ import {
 } from "@workspace/binance"
 import {
 	DflowBinanceExecutor,
-	// DflowExecutorView,
+	DflowExecutorView,
 	extractBinanceFlowSymbolsAndIntervalsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
@@ -133,6 +133,10 @@ self.onmessage = async ({
 						startTime,
 						endTime
 					})
+					await binance.klines(symbol, interval, {
+						startTime,
+						endTime
+					})
 					startTime = endTime
 					// TODO check why klines are not cached
 				}
@@ -147,17 +151,17 @@ self.onmessage = async ({
 				// Run executor.
 				try {
 					// const { balances, memory, orders } =
-					// 	await binanceExecutor.run(
-					// 		{
-					// 			binance,
-					// 			params: {},
-					// 			memory: session.memory,
-					// 			time
-					// 		},
-					// 		// TODO should not use a cast,
-					// 		// also DflowExecutorView is not a nice name
-					// 		view as DflowExecutorView
-					// 	)
+					await binanceExecutor.run(
+						{
+							binance,
+							params: {},
+							memory: session.memory,
+							time
+						},
+						// TODO should not use a cast,
+						// also DflowExecutorView is not a nice name
+						view as DflowExecutorView
+					)
 					// if (balances.length > 0)
 					// 	session.balanceHistory.push({
 					// 		balances,
