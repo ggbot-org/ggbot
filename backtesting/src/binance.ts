@@ -1,7 +1,6 @@
 import {
 	BinanceConnector,
 	BinanceExchange,
-	BinanceKlineInterval,
 	binanceKlineIntervals,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
@@ -11,31 +10,21 @@ import {
 } from "@workspace/binance"
 import {
 	DflowBinanceClient,
-	DflowBinanceClientKlinesParameters,
 	DflowBinanceKlineInterval,
 	dflowBinanceLowerKlineInterval
 } from "@workspace/dflow"
 import { div, mul } from "arithmetica"
 import { Time } from "minimal-time-helpers"
 
-import { ErrorBacktestingBinanceClientUndefinedTime } from "./errors.js"
-
 export class BacktestingBinanceClient
 	extends BinanceExchange
 	implements DflowBinanceClient
 {
-	time: Time | undefined
+	time: Time
 
-	constructor() {
+	constructor(time: BacktestingBinanceClient["time"]) {
 		super(BinanceConnector.defaultBaseUrl)
-	}
-
-	async klines(
-		symbol: string,
-		interval: BinanceKlineInterval,
-		optionalParameters: DflowBinanceClientKlinesParameters
-	) {
-		return super.klines(symbol, interval, optionalParameters)
+		this.time = time
 	}
 
 	async newOrder(
@@ -92,7 +81,6 @@ export class BacktestingBinanceClient
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
 		const { klinesCache: cache, time } = this
-		if (!time) throw new ErrorBacktestingBinanceClientUndefinedTime()
 		// Look for cached data.
 		if (cache)
 			for (const interval of binanceKlineIntervals) {

@@ -15,10 +15,6 @@ export interface DflowBinanceClient
 	extends DflowBinanceClientPublic,
 		DflowBinanceClientPrivate {}
 
-export type DflowBinanceClientKlinesParameters = Required<
-	Pick<BinanceKlineOptionalParameters, "endTime" | "limit">
->
-
 /** Binance Public API used by dflow binance nodes. */
 interface DflowBinanceClientPublic {
 	exchangeInfo(): Promise<BinanceExchangeInfo>
@@ -26,7 +22,7 @@ interface DflowBinanceClientPublic {
 	klines(
 		symbol: string,
 		interval: BinanceKlineInterval,
-		parameters: DflowBinanceClientKlinesParameters
+		parameters: BinanceKlineOptionalParameters
 	): Promise<BinanceKline[]>
 	tickerPrice(symbol: string): Promise<BinanceTickerPrice>
 }
@@ -58,7 +54,7 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 	async klines(
 		_symbol: string,
 		_interval: BinanceKlineInterval,
-		_parameters: DflowBinanceClientKlinesParameters
+		_parameters: BinanceKlineOptionalParameters
 	): Promise<BinanceKline[]> {
 		return Promise.resolve([])
 	}
@@ -73,6 +69,15 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 			clientOrderId: "",
 			cummulativeQuoteQty: "0",
 			executedQty: "0",
+			fills: [
+				{
+					commission: "0",
+					commissionAsset: "BNB",
+					price: "0",
+					qty: "0",
+					tradeId: -1
+				}
+			],
 			orderId: -1,
 			orderListId: -1,
 			origQty: "0",
@@ -82,16 +87,7 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 			symbol,
 			timeInForce: "GTC",
 			transactTime: 0,
-			type,
-			fills: [
-				{
-					commission: "0",
-					commissionAsset: "BNB",
-					price: "0",
-					qty: "0",
-					tradeId: -1
-				}
-			]
+			type
 		})
 	}
 

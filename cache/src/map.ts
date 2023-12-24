@@ -40,12 +40,15 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 	 */
 	readonly timeToLive: number | undefined
 
-	private itemMap = new Map<string, Data>()
-	private timeToLiveMap = new Map<string, number>()
-	private whenUpdatedMap = new Map<string, number>()
+	private itemMap: Map<string, Data>
+	private timeToLiveMap: Map<string, number>
+	private whenUpdatedMap: Map<string, number>
 
 	constructor(timeToLive?: number) {
 		this.timeToLive = timeToLive
+		this.itemMap = new Map<string, Data>()
+		this.timeToLiveMap = new Map<string, number>()
+		this.whenUpdatedMap = new Map<string, number>()
 	}
 
 	get currentTimestamp() {

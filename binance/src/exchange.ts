@@ -1,5 +1,3 @@
-import { Time } from "minimal-time-helpers"
-
 import {
 	BinanceExchangeInfoCacheProvider,
 	BinanceKlinesCacheProvider
@@ -299,21 +297,27 @@ export class BinanceExchange {
 		// Look for cached data.
 		const { klinesCache: cache } = this
 		const cachedKlines: BinanceKline[] = []
-		const { limit, endTime } = optionalParameters
-		let time: Time | undefined
-		if (limit && endTime)
-			time = getBinanceIntervalTime[interval](endTime).minus(limit)
-		if (cache && time) {
-			if (endTime)
-				while (time < endTime) {
-					const kline = await cache.getKline(symbol, interval, time)
-					if (!kline) break
-					cachedKlines.push(kline)
-					time = getBinanceIntervalTime[interval](time).plus(1)
+		let someKlineNotFoundInCache = false
+		const { limit } = optionalParameters
+		let { startTime, endTime } = optionalParameters
+		if (limit && startTime && !endTime)
+			endTime = getBinanceIntervalTime[interval](startTime).plus(limit)
+		if (limit && !startTime && endTime)
+			startTime = getBinanceIntervalTime[interval](endTime).minus(limit)
+		if (cache && startTime && endTime) {
+			let time = startTime
+			while (time < endTime) {
+				const kline = await cache.getKline(symbol, interval, time)
+				if (!kline) {
+					someKlineNotFoundInCache = true
+					break
 				}
+				cachedKlines.push(kline)
+				time = getBinanceIntervalTime[interval](time).plus(1)
+			}
+			// If all klines found in cache, it's done!
+			if (!someKlineNotFoundInCache) return cachedKlines
 		}
-		// If all klines wanted are found in cache, it's done!
-		if (cachedKlines.length === limit) return cachedKlines
 		// If any data was not found in cache, fetch it from Binance API.
 		const klines = await this.connector.request<BinanceKline[]>(
 			"GET",

@@ -12,7 +12,7 @@ import { BacktestingStrategy } from "./strategy.js"
  *  // File implementing Worker backtesting.js
  *
  *  self.onmessage = (event: MessageEvent<BacktestingMessageInData>) => {
- *    console.log(event.data)
+ *    // Do something with `event.data`.
  *  })
  * ```
  */
@@ -47,7 +47,7 @@ export type BacktestingMessageInData =
  *  const backtesting = new Worker("/path/to/worker/backtesting.js")
  *
  *  backtesting.onmessage = (event: MessageEvent<BacktestingMessageOutData>) => {
- *    console.log(event.data)
+ *    // Do something with `event.data`.
  *  })
  * ```
  */

@@ -21,7 +21,7 @@ import {
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 // import { newOrder } from "@workspace/models"
-import { Time } from "minimal-time-helpers"
+import { now, Time } from "minimal-time-helpers"
 
 import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
 import { logging } from "../logging"
@@ -29,9 +29,8 @@ import { logging } from "../logging"
 const { warn } = logging("backtesting")
 
 let binanceNodesCatalogShouldBeInitialized = false
-const binance = new BacktestingBinanceClient()
-binance.klinesCache = new BinanceKlinesCacheMap()
-binance.exchangeInfoCache = new BinanceExchangeInfoCache()
+const binanceKlinesCache = new BinanceKlinesCacheMap()
+const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceExecutor = new DflowBinanceExecutor()
 
 const session = new BacktestingSession()
@@ -60,22 +59,20 @@ self.onmessage = async ({
 }: MessageEvent<BacktestingMessageInData>) => {
 	if (message.type === "SET_DAY_INTERVAL") {
 		const { dayInterval } = message
-		// TODO remove this block
-		// session.dayInterval = dayInterval
+		session.dayInterval = dayInterval
 		self.postMessage({
 			type: "UPDATED_DAY_INTERVAL",
-			dayInterval
+			dayInterval: session.dayInterval
 		} satisfies BacktestingMessageOutData)
 		return
 	}
 
 	if (message.type === "SET_FREQUENCY") {
 		const { frequency } = message
-		// TODO remove this block
-		// session.frequency = frequency
+		session.frequency = frequency
 		self.postMessage({
 			type: "UPDATED_FREQUENCY",
-			frequency
+			frequency: session.frequency
 		} satisfies BacktestingMessageOutData)
 		return
 	}
@@ -91,15 +88,20 @@ self.onmessage = async ({
 		})
 		session.strategy = strategy
 		session.computeTimes()
+
 		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
 		if (statusChanged) self.postMessage(statusChangedMessage(session))
 		if (!session.canRun) return
+
 		// Run backtesting according to given `strategyKind`.
 		const { strategyKind } = strategyKey
 		const percentageStep = 5
 		let completionPercentage = percentageStep
 		if (strategyKind === "binance") {
+			const binance = new BacktestingBinanceClient(now())
+			binance.exchangeInfoCache = binanceExchangeInfoCache
+			binance.klinesCache = binanceKlinesCache
 			const { symbols: binanceSymbols } = await binance.exchangeInfo()
 			// Initialize `nodesCatalog`.
 			if (binanceNodesCatalogShouldBeInitialized) {
@@ -118,7 +120,7 @@ self.onmessage = async ({
 
 			const firstTime = session.times[0]
 			const lastTime = session.times[session.times.length - 1]
-			for (const { interval /*, symbol */ } of symbolsAndIntervals) {
+			for (const { interval, symbol } of symbolsAndIntervals) {
 				let startTime = firstTime
 				while (startTime < lastTime) {
 					const endTime = Math.min(
@@ -127,23 +129,22 @@ self.onmessage = async ({
 							binanceKlineMaxLimit
 						)
 					)
+					await binance.klines(symbol, interval, {
+						startTime,
+						endTime
+					})
 					startTime = endTime
-					// 		await binance.klines(symbol, interval, {
-					// 			limit: binanceKlineMaxLimit,
-					// 			endTime
-					// 		})
+					// TODO check why klines are not cached
 				}
 			}
 
 			// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
 			// TODO
 
-			// TODO pre-fetch  could also get data from indexed db
-			//
 			let time: Time | undefined
 			while ((time = session.nextTime)) {
-				// Run executor.
 				binance.time = time
+				// Run executor.
 				try {
 					// const { balances, memory, orders } =
 					// 	await binanceExecutor.run(
@@ -178,7 +179,6 @@ self.onmessage = async ({
 					completionPercentage =
 						session.completionPercentage + percentageStep
 					self.postMessage(updatedResultMessage(session))
-					break
 				}
 			}
 		}
