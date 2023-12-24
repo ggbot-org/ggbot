@@ -3,15 +3,10 @@ import { ToastContext } from "_/contexts/Toast"
 import { logging } from "_/logging"
 import {
 	BacktestingMessageInData,
-	BacktestingMessageOutData
+	BacktestingMessageOutData,
+	BacktestingSession
 } from "@workspace/backtesting"
-import { DflowCommonContext } from "@workspace/dflow"
-import {
-	BalanceChangeEvent,
-	everyOneHour,
-	Frequency,
-	Order
-} from "@workspace/models"
+import { everyOneHour, Frequency } from "@workspace/models"
 import {
 	Day,
 	DayInterval,
@@ -31,17 +26,17 @@ type Action =
 			type: "INITALIZED"
 	  }
 
-type State = Pick<DflowCommonContext, "memory"> & {
-	balanceHistory: BalanceChangeEvent[]
+type State = Pick<
+	BacktestingSession,
+	"balanceHistory" | "memory" | "orders" | "stepIndex"
+> & {
 	currentTimestamp: Timestamp | undefined
 	dayInterval: DayInterval
 	frequency: Frequency
 	isPaused: boolean
 	isRunning: boolean
 	maxDay: Day
-	orders: Order[]
 	numSteps: number
-	stepIndex: number
 }
 
 export type UseBacktestingOutput = {
@@ -70,18 +65,18 @@ const initializer = ({
 	frequency,
 	dayInterval
 }: Pick<State, "frequency" | "dayInterval">): State => ({
-		balanceHistory: [],
-		currentTimestamp: undefined,
-		dayInterval,
-		frequency,
-		isPaused: false,
-		isRunning: false,
-		maxDay: getMaxDay(),
-		memory: {},
-		orders: [],
-		stepIndex: 0,
-		numSteps: 0
-	})
+	balanceHistory: [],
+	currentTimestamp: undefined,
+	dayInterval,
+	frequency,
+	isPaused: false,
+	isRunning: false,
+	maxDay: getMaxDay(),
+	memory: {},
+	orders: [],
+	stepIndex: 0,
+	numSteps: 0
+})
 
 export const useBacktesting = (): UseBacktestingOutput => {
 	const { formatMessage } = useIntl()
@@ -123,9 +118,11 @@ export const useBacktesting = (): UseBacktestingOutput => {
 			}
 
 			if (action.type === "UPDATED_RESULT") {
-				const { numSteps, stepIndex } = action
+				const { numSteps, stepIndex, memory, orders } = action
 				return {
 					...state,
+					memory,
+					orders,
 					numSteps,
 					stepIndex
 				}

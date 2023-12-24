@@ -16,11 +16,10 @@ import {
 } from "@workspace/binance"
 import {
 	DflowBinanceExecutor,
-	DflowExecutorView,
 	extractBinanceFlowSymbolsAndIntervalsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
-// import { newOrder } from "@workspace/models"
+import { newId } from "@workspace/models"
 import { now, Time } from "minimal-time-helpers"
 
 import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
@@ -28,7 +27,6 @@ import { logging } from "../logging"
 
 const { warn } = logging("backtesting")
 
-let binanceNodesCatalogShouldBeInitialized = false
 const binanceKlinesCache = new BinanceKlinesCacheMap()
 const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceExecutor = new DflowBinanceExecutor()
@@ -103,12 +101,8 @@ self.onmessage = async ({
 			binance.exchangeInfoCache = binanceExchangeInfoCache
 			binance.klinesCache = binanceKlinesCache
 			const { symbols: binanceSymbols } = await binance.exchangeInfo()
-			// Initialize `nodesCatalog`.
-			if (binanceNodesCatalogShouldBeInitialized) {
-				binanceExecutor.nodesCatalog =
-					getDflowBinanceNodesCatalog(binanceSymbols)
-				binanceNodesCatalogShouldBeInitialized = false
-			}
+			binanceExecutor.nodesCatalog =
+				getDflowBinanceNodesCatalog(binanceSymbols)
 
 			// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
 
@@ -133,12 +127,7 @@ self.onmessage = async ({
 						startTime,
 						endTime
 					})
-					await binance.klines(symbol, interval, {
-						startTime,
-						endTime
-					})
 					startTime = endTime
-					// TODO check why klines are not cached
 				}
 			}
 
@@ -150,27 +139,33 @@ self.onmessage = async ({
 				binance.time = time
 				// Run executor.
 				try {
-					// const { balances, memory, orders } =
-					await binanceExecutor.run(
-						{
-							binance,
-							params: {},
-							memory: session.memory,
-							time
-						},
-						// TODO should not use a cast,
-						// also DflowExecutorView is not a nice name
-						view as DflowExecutorView
-					)
-					// if (balances.length > 0)
-					// 	session.balanceHistory.push({
-					// 		balances,
-					// 		whenCreated: time
-					// 	})
-					// session.memory = memory
-					// session.orders.push(
-					// 	...orders.map(({ info }) => newOrder({ info }))
-					// )
+					const { balances, memory, memoryChanged, orders } =
+						await binanceExecutor.run(
+							{
+								binance,
+								params: {},
+								memory: session.memory,
+								time
+							},
+							view
+						)
+					session.memory = memory
+					if (balances.length > 0)
+						session.balanceHistory.push({
+							balances,
+							whenCreated: time
+						})
+					if (orders.length > 0)
+						session.orders.push(
+							...orders.map(({ info }) => ({
+								id: newId(),
+								info,
+								whenCreated: time
+							}))
+						)
+					// Always update UI whenever `memoryChanged`.
+					if (memoryChanged)
+						self.postMessage(updatedResultMessage(session))
 				} catch (error) {
 					warn(error)
 					const statusChanged = session.stop()
