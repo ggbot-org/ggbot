@@ -3,6 +3,7 @@ export * from "./Checkmark"
 export * from "./DailyInterval"
 export * from "./DateTime"
 export * from "./Icon"
+export { Input } from "./Input"
 export * from "./InputField"
 export * from "./Logo"
 export * from "./Modal"
@@ -41,7 +42,6 @@ export {
 	formValues,
 	Heading,
 	Hero,
-	Input,
 	Label,
 	Level,
 	LevelItem,

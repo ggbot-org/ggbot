@@ -6,6 +6,7 @@
 	padding-bottom: $size-5;
 
 	&__strategyName {
+		flex: auto;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

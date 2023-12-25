@@ -81,7 +81,7 @@ export const Tabs: FC<TabsProps> = ({
 	)
 
 	return (
-		<div className={classNames("m-5")}>
+		<div className={classNames("m-3")}>
 			<TabSelectors>
 				{tabSelectors.map(({ children, tabId, ...props }) => (
 					<TabSelector key={tabId} {...props}>
