@@ -20,7 +20,7 @@ import {
 	extractsBinanceSymbolsFromTickerPriceAndOrderNodes,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
-import { newId } from "@workspace/models"
+import { newId, Order } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
 import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
@@ -35,6 +35,7 @@ const binanceKlinesCache = new BinanceKlinesCacheMap()
 const session = new BacktestingSession()
 
 const percentageStep = 5
+const updateInterval = 1000
 
 const statusChangedMessage = (
 	session: BacktestingSession
@@ -50,15 +51,6 @@ const updatedProgressMessage = (
 	currentTimestamp: session.currentTimestamp,
 	stepIndex: session.stepIndex,
 	numSteps: session.numSteps
-})
-
-const updatedResultsMessage = (
-	session: BacktestingSession
-): BacktestingMessageOutData => ({
-	type: "UPDATED_RESULTS",
-	balanceHistory: session.balanceHistory,
-	memory: session.memory,
-	orders: session.orders
 })
 
 const POST = (message: BacktestingMessageOutData) => {
@@ -159,37 +151,33 @@ const getBinance = (
 const runBinance = async (binance: BacktestingBinanceClient) => {
 	const flow = getStrategyFlow()
 	let time: Time | undefined
+	let nextUpdateTime = Date.now() + updateInterval
 	let nextCompletionPercentage = session.completionPercentage + percentageStep
+	const orderSet = new Set<Order>()
 
 	while ((time = session.nextTime)) {
 		binance.time = time
 		// Run executor.
 		try {
-			const { balances, memory, memoryChanged, orders } =
-				await binanceExecutor.run(
-					{
-						binance,
-						params: {},
-						memory: session.memory,
-						time
-					},
-					flow
-				)
+			const { memory, orders } = await binanceExecutor.run(
+				{
+					binance,
+					params: {},
+					memory: session.memory,
+					time
+				},
+				flow
+			)
 			session.memory = memory
-			if (balances.length > 0)
-				session.balanceHistory.push({
-					balances,
-					whenCreated: time
-				})
-			for (const { info } of orders)
-				session.orders.push({
+			for (const { info } of orders) {
+				const order = {
 					id: newId(),
 					info,
 					whenCreated: time
-				})
-			// Update UI, if memory changed or there was some new balance or order.
-			if (memoryChanged || balances.length + orders.length > 0)
-				POST(updatedResultsMessage(session))
+				} satisfies Order
+				orderSet.add(order)
+				session.orders.push(order)
+			}
 		} catch (error) {
 			warn(error)
 			const statusChanged = session.stop()
@@ -201,6 +189,22 @@ const runBinance = async (binance: BacktestingBinanceClient) => {
 			nextCompletionPercentage =
 				session.completionPercentage + percentageStep
 			POST(updatedProgressMessage(session))
+		}
+
+		if (Date.now() > nextUpdateTime) {
+			nextUpdateTime = Date.now() + updateInterval
+			POST({
+				type: "UPDATED_MEMORY",
+				memory: session.memory
+			})
+			if (orderSet.size > 0) {
+				const orders = Array.from(orderSet.values())
+				POST({
+					type: "UPDATED_ORDERS",
+					orders
+				})
+				orderSet.clear()
+			}
 		}
 	}
 }

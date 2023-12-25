@@ -12,7 +12,7 @@ import {
 import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { isBinanceOrderRespFULL } from "@workspace/binance"
-import { isOrders, Order } from "@workspace/models"
+import { Order } from "@workspace/models"
 import { add, gt, lt, mul, neg, sub } from "arithmetica"
 import { DayInterval } from "minimal-time-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
@@ -76,7 +76,7 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 		Omit<SymbolStats, "symbol">
 	>()
 
-	if (strategyKind === "binance" && isOrders(orders)) {
+	if (strategyKind === "binance") {
 		for (const { info } of orders) {
 			if (isBinanceOrderRespFULL(info)) {
 				if (info.status !== "FILLED") continue

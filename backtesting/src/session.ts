@@ -1,5 +1,4 @@
 import {
-	BalanceChangeEvent,
 	Frequency,
 	frequencyIntervalDuration,
 	Order,
@@ -16,7 +15,6 @@ import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
 export class BacktestingSession implements BacktestingStatusController {
-	balanceHistory: BalanceChangeEvent[]
 	memory: StrategyMemory
 	orders: Order[]
 	status: BacktestingStatus
@@ -31,7 +29,6 @@ export class BacktestingSession implements BacktestingStatusController {
 		this._dayInterval = undefined
 		this._frequency = undefined
 		this._strategy = undefined
-		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
 		this.status = "initial"
@@ -143,7 +140,6 @@ export class BacktestingSession implements BacktestingStatusController {
 		if (this.status !== "initial" && this.status !== "done") return false
 		this.status = "running"
 		// Reset before run.
-		this.balanceHistory = []
 		this.memory = {}
 		this.orders = []
 		this.stepIndex = 0

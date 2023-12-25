@@ -1,7 +1,6 @@
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
-import { isOrders, Orders } from "@workspace/models"
 import { DayInterval, getDay, today } from "minimal-time-helpers"
 import { FC, useContext, useEffect, useMemo } from "react"
 
@@ -20,7 +19,7 @@ export const StrategyProfits: FC<Props> = ({ numDays }) => {
 
 	const READ = useUserApi.ReadStrategyOrders()
 
-	const orders: Orders = isOrders(READ.data) ? READ.data : []
+	const orders = READ.data ?? []
 
 	useEffect(() => {
 		if (!strategyKey) return

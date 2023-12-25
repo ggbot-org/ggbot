@@ -46,7 +46,6 @@ export {
 	newAccountStrategy
 } from "./accountStrategy.js"
 export type { Balance } from "./balance.js"
-export type { BalanceChangeEvent } from "./balanceChangeEvent.js"
 export type {
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria,
@@ -102,8 +101,8 @@ export {
 	generateOneTimePassword,
 	isOneTimePasswordCode
 } from "./oneTimePassword.js"
-export type { Order, Orders } from "./order.js"
-export { isOrders, newOrder } from "./order.js"
+export type { Order } from "./order.js"
+export { newOrder } from "./order.js"
 export type { PaymentProvider } from "./paymentProviders.js"
 export { quotaType } from "./quotas.js"
 export type { SchedulingStatus } from "./scheduling.js"

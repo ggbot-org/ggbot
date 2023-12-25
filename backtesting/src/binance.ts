@@ -11,7 +11,6 @@ import {
 	BinanceTickerPrice
 } from "@workspace/binance"
 import { DflowBinanceClient, DflowBinanceKlineInterval } from "@workspace/dflow"
-import { div, mul } from "arithmetica"
 import { now, Time } from "minimal-time-helpers"
 
 export class BacktestingBinanceClient implements DflowBinanceClient {
@@ -58,16 +57,16 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 			orderOptions
 		)
 		const { price } = await this.tickerPrice(symbol)
-		let quantity = "0"
-		let quoteQuantity = "0"
-		if (options.quantity !== undefined) {
-			quantity = options.quantity
-			quoteQuantity = mul(quantity, price)
-		}
-		if (options.quoteOrderQty !== undefined) {
-			quoteQuantity = options.quoteOrderQty
-			quantity = div(quoteQuantity, price)
-		}
+		let quantity = options.quantity ?? "0"
+		const quoteOrderQty = Number(options.quoteOrderQty)
+		// TODO
+		// it was
+		// div(quoteOrderQty/price)
+		// why it does not work if quoteOrderQty is 0.1 ?
+		// it blocks everything
+		// TODO by the way if order is below 10 dollars it should not execute.
+		if (!isNaN(quoteOrderQty))
+			quantity = String(quoteOrderQty / Number(price))
 
 		const order: BinanceOrderRespFULL = {
 			clientOrderId: "",
@@ -94,7 +93,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 				}
 			]
 		}
-		return Promise.resolve(order)
+		return order
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {

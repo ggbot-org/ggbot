@@ -20,7 +20,7 @@ type Action =
 
 type State = Pick<
 	BacktestingSession,
-	"balanceHistory" | "currentTimestamp" | "memory" | "orders" | "stepIndex"
+	"currentTimestamp" | "memory" | "orders" | "stepIndex"
 > & {
 	dayInterval: DayInterval
 	frequency: Frequency
@@ -57,7 +57,6 @@ const initializer = ({
 	frequency,
 	dayInterval
 }: Pick<State, "frequency" | "dayInterval">): State => ({
-	balanceHistory: [],
 	currentTimestamp: undefined,
 	dayInterval,
 	frequency,
@@ -105,6 +104,15 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				}
 			}
 
+			if (actionType === "UPDATED_MEMORY") {
+				const { memory } = action
+				info(actionType, memory)
+				return {
+					...state,
+					memory
+				}
+			}
+
 			if (actionType === "UPDATED_PROGRESS") {
 				const { currentTimestamp, numSteps, stepIndex } = action
 				info(actionType, { numSteps, stepIndex })
@@ -116,14 +124,12 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				}
 			}
 
-			if (actionType === "UPDATED_RESULTS") {
-				const { balanceHistory, memory, orders } = action
-				info(actionType, { balanceHistory, memory, orders })
+			if (actionType === "UPDATED_ORDERS") {
+				const { orders } = action
+				info(actionType, orders)
 				return {
 					...state,
-					balanceHistory,
-					memory,
-					orders
+					orders: state.orders.concat(orders)
 				}
 			}
 
