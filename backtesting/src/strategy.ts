@@ -1,14 +1,17 @@
-import { StrategyFlow, StrategyKey } from "@workspace/models"
+import { Strategy, StrategyFlow, StrategyKey } from "@workspace/models"
 
 export class BacktestingStrategy {
+	flow: StrategyFlow["view"]
 	readonly strategyKey: StrategyKey
-	view: StrategyFlow["view"]
+	readonly strategyName: Strategy["name"]
 
 	constructor({
+		flow,
 		strategyKey,
-		view
-	}: Pick<BacktestingStrategy, "strategyKey" | "view">) {
+		strategyName
+	}: Pick<BacktestingStrategy, "flow" | "strategyKey" | "strategyName">) {
+		this.flow = flow
 		this.strategyKey = strategyKey
-		this.view = view
+		this.strategyName = strategyName
 	}
 }

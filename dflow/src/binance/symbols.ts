@@ -88,16 +88,16 @@ const isDflowBinanceSymbolAndInterval =
 // TODO it checks Candles nodes, should also check (add testss too) price nodes.
 export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	view: FlowViewSerializableGraph
+	flow: FlowViewSerializableGraph
 ): DflowBinanceSymbolAndInterval[] => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
 	const nodeConnections: Array<{ sourceId: DflowId; targetId: DflowId }> =
-		view.edges.map((edge) => ({
+		flow.edges.map((edge) => ({
 			sourceId: edge.from[0],
 			targetId: edge.to[0]
 		}))
-	for (const node of view.nodes) {
+	for (const node of flow.nodes) {
 		if (node.text === Candles.kind) {
 			const parentNodeIds = DflowGraph.parentsOfNodeId(
 				node.id,
@@ -109,7 +109,7 @@ export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
 					interval: undefined
 				}
 			for (const parentNodeId of parentNodeIds) {
-				const node = view.nodes.find(({ id }) => id === parentNodeId)
+				const node = flow.nodes.find(({ id }) => id === parentNodeId)
 				if (!node) continue
 				if (isDflowBinanceKlineInterval(node.text)) {
 					maybeSymbolAndInterval.interval = node.text

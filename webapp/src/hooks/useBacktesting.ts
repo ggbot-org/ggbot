@@ -41,7 +41,7 @@ type State = Pick<
 export type UseBacktestingOutput = {
 	state: State
 	dispatch: Dispatch<Action>
-	hasRequiredData: boolean
+	hasFlow: boolean
 }
 
 const { info } = logging("useBacktesting")
@@ -81,9 +81,7 @@ const initializer = ({
 export const useBacktesting = (): UseBacktestingOutput => {
 	const { flowViewGraph } = useContext(StrategyFlowContext)
 
-	// TODO hasRequiredData could be removed
-	let hasRequiredData = true
-	if (!flowViewGraph) hasRequiredData = false
+	const hasFlow = Boolean(flowViewGraph)
 
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
@@ -173,5 +171,5 @@ export const useBacktesting = (): UseBacktestingOutput => {
 		}
 	}, [dispatch])
 
-	return { state, dispatch, hasRequiredData }
+	return { hasFlow, dispatch, state }
 }

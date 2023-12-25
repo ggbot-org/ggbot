@@ -38,7 +38,7 @@ export type BacktestingMessageInData =
 			type: "START"
 			dayInterval: DayInterval
 			frequency: Frequency
-	  } & Pick<BacktestingStrategy, "strategyKey" | "view">)
+	  } & Pick<BacktestingStrategy, "flow" | "strategyKey" | "strategyName">)
 
 /**
  * @example

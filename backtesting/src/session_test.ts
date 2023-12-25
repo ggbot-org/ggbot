@@ -8,6 +8,7 @@ import { BacktestingSession } from "./session.js"
 import { BacktestingStrategy } from "./strategy.js"
 import { emptyStrategy } from "./strategy_test.js"
 
+const strategyName = "my strategy"
 const newSession = ({
 	dayInterval,
 	frequency,
@@ -111,7 +112,8 @@ void describe("BacktestingSession", () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
 			strategyKey: { strategyKind: "test", strategyId: "01010101" },
-			view: { nodes: [{ id: "a", text: "true", x: 0, y: 0 }], edges: [] }
+			strategyName,
+			flow: { nodes: [{ id: "a", text: "true", x: 0, y: 0 }], edges: [] }
 		})
 		const session = newSession({
 			dayInterval: {
@@ -122,33 +124,33 @@ void describe("BacktestingSession", () => {
 			strategy: strategy1
 		})
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
-		assert.deepEqual(session.strategy?.view, strategy1.view)
+		assert.deepEqual(session.strategy?.flow, strategy1.flow)
 		// Session is "running", `strategy` modifier does not apply.
 		session.start()
 		session.strategy = strategy2
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
-		assert.deepEqual(session.strategy?.view, strategy1.view)
+		assert.deepEqual(session.strategy?.flow, strategy1.flow)
 		// Session is "paused", `strategy` modifier does not apply.
 		session.pause()
 		session.strategy = strategy2
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
-		assert.deepEqual(session.strategy?.view, strategy1.view)
+		assert.deepEqual(session.strategy?.flow, strategy1.flow)
 		// Session is resumed, so it is "running" again, `strategy` modifier does not apply.
 		session.resume()
 		session.strategy = strategy2
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
-		assert.deepEqual(session.strategy?.view, strategy1.view)
+		assert.deepEqual(session.strategy?.flow, strategy1.flow)
 		// Session is not "running" nor "paused", `strategy` modifier can set new value.
 		session.stop()
 		session.strategy = strategy2
 		assert.deepEqual(session.strategy?.strategyKey, strategy2.strategyKey)
-		assert.deepEqual(session.strategy?.view, strategy2.view)
+		assert.deepEqual(session.strategy?.flow, strategy2.flow)
 	})
 
-	void test('cannot set `strategyView` while `status` is "running"', () => {
+	void test('cannot set `strategyFlow` while `status` is "running"', () => {
 		const strategy = emptyStrategy()
-		const strategyView1 = strategy.view
-		const strategyView2: BacktestingStrategy["view"] = {
+		const strategyFlow1 = strategy.flow
+		const strategyFlow2: BacktestingStrategy["flow"] = {
 			nodes: [{ id: "a", text: "true", x: 0, y: 0 }],
 			edges: []
 		}
@@ -160,23 +162,23 @@ void describe("BacktestingSession", () => {
 			frequency: { every: 1, interval: "1h" },
 			strategy
 		})
-		assert.deepEqual(session.strategy?.view, strategyView1)
+		assert.deepEqual(session.strategy?.flow, strategyFlow1)
 		// Session is "running", `strategy` modifier does not apply.
 		session.start()
-		session.strategyView = strategyView2
-		assert.deepEqual(session.strategy?.view, strategyView1)
+		session.strategyFlow = strategyFlow2
+		assert.deepEqual(session.strategy?.flow, strategyFlow1)
 		// Session is "paused", `strategy` modifier does not apply.
 		session.pause()
-		session.strategyView = strategyView2
-		assert.deepEqual(session.strategy?.view, strategyView1)
+		session.strategyFlow = strategyFlow2
+		assert.deepEqual(session.strategy?.flow, strategyFlow1)
 		// Session is resumed, so it is "running" again, `strategy` modifier does not apply.
 		session.resume()
-		session.strategyView = strategyView2
-		assert.deepEqual(session.strategy?.view, strategyView1)
+		session.strategyFlow = strategyFlow2
+		assert.deepEqual(session.strategy?.flow, strategyFlow1)
 		// Session is not "running" nor "paused", `strategy` modifier can set new value.
 		session.stop()
-		session.strategyView = strategyView2
-		assert.deepEqual(session.strategy?.view, strategyView2)
+		session.strategyFlow = strategyFlow2
+		assert.deepEqual(session.strategy?.flow, strategyFlow2)
 	})
 
 	void test('`nextTime` return Time if status is "running"', () => {

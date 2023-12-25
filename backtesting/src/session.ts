@@ -89,10 +89,10 @@ export class BacktestingSession implements BacktestingStatusController {
 		this._strategy = value
 	}
 
-	set strategyView(value: BacktestingStrategy["view"]) {
+	set strategyFlow(value: BacktestingStrategy["flow"]) {
 		if (this.status !== "initial") return
 		if (this._strategy === undefined) return
-		this._strategy.view = value
+		this._strategy.flow = value
 	}
 
 	/**

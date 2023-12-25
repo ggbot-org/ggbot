@@ -5,8 +5,9 @@ import { BacktestingStrategy } from "./strategy.js"
 
 export const emptyStrategy = () =>
 	new BacktestingStrategy({
+		flow: { nodes: [], edges: [] },
 		strategyKey: { strategyKind: "test", strategyId: "00000000" },
-		view: { nodes: [], edges: [] }
+		strategyName: "empty strategy"
 	})
 
 void describe("BacktestingStrategy", () => {

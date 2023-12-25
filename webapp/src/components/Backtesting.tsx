@@ -33,6 +33,8 @@ export const Backtesting: FC = () => {
 	const { toast } = useContext(ToastContext)
 
 	const {
+		hasFlow,
+		dispatch,
 		state: {
 			currentTimestamp,
 			dayInterval,
@@ -45,13 +47,12 @@ export const Backtesting: FC = () => {
 			orders,
 			stepIndex,
 			numSteps
-		},
-		dispatch,
-		hasRequiredData
+		}
 	} = useBacktesting()
 
 	let disabled = false
 	if (isRunning || isPaused) disabled = true
+	if (!hasFlow) disabled = true
 
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
@@ -98,11 +99,11 @@ export const Backtesting: FC = () => {
 		if (!flowViewGraph) return
 		if (!strategyKey) return
 		dispatch({
-			type: "START",
 			dayInterval,
+			flow: flowViewGraph,
 			frequency,
 			strategyKey,
-			view: flowViewGraph
+			type: "START"
 		})
 	}, [dispatch, flowViewGraph, dayInterval, frequency, strategyKey])
 
@@ -153,6 +154,7 @@ export const Backtesting: FC = () => {
 						/>
 
 						<BacktestingActions
+							hasFlow={hasFlow}
 							isPaused={isPaused}
 							isRunning={isRunning}
 							onClickPause={onClickPause}
@@ -170,7 +172,7 @@ export const Backtesting: FC = () => {
 				<Column>
 					<BacktestingProgress
 						dayInterval={dayInterval}
-						hasRequiredData={hasRequiredData}
+						hasFlow={hasFlow}
 						progress={progress}
 						currentTimestamp={currentTimestamp}
 					/>

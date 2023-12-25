@@ -28,11 +28,12 @@ import { logging } from "../logging"
 const { warn } = logging("backtesting")
 
 const binanceExecutor = new DflowBinanceExecutor()
-const binance = new BacktestingBinanceClient()
-binance.exchangeInfoCache = new BinanceExchangeInfoCache()
-binance.klinesCache = new BinanceKlinesCacheMap()
+const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
+const binanceKlinesCache = new BinanceKlinesCacheMap()
 
 const session = new BacktestingSession()
+
+const percentageStep = 5
 
 const statusChangedMessage = (
 	session: BacktestingSession
@@ -62,6 +63,121 @@ const POST = (message: BacktestingMessageOutData) => {
 	self.postMessage(message)
 }
 
+class ErrorMissingFlow extends Error {
+	static message = "Cannot run executor without a strategy flow"
+	constructor() {
+		super(ErrorMissingFlow.message)
+	}
+}
+
+const ifSessionIsDoneNotifyUI = (session: BacktestingSession) => {
+	if (session.status !== "done") return
+	POST(updatedProgressMessage(session))
+	POST(statusChangedMessage(session))
+}
+
+/** Get strategy flow from session or throw. */
+const getStrategyFlow = (): BacktestingStrategy["flow"] => {
+	const flow = session.strategy?.flow
+	if (!flow) {
+		const error = new ErrorMissingFlow()
+		warn(error.message)
+		throw error
+	}
+	return flow
+}
+
+const prepareBinance = async (binance: BacktestingBinanceClient) => {
+	const flow = getStrategyFlow()
+	const { symbols: binanceSymbols } = await binance.exchangeInfo()
+	binanceExecutor.nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
+
+	// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
+
+	const symbolsAndIntervals = extractBinanceFlowSymbolsAndIntervalsFromFlow(
+		binanceSymbols,
+		flow
+	)
+
+	const firstTime = session.times[0]
+	const lastTime = session.times[session.times.length - 1]
+	for (const { interval, symbol } of symbolsAndIntervals) {
+		let startTime = firstTime
+		while (startTime < lastTime) {
+			const endTime = Math.min(
+				lastTime,
+				getBinanceIntervalTime[interval](startTime).plus(
+					binanceKlineMaxLimit
+				)
+			)
+			await binance.klines(symbol, interval, {
+				startTime,
+				endTime
+			})
+			startTime = endTime
+		}
+	}
+
+	// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
+	// TODO
+}
+
+const getBinance = (interval: BacktestingBinanceClient["interval"]) => {
+	const binance = new BacktestingBinanceClient(interval)
+	binance.exchangeInfoCache = binanceExchangeInfoCache
+	binance.klinesCache = binanceKlinesCache
+	return binance
+}
+
+const runBinance = async (binance: BacktestingBinanceClient) => {
+	const flow = getStrategyFlow()
+	let time: Time | undefined
+	let nextCompletionPercentage = session.completionPercentage + percentageStep
+
+	while ((time = session.nextTime)) {
+		binance.time = time
+		// Run executor.
+		try {
+			const { balances, memory, memoryChanged, orders } =
+				await binanceExecutor.run(
+					{
+						binance,
+						params: {},
+						memory: session.memory,
+						time
+					},
+					flow
+				)
+			session.memory = memory
+			if (balances.length > 0)
+				session.balanceHistory.push({
+					balances,
+					whenCreated: time
+				})
+			for (const { info } of orders)
+				session.orders.push({
+					id: newId(),
+					info,
+					whenCreated: time
+				})
+			// Update UI, if memory changed or there was some new balance or order.
+			if (memoryChanged || balances.length + orders.length > 0)
+				POST(updatedResultsMessage(session))
+		} catch (error) {
+			warn(error)
+			const statusChanged = session.stop()
+			if (statusChanged) POST(statusChangedMessage(session))
+		}
+
+		// Update UI with current progress on every `percentageStep`.
+		if (session.completionPercentage > nextCompletionPercentage) {
+			nextCompletionPercentage =
+				session.completionPercentage + percentageStep
+			POST(updatedProgressMessage(session))
+		}
+	}
+}
+
 self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
@@ -85,13 +201,15 @@ self.onmessage = async ({
 	}
 
 	if (messageType === "START") {
-		const { strategyKey, view, dayInterval, frequency } = message
+		const { dayInterval, flow, frequency, strategyKey, strategyName } =
+			message
 		session.dayInterval = dayInterval
 		session.frequency = frequency
 		session.computeTimes()
 		const strategy = new BacktestingStrategy({
 			strategyKey,
-			view
+			strategyName,
+			flow
 		})
 		session.strategy = strategy
 		session.computeTimes()
@@ -103,93 +221,14 @@ self.onmessage = async ({
 
 		// Run backtesting according to given `strategyKind`.
 		const { strategyKind } = strategyKey
-		const percentageStep = 5
-		let completionPercentage = percentageStep
+
 		if (strategyKind === "binance") {
-			const { symbols: binanceSymbols } = await binance.exchangeInfo()
-			binanceExecutor.nodesCatalog =
-				getDflowBinanceNodesCatalog(binanceSymbols)
-
-			// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
-
-			const symbolsAndIntervals =
-				extractBinanceFlowSymbolsAndIntervalsFromFlow(
-					binanceSymbols,
-					view
-				)
-
-			const firstTime = session.times[0]
-			const lastTime = session.times[session.times.length - 1]
-			for (const { interval, symbol } of symbolsAndIntervals) {
-				let startTime = firstTime
-				while (startTime < lastTime) {
-					const endTime = Math.min(
-						lastTime,
-						getBinanceIntervalTime[interval](startTime).plus(
-							binanceKlineMaxLimit
-						)
-					)
-					await binance.klines(symbol, interval, {
-						startTime,
-						endTime
-					})
-					startTime = endTime
-				}
-			}
-
-			// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
-			// TODO
-
-			let time: Time | undefined
-			while ((time = session.nextTime)) {
-				binance.time = time
-				// Run executor.
-				try {
-					const { balances, memory, memoryChanged, orders } =
-						await binanceExecutor.run(
-							{
-								binance,
-								params: {},
-								memory: session.memory,
-								time
-							},
-							view
-						)
-					session.memory = memory
-					if (balances.length > 0)
-						session.balanceHistory.push({
-							balances,
-							whenCreated: time
-						})
-					for (const { info } of orders)
-						session.orders.push({
-							id: newId(),
-							info,
-							whenCreated: time
-						})
-					// Update UI, if memory changed or there was some new balance or order.
-					if (memoryChanged || balances.length + orders.length > 0)
-						POST(updatedResultsMessage(session))
-				} catch (error) {
-					warn(error)
-					const statusChanged = session.stop()
-					if (statusChanged) POST(statusChangedMessage(session))
-				}
-
-				// Update UI with current progress on every `percentageStep`.
-				if (session.completionPercentage > completionPercentage) {
-					completionPercentage =
-						session.completionPercentage + percentageStep
-					POST(updatedProgressMessage(session))
-				}
-			}
+			const binance = getBinance(frequency.interval)
+			await prepareBinance(binance)
+			await runBinance(binance)
 		}
-		// If session is "done", notify UI.
-		if (session.status === "done") {
-			POST(updatedProgressMessage(session))
-			POST(updatedResultsMessage(session))
-			POST(statusChangedMessage(session))
-		}
+
+		ifSessionIsDoneNotifyUI(session)
 	}
 
 	if (messageType === "STOP") {
@@ -207,5 +246,16 @@ self.onmessage = async ({
 	if (messageType === "RESUME") {
 		const statusChanged = session.resume()
 		if (statusChanged) POST(statusChangedMessage(session))
+		const strategyKind = session.strategy?.strategyKey.strategyKind
+		const interval = session.frequency?.interval
+		if (!interval) return
+
+		if (strategyKind === "binance") {
+			const binance = getBinance(interval)
+			await prepareBinance(binance)
+			await runBinance(binance)
+		}
+
+		ifSessionIsDoneNotifyUI(session)
 	}
 }
