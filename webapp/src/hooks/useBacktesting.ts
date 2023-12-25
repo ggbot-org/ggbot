@@ -1,5 +1,4 @@
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
-import { ToastContext } from "_/contexts/Toast"
 import { logging } from "_/logging"
 import {
 	BacktestingMessageInData,
@@ -15,7 +14,6 @@ import {
 	yesterday
 } from "minimal-time-helpers"
 import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
-import { useIntl } from "react-intl"
 
 import { ecmaScriptPath } from "../ecmaScripts"
 
@@ -34,6 +32,7 @@ type State = Pick<
 	dayInterval: DayInterval
 	frequency: Frequency
 	isPaused: boolean
+	isDone: boolean
 	isRunning: boolean
 	maxDay: Day
 	numSteps: number
@@ -45,7 +44,7 @@ export type UseBacktestingOutput = {
 	hasRequiredData: boolean
 }
 
-const { info } = logging("backtesting")
+const { info } = logging("useBacktesting")
 
 const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
 
@@ -70,6 +69,7 @@ const initializer = ({
 	dayInterval,
 	frequency,
 	isPaused: false,
+	isDone: false,
 	isRunning: false,
 	maxDay: getMaxDay(),
 	memory: {},
@@ -79,10 +79,7 @@ const initializer = ({
 })
 
 export const useBacktesting = (): UseBacktestingOutput => {
-	const { formatMessage } = useIntl()
-
 	const { flowViewGraph } = useContext(StrategyFlowContext)
-	const { toast } = useContext(ToastContext)
 
 	// TODO hasRequiredData could be removed
 	let hasRequiredData = true
@@ -90,8 +87,7 @@ export const useBacktesting = (): UseBacktestingOutput => {
 
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
-			info(action.type)
-
+			const { type: actionType } = action
 			if (
 				[
 					"PAUSE",
@@ -100,45 +96,60 @@ export const useBacktesting = (): UseBacktestingOutput => {
 					"START",
 					"SET_DAY_INTERVAL",
 					"SET_FREQUENCY"
-				].includes(action.type)
+				].includes(actionType)
 			) {
+				info(actionType)
 				backtesting.postMessage(action)
 				return state
 			}
 
-			if (action.type === "STATUS_CHANGED") {
+			if (actionType === "STATUS_CHANGED") {
 				const { status } = action
-				if (status === "done")
-					toast.info(formatMessage({ id: "Backtesting.done" }))
+				info(actionType, status)
 				return {
 					...state,
+					isDone: status === "done",
 					isPaused: status === "paused",
 					isRunning: status === "running"
 				}
 			}
 
-			if (action.type === "UPDATED_RESULT") {
-				const { numSteps, stepIndex, memory, orders } = action
+			if (actionType === "UPDATED_PROGRESS") {
+				const { numSteps, stepIndex } = action
+				info(actionType, { numSteps, stepIndex })
 				return {
 					...state,
-					memory,
-					orders,
 					numSteps,
 					stepIndex
 				}
 			}
 
-			if (action.type === "UPDATED_DAY_INTERVAL")
+			if (actionType === "UPDATED_RESULTS") {
+				const { balanceHistory, memory, orders } = action
+				info(actionType, { balanceHistory, memory, orders })
+				return {
+					...state,
+					balanceHistory,
+					memory,
+					orders
+				}
+			}
+
+			if (actionType === "UPDATED_DAY_INTERVAL") {
+				info(actionType)
 				return {
 					...state,
 					dayInterval: action.dayInterval
 				}
+			}
 
-			if (action.type === "UPDATED_FREQUENCY")
+			if (actionType === "UPDATED_FREQUENCY") {
+				info(actionType)
 				return {
 					...state,
 					frequency: action.frequency
 				}
+			}
 
 			return state
 		},

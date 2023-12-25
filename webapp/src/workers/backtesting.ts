@@ -20,16 +20,17 @@ import {
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import { newId } from "@workspace/models"
-import { now, Time } from "minimal-time-helpers"
+import { Time } from "minimal-time-helpers"
 
 import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
 import { logging } from "../logging"
 
 const { warn } = logging("backtesting")
 
-const binanceKlinesCache = new BinanceKlinesCacheMap()
-const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceExecutor = new DflowBinanceExecutor()
+const binance = new BacktestingBinanceClient()
+binance.exchangeInfoCache = new BinanceExchangeInfoCache()
+binance.klinesCache = new BinanceKlinesCacheMap()
 
 const session = new BacktestingSession()
 
@@ -40,42 +41,50 @@ const statusChangedMessage = (
 	status: session.status
 })
 
-const updatedResultMessage = (
+const updatedProgressMessage = (
 	session: BacktestingSession
 ): BacktestingMessageOutData => ({
-	type: "UPDATED_RESULT",
-	balanceHistory: session.balanceHistory,
-	memory: session.memory,
-	orders: session.orders,
-	status: session.status,
+	type: "UPDATED_PROGRESS",
 	stepIndex: session.stepIndex,
 	numSteps: session.numSteps
 })
 
+const updatedResultsMessage = (
+	session: BacktestingSession
+): BacktestingMessageOutData => ({
+	type: "UPDATED_RESULTS",
+	balanceHistory: session.balanceHistory,
+	memory: session.memory,
+	orders: session.orders
+})
+
+const POST = (message: BacktestingMessageOutData) => {
+	self.postMessage(message)
+}
+
 self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
-	if (message.type === "SET_DAY_INTERVAL") {
+	const { type: messageType } = message
+	if (messageType === "SET_DAY_INTERVAL") {
 		const { dayInterval } = message
 		session.dayInterval = dayInterval
-		self.postMessage({
+		return POST({
 			type: "UPDATED_DAY_INTERVAL",
 			dayInterval: session.dayInterval
-		} satisfies BacktestingMessageOutData)
-		return
+		})
 	}
 
-	if (message.type === "SET_FREQUENCY") {
+	if (messageType === "SET_FREQUENCY") {
 		const { frequency } = message
 		session.frequency = frequency
-		self.postMessage({
+		return POST({
 			type: "UPDATED_FREQUENCY",
 			frequency: session.frequency
 		} satisfies BacktestingMessageOutData)
-		return
 	}
 
-	if (message.type === "START") {
+	if (messageType === "START") {
 		const { strategyKey, view, dayInterval, frequency } = message
 		session.dayInterval = dayInterval
 		session.frequency = frequency
@@ -89,7 +98,7 @@ self.onmessage = async ({
 
 		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		if (statusChanged) POST(statusChangedMessage(session))
 		if (!session.canRun) return
 
 		// Run backtesting according to given `strategyKind`.
@@ -97,9 +106,6 @@ self.onmessage = async ({
 		const percentageStep = 5
 		let completionPercentage = percentageStep
 		if (strategyKind === "binance") {
-			const binance = new BacktestingBinanceClient(now())
-			binance.exchangeInfoCache = binanceExchangeInfoCache
-			binance.klinesCache = binanceKlinesCache
 			const { symbols: binanceSymbols } = await binance.exchangeInfo()
 			binanceExecutor.nodesCatalog =
 				getDflowBinanceNodesCatalog(binanceSymbols)
@@ -155,54 +161,51 @@ self.onmessage = async ({
 							balances,
 							whenCreated: time
 						})
-					if (orders.length > 0)
-						session.orders.push(
-							...orders.map(({ info }) => ({
-								id: newId(),
-								info,
-								whenCreated: time
-							}))
-						)
-					// Always update UI whenever `memoryChanged`.
-					if (memoryChanged)
-						self.postMessage(updatedResultMessage(session))
+					for (const { info } of orders)
+						session.orders.push({
+							id: newId(),
+							info,
+							whenCreated: time
+						})
+					// Update UI, if memory changed or there was some new balance or order.
+					if (memoryChanged || balances.length + orders.length > 0)
+						POST(updatedResultsMessage(session))
 				} catch (error) {
 					warn(error)
 					const statusChanged = session.stop()
-					if (statusChanged)
-						self.postMessage(statusChangedMessage(session))
+					if (statusChanged) POST(statusChangedMessage(session))
 				}
 
-				// Update UI with current results on every `percentageStep`.
+				// Update UI with current progress on every `percentageStep`.
 				if (session.completionPercentage > completionPercentage) {
 					completionPercentage =
 						session.completionPercentage + percentageStep
-					self.postMessage(updatedResultMessage(session))
+					POST(updatedProgressMessage(session))
 				}
 			}
 		}
 		// If session is "done", notify UI.
 		if (session.status === "done") {
-			self.postMessage(updatedResultMessage(session))
-			self.postMessage(statusChangedMessage(session))
+			POST(updatedProgressMessage(session))
+			POST(updatedResultsMessage(session))
+			POST(statusChangedMessage(session))
 		}
 	}
 
-	if (message.type === "STOP") {
+	if (messageType === "STOP") {
 		const statusChanged = session.stop()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		if (statusChanged) POST(statusChangedMessage(session))
+		POST(updatedProgressMessage(session))
 	}
 
-	if (message.type === "PAUSE") {
-		// Update UI with latest results,
-		self.postMessage(updatedResultMessage(session))
-		// and notify changed status.
+	if (messageType === "PAUSE") {
 		const statusChanged = session.pause()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		if (statusChanged) POST(statusChangedMessage(session))
+		POST(updatedProgressMessage(session))
 	}
 
-	if (message.type === "RESUME") {
+	if (messageType === "RESUME") {
 		const statusChanged = session.resume()
-		if (statusChanged) self.postMessage(statusChangedMessage(session))
+		if (statusChanged) POST(statusChangedMessage(session))
 	}
 }

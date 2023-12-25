@@ -1,6 +1,6 @@
 export type { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
 export { BinanceConnector } from "./connector.js"
-export { binanceKlineIntervals, binanceKlineMaxLimit } from "./constants.js"
+export { binanceKlineMaxLimit } from "./constants.js"
 export type { BinanceApiPrivateEndpoint } from "./endpoints.js"
 export { isBinanceApiPrivateEndoint } from "./endpoints.js"
 export { ErrorBinanceHTTP } from "./errors.js"

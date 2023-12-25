@@ -19,9 +19,10 @@ import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
+import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
 import { isFrequency } from "@workspace/models"
-import { FC, useCallback, useContext, useState } from "react"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const Backtesting: FC = () => {
@@ -29,12 +30,14 @@ export const Backtesting: FC = () => {
 
 	const { flowViewGraph } = useContext(StrategyFlowContext)
 	const { strategyKey } = useContext(StrategyContext)
+	const { toast } = useContext(ToastContext)
 
 	const {
 		state: {
 			currentTimestamp,
 			dayInterval,
 			frequency,
+			isDone,
 			isPaused,
 			isRunning,
 			maxDay,
@@ -110,6 +113,10 @@ export const Backtesting: FC = () => {
 	const onClickResume = useCallback(() => {
 		dispatch({ type: "RESUME" })
 	}, [dispatch])
+
+	useEffect(() => {
+		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))
+	}, [formatMessage, isDone, toast])
 
 	return (
 		<>

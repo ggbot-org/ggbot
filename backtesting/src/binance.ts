@@ -1,30 +1,29 @@
 import {
 	BinanceConnector,
 	BinanceExchange,
-	binanceKlineIntervals,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
 	BinanceTickerPrice
 } from "@workspace/binance"
-import {
-	DflowBinanceClient,
-	DflowBinanceKlineInterval,
-	dflowBinanceLowerKlineInterval
-} from "@workspace/dflow"
+import { DflowBinanceClient, DflowBinanceKlineInterval } from "@workspace/dflow"
 import { div, mul } from "arithmetica"
-import { Time } from "minimal-time-helpers"
+import { now, Time } from "minimal-time-helpers"
 
 export class BacktestingBinanceClient
 	extends BinanceExchange
 	implements DflowBinanceClient
 {
-	time: Time
+	/** The session's scheduling `interval`. It is needed to manage cache. */
+	interval: DflowBinanceKlineInterval
 
-	constructor(time: BacktestingBinanceClient["time"]) {
+	/** The `time` used by simulated run. It is needed to manage cache. */
+	time: Time = now()
+
+	constructor(interval: BacktestingBinanceClient["interval"]) {
 		super(BinanceConnector.defaultBaseUrl)
-		this.time = time
+		this.interval = interval
 	}
 
 	async newOrder(
@@ -80,28 +79,26 @@ export class BacktestingBinanceClient
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		const { klinesCache: cache, time } = this
+		const { klinesCache: cache, interval, time } = this
 		// Look for cached data.
-		if (cache)
-			for (const interval of binanceKlineIntervals) {
-				const kline = await cache.getKline(symbol, interval, time)
-				if (kline)
-					return {
-						symbol,
-						// Price is kline's open.
-						price: kline[1]
-					}
-			}
-		const interval: DflowBinanceKlineInterval =
-			dflowBinanceLowerKlineInterval
+		if (cache) {
+			const kline = await cache.getKline(symbol, interval, time)
+			if (kline)
+				return {
+					symbol,
+					// Price is kline's open.
+					price: kline[1]
+				}
+		}
 		// If no data was found in cache, fetch it from Binance API.
-		const klines = await this.klines(symbol, interval, {
+		const klines = await super.klines(symbol, interval, {
 			limit: 1,
 			endTime: time
 		})
 		return {
 			symbol,
-			// Price is kline's close. TODO is this correct? double check
+			// Since klines parameters are `limit` and `extends`,
+			// price is kline's close.
 			price: klines[0][4]
 		}
 	}
