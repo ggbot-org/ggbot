@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     ".": "./default.json",
+    "./code-quality": "./code-quality.json",
     "./lambda": "./lambda.json"
   },
   "dependencies": {
