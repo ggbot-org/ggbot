@@ -4,11 +4,26 @@
 		"lib": ["esnext"],
 		"module": "esnext",
 		"moduleResolution": "node",
+		"paths": {
+			"_/logging": ["./src/logging.ts"],
+			"_/storages/*": ["./src/storages/*"]
+		},
 		"skipLibCheck": true,
 		"target": "esnext",
 		"tsBuildInfoFile": "temp/tsconfig.workers.tsbuildinfo"
 	},
 	"extends": "@workspace/tsconfig/code-quality",
 	"exclude": ["node_modules"],
-	"include": ["src/workers/*.ts"]
+	"include": [
+		"src/binance/*.ts",
+		"src/esbuild/EnvironmentVariables.ts",
+		"src/esbuild/definitions.ts",
+		"src/esbuild/environmentVariableNames.ts",
+		"src/esbuild/errors.ts",
+		"src/logging.ts",
+		"src/storages/IndexedDB.ts",
+		"src/storages/binanceDB.ts",
+		"src/types/global.d.ts",
+		"src/workers/*.ts"
+	]
 }

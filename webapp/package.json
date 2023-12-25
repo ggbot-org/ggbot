@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npm run generate_public_files",
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit --project . && tsc --noEmit --project ./tsconfig.scripts.json && tsc --noEmit --project ./tsconfig.workers.json",
     "cleanup": "rm -rf temp/ public/main.css public/*.js public/*.html public/admin/ public/design public/user",
     "compile_translations": "npm run formatjs:compile:en",
     "deploy": "sh src/scripts/deploy.sh",
