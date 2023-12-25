@@ -1,4 +1,7 @@
-import { BinanceExchangeInfoCacheMap } from "@workspace/binance"
+import {
+	BinanceExchangeInfoCacheMap,
+	BinanceKlinesCacheMap
+} from "@workspace/binance"
 import {
 	appendAccountDailyOrders,
 	appendStrategyDailyBalanceChanges,
@@ -19,13 +22,14 @@ import {
 	ErrorStrategyItemNotFound,
 	newOrder,
 	StrategyKind,
-	StrategyScheduling
-} from "@workspace/models"
+	StrategyScheduling} from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "./binance.js"
 
+const ONE_WEEK = 604_800_000
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
+const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
 
 export const executeBinanceStrategy = async (
 	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
@@ -57,6 +61,7 @@ export const executeBinanceStrategy = async (
 	const { apiKey, apiSecret } = binanceApiConfig
 	const binance = new Binance(apiKey, apiSecret)
 	binance.publicClient.exchangeInfoCache = exchangeInfoCache
+	binance.publicClient.klinesCache = klinesCache
 
 	// Truncate logical time to minute. It is a good compromise also to
 	// cache klines data.
