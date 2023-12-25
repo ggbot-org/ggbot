@@ -28,11 +28,9 @@ import { ENV } from "@workspace/env"
  */
 export class Binance implements DflowBinanceClient {
 	readonly privateClient: BinanceClient
-	readonly publicClient: BinanceExchange
+	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
 	constructor(apiKey: string, apiSecret: string) {
-		this.publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
-
 		this.privateClient = new BinanceClient(
 			apiKey,
 			apiSecret,

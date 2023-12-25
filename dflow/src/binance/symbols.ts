@@ -1,14 +1,10 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
-import { DflowGraph, DflowId } from "dflow"
-import { FlowViewSerializableGraph } from "flow-view"
-import { MaybeObject, objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import {
 	DflowBinanceKlineInterval,
-	dflowBinanceKlineIntervals,
 	isDflowBinanceKlineInterval
 } from "./klineIntervals.js"
-import { Candles } from "./nodes/market.js"
 
 export type DflowBinanceSymbolInfo = Pick<
 	BinanceSymbolInfo,
@@ -65,7 +61,7 @@ export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
 			})
 		)
 
-const dflowBinanceSymbolSeparator = "/"
+export const dflowBinanceSymbolSeparator = "/"
 
 export const getDflowBinanceNodeSymbolKind = ({
 	baseAsset,
@@ -73,83 +69,14 @@ export const getDflowBinanceNodeSymbolKind = ({
 }: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
 	[baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
 
-type DflowBinanceSymbolAndInterval = {
+export type DflowBinanceSymbolAndInterval = {
 	symbol: string
 	interval: DflowBinanceKlineInterval
 }
 
-const isDflowBinanceSymbolAndInterval =
+export const isDflowBinanceSymbolAndInterval =
 	objectTypeGuard<DflowBinanceSymbolAndInterval>(({ symbol, interval }) => {
 		if (typeof symbol !== "string") return false
 		if (!isDflowBinanceKlineInterval(interval)) return false
 		return true
 	})
-
-// TODO it checks Candles nodes, should also check (add testss too) price nodes.
-export const extractBinanceFlowSymbolsAndIntervalsFromFlow = (
-	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: FlowViewSerializableGraph
-): DflowBinanceSymbolAndInterval[] => {
-	const symbols = binanceSymbols.map(({ symbol }) => symbol)
-	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
-	const nodeConnections: Array<{ sourceId: DflowId; targetId: DflowId }> =
-		flow.edges.map((edge) => ({
-			sourceId: edge.from[0],
-			targetId: edge.to[0]
-		}))
-	for (const node of flow.nodes) {
-		if (node.text === Candles.kind) {
-			const parentNodeIds = DflowGraph.parentsOfNodeId(
-				node.id,
-				nodeConnections
-			)
-			const maybeSymbolAndInterval: MaybeObject<DflowBinanceSymbolAndInterval> =
-				{
-					symbol: undefined,
-					interval: undefined
-				}
-			for (const parentNodeId of parentNodeIds) {
-				const node = flow.nodes.find(({ id }) => id === parentNodeId)
-				if (!node) continue
-				if (isDflowBinanceKlineInterval(node.text)) {
-					maybeSymbolAndInterval.interval = node.text
-					continue
-				} else {
-					const maybeSymbol = node.text
-						.split(dflowBinanceSymbolSeparator)
-						.join("")
-					if (symbols.includes(maybeSymbol))
-						maybeSymbolAndInterval.symbol = maybeSymbol
-				}
-			}
-			if (isDflowBinanceSymbolAndInterval(maybeSymbolAndInterval)) {
-				symbolsAndIntervals.push(maybeSymbolAndInterval)
-			}
-		}
-	}
-	return symbolsAndIntervals
-		.filter(
-			// Remove duplicates.
-			({ symbol, interval }, index, array) =>
-				index ===
-				array.findIndex(
-					(element) =>
-						element.symbol === symbol &&
-						element.interval === interval
-				)
-		)
-		.sort(
-			// Sort by symbol and interval.
-			(
-				{ symbol: symbolA, interval: intervalA },
-				{ symbol: symbolB, interval: intervalB }
-			) => {
-				if (symbolA > symbolB) return 1
-				if (symbolA < symbolB) return -1
-				return dflowBinanceKlineIntervals.indexOf(intervalA) >
-					dflowBinanceKlineIntervals.indexOf(intervalB)
-					? 1
-					: -1
-			}
-		)
-}

@@ -1,3 +1,4 @@
+import { classNames } from "_/classNames"
 import { stringMaxLength } from "@workspace/models"
 import { FC, ReactNode, useId } from "react"
 import { Control, ControlProps, Field, Help, Input, InputProps } from "trunx"
@@ -14,6 +15,8 @@ export const InputField: FC<InputFieldProps> = ({
 	color,
 	help,
 	isLoading,
+	readOnly,
+	isStatic,
 	label,
 	type,
 	...props
@@ -26,8 +29,11 @@ export const InputField: FC<InputFieldProps> = ({
 
 			<Control isLoading={isLoading}>
 				<Input
+					className={classNames({ "InputField--isStatic": isStatic })}
 					id={id}
 					color={color}
+					readOnly={readOnly || isStatic}
+					isStatic={isStatic}
 					maxLength={type === "text" ? stringMaxLength : undefined}
 					type={type}
 					{...props}

@@ -25,11 +25,6 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 				</Title>
 
 				<Progress />
-
-				<FormattedMessage
-					id="BacktestingProgress.waiting"
-					values={progress}
-				/>
 			</Box>
 		)
 
@@ -41,11 +36,6 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 
 			<Progress {...progress} />
 
-			<FormattedMessage
-				id="BacktestingProgress.intervals"
-				values={progress}
-			/>
-
 			<Flex direction="column" spacing={{ my: 2 }}>
 				<Flex>
 					<FormattedMessage
@@ -56,6 +46,13 @@ export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 						}}
 					/>
 				</Flex>
+
+				{progress.max ? (
+					<FormattedMessage
+						id="BacktestingProgress.intervals"
+						values={progress}
+					/>
+				) : null}
 
 				{currentTimestamp ? (
 					<Flex>

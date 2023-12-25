@@ -1,4 +1,5 @@
 // First of all import :root CSS variables.
+@import "./reset";
 @import "./root";
 
 // 1. Import bulma theme, colors and fonts first;
@@ -18,7 +19,9 @@
 @import "./bulma/overrides/tabs";
 
 @import "./components/Calendar";
+@import "./components/FlowMenu";
 @import "./components/FlowViewContainer";
+@import "./components/InputField";
 @import "./components/Modal";
 @import "./components/Page";
 @import "./components/ToastContainer";

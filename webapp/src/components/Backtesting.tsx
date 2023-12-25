@@ -29,7 +29,7 @@ export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
 
 	const { flowViewGraph } = useContext(StrategyFlowContext)
-	const { strategyKey } = useContext(StrategyContext)
+	const { strategyKey, strategyName } = useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
 
 	const {
@@ -102,10 +102,18 @@ export const Backtesting: FC = () => {
 			dayInterval,
 			flow: flowViewGraph,
 			frequency,
+			strategyName,
 			strategyKey,
 			type: "START"
 		})
-	}, [dispatch, flowViewGraph, dayInterval, frequency, strategyKey])
+	}, [
+		dayInterval,
+		dispatch,
+		flowViewGraph,
+		frequency,
+		strategyKey,
+		strategyName
+	])
 
 	const onClickPause = useCallback(() => {
 		dispatch({ type: "PAUSE" })

@@ -45,6 +45,10 @@ export class BacktestingSession implements BacktestingStatusController {
 		return true
 	}
 
+	get currentTimestamp(): Time | undefined {
+		return this.times[this.stepIndex]
+	}
+
 	get completionPercentage(): number {
 		if (this.times.length === 0) return 0
 		return Math.floor((100 * this.stepIndex) / this.times.length)

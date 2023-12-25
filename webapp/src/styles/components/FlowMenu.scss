@@ -1,0 +1,14 @@
+.FlowMenu {
+	max-height: 4rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: $size-5;
+
+	&__strategyName {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-inline: $size-6;
+	}
+}

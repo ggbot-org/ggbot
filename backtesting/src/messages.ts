@@ -67,6 +67,9 @@ export type BacktestingMessageOutData =
 	| (Pick<BacktestingSession, "balanceHistory" | "memory" | "orders"> & {
 			type: "UPDATED_RESULTS"
 	  })
-	| (Pick<BacktestingSession, "stepIndex" | "numSteps"> & {
+	| (Pick<
+			BacktestingSession,
+			"currentTimestamp" | "stepIndex" | "numSteps"
+	  > & {
 			type: "UPDATED_PROGRESS"
 	  })

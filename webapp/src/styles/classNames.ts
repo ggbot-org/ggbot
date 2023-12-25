@@ -4,10 +4,6 @@ import {
 	ClassNamesArg as _ClassNamesArg
 } from "trunx"
 
-type FlowViewContainerClassName = "FlowViewContainer"
-
-type DailyIntervalClassName = "DailyInterval"
-
 type CalendarClassName =
 	| "Calendar"
 	| "Calendar__body"
@@ -19,6 +15,14 @@ type CalendarClassName =
 	| "Calendar__cell--selected"
 	| "Calendar__cell--disabled"
 
+type DailyIntervalClassName = "DailyInterval"
+
+type FlowMenuClassName = "FlowMenu" | "FlowMenu__strategyName"
+
+type FlowViewContainerClassName = "FlowViewContainer"
+
+type InputFieldClassName = "InputField--isStatic"
+
 type ModalClassName = "Modal__content"
 
 type PageClassName = "Page" | "Page_content" | "Page_footer"
@@ -27,9 +31,11 @@ type ToastContainerClassName = "ToastContainer"
 
 type ClassName =
 	| BulmaClassName
-	| FlowViewContainerClassName
 	| CalendarClassName
 	| DailyIntervalClassName
+	| FlowMenuClassName
+	| FlowViewContainerClassName
+	| InputFieldClassName
 	| ModalClassName
 	| PageClassName
 	| ToastContainerClassName

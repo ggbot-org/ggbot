@@ -1,6 +1,9 @@
 import {
 	BinanceConnector,
 	BinanceExchange,
+	BinanceExchangeInfo,
+	BinanceKline,
+	BinanceKlineOptionalParameters,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
@@ -11,19 +14,34 @@ import { DflowBinanceClient, DflowBinanceKlineInterval } from "@workspace/dflow"
 import { div, mul } from "arithmetica"
 import { now, Time } from "minimal-time-helpers"
 
-export class BacktestingBinanceClient
-	extends BinanceExchange
-	implements DflowBinanceClient
-{
-	/** The session's scheduling `interval`. It is needed to manage cache. */
-	interval: DflowBinanceKlineInterval
+export class BacktestingBinanceClient implements DflowBinanceClient {
+	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
+	/** The `schedulingInterval` is needed to manage cache. */
+	schedulingInterval: DflowBinanceKlineInterval
 
 	/** The `time` used by simulated run. It is needed to manage cache. */
 	time: Time = now()
 
-	constructor(interval: BacktestingBinanceClient["interval"]) {
-		super(BinanceConnector.defaultBaseUrl)
-		this.interval = interval
+	constructor(
+		schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
+	) {
+		this.schedulingInterval = schedulingInterval
+	}
+
+	exchangeInfo(): Promise<BinanceExchangeInfo> {
+		return this.publicClient.exchangeInfo()
+	}
+
+	isBinanceSymbol(arg: unknown): Promise<boolean> {
+		return this.publicClient.isBinanceSymbol(arg)
+	}
+
+	klines(
+		symbol: string,
+		interval: DflowBinanceKlineInterval,
+		optionalParameters: BinanceKlineOptionalParameters
+	): Promise<BinanceKline[]> {
+		return this.publicClient.klines(symbol, interval, optionalParameters)
 	}
 
 	async newOrder(
@@ -32,7 +50,8 @@ export class BacktestingBinanceClient
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
-		const { options, symbol } = await super.prepareOrder(
+		const { publicClient: binance } = this
+		const { options, symbol } = await binance.prepareOrder(
 			symbolInput,
 			side,
 			type,
@@ -79,7 +98,12 @@ export class BacktestingBinanceClient
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		const { klinesCache: cache, interval, time } = this
+		const {
+			publicClient: binance,
+			schedulingInterval: interval,
+			time
+		} = this
+		const { klinesCache: cache } = binance
 		// Look for cached data.
 		if (cache) {
 			const kline = await cache.getKline(symbol, interval, time)
@@ -90,8 +114,8 @@ export class BacktestingBinanceClient
 					price: kline[1]
 				}
 		}
-		// If no data was found in cache, fetch it from Binance API.
-		const klines = await super.klines(symbol, interval, {
+		// // If no data was found in cache, fetch it from Binance API.
+		const klines = await binance.klines(symbol, interval, {
 			limit: 1,
 			endTime: time
 		})

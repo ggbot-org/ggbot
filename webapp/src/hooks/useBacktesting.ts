@@ -6,13 +6,7 @@ import {
 	BacktestingSession
 } from "@workspace/backtesting"
 import { everyOneHour, Frequency } from "@workspace/models"
-import {
-	Day,
-	DayInterval,
-	getDay,
-	Timestamp,
-	yesterday
-} from "minimal-time-helpers"
+import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
 import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
 
 import { ecmaScriptPath } from "../ecmaScripts"
@@ -26,9 +20,8 @@ type Action =
 
 type State = Pick<
 	BacktestingSession,
-	"balanceHistory" | "memory" | "orders" | "stepIndex"
+	"balanceHistory" | "currentTimestamp" | "memory" | "orders" | "stepIndex"
 > & {
-	currentTimestamp: Timestamp | undefined
 	dayInterval: DayInterval
 	frequency: Frequency
 	isPaused: boolean
@@ -113,10 +106,11 @@ export const useBacktesting = (): UseBacktestingOutput => {
 			}
 
 			if (actionType === "UPDATED_PROGRESS") {
-				const { numSteps, stepIndex } = action
+				const { currentTimestamp, numSteps, stepIndex } = action
 				info(actionType, { numSteps, stepIndex })
 				return {
 					...state,
+					currentTimestamp,
 					numSteps,
 					stepIndex
 				}

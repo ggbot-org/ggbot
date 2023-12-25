@@ -16,7 +16,8 @@ import {
 } from "@workspace/binance"
 import {
 	DflowBinanceExecutor,
-	extractBinanceFlowSymbolsAndIntervalsFromFlow,
+	extractBinanceSymbolsAndIntervalsFromFlowCandles,
+	extractsBinanceSymbolsFromTickerPriceAndOrderNodes,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import { newId } from "@workspace/models"
@@ -46,6 +47,7 @@ const updatedProgressMessage = (
 	session: BacktestingSession
 ): BacktestingMessageOutData => ({
 	type: "UPDATED_PROGRESS",
+	currentTimestamp: session.currentTimestamp,
 	stepIndex: session.stepIndex,
 	numSteps: session.numSteps
 })
@@ -87,21 +89,23 @@ const getStrategyFlow = (): BacktestingStrategy["flow"] => {
 	return flow
 }
 
-const prepareBinance = async (binance: BacktestingBinanceClient) => {
+const prepareBinance = async (
+	binance: BacktestingBinanceClient,
+	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
+) => {
 	const flow = getStrategyFlow()
 	const { symbols: binanceSymbols } = await binance.exchangeInfo()
 	binanceExecutor.nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
 
-	// Pre-fetch klines by extracted `symbolsAndIntervals` and given `session.times`.
-
-	const symbolsAndIntervals = extractBinanceFlowSymbolsAndIntervalsFromFlow(
-		binanceSymbols,
-		flow
-	)
-
 	const firstTime = session.times[0]
 	const lastTime = session.times[session.times.length - 1]
-	for (const { interval, symbol } of symbolsAndIntervals) {
+
+	// Pre-fetch klines for "candles" nodes.
+
+	const symbolsAndIntervalsFromCandlesNodes =
+		extractBinanceSymbolsAndIntervalsFromFlowCandles(binanceSymbols, flow)
+
+	for (const { interval, symbol } of symbolsAndIntervalsFromCandlesNodes) {
 		let startTime = firstTime
 		while (startTime < lastTime) {
 			const endTime = Math.min(
@@ -118,14 +122,37 @@ const prepareBinance = async (binance: BacktestingBinanceClient) => {
 		}
 	}
 
-	// Pre-fetch klines for `tickerPrice()` by given `session.frequency` and `session.times`.
-	// TODO
+	// Pre-fetch klines for "price" nodes.
+
+	const symbolsFromNodes = extractsBinanceSymbolsFromTickerPriceAndOrderNodes(
+		binanceSymbols,
+		flow
+	)
+
+	for (const symbol of symbolsFromNodes) {
+		let startTime = firstTime
+		while (startTime < lastTime) {
+			const endTime = Math.min(
+				lastTime,
+				getBinanceIntervalTime[schedulingInterval](startTime).plus(
+					binanceKlineMaxLimit
+				)
+			)
+			await binance.klines(symbol, schedulingInterval, {
+				startTime,
+				endTime
+			})
+			startTime = endTime
+		}
+	}
 }
 
-const getBinance = (interval: BacktestingBinanceClient["interval"]) => {
-	const binance = new BacktestingBinanceClient(interval)
-	binance.exchangeInfoCache = binanceExchangeInfoCache
-	binance.klinesCache = binanceKlinesCache
+const getBinance = (
+	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
+) => {
+	const binance = new BacktestingBinanceClient(schedulingInterval)
+	binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
+	binance.publicClient.klinesCache = binanceKlinesCache
 	return binance
 }
 
@@ -203,6 +230,7 @@ self.onmessage = async ({
 	if (messageType === "START") {
 		const { dayInterval, flow, frequency, strategyKey, strategyName } =
 			message
+		const { interval: schedulingInterval } = frequency
 		session.dayInterval = dayInterval
 		session.frequency = frequency
 		session.computeTimes()
@@ -223,8 +251,8 @@ self.onmessage = async ({
 		const { strategyKind } = strategyKey
 
 		if (strategyKind === "binance") {
-			const binance = getBinance(frequency.interval)
-			await prepareBinance(binance)
+			const binance = getBinance(schedulingInterval)
+			await prepareBinance(binance, schedulingInterval)
 			await runBinance(binance)
 		}
 
@@ -247,12 +275,12 @@ self.onmessage = async ({
 		const statusChanged = session.resume()
 		if (statusChanged) POST(statusChangedMessage(session))
 		const strategyKind = session.strategy?.strategyKey.strategyKind
-		const interval = session.frequency?.interval
-		if (!interval) return
+		const schedulingInterval = session.frequency?.interval
+		if (!schedulingInterval) return
 
 		if (strategyKind === "binance") {
-			const binance = getBinance(interval)
-			await prepareBinance(binance)
+			const binance = getBinance(schedulingInterval)
+			await prepareBinance(binance, schedulingInterval)
 			await runBinance(binance)
 		}
 
