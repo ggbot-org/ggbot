@@ -11,10 +11,9 @@ import {
 } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
+import { add, gt, lt, mul, neg, sub } from "@workspace/arithmetic"
 import { isBinanceOrderRespFULL } from "@workspace/binance"
 import { Order } from "@workspace/models"
-// TODO remove arithmetica, use workspace arithmetic or even better binanceArithmetic from dflow
-import { add, gt, lt, mul, neg, sub } from "arithmetica"
 import { DayInterval } from "minimal-time-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"

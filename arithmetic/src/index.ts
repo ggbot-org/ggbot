@@ -7,3 +7,4 @@ export {
 } from "./decimal.js"
 export { ErrorCannotDivideByZero } from "./errors.js"
 export { add, div, mul, sub } from "./operators.js"
+export { gt, lt, neg } from "arithmetica/float"

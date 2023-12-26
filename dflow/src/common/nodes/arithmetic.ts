@@ -10,54 +10,53 @@ import { DflowNode } from "dflow"
 
 const { input, output } = DflowNode
 
+const binaryOperatorInputs = [input("number"), input("number")]
+
 export class Addition extends DflowNode {
 	static kind = "add"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("number")]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const output: number = decimalToNumber(add(a, b))
-		this.output(0).data = output
+		this.output(0).data = decimalToNumber(add(a, b))
 	}
 }
 
 export class Subtraction extends DflowNode {
 	static kind = "sub"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("number")]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const output: number = decimalToNumber(sub(a, b))
-		this.output(0).data = output
+		this.output(0).data = decimalToNumber(sub(a, b))
 	}
 }
 
 export class Multiplication extends DflowNode {
 	static kind = "mul"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("number")]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const output: number = decimalToNumber(mul(a, b))
-		this.output(0).data = output
+		this.output(0).data = decimalToNumber(mul(a, b))
 	}
 }
 
 export class Division extends DflowNode {
 	static kind = "div"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("number")]
 	run() {
 		try {
 			const a = this.input(0).data as number
 			const b = this.input(1).data as number
-			const output: number = decimalToNumber(div(a, b))
-			this.output(0).data = output
+			this.output(0).data = decimalToNumber(div(a, b))
 		} catch (error) {
-			if (error instanceof ErrorCannotDivideByZero) return
+			if (error instanceof ErrorCannotDivideByZero)
+				return this.clearOutputs()
 			throw error
 		}
 	}
@@ -65,24 +64,22 @@ export class Division extends DflowNode {
 
 export class LessThan extends DflowNode {
 	static kind = "<"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("boolean")]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const output: boolean = a < b
-		this.output(0).data = output
+		this.output(0).data = a < b
 	}
 }
 
 export class GreaterThan extends DflowNode {
 	static kind = ">"
-	static inputs = [input("number"), input("number")]
+	static inputs = binaryOperatorInputs
 	static outputs = [output("boolean")]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const output: boolean = a > b
-		this.output(0).data = output
+		this.output(0).data = a > b
 	}
 }

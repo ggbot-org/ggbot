@@ -1,3 +1,4 @@
+// TODO is arithmetica package needed?
 import {
 	coerceToDecimal,
 	Decimal,

@@ -50,8 +50,11 @@ module.exports = {
 		"import/first": "error",
 		"import/newline-after-import": "error",
 		"import/no-cycle": "error",
-		"import/no-extraneous-dependencies": ["error"],
-		"import/no-internal-modules": ["error"],
+		"import/no-extraneous-dependencies": "error",
+		"import/no-internal-modules": [
+			"error",
+			{ allow: ["arithmetica/float"] }
+		],
 		"max-depth": ["error", 5],
 		"no-case-declarations": "error",
 		"no-console": ["error", { allow: ["error", "info", "warn"] }],

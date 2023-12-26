@@ -1,6 +1,8 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+// TODO use assertion helpers
+// import { assertEqual } from "minimal-assertion-helpers"
 import { isMaybeDecimal, numOfDecimals } from "./decimal.js"
 
 const validDecimals = [
@@ -25,8 +27,8 @@ const invalidDecimals = [
 	"1.2+e3"
 ]
 
-describe("Decimal", () => {
-	test('supports "Greater than" operator', () => {
+void describe("Decimal", () => {
+	void test('supports "Greater than" operator', () => {
 		[
 			{
 				input1: "0",
@@ -48,7 +50,7 @@ describe("Decimal", () => {
 		})
 	})
 
-	test('supports "Less than" operator', () => {
+	void test('supports "Less than" operator', () => {
 		[
 			{
 				input1: "1",
@@ -66,8 +68,8 @@ describe("Decimal", () => {
 	})
 })
 
-describe("isMaybeDecimal", () => {
-	test("checks that argument can be converted to Decimal", () => {
+void describe("isMaybeDecimal", () => {
+	void test("checks that argument can be converted to Decimal", () => {
 		const validArgs = [1, -1, ...validDecimals]
 		const invalidArgs = [...invalidDecimals]
 		;[
@@ -79,8 +81,8 @@ describe("isMaybeDecimal", () => {
 	})
 })
 
-describe("numOfDecimals", () => {
-	test("return number of digits in mantissa part", () => {
+void describe("numOfDecimals", () => {
+	void test("return number of digits in mantissa part", () => {
 		[
 			{ input: "0", output: 0 },
 			{ input: "0.0", output: 0 },
