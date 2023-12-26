@@ -16,12 +16,6 @@ export class DflowBinanceClientMock
 		return Promise.resolve(exchangeInfo)
 	}
 
-	async isBinanceSymbol(arg: unknown): Promise<boolean> {
-		return Promise.resolve(
-			exchangeInfo.symbols.find(({ symbol }) => arg === symbol) !== null
-		)
-	}
-
 	async klines(
 		_symbol: string,
 		_interval: BinanceKlineInterval,

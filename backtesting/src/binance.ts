@@ -1,3 +1,4 @@
+import { div, numOfDecimals } from "@workspace/arithmetic"
 import {
 	BinanceConnector,
 	BinanceExchange,
@@ -8,10 +9,13 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
+	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
 import { DflowBinanceClient, DflowBinanceKlineInterval } from "@workspace/dflow"
 import { now, Time } from "minimal-time-helpers"
+
+import { ErrorCannotCreateOrder } from "./errors.js"
 
 export class BacktestingBinanceClient implements DflowBinanceClient {
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
@@ -31,10 +35,6 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		return this.publicClient.exchangeInfo()
 	}
 
-	isBinanceSymbol(arg: unknown): Promise<boolean> {
-		return this.publicClient.isBinanceSymbol(arg)
-	}
-
 	klines(
 		symbol: string,
 		interval: DflowBinanceKlineInterval,
@@ -44,31 +44,23 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 	}
 
 	async newOrder(
-		symbolInput: string,
+		symbol: string,
 		side: BinanceOrderSide,
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
 		const { publicClient: binance } = this
-		const { options, symbol } = await binance.prepareOrder(
-			symbolInput,
-			side,
-			type,
-			orderOptions
-		)
+		const options = await binance.prepareOrder(symbol, type, orderOptions)
 		const { price } = await this.tickerPrice(symbol)
-		let quantity = options.quantity ?? "0"
-		const quoteOrderQty = Number(options.quoteOrderQty)
-		// TODO
-		// it was
-		// div(quoteOrderQty/price)
-		// why it does not work if quoteOrderQty is 0.1 ?
-		// it blocks everything
-		// TODO by the way if order is below 10 dollars it should not execute.
-		if (!isNaN(quoteOrderQty))
-			quantity = String(quoteOrderQty / Number(price))
+		const symbolInfo = await this.publicClient.symbolInfo(symbol)
+		if (!symbolInfo) throw new ErrorCannotCreateOrder()
 
-		const order: BinanceOrderRespFULL = {
+		const { quoteOrderQty } = options
+		let quantity = options.quantity ?? "0"
+		if (quoteOrderQty)
+			quantity = div(quoteOrderQty, price, numOfDecimals(price))
+
+		return {
 			clientOrderId: "",
 			cummulativeQuoteQty: "0",
 			executedQty: quantity,
@@ -92,8 +84,11 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 					tradeId: -1
 				}
 			]
-		}
-		return order
+		} satisfies BinanceOrderRespFULL
+	}
+
+	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
+		return this.publicClient.symbolInfo(symbol)
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {

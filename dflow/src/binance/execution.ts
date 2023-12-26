@@ -20,16 +20,21 @@ export const getBalancesFromExecutionSteps = (
 	for (const { side, type, symbol, executedQty, fills } of orders) {
 		const symbolInfo = binanceSymbols.find((info) => info.symbol === symbol)
 		if (!symbolInfo) continue
-		const { baseAsset, quoteAsset } = symbolInfo
+		const {
+			baseAsset,
+			baseAssetPrecision,
+			quoteAsset,
+			quoteAssetPrecision
+		} = symbolInfo
 		const baseBalance = balanceMap.get(symbol) ?? {
 			asset: baseAsset,
-			free: zero,
-			locked: zero
+			free: zero(baseAssetPrecision),
+			locked: zero(baseAssetPrecision)
 		}
 		const quoteBalance = balanceMap.get(symbol) ?? {
 			asset: quoteAsset,
-			free: zero,
-			locked: zero
+			free: zero(quoteAssetPrecision),
+			locked: zero(quoteAssetPrecision)
 		}
 		if (type === "MARKET") {
 			if (side === "BUY") {
@@ -48,8 +53,8 @@ export const getBalancesFromExecutionSteps = (
 		for (const { commission, commissionAsset, qty, price } of fills) {
 			const commissionBalance = balanceMap.get(commissionAsset) ?? {
 				asset: commissionAsset,
-				free: sub(zero, commission),
-				locked: zero
+				free: sub(zero(8), commission),
+				locked: zero(8)
 			}
 			if (type === "MARKET") {
 				const quoteQuantity = mul(qty, price)

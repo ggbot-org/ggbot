@@ -1,17 +1,11 @@
 import { isLiteralType } from "minimal-type-guard-helpers"
 
-import {
-	binanceKlineIntervals,
-	binanceOrderSides,
-	binanceOrderTypes
-} from "./constants.js"
+import { binanceKlineIntervals } from "./constants.js"
 import {
 	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
 	BinanceOrderRespFULL,
-	BinanceOrderSide,
-	BinanceOrderType,
 	BinanceSymbolFilterLotSize,
 	BinanceSymbolFilterMinNotional
 } from "./types.js"
@@ -73,12 +67,6 @@ export const isBinanceOrderRespFULL = (
 	if (!Array.isArray(fills)) return false
 	return fills.every((fill) => isBinanceFill(fill))
 }
-
-export const isBinanceOrderType =
-	isLiteralType<BinanceOrderType>(binanceOrderTypes)
-
-export const isBinanceOrderSide =
-	isLiteralType<BinanceOrderSide>(binanceOrderSides)
 
 export const isBinanceSymbolFilterLotSize = (
 	arg: unknown

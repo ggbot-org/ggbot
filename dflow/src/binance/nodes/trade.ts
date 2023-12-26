@@ -2,7 +2,6 @@ import { coerceToDecimal } from "@workspace/arithmetic"
 import { DflowNode, DflowOutputDefinition } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"
-import { dflowBinancePrecision } from "../arithmetic.js"
 import { DflowBinanceContext as Context } from "../context.js"
 
 const { input, output } = DflowNode
@@ -24,24 +23,27 @@ export class BuyMarket extends DflowNode {
 	static outputs = outputs
 	async run() {
 		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data as string
-		const quantity = this.input(1).data as number | undefined
-		const quoteOrderQty = this.input(2).data as number | undefined
-		const execute = this.input(3).data as boolean | undefined
-		if (!execute) return this.clearOutputs()
-		if (quantity === undefined && quoteOrderQty === undefined)
+		const symbol = this.input(0).data
+		const quantity = this.input(1).data
+		const quoteOrderQty = this.input(2).data
+		const execute = this.input(3).data
+		if (
+			typeof symbol !== "string" ||
+			(quantity === undefined && quoteOrderQty === undefined) ||
+			!execute
+		)
 			return this.clearOutputs()
-		const isBinanceSymbol = await binance.isBinanceSymbol(symbol)
-		if (!isBinanceSymbol) return this.clearOutputs()
+		const symbolInfo = await binance.symbolInfo(symbol)
+		if (!symbolInfo) return this.clearOutputs()
 		const order = await binance.newOrder(symbol, "BUY", "MARKET", {
 			quantity:
 				quantity === undefined
 					? undefined
-					: coerceToDecimal(quantity, dflowBinancePrecision),
+					: coerceToDecimal(quantity, symbolInfo.baseAssetPrecision),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: coerceToDecimal(quoteOrderQty, dflowBinancePrecision)
+					: coerceToDecimal(quoteOrderQty, symbolInfo.quotePrecision)
 		})
 		this.output(0).data = order
 	}
@@ -53,24 +55,27 @@ export class SellMarket extends DflowNode {
 	static outputs = outputs
 	async run() {
 		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data as string
-		const quantity = this.input(1).data as number | undefined
-		const quoteOrderQty = this.input(2).data as number | undefined
-		const execute = this.input(3).data as boolean | undefined
-		if (!execute) return this.clearOutputs()
-		if (quantity === undefined && quoteOrderQty === undefined)
+		const symbol = this.input(0).data
+		const quantity = this.input(1).data
+		const quoteOrderQty = this.input(2).data
+		const execute = this.input(3).data
+		if (
+			typeof symbol !== "string" ||
+			(quantity === undefined && quoteOrderQty === undefined) ||
+			!execute
+		)
 			return this.clearOutputs()
-		const isBinanceSymbol = await binance.isBinanceSymbol(symbol)
-		if (!isBinanceSymbol) return this.clearOutputs()
+		const symbolInfo = await binance.symbolInfo(symbol)
+		if (!symbolInfo) return this.clearOutputs()
 		const order = await binance.newOrder(symbol, "SELL", "MARKET", {
 			quantity:
 				quantity === undefined
 					? undefined
-					: coerceToDecimal(quantity, dflowBinancePrecision),
+					: coerceToDecimal(quantity, symbolInfo.baseAssetPrecision),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: coerceToDecimal(quoteOrderQty, dflowBinancePrecision)
+					: coerceToDecimal(quoteOrderQty, symbolInfo.quotePrecision)
 		})
 		this.output(0).data = order
 	}

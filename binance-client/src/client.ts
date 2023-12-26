@@ -119,9 +119,8 @@ export class BinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespFULL> {
-		const { options, symbol: _symbol } = await this.exchange.prepareOrder(
+		const options = await this.exchange.prepareOrder(
 			symbol,
-			side,
 			type,
 			orderOptions
 		)
@@ -129,7 +128,7 @@ export class BinanceClient {
 			"POST",
 			"/api/v3/order",
 			{
-				symbol: _symbol,
+				symbol,
 				side,
 				type,
 				...options
@@ -149,9 +148,8 @@ export class BinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespFULL> {
-		const { options, symbol: _symbol } = await this.exchange.prepareOrder(
+		const options = await this.exchange.prepareOrder(
 			symbol,
-			side,
 			type,
 			orderOptions
 		)
@@ -159,7 +157,7 @@ export class BinanceClient {
 			"POST",
 			"/api/v3/order/test",
 			{
-				symbol: _symbol,
+				symbol,
 				side,
 				type,
 				...options
@@ -178,9 +176,8 @@ export class BinanceClient {
 		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespACK> {
-		const { options, symbol: _symbol } = await this.exchange.prepareOrder(
+		const options = await this.exchange.prepareOrder(
 			symbol,
-			side,
 			type,
 			orderOptions
 		)
@@ -188,7 +185,7 @@ export class BinanceClient {
 			"POST",
 			"/api/v3/order",
 			{
-				symbol: _symbol,
+				symbol,
 				side,
 				type,
 				...options
@@ -208,9 +205,8 @@ export class BinanceClient {
 		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespACK> {
-		const { options, symbol: _symbol } = await this.exchange.prepareOrder(
+		const options = await this.exchange.prepareOrder(
 			symbol,
-			side,
 			type,
 			orderOptions
 		)
@@ -218,7 +214,7 @@ export class BinanceClient {
 			"POST",
 			"/api/v3/order/test",
 			{
-				symbol: _symbol,
+				symbol,
 				side,
 				type,
 				...options

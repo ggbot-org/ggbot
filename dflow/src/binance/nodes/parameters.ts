@@ -1,13 +1,8 @@
-import {
-	isNonEmptyString,
-	isSerializablePrimitive,
-	SerializablePrimitive
-} from "@workspace/models"
+import { isNonEmptyString } from "@workspace/models"
 import { DflowNode } from "dflow"
 
 import { inputKey } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
-import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 import {
 	inputInterval,
 	inputSymbol,
@@ -19,19 +14,15 @@ export class SymbolParameter extends DflowNode {
 	static kind = "symbolParameter"
 	static inputs = [inputKey, inputSymbol]
 	static outputs = [outputSymbol]
-	async run() {
-		const { binance, params } = this.host.context as Context
+	run() {
+		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isSerializablePrimitive(defaultValue))
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
 			return this.clearOutputs()
-		let value: SerializablePrimitive = defaultValue
-		if (key in params) {
-			const inputValue = params[key]
-			if (isSerializablePrimitive(inputValue)) value = inputValue
-		}
-		const isBinanceSymbol = await binance.isBinanceSymbol(value)
-		if (!isBinanceSymbol) return this.clearOutputs()
+		let value = defaultValue
+		const inputValue = params[key]
+		if (isNonEmptyString(inputValue)) value = inputValue
 		this.output(0).data = value
 	}
 }
@@ -44,14 +35,11 @@ export class IntervalParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isSerializablePrimitive(defaultValue))
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
 			return this.clearOutputs()
-		let value: SerializablePrimitive = defaultValue
-		if (key in params) {
-			const inputValue = params[key]
-			if (isSerializablePrimitive(inputValue)) value = inputValue
-		}
-		if (!isDflowBinanceKlineInterval(value)) return this.clearOutputs()
+		let value = defaultValue
+		const inputValue = params[key]
+		if (isNonEmptyString(inputValue)) value = inputValue
 		this.output(0).data = value
 	}
 }

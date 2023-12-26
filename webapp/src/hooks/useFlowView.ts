@@ -42,10 +42,6 @@ class BinanceClient
 	async exchangeInfo() {
 		return binance.exchangeInfo()
 	}
-
-	async isBinanceSymbol(arg: unknown) {
-		return binance.isBinanceSymbol(arg)
-	}
 }
 
 export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({

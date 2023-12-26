@@ -10,6 +10,7 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
+	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
 import { BinanceClient } from "@workspace/binance-client"
@@ -54,10 +55,6 @@ export class Binance implements DflowBinanceClient {
 		return await this.publicClient.exchangeInfo()
 	}
 
-	async isBinanceSymbol(arg: unknown): Promise<boolean> {
-		return await this.publicClient.isBinanceSymbol(arg)
-	}
-
 	async klines(
 		symbol: string,
 		interval: BinanceKlineInterval,
@@ -77,6 +74,10 @@ export class Binance implements DflowBinanceClient {
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespFULL> {
 		return this.privateClient.newOrder(symbol, side, type, orderOptions)
+	}
+
+	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
+		return this.publicClient.symbolInfo(symbol)
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {

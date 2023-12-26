@@ -7,8 +7,6 @@ import {
 export type BinanceExchangeInfoCacheProvider = {
 	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined>
 	setExchangeInfo(value: BinanceExchangeInfo): Promise<void>
-	getIsValidSymbol(symbol: string): Promise<boolean | undefined>
-	setIsValidSymbol(symbol: string, value: boolean): Promise<void>
 }
 
 export type BinanceKlinesCacheProvider = {

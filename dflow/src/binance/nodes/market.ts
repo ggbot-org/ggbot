@@ -1,9 +1,5 @@
 import { decimalToNumber } from "@workspace/arithmetic"
-import {
-	BinanceKline,
-	binanceKlineMaxLimit,
-	isBinanceKlineInterval
-} from "@workspace/binance"
+import { binanceKlineMaxLimit } from "@workspace/binance"
 import { Dflow, DflowNode } from "dflow"
 
 import {
@@ -38,21 +34,18 @@ export class Candles extends DflowNode {
 		const symbol = this.input(0).data as string
 		const interval = this.input(1).data as string
 		const count = this.input(2).data as number
-		const isBinanceSymbol = await binance.isBinanceSymbol(symbol)
 		if (
-			!isBinanceSymbol ||
-			!isBinanceKlineInterval(interval) ||
-			!isDflowBinanceKlineInterval(interval)
+			typeof symbol !== "string" ||
+			!isDflowBinanceKlineInterval(interval) ||
+			typeof count !== "number"
 		)
 			return this.clearOutputs()
 		const limit = Math.min(count, binanceKlineMaxLimit)
-		const data: BinanceKline[] = []
 		const klines = await binance.klines(symbol, interval, {
 			endTime: currentTime,
 			limit
 		})
-		data.push(...klines)
-		const { open, high, low, close, volume } = data.reduce<{
+		const { open, high, low, close, volume } = klines.reduce<{
 			open: number[]
 			high: number[]
 			low: number[]
@@ -88,9 +81,8 @@ export class TickerPrice extends DflowNode {
 	static outputs = [output("number", { name: "price" })]
 	async run() {
 		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data as string
-		const isBinanceSymbol = await binance.isBinanceSymbol(symbol)
-		if (!isBinanceSymbol) return this.clearOutputs()
+		const symbol = this.input(0).data
+		if (typeof symbol !== "string") return this.clearOutputs()
 		const data = await binance.tickerPrice(symbol)
 		const price = parseFloat(data.price)
 		if (Dflow.isNumber(price)) this.output(0).data = price

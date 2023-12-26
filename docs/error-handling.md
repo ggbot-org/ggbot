@@ -10,7 +10,6 @@ export class ErrorInvalidArg extends Error {
 	static message = "Invalid argument"
 	constructor() {
 		super(ErrorInvalidArg.message)
-		this.name = ErrorInvalidArg.errorName
 	}
 }
 ```

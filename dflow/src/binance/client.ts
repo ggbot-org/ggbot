@@ -6,6 +6,7 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
+	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
 
@@ -19,12 +20,12 @@ export interface DflowBinanceClient
 /** Binance Public API used by dflow binance nodes. */
 interface DflowBinanceClientPublic {
 	exchangeInfo(): Promise<BinanceExchangeInfo>
-	isBinanceSymbol(arg: unknown): Promise<boolean>
 	klines(
 		symbol: string,
 		interval: DflowBinanceKlineInterval,
 		optionalParameters: BinanceKlineOptionalParameters
 	): Promise<BinanceKline[]>
+	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined>
 	tickerPrice(symbol: string): Promise<BinanceTickerPrice>
 }
 
@@ -46,10 +47,6 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 			rateLimits: [],
 			symbols: []
 		})
-	}
-
-	isBinanceSymbol(_arg: unknown): Promise<boolean> {
-		return Promise.resolve(false)
 	}
 
 	klines(
@@ -90,6 +87,10 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 			transactTime: 0,
 			type
 		})
+	}
+
+	symbolInfo(_symbol: string): Promise<BinanceSymbolInfo | undefined> {
+		return Promise.resolve(undefined)
 	}
 
 	tickerPrice(symbol: string): Promise<BinanceTickerPrice> {

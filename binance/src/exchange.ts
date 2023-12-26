@@ -5,7 +5,6 @@ import {
 import { BinanceConnector } from "./connector.js"
 import {
 	ErrorBinanceCannotTradeSymbol,
-	ErrorBinanceInvalidArg,
 	ErrorBinanceInvalidOrderOptions,
 	ErrorBinanceSymbolFilter
 } from "./errors.js"
@@ -16,7 +15,6 @@ import {
 	minNotionalIsValid
 } from "./symbolFilters.js"
 import { getBinanceIntervalTime } from "./time.js"
-import { isBinanceOrderSide, isBinanceOrderType } from "./typeGuards.js"
 import {
 	BinanceAvgPrice,
 	BinanceExchangeInfo,
@@ -24,7 +22,6 @@ import {
 	BinanceKlineInterval,
 	BinanceKlineOptionalParameters,
 	BinanceNewOrderOptions,
-	BinanceOrderSide,
 	BinanceOrderType,
 	BinanceSymbolFilterLotSize,
 	BinanceSymbolFilterMinNotional,
@@ -96,25 +93,10 @@ export class BinanceExchange {
 	 */
 	async prepareOrder(
 		symbol: string,
-		side: BinanceOrderSide,
 		orderType: BinanceOrderType,
 		orderOptions: BinanceNewOrderOptions
-	): Promise<{ options: BinanceNewOrderOptions; symbol: string }> {
-		// TODO should be moved in binance-client package?
-		if (!isBinanceOrderSide(side))
-			throw new ErrorBinanceInvalidArg({ arg: side, type: "orderSide" })
-		if (!isBinanceOrderType(orderType))
-			throw new ErrorBinanceInvalidArg({
-				arg: orderType,
-				type: "orderType"
-			})
+	): Promise<BinanceNewOrderOptions> {
 		const symbolInfo = await this.symbolInfo(symbol)
-		// TODO
-		// this.canTradeSymbol should be optional here or it should be done by the caller
-		// otherwise we need to cache too much data in exchangeInfoCache
-		// if (!symbolInfo || !this.canTradeSymbol(symbol, orderType))
-		// 	throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
-
 		if (!symbolInfo)
 			throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
 
@@ -219,18 +201,16 @@ export class BinanceExchange {
 			}
 		}
 
-		return { symbol, options: prepareOptions[orderType]() }
+		return prepareOptions[orderType]()
 	}
+
 	/**
 	 * Current average price for a symbol.
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
 	 */
-	async avgPrice(symbol: string): Promise<BinanceAvgPrice> {
-		const isSymbol = await this.isBinanceSymbol(symbol)
-		if (!isSymbol)
-			throw new ErrorBinanceInvalidArg({ arg: symbol, type: "symbol" })
-		return await this.connector.request<BinanceAvgPrice>(
+	avgPrice(symbol: string): Promise<BinanceAvgPrice> {
+		return this.connector.request<BinanceAvgPrice>(
 			"GET",
 			"/api/v3/avgPrice",
 			{ symbol }
@@ -242,16 +222,11 @@ export class BinanceExchange {
 		symbol: string,
 		orderType: BinanceOrderType
 	): Promise<boolean> {
-		try {
-			const symbolInfo = await this.symbolInfo(symbol)
-			if (!symbolInfo) return false
-			if (!symbolInfo.orderTypes.includes(orderType)) return false
-			if (!symbolInfo.permissions.includes("SPOT")) return false
-			return symbolInfo.status === "TRADING"
-		} catch (error) {
-			if (error instanceof ErrorBinanceInvalidArg) return false
-			throw error
-		}
+		const symbolInfo = await this.symbolInfo(symbol)
+		if (!symbolInfo) return false
+		if (!symbolInfo.orderTypes.includes(orderType)) return false
+		if (!symbolInfo.permissions.includes("SPOT")) return false
+		return symbolInfo.status === "TRADING"
 	}
 
 	/**
@@ -269,19 +244,6 @@ export class BinanceExchange {
 		)
 		await cache?.setExchangeInfo(data)
 		return data
-	}
-
-	async isBinanceSymbol(arg: unknown): Promise<boolean> {
-		if (typeof arg !== "string") return false
-		// All symbols in Binance are in uppercase.
-		if (arg.toUpperCase() !== arg) return false
-		const { exchangeInfoCache: cache } = this
-		const cached = await cache?.getIsValidSymbol(arg)
-		if (cached) return cached
-		const { symbols } = await this.exchangeInfo()
-		const isValid = symbols.findIndex(({ symbol }) => arg === symbol) !== -1
-		await cache?.setIsValidSymbol(arg, isValid)
-		return isValid
 	}
 
 	/**
@@ -363,8 +325,7 @@ export class BinanceExchange {
 	/** Get `BinanceSymbolInfo` for `symbol`, if any. */
 	async symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {
 		const { symbols } = await this.exchangeInfo()
-		const symbolInfo = symbols.find((info) => info.symbol === symbol)
-		return symbolInfo
+		return symbols.find((info) => info.symbol === symbol)
 	}
 
 	/**
