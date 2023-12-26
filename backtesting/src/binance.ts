@@ -1,4 +1,4 @@
-import { div, numOfDecimals } from "@workspace/arithmetic"
+import { div } from "@workspace/arithmetic"
 import {
 	BinanceConnector,
 	BinanceExchange,
@@ -12,7 +12,11 @@ import {
 	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
-import { DflowBinanceClient, DflowBinanceKlineInterval } from "@workspace/dflow"
+import {
+	DflowBinanceClient,
+	DflowBinanceKlineInterval,
+	dflowBinanceZero
+} from "@workspace/dflow"
 import { now, Time } from "minimal-time-helpers"
 
 import { ErrorCannotCreateOrder } from "./errors.js"
@@ -55,10 +59,11 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		if (!symbolInfo) throw new ErrorCannotCreateOrder()
 
+		const { baseAssetPrecision, quoteAssetPrecision } = symbolInfo
 		const { quoteOrderQty } = options
-		let quantity = options.quantity ?? "0"
+		let quantity = options.quantity ?? dflowBinanceZero(baseAssetPrecision)
 		if (quoteOrderQty)
-			quantity = div(quoteOrderQty, price, numOfDecimals(price))
+			quantity = div(quoteOrderQty, price, quoteAssetPrecision)
 
 		return {
 			clientOrderId: "",

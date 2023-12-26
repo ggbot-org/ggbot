@@ -1,3 +1,4 @@
+export { dflowBinanceZero } from "./binance/arithmetic.js"
 export type { DflowBinanceClient } from "./binance/client.js"
 export { DflowBinanceClientDummy } from "./binance/client.js"
 export { DflowBinanceExecutor } from "./binance/executor.js"

@@ -11,16 +11,42 @@ import {
 } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { add, gt, lt, mul, neg, sub } from "@workspace/arithmetic"
-import { isBinanceOrderRespFULL } from "@workspace/binance"
+import {
+	add,
+	decimalToNumber,
+	gt,
+	lt,
+	mul,
+	neg,
+	sub
+} from "@workspace/arithmetic"
+import { BinanceFill, isBinanceFill } from "@workspace/binance"
+import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { Order } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { FC, Fragment, PropsWithChildren, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
 	dayInterval: DayInterval | undefined
 	orders: Order[]
+}
+
+const symbolInfoMap = new Map<string, DflowBinanceSymbolInfo>()
+// Get `symbolInfo` from cache map or look for it in `binanceSymbols`.
+const getSymbolInfo = (
+	symbol: string,
+	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
+) => {
+	const hasSymbolInfo = symbolInfoMap.has(symbol)
+	const symbolInfo = hasSymbolInfo
+		? symbolInfoMap.get(symbol)
+		: binanceSymbols?.find(
+				(binanceSymbol) => binanceSymbol.symbol === symbol
+		  )
+	if (!hasSymbolInfo && symbolInfo) symbolInfoMap.set(symbol, symbolInfo)
+	return symbolInfo
 }
 
 const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
@@ -78,7 +104,21 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 
 	if (strategyKind === "binance") {
 		for (const { info } of orders) {
-			if (isBinanceOrderRespFULL(info)) {
+			if (
+				objectTypeGuard<{
+					fills: unknown[]
+					side: string
+					status: string
+					symbol: string
+					type: string
+				}>(
+					({ fills, side, status, symbol, type }) =>
+						Array.isArray(fills) &&
+						[side, status, symbol, type].every(
+							(item) => typeof item === "string"
+						)
+				)(info)
+			) {
 				if (info.status !== "FILLED") continue
 				if (info.type !== "MARKET") continue
 				const { fills, side, symbol } = info
@@ -91,6 +131,8 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 				} else {
 					numSells === undefined ? (numSells = 1) : numSells++
 				}
+
+				if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
 
 				for (const {
 					commission,
@@ -204,33 +246,40 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 				})
 			)
 				.map(({ symbol, ...rest }) => {
-					const binanceSymbol = binanceSymbols?.find(
-						(binanceSymbol) => binanceSymbol.symbol === symbol
-					)
-					if (binanceSymbol) {
-						const { baseAsset, quoteAsset } = binanceSymbol
-						return {
-							baseAsset,
-							quoteAsset,
-							symbol,
-							...rest
-						}
-					} else {
+					const symbolInfo = getSymbolInfo(symbol, binanceSymbols)
+					if (!symbolInfo)
 						return {
 							baseAsset: "",
+							baseAssetPrecision: undefined,
 							quoteAsset: "",
+							quoteAssetPrecision: undefined,
 							symbol,
 							...rest
 						}
+					const {
+						baseAsset,
+						baseAssetPrecision,
+						quoteAsset,
+						quoteAssetPrecision
+					} = symbolInfo
+					return {
+						baseAsset,
+						baseAssetPrecision,
+						quoteAsset,
+						quoteAssetPrecision,
+						symbol,
+						...rest
 					}
 				})
 				.map(
 					({
 						baseAsset,
+						baseAssetPrecision,
 						baseQuantity,
 						maxPrice,
 						minPrice,
 						quoteAsset,
+						quoteAssetPrecision,
 						quoteQuantity,
 						symbol
 					}) => (
@@ -247,7 +296,10 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 										</_Label>
 
 										<_Value size="large">
-											{baseQuantity}
+											{decimalToNumber(
+												baseQuantity,
+												baseAssetPrecision
+											)}
 										</_Value>
 									</div>
 								</LevelItem>
@@ -259,7 +311,10 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 										</_Label>
 
 										<_Value size="large">
-											{quoteQuantity}
+											{decimalToNumber(
+												quoteQuantity,
+												quoteAssetPrecision
+											)}
 										</_Value>
 									</div>
 								</LevelItem>
@@ -272,7 +327,12 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 											<FormattedMessage id="ProfitSummary.minPrice" />
 										</_Label>
 
-										<_Value>{minPrice}</_Value>
+										<_Value>
+											{decimalToNumber(
+												minPrice,
+												quoteAssetPrecision
+											)}
+										</_Value>
 									</div>
 								</LevelItem>
 
@@ -282,7 +342,12 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 											<FormattedMessage id="ProfitSummary.maxPrice" />
 										</_Label>
 
-										<_Value>{maxPrice}</_Value>
+										<_Value>
+											{decimalToNumber(
+												maxPrice,
+												quoteAssetPrecision
+											)}
+										</_Value>
 									</div>
 								</LevelItem>
 							</Level>

@@ -15,7 +15,7 @@ import {
 const isStringyNumber = (arg: unknown): boolean =>
 	typeof arg === "string" && !isNaN(Number(arg))
 
-const isBinanceFill = (arg: unknown): arg is BinanceFill => {
+export const isBinanceFill = (arg: unknown): arg is BinanceFill => {
 	if (typeof arg !== "object" || arg === null) return false
 	const { price, qty, commission, commissionAsset } =
 		arg as Partial<BinanceFill>
