@@ -32,10 +32,6 @@ export class ErrorBinanceHTTP extends Error {
 	}
 
 	toJSON() {
-		return this.toValue()
-	}
-
-	toValue() {
 		return {
 			name: ErrorBinanceHTTP.errorName,
 			info: {

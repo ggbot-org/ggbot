@@ -22,9 +22,6 @@ export class ErrorAccountItemNotFound extends Error {
 		return `${type} not found, accountId=${accountId}`
 	}
 	toJSON() {
-		return this.toValue()
-	}
-	toValue() {
 		return {
 			name: ErrorAccountItemNotFound.errorName,
 			info: {
@@ -46,9 +43,6 @@ export class ErrorExceededQuota extends Error {
 		return `${type} quota exceeded`
 	}
 	toJSON() {
-		return this.toValue()
-	}
-	toValue() {
 		return {
 			name: ErrorExceededQuota.errorName,
 			info: {
@@ -148,9 +142,6 @@ export class ErrorUnimplementedStrategyKind extends Error {
 		return `Unimplemented strategyKind ${strategyKind}`
 	}
 	toJSON() {
-		return this.toValue()
-	}
-	toValue() {
 		return {
 			name: ErrorUnimplementedStrategyKind.errorName,
 			info: {

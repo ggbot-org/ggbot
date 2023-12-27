@@ -56,7 +56,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			error instanceof ErrorExceededQuota ||
 			error instanceof ErrorUnimplementedStrategyKind
 		)
-			return BAD_REQUEST(error.toValue())
+			return BAD_REQUEST(error.toJSON())
 		// Fallback to print error if not handled.
 		if (error instanceof Error) warn(error.message)
 		else warn(error)

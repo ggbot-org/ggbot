@@ -100,7 +100,7 @@ export class ErrorHTTP extends Error {
 	}: Pick<Response, "status" | "statusText" | "url">) {
 		return `Server responded with status=${status} statusText=${statusText} on URL=${url}`
 	}
-	toValue() {
+	toJSON() {
 		return {
 			name: ErrorHTTP.errorName,
 			info: {
@@ -154,8 +154,7 @@ was created in the same JavaScript context that catches it. This could be not
 the case, not only in client-server model but also when using threads (e.g. _Web
 Workers_).
 An error should also be serializable into JSON, in the following example the
-`toValue()` method return something that can be serialized; furthermore a `toJSON()`
-method is defined, it will be internally called by `JSON.stringify`.
+`toJSON()` method return something that can be serialized; it will be internally called by `JSON.stringify`.
 
 ```ts
 export class MyError extends Error {
@@ -186,10 +185,6 @@ export class MyError extends Error {
 	}
 
 	toJSON() {
-		return this.toValue()
-	}
-
-	toValue() {
 		return {
 			name: MyError.errorName,
 			data: {
