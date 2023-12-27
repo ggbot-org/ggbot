@@ -1,4 +1,4 @@
-import { DflowErrorItemNotFound, DflowHost } from "dflow"
+import { DflowData, DflowErrorItemNotFound, DflowHost } from "dflow"
 
 import { DflowExecutorView } from "./executor.js"
 import { NodeTextToDflowKind } from "./nodeResolution.js"
@@ -55,7 +55,7 @@ export const load = ({
 					throw new Error(`Data node has no out nodeId=${id}`)
 				}
 				try {
-					const data = JSON.parse(text)
+					const data = JSON.parse(text) as DflowData
 					dflow.newNode({
 						id,
 						kind: type,
@@ -72,12 +72,16 @@ export const load = ({
 			default: {
 				if (nodeKinds.includes(text)) {
 					const NodeClass = dflow.nodesCatalog[text]
-					// Start from inputs and outputs definitions and add them correponding id found in view.
+					// Start from inputs and outputs definitions and add them correponding `id` found in view.
+					// Notice that input or output `id` could be missing,
+					// for example if a new input or output was added to
+					// the node and the view was created before the node
+					// got that input or output.
 					const inputs = NodeClass.inputs?.map((_, index) => ({
-						id: ins?.[index].id
+						id: ins?.[index]?.id
 					}))
 					const outputs = NodeClass.outputs?.map((_, index) => ({
-						id: outs?.[index].id
+						id: outs?.[index]?.id
 					}))
 					dflow.newNode({
 						id,
