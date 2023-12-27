@@ -11,6 +11,7 @@ import {
 	LevelItem,
 	Title
 } from "_/components/library"
+import { Memory } from "_/components/Memory"
 import {
 	SchedulingItem,
 	SchedulingItemProps
@@ -282,18 +283,26 @@ export const Schedulings: FC = () => {
 				</Column>
 
 				{schedulingItems.map((scheduling) => (
-					<Column key={scheduling.id} isNarrow>
-						<SchedulingItem
-							scheduling={scheduling}
-							setFrequency={setSchedulingItemFrequency(
-								scheduling.id
-							)}
-							setStatus={setSchedulingItemStatus(scheduling.id)}
-							removeScheduling={removeSchedulingItem(
-								scheduling.id
-							)}
-						/>
-					</Column>
+					<>
+						<Column key={scheduling.id} isNarrow>
+							<SchedulingItem
+								scheduling={scheduling}
+								setFrequency={setSchedulingItemFrequency(
+									scheduling.id
+								)}
+								setStatus={setSchedulingItemStatus(
+									scheduling.id
+								)}
+								removeScheduling={removeSchedulingItem(
+									scheduling.id
+								)}
+							/>
+						</Column>
+
+						<Column size="one-third">
+							<Memory memory={scheduling.memory} />
+						</Column>
+					</>
 				))}
 			</Columns>
 

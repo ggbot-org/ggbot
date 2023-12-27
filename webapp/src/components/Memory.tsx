@@ -11,9 +11,8 @@ export const Memory: FC<Props> = ({ memory }) => {
 	const memoryItems: MemoryItemProps[] = []
 
 	if (memory)
-		for (const [key, value] of Object.entries(memory)) {
+		for (const [key, value] of Object.entries(memory))
 			memoryItems.push({ name: key, value })
-		}
 
 	return (
 		<Box>
