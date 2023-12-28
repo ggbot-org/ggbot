@@ -8,6 +8,7 @@ import {
 } from "./nodes/arithmetic.js"
 import { Pop, Push, Shift } from "./nodes/array.js"
 import { If } from "./nodes/conditional.js"
+import { DeltaPercentage } from "./nodes/deltaPercentage.js"
 import { BollingerBands } from "./nodes/indicators/bollingerBands.js"
 import { HeikinAshi } from "./nodes/indicators/candles.js"
 import { CrossOver } from "./nodes/indicators/cross.js"
@@ -50,6 +51,8 @@ export const nodesCatalog = {
 	[Push.kind]: Push,
 	// conditional
 	[If.kind]: If,
+	// deltaPercentage
+	[DeltaPercentage.kind]: DeltaPercentage,
 	// cross
 	[CrossOver.kind]: CrossOver,
 	// logic
