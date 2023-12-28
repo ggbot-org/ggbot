@@ -24,6 +24,31 @@ export const cachedBoolean = (
 	}
 })
 
+export const cachedObject = <Data>(
+	storage: WebStorageProvider,
+	key: string
+): ManagedCacheProvider<Data> => ({
+	get: () => {
+		const value = storage.getItem(key)
+		if (typeof value !== "string") return undefined
+		try {
+			return JSON.parse(value) as Data
+		} catch (error) {
+			if (error instanceof SyntaxError) {
+				storage.removeItem(key)
+				return
+			}
+			throw error
+		}
+	},
+	set: (value: Data) => {
+		storage.setItem(key, JSON.stringify(value))
+	},
+	delete: () => {
+		storage.removeItem(key)
+	}
+})
+
 const itemKeys = [
 	"activeTabId",
 	"authToken",

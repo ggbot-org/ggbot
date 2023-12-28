@@ -42,16 +42,16 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const refetchStrategy = useCallback(() => {
 		if (!strategyKey) return
-		localWebStorage.strategy.delete(strategyKey.strategyId)
+		localWebStorage.strategy(strategyKey.strategyId).delete()
 		READ.reset()
 	}, [READ, strategyKey])
 
 	const strategy = useMemo<ContextValue["strategy"]>(() => {
 		if (!strategyKey) return undefined
 		if (remoteStrategy) return remoteStrategy
-		const localStrategy = localWebStorage.strategy.get(
-			strategyKey.strategyId
-		)
+		const localStrategy = localWebStorage
+			.strategy(strategyKey.strategyId)
+			.get()
 		if (localStrategy) return localStrategy
 	}, [remoteStrategy, strategyKey])
 
@@ -78,9 +78,11 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	// Cache strategy.
 	useEffect(() => {
 		if (!strategyKey) return
-		if (remoteStrategy) localWebStorage.strategy.set(remoteStrategy)
+		const { strategyId } = strategyKey
+		if (remoteStrategy)
+			localWebStorage.strategy(strategyId).set(remoteStrategy)
 		if (remoteStrategy === null)
-			localWebStorage.strategy.delete(strategyKey.strategyId)
+			localWebStorage.strategy(strategyId).delete()
 	}, [remoteStrategy, strategyKey])
 
 	if (!strategyKey)

@@ -13,7 +13,7 @@ import {
 	Title
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
-import { FC, useCallback, useContext, useMemo } from "react"
+import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthExitProps = {
@@ -28,12 +28,7 @@ export const AuthExit: FC<AuthExitProps> = ({
 	exit
 }) => {
 	// TODO can I get `exit` from context here? Instead of a prop (looks duplicated)
-	const { account } = useContext(AuthenticationContext)
-
-	const { accountId, email } = useMemo(() => {
-		if (!account) return { accountId: "", email: "" }
-		return { accountId: account.id, email: account.email }
-	}, [account])
+	const { accountId, accountEmail } = useContext(AuthenticationContext)
 
 	const onSubmit = useCallback<FormOnSubmit>(
 		(event) => {
@@ -64,7 +59,7 @@ export const AuthExit: FC<AuthExitProps> = ({
 
 				<Columns>
 					<Column size="half">
-						<Email isStatic value={email} />
+						<Email isStatic value={accountEmail} />
 					</Column>
 
 					<Column size="half">

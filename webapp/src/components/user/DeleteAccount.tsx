@@ -9,14 +9,19 @@ import {
 	Modal,
 	ModalProps
 } from "_/components/library"
+import { AuthenticationContext } from "_/contexts/Authentication"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const DeleteAccount: FC = () => {
 	const color: MainColor = "danger"
 
 	const { formatMessage } = useIntl()
+
+	const { accountId } = useContext(AuthenticationContext)
+
+	const disabled = accountId === undefined
 
 	const DELETE = useUserApi.DeleteAccount()
 	const isLoading = DELETE.isPending
@@ -54,7 +59,7 @@ export const DeleteAccount: FC = () => {
 
 	return (
 		<>
-			<Button color={color} onClick={openModal}>
+			<Button color={color} onClick={openModal} disabled={disabled}>
 				<FormattedMessage id="DeleteAccount.button" />
 			</Button>
 

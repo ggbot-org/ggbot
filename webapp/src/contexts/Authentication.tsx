@@ -1,15 +1,14 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
-import { Navigation } from "_/components/Navigation"
 import { useUserApi } from "_/hooks/useUserApi"
 import { logging } from "_/logging"
 import { href } from "_/routing/public/hrefs"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { AccountInfo, EmailAddress, Subscription } from "@workspace/models"
-import { now, Time } from "minimal-time-helpers"
+import { EmailAddress, isAdminAccount, Subscription } from "@workspace/models"
+import { Time } from "minimal-time-helpers"
 import {
 	createContext,
 	FC,
@@ -27,7 +26,6 @@ type State = {
 	exited: boolean
 	token: string | undefined
 	verified?: boolean | undefined
-	startSession: Time
 }
 
 type Action =
@@ -44,9 +42,10 @@ type Action =
 	| { type: "RESET_TOKEN" }
 
 type ContextValue = {
-	account: AccountInfo | null | undefined
 	accountId: string
+	accountIsAdmin: boolean | undefined
 	accountEmail: string
+	accountWhenCreated: Time | undefined
 	subscription: Subscription | null | undefined
 	showAuthExit: () => void
 }
@@ -54,9 +53,10 @@ type ContextValue = {
 const { info } = logging("authentication")
 
 export const AuthenticationContext = createContext<ContextValue>({
-	account: undefined,
 	accountId: "",
+	accountIsAdmin: undefined,
 	accountEmail: "",
+	accountWhenCreated: undefined,
 	subscription: undefined,
 	showAuthExit: () => {}
 })
@@ -64,64 +64,54 @@ export const AuthenticationContext = createContext<ContextValue>({
 AuthenticationContext.displayName = "AuthenticationContext"
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [{ email, exited, exitIsActive, startSession, token }, dispatch] =
-		useReducer<Reducer<State, Action>>(
-			(state, action) => {
-				info("AuthenticationProvider", JSON.stringify(action, null, 2))
+	const [{ email, exited, exitIsActive, token }, dispatch] = useReducer<
+		Reducer<State, Action>
+	>(
+		(state, action) => {
+			info("AuthenticationProvider", JSON.stringify(action, null, 2))
 
-				if (action.type === "EXIT") {
-					clearStorages()
-					return { ...state, exited: true, exitIsActive: false }
+			if (action.type === "EXIT")
+				return { ...state, exited: true, exitIsActive: false }
+
+			if (action.type === "RESET_TOKEN")
+				return {
+					...state,
+					// Need also to reset `email` together with `token`.
+					email: undefined,
+					token: undefined
 				}
 
-				if (action.type === "RESET_TOKEN") {
-					localWebStorage.authToken.delete()
-					return {
-						...state,
-						// Need also to reset `email` together with `token`.
-						email: undefined,
-						token: undefined
-					}
+			if (action.type === "SET_EMAIL")
+				return { ...state, email: action.data.email }
+
+			if (action.type === "SET_EXIT_IS_ACTIVE")
+				return { ...state, exitIsActive: action.data.exitIsActive }
+
+			if (action.type === "SET_TOKEN")
+				return {
+					...state,
+					// Need also to reset `email` whenever `token` changes.
+					email: undefined,
+					token: action.data.token
 				}
 
-				if (action.type === "SET_EMAIL") {
-					const { email } = action.data
-					return { ...state, email }
-				}
-
-				if (action.type === "SET_EXIT_IS_ACTIVE") {
-					const { exitIsActive } = action.data
-					return { ...state, exitIsActive }
-				}
-
-				if (action.type === "SET_TOKEN") {
-					const { token } = action.data
-					localWebStorage.authToken.set(token)
-					return {
-						...state,
-						// Need also to reset `email` whenever `token` changes.
-						email: undefined,
-						token
-					}
-				}
-
-				return state
-			},
-			{
-				email: undefined,
-				exited: false,
-				exitIsActive: false,
-				token: localWebStorage.authToken.get(),
-				startSession: now()
-			}
-		)
+			return state
+		},
+		{
+			email: undefined,
+			exited: false,
+			exitIsActive: false,
+			token: localWebStorage.authToken.get()
+		}
+	)
 
 	const READ = useUserApi.ReadAccountInfo()
-	const account = READ.data
+	const accountInfo = READ.data
 
 	const setToken = useCallback<AuthVerifyProps["setToken"]>(
 		(token) => {
 			READ.reset()
+			localWebStorage.authToken.set(token)
 			dispatch({ type: "SET_TOKEN", data: { token } })
 		},
 		[dispatch, READ]
@@ -136,7 +126,15 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [])
 
 	const exit = useCallback<AuthExitProps["exit"]>(() => {
+		clearStorages()
 		dispatch({ type: "EXIT" })
+	}, [])
+
+	const showAuthExit = useCallback<ContextValue["showAuthExit"]>(() => {
+		dispatch({
+			type: "SET_EXIT_IS_ACTIVE",
+			data: { exitIsActive: true }
+		})
 	}, [])
 
 	const setExitIsActive = useCallback<AuthExitProps["setIsActive"]>(
@@ -155,41 +153,33 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			...(account
-				? {
-						account,
-						accountId: account.id,
-						accountEmail: account.email,
-						subscription: account.subscription
-				  }
-				: {
-						account,
-						accountId: "",
-						accountEmail: "",
-						subscription: undefined
-				  }),
+			accountId: accountInfo?.id ?? "",
+			accountIsAdmin: accountInfo
+				? isAdminAccount(accountInfo)
+				: undefined,
+			accountEmail: accountInfo?.email ?? "",
+			accountWhenCreated: accountInfo?.whenCreated,
+			subscription: accountInfo?.subscription,
 			exit,
-			showAuthExit: () => {
-				dispatch({
-					type: "SET_EXIT_IS_ACTIVE",
-					data: { exitIsActive: true }
-				})
-			}
+			showAuthExit
 		}),
-		[account, exit]
+		[accountInfo, exit, showAuthExit]
 	)
 
 	// Fetch account info.
 	useEffect(() => {
 		if (token === undefined) return
 		if (READ.canRun) READ.request()
-	}, [READ, token])
+	}, [READ, accountInfo, token])
 
 	// Handle errors.
 	useEffect(() => {
 		if (READ.error) {
 			if (READ.error.name === UnauthorizedError.errorName)
-				if (token) dispatch({ type: "RESET_TOKEN" })
+				if (token) {
+					localWebStorage.authToken.delete()
+					dispatch({ type: "RESET_TOKEN" })
+				}
 
 			if (READ.error.name === BadGatewayError.errorName) {
 				// Re-fetch.
@@ -204,15 +194,15 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [READ, dispatch, token])
 
 	useEffect(() => {
-		if (account === undefined) return
+		if (accountInfo === undefined) return
 
-		if (account === null) {
+		if (accountInfo === null) {
 			dispatch({ type: "SET_EMAIL", data: { email: undefined } })
 			return
 		}
 
-		dispatch({ type: "SET_EMAIL", data: { email: account.email } })
-	}, [account, startSession])
+		dispatch({ type: "SET_EMAIL", data: { email: accountInfo.email } })
+	}, [accountInfo])
 
 	// Go to Homepage on exit.
 	useEffect(() => {
@@ -233,21 +223,16 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		}
 	}, [onLocalStorageChange])
 
-	if (account === null || token === undefined) {
-		if (email) {
-			return (
-				<AuthVerify
-					email={email}
-					setToken={setToken}
-					resetEmail={resetEmail}
-				/>
-			)
-		} else {
-			return <AuthEnter setEmail={setEmail} />
-		}
-	}
-
-	if (account === undefined) return <Navigation />
+	if (accountInfo === null || token === undefined)
+		return email ? (
+			<AuthVerify
+				email={email}
+				setToken={setToken}
+				resetEmail={resetEmail}
+			/>
+		) : (
+			<AuthEnter setEmail={setEmail} />
+		)
 
 	return (
 		<AuthenticationContext.Provider value={contextValue}>

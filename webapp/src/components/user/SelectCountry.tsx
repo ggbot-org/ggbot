@@ -3,14 +3,13 @@ import {
 	SelectFieldProps,
 	SelectOnChange
 } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
 	AllowedCountryIsoCode2,
 	allowedCountryIsoCodes2,
 	isAllowedCountryIsoCode2
 } from "@workspace/models"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
 
 type Props = Pick<SelectFieldProps, "name">
@@ -29,7 +28,9 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 		PT: formatMessage({ id: "SelectCountry.PT" })
 	}
 
-	const { account } = useContext(AuthenticationContext)
+	const WRITE = useUserApi.SetAccountCountry()
+	const READ = useUserApi.ReadAccount()
+	const account = READ.data
 
 	const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("")
 
@@ -39,29 +40,30 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 			label: countryName[countryIsocode]
 		}))
 
-	// It is not allowed to unset the country.
-	const countryOptions: SelectFieldProps["options"] = country
-		? allowedCountryOptions
-		: [
-				{
-					value: "",
-					label: formatMessage({ id: "SelectCountry.noValue" })
-				},
-				...allowedCountryOptions
-		  ]
-
-	const SET_COUNTRY = useUserApi.SetAccountCountry()
+	let countryOptions: SelectFieldProps["options"] = []
+	if (account) {
+		// It is not allowed to unset the country.
+		countryOptions = country
+			? allowedCountryOptions
+			: [
+					{
+						value: "",
+						label: formatMessage({ id: "SelectCountry.noValue" })
+					},
+					...allowedCountryOptions
+			  ]
+	}
 
 	const onChange = useCallback<SelectOnChange>(
 		(event) => {
 			const value = event.target.value
-			if (!SET_COUNTRY.canRun) return
+			if (!WRITE.canRun) return
 			if (isAllowedCountryIsoCode2(value)) {
-				SET_COUNTRY.request({ country: value })
+				WRITE.request({ country: value })
 				setCountry(value)
 			}
 		},
-		[SET_COUNTRY]
+		[WRITE]
 	)
 
 	useEffect(() => {
@@ -70,11 +72,16 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 	}, [account, setCountry])
 
 	useEffect(() => {
-		if (SET_COUNTRY.isDone) SET_COUNTRY.reset()
-	}, [SET_COUNTRY])
+		if (READ.canRun) READ.request()
+	}, [READ])
+
+	useEffect(() => {
+		if (WRITE.isDone) WRITE.reset()
+	}, [WRITE])
 
 	return (
 		<SelectField
+			disabled={account === undefined}
 			label={formatMessage({ id: "SelectCountry.label" })}
 			options={countryOptions}
 			onChange={onChange}

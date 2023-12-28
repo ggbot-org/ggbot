@@ -11,12 +11,11 @@ import {
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { href } from "_/routing/user/hrefs"
 import { SettingsPageId } from "_/routing/user/types"
-import { isAdminAccount } from "@workspace/models"
 import { memo, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const Navigation = memo(() => {
-	const { account, showAuthExit } = useContext(AuthenticationContext)
+	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
 	const goToAdminPage = () => {
 		if (window.location.href !== href.adminPage())
@@ -68,7 +67,7 @@ export const Navigation = memo(() => {
 			</NavbarStart>
 
 			<NavbarEnd>
-				{account && isAdminAccount(account) ? (
+				{accountIsAdmin ? (
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
 						onClick={goToAdminPage}

@@ -1,9 +1,13 @@
 import { logging } from "_/logging"
-// TODO is it correct to use ManagedCacheProvider? Why not a CacheProvider?
 import type { ManagedCacheProvider } from "@workspace/cache"
-import { isStrategy, Strategy } from "@workspace/models"
+import { Strategy } from "@workspace/models"
 
-import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
+import {
+	cachedBoolean,
+	cachedObject,
+	itemKey,
+	WebStorageProvider
+} from "./WebStorage"
 
 const { info } = logging("localStorage")
 
@@ -44,11 +48,9 @@ class LocalWebStorage {
 				if (value) return value
 			},
 			set: (value: string) => {
-				info(`set ${key}`)
 				this.storage.setItem(key, value)
 			},
 			delete: () => {
-				info(`delete ${key}`)
 				this.storage.removeItem(key)
 				this.eventTarget.dispatchEvent(
 					new CustomEvent("authTokenDeleted")
@@ -57,37 +59,15 @@ class LocalWebStorage {
 		}
 	}
 
-	get hideInactiveStrategies(): ManagedCacheProvider<boolean> {
+	get hideInactiveStrategies() {
 		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
 	}
 
-	get strategy(): ManagedCacheProvider<Strategy> {
-		return {
-			get: (strategyId: Strategy["id"]) => {
-				const key = itemKey.strategy(strategyId)
-				const value = this.storage.getItem(key)
-				if (!value) return
-				try {
-					const strategy: unknown = JSON.parse(value)
-					if (isStrategy(strategy)) return strategy
-				} catch (error) {
-					if (error instanceof SyntaxError) {
-						this.storage.removeItem(key)
-						return
-					}
-					throw error
-				}
-			},
-			set: (strategy: Strategy) => {
-				this.storage.setItem(
-					itemKey.strategy(strategy.id),
-					JSON.stringify(strategy)
-				)
-			},
-			delete: (strategyId: Strategy["id"]) => {
-				this.storage.removeItem(itemKey.strategy(strategyId))
-			}
-		}
+	strategy(strategyId: Strategy["id"]) {
+		return cachedObject<Strategy>(
+			this.storage,
+			itemKey.strategy(strategyId)
+		)
 	}
 
 	addEventListener(

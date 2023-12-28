@@ -3,7 +3,6 @@ export {
 	deleteAccount,
 	listAccountKeys,
 	readAccount,
-	readAccountOrThrow,
 	renameAccount,
 	setAccountCountry
 } from "./account.js"

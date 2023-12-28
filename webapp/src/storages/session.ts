@@ -1,6 +1,5 @@
 import { logging } from "_/logging"
 import { PageName } from "_/routing/pageNames"
-import type { ManagedCacheProvider } from "@workspace/cache"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
 import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
@@ -32,11 +31,11 @@ class SessionWebStorageProvider implements WebStorageProvider {
 class SessionWebStorage {
 	private storage = new SessionWebStorageProvider()
 
-	get doNotShowPleasePurchase(): ManagedCacheProvider<boolean> {
+	get doNotShowPleasePurchase() {
 		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
 	}
 
-	get gotFirstPageView(): ManagedCacheProvider<boolean> {
+	get gotFirstPageView() {
 		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
 	}
 

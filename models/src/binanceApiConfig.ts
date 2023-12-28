@@ -44,15 +44,10 @@ export type ReadBinanceApiConfig = (
 	arg: AccountKey
 ) => Promise<BinanceApiConfig | null>
 
-/**
- * To be used to display BinanceApiConfig client-side, the `apiSecret` is
- * omitted and `apiKey` may be truncated.
- */
-export type BinanceApiKey = Pick<BinanceApiConfig, "apiKey">
-
+// On client-side, the `apiSecret` is omitted.
 export type ReadBinanceApiKey = (
 	arg: AccountKey
-) => Promise<BinanceApiKey | null>
+) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
 
 export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>
 

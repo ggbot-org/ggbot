@@ -1,9 +1,7 @@
 import { Account, AccountKey } from "./account.js"
-import { BinanceApiKey } from "./binanceApiConfig.js"
 import { Subscription } from "./subscription.js"
 
-export type AccountInfo = Account & {
-	binance: BinanceApiKey | null
+type AccountInfo = Account & {
 	subscription: Subscription | null
 }
 

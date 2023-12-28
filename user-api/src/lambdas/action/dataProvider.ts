@@ -7,7 +7,6 @@ import {
 	deleteBinanceApiConfig,
 	deleteStrategy,
 	readAccount,
-	readAccountOrThrow,
 	readAccountStrategies,
 	readBinanceApiKey,
 	readStrategyBalances,
@@ -39,12 +38,11 @@ const readAccountInfo: UserApiDataProvider["readAccountInfo"] = async (
 	accountKey
 ) => {
 	try {
-		const account = await readAccountOrThrow(accountKey)
-		const binance = await readBinanceApiKey(accountKey)
+		const account = await readAccount(accountKey)
+		if (!account) return null
 		const subscription = await readSubscription(accountKey)
 		return {
 			...account,
-			binance,
 			subscription
 		}
 	} catch (error) {

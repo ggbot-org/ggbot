@@ -34,7 +34,7 @@ export const createAccount: CreateAccount = async ({ email }) => {
 export const readAccount: ReadAccount = (arg) =>
 	READ<ReadAccount>(pathname.account(arg))
 
-export const readAccountOrThrow = async ({
+const readAccountOrThrow = async ({
 	accountId
 }: AccountKey): Promise<Account> => {
 	const account = await readAccount({ accountId })
