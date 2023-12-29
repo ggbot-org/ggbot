@@ -52,7 +52,6 @@ export const cachedObject = <Data>(
 const itemKeys = [
 	"activeTabId",
 	"authToken",
-	"binanceExchangeInfo",
 	"doNotShowPleasePurchase",
 	"gotFirstPageView",
 	"hideInactiveStrategies",
@@ -67,9 +66,8 @@ type ItemKey = (typeof itemKeys)[number]
  * type of value changes.
  */
 export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
-	activeTabId: (pageName: string) => `${pageName}:activeTab:v1`,
+	activeTabId: (pageName: string) => `${pageName}:activeTab:v2`,
 	authToken: () => "authToken:v1",
-	binanceExchangeInfo: () => "binanceExchangeInfo:v1.1.0",
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",
 	hideInactiveStrategies: () => "hideInactiveStrategies:v1",

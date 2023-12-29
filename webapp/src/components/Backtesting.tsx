@@ -16,7 +16,7 @@ import {
 	Title
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
-import { ProfitSummary } from "_/components/ProfitSummary"
+import { StrategyProfits } from "_/components/StrategyProfits"
 import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
@@ -29,7 +29,8 @@ export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
 
 	const { flowViewGraph } = useContext(StrategyFlowContext)
-	const { strategyKey, strategyName } = useContext(StrategyContext)
+	const { strategyKey, strategyKind, strategyName } =
+		useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
 
 	const {
@@ -187,7 +188,11 @@ export const Backtesting: FC = () => {
 				</Column>
 			</Columns>
 
-			<ProfitSummary orders={orders} dayInterval={dayInterval} />
+			<StrategyProfits
+				orders={orders}
+				dayInterval={dayInterval}
+				strategyKind={strategyKind}
+			/>
 		</>
 	)
 }

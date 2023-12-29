@@ -1,3 +1,4 @@
+import { getBinanceSymbolInfo } from "_/binance/getSymbolInfo"
 import { classNames } from "_/classNames"
 import {
 	Box,
@@ -9,7 +10,6 @@ import {
 	SizeModifierProp,
 	Title
 } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import {
 	add,
@@ -21,32 +21,16 @@ import {
 	sub
 } from "@workspace/arithmetic"
 import { BinanceFill, isBinanceFill } from "@workspace/binance"
-import { DflowBinanceSymbolInfo } from "@workspace/dflow"
-import { Order } from "@workspace/models"
+import { Order, StrategyKind } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
-import { FC, Fragment, PropsWithChildren, useContext } from "react"
+import { FC, Fragment, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
 	dayInterval: DayInterval | undefined
-	orders: Order[]
-}
-
-const symbolInfoMap = new Map<string, DflowBinanceSymbolInfo>()
-// Get `symbolInfo` from cache map or look for it in `binanceSymbols`.
-const getSymbolInfo = (
-	symbol: string,
-	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
-) => {
-	const hasSymbolInfo = symbolInfoMap.has(symbol)
-	const symbolInfo = hasSymbolInfo
-		? symbolInfoMap.get(symbol)
-		: binanceSymbols?.find(
-				(binanceSymbol) => binanceSymbol.symbol === symbol
-		  )
-	if (!hasSymbolInfo && symbolInfo) symbolInfoMap.set(symbol, symbolInfo)
-	return symbolInfo
+	orders: Order[] | undefined
+	strategyKind: StrategyKind | undefined
 }
 
 const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
@@ -88,9 +72,11 @@ type SymbolStats = {
 	quoteQuantity: string
 }
 
-export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
-	const { strategyKind } = useContext(StrategyContext)
-
+export const ProfitSummary: FC<Props> = ({
+	orders,
+	dayInterval,
+	strategyKind
+}) => {
 	const binanceSymbols = useBinanceSymbols()
 
 	let numBuys: number | undefined = undefined
@@ -103,83 +89,92 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 	>()
 
 	if (strategyKind === "binance") {
-		for (const { info } of orders) {
-			if (
-				objectTypeGuard<{
-					fills: unknown[]
-					side: string
-					status: string
-					symbol: string
-					type: string
-				}>(
-					({ fills, side, status, symbol, type }) =>
-						Array.isArray(fills) &&
-						[side, status, symbol, type].every(
-							(item) => typeof item === "string"
-						)
-				)(info)
-			) {
-				if (info.status !== "FILLED") continue
-				if (info.type !== "MARKET") continue
-				const { fills, side, symbol } = info
+		if (orders)
+			for (const { info } of orders) {
+				if (
+					objectTypeGuard<{
+						fills: unknown[]
+						side: string
+						status: string
+						symbol: string
+						type: string
+					}>(
+						({ fills, side, status, symbol, type }) =>
+							Array.isArray(fills) &&
+							[side, status, symbol, type].every(
+								(item) => typeof item === "string"
+							)
+					)(info)
+				) {
+					if (info.status !== "FILLED") continue
+					if (info.type !== "MARKET") continue
+					const { fills, side, symbol } = info
 
-				const isBuy = side === "BUY"
+					const isBuy = side === "BUY"
 
-				// Count buys and sells.
-				if (isBuy) {
-					numBuys === undefined ? (numBuys = 1) : numBuys++
-				} else {
-					numSells === undefined ? (numSells = 1) : numSells++
-				}
-
-				if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
-
-				for (const {
-					commission,
-					commissionAsset,
-					price,
-					qty: baseQty
-				} of fills) {
-					const quoteQty = mul(price, baseQty)
-
-					// Sum fees.
-					const previousFees = fees.get(commissionAsset)
-					if (previousFees) {
-						fees.set(commissionAsset, add(previousFees, commission))
+					// Count buys and sells.
+					if (isBuy) {
+						numBuys === undefined ? (numBuys = 1) : numBuys++
 					} else {
-						fees.set(commissionAsset, commission)
+						numSells === undefined ? (numSells = 1) : numSells++
 					}
 
-					// Statistics.
-					const previousSymbolStats = symbolStats.get(symbol)
-					if (previousSymbolStats) {
-						const {
-							minPrice,
-							maxPrice,
-							baseQuantity,
-							quoteQuantity
-						} = previousSymbolStats
-						symbolStats.set(symbol, {
-							baseQuantity: isBuy
-								? add(baseQuantity, baseQty)
-								: sub(baseQuantity, baseQty),
-							maxPrice: gt(price, maxPrice) ? price : maxPrice,
-							minPrice: lt(price, minPrice) ? price : minPrice,
-							quoteQuantity: isBuy
-								? sub(quoteQuantity, quoteQty)
-								: add(quoteQuantity, quoteQty)
-						})
-					} else {
-						symbolStats.set(symbol, {
-							baseQuantity: isBuy ? baseQty : neg(baseQty),
-							maxPrice: price,
-							minPrice: price,
-							quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
-						})
+					if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills))
+						continue
+
+					for (const {
+						commission,
+						commissionAsset,
+						price,
+						qty: baseQty
+					} of fills) {
+						const quoteQty = mul(price, baseQty)
+
+						// Sum fees.
+						const previousFees = fees.get(commissionAsset)
+						if (previousFees) {
+							fees.set(
+								commissionAsset,
+								add(previousFees, commission)
+							)
+						} else {
+							fees.set(commissionAsset, commission)
+						}
+
+						// Statistics.
+						const previousSymbolStats = symbolStats.get(symbol)
+						if (previousSymbolStats) {
+							const {
+								minPrice,
+								maxPrice,
+								baseQuantity,
+								quoteQuantity
+							} = previousSymbolStats
+							symbolStats.set(symbol, {
+								baseQuantity: isBuy
+									? add(baseQuantity, baseQty)
+									: sub(baseQuantity, baseQty),
+								maxPrice: gt(price, maxPrice)
+									? price
+									: maxPrice,
+								minPrice: lt(price, minPrice)
+									? price
+									: minPrice,
+								quoteQuantity: isBuy
+									? sub(quoteQuantity, quoteQty)
+									: add(quoteQuantity, quoteQty)
+							})
+						} else {
+							symbolStats.set(symbol, {
+								baseQuantity: isBuy ? baseQty : neg(baseQty),
+								maxPrice: price,
+								minPrice: price,
+								quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
+							})
+						}
 					}
 				}
 			}
-		}
 	}
 
 	return (
@@ -246,7 +241,10 @@ export const ProfitSummary: FC<Props> = ({ orders, dayInterval }) => {
 				})
 			)
 				.map(({ symbol, ...rest }) => {
-					const symbolInfo = getSymbolInfo(symbol, binanceSymbols)
+					const symbolInfo = getBinanceSymbolInfo(
+						symbol,
+						binanceSymbols
+					)
 					if (!symbolInfo)
 						return {
 							baseAsset: "",

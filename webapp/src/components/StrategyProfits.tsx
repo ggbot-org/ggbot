@@ -1,34 +1,36 @@
+import { Column, Columns } from "_/components/library"
 import { ProfitSummary } from "_/components/ProfitSummary"
-import { StrategyContext } from "_/contexts/Strategy"
-import { useUserApi } from "_/hooks/useUserApi"
-import { DayInterval, getDay, today } from "minimal-time-helpers"
-import { FC, useContext, useEffect, useMemo } from "react"
+import { StrategyOrders } from "_/components/StrategyOrders"
+import { Order, StrategyKind } from "@workspace/models"
+import { DayInterval } from "minimal-time-helpers"
+import { FC } from "react"
 
 type Props = {
-	numDays: number
+	dayInterval: DayInterval | undefined
+	orders: Order[] | undefined
+	strategyKind: StrategyKind | undefined
 }
 
-export const StrategyProfits: FC<Props> = ({ numDays }) => {
-	const { strategyKey } = useContext(StrategyContext)
+export const StrategyProfits: FC<Props> = ({
+	dayInterval,
+	orders,
+	strategyKind
+}) => (
+		<>
+			<Columns>
+				<Column size={{ desktop: "two-thirds" }}>
+					<ProfitSummary
+						orders={orders}
+						dayInterval={dayInterval}
+						strategyKind={strategyKind}
+					/>
+				</Column>
+			</Columns>
 
-	const dayInterval = useMemo<DayInterval>(() => {
-		const end = today()
-		const start = getDay(end).minus(numDays).days
-		return { start, end }
-	}, [numDays])
-
-	const READ = useUserApi.ReadStrategyOrders()
-
-	const orders = READ.data ?? []
-
-	useEffect(() => {
-		if (!strategyKey) return
-		if (READ.canRun)
-			READ.request({
-				...dayInterval,
-				...strategyKey
-			})
-	}, [READ, dayInterval, strategyKey])
-
-	return <ProfitSummary dayInterval={dayInterval} orders={orders} />
-}
+			<Columns>
+				<Column>
+					<StrategyOrders orders={orders} />
+				</Column>
+			</Columns>
+		</>
+	)

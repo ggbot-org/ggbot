@@ -55,7 +55,6 @@ module.exports = {
 			"error",
 			{ allow: ["arithmetica/float"] }
 		],
-		"max-depth": ["error", 5],
 		"no-case-declarations": "error",
 		"no-console": ["error", { allow: ["error", "info", "warn"] }],
 		"no-extra-label": "warn",

@@ -102,7 +102,6 @@ module.exports = {
 		"jsx-a11y/aria-proptypes": "error",
 		"jsx-a11y/aria-unsupported-elements": "error",
 		"jsx-a11y/role-has-required-aria-props": "error",
-		"max-depth": ["error", 5],
 		"no-case-declarations": "error",
 		"no-console": ["error", { allow: ["error"] }],
 		"no-extra-label": "warn",

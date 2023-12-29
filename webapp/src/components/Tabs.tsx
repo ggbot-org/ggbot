@@ -25,7 +25,7 @@ const tabIds = [
 	"flow",
 	"manage",
 	"newStrategy",
-	"orders",
+	"profits",
 	"strategies"
 ] as const
 export type TabId = (typeof tabIds)[number]

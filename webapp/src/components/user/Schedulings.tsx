@@ -221,7 +221,7 @@ export const Schedulings: FC = () => {
 
 	return (
 		<>
-			<Columns isMultiline>
+			<Columns>
 				<Column isNarrow>
 					<Form box onSubmit={onSubmit}>
 						<Level
@@ -281,30 +281,28 @@ export const Schedulings: FC = () => {
 						/>
 					</Form>
 				</Column>
-
-				{schedulingItems.map((scheduling) => (
-					<>
-						<Column key={scheduling.id} isNarrow>
-							<SchedulingItem
-								scheduling={scheduling}
-								setFrequency={setSchedulingItemFrequency(
-									scheduling.id
-								)}
-								setStatus={setSchedulingItemStatus(
-									scheduling.id
-								)}
-								removeScheduling={removeSchedulingItem(
-									scheduling.id
-								)}
-							/>
-						</Column>
-
-						<Column size="one-third">
-							<Memory memory={scheduling.memory} />
-						</Column>
-					</>
-				))}
 			</Columns>
+
+			{schedulingItems.map((scheduling) => (
+				<Columns key={scheduling.id}>
+					<Column isNarrow>
+						<SchedulingItem
+							scheduling={scheduling}
+							setFrequency={setSchedulingItemFrequency(
+								scheduling.id
+							)}
+							setStatus={setSchedulingItemStatus(scheduling.id)}
+							removeScheduling={removeSchedulingItem(
+								scheduling.id
+							)}
+						/>
+					</Column>
+
+					<Column>
+						<Memory memory={scheduling.memory} />
+					</Column>
+				</Columns>
+			))}
 
 			<SchedulingsErrorExceededQuota error={error} />
 		</>

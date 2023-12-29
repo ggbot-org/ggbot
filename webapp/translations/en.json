@@ -336,7 +336,7 @@
 		"defaultMessage": "Num. sells"
 	},
 	"ProfitSummary.title": {
-		"defaultMessage": "Profits"
+		"defaultMessage": "Summary"
 	},
 	"PurchaseCanceled.message": {
 		"defaultMessage": "Your purchase was canceled."
@@ -548,8 +548,8 @@
 	"Tabs.newStrategy": {
 		"defaultMessage": "New strategy"
 	},
-	"Tabs.orders": {
-		"defaultMessage": "Orders"
+	"Tabs.profits": {
+		"defaultMessage": "Profits"
 	},
 	"Tabs.strategies": {
 		"defaultMessage": "Strategies"
