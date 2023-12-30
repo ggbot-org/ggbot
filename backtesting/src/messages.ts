@@ -26,6 +26,9 @@ export type BacktestingMessageInData =
 	| {
 			type: "STOP"
 	  }
+	| ({
+			type: "SET_AFTER_STEP_BEHAVIOUR"
+	  } & Pick<BacktestingSession, "afterStepBehaviour">)
 	| {
 			type: "SET_DAY_INTERVAL"
 			dayInterval: DayInterval

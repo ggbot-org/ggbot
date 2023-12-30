@@ -34,7 +34,8 @@ const binanceKlinesCache = new BinanceKlinesCacheMap()
 
 const session = new BacktestingSession()
 
-const percentageStep = 5
+let memoryChangedOnSomeStep = false
+const orderSet = new Set<Order>()
 const updateInterval = 1000
 
 const statusChangedMessage = (
@@ -64,10 +65,35 @@ class ErrorMissingFlow extends Error {
 	}
 }
 
-const ifSessionIsDoneNotifyUI = (session: BacktestingSession) => {
-	if (session.status !== "done") return
+const updateUI = (session: BacktestingSession) => {
+	// Check if session should be stopped before handling memory or orders.
+	if (
+		(memoryChangedOnSomeStep &&
+			session.afterStepBehaviour.pauseOnMemoryChange) ||
+		(orderSet.size > 0 && session.afterStepBehaviour.pauseOnNewOrder)
+	) {
+		const statusChanged = session.pause()
+		if (statusChanged) POST(statusChangedMessage(session))
+	}
+	// Update progress.
 	POST(updatedProgressMessage(session))
-	POST(statusChangedMessage(session))
+	// Update memory.
+	if (memoryChangedOnSomeStep) {
+		POST({
+			type: "UPDATED_MEMORY",
+			memory: session.memory
+		})
+		memoryChangedOnSomeStep = false
+	}
+	// Update orders.
+	if (orderSet.size > 0) {
+		const orders = Array.from(orderSet.values())
+		POST({
+			type: "UPDATED_ORDERS",
+			orders
+		})
+		orderSet.clear()
+	}
 }
 
 /** Get strategy flow from session or throw. */
@@ -151,15 +177,16 @@ const getBinance = (
 const runBinance = async (binance: BacktestingBinanceClient) => {
 	const flow = getStrategyFlow()
 	let time: Time | undefined
+	// Initialize `shouldUpdateUI` to true, so first iteration will update UI.
+	let shouldUpdateUI = true
 	let nextUpdateTime = Date.now() + updateInterval
-	let nextCompletionPercentage = session.completionPercentage + percentageStep
-	const orderSet = new Set<Order>()
+	memoryChangedOnSomeStep = false
 
 	while ((time = session.nextTime)) {
 		binance.time = time
 		// Run executor.
 		try {
-			const { memory, orders } = await binanceExecutor.run(
+			const { memory, memoryChanged, orders } = await binanceExecutor.run(
 				{
 					binance,
 					params: {},
@@ -168,15 +195,24 @@ const runBinance = async (binance: BacktestingBinanceClient) => {
 				},
 				flow
 			)
-			session.memory = memory
-			for (const { info } of orders) {
-				const order = {
-					id: newId(),
-					info,
-					whenCreated: time
-				} satisfies Order
-				orderSet.add(order)
-				session.orders.push(order)
+			if (memoryChanged) {
+				memoryChangedOnSomeStep = true
+				session.memory = memory
+				if (session.afterStepBehaviour.pauseOnMemoryChange)
+					shouldUpdateUI = true
+			}
+			if (orders.length) {
+				if (session.afterStepBehaviour.pauseOnNewOrder)
+					shouldUpdateUI = true
+				for (const { info } of orders) {
+					const order = {
+						id: newId(),
+						info,
+						whenCreated: time
+					} satisfies Order
+					orderSet.add(order)
+					session.orders.push(order)
+				}
 			}
 		} catch (error) {
 			warn(error)
@@ -184,27 +220,14 @@ const runBinance = async (binance: BacktestingBinanceClient) => {
 			if (statusChanged) POST(statusChangedMessage(session))
 		}
 
-		// Update UI with current progress on every `percentageStep`.
-		if (session.completionPercentage > nextCompletionPercentage) {
-			nextCompletionPercentage =
-				session.completionPercentage + percentageStep
-			POST(updatedProgressMessage(session))
-		}
-
 		if (Date.now() > nextUpdateTime) {
 			nextUpdateTime = Date.now() + updateInterval
-			POST({
-				type: "UPDATED_MEMORY",
-				memory: session.memory
-			})
-			if (orderSet.size > 0) {
-				const orders = Array.from(orderSet.values())
-				POST({
-					type: "UPDATED_ORDERS",
-					orders
-				})
-				orderSet.clear()
-			}
+			shouldUpdateUI = true
+		}
+
+		if (shouldUpdateUI) {
+			shouldUpdateUI = false
+			updateUI(session)
 		}
 	}
 }
@@ -213,6 +236,11 @@ self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
 	const { type: messageType } = message
+	if (messageType === "SET_AFTER_STEP_BEHAVIOUR") {
+		const { afterStepBehaviour } = message
+		session.afterStepBehaviour = afterStepBehaviour
+	}
+
 	if (messageType === "SET_DAY_INTERVAL") {
 		const { dayInterval } = message
 		session.dayInterval = dayInterval
@@ -245,6 +273,8 @@ self.onmessage = async ({
 		})
 		session.strategy = strategy
 		session.computeTimes()
+		orderSet.clear()
+		memoryChangedOnSomeStep = false
 
 		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
@@ -260,7 +290,10 @@ self.onmessage = async ({
 			await runBinance(binance)
 		}
 
-		ifSessionIsDoneNotifyUI(session)
+		if (session.status === "done") {
+			updateUI(session)
+			POST(statusChangedMessage(session))
+		}
 	}
 
 	if (messageType === "STOP") {
@@ -288,6 +321,9 @@ self.onmessage = async ({
 			await runBinance(binance)
 		}
 
-		ifSessionIsDoneNotifyUI(session)
+		if (session.status === "done") {
+			updateUI(session)
+			POST(statusChangedMessage(session))
+		}
 	}
 }

@@ -9,6 +9,8 @@ import {
 } from "_/components/FrequencyInput"
 import {
 	Box,
+	Checkbox,
+	CheckboxOnChange,
 	Column,
 	Columns,
 	DailyInterval,
@@ -24,6 +26,7 @@ import { useBacktesting } from "_/hooks/useBacktesting"
 import { isFrequency } from "@workspace/models"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { classNames } from "trunx"
 
 export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
@@ -37,6 +40,7 @@ export const Backtesting: FC = () => {
 		hasFlow,
 		dispatch,
 		state: {
+			afterStepBehaviour,
 			currentTimestamp,
 			dayInterval,
 			frequency,
@@ -58,6 +62,33 @@ export const Backtesting: FC = () => {
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
 
+	const onChangePauseOnMemoryChange = useCallback<CheckboxOnChange>(
+		(event) => {
+			const checked = event.target.checked
+			dispatch({
+				type: "SET_AFTER_STEP_BEHAVIOUR",
+				afterStepBehaviour: {
+					...afterStepBehaviour,
+					pauseOnMemoryChange: checked
+				}
+			})
+		},
+		[afterStepBehaviour, dispatch]
+	)
+
+	const onChangePauseOnNewOrder = useCallback<CheckboxOnChange>(
+		(event) => {
+			const checked = event.target.checked
+			dispatch({
+				type: "SET_AFTER_STEP_BEHAVIOUR",
+				afterStepBehaviour: {
+					...afterStepBehaviour,
+					pauseOnNewOrder: checked
+				}
+			})
+		},
+		[afterStepBehaviour, dispatch]
+	)
 	const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
 		(frequency) => {
 			setFrequencyArg(frequency)
@@ -128,8 +159,39 @@ export const Backtesting: FC = () => {
 		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))
 	}, [formatMessage, isDone, toast])
 
+	useEffect(() => {
+		if (
+			isPaused &&
+			(afterStepBehaviour.pauseOnMemoryChange ||
+				afterStepBehaviour.pauseOnNewOrder)
+		)
+			toast.warning(formatMessage({ id: "Backtesting.paused" }))
+	}, [afterStepBehaviour, formatMessage, isPaused, toast])
+
 	return (
 		<>
+			<Columns className={classNames("mb-5 ml-3")}>
+				<Column isNarrow>
+					<Checkbox
+						className={classNames("mx-1")}
+						checked={afterStepBehaviour.pauseOnMemoryChange}
+						onChange={onChangePauseOnMemoryChange}
+					>
+						<FormattedMessage id="Backtesting.pauseOnMemoryChange" />
+					</Checkbox>
+				</Column>
+
+				<Column isNarrow>
+					<Checkbox
+						className={classNames("mx-1")}
+						checked={afterStepBehaviour.pauseOnNewOrder}
+						onChange={onChangePauseOnNewOrder}
+					>
+						<FormattedMessage id="Backtesting.pauseOnNewOrder" />
+					</Checkbox>
+				</Column>
+			</Columns>
+
 			<Columns>
 				<Column size="one-third">
 					<Box>

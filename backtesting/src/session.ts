@@ -15,26 +15,21 @@ import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
 export class BacktestingSession implements BacktestingStatusController {
-	memory: StrategyMemory
-	orders: Order[]
-	status: BacktestingStatus
-	stepIndex: number
-	times: Time[]
-
-	private _dayInterval: DayInterval | undefined
-	private _frequency: Frequency | undefined
-	private _strategy: BacktestingStrategy | undefined
-
-	constructor() {
-		this._dayInterval = undefined
-		this._frequency = undefined
-		this._strategy = undefined
-		this.memory = {}
-		this.orders = []
-		this.status = "initial"
-		this.stepIndex = 0
-		this.times = []
+	static defaultAfterStepBehaviour = {
+		pauseOnMemoryChange: false,
+		pauseOnNewOrder: false
 	}
+
+	afterStepBehaviour = BacktestingSession.defaultAfterStepBehaviour
+	memory: StrategyMemory = {}
+	orders: Order[] = []
+	status: BacktestingStatus = "initial"
+	stepIndex: number = 0
+	times: Time[] = []
+
+	private _dayInterval: DayInterval | undefined = undefined
+	private _frequency: Frequency | undefined = undefined
+	private _strategy: BacktestingStrategy | undefined = undefined
 
 	get canRun(): boolean {
 		if (this.times.length === 0) return false

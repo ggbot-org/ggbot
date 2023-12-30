@@ -20,7 +20,11 @@ type Action =
 
 type State = Pick<
 	BacktestingSession,
-	"currentTimestamp" | "memory" | "orders" | "stepIndex"
+	| "afterStepBehaviour"
+	| "currentTimestamp"
+	| "memory"
+	| "orders"
+	| "stepIndex"
 > & {
 	dayInterval: DayInterval
 	frequency: Frequency
@@ -53,21 +57,35 @@ const defaultDayInterval = (): State["dayInterval"] => {
 
 const defaultFrequency = (): State["frequency"] => everyOneHour()
 
+const partialInitialState: Pick<
+	State,
+	| "currentTimestamp"
+	| "isPaused"
+	| "isDone"
+	| "isRunning"
+	| "memory"
+	| "orders"
+	| "stepIndex"
+> = {
+	currentTimestamp: undefined,
+	isPaused: false,
+	isDone: false,
+	isRunning: false,
+	memory: {},
+	orders: [],
+	stepIndex: 0
+}
+
 const initializer = ({
 	frequency,
 	dayInterval
 }: Pick<State, "frequency" | "dayInterval">): State => ({
-	currentTimestamp: undefined,
+	afterStepBehaviour: BacktestingSession.defaultAfterStepBehaviour,
 	dayInterval,
 	frequency,
-	isPaused: false,
-	isDone: false,
-	isRunning: false,
 	maxDay: getMaxDay(),
-	memory: {},
-	orders: [],
-	stepIndex: 0,
-	numSteps: 0
+	numSteps: 0,
+	...partialInitialState
 })
 
 export const useBacktesting = (): UseBacktestingOutput => {
@@ -78,12 +96,19 @@ export const useBacktesting = (): UseBacktestingOutput => {
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
 			const { type: actionType } = action
+			if (["STOP", "START"].includes(actionType)) {
+				info(actionType)
+				backtesting.postMessage(action)
+				return {
+					...state,
+					...partialInitialState
+				}
+			}
+
 			if (
 				[
 					"PAUSE",
 					"RESUME",
-					"STOP",
-					"START",
 					"SET_DAY_INTERVAL",
 					"SET_FREQUENCY"
 				].includes(actionType)
@@ -93,6 +118,16 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				return state
 			}
 
+			if (actionType === "SET_AFTER_STEP_BEHAVIOUR") {
+				const { afterStepBehaviour } = action
+				info(actionType, afterStepBehaviour)
+				backtesting.postMessage(action)
+				return {
+					...state,
+					afterStepBehaviour
+				}
+			}
+
 			if (actionType === "STATUS_CHANGED") {
 				const { status } = action
 				info(actionType, status)
@@ -100,7 +135,8 @@ export const useBacktesting = (): UseBacktestingOutput => {
 					...state,
 					isDone: status === "done",
 					isPaused: status === "paused",
-					isRunning: status === "running"
+					isRunning: status === "running",
+					...(status === "initial" ? partialInitialState : {})
 				}
 			}
 
