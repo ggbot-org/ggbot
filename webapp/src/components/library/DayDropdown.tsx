@@ -15,6 +15,7 @@ import { Label } from "./Label"
 
 export type DayDropdownProps = Partial<{ disabled: boolean }> &
 	Required<Pick<DropdownProps, "isActive" | "onClick">> &
+	Pick<DropdownProps, "isRight"> &
 	Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
 		label: string
 	} & { close: () => void }
@@ -24,11 +25,12 @@ export const DayDropdown: FC<DayDropdownProps> = ({
 	day,
 	disabled,
 	isActive,
+	isRight,
 	label,
-	onClick,
-	setDay,
+	max,
 	min,
-	max
+	onClick,
+	setDay
 }) => (
 	<Field>
 		<Label>{label}</Label>
@@ -36,6 +38,7 @@ export const DayDropdown: FC<DayDropdownProps> = ({
 		<Control>
 			<Dropdown
 				isActive={disabled ? undefined : isActive}
+				isRight={isRight}
 				onClick={disabled ? undefined : onClick}
 			>
 				<DropdownTrigger disabled={disabled}>

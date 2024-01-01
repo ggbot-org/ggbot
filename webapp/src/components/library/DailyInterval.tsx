@@ -55,6 +55,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 			/>
 
 			<DayDropdown
+				isRight
 				close={close}
 				disabled={disabled}
 				isActive={activeDropdown === "end"}

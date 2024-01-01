@@ -82,7 +82,7 @@ export const ProfitSummary: FC<Props> = ({
 	let numBuys: number | undefined = undefined
 	let numSells: number | undefined = undefined
 
-	const fees = new Map<Fee["asset"], Fee["quantity"]>()
+	const feesMap = new Map<Fee["asset"], Fee["quantity"]>()
 	const symbolStats = new Map<
 		SymbolStats["symbol"],
 		Omit<SymbolStats, "symbol">
@@ -92,7 +92,7 @@ export const ProfitSummary: FC<Props> = ({
 		if (orders)
 			for (const { info } of orders) {
 				if (
-					objectTypeGuard<{
+					!objectTypeGuard<{
 						fills: unknown[]
 						side: string
 						status: string
@@ -105,73 +105,69 @@ export const ProfitSummary: FC<Props> = ({
 								(item) => typeof item === "string"
 							)
 					)(info)
-				) {
-					if (info.status !== "FILLED") continue
-					if (info.type !== "MARKET") continue
-					const { fills, side, symbol } = info
+				)
+					continue
 
-					const isBuy = side === "BUY"
+				if (info.status !== "FILLED") continue
+				if (info.type !== "MARKET") continue
+				const { fills, side, symbol } = info
 
-					// Count buys and sells.
-					if (isBuy) {
-						numBuys === undefined ? (numBuys = 1) : numBuys++
+				const isBuy = side === "BUY"
+
+				// Count buys and sells.
+				if (isBuy) {
+					numBuys === undefined ? (numBuys = 1) : numBuys++
+				} else {
+					numSells === undefined ? (numSells = 1) : numSells++
+				}
+
+				if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
+
+				for (const {
+					commission,
+					commissionAsset,
+					price,
+					qty: baseQty
+				} of fills) {
+					const quoteQty = mul(price, baseQty)
+
+					// Sum fees.
+					const previousFees = feesMap.get(commissionAsset)
+					if (previousFees) {
+						feesMap.set(
+							commissionAsset,
+							add(previousFees, commission)
+						)
 					} else {
-						numSells === undefined ? (numSells = 1) : numSells++
+						feesMap.set(commissionAsset, commission)
 					}
 
-					if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills))
-						continue
-
-					for (const {
-						commission,
-						commissionAsset,
-						price,
-						qty: baseQty
-					} of fills) {
-						const quoteQty = mul(price, baseQty)
-
-						// Sum fees.
-						const previousFees = fees.get(commissionAsset)
-						if (previousFees) {
-							fees.set(
-								commissionAsset,
-								add(previousFees, commission)
-							)
-						} else {
-							fees.set(commissionAsset, commission)
-						}
-
-						// Statistics.
-						const previousSymbolStats = symbolStats.get(symbol)
-						if (previousSymbolStats) {
-							const {
-								minPrice,
-								maxPrice,
-								baseQuantity,
-								quoteQuantity
-							} = previousSymbolStats
-							symbolStats.set(symbol, {
-								baseQuantity: isBuy
-									? add(baseQuantity, baseQty)
-									: sub(baseQuantity, baseQty),
-								maxPrice: gt(price, maxPrice)
-									? price
-									: maxPrice,
-								minPrice: lt(price, minPrice)
-									? price
-									: minPrice,
-								quoteQuantity: isBuy
-									? sub(quoteQuantity, quoteQty)
-									: add(quoteQuantity, quoteQty)
-							})
-						} else {
-							symbolStats.set(symbol, {
-								baseQuantity: isBuy ? baseQty : neg(baseQty),
-								maxPrice: price,
-								minPrice: price,
-								quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
-							})
-						}
+					// Statistics.
+					const previousSymbolStats = symbolStats.get(symbol)
+					if (previousSymbolStats) {
+						const {
+							minPrice,
+							maxPrice,
+							baseQuantity,
+							quoteQuantity
+						} = previousSymbolStats
+						symbolStats.set(symbol, {
+							baseQuantity: isBuy
+								? add(baseQuantity, baseQty)
+								: sub(baseQuantity, baseQty),
+							maxPrice: gt(price, maxPrice) ? price : maxPrice,
+							minPrice: lt(price, minPrice) ? price : minPrice,
+							quoteQuantity: isBuy
+								? sub(quoteQuantity, quoteQty)
+								: add(quoteQuantity, quoteQty)
+						})
+					} else {
+						symbolStats.set(symbol, {
+							baseQuantity: isBuy ? baseQty : neg(baseQty),
+							maxPrice: price,
+							minPrice: price,
+							quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
+						})
 					}
 				}
 			}
@@ -360,7 +356,7 @@ export const ProfitSummary: FC<Props> = ({
 					</Heading>
 				</LevelItem>
 
-				{Array.from(fees, ([asset, quantity]) => ({
+				{Array.from(feesMap, ([asset, quantity]) => ({
 					asset,
 					quantity
 				})).map(({ asset, quantity }) => (

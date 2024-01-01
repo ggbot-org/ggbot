@@ -105,14 +105,7 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				}
 			}
 
-			if (
-				[
-					"PAUSE",
-					"RESUME",
-					"SET_DAY_INTERVAL",
-					"SET_FREQUENCY"
-				].includes(actionType)
-			) {
+			if (["PAUSE", "RESUME"].includes(actionType)) {
 				info(actionType)
 				backtesting.postMessage(action)
 				return state

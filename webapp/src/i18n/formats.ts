@@ -9,7 +9,7 @@ export const dayFormat: DayFormat = {
 }
 
 export type TimeFormat = DayFormat &
-	Required<Pick<Intl.DateTimeFormatOptions, "minute" | "hour" | "second">>
+	Required<Pick<Intl.DateTimeFormatOptions, "hour" | "minute" | "second">>
 
 export const timeFormat: TimeFormat = {
 	...dayFormat,

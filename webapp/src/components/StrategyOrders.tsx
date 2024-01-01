@@ -1,8 +1,11 @@
 import { Message, Table } from "_/components/library"
+import { timeFormat } from "_/i18n/formats"
+import { add, div } from "@workspace/arithmetic"
+import { BinanceFill, isBinanceFill } from "@workspace/binance"
 import { Order } from "@workspace/models"
-import { isMaybeObject } from "minimal-type-guard-helpers"
+import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { FC } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 type Row = {
 	orderId: number
@@ -11,6 +14,7 @@ type Row = {
 	time: string
 	baseQuantity: string
 	quoteQuantity: string
+	price: string
 }
 
 type Props = {
@@ -18,45 +22,66 @@ type Props = {
 }
 
 export const StrategyOrders: FC<Props> = ({ orders }) => {
+	const { formatDate } = useIntl()
+
 	const rows: Row[] = []
-	if (Array.isArray(orders))
-		for (const order of orders) {
-			const { info } = order
+	if (orders)
+		for (const { info } of orders) {
 			if (
-				!isMaybeObject<{
-					side: string
-					orderId: number
+				!objectTypeGuard<{
 					cummulativeQuoteQty: string
 					executedQty: string
-					transactTime: number
+					fills: unknown[]
+					orderId: number
+					side: string
 					symbol: string
-				}>(info)
+					transactTime: number
+				}>(
+					({
+						cummulativeQuoteQty,
+						executedQty,
+						fills,
+						orderId,
+						side,
+						symbol,
+						transactTime
+					}) =>
+						Array.isArray(fills) &&
+						[cummulativeQuoteQty, executedQty, side, symbol].every(
+							(item) => typeof item === "string"
+						) &&
+						[orderId, transactTime].every(
+							(item) => typeof item === "number"
+						)
+				)(info)
 			)
 				continue
+
 			const {
-				side,
-				orderId,
 				cummulativeQuoteQty,
 				executedQty,
-				transactTime,
-				symbol
+				fills,
+				orderId,
+				side,
+				symbol,
+				transactTime
 			} = info
-			if (
-				typeof cummulativeQuoteQty !== "string" ||
-				typeof orderId !== "number" ||
-				typeof symbol !== "string" ||
-				typeof executedQty !== "string" ||
-				typeof transactTime !== "number" ||
-				typeof side !== "string"
-			)
-				continue
+
+			let price = "0"
+
+			if (arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) {
+				for (const fill of fills) price = add(price, fill.price)
+				price = div(price, fills.length)
+			}
+
 			rows.push({
 				side,
 				orderId,
 				symbol,
-				time: new Date(transactTime).toJSON(),
+				time: formatDate(transactTime, timeFormat),
 				baseQuantity: executedQty,
-				quoteQuantity: cummulativeQuoteQty
+				quoteQuantity: cummulativeQuoteQty,
+				price
 			})
 		}
 
@@ -92,18 +117,23 @@ export const StrategyOrders: FC<Props> = ({ orders }) => {
 					<th>
 						<FormattedMessage id="StrategyOrders.quoteQuantity" />
 					</th>
+
+					<th>
+						<FormattedMessage id="StrategyOrders.price" />
+					</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				{rows.map(
 					({
+						baseQuantity,
 						orderId,
+						price,
+						quoteQuantity,
 						side,
 						symbol,
-						time,
-						baseQuantity,
-						quoteQuantity
+						time
 					}) => (
 						<tr key={orderId}>
 							<td>{time}</td>
@@ -115,6 +145,8 @@ export const StrategyOrders: FC<Props> = ({ orders }) => {
 							<td>{baseQuantity}</td>
 
 							<td>{quoteQuantity}</td>
+
+							<td>{price}</td>
 						</tr>
 					)
 				)}

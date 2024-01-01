@@ -8,26 +8,30 @@ export const Footer = memo(() => {
 	const { formatDate } = useIntl()
 
 	return (
-		<footer className={classNames("footer")}>
-			<ul>
-				<li>
-					<a href={href.privacyPage()}>
-						<FormattedMessage id="Privacy.title" />
-					</a>
-				</li>
+		<>
+			<div className={classNames("Footer__top")} />
 
-				<li>
-					<a href={href.termsPage()}>
-						<FormattedMessage id="Terms.title" />
-					</a>
-				</li>
-			</ul>
+			<footer className={classNames("footer")}>
+				<ul>
+					<li>
+						<a href={href.privacyPage()}>
+							<FormattedMessage id="Privacy.title" />
+						</a>
+					</li>
 
-			<FormattedMessage
-				id="Footer.lastUpdate"
-				values={{ day: formatDate(BUILD_DATE, dayFormat) }}
-			/>
-		</footer>
+					<li>
+						<a href={href.termsPage()}>
+							<FormattedMessage id="Terms.title" />
+						</a>
+					</li>
+				</ul>
+
+				<FormattedMessage
+					id="Footer.lastUpdate"
+					values={{ day: formatDate(BUILD_DATE, dayFormat) }}
+				/>
+			</footer>
+		</>
 	)
 })
 

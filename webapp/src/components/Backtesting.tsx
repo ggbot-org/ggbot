@@ -13,8 +13,10 @@ import {
 	CheckboxOnChange,
 	Column,
 	Columns,
+	Control,
 	DailyInterval,
 	DailyIntervalProps,
+	Field,
 	OneColumn,
 	Title
 } from "_/components/library"
@@ -172,30 +174,8 @@ export const Backtesting: FC = () => {
 
 	return (
 		<>
-			<Columns className={classNames("mb-5 ml-3")}>
-				<Column isNarrow>
-					<Checkbox
-						className={classNames("mx-1")}
-						checked={afterStepBehaviour.pauseOnMemoryChange}
-						onChange={onChangePauseOnMemoryChange}
-					>
-						<FormattedMessage id="Backtesting.pauseOnMemoryChange" />
-					</Checkbox>
-				</Column>
-
-				<Column isNarrow>
-					<Checkbox
-						className={classNames("mx-1")}
-						checked={afterStepBehaviour.pauseOnNewOrder}
-						onChange={onChangePauseOnNewOrder}
-					>
-						<FormattedMessage id="Backtesting.pauseOnNewOrder" />
-					</Checkbox>
-				</Column>
-			</Columns>
-
 			<Columns>
-				<OneColumn>
+				<Column size={{ tablet: "half", fullhd: "one-third" }}>
 					<Box>
 						<Title>
 							<FormattedMessage id="Backtesting.title" />
@@ -226,6 +206,32 @@ export const Backtesting: FC = () => {
 							setFrequency={setFrequency}
 						/>
 
+						<Field>
+							<Control>
+								<Checkbox
+									className={classNames("mx-1")}
+									checked={
+										afterStepBehaviour.pauseOnMemoryChange
+									}
+									onChange={onChangePauseOnMemoryChange}
+								>
+									<FormattedMessage id="Backtesting.pauseOnMemoryChange" />
+								</Checkbox>
+							</Control>
+						</Field>
+
+						<Field>
+							<Control>
+								<Checkbox
+									className={classNames("mx-1")}
+									checked={afterStepBehaviour.pauseOnNewOrder}
+									onChange={onChangePauseOnNewOrder}
+								>
+									<FormattedMessage id="Backtesting.pauseOnNewOrder" />
+								</Checkbox>
+							</Control>
+						</Field>
+
 						<BacktestingActions
 							hasFlow={hasFlow}
 							isPaused={isPaused}
@@ -236,21 +242,21 @@ export const Backtesting: FC = () => {
 							onClickStop={onClickStop}
 						/>
 					</Box>
-				</OneColumn>
-			</Columns>
-
-			<Columns>
-				<Column size="one-third">
-					<Memory memory={memory} />
 				</Column>
 
-				<Column>
+				<Column size={{ tablet: "half", fullhd: "one-third" }}>
 					<BacktestingProgress
 						dayInterval={dayInterval}
 						hasFlow={hasFlow}
 						progress={progress}
 						currentTimestamp={currentTimestamp}
 					/>
+				</Column>
+			</Columns>
+
+			<Columns>
+				<Column size="one-third">
+					<Memory memory={memory} />
 				</Column>
 			</Columns>
 
@@ -265,9 +271,9 @@ export const Backtesting: FC = () => {
 			</Columns>
 
 			<Columns>
-				<OneColumn>
+				<Column isNarrow>
 					<StrategyOrders orders={orders} />
-				</OneColumn>
+				</Column>
 			</Columns>
 		</>
 	)

@@ -15,7 +15,7 @@ const PauseButton: FC<ButtonProps> = (props) => {
 const ResumeButton: FC<ButtonProps> = (props) => {
 	const { formatMessage } = useIntl()
 	return (
-		<Button {...props}>
+		<Button color="primary" {...props}>
 			{formatMessage({ id: "BacktestingActions.resume" })}
 		</Button>
 	)
@@ -24,7 +24,7 @@ const ResumeButton: FC<ButtonProps> = (props) => {
 const StartButton: FC<ButtonProps> = (props) => {
 	const { formatMessage } = useIntl()
 	return (
-		<Button {...props}>
+		<Button color="primary" {...props}>
 			{formatMessage({ id: "BacktestingActions.start" })}
 		</Button>
 	)
@@ -60,18 +60,18 @@ export const BacktestingActions: FC<Props> = ({
 	if (isPaused)
 		return (
 			<Buttons>
-				<StopButton onClick={onClickStop} />
-
 				<ResumeButton onClick={onClickResume} />
+
+				<StopButton onClick={onClickStop} />
 			</Buttons>
 		)
 
 	if (isRunning)
 		return (
 			<Buttons>
-				<StopButton onClick={onClickStop} />
-
 				<PauseButton onClick={onClickPause} />
+
+				<StopButton onClick={onClickStop} />
 			</Buttons>
 		)
 

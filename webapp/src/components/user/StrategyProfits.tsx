@@ -1,4 +1,4 @@
-import { Columns, OneColumn } from "_/components/library"
+import { Column, Columns, OneColumn } from "_/components/library"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrders } from "_/components/StrategyOrders"
 import { StrategyContext } from "_/contexts/Strategy"
@@ -43,9 +43,9 @@ export const StrategyProfits: FC = () => {
 			</Columns>
 
 			<Columns>
-				<OneColumn>
+				<Column isNarrow>
 					<StrategyOrders orders={orders} />
-				</OneColumn>
+				</Column>
 			</Columns>
 		</>
 	)

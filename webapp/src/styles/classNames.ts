@@ -21,6 +21,8 @@ type FlowMenuClassName = "FlowMenu" | "FlowMenu__strategyName"
 
 type FlowViewContainerClassName = "FlowViewContainer"
 
+type FooterClassName = "Footer__top"
+
 type InputClassName = "Input--isStatic"
 
 type ModalClassName = "Modal__content"
@@ -37,6 +39,7 @@ type ClassName =
 	| DailyIntervalClassName
 	| FlowMenuClassName
 	| FlowViewContainerClassName
+	| FooterClassName
 	| InputClassName
 	| ModalClassName
 	| OneColumn

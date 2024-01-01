@@ -1,4 +1,4 @@
-import { div } from "@workspace/arithmetic"
+import { div, mul } from "@workspace/arithmetic"
 import {
 	BinanceConnector,
 	BinanceExchange,
@@ -20,6 +20,8 @@ import {
 import { now, Time } from "minimal-time-helpers"
 
 import { ErrorCannotCreateOrder } from "./errors.js"
+
+let orderId = 0
 
 export class BacktestingBinanceClient implements DflowBinanceClient {
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
@@ -53,31 +55,37 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
-		const { publicClient: binance } = this
+		const { publicClient: binance, time } = this
 		const options = await binance.prepareOrder(symbol, type, orderOptions)
 		const { price } = await this.tickerPrice(symbol)
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		if (!symbolInfo) throw new ErrorCannotCreateOrder()
 
+		orderId++
+
 		const { baseAssetPrecision, quoteAssetPrecision } = symbolInfo
-		const { quoteOrderQty } = options
-		let quantity = options.quantity ?? dflowBinanceZero(baseAssetPrecision)
-		if (quoteOrderQty)
-			quantity = div(quoteOrderQty, price, quoteAssetPrecision)
+		let { quantity: baseQuantity, quoteOrderQty: quoteQuantity } = options
+		if (quoteQuantity && baseQuantity === undefined)
+			baseQuantity = div(quoteQuantity, price, quoteAssetPrecision)
+		if (baseQuantity && quoteQuantity === undefined)
+			quoteQuantity = mul(baseQuantity, price, baseAssetPrecision)
+		if (!baseQuantity) baseQuantity = dflowBinanceZero(baseAssetPrecision)
+		if (!quoteQuantity)
+			quoteQuantity = dflowBinanceZero(quoteAssetPrecision)
 
 		return {
 			clientOrderId: "",
-			cummulativeQuoteQty: "0",
-			executedQty: quantity,
-			orderId: -1,
+			cummulativeQuoteQty: quoteQuantity,
+			executedQty: baseQuantity,
+			orderId,
 			orderListId: -1,
-			origQty: quantity,
+			origQty: baseQuantity,
 			price,
 			side,
 			status: "FILLED",
 			symbol,
 			timeInForce: "GTC",
-			transactTime: 0,
+			transactTime: time,
 			type,
 
 			fills: [
@@ -85,8 +93,8 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 					commission: "0",
 					commissionAsset: "BNB",
 					price,
-					qty: quantity,
-					tradeId: -1
+					qty: baseQuantity,
+					tradeId: orderId
 				}
 			]
 		} satisfies BinanceOrderRespFULL

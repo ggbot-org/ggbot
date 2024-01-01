@@ -473,6 +473,9 @@
 	"StrategyOrders.quoteQuantity": {
 		"defaultMessage": "Quote quantity"
 	},
+	"StrategyOrders.price": {
+		"defaultMessage": "Price"
+	},
 	"StrategyOrders.baseQuantity": {
 		"defaultMessage": "Quantity"
 	},
