@@ -126,7 +126,8 @@ export const SubscriptionPurchase: FC = () => {
 		if (!data) return
 	}, [data])
 
-	if (!canPurchaseSubscription) return null
+	if (canPurchaseSubscription === undefined || !canPurchaseSubscription)
+		return null
 
 	return (
 		<Form box onSubmit={onSubmit}>
@@ -138,7 +139,11 @@ export const SubscriptionPurchase: FC = () => {
 				<Message color="danger">
 					<FormattedMessage id="SubscriptionPurchase.couldRenew" />
 				</Message>
-			) : null}
+			) : (
+				<Message color="info">
+					<FormattedMessage id="SubscriptionPurchase.pleasePurchase" />
+				</Message>
+			)}
 
 			<Message>
 				<p>

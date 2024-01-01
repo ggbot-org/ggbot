@@ -59,14 +59,6 @@ export type BacktestingMessageOutData =
 			type: "STATUS_CHANGED"
 			status: BacktestingStatus
 	  }
-	| {
-			type: "UPDATED_DAY_INTERVAL"
-			dayInterval: DayInterval
-	  }
-	| {
-			type: "UPDATED_FREQUENCY"
-			frequency: Frequency
-	  }
 	| (Pick<BacktestingSession, "memory"> & {
 			type: "UPDATED_MEMORY"
 	  })

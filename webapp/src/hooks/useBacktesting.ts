@@ -128,6 +128,26 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				}
 			}
 
+			if (actionType === "SET_DAY_INTERVAL") {
+				const { dayInterval } = action
+				info(actionType, dayInterval)
+				backtesting.postMessage(action)
+				return {
+					...state,
+					dayInterval
+				}
+			}
+
+			if (actionType === "SET_FREQUENCY") {
+				const { frequency } = action
+				info(actionType, frequency)
+				backtesting.postMessage(action)
+				return {
+					...state,
+					frequency
+				}
+			}
+
 			if (actionType === "STATUS_CHANGED") {
 				const { status } = action
 				info(actionType, status)
@@ -166,22 +186,6 @@ export const useBacktesting = (): UseBacktestingOutput => {
 				return {
 					...state,
 					orders: state.orders.concat(orders)
-				}
-			}
-
-			if (actionType === "UPDATED_DAY_INTERVAL") {
-				info(actionType)
-				return {
-					...state,
-					dayInterval: action.dayInterval
-				}
-			}
-
-			if (actionType === "UPDATED_FREQUENCY") {
-				info(actionType)
-				return {
-					...state,
-					frequency: action.frequency
 				}
 			}
 

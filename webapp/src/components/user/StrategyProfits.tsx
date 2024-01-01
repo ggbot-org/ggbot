@@ -1,4 +1,6 @@
-import { StrategyProfits as _StrategyProfits } from "_/components/StrategyProfits"
+import { Columns, OneColumn } from "_/components/library"
+import { ProfitSummary } from "_/components/ProfitSummary"
+import { StrategyOrders } from "_/components/StrategyOrders"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
 import { getDay, today } from "minimal-time-helpers"
@@ -29,10 +31,22 @@ export const StrategyProfits: FC = () => {
 	}, [READ, end, start, strategyKey])
 
 	return (
-		<_StrategyProfits
-			dayInterval={dayInterval}
-			orders={orders}
-			strategyKind={strategyKind}
-		/>
+		<>
+			<Columns>
+				<OneColumn>
+					<ProfitSummary
+						orders={orders}
+						dayInterval={dayInterval}
+						strategyKind={strategyKind}
+					/>
+				</OneColumn>
+			</Columns>
+
+			<Columns>
+				<OneColumn>
+					<StrategyOrders orders={orders} />
+				</OneColumn>
+			</Columns>
+		</>
 	)
 }

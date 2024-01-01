@@ -1,5 +1,5 @@
 import { GoCopyStrategy } from "_/components/GoCopyStrategy"
-import { Box, Buttons, Column, Columns, Title } from "_/components/library"
+import { Box, Buttons, Title } from "_/components/library"
 import { ShareStrategy } from "_/components/ShareStrategy"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
@@ -8,31 +8,21 @@ import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const StrategyActions: FC = () => (
-	<Columns>
-		<Column
-			size={{
-				tablet: "full",
-				desktop: "one-third",
-				fullhd: "two-fifths"
-			}}
-		>
-			<Box>
-				<Title>
-					<FormattedMessage id="StrategyActions.title" />
-				</Title>
+	<Box>
+		<Title>
+			<FormattedMessage id="StrategyActions.title" />
+		</Title>
 
-				<StrategyRecord />
+		<StrategyRecord />
 
-				<Buttons>
-					<RenameStrategy />
+		<Buttons>
+			<RenameStrategy />
 
-					<ShareStrategy />
+			<ShareStrategy />
 
-					<GoCopyStrategy />
+			<GoCopyStrategy />
 
-					<DeleteStrategy />
-				</Buttons>
-			</Box>
-		</Column>
-	</Columns>
+			<DeleteStrategy />
+		</Buttons>
+	</Box>
 )

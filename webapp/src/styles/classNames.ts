@@ -25,6 +25,8 @@ type InputClassName = "Input--isStatic"
 
 type ModalClassName = "Modal__content"
 
+type OneColumn = "OneColumn"
+
 type PageClassName = "Page" | "Page_content" | "Page_footer"
 
 type ToastContainerClassName = "ToastContainer"
@@ -37,6 +39,7 @@ type ClassName =
 	| FlowViewContainerClassName
 	| InputClassName
 	| ModalClassName
+	| OneColumn
 	| PageClassName
 	| ToastContainerClassName
 

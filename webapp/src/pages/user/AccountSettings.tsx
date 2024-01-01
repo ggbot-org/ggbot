@@ -1,4 +1,4 @@
-import { Column, Columns, Section } from "_/components/library"
+import { Columns, OneColumn, Section } from "_/components/library"
 import { AccountSettings } from "_/components/user/AccountSettings"
 import { DeleteAccount } from "_/components/user/DeleteAccount"
 import { PageContainer } from "_/components/user/PageContainer"
@@ -8,9 +8,9 @@ export const AccountSettingsPage: FC = () => (
 	<PageContainer>
 		<Section>
 			<Columns>
-				<Column size="half">
+				<OneColumn>
 					<AccountSettings />
-				</Column>
+				</OneColumn>
 			</Columns>
 		</Section>
 

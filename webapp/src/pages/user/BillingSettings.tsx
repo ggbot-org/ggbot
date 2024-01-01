@@ -1,4 +1,4 @@
-import { Column, Columns, Section } from "_/components/library"
+import { Column, Columns, OneColumn, Section } from "_/components/library"
 import { PageContainer } from "_/components/user/PageContainer"
 import { SubscriptionInfo } from "_/components/user/SubscriptionInfo"
 import { SubscriptionPurchase } from "_/components/user/SubscriptionPurchase"
@@ -8,11 +8,13 @@ export const BillingSettingsPage: FC = () => (
 	<PageContainer>
 		<Section>
 			<Columns>
-				<Column>
+				<OneColumn>
 					<SubscriptionInfo />
-				</Column>
+				</OneColumn>
+			</Columns>
 
-				<Column>
+			<Columns>
+				<Column isNarrow>
 					<SubscriptionPurchase />
 				</Column>
 			</Columns>

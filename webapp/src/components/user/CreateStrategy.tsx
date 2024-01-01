@@ -1,14 +1,13 @@
 import {
 	Button,
 	Buttons,
-	Column,
 	Columns,
 	Form,
 	FormOnSubmit,
 	formValues,
 	InputOnChange,
-	Message
-} from "_/components/library"
+	Message,
+	OneColumn} from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { UseActionError } from "_/hooks/useAction"
@@ -64,13 +63,7 @@ export const CreateStrategy: FC = () => {
 
 	return (
 		<Columns>
-			<Column
-				size={{
-					tablet: "full",
-					widescreen: "three-quarters",
-					fullhd: "half"
-				}}
-			>
+			<OneColumn>
 				<Form box onSubmit={onSubmit}>
 					{error ? null : (
 						<Message>
@@ -101,7 +94,7 @@ export const CreateStrategy: FC = () => {
 						</Button>
 					</Buttons>
 				</Form>
-			</Column>
+			</OneColumn>
 		</Columns>
 	)
 }

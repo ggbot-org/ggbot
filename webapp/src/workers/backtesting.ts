@@ -241,28 +241,16 @@ self.onmessage = async ({
 		session.afterStepBehaviour = afterStepBehaviour
 	}
 
-	if (messageType === "SET_DAY_INTERVAL") {
-		const { dayInterval } = message
-		session.dayInterval = dayInterval
-		return POST({
-			type: "UPDATED_DAY_INTERVAL",
-			dayInterval: session.dayInterval
-		})
-	}
+	if (messageType === "SET_DAY_INTERVAL")
+		session.dayInterval = message.dayInterval
 
-	if (messageType === "SET_FREQUENCY") {
-		const { frequency } = message
-		session.frequency = frequency
-		return POST({
-			type: "UPDATED_FREQUENCY",
-			frequency: session.frequency
-		} satisfies BacktestingMessageOutData)
-	}
+	if (messageType === "SET_FREQUENCY") session.frequency = message.frequency
 
 	if (messageType === "START") {
 		const { dayInterval, flow, frequency, strategyKey, strategyName } =
 			message
 		const { interval: schedulingInterval } = frequency
+		// Initialize session.
 		session.dayInterval = dayInterval
 		session.frequency = frequency
 		session.computeTimes()
@@ -273,15 +261,18 @@ self.onmessage = async ({
 		})
 		session.strategy = strategy
 		session.computeTimes()
-		orderSet.clear()
-		memoryChangedOnSomeStep = false
 
 		// Start session (if possible) and notify UI.
 		const statusChanged = session.start()
 		if (statusChanged) POST(statusChangedMessage(session))
 		if (!session.canRun) return
 
+		// Reset conditions.
+		orderSet.clear()
+		memoryChangedOnSomeStep = false
+
 		// Run backtesting according to given `strategyKind`.
+
 		const { strategyKind } = strategyKey
 
 		if (strategyKind === "binance") {
@@ -309,11 +300,11 @@ self.onmessage = async ({
 	}
 
 	if (messageType === "RESUME") {
-		const statusChanged = session.resume()
-		if (statusChanged) POST(statusChangedMessage(session))
 		const strategyKind = session.strategy?.strategyKey.strategyKind
 		const schedulingInterval = session.frequency?.interval
 		if (!schedulingInterval) return
+		const statusChanged = session.resume()
+		if (statusChanged) POST(statusChangedMessage(session))
 
 		if (strategyKind === "binance") {
 			const binance = getBinance(schedulingInterval)

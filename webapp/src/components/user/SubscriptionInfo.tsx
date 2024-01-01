@@ -1,4 +1,4 @@
-import { Box, Control, Field, Message, Title } from "_/components/library"
+import { Box, Control, Field, Title } from "_/components/library"
 import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
 import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
@@ -14,27 +14,7 @@ export const SubscriptionInfo: FC = () => {
 		hasActiveSubscription
 	} = useSubscription()
 
-	if (hasActiveSubscription === undefined)
-		return (
-			<Box>
-				<Title>
-					<FormattedMessage id="SubscriptionInfo.title" />
-				</Title>
-			</Box>
-		)
-
-	if (hasActiveSubscription === false)
-		return (
-			<Box>
-				<Title>
-					<FormattedMessage id="SubscriptionInfo.title" />
-				</Title>
-
-				<Message color="info">
-					<FormattedMessage id="SubscriptionInfo.pleasePurchase" />
-				</Message>
-			</Box>
-		)
+	if (!hasActiveSubscription) return null
 
 	return (
 		<Box>

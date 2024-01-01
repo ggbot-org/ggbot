@@ -491,9 +491,6 @@
 	"SubscriptionInfo.title": {
 		"defaultMessage": "Subscription"
 	},
-	"SubscriptionInfo.pleasePurchase": {
-		"defaultMessage": "Please purchase a subscription."
-	},
 	"SubscriptionNumMonths.label": {
 		"defaultMessage": "Num months"
 	},
@@ -511,6 +508,9 @@
 	},
 	"SubscriptionPurchase.couldRenew": {
 		"defaultMessage": "Your subscription will expire soon, please consider renew it."
+	},
+	"SubscriptionPurchase.pleasePurchase": {
+		"defaultMessage": "Please purchase a subscription."
 	},
 	"SubscriptionPurchase.monthlyItemName": {
 		"defaultMessage": "Monthly subscription ({numMonths, plural, =1 {# month} other {# months}})"

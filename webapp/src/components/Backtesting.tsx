@@ -15,10 +15,12 @@ import {
 	Columns,
 	DailyInterval,
 	DailyIntervalProps,
+	OneColumn,
 	Title
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
-import { StrategyProfits } from "_/components/StrategyProfits"
+import { ProfitSummary } from "_/components/ProfitSummary"
+import { StrategyOrders } from "_/components/StrategyOrders"
 import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
@@ -49,9 +51,9 @@ export const Backtesting: FC = () => {
 			isRunning,
 			maxDay,
 			memory,
+			numSteps,
 			orders,
-			stepIndex,
-			numSteps
+			stepIndex
 		}
 	} = useBacktesting()
 
@@ -193,7 +195,7 @@ export const Backtesting: FC = () => {
 			</Columns>
 
 			<Columns>
-				<Column size="one-third">
+				<OneColumn>
 					<Box>
 						<Title>
 							<FormattedMessage id="Backtesting.title" />
@@ -234,8 +236,10 @@ export const Backtesting: FC = () => {
 							onClickStop={onClickStop}
 						/>
 					</Box>
-				</Column>
+				</OneColumn>
+			</Columns>
 
+			<Columns>
 				<Column size="one-third">
 					<Memory memory={memory} />
 				</Column>
@@ -250,11 +254,21 @@ export const Backtesting: FC = () => {
 				</Column>
 			</Columns>
 
-			<StrategyProfits
-				orders={orders}
-				dayInterval={dayInterval}
-				strategyKind={strategyKind}
-			/>
+			<Columns>
+				<OneColumn>
+					<ProfitSummary
+						orders={orders}
+						dayInterval={dayInterval}
+						strategyKind={strategyKind}
+					/>
+				</OneColumn>
+			</Columns>
+
+			<Columns>
+				<OneColumn>
+					<StrategyOrders orders={orders} />
+				</OneColumn>
+			</Columns>
 		</>
 	)
 }
