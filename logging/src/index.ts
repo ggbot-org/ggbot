@@ -27,6 +27,13 @@ export const logging = (prefix: string) => ({
 	},
 	/** Prints log to STDERR, on any deploy stage. */
 	warn: (...args: unknown[]) => {
-		console.warn(new Date().toJSON(), prefix, ...args)
+		console.warn(
+			new Date().toJSON(),
+			prefix,
+			...args.map((item) => {
+				if (item instanceof Error) return item.message
+				return item
+			})
+		)
 	}
 })

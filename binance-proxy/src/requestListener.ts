@@ -13,7 +13,11 @@ import { info, warn } from "./logging.js"
 
 const DNS_DOMAIN = ENV.DNS_DOMAIN()
 
-export const requestListener = async (
+const targetHeaders = new Headers({
+	"User-agent": DNS_DOMAIN
+})
+
+export const requestListener = (
 	request: IncomingMessage,
 	response: ServerResponse
 ) => {
@@ -46,9 +50,6 @@ export const requestListener = async (
 		return
 	}
 
-	const targetHeaders = new Headers({
-		"User-agent": DNS_DOMAIN
-	})
 	for (const [key, value] of Object.entries(sourceHeaders))
 		if (
 			BinanceRequestHeaders.isApiKeyHeader(key) &&
@@ -56,27 +57,30 @@ export const requestListener = async (
 		)
 			targetHeaders.append(key, value)
 
-	const proxiedResponse = await fetch(targetUrl, {
+	fetch(targetUrl, {
 		headers: targetHeaders,
 		method: request.method
 	})
+		.then((proxiedResponse) => {
+			response.writeHead(proxiedResponse.status)
 
-	response.writeHead(proxiedResponse.status)
+			if (proxiedResponse.ok) return proxiedResponse.json()
 
-	if (!proxiedResponse.ok) {
-		warn(
-			proxiedResponse.status,
-			proxiedResponse.statusText,
-			// Avoid printing query string, it may contain signature.
-			targetUrl.origin,
-			targetUrl.pathname
-		)
-		response.end(proxiedResponse.statusText)
-		return
-	}
-
-	const data = await proxiedResponse.json()
-	info(data)
-	const json = JSON.stringify(data)
-	response.end(json)
+			warn(
+				proxiedResponse.status,
+				proxiedResponse.statusText,
+				// Avoid printing query string, it may contain signature.
+				targetUrl.origin,
+				targetUrl.pathname
+			)
+			response.end(proxiedResponse.statusText)
+		})
+		.then((data) => {
+			info(data)
+			response.end(JSON.stringify(data))
+		})
+		.catch((error) => {
+			warn(error)
+			response.end()
+		})
 }

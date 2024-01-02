@@ -23,7 +23,14 @@ export const logging = (prefix: string) => ({
 	},
 	/** Prints log with "Warn" level, on any deploy stage. */
 	warn: (...args: unknown[]) => {
-		console.warn(prefix, ...args)
+		console.warn(
+			prefix,
+			...args.map((item) => {
+				if (item instanceof Error) return item.message
+				if (item instanceof ErrorEvent) return item.message
+				return item
+			})
+		)
 	}
 })
 

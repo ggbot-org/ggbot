@@ -3,9 +3,3 @@ export class ErrorCannotParseElasticIps extends Error {
 		super("Cannot parse static IPs")
 	}
 }
-
-export class ErrorCannotReleaseElasticIp extends Error {
-	constructor() {
-		super("Cannot release static IP")
-	}
-}

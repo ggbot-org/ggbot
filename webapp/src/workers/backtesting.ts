@@ -101,7 +101,7 @@ const getStrategyFlow = (): BacktestingStrategy["flow"] => {
 	const flow = session.strategy?.flow
 	if (!flow) {
 		const error = new ErrorMissingFlow()
-		warn(error.message)
+		warn(error)
 		throw error
 	}
 	return flow

@@ -4,4 +4,3 @@ export {
 	describeElasticIps,
 	releaseElasticIp
 } from "./elasticIp.js"
-export { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"

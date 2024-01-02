@@ -41,7 +41,7 @@ export type UseBacktestingOutput = {
 	hasFlow: boolean
 }
 
-const { info } = logging("useBacktesting")
+const { info, warn } = logging("useBacktesting")
 
 const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
 
@@ -198,8 +198,13 @@ export const useBacktesting = (): UseBacktestingOutput => {
 			dispatch(action)
 		}
 
+		backtesting.addEventListener("error", (error) => {
+			warn(error)
+		})
+
 		// Terminate backtesting worker on onmount.
 		return () => {
+			info("Terminate backtesting worker")
 			backtesting.terminate()
 		}
 	}, [dispatch])

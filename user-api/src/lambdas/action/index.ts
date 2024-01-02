@@ -58,8 +58,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		)
 			return BAD_REQUEST(error.toJSON())
 		// Fallback to print error if not handled.
-		if (error instanceof Error) warn(error.message)
-		else warn(error)
+		warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

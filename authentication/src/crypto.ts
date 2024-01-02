@@ -1,7 +1,5 @@
 import { getRandomValues, webcrypto } from "node:crypto"
 
-import { warn } from "./logging.js"
-
 const saltVectorLength = 16
 const initializationVectorLength = 12
 
@@ -40,35 +38,29 @@ export const decrypt = async (
 	encryptedData: string,
 	password: string
 ): Promise<string> => {
-	try {
-		// Convert base64 string to Uint8Array.
-		const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
-			value.charCodeAt(0)
-		)
-		const saltVector = inputVector.slice(0, saltVectorLength)
-		const initializationVector = inputVector.slice(
-			saltVectorLength,
-			saltVectorLength + initializationVectorLength
-		)
-		const encryptedVector = inputVector.slice(
-			saltVectorLength + initializationVectorLength
-		)
-		const passwordBasedKey = await getPasswordBasedKey(password)
-		const aesKey = await deriveKey(passwordBasedKey, saltVector, "decrypt")
-		const decryptedContent = await webcrypto.subtle.decrypt(
-			{
-				name: "AES-GCM",
-				iv: initializationVector
-			},
-			aesKey,
-			encryptedVector
-		)
-		return decoder.decode(decryptedContent)
-	} catch (error) {
-		if (error instanceof Error) warn(error.message)
-		else warn(error)
-		throw error
-	}
+	// Convert base64 string to Uint8Array.
+	const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
+		value.charCodeAt(0)
+	)
+	const saltVector = inputVector.slice(0, saltVectorLength)
+	const initializationVector = inputVector.slice(
+		saltVectorLength,
+		saltVectorLength + initializationVectorLength
+	)
+	const encryptedVector = inputVector.slice(
+		saltVectorLength + initializationVectorLength
+	)
+	const passwordBasedKey = await getPasswordBasedKey(password)
+	const aesKey = await deriveKey(passwordBasedKey, saltVector, "decrypt")
+	const decryptedContent = await webcrypto.subtle.decrypt(
+		{
+			name: "AES-GCM",
+			iv: initializationVector
+		},
+		aesKey,
+		encryptedVector
+	)
+	return decoder.decode(decryptedContent)
 }
 
 /** Encrypt data, outputs a base64 encoded string. */
@@ -76,43 +68,37 @@ export const encrypt = async (
 	data: string,
 	password: string
 ): Promise<string> => {
-	try {
-		const saltVector = getRandomValues(new Uint8Array(saltVectorLength))
-		const initializationVector = getRandomValues(
-			new Uint8Array(initializationVectorLength)
+	const saltVector = getRandomValues(new Uint8Array(saltVectorLength))
+	const initializationVector = getRandomValues(
+		new Uint8Array(initializationVectorLength)
+	)
+	const passwordBasedKey = await getPasswordBasedKey(password)
+	const aesKey = await deriveKey(passwordBasedKey, saltVector, "encrypt")
+	const encryptedDataVector = await webcrypto.subtle.encrypt(
+		{
+			name: "AES-GCM",
+			iv: initializationVector
+		},
+		aesKey,
+		encoder.encode(data)
+	)
+	const encryptedDataUint8Array = new Uint8Array(encryptedDataVector)
+	const outputVector = new Uint8Array(
+		saltVector.byteLength +
+			initializationVector.byteLength +
+			encryptedDataUint8Array.byteLength
+	)
+	outputVector.set(saltVector, 0)
+	outputVector.set(initializationVector, saltVector.byteLength)
+	outputVector.set(
+		encryptedDataUint8Array,
+		saltVector.byteLength + initializationVector.byteLength
+	)
+	// Convert Uint8Array to base64 encoded string.
+	return btoa(
+		outputVector.reduce(
+			(data, byte) => data + String.fromCharCode(byte),
+			""
 		)
-		const passwordBasedKey = await getPasswordBasedKey(password)
-		const aesKey = await deriveKey(passwordBasedKey, saltVector, "encrypt")
-		const encryptedDataVector = await webcrypto.subtle.encrypt(
-			{
-				name: "AES-GCM",
-				iv: initializationVector
-			},
-			aesKey,
-			encoder.encode(data)
-		)
-		const encryptedDataUint8Array = new Uint8Array(encryptedDataVector)
-		const outputVector = new Uint8Array(
-			saltVector.byteLength +
-				initializationVector.byteLength +
-				encryptedDataUint8Array.byteLength
-		)
-		outputVector.set(saltVector, 0)
-		outputVector.set(initializationVector, saltVector.byteLength)
-		outputVector.set(
-			encryptedDataUint8Array,
-			saltVector.byteLength + initializationVector.byteLength
-		)
-		// Convert Uint8Array to base64 encoded string.
-		return btoa(
-			outputVector.reduce(
-				(data, byte) => data + String.fromCharCode(byte),
-				""
-			)
-		)
-	} catch (error) {
-		if (error instanceof Error) warn(error.message)
-		else warn(error)
-		throw error
-	}
+	)
 }
