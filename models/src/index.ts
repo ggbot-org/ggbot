@@ -130,7 +130,8 @@ export type {
 	RenameStrategy,
 	Strategy,
 	StrategyKey,
-	StrategyKind
+	StrategyKind,
+	UpsertStrategyFrequency
 } from "./strategy.js"
 export {
 	isCopyStrategyInput,

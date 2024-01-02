@@ -41,7 +41,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { strategyId } = useContext(StrategyContext)
+	const { strategyId, strategyKey } = useContext(StrategyContext)
 	const { hasActiveSubscription } = useSubscription()
 	const { accountStrategies, refetchAccountStrategies } =
 		useContext(StrategiesContext)
@@ -171,7 +171,7 @@ export const Schedulings: FC = () => {
 	}, [formatMessage, hasActiveSubscription, toast])
 
 	const onClickSave = useCallback<ButtonOnClick>(() => {
-		if (!strategyId) return
+		if (!strategyKey) return
 		if (!hasActiveSubscription) {
 			toast.warning(
 				formatMessage({ id: "Schedulings.noActiveSubscription" })
@@ -180,15 +180,15 @@ export const Schedulings: FC = () => {
 		}
 		if (!canSave) return
 		WRITE.request({
-			strategyId,
-			schedulings: wantedSchedulings
+			schedulings: wantedSchedulings,
+			...strategyKey
 		})
 	}, [
 		WRITE,
 		canSave,
 		formatMessage,
 		hasActiveSubscription,
-		strategyId,
+		strategyKey,
 		toast,
 		wantedSchedulings
 	])

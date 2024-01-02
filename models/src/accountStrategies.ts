@@ -37,6 +37,8 @@ export type RenameAccountStrategiesItem = (
 ) => Promise<UpdateTime>
 
 type WriteAccountStrategiesItemSchedulingsInput = AccountStrategyItemKey &
+	// Need also `strategyKind` in order to write suggested frequency to strategy.
+	Pick<AccountStrategyKey, "strategyKind"> &
 	Pick<AccountStrategy, "schedulings">
 
 export const isWriteAccountStrategiesItemSchedulingsInput =

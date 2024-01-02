@@ -1,8 +1,10 @@
 import {
 	accountStrategiesModifier,
+	AccountStrategy,
 	createdNow,
 	DeleteAccountStrategiesItem,
 	deletedNow,
+	Frequency,
 	InsertAccountStrategiesItem,
 	ReadAccountStrategies,
 	RenameAccountStrategiesItem,
@@ -15,6 +17,7 @@ import {
 
 import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
+import { upsertStrategyFrequency } from "./strategy.js"
 import { readSubscription } from "./subscription.js"
 
 export const readAccountStrategies: ReadAccountStrategies = (arg) =>
@@ -50,12 +53,25 @@ export const renameAccountStrategiesItem: RenameAccountStrategiesItem = async ({
 }
 
 export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings =
-	async ({ accountId, strategyId, schedulings }) => {
+	async ({ accountId, strategyId, strategyKind, schedulings }) => {
 		const items = (await readAccountStrategies({ accountId })) ?? []
-		const data = items.map((item) => {
-			if (item.strategyId !== strategyId) return item
-			return { ...item, schedulings }
-		})
+		const data: AccountStrategy[] = []
+		let suggestedFrequency: Frequency | undefined
+		for (const item of items) {
+			if (item.strategyId !== strategyId) {
+				data.push(item)
+				continue
+			}
+			data.push({ ...item, schedulings })
+			// Use first frequency as `suggestedFrequency`.
+			suggestedFrequency = schedulings[0]?.frequency
+		}
+		if (suggestedFrequency)
+			await upsertStrategyFrequency({
+				strategyId,
+				strategyKind,
+				frequency: suggestedFrequency
+			})
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 

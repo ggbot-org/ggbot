@@ -12,7 +12,10 @@ import {
 	ReadStrategy,
 	ReadStrategyAccountId,
 	RenameStrategy,
-	throwIfInvalidName
+	Strategy,
+	StrategyKey,
+	throwIfInvalidName,
+	UpsertStrategyFrequency
 } from "@workspace/models"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
@@ -70,6 +73,18 @@ export const copyStrategy: CopyStrategy = async ({
 export const readStrategy: ReadStrategy = (arg) =>
 	READ<ReadStrategy>(pathname.strategy(arg))
 
+const readStrategyOrThrow = async (
+	strategyKey: StrategyKey
+): Promise<Strategy> => {
+	const data = await readStrategy(strategyKey)
+	if (!data)
+		throw new ErrorStrategyItemNotFound({
+			type: "Strategy",
+			...strategyKey
+		})
+	return data
+}
+
 /** Get `accountId` of strategy. */
 export const readStrategyAccountId: ReadStrategyAccountId = async (
 	strategyKey
@@ -77,13 +92,7 @@ export const readStrategyAccountId: ReadStrategyAccountId = async (
 	const { strategyId } = strategyKey
 	const cachedData = strategyAccountIdCache.get(strategyId)
 	if (cachedData) return cachedData
-	const data = await readStrategy(strategyKey)
-	if (!data)
-		throw new ErrorStrategyItemNotFound({
-			type: "Strategy",
-			...strategyKey
-		})
-	const { accountId } = data
+	const { accountId } = await readStrategyOrThrow(strategyKey)
 	strategyAccountIdCache.set(strategyId, accountId)
 	return accountId
 }
@@ -94,12 +103,7 @@ export const renameStrategy: RenameStrategy = async ({
 	...strategyKey
 }) => {
 	throwIfInvalidName(name)
-	const strategy = await readStrategy(strategyKey)
-	if (!strategy)
-		throw new ErrorStrategyItemNotFound({
-			type: "Strategy",
-			...strategyKey
-		})
+	const strategy = await readStrategyOrThrow(strategyKey)
 	const normalizedName = normalizeName(name)
 	const { strategyId } = strategyKey
 	if (strategy.accountId === accountId) {
@@ -126,4 +130,18 @@ export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
 	await DELETE(pathname.strategy(strategyKey))
 	await deleteStrategyFlow(accountStrategyKey)
 	return await deleteAccountStrategiesItem(accountStrategyKey)
+}
+
+export const upsertStrategyFrequency: UpsertStrategyFrequency = async ({
+	frequency,
+	...strategyKey
+}) => {
+	const strategy = await readStrategyOrThrow(strategyKey)
+	const previousFrequency = strategy.frequency
+	if (
+		!previousFrequency ||
+		(previousFrequency.every !== frequency.every &&
+			previousFrequency.interval !== frequency.interval)
+	)
+		await WRITE(pathname.strategy(strategyKey), { ...strategy, frequency })
 }

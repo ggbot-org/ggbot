@@ -2,6 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Account, AccountKey, isAccountKey } from "./account.js"
 import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
+import { Frequency, isFrequency } from "./frequency.js"
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, DeletionTime, UpdateTime } from "./time.js"
@@ -15,14 +16,24 @@ export type Strategy = Item &
 	AccountKey & {
 		readonly kind: StrategyKind
 		name: Name
+		/**
+		 * Optional scheduling frequency.
+		 *
+		 * When the strategy is scheduled, the first scheduling is write here to
+		 * be used as suggestion when another user clones the strategy.
+		 */
+		frequency?: Frequency | undefined
 	}
 
 export const isStrategy = objectTypeGuard<Strategy>(
-	({ id, name, kind, ...accountKey }) =>
+	({ id, name, kind, frequency, ...accountKey }) =>
 		isItemId(id) &&
 		isAccountKey(accountKey) &&
 		isStrategyKind(kind) &&
-		isName(name)
+		isName(name) &&
+		frequency === undefined
+			? true
+			: isFrequency(frequency)
 )
 
 export const newStrategy = ({
@@ -80,6 +91,12 @@ export const isRenameStrategyInput = objectTypeGuard<RenameStrategyInput>(
 )
 
 export type RenameStrategy = (arg: RenameStrategyInput) => Promise<UpdateTime>
+
+type UpsertStrategyFrequencyInput = StrategyKey & { frequency: Frequency }
+
+export type UpsertStrategyFrequency = (
+	arg: UpsertStrategyFrequencyInput
+) => Promise<void>
 
 type DeleteStrategyInput = AccountStrategyKey
 
