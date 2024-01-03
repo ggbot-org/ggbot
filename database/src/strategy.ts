@@ -6,6 +6,7 @@ import {
 	DeleteStrategy,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
+	frequenciesAreEqual,
 	newAccountStrategy,
 	newStrategy,
 	normalizeName,
@@ -15,8 +16,7 @@ import {
 	Strategy,
 	StrategyKey,
 	throwIfInvalidName,
-	UpsertStrategyFrequency
-} from "@workspace/models"
+	UpsertStrategyFrequency} from "@workspace/models"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
 import {
@@ -31,16 +31,16 @@ const strategyAccountIdCache = new CacheMap<Account["id"]>()
 
 export const createStrategy: CreateStrategy = async ({
 	accountId,
-	kind,
-	name
+	name,
+	...rest
 }) => {
 	throwIfInvalidName(name)
 	const strategy = newStrategy({
-		kind,
+		accountId,
 		name,
-		accountId
+		...rest
 	})
-	const strategyKey = { strategyId: strategy.id, strategyKind: kind }
+	const strategyKey = { strategyId: strategy.id, strategyKind: strategy.kind }
 	await WRITE(pathname.strategy(strategyKey), strategy)
 	const accountStrategy = newAccountStrategy({ name, ...strategyKey })
 	await insertAccountStrategiesItem({ accountId, item: accountStrategy })
@@ -49,18 +49,25 @@ export const createStrategy: CreateStrategy = async ({
 
 export const copyStrategy: CopyStrategy = async ({
 	accountId,
-	name,
-	...strategyKey
+	strategyId,
+	strategyKind,
+	name
 }) => {
+	const sourceStrategy = await readStrategyOrThrow({
+		strategyId,
+		strategyKind
+	})
+
 	const strategy = await createStrategy({
 		accountId,
-		kind: strategyKey.strategyKind,
-		name
+		kind: strategyKind,
+		name,
+		frequency: sourceStrategy.frequency
 	})
 
 	await copyStrategyFlow({
 		accountId,
-		source: strategyKey,
+		source: { strategyId, strategyKind },
 		target: {
 			strategyId: strategy.id,
 			strategyKind: strategy.kind
@@ -137,11 +144,6 @@ export const upsertStrategyFrequency: UpsertStrategyFrequency = async ({
 	...strategyKey
 }) => {
 	const strategy = await readStrategyOrThrow(strategyKey)
-	const previousFrequency = strategy.frequency
-	if (
-		!previousFrequency ||
-		(previousFrequency.every !== frequency.every &&
-			previousFrequency.interval !== frequency.interval)
-	)
-		await WRITE(pathname.strategy(strategyKey), { ...strategy, frequency })
+	if (frequenciesAreEqual(frequency, strategy.frequency)) return
+	await WRITE(pathname.strategy(strategyKey), { ...strategy, frequency })
 }

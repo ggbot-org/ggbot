@@ -36,7 +36,7 @@ export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
 
 	const { flowViewGraph } = useContext(StrategyFlowContext)
-	const { strategyKey, strategyKind, strategyName } =
+	const { strategy, strategyKey, strategyKind, strategyName } =
 		useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
 
@@ -61,6 +61,7 @@ export const Backtesting: FC = () => {
 
 	let disabled = false
 	if (isRunning || isPaused) disabled = true
+	if (!strategy) disabled = true
 	if (!hasFlow) disabled = true
 
 	const [frequencyArg, setFrequencyArg] =
@@ -158,6 +159,13 @@ export const Backtesting: FC = () => {
 	const onClickResume = useCallback(() => {
 		dispatch({ type: "RESUME" })
 	}, [dispatch])
+
+	useEffect(() => {
+		if (!strategy) return
+		const suggestedFrequency = strategy.frequency
+		if (isFrequency(suggestedFrequency))
+			dispatch({ type: "SET_FREQUENCY", frequency: suggestedFrequency })
+	}, [dispatch, strategy])
 
 	useEffect(() => {
 		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))

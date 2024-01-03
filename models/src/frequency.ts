@@ -35,3 +35,8 @@ export const isFrequency = objectTypeGuard<Frequency>(
 )
 
 export const everyOneHour = (): Frequency => ({ every: 1, interval: "1h" })
+
+export const frequenciesAreEqual = (a: Frequency, b: unknown): boolean => {
+	if (!isFrequency(b)) return false
+	return a.every === b.every && a.interval === b.interval
+}

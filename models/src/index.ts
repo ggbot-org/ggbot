@@ -78,6 +78,7 @@ export {
 export type { Frequency, FrequencyInterval } from "./frequency.js"
 export {
 	everyOneHour,
+	frequenciesAreEqual,
 	frequencyIntervalDuration,
 	isFrequency,
 	isFrequencyInterval
@@ -137,7 +138,6 @@ export {
 	isCopyStrategyInput,
 	isCreateStrategyInput,
 	isDeleteStrategyInput,
-	isReadStrategyInput,
 	isRenameStrategyInput,
 	isStrategy,
 	isStrategyKey,
