@@ -1,9 +1,9 @@
-# ggbot2 environment variables
+# Environment variables
 
 The following environment variables are used:
 
 -   `AUTHENTICATION_SECRET`: used by APIs for authentication.
--   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, must be keys for _ggbot2-devops_ user.
+-   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, are AWS CLI credentials for [_devops_ account](../docs/aws-boostrap.md#devops-account).
 -   `AWS_ACCOUNT_ID`: used locally for devops.
 -   `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
 -   `AWS_DATA_REGION`: for example `eu-central-1`.
@@ -20,7 +20,7 @@ The following environment variables are used:
 A complete _.envrc_ file looks like the following
 
 ```sh
-export DNS_DOMAIN=example.org
+export DNS_DOMAIN=example.com
 
 export PROJECT_SHORT_NAME=brand
 
@@ -36,7 +36,7 @@ export DEPLOY_STAGE=main
 
 export AUTHENTICATION_SECRET=s3cret
 
-export BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com
+export BINANCE_PROXY_BASE_URL=https://binance-proxy.example.com
 export BINANCE_PROXY_ELASTIC_IPS=3.65.45.176,3.68.165.141,3.77.223.177
 
 export STRIPE_SECRET_KEY=xxx

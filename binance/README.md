@@ -1,4 +1,4 @@
-# ggbot2 Binance integration
+# Binance integration
 
 Official Binance API online documentation starts [here](https://binance-docs.github.io/apidocs/spot/en/#introduction).
 
