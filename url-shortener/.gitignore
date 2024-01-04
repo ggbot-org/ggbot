@@ -1,4 +1,4 @@
 node_modules/
-temp/
 public/
+temp/
 !public/robots.txt
