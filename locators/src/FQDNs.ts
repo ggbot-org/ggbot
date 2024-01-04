@@ -23,38 +23,34 @@ export class FQDN {
 	readonly deployStage: DeployStage
 	readonly dnsDomain: string
 
-	constructor(deployStage: DeployStage, dnsDomain: string) {
+	constructor(
+		deployStage: FQDN["deployStage"],
+		dnsDomain: FQDN["dnsDomain"]
+	) {
 		this.deployStage = deployStage
 		this.dnsDomain = dnsDomain
 	}
 
 	get apiDomain() {
-		const { deployStage, dnsDomain } = this
-		switch (deployStage) {
-			case "main":
-				return `api.${dnsDomain}`
-			case "next":
-				return `api-next.${dnsDomain}`
-			case "local":
-				return `api-local.${dnsDomain}`
+		const subDomain: Record<DeployStage, string> = {
+			main: "api",
+			next: "api-next",
+			local: "api-local"
 		}
+		return `${subDomain[this.deployStage]}.${this.dnsDomain}`
 	}
 
 	get authDomain() {
-		const { deployStage, dnsDomain } = this
-		switch (deployStage) {
-			case "main":
-				return `auth.${dnsDomain}`
-			case "next":
-				return `auth-next.${dnsDomain}`
-			case "local":
-				return `auth-local.${dnsDomain}`
+		const subDomain: Record<DeployStage, string> = {
+			main: "auth",
+			next: "auth-next",
+			local: "auth-local"
 		}
+		return `${subDomain[this.deployStage]}.${this.dnsDomain}`
 	}
 
 	get webappDomain() {
-		const { deployStage, dnsDomain } = this
-		return FQDN.webappDomain(deployStage, dnsDomain)
+		return FQDN.webappDomain(this.deployStage, this.dnsDomain)
 	}
 
 	get urlShortenerDomain() {
@@ -63,6 +59,7 @@ export class FQDN {
 
 	static webappDomain(deployStage: DeployStage, dnsDomain: string) {
 		if (deployStage === "main") return `www.${dnsDomain}`
+		// Both `next` and `local` deploy stages point to "next" webapp.
 		return `next.${dnsDomain}`
 	}
 }
