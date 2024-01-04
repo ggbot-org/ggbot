@@ -1,0 +1,27 @@
+{
+  "name": "@workspace/end-to-end-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check_types": "tsc --noEmit --project .",
+    "end-to-end-tests": "npm run playwright_test",
+    "lint": "eslint --fix --ext .ts src/",
+    "playwright_install": "playwright install",
+    "playwright_test": "playwright test",
+    "playwright_test--ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@workspace/env": "0.0.0",
+    "@workspace/locators": "0.0.0"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0",
+    "eslint-plugin-playwright": "0.21.0"
+  },
+  "optionalDependencies": {
+    "@playwright/test": "1.40.1",
+    "playwright": "1.40.1"
+  }
+}

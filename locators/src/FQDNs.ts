@@ -7,8 +7,11 @@ import { DeployStage } from "@workspace/models"
  *
  * ```ts
  * import { DeployStage } from "@workspace/models"
+ * import { ENV } from "@workspace/env"
  *
- * const dnsDomain = "example.com"
+ * const dnsDomain = ENV.DNS_DOMAIN()
+ *
+ * // Could be provided also by `ENV.DEPLOY_STAGE()`
  * const deployStage: DeployStage = "main"
  *
  * const fqdn = new FQDN(deployStage, dnsDomain)
