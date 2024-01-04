@@ -2,7 +2,7 @@
 
 Create an [Amazon Web Services](https://aws.amazon.com) account and perform the following instructions to set it up.
 
-See [env/README.md](../env/README.md) for information about environment variables mentioned below.
+See [env/README.md](../../env/README.md) for information about environment variables mentioned below.
 
 Get the AWS account id and set the `AWS_ACCOUNT_ID` environment variable.
 

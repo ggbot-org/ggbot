@@ -1,0 +1,16 @@
+{
+	"config": {
+		"code-block-style": false,
+		"line-length": false,
+		"list-marker-space": false,
+		"no-bare-urls": false,
+		"no-hard-tabs": false,
+		"no-inline-html": false,
+		"relative-links": true,
+		"ul-indent": false
+	},
+	"customRules": [
+		"markdownlint-rule-github-internal-links",
+		"markdownlint-rule-relative-links"
+	]
+}

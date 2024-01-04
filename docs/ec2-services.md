@@ -85,25 +85,21 @@ This will create a /etc/systemd/system/ggbot2.service.d/override.conf file, add 
 
 For example for _binance-proxy_ service
 
-```
-[Service]
-Environment="AWS_ACCOUNT_ID=888671539518"
-Environment="AWS_DATA_REGION=eu-central-1"
-Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
-Environment="DEPLOY_STAGE=main"
-Environment="DNS_DOMAIN=ggbot2.com"
-Environment="PROJECT_SHORT_NAME=ggbot2"
-```
+    [Service]
+    Environment="AWS_ACCOUNT_ID=888671539518"
+    Environment="AWS_DATA_REGION=eu-central-1"
+    Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
+    Environment="DEPLOY_STAGE=main"
+    Environment="DNS_DOMAIN=ggbot2.com"
+    Environment="PROJECT_SHORT_NAME=ggbot2"
 
 For example for _executor_ service
 
-```
-[Service]
-Environment="AWS_ACCOUNT_ID=888671539518"
-Environment="DEPLOY_STAGE=main"
-Environment="DNS_DOMAIN=ggbot2.com"
-Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
-```
+    [Service]
+    Environment="AWS_ACCOUNT_ID=888671539518"
+    Environment="DEPLOY_STAGE=main"
+    Environment="DNS_DOMAIN=ggbot2.com"
+    Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 

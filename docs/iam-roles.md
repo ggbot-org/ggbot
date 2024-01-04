@@ -11,7 +11,7 @@ When creating a IAM role for an EC2 service, select:
 
 Create a IAM role to be used on AMI creation with name `ggbot2-ec2-base-role`.
 
-Add [CodeCommit policy](#codecommit-policy).
+Add [CodeCommit policy](#codecommit).
 
 ### binance-proxy
 
@@ -19,7 +19,7 @@ Create a IAM role for _binance-proxy_ service with name `ggbot2-binance-proxy-ro
 
 Add policies:
 
--   [CodeCommit policy](#codecommit-policy)
+-   [CodeCommit policy](#codecommit)
 -   [S3 data policy](#elastic-ips)
 
 ### executor
@@ -28,7 +28,7 @@ Create a IAM role for _executor_ service with name `ggbot2-executor-role`.
 
 Add policies:
 
--   [CodeCommit policy](#codecommit-policy)
+-   [CodeCommit policy](#codecommit)
 -   [Elastic IPs policy](#s3-data)
 
 ## Policies

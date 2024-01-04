@@ -38,10 +38,8 @@ A basic workspace package is a folder with the following files:
 
 Create a gitignore file with at least the following content
 
-```
-dist/
-temp/
-```
+    dist/
+    temp/
 
 ### package.json
 

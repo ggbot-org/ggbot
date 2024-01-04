@@ -10,7 +10,7 @@
     -   [AWS EC2](#aws-ec2)
     -   [AWS IAM](#aws-iam)
     -   [AWS S3](#aws-s3)
--   [Google Search Console](google-search-console)
+-   [Google Search Console](#google-search-console)
 -   [Node.js](#nodejs)
 -   [npm workspaces](#npm-workspaces)
 -   [NVM](#nvm)
@@ -20,7 +20,6 @@
     -   [@types/node](#typesnode)
     -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
     -   [@typescript-eslint/parser](#typescript-eslintparser)
-    -   [@utrustdev/utrust-ts-library](utrustdevutrust-ts-library)
     -   [aws-sdk](#aws-sdk)
     -   [country-isocode2](#country-isocode2)
     -   [eslint](#eslint)
@@ -155,10 +154,6 @@ https://www.npmjs.com/package/@typescript-eslint/eslint-plugin
 ### @typescript-eslint/parser
 
 https://www.npmjs.com/package/@typescript-eslint/parser
-
-### @utrustdev/utrust-ts-library
-
-https://www.npmjs.com/package/@utrustdev/utrust-ts-library
 
 ### aws-sdk
 

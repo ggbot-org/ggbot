@@ -3,7 +3,7 @@
 The following environment variables are used:
 
 -   `AUTHENTICATION_SECRET`: used by APIs for authentication.
--   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, are AWS CLI credentials for [_devops_ account](../docs/aws-boostrap.md#devops-account).
+-   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, are AWS CLI credentials for [_devops_ account](../infrastructure/docs/aws-boostrap.md#devops-account).
 -   `AWS_ACCOUNT_ID`: used locally for devops.
 -   `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
 -   `AWS_DATA_REGION`: for example `eu-central-1`.
@@ -15,7 +15,7 @@ The following environment variables are used:
 -   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
 -   `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`: used by Strupe APIs for payments.
 
-# .envrc file
+## .envrc file
 
 A complete _.envrc_ file looks like the following
 

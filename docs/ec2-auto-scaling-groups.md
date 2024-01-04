@@ -1,6 +1,6 @@
 # EC2 Auto Scaling groups
 
-Every one of the [EC2 services](./ec2_services.md) has an [Auto Scaling group](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto_scaling_groups.html) associated.
+Every one of the [EC2 services](./ec2-services.md) has an [Auto Scaling group](https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto_scaling_groups.html) associated.
 
 ## Launch Template
 

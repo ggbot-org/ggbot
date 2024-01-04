@@ -77,6 +77,9 @@
   },
   "devDependencies": {
     "lint-staged": "13.2.2",
+    "markdownlint-cli2": "0.11.0",
+    "markdownlint-rule-github-internal-links": "0.1.0",
+    "markdownlint-rule-relative-links": "2.1.2",
     "pre-commit": "1.2.2",
     "prettier": "3.0.3",
     "prettier-plugin-jsdoc": "1.1.1",
@@ -88,7 +91,11 @@
       "prettier --write",
       "eslint --fix"
     ],
-    "*.{cjs,css,json,md,scss,sh}": [
+    "*.{md}": [
+      "prettier --write",
+      "markdownlint-cli2 --fix"
+    ],
+    "*.{cjs,css,json,jsonc,scss,sh}": [
       "prettier --write"
     ]
   },
