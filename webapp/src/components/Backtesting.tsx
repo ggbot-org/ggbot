@@ -163,9 +163,8 @@ export const Backtesting: FC = () => {
 	useEffect(() => {
 		if (!strategy) return
 		const suggestedFrequency = strategy.frequency
-		if (isFrequency(suggestedFrequency))
-			dispatch({ type: "SET_FREQUENCY", frequency: suggestedFrequency })
-	}, [dispatch, strategy])
+		if (suggestedFrequency) setFrequency(suggestedFrequency)
+	}, [setFrequency, strategy])
 
 	useEffect(() => {
 		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))
