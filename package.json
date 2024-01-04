@@ -91,7 +91,7 @@
       "prettier --write",
       "eslint --fix"
     ],
-    "*.{md}": [
+    "*.md": [
       "prettier --write",
       "markdownlint-cli2 --fix"
     ],

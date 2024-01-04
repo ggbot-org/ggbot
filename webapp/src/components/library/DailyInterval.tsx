@@ -1,5 +1,6 @@
 import { classNames } from "_/classNames"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 
 import { DayDropdown, DayDropdownProps } from "./DayDropdown"
 
@@ -7,8 +8,8 @@ export type DailyIntervalProps = Pick<
 	DayDropdownProps,
 	"disabled" | "min" | "max"
 > & {
-	start: Pick<DayDropdownProps, "day" | "label" | "setDay">
-	end: Pick<DayDropdownProps, "day" | "label" | "setDay">
+	start: Pick<DayDropdownProps, "day" | "setDay">
+	end: Pick<DayDropdownProps, "day" | "setDay">
 }
 
 export const DailyInterval: FC<DailyIntervalProps> = ({
@@ -18,11 +19,13 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 	start,
 	end
 }) => {
+	const { formatMessage } = useIntl()
+
 	const [activeDropdown, setActiveDropdown] = useState<
 		"start" | "end" | undefined
 	>()
 
-	const close = useCallback<DayDropdownProps["close"]>(() => {
+	const closeDropdowns = useCallback<DayDropdownProps["close"]>(() => {
 		setActiveDropdown(undefined)
 	}, [])
 
@@ -42,12 +45,21 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 		})
 	}, [])
 
+	// Close both day dropdowns on outside click.
+	useEffect(() => {
+		window.addEventListener("click", closeDropdowns)
+		return () => {
+			window.removeEventListener("click", closeDropdowns)
+		}
+	}, [closeDropdowns])
+
 	return (
 		<div className={classNames("DailyInterval")}>
 			<DayDropdown
-				close={close}
+				close={closeDropdowns}
 				disabled={disabled}
 				isActive={activeDropdown === "start"}
+				label={formatMessage({ id: "DailyInterval.from" })}
 				max={end.day}
 				min={min}
 				onClick={onClickStart}
@@ -56,9 +68,10 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 
 			<DayDropdown
 				isRight
-				close={close}
+				close={closeDropdowns}
 				disabled={disabled}
 				isActive={activeDropdown === "end"}
+				label={formatMessage({ id: "DailyInterval.to" })}
 				min={start.day}
 				max={max}
 				onClick={onClickEnd}

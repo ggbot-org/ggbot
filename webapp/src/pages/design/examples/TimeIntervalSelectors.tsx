@@ -10,12 +10,10 @@ export const TimeIntervalSelectors: FC = () => {
 	return (
 		<DailyInterval
 			start={{
-				label: "From",
 				setDay: setStartDay,
 				day: startDay
 			}}
 			end={{
-				label: "From",
 				setDay: setEndDay,
 				day: endDay
 			}}

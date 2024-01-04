@@ -190,20 +190,8 @@ export const Backtesting: FC = () => {
 
 						<DailyInterval
 							disabled={disabled}
-							start={{
-								day: dayInterval.start,
-								label: formatMessage({
-									id: "DailyInterval.from"
-								}),
-								setDay: setStart
-							}}
-							end={{
-								day: dayInterval.end,
-								label: formatMessage({
-									id: "DailyInterval.to"
-								}),
-								setDay: setEnd
-							}}
+							start={{ day: dayInterval.start, setDay: setStart }}
+							end={{ day: dayInterval.end, setDay: setEnd }}
 							max={maxDay}
 						/>
 

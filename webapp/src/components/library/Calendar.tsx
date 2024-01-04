@@ -64,7 +64,7 @@ export const Calendar: FC<CalendarProps> = ({
 
 	const [monthOffset, setMonthOffset] = useState(0)
 
-	const { lastDate, dateCells, monthName, year } = useMemo(() => {
+	const { firstDate, lastDate, dateCells, monthName, year } = useMemo(() => {
 		const firstDate = new Date(selectedDay)
 		firstDate.setDate(1)
 		firstDate.setMonth(firstDate.getMonth() + monthOffset)
@@ -161,7 +161,7 @@ export const Calendar: FC<CalendarProps> = ({
 				}
 			)
 
-		return { lastDate, dateCells, monthName, year }
+		return { firstDate, lastDate, dateCells, monthName, year }
 	}, [
 		formatDate,
 		min,
@@ -172,21 +172,25 @@ export const Calendar: FC<CalendarProps> = ({
 		setMonthOffset
 	])
 
+	const isLastMonth = max && dateToDay(lastDate) >= max
+	const isFirstMonth = min && dateToDay(firstDate) <= min
+
 	const onClickPrevious = useCallback<MouseEventHandler<HTMLDivElement>>(
 		(event) => {
 			event.stopPropagation()
+			if (isFirstMonth) return
 			setMonthOffset((n) => n - 1)
 		},
-		[setMonthOffset]
+		[isFirstMonth, setMonthOffset]
 	)
 
 	const onClickNext = useCallback<MouseEventHandler<HTMLDivElement>>(
 		(event) => {
 			event.stopPropagation()
-			if (max && lastDate.toJSON().substring(0, 10) >= max) return
+			if (isLastMonth) return
 			setMonthOffset((n) => n + 1)
 		},
-		[setMonthOffset, lastDate, max]
+		[isLastMonth, setMonthOffset]
 	)
 
 	return (
@@ -198,7 +202,9 @@ export const Calendar: FC<CalendarProps> = ({
 				}}
 			>
 				<div
-					className={classNames("Calendar__head-icon")}
+					className={classNames("Calendar__head-icon", {
+						"has-text-grey-lighter": isFirstMonth
+					})}
 					onClick={onClickPrevious}
 				>
 					<Icon name="caret-left" />
@@ -211,7 +217,9 @@ export const Calendar: FC<CalendarProps> = ({
 				<div className={classNames("Calendar__head-text")}>{year}</div>
 
 				<div
-					className={classNames("Calendar__head-icon")}
+					className={classNames("Calendar__head-icon", {
+						"has-text-grey-lighter": isLastMonth
+					})}
 					onClick={onClickNext}
 				>
 					<Icon name="caret-right" />
