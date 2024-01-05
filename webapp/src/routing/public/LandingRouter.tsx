@@ -1,28 +1,24 @@
 import { mount } from "_/react/mount"
+import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 
 import { HomePage } from "../../pages/HomePage"
 import { PrivacyPage } from "../../pages/Privacy"
 import { TermsPage } from "../../pages/Terms"
-import { homepageHtmlPathname, privacyHtmlPathname, termsHtmlPathname}from "./pages"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
-	switch (true) {
-		case pathname === "/":
-		case pathname === homepageHtmlPathname:
+if (pathname==="/"||pathname==="webapp.homepage.pathname")
 			return <HomePage />
 
-		case pathname === termsHtmlPathname:
-			return <TermsPage />
-
-		case pathname === privacyHtmlPathname:
+if (pathname===webapp.privacy.pathname)
 			return <PrivacyPage />
 
-		default:
-			return null
-	}
+if (pathname===webapp.terms.pathname)
+			return <TermsPage />
+
+return null
 }
 
 mount(Router)

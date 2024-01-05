@@ -11,13 +11,3 @@ export class AuthBaseURL extends URL {
 		super(`https://${fqdn.authDomain}`)
 	}
 }
-
-export class WebappBaseURL extends URL {
-	constructor(fqdn: FQDN) {
-		super(
-			fqdn.deployStage === "local"
-				? "http://localhost:8000"
-				: `https://${fqdn.webappDomain}`
-		)
-	}
-}

@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit --project .",
-    "end-to-end-tests": "npm run playwright_test",
     "lint": "eslint --fix --ext .ts src/",
     "playwright_install": "playwright install",
+    "playwright_show-report": "playwright show-report",
     "playwright_test": "playwright test",
     "playwright_test--ui": "playwright test --ui"
   },

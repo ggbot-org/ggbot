@@ -1,6 +1,6 @@
 import { Container, Content, Section, Title } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import { href } from "_/routing/public/hrefs"
+import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -75,7 +75,7 @@ export const TermsPage: FC = () => (
 							id="Terms.privacy"
 							values={{
 								a: (text) => (
-									<a href={href.privacyPage()}>{text}</a>
+									<a href={webapp.privacy.pathname}>{text}</a>
 								),
 								em: (chunks) => <em>{chunks}</em>
 							}}

@@ -1,6 +1,6 @@
 import { classNames } from "_/classNames"
 import { dayFormat } from "_/i18n/formats"
-import { href } from "_/routing/public/hrefs"
+import { webapp } from "_/routing/webapp"
 import { memo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -14,13 +14,13 @@ export const Footer = memo(() => {
 			<footer className={classNames("footer")}>
 				<ul>
 					<li>
-						<a href={href.privacyPage()}>
+						<a href={webapp.privacy.pathname}>
 							<FormattedMessage id="Privacy.title" />
 						</a>
 					</li>
 
 					<li>
-						<a href={href.termsPage()}>
+						<a href={webapp.terms.pathname}>
 							<FormattedMessage id="Terms.title" />
 						</a>
 					</li>

@@ -1,9 +1,6 @@
 import { defineConfig, devices } from "@playwright/test"
-import { ENV } from "@workspace/env"
-import { FQDN, WebappBaseURL } from "@workspace/locators"
 
-const fqdn = new FQDN("next", ENV.DNS_DOMAIN())
-const baseURL = new WebappBaseURL(fqdn).toString()
+import { webapp } from "./src/webapp.js"
 
 /** @see {@link https://playwright.dev/docs/test-configuration} */
 // ts-prune-ignore-next
@@ -27,5 +24,5 @@ export default defineConfig({
 	],
 	reporter: "html",
 	testDir: "./src",
-	use: { baseURL }
+	use: { baseURL: webapp.baseURL.toString() }
 })
