@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 
@@ -23,38 +23,32 @@ export const invalidIdentifierStrings = [
 	stringWithLineBreaks
 ]
 
-void describe("isFiniteString", () => {
-	void test("validates FiniteString", () => {
-		assert.ok(stringTooLong.length > stringMaxLength)
+void test("isFiniteString", () => {
+	assert.ok(stringTooLong.length > stringMaxLength)
 
-		assertEqual<unknown, boolean>(isFiniteString, [
-			{ input: fooString, output: true },
-			{ input: stringWithLineBreaks, output: true },
-			{ input: emptyString, output: true },
-			{ input: stringTooLong, output: false }
-		])
-	})
+	assertEqual<unknown, boolean>(isFiniteString, [
+		{ input: fooString, output: true },
+		{ input: stringWithLineBreaks, output: true },
+		{ input: emptyString, output: true },
+		{ input: stringTooLong, output: false }
+	])
 })
 
-void describe("isNonEmptyString", () => {
-	void test("validates NonEmptyString", () => {
-		assertEqual<unknown, boolean>(isNonEmptyString, [
-			{ input: fooString, output: true },
-			{ input: stringWithLineBreaks, output: true },
-			{ input: emptyString, output: false },
-			{ input: stringTooLong, output: false }
-		])
-	})
+void test("isNonEmptyString", () => {
+	assertEqual<unknown, boolean>(isNonEmptyString, [
+		{ input: fooString, output: true },
+		{ input: stringWithLineBreaks, output: true },
+		{ input: emptyString, output: false },
+		{ input: stringTooLong, output: false }
+	])
 })
 
-void describe("isIdentifierString", () => {
-	void test("validates IdentifierString", () => {
-		assertEqual<unknown, boolean>(isIdentifierString, [
-			{ input: fooString, output: true },
-			...invalidIdentifierStrings.map((key) => ({
-				input: { [key]: "value" },
-				output: false
-			}))
-		])
-	})
+void test("isIdentifierString", () => {
+	assertEqual<unknown, boolean>(isIdentifierString, [
+		{ input: fooString, output: true },
+		...invalidIdentifierStrings.map((key) => ({
+			input: { [key]: "value" },
+			output: false
+		}))
+	])
 })

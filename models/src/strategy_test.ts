@@ -1,4 +1,4 @@
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
@@ -21,78 +21,74 @@ export const strategyKey: StrategyKey = {
 	strategyKind: "test"
 }
 
-void describe("isCreateStrategyInput", () => {
-	void test("validates CreateStrategyInput", () => {
-		const accountId = nullId
-		const kind = "test"
-		const name = "Name"
-		assertEqual<Partial<MaybeObject<Strategy>>, boolean>(
-			isCreateStrategyInput,
-			[
-				{
-					input: { accountId, kind, name },
-					output: true
-				},
-				{
-					input: {
-						accountId: invalidId,
-						kind,
-						name
-					},
-					output: false
-				},
-				...invalidNames.map((invalidName) => ({
-					input: {
-						accountId,
-						kind,
-						name: normalizeName(invalidName)
-					},
-					output: false
-				}))
-			]
-		)
-	})
-})
-
-void describe("isStrategy", () => {
-	void test("validates Strategy", () => {
-		const accountId = nullId
-		const kind = "test"
-		const name = "Name"
-		const { whenCreated } = createdNow()
-		assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [
+void test("isCreateStrategyInput", () => {
+	const accountId = nullId
+	const kind = "test"
+	const name = "Name"
+	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(
+		isCreateStrategyInput,
+		[
 			{
-				input: newStrategy({ accountId, kind, name }),
+				input: { accountId, kind, name },
 				output: true
 			},
 			{
 				input: {
-					accountId,
-					id: invalidId,
+					accountId: invalidId,
 					kind,
-					name,
-					whenCreated
-				},
-				output: false
-			},
-			{
-				input: {
-					accountId,
-					id: nullId,
-					whenCreated: "not a timestamp"
+					name
 				},
 				output: false
 			},
 			...invalidNames.map((invalidName) => ({
 				input: {
 					accountId,
-					id: nullId,
 					kind,
-					name: normalizeName(invalidName),
-					whenCreated
+					name: normalizeName(invalidName)
 				},
 				output: false
 			}))
-		])
-	})
+		]
+	)
+})
+
+void test("isStrategy", () => {
+	const accountId = nullId
+	const kind = "test"
+	const name = "Name"
+	const { whenCreated } = createdNow()
+	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [
+		{
+			input: newStrategy({ accountId, kind, name }),
+			output: true
+		},
+		{
+			input: {
+				accountId,
+				id: invalidId,
+				kind,
+				name,
+				whenCreated
+			},
+			output: false
+		},
+		{
+			input: {
+				accountId,
+				id: nullId,
+				whenCreated: "not a timestamp"
+			},
+			output: false
+		},
+		...invalidNames.map((invalidName) => ({
+			input: {
+				accountId,
+				id: nullId,
+				kind,
+				name: normalizeName(invalidName),
+				whenCreated
+			},
+			output: false
+		}))
+	])
 })

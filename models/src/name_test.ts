@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 
@@ -9,25 +9,21 @@ import { isName, normalizeName, throwIfInvalidName } from "./name.js"
 const nameTooLong = "x".repeat(999)
 export const invalidNames = ["", "     ", nameTooLong]
 
-void describe("isName", () => {
-	void test("validates string as name or throws", () => {
-		assertEqual<string, boolean>(isName, [
-			{ input: "valid name", output: true },
-			...invalidNames.map((input) => ({ input, output: false }))
-		])
-	})
+void test("isName", () => {
+	assertEqual<string, boolean>(isName, [
+		{ input: "valid name", output: true },
+		...invalidNames.map((input) => ({ input, output: false }))
+	])
 })
 
 // TODO assertThrows
-void describe("throwIfInvalidName", () => {
-	void test("throws ErrorInvalidArg", () => {
-		[...invalidNames.map(normalizeName)].forEach((value) => {
-			assert.throws(
-				() => {
-					throwIfInvalidName(value)
-				},
-				{ name: "Error", message: ErrorInvalidArg.message("Name") }
-			)
-		})
+void test("throwIfInvalidName", () => {
+	[...invalidNames.map(normalizeName)].forEach((value) => {
+		assert.throws(
+			() => {
+				throwIfInvalidName(value)
+			},
+			{ name: "Error", message: ErrorInvalidArg.message("Name") }
+		)
 	})
 })

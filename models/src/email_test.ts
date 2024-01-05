@@ -55,18 +55,16 @@ void describe("normalizeEmailAddress", () => {
 	})
 })
 
-void describe("isEmailAddress", () => {
-	void test("validates email", () => {
-		[
-			{ input: undefined, output: false },
-			{ input: "not an email", output: false },
-			{ input: "john.smith at gmail.com", output: false },
-			{ input: "john.smith@gmail.com", output: true },
-			{ input: "jOhN.sMiTh@gmail.com", output: true },
-			{ input: "john.smith+label@gmail.com", output: true },
-			{ input: "john.smith@example.co", output: true }
-		].forEach(({ input, output }) => {
-			assert.equal(isEmailAddress(input), output)
-		})
+void test("isEmailAddress", () => {
+	[
+		{ input: undefined, output: false },
+		{ input: "not an email", output: false },
+		{ input: "john.smith at gmail.com", output: false },
+		{ input: "john.smith@gmail.com", output: true },
+		{ input: "jOhN.sMiTh@gmail.com", output: true },
+		{ input: "john.smith+label@gmail.com", output: true },
+		{ input: "john.smith@example.co", output: true }
+	].forEach(({ input, output }) => {
+		assert.equal(isEmailAddress(input), output)
 	})
 })

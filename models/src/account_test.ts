@@ -1,4 +1,4 @@
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
@@ -11,44 +11,42 @@ import { createdNow } from "./time.js"
 
 export const accountKey: AccountKey = { accountId: nullId }
 
-void describe("isAccount", () => {
-	void test("validates Account, name is optional", () => {
-		const email = "user@example.com"
-		const { whenCreated } = createdNow()
-		assertEqual<MaybeObject<Account>, boolean>(isAccount, [
-			{
-				input: newAccount({ email }),
-				output: true
+void test("isAccount", () => {
+	const email = "user@example.com"
+	const { whenCreated } = createdNow()
+	assertEqual<MaybeObject<Account>, boolean>(isAccount, [
+		{
+			input: newAccount({ email }),
+			output: true
+		},
+		{
+			input: newAccount({ email, name: "Name" }),
+			output: true
+		},
+		{
+			input: { id: "not an id", email, whenCreated },
+			output: false
+		},
+		{
+			input: { id: nullId, email: "not an email", whenCreated },
+			output: false
+		},
+		{
+			input: {
+				id: nullId,
+				email,
+				whenCreated: "not a timestamp"
 			},
-			{
-				input: newAccount({ email, name: "Name" }),
-				output: true
+			output: false
+		},
+		...invalidNames.map((invalidName) => ({
+			input: {
+				id: nullId,
+				email,
+				whenCreated,
+				name: normalizeName(invalidName)
 			},
-			{
-				input: { id: "not an id", email, whenCreated },
-				output: false
-			},
-			{
-				input: { id: nullId, email: "not an email", whenCreated },
-				output: false
-			},
-			{
-				input: {
-					id: nullId,
-					email,
-					whenCreated: "not a timestamp"
-				},
-				output: false
-			},
-			...invalidNames.map((invalidName) => ({
-				input: {
-					id: nullId,
-					email,
-					whenCreated,
-					name: normalizeName(invalidName)
-				},
-				output: false
-			}))
-		])
-	})
+			output: false
+		}))
+	])
 })

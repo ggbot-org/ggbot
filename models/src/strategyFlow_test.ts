@@ -1,4 +1,4 @@
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
@@ -10,16 +10,14 @@ import {
 	WriteStrategyFlowInput
 } from "./strategyFlow.js"
 
-void describe("isWriteStrategyFlowInput", () => {
-	void test("validates WriteStrategyFlowInput", () => {
-		assertEqual<Partial<MaybeObject<WriteStrategyFlowInput>>, boolean>(
-			isWriteStrategyFlowInput,
-			[
-				{
-					input: { ...accountStrategyKey, view: welcomeFlow },
-					output: true
-				}
-			]
-		)
-	})
+void test("isWriteStrategyFlowInput", () => {
+	assertEqual<Partial<MaybeObject<WriteStrategyFlowInput>>, boolean>(
+		isWriteStrategyFlowInput,
+		[
+			{
+				input: { ...accountStrategyKey, view: welcomeFlow },
+				output: true
+			}
+		]
+	)
 })
