@@ -5,6 +5,7 @@
 		"module": "esnext",
 		"moduleResolution": "node",
 		"paths": {
+			"_/binance/*": ["./src/binance/*"],
 			"_/logging": ["./src/logging.ts"],
 			"_/storages/*": ["./src/storages/*"]
 		},

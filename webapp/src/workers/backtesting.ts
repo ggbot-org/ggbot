@@ -2,6 +2,8 @@
 /// <reference lib="ES2017" />
 /// <reference lib="webworker" />
 
+import { BinanceExchangeInfoCache } from "_/binance/exchangeInfoCache"
+import { logging } from "_/logging"
 import {
 	BacktestingBinanceClient,
 	BacktestingMessageInData,
@@ -22,9 +24,6 @@ import {
 } from "@workspace/dflow"
 import { newId, Order } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
-
-import { BinanceExchangeInfoCache } from "../binance/exchangeInfoCache"
-import { logging } from "../logging"
 
 const { warn } = logging("backtesting")
 

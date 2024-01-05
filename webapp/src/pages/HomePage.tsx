@@ -10,7 +10,7 @@ import {
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { useGotFirstPageView } from "_/hooks/useGotFirstPageView"
-import { href } from "_/routing/public/hrefs"
+import { webapp } from "_/routing/webapp"
 import { FC, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -18,7 +18,7 @@ export const HomePage: FC = () => {
 	const { gotFirstPageView } = useGotFirstPageView()
 
 	const onClickCallToAction = useCallback(() => {
-		window.location.href = href.userDashboardPage()
+		window.location.href = webapp.user.dashboard.href
 	}, [])
 
 	return (

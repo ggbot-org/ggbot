@@ -1,9 +1,12 @@
 import { Button } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
-import { href } from "_/routing/public/hrefs"
+import { logging } from "_/logging"
+import { webapp } from "_/routing/webapp"
 import { FC, useCallback, useContext, useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+
+const { warn } = logging("ShareStrategy")
 
 export const ShareStrategy: FC = () => {
 	const { formatMessage } = useIntl()
@@ -16,12 +19,12 @@ export const ShareStrategy: FC = () => {
 		if (!strategyKey) return
 		return {
 			title: "ggbot",
-			url: `${window.location.origin}${href.strategyPage(strategyKey)}`,
+			url: webapp.strategy(strategyKey).href,
 			text: strategyName
 		}
 	}, [strategyKey, strategyName])
 
-	const onClick = useCallback(async () => {
+	const onClick = useCallback(() => {
 		try {
 			if (!shareData) return
 			if (
@@ -29,15 +32,21 @@ export const ShareStrategy: FC = () => {
 				"canShare" in navigator &&
 				navigator.canShare(shareData)
 			) {
-				navigator.share(shareData)
+				navigator.share(shareData).catch(warn)
 			} else if ("clipboard" in navigator && shareData.url) {
-				navigator.clipboard.writeText(shareData.url)
-				toast.info(formatMessage({ id: "ShareStrategy.copied" }))
+				navigator.clipboard
+					.writeText(shareData.url)
+					.then(() => {
+						toast.info(
+							formatMessage({ id: "ShareStrategy.copied" })
+						)
+					})
+					.catch(warn)
 			} else {
 				toast.warning(formatMessage({ id: "ShareStrategy.error" }))
 			}
 		} catch (error) {
-			console.error(error)
+			warn(error)
 			toast.warning(formatMessage({ id: "ShareStrategy.error" }))
 		}
 	}, [shareData, toast, formatMessage])

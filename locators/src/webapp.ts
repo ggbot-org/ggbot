@@ -1,3 +1,5 @@
+import { StrategyKey } from "@workspace/models"
+
 import { FQDN } from "./FQDNs.js"
 
 export class WebappBaseURL extends URL {
@@ -33,6 +35,15 @@ const WebappPagePathname = {
 	}
 } as const
 
+const appendStrategyKeyToURLSearchParams = (
+	{ strategyId, strategyKind }: StrategyKey,
+	url: URL
+) => {
+	url.searchParams.append("strategyId", strategyId)
+	url.searchParams.append("strategyKind", strategyKind)
+	return url
+}
+
 /**
  * Defines webapp URLs.
  *
@@ -46,19 +57,51 @@ const WebappPagePathname = {
  */
 export class WebappURLs {
 	baseURL: WebappBaseURL
+
 	constructor(
 		deployStage: FQDN["deployStage"],
 		dnsDomain: FQDN["dnsDomain"]
 	) {
 		this.baseURL = new WebappBaseURL(new FQDN(deployStage, dnsDomain))
 	}
-	get homepage(): URL {
+
+	get homepage() {
 		return new URL(WebappPagePathname.homepage, this.baseURL)
 	}
-	get privacy(): URL {
+
+	get privacy() {
 		return new URL(WebappPagePathname.privacy, this.baseURL)
 	}
-	get terms(): URL {
+
+	get terms() {
 		return new URL(WebappPagePathname.terms, this.baseURL)
+	}
+
+	get user() {
+		const { baseURL } = this
+		return {
+			get dashboard() {
+				return new URL(WebappPagePathname.user.dashboard, baseURL)
+			},
+			copyStrategy(strategyKey: StrategyKey) {
+				return appendStrategyKeyToURLSearchParams(
+					strategyKey,
+					new URL(WebappPagePathname.user.copyStrategy, baseURL)
+				)
+			},
+			strategy(strategyKey: StrategyKey) {
+				return appendStrategyKeyToURLSearchParams(
+					strategyKey,
+					new URL(WebappPagePathname.user.strategy, baseURL)
+				)
+			}
+		}
+	}
+
+	strategy(strategyKey: StrategyKey) {
+		return appendStrategyKeyToURLSearchParams(
+			strategyKey,
+			new URL(WebappPagePathname.strategy, this.baseURL)
+		)
 	}
 }

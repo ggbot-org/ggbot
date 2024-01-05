@@ -3,7 +3,7 @@ import { test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { accountStrategyKey } from "./accountStrategy_test.js"
+import { nullAccountStrategyKey } from "./accountStrategy.js"
 import {
 	isWriteStrategyFlowInput,
 	welcomeFlow,
@@ -15,7 +15,7 @@ void test("isWriteStrategyFlowInput", () => {
 		isWriteStrategyFlowInput,
 		[
 			{
-				input: { ...accountStrategyKey, view: welcomeFlow },
+				input: { ...nullAccountStrategyKey, view: welcomeFlow },
 				output: true
 			}
 		]

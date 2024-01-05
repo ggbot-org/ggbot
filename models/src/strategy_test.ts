@@ -11,19 +11,13 @@ import {
 	isCreateStrategyInput,
 	isStrategy,
 	newStrategy,
-	Strategy,
-	StrategyKey
+	Strategy
 } from "./strategy.js"
 import { createdNow } from "./time.js"
 
-export const strategyKey: StrategyKey = {
-	strategyId: nullId,
-	strategyKind: "test"
-}
-
 void test("isCreateStrategyInput", () => {
 	const accountId = nullId
-	const kind = "test"
+	const kind = "none"
 	const name = "Name"
 	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(
 		isCreateStrategyInput,
@@ -54,7 +48,7 @@ void test("isCreateStrategyInput", () => {
 
 void test("isStrategy", () => {
 	const accountId = nullId
-	const kind = "test"
+	const kind = "none"
 	const name = "Name"
 	const { whenCreated } = createdNow()
 	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [

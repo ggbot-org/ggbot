@@ -3,7 +3,6 @@ import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
 import { useUserApi } from "_/hooks/useUserApi"
 import { logging } from "_/logging"
-import { href } from "_/routing/public/hrefs"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
@@ -206,7 +205,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Go to Homepage on exit.
 	useEffect(() => {
-		if (exited) window.location.href = href.homePage()
+		if (exited) window.location.href = "/"
 	}, [exited])
 
 	useEffect(() => {

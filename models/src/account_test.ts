@@ -3,13 +3,11 @@ import { test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { Account, AccountKey, isAccount, newAccount } from "./account.js"
+import { Account, isAccount, newAccount } from "./account.js"
 import { nullId } from "./item.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
-
-export const accountKey: AccountKey = { accountId: nullId }
 
 void test("isAccount", () => {
 	const email = "user@example.com"

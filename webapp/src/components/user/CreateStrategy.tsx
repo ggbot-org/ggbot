@@ -7,7 +7,8 @@ import {
 	formValues,
 	InputOnChange,
 	Message,
-	OneColumn} from "_/components/library"
+	OneColumn
+} from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { UseActionError } from "_/hooks/useAction"
@@ -49,6 +50,8 @@ export const CreateStrategy: FC = () => {
 		[CREATE, canCreate]
 	)
 
+	useRedirectToNewStrategyPage(newStrategy)
+
 	useEffect(() => {
 		if (CREATE.error) {
 			setError(CREATE.error)
@@ -59,7 +62,6 @@ export const CreateStrategy: FC = () => {
 	useEffect(() => {
 		sessionWebStorage.setActiveTabId("Dashboard", "strategies")
 	}, [newStrategy])
-	useRedirectToNewStrategyPage(newStrategy)
 
 	return (
 		<Columns>

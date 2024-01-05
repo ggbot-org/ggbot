@@ -141,7 +141,8 @@ export {
 	isRenameStrategyInput,
 	isStrategy,
 	isStrategyKey,
-	newStrategy
+	newStrategy,
+	nullStrategyKey
 } from "./strategy.js"
 export type { ReadStrategyBalances } from "./strategyBalance.js"
 export { isReadStrategyBalancesInput } from "./strategyBalance.js"

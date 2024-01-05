@@ -2,7 +2,7 @@ import { InvalidStrategyKey } from "_/components/InvalidStrategyKey"
 import { Section } from "_/components/library"
 import { StrategyNotFound } from "_/components/StrategyNotFound"
 import { usePublicApi } from "_/hooks/usePublicApi"
-import { strategyKeyParamsFromCurrentLocation } from "_/routing/strategyKeyParams"
+import { strategyKeyParamsFromURL } from "_/routing/strategyKeyParams"
 import { localWebStorage } from "_/storages/local"
 import { Strategy, StrategyKey, StrategyKind } from "@workspace/models"
 import {
@@ -35,7 +35,7 @@ export const StrategyContext = createContext<ContextValue>({
 StrategyContext.displayName = "StrategyContext"
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-	const strategyKey = strategyKeyParamsFromCurrentLocation()
+	const strategyKey = strategyKeyParamsFromURL(new URL(window.location.href))
 
 	const READ = usePublicApi.ReadStrategy()
 	const remoteStrategy = READ.data

@@ -111,7 +111,7 @@ void describe("BacktestingSession", () => {
 	void test('cannot set `strategy` while `status` is "running"', () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
-			strategyKey: { strategyKind: "test", strategyId: "01010101" },
+			strategyKey: { strategyKind: "none", strategyId: "01010101" },
 			strategyName,
 			flow: { nodes: [{ id: "a", text: "true", x: 0, y: 0 }], edges: [] }
 		})

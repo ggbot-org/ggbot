@@ -13,7 +13,7 @@ import {
 } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { StrategiesContext } from "_/contexts/user/Strategies"
-import { href } from "_/routing/user/hrefs"
+import { webapp } from "_/routing/webapp"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import { FC, useCallback, useContext, useState } from "react"
@@ -50,7 +50,8 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 			const isInactive = schedulingsAreInactive(schedulings)
 			if (hideInactive && isInactive && !allAreInactive) continue
 			items.push({
-				href: href.strategyPage({ strategyId, strategyKind }),
+				href: webapp.user.strategy({ strategyId, strategyKind })
+					.pathname,
 				name,
 				schedulings,
 				strategyId

@@ -1,6 +1,6 @@
 import { Button, ButtonOnClick } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
-import { href } from "_/routing/user/hrefs"
+import { webapp } from "_/routing/webapp"
 import { FC, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -11,7 +11,7 @@ export const GoCopyStrategy: FC = () => {
 		(event) => {
 			event.stopPropagation()
 			if (!strategyKey) return
-			window.location.href = href.copyStrategyPage(strategyKey)
+			window.location.href = webapp.user.copyStrategy(strategyKey).href
 		},
 		[strategyKey]
 	)
