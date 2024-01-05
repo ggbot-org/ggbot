@@ -96,16 +96,10 @@ export class BinanceClient {
 	}
 
 	async apiRestrictions(): Promise<BinanceApiKeyPermission> {
-		try {
-			const response = await this.privateRequest<BinanceApiKeyPermission>(
-				"GET",
-				"/sapi/v1/account/apiRestrictions"
-			)
-			return response
-		} catch (error) {
-			console.error(error)
-			throw error
-		}
+		return this.privateRequest<BinanceApiKeyPermission>(
+			"GET",
+			"/sapi/v1/account/apiRestrictions"
+		)
 	}
 
 	/**

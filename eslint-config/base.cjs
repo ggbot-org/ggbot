@@ -1,5 +1,5 @@
 module.exports = {
-	env: { browser: true, es2020: true, node: true },
+	env: { browser: false, es2020: true, node: true },
 	extends: ["eslint:recommended", "plugin:@typescript-eslint/strict"],
 	parser: "@typescript-eslint/parser",
 	plugins: [
@@ -56,7 +56,7 @@ module.exports = {
 			{ allow: ["arithmetica/float"] }
 		],
 		"no-case-declarations": "error",
-		"no-console": ["error", { allow: ["error", "info", "warn"] }],
+		"no-console": "error",
 		"no-extra-label": "warn",
 		"no-floating-decimal": "error",
 		"no-global-assign": "error",
