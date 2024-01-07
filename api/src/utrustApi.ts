@@ -3,7 +3,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 import { ApiActionInput } from "./apiAction.js"
 
 const utrustApiActionTypes = ["CreateUtrustOrder"] as const
-export type UtrustApiActionType = (typeof utrustApiActionTypes)[number]
+type UtrustApiActionType = (typeof utrustApiActionTypes)[number]
 const isUtrustApiActionType =
 	isLiteralType<UtrustApiActionType>(utrustApiActionTypes)
 

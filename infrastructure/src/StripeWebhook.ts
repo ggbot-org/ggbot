@@ -1,9 +1,8 @@
 import { ENV } from "@workspace/env"
-import { ApiBaseURL, ApiStripeWebhookURL, FQDN } from "@workspace/locators"
+import { ApiURLs } from "@workspace/locators"
 import { newStripe, Stripe } from "@workspace/stripe"
 
-const fqdn = new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
-const apiBase = new ApiBaseURL(fqdn).toString()
+const api = new ApiURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
 
 export class StripeWebhook {
 	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion =
@@ -16,7 +15,7 @@ export class StripeWebhook {
 	private stripe = newStripe()
 
 	get url() {
-		return new ApiStripeWebhookURL(apiBase).toString()
+		return api.stripe.webhook.href
 	}
 
 	/** Create WebhookEndpoint if it does not exist. */

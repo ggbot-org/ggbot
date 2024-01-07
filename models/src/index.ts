@@ -73,7 +73,7 @@ export {
 	ErrorExceededQuota,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	ErrorUnimplementedStrategyKind
+	ErrorUnknown
 } from "./errors.js"
 export type { Frequency, FrequencyInterval } from "./frequency.js"
 export {
@@ -193,6 +193,7 @@ export {
 } from "./subscription.js"
 export type {
 	CreateMonthlySubscriptionPurchase,
+	CreatePurchaseOrder,
 	CreateYearlySubscriptionPurchase,
 	ReadSubscriptionPurchase,
 	SubscriptionPurchase,
@@ -202,6 +203,7 @@ export type {
 	WriteSubscriptionPurchase
 } from "./subscriptionPurchase.js"
 export {
+	isCreatePurchaseOrderInput,
 	isSubscriptionPurchaseKey,
 	monthlyPrice,
 	newMonthlySubscription,

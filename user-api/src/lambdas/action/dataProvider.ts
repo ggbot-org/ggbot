@@ -18,9 +18,21 @@ import {
 	writeAccountStrategiesItemSchedulings,
 	writeStrategyFlow
 } from "@workspace/database"
-import { ErrorAccountItemNotFound, welcomeFlow } from "@workspace/models"
+import {
+	ErrorAccountItemNotFound,
+	ErrorUnknown,
+	welcomeFlow
+} from "@workspace/models"
 
 import { readBinanceApiKeyPermissions } from "./binance.js"
+
+// TODO
+const createPurchaseOrder: UserApiDataProvider["createPurchaseOrder"] = ({
+	paymentProvider
+}) => {
+	if (paymentProvider === "stripe") return Promise.resolve(null)
+	throw new ErrorUnknown(paymentProvider)
+}
 
 const createStrategyWithWelcomeFlow: UserApiDataProvider["createStrategy"] =
 	async ({ accountId, kind, name }) => {
@@ -55,6 +67,7 @@ const readAccountInfo: UserApiDataProvider["readAccountInfo"] = async (
 export const dataProvider: UserApiDataProvider = {
 	copyStrategy,
 	createBinanceApiConfig,
+	createPurchaseOrder,
 	createStrategy: createStrategyWithWelcomeFlow,
 	deleteAccount,
 	deleteBinanceApiConfig,

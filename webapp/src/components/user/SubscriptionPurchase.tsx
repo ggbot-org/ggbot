@@ -21,7 +21,7 @@ import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useSubscription } from "_/hooks/useSubscription"
-import { useUtrustApi } from "_/hooks/useUtrustApi"
+import { useUserApi } from "_/hooks/useUserApi"
 import {
 	isAllowedCountryIsoCode2,
 	isNaturalNumber,
@@ -52,7 +52,7 @@ export const SubscriptionPurchase: FC = () => {
 		defaultNumMonths
 	)
 
-	const CREATE_ORDER = useUtrustApi.CreateUtrustOrder()
+	const CREATE_ORDER = useUserApi.CreatePurchaseOrder()
 	const isLoading = CREATE_ORDER.isPending
 	const data = CREATE_ORDER.data
 
@@ -109,12 +109,12 @@ export const SubscriptionPurchase: FC = () => {
 			CREATE_ORDER.request({
 				country,
 				email: accountEmail,
-				itemName,
 				numMonths,
+				paymentProvider: "stripe",
 				plan: "basic"
 			})
 		},
-		[CREATE_ORDER, accountEmail, itemName]
+		[CREATE_ORDER, accountEmail]
 	)
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {

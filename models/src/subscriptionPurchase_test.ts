@@ -14,7 +14,7 @@ import {
 import { createdNow } from "./time.js"
 
 void test("isSubscriptionPurchase", () => {
-	const paymentProvider = "utrust"
+	const paymentProvider = "stripe"
 	const plan = "basic"
 	const startDay = today()
 	const startDate = dayToDate(startDay)

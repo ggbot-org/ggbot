@@ -1,16 +1,18 @@
 import { join } from "node:path"
 
 import { ENV } from "@workspace/env"
-import { WebappPagePathname, WebappURLs } from "@workspace/locators"
+import {
+	WebappPagePathname,
+	webappSettingsPageIds,
+	WebappURLs
+} from "@workspace/locators"
 import write from "write-file-utf8"
 
-import { html } from "../html"
-import { publicDir, webappEcmaScriptsConfig } from "../package"
-import { adminHtmlPathnames } from "../routing/admin/pages"
-import { designShowcaseHtmlPathname } from "../routing/design/pages"
-import { userHtmlPathnames } from "../routing/user/pages"
-
-const strategyHtmlPathname = "/strategy.html"
+import { html } from "../html.js"
+import { publicDir, webappEcmaScriptsConfig } from "../package.js"
+import { adminHtmlPathnames } from "../routing/admin/pages.js"
+import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
+import { settingsHtmlPathname } from "../routing/user/pages.js"
 
 const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
 
@@ -33,7 +35,7 @@ for (const pathname of [
 
 // Try strategy.
 
-await write(join(publicDir, strategyHtmlPathname), html(strategyJs))
+await write(join(publicDir, WebappPagePathname.strategy), html(strategyJs))
 
 // Admin app.
 
@@ -41,6 +43,13 @@ for (const pathname of adminHtmlPathnames)
 	await write(join(publicDir, pathname), html(adminJs))
 
 // User app.
+
+const userHtmlPathnames = [
+	WebappPagePathname.user.dashboard,
+	WebappPagePathname.user.copyStrategy,
+	WebappPagePathname.user.strategy,
+	...webappSettingsPageIds.map(settingsHtmlPathname)
+]
 
 for (const pathname of userHtmlPathnames)
 	await write(join(publicDir, pathname), html(userJs))

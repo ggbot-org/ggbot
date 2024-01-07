@@ -4,6 +4,7 @@ import {
 	AccountKey,
 	isCopyStrategyInput,
 	isCreateBinanceApiConfigInput,
+	isCreatePurchaseOrderInput,
 	isCreateStrategyInput,
 	isDeleteStrategyInput,
 	isReadStrategyBalancesInput,
@@ -39,6 +40,12 @@ export class ApiService implements UserApiService {
 		const input = this.inputWithAccountKey(arg)
 		if (!isCreateBinanceApiConfigInput(input)) throw new BadRequestError()
 		return this.dataProvider.createBinanceApiConfig(input)
+	}
+
+	CreatePurchaseOrder(arg: unknown) {
+		const input = this.inputWithAccountKey(arg)
+		if (!isCreatePurchaseOrderInput(input)) throw new BadRequestError()
+		return this.dataProvider.createPurchaseOrder(input)
 	}
 
 	CreateStrategy(arg: unknown) {

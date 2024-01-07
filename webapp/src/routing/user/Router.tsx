@@ -7,23 +7,22 @@ import { PurchaseCanceledPage } from "_/pages/user/PurchaseCanceled"
 import { StrategyPage } from "_/pages/user/Strategy"
 import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
-import {
-	copyStrategyHtmlPathname,
-	settingsHtmlPathname,
-	strategyHtmlPathname,
-	userDashboardHtmlPathname
-} from "_/routing/user/pages"
+import { settingsHtmlPathname } from "_/routing/user/pages"
+import { webapp } from "_/routing/webapp"
 import { WebappPagePathname } from "@workspace/locators"
+import { nullStrategyKey } from "@workspace/models"
 import { FC } from "react"
 
 const Router: FC = () => {
 	const pathname = window.location.pathname
 
-	if (pathname === userDashboardHtmlPathname) return <DashboardPage />
+	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
 
-	if (pathname === copyStrategyHtmlPathname) return <CopyStrategyPage />
+	if (pathname === webapp.user.copyStrategy(nullStrategyKey).pathname)
+		return <CopyStrategyPage />
 
-	if (pathname === strategyHtmlPathname) return <StrategyPage />
+	if (pathname === webapp.user.strategy(nullStrategyKey).pathname)
+		return <StrategyPage />
 
 	if (pathname === settingsHtmlPathname("account"))
 		return <AccountSettingsPage />

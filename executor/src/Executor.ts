@@ -15,7 +15,7 @@ import {
 	AccountStrategySchedulingKey,
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
-	ErrorUnimplementedStrategyKind,
+	ErrorUnknown,
 	frequencyIntervalDuration,
 	isAccountKey,
 	isAccountStrategy,
@@ -204,7 +204,10 @@ export class Executor {
 			}
 			return
 		}
-		throw new ErrorUnimplementedStrategyKind({ strategyKind, strategyId })
+
+		if (strategyKind === "none") return
+
+		throw new ErrorUnknown(strategyKind)
 	}
 
 	managesItem(itemId: Item["id"]) {
@@ -246,10 +249,7 @@ export class Executor {
 						)
 					}
 			} catch (error) {
-				if (
-					error instanceof ErrorUnimplementedStrategyKind ||
-					error instanceof ErrorStrategyItemNotFound
-				) {
+				if (error instanceof ErrorStrategyItemNotFound) {
 					await this.suspendAccountStrategySchedulings({
 						accountId: accountKey.accountId,
 						strategyId: error.strategyId

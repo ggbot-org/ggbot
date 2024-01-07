@@ -124,30 +124,34 @@ export class ErrorPermissionOnStrategyItem extends Error {
 	}
 }
 
-export class ErrorUnimplementedStrategyKind extends Error {
-	static errorName = "ErrorUnimplementedStrategyKind"
-	readonly strategyKind: string
-	readonly strategyId: Strategy["id"]
-	constructor({
-		strategyKind,
-		strategyId
-	}: Pick<ErrorUnimplementedStrategyKind, "strategyKind" | "strategyId">) {
-		super(ErrorUnimplementedStrategyKind.message(strategyKind))
-		this.strategyKind = strategyKind
-		this.strategyId = strategyId
-	}
-	static message(
-		strategyKind: ErrorUnimplementedStrategyKind["strategyKind"]
-	) {
-		return `Unimplemented strategyKind ${strategyKind}`
+/**
+ * An error that should be never thrown.
+ *
+ * @example
+ *
+ * ```ts
+ * type Kind = "foo" | "bar"
+ *
+ * function handleKind(kind: Kind) {
+ * 	if (kind === "foo") doSomething()
+ * 	if (kind === "bar") doSomethingElse()
+ *
+ * 	// This code should never run.
+ * 	throw new ErrorUnknown(kind)
+ * }
+ * ```
+ */
+export class ErrorUnknown extends Error {
+	static errorName = "ErrorUnknown"
+	readonly itemName: string
+	constructor(itemName: never) {
+		super("Unknown " + String(itemName))
+		this.itemName = String(itemName)
 	}
 	toJSON() {
 		return {
-			name: ErrorUnimplementedStrategyKind.errorName,
-			info: {
-				strategyKind: this.strategyKind,
-				strategyId: this.strategyId
-			}
+			name: ErrorUnknown.errorName,
+			info: { itemName: this.itemName }
 		}
 	}
 }

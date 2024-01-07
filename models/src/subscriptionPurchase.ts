@@ -14,10 +14,12 @@ import {
 	objectTypeGuard
 } from "minimal-type-guard-helpers"
 
-import { AccountKey } from "./account.js"
+import { AccountKey, isAccountKey } from "./account.js"
+import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { Currency } from "./currency.js"
+import { EmailAddress, isEmailAddress } from "./email.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
-import { NaturalNumber } from "./numbers.js"
+import { isNaturalNumber, NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
 import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
@@ -200,3 +202,27 @@ type UpdateSubscriptionPurchaseStatusInput = SubscriptionPurchaseKey &
 export type UpdateSubscriptionPurchaseStatus = (
 	arg: UpdateSubscriptionPurchaseStatusInput
 ) => Promise<UpdateTime>
+
+type CreatePurchaseOrderInput = AccountKey & {
+	country: AllowedCountryIsoCode2
+	email: EmailAddress
+	numMonths: NaturalNumber
+	paymentProvider: PaymentProvider
+	plan: SubscriptionPlan
+}
+
+export const isCreatePurchaseOrderInput =
+	objectTypeGuard<CreatePurchaseOrderInput>(
+		({ country, email, numMonths, paymentProvider, plan, ...accountKey }) =>
+			isAccountKey(accountKey) &&
+			isEmailAddress(email) &&
+			isSubscriptionPlan(plan) &&
+			isAllowedCountryIsoCode2(country) &&
+			isNaturalNumber(numMonths) &&
+			isPaymentProvider(paymentProvider)
+	)
+
+export type CreatePurchaseOrder = (
+	arg: CreatePurchaseOrderInput
+	// TODO return type
+) => Promise<null>

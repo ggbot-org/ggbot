@@ -2,7 +2,7 @@ import { AccountNotFound } from "_/components/admin/AccountNotFound"
 import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey"
 import { Section } from "_/components/library"
 import { useAdminApi } from "_/hooks/useAdminApi"
-import { accountKeyParamsFromCurrentLocation } from "_/routing/admin/accountKeyParams"
+import { accountKeyParamsFromURL } from "_/routing/paramFromURL"
 import { Account } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
@@ -17,7 +17,7 @@ export const AccountContext = createContext<ContextValue>({
 AccountContext.displayName = "AccountContext"
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-	const accountKey = accountKeyParamsFromCurrentLocation()
+	const accountKey = accountKeyParamsFromURL(new URL(window.location.href))
 
 	const READ_ACCOUNT = useAdminApi.ReadAccount()
 	const account = READ_ACCOUNT.data

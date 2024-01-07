@@ -22,8 +22,10 @@ import {
 	extractsBinanceSymbolsFromTickerPriceAndOrderNodes,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
-import { newId, Order } from "@workspace/models"
+import { newId, Order, StrategyKind } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
+
+type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 
 const { warn } = logging("backtesting")
 
@@ -274,11 +276,16 @@ self.onmessage = async ({
 
 		const { strategyKind } = strategyKey
 
-		if (strategyKind === "binance") {
-			const binance = getBinance(schedulingInterval)
-			await prepareBinance(binance, schedulingInterval)
-			await runBinance(binance)
+		const handleStrategyKind: HandleStrategyKind = {
+			binance: async () => {
+				const binance = getBinance(schedulingInterval)
+				await prepareBinance(binance, schedulingInterval)
+				await runBinance(binance)
+			},
+			none: () => Promise.resolve()
 		}
+
+		await handleStrategyKind[strategyKind]()
 
 		if (session.status === "done") {
 			updateUI(session)
@@ -300,16 +307,22 @@ self.onmessage = async ({
 
 	if (messageType === "RESUME") {
 		const strategyKind = session.strategy?.strategyKey.strategyKind
+		if (!strategyKind) return
 		const schedulingInterval = session.frequency?.interval
 		if (!schedulingInterval) return
 		const statusChanged = session.resume()
 		if (statusChanged) POST(statusChangedMessage(session))
 
-		if (strategyKind === "binance") {
-			const binance = getBinance(schedulingInterval)
-			await prepareBinance(binance, schedulingInterval)
-			await runBinance(binance)
+		const handleStrategyKind: HandleStrategyKind = {
+			binance: async () => {
+				const binance = getBinance(schedulingInterval)
+				await prepareBinance(binance, schedulingInterval)
+				await runBinance(binance)
+			},
+			none: () => Promise.resolve()
 		}
+
+		await handleStrategyKind[strategyKind]()
 
 		if (session.status === "done") {
 			updateUI(session)

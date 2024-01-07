@@ -7,4 +7,5 @@ void test("authURLs", () => {
 	const auth = new AuthURLs("main", "example.com")
 
 	assert.equal(auth.enter.href, "https://auth.example.com/enter")
+	assert.equal(auth.verify.href, "https://auth.example.com/verify")
 })

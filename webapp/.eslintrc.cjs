@@ -58,7 +58,7 @@ module.exports = {
 			}
 		],
 		"func-style": ["warn", "expression"],
-		"import/extensions": ["error", "never"],
+		"import/extensions": "off",
 		"import/no-internal-modules": [
 			"error",
 			{

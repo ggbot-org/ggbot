@@ -1,9 +1,10 @@
-import { Authenticated, useAction,UseActionApiArg } from "_/hooks/useAction"
+import { Authenticated, useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import { UserApiActionType } from "@workspace/api"
 import {
 	CopyStrategy,
 	CreateBinanceApiConfig,
+	CreatePurchaseOrder,
 	CreateStrategy,
 	DeleteAccount,
 	DeleteBinanceApiConfig,
@@ -38,6 +39,11 @@ export const useUserApi = {
 		useAction<Authenticated<CreateBinanceApiConfig>, UserApiActionType>(
 			apiOptions,
 			"CreateBinanceApiConfig"
+		),
+	CreatePurchaseOrder: () =>
+		useAction<Authenticated<CreatePurchaseOrder>, UserApiActionType>(
+			apiOptions,
+			"CreatePurchaseOrder"
 		),
 	CreateStrategy: () =>
 		useAction<Authenticated<CreateStrategy>, UserApiActionType>(

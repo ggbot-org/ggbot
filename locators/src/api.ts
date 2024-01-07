@@ -13,6 +13,9 @@ const ApiEndpoint = {
 	public: {
 		action: "public/action"
 	},
+	stripe: {
+		webhook: "stripe/webhook"
+	},
 	user: {
 		action: "user/action"
 	}
@@ -42,6 +45,15 @@ export class ApiURLs {
 		return {
 			get action() {
 				return new URL(ApiEndpoint.public.action, baseURL)
+			}
+		}
+	}
+
+	get stripe() {
+		const { baseURL } = this
+		return {
+			get webhook() {
+				return new URL(ApiEndpoint.stripe.webhook, baseURL)
 			}
 		}
 	}

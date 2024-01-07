@@ -8,4 +8,5 @@ export {
 	WebappDirname,
 	WebappPagePathname,
 	webappSettingsPageIds,
-	WebappURLs} from "./webapp.js"
+	WebappURLs
+} from "./webapp.js"

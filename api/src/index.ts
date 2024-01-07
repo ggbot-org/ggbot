@@ -35,8 +35,5 @@ export type {
 	UserApiService
 } from "./userApi.js"
 export { userApiActionTypes } from "./userApi.js"
-export type {
-	UtrustApiActionType,
-	UtrustApiCallabackRequestData
-} from "./utrustApi.js"
+export type { UtrustApiCallabackRequestData } from "./utrustApi.js"
 export { isUtrustApiActionRequestData } from "./utrustApi.js"

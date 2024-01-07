@@ -1,6 +1,7 @@
 import {
 	CopyStrategy,
 	CreateBinanceApiConfig,
+	CreatePurchaseOrder,
 	CreateStrategy,
 	DeleteAccount,
 	DeleteBinanceApiConfig,
@@ -24,6 +25,7 @@ import {
 export const userApiActionTypes = [
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
+	"CreatePurchaseOrder",
 	"CreateStrategy",
 	"DeleteAccount",
 	"DeleteBinanceApiConfig",
@@ -47,6 +49,7 @@ export type UserApiActionType = (typeof userApiActionTypes)[number]
 export type UserApiDataProvider = {
 	copyStrategy: CopyStrategy
 	createBinanceApiConfig: CreateBinanceApiConfig
+	createPurchaseOrder: CreatePurchaseOrder
 	createStrategy: CreateStrategy
 	deleteAccount: DeleteAccount
 	deleteBinanceApiConfig: DeleteBinanceApiConfig
