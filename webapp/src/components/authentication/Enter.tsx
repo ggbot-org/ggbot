@@ -14,7 +14,7 @@ import {
 	Title
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
-import { url } from "_/routing/authentication/URLs"
+import { auth } from "_/routing/auth"
 import {
 	isApiAuthEnterRequestData,
 	isApiAuthEnterResponseData
@@ -96,7 +96,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 
 				dispatch({ type: "ENTER_REQUEST" })
 
-				const response = await fetch(url.authenticationEnter, {
+				const response = await fetch(auth.enter.href, {
 					body: JSON.stringify(requestData),
 					headers: new Headers({
 						"Content-Type": "application/json"

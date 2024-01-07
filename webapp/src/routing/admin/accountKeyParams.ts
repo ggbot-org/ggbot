@@ -13,9 +13,3 @@ export const accountKeyParamsFromCurrentLocation = ():
 
 	if (isAccountKey(accountKey)) return accountKey
 }
-
-export const accountKeyToURLSearchParams = ({ accountId }: AccountKey) => {
-	const params = new URLSearchParams()
-	params.append(accountIdKey, accountId)
-	return params
-}

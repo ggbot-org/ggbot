@@ -1,18 +1,14 @@
 import { join } from "node:path"
 
 import { ENV } from "@workspace/env"
-import { WebappURLs } from "@workspace/locators"
+import { WebappPagePathname, WebappURLs } from "@workspace/locators"
 import write from "write-file-utf8"
 
-import { html } from "../html.js"
-import { publicDir, webappEcmaScriptsConfig } from "../package.js"
-import { adminHtmlPathnames } from "../routing/admin/pages.js"
-import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
-import {
-	purchaseCanceledHtmlPathname,
-	subscriptionPurchasedHtmlPathname,
-	userHtmlPathnames
-} from "../routing/user/pages.js"
+import { html } from "../html"
+import { publicDir, webappEcmaScriptsConfig } from "../package"
+import { adminHtmlPathnames } from "../routing/admin/pages"
+import { designShowcaseHtmlPathname } from "../routing/design/pages"
+import { userHtmlPathnames } from "../routing/user/pages"
 
 const strategyHtmlPathname = "/strategy.html"
 
@@ -51,9 +47,12 @@ for (const pathname of userHtmlPathnames)
 
 // Subscription pages.
 
-await write(join(publicDir, purchaseCanceledHtmlPathname), html(userJs))
+await write(join(publicDir, WebappPagePathname.purchaseCanceled), html(userJs))
 
-await write(join(publicDir, subscriptionPurchasedHtmlPathname), html(userJs))
+await write(
+	join(publicDir, WebappPagePathname.subscriptionPurchased),
+	html(userJs)
+)
 
 // Design.
 

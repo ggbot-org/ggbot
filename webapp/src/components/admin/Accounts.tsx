@@ -1,7 +1,7 @@
 import { AccountId } from "_/components/AccountId"
 import { Box, Column, Columns } from "_/components/library"
 import { useAdminApi } from "_/hooks/useAdminApi"
-import { href } from "_/routing/admin/hrefs"
+import { webapp } from "_/routing/webapp"
 import { AccountKey, isAccountKey } from "@workspace/models"
 import { FC, useEffect } from "react"
 
@@ -21,7 +21,7 @@ export const Accounts: FC = () => {
 			if (isAccountKey(item))
 				accountItems.push({
 					...item,
-					href: href.accountDetailsPage(item)
+					href: webapp.admin.accountDetails(item).pathname
 				})
 	}
 

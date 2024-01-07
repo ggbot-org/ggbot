@@ -1,5 +1,5 @@
-import { Authenticated, useAction, UseActionApiArg } from "_/hooks/useAction"
-import { url } from "_/routing/user/URLs"
+import { Authenticated, useAction,UseActionApiArg } from "_/hooks/useAction"
+import { api } from "_/routing/api"
 import { UserApiActionType } from "@workspace/api"
 import {
 	CopyStrategy,
@@ -24,7 +24,7 @@ import {
 } from "@workspace/models"
 
 const apiOptions: UseActionApiArg = {
-	endpoint: url.apiUserAction,
+	endpoint: api.user.action.href,
 	withAuth: true
 }
 

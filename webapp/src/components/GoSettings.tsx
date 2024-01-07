@@ -1,6 +1,6 @@
 import { Button } from "_/components/library"
 import { href } from "_/routing/user/hrefs"
-import { SettingsPageId } from "_/routing/user/types"
+import { WebappSettingsPageId as SettingsPageId } from "@workspace/locators"
 import { FC, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -13,6 +13,8 @@ export const GoSettings: FC<Props> = ({ settingsPage }) => {
 
 	const onClick = () => {
 		setIsPending(true)
+		// TODO pathname = webapp.user.settings(settingsPage)
+		// if window.location.pathname !== pathname window.location.pathname = pathname
 		window.location.href = href.settingsPage(settingsPage)
 	}
 

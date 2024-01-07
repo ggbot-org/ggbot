@@ -1,10 +1,10 @@
-import { useAction, UseActionApiArg } from "_/hooks/useAction"
-import { url } from "_/routing/admin/URLs"
+import { useAction,UseActionApiArg } from "_/hooks/useAction"
+import { api } from "_/routing/api"
 import { AdminApiActionType } from "@workspace/api"
 import { ListAccountKeys, ReadAccount } from "@workspace/models"
 
 const apiOptions: UseActionApiArg = {
-	endpoint: url.apiAdminAction,
+	endpoint: api.admin.action.href,
 	withAuth: true
 }
 

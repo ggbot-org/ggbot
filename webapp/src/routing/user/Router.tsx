@@ -9,12 +9,11 @@ import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
 import {
 	copyStrategyHtmlPathname,
-	purchaseCanceledHtmlPathname,
 	settingsHtmlPathname,
 	strategyHtmlPathname,
-	subscriptionPurchasedHtmlPathname,
 	userDashboardHtmlPathname
 } from "_/routing/user/pages"
+import { WebappPagePathname } from "@workspace/locators"
 import { FC } from "react"
 
 const Router: FC = () => {
@@ -35,10 +34,10 @@ const Router: FC = () => {
 	if (pathname === settingsHtmlPathname("binance"))
 		return <BinanceSettingsPage />
 
-	if (pathname === purchaseCanceledHtmlPathname)
+	if (pathname === WebappPagePathname.purchaseCanceled)
 		return <PurchaseCanceledPage />
 
-	if (pathname === subscriptionPurchasedHtmlPathname)
+	if (pathname === WebappPagePathname.subscriptionPurchased)
 		return <SubscriptionPurchasedPage />
 
 	return null

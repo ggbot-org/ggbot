@@ -10,7 +10,7 @@ import {
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { href } from "_/routing/user/hrefs"
-import { SettingsPageId } from "_/routing/user/types"
+import { WebappSettingsPageId as SettingsPageId } from "@workspace/locators"
 import { memo, useCallback, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 

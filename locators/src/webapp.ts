@@ -1,4 +1,4 @@
-import { StrategyKey } from "@workspace/models"
+import { AccountKey, StrategyKey } from "@workspace/models"
 
 import { FQDN } from "./FQDNs.js"
 
@@ -12,17 +12,22 @@ export class WebappBaseURL extends URL {
 	}
 }
 
-const WebappDirname = {
+export const WebappDirname = {
+	admin: "admin",
 	user: "user"
 } as const
 
-const WebappPagePathname = {
+export const WebappPagePathname = {
 	homepage: "index.html",
 	privacy: "privacy.html",
 	terms: "terms.html",
 	strategy: "strategy.html",
 	purchaseCanceled: "purchase-canceled.html",
 	subscriptionPurchased: "subscription-purchased.html",
+	admin: {
+		accountDetails: `${WebappDirname.admin}/account-details.html`,
+		dashboard: `${WebappDirname.admin}/dashboard.html`
+	},
 	user: {
 		copyStrategy: `${WebappDirname.user}/copy-strategy.html`,
 		dashboard: `${WebappDirname.user}/dashboard.html`,
@@ -34,6 +39,19 @@ const WebappPagePathname = {
 		strategy: `${WebappDirname.user}/strategy.html`
 	}
 } as const
+
+export const webappSettingsPageIds = Object.keys(
+	WebappPagePathname.user.settings
+)
+export type WebappSettingsPageId = (typeof webappSettingsPageIds)[number]
+
+const appendAccountKeyToURLSearchParams = (
+	{ accountId }: AccountKey,
+	url: URL
+) => {
+	url.searchParams.append("accountId", accountId)
+	return url
+}
 
 const appendStrategyKeyToURLSearchParams = (
 	{ strategyId, strategyKind }: StrategyKey,
@@ -75,6 +93,29 @@ export class WebappURLs {
 
 	get terms() {
 		return new URL(WebappPagePathname.terms, this.baseURL)
+	}
+
+	get purchaseCanceled() {
+		return new URL(WebappPagePathname.purchaseCanceled, this.baseURL)
+	}
+
+	get subscriptionPurchased() {
+		return new URL(WebappPagePathname.subscriptionPurchased, this.baseURL)
+	}
+
+	get admin() {
+		const { baseURL } = this
+		return {
+			accountDetails(accountKey: AccountKey) {
+				return appendAccountKeyToURLSearchParams(
+					accountKey,
+					new URL(WebappPagePathname.admin.accountDetails, baseURL)
+				)
+			},
+			get dashboard() {
+				return new URL(WebappPagePathname.admin.dashboard, baseURL)
+			}
+		}
 	}
 
 	get user() {

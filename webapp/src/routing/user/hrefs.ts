@@ -3,7 +3,7 @@ import {
 	settingsHtmlPathname,
 	userDashboardHtmlPathname
 } from "_/routing/user/pages"
-import { SettingsPageId } from "_/routing/user/types"
+import { WebappSettingsPageId as SettingsPageId } from "@workspace/locators"
 
 export const href = {
 	adminPage: () => adminDashboardHtmlPathname,
