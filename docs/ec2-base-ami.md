@@ -28,6 +28,14 @@ Install [Git](./tech-stack.md#git)
 sudo yum install -y git
 ```
 
+Clone repository
+
+```sh
+git clone https://github.com/ggbot-org/ggbot.git
+```
+
+<!-- TODO remove this, it was an attempt to use AWS codecommit
+
 Configure git, setup credentials.
 
 ```sh
@@ -41,6 +49,8 @@ Clone repository
 ```sh
 git clone https://git-codecommit.eu-central-1.amazonaws.com/v1/repos/ggbot2-monorepo
 ```
+
+-->
 
 ## Node
 
@@ -56,6 +66,9 @@ Check which Node.js version was installed, it should be `v18.x`
 node --version
 ```
 
+<-- TODO is this still valid? check latest node version
+it should also contain a test to check nvmrc
+-->
 Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 
 ## Create AMI
@@ -63,10 +76,10 @@ Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 Create an image, with name
 
 ```sh
-ggbot2_base_${YYMMDD}
+ggbot_base_${YYMMDD}
 ```
 
-for example `ggbot2_base_230402`.
+for example `ggbot_base_230402`.
 
 ## Setup service
 

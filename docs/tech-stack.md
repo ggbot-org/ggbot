@@ -10,6 +10,7 @@
     -   [AWS EC2](#aws-ec2)
     -   [AWS IAM](#aws-iam)
     -   [AWS S3](#aws-s3)
+-   [direnv](#direnv)
 -   [Google Search Console](#google-search-console)
 -   [Node.js](#nodejs)
 -   [npm workspaces](#npm-workspaces)
@@ -85,6 +86,12 @@ https://aws.amazon.com/iam/
 
 https://aws.amazon.com/s3/
 
+## direnv
+
+https://direnv.net/
+
+`direnv` is an extension for your shell. It augments existing shells with a new feature that can load and unload environment variables depending on the current directory.
+
 ## Google Search Console
 
 Created the following properties:
@@ -100,12 +107,13 @@ To install Node.js locally, use [NVM](#nvm).
 
 Package manager used is _npm_.
 
+To install dependencies for development, launch
+
+```sh
+npm ci --include=optional
+```
+
 Node is also used for tests, with `node:test` module: see [Node Test runner documentation](https://nodejs.org/api/test.html).
-
-Current Node.js version used on AWS AMI is `v18.2.1`.
-Local Node.js version used for development is `>20` cause it is using latest Node TestRunner.
-
-Node version currently
 
 ## npm workspaces
 

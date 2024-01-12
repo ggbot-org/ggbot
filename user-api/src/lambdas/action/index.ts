@@ -14,7 +14,7 @@ import { UnauthorizedError } from "@workspace/http"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnimplementedStrategyKind
+	ErrorUnknown
 } from "@workspace/models"
 
 import { dataProvider } from "./dataProvider.js"
@@ -54,7 +54,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			error instanceof ErrorAccountItemNotFound ||
 			error instanceof ErrorBinanceHTTP ||
 			error instanceof ErrorExceededQuota ||
-			error instanceof ErrorUnimplementedStrategyKind
+			error instanceof ErrorUnknown
 		)
 			return BAD_REQUEST(error.toJSON())
 		// Fallback to print error if not handled.
