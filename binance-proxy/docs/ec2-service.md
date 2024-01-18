@@ -1,19 +1,6 @@
 # EC2 service
 
-EC2 services that powers ggbot are implemented by the following workspaces:
-
--   [binance-proxy](../binance-proxy/)
--   [executor](../executor/)
-
-Every EC2 instance run only one of those services, the following instructions differ by:
-
--   The npm commands to build and start the service.
--   The environment variables required by the service.
--   The AMI permissions that the service needs to be granted.
-
-Since there is one service per EC2 instance, the service name will be always _ggbot_.
-
-See [how to launch EC2 instance](./ec2-launch-instance.md).
+See [how to launch EC2 instance](../../docs/ec2-launch-instance.md).
 
 ## Deploy stage
 
@@ -24,22 +11,20 @@ First of all, define the _Deploy stage_: it can be `main` or `next`.
 ```sh
 cd ggbot
 git pull
-npm ci --include=optional
+npm ci
 ```
 
 ## Build
 
--   binance-proxy: `npm run build:binance-proxy`
--   executor: `npm run build:executor`
+-   `npm run build:binance-proxy`
 
 ## Create service
 
 Switch to **root** user: `sudo su -`.
 
-Set `SERVICE` either to:
+Set `SERVICE`
 
 -   `export SERVICE=binance-proxy`
--   `export SERVICE=executor`
 
 Then run the following.
 
@@ -47,7 +32,7 @@ Then run the following.
 cat << EOF > /lib/systemd/system/ggbot.service
 [Unit]
 Description=crypto flow
-Documentation=https://ggbot2.com
+Documentation=https://ggbot.org
 After=network.target
 
 [Service]
@@ -83,7 +68,7 @@ sudo systemctl edit ggbot
 
 This will create a /etc/systemd/system/ggbot.service.d/override.conf file, add environment variables with proper values.
 
-For example for _binance-proxy_ service
+For example
 
     [Service]
     Environment="AWS_ACCOUNT_ID=888671539518"
@@ -92,14 +77,6 @@ For example for _binance-proxy_ service
     Environment="DEPLOY_STAGE=main"
     Environment="DNS_DOMAIN=ggbot2.com"
     Environment="PROJECT_SHORT_NAME=ggbot"
-
-For example for _executor_ service
-
-    [Service]
-    Environment="AWS_ACCOUNT_ID=888671539518"
-    Environment="DEPLOY_STAGE=main"
-    Environment="DNS_DOMAIN=ggbot2.com"
-    Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 
@@ -142,4 +119,4 @@ ggbot_${SERVICE}_${YYMMDD}
 
 for example `ggbot_executor_230804`.
 
-Go to [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)
+Go to [EC2 Auto Scaling groups](../../docs/ec2-auto-scaling-groups.md)
