@@ -29,8 +29,6 @@ export const requestListener = (
 		return
 	}
 
-	info("sourceUrl", sourceUrl)
-
 	if (sourceUrl === "/health-check") {
 		response.end(`Elastic IP: ${getElasticIp() ?? "none"}`)
 		return
@@ -41,10 +39,14 @@ export const requestListener = (
 		return
 	}
 
+	// Output `sourceUrl` after handling known endpoints that are not worth to be logged,
+	// like `/health-check` and `/robots.txt`.
+	info("sourceUrl", sourceUrl)
+
 	const targetUrl = new URL(sourceUrl, `https://${binanceApiDomain}`)
 
 	if (!isBinanceApiPrivateEndoint(targetUrl.pathname)) {
-		info(__400__BAD_REQUEST__, targetUrl.pathname)
+		info(__404__NOT_FOUND__, targetUrl.pathname)
 		response.writeHead(__404__NOT_FOUND__)
 		response.end()
 		return

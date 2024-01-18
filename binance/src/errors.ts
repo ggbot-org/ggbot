@@ -1,41 +1,40 @@
 import { BinanceOrderType, BinanceSymbolFilter } from "./types.js"
 
+type ErrorBinanceHTTPInfo = Pick<
+	ErrorBinanceHTTP,
+	"pathname" | "searchParams" | "status" | "statusText"
+>
+
 export class ErrorBinanceHTTP extends Error {
 	static errorName = "ErrorBinanceHTTP"
-	endpoint: string
+	pathname: string
+	searchParams: string
 	status: Response["status"]
 	statusText: Response["statusText"]
 
-	constructor(response: Response) {
-		super(ErrorBinanceHTTP.message(response))
-		const { endpoint, status, statusText } =
-			ErrorBinanceHTTP.responseInfo(response)
-		this.endpoint = endpoint
-		this.status = status
-		this.statusText = statusText
+	constructor(info: ErrorBinanceHTTPInfo) {
+		super(ErrorBinanceHTTP.message(info))
+		this.pathname = info.pathname
+		this.status = info.status
+		this.statusText = info.statusText
+		this.searchParams = info.searchParams
 	}
 
-	static responseInfo(response: Response) {
-		const url = new URL(response.url)
-		return {
-			status: response.status,
-			statusText: response.statusText,
-			// Hide search params, they may contain signature.
-			endpoint: url.pathname
-		}
+	static message({
+		status,
+		statusText,
+		pathname,
+		searchParams
+	}: ErrorBinanceHTTPInfo) {
+		return `Server responded with status=${status} statusText=${statusText} on pathname=${pathname} with searchParams=${searchParams}`
 	}
 
-	static message(response: Response) {
-		const { status, statusText, endpoint } =
-			ErrorBinanceHTTP.responseInfo(response)
-		return `Server responded with status=${status} statusText=${statusText} on endpoint=${endpoint}`
-	}
-
-	toJSON() {
+	toJSON(): { name: string; info: ErrorBinanceHTTPInfo } {
 		return {
 			name: ErrorBinanceHTTP.errorName,
 			info: {
-				endpoint: this.endpoint,
+				pathname: this.pathname,
+				searchParams: this.searchParams,
 				status: this.status,
 				statusText: this.statusText
 			}

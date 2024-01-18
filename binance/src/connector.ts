@@ -35,6 +35,8 @@ export class BinanceConnector {
 		}
 
 		const url = new URL(endpoint, this.baseUrl)
+		// Keep a copy of `url` for debug purpose. It will not include `signature` parameter.
+		const debugUrl = new URL(endpoint, this.baseUrl)
 
 		for (const [key, value] of Object.entries(params)) {
 			if (value === undefined) continue
@@ -44,10 +46,18 @@ export class BinanceConnector {
 				? `["${value.join('","')}"]`
 				: value
 			url.searchParams.append(key, String(valueString))
+			if (key !== "signature")
+				debugUrl.searchParams.append(key, String(valueString))
 		}
 
 		const response = await fetch(url, fetchOptions)
-		if (!response.ok) throw new ErrorBinanceHTTP(response)
+		if (!response.ok)
+			throw new ErrorBinanceHTTP({
+				status: response.status,
+				statusText: response.statusText,
+				pathname: url.pathname,
+				searchParams: debugUrl.searchParams.toString()
+			})
 
 		return (await response.json()) as Data
 	}
