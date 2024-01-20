@@ -1,8 +1,7 @@
 import {
 	associateElasticIp,
 	describeElasticIps,
-	getOwnEc2InstanceId,
-	releaseElasticIp
+	getOwnEc2InstanceId
 } from "@workspace/aws-ec2"
 import { ENV } from "@workspace/env"
 
@@ -66,10 +65,11 @@ export const associateIp = async () => {
 	if (!elasticIp) throw new ErrorNoElasticIpAvailable()
 }
 
-export const releaseIp = async () => {
-	if (!elasticIp || !allocationId) return
-	info("Release IP", elasticIp, "from AllocationId", allocationId)
-	await releaseElasticIp(AWS_BINANCE_PROXY_REGION, {
-		AllocationId: allocationId
-	})
-}
+// TODO BUG release IP removes IP from account
+// export const releaseIp = async () => {
+// 	if (!elasticIp || !allocationId) return
+// 	info("Release IP", elasticIp, "from AllocationId", allocationId)
+// 	await releaseElasticIp(AWS_BINANCE_PROXY_REGION, {
+// 		AllocationId: allocationId
+// 	})
+// }

@@ -1,9 +1,9 @@
 import { createServer } from "node:http"
-import { exit } from "node:process"
 
+// import { exit } from "node:process"
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
 
-import { associateIp, releaseIp } from "./elasticIp.js"
+import { associateIp } from "./elasticIp.js"
 import { info, warn } from "./logging.js"
 import { requestListener } from "./requestListener.js"
 
@@ -18,19 +18,18 @@ createServer(requestListener).listen(PORT, () => {
 
 	associateIp().catch((error) => {
 		warn(error)
-		exit(1)
 	})
 })
 
 const terminate = () => {
-	releaseIp()
-		.then(() => {
-			exit(0)
-		})
-		.catch((error) => {
-			warn(error)
-			exit(1)
-		})
+	// releaseIp()
+	// 	.then(() => {
+	// 		exit(0)
+	// 	})
+	// 	.catch((error) => {
+	// 		warn(error)
+	// 		exit(1)
+	// 	})
 }
 
 process.on("SIGHUP", () => {

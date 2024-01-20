@@ -40,7 +40,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/npm run start:$SERVICE
+ExecStart=/usr/bin/node binance-proxy/dist/server.js
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"
@@ -72,11 +72,10 @@ For example
 
     [Service]
     Environment="AWS_ACCOUNT_ID=888671539518"
-    Environment="AWS_DATA_REGION=eu-central-1"
-    Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
     Environment="DEPLOY_STAGE=main"
     Environment="DNS_DOMAIN=ggbot2.com"
-    Environment="PROJECT_SHORT_NAME=ggbot"
+    Environment="BINANCE_PROXY_ELASTIC_IPS=1.2.3.4"
+    Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 

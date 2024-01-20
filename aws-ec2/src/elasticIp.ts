@@ -4,10 +4,7 @@ import {
 	AssociateAddressCommandOutput,
 	DescribeAddressesCommand,
 	DescribeAddressesCommandInput,
-	DescribeAddressesCommandOutput,
-	ReleaseAddressCommand,
-	ReleaseAddressCommandInput,
-	ReleaseAddressCommandOutput
+	DescribeAddressesCommandOutput
 } from "@aws-sdk/client-ec2"
 import { AwsRegion } from "@workspace/aws-types"
 
@@ -32,15 +29,6 @@ export const describeElasticIps = async (
 	{ PublicIps }: Required<Pick<DescribeAddressesCommandInput, "PublicIps">>
 ): Promise<DescribeAddressesCommandOutput> => {
 	const command = new DescribeAddressesCommand({ PublicIps })
-	const client = ec2Client(region)
-	return await client.send(command)
-}
-
-export const releaseElasticIp = async (
-	region: AwsRegion,
-	{ AllocationId }: Required<Pick<ReleaseAddressCommandInput, "AllocationId">>
-): Promise<ReleaseAddressCommandOutput> => {
-	const command = new ReleaseAddressCommand({ AllocationId })
 	const client = ec2Client(region)
 	return await client.send(command)
 }
