@@ -7,7 +7,9 @@ export type { Policy } from "@aws-sdk/client-iam"
 const policyDocumentStatementActions = [
 	"acm:ListCertificates",
 	"apigateway:GET",
+	"ec2:AssociateAddress",
 	"ec2:DescribeAddresses",
+	"ec2:DisassociateAddress",
 	"elasticloadbalancing:DescribeLoadBalancers",
 	"iam:GetPolicy",
 	"iam:GetPolicyVersion",
@@ -16,9 +18,9 @@ const policyDocumentStatementActions = [
 	"lambda:UpdateFunctionCode",
 	"lambda:UpdateFunctionConfiguration",
 	"s3:CreateBucket",
+	"s3:DeleteObject",
 	"s3:GetBucketAcl",
 	"s3:ListBucket",
-	"s3:DeleteObject",
 	"s3:PutObject"
 ] as const
 export type PolicyDocumentStatementAction =

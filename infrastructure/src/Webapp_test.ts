@@ -6,11 +6,11 @@ import { Webapp } from "./Webapp.js"
 
 const webapp = new Webapp()
 
-describe("Webapp", () => {
-	describe("S3 Bucket", () => {
+void describe("Webapp", () => {
+	void describe("S3 Bucket", () => {
 		const { s3Bucket } = webapp
 
-		test(
+		void test(
 			`${s3Bucket.name} exists`,
 			SKIP_WHEN_TESTS_ARE_ACTIVE,
 			async () => {
@@ -19,7 +19,7 @@ describe("Webapp", () => {
 			}
 		)
 
-		test(`create ${s3Bucket.name}`, ACTIVE_TEST, async () => {
+		void test(`create ${s3Bucket.name}`, ACTIVE_TEST, async () => {
 			await s3Bucket.create()
 			assert.ok(true)
 		})

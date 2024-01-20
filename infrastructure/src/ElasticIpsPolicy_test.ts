@@ -1,15 +1,15 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { IamPolicy } from "@workspace/aws-iam"
+ import { IamPolicy } from "@workspace/aws-iam"
 
-import { DevopsPolicy } from "./DevopsPolicy.js"
+import { ElasticIpsPolicy } from "./ElasticIpsPolicy.js"
 
-const devopsPolicy = new DevopsPolicy()
-await devopsPolicy.read()
-const { policy, policyDocument } = devopsPolicy
+const elasticIpsPolicy = new ElasticIpsPolicy()
+await elasticIpsPolicy.read()
+const { policy , policyDocument } = elasticIpsPolicy
 
-void describe("DevopsPolicy", () => {
+void describe("ElasticIpsPolicy", () => {
 	void test("exists", () => {
 		assert.ok(policy !== undefined)
 	})
@@ -24,7 +24,7 @@ void describe("DevopsPolicy", () => {
 		})
 
 		// TODO
-		// check it is attached to ggbot2-devops-group
+		// check it is attached to ggbot2-binance-proxy-role
 	}
 
 	if (policyDocument) {
@@ -32,15 +32,15 @@ void describe("DevopsPolicy", () => {
 			IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
 
 		for (const [statementName, actionList] of Object.entries(
-			devopsPolicy.statementAction
+			elasticIpsPolicy.statementAction
 		)) {
 			const statement = findStatementByActions(actionList)
 			const exists = statement !== undefined
-void			describe(statementName, () => {
+			void describe(statementName, () => {
 				void test("exists", () => {
 					assert.ok(
 						exists,
-						`devopsPolicy ${statementName} statement actions should be ${JSON.stringify(
+						`elasticIpsPolicy ${statementName} statement actions should be ${JSON.stringify(
 							actionList
 						)}`
 					)
@@ -50,4 +50,4 @@ void			describe(statementName, () => {
 			// TODO if exists, check Resource
 		}
 	}
-})
+	})

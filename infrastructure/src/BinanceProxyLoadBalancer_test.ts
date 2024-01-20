@@ -8,13 +8,13 @@ import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 const binanceProxyLoadBalancer = new BinanceProxyLoadBalancer()
 const loadBalancer = await binanceProxyLoadBalancer.describe()
 
-describe("BinanceProxyLoadBalancer", () => {
-	test("exists", async () => {
+void describe("BinanceProxyLoadBalancer", () => {
+	void test("exists", async () => {
 		assert.ok(loadBalancer !== undefined)
 	})
 
 	if (loadBalancer) {
-		test("is active", () => {
+		void test("is active", () => {
 			assert.ok(loadBalancer.State?.Code === LoadBalancerStateEnum.ACTIVE)
 		})
 

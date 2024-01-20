@@ -7,13 +7,13 @@ import { StripeWebhook } from "./StripeWebhook.js"
 const webhook = new StripeWebhook()
 const exists = await webhook.exists()
 
-describe("StripeWebhook", () => {
-	test("exists", SKIP_WHEN_TESTS_ARE_ACTIVE, () => {
+void describe("StripeWebhook", () => {
+	void test("exists", SKIP_WHEN_TESTS_ARE_ACTIVE, () => {
 		assert.ok(exists, `StripeWebhook ${webhook.url} does not exist`)
 	})
 
 	if (!exists) {
-		test(`create StripeWebhook ${webhook.url}`, ACTIVE_TEST, async () => {
+		void test(`create StripeWebhook ${webhook.url}`, ACTIVE_TEST, async () => {
 			const endpoint = await webhook.create()
 			console.info(endpoint)
 			assert.ok(true)
@@ -21,18 +21,18 @@ describe("StripeWebhook", () => {
 	}
 
 	if (exists) {
-		test("apiVersion", () => {
+		void test("apiVersion", () => {
 			assert.equal(
 				webhook.endpoint?.api_version,
 				StripeWebhook.apiVersion
 			)
 		})
 
-		test("status is enabled", () => {
+		void test("status is enabled", () => {
 			assert.equal(webhook.endpoint?.status, "enabled")
 		})
 
-		test("has enabled events", () => {
+		void test("has enabled events", () => {
 			assert.deepEqual(
 				webhook.endpoint?.enabled_events,
 				StripeWebhook.enabledEvents
