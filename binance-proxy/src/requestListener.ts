@@ -52,6 +52,7 @@ export const requestListener = (
 		return
 	}
 
+	// Copy Binance headers from source to target request.
 	for (const [key, value] of Object.entries(sourceHeaders))
 		if (
 			BinanceRequestHeaders.isApiKeyHeader(key) &&
@@ -66,19 +67,18 @@ export const requestListener = (
 		.then((proxiedResponse) => {
 			response.writeHead(proxiedResponse.status)
 
-			if (proxiedResponse.ok) return proxiedResponse.json()
+			if (!proxiedResponse.ok)
+				warn(
+					proxiedResponse.status,
+					proxiedResponse.statusText,
+					targetUrl.origin,
+					// Avoid printing query string, it may contain signature.
+					targetUrl.pathname
+				)
 
-			warn(
-				proxiedResponse.status,
-				proxiedResponse.statusText,
-				// Avoid printing query string, it may contain signature.
-				targetUrl.origin,
-				targetUrl.pathname
-			)
-			response.end(proxiedResponse.statusText)
+			return proxiedResponse.json()
 		})
 		.then((data) => {
-			info(data)
 			response.end(JSON.stringify(data))
 		})
 		.catch((error) => {
