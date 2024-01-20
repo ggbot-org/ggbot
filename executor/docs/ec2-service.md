@@ -10,10 +10,6 @@ First of all, define the _Deploy stage_: it can be `main` or `next`.
 
 Switch to **root** user: `sudo su -`.
 
-Set `SERVICE` either to:
-
--   `export SERVICE=executor`
-
 Then run the following.
 
 ```sh
@@ -28,7 +24,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/npm run update_and_start:$SERVICE
+ExecStart=/usr/bin/npm run update_and_start:executor
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"

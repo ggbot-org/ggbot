@@ -22,10 +22,6 @@ npm ci
 
 Switch to **root** user: `sudo su -`.
 
-Set `SERVICE`
-
--   `export SERVICE=binance-proxy`
-
 Then run the following.
 
 ```sh
@@ -40,7 +36,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/node binance-proxy/dist/server.js
+ExecStart=/usr/bin/npm run start:binance-proxy
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"
@@ -113,9 +109,9 @@ EOF
 Create an image, with name
 
 ```sh
-ggbot_${SERVICE}_${YYMMDD}
+ggbot_binance-proxy_${YYMMDD}
 ```
 
-for example `ggbot_executor_230804`.
+for example `ggbot_binance-proxy_230804`.
 
 Go to [EC2 Auto Scaling groups](../../docs/ec2-auto-scaling-groups.md)
