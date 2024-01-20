@@ -1,6 +1,7 @@
 import {
 	associateElasticIp,
 	describeElasticIps,
+	disassociateElasticIp,
 	getOwnEc2InstanceId
 } from "@workspace/aws-ec2"
 import { ENV } from "@workspace/env"
@@ -16,7 +17,7 @@ const BINANCE_PROXY_ELASTIC_IPS = ENV.BINANCE_PROXY_ELASTIC_IPS()
 const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
 
 let elasticIp = ""
-let allocationId = ""
+let associationId = ""
 
 export const getElasticIp = () => elasticIp
 
@@ -42,34 +43,32 @@ export const associateIp = async () => {
 	if (!Addresses) throw new ErrorElasticIpsListIsEmpty()
 
 	for (const elasticIpInfo of Addresses) {
-		const { AllocationId, AssociationId, PublicIp } = elasticIpInfo
+		const { AllocationId, PublicIp } = elasticIpInfo
 		// Skip elastic IP if it is already associated.
-		if (AssociationId) continue
+		if (elasticIpInfo.AssociationId) continue
 
 		if (!AllocationId || !PublicIp) continue
 
-		await associateElasticIp(AWS_BINANCE_PROXY_REGION, {
-			AllocationId,
-			InstanceId
-		})
-		elasticIp = PublicIp
-		allocationId = AllocationId
-		info(
-			"Elastic IP associated",
-			elasticIp,
-			"with AllocationId",
-			allocationId
+		const { AssociationId } = await associateElasticIp(
+			AWS_BINANCE_PROXY_REGION,
+			{
+				AllocationId,
+				InstanceId
+			}
 		)
+		elasticIp = PublicIp
+		if (AssociationId) associationId = AssociationId
+
+		info("Elastic IP associated", elasticIp)
 	}
 
 	if (!elasticIp) throw new ErrorNoElasticIpAvailable()
 }
 
-// TODO BUG release IP removes IP from account
-// export const releaseIp = async () => {
-// 	if (!elasticIp || !allocationId) return
-// 	info("Release IP", elasticIp, "from AllocationId", allocationId)
-// 	await releaseElasticIp(AWS_BINANCE_PROXY_REGION, {
-// 		AllocationId: allocationId
-// 	})
-// }
+export const disassociateIp = async () => {
+	if (!elasticIp || !associationId) return
+	info("Release IP", elasticIp)
+	await disassociateElasticIp(AWS_BINANCE_PROXY_REGION, {
+		AssociationId: associationId
+	})
+}
