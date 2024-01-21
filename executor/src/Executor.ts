@@ -207,7 +207,7 @@ export class Executor {
 
 		if (strategyKind === "none") return
 
-		throw new ErrorUnknown(strategyKind)
+		throw new ErrorUnknown("strategyKind", strategyKind)
 	}
 
 	managesItem(itemId: Item["id"]) {

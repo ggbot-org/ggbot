@@ -29,7 +29,7 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 	}
 
 	const WRITE = useUserApi.SetAccountCountry()
-	const READ = useUserApi.ReadAccount()
+	const READ = useUserApi.ReadAccountInfo()
 	const account = READ.data
 
 	const [country, setCountry] = useState<AllowedCountryIsoCode2 | "">("")

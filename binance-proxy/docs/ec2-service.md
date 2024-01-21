@@ -1,6 +1,6 @@
 # EC2 service
 
-See [how to launch EC2 instance](../../docs/ec2-launch-instance.md).
+See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.md).
 
 ## Deploy stage
 
@@ -69,7 +69,6 @@ For example
     [Service]
     Environment="AWS_ACCOUNT_ID=888671539518"
     Environment="DEPLOY_STAGE=main"
-    Environment="DNS_DOMAIN=ggbot2.com"
     Environment="BINANCE_PROXY_ELASTIC_IPS=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
 

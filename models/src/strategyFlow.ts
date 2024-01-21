@@ -19,10 +19,6 @@ export type CopyStrategyFlow = (
 	arg: CopyStrategyFlowInput
 ) => Promise<CreationTime>
 
-export type ReadStrategyFlow = (
-	arg: StrategyKey
-) => Promise<StrategyFlow | null>
-
 export type WriteStrategyFlowInput = AccountStrategyKey &
 	Omit<StrategyFlow, "whenUpdated">
 

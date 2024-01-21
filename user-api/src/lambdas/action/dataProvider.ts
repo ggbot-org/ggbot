@@ -31,7 +31,7 @@ const createPurchaseOrder: UserApiDataProvider["createPurchaseOrder"] = ({
 	paymentProvider
 }) => {
 	if (paymentProvider === "stripe") return Promise.resolve(null)
-	throw new ErrorUnknown(paymentProvider)
+	throw new ErrorUnknown("paymentProvider", paymentProvider)
 }
 
 const createStrategyWithWelcomeFlow: UserApiDataProvider["createStrategy"] =
@@ -72,7 +72,6 @@ export const dataProvider: UserApiDataProvider = {
 	deleteAccount,
 	deleteBinanceApiConfig,
 	deleteStrategy,
-	readAccount,
 	readAccountInfo,
 	readAccountStrategies,
 	readBinanceApiKey,

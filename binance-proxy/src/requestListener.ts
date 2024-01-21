@@ -1,88 +1,59 @@
 import { IncomingMessage, ServerResponse } from "node:http"
 
+import { isBinanceApiPrivateEndoint } from "@workspace/binance"
 import {
-	binanceApiDomain,
-	BinanceRequestHeaders,
-	isBinanceApiPrivateEndoint
-} from "@workspace/binance"
-import { ENV } from "@workspace/env"
-import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
+	__400__BAD_REQUEST__,
+	__404__NOT_FOUND__,
+	__500__INTERNAL_SERVER_ERROR__
+} from "@workspace/http"
 
+import { binanceHandler } from "./binanceHandler.js"
 import { getElasticIp } from "./elasticIp.js"
-import { info, warn } from "./logging.js"
-
-const DNS_DOMAIN = ENV.DNS_DOMAIN()
-
-const targetHeaders = new Headers({
-	"User-agent": DNS_DOMAIN
-})
+import { warn } from "./logging.js"
 
 export const requestListener = (
 	request: IncomingMessage,
 	response: ServerResponse
 ) => {
-	const { headers: sourceHeaders, url: sourceUrl } = request
+	const { url: requestUrl } = request
 
-	if (typeof sourceUrl !== "string") {
+	if (typeof requestUrl !== "string") {
 		response.writeHead(__400__BAD_REQUEST__)
 		response.end()
 		return
 	}
 
-	if (sourceUrl === "/health-check") {
+	if (requestUrl === "/health-check") {
 		response.end(`Elastic IP: ${getElasticIp() ?? "none"}`)
 		return
 	}
 
-	if (sourceUrl === "/robots.txt") {
+	if (requestUrl === "/robots.txt") {
 		response.end("User-agent: *\nDisallow: /")
 		return
 	}
 
-	// Output `sourceUrl` after handling known endpoints that are not worth to be logged,
-	// like `/health-check` and `/robots.txt`.
-	info("sourceUrl", sourceUrl)
-
-	const targetUrl = new URL(sourceUrl, `https://${binanceApiDomain}`)
-
-	if (!isBinanceApiPrivateEndoint(targetUrl.pathname)) {
-		info(__404__NOT_FOUND__, targetUrl.pathname)
+	if (!isBinanceApiPrivateEndoint(requestUrl)) {
+		warn(__404__NOT_FOUND__, requestUrl)
 		response.writeHead(__404__NOT_FOUND__)
 		response.end()
 		return
 	}
 
-	// Copy Binance headers from source to target request.
-	for (const [key, value] of Object.entries(sourceHeaders))
-		if (
-			BinanceRequestHeaders.isApiKeyHeader(key) &&
-			typeof value === "string"
-		)
-			targetHeaders.append(key, value)
+	if (request.method !== "POST") {
+		response.writeHead(__400__BAD_REQUEST__)
+		response.end()
+		return
+	}
 
-	fetch(targetUrl, {
-		headers: targetHeaders,
-		method: request.method
-	})
-		.then((proxiedResponse) => {
-			response.writeHead(proxiedResponse.status)
-
-			if (!proxiedResponse.ok)
-				warn(
-					proxiedResponse.status,
-					proxiedResponse.statusText,
-					targetUrl.origin,
-					// Avoid printing query string, it may contain signature.
-					targetUrl.pathname
-				)
-
-			return proxiedResponse.json()
-		})
-		.then((data) => {
-			response.end(JSON.stringify(data))
+	binanceHandler(requestUrl)
+		.then(({ status }) => {
+			response.writeHead(status)
+			response.end()
 		})
 		.catch((error) => {
 			warn(error)
+			response.writeHead(__500__INTERNAL_SERVER_ERROR__)
 			response.end()
 		})
 }

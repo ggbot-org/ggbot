@@ -3,8 +3,6 @@ export type {
 	AccountKey,
 	CreateAccount,
 	DeleteAccount,
-	ListAccountKeys,
-	ReadAccount,
 	RenameAccount,
 	SetAccountCountry
 } from "./account.js"
@@ -121,12 +119,10 @@ export {
 	isSerializableObject,
 	isSerializablePrimitive
 } from "./serializable.js"
-export type { Service } from "./service.js"
 export type {
 	CopyStrategy,
 	CreateStrategy,
 	DeleteStrategy,
-	ReadStrategy,
 	ReadStrategyAccountId,
 	RenameStrategy,
 	Strategy,
@@ -160,7 +156,6 @@ export type {
 export type {
 	CopyStrategyFlow,
 	DeleteStrategyFlow,
-	ReadStrategyFlow,
 	StrategyFlow,
 	WriteStrategyFlow
 } from "./strategyFlow.js"

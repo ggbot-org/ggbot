@@ -78,8 +78,6 @@ export const isCreateStrategyInput = objectTypeGuard<CreateStrategyInput>(
 
 export type CreateStrategy = (arg: NewItem<Strategy>) => Promise<Strategy>
 
-export type ReadStrategy = (arg: StrategyKey) => Promise<Strategy | null>
-
 export type ReadStrategyAccountId = (
 	arg: StrategyKey
 ) => Promise<Account["id"] | null>

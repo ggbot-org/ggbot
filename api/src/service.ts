@@ -1,4 +1,4 @@
-import { SerializableData } from "./serializable.js"
+import { SerializableData } from "@workspace/models"
 
 /**
  * A Service implements an API that can be consumed by a client and interacts

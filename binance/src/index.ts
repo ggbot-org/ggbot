@@ -6,18 +6,21 @@ export { isBinanceApiPrivateEndoint } from "./endpoints.js"
 export { ErrorBinanceHTTP } from "./errors.js"
 export { BinanceExchange } from "./exchange.js"
 export { BinanceExchangeInfoCacheMap } from "./exchangeInfoCacheMap.js"
-export { binanceApiDomain } from "./FQDN.js"
-export { BinanceRequestHeaders } from "./headers.js"
 export { BinanceKlinesCacheMap } from "./klinesCacheMap.js"
 export type {
 	BinanceApiRequestMethod,
 	BinanceApiRequestParams
 } from "./request.js"
 export { getBinanceIntervalTime } from "./time.js"
-export { isBinanceFill, isBinanceOrderRespFULL } from "./typeGuards.js"
+export {
+	isBinanceErrorPayload,
+	isBinanceFill,
+	isBinanceOrderRespFULL
+} from "./typeGuards.js"
 export type {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
+	BinanceErrorPayload,
 	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,

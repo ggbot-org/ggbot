@@ -1,43 +1,49 @@
-import { BinanceOrderType, BinanceSymbolFilter } from "./types.js"
-
-type ErrorBinanceHTTPInfo = Pick<
-	ErrorBinanceHTTP,
-	"pathname" | "searchParams" | "status" | "statusText"
->
+import {
+	BinanceErrorPayload,
+	BinanceOrderType,
+	BinanceSymbolFilter
+} from "./types.js"
 
 export class ErrorBinanceHTTP extends Error {
 	static errorName = "ErrorBinanceHTTP"
-	pathname: string
-	searchParams: string
-	status: Response["status"]
-	statusText: Response["statusText"]
-
-	constructor(info: ErrorBinanceHTTPInfo) {
-		super(ErrorBinanceHTTP.message(info))
-		this.pathname = info.pathname
-		this.status = info.status
-		this.statusText = info.statusText
-		this.searchParams = info.searchParams
+	payload: BinanceErrorPayload | undefined
+	info: {
+		pathname: string
+		searchParams: string
+		status: Response["status"]
+		statusText: Response["statusText"]
 	}
 
-	static message({
-		status,
-		statusText,
-		pathname,
-		searchParams
-	}: ErrorBinanceHTTPInfo) {
-		return `Server responded with status=${status} statusText=${statusText} on pathname=${pathname} with searchParams=${searchParams}`
+	constructor(
+		info: ErrorBinanceHTTP["info"],
+		payload?: ErrorBinanceHTTP["payload"]
+	) {
+		super(ErrorBinanceHTTP.message(info, payload))
+		this.info = info
+		this.payload = payload
 	}
 
-	toJSON(): { name: string; info: ErrorBinanceHTTPInfo } {
+	static message(
+		{
+			status,
+			statusText,
+			pathname,
+			searchParams
+		}: ErrorBinanceHTTP["info"],
+		payload: ErrorBinanceHTTP["payload"]
+	) {
+		return `Server responded with status=${status} payload=${JSON.stringify(
+			payload
+		)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
+	}
+
+	toJSON(): {
+		name: string
+		info: ErrorBinanceHTTP["info"] & Pick<ErrorBinanceHTTP, "payload">
+	} {
 		return {
 			name: ErrorBinanceHTTP.errorName,
-			info: {
-				pathname: this.pathname,
-				searchParams: this.searchParams,
-				status: this.status,
-				statusText: this.statusText
-			}
+			info: { ...this.info, payload: this.payload }
 		}
 	}
 }

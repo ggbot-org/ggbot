@@ -103,6 +103,11 @@ export type BinanceBalance = {
 	locked: string
 }
 
+export type BinanceErrorPayload = {
+	code: number
+	msg: string
+}
+
 export type BinanceExchangeInfo = {
 	timezone: string
 	serverTime: number

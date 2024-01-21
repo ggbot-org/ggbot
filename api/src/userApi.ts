@@ -1,3 +1,4 @@
+// TODO api types from models to api
 import {
 	CopyStrategy,
 	CreateBinanceApiConfig,
@@ -6,7 +7,6 @@ import {
 	DeleteAccount,
 	DeleteBinanceApiConfig,
 	DeleteStrategy,
-	ReadAccount,
 	ReadAccountInfo,
 	ReadAccountStrategies,
 	ReadBinanceApiKey,
@@ -16,11 +16,12 @@ import {
 	ReadSubscription,
 	RenameAccount,
 	RenameStrategy,
-	Service,
 	SetAccountCountry,
 	WriteAccountStrategiesItemSchedulings,
 	WriteStrategyFlow
 } from "@workspace/models"
+
+import { Service } from "./service.js"
 
 export const userApiActionTypes = [
 	"CopyStrategy",
@@ -30,7 +31,6 @@ export const userApiActionTypes = [
 	"DeleteAccount",
 	"DeleteBinanceApiConfig",
 	"DeleteStrategy",
-	"ReadAccount",
 	"ReadAccountInfo",
 	"ReadAccountStrategies",
 	"ReadBinanceApiKey",
@@ -54,7 +54,6 @@ export type UserApiDataProvider = {
 	deleteAccount: DeleteAccount
 	deleteBinanceApiConfig: DeleteBinanceApiConfig
 	deleteStrategy: DeleteStrategy
-	readAccount: ReadAccount
 	readAccountInfo: ReadAccountInfo
 	readAccountStrategies: ReadAccountStrategies
 	readBinanceApiKey: ReadBinanceApiKey

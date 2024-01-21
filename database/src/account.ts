@@ -1,3 +1,4 @@
+import { ListAccountKeys, ReadAccount } from "@workspace/api"
 import {
 	Account,
 	AccountKey,
@@ -5,9 +6,7 @@ import {
 	DeleteAccount,
 	ErrorAccountItemNotFound,
 	isAccountKey,
-	ListAccountKeys,
 	newAccount,
-	ReadAccount,
 	RenameAccount,
 	SetAccountCountry,
 	throwIfInvalidName,

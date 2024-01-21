@@ -3,6 +3,7 @@ import { ErrorBinanceHTTP } from "./errors.js"
 import { BinanceApiDomain, binanceApiDomain } from "./FQDN.js"
 import { BinanceRequestHeaders } from "./headers.js"
 import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js"
+import { BinanceErrorPayload } from "./types.js"
 
 /** BinanceConnector handles requests to Binance API. */
 export class BinanceConnector {
@@ -51,13 +52,21 @@ export class BinanceConnector {
 		}
 
 		const response = await fetch(url, fetchOptions)
-		if (!response.ok)
-			throw new ErrorBinanceHTTP({
+		if (!response.ok) {
+			const errorInfo = {
 				status: response.status,
 				statusText: response.statusText,
 				pathname: url.pathname,
 				searchParams: debugUrl.searchParams.toString()
-			})
+			}
+			try {
+				const errorPayload =
+					(await response.json()) as BinanceErrorPayload
+				throw new ErrorBinanceHTTP(errorInfo, errorPayload)
+			} catch {
+				throw new ErrorBinanceHTTP(errorInfo)
+			}
+		}
 
 		return (await response.json()) as Data
 	}

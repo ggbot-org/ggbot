@@ -1,10 +1,10 @@
+import { ReadStrategyFlow } from "@workspace/api"
 import {
 	CopyStrategyFlow,
 	createdNow,
 	DeleteStrategyFlow,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	ReadStrategyFlow,
 	StrategyFlow,
 	updatedNow,
 	WriteStrategyFlow

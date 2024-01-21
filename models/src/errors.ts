@@ -144,14 +144,16 @@ export class ErrorPermissionOnStrategyItem extends Error {
 export class ErrorUnknown extends Error {
 	static errorName = "ErrorUnknown"
 	readonly itemName: string
-	constructor(itemName: never) {
-		super("Unknown " + String(itemName))
+	readonly itemType: string
+	constructor(itemType: string, itemName: never) {
+		super(`Unknown ${itemType} ${String(itemName)}`)
 		this.itemName = String(itemName)
+		this.itemType = itemType
 	}
 	toJSON() {
 		return {
 			name: ErrorUnknown.errorName,
-			info: { itemName: this.itemName }
+			info: { itemName: this.itemName, itemType: this.itemType }
 		}
 	}
 }
