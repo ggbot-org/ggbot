@@ -1,13 +1,13 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
- import { IamPolicy } from "@workspace/aws-iam"
+import { IamPolicy } from "@workspace/aws-iam"
 
 import { ElasticIpsPolicy } from "./ElasticIpsPolicy.js"
 
 const elasticIpsPolicy = new ElasticIpsPolicy()
 await elasticIpsPolicy.read()
-const { policy , policyDocument } = elasticIpsPolicy
+const { policy, policyDocument } = elasticIpsPolicy
 
 void describe("ElasticIpsPolicy", () => {
 	void test("exists", () => {
@@ -50,4 +50,4 @@ void describe("ElasticIpsPolicy", () => {
 			// TODO if exists, check Resource
 		}
 	}
-	})
+})

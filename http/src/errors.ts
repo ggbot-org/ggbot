@@ -3,6 +3,7 @@ import {
 	__401__UNAUTHORIZED__,
 	__404__NOT_FOUND__,
 	__500__INTERNAL_SERVER_ERROR__,
+	__501__NOT_IMPLEMENTED__,
 	__502__BAD_GATEWAY__
 } from "./codes.js"
 
@@ -31,6 +32,13 @@ export class InternalServerError extends Error {
 	static errorName = "InternalServerError"
 	constructor() {
 		super(String(__500__INTERNAL_SERVER_ERROR__))
+	}
+}
+
+export class NotImplementedError extends Error {
+	static errorName = "NotImplemented"
+	constructor() {
+		super(String(__501__NOT_IMPLEMENTED__))
 	}
 }
 

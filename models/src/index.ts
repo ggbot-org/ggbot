@@ -48,7 +48,7 @@ export type {
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria,
 } from "./binanceApiConfig.js"
-export {isBinanceApiConfig } from "./binanceApiConfig.js"
+export {isBinanceApiConfig, isBinanceApiKeyPermissionCriteria } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"

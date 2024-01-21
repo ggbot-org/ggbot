@@ -49,6 +49,11 @@ export const __405__METHOD_NOT_ALLOWED__ = 405
 export const __500__INTERNAL_SERVER_ERROR__ = 500
 
 /**
+ * The server either does not recognize the request method, or it lacks the ability to fulfil the request. Usually this implies future availability (e.g., a new feature of a web-service API)
+*/
+export const __501__NOT_IMPLEMENTED__ = 501
+
+/**
  * The server was acting as a gateway or proxy and received an invalid response
  * from the upstream server.
  *

@@ -31,7 +31,7 @@ export type {
 	BinanceProxyApiService,
 	CreateBinanceOrderInput
 } from "./binanceProxyApi.js"
-export { isCreateBinanceOrderInput } from "./binanceProxyApi.js"
+export { isBinanceProxyApiResponseError, isCreateBinanceOrderInput } from "./binanceProxyApi.js"
 export type {
 	PublicApiActionType,
 	PublicApiDataProvider,
@@ -41,15 +41,15 @@ export type {
 } from "./publicApi.js"
 export { publicApiActionTypes } from "./publicApi.js"
 export type {
-	UserApiActionType,
-	UserApiDataProvider,
-	UserApiService,
 	CreateBinanceApiConfig,
 	DeleteBinanceApiConfig,
 	ReadBinanceApiConfig,
 	ReadBinanceApiKey,
-	ReadBinanceApiKeyPermissions
+	ReadBinanceApiKeyPermissions,
+	UserApiActionType,
+	UserApiDataProvider,
+	UserApiService
 } from "./userApi.js"
-export { userApiActionTypes, isCreateBinanceApiConfigInput } from "./userApi.js"
+export { isCreateBinanceApiConfigInput, userApiActionTypes } from "./userApi.js"
 export type { UtrustApiCallabackRequestData } from "./utrustApi.js"
 export { isUtrustApiActionRequestData } from "./utrustApi.js"

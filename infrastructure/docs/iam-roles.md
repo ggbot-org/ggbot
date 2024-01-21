@@ -35,6 +35,8 @@ Add policies:
 
 ### CodeCommit
 
+<!-- TODO remove this -->
+
 Create a IAM policy with name `ggbot2-codecommit-readonly-policy`.
 
 ```json

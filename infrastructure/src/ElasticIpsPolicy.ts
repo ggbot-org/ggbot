@@ -4,7 +4,7 @@ import { staticWebsiteAwsRegion } from "./awsRegions.js"
 
 const statementNames = [
 	"describeAddresses",
-	"handleAddressesAssociation",
+	"handleAddressesAssociation"
 ] as const
 type ElasticIpsPolicyStatementName = (typeof statementNames)[number]
 
@@ -20,27 +20,30 @@ export class ElasticIpsPolicy extends IamPolicy {
 	get statementAction(): Record<
 		ElasticIpsPolicyStatementName,
 		PolicyDocumentStatement["Action"]
-		> {
-			return {
-				describeAddresses: ["ec2:DescribeAddresses"],
-				handleAddressesAssociation:["ec2:AssociateAddress", "ec2:DisassociateAddress"]
-			}
+	> {
+		return {
+			describeAddresses: ["ec2:DescribeAddresses"],
+			handleAddressesAssociation: [
+				"ec2:AssociateAddress",
+				"ec2:DisassociateAddress"
+			]
 		}
+	}
 
 	get statementResource(): Record<
 		ElasticIpsPolicyStatementName,
 		PolicyDocumentStatement["Resource"]
 	> {
-		const {accountId} =this
+		const { accountId } = this
 		return {
 			describeAddresses: "*",
 			handleAddressesAssociation: [
-				  `arn:aws:ec2:*:${accountId}:network-interface/*`,
-                `arn:aws:ec2:*:${accountId}:elastic-ip/*`,
-                `arn:aws:ec2:*:${accountId}:instance/*`
+				`arn:aws:ec2:*:${accountId}:network-interface/*`,
+				`arn:aws:ec2:*:${accountId}:elastic-ip/*`,
+				`arn:aws:ec2:*:${accountId}:instance/*`
 			]
 		}
-		}
+	}
 
 	get statement(): Record<
 		ElasticIpsPolicyStatementName,
@@ -56,7 +59,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 
 		return {
 			describeAddresses: allow("describeAddresses"),
-			handleAddressesAssociation: allow("handleAddressesAssociation"),
+			handleAddressesAssociation: allow("handleAddressesAssociation")
 		}
 	}
 }

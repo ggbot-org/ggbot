@@ -36,7 +36,7 @@ void describe("DevopsPolicy", () => {
 		)) {
 			const statement = findStatementByActions(actionList)
 			const exists = statement !== undefined
-void			describe(statementName, () => {
+			void describe(statementName, () => {
 				void test("exists", () => {
 					assert.ok(
 						exists,

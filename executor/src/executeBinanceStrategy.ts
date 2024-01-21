@@ -22,7 +22,8 @@ import {
 	ErrorStrategyItemNotFound,
 	newOrder,
 	StrategyKind,
-	StrategyScheduling} from "@workspace/models"
+	StrategyScheduling
+} from "@workspace/models"
 import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "./binance.js"

@@ -1,13 +1,15 @@
 import {
 	BinanceAccountInformation,
-	BinanceApiKeyPermission,
 	BinanceErrorPayload,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
-	BinanceOrderType
+	BinanceOrderType,
+	isBinanceErrorPayload
 } from "@workspace/binance"
-import { SerializableData } from "@workspace/models"
+import {
+	BinanceApiKeyPermissionCriteria,
+	SerializableData } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Service } from "./service.js"
@@ -18,10 +20,17 @@ const binanceProxyApiActionTypes = [
 ] as const
 type BinanceProxyApiActionType = (typeof binanceProxyApiActionTypes)[number]
 
+export type BinanceProxyApiResponseError = Pick<Response, 'status'>  & {
+	error: BinanceErrorPayload
+}
+
+export const isBinanceProxyApiResponseError = objectTypeGuard<BinanceProxyApiResponseError>(( {
+	status,
+	error
+}) => (typeof status === 'number' && isBinanceErrorPayload(error)))
+
 export type BinanceProxyApiResponseOutput<Data extends SerializableData> = {
-	status: number
-	data?: Data
-	error?: BinanceErrorPayload
+	data: Data
 }
 
 export type CreateBinanceOrderInput = {
@@ -47,7 +56,7 @@ type CreateBinanceOrder = (
 
 type ReadBinanceAccount = () => Promise<BinanceAccountInformation>
 
-type ReadBinanceAccountApiRestrictions = () => Promise<BinanceApiKeyPermission>
+type ReadBinanceAccountApiRestrictions = () => Promise<BinanceApiKeyPermissionCriteria>
 
 export type BinanceProxyApiDataProvider = {
 	createBinanceOrder: CreateBinanceOrder

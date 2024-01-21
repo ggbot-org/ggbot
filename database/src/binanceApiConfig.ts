@@ -5,10 +5,7 @@ import {
 	ReadBinanceApiConfig,
 	ReadBinanceApiKey
 } from "@workspace/api"
-import {
-	BinanceApiConfig,
-	createdNow,
-} from "@workspace/models"
+import { BinanceApiConfig, createdNow } from "@workspace/models"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"

@@ -1,5 +1,7 @@
 # ggbot2 code on AWS CodeCommit
 
+<!-- TODO remove this -->
+
 Repo here: https://eu-central-1.console.aws.amazon.com/codesuite/codecommit/repositories/ggbot2-monorepo/browse?region=eu-central-1
 
 Create local ssh key, for instance _~/.ssh/aws_codecommit_rsa_.
@@ -23,5 +25,3 @@ Done that, to update CodeCommit launch
 ```sh
 git push aws_codecommit main
 ```
-
-See also [ggbot2-codecommit-readonly-policy on IAM](./iam-roles.md)

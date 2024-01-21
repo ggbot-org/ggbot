@@ -1,4 +1,8 @@
-import { UserApiDataProvider, UserApiService, isCreateBinanceApiConfigInput } from "@workspace/api"
+import {
+	UserApiDataProvider,
+	UserApiService,
+	isCreateBinanceApiConfigInput
+} from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
 import {
 	AccountKey,

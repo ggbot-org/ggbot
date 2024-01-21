@@ -13,11 +13,15 @@ void describe("StripeWebhook", () => {
 	})
 
 	if (!exists) {
-		void test(`create StripeWebhook ${webhook.url}`, ACTIVE_TEST, async () => {
-			const endpoint = await webhook.create()
-			console.info(endpoint)
-			assert.ok(true)
-		})
+		void test(
+			`create StripeWebhook ${webhook.url}`,
+			ACTIVE_TEST,
+			async () => {
+				const endpoint = await webhook.create()
+				console.info(endpoint)
+				assert.ok(true)
+			}
+		)
 	}
 
 	if (exists) {

@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from "node:http"
 
 import { isBinanceApiPrivateEndoint } from "@workspace/binance"
 import {
+	__200__OK__,
 	__400__BAD_REQUEST__,
 	__404__NOT_FOUND__,
 	__500__INTERNAL_SERVER_ERROR__
@@ -10,6 +11,7 @@ import {
 import { binanceRequestHandler } from "./binanceRequestHandler.js"
 import { getElasticIp } from "./elasticIp.js"
 import { warn } from "./logging.js"
+import {ErrorAccountItemNotFound} from "@workspace/models"
 
 export const requestListener = (
 	request: IncomingMessage,
@@ -47,11 +49,16 @@ export const requestListener = (
 	}
 
 	binanceRequestHandler(requestUrl)
-		.then(({ status }) => {
-			response.writeHead(status)
+		.then(() => {
+			response.writeHead(__200__OK__)
 			response.end()
 		})
 		.catch((error) => {
+			if (error instanceof ErrorAccountItemNotFound) {
+			response.writeHead(__400__BAD_REQUEST__)
+			response.end()
+			return
+			}
 			warn(error)
 			response.writeHead(__500__INTERNAL_SERVER_ERROR__)
 			response.end()
