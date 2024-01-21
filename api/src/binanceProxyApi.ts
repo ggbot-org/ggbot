@@ -1,7 +1,6 @@
 import {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
-	BinanceApiPrivateEndpoint,
 	BinanceErrorPayload,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
@@ -13,13 +12,13 @@ import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Service } from "./service.js"
 
-const binanceApiActionTypes = [
+const binanceProxyApiActionTypes = [
 	"CreateBinanceOrder",
 	"ReadBinanceAccountApiRestrictions"
 ] as const
-type BinanceApiActionType = (typeof binanceApiActionTypes)[number]
+type BinanceProxyApiActionType = (typeof binanceProxyApiActionTypes)[number]
 
-export type BinanceApiResponseOutput<Data extends SerializableData> = {
+export type BinanceProxyApiResponseOutput<Data extends SerializableData> = {
 	status: number
 	data?: Data
 	error?: BinanceErrorPayload
@@ -50,17 +49,14 @@ type ReadBinanceAccount = () => Promise<BinanceAccountInformation>
 
 type ReadBinanceAccountApiRestrictions = () => Promise<BinanceApiKeyPermission>
 
-export type BinanceApiDataProvider = {
-	action: (
-		endpoint: BinanceApiPrivateEndpoint
-	) => Promise<BinanceApiResponseOutput<SerializableData>>
+export type BinanceProxyApiDataProvider = {
 	createBinanceOrder: CreateBinanceOrder
 	createBinanceOrderTest: CreateBinanceOrder
 	readBinanceAccount: ReadBinanceAccount
 	readBinanceAccountApiRestrictions: ReadBinanceAccountApiRestrictions
 }
 
-export type BinanceApiService = Service<
-	BinanceApiActionType,
-	BinanceApiDataProvider
+export type BinanceProxyApiService = Service<
+	BinanceProxyApiActionType,
+	BinanceProxyApiDataProvider
 >

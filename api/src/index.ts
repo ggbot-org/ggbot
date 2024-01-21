@@ -26,12 +26,12 @@ export {
 	isApiAuthVerifyResponseData
 } from "./authApi.js"
 export type {
-	BinanceApiDataProvider,
-	BinanceApiResponseOutput,
-	BinanceApiService,
+	BinanceProxyApiDataProvider,
+	BinanceProxyApiResponseOutput,
+	BinanceProxyApiService,
 	CreateBinanceOrderInput
-} from "./binanceApi.js"
-export { isCreateBinanceOrderInput } from "./binanceApi.js"
+} from "./binanceProxyApi.js"
+export { isCreateBinanceOrderInput } from "./binanceProxyApi.js"
 export type {
 	PublicApiActionType,
 	PublicApiDataProvider,
@@ -43,8 +43,13 @@ export { publicApiActionTypes } from "./publicApi.js"
 export type {
 	UserApiActionType,
 	UserApiDataProvider,
-	UserApiService
+	UserApiService,
+	CreateBinanceApiConfig,
+	DeleteBinanceApiConfig,
+	ReadBinanceApiConfig,
+	ReadBinanceApiKey,
+	ReadBinanceApiKeyPermissions
 } from "./userApi.js"
-export { userApiActionTypes } from "./userApi.js"
+export { userApiActionTypes, isCreateBinanceApiConfigInput } from "./userApi.js"
 export type { UtrustApiCallabackRequestData } from "./utrustApi.js"
 export { isUtrustApiActionRequestData } from "./utrustApi.js"

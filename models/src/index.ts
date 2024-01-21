@@ -47,13 +47,8 @@ export type { Balance } from "./balance.js"
 export type {
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria,
-	CreateBinanceApiConfig,
-	DeleteBinanceApiConfig,
-	ReadBinanceApiConfig,
-	ReadBinanceApiKey,
-	ReadBinanceApiKeyPermissions
 } from "./binanceApiConfig.js"
-export { isCreateBinanceApiConfigInput } from "./binanceApiConfig.js"
+export {isBinanceApiConfig } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"
@@ -210,7 +205,7 @@ export {
 	purchaseMinNumMonths,
 	totalPurchase
 } from "./subscriptionPurchase.js"
-export type { DayKey } from "./time.js"
+export type {CreationTime, DayKey, DeletionTime } from "./time.js"
 export { createdNow, deletedNow, updatedNow } from "./time.js"
 export type { CreateUtrustOrder } from "./utrust.js"
 export { isCreateUtrustOrderInput } from "./utrust.js"

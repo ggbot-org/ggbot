@@ -7,7 +7,7 @@ import {
 	__500__INTERNAL_SERVER_ERROR__
 } from "@workspace/http"
 
-import { binanceHandler } from "./binanceHandler.js"
+import { binanceRequestHandler } from "./binanceRequestHandler.js"
 import { getElasticIp } from "./elasticIp.js"
 import { warn } from "./logging.js"
 
@@ -46,7 +46,7 @@ export const requestListener = (
 		return
 	}
 
-	binanceHandler(requestUrl)
+	binanceRequestHandler(requestUrl)
 		.then(({ status }) => {
 			response.writeHead(status)
 			response.end()

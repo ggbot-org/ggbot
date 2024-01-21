@@ -1,14 +1,14 @@
 import {
-	BinanceApiDataProvider,
-	BinanceApiService,
+	BinanceProxyApiDataProvider,
+	BinanceProxyApiService,
 	isCreateBinanceOrderInput
 } from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
 
-export class BinanceService implements BinanceApiService {
-	dataProvider: BinanceApiDataProvider
+export class BinanceService implements BinanceProxyApiService {
+	dataProvider: BinanceProxyApiDataProvider
 
-	constructor(dataProvider: BinanceApiDataProvider) {
+	constructor(dataProvider: BinanceProxyApiDataProvider) {
 		this.dataProvider = dataProvider
 	}
 

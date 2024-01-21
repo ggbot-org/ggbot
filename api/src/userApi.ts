@@ -1,16 +1,17 @@
 // TODO api types from models to api
 import {
+	AccountKey,
+	BinanceApiConfig,
+	BinanceApiKeyPermissionCriteria,
+	CreationTime,
+	DeletionTime,
 	CopyStrategy,
-	CreateBinanceApiConfig,
 	CreatePurchaseOrder,
 	CreateStrategy,
 	DeleteAccount,
-	DeleteBinanceApiConfig,
 	DeleteStrategy,
 	ReadAccountInfo,
 	ReadAccountStrategies,
-	ReadBinanceApiKey,
-	ReadBinanceApiKeyPermissions,
 	ReadStrategyBalances,
 	ReadStrategyOrders,
 	ReadSubscription,
@@ -18,8 +19,11 @@ import {
 	RenameStrategy,
 	SetAccountCountry,
 	WriteAccountStrategiesItemSchedulings,
-	WriteStrategyFlow
+	WriteStrategyFlow,
+	isAccountKey,
+	isBinanceApiConfig
 } from "@workspace/models"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Service } from "./service.js"
 
@@ -45,6 +49,34 @@ export const userApiActionTypes = [
 	"WriteStrategyFlow"
 ] as const
 export type UserApiActionType = (typeof userApiActionTypes)[number]
+
+type CreateBinanceApiConfigInput = AccountKey & BinanceApiConfig
+
+export const isCreateBinanceApiConfigInput =
+	objectTypeGuard<CreateBinanceApiConfigInput>(
+		({ apiKey, apiSecret, ...accountKey }) =>
+			isAccountKey(accountKey) &&
+			isBinanceApiConfig({ apiKey, apiSecret })
+	)
+
+export type CreateBinanceApiConfig = (
+	arg: CreateBinanceApiConfigInput
+) => Promise<CreationTime>
+
+export type DeleteBinanceApiConfig = (arg: AccountKey) => Promise<DeletionTime>
+
+export type ReadBinanceApiConfig = (
+	arg: AccountKey
+) => Promise<BinanceApiConfig | null>
+
+// On client-side, the `apiSecret` is omitted.
+export type ReadBinanceApiKey = (
+	arg: AccountKey
+) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
+
+export type ReadBinanceApiKeyPermissions = (
+	arg: AccountKey
+) => Promise<BinanceApiKeyPermissionCriteria>
 
 export type UserApiDataProvider = {
 	copyStrategy: CopyStrategy

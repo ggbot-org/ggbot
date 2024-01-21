@@ -1,9 +1,11 @@
+import {
+	ReadBinanceApiKeyPermissions
+} from "@workspace/api"
 import { BinanceClient } from "@workspace/binance-client"
 import { readBinanceApiConfig } from "@workspace/database"
 import { ENV } from "@workspace/env"
 import {
 	ErrorAccountItemNotFound,
-	ReadBinanceApiKeyPermissions
 } from "@workspace/models"
 
 export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions =

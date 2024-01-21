@@ -1,9 +1,8 @@
-import { UserApiDataProvider, UserApiService } from "@workspace/api"
+import { UserApiDataProvider, UserApiService, isCreateBinanceApiConfigInput } from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
 import {
 	AccountKey,
 	isCopyStrategyInput,
-	isCreateBinanceApiConfigInput,
 	isCreatePurchaseOrderInput,
 	isCreateStrategyInput,
 	isDeleteStrategyInput,
