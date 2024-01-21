@@ -119,7 +119,7 @@ Node is also used for tests, with `node:test` module: see [Node Test runner docu
 
 https://docs.npmjs.com/cli/using-npm/workspaces
 
-See also [npm workspaces internal documentation](./npm-workspaces.md).
+See also [npm workspaces internal documentation](../../repository/docs/npm-workspaces.md).
 
 ## NVM
 

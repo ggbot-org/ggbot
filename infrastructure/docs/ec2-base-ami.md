@@ -80,7 +80,3 @@ ggbot_base_${YYMMDD}
 ```
 
 for example `ggbot_base_230402`.
-
-## Setup service
-
-Go to [EC2 services](./ec2-services.md).

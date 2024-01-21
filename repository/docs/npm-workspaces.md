@@ -1,6 +1,6 @@
 # npm workspaces
 
-This repo uses [npm workspaces](./tech-stack.md#npm-workspaces).
+This repo uses [npm workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces).
 
 Every workspace folder has the same name as its package and is a direct child of the project root folder.
 Hence every workspace folder name has lower case letters with hyphen, because it must be a valid npm name. For example: _foo-bar_.

@@ -60,7 +60,7 @@ Create a IAM policy with name `ggbot2-elastic-ips-policy`
 	"Statement": [
 		{
 			"Effect": "Allow",
-			"Action": ["ec2:ReleaseAddress", "ec2:AssociateAddress"],
+			"Action": ["ec2:DisassociateAddress", "ec2:AssociateAddress"],
 			"Resource": [
 				"arn:aws:ec2:*:888671539518:network-interface/*",
 				"arn:aws:ec2:*:888671539518:elastic-ip/*",
