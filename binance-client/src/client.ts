@@ -39,8 +39,8 @@ export class BinanceClient {
 	readonly connector: BinanceConnector
 	readonly exchange: BinanceExchange
 
-	constructor(apiKey: string, apiSecret: string, baseUrl: string) {
-		const connector = new BinanceConnector(baseUrl)
+	constructor(apiKey: string, apiSecret: string, apiBaseUrl?: string) {
+		const connector = new BinanceConnector(apiBaseUrl)
 		connector.apiKey = apiKey
 		this.connector = connector
 		this.apiSecret = apiSecret

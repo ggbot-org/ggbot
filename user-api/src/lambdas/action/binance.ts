@@ -18,7 +18,7 @@ export const readBinanceApiKeyPermissions: ReadBinanceApiKeyPermissions =
 		const binance = new BinanceClient(
 			apiKey,
 			apiSecret,
-			ENV.BINANCE_PROXY_BASE_URL()
+			ENV.BINANCE_API_BASE_URL()
 		)
 		const data = await binance.apiRestrictions()
 		return {

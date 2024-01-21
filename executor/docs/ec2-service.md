@@ -1,6 +1,6 @@
 # EC2 service
 
-See [how to launch EC2 instance](../../docs/ec2-launch-instance.md).
+See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.md).
 
 ## Deploy stage
 
@@ -57,8 +57,8 @@ For example
     [Service]
     Environment="AWS_ACCOUNT_ID=888671539518"
     Environment="DEPLOY_STAGE=main"
-    Environment="DNS_DOMAIN=ggbot2.com"
-    Environment="BINANCE_PROXY_BASE_URL=https://binance-proxy.ggbot2.com"
+    Environment="DNS_DOMAIN=ggbot.org"
+    Environment="BINANCE_API_BASE_URL=http://3.65.45.176:3000"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 

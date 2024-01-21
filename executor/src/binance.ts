@@ -35,7 +35,7 @@ export class Binance implements DflowBinanceClient {
 		this.privateClient = new BinanceClient(
 			apiKey,
 			apiSecret,
-			ENV.BINANCE_PROXY_BASE_URL()
+			ENV.BINANCE_API_BASE_URL()
 		)
 	}
 

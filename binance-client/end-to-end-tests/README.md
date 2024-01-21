@@ -8,14 +8,14 @@ npm run build -w binance-client
 
 Set the following environment variables:
 
+-   `BINANCE_API_BASE_URL`
 -   `BINANCE_API_KEY`
 -   `BINANCE_API_SECRET`
--   `BINANCE_PROXY_BASE_URL`
 
-If script is run on the proxy instance, set `BINANCE_PROXY_BASE_URL` to a Binance API base URL.
+If script is run on the proxy instance, set `BINANCE_API_BASE_URL` to a Binance API base URL.
 
 ```sh
-export BINANCE_PROXY_BASE_URL=https://api.binance.com
+export BINANCE_API_BASE_URL=https://api1.binance.com
 ```
 
 Launch tests:

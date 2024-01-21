@@ -1,10 +1,12 @@
 # EC2 Load Balancer
 
+<!-- TODO remove this -->
+
 Service _binance-proxy_ uses an _Application Load Balancer_.
 
 ## Create Security Group
 
-Create `ggbot2-binance-proxy-alb-sg` _Security group_, see [EC2 Security Groups](./ec2-security-groups.md).
+Create `ggbot2-binance-proxy-alb-sg` _Security group_.
 
 ## Create a Target Group
 
@@ -44,6 +46,8 @@ Select default SSL certificate from _ACM_ (choose ggbot2.com certificate).
 
 ## Update DNS
 
+<!-- TODO remove this -->
+
 To be able to use ggbot2.com SSL certificate, add a DSN entry for the Load Balancer, for instance on Route 53.
 
 -   Record name: `binance-proxy`
@@ -52,4 +56,4 @@ To be able to use ggbot2.com SSL certificate, add a DSN entry for the Load Balan
 -   Region: Frankfurt
 -   Select the Load Balancer name in the dropdown
 
-Finally, update environment variable `BINANCE_PROXY_BASE_URL` accordingly.
+Finally, update environment variable `BINANCE_API_BASE_URL` accordingly.

@@ -30,8 +30,8 @@ class EnvironmentVariables {
 		return getVariable("AWS_SES_REGION")
 	}
 
-	BINANCE_PROXY_BASE_URL() {
-		return getVariable("BINANCE_PROXY_BASE_URL")
+	BINANCE_API_BASE_URL() {
+		return getVariable("BINANCE_API_BASE_URL")
 	}
 
 	BINANCE_PROXY_ELASTIC_IPS() {
