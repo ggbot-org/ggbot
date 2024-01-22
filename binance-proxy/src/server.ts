@@ -2,19 +2,20 @@ import { createServer } from "node:http"
 import { exit } from "node:process"
 
 import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
+import { BinanceProxyBaseURL } from "@workspace/locators"
 
 import { associateIp, disassociateIp } from "./elasticIp.js"
 import { info, warn } from "./logging.js"
 import { requestListener } from "./requestListener.js"
 
-const PORT = 3000
+const { port } = BinanceProxyBaseURL
 
 let gotSIGINT = false
 let gotSIGHUP = false
 let gotSIGTERM = false
 
-createServer(requestListener).listen(PORT, () => {
-	info("Server running on port", PORT)
+createServer(requestListener).listen(port, () => {
+	info("Server running on port", port)
 
 	associateIp().catch((error) => {
 		warn(error)

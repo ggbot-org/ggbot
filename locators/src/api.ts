@@ -6,7 +6,7 @@ class ApiBaseURL extends URL {
 	}
 }
 
-const ApiEndpoint = {
+const apiEndpoint = {
 	admin: {
 		action: "admin/action"
 	},
@@ -35,7 +35,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL(ApiEndpoint.admin.action, baseURL)
+				return new URL(apiEndpoint.admin.action, baseURL)
 			}
 		}
 	}
@@ -44,7 +44,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL(ApiEndpoint.public.action, baseURL)
+				return new URL(apiEndpoint.public.action, baseURL)
 			}
 		}
 	}
@@ -53,7 +53,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get webhook() {
-				return new URL(ApiEndpoint.stripe.webhook, baseURL)
+				return new URL(apiEndpoint.stripe.webhook, baseURL)
 			}
 		}
 	}
@@ -62,7 +62,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL(ApiEndpoint.user.action, baseURL)
+				return new URL(apiEndpoint.user.action, baseURL)
 			}
 		}
 	}

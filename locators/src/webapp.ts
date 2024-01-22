@@ -12,12 +12,12 @@ export class WebappBaseURL extends URL {
 	}
 }
 
-export const WebappDirname = {
+export const webappDirname = {
 	admin: "admin",
 	user: "user"
 } as const
 
-export const WebappPagePathname = {
+export const webappPagePathname = {
 	homepage: "index.html",
 	privacy: "privacy.html",
 	terms: "terms.html",
@@ -25,23 +25,23 @@ export const WebappPagePathname = {
 	purchaseCanceled: "purchase-canceled.html",
 	subscriptionPurchased: "subscription-purchased.html",
 	admin: {
-		accountDetails: `${WebappDirname.admin}/account-details.html`,
-		dashboard: `${WebappDirname.admin}/dashboard.html`
+		accountDetails: `${webappDirname.admin}/account-details.html`,
+		dashboard: `${webappDirname.admin}/dashboard.html`
 	},
 	user: {
-		copyStrategy: `${WebappDirname.user}/copy-strategy.html`,
-		dashboard: `${WebappDirname.user}/dashboard.html`,
+		copyStrategy: `${webappDirname.user}/copy-strategy.html`,
+		dashboard: `${webappDirname.user}/dashboard.html`,
 		settings: {
-			account: `${WebappDirname.user}/account-settings.html`,
-			billing: `${WebappDirname.user}/billing-settings.html`,
-			binance: `${WebappDirname.user}/binance-settings.html`
+			account: `${webappDirname.user}/account-settings.html`,
+			billing: `${webappDirname.user}/billing-settings.html`,
+			binance: `${webappDirname.user}/binance-settings.html`
 		},
-		strategy: `${WebappDirname.user}/strategy.html`
+		strategy: `${webappDirname.user}/strategy.html`
 	}
 } as const
 
 export const webappSettingsPageIds = Object.keys(
-	WebappPagePathname.user.settings
+	webappPagePathname.user.settings
 )
 export type WebappSettingsPageId = (typeof webappSettingsPageIds)[number]
 
@@ -84,23 +84,23 @@ export class WebappURLs {
 	}
 
 	get homepage() {
-		return new URL(WebappPagePathname.homepage, this.baseURL)
+		return new URL(webappPagePathname.homepage, this.baseURL)
 	}
 
 	get privacy() {
-		return new URL(WebappPagePathname.privacy, this.baseURL)
+		return new URL(webappPagePathname.privacy, this.baseURL)
 	}
 
 	get terms() {
-		return new URL(WebappPagePathname.terms, this.baseURL)
+		return new URL(webappPagePathname.terms, this.baseURL)
 	}
 
 	get purchaseCanceled() {
-		return new URL(WebappPagePathname.purchaseCanceled, this.baseURL)
+		return new URL(webappPagePathname.purchaseCanceled, this.baseURL)
 	}
 
 	get subscriptionPurchased() {
-		return new URL(WebappPagePathname.subscriptionPurchased, this.baseURL)
+		return new URL(webappPagePathname.subscriptionPurchased, this.baseURL)
 	}
 
 	get admin() {
@@ -109,11 +109,11 @@ export class WebappURLs {
 			accountDetails(accountKey: AccountKey) {
 				return appendAccountKeyToURLSearchParams(
 					accountKey,
-					new URL(WebappPagePathname.admin.accountDetails, baseURL)
+					new URL(webappPagePathname.admin.accountDetails, baseURL)
 				)
 			},
 			get dashboard() {
-				return new URL(WebappPagePathname.admin.dashboard, baseURL)
+				return new URL(webappPagePathname.admin.dashboard, baseURL)
 			}
 		}
 	}
@@ -122,18 +122,18 @@ export class WebappURLs {
 		const { baseURL } = this
 		return {
 			get dashboard() {
-				return new URL(WebappPagePathname.user.dashboard, baseURL)
+				return new URL(webappPagePathname.user.dashboard, baseURL)
 			},
 			copyStrategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey,
-					new URL(WebappPagePathname.user.copyStrategy, baseURL)
+					new URL(webappPagePathname.user.copyStrategy, baseURL)
 				)
 			},
 			strategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey,
-					new URL(WebappPagePathname.user.strategy, baseURL)
+					new URL(webappPagePathname.user.strategy, baseURL)
 				)
 			}
 		}
@@ -142,7 +142,7 @@ export class WebappURLs {
 	strategy(strategyKey: StrategyKey) {
 		return appendStrategyKeyToURLSearchParams(
 			strategyKey,
-			new URL(WebappPagePathname.strategy, this.baseURL)
+			new URL(webappPagePathname.strategy, this.baseURL)
 		)
 	}
 }

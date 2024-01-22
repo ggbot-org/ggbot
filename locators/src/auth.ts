@@ -6,7 +6,7 @@ class AuthBaseURL extends URL {
 	}
 }
 
-const AuthEndpoint = {
+const authEndpoint = {
 	enter: "enter",
 	verify: "verify"
 }
@@ -22,10 +22,10 @@ export class AuthURLs {
 	}
 
 	get enter() {
-		return new URL(AuthEndpoint.enter, this.baseURL)
+		return new URL(authEndpoint.enter, this.baseURL)
 	}
 
 	get verify() {
-		return new URL(AuthEndpoint.verify, this.baseURL)
+		return new URL(authEndpoint.verify, this.baseURL)
 	}
 }

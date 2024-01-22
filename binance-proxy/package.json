@@ -15,6 +15,7 @@
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/env": "0.0.0",
+    "@workspace/locators": "0.0.0",
     "@workspace/logging": "0.0.0",
     "@workspace/http": "0.0.0"
   },

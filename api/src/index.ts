@@ -27,11 +27,15 @@ export {
 } from "./authApi.js"
 export type {
 	BinanceProxyApiDataProvider,
+	BinanceProxyApiResponseError,
 	BinanceProxyApiResponseOutput,
 	BinanceProxyApiService,
 	CreateBinanceOrderInput
 } from "./binanceProxyApi.js"
-export { isBinanceProxyApiResponseError, isCreateBinanceOrderInput } from "./binanceProxyApi.js"
+export {
+	isBinanceProxyApiResponseError,
+	isCreateBinanceOrderInput
+} from "./binanceProxyApi.js"
 export type {
 	PublicApiActionType,
 	PublicApiDataProvider,

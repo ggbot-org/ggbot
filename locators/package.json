@@ -18,7 +18,8 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@workspace/models": "0.0.0"
+    "@workspace/models": "0.0.0",
+    "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
