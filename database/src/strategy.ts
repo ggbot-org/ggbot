@@ -1,22 +1,20 @@
-import { ReadStrategy } from "@workspace/api"
+import {
+	PublicApiDataProviderOperation as PublicOperation,
+	UserApiDataProviderOperation as UserOperation
+} from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
-	CopyStrategy,
-	CreateStrategy,
-	DeleteStrategy,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
 	frequenciesAreEqual,
+	Frequency,
 	newAccountStrategy,
 	newStrategy,
 	normalizeName,
-	ReadStrategyAccountId,
-	RenameStrategy,
 	Strategy,
 	StrategyKey,
-	throwIfInvalidName,
-	UpsertStrategyFrequency
+	throwIfInvalidName
 } from "@workspace/models"
 
 import { DELETE, READ, WRITE } from "./_dataBucket.js"
@@ -30,7 +28,7 @@ import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>()
 
-export const createStrategy: CreateStrategy = async ({
+export const createStrategy: UserOperation["CreateStrategy"] = async ({
 	accountId,
 	name,
 	...rest
@@ -48,7 +46,7 @@ export const createStrategy: CreateStrategy = async ({
 	return strategy
 }
 
-export const copyStrategy: CopyStrategy = async ({
+export const copyStrategy: UserOperation["CopyStrategy"] = async ({
 	accountId,
 	strategyId,
 	strategyKind,
@@ -78,8 +76,8 @@ export const copyStrategy: CopyStrategy = async ({
 	return strategy
 }
 
-export const readStrategy: ReadStrategy = (arg) =>
-	READ<ReadStrategy>(pathname.strategy(arg))
+export const readStrategy: PublicOperation["ReadStrategy"] = (arg) =>
+	READ<PublicOperation["ReadStrategy"]>(pathname.strategy(arg))
 
 const readStrategyOrThrow = async (
 	strategyKey: StrategyKey
@@ -94,9 +92,9 @@ const readStrategyOrThrow = async (
 }
 
 /** Get `accountId` of strategy. */
-export const readStrategyAccountId: ReadStrategyAccountId = async (
-	strategyKey
-) => {
+export const readStrategyAccountId = async (
+	strategyKey: StrategyKey
+): Promise<Account["id"] | null> => {
 	const { strategyId } = strategyKey
 	const cachedData = strategyAccountIdCache.get(strategyId)
 	if (cachedData) return cachedData
@@ -105,7 +103,7 @@ export const readStrategyAccountId: ReadStrategyAccountId = async (
 	return accountId
 }
 
-export const renameStrategy: RenameStrategy = async ({
+export const renameStrategy: UserOperation["RenameStrategy"] = async ({
 	accountId,
 	name,
 	...strategyKey
@@ -125,7 +123,9 @@ export const renameStrategy: RenameStrategy = async ({
 	})
 }
 
-export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
+export const deleteStrategy: UserOperation["DeleteStrategy"] = async (
+	accountStrategyKey
+) => {
 	const { accountId, ...strategyKey } = accountStrategyKey
 	const ownerId = await readStrategyAccountId(strategyKey)
 	if (accountId !== ownerId)
@@ -140,10 +140,10 @@ export const deleteStrategy: DeleteStrategy = async (accountStrategyKey) => {
 	return await deleteAccountStrategiesItem(accountStrategyKey)
 }
 
-export const upsertStrategyFrequency: UpsertStrategyFrequency = async ({
+export const upsertStrategyFrequency = async ({
 	frequency,
 	...strategyKey
-}) => {
+}: StrategyKey & { frequency: Frequency }): Promise<void> => {
 	const strategy = await readStrategyOrThrow(strategyKey)
 	if (frequenciesAreEqual(frequency, strategy.frequency)) return
 	await WRITE(pathname.strategy(strategyKey), { ...strategy, frequency })

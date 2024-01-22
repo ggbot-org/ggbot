@@ -53,7 +53,7 @@ export const Schedulings: FC = () => {
 	const error = WRITE.error
 
 	const [schedulingItems, setSchedulingItems] = useState<
-		SchedulingItemProps["scheduling"][]
+		Array<SchedulingItemProps["scheduling"]>
 	>([])
 
 	const currentSchedulings = useMemo<StrategyScheduling[]>(() => {

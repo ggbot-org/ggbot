@@ -22,6 +22,7 @@ module.exports = {
 			{ ignoreRestArgs: true }
 		],
 		"@typescript-eslint/no-extra-semi": "error",
+		"@typescript-eslint/no-invalid-void-type": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{

@@ -1,9 +1,6 @@
 import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { AccountKey } from "./account.js"
-import { UpdateTime } from "./time.js"
-
 export const shouldPurchaseSubscription = (
 	subscription: Subscription
 ): boolean => {
@@ -34,11 +31,3 @@ export const statusOfSubscription = ({
 	end
 }: Pick<Subscription, "end">): SubscriptionStatus =>
 	end > today() ? "active" : "expired"
-
-export type ReadSubscription = (arg: AccountKey) => Promise<Subscription | null>
-
-type WriteSubscriptionInput = AccountKey & Subscription
-
-export type WriteSubscription = (
-	arg: WriteSubscriptionInput
-) => Promise<UpdateTime>

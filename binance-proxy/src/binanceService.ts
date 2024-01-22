@@ -1,9 +1,9 @@
 import {
 	BinanceProxyApiDataProvider,
 	BinanceProxyApiService,
-	isCreateBinanceOrderInput
+	isBinanceProxyApiInput as isInput
 } from "@workspace/api"
-import { BadRequestError } from "@workspace/http"
+import {BadRequestError} from "@workspace/http"
 
 export class BinanceService implements BinanceProxyApiService {
 	dataProvider: BinanceProxyApiDataProvider
@@ -13,7 +13,7 @@ export class BinanceService implements BinanceProxyApiService {
 	}
 
 	CreateBinanceOrder(arg: unknown) {
-		if (!isCreateBinanceOrderInput(arg)) throw new BadRequestError()
+		if (!isInput.CreateBinanceOrder(arg)) throw new BadRequestError()
 		return this.dataProvider.createBinanceOrder(arg)
 	}
 

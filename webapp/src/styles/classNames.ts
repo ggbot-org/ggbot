@@ -46,5 +46,5 @@ type ClassName =
 	| PageClassName
 	| ToastContainerClassName
 
-export const classNames = (...args: _ClassNamesArg<ClassName>[]) =>
+export const classNames = (...args: Array<_ClassNamesArg<ClassName>>) =>
 	_classNames(...args)

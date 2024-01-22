@@ -1,14 +1,14 @@
-import { ReadStrategyBalances } from "@workspace/models"
+import { UserApiDataProviderOperation as Operation } from "@workspace/api"
 import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
 
 import { readStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js"
 
-export const readStrategyBalances: ReadStrategyBalances = async ({
+export const readStrategyBalances: Operation["ReadStrategyBalances"] = async ({
 	start,
 	end,
 	...key
 }) => {
-	const result: Awaited<ReturnType<ReadStrategyBalances>> = []
+	const result: Awaited<ReturnType<Operation["ReadStrategyBalances"]>> = []
 	let date = dayToDate(start)
 	while (date <= dayToDate(end)) {
 		const day = dateToDay(date)

@@ -1,8 +1,7 @@
-import { Account, AccountKey } from "./account.js"
+import { Account } from "./account.js"
 import { Subscription } from "./subscription.js"
 
-type AccountInfo = Account & {
+/** Group information about account, to be used client side. */
+export type AccountInfo = Account & {
 	subscription: Subscription | null
 }
-
-export type ReadAccountInfo = (arg: AccountKey) => Promise<AccountInfo | null>

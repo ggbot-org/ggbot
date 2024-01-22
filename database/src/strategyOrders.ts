@@ -1,14 +1,14 @@
-import { ReadStrategyOrders } from "@workspace/models"
+import { UserApiDataProviderOperation as Operation } from "@workspace/api"
 import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
 
 import { readStrategyDailyOrders } from "./strategyDailyOrders.js"
 
-export const readStrategyOrders: ReadStrategyOrders = async ({
+export const readStrategyOrders: Operation["ReadStrategyOrders"] = async ({
 	start,
 	end,
 	...key
 }) => {
-	const result: Awaited<ReturnType<ReadStrategyOrders>> = []
+	const result: Awaited<ReturnType<Operation["ReadStrategyOrders"]>> = []
 	let date = dayToDate(start)
 	while (date <= dayToDate(end)) {
 		const day = dateToDay(date)

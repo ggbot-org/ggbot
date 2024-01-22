@@ -1,14 +1,13 @@
-import { ListAccountKeys, ReadAccount } from "@workspace/api"
+import {
+	AdminApiDataProviderOperation as AdminOperation,
+	UserApiDataProviderOperation as UserOperation
+} from "@workspace/api"
 import {
 	Account,
 	AccountKey,
-	CreateAccount,
-	DeleteAccount,
 	ErrorAccountItemNotFound,
 	isAccountKey,
 	newAccount,
-	RenameAccount,
-	SetAccountCountry,
 	throwIfInvalidName,
 	updatedNow
 } from "@workspace/models"
@@ -22,6 +21,8 @@ import {
 	pathname
 } from "./locators.js"
 
+type CreateAccount = (arg: Pick<Account, "email">) => Promise<Account>
+
 export const createAccount: CreateAccount = async ({ email }) => {
 	const account = newAccount({ email })
 	const accountId = account.id
@@ -30,19 +31,21 @@ export const createAccount: CreateAccount = async ({ email }) => {
 	return account
 }
 
-export const readAccount: ReadAccount = (arg) =>
-	READ<ReadAccount>(pathname.account(arg))
+// TODO consider removing this, at least it is not ad AdminOperation
+// Admin API should be a superset of UserApi
+export const readAccount: AdminOperation["ReadAccount"] = (arg) =>
+	READ<AdminOperation["ReadAccount"]>(pathname.account(arg))
 
-const readAccountOrThrow = async ({
-	accountId
-}: AccountKey): Promise<Account> => {
+type ReadAccountOrThrow = (arg: AccountKey) => Promise<Account>
+
+const readAccountOrThrow: ReadAccountOrThrow = async ({ accountId }) => {
 	const account = await readAccount({ accountId })
 	if (!account)
 		throw new ErrorAccountItemNotFound({ type: "Account", accountId })
 	return account
 }
 
-export const listAccountKeys: ListAccountKeys = async () => {
+export const listAccountKeys: AdminOperation["ListAccountKeys"] = async () => {
 	const Prefix = dirnamePrefix.account + dirnameDelimiter
 	const results = await LIST({
 		Prefix
@@ -57,7 +60,10 @@ export const listAccountKeys: ListAccountKeys = async () => {
 	)
 }
 
-export const renameAccount: RenameAccount = async ({ accountId, name }) => {
+export const renameAccount: UserOperation["RenameAccount"] = async ({
+	accountId,
+	name
+}) => {
 	throwIfInvalidName(name)
 	const account = await readAccountOrThrow({ accountId })
 	const data: Account = {
@@ -68,7 +74,7 @@ export const renameAccount: RenameAccount = async ({ accountId, name }) => {
 	return updatedNow()
 }
 
-export const setAccountCountry: SetAccountCountry = async ({
+export const setAccountCountry: UserOperation["SetAccountCountry"] = async ({
 	accountId,
 	country
 }) => {
@@ -81,5 +87,5 @@ export const setAccountCountry: SetAccountCountry = async ({
 	return updatedNow()
 }
 
-export const deleteAccount: DeleteAccount = (arg) =>
+export const deleteAccount: UserOperation["DeleteAccount"] = (arg) =>
 	DELETE(pathname.account(arg))

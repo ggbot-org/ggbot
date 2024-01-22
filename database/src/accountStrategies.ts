@@ -1,27 +1,33 @@
+import { UserApiDataProviderOperation as Operation } from "@workspace/api"
 import {
+	AccountKey,
 	accountStrategiesModifier,
 	AccountStrategy,
+	AccountStrategyItemKey,
+	AccountStrategySchedulingKey,
 	createdNow,
-	DeleteAccountStrategiesItem,
+	CreationTime,
 	deletedNow,
+	DeletionTime,
 	Frequency,
-	InsertAccountStrategiesItem,
-	ReadAccountStrategies,
-	RenameAccountStrategiesItem,
-	SuspendAccountStrategiesSchedulings,
-	SuspendAccountStrategyScheduling,
-	SuspendAccountStrategySchedulings,
-	UpdateAccountStrategySchedulingMemory,
-	WriteAccountStrategiesItemSchedulings
-} from "@workspace/models"
+	StrategyMemory,
+	UpdateTime} from "@workspace/models"
 
 import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 import { upsertStrategyFrequency } from "./strategy.js"
 import { readSubscription } from "./subscription.js"
 
-export const readAccountStrategies: ReadAccountStrategies = (arg) =>
-	READ_ARRAY<ReadAccountStrategies>(pathname.accountStrategies(arg))
+export const readAccountStrategies: Operation["ReadAccountStrategies"] = (
+	arg
+) =>
+	READ_ARRAY<Operation["ReadAccountStrategies"]>(
+		pathname.accountStrategies(arg)
+	)
+
+type InsertAccountStrategiesItem = (
+	arg: AccountKey & { item: AccountStrategy }
+) => Promise<CreationTime>
 
 export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
 	accountId,
@@ -39,6 +45,10 @@ export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
 	return createdNow()
 }
 
+type RenameAccountStrategiesItem = (
+	arg: AccountStrategyItemKey & Pick<AccountStrategy, "name">
+) => Promise<UpdateTime>
+
 export const renameAccountStrategiesItem: RenameAccountStrategiesItem = async ({
 	accountId,
 	strategyId,
@@ -52,7 +62,7 @@ export const renameAccountStrategiesItem: RenameAccountStrategiesItem = async ({
 	return await UPDATE(pathname.accountStrategies({ accountId }), data)
 }
 
-export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSchedulings =
+export const writeAccountStrategiesItemSchedulings: Operation["WriteAccountStrategiesItemSchedulings"] =
 	async ({ accountId, strategyId, strategyKind, schedulings }) => {
 		const items = (await readAccountStrategies({ accountId })) ?? []
 		const data: AccountStrategy[] = []
@@ -75,6 +85,10 @@ export const writeAccountStrategiesItemSchedulings: WriteAccountStrategiesItemSc
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
+export type DeleteAccountStrategiesItem = (
+	arg: AccountStrategyItemKey
+) => Promise<DeletionTime>
+
 export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
 	accountId,
 	strategyId
@@ -86,6 +100,10 @@ export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
 	}
 	return deletedNow()
 }
+
+export type SuspendAccountStrategiesSchedulings = (
+	arg: AccountKey
+) => Promise<UpdateTime>
 
 export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedulings =
 	async ({ accountId }) => {
@@ -101,6 +119,10 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
 		}))
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
+
+export type SuspendAccountStrategyScheduling = (
+	arg: AccountStrategySchedulingKey
+) => Promise<UpdateTime>
 
 export const suspendAccountStrategyScheduling: SuspendAccountStrategyScheduling =
 	async ({ accountId, strategyId, schedulingId }) => {
@@ -121,6 +143,10 @@ export const suspendAccountStrategyScheduling: SuspendAccountStrategyScheduling 
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
+export type SuspendAccountStrategySchedulings = (
+	arg: AccountStrategyItemKey
+) => Promise<UpdateTime>
+
 export const suspendAccountStrategySchedulings: SuspendAccountStrategySchedulings =
 	async ({ accountId, strategyId }) => {
 		const items = (await readAccountStrategies({ accountId })) ?? []
@@ -138,6 +164,10 @@ export const suspendAccountStrategySchedulings: SuspendAccountStrategyScheduling
 		}))
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
+
+export type UpdateAccountStrategySchedulingMemory = (
+	arg: AccountStrategySchedulingKey & { memory: StrategyMemory }
+) => Promise<UpdateTime>
 
 export const updateAccountStrategySchedulingMemory: UpdateAccountStrategySchedulingMemory =
 	async ({ accountId, strategyId, schedulingId, memory }) => {

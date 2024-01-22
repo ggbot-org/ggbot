@@ -1,13 +1,14 @@
 import {
+	BinanceProxyApiInput as Input,
 	BinanceProxyApiDataProvider,
-	CreateBinanceOrderInput
 } from "@workspace/api"
 import {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
 	BinanceOrderRespFULL
 } from "@workspace/binance"
-import { BinanceClient } from "@workspace/binance-client"
+import {BinanceClient} from "@workspace/binance-client"
+import {NotImplementedError} from "@workspace/http"
 
 export class BinanceDataProvider implements BinanceProxyApiDataProvider {
 	binance: BinanceClient
@@ -21,21 +22,13 @@ export class BinanceDataProvider implements BinanceProxyApiDataProvider {
 		side,
 		type,
 		orderOptions
-	}: CreateBinanceOrderInput): Promise<BinanceOrderRespFULL> {
+	}: Input['CreateBinanceOrder']): Promise<BinanceOrderRespFULL> {
 		return this.binance.newOrder(symbol, side, type, orderOptions)
 	}
 
-	createBinanceOrderTest({
-		symbol,
-		side,
-		type,
-		orderOptions
-	}: CreateBinanceOrderInput): Promise<BinanceOrderRespFULL> {
-		return this.binance.newOrderTest(symbol, side, type, orderOptions)
-	}
-
 	readBinanceAccount(): Promise<BinanceAccountInformation> {
-		return this.binance.account()
+		// TODO return this.binance.account()
+		throw new NotImplementedError()
 	}
 
 	readBinanceAccountApiRestrictions(): Promise<BinanceApiKeyPermission> {

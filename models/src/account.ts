@@ -4,13 +4,7 @@ import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { EmailAddress, isEmailAddress } from "./email.js"
 import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
-import {
-	createdNow,
-	CreationTime,
-	DeletionTime,
-	isCreationTime,
-	UpdateTime
-} from "./time.js"
+import { createdNow, CreationTime, isCreationTime } from "./time.js"
 
 const accountRoles = ["admin", "user"] as const
 type AccountRole = (typeof accountRoles)[number]
@@ -57,28 +51,3 @@ export type AccountKey = ItemKey<{
 export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
 	isItemId(accountId)
 )
-
-export type CreateAccount = (arg: NewItem<Account>) => Promise<Account>
-
-type RenameAccountInput = AccountKey & { name: Name }
-
-export const isRenameAccountInput = objectTypeGuard<RenameAccountInput>(
-	({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
-)
-
-export type RenameAccount = (arg: RenameAccountInput) => Promise<UpdateTime>
-
-type SetAccountCountryInput = AccountKey & {
-	country: AllowedCountryIsoCode2
-}
-
-export const isSetAccountCountryInput = objectTypeGuard<SetAccountCountryInput>(
-	({ country, ...accountKey }) =>
-		isAllowedCountryIsoCode2(country) && isAccountKey(accountKey)
-)
-
-export type SetAccountCountry = (
-	arg: SetAccountCountryInput
-) => Promise<UpdateTime>
-
-export type DeleteAccount = (arg: AccountKey) => Promise<DeletionTime>

@@ -1,8 +1,7 @@
 import { FlowViewSerializableGraph } from "flow-view"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
-import { AccountStrategyKey, isAccountStrategyKey } from "./accountStrategy.js"
+import { AccountStrategyKey } from "./accountStrategy.js"
 import { StrategyKey } from "./strategy.js"
 import { CreationTime, DeletionTime, UpdateTime } from "./time.js"
 
@@ -19,24 +18,11 @@ export type CopyStrategyFlow = (
 	arg: CopyStrategyFlowInput
 ) => Promise<CreationTime>
 
-export type WriteStrategyFlowInput = AccountStrategyKey &
-	Omit<StrategyFlow, "whenUpdated">
-
 // TODO this should be implemented by flow-view
 // it is also a dummy implementation
-const isFlowViewSerializableGraph = (
+export const isFlowViewSerializableGraph = (
 	arg: unknown
 ): arg is FlowViewSerializableGraph => Boolean(arg)
-
-export const isWriteStrategyFlowInput = objectTypeGuard<WriteStrategyFlowInput>(
-	({ view, ...accountStrategyKey }) =>
-		isFlowViewSerializableGraph(view) &&
-		isAccountStrategyKey(accountStrategyKey)
-)
-
-export type WriteStrategyFlow = (
-	arg: WriteStrategyFlowInput
-) => Promise<UpdateTime>
 
 export type DeleteStrategyFlow = (
 	arg: AccountStrategyKey
