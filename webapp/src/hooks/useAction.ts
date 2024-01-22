@@ -16,7 +16,6 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
-import { AccountKey, EmptyObject } from "@workspace/models"
 import { useCallback, useState } from "react"
 
 const { info, warn } = logging("use-action")
@@ -78,7 +77,16 @@ export type UseActionApiArg = { endpoint: string } & ActionHeadersConstructorArg
  * ```ts
  * const endpoint = "/api/action"
  *
- * export const FooBar = useAction({ endpoint }, "FooBar")
+ * type ActionType = "FooBar"
+ * type Input = {
+ * 	param: string
+ * }
+ * type Operation = (arg: Input) => Promise<void>
+ *
+ * export const FooBar = useAction<Operation, ActionType>(
+ * 	{ endpoint },
+ * 	"FooBar"
+ * )
  * ```
  *
  * Then call it in a `useEffect`.
@@ -207,17 +215,3 @@ export const useAction = <
 		reset
 	}
 }
-
-/**
- * Helper to create an operation where authentication context is provided
- * implicitly.
- */
-export type Authenticated<
-	Operation extends (...args: any[]) => Promise<unknown>
-> = Omit<Parameters<Operation>[0], "accountId"> extends EmptyObject
-	? (arg: void) => Promise<Awaited<ReturnType<Operation>>>
-	: Parameters<Operation>[0] extends AccountKey
-	? (
-			arg: Omit<Parameters<Operation>[0], "accountId">
-	  ) => Promise<Awaited<ReturnType<Operation>>>
-	: never

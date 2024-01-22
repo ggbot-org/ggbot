@@ -1,24 +1,29 @@
 import {
 	AccountKey,
-	CreateMonthlySubscriptionPurchase,
-	CreateYearlySubscriptionPurchase,
 	ErrorAccountItemNotFound,
 	newMonthlySubscription,
+	NewMonthlySubscriptionArg,
 	newSubscriptionPurchaseKey,
 	newYearlySubscription,
-	ReadSubscriptionPurchase,
+	NewYearlySubscriptionArg,
 	SubscriptionPurchase,
 	SubscriptionPurchaseKey,
-	UpdateSubscriptionPurchaseInfo,
-	UpdateSubscriptionPurchaseStatus,
-	WriteSubscriptionPurchase
+	UpdateTime
 } from "@workspace/models"
 
 import { READ, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
+type ReadSubscriptionPurchase = (
+	arg: SubscriptionPurchaseKey
+) => Promise<SubscriptionPurchase | null>
+
 export const readSubscriptionPurchase: ReadSubscriptionPurchase = (arg) =>
 	READ<ReadSubscriptionPurchase>(pathname.subscriptionPurchase(arg))
+
+type WriteSubscriptionPurchase = (
+	arg: SubscriptionPurchaseKey & SubscriptionPurchase
+) => Promise<UpdateTime>
 
 const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
 	accountId,
@@ -31,35 +36,37 @@ const writeSubscriptionPurchase: WriteSubscriptionPurchase = ({
 		purchase
 	)
 
-export const updateSubscriptionPurchaseInfo: UpdateSubscriptionPurchaseInfo =
-	async ({ info, ...key }) => {
-		const purchase = await readSubscriptionPurchase(key)
-		if (!purchase)
-			throw new ErrorAccountItemNotFound({
-				accountId: key.accountId,
-				type: "SubscriptionPurchase"
-			})
-		return await writeSubscriptionPurchase({
-			...purchase,
-			...key,
-			info
+export const updateSubscriptionPurchaseInfo: (
+	arg: SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "info">
+) => Promise<UpdateTime> = async ({ info, ...key }) => {
+	const purchase = await readSubscriptionPurchase(key)
+	if (!purchase)
+		throw new ErrorAccountItemNotFound({
+			accountId: key.accountId,
+			type: "SubscriptionPurchase"
 		})
-	}
+	return await writeSubscriptionPurchase({
+		...purchase,
+		...key,
+		info
+	})
+}
 
-export const updateSubscriptionPurchaseStatus: UpdateSubscriptionPurchaseStatus =
-	async ({ status, ...key }) => {
-		const purchase = await readSubscriptionPurchase(key)
-		if (!purchase)
-			throw new ErrorAccountItemNotFound({
-				accountId: key.accountId,
-				type: "SubscriptionPurchase"
-			})
-		return await writeSubscriptionPurchase({
-			...purchase,
-			...key,
-			status
+export const updateSubscriptionPurchaseStatus: (
+	arg: SubscriptionPurchaseKey & Pick<SubscriptionPurchase, "status">
+) => Promise<UpdateTime> = async ({ status, ...key }) => {
+	const purchase = await readSubscriptionPurchase(key)
+	if (!purchase)
+		throw new ErrorAccountItemNotFound({
+			accountId: key.accountId,
+			type: "SubscriptionPurchase"
 		})
-	}
+	return await writeSubscriptionPurchase({
+		...purchase,
+		...key,
+		status
+	})
+}
 
 const writeNewSubscriptionPurchase = async ({
 	accountId,
@@ -75,14 +82,24 @@ const writeNewSubscriptionPurchase = async ({
 	return key
 }
 
+type CreateMonthlySubscriptionPurchaseInput = AccountKey &
+	NewMonthlySubscriptionArg
+
+/** Create a monthly subscription. */
+type CreateMonthlySubscriptionPurchase = (
+	arg: CreateMonthlySubscriptionPurchaseInput
+) => Promise<SubscriptionPurchaseKey>
+
 export const createMonthlySubscriptionPurchase: CreateMonthlySubscriptionPurchase =
 	async ({ accountId, ...arg }) => {
 		const purchase = newMonthlySubscription(arg)
 		return await writeNewSubscriptionPurchase({ accountId, purchase })
 	}
 
-export const createYearlySubscriptionPurchase: CreateYearlySubscriptionPurchase =
-	async ({ accountId, ...arg }) => {
-		const purchase = newYearlySubscription(arg)
-		return await writeNewSubscriptionPurchase({ accountId, purchase })
-	}
+/** Create a yearly subscription. */
+export const createYearlySubscriptionPurchase: (
+	arg: AccountKey & NewYearlySubscriptionArg
+) => Promise<SubscriptionPurchaseKey> = async ({ accountId, ...arg }) => {
+	const purchase = newYearlySubscription(arg)
+	return await writeNewSubscriptionPurchase({ accountId, purchase })
+}

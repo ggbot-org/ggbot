@@ -1,4 +1,7 @@
-import { ReadStrategyFlow } from "@workspace/api"
+import {
+	PublicApiDataProviderOperation as PublicOperation,
+	UserApiDataProviderOperation as UserOperation
+} from "@workspace/api"
 import {
 	CopyStrategyFlow,
 	createdNow,
@@ -6,8 +9,7 @@ import {
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
 	StrategyFlow,
-	updatedNow,
-	WriteStrategyFlow
+	updatedNow
 } from "@workspace/models"
 
 import { DELETE, READ, UPDATE } from "./_dataBucket.js"
@@ -33,10 +35,10 @@ export const copyStrategyFlow: CopyStrategyFlow = async ({
 	return createdNow()
 }
 
-export const readStrategyFlow: ReadStrategyFlow = (arg) =>
-	READ<ReadStrategyFlow>(pathname.strategyFlow(arg))
+export const readStrategyFlow: PublicOperation["ReadStrategyFlow"] = (arg) =>
+	READ<PublicOperation["ReadStrategyFlow"]>(pathname.strategyFlow(arg))
 
-export const writeStrategyFlow: WriteStrategyFlow = async ({
+export const writeStrategyFlow: UserOperation["WriteStrategyFlow"] = async ({
 	accountId,
 	view,
 	...strategyKey

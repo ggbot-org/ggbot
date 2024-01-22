@@ -1,23 +1,10 @@
 import {
+	isUserApiDataProviderInput as isInput,
 	UserApiDataProvider,
-	UserApiService,
-	isCreateBinanceApiConfigInput
+	UserApiService
 } from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
-import {
-	AccountKey,
-	isCopyStrategyInput,
-	isCreatePurchaseOrderInput,
-	isCreateStrategyInput,
-	isDeleteStrategyInput,
-	isReadStrategyBalancesInput,
-	isReadStrategyOrdersInput,
-	isRenameAccountInput,
-	isRenameStrategyInput,
-	isSetAccountCountryInput,
-	isWriteAccountStrategiesItemSchedulingsInput,
-	isWriteStrategyFlowInput
-} from "@workspace/models"
+import { AccountKey } from "@workspace/models"
 
 export class ApiService implements UserApiService {
 	accountKey: AccountKey
@@ -35,25 +22,25 @@ export class ApiService implements UserApiService {
 
 	CopyStrategy(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isCopyStrategyInput(input)) throw new BadRequestError()
+		if (!isInput.CopyStrategy(input)) throw new BadRequestError()
 		return this.dataProvider.copyStrategy(input)
 	}
 
 	CreateBinanceApiConfig(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isCreateBinanceApiConfigInput(input)) throw new BadRequestError()
+		if (!isInput.CreateBinanceApiConfig(input)) throw new BadRequestError()
 		return this.dataProvider.createBinanceApiConfig(input)
 	}
 
 	CreatePurchaseOrder(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isCreatePurchaseOrderInput(input)) throw new BadRequestError()
+		if (!isInput.CreatePurchaseOrder(input)) throw new BadRequestError()
 		return this.dataProvider.createPurchaseOrder(input)
 	}
 
 	CreateStrategy(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isCreateStrategyInput(input)) throw new BadRequestError()
+		if (!isInput.CreateStrategy(input)) throw new BadRequestError()
 		return this.dataProvider.createStrategy(input)
 	}
 
@@ -67,7 +54,7 @@ export class ApiService implements UserApiService {
 
 	DeleteStrategy(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isDeleteStrategyInput(input)) throw new BadRequestError()
+		if (!isInput.DeleteStrategy(input)) throw new BadRequestError()
 		return this.dataProvider.deleteStrategy(input)
 	}
 
@@ -89,13 +76,13 @@ export class ApiService implements UserApiService {
 
 	ReadStrategyBalances(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isReadStrategyBalancesInput(input)) throw new BadRequestError()
+		if (!isInput.ReadStrategyBalances(input)) throw new BadRequestError()
 		return this.dataProvider.readStrategyBalances(input)
 	}
 
 	ReadStrategyOrders(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isReadStrategyOrdersInput(input)) throw new BadRequestError()
+		if (!isInput.ReadStrategyOrders(input)) throw new BadRequestError()
 		return this.dataProvider.readStrategyOrders(input)
 	}
 
@@ -105,32 +92,32 @@ export class ApiService implements UserApiService {
 
 	RenameAccount(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isRenameAccountInput(input)) throw new BadRequestError()
+		if (!isInput.RenameAccount(input)) throw new BadRequestError()
 		return this.dataProvider.renameAccount(input)
 	}
 
 	RenameStrategy(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isRenameStrategyInput(input)) throw new BadRequestError()
+		if (!isInput.RenameStrategy(input)) throw new BadRequestError()
 		return this.dataProvider.renameStrategy(input)
 	}
 
 	SetAccountCountry(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isSetAccountCountryInput(input)) throw new BadRequestError()
+		if (!isInput.SetAccountCountry(input)) throw new BadRequestError()
 		return this.dataProvider.setAccountCountry(input)
 	}
 
 	WriteAccountStrategiesItemSchedulings(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isWriteAccountStrategiesItemSchedulingsInput(input))
+		if (!isInput.WriteAccountStrategiesItemSchedulings(input))
 			throw new BadRequestError()
 		return this.dataProvider.writeAccountStrategiesItemSchedulings(input)
 	}
 
 	WriteStrategyFlow(arg: unknown) {
 		const input = this.inputWithAccountKey(arg)
-		if (!isWriteStrategyFlowInput(input)) throw new BadRequestError()
+		if (!isInput.WriteStrategyFlow(input)) throw new BadRequestError()
 		return this.dataProvider.writeStrategyFlow(input)
 	}
 }

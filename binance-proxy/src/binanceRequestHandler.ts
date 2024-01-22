@@ -1,7 +1,7 @@
 import {
 	BinanceProxyApiResponseError,
 	BinanceProxyApiResponseOutput,
-	isCreateBinanceOrderInput
+	isBinanceProxyApiInput as isInput
 } from "@workspace/api"
 import { ErrorBinanceHTTP } from "@workspace/binance"
 import { readBinanceApiConfig } from "@workspace/database"
@@ -10,7 +10,8 @@ import {
 	__400__BAD_REQUEST__,
 	__404__NOT_FOUND__,
 	__500__INTERNAL_SERVER_ERROR__,
-	BadRequestError} from "@workspace/http"
+	BadRequestError
+} from "@workspace/http"
 import { BinanceProxyPathname } from "@workspace/locators"
 import {
 	AccountKey,
@@ -42,7 +43,7 @@ export const binanceRequestHandler = async (
 
 	try {
 		if (endpoint === "/order") {
-			if (!isCreateBinanceOrderInput(input)) throw new BadRequestError()
+			if (!isInput.CreateBinanceOrder(input)) throw new BadRequestError()
 			const data = await dataProvider.createBinanceOrder(input)
 			return { data }
 		}

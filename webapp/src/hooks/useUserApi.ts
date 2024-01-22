@@ -1,18 +1,21 @@
-import { Authenticated, useAction, UseActionApiArg } from "_/hooks/useAction"
+import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
-import { UserApiActionType } from "@workspace/api"
 import {
 	CopyStrategy,
 	CreateBinanceApiConfig,
-	CreatePurchaseOrder,
 	CreateStrategy,
-	DeleteAccount,
 	DeleteBinanceApiConfig,
 	DeleteStrategy,
-	ReadAccountInfo,
-	ReadAccountStrategies,
+	OmitAccountKey,
 	ReadBinanceApiKey,
 	ReadBinanceApiKeyPermissions,
+	UserApiActionType as ActionType
+} from "@workspace/api"
+import {
+	CreatePurchaseOrder,
+	DeleteAccount,
+	ReadAccountInfo,
+	ReadAccountStrategies,
 	ReadStrategyBalances,
 	ReadStrategyOrders,
 	ReadSubscription,
@@ -30,97 +33,97 @@ const apiOptions: UseActionApiArg = {
 
 export const useUserApi = {
 	CopyStrategy: () =>
-		useAction<Authenticated<CopyStrategy>, UserApiActionType>(
+		useAction<OmitAccountKey<CopyStrategy>, ActionType>(
 			apiOptions,
 			"CopyStrategy"
 		),
 	CreateBinanceApiConfig: () =>
-		useAction<Authenticated<CreateBinanceApiConfig>, UserApiActionType>(
+		useAction<OmitAccountKey<CreateBinanceApiConfig>, ActionType>(
 			apiOptions,
 			"CreateBinanceApiConfig"
 		),
 	CreatePurchaseOrder: () =>
-		useAction<Authenticated<CreatePurchaseOrder>, UserApiActionType>(
+		useAction<OmitAccountKey<CreatePurchaseOrder>, ActionType>(
 			apiOptions,
 			"CreatePurchaseOrder"
 		),
 	CreateStrategy: () =>
-		useAction<Authenticated<CreateStrategy>, UserApiActionType>(
+		useAction<OmitAccountKey<CreateStrategy>, ActionType>(
 			apiOptions,
 			"CreateStrategy"
 		),
 	DeleteAccount: () =>
-		useAction<Authenticated<DeleteAccount>, UserApiActionType>(
+		useAction<OmitAccountKey<DeleteAccount>, ActionType>(
 			apiOptions,
 			"DeleteAccount"
 		),
 	DeleteBinanceApiConfig: () =>
-		useAction<Authenticated<DeleteBinanceApiConfig>, UserApiActionType>(
+		useAction<OmitAccountKey<DeleteBinanceApiConfig>, ActionType>(
 			apiOptions,
 			"DeleteBinanceApiConfig"
 		),
 	DeleteStrategy: () =>
-		useAction<Authenticated<DeleteStrategy>, UserApiActionType>(
+		useAction<OmitAccountKey<DeleteStrategy>, ActionType>(
 			apiOptions,
 			"DeleteStrategy"
 		),
 	ReadAccountInfo: () =>
-		useAction<Authenticated<ReadAccountInfo>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadAccountInfo>, ActionType>(
 			apiOptions,
 			"ReadAccountInfo"
 		),
 	ReadAccountStrategies: () =>
-		useAction<Authenticated<ReadAccountStrategies>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadAccountStrategies>, ActionType>(
 			apiOptions,
 			"ReadAccountStrategies"
 		),
 	ReadBinanceApiKey: () =>
-		useAction<Authenticated<ReadBinanceApiKey>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadBinanceApiKey>, ActionType>(
 			apiOptions,
 			"ReadBinanceApiKey"
 		),
 	ReadBinanceApiKeyPermissions: () =>
-		useAction<
-			Authenticated<ReadBinanceApiKeyPermissions>,
-			UserApiActionType
-		>(apiOptions, "ReadBinanceApiKeyPermissions"),
+		useAction<OmitAccountKey<ReadBinanceApiKeyPermissions>, ActionType>(
+			apiOptions,
+			"ReadBinanceApiKeyPermissions"
+		),
 	ReadStrategyBalances: () =>
-		useAction<Authenticated<ReadStrategyBalances>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadStrategyBalances>, ActionType>(
 			apiOptions,
 			"ReadStrategyBalances"
 		),
 	ReadStrategyOrders: () =>
-		useAction<Authenticated<ReadStrategyOrders>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadStrategyOrders>, ActionType>(
 			apiOptions,
 			"ReadStrategyOrders"
 		),
 	ReadSubscription: () =>
-		useAction<Authenticated<ReadSubscription>, UserApiActionType>(
+		useAction<OmitAccountKey<ReadSubscription>, ActionType>(
 			apiOptions,
 			"ReadSubscription"
 		),
 	RenameAccount: () =>
-		useAction<Authenticated<RenameAccount>, UserApiActionType>(
+		useAction<OmitAccountKey<RenameAccount>, ActionType>(
 			apiOptions,
 			"RenameAccount"
 		),
 	RenameStrategy: () =>
-		useAction<Authenticated<RenameStrategy>, UserApiActionType>(
+		useAction<OmitAccountKey<RenameStrategy>, ActionType>(
 			apiOptions,
 			"RenameStrategy"
 		),
 	SetAccountCountry: () =>
-		useAction<Authenticated<SetAccountCountry>, UserApiActionType>(
+		useAction<OmitAccountKey<SetAccountCountry>, ActionType>(
 			apiOptions,
 			"SetAccountCountry"
 		),
 	WriteAccountStrategiesItemSchedulings: () =>
 		useAction<
-			Authenticated<WriteAccountStrategiesItemSchedulings>,
-			UserApiActionType
+			OmitAccountKey<WriteAccountStrategiesItemSchedulings>,
+			ActionType
 		>(apiOptions, "WriteAccountStrategiesItemSchedulings"),
 	WriteStrategyFlow: () =>
-		useAction<Authenticated<WriteStrategyFlow>, UserApiActionType>(
+		useAction<OmitAccountKey<WriteStrategyFlow>, ActionType>(
 			apiOptions,
 			"WriteStrategyFlow"
 		)

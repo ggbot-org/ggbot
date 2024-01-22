@@ -42,7 +42,7 @@ type TabsProps = {
 	pageName: PageName
 }
 
-type ItemList<Props> = (PropsWithChildren<Props> & Pick<Tab, "tabId">)[]
+type ItemList<Props> = Array<PropsWithChildren<Props> & Pick<Tab, "tabId">>
 
 export const Tabs: FC<TabsProps> = ({
 	activeTabId,

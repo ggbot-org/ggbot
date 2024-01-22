@@ -1,6 +1,9 @@
-import { PublicApiDataProvider, PublicApiService } from "@workspace/api"
+import {
+	isPublicApiInput as isInput,
+	PublicApiDataProvider,
+	PublicApiService
+} from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
-import { isStrategyKey } from "@workspace/models"
 
 export class ApiService implements PublicApiService {
 	dataProvider: PublicApiDataProvider
@@ -10,12 +13,12 @@ export class ApiService implements PublicApiService {
 	}
 
 	ReadStrategy(arg: unknown) {
-		if (!isStrategyKey(arg)) throw new BadRequestError()
+		if (!isInput.ReadStrategy(arg)) throw new BadRequestError()
 		return this.dataProvider.readStrategy(arg)
 	}
 
 	ReadStrategyFlow(arg: unknown) {
-		if (!isStrategyKey(arg)) throw new BadRequestError()
+		if (!isInput.ReadStrategyFlow(arg)) throw new BadRequestError()
 		return this.dataProvider.readStrategyFlow(arg)
 	}
 }

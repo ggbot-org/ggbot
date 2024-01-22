@@ -1,7 +1,7 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import {
-	AdminApiActionType,
+	AdminApiActionType as ActionType,
 	ListAccountKeys,
 	ReadAccount
 } from "@workspace/api"
@@ -13,10 +13,7 @@ const apiOptions: UseActionApiArg = {
 
 export const useAdminApi = {
 	ListAccountKeys: () =>
-		useAction<ListAccountKeys, AdminApiActionType>(
-			apiOptions,
-			"ListAccountKeys"
-		),
+		useAction<ListAccountKeys, ActionType>(apiOptions, "ListAccountKeys"),
 	ReadAccount: () =>
-		useAction<ReadAccount, AdminApiActionType>(apiOptions, "ReadAccount")
+		useAction<ReadAccount, ActionType>(apiOptions, "ReadAccount")
 }

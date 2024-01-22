@@ -1,5 +1,4 @@
 import {
-	BinanceAccountInformation,
 	BinanceErrorPayload,
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
@@ -9,7 +8,8 @@ import {
 } from "@workspace/binance"
 import {
 	BinanceApiKeyPermissionCriteria,
-	SerializableData } from "@workspace/models"
+	SerializableData
+} from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Service } from "./service.js"
@@ -20,52 +20,61 @@ const binanceProxyApiActionTypes = [
 ] as const
 type BinanceProxyApiActionType = (typeof binanceProxyApiActionTypes)[number]
 
-export type BinanceProxyApiResponseError = Pick<Response, 'status'>  & {
+export type BinanceProxyApiResponseError = Pick<Response, "status"> & {
 	error: BinanceErrorPayload
 }
 
-export const isBinanceProxyApiResponseError = objectTypeGuard<BinanceProxyApiResponseError>(( {
-	status,
-	error
-}) => (typeof status === 'number' && isBinanceErrorPayload(error)))
+export const isBinanceProxyApiResponseError =
+	objectTypeGuard<BinanceProxyApiResponseError>(
+		({ status, error }) =>
+			typeof status === "number" && isBinanceErrorPayload(error)
+	)
 
 export type BinanceProxyApiResponseOutput<Data extends SerializableData> = {
 	data: Data
 }
 
-export type CreateBinanceOrderInput = {
-	symbol: string
-	side: BinanceOrderSide
-	type: Extract<BinanceOrderType, "MARKET">
-	orderOptions: BinanceNewOrderOptions
+type Input = {
+	CreateBinanceOrder: {
+		symbol: string
+		side: BinanceOrderSide
+		type: Extract<BinanceOrderType, "MARKET">
+		orderOptions: BinanceNewOrderOptions
+	}
+	ReadBinanceAccountApiRestrictions: void
 }
 
-export const isCreateBinanceOrderInput =
-	objectTypeGuard<CreateBinanceOrderInput>(
-		({ symbol, side, type, orderOptions }) =>
-			typeof symbol === "string" &&
-			typeof side === "string" &&
-			typeof type === "string" &&
-			!orderOptions &&
-			typeof orderOptions === "object"
-	)
+export type BinanceProxyApiInput = Input
 
-type CreateBinanceOrder = (
-	arg: CreateBinanceOrderInput
-) => Promise<BinanceOrderRespFULL>
+type Operation = {
+	CreateBinanceOrder: (
+		arg: Input["CreateBinanceOrder"]
+	) => Promise<BinanceOrderRespFULL>
+	ReadBinanceAccountApiRestrictions: (
+		arg: Input["ReadBinanceAccountApiRestrictions"]
+	) => Promise<BinanceApiKeyPermissionCriteria>
+}
 
-type ReadBinanceAccount = () => Promise<BinanceAccountInformation>
-
-type ReadBinanceAccountApiRestrictions = () => Promise<BinanceApiKeyPermissionCriteria>
+export type BinanceProxyApiDataProviderOperation = Operation
 
 export type BinanceProxyApiDataProvider = {
-	createBinanceOrder: CreateBinanceOrder
-	createBinanceOrderTest: CreateBinanceOrder
-	readBinanceAccount: ReadBinanceAccount
-	readBinanceAccountApiRestrictions: ReadBinanceAccountApiRestrictions
+	createBinanceOrder: Operation["CreateBinanceOrder"]
+	readBinanceAccountApiRestrictions: Operation["ReadBinanceAccountApiRestrictions"]
 }
 
 export type BinanceProxyApiService = Service<
 	BinanceProxyApiActionType,
 	BinanceProxyApiDataProvider
 >
+
+export const isBinanceProxyApiInput = {
+	CreateBinanceOrder: objectTypeGuard<Input["CreateBinanceOrder"]>(
+		({ symbol, side, type, orderOptions }) =>
+			typeof symbol === "string" &&
+			typeof side === "string" &&
+			typeof type === "string" &&
+			!orderOptions &&
+			typeof orderOptions === "object"
+	),
+	ReadBinanceAccountApiRestrictions: () => true
+} satisfies Record<BinanceProxyApiActionType, (arg: unknown) => boolean>

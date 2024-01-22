@@ -14,22 +14,14 @@ import {
 	objectTypeGuard
 } from "minimal-type-guard-helpers"
 
-import { AccountKey, isAccountKey } from "./account.js"
-import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
+import { AccountKey } from "./account.js"
 import { Currency } from "./currency.js"
-import { EmailAddress, isEmailAddress } from "./email.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
-import { isNaturalNumber, NaturalNumber } from "./numbers.js"
+import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
 import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
-import {
-	createdNow,
-	CreationTime,
-	DayKey,
-	isCreationTime,
-	UpdateTime
-} from "./time.js"
+import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js"
 
 export const monthlyPrice = 10
 export const purchaseCurrency: Currency = "EUR"
@@ -104,7 +96,7 @@ export const newSubscriptionPurchaseKey = ({
 	day: today()
 })
 
-type NewMonthlySubscriptionArg = Pick<
+export type NewMonthlySubscriptionArg = Pick<
 	NewItem<SubscriptionPurchase>,
 	"plan" | "paymentProvider"
 > & {
@@ -132,7 +124,7 @@ export const newMonthlySubscription = ({
 	}
 }
 
-type NewYearlySubscriptionArg = Pick<
+export type NewYearlySubscriptionArg = Pick<
 	NewItem<SubscriptionPurchase>,
 	"plan" | "paymentProvider"
 > & { startDay: Day }
@@ -161,68 +153,3 @@ export const totalPurchase = (numMonths: NaturalNumber) => {
 	if (numMonths === 12) return monthlyPrice * 11
 	return numMonths * monthlyPrice
 }
-
-export type ReadSubscriptionPurchase = (
-	arg: SubscriptionPurchaseKey
-) => Promise<SubscriptionPurchase | null>
-
-type WriteSubscriptionPurchaseInput = SubscriptionPurchaseKey &
-	SubscriptionPurchase
-
-export type WriteSubscriptionPurchase = (
-	arg: WriteSubscriptionPurchaseInput
-) => Promise<UpdateTime>
-
-type CreateYearlySubscriptionPurchaseInput = AccountKey &
-	NewYearlySubscriptionArg
-
-/** Create a yearly subscription. */
-export type CreateYearlySubscriptionPurchase = (
-	arg: CreateYearlySubscriptionPurchaseInput
-) => Promise<SubscriptionPurchaseKey>
-
-type CreateMonthlySubscriptionPurchaseInput = AccountKey &
-	NewMonthlySubscriptionArg
-
-/** Create a monthly subscription. */
-export type CreateMonthlySubscriptionPurchase = (
-	arg: CreateMonthlySubscriptionPurchaseInput
-) => Promise<SubscriptionPurchaseKey>
-
-type UpdateSubscriptionPurchaseInfoInput = SubscriptionPurchaseKey &
-	Pick<SubscriptionPurchase, "info">
-
-export type UpdateSubscriptionPurchaseInfo = (
-	arg: UpdateSubscriptionPurchaseInfoInput
-) => Promise<UpdateTime>
-
-type UpdateSubscriptionPurchaseStatusInput = SubscriptionPurchaseKey &
-	Pick<SubscriptionPurchase, "status">
-
-export type UpdateSubscriptionPurchaseStatus = (
-	arg: UpdateSubscriptionPurchaseStatusInput
-) => Promise<UpdateTime>
-
-type CreatePurchaseOrderInput = AccountKey & {
-	country: AllowedCountryIsoCode2
-	email: EmailAddress
-	numMonths: NaturalNumber
-	paymentProvider: PaymentProvider
-	plan: SubscriptionPlan
-}
-
-export const isCreatePurchaseOrderInput =
-	objectTypeGuard<CreatePurchaseOrderInput>(
-		({ country, email, numMonths, paymentProvider, plan, ...accountKey }) =>
-			isAccountKey(accountKey) &&
-			isEmailAddress(email) &&
-			isSubscriptionPlan(plan) &&
-			isAllowedCountryIsoCode2(country) &&
-			isNaturalNumber(numMonths) &&
-			isPaymentProvider(paymentProvider)
-	)
-
-export type CreatePurchaseOrder = (
-	arg: CreatePurchaseOrderInput
-	// TODO return type
-) => Promise<null>

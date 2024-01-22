@@ -72,6 +72,8 @@ module.exports = {
 		"no-case-declarations": "error",
 		// TODO remove this no-console
 		"no-console": ["error", { allow: ["error"] }],
+		"react-hooks/exhaustive-deps": "error",
+		"react-hooks/rules-of-hooks": "error",
 		"react/display-name": "error",
 		"react/hook-use-state": ["error", { allowDestructuredState: true }],
 		"react/jsx-boolean-value": "error",
@@ -96,9 +98,7 @@ module.exports = {
 		"react/no-danger": "error",
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
-		"react/self-closing-comp": ["error", { component: true, html: true }],
-		"react-hooks/exhaustive-deps": "error",
-		"react-hooks/rules-of-hooks": "error"
+		"react/self-closing-comp": ["error", { component: true, html: true }]
 	},
 	settings: {
 		react: {
