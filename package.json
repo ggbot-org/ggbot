@@ -166,6 +166,7 @@
     "models",
     "public-api",
     "repository",
+    "s3-data-bucket",
     "stripe",
     "stripe-api",
     "tsconfig",

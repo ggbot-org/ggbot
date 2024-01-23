@@ -1,11 +1,11 @@
 import {
-	isStrategyKey,
+	Service,
+	ServiceInputValidator,
 	Strategy,
 	StrategyFlow,
-	StrategyKey
+	StrategyKey,
+	isStrategyKey,
 } from "@workspace/models"
-
-import { Service } from "./service.js"
 
 export const publicApiActionTypes = [
 	"ReadStrategy",
@@ -13,33 +13,16 @@ export const publicApiActionTypes = [
 ] as const
 export type PublicApiActionType = (typeof publicApiActionTypes)[number]
 
-type Input = {
-	ReadStrategy: StrategyKey
-	ReadStrategyFlow: StrategyKey
-}
-
-export type PublicApiInput = Input
-
-type Operation = {
-	ReadStrategy: (arg: Input["ReadStrategy"]) => Promise<Strategy | null>
-	ReadStrategyFlow: (
-		arg: Input["ReadStrategyFlow"]
-	) => Promise<StrategyFlow | null>
-}
-
-export type PublicApiDataProviderOperation = Operation
-
-export type PublicApiDataProvider = {
-	readStrategy: Operation["ReadStrategy"]
-	readStrategyFlow: Operation["ReadStrategyFlow"]
+export type PublicApiOperation = {
+	ReadStrategy: (arg: StrategyKey) => Promise<Strategy | null>
+	ReadStrategyFlow: ( arg: StrategyKey) => Promise<StrategyFlow | null>
 }
 
 export type PublicApiService = Service<
-	PublicApiActionType,
-	PublicApiDataProvider
+	PublicApiActionType
 >
 
 export const isPublicApiInput = {
 	ReadStrategy: isStrategyKey,
 	ReadStrategyFlow: isStrategyKey
-} satisfies Record<PublicApiActionType, (arg: unknown) => boolean>
+} satisfies ServiceInputValidator<PublicApiActionType>

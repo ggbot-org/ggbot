@@ -32,6 +32,7 @@ export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"
 export { allowedCountryIsoCodes2, isAllowedCountryIsoCode2 } from "./country.js"
 export type { DeployStage } from "./deployStage.js"
+export type {DocumentProvider} from './documentProvider.js'
 export type { EmailAddress } from "./email.js"
 export { isEmailAddress, normalizeEmailAddress } from "./email.js"
 export type { EmailAccount } from "./emailAccount.js"
@@ -84,6 +85,7 @@ export {
 	isSerializableObject,
 	isSerializablePrimitive
 } from "./serializable.js"
+export type {Service, ServiceInputValidator} from './service.js'
 export type { Strategy, StrategyKey, StrategyKind } from "./strategy.js"
 export {
 	isStrategy,

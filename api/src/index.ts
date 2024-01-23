@@ -36,13 +36,7 @@ export {
 	isBinanceProxyApiInput,
 	isBinanceProxyApiResponseError
 } from "./binanceProxyApi.js"
-export type {
-	PublicApiActionType,
-	PublicApiDataProvider,
-	PublicApiDataProviderOperation,
-	PublicApiInput,
-	PublicApiService
-} from "./publicApi.js"
+export type { PublicApiActionType, PublicApiService } from "./publicApi.js"
 export { isPublicApiInput, publicApiActionTypes } from "./publicApi.js"
 export type {
 	OmitAccountKey,

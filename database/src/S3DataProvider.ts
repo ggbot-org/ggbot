@@ -7,6 +7,7 @@ const AWS_DATA_REGION = ENV.AWS_DATA_REGION()
 
 const nextDeployStage: DeployStage = "next"
 
+// TODO remove this
 export const getDataBucketName = (deployStage = DEPLOY_STAGE) =>
 	deployStage === "local"
 		? `${nextDeployStage}-data.${AWS_DATA_REGION}.${DNS_DOMAIN}`

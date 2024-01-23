@@ -1,5 +1,6 @@
 import { SerializableData } from "@workspace/models"
 
+//TODO remove this
 /**
  * A `Service` implements an API that can be consumed by a client and interacts
  * with one or more services via a `DataProvider`.
