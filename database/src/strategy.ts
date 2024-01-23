@@ -1,7 +1,4 @@
-import {
-	PublicApiDataProviderOperation as PublicOperation,
-	UserApiDataProviderOperation as UserOperation
-} from "@workspace/api"
+import { UserApiDataProviderOperation as UserOperation } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
@@ -17,16 +14,19 @@ import {
 	throwIfInvalidName
 } from "@workspace/models"
 
-import { DELETE, READ, WRITE } from "./_dataBucket.js"
+import { DELETE, WRITE } from "./_dataBucket.js"
 import {
 	deleteAccountStrategiesItem,
 	insertAccountStrategiesItem,
 	renameAccountStrategiesItem
 } from "./accountStrategies.js"
 import { pathname } from "./locators.js"
+import { PublicDataProvider } from "./public.js"
 import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>()
+
+const publicDataProvider = new PublicDataProvider()
 
 export const createStrategy: UserOperation["CreateStrategy"] = async ({
 	accountId,
@@ -76,13 +76,10 @@ export const copyStrategy: UserOperation["CopyStrategy"] = async ({
 	return strategy
 }
 
-export const readStrategy: PublicOperation["ReadStrategy"] = (arg) =>
-	READ<PublicOperation["ReadStrategy"]>(pathname.strategy(arg))
-
 const readStrategyOrThrow = async (
 	strategyKey: StrategyKey
 ): Promise<Strategy> => {
-	const data = await readStrategy(strategyKey)
+	const data = await publicDataProvider.readStrategy(strategyKey)
 	if (!data)
 		throw new ErrorStrategyItemNotFound({
 			type: "Strategy",

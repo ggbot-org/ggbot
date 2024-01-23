@@ -7,14 +7,16 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
+import { PublicDataProvider } from "@workspace/database"
 import { BadGatewayError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 
-import { dataProvider } from "./dataProvider.js"
+import { info, warn } from "./logging.js"
 import { ApiService } from "./service.js"
 
+const dataProvider = new PublicDataProvider()
 const apiService = new ApiService(dataProvider)
-const { info } = logging("user-api")
+const { info, warn } = logging("pu-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -37,7 +39,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return METHOD_NOT_ALLOWED
 	} catch (error) {
 		if (error instanceof BadGatewayError) return BAD_REQUEST()
-		console.error(error)
+		// Fallback to print error if not handled.
+		warn(error)
 	}
 	return INTERNAL_SERVER_ERROR
 }

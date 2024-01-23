@@ -1,9 +1,8 @@
 export type { Account, AccountKey } from "./account.js"
 export { isAccountKey, isAdminAccount, newAccount } from "./account.js"
 export type {
-	AccountDailyOrdersKey,
-	AppendAccountDailyOrders,
-	ReadAccountDailyOrders
+	AccountDailyOrder,
+	AccountDailyOrdersKey
 } from "./accountDailyOrders.js"
 export { isAccountDailyOrdersKey } from "./accountDailyOrders.js"
 export type { AccountInfo } from "./accountInfo.js"
@@ -35,11 +34,7 @@ export { allowedCountryIsoCodes2, isAllowedCountryIsoCode2 } from "./country.js"
 export type { DeployStage } from "./deployStage.js"
 export type { EmailAddress } from "./email.js"
 export { isEmailAddress, normalizeEmailAddress } from "./email.js"
-export type {
-	CreateEmailAccount,
-	EmailAccount,
-	ReadEmailAccount
-} from "./emailAccount.js"
+export type { EmailAccount } from "./emailAccount.js"
 export {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -64,13 +59,7 @@ export { isName, normalizeName, throwIfInvalidName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
 export { isFiniteNumber, isNaturalNumber } from "./numbers.js"
 export type { EmptyObject } from "./objects.js"
-export type {
-	CreateOneTimePassword,
-	DeleteOneTimePassword,
-	OneTimePassword,
-	ReadOneTimePassword,
-	SendOneTimePassword
-} from "./oneTimePassword.js"
+export type { OneTimePassword } from "./oneTimePassword.js"
 export {
 	generateOneTimePassword,
 	isOneTimePasswordCode

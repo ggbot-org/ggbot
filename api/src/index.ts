@@ -34,11 +34,13 @@ export type {
 } from "./binanceProxyApi.js"
 export {
 	isBinanceProxyApiInput,
-	isBinanceProxyApiResponseError} from "./binanceProxyApi.js"
+	isBinanceProxyApiResponseError
+} from "./binanceProxyApi.js"
 export type {
 	PublicApiActionType,
 	PublicApiDataProvider,
 	PublicApiDataProviderOperation,
+	PublicApiInput,
 	PublicApiService
 } from "./publicApi.js"
 export { isPublicApiInput, publicApiActionTypes } from "./publicApi.js"

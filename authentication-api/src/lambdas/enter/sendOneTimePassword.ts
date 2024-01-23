@@ -2,7 +2,19 @@ import { sendEmail } from "@workspace/aws-ses"
 import { oneTimePasswordEmailMessage } from "@workspace/email-messages"
 import { ENV } from "@workspace/env"
 import { noReplyEmailAddress } from "@workspace/locators"
-import { createdNow, SendOneTimePassword } from "@workspace/models"
+import {
+	createdNow,
+	CreationTime,
+	EmailAddress,
+	Language,
+	OneTimePassword
+} from "@workspace/models"
+
+export type SendOneTimePassword = (arg: {
+	email: EmailAddress
+	oneTimePassword: OneTimePassword
+	language: Language
+}) => Promise<CreationTime>
 
 export const sendOneTimePassword: SendOneTimePassword = async ({
 	language,

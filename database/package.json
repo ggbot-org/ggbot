@@ -16,6 +16,7 @@
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
+    "@workspace/api": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
     "@workspace/cache": "0.0.0",
     "@workspace/dflow": "0.0.0",

@@ -7,7 +7,9 @@ import { SerializableData } from "@workspace/models"
  * The client has an instance of the `Service` and invokes methods defined by
  * `ActionType`.
  */
-export type Service<ActionType extends string, DataProvider extends object> = {
-	// Data consumed by the service.
-	readonly dataProvider: DataProvider
-} & Record<ActionType, (arg: unknown) => Promise<SerializableData>> // Actions the client can call when interacts with the service.
+export type Service<ActionType extends string, DataProvider extends object> =
+	// Actions the client can call when interacts with the service.
+	Record<ActionType, (arg: unknown) => Promise<SerializableData>> & {
+		// Data consumed by the service.
+		readonly dataProvider: DataProvider
+	}

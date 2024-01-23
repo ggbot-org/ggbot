@@ -28,18 +28,18 @@ export {
 	deleteOneTimePassword,
 	readOneTimePassword
 } from "./oneTimePassword.js"
+export { PublicDataProvider } from "./public.js"
 export { getDataBucketName } from "./S3DataProvider.js"
 export {
 	copyStrategy,
 	createStrategy,
 	deleteStrategy,
-	readStrategy,
 	renameStrategy
 } from "./strategy.js"
 export { readStrategyBalances } from "./strategyBalances.js"
 export { appendStrategyDailyBalanceChanges } from "./strategyDailyBalanceChanges.js"
 export { appendStrategyDailyOrders } from "./strategyDailyOrders.js"
-export { readStrategyFlow, writeStrategyFlow } from "./strategyFlow.js"
+export { writeStrategyFlow } from "./strategyFlow.js"
 export { readStrategyOrders } from "./strategyOrders.js"
 export { readSubscription, writeSubscription } from "./subscription.js"
 export {

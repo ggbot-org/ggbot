@@ -18,6 +18,8 @@ type Input = {
 	ReadStrategyFlow: StrategyKey
 }
 
+export type PublicApiInput = Input
+
 type Operation = {
 	ReadStrategy: (arg: Input["ReadStrategy"]) => Promise<Strategy | null>
 	ReadStrategyFlow: (

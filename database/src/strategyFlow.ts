@@ -1,7 +1,4 @@
-import {
-	PublicApiDataProviderOperation as PublicOperation,
-	UserApiDataProviderOperation as UserOperation
-} from "@workspace/api"
+import { UserApiDataProviderOperation as UserOperation } from "@workspace/api"
 import {
 	CopyStrategyFlow,
 	createdNow,
@@ -12,16 +9,19 @@ import {
 	updatedNow
 } from "@workspace/models"
 
-import { DELETE, READ, UPDATE } from "./_dataBucket.js"
+import { DELETE, UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
+import { PublicDataProvider } from "./public.js"
 import { readStrategyAccountId } from "./strategy.js"
+
+const publicDataProvider = new PublicDataProvider()
 
 export const copyStrategyFlow: CopyStrategyFlow = async ({
 	accountId,
 	source: strategyKey,
 	target
 }) => {
-	const strategyFlow = await readStrategyFlow(strategyKey)
+	const strategyFlow = await publicDataProvider.readStrategyFlow(strategyKey)
 	if (!strategyFlow)
 		throw new ErrorStrategyItemNotFound({
 			type: "StrategyFlow",
@@ -34,9 +34,6 @@ export const copyStrategyFlow: CopyStrategyFlow = async ({
 	})
 	return createdNow()
 }
-
-export const readStrategyFlow: PublicOperation["ReadStrategyFlow"] = (arg) =>
-	READ<PublicOperation["ReadStrategyFlow"]>(pathname.strategyFlow(arg))
 
 export const writeStrategyFlow: UserOperation["WriteStrategyFlow"] = async ({
 	accountId,
