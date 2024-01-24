@@ -1,4 +1,4 @@
-import { UserApiDataProvider } from "@workspace/api"
+import {UserApiDataProvider} from "@workspace/api"
 import {
 	copyStrategy,
 	createBinanceApiConfig,
@@ -19,24 +19,34 @@ import {
 	writeStrategyFlow
 } from "@workspace/database"
 import {
+	BinanceApiKeyPermissionCriteria,
 	ErrorAccountItemNotFound,
-	ErrorUnknown,
+	ErrorUnknownItem,
 	welcomeFlow
 } from "@workspace/models"
 
-import { readBinanceApiKeyPermissions } from "./binance.js"
+
+const readBinanceApiKeyPermissions = async (): Promise<BinanceApiKeyPermissionCriteria> => {
+	// TODO
+	return {
+		enableReading: false,
+		enableSpotAndMarginTrading: false,
+		enableWithdrawals: false,
+		ipRestrict: false,
+	}
+}
 
 // TODO
 const createPurchaseOrder: UserApiDataProvider["createPurchaseOrder"] = ({
 	paymentProvider
 }) => {
 	if (paymentProvider === "stripe") return Promise.resolve(null)
-	throw new ErrorUnknown("paymentProvider", paymentProvider)
+	throw new ErrorUnknownItem("paymentProvider", paymentProvider)
 }
 
 const createStrategyWithWelcomeFlow: UserApiDataProvider["createStrategy"] =
-	async ({ accountId, kind, name }) => {
-		const strategy = await createStrategy({ accountId, kind, name })
+	async ({accountId, kind, name}) => {
+		const strategy = await createStrategy({accountId, kind, name})
 		await writeStrategyFlow({
 			accountId,
 			view: welcomeFlow,

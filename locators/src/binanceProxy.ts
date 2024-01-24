@@ -1,4 +1,4 @@
-import { isLiteralType } from "minimal-type-guard-helpers"
+import {isLiteralType} from "minimal-type-guard-helpers"
 
 export class BinanceProxyBaseURL extends URL {
 	static port = 1221
@@ -7,13 +7,13 @@ export class BinanceProxyBaseURL extends URL {
 	}
 }
 
-export const binanceProxyPathnames = ["/order", "/apiRestrictions"] as const
+const binanceProxyPathnames = ["/order", "/apiRestrictions"] as const
 export type BinanceProxyPathname = (typeof binanceProxyPathnames)[number]
 export const isBinanceProxyPathname = isLiteralType<BinanceProxyPathname>(
 	binanceProxyPathnames
 )
 
-export const binanceProxyPathname: Record<string, BinanceProxyPathname> = {
+const binanceProxyPathname: Record<string, BinanceProxyPathname> = {
 	apiRestrictions: "/apiRestrictions",
 	order: "/order"
 }
@@ -26,7 +26,7 @@ export const binanceProxyPathname: Record<string, BinanceProxyPathname> = {
  * ```ts
  * import { ENV } from "@workspace/env"
  *
- * const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
+ * const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_BASE_URL())
  * ```
  */
 export class BinanceProxyURLs {

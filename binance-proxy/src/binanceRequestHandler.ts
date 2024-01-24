@@ -16,11 +16,11 @@ import { BinanceProxyPathname } from "@workspace/locators"
 import {
 	AccountKey,
 	ErrorAccountItemNotFound,
-	ErrorUnknown,
+	ErrorUnknownItem,
 	SerializableData
 } from "@workspace/models"
 
-import { BinanceDataProvider } from "./binanceDataProvider.js"
+import { BinanceService } from "./binanceService.js"
 import { warn } from "./logging.js"
 
 export const binanceRequestHandler = async (
@@ -39,21 +39,21 @@ export const binanceRequestHandler = async (
 			accountId
 		})
 	const { apiKey, apiSecret } = binanceApiConfig
-	const dataProvider = new BinanceDataProvider(apiKey, apiSecret)
+	const service = new BinanceService(apiKey, apiSecret)
 
 	try {
 		if (endpoint === "/order") {
 			if (!isInput.CreateBinanceOrder(input)) throw new BadRequestError()
-			const data = await dataProvider.createBinanceOrder(input)
+			const data = await service.CreateBinanceOrder(input)
 			return { data }
 		}
 
 		if (endpoint === "/apiRestrictions") {
-			const data = await dataProvider.readBinanceAccountApiRestrictions()
+			const data = await service.ReadBinanceAccountApiRestrictions()
 			return { data }
 		}
 
-		throw new ErrorUnknown("endpoint", endpoint)
+		throw new ErrorUnknownItem("endpoint", endpoint)
 	} catch (error) {
 		if (error instanceof ErrorBinanceHTTP) {
 			const {
@@ -72,7 +72,8 @@ export const binanceRequestHandler = async (
 		if (error instanceof BadRequestError)
 			return { status: __400__BAD_REQUEST__ }
 
-		if (error instanceof ErrorUnknown) return { status: __404__NOT_FOUND__ }
+		if (error instanceof ErrorUnknownItem)
+			return { status: __404__NOT_FOUND__ }
 
 		warn(error)
 		return { status: __500__INTERNAL_SERVER_ERROR__ }

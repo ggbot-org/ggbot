@@ -1,28 +1,37 @@
 import {
+	isStrategyKey,
 	Service,
-	ServiceInputValidator,
 	Strategy,
 	StrategyFlow,
-	StrategyKey,
-	isStrategyKey,
+	StrategyKey
 } from "@workspace/models"
 
-export const publicApiActionTypes = [
+export const publicApiOperationNames = [
 	"ReadStrategy",
 	"ReadStrategyFlow"
 ] as const
-export type PublicApiActionType = (typeof publicApiActionTypes)[number]
+type PublicApiOperationName = (typeof publicApiOperationNames)[number]
 
-export type PublicApiOperation = {
+type Operation = {
 	ReadStrategy: (arg: StrategyKey) => Promise<Strategy | null>
-	ReadStrategyFlow: ( arg: StrategyKey) => Promise<StrategyFlow | null>
+	ReadStrategyFlow: (arg: StrategyKey) => Promise<StrategyFlow | null>
 }
 
-export type PublicApiService = Service<
-	PublicApiActionType
->
+type Input = {
+	ReadStrategy: Parameters<Operation["ReadStrategy"]>[0]
+	ReadStrategyFlow: Parameters<Operation["ReadStrategyFlow"]>[0]
+}
+
+export type PublicApiInput = Input
+
+export type PublicApiOutput = {
+	ReadStrategy: Awaited<ReturnType<Operation["ReadStrategy"]>>
+	ReadStrategyFlow: Awaited<ReturnType<Operation["ReadStrategyFlow"]>>
+}
+
+export type PublicApiService = Service<PublicApiOperationName>
 
 export const isPublicApiInput = {
 	ReadStrategy: isStrategyKey,
 	ReadStrategyFlow: isStrategyKey
-} satisfies ServiceInputValidator<PublicApiActionType>
+}

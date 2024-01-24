@@ -86,7 +86,7 @@ export const writeAccountStrategiesItemSchedulings: Operation["WriteAccountStrat
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
-export type DeleteAccountStrategiesItem = (
+type DeleteAccountStrategiesItem = (
 	arg: AccountStrategyItemKey
 ) => Promise<DeletionTime>
 
@@ -102,7 +102,7 @@ export const deleteAccountStrategiesItem: DeleteAccountStrategiesItem = async ({
 	return deletedNow()
 }
 
-export type SuspendAccountStrategiesSchedulings = (
+type SuspendAccountStrategiesSchedulings = (
 	arg: AccountKey
 ) => Promise<UpdateTime>
 
@@ -121,7 +121,7 @@ export const suspendAccountStrategiesSchedulings: SuspendAccountStrategiesSchedu
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
-export type SuspendAccountStrategyScheduling = (
+type SuspendAccountStrategyScheduling = (
 	arg: AccountStrategySchedulingKey
 ) => Promise<UpdateTime>
 
@@ -144,7 +144,7 @@ export const suspendAccountStrategyScheduling: SuspendAccountStrategyScheduling 
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
-export type SuspendAccountStrategySchedulings = (
+type SuspendAccountStrategySchedulings = (
 	arg: AccountStrategyItemKey
 ) => Promise<UpdateTime>
 
@@ -166,7 +166,7 @@ export const suspendAccountStrategySchedulings: SuspendAccountStrategyScheduling
 		return await UPDATE(pathname.accountStrategies({ accountId }), data)
 	}
 
-export type UpdateAccountStrategySchedulingMemory = (
+type UpdateAccountStrategySchedulingMemory = (
 	arg: AccountStrategySchedulingKey & { memory: StrategyMemory }
 ) => Promise<UpdateTime>
 

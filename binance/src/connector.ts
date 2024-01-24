@@ -59,13 +59,8 @@ export class BinanceConnector {
 				pathname: url.pathname,
 				searchParams: debugUrl.searchParams.toString()
 			}
-			try {
-				const errorPayload =
-					(await response.json()) as BinanceErrorPayload
-				throw new ErrorBinanceHTTP(errorInfo, errorPayload)
-			} catch {
-				throw new ErrorBinanceHTTP(errorInfo)
-			}
+			const errorPayload = (await response.json()) as BinanceErrorPayload
+			throw new ErrorBinanceHTTP(errorInfo, errorPayload)
 		}
 
 		return (await response.json()) as Data

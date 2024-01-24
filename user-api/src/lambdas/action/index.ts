@@ -1,4 +1,4 @@
-import { isApiActionInput, userApiActionTypes } from "@workspace/api"
+import {isApiActionInput, userApiActionTypes} from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -8,18 +8,18 @@ import {
 	OK,
 	UNATHORIZED
 } from "@workspace/api-gateway"
-import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import { ErrorBinanceHTTP } from "@workspace/binance"
-import { UnauthorizedError } from "@workspace/http"
+import {readSessionFromAuthorizationHeader} from "@workspace/authentication"
+import {ErrorBinanceHTTP} from "@workspace/binance"
+import {UnauthorizedError} from "@workspace/http"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnknown
+	ErrorUnknownItem
 } from "@workspace/models"
 
-import { dataProvider } from "./dataProvider.js"
-import { info, warn } from "./logging.js"
-import { ApiService } from "./service.js"
+import {dataProvider} from "./dataProvider.js"
+import {info, warn} from "./logging.js"
+import {ApiService} from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -32,11 +32,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const { accountId } = await readSessionFromAuthorizationHeader(
+			const {accountId} = await readSessionFromAuthorizationHeader(
 				event.headers.Authorization
 			)
 
-			const apiService = new ApiService({ accountId }, dataProvider)
+			const apiService = new ApiService({accountId}, dataProvider)
 
 			const input: unknown = JSON.parse(event.body)
 			if (!isApiActionInput(userApiActionTypes)(input))
@@ -54,7 +54,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			error instanceof ErrorAccountItemNotFound ||
 			error instanceof ErrorBinanceHTTP ||
 			error instanceof ErrorExceededQuota ||
-			error instanceof ErrorUnknown
+			error instanceof ErrorUnknownItem
 		)
 			return BAD_REQUEST(error.toJSON())
 		// Fallback to print error if not handled.

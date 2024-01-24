@@ -1,4 +1,4 @@
-import { isApiActionInput, publicApiActionTypes } from "@workspace/api"
+import { isApiActionInput, publicApiOperationNames } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -7,16 +7,10 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { PublicDataProvider } from "@workspace/database"
 import { BadGatewayError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 
 import { info, warn } from "./logging.js"
-import { ApiService } from "./service.js"
-
-const dataProvider = new PublicDataProvider()
-const apiService = new ApiService(dataProvider)
-const { info, warn } = logging("pu-api")
+import { apiService } from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -28,7 +22,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isApiActionInput(publicApiActionTypes)(input))
+			if (!isApiActionInput(publicApiOperationNames)(input))
 				return BAD_REQUEST()
 
 			const output = await apiService[input.type](input.data)

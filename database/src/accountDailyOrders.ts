@@ -14,7 +14,7 @@ type ReadAccountDailyOrders = (
 const readAccountDailyOrders: ReadAccountDailyOrders = (arg) =>
 	READ_ARRAY<ReadAccountDailyOrders>(pathname.accountDailyOrders(arg))
 
-export type AppendAccountDailyOrders = (
+type AppendAccountDailyOrders = (
 	arg: AccountDailyOrdersKey & {
 		items: AccountDailyOrder[]
 	}

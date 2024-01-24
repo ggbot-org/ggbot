@@ -1,22 +1,31 @@
 import {
-	PublicApiDataProviderOperation as Operation,
-	PublicApiInput as Input
+	PublicApiInput as Input,
+	PublicApiOutput as Output
 } from "@workspace/api"
-import { DocumentProvider, Strategy, StrategyFlow } from "@workspace/models"
+import { DocumentProvider } from "@workspace/models"
 
-import { READ } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
 export class PublicDataProvider {
-	constructor(documentProvider: DocumentProvider) {
+	documentProvider: DocumentProvider
 
+	constructor(documentProvider: DocumentProvider) {
+		this.documentProvider = documentProvider
 	}
-	readStrategy(arg: Input["ReadStrategy"]): Promise<Strategy | null> {
-		return READ<Operation["ReadStrategy"]>(pathname.strategy(arg))
+
+	async readStrategy(
+		arg: Input["ReadStrategy"]
+	): Promise<Output["ReadStrategy"]> {
+		const data = await this.documentProvider.getItem(pathname.strategy(arg))
+		return data as Output["ReadStrategy"]
 	}
-	readStrategyFlow(
+
+	async readStrategyFlow(
 		arg: Input["ReadStrategyFlow"]
-	): Promise<StrategyFlow | null> {
-		return READ<Operation["ReadStrategyFlow"]>(pathname.strategyFlow(arg))
+	): Promise<Output["ReadStrategyFlow"]> {
+		const data = await this.documentProvider.getItem(
+			pathname.strategyFlow(arg)
+		)
+		return data as Output["ReadStrategyFlow"]
 	}
 }

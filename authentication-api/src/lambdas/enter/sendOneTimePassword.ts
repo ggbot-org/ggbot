@@ -10,7 +10,7 @@ import {
 	OneTimePassword
 } from "@workspace/models"
 
-export type SendOneTimePassword = (arg: {
+type SendOneTimePassword = (arg: {
 	email: EmailAddress
 	oneTimePassword: OneTimePassword
 	language: Language

@@ -8,7 +8,7 @@ The following environment variables are used:
 -   `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
 -   `AWS_DATA_REGION`: for example `eu-central-1`.
 -   `AWS_SES_REGION`: for example `us-east-1`.
--   `BINANCE_API_BASE_URL`: for example `http://3.65.45.176:3000`.
+-   `BINANCE_PROXY_BASE_URL`: for example `http://3.65.45.176:3000`.
 -   `BINANCE_PROXY_ELASTIC_IPS`: for example `3.65.45.176,3.68.165.141`.
 -   `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
 -   `DNS_DOMAIN`: _example.com_.

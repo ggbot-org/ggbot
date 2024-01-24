@@ -1,5 +1,6 @@
 import { UserApiDataProviderOperation as UserOperation } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
+import { ENV } from "@workspace/env"
 import {
 	Account,
 	ErrorPermissionOnStrategyItem,
@@ -13,6 +14,11 @@ import {
 	StrategyKey,
 	throwIfInvalidName
 } from "@workspace/models"
+// TODO database should not depend on this
+import {
+	getS3DataBucketName,
+	S3DataBucketProvider
+} from "@workspace/s3-data-bucket"
 
 import { DELETE, WRITE } from "./_dataBucket.js"
 import {
@@ -26,7 +32,12 @@ import { copyStrategyFlow, deleteStrategyFlow } from "./strategyFlow.js"
 
 const strategyAccountIdCache = new CacheMap<Account["id"]>()
 
-const publicDataProvider = new PublicDataProvider()
+const awsDataRegion = ENV.AWS_DATA_REGION()
+const documentProvider = new S3DataBucketProvider(
+	awsDataRegion,
+	getS3DataBucketName(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN(), awsDataRegion)
+)
+const publicDataProvider = new PublicDataProvider(documentProvider)
 
 export const createStrategy: UserOperation["CreateStrategy"] = async ({
 	accountId,

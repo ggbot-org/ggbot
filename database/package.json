@@ -23,6 +23,7 @@
     "@workspace/env": "0.0.0",
     "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",
+    "@workspace/s3-data-bucket": "0.0.0",
     "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {

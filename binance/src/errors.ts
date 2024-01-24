@@ -6,7 +6,7 @@ import {
 
 export class ErrorBinanceHTTP extends Error {
 	static errorName = "ErrorBinanceHTTP"
-	payload: BinanceErrorPayload | undefined
+	payload: BinanceErrorPayload
 	info: {
 		pathname: string
 		searchParams: string
@@ -16,7 +16,7 @@ export class ErrorBinanceHTTP extends Error {
 
 	constructor(
 		info: ErrorBinanceHTTP["info"],
-		payload?: ErrorBinanceHTTP["payload"]
+		payload: ErrorBinanceHTTP["payload"]
 	) {
 		super(ErrorBinanceHTTP.message(info, payload))
 		this.info = info

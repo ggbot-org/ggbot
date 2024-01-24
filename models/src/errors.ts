@@ -130,19 +130,19 @@ export class ErrorPermissionOnStrategyItem extends Error {
  * @example
  *
  * ```ts
- * type Kind = "foo" | "bar"
+ * type ItemName = "foo" | "bar"
  *
- * function handleKind(kind: Kind) {
- * 	if (kind === "foo") doSomething()
- * 	if (kind === "bar") doSomethingElse()
+ * function handleItem(item: ItemName) {
+ * 	if (item === "foo") doSomething()
+ * 	if (item === "bar") doSomethingElse()
  *
  * 	// This code should never run.
- * 	throw new ErrorUnknown(kind)
+ * 	throw new ErrorUnknownItem("item", item)
  * }
  * ```
  */
-export class ErrorUnknown extends Error {
-	static errorName = "ErrorUnknown"
+export class ErrorUnknownItem extends Error {
+	static errorName = "ErrorUnknownItem"
 	readonly itemName: string
 	readonly itemType: string
 	constructor(itemType: string, itemName: never) {
@@ -152,7 +152,7 @@ export class ErrorUnknown extends Error {
 	}
 	toJSON() {
 		return {
-			name: ErrorUnknown.errorName,
+			name: ErrorUnknownItem.errorName,
 			info: { itemName: this.itemName, itemType: this.itemType }
 		}
 	}

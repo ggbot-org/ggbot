@@ -1,5 +1,3 @@
-import { isLiteralType } from "minimal-type-guard-helpers"
-
 const binanceApiPrivateEndpoints = [
 	"/api/v3/account",
 	"/api/v3/order",
@@ -9,9 +7,6 @@ const binanceApiPrivateEndpoints = [
 
 export type BinanceApiPrivateEndpoint =
 	(typeof binanceApiPrivateEndpoints)[number]
-
-export const isBinanceApiPrivateEndoint =
-	isLiteralType<BinanceApiPrivateEndpoint>(binanceApiPrivateEndpoints)
 
 const binanceApiPublicEndpoints = [
 	"/api/v3/avgPrice",

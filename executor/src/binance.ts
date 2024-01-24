@@ -13,9 +13,10 @@ import {
 	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
-import { BinanceClient } from "@workspace/binance-client"
-import { DflowBinanceClient } from "@workspace/dflow"
-import { ENV } from "@workspace/env"
+import {BinanceClient} from "@workspace/binance-client"
+import {DflowBinanceClient} from "@workspace/dflow"
+import {ENV} from "@workspace/env"
+import {BinanceProxyURLs} from '@workspace/locators'
 
 /**
  * A Binance client that uses a proxy for private requests.
@@ -28,15 +29,14 @@ import { ENV } from "@workspace/env"
  * ```
  */
 export class Binance implements DflowBinanceClient {
+	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_BASE_URL())
+	// TODO remove binance-client from executor
 	readonly privateClient: BinanceClient
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
+	// TODO Also no need to pass apiKey and apiSecret here, needs accountId to pass it to authentication header
 	constructor(apiKey: string, apiSecret: string) {
-		this.privateClient = new BinanceClient(
-			apiKey,
-			apiSecret,
-			ENV.BINANCE_API_BASE_URL()
-		)
+		this.privateClient = new BinanceClient(apiKey, apiSecret)
 	}
 
 	async account(): Promise<BinanceAccountInformation> {
@@ -48,7 +48,7 @@ export class Binance implements DflowBinanceClient {
 		interval: BinanceKlineInterval,
 		limit: number
 	): Promise<BinanceKline[]> {
-		return await this.publicClient.klines(symbol, interval, { limit })
+		return await this.publicClient.klines(symbol, interval, {limit})
 	}
 
 	async exchangeInfo(): Promise<BinanceExchangeInfo> {

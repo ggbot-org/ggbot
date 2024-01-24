@@ -1,5 +1,5 @@
-import { logging } from "_/logging"
-import { localWebStorage } from "_/storages/local"
+import {logging} from "_/logging"
+import {localWebStorage} from "_/storages/local"
 import {
 	ApiActionClientSideError,
 	ApiActionServerSideError
@@ -16,25 +16,22 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
-import { useCallback, useState } from "react"
+import {useCallback, useState} from "react"
 
-const { info, warn } = logging("use-action")
-
-type ActionHeadersConstructorArg = {
-	withAuth?: boolean
-}
+const {info, warn} = logging("use-action")
 
 class ActionHeaders extends Headers {
-	constructor({ withAuth }: ActionHeadersConstructorArg) {
+	constructor() {
 		super({
 			Accept: "application/json",
 			"Content-Type": "application/json"
 		})
-		if (withAuth)
-			this.append(
-				"Authorization",
-				`Bearer ${localWebStorage.authToken.get()}`
-			)
+	}
+	appendAuthorization(token: string) {
+		this.append(
+			"Authorization",
+			token
+		)
 	}
 }
 
@@ -63,7 +60,7 @@ export type UseActionError =
 	| ApiActionServerSideError
 	| undefined
 
-export type UseActionApiArg = { endpoint: string } & ActionHeadersConstructorArg
+export type UseActionApiArg = {endpoint: string, withAuth?: boolean}
 
 /**
  * Hook to use API actions:
@@ -103,7 +100,7 @@ export const useAction = <
 	Operation extends (...args: any[]) => Promise<unknown>,
 	ActionType extends string
 >(
-	{ endpoint, withAuth }: UseActionApiArg,
+	{endpoint, withAuth}: UseActionApiArg,
 	type: ActionType
 ) => {
 	const [data, setData] = useState<
@@ -124,9 +121,19 @@ export const useAction = <
 				const controller = new UseActionAbortController()
 
 				try {
+					const headers = new ActionHeaders()
+					if (withAuth) {
+						const token = localWebStorage.authToken.get()
+						if (token) {
+							headers.appendAuthorization(token)
+						} else {
+							return setError({name: UnauthorizedError.errorName})
+						}
+					}
+
 					const options: RequestInit = {
-						body: JSON.stringify({ type, data: inputData }),
-						headers: new ActionHeaders({ withAuth }),
+						body: JSON.stringify({type, data: inputData}),
+						headers,
 						method: "POST",
 						signal: controller.signal
 					}
@@ -135,7 +142,7 @@ export const useAction = <
 					const response = await fetch(endpoint, options)
 
 					if (response.ok) {
-						const { data: outputData } = await response.json()
+						const {data: outputData} = await response.json()
 						info(
 							type,
 							JSON.stringify(inputData),
@@ -143,7 +150,7 @@ export const useAction = <
 						)
 						setData(outputData)
 					} else if (response.status === __400__BAD_REQUEST__) {
-						const { error } = await response.json()
+						const {error} = await response.json()
 						warn(
 							type,
 							JSON.stringify(inputData),
@@ -163,38 +170,38 @@ export const useAction = <
 						return
 
 					if (controller.signal.aborted)
-						return setError({ name: "Timeout" })
+						return setError({name: "Timeout"})
 
 					// TODO consider using a toast to display: Something went wrong
 					if (error === __400__BAD_REQUEST__)
-						return setError({ name: BadRequestError.errorName })
+						return setError({name: BadRequestError.errorName})
 
 					// TODO should logout user
 					if (error === __401__UNAUTHORIZED__) {
 						localWebStorage.authToken.delete()
-						return setError({ name: UnauthorizedError.errorName })
+						return setError({name: UnauthorizedError.errorName})
 					}
 
 					// TODO consider using a toast to display: Something went wrong
 					if (error === __404__NOT_FOUND__)
-						return setError({ name: NotFoundError.errorName })
+						return setError({name: NotFoundError.errorName})
 
 					// TODO consider using a toast to display: Something went wrong
 					if (error === __500__INTERNAL_SERVER_ERROR__)
-						return setError({ name: InternalServerError.name })
+						return setError({name: InternalServerError.name})
 
 					if (error === __502__BAD_GATEWAY__)
-						return setError({ name: BadGatewayError.name })
+						return setError({name: BadGatewayError.name})
 
 					warn(error)
-					setError({ name: "GenericError" })
+					setError({name: "GenericError"})
 				} finally {
 					controller.clearTimeout()
 					setIsPending(false)
 				}
 			})().catch((error) => {
 				warn(error)
-				setError({ name: "GenericError" })
+				setError({name: "GenericError"})
 			})
 		},
 		[endpoint, type, withAuth]

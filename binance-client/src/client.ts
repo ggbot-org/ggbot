@@ -22,17 +22,9 @@ const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 /**
  * BinanceClient implements private and public Binance API requests.
  *
- * Binance restricts _Spot & Margin Trading_ APIs to trusted IPs only. The
- * constructor accepts a `baseUrl` parameter which can be for example:
- *
- * - `https://api.binance.com`: if the process run on a server with a trusted IP
- *   associated. In this case it could be also `https://api1.binance.com` or any
- *   other Binance API cluster.
- * - Something like `https://my-proxy.example.com`: if the process run elsewhere
- *   and the proxy has a trusted IP associated.
- *
- * Notice that the _trusted IP_ must be configured on the Binance account for
- * the given `apiKey` provided as parameter to the constructor.
+ * Binance restricts _Spot & Margin Trading_ APIs to trusted IPs only. Notice
+ * that the _trusted IP_ must be configured on the Binance account for the given
+ * `apiKey` provided as parameter to the constructor.
  */
 export class BinanceClient {
 	readonly apiSecret: string

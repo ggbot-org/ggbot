@@ -246,4 +246,4 @@ export const isUserApiDataProviderInput = {
 			isFlowViewSerializableGraph(view) &&
 			isAccountStrategyKey(accountStrategyKey)
 	)
-} satisfies Record<UserApiActionType, (arg: unknown) => boolean>
+}
