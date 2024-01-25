@@ -3,12 +3,12 @@ import {
 	BinanceKlinesCacheMap
 } from "@workspace/binance"
 import {
+	PublicDataProvider,
 	appendAccountDailyOrders,
 	appendStrategyDailyBalanceChanges,
 	appendStrategyDailyOrders,
-	readBinanceApiConfig,
-	readStrategyFlow
 } from "@workspace/database"
+import {ENV} from '@workspace/env'
 import {
 	DflowBinanceExecutor,
 	DflowCommonContext,
@@ -17,32 +17,37 @@ import {
 } from "@workspace/dflow"
 import {
 	AccountStrategyKey,
-	createdNow,
-	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
+	StrategyKey,
+	StrategyScheduling,
+	createdNow,
 	newOrder,
-	StrategyKind,
-	StrategyScheduling
 } from "@workspace/models"
-import { now, timeToDay, today, truncateTime } from "minimal-time-helpers"
+import {getS3DataBucketName, S3DataBucketProvider} from "@workspace/s3-data-bucket"
+import {now, timeToDay, today, truncateTime} from "minimal-time-helpers"
 
-import { Binance } from "./binance.js"
+import {Binance} from "./binance.js"
 
 const ONE_WEEK = 604_800_000
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
 
+const awsDataRegion = ENV.AWS_DATA_REGION()
+const documentProvider = new S3DataBucketProvider(
+	awsDataRegion,
+	getS3DataBucketName(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN(), awsDataRegion)
+)
+const publicDataProvider = new PublicDataProvider(documentProvider)
+
 export const executeBinanceStrategy = async (
-	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
+	{accountId, strategyId}: Omit<AccountStrategyKey, "strategyKind">,
 	scheduling: StrategyScheduling
 ): Promise<
-	{ success: boolean } & Pick<DflowCommonContext, "memory" | "memoryChanged">
+	{success: boolean} & Pick<DflowCommonContext, "memory" | "memoryChanged">
 > => {
-	const strategyKind: StrategyKind = "binance"
-	const accountStrategyKey = { accountId, strategyKind, strategyId }
-	const strategyKey = { strategyKind, strategyId }
+	const strategyKey: StrategyKey = {strategyKind: "binance", strategyId}
 
-	const strategyFlow = await readStrategyFlow(accountStrategyKey)
+	const strategyFlow = await publicDataProvider.readStrategyFlow(strategyKey)
 	if (!strategyFlow)
 		throw new ErrorStrategyItemNotFound({
 			type: "StrategyFlow",
@@ -52,15 +57,7 @@ export const executeBinanceStrategy = async (
 	const memoryInput = scheduling.memory ?? {}
 	const params = scheduling.params ?? {}
 
-	const binanceApiConfig = await readBinanceApiConfig({ accountId })
-	if (!binanceApiConfig)
-		throw new ErrorAccountItemNotFound({
-			type: "BinanceApiConfig",
-			accountId
-		})
-
-	const { apiKey, apiSecret } = binanceApiConfig
-	const binance = new Binance(apiKey, apiSecret)
+	const binance = new Binance(accountId)
 	binance.publicClient.exchangeInfoCache = exchangeInfoCache
 	binance.publicClient.klinesCache = klinesCache
 
@@ -70,10 +67,10 @@ export const executeBinanceStrategy = async (
 	// TODO is this correct?
 	const time = truncateTime(now()).to.minute
 
-	const { symbols } = await binance.exchangeInfo()
+	const {symbols} = await binance.exchangeInfo()
 	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
-	const { view } = strategyFlow
+	const {view} = strategyFlow
 	if (!isDflowExecutorView(view))
 		return {
 			success: false,
@@ -106,16 +103,14 @@ export const executeBinanceStrategy = async (
 
 		await appendStrategyDailyOrders({
 			accountId,
-			strategyKind,
-			strategyId,
 			day,
-			items: strategyOrders
+			items: strategyOrders,
+			...strategyKey,
 		})
 
 		const accountOrders = strategyOrders.map((order) => ({
 			order,
-			strategyKind,
-			strategyId
+			...strategyKey
 		}))
 
 		await appendAccountDailyOrders({
@@ -126,14 +121,13 @@ export const executeBinanceStrategy = async (
 	}
 
 	if (balances.length > 0) {
-		const { whenCreated } = createdNow()
+		const {whenCreated} = createdNow()
 		const day = timeToDay(truncateTime(whenCreated).to.day)
 		await appendStrategyDailyBalanceChanges({
 			accountId,
-			strategyKind,
-			strategyId,
 			day,
-			items: [{ whenCreated, balances }]
+			items: [{whenCreated, balances}],
+			...strategyKey,
 		})
 	}
 

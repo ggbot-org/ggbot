@@ -1,4 +1,11 @@
 import {
+	ApiActionHeaders,
+	ApiActionInput,
+	BinanceProxyApiActionType,
+	apiActionRequestInit,
+} from "@workspace/api"
+import {signSession} from "@workspace/authentication"
+import {
 	BinanceAccountInformation,
 	BinanceConnector,
 	BinanceExchange,
@@ -13,10 +20,11 @@ import {
 	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "@workspace/binance"
-import {BinanceClient} from "@workspace/binance-client"
 import {DflowBinanceClient} from "@workspace/dflow"
 import {ENV} from "@workspace/env"
 import {BinanceProxyURLs} from '@workspace/locators'
+import {Account, ClientSession, SerializableData} from "@workspace/models"
+import {today} from "minimal-time-helpers"
 
 /**
  * A Binance client that uses a proxy for private requests.
@@ -29,18 +37,33 @@ import {BinanceProxyURLs} from '@workspace/locators'
  * ```
  */
 export class Binance implements DflowBinanceClient {
+	readonly accountId: Account['id']
+	binanceProxyApiActionHeaders: ApiActionHeaders | undefined
 	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_BASE_URL())
-	// TODO remove binance-client from executor
-	readonly privateClient: BinanceClient
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
 	// TODO Also no need to pass apiKey and apiSecret here, needs accountId to pass it to authentication header
-	constructor(apiKey: string, apiSecret: string) {
-		this.privateClient = new BinanceClient(apiKey, apiSecret)
+	constructor(accountId: Account['id']) {
+		this.accountId = accountId
+		this.binanceProxyToken = undefined
+	}
+
+	async getBinanceProxyApiActionHeaders() {
+		const {accountId, binanceProxyApiActionHeaders} = this
+		if (binanceProxyApiActionHeaders) return binanceProxyApiActionHeaders
+		const session: ClientSession = {
+			creationDay: today(),
+			accountId
+		}
+		const token = await signSession(session)
+		const headers = new ApiActionHeaders()
+		headers.appendAuthorization(token)
+		this.binanceProxyApiActionHeaders = headers
+		return headers
 	}
 
 	async account(): Promise<BinanceAccountInformation> {
-		return await this.privateClient.account()
+		throw new Error('TODO')
 	}
 
 	async candles(
@@ -67,13 +90,27 @@ export class Binance implements DflowBinanceClient {
 		)
 	}
 
+	async binanceProxyApiAction<Output extends SerializableData>({type, data: inputData}: ApiActionInput<BinanceProxyApiActionType>) {
+		const headers = await this.getBinanceProxyApiActionHeaders()
+		const options = apiActionRequestInit<BinanceProxyApiActionType>({type, headers, data: inputData})
+		const endpoint = 'TODO'
+		const response = await fetch(endpoint, options)
+		if (response.ok) {
+			const {data: outputData} = await response.json()
+			return outputData as Output
+		} else {
+			const {error} = await response.json()
+			return error
+		}
+	}
+
 	async newOrder(
 		symbol: string,
 		side: BinanceOrderSide,
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespFULL> {
-		return this.privateClient.newOrder(symbol, side, type, orderOptions)
+		return this.binanceProxyApiAction<BinanceOrderRespFULL>({type: "CreateBinanceOrder", data: {symbol, side, type, orderOptions}})
 	}
 
 	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {

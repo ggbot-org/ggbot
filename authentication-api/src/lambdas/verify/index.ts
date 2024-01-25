@@ -10,17 +10,18 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
-import { signSession } from "@workspace/authentication"
+import {signSession} from "@workspace/authentication"
 import {
 	createAccount,
 	deleteOneTimePassword,
 	readEmailAccount,
 	readOneTimePassword
 } from "@workspace/database"
-import { BadGatewayError } from "@workspace/http"
-import { today } from "minimal-time-helpers"
+import {BadGatewayError} from "@workspace/http"
+import {today} from "minimal-time-helpers"
 
-import { warn } from "./logging.js"
+import {warn} from "./logging.js"
+import {ClientSession} from "@workspace/models"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -33,7 +34,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			const input: unknown = JSON.parse(event.body)
 
 			if (isApiAuthVerifyRequestData(input)) {
-				const { code, email } = input
+				const {code, email} = input
 
 				const storedOneTimePassword = await readOneTimePassword(email)
 
@@ -54,15 +55,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				const creationDay = today()
 
 				if (emailAccount) {
-					const session = {
+					const session: ClientSession = {
 						creationDay,
 						accountId: emailAccount.accountId
 					}
 					const token = await signSession(session)
 					output.token = token
 				} else {
-					const account = await createAccount({ email })
-					const session = { creationDay, accountId: account.id }
+					const account = await createAccount({email})
+					const session: ClientSession = {creationDay, accountId: account.id}
 					const token = await signSession(session)
 					output.token = token
 				}

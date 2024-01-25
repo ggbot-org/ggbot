@@ -1,4 +1,4 @@
-import { ApiActionInput } from "./action.js"
+import {ApiActionInput} from "./action.js"
 
 export class ApiActionHeaders extends Headers {
 	constructor() {
@@ -12,17 +12,17 @@ export class ApiActionHeaders extends Headers {
 	}
 }
 
-export const apiActionRequestInit = ({
+export const apiActionRequestInit = <ActionType extends string>({
 	headers,
 	type,
 	data,
 	...rest
 }: Omit<RequestInit, "method" | "body" | "headers"> &
-	ApiActionInput<string> & {
+	ApiActionInput<ActionType> & {
 		headers: ApiActionHeaders
 	}) => ({
-	body: JSON.stringify({ type, data }),
-	headers,
-	method: "POST",
-	...rest
-})
+		body: JSON.stringify({type, data}),
+		headers,
+		method: "POST",
+		...rest
+	})
