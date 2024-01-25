@@ -11,7 +11,7 @@ import {
 	SerializableData,
 	Service
 } from "@workspace/models"
-import {objectTypeGuard} from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 const operationNames = [
 	"CreateBinanceOrder",
@@ -25,7 +25,7 @@ export type BinanceProxyApiResponseError = Pick<Response, "status"> & {
 
 export const isBinanceProxyApiResponseError =
 	objectTypeGuard<BinanceProxyApiResponseError>(
-		({status, error}) =>
+		({ status, error }) =>
 			typeof status === "number" && isBinanceErrorPayload(error)
 	)
 
@@ -65,12 +65,11 @@ export type BinanceProxyApiService = Service<OperationName>
 
 export const isBinanceProxyApiInput = {
 	CreateBinanceOrder: objectTypeGuard<Input["CreateBinanceOrder"]>(
-		({symbol, side, type, orderOptions}) =>
+		({ symbol, side, type, orderOptions }) =>
 			typeof symbol === "string" &&
 			typeof side === "string" &&
 			typeof type === "string" &&
 			!orderOptions &&
 			typeof orderOptions === "object"
-	),
-	ReadBinanceAccountApiRestrictions: () => true
+	)
 }

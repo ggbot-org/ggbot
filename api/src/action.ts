@@ -11,7 +11,7 @@ import {
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnknown,
+	ErrorUnknownItem,
 	isSerializableObject,
 	SerializableData,
 	SerializableObject
@@ -47,7 +47,7 @@ const apiActionServerSideErrorNames = [
 	// Model errors.
 	ErrorAccountItemNotFound.errorName,
 	ErrorExceededQuota.errorName,
-	ErrorUnknown.errorName,
+	ErrorUnknownItem.errorName,
 	// Other errors.
 	BadGatewayError.errorName,
 	InternalServerError.errorName

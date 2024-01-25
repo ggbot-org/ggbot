@@ -7,44 +7,8 @@ import { nullId } from "./item.js"
 import { invalidId } from "./item_test.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
-import {
-	isCreateStrategyInput,
-	isStrategy,
-	newStrategy,
-	Strategy
-} from "./strategy.js"
+import { isStrategy, newStrategy,Strategy } from "./strategy.js"
 import { createdNow } from "./time.js"
-
-void test("isCreateStrategyInput", () => {
-	const accountId = nullId
-	const kind = "none"
-	const name = "Name"
-	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(
-		isCreateStrategyInput,
-		[
-			{
-				input: { accountId, kind, name },
-				output: true
-			},
-			{
-				input: {
-					accountId: invalidId,
-					kind,
-					name
-				},
-				output: false
-			},
-			...invalidNames.map((invalidName) => ({
-				input: {
-					accountId,
-					kind,
-					name: normalizeName(invalidName)
-				},
-				output: false
-			}))
-		]
-	)
-})
 
 void test("isStrategy", () => {
 	const accountId = nullId

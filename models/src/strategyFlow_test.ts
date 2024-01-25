@@ -3,19 +3,19 @@ import { test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { nullAccountStrategyKey } from "./accountStrategy.js"
 import {
-	isWriteStrategyFlowInput,
-	welcomeFlow,
-	WriteStrategyFlowInput
+	isFlowViewSerializableGraph,
+	StrategyFlow,
+	welcomeFlow
 } from "./strategyFlow.js"
+import { createdNow } from "./time.js"
 
-void test("isWriteStrategyFlowInput", () => {
-	assertEqual<Partial<MaybeObject<WriteStrategyFlowInput>>, boolean>(
-		isWriteStrategyFlowInput,
+void test("isFlowViewSerializableGraph", () => {
+	assertEqual<Partial<MaybeObject<StrategyFlow>>, boolean>(
+		isFlowViewSerializableGraph,
 		[
 			{
-				input: { ...nullAccountStrategyKey, view: welcomeFlow },
+				input: { whenUpdated: createdNow(), view: welcomeFlow },
 				output: true
 			}
 		]

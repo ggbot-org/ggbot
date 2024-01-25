@@ -6,6 +6,7 @@ import {
 	__502__BAD_GATEWAY__
 } from "./codes.js"
 
+// TODO prefix all errors wuth HTTP, e.g. HTTPBadRequest
 export class BadRequestError extends Error {
 	static errorName = "BadRequest"
 	constructor() {
