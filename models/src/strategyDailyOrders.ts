@@ -4,10 +4,6 @@ import { DayKey, UpdateTime } from "./time.js"
 
 export type StrategyDailyOrdersKey = AccountStrategyKey & DayKey
 
-export type ReadStrategyDailyOrders = (
-	arg: StrategyDailyOrdersKey
-) => Promise<Order[]>
-
 type AppendStrategyDailyOrdersInput = StrategyDailyOrdersKey & {
 	items: Order[]
 }

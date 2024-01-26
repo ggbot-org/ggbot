@@ -5,30 +5,34 @@ import {
 	isStrategyKey
 } from "@workspace/models"
 
-export const publicApiActionTypes = [
-	"ReadStrategy",
-	"ReadStrategyFlow"
-] as const
-export type PublicApiActionType = (typeof publicApiActionTypes)[number]
-
 type Action = {
 	ReadStrategy: (arg: StrategyKey) => Promise<Strategy | null>
 	ReadStrategyFlow: (arg: StrategyKey) => Promise<StrategyFlow | null>
 }
+export type PublicDataprovider = Action
 
-export type PublicApiAction = Action
+type ActionType = keyof Action
+export type PublicActionType = ActionType
 
-export type PublicApiInput = {
-	ReadStrategy: Parameters<Action["ReadStrategy"]>[0]
-	ReadStrategyFlow: Parameters<Action["ReadStrategyFlow"]>[0]
+type Input = {
+	ReadStrategy: Parameters<Action['ReadStrategy']>[0]
+	ReadStrategyFlow: Parameters<Action['ReadStrategyFlow']>[0]
 }
+export type PublicActionInput = Input
 
-export type PublicApiOutput = {
-	ReadStrategy: Awaited<ReturnType<Action["ReadStrategy"]>>
-	ReadStrategyFlow: Awaited<ReturnType<Action["ReadStrategyFlow"]>>
+type Output = {
+	ReadStrategy: Awaited<ReturnType<Action['ReadStrategy']>>
+	ReadStrategyFlow: Awaited<ReturnType<Action['ReadStrategyFlow']>>
 }
+export type PublicActionOutput = Output
 
-export const isPublicApiInput = {
+export const publicActionTypes = [
+	"ReadStrategy",
+	"ReadStrategyFlow"
+] as const satisfies readonly ActionType[]
+
+export const isPublicActionInput = {
 	ReadStrategy: isStrategyKey,
 	ReadStrategyFlow: isStrategyKey
 }
+

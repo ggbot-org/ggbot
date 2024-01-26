@@ -1,24 +1,30 @@
 import { Account, AccountKey, isAccountKey } from "@workspace/models"
 
-export const adminApiActionTypes = ["ListAccountKeys", "ReadAccount"] as const
-export type AdminApiActionType = (typeof adminApiActionTypes)[number]
-
 type Action = {
 	ListAccountKeys: () => Promise<AccountKey[]>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 }
+export type AdminDataprovider = Action
 
-export type AdminApiInput = {
-	ReadAccount: Parameters<Action["ReadAccount"]>[0]
+type ActionType = keyof AdminDataprovider
+export type AdminActionType = ActionType
+
+type Input = {
+	ListAccountKeys: void
+	ReadAccount: Parameters<Action['ReadAccount']>[0]
 }
+export type AdminActionInput = Input
 
-export type AdminApiOutput = {
-	ListAccountKeys: Awaited<ReturnType<Action["ListAccountKeys"]>>
-	ReadStrategy: Awaited<ReturnType<Action["ReadAccount"]>>
+type Output = {
+	ListAccountKeys: Awaited<ReturnType<Action['ListAccountKeys']>>
+	ReadAccount: Awaited<ReturnType<Action['ReadAccount']>>
 }
+export type AdminActionOutput = Output
 
-export type AdminApiAction = Action
+export const adminActionTypes = [
+	"ListAccountKeys", "ReadAccount"
+] as const satisfies readonly ActionType[]
 
-export const isAdminApiInput = {
+export const isAdminActionInput = {
 	ReadAccount: isAccountKey
 }

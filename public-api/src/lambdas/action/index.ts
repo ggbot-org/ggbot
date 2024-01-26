@@ -8,7 +8,7 @@ import {
 	OK
 } from "@workspace/api-gateway"
 import { BadGatewayError } from "@workspace/http"
-import { isApiActionInput } from "@workspace/models"
+import { apiActionMethod, isApiActionInput } from "@workspace/models"
 
 import { info, warn } from "./logging.js"
 import { service } from "./service.js"
@@ -16,9 +16,9 @@ import { service } from "./service.js"
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === "POST") {
+		if (event.httpMethod === apiActionMethod) {
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 

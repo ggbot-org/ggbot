@@ -1,22 +1,21 @@
 import {
-	UserApiInput as Input,
-	UserApiOutput as Output,
-	UserApiActionType
+	DocumentProviderLevel2,
+	UserActionInput as Input,
+	UserActionOutput as Output,
+	UserDataprovider
 } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
 	AccountKey,
 	AccountStrategy,
-	ApiDataProvider,
-	DocumentProviderLevel2,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
-	Strategy,
+	Order,
+	StrategyDailyOrdersKey,
 	StrategyFlow,
 	StrategyKey,
 	accountStrategiesModifier,
-	createdNow,
 	deletedNow,
 	newAccountStrategy,
 	newStrategy,
@@ -24,8 +23,9 @@ import {
 } from "@workspace/models"
 import { PublicDatabase } from "./public.js"
 import { pathname } from "./locators.js"
+import {dateToDay, dayToDate, getDate} from "minimal-time-helpers"
 
-export class UserDatabase implements ApiDataProvider<UserApiActionType> {
+export class UserDatabase implements UserDataprovider {
 	readonly accountKey: AccountKey
 	readonly documentProvider: DocumentProviderLevel2
 	readonly publicDatabase: PublicDatabase
@@ -91,14 +91,29 @@ export class UserDatabase implements ApiDataProvider<UserApiActionType> {
 		return deletedNow()
 	}
 
-	ReadAccountStrategies(): Promise<Output["ReadAccountStrategies"]> {
+	ReadAccountStrategies(){
 		return this.documentProvider.getItem<Output["ReadAccountStrategies"]>(
 			pathname.accountStrategies(this.accountKey)
 		)
 	}
 
-	async ReadSubscription(): Promise<Output["ReadSubscription"]> {
-		return this.documentProvider.getItem(
+	async ReadStrategyOrders({start, end, ...strategyKey}: Input['ReadStrategyOrders']) {
+		const {accountId} = this.accountKey
+		const result: Output['ReadStrategyOrders'] = []
+	let date = dayToDate(start)
+	while (date <= dayToDate(end)) {
+		const day = dateToDay(date)
+		const orders = await this.readStrategyDailyOrders({ day, accountId, ...strategyKey }) ?? []
+		if (!orders) continue
+		for (const order of orders) result.push(order)
+		date = getDate(date).plusOne.day
+	}
+	return result
+
+	}
+
+	ReadSubscription() {
+		return this.documentProvider.getItem<Output['ReadSubscription']>(
 			pathname.subscription(this.accountKey)
 		)
 	}
@@ -107,7 +122,7 @@ export class UserDatabase implements ApiDataProvider<UserApiActionType> {
 		view,
 		strategyId,
 		strategyKind
-	}: Input["WriteStrategyFlow"]): Promise<Output["WriteStrategyFlow"]> {
+	}: Input["WriteStrategyFlow"]) {
 		const time = updatedNow()
 		this.writeStrategyFlow({ strategyId, strategyKind, view, ...time })
 		return time
@@ -131,24 +146,25 @@ export class UserDatabase implements ApiDataProvider<UserApiActionType> {
 		await this.documentProvider.removeItem(pathname.strategy(strategyKey))
 	}
 
-	private async deleteStrategyFlow(strategyKey: StrategyKey) {
-		const { accountId } = this.accountKey
-		const ownerId = await this.readStrategyAccountId(strategyKey)
-		if (accountId !== ownerId)
-			throw new ErrorPermissionOnStrategyItem({
-				type: "StrategyFlow",
-				action: "delete",
-				accountId,
-				...strategyKey
-			})
-		await this.documentProvider.removeItem(
-			pathname.strategyFlow(strategyKey)
-		)
-	}
+	// TODO remove it if not needed
+	// private async deleteStrategyFlow(strategyKey: StrategyKey) {
+	// 	const { accountId } = this.accountKey
+	// 	const ownerId = await this.readStrategyAccountId(strategyKey)
+	// 	if (accountId !== ownerId)
+	// 		throw new ErrorPermissionOnStrategyItem({
+	// 			type: "StrategyFlow",
+	// 			action: "delete",
+	// 			accountId,
+	// 			...strategyKey
+	// 		})
+	// 	await this.documentProvider.removeItem(
+	// 		pathname.strategyFlow(strategyKey)
+	// 	)
+	// }
 
 	private async insertAccountStrategiesItem(item: AccountStrategy) {
 		const { accountId } = this.accountKey
-		const items = await this.ReadAccountStrategies()
+		const items = await this.ReadAccountStrategies() ?? []
 		const subscription = await this.ReadSubscription()
 		const newItems = accountStrategiesModifier.insertItem(
 			items,
@@ -159,6 +175,16 @@ export class UserDatabase implements ApiDataProvider<UserApiActionType> {
 			pathname.accountStrategies({ accountId }),
 			newItems
 		)
+	}
+
+	private async readStrategy(strategyKey: StrategyKey) {
+		const data = await this.publicDatabase.ReadStrategy(strategyKey)
+		if (!data)
+			throw new ErrorStrategyItemNotFound({
+				type: "Strategy",
+				...strategyKey
+			})
+		return data
 	}
 
 	private async readStrategyAccountId(
@@ -173,20 +199,12 @@ export class UserDatabase implements ApiDataProvider<UserApiActionType> {
 		return accountId
 	}
 
-	private async readStrategy(strategyKey: StrategyKey): Promise<Strategy> {
-		const data = await this.publicDatabase.readStrategy(strategyKey)
-		if (!data)
-			throw new ErrorStrategyItemNotFound({
-				type: "Strategy",
-				...strategyKey
-			})
-		return data
-	}
+private readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
+	return this.documentProvider.getItem<Order[] | null>(pathname.strategyDailyOrders(arg)) 
+}
 
-	private async readStrategyFlow(
-		strategyKey: StrategyKey
-	): Promise<StrategyFlow> {
-		const data = await this.publicDatabase.readStrategyFlow(strategyKey)
+	private async readStrategyFlow( strategyKey: StrategyKey) {
+		const data = await this.publicDatabase.ReadStrategyFlow(strategyKey)
 		if (!data)
 			throw new ErrorStrategyItemNotFound({
 				type: "StrategyFlow",

@@ -1,33 +1,16 @@
 import {
+	Account,
 	AccountInfo,
 	AccountKey,
 	AccountStrategy,
-	AccountStrategyItemKey,
-	AccountStrategyKey,
 	AllowedCountryIsoCode2,
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria,
 	CreationTime,
 	DeletionTime,
 	EmailAddress,
-	isAccountKey,
-	isAccountStrategyKey,
-	isAllowedCountryIsoCode2,
-	isBinanceApiConfig,
-	isEmailAddress,
-	isFlowViewSerializableGraph,
-	isItemId,
-	isName,
-	isNaturalNumber,
-	isPaymentProvider,
-	isStrategy,
-	isStrategyKey,
-	isStrategySchedulings,
-	isSubscriptionPlan,
-	Name,
 	NaturalNumber,
 	NewItem,
-	nullId,
 	Order,
 	PaymentProvider,
 	Strategy,
@@ -36,12 +19,114 @@ import {
 	StrategyKey,
 	Subscription,
 	SubscriptionPlan,
-	UpdateTime
+	UpdateTime,
+	isAllowedCountryIsoCode2,
+	isBinanceApiConfig,
+	isEmailAddress,
+	isFlowViewSerializableGraph,
+	isName,
+	isNaturalNumber,
+	isPaymentProvider,
+	isStrategy,
+	isStrategyKey,
+	isStrategySchedulings,
+	isSubscriptionPlan,
+	nullId,
 } from "@workspace/models"
-import { DayInterval, isDayInterval } from "minimal-time-helpers"
+import {DayInterval, isDayInterval} from 'minimal-time-helpers'
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-export const userApiActionTypes = [
+type Action = {
+	CopyStrategy: (
+		arg: StrategyKey & Pick<Strategy, "name">
+	) => Promise<Strategy>,
+	CreateBinanceApiConfig: (arg: BinanceApiConfig) => Promise<CreationTime>
+	CreatePurchaseOrder: (arg:  {
+		country: AllowedCountryIsoCode2
+		email: EmailAddress
+		numMonths: NaturalNumber
+		paymentProvider: PaymentProvider
+		plan: SubscriptionPlan
+	}) => Promise<null>
+	CreateStrategy: (
+		arg: Omit<NewItem<Strategy>, keyof AccountKey>
+	) => Promise<Strategy>
+	DeleteAccount: () => Promise<DeletionTime>
+	DeleteBinanceApiConfig: () => Promise<DeletionTime>
+	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
+	ReadAccountInfo: () => Promise<AccountInfo | null>
+	ReadAccountStrategies: () => Promise<AccountStrategy[] | null>
+	ReadBinanceApiKey: () => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
+	ReadBinanceApiKeyPermissions: () => Promise<BinanceApiKeyPermissionCriteria>
+	ReadStrategyBalances: ( arg: StrategyKey & DayInterval) => Promise<StrategyBalance[] |null>
+	ReadStrategyOrders: ( arg: StrategyKey & DayInterval) => Promise<Order []>
+	ReadSubscription: () => Promise<Subscription| null>
+	RenameAccount: (arg: Required<Pick<Account, 'name' >>) => Promise<UpdateTime>
+	RenameStrategy: (arg: StrategyKey & Required<Pick<Strategy, "name">>) => Promise<UpdateTime>
+	SetAccountCountry: (arg: Required<Pick<Account, 'country'>>) => Promise<UpdateTime>
+	/**
+	 * @remarks
+	 * Need also `strategyKind` in order to write suggested `frequency` to strategy.
+	 */
+	WriteAccountStrategiesItemSchedulings: (
+		arg:
+	 StrategyKey &
+		Pick<AccountStrategy, "schedulings">
+	) => Promise<UpdateTime>
+	WriteStrategyFlow: (
+		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
+	) => Promise<UpdateTime>
+}
+
+export type UserDataprovider = Action
+
+type ActionType = keyof Action
+export type UserActionType = ActionType
+
+type Input = {
+	CopyStrategy: Parameters<Action['CopyStrategy']>[0]
+	CreateBinanceApiConfig: Parameters<Action['CreateBinanceApiConfig']>[0]
+	CreatePurchaseOrder: Parameters<Action['CreatePurchaseOrder']>[0]
+	CreateStrategy: Parameters<Action['CreateStrategy']>[0]
+	DeleteAccount: void
+	DeleteBinanceApiConfig: void
+	DeleteStrategy: Parameters<Action['DeleteStrategy']>[0]
+	ReadAccountInfo: void
+	ReadAccountStrategies: void
+	ReadBinanceApiKey: void
+    ReadStrategyBalances: Parameters<Action['ReadStrategyBalances']>[0]
+    ReadStrategyOrders: Parameters<Action['ReadStrategyOrders']>[0]
+    RenameAccount: Parameters<Action['RenameAccount']>[0]
+    RenameStrategy: Parameters<Action['RenameStrategy']>[0]
+    SetAccountCountry: Parameters<Action['SetAccountCountry']>[0]
+    WriteAccountStrategiesItemSchedulings: Parameters<Action['WriteAccountStrategiesItemSchedulings']>[0]
+    WriteStrategyFlow: Parameters<Action['WriteStrategyFlow']>[0]
+}
+export type UserActionInput = Input
+
+type Output = {
+	CopyStrategy: Awaited<ReturnType<Action['CopyStrategy']>>
+	CreateBinanceApiConfig: Awaited<ReturnType<Action['CreateBinanceApiConfig']>>
+	CreatePurchaseOrder: Awaited<ReturnType<Action['CreatePurchaseOrder']>>
+	CreateStrategy: Awaited<ReturnType<Action['CreateStrategy']>>
+	DeleteAccount: Awaited<ReturnType<Action['DeleteAccount']>>
+	DeleteBinanceApiConfig: Awaited<ReturnType<Action['DeleteBinanceApiConfig']>>
+	DeleteStrategy: Awaited<ReturnType<Action['DeleteStrategy']>>
+	ReadAccountInfo: Awaited<ReturnType<Action['ReadAccountInfo']>>
+	ReadAccountStrategies: Awaited<ReturnType<Action['ReadAccountStrategies']>>
+	ReadBinanceApiKey: Awaited<ReturnType<Action['ReadBinanceApiKey']>>
+	ReadBinanceApiKeyPermissions: Awaited<ReturnType<Action['ReadBinanceApiKeyPermissions']>>
+	ReadStrategyBalances: Awaited<ReturnType<Action['ReadStrategyBalances']>>
+	ReadStrategyOrders: Awaited<ReturnType<Action['ReadStrategyOrders']>>
+	ReadSubscription: Awaited<ReturnType<Action['ReadSubscription']>>
+	RenameAccount: Awaited<ReturnType<Action['RenameAccount']>>
+	SetAccountCountry: Awaited<ReturnType<Action['SetAccountCountry']>>
+	WriteAccountStrategiesItemSchedulings: Awaited<ReturnType<Action['WriteAccountStrategiesItemSchedulings']>>
+	WriteStrategyFlow: Awaited<ReturnType<Action['WriteStrategyFlow']>>
+}
+export type UserActionOutput = Output
+
+export const userActionTypes = [
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
 	"CreatePurchaseOrder",
@@ -61,93 +146,19 @@ export const userApiActionTypes = [
 	"SetAccountCountry",
 	"WriteAccountStrategiesItemSchedulings",
 	"WriteStrategyFlow"
-] as const
-export type UserApiActionType = (typeof userApiActionTypes)[number]
+] as const  satisfies readonly UserActionType[]
 
-type Action = {
-	CopyStrategy: (
-		arg: StrategyKey & Pick<Strategy, "name">
-	) => Promise<Strategy>
-	CreateBinanceApiConfig: (arg: BinanceApiConfig) => Promise<CreationTime>
-	CreatePurchaseOrder: (arg: Input["CreatePurchaseOrder"]) => Promise<null>
-	CreateStrategy: (
-		arg: Omit<NewItem<Strategy>, keyof AccountKey>
-	) => Promise<Strategy>
-	DeleteAccount: () => Promise<DeletionTime>
-	DeleteBinanceApiConfig: () => Promise<DeletionTime>
-	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
-	ReadAccountInfo: () => Promise<AccountInfo | null>
-	ReadAccountStrategies: () => Promise<AccountStrategy[] | null>
-	ReadBinanceApiKey: () => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
-	ReadBinanceApiKeyPermissions: () => Promise<BinanceApiKeyPermissionCriteria>
-	ReadStrategyBalances: (
-		arg: Input["ReadStrategyBalances"]
-	) => Promise<StrategyBalance[]>
-	ReadStrategyOrders: (
-		arg: Input["ReadStrategyOrders"]
-	) => Promise<Order[] | null>
-	ReadSubscription: () => Promise<Subscription | null>
-	RenameAccount: (arg: Input["RenameAccount"]) => Promise<UpdateTime>
-	RenameStrategy: (arg: Input["RenameStrategy"]) => Promise<UpdateTime>
-	SetAccountCountry: (arg: Input["SetAccountCountry"]) => Promise<UpdateTime>
-	WriteAccountStrategiesItemSchedulings: (
-		arg: Input["WriteAccountStrategiesItemSchedulings"]
-	) => Promise<UpdateTime>
-	WriteStrategyFlow: (
-		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
-	) => Promise<UpdateTime>
-}
-
-export type UserApiAction = Action
-
-type Input = {
-	CopyStrategy: Parameters<Action["CopyStrategy"]>[0]
-	CreateBinanceApiConfig: Parameters<Action["CreateBinanceApiConfig"]>[0]
-	CreatePurchaseOrder: AccountKey & {
-		country: AllowedCountryIsoCode2
-		email: EmailAddress
-		numMonths: NaturalNumber
-		paymentProvider: PaymentProvider
-		plan: SubscriptionPlan
-	}
-	CreateStrategy: Parameters<Action["CreateStrategy"]>[0]
-	DeleteStrategy: Parameters<Action["DeleteStrategy"]>[0]
-	ReadStrategyBalances: AccountStrategyKey & DayInterval
-	ReadStrategyOrders: AccountStrategyKey & DayInterval
-	RenameAccount: AccountKey & { name: Name }
-	RenameStrategy: AccountStrategyKey & Pick<Strategy, "name">
-	SetAccountCountry: AccountKey & { country: AllowedCountryIsoCode2 }
-	// Need also `strategyKind` in order to write suggested frequency to strategy.
-	WriteAccountStrategiesItemSchedulings: AccountStrategyItemKey &
-		Pick<AccountStrategyKey, "strategyKind"> &
-		Pick<AccountStrategy, "schedulings">
-	WriteStrategyFlow: Parameters<Action["WriteStrategyFlow"]>[0]
-}
-
-export type UserApiInput = Input
-
-export type UserApiOutput = {
-	CreateStrategy: Awaited<ReturnType<Action["CreateStrategy"]>>
-	CopyStrategy: Awaited<ReturnType<Action["CreateStrategy"]>>
-	DeleteStrategy: Awaited<ReturnType<Action["DeleteStrategy"]>>
-	ReadAccountStrategies: Awaited<ReturnType<Action["ReadAccountStrategies"]>>
-	ReadSubscription: Awaited<ReturnType<Action["ReadSubscription"]>>
-	WriteStrategyFlow: Awaited<ReturnType<Action["WriteStrategyFlow"]>>
-}
-
-export const isUserApiInput = {
+export const isUserActionInput = {
 	CopyStrategy: objectTypeGuard<Input["CopyStrategy"]>(
-		({ name, ...accountStrategyKey }) =>
-			isAccountStrategyKey(accountStrategyKey) && isName(name)
+		({ name, ...strategyKey }) =>
+			isStrategyKey(strategyKey) && isName(name)
 	),
 	CreateBinanceApiConfig: objectTypeGuard<Input["CreateBinanceApiConfig"]>(
-		({ apiKey, apiSecret, ...accountKey }) =>
-			isAccountKey(accountKey) &&
-			isBinanceApiConfig({ apiKey, apiSecret })
+		(binanceApiConfig) =>
+			isBinanceApiConfig(binanceApiConfig)
 	),
 	CreatePurchaseOrder: objectTypeGuard<Input["CreatePurchaseOrder"]>(
-		({ country, email, numMonths, paymentProvider, plan, ...accountKey }) =>
-			isAccountKey(accountKey) &&
+		({ country, email, numMonths, paymentProvider, plan }) =>
 			isEmailAddress(email) &&
 			isSubscriptionPlan(plan) &&
 			isAllowedCountryIsoCode2(country) &&
@@ -157,39 +168,40 @@ export const isUserApiInput = {
 	CreateStrategy: objectTypeGuard<Input["CreateStrategy"]>((arg) =>
 		isStrategy({ ...arg, id: nullId, whenCreated: 1 })
 	),
+	// DeleteAccount
+	// DeleteBinanceApiConfig
 	DeleteStrategy: isStrategyKey,
+	// ReadAccountInfo
+	// ReadAccountStrategies
+	// ReadBinanceApiKey
 	ReadStrategyBalances: objectTypeGuard<Input["ReadStrategyBalances"]>(
-		({ start, end, ...accountStrategyKey }) =>
+		({ start, end, ...strategyKey }) =>
 			isDayInterval({ start, end }) &&
-			isAccountStrategyKey(accountStrategyKey)
+			isStrategyKey(strategyKey)
 	),
 	ReadStrategyOrders: objectTypeGuard<Input["ReadStrategyOrders"]>(
-		({ start, end, ...accountStrategyKey }) =>
+		({ start, end, ...strategyKey }) =>
 			isDayInterval({ start, end }) &&
-			isAccountStrategyKey(accountStrategyKey)
+			isStrategyKey(strategyKey)
 	),
-	RenameAccount: objectTypeGuard<Input["RenameAccount"]>(
-		({ name, ...accountKey }) => isName(name) && isAccountKey(accountKey)
-	),
+	RenameAccount: objectTypeGuard<Input["RenameAccount"]>( ({ name }) => isName(name)),
 	RenameStrategy: objectTypeGuard<Input["RenameStrategy"]>(
-		({ name, ...accountStrategyKey }) =>
-			isName(name) && isAccountStrategyKey(accountStrategyKey)
+		({ name, ...strategyKey }) => isName(name) && isStrategyKey(strategyKey)
 	),
 	SetAccountCountry: objectTypeGuard<Input["SetAccountCountry"]>(
-		({ country, ...accountKey }) =>
-			isAllowedCountryIsoCode2(country) && isAccountKey(accountKey)
+		({ country }) =>
+			isAllowedCountryIsoCode2(country)
 	),
 	WriteAccountStrategiesItemSchedulings: objectTypeGuard<
 		Input["WriteAccountStrategiesItemSchedulings"]
 	>(
-		({ accountId, strategyId, schedulings }) =>
-			isItemId(accountId) &&
-			isItemId(strategyId) &&
+		({ schedulings, ...strategyKey }) =>
+			isStrategyKey(strategyKey) &&
 			isStrategySchedulings(schedulings)
 	),
 	WriteStrategyFlow: objectTypeGuard<Input["WriteStrategyFlow"]>(
-		({ view, ...accountStrategyKey }) =>
+		({ view, ...strategyKey }) =>
 			isFlowViewSerializableGraph(view) &&
-			isAccountStrategyKey(accountStrategyKey)
+			isStrategyKey(strategyKey)
 	)
 }

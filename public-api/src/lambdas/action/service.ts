@@ -2,19 +2,15 @@ import {
 	isPublicApiInput as isInput,
 	PublicApiActionType
 } from "@workspace/api"
-import { PublicDataProvider } from "@workspace/database"
-import { ENV } from "@workspace/env"
+import { PublicDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
 import { ApiService } from "@workspace/models"
-import {
-	getS3DataBucketName,
-	S3DataBucketProvider
-} from "@workspace/s3-data-bucket"
+import { dataProvider } from "./dataProvider.js"
 
-class Service implements ApiService<PublicApiActionType> {
-	dataProvider: PublicDataProvider
+export class Service implements ApiService<PublicApiActionType> {
+	dataProvider: PublicDatabase
 
-	constructor(dataProvider: PublicDataProvider) {
+	constructor(dataProvider: PublicDatabase) {
 		this.dataProvider = dataProvider
 	}
 
@@ -28,14 +24,5 @@ class Service implements ApiService<PublicApiActionType> {
 		return this.dataProvider.readStrategyFlow(arg)
 	}
 }
-
-const awsDataRegion = ENV.AWS_DATA_REGION()
-
-const documentProvider = new S3DataBucketProvider(
-	awsDataRegion,
-	getS3DataBucketName(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN(), awsDataRegion)
-)
-
-const dataProvider = new PublicDataProvider(documentProvider)
 
 export const service = new Service(dataProvider)

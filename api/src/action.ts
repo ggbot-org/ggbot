@@ -73,3 +73,19 @@ type ApiActionClientSideErrorName =
 export type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName
 }
+
+// TODO use it on all services implementations
+export const apiActionMethod = "POST"
+
+export type ApiActionInput<ActionType extends string> = {
+	type: ActionType
+	data?: unknown
+}
+
+export const isApiActionInput = <ActionType extends string>(
+	actionTypes: readonly ActionType[]
+) =>
+	objectTypeGuard<ApiActionInput<ActionType>>(({ type }) =>
+		isLiteralType<ActionType>(actionTypes)(type)
+	)
+

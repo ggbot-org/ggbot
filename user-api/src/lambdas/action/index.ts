@@ -14,7 +14,8 @@ import {UnauthorizedError} from "@workspace/http"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnknownItem
+	ErrorUnknownItem,
+	apiActionMethod
 } from "@workspace/models"
 
 import {dataProvider} from "./dataProvider.js"
@@ -24,9 +25,9 @@ import {ApiService} from "./service.js"
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === "POST") {
+		if (event.httpMethod === apiActionMethod) {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			if (!event.body) return BAD_REQUEST()

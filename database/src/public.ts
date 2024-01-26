@@ -1,31 +1,26 @@
 import {
-	PublicApiInput as Input,
-	PublicApiOutput as Output
+	DocumentProviderLevel1,
+	PublicActionInput as Input,
+	PublicActionOutput as Output,
+	PublicDataprovider
 } from "@workspace/api"
-import { DocumentProviderLevel1 } from "@workspace/models"
 
 import { pathname } from "./locators.js"
 
-export class PublicDatabase {
+export class PublicDatabase implements PublicDataprovider{
 	documentProvider: DocumentProviderLevel1
 
 	constructor(documentProvider: PublicDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
 	}
 
-	async readStrategy(
-		arg: Input["ReadStrategy"]
-	): Promise<Output["ReadStrategy"]> {
-		const data = await this.documentProvider.getItem(pathname.strategy(arg))
-		return data as Output["ReadStrategy"]
+	ReadStrategy( arg: Input["ReadStrategy"]) {
+		return this.documentProvider.getItem<Output['ReadStrategy']>(pathname.strategy(arg))
 	}
 
-	async readStrategyFlow(
-		arg: Input["ReadStrategyFlow"]
-	): Promise<Output["ReadStrategyFlow"]> {
-		const data = await this.documentProvider.getItem(
+	ReadStrategyFlow( arg: Input["ReadStrategyFlow"]) {
+		return this.documentProvider.getItem<Output["ReadStrategyFlow"] >(
 			pathname.strategyFlow(arg)
 		)
-		return data as Output["ReadStrategyFlow"]
 	}
 }

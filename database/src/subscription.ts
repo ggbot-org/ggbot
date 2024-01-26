@@ -1,7 +1,6 @@
-import { UserApiDataProviderOperation as Operation } from "@workspace/api"
 import { AccountKey, Subscription, UpdateTime } from "@workspace/models"
 
-import { READ, UPDATE } from "./_dataBucket.js"
+import { UPDATE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 
 type WriteSubscription = (arg: AccountKey & Subscription) => Promise<UpdateTime>
