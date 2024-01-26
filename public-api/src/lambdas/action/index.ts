@@ -1,4 +1,4 @@
-import { isApiActionInput, publicApiOperationNames } from "@workspace/api"
+import { publicApiActionTypes as actionTypes } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -8,9 +8,10 @@ import {
 	OK
 } from "@workspace/api-gateway"
 import { BadGatewayError } from "@workspace/http"
+import { isApiActionInput } from "@workspace/models"
 
 import { info, warn } from "./logging.js"
-import { apiService } from "./service.js"
+import { service } from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -22,10 +23,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isApiActionInput(publicApiOperationNames)(input))
-				return BAD_REQUEST()
+			if (!isApiActionInput(actionTypes)(input)) return BAD_REQUEST()
 
-			const output = await apiService[input.type](input.data)
+			const output = await service[input.type](input.data)
 			info(input.type, JSON.stringify(output, null, 2))
 			return OK(output)
 		}

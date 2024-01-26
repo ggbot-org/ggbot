@@ -1,3 +1,3 @@
-import { designDirname } from "../../dirnames.js"
+import { webappDirname } from "@workspace/locators"
 
-export const designShowcaseHtmlPathname = `${designDirname}/showcase.html`
+export const designShowcaseHtmlPathname = `${webappDirname.design}/showcase.html`

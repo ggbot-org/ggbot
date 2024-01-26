@@ -9,7 +9,7 @@ import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
 import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
 
-import { ecmaScriptPath } from "../ecmaScripts"
+import { workerScriptPath } from "_/workers"
 
 type Action =
 	| BacktestingMessageInData
@@ -43,7 +43,7 @@ export type UseBacktestingOutput = {
 
 const { info, warn } = logging("useBacktesting")
 
-const backtesting = new Worker(`/${ecmaScriptPath.backtesting.join("/")}`)
+const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 
 const getMaxDay: () => State["maxDay"] = yesterday
 

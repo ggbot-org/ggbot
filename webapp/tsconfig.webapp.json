@@ -8,23 +8,44 @@
 		"paths": {
 			"_/binance/*": ["./src/binance/*"],
 			"_/classNames": ["./src/styles/classNames.ts"],
-			"_/components/library": ["./src/components/library/index.ts"],
 			"_/components/*": ["./src/components/*"],
+			"_/components/library": ["./src/components/library/index.ts"],
 			"_/contexts/*": ["./src/contexts/*"],
+			"_/esbuild/definitions": ["./src/esbuild/definitions.ts"],
 			"_/flow/*": ["./src/flow/*"],
 			"_/hooks/*": ["./src/hooks/*"],
 			"_/i18n/*": ["./src/i18n/*"],
 			"_/logging": ["./src/logging.ts"],
 			"_/pages/*": ["./src/pages/*"],
 			"_/react/mount": ["./src/react/mount.tsx"],
+			"_/react/root": ["./src/react/root.ts"],
 			"_/routing/*": ["./src/routing/*"],
-			"_/storages/*": ["./src/storages/*"]
+			"_/storages/*": ["./src/storages/*"],
+			"_/workers": ["./src/workers/index.ts"]
 		},
 		"skipLibCheck": true,
 		"target": "esnext",
 		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
 	},
 	"extends": "@workspace/tsconfig/code-quality",
-	"exclude": ["node_modules", "src/workers/"],
-	"include": ["**/*.ts", "**/*.tsx"]
+	"exclude": ["node_modules"],
+	"include": [
+		"./src/binance/*.ts",
+		"./src/components/**/*.tsx",
+		"./src/contexts/**/*.tsx",
+		"./src/esbuild/EnvironmentVariables.ts",
+		"./src/esbuild/definitions.ts",
+		"./src/flow/**/*.ts",
+		"./src/hooks/*.ts",
+		"./src/i18n/*.ts",
+		"./src/logging.ts",
+		"./src/pages/**/*.tsx",
+		"./src/react/mount.tsx",
+		"./src/react/root.ts",
+		"./src/routing/**/*.ts",
+		"./src/storages/*.ts",
+		"./src/styles/**/*.ts",
+		"./src/types/*d.ts",
+		"./src/workers/index.ts"
+	]
 }

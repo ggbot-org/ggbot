@@ -12,12 +12,13 @@ export class WebappBaseURL extends URL {
 	}
 }
 
-const webappDirname = {
+export const webappDirname = {
 	admin: "admin",
+	design: "design",
 	user: "user"
 } as const
 
-const webappPagePathname = {
+export const webappPagePathname = {
 	homepage: "index.html",
 	privacy: "privacy.html",
 	terms: "terms.html",

@@ -16,7 +16,7 @@
 	"extends": "@workspace/tsconfig/code-quality",
 	"exclude": ["node_modules"],
 	"include": [
-		"src/binance/*.ts",
+		"src/binance/exchangeInfoCache.ts",
 		"src/esbuild/EnvironmentVariables.ts",
 		"src/esbuild/definitions.ts",
 		"src/esbuild/environmentVariableNames.ts",
@@ -25,6 +25,6 @@
 		"src/storages/IndexedDB.ts",
 		"src/storages/binanceDB.ts",
 		"src/types/global.d.ts",
-		"src/workers/*.ts"
+		"src/workers/backtesting.ts"
 	]
 }

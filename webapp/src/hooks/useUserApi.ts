@@ -1,14 +1,8 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import {
-	CopyStrategy,
-	CreateBinanceApiConfig,
-	CreateStrategy,
-	DeleteBinanceApiConfig,
-	DeleteStrategy,
 	OmitAccountKey,
-	ReadBinanceApiKey,
-	ReadBinanceApiKeyPermissions,
+	UserApiAction as Action,
 	UserApiActionType as ActionType
 } from "@workspace/api"
 import {
@@ -33,12 +27,12 @@ const apiOptions: UseActionApiArg = {
 
 export const useUserApi = {
 	CopyStrategy: () =>
-		useAction<OmitAccountKey<CopyStrategy>, ActionType>(
+		useAction<Action["CopyStrategy"], ActionType>(
 			apiOptions,
 			"CopyStrategy"
 		),
 	CreateBinanceApiConfig: () =>
-		useAction<OmitAccountKey<CreateBinanceApiConfig>, ActionType>(
+		useAction<Action["CreateBinanceApiConfig"], ActionType>(
 			apiOptions,
 			"CreateBinanceApiConfig"
 		),
@@ -48,7 +42,7 @@ export const useUserApi = {
 			"CreatePurchaseOrder"
 		),
 	CreateStrategy: () =>
-		useAction<OmitAccountKey<CreateStrategy>, ActionType>(
+		useAction<Action["CreateStrategy"], ActionType>(
 			apiOptions,
 			"CreateStrategy"
 		),
@@ -58,12 +52,12 @@ export const useUserApi = {
 			"DeleteAccount"
 		),
 	DeleteBinanceApiConfig: () =>
-		useAction<OmitAccountKey<DeleteBinanceApiConfig>, ActionType>(
+		useAction<Action["DeleteBinanceApiConfig"], ActionType>(
 			apiOptions,
 			"DeleteBinanceApiConfig"
 		),
 	DeleteStrategy: () =>
-		useAction<OmitAccountKey<DeleteStrategy>, ActionType>(
+		useAction<Action["DeleteStrategy"], ActionType>(
 			apiOptions,
 			"DeleteStrategy"
 		),
@@ -78,12 +72,12 @@ export const useUserApi = {
 			"ReadAccountStrategies"
 		),
 	ReadBinanceApiKey: () =>
-		useAction<OmitAccountKey<ReadBinanceApiKey>, ActionType>(
+		useAction<Action["ReadBinanceApiKey"], ActionType>(
 			apiOptions,
 			"ReadBinanceApiKey"
 		),
 	ReadBinanceApiKeyPermissions: () =>
-		useAction<OmitAccountKey<ReadBinanceApiKeyPermissions>, ActionType>(
+		useAction<Action["ReadBinanceApiKeyPermissions"], ActionType>(
 			apiOptions,
 			"ReadBinanceApiKeyPermissions"
 		),

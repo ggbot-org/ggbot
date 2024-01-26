@@ -1,6 +1,8 @@
-import { WebappDirname, WebappSettingsPageId } from "@workspace/locators"
+import { webappDirname, WebappSettingsPageId } from "@workspace/locators"
 
-export const userDashboardHtmlPathname = `/${WebappDirname.user}/dashboard.html`
+const { user } = webappDirname
+
+export const userDashboardHtmlPathname = `/${user}/dashboard.html`
 
 export const settingsHtmlPathname = (pageId: WebappSettingsPageId) =>
-	`/${WebappDirname.user}/${pageId}-settings.html`
+	`/${user}/${pageId}-settings.html`

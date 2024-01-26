@@ -2,14 +2,14 @@ import {
 	PublicApiInput as Input,
 	PublicApiOutput as Output
 } from "@workspace/api"
-import { DocumentProvider } from "@workspace/models"
+import { DocumentProviderLevel1 } from "@workspace/models"
 
 import { pathname } from "./locators.js"
 
-export class PublicDataProvider {
-	documentProvider: DocumentProvider
+export class PublicDatabase {
+	documentProvider: DocumentProviderLevel1
 
-	constructor(documentProvider: DocumentProvider) {
+	constructor(documentProvider: PublicDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
 	}
 

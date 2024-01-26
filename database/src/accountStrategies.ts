@@ -1,12 +1,8 @@
-import { UserApiDataProviderOperation as Operation } from "@workspace/api"
 import {
 	AccountKey,
-	accountStrategiesModifier,
 	AccountStrategy,
 	AccountStrategyItemKey,
 	AccountStrategySchedulingKey,
-	createdNow,
-	CreationTime,
 	deletedNow,
 	DeletionTime,
 	Frequency,
@@ -17,7 +13,6 @@ import {
 import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 import { upsertStrategyFrequency } from "./strategy.js"
-import { readSubscription } from "./subscription.js"
 
 export const readAccountStrategies: Operation["ReadAccountStrategies"] = (
 	arg
@@ -25,26 +20,6 @@ export const readAccountStrategies: Operation["ReadAccountStrategies"] = (
 	READ_ARRAY<Operation["ReadAccountStrategies"]>(
 		pathname.accountStrategies(arg)
 	)
-
-type InsertAccountStrategiesItem = (
-	arg: AccountKey & { item: AccountStrategy }
-) => Promise<CreationTime>
-
-export const insertAccountStrategiesItem: InsertAccountStrategiesItem = async ({
-	accountId,
-	item
-}) => {
-	const items = await readAccountStrategies({ accountId })
-	const subscription = await readSubscription({ accountId })
-	const data = accountStrategiesModifier.insertItem(
-		items,
-		item,
-		subscription?.plan
-	)
-	const Key = pathname.accountStrategies({ accountId })
-	await WRITE(Key, data)
-	return createdNow()
-}
 
 type RenameAccountStrategiesItem = (
 	arg: AccountStrategyItemKey & Pick<AccountStrategy, "name">

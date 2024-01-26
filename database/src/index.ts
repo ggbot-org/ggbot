@@ -28,7 +28,7 @@ export {
 	deleteOneTimePassword,
 	readOneTimePassword
 } from "./oneTimePassword.js"
-export { PublicDataProvider } from "./public.js"
+export { PublicDatabase } from "./public.js"
 export { getDataBucketName } from "./S3DataProvider.js"
 export {
 	copyStrategy,

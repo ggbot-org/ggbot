@@ -1,6 +1,6 @@
 /* eslint-disable no-var */
-import { esbuildDefinitions } from "../esbuild/definitions"
-import { LoggingController } from "../logging"
+import { esbuildDefinitions } from "_/esbuild/definitions"
+import { LoggingController } from "_/logging"
 
 declare global {
 	const BUILD_DATE: typeof esbuildDefinitions.BUILD_DATE

@@ -1,3 +1,11 @@
+export type { ApiDataProvider, ApiService } from "./api.js"
+export {
+	ApiActionHeaders,
+	apiActionMethod,
+	apiActionRequestInit,
+	isApiActionInput
+} from "./api.js"
+
 export type { Account, AccountKey } from "./account.js"
 export { isAccountKey, isAdminAccount, newAccount } from "./account.js"
 export type {
@@ -32,7 +40,10 @@ export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"
 export { allowedCountryIsoCodes2, isAllowedCountryIsoCode2 } from "./country.js"
 export type { DeployStage } from "./deployStage.js"
-export type { DocumentProvider } from "./documentProvider.js"
+export type {
+	DocumentProviderLevel1,
+	DocumentProviderLevel2
+} from "./documentProvider.js"
 export type { EmailAddress } from "./email.js"
 export { isEmailAddress, normalizeEmailAddress } from "./email.js"
 export type { EmailAccount } from "./emailAccount.js"
@@ -85,7 +96,6 @@ export {
 	isSerializableObject,
 	isSerializablePrimitive
 } from "./serializable.js"
-export type { Service } from "./service.js"
 export type { Strategy, StrategyKey, StrategyKind } from "./strategy.js"
 export {
 	isStrategy,
@@ -105,11 +115,7 @@ export type {
 	ReadStrategyDailyOrders,
 	StrategyDailyOrdersKey
 } from "./strategyDailyOrders.js"
-export type {
-	CopyStrategyFlow,
-	DeleteStrategyFlow,
-	StrategyFlow
-} from "./strategyFlow.js"
+export type { StrategyFlow } from "./strategyFlow.js"
 export { isFlowViewSerializableGraph, welcomeFlow } from "./strategyFlow.js"
 export type { StrategyMemory } from "./strategyMemory.js"
 export type { StrategyParameters } from "./strategyParameters.js"

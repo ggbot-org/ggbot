@@ -1,8 +1,10 @@
-import { adminDirname } from "../../dirnames.js"
+import { webappDirname } from "@workspace/locators"
 
-export const adminDashboardHtmlPathname = `/${adminDirname}/dashboard.html`
+const { admin } = webappDirname
 
-export const adminAccountDetailsHtmlPathname = `/${adminDirname}/account-details.html`
+export const adminDashboardHtmlPathname = `/${admin}/dashboard.html`
+
+export const adminAccountDetailsHtmlPathname = `/${admin}/account-details.html`
 
 export const adminHtmlPathnames = [
 	adminDashboardHtmlPathname,

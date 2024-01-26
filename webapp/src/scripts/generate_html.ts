@@ -2,7 +2,7 @@ import { join } from "node:path"
 
 import { ENV } from "@workspace/env"
 import {
-	WebappPagePathname,
+	webappPagePathname,
 	webappSettingsPageIds,
 	WebappURLs
 } from "@workspace/locators"
@@ -35,7 +35,7 @@ for (const pathname of [
 
 // Try strategy.
 
-await write(join(publicDir, WebappPagePathname.strategy), html(strategyJs))
+await write(join(publicDir, webappPagePathname.strategy), html(strategyJs))
 
 // Admin app.
 
@@ -45,9 +45,9 @@ for (const pathname of adminHtmlPathnames)
 // User app.
 
 const userHtmlPathnames = [
-	WebappPagePathname.user.dashboard,
-	WebappPagePathname.user.copyStrategy,
-	WebappPagePathname.user.strategy,
+	webappPagePathname.user.dashboard,
+	webappPagePathname.user.copyStrategy,
+	webappPagePathname.user.strategy,
 	...webappSettingsPageIds.map(settingsHtmlPathname)
 ]
 
@@ -56,10 +56,10 @@ for (const pathname of userHtmlPathnames)
 
 // Subscription pages.
 
-await write(join(publicDir, WebappPagePathname.purchaseCanceled), html(userJs))
+await write(join(publicDir, webappPagePathname.purchaseCanceled), html(userJs))
 
 await write(
-	join(publicDir, WebappPagePathname.subscriptionPurchased),
+	join(publicDir, webappPagePathname.subscriptionPurchased),
 	html(userJs)
 )
 

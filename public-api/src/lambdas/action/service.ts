@@ -1,13 +1,17 @@
-import {isPublicApiInput as isInput, PublicApiService} from "@workspace/api"
-import {PublicDataProvider} from "@workspace/database"
-import {ENV} from "@workspace/env"
-import {BadRequestError} from "@workspace/http"
+import {
+	isPublicApiInput as isInput,
+	PublicApiActionType
+} from "@workspace/api"
+import { PublicDataProvider } from "@workspace/database"
+import { ENV } from "@workspace/env"
+import { BadRequestError } from "@workspace/http"
+import { ApiService } from "@workspace/models"
 import {
 	getS3DataBucketName,
 	S3DataBucketProvider
 } from "@workspace/s3-data-bucket"
 
-class ApiService implements PublicApiService {
+class Service implements ApiService<PublicApiActionType> {
 	dataProvider: PublicDataProvider
 
 	constructor(dataProvider: PublicDataProvider) {
@@ -34,4 +38,4 @@ const documentProvider = new S3DataBucketProvider(
 
 const dataProvider = new PublicDataProvider(documentProvider)
 
-export const apiService = new ApiService(dataProvider)
+export const service = new Service(dataProvider)

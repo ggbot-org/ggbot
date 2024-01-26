@@ -18,18 +18,6 @@ import {
 } from "@workspace/models"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
-export type ApiActionInput<ApiActionType extends string> = {
-	type: ApiActionType
-	data?: unknown
-}
-
-export const isApiActionInput = <ApiActionType extends string>(
-	actionTypes: readonly ApiActionType[]
-) =>
-	objectTypeGuard<ApiActionInput<ApiActionType>>(({ type }) =>
-		isLiteralType<ApiActionType>(actionTypes)(type)
-	)
-
 export type ApiActionOutputError = {
 	error: ApiActionServerSideError
 }

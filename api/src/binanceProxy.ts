@@ -8,10 +8,9 @@ import {
 } from "@workspace/binance"
 import {
 	BinanceApiKeyPermissionCriteria,
-	SerializableData,
-	Service
+	SerializableData
 } from "@workspace/models"
-import {objectTypeGuard} from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 const actionTypes = [
 	"CreateBinanceOrder",
@@ -26,7 +25,7 @@ export type BinanceProxyApiResponseError = Pick<Response, "status"> & {
 
 export const isBinanceProxyApiResponseError =
 	objectTypeGuard<BinanceProxyApiResponseError>(
-		({status, error}) =>
+		({ status, error }) =>
 			typeof status === "number" && isBinanceErrorPayload(error)
 	)
 
@@ -34,7 +33,7 @@ export type BinanceProxyApiResponseOutput<Data extends SerializableData> = {
 	data: Data
 }
 
-type Operation = {
+type Action = {
 	CreateBinanceOrder: (arg: {
 		symbol: string
 		side: BinanceOrderSide
@@ -46,27 +45,26 @@ type Operation = {
 	>
 }
 
+export type BinanceProxyApiAction = Action
+
 type Input = {
-	CreateBinanceOrder: Parameters<Operation["CreateBinanceOrder"]>[0]
-	// ReadBinanceAccountApiRestrictions has no input arg
+	CreateBinanceOrder: Parameters<Action["CreateBinanceOrder"]>[0]
 }
 
 export type BinanceProxyApiInput = Input
 
 type Output = {
-	CreateBinanceOrder: Awaited<ReturnType<Operation["CreateBinanceOrder"]>>
+	CreateBinanceOrder: Awaited<ReturnType<Action["CreateBinanceOrder"]>>
 	ReadBinanceAccountApiRestrictions: Awaited<
-		ReturnType<Operation["ReadBinanceAccountApiRestrictions"]>
+		ReturnType<Action["ReadBinanceAccountApiRestrictions"]>
 	>
 }
 
 export type BinanceProxyApiOutput = Output
 
-export type BinanceProxyApiService = Service<ActionType>
-
 export const isBinanceProxyApiInput = {
 	CreateBinanceOrder: objectTypeGuard<Input["CreateBinanceOrder"]>(
-		({symbol, side, type, orderOptions}) =>
+		({ symbol, side, type, orderOptions }) =>
 			typeof symbol === "string" &&
 			typeof side === "string" &&
 			typeof type === "string" &&

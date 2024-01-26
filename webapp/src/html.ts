@@ -1,4 +1,4 @@
-import { reactRootId } from "./react/root.js"
+import { reactRootId } from "_/react/root"
 
 type LinkTag = {
 	href: string

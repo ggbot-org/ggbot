@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "build": "npm run generate_public_files",
-    "check_types": "tsc --noEmit --project . && tsc --noEmit --project ./tsconfig.scripts.json && tsc --noEmit --project ./tsconfig.workers.json",
+    "check_types": "npm run check_types:webapp && npm run check_types:scripts && npm run check_types:workers",
+    "check_types:scripts": "tsc --noEmit --project ./tsconfig.scripts.json",
+    "check_types:webapp": "tsc --noEmit --project ./tsconfig.webapp.json",
+    "check_types:workers": "tsc --noEmit --project ./tsconfig.workers.json",
     "cleanup": "rm -rf temp/ public/main.css public/*.js public/*.html public/admin/ public/design public/user",
     "compile_translations": "npm run formatjs:compile:en",
     "deploy": "sh src/scripts/deploy.sh",

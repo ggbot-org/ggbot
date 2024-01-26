@@ -2,7 +2,9 @@
 	"compilerOptions": {
 		"outDir": "./temp",
 		"paths": {
-			"_/routing/*": ["./src/routing/*"]
+			"_/react/root": ["./src/react/root.ts"],
+			"_/routing/*": ["./src/routing/*"],
+			"_/workers": ["./src/workers/index.ts"]
 		},
 		"rootDir": "./src",
 		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
@@ -21,6 +23,7 @@
 		"src/routing/design/pages.ts",
 		"src/routing/user/pages.ts",
 		"src/routing/user/types.ts",
-		"src/scripts/*.ts"
+		"src/scripts/*.ts",
+		"src/workers/index.ts"
 	]
 }

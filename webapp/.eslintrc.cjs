@@ -10,7 +10,11 @@ module.exports = {
 		ecmaFeatures: {
 			jsx: true
 		},
-		project: ["./tsconfig.json", "./tsconfig.workers.json"],
+		project: [
+			"./tsconfig.scripts.json",
+			"./tsconfig.webapp.json",
+			"./tsconfig.workers.json"
+		],
 		tsconfigRootDir: __dirname
 	},
 	plugins: [

@@ -1,12 +1,12 @@
 import {
 	isUserApiDataProviderInput as isInput,
-	UserApiDataProvider,
-	UserApiService
+	UserApiActionType,
+	UserApiDataProvider
 } from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
-import { AccountKey } from "@workspace/models"
+import { AccountKey, ApiService } from "@workspace/models"
 
-export class ApiService implements UserApiService {
+export class Service implements ApiService<UserApiActionType> {
 	accountKey: AccountKey
 	dataProvider: UserApiDataProvider
 

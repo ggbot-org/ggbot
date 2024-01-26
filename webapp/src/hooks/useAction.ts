@@ -2,9 +2,8 @@ import { logging } from "_/logging"
 import { localWebStorage } from "_/storages/local"
 import {
 	ApiActionClientSideError,
-	ApiActionHeaders,
-	apiActionRequestInit,
-	ApiActionServerSideError} from "@workspace/api"
+	ApiActionServerSideError
+} from "@workspace/api"
 import {
 	__400__BAD_REQUEST__,
 	__401__UNAUTHORIZED__,
@@ -17,6 +16,7 @@ import {
 	NotFoundError,
 	UnauthorizedError
 } from "@workspace/http"
+import { ApiActionHeaders, apiActionRequestInit } from "@workspace/models"
 import { useCallback, useState } from "react"
 
 const { info, warn } = logging("use-action")
@@ -103,7 +103,7 @@ export const useAction = <
 
 	const request = useCallback(
 		(inputData: Parameters<Operation>[0]) => {
-			(async function () {
+			;(async function () {
 				const controller = new UseActionAbortController()
 
 				try {
