@@ -1,4 +1,8 @@
-import { isAdminActionInput, isActionInput, apiActionMethod } from "@workspace/api"
+import {
+	apiActionMethod,
+	isActionInput,
+	isAdminActionInput
+} from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -10,17 +14,16 @@ import {
 } from "@workspace/api-gateway"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
+import { documentProvider } from "@workspace/s3-data-bucket"
 
-import { dataProvider } from "./dataProvider.js"
 import { info, warn } from "./logging.js"
-import { ApiService } from "./service.js"
-
-const apiService = new ApiService(dataProvider)
+import { Service } from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === "OPTIONS")
+			return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod === apiActionMethod) {
 			await readSessionFromAuthorizationHeader(
@@ -31,10 +34,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(isAdminActionInput)(input))
-				return BAD_REQUEST()
+			if (!isActionInput(isAdminActionInput)(input)) return BAD_REQUEST()
 
-			const output = await apiService[input.type](input.data)
+			const service = new Service(documentProvider)
+			const output = await service[input.type](input.data)
 			info(input.type, JSON.stringify(output, null, 2))
 			return OK(output)
 		}

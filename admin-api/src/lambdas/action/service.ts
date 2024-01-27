@@ -1,20 +1,25 @@
-import { AdminApiDataProvider, AdminApiService } from "@workspace/api"
+import {
+	AdminActionType,
+	ApiService,
+	DocumentProviderLevel2,
+	isAdminActionInput as isInput
+} from "@workspace/api"
+import { AdminDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
-import { isAccountKey } from "@workspace/models"
 
-export class ApiService implements AdminApiService {
-	dataProvider: AdminApiDataProvider
+export class Service implements ApiService<AdminActionType> {
+	dataProvider: AdminDatabase
 
-	constructor(dataProvider: AdminApiDataProvider) {
-		this.dataProvider = dataProvider
+	constructor(documentProvider: DocumentProviderLevel2) {
+		this.dataProvider = new AdminDatabase(documentProvider)
 	}
 
 	ReadAccount(arg: unknown) {
-		if (!isAccountKey(arg)) throw new BadRequestError()
-		return this.dataProvider.readAccount(arg)
+		if (!isInput.ReadAccount(arg)) throw new BadRequestError()
+		return this.dataProvider.ReadAccount(arg)
 	}
 
 	ListAccountKeys() {
-		return this.dataProvider.listAccountKeys()
+		return this.dataProvider.ListAccountKeys()
 	}
 }

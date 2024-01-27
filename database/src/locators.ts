@@ -109,7 +109,7 @@ import {
 import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
-export const dirnameDelimiter = "/"
+const dirnameDelimiter = "/"
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)
 
 const dayKeyFields = ["y", "m", "d"] as const
@@ -147,7 +147,7 @@ const dirnamePrefixes = [
 
 type DirnamePrefix = (typeof dirnamePrefixes)[number]
 
-export const dirnamePrefix: Record<DirnamePrefix, string> = {
+const dirnamePrefix: Record<DirnamePrefix, string> = {
 	account: "account",
 	accountConfig: "accountConfig",
 	accountDailyOrders: "accountOrders",

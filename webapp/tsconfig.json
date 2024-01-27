@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"jsx": "react-jsx",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"module": "esnext",
+		"moduleResolution": "node",
+		"paths": {
+			"_/binance/*": ["./src/binance/*"],
+			"_/classNames": ["./src/styles/classNames.ts"],
+			"_/components/*": ["./src/components/*"],
+			"_/components/library": ["./src/components/library/index.ts"],
+			"_/contexts/*": ["./src/contexts/*"],
+			"_/esbuild/definitions": ["./src/esbuild/definitions.ts"],
+			"_/flow/*": ["./src/flow/*"],
+			"_/hooks/*": ["./src/hooks/*"],
+			"_/i18n/*": ["./src/i18n/*"],
+			"_/logging": ["./src/logging.ts"],
+			"_/pages/*": ["./src/pages/*"],
+			"_/react/mount": ["./src/react/mount.tsx"],
+			"_/react/root": ["./src/react/root.ts"],
+			"_/routing/*": ["./src/routing/*"],
+			"_/storages/*": ["./src/storages/*"],
+			"_/workers": ["./src/workers/index.ts"]
+		},
+		"skipLibCheck": true,
+		"target": "esnext",
+		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
+	},
+	"extends": "@workspace/tsconfig/code-quality",
+	"exclude": ["node_modules"],
+	"include": ["src/**/*.ts", "src/**/*.tsx"]
+}

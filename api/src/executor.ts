@@ -15,8 +15,6 @@ type Action = {
 }
 export type ExecutorAction = Action
 
-export type ExecutorActionType = keyof Action
-
 type Input = {
 	AppendAccountDailyOrders: Parameters<Action["AppendAccountDailyOrders"]>[0]
 	AppendStrategyDailyOrders: Parameters<

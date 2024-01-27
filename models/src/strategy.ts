@@ -3,7 +3,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 import { AccountKey, isAccountKey } from "./account.js"
 import { Frequency, isFrequency } from "./frequency.js"
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
-import { isName, Name, throwIfInvalidName } from "./name.js"
+import { isName, Name } from "./name.js"
 import { createdNow, CreationTime } from "./time.js"
 
 const strategyKinds = ["binance", "none"] as const
@@ -35,15 +35,15 @@ export const isStrategy = objectTypeGuard<Strategy>(
 			: isFrequency(frequency)
 )
 
-export const newStrategy = ({ name, ...rest }: NewItem<Strategy>): Strategy => {
-	throwIfInvalidName(name)
-	return {
-		id: newId(),
-		name,
-		...rest,
-		...createdNow()
-	}
-}
+export const newStrategy = ({
+	name,
+	...rest
+}: NewItem<Strategy>): Strategy => ({
+	id: newId(),
+	name,
+	...rest,
+	...createdNow()
+})
 
 export type StrategyKey = ItemKey<{
 	strategyId: Strategy["id"]

@@ -51,11 +51,11 @@ export {
 	isFrequencyInterval
 } from "./frequency.js"
 export type { Item, NewItem } from "./item.js"
-export { isItemId, itemIdCharacters, newId, nullId } from "./item.js"
+export { itemIdCharacters, newId, nullId } from "./item.js"
 export type { Language } from "./languages.js"
 export { defaultLanguage, languages } from "./languages.js"
 export type { Name } from "./name.js"
-export { isName, normalizeName, throwIfInvalidName } from "./name.js"
+export { isName, normalizeName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
 export { isFiniteNumber, isNaturalNumber } from "./numbers.js"
 export type { EmptyObject } from "./objects.js"
@@ -92,11 +92,7 @@ export {
 	nullStrategyKey
 } from "./strategy.js"
 export type { StrategyBalance } from "./strategyBalance.js"
-export type {
-	AppendStrategyDailyBalanceChanges,
-	ReadStrategyDailyBalanceChanges,
-	StrategyDailyBalanceChangesKey
-} from "./strategyDailyBalanceChanges.js"
+export type { StrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
 export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
 export type { StrategyDailyOrdersKey } from "./strategyDailyOrders.js"
 export type { StrategyFlow } from "./strategyFlow.js"
@@ -126,8 +122,6 @@ export {
 	statusOfSubscription
 } from "./subscription.js"
 export type {
-	NewMonthlySubscriptionArg,
-	NewYearlySubscriptionArg,
 	SubscriptionPurchase,
 	SubscriptionPurchaseKey
 } from "./subscriptionPurchase.js"
@@ -135,9 +129,7 @@ export {
 	isSubscriptionPurchase,
 	isSubscriptionPurchaseKey,
 	monthlyPrice,
-	newMonthlySubscription,
 	newSubscriptionPurchaseKey,
-	newYearlySubscription,
 	purchaseCurrency,
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,

@@ -22,7 +22,8 @@ import {
 	StrategyDailyOrdersKey,
 	StrategyFlow,
 	StrategyKey,
-	updatedNow
+	updatedNow,
+	welcomeFlow
 } from "@workspace/models"
 import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
 
@@ -53,17 +54,35 @@ export class UserDatabase implements UserAction {
 		strategyKind,
 		name
 	}: Input["CopyStrategy"]) {
-		const strategy = await this.readStrategy({ strategyId, strategyKind })
-		const newStrategy = await this.CreateStrategy({
-			kind: strategyKind,
-			name,
-			frequency: strategy.frequency
+		const { accountId } = this.accountKey
+		const sourceStrategy = await this.readStrategy({
+			strategyId,
+			strategyKind
 		})
-		await this.copyStrategyFlow(
-			{ strategyId, strategyKind },
-			{ strategyId: newStrategy.id, strategyKind: newStrategy.kind }
+		const targetStrategy = newStrategy({
+			name,
+			kind: strategyKind,
+			accountId,
+			frequency: sourceStrategy.frequency
+		})
+		const targetStrategyKey: StrategyKey = {
+			strategyId: targetStrategy.id,
+			strategyKind
+		}
+		await this.documentProvider.setItem(
+			pathname.strategy(targetStrategyKey),
+			targetStrategy
 		)
-		return newStrategy
+		await this.documentProvider.setItem(
+			pathname.strategyFlow(targetStrategyKey),
+			welcomeFlow
+		)
+		const accountStrategy = newAccountStrategy({
+			name,
+			...targetStrategyKey
+		})
+		await this.insertAccountStrategiesItem(accountStrategy)
+		return targetStrategyKey
 	}
 
 	async CreateBinanceApiConfig(arg: Input["CreateBinanceApiConfig"]) {
@@ -85,18 +104,17 @@ export class UserDatabase implements UserAction {
 			accountId,
 			...rest
 		})
-		const { id: strategyId, kind: strategyKind } = strategy
+		const strategyKey: StrategyKey = {
+			strategyId: strategy.id,
+			strategyKind: strategy.kind
+		}
 		await this.documentProvider.setItem(
-			pathname.strategy({ strategyId, strategyKind }),
+			pathname.strategy(strategyKey),
 			strategy
 		)
-		const accountStrategy = newAccountStrategy({
-			name,
-			strategyId,
-			strategyKind
-		})
+		const accountStrategy = newAccountStrategy({ name, ...strategyKey })
 		await this.insertAccountStrategiesItem(accountStrategy)
-		return strategy
+		return strategyKey
 	}
 
 	DeleteAccount() {
@@ -259,11 +277,6 @@ export class UserDatabase implements UserAction {
 			view,
 			...updatedNow()
 		})
-	}
-
-	async copyStrategyFlow(source: StrategyKey, target: StrategyKey) {
-		const data = await this.readStrategyFlow(source)
-		await this.writeStrategyFlow({ ...target, ...data })
 	}
 
 	async deleteStrategy(strategyKey: StrategyKey) {

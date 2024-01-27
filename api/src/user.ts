@@ -39,7 +39,7 @@ import { __noInput } from "./action.js"
 type Action = {
 	CopyStrategy: (
 		arg: StrategyKey & Pick<Strategy, "name">
-	) => Promise<Strategy>
+	) => Promise<StrategyKey>
 	CreateBinanceApiConfig: (arg: BinanceApiConfig) => Promise<CreationTime>
 	CreatePurchaseOrder: (arg: {
 		country: AllowedCountryIsoCode2
@@ -50,7 +50,7 @@ type Action = {
 	}) => Promise<null>
 	CreateStrategy: (
 		arg: Omit<NewItem<Strategy>, keyof AccountKey>
-	) => Promise<Strategy>
+	) => Promise<StrategyKey>
 	DeleteAccount: () => Promise<DeletionTime>
 	DeleteBinanceApiConfig: () => Promise<DeletionTime>
 	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>

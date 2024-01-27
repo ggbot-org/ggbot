@@ -2,7 +2,7 @@ import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey, isAccountKey } from "./account.js"
 import { ItemKey } from "./item.js"
-import { isName, throwIfInvalidName } from "./name.js"
+import { isName } from "./name.js"
 import { isStrategyKey, Strategy, StrategyKey } from "./strategy.js"
 import {
 	isStrategySchedulings,
@@ -34,14 +34,11 @@ export const newAccountStrategy = ({
 }: Pick<
 	AccountStrategy,
 	"strategyId" | "strategyKind" | "name"
->): AccountStrategy => {
-	throwIfInvalidName(name)
-	return {
-		...strategyKey,
-		name,
-		schedulings: []
-	}
-}
+>): AccountStrategy => ({
+	...strategyKey,
+	name,
+	schedulings: []
+})
 
 export type AccountStrategySchedulingKey = Pick<
 	AccountStrategyKey,

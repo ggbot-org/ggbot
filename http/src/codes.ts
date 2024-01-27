@@ -12,7 +12,7 @@
 // ///////////////////////////////////////////////////////////////////
 
 /** Standard response for successful HTTP requests. */
-export const __200__OK__ = 200
+export const OK__200 = 200
 
 // 4XX client errors
 // ///////////////////////////////////////////////////////////////////
@@ -21,23 +21,23 @@ export const __200__OK__ = 200
  * The server cannot or will not process the request due to an apparent client
  * error (e.g., malformed request syntax)
  */
-export const __400__BAD_REQUEST__ = 400
+export const BAD_REQUEST__400 = 400
 
 /** Authentication is required and has failed or has not yet been provided. */
-export const __401__UNAUTHORIZED__ = 401
+export const UNAUTHORIZED__401 = 401
 
 /**
  * The requested resource could not be found but may be available in the future.
  * Subsequent requests by the client are permissible.
  */
-export const __404__NOT_FOUND__ = 404
+export const NOT_FOUND__404 = 404
 
 /**
  * A request method is not supported for the requested resource; for example, a
  * GET request on a form that requires data to be presented via POST, or a PUT
  * request on a read-only resource.
  */
-export const __405__METHOD_NOT_ALLOWED__ = 405
+export const METHOD_NOT_ALLOWED__405 = 405
 
 // 5XX server errors
 // ///////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ export const __405__METHOD_NOT_ALLOWED__ = 405
  * A generic error message, given when an unexpected condition was encountered
  * and no more specific message is suitable.
  */
-export const __500__INTERNAL_SERVER_ERROR__ = 500
+export const INTERNAL_SERVER_ERROR__500 = 500
 
 /**
  * The server was acting as a gateway or proxy and received an invalid response
@@ -54,13 +54,13 @@ export const __500__INTERNAL_SERVER_ERROR__ = 500
  *
  * @see {@link https://en.wikipedia.org/wiki/HTTP_502}
  */
-export const __502__BAD_GATEWAY__ = 502
+export const BAD_GATEWAY__502 = 502
 
 export type HTTPStatusCode =
-	| typeof __200__OK__
-	| typeof __400__BAD_REQUEST__
-	| typeof __401__UNAUTHORIZED__
-	| typeof __404__NOT_FOUND__
-	| typeof __405__METHOD_NOT_ALLOWED__
-	| typeof __500__INTERNAL_SERVER_ERROR__
-	| typeof __502__BAD_GATEWAY__
+	| typeof OK__200
+	| typeof BAD_REQUEST__400
+	| typeof UNAUTHORIZED__401
+	| typeof NOT_FOUND__404
+	| typeof METHOD_NOT_ALLOWED__405
+	| typeof INTERNAL_SERVER_ERROR__500
+	| typeof BAD_GATEWAY__502

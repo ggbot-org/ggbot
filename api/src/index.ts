@@ -57,11 +57,7 @@ export {
 	isBinanceClientActionInput,
 	isBinanceDatabaseActionInput
 } from "./binance.js"
-export type {
-	ExecutorAction,
-	ExecutorActionInput,
-	ExecutorActionType
-} from "./executor.js"
+export type { ExecutorAction, ExecutorActionInput } from "./executor.js"
 export type {
 	PaymentAction,
 	PaymentActionInput,

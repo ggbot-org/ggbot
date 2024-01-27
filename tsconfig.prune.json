@@ -46,7 +46,8 @@
 			"_/pages/*": ["./webapp/src/pages/*"],
 			"_/react/mount": ["./webapp/src/react/mount.tsx"],
 			"_/routing/*": ["./webapp/src/routing/*"],
-			"_/storages/*": ["./webapp/src/storages/*"]
+			"_/storages/*": ["./webapp/src/storages/*"],
+			"_/workers": ["./src/workers/index.ts"]
 		}
 	},
 	"extends": "./tsconfig/code-quality.json"

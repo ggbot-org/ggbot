@@ -1,13 +1,12 @@
 import { webapp } from "_/routing/webapp"
-import { isStrategy } from "@workspace/models"
+import { StrategyKey } from "@workspace/models"
 import { useEffect } from "react"
 
-export const useRedirectToNewStrategyPage = (strategy: unknown) => {
+export const useRedirectToNewStrategyPage = (
+	strategyKey: StrategyKey | undefined
+) => {
 	useEffect(() => {
-		if (isStrategy(strategy))
-			window.location.href = webapp.user.strategy({
-				strategyId: strategy.id,
-				strategyKind: strategy.kind
-			}).href
-	}, [strategy])
+		if (!strategyKey) return
+		window.location.href = webapp.user.strategy(strategyKey).href
+	}, [strategyKey])
 }
