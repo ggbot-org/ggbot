@@ -1,43 +1,49 @@
 import {
-	DocumentProviderLevel2,
+	UserAction,
 	UserActionInput as Input,
 	UserActionOutput as Output,
-	UserDataprovider
+	DocumentProviderLevel2,
 } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
 	AccountKey,
 	AccountStrategy,
+	ErrorAccountItemNotFound,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
 	Order,
 	StrategyDailyOrdersKey,
 	StrategyFlow,
 	StrategyKey,
+	UpdateTime,
 	accountStrategiesModifier,
+	createdNow,
 	deletedNow,
 	newAccountStrategy,
 	newStrategy,
 	updatedNow
 } from "@workspace/models"
+import { BinanceDatabase } from "./binance.js"
 import { PublicDatabase } from "./public.js"
 import { pathname } from "./locators.js"
 import {dateToDay, dayToDate, getDate} from "minimal-time-helpers"
 
-export class UserDatabase implements UserDataprovider {
+export class UserDatabase implements UserAction {
 	readonly accountKey: AccountKey
 	readonly documentProvider: DocumentProviderLevel2
+	readonly binanceDatabase: BinanceDatabase
 	readonly publicDatabase: PublicDatabase
+	// TODO cache should be attached after to the instance, to be reused
 	readonly strategyAccountIdCache = new CacheMap<Account["id"]>()
 
 	constructor(
 		accountKey: UserDatabase["accountKey"],
-		publicDatabase: UserDatabase["publicDatabase"],
 		documentProvider: UserDatabase["documentProvider"]
 	) {
 		this.accountKey = accountKey
-		this.publicDatabase = publicDatabase
+		this.binanceDatabase = new BinanceDatabase(accountKey, documentProvider)
+		this.publicDatabase = new PublicDatabase(documentProvider)
 		this.documentProvider = documentProvider
 	}
 
@@ -45,7 +51,7 @@ export class UserDatabase implements UserDataprovider {
 		strategyId,
 		strategyKind,
 		name
-	}: Input["CopyStrategy"]): Promise<Output["CopyStrategy"]> {
+	}: Input["CopyStrategy"]) {
 		const strategy = await this.readStrategy({ strategyId, strategyKind })
 		const newStrategy = await this.CreateStrategy({
 			kind: strategyKind,
@@ -59,10 +65,15 @@ export class UserDatabase implements UserDataprovider {
 		return newStrategy
 	}
 
+	async CreateBinanceApiConfig (arg: Input['CreateBinanceApiConfig'])  {
+		await this.documentProvider.setItem(pathname.binanceApiConfig(this.accountKey), arg)
+		return createdNow()
+	}
+
 	async CreateStrategy({
 		name,
 		...rest
-	}: Input["CreateStrategy"]): Promise<Output["CreateStrategy"]> {
+	}: Input["CreateStrategy"]) {
 		const { accountId } = this.accountKey
 		const strategy = newStrategy({
 			name,
@@ -83,11 +94,18 @@ export class UserDatabase implements UserDataprovider {
 		return strategy
 	}
 
-	async DeleteStrategy({
-		strategyId,
-		strategyKind
-	}: Input["DeleteStrategy"]): Promise<Output["DeleteStrategy"]> {
-		await this.deleteStrategy({ strategyId, strategyKind })
+	DeleteAccount() {
+		return this.documentProvider.removeItem(pathname.account(this.accountKey))
+	}
+
+	async DeleteBinanceApiConfig() {
+		await this.documentProvider.removeItem(pathname.binanceApiConfig(this.accountKey))
+		return deletedNow()
+	}
+
+	async DeleteStrategy(strategyKey: Input['DeleteStrategy']) {
+		await this.deleteStrategy(strategyKey)
+		await this.deleteStrategyFlow(strategyKey)
 		return deletedNow()
 	}
 
@@ -95,6 +113,13 @@ export class UserDatabase implements UserDataprovider {
 		return this.documentProvider.getItem<Output["ReadAccountStrategies"]>(
 			pathname.accountStrategies(this.accountKey)
 		)
+	}
+
+	async ReadBinanceApiKey() {
+		const data = await this.binanceDatabase.ReadBinanceApiConfig()
+	if (!data) return null
+	const { apiKey } = data
+	return { apiKey }
 	}
 
 	async ReadStrategyOrders({start, end, ...strategyKey}: Input['ReadStrategyOrders']) {
@@ -118,22 +143,38 @@ export class UserDatabase implements UserDataprovider {
 		)
 	}
 
+	async RenameAccount ({name}: Input['RenameAccount']) {
+		const account = await this.readAccount()
+	const data: Account = {
+		...account,
+		name
+	}
+	return this.documentProvider.setItem(pathname.account(this.accountKey), data)
+	}
+
+	async SetAccountCountry({country}: Input['SetAccountCountry']) {
+		const account = await this.readAccount()
+	const data: Account = {
+		...account,
+		country
+	}
+return this.documentProvider.setItem(pathname.account(this.accountKey), data)
+	}
+
 	async WriteStrategyFlow({
 		view,
 		strategyId,
 		strategyKind
 	}: Input["WriteStrategyFlow"]) {
-		const time = updatedNow()
-		this.writeStrategyFlow({ strategyId, strategyKind, view, ...time })
-		return time
+		return this.writeStrategyFlow({ strategyId, strategyKind, view, ...updatedNow() })
 	}
 
-	private async copyStrategyFlow(source: StrategyKey, target: StrategyKey) {
+	 async copyStrategyFlow(source: StrategyKey, target: StrategyKey) {
 		const data = await this.readStrategyFlow(source)
 		await this.writeStrategyFlow({ ...target, ...data })
 	}
 
-	private async deleteStrategy(strategyKey: StrategyKey) {
+	 async deleteStrategy(strategyKey: StrategyKey) {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId(strategyKey)
 		if (accountId !== ownerId)
@@ -146,23 +187,22 @@ export class UserDatabase implements UserDataprovider {
 		await this.documentProvider.removeItem(pathname.strategy(strategyKey))
 	}
 
-	// TODO remove it if not needed
-	// private async deleteStrategyFlow(strategyKey: StrategyKey) {
-	// 	const { accountId } = this.accountKey
-	// 	const ownerId = await this.readStrategyAccountId(strategyKey)
-	// 	if (accountId !== ownerId)
-	// 		throw new ErrorPermissionOnStrategyItem({
-	// 			type: "StrategyFlow",
-	// 			action: "delete",
-	// 			accountId,
-	// 			...strategyKey
-	// 		})
-	// 	await this.documentProvider.removeItem(
-	// 		pathname.strategyFlow(strategyKey)
-	// 	)
-	// }
+	 async deleteStrategyFlow(strategyKey: StrategyKey) {
+		const { accountId } = this.accountKey
+		const ownerId = await this.readStrategyAccountId(strategyKey)
+		if (accountId !== ownerId)
+			throw new ErrorPermissionOnStrategyItem({
+				type: "StrategyFlow",
+				action: "delete",
+				accountId,
+				...strategyKey
+			})
+		await this.documentProvider.removeItem(
+			pathname.strategyFlow(strategyKey)
+		)
+	}
 
-	private async insertAccountStrategiesItem(item: AccountStrategy) {
+	 async insertAccountStrategiesItem(item: AccountStrategy) {
 		const { accountId } = this.accountKey
 		const items = await this.ReadAccountStrategies() ?? []
 		const subscription = await this.ReadSubscription()
@@ -177,7 +217,15 @@ export class UserDatabase implements UserDataprovider {
 		)
 	}
 
-	private async readStrategy(strategyKey: StrategyKey) {
+	 async readAccount () {
+		const {accountId} = this.accountKey
+		const account = await this.documentProvider.getItem<Account>(pathname.account({accountId}))
+	if (!account)
+		throw new ErrorAccountItemNotFound({ type: "Account", accountId })
+	return account
+	}
+
+	 async readStrategy(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategy(strategyKey)
 		if (!data)
 			throw new ErrorStrategyItemNotFound({
@@ -187,7 +235,7 @@ export class UserDatabase implements UserDataprovider {
 		return data
 	}
 
-	private async readStrategyAccountId(
+	 async readStrategyAccountId(
 		strategyKey: StrategyKey
 	): Promise<Account["id"] | null> {
 		const { strategyAccountIdCache: cache } = this
@@ -199,11 +247,11 @@ export class UserDatabase implements UserDataprovider {
 		return accountId
 	}
 
-private readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
+ readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
 	return this.documentProvider.getItem<Order[] | null>(pathname.strategyDailyOrders(arg)) 
 }
 
-	private async readStrategyFlow( strategyKey: StrategyKey) {
+	 async readStrategyFlow( strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategyFlow(strategyKey)
 		if (!data)
 			throw new ErrorStrategyItemNotFound({
@@ -213,7 +261,7 @@ private readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
 		return data
 	}
 
-	private async writeStrategyFlow({
+	 async writeStrategyFlow({
 		strategyId,
 		strategyKind,
 		...data
@@ -231,7 +279,7 @@ private readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
 				strategyId,
 				strategyKind
 			})
-		this.documentProvider.setItem(
+		return this.documentProvider.setItem(
 			pathname.strategyFlow({ strategyId, strategyKind }),
 			data
 		)

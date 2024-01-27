@@ -1,13 +1,13 @@
 import {
-	DocumentProviderLevel1,
+	PublicAction,
 	PublicActionInput as Input,
 	PublicActionOutput as Output,
-	PublicDataprovider
+	DocumentProviderLevel1,
 } from "@workspace/api"
 
 import { pathname } from "./locators.js"
 
-export class PublicDatabase implements PublicDataprovider{
+export class PublicDatabase implements PublicAction{
 	documentProvider: DocumentProviderLevel1
 
 	constructor(documentProvider: PublicDatabase["documentProvider"]) {

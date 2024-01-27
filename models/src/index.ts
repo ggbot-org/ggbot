@@ -100,7 +100,6 @@ export type {
 export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
 export type {
 	AppendStrategyDailyOrders,
-	ReadStrategyDailyOrders,
 	StrategyDailyOrdersKey
 } from "./strategyDailyOrders.js"
 export type { StrategyFlow } from "./strategyFlow.js"
@@ -136,6 +135,7 @@ export type {
 	SubscriptionPurchaseKey
 } from "./subscriptionPurchase.js"
 export {
+	isSubscriptionPurchase,
 	isSubscriptionPurchaseKey,
 	monthlyPrice,
 	newMonthlySubscription,

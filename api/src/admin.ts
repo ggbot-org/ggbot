@@ -1,13 +1,12 @@
 import { Account, AccountKey, isAccountKey } from "@workspace/models"
+import {ActionInputValidators, __noInput} from "./action"
 
 type Action = {
 	ListAccountKeys: () => Promise<AccountKey[]>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 }
-export type AdminDataprovider = Action
-
-type ActionType = keyof AdminDataprovider
-export type AdminActionType = ActionType
+export type AdminAction = Action
+export type AdminActionType = keyof AdminAction
 
 type Input = {
 	ListAccountKeys: void
@@ -21,10 +20,7 @@ type Output = {
 }
 export type AdminActionOutput = Output
 
-export const adminActionTypes = [
-	"ListAccountKeys", "ReadAccount"
-] as const satisfies readonly ActionType[]
-
 export const isAdminActionInput = {
+	ListAccountKeys: __noInput,
 	ReadAccount: isAccountKey
-}
+} satisfies ActionInputValidators<AdminActionType>

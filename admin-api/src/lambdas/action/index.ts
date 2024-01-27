@@ -1,4 +1,4 @@
-import { adminApiActionTypes, isApiActionInput } from "@workspace/api"
+import { isAdminActionInput, isActionInput, apiActionMethod } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -20,9 +20,9 @@ const apiService = new ApiService(dataProvider)
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS(["POST"])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === "POST") {
+		if (event.httpMethod === apiActionMethod) {
 			await readSessionFromAuthorizationHeader(
 				event.headers.Authorization
 			)
@@ -31,7 +31,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isApiActionInput(adminApiActionTypes)(input))
+			if (!isActionInput(isAdminActionInput)(input))
 				return BAD_REQUEST()
 
 			const output = await apiService[input.type](input.data)

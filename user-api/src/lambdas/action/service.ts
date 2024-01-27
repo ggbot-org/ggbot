@@ -1,16 +1,17 @@
 import {
-	isUserApiDataProviderInput as isInput,
-	UserApiActionType,
-	UserApiDataProvider
+	ApiService,
+	isUserActionInput as isInput,
+	UserActionType,
+	UserDataProvider
 } from "@workspace/api"
 import { BadRequestError } from "@workspace/http"
-import { AccountKey, ApiService } from "@workspace/models"
+import { AccountKey } from "@workspace/models"
 
-export class Service implements ApiService<UserApiActionType> {
+export class Service implements ApiService<UserActionType> {
 	accountKey: AccountKey
-	dataProvider: UserApiDataProvider
+	dataProvider: UserDataProvider
 
-	constructor(accountKey: AccountKey, dataProvider: UserApiDataProvider) {
+	constructor(accountKey: AccountKey, dataProvider: UserDataProvider) {
 		this.accountKey = accountKey
 		this.dataProvider = dataProvider
 	}

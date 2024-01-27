@@ -5,11 +5,14 @@ import {
 	BinanceOrderType,
 } from "@workspace/binance"
 import {
+	AccountKey,
+	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria,
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
+import {ActionInputValidators, __noInput} from "./action"
 
-type Action = {
+type ClientAction = {
 	CreateBinanceOrder: (arg: {
 		symbol: string
 		side: BinanceOrderSide
@@ -17,38 +20,50 @@ type Action = {
 		orderOptions: BinanceNewOrderOptions
 	}) => Promise<BinanceOrderRespFULL>
 	ReadBinanceAccountApiRestrictions: () => Promise<
-		BinanceApiKeyPermissionCriteria 
+		BinanceApiKeyPermissionCriteria
 	>
 }
-export type BinanceDataprovider = Action
+export type BinanceClientAction = DatabaseAction
+export type BinanceClientActionType = keyof ClientAction
 
-type ActionType = keyof Action
-export type BinanceActionType = ActionType
+type DatabaseAction = {
+	ReadBinanceApiConfig: ( arg: AccountKey) => Promise<BinanceApiConfig | null>
+}
+export type BinanceDatabaseAction = DatabaseAction
+export type BinanceDatabaseActionType = keyof DatabaseAction
 
-type Input = {
-	CreateBinanceOrder: Parameters<Action['CreateBinanceOrder']>[0]
+type ClientInput = {
+	CreateBinanceOrder: Parameters<ClientAction['CreateBinanceOrder']>[0]
 	ReadBinanceAccountApiRestrictions: void
 }
-export type BinanceActionInput = Input
+export type BinanceClientActionInput = ClientInput
 
-type Output = {
-	CreateBinanceOrder: Awaited<ReturnType<Action['CreateBinanceOrder']>>
-	ReadBinanceAccountApiRestrictions: Awaited<ReturnType<Action['ReadBinanceAccountApiRestrictions']>>
+type DatabaseInput = {
+	ReadBinanceApiConfig: void
 }
-export type BinanceActionOutput = Output
+export type BinanceDatabaseActionInput = DatabaseInput
 
-export const binanceActionTypes = [
-	"CreateBinanceOrder",
-	"ReadBinanceAccountApiRestrictions"
-] as const satisfies readonly ActionType[]
+export type BinanceClientActionOutput = {
+	CreateBinanceOrder: Awaited<ReturnType<ClientAction['CreateBinanceOrder']>>
+	ReadBinanceAccountApiRestrictions: Awaited<ReturnType<ClientAction['ReadBinanceAccountApiRestrictions']>>
+}
 
-export const isBinanceActionInput = {
-	CreateBinanceOrder: objectTypeGuard<Input["CreateBinanceOrder"]>(
+export type BinanceDatabaseActionOutput = {
+	ReadBinanceApiConfig: Awaited<ReturnType<DatabaseAction['ReadBinanceApiConfig']>>
+}
+
+export const isBinanceClientActionInput = {
+	CreateBinanceOrder: objectTypeGuard<ClientInput["CreateBinanceOrder"]>(
 		({ symbol, side, type, orderOptions }) =>
 			typeof symbol === "string" &&
 			typeof side === "string" &&
 			typeof type === "string" &&
 			!orderOptions &&
 			typeof orderOptions === "object"
-	)
-}
+	),
+	ReadBinanceAccountApiRestrictions: __noInput
+} satisfies ActionInputValidators<BinanceClientActionType>
+
+export const isBinanceDatabaseActionInput = {
+	ReadBinanceApiConfig: __noInput
+} satisfies ActionInputValidators<BinanceDatabaseActionType>

@@ -10,16 +10,9 @@ import {
 	UpdateTime
 } from "@workspace/models"
 
-import { READ_ARRAY, UPDATE, WRITE } from "./_dataBucket.js"
+import { UPDATE, WRITE } from "./_dataBucket.js"
 import { pathname } from "./locators.js"
 import { upsertStrategyFrequency } from "./strategy.js"
-
-export const readAccountStrategies: Operation["ReadAccountStrategies"] = (
-	arg
-) =>
-	READ_ARRAY<Operation["ReadAccountStrategies"]>(
-		pathname.accountStrategies(arg)
-	)
 
 type RenameAccountStrategiesItem = (
 	arg: AccountStrategyItemKey & Pick<AccountStrategy, "name">

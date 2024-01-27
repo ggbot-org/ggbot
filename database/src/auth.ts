@@ -1,0 +1,57 @@
+import {
+	DocumentProviderLevel2,
+	AuthDatabaseActionInput as Input,
+	AuthDatabaseActionOutput as Output,
+	AuthDatabaseAction
+} from "@workspace/api"
+import {EmailAccount, createdNow, generateOneTimePassword, newAccount} from "@workspace/models"
+
+import { pathname } from "./locators.js"
+
+export class AuthDatabase implements AuthDatabaseAction{
+	documentProvider: DocumentProviderLevel2
+
+	constructor(
+		documentProvider: AuthDatabase["documentProvider"]
+	) {
+		this.documentProvider = documentProvider
+	}
+
+	async CreateAccount(email: Input['CreateAccount']) {
+	const account = newAccount({ email })
+	const accountId = account.id
+		await this.documentProvider.setItem(pathname.account({accountId}), account)
+		await this.createEmailAccount({accountId, email})
+		return account
+	}
+
+	async CreateOneTimePassword(email: Input['CreateOneTimePassword']) {
+	const data = generateOneTimePassword()
+		await this.documentProvider.setItem(pathname.oneTimePassword(email), data)
+		return data
+	}
+
+	async DeleteOneTimePassword(email: Input['DeleteOneTimePassword']) {
+		await this.documentProvider.removeItem(pathname.oneTimePassword(email) )
+	}
+
+	ReadEmailAccount(email: Input['ReadEmailAccount']) {
+		return this.documentProvider.getItem<Output['ReadEmailAccount']>(pathname.emailAccount(email) )
+	}
+
+	ReadOneTimePassword(email: Input['ReadOneTimePassword']) {
+		return this.documentProvider.getItem<Output['ReadOneTimePassword']>(pathname.oneTimePassword(email) )
+	}
+
+	async createEmailAccount({accountId, email}: Omit<EmailAccount, 'whenCreated'>) {
+	const creationTime = createdNow()
+	const data: EmailAccount = {
+		accountId,
+		email,
+		...creationTime
+	}
+		await this.documentProvider.setItem(pathname.emailAccount(email), data)
+	}
+}
+
+

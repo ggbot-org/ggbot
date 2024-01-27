@@ -35,6 +35,7 @@ import {
 } from "@workspace/models"
 import {DayInterval, isDayInterval} from 'minimal-time-helpers'
 import { objectTypeGuard } from "minimal-type-guard-helpers"
+import {ActionInputValidators, __noInput} from "./action"
 
 type Action = {
 	CopyStrategy: (
@@ -77,11 +78,8 @@ type Action = {
 		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
 	) => Promise<UpdateTime>
 }
-
-export type UserDataprovider = Action
-
-type ActionType = keyof Action
-export type UserActionType = ActionType
+export type UserAction = Action
+export type UserActionType = keyof Action
 
 type Input = {
 	CopyStrategy: Parameters<Action['CopyStrategy']>[0]
@@ -126,28 +124,6 @@ type Output = {
 }
 export type UserActionOutput = Output
 
-export const userActionTypes = [
-	"CopyStrategy",
-	"CreateBinanceApiConfig",
-	"CreatePurchaseOrder",
-	"CreateStrategy",
-	"DeleteAccount",
-	"DeleteBinanceApiConfig",
-	"DeleteStrategy",
-	"ReadAccountInfo",
-	"ReadAccountStrategies",
-	"ReadBinanceApiKey",
-	"ReadBinanceApiKeyPermissions",
-	"ReadStrategyBalances",
-	"ReadStrategyOrders",
-	"ReadSubscription",
-	"RenameAccount",
-	"RenameStrategy",
-	"SetAccountCountry",
-	"WriteAccountStrategiesItemSchedulings",
-	"WriteStrategyFlow"
-] as const  satisfies readonly UserActionType[]
-
 export const isUserActionInput = {
 	CopyStrategy: objectTypeGuard<Input["CopyStrategy"]>(
 		({ name, ...strategyKey }) =>
@@ -168,12 +144,13 @@ export const isUserActionInput = {
 	CreateStrategy: objectTypeGuard<Input["CreateStrategy"]>((arg) =>
 		isStrategy({ ...arg, id: nullId, whenCreated: 1 })
 	),
-	// DeleteAccount
-	// DeleteBinanceApiConfig
+	DeleteAccount: __noInput,
+	 DeleteBinanceApiConfig: __noInput,
 	DeleteStrategy: isStrategyKey,
-	// ReadAccountInfo
-	// ReadAccountStrategies
-	// ReadBinanceApiKey
+	ReadAccountInfo: __noInput,
+	 ReadAccountStrategies: __noInput,
+	 ReadBinanceApiKey: __noInput,
+	 ReadBinanceApiKeyPermissions: __noInput,
 	ReadStrategyBalances: objectTypeGuard<Input["ReadStrategyBalances"]>(
 		({ start, end, ...strategyKey }) =>
 			isDayInterval({ start, end }) &&
@@ -185,6 +162,7 @@ export const isUserActionInput = {
 			isStrategyKey(strategyKey)
 	),
 	RenameAccount: objectTypeGuard<Input["RenameAccount"]>( ({ name }) => isName(name)),
+		ReadSubscription: __noInput,
 	RenameStrategy: objectTypeGuard<Input["RenameStrategy"]>(
 		({ name, ...strategyKey }) => isName(name) && isStrategyKey(strategyKey)
 	),
@@ -204,4 +182,4 @@ export const isUserActionInput = {
 			isFlowViewSerializableGraph(view) &&
 			isStrategyKey(strategyKey)
 	)
-}
+} satisfies ActionInputValidators<UserActionType>

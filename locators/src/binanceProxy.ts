@@ -1,5 +1,3 @@
-import { isLiteralType } from "minimal-type-guard-helpers"
-
 export class BinanceProxyBaseURL extends URL {
 	static port = 1221
 	constructor(origin: string) {

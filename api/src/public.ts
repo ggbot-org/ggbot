@@ -4,15 +4,15 @@ import {
 	StrategyKey,
 	isStrategyKey
 } from "@workspace/models"
+import {ActionInputValidators} from "./action"
 
 type Action = {
 	ReadStrategy: (arg: StrategyKey) => Promise<Strategy | null>
 	ReadStrategyFlow: (arg: StrategyKey) => Promise<StrategyFlow | null>
 }
-export type PublicDataprovider = Action
+export type PublicAction = Action
 
-type ActionType = keyof Action
-export type PublicActionType = ActionType
+export type PublicActionType = keyof Action
 
 type Input = {
 	ReadStrategy: Parameters<Action['ReadStrategy']>[0]
@@ -26,13 +26,8 @@ type Output = {
 }
 export type PublicActionOutput = Output
 
-export const publicActionTypes = [
-	"ReadStrategy",
-	"ReadStrategyFlow"
-] as const satisfies readonly ActionType[]
-
 export const isPublicActionInput = {
 	ReadStrategy: isStrategyKey,
 	ReadStrategyFlow: isStrategyKey
-}
+} satisfies ActionInputValidators<PublicActionType>
 

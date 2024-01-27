@@ -1,13 +1,13 @@
 import {
-	isPublicApiInput as isInput,
-	PublicApiActionType
+	ApiService,
+	isPublicActionInput as isInput,
+	PublicActionType
 } from "@workspace/api"
 import { PublicDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
-import { ApiService } from "@workspace/models"
 import { dataProvider } from "./dataProvider.js"
 
-export class Service implements ApiService<PublicApiActionType> {
+export class Service implements ApiService<PublicActionType> {
 	dataProvider: PublicDatabase
 
 	constructor(dataProvider: PublicDatabase) {
