@@ -98,10 +98,7 @@ export type {
 	StrategyDailyBalanceChangesKey
 } from "./strategyDailyBalanceChanges.js"
 export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
-export type {
-	AppendStrategyDailyOrders,
-	StrategyDailyOrdersKey
-} from "./strategyDailyOrders.js"
+export type { StrategyDailyOrdersKey } from "./strategyDailyOrders.js"
 export type { StrategyFlow } from "./strategyFlow.js"
 export { isFlowViewSerializableGraph, welcomeFlow } from "./strategyFlow.js"
 export type { StrategyMemory } from "./strategyMemory.js"

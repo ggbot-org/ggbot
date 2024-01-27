@@ -1,4 +1,8 @@
-import {isActionInput, isUserActionInput } from "@workspace/api"
+import {
+	apiActionMethod,
+	isActionInput,
+	isUserActionInput
+} from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -8,24 +12,24 @@ import {
 	OK,
 	UNATHORIZED
 } from "@workspace/api-gateway"
-import {readSessionFromAuthorizationHeader} from "@workspace/authentication"
-import {ErrorBinanceHTTP} from "@workspace/binance"
-import {UnauthorizedError} from "@workspace/http"
+import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
+import { ErrorBinanceHTTP } from "@workspace/binance"
+import { UnauthorizedError } from "@workspace/http"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
-	ErrorUnknownItem,
-	apiActionMethod
+	ErrorUnknownItem
 } from "@workspace/models"
+import { documentProvider } from "@workspace/s3-data-bucket"
 
-import {dataProvider} from "./dataProvider.js"
-import {info, warn} from "./logging.js"
-import {ApiService} from "./service.js"
+import { info, warn } from "./logging.js"
+import { Service } from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === "OPTIONS")
+			return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod === apiActionMethod) {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
@@ -33,17 +37,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			if (!event.body) return BAD_REQUEST()
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const {accountId} = await readSessionFromAuthorizationHeader(
+			const { accountId } = await readSessionFromAuthorizationHeader(
 				event.headers.Authorization
 			)
 
-			const apiService = new ApiService({accountId}, dataProvider)
+			const service = new Service({ accountId }, documentProvider)
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(isUserActionInput)(input))
-				return BAD_REQUEST()
+			if (!isActionInput(isUserActionInput)(input)) return BAD_REQUEST()
 
-			const output = await apiService[input.type](input.data)
+			const output = await service[input.type](input.data)
 			info(input.type, JSON.stringify(output, null, 2))
 			return OK(output)
 		}

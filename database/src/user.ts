@@ -1,33 +1,34 @@
 import {
+	DocumentProviderLevel2,
 	UserAction,
 	UserActionInput as Input,
-	UserActionOutput as Output,
-	DocumentProviderLevel2,
+	UserActionOutput as Output
 } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
 	AccountKey,
+	accountStrategiesModifier,
 	AccountStrategy,
+	createdNow,
+	deletedNow,
 	ErrorAccountItemNotFound,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
+	newAccountStrategy,
+	newStrategy,
 	Order,
+	Strategy,
 	StrategyDailyOrdersKey,
 	StrategyFlow,
 	StrategyKey,
-	UpdateTime,
-	accountStrategiesModifier,
-	createdNow,
-	deletedNow,
-	newAccountStrategy,
-	newStrategy,
 	updatedNow
 } from "@workspace/models"
+import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
+
 import { BinanceDatabase } from "./binance.js"
-import { PublicDatabase } from "./public.js"
 import { pathname } from "./locators.js"
-import {dateToDay, dayToDate, getDate} from "minimal-time-helpers"
+import { PublicDatabase } from "./public.js"
 
 export class UserDatabase implements UserAction {
 	readonly accountKey: AccountKey
@@ -65,15 +66,19 @@ export class UserDatabase implements UserAction {
 		return newStrategy
 	}
 
-	async CreateBinanceApiConfig (arg: Input['CreateBinanceApiConfig'])  {
-		await this.documentProvider.setItem(pathname.binanceApiConfig(this.accountKey), arg)
+	async CreateBinanceApiConfig(arg: Input["CreateBinanceApiConfig"]) {
+		await this.documentProvider.setItem(
+			pathname.binanceApiConfig(this.accountKey),
+			arg
+		)
 		return createdNow()
 	}
 
-	async CreateStrategy({
-		name,
-		...rest
-	}: Input["CreateStrategy"]) {
+	CreatePurchaseOrder(_arg: Input["CreatePurchaseOrder"]) {
+		return Promise.resolve(null)
+	}
+
+	async CreateStrategy({ name, ...rest }: Input["CreateStrategy"]) {
 		const { accountId } = this.accountKey
 		const strategy = newStrategy({
 			name,
@@ -81,7 +86,7 @@ export class UserDatabase implements UserAction {
 			...rest
 		})
 		const { id: strategyId, kind: strategyKind } = strategy
-		this.documentProvider.setItem(
+		await this.documentProvider.setItem(
 			pathname.strategy({ strategyId, strategyKind }),
 			strategy
 		)
@@ -95,70 +100,152 @@ export class UserDatabase implements UserAction {
 	}
 
 	DeleteAccount() {
-		return this.documentProvider.removeItem(pathname.account(this.accountKey))
+		return this.documentProvider.removeItem(
+			pathname.account(this.accountKey)
+		)
 	}
 
 	async DeleteBinanceApiConfig() {
-		await this.documentProvider.removeItem(pathname.binanceApiConfig(this.accountKey))
+		await this.documentProvider.removeItem(
+			pathname.binanceApiConfig(this.accountKey)
+		)
 		return deletedNow()
 	}
 
-	async DeleteStrategy(strategyKey: Input['DeleteStrategy']) {
+	async DeleteStrategy(strategyKey: Input["DeleteStrategy"]) {
 		await this.deleteStrategy(strategyKey)
 		await this.deleteStrategyFlow(strategyKey)
 		return deletedNow()
 	}
 
-	ReadAccountStrategies(){
-		return this.documentProvider.getItem<Output["ReadAccountStrategies"]>(
-			pathname.accountStrategies(this.accountKey)
-		)
+	async ReadAccountInfo() {
+		const account = await this.readAccount()
+		const subscription = await this.ReadSubscription()
+		return { subscription, ...account }
+	}
+
+	async ReadAccountStrategies() {
+		const data = await this.documentProvider.getItem<
+			Output["ReadAccountStrategies"]
+		>(pathname.accountStrategies(this.accountKey))
+		return data ?? []
 	}
 
 	async ReadBinanceApiKey() {
 		const data = await this.binanceDatabase.ReadBinanceApiConfig()
-	if (!data) return null
-	const { apiKey } = data
-	return { apiKey }
+		if (!data) return null
+		const { apiKey } = data
+		return { apiKey }
 	}
 
-	async ReadStrategyOrders({start, end, ...strategyKey}: Input['ReadStrategyOrders']) {
-		const {accountId} = this.accountKey
-		const result: Output['ReadStrategyOrders'] = []
-	let date = dayToDate(start)
-	while (date <= dayToDate(end)) {
-		const day = dateToDay(date)
-		const orders = await this.readStrategyDailyOrders({ day, accountId, ...strategyKey }) ?? []
-		if (!orders) continue
-		for (const order of orders) result.push(order)
-		date = getDate(date).plusOne.day
+	ReadBinanceApiKeyPermissions() {
+		// TODO connect with binance proxy api
+		return Promise.resolve({
+			enableReading: false,
+			enableSpotAndMarginTrading: false,
+			enableWithdrawals: false,
+			ipRestrict: false
+		})
 	}
-	return result
 
+	async ReadStrategyOrders({
+		start,
+		end,
+		...strategyKey
+	}: Input["ReadStrategyOrders"]) {
+		const { accountId } = this.accountKey
+		const result: Output["ReadStrategyOrders"] = []
+		let date = dayToDate(start)
+		while (date <= dayToDate(end)) {
+			const day = dateToDay(date)
+			const orders = await this.readStrategyDailyOrders({
+				day,
+				accountId,
+				...strategyKey
+			})
+			if (!orders) continue
+			for (const order of orders) result.push(order)
+			date = getDate(date).plusOne.day
+		}
+		return result
 	}
 
 	ReadSubscription() {
-		return this.documentProvider.getItem<Output['ReadSubscription']>(
+		return this.documentProvider.getItem<Output["ReadSubscription"]>(
 			pathname.subscription(this.accountKey)
 		)
 	}
 
-	async RenameAccount ({name}: Input['RenameAccount']) {
+	async RenameAccount({ name }: Input["RenameAccount"]) {
 		const account = await this.readAccount()
-	const data: Account = {
-		...account,
-		name
-	}
-	return this.documentProvider.setItem(pathname.account(this.accountKey), data)
+		const data: Account = {
+			...account,
+			name
+		}
+		return this.documentProvider.setItem(
+			pathname.account(this.accountKey),
+			data
+		)
 	}
 
-	async SetAccountCountry({country}: Input['SetAccountCountry']) {
-		const account = await this.readAccount()
-	const data: Account = {
-		...account,
-		country
+	async RenameStrategy({
+		name: newName,
+		strategyId,
+		strategyKind
+	}: Input["RenameStrategy"]) {
+		const { name: oldName, ...strategy } = await this.readStrategy({
+			strategyId,
+			strategyKind
+		})
+		if (newName === oldName) return updatedNow()
+		await this.writeStrategy({ name: newName, ...strategy })
+		const accountStrategies = await this.ReadAccountStrategies()
+		const data = accountStrategies.map((item) => {
+			if (item.strategyId !== strategyId) return item
+			return { ...item, name: newName }
+		})
+		return this.writeAccountStrategies(data)
 	}
-return this.documentProvider.setItem(pathname.account(this.accountKey), data)
+
+	async SetAccountCountry({ country }: Input["SetAccountCountry"]) {
+		const account = await this.readAccount()
+		const data: Account = {
+			...account,
+			country
+		}
+		return this.documentProvider.setItem(
+			pathname.account(this.accountKey),
+			data
+		)
+	}
+
+	async WriteAccountStrategiesItemSchedulings({
+		schedulings,
+		strategyId
+	}: Input["WriteAccountStrategiesItemSchedulings"]) {
+		const items = await this.ReadAccountStrategies()
+		const data: AccountStrategy[] = []
+		// TODO let suggestedFrequency: Frequency | undefined
+		for (const item of items) {
+			if (item.strategyId !== strategyId) {
+				data.push(item)
+				continue
+			}
+			data.push({ ...item, schedulings })
+			// Use first frequency as `suggestedFrequency`.
+			// TODO suggestedFrequency = schedulings[0]?.frequency
+		}
+		// TODO check this
+		// if (suggestedFrequency)
+		// 	await upsertStrategyFrequency({
+		// 		strategyId,
+		// 		strategyKind,
+		// 		frequency: suggestedFrequency
+		// 	})
+		return this.documentProvider.setItem(
+			pathname.accountStrategies(this.accountKey),
+			data
+		)
 	}
 
 	async WriteStrategyFlow({
@@ -166,15 +253,20 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		strategyId,
 		strategyKind
 	}: Input["WriteStrategyFlow"]) {
-		return this.writeStrategyFlow({ strategyId, strategyKind, view, ...updatedNow() })
+		return this.writeStrategyFlow({
+			strategyId,
+			strategyKind,
+			view,
+			...updatedNow()
+		})
 	}
 
-	 async copyStrategyFlow(source: StrategyKey, target: StrategyKey) {
+	async copyStrategyFlow(source: StrategyKey, target: StrategyKey) {
 		const data = await this.readStrategyFlow(source)
 		await this.writeStrategyFlow({ ...target, ...data })
 	}
 
-	 async deleteStrategy(strategyKey: StrategyKey) {
+	async deleteStrategy(strategyKey: StrategyKey) {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId(strategyKey)
 		if (accountId !== ownerId)
@@ -187,7 +279,7 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		await this.documentProvider.removeItem(pathname.strategy(strategyKey))
 	}
 
-	 async deleteStrategyFlow(strategyKey: StrategyKey) {
+	async deleteStrategyFlow(strategyKey: StrategyKey) {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId(strategyKey)
 		if (accountId !== ownerId)
@@ -202,30 +294,32 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		)
 	}
 
-	 async insertAccountStrategiesItem(item: AccountStrategy) {
+	async insertAccountStrategiesItem(item: AccountStrategy) {
 		const { accountId } = this.accountKey
-		const items = await this.ReadAccountStrategies() ?? []
+		const items = await this.ReadAccountStrategies()
 		const subscription = await this.ReadSubscription()
 		const newItems = accountStrategiesModifier.insertItem(
 			items,
 			item,
 			subscription?.plan
 		)
-		this.documentProvider.setItem(
+		await this.documentProvider.setItem(
 			pathname.accountStrategies({ accountId }),
 			newItems
 		)
 	}
 
-	 async readAccount () {
-		const {accountId} = this.accountKey
-		const account = await this.documentProvider.getItem<Account>(pathname.account({accountId}))
-	if (!account)
-		throw new ErrorAccountItemNotFound({ type: "Account", accountId })
-	return account
+	async readAccount() {
+		const { accountId } = this.accountKey
+		const account = await this.documentProvider.getItem<Account>(
+			pathname.account({ accountId })
+		)
+		if (!account)
+			throw new ErrorAccountItemNotFound({ type: "Account", accountId })
+		return account
 	}
 
-	 async readStrategy(strategyKey: StrategyKey) {
+	async readStrategy(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategy(strategyKey)
 		if (!data)
 			throw new ErrorStrategyItemNotFound({
@@ -235,7 +329,7 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		return data
 	}
 
-	 async readStrategyAccountId(
+	async readStrategyAccountId(
 		strategyKey: StrategyKey
 	): Promise<Account["id"] | null> {
 		const { strategyAccountIdCache: cache } = this
@@ -247,11 +341,16 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		return accountId
 	}
 
- readStrategyDailyOrders( arg: StrategyDailyOrdersKey) {
-	return this.documentProvider.getItem<Order[] | null>(pathname.strategyDailyOrders(arg)) 
-}
+	async readStrategyDailyOrders(
+		arg: StrategyDailyOrdersKey
+	): Promise<Order[]> {
+		const data = await this.documentProvider.getItem<Order[] | null>(
+			pathname.strategyDailyOrders(arg)
+		)
+		return data ?? []
+	}
 
-	 async readStrategyFlow( strategyKey: StrategyKey) {
+	async readStrategyFlow(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategyFlow(strategyKey)
 		if (!data)
 			throw new ErrorStrategyItemNotFound({
@@ -261,7 +360,31 @@ return this.documentProvider.setItem(pathname.account(this.accountKey), data)
 		return data
 	}
 
-	 async writeStrategyFlow({
+	writeAccountStrategies(data: AccountStrategy[]) {
+		return this.documentProvider.setItem(
+			pathname.accountStrategies(this.accountKey),
+			data
+		)
+	}
+
+	async writeStrategy(strategy: Strategy) {
+		const { accountId } = this.accountKey
+		const { id: strategyId, kind: strategyKind } = strategy
+		if (accountId !== strategy.accountId)
+			throw new ErrorPermissionOnStrategyItem({
+				type: "Strategy",
+				action: "write",
+				accountId,
+				strategyId,
+				strategyKind
+			})
+		return this.documentProvider.setItem(
+			pathname.strategy({ strategyId, strategyKind }),
+			strategy
+		)
+	}
+
+	async writeStrategyFlow({
 		strategyId,
 		strategyKind,
 		...data

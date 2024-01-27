@@ -1,4 +1,8 @@
-import { apiActionMethod, isActionInput, isPublicActionInput } from "@workspace/api"
+import {
+	apiActionMethod,
+	isActionInput,
+	isPublicActionInput
+} from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -8,14 +12,16 @@ import {
 	OK
 } from "@workspace/api-gateway"
 import { BadGatewayError } from "@workspace/http"
+import { documentProvider } from "@workspace/s3-data-bucket"
 
 import { info, warn } from "./logging.js"
-import { service } from "./service.js"
+import { Service } from "./service.js"
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === "OPTIONS")
+			return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod === apiActionMethod) {
 			if (!event.body) return BAD_REQUEST()
@@ -24,6 +30,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			const input: unknown = JSON.parse(event.body)
 			if (!isActionInput(isPublicActionInput)(input)) return BAD_REQUEST()
 
+			const service = new Service(documentProvider)
 			const output = await service[input.type](input.data)
 			info(input.type, JSON.stringify(output, null, 2))
 			return OK(output)

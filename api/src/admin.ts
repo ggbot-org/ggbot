@@ -1,5 +1,6 @@
 import { Account, AccountKey, isAccountKey } from "@workspace/models"
-import {ActionInputValidators, __noInput} from "./action"
+
+import { __noInput } from "./action.js"
 
 type Action = {
 	ListAccountKeys: () => Promise<AccountKey[]>
@@ -10,17 +11,17 @@ export type AdminActionType = keyof AdminAction
 
 type Input = {
 	ListAccountKeys: void
-	ReadAccount: Parameters<Action['ReadAccount']>[0]
+	ReadAccount: Parameters<Action["ReadAccount"]>[0]
 }
 export type AdminActionInput = Input
 
 type Output = {
-	ListAccountKeys: Awaited<ReturnType<Action['ListAccountKeys']>>
-	ReadAccount: Awaited<ReturnType<Action['ReadAccount']>>
+	ListAccountKeys: Awaited<ReturnType<Action["ListAccountKeys"]>>
+	ReadAccount: Awaited<ReturnType<Action["ReadAccount"]>>
 }
 export type AdminActionOutput = Output
 
 export const isAdminActionInput = {
 	ListAccountKeys: __noInput,
 	ReadAccount: isAccountKey
-} satisfies ActionInputValidators<AdminActionType>
+}

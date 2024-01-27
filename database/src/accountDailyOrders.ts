@@ -1,30 +1,17 @@
-import {
-	AccountDailyOrder,
-	AccountDailyOrdersKey,
-	UpdateTime
-} from "@workspace/models"
+// TODO remove this file
 
-import { READ_ARRAY, UPDATE } from "./_dataBucket.js"
-import { pathname } from "./locators.js"
+// type ReadAccountDailyOrders = (
+// 	arg: AccountDailyOrdersKey
+// ) => Promise<AccountDailyOrder[]>
 
-type ReadAccountDailyOrders = (
-	arg: AccountDailyOrdersKey
-) => Promise<AccountDailyOrder[]>
+// const readAccountDailyOrders: ReadAccountDailyOrders = (arg) =>
+// 	READ_ARRAY<ReadAccountDailyOrders>(pathname.accountDailyOrders(arg))
 
-const readAccountDailyOrders: ReadAccountDailyOrders = (arg) =>
-	READ_ARRAY<ReadAccountDailyOrders>(pathname.accountDailyOrders(arg))
-
-type AppendAccountDailyOrders = (
-	arg: AccountDailyOrdersKey & {
-		items: AccountDailyOrder[]
-	}
-) => Promise<UpdateTime>
-
-export const appendAccountDailyOrders: AppendAccountDailyOrders = async ({
-	items,
-	...key
-}) => {
-	const currentItems = await readAccountDailyOrders(key)
-	const data = currentItems ? [...currentItems, ...items] : items
-	return await UPDATE(pathname.accountDailyOrders(key), data)
-}
+// export const appendAccountDailyOrders: AppendAccountDailyOrders = async ({
+// 	items,
+// 	...key
+// }) => {
+// 	const currentItems = await readAccountDailyOrders(key)
+// 	const data = currentItems ? [...currentItems, ...items] : items
+// 	return await UPDATE(pathname.accountDailyOrders(key), data)
+// }

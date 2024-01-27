@@ -1,124 +1,102 @@
 import {
 	ApiService,
+	DocumentProviderLevel2,
 	isUserActionInput as isInput,
-	UserActionType,
-	UserDataProvider
+	UserActionType
 } from "@workspace/api"
+import { UserDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
 import { AccountKey } from "@workspace/models"
 
 export class Service implements ApiService<UserActionType> {
 	accountKey: AccountKey
-	dataProvider: UserDataProvider
+	dataProvider: UserDatabase
 
-	constructor(accountKey: AccountKey, dataProvider: UserDataProvider) {
+	constructor(
+		accountKey: AccountKey,
+		documentProvider: DocumentProviderLevel2
+	) {
 		this.accountKey = accountKey
-		this.dataProvider = dataProvider
-	}
-
-	inputWithAccountKey(arg: unknown): unknown {
-		if (!arg) throw new BadRequestError()
-		return { ...arg, ...this.accountKey }
+		this.dataProvider = new UserDatabase(accountKey, documentProvider)
 	}
 
 	CopyStrategy(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.CopyStrategy(input)) throw new BadRequestError()
-		return this.dataProvider.copyStrategy(input)
+		if (!isInput.CopyStrategy(arg)) throw new BadRequestError()
+		return this.dataProvider.CopyStrategy(arg)
 	}
 
 	CreateBinanceApiConfig(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.CreateBinanceApiConfig(input)) throw new BadRequestError()
-		return this.dataProvider.createBinanceApiConfig(input)
+		if (!isInput.CreateBinanceApiConfig(arg)) throw new BadRequestError()
+		return this.dataProvider.CreateBinanceApiConfig(arg)
 	}
 
 	CreatePurchaseOrder(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.CreatePurchaseOrder(input)) throw new BadRequestError()
-		return this.dataProvider.createPurchaseOrder(input)
+		if (!isInput.CreatePurchaseOrder(arg)) throw new BadRequestError()
+		return this.dataProvider.CreatePurchaseOrder(arg)
 	}
 
 	CreateStrategy(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.CreateStrategy(input)) throw new BadRequestError()
-		return this.dataProvider.createStrategy(input)
+		if (!isInput.CreateStrategy(arg)) throw new BadRequestError()
+		return this.dataProvider.CreateStrategy(arg)
 	}
 
 	DeleteAccount() {
-		return this.dataProvider.deleteAccount(this.accountKey)
+		return this.dataProvider.DeleteAccount()
 	}
 
 	DeleteBinanceApiConfig() {
-		return this.dataProvider.deleteBinanceApiConfig(this.accountKey)
+		return this.dataProvider.DeleteBinanceApiConfig()
 	}
 
 	DeleteStrategy(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.DeleteStrategy(input)) throw new BadRequestError()
-		return this.dataProvider.deleteStrategy(input)
+		if (!isInput.DeleteStrategy(arg)) throw new BadRequestError()
+		return this.dataProvider.DeleteStrategy(arg)
 	}
 
 	ReadAccountInfo() {
-		return this.dataProvider.readAccountInfo(this.accountKey)
+		return this.dataProvider.ReadAccountInfo()
 	}
 
 	ReadAccountStrategies() {
-		return this.dataProvider.readAccountStrategies(this.accountKey)
+		return this.dataProvider.ReadAccountStrategies()
 	}
 
 	ReadBinanceApiKey() {
-		return this.dataProvider.readBinanceApiKey(this.accountKey)
-	}
-
-	ReadBinanceApiKeyPermissions() {
-		return this.dataProvider.readBinanceApiKeyPermissions(this.accountKey)
-	}
-
-	ReadStrategyBalances(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.ReadStrategyBalances(input)) throw new BadRequestError()
-		return this.dataProvider.readStrategyBalances(input)
+		return this.dataProvider.ReadBinanceApiKey()
 	}
 
 	ReadStrategyOrders(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.ReadStrategyOrders(input)) throw new BadRequestError()
-		return this.dataProvider.readStrategyOrders(input)
+		if (!isInput.ReadStrategyOrders(arg)) throw new BadRequestError()
+		return this.dataProvider.ReadStrategyOrders(arg)
 	}
 
 	ReadSubscription() {
-		return this.dataProvider.readSubscription(this.accountKey)
+		return this.dataProvider.ReadSubscription()
 	}
 
 	RenameAccount(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.RenameAccount(input)) throw new BadRequestError()
-		return this.dataProvider.renameAccount(input)
+		if (!isInput.RenameAccount(arg)) throw new BadRequestError()
+		return this.dataProvider.RenameAccount(arg)
 	}
 
 	RenameStrategy(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.RenameStrategy(input)) throw new BadRequestError()
-		return this.dataProvider.renameStrategy(input)
+		if (!isInput.RenameStrategy(arg)) throw new BadRequestError()
+		return this.dataProvider.RenameStrategy(arg)
 	}
 
 	SetAccountCountry(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.SetAccountCountry(input)) throw new BadRequestError()
-		return this.dataProvider.setAccountCountry(input)
+		if (!isInput.SetAccountCountry(arg)) throw new BadRequestError()
+		return this.dataProvider.SetAccountCountry(arg)
 	}
 
 	WriteAccountStrategiesItemSchedulings(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.WriteAccountStrategiesItemSchedulings(input))
+		if (!isInput.WriteAccountStrategiesItemSchedulings(arg))
 			throw new BadRequestError()
-		return this.dataProvider.writeAccountStrategiesItemSchedulings(input)
+		return this.dataProvider.WriteAccountStrategiesItemSchedulings(arg)
 	}
 
 	WriteStrategyFlow(arg: unknown) {
-		const input = this.inputWithAccountKey(arg)
-		if (!isInput.WriteStrategyFlow(input)) throw new BadRequestError()
-		return this.dataProvider.writeStrategyFlow(input)
+		if (!isInput.WriteStrategyFlow(arg)) throw new BadRequestError()
+		return this.dataProvider.WriteStrategyFlow(arg)
 	}
 }

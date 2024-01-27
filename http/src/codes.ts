@@ -55,3 +55,12 @@ export const __500__INTERNAL_SERVER_ERROR__ = 500
  * @see {@link https://en.wikipedia.org/wiki/HTTP_502}
  */
 export const __502__BAD_GATEWAY__ = 502
+
+export type HTTPStatusCode =
+	| typeof __200__OK__
+	| typeof __400__BAD_REQUEST__
+	| typeof __401__UNAUTHORIZED__
+	| typeof __404__NOT_FOUND__
+	| typeof __405__METHOD_NOT_ALLOWED__
+	| typeof __500__INTERNAL_SERVER_ERROR__
+	| typeof __502__BAD_GATEWAY__

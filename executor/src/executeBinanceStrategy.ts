@@ -2,13 +2,7 @@ import {
 	BinanceExchangeInfoCacheMap,
 	BinanceKlinesCacheMap
 } from "@workspace/binance"
-import {
-	PublicDataProvider,
-	appendAccountDailyOrders,
-	appendStrategyDailyBalanceChanges,
-	appendStrategyDailyOrders,
-} from "@workspace/database"
-import {ENV} from '@workspace/env'
+import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
 	DflowBinanceExecutor,
 	DflowCommonContext,
@@ -18,36 +12,31 @@ import {
 import {
 	AccountStrategyKey,
 	ErrorStrategyItemNotFound,
-	StrategyKey,
-	StrategyScheduling,
-	createdNow,
 	newOrder,
+	StrategyKey,
+	StrategyScheduling
 } from "@workspace/models"
-import {getS3DataBucketName, S3DataBucketProvider} from "@workspace/s3-data-bucket"
-import {now, timeToDay, today, truncateTime} from "minimal-time-helpers"
+import { documentProvider } from "@workspace/s3-data-bucket"
+import { now, today, truncateTime } from "minimal-time-helpers"
 
-import {Binance} from "./binance.js"
+import { Binance } from "./binance.js"
 
 const ONE_WEEK = 604_800_000
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
 
-const awsDataRegion = ENV.AWS_DATA_REGION()
-const documentProvider = new S3DataBucketProvider(
-	awsDataRegion,
-	getS3DataBucketName(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN(), awsDataRegion)
-)
-const publicDataProvider = new PublicDataProvider(documentProvider)
+const publicDatabase = new PublicDatabase(documentProvider)
+const executorDatabase = new ExecutorDatabase(documentProvider)
 
 export const executeBinanceStrategy = async (
-	{accountId, strategyId}: Omit<AccountStrategyKey, "strategyKind">,
+	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
 	scheduling: StrategyScheduling
 ): Promise<
-	{success: boolean} & Pick<DflowCommonContext, "memory" | "memoryChanged">
+	{ success: boolean } & Pick<DflowCommonContext, "memory" | "memoryChanged">
 > => {
-	const strategyKey: StrategyKey = {strategyKind: "binance", strategyId}
+	const strategyKey: StrategyKey = { strategyKind: "binance", strategyId }
 
-	const strategyFlow = await publicDataProvider.readStrategyFlow(strategyKey)
+	const strategyFlow = await publicDatabase.ReadStrategyFlow(strategyKey)
 	if (!strategyFlow)
 		throw new ErrorStrategyItemNotFound({
 			type: "StrategyFlow",
@@ -67,10 +56,10 @@ export const executeBinanceStrategy = async (
 	// TODO is this correct?
 	const time = truncateTime(now()).to.minute
 
-	const {symbols} = await binance.exchangeInfo()
+	const { symbols } = await binance.exchangeInfo()
 	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
-	const {view} = strategyFlow
+	const { view } = strategyFlow
 	if (!isDflowExecutorView(view))
 		return {
 			success: false,
@@ -82,7 +71,7 @@ export const executeBinanceStrategy = async (
 	executor.nodesCatalog = nodesCatalog
 
 	const {
-		balances,
+		// TODO balances,
 		execution,
 		memory: memoryOutput,
 		memoryChanged,
@@ -101,11 +90,11 @@ export const executeBinanceStrategy = async (
 		const day = today()
 		const strategyOrders = orders.map((info) => newOrder(info))
 
-		await appendStrategyDailyOrders({
+		await executorDatabase.AppendStrategyDailyOrders({
 			accountId,
 			day,
 			items: strategyOrders,
-			...strategyKey,
+			...strategyKey
 		})
 
 		const accountOrders = strategyOrders.map((order) => ({
@@ -113,23 +102,24 @@ export const executeBinanceStrategy = async (
 			...strategyKey
 		}))
 
-		await appendAccountDailyOrders({
+		await executorDatabase.AppendAccountDailyOrders({
 			accountId,
 			day,
 			items: accountOrders
 		})
 	}
 
-	if (balances.length > 0) {
-		const {whenCreated} = createdNow()
-		const day = timeToDay(truncateTime(whenCreated).to.day)
-		await appendStrategyDailyBalanceChanges({
-			accountId,
-			day,
-			items: [{whenCreated, balances}],
-			...strategyKey,
-		})
-	}
+	// TODO
+	// if (balances.length > 0) {
+	// 	const {whenCreated} = createdNow()
+	// 	const day = timeToDay(truncateTime(whenCreated).to.day)
+	// 	await appendStrategyDailyBalanceChanges({
+	// 		accountId,
+	// 		day,
+	// 		items: [{whenCreated, balances}],
+	// 		...strategyKey,
+	// 	})
+	// }
 
 	return {
 		success: execution?.status === "success",

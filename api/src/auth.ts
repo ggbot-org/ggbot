@@ -2,38 +2,47 @@ import {
 	Account,
 	EmailAccount,
 	EmailAddress,
-	OneTimePassword,
 	isEmailAddress,
 	isOneTimePasswordCode,
+	OneTimePassword
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
-import {ActionInputValidators} from "./action"
 
 type DatabaseAction = {
 	CreateAccount: (arg: EmailAddress) => Promise<Account>
-CreateOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword>
-DeleteOneTimePassword: (arg: EmailAddress) => Promise<void>
+	CreateOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword>
+	DeleteOneTimePassword: (arg: EmailAddress) => Promise<void>
 	ReadEmailAccount: (arg: EmailAddress) => Promise<EmailAccount | null>
-ReadOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword | null>
+	ReadOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword | null>
 }
 export type AuthDatabaseAction = DatabaseAction
 export type AuthDatabaseActionType = keyof DatabaseAction
 
 type DatabaseInput = {
-	CreateAccount: Parameters<DatabaseAction['CreateAccount']>[0]
-	CreateOneTimePassword: Parameters<DatabaseAction['CreateOneTimePassword']>[0]
-	DeleteOneTimePassword: Parameters<DatabaseAction['DeleteOneTimePassword']>[0]
-	ReadEmailAccount: Parameters<DatabaseAction['ReadEmailAccount']>[0]
-	ReadOneTimePassword: Parameters<DatabaseAction['ReadOneTimePassword']>[0]
+	CreateAccount: Parameters<DatabaseAction["CreateAccount"]>[0]
+	CreateOneTimePassword: Parameters<
+		DatabaseAction["CreateOneTimePassword"]
+	>[0]
+	DeleteOneTimePassword: Parameters<
+		DatabaseAction["DeleteOneTimePassword"]
+	>[0]
+	ReadEmailAccount: Parameters<DatabaseAction["ReadEmailAccount"]>[0]
+	ReadOneTimePassword: Parameters<DatabaseAction["ReadOneTimePassword"]>[0]
 }
 export type AuthDatabaseActionInput = DatabaseInput
 
 export type AuthDatabaseActionOutput = {
-	CreateAccount: Awaited<ReturnType<DatabaseAction['CreateAccount']>>
-	CreateOneTimePassword: Awaited<ReturnType<DatabaseAction['CreateOneTimePassword']>>
-	DeleteOneTimePassword: Awaited<ReturnType<DatabaseAction['DeleteOneTimePassword']>>
-	ReadEmailAccount: Awaited<ReturnType<DatabaseAction['ReadEmailAccount']>>
-	ReadOneTimePassword: Awaited<ReturnType<DatabaseAction['ReadOneTimePassword']>>
+	CreateAccount: Awaited<ReturnType<DatabaseAction["CreateAccount"]>>
+	CreateOneTimePassword: Awaited<
+		ReturnType<DatabaseAction["CreateOneTimePassword"]>
+	>
+	DeleteOneTimePassword: Awaited<
+		ReturnType<DatabaseAction["DeleteOneTimePassword"]>
+	>
+	ReadEmailAccount: Awaited<ReturnType<DatabaseAction["ReadEmailAccount"]>>
+	ReadOneTimePassword: Awaited<
+		ReturnType<DatabaseAction["ReadOneTimePassword"]>
+	>
 }
 
 export const isAuthDatabaseActionInput = {
@@ -41,8 +50,8 @@ export const isAuthDatabaseActionInput = {
 	CreateOneTimePassword: isEmailAddress,
 	DeleteOneTimePassword: isEmailAddress,
 	ReadEmailAccount: isEmailAddress,
-	ReadOneTimePassword: isEmailAddress,
-} satisfies ActionInputValidators<AuthDatabaseActionType>
+	ReadOneTimePassword: isEmailAddress
+}
 
 type ApiAuthEnterRequestData = {
 	email: EmailAddress

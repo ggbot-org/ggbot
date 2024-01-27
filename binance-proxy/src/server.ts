@@ -1,7 +1,6 @@
 import { createServer } from "node:http"
 import { exit } from "node:process"
 
-import { __400__BAD_REQUEST__, __404__NOT_FOUND__ } from "@workspace/http"
 import { BinanceProxyBaseURL } from "@workspace/locators"
 
 import { associateIp, disassociateIp } from "./elasticIp.js"

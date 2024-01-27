@@ -81,13 +81,18 @@ export type ApiActionInput<ActionType extends string> = {
 	data?: unknown
 }
 
-export type ActionInputValidators<ActionType extends string > = Record<ActionType, (arg: unknown) => boolean>
+type ActionInputValidators<ActionType extends string> = Record<
+	ActionType,
+	(arg: unknown) => boolean
+>
 
 export const isActionInput = <ActionType extends string>(
 	actionInputValidator: ActionInputValidators<ActionType>
 ) =>
-	objectTypeGuard<ApiActionInput<ActionType>>(({ type }) =>
-												typeof type === 'string' && typeof actionInputValidator[type as ActionType] === 'function'
+	objectTypeGuard<ApiActionInput<ActionType>>(
+		({ type }) =>
+			typeof type === "string" &&
+			typeof actionInputValidator[type as ActionType] === "function"
 	)
 
 export const __noInput = () => false
