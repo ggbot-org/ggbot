@@ -53,14 +53,14 @@ export class BinanceConnector {
 
 		const response = await fetch(url, fetchOptions)
 		if (!response.ok) {
-			const errorInfo = {
+			const payload = (await response.json()) as BinanceErrorPayload
+			throw new ErrorBinanceHTTP({
 				status: response.status,
 				statusText: response.statusText,
 				pathname: url.pathname,
+				payload,
 				searchParams: debugUrl.searchParams.toString()
-			}
-			const errorPayload = (await response.json()) as BinanceErrorPayload
-			throw new ErrorBinanceHTTP(errorInfo, errorPayload)
+			})
 		}
 
 		return (await response.json()) as Data

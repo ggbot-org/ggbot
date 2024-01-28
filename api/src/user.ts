@@ -34,7 +34,7 @@ import {
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { __noInput } from "./action.js"
+import { BinanceClientActionType } from "./binance.js"
 
 type Action = {
 	CopyStrategy: (
@@ -73,27 +73,23 @@ type Action = {
 	 * strategy.
 	 */
 	WriteAccountStrategiesItemSchedulings: (
-		arg: Pick<StrategyKey, "strategyId"> &
-			Pick<AccountStrategy, "schedulings">
+		arg: StrategyKey & Pick<AccountStrategy, "schedulings">
 	) => Promise<UpdateTime>
 	WriteStrategyFlow: (
 		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
 	) => Promise<UpdateTime>
 }
 export type UserAction = Action
-export type UserActionType = keyof Action
+export type UserActionType =
+	| keyof Action
+	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">
 
 type Input = {
 	CopyStrategy: Parameters<Action["CopyStrategy"]>[0]
 	CreateBinanceApiConfig: Parameters<Action["CreateBinanceApiConfig"]>[0]
 	CreatePurchaseOrder: Parameters<Action["CreatePurchaseOrder"]>[0]
 	CreateStrategy: Parameters<Action["CreateStrategy"]>[0]
-	DeleteAccount: void
-	DeleteBinanceApiConfig: void
 	DeleteStrategy: Parameters<Action["DeleteStrategy"]>[0]
-	ReadAccountInfo: void
-	ReadAccountStrategies: void
-	ReadBinanceApiKey: void
 	// TODO ReadStrategyBalances: Parameters<Action['ReadStrategyBalances']>[0]
 	ReadStrategyOrders: Parameters<Action["ReadStrategyOrders"]>[0]
 	RenameAccount: Parameters<Action["RenameAccount"]>[0]
@@ -151,12 +147,7 @@ export const isUserActionInput = {
 	CreateStrategy: objectTypeGuard<Input["CreateStrategy"]>((arg) =>
 		isStrategy({ ...arg, id: nullId, whenCreated: 1 })
 	),
-	DeleteAccount: __noInput,
-	DeleteBinanceApiConfig: __noInput,
 	DeleteStrategy: isStrategyKey,
-	ReadAccountInfo: __noInput,
-	ReadAccountStrategies: __noInput,
-	ReadBinanceApiKey: __noInput,
 	// TODO
 	// ReadStrategyBalances: objectTypeGuard<Input["ReadStrategyBalances"]>(
 	// 	({ start, end, ...strategyKey }) =>
@@ -167,7 +158,6 @@ export const isUserActionInput = {
 		({ start, end, ...strategyKey }) =>
 			isDayInterval({ start, end }) && isStrategyKey(strategyKey)
 	),
-	ReadSubscription: __noInput,
 	RenameAccount: objectTypeGuard<Input["RenameAccount"]>(({ name }) =>
 		isName(name)
 	),

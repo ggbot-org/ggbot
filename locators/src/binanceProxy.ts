@@ -17,7 +17,7 @@ const apiEndpoint = {
  * ```ts
  * import { ENV } from "@workspace/env"
  *
- * const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_BASE_URL())
+ * const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
  * ```
  */
 export class BinanceProxyURLs {

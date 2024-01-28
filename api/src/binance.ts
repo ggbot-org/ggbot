@@ -11,8 +11,6 @@ import {
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { __noInput } from "./action.js"
-
 type ClientAction = {
 	CreateBinanceOrder: (arg: {
 		symbol: string
@@ -22,25 +20,16 @@ type ClientAction = {
 	}) => Promise<BinanceOrderRespFULL>
 	ReadBinanceAccountApiRestrictions: () => Promise<BinanceApiKeyPermissionCriteria>
 }
-export type BinanceClientAction = ClientAction
 export type BinanceClientActionType = keyof ClientAction
 
 type DatabaseAction = {
 	ReadBinanceApiConfig: (arg: AccountKey) => Promise<BinanceApiConfig | null>
 }
 export type BinanceDatabaseAction = DatabaseAction
-export type BinanceDatabaseActionType = keyof DatabaseAction
 
 type ClientInput = {
 	CreateBinanceOrder: Parameters<ClientAction["CreateBinanceOrder"]>[0]
-	ReadBinanceAccountApiRestrictions: void
 }
-export type BinanceClientActionInput = ClientInput
-
-type DatabaseInput = {
-	ReadBinanceApiConfig: void
-}
-export type BinanceDatabaseActionInput = DatabaseInput
 
 export type BinanceClientActionOutput = {
 	CreateBinanceOrder: Awaited<ReturnType<ClientAction["CreateBinanceOrder"]>>
@@ -63,10 +52,5 @@ export const isBinanceClientActionInput = {
 			typeof type === "string" &&
 			!orderOptions &&
 			typeof orderOptions === "object"
-	),
-	ReadBinanceAccountApiRestrictions: __noInput
-}
-
-export const isBinanceDatabaseActionInput = {
-	ReadBinanceApiConfig: __noInput
+	)
 }

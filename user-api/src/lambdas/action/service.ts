@@ -1,23 +1,35 @@
 import {
+	ApiActionHeaders,
+	apiActionRequestInit,
 	ApiService,
+	BinanceClientActionOutput,
+	BinanceClientActionType,
 	DocumentProviderLevel2,
 	isUserActionInput as isInput,
 	UserActionType
 } from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
+import { ENV } from "@workspace/env"
 import { BadRequestError } from "@workspace/http"
+import { BinanceProxyURLs } from "@workspace/locators"
 import { AccountKey } from "@workspace/models"
 
 export class Service implements ApiService<UserActionType> {
 	accountKey: AccountKey
 	dataProvider: UserDatabase
+	authorization: string
 
-	constructor(
-		accountKey: AccountKey,
-		documentProvider: DocumentProviderLevel2
-	) {
+	constructor({
+		accountKey,
+		authorization,
+		documentProvider
+	}: { documentProvider: DocumentProviderLevel2 } & Pick<
+		Service,
+		"accountKey" | "authorization"
+	>) {
 		this.accountKey = accountKey
 		this.dataProvider = new UserDatabase(accountKey, documentProvider)
+		this.authorization = authorization
 	}
 
 	CopyStrategy(arg: unknown) {
@@ -59,6 +71,22 @@ export class Service implements ApiService<UserActionType> {
 
 	ReadAccountStrategies() {
 		return this.dataProvider.ReadAccountStrategies()
+	}
+
+	async ReadBinanceAccountApiRestrictions() {
+		const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
+		const headers = new ApiActionHeaders()
+		headers.appendAuthorization(this.authorization)
+		const options = apiActionRequestInit<BinanceClientActionType>({
+			type: "ReadBinanceAccountApiRestrictions",
+			headers
+		})
+		const response = await fetch(binanceProxy.action, options)
+		const output: unknown = await response.json()
+		if (response.ok)
+			return output as BinanceClientActionOutput["ReadBinanceAccountApiRestrictions"]
+		// TODO handle errors from binance
+		throw new BadRequestError()
 	}
 
 	ReadBinanceApiKey() {

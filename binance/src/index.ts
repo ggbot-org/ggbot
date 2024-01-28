@@ -11,11 +11,7 @@ export type {
 	BinanceApiRequestParams
 } from "./request.js"
 export { getBinanceIntervalTime } from "./time.js"
-export {
-	isBinanceErrorPayload,
-	isBinanceFill,
-	isBinanceOrderRespFULL
-} from "./typeGuards.js"
+export { isBinanceFill, isBinanceOrderRespFULL } from "./typeGuards.js"
 export type {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,

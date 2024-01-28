@@ -91,5 +91,3 @@ export const isActionInput = <ActionType extends string>(
 			typeof type === "string" &&
 			typeof actionInputValidator[type as ActionType] === "function"
 	)
-
-export const __noInput = () => false

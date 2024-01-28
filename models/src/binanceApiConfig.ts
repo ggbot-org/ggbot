@@ -24,10 +24,3 @@ export type BinanceApiKeyPermissionCriteria = {
 	enableWithdrawals: boolean
 	ipRestrict: boolean
 }
-
-export const isBinanceApiKeyPermissionCriteria = objectTypeGuard<BinanceApiKeyPermissionCriteria>(( {
-	enableReading,
-	enableSpotAndMarginTrading,
-	enableWithdrawals,
-	ipRestrict,
-}) => typeof enableReading === 'boolean' && typeof enableSpotAndMarginTrading ==='boolean'&& typeof enableWithdrawals ==='boolean' && typeof ipRestrict==='boolean')

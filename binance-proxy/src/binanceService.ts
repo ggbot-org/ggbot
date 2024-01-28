@@ -1,23 +1,21 @@
 import {
-	BinanceClientAction,
-	BinanceClientActionInput as Input
+	ApiService,
+	BinanceClientActionType,
+	isBinanceClientActionInput as isInput
 } from "@workspace/api"
 import { BinanceClient } from "@workspace/binance-client"
-import { __500__INTERNAL_SERVER_ERROR__ } from "@workspace/http"
+import { BadRequestError } from "@workspace/http"
 
-export class BinanceService implements BinanceClientAction {
+export class BinanceService implements ApiService<BinanceClientActionType> {
 	binance: BinanceClient
 
 	constructor(apiKey: string, apiSecret: string) {
 		this.binance = new BinanceClient(apiKey, apiSecret)
 	}
 
-	CreateBinanceOrder({
-		symbol,
-		side,
-		type,
-		orderOptions
-	}: Input["CreateBinanceOrder"]) {
+	CreateBinanceOrder(arg: unknown) {
+		if (!isInput.CreateBinanceOrder(arg)) throw new BadRequestError()
+		const { symbol, side, type, orderOptions } = arg
 		return this.binance.newOrder(symbol, side, type, orderOptions)
 	}
 

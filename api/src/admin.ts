@@ -1,7 +1,5 @@
 import { Account, AccountKey, isAccountKey } from "@workspace/models"
 
-import { __noInput } from "./action.js"
-
 type Action = {
 	ListAccountKeys: () => Promise<AccountKey[]>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
@@ -10,7 +8,6 @@ export type AdminAction = Action
 export type AdminActionType = keyof AdminAction
 
 type Input = {
-	ListAccountKeys: void
 	ReadAccount: Parameters<Action["ReadAccount"]>[0]
 }
 export type AdminActionInput = Input
@@ -22,6 +19,5 @@ type Output = {
 export type AdminActionOutput = Output
 
 export const isAdminActionInput = {
-	ListAccountKeys: __noInput,
 	ReadAccount: isAccountKey
 }

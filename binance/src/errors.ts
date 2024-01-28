@@ -6,32 +6,26 @@ import {
 
 export class ErrorBinanceHTTP extends Error {
 	static errorName = "ErrorBinanceHTTP"
-	payload: BinanceErrorPayload
 	info: {
+		payload: BinanceErrorPayload
 		pathname: string
 		searchParams: string
 		status: Response["status"]
 		statusText: Response["statusText"]
 	}
 
-	constructor(
-		info: ErrorBinanceHTTP["info"],
-		payload: ErrorBinanceHTTP["payload"]
-	) {
-		super(ErrorBinanceHTTP.message(info, payload))
+	constructor(info: ErrorBinanceHTTP["info"]) {
+		super(ErrorBinanceHTTP.message(info))
 		this.info = info
-		this.payload = payload
 	}
 
-	static message(
-		{
-			status,
-			statusText,
-			pathname,
-			searchParams
-		}: ErrorBinanceHTTP["info"],
-		payload: ErrorBinanceHTTP["payload"]
-	) {
+	static message({
+		status,
+		statusText,
+		pathname,
+		payload,
+		searchParams
+	}: ErrorBinanceHTTP["info"]) {
 		return `Server responded with status=${status} payload=${JSON.stringify(
 			payload
 		)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
@@ -39,11 +33,11 @@ export class ErrorBinanceHTTP extends Error {
 
 	toJSON(): {
 		name: string
-		info: ErrorBinanceHTTP["info"] & Pick<ErrorBinanceHTTP, "payload">
+		info: ErrorBinanceHTTP["info"]
 	} {
 		return {
 			name: ErrorBinanceHTTP.errorName,
-			info: { ...this.info, payload: this.payload }
+			info: this.info
 		}
 	}
 }

@@ -2,9 +2,8 @@ import { BinanceClient } from "../dist/client.js"
 
 const apiKey = process.env.BINANCE_API_KEY
 const apiSecret = process.env.BINANCE_API_SECRET
-const apiBaseUrl = process.env.BINANCE_API_BASE_URL
 
-const binance = new BinanceClient(apiKey, apiSecret, apiBaseUrl)
+const binance = new BinanceClient(apiKey, apiSecret)
 
 const symbol = "BTCTUSD"
 const side = "BUY"

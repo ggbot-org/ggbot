@@ -15,6 +15,8 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorPermissionOnStrategyItem,
 	ErrorStrategyItemNotFound,
+	frequenciesAreEqual,
+	Frequency,
 	newAccountStrategy,
 	newStrategy,
 	Order,
@@ -156,16 +158,6 @@ export class UserDatabase implements UserAction {
 		return { apiKey }
 	}
 
-	ReadBinanceApiKeyPermissions() {
-		// TODO connect with binance proxy api
-		return Promise.resolve({
-			enableReading: false,
-			enableSpotAndMarginTrading: false,
-			enableWithdrawals: false,
-			ipRestrict: false
-		})
-	}
-
 	async ReadStrategyOrders({
 		start,
 		end,
@@ -239,11 +231,12 @@ export class UserDatabase implements UserAction {
 
 	async WriteAccountStrategiesItemSchedulings({
 		schedulings,
-		strategyId
+		strategyId,
+		strategyKind
 	}: Input["WriteAccountStrategiesItemSchedulings"]) {
 		const items = await this.ReadAccountStrategies()
 		const data: AccountStrategy[] = []
-		// TODO let suggestedFrequency: Frequency | undefined
+		let suggestedFrequency: Frequency | undefined
 		for (const item of items) {
 			if (item.strategyId !== strategyId) {
 				data.push(item)
@@ -251,15 +244,14 @@ export class UserDatabase implements UserAction {
 			}
 			data.push({ ...item, schedulings })
 			// Use first frequency as `suggestedFrequency`.
-			// TODO suggestedFrequency = schedulings[0]?.frequency
+			suggestedFrequency = schedulings[0]?.frequency
 		}
-		// TODO check this
-		// if (suggestedFrequency)
-		// 	await upsertStrategyFrequency({
-		// 		strategyId,
-		// 		strategyKind,
-		// 		frequency: suggestedFrequency
-		// 	})
+		if (suggestedFrequency)
+			await this.upsertStrategyFrequency({
+				strategyId,
+				strategyKind,
+				frequency: suggestedFrequency
+			})
 		return this.documentProvider.setItem(
 			pathname.accountStrategies(this.accountKey),
 			data
@@ -378,6 +370,15 @@ export class UserDatabase implements UserAction {
 			pathname.accountStrategies(this.accountKey),
 			data
 		)
+	}
+
+	async upsertStrategyFrequency({
+		frequency,
+		...strategyKey
+	}: { frequency: Frequency } & StrategyKey) {
+		const strategy = await this.readStrategy(strategyKey)
+		if (frequenciesAreEqual(frequency, strategy.frequency)) return
+		await this.writeStrategy({ ...strategy, frequency })
 	}
 
 	async writeStrategy(strategy: Strategy) {

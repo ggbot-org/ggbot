@@ -58,7 +58,8 @@ For example
     Environment="AWS_ACCOUNT_ID=888671539518"
     Environment="DEPLOY_STAGE=main"
     Environment="DNS_DOMAIN=ggbot.org"
-    Environment="BINANCE_API_BASE_URL=http://3.65.45.176:3000"
+    Environment="BINANCE_PROXY_ORIGIN=3.65.45.176"
+    Environment="AUTHENTICATION_SECRET=xxx"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 

@@ -56,4 +56,4 @@ To be able to use ggbot2.com SSL certificate, add a DSN entry for the Load Balan
 -   Region: Frankfurt
 -   Select the Load Balancer name in the dropdown
 
-Finally, update environment variable `BINANCE_API_BASE_URL` accordingly.
+Finally, update environment variable `BINANCE_PROXY_ORIGIN` accordingly.

@@ -1,5 +1,9 @@
 export type { Account, AccountKey } from "./account.js"
-export { isAccountKey, isAdminAccount, newAccount } from "./account.js"
+export {
+	isAccountKey,
+	isAdminAccount
+	// TODO newAccount
+} from "./account.js"
 export type {
 	AccountDailyOrder,
 	AccountDailyOrdersKey
@@ -23,10 +27,7 @@ export type {
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria
 } from "./binanceApiConfig.js"
-export {
-	isBinanceApiConfig,
-	isBinanceApiKeyPermissionCriteria
-} from "./binanceApiConfig.js"
+export { isBinanceApiConfig } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
 export type { AllowedCountryIsoCode2 } from "./country.js"

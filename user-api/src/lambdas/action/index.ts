@@ -33,15 +33,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		if (event.httpMethod === apiActionMethod) {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
-
 			if (!event.body) return BAD_REQUEST()
-			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const { accountId } = await readSessionFromAuthorizationHeader(
-				event.headers.Authorization
-			)
-
-			const service = new Service({ accountId }, documentProvider)
+			const authorization = event.headers.Authorization
+			const { accountId } =
+				await readSessionFromAuthorizationHeader(authorization)
+			const service = new Service({
+				accountKey: { accountId },
+				// If `readSessionFromAuthorizationHeader` succedes, then `authorization` is a string
+				authorization: authorization as string,
+				documentProvider
+			})
 
 			const input: unknown = JSON.parse(event.body)
 			if (!isActionInput(isUserActionInput)(input)) return BAD_REQUEST()
