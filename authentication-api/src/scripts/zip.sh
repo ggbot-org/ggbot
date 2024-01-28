@@ -14,7 +14,7 @@ for LAMBDA in enter verify; do
 	cd -
 
 	# Copy internal deps.
-	for WORKSPACE in api api-gateway arithmetic authentication aws-s3 aws-ses binance binance-client cache database dflow env email-messages http locators logging models; do
+	for WORKSPACE in api api-gateway arithmetic authentication aws-s3 aws-ses binance binance-client cache database dflow env email-messages http locators logging models s3-data-bucket; do
 		WORKSPACE_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE
 		mkdir -p $WORKSPACE_DIR/dist
 		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIR/dist

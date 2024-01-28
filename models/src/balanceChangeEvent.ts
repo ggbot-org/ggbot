@@ -1,9 +1,6 @@
-// TODO
-// import { Balance } from "./balance.js"
-// import { CreationTime } from "./time.js"
+import { Balance } from "./balance.js"
+import { CreationTime } from "./time.js"
 
-// export type BalanceChangeEvent = CreationTime & {
-// 	balances: Balance[]
-// }
-
-// export type BalanceChangeEvents = BalanceChangeEvent[]
+export type BalanceChangeEvent = CreationTime & {
+	balances: Balance[]
+}

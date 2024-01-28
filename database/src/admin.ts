@@ -14,7 +14,7 @@ export class AdminDatabase implements AdminAction {
 		this.documentProvider = documentProvider
 	}
 
-	ListAccountKeys(_arg: Input["ListAccountKeys"]) {
+	ListAccountKeys() {
 		// TODO
 		return Promise.resolve([])
 	}

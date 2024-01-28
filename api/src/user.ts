@@ -34,6 +34,7 @@ import {
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
+import { Actions } from "./action.js"
 import { BinanceClientActionType } from "./binance.js"
 
 type Action = {
@@ -80,9 +81,29 @@ type Action = {
 	) => Promise<UpdateTime>
 }
 export type UserAction = Action
-export type UserActionType =
+type ActionType =
 	| keyof Action
 	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">
+export type UserActionType = ActionType
+export const userActions: Actions<ActionType> = [
+	"CopyStrategy",
+	"CreateBinanceApiConfig",
+	"CreatePurchaseOrder",
+	"CreateStrategy",
+	"DeleteAccount",
+	"DeleteBinanceApiConfig",
+	"ReadAccountInfo",
+	"ReadAccountStrategies",
+	"ReadBinanceApiKey",
+	"ReadStrategyOrders",
+	"ReadSubscription",
+	"RenameAccount",
+	"RenameStrategy",
+	"SetAccountCountry",
+	"WriteAccountStrategiesItemSchedulings",
+	"WriteStrategyFlow",
+	"ReadBinanceAccountApiRestrictions"
+] as const
 
 type Input = {
 	CopyStrategy: Parameters<Action["CopyStrategy"]>[0]

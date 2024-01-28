@@ -15,18 +15,18 @@ import {
 	AccountStrategySchedulingKey,
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
-	ErrorUnknown,
+	ErrorUnknownItem,
+	Item,
+	StrategyMemory,
+	StrategyScheduling,
+	Subscription,
 	frequencyIntervalDuration,
 	isAccountKey,
 	isAccountStrategy,
 	isSubscription,
-	Item,
 	itemIdCharacters,
 	newId,
 	statusOfSubscription,
-	StrategyMemory,
-	StrategyScheduling,
-	Subscription
 } from "@workspace/models"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"
@@ -207,7 +207,7 @@ export class Executor {
 
 		if (strategyKind === "none") return
 
-		throw new ErrorUnknown("strategyKind", strategyKind)
+		throw new ErrorUnknownItem("strategyKind", strategyKind)
 	}
 
 	managesItem(itemId: Item["id"]) {

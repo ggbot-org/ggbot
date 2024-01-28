@@ -8,43 +8,59 @@ import {
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-type Action = {
+import { Actions } from "./action.js"
+
+export type AuthDatabaseAction = {
 	CreateAccount: (arg: EmailAddress) => Promise<Account>
 	CreateOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword>
 	DeleteOneTimePassword: (arg: EmailAddress) => Promise<void>
 	ReadEmailAccount: (arg: EmailAddress) => Promise<EmailAccount | null>
 	ReadOneTimePassword: (arg: EmailAddress) => Promise<OneTimePassword | null>
 }
-export type AuthAction = Action
-export type AuthActionType = keyof Action
 
-type Input = {
-	CreateAccount: Parameters<Action["CreateAccount"]>[0]
-	CreateOneTimePassword: Parameters<Action["CreateOneTimePassword"]>[0]
-	DeleteOneTimePassword: Parameters<Action["DeleteOneTimePassword"]>[0]
-	ReadEmailAccount: Parameters<Action["ReadEmailAccount"]>[0]
-	ReadOneTimePassword: Parameters<Action["ReadOneTimePassword"]>[0]
+export type AuthDatabaseActionInput = {
+	CreateAccount: Parameters<AuthDatabaseAction["CreateAccount"]>[0]
+	CreateOneTimePassword: Parameters<
+		AuthDatabaseAction["CreateOneTimePassword"]
+	>[0]
+	DeleteOneTimePassword: Parameters<
+		AuthDatabaseAction["DeleteOneTimePassword"]
+	>[0]
+	ReadEmailAccount: Parameters<AuthDatabaseAction["ReadEmailAccount"]>[0]
+	ReadOneTimePassword: Parameters<
+		AuthDatabaseAction["ReadOneTimePassword"]
+	>[0]
 }
-export type AuthActionInput = Input
 
-export type AuthActionOutput = {
-	CreateAccount: Awaited<ReturnType<Action["CreateAccount"]>>
-	CreateOneTimePassword: Awaited<ReturnType<Action["CreateOneTimePassword"]>>
-	DeleteOneTimePassword: Awaited<ReturnType<Action["DeleteOneTimePassword"]>>
-	ReadEmailAccount: Awaited<ReturnType<Action["ReadEmailAccount"]>>
-	ReadOneTimePassword: Awaited<ReturnType<Action["ReadOneTimePassword"]>>
+export type AuthDatabaseActionOutput = {
+	CreateAccount: Awaited<ReturnType<AuthDatabaseAction["CreateAccount"]>>
+	CreateOneTimePassword: Awaited<
+		ReturnType<AuthDatabaseAction["CreateOneTimePassword"]>
+	>
+	DeleteOneTimePassword: Awaited<
+		ReturnType<AuthDatabaseAction["DeleteOneTimePassword"]>
+	>
+	ReadEmailAccount: Awaited<
+		ReturnType<AuthDatabaseAction["ReadEmailAccount"]>
+	>
+	ReadOneTimePassword: Awaited<
+		ReturnType<AuthDatabaseAction["ReadOneTimePassword"]>
+	>
 }
 
 type ClientAction = {
 	Enter: (arg: Pick<Account, "email">) => Promise<{ emailSent: boolean }>
 }
 export type AuthClientActionType = keyof ClientAction
+export const authClientActions: Actions<AuthClientActionType> = [
+	"Enter"
+] as const
 
 type ClientInput = {
 	Enter: Parameters<ClientAction["Enter"]>[0]
 }
 
-export type AuthClientOutput = {
+export type AuthClientActionOutput = {
 	Enter: Awaited<ReturnType<ClientAction["Enter"]>>
 }
 

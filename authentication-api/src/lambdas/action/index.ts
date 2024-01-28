@@ -1,7 +1,7 @@
 import {
 	apiActionMethod,
-	isActionInput,
-	isAuthClientActionInput
+	authClientActions,
+	isActionInput
 } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
@@ -28,8 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(isAuthClientActionInput)(input))
-				return BAD_REQUEST()
+			if (!isActionInput(authClientActions)(input)) return BAD_REQUEST()
 
 			const service = new Service(documentProvider)
 			const output = await service[input.type](input.data)

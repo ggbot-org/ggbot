@@ -1,5 +1,5 @@
 import { DocumentProviderLevel2 } from "@workspace/api"
-import { S3IOClient } from "@workspace/aws-s3"
+import { S3Bucket, S3IOClient } from "@workspace/aws-s3"
 import { AwsRegion } from "@workspace/aws-types"
 import {
 	deletedNow,
@@ -16,7 +16,7 @@ export const getS3DataBucketName = (
 	deployStage: DeployStage,
 	dnsDomain: string,
 	awsRegion: AwsRegion
-) =>
+): S3Bucket["name"] =>
 	deployStage === "local"
 		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
 		: `${deployStage}-data.${awsRegion}.${dnsDomain}`

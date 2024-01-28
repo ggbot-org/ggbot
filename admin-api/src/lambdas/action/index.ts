@@ -1,8 +1,4 @@
-import {
-	apiActionMethod,
-	isActionInput,
-	isAdminActionInput
-} from "@workspace/api"
+import { adminActions, apiActionMethod, isActionInput } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
@@ -34,7 +30,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(isAdminActionInput)(input)) return BAD_REQUEST()
+			if (!isActionInput(adminActions)(input)) return BAD_REQUEST()
 
 			const service = new Service(documentProvider)
 			const output = await service[input.type](input.data)

@@ -1,4 +1,12 @@
-import { DayInterval, isDay, isDayInterval, today } from "minimal-time-helpers"
+import {
+	dateToDay,
+	Day,
+	DayInterval,
+	dayToDate,
+	getDate,
+	isDay,
+	isDayInterval
+} from "minimal-time-helpers"
 import {
 	isLiteralType,
 	isMaybeObject,
@@ -7,12 +15,12 @@ import {
 
 import { AccountKey } from "./account.js"
 import { Currency } from "./currency.js"
-import { isItemId, Item } from "./item.js"
+import { isItemId, Item, newId, NewItem } from "./item.js"
 import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
 import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
-import { CreationTime, DayKey, isCreationTime } from "./time.js"
+import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js"
 
 export const monthlyPrice = 10
 export const purchaseCurrency: Currency = "EUR"
@@ -33,6 +41,7 @@ const subscriptionPurchaseStatuses = [
 	"pending"
 ] as const
 type SubscriptionPurchaseStatus = (typeof subscriptionPurchaseStatuses)[number]
+
 const isSubscriptionPurchaseStatus = isLiteralType<SubscriptionPurchaseStatus>(
 	subscriptionPurchaseStatuses
 )
@@ -78,68 +87,59 @@ export const isSubscriptionPurchaseKey =
 			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
 	)
 
-export const newSubscriptionPurchaseKey = ({
-	accountId,
-	purchaseId
-}: Omit<SubscriptionPurchaseKey, "day">): SubscriptionPurchaseKey => ({
-	accountId,
-	purchaseId,
-	day: today()
-})
-
 // TODO
-// export type NewMonthlySubscriptionArg = Pick<
-// 	NewItem<SubscriptionPurchase>,
-// 	"plan" | "paymentProvider"
-// > & {
-// 	startDay: Day
-// 	numMonths: NaturalNumber
-// }
+// export const newSubscriptionPurchaseKey = ({
+// 	accountId,
+// 	purchaseId
+// }: Omit<SubscriptionPurchaseKey, "day">): SubscriptionPurchaseKey => ({
+// 	accountId,
+// 	purchaseId,
+// 	day: today()
+// })
 
-// export const newMonthlySubscription = ({
-// 	plan,
-// 	paymentProvider,
-// 	startDay,
-// 	numMonths
-// }: NewMonthlySubscriptionArg): SubscriptionPurchase => {
-// 	const startDate = dayToDate(startDay)
-// 	const endDate = getDate(startDate).plus(numMonths).months
-// 	const endDay = dateToDay(endDate)
-// 	const dayInterval = { start: startDay, end: endDay }
-// 	return {
-// 		id: newId(),
-// 		paymentProvider,
-// 		plan,
-// 		status: "pending",
-// 		...createdNow(),
-// 		...dayInterval
-// 	}
-// }
+export const newMonthlySubscription = ({
+	plan,
+	paymentProvider,
+	startDay,
+	numMonths
+}: Pick<NewItem<SubscriptionPurchase>, "plan" | "paymentProvider"> & {
+	startDay: Day
+	numMonths: NaturalNumber
+}): SubscriptionPurchase => {
+	const startDate = dayToDate(startDay)
+	const endDate = getDate(startDate).plus(numMonths).months
+	const endDay = dateToDay(endDate)
+	const dayInterval = { start: startDay, end: endDay }
+	return {
+		id: newId(),
+		paymentProvider,
+		plan,
+		status: "pending",
+		...createdNow(),
+		...dayInterval
+	}
+}
 
-// TODO
-// export type NewYearlySubscriptionArg = Pick<
-// 	NewItem<SubscriptionPurchase>,
-// 	"plan" | "paymentProvider"
-// > & { startDay: Day }
-
-// export const newYearlySubscription = ({
-// 	plan,
-// 	paymentProvider,
-// 	startDay
-// }: NewYearlySubscriptionArg): SubscriptionPurchase => {
-// 	const startDate = dayToDate(startDay)
-// 	const endDate = getDate(startDate).plusOne.year
-// 	const endDay = dateToDay(endDate)
-// 	const dayInterval = { start: startDay, end: endDay }
-// 	return {
-// 		id: newId(),
-// 		paymentProvider,
-// 		plan,
-// 		status: "pending",
-// 		...createdNow(),
-// 		...dayInterval
-// 	}
-// }
+export const newYearlySubscription = ({
+	plan,
+	paymentProvider,
+	startDay
+}: Pick<NewItem<SubscriptionPurchase>, "plan" | "paymentProvider"> & {
+	startDay: Day
+}): SubscriptionPurchase => {
+	const startDate = dayToDate(startDay)
+	const endDate = getDate(startDate).plusOne.year
+	const endDay = dateToDay(endDate)
+	const dayInterval = { start: startDay, end: endDay }
+	return {
+		id: newId(),
+		paymentProvider,
+		plan,
+		status: "pending",
+		...createdNow(),
+		...dayInterval
+	}
+}
 
 export const totalPurchase = (numMonths: NaturalNumber) => {
 	// if 12 months, apply discount.

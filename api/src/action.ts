@@ -15,6 +15,8 @@ import {
 } from "@workspace/models"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
+export type Actions<ActionType extends string> = Readonly<ActionType[]>
+
 export type ApiActionOutputError = {
 	error: ApiActionServerSideError
 }
@@ -78,16 +80,9 @@ export type ApiActionInput<ActionType extends string> = {
 	data?: unknown
 }
 
-type ActionInputValidators<ActionType extends string> = Record<
-	ActionType,
-	(arg: unknown) => boolean
->
-
 export const isActionInput = <ActionType extends string>(
-	actionInputValidator: ActionInputValidators<ActionType>
+	actionTypes: readonly ActionType[]
 ) =>
-	objectTypeGuard<ApiActionInput<ActionType>>(
-		({ type }) =>
-			typeof type === "string" &&
-			typeof actionInputValidator[type as ActionType] === "function"
+	objectTypeGuard<ApiActionInput<ActionType>>(({ type }) =>
+		isLiteralType<ActionType>(actionTypes)(type)
 	)

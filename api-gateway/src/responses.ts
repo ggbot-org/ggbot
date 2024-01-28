@@ -1,12 +1,12 @@
 import { ApiActionOutputData, ApiActionOutputError } from "@workspace/api"
 import { ENV } from "@workspace/env"
 import {
-	__200__OK__,
-	__400__BAD_REQUEST__,
-	__401__UNAUTHORIZED__,
-	__405__METHOD_NOT_ALLOWED__,
-	__500__INTERNAL_SERVER_ERROR__,
-	HTTP_METHOD
+	BAD_REQUEST__400,
+	HTTP_METHOD,
+	INTERNAL_SERVER_ERROR__500,
+	METHOD_NOT_ALLOWED__405,
+	OK__200,
+	UNAUTHORIZED__401
 } from "@workspace/http"
 import { FQDN, WebappBaseURL } from "@workspace/locators"
 
@@ -28,7 +28,7 @@ export const ALLOWED_METHODS = (methods: HTTP_METHOD[]) => ({
 		...commonHeaders
 	},
 	isBase64Encoded: false,
-	statusCode: __200__OK__
+	statusCode: OK__200
 })
 
 export const BAD_REQUEST = (
@@ -37,21 +37,21 @@ export const BAD_REQUEST = (
 	...(error ? responseBody({ error }) : { body: "" }),
 	headers: commonHeaders,
 	isBase64Encoded: false,
-	statusCode: __400__BAD_REQUEST__
+	statusCode: BAD_REQUEST__400
 })
 
 export const INTERNAL_SERVER_ERROR: APIGatewayProxyResult = {
 	body: "",
 	headers: commonHeaders,
 	isBase64Encoded: false,
-	statusCode: __500__INTERNAL_SERVER_ERROR__
+	statusCode: INTERNAL_SERVER_ERROR__500
 }
 
 export const METHOD_NOT_ALLOWED = {
 	body: "",
 	headers: commonHeaders,
 	isBase64Encoded: false,
-	statusCode: __405__METHOD_NOT_ALLOWED__
+	statusCode: METHOD_NOT_ALLOWED__405
 }
 
 export const OK = (
@@ -63,12 +63,12 @@ export const OK = (
 		...commonHeaders
 	},
 	isBase64Encoded: false,
-	statusCode: __200__OK__
+	statusCode: OK__200
 })
 
 export const UNATHORIZED: APIGatewayProxyResult = {
 	body: "",
 	headers: commonHeaders,
 	isBase64Encoded: false,
-	statusCode: __401__UNAUTHORIZED__
+	statusCode: UNAUTHORIZED__401
 }

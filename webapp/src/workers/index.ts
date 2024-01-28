@@ -1,4 +1,4 @@
-const workersDirname = "workers"
+export const workersDirname = "workers"
 
 type WorkerName = "backtesting"
 

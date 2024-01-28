@@ -1,7 +1,7 @@
 import {
 	ApiService,
+	AuthClientActionOutput as Output,
 	AuthClientActionType,
-	AuthClientOutput as Output,
 	DocumentProviderLevel2,
 	isAuthClientActionInput as isInput
 } from "@workspace/api"

@@ -1,6 +1,6 @@
 import { IncomingMessage } from "node:http"
 
-import { isActionInput, isBinanceClientActionInput } from "@workspace/api"
+import { binanceClientActions, isActionInput } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { BinanceDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
@@ -14,8 +14,7 @@ export const binanceRequestHandler = async (
 	body: string
 ): Promise<SerializableData> => {
 	const input: unknown = JSON.parse(body)
-	if (!isActionInput(isBinanceClientActionInput)(input))
-		throw new BadRequestError()
+	if (!isActionInput(binanceClientActions)(input)) throw new BadRequestError()
 
 	const { accountId } = await readSessionFromAuthorizationHeader(
 		headers.Authorization

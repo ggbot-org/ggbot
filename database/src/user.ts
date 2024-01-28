@@ -95,7 +95,7 @@ export class UserDatabase implements UserAction {
 		return createdNow()
 	}
 
-	CreatePurchaseOrder(_arg: Input["CreatePurchaseOrder"]) {
+	CreatePurchaseOrder() {
 		return Promise.resolve(null)
 	}
 

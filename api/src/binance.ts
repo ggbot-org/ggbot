@@ -11,6 +11,8 @@ import {
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
+import { Actions } from "./action.js"
+
 type ClientAction = {
 	CreateBinanceOrder: (arg: {
 		symbol: string
@@ -20,7 +22,12 @@ type ClientAction = {
 	}) => Promise<BinanceOrderRespFULL>
 	ReadBinanceAccountApiRestrictions: () => Promise<BinanceApiKeyPermissionCriteria>
 }
+type ClientActionType = keyof ClientAction
 export type BinanceClientActionType = keyof ClientAction
+export const binanceClientActions: Actions<ClientActionType> = [
+	"CreateBinanceOrder",
+	"ReadBinanceAccountApiRestrictions"
+] as const
 
 type DatabaseAction = {
 	ReadBinanceApiConfig: (arg: AccountKey) => Promise<BinanceApiConfig | null>
