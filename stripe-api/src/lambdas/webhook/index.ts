@@ -5,12 +5,13 @@ import {
 	METHOD_NOT_ALLOWED,
 	OK
 } from "@workspace/api-gateway"
+import { logging } from "@workspace/logging"
 import {
 	StripeClient,
 	StripeSignatureVerificationError
 } from "@workspace/stripe"
 
-import { info, warn } from "./logging.js"
+const { info, warn } = logging("stripe-api")
 
 const stripe = new StripeClient()
 

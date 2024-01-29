@@ -9,6 +9,7 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
 	ErrorUnknownItem,
+	isSerializableData,
 	isSerializableObject,
 	SerializableData,
 	SerializableObject
@@ -21,9 +22,17 @@ export type ApiActionOutputError = {
 	error: ApiActionServerSideError
 }
 
+export const isApiActionOutputError = objectTypeGuard<ApiActionOutputError>(
+	({ error }) => isApiActionServerSideError(error)
+)
+
 export type ApiActionOutputData = {
 	data: SerializableData
 }
+
+export const isApiActionOutputData = objectTypeGuard<ApiActionOutputData>(
+	({ data }) => isSerializableData(data)
+)
 
 export type ApiActionOutput = ApiActionOutputData | ApiActionOutputError
 

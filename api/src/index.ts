@@ -9,6 +9,8 @@ export type {
 export {
 	apiActionMethod,
 	isActionInput,
+	isApiActionOutputData,
+	isApiActionOutputError,
 	isApiActionServerSideError
 } from "./action.js"
 export { apiActionRequestInit } from "./client.js"
@@ -52,10 +54,6 @@ export type { ExecutorAction, ExecutorActionInput } from "./executor.js"
 // 	PaymentActionType
 // } from "./payment.js"
 // export { isPaymentActionInput } from "./payment.js"
-export type {
-	ApiAuthEnterResponseData,
-	ApiAuthVerifyResponseData
-} from "./auth.js"
 export {
 	isApiAuthEnterRequestData,
 	isApiAuthEnterResponseData,
@@ -70,9 +68,13 @@ export type {
 } from "./public.js"
 export { isPublicActionInput, publicActions } from "./public.js"
 export type {
-	UserAction,
-	UserActionInput,
-	UserActionOutput,
-	UserActionType
+	UserClientAction,
+	UserClientActionType,
+	UserDatabaseAction,
+	UserDatabaseActionInput,
+	UserDatabaseActionOutput
 } from "./user.js"
-export { isUserActionInput, userActions } from "./user.js"
+export { isUserActionInput, userClientActions } from "./user.js"
+
+// Other providers.
+export type { SendEmailAction, SendEmailActionInput } from "./sendEmail.js"

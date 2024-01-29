@@ -4,7 +4,8 @@ import {
 	ApiActionClientSideError,
 	ApiActionHeaders,
 	apiActionRequestInit,
-	ApiActionServerSideError} from "@workspace/api"
+	ApiActionServerSideError
+} from "@workspace/api"
 import {
 	BAD_GATEWAY__502,
 	BAD_REQUEST__400,
@@ -102,7 +103,7 @@ export const useAction = <
 	}, [])
 
 	const request = useCallback(
-		(inputData: Parameters<Operation>[0]) => {
+		(inputData?: Parameters<Operation>[0]) => {
 			(async function () {
 				const controller = new UseActionAbortController()
 

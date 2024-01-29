@@ -36,6 +36,8 @@
 		"./src/contexts/**/*.tsx",
 		"./src/esbuild/EnvironmentVariables.ts",
 		"./src/esbuild/definitions.ts",
+		"./src/esbuild/environmentVariableNames.ts",
+		"./src/esbuild/errors.ts",
 		"./src/flow/**/*.ts",
 		"./src/hooks/*.ts",
 		"./src/i18n/*.ts",

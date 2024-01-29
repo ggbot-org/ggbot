@@ -10,10 +10,12 @@ import {
 } from "@workspace/api-gateway"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
+import { logging } from "@workspace/logging"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
-import { info, warn } from "./logging.js"
 import { Service } from "./service.js"
+
+const { info, warn } = logging("admin-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {

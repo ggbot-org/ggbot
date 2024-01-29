@@ -5,25 +5,20 @@ import {
 	DocumentProviderLevel2,
 	isAuthClientActionInput as isInput
 } from "@workspace/api"
-import { sendEmail } from "@workspace/aws-ses"
+import { signSession } from "@workspace/authentication"
 import { AuthDatabase } from "@workspace/database"
-import { oneTimePasswordEmailMessage } from "@workspace/email-messages"
-import { ENV } from "@workspace/env"
+import { SendEmailProvider } from "@workspace/email-messages"
 import { BadRequestError } from "@workspace/http"
-import { noReplyEmailAddress } from "@workspace/locators"
-import {
-	createdNow,
-	EmailAddress,
-	Language,
-	OneTimePassword
-} from "@workspace/models"
+import { ClientSession } from "@workspace/models"
+import { today } from "minimal-time-helpers"
 
-// TODO
 export class Service implements ApiService<AuthClientActionType> {
 	dataProvider: AuthDatabase
+	sendEmailProvider: SendEmailProvider
 
 	constructor(documentProvider: DocumentProviderLevel2) {
 		this.dataProvider = new AuthDatabase(documentProvider)
+		this.sendEmailProvider = new SendEmailProvider()
 	}
 
 	async Enter(arg: unknown) {
@@ -31,7 +26,7 @@ export class Service implements ApiService<AuthClientActionType> {
 		const { email } = arg
 		const oneTimePassword =
 			await this.dataProvider.CreateOneTimePassword(email)
-		await this.sendOneTimePassword({
+		await this.sendEmailProvider.SendOneTimePassword({
 			language: "en",
 			email,
 			oneTimePassword
@@ -41,24 +36,43 @@ export class Service implements ApiService<AuthClientActionType> {
 		} satisfies Output["Enter"]
 	}
 
-	async sendOneTimePassword({
-		language,
-		email,
-		oneTimePassword
-	}: {
-		email: EmailAddress
-		oneTimePassword: OneTimePassword
-		language: Language
-	}) {
-		const whenCreated = createdNow()
-		const emailMessage = oneTimePasswordEmailMessage(language, {
-			oneTimePassword
-		})
-		await sendEmail(ENV.AWS_SES_REGION(), {
-			source: noReplyEmailAddress(ENV.DNS_DOMAIN()),
-			toAddresses: [email],
-			...emailMessage
-		})
-		return whenCreated
+	async Verify(arg: unknown) {
+		if (!isInput.Verify(arg)) throw new BadRequestError()
+		const { code, email } = arg
+
+		const output: Output["Verify"] = {
+			token: undefined
+		}
+
+		const storedOneTimePassword =
+			await this.dataProvider.ReadOneTimePassword(email)
+		const verified = code === storedOneTimePassword?.code
+		if (!verified) return output
+
+		await this.dataProvider.DeleteOneTimePassword(email)
+
+		const emailAccount = await this.dataProvider.ReadEmailAccount(email)
+		const creationDay = today()
+
+		if (emailAccount) {
+			// Given email is associated with an account: create a session.
+			const session: ClientSession = {
+				creationDay,
+				accountId: emailAccount.accountId
+			}
+			const token = await signSession(session)
+			output.token = token
+		} else {
+			// Given email is new: create account first, then create a session.
+			const account = await this.dataProvider.CreateAccount(email)
+			const session: ClientSession = {
+				creationDay,
+				accountId: account.id
+			}
+			const token = await signSession(session)
+			output.token = token
+		}
+
+		return output
 	}
 }

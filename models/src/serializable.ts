@@ -38,7 +38,7 @@ export type SerializableData =
 const isSerializableArray = (arg: unknown): arg is SerializableArray =>
 	Array.isArray(arg) && arg.every(isSerializableData)
 
-const isSerializableData = (arg: unknown): arg is SerializableData => {
+export const isSerializableData = (arg: unknown): arg is SerializableData => {
 	if (arg === undefined) return false
 	return (
 		isSerializablePrimitive(arg) ||

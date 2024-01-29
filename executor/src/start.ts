@@ -64,7 +64,7 @@ const start = async () => {
 			await executor.runTasks()
 			await sleep(1000)
 		} catch (error) {
-			console.error(error)
+			warn(error)
 		}
 	}
 }

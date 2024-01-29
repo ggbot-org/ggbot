@@ -1,1 +1,1 @@
-export * from "./oneTimePassword.js"
+export { SendEmailProvider } from "./provider.js"

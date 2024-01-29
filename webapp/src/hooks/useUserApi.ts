@@ -1,8 +1,8 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import {
-	UserAction as Action,
-	UserActionType as ActionType
+	UserClientAction as Action,
+	UserClientActionType as ActionType
 } from "@workspace/api"
 
 const apiOptions: UseActionApiArg = {

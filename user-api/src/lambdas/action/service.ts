@@ -6,7 +6,7 @@ import {
 	BinanceClientActionType,
 	DocumentProviderLevel2,
 	isUserActionInput as isInput,
-	UserActionType
+	UserClientActionType
 } from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
@@ -14,7 +14,7 @@ import { BadRequestError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { AccountKey } from "@workspace/models"
 
-export class Service implements ApiService<UserActionType> {
+export class Service implements ApiService<UserClientActionType> {
 	accountKey: AccountKey
 	dataProvider: UserDatabase
 	authorization: string
@@ -44,7 +44,7 @@ export class Service implements ApiService<UserActionType> {
 
 	CreatePurchaseOrder(arg: unknown) {
 		if (!isInput.CreatePurchaseOrder(arg)) throw new BadRequestError()
-		return this.dataProvider.CreatePurchaseOrder(arg)
+		return this.dataProvider.CreatePurchaseOrder()
 	}
 
 	CreateStrategy(arg: unknown) {

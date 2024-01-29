@@ -50,23 +50,33 @@ export type AuthDatabaseActionOutput = {
 
 type ClientAction = {
 	Enter: (arg: Pick<Account, "email">) => Promise<{ emailSent: boolean }>
+	Verify: (
+		arg: Pick<OneTimePassword, "code"> & { email: EmailAddress }
+	) => Promise<{ token?: string }>
 }
 export type AuthClientActionType = keyof ClientAction
 export const authClientActions: Actions<AuthClientActionType> = [
-	"Enter"
+	"Enter",
+	"Verify"
 ] as const
 
 type ClientInput = {
 	Enter: Parameters<ClientAction["Enter"]>[0]
+	Verify: Parameters<ClientAction["Verify"]>[0]
 }
 
 export type AuthClientActionOutput = {
 	Enter: Awaited<ReturnType<ClientAction["Enter"]>>
+	Verify: Awaited<ReturnType<ClientAction["Verify"]>>
 }
 
 export const isAuthClientActionInput = {
 	Enter: objectTypeGuard<ClientInput["Enter"]>(({ email }) =>
 		isEmailAddress(email)
+	),
+	Verify: objectTypeGuard<ClientInput["Verify"]>(
+		({ code, email }) =>
+			isOneTimePasswordCode(code) && isEmailAddress(email)
 	)
 }
 
@@ -79,7 +89,7 @@ export const isApiAuthEnterRequestData =
 		isEmailAddress(email)
 	)
 
-export type ApiAuthEnterResponseData = {
+type ApiAuthEnterResponseData = {
 	emailSent: boolean
 }
 
@@ -98,7 +108,7 @@ export const isApiAuthVerifyRequestData =
 			isOneTimePasswordCode(code) && isEmailAddress(email)
 	)
 
-export type ApiAuthVerifyResponseData = {
+type ApiAuthVerifyResponseData = {
 	token?: string
 }
 

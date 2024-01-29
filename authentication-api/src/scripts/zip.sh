@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for LAMBDA in enter verify; do
+for LAMBDA in action; do
 	DIST_DIR=dist/$LAMBDA
 
 	# Cleanup previous .zip file.

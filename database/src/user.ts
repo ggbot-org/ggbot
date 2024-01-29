@@ -1,8 +1,8 @@
 import {
 	DocumentProviderLevel2,
-	UserAction,
-	UserActionInput as Input,
-	UserActionOutput as Output
+	UserDatabaseAction,
+	UserDatabaseActionInput as Input,
+	UserDatabaseActionOutput as Output
 } from "@workspace/api"
 import { CacheMap } from "@workspace/cache"
 import {
@@ -33,7 +33,7 @@ import { BinanceDatabase } from "./binance.js"
 import { pathname } from "./locators.js"
 import { PublicDatabase } from "./public.js"
 
-export class UserDatabase implements UserAction {
+export class UserDatabase implements UserDatabaseAction {
 	readonly accountKey: AccountKey
 	readonly documentProvider: DocumentProviderLevel2
 	readonly binanceDatabase: BinanceDatabase

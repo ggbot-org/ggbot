@@ -2,7 +2,9 @@ import {
 	ApiActionHeaders,
 	ApiActionInput,
 	apiActionRequestInit,
-	BinanceClientActionType
+	BinanceClientActionType,
+	isApiActionOutputData,
+	isApiActionOutputError
 } from "@workspace/api"
 import { signSession } from "@workspace/authentication"
 import {
@@ -13,10 +15,12 @@ import {
 	BinanceNewOrderOptions,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
-	BinanceOrderType
+	BinanceOrderType,
+	ErrorBinanceHTTP
 } from "@workspace/binance"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
+import { BadGatewayError, InternalServerError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { Account, ClientSession, SerializableData } from "@workspace/models"
 import { today } from "minimal-time-helpers"
@@ -69,10 +73,22 @@ export class Binance implements DflowBinanceClient {
 		const response = await fetch(this.binanceProxy.action, options)
 		const output: unknown = await response.json()
 
-		if (response.ok) return output as Output
+		if (response.ok) {
+			if (!isApiActionOutputData(output)) throw new BadGatewayError()
 
-		// TODO handle errors from binance
-		return output as Output
+			return output.data as Output
+		}
+
+		if (isApiActionOutputError(output)) {
+			const { error } = output
+			if (error.name === ErrorBinanceHTTP.errorName) {
+				throw new ErrorBinanceHTTP(
+					error.info as ErrorBinanceHTTP["info"]
+				)
+			}
+		}
+
+		throw new InternalServerError()
 	}
 
 	candles(symbol: string, interval: BinanceKlineInterval, limit: number) {

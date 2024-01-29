@@ -27,7 +27,12 @@ export class AuthDatabase implements AuthDatabaseAction {
 			pathname.account({ accountId }),
 			account
 		)
-		await this.createEmailAccount({ accountId, email })
+		const data: EmailAccount = {
+			accountId,
+			email,
+			...createdNow()
+		}
+		await this.documentProvider.setItem(pathname.emailAccount(email), data)
 		return account
 	}
 
@@ -54,18 +59,5 @@ export class AuthDatabase implements AuthDatabaseAction {
 		return this.documentProvider.getItem<Output["ReadOneTimePassword"]>(
 			pathname.oneTimePassword(email)
 		)
-	}
-
-	async createEmailAccount({
-		accountId,
-		email
-	}: Omit<EmailAccount, "whenCreated">) {
-		const creationTime = createdNow()
-		const data: EmailAccount = {
-			accountId,
-			email,
-			...creationTime
-		}
-		await this.documentProvider.setItem(pathname.emailAccount(email), data)
 	}
 }

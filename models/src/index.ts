@@ -79,6 +79,7 @@ export type {
 	SerializablePrimitive
 } from "./serializable.js"
 export {
+	isSerializableData,
 	isSerializableObject,
 	isSerializablePrimitive
 } from "./serializable.js"
