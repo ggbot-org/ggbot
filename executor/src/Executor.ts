@@ -1,13 +1,5 @@
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
-import {
-	listAccountKeys,
-	readAccountStrategies,
-	readSubscription,
-	suspendAccountStrategiesSchedulings,
-	suspendAccountStrategyScheduling,
-	suspendAccountStrategySchedulings,
-	updateAccountStrategySchedulingMemory
-} from "@workspace/database"
+import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
 	AccountKey,
 	AccountStrategy,
@@ -16,18 +8,19 @@ import {
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
 	ErrorUnknownItem,
-	Item,
-	StrategyMemory,
-	StrategyScheduling,
-	Subscription,
 	frequencyIntervalDuration,
 	isAccountKey,
 	isAccountStrategy,
 	isSubscription,
+	Item,
 	itemIdCharacters,
 	newId,
 	statusOfSubscription,
+	StrategyMemory,
+	StrategyScheduling,
+	Subscription
 } from "@workspace/models"
+import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { homedir } from "os"
 import { join } from "path"
@@ -47,6 +40,9 @@ export class Executor {
 	accountKeysCache = new CacheMap<AccountKey[]>(ONE_HOUR)
 	accountStrategiesCache = new CacheMap<AccountStrategy[]>(FIVE_MINUTES)
 	subscriptionsCache = new CacheMap<Subscription>(ONE_HOUR)
+
+	readonly publicDatabase = new PublicDatabase(documentProvider)
+	readonly executorDatabase = new ExecutorDatabase(documentProvider)
 
 	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
@@ -104,7 +100,7 @@ export class Executor {
 		try {
 			const cached = this.cachedAccountKeys.get()
 			if (cached) return cached
-			const data = await listAccountKeys()
+			const data = await this.executorDatabase.ListAccountKeys()
 			this.cachedAccountKeys.set(data)
 			return data
 		} catch (error) {
@@ -123,7 +119,10 @@ export class Executor {
 			const cached = cache.get(key)
 			if (cached) return cached
 			info("readAccountStrategies")
-			const data = (await readAccountStrategies({ accountId })) ?? []
+			const data =
+				(await this.executorDatabase.ReadAccountStrategies({
+					accountId
+				})) ?? []
 			if (!Array.isArray(data)) return accountStrategies
 			for (const item of data)
 				if (isAccountStrategy(item)) accountStrategies.push(item)
@@ -151,7 +150,9 @@ export class Executor {
 			const cached = cache.get(key)
 			if (cached) return statusOfSubscription(cached) === "active"
 			info("readSubscription", accountId)
-			const subscription = await readSubscription({ accountId })
+			const subscription = await this.executorDatabase.ReadSubscription({
+				accountId
+			})
 			if (!isSubscription(subscription)) return false
 			cache.set(key, subscription)
 			return statusOfSubscription(subscription) === "active"
@@ -185,7 +186,9 @@ export class Executor {
 			const { memory, memoryChanged, success } =
 				await executeBinanceStrategy(
 					{ accountId, strategyId },
-					scheduling
+					scheduling,
+					this.publicDatabase,
+					this.executorDatabase
 				)
 			// Suspend strategy scheduling if execution failed.
 			if (!success) {
@@ -220,11 +223,11 @@ export class Executor {
 	async runTasks() {
 		const accountKeys = await this.getAccountKeys()
 		for (const accountKey of accountKeys) {
-			try {
-				// Get account.
-				if (!isAccountKey(accountKey)) continue
-				const { accountId } = accountKey
+			// Get account.
+			if (!isAccountKey(accountKey)) continue
+			const { accountId } = accountKey
 
+			try {
 				// Check subscription or suspend account strategies.
 				const hasActiveSubscription =
 					await this.checkSubscription(accountKey)
@@ -251,7 +254,7 @@ export class Executor {
 			} catch (error) {
 				if (error instanceof ErrorStrategyItemNotFound) {
 					await this.suspendAccountStrategySchedulings({
-						accountId: accountKey.accountId,
+						accountId,
 						strategyId: error.strategyId
 					})
 					continue
@@ -278,7 +281,9 @@ export class Executor {
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await suspendAccountStrategiesSchedulings({ accountId })
+		await this.executorDatabase.SuspendAccountStrategiesSchedulings({
+			accountId
+		})
 	}
 
 	async suspendAccountStrategyScheduling({
@@ -294,7 +299,7 @@ export class Executor {
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await suspendAccountStrategyScheduling({
+		await this.executorDatabase.SuspendAccountStrategyScheduling({
 			accountId,
 			strategyId,
 			schedulingId
@@ -311,7 +316,7 @@ export class Executor {
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await suspendAccountStrategySchedulings({
+		await this.executorDatabase.SuspendAccountStrategySchedulings({
 			accountId,
 			strategyId
 		})
@@ -329,7 +334,7 @@ export class Executor {
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await updateAccountStrategySchedulingMemory({
+		await this.executorDatabase.UpdateAccountStrategySchedulingMemory({
 			accountId,
 			strategyId,
 			schedulingId,

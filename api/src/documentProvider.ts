@@ -1,4 +1,9 @@
-import { DeletionTime, UpdateTime, SerializableData } from "@workspace/models"
+import {
+	DeletionTime,
+	SerializableArray,
+	SerializableData,
+	UpdateTime
+} from "@workspace/models"
 
 /** Provides read-only access to documents. */
 export type DocumentProviderLevel1 = {
@@ -7,12 +12,11 @@ export type DocumentProviderLevel1 = {
 
 /** Provides read-write access to documents. */
 export type DocumentProviderLevel2 = DocumentProviderLevel1 & {
-	setItem(key: string, value: SerializableData): Promise<UpdateTime>
+	setItem(key: string, data: SerializableData): Promise<UpdateTime>
 	removeItem(key: string): Promise<DeletionTime>
 }
 
-// TODO
-// /** Provides documents listing. */
-// type DocumentProviderLevel3  = DocumentProviderLevel2 & {
-// 	listItems(Prefix: string): Promise<SerializableArray>
-// }
+/** Provides documents listing. */
+export type DocumentProviderLevel3 = DocumentProviderLevel2 & {
+	listItems(Prefix: string): Promise<SerializableArray>
+}

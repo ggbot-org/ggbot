@@ -35,7 +35,7 @@ import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Actions } from "./action.js"
-import { BinanceClientActionType } from "./binance.js"
+import { BinanceClientAction, BinanceClientActionType } from "./binance.js"
 
 type Action = {
 	CopyStrategy: (
@@ -52,15 +52,17 @@ type Action = {
 	CreateStrategy: (
 		arg: Omit<NewItem<Strategy>, keyof AccountKey>
 	) => Promise<StrategyKey>
-	DeleteAccount: () => Promise<DeletionTime>
-	DeleteBinanceApiConfig: () => Promise<DeletionTime>
+	DeleteAccount: (arg: void) => Promise<DeletionTime>
+	DeleteBinanceApiConfig: (arg: void) => Promise<DeletionTime>
 	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
-	ReadAccountInfo: () => Promise<AccountInfo | null>
-	ReadAccountStrategies: () => Promise<AccountStrategy[]>
-	ReadBinanceApiKey: () => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
+	ReadAccountInfo: (arg: void) => Promise<AccountInfo | null>
+	ReadAccountStrategies: (arg: void) => Promise<AccountStrategy[]>
+	ReadBinanceApiKey: (
+		arg: void
+	) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
 	// TODO ReadStrategyBalances: ( arg: StrategyKey & DayInterval) => Promise<StrategyBalance[] |null>
 	ReadStrategyOrders: (arg: StrategyKey & DayInterval) => Promise<Order[]>
-	ReadSubscription: () => Promise<Subscription | null>
+	ReadSubscription: (arg: void) => Promise<Subscription | null>
 	RenameAccount: (arg: Required<Pick<Account, "name">>) => Promise<UpdateTime>
 	RenameStrategy: (
 		arg: StrategyKey & Required<Pick<Strategy, "name">>
@@ -80,7 +82,8 @@ type Action = {
 		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
 	) => Promise<UpdateTime>
 }
-export type UserAction = Action
+export type UserAction = Action &
+	Pick<BinanceClientAction, "ReadBinanceAccountApiRestrictions">
 type ActionType =
 	| keyof Action
 	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">

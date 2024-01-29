@@ -3,7 +3,7 @@ import { Account, AccountKey, isAccountKey } from "@workspace/models"
 import { Actions } from "./action.js"
 
 type Action = {
-	ListAccountKeys: () => Promise<AccountKey[]>
+	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 }
 export type AdminAction = Action

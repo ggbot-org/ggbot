@@ -7,7 +7,6 @@ import {
 	BinanceKlineInterval,
 	BinanceOrderRespFULL,
 	BinanceSymbolFilterLotSize,
-	BinanceSymbolFilterMinNotional,
 	BinanceSymbolFilterMinNotional
 } from "./types.js"
 

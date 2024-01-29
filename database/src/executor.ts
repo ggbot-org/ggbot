@@ -1,11 +1,12 @@
 import {
-	DocumentProviderLevel2,
+	DocumentProviderLevel3,
 	ExecutorAction,
 	ExecutorActionInput as Input
 } from "@workspace/api"
 import {
 	AccountDailyOrder,
 	AccountDailyOrdersKey,
+	AccountStrategy,
 	Order,
 	StrategyDailyOrdersKey
 } from "@workspace/models"
@@ -13,7 +14,7 @@ import {
 import { pathname } from "./locators.js"
 
 export class ExecutorDatabase implements ExecutorAction {
-	documentProvider: DocumentProviderLevel2
+	documentProvider: DocumentProviderLevel3
 
 	constructor(documentProvider: ExecutorDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
@@ -41,6 +42,44 @@ export class ExecutorDatabase implements ExecutorAction {
 			pathname.strategyDailyOrders(key),
 			data
 		)
+	}
+
+	ListAccountKeys() {
+		const items: Array<Readonly<{ accountId: string }>> = []
+		return Promise.resolve(items)
+	}
+
+	ReadAccountStrategies(_arg: Input["ReadAccountStrategies"]) {
+		const items: AccountStrategy[] = []
+		return Promise.resolve(items)
+	}
+
+	ReadSubscription(_arg: Input["ReadSubscription"]) {
+		return Promise.resolve(null)
+	}
+
+	SuspendAccountStrategyScheduling(
+		_arg: Input["SuspendAccountStrategyScheduling"]
+	) {
+		return Promise.resolve()
+	}
+
+	SuspendAccountStrategySchedulings(
+		_arg: Input["SuspendAccountStrategySchedulings"]
+	) {
+		return Promise.resolve()
+	}
+
+	SuspendAccountStrategiesSchedulings(
+		_arg: Input["SuspendAccountStrategiesSchedulings"]
+	) {
+		return Promise.resolve()
+	}
+
+	UpdateAccountStrategySchedulingMemory(
+		_arg: Input["UpdateAccountStrategySchedulingMemory"]
+	) {
+		return Promise.resolve()
 	}
 
 	async readAccountDailyOrders(arg: AccountDailyOrdersKey) {

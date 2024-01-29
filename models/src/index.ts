@@ -73,6 +73,7 @@ export {
 	schedulingStatuses
 } from "./scheduling.js"
 export type {
+	SerializableArray,
 	SerializableData,
 	SerializableObject,
 	SerializablePrimitive

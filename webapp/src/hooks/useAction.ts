@@ -2,21 +2,21 @@ import { logging } from "_/logging"
 import { localWebStorage } from "_/storages/local"
 import {
 	ApiActionClientSideError,
-	ApiActionServerSideError
-} from "@workspace/api"
+	ApiActionHeaders,
+	apiActionRequestInit,
+	ApiActionServerSideError} from "@workspace/api"
 import {
-	__400__BAD_REQUEST__,
-	__401__UNAUTHORIZED__,
-	__404__NOT_FOUND__,
-	__500__INTERNAL_SERVER_ERROR__,
-	__502__BAD_GATEWAY__,
+	BAD_GATEWAY__502,
+	BAD_REQUEST__400,
 	BadGatewayError,
 	BadRequestError,
+	INTERNAL_SERVER_ERROR__500,
 	InternalServerError,
+	NOT_FOUND__404,
 	NotFoundError,
+	UNAUTHORIZED__401,
 	UnauthorizedError
 } from "@workspace/http"
-import { ApiActionHeaders, apiActionRequestInit } from "@workspace/models"
 import { useCallback, useState } from "react"
 
 const { info, warn } = logging("use-action")
@@ -103,7 +103,7 @@ export const useAction = <
 
 	const request = useCallback(
 		(inputData: Parameters<Operation>[0]) => {
-			;(async function () {
+			(async function () {
 				const controller = new UseActionAbortController()
 
 				try {
@@ -137,7 +137,7 @@ export const useAction = <
 							JSON.stringify(outputData)
 						)
 						setData(outputData)
-					} else if (response.status === __400__BAD_REQUEST__) {
+					} else if (response.status === BAD_REQUEST__400) {
 						const { error } = await response.json()
 						warn(
 							type,
@@ -161,24 +161,24 @@ export const useAction = <
 						return setError({ name: "Timeout" })
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error === __400__BAD_REQUEST__)
+					if (error === BAD_REQUEST__400)
 						return setError({ name: BadRequestError.errorName })
 
 					// TODO should logout user
-					if (error === __401__UNAUTHORIZED__) {
+					if (error === UNAUTHORIZED__401) {
 						localWebStorage.authToken.delete()
 						return setError({ name: UnauthorizedError.errorName })
 					}
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error === __404__NOT_FOUND__)
+					if (error === NOT_FOUND__404)
 						return setError({ name: NotFoundError.errorName })
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error === __500__INTERNAL_SERVER_ERROR__)
+					if (error === INTERNAL_SERVER_ERROR__500)
 						return setError({ name: InternalServerError.name })
 
-					if (error === __502__BAD_GATEWAY__)
+					if (error === BAD_GATEWAY__502)
 						return setError({ name: BadGatewayError.name })
 
 					warn(error)

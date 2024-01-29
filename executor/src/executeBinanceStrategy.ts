@@ -16,7 +16,6 @@ import {
 	StrategyKey,
 	StrategyScheduling
 } from "@workspace/models"
-import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, today, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "./binance.js"
@@ -25,12 +24,11 @@ const ONE_WEEK = 604_800_000
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
 
-const publicDatabase = new PublicDatabase(documentProvider)
-const executorDatabase = new ExecutorDatabase(documentProvider)
-
 export const executeBinanceStrategy = async (
 	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
-	scheduling: StrategyScheduling
+	scheduling: StrategyScheduling,
+	publicDatabase: PublicDatabase,
+	executorDatabase: ExecutorDatabase
 ): Promise<
 	{ success: boolean } & Pick<DflowCommonContext, "memory" | "memoryChanged">
 > => {

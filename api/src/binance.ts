@@ -20,8 +20,11 @@ type ClientAction = {
 		type: Extract<BinanceOrderType, "MARKET">
 		orderOptions: BinanceNewOrderOptions
 	}) => Promise<BinanceOrderRespFULL>
-	ReadBinanceAccountApiRestrictions: () => Promise<BinanceApiKeyPermissionCriteria>
+	ReadBinanceAccountApiRestrictions: (
+		arg: void
+	) => Promise<BinanceApiKeyPermissionCriteria>
 }
+export type BinanceClientAction = ClientAction
 type ClientActionType = keyof ClientAction
 export type BinanceClientActionType = keyof ClientAction
 export const binanceClientActions: Actions<ClientActionType> = [

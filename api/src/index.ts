@@ -14,7 +14,8 @@ export {
 export { apiActionRequestInit } from "./client.js"
 export type {
 	DocumentProviderLevel1,
-	DocumentProviderLevel2
+	DocumentProviderLevel2,
+	DocumentProviderLevel3
 } from "./documentProvider.js"
 export { ApiActionHeaders } from "./headers.js"
 export type { ApiService } from "./service.js"

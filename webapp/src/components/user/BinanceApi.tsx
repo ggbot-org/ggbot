@@ -28,7 +28,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 	const [permissions, setPermissions] =
 		useState<BinanceApiKeyPermissionsProps["permissions"]>()
 
-	const READ = useUserApi.ReadBinanceApiKeyPermissions()
+	const READ = useUserApi.ReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending
 
 	const onSubmit = useCallback<FormOnSubmit>(
