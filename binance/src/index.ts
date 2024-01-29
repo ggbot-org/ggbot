@@ -15,7 +15,6 @@ export { isBinanceFill, isBinanceOrderRespFULL } from "./typeGuards.js"
 export type {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
-	BinanceErrorPayload,
 	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,

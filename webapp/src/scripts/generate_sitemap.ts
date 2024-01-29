@@ -1,8 +1,9 @@
-import { sitemap as filePath } from "_/package"
 import { ENV } from "@workspace/env"
 import { WebappURLs } from "@workspace/locators"
-import { dayToDate,today } from "minimal-time-helpers"
+import { dayToDate, today } from "minimal-time-helpers"
 import writeFile from "write-file-utf8"
+
+import { sitemap as filePath } from "../package.js"
 
 const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
 const lastmod = dayToDate(today()).toISOString()

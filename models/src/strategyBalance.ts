@@ -1,5 +1,10 @@
-import { Day } from "minimal-time-helpers"
+// TODO
+// import { Day } from "minimal-time-helpers"
+// import { Balance } from "./balance.js"
+// import { CreationTime } from "./time.js"
 
-import { BalanceChangeEvent } from "./balanceChangeEvent.js"
+// type BalanceChangeEvent = CreationTime & {
+// 	balances: Balance[]
+// }
 
-export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }
+// export type StrategyBalance = { day: Day; data: BalanceChangeEvent[] }

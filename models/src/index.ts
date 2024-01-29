@@ -51,11 +51,9 @@ export type { Item, NewItem } from "./item.js"
 export { itemIdCharacters, newId, nullId } from "./item.js"
 export type { Language } from "./languages.js"
 export { defaultLanguage, languages } from "./languages.js"
-export type { Name } from "./name.js"
 export { isName, normalizeName } from "./name.js"
 export type { NaturalNumber } from "./numbers.js"
 export { isFiniteNumber, isNaturalNumber } from "./numbers.js"
-export type { EmptyObject } from "./objects.js"
 export type { OneTimePassword } from "./oneTimePassword.js"
 export {
 	generateOneTimePassword,
@@ -90,7 +88,6 @@ export {
 	newStrategy,
 	nullStrategyKey
 } from "./strategy.js"
-export type { StrategyBalance } from "./strategyBalance.js"
 export type { StrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
 export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
 export type { StrategyDailyOrdersKey } from "./strategyDailyOrders.js"
