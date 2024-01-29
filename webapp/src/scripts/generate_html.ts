@@ -8,11 +8,11 @@ import {
 } from "@workspace/locators"
 import write from "write-file-utf8"
 
-import { html } from "../html.js"
-import { publicDir, webappEcmaScriptsConfig } from "../package.js"
-import { adminHtmlPathnames } from "../routing/admin/pages.js"
-import { designShowcaseHtmlPathname } from "../routing/design/pages.js"
-import { settingsHtmlPathname } from "../routing/user/pages.js"
+import { html } from "_/html"
+import { publicDir, webappEcmaScriptsConfig } from "_/package"
+import { adminHtmlPathnames } from "_/routing/admin/pages.js"
+import { designShowcaseHtmlPathname } from "_/routing/design/pages.js"
+import { settingsHtmlPathname } from "_/routing/user/pages.js"
 
 const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
 

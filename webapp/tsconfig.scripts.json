@@ -2,28 +2,30 @@
 	"compilerOptions": {
 		"outDir": "./temp",
 		"paths": {
+			"_/*": ["./src/*"],
+			"_/html": ["./src/html.ts"],
+			"_/package": ["./src/package.ts"],
 			"_/react/root": ["./src/react/root.ts"],
-			"_/routing/*": ["./src/routing/*"],
 			"_/workers": ["./src/workers/index.ts"]
 		},
 		"rootDir": "./src",
 		"tsBuildInfoFile": "temp/tsconfig.scripts.tsbuildinfo"
 	},
-	"extends": "@workspace/tsconfig",
+	"extends": "@workspace/tsconfig/default",
 	"include": [
-		"src/dirnames.ts",
-		"src/ecmaScripts.ts",
-		"src/esbuild/*.ts",
-		"src/html.ts",
-		"src/i18n/FormatjsIntlMessageIds.ts",
-		"src/i18n/locales.ts",
-		"src/package.ts",
-		"src/react/root.ts",
-		"src/routing/admin/pages.ts",
-		"src/routing/design/pages.ts",
-		"src/routing/user/pages.ts",
-		"src/routing/user/types.ts",
-		"src/scripts/*.ts",
-		"src/workers/index.ts"
+		"./src/dirnames.ts",
+		"./src/ecmaScripts.ts",
+		"./src/esbuild/*.ts",
+		"./src/html.ts",
+		"./src/i18n/FormatjsIntlMessageIds.ts",
+		"./src/i18n/locales.ts",
+		"./src/package.ts",
+		"./src/react/root.ts",
+		"./src/routing/admin/pages.ts",
+		"./src/routing/design/pages.ts",
+		"./src/routing/user/pages.ts",
+		"./src/routing/user/types.ts",
+		"./src/scripts/*.ts",
+		"./src/workers/index.ts"
 	]
 }

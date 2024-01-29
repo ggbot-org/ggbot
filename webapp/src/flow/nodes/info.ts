@@ -37,7 +37,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
 	initContent() {
 		// TODO update FlowViewNode definition
 		// should be also a generic like createElement<HTMLTextAreaElement>
-		// @ts-ignore
+		// @ts-expect-error
 		const textarea = this.createElement("textarea")
 		this.textarea = textarea
 
@@ -53,7 +53,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
 			if (this.text !== textarea.value) {
 				this.text = textarea.value
 				// TODO update FlowViewNode definition
-				// @ts-ignore
+				// @ts-expect-error
 				this.view.host.viewChange({ updatedNode: this.toObject() })
 			}
 			this.view.deselectNode(this)

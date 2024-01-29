@@ -26,10 +26,5 @@
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@workspace/eslint-config"
-    ]
   }
 }

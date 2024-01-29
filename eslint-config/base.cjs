@@ -1,6 +1,8 @@
 module.exports = {
 	env: { browser: false, es2020: true, node: true },
-	extends: ["eslint:recommended", "plugin:@typescript-eslint/strict"],
+	extends: ["eslint:recommended", "plugin:@typescript-eslint/strict",
+		"plugin:@typescript-eslint/recommended-type-checked"
+	],
 	parser: "@typescript-eslint/parser",
 	plugins: [
 		"@typescript-eslint",

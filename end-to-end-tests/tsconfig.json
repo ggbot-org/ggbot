@@ -1,4 +1,4 @@
 {
-	"extends": "@workspace/tsconfig",
+	"extends": "@workspace/tsconfig/default",
 	"include": ["./playwright.config.ts", "./src/**/*.ts"]
 }

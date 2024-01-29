@@ -7,9 +7,9 @@ import writeFile from "write-file-utf8"
 import {
 	FormatjsIntlMessageIdsContent,
 	FormatjsIntlMessageIdsFilename
-} from "../i18n/FormatjsIntlMessageIds.js"
-import { translationPathname } from "../i18n/locales.js"
-import { packageDir, typesDir } from "../package.js"
+} from "_/i18n/FormatjsIntlMessageIds.js"
+import { translationPathname } from "_/i18n/locales.js"
+import { packageDir, typesDir } from "_/package"
 
 const defaultTranslation = await readFile(
 	join(packageDir, translationPathname(defaultLanguage))

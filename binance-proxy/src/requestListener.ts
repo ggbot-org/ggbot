@@ -24,6 +24,8 @@ import { binanceRequestHandler } from "./binanceRequestHandler.js"
 import { getElasticIp } from "./elasticIp.js"
 import { warn } from "./logging.js"
 
+const ContentTypeJSON =  {'Content-Type': 'application/json'}
+
 export const requestListener = (
 	request: IncomingMessage,
 	response: ServerResponse
@@ -70,7 +72,7 @@ export const requestListener = (
 			binanceRequestHandler(request.headers, body)
 				.then((data) => {
 					const output: ApiActionOutputData = { data }
-					response.writeHead(OK__200)
+					response.writeHead(OK__200, ContentTypeJSON)
 					response.write(JSON.stringify(output))
 				})
 				.catch((error) => {
@@ -85,7 +87,7 @@ export const requestListener = (
 					}
 
 					if (error instanceof ErrorBinanceHTTP) {
-						response.writeHead(BAD_GATEWAY__502)
+						response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
 						const output: ApiActionOutputError = {
 							error: {
 								name: BadRequestError.errorName,

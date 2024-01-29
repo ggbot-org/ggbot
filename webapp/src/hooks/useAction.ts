@@ -23,14 +23,14 @@ import { useCallback, useState } from "react"
 const { info, warn } = logging("use-action")
 
 class UseActionAbortController extends AbortController {
-	timeoutId = 0
+	timeoutId: ReturnType<typeof setTimeout>
 
-	constructor() {
+	constructor(timeout = 10_000) {
 		super()
 
-		this.timeoutId = window.setTimeout(() => {
+		this.timeoutId = setTimeout(() => {
 			this.abort()
-		}, 10000)
+		}, timeout)
 
 		this.signal.addEventListener("abort", () => {
 			this.clearTimeout()
@@ -38,7 +38,7 @@ class UseActionAbortController extends AbortController {
 	}
 
 	clearTimeout() {
-		window.clearTimeout(this.timeoutId)
+		clearTimeout(this.timeoutId)
 	}
 }
 

@@ -7,5 +7,5 @@
 		"target": "esnext"
 	},
 	"extends": "@workspace/tsconfig/default",
-	"include": ["./src/**/*.ts"]
+	"include": ["./.eslintrc.cjs", "./base.cjs"]
 }

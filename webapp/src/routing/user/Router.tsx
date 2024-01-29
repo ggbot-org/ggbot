@@ -9,12 +9,12 @@ import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
 import { settingsHtmlPathname } from "_/routing/user/pages"
 import { webapp } from "_/routing/webapp"
-import { WebappPagePathname } from "@workspace/locators"
+import { webappPagePathname } from "@workspace/locators"
 import { nullStrategyKey } from "@workspace/models"
 import { FC } from "react"
 
 const Router: FC = () => {
-	const pathname = window.location.pathname
+	const pathname = globalThis.location.pathname
 
 	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
 
@@ -33,10 +33,10 @@ const Router: FC = () => {
 	if (pathname === settingsHtmlPathname("binance"))
 		return <BinanceSettingsPage />
 
-	if (pathname === WebappPagePathname.purchaseCanceled)
+	if (pathname === webappPagePathname.purchaseCanceled)
 		return <PurchaseCanceledPage />
 
-	if (pathname === WebappPagePathname.subscriptionPurchased)
+	if (pathname === webappPagePathname.subscriptionPurchased)
 		return <SubscriptionPurchasedPage />
 
 	return null

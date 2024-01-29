@@ -20,18 +20,13 @@
     "test": "node --test",
     "tsc:scripts": "tsc --build tsconfig.scripts.json"
   },
+  "dependencies": {
+    "type-fest": "4.8.1"
+  },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
     "read-file-utf8": "3.0.0",
     "write-file-utf8": "3.0.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@workspace/eslint-config"
-    ]
-  },
-  "dependencies": {
-    "type-fest": "4.8.1"
   }
 }

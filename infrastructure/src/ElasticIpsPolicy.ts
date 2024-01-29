@@ -1,5 +1,6 @@
 import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
+
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
 
 const statementNames = [

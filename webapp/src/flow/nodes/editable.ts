@@ -3,40 +3,40 @@ import { FlowViewNode } from "flow-view"
 export class FlowViewNodeEditable extends FlowViewNode {
 	isEditing: boolean | undefined
 
-	// @ts-ignore
+	// @ts-expect-error
 	init(arg) {
-		// @ts-ignore
+		// @ts-expect-error
 		super.init(arg)
 
-		// @ts-ignore
+		// @ts-expect-error
 		this.contentDiv.style.outline = "none"
 
-		// @ts-ignore
+		// @ts-expect-error
 		this._onDblclick = this.onDblclick.bind(this)
-		// @ts-ignore
+		// @ts-expect-error
 		this.element.addEventListener("dblclick", this._onDblclick)
 	}
 
 	dispose() {
-		// @ts-ignore
+		// @ts-expect-error
 		this.element.removeEventListener("dblclick", this._onDblclick)
 		this.disposeEditor()
-		// @ts-ignore
+		// @ts-expect-error
 		super.dispose()
 	}
 
 	disposeEditor() {
 		if (!this.isEditing) return
 
-		// @ts-ignore
+		// @ts-expect-error
 		this.contentDiv.removeAttribute("contenteditable")
-		// @ts-ignore
+		// @ts-expect-error
 		this.contentDiv.removeEventListener("blur", this._onBlur)
-		// @ts-ignore
+		// @ts-expect-error
 		this._onBlur = undefined
-		// @ts-ignore
+		// @ts-expect-error
 		this.contentDiv.removeEventListener("keydown", this._onKeydown)
-		// @ts-ignore
+		// @ts-expect-error
 		this._onKeydown = undefined
 
 		this.isEditing = false
@@ -46,7 +46,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		event.stopPropagation()
 		if (this.isEditing) return
 
-		// @ts-ignore
+		// @ts-expect-error
 		const { contentDiv } = this
 
 		contentDiv.setAttribute("contenteditable", true)
@@ -64,13 +64,13 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		// TODO use handleEvent()
 		// TODO remove all ts-ignore
 
-		// @ts-ignore
+		// @ts-expect-error
 		this._onKeydown = this.onKeydown.bind(this)
-		// @ts-ignore
+		// @ts-expect-error
 		contentDiv.addEventListener("keydown", this._onKeydown)
-		// @ts-ignore
+		// @ts-expect-error
 		this._onBlur = this.onBlur.bind(this)
-		// @ts-ignore
+		// @ts-expect-error
 		contentDiv.addEventListener("blur", this._onBlur)
 
 		contentDiv.focus()
@@ -79,16 +79,16 @@ export class FlowViewNodeEditable extends FlowViewNode {
 	onBlur(event: FocusEvent) {
 		event.stopPropagation()
 		const {
-			// @ts-ignore
+			// @ts-expect-error
 			contentDiv: { textContent },
 			text
 		} = this
 		if (textContent && text !== textContent) {
 			this.text = textContent
-			// @ts-ignore
+			// @ts-expect-error
 			this.view.host.viewChange({ updatedNode: this.toObject() })
 		} else {
-			// @ts-ignore
+			// @ts-expect-error
 			this.contentDiv.textContent = text
 		}
 		this.disposeEditor()
@@ -99,7 +99,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
 
 		switch (event.code) {
 			case "Enter":
-				// @ts-ignore
+				// @ts-expect-error
 				this.contentDiv.blur()
 				break
 			default:

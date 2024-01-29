@@ -182,11 +182,11 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 			if (READ.error.name === BadGatewayError.errorName) {
 				// Re-fetch.
-				const timeoutId = window.setTimeout(() => {
+				const timeoutId = setTimeout(() => {
 					READ.reset()
 				}, 5000)
 				return () => {
-					window.clearTimeout(timeoutId)
+					clearTimeout(timeoutId)
 				}
 			}
 		}

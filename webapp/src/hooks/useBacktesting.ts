@@ -1,5 +1,6 @@
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { logging } from "_/logging"
+import { workerScriptPath } from "_/workers"
 import {
 	BacktestingMessageInData,
 	BacktestingMessageOutData,
@@ -8,8 +9,6 @@ import {
 import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
 import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
-
-import { workerScriptPath } from "_/workers"
 
 type Action =
 	| BacktestingMessageInData
