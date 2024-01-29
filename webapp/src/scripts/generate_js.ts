@@ -1,7 +1,7 @@
 import { join } from "node:path"
 
-import { browserBundle } from "../esbuild/browserBundle.js"
-import { publicDir, webappEcmaScriptsConfig } from "../package.js"
+import { browserBundle } from "_/esbuild/browserBundle"
+import { publicDir, webappEcmaScriptsConfig } from "_/package"
 
 for (const { entryPoint, jsPath } of Object.values(webappEcmaScriptsConfig))
 	await browserBundle({

@@ -140,10 +140,11 @@ export class WebappURLs {
 		}
 	}
 
-	strategy(strategyKey: StrategyKey) {
-		return appendStrategyKeyToURLSearchParams(
-			strategyKey,
-			new URL(webappPagePathname.strategy, this.baseURL)
-		)
+	strategy(strategyKey?: StrategyKey) {
+		const url = new URL(webappPagePathname.strategy, this.baseURL)
+
+		return strategyKey
+			? appendStrategyKeyToURLSearchParams(strategyKey, url)
+			: url
 	}
 }

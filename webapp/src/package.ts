@@ -9,6 +9,7 @@ export const packageDir = resolve(
 )
 
 export const publicDir = join(packageDir, "public")
+export const sitemap = join(publicDir, "sitemap.xml")
 
 const srcDir = join(packageDir, "src")
 

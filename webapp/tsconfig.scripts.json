@@ -4,6 +4,7 @@
 		"paths": {
 			"_/*": ["./src/*"],
 			"_/html": ["./src/html.ts"],
+			"_/esbuild/browserBundle": ["./src/esbuild/browserBundle.ts"],
 			"_/package": ["./src/package.ts"],
 			"_/react/root": ["./src/react/root.ts"],
 			"_/workers": ["./src/workers/index.ts"]
