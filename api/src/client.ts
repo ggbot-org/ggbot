@@ -1,18 +1,87 @@
-import { ApiActionInput, apiActionMethod } from "./action.js"
-import { ApiActionHeaders } from "./headers.js"
+import {
+	BadRequestError,
+	GatewayTimeoutError,
+	InternalServerError,
+	UnauthorizedError
+} from "@workspace/http"
 
-export const apiActionRequestInit = <ActionType extends string>({
-	headers,
-	type,
-	data,
-	...rest
-}: Omit<RequestInit, "method" | "body" | "headers"> &
-	ApiActionInput<ActionType> & {
-		headers: ApiActionHeaders
-	}) => ({
-	body: JSON.stringify({ type, data }),
-	headers,
-	method: apiActionMethod,
-	...rest
-})
+import {
+	ActionInput,
+	ApiActionOutput,
+	isApiActionOutputData,
+	isApiActionOutputError
+} from "./action.js"
+import { apiActionMethod } from "./api.js"
+import { GenericError, TimeoutError } from "./errors.js"
 
+export class ClientActionHeaders extends Headers {
+	constructor() {
+		super({
+			Accept: "application/json",
+			"Content-Type": "application/json"
+		})
+	}
+	appendAuthorization(token: string) {
+		this.append("Authorization", token)
+	}
+}
+
+class ActionAbortController extends AbortController {
+	timeoutId: ReturnType<typeof setTimeout>
+
+	constructor(timeout = 10_000) {
+		super()
+
+		this.timeoutId = setTimeout(() => {
+			this.abort()
+		}, timeout)
+
+		this.signal.addEventListener("abort", () => {
+			this.clearTimeout()
+		})
+	}
+
+	clearTimeout() {
+		clearTimeout(this.timeoutId)
+	}
+}
+
+export const clientAction = async <ActionType extends string>(
+	url: URL | string,
+	headers: ClientActionHeaders,
+	{ type, data }: ActionInput<ActionType>
+): Promise<ApiActionOutput> => {
+	const controller = new ActionAbortController()
+
+	const response = await fetch(url, {
+		body: JSON.stringify({ type, data }),
+		headers,
+		method: apiActionMethod,
+		signal: controller.signal
+	})
+
+	if (controller.signal.aborted) throw new TimeoutError()
+	controller.clearTimeout()
+
+	try {
+		const output: unknown = await response.json()
+
+		if (!response.ok) {
+			if (isApiActionOutputError(output)) return output
+			throw response.status
+		}
+
+		if (isApiActionOutputData(output)) return output
+		throw new GenericError()
+	} catch (error) {
+		for (const ErrorClass of [
+			BadRequestError,
+			InternalServerError,
+			GatewayTimeoutError,
+			UnauthorizedError
+		])
+			if (error === ErrorClass.statusCode) throw new ErrorClass()
+
+		throw new GenericError()
+	}
+}

@@ -1,53 +1,35 @@
 import { logging } from "_/logging"
 import { localWebStorage } from "_/storages/local"
 import {
+	ActionIO,
 	ApiActionClientSideError,
-	ApiActionHeaders,
-	apiActionRequestInit,
-	ApiActionServerSideError
+	ApiActionServerSideError,
+	clientAction,
+	ClientActionHeaders,
+	GenericError,
+	isApiActionOutputData,
+	isApiActionOutputError,
+	TimeoutError
 } from "@workspace/api"
 import {
-	BAD_GATEWAY__502,
-	BAD_REQUEST__400,
 	BadGatewayError,
 	BadRequestError,
-	INTERNAL_SERVER_ERROR__500,
 	InternalServerError,
-	NOT_FOUND__404,
-	NotFoundError,
-	UNAUTHORIZED__401,
 	UnauthorizedError
 } from "@workspace/http"
 import { useCallback, useState } from "react"
 
 const { info, warn } = logging("use-action")
 
-class UseActionAbortController extends AbortController {
-	timeoutId: ReturnType<typeof setTimeout>
-
-	constructor(timeout = 10_000) {
-		super()
-
-		this.timeoutId = setTimeout(() => {
-			this.abort()
-		}, timeout)
-
-		this.signal.addEventListener("abort", () => {
-			this.clearTimeout()
-		})
-	}
-
-	clearTimeout() {
-		clearTimeout(this.timeoutId)
-	}
-}
-
 export type UseActionError =
 	| ApiActionClientSideError
 	| ApiActionServerSideError
 	| undefined
 
-export type UseActionApiArg = { endpoint: string; withAuth?: boolean }
+export type UseActionApiArg = {
+	url: Parameters<typeof clientAction>[0]
+	withAuth?: boolean
+}
 
 /**
  * Hook to use API actions:
@@ -59,8 +41,6 @@ export type UseActionApiArg = { endpoint: string; withAuth?: boolean }
  * @example
  *
  * ```ts
- * const endpoint = "/api/action"
- *
  * type ActionType = "FooBar"
  * type Input = {
  * 	param: string
@@ -68,7 +48,7 @@ export type UseActionApiArg = { endpoint: string; withAuth?: boolean }
  * type Operation = (arg: Input) => Promise<void>
  *
  * export const FooBar = useAction<Operation, ActionType>(
- * 	{ endpoint },
+ * 	{ url: "http://api.example.com/action" },
  * 	"FooBar"
  * )
  * ```
@@ -84,15 +64,14 @@ export type UseActionApiArg = { endpoint: string; withAuth?: boolean }
  * ```
  */
 export const useAction = <
-	Operation extends (...args: any[]) => Promise<unknown>,
-	ActionType extends string
+	ActionType extends string,
+	Input extends ActionIO,
+	Output extends ActionIO
 >(
-	{ endpoint, withAuth }: UseActionApiArg,
+	{ url, withAuth }: UseActionApiArg,
 	type: ActionType
 ) => {
-	const [data, setData] = useState<
-		Awaited<ReturnType<Operation>> | undefined
-	>()
+	const [data, setData] = useState<Output | undefined>()
 	const [error, setError] = useState<UseActionError>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
 
@@ -103,12 +82,10 @@ export const useAction = <
 	}, [])
 
 	const request = useCallback(
-		(inputData?: Parameters<Operation>[0]) => {
+		(inputData?: Input) => {
 			(async function () {
-				const controller = new UseActionAbortController()
-
 				try {
-					const headers = new ApiActionHeaders()
+					const headers = new ClientActionHeaders()
 					if (withAuth) {
 						const token = localWebStorage.authToken.get()
 						if (token) {
@@ -120,35 +97,30 @@ export const useAction = <
 						}
 					}
 
-					const options = apiActionRequestInit({
+					setIsPending(true)
+					const output = await clientAction(url, headers, {
 						type,
-						data,
-						headers,
-						signal: controller.signal
+						data
 					})
 
-					setIsPending(true)
-					const response = await fetch(endpoint, options)
-
-					if (response.ok) {
-						const { data: outputData } = await response.json()
+					if (isApiActionOutputData(output)) {
+						const { data: outputData } = output
 						info(
 							type,
 							JSON.stringify(inputData),
 							JSON.stringify(outputData)
 						)
-						setData(outputData)
-					} else if (response.status === BAD_REQUEST__400) {
-						const { error } = await response.json()
+						setData(outputData as Output)
+					}
+
+					if (isApiActionOutputError(output)) {
+						const { error } = output
 						warn(
 							type,
 							JSON.stringify(inputData),
 							JSON.stringify(error)
 						)
 						setError(error)
-					} else {
-						warn(type, response.status)
-						throw response.status
 					}
 				} catch (error) {
 					// This AbortError is called on component unmount.
@@ -158,42 +130,39 @@ export const useAction = <
 					)
 						return
 
-					if (controller.signal.aborted)
-						return setError({ name: "Timeout" })
+					if (error instanceof TimeoutError)
+						return setError({ name: TimeoutError.errorName })
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error === BAD_REQUEST__400)
+					if (error instanceof BadRequestError)
 						return setError({ name: BadRequestError.errorName })
 
 					// TODO should logout user
-					if (error === UNAUTHORIZED__401) {
+					if (error === UnauthorizedError) {
 						localWebStorage.authToken.delete()
 						return setError({ name: UnauthorizedError.errorName })
 					}
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error === NOT_FOUND__404)
-						return setError({ name: NotFoundError.errorName })
-
-					// TODO consider using a toast to display: Something went wrong
-					if (error === INTERNAL_SERVER_ERROR__500)
+					if (error instanceof InternalServerError)
 						return setError({ name: InternalServerError.name })
 
-					if (error === BAD_GATEWAY__502)
+					// TODO in case of test Binance error a toast and the proxy is down
+					// the toast should say contact support.
+					if (error instanceof BadGatewayError)
 						return setError({ name: BadGatewayError.name })
 
 					warn(error)
-					setError({ name: "GenericError" })
+					setError({ name: GenericError.errorName })
 				} finally {
-					controller.clearTimeout()
 					setIsPending(false)
 				}
 			})().catch((error) => {
 				warn(error)
-				setError({ name: "GenericError" })
+				setError({ name: GenericError.errorName })
 			})
 		},
-		[data, endpoint, type, withAuth]
+		[data, url, type, withAuth]
 	)
 
 	const isDone = data !== undefined

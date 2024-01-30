@@ -1,16 +1,17 @@
 import {
-	ApiActionHeaders,
-	apiActionRequestInit,
+	ActionInput,
 	ApiService,
-	BinanceClientActionOutput,
 	BinanceClientActionType,
+	clientAction,
+	ClientActionHeaders,
 	DocumentProviderLevel2,
-	isUserActionInput as isInput,
+	isUserClientActionInput as isInput,
+	TimeoutError,
 	UserClientActionType
 } from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
-import { BadRequestError } from "@workspace/http"
+import { BadRequestError, GatewayTimeoutError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { AccountKey } from "@workspace/models"
 
@@ -73,20 +74,10 @@ export class Service implements ApiService<UserClientActionType> {
 		return this.dataProvider.ReadAccountStrategies()
 	}
 
-	async ReadBinanceAccountApiRestrictions() {
-		const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
-		const headers = new ApiActionHeaders()
-		headers.appendAuthorization(this.authorization)
-		const options = apiActionRequestInit<BinanceClientActionType>({
-			type: "ReadBinanceAccountApiRestrictions",
-			headers
+	ReadBinanceAccountApiRestrictions() {
+		return this.binanceClientAction({
+			type: "ReadBinanceAccountApiRestrictions"
 		})
-		const response = await fetch(binanceProxy.action, options)
-		const output: unknown = await response.json()
-		if (response.ok)
-			return output as BinanceClientActionOutput["ReadBinanceAccountApiRestrictions"]
-		// TODO handle errors from binance
-		throw new BadRequestError()
 	}
 
 	ReadBinanceApiKey() {
@@ -126,5 +117,25 @@ export class Service implements ApiService<UserClientActionType> {
 	WriteStrategyFlow(arg: unknown) {
 		if (!isInput.WriteStrategyFlow(arg)) throw new BadRequestError()
 		return this.dataProvider.WriteStrategyFlow(arg)
+	}
+
+	async binanceClientAction({ type }: ActionInput<BinanceClientActionType>) {
+		const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
+
+		const headers = new ClientActionHeaders()
+		headers.appendAuthorization(this.authorization)
+
+		try {
+			const output = await clientAction<BinanceClientActionType>(
+				binanceProxy.action,
+				headers,
+				{ type }
+			)
+			return output
+		} catch (error) {
+			if (error instanceof TimeoutError) throw new GatewayTimeoutError()
+			// TODO handle errors from binance
+			throw error
+		}
 	}
 }

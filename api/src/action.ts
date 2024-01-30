@@ -16,7 +16,16 @@ import {
 } from "@workspace/models"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
-export type Actions<ActionType extends string> = Readonly<ActionType[]>
+import { GenericError, TimeoutError } from "./errors.js"
+
+export type ActionIO = void | SerializableData
+
+// TODO use it in all apis: user, admin, etc
+export type Action<Input extends ActionIO, Output extends ActionIO> = (
+	arg: Input
+) => Promise<Output>
+
+export type ActionTypes<ActionType extends string> = Readonly<ActionType[]>
 
 export type ApiActionOutputError = {
 	error: ApiActionServerSideError
@@ -72,8 +81,8 @@ const apiActionClientSideErrorNames = [
 	BadRequestError.errorName,
 	UnauthorizedError.errorName,
 	NotFoundError.errorName,
-	"GenericError",
-	"Timeout"
+	GenericError.errorName,
+	TimeoutError.errorName
 ] as const
 type ApiActionClientSideErrorName =
 	(typeof apiActionClientSideErrorNames)[number]
@@ -82,9 +91,7 @@ export type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName
 }
 
-export const apiActionMethod = "POST"
-
-export type ApiActionInput<ActionType extends string> = {
+export type ActionInput<ActionType extends string> = {
 	type: ActionType
 	data?: unknown
 }
@@ -92,6 +99,6 @@ export type ApiActionInput<ActionType extends string> = {
 export const isActionInput = <ActionType extends string>(
 	actionTypes: readonly ActionType[]
 ) =>
-	objectTypeGuard<ApiActionInput<ActionType>>(({ type }) =>
+	objectTypeGuard<ActionInput<ActionType>>(({ type }) =>
 		isLiteralType<ActionType>(actionTypes)(type)
 	)

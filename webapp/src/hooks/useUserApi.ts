@@ -1,110 +1,122 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import {
-	UserClientAction as Action,
+	UserClientActionInput as Input,
+	UserClientActionOutput as Output,
 	UserClientActionType as ActionType
 } from "@workspace/api"
 
 const apiOptions: UseActionApiArg = {
-	endpoint: api.user.action.href,
+	url: api.user.action,
 	withAuth: true
 }
 
 export const useUserApi = {
 	CopyStrategy: () =>
-		useAction<Action["CopyStrategy"], ActionType>(
+		useAction<ActionType, Input["CopyStrategy"], Output["CopyStrategy"]>(
 			apiOptions,
 			"CopyStrategy"
 		),
 	CreateBinanceApiConfig: () =>
-		useAction<Action["CreateBinanceApiConfig"], ActionType>(
-			apiOptions,
-			"CreateBinanceApiConfig"
-		),
+		useAction<
+			ActionType,
+			Input["CreateBinanceApiConfig"],
+			Output["CreateBinanceApiConfig"]
+		>(apiOptions, "CreateBinanceApiConfig"),
 	CreatePurchaseOrder: () =>
-		useAction<Action["CreatePurchaseOrder"], ActionType>(
-			apiOptions,
-			"CreatePurchaseOrder"
-		),
+		useAction<
+			ActionType,
+			Input["CreatePurchaseOrder"],
+			Output["CreatePurchaseOrder"]
+		>(apiOptions, "CreatePurchaseOrder"),
 	CreateStrategy: () =>
-		useAction<Action["CreateStrategy"], ActionType>(
-			apiOptions,
-			"CreateStrategy"
-		),
+		useAction<
+			ActionType,
+			Input["CreateStrategy"],
+			Output["CreateStrategy"]
+		>(apiOptions, "CreateStrategy"),
 	DeleteAccount: () =>
-		useAction<Action["DeleteAccount"], ActionType>(
+		useAction<ActionType, Input["DeleteAccount"], Output["DeleteAccount"]>(
 			apiOptions,
 			"DeleteAccount"
 		),
 	DeleteBinanceApiConfig: () =>
-		useAction<Action["DeleteBinanceApiConfig"], ActionType>(
-			apiOptions,
-			"DeleteBinanceApiConfig"
-		),
+		useAction<
+			ActionType,
+			Input["DeleteBinanceApiConfig"],
+			Output["DeleteBinanceApiConfig"]
+		>(apiOptions, "DeleteBinanceApiConfig"),
 	DeleteStrategy: () =>
-		useAction<Action["DeleteStrategy"], ActionType>(
-			apiOptions,
-			"DeleteStrategy"
-		),
+		useAction<
+			ActionType,
+			Input["DeleteStrategy"],
+			Output["DeleteStrategy"]
+		>(apiOptions, "DeleteStrategy"),
 	ReadAccountInfo: () =>
-		useAction<Action["ReadAccountInfo"], ActionType>(
-			apiOptions,
-			"ReadAccountInfo"
-		),
+		useAction<
+			ActionType,
+			Input["ReadAccountInfo"],
+			Output["ReadAccountInfo"]
+		>(apiOptions, "ReadAccountInfo"),
 	ReadAccountStrategies: () =>
-		useAction<Action["ReadAccountStrategies"], ActionType>(
-			apiOptions,
-			"ReadAccountStrategies"
-		),
+		useAction<
+			ActionType,
+			Input["ReadAccountStrategies"],
+			Output["ReadAccountStrategies"]
+		>(apiOptions, "ReadAccountStrategies"),
 	ReadBinanceAccountApiRestrictions: () =>
-		useAction<Action["ReadBinanceAccountApiRestrictions"], ActionType>(
-			apiOptions,
-			"ReadBinanceAccountApiRestrictions"
-		),
+		useAction<
+			ActionType,
+			Input["ReadBinanceAccountApiRestrictions"],
+			Output["ReadBinanceAccountApiRestrictions"]
+		>(apiOptions, "ReadBinanceAccountApiRestrictions"),
 	ReadBinanceApiKey: () =>
-		useAction<Action["ReadBinanceApiKey"], ActionType>(
-			apiOptions,
-			"ReadBinanceApiKey"
-		),
+		useAction<
+			ActionType,
+			Input["ReadBinanceApiKey"],
+			Output["ReadBinanceApiKey"]
+		>(apiOptions, "ReadBinanceApiKey"),
 	// TODO
-	// ReadStrategyBalances: () =>
-	// 	useAction<Action['ReadStrategyBalances'], ActionType>(
-	// 		apiOptions,
-	// 		"ReadStrategyBalances"
-	// 	),
+	// ReadStrategyBalances
 	ReadStrategyOrders: () =>
-		useAction<Action["ReadStrategyOrders"], ActionType>(
-			apiOptions,
-			"ReadStrategyOrders"
-		),
+		useAction<
+			ActionType,
+			Input["ReadStrategyOrders"],
+			Output["ReadStrategyOrders"]
+		>(apiOptions, "ReadStrategyOrders"),
 	ReadSubscription: () =>
-		useAction<Action["ReadSubscription"], ActionType>(
-			apiOptions,
-			"ReadSubscription"
-		),
+		useAction<
+			ActionType,
+			Input["ReadSubscription"],
+			Output["ReadSubscription"]
+		>(apiOptions, "ReadSubscription"),
 	RenameAccount: () =>
-		useAction<Action["RenameAccount"], ActionType>(
+		useAction<ActionType, Input["RenameAccount"], Output["RenameAccount"]>(
 			apiOptions,
 			"RenameAccount"
 		),
 	RenameStrategy: () =>
-		useAction<Action["RenameStrategy"], ActionType>(
-			apiOptions,
-			"RenameStrategy"
-		),
+		useAction<
+			ActionType,
+			Input["RenameStrategy"],
+			Output["RenameStrategy"]
+		>(apiOptions, "RenameStrategy"),
 	SetAccountCountry: () =>
-		useAction<Action["SetAccountCountry"], ActionType>(
-			apiOptions,
-			"SetAccountCountry"
-		),
+		useAction<
+			ActionType,
+			Input["SetAccountCountry"],
+			Output["SetAccountCountry"]
+		>(apiOptions, "SetAccountCountry"),
 	WriteAccountStrategiesItemSchedulings: () =>
-		useAction<Action["WriteAccountStrategiesItemSchedulings"], ActionType>(
-			apiOptions,
-			"WriteAccountStrategiesItemSchedulings"
-		),
+		useAction<
+			ActionType,
+			Input["WriteAccountStrategiesItemSchedulings"],
+			Output["WriteAccountStrategiesItemSchedulings"]
+		>(apiOptions, "WriteAccountStrategiesItemSchedulings"),
 	WriteStrategyFlow: () =>
-		useAction<Action["WriteStrategyFlow"], ActionType>(
-			apiOptions,
-			"WriteStrategyFlow"
-		)
+		useAction<
+			ActionType,
+			Input["WriteStrategyFlow"],
+			Output["WriteStrategyFlow"]
+		>(apiOptions, "WriteStrategyFlow")
 }

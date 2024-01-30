@@ -56,6 +56,12 @@ export const INTERNAL_SERVER_ERROR__500 = 500
  */
 export const BAD_GATEWAY__502 = 502
 
+/**
+ * The server was acting as a gateway or proxy and did not receive a timely
+ * response from the upstream server.
+ */
+export const GATEWAY_TIMEOUT__504 = 504
+
 export type HTTPStatusCode =
 	| typeof OK__200
 	| typeof BAD_REQUEST__400
@@ -64,3 +70,4 @@ export type HTTPStatusCode =
 	| typeof METHOD_NOT_ALLOWED__405
 	| typeof INTERNAL_SERVER_ERROR__500
 	| typeof BAD_GATEWAY__502
+	| typeof GATEWAY_TIMEOUT__504

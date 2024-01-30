@@ -1,21 +1,26 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import {
-	AdminAction as Action,
+	AdminActionInput as Input,
+	AdminActionOutput as Output,
 	AdminActionType as ActionType
 } from "@workspace/api"
 
 const apiOptions: UseActionApiArg = {
-	endpoint: api.admin.action.href,
+	url: api.admin.action,
 	withAuth: true
 }
 
 export const useAdminApi = {
 	ListAccountKeys: () =>
-		useAction<Action["ListAccountKeys"], ActionType>(
-			apiOptions,
-			"ListAccountKeys"
-		),
+		useAction<
+			ActionType,
+			Input["ListAccountKeys"],
+			Output["ListAccountKeys"]
+		>(apiOptions, "ListAccountKeys"),
 	ReadAccount: () =>
-		useAction<Action["ReadAccount"], ActionType>(apiOptions, "ReadAccount")
+		useAction<ActionType, Input["ReadAccount"], Output["ReadAccount"]>(
+			apiOptions,
+			"ReadAccount"
+		)
 }

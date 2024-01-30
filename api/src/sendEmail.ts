@@ -1,11 +1,16 @@
 import { EmailAddress, Language, OneTimePassword } from "@workspace/models"
 
+import { Action } from "./action.js"
+
 export type SendEmailAction = {
-	SendOneTimePassword: (arg: {
-		email: EmailAddress
-		oneTimePassword: OneTimePassword
-		language: Language
-	}) => Promise<void>
+	SendOneTimePassword: Action<
+		{
+			email: EmailAddress
+			oneTimePassword: OneTimePassword
+			language: Language
+		},
+		void
+	>
 }
 
 export type SendEmailActionInput = {

@@ -8,7 +8,7 @@ import {
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { Actions } from "./action.js"
+import { ActionTypes } from "./action.js"
 
 export type AuthDatabaseAction = {
 	CreateAccount: (arg: EmailAddress) => Promise<Account>
@@ -48,33 +48,35 @@ export type AuthDatabaseActionOutput = {
 	>
 }
 
-type ClientAction = {
+type AuthClientAction = {
 	Enter: (arg: Pick<Account, "email">) => Promise<{ emailSent: boolean }>
 	Verify: (
 		arg: Pick<OneTimePassword, "code"> & { email: EmailAddress }
 	) => Promise<{ token?: string }>
 }
-export type AuthClientActionType = keyof ClientAction
-export const authClientActions: Actions<AuthClientActionType> = [
+
+export type AuthClientActionType = keyof AuthClientAction
+
+export const authClientActions: ActionTypes<AuthClientActionType> = [
 	"Enter",
 	"Verify"
 ] as const
 
-type ClientInput = {
-	Enter: Parameters<ClientAction["Enter"]>[0]
-	Verify: Parameters<ClientAction["Verify"]>[0]
+type AuthClientInput = {
+	Enter: Parameters<AuthClientAction["Enter"]>[0]
+	Verify: Parameters<AuthClientAction["Verify"]>[0]
 }
 
 export type AuthClientActionOutput = {
-	Enter: Awaited<ReturnType<ClientAction["Enter"]>>
-	Verify: Awaited<ReturnType<ClientAction["Verify"]>>
+	Enter: Awaited<ReturnType<AuthClientAction["Enter"]>>
+	Verify: Awaited<ReturnType<AuthClientAction["Verify"]>>
 }
 
 export const isAuthClientActionInput = {
-	Enter: objectTypeGuard<ClientInput["Enter"]>(({ email }) =>
+	Enter: objectTypeGuard<AuthClientInput["Enter"]>(({ email }) =>
 		isEmailAddress(email)
 	),
-	Verify: objectTypeGuard<ClientInput["Verify"]>(
+	Verify: objectTypeGuard<AuthClientInput["Verify"]>(
 		({ code, email }) =>
 			isOneTimePasswordCode(code) && isEmailAddress(email)
 	)

@@ -1,26 +1,27 @@
 import { Account, AccountKey, isAccountKey } from "@workspace/models"
 
-import { Actions } from "./action.js"
+import { ActionTypes } from "./action.js"
 
-type Action = {
+export type AdminAction = {
 	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 }
-export type AdminAction = Action
-type ActionType = keyof Action
-export const adminActions: Actions<ActionType> = [
+
+export type AdminActionType = keyof AdminAction
+
+export const adminActions: ActionTypes<AdminActionType> = [
 	"ListAccountKeys",
 	"ReadAccount"
 ] as const
-export type AdminActionType = keyof AdminAction
 
 export type AdminActionInput = {
-	ReadAccount: Parameters<Action["ReadAccount"]>[0]
+	ListAccountKeys: Parameters<AdminAction["ListAccountKeys"]>[0]
+	ReadAccount: Parameters<AdminAction["ReadAccount"]>[0]
 }
 
 export type AdminActionOutput = {
-	ListAccountKeys: Awaited<ReturnType<Action["ListAccountKeys"]>>
-	ReadAccount: Awaited<ReturnType<Action["ReadAccount"]>>
+	ListAccountKeys: Awaited<ReturnType<AdminAction["ListAccountKeys"]>>
+	ReadAccount: Awaited<ReturnType<AdminAction["ReadAccount"]>>
 }
 
 export const isAdminActionInput = {

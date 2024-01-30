@@ -1,8 +1,8 @@
 import {
-	ApiActionHeaders,
-	ApiActionInput,
-	apiActionRequestInit,
+	ActionInput,
 	BinanceClientActionType,
+	clientAction,
+	ClientActionHeaders,
 	isApiActionOutputData,
 	isApiActionOutputError
 } from "@workspace/api"
@@ -20,7 +20,7 @@ import {
 } from "@workspace/binance"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
-import { BadGatewayError, InternalServerError } from "@workspace/http"
+import { BadGatewayError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { Account, ClientSession, SerializableData } from "@workspace/models"
 import { today } from "minimal-time-helpers"
@@ -37,7 +37,7 @@ import { today } from "minimal-time-helpers"
  */
 export class Binance implements DflowBinanceClient {
 	readonly accountId: Account["id"]
-	binanceProxyApiActionHeaders: ApiActionHeaders | undefined
+	binanceProxyApiActionHeaders: ClientActionHeaders | undefined
 	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
@@ -54,7 +54,7 @@ export class Binance implements DflowBinanceClient {
 			accountId
 		}
 		const token = await signSession(session)
-		const headers = new ApiActionHeaders()
+		const headers = new ClientActionHeaders()
 		headers.appendAuthorization(token)
 		this.binanceProxyApiActionHeaders = headers
 		return headers
@@ -63,21 +63,15 @@ export class Binance implements DflowBinanceClient {
 	async binanceClientAction<Output extends SerializableData>({
 		type,
 		data: inputData
-	}: ApiActionInput<BinanceClientActionType>) {
+	}: ActionInput<BinanceClientActionType>) {
 		const headers = await this.getBinanceClientActionHeaders()
-		const options = apiActionRequestInit<BinanceClientActionType>({
+
+		const output = await clientAction(this.binanceProxy.action, headers, {
 			type,
-			headers,
 			data: inputData
 		})
-		const response = await fetch(this.binanceProxy.action, options)
-		const output: unknown = await response.json()
 
-		if (response.ok) {
-			if (!isApiActionOutputData(output)) throw new BadGatewayError()
-
-			return output.data as Output
-		}
+		if (isApiActionOutputData(output)) return output.data as Output
 
 		if (isApiActionOutputError(output)) {
 			const { error } = output
@@ -88,7 +82,7 @@ export class Binance implements DflowBinanceClient {
 			}
 		}
 
-		throw new InternalServerError()
+		throw new BadGatewayError()
 	}
 
 	candles(symbol: string, interval: BinanceKlineInterval, limit: number) {

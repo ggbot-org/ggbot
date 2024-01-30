@@ -11,10 +11,13 @@ import {
 	Subscription
 } from "@workspace/models"
 
-type Action = {
-	AppendStrategyDailyOrders: (
-		arg: StrategyDailyOrdersKey & { items: Order[] }
-	) => Promise<void>
+import { Action } from "./action.js"
+
+export type ExecutorAction = {
+	AppendStrategyDailyOrders: Action<
+		StrategyDailyOrdersKey & { items: Order[] },
+		void
+	>
 	AppendAccountDailyOrders: (
 		arg: AccountDailyOrdersKey & { items: AccountDailyOrder[] }
 	) => Promise<void>
@@ -32,26 +35,28 @@ type Action = {
 		arg: AccountStrategySchedulingKey & { memory: StrategyMemory }
 	) => Promise<void>
 }
-export type ExecutorAction = Action
 
-type Input = {
-	AppendAccountDailyOrders: Parameters<Action["AppendAccountDailyOrders"]>[0]
-	AppendStrategyDailyOrders: Parameters<
-		Action["AppendStrategyDailyOrders"]
+export type ExecutorActionInput = {
+	AppendAccountDailyOrders: Parameters<
+		ExecutorAction["AppendAccountDailyOrders"]
 	>[0]
-	ReadAccountStrategies: Parameters<Action["ReadAccountStrategies"]>[0]
-	ReadSubscription: Parameters<Action["ReadSubscription"]>[0]
+	AppendStrategyDailyOrders: Parameters<
+		ExecutorAction["AppendStrategyDailyOrders"]
+	>[0]
+	ReadAccountStrategies: Parameters<
+		ExecutorAction["ReadAccountStrategies"]
+	>[0]
+	ReadSubscription: Parameters<ExecutorAction["ReadSubscription"]>[0]
 	SuspendAccountStrategyScheduling: Parameters<
-		Action["SuspendAccountStrategyScheduling"]
+		ExecutorAction["SuspendAccountStrategyScheduling"]
 	>[0]
 	SuspendAccountStrategySchedulings: Parameters<
-		Action["SuspendAccountStrategySchedulings"]
+		ExecutorAction["SuspendAccountStrategySchedulings"]
 	>[0]
 	SuspendAccountStrategiesSchedulings: Parameters<
-		Action["SuspendAccountStrategiesSchedulings"]
+		ExecutorAction["SuspendAccountStrategiesSchedulings"]
 	>[0]
 	UpdateAccountStrategySchedulingMemory: Parameters<
-		Action["UpdateAccountStrategySchedulingMemory"]
+		ExecutorAction["UpdateAccountStrategySchedulingMemory"]
 	>[0]
 }
-export type ExecutorActionInput = Input

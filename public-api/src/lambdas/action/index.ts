@@ -2,12 +2,15 @@ import { apiActionMethod, isActionInput, publicActions } from "@workspace/api"
 import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
-	BAD_REQUEST,
-	INTERNAL_SERVER_ERROR,
-	METHOD_NOT_ALLOWED,
+	errorResponse,
 	OK
 } from "@workspace/api-gateway"
-import { BadGatewayError } from "@workspace/http"
+import {
+	BAD_REQUEST__400,
+	BadGatewayError,
+	INTERNAL_SERVER_ERROR__500,
+	METHOD_NOT_ALLOWED__405
+} from "@workspace/http"
 import { logging } from "@workspace/logging"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
@@ -21,24 +24,27 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod === "OPTIONS")
 			return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === apiActionMethod) {
-			if (!event.body) return BAD_REQUEST()
-			info(event.httpMethod, JSON.stringify(event.body, null, 2))
+		if (event.httpMethod !== apiActionMethod)
+			return errorResponse(METHOD_NOT_ALLOWED__405)
 
-			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(publicActions)(input)) return BAD_REQUEST()
+		if (!event.body) return errorResponse(BAD_REQUEST__400)
+		info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
-			const service = new Service(documentProvider)
-			const output = await service[input.type](input.data)
-			info(input.type, JSON.stringify(output, null, 2))
-			return OK(output)
-		}
+		const input: unknown = JSON.parse(event.body)
+		if (!isActionInput(publicActions)(input))
+			return errorResponse(BAD_REQUEST__400)
 
-		return METHOD_NOT_ALLOWED
+		const service = new Service(documentProvider)
+		const output = await service[input.type](input.data)
+		info(input.type, JSON.stringify(output, null, 2))
+		return OK(output)
 	} catch (error) {
-		if (error instanceof BadGatewayError) return BAD_REQUEST()
+		for (const ErrorClass of [BadGatewayError])
+			if (error instanceof ErrorClass)
+				return errorResponse(ErrorClass.statusCode)
+
 		// Fallback to print error if not handled.
 		warn(error)
+		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
-	return INTERNAL_SERVER_ERROR
 }

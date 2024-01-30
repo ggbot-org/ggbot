@@ -34,8 +34,12 @@ import {
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { Actions } from "./action.js"
-import { BinanceClientAction, BinanceClientActionType } from "./binance.js"
+import { Action, ActionTypes } from "./action.js"
+import {
+	BinanceClientActionType,
+	BinanceClientInput,
+	BinanceClientOutput
+} from "./binance.js"
 
 export type UserDatabaseAction = {
 	CopyStrategy: (
@@ -52,7 +56,7 @@ export type UserDatabaseAction = {
 	CreateStrategy: (
 		arg: Omit<NewItem<Strategy>, keyof AccountKey>
 	) => Promise<StrategyKey>
-	DeleteAccount: (arg: void) => Promise<DeletionTime>
+	DeleteAccount: Action<void, DeletionTime>
 	DeleteBinanceApiConfig: (arg: void) => Promise<DeletionTime>
 	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
 	ReadAccountInfo: (arg: void) => Promise<AccountInfo | null>
@@ -82,13 +86,86 @@ export type UserDatabaseAction = {
 		arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">
 	) => Promise<UpdateTime>
 }
+
 type UserDatabaseActionType = keyof UserDatabaseAction
-export type UserClientAction = UserDatabaseAction &
-	Pick<BinanceClientAction, "ReadBinanceAccountApiRestrictions">
+
+export type UserDatabaseActionInput = {
+	CopyStrategy: Parameters<UserDatabaseAction["CopyStrategy"]>[0]
+	CreateBinanceApiConfig: Parameters<
+		UserDatabaseAction["CreateBinanceApiConfig"]
+	>[0]
+	CreatePurchaseOrder: Parameters<
+		UserDatabaseAction["CreatePurchaseOrder"]
+	>[0]
+	CreateStrategy: Parameters<UserDatabaseAction["CreateStrategy"]>[0]
+	DeleteAccount: Parameters<UserDatabaseAction["DeleteAccount"]>[0]
+	DeleteBinanceApiConfig: Parameters<
+		UserDatabaseAction["DeleteBinanceApiConfig"]
+	>[0]
+	DeleteStrategy: Parameters<UserDatabaseAction["DeleteStrategy"]>[0]
+	ReadAccountInfo: Parameters<UserDatabaseAction["ReadAccountInfo"]>[0]
+	// TODO ReadStrategyBalances: Parameters<UserDatabaseAction['ReadStrategyBalances']>[0]
+	ReadAccountStrategies: Parameters<
+		UserDatabaseAction["ReadAccountStrategies"]
+	>[0]
+	ReadBinanceApiKey: Parameters<UserDatabaseAction["ReadBinanceApiKey"]>[0]
+	ReadStrategyOrders: Parameters<UserDatabaseAction["ReadStrategyOrders"]>[0]
+	ReadSubscription: Parameters<UserDatabaseAction["ReadSubscription"]>[0]
+	RenameAccount: Parameters<UserDatabaseAction["RenameAccount"]>[0]
+	RenameStrategy: Parameters<UserDatabaseAction["RenameStrategy"]>[0]
+	SetAccountCountry: Parameters<UserDatabaseAction["SetAccountCountry"]>[0]
+	WriteAccountStrategiesItemSchedulings: Parameters<
+		UserDatabaseAction["WriteAccountStrategiesItemSchedulings"]
+	>[0]
+	WriteStrategyFlow: Parameters<UserDatabaseAction["WriteStrategyFlow"]>[0]
+}
+
+export type UserDatabaseActionOutput = {
+	CopyStrategy: Awaited<ReturnType<UserDatabaseAction["CopyStrategy"]>>
+	CreateBinanceApiConfig: Awaited<
+		ReturnType<UserDatabaseAction["CreateBinanceApiConfig"]>
+	>
+	CreatePurchaseOrder: Awaited<
+		ReturnType<UserDatabaseAction["CreatePurchaseOrder"]>
+	>
+	CreateStrategy: Awaited<ReturnType<UserDatabaseAction["CreateStrategy"]>>
+	DeleteAccount: Awaited<ReturnType<UserDatabaseAction["DeleteAccount"]>>
+	DeleteBinanceApiConfig: Awaited<
+		ReturnType<UserDatabaseAction["DeleteBinanceApiConfig"]>
+	>
+	DeleteStrategy: Awaited<ReturnType<UserDatabaseAction["DeleteStrategy"]>>
+	ReadAccountInfo: Awaited<ReturnType<UserDatabaseAction["ReadAccountInfo"]>>
+	ReadAccountStrategies: Awaited<
+		ReturnType<UserDatabaseAction["ReadAccountStrategies"]>
+	>
+	ReadBinanceApiKey: Awaited<
+		ReturnType<UserDatabaseAction["ReadBinanceApiKey"]>
+	>
+	// TODO ReadStrategyBalances: Awaited<ReturnType<UserDatabaseAction['ReadStrategyBalances']>>
+	ReadStrategyOrders: Awaited<
+		ReturnType<UserDatabaseAction["ReadStrategyOrders"]>
+	>
+	ReadSubscription: Awaited<
+		ReturnType<UserDatabaseAction["ReadSubscription"]>
+	>
+	RenameAccount: Awaited<ReturnType<UserDatabaseAction["RenameAccount"]>>
+	RenameStrategy: Awaited<ReturnType<UserDatabaseAction["RenameStrategy"]>>
+	SetAccountCountry: Awaited<
+		ReturnType<UserDatabaseAction["SetAccountCountry"]>
+	>
+	WriteAccountStrategiesItemSchedulings: Awaited<
+		ReturnType<UserDatabaseAction["WriteAccountStrategiesItemSchedulings"]>
+	>
+	WriteStrategyFlow: Awaited<
+		ReturnType<UserDatabaseAction["WriteStrategyFlow"]>
+	>
+}
+
 export type UserClientActionType =
 	| UserDatabaseActionType
 	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">
-export const userClientActions: Actions<UserClientActionType> = [
+
+export const userClientActions: ActionTypes<UserClientActionType> = [
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
 	"CreatePurchaseOrder",
@@ -108,66 +185,13 @@ export const userClientActions: Actions<UserClientActionType> = [
 	"ReadBinanceAccountApiRestrictions"
 ] as const
 
-export type UserDatabaseActionInput = {
-	CopyStrategy: Parameters<UserClientAction["CopyStrategy"]>[0]
-	CreateBinanceApiConfig: Parameters<
-		UserClientAction["CreateBinanceApiConfig"]
-	>[0]
-	CreatePurchaseOrder: Parameters<UserClientAction["CreatePurchaseOrder"]>[0]
-	CreateStrategy: Parameters<UserClientAction["CreateStrategy"]>[0]
-	DeleteStrategy: Parameters<UserClientAction["DeleteStrategy"]>[0]
-	// TODO ReadStrategyBalances: Parameters<UserClientAction['ReadStrategyBalances']>[0]
-	ReadStrategyOrders: Parameters<UserClientAction["ReadStrategyOrders"]>[0]
-	RenameAccount: Parameters<UserClientAction["RenameAccount"]>[0]
-	RenameStrategy: Parameters<UserClientAction["RenameStrategy"]>[0]
-	SetAccountCountry: Parameters<UserClientAction["SetAccountCountry"]>[0]
-	WriteAccountStrategiesItemSchedulings: Parameters<
-		UserClientAction["WriteAccountStrategiesItemSchedulings"]
-	>[0]
-	WriteStrategyFlow: Parameters<UserClientAction["WriteStrategyFlow"]>[0]
-}
+export type UserClientActionInput = UserDatabaseActionInput &
+	Pick<BinanceClientInput, "ReadBinanceAccountApiRestrictions">
 
-type UserClientActionInput = UserDatabaseActionInput
+export type UserClientActionOutput = UserDatabaseActionOutput &
+	Pick<BinanceClientOutput, "ReadBinanceAccountApiRestrictions">
 
-export type UserDatabaseActionOutput = {
-	CopyStrategy: Awaited<ReturnType<UserClientAction["CopyStrategy"]>>
-	CreateBinanceApiConfig: Awaited<
-		ReturnType<UserClientAction["CreateBinanceApiConfig"]>
-	>
-	CreatePurchaseOrder: Awaited<
-		ReturnType<UserClientAction["CreatePurchaseOrder"]>
-	>
-	CreateStrategy: Awaited<ReturnType<UserClientAction["CreateStrategy"]>>
-	DeleteAccount: Awaited<ReturnType<UserClientAction["DeleteAccount"]>>
-	DeleteBinanceApiConfig: Awaited<
-		ReturnType<UserClientAction["DeleteBinanceApiConfig"]>
-	>
-	DeleteStrategy: Awaited<ReturnType<UserClientAction["DeleteStrategy"]>>
-	ReadAccountInfo: Awaited<ReturnType<UserClientAction["ReadAccountInfo"]>>
-	ReadAccountStrategies: Awaited<
-		ReturnType<UserClientAction["ReadAccountStrategies"]>
-	>
-	ReadBinanceApiKey: Awaited<
-		ReturnType<UserClientAction["ReadBinanceApiKey"]>
-	>
-	// TODO ReadStrategyBalances: Awaited<ReturnType<UserClientAction['ReadStrategyBalances']>>
-	ReadStrategyOrders: Awaited<
-		ReturnType<UserClientAction["ReadStrategyOrders"]>
-	>
-	ReadSubscription: Awaited<ReturnType<UserClientAction["ReadSubscription"]>>
-	RenameAccount: Awaited<ReturnType<UserClientAction["RenameAccount"]>>
-	SetAccountCountry: Awaited<
-		ReturnType<UserClientAction["SetAccountCountry"]>
-	>
-	WriteAccountStrategiesItemSchedulings: Awaited<
-		ReturnType<UserClientAction["WriteAccountStrategiesItemSchedulings"]>
-	>
-	WriteStrategyFlow: Awaited<
-		ReturnType<UserClientAction["WriteStrategyFlow"]>
-	>
-}
-
-export const isUserActionInput = {
+export const isUserClientActionInput = {
 	CopyStrategy: objectTypeGuard<UserClientActionInput["CopyStrategy"]>(
 		({ name, ...strategyKey }) => isStrategyKey(strategyKey) && isName(name)
 	),

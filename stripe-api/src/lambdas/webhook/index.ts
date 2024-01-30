@@ -1,10 +1,13 @@
 import {
 	APIGatewayProxyHandler,
-	BAD_REQUEST,
-	INTERNAL_SERVER_ERROR,
-	METHOD_NOT_ALLOWED,
+	errorResponse,
 	OK
 } from "@workspace/api-gateway"
+import {
+	BAD_REQUEST__400,
+	INTERNAL_SERVER_ERROR__500,
+	METHOD_NOT_ALLOWED__405
+} from "@workspace/http"
 import { logging } from "@workspace/logging"
 import {
 	StripeClient,
@@ -22,32 +25,33 @@ type ResponseData = {
 // @ts-expect-error TODO use async/await ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = (event) => {
 	try {
-		if (event.httpMethod === "POST") {
-			if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod !== "POST")
+			return errorResponse(METHOD_NOT_ALLOWED__405)
 
-			const signature = event.headers["stripe-signature"]
-			if (typeof signature !== "string") return BAD_REQUEST()
+		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
-			const stripeEvent = stripe.getWebhookEvent(event.body, signature)
+		const signature = event.headers["stripe-signature"]
+		if (typeof signature !== "string")
+			return errorResponse(BAD_REQUEST__400)
 
-			info(stripeEvent)
+		const stripeEvent = stripe.getWebhookEvent(event.body, signature)
 
-			switch (stripeEvent.type) {
-				default: {
-					warn(`Unhandled event type ${stripeEvent.type}`)
-				}
+		info(stripeEvent)
+
+		switch (stripeEvent.type) {
+			default: {
+				warn(`Unhandled event type ${stripeEvent.type}`)
 			}
-
-			const output: ResponseData = { received: true }
-			return OK(output)
 		}
 
-		return METHOD_NOT_ALLOWED
+		const output: ResponseData = { received: true }
+		return OK(output)
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError)
-			return BAD_REQUEST()
+			return errorResponse(BAD_REQUEST__400)
+
 		// Fallback to print error if not handled.
 		warn(error)
+		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
-	return INTERNAL_SERVER_ERROR
 }

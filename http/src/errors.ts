@@ -1,6 +1,7 @@
 import {
 	BAD_GATEWAY__502,
 	BAD_REQUEST__400,
+	GATEWAY_TIMEOUT__504,
 	HTTPStatusCode,
 	INTERNAL_SERVER_ERROR__500,
 	NOT_FOUND__404,
@@ -11,48 +12,56 @@ type HTTPError = {
 	statusCode: HTTPStatusCode
 }
 
-// TODO prefix all errors wuth HTTP, e.g. HTTPBadRequest
 export class BadRequestError extends Error implements HTTPError {
 	static errorName = "BadRequest"
-	statusCode: HTTPStatusCode
+	static statusCode: HTTPStatusCode = BAD_REQUEST__400
+	statusCode: HTTPStatusCode = BAD_REQUEST__400
 	constructor() {
 		super(String(BAD_REQUEST__400))
-		this.statusCode = BAD_REQUEST__400
 	}
 }
 
-export class UnauthorizedError extends Error {
+export class UnauthorizedError extends Error implements HTTPError {
 	static errorName = "Unauthorized"
-	statusCode: HTTPStatusCode
+	static statusCode: HTTPStatusCode = UNAUTHORIZED__401
+	statusCode: HTTPStatusCode = UNAUTHORIZED__401
 	constructor() {
 		super(String(UNAUTHORIZED__401))
-		this.statusCode = UNAUTHORIZED__401
 	}
 }
 
-export class NotFoundError extends Error {
+export class NotFoundError extends Error implements HTTPError {
 	static errorName = "NotFound"
-	statusCode: HTTPStatusCode
+	static statusCode: HTTPStatusCode = NOT_FOUND__404
+	statusCode: HTTPStatusCode = NOT_FOUND__404
 	constructor() {
 		super(String(NOT_FOUND__404))
-		this.statusCode = NOT_FOUND__404
 	}
 }
 
-export class InternalServerError extends Error {
+export class InternalServerError extends Error implements HTTPError {
 	static errorName = "InternalServerError"
-	statusCode: HTTPStatusCode
+	static statusCode: HTTPStatusCode = INTERNAL_SERVER_ERROR__500
+	statusCode: HTTPStatusCode = INTERNAL_SERVER_ERROR__500
 	constructor() {
 		super(String(INTERNAL_SERVER_ERROR__500))
-		this.statusCode = INTERNAL_SERVER_ERROR__500
 	}
 }
 
-export class BadGatewayError extends Error {
+export class BadGatewayError extends Error implements HTTPError {
 	static errorName = "BadGateway"
-	statusCode: HTTPStatusCode
+	static statusCode: HTTPStatusCode = BAD_GATEWAY__502
+	statusCode: HTTPStatusCode = BAD_GATEWAY__502
 	constructor() {
 		super(String(BAD_GATEWAY__502))
-		this.statusCode = BAD_GATEWAY__502
+	}
+}
+
+export class GatewayTimeoutError extends Error implements HTTPError {
+	static errorName = "BadGateway"
+	static statusCode: HTTPStatusCode = GATEWAY_TIMEOUT__504
+	statusCode: HTTPStatusCode = GATEWAY_TIMEOUT__504
+	constructor() {
+		super(String(GATEWAY_TIMEOUT__504))
 	}
 }

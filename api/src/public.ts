@@ -5,27 +5,28 @@ import {
 	StrategyKey
 } from "@workspace/models"
 
-import { Actions } from "./action.js"
+import { ActionTypes } from "./action.js"
 
-type Action = {
+export type PublicAction = {
 	ReadStrategy: (arg: StrategyKey) => Promise<Strategy | null>
 	ReadStrategyFlow: (arg: StrategyKey) => Promise<StrategyFlow | null>
 }
-export type PublicAction = Action
-export type PublicActionType = keyof Action
-export const publicActions: Actions<PublicActionType> = [
+
+export type PublicActionType = keyof PublicAction
+
+export const publicActions: ActionTypes<PublicActionType> = [
 	"ReadStrategy",
 	"ReadStrategyFlow"
 ] as const
 
 export type PublicActionInput = {
-	ReadStrategy: Parameters<Action["ReadStrategy"]>[0]
-	ReadStrategyFlow: Parameters<Action["ReadStrategyFlow"]>[0]
+	ReadStrategy: Parameters<PublicAction["ReadStrategy"]>[0]
+	ReadStrategyFlow: Parameters<PublicAction["ReadStrategyFlow"]>[0]
 }
 
 export type PublicActionOutput = {
-	ReadStrategy: Awaited<ReturnType<Action["ReadStrategy"]>>
-	ReadStrategyFlow: Awaited<ReturnType<Action["ReadStrategyFlow"]>>
+	ReadStrategy: Awaited<ReturnType<PublicAction["ReadStrategy"]>>
+	ReadStrategyFlow: Awaited<ReturnType<PublicAction["ReadStrategyFlow"]>>
 }
 
 export const isPublicActionInput = {

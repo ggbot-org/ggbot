@@ -7,14 +7,19 @@ import {
 	ALLOWED_METHODS,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
-	INTERNAL_SERVER_ERROR,
-	METHOD_NOT_ALLOWED,
-	OK,
-	UNATHORIZED
+	errorResponse,
+	OK
 } from "@workspace/api-gateway"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { ErrorBinanceHTTP } from "@workspace/binance"
-import { UnauthorizedError } from "@workspace/http"
+import {
+	BAD_REQUEST__400,
+	BadGatewayError,
+	INTERNAL_SERVER_ERROR__500,
+	METHOD_NOT_ALLOWED__405,
+	UnauthorizedError
+} from "@workspace/http"
+import { logging } from "@workspace/logging"
 import {
 	ErrorAccountItemNotFound,
 	ErrorExceededQuota,
@@ -22,8 +27,9 @@ import {
 } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
-import { info, warn } from "./logging.js"
 import { Service } from "./service.js"
+
+const { info, warn } = logging("user-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -31,31 +37,34 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod === "OPTIONS")
 			return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === apiActionMethod) {
-			info(event.httpMethod, JSON.stringify(event.body, null, 2))
-			if (!event.body) return BAD_REQUEST()
+		if (event.httpMethod === apiActionMethod)
+			return errorResponse(METHOD_NOT_ALLOWED__405)
 
-			const authorization = event.headers.Authorization
-			const { accountId } =
-				await readSessionFromAuthorizationHeader(authorization)
-			const service = new Service({
-				accountKey: { accountId },
-				// If `readSessionFromAuthorizationHeader` succedes, then `authorization` is a string
-				authorization: authorization as string,
-				documentProvider
-			})
+		info(event.httpMethod, JSON.stringify(event.body, null, 2))
+		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
-			const input: unknown = JSON.parse(event.body)
-			if (!isActionInput(userClientActions)(input)) return BAD_REQUEST()
+		const authorization = event.headers.Authorization
+		const { accountId } =
+			await readSessionFromAuthorizationHeader(authorization)
+		const service = new Service({
+			accountKey: { accountId },
+			// If `readSessionFromAuthorizationHeader` succedes, then `authorization` is a string
+			authorization: authorization as string,
+			documentProvider
+		})
 
-			const output = await service[input.type](input.data)
-			info(input.type, JSON.stringify(output, null, 2))
-			return OK(output)
-		}
+		const input: unknown = JSON.parse(event.body)
+		if (!isActionInput(userClientActions)(input))
+			return errorResponse(BAD_REQUEST__400)
 
-		return METHOD_NOT_ALLOWED
+		const output = await service[input.type](input.data)
+		info(input.type, JSON.stringify(output, null, 2))
+		return OK(output)
 	} catch (error) {
-		if (error instanceof UnauthorizedError) return UNATHORIZED
+		for (const ErrorClass of [BadGatewayError, UnauthorizedError])
+			if (error instanceof ErrorClass)
+				return errorResponse(ErrorClass.statusCode)
+
 		if (
 			error instanceof ErrorAccountItemNotFound ||
 			error instanceof ErrorBinanceHTTP ||
@@ -63,8 +72,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			error instanceof ErrorUnknownItem
 		)
 			return BAD_REQUEST(error.toJSON())
+
 		// Fallback to print error if not handled.
 		warn(error)
+		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
-	return INTERNAL_SERVER_ERROR
 }
