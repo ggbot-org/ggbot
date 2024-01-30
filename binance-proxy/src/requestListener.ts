@@ -53,62 +53,62 @@ export const requestListener = (
 	// just to get its URLs pathnames.
 	const binanceProxy = new BinanceProxyURLs("localhost")
 
+	// The request URL is not known if we arrive here.
 	if (requestUrl === `/${binanceProxy.action.pathname}`) {
-		if (request.method !== apiActionMethod) {
-			response.writeHead(METHOD_NOT_ALLOWED__405)
-			response.end()
-			return
-		}
-
-		const chunks: Uint8Array[] = []
-		request.on("data", (chunk) => chunks.push(chunk as Uint8Array))
-		request.on("error", () => {
-			response.writeHead(INTERNAL_SERVER_ERROR__500)
-			response.end()
-		})
-		request.on("end", () => {
-			const body = Buffer.concat(chunks).toString("utf-8")
-
-			binanceRequestHandler(request.headers, body)
-				.then((data) => {
-					const output: ApiActionOutputData = { data }
-					response.writeHead(OK__200, ContentTypeJSON)
-					response.write(JSON.stringify(output))
-				})
-				.catch((error) => {
-					if (error instanceof BadRequestError) {
-						response.writeHead(error.statusCode)
-						return
-					}
-
-					if (error instanceof ErrorAccountItemNotFound) {
-						response.writeHead(UNAUTHORIZED__401)
-						return
-					}
-
-					if (error instanceof ErrorBinanceHTTP) {
-						response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
-						const output: ApiActionOutputError = {
-							error: {
-								name: BadRequestError.errorName,
-								info: error.info
-							}
-						}
-						response.write(JSON.stringify(output))
-					}
-
-					// Fallback to print out error an return an "Internal Server Error" code.
-					warn(error)
-					response.writeHead(INTERNAL_SERVER_ERROR__500)
-				})
-				.finally(() => {
-					response.end()
-				})
-		})
+		warn(NOT_FOUND__404, requestUrl)
+		response.writeHead(NOT_FOUND__404)
+		response.end()
 	}
 
-	// The request URL is not known if we arrive here.
-	warn(NOT_FOUND__404, requestUrl)
-	response.writeHead(NOT_FOUND__404)
-	response.end()
+	if (request.method !== apiActionMethod) {
+		response.writeHead(METHOD_NOT_ALLOWED__405)
+		response.end()
+		return
+	}
+
+	const chunks: Uint8Array[] = []
+	request.on("data", (chunk) => chunks.push(chunk as Uint8Array))
+	request.on("error", () => {
+		response.writeHead(INTERNAL_SERVER_ERROR__500)
+		response.end()
+	})
+	request.on("end", () => {
+		const body = Buffer.concat(chunks).toString("utf-8")
+
+		binanceRequestHandler(request.headers, body)
+			.then((data) => {
+				const output: ApiActionOutputData = { data }
+				response.writeHead(OK__200, ContentTypeJSON)
+				response.write(JSON.stringify(output))
+			})
+			.catch((error) => {
+				if (error instanceof BadRequestError) {
+					response.writeHead(error.statusCode)
+					return
+				}
+
+				if (error instanceof ErrorAccountItemNotFound) {
+					response.writeHead(UNAUTHORIZED__401)
+					return
+				}
+
+				if (error instanceof ErrorBinanceHTTP) {
+					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
+					const output: ApiActionOutputError = {
+						error: {
+							name: BadRequestError.errorName,
+							info: error.info
+						}
+					}
+					response.write(JSON.stringify(output))
+				}
+
+				// Fallback to print out error an return an "Internal Server Error" code.
+				warn(error)
+				response.writeHead(INTERNAL_SERVER_ERROR__500)
+			})
+			.finally(() => {
+				response.end()
+			})
+	})
 }

@@ -36,7 +36,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/npm run start:binance-proxy
+ExecStart=/usr/bin/npm run update_and_start:binance-proxy
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"
