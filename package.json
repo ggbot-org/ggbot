@@ -31,7 +31,7 @@
     "end-to-end-tests": "npm run playwright_test -w end-to-end-tests",
     "end-to-end-tests:show-report": "npm run playwright_show-report -w end-to-end-tests",
     "generate_docs": "npm run generate_docs -w repository",
-    "git_pull": "git pull origin main",
+    "git_pull": "git pull origin main --rebase",
     "lint": "npm run lint --workspaces --if-present",
     "lint-staged": "lint-staged",
     "install_dependencies": "npm ci",
