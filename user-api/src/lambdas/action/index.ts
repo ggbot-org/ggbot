@@ -15,6 +15,7 @@ import { ErrorBinanceHTTP } from "@workspace/binance"
 import {
 	BAD_REQUEST__400,
 	BadGatewayError,
+	GatewayTimeoutError,
 	INTERNAL_SERVER_ERROR__500,
 	METHOD_NOT_ALLOWED__405,
 	UnauthorizedError
@@ -61,7 +62,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		info(input.type, JSON.stringify(output, null, 2))
 		return OK(output)
 	} catch (error) {
-		for (const ErrorClass of [BadGatewayError, UnauthorizedError])
+		for (const ErrorClass of [
+			BadGatewayError,
+			GatewayTimeoutError,
+			UnauthorizedError
+		])
 			if (error instanceof ErrorClass)
 				return errorResponse(ErrorClass.statusCode)
 

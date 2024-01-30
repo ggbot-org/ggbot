@@ -68,7 +68,10 @@ For example
 
     [Service]
     Environment="AWS_ACCOUNT_ID=888671539518"
+    Environment="AWS_DATA_REGION=eu-central-1"
+    Environment="AUTHENTICATION_SECRET=s3cret"
     Environment="DEPLOY_STAGE=main"
+    Environment="DNS_DOMAIN=ggbot2.com"
     Environment="BINANCE_PROXY_ELASTIC_IPS=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
 

@@ -13,6 +13,7 @@ import {
 } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
 import { useUserApi } from "_/hooks/useUserApi"
+import { GatewayTimeoutError } from "@workspace/http"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -46,7 +47,13 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 		}
 		if (READ.error) {
 			READ.reset()
-			toast.warning(formatMessage({ id: "BinanceApi.error" }))
+			if (READ.error.name === GatewayTimeoutError.name) {
+				toast.warning(
+					formatMessage({ id: "BinanceApi.GatewayTimeoutError" })
+				)
+				return
+			}
+			toast.warning(formatMessage({ id: "BinanceApi.GenericError" }))
 		}
 	}, [READ, formatMessage, toast])
 

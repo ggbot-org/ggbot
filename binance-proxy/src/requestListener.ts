@@ -24,7 +24,7 @@ import { binanceRequestHandler } from "./binanceRequestHandler.js"
 import { getElasticIp } from "./elasticIp.js"
 import { warn } from "./logging.js"
 
-const ContentTypeJSON =  {'Content-Type': 'application/json'}
+const ContentTypeJSON = { "Content-Type": "application/json" }
 
 export const requestListener = (
 	request: IncomingMessage,
@@ -53,7 +53,7 @@ export const requestListener = (
 	// just to get its URLs pathnames.
 	const binanceProxy = new BinanceProxyURLs("localhost")
 
-	if (requestUrl === binanceProxy.action.pathname) {
+	if (requestUrl === `/${binanceProxy.action.pathname}`) {
 		if (request.method !== apiActionMethod) {
 			response.writeHead(METHOD_NOT_ALLOWED__405)
 			response.end()

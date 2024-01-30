@@ -101,7 +101,10 @@
 	"BacktestingProgress.preparing": {
 		"defaultMessage": "Preparing backtesting data"
 	},
-	"BinanceApi.error": {
+	"BinanceApi.GatewayTimeoutError": {
+		"defaultMessage": "Could not test Binance API."
+	},
+	"BinanceApi.GenericError": {
 		"defaultMessage": "Could not test Binance API."
 	},
 	"BinanceApi.title": {

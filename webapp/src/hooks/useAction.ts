@@ -14,6 +14,7 @@ import {
 import {
 	BadGatewayError,
 	BadRequestError,
+	GatewayTimeoutError,
 	InternalServerError,
 	UnauthorizedError
 } from "@workspace/http"
@@ -130,6 +131,9 @@ export const useAction = <
 					)
 						return
 
+					if (error instanceof GatewayTimeoutError)
+						return setError({ name: GatewayTimeoutError.errorName })
+
 					if (error instanceof TimeoutError)
 						return setError({ name: TimeoutError.errorName })
 
@@ -138,7 +142,7 @@ export const useAction = <
 						return setError({ name: BadRequestError.errorName })
 
 					// TODO should logout user
-					if (error === UnauthorizedError) {
+					if (error instanceof UnauthorizedError) {
 						localWebStorage.authToken.delete()
 						return setError({ name: UnauthorizedError.errorName })
 					}

@@ -11,4 +11,5 @@ const type = "MARKET"
 const orderOptions = { quantity: "0.001" }
 
 const order = await binance.newOrder(symbol, side, type, orderOptions)
+await binance.apiRestrictions(symbol, side, type, orderOptions)
 console.info(order)

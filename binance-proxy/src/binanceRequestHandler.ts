@@ -17,7 +17,7 @@ export const binanceRequestHandler = async (
 	if (!isActionInput(binanceClientActions)(input)) throw new BadRequestError()
 
 	const { accountId } = await readSessionFromAuthorizationHeader(
-		headers.Authorization
+		headers.authorization
 	)
 
 	const binanceDatabase = new BinanceDatabase({ accountId }, documentProvider)
