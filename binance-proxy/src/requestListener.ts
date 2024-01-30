@@ -10,6 +10,7 @@ import { ErrorBinanceHTTP } from "@workspace/binance"
 import {
 	BAD_GATEWAY__502,
 	BAD_REQUEST__400,
+	BadGatewayError,
 	BadRequestError,
 	INTERNAL_SERVER_ERROR__500,
 	METHOD_NOT_ALLOWED__405,
@@ -96,7 +97,7 @@ export const requestListener = (
 					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
 					const output: ApiActionOutputError = {
 						error: {
-							name: BadRequestError.errorName,
+							name: BadGatewayError.errorName,
 							info: error.info
 						}
 					}

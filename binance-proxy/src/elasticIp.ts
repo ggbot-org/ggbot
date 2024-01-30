@@ -13,7 +13,7 @@ import {
 } from "./errors.js"
 import { info } from "./logging.js"
 
-const BINANCE_PROXY_ELASTIC_IPS = ENV.BINANCE_PROXY_ELASTIC_IPS()
+const BINANCE_PROXY_IP = ENV.BINANCE_PROXY_IP()
 const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
 
 let elasticIp = ""
@@ -23,10 +23,9 @@ export const getElasticIp = () => elasticIp
 
 const looksLikeIp = (ip: unknown) => typeof ip === "string"
 
-const parseElasticIpsFromEnv = () => {
-	const elasticIpList = BINANCE_PROXY_ELASTIC_IPS.split(",")
-	if (Array.isArray(elasticIpList) && elasticIpList.every(looksLikeIp))
-		return elasticIpList
+const parseElasticIpFromEnv = () => {
+	const elasticIp = BINANCE_PROXY_IP
+	if (looksLikeIp(elasticIp)) return elasticIp
 	throw new ErrorCannotParseElasticIps()
 }
 
@@ -34,11 +33,11 @@ export const associateIp = async () => {
 	const InstanceId = await getOwnEc2InstanceId
 	info("Got instanceId", InstanceId)
 
-	const elasticIps = parseElasticIpsFromEnv()
-	info("Elastic IPs", elasticIps)
+	const elasticIpFromEnv = parseElasticIpFromEnv()
+	info("Elastic IP", elasticIpFromEnv)
 
 	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, {
-		PublicIps: elasticIps
+		PublicIps: [elasticIpFromEnv]
 	})
 	if (!Addresses) throw new ErrorElasticIpsListIsEmpty()
 

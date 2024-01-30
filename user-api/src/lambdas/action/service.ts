@@ -120,7 +120,7 @@ export class Service implements ApiService<UserClientActionType> {
 	}
 
 	async binanceClientAction({ type }: ActionInput<BinanceClientActionType>) {
-		const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
+		const binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_IP())
 
 		const headers = new ClientActionHeaders()
 		headers.appendAuthorization(this.authorization)

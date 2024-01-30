@@ -38,7 +38,7 @@ import { today } from "minimal-time-helpers"
 export class Binance implements DflowBinanceClient {
 	readonly accountId: Account["id"]
 	binanceProxyApiActionHeaders: ClientActionHeaders | undefined
-	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_ORIGIN())
+	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_IP())
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
 	// TODO Also no need to pass apiKey and apiSecret here, needs accountId to pass it to authentication header

@@ -72,7 +72,7 @@ For example
     Environment="AUTHENTICATION_SECRET=s3cret"
     Environment="DEPLOY_STAGE=main"
     Environment="DNS_DOMAIN=ggbot2.com"
-    Environment="BINANCE_PROXY_ELASTIC_IPS=1.2.3.4"
+    Environment="BINANCE_PROXY_IP=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
