@@ -5,7 +5,9 @@ import writeFile from "write-file-utf8"
 
 import { sitemap as filePath } from "../package.js"
 
-const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
+
+const webapp = new WebappURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
 const lastmod = dayToDate(today()).toISOString()
 
 const urls = [
@@ -38,4 +40,4 @@ const content = `<?xml version="1.0" encoding="UTF-8"?>
 ${urlset(urls.map((url) => ({ loc: url.href, lastmod })))}
 `
 
-await writeFile(filePath, content)
+if (DEPLOY_STAGE !== "local") await writeFile(filePath, content)
