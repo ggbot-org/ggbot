@@ -80,7 +80,7 @@ export const requestListener = (
 			.then((data) => {
 				const output: ApiActionOutputData = { data }
 				response.writeHead(OK__200, ContentTypeJSON)
-				response.write(JSON.stringify(output))
+				response.write(JSON.stringify(output), "utf-8")
 			})
 			.catch((error) => {
 				if (error instanceof BadRequestError) {
@@ -101,7 +101,7 @@ export const requestListener = (
 							info: error.info
 						}
 					}
-					response.write(JSON.stringify(output))
+					response.write(JSON.stringify(output), "utf-8")
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.
