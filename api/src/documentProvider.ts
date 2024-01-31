@@ -1,9 +1,4 @@
-import {
-	DeletionTime,
-	SerializableArray,
-	SerializableData,
-	UpdateTime
-} from "@workspace/models"
+import { DeletionTime, SerializableData, UpdateTime } from "@workspace/models"
 
 /** Provides read-only access to documents. */
 export type DocumentProviderLevel1 = {
@@ -18,5 +13,5 @@ export type DocumentProviderLevel2 = DocumentProviderLevel1 & {
 
 /** Provides documents listing. */
 export type DocumentProviderLevel3 = DocumentProviderLevel2 & {
-	listItems(Prefix: string): Promise<SerializableArray>
+	listItems(Prefix: string): Promise<string[]>
 }

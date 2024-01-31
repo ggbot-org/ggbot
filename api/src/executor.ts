@@ -21,7 +21,7 @@ export type ExecutorAction = {
 	AppendAccountDailyOrders: (
 		arg: AccountDailyOrdersKey & { items: AccountDailyOrder[] }
 	) => Promise<void>
-	ListAccountKeys: () => Promise<AccountKey[]>
+	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
 	ReadAccountStrategies: (arg: AccountKey) => Promise<AccountStrategy[]>
 	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>
 	SuspendAccountStrategyScheduling: (
@@ -43,6 +43,7 @@ export type ExecutorActionInput = {
 	AppendStrategyDailyOrders: Parameters<
 		ExecutorAction["AppendStrategyDailyOrders"]
 	>[0]
+	ListAccountKeys: Parameters<ExecutorAction["ListAccountKeys"]>[0]
 	ReadAccountStrategies: Parameters<
 		ExecutorAction["ReadAccountStrategies"]
 	>[0]
@@ -59,4 +60,30 @@ export type ExecutorActionInput = {
 	UpdateAccountStrategySchedulingMemory: Parameters<
 		ExecutorAction["UpdateAccountStrategySchedulingMemory"]
 	>[0]
+}
+
+export type ExecutorActionOutput = {
+	AppendAccountDailyOrders: Awaited<
+		ReturnType<ExecutorAction["AppendAccountDailyOrders"]>
+	>
+	AppendStrategyDailyOrders: Awaited<
+		ReturnType<ExecutorAction["AppendStrategyDailyOrders"]>
+	>
+	ListAccountKeys: Awaited<ReturnType<ExecutorAction["ListAccountKeys"]>>
+	ReadAccountStrategies: Awaited<
+		ReturnType<ExecutorAction["ReadAccountStrategies"]>
+	>
+	ReadSubscription: Awaited<ReturnType<ExecutorAction["ReadSubscription"]>>
+	SuspendAccountStrategiesSchedulings: Awaited<
+		ReturnType<ExecutorAction["SuspendAccountStrategiesSchedulings"]>
+	>
+	SuspendAccountStrategyScheduling: Awaited<
+		ReturnType<ExecutorAction["SuspendAccountStrategyScheduling"]>
+	>
+	SuspendAccountStrategySchedulings: Awaited<
+		ReturnType<ExecutorAction["SuspendAccountStrategySchedulings"]>
+	>
+	UpdateAccountStrategySchedulingMemory: Awaited<
+		ReturnType<ExecutorAction["UpdateAccountStrategySchedulingMemory"]>
+	>
 }

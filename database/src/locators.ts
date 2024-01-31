@@ -82,10 +82,10 @@
  │
  └╴subscriptionPurchase
    └╴accountId=XXX/
-     └╴y=YYYY/
-       └╴m=MM/
-         └╴d=DD/
-           └╴purchase.json
+	 └╴y=YYYY/
+	   └╴m=MM/
+		 └╴d=DD/
+		   └╴purchase.json
 */
 
 import {
@@ -109,45 +109,31 @@ import {
 import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
-const dirnameDelimiter = "/"
+export const dirnameDelimiter = "/"
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)
 
 const dayKeyFields = ["y", "m", "d"] as const
 const accountKeyFields = ["accountId"] as const
 const strategyKeyFields = ["strategyKind", "strategyId"] as const
 const subscriptionPurchaseKeyFields = ["purchaseId"] as const
+
 const fieldNames = [
 	...accountKeyFields,
 	...strategyKeyFields,
 	...dayKeyFields,
 	...subscriptionPurchaseKeyFields
 ] as const
+
 type FieldName = (typeof fieldNames)[number]
+
 const isFieldName = isLiteralType<FieldName>(fieldNames)
+
 const fieldSeparator = "="
+
 const fieldJoin = (name: FieldName, value: string) =>
 	[name, value].join(fieldSeparator)
 
-const dirnamePrefixes = [
-	"account",
-	"accountConfig",
-	"accountDailyOrders",
-	"accountStrategies",
-	"emailAccount",
-	"oneTimePassword",
-	"strategy",
-	"strategyDailyBalanceChanges",
-	"strategyDailyOrders",
-	"strategyExecution",
-	"strategyFlow",
-	"strategyOrdersPool",
-	"subscription",
-	"subscriptionPurchase"
-] as const
-
-type DirnamePrefix = (typeof dirnamePrefixes)[number]
-
-const dirnamePrefix: Record<DirnamePrefix, string> = {
+export const dirnamePrefix = {
 	account: "account",
 	accountConfig: "accountConfig",
 	accountDailyOrders: "accountOrders",

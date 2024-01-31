@@ -1,17 +1,22 @@
 import {
 	DocumentProviderLevel3,
 	ExecutorAction,
-	ExecutorActionInput as Input
+	ExecutorActionInput as Input,
+	ExecutorActionOutput as Output
 } from "@workspace/api"
 import {
 	AccountDailyOrder,
 	AccountDailyOrdersKey,
-	AccountStrategy,
 	Order,
 	StrategyDailyOrdersKey
 } from "@workspace/models"
 
-import { pathname } from "./locators.js"
+import {
+	dirnameDelimiter,
+	dirnamePrefix,
+	locatorToItemKey,
+	pathname
+} from "./locators.js"
 
 export class ExecutorDatabase implements ExecutorAction {
 	documentProvider: DocumentProviderLevel3
@@ -44,18 +49,27 @@ export class ExecutorDatabase implements ExecutorAction {
 		)
 	}
 
-	ListAccountKeys() {
-		const items: Array<Readonly<{ accountId: string }>> = []
-		return Promise.resolve(items)
+	async ListAccountKeys() {
+		const Prefix = dirnamePrefix.account + dirnameDelimiter
+		const itemLocators = await this.documentProvider.listItems(Prefix)
+		return itemLocators.reduce<Output["ListAccountKeys"]>((list, item) => {
+			const itemKey = locatorToItemKey.account(item)
+			return itemKey ? list.concat(itemKey) : list
+		}, [])
 	}
 
-	ReadAccountStrategies(_arg: Input["ReadAccountStrategies"]) {
-		const items: AccountStrategy[] = []
-		return Promise.resolve(items)
+	async ReadAccountStrategies(arg: Input["ReadAccountStrategies"]) {
+		const data = await this.documentProvider.getItem<
+			Output["ReadAccountStrategies"]
+		>(pathname.accountStrategies(arg))
+		if (!data) return []
+		return data
 	}
 
-	ReadSubscription(_arg: Input["ReadSubscription"]) {
-		return Promise.resolve(null)
+	ReadSubscription(arg: Input["ReadSubscription"]) {
+		return this.documentProvider.getItem<Output["ReadSubscription"]>(
+			pathname.subscription(arg)
+		)
 	}
 
 	SuspendAccountStrategyScheduling(

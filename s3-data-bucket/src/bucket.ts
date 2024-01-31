@@ -44,13 +44,12 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 	}
 
 	async listItems(Prefix: string) {
-		const items: string[] = []
 		const { Contents } = await this.s3.listObjects({ Prefix })
-		if (!Contents) return items
-		for (const { Key } of Contents) {
-			if (!Key) continue
-			items.push(Key)
-		}
-		return items
+		return (
+			Contents?.reduce<string[]>(
+				(list, { Key }) => (Key ? list.concat(Key) : list),
+				[]
+			) ?? []
+		)
 	}
 }

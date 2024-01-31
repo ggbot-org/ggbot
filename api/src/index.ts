@@ -46,7 +46,11 @@ export type {
 	BinanceDatabaseActionOutput
 } from "./binance.js"
 export { binanceClientActions, isBinanceClientActionInput } from "./binance.js"
-export type { ExecutorAction, ExecutorActionInput } from "./executor.js"
+export type {
+	ExecutorAction,
+	ExecutorActionInput,
+	ExecutorActionOutput
+} from "./executor.js"
 // TODO export type {
 // 	PaymentAction,
 // 	PaymentActionInput,
