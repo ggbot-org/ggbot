@@ -3,12 +3,10 @@ import { ENV } from "@workspace/env"
 
 import { ApiRole } from "./ApiRole.js"
 import { staticWebsiteAwsRegion } from "./awsRegions.js"
-import { BinanceProxyLoadBalancer } from "./BinanceProxyLoadBalancer.js"
 import { LambdaFunction } from "./LambdaFunction.js"
 import { WebappApiGatewayDomain } from "./WebappApiGatewayDomain.js"
 
 const statementNames = [
-	"binanceProxy",
 	"createBuckets",
 	"deployStaticWebsites",
 	"manageLambdas",
@@ -36,7 +34,6 @@ export class DevopsPolicy extends IamPolicy {
 		PolicyDocumentStatement["Action"]
 	> {
 		return {
-			binanceProxy: ["elasticloadbalancing:DescribeLoadBalancers"],
 			createBuckets: [
 				"s3:CreateBucket",
 				"s3:GetBucketAcl",
@@ -65,7 +62,6 @@ export class DevopsPolicy extends IamPolicy {
 		PolicyDocumentStatement["Resource"]
 	> {
 		return {
-			binanceProxy: BinanceProxyLoadBalancer.everyArn(),
 			createBuckets: [
 				// TODO
 				// cross.nakedDomainBucketArn,
@@ -101,7 +97,6 @@ export class DevopsPolicy extends IamPolicy {
 		})
 
 		return {
-			binanceProxy: allow("binanceProxy"),
 			createBuckets: allow("createBuckets"),
 			deployStaticWebsites: allow("deployStaticWebsites"),
 			manageLambdas: allow("manageLambdas"),

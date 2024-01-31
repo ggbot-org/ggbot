@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
+    "build": "tsc --build",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ temp/",
+    "cleanup": "tsc --build --clean",
     "lint": "eslint --fix --ext .ts src/",
+    "prebuild": "npm run cleanup",
     "start": "node dist/server"
   },
   "dependencies": {

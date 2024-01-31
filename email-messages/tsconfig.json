@@ -1,10 +1,8 @@
 {
 	"compilerOptions": {
-		"lib": ["dom", "es2015"],
-		"module": "esnext",
-		"moduleResolution": "node",
-		"rootDir": "./src",
-		"target": "esnext"
+		"declaration": true,
+		"outDir": "./dist",
+		"rootDir": "./src"
 	},
 	"extends": "@workspace/tsconfig/default",
 	"include": ["./src/**/*.ts"]

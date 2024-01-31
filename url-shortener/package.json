@@ -5,11 +5,8 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf temp/",
-    "generate_shortened_urls": "node temp/scripts/generate_shortened_urls.js",
-    "lint": "eslint --fix --ext .ts src/",
-    "pregenerate_shortened_urls": "npm run tsc:scripts",
-    "tsc:scripts": "tsc --build tsconfig.scripts.json"
+    "generate_shortened_urls": "node --loader ts-node/esm src/scripts/generate_shortened_urls.ts",
+    "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
     "@workspace/env": "0.0.0",

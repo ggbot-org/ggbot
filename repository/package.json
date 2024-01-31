@@ -11,22 +11,20 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "cleanup": "tsc --build --clean tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ temp/",
-    "generate_docs": "node temp/scripts/generate_npm_dependencies_doc.js",
+    "generate_docs": "node --loader ts-node/esm src/scripts/generate_npm_dependencies_doc.ts",
     "lint": "eslint --fix --ext .ts src/",
-    "pregenerate_docs": "npm run tsc:scripts",
-    "pretest": "tsc --build tsconfig.test.json",
-    "test": "node --test",
-    "tsc:scripts": "tsc --build tsconfig.scripts.json"
+    "prebuild": "npm run cleanup",
+    "test": "node --test --loader ts-node/esm **/*_test.ts"
   },
   "dependencies": {
-    "type-fest": "4.8.1"
+    "read-file-utf8": "3.0.0",
+    "type-fest": "4.8.1",
+    "write-file-utf8": "3.0.2"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
-    "@workspace/tsconfig": "0.0.0",
-    "read-file-utf8": "3.0.0",
-    "write-file-utf8": "3.0.2"
+    "@workspace/tsconfig": "0.0.0"
   }
 }

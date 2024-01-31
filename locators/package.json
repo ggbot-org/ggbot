@@ -11,11 +11,11 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
+    "cleanup": "tsc --build --clean tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "rm -rf dist/ temp/",
     "lint": "eslint --fix --ext .ts src/",
-    "pretest": "tsc --build tsconfig.test.json",
-    "test": "node --test"
+    "prebuild": "npm run cleanup",
+    "test": "node --test --loader ts-node/esm **/*_test.ts"
   },
   "dependencies": {
     "@workspace/models": "0.0.0",
