@@ -8,7 +8,7 @@ The following environment variables are used:
 -   `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
 -   `AWS_DATA_REGION`: for example `eu-central-1`.
 -   `AWS_SES_REGION`: for example `us-east-1`.
--   `BINANCE_PROXY_IP`: for example `3.65.45.176`.
+-   `BINANCE_PROXY_IP`: for example `1.2.3.4`.
 -   `DEPLOY_STAGE`: can be `main`, `next` or `local`. It defaults to `local` if not provided.
 -   `DNS_DOMAIN`: _example.com_.
 -   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
@@ -40,7 +40,7 @@ export DEPLOY_STAGE=main
 
 export AUTHENTICATION_SECRET=s3cret
 
-export BINANCE_PROXY_IP=3.65.45.176
+export BINANCE_PROXY_IP=1.2.3.4
 
 export STRIPE_SECRET_KEY=xxx
 export STRIPE_WEBHOOK_SECRET=xxx
