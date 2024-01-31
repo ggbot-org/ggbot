@@ -38,7 +38,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod === "OPTIONS")
 			return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod === apiActionMethod)
+		if (event.httpMethod !== apiActionMethod)
 			return errorResponse(METHOD_NOT_ALLOWED__405)
 
 		info(event.httpMethod, JSON.stringify(event.body, null, 2))

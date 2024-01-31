@@ -50,14 +50,14 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 			const isInactive = schedulingsAreInactive(schedulings)
 			if (hideInactive && isInactive && !allAreInactive) continue
 			items.push({
-				href: webapp.user.strategy({ strategyId, strategyKind })
-					.pathname,
+				href: webapp.user.strategy({ strategyId, strategyKind }).href,
 				name,
 				schedulings,
 				strategyId
 			})
 		}
 	}
+console.log(items)
 
 	const onChangeHideInactive = useCallback<CheckboxOnChange>((event) => {
 		const checked = event.target.checked

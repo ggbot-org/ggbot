@@ -5,6 +5,9 @@ import {
 	clientAction,
 	ClientActionHeaders,
 	DocumentProviderLevel2,
+	GenericError,
+	isApiActionOutputData,
+	isApiActionOutputError,
 	isUserClientActionInput as isInput,
 	TimeoutError,
 	UserClientActionType
@@ -131,7 +134,10 @@ export class Service implements ApiService<UserClientActionType> {
 				headers,
 				{ type }
 			)
-			return output
+
+			if (isApiActionOutputData(output)) return output.data
+			if (isApiActionOutputError(output)) return output.error
+			throw new GenericError()
 		} catch (error) {
 			if (error instanceof TimeoutError) throw new GatewayTimeoutError()
 			// TODO handle errors from binance
