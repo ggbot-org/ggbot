@@ -7,8 +7,11 @@ import {
 import {
 	AccountDailyOrder,
 	AccountDailyOrdersKey,
+	AccountKey,
+	AccountStrategy,
 	Order,
-	StrategyDailyOrdersKey
+	StrategyDailyOrdersKey,
+	StrategyScheduling
 } from "@workspace/models"
 
 import {
@@ -72,28 +75,89 @@ export class ExecutorDatabase implements ExecutorAction {
 		)
 	}
 
-	SuspendAccountStrategyScheduling(
-		_arg: Input["SuspendAccountStrategyScheduling"]
-	) {
-		return Promise.resolve()
+	async SuspendAccountStrategyScheduling({
+		accountId,
+		strategyId,
+		schedulingId
+	}: Input["SuspendAccountStrategyScheduling"]) {
+		const items = await this.ReadAccountStrategies({ accountId })
+		const data = items.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status, ...scheduling }) => ({
+								...scheduling,
+								status:
+									schedulingId === scheduling.id
+										? "suspended"
+										: status
+							})
+					  )
+					: item.schedulings
+		}))
+		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	SuspendAccountStrategySchedulings(
-		_arg: Input["SuspendAccountStrategySchedulings"]
-	) {
-		return Promise.resolve()
+	async SuspendAccountStrategySchedulings({
+		accountId,
+		strategyId
+	}: Input["SuspendAccountStrategySchedulings"]) {
+		const items = await this.ReadAccountStrategies({ accountId })
+		const data = items.map<AccountStrategy>((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status: _status, ...scheduling }) => ({
+								...scheduling,
+								status: "suspended"
+							})
+					  )
+					: item.schedulings
+		}))
+		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	SuspendAccountStrategiesSchedulings(
-		_arg: Input["SuspendAccountStrategiesSchedulings"]
-	) {
-		return Promise.resolve()
+	async SuspendAccountStrategiesSchedulings({
+		accountId
+	}: Input["SuspendAccountStrategiesSchedulings"]) {
+		const items = await this.ReadAccountStrategies({ accountId })
+		const data = items.map<AccountStrategy>((item) => ({
+			...item,
+			schedulings: item.schedulings.map<StrategyScheduling>(
+				({ status: _status, ...scheduling }) => ({
+					...scheduling,
+					status: "suspended"
+				})
+			)
+		}))
+		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	UpdateAccountStrategySchedulingMemory(
-		_arg: Input["UpdateAccountStrategySchedulingMemory"]
-	) {
-		return Promise.resolve()
+	async UpdateAccountStrategySchedulingMemory({
+		accountId,
+		strategyId,
+		schedulingId,
+		memory
+	}: Input["UpdateAccountStrategySchedulingMemory"]) {
+		const items = await this.ReadAccountStrategies({ accountId })
+		const data = items.map<AccountStrategy>((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							(scheduling) => ({
+								...scheduling,
+								memory:
+									schedulingId === scheduling.id
+										? memory
+										: scheduling.memory
+							})
+					  )
+					: item.schedulings
+		}))
+		await this.writeAccountStrategies({ accountId }, data)
 	}
 
 	async readAccountDailyOrders(arg: AccountDailyOrdersKey) {
@@ -108,5 +172,12 @@ export class ExecutorDatabase implements ExecutorAction {
 			pathname.accountDailyOrders(arg)
 		)
 		return data ?? []
+	}
+
+	writeAccountStrategies(arg: AccountKey, data: AccountStrategy[]) {
+		return this.documentProvider.setItem(
+			pathname.accountStrategies(arg),
+			data
+		)
 	}
 }
