@@ -101,7 +101,7 @@ export const useAction = <
 					setIsPending(true)
 					const output = await clientAction(url, headers, {
 						type,
-						data
+						data: inputData
 					})
 
 					if (isApiActionOutputData(output)) {
@@ -166,7 +166,7 @@ export const useAction = <
 				setError({ name: GenericError.errorName })
 			})
 		},
-		[data, url, type, withAuth]
+		[url, type, withAuth]
 	)
 
 	const isDone = data !== undefined
