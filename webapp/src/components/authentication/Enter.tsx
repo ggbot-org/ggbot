@@ -7,7 +7,6 @@ import {
 	Control,
 	Field,
 	Form,
-	FormOnSubmit,
 	formValues,
 	Message,
 	Modal,
@@ -21,7 +20,7 @@ import {
 } from "@workspace/api"
 import { EmailAddress, isEmailAddress } from "@workspace/models"
 import { isMaybeObject } from "minimal-type-guard-helpers"
-import { FC, Reducer, useCallback, useReducer } from "react"
+import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthEnterProps = {
@@ -67,7 +66,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 		}
 	}, {})
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		async (event) => {
 			try {
 				event.preventDefault()

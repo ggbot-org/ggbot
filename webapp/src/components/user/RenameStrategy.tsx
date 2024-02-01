@@ -3,9 +3,7 @@ import {
 	Control,
 	Field,
 	Form,
-	FormOnSubmit,
 	formValues,
-	InputOnChange,
 	Message,
 	Modal,
 	Title
@@ -14,7 +12,16 @@ import { StrategyName } from "_/components/StrategyName"
 import { StrategyContext } from "_/contexts/Strategy"
 import { ManageStrategyContext } from "_/contexts/user/ManageStrategy"
 import { isName } from "@workspace/models"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	FormEventHandler,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -36,15 +43,25 @@ export const RenameStrategy: FC = () => {
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-	const onChangeName = useCallback<InputOnChange>((event) => {
-		if (isName(event.target.value)) setCanCreate(true)
-	}, [])
+	const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
+		(event) => {
+			if (
+				isName(
+					(
+						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+					).value
+				)
+			)
+				setCanCreate(true)
+		},
+		[]
+	)
 
 	const toggleModal = useCallback(() => {
 		setModalIsActive((active) => !active)
 	}, [])
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			const { name: newName } = formValues(event, fields)

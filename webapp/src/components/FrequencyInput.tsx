@@ -1,11 +1,4 @@
-import {
-	Column,
-	Columns,
-	InputField,
-	InputOnChange,
-	SelectField,
-	SelectOnChange
-} from "_/components/library"
+import { Column, Columns, InputField, SelectField } from "_/components/library"
 import {
 	Frequency,
 	FrequencyInterval,
@@ -13,7 +6,13 @@ import {
 	isNaturalNumber,
 	NaturalNumber
 } from "@workspace/models"
-import { FC, useCallback } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	SelectHTMLAttributes,
+	useCallback
+} from "react"
 import { useIntl } from "react-intl"
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
@@ -43,9 +42,12 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 		{ value: "1m", label: formatMessage({ id: "FrequencyInput.minute" }) }
 	]
 
-	const onChangeFrequencyEvery = useCallback<InputOnChange>(
+	const onChangeFrequencyEvery = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
 		(event) => {
-			const value = event.target.value
+			const { value } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 			const every = value === "" ? value : Number(value)
 			if (isNaturalNumber(every) || every === "")
 				setFrequency({
@@ -56,9 +58,12 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 		[interval, setFrequency]
 	)
 
-	const onChangeFrequencyInterval = useCallback<SelectOnChange>(
+	const onChangeFrequencyInterval = useCallback<
+		ChangeEventHandler<HTMLSelectElement>
+	>(
 		(event) => {
-			const value = event.target.value
+			const { value } =
+				event.target as unknown as SelectHTMLAttributes<HTMLSelectElement>
 			if (isFrequencyInterval(value))
 				setFrequency({
 					every,

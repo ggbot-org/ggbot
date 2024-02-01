@@ -1,6 +1,6 @@
 import { FlowMenu } from "_/components/FlowMenu"
 import { FlowViewContainer } from "_/components/FlowViewContainer"
-import { Button, ButtonOnClick } from "_/components/library"
+import { Button } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { useUserApi } from "_/hooks/useUserApi"
@@ -18,7 +18,7 @@ export const EditableFlow: FC = () => {
 
 	const saveIsPending = WRITE.isPending
 
-	const onClickSave = useCallback<ButtonOnClick>(() => {
+	const onClickSave = useCallback(() => {
 		if (!strategyKey) return
 		if (!canSave) return
 		if (!WRITE.canRun) return

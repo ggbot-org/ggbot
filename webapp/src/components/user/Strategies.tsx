@@ -3,12 +3,10 @@ import {
 	Button,
 	Buttons,
 	Checkbox,
-	CheckboxOnChange,
 	Column,
 	Columns,
 	Flex,
 	Form,
-	FormOnSubmit,
 	Message
 } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
@@ -16,8 +14,16 @@ import { StrategiesContext } from "_/contexts/user/Strategies"
 import { webapp } from "_/routing/webapp"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
-import { FC, useCallback, useContext, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useState
+} from "react"
 import { FormattedMessage } from "react-intl"
+import { FormProps } from "trunx"
 
 type StrategyItem = Pick<
 	AccountStrategy,
@@ -25,7 +31,7 @@ type StrategyItem = Pick<
 > & { href: string }
 
 export type StrategiesProps = {
-	goCreateStrategy: FormOnSubmit
+	goCreateStrategy: NonNullable<FormProps["onSubmit"]>
 }
 
 export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
@@ -49,18 +55,21 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 		} of accountStrategies) {
 			const isInactive = schedulingsAreInactive(schedulings)
 			if (hideInactive && isInactive && !allAreInactive) continue
+			const url = webapp.user.strategy({ strategyId, strategyKind })
 			items.push({
-				href: webapp.user.strategy({ strategyId, strategyKind }).href,
+				href: `${url.pathname}${url.search}`,
 				name,
 				schedulings,
 				strategyId
 			})
 		}
 	}
-console.log(items)
 
-	const onChangeHideInactive = useCallback<CheckboxOnChange>((event) => {
-		const checked = event.target.checked
+	const onChangeHideInactive = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>((event) => {
+		const { checked } =
+			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		setHideInactive(checked)
 		localWebStorage.hideInactiveStrategies.set(checked)
 	}, [])

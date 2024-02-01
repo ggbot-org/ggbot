@@ -2,7 +2,6 @@ import {
 	Button,
 	Buttons,
 	Checkbox,
-	CheckboxOnChange,
 	Content,
 	MainColor,
 	Message,
@@ -11,7 +10,14 @@ import {
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useContext, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const DeleteAccount: FC = () => {
@@ -26,7 +32,7 @@ export const DeleteAccount: FC = () => {
 	const DELETE = useUserApi.DeleteAccount()
 	const isLoading = DELETE.isPending
 
-	const [hasConsent, setHasConsent] = useState(false)
+	const [hasConsent, setHasConsent] = useState<boolean | undefined>()
 	const [modalIsActive, setModalIsActive] = useState(false)
 
 	const _setModalIsActive = useCallback<
@@ -36,9 +42,13 @@ export const DeleteAccount: FC = () => {
 		setHasConsent(false)
 	}, [])
 
-	const onChangeConsent = useCallback<CheckboxOnChange>(
+	const onChangeConsent = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
-			setHasConsent(event.target.checked)
+			setHasConsent(
+				(
+					event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+				).checked
+			)
 		},
 		[setHasConsent]
 	)

@@ -5,9 +5,7 @@ import {
 	Column,
 	Columns,
 	Form,
-	FormOnSubmit,
 	formValues,
-	InputOnChange,
 	Message,
 	Section,
 	Title
@@ -20,7 +18,16 @@ import { UseActionError } from "_/hooks/useAction"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
 import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	FormEventHandler,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -41,11 +48,20 @@ export const CopyStrategy: FC = () => {
 	const isLoading = COPY.isPending || COPY.isDone
 	const newStrategy = COPY.data
 
-	const onChangeName = useCallback<InputOnChange>((event) => {
-		setCanCreate(isName(event.target.value))
-	}, [])
+	const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
+		(event) => {
+			setCanCreate(
+				isName(
+					(
+						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+					).value
+				)
+			)
+		},
+		[]
+	)
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (!strategyKey) return

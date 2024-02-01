@@ -2,14 +2,20 @@ import { GoSettings } from "_/components/GoSettings"
 import {
 	Buttons,
 	Checkbox,
-	CheckboxOnChange,
 	Content,
 	Message,
 	Modal
 } from "_/components/library"
 import { useSubscription } from "_/hooks/useSubscription"
 import { sessionWebStorage } from "_/storages/session"
-import { FC, useCallback, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	useCallback,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const PleasePurchase: FC = () => {
@@ -17,14 +23,18 @@ export const PleasePurchase: FC = () => {
 
 	const { hasActiveSubscription } = useSubscription()
 
-	const [doNotShow, setDoNotShow] = useState(false)
+	const [doNotShow, setDoNotShow] = useState<boolean | undefined>()
 	const [isActive, setIsActive] = useState(false)
 
-	const onChangeDoNotShow = useCallback<CheckboxOnChange>((event) => {
-		const checked = event.target.checked
-		setDoNotShow(checked)
-		sessionWebStorage.doNotShowPleasePurchase.set(checked)
-	}, [])
+	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>(
+		(event) => {
+			const { checked } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			setDoNotShow(checked)
+			sessionWebStorage.doNotShowPleasePurchase.set(checked)
+		},
+		[]
+	)
 
 	useEffect(() => {
 		if (sessionWebStorage.doNotShowPleasePurchase.get()) return

@@ -8,8 +8,6 @@ import {
 	Control,
 	Field,
 	Form,
-	FormOnReset,
-	FormOnSubmit,
 	Input,
 	Label,
 	Message,
@@ -24,7 +22,7 @@ import {
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
 import { EmailAddress } from "@workspace/models"
-import { FC, Reducer, useCallback, useReducer } from "react"
+import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthVerifyProps = {
@@ -91,7 +89,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		return state
 	}, {})
 
-	const onReset = useCallback<FormOnReset>(
+	const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			resetEmail()
@@ -99,7 +97,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		[resetEmail]
 	)
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		async (event) => {
 			try {
 				event.preventDefault()

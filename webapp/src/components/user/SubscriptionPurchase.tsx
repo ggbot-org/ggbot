@@ -7,7 +7,6 @@ import {
 	Columns,
 	Flex,
 	Form,
-	FormOnSubmit,
 	formValues,
 	Message,
 	Title
@@ -32,7 +31,14 @@ import {
 	purchaseMinNumMonths as minNumMonths
 } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import {
+	FC,
+	FormEventHandler,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
@@ -82,7 +88,7 @@ export const SubscriptionPurchase: FC = () => {
 			{ numMonths }
 		)
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (!accountEmail) return

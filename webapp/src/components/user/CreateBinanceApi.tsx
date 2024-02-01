@@ -4,13 +4,12 @@ import {
 	Control,
 	Field,
 	Form,
-	FormOnSubmit,
 	formValues,
 	Title
 } from "_/components/library"
 import { ApiSecret } from "_/components/user/ApiSecret"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useEffect } from "react"
+import { FC, FormEventHandler, useCallback, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -29,7 +28,7 @@ export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 	const readOnly = CREATE.isPending
 	const isDone = CREATE.isDone
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (!CREATE.canRun) return

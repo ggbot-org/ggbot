@@ -1,13 +1,16 @@
-import {
-	InputField,
-	InputFieldProps,
-	InputOnChange
-} from "_/components/library"
+import { InputField, InputFieldProps } from "_/components/library"
 import {
 	purchaseMaxNumMonths as max,
 	purchaseMinNumMonths as min
 } from "@workspace/models"
-import { Dispatch, FC, SetStateAction, useCallback } from "react"
+import {
+	ChangeEventHandler,
+	Dispatch,
+	FC,
+	InputHTMLAttributes,
+	SetStateAction,
+	useCallback
+} from "react"
 import { useIntl } from "react-intl"
 
 type Props = Omit<
@@ -24,9 +27,10 @@ export const SubscriptionNumMonths: FC<Props> = ({
 }) => {
 	const { formatMessage } = useIntl()
 
-	const onChange = useCallback<InputOnChange>(
+	const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
-			const value = event.target.value
+			const { value } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 			const num = Number(value)
 			if (value === "" || isNaN(num)) {
 				setValue(undefined)

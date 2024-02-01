@@ -2,14 +2,7 @@ import {
 	FrequencyInput,
 	FrequencyInputProps
 } from "_/components/FrequencyInput"
-import {
-	Box,
-	Button,
-	ButtonOnClick,
-	Buttons,
-	Level,
-	LevelItem
-} from "_/components/library"
+import { Box, Button, Buttons, Level, LevelItem } from "_/components/library"
 import { SchedulingStatus } from "_/components/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
 import { FC, useCallback } from "react"
@@ -34,7 +27,7 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
 
 	const { frequency, status } = scheduling
 
-	const onClickStatusButton = useCallback<ButtonOnClick>(() => {
+	const onClickStatusButton = useCallback(() => {
 		if (status !== "active") {
 			setStatus("active")
 		} else {

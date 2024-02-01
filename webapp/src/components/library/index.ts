@@ -16,15 +16,9 @@ export * from "./Tag"
 export * from "./Toast"
 export * from "./ToastContainer"
 export type {
-	ButtonOnClick,
 	ButtonProps,
-	CheckboxOnChange,
-	FormOnReset,
-	FormOnSubmit,
-	InputOnChange,
 	MainColor,
 	ProgressProps,
-	SelectOnChange,
 	SizeModifierProp
 } from "trunx"
 export {

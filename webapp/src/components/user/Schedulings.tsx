@@ -1,12 +1,10 @@
 import { classNames } from "_/classNames"
 import {
 	Button,
-	ButtonOnClick,
 	Buttons,
 	Column,
 	Columns,
 	Form,
-	FormOnSubmit,
 	Level,
 	LevelItem,
 	Title
@@ -30,6 +28,7 @@ import {
 } from "@workspace/models"
 import {
 	FC,
+	MouseEventHandler,
 	useCallback,
 	useContext,
 	useEffect,
@@ -170,7 +169,7 @@ export const Schedulings: FC = () => {
 		)
 	}, [formatMessage, hasActiveSubscription, toast])
 
-	const onClickSave = useCallback<ButtonOnClick>(() => {
+	const onClickSave = useCallback(() => {
 		if (!strategyKey) return
 		if (!hasActiveSubscription) {
 			toast.warning(
@@ -193,11 +192,7 @@ export const Schedulings: FC = () => {
 		wantedSchedulings
 	])
 
-	const onSubmit = useCallback<FormOnSubmit>((event) => {
-		event.preventDefault()
-	}, [])
-
-	const onClickCancel = useCallback<ButtonOnClick>(
+	const onClickCancel = useCallback<MouseEventHandler>(
 		(event) => {
 			event.preventDefault()
 			setSchedulingItems(currentSchedulings)
@@ -223,7 +218,12 @@ export const Schedulings: FC = () => {
 		<>
 			<Columns>
 				<Column isNarrow>
-					<Form box onSubmit={onSubmit}>
+					<Form
+						box
+						onSubmit={(event) => {
+							event.preventDefault()
+						}}
+					>
 						<Level
 							isMobile
 							left={

@@ -1,10 +1,13 @@
-import {
-	InputField,
-	InputFieldProps,
-	InputOnChange
-} from "_/components/library"
+import { InputField, InputFieldProps } from "_/components/library"
 import { isName, normalizeName } from "@workspace/models"
-import { Dispatch, FC, SetStateAction, useCallback } from "react"
+import {
+	ChangeEventHandler,
+	Dispatch,
+	FC,
+	InputHTMLAttributes,
+	SetStateAction,
+	useCallback
+} from "react"
 import { useIntl } from "react-intl"
 
 export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
@@ -23,9 +26,11 @@ export const Name: FC<NameProps> = ({
 
 	const name = typeof value === "string" ? value : ""
 
-	const onChange = useCallback<InputOnChange>(
+	const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
-			setValue?.(event.target.value)
+			const { value } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			if (typeof value === "string") setValue?.(value)
 		},
 		[setValue]
 	)

@@ -1,12 +1,5 @@
 import { ApiKey } from "_/components/ApiKey"
-import {
-	Button,
-	Control,
-	Field,
-	Form,
-	FormOnSubmit,
-	Title
-} from "_/components/library"
+import { Button, Control, Field, Form, Title } from "_/components/library"
 import {
 	BinanceApiKeyPermissions,
 	BinanceApiKeyPermissionsProps
@@ -14,7 +7,14 @@ import {
 import { ToastContext } from "_/contexts/Toast"
 import { useUserApi } from "_/hooks/useUserApi"
 import { GatewayTimeoutError } from "@workspace/http"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Props = {
@@ -32,7 +32,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 	const READ = useUserApi.ReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<ChangeEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (READ.canRun) READ.request()

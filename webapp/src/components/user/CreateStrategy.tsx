@@ -3,9 +3,7 @@ import {
 	Buttons,
 	Columns,
 	Form,
-	FormOnSubmit,
 	formValues,
-	InputOnChange,
 	Message,
 	OneColumn
 } from "_/components/library"
@@ -16,7 +14,15 @@ import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPa
 import { useUserApi } from "_/hooks/useUserApi"
 import { sessionWebStorage } from "_/storages/session"
 import { isName } from "@workspace/models"
-import { FC, useCallback, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	FormEventHandler,
+	InputHTMLAttributes,
+	useCallback,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -35,11 +41,20 @@ export const CreateStrategy: FC = () => {
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-	const onChangeName = useCallback<InputOnChange>((event) => {
-		setCanCreate(isName(event.target.value))
-	}, [])
+	const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
+		(event) => {
+			setCanCreate(
+				isName(
+					(
+						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+					).value
+				)
+			)
+		},
+		[]
+	)
 
-	const onSubmit = useCallback<FormOnSubmit>(
+	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (!canCreate) return

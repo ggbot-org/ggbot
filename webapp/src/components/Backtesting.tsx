@@ -10,7 +10,6 @@ import {
 import {
 	Box,
 	Checkbox,
-	CheckboxOnChange,
 	Column,
 	Columns,
 	Control,
@@ -28,7 +27,15 @@ import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
 import { isFrequency } from "@workspace/models"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { classNames } from "trunx"
 
@@ -67,9 +74,13 @@ export const Backtesting: FC = () => {
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
 
-	const onChangePauseOnMemoryChange = useCallback<CheckboxOnChange>(
+	const onChangePauseOnMemoryChange = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
 		(event) => {
-			const checked = event.target.checked
+			const { checked } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			if (checked === undefined) return
 			dispatch({
 				type: "SET_AFTER_STEP_BEHAVIOUR",
 				afterStepBehaviour: {
@@ -81,9 +92,13 @@ export const Backtesting: FC = () => {
 		[afterStepBehaviour, dispatch]
 	)
 
-	const onChangePauseOnNewOrder = useCallback<CheckboxOnChange>(
+	const onChangePauseOnNewOrder = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>(
 		(event) => {
-			const checked = event.target.checked
+			const { checked } =
+				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			if (checked === undefined) return
 			dispatch({
 				type: "SET_AFTER_STEP_BEHAVIOUR",
 				afterStepBehaviour: {

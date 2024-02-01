@@ -1,15 +1,18 @@
-import {
-	SelectField,
-	SelectFieldProps,
-	SelectOnChange
-} from "_/components/library"
+import { SelectField, SelectFieldProps } from "_/components/library"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
 	AllowedCountryIsoCode2,
 	allowedCountryIsoCodes2,
 	isAllowedCountryIsoCode2
 } from "@workspace/models"
-import { FC, useCallback, useEffect, useState } from "react"
+import {
+	ChangeEventHandler,
+	FC,
+	SelectHTMLAttributes,
+	useCallback,
+	useEffect,
+	useState
+} from "react"
 import { useIntl } from "react-intl"
 
 type Props = Pick<SelectFieldProps, "name">
@@ -54,9 +57,10 @@ export const SelectCountry: FC<Props> = ({ name }) => {
 			  ]
 	}
 
-	const onChange = useCallback<SelectOnChange>(
+	const onChange = useCallback<ChangeEventHandler<HTMLSelectElement>>(
 		(event) => {
-			const value = event.target.value
+			const { value } =
+				event.target as unknown as SelectHTMLAttributes<HTMLSelectElement>
 			if (!WRITE.canRun) return
 			if (isAllowedCountryIsoCode2(value)) {
 				WRITE.request({ country: value })
