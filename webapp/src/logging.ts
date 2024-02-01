@@ -31,7 +31,9 @@ export const logging = (prefix: string) => ({
 				return item
 			})
 		)
-	}
+	},
+	/** Prints error and with "Debug" level, on any deploy stage. */
+	debug: console.debug.bind(console)
 })
 
 if (IS_DEV) log.enable()
