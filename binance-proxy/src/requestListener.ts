@@ -23,7 +23,7 @@ import { ErrorAccountItemNotFound } from "@workspace/models"
 
 import { binanceRequestHandler } from "./binanceRequestHandler.js"
 import { getElasticIp } from "./elasticIp.js"
-import { warn } from "./logging.js"
+import { debug, warn } from "./logging.js"
 
 const ContentTypeJSON = { "Content-Type": "application/json" }
 
@@ -105,7 +105,7 @@ export const requestListener = (
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.
-				warn(error)
+				debug(error)
 				response.writeHead(INTERNAL_SERVER_ERROR__500)
 			})
 			.finally(() => {

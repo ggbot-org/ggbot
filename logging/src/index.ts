@@ -1,4 +1,3 @@
-// eslint-disable no-console
 import { ENV } from "@workspace/env"
 
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
@@ -35,5 +34,9 @@ export const logging = (prefix: string) => ({
 				return item
 			})
 		)
+	},
+	/** Prints error and its stacktrace to STDERR, on any deploy stage. */
+	debug: (error: unknown) => {
+		console.debug(new Date().toJSON(), error)
 	}
 })

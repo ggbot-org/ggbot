@@ -82,6 +82,6 @@ export const clientAction = async <ActionType extends string>(
 		])
 			if (error === ErrorClass.statusCode) throw new ErrorClass()
 
-		throw new GenericError()
+		throw error
 	}
 }

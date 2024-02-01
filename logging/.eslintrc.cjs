@@ -6,5 +6,8 @@ module.exports = {
 	parserOptions: {
 		project: true,
 		tsconfigRootDir: __dirname
+	},
+	rules: {
+		"no-console": "off"
 	}
 }

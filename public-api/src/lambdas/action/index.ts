@@ -16,7 +16,7 @@ import { documentProvider } from "@workspace/s3-data-bucket"
 
 import { Service } from "./service.js"
 
-const { info, warn } = logging("public-api")
+const { debug, info } = logging("public-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -44,7 +44,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return errorResponse(ErrorClass.statusCode)
 
 		// Fallback to print error if not handled.
-		warn(error)
+		debug(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }
