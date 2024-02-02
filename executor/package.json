@@ -7,6 +7,8 @@
     "build": "tsc --build",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "tsc --build --clean",
+    "e2e:execute": "node --loader ts-node/esm ./src/end-to-end-tests/execute.ts",
+    "e2e:listAccountKeys": "node --loader ts-node/esm ./src/end-to-end-tests/listAccountKeys.ts",
     "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "start": "node dist/start"

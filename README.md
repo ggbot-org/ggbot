@@ -17,6 +17,16 @@ npm run build
 
 Read [Tech strack](./infrastructure/docs/tech-stack.md) for more details.
 
+To launch linting, type checking and tests:
+
+```sh
+npm run lint
+npm run check_types
+npm test
+```
+
+See also [here how to run end to end tests](./infrastructure/docs/end-to-end-tests.md).
+
 ## Documentation
 
 -   [Entity-relationship model](./models/docs/entity-relationship.md)
