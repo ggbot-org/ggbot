@@ -41,7 +41,7 @@ export const requestListener = (
 		return response.end()
 	}
 
-	if (url !== `/${binanceProxy.action.pathname}`) {
+	if (url !== binanceProxy.action.pathname) {
 		warn(NOT_FOUND__404, url)
 		response.writeHead(NOT_FOUND__404)
 		return response.end()
