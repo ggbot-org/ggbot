@@ -10,19 +10,25 @@
     }
   },
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "tsc --build --clean",
-    "e2e:apiRestrictions": "node --loader ts-node/esm ./src/end-to-end-tests/apiRestrictions.ts",
-    "e2e:newOrder": "node --loader ts-node/esm ./src/end-to-end-tests/newOrder.ts",
+    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "e2e:apiRestrictions": "node $npm_package_config_tsnode ./src/end-to-end-tests/apiRestrictions.ts",
+    "e2e:newOrder": "node $npm_package_config_tsnode ./src/end-to-end-tests/newOrder.ts",
     "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup"
+  },
+  "dependencies": {
+    "@workspace/binance": "0.0.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
   },
-  "dependencies": {
-    "@workspace/binance": "0.0.0"
+  "optionalDependencies": {
+    "@workspace/logging": "0.0.0"
+  },
+  "config": {
+    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

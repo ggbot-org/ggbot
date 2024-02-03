@@ -1,12 +1,14 @@
-/* eslint-disable no-console */
 import {
 	DflowBinanceExecutor,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
+import { logging } from "@workspace/logging"
 import { StrategyFlow } from "@workspace/models"
 import { now, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "../binance.js"
+
+const { info } = logging("e2e:execute")
 
 const accountId = process.env.ACCOUNT_ID
 
@@ -118,5 +120,5 @@ const { execution, orders } = await executor.run(
 	view
 )
 
-console.info("execution status", execution?.status)
-console.info("orders", orders)
+info("execution status", execution?.status)
+info("orders", orders)

@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
-    "cleanup": "tsc --build --clean",
-    "e2e:execute": "node --loader ts-node/esm ./src/end-to-end-tests/execute.ts",
-    "e2e:listAccountKeys": "node --loader ts-node/esm ./src/end-to-end-tests/listAccountKeys.ts",
+    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "e2e:execute": "node $npm_package_config_tsnode ./src/end-to-end-tests/execute.ts",
+    "e2e:listAccountKeys": "node $npm_package_config_tsnode ./src/end-to-end-tests/listAccountKeys.ts",
     "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "start": "node dist/start"
@@ -32,5 +32,8 @@
     "minimal-time-helpers": "0.1.0",
     "read-file-utf8": "3.0.0",
     "write-file-utf8": "3.0.2"
+  },
+  "config": {
+    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

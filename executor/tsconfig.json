@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"outDir": "./dist",
 		"rootDir": "./src"
 	},
 	"extends": "@workspace/tsconfig/default",

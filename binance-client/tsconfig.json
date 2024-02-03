@@ -1,8 +1,5 @@
 {
 	"compilerOptions": {
-		"declaration": true,
-		"lib": ["dom", "es2015"],
-		"outDir": "./dist",
 		"rootDir": "./src"
 	},
 	"extends": "@workspace/tsconfig/default",

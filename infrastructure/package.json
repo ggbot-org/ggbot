@@ -6,8 +6,8 @@
   "scripts": {
     "check_types": "tsc --noEmit --project .",
     "lint": "eslint --fix --ext .ts src/",
-    "push_infrastructure": "ACTIVE_TEST=1 node --test --loader ts-node/esm **/*_test.ts",
-    "test_infrastructure": "node --test --loader ts-node/esm **/*_test.ts"
+    "push_infrastructure": "ACTIVE_TEST=1 node --test $npm_package_config_tsnode **/*_test.ts",
+    "test_infrastructure": "node --test $npm_package_config_tsnode **/*_test.ts"
   },
   "dependencies": {
     "@workspace/aws-acm": "0.0.0",
@@ -27,5 +27,8 @@
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
+  },
+  "config": {
+    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }
