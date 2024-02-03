@@ -6,7 +6,6 @@
 -   Amazon Web Services
     -   [AWS Certificate Manager](#aws-certificate-manager)
     -   [AWS CloudFront](#aws-cloudfront)
-    -   [AWS CodeCommit](#aws-codecommit)
     -   [AWS EC2](#aws-ec2)
     -   [AWS IAM](#aws-iam)
     -   [AWS S3](#aws-s3)
@@ -67,10 +66,6 @@ https://aws.amazon.com/certificate-manager/
 ### AWS CloudFront
 
 https://aws.amazon.com/cloudfront/
-
-### AWS CodeCommit
-
-https://aws.amazon.com/codecommit/
 
 ### AWS EC2
 

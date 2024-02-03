@@ -34,24 +34,6 @@ Clone repository
 git clone https://github.com/ggbot-org/ggbot.git
 ```
 
-<!-- TODO remove this, it was an attempt to use AWS codecommit
-
-Configure git, setup credentials.
-
-```sh
-git config --global credential.helper '!aws codecommit credential-helper $@'
-
-git config --global credential.UseHttpPath true
-```
-
-Clone repository
-
-```sh
-git clone https://git-codecommit.eu-central-1.amazonaws.com/v1/repos/ggbot2-monorepo
-```
-
--->
-
 ## Node
 
 Install [Node.js](./tech-stack.md#nodejs)
