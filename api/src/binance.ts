@@ -66,7 +66,7 @@ export const isBinanceClientActionInput = {
 			typeof symbol === "string" &&
 			typeof side === "string" &&
 			typeof type === "string" &&
-			!orderOptions &&
+			orderOptions !== null &&
 			typeof orderOptions === "object"
 	)
 }
