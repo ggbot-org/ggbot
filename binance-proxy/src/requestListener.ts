@@ -22,49 +22,34 @@ import { BinanceProxyURLs } from "@workspace/locators"
 import { ErrorAccountItemNotFound } from "@workspace/models"
 
 import { binanceRequestHandler } from "./binanceRequestHandler.js"
-import { getElasticIp } from "./elasticIp.js"
 import { debug, warn } from "./logging.js"
 
 const ContentTypeJSON = { "Content-Type": "application/json" }
+
+// Use an instance of `BinanceProxyURLs` with `localhost` as base URL,
+// just to get its URLs pathnames.
+const binanceProxy = new BinanceProxyURLs("localhost")
 
 export const requestListener = (
 	request: IncomingMessage,
 	response: ServerResponse
 ) => {
-	const { url: requestUrl } = request
+	const { method, url } = request
 
-	if (typeof requestUrl !== "string") {
+	if (typeof url !== "string") {
 		response.writeHead(BAD_REQUEST__400)
-		response.end()
-		return
+		return response.end()
 	}
 
-	if (requestUrl === "/health-check") {
-		response.end(`Elastic IP: ${getElasticIp() ?? "none"}`)
-		return
-	}
-
-	if (requestUrl === "/robots.txt") {
-		response.end("User-agent: *\nDisallow: /")
-		return
-	}
-
-	// Handle known URLs.
-	// Use an instance of `BinanceProxyURLs` with `localhost` as base URL,
-	// just to get its URLs pathnames.
-	const binanceProxy = new BinanceProxyURLs("localhost")
-
-	// The request URL is not known if we arrive here.
-	if (requestUrl === `/${binanceProxy.action.pathname}`) {
-		warn(NOT_FOUND__404, requestUrl)
+	if (url !== `/${binanceProxy.action.pathname}`) {
+		warn(NOT_FOUND__404, url)
 		response.writeHead(NOT_FOUND__404)
-		response.end()
+		return response.end()
 	}
 
-	if (request.method !== apiActionMethod) {
+	if (method !== apiActionMethod) {
 		response.writeHead(METHOD_NOT_ALLOWED__405)
-		response.end()
-		return
+		return response.end()
 	}
 
 	const chunks: Uint8Array[] = []
@@ -78,20 +63,16 @@ export const requestListener = (
 
 		binanceRequestHandler(request.headers, body)
 			.then((data) => {
-				const output: ApiActionOutputData = { data }
 				response.writeHead(OK__200, ContentTypeJSON)
+				const output: ApiActionOutputData = { data }
 				response.write(JSON.stringify(output), "utf-8")
 			})
 			.catch((error) => {
-				if (error instanceof BadRequestError) {
-					response.writeHead(error.statusCode)
-					return
-				}
+				if (error instanceof BadRequestError)
+					return response.writeHead(error.statusCode)
 
-				if (error instanceof ErrorAccountItemNotFound) {
-					response.writeHead(UNAUTHORIZED__401)
-					return
-				}
+				if (error instanceof ErrorAccountItemNotFound)
+					return response.writeHead(UNAUTHORIZED__401)
 
 				if (error instanceof ErrorBinanceHTTP) {
 					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
@@ -101,7 +82,7 @@ export const requestListener = (
 							info: error.info
 						}
 					}
-					response.write(JSON.stringify(output), "utf-8")
+					return response.write(JSON.stringify(output), "utf-8")
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.

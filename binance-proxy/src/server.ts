@@ -16,9 +16,7 @@ let gotSIGTERM = false
 createServer(requestListener).listen(port, () => {
 	info("Server running on port", port)
 
-	associateIp().catch((error) => {
-		warn(error)
-	})
+	associateIp().catch(warn)
 })
 
 const terminate = () => {

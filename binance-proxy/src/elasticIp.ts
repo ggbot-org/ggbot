@@ -6,11 +6,6 @@ import {
 } from "@workspace/aws-ec2"
 import { ENV } from "@workspace/env"
 
-import {
-	ErrorCannotParseElasticIps,
-	ErrorElasticIpsListIsEmpty,
-	ErrorNoElasticIpAvailable
-} from "./errors.js"
 import { info } from "./logging.js"
 
 const BINANCE_PROXY_IP = ENV.BINANCE_PROXY_IP()
@@ -19,14 +14,12 @@ const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
 let elasticIp = ""
 let associationId = ""
 
-export const getElasticIp = () => elasticIp
-
 const looksLikeIp = (ip: unknown) => typeof ip === "string"
 
 const parseElasticIpFromEnv = () => {
-	const elasticIp = BINANCE_PROXY_IP
-	if (looksLikeIp(elasticIp)) return elasticIp
-	throw new ErrorCannotParseElasticIps()
+	const ip = BINANCE_PROXY_IP
+	if (looksLikeIp(ip)) return ip
+	throw new Error("Cannot parse static IPs")
 }
 
 export const associateIp = async () => {
@@ -39,7 +32,8 @@ export const associateIp = async () => {
 	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, {
 		PublicIps: [elasticIpFromEnv]
 	})
-	if (!Addresses) throw new ErrorElasticIpsListIsEmpty()
+	if (!Addresses)
+		throw new Error("Cannot associate Elastic IP, empty address list")
 
 	for (const elasticIpInfo of Addresses) {
 		const { AllocationId, PublicIp } = elasticIpInfo
@@ -61,7 +55,10 @@ export const associateIp = async () => {
 		info("Elastic IP associated", elasticIp)
 	}
 
-	if (!elasticIp) throw new ErrorNoElasticIpAvailable()
+	if (!elasticIp)
+		throw new Error(
+			"Cannot associate Elastic IP, no available address found"
+		)
 }
 
 export const disassociateIp = async () => {
