@@ -8,6 +8,7 @@ graph LR
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/database
     workspace/admin-api --- workspace/s3-data-bucket
+    workspace/api --- workspace/binance
     workspace/api --- workspace/http
     workspace/api --- workspace/models
     workspace/api-gateway --- workspace/api
@@ -29,11 +30,11 @@ graph LR
     workspace/backtesting --- workspace/dflow
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
-    workspace/binance-proxy --- workspace/api
     workspace/binance-proxy --- workspace/aws-ec2
-    workspace/binance-proxy --- workspace/binance
+    workspace/binance-proxy --- workspace/authentication
+    workspace/binance-proxy --- workspace/binance-client
+    workspace/binance-proxy --- workspace/database
     workspace/binance-proxy --- workspace/locators
-    workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/s3-data-bucket
     workspace/database --- workspace/api
     workspace/database --- workspace/aws-s3
@@ -51,6 +52,7 @@ graph LR
     workspace/env --- workspace/models
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database
+    workspace/executor --- workspace/locators
     workspace/executor --- workspace/s3-data-bucket
     workspace/infrastructure --- workspace/aws-acm
     workspace/infrastructure --- workspace/aws-api-gateway
@@ -67,8 +69,8 @@ graph LR
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/database
     workspace/public-api --- workspace/s3-data-bucket
+    workspace/s3-data-bucket --- workspace/api
     workspace/s3-data-bucket --- workspace/aws-s3
-    workspace/s3-data-bucket --- workspace/models
     workspace/stripe --- workspace/env
     workspace/stripe-api --- workspace/api-gateway
     workspace/stripe-api --- workspace/database

@@ -17,6 +17,7 @@
     "prebuild": "npm run cleanup"
   },
   "dependencies": {
+    "@workspace/api": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
     "@workspace/aws-types": "0.0.0",
     "@workspace/models": "0.0.0"

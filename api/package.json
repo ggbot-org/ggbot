@@ -17,6 +17,7 @@
     "prebuild": "npm run cleanup"
   },
   "dependencies": {
+    "@workspace/binance": "0.0.0",
     "@workspace/http": "0.0.0",
     "@workspace/models": "0.0.0",
     "minimal-assertion-helpers": "0.1.0",

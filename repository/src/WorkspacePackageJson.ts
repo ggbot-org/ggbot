@@ -20,10 +20,10 @@ export class WorkspacePackageJson implements FileProvider {
 
 	buildScriptCommand: string | undefined
 
-	/** Key = package name value = package version */
+	/** Key = "package name" value = "package version" */
 	dependencies = new Map<string, string>()
 
-	/** Key = package name value = package version */
+	/** Key = "package name" value = "package version" */
 	devDependencies = new Map<string, string>()
 
 	/** Can be a dependency or a dev dependency. */
