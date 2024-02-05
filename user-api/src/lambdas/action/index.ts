@@ -41,7 +41,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod !== apiActionMethod)
 			return errorResponse(METHOD_NOT_ALLOWED__405)
 
-		info(event.httpMethod, JSON.stringify(event.body, null, 2))
+		info(event.httpMethod, event.body)
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const authorization = event.headers.Authorization

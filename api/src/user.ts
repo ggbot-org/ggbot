@@ -166,12 +166,14 @@ export type UserClientActionType =
 	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">
 
 export const userClientActions: ActionTypes<UserClientActionType> = [
+	// UserDatabase action types.
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
 	"CreatePurchaseOrder",
 	"CreateStrategy",
 	"DeleteAccount",
 	"DeleteBinanceApiConfig",
+	"DeleteStrategy",
 	"ReadAccountInfo",
 	"ReadAccountStrategies",
 	"ReadBinanceApiKey",
@@ -182,6 +184,7 @@ export const userClientActions: ActionTypes<UserClientActionType> = [
 	"SetAccountCountry",
 	"WriteAccountStrategiesItemSchedulings",
 	"WriteStrategyFlow",
+	// Binance client action types.
 	"ReadBinanceAccountApiRestrictions"
 ] as const
 

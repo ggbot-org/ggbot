@@ -31,8 +31,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		await readSessionFromAuthorizationHeader(event.headers.Authorization)
 
+		info(event.httpMethod, event.body)
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
-		info(event.httpMethod, JSON.stringify(event.body, null, 2))
 
 		const input: unknown = JSON.parse(event.body)
 		if (!isActionInput(adminActions)(input))
