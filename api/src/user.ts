@@ -29,8 +29,7 @@ import {
 	StrategyKey,
 	Subscription,
 	SubscriptionPlan,
-	UpdateTime
-} from "@workspace/models"
+	UpdateTime} from "@workspace/models"
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
@@ -212,7 +211,13 @@ export const isUserClientActionInput = {
 			isPaymentProvider(paymentProvider)
 	),
 	CreateStrategy: objectTypeGuard<UserClientActionInput["CreateStrategy"]>(
-		(arg) => isStrategy({ ...arg, id: nullId, whenCreated: 1 })
+		(arg) =>
+			isStrategy({
+				...arg,
+				accountId: nullId,
+				id: nullId,
+				whenCreated: 1
+			})
 	),
 	DeleteStrategy: isStrategyKey,
 	// TODO
