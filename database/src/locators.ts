@@ -102,6 +102,7 @@ import {
 	isSubscriptionPurchaseKey,
 	normalizeEmailAddress,
 	StrategyDailyBalanceChangesKey,
+	StrategyDailyErrorsKey,
 	StrategyDailyOrdersKey,
 	StrategyKey,
 	SubscriptionPurchaseKey
@@ -142,6 +143,7 @@ export const dirnamePrefix = {
 	oneTimePassword: "oneTimePassword",
 	strategy: "strategy",
 	strategyDailyBalanceChanges: "strategyBalances",
+	strategyDailyErrors: "strategyErrors",
 	strategyDailyOrders: "strategyOrders",
 	strategyExecution: "strategyExecution",
 	strategyFlow: "strategyFlow",
@@ -242,6 +244,11 @@ export const itemKeyToDirname = {
 			itemKeyToDirname.day({ day }),
 			itemKeyToDirname.accountStrategy(key)
 		]),
+	strategyDailyErrors: ({ day, ...key }: StrategyDailyErrorsKey) =>
+		dirJoin([
+			itemKeyToDirname.day({ day }),
+			itemKeyToDirname.accountStrategy(key)
+		]),
 	strategyDailyOrders: ({ day, ...key }: StrategyDailyOrdersKey) =>
 		dirJoin([
 			itemKeyToDirname.day({ day }),
@@ -286,6 +293,11 @@ const dirname = {
 			dirnamePrefix.strategyDailyBalanceChanges,
 			itemKeyToDirname.strategyDailyBalanceChanges(arg)
 		]),
+	strategyDailyErrors: (arg: StrategyDailyErrorsKey) =>
+		dirJoin([
+			dirnamePrefix.strategyDailyErrors,
+			itemKeyToDirname.strategyDailyErrors(arg)
+		]),
 	strategyDailyOrders: (arg: StrategyDailyOrdersKey) =>
 		dirJoin([
 			dirnamePrefix.strategyDailyOrders,
@@ -324,6 +336,7 @@ const filename = {
 	oneTimePassword: "otp.json",
 	strategy: "strategy.json",
 	strategyDailyBalanceChanges: "balances.json",
+	strategyDailyErrors: "errors.json",
 	strategyDailyOrders: "orders.json",
 	strategyExecution: "execution.json",
 	strategyFlow: "flow.json",
@@ -359,6 +372,11 @@ export const pathname = {
 		dirJoin([
 			dirname.strategyDailyBalanceChanges(arg),
 			filename.strategyDailyBalanceChanges
+		]),
+	strategyDailyErrors: (arg: StrategyDailyOrdersKey) =>
+		dirJoin([
+			dirname.strategyDailyErrors(arg),
+			filename.strategyDailyErrors
 		]),
 	strategyDailyOrders: (arg: StrategyDailyOrdersKey) =>
 		dirJoin([

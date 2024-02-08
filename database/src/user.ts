@@ -21,7 +21,9 @@ import {
 	newStrategy,
 	Order,
 	Strategy,
+	StrategyDailyErrorsKey,
 	StrategyDailyOrdersKey,
+	StrategyError,
 	StrategyFlow,
 	StrategyKey,
 	updatedNow,
@@ -156,6 +158,28 @@ export class UserDatabase implements UserDatabaseAction {
 		if (!data) return null
 		const { apiKey } = data
 		return { apiKey }
+	}
+
+	async ReadStrategyErrors({
+		start,
+		end,
+		...strategyKey
+	}: Input["ReadStrategyErrors"]) {
+		const { accountId } = this.accountKey
+		const result: Output["ReadStrategyErrors"] = []
+		let date = dayToDate(start)
+		while (date <= dayToDate(end)) {
+			const day = dateToDay(date)
+			const orders = await this.readStrategyDailyErrors({
+				day,
+				accountId,
+				...strategyKey
+			})
+			if (!orders) continue
+			for (const order of orders) result.push(order)
+			date = getDate(date).plusOne.day
+		}
+		return result
 	}
 
 	async ReadStrategyOrders({
@@ -344,6 +368,15 @@ export class UserDatabase implements UserDatabaseAction {
 		const { accountId } = await this.readStrategy(strategyKey)
 		cache.set(strategyId, accountId)
 		return accountId
+	}
+
+	async readStrategyDailyErrors(
+		arg: StrategyDailyErrorsKey
+	): Promise<StrategyError[]> {
+		const data = await this.documentProvider.getItem<
+			StrategyError[] | null
+		>(pathname.strategyDailyErrors(arg))
+		return data ?? []
 	}
 
 	async readStrategyDailyOrders(

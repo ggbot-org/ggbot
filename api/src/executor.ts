@@ -6,7 +6,9 @@ import {
 	AccountStrategyItemKey,
 	AccountStrategySchedulingKey,
 	Order,
+	StrategyDailyErrorsKey,
 	StrategyDailyOrdersKey,
+	StrategyError,
 	StrategyMemory,
 	Subscription
 } from "@workspace/models"
@@ -14,13 +16,17 @@ import {
 import { Action } from "./action.js"
 
 export type ExecutorAction = {
+	AppendAccountDailyOrders: (
+		arg: AccountDailyOrdersKey & { items: AccountDailyOrder[] }
+	) => Promise<void>
+	AppendStrategyDailyErrors: Action<
+		StrategyDailyErrorsKey & { items: StrategyError[] },
+		void
+	>
 	AppendStrategyDailyOrders: Action<
 		StrategyDailyOrdersKey & { items: Order[] },
 		void
 	>
-	AppendAccountDailyOrders: (
-		arg: AccountDailyOrdersKey & { items: AccountDailyOrder[] }
-	) => Promise<void>
 	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
 	ReadAccountStrategies: (arg: AccountKey) => Promise<AccountStrategy[]>
 	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>
@@ -39,6 +45,9 @@ export type ExecutorAction = {
 export type ExecutorActionInput = {
 	AppendAccountDailyOrders: Parameters<
 		ExecutorAction["AppendAccountDailyOrders"]
+	>[0]
+	AppendStrategyDailyErrors: Parameters<
+		ExecutorAction["AppendStrategyDailyErrors"]
 	>[0]
 	AppendStrategyDailyOrders: Parameters<
 		ExecutorAction["AppendStrategyDailyOrders"]
@@ -65,6 +74,9 @@ export type ExecutorActionInput = {
 export type ExecutorActionOutput = {
 	AppendAccountDailyOrders: Awaited<
 		ReturnType<ExecutorAction["AppendAccountDailyOrders"]>
+	>
+	AppendStrategyDailyErrors: Awaited<
+		ReturnType<ExecutorAction["AppendStrategyDailyErrors"]>
 	>
 	AppendStrategyDailyOrders: Awaited<
 		ReturnType<ExecutorAction["AppendStrategyDailyOrders"]>

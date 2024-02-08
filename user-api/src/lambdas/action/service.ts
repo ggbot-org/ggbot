@@ -10,7 +10,8 @@ import {
 	isApiActionOutputError,
 	isUserClientActionInput as isInput,
 	TimeoutError,
-	UserClientActionType} from "@workspace/api"
+	UserClientActionType
+} from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
 import { BadRequestError, GatewayTimeoutError } from "@workspace/http"
@@ -84,6 +85,11 @@ export class Service implements ApiService<UserClientActionType> {
 
 	ReadBinanceApiKey() {
 		return this.dataProvider.ReadBinanceApiKey()
+	}
+
+	ReadStrategyErrors(arg: unknown) {
+		if (!isInput.ReadStrategyErrors(arg)) throw new BadRequestError()
+		return this.dataProvider.ReadStrategyErrors(arg)
 	}
 
 	ReadStrategyOrders(arg: unknown) {

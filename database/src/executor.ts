@@ -11,7 +11,10 @@ import {
 	accountStrategiesModifier,
 	AccountStrategy,
 	Order,
-	StrategyDailyOrdersKey} from "@workspace/models"
+	StrategyDailyErrorsKey,
+	StrategyDailyOrdersKey,
+	StrategyError
+} from "@workspace/models"
 
 import {
 	dirnameDelimiter,
@@ -39,11 +42,23 @@ export class ExecutorDatabase implements ExecutorAction {
 		)
 	}
 
+	async AppendStrategyDailyErrors({
+		items,
+		...key
+	}: Input["AppendStrategyDailyErrors"]) {
+		const currentItems = await this.readStrategyDailyErrors(key)
+		const data = [...currentItems, ...items]
+		await this.documentProvider.setItem(
+			pathname.strategyDailyOrders(key),
+			data
+		)
+	}
+
 	async AppendStrategyDailyOrders({
 		items,
 		...key
 	}: Input["AppendStrategyDailyOrders"]) {
-		const currentItems = await this.readAccountDailyOrders(key)
+		const currentItems = await this.readStrategyDailyOrders(key)
 		const data = [...currentItems, ...items]
 		await this.documentProvider.setItem(
 			pathname.strategyDailyOrders(key),
@@ -132,9 +147,16 @@ export class ExecutorDatabase implements ExecutorAction {
 		return data ?? []
 	}
 
+	async readStrategyDailyErrors(arg: StrategyDailyErrorsKey) {
+		const data = await this.documentProvider.getItem<StrategyError[]>(
+			pathname.strategyDailyErrors(arg)
+		)
+		return data ?? []
+	}
+
 	async readStrategyDailyOrders(arg: StrategyDailyOrdersKey) {
 		const data = await this.documentProvider.getItem<Order[]>(
-			pathname.accountDailyOrders(arg)
+			pathname.strategyDailyOrders(arg)
 		)
 		return data ?? []
 	}

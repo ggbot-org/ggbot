@@ -25,11 +25,13 @@ import {
 	Order,
 	PaymentProvider,
 	Strategy,
+	StrategyError,
 	StrategyFlow,
 	StrategyKey,
 	Subscription,
 	SubscriptionPlan,
-	UpdateTime} from "@workspace/models"
+	UpdateTime
+} from "@workspace/models"
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
@@ -64,6 +66,9 @@ export type UserDatabaseAction = {
 		arg: void
 	) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
 	// TODO ReadStrategyBalances: ( arg: StrategyKey & DayInterval) => Promise<StrategyBalance[] |null>
+	ReadStrategyErrors: (
+		arg: StrategyKey & DayInterval
+	) => Promise<StrategyError[]>
 	ReadStrategyOrders: (arg: StrategyKey & DayInterval) => Promise<Order[]>
 	ReadSubscription: (arg: void) => Promise<Subscription | null>
 	RenameAccount: (arg: Required<Pick<Account, "name">>) => Promise<UpdateTime>
@@ -108,6 +113,7 @@ export type UserDatabaseActionInput = {
 		UserDatabaseAction["ReadAccountStrategies"]
 	>[0]
 	ReadBinanceApiKey: Parameters<UserDatabaseAction["ReadBinanceApiKey"]>[0]
+	ReadStrategyErrors: Parameters<UserDatabaseAction["ReadStrategyErrors"]>[0]
 	ReadStrategyOrders: Parameters<UserDatabaseAction["ReadStrategyOrders"]>[0]
 	ReadSubscription: Parameters<UserDatabaseAction["ReadSubscription"]>[0]
 	RenameAccount: Parameters<UserDatabaseAction["RenameAccount"]>[0]
@@ -141,6 +147,9 @@ export type UserDatabaseActionOutput = {
 		ReturnType<UserDatabaseAction["ReadBinanceApiKey"]>
 	>
 	// TODO ReadStrategyBalances: Awaited<ReturnType<UserDatabaseAction['ReadStrategyBalances']>>
+	ReadStrategyErrors: Awaited<
+		ReturnType<UserDatabaseAction["ReadStrategyErrors"]>
+	>
 	ReadStrategyOrders: Awaited<
 		ReturnType<UserDatabaseAction["ReadStrategyOrders"]>
 	>
@@ -176,6 +185,7 @@ export const userClientActions: ActionTypes<UserClientActionType> = [
 	"ReadAccountInfo",
 	"ReadAccountStrategies",
 	"ReadBinanceApiKey",
+	"ReadStrategyErrors",
 	"ReadStrategyOrders",
 	"ReadSubscription",
 	"RenameAccount",
@@ -226,6 +236,12 @@ export const isUserClientActionInput = {
 	// 		isDayInterval({ start, end }) &&
 	// 		isStrategyKey(strategyKey)
 	// ),
+	ReadStrategyErrors: objectTypeGuard<
+		UserClientActionInput["ReadStrategyErrors"]
+	>(
+		({ start, end, ...strategyKey }) =>
+			isDayInterval({ start, end }) && isStrategyKey(strategyKey)
+	),
 	ReadStrategyOrders: objectTypeGuard<
 		UserClientActionInput["ReadStrategyOrders"]
 	>(

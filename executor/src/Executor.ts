@@ -22,12 +22,12 @@ import {
 } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, truncateTime } from "minimal-time-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 import { homedir } from "os"
 import { join } from "path"
 import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
-import { isNodeError } from "./errors.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
 import { info, warn } from "./logging.js"
 
@@ -78,8 +78,13 @@ export class Executor {
 			const executorId = await readFile(executorIdFile)
 			return executorId
 		} catch (error) {
-			if (isNodeError(error)) {
-				if (error.code === "ENOENT") {
+			if (
+				objectTypeGuard<{ code: string }>(
+					({ code }) => typeof code === "string"
+				)(error)
+			) {
+				const { code } = error
+				if (code === "ENOENT") {
 					const executorId = newId()
 					await writeFile(executorIdFile, executorId)
 					return executorId
@@ -163,7 +168,7 @@ export class Executor {
 	}
 
 	/**
-	 * Execute strategies if scheduling is active and accorging to scheduling
+	 * Execute strategies if scheduling is active and according to scheduling
 	 * frequency.
 	 */
 	async manageStrategyExecution(
