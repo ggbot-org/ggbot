@@ -78,6 +78,12 @@ export const useUserApi = {
 		>(apiOptions, "ReadBinanceApiKey"),
 	// TODO
 	// ReadStrategyBalances
+	ReadStrategyErrors: () =>
+		useAction<
+			ActionType,
+			Input["ReadStrategyErrors"],
+			Output["ReadStrategyErrors"]
+		>(apiOptions, "ReadStrategyErrors"),
 	ReadStrategyOrders: () =>
 		useAction<
 			ActionType,

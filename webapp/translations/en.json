@@ -458,6 +458,12 @@
 	"StrategyActions.title": {
 		"defaultMessage": "Strategy"
 	},
+	"StrategyErrors.noError": {
+		"defaultMessage": "No error found"
+	},
+	"StrategyErrors.whenCreated": {
+		"defaultMessage": "Creation time"
+	},
 	"StrategyNotFound.title": {
 		"defaultMessage": "Strategy not found."
 	},
@@ -553,6 +559,9 @@
 	},
 	"Tabs.backtesting": {
 		"defaultMessage": "Backtesting"
+	},
+	"Tabs.errors": {
+		"defaultMessage": "Errors"
 	},
 	"Tabs.flow": {
 		"defaultMessage": "Flow"

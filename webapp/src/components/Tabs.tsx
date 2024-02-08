@@ -22,6 +22,7 @@ const tabIds = [
 	"account",
 	"accounts",
 	"backtesting",
+	"errors",
 	"flow",
 	"manage",
 	"newStrategy",

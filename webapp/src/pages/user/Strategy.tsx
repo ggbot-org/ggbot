@@ -4,6 +4,7 @@ import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
 import { ManageStrategy } from "_/components/user/ManageStrategy"
 import { PageContainer } from "_/components/user/PageContainer"
 import { PleasePurchase } from "_/components/user/PleasePurchase"
+import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
@@ -37,6 +38,10 @@ export const StrategyPage: FC = () => {
 									{
 										tabId: "profits",
 										content: <StrategyProfits />
+									},
+									{
+										tabId: "errors",
+										content: <StrategyErrors />
 									},
 									{
 										tabId: "backtesting",

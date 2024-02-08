@@ -21,7 +21,7 @@ import {
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
-import { StrategyOrders } from "_/components/StrategyOrders"
+import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
@@ -282,7 +282,7 @@ export const Backtesting: FC = () => {
 
 			<Columns>
 				<Column isNarrow>
-					<StrategyOrders orders={orders} />
+					<StrategyOrdersTable orders={orders} />
 				</Column>
 			</Columns>
 		</>

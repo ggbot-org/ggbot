@@ -21,7 +21,7 @@ type Props = {
 	orders: Order[] | undefined
 }
 
-export const StrategyOrders: FC<Props> = ({ orders }) => {
+export const StrategyOrdersTable: FC<Props> = ({ orders }) => {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []

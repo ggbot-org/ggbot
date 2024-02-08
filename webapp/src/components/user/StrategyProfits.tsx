@@ -1,6 +1,6 @@
 import { Column, Columns, OneColumn } from "_/components/library"
 import { ProfitSummary } from "_/components/ProfitSummary"
-import { StrategyOrders } from "_/components/StrategyOrders"
+import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
 import { getDay, today } from "minimal-time-helpers"
@@ -44,7 +44,7 @@ export const StrategyProfits: FC = () => {
 
 			<Columns>
 				<Column isNarrow>
-					<StrategyOrders orders={orders} />
+					<StrategyOrdersTable orders={orders} />
 				</Column>
 			</Columns>
 		</>
