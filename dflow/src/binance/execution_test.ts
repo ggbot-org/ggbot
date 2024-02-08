@@ -8,8 +8,8 @@ import {
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js"
 
-describe("getBalancesFromExecutionSteps", () => {
-	test("works", async () => {
+void describe("getBalancesFromExecutionSteps", () => {
+	void test("works", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		;[
@@ -41,8 +41,8 @@ describe("getBalancesFromExecutionSteps", () => {
 	})
 })
 
-describe("getOrdersFromExecutionSteps", () => {
-	test("works", () => {
+void describe("getOrdersFromExecutionSteps", () => {
+	void test("works", () => {
 		[
 			{
 				input: [],

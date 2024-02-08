@@ -1,6 +1,8 @@
 module.exports = {
 	env: { browser: false, es2020: true, node: true },
-	extends: ["eslint:recommended", "plugin:@typescript-eslint/strict",
+	extends: [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/strict",
 		"plugin:@typescript-eslint/recommended-type-checked"
 	],
 	parser: "@typescript-eslint/parser",
@@ -73,8 +75,7 @@ module.exports = {
 		"no-warning-comments": "warn",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
-		// TODO remove all switches then set it to error
-		"smells/no-switch": "warn",
+		"smells/no-switch": "error",
 		"sort-keys": [
 			"error",
 			"asc",

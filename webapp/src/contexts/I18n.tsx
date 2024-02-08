@@ -27,31 +27,27 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 				| { type: "READ_INTL_MESSAGES_FAILURE" }
 			>
 		>((state, action) => {
-			switch (action.type) {
-				case "READ_INTL_MESSAGES_REQUEST": {
-					return {
-						...state,
-						readIntlMessagesIsPending: true
-					}
-				}
-				case "READ_INTL_MESSAGES_SUCCESS": {
-					return {
-						...state,
-						intlMessagesLoaded: true,
-						readIntlMessagesIsPending: false
-					}
-				}
-				case "READ_INTL_MESSAGES_FAILURE": {
-					return {
-						...state,
-						intlMessagesLoaded: false,
-						readIntlMessagesIsPending: false
-					}
+			if (action.type === "READ_INTL_MESSAGES_REQUEST")
+				return {
+					...state,
+					readIntlMessagesIsPending: true
 				}
 
-				default:
-					return state
-			}
+			if (action.type === "READ_INTL_MESSAGES_SUCCESS")
+				return {
+					...state,
+					intlMessagesLoaded: true,
+					readIntlMessagesIsPending: false
+				}
+
+			if (action.type === "READ_INTL_MESSAGES_FAILURE")
+				return {
+					...state,
+					intlMessagesLoaded: false,
+					readIntlMessagesIsPending: false
+				}
+
+			return state
 		}, {})
 
 	const intlMessages = useRef()
@@ -66,7 +62,7 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 			intlMessages.current = json
 			dispatch({ type: "READ_INTL_MESSAGES_SUCCESS" })
 		} catch (error) {
-			console.error(error)
+			warn(error)
 			dispatch({ type: "READ_INTL_MESSAGES_FAILURE" })
 		}
 	}, [language])

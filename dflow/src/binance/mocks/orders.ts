@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { BinanceOrderRespFULL } from "@workspace/binance"
 
 export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {

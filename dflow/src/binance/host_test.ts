@@ -7,9 +7,9 @@ import { DflowBinanceHost } from "./host.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 
-describe("DflowBinanceHost", () => {
-	describe("load()", () => {
-		test("parses a flow view and loads it into a Dflow graph", async () => {
+void describe("DflowBinanceHost", () => {
+	void describe("load()", () => {
+		void test("parses a flow view and loads it into a Dflow graph", async () => {
 			const binance = new DflowBinanceClientMock()
 			const { symbols } = await binance.exchangeInfo()
 			const nodesCatalog = getDflowBinanceNodesCatalog(symbols)

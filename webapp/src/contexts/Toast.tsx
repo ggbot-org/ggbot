@@ -39,18 +39,15 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
 			| ({ type: "REMOVE_NOTIFICATION" } & Pick<Notification, "id">)
 		>
 	>((notifications, action) => {
-		switch (action.type) {
-			case "ADD_NOTIFICATION":
-				// Add new notification at the beginning of the stack.
-				// They are displayed on bottom, so new notifications will be on top.
-				return [action.notification, ...notifications]
+		if (action.type === "ADD_NOTIFICATION")
+			// Add new notification at the beginning of the stack.
+			// They are displayed on bottom, so new notifications will be on top.
+			return [action.notification, ...notifications]
 
-			case "REMOVE_NOTIFICATION":
-				return notifications.filter(({ id }) => id !== action.id)
+		if (action.type === "REMOVE_NOTIFICATION")
+			return notifications.filter(({ id }) => id !== action.id)
 
-			default:
-				return notifications
-		}
+		return notifications
 	}, [])
 
 	const close = useCallback<(id: Notification["id"]) => () => void>(

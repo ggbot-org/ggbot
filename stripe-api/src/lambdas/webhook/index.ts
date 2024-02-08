@@ -22,6 +22,9 @@ type ResponseData = {
 	received: boolean
 }
 
+const received: ResponseData = { received: true }
+const notReceived: ResponseData = { received: false }
+
 // @ts-expect-error TODO use async/await ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = (event) => {
 	try {
@@ -38,14 +41,11 @@ export const handler: APIGatewayProxyHandler = (event) => {
 
 		info(stripeEvent)
 
-		switch (stripeEvent.type) {
-			default: {
-				warn(`Unhandled event type ${stripeEvent.type}`)
-			}
+		if (stripeEvent.type === "payment_intent.succeeded") {
+			return OK(received)
 		}
 
-		const output: ResponseData = { received: true }
-		return OK(output)
+		return OK(notReceived)
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError)
 			return errorResponse(BAD_REQUEST__400)

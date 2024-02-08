@@ -102,7 +102,9 @@ module.exports = {
 		"react/no-danger": "error",
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
-		"react/self-closing-comp": ["error", { component: true, html: true }]
+		"react/self-closing-comp": ["error", { component: true, html: true }],
+		// TODO remove all switches then remove this override
+		"smells/no-switch": "warn"
 	},
 	settings: {
 		react: {

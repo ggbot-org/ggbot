@@ -46,51 +46,44 @@ export const load = ({
 		if (isInfoNode(text)) continue
 
 		const type = nodeTextToDflowKind(text)
-		switch (type) {
+		if (type === "data") {
 			// If node has type "data", parse text as JSON and create a DflowNode with kind "data".
-			case "data": {
-				const out = outs?.[0]
-				if (!out) {
-					// Throw with a custom error; it should not happen if graph is validated.
-					throw new Error(`Data node has no out nodeId=${id}`)
-				}
-				try {
-					const data = JSON.parse(text) as DflowData
-					dflow.newNode({
-						id,
-						kind: type,
-						outputs: [{ id: out.id, data }]
-					})
-				} catch (error) {
-					if (error instanceof SyntaxError) continue
-					throw error
-				}
-				break
+			const out = outs?.[0]
+			if (!out) {
+				// Throw with a custom error; it should not happen if graph is validated.
+				throw new Error(`Data node has no out nodeId=${id}`)
 			}
-
+			try {
+				const data = JSON.parse(text) as DflowData
+				dflow.newNode({
+					id,
+					kind: type,
+					outputs: [{ id: out.id, data }]
+				})
+			} catch (error) {
+				if (error instanceof SyntaxError) continue
+				throw error
+			}
+		} else if (nodeKinds.includes(text)) {
 			// By default create a Dflow node with `kind` given by `text`.
-			default: {
-				if (nodeKinds.includes(text)) {
-					const NodeClass = dflow.nodesCatalog[text]
-					// Start from inputs and outputs definitions and add them correponding `id` found in view.
-					// Notice that input or output `id` could be missing,
-					// for example if a new input or output was added to
-					// the node and the view was created before the node
-					// got that input or output.
-					const inputs = NodeClass.inputs?.map((_, index) => ({
-						id: ins?.[index]?.id
-					}))
-					const outputs = NodeClass.outputs?.map((_, index) => ({
-						id: outs?.[index]?.id
-					}))
-					dflow.newNode({
-						id,
-						kind: text,
-						inputs,
-						outputs
-					})
-				}
-			}
+			const NodeClass = dflow.nodesCatalog[text]
+			// Start from inputs and outputs definitions and add them correponding `id` found in view.
+			// Notice that input or output `id` could be missing,
+			// for example if a new input or output was added to
+			// the node and the view was created before the node
+			// got that input or output.
+			const inputs = NodeClass.inputs?.map((_, index) => ({
+				id: ins?.[index]?.id
+			}))
+			const outputs = NodeClass.outputs?.map((_, index) => ({
+				id: outs?.[index]?.id
+			}))
+			dflow.newNode({
+				id,
+				kind: text,
+				inputs,
+				outputs
+			})
 		}
 	}
 
@@ -100,10 +93,8 @@ export const load = ({
 			dflow.newEdge({ id, source, target })
 		} catch (error) {
 			// Ignore broken connections, there could be unknown nodes.
-			if (error instanceof DflowErrorItemNotFound) {
-				console.error(error)
-				continue
-			}
+			if (error instanceof DflowErrorItemNotFound) continue
+
 			throw error
 		}
 	}

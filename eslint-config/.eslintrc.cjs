@@ -1,7 +1,8 @@
 module.exports = {
-	extends: [
-		"./base.cjs",
-	],
+	env: {
+		node: true
+	},
+	extends: ["./base.cjs"],
 	parserOptions: {
 		project: true,
 		tsconfigRootDir: __dirname

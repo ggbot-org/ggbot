@@ -45,7 +45,9 @@ export class IamPolicy implements AwsResource {
 	}
 
 	static parsePolicyVersionDocument(policyVersionDocument: string) {
-		return JSON.parse(decodeURIComponent(policyVersionDocument))
+		return JSON.parse(
+			decodeURIComponent(policyVersionDocument)
+		) as PolicyDocument
 	}
 
 	async read() {

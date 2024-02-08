@@ -10,8 +10,8 @@ import { DflowCommonHostMock } from "./mocks/host.js"
 import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 import { dflowValidate } from "./validate.js"
 
-describe("dflowValidate", () => {
-	test("throws ErrorUknownDflowNodes", () => {
+void describe("dflowValidate", () => {
+	void test("throws ErrorUknownDflowNodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
 		const view: DflowExecutorView = {
 			nodes: [{ id: "n1", text: "unknownNode" }],
@@ -32,7 +32,7 @@ describe("dflowValidate", () => {
 		)
 	})
 
-	test("ignores info nodes", () => {
+	void test("ignores info nodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
 		const view: DflowExecutorView = {
 			nodes: [{ id: "n1", text: "this is a comment" }],
@@ -47,7 +47,7 @@ describe("dflowValidate", () => {
 		}, Error)
 	})
 
-	test("validates json nodes", () => {
+	void test("validates json nodes", () => {
 		const dflow = new DflowCommonHostMock(
 			{ nodesCatalog: {} },
 			{ params: {}, memory: {}, time: now() }

@@ -1,11 +1,4 @@
 {
-	"compilerOptions": {
-		"lib": ["dom", "es2015"],
-		"module": "esnext",
-		"moduleResolution": "node",
-		"rootDir": "./src",
-		"target": "esnext"
-	},
 	"extends": "@workspace/tsconfig/default",
 	"include": ["./.eslintrc.cjs", "./base.cjs"]
 }

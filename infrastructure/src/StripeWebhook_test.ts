@@ -17,8 +17,7 @@ void describe("StripeWebhook", () => {
 			`create StripeWebhook ${webhook.url}`,
 			ACTIVE_TEST,
 			async () => {
-				const endpoint = await webhook.create()
-				console.info(endpoint)
+				await webhook.create()
 				assert.ok(true)
 			}
 		)

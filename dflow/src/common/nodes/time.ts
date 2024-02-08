@@ -43,18 +43,10 @@ const translateTime = (
 ): number | undefined => {
 	if (!isTime(time)) return
 	const timeUnit = coerceToTimeUnit(timeUnitStr)
-	switch (timeUnit) {
-		case "second":
-			return getTime(time).plus(num).seconds
-		case "minute":
-			return getTime(time).plus(num).minutes
-		case "hour":
-			return getTime(time).plus(num).hours
-		case "day":
-			return getTime(time).plus(num).days
-		default:
-			return
-	}
+	if (timeUnit === "second") return getTime(time).plus(num).seconds
+	if (timeUnit === "minute") return getTime(time).plus(num).minutes
+	if (timeUnit === "hour") return getTime(time).plus(num).hours
+	if (timeUnit === "day") return getTime(time).plus(num).days
 }
 
 export class Time extends DflowNode {

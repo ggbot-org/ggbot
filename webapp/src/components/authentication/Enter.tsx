@@ -52,18 +52,12 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 			| { type: "SET_HAS_INVALID_INPUT" }
 		>
 	>((state, action) => {
-		switch (action.type) {
-			case "ENTER_REQUEST":
-				return { isPending: true }
-			case "ENTER_FAILURE":
-				return { hasGenericError: true }
-			case "ENTER_TIMEOUT":
-				return { gotTimeout: true }
-			case "SET_HAS_INVALID_INPUT":
-				return { hasInvalidInput: true }
-			default:
-				return state
-		}
+		if (action.type === "ENTER_REQUEST") return { isPending: true }
+		if (action.type === "ENTER_FAILURE") return { hasGenericError: true }
+		if (action.type === "ENTER_TIMEOUT") return { gotTimeout: true }
+		if (action.type === "SET_HAS_INVALID_INPUT")
+			return { hasInvalidInput: true }
+		return state
 	}, {})
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(

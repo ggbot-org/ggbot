@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { BinanceExchangeInfo } from "@workspace/binance"
 
 export const exchangeInfo: BinanceExchangeInfo = {
