@@ -13,6 +13,7 @@
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "tsc --build --clean tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
+    "build_repository": "node $npm_package_config_tsnode src/scripts/build_repository.ts",
     "generate_docs": "node $npm_package_config_tsnode src/scripts/generate_npm_dependencies_doc.ts",
     "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",

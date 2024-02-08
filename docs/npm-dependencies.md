@@ -1,3 +1,4 @@
+
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.
@@ -71,6 +72,7 @@ graph LR
     workspace/public-api --- workspace/s3-data-bucket
     workspace/s3-data-bucket --- workspace/api
     workspace/s3-data-bucket --- workspace/aws-s3
+    workspace/s3-data-bucket --- workspace/env
     workspace/stripe --- workspace/env
     workspace/stripe-api --- workspace/api-gateway
     workspace/stripe-api --- workspace/database
@@ -86,3 +88,5 @@ graph LR
     workspace/webapp --- workspace/backtesting
     workspace/webapp --- workspace/locators
 ```
+
+

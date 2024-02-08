@@ -18,6 +18,7 @@
     "test": "node --test $npm_package_config_tsnode **/*_test.ts"
   },
   "dependencies": {
+    "@workspace/arithmetic": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/dflow": "0.0.0",
     "@workspace/models": "0.0.0",

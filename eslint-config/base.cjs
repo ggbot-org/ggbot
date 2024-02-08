@@ -3,7 +3,8 @@ module.exports = {
 	extends: [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/strict",
-		"plugin:@typescript-eslint/recommended-type-checked"
+		"plugin:@typescript-eslint/recommended-type-checked",
+		"plugin:workspaces/recommended"
 	],
 	parser: "@typescript-eslint/parser",
 	plugins: [
@@ -11,7 +12,8 @@ module.exports = {
 		"eslint-plugin-tsdoc",
 		"import",
 		"simple-import-sort",
-		"smells"
+		"smells",
+		"workspaces"
 	],
 	root: true,
 	rules: {
