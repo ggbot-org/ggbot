@@ -2,18 +2,22 @@ import { AccountStrategy, AccountStrategyKey } from "./accountStrategy.js"
 import { ErrorExceededQuota } from "./errors.js"
 import { Modifier } from "./modifier.js"
 import { quota } from "./quotas.js"
+import { StrategyMemory } from "./strategyMemory.js"
+import { StrategyScheduling } from "./strategyScheduling.js"
 import { SubscriptionPlan } from "./subscription.js"
 
 export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
-// TODO add and test all other modifiers, see database/src/accountStrategies
 export const accountStrategiesModifier: Modifier<AccountStrategy[]> = {
-	insertItem(
-		previousItems: AccountStrategy[],
-		item: AccountStrategy,
+	insertAccountStrategy(
+		previousAccountStrategies: AccountStrategy[],
+		accountStrategy: AccountStrategy,
 		subscriptionPlan: SubscriptionPlan | undefined
 	) {
-		const accountStrategies = [...previousItems, item]
+		const accountStrategies = [
+			...previousAccountStrategies,
+			accountStrategy
+		]
 		// Check num strategies does not exceed quota, according to subscription.
 		if (
 			accountStrategies.length >
@@ -32,5 +36,80 @@ export const accountStrategiesModifier: Modifier<AccountStrategy[]> = {
 				type: "MAX_SCHEDULINGS_PER_ACCOUNT"
 			})
 		return accountStrategies
+	},
+
+	suspendScheduling(
+		accountStrategies: AccountStrategy[],
+		strategyId: AccountStrategy["strategyId"],
+		schedulingId: StrategyScheduling["id"]
+	) {
+		return accountStrategies.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status, ...scheduling }) => ({
+								...scheduling,
+								status:
+									schedulingId === scheduling.id
+										? "suspended"
+										: status
+							})
+					  )
+					: item.schedulings
+		}))
+	},
+
+	suspendStrategySchedulings(
+		accountStrategies: AccountStrategy[],
+		strategyId: AccountStrategy["strategyId"]
+	) {
+		return accountStrategies.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							({ status: _status, ...scheduling }) => ({
+								...scheduling,
+								status: "suspended"
+							})
+					  )
+					: item.schedulings
+		}))
+	},
+
+	suspendStrategiesSchedulings(accountStrategies: AccountStrategy[]) {
+		return accountStrategies.map((item) => ({
+			...item,
+			schedulings: item.schedulings.map<StrategyScheduling>(
+				({ status: _status, ...scheduling }) => ({
+					...scheduling,
+					status: "suspended"
+				})
+			)
+		}))
+	},
+
+	updateSchedulingMemory(
+		accountStrategies: AccountStrategy[],
+		strategyId: AccountStrategy["strategyId"],
+		schedulingId: StrategyScheduling["id"],
+		memory: StrategyMemory
+	) {
+		return accountStrategies.map((item) => ({
+			...item,
+			schedulings:
+				item.strategyId === strategyId
+					? item.schedulings.map<StrategyScheduling>(
+							(scheduling) => ({
+								...scheduling,
+								memory:
+									schedulingId === scheduling.id
+										? memory
+										: scheduling.memory
+							})
+					  )
+					: item.schedulings
+		}))
 	}
 }
