@@ -75,6 +75,12 @@ export class RepositoryPackageJson implements FileProvider {
 		return `npm run ${WorkspacePackageJson.buildScriptKey} -w ${workspacePathname}`
 	}
 
+	static workspacePrebuildCommand(
+		workspacePathname: PackageJson.WorkspacePattern
+	) {
+		return `npm run build_workspace_dependencies -w repository ${workspacePathname}`
+	}
+
 	static workspacePrebuildCommandSequence(
 		internalDependenciesChain: string[],
 		workspaces: Repository["workspaces"]

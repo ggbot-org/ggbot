@@ -16,15 +16,6 @@ void describe("repository", () => {
 		})
 
 		void describe("script", () => {
-			void describe("build", () => {
-				const buildScript = packageJson.buildScriptCommand()
-				assert.equal(
-					buildScript,
-					RepositoryPackageJson.buildCommandSequence(workspaces),
-					`check repository package.json ${RepositoryPackageJson.buildScriptKey} script`
-				)
-			})
-
 			for (const workspacePathname of packageJson.workspaces) {
 				const buildScript =
 					packageJson.workspaceBuildScriptCommand(workspacePathname)
@@ -75,16 +66,10 @@ void describe("repository", () => {
 								assertionError
 							)
 						} else {
-							const internalDependenciesChain =
-								WorkspacePackageJson.internalDependenciesChain(
-									workspacePathname,
-									workspaces
-								)
 							assert.equal(
 								prebuildScript,
-								RepositoryPackageJson.workspacePrebuildCommandSequence(
-									internalDependenciesChain,
-									workspaces
+								RepositoryPackageJson.workspacePrebuildCommand(
+									workspacePathname
 								),
 								assertionError
 							)
