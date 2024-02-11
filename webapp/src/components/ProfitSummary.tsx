@@ -27,7 +27,7 @@ import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { FC, Fragment, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
+export type ProfitSummaryProps = {
 	dayInterval: DayInterval | undefined
 	orders: Order[] | undefined
 	strategyKind: StrategyKind | undefined
@@ -72,7 +72,7 @@ type SymbolStats = {
 	quoteQuantity: string
 }
 
-export const ProfitSummary: FC<Props> = ({
+export const ProfitSummary: FC<ProfitSummaryProps> = ({
 	orders,
 	dayInterval,
 	strategyKind

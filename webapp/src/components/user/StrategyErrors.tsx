@@ -1,25 +1,32 @@
-import { Column, Columns } from "_/components/library"
-import { StrategyErrorsTable } from "_/components/StrategyErrorsTable"
+import {
+	Column,
+	Columns,
+	DailyIntervalBox,
+	OneColumn
+} from "_/components/library"
+import {
+	StrategyErrorsTable,
+	StrategyErrorsTableProps
+} from "_/components/StrategyErrorsTable"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
 import { getDay, today } from "minimal-time-helpers"
-import { FC, useContext, useEffect } from "react"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 
 export const StrategyErrors: FC = () => {
 	const { strategyKey } = useContext(StrategyContext)
 
-	// TODO add day selector and use indexedDB to cache orders
+	// TODO use indexedDB to cache errors
 	const numDays = 30
 
-	const end = today()
-	const start = getDay(end).minus(numDays).days
-	// const dayInterval = { start, end }
+	const [start, setStart] = useState(getDay(today()).minus(numDays).days)
+	const [end, setEnd] = useState(today())
+
+	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
 	const READ = useUserApi.ReadStrategyErrors()
 
-	const errors = READ.data
-
-	useEffect(() => {
+	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
 		if (READ.canRun)
 			READ.request({
@@ -29,11 +36,32 @@ export const StrategyErrors: FC = () => {
 			})
 	}, [READ, end, start, strategyKey])
 
+	useEffect(() => {
+		if (!READ.isDone) return
+		setErrors(READ.data)
+		READ.reset()
+	}, [READ])
+
 	return (
-		<Columns>
-			<Column isNarrow>
-				<StrategyErrorsTable errors={errors} />
-			</Column>
-		</Columns>
+		<>
+			<Columns>
+				<OneColumn>
+					<DailyIntervalBox
+						isLoading={READ.isPending}
+						start={start}
+						setStart={setStart}
+						setEnd={setEnd}
+						end={end}
+						onClickUpdate={onClickUpdate}
+					/>
+				</OneColumn>
+			</Columns>
+
+			<Columns>
+				<Column isNarrow>
+					<StrategyErrorsTable errors={errors} />
+				</Column>
+			</Columns>
+		</>
 	)
 }

@@ -158,6 +158,12 @@
 	"DailyInterval.to": {
 		"defaultMessage": "To"
 	},
+	"DailyIntervalBox.title": {
+		"defaultMessage": "Daily interval"
+	},
+	"DailyIntervalBox.update": {
+		"defaultMessage": "Update"
+	},
 	"DeleteAccount.button": {
 		"defaultMessage": "Delete account"
 	},

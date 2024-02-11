@@ -1,6 +1,7 @@
 export * from "./BrandName"
 export * from "./Checkmark"
 export * from "./DailyInterval"
+export * from "./DailyIntervalBox"
 export * from "./DateTime"
 export * from "./Icon"
 export { Input } from "./Input"

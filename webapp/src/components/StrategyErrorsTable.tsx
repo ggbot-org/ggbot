@@ -9,11 +9,13 @@ type Row = {
 	error: string
 }
 
-type Props = {
+export type StrategyErrorsTableProps = {
 	errors: StrategyError[] | undefined
 }
 
-export const StrategyErrorsTable: FC<Props> = ({ errors }) => {
+export const StrategyErrorsTable: FC<StrategyErrorsTableProps> = ({
+	errors
+}) => {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []
