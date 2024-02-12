@@ -65,7 +65,7 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 			return
 		}
 		// If is not up to date, delete item and return.
-		if (whenUpdated + timeToLive > Date.now()) {
+		if (whenUpdated + timeToLive < Date.now()) {
 			this.delete(key)
 			return
 		}
