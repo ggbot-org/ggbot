@@ -1,6 +1,6 @@
-import { DflowNode } from "dflow"
+import { Dflow } from "dflow"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 export const inputArray = input("array", { name: "array" })
 

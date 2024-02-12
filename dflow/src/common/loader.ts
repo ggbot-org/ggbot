@@ -1,17 +1,17 @@
-import { DflowData, DflowErrorItemNotFound, DflowHost } from "dflow"
+import { Dflow, DflowData, DflowErrorItemNotFound } from "dflow"
 
 import { DflowExecutorView } from "./executor.js"
 import { NodeTextToDflowKind } from "./nodeResolution.js"
 import { isInfoNode } from "./nodeTextParser.js"
 
 /**
- * A DflowHost that can load a FlowView graph.
+ * A Dflow instance that can load a FlowView graph.
  *
  * @example
  *
  * ```ts
  * import { DflowLoader, load } from "../path/to/loader.js"
- * class MyDflowHost extends DflowHost implements DflowLoader {
+ * class MyDflowHost extends Dflow implements DflowLoader {
  * 	load(view: DflowExecutorView): void {
  * 		load({
  * 			dflow: this,
@@ -22,7 +22,7 @@ import { isInfoNode } from "./nodeTextParser.js"
  * }
  * ```
  */
-export interface DflowLoader extends DflowHost {
+export interface DflowLoader extends Dflow {
 	load(view: DflowExecutorView): void
 }
 

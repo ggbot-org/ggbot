@@ -1,8 +1,8 @@
-import { DflowGraphExecutionReport } from "dflow"
+import { DflowExecutionReport } from "dflow"
 
 import { orderBuyBTCBUSD1 } from "./orders.js"
 
-export const executionStepsBuyBTCUSD: DflowGraphExecutionReport["steps"] = [
+export const executionStepsBuyBTCUSD: DflowExecutionReport["steps"] = [
 	{
 		id: "jxhrh",
 		k: "data",

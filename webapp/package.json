@@ -35,6 +35,7 @@
     "@workspace/arithmetic": "0.0.0",
     "@workspace/backtesting": "0.0.0",
     "@workspace/binance": "0.0.0",
+    "@workspace/cache": "0.0.0",
     "@workspace/dflow": "0.0.0",
     "@workspace/http": "0.0.0",
     "@workspace/locators": "0.0.0",

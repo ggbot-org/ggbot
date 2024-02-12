@@ -8,12 +8,12 @@ import {
 	mul,
 	sub
 } from "@workspace/arithmetic"
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
 import { inputPeriod, inputValues } from "../commonIO.js"
 import { simpleMovingAverage } from "./movingAverages.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 export const bollingerBands = (
 	values: number[],

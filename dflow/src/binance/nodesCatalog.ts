@@ -1,4 +1,4 @@
-import { DflowNode, DflowNodesCatalog } from "dflow"
+import { Dflow, DflowNode, DflowNodesCatalog } from "dflow"
 
 import { nodesCatalog as commonNodesCatalog } from "../common/nodesCatalog.js"
 import { dflowBinanceKlineIntervals } from "./klineIntervals.js"
@@ -12,7 +12,7 @@ import {
 	isDflowBinanceSymbolInfo
 } from "./symbols.js"
 
-const { output } = DflowNode
+const { output } = Dflow
 
 type GetDflowBinanceNodesCatalog = (
 	symbols: DflowBinanceSymbolInfo[]

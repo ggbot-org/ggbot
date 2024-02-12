@@ -1,8 +1,8 @@
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
 import { inputArray } from "./commonIO.js"
 
-const { output } = DflowNode
+const { output } = Dflow
 
 const arrayIsEmptyOrNoElementIsNumber = (array: unknown[]) =>
 	array.length === 0 ||

@@ -1,10 +1,10 @@
 import { isIdentifierString, isSerializablePrimitive } from "@workspace/models"
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
 import { inputKey } from "./commonIO.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 export class DeleteMemory extends DflowNode {
 	static kind = "deleteMemory"

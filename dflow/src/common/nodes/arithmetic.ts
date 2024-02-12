@@ -6,9 +6,9 @@ import {
 	mul,
 	sub
 } from "@workspace/arithmetic"
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 const binaryOperatorInputs = [input("number"), input("number")]
 

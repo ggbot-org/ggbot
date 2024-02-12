@@ -13,7 +13,7 @@ import { DflowBinanceContext as Context } from "../context.js"
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 import { inputInterval, inputSymbol } from "./commonIO.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 export class Candles extends DflowNode {
 	static kind = "candles"

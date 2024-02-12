@@ -10,7 +10,7 @@ import {
 } from "@workspace/dflow"
 import { StrategyKind } from "@workspace/models"
 import {
-	DflowErrorCannotConnectPins,
+	DflowErrorCannotConnectSourceToTarget,
 	DflowNodesCatalog,
 	DflowNodeUnknown
 } from "dflow"
@@ -157,7 +157,7 @@ export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 											nodeView.inputs[i].text = name
 										} else {
 											nodeView.newInput({
-												id: node.input(i).id,
+												id: node.input(i).id as string,
 												name
 											})
 										}
@@ -170,7 +170,7 @@ export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 											nodeView.outputs[i].text = name
 										} else {
 											nodeView.newOutput({
-												id: node.output(i).id,
+												id: node.output(i).id as string,
 												name
 											})
 										}
@@ -208,7 +208,10 @@ export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
 							if (typeof data !== "object" || data === null) break
 							const edgeId = data.id
 							if (typeof edgeId !== "string") break
-							if (error instanceof DflowErrorCannotConnectPins) {
+							if (
+								error instanceof
+								DflowErrorCannotConnectSourceToTarget
+							) {
 								flowView.deleteEdge(edgeId)
 								break
 							}

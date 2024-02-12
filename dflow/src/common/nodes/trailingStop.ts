@@ -1,9 +1,9 @@
 import { add, decimalToNumber, mul, sub } from "@workspace/arithmetic"
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 const inputs = [
 	input([], { name: "enterTrailing" }),

@@ -21,7 +21,7 @@
     "@workspace/arithmetic": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/models": "0.0.0",
-    "dflow": "0.42.0",
+    "dflow": "0.43.0",
     "flow-view": "6.0.1",
     "minimal-type-guard-helpers": "0.2.0"
   },

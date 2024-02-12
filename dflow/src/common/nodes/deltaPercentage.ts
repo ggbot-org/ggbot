@@ -3,12 +3,13 @@ import {
 	div,
 	ErrorCannotDivideByZero,
 	mul,
-	sub} from "@workspace/arithmetic"
+	sub
+} from "@workspace/arithmetic"
 import { Dflow, DflowNode } from "dflow"
 
 import { outputLastValue, outputValues } from "./commonIO.js"
 
-const { input } = DflowNode
+const { input } = Dflow
 
 export class DeltaPercentage extends DflowNode {
 	static kind = "deltaPercentage"

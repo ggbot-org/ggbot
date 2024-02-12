@@ -1,10 +1,10 @@
 import { coerceToDecimal } from "@workspace/arithmetic"
-import { DflowNode, DflowOutputDefinition } from "dflow"
+import { Dflow, DflowNode, DflowOutputDefinition } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 const marketOrderInputs = [
 	input("string", { name: "symbol" }),

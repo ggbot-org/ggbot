@@ -1,8 +1,8 @@
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 
 import { inputArray } from "./commonIO.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 const inputElement = input([], { name: "element" })
 const outputElement = output([], { name: "element" })

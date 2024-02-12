@@ -1,4 +1,4 @@
-import { DflowGraph, DflowId } from "dflow"
+import { Dflow, DflowId } from "dflow"
 import { FlowViewSerializableGraph } from "flow-view"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
@@ -28,7 +28,7 @@ export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 		}))
 	for (const node of flow.nodes) {
 		if (node.text === Candles.kind) {
-			const parentNodeIds = DflowGraph.parentsOfNodeId(
+			const parentNodeIds = Dflow.parentsOfNodeId(
 				node.id,
 				nodeConnections
 			)
@@ -101,7 +101,7 @@ export const extractsBinanceSymbolsFromTickerPriceAndOrderNodes = (
 				node.text
 			)
 		) {
-			const parentNodeIds = DflowGraph.parentsOfNodeId(
+			const parentNodeIds = Dflow.parentsOfNodeId(
 				node.id,
 				nodeConnections
 			)

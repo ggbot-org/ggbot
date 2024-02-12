@@ -1,4 +1,4 @@
-import { DflowNode } from "dflow"
+import { Dflow, DflowNode } from "dflow"
 import {
 	getTime,
 	isTime,
@@ -10,7 +10,7 @@ import {
 
 import { DflowCommonContext as Context } from "../context.js"
 
-const { input, output } = DflowNode
+const { input, output } = Dflow
 
 const outputDay = output("string", { name: "yyyy-mm-dd" })
 

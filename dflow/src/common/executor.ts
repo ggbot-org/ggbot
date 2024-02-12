@@ -1,4 +1,4 @@
-import { DflowGraphExecutionReport, DflowNodesCatalog } from "dflow"
+import { DflowExecutionReport, DflowNodesCatalog } from "dflow"
 import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
@@ -13,7 +13,7 @@ export type DflowCommonExecutorOutput = Pick<
 	DflowCommonContext,
 	"memory" | "memoryChanged"
 > & {
-	execution: null | DflowGraphExecutionReport
+	execution: null | DflowExecutionReport
 }
 
 /** A subset of `FlowViewSerializableGraph`. */

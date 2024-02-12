@@ -1,4 +1,4 @@
-import { DflowHost, DflowHostConstructorArg } from "dflow"
+import { Dflow, DflowConstructorArg } from "dflow"
 
 import { DflowExecutorView } from "../common/executor.js"
 import { DflowLoader, load } from "../common/loader.js"
@@ -9,9 +9,9 @@ import { binanceNodeTextToDflowKind } from "./nodeResolution.js"
  * `DflowBinanceHost` extends `DflowHost` adding DflowCommonContext and an
  * instance of Binance client.
  */
-export class DflowBinanceHost extends DflowHost implements DflowLoader {
+export class DflowBinanceHost extends Dflow implements DflowLoader {
 	constructor(
-		arg: DflowHostConstructorArg,
+		arg: DflowConstructorArg,
 		context: Omit<DflowBinanceContext, "memoryChanged">
 	) {
 		super(arg)
