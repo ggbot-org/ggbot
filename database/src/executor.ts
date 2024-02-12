@@ -115,15 +115,6 @@ export class ExecutorDatabase implements ExecutorAction {
 		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	async SuspendAccountStrategiesSchedulings({
-		accountId
-	}: Input["SuspendAccountStrategiesSchedulings"]) {
-		const items = await this.ReadAccountStrategies({ accountId })
-		const data =
-			accountStrategiesModifier.suspendStrategiesSchedulings(items)
-		await this.writeAccountStrategies({ accountId }, data)
-	}
-
 	async UpdateAccountStrategySchedulingMemory({
 		accountId,
 		strategyId,

@@ -36,7 +36,6 @@ export type ExecutorAction = {
 	SuspendAccountStrategySchedulings: (
 		arg: AccountStrategyItemKey
 	) => Promise<void>
-	SuspendAccountStrategiesSchedulings: (arg: AccountKey) => Promise<void>
 	UpdateAccountStrategySchedulingMemory: (
 		arg: AccountStrategySchedulingKey & { memory: StrategyMemory }
 	) => Promise<void>
@@ -63,9 +62,6 @@ export type ExecutorActionInput = {
 	SuspendAccountStrategySchedulings: Parameters<
 		ExecutorAction["SuspendAccountStrategySchedulings"]
 	>[0]
-	SuspendAccountStrategiesSchedulings: Parameters<
-		ExecutorAction["SuspendAccountStrategiesSchedulings"]
-	>[0]
 	UpdateAccountStrategySchedulingMemory: Parameters<
 		ExecutorAction["UpdateAccountStrategySchedulingMemory"]
 	>[0]
@@ -86,9 +82,6 @@ export type ExecutorActionOutput = {
 		ReturnType<ExecutorAction["ReadAccountStrategies"]>
 	>
 	ReadSubscription: Awaited<ReturnType<ExecutorAction["ReadSubscription"]>>
-	SuspendAccountStrategiesSchedulings: Awaited<
-		ReturnType<ExecutorAction["SuspendAccountStrategiesSchedulings"]>
-	>
 	SuspendAccountStrategyScheduling: Awaited<
 		ReturnType<ExecutorAction["SuspendAccountStrategyScheduling"]>
 	>

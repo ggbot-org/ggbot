@@ -18,8 +18,7 @@ import {
 	statusOfSubscription,
 	StrategyMemory,
 	StrategyScheduling,
-	Subscription
-} from "@workspace/models"
+	Subscription} from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -33,12 +32,11 @@ import { info, warn } from "./logging.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
-const FIVE_MINUTES = 300_000
 const ONE_HOUR = 3_600_000
 
 export class Executor {
 	accountKeysCache = new CacheMap<AccountKey[]>(ONE_HOUR)
-	accountStrategiesCache = new CacheMap<AccountStrategy[]>(FIVE_MINUTES)
+	accountStrategiesCache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
 	subscriptionsCache = new CacheMap<Subscription>(ONE_HOUR)
 
 	readonly publicDatabase = new PublicDatabase(documentProvider)
@@ -237,7 +235,7 @@ export class Executor {
 				const hasActiveSubscription =
 					await this.checkSubscription(accountKey)
 				if (!hasActiveSubscription) {
-					await this.suspendAccountStrategies(accountKey)
+					this.cachedAccountKeys.delete(accountId)
 					continue
 				}
 
@@ -267,7 +265,7 @@ export class Executor {
 
 				if (error instanceof ErrorAccountItemNotFound) {
 					if (error.type === "BinanceApiConfig") {
-						await this.suspendAccountStrategies(accountKey)
+						this.cachedAccountKeys.delete(accountId)
 						continue
 					}
 				}
@@ -276,19 +274,6 @@ export class Executor {
 				continue
 			}
 		}
-	}
-
-	async suspendAccountStrategies({ accountId }: AccountKey) {
-		info(`Suspend all strategies accountId=${accountId}`)
-
-		// Cleanup cache locally.
-		this.cachedAccountKeys.delete(accountId)
-		this.accountStrategiesCache.delete(accountId)
-
-		// Update database remotely.
-		await this.executorDatabase.SuspendAccountStrategiesSchedulings({
-			accountId
-		})
 	}
 
 	async suspendAccountStrategyScheduling({
