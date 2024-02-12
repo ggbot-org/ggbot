@@ -14,7 +14,7 @@ const graphInternalDependencyRows: string[] = []
 
 const repository = new Repository()
 await repository.read()
-const repositoryDocsDir = join(repository.pathname, "docs")
+const repositoryDocsDir = join(repository.pathname, "repository", "docs")
 
 const pathname = join(repositoryDocsDir, "npm-dependencies.md")
 

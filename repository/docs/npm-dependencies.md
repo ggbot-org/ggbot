@@ -1,4 +1,3 @@
-
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.
@@ -88,5 +87,3 @@ graph LR
     workspace/webapp --- workspace/backtesting
     workspace/webapp --- workspace/locators
 ```
-
-
