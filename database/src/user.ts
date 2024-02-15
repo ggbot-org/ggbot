@@ -146,6 +146,7 @@ export class UserDatabase implements UserDatabaseAction {
 	async DeleteStrategy(strategyKey: Input["DeleteStrategy"]) {
 		await this.deleteStrategy(strategyKey)
 		await this.deleteStrategyFlow(strategyKey)
+		await this.deleteAccountStrategiesItem(strategyKey.strategyId)
 		return deletedNow()
 	}
 
@@ -340,6 +341,21 @@ export class UserDatabase implements UserDatabaseAction {
 			items,
 			item,
 			subscription?.plan
+		)
+		await this.documentProvider.setItem(
+			pathname.accountStrategies({ accountId }),
+			newItems
+		)
+	}
+
+	async deleteAccountStrategiesItem(
+		strategyId: AccountStrategy["strategyId"]
+	) {
+		const { accountId } = this.accountKey
+		const items = await this.ReadAccountStrategies()
+		const newItems = accountStrategiesModifier.deleteAccountStrategy(
+			items,
+			strategyId
 		)
 		await this.documentProvider.setItem(
 			pathname.accountStrategies({ accountId }),

@@ -37,6 +37,15 @@ export const accountStrategiesModifier = {
 		return accountStrategies
 	},
 
+	deleteAccountStrategy(
+		accountStrategies: AccountStrategy[],
+		strategyId: AccountStrategy["strategyId"]
+	) {
+		return accountStrategies.filter(
+			(item) => item.strategyId !== strategyId
+		)
+	},
+
 	suspendScheduling(
 		accountStrategies: AccountStrategy[],
 		strategyId: AccountStrategy["strategyId"],

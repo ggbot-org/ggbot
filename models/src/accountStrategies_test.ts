@@ -119,6 +119,30 @@ void describe("accountStrategiesModifier", () => {
 		})
 	})
 
+	void test("deleteAccountStrategy", () => {
+		assertDeepEqual<
+			Parameters<typeof accountStrategiesModifier.deleteAccountStrategy>,
+			ReturnType<typeof accountStrategiesModifier.deleteAccountStrategy>
+		>(
+			function suspendScheduling(
+				input: Parameters<
+					typeof accountStrategiesModifier.deleteAccountStrategy
+				>
+			) {
+				return accountStrategiesModifier.deleteAccountStrategy(...input)
+			},
+			[
+				{
+					input: [
+						[accountStrategy1, accountStrategy4Active],
+						accountStrategy4Active.strategyId
+					],
+					output: [accountStrategy1]
+				}
+			]
+		)
+	})
+
 	void test("suspendScheduling", () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.suspendScheduling>,
