@@ -78,16 +78,6 @@ module.exports = {
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
 		"smells/no-switch": "error",
-		"sort-keys": [
-			"error",
-			"asc",
-			{
-				allowLineSeparatedGroups: true,
-				caseSensitive: true,
-				natural: true,
-				minKeys: 10
-			}
-		],
 		"tsdoc/syntax": "error",
 		"workspaces/no-relative-imports": "off"
 	}
