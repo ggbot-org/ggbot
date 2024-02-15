@@ -53,9 +53,6 @@ export class BinanceClient {
 		const timestamp = Date.now()
 		searchParams.append("timestamp", String(timestamp))
 
-		// TODO can this be achieved with Web Crypto API?
-		// For example
-		// globalThis.crypto.subtle.digest()
 		const signature = createHmac("sha256", this.apiSecret)
 			.update(searchParams.toString())
 			.digest("hex")
