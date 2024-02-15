@@ -327,7 +327,7 @@ export class UserDatabase implements UserDatabaseAction {
 		const { accountId } = this.accountKey
 		const items = await this.ReadAccountStrategies()
 		const subscription = await this.ReadSubscription()
-		const newItems = accountStrategiesModifier.insertItem(
+		const newItems = accountStrategiesModifier.insertAccountStrategy(
 			items,
 			item,
 			subscription?.plan

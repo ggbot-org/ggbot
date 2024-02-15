@@ -20,7 +20,7 @@ export const isSerializablePrimitive = (
 	typeof arg === "boolean" ||
 	arg === null
 
-export type SerializableArray = SerializableData[] | readonly SerializableData[]
+type SerializableArray = SerializableData[] | readonly SerializableData[]
 
 // TODO check max label string length in JSON is 256
 // max value string length in JSON is 8192 bytes

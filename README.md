@@ -11,11 +11,11 @@ TLDR; To start developing locally,
 2. Install dependencies and build packages.
 
 ```sh
-npm ci --include=optional
+npm ci
 npm run build
 ```
 
-Read [Tech strack](./infrastructure/docs/tech-stack.md) for more details.
+Read [Tech stack](./infrastructure/docs/tech-stack.md) for more details.
 
 To launch linting, type checking and tests:
 

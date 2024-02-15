@@ -178,37 +178,6 @@ void describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	void test("suspendStrategiesSchedulings", () => {
-		assertDeepEqual<
-			Parameters<
-				typeof accountStrategiesModifier.suspendStrategiesSchedulings
-			>,
-			ReturnType<
-				typeof accountStrategiesModifier.suspendStrategiesSchedulings
-			>
-		>(
-			function suspendStrategiesSchedulings(
-				input: Parameters<
-					typeof accountStrategiesModifier.suspendStrategiesSchedulings
-				>
-			) {
-				return accountStrategiesModifier.suspendStrategiesSchedulings(
-					...input
-				)
-			},
-			[
-				{
-					input: [[accountStrategy1]],
-					output: [accountStrategy1]
-				},
-				{
-					input: [[accountStrategy1, accountStrategy4Active]],
-					output: [accountStrategy1, accountStrategy4Suspended]
-				}
-			]
-		)
-	})
-
 	void test("updateSchedulingMemory", () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.updateSchedulingMemory>,

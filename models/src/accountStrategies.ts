@@ -1,6 +1,5 @@
 import { AccountStrategy, AccountStrategyKey } from "./accountStrategy.js"
 import { ErrorExceededQuota } from "./errors.js"
-import { Modifier } from "./modifier.js"
 import { quota } from "./quotas.js"
 import { StrategyMemory } from "./strategyMemory.js"
 import { StrategyScheduling } from "./strategyScheduling.js"
@@ -8,7 +7,7 @@ import { SubscriptionPlan } from "./subscription.js"
 
 export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
-export const accountStrategiesModifier: Modifier<AccountStrategy[]> = {
+export const accountStrategiesModifier = {
 	insertAccountStrategy(
 		previousAccountStrategies: AccountStrategy[],
 		accountStrategy: AccountStrategy,
@@ -75,18 +74,6 @@ export const accountStrategiesModifier: Modifier<AccountStrategy[]> = {
 							})
 					  )
 					: item.schedulings
-		}))
-	},
-
-	suspendStrategiesSchedulings(accountStrategies: AccountStrategy[]) {
-		return accountStrategies.map((item) => ({
-			...item,
-			schedulings: item.schedulings.map<StrategyScheduling>(
-				({ status: _status, ...scheduling }) => ({
-					...scheduling,
-					status: "suspended"
-				})
-			)
 		}))
 	},
 
