@@ -44,7 +44,7 @@ export const StrategyErrorsTable: FC<StrategyErrorsTableProps> = ({
 					</th>
 
 					<th>
-						<FormattedMessage id="StrategyErrors.whenCreated" />
+						<FormattedMessage id="StrategyErrors.detail" />
 					</th>
 				</tr>
 			</thead>

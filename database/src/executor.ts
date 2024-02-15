@@ -49,7 +49,7 @@ export class ExecutorDatabase implements ExecutorAction {
 		const currentItems = await this.readStrategyDailyErrors(key)
 		const data = [...currentItems, ...items]
 		await this.documentProvider.setItem(
-			pathname.strategyDailyOrders(key),
+			pathname.strategyDailyErrors(key),
 			data
 		)
 	}

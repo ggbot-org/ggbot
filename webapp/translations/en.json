@@ -467,6 +467,9 @@
 	"StrategyErrors.noError": {
 		"defaultMessage": "No error found"
 	},
+	"StrategyErrors.detail": {
+		"defaultMessage": "Error detail"
+	},
 	"StrategyErrors.whenCreated": {
 		"defaultMessage": "Creation time"
 	},

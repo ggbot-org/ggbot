@@ -1,4 +1,4 @@
-import { ErrorBinanceHTTP } from "@workspace/binance"
+import { BinanceErrorCode,ErrorBinanceHTTP } from "@workspace/binance"
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
@@ -20,7 +20,8 @@ import {
 	statusOfSubscription,
 	StrategyMemory,
 	StrategyScheduling,
-	Subscription} from "@workspace/models"
+	Subscription
+} from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -30,7 +31,7 @@ import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { debug,info, warn } from "./logging.js"
+import { debug, info, warn } from "./logging.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
@@ -190,22 +191,12 @@ export class Executor {
 
 		if (strategyKind === "binance") {
 			try {
-				const { memory, memoryChanged, success } =
-					await executeBinanceStrategy(
-						{ accountId, strategyId },
-						scheduling,
-						this.publicDatabase,
-						this.executorDatabase
-					)
-				// Suspend strategy scheduling if execution failed.
-				if (!success) {
-					await this.suspendAccountStrategyScheduling({
-						accountId,
-						strategyId,
-						schedulingId
-					})
-					return
-				}
+				const { memory, memoryChanged } = await executeBinanceStrategy(
+					{ accountId, strategyId },
+					scheduling,
+					this.publicDatabase,
+					this.executorDatabase
+				)
 				if (memoryChanged) {
 					await this.updateAccountStrategySchedulingMemory(
 						{ accountId, strategyId, schedulingId },
@@ -220,6 +211,27 @@ export class Executor {
 						strategyKind,
 						day: today(),
 						items: [{ error: error.toJSON(), ...createdNow() }]
+					})
+
+					const { code } = error.info.payload
+
+					// TODO could check if the msg is related to funds
+					// and handle it somehow instead of suspend the startegy
+					// if (code === BinanceErrorCode.NEW_ORDER_REJECTED) return
+
+					if (code === BinanceErrorCode.TIMEOUT) return
+					if (code === BinanceErrorCode.SERVER_BUSY) return
+
+					if (code === BinanceErrorCode.UNAUTHORIZED) {
+						this.cachedAccountKeys.delete(accountId)
+						return
+					}
+
+					// If error code is not handled, suspend startegy.
+					await this.suspendAccountStrategyScheduling({
+						accountId,
+						strategyId,
+						schedulingId
 					})
 					return
 				}

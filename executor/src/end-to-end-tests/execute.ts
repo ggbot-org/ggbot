@@ -110,7 +110,7 @@ const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 const executor = new DflowBinanceExecutor()
 executor.nodesCatalog = nodesCatalog
 
-const { execution, orders } = await executor.run(
+const { orders } = await executor.run(
 	{
 		binance,
 		params: {},
@@ -120,5 +120,4 @@ const { execution, orders } = await executor.run(
 	view
 )
 
-info("execution status", execution?.status)
 info("orders", orders)

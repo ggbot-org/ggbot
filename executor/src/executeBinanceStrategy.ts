@@ -29,9 +29,7 @@ export const executeBinanceStrategy = async (
 	scheduling: StrategyScheduling,
 	publicDatabase: PublicDatabase,
 	executorDatabase: ExecutorDatabase
-): Promise<
-	{ success: boolean } & Pick<DflowCommonContext, "memory" | "memoryChanged">
-> => {
+): Promise<Pick<DflowCommonContext, "memory" | "memoryChanged">> => {
 	const strategyKey: StrategyKey = { strategyKind: "binance", strategyId }
 
 	const strategyFlow = await publicDatabase.ReadStrategyFlow(strategyKey)
@@ -60,7 +58,6 @@ export const executeBinanceStrategy = async (
 	const { view } = strategyFlow
 	if (!isDflowExecutorView(view))
 		return {
-			success: false,
 			memoryChanged: false,
 			memory: {}
 		}
@@ -70,7 +67,6 @@ export const executeBinanceStrategy = async (
 
 	const {
 		// TODO balances,
-		execution,
 		memory: memoryOutput,
 		memoryChanged,
 		orders
@@ -120,7 +116,6 @@ export const executeBinanceStrategy = async (
 	// }
 
 	return {
-		success: execution?.status === "success",
 		memoryChanged,
 		memory: memoryOutput
 	}
