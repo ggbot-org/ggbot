@@ -23,7 +23,7 @@ const strategyFlow: StrategyFlow = {
 		nodes: [
 			{
 				id: "n1",
-				text: "BTC/TUSD",
+				text: "BTC/USDT",
 				outs: [
 					{
 						id: "o0"

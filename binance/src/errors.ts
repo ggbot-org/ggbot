@@ -1,18 +1,32 @@
+import { objectTypeGuard } from "minimal-type-guard-helpers"
+
+import { isBinanceErrorPayload } from "./typeGuards.js"
 import {
 	BinanceErrorPayload,
 	BinanceOrderType,
 	BinanceSymbolFilter
 } from "./types.js"
 
+type ErrorBinanceHTTPInfo = {
+	payload: BinanceErrorPayload
+	pathname: string
+	searchParams: string
+	status: Response["status"]
+	statusText: Response["statusText"]
+}
+
+export const isErrorBinanceHTTPInfo = objectTypeGuard<ErrorBinanceHTTPInfo>(
+	({ payload, pathname, searchParams, status, statusText }) =>
+		isBinanceErrorPayload(payload) &&
+		typeof pathname === "string" &&
+		typeof searchParams === "string" &&
+		typeof status === "number" &&
+		typeof statusText === "string"
+)
+
 export class ErrorBinanceHTTP extends Error {
 	static errorName = "ErrorBinanceHTTP"
-	info: {
-		payload: BinanceErrorPayload
-		pathname: string
-		searchParams: string
-		status: Response["status"]
-		statusText: Response["statusText"]
-	}
+	info: ErrorBinanceHTTPInfo
 
 	constructor(info: ErrorBinanceHTTP["info"]) {
 		super(ErrorBinanceHTTP.message(info))
@@ -25,7 +39,7 @@ export class ErrorBinanceHTTP extends Error {
 		pathname,
 		payload,
 		searchParams
-	}: ErrorBinanceHTTP["info"]) {
+	}: ErrorBinanceHTTPInfo) {
 		return `Server responded with status=${status} payload=${JSON.stringify(
 			payload
 		)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
@@ -33,7 +47,7 @@ export class ErrorBinanceHTTP extends Error {
 
 	toJSON(): {
 		name: string
-		info: ErrorBinanceHTTP["info"]
+		info: ErrorBinanceHTTPInfo
 	} {
 		return {
 			name: ErrorBinanceHTTP.errorName,

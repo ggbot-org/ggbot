@@ -2,6 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { binanceKlineIntervals } from "./constants.js"
 import {
+	BinanceErrorPayload,
 	BinanceFill,
 	BinanceKline,
 	BinanceKlineInterval,
@@ -14,6 +15,10 @@ import {
 
 const isStringyNumber = (arg: unknown): boolean =>
 	typeof arg === "string" && !isNaN(Number(arg))
+
+export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
+	({ code, msg }) => typeof code === "number" && typeof msg === "string"
+)
 
 export const isBinanceFill = objectTypeGuard<BinanceFill>(
 	({ price, qty, commission, commissionAsset }) =>

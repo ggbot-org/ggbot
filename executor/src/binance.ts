@@ -16,7 +16,8 @@ import {
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
 	BinanceOrderType,
-	ErrorBinanceHTTP
+	ErrorBinanceHTTP,
+	isErrorBinanceHTTPInfo
 } from "@workspace/binance"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
@@ -73,14 +74,13 @@ export class Binance implements DflowBinanceClient {
 		if (isApiActionOutputData(output)) return output.data as Output
 
 		if (isApiActionOutputError(output)) {
-			const { error } = output
-			if (error.name === ErrorBinanceHTTP.errorName) {
-				throw new ErrorBinanceHTTP(
-					error.info as ErrorBinanceHTTP["info"]
-				)
-			}
+			const {
+				error: { info }
+			} = output
+			if (isErrorBinanceHTTPInfo(info)) throw new ErrorBinanceHTTP(info)
 		}
 
+		// Fallback to throw a "Bad Gateway", notice it should not arrive here.
 		throw new BadGatewayError()
 	}
 

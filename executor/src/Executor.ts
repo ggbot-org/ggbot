@@ -1,3 +1,4 @@
+import { ErrorBinanceHTTP } from "@workspace/binance"
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
@@ -5,6 +6,7 @@ import {
 	AccountStrategy,
 	AccountStrategyKey,
 	AccountStrategySchedulingKey,
+	createdNow,
 	ErrorAccountItemNotFound,
 	ErrorStrategyItemNotFound,
 	ErrorUnknownItem,
@@ -20,7 +22,7 @@ import {
 	StrategyScheduling,
 	Subscription} from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
-import { now, Time, truncateTime } from "minimal-time-helpers"
+import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 import { homedir } from "os"
 import { join } from "path"
@@ -28,7 +30,7 @@ import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { info, warn } from "./logging.js"
+import { debug,info, warn } from "./logging.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
@@ -185,28 +187,44 @@ export class Executor {
 		}
 		strategyWhenExecuted.set(strategyId, time)
 		info("execute strategy", strategyId)
+
 		if (strategyKind === "binance") {
-			const { memory, memoryChanged, success } =
-				await executeBinanceStrategy(
-					{ accountId, strategyId },
-					scheduling,
-					this.publicDatabase,
-					this.executorDatabase
-				)
-			// Suspend strategy scheduling if execution failed.
-			if (!success) {
-				await this.suspendAccountStrategyScheduling({
-					accountId,
-					strategyId,
-					schedulingId
-				})
-				return
-			}
-			if (memoryChanged) {
-				await this.updateAccountStrategySchedulingMemory(
-					{ accountId, strategyId, schedulingId },
-					memory
-				)
+			try {
+				const { memory, memoryChanged, success } =
+					await executeBinanceStrategy(
+						{ accountId, strategyId },
+						scheduling,
+						this.publicDatabase,
+						this.executorDatabase
+					)
+				// Suspend strategy scheduling if execution failed.
+				if (!success) {
+					await this.suspendAccountStrategyScheduling({
+						accountId,
+						strategyId,
+						schedulingId
+					})
+					return
+				}
+				if (memoryChanged) {
+					await this.updateAccountStrategySchedulingMemory(
+						{ accountId, strategyId, schedulingId },
+						memory
+					)
+				}
+			} catch (error) {
+				if (error instanceof ErrorBinanceHTTP) {
+					await this.executorDatabase.AppendStrategyDailyErrors({
+						accountId,
+						strategyId,
+						strategyKind,
+						day: today(),
+						items: [{ error: error.toJSON(), ...createdNow() }]
+					})
+					return
+				}
+
+				throw error
 			}
 			return
 		}
@@ -270,8 +288,7 @@ export class Executor {
 					}
 				}
 
-				warn(error)
-				continue
+				debug(error)
 			}
 		}
 	}
