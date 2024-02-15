@@ -92,7 +92,11 @@ export type { StrategyDailyErrorsKey } from "./strategyDailyErrors.js"
 export type { StrategyDailyOrdersKey } from "./strategyDailyOrders.js"
 export type { StrategyError } from "./strategyError.js"
 export type { StrategyFlow } from "./strategyFlow.js"
-export { isFlowViewSerializableGraph, welcomeFlow } from "./strategyFlow.js"
+export {
+	isFlowViewSerializableGraph,
+	newStrategyFlow,
+	welcomeFlow
+} from "./strategyFlow.js"
 export type { StrategyMemory } from "./strategyMemory.js"
 export type { StrategyParameters } from "./strategyParameters.js"
 export type { StrategyScheduling } from "./strategyScheduling.js"

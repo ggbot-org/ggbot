@@ -1,10 +1,17 @@
 import { FlowViewSerializableGraph } from "flow-view"
 
-import { UpdateTime } from "./time.js"
+import { updatedNow,UpdateTime } from "./time.js"
 
 export type StrategyFlow = UpdateTime & {
 	view: FlowViewSerializableGraph
 }
+
+export const newStrategyFlow = ({
+	view
+}: Pick<StrategyFlow, "view">): StrategyFlow => ({
+	view,
+	...updatedNow()
+})
 
 // TODO this should be implemented by flow-view
 // it is also a dummy implementation

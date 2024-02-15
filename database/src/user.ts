@@ -19,6 +19,7 @@ import {
 	Frequency,
 	newAccountStrategy,
 	newStrategy,
+	newStrategyFlow,
 	Order,
 	Strategy,
 	StrategyDailyErrorsKey,
@@ -77,9 +78,13 @@ export class UserDatabase implements UserDatabaseAction {
 			pathname.strategy(targetStrategyKey),
 			targetStrategy
 		)
+		const sourceStrategyFlow = await this.readStrategyFlow({
+			strategyId,
+			strategyKind
+		})
 		await this.documentProvider.setItem(
 			pathname.strategyFlow(targetStrategyKey),
-			welcomeFlow
+			sourceStrategyFlow
 		)
 		const accountStrategy = newAccountStrategy({
 			name,
@@ -115,6 +120,10 @@ export class UserDatabase implements UserDatabaseAction {
 		await this.documentProvider.setItem(
 			pathname.strategy(strategyKey),
 			strategy
+		)
+		await this.documentProvider.setItem(
+			pathname.strategyFlow(strategyKey),
+			newStrategyFlow({ view: welcomeFlow })
 		)
 		const accountStrategy = newAccountStrategy({ name, ...strategyKey })
 		await this.insertAccountStrategiesItem(accountStrategy)
