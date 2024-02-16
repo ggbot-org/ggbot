@@ -130,10 +130,20 @@ export class UserDatabase implements UserDatabaseAction {
 		return strategyKey
 	}
 
-	DeleteAccount() {
-		return this.documentProvider.removeItem(
+	/**
+	 * Delete account related files.
+	 *
+	 * @remarks
+	 * It keeps account related file in `emailAccount/` in case a user wants to
+	 * recover a deleted account, it will be possible to do that if same email
+	 * is used.
+	 */
+	async DeleteAccount() {
+		await this.DeleteBinanceApiConfig()
+		await this.documentProvider.removeItem(
 			pathname.account(this.accountKey)
 		)
+		return deletedNow()
 	}
 
 	async DeleteBinanceApiConfig() {
@@ -143,10 +153,16 @@ export class UserDatabase implements UserDatabaseAction {
 		return deletedNow()
 	}
 
+	/**
+	 * Delete strategy from `accountStrategies` list.
+	 *
+	 * @remarks
+	 * The `strategy` file is **not** deleted: it may be referenced by some
+	 * order or other data.
+	 */
 	async DeleteStrategy(strategyKey: Input["DeleteStrategy"]) {
-		await this.deleteStrategy(strategyKey)
-		await this.deleteStrategyFlow(strategyKey)
 		await this.deleteAccountStrategiesItem(strategyKey.strategyId)
+		await this.deleteStrategyFlow(strategyKey)
 		return deletedNow()
 	}
 
@@ -303,19 +319,6 @@ export class UserDatabase implements UserDatabaseAction {
 			view,
 			...updatedNow()
 		})
-	}
-
-	async deleteStrategy(strategyKey: StrategyKey) {
-		const { accountId } = this.accountKey
-		const ownerId = await this.readStrategyAccountId(strategyKey)
-		if (accountId !== ownerId)
-			throw new ErrorPermissionOnStrategyItem({
-				type: "Strategy",
-				action: "delete",
-				accountId,
-				...strategyKey
-			})
-		await this.documentProvider.removeItem(pathname.strategy(strategyKey))
 	}
 
 	async deleteStrategyFlow(strategyKey: StrategyKey) {
