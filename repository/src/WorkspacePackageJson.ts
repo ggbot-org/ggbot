@@ -1,9 +1,9 @@
 import { join } from "node:path"
 
 import readFile from "read-file-utf8"
-import { PackageJson } from "type-fest"
 
 import { FileProvider } from "./filesystemProviders.js"
+import { PackageJson } from "./PackageJson.js"
 import type { Repository } from "./Repository.js"
 import type { Workspace } from "./Workspace.js"
 
@@ -16,14 +16,14 @@ export class WorkspacePackageJson implements FileProvider {
 	filename = "package.json"
 
 	packageName = ""
-	isPrivate = false
+	isPrivate: PackageJson["private"] = false
 
 	buildScriptCommand: string | undefined
 
-	/** Key = "package name" value = "package version" */
+	/** Key = "package name", value = "package version" */
 	dependencies = new Map<string, string>()
 
-	/** Key = "package name" value = "package version" */
+	/** Key = "package name", value = "package version" */
 	devDependencies = new Map<string, string>()
 
 	/** Can be a dependency or a dev dependency. */

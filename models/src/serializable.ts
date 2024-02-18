@@ -1,7 +1,4 @@
-// Credits:
-// inspired by `JsonValue` in type-fest package
-// https://github.com/sindresorhus/type-fest/tree/main
-// ///
+// Credits: inspired by `JsonValue` in type-fest package.
 import { FiniteNumber, isFiniteNumber } from "./numbers.js"
 import {
 	FiniteString,

@@ -1,9 +1,9 @@
 import { join } from "node:path"
 
 import readFile from "read-file-utf8"
-import { PackageJson } from "type-fest"
 
 import { FileProvider } from "./filesystemProviders.js"
+import { PackageJson } from "./PackageJson.js"
 import type { Repository } from "./Repository.js"
 import { Workspace } from "./Workspace.js"
 import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
@@ -14,11 +14,10 @@ export class RepositoryPackageJson implements FileProvider {
 	directoryPathname: string
 	filename = "package.json"
 
-	packageName: PackageJson["name"] = ""
 	isPrivate: PackageJson["private"]
 	dependencies: PackageJson["dependencies"] = {}
 	scripts: NonNullable<PackageJson["scripts"]> = {}
-	workspaces: PackageJson.WorkspacePattern[] = []
+	workspaces: NonNullable<PackageJson["workspaces"]> = []
 
 	constructor(directoryPathname: string) {
 		this.directoryPathname = directoryPathname
@@ -63,21 +62,15 @@ export class RepositoryPackageJson implements FileProvider {
 		}
 	}
 
-	static workspaceBuildScriptKey(
-		workspacePathname: PackageJson.WorkspacePattern
-	) {
+	static workspaceBuildScriptKey(workspacePathname: string) {
 		return `${RepositoryPackageJson.buildScriptKey}:${workspacePathname}`
 	}
 
-	static workspaceBuildCommand(
-		workspacePathname: PackageJson.WorkspacePattern
-	) {
+	static workspaceBuildCommand(workspacePathname: string) {
 		return `npm run ${WorkspacePackageJson.buildScriptKey} -w ${workspacePathname}`
 	}
 
-	static workspacePrebuildCommand(
-		workspacePathname: PackageJson.WorkspacePattern
-	) {
+	static workspacePrebuildCommand(workspacePathname: string) {
 		return `npm run build_workspace_dependencies -w repository ${workspacePathname}`
 	}
 
@@ -98,15 +91,12 @@ export class RepositoryPackageJson implements FileProvider {
 			.join(" && ")
 	}
 
-	static workspacePrebuildScriptKey(
-		workspacePathname: PackageJson.WorkspacePattern
-	) {
+	static workspacePrebuildScriptKey(workspacePathname: string) {
 		return `prebuild:${workspacePathname}`
 	}
 
 	async read() {
 		const {
-			name,
 			dependencies,
 			private: isPrivate,
 			scripts,
@@ -114,7 +104,6 @@ export class RepositoryPackageJson implements FileProvider {
 		} = await readFile<PackageJson>(
 			join(this.directoryPathname, this.filename)
 		)
-		this.packageName = name
 		this.dependencies = dependencies
 		this.isPrivate = isPrivate
 		if (Array.isArray(workspaces)) this.workspaces = workspaces

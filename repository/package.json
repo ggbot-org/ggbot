@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "read-file-utf8": "3.0.0",
-    "type-fest": "4.8.1",
     "write-file-utf8": "3.0.2"
   },
   "devDependencies": {
