@@ -11,14 +11,14 @@ import {
 } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
-import { inputInterval, inputSymbol } from "./commonIO.js"
+import { inputInterval, inputSymbol, pinSymbolName } from "./commonIO.js"
 
 const { input, output } = Dflow
 
 export class Candles extends DflowNode {
 	static kind = "candles"
 	static inputs = [
-		inputSymbol,
+		input("string", { name: pinSymbolName }),
 		inputInterval,
 		input("number", { name: "count" })
 	]

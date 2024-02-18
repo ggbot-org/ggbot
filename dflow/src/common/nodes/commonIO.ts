@@ -1,6 +1,9 @@
-import { Dflow } from "dflow"
+import { Dflow, DflowDataType } from "dflow"
 
 const { input, output } = Dflow
+
+export const inputDefaultParameter = (dataType: DflowDataType) =>
+	input(dataType, { name: "default" })
 
 export const inputArray = input("array", { name: "array" })
 

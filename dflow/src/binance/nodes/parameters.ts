@@ -1,18 +1,13 @@
 import { isNonEmptyString } from "@workspace/models"
 import { DflowNode } from "dflow"
 
-import { inputKey } from "../../common/nodes/commonIO.js"
+import { inputDefaultParameter,inputKey } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
-import {
-	inputInterval,
-	inputSymbol,
-	outputInterval,
-	outputSymbol
-} from "./commonIO.js"
+import { inputInterval, outputInterval, outputSymbol } from "./commonIO.js"
 
 export class SymbolParameter extends DflowNode {
 	static kind = "symbolParameter"
-	static inputs = [inputKey, inputSymbol]
+	static inputs = [inputKey, inputDefaultParameter("string")]
 	static outputs = [outputSymbol]
 	run() {
 		const { params } = this.host.context as Context

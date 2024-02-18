@@ -6,13 +6,13 @@ import {
 import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
-import { inputKey } from "./commonIO.js"
+import { inputDefaultParameter,inputKey } from "./commonIO.js"
 
-const { input, output } = Dflow
+const { output } = Dflow
 
 export class BooleanParameter extends DflowNode {
 	static kind = "booleanParameter"
-	static inputs = [inputKey, input("boolean", { name: "value" })]
+	static inputs = [inputKey, inputDefaultParameter("boolean")]
 	static outputs = [output("boolean")]
 	run() {
 		const { params } = this.host.context as Context
@@ -31,7 +31,7 @@ export class BooleanParameter extends DflowNode {
 
 export class NumberParameter extends DflowNode {
 	static kind = "numberParameter"
-	static inputs = [inputKey, input("number", { name: "value" })]
+	static inputs = [inputKey, inputDefaultParameter("number")]
 	static outputs = [output("number")]
 	run() {
 		const { params } = this.host.context as Context
@@ -50,7 +50,7 @@ export class NumberParameter extends DflowNode {
 
 export class StringParameter extends DflowNode {
 	static kind = "stringParameter"
-	static inputs = [inputKey, input("string", { name: "value" })]
+	static inputs = [inputKey, inputDefaultParameter("string")]
 	static outputs = [output("string")]
 	run() {
 		const { params } = this.host.context as Context
