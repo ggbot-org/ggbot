@@ -91,7 +91,7 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp' --project ./tsconfig.prune.json"
   },
   "devDependencies": {
-    "lint-staged": "13.2.2",
+    "lint-staged": "15.2.2",
     "markdownlint-cli2": "0.11.0",
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
