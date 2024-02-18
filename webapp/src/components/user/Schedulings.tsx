@@ -10,6 +10,7 @@ import {
 	Title
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
+import { Parameters } from "_/components/Parameters"
 import {
 	SchedulingItem,
 	SchedulingItemProps
@@ -22,6 +23,7 @@ import { StrategiesContext } from "_/contexts/user/Strategies"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
+	AccountStrategy,
 	isStrategyScheduling,
 	newStrategyScheduling,
 	StrategyScheduling
@@ -42,9 +44,16 @@ export const Schedulings: FC = () => {
 
 	const { strategyId, strategyKey } = useContext(StrategyContext)
 	const { hasActiveSubscription } = useSubscription()
-	const { accountStrategies, refetchAccountStrategies } =
-		useContext(StrategiesContext)
+	const {
+		accountStrategies,
+		fetchAccountStrategiesIsPending,
+		refetchAccountStrategies
+	} = useContext(StrategiesContext)
 	const { toast } = useContext(ToastContext)
+
+	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
+		AccountStrategy[]
+	>([])
 
 	const WRITE = useUserApi.WriteAccountStrategiesItemSchedulings()
 	const isDone = WRITE.isDone
@@ -55,9 +64,9 @@ export const Schedulings: FC = () => {
 		Array<SchedulingItemProps["scheduling"]>
 	>([])
 
-	const currentSchedulings = useMemo<StrategyScheduling[]>(() => {
-		if (!accountStrategies) return []
-		return accountStrategies
+	const currentSchedulings = useMemo<StrategyScheduling[] | undefined>(() => {
+		if (fetchAccountStrategiesIsPending) return
+		return currentAccountStrategies
 			.filter(
 				(accountStrategy) => accountStrategy.strategyId === strategyId
 			)
@@ -66,7 +75,7 @@ export const Schedulings: FC = () => {
 					list.concat(accountStrategy.schedulings),
 				[]
 			)
-	}, [accountStrategies, strategyId])
+	}, [currentAccountStrategies, strategyId, fetchAccountStrategiesIsPending])
 
 	const someSchedulingChanged = useMemo(() => {
 		// Do not know about currentSchedulings yet, data fetch is pending.
@@ -195,10 +204,17 @@ export const Schedulings: FC = () => {
 	const onClickCancel = useCallback<MouseEventHandler>(
 		(event) => {
 			event.preventDefault()
+			if (!currentSchedulings) return
 			setSchedulingItems(currentSchedulings)
 		},
 		[currentSchedulings]
 	)
+
+	// Update accountStrategies once fetched.
+	useEffect(() => {
+		if (!accountStrategies) return
+		setCurrentAccountStrategies(accountStrategies)
+	}, [accountStrategies, setCurrentAccountStrategies])
 
 	// Update schedulings once fetched.
 	useEffect(() => {
@@ -235,9 +251,12 @@ export const Schedulings: FC = () => {
 							}
 							right={
 								<LevelItem className={classNames("ml-5")}>
-									<SchedulingsStatusBadges
-										schedulings={currentSchedulings}
-									/>
+									{currentSchedulings &&
+									!fetchAccountStrategiesIsPending ? (
+										<SchedulingsStatusBadges
+											schedulings={currentSchedulings}
+										/>
+									) : null}
 								</LevelItem>
 							}
 						/>
@@ -268,13 +287,15 @@ export const Schedulings: FC = () => {
 							right={
 								<LevelItem>
 									<Buttons>
-										<Button
-											isRounded
-											onClick={addSchedulingItem}
-											size="small"
-										>
-											<FormattedMessage id="Schedulings.add" />
-										</Button>
+										{fetchAccountStrategiesIsPending ? null : (
+											<Button
+												isRounded
+												onClick={addSchedulingItem}
+												size="small"
+											>
+												<FormattedMessage id="Schedulings.add" />
+											</Button>
+										)}
 									</Buttons>
 								</LevelItem>
 							}
@@ -296,6 +317,10 @@ export const Schedulings: FC = () => {
 								scheduling.id
 							)}
 						/>
+					</Column>
+
+					<Column>
+						<Parameters params={scheduling.params} />
 					</Column>
 
 					<Column>

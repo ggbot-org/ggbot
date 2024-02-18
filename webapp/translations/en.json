@@ -302,6 +302,12 @@
 	"OneTimePassword.label": {
 		"defaultMessage": "One time password"
 	},
+	"Parameters.empty": {
+		"defaultMessage": "empty"
+	},
+	"Parameters.title": {
+		"defaultMessage": "Parameters"
+	},
 	"PleasePurchase.doNotShow": {
 		"defaultMessage": "Do not show this message for a while."
 	},

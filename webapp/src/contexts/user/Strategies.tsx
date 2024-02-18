@@ -4,6 +4,7 @@ import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
 	accountStrategies: AccountStrategy[] | undefined
+	fetchAccountStrategiesIsPending?: boolean
 	refetchAccountStrategies: () => void
 }
 
@@ -17,10 +18,14 @@ StrategiesContext.displayName = "Strategies"
 export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
 	const READ = useUserApi.ReadAccountStrategies()
 
-	const contextValue = useMemo(() => ({
+	const contextValue = useMemo(
+		() => ({
 			accountStrategies: READ.data,
+			fetchAccountStrategiesIsPending: READ.isPending,
 			refetchAccountStrategies: READ.reset
-		}), [READ])
+		}),
+		[READ]
+	)
 
 	useEffect(() => {
 		if (READ.canRun) READ.request()
