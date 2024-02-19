@@ -3,12 +3,107 @@ import { test } from "node:test"
 import { assertDeepEqual } from "minimal-assertion-helpers"
 
 import {
+	extractBinanceParameters,
 	extractBinanceSymbolsAndIntervalsFromFlowCandles,
 	extractsBinanceSymbolsFromTickerPriceAndOrderNodes
 } from "./flow.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
+import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
+
+void test("extractCommonParameters", () => {
+	const intervalValue = "1h"
+	const intervalKey = "my interval"
+	const symbolValue = "BTC/BUSD"
+	const symbolKey = "my symbol"
+
+	assertDeepEqual<
+		Parameters<typeof extractBinanceParameters>[0],
+		ReturnType<typeof extractBinanceParameters>
+	>(extractBinanceParameters, [
+		{
+			input: {
+				nodes: [
+					{
+						id: "n1",
+						text: JSON.stringify(intervalKey),
+						x: 0,
+						y: 0,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n2",
+						text: JSON.stringify(intervalValue),
+						x: 0,
+						y: 0,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n3",
+						text: IntervalParameter.kind,
+						x: 0,
+						y: 0,
+						ins: [{ id: "i1" }, { id: "i2" }],
+						outs: [{ id: "o1" }]
+					}
+				],
+				edges: [
+					{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
+					{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
+				]
+			},
+			output: [
+				// TODO
+				// {
+				// 	kind: IntervalParameter.kind,
+				// 	key: intervalKey,
+				// 	defaultValue: intervalValue
+				// }
+			]
+		},
+		{
+			input: {
+				nodes: [
+					{
+						id: "n1",
+						text: JSON.stringify(symbolKey),
+						x: 0,
+						y: 0,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n2",
+						text: JSON.stringify(symbolValue),
+						x: 0,
+						y: 0,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n3",
+						text: SymbolParameter.kind,
+						x: 0,
+						y: 0,
+						ins: [{ id: "i1" }, { id: "i2" }],
+						outs: [{ id: "o1" }]
+					}
+				],
+				edges: [
+					{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
+					{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
+				]
+			},
+			output: [
+				// TODO
+				// {
+				// 	kind: SymbolParameter.kind,
+				// 	key: symbolKey,
+				// 	defaultValue: symbolValue
+				// }
+			]
+		}
+	])
+})
 
 void test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 	const binance = new DflowBinanceClientMock()

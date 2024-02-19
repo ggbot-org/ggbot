@@ -2,11 +2,13 @@ import { Dflow, DflowId } from "dflow"
 import { FlowViewSerializableGraph } from "flow-view"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
+import { DflowParameter } from "../parameters.js"
 import {
 	dflowBinanceKlineIntervals,
 	isDflowBinanceKlineInterval
 } from "./klineIntervals.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
+import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import {
 	DflowBinanceSymbolAndInterval,
@@ -15,6 +17,27 @@ import {
 	isDflowBinanceSymbolAndInterval
 } from "./symbols.js"
 
+type DflowBinanceParameterKind = typeof IntervalParameter.kind
+
+type DflowBinanceParameter = DflowParameter<DflowBinanceParameterKind>
+
+export const extractBinanceParameters = (
+	flow: FlowViewSerializableGraph
+): DflowBinanceParameter[] => {
+	const parameters: DflowBinanceParameter[] = []
+	for (const node of flow.nodes) {
+		if (
+			[IntervalParameter.kind, SymbolParameter.kind].includes(node.text)
+		) {
+			// TODO
+		}
+	}
+	return parameters
+}
+
+// TODO this is implemented with static analysis
+// it would need to run the flow with a custom candles node that
+// extracts the symbol and interval
 export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: FlowViewSerializableGraph
@@ -83,6 +106,9 @@ export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 		)
 }
 
+// TODO this is implemented with static analysis
+// it would need to run the flow with a custom price and order nodes that
+// extract the symbol
 export const extractsBinanceSymbolsFromTickerPriceAndOrderNodes = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: FlowViewSerializableGraph
