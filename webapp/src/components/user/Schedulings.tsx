@@ -18,6 +18,7 @@ import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
+import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { useSubscription } from "_/hooks/useSubscription"
@@ -42,7 +43,8 @@ import { FormattedMessage, useIntl } from "react-intl"
 export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { strategyId, strategyKey } = useContext(StrategyContext)
+	const { strategyId, strategyKind, strategyKey } = useContext(StrategyContext)
+	const {flowViewGraph} = useContext(StrategyFlowContext)
 	const { hasActiveSubscription } = useSubscription()
 	const {
 		accountStrategies,
@@ -320,7 +322,7 @@ export const Schedulings: FC = () => {
 					</Column>
 
 					<Column>
-						<SchedulingParameters params={scheduling.params} />
+						<SchedulingParameters params={scheduling.params} flowViewGraph={flowViewGraph} strategyKind={strategyKind} />
 					</Column>
 
 					<Column>

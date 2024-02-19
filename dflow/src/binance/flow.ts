@@ -19,9 +19,9 @@ import {
 
 type DflowBinanceParameterKind =
 	| typeof IntervalParameter.kind
-	 
 
-type DflowBinanceParameter = DflowParameter<DflowBinanceParameterKind>
+
+export type DflowBinanceParameter = DflowParameter<DflowBinanceParameterKind>
 
 export const extractBinanceParameters = (
 	binanceSymbols: DflowBinanceSymbolInfo[],

@@ -1,5 +1,6 @@
 import { Box, Title } from "_/components/library"
-import { DflowCommonContext } from "@workspace/dflow"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
+import { DflowCommonContext, DflowCommonParameter, DflowBinanceParameter, extractCommonParameters, extractBinanceParameters } from "@workspace/dflow"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -7,11 +8,27 @@ import {
 	SchedulingParameterItem,
 	SchedulingParameterItemProps
 } from "./SchedulingParameterItem"
+import {FlowViewSerializableGraph} from "flow-view"
+import {StrategyKind} from "@workspace/models"
 
-type Props = { params: DflowCommonContext["params"] | undefined }
+type Props = {
+flowViewGraph: FlowViewSerializableGraph| undefined
+params: DflowCommonContext["params"] | undefined
+strategyKind: StrategyKind
+}
 
-export const SchedulingParameters: FC<Props> = ({ params }) => {
+export const SchedulingParameters: FC<Props> = ({ flowViewGraph, params }) => {
+	const binanceSymbols = useBinanceSymbols()
 	const items: SchedulingParameterItemProps[] = []
+
+let commonParams: Array<DflowCommonParameter> = []
+let binanceParams: Array<DflowBinanceParameter> = []
+if (flowViewGraph ) {
+commonParams = extractCommonParameters(flowViewGraph)
+if (binanceSymbols)
+binanceParams = extractBinanceParameters(binanceSymbols, flowViewGraph)
+}
+console.log(commonParams, binanceParams)
 
 	if (params)
 		for (const [key, value] of Object.entries(params))
