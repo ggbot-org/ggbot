@@ -3,22 +3,20 @@ import { Flex } from "_/components/library"
 import { SerializablePrimitive } from "@workspace/models"
 import { FC } from "react"
 
-export type ParametersItemProps = {
+export type SchedulingParameterItemProps = {
 	name: string
 	value: SerializablePrimitive | undefined
 }
 
-export const ParametersItem: FC<ParametersItemProps> = ({ name, value }) => {
-	const formattedValue =
-		value === undefined ? "" : JSON.stringify(value, null, 2)
-
-	return (
+export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
+	name,
+	value = ""
+}) => (
 		<Flex grow={1} spacing={{ my: 1 }} direction="column">
 			<span>{name}</span>
 
 			<pre className={classNames("p-2")}>
-				<code>{formattedValue}</code>
+				<code>{value}</code>
 			</pre>
 		</Flex>
 	)
-}

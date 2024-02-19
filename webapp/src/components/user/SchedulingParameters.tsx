@@ -3,12 +3,15 @@ import { DflowCommonContext } from "@workspace/dflow"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { ParametersItem, ParametersItemProps } from "./ParamtersItem"
+import {
+	SchedulingParameterItem,
+	SchedulingParameterItemProps
+} from "./SchedulingParameterItem"
 
 type Props = { params: DflowCommonContext["params"] | undefined }
 
-export const Parameters: FC<Props> = ({ params }) => {
-	const items: ParametersItemProps[] = []
+export const SchedulingParameters: FC<Props> = ({ params }) => {
+	const items: SchedulingParameterItemProps[] = []
 
 	if (params)
 		for (const [key, value] of Object.entries(params))
@@ -28,7 +31,11 @@ export const Parameters: FC<Props> = ({ params }) => {
 
 			<div>
 				{items.map(({ name, value }) => (
-					<ParametersItem key={name} name={name} value={value} />
+					<SchedulingParameterItem
+						key={name}
+						name={name}
+						value={value}
+					/>
 				))}
 			</div>
 		</Box>

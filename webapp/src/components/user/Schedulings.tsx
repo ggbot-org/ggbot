@@ -10,12 +10,12 @@ import {
 	Title
 } from "_/components/library"
 import { Memory } from "_/components/Memory"
-import { Parameters } from "_/components/Parameters"
 import {
 	SchedulingItem,
 	SchedulingItemProps
 } from "_/components/SchedulingItem"
 import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
+import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
@@ -320,7 +320,7 @@ export const Schedulings: FC = () => {
 					</Column>
 
 					<Column>
-						<Parameters params={scheduling.params} />
+						<SchedulingParameters params={scheduling.params} />
 					</Column>
 
 					<Column>
