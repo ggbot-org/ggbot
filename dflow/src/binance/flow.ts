@@ -17,19 +17,67 @@ import {
 	isDflowBinanceSymbolAndInterval
 } from "./symbols.js"
 
-type DflowBinanceParameterKind = typeof IntervalParameter.kind
+type DflowBinanceParameterKind =
+	| typeof IntervalParameter.kind
+	 
 
 type DflowBinanceParameter = DflowParameter<DflowBinanceParameterKind>
 
 export const extractBinanceParameters = (
+	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: FlowViewSerializableGraph
 ): DflowBinanceParameter[] => {
+	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const parameters: DflowBinanceParameter[] = []
 	for (const node of flow.nodes) {
+		const kind = node.text
+		if (![IntervalParameter.kind, SymbolParameter.kind].includes(kind))
+			continue
+		const firstInputId = node.ins?.[0].id
+		const secondInputId = node.ins?.[1].id
+		const firstParentNodeEdge = flow.edges.find(
+			(edge) => edge.to[1] === firstInputId
+		)
+		const secondParentNodeEdge = flow.edges.find(
+			(edge) => edge.to[1] === secondInputId
+		)
+		const firstParentNode = flow.nodes.find(
+			({ id }) => id === firstParentNodeEdge?.from[0]
+		)
+		const secondParentNode = flow.nodes.find(
+			({ id }) => id === secondParentNodeEdge?.from[0]
+		)
+
+		const maybeKey = firstParentNode?.text
+		const maybeValue = secondParentNode?.text
+		if (!maybeKey || !maybeValue) continue
+		const key: unknown = JSON.parse(maybeKey)
+		const defaultValue: unknown = JSON.parse(maybeValue)
+
+		if (typeof key !== "string") continue
+
 		if (
-			[IntervalParameter.kind, SymbolParameter.kind].includes(node.text)
-		) {
-			// TODO
+			kind === IntervalParameter.kind &&
+			isDflowBinanceKlineInterval(defaultValue)
+		)
+			parameters.push({
+				kind,
+				key,
+				defaultValue
+			})
+
+		if (kind === SymbolParameter.kind) {
+			if (typeof defaultValue !== "string") continue
+			const maybeSymbol = defaultValue
+				.split(dflowBinanceSymbolSeparator)
+				.join("")
+
+			if (symbols.includes(maybeSymbol))
+				parameters.push({
+					kind,
+					key,
+					defaultValue: maybeSymbol
+				})
 		}
 	}
 	return parameters

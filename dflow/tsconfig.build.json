@@ -4,5 +4,6 @@
 		"declarationMap": true,
 		"outDir": "./dist"
 	},
-	"extends": "./tsconfig.json"
+	"extends": "./tsconfig.json",
+	"exclude": ["**/*_test.ts"]
 }

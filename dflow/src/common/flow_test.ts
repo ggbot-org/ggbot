@@ -53,12 +53,11 @@ void test("extractCommonParameters", () => {
 				]
 			},
 			output: [
-				// TODO
-				// {
-				// 	kind: BooleanParameter.kind,
-				// 	key: booleanKey,
-				// 	defaultValue: booleanValue
-				// }
+				{
+					kind: BooleanParameter.kind,
+					key: booleanKey,
+					defaultValue: booleanValue
+				}
 			]
 		},
 		{
@@ -93,12 +92,11 @@ void test("extractCommonParameters", () => {
 				]
 			},
 			output: [
-				// TODO
-				// {
-				// 	kind: NumberParameter.kind,
-				// 	key: numberKey,
-				// 	defaultValue: numberValue
-				// }
+				{
+					kind: NumberParameter.kind,
+					key: numberKey,
+					defaultValue: numberValue
+				}
 			]
 		},
 		{
@@ -133,12 +131,11 @@ void test("extractCommonParameters", () => {
 				]
 			},
 			output: [
-				// TODO
-				// {
-				// 	kind: StringParameter.kind,
-				// 	key: stringKey,
-				// 	defaultValue: stringValue
-				// }
+				{
+					kind: StringParameter.kind,
+					key: stringKey,
+					defaultValue: stringValue
+				}
 			]
 		}
 	])
