@@ -36,6 +36,7 @@ export const browserBundle = ({
 		bundle: true,
 		define: esbuildDefinitions,
 		entryPoints,
+		legalComments: "none",
 		minify: DEPLOY_STAGE !== "local",
 		outfile,
 		platform: "browser"
