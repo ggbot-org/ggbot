@@ -21,12 +21,18 @@ import { StrategyContext } from "_/contexts/Strategy"
 import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
+import {
+	extractBinanceParameters,
+	extractCommonParameters
+} from "@workspace/dflow"
 import {
 	AccountStrategy,
 	isStrategyScheduling,
 	newStrategyScheduling,
+	StrategyParameters,
 	StrategyScheduling
 } from "@workspace/models"
 import {
@@ -39,6 +45,8 @@ import {
 	useState
 } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+
+import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
 
 export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
@@ -102,6 +110,24 @@ export const Schedulings: FC = () => {
 						currentScheduling.frequency.interval)
 			)
 				return true
+			// Compare startegy params.
+			if (currentScheduling.params === undefined && schedulingItem.params)
+				return true
+			if (currentScheduling.params && schedulingItem.params === undefined)
+				return true
+			if (currentScheduling.params && schedulingItem.params) {
+				if (
+					Object.keys(currentScheduling.params).length !==
+					Object.keys(schedulingItem.params).length
+				)
+					return true
+				for (const key in currentScheduling.params)
+					if (
+						currentScheduling.params[key] !==
+						schedulingItem.params[key]
+					)
+						return true
+			}
 		}
 		return false
 	}, [currentSchedulings, schedulingItems])
@@ -119,6 +145,50 @@ export const Schedulings: FC = () => {
 			someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
 		)
 	}, [someSchedulingChanged, hasActiveSubscription, schedulingItems])
+
+	const binanceSymbols = useBinanceSymbols()
+
+	const paramItems = useCallback<
+		(
+			params: StrategyParameters | undefined
+		) => Array<
+			Pick<
+				SchedulingParameterItemProps,
+				"label" | "value" | "defaultValue"
+			>
+		>
+	>(
+		(params = {}) => {
+			const items = []
+			if (!flowViewGraph) return []
+
+			const commonParams = extractCommonParameters(flowViewGraph)
+
+			for (const { key, defaultValue } of commonParams) {
+				const value = params[key]
+				items.push({
+					label: key,
+					defaultValue,
+					value
+				})
+			}
+
+			const binanceParams = binanceSymbols
+				? extractBinanceParameters(binanceSymbols, flowViewGraph)
+				: []
+
+			for (const { key, defaultValue } of binanceParams) {
+				const value = params[key]
+				items.push({
+					label: key,
+					defaultValue,
+					value
+				})
+			}
+			return items
+		},
+		[flowViewGraph, binanceSymbols]
+	)
 
 	const setSchedulingItemFrequency = useCallback<
 		(id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
@@ -142,6 +212,24 @@ export const Schedulings: FC = () => {
 				schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					return { ...schedulingItem, status }
+				})
+			)
+		},
+		[]
+	)
+
+	const setSchedulingParam = useCallback<
+		(
+			id: StrategyScheduling["id"]
+		) => SchedulingParameterItemProps["setParam"]
+	>(
+		(id) => (key, value) => {
+			setSchedulingItems((schedulingItems) =>
+				schedulingItems.map((schedulingItem) => {
+					if (schedulingItem.id !== id) return schedulingItem
+					const params = schedulingItem.params ?? {}
+					params[key] = value
+					return { ...schedulingItem, params }
 				})
 			)
 		},
@@ -323,8 +411,8 @@ export const Schedulings: FC = () => {
 
 					<Column>
 						<SchedulingParameters
-							params={scheduling.params}
-							flowViewGraph={flowViewGraph}
+							setParam={setSchedulingParam(scheduling.id)}
+							items={paramItems(scheduling.params)}
 						/>
 					</Column>
 

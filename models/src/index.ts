@@ -105,6 +105,7 @@ export {
 	isStrategySchedulings,
 	newStrategyScheduling
 } from "./strategyScheduling.js"
+export type { IdentifierString } from "./strings.js"
 export {
 	isIdentifierString,
 	isNonEmptyString,
