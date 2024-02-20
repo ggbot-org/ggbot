@@ -1,7 +1,7 @@
 import { Box, Title } from "_/components/library"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { DflowCommonContext, DflowCommonParameter, DflowBinanceParameter, extractCommonParameters, extractBinanceParameters } from "@workspace/dflow"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
 import {
@@ -18,6 +18,7 @@ strategyKind: StrategyKind
 }
 
 export const SchedulingParameters: FC<Props> = ({ flowViewGraph, params }) => {
+console.log('flowViewGraph',flowViewGraph)
 	const binanceSymbols = useBinanceSymbols()
 	const items: SchedulingParameterItemProps[] = []
 
@@ -33,6 +34,13 @@ console.log(commonParams, binanceParams)
 	if (params)
 		for (const [key, value] of Object.entries(params))
 			items.push({ name: key, value })
+
+useEffect(() => {
+if (flowViewGraph &&binanceSymbols)
+console.log(
+'binanceParams', extractBinanceParameters(binanceSymbols,flowViewGraph)
+)
+}, [flowViewGraph, binanceSymbols])
 
 	return (
 		<Box>

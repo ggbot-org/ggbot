@@ -39,7 +39,7 @@ void test("extractCommonParameters", async () => {
 						},
 						{
 							id: "n2",
-							text: JSON.stringify(intervalValue),
+							text: intervalValue,
 							x: 0,
 							y: 0,
 							outs: [{ id: "o1" }]
@@ -78,7 +78,7 @@ void test("extractCommonParameters", async () => {
 						},
 						{
 							id: "n2",
-							text: JSON.stringify(symbolValue),
+							text: symbolValue,
 							x: 0,
 							y: 0,
 							outs: [{ id: "o1" }]

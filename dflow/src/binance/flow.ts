@@ -51,8 +51,9 @@ export const extractBinanceParameters = (
 		const maybeKey = firstParentNode?.text
 		const maybeValue = secondParentNode?.text
 		if (!maybeKey || !maybeValue) continue
+			try {
 		const key: unknown = JSON.parse(maybeKey)
-		const defaultValue: unknown = JSON.parse(maybeValue)
+		const defaultValue = maybeValue
 
 		if (typeof key !== "string") continue
 
@@ -79,6 +80,9 @@ export const extractBinanceParameters = (
 					defaultValue: maybeSymbol
 				})
 		}
+			} catch(_ignore) {
+
+			}
 	}
 	return parameters
 }
