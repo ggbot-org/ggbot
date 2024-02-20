@@ -9,7 +9,7 @@ import {
 
 type DflowCommonParameterKind = typeof BooleanParameter.kind
 
-export type DflowCommonParameter = DflowParameter<DflowCommonParameterKind>
+type DflowCommonParameter = DflowParameter<DflowCommonParameterKind>
 
 export const extractCommonParameters = (
 	flow: FlowViewSerializableGraph

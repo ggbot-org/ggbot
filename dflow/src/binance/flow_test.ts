@@ -11,7 +11,6 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
-import { dflowBinanceSymbolSeparator } from "./symbols.js"
 
 void test("extractCommonParameters", async () => {
 	const binance = new DflowBinanceClientMock()
@@ -102,8 +101,6 @@ void test("extractCommonParameters", async () => {
 						kind: SymbolParameter.kind,
 						key: symbolKey,
 						defaultValue: symbolValue
-							.split(dflowBinanceSymbolSeparator)
-							.join("")
 					}
 				]
 			}

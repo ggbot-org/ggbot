@@ -2,9 +2,6 @@ export { dflowBinanceZero } from "./binance/arithmetic.js"
 export type { DflowBinanceClient } from "./binance/client.js"
 export { DflowBinanceClientDummy } from "./binance/client.js"
 export { DflowBinanceExecutor } from "./binance/executor.js"
-export type {
-	DflowBinanceParameter
-} from "./binance/flow.js"
 export {
 	extractBinanceParameters,
 	extractBinanceSymbolsAndIntervalsFromFlowCandles,
@@ -16,12 +13,7 @@ export { getDflowBinanceNodesCatalog } from "./binance/nodesCatalog.js"
 export type { DflowBinanceSymbolInfo } from "./binance/symbols.js"
 export { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "./binance/symbols.js"
 export type { DflowCommonContext } from "./common/context.js"
-export type {
-	DflowCommonParameter
-} from "./common/flow.js"
-export {
-	extractCommonParameters,
-} from "./common/flow.js"
 export { isDflowExecutorView } from "./common/executor.js"
+export { extractCommonParameters } from "./common/flow.js"
 export { nodeTextToViewType } from "./common/nodeResolution.js"
 export { parsePercentage } from "./common/nodeTextParser.js"

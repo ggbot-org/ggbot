@@ -43,8 +43,8 @@ import { FormattedMessage, useIntl } from "react-intl"
 export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { strategyId, strategyKind, strategyKey } = useContext(StrategyContext)
-	const {flowViewGraph} = useContext(StrategyFlowContext)
+	const { strategyId, strategyKey } = useContext(StrategyContext)
+	const { flowViewGraph } = useContext(StrategyFlowContext)
 	const { hasActiveSubscription } = useSubscription()
 	const {
 		accountStrategies,
@@ -322,7 +322,10 @@ export const Schedulings: FC = () => {
 					</Column>
 
 					<Column>
-						<SchedulingParameters params={scheduling.params} flowViewGraph={flowViewGraph} strategyKind={strategyKind} />
+						<SchedulingParameters
+							params={scheduling.params}
+							flowViewGraph={flowViewGraph}
+						/>
 					</Column>
 
 					<Column>

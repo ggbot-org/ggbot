@@ -1,46 +1,59 @@
 import { Box, Title } from "_/components/library"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { DflowCommonContext, DflowCommonParameter, DflowBinanceParameter, extractCommonParameters, extractBinanceParameters } from "@workspace/dflow"
-import { FC, useEffect } from "react"
+import {
+	DflowCommonContext,
+	extractBinanceParameters,
+	extractCommonParameters
+} from "@workspace/dflow"
+import { FlowViewSerializableGraph } from "flow-view"
+import { FC, useMemo } from "react"
 import { FormattedMessage } from "react-intl"
 
 import {
 	SchedulingParameterItem,
 	SchedulingParameterItemProps
 } from "./SchedulingParameterItem"
-import {FlowViewSerializableGraph} from "flow-view"
-import {StrategyKind} from "@workspace/models"
 
 type Props = {
-flowViewGraph: FlowViewSerializableGraph| undefined
-params: DflowCommonContext["params"] | undefined
-strategyKind: StrategyKind
+	flowViewGraph: FlowViewSerializableGraph | undefined
+	params: DflowCommonContext["params"] | undefined
 }
 
-export const SchedulingParameters: FC<Props> = ({ flowViewGraph, params }) => {
-console.log('flowViewGraph',flowViewGraph)
+export const SchedulingParameters: FC<Props> = ({
+	flowViewGraph,
+	params = {}
+}) => {
 	const binanceSymbols = useBinanceSymbols()
-	const items: SchedulingParameterItemProps[] = []
 
-let commonParams: Array<DflowCommonParameter> = []
-let binanceParams: Array<DflowBinanceParameter> = []
-if (flowViewGraph ) {
-commonParams = extractCommonParameters(flowViewGraph)
-if (binanceSymbols)
-binanceParams = extractBinanceParameters(binanceSymbols, flowViewGraph)
-}
-console.log(commonParams, binanceParams)
+	const items = useMemo<SchedulingParameterItemProps[]>(() => {
+		const items: SchedulingParameterItemProps[] = []
+		if (!flowViewGraph) return []
 
-	if (params)
-		for (const [key, value] of Object.entries(params))
-			items.push({ name: key, value })
+		const commonParams = extractCommonParameters(flowViewGraph)
 
-useEffect(() => {
-if (flowViewGraph &&binanceSymbols)
-console.log(
-'binanceParams', extractBinanceParameters(binanceSymbols,flowViewGraph)
-)
-}, [flowViewGraph, binanceSymbols])
+		for (const { key, defaultValue } of commonParams) {
+			const value = params[key]
+			items.push({
+				label: key,
+				defaultValue,
+				value
+			})
+		}
+
+		const binanceParams = binanceSymbols
+			? extractBinanceParameters(binanceSymbols, flowViewGraph)
+			: []
+
+		for (const { key, defaultValue } of binanceParams) {
+			const value = params[key]
+			items.push({
+				label: key,
+				defaultValue,
+				value
+			})
+		}
+		return items
+	}, [flowViewGraph, binanceSymbols, params])
 
 	return (
 		<Box>
@@ -55,10 +68,11 @@ console.log(
 			)}
 
 			<div>
-				{items.map(({ name, value }) => (
+				{items.map(({ defaultValue, label, value }) => (
 					<SchedulingParameterItem
-						key={name}
-						name={name}
+						key={label}
+						defaultValue={defaultValue}
+						label={label}
 						value={value}
 					/>
 				))}
