@@ -4,5 +4,5 @@ import { Stripe } from "./Stripe.js"
 
 export const newStripe = () =>
 	new Stripe(ENV.STRIPE_SECRET_KEY(), {
-		apiVersion: "2023-08-16"
+		apiVersion: "2023-10-16"
 	})

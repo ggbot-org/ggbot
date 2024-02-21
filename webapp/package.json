@@ -54,14 +54,14 @@
     "@workspace/env": "0.0.0",
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
-    "esbuild": "0.20.0",
+    "esbuild": "0.20.1",
     "eslint-plugin-formatjs": "4.10.3",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "onchange": "7.1.0",
     "read-file-utf8": "3.0.0",
-    "sass": "1.69.0",
+    "sass": "1.71.1",
     "tsc-alias": "1.8.8",
     "write-file-utf8": "3.0.2"
   }

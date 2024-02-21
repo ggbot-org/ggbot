@@ -145,7 +145,6 @@ export class Service implements ApiService<UserClientActionType> {
 			throw new GenericError()
 		} catch (error) {
 			if (error instanceof TimeoutError) throw new GatewayTimeoutError()
-			// TODO handle errors from binance
 			throw error
 		}
 	}
