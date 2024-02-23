@@ -11,19 +11,25 @@ export const extractCommonParameters = (flow: FlowViewSerializableGraph) => {
 	const parameters: DflowParameter[] = []
 	const extractedParameters = extractParameters(flow)
 	for (const { kind, key, defaultValueNodeText } of extractedParameters) {
-		const defaultValue: unknown = JSON.parse(defaultValueNodeText)
-		if (
-			(kind === BooleanParameter.kind &&
-				typeof defaultValue === "boolean") ||
-			(kind === NumberParameter.kind &&
-				typeof defaultValue === "number") ||
-			(kind === StringParameter.kind && typeof defaultValue === "string")
-		)
-			parameters.push({
-				kind,
-				key,
-				defaultValue
-			})
+		try {
+			const defaultValue: unknown = JSON.parse(defaultValueNodeText)
+			if (
+				(kind === BooleanParameter.kind &&
+					typeof defaultValue === "boolean") ||
+				(kind === NumberParameter.kind &&
+					typeof defaultValue === "number") ||
+				(kind === StringParameter.kind &&
+					typeof defaultValue === "string")
+			)
+				parameters.push({
+					kind,
+					key,
+					defaultValue
+				})
+		} catch (error) {
+			if (error instanceof SyntaxError) continue
+			throw error
+		}
 	}
 	return parameters
 }

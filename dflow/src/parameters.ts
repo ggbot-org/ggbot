@@ -17,8 +17,9 @@ export const extractParameters = (flow: FlowViewSerializableGraph) => {
 	for (const node of flow.nodes) {
 		const { text: kind, id: nodeId } = node
 
-		const firstInputId = node.ins?.[0].id
-		const secondInputId = node.ins?.[1].id
+		const firstInputId = node.ins?.[0]?.id
+		const secondInputId = node.ins?.[1]?.id
+		if (!firstInputId || !secondInputId) continue
 
 		const firstParentNodeEdge = flow.edges.find(
 			(edge) => edge.to[0] === nodeId && edge.to[1] === firstInputId
