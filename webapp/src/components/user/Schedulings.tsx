@@ -61,6 +61,8 @@ export const Schedulings: FC = () => {
 	} = useContext(StrategiesContext)
 	const { toast } = useContext(ToastContext)
 
+	const binanceSymbols = useBinanceSymbols()
+
 	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
 		AccountStrategy[]
 	>([])
@@ -132,6 +134,50 @@ export const Schedulings: FC = () => {
 		return false
 	}, [currentSchedulings, schedulingItems])
 
+	const paramItems = useCallback<
+		(
+			params: StrategyParameters | undefined
+		) => Array<
+			Pick<
+				SchedulingParameterItemProps,
+				"kind" | "label" | "value" | "defaultValue"
+			>
+		>
+	>(
+		(params = {}) => {
+			const items = []
+			if (!flowViewGraph) return []
+
+			const commonParams = extractCommonParameters(flowViewGraph)
+
+			for (const { key, kind, defaultValue } of commonParams) {
+				const value = params[key]
+				items.push({
+					kind,
+					label: key,
+					defaultValue,
+					value
+				})
+			}
+
+			const binanceParams = binanceSymbols
+				? extractBinanceParameters(binanceSymbols, flowViewGraph)
+				: []
+
+			for (const { key, kind, defaultValue } of binanceParams) {
+				const value = params[key]
+				items.push({
+					kind,
+					label: key,
+					defaultValue,
+					value
+				})
+			}
+			return items
+		},
+		[flowViewGraph, binanceSymbols]
+	)
+
 	const canCancel = someSchedulingChanged
 
 	const wantedSchedulings = useMemo<StrategyScheduling[]>(
@@ -145,50 +191,6 @@ export const Schedulings: FC = () => {
 			someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
 		)
 	}, [someSchedulingChanged, hasActiveSubscription, schedulingItems])
-
-	const binanceSymbols = useBinanceSymbols()
-
-	const paramItems = useCallback<
-		(
-			params: StrategyParameters | undefined
-		) => Array<
-			Pick<
-				SchedulingParameterItemProps,
-				"label" | "value" | "defaultValue"
-			>
-		>
-	>(
-		(params = {}) => {
-			const items = []
-			if (!flowViewGraph) return []
-
-			const commonParams = extractCommonParameters(flowViewGraph)
-
-			for (const { key, defaultValue } of commonParams) {
-				const value = params[key]
-				items.push({
-					label: key,
-					defaultValue,
-					value
-				})
-			}
-
-			const binanceParams = binanceSymbols
-				? extractBinanceParameters(binanceSymbols, flowViewGraph)
-				: []
-
-			for (const { key, defaultValue } of binanceParams) {
-				const value = params[key]
-				items.push({
-					label: key,
-					defaultValue,
-					value
-				})
-			}
-			return items
-		},
-		[flowViewGraph, binanceSymbols]
-	)
 
 	const setSchedulingItemFrequency = useCallback<
 		(id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
@@ -227,8 +229,12 @@ export const Schedulings: FC = () => {
 			setSchedulingItems((schedulingItems) =>
 				schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
-					const params = schedulingItem.params ?? {}
-					params[key] = value
+					const params = Object.assign({}, schedulingItem.params)
+					if (value === undefined) {
+						delete params[key]
+					} else {
+						params[key] = value
+					}
 					return { ...schedulingItem, params }
 				})
 			)
@@ -411,6 +417,7 @@ export const Schedulings: FC = () => {
 
 					<Column>
 						<SchedulingParameters
+							binanceSymbols={binanceSymbols}
 							setParam={setSchedulingParam(scheduling.id)}
 							items={paramItems(scheduling.params)}
 						/>

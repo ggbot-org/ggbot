@@ -1,4 +1,5 @@
 import { Box, Title } from "_/components/library"
+import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -8,12 +9,20 @@ import {
 } from "./SchedulingParameterItem"
 
 type Props = Pick<SchedulingParameterItemProps, "setParam"> & {
+	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
 	items: Array<
-		Pick<SchedulingParameterItemProps, "label" | "value" | "defaultValue">
+		Pick<
+			SchedulingParameterItemProps,
+			"kind" | "label" | "value" | "defaultValue"
+		>
 	>
 }
 
-export const SchedulingParameters: FC<Props> = ({ items, setParam }) => (
+export const SchedulingParameters: FC<Props> = ({
+	binanceSymbols,
+	items,
+	setParam
+}) => (
 	<Box>
 		<Title>
 			<FormattedMessage id="Parameters.title" />
@@ -26,9 +35,11 @@ export const SchedulingParameters: FC<Props> = ({ items, setParam }) => (
 		)}
 
 		<div>
-			{items.map(({ defaultValue, label, value }) => (
+			{items.map(({ kind, defaultValue, label, value }) => (
 				<SchedulingParameterItem
 					key={label}
+					kind={kind}
+					binanceSymbols={binanceSymbols}
 					setParam={setParam}
 					defaultValue={defaultValue}
 					label={label}
