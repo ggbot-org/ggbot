@@ -5,7 +5,7 @@ import type {
 	FlowViewSerializableEdge,
 	FlowViewSerializableNode
 } from "flow-view"
-import { assertEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
 import { DflowCommonContext } from "../context.js"
@@ -65,10 +65,9 @@ const executeTrailingStop = async (
 	const hasInitialStopPrice = typeof initialStopPrice === "number"
 	const hasResetTrailing = typeof resetTrailing !== "undefined"
 
-	const nodes: Array<Pick<
-		FlowViewSerializableNode,
-		"id" | "text" | "ins" | "outs"
-	>> = [
+	const nodes: Array<
+		Pick<FlowViewSerializableNode, "id" | "text" | "ins" | "outs">
+	> = [
 		{
 			id: "enterTrailing",
 			text: JSON.stringify(enterTrailing),
@@ -587,78 +586,72 @@ void describe("Trailing Stop", () => {
 			assert.deepEqual(memory, output.memory, memoryAssertionError)
 		}
 	})
+})
 
-	void test("trailingStop", () => {
-		const testData: Array<{
-			input: TrailingStopInput
-			output: TrailingStopOutput
-		}> = [
-			// If `direction` is "UP" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
-			{
-				input: {
-					direction: "UP",
-					marketPrice: 99,
-					percentageDelta: 0,
-					stopPrice: 100
-				},
-				output: { exitTrailing: true, stopPrice: 100 }
+void test("trailingStop", () => {
+	assertDeepEqual<TrailingStopInput, TrailingStopOutput>(trailingStop, [
+		// If `direction` is "UP" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
+		{
+			input: {
+				direction: "UP",
+				marketPrice: 99,
+				percentageDelta: 0,
+				stopPrice: 100
 			},
+			output: { exitTrailing: true, stopPrice: 100 }
+		},
 
-			// If `direction` is "DOWN" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
-			{
-				input: {
-					direction: "DOWN",
-					marketPrice: 101,
-					percentageDelta: 0,
-					stopPrice: 100
-				},
-				output: { exitTrailing: true, stopPrice: 100 }
+		// If `direction` is "DOWN" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
+		{
+			input: {
+				direction: "DOWN",
+				marketPrice: 101,
+				percentageDelta: 0,
+				stopPrice: 100
 			},
+			output: { exitTrailing: true, stopPrice: 100 }
+		},
 
-			// Return adjusted `stopPrice` according to `percentageDelta`.
-			{
-				input: {
-					direction: "UP",
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					stopPrice: 50
-				},
-				output: { exitTrailing: false, stopPrice: 99 }
+		// Return adjusted `stopPrice` according to `percentageDelta`.
+		{
+			input: {
+				direction: "UP",
+				marketPrice: 100,
+				percentageDelta: 0.01,
+				stopPrice: 50
 			},
-			{
-				input: {
-					direction: "DOWN",
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					stopPrice: 150
-				},
-				output: { exitTrailing: false, stopPrice: 101 }
+			output: { exitTrailing: false, stopPrice: 99 }
+		},
+		{
+			input: {
+				direction: "DOWN",
+				marketPrice: 100,
+				percentageDelta: 0.01,
+				stopPrice: 150
 			},
+			output: { exitTrailing: false, stopPrice: 101 }
+		},
 
-			// Leave `stopPrice` as is when `marketPrice` gets closer.
-			{
-				input: {
-					direction: "UP",
-					marketPrice: 100,
-					percentageDelta: 0.02,
-					stopPrice: 99
-				},
-				output: { exitTrailing: false, stopPrice: 99 }
+		// Leave `stopPrice` as is when `marketPrice` gets closer.
+		{
+			input: {
+				direction: "UP",
+				marketPrice: 100,
+				percentageDelta: 0.02,
+				stopPrice: 99
 			},
-			{
-				input: {
-					direction: "DOWN",
-					marketPrice: 100,
-					percentageDelta: 0.02,
-					stopPrice: 101
-				},
-				output: { exitTrailing: false, stopPrice: 101 }
-			}
-		]
-		testData.forEach(({ input, output }) => {
-			assert.deepEqual(trailingStop(input), output)
-		})
-	})
+			output: { exitTrailing: false, stopPrice: 99 }
+		},
+		{
+			input: {
+				direction: "DOWN",
+				marketPrice: 100,
+				percentageDelta: 0.02,
+				stopPrice: 101
+			},
+			output: { exitTrailing: false, stopPrice: 101 }
+		}
+	])
 })
 
 void describe("computeStopPriceDown", () => {

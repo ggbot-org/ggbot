@@ -28,6 +28,7 @@ import {
 	Or
 } from "./nodes/logic.js"
 import { Max, Min } from "./nodes/mathFunctions.js"
+import { MediatorLong, MediatorShort } from "./nodes/mediator.js"
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js"
 import {
 	BooleanParameter,
@@ -66,6 +67,8 @@ export const nodesCatalog = {
 	[BollingerBands.kind]: BollingerBands,
 	[ExponentialMovingAverage.kind]: ExponentialMovingAverage,
 	[HeikinAshi.kind]: HeikinAshi,
+	[MediatorLong.kind]: MediatorLong,
+	[MediatorShort.kind]: MediatorShort,
 	[RelativeStrengthIndex.kind]: RelativeStrengthIndex,
 	[SimpleMovingAverage.kind]: SimpleMovingAverage,
 	[TrailingStopDown.kind]: TrailingStopDown,

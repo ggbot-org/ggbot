@@ -126,7 +126,7 @@ export class TrailingStopUp extends DflowNode {
 
 		if (resetTrailing) {
 			cleanupMemory()
-			return
+			return this.clearOutputs()
 		}
 
 		if (!isValidPercentageDelta(percentageDelta)) return
@@ -211,7 +211,7 @@ export class TrailingStopDown extends DflowNode {
 
 		if (resetTrailing) {
 			cleanupMemory()
-			return
+			return this.clearOutputs()
 		}
 
 		if (!isValidPercentageDelta(percentageDelta)) return
