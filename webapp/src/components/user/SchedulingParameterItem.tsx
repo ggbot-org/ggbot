@@ -16,8 +16,8 @@ import {
 	SerializablePrimitive
 } from "@workspace/models"
 import {
+	ChangeEventHandler,
 	FC,
-	FocusEventHandler,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -46,8 +46,8 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 }) => {
 	const [hasError, setHasError] = useState(false)
 
-	const onBlur = useCallback<
-		FocusEventHandler<
+	const onChange = useCallback<
+		ChangeEventHandler<
 			HTMLInputElement & { value: SchedulingParameterItemProps["value"] }
 		>
 	>(
@@ -111,6 +111,7 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 				const maybeSymbol = value
 					.split(dflowBinanceSymbolSeparator)
 					.join("")
+					.toUpperCase()
 				const isSymbol = binanceSymbols?.some(
 					({ symbol }) => symbol === maybeSymbol
 				)
@@ -163,12 +164,26 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 	}, [binanceSymbols, kind, value])
 
 	return (
-		<InputField
-			color={hasError ? "danger" : undefined}
-			onBlur={onBlur}
-			placeholder={String(defaultValue ?? "")}
-			label={label}
-			defaultValue={formattedValue}
-		/>
+		<>
+			<InputField
+				color={hasError ? "danger" : undefined}
+				list={label}
+				onChange={onChange}
+				placeholder={String(defaultValue ?? "")}
+				label={label}
+				defaultValue={formattedValue}
+			/>
+
+			{kind === SymbolParameter.kind && (
+				<datalist id={label}>
+						{binanceSymbols?.map(({ baseAsset, quoteAsset }) => (
+							<option
+								key={baseAsset + quoteAsset}
+								value={`${baseAsset}${dflowBinanceSymbolSeparator}${quoteAsset}`}
+							/>
+						))}
+					</datalist>
+			)}
+		</>
 	)
 }
