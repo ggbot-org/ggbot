@@ -36,6 +36,10 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 
 	const frequencyIntervalOptions: FrequencyIntervalOption[] = [
 		{
+			value: "1d",
+			label: formatMessage({ id: "FrequencyInput.day" })
+		},
+		{
 			value: "1h",
 			label: formatMessage({ id: "FrequencyInput.hour" })
 		},

@@ -233,6 +233,9 @@
 	"FrequencyInput.interval": {
 		"defaultMessage": "Interval"
 	},
+	"FrequencyInput.day": {
+		"defaultMessage": "day"
+	},
 	"FrequencyInput.hour": {
 		"defaultMessage": "hour"
 	},

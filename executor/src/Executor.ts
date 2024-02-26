@@ -1,4 +1,4 @@
-import { BinanceErrorCode,ErrorBinanceHTTP } from "@workspace/binance"
+import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
@@ -20,7 +20,8 @@ import {
 	statusOfSubscription,
 	StrategyMemory,
 	StrategyScheduling,
-	Subscription
+	Subscription,
+	SubscriptionPlan
 } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
@@ -144,27 +145,44 @@ export class Executor {
 	 * Check if subscription is active.
 	 *
 	 * ```ts
-	 * const hasActiveSubscription = await this.checkSubscription({
-	 * 	accountId
-	 * })
+	 * const { hasActiveSubscription, subscriptionPlan } =
+	 * 	await this.checkSubscription({
+	 * 		accountId
+	 * 	})
 	 * ```
 	 */
-	async checkSubscription({ accountId }: AccountKey): Promise<boolean> {
+	async checkSubscription({ accountId }: AccountKey): Promise<{
+		hasActiveSubscription: boolean
+		subscriptionPlan: SubscriptionPlan | undefined
+	}> {
 		try {
 			const key = accountId
 			const { subscriptionsCache: cache } = this
 			const cached = cache.get(key)
-			if (cached) return statusOfSubscription(cached) === "active"
+			if (cached)
+				return {
+					hasActiveSubscription:
+						statusOfSubscription(cached) === "active",
+					subscriptionPlan: cached.plan
+				}
 			info("readSubscription", accountId)
 			const subscription = await this.executorDatabase.ReadSubscription({
 				accountId
 			})
-			if (!isSubscription(subscription)) return false
+			if (!isSubscription(subscription))
+				return {
+					hasActiveSubscription: false,
+					subscriptionPlan: undefined
+				}
 			cache.set(key, subscription)
-			return statusOfSubscription(subscription) === "active"
+			return {
+				hasActiveSubscription:
+					statusOfSubscription(subscription) === "active",
+				subscriptionPlan: subscription.plan
+			}
 		} catch (error) {
 			warn(error)
-			return false
+			return { hasActiveSubscription: false, subscriptionPlan: undefined }
 		}
 	}
 
@@ -262,7 +280,7 @@ export class Executor {
 
 			try {
 				// Check subscription or suspend account strategies.
-				const hasActiveSubscription =
+				const { hasActiveSubscription } =
 					await this.checkSubscription(accountKey)
 				if (!hasActiveSubscription) {
 					this.cachedAccountKeys.delete(accountId)
@@ -279,6 +297,10 @@ export class Executor {
 					schedulings
 				} of accountStrategies)
 					for (const scheduling of schedulings) {
+						// TODO check if scheduling has interval 1m (minute)
+						// then check if subscriptionPlan (get it from checkSubscription)
+						// is pro, otherwise suspend strategy
+						// with suspendAccountStrategyScheduling
 						await this.manageStrategyExecution(
 							{ accountId, strategyId, strategyKind },
 							scheduling
