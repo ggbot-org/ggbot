@@ -103,4 +103,4 @@ ggbot_executor_${YYMMDD}
 
 for example `ggbot_executor_230804`.
 
-Go to [EC2 Auto Scaling groups](../../docs/ec2-auto-scaling-groups.md)
+Go to [EC2 Auto Scaling groups](../../infrastructure/docs/ec2-auto-scaling-groups.md)

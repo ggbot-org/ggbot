@@ -116,4 +116,4 @@ ggbot_binance-proxy_${YYMMDD}
 
 for example `ggbot_binance-proxy_230804`.
 
-Go to [EC2 Auto Scaling groups](../../docs/ec2-auto-scaling-groups.md)
+Go to [EC2 Auto Scaling groups](../../infrastructure/docs/ec2-auto-scaling-groups.md)

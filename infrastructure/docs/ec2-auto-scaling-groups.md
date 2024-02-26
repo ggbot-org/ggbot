@@ -7,10 +7,10 @@ Every one of the EC2 services has an [Auto Scaling group](https://docs.aws.amazo
 Create a _Launch template_ with name
 
 ```sh
-ggbot2_${SERVICE}_${YYMMDD}_lt
+${PROJECT_SHORT_NAME}_${SERVICE}_${YYMMDD}_lt
 ```
 
-for example `ggbot2_executor_230808_lt`.
+for example `ggbot_executor_230808_lt`.
 
 Choose properly the following settings:
 
@@ -23,28 +23,26 @@ TODO: try this (only for executor)
 In _Advanced Details_: select _IAM instance profile_, and in _User data_ add a script like the following
 
 ```sh
-cat << EOF > /etc/systemd/system/ggbot2.service.d/override.conf
+cat << EOF > /etc/systemd/system/ggbot.service.d/override.conf
 [Service]
 Environment="DEPLOY_STAGE=next"
 EOF
 
 systemctl daemon-reload
-systemctl enable ggbot2
-systemctl stop ggbot2
-systemctl start ggbot2
+systemctl enable ggbot
+systemctl stop ggbot
+systemctl start ggbot
 ```
 
 ## Auto Scaling group
 
-If service is _binance-proxy_ create an [EC2 Load Balancer](./ec2-load-balancer.md) first.
-
 Create _Auto Scaling group_ with name
 
 ```sh
-ggbot2_${SERVICE}_${YYMMDD}_asg
+${PROJECT_SHORT_NAME}_${SERVICE}_${YYMMDD}_asg
 ```
 
-for example `ggbot2_binance-proxy_230815_asg`.
+for example `ggbot_binance-proxy_230815_asg`.
 
 Select _Launch template_.
 Select all _Availability zones and subnets_.

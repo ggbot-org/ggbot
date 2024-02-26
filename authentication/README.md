@@ -1,5 +1,7 @@
 # Authentication
 
+User can access his/her account via email, by getting a _one time password_.
+
 ```mermaid
 sequenceDiagram
     participant Client
