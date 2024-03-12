@@ -1,17 +1,17 @@
 import { classNames } from "_/classNames"
 import { dayFormat } from "_/i18n/formats"
 import { webapp } from "_/routing/webapp"
-import { memo } from "react"
+import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const Footer = memo(() => {
+export const Footer: FC = () => {
 	const { formatDate } = useIntl()
 
 	return (
 		<>
 			<div className={classNames("Footer__top")} />
 
-			<footer className={classNames("footer")}>
+			<footer className={classNames("footer", "Footer__body")}>
 				<ul>
 					<li>
 						<a href={webapp.privacy.pathname}>
@@ -30,9 +30,11 @@ export const Footer = memo(() => {
 					id="Footer.lastUpdate"
 					values={{ day: formatDate(BUILD_DATE, dayFormat) }}
 				/>
+
+				<sub>
+					<FormattedMessage id="Footer.noTracking" />
+				</sub>
 			</footer>
 		</>
 	)
-})
-
-Footer.displayName = "Footer"
+}

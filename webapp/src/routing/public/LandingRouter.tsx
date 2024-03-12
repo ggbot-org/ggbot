@@ -1,15 +1,14 @@
+import { HomePage } from "_/pages/HomePage"
+import { PrivacyPage } from "_/pages/Privacy"
+import { TermsPage } from "_/pages/Terms"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 
-import { HomePage } from "../../pages/HomePage"
-import { PrivacyPage } from "../../pages/Privacy"
-import { TermsPage } from "../../pages/Terms"
-
 const Router: FC = () => {
-	const pathname = window.location.pathname
+	const {pathname} = location
 
-if (pathname==="/"||pathname==="webapp.homepage.pathname")
+if (pathname==="/"||pathname===webapp.homepage.pathname)
 			return <HomePage />
 
 if (pathname===webapp.privacy.pathname)
@@ -22,4 +21,3 @@ return null
 }
 
 mount(Router)
-

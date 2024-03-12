@@ -7,4 +7,10 @@
 		);
 		height: $size-1;
 	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
 }

@@ -7,10 +7,10 @@ type Props = {
 
 export const Page: FC<PropsWithChildren<Props>> = ({ children, footer }) => (
 	<div className={classNames("Page")}>
-		<div className={classNames("Page_content")}>{children}</div>
+		<div className={classNames("Page__content")}>{children}</div>
 
 		{footer ? (
-			<div className={classNames("Page_footer")}>{footer}</div>
+			<div className={classNames("Page__footer")}>{footer}</div>
 		) : null}
 	</div>
 )

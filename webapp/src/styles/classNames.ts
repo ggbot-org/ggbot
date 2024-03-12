@@ -21,7 +21,7 @@ type FlowMenuClassName = "FlowMenu" | "FlowMenu__strategyName"
 
 type FlowViewContainerClassName = "FlowViewContainer"
 
-type FooterClassName = "Footer__top"
+type FooterClassName = "Footer__top" | "Footer__body"
 
 type InputClassName = "Input--isStatic"
 
@@ -29,7 +29,7 @@ type ModalClassName = "Modal__content"
 
 type OneColumn = "OneColumn"
 
-type PageClassName = "Page" | "Page_content" | "Page_footer"
+type PageClassName = "Page" | "Page__content" | "Page__footer"
 
 type ToastContainerClassName = "ToastContainer"
 

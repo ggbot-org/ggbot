@@ -1,4 +1,5 @@
 import { classNames } from "_/classNames"
+import { webapp } from "_/routing/webapp"
 import { FC, PropsWithChildren, useEffect, useState } from "react"
 import {
 	Navbar as _Navbar,
@@ -27,15 +28,25 @@ export const Navbar: FC<PropsWithChildren<Props>> = ({
 		const closeMenu = () => {
 			setIsActive(false)
 		}
-		window.addEventListener("click", closeMenu)
+		addEventListener("click", closeMenu)
 		return () => {
-			window.removeEventListener("click", closeMenu)
+			removeEventListener("click", closeMenu)
 		}
 	}, [])
 
 	return (
 		<_Navbar color="black" {...props}>
-			<NavbarBrand>
+			<NavbarBrand
+				onClick={() => {
+					const { pathname } = location
+					if (
+						pathname === "/" ||
+						pathname === webapp.homepage.pathname
+					)
+						return
+					location.pathname = "/"
+				}}
+			>
 				<NavbarItem className={classNames("is-unselectable")}>
 					<Logo size={34} />
 

@@ -1,10 +1,8 @@
 import { Navbar } from "_/components/library"
-import { memo } from "react"
+import { FC } from "react"
 
-export const Navigation = memo(() => {
-	if (window.location.pathname === "/") return null
+export const Navigation: FC = () => {
+	if (location.pathname === "/") return null
 
 	return <Navbar noMenu />
-})
-
-Navigation.displayName = "Navigation"
+}

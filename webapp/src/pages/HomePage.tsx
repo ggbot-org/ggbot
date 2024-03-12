@@ -18,7 +18,7 @@ export const HomePage: FC = () => {
 	const { gotFirstPageView } = useGotFirstPageView()
 
 	const onClickCallToAction = useCallback(() => {
-		window.location.href = webapp.user.dashboard.href
+		location.assign(webapp.user.dashboard.href)
 	}, [])
 
 	return (

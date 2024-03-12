@@ -227,6 +227,9 @@
 	"Footer.lastUpdate": {
 		"defaultMessage": "Last update: {day}"
 	},
+	"Footer.noTracking": {
+		"defaultMessage": "This page does not track you. No cookies."
+	},
 	"FrequencyInput.every": {
 		"defaultMessage": "Every"
 	},
