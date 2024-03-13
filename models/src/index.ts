@@ -120,9 +120,9 @@ export type {
 export {
 	isSubscription,
 	isSubscriptionPlan,
+	PRO_FREQUENCY_INTERVALS,
 	shouldPurchaseSubscription,
-	statusOfSubscription
-} from "./subscription.js"
+	statusOfSubscription} from "./subscription.js"
 export type { SubscriptionPurchaseKey } from "./subscriptionPurchase.js"
 export {
 	isSubscriptionPurchaseKey,

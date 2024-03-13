@@ -1,6 +1,8 @@
 import { DayInterval, getDay, isDay, today } from "minimal-time-helpers"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
+import { FrequencyInterval } from "./frequency.js"
+
 export const shouldPurchaseSubscription = (
 	subscription: Subscription
 ): boolean => {
@@ -31,3 +33,9 @@ export const statusOfSubscription = ({
 	end
 }: Pick<Subscription, "end">): SubscriptionStatus =>
 	end > today() ? "active" : "expired"
+
+/**
+ * Only accounts with "pro" subscription plan can schedule with these frequency
+ * intervals.
+ */
+export const PRO_FREQUENCY_INTERVALS: FrequencyInterval[] = ["1m"]

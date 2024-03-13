@@ -32,9 +32,9 @@ import {
 	AccountStrategy,
 	isStrategyScheduling,
 	newStrategyScheduling,
+	PRO_FREQUENCY_INTERVALS,
 	StrategyParameters,
-	StrategyScheduling
-} from "@workspace/models"
+	StrategyScheduling} from "@workspace/models"
 import {
 	FC,
 	MouseEventHandler,
@@ -404,7 +404,9 @@ export const Schedulings: FC = () => {
 				<Columns key={scheduling.id}>
 					<Column isNarrow>
 						<SchedulingItem
-							disabledIntervalOptions={isPro ? [] : ["1m"]}
+							disabledIntervalOptions={
+								isPro ? [] : PRO_FREQUENCY_INTERVALS
+							}
 							scheduling={scheduling}
 							setFrequency={setSchedulingItemFrequency(
 								scheduling.id
