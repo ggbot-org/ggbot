@@ -14,6 +14,7 @@ type UseSubscriptionOutput = Partial<{
 	subscriptionEnd: Time
 	subscriptionStatus: SubscriptionStatus
 	subscriptionPlan: SubscriptionPlan
+	isPro: boolean
 }>
 
 export const useSubscription = (): UseSubscriptionOutput => {
@@ -31,6 +32,7 @@ export const useSubscription = (): UseSubscriptionOutput => {
 		hasActiveSubscription: subscriptionStatus === "active",
 		subscriptionEnd: dayToTime(subscription.end),
 		subscriptionStatus,
-		subscriptionPlan: subscription.plan
+		subscriptionPlan: subscription.plan,
+		isPro: subscription.plan === "pro"
 	}
 }

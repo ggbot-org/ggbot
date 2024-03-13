@@ -8,7 +8,10 @@ import { StrategyScheduling } from "@workspace/models"
 import { FC, useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
+export type SchedulingItemProps = Pick<
+	FrequencyInputProps,
+	"disabledIntervalOptions" | "setFrequency"
+> & {
 	scheduling: Omit<StrategyScheduling, "frequency"> &
 		Pick<FrequencyInputProps, "frequency">
 	setStatus: (
@@ -18,6 +21,7 @@ export type SchedulingItemProps = Pick<FrequencyInputProps, "setFrequency"> & {
 }
 
 export const SchedulingItem: FC<SchedulingItemProps> = ({
+	disabledIntervalOptions,
 	scheduling,
 	setFrequency,
 	removeScheduling,
@@ -63,7 +67,11 @@ export const SchedulingItem: FC<SchedulingItemProps> = ({
 				}
 			/>
 
-			<FrequencyInput frequency={frequency} setFrequency={setFrequency} />
+			<FrequencyInput
+				frequency={frequency}
+				setFrequency={setFrequency}
+				disabledIntervalOptions={disabledIntervalOptions}
+			/>
 		</Box>
 	)
 }

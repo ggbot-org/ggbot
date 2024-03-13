@@ -53,7 +53,7 @@ export const Schedulings: FC = () => {
 
 	const { strategyId, strategyKey } = useContext(StrategyContext)
 	const { flowViewGraph } = useContext(StrategyFlowContext)
-	const { hasActiveSubscription } = useSubscription()
+	const { hasActiveSubscription, isPro } = useSubscription()
 	const {
 		accountStrategies,
 		fetchAccountStrategiesIsPending,
@@ -404,6 +404,7 @@ export const Schedulings: FC = () => {
 				<Columns key={scheduling.id}>
 					<Column isNarrow>
 						<SchedulingItem
+							disabledIntervalOptions={isPro ? [] : ["1m"]}
 							scheduling={scheduling}
 							setFrequency={setSchedulingItemFrequency(
 								scheduling.id

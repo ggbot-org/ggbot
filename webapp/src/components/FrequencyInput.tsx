@@ -19,16 +19,19 @@ export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
 	frequency: Pick<Frequency, "interval"> & {
 		every: NaturalNumber | ""
 	}
+	disabledIntervalOptions?: FrequencyInterval[]
 	setFrequency: (arg: FrequencyInputProps["frequency"]) => void
 }
 
 type FrequencyIntervalOption = {
+	disabled?: boolean
 	value: FrequencyInterval
 	label: string
 }
 
 export const FrequencyInput: FC<FrequencyInputProps> = ({
 	disabled,
+	disabledIntervalOptions = [],
 	frequency: { interval, every },
 	setFrequency
 }) => {
@@ -37,13 +40,19 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 	const frequencyIntervalOptions: FrequencyIntervalOption[] = [
 		{
 			value: "1d",
+			disabled: disabledIntervalOptions.includes("1d"),
 			label: formatMessage({ id: "FrequencyInput.day" })
 		},
 		{
 			value: "1h",
+			disabled: disabledIntervalOptions.includes("1h"),
 			label: formatMessage({ id: "FrequencyInput.hour" })
 		},
-		{ value: "1m", label: formatMessage({ id: "FrequencyInput.minute" }) }
+		{
+			disabled: disabledIntervalOptions.includes("1m"),
+			value: "1m",
+			label: formatMessage({ id: "FrequencyInput.minute" })
+		}
 	]
 
 	const onChangeFrequencyEvery = useCallback<
@@ -92,6 +101,11 @@ export const FrequencyInput: FC<FrequencyInputProps> = ({
 
 			<Column size="half">
 				<SelectField
+					color={
+						disabledIntervalOptions.includes(interval)
+							? "danger"
+							: undefined
+					}
 					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.interval" })}
 					onChange={onChangeFrequencyInterval}
