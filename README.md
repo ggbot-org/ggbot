@@ -6,14 +6,14 @@
 
 To start developing locally, use the following instructions.
 
-Set your environment variables, `DEPLOY_STAGE` and `DNS_DOMAIN`.
+See [env/README.md](./env/README.md) for the complete list of environment variables used.
+
+To run the webapp locally, set environment variables `DEPLOY_STAGE` and `DNS_DOMAIN`.
 
 ```sh
 export DEPLOY_STAGE=local
 export DNS_DOMAIN=ggbot.org
 ```
-
-Install [direnv](./infrastructure/docs/tech-stack.md#direnv) and follow instructions [here to populate other environment variables](./env/README.md), if needed.
 
 Install dependencies and build packages.
 
@@ -22,7 +22,7 @@ npm ci
 npm run build
 ```
 
-Start webapp.
+Start webapp with
 
 ```sh
 npm start
