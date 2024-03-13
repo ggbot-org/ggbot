@@ -76,12 +76,18 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
 export class ErrorBinanceSymbolFilter extends Error {
 	static errorName = "ErrorBinanceSymbolFilter"
 	filterType: BinanceSymbolFilter["filterType"]
-	constructor({ filterType }: Pick<ErrorBinanceSymbolFilter, "filterType">) {
-		super(ErrorBinanceSymbolFilter.message(filterType))
+	constructor({
+		filterType,
+		detail
+	}: Pick<ErrorBinanceSymbolFilter, "filterType"> & { detail: string }) {
+		super(ErrorBinanceSymbolFilter.message(filterType, detail))
 		this.filterType = filterType
 	}
-	static message(filterType: ErrorBinanceSymbolFilter["filterType"]) {
-		return `Binance filter ${filterType} violated`
+	static message(
+		filterType: ErrorBinanceSymbolFilter["filterType"],
+		detail: string
+	) {
+		return `Binance filter ${filterType} violated, ${detail}`
 	}
 }
 

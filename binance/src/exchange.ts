@@ -74,7 +74,10 @@ export class BinanceExchange {
 		if (type === "MARKET" && minNotionalFilter.applyToMarket !== true)
 			return
 		if (!minNotionalIsValid(minNotionalFilter, quoteOrderQty))
-			throw new ErrorBinanceSymbolFilter({ filterType: "MIN_NOTIONAL" })
+			throw new ErrorBinanceSymbolFilter({
+				filterType: "MIN_NOTIONAL",
+				detail: `quoteOrderQty=${quoteOrderQty}`
+			})
 	}
 
 	static throwIfLotSizeFilterIsInvalid(
@@ -82,7 +85,10 @@ export class BinanceExchange {
 		lotSizeFilter?: BinanceSymbolFilterLotSize
 	) {
 		if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
-			throw new ErrorBinanceSymbolFilter({ filterType: "LOT_SIZE" })
+			throw new ErrorBinanceSymbolFilter({
+				filterType: "LOT_SIZE",
+				detail: `quantity=${quantity}`
+			})
 	}
 
 	/**
