@@ -17,12 +17,12 @@ import {
 	Item,
 	itemIdCharacters,
 	newId,
+	PRO_FREQUENCY_INTERVALS,
 	statusOfSubscription,
 	StrategyMemory,
 	StrategyScheduling,
 	Subscription,
-	SubscriptionPlan
-} from "@workspace/models"
+	SubscriptionPlan} from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -280,7 +280,7 @@ export class Executor {
 
 			try {
 				// Check subscription or suspend account strategies.
-				const { hasActiveSubscription } =
+				const { hasActiveSubscription, subscriptionPlan } =
 					await this.checkSubscription(accountKey)
 				if (!hasActiveSubscription) {
 					this.cachedAccountKeys.delete(accountId)
@@ -297,10 +297,21 @@ export class Executor {
 					schedulings
 				} of accountStrategies)
 					for (const scheduling of schedulings) {
-						// TODO check if scheduling has interval 1m (minute)
-						// then check if subscriptionPlan (get it from checkSubscription)
-						// is pro, otherwise suspend strategy
-						// with suspendAccountStrategyScheduling
+						// Suspend scheduling if frequency interval is not allowed in subscription plan.
+						if (
+							subscriptionPlan !== "pro" &&
+							PRO_FREQUENCY_INTERVALS.includes(
+								scheduling.frequency.interval
+							)
+						) {
+							await this.suspendAccountStrategyScheduling({
+								accountId,
+								strategyId,
+								schedulingId: scheduling.id
+							})
+							continue
+						}
+
 						await this.manageStrategyExecution(
 							{ accountId, strategyId, strategyKind },
 							scheduling
