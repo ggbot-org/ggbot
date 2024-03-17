@@ -33,6 +33,10 @@ void test("WebappURLs", () => {
 		"https://www.example.com/user/copy-strategy.html?strategyId=00000000&strategyKind=none"
 	)
 	assert.equal(
+		webapp.user.editStrategy(strategyKey).href,
+		"https://www.example.com/user/edit-strategy.html?strategyId=00000000&strategyKind=none"
+	)
+	assert.equal(
 		webapp.user.strategy(strategyKey).href,
 		"https://www.example.com/user/strategy.html?strategyId=00000000&strategyKind=none"
 	)

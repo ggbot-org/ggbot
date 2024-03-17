@@ -47,6 +47,7 @@ for (const pathname of adminHtmlPathnames)
 const userHtmlPathnames = [
 	webappPagePathname.user.dashboard,
 	webappPagePathname.user.copyStrategy,
+	webappPagePathname.user.editStrategy,
 	webappPagePathname.user.strategy,
 	...webappSettingsPageIds.map(settingsHtmlPathname)
 ]

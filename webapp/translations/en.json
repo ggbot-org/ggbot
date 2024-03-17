@@ -251,6 +251,9 @@
 	"GoCopyStrategy.label": {
 		"defaultMessage": "Copy"
 	},
+	"GoEditStrategy.label": {
+		"defaultMessage": "Edit"
+	},
 	"GoSettings.label": {
 		"defaultMessage": "Go to Settings"
 	},

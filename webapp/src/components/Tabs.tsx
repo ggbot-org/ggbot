@@ -6,8 +6,6 @@ import {
 	TabSelectorProps,
 	TabSelectors
 } from "_/components/library"
-import { PageName } from "_/routing/pageNames"
-import { sessionWebStorage } from "_/storages/session"
 import {
 	Dispatch,
 	FC,
@@ -31,26 +29,17 @@ const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-export const getStoredTabId = (pageName: PageName) =>
-	sessionWebStorage.getActiveTabId<TabId>(pageName, tabIds)
-
 type Tab = { tabId: TabId; content: ReactNode }
 
 type TabsProps = {
 	activeTabId: TabId
 	setActiveTabId: Dispatch<SetStateAction<TabId>>
 	tabs: Tab[]
-	pageName: PageName
 }
 
 type ItemList<Props> = Array<PropsWithChildren<Props> & Pick<Tab, "tabId">>
 
-export const Tabs: FC<TabsProps> = ({
-	activeTabId,
-	setActiveTabId,
-	tabs,
-	pageName
-}) => {
+export const Tabs: FC<TabsProps> = ({ activeTabId, setActiveTabId, tabs }) => {
 	const { formatMessage } = useIntl()
 
 	const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
@@ -61,14 +50,11 @@ export const Tabs: FC<TabsProps> = ({
 				onClick: (event) => {
 					event.preventDefault()
 					event.stopPropagation()
-					setActiveTabId(() => {
-						sessionWebStorage.setActiveTabId(pageName, tabId)
-						return tabId
-					})
+					setActiveTabId(tabId)
 				},
 				children: formatMessage({ id: `Tabs.${tabId}` })
 			})),
-		[activeTabId, pageName, formatMessage, setActiveTabId, tabs]
+		[activeTabId, formatMessage, setActiveTabId, tabs]
 	)
 
 	const tabContents = useMemo<ItemList<TabContentProps>>(

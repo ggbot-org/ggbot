@@ -12,7 +12,6 @@ import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorE
 import { UseActionError } from "_/hooks/useAction"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
 import { useUserApi } from "_/hooks/useUserApi"
-import { sessionWebStorage } from "_/storages/session"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -73,10 +72,6 @@ export const CreateStrategy: FC = () => {
 			CREATE.reset()
 		}
 	}, [CREATE])
-
-	useEffect(() => {
-		sessionWebStorage.setActiveTabId("Dashboard", "strategies")
-	}, [newStrategy])
 
 	return (
 		<Columns>

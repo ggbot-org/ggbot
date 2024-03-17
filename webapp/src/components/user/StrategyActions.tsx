@@ -1,4 +1,5 @@
 import { GoCopyStrategy } from "_/components/GoCopyStrategy"
+import { GoEditStrategy } from "_/components/GoEditStrategy"
 import { Box, Buttons, Title } from "_/components/library"
 import { ShareStrategy } from "_/components/ShareStrategy"
 import { StrategyRecord } from "_/components/StrategyRecord"
@@ -19,6 +20,8 @@ export const StrategyActions: FC = () => (
 			<RenameStrategy />
 
 			<ShareStrategy />
+
+			<GoEditStrategy />
 
 			<GoCopyStrategy />
 

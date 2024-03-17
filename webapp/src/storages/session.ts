@@ -1,6 +1,4 @@
 import { logging } from "_/logging"
-import { PageName } from "_/routing/pageNames"
-import { isLiteralType } from "minimal-type-guard-helpers"
 
 import { cachedBoolean, itemKey, WebStorageProvider } from "./WebStorage"
 
@@ -41,18 +39,6 @@ class SessionWebStorage {
 
 	clear() {
 		this.storage.clear()
-	}
-
-	getActiveTabId<TabId extends string>(
-		pageName: PageName,
-		tabIds: readonly TabId[]
-	): TabId | undefined {
-		const value = this.storage.getItem(itemKey.activeTabId(pageName))
-		if (isLiteralType<TabId>(tabIds)(value)) return value
-	}
-
-	setActiveTabId<TabId extends string>(pageName: PageName, value: TabId) {
-		this.storage.setItem(itemKey.activeTabId(pageName), value)
 	}
 }
 

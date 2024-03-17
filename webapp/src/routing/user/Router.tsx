@@ -3,6 +3,7 @@ import { BillingSettingsPage } from "_/pages/user/BillingSettings"
 import { BinanceSettingsPage } from "_/pages/user/BinanceSettings"
 import { CopyStrategyPage } from "_/pages/user/CopyStrategy"
 import { DashboardPage } from "_/pages/user/Dashboard"
+import { EditStrategyPage } from "_/pages/user/EditStrategy"
 import { PurchaseCanceledPage } from "_/pages/user/PurchaseCanceled"
 import { StrategyPage } from "_/pages/user/Strategy"
 import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
@@ -20,6 +21,9 @@ const Router: FC = () => {
 
 	if (pathname === webapp.user.copyStrategy(nullStrategyKey).pathname)
 		return <CopyStrategyPage />
+
+	if (pathname === webapp.user.editStrategy(nullStrategyKey).pathname)
+		return <EditStrategyPage />
 
 	if (pathname === webapp.user.strategy(nullStrategyKey).pathname)
 		return <StrategyPage />

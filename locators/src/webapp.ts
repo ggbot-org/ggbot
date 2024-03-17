@@ -31,7 +31,9 @@ export const webappPagePathname = {
 	},
 	user: {
 		copyStrategy: `${webappDirname.user}/copy-strategy.html`,
+		editStrategy: `${webappDirname.user}/edit-strategy.html`,
 		dashboard: `${webappDirname.user}/dashboard.html`,
+		flow: `${webappDirname.user}/dashboard.html`,
 		settings: {
 			account: `${webappDirname.user}/account-settings.html`,
 			billing: `${webappDirname.user}/billing-settings.html`,
@@ -129,6 +131,12 @@ export class WebappURLs {
 				return appendStrategyKeyToURLSearchParams(
 					strategyKey,
 					new URL(webappPagePathname.user.copyStrategy, baseURL)
+				)
+			},
+			editStrategy(strategyKey: StrategyKey) {
+				return appendStrategyKeyToURLSearchParams(
+					strategyKey,
+					new URL(webappPagePathname.user.editStrategy, baseURL)
 				)
 			},
 			strategy(strategyKey: StrategyKey) {

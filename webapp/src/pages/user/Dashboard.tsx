@@ -1,17 +1,12 @@
-import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
+import { TabId, Tabs } from "_/components/Tabs"
 import { CreateStrategy } from "_/components/user/CreateStrategy"
 import { PageContainer } from "_/components/user/PageContainer"
 import { Strategies, StrategiesProps } from "_/components/user/Strategies"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
-import { PageName } from "_/routing/pageNames"
 import { FC, useCallback, useState } from "react"
 
-const pageName: PageName = "Dashboard"
-
 export const DashboardPage: FC = () => {
-	const [activeTabId, setActiveTabId] = useState<TabId>(
-		getStoredTabId(pageName) ?? "strategies"
-	)
+	const [activeTabId, setActiveTabId] = useState<TabId>("strategies")
 
 	const goCreateStrategy = useCallback<StrategiesProps["goCreateStrategy"]>(
 		(event) => {
@@ -25,7 +20,6 @@ export const DashboardPage: FC = () => {
 		<PageContainer>
 			<StrategiesProvider>
 				<Tabs
-					pageName={pageName}
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
 					tabs={[

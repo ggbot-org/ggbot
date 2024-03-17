@@ -1,25 +1,19 @@
 import { Backtesting } from "_/components/Backtesting"
 import { PageContainer } from "_/components/PageContainer"
 import { ReadonlyFlow } from "_/components/ReadonlyFlow"
-import { getStoredTabId, TabId, Tabs } from "_/components/Tabs"
+import { TabId, Tabs } from "_/components/Tabs"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
-import { PageName } from "_/routing/pageNames"
 import { FC, useState } from "react"
 
-const pageName: PageName = "Strategy"
-
 export const StrategyPage: FC = () => {
-	const [activeTabId, setActiveTabId] = useState<TabId>(
-		getStoredTabId(pageName) ?? "flow"
-	)
+	const [activeTabId, setActiveTabId] = useState<TabId>("flow")
 
 	return (
 		<PageContainer>
 			<StrategyProvider>
 				<StrategyFlowProvider>
 					<Tabs
-						pageName={pageName}
 						activeTabId={activeTabId}
 						setActiveTabId={setActiveTabId}
 						tabs={[
