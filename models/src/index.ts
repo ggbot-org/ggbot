@@ -1,5 +1,10 @@
 export type { Account, AccountKey } from "./account.js"
-export { isAccountKey, isAdminAccount, newAccount } from "./account.js"
+export {
+	isAccountKey,
+	isAdminAccount,
+	newAccount,
+	nullAccountKey
+} from "./account.js"
 export type {
 	AccountDailyOrder,
 	AccountDailyOrdersKey
@@ -122,7 +127,8 @@ export {
 	isSubscriptionPlan,
 	PRO_FREQUENCY_INTERVALS,
 	shouldPurchaseSubscription,
-	statusOfSubscription} from "./subscription.js"
+	statusOfSubscription
+} from "./subscription.js"
 export type { SubscriptionPurchaseKey } from "./subscriptionPurchase.js"
 export {
 	isSubscriptionPurchaseKey,

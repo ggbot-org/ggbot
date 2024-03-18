@@ -2,7 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AllowedCountryIsoCode2, isAllowedCountryIsoCode2 } from "./country.js"
 import { EmailAddress, isEmailAddress } from "./email.js"
-import { isItemId, Item, ItemKey, newId, NewItem } from "./item.js"
+import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
 import { isName, Name, normalizeName } from "./name.js"
 import { createdNow, CreationTime, isCreationTime } from "./time.js"
 
@@ -51,3 +51,7 @@ export type AccountKey = ItemKey<{
 export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
 	isItemId(accountId)
 )
+
+export const nullAccountKey: AccountKey = {
+	accountId: nullId
+}

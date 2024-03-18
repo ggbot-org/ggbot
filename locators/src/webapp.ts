@@ -33,12 +33,7 @@ export const webappPagePathname = {
 		copyStrategy: `${webappDirname.user}/copy-strategy.html`,
 		editStrategy: `${webappDirname.user}/edit-strategy.html`,
 		dashboard: `${webappDirname.user}/dashboard.html`,
-		flow: `${webappDirname.user}/dashboard.html`,
-		settings: {
-			account: `${webappDirname.user}/account-settings.html`,
-			billing: `${webappDirname.user}/billing-settings.html`,
-			binance: `${webappDirname.user}/binance-settings.html`
-		},
+		settings: `${webappDirname.user}/settings.html`,
 		strategy: `${webappDirname.user}/strategy.html`
 	}
 } as const
@@ -138,6 +133,9 @@ export class WebappURLs {
 					strategyKey,
 					new URL(webappPagePathname.user.editStrategy, baseURL)
 				)
+			},
+			get settings() {
+				return new URL(webappPagePathname.user.settings, baseURL)
 			},
 			strategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
