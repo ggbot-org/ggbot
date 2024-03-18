@@ -68,7 +68,7 @@ export const PleasePurchase: FC = () => {
 				</Content>
 
 				<Buttons>
-					<GoSettings settingsPage="billing" />
+					<GoSettings />
 				</Buttons>
 			</Message>
 		</Modal>

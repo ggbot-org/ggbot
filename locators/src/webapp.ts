@@ -38,11 +38,6 @@ export const webappPagePathname = {
 	}
 } as const
 
-export const webappSettingsPageIds = Object.keys(
-	webappPagePathname.user.settings
-)
-export type WebappSettingsPageId = (typeof webappSettingsPageIds)[number]
-
 const appendAccountKeyToURLSearchParams = (
 	{ accountId }: AccountKey,
 	url: URL

@@ -20,6 +20,8 @@ const tabIds = [
 	"account",
 	"accounts",
 	"backtesting",
+	"billing",
+	"binance",
 	"errors",
 	"flow",
 	"manage",

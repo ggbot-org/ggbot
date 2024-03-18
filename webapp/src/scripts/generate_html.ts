@@ -2,13 +2,8 @@ import { join } from "node:path"
 
 import { adminHtmlPathnames } from "_/routing/admin/pages.js"
 import { designShowcaseHtmlPathname } from "_/routing/design/pages.js"
-import { settingsHtmlPathname } from "_/routing/user/pages.js"
 import { ENV } from "@workspace/env"
-import {
-	webappPagePathname,
-	webappSettingsPageIds,
-	WebappURLs
-} from "@workspace/locators"
+import { webappPagePathname, WebappURLs } from "@workspace/locators"
 import write from "write-file-utf8"
 
 import { publicDir, webappEcmaScriptsConfig } from "../package.js"
@@ -48,8 +43,8 @@ const userHtmlPathnames = [
 	webappPagePathname.user.dashboard,
 	webappPagePathname.user.copyStrategy,
 	webappPagePathname.user.editStrategy,
-	webappPagePathname.user.strategy,
-	...webappSettingsPageIds.map(settingsHtmlPathname)
+	webappPagePathname.user.settings,
+	webappPagePathname.user.strategy
 ]
 
 for (const pathname of userHtmlPathnames)

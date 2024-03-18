@@ -2,11 +2,11 @@
 	"AccountId.label": {
 		"defaultMessage": "Account ID"
 	},
+	"AccountInfo.title": {
+		"defaultMessage": "Account"
+	},
 	"AccountNotFound.title": {
 		"defaultMessage": "Account not found."
-	},
-	"AccountSettings.title": {
-		"defaultMessage": "Account"
 	},
 	"AdminNavigation.dashboard": {
 		"defaultMessage": "Accounts"
@@ -179,6 +179,9 @@
 	"DeleteAccount.consent": {
 		"defaultMessage": "I am aware of the consequences of my account deletion."
 	},
+	"DeleteAccount.accountIdInputHelp": {
+		"defaultMessage": "Type here your Account ID to proceed"
+	},
 	"DeleteAccount.question": {
 		"defaultMessage": "Are you sure you want to delete your account?"
 	},
@@ -198,7 +201,7 @@
 		"defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot?"
 	},
 	"DeleteBinanceApi.warning": {
-		"defaultMessage": "All your ggbot strategies will not able to be run"
+		"defaultMessage": "All your ggbot strategies will not able to be run!"
 	},
 	"DeleteBinanceApi.info": {
 		"defaultMessage": "This action will not delete your API key on Binance website."
@@ -583,6 +586,12 @@
 	},
 	"Tabs.backtesting": {
 		"defaultMessage": "Backtesting"
+	},
+	"Tabs.billing": {
+		"defaultMessage": "Billing"
+	},
+	"Tabs.binance": {
+		"defaultMessage": "Binance"
 	},
 	"Tabs.errors": {
 		"defaultMessage": "Errors"

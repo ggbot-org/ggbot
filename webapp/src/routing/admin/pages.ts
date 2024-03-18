@@ -1,3 +1,4 @@
+// TODO remove this file
 import { webappDirname } from "@workspace/locators"
 
 const { admin } = webappDirname

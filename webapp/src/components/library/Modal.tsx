@@ -7,12 +7,12 @@ import {
 	ModalContent
 } from "trunx"
 
-export type ModalProps = Partial<{
+type Props = Partial<{
 	isActive: boolean
 	setIsActive: (arg: boolean) => void
 }>
 
-export const Modal: FC<PropsWithChildren<ModalProps>> = ({
+export const Modal: FC<PropsWithChildren<Props>> = ({
 	children,
 	isActive,
 	setIsActive

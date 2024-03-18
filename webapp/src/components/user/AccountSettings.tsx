@@ -1,30 +1,16 @@
-import { AccountId } from "_/components/AccountId"
-import { Email } from "_/components/Email"
-import { Box, Title } from "_/components/library"
-import { SelectCountry } from "_/components/user/SelectCountry"
-import { WhenCreated } from "_/components/WhenCreated"
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { FC, useContext } from "react"
-import { FormattedMessage } from "react-intl"
+import { Columns, OneColumn } from "_/components/library"
+import { AccountInfo } from "_/components/user/AccountInfo"
+import { DeleteAccount } from "_/components/user/DeleteAccount"
+import { FC } from "react"
 
-export const AccountSettings: FC = () => {
-	const { accountWhenCreated, accountEmail, accountId } = useContext(
-		AuthenticationContext
-	)
+export const AccountSettings: FC = () => (
+	<>
+		<Columns>
+			<OneColumn>
+				<AccountInfo />
+			</OneColumn>
+		</Columns>
 
-	return (
-		<Box>
-			<Title>
-				<FormattedMessage id="AccountSettings.title" />
-			</Title>
-
-			<Email isStatic value={accountEmail} />
-
-			<SelectCountry />
-
-			<WhenCreated value={accountWhenCreated} />
-
-			<AccountId value={accountId} />
-		</Box>
-	)
-}
+		<DeleteAccount />
+	</>
+)

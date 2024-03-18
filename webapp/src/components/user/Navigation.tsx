@@ -1,82 +1,58 @@
 import { classNames } from "_/classNames"
 import {
 	Navbar,
-	NavbarDropdown,
 	NavbarEnd,
-	NavbarItem,
 	NavbarItemAnchor,
-	NavbarLink,
 	NavbarStart
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { href } from "_/routing/user/hrefs"
-import { WebappSettingsPageId as SettingsPageId } from "@workspace/locators"
-import { memo, useCallback, useContext } from "react"
+import { memo, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const Navigation = memo(() => {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
-	const goToAdminPage = () => {
-		if (window.location.href !== href.adminPage())
-			window.location.href = href.adminPage()
-	}
-
-	const goToDashboardPage = () => {
-		if (window.location.href !== href.dashboardPage())
-			window.location.href = href.dashboardPage()
-	}
-
-	const onClickExit = useCallback(() => {
-		showAuthExit()
-	}, [showAuthExit])
-
-	const goToSettings = useCallback(
-		(settingsPage: SettingsPageId) => () => {
-			window.location.href = href.settingsPage(settingsPage)
-		},
-		[]
-	)
-
 	return (
 		<Navbar>
 			<NavbarStart>
-				<NavbarItemAnchor onClick={goToDashboardPage}>
+				<NavbarItemAnchor
+					onClick={() => {
+						if (window.location.href !== href.dashboardPage())
+							window.location.href = href.dashboardPage()
+					}}
+				>
 					<FormattedMessage id="Navigation.dashboard" />
 				</NavbarItemAnchor>
 
-				<NavbarItem hasDropdown isHoverable>
-					<NavbarLink>
-						<FormattedMessage id="Navigation.settings" />
-					</NavbarLink>
-
-					<NavbarDropdown>
-						<NavbarItemAnchor onClick={goToSettings("account")}>
-							<FormattedMessage id="Navigation.account" />
-						</NavbarItemAnchor>
-
-						<NavbarItemAnchor onClick={goToSettings("binance")}>
-							<FormattedMessage id="Navigation.binance" />
-						</NavbarItemAnchor>
-
-						<NavbarItemAnchor onClick={goToSettings("billing")}>
-							<FormattedMessage id="Navigation.billing" />
-						</NavbarItemAnchor>
-					</NavbarDropdown>
-				</NavbarItem>
+				<NavbarItemAnchor
+					onClick={() => {
+						if (window.location.href !== href.settingsPage())
+							window.location.href = href.settingsPage()
+					}}
+				>
+					<FormattedMessage id="Navigation.settings" />
+				</NavbarItemAnchor>
 			</NavbarStart>
 
 			<NavbarEnd>
 				{accountIsAdmin ? (
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
-						onClick={goToAdminPage}
+						onClick={() => {
+							if (window.location.href !== href.adminPage())
+								window.location.href = href.adminPage()
+						}}
 					>
 						<FormattedMessage id="Navigation.admin" />
 					</NavbarItemAnchor>
 				) : null}
 
-				<NavbarItemAnchor onClick={onClickExit}>
+				<NavbarItemAnchor
+					onClick={() => {
+						showAuthExit()
+					}}
+				>
 					<FormattedMessage id="Navigation.exit" />
 				</NavbarItemAnchor>
 			</NavbarEnd>

@@ -14,7 +14,7 @@ export const Account: FC = () => {
 	return (
 		<Box>
 			<Title>
-				<FormattedMessage id="AccountSettings.title" />
+				<FormattedMessage id="AccountInfo.title" />
 			</Title>
 
 			<Email isStatic value={account.email} />

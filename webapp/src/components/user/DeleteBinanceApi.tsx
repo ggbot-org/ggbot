@@ -42,7 +42,7 @@ export const DeleteBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 
 	return (
 		<>
-			<Button color={color} onClick={toggleModal}>
+			<Button isOutlined color={color} onClick={toggleModal}>
 				<FormattedMessage id="DeleteBinanceApi.button" />
 			</Button>
 
