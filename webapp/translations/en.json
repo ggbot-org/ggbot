@@ -23,6 +23,9 @@
 	"AuthEnter.info": {
 		"defaultMessage": "Use your email to access ggbot."
 	},
+	"AuthEnter.termsAndPolicy": {
+		"defaultMessage": "I accept {terms} and {policy}"
+	},
 	"AuthEnter.title": {
 		"defaultMessage": "Enter ggbot"
 	},
@@ -255,7 +258,7 @@
 		"defaultMessage": "Copy"
 	},
 	"GoEditStrategy.label": {
-		"defaultMessage": "Edit"
+		"defaultMessage": "Flow"
 	},
 	"GoSettings.label": {
 		"defaultMessage": "Go to Settings"

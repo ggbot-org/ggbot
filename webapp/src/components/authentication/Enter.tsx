@@ -2,6 +2,7 @@ import { Email } from "_/components/Email"
 import { GenericError } from "_/components/GenericError"
 import {
 	Button,
+	Checkbox,
 	Column,
 	Columns,
 	Control,
@@ -12,6 +13,7 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
+import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { TimeoutError } from "_/components/TimeoutError"
 import { auth } from "_/routing/auth"
 import {
@@ -20,8 +22,17 @@ import {
 } from "@workspace/api"
 import { EmailAddress, isEmailAddress } from "@workspace/models"
 import { isMaybeObject } from "minimal-type-guard-helpers"
-import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react"
-import { FormattedMessage } from "react-intl"
+import {
+	ChangeEventHandler,
+	FC,
+	FormEventHandler,
+	InputHTMLAttributes,
+	Reducer,
+	useCallback,
+	useReducer,
+	useState
+} from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 export type AuthEnterProps = {
 	setEmail: (email: EmailAddress) => void
@@ -40,6 +51,8 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
+	const { formatMessage } = useIntl()
+
 	const [
 		{ gotTimeout, hasGenericError, hasInvalidInput, isPending },
 		dispatch
@@ -59,6 +72,20 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 			return { hasInvalidInput: true }
 		return state
 	}, {})
+
+	const [termsAndPolicyAccepted, setTermsAndPolicyAccepted] = useState<
+		boolean | undefined
+	>()
+
+	const disabled = !termsAndPolicyAccepted
+
+	const onChangeTermsAndPolicyAccepted = useCallback<
+		ChangeEventHandler<HTMLInputElement>
+	>((event) => {
+		const { checked } =
+			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+		setTermsAndPolicyAccepted(checked)
+	}, [])
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		async (event) => {
@@ -146,13 +173,39 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 					</Column>
 				</Columns>
 
+				<Field>
+					<Control>
+						<Checkbox
+							color="primary"
+							checked={termsAndPolicyAccepted}
+							onChange={onChangeTermsAndPolicyAccepted}
+						>
+							<FormattedMessage
+								id="AuthEnter.termsAndPolicy"
+								values={{
+									terms: formatMessage({ id: "Terms.title" }),
+									policy: formatMessage({
+										id: "Privacy.title"
+									})
+								}}
+							/>
+						</Checkbox>
+					</Control>
+				</Field>
+
 				<Field isGrouped>
 					<Control>
-						<Button color="primary" isLoading={isPending}>
+						<Button
+							disabled={disabled}
+							color={disabled ? undefined : "primary"}
+							isLoading={isPending}
+						>
 							<FormattedMessage id="AuthEnter.button" />
 						</Button>
 					</Control>
 				</Field>
+
+				<TermsAndPolicyLinks />
 
 				<>
 					{hasGenericError || (hasInvalidInput && <GenericError />)}

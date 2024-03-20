@@ -205,7 +205,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Go to Homepage on exit.
 	useEffect(() => {
-		if (exited) window.location.href = "/"
+		if (exited) location.href = "/"
 	}, [exited])
 
 	useEffect(() => {
@@ -216,9 +216,9 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, [exit])
 
 	useEffect(() => {
-		window.addEventListener("storage", onLocalStorageChange)
+		addEventListener("storage", onLocalStorageChange)
 		return () => {
-			window.removeEventListener("storage", onLocalStorageChange)
+			removeEventListener("storage", onLocalStorageChange)
 		}
 	}, [onLocalStorageChange])
 

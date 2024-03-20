@@ -14,6 +14,7 @@
 // 3. then bulma modules;
 @import "bulma/bulma";
 // 4. and finally the overrides.
+@import "./bulma/overrides/a";
 @import "./bulma/overrides/button";
 @import "./bulma/overrides/checkbox";
 @import "./bulma/overrides/tabs";
