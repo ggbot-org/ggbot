@@ -1,4 +1,4 @@
-import { Container, Content, Section, Title } from "_/components/library"
+import { Container, Content, H1, H2, Section } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
@@ -8,9 +8,9 @@ export const PrivacyPage: FC = () => (
 		<Container>
 			<Content>
 				<Section>
-					<Title>
+					<H1>
 						<FormattedMessage id="Privacy.title" />
-					</Title>
+					</H1>
 
 					<p>
 						<FormattedMessage
@@ -21,9 +21,9 @@ export const PrivacyPage: FC = () => (
 						/>
 					</p>
 
-					<h2>
+					<H2>
 						<FormattedMessage id="Privacy.personalData" />
-					</h2>
+					</H2>
 
 					<p>
 						<FormattedMessage

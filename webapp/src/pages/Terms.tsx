@@ -1,4 +1,4 @@
-import { Container, Content, Section, Title } from "_/components/library"
+import { Container, Content, H1, H2, Section } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { webapp } from "_/routing/webapp"
 import { FC } from "react"
@@ -9,9 +9,9 @@ export const TermsPage: FC = () => (
 		<Container>
 			<Section>
 				<Content>
-					<Title>
+					<H1>
 						<FormattedMessage id="Terms.title" />
-					</Title>
+					</H1>
 
 					<p>
 						<FormattedMessage
@@ -22,9 +22,9 @@ export const TermsPage: FC = () => (
 						/>
 					</p>
 
-					<h2>
+					<H2>
 						<FormattedMessage id="Terms.access" />
-					</h2>
+					</H2>
 
 					<p>
 						<FormattedMessage
@@ -35,9 +35,9 @@ export const TermsPage: FC = () => (
 						/>
 					</p>
 
-					<h2>
+					<H2>
 						<FormattedMessage id="Terms.binance" />
-					</h2>
+					</H2>
 
 					<p>
 						<FormattedMessage
@@ -58,17 +58,17 @@ export const TermsPage: FC = () => (
 						/>
 					</p>
 
-					<h2>
+					<H2>
 						<FormattedMessage id="Terms.pricing" />
-					</h2>
+					</H2>
 
 					<p>
 						<FormattedMessage id="Terms.pricingVat" />
 					</p>
 
-					<h2>
+					<H2>
 						<FormattedMessage id="Privacy.title" />
-					</h2>
+					</H2>
 
 					<p>
 						<FormattedMessage
