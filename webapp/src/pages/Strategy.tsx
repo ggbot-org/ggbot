@@ -1,13 +1,13 @@
 import { Backtesting } from "_/components/Backtesting"
 import { PageContainer } from "_/components/PageContainer"
-import { ReadonlyFlow } from "_/components/ReadonlyFlow"
+import { StrategyActions } from "_/components/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
 import { FC, useState } from "react"
 
 export const StrategyPage: FC = () => {
-	const [activeTabId, setActiveTabId] = useState<TabId>("flow")
+	const [activeTabId, setActiveTabId] = useState<TabId>("info")
 
 	return (
 		<PageContainer>
@@ -18,12 +18,12 @@ export const StrategyPage: FC = () => {
 						setActiveTabId={setActiveTabId}
 						tabs={[
 							{
-								tabId: "backtesting",
-								content: <Backtesting />
+								tabId: "info",
+								content: <StrategyActions readOnly />
 							},
 							{
-								tabId: "flow",
-								content: <ReadonlyFlow />
+								tabId: "backtesting",
+								content: <Backtesting />
 							}
 						]}
 					/>

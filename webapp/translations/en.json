@@ -608,6 +608,9 @@
 	"Tabs.flow": {
 		"defaultMessage": "Flow"
 	},
+	"Tabs.info": {
+		"defaultMessage": "Info"
+	},
 	"Tabs.manage": {
 		"defaultMessage": "Manage"
 	},

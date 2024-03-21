@@ -1,15 +1,10 @@
-import { Columns, OneColumn } from "_/components/library"
+import { StrategyActions } from "_/components/StrategyActions"
 import { Schedulings } from "_/components/user/Schedulings"
-import { StrategyActions } from "_/components/user/StrategyActions"
 import { FC } from "react"
 
 export const ManageStrategy: FC = () => (
 	<>
-		<Columns>
-			<OneColumn>
-				<StrategyActions />
-			</OneColumn>
-		</Columns>
+		<StrategyActions readOnly={false} />
 
 		<Schedulings />
 	</>

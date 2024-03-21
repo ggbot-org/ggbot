@@ -24,6 +24,7 @@ const tabIds = [
 	"binance",
 	"errors",
 	"flow",
+	"info",
 	"manage",
 	"newStrategy",
 	"profits",
