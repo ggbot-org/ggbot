@@ -4,29 +4,19 @@ import { dayFormat, timeFormat } from "_/i18n/formats"
 import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export type BacktestingProgressProps = Pick<UseBacktestingOutput, "hasFlow"> &
-	Pick<UseBacktestingOutput["state"], "currentTimestamp" | "dayInterval"> & {
-		progress: Pick<ProgressProps, "value" | "max">
-	}
+export type BacktestingProgressProps = Pick<
+	UseBacktestingOutput["state"],
+	"currentTimestamp" | "dayInterval"
+> & {
+	progress: Pick<ProgressProps, "value" | "max">
+}
 
 export const BacktestingProgress: FC<BacktestingProgressProps> = ({
 	dayInterval,
-	hasFlow,
 	progress,
 	currentTimestamp
 }) => {
 	const { formatDate } = useIntl()
-
-	if (!hasFlow)
-		return (
-			<Box>
-				<Title>
-					<FormattedMessage id="BacktestingProgress.title" />
-				</Title>
-
-				<Progress />
-			</Box>
-		)
 
 	return (
 		<Box>

@@ -5,7 +5,6 @@ import { PleasePurchase } from "_/components/user/PleasePurchase"
 import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
 import { StrategyProvider } from "_/contexts/Strategy"
-import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
 import { ManageStrategyProvider } from "_/contexts/user/ManageStrategy"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
 import { FC, useState } from "react"
@@ -17,30 +16,28 @@ export const StrategyPage: FC = () => {
 		<PageContainer>
 			<StrategiesProvider>
 				<StrategyProvider>
-					<StrategyFlowProvider>
-						<ManageStrategyProvider>
-							<Tabs
-								activeTabId={activeTabId}
-								setActiveTabId={setActiveTabId}
-								tabs={[
-									{
-										tabId: "manage",
-										content: <ManageStrategy />
-									},
-									{
-										tabId: "profits",
-										content: <StrategyProfits />
-									},
-									{
-										tabId: "errors",
-										content: <StrategyErrors />
-									}
-								]}
-							/>
+					<ManageStrategyProvider>
+						<Tabs
+							activeTabId={activeTabId}
+							setActiveTabId={setActiveTabId}
+							tabs={[
+								{
+									tabId: "manage",
+									content: <ManageStrategy />
+								},
+								{
+									tabId: "profits",
+									content: <StrategyProfits />
+								},
+								{
+									tabId: "errors",
+									content: <StrategyErrors />
+								}
+							]}
+						/>
 
-							<PleasePurchase />
-						</ManageStrategyProvider>
-					</StrategyFlowProvider>
+						<PleasePurchase />
+					</ManageStrategyProvider>
 				</StrategyProvider>
 			</StrategiesProvider>
 		</PageContainer>

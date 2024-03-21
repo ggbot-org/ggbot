@@ -24,13 +24,7 @@ import {
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-export type UseFlowViewArg = {
-	container: FlowViewContainerElement
-	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined
-	strategyKind?: StrategyKind
-}
-
-export type UseFlowViewOutput = {
+type UseFlowViewOutput = {
 	whenUpdatedFlowView: Time | undefined
 	flowViewGraph: FlowViewSerializableGraph | undefined
 }
@@ -44,11 +38,15 @@ class BinanceClient
 	}
 }
 
-export const useFlowView: (arg: UseFlowViewArg) => UseFlowViewOutput = ({
+export const useFlowView = ({
 	container,
 	initialFlowViewGraph,
 	strategyKind
-}) => {
+}: {
+	container: FlowViewContainerElement
+	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined
+	strategyKind?: StrategyKind
+}): UseFlowViewOutput => {
 	const [output, setOutput] = useState<UseFlowViewOutput>({
 		whenUpdatedFlowView: undefined,
 		flowViewGraph: undefined

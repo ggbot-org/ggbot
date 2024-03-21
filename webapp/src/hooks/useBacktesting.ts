@@ -1,4 +1,3 @@
-import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { logging } from "_/logging"
 import { workerScriptPath } from "_/workers"
 import {
@@ -8,7 +7,7 @@ import {
 } from "@workspace/backtesting"
 import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
-import { Dispatch, Reducer, useContext, useEffect, useReducer } from "react"
+import { Dispatch, Reducer, useEffect, useReducer } from "react"
 
 type Action =
 	| BacktestingMessageInData
@@ -37,7 +36,6 @@ type State = Pick<
 export type UseBacktestingOutput = {
 	state: State
 	dispatch: Dispatch<Action>
-	hasFlow: boolean
 }
 
 const { info, warn } = logging("useBacktesting")
@@ -88,10 +86,6 @@ const initializer = ({
 })
 
 export const useBacktesting = (): UseBacktestingOutput => {
-	const { flowViewGraph } = useContext(StrategyFlowContext)
-
-	const hasFlow = Boolean(flowViewGraph)
-
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
 			const { type: actionType } = action
@@ -208,5 +202,5 @@ export const useBacktesting = (): UseBacktestingOutput => {
 		}
 	}, [dispatch])
 
-	return { hasFlow, dispatch, state }
+	return { dispatch, state }
 }

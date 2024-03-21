@@ -23,9 +23,9 @@ import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { StrategyContext } from "_/contexts/Strategy"
-import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
+import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { isFrequency } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -42,13 +42,15 @@ import { classNames } from "trunx"
 export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { flowViewGraph } = useContext(StrategyFlowContext)
 	const { strategy, strategyKey, strategyKind, strategyName } =
 		useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
 
+	const { flowViewGraph } = useStrategyFlow(strategyKey)
+
+	const hasFlow = Boolean(flowViewGraph)
+
 	const {
-		hasFlow,
 		dispatch,
 		state: {
 			afterStepBehaviour,
@@ -243,7 +245,7 @@ export const Backtesting: FC = () => {
 						</Field>
 
 						<BacktestingActions
-							hasFlow={hasFlow}
+							canStart={hasFlow}
 							isPaused={isPaused}
 							isRunning={isRunning}
 							onClickPause={onClickPause}
@@ -257,7 +259,6 @@ export const Backtesting: FC = () => {
 				<Column size={{ tablet: "half", fullhd: "one-third" }}>
 					<BacktestingProgress
 						dayInterval={dayInterval}
-						hasFlow={hasFlow}
 						progress={progress}
 						currentTimestamp={currentTimestamp}
 					/>

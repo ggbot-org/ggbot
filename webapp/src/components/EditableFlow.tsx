@@ -1,22 +1,32 @@
 import { FlowMenu } from "_/components/FlowMenu"
-import { FlowViewContainer } from "_/components/FlowViewContainer"
+import {
+	FlowViewContainer,
+	FlowViewContainerElement
+} from "_/components/FlowViewContainer"
 import { Button } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
-import { StrategyFlowContext } from "_/contexts/StrategyFlow"
+import { useFlowView } from "_/hooks/useFlowView"
+import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const EditableFlow: FC = () => {
-	const { flowViewContainerRef, flowViewGraph, whenUpdatedFlowView } =
-		useContext(StrategyFlowContext)
-	const { strategyKey } = useContext(StrategyContext)
+	const { strategyKey, strategyKind } = useContext(StrategyContext)
+
+	const { flowViewGraph: initialFlowViewGraph } = useStrategyFlow(strategyKey)
+
+	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
+
+	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
+		container: flowViewContainerRef.current,
+		initialFlowViewGraph,
+		strategyKind
+	})
 
 	const [canSave, setCanSave] = useState(false)
 
 	const WRITE = useUserApi.WriteStrategyFlow()
-
-	const saveIsPending = WRITE.isPending
 
 	const onClickSave = useCallback(() => {
 		if (!strategyKey) return
@@ -45,7 +55,7 @@ export const EditableFlow: FC = () => {
 			<FlowMenu>
 				<Button
 					color={canSave ? "primary" : undefined}
-					isLoading={saveIsPending}
+					isLoading={WRITE.isPending}
 					onClick={onClickSave}
 				>
 					<FormattedMessage id="EditableFlow.save" />

@@ -18,10 +18,10 @@ import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
-import { StrategyFlowContext } from "_/contexts/StrategyFlow"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
+import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
@@ -34,7 +34,8 @@ import {
 	newStrategyScheduling,
 	PRO_FREQUENCY_INTERVALS,
 	StrategyParameters,
-	StrategyScheduling} from "@workspace/models"
+	StrategyScheduling
+} from "@workspace/models"
 import {
 	FC,
 	MouseEventHandler,
@@ -52,7 +53,7 @@ export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
 	const { strategyId, strategyKey } = useContext(StrategyContext)
-	const { flowViewGraph } = useContext(StrategyFlowContext)
+	const { flowViewGraph } = useStrategyFlow(strategyKey)
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const {
 		accountStrategies,

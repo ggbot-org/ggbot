@@ -39,17 +39,16 @@ const StopButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-type Props = Pick<UseBacktestingOutput, "hasFlow"> &
-	Pick<UseBacktestingOutput["state"], "isPaused" | "isRunning"> &
-	Partial<{ disabled: boolean }> & {
-		onClickPause: ButtonProps["onClick"]
-		onClickResume: ButtonProps["onClick"]
-		onClickStart: ButtonProps["onClick"]
-		onClickStop: ButtonProps["onClick"]
-	}
+type Props = Pick<UseBacktestingOutput["state"], "isPaused" | "isRunning"> & {
+	canStart: boolean
+	onClickPause: ButtonProps["onClick"]
+	onClickResume: ButtonProps["onClick"]
+	onClickStart: ButtonProps["onClick"]
+	onClickStop: ButtonProps["onClick"]
+}
 
 export const BacktestingActions: FC<Props> = ({
-	hasFlow,
+	canStart,
 	isPaused,
 	isRunning,
 	onClickPause,
@@ -75,5 +74,5 @@ export const BacktestingActions: FC<Props> = ({
 			</Buttons>
 		)
 
-	return <StartButton onClick={onClickStart} disabled={!hasFlow} />
+	return <StartButton onClick={onClickStart} disabled={!canStart} />
 }

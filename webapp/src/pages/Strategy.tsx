@@ -3,7 +3,6 @@ import { PageContainer } from "_/components/PageContainer"
 import { StrategyActions } from "_/components/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
 import { StrategyProvider } from "_/contexts/Strategy"
-import { StrategyFlowProvider } from "_/contexts/StrategyFlow"
 import { FC, useState } from "react"
 
 export const StrategyPage: FC = () => {
@@ -12,22 +11,20 @@ export const StrategyPage: FC = () => {
 	return (
 		<PageContainer>
 			<StrategyProvider>
-				<StrategyFlowProvider>
-					<Tabs
-						activeTabId={activeTabId}
-						setActiveTabId={setActiveTabId}
-						tabs={[
-							{
-								tabId: "info",
-								content: <StrategyActions readOnly />
-							},
-							{
-								tabId: "backtesting",
-								content: <Backtesting />
-							}
-						]}
-					/>
-				</StrategyFlowProvider>
+				<Tabs
+					activeTabId={activeTabId}
+					setActiveTabId={setActiveTabId}
+					tabs={[
+						{
+							tabId: "info",
+							content: <StrategyActions readOnly />
+						},
+						{
+							tabId: "backtesting",
+							content: <Backtesting />
+						}
+					]}
+				/>
 			</StrategyProvider>
 		</PageContainer>
 	)
