@@ -464,6 +464,12 @@
 	"SelectCountry.noValue": {
 		"defaultMessage": "-- Select country --"
 	},
+	"SocialLinks.telegramSupport": {
+		"defaultMessage": "Telegram support group"
+	},
+	"SocialLinks.githubOrganizaton": {
+		"defaultMessage": "Github organization"
+	},
 	"ShareStrategy.label": {
 		"defaultMessage": "Share"
 	},
