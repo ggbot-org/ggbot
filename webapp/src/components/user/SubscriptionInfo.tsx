@@ -1,4 +1,11 @@
-import { Box, Control, Field, Title } from "_/components/library"
+import {
+	Box,
+	Columns,
+	Control,
+	Field,
+	OneColumn,
+	Title
+} from "_/components/library"
 import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
 import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
@@ -17,22 +24,28 @@ export const SubscriptionInfo: FC = () => {
 	if (!hasActiveSubscription) return null
 
 	return (
-		<Box>
-			<Title>
-				<FormattedMessage id="SubscriptionInfo.title" />
-			</Title>
+		<Columns>
+			<OneColumn>
+				<Box>
+					<Title>
+						<FormattedMessage id="SubscriptionInfo.title" />
+					</Title>
 
-			<Field>
-				<Control>
-					{subscriptionStatus ? (
-						<SubscriptionStatus status={subscriptionStatus} />
-					) : null}
-				</Control>
-			</Field>
+					<Field>
+						<Control>
+							{subscriptionStatus ? (
+								<SubscriptionStatus
+									status={subscriptionStatus}
+								/>
+							) : null}
+						</Control>
+					</Field>
 
-			<SubscriptionPlan isStatic value={subscriptionPlan} />
+					<SubscriptionPlan isStatic value={subscriptionPlan} />
 
-			<SubscriptionEnd isStatic value={subscriptionEnd} />
-		</Box>
+					<SubscriptionEnd isStatic value={subscriptionEnd} />
+				</Box>
+			</OneColumn>
+		</Columns>
 	)
 }

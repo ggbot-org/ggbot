@@ -5,6 +5,10 @@ import { newStripe } from "./newStripe.js"
 export class StripeClient {
 	private stripe = newStripe()
 
+	/**
+	 * Call `stripe.webhooks.constructEvent()` adding `STRIPE_WEBHOOK_SECRET`
+	 * from environment.
+	 */
 	getWebhookEvent(
 		/** Raw text body payload received from Stripe. */
 		payload: string,

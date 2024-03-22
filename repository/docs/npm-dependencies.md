@@ -47,8 +47,6 @@ graph LR
     workspace/email-messages --- workspace/aws-ses
     workspace/email-messages --- workspace/env
     workspace/email-messages --- workspace/locators
-    workspace/end-to-end-tests --- workspace/env
-    workspace/end-to-end-tests --- workspace/locators
     workspace/env --- workspace/models
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database

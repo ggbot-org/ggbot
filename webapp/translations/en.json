@@ -564,7 +564,7 @@
 		"defaultMessage": "Monthly subscription ({numMonths, plural, =1 {# month} other {# months}})"
 	},
 	"SubscriptionPurchase.yearlyItemName": {
-		"defaultMessage": "One year subscription"
+		"defaultMessage": "One year subscription 🎉"
 	},
 	"SubscriptionPurchase.hint": {
 		"defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."

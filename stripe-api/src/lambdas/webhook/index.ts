@@ -14,7 +14,7 @@ import {
 	StripeSignatureVerificationError
 } from "@workspace/stripe"
 
-const { info, warn } = logging("stripe-api")
+const { info, debug } = logging("stripe-api")
 
 const stripe = new StripeClient()
 
@@ -42,6 +42,9 @@ export const handler: APIGatewayProxyHandler = (event) => {
 		info(stripeEvent)
 
 		if (stripeEvent.type === "payment_intent.succeeded") {
+			if (stripeEvent.data.object.status === "succeeded") {
+				return OK(received)
+			}
 			return OK(received)
 		}
 
@@ -51,7 +54,7 @@ export const handler: APIGatewayProxyHandler = (event) => {
 			return errorResponse(BAD_REQUEST__400)
 
 		// Fallback to print error if not handled.
-		warn(error)
+		debug(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }

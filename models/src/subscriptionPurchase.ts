@@ -22,9 +22,10 @@ import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
 import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js"
 
-export const monthlyPrice = 10
+export const monthlyPrice = 2
 export const purchaseCurrency: Currency = "EUR"
 export const purchaseDefaultNumMonths = 6
+
 /**
  * Maximum number of purchase months.
  *
@@ -32,6 +33,7 @@ export const purchaseDefaultNumMonths = 6
  * purchase may be blocked if the user needs to update its API settings.
  */
 export const purchaseMaxNumMonths = 12
+
 /** Minimum number of purchase months. */
 export const purchaseMinNumMonths = 1
 

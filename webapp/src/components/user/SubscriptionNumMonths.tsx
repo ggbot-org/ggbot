@@ -17,10 +17,12 @@ type Props = Omit<
 	InputFieldProps,
 	"label" | "min" | "max" | "onChange" | "step" | "type"
 > & {
+	isYearlyPurchase: boolean | undefined
 	setValue: Dispatch<SetStateAction<number | undefined>>
 }
 
 export const SubscriptionNumMonths: FC<Props> = ({
+	isYearlyPurchase,
 	setValue,
 	value,
 	...props
@@ -46,6 +48,7 @@ export const SubscriptionNumMonths: FC<Props> = ({
 	return (
 		<InputField
 			label={formatMessage({ id: "SubscriptionNumMonths.label" })}
+			color={isYearlyPurchase ? "primary" : undefined}
 			onChange={onChange}
 			min={min}
 			max={max}

@@ -2,10 +2,8 @@ import { Email } from "_/components/Email"
 import {
 	Button,
 	Buttons,
-	Checkmark,
 	Column,
 	Columns,
-	Flex,
 	Form,
 	formValues,
 	Message,
@@ -136,70 +134,76 @@ export const SubscriptionPurchase: FC = () => {
 		return null
 
 	return (
-		<Form box onSubmit={onSubmit}>
-			<Title>
-				<FormattedMessage id="SubscriptionPurchase.title" />
-			</Title>
+		<Columns>
+			<Column isNarrow>
+				<Form box onSubmit={onSubmit}>
+					<Title>
+						<FormattedMessage id="SubscriptionPurchase.title" />
+					</Title>
 
-			{hasActiveSubscription ? (
-				<Message color="danger">
-					<FormattedMessage id="SubscriptionPurchase.couldRenew" />
-				</Message>
-			) : (
-				<Message color="info">
-					<FormattedMessage id="SubscriptionPurchase.pleasePurchase" />
-				</Message>
-			)}
+					<Title size={5}>{itemName}</Title>
 
-			<Message>
-				<p>
-					<FormattedMessage
-						id="SubscriptionPurchase.oneMonthPrice"
-						values={{ price: formattedMonthlyPrice }}
-					/>
-				</p>
+					{hasActiveSubscription ? (
+						<Message color="danger">
+							<FormattedMessage id="SubscriptionPurchase.couldRenew" />
+						</Message>
+					) : (
+						<Message color="info">
+							<FormattedMessage id="SubscriptionPurchase.pleasePurchase" />
+						</Message>
+					)}
 
-				<Flex>
-					<span>
+					<Message>
+						<FormattedMessage
+							id="SubscriptionPurchase.oneMonthPrice"
+							values={{ price: formattedMonthlyPrice }}
+						/>
+
+						<br />
+
 						<FormattedMessage
 							id="SubscriptionPurchase.hint"
 							values={{
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
-					</span>
+					</Message>
 
-					<Checkmark ok={isYearlyPurchase || undefined} />
-				</Flex>
-			</Message>
+					<Columns isMobile>
+						<Column isNarrow>
+							<SubscriptionNumMonths
+								name={fieldName.numMonths}
+								isYearlyPurchase={isYearlyPurchase}
+								setValue={setNumMonths}
+								value={numMonths}
+							/>
+						</Column>
 
-			<Email isStatic value={accountEmail} />
+						<Column>
+							<SubscriptionEnd
+								isStatic
+								value={newSubscriptionEnd}
+							/>
+						</Column>
+					</Columns>
 
-			<SelectCountry name={fieldName.country} />
+					<Email isStatic value={accountEmail} />
 
-			<Columns>
-				<Column isNarrow>
-					<SubscriptionNumMonths
-						name={fieldName.numMonths}
-						setValue={setNumMonths}
-						value={numMonths}
-					/>
-				</Column>
+					<SelectCountry name={fieldName.country} />
 
-				<Column>
-					<SubscriptionEnd isStatic value={newSubscriptionEnd} />
-				</Column>
-			</Columns>
+					<SubscriptionTotalPrice numMonths={numMonths} />
 
-			<SubscriptionTotalPrice numMonths={numMonths} />
-
-			<Title size={5}>{itemName}</Title>
-
-			<Buttons>
-				<Button color="primary" isLoading={isLoading}>
-					<FormattedMessage id="SubscriptionPurchase.button" />
-				</Button>
-			</Buttons>
-		</Form>
+					<Buttons>
+						<Button
+							color="primary"
+							isOutlined={!isYearlyPurchase}
+							isLoading={isLoading}
+						>
+							<FormattedMessage id="SubscriptionPurchase.button" />
+						</Button>
+					</Buttons>
+				</Form>
+			</Column>
+		</Columns>
 	)
 }
