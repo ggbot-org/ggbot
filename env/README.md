@@ -12,7 +12,7 @@ The following environment variables are used:
 -   `DEPLOY_STAGE`: can be `main`, `next` or `local`.
 -   `DNS_DOMAIN`: _example.com_.
 -   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
--   `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`: used by Strupe APIs for payments.
+-   `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PLAN_BASIC_PRICE_ID`: used by Stripe APIs for payments.
 
 Optional environment variables needed to launch [binance-client end to end tests](../binance-client/docs/end-to-end-tests.md).
 
@@ -46,6 +46,7 @@ export BINANCE_PROXY_IP=1.2.3.4
 
 export STRIPE_SECRET_KEY=xxx
 export STRIPE_WEBHOOK_SECRET=xxx
+export STRIPE_PLAN_BASIC_PRICE_ID=xxx
 
 export BINANCE_API_KEY=xxx
 export BINANCE_API_SECRET=xxx

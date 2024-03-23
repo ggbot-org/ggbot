@@ -16,6 +16,7 @@ import {
 
 const { info, debug } = logging("stripe-api")
 
+// TODO use service pattern like other APIs, this file should only implement the bare handler
 const stripe = new StripeClient()
 
 type ResponseData = {

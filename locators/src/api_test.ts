@@ -15,5 +15,9 @@ void test("apiURLs", () => {
 		api.stripe.webhook.href,
 		"https://api.example.com/stripe/webhook"
 	)
+	assert.equal(
+		api.stripe.action.href,
+		"https://api.example.com/stripe/action"
+	)
 	assert.equal(api.user.action.href, "https://api.example.com/user/action")
 })

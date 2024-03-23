@@ -72,6 +72,12 @@ export type {
 } from "./public.js"
 export { isPublicActionInput, publicActions } from "./public.js"
 export type {
+	StripeClientActionInput,
+	StripeClientActionOutput,
+	StripeClientActionType
+} from "./stripe.js"
+export { isStripeClientActionInput, stripeClientActions } from "./stripe.js"
+export type {
 	UserClientActionInput,
 	UserClientActionOutput,
 	UserClientActionType,

@@ -23,6 +23,7 @@ export const useUserApi = {
 			Input["CreateBinanceApiConfig"],
 			Output["CreateBinanceApiConfig"]
 		>(apiOptions, "CreateBinanceApiConfig"),
+	// TODO remove this, instead of CreatePurchaseOrder use stripe API hook
 	CreatePurchaseOrder: () =>
 		useAction<
 			ActionType,

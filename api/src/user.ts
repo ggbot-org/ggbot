@@ -210,6 +210,7 @@ export const isUserClientActionInput = {
 	CreateBinanceApiConfig: objectTypeGuard<
 		UserClientActionInput["CreateBinanceApiConfig"]
 	>((binanceApiConfig) => isBinanceApiConfig(binanceApiConfig)),
+	// TODO CreatePurchaseOrder is not a user client action
 	CreatePurchaseOrder: objectTypeGuard<
 		UserClientActionInput["CreatePurchaseOrder"]
 	>(

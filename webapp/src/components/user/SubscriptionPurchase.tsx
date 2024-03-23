@@ -17,6 +17,7 @@ import {
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
+import { useStripeApi } from "_/hooks/useStripeApi"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
@@ -56,9 +57,11 @@ export const SubscriptionPurchase: FC = () => {
 		defaultNumMonths
 	)
 
+	const CREATE_CHECKOUT = useStripeApi.CreateCheckoutSession()
+	const isLoading = CREATE_CHECKOUT.isPending
+	const data = CREATE_CHECKOUT.data
+
 	const CREATE_ORDER = useUserApi.CreatePurchaseOrder()
-	const isLoading = CREATE_ORDER.isPending
-	const data = CREATE_ORDER.data
 
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
 	if (isNaturalNumber(numMonths)) {
@@ -128,6 +131,8 @@ export const SubscriptionPurchase: FC = () => {
 
 	useEffect(() => {
 		if (!data) return
+		// @ts-expect-error
+		location.replace(data.url)
 	}, [data])
 
 	if (canPurchaseSubscription === undefined || !canPurchaseSubscription)
