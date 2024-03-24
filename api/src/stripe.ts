@@ -1,4 +1,9 @@
-import { isNaturalNumber, NaturalNumber } from "@workspace/models"
+import {
+	isNaturalNumber,
+	isSubscriptionPlan,
+	NaturalNumber,
+	SubscriptionPlan
+} from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ActionTypes } from "./action.js"
@@ -6,10 +11,11 @@ import { ActionTypes } from "./action.js"
 type StripeClientAction = {
 	CreateCheckoutSession: (arg: {
 		numMonths: NaturalNumber
+		plan: SubscriptionPlan
 	}) => Promise<{ url: string }>
 }
 
-type StripeClientActionType = keyof StripeClientAction
+export type StripeClientActionType = keyof StripeClientAction
 
 export type StripeClientActionInput = {
 	CreateCheckoutSession: Parameters<
@@ -30,5 +36,8 @@ export const stripeClientActions: ActionTypes<StripeClientActionType> = [
 export const isStripeClientActionInput = {
 	CreateCheckoutSession: objectTypeGuard<
 		StripeClientActionInput["CreateCheckoutSession"]
-	>(({ numMonths }) => isNaturalNumber(numMonths))
+	>(
+		({ numMonths, plan }) =>
+			isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
+	)
 }

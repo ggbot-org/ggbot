@@ -37,8 +37,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const authorization = event.headers.Authorization
-		await readSessionFromAuthorizationHeader(authorization)
-		const service = new Service()
+		const accountKey =
+			await readSessionFromAuthorizationHeader(authorization)
+		const service = new Service({ accountKey })
 
 		const input: unknown = JSON.parse(event.body)
 		if (!isActionInput(stripeClientActions)(input))

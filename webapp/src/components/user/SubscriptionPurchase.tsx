@@ -1,4 +1,3 @@
-import { Email } from "_/components/Email"
 import {
 	Button,
 	Buttons,
@@ -9,19 +8,15 @@ import {
 	Message,
 	Title
 } from "_/components/library"
-import { SelectCountry } from "_/components/user/SelectCountry"
 import {
 	SubscriptionEnd,
 	SubscriptionEndProps
 } from "_/components/user/SubscriptionEnd"
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
-import { AuthenticationContext } from "_/contexts/Authentication"
 import { useStripeApi } from "_/hooks/useStripeApi"
 import { useSubscription } from "_/hooks/useSubscription"
-import { useUserApi } from "_/hooks/useUserApi"
 import {
-	isAllowedCountryIsoCode2,
 	isNaturalNumber,
 	monthlyPrice,
 	purchaseCurrency,
@@ -30,18 +25,10 @@ import {
 	purchaseMinNumMonths as minNumMonths
 } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
-import {
-	FC,
-	FormEventHandler,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { FC, FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
-	country: "country",
 	numMonths: "numMonths"
 }
 const fields = Object.keys(fieldName)
@@ -49,7 +36,6 @@ const fields = Object.keys(fieldName)
 export const SubscriptionPurchase: FC = () => {
 	const { formatNumber, formatMessage } = useIntl()
 
-	const { accountEmail } = useContext(AuthenticationContext)
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
 		useSubscription()
 
@@ -58,10 +44,7 @@ export const SubscriptionPurchase: FC = () => {
 	)
 
 	const CREATE_CHECKOUT = useStripeApi.CreateCheckoutSession()
-	const isLoading = CREATE_CHECKOUT.isPending
-	const data = CREATE_CHECKOUT.data
-
-	const CREATE_ORDER = useUserApi.CreatePurchaseOrder()
+	const { data: checkoutData, isPending } = CREATE_CHECKOUT
 
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
 	if (isNaturalNumber(numMonths)) {
@@ -92,18 +75,13 @@ export const SubscriptionPurchase: FC = () => {
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
-			if (!accountEmail) return
-			if (!CREATE_ORDER.canRun) return
+			if (!CREATE_CHECKOUT.canRun) return
 
-			const { country, numMonths: numMonthsStr } = formValues(
-				event,
-				fields
-			)
+			const { numMonths: numMonthsStr } = formValues(event, fields)
 
 			const numMonths = Number(numMonthsStr)
 
 			let purchaseIsDisabled = false
-			if (!country) purchaseIsDisabled = true
 			if (isNaturalNumber(numMonths)) {
 				if (numMonths < minNumMonths) purchaseIsDisabled = true
 				if (numMonths > maxNumMonths) purchaseIsDisabled = true
@@ -111,17 +89,13 @@ export const SubscriptionPurchase: FC = () => {
 			if (purchaseIsDisabled) return
 
 			if (typeof numMonths !== "number") return
-			if (!isAllowedCountryIsoCode2(country)) return
 
-			CREATE_ORDER.request({
-				country,
-				email: accountEmail,
+			CREATE_CHECKOUT.request({
 				numMonths,
-				paymentProvider: "stripe",
 				plan: "basic"
 			})
 		},
-		[CREATE_ORDER, accountEmail]
+		[CREATE_CHECKOUT]
 	)
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {
@@ -130,10 +104,14 @@ export const SubscriptionPurchase: FC = () => {
 	})
 
 	useEffect(() => {
-		if (!data) return
-		// @ts-expect-error
-		location.replace(data.url)
-	}, [data])
+		if (!checkoutData) return
+		// @ts-expect-error fix location types
+		location.replace(checkoutData.url)
+	}, [checkoutData])
+
+	useEffect(() => {
+		if (CREATE_CHECKOUT.isDone) CREATE_CHECKOUT.reset()
+	}, [CREATE_CHECKOUT])
 
 	if (canPurchaseSubscription === undefined || !canPurchaseSubscription)
 		return null
@@ -192,17 +170,13 @@ export const SubscriptionPurchase: FC = () => {
 						</Column>
 					</Columns>
 
-					<Email isStatic value={accountEmail} />
-
-					<SelectCountry name={fieldName.country} />
-
 					<SubscriptionTotalPrice numMonths={numMonths} />
 
 					<Buttons>
 						<Button
 							color="primary"
 							isOutlined={!isYearlyPurchase}
-							isLoading={isLoading}
+							isLoading={isPending}
 						>
 							<FormattedMessage id="SubscriptionPurchase.button" />
 						</Button>

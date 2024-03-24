@@ -58,7 +58,6 @@ graph LR
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
-    workspace/infrastructure --- workspace/locators
     workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/s3-data-bucket
     workspace/infrastructure --- workspace/stripe
@@ -71,7 +70,9 @@ graph LR
     workspace/s3-data-bucket --- workspace/aws-s3
     workspace/s3-data-bucket --- workspace/env
     workspace/stripe --- workspace/env
+    workspace/stripe --- workspace/locators
     workspace/stripe-api --- workspace/api-gateway
+    workspace/stripe-api --- workspace/authentication
     workspace/stripe-api --- workspace/database
     workspace/stripe-api --- workspace/stripe
     workspace/stripe-api --- workspace/s3-data-bucket

@@ -1,5 +1,6 @@
 import { ENV } from "@workspace/env"
 import { WebappURLs } from "@workspace/locators"
+import { AccountKey } from "@workspace/models"
 
 import { newStripe } from "./newStripe.js"
 
@@ -9,9 +10,10 @@ export class StripeClient {
 
 	/** Call `stripe.checkout.sessions.create()` adding context. */
 	createCheckoutSession({
+		accountId,
 		/** Number of months to subscribe. */
 		quantity
-	}: {
+	}: AccountKey & {
 		quantity: number
 	}) {
 		return this.stripe.checkout.sessions.create({
@@ -21,6 +23,9 @@ export class StripeClient {
 					quantity
 				}
 			],
+			metadata: {
+				accountId
+			},
 			success_url: this.webapp.subscriptionPurchased.href,
 			cancel_url: this.webapp.purchaseCanceled.href
 		})
