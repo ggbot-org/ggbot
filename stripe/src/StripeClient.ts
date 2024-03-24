@@ -26,6 +26,7 @@ export class StripeClient {
 			metadata: {
 				accountId
 			},
+			mode: "payment",
 			success_url: this.webapp.subscriptionPurchased.href,
 			cancel_url: this.webapp.purchaseCanceled.href
 		})
