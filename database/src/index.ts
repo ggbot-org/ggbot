@@ -5,5 +5,3 @@ export { ExecutorDatabase } from "./executor.js"
 // TODO export { PaymentDatabase } from "./payment.js"
 export { PublicDatabase } from "./public.js"
 export { UserDatabase } from "./user.js"
-// TODO this should not be exported
-export { itemKeyToDirname, locatorToItemKey } from "./locators.js"

@@ -141,5 +141,3 @@ export {
 } from "./subscriptionPurchase.js"
 export type { CreationTime, DayKey, DeletionTime, UpdateTime } from "./time.js"
 export { createdNow, deletedNow, updatedNow } from "./time.js"
-export type { CreateUtrustOrder } from "./utrust.js"
-export { isCreateUtrustOrderInput } from "./utrust.js"

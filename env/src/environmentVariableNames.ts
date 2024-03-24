@@ -11,8 +11,6 @@ const environmentVariableNames = [
 	"STRIPE_PLAN_BASIC_PRICE_ID",
 	"PROJECT_SHORT_NAME",
 	"STRIPE_SECRET_KEY",
-	"STRIPE_WEBHOOK_SECRET",
-	"UTRUST_API_KEY",
-	"UTRUST_WEBHOOK_SECRET"
+	"STRIPE_WEBHOOK_SECRET"
 ] as const
 export type EnvironmentVariableName = (typeof environmentVariableNames)[number]

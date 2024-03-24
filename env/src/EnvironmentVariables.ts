@@ -57,14 +57,6 @@ class EnvironmentVariables {
 	STRIPE_WEBHOOK_SECRET() {
 		return getVariable("STRIPE_WEBHOOK_SECRET")
 	}
-
-	UTRUST_API_KEY() {
-		return getVariable("UTRUST_API_KEY")
-	}
-
-	UTRUST_WEBHOOK_SECRET() {
-		return getVariable("UTRUST_WEBHOOK_SECRET")
-	}
 }
 
 /**

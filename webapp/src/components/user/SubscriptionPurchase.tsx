@@ -105,7 +105,6 @@ export const SubscriptionPurchase: FC = () => {
 
 	useEffect(() => {
 		if (!checkoutData) return
-		// @ts-expect-error WorkerLocation
 		location.replace(checkoutData.url)
 	}, [checkoutData])
 

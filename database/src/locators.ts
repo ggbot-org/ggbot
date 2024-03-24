@@ -218,7 +218,7 @@ export const locatorToItemKey = {
 	}
 }
 
-export const itemKeyToDirname = {
+const itemKeyToDirname = {
 	account: ({ accountId }: AccountKey) => fieldJoin("accountId", accountId),
 	accountDailyOrders: ({ day, ...key }: AccountDailyOrdersKey) =>
 		dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
