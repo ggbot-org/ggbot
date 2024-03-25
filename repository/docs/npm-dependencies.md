@@ -50,7 +50,7 @@ graph LR
     workspace/env --- workspace/models
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database
-    workspace/executor --- workspace/locators
+    workspace/executor --- workspace/email-messages
     workspace/executor --- workspace/s3-data-bucket
     workspace/infrastructure --- workspace/aws-acm
     workspace/infrastructure --- workspace/aws-api-gateway
