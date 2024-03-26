@@ -11,5 +11,6 @@ export const esbuildDefinitions = {
 	BUILD_DATE: `"${new Date().toJSON().substring(0, 10)}"`,
 	DEPLOY_STAGE: `"${DEPLOY_STAGE}"` as DeployStage,
 	DNS_DOMAIN: `"${ENV.DNS_DOMAIN()}"`,
-	IS_DEV: `${isDev}`
+	IS_DEV: `${isDev}`,
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE: `"${ENV.STRIPE_PLAN_BASIC_MONTHLY_PRICE()}"`
 }

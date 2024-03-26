@@ -46,6 +46,10 @@ class EnvironmentVariables {
 		return getVariable("PROJECT_SHORT_NAME")
 	}
 
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE() {
+		return getVariable("STRIPE_PLAN_BASIC_MONTHLY_PRICE")
+	}
+
 	STRIPE_PLAN_BASIC_PRICE_ID() {
 		return getVariable("STRIPE_PLAN_BASIC_PRICE_ID")
 	}

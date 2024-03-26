@@ -2,9 +2,16 @@ import { DeployStage } from "@workspace/models"
 
 import { ErrorMissingEnvironmentVariable } from "./errors.js"
 
+// Use explicit `process.env.VARIABLE` expressions in order to make it visible to esbuild.
+//
+// For example
+//
+// ```ts
+// const VALUE = process.env.DEPLOY_STAGE
+// ```
+
 export class EnvironmentVariables {
 	DEPLOY_STAGE(): DeployStage {
-		// Use explicit `process.env.DEPLOY_STAGE` in order to make it visible to esbuild.
 		const VALUE = process.env.DEPLOY_STAGE
 		if (VALUE === "main") return "main"
 		if (VALUE === "next") return "next"
@@ -13,9 +20,16 @@ export class EnvironmentVariables {
 	}
 
 	DNS_DOMAIN() {
-		// Use explicit `process.env.DEPLOY_STAGE` in order to make it visible to esbuild.
 		const VALUE = process.env.DNS_DOMAIN
 		if (typeof VALUE === "string") return VALUE
 		throw new ErrorMissingEnvironmentVariable("DNS_DOMAIN")
+	}
+
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE() {
+		const VALUE = process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE
+		if (typeof VALUE === "string") return VALUE
+		throw new ErrorMissingEnvironmentVariable(
+			"STRIPE_PLAN_BASIC_MONTHLY_PRICE"
+		)
 	}
 }

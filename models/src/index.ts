@@ -132,8 +132,6 @@ export {
 export type { SubscriptionPurchaseKey } from "./subscriptionPurchase.js"
 export {
 	isSubscriptionPurchaseKey,
-	monthlyPrice,
-	purchaseCurrency,
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,
 	purchaseMinNumMonths,

@@ -18,11 +18,10 @@ import { useStripeApi } from "_/hooks/useStripeApi"
 import { useSubscription } from "_/hooks/useSubscription"
 import {
 	isNaturalNumber,
-	monthlyPrice,
-	purchaseCurrency,
 	purchaseDefaultNumMonths as defaultNumMonths,
 	purchaseMaxNumMonths as maxNumMonths,
-	purchaseMinNumMonths as minNumMonths
+	purchaseMinNumMonths as minNumMonths,
+	SubscriptionPlan
 } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
 import { FC, FormEventHandler, useCallback, useEffect, useState } from "react"
@@ -42,6 +41,10 @@ export const SubscriptionPurchase: FC = () => {
 	const [numMonths, setNumMonths] = useState<number | undefined>(
 		defaultNumMonths
 	)
+
+	const subscriptionPlan: SubscriptionPlan = "basic"
+	const monthlyPrice = Number(STRIPE_PLAN_BASIC_MONTHLY_PRICE)
+	const currency = "EUR"
 
 	const CREATE_CHECKOUT = useStripeApi.CreateCheckoutSession()
 	const { data: checkoutData, isPending } = CREATE_CHECKOUT
@@ -92,7 +95,7 @@ export const SubscriptionPurchase: FC = () => {
 
 			CREATE_CHECKOUT.request({
 				numMonths,
-				plan: "basic"
+				plan: subscriptionPlan
 			})
 		},
 		[CREATE_CHECKOUT]
@@ -100,7 +103,7 @@ export const SubscriptionPurchase: FC = () => {
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {
 		style: "currency",
-		currency: purchaseCurrency
+		currency
 	})
 
 	useEffect(() => {
@@ -169,7 +172,11 @@ export const SubscriptionPurchase: FC = () => {
 						</Column>
 					</Columns>
 
-					<SubscriptionTotalPrice numMonths={numMonths} />
+					<SubscriptionTotalPrice
+						currency={currency}
+						monthlyPrice={monthlyPrice}
+						numMonths={numMonths}
+					/>
 
 					<Buttons>
 						<Button

@@ -14,7 +14,6 @@ import {
 } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
-import { Currency } from "./currency.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
 import { NaturalNumber } from "./numbers.js"
 import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
@@ -22,8 +21,6 @@ import { SerializableObject } from "./serializable.js"
 import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
 import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js"
 
-export const monthlyPrice = 2
-export const purchaseCurrency: Currency = "EUR"
 export const purchaseDefaultNumMonths = 6
 
 /**
@@ -89,16 +86,6 @@ export const isSubscriptionPurchaseKey =
 			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
 	)
 
-// TODO
-// export const newSubscriptionPurchaseKey = ({
-// 	accountId,
-// 	purchaseId
-// }: Omit<SubscriptionPurchaseKey, "day">): SubscriptionPurchaseKey => ({
-// 	accountId,
-// 	purchaseId,
-// 	day: today()
-// })
-
 export const newMonthlySubscription = ({
 	plan,
 	paymentProvider,
@@ -143,7 +130,10 @@ export const newYearlySubscription = ({
 	}
 }
 
-export const totalPurchase = (numMonths: NaturalNumber) => {
+export const totalPurchase = (
+	monthlyPrice: number,
+	numMonths: NaturalNumber
+) => {
 	// if 12 months, apply discount.
 	if (numMonths === 12) return monthlyPrice * 11
 	return numMonths * monthlyPrice
