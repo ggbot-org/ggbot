@@ -39,7 +39,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		const authorization = event.headers.Authorization
 		const accountKey =
 			await readSessionFromAuthorizationHeader(authorization)
-		const service = new Service({ accountKey })
+		const service = new Service(accountKey)
 
 		const input: unknown = JSON.parse(event.body)
 		if (!isActionInput(stripeClientActions)(input))

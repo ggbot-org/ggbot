@@ -23,6 +23,7 @@ import {
 	purchaseMinNumMonths as minNumMonths,
 	SubscriptionPlan
 } from "@workspace/models"
+import { isYearlyPurchase } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
 import { FC, FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -59,13 +60,10 @@ export const SubscriptionPurchase: FC = () => {
 		).months
 	}
 
-	const isYearlyPurchase: boolean | undefined =
-		typeof numMonths === "number" && numMonths >= maxNumMonths - 1
-			? true
-			: undefined
+	const isYearly = isYearlyPurchase({ numMonths })
 
 	let itemName = ""
-	if (isYearlyPurchase) {
+	if (isYearly) {
 		itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
 	} else if (numMonths)
 		itemName = formatMessage(
@@ -158,7 +156,7 @@ export const SubscriptionPurchase: FC = () => {
 						<Column isNarrow>
 							<SubscriptionNumMonths
 								name={fieldName.numMonths}
-								isYearlyPurchase={isYearlyPurchase}
+								isYearlyPurchase={isYearly}
 								setValue={setNumMonths}
 								value={numMonths}
 							/>
@@ -181,7 +179,7 @@ export const SubscriptionPurchase: FC = () => {
 					<Buttons>
 						<Button
 							color="primary"
-							isOutlined={!isYearlyPurchase}
+							isOutlined={!isYearly}
 							isLoading={isPending}
 						>
 							<FormattedMessage id="SubscriptionPurchase.button" />

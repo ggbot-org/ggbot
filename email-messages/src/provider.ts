@@ -5,21 +5,10 @@ import { noReplyEmailAddress } from "@workspace/locators"
 import { EmailAddress } from "@workspace/models"
 
 import { EmailMessageContent } from "./emailMessage.js"
-import { allStrategiesSuspendedEmailMessage } from "./messageAllStrategiesSuspended.js"
 import { oneTimePasswordEmailMessage } from "./messageOneTimePassword.js"
 import { suspendedStrategyEmailMessage } from "./messageSuspendedStrategy.js"
 
 export class SendEmailProvider implements SendEmailAction {
-	async SendAllStrategiesSuspended({
-		email,
-		language
-	}: Input["SendAllStrategiesSuspended"]) {
-		await this.sendEmail(
-			email,
-			allStrategiesSuspendedEmailMessage(language)
-		)
-	}
-
 	async SendOneTimePassword({
 		email,
 		oneTimePassword,

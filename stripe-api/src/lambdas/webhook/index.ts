@@ -1,8 +1,11 @@
+import { StripeMetadata } from "@workspace/api"
 import {
 	APIGatewayProxyHandler,
+	BAD_REQUEST,
 	errorResponse,
 	OK
 } from "@workspace/api-gateway"
+import { PaymentDatabase } from "@workspace/database"
 import {
 	BAD_REQUEST__400,
 	INTERNAL_SERVER_ERROR__500,
@@ -10,13 +13,19 @@ import {
 } from "@workspace/http"
 import { logging } from "@workspace/logging"
 import {
+	newMonthlySubscription,
+	newYearlySubscription,
+	PaymentProvider
+} from "@workspace/models"
+import { documentProvider } from "@workspace/s3-data-bucket"
+import {
 	StripeClient,
 	StripeSignatureVerificationError
 } from "@workspace/stripe"
+import { today } from "minimal-time-helpers"
 
 const { info, debug } = logging("stripe-api")
 
-// TODO use service pattern like other APIs, this file should only implement the bare handler
 const stripe = new StripeClient()
 
 type ResponseData = {
@@ -26,8 +35,8 @@ type ResponseData = {
 const received: ResponseData = { received: true }
 const notReceived: ResponseData = { received: false }
 
-// @ts-expect-error TODO use async/await ts-prune-ignore-next
-export const handler: APIGatewayProxyHandler = (event) => {
+// ts-prune-ignore-next
+export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		if (event.httpMethod !== "POST")
 			return errorResponse(METHOD_NOT_ALLOWED__405)
@@ -42,8 +51,43 @@ export const handler: APIGatewayProxyHandler = (event) => {
 
 		info(stripeEvent)
 
+		const dataProvider = new PaymentDatabase(documentProvider)
+		const paymentProvider: PaymentProvider = "stripe"
+
 		if (stripeEvent.type === "payment_intent.succeeded") {
 			if (stripeEvent.data.object.status === "succeeded") {
+				const { accountId, plan } = stripeEvent.data.object
+					.metadata as StripeMetadata
+
+				const checkout = await stripe.retreiveCheckoutSession(
+					stripeEvent.data.object.id
+				)
+				if (!checkout) return BAD_REQUEST()
+
+				// TODO read current subscription, startDay may be when it ends + one day.
+				const startDay = today()
+
+				const subscriptionPurchase = checkout.isYearly
+					? newYearlySubscription({
+							plan,
+							paymentProvider,
+							startDay
+					  })
+					: newMonthlySubscription({
+							plan,
+							paymentProvider,
+							numMonths: checkout.quantity,
+
+							startDay
+					  })
+
+				await dataProvider.WriteSubscriptionPurchase({
+					accountId,
+					day: today(),
+					purchaseId: subscriptionPurchase.id,
+					...subscriptionPurchase
+				})
+
 				return OK(received)
 			}
 			return OK(received)

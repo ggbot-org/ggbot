@@ -4,7 +4,6 @@ import {
 	BinanceClientActionType,
 	clientAction,
 	ClientActionHeaders,
-	DocumentProviderLevel2,
 	GenericError,
 	isApiActionOutputData,
 	isApiActionOutputError,
@@ -27,10 +26,8 @@ export class Service implements ApiService<UserClientActionType> {
 		accountKey,
 		authorization,
 		documentProvider
-	}: { documentProvider: DocumentProviderLevel2 } & Pick<
-		Service,
-		"accountKey" | "authorization"
-	>) {
+	}: Pick<UserDatabase, "documentProvider"> &
+		Pick<Service, "accountKey" | "authorization">) {
 		this.accountKey = accountKey
 		this.dataProvider = new UserDatabase(accountKey, documentProvider)
 		this.authorization = authorization

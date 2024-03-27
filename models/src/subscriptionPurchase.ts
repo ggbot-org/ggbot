@@ -138,3 +138,12 @@ export const totalPurchase = (
 	if (numMonths === 12) return monthlyPrice * 11
 	return numMonths * monthlyPrice
 }
+
+export const isYearlyPurchase = ({
+	numMonths
+}: {
+	numMonths: unknown
+}): boolean | undefined => {
+	if (typeof numMonths !== "number") return undefined
+	return numMonths >= purchaseMaxNumMonths - 1
+}

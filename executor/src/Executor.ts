@@ -1,6 +1,7 @@
 import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
+import { SendEmailProvider } from "@workspace/email-messages"
 import {
 	AccountKey,
 	AccountStrategy,
@@ -11,6 +12,7 @@ import {
 	ErrorStrategyItemNotFound,
 	ErrorUnknownItem,
 	frequencyIntervalDuration,
+	isAccount,
 	isAccountKey,
 	isAccountStrategy,
 	isSubscription,
@@ -19,10 +21,12 @@ import {
 	newId,
 	PRO_FREQUENCY_INTERVALS,
 	statusOfSubscription,
+	StrategyKind,
 	StrategyMemory,
 	StrategyScheduling,
 	Subscription,
-	SubscriptionPlan} from "@workspace/models"
+	SubscriptionPlan
+} from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -45,6 +49,7 @@ export class Executor {
 
 	readonly publicDatabase = new PublicDatabase(documentProvider)
 	readonly executorDatabase = new ExecutorDatabase(documentProvider)
+	readonly sendEmailProvider = new SendEmailProvider()
 
 	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
@@ -246,11 +251,14 @@ export class Executor {
 					}
 
 					// If error code is not handled, suspend startegy.
-					await this.suspendAccountStrategyScheduling({
-						accountId,
-						strategyId,
-						schedulingId
-					})
+					await this.suspendAccountStrategyScheduling(
+						{
+							accountId,
+							strategyId,
+							schedulingId
+						},
+						strategyKind
+					)
 					return
 				}
 
@@ -280,9 +288,12 @@ export class Executor {
 
 			try {
 				// Check subscription or suspend account strategies.
+
 				const { hasActiveSubscription, subscriptionPlan } =
 					await this.checkSubscription(accountKey)
+
 				if (!hasActiveSubscription) {
+					// Cleanup cache.
 					this.cachedAccountKeys.delete(accountId)
 					continue
 				}
@@ -304,11 +315,14 @@ export class Executor {
 								scheduling.frequency.interval
 							)
 						) {
-							await this.suspendAccountStrategyScheduling({
-								accountId,
-								strategyId,
-								schedulingId: scheduling.id
-							})
+							await this.suspendAccountStrategyScheduling(
+								{
+									accountId,
+									strategyId,
+									schedulingId: scheduling.id
+								},
+								strategyKind
+							)
 							continue
 						}
 
@@ -338,11 +352,11 @@ export class Executor {
 		}
 	}
 
-	async suspendAccountStrategyScheduling({
-		accountId,
-		strategyId,
-		schedulingId
-	}: AccountStrategySchedulingKey) {
+	async suspendAccountStrategyScheduling(
+		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey,
+		// The `strategyKind` is needed to send email notification.
+		strategyKind: StrategyKind
+	) {
 		warn(
 			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
 		)
@@ -355,6 +369,18 @@ export class Executor {
 			accountId,
 			strategyId,
 			schedulingId
+		})
+
+		// Send email notification.
+		const account = await this.executorDatabase.ReadAccount({ accountId })
+		// Account may be null in case user deleted the account.
+		if (!isAccount(account)) return
+		// If there is an account, notify the user via email.
+		await this.sendEmailProvider.SuspendedStrategy({
+			language: "en",
+			email: account.email,
+			strategyId,
+			strategyKind
 		})
 	}
 

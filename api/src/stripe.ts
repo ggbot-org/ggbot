@@ -1,15 +1,20 @@
 import {
+	AccountKey,
 	isNaturalNumber,
 	isSubscriptionPlan,
 	NaturalNumber,
+	Subscription,
 	SubscriptionPlan
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ActionTypes } from "./action.js"
 
+export type StripeMetadata = AccountKey & Pick<Subscription, "plan">
+
 type StripeClientAction = {
 	CreateCheckoutSession: (arg: {
+		/** Number of months to subscribe. */
 		numMonths: NaturalNumber
 		plan: SubscriptionPlan
 	}) => Promise<{ url: string }>

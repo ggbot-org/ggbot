@@ -1,4 +1,5 @@
 import {
+	Account,
 	AccountDailyOrder,
 	AccountDailyOrdersKey,
 	AccountKey,
@@ -28,6 +29,7 @@ export type ExecutorAction = {
 		void
 	>
 	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
+	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 	ReadAccountStrategies: (arg: AccountKey) => Promise<AccountStrategy[]>
 	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>
 	SuspendAccountStrategyScheduling: (
@@ -52,6 +54,7 @@ export type ExecutorActionInput = {
 		ExecutorAction["AppendStrategyDailyOrders"]
 	>[0]
 	ListAccountKeys: Parameters<ExecutorAction["ListAccountKeys"]>[0]
+	ReadAccount: Parameters<ExecutorAction["ReadAccount"]>[0]
 	ReadAccountStrategies: Parameters<
 		ExecutorAction["ReadAccountStrategies"]
 	>[0]
@@ -81,6 +84,7 @@ export type ExecutorActionOutput = {
 	ReadAccountStrategies: Awaited<
 		ReturnType<ExecutorAction["ReadAccountStrategies"]>
 	>
+	ReadAccount: Awaited<ReturnType<ExecutorAction["ReadAccount"]>>
 	ReadSubscription: Awaited<ReturnType<ExecutorAction["ReadSubscription"]>>
 	SuspendAccountStrategyScheduling: Awaited<
 		ReturnType<ExecutorAction["SuspendAccountStrategyScheduling"]>

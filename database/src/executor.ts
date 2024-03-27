@@ -83,6 +83,12 @@ export class ExecutorDatabase implements ExecutorAction {
 		return data
 	}
 
+	ReadAccount(arg: Input["ReadAccount"]) {
+		return this.documentProvider.getItem<Output["ReadAccount"]>(
+			pathname.account(arg)
+		)
+	}
+
 	ReadSubscription(arg: Input["ReadSubscription"]) {
 		return this.documentProvider.getItem<Output["ReadSubscription"]>(
 			pathname.subscription(arg)

@@ -1,5 +1,6 @@
 export type { Account, AccountKey } from "./account.js"
 export {
+	isAccount,
 	isAccountKey,
 	isAdminAccount,
 	newAccount,
@@ -129,9 +130,15 @@ export {
 	shouldPurchaseSubscription,
 	statusOfSubscription
 } from "./subscription.js"
-export type { SubscriptionPurchaseKey } from "./subscriptionPurchase.js"
+export type {
+	SubscriptionPurchase,
+	SubscriptionPurchaseKey
+} from "./subscriptionPurchase.js"
 export {
 	isSubscriptionPurchaseKey,
+	isYearlyPurchase,
+	newMonthlySubscription,
+	newYearlySubscription,
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,
 	purchaseMinNumMonths,

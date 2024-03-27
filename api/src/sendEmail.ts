@@ -13,7 +13,6 @@ type SendEmailCommonArgs = {
 }
 
 export type SendEmailAction = {
-	SendAllStrategiesSuspended: Action<SendEmailCommonArgs, void>
 	SendOneTimePassword: Action<
 		SendEmailCommonArgs & {
 			oneTimePassword: OneTimePassword
@@ -24,9 +23,6 @@ export type SendEmailAction = {
 }
 
 export type SendEmailActionInput = {
-	SendAllStrategiesSuspended: Parameters<
-		SendEmailAction["SendAllStrategiesSuspended"]
-	>[0]
 	SendOneTimePassword: Parameters<SendEmailAction["SendOneTimePassword"]>[0]
 	SuspendedStrategy: Parameters<SendEmailAction["SuspendedStrategy"]>[0]
 }

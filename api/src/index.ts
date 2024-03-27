@@ -40,6 +40,12 @@ export type {
 	AuthDatabaseActionOutput
 } from "./auth.js"
 export { authClientActions, isAuthClientActionInput } from "./auth.js"
+export {
+	isApiAuthEnterRequestData,
+	isApiAuthEnterResponseData,
+	isApiAuthVerifyRequestData,
+	isApiAuthVerifyResponseData
+} from "./auth.js"
 export type {
 	BinanceClientActionType,
 	BinanceDatabaseAction,
@@ -51,19 +57,7 @@ export type {
 	ExecutorActionInput,
 	ExecutorActionOutput
 } from "./executor.js"
-// TODO export type {
-// 	PaymentAction,
-// 	PaymentActionInput,
-// 	PaymentActionOutput,
-// 	PaymentActionType
-// } from "./payment.js"
-// export { isPaymentActionInput } from "./payment.js"
-export {
-	isApiAuthEnterRequestData,
-	isApiAuthEnterResponseData,
-	isApiAuthVerifyRequestData,
-	isApiAuthVerifyResponseData
-} from "./auth.js"
+export type { PaymentAction, PaymentActionInput } from "./payment.js"
 export type {
 	PublicAction,
 	PublicActionInput,
@@ -74,7 +68,8 @@ export { isPublicActionInput, publicActions } from "./public.js"
 export type {
 	StripeClientActionInput,
 	StripeClientActionOutput,
-	StripeClientActionType
+	StripeClientActionType,
+	StripeMetadata
 } from "./stripe.js"
 export { isStripeClientActionInput, stripeClientActions } from "./stripe.js"
 export type {

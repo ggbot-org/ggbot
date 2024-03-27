@@ -85,7 +85,8 @@
 	 └╴y=YYYY/
 	   └╴m=MM/
 		 └╴d=DD/
-		   └╴purchase.json
+		   └╴purchaseId=XXX/
+		     └╴purchase.json
 */
 
 import {
@@ -342,7 +343,7 @@ const filename = {
 	strategyFlow: "flow.json",
 	strategyOrdersPool: "orders.json",
 	subscription: "subscription.json",
-	subscriptionPurchase: "purchases.json"
+	subscriptionPurchase: "purchase.json"
 }
 
 export const pathname = {

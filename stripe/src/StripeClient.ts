@@ -1,6 +1,7 @@
+import { StripeMetadata } from "@workspace/api"
 import { ENV } from "@workspace/env"
 import { WebappURLs } from "@workspace/locators"
-import { AccountKey } from "@workspace/models"
+import { isYearlyPurchase } from "@workspace/models"
 
 import { newStripe } from "./newStripe.js"
 
@@ -10,22 +11,22 @@ export class StripeClient {
 
 	/** Call `stripe.checkout.sessions.create()` adding context. */
 	createCheckoutSession({
-		accountId,
-		/** Number of months to subscribe. */
+		metadata,
+		price,
 		quantity
-	}: AccountKey & {
+	}: {
+		metadata: StripeMetadata
+		price: string
 		quantity: number
 	}) {
 		return this.stripe.checkout.sessions.create({
 			line_items: [
 				{
-					price: ENV.STRIPE_PLAN_BASIC_PRICE_ID(),
+					price,
 					quantity
 				}
 			],
-			metadata: {
-				accountId
-			},
+			metadata,
 			mode: "payment",
 			success_url: this.webapp.subscriptionPurchased.href,
 			cancel_url: this.webapp.purchaseCanceled.href
@@ -44,5 +45,18 @@ export class StripeClient {
 			signature,
 			ENV.STRIPE_WEBHOOK_SECRET()
 		)
+	}
+
+	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
+	async retreiveCheckoutSession(id: string) {
+		const session = await this.stripe.checkout.sessions.retrieve(id, {
+			expand: ["line_items"]
+		})
+		const quantity = session.line_items?.data[0].quantity
+		if (typeof quantity !== "number") return
+		return {
+			quantity,
+			isYearly: isYearlyPurchase({ numMonths: quantity })
+		}
 	}
 }

@@ -1,26 +1,39 @@
 import {
 	ApiService,
 	isStripeClientActionInput as isInput,
-	StripeClientActionType
+	StripeClientActionType,
+	StripeMetadata
 } from "@workspace/api"
+import { ENV } from "@workspace/env"
 import { BadRequestError } from "@workspace/http"
-import { AccountKey } from "@workspace/models"
 import { StripeClient } from "@workspace/stripe"
 
 export class Service implements ApiService<StripeClientActionType> {
-	accountKey: AccountKey
+	accountId: StripeMetadata["accountId"]
 	stripe = new StripeClient()
 
-	constructor({ accountKey }: Pick<Service, "accountKey">) {
-		this.accountKey = accountKey
+	constructor({ accountId }: Pick<Service, "accountId">) {
+		this.accountId = accountId
 	}
 
 	async CreateCheckoutSession(arg: unknown) {
 		if (!isInput.CreateCheckoutSession(arg)) throw new BadRequestError()
-		const { numMonths } = arg
+		const { numMonths, plan } = arg
+
+		const metadata: StripeMetadata = {
+			accountId: this.accountId,
+			plan
+		}
+
+		let price: string
+		if (plan === "basic") price = ENV.STRIPE_PLAN_BASIC_PRICE_ID()
+		// TODO else if (plan==="pro") price = ENV.STRIPE_PLAN_PRO_PRICE_ID()
+		else throw new BadRequestError()
+
 		const session = await this.stripe.createCheckoutSession({
+			metadata,
 			quantity: numMonths,
-			...this.accountKey
+			price
 		})
 		return {
 			url: session.url

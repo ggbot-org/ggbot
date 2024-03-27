@@ -69,6 +69,7 @@ graph LR
     workspace/s3-data-bucket --- workspace/api
     workspace/s3-data-bucket --- workspace/aws-s3
     workspace/s3-data-bucket --- workspace/env
+    workspace/stripe --- workspace/api
     workspace/stripe --- workspace/env
     workspace/stripe --- workspace/locators
     workspace/stripe-api --- workspace/api-gateway
