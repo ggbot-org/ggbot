@@ -8,7 +8,8 @@ import {
 	Section
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import { amazonWebServices, stripe } from "@workspace/locators"
+import { amazonWebServices, binance, stripe } from "@workspace/locators"
+import { numYearsTradingOperationsRetention } from "@workspace/models"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -38,6 +39,7 @@ export const PrivacyPage: FC = () => (
 						<FormattedMessage
 							id="Privacy.personalDataOnlyEmail"
 							values={{
+								b: (chunks) => <b>{chunks}</b>,
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
@@ -101,6 +103,38 @@ export const PrivacyPage: FC = () => (
 								),
 								b: (chunks) => <b>{chunks}</b>,
 								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
+					</Paragraph>
+
+					<H2>
+						<FormattedMessage id="Privacy.marketProviders" />
+					</H2>
+
+					<H3>
+						<FormattedMessage id="Privacy.binance" />
+					</H3>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Privacy.binanceCustomerData"
+							values={{
+								a: (text) => (
+									<a href={binance.homepage}>{text}</a>
+								),
+								b: (chunks) => <b>{chunks}</b>,
+								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
+					</Paragraph>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Privacy.binanceTradingData"
+							values={{
+								b: (chunks) => <b>{chunks}</b>,
+								em: (chunks) => <em>{chunks}</em>,
+								numYears: numYearsTradingOperationsRetention
 							}}
 						/>
 					</Paragraph>

@@ -350,20 +350,32 @@
 	"Privacy.cloudProvider": {
 		"defaultMessage": "Cloud provider"
 	},
+	"Privacy.marketProviders": {
+		"defaultMessage": "Market providers"
+	},
 	"Privacy.paymentProvider": {
 		"defaultMessage": "Payment provider"
+	},
+	"Privacy.binance": {
+		"defaultMessage": "Binance"
+	},
+	"Privacy.binanceCustomerData": {
+		"defaultMessage": "<a>Binance exchange</a> is used as a market provider. You will be asked to give information about your account, according to your country regulations. The <em>ggbot</em> platform is <b>not involved at all</b> in this process, and <b>does not have access</b> to the data you are required to share with <em>Binance</em>."
+	},
+	"Privacy.binanceTradingData": {
+		"defaultMessage": "<em>Binance</em> holds all your trading data, including orders, staking and any other crypto activity you perform on that exchange. The <em>ggbot</em> platform <b>does not fetch</b> your trading data from <em>Binance</em> but it keeps track of the operations you perform using the <em>ggbot</em> strategies in order to provide you information about your orders, profits, etc. and stores these data with a retention period of {numYears} years."
 	},
 	"Privacy.stripe": {
 		"defaultMessage": "<a>Stripe</a> is used as payments provider: during checkout your <em>email</em> will be prefilled and you will be asked to enter your <em>country</em> and <em>credit card</em> information such as <em>cardholder name</em>. The <em>ggbot</em> platform <b>does not store</b> your country nor your credit card information."
 	},
 	"Privacy.personalDataOnlyEmail": {
-		"defaultMessage": "No <em>Personal Data</em> is collected other than your <em>account email</em>. This website does not use cookies and does not track you at all."
+		"defaultMessage": "No <em>Personal Data</em> is collected other than your <em>account email</em>. This website does not use cookies and <b>does not track you</b> at all."
 	},
 	"Privacy.personalDataEmailUsage": {
 		"defaultMessage": "Your account email is used for authentication and communications. Communications are limited to what is strictly necessary, for example to inform you when there is an issue on your strategies that may impact your profits."
 	},
 	"Privacy.personalDataSecureStorage": {
-		"defaultMessage": "We store all <em>Personal Data</em> on secure servers administered by <a>AWS</a> (Amazon Web Services) which is a popular cloud provider. This is very common, many of the websites you visit run on AWS."
+		"defaultMessage": "We store all <em>Personal Data</em> on secure servers administered by <a>AWS</a> (Amazon Web Services) which is a popular cloud provider. This is very common, many of the websites you visit run on <em>AWS</em>."
 	},
 	"Privacy.personalDataEmailService": {
 		"defaultMessage": "No third party service is used for email communications, we are using AWS <em>Simple Email Service.</em>"
