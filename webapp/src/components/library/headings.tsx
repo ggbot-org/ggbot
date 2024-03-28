@@ -8,3 +8,7 @@ export const H1: FC<PropsWithChildren> = ({ children }) => (
 export const H2: FC<PropsWithChildren> = ({ children }) => (
 	<h2 className={classNames("is-size-2")}>{children}</h2>
 )
+
+export const H3: FC<PropsWithChildren> = ({ children }) => (
+	<h2 className={classNames("is-size-3")}>{children}</h2>
+)

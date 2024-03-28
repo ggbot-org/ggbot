@@ -207,7 +207,7 @@
 		"defaultMessage": "All your ggbot strategies will not able to be run!"
 	},
 	"DeleteBinanceApi.info": {
-		"defaultMessage": "This action will not delete your API key on Binance website."
+		"defaultMessage": "This action will not delete your API key on Binance."
 	},
 	"DeleteStrategy.button": {
 		"defaultMessage": "Delete"
@@ -339,22 +339,31 @@
 		"defaultMessage": "Privacy Policy"
 	},
 	"Privacy.welcome": {
-		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot</em> website."
+		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot</em> platform."
 	},
 	"Privacy.personalData": {
 		"defaultMessage": "Personal Data"
 	},
 	"Privacy.personalDataNotShared": {
-		"defaultMessage": "Your <em>Personal Data</em> is not shared with third parties."
+		"defaultMessage": "Your <em>Personal Data</em> is not shared with third parties other than <em>AWS</em> and <em>Stripe</em> as mentioned below."
+	},
+	"Privacy.cloudProvider": {
+		"defaultMessage": "Cloud provider"
+	},
+	"Privacy.paymentProvider": {
+		"defaultMessage": "Payment provider"
+	},
+	"Privacy.stripe": {
+		"defaultMessage": "<a>Stripe</a> is used as payments provider: during checkout your <em>email</em> will be prefilled and you will be asked to enter your <em>country</em> and <em>credit card</em> information such as <em>cardholder name</em>. The <em>ggbot</em> platform <b>does not store</b> your country nor your credit card information."
 	},
 	"Privacy.personalDataOnlyEmail": {
-		"defaultMessage": "No <em>Personal Data</em> is collected other than your account email."
+		"defaultMessage": "No <em>Personal Data</em> is collected other than your <em>account email</em>. This website does not use cookies and does not track you at all."
 	},
 	"Privacy.personalDataEmailUsage": {
-		"defaultMessage": "Your account email is used for authentication and communications."
+		"defaultMessage": "Your account email is used for authentication and communications. Communications are limited to what is strictly necessary, for example to inform you when there is an issue on your strategies that may impact your profits."
 	},
 	"Privacy.personalDataSecureStorage": {
-		"defaultMessage": "We store all <em>Personal Data</em> on secure servers administered by <em>AWS</em> (Amazon Web Services)."
+		"defaultMessage": "We store all <em>Personal Data</em> on secure servers administered by <a>AWS</a> (Amazon Web Services) which is a popular cloud provider. This is very common, many of the websites you visit run on AWS."
 	},
 	"Privacy.personalDataEmailService": {
 		"defaultMessage": "No third party service is used for email communications, we are using AWS <em>Simple Email Service.</em>"
@@ -567,7 +576,7 @@
 		"defaultMessage": "One year subscription 🎉"
 	},
 	"SubscriptionPurchase.hint": {
-		"defaultMessage": "Go for 12 months subscription and get 1 month for <em>free</em>."
+		"defaultMessage": "Go for {numMonths} months subscription and get 1 month for <em>free</em>."
 	},
 	"SubscriptionPurchase.oneMonthPrice": {
 		"defaultMessage": "Price for one month is {price}."
@@ -639,10 +648,13 @@
 		"defaultMessage": "Binance API"
 	},
 	"Terms.binanceApi": {
-		"defaultMessage": "The <em>ggbot</em> engine needs your grant to access your Binance account using Binance API key."
+		"defaultMessage": "The <em>ggbot</em> platform interacts with <a>Binance Exchange</a> and needs your grant to access your Binance account using Binance API key."
 	},
 	"Terms.binanceNoWithdrawals": {
 		"defaultMessage": "It is crucial to understand that <em>ggbot</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
+	},
+	"Terms.payments": {
+		"defaultMessage": "Payments"
 	},
 	"Terms.pricing": {
 		"defaultMessage": "Product pricing"

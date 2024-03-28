@@ -31,6 +31,8 @@ type OneColumn = "OneColumn"
 
 type PageClassName = "Page" | "Page__content" | "Page__footer"
 
+type ParagraphClassName = "Paragraph"
+
 type ToastContainerClassName = "ToastContainer"
 
 type ClassName =
@@ -44,6 +46,7 @@ type ClassName =
 	| ModalClassName
 	| OneColumn
 	| PageClassName
+	| ParagraphClassName
 	| ToastContainerClassName
 
 export const classNames = (...args: Array<_ClassNamesArg<ClassName>>) =>

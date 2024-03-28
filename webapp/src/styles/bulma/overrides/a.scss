@@ -1,4 +1,6 @@
 a {
+	text-decoration: underline;
+
 	&:focus-visible {
 		outline-color: $grey-light;
 	}

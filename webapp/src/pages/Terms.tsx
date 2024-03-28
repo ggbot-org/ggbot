@@ -1,6 +1,15 @@
-import { Container, Content, H1, H2, Section } from "_/components/library"
+import {
+	Container,
+	Content,
+	H1,
+	H2,
+	H3,
+	Paragraph,
+	Section
+} from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { webapp } from "_/routing/webapp"
+import { binance } from "@workspace/locators"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -13,42 +22,45 @@ export const TermsPage: FC = () => (
 						<FormattedMessage id="Terms.title" />
 					</H1>
 
-					<p>
+					<Paragraph>
 						<FormattedMessage
 							id="Terms.welcome"
 							values={{
 								em: (chuncks) => <em>{chuncks}</em>
 							}}
 						/>
-					</p>
+					</Paragraph>
 
 					<H2>
 						<FormattedMessage id="Terms.access" />
 					</H2>
 
-					<p>
+					<Paragraph>
 						<FormattedMessage
 							id="Terms.accessWithEmail"
 							values={{
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
-					</p>
+					</Paragraph>
 
 					<H2>
 						<FormattedMessage id="Terms.binance" />
 					</H2>
 
-					<p>
+					<Paragraph>
 						<FormattedMessage
 							id="Terms.binanceApi"
 							values={{
+								a: (text) => (
+									<a href={binance.homepage}>{text}</a>
+								),
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
-					</p>
+					</Paragraph>
 
-					<p>
+					<Paragraph>
 						<FormattedMessage
 							id="Terms.binanceNoWithdrawals"
 							values={{
@@ -56,21 +68,25 @@ export const TermsPage: FC = () => (
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
-					</p>
+					</Paragraph>
 
 					<H2>
-						<FormattedMessage id="Terms.pricing" />
+						<FormattedMessage id="Terms.payments" />
 					</H2>
 
-					<p>
+					<H3>
+						<FormattedMessage id="Terms.pricing" />
+					</H3>
+
+					<Paragraph>
 						<FormattedMessage id="Terms.pricingVat" />
-					</p>
+					</Paragraph>
 
 					<H2>
 						<FormattedMessage id="Privacy.title" />
 					</H2>
 
-					<p>
+					<Paragraph>
 						<FormattedMessage
 							id="Terms.privacy"
 							values={{
@@ -80,7 +96,7 @@ export const TermsPage: FC = () => (
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
-					</p>
+					</Paragraph>
 				</Content>
 			</Section>
 		</Container>

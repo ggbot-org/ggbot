@@ -158,6 +158,7 @@ export const SubscriptionPurchase: FC = () => {
 						<FormattedMessage
 							id="SubscriptionPurchase.hint"
 							values={{
+								numMonths: maxNumMonths,
 								em: (chunks) => <em>{chunks}</em>
 							}}
 						/>
