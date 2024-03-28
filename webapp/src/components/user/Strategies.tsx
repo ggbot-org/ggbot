@@ -1,5 +1,4 @@
 import {
-	Box,
 	Button,
 	Buttons,
 	Checkbox,
@@ -9,7 +8,7 @@ import {
 	Form,
 	Message
 } from "_/components/library"
-import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
+import { StrategyItem, StrategyItemProps } from "_/components/user/StrategyItem"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { webapp } from "_/routing/webapp"
 import { localWebStorage } from "_/storages/local"
@@ -24,11 +23,6 @@ import {
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { FormProps } from "trunx"
-
-type StrategyItem = Pick<
-	AccountStrategy,
-	"strategyId" | "name" | "schedulings"
-> & { href: string }
 
 export type StrategiesProps = {
 	goCreateStrategy: NonNullable<FormProps["onSubmit"]>
@@ -45,7 +39,10 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 		schedulingsAreInactive(schedulings)
 	)
 
-	const items: StrategyItem[] = []
+	const items: Array<
+		Pick<AccountStrategy, "strategyId"> & StrategyItemProps
+	> = []
+
 	if (accountStrategies) {
 		for (const {
 			strategyId,
@@ -121,17 +118,11 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 							fullhd: "one-third"
 						}}
 					>
-						<a href={href} tabIndex={0}>
-							<Box>
-								<Flex justify="space-between">
-									{name}
-
-									<SchedulingsStatusBadges
-										schedulings={schedulings}
-									/>
-								</Flex>
-							</Box>
-						</a>
+						<StrategyItem
+							name={name}
+							href={href}
+							schedulings={schedulings}
+						/>
 					</Column>
 				))}
 			</Columns>

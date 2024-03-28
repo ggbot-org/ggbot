@@ -4,13 +4,13 @@ import { memo } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const Navigation = memo(() => (
-	<Navbar>
+	<Navbar className="Navigation">
 		<NavbarStart>
 			<NavbarItemAnchor
 				onClick={() => {
 					const pathname = webapp.admin.dashboard.pathname
-					if (window.location.pathname !== pathname)
-						window.location.pathname = pathname
+					if (location.pathname !== pathname)
+						location.pathname = pathname
 				}}
 			>
 				<FormattedMessage id="AdminNavigation.dashboard" />

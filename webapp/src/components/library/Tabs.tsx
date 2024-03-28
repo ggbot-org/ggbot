@@ -11,7 +11,7 @@ export const TabSelector: FC<PropsWithChildren<TabSelectorProps>> = ({
 	isActive,
 	...props
 }) => (
-	<li className={classNames({ "is-active": isActive })}>
+	<li className={classNames("TabSelector", { "is-active": isActive })}>
 		<a {...props}>{children}</a>
 	</li>
 )

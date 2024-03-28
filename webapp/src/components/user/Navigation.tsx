@@ -14,12 +14,12 @@ export const Navigation = memo(() => {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
 	return (
-		<Navbar>
+		<Navbar className="Navigation">
 			<NavbarStart>
 				<NavbarItemAnchor
 					onClick={() => {
-						if (window.location.href !== href.dashboardPage())
-							window.location.href = href.dashboardPage()
+						if (location.href !== href.dashboardPage())
+							location.href = href.dashboardPage()
 					}}
 				>
 					<FormattedMessage id="Navigation.dashboard" />
@@ -27,8 +27,8 @@ export const Navigation = memo(() => {
 
 				<NavbarItemAnchor
 					onClick={() => {
-						if (window.location.href !== href.settingsPage())
-							window.location.href = href.settingsPage()
+						if (location.href !== href.settingsPage())
+							location.href = href.settingsPage()
 					}}
 				>
 					<FormattedMessage id="Navigation.settings" />
@@ -40,8 +40,8 @@ export const Navigation = memo(() => {
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
 						onClick={() => {
-							if (window.location.href !== href.adminPage())
-								window.location.href = href.adminPage()
+							if (location.href !== href.adminPage())
+								location.href = href.adminPage()
 						}}
 					>
 						<FormattedMessage id="Navigation.admin" />

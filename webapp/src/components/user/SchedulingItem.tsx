@@ -3,7 +3,7 @@ import {
 	FrequencyInputProps
 } from "_/components/FrequencyInput"
 import { Box, Button, Buttons, Level, LevelItem } from "_/components/library"
-import { SchedulingStatus } from "_/components/SchedulingStatus"
+import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
 import { FC, useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"

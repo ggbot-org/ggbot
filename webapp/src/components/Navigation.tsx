@@ -4,5 +4,5 @@ import { FC } from "react"
 export const Navigation: FC = () => {
 	if (location.pathname === "/") return null
 
-	return <Navbar noMenu />
+	return <Navbar noMenu className="Navigation" />
 }

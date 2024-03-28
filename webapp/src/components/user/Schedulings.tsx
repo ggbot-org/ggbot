@@ -13,10 +13,10 @@ import { Memory } from "_/components/Memory"
 import {
 	SchedulingItem,
 	SchedulingItemProps
-} from "_/components/SchedulingItem"
-import { SchedulingsStatusBadges } from "_/components/SchedulingsStatusBadges"
+} from "_/components/user/SchedulingItem"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
+import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"

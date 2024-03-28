@@ -6,7 +6,8 @@ import {
 	NavbarBrand,
 	NavbarBurger,
 	NavbarItem,
-	NavbarMenu
+	NavbarMenu,
+	NavbarProps
 } from "trunx"
 
 import { BrandName } from "./BrandName"
@@ -14,12 +15,13 @@ import { Logo } from "./Logo"
 
 type Props = Partial<{
 	noMenu: boolean
-}>
+}> &
+	Pick<NavbarProps, "className">
 
 export const Navbar: FC<PropsWithChildren<Props>> = ({
 	children,
-	noMenu,
-	...props
+	className,
+	noMenu
 }) => {
 	const [isActive, setIsActive] = useState(false)
 
@@ -35,7 +37,7 @@ export const Navbar: FC<PropsWithChildren<Props>> = ({
 	}, [])
 
 	return (
-		<_Navbar color="black" {...props}>
+		<_Navbar className={className} color="black">
 			<NavbarBrand
 				onClick={() => {
 					const { pathname } = location

@@ -27,11 +27,17 @@ type InputClassName = "Input--isStatic"
 
 type ModalClassName = "Modal__content"
 
+type NavigationClassName = "Navigation"
+
 type OneColumn = "OneColumn"
 
 type PageClassName = "Page" | "Page__content" | "Page__footer"
 
 type ParagraphClassName = "Paragraph"
+
+type StrategyItemClassName = "StrategyItem"
+
+type TabSelectorClassName = "TabSelector"
 
 type ToastContainerClassName = "ToastContainer"
 
@@ -44,9 +50,12 @@ type ClassName =
 	| FooterClassName
 	| InputClassName
 	| ModalClassName
+	| NavigationClassName
 	| OneColumn
 	| PageClassName
 	| ParagraphClassName
+	| StrategyItemClassName
+	| TabSelectorClassName
 	| ToastContainerClassName
 
 export const classNames = (...args: Array<_ClassNamesArg<ClassName>>) =>

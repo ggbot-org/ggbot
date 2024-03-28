@@ -1,10 +1,11 @@
 import { Control, Field } from "_/components/library"
-import { SchedulingStatus } from "_/components/SchedulingStatus"
+import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import {
 	AccountStrategy,
 	getSchedulingSummary,
 	schedulingsAreInactive,
-	schedulingStatuses} from "@workspace/models"
+	schedulingStatuses
+} from "@workspace/models"
 import { FC } from "react"
 
 type Props = {
