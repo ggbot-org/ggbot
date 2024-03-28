@@ -76,6 +76,8 @@ module.exports = {
 		"no-case-declarations": "error",
 		// TODO remove this no-console
 		"no-console": ["error", { allow: ["error"] }],
+		// TODO remove this no-warning-comments
+		"no-warning-comments": "warn",
 		"react-hooks/exhaustive-deps": "error",
 		"react-hooks/rules-of-hooks": "error",
 		"react/display-name": "error",

@@ -6,5 +6,9 @@ module.exports = {
 	parserOptions: {
 		project: true,
 		tsconfigRootDir: __dirname
+	},
+	// TODO remove overrides
+	rules: {
+		"no-warning-comments": "warn"
 	}
 }
