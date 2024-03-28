@@ -21,7 +21,6 @@
     -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
     -   [@typescript-eslint/parser](#typescript-eslintparser)
     -   [aws-sdk](#aws-sdk)
-    -   [country-isocode2](#country-isocode2)
     -   [eslint](#eslint)
     -   [eslint-plugin-import](#eslint-plugin-import)
     -   [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
@@ -161,10 +160,6 @@ https://www.npmjs.com/package/@typescript-eslint/parser
 ### aws-sdk
 
 https://www.npmjs.com/package/aws-sdk
-
-### country-isocode2
-
-https://www.npmjs.com/package/country-isocode2
 
 ### dflow
 

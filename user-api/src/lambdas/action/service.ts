@@ -98,19 +98,9 @@ export class Service implements ApiService<UserClientActionType> {
 		return this.dataProvider.ReadSubscription()
 	}
 
-	RenameAccount(arg: unknown) {
-		if (!isInput.RenameAccount(arg)) throw new BadRequestError()
-		return this.dataProvider.RenameAccount(arg)
-	}
-
 	RenameStrategy(arg: unknown) {
 		if (!isInput.RenameStrategy(arg)) throw new BadRequestError()
 		return this.dataProvider.RenameStrategy(arg)
-	}
-
-	SetAccountCountry(arg: unknown) {
-		if (!isInput.SetAccountCountry(arg)) throw new BadRequestError()
-		return this.dataProvider.SetAccountCountry(arg)
 	}
 
 	WriteAccountStrategiesItemSchedulings(arg: unknown) {

@@ -1,14 +1,11 @@
 import {
-	Account,
 	AccountInfo,
 	AccountKey,
 	AccountStrategy,
-	AllowedCountryIsoCode2,
 	BinanceApiConfig,
 	CreationTime,
 	DeletionTime,
 	EmailAddress,
-	isAllowedCountryIsoCode2,
 	isBinanceApiConfig,
 	isEmailAddress,
 	isFlowViewSerializableGraph,
@@ -48,7 +45,6 @@ export type UserDatabaseAction = {
 	) => Promise<StrategyKey>
 	CreateBinanceApiConfig: (arg: BinanceApiConfig) => Promise<CreationTime>
 	CreatePurchaseOrder: (arg: {
-		country: AllowedCountryIsoCode2
 		email: EmailAddress
 		numMonths: NaturalNumber
 		paymentProvider: PaymentProvider
@@ -71,12 +67,8 @@ export type UserDatabaseAction = {
 	) => Promise<StrategyError[]>
 	ReadStrategyOrders: (arg: StrategyKey & DayInterval) => Promise<Order[]>
 	ReadSubscription: (arg: void) => Promise<Subscription | null>
-	RenameAccount: (arg: Required<Pick<Account, "name">>) => Promise<UpdateTime>
 	RenameStrategy: (
 		arg: StrategyKey & Required<Pick<Strategy, "name">>
-	) => Promise<UpdateTime>
-	SetAccountCountry: (
-		arg: Required<Pick<Account, "country">>
 	) => Promise<UpdateTime>
 	/**
 	 * @remarks
@@ -116,9 +108,7 @@ export type UserDatabaseActionInput = {
 	ReadStrategyErrors: Parameters<UserDatabaseAction["ReadStrategyErrors"]>[0]
 	ReadStrategyOrders: Parameters<UserDatabaseAction["ReadStrategyOrders"]>[0]
 	ReadSubscription: Parameters<UserDatabaseAction["ReadSubscription"]>[0]
-	RenameAccount: Parameters<UserDatabaseAction["RenameAccount"]>[0]
 	RenameStrategy: Parameters<UserDatabaseAction["RenameStrategy"]>[0]
-	SetAccountCountry: Parameters<UserDatabaseAction["SetAccountCountry"]>[0]
 	WriteAccountStrategiesItemSchedulings: Parameters<
 		UserDatabaseAction["WriteAccountStrategiesItemSchedulings"]
 	>[0]
@@ -156,11 +146,7 @@ export type UserDatabaseActionOutput = {
 	ReadSubscription: Awaited<
 		ReturnType<UserDatabaseAction["ReadSubscription"]>
 	>
-	RenameAccount: Awaited<ReturnType<UserDatabaseAction["RenameAccount"]>>
 	RenameStrategy: Awaited<ReturnType<UserDatabaseAction["RenameStrategy"]>>
-	SetAccountCountry: Awaited<
-		ReturnType<UserDatabaseAction["SetAccountCountry"]>
-	>
 	WriteAccountStrategiesItemSchedulings: Awaited<
 		ReturnType<UserDatabaseAction["WriteAccountStrategiesItemSchedulings"]>
 	>
@@ -188,9 +174,7 @@ export const userClientActions: ActionTypes<UserClientActionType> = [
 	"ReadStrategyErrors",
 	"ReadStrategyOrders",
 	"ReadSubscription",
-	"RenameAccount",
 	"RenameStrategy",
-	"SetAccountCountry",
 	"WriteAccountStrategiesItemSchedulings",
 	"WriteStrategyFlow",
 	// Binance client action types.
@@ -214,10 +198,9 @@ export const isUserClientActionInput = {
 	CreatePurchaseOrder: objectTypeGuard<
 		UserClientActionInput["CreatePurchaseOrder"]
 	>(
-		({ country, email, numMonths, paymentProvider, plan }) =>
+		({ email, numMonths, paymentProvider, plan }) =>
 			isEmailAddress(email) &&
 			isSubscriptionPlan(plan) &&
-			isAllowedCountryIsoCode2(country) &&
 			isNaturalNumber(numMonths) &&
 			isPaymentProvider(paymentProvider)
 	),
@@ -249,15 +232,9 @@ export const isUserClientActionInput = {
 		({ start, end, ...strategyKey }) =>
 			isDayInterval({ start, end }) && isStrategyKey(strategyKey)
 	),
-	RenameAccount: objectTypeGuard<UserClientActionInput["RenameAccount"]>(
-		({ name }) => isName(name)
-	),
 	RenameStrategy: objectTypeGuard<UserClientActionInput["RenameStrategy"]>(
 		({ name, ...strategyKey }) => isName(name) && isStrategyKey(strategyKey)
 	),
-	SetAccountCountry: objectTypeGuard<
-		UserClientActionInput["SetAccountCountry"]
-	>(({ country }) => isAllowedCountryIsoCode2(country)),
 	WriteAccountStrategiesItemSchedulings: objectTypeGuard<
 		UserClientActionInput["WriteAccountStrategiesItemSchedulings"]
 	>(

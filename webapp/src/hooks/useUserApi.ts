@@ -97,23 +97,12 @@ export const useUserApi = {
 			Input["ReadSubscription"],
 			Output["ReadSubscription"]
 		>(apiOptions, "ReadSubscription"),
-	RenameAccount: () =>
-		useAction<ActionType, Input["RenameAccount"], Output["RenameAccount"]>(
-			apiOptions,
-			"RenameAccount"
-		),
 	RenameStrategy: () =>
 		useAction<
 			ActionType,
 			Input["RenameStrategy"],
 			Output["RenameStrategy"]
 		>(apiOptions, "RenameStrategy"),
-	SetAccountCountry: () =>
-		useAction<
-			ActionType,
-			Input["SetAccountCountry"],
-			Output["SetAccountCountry"]
-		>(apiOptions, "SetAccountCountry"),
 	WriteAccountStrategiesItemSchedulings: () =>
 		useAction<
 			ActionType,

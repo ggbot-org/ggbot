@@ -19,12 +19,6 @@ export const Account: FC = () => {
 
 			<Email isStatic value={account.email} />
 
-			{/*
-TODO show country
-create component Country to add country name translations, to be reused also by SelectCountry
-here add a static field
-*/}
-
 			<WhenCreated value={account.whenCreated} />
 
 			<AccountId value={account.id} />

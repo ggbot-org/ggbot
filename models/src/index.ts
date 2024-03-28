@@ -32,8 +32,6 @@ export type {
 export { isBinanceApiConfig } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
-export type { AllowedCountryIsoCode2 } from "./country.js"
-export { allowedCountryIsoCodes2, isAllowedCountryIsoCode2 } from "./country.js"
 export type { DeployStage } from "./deployStage.js"
 export type { EmailAddress } from "./email.js"
 export { isEmailAddress, normalizeEmailAddress } from "./email.js"

@@ -443,36 +443,6 @@
 	"SchedulingStatus.suspended": {
 		"defaultMessage": "Suspended"
 	},
-	"SelectCountry.AT": {
-		"defaultMessage": "Austria"
-	},
-	"SelectCountry.FR": {
-		"defaultMessage": "France"
-	},
-	"SelectCountry.IT": {
-		"defaultMessage": "Italy"
-	},
-	"SelectCountry.DE": {
-		"defaultMessage": "Germany"
-	},
-	"SelectCountry.ES": {
-		"defaultMessage": "Spain"
-	},
-	"SelectCountry.GR": {
-		"defaultMessage": "Greece"
-	},
-	"SelectCountry.NL": {
-		"defaultMessage": "Netherlands"
-	},
-	"SelectCountry.PT": {
-		"defaultMessage": "Portugal"
-	},
-	"SelectCountry.label": {
-		"defaultMessage": "Country"
-	},
-	"SelectCountry.noValue": {
-		"defaultMessage": "-- Select country --"
-	},
 	"SocialLinks.telegramSupport": {
 		"defaultMessage": "Telegram support group"
 	},

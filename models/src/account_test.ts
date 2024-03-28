@@ -5,8 +5,6 @@ import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { Account, isAccount, newAccount } from "./account.js"
 import { nullId } from "./item.js"
-import { normalizeName } from "./name.js"
-import { invalidNames } from "./name_test.js"
 import { createdNow } from "./time.js"
 
 void test("isAccount", () => {
@@ -15,10 +13,6 @@ void test("isAccount", () => {
 	assertEqual<MaybeObject<Account>, boolean>(isAccount, [
 		{
 			input: newAccount({ email }),
-			output: true
-		},
-		{
-			input: newAccount({ email, name: "Name" }),
 			output: true
 		},
 		{
@@ -36,15 +30,6 @@ void test("isAccount", () => {
 				whenCreated: "not a timestamp"
 			},
 			output: false
-		},
-		...invalidNames.map((invalidName) => ({
-			input: {
-				id: nullId,
-				email,
-				whenCreated,
-				name: normalizeName(invalidName)
-			},
-			output: false
-		}))
+		}
 	])
 })

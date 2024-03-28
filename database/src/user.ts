@@ -236,18 +236,6 @@ export class UserDatabase implements UserDatabaseAction {
 		)
 	}
 
-	async RenameAccount({ name }: Input["RenameAccount"]) {
-		const account = await this.readAccount()
-		const data: Account = {
-			...account,
-			name
-		}
-		return this.documentProvider.setItem(
-			pathname.account(this.accountKey),
-			data
-		)
-	}
-
 	async RenameStrategy({
 		name: newName,
 		strategyId,
@@ -265,18 +253,6 @@ export class UserDatabase implements UserDatabaseAction {
 			return { ...item, name: newName }
 		})
 		return this.writeAccountStrategies(data)
-	}
-
-	async SetAccountCountry({ country }: Input["SetAccountCountry"]) {
-		const account = await this.readAccount()
-		const data: Account = {
-			...account,
-			country
-		}
-		return this.documentProvider.setItem(
-			pathname.account(this.accountKey),
-			data
-		)
 	}
 
 	async WriteAccountStrategiesItemSchedulings({
