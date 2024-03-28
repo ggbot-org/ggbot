@@ -11,15 +11,18 @@ export class StripeClient {
 
 	/** Call `stripe.checkout.sessions.create()` adding context. */
 	createCheckoutSession({
+		email,
 		metadata,
 		price,
 		quantity
 	}: {
+		email: string
 		metadata: StripeMetadata
 		price: string
 		quantity: number
 	}) {
 		return this.stripe.checkout.sessions.create({
+			customer_email: email,
 			line_items: [
 				{
 					price,

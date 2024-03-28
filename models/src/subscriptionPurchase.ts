@@ -4,76 +4,38 @@ import {
 	DayInterval,
 	dayToDate,
 	getDate,
-	isDay,
-	isDayInterval
+	isDay
 } from "minimal-time-helpers"
-import {
-	isLiteralType,
-	isMaybeObject,
-	objectTypeGuard
-} from "minimal-type-guard-helpers"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { AccountKey } from "./account.js"
 import { isItemId, Item, newId, NewItem } from "./item.js"
 import { NaturalNumber } from "./numbers.js"
-import { isPaymentProvider, PaymentProvider } from "./paymentProviders.js"
-import { SerializableObject } from "./serializable.js"
-import { isSubscriptionPlan, SubscriptionPlan } from "./subscription.js"
-import { createdNow, CreationTime, DayKey, isCreationTime } from "./time.js"
+import { PaymentProvider } from "./paymentProviders.js"
+import { SubscriptionPlan } from "./subscription.js"
+import { createdNow, CreationTime, DayKey } from "./time.js"
 
 export const purchaseDefaultNumMonths = 6
 
 /**
- * Maximum number of purchase months.
+ * Maximum number of purchase months. Considering 1 month discount, 11 months is
+ * a yearly subscription.
  *
+ * @remarks
  * It is bounded in order to renew conditions periodically. For example the
  * purchase may be blocked if the user needs to update its API settings.
  */
-export const purchaseMaxNumMonths = 12
+export const purchaseMaxNumMonths = 11
 
 /** Minimum number of purchase months. */
 export const purchaseMinNumMonths = 1
 
-const subscriptionPurchaseStatuses = [
-	"completed",
-	"canceled",
-	"pending"
-] as const
-type SubscriptionPurchaseStatus = (typeof subscriptionPurchaseStatuses)[number]
-
-const isSubscriptionPurchaseStatus = isLiteralType<SubscriptionPurchaseStatus>(
-	subscriptionPurchaseStatuses
-)
-
 export type SubscriptionPurchase = Item &
 	CreationTime &
 	DayInterval & {
-		info?: SerializableObject
 		plan: SubscriptionPlan
 		paymentProvider: PaymentProvider
-		status: SubscriptionPurchaseStatus
 	}
-
-export const isSubscriptionPurchase = objectTypeGuard<SubscriptionPurchase>(
-	({
-		id,
-		plan,
-		paymentProvider,
-		status,
-		whenCreated,
-		info,
-		...dayInterval
-	}) =>
-		isItemId(id) &&
-		isSubscriptionPlan(plan) &&
-		isPaymentProvider(paymentProvider) &&
-		isCreationTime({ whenCreated }) &&
-		isDayInterval(dayInterval) &&
-		isSubscriptionPurchaseStatus(status) &&
-		info === undefined
-			? true
-			: isMaybeObject(info)
-)
 
 export type SubscriptionPurchaseKey = AccountKey &
 	DayKey & {
@@ -103,7 +65,6 @@ export const newMonthlySubscription = ({
 		id: newId(),
 		paymentProvider,
 		plan,
-		status: "pending",
 		...createdNow(),
 		...dayInterval
 	}
@@ -124,19 +85,9 @@ export const newYearlySubscription = ({
 		id: newId(),
 		paymentProvider,
 		plan,
-		status: "pending",
 		...createdNow(),
 		...dayInterval
 	}
-}
-
-export const totalPurchase = (
-	monthlyPrice: number,
-	numMonths: NaturalNumber
-) => {
-	// if 12 months, apply discount.
-	if (numMonths === 12) return monthlyPrice * 11
-	return numMonths * monthlyPrice
 }
 
 export const isYearlyPurchase = ({
@@ -144,6 +95,6 @@ export const isYearlyPurchase = ({
 }: {
 	numMonths: unknown
 }): boolean | undefined => {
-	if (typeof numMonths !== "number") return undefined
-	return numMonths >= purchaseMaxNumMonths - 1
+	if (typeof numMonths !== "number") return
+	return numMonths === purchaseMaxNumMonths
 }

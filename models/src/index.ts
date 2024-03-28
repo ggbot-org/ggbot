@@ -141,8 +141,7 @@ export {
 	newYearlySubscription,
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,
-	purchaseMinNumMonths,
-	totalPurchase
+	purchaseMinNumMonths
 } from "./subscriptionPurchase.js"
 export type { CreationTime, DayKey, DeletionTime, UpdateTime } from "./time.js"
 export { createdNow, deletedNow, updatedNow } from "./time.js"

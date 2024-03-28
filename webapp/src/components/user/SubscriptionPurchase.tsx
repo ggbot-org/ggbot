@@ -14,6 +14,7 @@ import {
 } from "_/components/user/SubscriptionEnd"
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
+import { AuthenticationContext } from "_/contexts/Authentication"
 import { useStripeApi } from "_/hooks/useStripeApi"
 import { useSubscription } from "_/hooks/useSubscription"
 import {
@@ -25,7 +26,14 @@ import {
 } from "@workspace/models"
 import { isYearlyPurchase } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
-import { FC, FormEventHandler, useCallback, useEffect, useState } from "react"
+import {
+	FC,
+	FormEventHandler,
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
@@ -35,6 +43,8 @@ const fields = Object.keys(fieldName)
 
 export const SubscriptionPurchase: FC = () => {
 	const { formatNumber, formatMessage } = useIntl()
+
+	const { accountEmail } = useContext(AuthenticationContext)
 
 	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
 		useSubscription()
@@ -92,11 +102,12 @@ export const SubscriptionPurchase: FC = () => {
 			if (typeof numMonths !== "number") return
 
 			CREATE_CHECKOUT.request({
+				email: accountEmail,
 				numMonths,
 				plan: subscriptionPlan
 			})
 		},
-		[CREATE_CHECKOUT]
+		[CREATE_CHECKOUT, accountEmail]
 	)
 
 	const formattedMonthlyPrice = formatNumber(monthlyPrice, {

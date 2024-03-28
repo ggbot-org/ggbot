@@ -18,7 +18,7 @@ export class Service implements ApiService<StripeClientActionType> {
 
 	async CreateCheckoutSession(arg: unknown) {
 		if (!isInput.CreateCheckoutSession(arg)) throw new BadRequestError()
-		const { numMonths, plan } = arg
+		const { email, numMonths, plan } = arg
 
 		const metadata: StripeMetadata = {
 			accountId: this.accountId,
@@ -32,6 +32,7 @@ export class Service implements ApiService<StripeClientActionType> {
 
 		const session = await this.stripe.createCheckoutSession({
 			metadata,
+			email,
 			quantity: numMonths,
 			price
 		})

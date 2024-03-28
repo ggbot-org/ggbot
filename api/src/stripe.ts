@@ -3,8 +3,7 @@ import {
 	isNaturalNumber,
 	isSubscriptionPlan,
 	NaturalNumber,
-	Subscription,
-	SubscriptionPlan
+	Subscription
 } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
@@ -13,11 +12,17 @@ import { ActionTypes } from "./action.js"
 export type StripeMetadata = AccountKey & Pick<Subscription, "plan">
 
 type StripeClientAction = {
-	CreateCheckoutSession: (arg: {
-		/** Number of months to subscribe. */
-		numMonths: NaturalNumber
-		plan: SubscriptionPlan
-	}) => Promise<{ url: string }>
+	CreateCheckoutSession: (
+		arg: {
+			/** Used to prefill the email field on the checkout page. */
+			email: string
+			/** Number of months to subscribe. */
+			numMonths: NaturalNumber
+		} & Pick<StripeMetadata, "plan">
+	) => Promise<{
+		/** The webapp will redirect to this checkout session URL. */
+		url: string
+	}>
 }
 
 export type StripeClientActionType = keyof StripeClientAction

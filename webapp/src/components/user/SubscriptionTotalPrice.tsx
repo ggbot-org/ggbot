@@ -1,5 +1,4 @@
 import { InputField } from "_/components/library"
-import { totalPurchase } from "@workspace/models"
 import { FC } from "react"
 import { useIntl } from "react-intl"
 
@@ -23,7 +22,7 @@ export const SubscriptionTotalPrice: FC<Props> = ({
 			label={formatMessage({ id: "SubscriptionTotalPrice.label" })}
 			value={
 				numMonths
-					? formatNumber(totalPurchase(monthlyPrice, numMonths), {
+					? formatNumber(monthlyPrice * numMonths, {
 							style: "currency",
 							currency
 					  })
