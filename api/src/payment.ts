@@ -6,18 +6,26 @@ import {
 	UpdateTime
 } from "@workspace/models"
 
-type Action = {
+export type PaymentAction = {
+	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>
 	WriteSubscription: (arg: AccountKey & Subscription) => Promise<UpdateTime>
 	WriteSubscriptionPurchase: (
 		arg: SubscriptionPurchaseKey & SubscriptionPurchase
 	) => Promise<UpdateTime>
 }
-export type PaymentAction = Action
 
-type Input = {
-	WriteSubscription: Parameters<Action["WriteSubscription"]>[0]
+export type PaymentActionInput = {
+	ReadSubscription: Parameters<PaymentAction["ReadSubscription"]>[0]
+	WriteSubscription: Parameters<PaymentAction["WriteSubscription"]>[0]
 	WriteSubscriptionPurchase: Parameters<
-		Action["WriteSubscriptionPurchase"]
+		PaymentAction["WriteSubscriptionPurchase"]
 	>[0]
 }
-export type PaymentActionInput = Input
+
+export type PaymentActionOutput = {
+	ReadSubscription: Awaited<ReturnType<PaymentAction["ReadSubscription"]>>
+	WriteSubscription: Awaited<ReturnType<PaymentAction["WriteSubscription"]>>
+	WriteSubscriptionPurchase: Awaited<
+		ReturnType<PaymentAction["WriteSubscriptionPurchase"]>
+	>
+}

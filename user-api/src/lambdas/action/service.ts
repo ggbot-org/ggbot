@@ -15,20 +15,16 @@ import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
 import { BadRequestError, GatewayTimeoutError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
-import { AccountKey } from "@workspace/models"
 
 export class Service implements ApiService<UserClientActionType> {
-	accountKey: AccountKey
 	dataProvider: UserDatabase
 	authorization: string
 
-	constructor({
-		accountKey,
-		authorization,
-		documentProvider
-	}: Pick<UserDatabase, "documentProvider"> &
-		Pick<Service, "accountKey" | "authorization">) {
-		this.accountKey = accountKey
+	constructor(
+		accountKey: ConstructorParameters<typeof UserDatabase>[0],
+		documentProvider: ConstructorParameters<typeof UserDatabase>[1],
+		authorization: Service["authorization"]
+	) {
 		this.dataProvider = new UserDatabase(accountKey, documentProvider)
 		this.authorization = authorization
 	}

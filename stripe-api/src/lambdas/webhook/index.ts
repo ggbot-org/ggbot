@@ -13,8 +13,8 @@ import {
 } from "@workspace/http"
 import { logging } from "@workspace/logging"
 import {
-	newMonthlySubscription,
-	newYearlySubscription,
+	newMonthlySubscriptionPurchase,
+	newYearlySubscriptionPurchase,
 	PaymentProvider
 } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
@@ -22,7 +22,7 @@ import {
 	StripeClient,
 	StripeSignatureVerificationError
 } from "@workspace/stripe"
-import { today } from "minimal-time-helpers"
+import { getDay, today } from "minimal-time-helpers"
 
 const { info, debug } = logging("stripe-api")
 
@@ -64,20 +64,24 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				)
 				if (!checkout) return BAD_REQUEST()
 
-				// TODO read current subscription, startDay may be when it ends + one day.
-				const startDay = today()
+				// The `startDay` may be when current subscription ends, if any.
+				const subscription = await dataProvider.ReadSubscription({
+					accountId
+				})
+				const startDay = subscription?.end ?? today()
 
-				const subscriptionPurchase = checkout.isYearly
-					? newYearlySubscription({
+				const { quantity: numMonths, isYearly } = checkout
+
+				const subscriptionPurchase = isYearly
+					? newYearlySubscriptionPurchase({
 							plan,
 							paymentProvider,
 							startDay
 					  })
-					: newMonthlySubscription({
+					: newMonthlySubscriptionPurchase({
 							plan,
 							paymentProvider,
-							numMonths: checkout.quantity,
-
+							numMonths,
 							startDay
 					  })
 
@@ -86,6 +90,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 					day: today(),
 					purchaseId: subscriptionPurchase.id,
 					...subscriptionPurchase
+				})
+
+				// Compute the new subscription end day, considering if it is yearly or monthly purchase.
+				const subscriptionEnd = isYearly
+					? getDay(startDay).plus(1).years
+					: getDay(startDay).plus(numMonths).months
+
+				await dataProvider.WriteSubscription({
+					accountId,
+					plan,
+					end: subscriptionEnd
 				})
 
 				return OK(received)

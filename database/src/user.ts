@@ -37,12 +37,13 @@ import { pathname } from "./locators.js"
 import { PublicDatabase } from "./public.js"
 
 export class UserDatabase implements UserDatabaseAction {
-	readonly accountKey: AccountKey
-	readonly documentProvider: DocumentProviderLevel2
-	readonly binanceDatabase: BinanceDatabase
-	readonly publicDatabase: PublicDatabase
 	// TODO cache should be attached after to the instance, to be reused
 	readonly strategyAccountIdCache = new CacheMap<Account["id"]>()
+
+	private accountKey: AccountKey
+	private documentProvider: DocumentProviderLevel2
+	private binanceDatabase: BinanceDatabase
+	private publicDatabase: PublicDatabase
 
 	constructor(
 		accountKey: UserDatabase["accountKey"],

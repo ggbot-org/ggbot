@@ -48,7 +48,7 @@ export const isSubscriptionPurchaseKey =
 			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
 	)
 
-export const newMonthlySubscription = ({
+export const newMonthlySubscriptionPurchase = ({
 	plan,
 	paymentProvider,
 	startDay,
@@ -70,7 +70,7 @@ export const newMonthlySubscription = ({
 	}
 }
 
-export const newYearlySubscription = ({
+export const newYearlySubscriptionPurchase = ({
 	plan,
 	paymentProvider,
 	startDay

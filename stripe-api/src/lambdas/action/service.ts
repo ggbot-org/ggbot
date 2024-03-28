@@ -27,7 +27,6 @@ export class Service implements ApiService<StripeClientActionType> {
 
 		let price: string
 		if (plan === "basic") price = ENV.STRIPE_PLAN_BASIC_PRICE_ID()
-		// TODO else if (plan==="pro") price = ENV.STRIPE_PLAN_PRO_PRICE_ID()
 		else throw new BadRequestError()
 
 		const session = await this.stripe.createCheckoutSession({

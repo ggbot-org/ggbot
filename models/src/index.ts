@@ -136,8 +136,8 @@ export type {
 export {
 	isSubscriptionPurchaseKey,
 	isYearlyPurchase,
-	newMonthlySubscription,
-	newYearlySubscription,
+	newMonthlySubscriptionPurchase,
+	newYearlySubscriptionPurchase,
 	purchaseDefaultNumMonths,
 	purchaseMaxNumMonths,
 	purchaseMinNumMonths

@@ -24,7 +24,7 @@ import {
 } from "./locators.js"
 
 export class ExecutorDatabase implements ExecutorAction {
-	documentProvider: DocumentProviderLevel3
+	private documentProvider: DocumentProviderLevel3
 
 	constructor(documentProvider: ExecutorDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider

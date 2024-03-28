@@ -1,16 +1,23 @@
 import {
 	DocumentProviderLevel2,
 	PaymentAction,
-	PaymentActionInput as Input
+	PaymentActionInput as Input,
+	PaymentActionOutput as Output
 } from "@workspace/api"
 
 import { pathname } from "./locators.js"
 
 export class PaymentDatabase implements PaymentAction {
-	documentProvider: DocumentProviderLevel2
+	private documentProvider: DocumentProviderLevel2
 
 	constructor(documentProvider: PaymentDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
+	}
+
+	ReadSubscription({ accountId }: Input["ReadSubscription"]) {
+		return this.documentProvider.getItem<Output["ReadSubscription"]>(
+			pathname.subscription({ accountId })
+		)
 	}
 
 	WriteSubscription({

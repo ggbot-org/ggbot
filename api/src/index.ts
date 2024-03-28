@@ -57,7 +57,11 @@ export type {
 	ExecutorActionInput,
 	ExecutorActionOutput
 } from "./executor.js"
-export type { PaymentAction, PaymentActionInput } from "./payment.js"
+export type {
+	PaymentAction,
+	PaymentActionInput,
+	PaymentActionOutput
+} from "./payment.js"
 export type {
 	PublicAction,
 	PublicActionInput,

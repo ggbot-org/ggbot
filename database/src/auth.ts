@@ -14,7 +14,7 @@ import {
 import { pathname } from "./locators.js"
 
 export class AuthDatabase implements AuthDatabaseAction {
-	documentProvider: DocumentProviderLevel2
+	private documentProvider: DocumentProviderLevel2
 
 	constructor(documentProvider: AuthDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
