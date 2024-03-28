@@ -39,6 +39,8 @@ type StrategyItemClassName = "StrategyItem"
 
 type TabSelectorClassName = "TabSelector"
 
+type TermsAndPolicyLinksClassName = "TermsAndPolicyLinks"
+
 type ToastContainerClassName = "ToastContainer"
 
 type ClassName =
@@ -56,6 +58,7 @@ type ClassName =
 	| ParagraphClassName
 	| StrategyItemClassName
 	| TabSelectorClassName
+	| TermsAndPolicyLinksClassName
 	| ToastContainerClassName
 
 export const classNames = (...args: Array<_ClassNamesArg<ClassName>>) =>

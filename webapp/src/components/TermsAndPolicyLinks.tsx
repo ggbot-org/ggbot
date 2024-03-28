@@ -1,9 +1,10 @@
+import { classNames } from "_/classNames"
 import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const TermsAndPolicyLinks: FC = () => (
-	<ul>
+	<ul className={classNames("TermsAndPolicyLinks")}>
 		<li>
 			<a href={webapp.privacy.pathname}>
 				<FormattedMessage id="Privacy.title" />
