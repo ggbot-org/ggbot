@@ -144,6 +144,10 @@ export const SubscriptionPurchase: FC = () => {
 					) : (
 						<Message color="info">
 							<FormattedMessage id="SubscriptionPurchase.pleasePurchase" />
+
+							<br />
+
+							<FormattedMessage id="SubscriptionPurchase.purchaseCurrency" />
 						</Message>
 					)}
 

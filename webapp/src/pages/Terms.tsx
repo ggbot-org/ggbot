@@ -9,7 +9,7 @@ import {
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { webapp } from "_/routing/webapp"
-import { binance } from "@workspace/locators"
+import { binance, telegram } from "@workspace/locators"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -45,6 +45,32 @@ export const TermsPage: FC = () => (
 					</Paragraph>
 
 					<H2>
+						<FormattedMessage id="Terms.product" />
+					</H2>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Terms.strategies"
+							values={{
+								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
+					</Paragraph>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Terms.profitAndLoss"
+							values={{
+								a: (text) => (
+									<a href={telegram.support}>{text}</a>
+								),
+								b: (chunks) => <b>{chunks}</b>,
+								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
+					</Paragraph>
+
+					<H2>
 						<FormattedMessage id="Terms.binance" />
 					</H2>
 
@@ -71,6 +97,20 @@ export const TermsPage: FC = () => (
 					</Paragraph>
 
 					<H2>
+						<FormattedMessage id="Terms.supportedCountries" />
+					</H2>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Terms.binanceUSisNotSupported"
+							values={{
+								b: (chunks) => <b>{chunks}</b>,
+								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
+					</Paragraph>
+
+					<H2>
 						<FormattedMessage id="Terms.payments" />
 					</H2>
 
@@ -80,6 +120,22 @@ export const TermsPage: FC = () => (
 
 					<Paragraph>
 						<FormattedMessage id="Terms.pricingVat" />
+					</Paragraph>
+
+					<H3>
+						<FormattedMessage id="Terms.paymentsFullfillment" />
+					</H3>
+
+					<Paragraph>
+						<FormattedMessage
+							id="Terms.fullfillmentPolicies"
+							values={{
+								a: (chunks) => (
+									<a href={telegram.support}>{chunks}</a>
+								),
+								em: (chunks) => <em>{chunks}</em>
+							}}
+						/>
 					</Paragraph>
 
 					<H2>

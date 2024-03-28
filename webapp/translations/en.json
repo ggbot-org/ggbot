@@ -551,6 +551,9 @@
 	"SubscriptionPurchase.pleasePurchase": {
 		"defaultMessage": "Please purchase a subscription."
 	},
+	"SubscriptionPurchase.purchaseCurrency": {
+		"defaultMessage": "Prices are expressed in Euro currency (€)."
+	},
 	"SubscriptionPurchase.monthlyItemName": {
 		"defaultMessage": "Monthly subscription ({numMonths, plural, =1 {# month} other {# months}})"
 	},
@@ -635,8 +638,29 @@
 	"Terms.binanceNoWithdrawals": {
 		"defaultMessage": "It is crucial to understand that <em>ggbot</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
 	},
+	"Terms.supportedCountries": {
+		"defaultMessage": "Supported countries"
+	},
+	"Terms.binanceUSisNotSupported": {
+		"defaultMessage": "Currently <em>ggbot</em> is <b>not available</b> in the <em>United States</em>. We are sorry but <em>Binance US</em> is <b>not supported</b>. While this would be easily achievable technically and <em>ggbot</em> could already provide this feature out of the box, it could be hard for us for legal reasons. We are a small and growing team and we would love to enter the US market! Right now it is out of our scope."
+	},
 	"Terms.payments": {
 		"defaultMessage": "Payments"
+	},
+	"Terms.paymentsFullfillment": {
+		"defaultMessage": "Fullfillment policies"
+	},
+	"Terms.fullfillmentPolicies": {
+		"defaultMessage": "Once you have purchased a payment plan, <em>ggbot</em> will be able to trade using your <em>Binance</em> account and make profits with trading strategies. There is no recurrent subscription, so cancellation does not apply. You can opt out at any time but <em>refund</em> is not handled automatically: please contact <a>support group on Telegram</a> in case you want a refund."
+	},
+	"Terms.product": {
+		"defaultMessage": "Products offered"
+	},
+	"Terms.strategies": {
+		"defaultMessage": "The <em>ggbot</em> platform let you run trading strategies on <em>Binance Exchange</em>. You can copy strategies from other users, and schedule them with custom parameters accorgin to your needs (for instance the <em>amount</em>). You can also modify a strategy as well as create a new one or share them."
+	},
+	"Terms.profitAndLoss": {
+		"defaultMessage": "A strategy can be profitable, many of them are already generating a considerable amount of profit yearly. Be aware that you may misuse a strategy by setting wrong parameters or creating a failing strategy that can cause losses. There can be other issues like setting a strategy without having enough budget. The <em>ggbot</em> team will be available to share successfull strategies but <b>we are not responsible of any loss</b> you may have for any reason. To avoid losses it is a <em>good practice</em> to run a <em>backtest</em> on your strategy: you can do so using the <em>ggbot</em> website. For any question do not hesitate to contact the <a>ggbot support group on Telegram</a>."
 	},
 	"Terms.pricing": {
 		"defaultMessage": "Product pricing"
