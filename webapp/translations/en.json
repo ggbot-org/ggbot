@@ -360,10 +360,10 @@
 		"defaultMessage": "Binance"
 	},
 	"Privacy.binanceCustomerData": {
-		"defaultMessage": "<a>Binance exchange</a> is used as a market provider. You will be asked to give information about your account, according to your country regulations. The <em>ggbot</em> platform is <b>not involved at all</b> in this process, and <b>does not have access</b> to the data you are required to share with <em>Binance</em>."
+		"defaultMessage": "<a>Binance exchange</a> is used as a market provider. You will be asked to give information about your account, according to your Country's regulations. The <em>ggbot</em> platform is <b>not involved at all</b> in this process, and <b>does not have access</b> to the data you are required to share with <em>Binance</em>."
 	},
 	"Privacy.binanceTradingData": {
-		"defaultMessage": "<em>Binance</em> holds all your trading data, including orders, staking and any other crypto activity you perform on that exchange. The <em>ggbot</em> platform <b>does not fetch</b> your trading data from <em>Binance</em> but it keeps track of the operations you perform using the <em>ggbot</em> strategies in order to provide you information about your orders, profits, etc. and stores these data with a retention period of {numYears} years."
+		"defaultMessage": "<em>Binance</em> holds all your trading data, including orders, staking and any other crypto activity you perform on that exchange. The <em>ggbot</em> platform <b>does not retrieve</b> your trading data from <em>Binance</em> but it keeps track of the operations you perform using the <em>ggbot</em> strategies in order to provide you information about your orders, profits, etc. and stores these data with a retention period of {numYears} years."
 	},
 	"Privacy.stripe": {
 		"defaultMessage": "<a>Stripe</a> is used as payments provider: during checkout your <em>email</em> will be prefilled and you will be asked to enter your <em>country</em> and <em>credit card</em> information such as <em>cardholder name</em>. The <em>ggbot</em> platform <b>does not store</b> your country nor your credit card information."
@@ -633,7 +633,7 @@
 		"defaultMessage": "Binance API"
 	},
 	"Terms.binanceApi": {
-		"defaultMessage": "The <em>ggbot</em> platform interacts with <a>Binance Exchange</a> and needs your grant to access your Binance account using Binance API key."
+		"defaultMessage": "The <em>ggbot</em> platform interacts with <a>Binance Exchange</a> and needs your approval to access your Binance account using a <em>Binance API key</em>."
 	},
 	"Terms.binanceNoWithdrawals": {
 		"defaultMessage": "It is crucial to understand that <em>ggbot</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
