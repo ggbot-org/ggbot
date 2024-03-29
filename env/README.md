@@ -14,7 +14,6 @@ The following environment variables are used:
 -   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
 -   Used by Stripe APIs for payments:
     -   `STRIPE_SECRET_KEY`
-    -   `STRIPE_WEBHOOK_SECRET`
     -   `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
     -   `STRIPE_PLAN_BASIC_PRICE_ID`
 
@@ -49,7 +48,6 @@ export AUTHENTICATION_SECRET=s3cret
 export BINANCE_PROXY_IP=1.2.3.4
 
 export STRIPE_SECRET_KEY=xxx
-export STRIPE_WEBHOOK_SECRET=xxx
 export STRIPE_PLAN_BASIC_PRICE_ID=xxx
 export STRIPE_PLAN_BASIC_MONTHLY_PRICE=2
 

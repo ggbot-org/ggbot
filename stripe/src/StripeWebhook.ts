@@ -12,7 +12,7 @@ export class StripeWebhook {
 	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion =
 		"2023-08-16"
 	static enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
-		"payment_intent.succeeded"
+		"checkout.session.completed"
 	]
 
 	endpoint: Stripe.WebhookEndpoint | undefined

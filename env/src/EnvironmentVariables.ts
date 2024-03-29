@@ -57,10 +57,6 @@ class EnvironmentVariables {
 	STRIPE_SECRET_KEY() {
 		return getVariable("STRIPE_SECRET_KEY")
 	}
-
-	STRIPE_WEBHOOK_SECRET() {
-		return getVariable("STRIPE_WEBHOOK_SECRET")
-	}
 }
 
 /**

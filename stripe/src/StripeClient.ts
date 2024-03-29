@@ -38,21 +38,6 @@ export class StripeClient {
 		})
 	}
 
-	/** Call `stripe.webhooks.constructEvent()` adding context. */
-	getWebhookEvent(
-		/** Raw text body payload received from Stripe. */
-		payload: string,
-		/** Value of the `stripe-signature` header from Stripe. */
-		signature: string
-	) {
-		info("getWebhookEvent", { payload, signature })
-		return this.stripe.webhooks.constructEvent(
-			payload,
-			signature,
-			ENV.STRIPE_WEBHOOK_SECRET()
-		)
-	}
-
 	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
 	async retreiveCheckoutSession(id: string) {
 		info("retreiveCheckoutSession", { id })

@@ -569,8 +569,14 @@
 	"SubscriptionPurchase.title": {
 		"defaultMessage": "Purchase"
 	},
+	"SubscriptionPurchased.title": {
+		"defaultMessage": "Thank you for your purchase!"
+	},
 	"SubscriptionPurchased.message": {
-		"defaultMessage": "Thank you for your purchase."
+		"defaultMessage": "You are now able to use <em>ggbot</em> strategies."
+	},
+	"SubscriptionPurchased.support": {
+		"defaultMessage": "For any issue, please contact <a>Telegram support group</a>."
 	},
 	"SubscriptionStatus.active": {
 		"defaultMessage": "Active"
