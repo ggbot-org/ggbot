@@ -41,6 +41,7 @@
 		"./src/flow/**/*.ts",
 		"./src/hooks/*.ts",
 		"./src/i18n/*.ts",
+		"./src/i18n/*.tsx",
 		"./src/logging.ts",
 		"./src/pages/**/*.tsx",
 		"./src/react/**.tsx",

@@ -15,6 +15,7 @@ import {
 	Title
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
+import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { logging } from "_/logging"
 import { auth } from "_/routing/auth"
 import {
@@ -173,9 +174,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				<Message>
 					<FormattedMessage
 						id="AuthVerify.checkEmail"
-						values={{
-							em: (chunks) => <em>{chunks}</em>
-						}}
+						values={formattedMessageMarkup}
 					/>
 				</Message>
 
@@ -206,7 +205,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				<Message>
 					<FormattedMessage
 						id="AuthVerify.enterOneTimePassword"
-						values={{ em: (chunks) => <em>{chunks}</em> }}
+						values={formattedMessageMarkup}
 					/>
 				</Message>
 

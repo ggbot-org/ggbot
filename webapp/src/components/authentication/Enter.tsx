@@ -15,6 +15,7 @@ import {
 } from "_/components/library"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { TimeoutError } from "_/components/TimeoutError"
+import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { auth } from "_/routing/auth"
 import {
 	isApiAuthEnterRequestData,
@@ -157,9 +158,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 				<Message>
 					<FormattedMessage
 						id="AuthEnter.info"
-						values={{
-							em: (chunks) => <em>{chunks}</em>
-						}}
+						values={formattedMessageMarkup}
 					/>
 				</Message>
 

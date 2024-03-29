@@ -1,4 +1,5 @@
 import { Checkmark, CheckmarkProps, Flex } from "_/components/library"
+import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 import { FC, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
@@ -28,9 +29,7 @@ const BinanceApiKeyPermissionEnableReading: FC<
 	<BinanceApiKeyPermission ok={enableReading}>
 		<FormattedMessage
 			id="BinanceApiKeyPermissionEnableReading.description"
-			values={{
-				em: (chunks) => <em>{chunks}</em>
-			}}
+			values={formattedMessageMarkup}
 		/>
 	</BinanceApiKeyPermission>
 )
@@ -45,7 +44,7 @@ const BinanceApiKeyPermissionEnableSpotAndMarginTrading: FC<
 	<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
 		<FormattedMessage
 			id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description"
-			values={{ em: (chunks) => <em>{chunks}</em> }}
+			values={formattedMessageMarkup}
 		/>
 	</BinanceApiKeyPermission>
 )
@@ -66,10 +65,7 @@ const BinanceApiKeyPermissionEnableWithdrawals: FC<
 	>
 		<FormattedMessage
 			id="BinanceApiKeyPermissionEnableWithdrawals.description"
-			values={{
-				b: (chunks) => <b>{chunks}</b>,
-				em: (chunks) => <em>{chunks}</em>
-			}}
+			values={formattedMessageMarkup}
 		/>
 	</BinanceApiKeyPermission>
 )
@@ -84,7 +80,7 @@ const BinanceApiKeyPermissionIpRestrict: FC<
 	<BinanceApiKeyPermission ok={ipRestrict}>
 		<FormattedMessage
 			id="BinanceApiKeyPermissionIpRestrict.description"
-			values={{ em: (chunks) => <em>{chunks}</em> }}
+			values={formattedMessageMarkup}
 		/>
 	</BinanceApiKeyPermission>
 )

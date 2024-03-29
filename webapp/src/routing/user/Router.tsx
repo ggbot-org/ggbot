@@ -7,7 +7,6 @@ import { StrategyPage } from "_/pages/user/Strategy"
 import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
-import { webappPagePathname } from "@workspace/locators"
 import { nullStrategyKey } from "@workspace/models"
 import { FC } from "react"
 
@@ -27,10 +26,10 @@ const Router: FC = () => {
 	if (pathname === webapp.user.strategy(nullStrategyKey).pathname)
 		return <StrategyPage />
 
-	if (pathname === webappPagePathname.purchaseCanceled)
+	if (pathname === webapp.purchaseCanceled.pathname)
 		return <PurchaseCanceledPage />
 
-	if (pathname === webappPagePathname.subscriptionPurchased)
+	if (pathname === webapp.subscriptionPurchased.pathname)
 		return <SubscriptionPurchasedPage />
 
 	return null

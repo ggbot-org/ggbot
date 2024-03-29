@@ -8,6 +8,10 @@ import {
 	Section
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
+import {
+	formattedMessageMarkup,
+	formattedMessageMarkupWithLinkTo
+} from "_/i18n/formattedMessageMarkup"
 import { webapp } from "_/routing/webapp"
 import { binance, telegram } from "@workspace/locators"
 import { FC } from "react"
@@ -25,9 +29,7 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.welcome"
-							values={{
-								em: (chuncks) => <em>{chuncks}</em>
-							}}
+							values={formattedMessageMarkup}
 						/>
 					</Paragraph>
 
@@ -38,9 +40,7 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.accessWithEmail"
-							values={{
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkup}
 						/>
 					</Paragraph>
 
@@ -51,22 +51,16 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.strategies"
-							values={{
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkup}
 						/>
 					</Paragraph>
 
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.profitAndLoss"
-							values={{
-								a: (text) => (
-									<a href={telegram.support}>{text}</a>
-								),
-								b: (chunks) => <b>{chunks}</b>,
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkupWithLinkTo(
+								telegram.support
+							)}
 						/>
 					</Paragraph>
 
@@ -77,22 +71,16 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.binanceApi"
-							values={{
-								a: (text) => (
-									<a href={binance.homepage}>{text}</a>
-								),
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkupWithLinkTo(
+								binance.homepage
+							)}
 						/>
 					</Paragraph>
 
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.binanceNoWithdrawals"
-							values={{
-								b: (chunks) => <b>{chunks}</b>,
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkup}
 						/>
 					</Paragraph>
 
@@ -129,12 +117,9 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.fullfillmentPolicies"
-							values={{
-								a: (chunks) => (
-									<a href={telegram.support}>{chunks}</a>
-								),
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkupWithLinkTo(
+								telegram.support
+							)}
 						/>
 					</Paragraph>
 
@@ -145,12 +130,9 @@ export const TermsPage: FC = () => (
 					<Paragraph>
 						<FormattedMessage
 							id="Terms.privacy"
-							values={{
-								a: (text) => (
-									<a href={webapp.privacy.pathname}>{text}</a>
-								),
-								em: (chunks) => <em>{chunks}</em>
-							}}
+							values={formattedMessageMarkupWithLinkTo(
+								webapp.privacy.pathname
+							)}
 						/>
 					</Paragraph>
 				</Content>
