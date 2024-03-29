@@ -10,20 +10,25 @@
     }
   },
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "tsc --build --clean",
+    "create_webhook": "node $npm_package_config_tsnode src/scripts/create_webhook.ts",
     "lint": "eslint --fix --ext .ts src/"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
+    "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",
     "stripe": "14.22.0"
   },
   "devDependencies": {
     "@workspace/eslint-config": "0.0.0",
     "@workspace/tsconfig": "0.0.0"
+  },
+  "config": {
+    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

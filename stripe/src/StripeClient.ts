@@ -3,6 +3,7 @@ import { ENV } from "@workspace/env"
 import { WebappURLs } from "@workspace/locators"
 import { isYearlyPurchase } from "@workspace/models"
 
+import { info, warn } from "./logging.js"
 import { newStripe } from "./newStripe.js"
 
 export class StripeClient {
@@ -21,6 +22,7 @@ export class StripeClient {
 		price: string
 		quantity: number
 	}) {
+		info("createCheckoutSession", { email, metadata, price, quantity })
 		return this.stripe.checkout.sessions.create({
 			customer_email: email,
 			line_items: [
@@ -43,6 +45,7 @@ export class StripeClient {
 		/** Value of the `stripe-signature` header from Stripe. */
 		signature: string
 	) {
+		info("getWebhookEvent", { payload, signature })
 		return this.stripe.webhooks.constructEvent(
 			payload,
 			signature,
@@ -52,11 +55,15 @@ export class StripeClient {
 
 	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
 	async retreiveCheckoutSession(id: string) {
+		info("retreiveCheckoutSession", { id })
 		const session = await this.stripe.checkout.sessions.retrieve(id, {
 			expand: ["line_items"]
 		})
 		const quantity = session.line_items?.data[0].quantity
-		if (typeof quantity !== "number") return
+		if (typeof quantity !== "number") {
+			warn("No quantity found in line_items")
+			return
+		}
 		return {
 			quantity,
 			isYearly: isYearlyPurchase({ numMonths: quantity })

@@ -1,4 +1,2 @@
-export * from "./errors.js"
-export * from "./newStripe.js"
-export * from "./Stripe.js"
+export { StripeSignatureVerificationError } from "./errors.js"
 export * from "./StripeClient.js"

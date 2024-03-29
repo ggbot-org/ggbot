@@ -87,6 +87,7 @@
     "start:binance-proxy": "npm run start -w binance-proxy",
     "start:executor": "npm run start -w executor",
     "start:webapp": "npm run start -w webapp",
+    "stripe:create_webhook": "npm run  create_webhook -w stripe",
     "update:binance-proxy": "npm run build:binance-proxy",
     "update:executor": "npm run build:executor",
     "update_and_start:binance-proxy": "npm run start:binance-proxy",

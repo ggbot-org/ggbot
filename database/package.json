@@ -22,7 +22,6 @@
     "@workspace/cache": "0.0.0",
     "@workspace/dflow": "0.0.0",
     "@workspace/env": "0.0.0",
-    "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",
     "minimal-type-guard-helpers": "0.2.0"
   },

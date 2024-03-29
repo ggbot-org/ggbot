@@ -1,8 +1,12 @@
 import { ENV } from "@workspace/env"
 import { ApiURLs } from "@workspace/locators"
-import { newStripe, Stripe } from "@workspace/stripe"
 
-const api = new ApiURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+import { info, warn } from "./logging.js"
+import { newStripe } from "./newStripe.js"
+import { Stripe } from "./Stripe.js"
+
+const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
+const api = new ApiURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
 
 export class StripeWebhook {
 	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion =
@@ -14,18 +18,30 @@ export class StripeWebhook {
 	endpoint: Stripe.WebhookEndpoint | undefined
 	private stripe = newStripe()
 
+	constructor() {
+		if (DEPLOY_STAGE === "local")
+			throw new Error(
+				"A StripeWebhook on local deploy stage does not make sense."
+			)
+	}
+
 	get url() {
 		return api.stripe.webhook.href
 	}
 
 	/** Create WebhookEndpoint if it does not exist. */
 	async create() {
+		const { url } = this
+		info("Create StripeWebhook", url)
 		const exists = await this.exists()
-		if (exists) return
+		if (exists) {
+			warn("Cannot create StripeWebhook, it already exists.")
+			return
+		}
 		return await this.stripe.webhookEndpoints.create({
 			api_version: StripeWebhook.apiVersion,
 			enabled_events: StripeWebhook.enabledEvents,
-			url: this.url
+			url
 		})
 	}
 
@@ -45,6 +61,7 @@ export class StripeWebhook {
 				break
 			}
 		}
-		// TODO if webhookEndpoints.has_more do recursive read
+		// Notice that `webhookEndpoints.has_more` is not handled here:
+		// it is assumed there are one of few endpoints, and no pagination.
 	}
 }
