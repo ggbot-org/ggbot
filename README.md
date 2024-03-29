@@ -18,7 +18,7 @@ export DNS_DOMAIN=ggbot.org
 Install dependencies and build packages.
 
 ```sh
-npm ci
+npm ci --include=optional
 npm run build
 ```
 

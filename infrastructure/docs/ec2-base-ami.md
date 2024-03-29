@@ -58,7 +58,7 @@ Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 Create an image, with name
 
 ```sh
-ggbot_base_${YYMMDD}
+${PROJECT_SHORT_NAME}_base_${YYMMDD}
 ```
 
 for example `ggbot_base_230402`.
