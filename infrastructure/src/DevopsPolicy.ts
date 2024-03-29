@@ -11,6 +11,7 @@ const statementNames = [
 	"deployStaticWebsites",
 	"manageLambdas",
 	"manageLambdasPassRole",
+	"manageLogGroups",
 	"readResources",
 	"webappApiGatewayDomain"
 ] as const
@@ -47,6 +48,7 @@ export class DevopsPolicy extends IamPolicy {
 			],
 			// iam:PassRole is needed by lambda:CreateFunction
 			manageLambdasPassRole: ["iam:PassRole"],
+			manageLogGroups: ["logs:CreateLogGroup", "logs:PutRetentionPolicy"],
 			readResources: [
 				"acm:ListCertificates",
 				"ec2:DescribeAddresses",
@@ -78,6 +80,7 @@ export class DevopsPolicy extends IamPolicy {
 				// `${next.webappBucketArn}/*`
 			],
 			manageLambdas: LambdaFunction.everyArn(),
+			manageLogGroups: "*",
 			manageLambdasPassRole: this.apiRole.arn,
 			readResources: "*",
 			webappApiGatewayDomain: WebappApiGatewayDomain.everyArn()
@@ -100,6 +103,7 @@ export class DevopsPolicy extends IamPolicy {
 			createBuckets: allow("createBuckets"),
 			deployStaticWebsites: allow("deployStaticWebsites"),
 			manageLambdas: allow("manageLambdas"),
+			manageLogGroups: allow("manageLogGroups"),
 			manageLambdasPassRole: allow("manageLambdasPassRole"),
 			readResources: allow("readResources"),
 			webappApiGatewayDomain: allow("webappApiGatewayDomain")

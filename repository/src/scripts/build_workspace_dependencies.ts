@@ -20,7 +20,7 @@ import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
  * ```
  */
 const workspacePathname = process.argv[2]
-if (typeof workspacePathname !== "string") throw new Error("missing parameter")
+if (typeof workspacePathname !== "string") process.exit(1)
 
 const repository = new Repository()
 await repository.read()

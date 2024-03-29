@@ -17,6 +17,8 @@ const policyDocumentStatementActions = [
 	"lambda:CreateFunction",
 	"lambda:UpdateFunctionCode",
 	"lambda:UpdateFunctionConfiguration",
+	"logs:CreateLogGroup",
+	"logs:PutRetentionPolicy",
 	"s3:CreateBucket",
 	"s3:DeleteObject",
 	"s3:GetBucketAcl",

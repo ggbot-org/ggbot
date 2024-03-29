@@ -14,7 +14,7 @@ for LAMBDA in action webhook; do
 	cd -
 
 	# Copy internal deps.
-	for WORKSPACE in api api-gateway authentication aws-s3 database env http locators logging models s3-data-bucket stripe; do
+	for WORKSPACE in api api-gateway authentication aws-s3 cache database env http locators logging models s3-data-bucket stripe; do
 		WORKSPACE_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE
 		mkdir -p $WORKSPACE_DIR/dist
 		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIR/dist
