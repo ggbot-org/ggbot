@@ -39,11 +39,6 @@ export class Service implements ApiService<UserClientActionType> {
 		return this.dataProvider.CreateBinanceApiConfig(arg)
 	}
 
-	CreatePurchaseOrder(arg: unknown) {
-		if (!isInput.CreatePurchaseOrder(arg)) throw new BadRequestError()
-		return this.dataProvider.CreatePurchaseOrder()
-	}
-
 	CreateStrategy(arg: unknown) {
 		if (!isInput.CreateStrategy(arg)) throw new BadRequestError()
 		return this.dataProvider.CreateStrategy(arg)
@@ -66,8 +61,9 @@ export class Service implements ApiService<UserClientActionType> {
 		return this.dataProvider.ReadAccountInfo()
 	}
 
-	ReadAccountStrategies() {
-		return this.dataProvider.ReadAccountStrategies()
+	ReadBalances(arg: unknown) {
+		if (!isInput.ReadBalances(arg)) throw new BadRequestError()
+		return this.dataProvider.ReadBalances(arg)
 	}
 
 	ReadBinanceAccountApiRestrictions() {
@@ -78,6 +74,10 @@ export class Service implements ApiService<UserClientActionType> {
 
 	ReadBinanceApiKey() {
 		return this.dataProvider.ReadBinanceApiKey()
+	}
+
+	ReadStrategies() {
+		return this.dataProvider.ReadStrategies()
 	}
 
 	ReadStrategyErrors(arg: unknown) {

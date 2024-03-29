@@ -4,19 +4,19 @@ import {
 	BinanceOrderRespFULL,
 	isBinanceOrderRespFULL
 } from "@workspace/binance"
-import { Balance } from "@workspace/models"
+import { Balance, BalanceItem } from "@workspace/models"
 import { DflowExecutionReport } from "dflow"
 
 import { dflowBinanceZero as zero } from "./arithmetic.js"
 import { BuyMarket, orderOutputPosition, SellMarket } from "./nodes/trade.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
-export const getBalancesFromExecutionSteps = (
+export const getBalanceFromExecutionSteps = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	steps: DflowExecutionReport["steps"]
-): Balance[] => {
+): Balance => {
 	const orders = getOrdersFromExecutionSteps(steps)
-	const balanceMap = new Map<string, Balance>()
+	const balanceMap = new Map<string, BalanceItem>()
 	for (const { side, type, symbol, executedQty, fills } of orders) {
 		const symbolInfo = binanceSymbols.find((info) => info.symbol === symbol)
 		if (!symbolInfo) continue

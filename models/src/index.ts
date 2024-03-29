@@ -6,11 +6,6 @@ export {
 	newAccount,
 	nullAccountKey
 } from "./account.js"
-export type {
-	AccountDailyOrder,
-	AccountDailyOrdersKey
-} from "./accountDailyOrders.js"
-export { isAccountDailyOrdersKey } from "./accountDailyOrders.js"
 export type { AccountInfo } from "./accountInfo.js"
 export type { AccountStrategyItemKey } from "./accountStrategies.js"
 export { accountStrategiesModifier } from "./accountStrategies.js"
@@ -24,7 +19,7 @@ export {
 	isAccountStrategyKey,
 	newAccountStrategy
 } from "./accountStrategy.js"
-export type { Balance } from "./balance.js"
+export * from "./balance.js"
 export type {
 	BinanceApiConfig,
 	BinanceApiKeyPermissionCriteria
@@ -32,6 +27,7 @@ export type {
 export { isBinanceApiConfig } from "./binanceApiConfig.js"
 export type { ClientSession } from "./clientSession.js"
 export { clientSessionNumDays, isClientSession } from "./clientSession.js"
+export * from "./dailyAggregations.js"
 export { numYearsTradingOperationsRetention } from "./dataRetention.js"
 export type { DeployStage } from "./deployStage.js"
 export type { EmailAddress } from "./email.js"
@@ -64,10 +60,8 @@ export {
 	generateOneTimePassword,
 	isOneTimePasswordCode
 } from "./oneTimePassword.js"
-export type { Order } from "./order.js"
-export { newOrder } from "./order.js"
-export type { PaymentProvider } from "./paymentProviders.js"
-export { isPaymentProvider } from "./paymentProviders.js"
+export * from "./order.js"
+export * from "./paymentProviders.js"
 export { quotaType } from "./quotas.js"
 export type { SchedulingStatus } from "./scheduling.js"
 export {
@@ -91,10 +85,6 @@ export {
 	newStrategy,
 	nullStrategyKey
 } from "./strategy.js"
-export type { StrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
-export { isStrategyDailyBalanceChangesKey } from "./strategyDailyBalanceChanges.js"
-export type { StrategyDailyErrorsKey } from "./strategyDailyErrors.js"
-export type { StrategyDailyOrdersKey } from "./strategyDailyOrders.js"
 export type { StrategyError } from "./strategyError.js"
 export type { StrategyFlow } from "./strategyFlow.js"
 export {

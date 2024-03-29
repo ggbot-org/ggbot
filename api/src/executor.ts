@@ -1,14 +1,14 @@
 import {
 	Account,
+	AccountDailyKey,
 	AccountDailyOrder,
-	AccountDailyOrdersKey,
 	AccountKey,
 	AccountStrategy,
+	AccountStrategyDailyKey,
 	AccountStrategyItemKey,
 	AccountStrategySchedulingKey,
+	BalanceEvent,
 	Order,
-	StrategyDailyErrorsKey,
-	StrategyDailyOrdersKey,
 	StrategyError,
 	StrategyMemory,
 	Subscription
@@ -17,15 +17,18 @@ import {
 import { Action } from "./action.js"
 
 export type ExecutorAction = {
+	AppendAccountBalanceEvent: (
+		arg: AccountDailyKey & { item: BalanceEvent }
+	) => Promise<void>
 	AppendAccountDailyOrders: (
-		arg: AccountDailyOrdersKey & { items: AccountDailyOrder[] }
+		arg: AccountDailyKey & { items: AccountDailyOrder[] }
 	) => Promise<void>
 	AppendStrategyDailyErrors: Action<
-		StrategyDailyErrorsKey & { items: StrategyError[] },
+		AccountStrategyDailyKey & { items: StrategyError[] },
 		void
 	>
 	AppendStrategyDailyOrders: Action<
-		StrategyDailyOrdersKey & { items: Order[] },
+		AccountStrategyDailyKey & { items: Order[] },
 		void
 	>
 	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
@@ -44,6 +47,9 @@ export type ExecutorAction = {
 }
 
 export type ExecutorActionInput = {
+	AppendAccountBalanceEvent: Parameters<
+		ExecutorAction["AppendAccountBalanceEvent"]
+	>[0]
 	AppendAccountDailyOrders: Parameters<
 		ExecutorAction["AppendAccountDailyOrders"]
 	>[0]
@@ -71,6 +77,9 @@ export type ExecutorActionInput = {
 }
 
 export type ExecutorActionOutput = {
+	AppendAccountBalanceEvent: Awaited<
+		ReturnType<ExecutorAction["AppendAccountBalanceEvent"]>
+	>
 	AppendAccountDailyOrders: Awaited<
 		ReturnType<ExecutorAction["AppendAccountDailyOrders"]>
 	>

@@ -10,14 +10,14 @@ import {
 import { DflowBinanceClient } from "./client.js"
 import { DflowBinanceContext } from "./context.js"
 import {
-	getBalancesFromExecutionSteps,
+	getBalanceFromExecutionSteps,
 	getOrdersFromExecutionSteps
 } from "./execution.js"
 import { DflowBinanceHost } from "./host.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
-	balances: Balance[]
+	balance: Balance
 	orders: Array<Pick<Order, "info">>
 }
 
@@ -52,14 +52,14 @@ export class DflowBinanceExecutor
 			"memory" | "memoryChanged"
 		>
 		const { symbols } = await binance.exchangeInfo()
-		const balances = execution
-			? getBalancesFromExecutionSteps(symbols, execution.steps)
+		const balance = execution
+			? getBalanceFromExecutionSteps(symbols, execution.steps)
 			: []
 		const orders = execution
 			? getOrdersFromExecutionSteps(execution.steps).map((info) => ({
 					info
 			  }))
 			: []
-		return { balances, execution, memory, memoryChanged, orders }
+		return { balance, execution, memory, memoryChanged, orders }
 	}
 }

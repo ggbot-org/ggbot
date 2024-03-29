@@ -11,9 +11,10 @@ import {
 } from "@workspace/dflow"
 import {
 	AccountStrategyKey,
+	BalanceEvent,
+	createdNow,
 	ErrorStrategyItemNotFound,
 	newOrder,
-	StrategyKey,
 	StrategyScheduling
 } from "@workspace/models"
 import { now, today, truncateTime } from "minimal-time-helpers"
@@ -25,13 +26,11 @@ const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
 
 export const executeBinanceStrategy = async (
-	{ accountId, strategyId }: Omit<AccountStrategyKey, "strategyKind">,
+	{ accountId, ...strategyKey }: AccountStrategyKey,
 	scheduling: StrategyScheduling,
 	publicDatabase: PublicDatabase,
 	executorDatabase: ExecutorDatabase
 ): Promise<Pick<DflowCommonContext, "memory" | "memoryChanged">> => {
-	const strategyKey: StrategyKey = { strategyKind: "binance", strategyId }
-
 	const strategyFlow = await publicDatabase.ReadStrategyFlow(strategyKey)
 	if (!strategyFlow)
 		throw new ErrorStrategyItemNotFound({
@@ -66,7 +65,7 @@ export const executeBinanceStrategy = async (
 	executor.nodesCatalog = nodesCatalog
 
 	const {
-		// TODO balances,
+		balance,
 		memory: memoryOutput,
 		memoryChanged,
 		orders
@@ -80,8 +79,9 @@ export const executeBinanceStrategy = async (
 		view
 	)
 
+	const day = today()
+
 	if (orders.length > 0) {
-		const day = today()
 		const strategyOrders = orders.map((info) => newOrder(info))
 
 		await executorDatabase.AppendStrategyDailyOrders({
@@ -103,17 +103,19 @@ export const executeBinanceStrategy = async (
 		})
 	}
 
-	// TODO
-	// if (balances.length > 0) {
-	// 	const {whenCreated} = createdNow()
-	// 	const day = timeToDay(truncateTime(whenCreated).to.day)
-	// 	await appendStrategyDailyBalanceChanges({
-	// 		accountId,
-	// 		day,
-	// 		items: [{whenCreated, balances}],
-	// 		...strategyKey,
-	// 	})
-	// }
+	if (balance.length > 0) {
+		const balanceEvent: BalanceEvent = {
+			balance,
+			...strategyKey,
+			...createdNow()
+		}
+
+		await executorDatabase.AppendAccountBalanceEvent({
+			accountId,
+			day,
+			item: balanceEvent
+		})
+	}
 
 	return {
 		memoryChanged,

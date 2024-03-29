@@ -23,13 +23,6 @@ export const useUserApi = {
 			Input["CreateBinanceApiConfig"],
 			Output["CreateBinanceApiConfig"]
 		>(apiOptions, "CreateBinanceApiConfig"),
-	// TODO remove this, instead of CreatePurchaseOrder use stripe API hook
-	CreatePurchaseOrder: () =>
-		useAction<
-			ActionType,
-			Input["CreatePurchaseOrder"],
-			Output["CreatePurchaseOrder"]
-		>(apiOptions, "CreatePurchaseOrder"),
 	CreateStrategy: () =>
 		useAction<
 			ActionType,
@@ -59,12 +52,6 @@ export const useUserApi = {
 			Input["ReadAccountInfo"],
 			Output["ReadAccountInfo"]
 		>(apiOptions, "ReadAccountInfo"),
-	ReadAccountStrategies: () =>
-		useAction<
-			ActionType,
-			Input["ReadAccountStrategies"],
-			Output["ReadAccountStrategies"]
-		>(apiOptions, "ReadAccountStrategies"),
 	ReadBinanceAccountApiRestrictions: () =>
 		useAction<
 			ActionType,
@@ -77,8 +64,12 @@ export const useUserApi = {
 			Input["ReadBinanceApiKey"],
 			Output["ReadBinanceApiKey"]
 		>(apiOptions, "ReadBinanceApiKey"),
-	// TODO
-	// ReadStrategyBalances
+	ReadStrategies: () =>
+		useAction<
+			ActionType,
+			Input["ReadStrategies"],
+			Output["ReadStrategies"]
+		>(apiOptions, "ReadStrategies"),
 	ReadStrategyErrors: () =>
 		useAction<
 			ActionType,

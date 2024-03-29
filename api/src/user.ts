@@ -2,31 +2,24 @@ import {
 	AccountInfo,
 	AccountKey,
 	AccountStrategy,
+	BalanceEvent,
 	BinanceApiConfig,
 	CreationTime,
 	DeletionTime,
-	EmailAddress,
 	isBinanceApiConfig,
-	isEmailAddress,
 	isFlowViewSerializableGraph,
 	isName,
-	isNaturalNumber,
-	isPaymentProvider,
 	isStrategy,
 	isStrategyKey,
 	isStrategySchedulings,
-	isSubscriptionPlan,
-	NaturalNumber,
 	NewItem,
 	nullId,
 	Order,
-	PaymentProvider,
 	Strategy,
 	StrategyError,
 	StrategyFlow,
 	StrategyKey,
 	Subscription,
-	SubscriptionPlan,
 	UpdateTime
 } from "@workspace/models"
 import { DayInterval, isDayInterval } from "minimal-time-helpers"
@@ -44,24 +37,18 @@ export type UserDatabaseAction = {
 		arg: StrategyKey & Pick<Strategy, "name">
 	) => Promise<StrategyKey>
 	CreateBinanceApiConfig: (arg: BinanceApiConfig) => Promise<CreationTime>
-	CreatePurchaseOrder: (arg: {
-		email: EmailAddress
-		numMonths: NaturalNumber
-		paymentProvider: PaymentProvider
-		plan: SubscriptionPlan
-	}) => Promise<null>
 	CreateStrategy: (
 		arg: Omit<NewItem<Strategy>, keyof AccountKey>
 	) => Promise<StrategyKey>
 	DeleteAccount: Action<void, DeletionTime>
 	DeleteBinanceApiConfig: (arg: void) => Promise<DeletionTime>
 	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
+	ReadBalances: (arg: DayInterval) => Promise<BalanceEvent[]>
 	ReadAccountInfo: (arg: void) => Promise<AccountInfo | null>
-	ReadAccountStrategies: (arg: void) => Promise<AccountStrategy[]>
 	ReadBinanceApiKey: (
 		arg: void
 	) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>
-	// TODO ReadStrategyBalances: ( arg: StrategyKey & DayInterval) => Promise<StrategyBalance[] |null>
+	ReadStrategies: (arg: void) => Promise<AccountStrategy[]>
 	ReadStrategyErrors: (
 		arg: StrategyKey & DayInterval
 	) => Promise<StrategyError[]>
@@ -90,21 +77,16 @@ export type UserDatabaseActionInput = {
 	CreateBinanceApiConfig: Parameters<
 		UserDatabaseAction["CreateBinanceApiConfig"]
 	>[0]
-	CreatePurchaseOrder: Parameters<
-		UserDatabaseAction["CreatePurchaseOrder"]
-	>[0]
 	CreateStrategy: Parameters<UserDatabaseAction["CreateStrategy"]>[0]
 	DeleteAccount: Parameters<UserDatabaseAction["DeleteAccount"]>[0]
 	DeleteBinanceApiConfig: Parameters<
 		UserDatabaseAction["DeleteBinanceApiConfig"]
 	>[0]
 	DeleteStrategy: Parameters<UserDatabaseAction["DeleteStrategy"]>[0]
+	ReadBalances: Parameters<UserDatabaseAction["ReadBalances"]>[0]
 	ReadAccountInfo: Parameters<UserDatabaseAction["ReadAccountInfo"]>[0]
-	// TODO ReadStrategyBalances: Parameters<UserDatabaseAction['ReadStrategyBalances']>[0]
-	ReadAccountStrategies: Parameters<
-		UserDatabaseAction["ReadAccountStrategies"]
-	>[0]
 	ReadBinanceApiKey: Parameters<UserDatabaseAction["ReadBinanceApiKey"]>[0]
+	ReadStrategies: Parameters<UserDatabaseAction["ReadStrategies"]>[0]
 	ReadStrategyErrors: Parameters<UserDatabaseAction["ReadStrategyErrors"]>[0]
 	ReadStrategyOrders: Parameters<UserDatabaseAction["ReadStrategyOrders"]>[0]
 	ReadSubscription: Parameters<UserDatabaseAction["ReadSubscription"]>[0]
@@ -120,23 +102,18 @@ export type UserDatabaseActionOutput = {
 	CreateBinanceApiConfig: Awaited<
 		ReturnType<UserDatabaseAction["CreateBinanceApiConfig"]>
 	>
-	CreatePurchaseOrder: Awaited<
-		ReturnType<UserDatabaseAction["CreatePurchaseOrder"]>
-	>
 	CreateStrategy: Awaited<ReturnType<UserDatabaseAction["CreateStrategy"]>>
 	DeleteAccount: Awaited<ReturnType<UserDatabaseAction["DeleteAccount"]>>
 	DeleteBinanceApiConfig: Awaited<
 		ReturnType<UserDatabaseAction["DeleteBinanceApiConfig"]>
 	>
 	DeleteStrategy: Awaited<ReturnType<UserDatabaseAction["DeleteStrategy"]>>
+	ReadBalances: Awaited<ReturnType<UserDatabaseAction["ReadBalances"]>>
 	ReadAccountInfo: Awaited<ReturnType<UserDatabaseAction["ReadAccountInfo"]>>
-	ReadAccountStrategies: Awaited<
-		ReturnType<UserDatabaseAction["ReadAccountStrategies"]>
-	>
 	ReadBinanceApiKey: Awaited<
 		ReturnType<UserDatabaseAction["ReadBinanceApiKey"]>
 	>
-	// TODO ReadStrategyBalances: Awaited<ReturnType<UserDatabaseAction['ReadStrategyBalances']>>
+	ReadStrategies: Awaited<ReturnType<UserDatabaseAction["ReadStrategies"]>>
 	ReadStrategyErrors: Awaited<
 		ReturnType<UserDatabaseAction["ReadStrategyErrors"]>
 	>
@@ -163,14 +140,14 @@ export const userClientActions: ActionTypes<UserClientActionType> = [
 	// UserDatabase action types.
 	"CopyStrategy",
 	"CreateBinanceApiConfig",
-	"CreatePurchaseOrder",
 	"CreateStrategy",
 	"DeleteAccount",
 	"DeleteBinanceApiConfig",
 	"DeleteStrategy",
 	"ReadAccountInfo",
-	"ReadAccountStrategies",
+	"ReadBalances",
 	"ReadBinanceApiKey",
+	"ReadStrategies",
 	"ReadStrategyErrors",
 	"ReadStrategyOrders",
 	"ReadSubscription",
@@ -194,16 +171,6 @@ export const isUserClientActionInput = {
 	CreateBinanceApiConfig: objectTypeGuard<
 		UserClientActionInput["CreateBinanceApiConfig"]
 	>((binanceApiConfig) => isBinanceApiConfig(binanceApiConfig)),
-	// TODO CreatePurchaseOrder is not a user client action
-	CreatePurchaseOrder: objectTypeGuard<
-		UserClientActionInput["CreatePurchaseOrder"]
-	>(
-		({ email, numMonths, paymentProvider, plan }) =>
-			isEmailAddress(email) &&
-			isSubscriptionPlan(plan) &&
-			isNaturalNumber(numMonths) &&
-			isPaymentProvider(paymentProvider)
-	),
 	CreateStrategy: objectTypeGuard<UserClientActionInput["CreateStrategy"]>(
 		(arg) =>
 			isStrategy({
@@ -214,12 +181,8 @@ export const isUserClientActionInput = {
 			})
 	),
 	DeleteStrategy: isStrategyKey,
-	// TODO
-	// ReadStrategyBalances: objectTypeGuard<UserClientActionInput["ReadStrategyBalances"]>(
-	// 	({ start, end, ...strategyKey }) =>
-	// 		isDayInterval({ start, end }) &&
-	// 		isStrategyKey(strategyKey)
-	// ),
+	ReadBalances:
+		objectTypeGuard<UserClientActionInput["ReadBalances"]>(isDayInterval),
 	ReadStrategyErrors: objectTypeGuard<
 		UserClientActionInput["ReadStrategyErrors"]
 	>(

@@ -8,6 +8,7 @@ type ContextValue = {
 	refetchAccountStrategies: () => void
 }
 
+// TODO move to hook useStrategies
 export const StrategiesContext = createContext<ContextValue>({
 	accountStrategies: undefined,
 	refetchAccountStrategies: () => {}
@@ -16,7 +17,7 @@ export const StrategiesContext = createContext<ContextValue>({
 StrategiesContext.displayName = "Strategies"
 
 export const StrategiesProvider: FC<PropsWithChildren> = ({ children }) => {
-	const READ = useUserApi.ReadAccountStrategies()
+	const READ = useUserApi.ReadStrategies()
 
 	const contextValue = useMemo(
 		() => ({

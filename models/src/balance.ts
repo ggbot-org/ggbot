@@ -1,21 +1,30 @@
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { StrategyKey } from "./strategy.js"
+import { NonEmptyString } from "./strings.js"
+import { CreationTime } from "./time.js"
 
-import { isNonEmptyString, NonEmptyString } from "./strings.js"
+/** A BalanceItem represents an asset inflow or outflow. */
+export type BalanceItem = {
+	/** Asset symbol, e.g. BTC, ETH. */
+	asset: NonEmptyString
+	/** Free value available. */
+	free: NonEmptyString
+	/** Locked value, for example via staking or a limit order. */
+	locked: NonEmptyString
+}
 
 /**
- * A Balance is an abstract representation of an asset owned.
+ * A Balance is an array of BalanceItem.
  *
+ * @remarks
  * Values can be negative, for example a simulation could start with an empty
  * list of balances.
- *
  * @example
  *
  * ```typescript
- * const wallet: Balance[] = []
+ * const balance: Balance = []
  * ```
  *
- * Then after buying BTC for a worth of 1000 BUSD we have the following
- * balances.
+ * Then after buying BTC for a worth of 1000 USD we have the following balances.
  *
  * @example
  *
@@ -27,22 +36,20 @@ import { isNonEmptyString, NonEmptyString } from "./strings.js"
  *     "locked": "0"
  *   },
  *   {
- *     "asset": "BUSD",
+ *     "asset": "USD",
  *     "free": "-1000.00",
  *     "locked": "0"
  *   }
  * ]
  * ```
  */
-export type Balance = {
-	/** Asset symbol, e.g. BTC, ETH. */
-	asset: NonEmptyString
-	/** Free value available. */
-	free: NonEmptyString
-	/** Locked value, for example via staking or a limit order. */
-	locked: NonEmptyString
-}
+export type Balance = BalanceItem[]
 
-export const isBalance = objectTypeGuard<Balance>(({ asset, free, locked }) =>
-	[asset, free, locked].every(isNonEmptyString)
-)
+/**
+ * A BalanceEvent happens when a strategy perform an operation that modifies an
+ * account balance.
+ */
+export type BalanceEvent = StrategyKey &
+	CreationTime & {
+		balance: Balance
+	}

@@ -215,7 +215,7 @@ export class Executor {
 		if (strategyKind === "binance") {
 			try {
 				const { memory, memoryChanged } = await executeBinanceStrategy(
-					{ accountId, strategyId },
+					{ accountId, strategyId, strategyKind },
 					scheduling,
 					this.publicDatabase,
 					this.executorDatabase

@@ -7,9 +7,12 @@ import {
 import { CacheMap } from "@workspace/cache"
 import {
 	Account,
+	AccountDailyKey,
 	AccountKey,
 	accountStrategiesModifier,
 	AccountStrategy,
+	AccountStrategyDailyKey,
+	BalanceEvent,
 	createdNow,
 	deletedNow,
 	ErrorAccountItemNotFound,
@@ -22,8 +25,6 @@ import {
 	newStrategyFlow,
 	Order,
 	Strategy,
-	StrategyDailyErrorsKey,
-	StrategyDailyOrdersKey,
 	StrategyError,
 	StrategyFlow,
 	StrategyKey,
@@ -173,11 +174,19 @@ export class UserDatabase implements UserDatabaseAction {
 		return { subscription, ...account }
 	}
 
-	async ReadAccountStrategies() {
-		const data = await this.documentProvider.getItem<
-			Output["ReadAccountStrategies"]
-		>(pathname.accountStrategies(this.accountKey))
-		return data ?? []
+	async ReadBalances({ start, end }: Input["ReadBalances"]) {
+		const result: Output["ReadBalances"] = []
+		let date = dayToDate(start)
+		while (date <= dayToDate(end)) {
+			const dailyResult = await this.readAccountDailyBalanceEvents({
+				day: dateToDay(date),
+				...this.accountKey
+			})
+			if (!dailyResult) continue
+			result.push(...dailyResult)
+			date = getDate(date).plusOne.day
+		}
+		return result
 	}
 
 	async ReadBinanceApiKey() {
@@ -187,23 +196,28 @@ export class UserDatabase implements UserDatabaseAction {
 		return { apiKey }
 	}
 
+	async ReadStrategies() {
+		const data = await this.documentProvider.getItem<
+			Output["ReadStrategies"]
+		>(pathname.accountStrategies(this.accountKey))
+		return data ?? []
+	}
+
 	async ReadStrategyErrors({
 		start,
 		end,
 		...strategyKey
 	}: Input["ReadStrategyErrors"]) {
-		const { accountId } = this.accountKey
 		const result: Output["ReadStrategyErrors"] = []
 		let date = dayToDate(start)
 		while (date <= dayToDate(end)) {
-			const day = dateToDay(date)
-			const orders = await this.readStrategyDailyErrors({
-				day,
-				accountId,
+			const dailyResult = await this.readStrategyDailyErrors({
+				day: dateToDay(date),
+				...this.accountKey,
 				...strategyKey
 			})
-			if (!orders) continue
-			for (const order of orders) result.push(order)
+			if (!dailyResult) continue
+			result.push(...dailyResult)
 			date = getDate(date).plusOne.day
 		}
 		return result
@@ -214,18 +228,16 @@ export class UserDatabase implements UserDatabaseAction {
 		end,
 		...strategyKey
 	}: Input["ReadStrategyOrders"]) {
-		const { accountId } = this.accountKey
 		const result: Output["ReadStrategyOrders"] = []
 		let date = dayToDate(start)
 		while (date <= dayToDate(end)) {
-			const day = dateToDay(date)
-			const orders = await this.readStrategyDailyOrders({
-				day,
-				accountId,
+			const dailyResult = await this.readStrategyDailyOrders({
+				day: dateToDay(date),
+				...this.accountKey,
 				...strategyKey
 			})
-			if (!orders) continue
-			for (const order of orders) result.push(order)
+			if (!dailyResult) continue
+			result.push(...dailyResult)
 			date = getDate(date).plusOne.day
 		}
 		return result
@@ -248,7 +260,7 @@ export class UserDatabase implements UserDatabaseAction {
 		})
 		if (newName === oldName) return updatedNow()
 		await this.writeStrategy({ name: newName, ...strategy })
-		const accountStrategies = await this.ReadAccountStrategies()
+		const accountStrategies = await this.ReadStrategies()
 		const data = accountStrategies.map((item) => {
 			if (item.strategyId !== strategyId) return item
 			return { ...item, name: newName }
@@ -261,7 +273,7 @@ export class UserDatabase implements UserDatabaseAction {
 		strategyId,
 		strategyKind
 	}: Input["WriteAccountStrategiesItemSchedulings"]) {
-		const items = await this.ReadAccountStrategies()
+		const items = await this.ReadStrategies()
 		const data: AccountStrategy[] = []
 		let suggestedFrequency: Frequency | undefined
 		for (const item of items) {
@@ -315,7 +327,7 @@ export class UserDatabase implements UserDatabaseAction {
 
 	async insertAccountStrategiesItem(item: AccountStrategy) {
 		const { accountId } = this.accountKey
-		const items = await this.ReadAccountStrategies()
+		const items = await this.ReadStrategies()
 		const subscription = await this.ReadSubscription()
 		const newItems = accountStrategiesModifier.insertAccountStrategy(
 			items,
@@ -332,7 +344,7 @@ export class UserDatabase implements UserDatabaseAction {
 		strategyId: AccountStrategy["strategyId"]
 	) {
 		const { accountId } = this.accountKey
-		const items = await this.ReadAccountStrategies()
+		const items = await this.ReadStrategies()
 		const newItems = accountStrategiesModifier.deleteAccountStrategy(
 			items,
 			strategyId
@@ -353,6 +365,14 @@ export class UserDatabase implements UserDatabaseAction {
 		return account
 	}
 
+	async readAccountDailyBalanceEvents(
+		arg: AccountDailyKey
+	): Promise<BalanceEvent[]> {
+		const data = await this.documentProvider.getItem<BalanceEvent[] | null>(
+			pathname.accountDailyBalanceEvents(arg)
+		)
+		return data ?? []
+	}
 	async readStrategy(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategy(strategyKey)
 		if (!data)
@@ -376,7 +396,7 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	async readStrategyDailyErrors(
-		arg: StrategyDailyErrorsKey
+		arg: AccountStrategyDailyKey
 	): Promise<StrategyError[]> {
 		const data = await this.documentProvider.getItem<
 			StrategyError[] | null
@@ -385,7 +405,7 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	async readStrategyDailyOrders(
-		arg: StrategyDailyOrdersKey
+		arg: AccountStrategyDailyKey
 	): Promise<Order[]> {
 		const data = await this.documentProvider.getItem<Order[] | null>(
 			pathname.strategyDailyOrders(arg)

@@ -5,14 +5,14 @@ import {
 	ExecutorActionOutput as Output
 } from "@workspace/api"
 import {
+	AccountDailyKey,
 	AccountDailyOrder,
-	AccountDailyOrdersKey,
 	AccountKey,
 	accountStrategiesModifier,
 	AccountStrategy,
+	AccountStrategyDailyKey,
+	BalanceEvent,
 	Order,
-	StrategyDailyErrorsKey,
-	StrategyDailyOrdersKey,
 	StrategyError
 } from "@workspace/models"
 
@@ -28,6 +28,18 @@ export class ExecutorDatabase implements ExecutorAction {
 
 	constructor(documentProvider: ExecutorDatabase["documentProvider"]) {
 		this.documentProvider = documentProvider
+	}
+
+	async AppendAccountBalanceEvent({
+		item,
+		...key
+	}: Input["AppendAccountBalanceEvent"]) {
+		const currentItems = await this.readAccountDailyBalanceEvents(key)
+		const data = [...currentItems, item]
+		await this.documentProvider.setItem(
+			pathname.accountDailyOrders(key),
+			data
+		)
 	}
 
 	async AppendAccountDailyOrders({
@@ -137,21 +149,28 @@ export class ExecutorDatabase implements ExecutorAction {
 		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	async readAccountDailyOrders(arg: AccountDailyOrdersKey) {
+	async readAccountDailyBalanceEvents(arg: AccountDailyKey) {
+		const data = await this.documentProvider.getItem<BalanceEvent[]>(
+			pathname.accountDailyBalanceEvents(arg)
+		)
+		return data ?? []
+	}
+
+	async readAccountDailyOrders(arg: AccountDailyKey) {
 		const data = await this.documentProvider.getItem<AccountDailyOrder[]>(
 			pathname.accountDailyOrders(arg)
 		)
 		return data ?? []
 	}
 
-	async readStrategyDailyErrors(arg: StrategyDailyErrorsKey) {
+	async readStrategyDailyErrors(arg: AccountStrategyDailyKey) {
 		const data = await this.documentProvider.getItem<StrategyError[]>(
 			pathname.strategyDailyErrors(arg)
 		)
 		return data ?? []
 	}
 
-	async readStrategyDailyOrders(arg: StrategyDailyOrdersKey) {
+	async readStrategyDailyOrders(arg: AccountStrategyDailyKey) {
 		const data = await this.documentProvider.getItem<Order[]>(
 			pathname.strategyDailyOrders(arg)
 		)
