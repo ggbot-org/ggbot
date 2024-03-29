@@ -1,1 +1,1 @@
-export { SendEmailProvider } from "./provider.js"
+export * from "./provider.js"

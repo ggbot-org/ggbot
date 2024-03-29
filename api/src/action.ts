@@ -19,7 +19,6 @@ import { GenericError, TimeoutError } from "./errors.js"
 
 export type ActionIO = void | SerializableData
 
-// TODO use it in all apis: user, admin, etc
 export type Action<Input extends ActionIO, Output extends ActionIO> = (
 	arg: Input
 ) => Promise<Output>

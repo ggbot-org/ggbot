@@ -1,1 +1,1 @@
-export { sendEmail } from "./sendEmail.js"
+export * from "./sendEmail.js"
