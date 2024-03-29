@@ -41,11 +41,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod !== "POST")
 			return errorResponse(METHOD_NOT_ALLOWED__405)
 
-		if (!event.body) return errorResponse(BAD_REQUEST__400)
+		if (!event.body) {
+			debug("Missing body")
+			return errorResponse(BAD_REQUEST__400)
+		}
 
 		const signature = event.headers["stripe-signature"]
-		if (typeof signature !== "string")
+		if (typeof signature !== "string") {
+			debug("Missing stripe-signature header")
 			return errorResponse(BAD_REQUEST__400)
+		}
 
 		const stripeEvent = stripe.getWebhookEvent(event.body, signature)
 
@@ -62,7 +67,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				const checkout = await stripe.retreiveCheckoutSession(
 					stripeEvent.data.object.id
 				)
-				if (!checkout) return BAD_REQUEST()
+				if (!checkout) {
+					debug("Checkout session not found")
+					return BAD_REQUEST()
+				}
 
 				// The `startDay` may be when current subscription ends, if any.
 				const subscription = await dataProvider.ReadSubscription({
@@ -106,12 +114,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return OK(received)
 			}
 			return OK(received)
+		} else {
+			debug(`Unhandled event type: ${stripeEvent.type}`)
 		}
 
 		return OK(notReceived)
 	} catch (error) {
-		if (error instanceof StripeSignatureVerificationError)
+		if (error instanceof StripeSignatureVerificationError) {
+			debug(error)
 			return errorResponse(BAD_REQUEST__400)
+		}
 
 		// Fallback to print error if not handled.
 		debug(error)

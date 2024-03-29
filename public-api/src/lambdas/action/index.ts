@@ -24,15 +24,22 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (event.httpMethod === "OPTIONS")
 			return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod !== apiActionMethod)
+		if (event.httpMethod !== apiActionMethod) {
+			debug("Method not allowed")
 			return errorResponse(METHOD_NOT_ALLOWED__405)
+		}
 
 		info(event.httpMethod, event.body)
-		if (!event.body) return errorResponse(BAD_REQUEST__400)
+		if (!event.body) {
+			debug("Missing body")
+			return errorResponse(BAD_REQUEST__400)
+		}
 
 		const input: unknown = JSON.parse(event.body)
-		if (!isActionInput(publicActions)(input))
+		if (!isActionInput(publicActions)(input)) {
+			debug("Unknown input")
 			return errorResponse(BAD_REQUEST__400)
+		}
 
 		const service = new Service(documentProvider)
 		const output = await service[input.type](input.data)
@@ -40,8 +47,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return OK(output)
 	} catch (error) {
 		for (const ErrorClass of [BadGatewayError])
-			if (error instanceof ErrorClass)
+			if (error instanceof ErrorClass) {
+				debug(error)
 				return errorResponse(ErrorClass.statusCode)
+			}
 
 		// Fallback to print error if not handled.
 		debug(error)
