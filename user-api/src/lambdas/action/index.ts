@@ -35,6 +35,8 @@ const { debug, info } = logging("user-api")
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
+		info(event)
+
 		if (event.httpMethod === "OPTIONS")
 			return ALLOWED_METHODS([apiActionMethod])
 
