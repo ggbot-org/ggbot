@@ -1,43 +1,51 @@
 import { GoCopyStrategy } from "_/components/GoCopyStrategy"
 import { GoEditStrategy } from "_/components/GoEditStrategy"
 import { Box, Buttons, Columns, OneColumn, Title } from "_/components/library"
-import { ShareStrategy } from "_/components/ShareStrategy"
+import { ShareStrategy, ShareStrategyProps } from "_/components/ShareStrategy"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
 import { RenameStrategy } from "_/components/user/RenameStrategy"
-import { FC } from "react"
+import { StrategyContext } from "_/contexts/Strategy"
+import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
+type Props = ShareStrategyProps & {
 	readOnly: boolean
 }
 
-export const StrategyActions: FC<Props> = ({ readOnly }) => (
-	<Columns>
-		<OneColumn>
-			<Box>
-				<Title>
-					<FormattedMessage id="StrategyActions.title" />
-				</Title>
+export const StrategyActions: FC<Props> = ({ readOnly }) => {
+	const { strategyKey, strategyName } = useContext(StrategyContext)
 
-				<StrategyRecord />
+	return (
+		<Columns>
+			<OneColumn>
+				<Box>
+					<Title>
+						<FormattedMessage id="StrategyActions.title" />
+					</Title>
 
-				<Buttons>
-					{readOnly ? null : <RenameStrategy />}
+					<StrategyRecord />
 
-					<GoCopyStrategy />
+					<Buttons>
+						{readOnly ? null : <RenameStrategy />}
 
-					<ShareStrategy />
+						<GoCopyStrategy />
 
-					{readOnly ? null : (
-						<>
-							<GoEditStrategy />
+						<ShareStrategy
+							strategyKey={strategyKey}
+							strategyName={strategyName}
+						/>
 
-							<DeleteStrategy />
-						</>
-					)}
-				</Buttons>
-			</Box>
-		</OneColumn>
-	</Columns>
-)
+						{readOnly ? null : (
+							<>
+								<GoEditStrategy />
+
+								<DeleteStrategy />
+							</>
+						)}
+					</Buttons>
+				</Box>
+			</OneColumn>
+		</Columns>
+	)
+}

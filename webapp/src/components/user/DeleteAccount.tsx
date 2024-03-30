@@ -12,15 +12,7 @@ import {
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useUserApi } from "_/hooks/useUserApi"
-import {
-	ChangeEventHandler,
-	FC,
-	InputHTMLAttributes,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const DeleteAccount: FC = () => {
@@ -40,33 +32,8 @@ export const DeleteAccount: FC = () => {
 	const DELETE = useUserApi.DeleteAccount()
 	const isLoading = DELETE.isPending
 
-	const [hasConsent, setHasConsent] = useState<boolean | undefined>()
+	const [hasConsent, setHasConsent] = useState<boolean>(false)
 	const [modalIsActive, setModalIsActive] = useState(false)
-
-	const onChangeAccountIdInput: ChangeEventHandler<HTMLInputElement> = (
-		event
-	) => {
-		const value = (
-			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-		).value
-		if (typeof value === "string") setAccountIdConfirmation(value)
-	}
-
-	const onChangeConsent = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			setHasConsent(
-				(
-					event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-				).checked
-			)
-		},
-		[setHasConsent]
-	)
-
-	const onClickConfirmation = useCallback(() => {
-		if (!hasConsent) return
-		if (DELETE.canRun) DELETE.request()
-	}, [DELETE, hasConsent])
 
 	// Reset modal on close.
 	useEffect(() => {
@@ -105,7 +72,11 @@ export const DeleteAccount: FC = () => {
 									label={formatMessage({
 										id: "AccountId.label"
 									})}
-									onChange={onChangeAccountIdInput}
+									onChange={(event) => {
+										setAccountIdConfirmation(
+											event.target.value
+										)
+									}}
 									help={
 										<FormattedMessage id="DeleteAccount.accountIdInputHelp" />
 									}
@@ -116,7 +87,9 @@ export const DeleteAccount: FC = () => {
 						<Checkbox
 							checked={hasConsent}
 							disabled={!accountIdConfirmed}
-							onChange={onChangeConsent}
+							onChange={(event) => {
+								setHasConsent(event.target.checked)
+							}}
 							color={color}
 						/>
 
@@ -128,7 +101,10 @@ export const DeleteAccount: FC = () => {
 							color={hasConsent ? color : undefined}
 							disabled={!hasConsent}
 							isLoading={isLoading}
-							onClick={onClickConfirmation}
+							onClick={() => {
+								if (!hasConsent) return
+								if (DELETE.canRun) DELETE.request()
+							}}
 						>
 							<FormattedMessage id="DeleteAccount.confirmation" />
 						</Button>

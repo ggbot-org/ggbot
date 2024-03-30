@@ -1,4 +1,3 @@
-import { ApiKey } from "_/components/ApiKey"
 import {
 	Button,
 	Control,
@@ -7,6 +6,7 @@ import {
 	formValues,
 	Title
 } from "_/components/library"
+import { ApiKey } from "_/components/user/ApiKey"
 import { ApiSecret } from "_/components/user/ApiSecret"
 import { useUserApi } from "_/hooks/useUserApi"
 import { FC, FormEventHandler, useCallback, useEffect } from "react"

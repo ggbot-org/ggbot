@@ -1,4 +1,11 @@
-import { Column, Columns, Logo, Section, Title } from "_/components/library"
+import {
+	Column,
+	Columns,
+	Flex,
+	Logo,
+	Section,
+	Title
+} from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { FC } from "react"
 
@@ -8,7 +15,7 @@ import { Icons } from "./examples/Icons"
 import { InputFields } from "./examples/InputFields"
 import { Palette } from "./examples/Palette"
 import { SimpleTable } from "./examples/Tables"
-import { Tags } from "./examples/Tags"
+import { TagsExample } from "./examples/Tags"
 import { TimeIntervalSelectors } from "./examples/TimeIntervalSelectors"
 import { ToastExample } from "./examples/Toast"
 import { Typography } from "./examples/Typography"
@@ -16,7 +23,13 @@ import { Typography } from "./examples/Typography"
 export const ShowcasePage: FC = () => (
 	<PageContainer>
 		<Section>
-			<Logo size={71} />
+			<Title>Logo</Title>
+
+			<Flex>
+				<Logo size={200} />
+
+				<Logo animated size={200} />
+			</Flex>
 		</Section>
 
 		<Section>
@@ -74,7 +87,7 @@ export const ShowcasePage: FC = () => (
 		<Section>
 			<Title>Tags</Title>
 
-			<Tags />
+			<TagsExample />
 		</Section>
 
 		<Section>

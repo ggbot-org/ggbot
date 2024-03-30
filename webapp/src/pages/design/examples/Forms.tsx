@@ -12,7 +12,7 @@ import { FC, InputHTMLAttributes, SelectHTMLAttributes, useState } from "react"
 
 export const SimpleForm: FC = () => {
 	const [isPending, setIsPending] = useState(false)
-	const [hasConsent, setHasConsent] = useState<boolean | undefined>()
+	const [hasConsent, setHasConsent] = useState<boolean>(false)
 	const [gender, setGender] = useState("")
 	const [nick, setNick] = useState("satoshi")
 	const [password, setPassword] = useState("")
@@ -73,9 +73,11 @@ export const SimpleForm: FC = () => {
 					checked={hasConsent}
 					onChange={(event) => {
 						setHasConsent(
-							(
-								event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-							).checked
+							Boolean(
+								(
+									event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+								).checked
+							)
 						)
 					}}
 				>

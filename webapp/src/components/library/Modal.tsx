@@ -9,6 +9,10 @@ import {
 
 type Props = Partial<{
 	isActive: boolean
+	/**
+	 * To prevent user from closing the modal, do not pass `setIsActive` or set
+	 * it to `undefined`.
+	 */
 	setIsActive: (arg: boolean) => void
 }>
 

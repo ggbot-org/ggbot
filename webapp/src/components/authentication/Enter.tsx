@@ -39,7 +39,7 @@ export type AuthEnterProps = {
 	setEmail: (email: EmailAddress) => void
 }
 
-type State = {
+type ApiState = {
 	gotTimeout: boolean
 	hasGenericError: boolean
 	hasInvalidInput: boolean
@@ -59,7 +59,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 		dispatch
 	] = useReducer<
 		Reducer<
-			Partial<State>,
+			Partial<ApiState>,
 			| { type: "ENTER_REQUEST" }
 			| { type: "ENTER_FAILURE" }
 			| { type: "ENTER_TIMEOUT" }
@@ -74,9 +74,8 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 		return state
 	}, {})
 
-	const [termsAndPolicyAccepted, setTermsAndPolicyAccepted] = useState<
-		boolean | undefined
-	>()
+	const [termsAndPolicyAccepted, setTermsAndPolicyAccepted] =
+		useState<boolean>(false)
 
 	const disabled = !termsAndPolicyAccepted
 
@@ -85,7 +84,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 	>((event) => {
 		const { checked } =
 			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-		setTermsAndPolicyAccepted(checked)
+		setTermsAndPolicyAccepted(Boolean(checked))
 	}, [])
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(

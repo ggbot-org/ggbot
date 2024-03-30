@@ -23,14 +23,14 @@ export const PleasePurchase: FC = () => {
 
 	const { hasActiveSubscription } = useSubscription()
 
-	const [doNotShow, setDoNotShow] = useState<boolean | undefined>()
+	const [doNotShow, setDoNotShow] = useState<boolean>(false)
 	const [isActive, setIsActive] = useState(false)
 
 	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
 			const { checked } =
 				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-			setDoNotShow(checked)
+			setDoNotShow(Boolean(checked))
 			sessionWebStorage.doNotShowPleasePurchase.set(checked)
 		},
 		[]

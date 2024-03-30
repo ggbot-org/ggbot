@@ -82,12 +82,11 @@ export const Backtesting: FC = () => {
 		(event) => {
 			const { checked } =
 				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-			if (checked === undefined) return
 			dispatch({
 				type: "SET_AFTER_STEP_BEHAVIOUR",
 				afterStepBehaviour: {
 					...afterStepBehaviour,
-					pauseOnMemoryChange: checked
+					pauseOnMemoryChange: Boolean(checked)
 				}
 			})
 		},

@@ -1,5 +1,5 @@
-import { ApiKey } from "_/components/ApiKey"
 import { Button, Control, Field, Form, Title } from "_/components/library"
+import { ApiKey } from "_/components/user/ApiKey"
 import {
 	BinanceApiKeyPermissions,
 	BinanceApiKeyPermissionsProps

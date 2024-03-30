@@ -129,7 +129,7 @@
 		"defaultMessage": "<em>IP access restrictions</em> are activated."
 	},
 	"BrandName.label": {
-		"defaultMessage": "ggbot"
+		"defaultMessage": "{name}"
 	},
 	"CopyStrategy.chooseName": {
 		"defaultMessage": "Choose a new name for the copied strategy."

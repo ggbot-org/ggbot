@@ -16,6 +16,9 @@ export const BrandName: FC<Props> = ({ size = "normal" }) => (
 			"mb-1": size === "normal"
 		})}
 	>
-		<FormattedMessage id="BrandName.label" />
+		<FormattedMessage
+			id="BrandName.label"
+			values={{ name: PROJECT_SHORT_NAME }}
+		/>
 	</span>
 )

@@ -8,11 +8,12 @@ To start developing locally, use the following instructions.
 
 See [env/README.md](./env/README.md) for the complete list of environment variables used.
 
-To run the webapp locally, set environment variables `DEPLOY_STAGE` and `DNS_DOMAIN`.
+To run the webapp locally, set the following environment variables
 
 ```sh
 export DEPLOY_STAGE=local
 export DNS_DOMAIN=ggbot.org
+export PROJECT_SHORT_NAME=ggbot
 ```
 
 Install dependencies and build packages.

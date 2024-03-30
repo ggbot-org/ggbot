@@ -8,9 +8,8 @@ import {
 	Form,
 	Message
 } from "_/components/library"
-import { StrategyItem, StrategyItemProps } from "_/components/user/StrategyItem"
+import { StrategyItem } from "_/components/user/StrategyItem"
 import { StrategiesContext } from "_/contexts/user/Strategies"
-import { webapp } from "_/routing/webapp"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import {
@@ -39,26 +38,13 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 		schedulingsAreInactive(schedulings)
 	)
 
-	const items: Array<
-		Pick<AccountStrategy, "strategyId"> & StrategyItemProps
-	> = []
+	const items: AccountStrategy[] = []
 
 	if (accountStrategies) {
-		for (const {
-			strategyId,
-			strategyKind,
-			name,
-			schedulings
-		} of accountStrategies) {
-			const isInactive = schedulingsAreInactive(schedulings)
+		for (const item of accountStrategies) {
+			const isInactive = schedulingsAreInactive(item.schedulings)
 			if (hideInactive && isInactive && !allAreInactive) continue
-			const url = webapp.user.strategy({ strategyId, strategyKind })
-			items.push({
-				href: `${url.pathname}${url.search}`,
-				name,
-				schedulings,
-				strategyId
-			})
+			items.push(item)
 		}
 	}
 
@@ -110,19 +96,15 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 			</Flex>
 
 			<Columns isMultiline>
-				{items.map(({ name, href, schedulings, strategyId }) => (
+				{items.map((props) => (
 					<Column
-						key={strategyId}
+						key={props.strategyId}
 						size={{
 							tablet: "half",
 							fullhd: "one-third"
 						}}
 					>
-						<StrategyItem
-							name={name}
-							href={href}
-							schedulings={schedulings}
-						/>
+						<StrategyItem {...props} />
 					</Column>
 				))}
 			</Columns>
