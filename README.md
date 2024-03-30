@@ -38,5 +38,10 @@ npm test
 
 ## Documentation
 
+To setup infrastructure start with the following readings:
+
+-   [AWS](./infrastructure/docs/aws-bootstrap.md)
+-   [Stripe](./stripe/docs/stripe-bootstrap.md)
+
 -   [Authentication](./authentication/README.md)
 -   [Entity-relationship model](./models/docs/entity-relationship.md)
