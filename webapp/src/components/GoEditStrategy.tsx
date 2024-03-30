@@ -9,9 +9,7 @@ export const GoEditStrategy: FC = () => {
 
 	const onClick = useCallback(() => {
 		if (!strategyKey) return
-		const url = webapp.user.editStrategy(strategyKey)
-		// @ts-expect-error
-		location = `${url.pathname}${url.search}`
+		location.href = webapp.user.editStrategy(strategyKey).href
 	}, [strategyKey])
 
 	if (!strategyKey) return null

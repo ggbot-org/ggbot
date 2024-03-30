@@ -35,7 +35,7 @@ export const StrategyContext = createContext<ContextValue>({
 StrategyContext.displayName = "StrategyContext"
 
 export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-	const strategyKey = strategyKeyParamsFromURL(new URL(window.location.href))
+	const strategyKey = strategyKeyParamsFromURL(new URL(location.href))
 
 	const READ = usePublicApi.ReadStrategy()
 	const remoteStrategy = READ.data

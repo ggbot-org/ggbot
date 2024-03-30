@@ -1,10 +1,10 @@
-import { logging } from "_/logging"
 import { workerScriptPath } from "_/workers"
 import {
 	BacktestingMessageInData,
 	BacktestingMessageOutData,
 	BacktestingSession
 } from "@workspace/backtesting"
+import { logging } from "@workspace/logging"
 import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
 import { Dispatch, Reducer, useEffect, useReducer } from "react"
@@ -38,7 +38,10 @@ export type UseBacktestingOutput = {
 	dispatch: Dispatch<Action>
 }
 
-const { info, warn } = logging("useBacktesting")
+// TODO: use some other way to set isDev
+// i.e. not hardcoded but using some local storage
+const isDev = true
+const { info, warn } = logging("useBacktesting", isDev)
 
 const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 

@@ -10,11 +10,11 @@ export const useOfflineDetection = () => {
 		const onOnline = () => {
 			setIsOffline(false)
 		}
-		window.addEventListener("offline", onOffline)
-		window.addEventListener("online", onOnline)
+		addEventListener("offline", onOffline)
+		addEventListener("online", onOnline)
 		return () => {
-			window.removeEventListener("offline", onOffline)
-			window.removeEventListener("online", onOnline)
+			removeEventListener("offline", onOffline)
+			removeEventListener("online", onOnline)
 		}
 	}, [])
 

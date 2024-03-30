@@ -6,11 +6,12 @@ import {
 	NavbarStart
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
-import { href } from "_/routing/user/hrefs"
-import { memo, useContext } from "react"
+import { GOTO } from "_/routing/navigation"
+import { webapp } from "_/routing/webapp"
+import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const Navigation = memo(() => {
+export const Navigation: FC = () => {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
 	return (
@@ -18,8 +19,7 @@ export const Navigation = memo(() => {
 			<NavbarStart>
 				<NavbarItemAnchor
 					onClick={() => {
-						if (location.href !== href.dashboardPage())
-							location.href = href.dashboardPage()
+						GOTO(webapp.user.dashboard)
 					}}
 				>
 					<FormattedMessage id="Navigation.dashboard" />
@@ -27,8 +27,7 @@ export const Navigation = memo(() => {
 
 				<NavbarItemAnchor
 					onClick={() => {
-						if (location.href !== href.settingsPage())
-							location.href = href.settingsPage()
+						GOTO(webapp.user.settings)
 					}}
 				>
 					<FormattedMessage id="Navigation.settings" />
@@ -40,8 +39,7 @@ export const Navigation = memo(() => {
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
 						onClick={() => {
-							if (location.href !== href.adminPage())
-								location.href = href.adminPage()
+							GOTO(webapp.admin.dashboard)
 						}}
 					>
 						<FormattedMessage id="Navigation.admin" />
@@ -58,6 +56,4 @@ export const Navigation = memo(() => {
 			</NavbarEnd>
 		</Navbar>
 	)
-})
-
-Navigation.displayName = "Navigation"
+}

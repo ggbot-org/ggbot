@@ -2,7 +2,7 @@ import { defaultLanguage, Language, languages } from "@workspace/models"
 
 export const detectLanguage = (): Language => {
 	for (const language of languages)
-		if (window.navigator.language.startsWith(language)) return language
+		if (navigator.language.startsWith(language)) return language
 	return defaultLanguage
 }
 

@@ -8,7 +8,7 @@ import {
 import { FC } from "react"
 
 const Router: FC = () => {
-	const pathname = window.location.pathname
+	const pathname = location.pathname
 
 	if (pathname === adminDashboardHtmlPathname) return <DashboardPage />
 

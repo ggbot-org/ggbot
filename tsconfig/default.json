@@ -3,7 +3,7 @@
 		"module": "esnext",
 		"moduleResolution": "node",
 		"skipLibCheck": true,
-		"target": "es2020"
+		"target": "es2022"
 	},
 	"extends": "./code-quality.json"
 }

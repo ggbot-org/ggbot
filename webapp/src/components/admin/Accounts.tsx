@@ -5,7 +5,6 @@ import { webapp } from "_/routing/webapp"
 import { AccountKey, isAccountKey } from "@workspace/models"
 import { FC, useEffect } from "react"
 
-// TODO add also email and nickname
 type AccountItem = AccountKey & {
 	href: string
 }

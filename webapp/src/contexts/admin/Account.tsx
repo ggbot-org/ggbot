@@ -17,7 +17,7 @@ export const AccountContext = createContext<ContextValue>({
 AccountContext.displayName = "AccountContext"
 
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
-	const accountKey = accountKeyParamsFromURL(new URL(window.location.href))
+	const accountKey = accountKeyParamsFromURL(new URL(location.href))
 
 	const READ_ACCOUNT = useAdminApi.ReadAccount()
 	const account = READ_ACCOUNT.data

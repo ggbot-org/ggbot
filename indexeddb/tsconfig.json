@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src"
+	},
+	"extends": ["@workspace/tsconfig/build", "@workspace/tsconfig/dom"],
+	"include": ["./src/**/*.ts"]
+}

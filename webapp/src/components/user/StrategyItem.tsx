@@ -1,5 +1,6 @@
 import { Box, Flex } from "_/components/library"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
+import { GOTO } from "_/routing/navigation"
 import { AccountStrategy } from "@workspace/models"
 import { FC } from "react"
 
@@ -17,15 +18,11 @@ export const StrategyItem: FC<StrategyItemProps> = ({
 		className="StrategyItem"
 		tabIndex={0}
 		onClick={() => {
-			location.href = href
+			GOTO(new URL(href))
 		}}
 	>
-		{" "}
-
 		<Flex justify="space-between">
-			{" "}
-
-			<span> {name} </span>{" "}
+			<span>{name}</span>
 
 			<SchedulingsStatusBadges schedulings={schedulings} />{" "}
 		</Flex>

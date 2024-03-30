@@ -1,0 +1,27 @@
+{
+  "name": "@workspace/indexeddb",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "check_types": "tsc --noEmit --project .",
+    "cleanup": "tsc --build --clean",
+    "lint": "eslint --fix --ext .ts src/",
+    "prebuild": "npm run cleanup"
+  },
+  "dependencies": {
+    "@workspace/logging": "0.0.0",
+    "@workspace/models": "0.0.0"
+  },
+  "devDependencies": {
+    "@workspace/eslint-config": "0.0.0",
+    "@workspace/tsconfig": "0.0.0"
+  }
+}

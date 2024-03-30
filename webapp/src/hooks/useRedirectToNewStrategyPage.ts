@@ -1,3 +1,4 @@
+import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
 import { useEffect } from "react"
@@ -7,6 +8,6 @@ export const useRedirectToNewStrategyPage = (
 ) => {
 	useEffect(() => {
 		if (!strategyKey) return
-		window.location.href = webapp.user.strategy(strategyKey).href
+		GOTO(webapp.user.strategy(strategyKey))
 	}, [strategyKey])
 }

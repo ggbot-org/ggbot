@@ -2,7 +2,8 @@ import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
 import { useUserApi } from "_/hooks/useUserApi"
-import { logging } from "_/logging"
+import { GOTO } from "_/routing/navigation"
+import { webapp } from "_/routing/webapp"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
@@ -49,8 +50,6 @@ type ContextValue = {
 	showAuthExit: () => void
 }
 
-const { info } = logging("authentication")
-
 export const AuthenticationContext = createContext<ContextValue>({
 	accountId: "",
 	accountIsAdmin: undefined,
@@ -67,8 +66,6 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		Reducer<State, Action>
 	>(
 		(state, action) => {
-			info("AuthenticationProvider", JSON.stringify(action, null, 2))
-
 			if (action.type === "EXIT")
 				return { ...state, exited: true, exitIsActive: false }
 
@@ -205,7 +202,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	// Go to Homepage on exit.
 	useEffect(() => {
-		if (exited) location.href = "/"
+		if (exited) GOTO(webapp.homepage)
 	}, [exited])
 
 	useEffect(() => {

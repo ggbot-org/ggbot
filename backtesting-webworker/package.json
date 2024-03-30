@@ -19,6 +19,7 @@
   "dependencies": {
     "@workspace/backtesting": "0.0.0",
     "@workspace/binance": "0.0.0",
+    "@workspace/binance-indexeddb": "0.0.0",
     "@workspace/dflow": "0.0.0",
     "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",

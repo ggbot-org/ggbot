@@ -3,7 +3,6 @@ module.exports = {
 	extends: [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/strict",
-		"plugin:@typescript-eslint/recommended-type-checked",
 		"plugin:workspaces/recommended"
 	],
 	parser: "@typescript-eslint/parser",
@@ -29,6 +28,7 @@ module.exports = {
 		],
 		"@typescript-eslint/no-extra-semi": "error",
 		"@typescript-eslint/no-invalid-void-type": "off",
+		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{
@@ -46,7 +46,6 @@ module.exports = {
 			}
 		],
 		"@typescript-eslint/no-useless-empty-export": "error",
-		"@typescript-eslint/unbound-method": ["error", { ignoreStatic: true }],
 		"arrow-body-style": ["error", "as-needed"],
 		"block-scoped-var": "error",
 		"default-param-last": "error",

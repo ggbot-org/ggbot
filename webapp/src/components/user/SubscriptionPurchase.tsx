@@ -17,6 +17,7 @@ import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useStripeApi } from "_/hooks/useStripeApi"
 import { useSubscription } from "_/hooks/useSubscription"
+import { GOTO } from "_/routing/navigation"
 import {
 	isNaturalNumber,
 	purchaseDefaultNumMonths as defaultNumMonths,
@@ -117,7 +118,7 @@ export const SubscriptionPurchase: FC = () => {
 
 	useEffect(() => {
 		if (!checkoutData) return
-		location.replace(checkoutData.url)
+		GOTO(new URL(checkoutData.url))
 	}, [checkoutData])
 
 	useEffect(() => {

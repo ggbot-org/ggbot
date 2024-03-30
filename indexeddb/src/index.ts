@@ -1,4 +1,4 @@
-import { logging } from "_/logging"
+import { logging } from "@workspace/logging"
 import { SerializableData } from "@workspace/models"
 
 type IDBEventType = "open"

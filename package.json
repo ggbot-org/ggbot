@@ -163,6 +163,7 @@
     "backtesting-webworker",
     "binance",
     "binance-client",
+    "binance-indexeddb",
     "binance-proxy",
     "cache",
     "database",
@@ -172,6 +173,7 @@
     "eslint-config",
     "executor",
     "http",
+    "indexeddb",
     "infrastructure",
     "locators",
     "logging",
@@ -184,6 +186,7 @@
     "tsconfig",
     "url-shortener",
     "user-api",
-    "webapp"
+    "webapp",
+    "webstorage"
   ]
 }

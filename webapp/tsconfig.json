@@ -1,10 +1,6 @@
 {
 	"compilerOptions": {
-		"composite": true,
 		"jsx": "react-jsx",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"module": "esnext",
-		"moduleResolution": "node",
 		"paths": {
 			"_/binance/*": ["./src/binance/*"],
 			"_/classNames": ["./src/styles/classNames.ts"],
@@ -22,12 +18,8 @@
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"],
 			"_/workers": ["./src/workers.ts"]
-		},
-		"skipLibCheck": true,
-		"target": "esnext",
-		"tsBuildInfoFile": "temp/tsconfig.react.tsbuildinfo"
+		}
 	},
-	"extends": "@workspace/tsconfig/code-quality",
-	"exclude": ["node_modules"],
+	"extends": ["@workspace/tsconfig/dom"],
 	"include": ["src/**/*.ts", "src/**/*.tsx"]
 }

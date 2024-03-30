@@ -9,7 +9,7 @@ import { defaultLanguage } from "@workspace/models"
 import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
-import { workspaceDir, typesDir } from "../package.js"
+import { typesDir, workspaceDir } from "../package.js"
 
 const defaultTranslation = await readFile(
 	join(workspaceDir, translationPathname(defaultLanguage))

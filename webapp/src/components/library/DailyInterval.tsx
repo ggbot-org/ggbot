@@ -47,9 +47,9 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 
 	// Close both day dropdowns on outside click.
 	useEffect(() => {
-		window.addEventListener("click", closeDropdowns)
+		addEventListener("click", closeDropdowns)
 		return () => {
-			window.removeEventListener("click", closeDropdowns)
+			removeEventListener("click", closeDropdowns)
 		}
 	}, [closeDropdowns])
 

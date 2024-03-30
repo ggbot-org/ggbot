@@ -1,22 +1,19 @@
 import { Navbar, NavbarItemAnchor, NavbarStart } from "_/components/library"
+import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { memo } from "react"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const Navigation = memo(() => (
+export const Navigation: FC = () => (
 	<Navbar className="Navigation">
 		<NavbarStart>
 			<NavbarItemAnchor
 				onClick={() => {
-					const pathname = webapp.admin.dashboard.pathname
-					if (location.pathname !== pathname)
-						location.pathname = pathname
+					GOTO(webapp.admin.dashboard)
 				}}
 			>
 				<FormattedMessage id="AdminNavigation.dashboard" />
 			</NavbarItemAnchor>
 		</NavbarStart>
 	</Navbar>
-))
-
-Navigation.displayName = "AdminNavigation"
+)

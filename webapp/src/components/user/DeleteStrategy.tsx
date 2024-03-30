@@ -36,7 +36,7 @@ export const DeleteStrategy: FC = () => {
 	}, [DELETE, strategyKey])
 
 	useEffect(() => {
-		if (redirect) window.location.href = href.dashboardPage()
+		if (redirect) location.href = href.dashboardPage()
 	}, [redirect])
 
 	return (

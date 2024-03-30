@@ -1,13 +1,13 @@
 import { binance } from "_/binance/exchange"
 import { StrategyContext } from "_/contexts/Strategy"
-import { logging } from "_/logging"
 import {
 	binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols,
 	DflowBinanceSymbolInfo
 } from "@workspace/dflow"
+import { logging } from "@workspace/logging"
 import { useContext, useEffect, useRef } from "react"
 
-const { info, warn } = logging("useBinanceSymbols")
+const { debug } = logging("useBinanceSymbols")
 
 export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
 	const { strategyKind } = useContext(StrategyContext)
@@ -20,13 +20,12 @@ export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
 		binance
 			.exchangeInfo()
 			.then(({ symbols }) => {
-				info(`got ${symbols.length} binance symbols`)
 				binanceSymbolsRef.current =
 					binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 						symbols
 					)
 			})
-			.catch(warn)
+			.catch(debug)
 	}, [binanceSymbolsRef, strategyKind])
 
 	return binanceSymbolsRef.current

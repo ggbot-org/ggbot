@@ -1,4 +1,5 @@
 import { Button } from "_/components/library"
+import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 import { FormattedMessage } from "react-intl"
@@ -6,8 +7,7 @@ import { FormattedMessage } from "react-intl"
 export const GoSettings: FC = () => (
 	<Button
 		onClick={() => {
-			// @ts-expect-error
-			location.href = webapp.user.settings
+			GOTO(webapp.user.settings)
 		}}
 	>
 		<FormattedMessage id="GoSettings.label" />

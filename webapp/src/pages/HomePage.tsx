@@ -10,16 +10,13 @@ import {
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { useGotFirstPageView } from "_/hooks/useGotFirstPageView"
+import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC, useCallback } from "react"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const HomePage: FC = () => {
 	const { gotFirstPageView } = useGotFirstPageView()
-
-	const onClickCallToAction = useCallback(() => {
-		location.assign(webapp.user.dashboard.href)
-	}, [])
 
 	return (
 		<PageContainer>
@@ -33,7 +30,9 @@ export const HomePage: FC = () => {
 					>
 						<Button
 							isOutlined
-							onClick={onClickCallToAction}
+							onClick={() => {
+								GOTO(webapp.user.dashboard)
+							}}
 							size="large"
 							color="primary"
 						>

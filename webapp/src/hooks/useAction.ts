@@ -1,4 +1,3 @@
-import { logging } from "_/logging"
 import { localWebStorage } from "_/storages/local"
 import {
 	ActionIO,
@@ -18,9 +17,10 @@ import {
 	InternalServerError,
 	UnauthorizedError
 } from "@workspace/http"
+import { logging } from "@workspace/logging"
 import { useCallback, useState } from "react"
 
-const { info, warn } = logging("use-action")
+const { debug, warn } = logging("use-action")
 
 export type UseActionError =
 	| ApiActionClientSideError
@@ -106,11 +106,6 @@ export const useAction = <
 
 					if (isApiActionOutputData(output)) {
 						const { data: outputData } = output
-						info(
-							type,
-							JSON.stringify(inputData),
-							JSON.stringify(outputData)
-						)
 						setData(outputData as Output)
 					}
 
@@ -156,13 +151,13 @@ export const useAction = <
 					if (error instanceof BadGatewayError)
 						return setError({ name: BadGatewayError.name })
 
-					warn(error)
+					debug(error)
 					setError({ name: GenericError.errorName })
 				} finally {
 					setIsPending(false)
 				}
 			})().catch((error) => {
-				warn(error)
+				debug(error)
 				setError({ name: GenericError.errorName })
 			})
 		},

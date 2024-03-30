@@ -1,9 +1,9 @@
-import { binanceDB } from "_/storages/binanceDB"
+import { binanceIDB } from "_/storages/binanceIDB"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
 
 export const clearStorages = () => {
-	binanceDB.deleteDatabase()
+	binanceIDB.deleteDatabase()
 	localWebStorage.clear()
 	sessionWebStorage.clear()
 }

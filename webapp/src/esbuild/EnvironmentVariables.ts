@@ -25,6 +25,12 @@ export class EnvironmentVariables {
 		throw new ErrorMissingEnvironmentVariable("DNS_DOMAIN")
 	}
 
+	PROJECT_SHORT_NAME() {
+		const VALUE = process.env.PROJECT_SHORT_NAME
+		if (typeof VALUE === "string") return VALUE
+		throw new ErrorMissingEnvironmentVariable("PROJECT_SHORT_NAME")
+	}
+
 	STRIPE_PLAN_BASIC_MONTHLY_PRICE() {
 		const VALUE = process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE
 		if (typeof VALUE === "string") return VALUE

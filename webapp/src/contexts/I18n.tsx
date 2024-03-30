@@ -1,5 +1,5 @@
 import { detectLanguage, translationPathname } from "_/i18n/locales"
-import { logging } from "_/logging"
+import { logging } from "@workspace/logging"
 import { defaultLanguage } from "@workspace/models"
 import {
 	FC,
@@ -12,7 +12,7 @@ import {
 } from "react"
 import { IntlProvider } from "react-intl"
 
-const { warn } = logging("i18n")
+const { debug } = logging("i18n")
 
 export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] =
@@ -62,7 +62,7 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 			intlMessages.current = json
 			dispatch({ type: "READ_INTL_MESSAGES_SUCCESS" })
 		} catch (error) {
-			warn(error)
+			debug(error)
 			dispatch({ type: "READ_INTL_MESSAGES_FAILURE" })
 		}
 	}, [language])
@@ -70,7 +70,7 @@ export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (readIntlMessagesIsPending !== undefined) return
 		if (intlMessagesLoaded) return
-		readIntlMessages().catch(warn)
+		readIntlMessages().catch(debug)
 	}, [readIntlMessages, intlMessagesLoaded, readIntlMessagesIsPending])
 
 	return intlMessagesLoaded ? (

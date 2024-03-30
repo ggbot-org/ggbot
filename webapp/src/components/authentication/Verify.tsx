@@ -16,12 +16,12 @@ import {
 } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { logging } from "_/logging"
 import { auth } from "_/routing/auth"
 import {
 	isApiAuthVerifyRequestData,
 	isApiAuthVerifyResponseData
 } from "@workspace/api"
+import { logging } from "@workspace/logging"
 import { EmailAddress } from "@workspace/models"
 import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
@@ -56,7 +56,7 @@ type Action =
 	| { type: "VERIFY_FAILURE" }
 	| { type: "VERIFY_TIMEOUT" }
 
-const { info, warn } = logging("authentication")
+const { debug } = logging("authentication")
 
 export const AuthVerify: FC<AuthVerifyProps> = ({
 	email,
@@ -74,7 +74,6 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 		},
 		dispatch
 	] = useReducer<Reducer<State, Action>>((state, action) => {
-		info("AuthVerify", JSON.stringify(action, null, 2))
 		if (action.type === "SET_HAS_INVALID_INPUT")
 			return { hasInvalidInput: true }
 
@@ -158,7 +157,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				}
 			} catch (error) {
 				dispatch({ type: "VERIFY_FAILURE" })
-				warn(error)
+				debug(error)
 			}
 		},
 		[dispatch, email, isPending, setToken]

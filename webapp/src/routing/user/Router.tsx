@@ -11,7 +11,7 @@ import { nullStrategyKey } from "@workspace/models"
 import { FC } from "react"
 
 const Router: FC = () => {
-	const pathname = globalThis.location.pathname
+	const pathname = location.pathname
 
 	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
 

@@ -35,12 +35,12 @@ export const Modal: FC<PropsWithChildren<Props>> = ({
 	useEffect(() => {
 		if (userCannotCloseModal) return
 		if (isActive) {
-			window.addEventListener("keydown", onKeydown)
+			addEventListener("keydown", onKeydown)
 		} else {
-			window.removeEventListener("keydown", onKeydown)
+			removeEventListener("keydown", onKeydown)
 		}
 		return () => {
-			window.removeEventListener("keydown", onKeydown)
+			removeEventListener("keydown", onKeydown)
 		}
 	}, [userCannotCloseModal, isActive, onKeydown])
 

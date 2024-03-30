@@ -10,11 +10,7 @@ module.exports = {
 		ecmaFeatures: {
 			jsx: true
 		},
-		project: [
-			"./tsconfig.scripts.json",
-			"./tsconfig.webapp.json",
-			"./tsconfig.workers.json"
-		],
+		project: ["./tsconfig.json", "./tsconfig.scripts.json"],
 		tsconfigRootDir: __dirname
 	},
 	plugins: [
@@ -64,6 +60,8 @@ module.exports = {
 		],
 		"func-style": ["warn", "expression"],
 		"import/extensions": "off",
+		// TODO why import/no-cycle complains?
+		"import/no-cycle": "off",
 		"import/no-internal-modules": [
 			"error",
 			{
