@@ -21,7 +21,7 @@
 			"_/react/root": ["./src/react/root.ts"],
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"],
-			"_/workers": ["./src/workers/index.ts"]
+			"_/workers": ["./src/workers.ts"]
 		},
 		"skipLibCheck": true,
 		"target": "esnext",

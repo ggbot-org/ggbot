@@ -1,9 +1,5 @@
-/// <reference no-default-lib="true"/>
-/// <reference lib="ES2017" />
-/// <reference lib="webworker" />
-
-import { BinanceExchangeInfoCache } from "_/binance/exchangeInfoCache"
-import { logging } from "_/logging"
+// TODO import { BinanceExchangeInfoCache } from "_/binance/exchangeInfoCache"
+import { logging } from "@workspace/logging"
 import {
 	BacktestingBinanceClient,
 	BacktestingMessageInData,
@@ -30,7 +26,7 @@ type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 const { warn } = logging("backtesting")
 
 const binanceExecutor = new DflowBinanceExecutor()
-const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
+// TODO const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
 const binanceKlinesCache = new BinanceKlinesCacheMap()
 
 const session = new BacktestingSession()
@@ -170,7 +166,7 @@ const getBinance = (
 	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
 ) => {
 	const binance = new BacktestingBinanceClient(schedulingInterval)
-	binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
+	// TODO binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
 	binance.publicClient.klinesCache = binanceKlinesCache
 	return binance
 }

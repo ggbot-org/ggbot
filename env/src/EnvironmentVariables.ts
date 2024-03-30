@@ -10,6 +10,10 @@ const getVariable = (VARIABLE_NAME: EnvironmentVariableName) => {
 }
 
 class EnvironmentVariables {
+	get isDev() {
+		return this.DEPLOY_STAGE() !== "main"
+	}
+
 	AUTHENTICATION_SECRET() {
 		return getVariable("AUTHENTICATION_SECRET")
 	}

@@ -26,6 +26,6 @@
 		"./src/routing/user/pages.ts",
 		"./src/routing/user/types.ts",
 		"./src/scripts/*.ts",
-		"./src/workers/index.ts"
+		"./src/workers.ts"
 	]
 }

@@ -160,6 +160,7 @@
     "aws-ses",
     "aws-types",
     "backtesting",
+    "backtesting-webworker",
     "binance",
     "binance-client",
     "binance-proxy",

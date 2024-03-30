@@ -15,7 +15,7 @@ export class WebappBaseURL extends URL {
 export const webappDirname = {
 	admin: "admin",
 	design: "design",
-	user: "user"
+	user: "user",
 } as const
 
 export const webappPagePathname = {

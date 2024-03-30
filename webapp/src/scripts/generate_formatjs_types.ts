@@ -9,10 +9,10 @@ import { defaultLanguage } from "@workspace/models"
 import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
-import { packageDir, typesDir } from "../package.js"
+import { workspaceDir, typesDir } from "../package.js"
 
 const defaultTranslation = await readFile(
-	join(packageDir, translationPathname(defaultLanguage))
+	join(workspaceDir, translationPathname(defaultLanguage))
 )
 
 const pathname = join(typesDir, FormatjsIntlMessageIdsFilename)

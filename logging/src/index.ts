@@ -1,8 +1,3 @@
-import { ENV } from "@workspace/env"
-
-const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
-const isDev = DEPLOY_STAGE !== "main"
-
 /**
  * Output log with a prefix string and a timestamp.
  *
@@ -13,13 +8,26 @@ const isDev = DEPLOY_STAGE !== "main"
  * ```ts
  * import { logging } from "@workspace/logging"
  *
- * const { info, warn } = logging("my-prefix")
+ * const { warn, debug } = logging("my-prefix")
  *
- * export { info, warn }
+ * export { warn, debug }
+ * ```
+ *
+ * To enable info logging, on Node runtime you can do something like this:
+ *
+ * @example
+ *
+ * ```ts
+ * import { logging } from "@workspace/logging"
+ * import { ENV } from "@workspace/env"
+ *
+ * const { info } = logging("my-prefix", ENV.isDev)
+ *
+ * export { info }
  * ```
  */
 
-export const logging = (prefix: string) => ({
+export const logging = (prefix: string, isDev = false) => ({
 	/** Prints log to STDOUT, only on deploy stages `local` and `next`. */
 	info: (...args: unknown[]) => {
 		if (isDev) console.info(new Date().toJSON(), prefix, ...args)

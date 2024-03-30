@@ -1,32 +1,34 @@
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import { workersDirname } from "_/workers"
 import { webappDirname } from "@workspace/locators"
 
-export const packageDir = resolve(
+import { WorkerName, workerScriptPath } from "./workers.js"
+
+export const workspaceDir = resolve(
 	dirname(dirname(fileURLToPath(import.meta.url)))
 )
 
-export const publicDir = join(packageDir, "public")
+const monorepoDir = dirname(workspaceDir)
+
+export const publicDir = join(workspaceDir, "public")
 export const sitemap = join(publicDir, "sitemap.xml")
 
-const srcDir = join(packageDir, "src")
+const srcDir = join(workspaceDir, "src")
 
 export const typesDir = join(srcDir, "types")
 
 const srcRoutingDir = join(srcDir, "routing")
 const srcPublicRoutingDir = join(srcRoutingDir, "public")
 
-const srcWorkersDir = join(srcDir, workersDirname)
-
-type EcmaScriptName =
+type AppName =
 	| "admin"
-	| "backtesting"
 	| "design"
 	| "landing"
 	| "strategy"
 	| "user"
+
+type EcmaScriptName = AppName|WorkerName
 
 const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
 	landing: ["landing.js"],
@@ -34,7 +36,7 @@ const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
 	user: [webappDirname.user, "app.js"],
 	admin: [webappDirname.admin, "app.js"],
 	design: [webappDirname.design, "app.js"],
-	backtesting: [workersDirname, "backtesting.js"]
+	...workerScriptPath
 }
 
 export const webappEcmaScriptsConfig: Record<
@@ -65,7 +67,7 @@ export const webappEcmaScriptsConfig: Record<
 		jsPath: ecmaScriptPath.design
 	},
 	backtesting: {
-		entryPoint: join(srcWorkersDir, "backtesting.ts"),
+		entryPoint: join(monorepoDir,"backtesting-webworker", "src/index.ts"),
 		jsPath: ecmaScriptPath.backtesting
 	}
 }
