@@ -34,6 +34,10 @@ export class LocalWebStorage {
 		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
 	}
 
+	get DEBUG_backtesting() {
+		return cachedBoolean(this.storage, itemKey.DEBUG_backtesting())
+	}
+
 	strategy(strategyId: Strategy["id"]) {
 		return cachedObject<Strategy>(
 			this.storage,
@@ -57,5 +61,13 @@ export class LocalWebStorage {
 
 	clear() {
 		this.storage.clear()
+	}
+
+	clearAnyThingButDebugFlags() {
+		const DEBUG_backtesting = this.DEBUG_backtesting.get()
+
+		this.storage.clear()
+
+		if (DEBUG_backtesting) this.DEBUG_backtesting.set(true)
 	}
 }

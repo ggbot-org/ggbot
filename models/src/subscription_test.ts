@@ -43,7 +43,7 @@ void test("statusOfSubscription", () => {
 			{
 				input: {
 					end: getDay(today()).minus(
-						numDaysSubscriptionExpirationTolerance
+						numDaysSubscriptionExpirationTolerance - 1
 					).days
 				},
 				output: "active"

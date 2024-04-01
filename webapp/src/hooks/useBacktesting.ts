@@ -1,3 +1,4 @@
+import { localWebStorage } from "_/storages/local"
 import { workerScriptPath } from "_/workers"
 import {
 	BacktestingMessageInData,
@@ -38,10 +39,10 @@ export type UseBacktestingOutput = {
 	dispatch: Dispatch<Action>
 }
 
-// TODO: use some other way to set isDev
-// i.e. not hardcoded but using some local storage
-const isDev = true
-const { info, warn } = logging("useBacktesting", isDev)
+const { info, warn } = logging(
+	"useBacktesting",
+	localWebStorage.DEBUG_backtesting.get()
+)
 
 const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 

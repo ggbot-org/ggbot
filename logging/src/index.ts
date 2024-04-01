@@ -28,11 +28,12 @@
  */
 
 export const logging = (prefix: string, isDev = false) => ({
-	/** Prints log to STDOUT, only on deploy stages `local` and `next`. */
+	/** Prints log to STDOUT, only on is `isDev`. */
 	info: (...args: unknown[]) => {
-		if (isDev) console.info(new Date().toJSON(), prefix, ...args)
+		if (!isDev) return
+		console.info(new Date().toJSON(), prefix, ...args)
 	},
-	/** Prints log to STDERR, on any deploy stage. */
+	/** Prints log to STDERR. */
 	warn: (...args: unknown[]) => {
 		console.warn(
 			new Date().toJSON(),
@@ -43,7 +44,7 @@ export const logging = (prefix: string, isDev = false) => ({
 			})
 		)
 	},
-	/** Prints error and its stacktrace to STDERR, on any deploy stage. */
+	/** Prints error and its stacktrace to STDERR. */
 	debug: (error: unknown) => {
 		console.debug(new Date().toJSON(), error)
 	}

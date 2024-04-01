@@ -37,6 +37,8 @@ npm run check_types
 npm test
 ```
 
+See also here [how to enable debugging in the webapp](./webstorage/docs/webapp-debug.md).
+
 ## Documentation
 
 To setup infrastructure start with the following readings:

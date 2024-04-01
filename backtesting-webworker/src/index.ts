@@ -26,7 +26,7 @@ import { Time } from "minimal-time-helpers"
 
 type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 
-const { warn } = logging("backtesting")
+const { debug, warn } = logging("backtesting")
 
 const binanceExecutor = new DflowBinanceExecutor()
 const binanceIDB = new BinanceIDB()
@@ -216,7 +216,7 @@ const runBinance = async (binance: BacktestingBinanceClient) => {
 				}
 			}
 		} catch (error) {
-			warn(error)
+			debug(error)
 			const statusChanged = session.stop()
 			if (statusChanged) POST(statusChangedMessage(session))
 		}
