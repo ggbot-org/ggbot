@@ -1,5 +1,5 @@
 import {
-	AccountInfo,
+	Account,
 	AccountKey,
 	AccountStrategy,
 	BalanceEvent,
@@ -44,7 +44,9 @@ export type UserDatabaseAction = {
 	DeleteBinanceApiConfig: (arg: void) => Promise<DeletionTime>
 	DeleteStrategy: (arg: StrategyKey) => Promise<DeletionTime>
 	ReadBalances: (arg: DayInterval) => Promise<BalanceEvent[]>
-	ReadAccountInfo: (arg: void) => Promise<AccountInfo | null>
+	ReadAccountInfo: (
+		arg: void
+	) => Promise<(Account & { subscription: Subscription | null }) | null>
 	ReadBinanceApiKey: (
 		arg: void
 	) => Promise<Pick<BinanceApiConfig, "apiKey"> | null>

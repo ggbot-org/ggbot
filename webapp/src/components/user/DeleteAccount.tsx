@@ -10,21 +10,19 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication"
+import { useStoredAccount } from "_/hooks/useStoredAccount"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export const DeleteAccount: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { accountId } = useContext(AuthenticationContext)
+	const account = useStoredAccount()
 
 	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
 
-	const disabled = accountId === undefined
-
-	const accountIdConfirmed = accountIdConfirmation === accountId
+	const accountIdConfirmed = accountIdConfirmation === account?.id
 	const color: MainColor | undefined = accountIdConfirmed
 		? "danger"
 		: undefined
@@ -50,7 +48,7 @@ export const DeleteAccount: FC = () => {
 				onClick={() => {
 					setModalIsActive(true)
 				}}
-				disabled={disabled}
+				disabled={account === undefined}
 			>
 				<FormattedMessage id="DeleteAccount.button" />
 			</Button>

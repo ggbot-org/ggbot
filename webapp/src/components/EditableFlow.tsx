@@ -59,7 +59,7 @@ export const EditableFlow: FC = () => {
 					<Button
 						onClick={() => {
 							if (!strategyKey) return
-							GOTO(webapp.user.editStrategy(strategyKey))
+							GOTO(webapp.user.strategy(strategyKey))
 						}}
 					>
 						<FormattedMessage id="Tabs.manage" />

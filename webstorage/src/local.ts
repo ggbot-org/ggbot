@@ -1,5 +1,5 @@
 import type { ManagedCacheProvider } from "@workspace/cache"
-import { Strategy } from "@workspace/models"
+import { Account, Strategy } from "@workspace/models"
 
 import { cachedBoolean, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
@@ -10,6 +10,10 @@ type LocalWebStorageEventType = "authTokenDeleted"
 export class LocalWebStorage {
 	private storage = new LocalWebStorageProvider()
 	private eventTarget = new EventTarget()
+
+	get account() {
+		return cachedObject<Account>(this.storage, itemKey.account())
+	}
 
 	get authToken(): ManagedCacheProvider<string> {
 		const key = itemKey.authToken()

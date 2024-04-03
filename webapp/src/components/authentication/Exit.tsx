@@ -10,23 +10,18 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { FC, FormEventHandler, useCallback, useContext } from "react"
+import { useStoredAccount } from "_/hooks/useStoredAccount"
+import { FC, FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 
-export type AuthExitProps = {
+type Props = {
 	isActive: boolean
 	setIsActive: (arg: boolean) => void
 	exit: () => void
 }
 
-export const AuthExit: FC<AuthExitProps> = ({
-	isActive,
-	setIsActive,
-	exit
-}) => {
-	// TODO can I get `exit` from context here? Instead of a prop (looks duplicated)
-	const { accountId, accountEmail } = useContext(AuthenticationContext)
+export const AuthExit: FC<Props> = ({ isActive, setIsActive, exit }) => {
+	const account = useStoredAccount()
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
@@ -57,11 +52,11 @@ export const AuthExit: FC<AuthExitProps> = ({
 
 				<Columns>
 					<Column size="half">
-						<Email isStatic value={accountEmail} />
+						<Email isStatic value={account?.email} />
 					</Column>
 
 					<Column size="half">
-						<AccountId value={accountId} />
+						<AccountId value={account?.id} />
 					</Column>
 				</Columns>
 

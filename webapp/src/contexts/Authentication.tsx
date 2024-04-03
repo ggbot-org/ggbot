@@ -1,5 +1,5 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
-import { AuthExit, AuthExitProps } from "_/components/authentication/Exit"
+import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
 import { useUserApi } from "_/hooks/useUserApi"
 import { GOTO } from "_/routing/navigation"
@@ -7,7 +7,7 @@ import { webapp } from "_/routing/webapp"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { BadGatewayError, UnauthorizedError } from "@workspace/http"
-import { EmailAddress, isAdminAccount, Subscription } from "@workspace/models"
+import { Account, EmailAddress, Subscription } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 import {
 	createContext,
@@ -17,12 +17,13 @@ import {
 	useCallback,
 	useEffect,
 	useMemo,
-	useReducer
+	useReducer,
+	useState
 } from "react"
 
 type State = {
 	email: EmailAddress | undefined
-	exitIsActive: boolean
+	exitConfirmationIsActive: boolean
 	exited: boolean
 	token: string | undefined
 	verified?: boolean | undefined
@@ -32,8 +33,8 @@ type Action =
 	| { type: "EXIT" }
 	| { type: "SET_EMAIL"; data: Pick<State, "email"> }
 	| {
-			type: "SET_EXIT_IS_ACTIVE"
-			data: Pick<State, "exitIsActive">
+			type: "SET_EXIT_CONFIRMATION_IS_ACTIVE"
+			data: Pick<State, "exitConfirmationIsActive">
 	  }
 	| {
 			type: "SET_TOKEN"
@@ -43,7 +44,6 @@ type Action =
 
 type ContextValue = {
 	accountId: string
-	accountIsAdmin: boolean | undefined
 	accountEmail: string
 	accountWhenCreated: Time | undefined
 	subscription: Subscription | null | undefined
@@ -52,7 +52,6 @@ type ContextValue = {
 
 export const AuthenticationContext = createContext<ContextValue>({
 	accountId: "",
-	accountIsAdmin: undefined,
 	accountEmail: "",
 	accountWhenCreated: undefined,
 	subscription: undefined,
@@ -62,43 +61,54 @@ export const AuthenticationContext = createContext<ContextValue>({
 AuthenticationContext.displayName = "AuthenticationContext"
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [{ email, exited, exitIsActive, token }, dispatch] = useReducer<
-		Reducer<State, Action>
-	>(
-		(state, action) => {
-			if (action.type === "EXIT")
-				return { ...state, exited: true, exitIsActive: false }
+	const [{ email, exited, exitConfirmationIsActive, token }, dispatch] =
+		useReducer<Reducer<State, Action>>(
+			(state, action) => {
+				if (action.type === "EXIT")
+					return {
+						...state,
+						exited: true,
+						exitConfirmationIsActive: false
+					}
 
-			if (action.type === "RESET_TOKEN")
-				return {
-					...state,
-					// Need also to reset `email` together with `token`.
-					email: undefined,
-					token: undefined
-				}
+				if (action.type === "RESET_TOKEN")
+					return {
+						...state,
+						// Need also to reset `email` together with `token`.
+						email: undefined,
+						token: undefined
+					}
 
-			if (action.type === "SET_EMAIL")
-				return { ...state, email: action.data.email }
+				if (action.type === "SET_EMAIL")
+					return { ...state, email: action.data.email }
 
-			if (action.type === "SET_EXIT_IS_ACTIVE")
-				return { ...state, exitIsActive: action.data.exitIsActive }
+				if (action.type === "SET_EXIT_CONFIRMATION_IS_ACTIVE")
+					return {
+						...state,
+						exitConfirmationIsActive:
+							action.data.exitConfirmationIsActive
+					}
 
-			if (action.type === "SET_TOKEN")
-				return {
-					...state,
-					// Need also to reset `email` whenever `token` changes.
-					email: undefined,
-					token: action.data.token
-				}
+				if (action.type === "SET_TOKEN")
+					return {
+						...state,
+						// Need also to reset `email` whenever `token` changes.
+						email: undefined,
+						token: action.data.token
+					}
 
-			return state
-		},
-		{
-			email: undefined,
-			exited: false,
-			exitIsActive: false,
-			token: localWebStorage.authToken.get()
-		}
+				return state
+			},
+			{
+				email: undefined,
+				exited: false,
+				exitConfirmationIsActive: false,
+				token: localWebStorage.authToken.get()
+			}
+		)
+
+	const [storedAccount, setStoredAccount] = useState<Account | undefined>(
+		localWebStorage.account.get()
 	)
 
 	const READ = useUserApi.ReadAccountInfo()
@@ -121,24 +131,17 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		dispatch({ type: "SET_EMAIL", data: { email: undefined } })
 	}, [])
 
-	const exit = useCallback<AuthExitProps["exit"]>(() => {
+	const exit = useCallback(() => {
 		clearStorages()
 		dispatch({ type: "EXIT" })
 	}, [])
 
 	const showAuthExit = useCallback<ContextValue["showAuthExit"]>(() => {
 		dispatch({
-			type: "SET_EXIT_IS_ACTIVE",
-			data: { exitIsActive: true }
+			type: "SET_EXIT_CONFIRMATION_IS_ACTIVE",
+			data: { exitConfirmationIsActive: true }
 		})
 	}, [])
-
-	const setExitIsActive = useCallback<AuthExitProps["setIsActive"]>(
-		(exitIsActive) => {
-			dispatch({ type: "SET_EXIT_IS_ACTIVE", data: { exitIsActive } })
-		},
-		[]
-	)
 
 	// Handle case when `authToken` is deleted from localWebStorage in other tabs.
 	const onLocalStorageChange = useCallback(() => {
@@ -147,19 +150,18 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		if (!authToken) exit()
 	}, [token, exit])
 
+	// TODO improve this
+	// Authentication context may work differently, and do not provide subscription
+	// also subscription could be cached in local storage?
 	const contextValue = useMemo<ContextValue>(
 		() => ({
-			accountId: accountInfo?.id ?? "",
-			accountIsAdmin: accountInfo
-				? isAdminAccount(accountInfo)
-				: undefined,
-			accountEmail: accountInfo?.email ?? "",
-			accountWhenCreated: accountInfo?.whenCreated,
+			accountId: storedAccount?.id ?? "",
+			accountEmail: storedAccount?.email ?? "",
+			accountWhenCreated: storedAccount?.whenCreated,
 			subscription: accountInfo?.subscription,
-			exit,
 			showAuthExit
 		}),
-		[accountInfo, exit, showAuthExit]
+		[accountInfo, showAuthExit, storedAccount]
 	)
 
 	// Fetch account info.
@@ -167,6 +169,14 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 		if (token === undefined) return
 		if (READ.canRun) READ.request()
 	}, [READ, accountInfo, token])
+
+	// Store account in local storage.
+	useEffect(() => {
+		if (!accountInfo) return
+		const { subscription: _remove, ...account } = accountInfo
+		localWebStorage.account.set(account)
+		setStoredAccount(account)
+	}, [accountInfo])
 
 	// Handle errors.
 	useEffect(() => {
@@ -235,8 +245,13 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 			{children}
 
 			<AuthExit
-				isActive={exitIsActive}
-				setIsActive={setExitIsActive}
+				isActive={exitConfirmationIsActive}
+				setIsActive={(exitConfirmationIsActive) => {
+					dispatch({
+						type: "SET_EXIT_CONFIRMATION_IS_ACTIVE",
+						data: { exitConfirmationIsActive }
+					})
+				}}
 				exit={exit}
 			/>
 		</AuthenticationContext.Provider>

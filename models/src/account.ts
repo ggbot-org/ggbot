@@ -24,8 +24,8 @@ export const isAccount = objectTypeGuard<Account>(
 		(role === undefined ? true : isAccountRole(role))
 )
 
-export const isAdminAccount = ({ role }: Pick<Account, "role">): boolean =>
-	role === "admin"
+export const isAdminAccount = (arg?: Pick<Account, "role">): boolean =>
+	arg?.role === "admin"
 
 export const newAccount = ({ email }: NewItem<Account>): Account => ({
 	...createdNow(),

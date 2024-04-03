@@ -20,11 +20,19 @@ export const SettingsPage: FC = () => {
 					},
 					{
 						tabId: "billing",
-						content: <BillingSettings />
+						// Do not render content if tab is not active, avoid unnecessary network calls.
+						content:
+							activeTabId === "billing" ? (
+								<BillingSettings />
+							) : null
 					},
 					{
 						tabId: "binance",
-						content: <BinanceSettings />
+						// Do not render content if tab is not active, avoid unnecessary network calls.
+						content:
+							activeTabId === "binance" ? (
+								<BinanceSettings />
+							) : null
 					}
 				]}
 			/>
