@@ -1,14 +1,15 @@
 import { Button } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC, useContext } from "react"
+import { StrategyKey } from "@workspace/models"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const GoCopyStrategy: FC = () => {
-	const { strategyKey } = useContext(StrategyContext)
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
 
-	return (
+export const GoCopyStrategy: FC<Props> = ({ strategyKey }) => (
 		<Button
 			onClick={() => {
 				if (!strategyKey) return
@@ -18,4 +19,3 @@ export const GoCopyStrategy: FC = () => {
 			<FormattedMessage id="GoCopyStrategy.label" />
 		</Button>
 	)
-}

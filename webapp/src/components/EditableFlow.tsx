@@ -3,16 +3,18 @@ import {
 	FlowViewContainer,
 	FlowViewContainerElement
 } from "_/components/FlowViewContainer"
-import { Button } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy"
+import { Button, Buttons } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useContext, useEffect, useRef, useState } from "react"
+import { GOTO } from "_/routing/navigation"
+import { webapp } from "_/routing/webapp"
+import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const EditableFlow: FC = () => {
-	const { strategyKey, strategyKind } = useContext(StrategyContext)
+	const strategyKey = useStrategyKey()
 
 	const { flowViewGraph: initialFlowViewGraph } = useStrategyFlow(strategyKey)
 
@@ -21,7 +23,7 @@ export const EditableFlow: FC = () => {
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
 		container: flowViewContainerRef.current,
 		initialFlowViewGraph,
-		strategyKind
+		strategyKind: strategyKey?.strategyKind
 	})
 
 	const [canSave, setCanSave] = useState(false)
@@ -53,13 +55,24 @@ export const EditableFlow: FC = () => {
 	return (
 		<>
 			<FlowMenu>
-				<Button
-					color={canSave ? "primary" : undefined}
-					isLoading={WRITE.isPending}
-					onClick={onClickSave}
-				>
-					<FormattedMessage id="EditableFlow.save" />
-				</Button>
+				<Buttons>
+					<Button
+						onClick={() => {
+							if (!strategyKey) return
+							GOTO(webapp.user.editStrategy(strategyKey))
+						}}
+					>
+						<FormattedMessage id="Tabs.manage" />
+					</Button>
+
+					<Button
+						color={canSave ? "primary" : undefined}
+						isLoading={WRITE.isPending}
+						onClick={onClickSave}
+					>
+						<FormattedMessage id="EditableFlow.save" />
+					</Button>
+				</Buttons>
 			</FlowMenu>
 
 			<FlowViewContainer ref={flowViewContainerRef} />

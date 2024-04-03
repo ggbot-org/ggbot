@@ -1,22 +1,21 @@
 import { Button } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy"
+import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC, useCallback, useContext } from "react"
+import { StrategyKey } from "@workspace/models"
+import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const GoEditStrategy: FC = () => {
-	const { strategyKey } = useContext(StrategyContext)
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
 
-	const onClick = useCallback(() => {
-		if (!strategyKey) return
-		location.href = webapp.user.editStrategy(strategyKey).href
-	}, [strategyKey])
-
-	if (!strategyKey) return null
-
-	return (
-		<Button onClick={onClick}>
+export const GoEditStrategy: FC<Props> = ({ strategyKey }) => (
+		<Button
+			onClick={() => {
+				if (!strategyKey) return
+				GOTO(webapp.user.editStrategy(strategyKey))
+			}}
+		>
 			<FormattedMessage id="GoEditStrategy.label" />
 		</Button>
 	)
-}

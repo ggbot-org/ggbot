@@ -29,7 +29,7 @@ export const StrategyActions: FC<Props> = ({ readOnly }) => {
 					<Buttons>
 						{readOnly ? null : <RenameStrategy />}
 
-						<GoCopyStrategy />
+						<GoCopyStrategy strategyKey={strategyKey} />
 
 						<ShareStrategy
 							strategyKey={strategyKey}
@@ -38,9 +38,9 @@ export const StrategyActions: FC<Props> = ({ readOnly }) => {
 
 						{readOnly ? null : (
 							<>
-								<GoEditStrategy />
+								<GoEditStrategy strategyKey={strategyKey} />
 
-								<DeleteStrategy />
+								<DeleteStrategy strategyKey={strategyKey} />
 							</>
 						)}
 					</Buttons>
