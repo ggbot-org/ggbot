@@ -108,7 +108,7 @@ export class TrailingStopUp extends DflowNode {
 		const memoryLabel = this.input(1).data as string
 		const marketPrice = this.input(2).data as number
 		const percentageDelta = this.input(3).data as number
-		const initialStopPrice = this.input(4).data as number
+		const initialStopPrice = this.input(4).data as number | undefined
 		const resetTrailing = this.input(5).data
 
 		const context = this.host.context as Context

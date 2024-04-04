@@ -6,21 +6,17 @@ import { esbuildDefinitions } from "./definitions.js"
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 
 /**
- * Generate bundle for web apps.
+ * Generate JS bundle for a web app.
  *
  * @example
  *
  * ```ts
  * import { browserBundle } from "@workspace/esbuild"
  *
- * const bundleWebApps = async () => {
- * 	await browserBundle({
- * 		entryPoints: ["src/app.tsx"],
- * 		outfile: "public/app"
- * 	})
- * }
- *
- * bundleWebApps()
+ * await browserBundle({
+ * 	entryPoints: ["src/app.tsx"],
+ * 	outfile: "public/app.js"
+ * })
  * ```
  */
 
@@ -30,6 +26,8 @@ export const browserBundle = ({
 }: Pick<BuildOptions, "entryPoints" | "outfile">) =>
 	build({
 		alias: {
+			// `react-intl` without the parser is 40% smaller,
+			// see https://formatjs.io/docs/guides/advanced-usage/
 			"@formatjs/icu-messageformat-parser":
 				"@formatjs/icu-messageformat-parser/no-parser"
 		},

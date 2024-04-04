@@ -46,6 +46,7 @@ module.exports = {
 			}
 		],
 		"@typescript-eslint/no-useless-empty-export": "error",
+		"@typescript-eslint/unbound-method": "off",
 		"arrow-body-style": ["error", "as-needed"],
 		"block-scoped-var": "error",
 		"default-param-last": "error",
