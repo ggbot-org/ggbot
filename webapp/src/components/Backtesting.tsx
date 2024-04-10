@@ -22,10 +22,16 @@ import {
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
+import {
+	SchedulingParameters,
+	SchedulingParametersProps
+} from "_/components/user/SchedulingParameters"
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { isFrequency } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -42,9 +48,11 @@ import { classNames } from "trunx"
 export const Backtesting: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { strategy, strategyKey, strategyKind, strategyName } =
-		useContext(StrategyContext)
+	const strategyKey = useStrategyKey()
+	const { strategy, strategyKind, strategyName } = useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
+
+	const binanceSymbols = useBinanceSymbols()
 
 	const { flowViewGraph } = useStrategyFlow(strategyKey)
 
@@ -75,6 +83,9 @@ export const Backtesting: FC = () => {
 
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
+
+	const paramItems: SchedulingParametersProps["items"] = []
+	const setParam: SchedulingParametersProps["setParam"] = () => {}
 
 	const onChangePauseOnMemoryChange = useCallback<
 		ChangeEventHandler<HTMLInputElement>
@@ -265,6 +276,14 @@ export const Backtesting: FC = () => {
 			</Columns>
 
 			<Columns>
+				<Column size="one-third">
+					<SchedulingParameters
+						binanceSymbols={binanceSymbols}
+						setParam={setParam}
+						items={paramItems}
+					/>
+				</Column>
+
 				<Column size="one-third">
 					<Memory memory={memory} />
 				</Column>

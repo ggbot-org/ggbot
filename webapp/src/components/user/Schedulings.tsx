@@ -14,14 +14,17 @@ import {
 	SchedulingItem,
 	SchedulingItemProps
 } from "_/components/user/SchedulingItem"
-import { SchedulingParameters } from "_/components/user/SchedulingParameters"
+import {
+	SchedulingParameters,
+	SchedulingParametersProps
+} from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
-import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
@@ -52,7 +55,9 @@ import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
 export const Schedulings: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const { strategyId, strategyKey } = useContext(StrategyContext)
+	const strategyKey = useStrategyKey()
+	const strategyId = strategyKey?.strategyId
+
 	const { flowViewGraph } = useStrategyFlow(strategyKey)
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const {
@@ -138,12 +143,7 @@ export const Schedulings: FC = () => {
 	const paramItems = useCallback<
 		(
 			params: StrategyParameters | undefined
-		) => Array<
-			Pick<
-				SchedulingParameterItemProps,
-				"kind" | "label" | "value" | "defaultValue"
-			>
-		>
+		) => SchedulingParametersProps["items"]
 	>(
 		(params = {}) => {
 			const items = []

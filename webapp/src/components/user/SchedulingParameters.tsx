@@ -8,7 +8,10 @@ import {
 	SchedulingParameterItemProps
 } from "./SchedulingParameterItem"
 
-type Props = Pick<SchedulingParameterItemProps, "setParam"> & {
+export type SchedulingParametersProps = Pick<
+	SchedulingParameterItemProps,
+	"setParam"
+> & {
 	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
 	items: Array<
 		Pick<
@@ -18,7 +21,7 @@ type Props = Pick<SchedulingParameterItemProps, "setParam"> & {
 	>
 }
 
-export const SchedulingParameters: FC<Props> = ({
+export const SchedulingParameters: FC<SchedulingParametersProps> = ({
 	binanceSymbols,
 	items,
 	setParam
