@@ -54,7 +54,7 @@ export const Backtesting: FC = () => {
 
 	const binanceSymbols = useBinanceSymbols()
 
-	const { flowViewGraph } = useStrategyFlow(strategyKey)
+	const flowViewGraph = useStrategyFlow(strategyKey)
 
 	const hasFlow = Boolean(flowViewGraph)
 
@@ -84,7 +84,6 @@ export const Backtesting: FC = () => {
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
 
-	const paramItems: SchedulingParametersProps["items"] = []
 	const setParam: SchedulingParametersProps["setParam"] = () => {}
 
 	const onChangePauseOnMemoryChange = useCallback<
@@ -279,8 +278,9 @@ export const Backtesting: FC = () => {
 				<Column size="one-third">
 					<SchedulingParameters
 						binanceSymbols={binanceSymbols}
+						flowViewGraph={flowViewGraph}
 						setParam={setParam}
-						items={paramItems}
+						params={undefined}
 					/>
 				</Column>
 

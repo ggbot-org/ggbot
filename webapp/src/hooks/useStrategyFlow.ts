@@ -3,9 +3,7 @@ import { StrategyKey } from "@workspace/models"
 import { FlowViewSerializableGraph } from "flow-view"
 import { useEffect } from "react"
 
-type UseStrategyFlowOutput = {
-	flowViewGraph: FlowViewSerializableGraph | null | undefined
-}
+export type UseStrategyFlowOutput = FlowViewSerializableGraph | null | undefined
 
 export const useStrategyFlow = (
 	strategyKey: StrategyKey | undefined
@@ -18,7 +16,7 @@ export const useStrategyFlow = (
 		if (canRun) request(strategyKey)
 	}, [canRun, request, strategyKey])
 
-	if (!strategyKey) return { flowViewGraph: undefined }
-	if (!data) return { flowViewGraph: data }
-	return { flowViewGraph: data.view }
+	if (!strategyKey) return undefined
+	if (!data) return null
+	return data.view
 }

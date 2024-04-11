@@ -7,9 +7,11 @@ import {
 import { logging } from "@workspace/logging"
 import { useContext, useEffect, useRef } from "react"
 
+type UseBinanceSymbolsOutput = DflowBinanceSymbolInfo[] | undefined
+
 const { debug } = logging("useBinanceSymbols")
 
-export const useBinanceSymbols = (): DflowBinanceSymbolInfo[] | undefined => {
+export const useBinanceSymbols = (): UseBinanceSymbolsOutput => {
 	const { strategyKind } = useContext(StrategyContext)
 
 	const binanceSymbolsRef = useRef<DflowBinanceSymbolInfo[]>()

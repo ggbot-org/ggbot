@@ -317,10 +317,10 @@
 	"OneTimePassword.label": {
 		"defaultMessage": "One time password"
 	},
-	"Parameters.empty": {
+	"SchedulingParameters.empty": {
 		"defaultMessage": "empty"
 	},
-	"Parameters.title": {
+	"SchedulingParameters.title": {
 		"defaultMessage": "Parameters"
 	},
 	"PleasePurchase.doNotShow": {

@@ -16,7 +16,7 @@ import { FormattedMessage } from "react-intl"
 export const EditableFlow: FC = () => {
 	const strategyKey = useStrategyKey()
 
-	const { flowViewGraph: initialFlowViewGraph } = useStrategyFlow(strategyKey)
+	const initialFlowViewGraph = useStrategyFlow(strategyKey)
 
 	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
 

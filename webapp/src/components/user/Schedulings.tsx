@@ -14,10 +14,7 @@ import {
 	SchedulingItem,
 	SchedulingItemProps
 } from "_/components/user/SchedulingItem"
-import {
-	SchedulingParameters,
-	SchedulingParametersProps
-} from "_/components/user/SchedulingParameters"
+import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { ToastContext } from "_/contexts/Toast"
@@ -28,15 +25,10 @@ import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useSubscription } from "_/hooks/useSubscription"
 import { useUserApi } from "_/hooks/useUserApi"
 import {
-	extractBinanceParameters,
-	extractCommonParameters
-} from "@workspace/dflow"
-import {
 	AccountStrategy,
 	isStrategyScheduling,
 	newStrategyScheduling,
 	PRO_FREQUENCY_INTERVALS,
-	StrategyParameters,
 	StrategyScheduling
 } from "@workspace/models"
 import {
@@ -58,7 +50,7 @@ export const Schedulings: FC = () => {
 	const strategyKey = useStrategyKey()
 	const strategyId = strategyKey?.strategyId
 
-	const { flowViewGraph } = useStrategyFlow(strategyKey)
+	const flowViewGraph = useStrategyFlow(strategyKey)
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const {
 		accountStrategies,
@@ -139,45 +131,6 @@ export const Schedulings: FC = () => {
 		}
 		return false
 	}, [currentSchedulings, schedulingItems])
-
-	const paramItems = useCallback<
-		(
-			params: StrategyParameters | undefined
-		) => SchedulingParametersProps["items"]
-	>(
-		(params = {}) => {
-			const items = []
-			if (!flowViewGraph) return []
-
-			const commonParams = extractCommonParameters(flowViewGraph)
-
-			for (const { key, kind, defaultValue } of commonParams) {
-				const value = params[key]
-				items.push({
-					kind,
-					label: key,
-					defaultValue,
-					value
-				})
-			}
-
-			const binanceParams = binanceSymbols
-				? extractBinanceParameters(binanceSymbols, flowViewGraph)
-				: []
-
-			for (const { key, kind, defaultValue } of binanceParams) {
-				const value = params[key]
-				items.push({
-					kind,
-					label: key,
-					defaultValue,
-					value
-				})
-			}
-			return items
-		},
-		[flowViewGraph, binanceSymbols]
-	)
 
 	const canCancel = someSchedulingChanged
 
@@ -422,8 +375,9 @@ export const Schedulings: FC = () => {
 					<Column>
 						<SchedulingParameters
 							binanceSymbols={binanceSymbols}
+							flowViewGraph={flowViewGraph}
 							setParam={setSchedulingParam(scheduling.id)}
-							items={paramItems(scheduling.params)}
+							params={scheduling.params}
 						/>
 					</Column>
 
