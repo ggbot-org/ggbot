@@ -1,7 +1,8 @@
 import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
 import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
-import { SendEmailProvider } from "@workspace/email-messages"
+// TODO enable emails
+// import { SendEmailProvider } from "@workspace/email-messages"
 import {
 	AccountKey,
 	AccountStrategy,
@@ -21,7 +22,8 @@ import {
 	newId,
 	PRO_FREQUENCY_INTERVALS,
 	statusOfSubscription,
-	StrategyKind,
+	// TODO enable emails
+	// StrategyKind,
 	StrategyMemory,
 	StrategyScheduling,
 	Subscription,
@@ -49,7 +51,8 @@ export class Executor {
 
 	readonly publicDatabase = new PublicDatabase(documentProvider)
 	readonly executorDatabase = new ExecutorDatabase(documentProvider)
-	readonly sendEmailProvider = new SendEmailProvider()
+	// TODO enable emails
+	// readonly sendEmailProvider = new SendEmailProvider()
 
 	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
@@ -256,8 +259,9 @@ export class Executor {
 							accountId,
 							strategyId,
 							schedulingId
-						},
-						strategyKind
+						}
+						// TODO enable emails
+						// strategyKind
 					)
 					return
 				}
@@ -320,8 +324,9 @@ export class Executor {
 									accountId,
 									strategyId,
 									schedulingId: scheduling.id
-								},
-								strategyKind
+								}
+								// TODO enable emails
+								// strategyKind
 							)
 							continue
 						}
@@ -353,9 +358,10 @@ export class Executor {
 	}
 
 	async suspendAccountStrategyScheduling(
-		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey,
+		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey
 		// The `strategyKind` is needed to send email notification.
-		strategyKind: StrategyKind
+		// TODO enable emails
+		// strategyKind: StrategyKind
 	) {
 		warn(
 			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
@@ -376,12 +382,13 @@ export class Executor {
 		// Account may be null in case user deleted the account.
 		if (!isAccount(account)) return
 		// If there is an account, notify the user via email.
-		await this.sendEmailProvider.SuspendedStrategy({
-			language: "en",
-			email: account.email,
-			strategyId,
-			strategyKind
-		})
+		// TODO enable emails
+		// await this.sendEmailProvider.SuspendedStrategy({
+		// 	language: "en",
+		// 	email: account.email,
+		// 	strategyId,
+		// 	strategyKind
+		// })
 	}
 
 	async suspendAccountStrategySchedulings({
