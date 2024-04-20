@@ -19,6 +19,10 @@ void test("add", async () => {
 		{
 			input: { a: 2, b: 3 },
 			output: 5
+		},
+		{
+			input: { a: 0.2, b: 0.1 },
+			output: 0.3
 		}
 	]
 
@@ -64,6 +68,11 @@ void test("div", async () => {
 		{
 			input: { a: 3, b: 2 },
 			output: 1.5
+		},
+		// Division by zero
+		{
+			input: { a: 1, b: 0 },
+			output: undefined
 		}
 	]
 

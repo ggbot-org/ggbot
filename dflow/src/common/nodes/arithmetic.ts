@@ -1,63 +1,74 @@
-import {
-	add,
-	decimalToNumber,
-	div,
-	ErrorCannotDivideByZero,
-	mul,
-	sub
-} from "@workspace/arithmetic"
 import { Dflow, DflowNode } from "dflow"
 
 const { input, output } = Dflow
 
 const binaryOperatorInputs = [input("number"), input("number")]
+const binaryOperatorOutputs = [output("number")]
+
+/**
+ * Fix floating point issues by coercing to a number with precision eight.
+ *
+ * @remarks
+ * Quantities in crypto do not have precision greater than eight.
+ * @example
+ *
+ * ```ts
+ * 0.1 + 0.2 // 0.30000000000000004
+ * num8(0.1 + 0.2) // 0.3
+ *
+ * 1111.11 + 1111.11 + 1111.11 + 1111.11 + 1111.11 // 5555.549999999999
+ * num8(1111.11 + 1111.11 + 1111.11 + 1111.11 + 1111.11) // 5555.55
+ * ```
+ *
+ * @internal
+ */
+const num8 = (n: number) => Number(n.toFixed(8))
 
 export class Addition extends DflowNode {
 	static kind = "add"
 	static inputs = binaryOperatorInputs
-	static outputs = [output("number")]
+	static outputs = binaryOperatorOutputs
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = decimalToNumber(add(a, b))
+		this.output(0).data = num8(a + b)
 	}
 }
 
 export class Subtraction extends DflowNode {
 	static kind = "sub"
 	static inputs = binaryOperatorInputs
-	static outputs = [output("number")]
+	static outputs = binaryOperatorOutputs
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = decimalToNumber(sub(a, b))
+		this.output(0).data = num8(a - b)
 	}
 }
 
 export class Multiplication extends DflowNode {
 	static kind = "mul"
 	static inputs = binaryOperatorInputs
-	static outputs = [output("number")]
+	static outputs = binaryOperatorOutputs
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = decimalToNumber(mul(a, b))
+		this.output(0).data = num8(a * b)
 	}
 }
 
 export class Division extends DflowNode {
 	static kind = "div"
 	static inputs = binaryOperatorInputs
-	static outputs = [output("number")]
+	static outputs = binaryOperatorOutputs
 	run() {
-		try {
-			const a = this.input(0).data as number
-			const b = this.input(1).data as number
-			this.output(0).data = decimalToNumber(div(a, b))
-		} catch (error) {
-			if (error instanceof ErrorCannotDivideByZero)
-				return this.clearOutputs()
-			throw error
+		const a = this.input(0).data as number
+		const b = this.input(1).data as number
+		const result = num8(a / b)
+		if (Number.isFinite(result)) {
+			this.output(0).data = result
+		} else {
+			return this.clearOutputs()
 		}
 	}
 }
