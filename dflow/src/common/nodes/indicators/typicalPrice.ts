@@ -1,11 +1,6 @@
-import {
-	add,
-	decimalToNumber,
-	div,
-	maxNumOfDecimals
-} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
+import { add, div, } from "../arithmetic.js"
 import {
 	inputClose,
 	inputHigh,
@@ -19,9 +14,8 @@ export const typicalPrice = (
 	low: number,
 	close: number
 ): number => {
-	const numDecimals = maxNumOfDecimals([high, low, close])
-	const sum = add(add(high, low, numDecimals), close, numDecimals)
-	return decimalToNumber(div(sum, 3), numDecimals)
+	const sum = add(add(high, low), close)
+	return div(sum, 3) as number
 }
 
 export class TypicalPrice extends DflowNode {
@@ -33,10 +27,7 @@ export class TypicalPrice extends DflowNode {
 		const low = this.input(1).data as number[]
 		const close = this.input(2).data as number[]
 		const size = high.length
-		if (close.length !== size || low.length !== size) {
-			this.clearOutputs()
-			return
-		}
+		if (close.length !== size || low.length !== size) return this.clearOutputs()
 		const result: number[] = []
 		for (let i = 0; i < size; i++) {
 			result.push(typicalPrice(high[i], low[i], close[i]))

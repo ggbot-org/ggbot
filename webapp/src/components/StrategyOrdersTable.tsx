@@ -1,6 +1,6 @@
 import { Message, Table } from "_/components/library"
 import { timeFormat } from "_/i18n/formats"
-import { add, div } from "@workspace/arithmetic"
+import { add, div } from "arithmetica/float"
 import { BinanceFill, isBinanceFill } from "@workspace/binance"
 import { Order } from "@workspace/models"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"

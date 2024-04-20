@@ -1,4 +1,3 @@
-import { decimalToNumber } from "@workspace/arithmetic"
 import { binanceKlineMaxLimit } from "@workspace/binance"
 import { Dflow, DflowNode } from "dflow"
 
@@ -53,11 +52,11 @@ export class Candles extends DflowNode {
 			volume: number[]
 		}>(
 			({ open, high, low, close, volume }, kline) => ({
-				open: [...open, decimalToNumber(kline[1])],
-				high: [...high, decimalToNumber(kline[2])],
-				low: [...low, decimalToNumber(kline[3])],
-				close: [...close, decimalToNumber(kline[4])],
-				volume: [...volume, decimalToNumber(kline[5])]
+				open: [...open, Number(kline[1])],
+				high: [...high, Number(kline[2])],
+				low: [...low, Number(kline[3])],
+				close: [...close, Number(kline[4])],
+				volume: [...volume, Number(kline[5])]
 			}),
 			{
 				open: [],
@@ -84,7 +83,6 @@ export class TickerPrice extends DflowNode {
 		const symbol = this.input(0).data
 		if (typeof symbol !== "string") return this.clearOutputs()
 		const data = await binance.tickerPrice(symbol)
-		const price = parseFloat(data.price)
-		if (Dflow.isNumber(price)) this.output(0).data = price
+		this.output(0).data = Number(data.price)
 	}
 }

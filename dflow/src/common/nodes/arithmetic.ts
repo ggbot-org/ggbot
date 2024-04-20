@@ -22,7 +22,15 @@ const binaryOperatorOutputs = [output("number")]
  *
  * @internal
  */
-const num8 = (n: number) => Number(n.toFixed(8))
+export const num8 = (n: number) => Number(n.toFixed(8))
+
+export type MaybeNumber = number | undefined
+
+export const add = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
+	if (typeof a !== 'number'||typeof b !== 'number') return
+	if (isNaN(a) || isNaN(b)) return
+	return num8(a + b)
+}
 
 export class Addition extends DflowNode {
 	static kind = "add"
@@ -31,8 +39,14 @@ export class Addition extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = num8(a + b)
+		this.output(0).data = add(a, b)
 	}
+}
+
+export const sub = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
+	if (typeof a !== 'number'||typeof b !== 'number') return
+	if (isNaN(a) || isNaN(b)) return
+	return num8(a - b)
 }
 
 export class Subtraction extends DflowNode {
@@ -42,8 +56,14 @@ export class Subtraction extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = num8(a - b)
+		this.output(0).data = sub(a , b)
 	}
+}
+
+export const mul = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
+	if (typeof a !== 'number'||typeof b !== 'number') return
+	if (isNaN(a) || isNaN(b)) return
+	return num8(a * b)
 }
 
 export class Multiplication extends DflowNode {
@@ -53,8 +73,15 @@ export class Multiplication extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = num8(a * b)
+		this.output(0).data = mul(a , b)
 	}
+}
+
+export const div = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
+	if (typeof a !== 'number'||typeof b !== 'number') return
+	if (isNaN(a) || isNaN(b)) return
+		const result = num8(a / b)
+	return Number.isFinite(result) ? result : undefined
 }
 
 export class Division extends DflowNode {
@@ -64,12 +91,7 @@ export class Division extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		const result = num8(a / b)
-		if (Number.isFinite(result)) {
-			this.output(0).data = result
-		} else {
-			return this.clearOutputs()
-		}
+			this.output(0).data = div(a,b)
 	}
 }
 

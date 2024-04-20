@@ -1,10 +1,9 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { relativeStrengthIndex } from "./relativeStrengthIndex.js"
 
-void describe("Relative Strength Index", () => {
-	void test("works", () => {
+void test("Relative Strength Index", () => {
 		[
 			{
 				input: {
@@ -22,12 +21,14 @@ void describe("Relative Strength Index", () => {
 					period: 5
 				},
 				output: [
-					72.03, 64.93, 75.94, 79.8, 74.71, 83.03, 87.48, 88.75,
-					91.48, 78.5
+					  72.033898, 64.926798,
+      75.936238, 79.796498,
+      74.713414,  83.03286,
+      87.478287, 88.754544,
+      91.482854, 78.497831
 				]
 			}
 		].forEach(({ input: { values, period }, output }) => {
 			assert.deepEqual(relativeStrengthIndex(values, period), output)
 		})
-	})
 })

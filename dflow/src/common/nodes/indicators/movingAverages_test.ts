@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import {
 	exponentialMovingAverage,
@@ -7,8 +7,7 @@ import {
 	wilderSmoothing
 } from "./movingAverages.js"
 
-void describe("Exponential Moving Average", () => {
-	void test("works", () => {
+void test("Exponential Moving Average", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -20,18 +19,23 @@ void describe("Exponential Moving Average", () => {
 					period: 5
 				},
 				output: [
-					81.59, 81.41, 81.9, 82.27, 82.71, 82.86, 82.85, 83.23,
-					83.67, 83.9, 84.44, 85.14, 85.73, 86.41, 86.7
+					         81.59, 81.41333333,
+      81.89888889, 82.26592593,
+      82.71395062, 82.85930041,
+      82.85286694, 83.23191129,
+      83.67127419, 83.90084946,
+      84.44389964, 85.14259976,
+      85.72506651, 86.40671101,
+      86.70114067
+
 				]
 			}
 		].forEach(({ input: { values, period }, output }) => {
 			assert.deepEqual(exponentialMovingAverage(values, period), output)
 		})
 	})
-})
 
-void describe("Simple Moving Average", () => {
-	void test("works", () => {
+void test("Simple Moving Average", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -43,18 +47,21 @@ void describe("Simple Moving Average", () => {
 					period: 5
 				},
 				output: [
-					82.43, 82.74, 83.09, 83.32, 83.63, 83.78, 84.25, 84.99,
-					85.57, 86.22, 86.8
+					 82.426, 82.738,
+      83.094, 83.318,
+      83.628, 83.778,
+      84.254, 84.994,
+      85.574, 86.218,
+      86.804
+
 				]
 			}
 		].forEach(({ input: { values, period }, output }) => {
 			assert.deepEqual(simpleMovingAverage(values, period), output)
 		})
 	})
-})
 
-void describe("Wilder's smoothing", () => {
-	void test("works", () => {
+void test("Wilder's smoothing", () => {
 		[
 			{ input: { values: [], period: 1 }, output: [] },
 			{
@@ -66,12 +73,15 @@ void describe("Wilder's smoothing", () => {
 					period: 5
 				},
 				output: [
-					82.43, 82.57, 82.62, 82.9, 83.23, 83.45, 83.87, 84.4, 84.9,
-					85.47, 85.84
+					    82.426,     82.5708,
+         82.62464,   82.897712,
+       83.2281696, 83.45453568,
+      83.86962854, 84.40370283,
+      84.90096226, 85.47476981,
+      85.83781585
 				]
 			}
 		].forEach(({ input: { values, period }, output }) => {
 			assert.deepEqual(wilderSmoothing(values, period), output)
 		})
 	})
-})

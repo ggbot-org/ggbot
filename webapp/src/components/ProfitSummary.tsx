@@ -13,13 +13,12 @@ import {
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import {
 	add,
-	decimalToNumber,
 	gt,
 	lt,
 	mul,
 	neg,
 	sub
-} from "@workspace/arithmetic"
+} from "arithmetica/float"
 import { BinanceFill, isBinanceFill } from "@workspace/binance"
 import { Order, StrategyKind } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
@@ -32,6 +31,8 @@ export type ProfitSummaryProps = {
 	orders: Order[] | undefined
 	strategyKind: StrategyKind | undefined
 }
+
+const toNumber = (value:string, precision = 8) => Number(value).toFixed(precision)
 
 const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
 	children,
@@ -290,7 +291,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value size="large">
-											{decimalToNumber(
+											{toNumber(
 												baseQuantity,
 												baseAssetPrecision
 											)}
@@ -305,7 +306,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value size="large">
-											{decimalToNumber(
+											{toNumber(
 												quoteQuantity,
 												quoteAssetPrecision
 											)}
@@ -322,7 +323,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value>
-											{decimalToNumber(
+											{toNumber(
 												minPrice,
 												quoteAssetPrecision
 											)}
@@ -337,7 +338,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value>
-											{decimalToNumber(
+											{toNumber(
 												maxPrice,
 												quoteAssetPrecision
 											)}

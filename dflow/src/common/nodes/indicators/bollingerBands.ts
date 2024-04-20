@@ -1,15 +1,6 @@
-import {
-	add,
-	coerceToDecimal,
-	Decimal,
-	decimalToNumber,
-	div,
-	maxNumOfDecimals,
-	mul,
-	sub
-} from "@workspace/arithmetic"
 import { Dflow, DflowNode } from "dflow"
 
+import { MaybeNumber, add, div, mul, sub } from "../arithmetic.js"
 import { inputPeriod, inputValues } from "../commonIO.js"
 import { simpleMovingAverage } from "./movingAverages.js"
 
@@ -19,29 +10,30 @@ export const bollingerBands = (
 	values: number[],
 	period: number,
 	amplitude = 2
-): [lower: number[], middle: number[], upper: number[]] => {
+): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] => {
 	const size = values.length
 	if (size < period) return [[], [], []]
-	const numDecimals = maxNumOfDecimals(values)
-	const decimalValues = values.map((value) =>
-		coerceToDecimal(value, numDecimals)
-	)
 	const middle = simpleMovingAverage(values, period)
-	const lower: number[] = []
-	const upper: number[] = []
+	const lower: MaybeNumber[] = []
+	const upper: MaybeNumber[] = []
 	for (let index = period; index <= size; index++) {
 		const average = middle[index - period]
-		const variance = decimalValues
+		const variance = values
 			.slice(index - period, index)
-			.reduce<Decimal>((sum, decimal, index, array) => {
+			.reduce<MaybeNumber>((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
 				const result = add(sum, mul(distance, distance))
 				const isLast = index === array.length - 1
 				return isLast ? div(result, period) : result
-			}, "0")
-		const half = mul(amplitude, Math.sqrt(decimalToNumber(variance)))
-		lower.push(decimalToNumber(sub(average, half, numDecimals)))
-		upper.push(decimalToNumber(add(average, half, numDecimals)))
+			}, 0)
+		if (variance === undefined) {
+		lower.push(undefined)
+		upper.push(undefined)
+		} else {
+		const half = mul(amplitude, Math.sqrt(variance))
+		lower.push(sub(average, half))
+		upper.push(add(average, half))
+		}
 	}
 	return [lower, middle, upper]
 }
