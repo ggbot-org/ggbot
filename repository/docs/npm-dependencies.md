@@ -1,4 +1,3 @@
-
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.
@@ -30,7 +29,6 @@ graph LR
     workspace/aws-iam --- workspace/aws-types
     workspace/aws-s3 --- workspace/aws-types
     workspace/aws-ses --- workspace/aws-types
-    workspace/backtesting --- workspace/arithmetic
     workspace/backtesting --- workspace/dflow
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
@@ -94,5 +92,3 @@ graph LR
     workspace/webapp --- workspace/backtesting
     workspace/webapp --- workspace/locators
 ```
-
-

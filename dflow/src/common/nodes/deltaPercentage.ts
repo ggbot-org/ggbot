@@ -1,12 +1,6 @@
-import {
-	decimalToNumber,
-	div,
-	ErrorCannotDivideByZero,
-	mul,
-	sub
-} from "@workspace/arithmetic"
 import { Dflow, DflowNode } from "dflow"
 
+import { div, mul, sub } from "./arithmetic.js"
 import { outputLastValue, outputValues } from "./commonIO.js"
 
 const { input } = Dflow
@@ -27,18 +21,9 @@ export class DeltaPercentage extends DflowNode {
 			if (!Dflow.isNumber(valueA)) continue
 			const valueB = arrayB[i]
 			if (!Dflow.isNumber(valueB)) continue
-			try {
-				values.push(
-					decimalToNumber(
-						mul(div(sub(valueB, valueA), valueA), 100),
-						2
-					)
-				)
-			} catch (error) {
-				if (error instanceof ErrorCannotDivideByZero)
-					return this.clearOutputs()
-				throw error
-			}
+			const value = mul(div(sub(valueB, valueA), valueA), 100)
+			if (value === undefined) return this.clearOutputs()
+			values.push(Number(value.toFixed(2)))
 		}
 		if (!values.length) return this.clearOutputs()
 		this.output(0).data = values

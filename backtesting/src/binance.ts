@@ -1,4 +1,3 @@
-import { div, mul } from "@workspace/arithmetic"
 import {
 	BinanceConnector,
 	BinanceExchange,
@@ -10,7 +9,9 @@ import {
 	BinanceOrderSide,
 	BinanceOrderType,
 	BinanceSymbolInfo,
-	BinanceTickerPrice
+	BinanceTickerPrice,
+	div,
+	mul
 } from "@workspace/binance"
 import {
 	DflowBinanceClient,

@@ -654,24 +654,20 @@ void test("trailingStop", () => {
 	])
 })
 
-void describe("computeStopPriceDown", () => {
-	void test("does not increase number of decimals", () => {
-		assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
-			{
-				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
-				output: 12469.1357
-			}
-		])
-	})
+void test("computeStopPriceDown", () => {
+	assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
+		{
+			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+			output: 12469.135689
+		}
+	])
 })
 
-void describe("computeStopPriceUp", () => {
-	void test("does not increase number of decimals", () => {
-		assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
-			{
-				input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
-				output: 12222.2221
-			}
-		])
-	})
+void test("computeStopPriceUp", () => {
+	assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
+		{
+			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+			output: 12222.222111
+		}
+	])
 })

@@ -1,6 +1,6 @@
 import { Dflow, DflowNode } from "dflow"
 
-import { MaybeNumber, add, div, mul, sub } from "../arithmetic.js"
+import { add, div, MaybeNumber, mul, sub } from "../arithmetic.js"
 import { inputPeriod, inputValues } from "../commonIO.js"
 import { simpleMovingAverage } from "./movingAverages.js"
 
@@ -20,19 +20,19 @@ export const bollingerBands = (
 		const average = middle[index - period]
 		const variance = values
 			.slice(index - period, index)
-			.reduce<MaybeNumber>((sum, decimal, index, array) => {
+			.reduce<number>((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance))
+				const result = add(sum, mul(distance, distance)) as number
 				const isLast = index === array.length - 1
-				return isLast ? div(result, period) : result
+				return isLast ? (div(result, period) as number) : result
 			}, 0)
 		if (variance === undefined) {
-		lower.push(undefined)
-		upper.push(undefined)
+			lower.push(undefined)
+			upper.push(undefined)
 		} else {
-		const half = mul(amplitude, Math.sqrt(variance))
-		lower.push(sub(average, half))
-		upper.push(add(average, half))
+			const half = mul(amplitude, Math.sqrt(variance))
+			lower.push(sub(average, half))
+			upper.push(add(average, half))
 		}
 	}
 	return [lower, middle, upper]

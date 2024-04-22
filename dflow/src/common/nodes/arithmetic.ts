@@ -5,6 +5,21 @@ const { input, output } = Dflow
 const binaryOperatorInputs = [input("number"), input("number")]
 const binaryOperatorOutputs = [output("number")]
 
+export type MaybeNumber = string | number | undefined
+
+type ValidNumber = number
+
+const isValidNumber = (arg: MaybeNumber): arg is ValidNumber => {
+	const num = Number(arg)
+	if (Number.isNaN(num)) return false
+	return Number.isFinite(num)
+}
+
+type BinaryOperator = (
+	a: MaybeNumber,
+	b: MaybeNumber
+) => ValidNumber | undefined
+
 /**
  * Fix floating point issues by coercing to a number with precision eight.
  *
@@ -22,14 +37,10 @@ const binaryOperatorOutputs = [output("number")]
  *
  * @internal
  */
-export const num8 = (n: number) => Number(n.toFixed(8))
+const num8 = (n: number) => Number(n.toFixed(8))
 
-export type MaybeNumber = number | undefined
-
-export const add = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
-	if (typeof a !== 'number'||typeof b !== 'number') return
-	if (isNaN(a) || isNaN(b)) return
-	return num8(a + b)
+export const add: BinaryOperator = (a, b) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num8(a + b)
 }
 
 export class Addition extends DflowNode {
@@ -43,10 +54,8 @@ export class Addition extends DflowNode {
 	}
 }
 
-export const sub = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
-	if (typeof a !== 'number'||typeof b !== 'number') return
-	if (isNaN(a) || isNaN(b)) return
-	return num8(a - b)
+export const sub: BinaryOperator = (a, b) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num8(a - b)
 }
 
 export class Subtraction extends DflowNode {
@@ -56,14 +65,12 @@ export class Subtraction extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = sub(a , b)
+		this.output(0).data = sub(a, b)
 	}
 }
 
-export const mul = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
-	if (typeof a !== 'number'||typeof b !== 'number') return
-	if (isNaN(a) || isNaN(b)) return
-	return num8(a * b)
+export const mul: BinaryOperator = (a, b) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num8(a * b)
 }
 
 export class Multiplication extends DflowNode {
@@ -73,14 +80,13 @@ export class Multiplication extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-		this.output(0).data = mul(a , b)
+		this.output(0).data = mul(a, b)
 	}
 }
 
-export const div = (a: MaybeNumber, b: MaybeNumber) : MaybeNumber => {
-	if (typeof a !== 'number'||typeof b !== 'number') return
-	if (isNaN(a) || isNaN(b)) return
-		const result = num8(a / b)
+export const div: BinaryOperator = (a, b) => {
+	if (!isValidNumber(a) || !isValidNumber(b)) return
+	const result = num8(a / b)
 	return Number.isFinite(result) ? result : undefined
 }
 
@@ -91,7 +97,7 @@ export class Division extends DflowNode {
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
-			this.output(0).data = div(a,b)
+		this.output(0).data = div(a, b)
 	}
 }
 
