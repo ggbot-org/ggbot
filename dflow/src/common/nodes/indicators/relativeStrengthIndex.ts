@@ -1,16 +1,6 @@
-import {
-	add,
-	coerceToDecimal,
-	Decimal,
-	decimalToNumber,
-	div,
-	ErrorCannotDivideByZero,
-	maxNumOfDecimals,
-	mul,
-	sub
-} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
+import { MaybeNumber, add, div, mul, sub } from "../arithmetic.js"
 import {
 	inputPeriod,
 	inputValues,
@@ -22,34 +12,34 @@ import { MovingAverage } from "./movingAverages.js"
 export const relativeStrengthIndex: MovingAverage = (values, period) => {
 	const size = values.length
 	if (size < period) return []
-	const numDecimals = maxNumOfDecimals(values)
-	const decimalValues = values.map((value) =>
-		coerceToDecimal(value, numDecimals)
-	)
-	const upwards: Decimal[] = []
-	const downwards: Decimal[] = []
+	const upwards: MaybeNumber[] = []
+	const downwards: MaybeNumber[] = []
 	for (let i = 1; i < size; i++) {
-		const current = decimalValues[i]
-		const previous = decimalValues[i - 1]
-		const upward: Decimal =
-			current > previous ? sub(current, previous) : "0"
-		const downward: Decimal =
-			current < previous ? sub(previous, current) : "0"
+		const current = values[i]
+		const previous = values[i - 1]
+		const upward: MaybeNumber =
+			current > previous ? sub(current, previous) as number : 0
+		const downward: MaybeNumber =
+			current < previous ? sub(previous, current) as number :0
 		upwards.push(upward)
 		downwards.push(downward)
 	}
 	const sumUp = upwards
 		.slice(0, period)
-		.reduce<Decimal>((a, b) => add(a, b), "0")
+		.reduce<MaybeNumber>((a, b) => add(a, b) , 0)
 	const sumDown = downwards
 		.slice(0, period)
-		.reduce<Decimal>((a, b) => add(a, b), "0")
+		.reduce<MaybeNumber>((a, b) => add(a, b) , 0)
 	const smoothUp = div(sumUp, period)
 	const smoothDown = div(sumDown, period)
-	const smoothUps: Decimal[] = [smoothUp]
-	const smoothDowns: Decimal[] = [smoothDown]
-	const decimalOutputs: Decimal[] = [
-		mul(100, div(smoothUp, add(smoothUp, smoothDown)))
+	const smoothUps: MaybeNumber[] = [smoothUp]
+	const smoothDowns: MaybeNumber[] = [smoothDown]
+	// TODO
+	// try to avoid castings to number (see below untile ned of function body),
+	// there could be a divide by zero
+	// MovingAverage should use MaybeNumber?
+	const result: number[] = [
+		mul(100, div(smoothUp, add(smoothUp, smoothDown))) as number
 	]
 	for (let i = period + 1; i < size; i++) {
 		const previousSmoothUp = smoothUps[i - period - 1]
@@ -59,16 +49,16 @@ export const relativeStrengthIndex: MovingAverage = (values, period) => {
 		const smoothUp = add(
 			div(sub(upward, previousSmoothUp), period),
 			previousSmoothUp
-		)
+		) as number
 		smoothUps.push(smoothUp)
 		const smoothDown = add(
 			div(sub(downward, previousSmoothDown), period),
 			previousSmoothDown
 		)
 		smoothDowns.push(smoothDown)
-		decimalOutputs.push(mul(100, div(smoothUp, add(smoothUp, smoothDown))))
+		result.push(mul(100, div(smoothUp, add(smoothUp, smoothDown))) as number)
 	}
-	return decimalOutputs.map((value) => decimalToNumber(value, numDecimals))
+	return result
 }
 
 export class RelativeStrengthIndex extends DflowNode {
@@ -76,15 +66,10 @@ export class RelativeStrengthIndex extends DflowNode {
 	static inputs = [inputValues, inputPeriod]
 	static outputs = [outputValues, outputLastValue]
 	run() {
-		try {
 			const values = this.input(0).data as number[]
 			const period = this.input(1).data as number
 			const result = relativeStrengthIndex(values, period)
 			this.output(0).data = result
 			this.output(1).data = result.slice(-1).pop()
-		} catch (error) {
-			if (error instanceof ErrorCannotDivideByZero) return
-			throw error
-		}
 	}
 }

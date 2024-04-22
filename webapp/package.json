@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
-    "@workspace/arithmetic": "0.0.0",
     "@workspace/backtesting": "0.0.0",
     "@workspace/binance": "0.0.0",
     "@workspace/cache": "0.0.0",

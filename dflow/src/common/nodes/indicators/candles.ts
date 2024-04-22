@@ -1,11 +1,6 @@
-import {
-	add,
-	decimalToNumber,
-	div,
-	maxNumOfDecimals
-} from "@workspace/arithmetic"
 import { DflowNode } from "dflow"
 
+import { MaybeNumber, add, div, } from "../arithmetic.js"
 import {
 	inputClose,
 	inputHigh,
@@ -38,25 +33,16 @@ export class HeikinAshi extends DflowNode {
 			this.clearOutputs()
 			return
 		}
-		const openOutput: number[] = []
-		const closeOutput: number[] = []
+		const openOutput: MaybeNumber[] = []
+		const closeOutput: MaybeNumber[] = []
 		for (let i = 1; i < size; i++) {
-			const numDecimals = maxNumOfDecimals([
-				open[i - 1],
-				close[i - 1],
-				open[i],
-				high[i],
-				low[i],
-				close[i]
-			])
-			const heikinAshiOpen = div(add(open[i], close[i]), 2, numDecimals)
-			openOutput.push(decimalToNumber(heikinAshiOpen))
+			const heikinAshiOpen = div(add(open[i], close[i]), 2)
+			openOutput.push(heikinAshiOpen)
 			const heikinAshiClose = div(
 				add(add(add(open[i], high[i]), low[i]), close[i]),
 				4,
-				numDecimals
 			)
-			closeOutput.push(decimalToNumber(heikinAshiClose))
+			closeOutput.push(heikinAshiClose)
 		}
 		this.output(0).data = openOutput
 		this.output(1).data = closeOutput

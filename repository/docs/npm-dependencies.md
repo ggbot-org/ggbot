@@ -43,7 +43,6 @@ graph LR
     workspace/database --- workspace/aws-s3
     workspace/database --- workspace/dflow
     workspace/database --- workspace/env
-    workspace/dflow --- workspace/arithmetic
     workspace/dflow --- workspace/binance
     workspace/dflow --- workspace/models
     workspace/email-messages --- workspace/api

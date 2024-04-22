@@ -7,7 +7,6 @@
 		"paths": {
 			"@workspace/api": ["./api/src/index.ts"],
 			"@workspace/api-gateway": ["./api-gateway/src/index.ts"],
-			"@workspace/arithmetic": ["./arithmetic/src/index.ts"],
 			"@workspace/authentication": ["./authentication/src/index.ts"],
 			"@workspace/aws-acm": ["./aws-acm/src/index.ts"],
 			"@workspace/aws-api-gateway": ["./aws-api-gateway/src/index.ts"],

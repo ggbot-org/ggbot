@@ -1,4 +1,4 @@
-import { coerceToDecimal } from "@workspace/arithmetic"
+import { numberToBinanceDecimal } from "@workspace/binance"
 import { Dflow, DflowNode, DflowOutputDefinition } from "dflow"
 
 import { inputExecute } from "../../common/nodes/commonIO.js"
@@ -24,8 +24,8 @@ export class BuyMarket extends DflowNode {
 	async run() {
 		const { binance } = this.host.context as Context
 		const symbol = this.input(0).data
-		const quantity = this.input(1).data
-		const quoteOrderQty = this.input(2).data
+		const quantity = this.input(1).data as number | undefined
+		const quoteOrderQty = this.input(2).data as number | undefined
 		const execute = this.input(3).data
 		if (
 			typeof symbol !== "string" ||
@@ -39,11 +39,17 @@ export class BuyMarket extends DflowNode {
 			quantity:
 				quantity === undefined
 					? undefined
-					: coerceToDecimal(quantity, symbolInfo.baseAssetPrecision),
+					: numberToBinanceDecimal(
+							quantity,
+							symbolInfo.baseAssetPrecision
+					  ),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: coerceToDecimal(quoteOrderQty, symbolInfo.quotePrecision)
+					: numberToBinanceDecimal(
+							quoteOrderQty,
+							symbolInfo.quotePrecision
+					  )
 		})
 		this.output(0).data = order
 	}
@@ -56,8 +62,8 @@ export class SellMarket extends DflowNode {
 	async run() {
 		const { binance } = this.host.context as Context
 		const symbol = this.input(0).data
-		const quantity = this.input(1).data
-		const quoteOrderQty = this.input(2).data
+		const quantity = this.input(1).data as number | undefined
+		const quoteOrderQty = this.input(2).data as number | undefined
 		const execute = this.input(3).data
 		if (
 			typeof symbol !== "string" ||
@@ -71,11 +77,17 @@ export class SellMarket extends DflowNode {
 			quantity:
 				quantity === undefined
 					? undefined
-					: coerceToDecimal(quantity, symbolInfo.baseAssetPrecision),
+					: numberToBinanceDecimal(
+							quantity,
+							symbolInfo.baseAssetPrecision
+					  ),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: coerceToDecimal(quoteOrderQty, symbolInfo.quotePrecision)
+					: numberToBinanceDecimal(
+							quoteOrderQty,
+							symbolInfo.quotePrecision
+					  )
 		})
 		this.output(0).data = order
 	}

@@ -99,9 +99,11 @@ export type BinanceAvgPrice = {
  */
 export type BinanceBalance = {
 	asset: string
-	free: string
-	locked: string
+	free: BinanceDecimal
+	locked: BinanceDecimal
 }
+
+export type BinanceDecimal = string
 
 export type BinanceErrorPayload = {
 	code: number
@@ -148,16 +150,16 @@ export type BinanceFill = Pick<
  */
 export type BinanceKline = [
 	openTime: number,
-	open: string,
-	high: string,
-	low: string,
-	close: string,
-	volume: string,
+	open: BinanceDecimal,
+	high: BinanceDecimal,
+	low: BinanceDecimal,
+	close: BinanceDecimal,
+	volume: BinanceDecimal,
 	closeTime: number,
-	quoteVolume: string,
+	quoteVolume: BinanceDecimal,
 	numTrades: number,
-	takerBaseVolume: string,
-	takerQuoteVolume: string,
+	takerBaseVolume: BinanceDecimal,
+	takerQuoteVolume: BinanceDecimal,
 	_unused_field: string
 ]
 
@@ -172,9 +174,9 @@ export type BinanceKlineOptionalParameters = Partial<{
 
 export type BinanceNewOrderOptions = Partial<{
 	timeInForce: BinanceTimeInForce
-	quantity: string
-	quoteOrderQty: string
-	price: string
+	quantity: BinanceDecimal
+	quoteOrderQty: BinanceDecimal
+	price: BinanceDecimal
 	/** A unique id among open orders. Automatically generated if not sent. */
 	newClientOrderId: string
 	/**
@@ -207,21 +209,21 @@ type BinanceOrder = {
 	orderId: number
 	orderListId: number
 	clientOrderId: string
-	price: string
-	origQty: string
-	executedQty: string
-	cummulativeQuoteQty: string
+	price: BinanceDecimal
+	origQty: BinanceDecimal
+	executedQty: BinanceDecimal
+	cummulativeQuoteQty: BinanceDecimal
 	transactTime: number
 	status: BinanceOrderStatus
 	timeInForce: BinanceTimeInForce
 	type: BinanceOrderType
 	side: BinanceOrderSide
-	stopPrice: string
-	icebergQty: string
+	stopPrice: BinanceDecimal
+	icebergQty: BinanceDecimal
 	time: number
 	updateTime: number
 	isWorking: boolean
-	origQuoteOrderQty: string
+	origQuoteOrderQty: BinanceDecimal
 }
 
 export type BinanceOrderRespACK = Pick<
@@ -403,16 +405,18 @@ type BinanceSymbolFilterMaxNumAlgoOrders = {
 
 /**
  * The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an
- * order on a symbol. An order's notional value is the `price` * `quantity`. If
- * the order is an Algo order (e.g. `STOP_LOSS_LIMIT`), then the notional value
- * of the `stopPrice` * `quantity` will also be evaluated. If the order is an
- * Iceberg Order, then the notional value of the `price` * `icebergQty` will
- * also be evaluated. `applyToMarket` determines whether or not the
- * `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. Since `MARKET`
- * orders have no price, the average price is used over the last avgPriceMins
- * minutes. `avgPriceMins` is the number of minutes the average price is
- * calculated over. 0 means the last price is used.
+ * order on a symbol.
  *
+ * @remarks
+ * An order's notional value is the `price` * `quantity`. If the order is an
+ * Algo order (e.g. `STOP_LOSS_LIMIT`), then the notional value of the
+ * `stopPrice` * `quantity` will also be evaluated. If the order is an Iceberg
+ * Order, then the notional value of the `price` * `icebergQty` will also be
+ * evaluated. `applyToMarket` determines whether or not the `MIN_NOTIONAL`
+ * filter will also be applied to `MARKET` orders. Since `MARKET` orders have no
+ * price, the average price is used over the last avgPriceMins minutes.
+ * `avgPriceMins` is the number of minutes the average price is calculated over.
+ * 0 means the last price is used.
  * @example
  *
  * ```json
@@ -478,17 +482,17 @@ type BinanceSymbolFilterPrice = {
 	 * Defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice`
 	 * == 0
 	 */
-	minPrice: string
+	minPrice: BinanceDecimal
 	/**
 	 * Defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice`
 	 * == 0
 	 */
-	maxPrice: string
+	maxPrice: BinanceDecimal
 	/**
 	 * Defines the intervals that a `price`/`stopPrice` can be
 	 * increased/decreased by; disabled on `tickSize` == 0
 	 */
-	tickSize: string
+	tickSize: BinanceDecimal
 }
 
 /**
@@ -516,7 +520,7 @@ type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
 
 export type BinanceTickerPrice = {
 	symbol: string
-	price: string
+	price: BinanceDecimal
 }
 
 /**
@@ -552,21 +556,21 @@ export type BinanceTickerPrice = {
  */
 export type BinanceTicker24hr = {
 	symbol: string
-	priceChange: string
-	priceChangePercent: string
-	weightedAvgPrice: string
-	prevClosePrice: string
-	lastPrice: string
-	lastQty: string
-	bidPrice: string
-	bidQty: string
-	askPrice: string
-	askQty: string
-	openPrice: string
-	highPrice: string
-	lowPrice: string
-	volume: string
-	quoteVolume: string
+	priceChange: BinanceDecimal
+	priceChangePercent: BinanceDecimal
+	weightedAvgPrice: BinanceDecimal
+	prevClosePrice: BinanceDecimal
+	lastPrice: BinanceDecimal
+	lastQty: BinanceDecimal
+	bidPrice: BinanceDecimal
+	bidQty: BinanceDecimal
+	askPrice: BinanceDecimal
+	askQty: BinanceDecimal
+	openPrice: BinanceDecimal
+	highPrice: BinanceDecimal
+	lowPrice: BinanceDecimal
+	volume: BinanceDecimal
+	quoteVolume: BinanceDecimal
 	openTime: number
 	closeTime: number
 	/** First tradeId. */

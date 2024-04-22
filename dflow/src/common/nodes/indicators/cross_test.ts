@@ -1,10 +1,9 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import { crossOver } from "./cross.js"
 
-void describe("CrossOver", () => {
-	void test("works", () => {
+void test("CrossOver", () => {
 		[
 			{ input: { values1: [], values2: [] }, output: [] },
 			{
@@ -31,4 +30,3 @@ void describe("CrossOver", () => {
 			assert.deepEqual(crossOver(values1, values2), output)
 		})
 	})
-})

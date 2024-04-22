@@ -13,14 +13,14 @@ import {
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import {
 	add,
-	decimalToNumber,
-	gt,
-	lt,
+	BinanceFill,
+	greaterThan,
+	isBinanceFill,
+	lessThan,
 	mul,
 	neg,
 	sub
-} from "@workspace/arithmetic"
-import { BinanceFill, isBinanceFill } from "@workspace/binance"
+} from "@workspace/binance"
 import { Order, StrategyKind } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
@@ -32,6 +32,9 @@ export type ProfitSummaryProps = {
 	orders: Order[] | undefined
 	strategyKind: StrategyKind | undefined
 }
+
+const toNumber = (value: string, precision = 8) =>
+	Number(value).toFixed(precision)
 
 const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
 	children,
@@ -155,8 +158,12 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 							baseQuantity: isBuy
 								? add(baseQuantity, baseQty)
 								: sub(baseQuantity, baseQty),
-							maxPrice: gt(price, maxPrice) ? price : maxPrice,
-							minPrice: lt(price, minPrice) ? price : minPrice,
+							maxPrice: greaterThan(price, maxPrice)
+								? price
+								: maxPrice,
+							minPrice: lessThan(price, minPrice)
+								? price
+								: minPrice,
 							quoteQuantity: isBuy
 								? sub(quoteQuantity, quoteQty)
 								: add(quoteQuantity, quoteQty)
@@ -290,7 +297,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value size="large">
-											{decimalToNumber(
+											{toNumber(
 												baseQuantity,
 												baseAssetPrecision
 											)}
@@ -305,7 +312,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value size="large">
-											{decimalToNumber(
+											{toNumber(
 												quoteQuantity,
 												quoteAssetPrecision
 											)}
@@ -322,7 +329,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value>
-											{decimalToNumber(
+											{toNumber(
 												minPrice,
 												quoteAssetPrecision
 											)}
@@ -337,7 +344,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 										</_Label>
 
 										<_Value>
-											{decimalToNumber(
+											{toNumber(
 												maxPrice,
 												quoteAssetPrecision
 											)}

@@ -1,7 +1,11 @@
 import { Message, Table } from "_/components/library"
 import { timeFormat } from "_/i18n/formats"
-import { add, div } from "@workspace/arithmetic"
-import { BinanceFill, isBinanceFill } from "@workspace/binance"
+import {
+	add,
+	BinanceDecimal,
+	BinanceFill,
+	isBinanceFill
+} from "@workspace/binance"
 import { Order } from "@workspace/models"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { FC } from "react"
@@ -67,11 +71,21 @@ export const StrategyOrdersTable: FC<Props> = ({ orders }) => {
 				transactTime
 			} = info
 
-			let price = "0"
+			let price: BinanceDecimal = "0"
+			const precision = 8
 
 			if (arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) {
-				for (const fill of fills) price = add(price, fill.price)
-				price = div(price, fills.length)
+				const numFills = fills.length
+				if (numFills === 1) {
+					price = fills[0].price
+				} else {
+					let sumFillPrice = "0"
+					for (const fill of fills)
+						sumFillPrice = add(sumFillPrice, fill.price, precision)
+					price = (Number(sumFillPrice) / fills.length).toFixed(
+						precision
+					)
+				}
 			}
 
 			rows.push({

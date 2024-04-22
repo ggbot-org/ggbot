@@ -1,3 +1,4 @@
+export * from "./arithmetic.js"
 export type { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
 export { BinanceConnector } from "./connector.js"
 export { binanceKlineMaxLimit } from "./constants.js"
@@ -16,6 +17,7 @@ export { isBinanceFill, isBinanceOrderRespFULL } from "./typeGuards.js"
 export type {
 	BinanceAccountInformation,
 	BinanceApiKeyPermission,
+	BinanceDecimal,
 	BinanceExchangeInfo,
 	BinanceFill,
 	BinanceKline,

@@ -22,6 +22,7 @@ const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 /**
  * BinanceClient implements private and public Binance API requests.
  *
+ * @remarks
  * Binance restricts _Spot & Margin Trading_ APIs to trusted IPs only. Notice
  * that the _trusted IP_ must be configured on the Binance account for the given
  * `apiKey` provided as parameter to the constructor.

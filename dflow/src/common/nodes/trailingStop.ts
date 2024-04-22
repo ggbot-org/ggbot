@@ -1,7 +1,7 @@
-import { add, decimalToNumber, mul, sub } from "@workspace/arithmetic"
 import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
+import { add, mul, sub } from "./arithmetic.js"
 
 const { input, output } = Dflow
 
@@ -40,13 +40,11 @@ type ComputeStopPrice = (
 export const computeStopPriceDown: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}): number =>
-	decimalToNumber(add(marketPrice, mul(marketPrice, percentageDelta)))
+}): number => add(marketPrice, mul(marketPrice, percentageDelta)) as number
 export const computeStopPriceUp: ComputeStopPrice = ({
 	marketPrice,
 	percentageDelta
-}): number =>
-	decimalToNumber(sub(marketPrice, mul(marketPrice, percentageDelta)))
+}): number => sub(marketPrice, mul(marketPrice, percentageDelta)) as number
 
 /**
  * Prevent percentageDelta from be zero or negative or one or greater than one,

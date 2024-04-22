@@ -2,6 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { binanceKlineIntervals } from "./constants.js"
 import {
+	BinanceDecimal,
 	BinanceErrorPayload,
 	BinanceFill,
 	BinanceKline,
@@ -11,9 +12,7 @@ import {
 	BinanceSymbolFilterMinNotional
 } from "./types.js"
 
-// TODO use objectTypeGuard for all type guards
-
-const isStringyNumber = (arg: unknown): boolean =>
+const isBinanceDecimal = (arg: unknown): arg is BinanceDecimal =>
 	typeof arg === "string" && !isNaN(Number(arg))
 
 export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
@@ -22,9 +21,9 @@ export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
 
 export const isBinanceFill = objectTypeGuard<BinanceFill>(
 	({ price, qty, commission, commissionAsset }) =>
-		isStringyNumber(price) &&
-		isStringyNumber(qty) &&
-		isStringyNumber(commission) &&
+		isBinanceDecimal(price) &&
+		isBinanceDecimal(qty) &&
+		isBinanceDecimal(commission) &&
 		typeof commissionAsset === "string"
 )
 
@@ -47,16 +46,16 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 
 	return (
 		typeof openTime === "number" &&
-		isStringyNumber(open) &&
-		isStringyNumber(high) &&
-		isStringyNumber(low) &&
-		isStringyNumber(close) &&
-		isStringyNumber(volume) &&
+		isBinanceDecimal(open) &&
+		isBinanceDecimal(high) &&
+		isBinanceDecimal(low) &&
+		isBinanceDecimal(close) &&
+		isBinanceDecimal(volume) &&
 		typeof closeTime === "number" &&
-		isStringyNumber(quoteVolume) &&
+		isBinanceDecimal(quoteVolume) &&
 		typeof numTrades === "number" &&
-		isStringyNumber(takerBaseVolume) &&
-		isStringyNumber(takerQuoteVolume)
+		isBinanceDecimal(takerBaseVolume) &&
+		isBinanceDecimal(takerQuoteVolume)
 	)
 }
 
@@ -73,15 +72,15 @@ export const isBinanceSymbolFilterLotSize =
 	objectTypeGuard<BinanceSymbolFilterLotSize>(
 		({ filterType, minQty, maxQty, stepSize }) =>
 			filterType === "LOT_SIZE" &&
-			isStringyNumber(minQty) &&
-			isStringyNumber(maxQty) &&
-			isStringyNumber(stepSize)
+			isBinanceDecimal(minQty) &&
+			isBinanceDecimal(maxQty) &&
+			isBinanceDecimal(stepSize)
 	)
 export const isBinanceSymbolFilterMinNotional =
 	objectTypeGuard<BinanceSymbolFilterMinNotional>(
 		({ filterType, minNotional, applyToMarket, avgPriceMins }) =>
 			filterType === "MIN_NOTIONAL" &&
-			isStringyNumber(minNotional) &&
+			isBinanceDecimal(minNotional) &&
 			typeof applyToMarket === "boolean" &&
 			typeof avgPriceMins === "number"
 	)

@@ -150,7 +150,6 @@
     "admin-api",
     "api",
     "api-gateway",
-    "arithmetic",
     "authentication",
     "authentication-api",
     "aws-acm",
