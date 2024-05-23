@@ -19,7 +19,7 @@ export PROJECT_SHORT_NAME=ggbot
 Install dependencies and build packages.
 
 ```sh
-npm ci --include=optional
+npm install
 npm run build
 ```
 

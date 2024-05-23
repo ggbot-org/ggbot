@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url"
 
 import { webappDirname } from "@workspace/locators"
 
-import { WorkerName, workerScriptPath } from "./workers.js"
+import { WorkerName, workerScriptPath } from "_/workers"
 
 export const workspaceDir = resolve(
 	dirname(dirname(fileURLToPath(import.meta.url)))
