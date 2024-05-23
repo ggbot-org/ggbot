@@ -9,13 +9,17 @@ type Props = {
 	strategyKey: StrategyKey | undefined
 }
 
-export const GoEditStrategy: FC<Props> = ({ strategyKey }) => (
-		<Button
-			onClick={() => {
-				if (!strategyKey) return
-				GOTO(webapp.user.editStrategy(strategyKey))
-			}}
-		>
+export const GoEditStrategy: FC<Props> = ({ strategyKey }) => {
+	const onClick = () => {
+		if (!strategyKey) return
+		GOTO(webapp.user.editStrategy(strategyKey))
+	}
+
+	if (!strategyKey) return null
+
+	return (
+		<Button onClick={onClick}>
 			<FormattedMessage id="GoEditStrategy.label" />
 		</Button>
 	)
+}

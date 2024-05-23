@@ -8,7 +8,8 @@ import {
 } from "_/components/library"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { useUserApi } from "_/hooks/useUserApi"
-import { href } from "_/routing/user/hrefs"
+import { GOTO } from "_/routing/navigation"
+import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
 import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -38,7 +39,7 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey }) => {
 	}, [DELETE, strategyKey])
 
 	useEffect(() => {
-		if (redirect) location.href = href.dashboardPage()
+		if (redirect) GOTO(webapp.user.dashboard)
 	}, [redirect])
 
 	return (

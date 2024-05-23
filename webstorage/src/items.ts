@@ -1,14 +1,14 @@
 import { Strategy } from "@workspace/models"
 
 const itemKeys = [
+	"DEBUG_backtesting",
 	"account",
 	"activeTabId",
 	"authToken",
 	"doNotShowPleasePurchase",
 	"gotFirstPageView",
 	"hideInactiveStrategies",
-	"strategy",
-	"DEBUG_backtesting"
+	"strategy"
 ] as const
 
 type ItemKey = (typeof itemKeys)[number]

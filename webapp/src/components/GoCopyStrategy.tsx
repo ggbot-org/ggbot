@@ -9,13 +9,15 @@ type Props = {
 	strategyKey: StrategyKey | undefined
 }
 
-export const GoCopyStrategy: FC<Props> = ({ strategyKey }) => (
-		<Button
-			onClick={() => {
-				if (!strategyKey) return
-				GOTO(webapp.user.copyStrategy(strategyKey))
-			}}
-		>
+export const GoCopyStrategy: FC<Props> = ({ strategyKey }) => {
+	const onClick = () => {
+		if (!strategyKey) return
+		GOTO(webapp.user.copyStrategy(strategyKey))
+	}
+
+	return (
+		<Button onClick={onClick}>
 			<FormattedMessage id="GoCopyStrategy.label" />
 		</Button>
 	)
+}

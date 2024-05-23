@@ -12,18 +12,22 @@ export const StrategyItem: FC<Props> = ({
 	name,
 	schedulings,
 	...strategyKey
-}) => (
-	<Box
-		className={classNames("StrategyItem")}
-		tabIndex={0}
-		onClick={() => {
-			GOTO(new URL(webapp.user.strategy(strategyKey)))
-		}}
-	>
-		<Flex justify="space-between">
-			<span className={classNames("is-unselectable")}>{name}</span>
+}) => {
+	const onClick = () => {
+		GOTO(new URL(webapp.user.strategy(strategyKey)))
+	}
 
-			<SchedulingsStatusBadges schedulings={schedulings} />
-		</Flex>
-	</Box>
-)
+	return (
+		<Box
+			className={classNames("StrategyItem")}
+			tabIndex={0}
+			onClick={onClick}
+		>
+			<Flex justify="space-between">
+				<span className={classNames("is-unselectable")}>{name}</span>
+
+				<SchedulingsStatusBadges schedulings={schedulings} />
+			</Flex>
+		</Box>
+	)
+}

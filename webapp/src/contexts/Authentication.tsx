@@ -45,6 +45,7 @@ type Action =
 type ContextValue = {
 	accountId: string
 	accountEmail: string
+	accountIsAdmin: boolean | undefined
 	accountWhenCreated: Time | undefined
 	subscription: Subscription | null | undefined
 	showAuthExit: () => void
@@ -53,6 +54,7 @@ type ContextValue = {
 export const AuthenticationContext = createContext<ContextValue>({
 	accountId: "",
 	accountEmail: "",
+	accountIsAdmin: undefined,
 	accountWhenCreated: undefined,
 	subscription: undefined,
 	showAuthExit: () => {}
@@ -156,6 +158,7 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const contextValue = useMemo<ContextValue>(
 		() => ({
 			accountId: storedAccount?.id ?? "",
+			accountIsAdmin: storedAccount?.role === "admin",
 			accountEmail: storedAccount?.email ?? "",
 			accountWhenCreated: storedAccount?.whenCreated,
 			subscription: accountInfo?.subscription,

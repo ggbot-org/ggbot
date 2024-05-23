@@ -11,7 +11,10 @@ import {
 	BinanceKlinesCacheMap,
 	getBinanceIntervalTime
 } from "@workspace/binance"
-// TODO import { BinanceExchangeInfoCacheIDB, BinanceIDB } from "@workspace/binance-indexeddb"
+import {
+	BinanceExchangeInfoCacheIDB,
+	BinanceIDB
+} from "@workspace/binance-indexeddb"
 import {
 	DflowBinanceExecutor,
 	extractBinanceSymbolsAndIntervalsFromFlowCandles,
@@ -27,8 +30,8 @@ type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 const { debug, warn } = logging("backtesting")
 
 const binanceExecutor = new DflowBinanceExecutor()
-// TODO const binanceIDB = new BinanceIDB()
-// TODO const binanceExchangeInfoCache = new BinanceExchangeInfoCache()
+const binanceIDB = new BinanceIDB()
+const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)
 const binanceKlinesCache = new BinanceKlinesCacheMap()
 
 const session = new BacktestingSession()
@@ -168,7 +171,7 @@ const getBinance = (
 	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
 ) => {
 	const binance = new BacktestingBinanceClient(schedulingInterval)
-	// TODO binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
+	binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
 	binance.publicClient.klinesCache = binanceKlinesCache
 	return binance
 }
