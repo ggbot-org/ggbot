@@ -134,14 +134,16 @@ void describe("repository", () => {
 						version
 							.split(".")
 							.every((part) => Number.isInteger(Number(part)))
+					// TODO: remove this condition, it is used to try out the React compiler
 					for (const [key, value] of [
 						...Array.from(dependencies.entries()),
 						...Array.from(devDependencies.entries())
 					])
-						assert.ok(
-							isExact(value),
-							`${assertionError} dependency ${key} version ${value} is not exact`
-						)
+						if (value !== "0.0.0-experimental-c8b3f72-20240517")
+							assert.ok(
+								isExact(value),
+								`${assertionError} dependency ${key} version ${value} is not exact`
+							)
 				})
 			})
 		}

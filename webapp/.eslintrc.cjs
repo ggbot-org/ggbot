@@ -19,6 +19,7 @@ module.exports = {
 	},
 	plugins: [
 		"@typescript-eslint",
+		"eslint-plugin-react-compiler",
 		"eslint-plugin-tsdoc",
 		"formatjs",
 		"import",
@@ -105,6 +106,7 @@ module.exports = {
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
 		"react/self-closing-comp": ["error", { component: true, html: true }],
+		"react-compiler/react-compiler": "warn",
 		// TODO remove all switches then remove this override
 		"smells/no-switch": "warn"
 	},
