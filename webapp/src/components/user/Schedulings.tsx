@@ -51,6 +51,7 @@ export const Schedulings: FC = () => {
 	const strategyId = strategyKey?.strategyId
 
 	const flowViewGraph = useStrategyFlow(strategyKey)
+
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const {
 		accountStrategies,
