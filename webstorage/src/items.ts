@@ -8,7 +8,8 @@ const itemKeys = [
 	"doNotShowPleasePurchase",
 	"gotFirstPageView",
 	"hideInactiveStrategies",
-	"strategy"
+	"strategy",
+	"DEBUG_backtesting"
 ] as const
 
 type ItemKey = (typeof itemKeys)[number]

@@ -5,6 +5,5 @@ import { sessionWebStorage } from "_/storages/session"
 export const clearStorages = () => {
 	binanceIDB.deleteDatabase()
 	localWebStorage.clearAnyThingButDebugFlags()
-	localWebStorage.clear()
 	sessionWebStorage.clear()
 }
