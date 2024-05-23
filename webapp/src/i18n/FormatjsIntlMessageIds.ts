@@ -2,7 +2,8 @@ export const FormatjsIntlMessageIdsFilename = "FormatjsIntlMessageIds.d.ts"
 
 export const FormatjsIntlMessageIdsContent = (
 	translationKeys: string[]
-) => `// prettier-ignore
+) => `// This file is generated
+
 // ts-prune-ignore-next
 export declare type FormatjsIntlMessageId =
   | ${translationKeys.map((key) => `"${key}"`).join("\n  | ")};

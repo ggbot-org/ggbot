@@ -51,7 +51,7 @@
     "trunx": "0.46.0"
   },
   "devDependencies": {
-    "@formatjs/cli": "6.1.3",
+    "@formatjs/cli": "6.2.12",
     "@types/react-dom": "18.2.7",
     "@workspace/env": "0.0.0",
     "@workspace/eslint-config": "0.0.0",
