@@ -140,8 +140,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 						}
 					}
 				}
-			} catch (error) {
-				console.error(error)
+			} catch {
 				dispatch({ type: "ENTER_FAILURE" })
 			}
 		},

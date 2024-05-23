@@ -2,6 +2,7 @@ import { binance } from "_/binance/exchange"
 import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
+import { logging } from "_/logging"
 import {
 	DflowBinanceClient,
 	DflowBinanceClientDummy,
@@ -23,6 +24,8 @@ import {
 } from "flow-view"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
+
+const { debug } = logging("useFlowView")
 
 type UseFlowViewOutput = {
 	whenUpdatedFlowView: Time | undefined
@@ -199,7 +202,7 @@ export const useFlowView = ({
 							break
 					}
 				} catch (error) {
-					console.error(error)
+					debug(error)
 
 					switch (action) {
 						case "CREATE_EDGE": {

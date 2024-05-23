@@ -76,9 +76,7 @@ module.exports = {
 		"jsx-a11y/role-has-required-aria-props": "error",
 		"no-case-declarations": "error",
 		// TODO remove this no-console
-		"no-console": ["error", { allow: ["error"] }],
-		// TODO remove this no-warning-comments
-		"no-warning-comments": "warn",
+		// "no-console": ["error", { allow: ["error"] }],
 		"react-hooks/exhaustive-deps": "error",
 		"react-hooks/rules-of-hooks": "error",
 		"react/display-name": "error",
