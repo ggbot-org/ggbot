@@ -35,7 +35,7 @@
     "git_pull": "git pull origin main --quiet --rebase",
     "install_dependencies": "npm ci",
     "lint": "npm run lint --workspaces --if-present",
-    "lint-staged": "lint-staged",
+    "lint-staged": "lint-staged --allow-empty",
     "markdownlint": "markdownlint-cli2 */README.md */docs/*.md",
     "prebuild:admin-api": "npm run build_workspace_dependencies -w repository admin-api",
     "prebuild:authentication-api": "npm run build_workspace_dependencies -w repository authentication-api",
