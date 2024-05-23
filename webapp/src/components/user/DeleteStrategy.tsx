@@ -11,7 +11,7 @@ import { useUserApi } from "_/hooks/useUserApi"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 // TODO should delete strategy from local storage
@@ -30,13 +30,13 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey }) => {
 
 	const [modalIsActive, setModalIsActive] = useState(false)
 
-	const toggleModal = useCallback(() => {
+	const toggleModal = () => {
 		setModalIsActive((active) => !active)
-	}, [])
+	}
 
-	const onClickConfirmation = useCallback(() => {
+	const onClickConfirmation = () => {
 		if (strategyKey) DELETE.request(strategyKey)
-	}, [DELETE, strategyKey])
+	}
 
 	useEffect(() => {
 		if (redirect) GOTO(webapp.user.dashboard)
