@@ -11,14 +11,15 @@
 			"_/flow/*": ["./src/flow/*"],
 			"_/hooks/*": ["./src/hooks/*"],
 			"_/i18n/*": ["./src/i18n/*"],
-			"_/logging": ["./src/logging.ts"],
 			"_/pages/*": ["./src/pages/*"],
 			"_/react/mount": ["./src/react/mount.tsx"],
 			"_/react/root": ["./src/react/root.ts"],
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"],
 			"_/workers": ["./src/workers.ts"]
-		}
+		},
+		"skipLibCheck": true,
+		"target": "esnext"
 	},
 	"extends": ["@workspace/tsconfig/dom"],
 	"include": ["src/**/*.ts", "src/**/*.tsx"]

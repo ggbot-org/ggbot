@@ -2,13 +2,13 @@ import { binance } from "_/binance/exchange"
 import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
-import { logging } from "_/logging"
 import {
 	DflowBinanceClient,
 	DflowBinanceClientDummy,
 	DflowBinanceHost,
 	parsePercentage
 } from "@workspace/dflow"
+import { logging } from "@workspace/logging"
 import { StrategyKind } from "@workspace/models"
 import {
 	DflowErrorCannotConnectSourceToTarget,
