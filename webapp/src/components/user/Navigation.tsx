@@ -6,13 +6,16 @@ import {
 	NavbarStart
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
+import { useStoredAccount } from "_/hooks/useStoredAccount"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
+import { isAdminAccount } from "@workspace/models"
 import { FC, useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const Navigation: FC = () => {
-	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
+	const { showAuthExit } = useContext(AuthenticationContext)
+	const account = useStoredAccount()
 
 	return (
 		<Navbar className="Navigation">
@@ -35,7 +38,7 @@ export const Navigation: FC = () => {
 			</NavbarStart>
 
 			<NavbarEnd>
-				{accountIsAdmin ? (
+				{isAdminAccount(account) ? (
 					<NavbarItemAnchor
 						className={classNames("has-text-primary")}
 						onClick={() => {
