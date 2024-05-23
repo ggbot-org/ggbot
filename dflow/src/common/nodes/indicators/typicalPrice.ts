@@ -1,6 +1,6 @@
 import { DflowNode } from "dflow"
 
-import { add, div, } from "../arithmetic.js"
+import { add, div } from "../arithmetic.js"
 import {
 	inputClose,
 	inputHigh,
@@ -27,7 +27,8 @@ export class TypicalPrice extends DflowNode {
 		const low = this.input(1).data as number[]
 		const close = this.input(2).data as number[]
 		const size = high.length
-		if (close.length !== size || low.length !== size) return this.clearOutputs()
+		if (close.length !== size || low.length !== size)
+			return this.clearOutputs()
 		const result: number[] = []
 		for (let i = 0; i < size; i++) {
 			result.push(typicalPrice(high[i], low[i], close[i]))

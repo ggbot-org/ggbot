@@ -1,6 +1,6 @@
 import { DflowNode } from "dflow"
 
-import { MaybeNumber, add, div, mul, sub } from "../arithmetic.js"
+import { add, div, MaybeNumber, mul, sub } from "../arithmetic.js"
 import {
 	inputPeriod,
 	inputValues,
@@ -18,18 +18,18 @@ export const relativeStrengthIndex: MovingAverage = (values, period) => {
 		const current = values[i]
 		const previous = values[i - 1]
 		const upward: MaybeNumber =
-			current > previous ? sub(current, previous) as number : 0
+			current > previous ? (sub(current, previous) as number) : 0
 		const downward: MaybeNumber =
-			current < previous ? sub(previous, current) as number :0
+			current < previous ? (sub(previous, current) as number) : 0
 		upwards.push(upward)
 		downwards.push(downward)
 	}
 	const sumUp = upwards
 		.slice(0, period)
-		.reduce<MaybeNumber>((a, b) => add(a, b) , 0)
+		.reduce<MaybeNumber>((a, b) => add(a, b), 0)
 	const sumDown = downwards
 		.slice(0, period)
-		.reduce<MaybeNumber>((a, b) => add(a, b) , 0)
+		.reduce<MaybeNumber>((a, b) => add(a, b), 0)
 	const smoothUp = div(sumUp, period)
 	const smoothDown = div(sumDown, period)
 	const smoothUps: MaybeNumber[] = [smoothUp]
@@ -56,7 +56,9 @@ export const relativeStrengthIndex: MovingAverage = (values, period) => {
 			previousSmoothDown
 		)
 		smoothDowns.push(smoothDown)
-		result.push(mul(100, div(smoothUp, add(smoothUp, smoothDown))) as number)
+		result.push(
+			mul(100, div(smoothUp, add(smoothUp, smoothDown))) as number
+		)
 	}
 	return result
 }
@@ -66,10 +68,10 @@ export class RelativeStrengthIndex extends DflowNode {
 	static inputs = [inputValues, inputPeriod]
 	static outputs = [outputValues, outputLastValue]
 	run() {
-			const values = this.input(0).data as number[]
-			const period = this.input(1).data as number
-			const result = relativeStrengthIndex(values, period)
-			this.output(0).data = result
-			this.output(1).data = result.slice(-1).pop()
+		const values = this.input(0).data as number[]
+		const period = this.input(1).data as number
+		const result = relativeStrengthIndex(values, period)
+		this.output(0).data = result
+		this.output(1).data = result.slice(-1).pop()
 	}
 }

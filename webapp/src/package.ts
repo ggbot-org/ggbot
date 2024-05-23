@@ -21,14 +21,9 @@ export const typesDir = join(srcDir, "types")
 const srcRoutingDir = join(srcDir, "routing")
 const srcPublicRoutingDir = join(srcRoutingDir, "public")
 
-type AppName =
-	| "admin"
-	| "design"
-	| "landing"
-	| "strategy"
-	| "user"
+type AppName = "admin" | "design" | "landing" | "strategy" | "user"
 
-type EcmaScriptName = AppName|WorkerName
+type EcmaScriptName = AppName | WorkerName
 
 const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
 	landing: ["landing.js"],
@@ -67,7 +62,7 @@ export const webappEcmaScriptsConfig: Record<
 		jsPath: ecmaScriptPath.design
 	},
 	backtesting: {
-		entryPoint: join(monorepoDir,"backtesting-webworker", "src/index.ts"),
+		entryPoint: join(monorepoDir, "backtesting-webworker", "src/index.ts"),
 		jsPath: ecmaScriptPath.backtesting
 	}
 }

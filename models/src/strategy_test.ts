@@ -7,7 +7,7 @@ import { nullId } from "./item.js"
 import { invalidId } from "./item_test.js"
 import { normalizeName } from "./name.js"
 import { invalidNames } from "./name_test.js"
-import { isStrategy, newStrategy,Strategy } from "./strategy.js"
+import { isStrategy, newStrategy, Strategy } from "./strategy.js"
 import { createdNow } from "./time.js"
 
 void test("isStrategy", () => {

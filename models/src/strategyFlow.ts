@@ -1,6 +1,6 @@
 import { FlowViewSerializableGraph } from "flow-view"
 
-import { updatedNow,UpdateTime } from "./time.js"
+import { updatedNow, UpdateTime } from "./time.js"
 
 export type StrategyFlow = UpdateTime & {
 	view: FlowViewSerializableGraph

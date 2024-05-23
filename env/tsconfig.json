@@ -3,9 +3,6 @@
 		"outDir": "./dist",
 		"rootDir": "./src"
 	},
-	"extends": [
-		"@workspace/tsconfig/build",
-		"@workspace/tsconfig/default"
-	],
+	"extends": ["@workspace/tsconfig/build", "@workspace/tsconfig/default"],
 	"include": ["./src/**/*.ts"]
 }

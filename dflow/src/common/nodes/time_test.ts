@@ -9,7 +9,7 @@ import { coerceToTimeUnit } from "./time.js"
 
 void describe("coerceToTimeUnit", () => {
 	void test("works", () => {
-		[
+		;[
 			{ input: "not a TimeUnit", output: undefined },
 			{ input: "seconds", output: "second" },
 			{ input: "1s", output: "second" },

@@ -6,7 +6,7 @@ import {
 import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
-import { inputDefaultParameter,inputKey } from "./commonIO.js"
+import { inputDefaultParameter, inputKey } from "./commonIO.js"
 
 const { output } = Dflow
 

@@ -84,7 +84,7 @@ export const useAction = <
 
 	const request = useCallback(
 		(inputData?: Input) => {
-			(async function () {
+			;(async function () {
 				try {
 					const headers = new ClientActionHeaders()
 					if (withAuth) {

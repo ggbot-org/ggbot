@@ -53,6 +53,8 @@
     "predeploy:api:user": "npm run build:user-api",
     "predeploy:webapp": "npm run build:webapp",
     "preinstall_dependencies": "npm run git_pull",
+    "prettier": "prettier --write .",
+    "prettier--check": "prettier --cache --check .",
     "preupdate:binance-proxy": "npm run install_dependencies",
     "preupdate:executor": "npm run install_dependencies",
     "preupdate_and_start:binance-proxy": "npm run update:binance-proxy",
@@ -95,10 +97,9 @@
     "test": "npm run test --workspaces --if-present 1> /dev/null",
     "test_infrastructure": "npm run test_infrastructure -w infrastructure",
     "test_repository": "npm run test -w repository",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp' --project ./tsconfig.prune.json"
+    "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "devDependencies": {
-    "lint-staged": "15.2.2",
     "markdownlint-cli2": "0.12.1",
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
@@ -108,21 +109,9 @@
     "prettier-plugin-sh": "0.14.0",
     "ts-prune": "0.10.3"
   },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.md": [
-      "prettier --write",
-      "markdownlint-cli2 --fix"
-    ],
-    "*.{cjs,css,json,jsonc,scss,sh}": [
-      "prettier --write"
-    ]
-  },
   "pre-commit": [
-    "lint-staged",
+    "prettier--check",
+    "markdownlint",
     "ts-prune",
     "check_types",
     "test"

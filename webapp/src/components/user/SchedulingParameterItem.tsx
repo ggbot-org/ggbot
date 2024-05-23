@@ -176,13 +176,13 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 
 			{kind === SymbolParameter.kind && (
 				<datalist id={label}>
-						{binanceSymbols?.map(({ baseAsset, quoteAsset }) => (
-							<option
-								key={baseAsset + quoteAsset}
-								value={`${baseAsset}${dflowBinanceSymbolSeparator}${quoteAsset}`}
-							/>
-						))}
-					</datalist>
+					{binanceSymbols?.map(({ baseAsset, quoteAsset }) => (
+						<option
+							key={baseAsset + quoteAsset}
+							value={`${baseAsset}${dflowBinanceSymbolSeparator}${quoteAsset}`}
+						/>
+					))}
+				</datalist>
 			)}
 		</>
 	)

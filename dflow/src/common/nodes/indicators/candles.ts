@@ -1,6 +1,6 @@
 import { DflowNode } from "dflow"
 
-import { MaybeNumber, add, div, } from "../arithmetic.js"
+import { add, div, MaybeNumber } from "../arithmetic.js"
 import {
 	inputClose,
 	inputHigh,
@@ -40,7 +40,7 @@ export class HeikinAshi extends DflowNode {
 			openOutput.push(heikinAshiOpen)
 			const heikinAshiClose = div(
 				add(add(add(open[i], high[i]), low[i]), close[i]),
-				4,
+				4
 			)
 			closeOutput.push(heikinAshiClose)
 		}
