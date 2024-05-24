@@ -10,10 +10,10 @@ import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useUserApi } from "_/hooks/useUserApi"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC, useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const EditableFlow: FC = () => {
+export function EditableFlow() {
 	const strategyKey = useStrategyKey()
 
 	const initialFlowViewGraph = useStrategyFlow(strategyKey)

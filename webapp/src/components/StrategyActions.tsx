@@ -6,14 +6,14 @@ import { StrategyRecord } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
 import { RenameStrategy } from "_/components/user/RenameStrategy"
 import { StrategyContext } from "_/contexts/Strategy"
-import { FC, useContext } from "react"
+import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = ShareStrategyProps & {
 	readOnly: boolean
 }
 
-export const StrategyActions: FC<Props> = ({ readOnly }) => {
+export function StrategyActions({ readOnly }: Props) {
 	const { strategyKey, strategyName } = useContext(StrategyContext)
 
 	return (

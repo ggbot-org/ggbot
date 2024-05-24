@@ -35,7 +35,6 @@ import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { isFrequency } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	InputHTMLAttributes,
 	useCallback,
 	useContext,
@@ -45,7 +44,7 @@ import {
 import { FormattedMessage, useIntl } from "react-intl"
 import { classNames } from "trunx"
 
-export const Backtesting: FC = () => {
+export function Backtesting() {
 	const { formatMessage } = useIntl()
 
 	const strategyKey = useStrategyKey()

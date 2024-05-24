@@ -2,14 +2,13 @@ import { Button } from "_/components/library"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
-import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
 	strategyKey: StrategyKey | undefined
 }
 
-export const GoEditStrategy: FC<Props> = ({ strategyKey }) => {
+export function GoEditStrategy({ strategyKey }: Props) {
 	const onClick = () => {
 		if (!strategyKey) return
 		GOTO(webapp.user.editStrategy(strategyKey))

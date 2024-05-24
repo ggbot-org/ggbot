@@ -1,9 +1,8 @@
 import { Button, ButtonProps, Buttons } from "_/components/library"
 import type { UseBacktestingOutput } from "_/hooks/useBacktesting"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
-const PauseButton: FC<ButtonProps> = (props) => {
+function PauseButton(props: ButtonProps) {
 	const { formatMessage } = useIntl()
 	return (
 		<Button {...props}>
@@ -12,7 +11,7 @@ const PauseButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-const ResumeButton: FC<ButtonProps> = (props) => {
+function ResumeButton(props: ButtonProps) {
 	const { formatMessage } = useIntl()
 	return (
 		<Button color="primary" {...props}>
@@ -21,7 +20,7 @@ const ResumeButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-const StartButton: FC<ButtonProps> = (props) => {
+function StartButton(props: ButtonProps) {
 	const { formatMessage } = useIntl()
 	return (
 		<Button color="primary" {...props}>
@@ -30,7 +29,7 @@ const StartButton: FC<ButtonProps> = (props) => {
 	)
 }
 
-const StopButton: FC<ButtonProps> = (props) => {
+function StopButton(props: ButtonProps) {
 	const { formatMessage } = useIntl()
 	return (
 		<Button {...props}>
@@ -47,7 +46,7 @@ type Props = Pick<UseBacktestingOutput["state"], "isPaused" | "isRunning"> & {
 	onClickStop: ButtonProps["onClick"]
 }
 
-export const BacktestingActions: FC<Props> = ({
+export function BacktestingActions({
 	canStart,
 	isPaused,
 	isRunning,
@@ -55,7 +54,7 @@ export const BacktestingActions: FC<Props> = ({
 	onClickResume,
 	onClickStart,
 	onClickStop
-}) => {
+}: Props) {
 	if (isPaused)
 		return (
 			<Buttons>

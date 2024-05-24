@@ -1,7 +1,6 @@
 import { InputField, InputFieldProps } from "_/components/library"
 import { dayFormat } from "_/i18n/formats"
 import { Time } from "minimal-time-helpers"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = Omit<
@@ -11,7 +10,7 @@ type Props = Omit<
 	value: Time | undefined
 }
 
-export const WhenCreated: FC<Props> = ({ value, ...props }) => {
+export function WhenCreated({ value, ...props }: Props) {
 	const { formatDate, formatMessage } = useIntl()
 
 	return (

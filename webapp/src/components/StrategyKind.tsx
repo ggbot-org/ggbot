@@ -1,10 +1,9 @@
 import { InputField, InputFieldProps } from "_/components/library"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = Omit<InputFieldProps, "label" | "readOnly">
 
-export const StrategyKind: FC<Props> = ({ value, ...props }) => {
+export function StrategyKind({ value, ...props }: Props) {
 	const { formatMessage } = useIntl()
 
 	return (

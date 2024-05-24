@@ -3,7 +3,6 @@ import { isName, normalizeName } from "@workspace/models"
 import {
 	ChangeEventHandler,
 	Dispatch,
-	FC,
 	InputHTMLAttributes,
 	SetStateAction,
 	useCallback
@@ -15,13 +14,13 @@ export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
 		setValue: Dispatch<SetStateAction<string>>
 	}>
 
-export const Name: FC<NameProps> = ({
+export function Name({
 	isStatic,
 	readOnly,
 	setValue,
 	value,
 	...props
-}) => {
+}: NameProps) {
 	const { formatMessage } = useIntl()
 
 	const name = typeof value === "string" ? value : ""

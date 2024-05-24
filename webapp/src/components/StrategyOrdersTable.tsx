@@ -8,7 +8,6 @@ import {
 } from "@workspace/binance"
 import { Order } from "@workspace/models"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
-import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Row = {
@@ -25,7 +24,7 @@ type Props = {
 	orders: Order[] | undefined
 }
 
-export const StrategyOrdersTable: FC<Props> = ({ orders }) => {
+export function StrategyOrdersTable({ orders }: Props) {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []

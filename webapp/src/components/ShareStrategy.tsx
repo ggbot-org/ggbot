@@ -3,7 +3,7 @@ import { ToastContext } from "_/contexts/Toast"
 import { webapp } from "_/routing/webapp"
 import { logging } from "@workspace/logging"
 import { Strategy, StrategyKey } from "@workspace/models"
-import { FC, useContext } from "react"
+import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const { debug } = logging("ShareStrategy")
@@ -13,10 +13,10 @@ export type ShareStrategyProps = Partial<{
 	strategyName: Strategy["name"]
 }>
 
-export const ShareStrategy: FC<ShareStrategyProps> = ({
+export function ShareStrategy({
 	strategyKey,
 	strategyName
-}) => {
+}: ShareStrategyProps) {
 	const { formatMessage } = useIntl()
 	const { toast } = useContext(ToastContext)
 

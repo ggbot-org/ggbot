@@ -1,5 +1,4 @@
 import { InputField, InputFieldProps } from "_/components/library"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = Omit<
@@ -7,7 +6,7 @@ type Props = Omit<
 	"label" | "readOnly" | "isStatic" | "defaultValue"
 >
 
-export const StrategyId: FC<Props> = ({ value, ...props }) => {
+export function StrategyId({ value, ...props }: Props) {
 	const { formatMessage } = useIntl()
 
 	return (

@@ -2,10 +2,9 @@ import { classNames } from "_/classNames"
 import { SocialLinks } from "_/components/SocialLinks"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { dayFormat } from "_/i18n/formats"
-import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const Footer: FC = () => {
+export function Footer() {
 	const { formatDate } = useIntl()
 
 	return (

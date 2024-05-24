@@ -3,9 +3,9 @@ import { StrategyId } from "_/components/StrategyId"
 import { StrategyName } from "_/components/StrategyName"
 import { WhenCreated } from "_/components/WhenCreated"
 import { StrategyContext } from "_/contexts/Strategy"
-import { FC, useContext } from "react"
+import { useContext } from "react"
 
-export const StrategyRecord: FC = () => {
+export function StrategyRecord() {
 	const { strategy } = useContext(StrategyContext)
 
 	return (

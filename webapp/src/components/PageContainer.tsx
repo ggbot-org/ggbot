@@ -4,16 +4,18 @@ import { Navigation } from "_/components/Navigation"
 import { NoNetwork } from "_/components/NoNetwork"
 import { I18nProvider } from "_/contexts/I18n"
 import { ToastProvider } from "_/contexts/Toast"
-import { FC, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 
-export const PageContainer: FC<PropsWithChildren> = ({ children }) => (
-	<I18nProvider>
-		<Page footer={<Footer />}>
-			<Navigation />
+export function PageContainer({ children }: PropsWithChildren) {
+	return (
+		<I18nProvider>
+			<Page footer={<Footer />}>
+				<Navigation />
 
-			<NoNetwork />
+				<NoNetwork />
 
-			<ToastProvider>{children}</ToastProvider>
-		</Page>
-	</I18nProvider>
-)
+				<ToastProvider>{children}</ToastProvider>
+			</Page>
+		</I18nProvider>
+	)
+}

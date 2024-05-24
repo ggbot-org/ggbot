@@ -8,7 +8,6 @@ import {
 } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	InputHTMLAttributes,
 	SelectHTMLAttributes,
 	useCallback
@@ -29,12 +28,12 @@ type FrequencyIntervalOption = {
 	label: string
 }
 
-export const FrequencyInput: FC<FrequencyInputProps> = ({
+export function FrequencyInput({
 	disabled,
 	disabledIntervalOptions = [],
 	frequency: { interval, every },
 	setFrequency
-}) => {
+}: FrequencyInputProps) {
 	const { formatMessage } = useIntl()
 
 	const frequencyIntervalOptions: FrequencyIntervalOption[] = [

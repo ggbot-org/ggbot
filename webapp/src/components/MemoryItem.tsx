@@ -1,14 +1,13 @@
 import { classNames } from "_/classNames"
 import { Flex } from "_/components/library"
 import { SerializablePrimitive } from "@workspace/models"
-import { FC } from "react"
 
 export type MemoryItemProps = {
 	name: string
 	value: SerializablePrimitive | undefined
 }
 
-export const MemoryItem: FC<MemoryItemProps> = ({ name, value }) => {
+export function MemoryItem({ name, value }: MemoryItemProps) {
 	const formattedValue =
 		value === undefined ? "" : JSON.stringify(value, null, 2)
 

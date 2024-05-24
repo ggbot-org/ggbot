@@ -1,9 +1,9 @@
 import { classNames } from "_/classNames"
 import { Input } from "_/components/library"
 import { StrategyContext } from "_/contexts/Strategy"
-import { FC, PropsWithChildren, useContext } from "react"
+import { PropsWithChildren, useContext } from "react"
 
-export const FlowMenu: FC<PropsWithChildren> = ({ children }) => {
+export function FlowMenu({ children }: PropsWithChildren) {
 	const { strategyName } = useContext(StrategyContext)
 
 	return (

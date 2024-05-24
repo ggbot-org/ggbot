@@ -1,8 +1,7 @@
 import { Navbar } from "_/components/library"
 import { isHomepage } from "_/routing/isHomepage"
-import { FC } from "react"
 
-export const Navigation: FC = () => {
+export function Navigation() {
 	// Hide this component in Homepage
 	if (isHomepage()) return null
 

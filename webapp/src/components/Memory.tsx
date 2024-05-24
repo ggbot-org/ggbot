@@ -1,13 +1,12 @@
 import { Box, Title } from "_/components/library"
 import { DflowCommonContext } from "@workspace/dflow"
-import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 import { MemoryItem, MemoryItemProps } from "./MemoryItem"
 
 type Props = { memory: DflowCommonContext["memory"] | undefined }
 
-export const Memory: FC<Props> = ({ memory }) => {
+export function Memory({ memory }: Props) {
 	const items: MemoryItemProps[] = []
 
 	if (memory)
