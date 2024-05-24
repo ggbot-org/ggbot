@@ -9,7 +9,7 @@ const truncateApiKey = (apiKey: InputFieldProps["value"]) =>
 		? `${apiKey.substring(0, 10)}...${apiKey.substring(
 				apiKey.length - 10,
 				apiKey.length
-		  )}`
+			)}`
 		: ""
 
 export const ApiKey: FC<Props> = ({ isStatic, value, ...props }) => {

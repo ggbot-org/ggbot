@@ -81,11 +81,9 @@ export const Schedulings: FC = () => {
 			.filter(
 				(accountStrategy) => accountStrategy.strategyId === strategyId
 			)
-			.reduce<StrategyScheduling[]>(
-				(list, accountStrategy) =>
-					list.concat(accountStrategy.schedulings),
-				[]
-			)
+			.reduce<
+				StrategyScheduling[]
+			>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
 	}, [currentAccountStrategies, strategyId, fetchAccountStrategiesIsPending])
 
 	const someSchedulingChanged = useMemo(() => {

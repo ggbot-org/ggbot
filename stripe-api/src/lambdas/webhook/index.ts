@@ -80,13 +80,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 						plan,
 						paymentProvider,
 						startDay
-				  })
+					})
 				: newMonthlySubscriptionPurchase({
 						plan,
 						paymentProvider,
 						numMonths,
 						startDay
-				  })
+					})
 
 			await dataProvider.WriteSubscriptionPurchase({
 				accountId,

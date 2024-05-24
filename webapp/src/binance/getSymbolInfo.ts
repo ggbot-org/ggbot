@@ -12,7 +12,7 @@ export const getBinanceSymbolInfo = (
 		? symbolInfoMap.get(symbol)
 		: binanceSymbols?.find(
 				(binanceSymbol) => binanceSymbol.symbol === symbol
-		  )
+			)
 	if (!hasSymbolInfo && symbolInfo) symbolInfoMap.set(symbol, symbolInfo)
 	return symbolInfo
 }

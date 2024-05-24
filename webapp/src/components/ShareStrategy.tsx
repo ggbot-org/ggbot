@@ -29,7 +29,7 @@ export function ShareStrategy({
 						title: PROJECT_SHORT_NAME,
 						url: webapp.strategy(strategyKey).href,
 						text: strategyName
-				  }
+					}
 				: undefined
 			if (!shareData) return
 			if (

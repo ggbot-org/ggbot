@@ -63,7 +63,7 @@ export const accountStrategiesModifier = {
 										? "suspended"
 										: status
 							})
-					  )
+						)
 					: item.schedulings
 		}))
 	},
@@ -81,7 +81,7 @@ export const accountStrategiesModifier = {
 								...scheduling,
 								status: "suspended"
 							})
-					  )
+						)
 					: item.schedulings
 		}))
 	},
@@ -104,7 +104,7 @@ export const accountStrategiesModifier = {
 										? memory
 										: scheduling.memory
 							})
-					  )
+						)
 					: item.schedulings
 		}))
 	}

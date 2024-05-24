@@ -42,14 +42,14 @@ export class BuyMarket extends DflowNode {
 					: numberToBinanceDecimal(
 							quantity,
 							symbolInfo.baseAssetPrecision
-					  ),
+						),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
 					: numberToBinanceDecimal(
 							quoteOrderQty,
 							symbolInfo.quotePrecision
-					  )
+						)
 		})
 		this.output(0).data = order
 	}
@@ -80,14 +80,14 @@ export class SellMarket extends DflowNode {
 					: numberToBinanceDecimal(
 							quantity,
 							symbolInfo.baseAssetPrecision
-					  ),
+						),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
 					: numberToBinanceDecimal(
 							quoteOrderQty,
 							symbolInfo.quotePrecision
-					  )
+						)
 		})
 		this.output(0).data = order
 	}

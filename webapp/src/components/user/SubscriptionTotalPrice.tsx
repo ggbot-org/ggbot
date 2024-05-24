@@ -25,7 +25,7 @@ export const SubscriptionTotalPrice: FC<Props> = ({
 					? formatNumber(monthlyPrice * numMonths, {
 							style: "currency",
 							currency
-					  })
+						})
 					: ""
 			}
 		/>

@@ -39,7 +39,7 @@ export class IamPolicy implements AwsResource {
 			Statement.find(({ Action }) =>
 				Array.isArray(Action)
 					? Action.slice().sort().join() ===
-					  policyDocumentStatementActions.slice().sort().join()
+						policyDocumentStatementActions.slice().sort().join()
 					: Action === policyDocumentStatementActions[0]
 			)
 	}

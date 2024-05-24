@@ -53,7 +53,7 @@
     "predeploy:api:user": "npm run build:user-api",
     "predeploy:webapp": "npm run build:webapp",
     "preinstall_dependencies": "npm run git_pull",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --log-level error --cache --write .",
     "prettier--check": "prettier --cache --check .",
     "preupdate:binance-proxy": "npm run install_dependencies",
     "preupdate:executor": "npm run install_dependencies",
@@ -104,7 +104,7 @@
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
     "pre-commit": "1.2.2",
-    "prettier": "3.0.3",
+    "prettier": "3.2.5",
     "prettier-plugin-jsdoc": "1.1.1",
     "prettier-plugin-sh": "0.14.0",
     "ts-prune": "0.10.3"

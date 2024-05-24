@@ -58,7 +58,7 @@ export class DflowBinanceExecutor
 		const orders = execution
 			? getOrdersFromExecutionSteps(execution.steps).map((info) => ({
 					info
-			  }))
+				}))
 			: []
 		return { balance, execution, memory, memoryChanged, orders }
 	}
