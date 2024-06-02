@@ -1,28 +1,27 @@
-import { BinanceExchangeInfo } from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceKline } from "@workspace/binance"
 import {
 	CacheObjectStore,
 	IDBInstance,
 	IDBProvider
 } from "@workspace/indexeddb"
 
-type InfoSchema = {
-	BinanceExchangeInfo: {
-		type: "BinanceExchangeInfo"
-		data: BinanceExchangeInfo
-	}
-}
-
 export class BinanceIDB extends IDBProvider implements IDBInstance {
 	readonly databaseName: string
 	readonly databaseVersion: number
 
-	private infoObjectStore: CacheObjectStore<InfoSchema>
+	private objectStore: CacheObjectStore
+
+	static exchangeInfoKey = "exchangeInfo"
+
+	static klineKey(key: string) {
+		return `kline/${key}`
+	}
 
 	constructor() {
 		super()
 		this.databaseName = BinanceIDB.databaseName()
 		this.databaseVersion = 1
-		this.infoObjectStore = new CacheObjectStore(
+		this.objectStore = new CacheObjectStore(
 			this.databaseName,
 			this.databaseVersion
 		)
@@ -35,31 +34,54 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 
 	databaseUpgrade(db: IDBDatabase, version: number) {
 		if (version === 1) {
-			this.infoObjectStore.create(db)
+			this.objectStore.create(db)
 		}
 	}
 
 	deleteExchangeInfo(): Promise<void> {
-		const { db, infoObjectStore: objectStore } = this
+		const { db, objectStore: objectStore } = this
 		if (!db) return Promise.reject()
-		return objectStore.delete(db, "BinanceExchangeInfo")
+		return objectStore.delete(db, BinanceIDB.exchangeInfoKey)
+	}
+
+	deleteKline(): Promise<void> {
+		const { db, objectStore: objectStore } = this
+		if (!db) return Promise.reject()
+		return objectStore.delete(db, BinanceIDB.exchangeInfoKey)
 	}
 
 	readExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
-		const { db, infoObjectStore: objectStore } = this
+		const { db, objectStore: objectStore } = this
 		if (!db) return Promise.reject()
-		return objectStore.read<InfoSchema["BinanceExchangeInfo"]["data"]>(
+		return objectStore.read<BinanceExchangeInfo>(
 			db,
-			"BinanceExchangeInfo"
+			BinanceIDB.exchangeInfoKey
 		)
 	}
 
-	writeExchangeInfo(data: BinanceExchangeInfo): Promise<void> {
-		const { db, infoObjectStore: objectStore } = this
+	readKline(_key: string): Promise<BinanceKline | undefined> {
+		const { db } = this
 		if (!db) return Promise.reject()
-		return objectStore.write<"BinanceExchangeInfo">(db, {
-			type: "BinanceExchangeInfo",
+		return Promise.resolve(undefined)
+	}
+
+	writeExchangeInfo(data: BinanceExchangeInfo): Promise<void> {
+		const { db, objectStore: objectStore } = this
+		if (!db) return Promise.reject()
+		return objectStore.write<BinanceExchangeInfo>(
+			db,
+			BinanceIDB.exchangeInfoKey,
 			data
-		})
+		)
+	}
+
+	writeKline(key: string, data: BinanceKline): Promise<void> {
+		const { db, objectStore: objectStore } = this
+		if (!db) return Promise.reject()
+		return objectStore.write<BinanceKline>(
+			db,
+			BinanceIDB.klineKey(key),
+			data
+		)
 	}
 }

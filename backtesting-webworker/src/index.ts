@@ -1,4 +1,3 @@
-// TODO import { BinanceExchangeInfoCache } from "_/binance/exchangeInfoCache"
 import {
 	BacktestingBinanceClient,
 	BacktestingMessageInData,
@@ -8,11 +7,11 @@ import {
 } from "@workspace/backtesting"
 import {
 	binanceKlineMaxLimit,
-	BinanceKlinesCacheMap,
 	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
 	BinanceExchangeInfoCacheIDB,
+	BinanceKlinesCacheIDB,
 	BinanceIDB
 } from "@workspace/binance-indexeddb"
 import {
@@ -32,7 +31,7 @@ const { debug, warn } = logging("backtesting")
 const binanceExecutor = new DflowBinanceExecutor()
 const binanceIDB = new BinanceIDB()
 const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)
-const binanceKlinesCache = new BinanceKlinesCacheMap()
+const binanceKlinesCache = new BinanceKlinesCacheIDB(binanceIDB)
 
 const session = new BacktestingSession()
 

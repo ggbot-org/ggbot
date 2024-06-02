@@ -1,5 +1,8 @@
 export * from "./arithmetic.js"
-export type { BinanceExchangeInfoCacheProvider } from "./cacheProviders.js"
+export type {
+	BinanceExchangeInfoCacheProvider,
+	BinanceKlinesCacheProvider
+} from "./cacheProviders.js"
 export { BinanceConnector } from "./connector.js"
 export { binanceKlineMaxLimit } from "./constants.js"
 export type { BinanceApiPrivateEndpoint } from "./endpoints.js"
@@ -31,4 +34,4 @@ export type {
 	BinanceSymbolInfo,
 	BinanceTickerPrice
 } from "./types.js"
-export { balanceIsNotEmpty } from "./utils.js"
+export { balanceIsNotEmpty, binanceKlineKey } from "./utils.js"
