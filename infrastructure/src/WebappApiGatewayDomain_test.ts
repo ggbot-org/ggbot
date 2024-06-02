@@ -6,8 +6,8 @@ import { WebappApiGatewayDomain } from "./WebappApiGatewayDomain.js"
 const webappApiGatewayDomain = new WebappApiGatewayDomain()
 const domainName = await webappApiGatewayDomain.describe()
 
-void describe("WebappApiGatewayDomain", () => {
-	void test("exists", () => {
+describe("WebappApiGatewayDomain", () => {
+	test("exists", () => {
 		assert.ok(domainName !== undefined)
 	})
 

@@ -7,7 +7,7 @@ import { isName } from "./name.js"
 const nameTooLong = "x".repeat(999)
 export const invalidNames = ["", "     ", nameTooLong]
 
-void test("isName", () => {
+test("isName", () => {
 	assertEqual<string, boolean>(isName, [
 		{ input: "valid name", output: true },
 		...invalidNames.map((input) => ({ input, output: false }))

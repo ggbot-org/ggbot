@@ -9,7 +9,7 @@ import {
 	StringParameter
 } from "./nodes/parameters.js"
 
-void test("extractCommonParameters", () => {
+test("extractCommonParameters", () => {
 	const booleanValue = false
 	const booleanKey = "my boolean"
 	const numberValue = 1.2

@@ -11,7 +11,7 @@ import {
 } from "./oneTimePassword.js"
 import { createdNow } from "./time.js"
 
-void test("isOneTimePassword", () => {
+test("isOneTimePassword", () => {
 	assertEqual<MaybeObject<OneTimePassword>, boolean>(isOneTimePassword, [
 		{
 			input: { code: "123456", ...createdNow() },
@@ -20,6 +20,6 @@ void test("isOneTimePassword", () => {
 	])
 })
 
-void test("generateOneTimePassword", () => {
+test("generateOneTimePassword", () => {
 	assert.ok(isOneTimePassword(generateOneTimePassword()))
 })

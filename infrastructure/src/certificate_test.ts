@@ -20,16 +20,16 @@ const certificate = CertificateSummaryList?.find(
 	({ DomainName }) => DomainName === DNS_DOMAIN
 )
 
-void describe(`SSL certificate for domain ${DNS_DOMAIN} on region ${staticWebsiteAwsRegion}`, () => {
-	void test("is used", () => {
+describe(`SSL certificate for domain ${DNS_DOMAIN} on region ${staticWebsiteAwsRegion}`, () => {
+	test("is used", () => {
 		assert.ok(certificate?.InUse)
 	})
 
-	void test("status is ISSUED", () => {
+	test("status is ISSUED", () => {
 		assert.ok(certificate?.Status === CertificateStatus.ISSUED)
 	})
 
-	void test("is ELIGIBLE for renewal", () => {
+	test("is ELIGIBLE for renewal", () => {
 		assert.ok(
 			certificate?.RenewalEligibility === RenewalEligibility.ELIGIBLE
 		)

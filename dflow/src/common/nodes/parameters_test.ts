@@ -6,8 +6,8 @@ import { now } from "minimal-time-helpers"
 import { getDflowExecutionOutputData } from "../executor.js"
 import { DflowExecutorMock } from "../mocks/executor.js"
 
-void describe("booleanParameter", () => {
-	void test("reads context params", async () => {
+describe("booleanParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -46,7 +46,7 @@ void describe("booleanParameter", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	void test("use default if context param is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -83,8 +83,8 @@ void describe("booleanParameter", () => {
 	})
 })
 
-void describe("numberParameter", () => {
-	void test("reads context params", async () => {
+describe("numberParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -123,7 +123,7 @@ void describe("numberParameter", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	void test("use default if context param is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -160,8 +160,8 @@ void describe("numberParameter", () => {
 	})
 })
 
-void describe("stringParameter", () => {
-	void test("reads context params", async () => {
+describe("stringParameter", () => {
+	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {
@@ -200,7 +200,7 @@ void describe("stringParameter", () => {
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
-	void test("use default if context param is not available", async () => {
+	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
 			view: {

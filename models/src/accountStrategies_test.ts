@@ -53,9 +53,9 @@ const accountStrategy4Suspended: AccountStrategy = {
 	]
 }
 
-void describe("accountStrategiesModifier", () => {
-	void describe("insertAccountStrategy", () => {
-		void test("inserts a new item", () => {
+describe("accountStrategiesModifier", () => {
+	describe("insertAccountStrategy", () => {
+		test("inserts a new item", () => {
 			assertDeepEqual<
 				Parameters<
 					typeof accountStrategiesModifier.insertAccountStrategy
@@ -82,7 +82,7 @@ void describe("accountStrategiesModifier", () => {
 			)
 		})
 
-		void test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
+		test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertAccountStrategy(
@@ -100,7 +100,7 @@ void describe("accountStrategiesModifier", () => {
 			)
 		})
 
-		void test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
+		test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertAccountStrategy(
@@ -119,7 +119,7 @@ void describe("accountStrategiesModifier", () => {
 		})
 	})
 
-	void test("deleteAccountStrategy", () => {
+	test("deleteAccountStrategy", () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.deleteAccountStrategy>,
 			ReturnType<typeof accountStrategiesModifier.deleteAccountStrategy>
@@ -143,7 +143,7 @@ void describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	void test("suspendScheduling", () => {
+	test("suspendScheduling", () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.suspendScheduling>,
 			ReturnType<typeof accountStrategiesModifier.suspendScheduling>
@@ -168,7 +168,7 @@ void describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	void test("suspendStrategySchedulings", () => {
+	test("suspendStrategySchedulings", () => {
 		assertDeepEqual<
 			Parameters<
 				typeof accountStrategiesModifier.suspendStrategySchedulings
@@ -202,7 +202,7 @@ void describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	void test("updateSchedulingMemory", () => {
+	test("updateSchedulingMemory", () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.updateSchedulingMemory>,
 			ReturnType<typeof accountStrategiesModifier.updateSchedulingMemory>

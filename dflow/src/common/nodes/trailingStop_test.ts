@@ -168,8 +168,8 @@ const executeTrailingStop = async (
 	}
 }
 
-void describe("Trailing Stop", () => {
-	void test("TrailingStopUp", async () => {
+describe("Trailing Stop", () => {
+	test("TrailingStopUp", async () => {
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 
@@ -378,7 +378,7 @@ void describe("Trailing Stop", () => {
 		}
 	})
 
-	void test("TrailingStopDown", async () => {
+	test("TrailingStopDown", async () => {
 		const { entryPriceMemoryKey, stopPriceMemoryKey } =
 			trailingStopMemoryKeys(memoryLabel)
 
@@ -588,7 +588,7 @@ void describe("Trailing Stop", () => {
 	})
 })
 
-void test("trailingStop", () => {
+test("trailingStop", () => {
 	assertDeepEqual<TrailingStopInput, TrailingStopOutput>(trailingStop, [
 		// If `direction` is "UP" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
 		{
@@ -654,7 +654,7 @@ void test("trailingStop", () => {
 	])
 })
 
-void test("computeStopPriceDown", () => {
+test("computeStopPriceDown", () => {
 	assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
 		{
 			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
@@ -663,7 +663,7 @@ void test("computeStopPriceDown", () => {
 	])
 })
 
-void test("computeStopPriceUp", () => {
+test("computeStopPriceUp", () => {
 	assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
 		{
 			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },

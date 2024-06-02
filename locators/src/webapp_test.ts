@@ -8,7 +8,7 @@ import {
 
 import { WebappURLs } from "./webapp.js"
 
-void test("WebappURLs", () => {
+test("WebappURLs", () => {
 	const webapp = new WebappURLs("main", "example.com")
 
 	// Public

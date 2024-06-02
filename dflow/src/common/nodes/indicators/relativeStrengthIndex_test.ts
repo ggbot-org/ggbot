@@ -3,7 +3,7 @@ import { test } from "node:test"
 
 import { relativeStrengthIndex } from "./relativeStrengthIndex.js"
 
-void test("Relative Strength Index", () => {
+test("Relative Strength Index", () => {
 	;[
 		{
 			input: {

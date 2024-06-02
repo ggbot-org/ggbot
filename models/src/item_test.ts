@@ -6,7 +6,7 @@ import { isItemId } from "./item.js"
 
 export const invalidId = "not an id"
 
-void test("isItemId", () => {
+test("isItemId", () => {
 	assertEqual<unknown, boolean>(isItemId, [
 		{ input: undefined, output: false },
 		{ input: 1000, output: false },

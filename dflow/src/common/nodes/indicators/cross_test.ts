@@ -3,7 +3,7 @@ import { test } from "node:test"
 
 import { crossOver } from "./cross.js"
 
-void test("CrossOver", () => {
+test("CrossOver", () => {
 	;[
 		{ input: { values1: [], values2: [] }, output: [] },
 		{

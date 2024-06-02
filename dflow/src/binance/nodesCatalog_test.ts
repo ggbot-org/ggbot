@@ -6,8 +6,8 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { getDflowBinanceDynamicNodesCatalog } from "./nodesCatalog.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
-void describe("getDflowBinanceDynamicNodesCatalog", () => {
-	void test("creates Dflow nodes related with Binance symbols", async () => {
+describe("getDflowBinanceDynamicNodesCatalog", () => {
+	test("creates Dflow nodes related with Binance symbols", async () => {
 		const binance = new DflowBinanceClientMock()
 		const { symbols } = await binance.exchangeInfo()
 		const nodesCatalog = getDflowBinanceDynamicNodesCatalog(symbols)
@@ -45,7 +45,7 @@ void describe("getDflowBinanceDynamicNodesCatalog", () => {
 		)
 	})
 
-	void test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", () => {
+	test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", () => {
 		const validSymbol: DflowBinanceSymbolInfo = {
 			symbol: "AAABTC",
 			status: "TRADING",

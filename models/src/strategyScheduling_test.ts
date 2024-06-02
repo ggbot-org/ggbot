@@ -9,7 +9,7 @@ import {
 	StrategyScheduling
 } from "./strategyScheduling.js"
 
-void test("isStrategyScheduling", () => {
+test("isStrategyScheduling", () => {
 	assertEqual<MaybeObject<StrategyScheduling>, boolean>(
 		isStrategyScheduling,
 		[

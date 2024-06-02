@@ -26,8 +26,8 @@ const newSession = ({
 	return session
 }
 
-void describe("BacktestingSession", () => {
-	void test("`canRun` is true only when `dayInterval`, `frequency` and `strategy` are provided", () => {
+describe("BacktestingSession", () => {
+	test("`canRun` is true only when `dayInterval`, `frequency` and `strategy` are provided", () => {
 		const session = new BacktestingSession()
 		assert.ok(!session.canRun)
 		session.dayInterval = {
@@ -42,7 +42,7 @@ void describe("BacktestingSession", () => {
 		assert.ok(session.canRun)
 	})
 
-	void test('cannot set `dayInterval` while `status` is "running"', () => {
+	test('cannot set `dayInterval` while `status` is "running"', () => {
 		const dayInterval1: DayInterval = {
 			start: "2000-01-01",
 			end: "2001-01-01"
@@ -75,7 +75,7 @@ void describe("BacktestingSession", () => {
 		assert.deepEqual(session.dayInterval, dayInterval2)
 	})
 
-	void test('cannot set `frequency` while `status` is "running"', () => {
+	test('cannot set `frequency` while `status` is "running"', () => {
 		const frequency1: Frequency = {
 			every: 1,
 			interval: "1h"
@@ -108,7 +108,7 @@ void describe("BacktestingSession", () => {
 		assert.deepEqual(session.frequency, frequency2)
 	})
 
-	void test('cannot set `strategy` while `status` is "running"', () => {
+	test('cannot set `strategy` while `status` is "running"', () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
 			strategyKey: { strategyKind: "none", strategyId: "01010101" },
@@ -147,7 +147,7 @@ void describe("BacktestingSession", () => {
 		assert.deepEqual(session.strategy?.flow, strategy2.flow)
 	})
 
-	void test('cannot set `strategyFlow` while `status` is "running"', () => {
+	test('cannot set `strategyFlow` while `status` is "running"', () => {
 		const strategy = emptyStrategy()
 		const strategyFlow1 = strategy.flow
 		const strategyFlow2: BacktestingStrategy["flow"] = {
@@ -181,7 +181,7 @@ void describe("BacktestingSession", () => {
 		assert.deepEqual(session.strategy?.flow, strategyFlow2)
 	})
 
-	void test('`nextTime` return Time if status is "running"', () => {
+	test('`nextTime` return Time if status is "running"', () => {
 		const session = newSession({
 			dayInterval: {
 				start: "2000-01-01",

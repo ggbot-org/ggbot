@@ -6,7 +6,7 @@ import { MaybeObject } from "minimal-type-guard-helpers"
 import { isStrategyMemory, StrategyMemory } from "./strategyMemory.js"
 import { invalidIdentifierStrings } from "./strings_test.js"
 
-void test("isStrategyMemory", () => {
+test("isStrategyMemory", () => {
 	assertEqual<MaybeObject<StrategyMemory>, boolean>(isStrategyMemory, [
 		{
 			input: {},

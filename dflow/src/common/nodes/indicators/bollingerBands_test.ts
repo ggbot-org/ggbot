@@ -3,7 +3,7 @@ import { test } from "node:test"
 
 import { bollingerBands } from "./bollingerBands.js"
 
-void test("Bollinger Bands", () => {
+test("Bollinger Bands", () => {
 	;[
 		{
 			input: { values: [], period: 1, amplitude: 2 },

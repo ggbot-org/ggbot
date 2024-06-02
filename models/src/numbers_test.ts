@@ -6,7 +6,7 @@ import { isFiniteNumber, isNaturalNumber } from "./numbers.js"
 
 const notAllowed = [NaN, Infinity]
 
-void test("isFiniteNumber", () => {
+test("isFiniteNumber", () => {
 	assertEqual<unknown, boolean>(isFiniteNumber, [
 		{
 			input: 1,
@@ -20,7 +20,7 @@ void test("isFiniteNumber", () => {
 	])
 })
 
-void test("isNaturalNumber", () => {
+test("isNaturalNumber", () => {
 	assertEqual<unknown, boolean>(isNaturalNumber, [
 		{
 			input: 1,

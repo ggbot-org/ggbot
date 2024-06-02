@@ -3,7 +3,7 @@ import { test } from "node:test"
 
 import { typicalPrice } from "./typicalPrice.js"
 
-void test("Typical Price", () => {
+test("Typical Price", () => {
 	;[
 		{ input: { high: 0, low: 0, close: 0 }, output: 0 },
 		{ input: { high: 10, low: 20, close: 30 }, output: 20 },

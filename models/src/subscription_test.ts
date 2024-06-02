@@ -11,7 +11,7 @@ import {
 	SubscriptionStatus
 } from "./subscription.js"
 
-void test("isSubscription", () => {
+test("isSubscription", () => {
 	assertEqual<Subscription, boolean>(isSubscription, [
 		{
 			input: {
@@ -23,7 +23,7 @@ void test("isSubscription", () => {
 	])
 })
 
-void test("statusOfSubscription", () => {
+test("statusOfSubscription", () => {
 	assertEqual<Pick<Subscription, "end">, SubscriptionStatus>(
 		statusOfSubscription,
 		[

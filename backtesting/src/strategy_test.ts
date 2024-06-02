@@ -12,8 +12,8 @@ export const emptyStrategy = () =>
 		strategyName: "empty strategy"
 	})
 
-void describe("BacktestingStrategy", () => {
-	void test("constructor", () => {
+describe("BacktestingStrategy", () => {
+	test("constructor", () => {
 		assert.ok(emptyStrategy() instanceof BacktestingStrategy)
 	})
 })

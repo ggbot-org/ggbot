@@ -9,7 +9,7 @@ import {
 	isBinanceSymbolFilterMinNotional
 } from "./typeGuards.js"
 
-void test("isBinanceKline", () => {
+test("isBinanceKline", () => {
 	;[
 		{
 			input: [
@@ -33,7 +33,7 @@ void test("isBinanceKline", () => {
 	})
 })
 
-void test("isBinanceKlineInterval", () => {
+test("isBinanceKlineInterval", () => {
 	;[
 		{ input: "xx", output: false },
 		{ input: "1m", output: true },
@@ -56,7 +56,7 @@ void test("isBinanceKlineInterval", () => {
 	})
 })
 
-void test("isBinanceSymbolFilterLotSize", () => {
+test("isBinanceSymbolFilterLotSize", () => {
 	;[
 		{
 			input: {
@@ -108,7 +108,7 @@ void test("isBinanceSymbolFilterLotSize", () => {
 	})
 })
 
-void test("isBinanceSymbolFilterMinNotional", () => {
+test("isBinanceSymbolFilterMinNotional", () => {
 	;[
 		{
 			input: {

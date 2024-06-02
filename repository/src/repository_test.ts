@@ -8,14 +8,15 @@ import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
 const repository = new Repository()
 await repository.read()
 
-void describe("repository", () => {
-	void describe("package.json", () => {
+describe("repository", () => {
+	describe("package.json", () => {
 		const { packageJson, workspaces } = repository
-		void test("is private", () => {
+
+		test("is private", () => {
 			assert.equal(packageJson.isPrivate, true)
 		})
 
-		void describe("script", () => {
+		describe("script", () => {
 			for (const workspacePathname of packageJson.workspaces) {
 				const buildScript =
 					packageJson.workspaceBuildScriptCommand(workspacePathname)
@@ -24,9 +25,9 @@ void describe("repository", () => {
 					RepositoryPackageJson.workspaceBuildScriptKey(
 						workspacePathname
 					)
-				void describe(buildScriptKey, () => {
+				describe(buildScriptKey, () => {
 					const assertionError = `check repository package.json ${buildScriptKey} script`
-					void test("has expected command", () => {
+					test("has expected command", () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
 						if (workspace.packageJson.buildScriptCommand) {
@@ -47,9 +48,9 @@ void describe("repository", () => {
 					RepositoryPackageJson.workspacePrebuildScriptKey(
 						workspacePathname
 					)
-				void describe(prebuildScriptKey, () => {
+				describe(prebuildScriptKey, () => {
 					const assertionError = `check repository package.json ${prebuildScriptKey} script`
-					void test("has expected command", () => {
+					test("has expected command", () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
 						const prebuildScript =
@@ -80,14 +81,14 @@ void describe("repository", () => {
 		})
 	})
 
-	void describe("workspace", () => {
+	describe("workspace", () => {
 		for (const [
 			workspacePathname,
 			{ packageJson }
 		] of repository.workspaces.entries()) {
 			const assertionError = `check ${workspacePathname}/package.json`
 
-			void describe(`${workspacePathname} package.json`, () => {
+			describe(`${workspacePathname} package.json`, () => {
 				const { packageName, dependencies, devDependencies } =
 					packageJson
 
@@ -96,11 +97,11 @@ void describe("repository", () => {
 					...Array.from(devDependencies.keys())
 				]
 
-				void test("has name", () => {
+				test("has name", () => {
 					assert.ok(packageName !== "", assertionError)
 				})
 
-				void test("has scope", () => {
+				test("has scope", () => {
 					assert.ok(
 						packageName.startsWith(
 							`${WorkspacePackageJson.scope}/`
@@ -109,18 +110,18 @@ void describe("repository", () => {
 					)
 				})
 
-				void test("is private", () => {
+				test("is private", () => {
 					assert.ok(packageJson.isPrivate, assertionError)
 				})
 
-				void test("does not depend on itself", () => {
+				test("does not depend on itself", () => {
 					assert.ok(
 						!allDependencyKeys.includes(packageName),
 						assertionError
 					)
 				})
 
-				void test("does not have duplicated dependencies", () => {
+				test("does not have duplicated dependencies", () => {
 					const seenDependency = new Set()
 					for (const dependency of allDependencyKeys) {
 						if (seenDependency.has(dependency))
@@ -129,7 +130,7 @@ void describe("repository", () => {
 					}
 				})
 
-				void test("dependencies has exact version", () => {
+				test("dependencies has exact version", () => {
 					const isExact = (version: string) =>
 						version
 							.split(".")

@@ -6,7 +6,7 @@ import { everyOneHour, frequenciesAreEqual } from "./frequency.js"
 
 type FrequenciesAreEqualArgs = Parameters<typeof frequenciesAreEqual>
 
-void test("frequenciesAreEqual", () => {
+test("frequenciesAreEqual", () => {
 	assertEqual<FrequenciesAreEqualArgs, boolean>(
 		(frequencies: FrequenciesAreEqualArgs) =>
 			frequenciesAreEqual(...frequencies),

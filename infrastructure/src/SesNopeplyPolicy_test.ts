@@ -7,13 +7,13 @@ const sesNoreplyPolicy = new SesNoreplyPolicy()
 await sesNoreplyPolicy.read()
 const { policy } = sesNoreplyPolicy
 
-void describe("SesNoreplyPolicy", () => {
-	void test("exists", () => {
+describe("SesNoreplyPolicy", () => {
+	test("exists", () => {
 		assert.ok(policy !== undefined)
 	})
 
 	if (policy) {
-		void test("is attachable", () => {
+		test("is attachable", () => {
 			assert.ok(policy.IsAttachable)
 		})
 

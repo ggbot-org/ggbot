@@ -4,7 +4,7 @@ import { assertEqual } from "minimal-assertion-helpers"
 
 import { isYearlyPurchase } from "./subscriptionPurchase.js"
 
-void test("isYearlyPurchase", () => {
+test("isYearlyPurchase", () => {
 	assertEqual<
 		Parameters<typeof isYearlyPurchase>[0],
 		ReturnType<typeof isYearlyPurchase>

@@ -9,8 +9,8 @@ import { DflowExecutorMock } from "../mocks/executor.js"
 
 const testValues: SerializablePrimitive[] = [42, "a string"]
 
-void describe("deleteMemory", () => {
-	void test("can delete context memory", async () => {
+describe("deleteMemory", () => {
+	test("can delete context memory", async () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
@@ -44,8 +44,8 @@ void describe("deleteMemory", () => {
 	})
 })
 
-void describe("getMemory", () => {
-	void test("can read context memory", async () => {
+describe("getMemory", () => {
+	test("can read context memory", async () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
@@ -82,7 +82,7 @@ void describe("getMemory", () => {
 		}
 	})
 
-	void test("can fallback to default", async () => {
+	test("can fallback to default", async () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
@@ -129,7 +129,7 @@ void describe("getMemory", () => {
 		}
 	})
 
-	void test("default value is ignored if memory is defined", async () => {
+	test("default value is ignored if memory is defined", async () => {
 		const nodeId = "test"
 		const key = "memory key"
 		const defaultValue = "my default value"
@@ -178,8 +178,8 @@ void describe("getMemory", () => {
 	})
 })
 
-void describe("setMemory", () => {
-	void test("can set context memory", async () => {
+describe("setMemory", () => {
+	test("can set context memory", async () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {

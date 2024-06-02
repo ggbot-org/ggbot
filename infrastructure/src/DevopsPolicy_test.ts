@@ -9,17 +9,17 @@ const devopsPolicy = new DevopsPolicy()
 await devopsPolicy.read()
 const { policy, policyDocument } = devopsPolicy
 
-void describe("DevopsPolicy", () => {
-	void test("exists", () => {
+describe("DevopsPolicy", () => {
+	test("exists", () => {
 		assert.ok(policy !== undefined)
 	})
 
 	if (policy) {
-		void test("is attachable", () => {
+		test("is attachable", () => {
 			assert.ok(policy.IsAttachable)
 		})
 
-		void test("has one attachment", () => {
+		test("has one attachment", () => {
 			assert.equal(policy.AttachmentCount, 1)
 		})
 
@@ -36,8 +36,8 @@ void describe("DevopsPolicy", () => {
 		)) {
 			const statement = findStatementByActions(actionList)
 			const exists = statement !== undefined
-			void describe(statementName, () => {
-				void test("exists", () => {
+			describe(statementName, () => {
+				test("exists", () => {
 					assert.ok(
 						exists,
 						`devopsPolicy ${statementName} statement actions should be ${JSON.stringify(

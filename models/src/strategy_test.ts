@@ -10,7 +10,7 @@ import { invalidNames } from "./name_test.js"
 import { isStrategy, newStrategy, Strategy } from "./strategy.js"
 import { createdNow } from "./time.js"
 
-void test("isStrategy", () => {
+test("isStrategy", () => {
 	const accountId = nullId
 	const kind = "none"
 	const name = "Name"

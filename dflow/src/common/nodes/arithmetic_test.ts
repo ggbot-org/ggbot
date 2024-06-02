@@ -13,7 +13,7 @@ import {
 	Subtraction
 } from "./arithmetic.js"
 
-void test("add", async () => {
+test("add", async () => {
 	const operator: ArithmeticNodeKind = "add"
 	const testData: ExecuteOperatorTestData[] = [
 		{
@@ -32,7 +32,7 @@ void test("add", async () => {
 	}
 })
 
-void test("sub", async () => {
+test("sub", async () => {
 	const operator: ArithmeticNodeKind = "sub"
 	const testData: ExecuteOperatorTestData[] = [
 		{
@@ -47,7 +47,7 @@ void test("sub", async () => {
 	}
 })
 
-void test("mul", async () => {
+test("mul", async () => {
 	const operator: ArithmeticNodeKind = "mul"
 	const testData: ExecuteOperatorTestData[] = [
 		{
@@ -62,7 +62,7 @@ void test("mul", async () => {
 	}
 })
 
-void test("div", async () => {
+test("div", async () => {
 	const operator: ArithmeticNodeKind = "div"
 	const testData: ExecuteOperatorTestData[] = [
 		{

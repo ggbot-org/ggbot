@@ -7,7 +7,7 @@ import { Account, isAccount, newAccount } from "./account.js"
 import { nullId } from "./item.js"
 import { createdNow } from "./time.js"
 
-void test("isAccount", () => {
+test("isAccount", () => {
 	const email = "user@example.com"
 	const { whenCreated } = createdNow()
 	assertEqual<MaybeObject<Account>, boolean>(isAccount, [

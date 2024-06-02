@@ -7,8 +7,8 @@ import {
 	BinanceSymbolFilterMinNotional
 } from "./types.js"
 
-void describe("lotSizeIsValid", () => {
-	void test("applies LOT_SIZE symbol filter", () => {
+describe("lotSizeIsValid", () => {
+	test("applies LOT_SIZE symbol filter", () => {
 		const filter: BinanceSymbolFilterLotSize = {
 			filterType: "LOT_SIZE",
 			minQty: "0.00010000",
@@ -39,8 +39,8 @@ void describe("lotSizeIsValid", () => {
 	})
 })
 
-void describe("minNotionalIsValid", () => {
-	void test("applies MIN_NOTIONAL symbol filter", () => {
+describe("minNotionalIsValid", () => {
+	test("applies MIN_NOTIONAL symbol filter", () => {
 		const filter: BinanceSymbolFilterMinNotional = {
 			filterType: "MIN_NOTIONAL",
 			minNotional: "0.00010000",

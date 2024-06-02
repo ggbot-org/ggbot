@@ -6,7 +6,7 @@ import { getBalanceFromExecutionSteps } from "./execution.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js"
 
-void test("getBalanceFromExecutionSteps", async () => {
+test("getBalanceFromExecutionSteps", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 

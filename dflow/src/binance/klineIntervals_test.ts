@@ -17,8 +17,8 @@ const sortIntervals = (values: TestInterval[]) =>
 				dflowBinanceKlineIntervals.indexOf(b.interval)
 		)
 
-void describe("dflowBinanceKlineIntervals", () => {
-	void test("can be used to sort intervals", () => {
+describe("dflowBinanceKlineIntervals", () => {
+	test("can be used to sort intervals", () => {
 		assertDeepEqual<TestInterval[], TestInterval[]>(sortIntervals, [
 			{
 				input: [{ interval: "1d" }, { interval: "1h" }],

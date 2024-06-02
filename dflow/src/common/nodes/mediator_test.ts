@@ -4,7 +4,7 @@ import { assertDeepEqual } from "minimal-assertion-helpers"
 
 import { mediation, MediatorInput, MediatorOutput } from "./mediator.js"
 
-void test("mediation", () => {
+test("mediation", () => {
 	assertDeepEqual<MediatorInput, MediatorOutput>(mediation, [
 		{
 			input: {

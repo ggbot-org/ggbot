@@ -23,7 +23,7 @@ export const invalidIdentifierStrings = [
 	stringWithLineBreaks
 ]
 
-void test("isFiniteString", () => {
+test("isFiniteString", () => {
 	assert.ok(stringTooLong.length > stringMaxLength)
 
 	assertEqual<unknown, boolean>(isFiniteString, [
@@ -34,7 +34,7 @@ void test("isFiniteString", () => {
 	])
 })
 
-void test("isNonEmptyString", () => {
+test("isNonEmptyString", () => {
 	assertEqual<unknown, boolean>(isNonEmptyString, [
 		{ input: fooString, output: true },
 		{ input: stringWithLineBreaks, output: true },
@@ -43,7 +43,7 @@ void test("isNonEmptyString", () => {
 	])
 })
 
-void test("isIdentifierString", () => {
+test("isIdentifierString", () => {
 	assertEqual<unknown, boolean>(isIdentifierString, [
 		{ input: fooString, output: true },
 		...invalidIdentifierStrings.map((key) => ({

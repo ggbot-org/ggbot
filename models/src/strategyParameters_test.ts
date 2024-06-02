@@ -11,7 +11,7 @@ import { invalidIdentifierStrings } from "./strings_test.js"
 
 const invalidValues = ["", Infinity, []]
 
-void test("isStrategyParameters", () => {
+test("isStrategyParameters", () => {
 	assertEqual<MaybeObject<StrategyParameters>, boolean>(
 		isStrategyParameters,
 		[

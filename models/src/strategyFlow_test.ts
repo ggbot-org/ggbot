@@ -10,7 +10,7 @@ import {
 } from "./strategyFlow.js"
 import { createdNow } from "./time.js"
 
-void test("isFlowViewSerializableGraph", () => {
+test("isFlowViewSerializableGraph", () => {
 	assertEqual<Partial<MaybeObject<StrategyFlow>>, boolean>(
 		isFlowViewSerializableGraph,
 		[

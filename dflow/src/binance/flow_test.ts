@@ -12,7 +12,7 @@ import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 
-void test("extractCommonParameters", async () => {
+test("extractCommonParameters", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 	const intervalValue = "1h"
@@ -108,7 +108,7 @@ void test("extractCommonParameters", async () => {
 	)
 })
 
-void test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
+test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 	assertDeepEqual<
@@ -235,7 +235,7 @@ void test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 	)
 })
 
-void test("extractsBinanceSymbolsFromTickerPriceAndOrderNodes", async () => {
+test("extractsBinanceSymbolsFromTickerPriceAndOrderNodes", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 	assertDeepEqual<

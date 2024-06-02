@@ -6,15 +6,15 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { EmailAddress, isEmailAddress, normalizeEmailAddress } from "./email.js"
 import { ErrorInvalidArg } from "./errors.js"
 
-void describe("normalizeEmailAddress", () => {
-	void test("returns email in lowercase", () => {
+describe("normalizeEmailAddress", () => {
+	test("returns email in lowercase", () => {
 		assertEqual<EmailAddress, EmailAddress>(normalizeEmailAddress, [
 			{ input: "lower@example.com", output: "lower@example.com" },
 			{ input: "MiXeD@example.com", output: "mixed@example.com" }
 		])
 	})
 
-	void test("removes period characters", () => {
+	test("removes period characters", () => {
 		;[
 			{ input: "john.smith@gmail.com", output: "johnsmith@gmail.com" },
 			{ input: "jOhN.sMiTh@gmail.com", output: "johnsmith@gmail.com" },
@@ -29,7 +29,7 @@ void describe("normalizeEmailAddress", () => {
 		})
 	})
 
-	void test("removes labels", () => {
+	test("removes labels", () => {
 		;[
 			{ input: "user+label@example.com", output: "user@example.com" }
 		].forEach(({ input, output }) => {
@@ -38,7 +38,7 @@ void describe("normalizeEmailAddress", () => {
 		})
 	})
 
-	void test("throws ErrorInvalidArg", () => {
+	test("throws ErrorInvalidArg", () => {
 		;["", "@@", "not an email", "john.smith at gmail.com"].forEach(
 			(value) => {
 				assert.throws(
@@ -55,7 +55,7 @@ void describe("normalizeEmailAddress", () => {
 	})
 })
 
-void test("isEmailAddress", () => {
+test("isEmailAddress", () => {
 	;[
 		{ input: undefined, output: false },
 		{ input: "not an email", output: false },

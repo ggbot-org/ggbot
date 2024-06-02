@@ -6,16 +6,16 @@ import { ACTIVE_TEST } from "./runnerOptions.js"
 
 const database = new Database()
 
-void describe("Database", () => {
-	void describe("S3 Bucket", () => {
+describe("Database", () => {
+	describe("S3 Bucket", () => {
 		const { s3Bucket } = database
 
-		void test(`${s3Bucket.name} exists`, async () => {
+		test(`${s3Bucket.name} exists`, async () => {
 			const exists = await s3Bucket.exists()
 			assert.ok(exists, `S3 bucket ${s3Bucket.name} does not exist`)
 		})
 
-		void test(`create ${s3Bucket.name}`, ACTIVE_TEST, async () => {
+		test(`create ${s3Bucket.name}`, ACTIVE_TEST, async () => {
 			await s3Bucket.create()
 			assert.ok(true)
 		})
