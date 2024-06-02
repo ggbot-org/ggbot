@@ -1,4 +1,4 @@
-import { Name, NameProps } from "_/components/Name"
+import { Name, NameProps } from "_/components/library"
 import { useIntl } from "react-intl"
 
 type Props = Omit<NameProps, "label">
