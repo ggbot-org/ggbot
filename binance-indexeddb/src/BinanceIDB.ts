@@ -59,10 +59,10 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 		)
 	}
 
-	readKline(_key: string): Promise<BinanceKline | undefined> {
-		const { db } = this
+	readKline(key: string): Promise<BinanceKline | undefined> {
+		const { db, objectStore: objectStore } = this
 		if (!db) return Promise.reject()
-		return Promise.resolve(undefined)
+		return objectStore.read<BinanceKline>(db, BinanceIDB.klineKey(key))
 	}
 
 	writeExchangeInfo(data: BinanceExchangeInfo): Promise<void> {

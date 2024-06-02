@@ -27,13 +27,13 @@ export class BacktestingSession implements BacktestingStatusController {
 	stepIndex: number = 0
 	times: Time[] = []
 
-	private _dayInterval: DayInterval | undefined = undefined
-	private _frequency: Frequency | undefined = undefined
-	private _strategy: BacktestingStrategy | undefined = undefined
+	#dayInterval: DayInterval | undefined = undefined
+	#frequency: Frequency | undefined = undefined
+	#strategy: BacktestingStrategy | undefined = undefined
 
 	get canRun(): boolean {
 		if (this.times.length === 0) return false
-		if (!this._strategy) return false
+		if (!this.#strategy) return false
 		return true
 	}
 
@@ -47,11 +47,11 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	get dayInterval(): DayInterval | undefined {
-		return this._dayInterval
+		return this.#dayInterval
 	}
 
 	get frequency(): Frequency | undefined {
-		return this._frequency
+		return this.#frequency
 	}
 
 	get nextTime(): Time | undefined {
@@ -67,28 +67,28 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	get strategy(): BacktestingStrategy | undefined {
-		return this._strategy
+		return this.#strategy
 	}
 
 	set dayInterval(value: DayInterval) {
 		if (this.status !== "initial") return
-		this._dayInterval = value
+		this.#dayInterval = value
 	}
 
 	set frequency(value: Frequency) {
 		if (this.status !== "initial") return
-		this._frequency = value
+		this.#frequency = value
 	}
 
 	set strategy(value: BacktestingStrategy) {
 		if (this.status !== "initial") return
-		this._strategy = value
+		this.#strategy = value
 	}
 
 	set strategyFlow(value: BacktestingStrategy["flow"]) {
 		if (this.status !== "initial") return
-		if (this._strategy === undefined) return
-		this._strategy.flow = value
+		if (this.#strategy === undefined) return
+		this.#strategy.flow = value
 	}
 
 	/**

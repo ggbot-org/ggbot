@@ -237,15 +237,21 @@ self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
 	const { type: messageType } = message
+
 	if (messageType === "SET_AFTER_STEP_BEHAVIOUR") {
 		const { afterStepBehaviour } = message
 		session.afterStepBehaviour = afterStepBehaviour
 	}
 
-	if (messageType === "SET_DAY_INTERVAL")
-		session.dayInterval = message.dayInterval
+	if (messageType === "SET_DAY_INTERVAL") {
+		const { dayInterval } = message
+		session.dayInterval = dayInterval
+	}
 
-	if (messageType === "SET_FREQUENCY") session.frequency = message.frequency
+	if (messageType === "SET_FREQUENCY") {
+		const { frequency } = message
+		session.frequency = frequency
+	}
 
 	if (messageType === "START") {
 		const { dayInterval, flow, frequency, strategyKey, strategyName } =

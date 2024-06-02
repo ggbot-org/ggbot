@@ -56,8 +56,11 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
-		const { publicClient: binance, time } = this
-		const options = await binance.prepareOrder(symbol, type, orderOptions)
+		const options = await this.publicClient.prepareOrder(
+			symbol,
+			type,
+			orderOptions
+		)
 		const { price } = await this.tickerPrice(symbol)
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		if (!symbolInfo) throw new ErrorCannotCreateOrder()
@@ -86,7 +89,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 			status: "FILLED",
 			symbol,
 			timeInForce: "GTC",
-			transactTime: time,
+			transactTime: this.time,
 			type,
 
 			fills: [
@@ -106,27 +109,14 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		const {
-			publicClient: binance,
-			schedulingInterval: interval,
-			time
-		} = this
-		const { klinesCache: cache } = binance
-		// Look for cached data.
-		if (cache) {
-			const kline = await cache.getKline(symbol, interval, time)
-			if (kline)
-				return {
-					symbol,
-					// Price is kline's open.
-					price: kline[1]
-				}
-		}
-		// // If no data was found in cache, fetch it from Binance API.
-		const klines = await binance.klines(symbol, interval, {
-			limit: 1,
-			endTime: time
-		})
+		const klines = await this.publicClient.klines(
+			symbol,
+			this.schedulingInterval,
+			{
+				limit: 1,
+				endTime: this.time
+			}
+		)
 		return {
 			symbol,
 			// Since klines parameters are `limit` and `extends`,
