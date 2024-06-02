@@ -9,7 +9,6 @@
     "cleanup": "tsc --build --clean tsconfig.build.json",
     "e2e:execute": "node $npm_package_config_tsnode ./src/end-to-end-tests/execute.ts",
     "e2e:listAccountKeys": "node $npm_package_config_tsnode ./src/end-to-end-tests/listAccountKeys.ts",
-    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "start": "node dist/start"
   },

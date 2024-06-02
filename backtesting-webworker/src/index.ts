@@ -11,8 +11,8 @@ import {
 } from "@workspace/binance"
 import {
 	BinanceExchangeInfoCacheIDB,
-	BinanceKlinesCacheIDB,
-	BinanceIDB
+	BinanceIDB,
+	BinanceKlinesCacheIDB
 } from "@workspace/binance-indexeddb"
 import {
 	DflowBinanceExecutor,

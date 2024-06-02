@@ -1,7 +1,7 @@
 module.exports = {
 	env: { browser: true, es2020: true, node: false },
 	extends: [
-		"@workspace/eslint-config",
+		"../.eslintrc.cjs",
 		"plugin:react/recommended",
 		"plugin:react/jsx-runtime"
 	],
@@ -57,7 +57,6 @@ module.exports = {
 				}
 			}
 		],
-		"func-style": ["warn", "expression"],
 		"import/extensions": "off",
 		// TODO why import/no-cycle complains?
 		"import/no-cycle": "off",

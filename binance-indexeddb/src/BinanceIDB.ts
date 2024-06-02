@@ -6,16 +6,12 @@ import {
 } from "@workspace/indexeddb"
 
 export class BinanceIDB extends IDBProvider implements IDBInstance {
+	static exchangeInfoKey = "exchangeInfo"
+
 	readonly databaseName: string
 	readonly databaseVersion: number
 
 	private objectStore: CacheObjectStore
-
-	static exchangeInfoKey = "exchangeInfo"
-
-	static klineKey(key: string) {
-		return `kline/${key}`
-	}
 
 	constructor() {
 		super()
@@ -32,6 +28,10 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 		return "binance"
 	}
 
+	static klineKey(key: string) {
+		return `kline/${key}`
+	}
+
 	databaseUpgrade(db: IDBDatabase, version: number) {
 		if (version === 1) {
 			this.objectStore.create(db)
@@ -39,47 +39,44 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 	}
 
 	deleteExchangeInfo(): Promise<void> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.delete(db, BinanceIDB.exchangeInfoKey)
+		if (!this.db) return Promise.reject()
+		return this.objectStore.delete(this.db, BinanceIDB.exchangeInfoKey)
 	}
 
 	deleteKline(): Promise<void> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.delete(db, BinanceIDB.exchangeInfoKey)
+		if (!this.db) return Promise.reject()
+		return this.objectStore.delete(this.db, BinanceIDB.exchangeInfoKey)
 	}
 
 	readExchangeInfo(): Promise<BinanceExchangeInfo | undefined> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.read<BinanceExchangeInfo>(
-			db,
+		if (!this.db) return Promise.reject()
+		return this.objectStore.read<BinanceExchangeInfo>(
+			this.db,
 			BinanceIDB.exchangeInfoKey
 		)
 	}
 
 	readKline(key: string): Promise<BinanceKline | undefined> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.read<BinanceKline>(db, BinanceIDB.klineKey(key))
+		if (!this.db) return Promise.reject()
+		return this.objectStore.read<BinanceKline>(
+			this.db,
+			BinanceIDB.klineKey(key)
+		)
 	}
 
 	writeExchangeInfo(data: BinanceExchangeInfo): Promise<void> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.write<BinanceExchangeInfo>(
-			db,
+		if (!this.db) return Promise.reject()
+		return this.objectStore.write<BinanceExchangeInfo>(
+			this.db,
 			BinanceIDB.exchangeInfoKey,
 			data
 		)
 	}
 
 	writeKline(key: string, data: BinanceKline): Promise<void> {
-		const { db, objectStore: objectStore } = this
-		if (!db) return Promise.reject()
-		return objectStore.write<BinanceKline>(
-			db,
+		if (!this.db) return Promise.reject()
+		return this.objectStore.write<BinanceKline>(
+			this.db,
 			BinanceIDB.klineKey(key),
 			data
 		)

@@ -9,7 +9,6 @@
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",
-    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup",
     "precreate": "npm run zip",
     "predeploy": "npm run zip",

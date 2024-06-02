@@ -31,10 +31,10 @@
     "e2e:execute": "npm run e2e:execute -w executor",
     "e2e:listAccountKeys": "npm run e2e:listAccountKeys -w executor",
     "e2e:newOrder": "npm run e2e:newOrder -w binance-client",
+    "eslint": "eslint --ext .ts --ext .tsx .",
     "generate_docs": "npm run generate_docs -w repository",
     "git_pull": "git pull origin main --quiet --rebase",
     "install_dependencies": "npm ci",
-    "lint": "npm run lint --workspaces --if-present",
     "lint-staged": "lint-staged --allow-empty",
     "markdownlint": "markdownlint-cli2 */README.md */docs/*.md",
     "prebuild:admin-api": "npm run build_workspace_dependencies -w repository admin-api",
@@ -100,6 +100,14 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/parser": "7.10.0",
+    "eslint": "8.56.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-smells": "1.0.1",
+    "eslint-plugin-tsdoc": "0.2.17",
+    "eslint-plugin-workspaces": "0.10.0",
     "markdownlint-cli2": "0.12.1",
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
@@ -112,9 +120,10 @@
   "pre-commit": [
     "prettier--check",
     "markdownlint",
-    "ts-prune",
     "check_types",
-    "test"
+    "test",
+    "eslint",
+    "ts-prune"
   ],
   "prettier": {
     "semi": false,
@@ -159,7 +168,6 @@
     "dflow",
     "email-messages",
     "env",
-    "eslint-config",
     "executor",
     "http",
     "indexeddb",

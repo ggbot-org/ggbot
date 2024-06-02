@@ -15,7 +15,6 @@
     "cleanup": "tsc --build --clean tsconfig.build.json",
     "e2e:apiRestrictions": "node $npm_package_config_tsnode ./src/end-to-end-tests/apiRestrictions.ts",
     "e2e:newOrder": "node $npm_package_config_tsnode ./src/end-to-end-tests/newOrder.ts",
-    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup"
   },
   "dependencies": {

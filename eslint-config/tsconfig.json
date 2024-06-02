@@ -1,4 +1,0 @@
-{
-	"extends": "@workspace/tsconfig/default",
-	"include": ["./.eslintrc.cjs", "./base.cjs"]
-}

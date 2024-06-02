@@ -60,25 +60,19 @@ Create a gitignore file with at least the following content
 	},
 	"scripts": {
 		"build": "tsc --build tsconfig.build.json",
+		"cleanup": "tsc --build --clean tsconfig.build.json",
 		"check_types": "tsc --noEmit --project .",
-		"cleanup": "rm -rf dist/ temp/",
-		"lint": "eslint --fix --ext .ts src/",
-		"pretest": "tsc --build tsconfig.test.json",
-		"test": "node --test"
+		"prebuild": "npm run cleanup",
+		"test": "node --test $npm_package_config_tsnode **/*_test.ts"
 	},
 	"dependencies": {
 		"@workspace/another-package": "0.0.0"
 	},
 	"devDependencies": {
-		"@workspace/eslint-config": "0.0.0",
 		"@workspace/tsconfig": "0.0.0"
 	},
-	"eslintConfig": {
-		"extends": [
-			// Extend proper eslint preset,
-			// may be "@workspace/eslint-config/react" for frontend packages.
-			"@workspace/eslint-config"
-		]
+	"config": {
+		"tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
 	}
 }
 ```

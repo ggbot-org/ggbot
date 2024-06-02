@@ -13,7 +13,6 @@
     "build": "tsc --build",
     "check_types": "tsc --noEmit --project .",
     "cleanup": "tsc --build --clean",
-    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup"
   },
   "dependencies": {

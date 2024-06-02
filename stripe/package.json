@@ -14,7 +14,6 @@
     "check_types": "tsc --noEmit --project .",
     "cleanup": "tsc --build --clean",
     "create_webhook": "node $npm_package_config_tsnode src/scripts/create_webhook.ts",
-    "lint": "eslint --fix --ext .ts src/",
     "prebuild": "npm run cleanup"
   },
   "dependencies": {
