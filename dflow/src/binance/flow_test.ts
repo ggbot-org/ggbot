@@ -231,6 +231,180 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 				},
 				output: [{ symbol: "ETHBTC", interval: "1h" }]
 			}
+
+			// TODO
+			// It handles nodes `symbolParameter` and `intervalParameter`.
+			// {
+			// 	input: {
+			// 		nodes: [
+			// 			{
+			// 				id: "tdfzs",
+			// 				text: "BTC/USDT",
+			// 				outs: [
+			// 					{
+			// 						id: "o0"
+			// 					}
+			// 				],
+			// 				x: 76,
+			// 				y: 20
+			// 			},
+			// 			{
+			// 				id: "qjjzi",
+			// 				text: "symbolParameter",
+			// 				ins: [
+			// 					{
+			// 						id: "i0"
+			// 					},
+			// 					{
+			// 						id: "i1"
+			// 					}
+			// 				],
+			// 				outs: [
+			// 					{
+			// 						id: "o0"
+			// 					}
+			// 				],
+			// 				x: 200,
+			// 				y: 131
+			// 			},
+			// 			{
+			// 				id: "ipbud",
+			// 				text: '"symbol"',
+			// 				outs: [
+			// 					{
+			// 						id: "o"
+			// 					}
+			// 				],
+			// 				x: 224,
+			// 				y: 45
+			// 			},
+			// 			{
+			// 				id: "yechx",
+			// 				text: "candles",
+			// 				ins: [
+			// 					{
+			// 						id: "i0"
+			// 					},
+			// 					{
+			// 						id: "i1"
+			// 					},
+			// 					{
+			// 						id: "i2"
+			// 					}
+			// 				],
+			// 				outs: [
+			// 					{
+			// 						id: "o0"
+			// 					},
+			// 					{
+			// 						id: "o1"
+			// 					},
+			// 					{
+			// 						id: "o2"
+			// 					},
+			// 					{
+			// 						id: "o3"
+			// 					},
+			// 					{
+			// 						id: "o4"
+			// 					}
+			// 				],
+			// 				x: 333,
+			// 				y: 253
+			// 			},
+			// 			{
+			// 				id: "bggtp",
+			// 				text: "1h",
+			// 				outs: [
+			// 					{
+			// 						id: "o0"
+			// 					}
+			// 				],
+			// 				x: 579,
+			// 				y: 13
+			// 			},
+			// 			{
+			// 				id: "gsgay",
+			// 				text: "25",
+			// 				outs: [
+			// 					{
+			// 						id: "o"
+			// 					}
+			// 				],
+			// 				x: 518,
+			// 				y: 182
+			// 			},
+			// 			{
+			// 				id: "sbrls",
+			// 				text: "intervalParameter",
+			// 				ins: [
+			// 					{
+			// 						id: "i0"
+			// 					},
+			// 					{
+			// 						id: "i1"
+			// 					}
+			// 				],
+			// 				outs: [
+			// 					{
+			// 						id: "o0"
+			// 					}
+			// 				],
+			// 				x: 450,
+			// 				y: 111
+			// 			},
+			// 			{
+			// 				id: "afxnr",
+			// 				text: '"interval"',
+			// 				outs: [
+			// 					{
+			// 						id: "o"
+			// 					}
+			// 				],
+			// 				x: 407,
+			// 				y: 28
+			// 			}
+			// 		],
+			// 		edges: [
+			// 			{
+			// 				id: "ptgcj",
+			// 				from: ["ipbud", "o"],
+			// 				to: ["qjjzi", "i0"]
+			// 			},
+			// 			{
+			// 				id: "kvowc",
+			// 				from: ["tdfzs", "o0"],
+			// 				to: ["qjjzi", "i1"]
+			// 			},
+			// 			{
+			// 				id: "kpmdj",
+			// 				from: ["qjjzi", "o0"],
+			// 				to: ["yechx", "i0"]
+			// 			},
+			// 			{
+			// 				id: "jhzjd",
+			// 				from: ["bggtp", "o0"],
+			// 				to: ["sbrls", "i1"]
+			// 			},
+			// 			{
+			// 				id: "jshro",
+			// 				from: ["sbrls", "o0"],
+			// 				to: ["yechx", "i1"]
+			// 			},
+			// 			{
+			// 				id: "lfond",
+			// 				from: ["gsgay", "o"],
+			// 				to: ["yechx", "i2"]
+			// 			},
+			// 			{
+			// 				id: "hpzag",
+			// 				from: ["afxnr", "o"],
+			// 				to: ["sbrls", "i0"]
+			// 			}
+			// 		]
+			// 	},
+			// 	output: [{ symbol: "BTCUSDT", interval: "1h" }]
+			// }
 		]
 	)
 })

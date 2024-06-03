@@ -55,6 +55,7 @@ export const extractBinanceParameters = (
 // TODO this is implemented with static analysis
 // it would need to run the flow with a custom candles node that
 // extracts the symbol and interval
+// Uncomment test in flow_test.ts
 export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: FlowViewSerializableGraph
