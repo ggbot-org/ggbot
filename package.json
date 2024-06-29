@@ -191,5 +191,8 @@
     "user-api",
     "webapp",
     "webstorage"
-  ]
+  ],
+  "volta": {
+    "node": "20.14.0"
+  }
 }

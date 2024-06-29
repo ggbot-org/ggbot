@@ -48,9 +48,6 @@ Check which Node.js version was installed, it should be `v18.x`
 node --version
 ```
 
-<-- TODO is this still valid? check latest node version
-it should also contain a test to check nvmrc
--->
 Update [Node.js section](./tech-stack.md#nodejs) with latest version.
 
 ## Create AMI

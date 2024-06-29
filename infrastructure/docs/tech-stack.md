@@ -13,7 +13,7 @@
 -   [Google Search Console](#google-search-console)
 -   [Node.js](#nodejs)
 -   [npm workspaces](#npm-workspaces)
--   [NVM](#nvm)
+-   [Volta](#volta)
 -   [React](#react)
 -   [Stripe](#stripe)
 -   npm packages
@@ -97,7 +97,7 @@ Created the following properties:
 
 https://nodejs.org/it/
 
-To install Node.js locally, use [NVM](#nvm).
+To install Node.js locally, use [Volta](#volta).
 
 Package manager used is _npm_.
 
@@ -115,21 +115,19 @@ https://docs.npmjs.com/cli/using-npm/workspaces
 
 See also [npm workspaces internal documentation](../../repository/docs/npm-workspaces.md).
 
-## NVM
+## Volta
 
-> Node Version Manager - POSIX-compliant bash script to manage multiple active node.js versions
+> Volta - The Hassle-Free JavaScript Tool Manager
 
-https://github.com/nvm-sh/nvm
+https://volta.sh/
 
-NVM configuration file is _.nvmrc_ and it is located in repository root folder.
+Volta will automatically use the NodeJS version, once you enter in the repository root folder.
 
-To install [Node.js](#nodejs) locally, go to repository root folder and launch:
+To update the wanted Node version, for instance to `v18.1.0`, go to the repository root folder and launch
 
 ```sh
-nvm use
+volta pin node@18.1.0
 ```
-
-See also how to [call `nvm use` automatically in a directory with a _.nvmrc_ file](https://github.com/nvm-sh/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file).
 
 ## React
 
