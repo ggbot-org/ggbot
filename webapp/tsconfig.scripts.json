@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"composite": true,
+		"noEmit": false,
 		"outDir": "./temp",
 		"paths": {
 			"_/*": ["./src/*"],

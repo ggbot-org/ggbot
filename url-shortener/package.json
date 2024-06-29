@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit",
     "generate_shortened_urls": "node --loader ts-node/esm src/scripts/generate_shortened_urls.ts"
   },
   "dependencies": {

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run tsc:build",
-    "check_types": "tsc --noEmit --project .",
+    "build": "tsc --build tsconfig.build.json",
+    "check_types": "tsc --noEmit",
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",
@@ -17,7 +17,6 @@
     "set_log_retention": "sh src/scripts/set_log_retention.sh",
     "set_memory_size": "sh src/scripts/set_memory_size.sh",
     "set_timeout": "sh src/scripts/set_timeout.sh",
-    "tsc:build": "tsc --build tsconfig.build.json",
     "zip": "sh src/scripts/zip.sh"
   },
   "dependencies": {

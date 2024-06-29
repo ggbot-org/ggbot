@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "./dist",
-		"rootDir": "./src"
+		"lib": ["webworker"]
 	},
-	"extends": ["@workspace/tsconfig/build", "@workspace/tsconfig/webworker"],
-	"include": ["./src/**/*.ts"]
+	"extends": "@workspace/tsconfig/build"
 }

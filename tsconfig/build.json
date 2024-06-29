@@ -1,6 +1,10 @@
 {
 	"compilerOptions": {
 		"declaration": true,
-		"declarationMap": true
-	}
+		"declarationMap": true,
+		"noEmit": false,
+		"outDir": "${configDir}/dist"
+	},
+	"extends": "./default.json",
+	"exclude": ["${configDir}/src/**/*_test.ts"]
 }

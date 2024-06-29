@@ -1,9 +1,4 @@
 {
-	"compilerOptions": {
-		"declaration": true,
-		"declarationMap": true,
-		"outDir": "./dist"
-	},
-	"extends": "./tsconfig.json",
+	"extends": "@workspace/tsconfig/build",
 	"exclude": ["./src/end-to-end-tests/"]
 }

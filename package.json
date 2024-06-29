@@ -45,7 +45,6 @@
     "prebuild:stripe-api": "npm run build_workspace_dependencies -w repository stripe-api",
     "prebuild:user-api": "npm run build_workspace_dependencies -w repository user-api",
     "prebuild:webapp": "npm run build_workspace_dependencies -w repository webapp",
-    "precleanup": "npm run remove_node_modules",
     "predeploy:api:admin": "npm run build:admin-api",
     "predeploy:api:authentication": "npm run build:authentication-api",
     "predeploy:api:public": "npm run build:public-api",
@@ -100,8 +99,8 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "7.10.0",
-    "@typescript-eslint/parser": "7.10.0",
+    "@typescript-eslint/eslint-plugin": "7.14.1",
+    "@typescript-eslint/parser": "7.14.1",
     "eslint": "8.56.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-simple-import-sort": "10.0.0",

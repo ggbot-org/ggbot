@@ -43,6 +43,8 @@ Create a gitignore file with at least the following content
 
 ### package.json
 
+This is a sample _package.json_ for a generic workspace.
+
 ```jsonc
 {
 	// Package name, for instance `foo-bar`, prefixed by `@workspace` project namespace.
@@ -58,11 +60,17 @@ Create a gitignore file with at least the following content
 			"import": "./dist/index.js"
 		}
 	},
+	// If workspace has no tests, its `scripts` can be the following
+	//
+	// "scripts": {
+	// 	"build": "tsc --build",
+	// 	"cleanup": "tsc --build --clean",
+	// 	"check_types": "tsc --noEmit"
+	// },
 	"scripts": {
 		"build": "tsc --build tsconfig.build.json",
 		"cleanup": "tsc --build --clean tsconfig.build.json",
-		"check_types": "tsc --noEmit --project .",
-		"prebuild": "npm run cleanup",
+		"check_types": "tsc --noEmit",
 		"test": "node --test $npm_package_config_tsnode **/*_test.ts"
 	},
 	"dependencies": {
@@ -73,20 +81,6 @@ Create a gitignore file with at least the following content
 	},
 	"config": {
 		"tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
-	}
-}
-```
-
-If package has no test, its `scripts` can be the following
-
-```jsonc
-{
-	"scripts": {
-		"build": "tsc --build tsconfig.build.json",
-		"cleanup": "rm -rf dist/",
-		"lint": "eslint --fix --ext .ts .",
-		"test": "npm run tsc--noEmit",
-		"tsc--noEmit": "tsc --noEmit --project ."
 	}
 }
 ```

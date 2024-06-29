@@ -11,9 +11,8 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "check_types": "tsc --noEmit --project .",
-    "cleanup": "tsc --build --clean",
-    "prebuild": "npm run cleanup"
+    "check_types": "tsc --noEmit",
+    "cleanup": "tsc --build --clean"
   },
   "dependencies": {
     "@workspace/models": "0.0.0"

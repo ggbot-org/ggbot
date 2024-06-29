@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"jsx": "react-jsx",
+		"lib": ["dom", "dom.iterable", "es2022"],
 		"paths": {
 			"_/binance/*": ["./src/binance/*"],
 			"_/classNames": ["./src/styles/classNames.ts"],
@@ -18,9 +19,8 @@
 			"_/storages/*": ["./src/storages/*"],
 			"_/workers": ["./src/workers.ts"]
 		},
-		"skipLibCheck": true,
 		"target": "esnext"
 	},
-	"extends": ["@workspace/tsconfig/dom"],
+	"extends": ["@workspace/tsconfig/build"],
 	"include": ["src/**/*.ts", "src/**/*.tsx"]
 }

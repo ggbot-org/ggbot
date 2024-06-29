@@ -1,7 +1,3 @@
 {
-	"compilerOptions": {
-		"rootDir": "./src"
-	},
-	"extends": "@workspace/tsconfig/default",
-	"include": ["./src/**/*.ts"]
+	"extends": "@workspace/tsconfig/default"
 }

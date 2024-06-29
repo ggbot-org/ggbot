@@ -2,8 +2,11 @@
 	"compilerOptions": {
 		"module": "esnext",
 		"moduleResolution": "node",
+		"noEmit": true,
+		"rootDir": "${configDir}/src",
 		"skipLibCheck": true,
 		"target": "es2022"
 	},
-	"extends": "./code-quality.json"
+	"extends": "./code-quality.json",
+	"include": ["${configDir}/src/**/*.ts"]
 }

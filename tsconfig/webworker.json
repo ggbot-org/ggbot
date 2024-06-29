@@ -1,6 +1,0 @@
-{
-	"compilerOptions": {
-		"lib": ["webworker"]
-	},
-	"extends": "./default.json"
-}

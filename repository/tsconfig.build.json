@@ -1,9 +1,3 @@
 {
-	"compilerOptions": {
-		"declaration": true,
-		"declarationMap": true,
-		"outDir": "./dist"
-	},
-	"extends": "./tsconfig.json",
-	"exclude": ["**/*_test.ts"]
+	"extends": "@workspace/tsconfig/build"
 }

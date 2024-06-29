@@ -11,10 +11,9 @@
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean",
-    "create_webhook": "node $npm_package_config_tsnode src/scripts/create_webhook.ts",
-    "prebuild": "npm run cleanup"
+    "create_webhook": "node $npm_package_config_tsnode src/scripts/create_webhook.ts"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",

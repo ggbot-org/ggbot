@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean tsconfig.build.json",
     "e2e:execute": "node $npm_package_config_tsnode ./src/end-to-end-tests/execute.ts",
     "e2e:listAccountKeys": "node $npm_package_config_tsnode ./src/end-to-end-tests/listAccountKeys.ts",

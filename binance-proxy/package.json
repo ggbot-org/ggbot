@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --build",
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean",
     "prebuild": "npm run cleanup",
     "start": "node dist/server"

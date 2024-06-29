@@ -12,8 +12,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "tsc --build --clean tsconfig.build.json",
-    "check_types": "tsc --noEmit --project .",
-    "prebuild": "npm run cleanup",
+    "check_types": "tsc --noEmit",
     "test": "node --test $npm_package_config_tsnode **/*_test.ts"
   },
   "devDependencies": {

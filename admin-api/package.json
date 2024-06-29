@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "npm run tsc:build",
-    "check_types": "tsc --noEmit --project .",
+    "check_types": "tsc --noEmit",
     "cleanup": "rm -rf dist/ temp/",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",

@@ -5,7 +5,6 @@
   "exports": {
     "./build": "./build.json",
     "./default": "./default.json",
-    "./dom": "./dom.json",
     "./code-quality": "./code-quality.json",
     "./lambda": "./lambda.json",
     "./webworker": "./webworker.json"
@@ -13,6 +12,6 @@
   "dependencies": {
     "@types/node": "20.12.12",
     "ts-node": "10.9.2",
-    "typescript": "5.2.2"
+    "typescript": "5.5.2"
   }
 }
