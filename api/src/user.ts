@@ -7,9 +7,9 @@ import {
 	CreationTime,
 	DeletionTime,
 	isBinanceApiConfig,
-	isFlowViewSerializableGraph,
 	isName,
 	isStrategy,
+	isStrategyFlowView,
 	isStrategyKey,
 	isStrategySchedulings,
 	NewItem,
@@ -210,6 +210,6 @@ export const isUserClientActionInput = {
 		UserClientActionInput["WriteStrategyFlow"]
 	>(
 		({ view, ...strategyKey }) =>
-			isFlowViewSerializableGraph(view) && isStrategyKey(strategyKey)
+			isStrategyFlowView(view) && isStrategyKey(strategyKey)
 	)
 }

@@ -8,5 +8,5 @@
 		"target": "es2022"
 	},
 	"extends": "./code-quality.json",
-	"include": ["${configDir}/src/**/*.ts"]
+	"include": ["${configDir}/src"]
 }

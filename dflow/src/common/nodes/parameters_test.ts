@@ -10,7 +10,7 @@ describe("booleanParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",
@@ -49,7 +49,7 @@ describe("booleanParameter", () => {
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",
@@ -87,7 +87,7 @@ describe("numberParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",
@@ -126,7 +126,7 @@ describe("numberParameter", () => {
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",
@@ -164,7 +164,7 @@ describe("stringParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",
@@ -203,7 +203,7 @@ describe("stringParameter", () => {
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "k",

@@ -19,7 +19,6 @@ export type { DflowBinanceSymbolInfo } from "./binance/symbols.js"
 export { dflowBinanceSymbolSeparator } from "./binance/symbols.js"
 export { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols } from "./binance/symbols.js"
 export type { DflowCommonContext } from "./common/context.js"
-export { isDflowExecutorView } from "./common/executor.js"
 export { extractCommonParameters } from "./common/flow.js"
 export { nodeTextToViewType } from "./common/nodeResolution.js"
 export {

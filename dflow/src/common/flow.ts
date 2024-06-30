@@ -1,4 +1,4 @@
-import { FlowViewSerializableGraph } from "flow-view"
+import { StrategyFlow } from "@workspace/models"
 
 import { DflowParameter, extractParameters } from "../parameters.js"
 import {
@@ -7,9 +7,9 @@ import {
 	StringParameter
 } from "./nodes/parameters.js"
 
-export const extractCommonParameters = (flow: FlowViewSerializableGraph) => {
+export const extractCommonParameters = (view: StrategyFlow["view"]) => {
 	const parameters: DflowParameter[] = []
-	const extractedParameters = extractParameters(flow)
+	const extractedParameters = extractParameters(view)
 	for (const { kind, key, defaultValueNodeText } of extractedParameters) {
 		try {
 			const defaultValue: unknown = JSON.parse(defaultValueNodeText)

@@ -1,5 +1,4 @@
-import { SerializablePrimitive } from "@workspace/models"
-import { FlowViewSerializableGraph } from "flow-view"
+import { SerializablePrimitive, StrategyFlowView } from "@workspace/models"
 
 export type DflowParameter = {
 	kind: string
@@ -7,7 +6,7 @@ export type DflowParameter = {
 	defaultValue: SerializablePrimitive
 }
 
-export const extractParameters = (flow: FlowViewSerializableGraph) => {
+export const extractParameters = (flow: StrategyFlowView) => {
 	const parameters: Array<{
 		kind: string
 		key: string

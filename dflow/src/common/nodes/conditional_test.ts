@@ -9,7 +9,7 @@ import { DflowExecutorMock } from "../mocks/executor.js"
 test("implements `if` condition", async () => {
 	const nodeId = "if"
 	const executor = new DflowExecutorMock({
-		view: {
+		graph: {
 			nodes: [
 				{
 					id: "i1",

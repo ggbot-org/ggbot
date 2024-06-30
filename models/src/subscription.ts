@@ -42,7 +42,6 @@ export const statusOfSubscription = ({
 	getDay(end).plus(numDaysSubscriptionExpirationTolerance).days >= today()
 		? "active"
 		: "expired"
-// end >= today()? "active" : "expired"
 
 /**
  * Only accounts with "pro" subscription plan can schedule with these frequency

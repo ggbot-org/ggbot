@@ -10,7 +10,7 @@ describe("shift", () => {
 	test("implements Array.prototype.shift()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "array",
@@ -45,7 +45,7 @@ describe("pop", () => {
 	test("implements Array.prototype.pop()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "array",
@@ -80,7 +80,7 @@ describe("push", () => {
 	test("implements Array.prototype.push()", async () => {
 		const nodeId = "operator"
 		const executor = new DflowExecutorMock({
-			view: {
+			graph: {
 				nodes: [
 					{
 						id: "array",

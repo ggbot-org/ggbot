@@ -4,15 +4,15 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import {
-	isFlowViewSerializableGraph,
+	isStrategyFlowView,
 	StrategyFlow,
 	welcomeFlow
 } from "./strategyFlow.js"
 import { createdNow } from "./time.js"
 
-test("isFlowViewSerializableGraph", () => {
+test("isStrategyFlowView", () => {
 	assertEqual<Partial<MaybeObject<StrategyFlow>>, boolean>(
-		isFlowViewSerializableGraph,
+		isStrategyFlowView,
 		[
 			{
 				input: { whenUpdated: createdNow(), view: welcomeFlow },

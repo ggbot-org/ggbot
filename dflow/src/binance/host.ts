@@ -1,6 +1,6 @@
+import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowConstructorArg } from "dflow"
 
-import { DflowExecutorView } from "../common/executor.js"
 import { DflowLoader, load } from "../common/loader.js"
 import { DflowBinanceContext } from "./context.js"
 import { binanceNodeTextToDflowKind } from "./nodeResolution.js"
@@ -22,11 +22,11 @@ export class DflowBinanceHost extends Dflow implements DflowLoader {
 		this.context.time = context.time
 	}
 
-	load(view: DflowExecutorView): void {
+	load(graph: StrategyFlowGraph): void {
 		load({
 			dflow: this,
 			nodeTextToDflowKind: binanceNodeTextToDflowKind,
-			view
+			graph
 		})
 	}
 }

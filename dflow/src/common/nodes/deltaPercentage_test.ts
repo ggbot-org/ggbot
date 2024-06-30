@@ -11,7 +11,7 @@ test("deltaPercentage", async () => {
 	const a = [30, 10, 100, 100, 0]
 	const b = [20, 20, 98, 102]
 	const executor = new DflowExecutorMock({
-		view: {
+		graph: {
 			nodes: [
 				{
 					id: "i1",

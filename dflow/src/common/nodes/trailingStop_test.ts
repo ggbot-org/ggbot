@@ -2,9 +2,9 @@ import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
 import type {
-	FlowViewSerializableEdge,
-	FlowViewSerializableNode
-} from "flow-view"
+	StrategyFlowGraphEdge,
+	StrategyFlowGraphNode
+} from "@workspace/models"
 import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
@@ -65,9 +65,7 @@ const executeTrailingStop = async (
 	const hasInitialStopPrice = typeof initialStopPrice === "number"
 	const hasResetTrailing = typeof resetTrailing !== "undefined"
 
-	const nodes: Array<
-		Pick<FlowViewSerializableNode, "id" | "text" | "ins" | "outs">
-	> = [
+	const nodes: StrategyFlowGraphNode[] = [
 		{
 			id: "enterTrailing",
 			text: JSON.stringify(enterTrailing),
@@ -115,7 +113,7 @@ const executeTrailingStop = async (
 			outs: [{ id: "o" }]
 		})
 
-	const edges: Array<Pick<FlowViewSerializableEdge, "id" | "from" | "to">> = [
+	const edges: StrategyFlowGraphEdge[] = [
 		{
 			id: "e1",
 			from: ["enterTrailing", "o"],
@@ -147,7 +145,7 @@ const executeTrailingStop = async (
 			to: [nodeId, "i6"]
 		})
 
-	const executor = new DflowExecutorMock({ view: { nodes, edges } })
+	const executor = new DflowExecutorMock({ graph: { nodes, edges } })
 	const {
 		execution,
 		memory: memoryOutput,

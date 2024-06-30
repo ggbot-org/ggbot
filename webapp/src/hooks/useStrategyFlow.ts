@@ -1,9 +1,8 @@
 import { usePublicApi } from "_/hooks/usePublicApi"
-import { StrategyKey } from "@workspace/models"
-import { FlowViewSerializableGraph } from "flow-view"
+import { StrategyFlow, StrategyKey } from "@workspace/models"
 import { useEffect } from "react"
 
-export type UseStrategyFlowOutput = FlowViewSerializableGraph | null | undefined
+export type UseStrategyFlowOutput = StrategyFlow["view"] | null | undefined
 
 export const useStrategyFlow = (
 	strategyKey: StrategyKey | undefined

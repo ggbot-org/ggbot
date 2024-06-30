@@ -1,3 +1,5 @@
+/* eslint-disable smells/no-switch */
+// TODO remove switch in this file, when upgrading flow-view
 import { binance } from "_/binance/exchange"
 import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"

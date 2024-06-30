@@ -31,9 +31,12 @@ graph LR
     workspace/aws-ses --- workspace/aws-types
     workspace/backtesting --- workspace/dflow
     workspace/backtesting-webworker --- workspace/backtesting
-    workspace/backtesting-webworker --- workspace/logging
+    workspace/backtesting-webworker --- workspace/binance-indexeddb
+    workspace/backtesting-webworker --- workspace/webstorage
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
+    workspace/binance-indexeddb --- workspace/binance
+    workspace/binance-indexeddb --- workspace/indexeddb
     workspace/binance-proxy --- workspace/aws-ec2
     workspace/binance-proxy --- workspace/authentication
     workspace/binance-proxy --- workspace/binance-client
@@ -57,6 +60,8 @@ graph LR
     workspace/executor --- workspace/email-messages
     workspace/executor --- workspace/logging
     workspace/executor --- workspace/s3-data-bucket
+    workspace/indexeddb --- workspace/logging
+    workspace/indexeddb --- workspace/models
     workspace/infrastructure --- workspace/aws-acm
     workspace/infrastructure --- workspace/aws-api-gateway
     workspace/infrastructure --- workspace/aws-ec2
@@ -67,7 +72,6 @@ graph LR
     workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/s3-data-bucket
     workspace/locators --- workspace/models
-    workspace/logging --- workspace/env
     workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/database
     workspace/public-api --- workspace/logging
@@ -76,6 +80,7 @@ graph LR
     workspace/s3-data-bucket --- workspace/aws-s3
     workspace/s3-data-bucket --- workspace/env
     workspace/stripe --- workspace/api
+    workspace/stripe --- workspace/env
     workspace/stripe --- workspace/locators
     workspace/stripe --- workspace/logging
     workspace/stripe-api --- workspace/api-gateway
@@ -91,7 +96,8 @@ graph LR
     workspace/user-api --- workspace/logging
     workspace/user-api --- workspace/s3-data-bucket
     workspace/webapp --- workspace/api
-    workspace/webapp --- workspace/backtesting
+    workspace/webapp --- workspace/backtesting-webworker
     workspace/webapp --- workspace/locators
-    workspace/webapp --- workspace/logging
+    workspace/webstorage --- workspace/cache
+    workspace/webstorage --- workspace/models
 ```

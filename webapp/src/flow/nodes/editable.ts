@@ -97,13 +97,9 @@ export class FlowViewNodeEditable extends FlowViewNode {
 	onKeydown(event: KeyboardEvent) {
 		event.stopPropagation()
 
-		switch (event.code) {
-			case "Enter":
-				// @ts-expect-error
-				this.contentDiv.blur()
-				break
-			default:
-				break
+		if (event.code === "Enter") {
+			// @ts-expect-error
+			this.contentDiv.blur()
 		}
 	}
 }

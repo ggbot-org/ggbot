@@ -1,48 +1,52 @@
+import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowData, DflowErrorItemNotFound } from "dflow"
 
-import { DflowExecutorView } from "./executor.js"
 import { NodeTextToDflowKind } from "./nodeResolution.js"
 import { isInfoNode } from "./nodeTextParser.js"
 
 /**
- * A Dflow instance that can load a FlowView graph.
+ * A Dflow instance that can load a StrategyFlowGraph.
  *
  * @example
  *
  * ```ts
+ * import { StrategyFlowGraph } from "@workspace/models"
  * import { DflowLoader, load } from "../path/to/loader.js"
+ *
  * class MyDflowHost extends Dflow implements DflowLoader {
- * 	load(view: DflowExecutorView): void {
+ * 	load(graph: StrategyFlowGraph): void {
  * 		load({
  * 			dflow: this,
  * 			nodeTextToDflowKind,
- * 			view
+ * 			graph
  * 		})
  * 	}
  * }
  * ```
  */
 export interface DflowLoader extends Dflow {
-	load(view: DflowExecutorView): void
+	load(graph: StrategyFlowGraph): void
 }
 
 /**
- * Parse view and load it as a Dflow graph. Unknown nodes and broken connections
- * are ignored.
+ * Parse and load a Dflow graph.
+ *
+ * @remarks
+ * Unknown nodes and broken connections are ignored.
  */
 export const load = ({
 	dflow,
 	nodeTextToDflowKind,
-	view
+	graph
 }: {
 	dflow: DflowLoader
 	nodeTextToDflowKind: NodeTextToDflowKind
-	view: DflowExecutorView
+	graph: StrategyFlowGraph
 }) => {
 	const nodeKinds = Object.keys(dflow.nodesCatalog)
 
 	// Create nodes.
-	for (const { id, ins, outs, text } of view.nodes) {
+	for (const { id, ins, outs, text } of graph.nodes) {
 		if (isInfoNode(text)) continue
 
 		const type = nodeTextToDflowKind(text)
@@ -67,10 +71,10 @@ export const load = ({
 		} else if (nodeKinds.includes(text)) {
 			// By default create a Dflow node with `kind` given by `text`.
 			const NodeClass = dflow.nodesCatalog[text]
-			// Start from inputs and outputs definitions and add them correponding `id` found in view.
+			// Start from inputs and outputs definitions and add them correponding `id` found in graph.
 			// Notice that input or output `id` could be missing,
 			// for example if a new input or output was added to
-			// the node and the view was created before the node
+			// the node and the graph was created before the node
 			// got that input or output.
 			const inputs = NodeClass.inputs?.map((_, index) => ({
 				id: ins?.[index]?.id
@@ -88,7 +92,7 @@ export const load = ({
 	}
 
 	// Connect nodes with edges.
-	for (const { id, from: source, to: target } of view.edges) {
+	for (const { id, from: source, to: target } of graph.edges) {
 		try {
 			dflow.newEdge({ id, source, target })
 		} catch (error) {

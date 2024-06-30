@@ -62,9 +62,16 @@ export {
 	nullStrategyKey
 } from "./strategy.js"
 export type { StrategyError } from "./strategyError.js"
-export type { StrategyFlow } from "./strategyFlow.js"
+export type {
+	StrategyFlow,
+	StrategyFlowGraph,
+	StrategyFlowGraphEdge,
+	StrategyFlowGraphNode,
+	StrategyFlowView
+} from "./strategyFlow.js"
 export {
-	isFlowViewSerializableGraph,
+	isStrategyFlowGraph,
+	isStrategyFlowView,
 	newStrategyFlow,
 	welcomeFlow
 } from "./strategyFlow.js"

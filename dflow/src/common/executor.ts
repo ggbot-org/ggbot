@@ -1,6 +1,5 @@
+import { StrategyFlowGraph } from "@workspace/models"
 import { DflowExecutionReport, DflowNodesCatalog } from "dflow"
-import { FlowViewSerializableEdge, FlowViewSerializableNode } from "flow-view"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { DflowCommonContext } from "./context.js"
 
@@ -16,23 +15,12 @@ export type DflowCommonExecutorOutput = Pick<
 	execution: null | DflowExecutionReport
 }
 
-/** A subset of `FlowViewSerializableGraph`. */
-export type DflowExecutorView = {
-	edges: Array<Pick<FlowViewSerializableEdge, "id" | "from" | "to">>
-	nodes: Array<Pick<FlowViewSerializableNode, "id" | "ins" | "outs" | "text">>
-}
-
-// TODO Improve this
-export const isDflowExecutorView = objectTypeGuard<DflowExecutorView>(
-	({ edges, nodes }) => Array.isArray(edges) && Array.isArray(nodes)
-)
-
 export type DflowExecutor<
 	RunContext extends DflowCommonExecutorContext = DflowCommonExecutorContext,
 	RunOutput extends DflowCommonExecutorOutput = DflowCommonExecutorOutput
 > = {
 	readonly nodesCatalog: DflowNodesCatalog
-	run(context: RunContext, view: DflowExecutorView): Promise<RunOutput>
+	run(context: RunContext, graph: StrategyFlowGraph): Promise<RunOutput>
 }
 
 export const getDflowExecutionOutputData = (

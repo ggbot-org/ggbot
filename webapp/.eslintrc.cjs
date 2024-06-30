@@ -5,6 +5,7 @@ module.exports = {
 		"plugin:react/recommended",
 		"plugin:react/jsx-runtime"
 	],
+	ignorePatterns: ["dist"],
 	parser: "@typescript-eslint/parser",
 	parserOptions: {
 		ecmaFeatures: {
@@ -71,8 +72,6 @@ module.exports = {
 		"jsx-a11y/aria-unsupported-elements": "error",
 		"jsx-a11y/role-has-required-aria-props": "error",
 		"no-case-declarations": "error",
-		// TODO remove this no-console
-		// "no-console": ["error", { allow: ["error"] }],
 		"react-hooks/exhaustive-deps": "error",
 		"react-hooks/rules-of-hooks": "error",
 		"react/display-name": "error",
@@ -100,9 +99,7 @@ module.exports = {
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
 		"react/self-closing-comp": ["error", { component: true, html: true }],
-		"react-compiler/react-compiler": "warn",
-		// TODO remove all switches then remove this override
-		"smells/no-switch": "warn"
+		"react-compiler/react-compiler": "warn"
 	},
 	settings: {
 		react: {

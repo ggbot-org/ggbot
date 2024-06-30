@@ -5,6 +5,7 @@ module.exports = {
 		"plugin:@typescript-eslint/strict",
 		"plugin:workspaces/recommended"
 	],
+	ignorePatterns: ["dist"],
 	parser: "@typescript-eslint/parser",
 	plugins: [
 		"@typescript-eslint",

@@ -1,11 +1,11 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { StrategyFlowGraph } from "@workspace/models"
 import { DflowNodesCatalog } from "dflow"
 import { now } from "minimal-time-helpers"
 
 import { ErrorUknownDflowNodes } from "../errors.js"
-import { DflowExecutorView } from "./executor.js"
 import { DflowCommonHostMock } from "./mocks/host.js"
 import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 import { dflowValidate } from "./validate.js"
@@ -13,7 +13,7 @@ import { dflowValidate } from "./validate.js"
 describe("dflowValidate", () => {
 	test("throws ErrorUknownDflowNodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
-		const view: DflowExecutorView = {
+		const graph: StrategyFlowGraph = {
 			nodes: [{ id: "n1", text: "unknownNode" }],
 			edges: []
 		}
@@ -22,7 +22,7 @@ describe("dflowValidate", () => {
 				dflowValidate({
 					nodesCatalog,
 					nodeTextToDflowKind: commonNodeTextToDflowKind,
-					view
+					graph
 				})
 			},
 			{
@@ -34,7 +34,7 @@ describe("dflowValidate", () => {
 
 	test("ignores info nodes", () => {
 		const nodesCatalog: DflowNodesCatalog = {}
-		const view: DflowExecutorView = {
+		const graph: StrategyFlowGraph = {
 			nodes: [{ id: "n1", text: "this is a comment" }],
 			edges: []
 		}
@@ -42,7 +42,7 @@ describe("dflowValidate", () => {
 			dflowValidate({
 				nodesCatalog,
 				nodeTextToDflowKind: commonNodeTextToDflowKind,
-				view
+				graph
 			})
 		}, Error)
 	})
@@ -52,7 +52,7 @@ describe("dflowValidate", () => {
 			{ nodesCatalog: {} },
 			{ params: {}, memory: {}, time: now() }
 		)
-		const view: DflowExecutorView = {
+		const graph: StrategyFlowGraph = {
 			nodes: [
 				{
 					id: "n1",
@@ -66,7 +66,7 @@ describe("dflowValidate", () => {
 			dflowValidate({
 				nodesCatalog: dflow.nodesCatalog,
 				nodeTextToDflowKind: commonNodeTextToDflowKind,
-				view
+				graph
 			})
 		}, Error)
 	})

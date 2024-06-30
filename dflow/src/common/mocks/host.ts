@@ -1,6 +1,7 @@
+import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowConstructorArg } from "dflow"
 
-import { DflowCommonExecutorContext, DflowExecutorView } from "../executor.js"
+import { DflowCommonExecutorContext } from "../executor.js"
 import { DflowLoader, load } from "../loader.js"
 import { commonNodeTextToDflowKind } from "../nodeResolution.js"
 
@@ -12,11 +13,11 @@ export class DflowCommonHostMock extends Dflow implements DflowLoader {
 		this.context.memoryChanged = false
 		this.context.time = context.time
 	}
-	load(view: DflowExecutorView): void {
+	load(graph: StrategyFlowGraph): void {
 		load({
 			dflow: this,
 			nodeTextToDflowKind: commonNodeTextToDflowKind,
-			view
+			graph
 		})
 	}
 }

@@ -15,7 +15,7 @@ describe("deleteMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
-				view: {
+				graph: {
 					nodes: [
 						{
 							id: "key",
@@ -50,7 +50,7 @@ describe("getMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
-				view: {
+				graph: {
 					nodes: [
 						{
 							id: "key",
@@ -87,7 +87,7 @@ describe("getMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
-				view: {
+				graph: {
 					nodes: [
 						{
 							id: "key",
@@ -135,7 +135,7 @@ describe("getMemory", () => {
 		const defaultValue = "my default value"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
-				view: {
+				graph: {
 					nodes: [
 						{
 							id: "key",
@@ -184,7 +184,7 @@ describe("setMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowExecutorMock({
-				view: {
+				graph: {
 					nodes: [
 						{
 							id: "key",

@@ -108,7 +108,7 @@ const executeOperator = async (
 ): Promise<ExecuteOperatorOutput> => {
 	const nodeId = "operator"
 	const executor = new DflowExecutorMock({
-		view: {
+		graph: {
 			nodes: [
 				{
 					id: "i1",

@@ -6,14 +6,14 @@ import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 import {
 	DflowBinanceExecutor,
 	DflowCommonContext,
-	getDflowBinanceNodesCatalog,
-	isDflowExecutorView
+	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import {
 	AccountStrategyKey,
 	BalanceEvent,
 	createdNow,
 	ErrorStrategyItemNotFound,
+	isStrategyFlowGraph,
 	newOrder,
 	StrategyScheduling
 } from "@workspace/models"
@@ -54,8 +54,10 @@ export const executeBinanceStrategy = async (
 	const { symbols } = await binance.exchangeInfo()
 	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
 
+	// TODO should use the StrategyFlowGraph
+	// it may be on another file or in { graph } or parsed from view
 	const { view } = strategyFlow
-	if (!isDflowExecutorView(view))
+	if (!isStrategyFlowGraph(view))
 		return {
 			memoryChanged: false,
 			memory: {}

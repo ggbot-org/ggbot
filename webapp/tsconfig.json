@@ -21,6 +21,5 @@
 		},
 		"target": "esnext"
 	},
-	"extends": ["@workspace/tsconfig/build"],
-	"include": ["src/**/*.ts", "src/**/*.tsx"]
+	"extends": ["@workspace/tsconfig/default"]
 }

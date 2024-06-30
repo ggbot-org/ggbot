@@ -1,11 +1,10 @@
-import { Balance, Order } from "@workspace/models"
+import { Balance, Order, StrategyFlowGraph } from "@workspace/models"
 import { DflowNodesCatalog } from "dflow"
 
 import {
 	DflowCommonExecutorContext,
 	DflowCommonExecutorOutput,
-	DflowExecutor,
-	DflowExecutorView
+	DflowExecutor
 } from "../common/executor.js"
 import { DflowBinanceClient } from "./client.js"
 import { DflowBinanceContext } from "./context.js"
@@ -38,13 +37,13 @@ export class DflowBinanceExecutor
 	}
 
 	/** Execute flow on given context. */
-	async run(context: DflowBinanceExecutorContext, view: DflowExecutorView) {
+	async run(context: DflowBinanceExecutorContext, graph: StrategyFlowGraph) {
 		const { binance } = context
 		const dflow = new DflowBinanceHost(
 			{ nodesCatalog: this.nodesCatalog },
 			context
 		)
-		dflow.load(view)
+		dflow.load(graph)
 		await dflow.run()
 		const execution = dflow.executionReport
 		const { memory, memoryChanged } = dflow.context as Pick<

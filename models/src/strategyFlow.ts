@@ -1,9 +1,66 @@
-import { FlowViewSerializableGraph } from "flow-view"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { updatedNow, UpdateTime } from "./time.js"
 
+type StrategyFlowViewItem = {
+	id: string
+}
+
+type StrategyFlowViewOutput = StrategyFlowViewItem
+type StrategyFlowViewInput = StrategyFlowViewItem
+
+type StrategyFlowViewNode = StrategyFlowViewItem & {
+	text: string
+
+	/** List of input definitions. */
+	ins?: StrategyFlowViewInput[]
+
+	/** List of output definitions. */
+	outs?: StrategyFlowViewOutput[]
+
+	/** Node position x coordinate. */
+	x: number
+
+	/** Node position y coordinate. */
+	y: number
+}
+
+type StrategyFlowViewEdge = StrategyFlowViewItem & {
+	/** Describes the output where edge starts from. */
+	from: [StrategyFlowViewNode["id"], StrategyFlowViewOutput["id"]]
+
+	/** Describes the input where edge ends to. */
+	to: [StrategyFlowViewNode["id"], StrategyFlowViewInput["id"]]
+}
+
+export type StrategyFlowView = {
+	nodes: StrategyFlowViewNode[]
+	edges: StrategyFlowViewEdge[]
+}
+
+export type StrategyFlowGraphEdge = Pick<
+	StrategyFlowViewEdge,
+	"id" | "from" | "to"
+>
+export type StrategyFlowGraphNode = Pick<
+	StrategyFlowViewNode,
+	"id" | "text" | "ins" | "outs"
+>
+
+export type StrategyFlowGraph = {
+	nodes: StrategyFlowGraphNode[]
+	edges: StrategyFlowGraphEdge[]
+}
+
+// TODO Improve this
+export const isStrategyFlowGraph = objectTypeGuard<StrategyFlowGraph>(
+	({ edges, nodes }) => Array.isArray(edges) && Array.isArray(nodes)
+)
+
 export type StrategyFlow = UpdateTime & {
-	view: FlowViewSerializableGraph
+	view: StrategyFlowView
+	// TODO graph: StrategyFlowGraph ?? or put the graph in another file
+	// and/or parse the view to get the graph
 }
 
 export const newStrategyFlow = ({
@@ -13,14 +70,11 @@ export const newStrategyFlow = ({
 	...updatedNow()
 })
 
-// TODO this should be implemented by flow-view
-// it is also a dummy implementation
-export const isFlowViewSerializableGraph = (
-	arg: unknown
-): arg is FlowViewSerializableGraph => Boolean(arg)
+export const isStrategyFlowView = (arg: unknown): arg is StrategyFlowView =>
+	Boolean(arg) // TODO improve this or remove type-guard
 
 // TODO welcomeFlow should contain "docs" node
-export const welcomeFlow: StrategyFlow["view"] = {
+export const welcomeFlow: StrategyFlowView = {
 	nodes: [
 		{
 			id: "aaaaa",
