@@ -60,7 +60,7 @@ const POST = (message: BacktestingMessageOutData) => {
 }
 
 class ErrorMissingFlow extends Error {
-	static message = "Cannot run executor without a strategy flow"
+	static message = "Cannot run backtesting without a strategy flow"
 	constructor() {
 		super(ErrorMissingFlow.message)
 	}

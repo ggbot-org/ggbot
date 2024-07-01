@@ -3,14 +3,16 @@ import { test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 
 test("deltaPercentage", async () => {
 	const nodeId = "nodeId"
 	const a = [30, 10, 100, 100, 0]
 	const b = [20, 20, 98, 102]
-	const executor = new DflowExecutorMock({
+	const executor = new DflowCommonExecutor({
 		graph: {
 			nodes: [
 				{

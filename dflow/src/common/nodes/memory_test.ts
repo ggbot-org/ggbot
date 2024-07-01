@@ -4,8 +4,10 @@ import { describe, test } from "node:test"
 import { SerializablePrimitive } from "@workspace/models"
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 
 const testValues: SerializablePrimitive[] = [42, "a string"]
 
@@ -14,7 +16,7 @@ describe("deleteMemory", () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
-			const executor = new DflowExecutorMock({
+			const executor = new DflowCommonExecutor({
 				graph: {
 					nodes: [
 						{
@@ -49,7 +51,7 @@ describe("getMemory", () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
-			const executor = new DflowExecutorMock({
+			const executor = new DflowCommonExecutor({
 				graph: {
 					nodes: [
 						{
@@ -86,7 +88,7 @@ describe("getMemory", () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
-			const executor = new DflowExecutorMock({
+			const executor = new DflowCommonExecutor({
 				graph: {
 					nodes: [
 						{
@@ -134,7 +136,7 @@ describe("getMemory", () => {
 		const key = "memory key"
 		const defaultValue = "my default value"
 		for (const value of testValues) {
-			const executor = new DflowExecutorMock({
+			const executor = new DflowCommonExecutor({
 				graph: {
 					nodes: [
 						{
@@ -183,7 +185,7 @@ describe("setMemory", () => {
 		const nodeId = "test"
 		const key = "memory key"
 		for (const value of testValues) {
-			const executor = new DflowExecutorMock({
+			const executor = new DflowCommonExecutor({
 				graph: {
 					nodes: [
 						{

@@ -9,8 +9,10 @@ import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
 import { DflowCommonContext } from "../context.js"
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 import {
 	ComputeStopPriceArg,
 	computeStopPriceDown,
@@ -145,7 +147,7 @@ const executeTrailingStop = async (
 			to: [nodeId, "i6"]
 		})
 
-	const executor = new DflowExecutorMock({ graph: { nodes, edges } })
+	const executor = new DflowCommonExecutor({ graph: { nodes, edges } })
 	const {
 		execution,
 		memory: memoryOutput,

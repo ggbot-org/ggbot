@@ -1,11 +1,11 @@
 import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowConstructorArg } from "dflow"
 
-import { DflowCommonExecutorContext } from "../executor.js"
-import { DflowLoader, load } from "../loader.js"
-import { commonNodeTextToDflowKind } from "../nodeResolution.js"
+import { DflowCommonExecutorContext } from "./executor.js"
+import { DflowLoader, load } from "./loader.js"
+import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 
-export class DflowCommonHostMock extends Dflow implements DflowLoader {
+export class DflowCommonHost extends Dflow implements DflowLoader {
 	constructor(arg: DflowConstructorArg, context: DflowCommonExecutorContext) {
 		super(arg)
 		this.context.params = context.params

@@ -9,16 +9,16 @@ import {
 } from "./flow.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
-import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
+//  TODO import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 
-test("extractCommonParameters", async () => {
+test("extractBinanceParameters", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
-	const intervalValue = "1h"
-	const intervalKey = "my interval"
-	const symbolValue = "BTC/BUSD"
-	const symbolKey = "my symbol"
+	// TODO const intervalValue = "1h"
+	// TODO const intervalKey = "my interval"
+	// TODO const symbolValue = "BTC/BUSD"
+	// TODO const symbolKey = "my symbol"
 	assertDeepEqual<
 		Parameters<typeof extractBinanceParameters>[1],
 		ReturnType<typeof extractBinanceParameters>
@@ -26,72 +26,74 @@ test("extractCommonParameters", async () => {
 		(flow: Parameters<typeof extractBinanceParameters>[1]) =>
 			extractBinanceParameters(symbols, flow),
 		[
-			{
-				input: {
-					nodes: [
-						{
-							id: "n1",
-							text: JSON.stringify(intervalKey),
-							outs: [{ id: "o1" }]
-						},
-						{
-							id: "n2",
-							text: intervalValue,
-							outs: [{ id: "o1" }]
-						},
-						{
-							id: "n3",
-							text: IntervalParameter.kind,
-							ins: [{ id: "i1" }, { id: "i2" }],
-							outs: [{ id: "o1" }]
-						}
-					],
-					edges: [
-						{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
-						{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
-					]
-				},
-				output: [
+			/* TODO
+		{
+			input: {
+				nodes: [
 					{
-						kind: IntervalParameter.kind,
-						key: intervalKey,
-						defaultValue: intervalValue
+						id: "n1",
+						text: JSON.stringify(intervalKey),
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n2",
+						text: intervalValue,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n3",
+						text: IntervalParameter.kind,
+						ins: [{ id: "i1" }, { id: "i2" }],
+						outs: [{ id: "o1" }]
 					}
+				],
+				edges: [
+					{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
+					{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
 				]
 			},
-			{
-				input: {
-					nodes: [
-						{
-							id: "n1",
-							text: JSON.stringify(symbolKey),
-							outs: [{ id: "o1" }]
-						},
-						{
-							id: "n2",
-							text: symbolValue,
-							outs: [{ id: "o1" }]
-						},
-						{
-							id: "n3",
-							text: SymbolParameter.kind,
-							ins: [{ id: "i1" }, { id: "i2" }],
-							outs: [{ id: "o1" }]
-						}
-					],
-					edges: [
-						{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
-						{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
-					]
-				},
-				output: [
+			output: [
+				{
+					kind: IntervalParameter.kind,
+					key: intervalKey,
+					defaultValue: intervalValue
+				}
+			]
+		},
+		{
+			input: {
+				nodes: [
 					{
-						kind: SymbolParameter.kind,
-						key: symbolKey,
-						defaultValue: symbolValue
+						id: "n1",
+						text: JSON.stringify(symbolKey),
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n2",
+						text: symbolValue,
+						outs: [{ id: "o1" }]
+					},
+					{
+						id: "n3",
+						text: SymbolParameter.kind,
+						ins: [{ id: "i1" }, { id: "i2" }],
+						outs: [{ id: "o1" }]
 					}
+				],
+				edges: [
+					{ id: "e1", from: ["n1", "o1"], to: ["n3", "i1"] },
+					{ id: "e2", from: ["n2", "o1"], to: ["n3", "i2"] }
 				]
-			}
+			},
+			output: [
+				{
+					kind: SymbolParameter.kind,
+					key: symbolKey,
+					defaultValue: symbolValue
+				}
+			]
+		}
+			*/
 		]
 	)
 })

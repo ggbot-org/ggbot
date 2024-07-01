@@ -6,7 +6,7 @@ import { DflowNodesCatalog } from "dflow"
 import { now } from "minimal-time-helpers"
 
 import { ErrorUknownDflowNodes } from "../errors.js"
-import { DflowCommonHostMock } from "./mocks/host.js"
+import { DflowCommonHost } from "./host.js"
 import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 import { dflowValidate } from "./validate.js"
 
@@ -48,7 +48,7 @@ describe("dflowValidate", () => {
 	})
 
 	test("validates json nodes", () => {
-		const dflow = new DflowCommonHostMock(
+		const dflow = new DflowCommonHost(
 			{ nodesCatalog: {} },
 			{ params: {}, memory: {}, time: now() }
 		)

@@ -4,8 +4,10 @@ import { describe, test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { dayToTime } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 import { coerceToTimeUnit } from "./time.js"
 
 test("coerceToTimeUnit", () => {
@@ -26,7 +28,7 @@ describe("today", () => {
 	test("reads context timestamp", async () => {
 		const day = "1978-12-31"
 		const nodeId = "a"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{

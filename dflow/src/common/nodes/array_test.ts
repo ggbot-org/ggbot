@@ -3,13 +3,15 @@ import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 
 describe("shift", () => {
 	test("implements Array.prototype.shift()", async () => {
 		const nodeId = "operator"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -44,7 +46,7 @@ describe("shift", () => {
 describe("pop", () => {
 	test("implements Array.prototype.pop()", async () => {
 		const nodeId = "operator"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -79,7 +81,7 @@ describe("pop", () => {
 describe("push", () => {
 	test("implements Array.prototype.push()", async () => {
 		const nodeId = "operator"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{

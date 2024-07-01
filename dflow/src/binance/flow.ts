@@ -2,13 +2,13 @@ import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowId } from "dflow"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import { DflowParameter, extractParameters } from "../parameters.js"
+import { DflowParameter } from "../common/parameters.js"
 import {
 	dflowBinanceKlineIntervals,
 	isDflowBinanceKlineInterval
 } from "./klineIntervals.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
-import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
+// TODO import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import {
 	DflowBinanceSymbolAndInterval,
@@ -18,37 +18,38 @@ import {
 } from "./symbols.js"
 
 export const extractBinanceParameters = (
-	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: StrategyFlowGraph
+	_binanceSymbols: DflowBinanceSymbolInfo[],
+	_flow: StrategyFlowGraph
 ) => {
-	const symbols = binanceSymbols.map(({ symbol }) => symbol)
+	// TODO const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const parameters: DflowParameter[] = []
-	const extractedParameters = extractParameters(flow)
-	for (const { kind, key, defaultValueNodeText } of extractedParameters) {
-		if (
-			kind === IntervalParameter.kind &&
-			isDflowBinanceKlineInterval(defaultValueNodeText)
-		)
-			parameters.push({
-				kind,
-				key,
-				defaultValue: defaultValueNodeText
-			})
-
-		if (kind === SymbolParameter.kind) {
-			if (typeof defaultValueNodeText !== "string") continue
-			const maybeSymbol = defaultValueNodeText
-				.split(dflowBinanceSymbolSeparator)
-				.join("")
-
-			if (symbols.includes(maybeSymbol))
-				parameters.push({
-					kind,
-					key,
-					defaultValue: defaultValueNodeText
-				})
-		}
-	}
+	// TODO
+	// const extractedParameters = extractCommonParameters(flow)
+	// for (const { kind, key, defaultValueNodeText } of extractedParameters) {
+	// 	if (
+	// 		kind === IntervalParameter.kind &&
+	// 		isDflowBinanceKlineInterval(defaultValueNodeText)
+	// 	)
+	// 		parameters.push({
+	// 			kind,
+	// 			key,
+	// 			defaultValue: defaultValueNodeText
+	// 		})
+	//
+	// 	if (kind === SymbolParameter.kind) {
+	// 		if (typeof defaultValueNodeText !== "string") continue
+	// 		const maybeSymbol = defaultValueNodeText
+	// 			.split(dflowBinanceSymbolSeparator)
+	// 			.join("")
+	//
+	// 		if (symbols.includes(maybeSymbol))
+	// 			parameters.push({
+	// 				kind,
+	// 				key,
+	// 				defaultValue: defaultValueNodeText
+	// 			})
+	// 	}
+	// }
 	return parameters
 }
 

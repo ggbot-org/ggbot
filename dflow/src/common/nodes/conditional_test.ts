@@ -3,12 +3,14 @@ import { test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 
 test("implements `if` condition", async () => {
 	const nodeId = "if"
-	const executor = new DflowExecutorMock({
+	const executor = new DflowCommonExecutor({
 		graph: {
 			nodes: [
 				{

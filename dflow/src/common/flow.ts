@@ -1,18 +1,45 @@
 import { StrategyFlowGraph } from "@workspace/models"
 
-import { DflowParameter, extractParameters } from "../parameters.js"
 import {
 	BooleanParameter,
 	NumberParameter,
 	StringParameter
 } from "./nodes/parameters.js"
+import { DflowParameter } from "./parameters.js"
 
-export const extractCommonParameters = (graph: StrategyFlowGraph) => {
+export const extractCommonParameters = (flow: StrategyFlowGraph) => {
 	const parameters: DflowParameter[] = []
-	const extractedParameters = extractParameters(graph)
-	for (const { kind, key, defaultValueNodeText } of extractedParameters) {
+
+	for (const node of flow.nodes) {
+		const { text: kind, id: nodeId } = node
+
+		const firstInputId = node.ins?.[0]?.id
+		const secondInputId = node.ins?.[1]?.id
+		if (!firstInputId || !secondInputId) continue
+
+		const firstParentNodeEdge = flow.edges.find(
+			(edge) => edge.to[0] === nodeId && edge.to[1] === firstInputId
+		)
+		const secondParentNodeEdge = flow.edges.find(
+			(edge) => edge.to[0] === nodeId && edge.to[1] === secondInputId
+		)
+		const firstParentNode = flow.nodes.find(
+			({ id }) => id === firstParentNodeEdge?.from[0]
+		)
+		const secondParentNode = flow.nodes.find(
+			({ id }) => id === secondParentNodeEdge?.from[0]
+		)
+
+		const maybeKey = firstParentNode?.text
+		const maybeValue = secondParentNode?.text
+		if (!maybeKey || !maybeValue) continue
+
 		try {
-			const defaultValue: unknown = JSON.parse(defaultValueNodeText)
+			const key: unknown = JSON.parse(maybeKey)
+			if (typeof key !== "string") continue
+
+			const defaultValue: unknown = JSON.parse(maybeValue)
+
 			if (
 				(kind === BooleanParameter.kind &&
 					typeof defaultValue === "boolean") ||
@@ -31,5 +58,6 @@ export const extractCommonParameters = (graph: StrategyFlowGraph) => {
 			throw error
 		}
 	}
+
 	return parameters
 }

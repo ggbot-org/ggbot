@@ -78,7 +78,7 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
 		// trade
 		[BuyMarket.kind]: BuyMarket,
 		[SellMarket.kind]: SellMarket,
-		//
+		// common nodes
 		...commonNodesCatalog
 	}
 

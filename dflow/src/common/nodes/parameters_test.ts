@@ -3,13 +3,15 @@ import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 
 describe("booleanParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -48,7 +50,7 @@ describe("booleanParameter", () => {
 
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -86,7 +88,7 @@ describe("booleanParameter", () => {
 describe("numberParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -125,7 +127,7 @@ describe("numberParameter", () => {
 
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -163,7 +165,7 @@ describe("numberParameter", () => {
 describe("stringParameter", () => {
 	test("reads context params", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{
@@ -202,7 +204,7 @@ describe("stringParameter", () => {
 
 	test("use default if context param is not available", async () => {
 		const nodeId = "test"
-		const executor = new DflowExecutorMock({
+		const executor = new DflowCommonExecutor({
 			graph: {
 				nodes: [
 					{

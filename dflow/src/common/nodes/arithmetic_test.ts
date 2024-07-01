@@ -4,8 +4,10 @@ import { test } from "node:test"
 import { Dflow } from "dflow"
 import { now } from "minimal-time-helpers"
 
-import { getDflowExecutionOutputData } from "../executor.js"
-import { DflowExecutorMock } from "../mocks/executor.js"
+import {
+	DflowCommonExecutor,
+	getDflowExecutionOutputData
+} from "../executor.js"
 import {
 	Addition,
 	Division,
@@ -107,7 +109,7 @@ const executeOperator = async (
 	{ a, b }: ExecuteOperatorInput
 ): Promise<ExecuteOperatorOutput> => {
 	const nodeId = "operator"
-	const executor = new DflowExecutorMock({
+	const executor = new DflowCommonExecutor({
 		graph: {
 			nodes: [
 				{
