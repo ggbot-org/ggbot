@@ -24,7 +24,7 @@ Optional environment variables needed to launch [binance-client end to end tests
 
 ## .envrc file
 
-Install [direnv](../infrastructure/docs/tech-stack.md#direnv): it reads a _.envrc_ file and set environment variables automatically.
+Install [direnv](../repository/docs/tech-stack.md#direnv): it reads a _.envrc_ file and set environment variables automatically.
 
 A complete _.envrc_ file looks like the following
 

@@ -70,8 +70,6 @@ https://aws.amazon.com/cloudfront/
 
 https://aws.amazon.com/ec2/
 
-See also how to create [EC2 base AMI](./ec2-base-ami.md).
-
 ### AWS IAM
 
 https://aws.amazon.com/iam/
@@ -182,6 +180,8 @@ https://www.npmjs.com/package/eslint-plugin-react
 ### eslint-plugin-react-hooks
 
 https://www.npmjs.com/package/eslint-plugin-react-hooks
+
+<!-- TODO the webapp tech-stack should be in webapp/docs -->
 
 ### flow-view
 

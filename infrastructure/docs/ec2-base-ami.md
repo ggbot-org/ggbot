@@ -22,7 +22,7 @@ or check the shell prompt on SSH login.
 
 ## Git
 
-Install [Git](./tech-stack.md#git)
+Install _Git_.
 
 ```sh
 sudo yum install -y git
@@ -36,19 +36,19 @@ git clone https://github.com/ggbot-org/ggbot.git
 
 ## Node
 
-Install [Node.js](./tech-stack.md#nodejs)
+Install _Node.js_.
 
 ```sh
 sudo yum install -y nodejs
 ```
 
-Check which Node.js version was installed, it should be `v18.x`
+Check which Node.js version was installed.
 
 ```sh
 node --version
 ```
 
-Update [Node.js section](./tech-stack.md#nodejs) with latest version.
+Update [Node.js section](../../repository/docs/tech-stack.md#nodejs) with latest version.
 
 ## Create AMI
 
