@@ -66,8 +66,7 @@ export type {
 	StrategyFlow,
 	StrategyFlowGraph,
 	StrategyFlowGraphEdge,
-	StrategyFlowGraphNode,
-	StrategyFlowView
+	StrategyFlowGraphNode
 } from "./strategyFlow.js"
 export {
 	isStrategyFlowGraph,

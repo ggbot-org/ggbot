@@ -113,7 +113,7 @@ describe("BacktestingSession", () => {
 		const strategy2 = new BacktestingStrategy({
 			strategyKey: { strategyKind: "none", strategyId: "01010101" },
 			strategyName,
-			flow: { nodes: [{ id: "a", text: "true", x: 0, y: 0 }], edges: [] }
+			flow: { nodes: [{ id: "a", text: "true" }], edges: [] }
 		})
 		const session = newSession({
 			dayInterval: {
@@ -151,7 +151,7 @@ describe("BacktestingSession", () => {
 		const strategy = emptyStrategy()
 		const strategyFlow1 = strategy.flow
 		const strategyFlow2: BacktestingStrategy["flow"] = {
-			nodes: [{ id: "a", text: "true", x: 0, y: 0 }],
+			nodes: [{ id: "a", text: "true" }],
 			edges: []
 		}
 		const session = newSession({

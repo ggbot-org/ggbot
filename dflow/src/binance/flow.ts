@@ -1,5 +1,5 @@
+import { StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowId } from "dflow"
-import { FlowViewSerializableGraph } from "flow-view"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { DflowParameter, extractParameters } from "../parameters.js"
@@ -19,7 +19,7 @@ import {
 
 export const extractBinanceParameters = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: FlowViewSerializableGraph
+	flow: StrategyFlowGraph
 ) => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const parameters: DflowParameter[] = []
@@ -58,7 +58,7 @@ export const extractBinanceParameters = (
 // Uncomment test in flow_test.ts
 export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: FlowViewSerializableGraph
+	flow: StrategyFlowGraph
 ): DflowBinanceSymbolAndInterval[] => {
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
@@ -129,7 +129,7 @@ export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 // extract the symbol
 export const extractsBinanceSymbolsFromTickerPriceAndOrderNodes = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: FlowViewSerializableGraph
+	flow: StrategyFlowGraph
 ): string[] => {
 	const symbolsFromTickerPrice = new Set<string>()
 	const symbols = binanceSymbols.map(({ symbol }) => symbol)

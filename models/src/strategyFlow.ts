@@ -33,7 +33,7 @@ type StrategyFlowViewEdge = StrategyFlowViewItem & {
 	to: [StrategyFlowViewNode["id"], StrategyFlowViewInput["id"]]
 }
 
-export type StrategyFlowView = {
+type StrategyFlowView = {
 	nodes: StrategyFlowViewNode[]
 	edges: StrategyFlowViewEdge[]
 }
@@ -59,8 +59,8 @@ export const isStrategyFlowGraph = objectTypeGuard<StrategyFlowGraph>(
 
 export type StrategyFlow = UpdateTime & {
 	view: StrategyFlowView
-	// TODO graph: StrategyFlowGraph ?? or put the graph in another file
-	// and/or parse the view to get the graph
+	// TODO graph: StrategyFlowGraph
+	// and parse the graph to get the view and viceversa
 }
 
 export const newStrategyFlow = ({

@@ -1,7 +1,9 @@
-import { Strategy, StrategyFlow, StrategyKey } from "@workspace/models"
+import { Strategy, StrategyFlowGraph, StrategyKey } from "@workspace/models"
 
 export class BacktestingStrategy {
-	flow: StrategyFlow["view"]
+	/** The graph of the strategy flow. */
+	flow: StrategyFlowGraph
+
 	readonly strategyKey: StrategyKey
 	readonly strategyName: Strategy["name"]
 

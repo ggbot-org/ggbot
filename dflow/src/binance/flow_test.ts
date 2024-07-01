@@ -32,22 +32,16 @@ test("extractCommonParameters", async () => {
 						{
 							id: "n1",
 							text: JSON.stringify(intervalKey),
-							x: 0,
-							y: 0,
 							outs: [{ id: "o1" }]
 						},
 						{
 							id: "n2",
 							text: intervalValue,
-							x: 0,
-							y: 0,
 							outs: [{ id: "o1" }]
 						},
 						{
 							id: "n3",
 							text: IntervalParameter.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "i1" }, { id: "i2" }],
 							outs: [{ id: "o1" }]
 						}
@@ -71,22 +65,16 @@ test("extractCommonParameters", async () => {
 						{
 							id: "n1",
 							text: JSON.stringify(symbolKey),
-							x: 0,
-							y: 0,
 							outs: [{ id: "o1" }]
 						},
 						{
 							id: "n2",
 							text: symbolValue,
-							x: 0,
-							y: 0,
 							outs: [{ id: "o1" }]
 						},
 						{
 							id: "n3",
 							text: SymbolParameter.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "i1" }, { id: "i2" }],
 							outs: [{ id: "o1" }]
 						}
@@ -127,37 +115,27 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 						{
 							id: "a1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa1" }]
 						},
 						{
 							id: "a2",
 							text: "1h",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa2" }]
 						},
 						{
 							id: "a3",
 							text: Candles.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "ai1" }, { id: "ai2" }, { id: "ai3" }]
 						},
-						{ id: "b1", text: "BTC/BUSD", x: 0, y: 0 },
+						{ id: "b1", text: "BTC/BUSD" },
 						{
 							id: "b2",
 							text: "1d",
-							x: 0,
-							y: 0,
 							outs: [{ id: "ob2" }]
 						},
 						{
 							id: "b3",
 							text: Candles.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "bi1" }, { id: "bi2" }, { id: "bi3" }]
 						}
 					],
@@ -181,44 +159,32 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 						{
 							id: "a1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa1" }]
 						},
 						{
 							id: "a2",
 							text: "1h",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa2" }]
 						},
 						{
 							id: "a3",
 							text: Candles.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "ai1" }, { id: "ai2" }, { id: "ai3" }]
 						},
 						// Should not return ["ETHBTC", "1h"] twice.
 						{
 							id: "b1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "ob1" }]
 						},
 						{
 							id: "b2",
 							text: "1h",
-							x: 0,
-							y: 0,
 							outs: [{ id: "ob2" }]
 						},
 						{
 							id: "b3",
 							text: Candles.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "bi1" }, { id: "bi2" }, { id: "bi3" }]
 						}
 					],
@@ -264,8 +230,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o0"
 			// 					}
 			// 				],
-			// 				x: 200,
-			// 				y: 131
 			// 			},
 			// 			{
 			// 				id: "ipbud",
@@ -275,8 +239,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o"
 			// 					}
 			// 				],
-			// 				x: 224,
-			// 				y: 45
 			// 			},
 			// 			{
 			// 				id: "yechx",
@@ -309,8 +271,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o4"
 			// 					}
 			// 				],
-			// 				x: 333,
-			// 				y: 253
 			// 			},
 			// 			{
 			// 				id: "bggtp",
@@ -320,8 +280,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o0"
 			// 					}
 			// 				],
-			// 				x: 579,
-			// 				y: 13
 			// 			},
 			// 			{
 			// 				id: "gsgay",
@@ -331,8 +289,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o"
 			// 					}
 			// 				],
-			// 				x: 518,
-			// 				y: 182
 			// 			},
 			// 			{
 			// 				id: "sbrls",
@@ -350,8 +306,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o0"
 			// 					}
 			// 				],
-			// 				x: 450,
-			// 				y: 111
 			// 			},
 			// 			{
 			// 				id: "afxnr",
@@ -361,8 +315,6 @@ test("extractBinanceSymbolsAndIntervalsFromFlowCandles", async () => {
 			// 						id: "o"
 			// 					}
 			// 				],
-			// 				x: 407,
-			// 				y: 28
 			// 			}
 			// 		],
 			// 		edges: [
@@ -430,24 +382,18 @@ test("extractsBinanceSymbolsFromTickerPriceAndOrderNodes", async () => {
 						{
 							id: "a1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa1" }]
 						},
 						{
 							id: "a2",
 							text: BuyMarket.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "ai1" }],
 							outs: [{ id: "oa2" }]
 						},
-						{ id: "b1", text: "BTC/BUSD", x: 0, y: 0 },
+						{ id: "b1", text: "BTC/BUSD" },
 						{
 							id: "b2",
 							text: TickerPrice.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "bi1" }],
 							outs: [{ id: "oa2" }]
 						}
@@ -467,15 +413,11 @@ test("extractsBinanceSymbolsFromTickerPriceAndOrderNodes", async () => {
 						{
 							id: "a1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "oa1" }]
 						},
 						{
 							id: "a2",
 							text: SellMarket.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "ai1" }],
 							outs: [{ id: "oa2" }]
 						},
@@ -483,15 +425,11 @@ test("extractsBinanceSymbolsFromTickerPriceAndOrderNodes", async () => {
 						{
 							id: "b1",
 							text: "ETH/BTC",
-							x: 0,
-							y: 0,
 							outs: [{ id: "ob1" }]
 						},
 						{
 							id: "b2",
 							text: TickerPrice.kind,
-							x: 0,
-							y: 0,
 							ins: [{ id: "bi1" }],
 							outs: [{ id: "ob2" }]
 						}

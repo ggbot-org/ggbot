@@ -1,4 +1,4 @@
-import { SerializablePrimitive, StrategyFlowView } from "@workspace/models"
+import { SerializablePrimitive, StrategyFlowGraph } from "@workspace/models"
 
 export type DflowParameter = {
 	kind: string
@@ -6,30 +6,30 @@ export type DflowParameter = {
 	defaultValue: SerializablePrimitive
 }
 
-export const extractParameters = (flow: StrategyFlowView) => {
+export const extractParameters = (graph: StrategyFlowGraph) => {
 	const parameters: Array<{
 		kind: string
 		key: string
 		defaultValueNodeText: string
 	}> = []
 
-	for (const node of flow.nodes) {
+	for (const node of graph.nodes) {
 		const { text: kind, id: nodeId } = node
 
 		const firstInputId = node.ins?.[0]?.id
 		const secondInputId = node.ins?.[1]?.id
 		if (!firstInputId || !secondInputId) continue
 
-		const firstParentNodeEdge = flow.edges.find(
+		const firstParentNodeEdge = graph.edges.find(
 			(edge) => edge.to[0] === nodeId && edge.to[1] === firstInputId
 		)
-		const secondParentNodeEdge = flow.edges.find(
+		const secondParentNodeEdge = graph.edges.find(
 			(edge) => edge.to[0] === nodeId && edge.to[1] === secondInputId
 		)
-		const firstParentNode = flow.nodes.find(
+		const firstParentNode = graph.nodes.find(
 			({ id }) => id === firstParentNodeEdge?.from[0]
 		)
-		const secondParentNode = flow.nodes.find(
+		const secondParentNode = graph.nodes.find(
 			({ id }) => id === secondParentNodeEdge?.from[0]
 		)
 

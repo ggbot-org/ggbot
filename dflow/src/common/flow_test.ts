@@ -27,22 +27,16 @@ test("extractCommonParameters", () => {
 					{
 						id: "n1",
 						text: JSON.stringify(booleanKey),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n2",
 						text: JSON.stringify(booleanValue),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n3",
 						text: BooleanParameter.kind,
-						x: 0,
-						y: 0,
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -66,22 +60,16 @@ test("extractCommonParameters", () => {
 					{
 						id: "n1",
 						text: JSON.stringify(numberKey),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n2",
 						text: JSON.stringify(numberValue),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n3",
 						text: NumberParameter.kind,
-						x: 0,
-						y: 0,
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
@@ -105,22 +93,16 @@ test("extractCommonParameters", () => {
 					{
 						id: "n1",
 						text: JSON.stringify(stringKey),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n2",
 						text: JSON.stringify(stringValue),
-						x: 0,
-						y: 0,
 						outs: [{ id: "o1" }]
 					},
 					{
 						id: "n3",
 						text: StringParameter.kind,
-						x: 0,
-						y: 0,
 						ins: [{ id: "i1" }, { id: "i2" }],
 						outs: [{ id: "o1" }]
 					}
