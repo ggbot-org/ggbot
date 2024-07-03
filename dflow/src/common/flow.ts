@@ -1,63 +1,129 @@
-import { StrategyFlowGraph } from "@workspace/models"
+import {
+	isFiniteNumber,
+	isIdentifierString,
+	isNonEmptyString,
+	StrategyFlowGraph
+} from "@workspace/models"
+import { DflowNode } from "dflow"
+import { now } from "minimal-time-helpers"
 
+import { DflowCommonContext as Context } from "./context.js"
+import { DflowCommonHost } from "./host.js"
 import {
 	BooleanParameter,
 	NumberParameter,
 	StringParameter
 } from "./nodes/parameters.js"
+import { nodesCatalog } from "./nodesCatalog.js"
 import { DflowParameter } from "./parameters.js"
 
-export const extractCommonParameters = (flow: StrategyFlowGraph) => {
+const defaultContext = (): Context => ({
+	params: {},
+	memory: {},
+	time: now()
+})
+
+export const extractCommonParameters = async (
+	graph: StrategyFlowGraph,
+	context = defaultContext()
+) => {
 	const parameters: DflowParameter[] = []
 
-	for (const node of flow.nodes) {
-		const { text: kind, id: nodeId } = node
+	const dflow = new DflowCommonHost(
+		{
+			nodesCatalog: {
+				...nodesCatalog,
+				[BooleanParameter.kind]: class MockedBooleanParameter extends DflowNode {
+					static kind = BooleanParameter.kind
+					static inputs = BooleanParameter.inputs
+					static outputs = BooleanParameter.outputs
+					run() {
+						// 👇 Sync with BooleanParameter run()
+						const { params } = this.host.context as Context
+						const key = this.input(0).data
+						const defaultValue = this.input(1).data
+						if (
+							!isIdentifierString(key) ||
+							typeof defaultValue !== "boolean"
+						)
+							return this.clearOutputs()
+						let value = defaultValue
+						if (key in params) {
+							const inputValue = params[key]
+							if (typeof inputValue === "boolean")
+								value = inputValue
+						}
+						this.output(0).data = value
+						// Set parameter
+						parameters.push({
+							kind: BooleanParameter.kind,
+							key,
+							defaultValue
+						})
+					}
+				},
+				[NumberParameter.kind]: class MockedNumberParameter extends DflowNode {
+					static kind = NumberParameter.kind
+					static inputs = NumberParameter.inputs
+					static outputs = NumberParameter.outputs
+					run() {
+						// 👇 Sync with NumberParameter run()
+						const { params } = this.host.context as Context
+						const key = this.input(0).data
+						const defaultValue = this.input(1).data
+						if (
+							!isIdentifierString(key) ||
+							!isFiniteNumber(defaultValue)
+						)
+							return this.clearOutputs()
+						let value = defaultValue
+						if (key in params) {
+							const inputValue = params[key]
+							if (isFiniteNumber(inputValue)) value = inputValue
+						}
+						this.output(0).data = value
+						// Set parameter
+						parameters.push({
+							kind: NumberParameter.kind,
+							key,
+							defaultValue
+						})
+					}
+				},
+				[StringParameter.kind]: class MockedStringParameter extends DflowNode {
+					static kind = StringParameter.kind
+					static inputs = StringParameter.inputs
+					static outputs = StringParameter.outputs
+					run() {
+						// 👇 Sync with StringParameter run()
+						const { params } = this.host.context as Context
+						const key = this.input(0).data
+						const defaultValue = this.input(1).data
+						if (
+							!isIdentifierString(key) ||
+							!isNonEmptyString(defaultValue)
+						)
+							return this.clearOutputs()
+						let value = defaultValue
+						if (key in params) {
+							const inputValue = params[key]
+							if (isNonEmptyString(inputValue)) value = inputValue
+						}
+						this.output(0).data = value
+						// Set parameter
+						parameters.push({
+							kind: StringParameter.kind,
+							key,
+							defaultValue
+						})
+					}
+				}
+			}
+		},
+		context
+	)
 
-		const firstInputId = node.ins?.[0]?.id
-		const secondInputId = node.ins?.[1]?.id
-		if (!firstInputId || !secondInputId) continue
-
-		const firstParentNodeEdge = flow.edges.find(
-			(edge) => edge.to[0] === nodeId && edge.to[1] === firstInputId
-		)
-		const secondParentNodeEdge = flow.edges.find(
-			(edge) => edge.to[0] === nodeId && edge.to[1] === secondInputId
-		)
-		const firstParentNode = flow.nodes.find(
-			({ id }) => id === firstParentNodeEdge?.from[0]
-		)
-		const secondParentNode = flow.nodes.find(
-			({ id }) => id === secondParentNodeEdge?.from[0]
-		)
-
-		const maybeKey = firstParentNode?.text
-		const maybeValue = secondParentNode?.text
-		if (!maybeKey || !maybeValue) continue
-
-		try {
-			const key: unknown = JSON.parse(maybeKey)
-			if (typeof key !== "string") continue
-
-			const defaultValue: unknown = JSON.parse(maybeValue)
-
-			if (
-				(kind === BooleanParameter.kind &&
-					typeof defaultValue === "boolean") ||
-				(kind === NumberParameter.kind &&
-					typeof defaultValue === "number") ||
-				(kind === StringParameter.kind &&
-					typeof defaultValue === "string")
-			)
-				parameters.push({
-					kind,
-					key,
-					defaultValue
-				})
-		} catch (error) {
-			if (error instanceof SyntaxError) continue
-			throw error
-		}
-	}
-
+	dflow.load(graph)
+	await dflow.run()
 	return parameters
 }

@@ -10,7 +10,7 @@ import {
 } from "@workspace/dflow"
 import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { StrategyParameters } from "@workspace/models"
-import { FC, useMemo } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type SchedulingParametersProps = Pick<
@@ -22,50 +22,54 @@ export type SchedulingParametersProps = Pick<
 	params: StrategyParameters | undefined
 }
 
-export const SchedulingParameters: FC<SchedulingParametersProps> = ({
+export function SchedulingParameters({
 	binanceSymbols,
 	flowViewGraph,
 	setParam,
 	params
-}) => {
-	const schedulingParameterItems = useMemo<
+}: SchedulingParametersProps) {
+	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
 		Array<
 			Pick<
 				SchedulingParameterItemProps,
 				"kind" | "label" | "value" | "defaultValue"
 			>
 		>
-	>(() => {
-		const items = []
-		if (!flowViewGraph) return []
-		if (!params) return []
+	>([])
 
-		const commonParams = extractCommonParameters(flowViewGraph)
+	useEffect(() => {
+		;(async () => {
+			const items = []
+			if (!flowViewGraph) return
+			if (!params) return
 
-		for (const { key, kind, defaultValue } of commonParams) {
-			const value = params[key]
-			items.push({
-				kind,
-				label: key,
-				defaultValue,
-				value
-			})
-		}
+			const commonParams = await extractCommonParameters(flowViewGraph)
 
-		const binanceParams = binanceSymbols
-			? extractBinanceParameters(binanceSymbols, flowViewGraph)
-			: []
+			for (const { key, kind, defaultValue } of commonParams) {
+				const value = params[key]
+				items.push({
+					kind,
+					label: key,
+					defaultValue,
+					value
+				})
+			}
 
-		for (const { key, kind, defaultValue } of binanceParams) {
-			const value = params[key]
-			items.push({
-				kind,
-				label: key,
-				defaultValue,
-				value
-			})
-		}
-		return items
+			const binanceParams = binanceSymbols
+				? extractBinanceParameters(binanceSymbols, flowViewGraph)
+				: []
+
+			for (const { key, kind, defaultValue } of binanceParams) {
+				const value = params[key]
+				items.push({
+					kind,
+					label: key,
+					defaultValue,
+					value
+				})
+			}
+			setSchedulingParameterItems(items)
+		})()
 	}, [flowViewGraph, binanceSymbols, params])
 
 	return (

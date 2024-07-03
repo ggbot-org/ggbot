@@ -24,7 +24,6 @@ export const extractBinanceParameters = (
 	// TODO const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const parameters: DflowParameter[] = []
 	// TODO
-	// const extractedParameters = extractCommonParameters(flow)
 	// for (const { kind, key, defaultValueNodeText } of extractedParameters) {
 	// 	if (
 	// 		kind === IntervalParameter.kind &&
