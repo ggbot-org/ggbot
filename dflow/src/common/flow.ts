@@ -17,17 +17,13 @@ import {
 import { nodesCatalog } from "./nodesCatalog.js"
 import { DflowParameter } from "./parameters.js"
 
-const defaultContext = (): Context => ({
-	params: {},
-	memory: {},
-	time: now()
-})
-
-export const extractCommonParameters = async (
-	graph: StrategyFlowGraph,
-	context = defaultContext()
-) => {
+export const extractCommonParameters = async (graph: StrategyFlowGraph) => {
 	const parameters: DflowParameter[] = []
+	const context: Context = {
+		params: {},
+		memory: {},
+		time: now()
+	}
 
 	const dflow = new DflowCommonHost(
 		{

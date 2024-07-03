@@ -1,15 +1,20 @@
-import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow, DflowId } from "dflow"
+import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
+import { Dflow, DflowId, DflowNode } from "dflow"
+import { now } from "minimal-time-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { DflowParameter } from "../common/parameters.js"
+import { DflowBinanceContext as Context } from "./context.js"
+import { DflowBinanceHost } from "./host.js"
 import {
 	dflowBinanceKlineIntervals,
 	isDflowBinanceKlineInterval
 } from "./klineIntervals.js"
+import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
-// TODO import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
+import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
+import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 import {
 	DflowBinanceSymbolAndInterval,
 	DflowBinanceSymbolInfo,
@@ -17,38 +22,84 @@ import {
 	isDflowBinanceSymbolAndInterval
 } from "./symbols.js"
 
-export const extractBinanceParameters = (
-	_binanceSymbols: DflowBinanceSymbolInfo[],
-	_flow: StrategyFlowGraph
+const binanceClientMock = new DflowBinanceClientMock()
+
+export const extractBinanceParameters = async (
+	binanceSymbols: DflowBinanceSymbolInfo[],
+	graph: StrategyFlowGraph
 ) => {
-	// TODO const symbols = binanceSymbols.map(({ symbol }) => symbol)
 	const parameters: DflowParameter[] = []
-	// TODO
-	// for (const { kind, key, defaultValueNodeText } of extractedParameters) {
-	// 	if (
-	// 		kind === IntervalParameter.kind &&
-	// 		isDflowBinanceKlineInterval(defaultValueNodeText)
-	// 	)
-	// 		parameters.push({
-	// 			kind,
-	// 			key,
-	// 			defaultValue: defaultValueNodeText
-	// 		})
-	//
-	// 	if (kind === SymbolParameter.kind) {
-	// 		if (typeof defaultValueNodeText !== "string") continue
-	// 		const maybeSymbol = defaultValueNodeText
-	// 			.split(dflowBinanceSymbolSeparator)
-	// 			.join("")
-	//
-	// 		if (symbols.includes(maybeSymbol))
-	// 			parameters.push({
-	// 				kind,
-	// 				key,
-	// 				defaultValue: defaultValueNodeText
-	// 			})
-	// 	}
-	// }
+	const context: Context = {
+		binance: binanceClientMock,
+		params: {},
+		memory: {},
+		time: now()
+	}
+	const nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
+
+	const dflow = new DflowBinanceHost(
+		{
+			nodesCatalog: {
+				...nodesCatalog,
+				[IntervalParameter.kind]: class MockedIntervalParameter extends DflowNode {
+					static kind = IntervalParameter.kind
+					static inputs = IntervalParameter.inputs
+					static outputs = IntervalParameter.outputs
+					run() {
+						// 👇 Sync with IntervalParameter run()
+						const { params } = this.host.context as Context
+						const key = this.input(0).data
+						const defaultValue = this.input(1).data
+						if (
+							!isNonEmptyString(key) ||
+							!isNonEmptyString(defaultValue)
+						)
+							return this.clearOutputs()
+						let value = defaultValue
+						const inputValue = params[key]
+						if (isNonEmptyString(inputValue)) value = inputValue
+						this.output(0).data = value
+						// Set parameter
+						parameters.push({
+							kind: IntervalParameter.kind,
+							key,
+							defaultValue
+						})
+					}
+				},
+				[SymbolParameter.kind]: class MockedSymbolParameter extends DflowNode {
+					static kind = SymbolParameter.kind
+					static inputs = SymbolParameter.inputs
+					static outputs = SymbolParameter.outputs
+					run() {
+						// 👇 Sync with SymbolParameter run()
+						const { params } = this.host.context as Context
+						const key = this.input(0).data
+						const defaultValue = this.input(1).data
+						if (
+							!isNonEmptyString(key) ||
+							!isNonEmptyString(defaultValue)
+						)
+							return this.clearOutputs()
+						let value = defaultValue
+						const inputValue = params[key]
+						if (isNonEmptyString(inputValue)) value = inputValue
+						this.output(0).data = value
+						// Set parameter
+						parameters.push({
+							kind: SymbolParameter.kind,
+							key,
+							defaultValue
+						})
+					}
+				}
+			}
+		},
+		context
+	)
+
+	dflow.load(graph)
+	await dflow.run()
 	return parameters
 }
 
