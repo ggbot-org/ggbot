@@ -8,6 +8,12 @@ Get the AWS account id and set the `AWS_ACCOUNT_ID` environment variable.
 
 Choose a string to prefix project entities and set `PROJECT_SHORT_NAME` environment variable, for instance **ggbot**.
 
+## DNS domain
+
+Buy a domain, for instance _ggbot.com_ and set the `DNS_DOMAIN` environment variable.
+You can get a domain on [Amazon Route 53](https://aws.amazon.com/it/route53/).
+In any case, you need to add your domain to _Route 53_ as hosted zone.
+
 ## Devops account
 
 Create a _devops_ account. Once the IAM permissions are set, every other operation can be done by infrastructure automation.
@@ -59,17 +65,13 @@ next step is to run single infrastructure test to check policy, and run it activ
 TODO how to run a single test, does node --test --test-name-pattern work? Can it be passed to `npm run test_infrastructure` as parameter?
 TODO link infrastructure README and add other steps there.
 
-## DNS domain
-
-Buy a domain, for instance _example.com_ and set the `DNS_DOMAIN` environment variable.
-
 ## SSL certificate
 
 Create an SSL certificate with [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) (ACM).
 
 Go to ACM on AWS console, check that you are in the wanted AWS region, for instance, _eu-central-1 Europe (Frankfurt)_.
 Click on "Request a certificate", flag "Request a public certificate" and click "Next".
-Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.org`.
-Click on "Add another name to this certificate" and add a third level domain _wildcard_, for instance, `*.ggbot.org`.
+Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.com`.
+Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.com`.
 Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
 Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.

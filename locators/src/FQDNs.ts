@@ -53,10 +53,6 @@ export class FQDN {
 		return FQDN.webappDomain(this.deployStage, this.dnsDomain)
 	}
 
-	get urlShortenerDomain() {
-		return this.dnsDomain
-	}
-
 	static webappDomain(deployStage: DeployStage, dnsDomain: string) {
 		if (deployStage === "main") return `www.${dnsDomain}`
 		// Both `next` and `local` deploy stages point to "next" webapp.

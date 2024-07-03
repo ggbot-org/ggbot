@@ -10,7 +10,3 @@ export const databaseWorkspace = new Workspace(
 export const webappWorkspace = new Workspace(
 	join(Repository.pathname, "webapp")
 )
-
-export const urlShortenerWorkspace = new Workspace(
-	join(Repository.pathname, "url-shortener")
-)
