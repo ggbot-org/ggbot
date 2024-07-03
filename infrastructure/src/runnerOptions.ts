@@ -1,5 +1,5 @@
 /**
- * An "Active Test" pushes modifications to the infrastructures.
+ * An "Active Test" pushes modifications to the infrastructure.
  *
  * @remarks
  * It run only if `ACTIVE_TEST` environment variable is found.

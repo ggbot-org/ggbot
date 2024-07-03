@@ -49,20 +49,19 @@ Get the access keys and set environment variables:
 -   `AWS_ACCESS_KEY_ID`
 -   `AWS_SECRET_ACCESS_KEY`
 
-Compile _infrastructure_ tests
-
-```sh
-npm run tsc:test -w infrastructure
-```
-
 Check devops policy
 
 ```sh
-node infrastructure/temp/DevopsPolicy_test.js
+npm run test_infrastructure:devops-policy -w infrastructure
+```
+
+Of course, the test is expected to fail on first run. To update devops policy run
+
+```sh
+TODO npm run push_infrastructure:devops-policy -w infrastructure
 ```
 
 next step is to run single infrastructure test to check policy, and run it actively to fix the policy.
-TODO how to run a single test, does node --test --test-name-pattern work? Can it be passed to `npm run test_infrastructure` as parameter?
 TODO link infrastructure README and add other steps there.
 
 ## SSL certificate
