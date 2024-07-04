@@ -1,7 +1,6 @@
 import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
 import { Dflow, DflowId, DflowNode } from "dflow"
 import { now } from "minimal-time-helpers"
-import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { DflowParameter } from "../common/parameters.js"
 import { DflowBinanceContext as Context } from "./context.js"
@@ -18,13 +17,12 @@ import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 import {
 	DflowBinanceSymbolAndInterval,
 	DflowBinanceSymbolInfo,
-	dflowBinanceSymbolSeparator,
-	isDflowBinanceSymbolAndInterval
+	dflowBinanceSymbolSeparator
 } from "./symbols.js"
 
 const binanceClientMock = new DflowBinanceClientMock()
 
-export const extractBinanceParameters = async (
+export const extractBinanceParametersFromFlow = async (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	graph: StrategyFlowGraph
 ) => {
@@ -103,51 +101,50 @@ export const extractBinanceParameters = async (
 	return parameters
 }
 
-// TODO this is implemented with static analysis
-// it would need to run the flow with a custom candles node that
-// extracts the symbol and interval
-// Uncomment test in flow_test.ts
-export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
+export const extractBinanceSymbolsAndIntervalsFromFlow = async (
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: StrategyFlowGraph
-): DflowBinanceSymbolAndInterval[] => {
-	const symbols = binanceSymbols.map(({ symbol }) => symbol)
+	graph: StrategyFlowGraph
+): Promise<DflowBinanceSymbolAndInterval[]> => {
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
-	const nodeConnections: Array<{ sourceId: DflowId; targetId: DflowId }> =
-		flow.edges.map((edge) => ({
-			sourceId: edge.from[0],
-			targetId: edge.to[0]
-		}))
-	for (const node of flow.nodes) {
-		if (node.text === Candles.kind) {
-			const parentNodeIds = Dflow.parentsOfNodeId(
-				node.id,
-				nodeConnections
-			)
-			const maybeSymbolAndInterval: MaybeObject<DflowBinanceSymbolAndInterval> =
-				{
-					symbol: undefined,
-					interval: undefined
-				}
-			for (const parentNodeId of parentNodeIds) {
-				const node = flow.nodes.find(({ id }) => id === parentNodeId)
-				if (!node) continue
-				if (isDflowBinanceKlineInterval(node.text)) {
-					maybeSymbolAndInterval.interval = node.text
-					continue
-				} else {
-					const maybeSymbol = node.text
-						.split(dflowBinanceSymbolSeparator)
-						.join("")
-					if (symbols.includes(maybeSymbol))
-						maybeSymbolAndInterval.symbol = maybeSymbol
-				}
-			}
-			if (isDflowBinanceSymbolAndInterval(maybeSymbolAndInterval)) {
-				symbolsAndIntervals.push(maybeSymbolAndInterval)
-			}
-		}
+	const context: Context = {
+		binance: binanceClientMock,
+		params: {},
+		memory: {},
+		time: now()
 	}
+	const nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
+
+	const dflow = new DflowBinanceHost(
+		{
+			nodesCatalog: {
+				...nodesCatalog,
+				[Candles.kind]: class MockedCandle extends DflowNode {
+					static kind = Candles.kind
+					static inputs = Candles.inputs
+					static outputs = Candles.outputs
+					run() {
+						// 👇 Sync with Candles run()
+						const symbol = this.input(0).data as string
+						const interval = this.input(1).data as string
+						if (
+							typeof symbol !== "string" ||
+							!isDflowBinanceKlineInterval(interval)
+						)
+							return this.clearOutputs()
+						// Set symbolsAndIntervals
+						symbolsAndIntervals.push({
+							symbol,
+							interval
+						})
+					}
+				}
+			}
+		},
+		context
+	)
+
+	dflow.load(graph)
+	await dflow.run()
 	return symbolsAndIntervals
 		.filter(
 			// Remove duplicates.
@@ -178,7 +175,7 @@ export const extractBinanceSymbolsAndIntervalsFromFlowCandles = (
 // TODO this is implemented with static analysis
 // it would need to run the flow with a custom price and order nodes that
 // extract the symbol
-export const extractsBinanceSymbolsFromTickerPriceAndOrderNodes = (
+export const extractsBinanceSymbolsFromFlow = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: StrategyFlowGraph
 ): string[] => {

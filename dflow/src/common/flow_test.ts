@@ -1,14 +1,14 @@
 import { strict as assert } from "node:assert"
 import { test } from "node:test"
 
-import { extractCommonParameters } from "./flow.js"
+import { extractCommonParametersFromFlow } from "./flow.js"
 import {
 	BooleanParameter,
 	NumberParameter,
 	StringParameter
 } from "./nodes/parameters.js"
 
-test("extractCommonParameters", async () => {
+test("extractCommonParametersFromFlow", async () => {
 	const booleanValue = false
 	const booleanKey = "my boolean"
 	const numberValue = 1.2
@@ -17,7 +17,7 @@ test("extractCommonParameters", async () => {
 	const stringKey = "my string"
 
 	assert.deepEqual(
-		await extractCommonParameters({
+		await extractCommonParametersFromFlow({
 			nodes: [
 				{
 					id: "n1",
@@ -51,7 +51,7 @@ test("extractCommonParameters", async () => {
 	)
 
 	assert.deepEqual(
-		await extractCommonParameters({
+		await extractCommonParametersFromFlow({
 			nodes: [
 				{
 					id: "n1",
@@ -85,7 +85,7 @@ test("extractCommonParameters", async () => {
 	)
 
 	assert.deepEqual(
-		await extractCommonParameters({
+		await extractCommonParametersFromFlow({
 			nodes: [
 				{
 					id: "n1",

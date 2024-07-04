@@ -17,7 +17,9 @@ import {
 import { nodesCatalog } from "./nodesCatalog.js"
 import { DflowParameter } from "./parameters.js"
 
-export const extractCommonParameters = async (graph: StrategyFlowGraph) => {
+export const extractCommonParametersFromFlow = async (
+	graph: StrategyFlowGraph
+): Promise<DflowParameter[]> => {
 	const parameters: DflowParameter[] = []
 	const context: Context = {
 		params: {},

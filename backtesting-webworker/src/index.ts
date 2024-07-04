@@ -16,8 +16,8 @@ import {
 } from "@workspace/binance-indexeddb"
 import {
 	DflowBinanceExecutor,
-	extractBinanceSymbolsAndIntervalsFromFlowCandles,
-	extractsBinanceSymbolsFromTickerPriceAndOrderNodes,
+	extractBinanceSymbolsAndIntervalsFromFlow,
+	extractsBinanceSymbolsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
 import { logging } from "@workspace/logging"
@@ -122,7 +122,7 @@ const prepareBinance = async (
 	// Pre-fetch klines for "candles" nodes.
 
 	const symbolsAndIntervalsFromCandlesNodes =
-		extractBinanceSymbolsAndIntervalsFromFlowCandles(binanceSymbols, flow)
+		await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
 
 	for (const { interval, symbol } of symbolsAndIntervalsFromCandlesNodes) {
 		let startTime = firstTime
@@ -143,7 +143,7 @@ const prepareBinance = async (
 
 	// Pre-fetch klines for "price" nodes.
 
-	const symbolsFromNodes = extractsBinanceSymbolsFromTickerPriceAndOrderNodes(
+	const symbolsFromNodes = extractsBinanceSymbolsFromFlow(
 		binanceSymbols,
 		flow
 	)

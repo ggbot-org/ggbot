@@ -5,8 +5,8 @@ import {
 } from "_/components/user/SchedulingParameterItem"
 import { UseStrategyFlowOutput } from "_/hooks/useStrategyFlow"
 import {
-	extractBinanceParameters,
-	extractCommonParameters
+	extractBinanceParametersFromFlow,
+	extractCommonParametersFromFlow
 } from "@workspace/dflow"
 import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { StrategyParameters } from "@workspace/models"
@@ -43,7 +43,8 @@ export function SchedulingParameters({
 			if (!flowViewGraph) return
 			if (!params) return
 
-			const commonParams = await extractCommonParameters(flowViewGraph)
+			const commonParams =
+				await extractCommonParametersFromFlow(flowViewGraph)
 
 			for (const { key, kind, defaultValue } of commonParams) {
 				const value = params[key]
@@ -56,7 +57,10 @@ export function SchedulingParameters({
 			}
 
 			const binanceParams = binanceSymbols
-				? await extractBinanceParameters(binanceSymbols, flowViewGraph)
+				? await extractBinanceParametersFromFlow(
+						binanceSymbols,
+						flowViewGraph
+					)
 				: []
 
 			for (const { key, kind, defaultValue } of binanceParams) {
