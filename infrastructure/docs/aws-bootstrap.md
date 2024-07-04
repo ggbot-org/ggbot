@@ -14,6 +14,17 @@ Buy a domain, for instance _ggbot.com_ and set the `DNS_DOMAIN` environment vari
 You can get a domain on [Amazon Route 53](https://aws.amazon.com/it/route53/).
 In any case, you need to add your domain to _Route 53_ as hosted zone.
 
+## SSL certificate
+
+Create an SSL certificate with [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) (ACM).
+
+Go to ACM on AWS console, check that you are in the wanted AWS region, for instance, _eu-central-1 Europe (Frankfurt)_.
+Click on "Request a certificate", flag "Request a public certificate" and click "Next".
+Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.com`.
+Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.com`.
+Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
+Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.
+
 ## Devops account
 
 Create a _devops_ account. Once the IAM permissions are set, every other operation can be done by infrastructure automation.
@@ -49,28 +60,14 @@ Get the access keys and set environment variables:
 -   `AWS_ACCESS_KEY_ID`
 -   `AWS_SECRET_ACCESS_KEY`
 
-Check devops policy
+To check devops policy run
 
 ```sh
-npm run test_infrastructure:devops-policy -w infrastructure
+npm run test_infrastructure:bootstrap
 ```
 
 Of course, the test is expected to fail on first run. To update devops policy run
 
 ```sh
-TODO npm run push_infrastructure:devops-policy -w infrastructure
+TODO npm run push_infrastructure:bootstrap
 ```
-
-next step is to run single infrastructure test to check policy, and run it actively to fix the policy.
-TODO link infrastructure README and add other steps there.
-
-## SSL certificate
-
-Create an SSL certificate with [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) (ACM).
-
-Go to ACM on AWS console, check that you are in the wanted AWS region, for instance, _eu-central-1 Europe (Frankfurt)_.
-Click on "Request a certificate", flag "Request a public certificate" and click "Next".
-Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.com`.
-Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.com`.
-Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
-Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.

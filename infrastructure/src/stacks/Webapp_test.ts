@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import { ACTIVE_TEST } from "./runnerOptions.js"
+import { ACTIVE_TEST } from "../runnerOptions.js"
 import { Webapp } from "./Webapp.js"
 
 const webapp = new Webapp()

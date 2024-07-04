@@ -1,10 +1,10 @@
 import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
-import { ApiRole } from "./ApiRole.js"
-import { staticWebsiteAwsRegion } from "./awsRegions.js"
-import { LambdaFunction } from "./LambdaFunction.js"
-import { WebappApiGatewayDomain } from "./WebappApiGatewayDomain.js"
+import { staticWebsiteAwsRegion } from "../awsRegions.js"
+import { ApiRole } from "../stacks/ApiRole.js"
+import { LambdaFunction } from "../stacks/LambdaFunction.js"
+import { WebappApiGatewayDomain } from "../stacks/WebappApiGatewayDomain.js"
 
 const statementNames = [
 	"createBuckets",

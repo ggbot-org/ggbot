@@ -2,7 +2,7 @@ import { ApiGatewayDomain } from "@workspace/aws-api-gateway"
 import { AwsAccountId, AwsRegion } from "@workspace/aws-types"
 import { ENV } from "@workspace/env"
 
-import { apiGatewayAwsRegion } from "./awsRegions.js"
+import { apiGatewayAwsRegion } from "../awsRegions.js"
 import { fqdn } from "./fqdn.js"
 
 export class WebappApiGatewayDomain extends ApiGatewayDomain {

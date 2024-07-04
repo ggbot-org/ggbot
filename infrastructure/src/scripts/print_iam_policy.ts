@@ -1,4 +1,4 @@
-import { DevopsPolicy } from "../DevopsPolicy.js"
+import { DevopsPolicy } from "../bootstrap/DevopsPolicy.js"
 import { isIamPolicyIdentifier } from "../iamPolicies.js"
 
 const iamPolicyIdentifier = process.argv[2]

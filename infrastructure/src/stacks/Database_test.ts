@@ -1,8 +1,8 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
+import { ACTIVE_TEST } from "../runnerOptions.js"
 import { Database } from "./Database.js"
-import { ACTIVE_TEST } from "./runnerOptions.js"
 
 const database = new Database()
 

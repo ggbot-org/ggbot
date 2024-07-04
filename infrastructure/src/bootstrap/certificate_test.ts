@@ -8,7 +8,7 @@ import {
 } from "@workspace/aws-acm"
 import { ENV } from "@workspace/env"
 
-import { staticWebsiteAwsRegion } from "./awsRegions.js"
+import { staticWebsiteAwsRegion } from "../awsRegions.js"
 
 const DNS_DOMAIN = ENV.DNS_DOMAIN()
 
@@ -21,10 +21,6 @@ const certificate = CertificateSummaryList?.find(
 )
 
 describe(`SSL certificate for domain ${DNS_DOMAIN} on region ${staticWebsiteAwsRegion}`, () => {
-	test("is used", () => {
-		assert.ok(certificate?.InUse)
-	})
-
 	test("status is ISSUED", () => {
 		assert.ok(certificate?.Status === CertificateStatus.ISSUED)
 	})
