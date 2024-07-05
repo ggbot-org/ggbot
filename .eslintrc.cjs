@@ -5,7 +5,7 @@ module.exports = {
 		"plugin:@typescript-eslint/strict",
 		"plugin:workspaces/recommended"
 	],
-	ignorePatterns: ["dist"],
+	ignorePatterns: ["dist", "temp"],
 	parser: "@typescript-eslint/parser",
 	plugins: [
 		"@typescript-eslint",
@@ -52,7 +52,8 @@ module.exports = {
 		"block-scoped-var": "error",
 		"default-param-last": "error",
 		"dot-notation": "error",
-		eqeqeq: "error",
+		eqeqeq: ["error", "smart"],
+		"func-style": ["warn", "declaration"],
 		"import/extensions": ["error", "ignorePackages"],
 		"import/first": "error",
 		"import/newline-after-import": "error",
