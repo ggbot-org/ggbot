@@ -1,8 +1,6 @@
 import { strict as assert } from "node:assert"
 import { test } from "node:test"
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
-
 import {
 	extractBinanceParametersFromFlow,
 	extractBinanceSymbolsAndIntervalsFromFlow,
@@ -266,78 +264,84 @@ test("extractBinanceSymbolsAndIntervalsFromFlow", async () => {
 test("extractsBinanceSymbolsFromFlow", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
-	assertDeepEqual<
-		Parameters<typeof extractsBinanceSymbolsFromFlow>[1],
-		ReturnType<typeof extractsBinanceSymbolsFromFlow>
-	>(
-		(flow: Parameters<typeof extractsBinanceSymbolsFromFlow>[1]) =>
-			extractsBinanceSymbolsFromFlow(symbols, flow),
-		[
-			{
-				input: {
-					nodes: [
-						{
-							id: "a1",
-							text: "ETH/BTC",
-							outs: [{ id: "oa1" }]
-						},
-						{
-							id: "a2",
-							text: BuyMarket.kind,
-							ins: [{ id: "ai1" }],
-							outs: [{ id: "oa2" }]
-						},
-						{ id: "b1", text: "BTC/BUSD" },
-						{
-							id: "b2",
-							text: TickerPrice.kind,
-							ins: [{ id: "bi1" }],
-							outs: [{ id: "oa2" }]
-						}
-					],
-					edges: [
-						{ id: "ea1", from: ["a1", "oa1"], to: ["a2", "ai1"] },
-						{ id: "eb1", from: ["b1", "ob1"], to: ["b2", "bi1"] }
-					]
-				},
-				output: ["BTCBUSD", "ETHBTC"]
-			},
 
-			// It manages duplicates.
-			{
-				input: {
-					nodes: [
-						{
-							id: "a1",
-							text: "ETH/BTC",
-							outs: [{ id: "oa1" }]
-						},
-						{
-							id: "a2",
-							text: SellMarket.kind,
-							ins: [{ id: "ai1" }],
-							outs: [{ id: "oa2" }]
-						},
-						// Should not return "ETHBTC" twice.
-						{
-							id: "b1",
-							text: "ETH/BTC",
-							outs: [{ id: "ob1" }]
-						},
-						{
-							id: "b2",
-							text: TickerPrice.kind,
-							ins: [{ id: "bi1" }],
-							outs: [{ id: "ob2" }]
-						}
-					],
-					edges: [
-						{ id: "ea1", from: ["a1", "oa1"], to: ["a2", "ai1"] },
-						{ id: "eb1", from: ["b1", "ob1"], to: ["b2", "bi1"] }
-					]
+	assert.deepEqual(
+		await extractsBinanceSymbolsFromFlow(symbols, {
+			nodes: [
+				{
+					id: "a1",
+					text: "ETH/BTC",
+					outs: [{ id: "oa1" }]
 				},
-				output: ["ETHBTC"]
-			}
-		]
+				{ id: "a2", text: "1", outs: [{ id: "oa2" }] },
+				{ id: "a3", text: "true", outs: [{ id: "oa3" }] },
+				{
+					id: "a4",
+					text: BuyMarket.kind,
+					ins: [
+						{ id: "ai1" },
+						{ id: "ai2" },
+						{ id: "ai3" },
+						{ id: "ai4" }
+					],
+					outs: [{ id: "oa2" }]
+				},
+				{ id: "b1", text: "BTC/BUSD", outs: [{ id: "ob1" }] },
+				{
+					id: "b2",
+					text: TickerPrice.kind,
+					ins: [{ id: "bi1" }],
+					outs: [{ id: "oa2" }]
+				}
+			],
+			edges: [
+				{ id: "ea1", from: ["a1", "oa1"], to: ["a4", "ai1"] },
+				{ id: "ea2", from: ["a2", "oa2"], to: ["a4", "ai2"] },
+				{ id: "ea3", from: ["a3", "oa3"], to: ["a4", "ai4"] },
+				{ id: "eb1", from: ["b1", "ob1"], to: ["b2", "bi1"] }
+			]
+		}),
+		["BTCBUSD", "ETHBTC"]
+	)
+
+	// It manages duplicates.
+	assert.deepEqual(
+		await extractsBinanceSymbolsFromFlow(symbols, {
+			nodes: [
+				{
+					id: "a1",
+					text: "ETH/BTC",
+					outs: [{ id: "oa1" }]
+				},
+				{ id: "a2", text: "1", outs: [{ id: "oa2" }] },
+				{ id: "a3", text: "true", outs: [{ id: "oa3" }] },
+				{
+					id: "a4",
+					text: SellMarket.kind,
+					ins: [
+						{ id: "ai1" },
+						{ id: "ai2" },
+						{ id: "ai3" },
+						{ id: "ai4" }
+					],
+					outs: [{ id: "oa2" }]
+				},
+				// Should not return "ETHBTC" twice.
+				{ id: "b1", text: "ETH/BTC", outs: [{ id: "ob1" }] },
+				{
+					id: "b2",
+					text: TickerPrice.kind,
+					ins: [{ id: "bi1" }],
+					outs: [{ id: "ob2" }]
+				}
+			],
+			edges: [
+				{ id: "ea1", from: ["a1", "oa1"], to: ["a4", "ai1"] },
+				{ id: "ea2", from: ["a2", "oa2"], to: ["a4", "ai2"] },
+				{ id: "ea3", from: ["a3", "oa3"], to: ["a4", "ai4"] },
+				{ id: "eb1", from: ["b1", "ob1"], to: ["b2", "bi1"] }
+			]
+		}),
+		["ETHBTC"]
 	)
 })

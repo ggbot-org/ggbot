@@ -1,5 +1,5 @@
 import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
-import { Dflow, DflowId, DflowNode } from "dflow"
+import { DflowNode } from "dflow"
 import { now } from "minimal-time-helpers"
 
 import { DflowParameter } from "../common/parameters.js"
@@ -16,16 +16,15 @@ import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 import {
 	DflowBinanceSymbolAndInterval,
-	DflowBinanceSymbolInfo,
-	dflowBinanceSymbolSeparator
+	DflowBinanceSymbolInfo
 } from "./symbols.js"
 
 const binanceClientMock = new DflowBinanceClientMock()
 
-export const extractBinanceParametersFromFlow = async (
+export async function extractBinanceParametersFromFlow(
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	graph: StrategyFlowGraph
-) => {
+) {
 	const parameters: DflowParameter[] = []
 	const context: Context = {
 		binance: binanceClientMock,
@@ -57,7 +56,7 @@ export const extractBinanceParametersFromFlow = async (
 						const inputValue = params[key]
 						if (isNonEmptyString(inputValue)) value = inputValue
 						this.output(0).data = value
-						// Set parameter
+						// Additional code
 						parameters.push({
 							kind: IntervalParameter.kind,
 							key,
@@ -83,7 +82,7 @@ export const extractBinanceParametersFromFlow = async (
 						const inputValue = params[key]
 						if (isNonEmptyString(inputValue)) value = inputValue
 						this.output(0).data = value
-						// Set parameter
+						// Additional code
 						parameters.push({
 							kind: SymbolParameter.kind,
 							key,
@@ -98,13 +97,14 @@ export const extractBinanceParametersFromFlow = async (
 
 	dflow.load(graph)
 	await dflow.run()
+
 	return parameters
 }
 
-export const extractBinanceSymbolsAndIntervalsFromFlow = async (
+export async function extractBinanceSymbolsAndIntervalsFromFlow(
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	graph: StrategyFlowGraph
-): Promise<DflowBinanceSymbolAndInterval[]> => {
+): Promise<DflowBinanceSymbolAndInterval[]> {
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
 	const context: Context = {
 		binance: binanceClientMock,
@@ -131,7 +131,7 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = async (
 							!isDflowBinanceKlineInterval(interval)
 						)
 							return this.clearOutputs()
-						// Set symbolsAndIntervals
+						// Additional code
 						symbolsAndIntervals.push({
 							symbol,
 							interval
@@ -145,6 +145,7 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = async (
 
 	dflow.load(graph)
 	await dflow.run()
+
 	return symbolsAndIntervals
 		.filter(
 			// Remove duplicates.
@@ -172,39 +173,94 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = async (
 		)
 }
 
-export const extractsBinanceSymbolsFromFlow = (
+export async function extractsBinanceSymbolsFromFlow(
 	binanceSymbols: DflowBinanceSymbolInfo[],
-	flow: StrategyFlowGraph
-): string[] => {
-	const symbolsFromTickerPrice = new Set<string>()
-	const symbols = binanceSymbols.map(({ symbol }) => symbol)
-
-	const nodeConnections: Array<{ sourceId: DflowId; targetId: DflowId }> =
-		flow.edges.map((edge) => ({
-			sourceId: edge.from[0],
-			targetId: edge.to[0]
-		}))
-	for (const node of flow.nodes) {
-		if (
-			[BuyMarket.kind, SellMarket.kind, TickerPrice.kind].includes(
-				node.text
-			)
-		) {
-			const parentNodeIds = Dflow.parentsOfNodeId(
-				node.id,
-				nodeConnections
-			)
-			for (const parentNodeId of parentNodeIds) {
-				const node = flow.nodes.find(({ id }) => id === parentNodeId)
-				if (!node) continue
-				const maybeSymbol = node.text
-					.split(dflowBinanceSymbolSeparator)
-					.join("")
-				if (symbols.includes(maybeSymbol))
-					symbolsFromTickerPrice.add(maybeSymbol)
-			}
-		}
+	graph: StrategyFlowGraph
+): Promise<string[]> {
+	const symbolsSet = new Set<string>()
+	const context: Context = {
+		binance: binanceClientMock,
+		params: {},
+		memory: {},
+		time: now()
 	}
+	const nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
+
+	const dflow = new DflowBinanceHost(
+		{
+			nodesCatalog: {
+				...nodesCatalog,
+				[BuyMarket.kind]: class MockedBuyMarket extends DflowNode {
+					static kind = BuyMarket.kind
+					static inputs = BuyMarket.inputs
+					static outputs = BuyMarket.outputs
+					run() {
+						// 👇 Sync with BuyMarket run()
+						const symbol = this.input(0).data
+						const quantity = this.input(1).data as
+							| number
+							| undefined
+						const quoteOrderQty = this.input(2).data as
+							| number
+							| undefined
+						const execute = this.input(3).data
+						if (
+							typeof symbol !== "string" ||
+							(quantity === undefined &&
+								quoteOrderQty === undefined) ||
+							!execute
+						)
+							return this.clearOutputs()
+						// Additional code
+						symbolsSet.add(symbol)
+					}
+				},
+				[SellMarket.kind]: class MockedSellMarket extends DflowNode {
+					static kind = SellMarket.kind
+					static inputs = SellMarket.inputs
+					static outputs = SellMarket.outputs
+					run() {
+						// 👇 Sync with SellMarket run()
+						const symbol = this.input(0).data
+						const quantity = this.input(1).data as
+							| number
+							| undefined
+						const quoteOrderQty = this.input(2).data as
+							| number
+							| undefined
+						const execute = this.input(3).data
+						if (
+							typeof symbol !== "string" ||
+							(quantity === undefined &&
+								quoteOrderQty === undefined) ||
+							!execute
+						)
+							return this.clearOutputs()
+						// Additional code
+						symbolsSet.add(symbol)
+					}
+				},
+				[TickerPrice.kind]: class MockedTickerPrice extends DflowNode {
+					static kind = TickerPrice.kind
+					static inputs = TickerPrice.inputs
+					static outputs = TickerPrice.outputs
+					run() {
+						// 👇 Sync with TickerPrice run()
+						const symbol = this.input(0).data
+						if (typeof symbol !== "string")
+							return this.clearOutputs()
+						// Additional code
+						symbolsSet.add(symbol)
+					}
+				}
+			}
+		},
+		context
+	)
+
+	dflow.load(graph)
+	await dflow.run()
+
 	// Return deduplicated and sorted result.
-	return Array.from(symbolsFromTickerPrice.values()).sort()
+	return Array.from(symbolsSet.values()).sort()
 }

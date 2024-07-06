@@ -143,7 +143,7 @@ const prepareBinance = async (
 
 	// Pre-fetch klines for "price" nodes.
 
-	const symbolsFromNodes = extractsBinanceSymbolsFromFlow(
+	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(
 		binanceSymbols,
 		flow
 	)
