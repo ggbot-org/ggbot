@@ -1,10 +1,7 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import {
-	DflowBinanceKlineInterval,
-	isDflowBinanceKlineInterval
-} from "./klineIntervals.js"
+import { DflowBinanceKlineInterval } from "./klineIntervals.js"
 
 export type DflowBinanceSymbolInfo = Pick<
 	BinanceSymbolInfo,
@@ -73,10 +70,3 @@ export type DflowBinanceSymbolAndInterval = {
 	symbol: string
 	interval: DflowBinanceKlineInterval
 }
-
-export const isDflowBinanceSymbolAndInterval =
-	objectTypeGuard<DflowBinanceSymbolAndInterval>(({ symbol, interval }) => {
-		if (typeof symbol !== "string") return false
-		if (!isDflowBinanceKlineInterval(interval)) return false
-		return true
-	})

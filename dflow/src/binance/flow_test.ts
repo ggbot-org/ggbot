@@ -12,13 +12,15 @@ import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
+import { getDflowBinanceNodeSymbolKind } from "./symbols.js"
 
 test("extractBinanceParametersFromFlow", async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 	const intervalValue = "1h"
 	const intervalKey = "my interval"
-	const symbolValue = "BTCBUSD"
+	const symbolBaseAsset = "BTC"
+	const symbolQuoteAsset = "BUSD"
 	const symbolKey = "my symbol"
 
 	assert.deepEqual(
@@ -65,7 +67,10 @@ test("extractBinanceParametersFromFlow", async () => {
 				},
 				{
 					id: "n2",
-					text: JSON.stringify(symbolValue),
+					text: getDflowBinanceNodeSymbolKind({
+						baseAsset: symbolBaseAsset,
+						quoteAsset: symbolQuoteAsset
+					}),
 					outs: [{ id: "o1" }]
 				},
 				{
@@ -84,7 +89,7 @@ test("extractBinanceParametersFromFlow", async () => {
 			{
 				kind: SymbolParameter.kind,
 				key: symbolKey,
-				defaultValue: symbolValue
+				defaultValue: `${symbolBaseAsset}${symbolQuoteAsset}`
 			}
 		]
 	)
@@ -97,38 +102,30 @@ test("extractBinanceSymbolsAndIntervalsFromFlow", async () => {
 	assert.deepEqual(
 		await extractBinanceSymbolsAndIntervalsFromFlow(symbols, {
 			nodes: [
+				{ id: "a1", text: "ETH/BTC", outs: [{ id: "oa1" }] },
+				{ id: "a2", text: "1h", outs: [{ id: "oa2" }] },
+				{ id: "a3", text: "1", outs: [{ id: "oa3" }] },
 				{
-					id: "a1",
-					text: "ETHBTC",
-					outs: [{ id: "oa1" }]
-				},
-				{
-					id: "a2",
-					text: "1h",
-					outs: [{ id: "oa2" }]
-				},
-				{
-					id: "a3",
+					id: "a4",
 					text: Candles.kind,
 					ins: [{ id: "ai1" }, { id: "ai2" }, { id: "ai3" }]
 				},
-				{ id: "b1", text: "BTCBUSD", outs: [{ id: "ob1" }] },
+				{ id: "b1", text: "BTC/BUSD", outs: [{ id: "ob1" }] },
+				{ id: "b2", text: "1d", outs: [{ id: "ob2" }] },
+				{ id: "b3", text: "1", outs: [{ id: "ob3" }] },
 				{
-					id: "b2",
-					text: "1d",
-					outs: [{ id: "ob2" }]
-				},
-				{
-					id: "b3",
+					id: "b4",
 					text: Candles.kind,
 					ins: [{ id: "bi1" }, { id: "bi2" }, { id: "bi3" }]
 				}
 			],
 			edges: [
-				{ id: "ea1", from: ["a1", "oa1"], to: ["a3", "ai1"] },
-				{ id: "ea2", from: ["a2", "oa2"], to: ["a3", "ai2"] },
-				{ id: "eb1", from: ["b1", "ob1"], to: ["b3", "bi1"] },
-				{ id: "eb2", from: ["b2", "ob2"], to: ["b3", "bi2"] }
+				{ id: "ea1", from: ["a1", "oa1"], to: ["a4", "ai1"] },
+				{ id: "ea2", from: ["a2", "oa2"], to: ["a4", "ai2"] },
+				{ id: "ea3", from: ["a3", "oa3"], to: ["a4", "ai3"] },
+				{ id: "eb1", from: ["b1", "ob1"], to: ["b4", "bi1"] },
+				{ id: "eb2", from: ["b2", "ob2"], to: ["b4", "bi2"] },
+				{ id: "eb3", from: ["b3", "ob3"], to: ["b4", "bi3"] }
 			]
 		}),
 		[
@@ -139,45 +136,32 @@ test("extractBinanceSymbolsAndIntervalsFromFlow", async () => {
 
 	// It manages duplicates.
 	assert.deepEqual(
-		await extractBinanceParametersFromFlow(symbols, {
+		await extractBinanceSymbolsAndIntervalsFromFlow(symbols, {
 			nodes: [
+				{ id: "a1", text: "ETH/BTC", outs: [{ id: "oa1" }] },
+				{ id: "a2", text: "1h", outs: [{ id: "oa2" }] },
+				{ id: "a3", text: "1", outs: [{ id: "oa3" }] },
 				{
-					id: "a1",
-					text: "ETH/BTC",
-					outs: [{ id: "oa1" }]
-				},
-				{
-					id: "a2",
-					text: "1h",
-					outs: [{ id: "oa2" }]
-				},
-				{
-					id: "a3",
+					id: "a4",
 					text: Candles.kind,
 					ins: [{ id: "ai1" }, { id: "ai2" }, { id: "ai3" }]
 				},
-				// Should not return ["ETHBTC", "1h"] twice.
+				{ id: "b1", text: "ETH/BTC", outs: [{ id: "ob1" }] },
+				{ id: "b2", text: "1k", outs: [{ id: "ob2" }] },
+				{ id: "b3", text: "1", outs: [{ id: "ob3" }] },
 				{
-					id: "b1",
-					text: "ETH/BTC",
-					outs: [{ id: "ob1" }]
-				},
-				{
-					id: "b2",
-					text: "1h",
-					outs: [{ id: "ob2" }]
-				},
-				{
-					id: "b3",
+					id: "b4",
 					text: Candles.kind,
 					ins: [{ id: "bi1" }, { id: "bi2" }, { id: "bi3" }]
 				}
 			],
 			edges: [
-				{ id: "ea1", from: ["a1", "oa1"], to: ["a3", "ai1"] },
-				{ id: "ea2", from: ["a2", "oa2"], to: ["a3", "ai2"] },
-				{ id: "eb1", from: ["b1", "ob1"], to: ["b3", "bi1"] },
-				{ id: "eb2", from: ["b2", "ob2"], to: ["b3", "bi2"] }
+				{ id: "ea1", from: ["a1", "oa1"], to: ["a4", "ai1"] },
+				{ id: "ea2", from: ["a2", "oa2"], to: ["a4", "ai2"] },
+				{ id: "ea3", from: ["a3", "oa3"], to: ["a4", "ai3"] },
+				{ id: "eb1", from: ["b1", "ob1"], to: ["b4", "bi1"] },
+				{ id: "eb2", from: ["b2", "ob2"], to: ["b4", "bi2"] },
+				{ id: "eb3", from: ["b3", "ob3"], to: ["b4", "bi3"] }
 			]
 		}),
 		[{ symbol: "ETHBTC", interval: "1h" }]
@@ -185,11 +169,11 @@ test("extractBinanceSymbolsAndIntervalsFromFlow", async () => {
 
 	// It handles nodes `symbolParameter` and `intervalParameter`.
 	assert.deepEqual(
-		await extractBinanceParametersFromFlow(symbols, {
+		await extractBinanceSymbolsAndIntervalsFromFlow(symbols, {
 			nodes: [
 				{
 					id: "tdfzs",
-					text: "BTC/USDT",
+					text: "BTC/BUSD",
 					outs: [{ id: "o0" }]
 				},
 				{
@@ -275,7 +259,7 @@ test("extractBinanceSymbolsAndIntervalsFromFlow", async () => {
 				}
 			]
 		}),
-		[{ symbol: "BTCUSDT", interval: "1h" }]
+		[{ symbol: "BTCBUSD", interval: "1h" }]
 	)
 })
 

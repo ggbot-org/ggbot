@@ -172,9 +172,6 @@ export const extractBinanceSymbolsAndIntervalsFromFlow = async (
 		)
 }
 
-// TODO this is implemented with static analysis
-// it would need to run the flow with a custom price and order nodes that
-// extract the symbol
 export const extractsBinanceSymbolsFromFlow = (
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	flow: StrategyFlowGraph
