@@ -1,8 +1,6 @@
 import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
-import { staticWebsiteAwsRegion } from "../awsRegions.js"
-
 const statementNames = [
 	"describeAddresses",
 	"handleAddressesAssociation"
@@ -13,7 +11,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 	constructor() {
 		super(
 			ENV.AWS_ACCOUNT_ID(),
-			staticWebsiteAwsRegion,
+			ENV.AWS_DATA_REGION(),
 			`${ENV.PROJECT_SHORT_NAME()}-elastic-ips-policy`
 		)
 	}

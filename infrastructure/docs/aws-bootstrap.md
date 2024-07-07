@@ -6,7 +6,17 @@ See [env/README.md](../../env/README.md) for information about environment varia
 
 Get the AWS account id and set the `AWS_ACCOUNT_ID` environment variable.
 
+```sh
+export AWS_ACCOUNT_ID=888777666555
+```
+
 Choose a string to prefix project entities and set `PROJECT_SHORT_NAME` environment variable, for instance **ggbot**.
+
+Choose an AWS region to host your data, for instance let's assume **ggbot data** and activities will be inside **Europe** and let's go for _Europe (Frankfurt)_ region (which identifier is `eu-central-1`). Once you chose a region, set the environment variable `AWS_DATA_REGION` as
+
+```sh
+export AWS_DATA_REGION=eu-central-1
+```
 
 ## DNS domain
 
@@ -24,6 +34,12 @@ Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.com`.
 Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.com`.
 Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
 Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.
+
+## SES - Amazon Simple Email Service
+
+Setup your project email, for example to send email from an address like `noreply@ggbot.com`.
+
+TODO add instructions about SES bootstrapping
 
 ## Devops account
 
@@ -63,11 +79,11 @@ Get the access keys and set environment variables:
 To check devops policy run
 
 ```sh
-npm run test_infrastructure:bootstrap
+npm run test_infrastructure:aws:bootstrap
 ```
 
 Of course, the test is expected to fail on first run. To update devops policy run
 
 ```sh
-TODO npm run push_infrastructure:bootstrap
+TODO npm run push_infrastructure:aws:bootstrap
 ```

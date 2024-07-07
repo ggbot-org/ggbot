@@ -1,10 +1,11 @@
 import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
-import { staticWebsiteAwsRegion } from "../awsRegions.js"
-import { ApiRole } from "../stacks/ApiRole.js"
-import { LambdaFunction } from "../stacks/LambdaFunction.js"
-import { WebappApiGatewayDomain } from "../stacks/WebappApiGatewayDomain.js"
+import { ApiRole } from "../aws/ApiRole.js"
+import { LambdaFunction } from "../aws/LambdaFunction.js"
+import { WebappApiGatewayDomain } from "../aws/WebappApiGatewayDomain.js"
+
+const webappApiGatewayDomain = new WebappApiGatewayDomain()
 
 const statementNames = [
 	"createBuckets",
@@ -23,7 +24,7 @@ export class DevopsPolicy extends IamPolicy {
 	constructor() {
 		super(
 			ENV.AWS_ACCOUNT_ID(),
-			staticWebsiteAwsRegion,
+			ENV.AWS_DATA_REGION(),
 			`${ENV.PROJECT_SHORT_NAME()}-devops-policy`
 		)
 
@@ -83,7 +84,7 @@ export class DevopsPolicy extends IamPolicy {
 			manageLogGroups: "*",
 			manageLambdasPassRole: this.apiRole.arn,
 			readResources: "*",
-			webappApiGatewayDomain: WebappApiGatewayDomain.everyArn()
+			webappApiGatewayDomain: webappApiGatewayDomain.everyArn
 		}
 	}
 

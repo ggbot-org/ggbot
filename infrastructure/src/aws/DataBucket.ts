@@ -2,17 +2,20 @@ import { S3Bucket, S3BucketACL } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 import { getS3DataBucketName } from "@workspace/s3-data-bucket"
 
-const awsRegion = ENV.AWS_DATA_REGION()
+const AWS_REGION = ENV.AWS_DATA_REGION()
 
 export class DataBucket extends S3Bucket {
-	readonly ACL: S3BucketACL
+	readonly ACL: S3BucketACL = "private"
 
 	constructor() {
 		super(
-			awsRegion,
-			getS3DataBucketName(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN(), awsRegion)
+			AWS_REGION,
+			getS3DataBucketName(
+				ENV.DEPLOY_STAGE(),
+				ENV.DNS_DOMAIN(),
+				AWS_REGION
+			)
 		)
-		this.ACL = "private"
 	}
 
 	async create() {

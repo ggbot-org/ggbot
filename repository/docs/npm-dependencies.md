@@ -88,8 +88,6 @@ graph LR
     workspace/stripe-api --- workspace/database
     workspace/stripe-api --- workspace/stripe
     workspace/stripe-api --- workspace/s3-data-bucket
-    workspace/url-shortener --- workspace/env
-    workspace/url-shortener --- workspace/locators
     workspace/user-api --- workspace/api-gateway
     workspace/user-api --- workspace/authentication
     workspace/user-api --- workspace/database

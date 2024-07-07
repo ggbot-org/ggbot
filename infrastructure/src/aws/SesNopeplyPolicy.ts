@@ -4,7 +4,7 @@ import { ENV } from "@workspace/env"
 import { SesIdentity } from "./SesIdentity.js"
 
 export class SesNoreplyPolicy extends IamPolicy {
-	sesIdentity: SesIdentity
+	sesIdentity: SesIdentity = new SesIdentity()
 
 	constructor() {
 		super(
@@ -12,8 +12,6 @@ export class SesNoreplyPolicy extends IamPolicy {
 			ENV.AWS_SES_REGION(),
 			`${ENV.PROJECT_SHORT_NAME()}-main-ses-noreply-policy`
 		)
-
-		this.sesIdentity = new SesIdentity()
 	}
 
 	get statement() {

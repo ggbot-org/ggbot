@@ -11,8 +11,8 @@ import { ErrorCannotGetApiGatewayDomain } from "./errors.js"
 export class ApiGatewayDomain implements AwsResource {
 	readonly accountId: AwsAccountId
 	readonly region: AwsRegion
-
 	readonly domainName: string
+
 	readonly client: APIGatewayClient
 
 	constructor(
@@ -34,9 +34,17 @@ export class ApiGatewayDomain implements AwsResource {
 		)
 	}
 
+	get everyArn() {
+		return ApiGatewayDomain.arn(this.accountId, this.region, "*")
+	}
+
 	static arn(accountId: AwsAccountId, region: AwsRegion, domainName: string) {
 		const arnPrefix = `arn:aws:apigateway:${region}:${accountId}:domainnames/app`
 		return `${arnPrefix}/${domainName}`
+	}
+
+	static everyArn(accountId: AwsAccountId, region: AwsRegion) {
+		return ApiGatewayDomain.arn(accountId, region, "*")
 	}
 
 	async describe(): Promise<GetDomainNamesCommandOutput> {
