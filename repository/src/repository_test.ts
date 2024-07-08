@@ -149,4 +149,20 @@ describe("repository", () => {
 			})
 		}
 	})
+
+	describe("tsconfig.json", () => {
+		const { tsconfigJson, workspaces } = repository
+
+		test("compilerOptions.paths keys references existing workspaces", () => {
+			for (const key of tsconfigJson.paths.keys()) {
+				if (!key.startsWith(WorkspacePackageJson.scope)) continue
+				assert.ok(
+					Array.from(workspaces.values()).find(
+						({ packageJson: { packageName } }) => packageName == key
+					),
+					`compilerOptions.paths key ${key} does not reference existing workspace`
+				)
+			}
+		})
+	})
 })

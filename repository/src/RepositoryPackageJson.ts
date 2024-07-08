@@ -12,7 +12,7 @@ export class RepositoryPackageJson implements FileProvider {
 	static buildScriptKey = "build"
 
 	directoryPathname: string
-	filename = "package.json"
+	readonly filename = "package.json"
 
 	isPrivate: PackageJson["private"]
 	dependencies: PackageJson["dependencies"] = {}
