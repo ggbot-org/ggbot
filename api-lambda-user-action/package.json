@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/user-api",
+  "name": "@workspace/api-lambda-user-action",
   "version": "0.0.0",
   "private": true,
   "type": "module",
