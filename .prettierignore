@@ -1,4 +1,4 @@
 dist/
 temp/
-public/
+webapp/public/
 FormatjsIntlMessageIds.d.ts

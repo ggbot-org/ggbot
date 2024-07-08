@@ -6,18 +6,16 @@ import { webapp } from "_/routing/webapp"
 import { FC } from "react"
 
 const Router: FC = () => {
-	const {pathname} = location
+	const { pathname } = location
 
-if (pathname==="/"||pathname===webapp.homepage.pathname)
-			return <HomePage />
+	if (pathname === "/" || pathname === webapp.homepage.pathname)
+		return <HomePage />
 
-if (pathname===webapp.privacy.pathname)
-			return <PrivacyPage />
+	if (pathname === webapp.privacy.pathname) return <PrivacyPage />
 
-if (pathname===webapp.terms.pathname)
-			return <TermsPage />
+	if (pathname === webapp.terms.pathname) return <TermsPage />
 
-return null
+	return null
 }
 
 mount(Router)
