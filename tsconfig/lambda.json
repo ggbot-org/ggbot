@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
-		"lib": ["dom", "es2020"]
+		"lib": ["dom", "es2020"],
+		"noEmit": false,
 	},
-	"extends": "./default.json",
-	"include": ["./src/**/*.ts"]
+	"extends": "./default.json"
 }
