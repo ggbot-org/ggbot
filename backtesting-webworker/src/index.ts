@@ -5,39 +5,20 @@ import {
 	BacktestingSession,
 	BacktestingStrategy
 } from "@workspace/backtesting"
-import {
-	binanceKlineMaxLimit,
-	getBinanceIntervalTime
-} from "@workspace/binance"
-import {
-	BinanceExchangeInfoCacheIDB,
-	BinanceIDB,
-	BinanceKlinesCacheIDB
-} from "@workspace/binance-indexeddb"
-import {
-	DflowBinanceExecutor,
-	extractBinanceSymbolsAndIntervalsFromFlow,
-	extractsBinanceSymbolsFromFlow,
-	getDflowBinanceNodesCatalog
-} from "@workspace/dflow"
-import { logging } from "@workspace/logging"
+import { DflowBinanceExecutor } from "@workspace/dflow"
 import { newId, Order, StrategyKind } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
+import { getBinance, prepareBinance } from "./binance.js"
+import { debug, warn } from "./logging.js"
+
 type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 
-const { debug, warn } = logging("backtesting")
-
-const binanceExecutor = new DflowBinanceExecutor()
-const binanceIDB = new BinanceIDB()
-const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)
-const binanceKlinesCache = new BinanceKlinesCacheIDB(binanceIDB)
-
 const session = new BacktestingSession()
+const binanceExecutor = new DflowBinanceExecutor()
 
 let memoryChangedOnSomeStep = false
 const orderSet = new Set<Order>()
-const updateInterval = 1000
 
 const statusChangedMessage = (
 	session: BacktestingSession
@@ -97,86 +78,12 @@ const updateUI = (session: BacktestingSession) => {
 	}
 }
 
-/** Get strategy flow from session or throw. */
-const getStrategyFlow = (): BacktestingStrategy["flow"] => {
-	const flow = session.strategy?.flow
-	if (!flow) {
-		const error = new ErrorMissingFlow()
-		warn(error)
-		throw error
-	}
-	return flow
-}
-
-const prepareBinance = async (
+async function runBinance(
 	binance: BacktestingBinanceClient,
-	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
-) => {
-	const flow = getStrategyFlow()
-	const { symbols: binanceSymbols } = await binance.exchangeInfo()
-	binanceExecutor.nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
-
-	const firstTime = session.times[0]
-	const lastTime = session.times[session.times.length - 1]
-
-	// Pre-fetch klines for "candles" nodes.
-
-	const symbolsAndIntervalsFromCandlesNodes =
-		await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
-
-	for (const { interval, symbol } of symbolsAndIntervalsFromCandlesNodes) {
-		let startTime = firstTime
-		while (startTime < lastTime) {
-			const endTime = Math.min(
-				lastTime,
-				getBinanceIntervalTime[interval](startTime).plus(
-					binanceKlineMaxLimit
-				)
-			)
-			await binance.klines(symbol, interval, {
-				startTime,
-				endTime
-			})
-			startTime = endTime
-		}
-	}
-
-	// Pre-fetch klines for "price" nodes.
-
-	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(
-		binanceSymbols,
-		flow
-	)
-
-	for (const symbol of symbolsFromNodes) {
-		let startTime = firstTime
-		while (startTime < lastTime) {
-			const endTime = Math.min(
-				lastTime,
-				getBinanceIntervalTime[schedulingInterval](startTime).plus(
-					binanceKlineMaxLimit
-				)
-			)
-			await binance.klines(symbol, schedulingInterval, {
-				startTime,
-				endTime
-			})
-			startTime = endTime
-		}
-	}
-}
-
-const getBinance = (
-	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
-) => {
-	const binance = new BacktestingBinanceClient(schedulingInterval)
-	binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
-	binance.publicClient.klinesCache = binanceKlinesCache
-	return binance
-}
-
-const runBinance = async (binance: BacktestingBinanceClient) => {
-	const flow = getStrategyFlow()
+	binanceExecutor: DflowBinanceExecutor,
+	flow: BacktestingStrategy["flow"]
+) {
+	const updateInterval = 1000
 	let time: Time | undefined
 	// Initialize `shouldUpdateUI` to true, so first iteration will update UI.
 	let shouldUpdateUI = true
@@ -233,6 +140,17 @@ const runBinance = async (binance: BacktestingBinanceClient) => {
 	}
 }
 
+/** Get strategy flow from session or throw. */
+function getStrategyFlow(): BacktestingStrategy["flow"] {
+	const flow = session.strategy?.flow
+	if (!flow) {
+		const error = new ErrorMissingFlow()
+		warn(error)
+		throw error
+	}
+	return flow
+}
+
 self.onmessage = async ({
 	data: message
 }: MessageEvent<BacktestingMessageInData>) => {
@@ -284,9 +202,16 @@ self.onmessage = async ({
 
 		const handleStrategyKind: HandleStrategyKind = {
 			binance: async () => {
+				const flow = getStrategyFlow()
 				const binance = getBinance(schedulingInterval)
-				await prepareBinance(binance, schedulingInterval)
-				await runBinance(binance)
+				await prepareBinance(
+					binance,
+					binanceExecutor,
+					session,
+					schedulingInterval,
+					flow
+				)
+				await runBinance(binance, binanceExecutor, flow)
 			},
 			none: () => Promise.resolve()
 		}
@@ -321,9 +246,16 @@ self.onmessage = async ({
 
 		const handleStrategyKind: HandleStrategyKind = {
 			binance: async () => {
+				const flow = getStrategyFlow()
 				const binance = getBinance(schedulingInterval)
-				await prepareBinance(binance, schedulingInterval)
-				await runBinance(binance)
+				await prepareBinance(
+					binance,
+					binanceExecutor,
+					session,
+					schedulingInterval,
+					flow
+				)
+				await runBinance(binance, binanceExecutor, flow)
 			},
 			none: () => Promise.resolve()
 		}
