@@ -20,11 +20,11 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  * ```
  */
 
-export const browserBundle = ({
+export function browserBundle({
 	entryPoints,
 	outfile
-}: Pick<BuildOptions, "entryPoints" | "outfile">) =>
-	build({
+}: Pick<BuildOptions, "entryPoints" | "outfile">) {
+	return build({
 		alias: {
 			// `react-intl` without the parser is 40% smaller,
 			// see https://formatjs.io/docs/guides/advanced-usage/
@@ -39,3 +39,4 @@ export const browserBundle = ({
 		outfile,
 		platform: "browser"
 	})
+}
