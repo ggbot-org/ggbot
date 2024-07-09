@@ -1,14 +1,12 @@
 import {
-	apiActionMethod,
-	isActionInput,
-	stripeClientActions
-} from "@workspace/api"
-import {
 	ALLOWED_METHODS,
+	apiActionMethod,
 	APIGatewayProxyHandler,
 	errorResponse,
-	OK
-} from "@workspace/api-gateway"
+	isActionInput,
+	OK,
+	stripeClientActions
+} from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import {
 	BAD_REQUEST__400,

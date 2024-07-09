@@ -4,20 +4,20 @@ This is the internal dependencies graph: it shows how workspaces depend on each 
 
 ```mermaid
 graph LR
-    workspace/admin-api --- workspace/api-gateway
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/database
     workspace/admin-api --- workspace/logging
     workspace/admin-api --- workspace/s3-data-bucket
     workspace/api --- workspace/binance
+    workspace/api --- workspace/env
     workspace/api --- workspace/http
-    workspace/api --- workspace/models
-    workspace/api-gateway --- workspace/api
-    workspace/api-gateway --- workspace/env
-    workspace/api-gateway --- workspace/locators
+    workspace/api --- workspace/locators
+    workspace/api-lambda-user-action --- workspace/authentication
+    workspace/api-lambda-user-action --- workspace/database
+    workspace/api-lambda-user-action --- workspace/logging
+    workspace/api-lambda-user-action --- workspace/s3-data-bucket
     workspace/authentication --- workspace/env
     workspace/authentication --- workspace/http
-    workspace/authentication-api --- workspace/api-gateway
     workspace/authentication-api --- workspace/authentication
     workspace/authentication-api --- workspace/database
     workspace/authentication-api --- workspace/email-messages
@@ -41,19 +41,15 @@ graph LR
     workspace/binance-proxy --- workspace/authentication
     workspace/binance-proxy --- workspace/binance-client
     workspace/binance-proxy --- workspace/database
-    workspace/binance-proxy --- workspace/locators
     workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/s3-data-bucket
     workspace/database --- workspace/api
     workspace/database --- workspace/aws-s3
     workspace/database --- workspace/dflow
-    workspace/database --- workspace/env
     workspace/dflow --- workspace/binance
     workspace/dflow --- workspace/models
     workspace/email-messages --- workspace/api
     workspace/email-messages --- workspace/aws-ses
-    workspace/email-messages --- workspace/env
-    workspace/email-messages --- workspace/locators
     workspace/env --- workspace/models
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database
@@ -63,39 +59,26 @@ graph LR
     workspace/indexeddb --- workspace/logging
     workspace/indexeddb --- workspace/models
     workspace/infrastructure --- workspace/aws-acm
-    workspace/infrastructure --- workspace/aws-api-gateway
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
-    workspace/infrastructure --- workspace/locators
     workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/s3-data-bucket
     workspace/locators --- workspace/models
-    workspace/public-api --- workspace/api-gateway
     workspace/public-api --- workspace/database
     workspace/public-api --- workspace/logging
     workspace/public-api --- workspace/s3-data-bucket
     workspace/s3-data-bucket --- workspace/api
     workspace/s3-data-bucket --- workspace/aws-s3
-    workspace/s3-data-bucket --- workspace/env
     workspace/stripe --- workspace/api
-    workspace/stripe --- workspace/env
-    workspace/stripe --- workspace/locators
     workspace/stripe --- workspace/logging
-    workspace/stripe-api --- workspace/api-gateway
     workspace/stripe-api --- workspace/authentication
     workspace/stripe-api --- workspace/database
     workspace/stripe-api --- workspace/stripe
     workspace/stripe-api --- workspace/s3-data-bucket
-    workspace/user-api --- workspace/api-gateway
-    workspace/user-api --- workspace/authentication
-    workspace/user-api --- workspace/database
-    workspace/user-api --- workspace/logging
-    workspace/user-api --- workspace/s3-data-bucket
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/backtesting-webworker
-    workspace/webapp --- workspace/locators
     workspace/webstorage --- workspace/cache
     workspace/webstorage --- workspace/models
 ```

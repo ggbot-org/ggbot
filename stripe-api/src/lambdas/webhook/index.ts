@@ -1,10 +1,10 @@
-import { StripeMetadata } from "@workspace/api"
 import {
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
 	errorResponse,
-	OK
-} from "@workspace/api-gateway"
+	OK,
+	StripeMetadata
+} from "@workspace/api"
 import { PaymentDatabase } from "@workspace/database"
 import {
 	BAD_REQUEST__400,

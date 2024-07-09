@@ -46,11 +46,11 @@ class ActionAbortController extends AbortController {
 	}
 }
 
-export const clientAction = async <ActionType extends string>(
+export async function clientAction<ActionType extends string>(
 	url: URL | string,
 	headers: ClientActionHeaders,
 	{ type, data }: ActionInput<ActionType>
-): Promise<ApiActionOutput> => {
+): Promise<ApiActionOutput> {
 	const controller = new ActionAbortController()
 
 	const response = await fetch(url, {

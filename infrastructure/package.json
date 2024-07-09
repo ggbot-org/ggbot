@@ -12,8 +12,8 @@
     "test_infrastructure:aws:bootstrap": "node --test $npm_package_config_tsnode ./src/bootstrap/*_test.ts"
   },
   "dependencies": {
+    "@workspace/api": "0.0.0",
     "@workspace/aws-acm": "0.0.0",
-    "@workspace/aws-api-gateway": "0.0.0",
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/aws-iam": "0.0.0",
     "@workspace/aws-s3": "0.0.0",

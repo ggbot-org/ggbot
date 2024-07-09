@@ -154,7 +154,6 @@
   "workspaces": [
     "admin-api",
     "api",
-    "api-gateway",
     "api-lambda-user-action",
     "authentication",
     "authentication-api",

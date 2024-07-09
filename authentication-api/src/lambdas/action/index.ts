@@ -1,14 +1,12 @@
 import {
-	apiActionMethod,
-	authClientActions,
-	isActionInput
-} from "@workspace/api"
-import {
 	ALLOWED_METHODS,
+	apiActionMethod,
 	APIGatewayProxyHandler,
+	authClientActions,
 	errorResponse,
+	isActionInput,
 	OK
-} from "@workspace/api-gateway"
+} from "@workspace/api"
 import {
 	BAD_REQUEST__400,
 	BadGatewayError,

@@ -16,13 +16,15 @@
   },
   "dependencies": {
     "@workspace/binance": "0.0.0",
+    "@workspace/env": "0.0.0",
     "@workspace/http": "0.0.0",
+    "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
-    "minimal-assertion-helpers": "0.1.0",
     "minimal-time-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.2.0"
   },
   "devDependencies": {
-    "@workspace/tsconfig": "0.0.0"
+    "@workspace/tsconfig": "0.0.0",
+    "minimal-assertion-helpers": "0.1.0"
   }
 }
