@@ -53,7 +53,9 @@
 			"_/routing/*": ["./webapp/src/routing/*"],
 			"_/storages/*": ["./webapp/src/storages/*"],
 			"_/workers": ["./webapp/src/workers.ts"]
-		}
+		},
+		"target": "es2022"
 	},
-	"extends": "./tsconfig/code-quality.json"
+	"extends": "./tsconfig/code-quality.json",
+	"include": ["**/*.ts", "**/*.tsx"]
 }

@@ -5,9 +5,8 @@ import {
 	adminAccountDetailsHtmlPathname,
 	adminDashboardHtmlPathname
 } from "_/routing/admin/pages"
-import { FC } from "react"
 
-const Router: FC = () => {
+function Router() {
 	const pathname = location.pathname
 
 	if (pathname === adminDashboardHtmlPathname) return <DashboardPage />
@@ -18,4 +17,4 @@ const Router: FC = () => {
 	return null
 }
 
-mount(Router)
+mount(<Router />)

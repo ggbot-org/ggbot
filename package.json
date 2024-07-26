@@ -119,6 +119,9 @@
     "ts-prune": "0.10.3"
   },
   "lint-staged": {
+    "**/*.{json}": [
+      "prettier --write"
+    ],
     "**/*.{ts,tsx}": [
       "prettier --write",
       "eslint --fix"

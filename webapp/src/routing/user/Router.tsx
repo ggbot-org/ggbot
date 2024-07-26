@@ -8,9 +8,8 @@ import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
 import { nullStrategyKey } from "@workspace/models"
-import { FC } from "react"
 
-const Router: FC = () => {
+function Router() {
 	const pathname = location.pathname
 
 	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
@@ -35,4 +34,4 @@ const Router: FC = () => {
 	return null
 }
 
-mount(Router)
+mount(<Router />)

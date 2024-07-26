@@ -31,6 +31,8 @@ module.exports = {
 		"@typescript-eslint/no-array-constructor": "off",
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-extra-semi": "off",
+		// A non-null assertion is used in ./src/react/mount.tsx
+		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
 		"@typescript-eslint/no-unsafe-assignment": "off",
 		// @typescript-eslint/unbound-method rule is not compatible with hooks,

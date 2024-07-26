@@ -18,8 +18,7 @@
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"],
 			"_/workers": ["./src/workers.ts"]
-		},
-		"target": "esnext"
+		}
 	},
 	"extends": ["@workspace/tsconfig/default"]
 }

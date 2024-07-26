@@ -3,9 +3,8 @@ import { PrivacyPage } from "_/pages/Privacy"
 import { TermsPage } from "_/pages/Terms"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
-import { FC } from "react"
 
-const Router: FC = () => {
+function Router() {
 	const { pathname } = location
 
 	if (pathname === "/" || pathname === webapp.homepage.pathname)
@@ -18,4 +17,4 @@ const Router: FC = () => {
 	return null
 }
 
-mount(Router)
+mount(<Router />)
