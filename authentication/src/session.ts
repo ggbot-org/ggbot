@@ -12,9 +12,20 @@ import { decrypt, encrypt } from "./crypto.js"
 export const signSession = async (session: ClientSession) =>
 	await encrypt(JSON.stringify(session), ENV.AUTHENTICATION_SECRET())
 
-export const readSessionFromAuthorizationHeader = async (
+/**
+ * Get client session from encrypted authorization header.
+ *
+ * @example
+ *
+ * ```ts
+ * const authorization = event.headers.Authorization
+ * const { accountId, creationDay } =
+ * 	await readSessionFromAuthorizationHeader(authorization)
+ * ```
+ */
+export async function readSessionFromAuthorizationHeader(
 	headerContent: unknown
-): Promise<ClientSession> => {
+): Promise<ClientSession> {
 	if (typeof headerContent !== "string") throw new UnauthorizedError()
 	const sessionJson = await decrypt(
 		headerContent,

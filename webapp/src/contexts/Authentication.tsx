@@ -11,7 +11,6 @@ import { Account, EmailAddress, Subscription } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 import {
 	createContext,
-	FC,
 	PropsWithChildren,
 	Reducer,
 	useCallback,
@@ -62,7 +61,7 @@ export const AuthenticationContext = createContext<ContextValue>({
 
 AuthenticationContext.displayName = "AuthenticationContext"
 
-export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
+export function AuthenticationProvider({ children }: PropsWithChildren) {
 	const [{ email, exited, exitConfirmationIsActive, token }, dispatch] =
 		useReducer<Reducer<State, Action>>(
 			(state, action) => {

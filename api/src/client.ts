@@ -64,14 +64,12 @@ export async function clientAction<ActionType extends string>(
 	controller.clearTimeout()
 
 	try {
+		if (!response.ok) throw response.status
+
 		const output: unknown = await response.json()
-
-		if (!response.ok) {
-			if (isApiActionOutputError(output)) return output
-			throw response.status
-		}
-
+		if (isApiActionOutputError(output)) return output
 		if (isApiActionOutputData(output)) return output
+
 		throw new GenericError()
 	} catch (error) {
 		for (const ErrorClass of [
