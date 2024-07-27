@@ -9,6 +9,15 @@ import { ErrorExceededQuota } from "./errors.js"
 import { newId } from "./item.js"
 import { StrategyScheduling } from "./strategyScheduling.js"
 
+const { insertAccountStrategy } = accountStrategiesModifier
+
+type InsertAccountStrategy = typeof insertAccountStrategy
+type InsertAccountStrategyInput = {
+	previousAccountStrategies: Parameters<InsertAccountStrategy>[0]
+	accountStrategy: Parameters<InsertAccountStrategy>[1]
+	subscriptionPlan: Parameters<InsertAccountStrategy>[2]
+}
+
 const accountStrategy1: AccountStrategy = {
 	strategyId: "11111111",
 	strategyKind: "binance",
@@ -57,25 +66,26 @@ describe("accountStrategiesModifier", () => {
 	describe("insertAccountStrategy", () => {
 		test("inserts a new item", () => {
 			assertDeepEqual<
-				Parameters<
-					typeof accountStrategiesModifier.insertAccountStrategy
-				>,
-				ReturnType<
-					typeof accountStrategiesModifier.insertAccountStrategy
-				>
+				InsertAccountStrategyInput,
+				ReturnType<InsertAccountStrategy>
 			>(
-				function insertAccountStrategy(
-					input: Parameters<
-						typeof accountStrategiesModifier.insertAccountStrategy
-					>
-				) {
-					return accountStrategiesModifier.insertAccountStrategy(
-						...input
-					)
-				},
+				({
+					previousAccountStrategies,
+					accountStrategy,
+					subscriptionPlan
+				}: InsertAccountStrategyInput) =>
+					insertAccountStrategy(
+						previousAccountStrategies,
+						accountStrategy,
+						subscriptionPlan
+					),
 				[
 					{
-						input: [[], accountStrategy1, undefined],
+						input: {
+							previousAccountStrategies: [],
+							accountStrategy: accountStrategy1,
+							subscriptionPlan: undefined
+						},
 						output: [accountStrategy1]
 					}
 				]
@@ -85,7 +95,7 @@ describe("accountStrategiesModifier", () => {
 		test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
-					accountStrategiesModifier.insertAccountStrategy(
+					insertAccountStrategy(
 						[accountStrategy1, accountStrategy2],
 						accountStrategy3,
 						undefined
@@ -103,11 +113,7 @@ describe("accountStrategiesModifier", () => {
 		test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
 			assert.throws(
 				() => {
-					accountStrategiesModifier.insertAccountStrategy(
-						[],
-						accountStrategy4Active,
-						undefined
-					)
+					insertAccountStrategy([], accountStrategy4Active, undefined)
 				},
 				{
 					name: "Error",

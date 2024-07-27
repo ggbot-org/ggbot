@@ -15,7 +15,6 @@ import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	FormEventHandler,
 	InputHTMLAttributes,
 	useCallback,
@@ -29,7 +28,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const CreateStrategy: FC = () => {
+export function CreateStrategy() {
 	const CREATE = useUserApi.CreateStrategy()
 	const newStrategy = CREATE.data
 	const readOnly = CREATE.isPending
@@ -77,7 +76,9 @@ export const CreateStrategy: FC = () => {
 		<Columns>
 			<OneColumn>
 				<Form box onSubmit={onSubmit}>
-					{error ? null : (
+					{error ? (
+						<StrategiesErrorExceededQuota error={error} />
+					) : (
 						<Message>
 							<FormattedMessage
 								id="CreateStrategy.chooseName"
@@ -85,8 +86,6 @@ export const CreateStrategy: FC = () => {
 							/>
 						</Message>
 					)}
-
-					<StrategiesErrorExceededQuota error={error} />
 
 					<StrategyName
 						required

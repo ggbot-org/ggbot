@@ -17,15 +17,16 @@ export const accountStrategiesModifier = {
 			...previousAccountStrategies,
 			accountStrategy
 		]
+
 		// Check num strategies does not exceed quota, according to subscription.
 		if (
 			accountStrategies.length >
 			quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
 		)
 			throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" })
-		let numSchedulings = 0
 
-		// Check num schedulings does not exceed quota, according to subscription.
+		// Check num active schedulings does not exceed quota, according to subscription.
+		let numSchedulings = 0
 		for (const { schedulings } of accountStrategies)
 			numSchedulings += schedulings.length
 		if (
@@ -34,6 +35,7 @@ export const accountStrategiesModifier = {
 			throw new ErrorExceededQuota({
 				type: "MAX_SCHEDULINGS_PER_ACCOUNT"
 			})
+
 		return accountStrategies
 	},
 

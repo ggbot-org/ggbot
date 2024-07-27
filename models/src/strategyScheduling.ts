@@ -22,14 +22,16 @@ export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(
 		(memory === undefined ? true : isStrategyMemory(memory))
 )
 
-export const newStrategyScheduling = ({
+export function newStrategyScheduling({
 	frequency,
 	status
-}: Pick<StrategyScheduling, "frequency" | "status">): StrategyScheduling => ({
-	id: newId(),
-	frequency,
-	status
-})
+}: Pick<StrategyScheduling, "frequency" | "status">): StrategyScheduling {
+	return {
+		id: newId(),
+		frequency,
+		status
+	}
+}
 
 export const isStrategySchedulings =
 	arrayTypeGuard<StrategyScheduling>(isStrategyScheduling)

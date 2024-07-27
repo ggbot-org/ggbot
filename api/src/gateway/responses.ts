@@ -30,6 +30,20 @@ export function OK(data: ApiActionOutputData["data"]): APIGatewayProxyResult {
 	}
 }
 
+export function ERROR(
+	error: ApiActionOutputError["error"]
+): APIGatewayProxyResult {
+	return {
+		...responseBody({ error }),
+		headers: {
+			"Content-Type": "application/json",
+			...commonHeaders
+		},
+		isBase64Encoded: false,
+		statusCode: OK__200
+	}
+}
+
 export function BAD_REQUEST(
 	error?: ApiActionOutputError["error"]
 ): APIGatewayProxyResult {

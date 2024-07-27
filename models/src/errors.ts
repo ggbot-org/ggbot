@@ -18,7 +18,6 @@ export class ErrorAccountItemNotFound extends Error {
 		type,
 		accountId
 	}: Pick<ErrorAccountItemNotFound, "type" | "accountId">) {
-		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		return `${type} not found, accountId=${accountId}`
 	}
 	toJSON() {

@@ -3,6 +3,7 @@ import {
 	apiActionMethod,
 	APIGatewayProxyHandler,
 	BAD_REQUEST,
+	ERROR,
 	errorResponse,
 	isActionInput,
 	OK,
@@ -79,10 +80,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 				return errorResponse(ErrorClass.statusCode)
 			}
 
+		if (error instanceof ErrorExceededQuota) return ERROR(error.toJSON())
+
 		if (
 			error instanceof ErrorAccountItemNotFound ||
 			error instanceof ErrorBinanceHTTP ||
-			error instanceof ErrorExceededQuota ||
 			error instanceof ErrorUnknownItem
 		) {
 			debug(error)
