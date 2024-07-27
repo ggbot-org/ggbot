@@ -75,7 +75,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 				if (action.type === "RESET_TOKEN")
 					return {
 						...state,
-						// Need also to reset `email` together with `token`.
+						// Need to reset `email` together with `token`.
 						email: undefined,
 						token: undefined
 					}
@@ -153,7 +153,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 
 	// TODO improve this
 	// Authentication context may work differently, and do not provide subscription
-	// also subscription could be cached in local storage?
+	// also subscription could be cached in session storage?
 	const contextValue = useMemo<ContextValue>(
 		() => ({
 			accountId: storedAccount?.id ?? "",
@@ -193,7 +193,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 				// Re-fetch.
 				const timeoutId = setTimeout(() => {
 					READ.reset()
-				}, 5000)
+				}, 5_000)
 				return () => {
 					clearTimeout(timeoutId)
 				}

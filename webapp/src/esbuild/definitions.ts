@@ -1,5 +1,5 @@
-import { DeployStage } from "@workspace/models"
 import { ENV } from "@workspace/env"
+import { DeployStage } from "@workspace/models"
 
 export const esbuildDefinitions = {
 	BUILD_DATE: `"${new Date().toJSON().substring(0, 10)}"`,

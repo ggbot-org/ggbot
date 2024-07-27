@@ -15,17 +15,7 @@ export class CacheObjectStore implements IDBObjectStoreProvider {
 		storeBasename: string,
 		databaseVersion: IDBInstance["databaseVersion"]
 	) {
-		this.storeName = CacheObjectStore.storeName(
-			storeBasename,
-			databaseVersion
-		)
-	}
-
-	static storeName(
-		storeBasename: string,
-		databaseVersion: IDBInstance["databaseVersion"]
-	) {
-		return `${storeBasename}-v${databaseVersion}`
+		this.storeName = `${storeBasename}-v${databaseVersion}`
 	}
 
 	create(db: IDBDatabase) {
@@ -45,7 +35,7 @@ export class CacheObjectStore implements IDBObjectStoreProvider {
 				request.onsuccess = () => resolve()
 			} catch (error) {
 				warn(error)
-				reject(undefined)
+				reject()
 			}
 		})
 	}

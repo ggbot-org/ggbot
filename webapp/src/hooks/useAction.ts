@@ -64,14 +64,11 @@ export type UseActionApiArg = {
  * }, [FooBar])
  * ```
  */
-export const useAction = <
+export function useAction<
 	ActionType extends string,
 	Input extends ActionIO,
 	Output extends ActionIO
->(
-	{ url, withAuth }: UseActionApiArg,
-	type: ActionType
-) => {
+>({ url, withAuth }: UseActionApiArg, type: ActionType) {
 	const [data, setData] = useState<Output | undefined>()
 	const [error, setError] = useState<UseActionError>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
@@ -136,7 +133,6 @@ export const useAction = <
 					if (error instanceof BadRequestError)
 						return setError({ name: BadRequestError.errorName })
 
-					// TODO should logout user
 					if (error instanceof UnauthorizedError) {
 						localWebStorage.authToken.delete()
 						return setError({ name: UnauthorizedError.errorName })

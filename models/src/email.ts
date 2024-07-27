@@ -40,7 +40,7 @@ export const isEmailAddress = (arg: unknown): arg is EmailAddress => {
  *
  * `Name@gmail.com` can be used as `name+label@gmail.com`
  */
-export const normalizeEmailAddress = (email: EmailAddress): EmailAddress => {
+export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
 	// Split EmailAddress
 	const [firstPart, domain] = email.split("@")
 	// Remove labels

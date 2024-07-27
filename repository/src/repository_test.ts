@@ -131,20 +131,14 @@ describe("repository", () => {
 				})
 
 				test("dependencies has exact version", () => {
-					const isExact = (version: string) =>
-						version
-							.split(".")
-							.every((part) => Number.isInteger(Number(part)))
-					// TODO: remove this condition, it is used to try out the React compiler
 					for (const [key, value] of [
 						...Array.from(dependencies.entries()),
 						...Array.from(devDependencies.entries())
 					])
-						if (value !== "0.0.0-experimental-c8b3f72-20240517")
-							assert.ok(
-								isExact(value),
-								`${assertionError} dependency ${key} version ${value} is not exact`
-							)
+						assert.ok(
+							Number.isInteger(Number(value.split(".")[0])),
+							`${assertionError} dependency ${key} version ${value} is not exact`
+						)
 				})
 			})
 		}
@@ -158,7 +152,8 @@ describe("repository", () => {
 				if (!key.startsWith(WorkspacePackageJson.scope)) continue
 				assert.ok(
 					Array.from(workspaces.values()).find(
-						({ packageJson: { packageName } }) => packageName == key
+						({ packageJson: { packageName } }) =>
+							packageName === key
 					),
 					`compilerOptions.paths key ${key} does not reference existing workspace`
 				)

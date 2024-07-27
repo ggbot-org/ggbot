@@ -1,7 +1,7 @@
-import { strict as assert } from "node:assert"
 import { test } from "node:test"
 
-// TODO use asset helpers
+import { assertEqual } from "minimal-assertion-helpers"
+
 import {
 	isBinanceKline,
 	isBinanceKlineInterval,
@@ -10,7 +10,7 @@ import {
 } from "./typeGuards.js"
 
 test("isBinanceKline", () => {
-	;[
+	assertEqual(isBinanceKline, [
 		{
 			input: [
 				1674259200000,
@@ -28,13 +28,11 @@ test("isBinanceKline", () => {
 			],
 			output: true
 		}
-	].forEach(({ input, output }) => {
-		assert.equal(isBinanceKline(input), output)
-	})
+	])
 })
 
 test("isBinanceKlineInterval", () => {
-	;[
+	assertEqual(isBinanceKlineInterval, [
 		{ input: "xx", output: false },
 		{ input: "1m", output: true },
 		{ input: "3m", output: true },
@@ -51,13 +49,11 @@ test("isBinanceKlineInterval", () => {
 		{ input: "3d", output: true },
 		{ input: "1w", output: true },
 		{ input: "1M", output: true }
-	].forEach(({ input, output }) => {
-		assert.equal(isBinanceKlineInterval(input), output)
-	})
+	])
 })
 
 test("isBinanceSymbolFilterLotSize", () => {
-	;[
+	assertEqual(isBinanceSymbolFilterLotSize, [
 		{
 			input: {
 				filterType: "LOT_SIZE",
@@ -103,13 +99,11 @@ test("isBinanceSymbolFilterLotSize", () => {
 			},
 			output: false
 		}
-	].forEach(({ input, output }) => {
-		assert.equal(isBinanceSymbolFilterLotSize(input), output)
-	})
+	])
 })
 
 test("isBinanceSymbolFilterMinNotional", () => {
-	;[
+	assertEqual(isBinanceSymbolFilterMinNotional, [
 		{
 			input: {
 				filterType: "MIN_NOTIONAL",
@@ -155,7 +149,5 @@ test("isBinanceSymbolFilterMinNotional", () => {
 			},
 			output: false
 		}
-	].forEach(({ input, output }) => {
-		assert.equal(isBinanceSymbolFilterMinNotional(input), output)
-	})
+	])
 })

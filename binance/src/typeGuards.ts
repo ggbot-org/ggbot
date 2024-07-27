@@ -12,8 +12,9 @@ import {
 	BinanceSymbolFilterMinNotional
 } from "./types.js"
 
-const isBinanceDecimal = (arg: unknown): arg is BinanceDecimal =>
-	typeof arg === "string" && !isNaN(Number(arg))
+function isBinanceDecimal(arg: unknown): arg is BinanceDecimal {
+	return typeof arg === "string" && !isNaN(Number(arg))
+}
 
 export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
 	({ code, msg }) => typeof code === "number" && typeof msg === "string"
@@ -27,7 +28,7 @@ export const isBinanceFill = objectTypeGuard<BinanceFill>(
 		typeof commissionAsset === "string"
 )
 
-export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
+export function isBinanceKline(arg: unknown): arg is BinanceKline {
 	if (!Array.isArray(arg)) return false
 	const [
 		openTime,
@@ -59,9 +60,9 @@ export const isBinanceKline = (arg: unknown): arg is BinanceKline => {
 	)
 }
 
-export const isBinanceOrderRespFULL = (
+export function isBinanceOrderRespFULL(
 	arg: unknown
-): arg is BinanceOrderRespFULL => {
+): arg is BinanceOrderRespFULL {
 	if (typeof arg !== "object" || arg === null) return false
 	const { fills } = arg as Partial<BinanceOrderRespFULL>
 	if (!Array.isArray(fills)) return false

@@ -9,11 +9,7 @@ import {
 	outputValues
 } from "../commonIO.js"
 
-export const typicalPrice = (
-	high: number,
-	low: number,
-	close: number
-): number => {
+export function typicalPrice(high: number, low: number, close: number): number {
 	const sum = add(add(high, low), close)
 	return div(sum, 3) as number
 }
@@ -30,9 +26,8 @@ export class TypicalPrice extends DflowNode {
 		if (close.length !== size || low.length !== size)
 			return this.clearOutputs()
 		const result: number[] = []
-		for (let i = 0; i < size; i++) {
+		for (let i = 0; i < size; i++)
 			result.push(typicalPrice(high[i], low[i], close[i]))
-		}
 		this.output(0).data = result
 		this.output(1).data = result.slice(-1).pop()
 	}

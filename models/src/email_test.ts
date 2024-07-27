@@ -15,7 +15,7 @@ describe("normalizeEmailAddress", () => {
 	})
 
 	test("removes period characters", () => {
-		;[
+		assertEqual<EmailAddress, EmailAddress>(normalizeEmailAddress, [
 			{ input: "john.smith@gmail.com", output: "johnsmith@gmail.com" },
 			{ input: "jOhN.sMiTh@gmail.com", output: "johnsmith@gmail.com" },
 			{
@@ -23,40 +23,38 @@ describe("normalizeEmailAddress", () => {
 				output: "mixedcase@example.com"
 			},
 			{ input: "u.s.e.r@example.com", output: "user@example.com" }
-		].forEach(({ input, output }) => {
-			if (!isEmailAddress(input)) throw new Error()
-			assert.equal(normalizeEmailAddress(input), output)
-		})
+		])
 	})
 
 	test("removes labels", () => {
-		;[
+		assertEqual<EmailAddress, EmailAddress>(normalizeEmailAddress, [
 			{ input: "user+label@example.com", output: "user@example.com" }
-		].forEach(({ input, output }) => {
-			if (!isEmailAddress(input)) throw new Error()
-			assert.equal(normalizeEmailAddress(input), output)
-		})
+		])
 	})
 
 	test("throws ErrorInvalidArg", () => {
-		;["", "@@", "not an email", "john.smith at gmail.com"].forEach(
-			(value) => {
-				assert.throws(
-					() => {
-						normalizeEmailAddress(value)
-					},
-					{
-						name: "Error",
-						message: ErrorInvalidArg.message("EmailAddress")
-					}
-				)
-			}
-		)
+		const invalidEmails = [
+			"",
+			"@@",
+			"not an email",
+			"john.smith at gmail.com"
+		]
+		invalidEmails.forEach((value) => {
+			assert.throws(
+				() => {
+					normalizeEmailAddress(value)
+				},
+				{
+					name: "Error",
+					message: ErrorInvalidArg.message("EmailAddress")
+				}
+			)
+		})
 	})
 })
 
 test("isEmailAddress", () => {
-	;[
+	assertEqual(isEmailAddress, [
 		{ input: undefined, output: false },
 		{ input: "not an email", output: false },
 		{ input: "john.smith at gmail.com", output: false },
@@ -64,7 +62,5 @@ test("isEmailAddress", () => {
 		{ input: "jOhN.sMiTh@gmail.com", output: true },
 		{ input: "john.smith+label@gmail.com", output: true },
 		{ input: "john.smith@example.co", output: true }
-	].forEach(({ input, output }) => {
-		assert.equal(isEmailAddress(input), output)
-	})
+	])
 })

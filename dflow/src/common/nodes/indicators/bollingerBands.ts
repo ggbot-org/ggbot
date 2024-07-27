@@ -6,11 +6,11 @@ import { simpleMovingAverage } from "./movingAverages.js"
 
 const { input, output } = Dflow
 
-export const bollingerBands = (
+export function bollingerBands(
 	values: number[],
 	period: number,
 	amplitude = 2
-): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] => {
+): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
 	const size = values.length
 	if (size < period) return [[], [], []]
 	const middle = simpleMovingAverage(values, period)
