@@ -7,9 +7,9 @@ import { StrategyProfits } from "_/components/user/StrategyProfits"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { ManageStrategyProvider } from "_/contexts/user/ManageStrategy"
 import { StrategiesProvider } from "_/contexts/user/Strategies"
-import { FC, useState } from "react"
+import { useState } from "react"
 
-export const StrategyPage: FC = () => {
+export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("manage")
 
 	return (

@@ -1,8 +1,8 @@
 import { Toast, ToastContainer, ToastProps } from "_/components/library"
 import {
 	createContext,
-	FC,
 	PropsWithChildren,
+	ReactNode,
 	Reducer,
 	useCallback,
 	useMemo,
@@ -10,10 +10,8 @@ import {
 } from "react"
 import { Notification } from "trunx"
 
-type CreateToast = (message: ToastProps["message"]) => void
-
 type ContextValue = {
-	toast: Record<ToastProps["color"], CreateToast>
+	toast: Record<ToastProps["color"], (message: ToastProps["message"]) => void>
 }
 
 export const ToastContext = createContext<ContextValue>({
@@ -31,7 +29,7 @@ type Notification = {
 	toast: Omit<ToastProps, "close">
 }
 
-export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
+export function ToastProvider({ children }: PropsWithChildren) {
 	const [notifications, dispatch] = useReducer<
 		Reducer<
 			Notification[],
@@ -58,20 +56,29 @@ export const ToastProvider: FC<PropsWithChildren> = ({ children }) => {
 	)
 
 	const contextValue = useMemo<ContextValue>(() => {
-		const toast: (color: ToastProps["color"]) => CreateToast =
-			(color) => (message) => {
-				const id = Date.now()
-				dispatch({
-					type: "ADD_NOTIFICATION",
-					notification: { id, toast: { color, message } }
-				})
-			}
-
+		function notify({
+			color,
+			message
+		}: Pick<ToastProps, "color" | "message">) {
+			dispatch({
+				type: "ADD_NOTIFICATION",
+				notification: {
+					id: Date.now(),
+					toast: { color, message }
+				}
+			})
+		}
 		return {
 			toast: {
-				info: toast("info"),
-				danger: toast("danger"),
-				warning: toast("warning")
+				info(message: ReactNode) {
+					notify({ color: "info", message })
+				},
+				danger(message: ReactNode) {
+					notify({ color: "danger", message })
+				},
+				warning(message: ReactNode) {
+					notify({ color: "warning", message })
+				}
 			}
 		}
 	}, [])

@@ -1,8 +1,8 @@
 import { Button, Buttons } from "_/components/library"
 import { ToastContext } from "_/contexts/Toast"
-import { FC, useCallback, useContext } from "react"
+import { useCallback, useContext } from "react"
 
-export const ToastExample: FC = () => {
+export function ToastExample() {
 	const { toast } = useContext(ToastContext)
 
 	const showError = useCallback(() => {

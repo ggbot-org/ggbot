@@ -5,7 +5,7 @@ import {
 import { Box, Button, Buttons, Level, LevelItem } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
-import { FC, useCallback } from "react"
+import { useCallback } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export type SchedulingItemProps = Pick<
@@ -20,13 +20,13 @@ export type SchedulingItemProps = Pick<
 	removeScheduling: () => void
 }
 
-export const SchedulingItem: FC<SchedulingItemProps> = ({
+export function SchedulingItem({
 	disabledIntervalOptions,
 	scheduling,
 	setFrequency,
 	removeScheduling,
 	setStatus
-}) => {
+}: SchedulingItemProps) {
 	const { formatMessage } = useIntl()
 
 	const { frequency, status } = scheduling

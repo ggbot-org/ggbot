@@ -32,7 +32,6 @@ import {
 	StrategyScheduling
 } from "@workspace/models"
 import {
-	FC,
 	MouseEventHandler,
 	useCallback,
 	useContext,
@@ -44,7 +43,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
 
-export const Schedulings: FC = () => {
+export function Schedulings() {
 	const { formatMessage } = useIntl()
 
 	const strategyKey = useStrategyKey()
@@ -138,12 +137,8 @@ export const Schedulings: FC = () => {
 		[schedulingItems]
 	)
 
-	const canSave = useMemo(() => {
-		if (hasActiveSubscription !== true) return false
-		return (
-			someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
-		)
-	}, [someSchedulingChanged, hasActiveSubscription, schedulingItems])
+	const canSave =
+		someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
 
 	const setSchedulingItemFrequency = useCallback<
 		(id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
@@ -229,26 +224,12 @@ export const Schedulings: FC = () => {
 
 	const onClickSave = useCallback(() => {
 		if (!strategyKey) return
-		if (!hasActiveSubscription) {
-			toast.warning(
-				formatMessage({ id: "Schedulings.noActiveSubscription" })
-			)
-			return
-		}
 		if (!canSave) return
 		WRITE.request({
 			schedulings: wantedSchedulings,
 			...strategyKey
 		})
-	}, [
-		WRITE,
-		canSave,
-		formatMessage,
-		hasActiveSubscription,
-		strategyKey,
-		toast,
-		wantedSchedulings
-	])
+	}, [WRITE, canSave, strategyKey, wantedSchedulings])
 
 	const onClickCancel = useCallback<MouseEventHandler>(
 		(event) => {
