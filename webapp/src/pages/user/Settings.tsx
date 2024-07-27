@@ -3,9 +3,9 @@ import { AccountSettings } from "_/components/user/AccountSettings"
 import { BillingSettings } from "_/components/user/BillingSettings"
 import { BinanceSettings } from "_/components/user/BinanceSettings"
 import { PageContainer } from "_/components/user/PageContainer"
-import { FC, useState } from "react"
+import { useState } from "react"
 
-export const SettingsPage: FC = () => {
+export function SettingsPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("account")
 
 	return (

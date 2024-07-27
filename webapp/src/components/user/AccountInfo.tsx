@@ -2,12 +2,11 @@ import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import { Box, Title } from "_/components/library"
 import { WhenCreated } from "_/components/WhenCreated"
-import { useStoredAccount } from "_/hooks/useStoredAccount"
-import { FC } from "react"
+import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
 import { FormattedMessage } from "react-intl"
 
-export const AccountInfo: FC = () => {
-	const account = useStoredAccount()
+export function AccountInfo() {
+	const account = useStoredAccountInfo()
 
 	return (
 		<Box>

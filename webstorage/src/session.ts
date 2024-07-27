@@ -1,9 +1,15 @@
-import { cachedBoolean } from "./cache.js"
+import { AccountInfo } from "@workspace/models"
+
+import { cachedBoolean, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
 import { SessionWebStorageProvider } from "./providers.js"
 
 export class SessionWebStorage {
 	private storage = new SessionWebStorageProvider()
+
+	get accountInfo() {
+		return cachedObject<AccountInfo>(this.storage, itemKey.accountInfo())
+	}
 
 	get doNotShowPleasePurchase() {
 		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())

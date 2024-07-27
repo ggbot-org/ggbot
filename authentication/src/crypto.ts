@@ -6,12 +6,12 @@ const initializationVectorLength = 12
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 
-const deriveKey = (
+async function deriveKey(
 	passwordBasedKey: CryptoKey,
 	salt: BufferSource,
 	keyUsage: Extract<KeyUsage, "encrypt" | "decrypt">
-) =>
-	webcrypto.subtle.deriveKey(
+) {
+	return webcrypto.subtle.deriveKey(
 		{
 			name: "PBKDF2",
 			salt,
@@ -23,21 +23,23 @@ const deriveKey = (
 		false,
 		[keyUsage]
 	)
+}
 
-const getPasswordBasedKey = (password: string) =>
-	webcrypto.subtle.importKey(
+async function getPasswordBasedKey(password: string) {
+	return webcrypto.subtle.importKey(
 		"raw",
 		encoder.encode(password),
 		"PBKDF2",
 		false,
 		["deriveKey"]
 	)
+}
 
 /** Decrypt data, assumes input is a base64 encoded string. */
-export const decrypt = async (
+export async function decrypt(
 	encryptedData: string,
 	password: string
-): Promise<string> => {
+): Promise<string> {
 	// Convert base64 string to Uint8Array.
 	const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
 		value.charCodeAt(0)
@@ -64,10 +66,7 @@ export const decrypt = async (
 }
 
 /** Encrypt data, outputs a base64 encoded string. */
-export const encrypt = async (
-	data: string,
-	password: string
-): Promise<string> => {
+export async function encrypt(data: string, password: string): Promise<string> {
 	const saltVector = getRandomValues(new Uint8Array(saltVectorLength))
 	const initializationVector = getRandomValues(
 		new Uint8Array(initializationVectorLength)

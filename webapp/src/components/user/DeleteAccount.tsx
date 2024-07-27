@@ -10,7 +10,7 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { useStoredAccount } from "_/hooks/useStoredAccount"
+import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
 import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -18,7 +18,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 export const DeleteAccount: FC = () => {
 	const { formatMessage } = useIntl()
 
-	const account = useStoredAccount()
+	const account = useStoredAccountInfo()
 
 	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
 

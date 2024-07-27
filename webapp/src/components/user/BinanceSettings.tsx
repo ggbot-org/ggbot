@@ -3,9 +3,9 @@ import { BinanceApi } from "_/components/user/BinanceApi"
 import { CreateBinanceApi } from "_/components/user/CreateBinanceApi"
 import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, useCallback, useEffect } from "react"
+import { useCallback, useEffect } from "react"
 
-export const BinanceSettings: FC = () => {
+export function BinanceSettings() {
 	const READ_API_KEY = useUserApi.ReadBinanceApiKey()
 	const remoteApiKey = READ_API_KEY.data
 

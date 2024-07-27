@@ -17,7 +17,7 @@ type UseSubscriptionOutput = Partial<{
 	isPro: boolean
 }>
 
-export const useSubscription = (): UseSubscriptionOutput => {
+export function useSubscription(): UseSubscriptionOutput {
 	const { subscription } = useContext(AuthenticationContext)
 
 	if (subscription === undefined) return {}

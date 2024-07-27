@@ -1,16 +1,15 @@
-import { localWebStorage } from "_/storages/local"
-import { Account } from "@workspace/models"
+import { sessionWebStorage } from "_/storages/session"
+import { AccountInfo } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
-export const useStoredAccount = () => {
-	const [account, setAccount] = useState<Account | undefined>(
-		localWebStorage.account.get()
+export function useStoredAccountInfo() {
+	const [accountInfo, setAccountInfo] = useState<AccountInfo | undefined>(
+		sessionWebStorage.accountInfo.get()
 	)
 
 	// Handle case when `account` changes or is deleted from localWebStorage in other tabs.
-
 	const onLocalStorageChange = useCallback(() => {
-		setAccount(localWebStorage.account.get())
+		setAccountInfo(sessionWebStorage.accountInfo.get())
 	}, [])
 
 	useEffect(() => {
@@ -20,5 +19,5 @@ export const useStoredAccount = () => {
 		}
 	}, [onLocalStorageChange])
 
-	return account
+	return accountInfo
 }

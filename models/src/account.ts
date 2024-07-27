@@ -2,6 +2,7 @@ import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { EmailAddress, isEmailAddress } from "./email.js"
 import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
+import { Subscription } from "./subscription.js"
 import { createdNow, CreationTime, isCreationTime } from "./time.js"
 
 const accountRoles = ["admin", "user"] as const
@@ -24,11 +25,15 @@ export const isAccount = objectTypeGuard<Account>(
 		(role === undefined ? true : isAccountRole(role))
 )
 
-export const newAccount = ({ email }: NewItem<Account>): Account => ({
-	...createdNow(),
-	id: newId(),
-	email
-})
+export type AccountInfo = Account & { subscription: Subscription | null }
+
+export function newAccount({ email }: NewItem<Account>): Account {
+	return {
+		...createdNow(),
+		id: newId(),
+		email
+	}
+}
 
 export type AccountKey = ItemKey<{
 	accountId: Account["id"]

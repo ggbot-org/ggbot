@@ -10,8 +10,8 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
-import { useStoredAccount } from "_/hooks/useStoredAccount"
-import { FC, FormEventHandler, useCallback } from "react"
+import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
+import { FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
@@ -20,8 +20,8 @@ type Props = {
 	exit: () => void
 }
 
-export const AuthExit: FC<Props> = ({ isActive, setIsActive, exit }) => {
-	const account = useStoredAccount()
+export function AuthExit({ isActive, setIsActive, exit }: Props) {
+	const account = useStoredAccountInfo()
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {

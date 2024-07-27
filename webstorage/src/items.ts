@@ -2,7 +2,7 @@ import { Strategy } from "@workspace/models"
 
 const itemKeys = [
 	"DEBUG_backtesting",
-	"account",
+	"accountInfo",
 	"activeTabId",
 	"authToken",
 	"doNotShowPleasePurchase",
@@ -23,7 +23,7 @@ type ItemKey = (typeof itemKeys)[number]
  * Notice that `DEBUG_*` are used internally and do not have a version.
  */
 export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
-	account: () => "account:v1",
+	accountInfo: () => "accountInfo:v1",
 	activeTabId: (pageName: string) => `${pageName}:activeTab:v2`,
 	authToken: () => "authToken:v1",
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",

@@ -10,10 +10,9 @@ import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
 import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
 import { useSubscription } from "_/hooks/useSubscription"
-import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const SubscriptionInfo: FC = () => {
+export function SubscriptionInfo() {
 	const {
 		subscriptionEnd,
 		subscriptionPlan,

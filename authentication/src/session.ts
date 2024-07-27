@@ -9,8 +9,9 @@ import { getDay, today } from "minimal-time-helpers"
 
 import { decrypt, encrypt } from "./crypto.js"
 
-export const signSession = async (session: ClientSession) =>
-	await encrypt(JSON.stringify(session), ENV.AUTHENTICATION_SECRET())
+export async function signSession(session: ClientSession) {
+	return encrypt(JSON.stringify(session), ENV.AUTHENTICATION_SECRET())
+}
 
 /**
  * Get client session from encrypted authorization header.
@@ -27,10 +28,12 @@ export async function readSessionFromAuthorizationHeader(
 	headerContent: unknown
 ): Promise<ClientSession> {
 	if (typeof headerContent !== "string") throw new UnauthorizedError()
-	const sessionJson = await decrypt(
-		headerContent,
-		ENV.AUTHENTICATION_SECRET()
-	)
+	let sessionJson = ""
+	try {
+		sessionJson = await decrypt(headerContent, ENV.AUTHENTICATION_SECRET())
+	} catch {
+		throw new UnauthorizedError()
+	}
 	const session: unknown = JSON.parse(sessionJson)
 	if (!isClientSession(session)) throw new UnauthorizedError()
 	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays`
