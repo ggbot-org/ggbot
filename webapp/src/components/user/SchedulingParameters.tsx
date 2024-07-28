@@ -3,12 +3,12 @@ import {
 	SchedulingParameterItem,
 	SchedulingParameterItemProps
 } from "_/components/user/SchedulingParameterItem"
+import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { UseStrategyFlowOutput } from "_/hooks/useStrategyFlow"
 import {
 	extractBinanceParametersFromFlow,
 	extractCommonParametersFromFlow
 } from "@workspace/dflow"
-import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { StrategyParameters } from "@workspace/models"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -17,22 +17,22 @@ export type SchedulingParametersProps = Pick<
 	SchedulingParameterItemProps,
 	"setParam"
 > & {
-	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
 	flowViewGraph: UseStrategyFlowOutput
 	params: StrategyParameters | undefined
 }
 
 export function SchedulingParameters({
-	binanceSymbols,
 	flowViewGraph,
 	setParam,
 	params
 }: SchedulingParametersProps) {
+	const binanceSymbols = useBinanceSymbols()
+
 	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
 		Array<
 			Pick<
 				SchedulingParameterItemProps,
-				"kind" | "label" | "value" | "defaultValue"
+				"kind" | "label" | "paramValue" | "defaultParamValue"
 			>
 		>
 	>([])
@@ -41,20 +41,17 @@ export function SchedulingParameters({
 		;(async () => {
 			const items = []
 			if (!flowViewGraph) return
-			if (!params) return
 
 			const commonParams =
 				await extractCommonParametersFromFlow(flowViewGraph)
 
-			for (const { key, kind, defaultValue } of commonParams) {
-				const value = params[key]
+			for (const { key, kind, defaultValue } of commonParams)
 				items.push({
 					kind,
 					label: key,
-					defaultValue,
-					value
+					defaultParamValue: defaultValue,
+					paramValue: params?.[key]
 				})
-			}
 
 			const binanceParams = binanceSymbols
 				? await extractBinanceParametersFromFlow(
@@ -63,15 +60,14 @@ export function SchedulingParameters({
 					)
 				: []
 
-			for (const { key, kind, defaultValue } of binanceParams) {
-				const value = params[key]
+			for (const { key, kind, defaultValue } of binanceParams)
 				items.push({
 					kind,
 					label: key,
-					defaultValue,
-					value
+					defaultParamValue: defaultValue,
+					paramValue: params?.[key]
 				})
-			}
+
 			setSchedulingParameterItems(items)
 		})()
 	}, [flowViewGraph, binanceSymbols, params])
@@ -89,19 +85,15 @@ export function SchedulingParameters({
 			)}
 
 			<div>
-				{schedulingParameterItems.map(
-					({ kind, defaultValue, label, value }) => (
-						<SchedulingParameterItem
-							key={label}
-							kind={kind}
-							binanceSymbols={binanceSymbols}
-							setParam={setParam}
-							defaultValue={defaultValue}
-							label={label}
-							value={value}
-						/>
-					)
-				)}
+				{schedulingParameterItems.map(({ label, ...rest }) => (
+					<SchedulingParameterItem
+						key={label}
+						binanceSymbols={binanceSymbols}
+						setParam={setParam}
+						label={label}
+						{...rest}
+					/>
+				))}
 			</div>
 		</Box>
 	)

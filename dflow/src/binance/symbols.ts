@@ -27,10 +27,10 @@ export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
 		symbol === `${baseAsset}${quoteAsset}`
 )
 
-export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
+export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 	symbols: BinanceExchangeInfo["symbols"]
-): DflowBinanceSymbolInfo[] =>
-	symbols
+): DflowBinanceSymbolInfo[] {
+	return symbols
 		.filter(isDflowBinanceSymbolInfo)
 		.map(
 			({
@@ -57,14 +57,16 @@ export const binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols = (
 				symbol
 			})
 		)
+}
 
 export const dflowBinanceSymbolSeparator = "/"
 
-export const getDflowBinanceNodeSymbolKind = ({
+export function getDflowBinanceNodeSymbolKind({
 	baseAsset,
 	quoteAsset
-}: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) =>
-	[baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
+}: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) {
+	return [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
+}
 
 export type DflowBinanceSymbolAndInterval = {
 	symbol: string

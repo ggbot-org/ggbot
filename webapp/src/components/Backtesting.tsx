@@ -29,7 +29,6 @@ import {
 import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { isFrequency } from "@workspace/models"
@@ -50,8 +49,6 @@ export function Backtesting() {
 	const strategyKey = useStrategyKey()
 	const { strategy, strategyKind, strategyName } = useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
-
-	const binanceSymbols = useBinanceSymbols()
 
 	const flowViewGraph = useStrategyFlow(strategyKey)
 
@@ -276,7 +273,6 @@ export function Backtesting() {
 			<Columns>
 				<Column size="one-third">
 					<SchedulingParameters
-						binanceSymbols={binanceSymbols}
 						flowViewGraph={flowViewGraph}
 						setParam={setParam}
 						params={undefined}

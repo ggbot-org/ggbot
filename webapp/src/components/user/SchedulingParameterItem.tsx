@@ -17,7 +17,6 @@ import {
 } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -28,27 +27,29 @@ export type SchedulingParameterItemProps = {
 	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
 	kind: string
 	label: string
-	defaultValue?: SerializablePrimitive
-	value: SerializablePrimitive | undefined
+	defaultParamValue?: SerializablePrimitive
+	paramValue: SerializablePrimitive | undefined
 	setParam: (
 		key: IdentifierString,
 		value: SerializablePrimitive | undefined
 	) => void
 }
 
-export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
+export function SchedulingParameterItem({
 	binanceSymbols,
 	kind,
-	defaultValue,
+	defaultParamValue,
 	label,
-	value = "",
+	paramValue,
 	setParam
-}) => {
+}: SchedulingParameterItemProps) {
 	const [hasError, setHasError] = useState(false)
 
 	const onChange = useCallback<
 		ChangeEventHandler<
-			HTMLInputElement & { value: SchedulingParameterItemProps["value"] }
+			HTMLInputElement & {
+				value: SchedulingParameterItemProps["paramValue"]
+			}
 		>
 	>(
 		(event) => {
@@ -128,40 +129,56 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 
 	// Validate incoming value to show UI feedback.
 	useEffect(() => {
-		if (value === "") return
-		if (kind === BooleanParameter.kind && typeof value === "boolean") return
+		if (paramValue === undefined) return
+		if (kind === BooleanParameter.kind && typeof paramValue === "boolean")
+			return
 
-		if (kind === NumberParameter.kind && isFiniteNumber(Number(value)))
+		if (kind === NumberParameter.kind && isFiniteNumber(Number(paramValue)))
 			return
 
 		if (
 			kind === IntervalParameter.kind &&
-			isDflowBinanceKlineInterval(value)
+			isDflowBinanceKlineInterval(paramValue)
 		)
 			return
 
 		if (kind === SymbolParameter.kind) {
 			if (!binanceSymbols) return
 			const isSymbol = binanceSymbols.some(
-				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === value
+				({ baseAsset, quoteAsset }) =>
+					baseAsset + quoteAsset === paramValue
 			)
 			if (isSymbol) return
 		}
 
 		setHasError(true)
-	}, [kind, value, binanceSymbols])
+	}, [kind, paramValue, binanceSymbols])
 
-	const formattedValue = useMemo(() => {
+	const placeholder = useMemo(() => {
 		if (SymbolParameter.kind === kind) {
 			if (!binanceSymbols) return ""
 			const symbolInfo = binanceSymbols.find(
-				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === value
+				({ baseAsset, quoteAsset }) =>
+					baseAsset + quoteAsset === defaultParamValue
 			)
 			if (symbolInfo)
 				return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
 		}
-		return String(value ?? "")
-	}, [binanceSymbols, kind, value])
+		return String(defaultParamValue ?? "")
+	}, [binanceSymbols, kind, defaultParamValue])
+
+	const defaultValue = useMemo(() => {
+		if (SymbolParameter.kind === kind) {
+			if (!binanceSymbols) return ""
+			const symbolInfo = binanceSymbols.find(
+				({ baseAsset, quoteAsset }) =>
+					baseAsset + quoteAsset === paramValue
+			)
+			if (symbolInfo)
+				return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
+		}
+		return String(paramValue ?? "")
+	}, [binanceSymbols, kind, paramValue])
 
 	return (
 		<>
@@ -169,9 +186,9 @@ export const SchedulingParameterItem: FC<SchedulingParameterItemProps> = ({
 				color={hasError ? "danger" : undefined}
 				list={label}
 				onChange={onChange}
-				placeholder={String(defaultValue ?? "")}
+				placeholder={placeholder}
 				label={label}
-				defaultValue={formattedValue}
+				defaultValue={defaultValue}
 			/>
 
 			{kind === SymbolParameter.kind && (

@@ -19,7 +19,6 @@ import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErro
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { ToastContext } from "_/contexts/Toast"
 import { StrategiesContext } from "_/contexts/user/Strategies"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useSubscription } from "_/hooks/useSubscription"
@@ -58,8 +57,6 @@ export function Schedulings() {
 		refetchAccountStrategies
 	} = useContext(StrategiesContext)
 	const { toast } = useContext(ToastContext)
-
-	const binanceSymbols = useBinanceSymbols()
 
 	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
 		AccountStrategy[]
@@ -354,7 +351,6 @@ export function Schedulings() {
 
 					<Column>
 						<SchedulingParameters
-							binanceSymbols={binanceSymbols}
 							flowViewGraph={flowViewGraph}
 							setParam={setSchedulingParam(scheduling.id)}
 							params={scheduling.params}
