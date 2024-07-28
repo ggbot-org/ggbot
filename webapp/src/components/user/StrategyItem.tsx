@@ -1,33 +1,30 @@
-import { classNames } from "_/classNames"
-import { Box, Flex } from "_/components/library"
+import { classnames } from "_/classnames"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { AccountStrategy } from "@workspace/models"
-import { FC } from "react"
 
 type Props = AccountStrategy
 
-export const StrategyItem: FC<Props> = ({
-	name,
-	schedulings,
-	...strategyKey
-}) => {
-	const onClick = () => {
-		GOTO(new URL(webapp.user.strategy(strategyKey)))
-	}
-
+export function StrategyItem({ name, schedulings, ...strategyKey }: Props) {
 	return (
-		<Box
-			className={classNames("StrategyItem")}
+		<div
+			className={classnames("box", "StrategyItem")}
 			tabIndex={0}
-			onClick={onClick}
+			onClick={() => {
+				GOTO(new URL(webapp.user.strategy(strategyKey)))
+			}}
 		>
-			<Flex justify="space-between">
-				<span className={classNames("is-unselectable")}>{name}</span>
+			<div
+				className={classnames(
+					"is-flex",
+					"is-justify-content-space-between"
+				)}
+			>
+				<span className={classnames("is-unselectable")}>{name}</span>
 
 				<SchedulingsStatusBadges schedulings={schedulings} />
-			</Flex>
-		</Box>
+			</div>
+		</div>
 	)
 }

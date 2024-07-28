@@ -1,24 +1,30 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import { stringMaxLength } from "@workspace/models"
-import { FC } from "react"
-import { Input as _Input, InputProps } from "trunx"
+import { Input as _Input, InputProps as _InputProps } from "trunx"
 
-export type { InputProps } from "trunx"
+export type InputProps = _InputProps &
+	Partial<{
+		isStatic: boolean
+	}>
 
-export const Input: FC<InputProps> = ({
+export function Input({
 	color,
 	readOnly,
 	isStatic,
 	type,
 	...props
-}) => (
-	<_Input
-		className={classNames({ "Input--isStatic": isStatic })}
-		color={color}
-		readOnly={readOnly || isStatic}
-		isStatic={isStatic}
-		maxLength={type === "text" ? stringMaxLength : undefined}
-		type={type}
-		{...props}
-	/>
-)
+}: InputProps) {
+	return (
+		<_Input
+			className={classnames({
+				"Input--isStatic": isStatic,
+				"is-static": isStatic
+			})}
+			color={color}
+			readOnly={readOnly || isStatic}
+			maxLength={type === "text" ? stringMaxLength : undefined}
+			type={type}
+			{...props}
+		/>
+	)
+}

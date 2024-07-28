@@ -1,15 +1,15 @@
 import { AccountId } from "_/components/AccountId"
-import { Box, Column, Columns } from "_/components/library"
+import { Column, Columns, Div } from "_/components/library"
 import { useAdminApi } from "_/hooks/useAdminApi"
 import { webapp } from "_/routing/webapp"
 import { AccountKey, isAccountKey } from "@workspace/models"
-import { FC, useEffect } from "react"
+import { useEffect } from "react"
 
 type AccountItem = AccountKey & {
 	href: string
 }
 
-export const Accounts: FC = () => {
+export function Accounts() {
 	const READ = useAdminApi.ListAccountKeys()
 	const { data } = READ
 
@@ -35,15 +35,12 @@ export const Accounts: FC = () => {
 			{accountItems.map(({ accountId, href }) => (
 				<Column
 					key={accountId}
-					size={{
-						tablet: "half",
-						fullhd: "one-third"
-					}}
+					bulma={["is-half-tablet", "is-one-third-desktop"]}
 				>
 					<a href={href} tabIndex={0}>
-						<Box>
+						<Div bulma="box">
 							<AccountId value={accountId} />
-						</Box>
+						</Div>
 					</a>
 				</Column>
 			))}

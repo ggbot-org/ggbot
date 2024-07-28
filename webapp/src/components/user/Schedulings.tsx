@@ -1,10 +1,9 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Buttons,
 	Column,
 	Columns,
-	Form,
 	Level,
 	LevelItem,
 	Title
@@ -260,9 +259,9 @@ export function Schedulings() {
 	return (
 		<>
 			<Columns>
-				<Column isNarrow>
-					<Form
-						box
+				<Column bulma="is-narrow">
+					<form
+						className={classnames("box")}
 						onSubmit={(event) => {
 							event.preventDefault()
 						}}
@@ -277,7 +276,7 @@ export function Schedulings() {
 								</LevelItem>
 							}
 							right={
-								<LevelItem className={classNames("ml-5")}>
+								<LevelItem className={classnames("ml-5")}>
 									{currentSchedulings &&
 									!fetchAccountStrategiesIsPending ? (
 										<SchedulingsStatusBadges
@@ -327,13 +326,13 @@ export function Schedulings() {
 								</LevelItem>
 							}
 						/>
-					</Form>
+					</form>
 				</Column>
 			</Columns>
 
 			{schedulingItems.map((scheduling) => (
 				<Columns key={scheduling.id}>
-					<Column isNarrow>
+					<Column bulma="is-narrow">
 						<SchedulingItem
 							disabledIntervalOptions={
 								isPro ? [] : PRO_FREQUENCY_INTERVALS

@@ -1,4 +1,4 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
 	TabContent,
 	TabContentProps,
@@ -8,7 +8,6 @@ import {
 } from "_/components/library"
 import {
 	Dispatch,
-	FC,
 	PropsWithChildren,
 	ReactNode,
 	SetStateAction,
@@ -42,7 +41,7 @@ type TabsProps = {
 
 type ItemList<Props> = Array<PropsWithChildren<Props> & Pick<Tab, "tabId">>
 
-export const Tabs: FC<TabsProps> = ({ activeTabId, setActiveTabId, tabs }) => {
+export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 	const { formatMessage } = useIntl()
 
 	const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
@@ -71,7 +70,7 @@ export const Tabs: FC<TabsProps> = ({ activeTabId, setActiveTabId, tabs }) => {
 	)
 
 	return (
-		<div className={classNames("m-3")}>
+		<div className={classnames("m-3")}>
 			<TabSelectors>
 				{tabSelectors.map(({ children, tabId, ...props }) => (
 					<TabSelector key={tabId} {...props}>

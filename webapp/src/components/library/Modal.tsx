@@ -1,11 +1,6 @@
-import { classNames } from "_/classNames"
-import { FC, PropsWithChildren, useCallback, useEffect } from "react"
-import {
-	Modal as _Modal,
-	ModalBackground,
-	ModalClose,
-	ModalContent
-} from "trunx"
+import { classnames } from "_/classnames"
+import { PropsWithChildren, useCallback, useEffect } from "react"
+import { Modal as _Modal, ModalClose, ModalContent } from "trunx"
 
 type Props = Partial<{
 	isActive: boolean
@@ -16,11 +11,11 @@ type Props = Partial<{
 	setIsActive: (arg: boolean) => void
 }>
 
-export const Modal: FC<PropsWithChildren<Props>> = ({
+export function Modal({
 	children,
 	isActive,
 	setIsActive
-}) => {
+}: PropsWithChildren<Props>) {
 	const userCannotCloseModal = setIsActive === undefined
 
 	const closeModal = useCallback(() => {
@@ -48,11 +43,13 @@ export const Modal: FC<PropsWithChildren<Props>> = ({
 		}
 	}, [userCannotCloseModal, isActive, onKeydown])
 
+	// TODO update trunx Modal, then remove div with modal-background class
+	// and use isActive prop instead.
 	return (
-		<_Modal isActive={isActive}>
-			<ModalBackground onClick={closeModal} />
+		<_Modal noBackground bulma={{ "is-active": isActive }}>
+			<div className="modal-background" onClick={closeModal} />
 
-			<ModalContent className={classNames("Modal__content")}>
+			<ModalContent className={classnames("Modal__content")}>
 				{children}
 			</ModalContent>
 

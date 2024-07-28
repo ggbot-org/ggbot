@@ -1,4 +1,5 @@
-import { Box, Flex, Progress, ProgressProps, Title } from "_/components/library"
+import { classnames } from "_/classnames"
+import { Div, Progress, ProgressProps, Title } from "_/components/library"
 import type { UseBacktestingOutput } from "_/hooks/useBacktesting"
 import { dayFormat, timeFormat } from "_/i18n/formats"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -18,13 +19,19 @@ export function BacktestingProgress({
 	const { formatDate, formatMessage } = useIntl()
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Title>{formatMessage({ id: "BacktestingProgress.title" })}</Title>
 
 			<Progress {...progress} />
 
-			<Flex direction="column" spacing={{ my: 2 }}>
-				<Flex>
+			<div
+				className={classnames(
+					"is-flex",
+					"my-2",
+					"is-flex-direction-column"
+				)}
+			>
+				<div className={classnames("is-flex")}>
 					<FormattedMessage
 						id="BacktestingProgress.dayInterval"
 						values={{
@@ -32,7 +39,7 @@ export function BacktestingProgress({
 							end: formatDate(dayInterval.end, dayFormat)
 						}}
 					/>
-				</Flex>
+				</div>
 
 				{progress.max ? (
 					<FormattedMessage
@@ -42,16 +49,16 @@ export function BacktestingProgress({
 				) : null}
 
 				{currentTimestamp ? (
-					<Flex>
+					<div className={classnames("is-flex")}>
 						<FormattedMessage
 							id="BacktestingProgress.currentTime"
 							values={{
 								time: formatDate(currentTimestamp, timeFormat)
 							}}
 						/>
-					</Flex>
+					</div>
 				) : null}
-			</Flex>
-		</Box>
+			</div>
+		</Div>
 	)
 }

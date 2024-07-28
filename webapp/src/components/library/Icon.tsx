@@ -1,4 +1,4 @@
-import { FC, ReactNode, SVGAttributes } from "react"
+import { ReactNode, SVGAttributes } from "react"
 
 export const iconNames = [
 	"account",
@@ -72,7 +72,7 @@ type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 	size?: number | `${number}em` | `${number}rem`
 }
 
-export const Icon: FC<IconProps> = ({ name, onClick, size = "1em" }) => {
+export function Icon({ name, onClick, size = "1em" }: IconProps) {
 	const { viewBox, jsx } = iconRecord[name]
 
 	const className = onClick ? "cursor-pointer" : ""

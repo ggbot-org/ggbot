@@ -1,58 +1,58 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
 	Navbar,
 	NavbarEnd,
-	NavbarItemAnchor,
+	NavbarLink,
 	NavbarStart
 } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC, useContext } from "react"
+import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const Navigation: FC = () => {
+export function Navigation() {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
 	return (
-		<Navbar className="Navigation">
+		<Navbar className={classnames("Navigation")}>
 			<NavbarStart>
-				<NavbarItemAnchor
+				<NavbarLink
 					onClick={() => {
 						GOTO(webapp.user.dashboard)
 					}}
 				>
 					<FormattedMessage id="Navigation.dashboard" />
-				</NavbarItemAnchor>
+				</NavbarLink>
 
-				<NavbarItemAnchor
+				<NavbarLink
 					onClick={() => {
 						GOTO(webapp.user.settings)
 					}}
 				>
 					<FormattedMessage id="Navigation.settings" />
-				</NavbarItemAnchor>
+				</NavbarLink>
 			</NavbarStart>
 
 			<NavbarEnd>
 				{accountIsAdmin ? (
-					<NavbarItemAnchor
-						className={classNames("has-text-primary")}
+					<NavbarLink
+						className={classnames("has-text-primary")}
 						onClick={() => {
 							GOTO(webapp.admin.dashboard)
 						}}
 					>
 						<FormattedMessage id="Navigation.admin" />
-					</NavbarItemAnchor>
+					</NavbarLink>
 				) : null}
 
-				<NavbarItemAnchor
+				<NavbarLink
 					onClick={() => {
 						showAuthExit()
 					}}
 				>
 					<FormattedMessage id="Navigation.exit" />
-				</NavbarItemAnchor>
+				</NavbarLink>
 			</NavbarEnd>
 		</Navbar>
 	)

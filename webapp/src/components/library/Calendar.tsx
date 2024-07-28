@@ -1,13 +1,6 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import { dateToDay, Day } from "minimal-time-helpers"
-import {
-	FC,
-	memo,
-	MouseEventHandler,
-	useCallback,
-	useMemo,
-	useState
-} from "react"
+import { memo, MouseEventHandler, useCallback, useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
@@ -37,7 +30,7 @@ const CalendarWeekDays = memo(() => {
 	return (
 		<>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={classNames("Calendar__week-day")}>
+				<div key={day} className={classnames("Calendar__week-day")}>
 					{label}
 				</div>
 			))}
@@ -54,12 +47,12 @@ export type CalendarProps = {
 	setDay: (arg: Day) => void
 }
 
-export const Calendar: FC<CalendarProps> = ({
+export function Calendar({
 	min,
 	max,
 	day: selectedDay,
 	setDay: setSelectedDay
-}) => {
+}: CalendarProps) {
 	const { formatDate } = useIntl()
 
 	const [monthOffset, setMonthOffset] = useState(0)
@@ -194,15 +187,15 @@ export const Calendar: FC<CalendarProps> = ({
 	)
 
 	return (
-		<div className={classNames("Calendar")}>
+		<div className={classnames("Calendar")}>
 			<div
-				className={classNames("Calendar__head")}
+				className={classnames("Calendar__head")}
 				onClick={(event) => {
 					event.stopPropagation()
 				}}
 			>
 				<div
-					className={classNames("Calendar__head-icon", {
+					className={classnames("Calendar__head-icon", {
 						"has-text-grey-lighter": isFirstMonth
 					})}
 					onClick={onClickPrevious}
@@ -210,14 +203,14 @@ export const Calendar: FC<CalendarProps> = ({
 					<Icon name="caret-left" />
 				</div>
 
-				<div className={classNames("Calendar__head-text")}>
+				<div className={classnames("Calendar__head-text")}>
 					{monthName}
 				</div>
 
-				<div className={classNames("Calendar__head-text")}>{year}</div>
+				<div className={classnames("Calendar__head-text")}>{year}</div>
 
 				<div
-					className={classNames("Calendar__head-icon", {
+					className={classnames("Calendar__head-icon", {
 						"has-text-grey-lighter": isLastMonth
 					})}
 					onClick={onClickNext}
@@ -226,14 +219,14 @@ export const Calendar: FC<CalendarProps> = ({
 				</div>
 			</div>
 
-			<div className={classNames("Calendar__body")}>
+			<div className={classnames("Calendar__body")}>
 				<CalendarWeekDays />
 
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
 							key={key}
-							className={classNames("Calendar__cell", {
+							className={classnames("Calendar__cell", {
 								"Calendar__cell--selected": selected,
 								"Calendar__cell--disabled": !isSelectable
 							})}

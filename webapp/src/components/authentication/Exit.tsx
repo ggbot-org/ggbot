@@ -1,3 +1,4 @@
+import { classnames } from "_/classnames"
 import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import {
@@ -5,7 +6,6 @@ import {
 	Buttons,
 	Column,
 	Columns,
-	Form,
 	Message,
 	Modal,
 	Title
@@ -41,7 +41,11 @@ export function AuthExit({ isActive, setIsActive, exit }: Props) {
 
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
-			<Form box onSubmit={onSubmit} onReset={onReset}>
+			<form
+				className={classnames("box")}
+				onSubmit={onSubmit}
+				onReset={onReset}
+			>
 				<Title>
 					<FormattedMessage id="AuthExit.title" />
 				</Title>
@@ -51,11 +55,11 @@ export function AuthExit({ isActive, setIsActive, exit }: Props) {
 				</Message>
 
 				<Columns>
-					<Column size="half">
+					<Column bulma="is-half">
 						<Email isStatic value={account?.email} />
 					</Column>
 
-					<Column size="half">
+					<Column bulma="is-half">
 						<AccountId value={account?.id} />
 					</Column>
 				</Columns>
@@ -69,7 +73,7 @@ export function AuthExit({ isActive, setIsActive, exit }: Props) {
 						<FormattedMessage id="AuthExit.reset" />
 					</Button>
 				</Buttons>
-			</Form>
+			</form>
 		</Modal>
 	)
 }

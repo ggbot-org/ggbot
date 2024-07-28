@@ -1,11 +1,10 @@
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Buttons,
 	Checkbox,
 	Column,
 	Columns,
-	Flex,
-	Form,
 	Message
 } from "_/components/library"
 import { StrategyItem } from "_/components/user/StrategyItem"
@@ -14,20 +13,18 @@ import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	InputHTMLAttributes,
 	useCallback,
 	useContext,
 	useState
 } from "react"
 import { FormattedMessage } from "react-intl"
-import { FormProps } from "trunx"
 
-export type StrategiesProps = {
-	goCreateStrategy: NonNullable<FormProps["onSubmit"]>
+type Props = {
+	goCreateStrategy: () => void
 }
 
-export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
+export function Strategies({ goCreateStrategy }: Props) {
 	const { accountStrategies } = useContext(StrategiesContext)
 
 	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
@@ -63,13 +60,19 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 		return (
 			<Columns>
 				<Column
-					size={{
-						tablet: "full",
-						widescreen: "three-quarters",
-						fullhd: "half"
-					}}
+					bulma={[
+						"is-full-tablet",
+						"is-three-quarters-widescreen",
+						"is-half-fullhd"
+					]}
 				>
-					<Form box onSubmit={goCreateStrategy}>
+					<form
+						className={classnames("box")}
+						onSubmit={(event) => {
+							event.preventDefault()
+							goCreateStrategy()
+						}}
+					>
 						<Message color="info">
 							<FormattedMessage id="Strategies.noStrategy" />
 						</Message>
@@ -79,30 +82,27 @@ export const Strategies: FC<StrategiesProps> = ({ goCreateStrategy }) => {
 								<FormattedMessage id="Tabs.newStrategy" />
 							</Button>
 						</Buttons>
-					</Form>
+					</form>
 				</Column>
 			</Columns>
 		)
 
 	return (
 		<>
-			<Flex spacing={{ mb: 5, ml: 3 }}>
+			<div className={classnames("is-flex", "mb-5", "ml-3")}>
 				<Checkbox
 					checked={hideInactive}
 					onChange={onChangeHideInactive}
 				>
 					<FormattedMessage id="Strategies.hideInactive" />
 				</Checkbox>
-			</Flex>
+			</div>
 
 			<Columns isMultiline>
 				{items.map((props) => (
 					<Column
 						key={props.strategyId}
-						size={{
-							tablet: "half",
-							fullhd: "one-third"
-						}}
+						bulma={["is-half-tablet", "is-one-third-desktop"]}
 					>
 						<StrategyItem {...props} />
 					</Column>

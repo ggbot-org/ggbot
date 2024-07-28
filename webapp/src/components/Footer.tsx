@@ -1,4 +1,4 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import { SocialLinks } from "_/components/SocialLinks"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { dayFormat } from "_/i18n/formats"
@@ -9,9 +9,9 @@ export function Footer() {
 
 	return (
 		<>
-			<div className={classNames("Footer__top")} />
+			<div className={classnames("Footer__top")} />
 
-			<footer className={classNames("footer", "Footer__body")}>
+			<footer className={classnames("footer", "Footer__body")}>
 				<TermsAndPolicyLinks />
 
 				<SocialLinks />

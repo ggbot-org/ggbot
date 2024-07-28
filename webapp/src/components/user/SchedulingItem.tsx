@@ -2,7 +2,7 @@ import {
 	FrequencyInput,
 	FrequencyInputProps
 } from "_/components/FrequencyInput"
-import { Box, Button, Buttons, Level, LevelItem } from "_/components/library"
+import { Button, Buttons, Div, Level, LevelItem } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
 import { useCallback } from "react"
@@ -45,7 +45,7 @@ export function SchedulingItem({
 			: formatMessage({ id: "SchedulingItem.activate" })
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Level
 				left={
 					<LevelItem>
@@ -72,6 +72,6 @@ export function SchedulingItem({
 				setFrequency={setFrequency}
 				disabledIntervalOptions={disabledIntervalOptions}
 			/>
-		</Box>
+		</Div>
 	)
 }

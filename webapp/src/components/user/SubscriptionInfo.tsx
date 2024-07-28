@@ -1,7 +1,7 @@
 import {
-	Box,
 	Columns,
 	Control,
+	Div,
 	Field,
 	OneColumn,
 	Title
@@ -25,7 +25,7 @@ export function SubscriptionInfo() {
 	return (
 		<Columns>
 			<OneColumn>
-				<Box>
+				<Div bulma="box">
 					<Title>
 						<FormattedMessage id="SubscriptionInfo.title" />
 					</Title>
@@ -43,7 +43,7 @@ export function SubscriptionInfo() {
 					<SubscriptionPlan isStatic value={subscriptionPlan} />
 
 					<SubscriptionEnd isStatic value={subscriptionEnd} />
-				</Box>
+				</Div>
 			</OneColumn>
 		</Columns>
 	)

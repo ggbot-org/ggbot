@@ -11,9 +11,9 @@ import {
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
 import { getDay, today } from "minimal-time-helpers"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
-export const StrategyErrors: FC = () => {
+export function StrategyErrors() {
 	const { strategyKey } = useContext(StrategyContext)
 
 	// TODO use indexedDB to cache errors
@@ -58,7 +58,7 @@ export const StrategyErrors: FC = () => {
 			</Columns>
 
 			<Columns>
-				<Column isNarrow>
+				<Column bulma="is-narrow">
 					<StrategyErrorsTable errors={errors} />
 				</Column>
 			</Columns>

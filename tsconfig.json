@@ -36,7 +36,7 @@
 			"@workspace/stripe": ["./stripe/src/index.ts"],
 			"@workspace/webstorage": ["./webstorage/src/index.ts"],
 			"_/binance/*": ["./webapp/src/binance/*"],
-			"_/classNames": ["./webapp/src/styles/classNames.ts"],
+			"_/classnames": ["./webapp/src/styles/classenames.ts"],
 			"_/components/library": [
 				"./webapp/src/components/library/index.ts"
 			],

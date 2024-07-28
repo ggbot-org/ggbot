@@ -1,13 +1,6 @@
-import {
-	Column,
-	Columns,
-	Flex,
-	Logo,
-	Section,
-	Title
-} from "_/components/library"
+import { classnames } from "_/classnames"
+import { Column, Columns, Logo, Section, Title } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import { FC } from "react"
 
 import { ButtonColors, LoadingButtons } from "./examples/Buttons"
 import { SimpleForm } from "./examples/Forms"
@@ -20,86 +13,88 @@ import { TimeIntervalSelectors } from "./examples/TimeIntervalSelectors"
 import { ToastExample } from "./examples/Toast"
 import { Typography } from "./examples/Typography"
 
-export const ShowcasePage: FC = () => (
-	<PageContainer>
-		<Section>
-			<Title>Logo</Title>
+export function ShowcasePage() {
+	return (
+		<PageContainer>
+			<Section>
+				<Title>Logo</Title>
 
-			<Flex>
-				<Logo size={200} />
+				<div className={classnames("is-flex")}>
+					<Logo size={200} />
 
-				<Logo animated size={200} />
-			</Flex>
-		</Section>
+					<Logo animated size={200} />
+				</div>
+			</Section>
 
-		<Section>
-			<Title>Typography</Title>
+			<Section>
+				<Title>Typography</Title>
 
-			<Typography />
-		</Section>
+				<Typography />
+			</Section>
 
-		<Section>
-			<Title>Palette</Title>
+			<Section>
+				<Title>Palette</Title>
 
-			<Palette />
-		</Section>
+				<Palette />
+			</Section>
 
-		<Section>
-			<Title>Inputs</Title>
+			<Section>
+				<Title>Inputs</Title>
 
-			<Columns>
-				<Column size="half">
-					<InputFields />
-				</Column>
-			</Columns>
-		</Section>
+				<Columns>
+					<Column bulma="is-half">
+						<InputFields />
+					</Column>
+				</Columns>
+			</Section>
 
-		<Section>
-			<Title>Forms</Title>
+			<Section>
+				<Title>Forms</Title>
 
-			<Columns>
-				<Column size="half">
-					<SimpleForm />
-				</Column>
-			</Columns>
-		</Section>
+				<Columns>
+					<Column bulma="is-half">
+						<SimpleForm />
+					</Column>
+				</Columns>
+			</Section>
 
-		<Section>
-			<Title>Buttons</Title>
+			<Section>
+				<Title>Buttons</Title>
 
-			<ButtonColors />
+				<ButtonColors />
 
-			<LoadingButtons />
-		</Section>
+				<LoadingButtons />
+			</Section>
 
-		<Section>
-			<Title>Time interval selectors</Title>
+			<Section>
+				<Title>Time interval selectors</Title>
 
-			<TimeIntervalSelectors />
-		</Section>
+				<TimeIntervalSelectors />
+			</Section>
 
-		<Section>
-			<Title>Icons</Title>
+			<Section>
+				<Title>Icons</Title>
 
-			<Icons />
-		</Section>
+				<Icons />
+			</Section>
 
-		<Section>
-			<Title>Tags</Title>
+			<Section>
+				<Title>Tags</Title>
 
-			<TagsExample />
-		</Section>
+				<TagsExample />
+			</Section>
 
-		<Section>
-			<Title>Tables</Title>
+			<Section>
+				<Title>Tables</Title>
 
-			<SimpleTable />
-		</Section>
+				<SimpleTable />
+			</Section>
 
-		<Section>
-			<Title>Toast</Title>
+			<Section>
+				<Title>Toast</Title>
 
-			<ToastExample />
-		</Section>
-	</PageContainer>
-)
+				<ToastExample />
+			</Section>
+		</PageContainer>
+	)
+}

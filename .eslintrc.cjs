@@ -53,7 +53,7 @@ module.exports = {
 		"default-param-last": "error",
 		"dot-notation": "error",
 		eqeqeq: ["error", "smart"],
-		"func-style": ["warn", "declaration"],
+		// TODO "func-style": ["warn", "declaration"],
 		"import/extensions": ["error", "ignorePackages"],
 		"import/first": "error",
 		"import/newline-after-import": "error",
@@ -73,7 +73,8 @@ module.exports = {
 		// This behavior is known as [SmartTabs](https://www.emacswiki.org/emacs/SmartTabs).
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
-		"no-warning-comments": "warn",
+		// TODO se no-warning-comments to "warn"
+		"no-warning-comments": "off",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
 		"smells/no-switch": "error",

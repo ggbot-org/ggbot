@@ -1,9 +1,10 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
 	BrandName,
 	Button,
-	Flex,
 	Hero,
+	HeroBody,
+	HeroFoot,
 	Level,
 	LevelItem,
 	Logo
@@ -12,21 +13,45 @@ import { PageContainer } from "_/components/PageContainer"
 import { useGotFirstPageView } from "_/hooks/useGotFirstPageView"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
-export const HomePage: FC = () => {
+export function HomePage() {
 	const { gotFirstPageView } = useGotFirstPageView()
 
 	return (
 		<PageContainer>
-			<Hero
-				className={classNames("is-black")}
-				foot={
-					<Flex
-						justify="center"
-						alignItems="center"
-						spacing={{ mb: 6 }}
+			<Hero className={classnames("is-black")}>
+				<HeroBody>
+					<Level>
+						<LevelItem>
+							<Logo animated={!gotFirstPageView} size={200} />
+						</LevelItem>
+
+						<LevelItem>
+							<div
+								className={classnames(
+									"is-flex",
+									"is-flex-direction-column"
+								)}
+							>
+								<BrandName size="large" />
+
+								<i>
+									<FormattedMessage id="HomePage.tagline" />
+								</i>
+							</div>
+						</LevelItem>
+					</Level>
+				</HeroBody>
+
+				<HeroFoot>
+					<div
+						className={classnames(
+							"is-flex",
+							"is-justify-content-center",
+							"is-align-content-center",
+							"mb-6"
+						)}
 					>
 						<Button
 							isOutlined
@@ -38,24 +63,8 @@ export const HomePage: FC = () => {
 						>
 							<FormattedMessage id="HomePage.callToAction" />
 						</Button>
-					</Flex>
-				}
-			>
-				<Level>
-					<LevelItem>
-						<Logo animated={!gotFirstPageView} size={200} />
-					</LevelItem>
-
-					<LevelItem>
-						<Flex direction="column">
-							<BrandName size="large" />
-
-							<i>
-								<FormattedMessage id="HomePage.tagline" />
-							</i>
-						</Flex>
-					</LevelItem>
-				</Level>
+					</div>
+				</HeroFoot>
 			</Hero>
 		</PageContainer>
 	)

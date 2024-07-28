@@ -1,15 +1,9 @@
-import {
-	Button,
-	Control,
-	Field,
-	Form,
-	formValues,
-	Title
-} from "_/components/library"
+import { classnames } from "_/classnames"
+import { Button, Control, Field, Title } from "_/components/library"
 import { ApiKey } from "_/components/user/ApiKey"
 import { ApiSecret } from "_/components/user/ApiSecret"
 import { useUserApi } from "_/hooks/useUserApi"
-import { FC, FormEventHandler, useCallback, useEffect } from "react"
+import { FormEventHandler, useCallback, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -22,7 +16,7 @@ type Props = {
 	refetchApiKey: () => void
 }
 
-export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
+export function CreateBinanceApi({ refetchApiKey }: Props) {
 	const CREATE = useUserApi.CreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending
@@ -32,9 +26,12 @@ export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 		(event) => {
 			event.preventDefault()
 			if (!CREATE.canRun) return
-			const { apiKey, apiSecret } = formValues(event, fields)
-			if (typeof apiKey !== "string") return
-			if (typeof apiSecret !== "string") return
+			const eventTarget = event.target as EventTarget & {
+				[key in (typeof fields)[number]]?: { value: string }
+			}
+			const apiKey = eventTarget[fieldName.apiKey]?.value
+			const apiSecret = eventTarget[fieldName.apiSecret]?.value
+			if (!apiKey || !apiSecret) return
 			CREATE.request({ apiKey, apiSecret })
 		},
 		[CREATE]
@@ -45,7 +42,7 @@ export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 	}, [isDone, refetchApiKey])
 
 	return (
-		<Form box onSubmit={onSubmit}>
+		<form className={classnames("box")} onSubmit={onSubmit}>
 			<Title>
 				<FormattedMessage id="CreateBinanceApi.title" />
 			</Title>
@@ -65,7 +62,7 @@ export const CreateBinanceApi: FC<Props> = ({ refetchApiKey }) => {
 					</Button>
 				</Control>
 			</Field>
-		</Form>
+		</form>
 	)
 	// TODO error feedback
 }

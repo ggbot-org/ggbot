@@ -27,7 +27,8 @@ module.exports = {
 	],
 	root: true,
 	rules: {
-		"@typescript-eslint/ban-ts-comment": "warn",
+		// TODO set "@typescript-eslint/ban-ts-comment": "warn",
+		"@typescript-eslint/ban-ts-comment": "off",
 		"@typescript-eslint/no-array-constructor": "off",
 		"@typescript-eslint/no-empty-function": "off",
 		"@typescript-eslint/no-extra-semi": "off",
@@ -100,8 +101,8 @@ module.exports = {
 		"react/no-danger": "error",
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
-		"react/self-closing-comp": ["error", { component: true, html: true }],
-		"react-compiler/react-compiler": "warn"
+		"react/self-closing-comp": ["error", { component: true, html: true }]
+		// TODO "react-compiler/react-compiler": "warn"
 	},
 	settings: {
 		react: {

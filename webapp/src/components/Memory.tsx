@@ -1,4 +1,4 @@
-import { Box, Title } from "_/components/library"
+import { Div, Title } from "_/components/library"
 import { DflowCommonContext } from "@workspace/dflow"
 import { FormattedMessage } from "react-intl"
 
@@ -14,7 +14,7 @@ export function Memory({ memory }: Props) {
 			items.push({ name: key, value })
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Title>
 				<FormattedMessage id="Memory.title" />
 			</Title>
@@ -30,6 +30,6 @@ export function Memory({ memory }: Props) {
 					<MemoryItem key={name} name={name} value={value} />
 				))}
 			</div>
-		</Box>
+		</Div>
 	)
 }

@@ -1,6 +1,6 @@
-import { classNames } from "_/classNames"
-import { FC, PropsWithChildren } from "react"
+import { classnames } from "_/classnames"
+import { PropsWithChildren } from "react"
 
-export const ToastContainer: FC<PropsWithChildren> = ({ children }) => (
-	<div className={classNames("ToastContainer")}>{children}</div>
-)
+export function ToastContainer({ children }: PropsWithChildren) {
+	return <div className={classnames("ToastContainer")}>{children}</div>
+}

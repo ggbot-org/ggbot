@@ -64,7 +64,7 @@ export const DeleteAccount: FC = () => {
 						</p>
 
 						<Columns>
-							<Column size="half">
+							<Column bulma="is-half">
 								<InputField
 									value={accountIdConfirmation}
 									label={formatMessage({

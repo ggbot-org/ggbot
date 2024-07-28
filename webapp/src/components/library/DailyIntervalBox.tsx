@@ -1,7 +1,7 @@
 import { Day } from "minimal-time-helpers"
 import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
-import { Box, Button, ButtonProps, Buttons, Title } from "trunx"
+import { Button, ButtonProps, Buttons, Div, Title } from "trunx"
 
 import { DailyInterval } from "./DailyInterval"
 
@@ -38,7 +38,7 @@ export const DailyIntervalBox: FC<DailyIntervalBoxProps> = ({
 	)
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Title>
 				<FormattedMessage id="DailyIntervalBox.title" />
 			</Title>
@@ -53,6 +53,6 @@ export const DailyIntervalBox: FC<DailyIntervalBoxProps> = ({
 					<FormattedMessage id="DailyIntervalBox.update" />
 				</Button>
 			</Buttons>
-		</Box>
+		</Div>
 	)
 }

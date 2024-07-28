@@ -1,4 +1,4 @@
-import { Box, Title } from "_/components/library"
+import { Div, Title } from "_/components/library"
 import {
 	SchedulingParameterItem,
 	SchedulingParameterItemProps
@@ -73,7 +73,7 @@ export function SchedulingParameters({
 	}, [flowViewGraph, binanceSymbols, params])
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Title>
 				<FormattedMessage id="SchedulingParameters.title" />
 			</Title>
@@ -95,6 +95,6 @@ export function SchedulingParameters({
 					/>
 				))}
 			</div>
-		</Box>
+		</Div>
 	)
 }

@@ -1,6 +1,6 @@
-import { classNames } from "_/classNames"
-import { FC, PropsWithChildren } from "react"
+import { classnames } from "_/classnames"
+import { PropsWithChildren } from "react"
 
-export const Paragraph: FC<PropsWithChildren> = ({ children }) => (
-	<p className={classNames("Paragraph")}>{children}</p>
-)
+export function Paragraph({ children }: PropsWithChildren) {
+	return <p className={classnames("Paragraph")}>{children}</p>
+}

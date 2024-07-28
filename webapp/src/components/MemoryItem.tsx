@@ -1,5 +1,4 @@
-import { classNames } from "_/classNames"
-import { Flex } from "_/components/library"
+import { classnames } from "_/classnames"
 import { SerializablePrimitive } from "@workspace/models"
 
 export type MemoryItemProps = {
@@ -12,12 +11,19 @@ export function MemoryItem({ name, value }: MemoryItemProps) {
 		value === undefined ? "" : JSON.stringify(value, null, 2)
 
 	return (
-		<Flex grow={1} spacing={{ my: 1 }} direction="column">
+		<div
+			className={classnames(
+				"is-flex",
+				"is-flex-direction-column",
+				"my-1",
+				"is-flex-grow-1"
+			)}
+		>
 			<span>{name}</span>
 
-			<pre className={classNames("p-2")}>
+			<pre className={classnames("p-2")}>
 				<code>{formattedValue}</code>
 			</pre>
-		</Flex>
+		</div>
 	)
 }

@@ -1,10 +1,9 @@
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Buttons,
 	Column,
 	Columns,
-	Form,
-	formValues,
 	Message,
 	Title
 } from "_/components/library"
@@ -28,7 +27,6 @@ import {
 import { isYearlyPurchase } from "@workspace/models"
 import { getTime, now } from "minimal-time-helpers"
 import {
-	FC,
 	FormEventHandler,
 	useCallback,
 	useContext,
@@ -42,7 +40,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const SubscriptionPurchase: FC = () => {
+export function SubscriptionPurchase() {
 	const { formatNumber, formatMessage } = useIntl()
 
 	const { accountEmail } = useContext(AuthenticationContext)
@@ -89,7 +87,11 @@ export const SubscriptionPurchase: FC = () => {
 			event.preventDefault()
 			if (!CREATE_CHECKOUT.canRun) return
 
-			const { numMonths: numMonthsStr } = formValues(event, fields)
+			const eventTarget = event.target as EventTarget & {
+				[key in (typeof fields)[number]]?: { value: unknown }
+			}
+
+			const numMonthsStr = eventTarget[fieldName.numMonths]?.value
 
 			const numMonths = Number(numMonthsStr)
 
@@ -130,13 +132,13 @@ export const SubscriptionPurchase: FC = () => {
 
 	return (
 		<Columns>
-			<Column isNarrow>
-				<Form box onSubmit={onSubmit}>
+			<Column bulma="is-narrow">
+				<form className={classnames("box")} onSubmit={onSubmit}>
 					<Title>
 						<FormattedMessage id="SubscriptionPurchase.title" />
 					</Title>
 
-					<Title size={5}>{itemName}</Title>
+					<Title is={5}>{itemName}</Title>
 
 					{hasActiveSubscription ? (
 						<Message color="danger">
@@ -170,7 +172,7 @@ export const SubscriptionPurchase: FC = () => {
 					</Message>
 
 					<Columns isMobile>
-						<Column isNarrow>
+						<Column bulma="is-narrow">
 							<SubscriptionNumMonths
 								name={fieldName.numMonths}
 								isYearlyPurchase={isYearly}
@@ -202,7 +204,7 @@ export const SubscriptionPurchase: FC = () => {
 							<FormattedMessage id="SubscriptionPurchase.button" />
 						</Button>
 					</Buttons>
-				</Form>
+				</form>
 			</Column>
 		</Columns>
 	)

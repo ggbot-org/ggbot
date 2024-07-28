@@ -1,16 +1,14 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Checkbox,
-	Flex,
-	Form,
 	InputField,
 	SelectField,
 	Title
 } from "_/components/library"
-import { FC, InputHTMLAttributes, SelectHTMLAttributes, useState } from "react"
+import { InputHTMLAttributes, SelectHTMLAttributes, useState } from "react"
 
-export const SimpleForm: FC = () => {
+export function SimpleForm() {
 	const [isPending, setIsPending] = useState(false)
 	const [hasConsent, setHasConsent] = useState<boolean>(false)
 	const [gender, setGender] = useState("")
@@ -18,8 +16,8 @@ export const SimpleForm: FC = () => {
 	const [password, setPassword] = useState("")
 
 	return (
-		<Form
-			box
+		<form
+			className={classnames("box")}
 			onSubmit={(event) => {
 				event.preventDefault()
 				setIsPending(true)
@@ -68,7 +66,13 @@ export const SimpleForm: FC = () => {
 				]}
 			/>
 
-			<Flex alignItems="center" justify="space-between">
+			<div
+				className={classnames(
+					"is-flex",
+					"is-justify-content-center",
+					"is-align-content-center"
+				)}
+			>
 				<Checkbox
 					checked={hasConsent}
 					onChange={(event) => {
@@ -81,7 +85,7 @@ export const SimpleForm: FC = () => {
 						)
 					}}
 				>
-					<span className={classNames("ml-2")}>
+					<span className={classnames("ml-2")}>
 						I agree with Terms of service.
 					</span>
 				</Checkbox>
@@ -93,7 +97,7 @@ export const SimpleForm: FC = () => {
 				>
 					Enter
 				</Button>
-			</Flex>
-		</Form>
+			</div>
+		</form>
 	)
 }

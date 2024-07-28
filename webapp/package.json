@@ -47,7 +47,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-intl": "6.6.8",
-    "trunx": "0.46.0"
+    "trunx": "1.0.2"
   },
   "devDependencies": {
     "@formatjs/cli": "6.2.12",

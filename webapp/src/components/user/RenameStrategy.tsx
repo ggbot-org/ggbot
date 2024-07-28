@@ -1,9 +1,8 @@
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Control,
 	Field,
-	Form,
-	formValues,
 	Message,
 	Modal,
 	Title
@@ -14,7 +13,6 @@ import { ManageStrategyContext } from "_/contexts/user/ManageStrategy"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	FormEventHandler,
 	InputHTMLAttributes,
 	useCallback,
@@ -29,7 +27,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const RenameStrategy: FC = () => {
+export function RenameStrategy() {
 	const { strategyName } = useContext(StrategyContext)
 	const {
 		renameIsPending: isPending,
@@ -64,7 +62,10 @@ export const RenameStrategy: FC = () => {
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
-			const { name: newName } = formValues(event, fields)
+			const eventTarget = event.target as EventTarget & {
+				[key in (typeof fields)[number]]?: { value: unknown }
+			}
+			const newName = eventTarget[fieldName.name]?.value
 			if (!isName(newName)) return
 			renameStrategy(newName)
 		},
@@ -82,7 +83,11 @@ export const RenameStrategy: FC = () => {
 			</Button>
 
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-				<Form box autoComplete="off" onSubmit={onSubmit}>
+				<form
+					className={classnames("box")}
+					autoComplete="off"
+					onSubmit={onSubmit}
+				>
 					<Title>
 						<FormattedMessage id="RenameStrategy.title" />
 					</Title>
@@ -102,8 +107,8 @@ export const RenameStrategy: FC = () => {
 					<Field isGrouped>
 						<Control>
 							<Button
+								bulma={{ "is-light": color !== "primary" }}
 								color={color}
-								isLight={color !== "primary"}
 								isLoading={isPending}
 								isOutlined={color === "primary"}
 							>
@@ -111,7 +116,7 @@ export const RenameStrategy: FC = () => {
 							</Button>
 						</Control>
 					</Field>
-				</Form>
+				</form>
 			</Modal>
 		</>
 	)

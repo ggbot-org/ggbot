@@ -1,13 +1,11 @@
 import { getBinanceSymbolInfo } from "_/binance/getSymbolInfo"
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import {
-	Box,
 	DateTime,
-	Flex,
-	Heading,
+	Div,
 	Level,
 	LevelItem,
-	SizeModifierProp,
+	SizeProp,
 	Title
 } from "_/components/library"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
@@ -24,7 +22,7 @@ import {
 import { Order, StrategyKind } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
-import { FC, Fragment, PropsWithChildren } from "react"
+import { Fragment, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type ProfitSummaryProps = {
@@ -33,26 +31,23 @@ export type ProfitSummaryProps = {
 	strategyKind: StrategyKind | undefined
 }
 
-const toNumber = (value: string, precision = 8) =>
-	Number(value).toFixed(precision)
+function toNumber(value: string, precision = 8) {
+	return Number(value).toFixed(precision)
+}
 
-const _Label: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
-	children,
-	size
-}) => (
-	<Heading className={classNames({ "is-size-6": size === "large" })}>
-		{children}
-	</Heading>
-)
+function _Label({ children, size }: PropsWithChildren<SizeProp<"large">>) {
+	return (
+		<p className={classnames({ "is-size-6": size === "large" })}>
+			{children}
+		</p>
+	)
+}
 
-const _Value: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
-	children,
-	size = "normal"
-}) =>
-	children ? (
+function _Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
+	return children ? (
 		<p
-			className={classNames("has-text-weight-medium", {
-				"is-size-5": size === "normal",
+			className={classnames("has-text-weight-medium", {
+				"is-size-5": size === undefined,
 				"is-size-3": size === "large"
 			})}
 		>
@@ -61,6 +56,7 @@ const _Value: FC<PropsWithChildren<SizeModifierProp<"large">>> = ({
 	) : (
 		<>&nbsp;</>
 	)
+}
 
 type Fee = {
 	asset: string
@@ -75,11 +71,11 @@ type SymbolStats = {
 	quoteQuantity: string
 }
 
-export const ProfitSummary: FC<ProfitSummaryProps> = ({
+export function ProfitSummary({
 	orders,
 	dayInterval,
 	strategyKind
-}) => {
+}: ProfitSummaryProps) {
 	const binanceSymbols = useBinanceSymbols()
 
 	let numBuys: number | undefined = undefined
@@ -181,14 +177,20 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 	}
 
 	return (
-		<Box>
+		<Div bulma="box">
 			<Title>
 				<FormattedMessage id="ProfitSummary.title" />
 			</Title>
 
 			<Level>
 				<LevelItem>
-					<Flex direction="column" spacing={{ mx: 2 }}>
+					<div
+						className={classnames(
+							"is-flex",
+							"is-flex-direction-column",
+							"mx-2"
+						)}
+					>
 						<_Label>
 							<FormattedMessage id="DailyInterval.from" />
 						</_Label>
@@ -196,9 +198,15 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 						<_Value>
 							<DateTime format="day" value={dayInterval?.start} />
 						</_Value>
-					</Flex>
+					</div>
 
-					<Flex direction="column" spacing={{ mx: 2 }}>
+					<div
+						className={classnames(
+							"is-flex",
+							"is-flex-direction-column",
+							"mx-2"
+						)}
+					>
 						<_Label>
 							<FormattedMessage id="DailyInterval.to" />
 						</_Label>
@@ -206,10 +214,10 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 						<_Value>
 							<DateTime format="day" value={dayInterval?.end} />
 						</_Value>
-					</Flex>
+					</div>
 				</LevelItem>
 
-				<LevelItem hasText="centered">
+				<LevelItem bulma="has-text-centered">
 					<div>
 						<_Label size="large">
 							<FormattedMessage id="ProfitSummary.numBuys" />
@@ -219,7 +227,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 					</div>
 				</LevelItem>
 
-				<LevelItem hasText="centered">
+				<LevelItem bulma="has-text-centered">
 					<div>
 						<_Label size="large">
 							<FormattedMessage id="ProfitSummary.numSells" />
@@ -287,10 +295,10 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 						<Fragment key={symbol}>
 							<Level>
 								<LevelItem>
-									<Title size={4}>{symbol}</Title>
+									<Title is={4}>{symbol}</Title>
 								</LevelItem>
 
-								<LevelItem hasText="centered">
+								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label size="large">
 											{baseAsset}
@@ -305,7 +313,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 									</div>
 								</LevelItem>
 
-								<LevelItem hasText="centered">
+								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label size="large">
 											{quoteAsset}
@@ -322,7 +330,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 							</Level>
 
 							<Level>
-								<LevelItem hasText="centered">
+								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label>
 											<FormattedMessage id="ProfitSummary.minPrice" />
@@ -337,7 +345,7 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 									</div>
 								</LevelItem>
 
-								<LevelItem hasText="centered">
+								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label>
 											<FormattedMessage id="ProfitSummary.maxPrice" />
@@ -358,16 +366,16 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 
 			<Level>
 				<LevelItem>
-					<Heading>
+					<p>
 						<FormattedMessage id="ProfitSummary.fees" />
-					</Heading>
+					</p>
 				</LevelItem>
 
 				{Array.from(feesMap, ([asset, quantity]) => ({
 					asset,
 					quantity
 				})).map(({ asset, quantity }) => (
-					<LevelItem key={asset} hasText="centered">
+					<LevelItem key={asset} bulma="has-text-centered">
 						<div>
 							<_Label>{asset}</_Label>
 
@@ -376,6 +384,6 @@ export const ProfitSummary: FC<ProfitSummaryProps> = ({
 					</LevelItem>
 				))}
 			</Level>
-		</Box>
+		</Div>
 	)
 }

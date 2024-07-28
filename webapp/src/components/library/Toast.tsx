@@ -1,10 +1,5 @@
-import { FC, ReactNode, useCallback, useEffect, useRef } from "react"
-import {
-	ButtonDelete,
-	ButtonDeleteProps,
-	Notification,
-	NotificationProps
-} from "trunx"
+import { ReactNode, useCallback, useEffect, useRef } from "react"
+import { Delete, DeleteProps, Notification, NotificationProps } from "trunx"
 
 export type ToastProps = {
 	close: () => void
@@ -13,7 +8,7 @@ export type ToastProps = {
 	timeout?: number
 }
 
-export const Toast: FC<ToastProps> = ({ close, color, message }) => {
+export function Toast({ close, color, message }: ToastProps) {
 	const timeout = 10000
 	const timeoutIdRef = useRef(0)
 
@@ -32,7 +27,7 @@ export const Toast: FC<ToastProps> = ({ close, color, message }) => {
 		window.clearTimeout(timeoutIdRef.current)
 	}, [timeoutIdRef])
 
-	const onClickClose = useCallback<NonNullable<ButtonDeleteProps["onClick"]>>(
+	const onClickClose = useCallback<NonNullable<DeleteProps["onClick"]>>(
 		(event) => {
 			event.stopPropagation()
 			close()
@@ -42,7 +37,7 @@ export const Toast: FC<ToastProps> = ({ close, color, message }) => {
 
 	return (
 		<Notification color={color} onClick={onClickMessage}>
-			<ButtonDelete size="small" onClick={onClickClose} />
+			<Delete size="small" onClick={onClickClose} />
 
 			{message}
 		</Notification>

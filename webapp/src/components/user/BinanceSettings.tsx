@@ -26,11 +26,11 @@ export function BinanceSettings() {
 		<>
 			<Columns isMultiline>
 				<Column
-					size={{
-						tablet: "half",
-						desktop: "two-thirds",
-						widescreen: "one-third"
-					}}
+					bulma={[
+						"is-half-tablet",
+						"is-two-thirds-desktop",
+						"is-one-third-widescreen"
+					]}
 				>
 					{apiKey ? <BinanceApi apiKey={apiKey} /> : null}
 

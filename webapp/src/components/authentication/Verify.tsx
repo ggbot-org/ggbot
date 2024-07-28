@@ -1,3 +1,4 @@
+import { classnames } from "_/classnames"
 import { OneTimePassword } from "_/components/authentication/OneTimePassword"
 import { RegenerateOneTimePassword } from "_/components/authentication/RegenerateOneTimePassword"
 import { GenericError } from "_/components/GenericError"
@@ -7,7 +8,6 @@ import {
 	Columns,
 	Control,
 	Field,
-	Form,
 	Input,
 	Label,
 	Message,
@@ -23,7 +23,7 @@ import {
 } from "@workspace/api"
 import { logging } from "@workspace/logging"
 import { EmailAddress } from "@workspace/models"
-import { FC, FormEventHandler, Reducer, useCallback, useReducer } from "react"
+import { FormEventHandler, Reducer, useCallback, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
 
 export type AuthVerifyProps = {
@@ -58,11 +58,7 @@ type Action =
 
 const { debug } = logging("authentication")
 
-export const AuthVerify: FC<AuthVerifyProps> = ({
-	email,
-	resetEmail,
-	setToken
-}) => {
+export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 	const [
 		{
 			gotTimeout,
@@ -165,7 +161,11 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 
 	return (
 		<Modal isActive>
-			<Form box onSubmit={onSubmit} onReset={onReset}>
+			<form
+				className={classnames("box")}
+				onSubmit={onSubmit}
+				onReset={onReset}
+			>
 				<Title>
 					<FormattedMessage id="AuthVerify.title" />
 				</Title>
@@ -178,7 +178,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				</Message>
 
 				<Columns>
-					<Column size={{ desktop: "half" }}>
+					<Column bulma="is-half-desktop">
 						<Label htmlFor="email">
 							<FormattedMessage id="Email.label" />
 						</Label>
@@ -209,7 +209,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 				</Message>
 
 				<Columns>
-					<Column size={{ desktop: "half" }}>
+					<Column bulma="is-half-desktop">
 						<OneTimePassword
 							required
 							name="code"
@@ -217,7 +217,7 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 						/>
 					</Column>
 
-					<Column size="half" />
+					<Column bulma="is-half" />
 				</Columns>
 
 				<Field>
@@ -228,25 +228,23 @@ export const AuthVerify: FC<AuthVerifyProps> = ({
 					</Control>
 				</Field>
 
-				<>
-					{hasGenericError || (hasInvalidInput && <GenericError />)}
+				{hasGenericError || (hasInvalidInput && <GenericError />)}
 
-					{gotTimeout ? <TimeoutError /> : null}
+				{gotTimeout ? <TimeoutError /> : null}
 
-					{verificationFailed ? (
-						<Message color="warning">
-							<FormattedMessage
-								id="AuthVerify.failed"
-								values={{ em: (chunks) => <em>{chunks}</em> }}
-							/>
-						</Message>
-					) : null}
+				{verificationFailed ? (
+					<Message color="warning">
+						<FormattedMessage
+							id="AuthVerify.failed"
+							values={{ em: (chunks) => <em>{chunks}</em> }}
+						/>
+					</Message>
+				) : null}
 
-					{needToGenerateOneTimePasswordAgain ? (
-						<RegenerateOneTimePassword onClick={resetEmail} />
-					) : null}
-				</>
-			</Form>
+				{needToGenerateOneTimePasswordAgain ? (
+					<RegenerateOneTimePassword onClick={resetEmail} />
+				) : null}
+			</form>
 		</Modal>
 	)
 }

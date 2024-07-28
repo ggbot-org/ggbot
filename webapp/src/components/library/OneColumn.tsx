@@ -1,11 +1,7 @@
-import { classNames } from "_/classNames"
-import { FC } from "react"
-import { Column, ColumnProps } from "trunx"
+import { classnames } from "_/classnames"
+import { PropsWithChildren } from "react"
+import { Column } from "trunx"
 
-type Props = Omit<ColumnProps, "size">
-
-export const OneColumn: FC<Props> = ({ children, ...props }) => (
-	<Column className={classNames("OneColumn")} {...props}>
-		{children}
-	</Column>
-)
+export function OneColumn({ children }: PropsWithChildren) {
+	return <Column className={classnames("OneColumn")}>{children}</Column>
+}

@@ -7,6 +7,8 @@ export * from "./headings"
 export * from "./Icon"
 export { Input } from "./Input"
 export * from "./InputField"
+export * from "./Label"
+export * from "./Level"
 export * from "./Logo"
 export * from "./Modal"
 export * from "./Name"
@@ -19,14 +21,8 @@ export * from "./Tabs"
 export * from "./Tag"
 export * from "./Toast"
 export * from "./ToastContainer"
-export type {
-	ButtonProps,
-	MainColor,
-	ProgressProps,
-	SizeModifierProp
-} from "trunx"
+export type { ButtonProps, MainColor, ProgressProps, SizeProp } from "trunx"
 export {
-	Box,
 	Button,
 	Buttons,
 	Checkbox,
@@ -35,18 +31,14 @@ export {
 	Container,
 	Content,
 	Control,
+	Div,
 	Field,
-	Flex,
-	Form,
-	formValues,
-	Heading,
 	Hero,
-	Label,
-	Level,
-	LevelItem,
+	HeroBody,
+	HeroFoot,
 	Message,
 	NavbarEnd,
-	NavbarItemAnchor,
+	NavbarLink,
 	NavbarStart,
 	Progress,
 	Section,

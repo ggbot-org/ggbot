@@ -1,9 +1,8 @@
+import { classnames } from "_/classnames"
 import {
 	Button,
 	Buttons,
 	Columns,
-	Form,
-	formValues,
 	Message,
 	OneColumn
 } from "_/components/library"
@@ -57,7 +56,10 @@ export function CreateStrategy() {
 			event.preventDefault()
 			if (!canCreate) return
 			if (!CREATE.canRun) return
-			const { name } = formValues(event, fields)
+			const eventTarget = event.target as EventTarget & {
+				[key in (typeof fields)[number]]?: { value: string }
+			}
+			const name = eventTarget[fieldName.name]?.value
 			if (isName(name)) CREATE.request({ kind: "binance", name })
 		},
 		[CREATE, canCreate]
@@ -75,7 +77,7 @@ export function CreateStrategy() {
 	return (
 		<Columns>
 			<OneColumn>
-				<Form box onSubmit={onSubmit}>
+				<form className={classnames("box")} onSubmit={onSubmit}>
 					{error ? (
 						<StrategiesErrorExceededQuota error={error} />
 					) : (
@@ -96,15 +98,15 @@ export function CreateStrategy() {
 
 					<Buttons>
 						<Button
+							bulma={{ "is-light": color !== "primary" }}
 							color={color}
-							isLight={color !== "primary"}
 							isLoading={isLoading}
 							isOutlined={color === "primary"}
 						>
 							<FormattedMessage id="CreateStrategy.button" />
 						</Button>
 					</Buttons>
-				</Form>
+				</form>
 			</OneColumn>
 		</Columns>
 	)

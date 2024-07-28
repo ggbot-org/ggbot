@@ -1,3 +1,4 @@
+import { classnames } from "_/classnames"
 import { BacktestingActions } from "_/components/BacktestingActions"
 import {
 	BacktestingProgress,
@@ -8,13 +9,13 @@ import {
 	FrequencyInputProps
 } from "_/components/FrequencyInput"
 import {
-	Box,
 	Checkbox,
 	Column,
 	Columns,
 	Control,
 	DailyInterval,
 	DailyIntervalProps,
+	Div,
 	Field,
 	OneColumn,
 	Title
@@ -41,7 +42,6 @@ import {
 	useState
 } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { classNames } from "trunx"
 
 export function Backtesting() {
 	const { formatMessage } = useIntl()
@@ -204,8 +204,8 @@ export function Backtesting() {
 	return (
 		<>
 			<Columns>
-				<Column size={{ tablet: "half", fullhd: "one-third" }}>
-					<Box>
+				<Column bulma={["is-half-tablet", "is-one-third-fullhd"]}>
+					<Div bulma="box">
 						<Title>
 							<FormattedMessage id="Backtesting.title" />
 						</Title>
@@ -226,7 +226,7 @@ export function Backtesting() {
 						<Field>
 							<Control>
 								<Checkbox
-									className={classNames("mx-1")}
+									className={classnames("mx-1")}
 									checked={
 										afterStepBehaviour.pauseOnMemoryChange
 									}
@@ -240,7 +240,7 @@ export function Backtesting() {
 						<Field>
 							<Control>
 								<Checkbox
-									className={classNames("mx-1")}
+									className={classnames("mx-1")}
 									checked={afterStepBehaviour.pauseOnNewOrder}
 									onChange={onChangePauseOnNewOrder}
 								>
@@ -258,10 +258,10 @@ export function Backtesting() {
 							onClickStart={onClickStart}
 							onClickStop={onClickStop}
 						/>
-					</Box>
+					</Div>
 				</Column>
 
-				<Column size={{ tablet: "half", fullhd: "one-third" }}>
+				<Column bulma={["is-half-tablet", "is-one-third-fullhd"]}>
 					<BacktestingProgress
 						dayInterval={dayInterval}
 						progress={progress}
@@ -271,7 +271,7 @@ export function Backtesting() {
 			</Columns>
 
 			<Columns>
-				<Column size="one-third">
+				<Column bulma="is-one-third">
 					<SchedulingParameters
 						flowViewGraph={flowViewGraph}
 						setParam={setParam}
@@ -279,7 +279,7 @@ export function Backtesting() {
 					/>
 				</Column>
 
-				<Column size="one-third">
+				<Column bulma="is-one-third">
 					<Memory memory={memory} />
 				</Column>
 			</Columns>
@@ -295,7 +295,7 @@ export function Backtesting() {
 			</Columns>
 
 			<Columns>
-				<Column isNarrow>
+				<Column bulma="is-narrow">
 					<StrategyOrdersTable orders={orders} />
 				</Column>
 			</Columns>

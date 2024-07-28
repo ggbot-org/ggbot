@@ -1,3 +1,4 @@
+import { classnames } from "_/classnames"
 import { Email } from "_/components/Email"
 import { GenericError } from "_/components/GenericError"
 import {
@@ -7,8 +8,6 @@ import {
 	Columns,
 	Control,
 	Field,
-	Form,
-	formValues,
 	Message,
 	Modal,
 	Title
@@ -25,7 +24,6 @@ import { EmailAddress, isEmailAddress } from "@workspace/models"
 import { isMaybeObject } from "minimal-type-guard-helpers"
 import {
 	ChangeEventHandler,
-	FC,
 	FormEventHandler,
 	InputHTMLAttributes,
 	Reducer,
@@ -51,7 +49,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
+export function AuthEnter({ setEmail }: AuthEnterProps) {
 	const { formatMessage } = useIntl()
 
 	const [
@@ -93,11 +91,12 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 				event.preventDefault()
 				if (isPending) return
 
-				const { email } = formValues(event, fields)
-
-				if (!isEmailAddress(email)) {
-					return
+				const eventTarget = event.target as EventTarget & {
+					[key in (typeof fields)[number]]?: { value: string }
 				}
+				const email = eventTarget[fieldName.email]?.value
+
+				if (!isEmailAddress(email)) return
 
 				const requestData = { email }
 
@@ -107,7 +106,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 				}
 
 				const controller = new AbortController()
-				const timeout = 10000
+				const timeout = 10_000
 
 				const timeoutId = setTimeout(() => {
 					controller.abort()
@@ -148,7 +147,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 
 	return (
 		<Modal isActive>
-			<Form box onSubmit={onSubmit}>
+			<form className={classnames("box")} onSubmit={onSubmit}>
 				<Title>
 					<FormattedMessage id="AuthEnter.title" />
 				</Title>
@@ -161,7 +160,7 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 				</Message>
 
 				<Columns>
-					<Column size={{ desktop: "half" }}>
+					<Column bulma="is-half-desktop">
 						<Email
 							required
 							name={fieldName.email}
@@ -204,12 +203,10 @@ export const AuthEnter: FC<AuthEnterProps> = ({ setEmail }) => {
 
 				<TermsAndPolicyLinks />
 
-				<>
-					{hasGenericError || (hasInvalidInput && <GenericError />)}
+				{hasGenericError || (hasInvalidInput && <GenericError />)}
 
-					{gotTimeout ? <TimeoutError /> : null}
-				</>
-			</Form>
+				{gotTimeout ? <TimeoutError /> : null}
+			</form>
 		</Modal>
 	)
 }

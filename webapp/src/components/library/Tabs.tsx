@@ -1,32 +1,38 @@
-import { classNames } from "_/classNames"
-import { AnchorHTMLAttributes, FC, PropsWithChildren } from "react"
-import { Tabs } from "trunx"
+import { classnames } from "_/classnames"
+import { AnchorHTMLAttributes, PropsWithChildren } from "react"
+import { Div, Tabs } from "trunx"
 
 export type TabSelectorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 	isActive: boolean
 }
 
-export const TabSelector: FC<PropsWithChildren<TabSelectorProps>> = ({
+export function TabSelector({
 	children,
 	isActive,
 	...props
-}) => (
-	<li className={classNames("TabSelector", { "is-active": isActive })}>
-		<a {...props}>{children}</a>
-	</li>
-)
+}: PropsWithChildren<TabSelectorProps>) {
+	return (
+		<li className={classnames("TabSelector", { "is-active": isActive })}>
+			<a {...props}>{children}</a>
+		</li>
+	)
+}
 
 export type TabContentProps = {
 	isActive: boolean
 }
 
-export const TabContent: FC<PropsWithChildren<TabContentProps>> = ({
+export function TabContent({
 	children,
 	isActive
-}) => <div className={classNames({ "is-hidden": !isActive })}>{children}</div>
+}: PropsWithChildren<TabContentProps>) {
+	return <Div bulma={{ "is-hidden": !isActive }}>{children}</Div>
+}
 
-export const TabSelectors: FC<PropsWithChildren> = ({ children }) => (
-	<Tabs isBoxed>
-		<ul>{children}</ul>
-	</Tabs>
-)
+export function TabSelectors({ children }: PropsWithChildren) {
+	return (
+		<Tabs isBoxed>
+			<ul>{children}</ul>
+		</Tabs>
+	)
+}

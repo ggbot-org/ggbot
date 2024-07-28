@@ -1,16 +1,17 @@
-import { Form, InputField } from "_/components/library"
-import { FC } from "react"
+import { InputField } from "_/components/library"
 
-export const InputFields: FC = () => (
-	<Form>
-		<InputField label="normal" />
+export function InputFields() {
+	return (
+		<form>
+			<InputField label="normal" />
 
-		<InputField color="primary" label="primary" />
+			<InputField color="primary" label="primary" />
 
-		<InputField color="warning" label="warning" />
+			<InputField color="warning" label="warning" />
 
-		<InputField color="danger" label="danger" />
+			<InputField color="danger" label="danger" />
 
-		<InputField color="success" label="success" />
-	</Form>
-)
+			<InputField color="success" label="success" />
+		</form>
+	)
+}

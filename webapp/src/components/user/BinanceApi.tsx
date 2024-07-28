@@ -1,4 +1,5 @@
-import { Button, Control, Field, Form, Title } from "_/components/library"
+import { classnames } from "_/classnames"
+import { Button, Control, Field, Title } from "_/components/library"
 import { ApiKey } from "_/components/user/ApiKey"
 import {
 	BinanceApiKeyPermissions,
@@ -9,7 +10,6 @@ import { useUserApi } from "_/hooks/useUserApi"
 import { GatewayTimeoutError } from "@workspace/http"
 import {
 	ChangeEventHandler,
-	FC,
 	useCallback,
 	useContext,
 	useEffect,
@@ -21,7 +21,7 @@ type Props = {
 	apiKey: string
 }
 
-export const BinanceApi: FC<Props> = ({ apiKey }) => {
+export function BinanceApi({ apiKey }: Props) {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
@@ -58,7 +58,7 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 	}, [READ, formatMessage, toast])
 
 	return (
-		<Form box onSubmit={onSubmit}>
+		<form className={classnames("box")} onSubmit={onSubmit}>
 			<Title>
 				<FormattedMessage id="BinanceApi.title" />
 			</Title>
@@ -74,6 +74,6 @@ export const BinanceApi: FC<Props> = ({ apiKey }) => {
 			</Field>
 
 			<BinanceApiKeyPermissions permissions={permissions} />
-		</Form>
+		</form>
 	)
 }

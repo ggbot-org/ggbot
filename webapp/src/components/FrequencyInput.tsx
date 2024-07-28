@@ -87,7 +87,7 @@ export function FrequencyInput({
 
 	return (
 		<Columns isMobile>
-			<Column size="one-third">
+			<Column bulma="is-one-third">
 				<InputField
 					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.every" })}
@@ -98,7 +98,7 @@ export function FrequencyInput({
 				/>
 			</Column>
 
-			<Column size="half">
+			<Column bulma="is-half">
 				<SelectField
 					color={
 						disabledIntervalOptions.includes(interval)

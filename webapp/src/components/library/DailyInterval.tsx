@@ -1,5 +1,5 @@
-import { classNames } from "_/classNames"
-import { FC, useCallback, useEffect, useState } from "react"
+import { classnames } from "_/classnames"
+import { useCallback, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { DayDropdown, DayDropdownProps } from "./DayDropdown"
@@ -12,13 +12,13 @@ export type DailyIntervalProps = Pick<
 	end: Pick<DayDropdownProps, "day" | "setDay">
 }
 
-export const DailyInterval: FC<DailyIntervalProps> = ({
+export function DailyInterval({
 	disabled,
 	min,
 	max,
 	start,
 	end
-}) => {
+}: DailyIntervalProps) {
 	const { formatMessage } = useIntl()
 
 	const [activeDropdown, setActiveDropdown] = useState<
@@ -54,7 +54,7 @@ export const DailyInterval: FC<DailyIntervalProps> = ({
 	}, [closeDropdowns])
 
 	return (
-		<div className={classNames("DailyInterval")}>
+		<div className={classnames("DailyInterval")}>
 			<DayDropdown
 				close={closeDropdowns}
 				disabled={disabled}

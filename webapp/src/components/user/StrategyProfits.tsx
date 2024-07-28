@@ -9,9 +9,9 @@ import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { StrategyContext } from "_/contexts/Strategy"
 import { useUserApi } from "_/hooks/useUserApi"
 import { getDay, today } from "minimal-time-helpers"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
-export const StrategyProfits: FC = () => {
+export function StrategyProfits() {
 	const { strategyKey, strategyKind } = useContext(StrategyContext)
 
 	// TODO use indexedDB to cache orders
@@ -68,7 +68,7 @@ export const StrategyProfits: FC = () => {
 			</Columns>
 
 			<Columns>
-				<Column isNarrow>
+				<Column bulma="is-narrow">
 					<StrategyOrdersTable orders={orders} />
 				</Column>
 			</Columns>

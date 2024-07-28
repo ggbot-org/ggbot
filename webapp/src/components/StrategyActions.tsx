@@ -1,6 +1,6 @@
 import { GoCopyStrategy } from "_/components/GoCopyStrategy"
 import { GoEditStrategy } from "_/components/GoEditStrategy"
-import { Box, Buttons, Columns, OneColumn, Title } from "_/components/library"
+import { Buttons, Columns, Div, OneColumn, Title } from "_/components/library"
 import { ShareStrategy, ShareStrategyProps } from "_/components/ShareStrategy"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
@@ -19,7 +19,7 @@ export function StrategyActions({ readOnly }: Props) {
 	return (
 		<Columns>
 			<OneColumn>
-				<Box>
+				<Div bulma="box">
 					<Title>
 						<FormattedMessage id="StrategyActions.title" />
 					</Title>
@@ -44,7 +44,7 @@ export function StrategyActions({ readOnly }: Props) {
 							</>
 						)}
 					</Buttons>
-				</Box>
+				</Div>
 			</OneColumn>
 		</Columns>
 	)

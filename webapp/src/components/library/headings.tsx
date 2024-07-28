@@ -1,14 +1,14 @@
-import { classNames } from "_/classNames"
-import { FC, PropsWithChildren } from "react"
+import { classnames } from "_/classnames"
+import { PropsWithChildren } from "react"
 
-export const H1: FC<PropsWithChildren> = ({ children }) => (
-	<h1 className={classNames("is-size-1")}>{children}</h1>
-)
+export function H1({ children }: PropsWithChildren) {
+	return <h1 className={classnames("is-size-1")}>{children}</h1>
+}
 
-export const H2: FC<PropsWithChildren> = ({ children }) => (
-	<h2 className={classNames("is-size-2")}>{children}</h2>
-)
+export function H2({ children }: PropsWithChildren) {
+	return <h2 className={classnames("is-size-2")}>{children}</h2>
+}
 
-export const H3: FC<PropsWithChildren> = ({ children }) => (
-	<h2 className={classNames("is-size-3")}>{children}</h2>
-)
+export function H3({ children }: PropsWithChildren) {
+	return <h2 className={classnames("is-size-3")}>{children}</h2>
+}

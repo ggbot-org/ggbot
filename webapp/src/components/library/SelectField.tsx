@@ -1,19 +1,21 @@
-import { FC, ReactNode, useId } from "react"
-import { Control, Field, Help, Select, SelectProps } from "trunx"
+import { ReactNode, useId } from "react"
+import { ColorProp, Control, Field, Help, Select, SelectProps } from "trunx"
 
 import { Label } from "./Label"
 
-type SelectFieldProps = Omit<SelectProps, "id"> & {
-	help?: ReactNode
-	label: string
-}
+// TODO update trunx then use color from SelectProps
+type SelectFieldProps = ColorProp &
+	Omit<SelectProps, "id"> & {
+		help?: ReactNode
+		label: string
+	}
 
-export const SelectField: FC<SelectFieldProps> = ({
+export function SelectField({
 	color,
 	help,
 	label,
 	...props
-}) => {
+}: SelectFieldProps) {
 	const id = useId()
 	return (
 		<Field>

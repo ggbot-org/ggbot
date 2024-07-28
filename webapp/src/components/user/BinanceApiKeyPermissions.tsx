@@ -1,97 +1,91 @@
-import { Checkmark, CheckmarkProps, Flex } from "_/components/library"
+import { classnames } from "_/classnames"
+import { Checkmark, CheckmarkProps } from "_/components/library"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
-import { FC, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
-type BinanceApiKeyPermissionProps = Pick<CheckmarkProps, "ok">
-
-const BinanceApiKeyPermission: FC<
-	PropsWithChildren<BinanceApiKeyPermissionProps>
-> = ({ children, ok }) => {
+function BinanceApiKeyPermission({
+	children,
+	ok
+}: PropsWithChildren<Pick<CheckmarkProps, "ok">>) {
 	if (ok === undefined) return null
 	return (
-		<Flex>
+		<div className={classnames("is-flex")}>
 			<div>{children}</div>
 
 			<Checkmark ok={ok} />
-		</Flex>
+		</div>
 	)
 }
 
-type BinanceApiKeyPermissionEnableReadingProps = Partial<
-	Pick<BinanceApiKeyPermissionCriteria, "enableReading">
->
+function BinanceApiKeyPermissionEnableReading({
+	enableReading
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableReading">>) {
+	return (
+		<BinanceApiKeyPermission ok={enableReading}>
+			<FormattedMessage
+				id="BinanceApiKeyPermissionEnableReading.description"
+				values={formattedMessageMarkup}
+			/>
+		</BinanceApiKeyPermission>
+	)
+}
 
-const BinanceApiKeyPermissionEnableReading: FC<
-	BinanceApiKeyPermissionEnableReadingProps
-> = ({ enableReading }) => (
-	<BinanceApiKeyPermission ok={enableReading}>
-		<FormattedMessage
-			id="BinanceApiKeyPermissionEnableReading.description"
-			values={formattedMessageMarkup}
-		/>
-	</BinanceApiKeyPermission>
-)
-
-type BinanceApiKeyPermissionEnableSpotAndMarginTradingProps = Partial<
+function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
+	enableSpotAndMarginTrading
+}: Partial<
 	Pick<BinanceApiKeyPermissionCriteria, "enableSpotAndMarginTrading">
->
+>) {
+	return (
+		<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
+			<FormattedMessage
+				id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description"
+				values={formattedMessageMarkup}
+			/>
+		</BinanceApiKeyPermission>
+	)
+}
 
-const BinanceApiKeyPermissionEnableSpotAndMarginTrading: FC<
-	BinanceApiKeyPermissionEnableSpotAndMarginTradingProps
-> = ({ enableSpotAndMarginTrading }) => (
-	<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
-		<FormattedMessage
-			id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description"
-			values={formattedMessageMarkup}
-		/>
-	</BinanceApiKeyPermission>
-)
+function BinanceApiKeyPermissionEnableWithdrawals({
+	enableWithdrawals
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableWithdrawals">>) {
+	return (
+		<BinanceApiKeyPermission
+			ok={
+				typeof enableWithdrawals === "boolean"
+					? enableWithdrawals === false
+					: undefined
+			}
+		>
+			<FormattedMessage
+				id="BinanceApiKeyPermissionEnableWithdrawals.description"
+				values={formattedMessageMarkup}
+			/>
+		</BinanceApiKeyPermission>
+	)
+}
 
-type BinanceApiKeyPermissionEnableWithdrawalsProps = Partial<
-	Pick<BinanceApiKeyPermissionCriteria, "enableWithdrawals">
->
-
-const BinanceApiKeyPermissionEnableWithdrawals: FC<
-	BinanceApiKeyPermissionEnableWithdrawalsProps
-> = ({ enableWithdrawals }) => (
-	<BinanceApiKeyPermission
-		ok={
-			typeof enableWithdrawals === "boolean"
-				? enableWithdrawals === false
-				: undefined
-		}
-	>
-		<FormattedMessage
-			id="BinanceApiKeyPermissionEnableWithdrawals.description"
-			values={formattedMessageMarkup}
-		/>
-	</BinanceApiKeyPermission>
-)
-
-type BinanceApiKeyPermissionIpRestrictProps = Partial<
-	Pick<BinanceApiKeyPermissionCriteria, "ipRestrict">
->
-
-const BinanceApiKeyPermissionIpRestrict: FC<
-	BinanceApiKeyPermissionIpRestrictProps
-> = ({ ipRestrict }) => (
-	<BinanceApiKeyPermission ok={ipRestrict}>
-		<FormattedMessage
-			id="BinanceApiKeyPermissionIpRestrict.description"
-			values={formattedMessageMarkup}
-		/>
-	</BinanceApiKeyPermission>
-)
+function BinanceApiKeyPermissionIpRestrict({
+	ipRestrict
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, "ipRestrict">>) {
+	return (
+		<BinanceApiKeyPermission ok={ipRestrict}>
+			<FormattedMessage
+				id="BinanceApiKeyPermissionIpRestrict.description"
+				values={formattedMessageMarkup}
+			/>
+		</BinanceApiKeyPermission>
+	)
+}
 
 export type BinanceApiKeyPermissionsProps = {
 	permissions: BinanceApiKeyPermissionCriteria | undefined
 }
 
-export const BinanceApiKeyPermissions: FC<BinanceApiKeyPermissionsProps> = ({
+export function BinanceApiKeyPermissions({
 	permissions
-}) => {
+}: BinanceApiKeyPermissionsProps) {
 	if (!permissions) return null
 
 	const {

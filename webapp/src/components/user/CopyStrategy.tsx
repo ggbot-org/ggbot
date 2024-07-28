@@ -1,11 +1,10 @@
+import { classnames } from "_/classnames"
 import {
-	Box,
 	Button,
 	Buttons,
 	Column,
 	Columns,
-	Form,
-	formValues,
+	Div,
 	Message,
 	Section,
 	Title
@@ -20,7 +19,6 @@ import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
-	FC,
 	FormEventHandler,
 	InputHTMLAttributes,
 	useCallback,
@@ -35,7 +33,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export const CopyStrategy: FC = () => {
+export function CopyStrategy() {
 	const { strategyKey, strategyName } = useContext(StrategyContext)
 
 	const [error, setError] = useState<UseActionError>()
@@ -67,7 +65,10 @@ export const CopyStrategy: FC = () => {
 			if (!strategyKey) return
 			if (!canCreate) return
 			if (!COPY.canRun) return
-			const { name } = formValues(event, fields)
+			const eventTarget = event.target as EventTarget & {
+				[key in (typeof fields)[number]]?: { value: string }
+			}
+			const name = eventTarget[fieldName.name]?.value
 			if (isName(name))
 				COPY.request({
 					name,
@@ -90,13 +91,13 @@ export const CopyStrategy: FC = () => {
 		<Section>
 			<Columns isMultiline>
 				<Column
-					size={{
-						tablet: "full",
-						desktop: "three-quarters",
-						fullhd: "half"
-					}}
+					bulma={[
+						"is-full-tablet",
+						"is-three-quarters-desktop",
+						"is-half-fullhd"
+					]}
 				>
-					<Box>
+					<Div bulma="box">
 						<Title>
 							<FormattedMessage id="CopyStrategy.title" />
 						</Title>
@@ -106,17 +107,17 @@ export const CopyStrategy: FC = () => {
 						</Message>
 
 						<StrategyRecord />
-					</Box>
+					</Div>
 				</Column>
 
 				<Column
-					size={{
-						tablet: "full",
-						desktop: "three-quarters",
-						fullhd: "half"
-					}}
+					bulma={[
+						"is-full-tablet",
+						"is-three-quarters-desktop",
+						"is-half-fullhd"
+					]}
 				>
-					<Form box onSubmit={onSubmit}>
+					<form className={classnames("box")} onSubmit={onSubmit}>
 						{error ? null : (
 							<Message color="info">
 								<FormattedMessage id="CopyStrategy.chooseName" />
@@ -135,15 +136,15 @@ export const CopyStrategy: FC = () => {
 
 						<Buttons>
 							<Button
+								bulma={{ "is-light": color !== "primary" }}
 								color={color}
-								isLight={color !== "primary"}
 								isLoading={isLoading}
 								isOutlined={color === "primary"}
 							>
 								<FormattedMessage id="CopyStrategy.button" />
 							</Button>
 						</Buttons>
-					</Form>
+					</form>
 				</Column>
 			</Columns>
 		</Section>

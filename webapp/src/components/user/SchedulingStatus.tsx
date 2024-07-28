@@ -1,7 +1,6 @@
-import { classNames } from "_/classNames"
+import { classnames } from "_/classnames"
 import { Tag, TagProps, Tags } from "_/components/library"
 import { SchedulingStatus as Status } from "@workspace/models"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type SchedulingStatusColor = Extract<
@@ -19,13 +18,13 @@ type _TagLabelProps = {
 	status: Status | undefined
 }
 
-const _TagLabel: FC<_TagLabelProps> = ({ status }) => {
+function _TagLabel({ status }: _TagLabelProps) {
 	const { formatMessage } = useIntl()
 
 	if (!status) return null
 
 	return (
-		<Tag className={classNames("is-uppercase")} color={colorOf[status]}>
+		<Tag className={classnames("is-uppercase")} color={colorOf[status]}>
 			{formatMessage({ id: `SchedulingStatus.${status}` })}
 		</Tag>
 	)
@@ -35,10 +34,7 @@ type SchedulingStatusProps = Pick<_TagLabelProps, "status"> & {
 	count?: number
 }
 
-export const SchedulingStatus: FC<SchedulingStatusProps> = ({
-	status,
-	count
-}) => {
+export function SchedulingStatus({ status, count }: SchedulingStatusProps) {
 	if (count === undefined) return <_TagLabel status={status} />
 
 	if (count === 0) return null
