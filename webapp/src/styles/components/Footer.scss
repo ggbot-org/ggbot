@@ -2,10 +2,10 @@
 	&__top {
 		background: linear-gradient(
 			180deg,
-			$body-background-color 0%,
-			$footer-background-color 100%
+			var(--bulma-body-background-color) 0%,
+			var(--bulma-footer-background-color) 100%
 		);
-		height: $size-1;
+		height: var(--bulma-size-1);
 	}
 
 	&__body {

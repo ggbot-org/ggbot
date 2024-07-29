@@ -61,5 +61,7 @@ type Classname =
 	| TermsAndPolicyLinksClassname
 	| ToastContainerClassname
 
+// TODO why ts-prune complain?
+// ts-prune-ignore-next
 export const classnames = (...args: Array<_ClassnamesArg<Classname>>) =>
 	_classnames(...args)

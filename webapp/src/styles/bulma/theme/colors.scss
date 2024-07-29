@@ -1,9 +1,15 @@
-$white: #ffffff;
-$black: #070900;
-$primary: #09eae5;
-$warning: #f6eb4e;
-$danger: #ba007c;
-$success: #1ebb1e;
+:root {
+	--bulma-white: var(#ffffff);
+	--bulma-black: var(#070900);
+	--bulma-primary: var(#09eae5);
+	--bulma-warning: var(#f6eb4e);
+	--bulma-danger: var(#ba007c);
+	--bulma-success: var(#1ebb1e);
+
+	--bulma-body-background-color: var(#faffff);
+}
+/*
+TODO port this
 // $link is used as focus color for select, input, button, etc.
 $link: $black;
 
@@ -21,3 +27,4 @@ $scheme-invert: $black;
 $shadow:
 	0.1em 0.1em 0.5em -0.1em rgba($scheme-invert, 0.1),
 	0 0px 0 1px rgba($scheme-invert, 0.02);
+	*/

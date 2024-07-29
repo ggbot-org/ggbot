@@ -3,13 +3,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding-bottom: $size-5;
+	padding-bottom: var(--bulma-size-5);
 
 	&__strategyName {
 		flex: auto;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		padding-inline: $size-6;
+		padding-inline: var(--bulma-size-6);
 	}
 }

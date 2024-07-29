@@ -43,19 +43,19 @@
 		text-align: center;
 		user-select: none;
 		font-size: 1.1em;
-		border-radius: $radius;
+		border-radius: 0.125em;
 		width: 2.2em;
 
 		&:hover {
-			background: $primary;
+			background: var(--bulma-primary);
 		}
 
 		&--selected {
-			background: $primary;
+			background: var(--bulma-primary);
 		}
 
 		&--disabled {
-			color: $grey-light;
+			color: var(--bulma-grey-light);
 
 			&:hover {
 				background: transparent;

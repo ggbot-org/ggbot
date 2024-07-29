@@ -2,6 +2,6 @@ a {
 	text-decoration: underline;
 
 	&:focus-visible {
-		outline-color: $grey-light;
+		outline-color: var(--bulma-grey-light);
 	}
 }

@@ -1,16 +1,16 @@
 input[type="checkbox"] {
 	margin-right: 0.5em;
-	accent-color: $link;
+	accent-color: var(--bulma-black);
 }
 
 input[type="checkbox"][color="danger"] {
-	accent-color: $danger;
+	accent-color: var(--bulma-danger);
 }
 
 input[type="checkbox"][color="primary"] {
-	accent-color: $primary;
+	accent-color: var(--bulma-primary);
 }
 
 input[type="checkbox"][color="warning"] {
-	accent-color: $warning;
+	accent-color: var(--bulma-warning);
 }
