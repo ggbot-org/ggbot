@@ -11,7 +11,7 @@ import { useUserApi } from "_/hooks/useUserApi"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 // TODO should delete strategy from local storage
@@ -19,7 +19,7 @@ type Props = {
 	strategyKey: StrategyKey | undefined
 }
 
-export const DeleteStrategy: FC<Props> = ({ strategyKey }) => {
+export function DeleteStrategy({ strategyKey }: Props) {
 	const color: MainColor = "warning"
 
 	const { formatMessage } = useIntl()
@@ -44,7 +44,7 @@ export const DeleteStrategy: FC<Props> = ({ strategyKey }) => {
 
 	return (
 		<>
-			<Button isOutlined color={color} onClick={toggleModal}>
+			<Button color={color} onClick={toggleModal}>
 				<FormattedMessage id="DeleteStrategy.button" />
 			</Button>
 

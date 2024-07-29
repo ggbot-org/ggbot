@@ -1,9 +1,0 @@
-:root {
-	--bulma-family-sans-serif: sans-serif;
-}
-
-@supports (font-variation-settings: normal) {
-	:root {
-		--bulma-family-sans-serif: "Inter var", sans-serif;
-	}
-}

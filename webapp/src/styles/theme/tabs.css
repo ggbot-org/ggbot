@@ -1,3 +1,7 @@
+:root {
+	--bulma-tabs-link-active-color: var(--bulma-body-color);
+}
+
 /* Hide scrollbar on Chrome. */
 .tabs::-webkit-scrollbar {
 	width: 0 !important;

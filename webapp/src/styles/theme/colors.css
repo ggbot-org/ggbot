@@ -1,0 +1,29 @@
+:root {
+	--bulma-white: var(#ffffff);
+	--bulma-black: var(#070900);
+
+	--bulma-primary-h: 179deg;
+	--bulma-primary-s: 93%;
+	--bulma-primary-l: 48%;
+
+	/* --bulma-link is used for anchors and
+	 * also as focus color for select, input, button, etc.
+	 */
+	--bulma-link-h: 17deg;
+	--bulma-link-s: 17%;
+	--bulma-link-l: 17%;
+
+	--bulma-warning-h: 56deg;
+	--bulma-warning-s: 90%;
+	--bulma-warning-l: 64%;
+
+	--bulma-danger-h: 320deg;
+	--bulma-danger-s: 100%;
+	--bulma-danger-l: 36%;
+
+	--bulma-success-h: 120deg;
+	--bulma-success-s: 72%;
+	--bulma-success-l: 43%;
+
+	--bulma-body-background-color: var(#faffff);
+}

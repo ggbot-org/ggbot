@@ -57,7 +57,7 @@ export function ShareStrategy({
 	}
 
 	return (
-		<Button isOutlined color="primary" onClick={onClick}>
+		<Button onClick={onClick}>
 			<FormattedMessage id="ShareStrategy.label" />
 		</Button>
 	)

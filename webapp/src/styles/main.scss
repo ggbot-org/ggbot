@@ -1,14 +1,12 @@
-// First of all import :root CSS variables.
-@use "./root";
-
-// Load whole bulma.
+// Load whole bulma first, then CSS custom props.
 @use "bulma/sass";
 
-// Overrides.
-@use "./bulma/overrides/a";
-@use "./bulma/overrides/button";
-@use "./bulma/overrides/checkbox";
-@use "./bulma/overrides/tabs";
+@use "./theme/fonts";
+@use "./theme/colors";
+
+@use "./theme/a";
+@use "./theme/checkbox";
+@use "./theme/tabs";
 
 // Components.
 @use "./components/Calendar";
