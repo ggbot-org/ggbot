@@ -1,12 +1,16 @@
-// Load whole bulma first, then CSS custom props.
+// Load whole bulma first
 @use "bulma/sass";
 
+// then CSS custom props.
 @use "./theme/fonts";
 @use "./theme/colors";
 
 @use "./theme/a";
 @use "./theme/checkbox";
+@use "./theme/modal";
+@use "./theme/navbar";
 @use "./theme/tabs";
+@use "./theme/tables";
 
 // Components.
 @use "./components/Calendar";

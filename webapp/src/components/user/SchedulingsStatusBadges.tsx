@@ -6,13 +6,14 @@ import {
 	schedulingsAreInactive,
 	schedulingStatuses
 } from "@workspace/models"
-import { FC } from "react"
 
 type Props = {
-	schedulings: AccountStrategy["schedulings"]
+	schedulings: AccountStrategy["schedulings"] | undefined
 }
 
-export const SchedulingsStatusBadges: FC<Props> = ({ schedulings }) => {
+export function SchedulingsStatusBadges({ schedulings }: Props) {
+	if (!schedulings) return null
+
 	const schedulingSummary = getSchedulingSummary(schedulings)
 
 	if (schedulingsAreInactive(schedulings))

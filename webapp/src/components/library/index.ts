@@ -38,7 +38,6 @@ export {
 	HeroFoot,
 	Message,
 	NavbarEnd,
-	NavbarLink,
 	NavbarStart,
 	Progress,
 	Section,

@@ -30,9 +30,5 @@ export function TabContent({
 }
 
 export function TabSelectors({ children }: PropsWithChildren) {
-	return (
-		<Tabs isBoxed>
-			<ul>{children}</ul>
-		</Tabs>
-	)
+	return <Tabs isBoxed>{children}</Tabs>
 }

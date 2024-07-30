@@ -55,7 +55,7 @@ export function Modal({
 
 			{
 				/* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
-					<ModalClose onClick={closeModal} />
+					<ModalClose onClick={closeModal} size="large" />
 				)
 			}
 		</_Modal>

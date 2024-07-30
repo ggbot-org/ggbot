@@ -1,16 +1,13 @@
 import { classnames } from "_/classnames"
 import { webapp } from "_/routing/webapp"
+import { HTMLAttributes, PropsWithChildren, useEffect, useState } from "react"
 import {
-	FC,
-	HTMLAttributes,
-	PropsWithChildren,
-	useEffect,
-	useState
-} from "react"
-import {
+	Bulma,
 	Navbar as _Navbar,
 	NavbarBurger,
 	NavbarItem,
+	NavbarLink as _NavbarLink,
+	NavbarLinkProps,
 	NavbarMenu,
 	NavbarProps
 } from "trunx"
@@ -19,14 +16,16 @@ import { BrandName } from "./BrandName"
 import { Logo } from "./Logo"
 
 // Once updated trunx, remove this and import it from trunx
-const NavbarBrand: FC<PropsWithChildren<NavbarBrandProps>> = ({
+function NavbarBrand({
 	children,
 	...props
-}) => (
-	<div className="navbar-brand" {...props}>
-		{children}
-	</div>
-)
+}: PropsWithChildren<NavbarBrandProps>) {
+	return (
+		<div className="navbar-brand" {...props}>
+			{children}
+		</div>
+	)
+}
 type NavbarBrandProps = HTMLAttributes<HTMLDivElement>
 
 type Props = Partial<{
@@ -71,10 +70,36 @@ export function Navbar({
 					<BrandName />
 				</NavbarItem>
 
-				{noMenu || <NavbarBurger isActive={isActive} />}
+				{noMenu || (
+					<NavbarBurger
+						isActive={isActive}
+						onClick={(event) => {
+							event.stopPropagation()
+							setIsActive((isActive) => !isActive)
+						}}
+					/>
+				)}
 			</NavbarBrand>
 
 			{noMenu || <NavbarMenu isActive={isActive}>{children}</NavbarMenu>}
 		</_Navbar>
+	)
+}
+
+// TODO trunx has no is-arrowless class in Bulma, find a way to fix it
+// for example add missing classes manually (they are all inside a :not())
+// and add a test to make sure typings are working
+export function NavbarLink({
+	className,
+	children,
+	...props
+}: PropsWithChildren<NavbarLinkProps>) {
+	return (
+		<_NavbarLink
+			className={classnames("is-arrowless" as Bulma, className as Bulma)}
+			{...props}
+		>
+			{children}
+		</_NavbarLink>
 	)
 }

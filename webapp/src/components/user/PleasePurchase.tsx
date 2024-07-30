@@ -10,7 +10,6 @@ import { useSubscription } from "_/hooks/useSubscription"
 import { sessionWebStorage } from "_/storages/session"
 import {
 	ChangeEventHandler,
-	FC,
 	InputHTMLAttributes,
 	useCallback,
 	useEffect,
@@ -18,12 +17,14 @@ import {
 } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const PleasePurchase: FC = () => {
+export function PleasePurchase() {
 	const { formatMessage } = useIntl()
 
 	const { hasActiveSubscription } = useSubscription()
 
-	const [doNotShow, setDoNotShow] = useState<boolean>(false)
+	const [doNotShow, setDoNotShow] = useState<boolean>(
+		Boolean(sessionWebStorage.doNotShowPleasePurchase.get())
+	)
 	const [isActive, setIsActive] = useState(false)
 
 	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -43,10 +44,7 @@ export const PleasePurchase: FC = () => {
 
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
-			<Message
-				color="info"
-				header={formatMessage({ id: "PleasePurchase.title" })}
-			>
+			<Message header={formatMessage({ id: "PleasePurchase.title" })}>
 				<Content>
 					<p>
 						<FormattedMessage id="PleasePurchase.message" />

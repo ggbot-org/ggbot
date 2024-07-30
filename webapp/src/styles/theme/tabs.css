@@ -1,5 +1,5 @@
-:root {
-	--bulma-tabs-link-active-color: var(--bulma-body-color);
+.tabs {
+	--bulma-tabs-link-active-color: var(--bulma-tabs-link-color);
 }
 
 /* Hide scrollbar on Chrome. */
@@ -8,6 +8,6 @@
 }
 
 /* Hide scrollbar on Firefox. */
-.tabs {
+.tabs li a {
 	overflow: -moz-scrollbars-none;
 }

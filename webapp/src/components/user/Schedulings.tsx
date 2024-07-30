@@ -259,7 +259,12 @@ export function Schedulings() {
 	return (
 		<>
 			<Columns>
-				<Column bulma="is-narrow">
+				<Column
+					bulma={[
+						"is-narrow",
+						{ "is-skeleton": fetchAccountStrategiesIsPending }
+					]}
+				>
 					<form
 						className={classnames("box")}
 						onSubmit={(event) => {
@@ -277,12 +282,9 @@ export function Schedulings() {
 							}
 							right={
 								<LevelItem className={classnames("ml-5")}>
-									{currentSchedulings &&
-									!fetchAccountStrategiesIsPending ? (
-										<SchedulingsStatusBadges
-											schedulings={currentSchedulings}
-										/>
-									) : null}
+									<SchedulingsStatusBadges
+										schedulings={currentSchedulings}
+									/>{" "}
 								</LevelItem>
 							}
 						/>
@@ -313,15 +315,13 @@ export function Schedulings() {
 							right={
 								<LevelItem>
 									<Buttons>
-										{fetchAccountStrategiesIsPending ? null : (
-											<Button
-												isRounded
-												onClick={addSchedulingItem}
-												size="small"
-											>
-												<FormattedMessage id="Schedulings.add" />
-											</Button>
-										)}
+										<Button
+											isRounded
+											onClick={addSchedulingItem}
+											size="small"
+										>
+											<FormattedMessage id="Schedulings.add" />
+										</Button>
 									</Buttons>
 								</LevelItem>
 							}

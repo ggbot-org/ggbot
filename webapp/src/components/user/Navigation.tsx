@@ -18,6 +18,7 @@ export function Navigation() {
 		<Navbar className={classnames("Navigation")}>
 			<NavbarStart>
 				<NavbarLink
+					className="is-arrowless"
 					onClick={() => {
 						GOTO(webapp.user.dashboard)
 					}}

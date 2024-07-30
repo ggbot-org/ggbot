@@ -1,7 +1,10 @@
 import { classnames } from "_/classnames"
 import {
 	Button,
+	Buttons,
 	Checkbox,
+	Control,
+	Field,
 	InputField,
 	SelectField,
 	Title
@@ -66,30 +69,28 @@ export function SimpleForm() {
 				]}
 			/>
 
-			<div
-				className={classnames(
-					"is-flex",
-					"is-justify-content-center",
-					"is-align-content-center"
-				)}
-			>
-				<Checkbox
-					checked={hasConsent}
-					onChange={(event) => {
-						setHasConsent(
-							Boolean(
-								(
-									event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-								).checked
+			<Field>
+				<Control>
+					<Checkbox
+						checked={hasConsent}
+						onChange={(event) => {
+							setHasConsent(
+								Boolean(
+									(
+										event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+									).checked
+								)
 							)
-						)
-					}}
-				>
-					<span className={classnames("ml-2")}>
-						I agree with Terms of service.
-					</span>
-				</Checkbox>
+						}}
+					>
+						<span className={classnames("ml-2")}>
+							I agree with Terms of service.
+						</span>
+					</Checkbox>
+				</Control>
+			</Field>
 
+			<Buttons>
 				<Button
 					color={hasConsent ? "primary" : undefined}
 					disabled={!hasConsent}
@@ -97,7 +98,7 @@ export function SimpleForm() {
 				>
 					Enter
 				</Button>
-			</div>
+			</Buttons>
 		</form>
 	)
 }
