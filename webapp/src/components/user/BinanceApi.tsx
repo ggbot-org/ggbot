@@ -6,7 +6,7 @@ import {
 	BinanceApiKeyPermissionsProps
 } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { GatewayTimeoutError } from "@workspace/http"
 import {
 	ChangeEventHandler,

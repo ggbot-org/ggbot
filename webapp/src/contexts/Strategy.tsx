@@ -5,14 +5,7 @@ import { usePublicApi } from "_/hooks/usePublicApi"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { localWebStorage } from "_/storages/local"
 import { Strategy, StrategyKey, StrategyKind } from "@workspace/models"
-import {
-	createContext,
-	FC,
-	PropsWithChildren,
-	useCallback,
-	useEffect,
-	useMemo
-} from "react"
+import { createContext, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
 	strategy: Strategy | null | undefined
@@ -20,7 +13,7 @@ type ContextValue = {
 	strategyKind: StrategyKind | undefined
 	strategyId: Strategy["id"] | undefined
 	strategyName: string
-	refetchStrategy: () => void
+	resetStrategy: () => void
 }
 
 export const StrategyContext = createContext<ContextValue>({
@@ -29,34 +22,26 @@ export const StrategyContext = createContext<ContextValue>({
 	strategyKind: undefined,
 	strategyId: undefined,
 	strategyName: "",
-	refetchStrategy: () => {}
+	resetStrategy: () => {}
 })
 
 StrategyContext.displayName = "StrategyContext"
 
-export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
+export function StrategyProvider({ children }: PropsWithChildren) {
 	const strategyKey = useStrategyKey()
 
 	const READ = usePublicApi.ReadStrategy()
-	const remoteStrategy = READ.data
+	const { data: remoteStrategy, reset } = READ
 
-	const refetchStrategy = useCallback(() => {
-		if (!strategyKey) return
-		localWebStorage.strategy(strategyKey.strategyId).delete()
-		READ.reset()
-	}, [READ, strategyKey])
+	const contextValue = useMemo<ContextValue>(() => {
+		let strategy
+		if (remoteStrategy) {
+			strategy = remoteStrategy
+		} else if (strategyKey) {
+			strategy = localWebStorage.strategy(strategyKey.strategyId).get()
+		}
 
-	const strategy = useMemo<ContextValue["strategy"]>(() => {
-		if (!strategyKey) return undefined
-		if (remoteStrategy) return remoteStrategy
-		const localStrategy = localWebStorage
-			.strategy(strategyKey.strategyId)
-			.get()
-		if (localStrategy) return localStrategy
-	}, [remoteStrategy, strategyKey])
-
-	const contextValue = useMemo<ContextValue>(
-		() => ({
+		return {
 			strategy,
 			strategyKey: strategy
 				? { strategyId: strategy.id, strategyKind: strategy.kind }
@@ -64,10 +49,15 @@ export const StrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 			strategyKind: strategy?.kind,
 			strategyId: strategy?.id,
 			strategyName: strategy?.name ?? "",
-			refetchStrategy
-		}),
-		[strategy, refetchStrategy]
-	)
+			resetStrategy: () => {
+				if (!strategyKey) return
+				localWebStorage.strategy(strategyKey.strategyId).delete()
+				reset()
+			}
+		}
+	}, [strategyKey, remoteStrategy, reset])
+
+	const { strategy } = contextValue
 
 	// Fetch strategy.
 	useEffect(() => {

@@ -8,14 +8,13 @@ import {
 	Message
 } from "_/components/library"
 import { StrategyItem } from "_/components/user/StrategyItem"
-import { StrategiesContext } from "_/contexts/user/Strategies"
+import { useAccountStrategies } from "_/hooks/useAccountStrategies"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import {
 	ChangeEventHandler,
 	InputHTMLAttributes,
 	useCallback,
-	useContext,
 	useState
 } from "react"
 import { FormattedMessage } from "react-intl"
@@ -25,7 +24,7 @@ type Props = {
 }
 
 export function Strategies({ goCreateStrategy }: Props) {
-	const { accountStrategies } = useContext(StrategiesContext)
+	const { accountStrategies } = useAccountStrategies()
 
 	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
 		localWebStorage.hideInactiveStrategies.get()

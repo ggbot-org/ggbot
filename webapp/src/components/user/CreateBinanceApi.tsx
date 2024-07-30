@@ -2,7 +2,7 @@ import { classnames } from "_/classnames"
 import { Button, Control, Field, Title } from "_/components/library"
 import { ApiKey } from "_/components/user/ApiKey"
 import { ApiSecret } from "_/components/user/ApiSecret"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { FormEventHandler, useCallback, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 

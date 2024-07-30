@@ -6,7 +6,7 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { FC, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

@@ -1,4 +1,4 @@
-import { AccountInfo } from "@workspace/models"
+import { AccountInfo, AccountStrategy } from "@workspace/models"
 
 import { cachedBoolean, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
@@ -9,6 +9,13 @@ export class SessionWebStorage {
 
 	get accountInfo() {
 		return cachedObject<AccountInfo>(this.storage, itemKey.accountInfo())
+	}
+
+	get accountStrategies() {
+		return cachedObject<AccountStrategy[]>(
+			this.storage,
+			itemKey.accountStrategies()
+		)
 	}
 
 	get doNotShowPleasePurchase() {

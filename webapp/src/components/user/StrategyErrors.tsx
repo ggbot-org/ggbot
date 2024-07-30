@@ -9,7 +9,7 @@ import {
 	StrategyErrorsTableProps
 } from "_/components/StrategyErrorsTable"
 import { StrategyContext } from "_/contexts/Strategy"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { getDay, today } from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useState } from "react"
 

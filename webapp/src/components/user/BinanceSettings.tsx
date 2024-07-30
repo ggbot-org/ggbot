@@ -2,7 +2,7 @@ import { Column, Columns } from "_/components/library"
 import { BinanceApi } from "_/components/user/BinanceApi"
 import { CreateBinanceApi } from "_/components/user/CreateBinanceApi"
 import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { useCallback, useEffect } from "react"
 
 export function BinanceSettings() {

@@ -6,7 +6,6 @@ import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
 import { StrategyProvider } from "_/contexts/Strategy"
 import { ManageStrategyProvider } from "_/contexts/user/ManageStrategy"
-import { StrategiesProvider } from "_/contexts/user/Strategies"
 import { useState } from "react"
 
 export function StrategyPage() {
@@ -14,32 +13,30 @@ export function StrategyPage() {
 
 	return (
 		<PageContainer>
-			<StrategiesProvider>
-				<StrategyProvider>
-					<ManageStrategyProvider>
-						<Tabs
-							activeTabId={activeTabId}
-							setActiveTabId={setActiveTabId}
-							tabs={[
-								{
-									tabId: "manage",
-									content: <ManageStrategy />
-								},
-								{
-									tabId: "profits",
-									content: <StrategyProfits />
-								},
-								{
-									tabId: "errors",
-									content: <StrategyErrors />
-								}
-							]}
-						/>
+			<StrategyProvider>
+				<ManageStrategyProvider>
+					<Tabs
+						activeTabId={activeTabId}
+						setActiveTabId={setActiveTabId}
+						tabs={[
+							{
+								tabId: "manage",
+								content: <ManageStrategy />
+							},
+							{
+								tabId: "profits",
+								content: <StrategyProfits />
+							},
+							{
+								tabId: "errors",
+								content: <StrategyErrors />
+							}
+						]}
+					/>
 
-						<PleasePurchase />
-					</ManageStrategyProvider>
-				</StrategyProvider>
-			</StrategiesProvider>
+					<PleasePurchase />
+				</ManageStrategyProvider>
+			</StrategyProvider>
 		</PageContainer>
 	)
 }

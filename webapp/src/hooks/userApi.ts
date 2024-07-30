@@ -11,6 +11,15 @@ const apiOptions: UseActionApiArg = {
 	withAuth: true
 }
 
+// TODO port all hooks to this form, to make react compiler happy
+export function useReadStrategies() {
+	return useAction<
+		ActionType,
+		Input["ReadStrategies"],
+		Output["ReadStrategies"]
+	>(apiOptions, "ReadStrategies")
+}
+
 export const useUserApi = {
 	CopyStrategy: () =>
 		useAction<ActionType, Input["CopyStrategy"], Output["CopyStrategy"]>(
@@ -64,12 +73,6 @@ export const useUserApi = {
 			Input["ReadBinanceApiKey"],
 			Output["ReadBinanceApiKey"]
 		>(apiOptions, "ReadBinanceApiKey"),
-	ReadStrategies: () =>
-		useAction<
-			ActionType,
-			Input["ReadStrategies"],
-			Output["ReadStrategies"]
-		>(apiOptions, "ReadStrategies"),
 	ReadStrategyErrors: () =>
 		useAction<
 			ActionType,

@@ -1,7 +1,7 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"

@@ -17,11 +17,11 @@ import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { ToastContext } from "_/contexts/Toast"
-import { StrategiesContext } from "_/contexts/user/Strategies"
+import { useAccountStrategies } from "_/hooks/useAccountStrategies"
+import { useUserApi } from "_/hooks/userApi"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useSubscription } from "_/hooks/useSubscription"
-import { useUserApi } from "_/hooks/useUserApi"
 import {
 	AccountStrategy,
 	isStrategyScheduling,
@@ -50,11 +50,7 @@ export function Schedulings() {
 	const flowViewGraph = useStrategyFlow(strategyKey)
 
 	const { hasActiveSubscription, isPro } = useSubscription()
-	const {
-		accountStrategies,
-		fetchAccountStrategiesIsPending,
-		refetchAccountStrategies
-	} = useContext(StrategiesContext)
+	const { accountStrategies, resetAccountStrategies } = useAccountStrategies()
 	const { toast } = useContext(ToastContext)
 
 	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
@@ -71,7 +67,7 @@ export function Schedulings() {
 	>([])
 
 	const currentSchedulings = useMemo<StrategyScheduling[] | undefined>(() => {
-		if (fetchAccountStrategiesIsPending) return
+		if (currentAccountStrategies === undefined) return
 		return currentAccountStrategies
 			.filter(
 				(accountStrategy) => accountStrategy.strategyId === strategyId
@@ -79,7 +75,7 @@ export function Schedulings() {
 			.reduce<
 				StrategyScheduling[]
 			>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
-	}, [currentAccountStrategies, strategyId, fetchAccountStrategiesIsPending])
+	}, [currentAccountStrategies, strategyId])
 
 	const someSchedulingChanged = useMemo(() => {
 		// Do not know about currentSchedulings yet, data fetch is pending.
@@ -251,10 +247,10 @@ export function Schedulings() {
 		if (WRITE.error) WRITE.reset()
 	}, [WRITE])
 
-	// Fetch strategies on updates.
+	// Reset strategies once done.
 	useEffect(() => {
-		if (isDone) refetchAccountStrategies()
-	}, [refetchAccountStrategies, isDone])
+		if (isDone) resetAccountStrategies()
+	}, [resetAccountStrategies, isDone])
 
 	return (
 		<>
@@ -262,7 +258,7 @@ export function Schedulings() {
 				<Column
 					bulma={[
 						"is-narrow",
-						{ "is-skeleton": fetchAccountStrategiesIsPending }
+						{ "is-skeleton": accountStrategies === undefined }
 					]}
 				>
 					<form

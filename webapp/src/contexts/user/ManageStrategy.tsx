@@ -1,6 +1,6 @@
 import { StrategyContext } from "_/contexts/Strategy"
 import { UseActionError } from "_/hooks/useAction"
-import { useUserApi } from "_/hooks/useUserApi"
+import { useUserApi } from "_/hooks/userApi"
 import {
 	createContext,
 	FC,
@@ -27,7 +27,7 @@ export const ManageStrategyContext = createContext<ContextValue>({
 ManageStrategyContext.displayName = "ManageStrategyContext"
 
 export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
-	const { strategyKey, refetchStrategy } = useContext(StrategyContext)
+	const { strategyKey, resetStrategy } = useContext(StrategyContext)
 
 	const [renameError, setRenameError] = useState<UseActionError>()
 
@@ -60,9 +60,9 @@ export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		if (RENAME.isDone) {
 			RENAME.reset()
-			refetchStrategy()
+			resetStrategy()
 		}
-	}, [RENAME, refetchStrategy])
+	}, [RENAME, resetStrategy])
 
 	useEffect(() => {
 		if (RENAME.error) {

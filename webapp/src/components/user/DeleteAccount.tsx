@@ -10,8 +10,8 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
+import { useUserApi } from "_/hooks/userApi"
 import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
-import { useUserApi } from "_/hooks/useUserApi"
 import { FC, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

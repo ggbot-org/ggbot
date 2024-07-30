@@ -14,8 +14,8 @@ import { StrategyRecord } from "_/components/StrategyRecord"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
 import { UseActionError } from "_/hooks/useAction"
+import { useUserApi } from "_/hooks/userApi"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
-import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,

@@ -2,6 +2,7 @@ import { sessionWebStorage } from "_/storages/session"
 import { AccountInfo } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
+// TODO this may be inside Authentication context
 export function useStoredAccountInfo() {
 	const [accountInfo, setAccountInfo] = useState<AccountInfo | undefined>(
 		sessionWebStorage.accountInfo.get()
@@ -11,7 +12,6 @@ export function useStoredAccountInfo() {
 	const onLocalStorageChange = useCallback(() => {
 		setAccountInfo(sessionWebStorage.accountInfo.get())
 	}, [])
-
 	useEffect(() => {
 		addEventListener("storage", onLocalStorageChange)
 		return () => {

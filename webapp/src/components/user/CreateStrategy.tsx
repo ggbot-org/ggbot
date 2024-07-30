@@ -8,9 +8,10 @@ import {
 } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
+import { useAccountStrategies } from "_/hooks/useAccountStrategies"
 import { UseActionError } from "_/hooks/useAction"
+import { useUserApi } from "_/hooks/userApi"
 import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
-import { useUserApi } from "_/hooks/useUserApi"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -28,6 +29,8 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export function CreateStrategy() {
+	const { resetAccountStrategies } = useAccountStrategies()
+
 	const CREATE = useUserApi.CreateStrategy()
 	const newStrategy = CREATE.data
 	const readOnly = CREATE.isPending
@@ -61,8 +64,9 @@ export function CreateStrategy() {
 			}
 			const name = eventTarget[fieldName.name]?.value
 			if (isName(name)) CREATE.request({ kind: "binance", name })
+			resetAccountStrategies()
 		},
-		[CREATE, canCreate]
+		[CREATE, canCreate, resetAccountStrategies]
 	)
 
 	useRedirectToNewStrategyPage(newStrategy)
@@ -101,7 +105,6 @@ export function CreateStrategy() {
 							bulma={{ "is-light": color !== "primary" }}
 							color={color}
 							isLoading={isLoading}
-							isOutlined={color === "primary"}
 						>
 							<FormattedMessage id="CreateStrategy.button" />
 						</Button>
