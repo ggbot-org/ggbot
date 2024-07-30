@@ -17,9 +17,6 @@
 			"@workspace/aws-types": ["./aws-types/src/index.ts"],
 			"@workspace/backtesting": ["./backtesting/src/index.ts"],
 			"@workspace/binance": ["./binance/src/index.ts"],
-			"@workspace/binance-indexeddb": [
-				"./binance-indexeddb/src/index.ts"
-			],
 			"@workspace/binance-client": ["./binance-client/src/index.ts"],
 			"@workspace/cache": ["./cache/src/index.ts"],
 			"@workspace/database": ["./database/src/index.ts"],
@@ -28,6 +25,10 @@
 			"@workspace/env": ["./env/src/index.ts"],
 			"@workspace/http": ["./http/src/index.ts"],
 			"@workspace/indexeddb": ["./indexeddb/src/index.ts"],
+			"@workspace/indexeddb-binance": [
+				"./indexeddb-binance/src/index.ts"
+			],
+			"@workspace/indexeddb-orders": ["./indexeddb-orders/src/index.ts"],
 			"@workspace/locators": ["./locators/src/index.ts"],
 			"@workspace/logging": ["./logging/src/index.ts"],
 			"@workspace/models": ["./models/src/index.ts"],

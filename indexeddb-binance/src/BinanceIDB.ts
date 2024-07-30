@@ -8,15 +8,13 @@ import {
 export class BinanceIDB extends IDBProvider implements IDBInstance {
 	static exchangeInfoKey = "exchangeInfo"
 
-	readonly databaseName: string
-	readonly databaseVersion: number
+	readonly databaseName = "binance"
+	readonly databaseVersion = 1
 
 	private objectStore: CacheObjectStore
 
 	constructor() {
 		super()
-		this.databaseName = BinanceIDB.databaseName()
-		this.databaseVersion = 1
 		this.objectStore = new CacheObjectStore(
 			this.databaseName,
 			this.databaseVersion
@@ -24,18 +22,12 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 		super.open(this)
 	}
 
-	static databaseName() {
-		return "binance"
-	}
-
 	static klineKey(key: string) {
 		return `kline/${key}`
 	}
 
 	databaseUpgrade(db: IDBDatabase, version: number) {
-		if (version === 1) {
-			this.objectStore.create(db)
-		}
+		if (version === 1) this.objectStore.create(db)
 	}
 
 	deleteExchangeInfo(): Promise<void> {

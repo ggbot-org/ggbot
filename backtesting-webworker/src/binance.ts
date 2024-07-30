@@ -8,16 +8,16 @@ import {
 	getBinanceIntervalTime
 } from "@workspace/binance"
 import {
-	BinanceExchangeInfoCacheIDB,
-	BinanceIDB,
-	BinanceKlinesCacheIDB
-} from "@workspace/binance-indexeddb"
-import {
 	DflowBinanceExecutor,
 	extractBinanceSymbolsAndIntervalsFromFlow,
 	extractsBinanceSymbolsFromFlow,
 	getDflowBinanceNodesCatalog
 } from "@workspace/dflow"
+import {
+	BinanceExchangeInfoCacheIDB,
+	BinanceIDB,
+	BinanceKlinesCacheIDB
+} from "@workspace/indexeddb-binance"
 
 const binanceIDB = new BinanceIDB()
 const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)

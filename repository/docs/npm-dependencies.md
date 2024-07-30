@@ -31,12 +31,10 @@ graph LR
     workspace/aws-ses --- workspace/aws-types
     workspace/backtesting --- workspace/dflow
     workspace/backtesting-webworker --- workspace/backtesting
-    workspace/backtesting-webworker --- workspace/binance-indexeddb
+    workspace/backtesting-webworker --- workspace/indexeddb-binance
     workspace/backtesting-webworker --- workspace/webstorage
     workspace/binance --- workspace/cache
     workspace/binance-client --- workspace/binance
-    workspace/binance-indexeddb --- workspace/binance
-    workspace/binance-indexeddb --- workspace/indexeddb
     workspace/binance-proxy --- workspace/aws-ec2
     workspace/binance-proxy --- workspace/authentication
     workspace/binance-proxy --- workspace/binance-client
@@ -58,7 +56,11 @@ graph LR
     workspace/executor --- workspace/s3-data-bucket
     workspace/indexeddb --- workspace/logging
     workspace/indexeddb --- workspace/models
+    workspace/indexeddb-binance --- workspace/binance
+    workspace/indexeddb-binance --- workspace/indexeddb
+    workspace/indexeddb-orders --- workspace/indexeddb
     workspace/infrastructure --- workspace/aws-acm
+    workspace/infrastructure --- workspace/aws-api-gateway
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-ses
@@ -79,6 +81,7 @@ graph LR
     workspace/stripe-api --- workspace/s3-data-bucket
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/backtesting-webworker
+    workspace/webapp --- workspace/indexeddb-orders
     workspace/webstorage --- workspace/cache
     workspace/webstorage --- workspace/models
 ```

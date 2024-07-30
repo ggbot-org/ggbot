@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/backtesting-webworker",
+  "name": "@workspace/indexeddb-orders",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -15,14 +15,7 @@
     "check_types": "tsc --noEmit"
   },
   "dependencies": {
-    "@workspace/backtesting": "0.0.0",
-    "@workspace/binance": "0.0.0",
-    "@workspace/indexeddb-binance": "0.0.0",
-    "@workspace/dflow": "0.0.0",
-    "@workspace/logging": "0.0.0",
-    "@workspace/models": "0.0.0",
-    "@workspace/webstorage": "0.0.0",
-    "minimal-time-helpers": "0.1.0"
+    "@workspace/indexeddb": "0.0.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"
