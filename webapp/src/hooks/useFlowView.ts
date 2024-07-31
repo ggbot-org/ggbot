@@ -252,7 +252,13 @@ export function useFlowView({
 		if (!nodesCatalog || !container) return
 		if (strategyKind === "binance")
 			setFlowView(initializeBinanceFlowView(container, nodesCatalog))
-	}, [flowView, nodesCatalog, container, strategyKind])
+	}, [
+		flowView,
+		nodesCatalog,
+		initializeBinanceFlowView,
+		container,
+		strategyKind
+	])
 
 	// Load initial graph.
 	useEffect(() => {

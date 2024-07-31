@@ -1,11 +1,13 @@
+// TODO move this outside of components library
+// TODO use session storage to persist choosen daily interval
 import { Day } from "minimal-time-helpers"
-import { Dispatch, FC, SetStateAction, useCallback } from "react"
+import { Dispatch, SetStateAction, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 import { Button, ButtonProps, Buttons, Div, Title } from "trunx"
 
 import { DailyInterval } from "./DailyInterval"
 
-type DailyIntervalBoxProps = Pick<ButtonProps, "isLoading"> & {
+type Props = Pick<ButtonProps, "isLoading"> & {
 	onClickUpdate: ButtonProps["onClick"]
 	start: Day
 	end: Day
@@ -13,14 +15,14 @@ type DailyIntervalBoxProps = Pick<ButtonProps, "isLoading"> & {
 	setEnd: Dispatch<SetStateAction<Day>>
 }
 
-export const DailyIntervalBox: FC<DailyIntervalBoxProps> = ({
+export function DailyIntervalBox({
 	onClickUpdate,
 	isLoading,
 	start,
 	end,
 	setStart,
 	setEnd
-}) => {
+}: Props) {
 	const setStartDay = useCallback(
 		(day: Day) => {
 			if (isLoading) return

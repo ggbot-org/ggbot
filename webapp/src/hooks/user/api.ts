@@ -3,6 +3,7 @@ import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
+import { errorsIDB } from "_/storages/indexedDBs"
 import {
 	StripeClientActionInput,
 	StripeClientActionOutput,
@@ -11,7 +12,16 @@ import {
 	UserClientActionOutput,
 	UserClientActionType
 } from "@workspace/api"
-import { useEffect } from "react"
+import {
+	dateToDay,
+	Day,
+	dayToDate,
+	getDate,
+	timeToDay
+} from "minimal-time-helpers"
+import { useEffect, useState } from "react"
+
+import { useStrategyKey } from "../useStrategyKey"
 
 // Stripe Api
 
@@ -145,11 +155,69 @@ export function useReadStrategies() {
 }
 
 export function useReadStrategyErrors() {
-	return useAction<
+	const [data, setData] = useState<
+		UserClientActionOutput["ReadStrategyErrors"]
+	>([])
+	const strategyKey = useStrategyKey()
+	const {
+		request,
+		data: requestData,
+		...rest
+	} = useAction<
 		UserClientActionType,
 		UserClientActionInput["ReadStrategyErrors"],
 		UserClientActionOutput["ReadStrategyErrors"]
 	>(userApiOptions, "ReadStrategyErrors")
+	useEffect(() => {
+		if (!strategyKey) return
+		if (!requestData) return
+		setData((data) => [...data, ...requestData])
+		// Write to cache.
+		const dailyResults = new Map<
+			Day,
+			UserClientActionOutput["ReadStrategyErrors"]
+		>()
+		for (const item of requestData) {
+			const day = timeToDay(item.whenCreated)
+			if (dailyResults.has(day)) dailyResults.get(day)!.push(item)
+			else dailyResults.set(day, [item])
+		}
+		for (const [day, data] of dailyResults) {
+			errorsIDB.writeDailyErrors(strategyKey, day, data)
+		}
+	}, [requestData, strategyKey])
+	return {
+		data,
+		async request({
+			start,
+			end,
+			...strategyKey
+		}: UserClientActionInput["ReadStrategyErrors"]): Promise<void> {
+			const cachedData: UserClientActionOutput["ReadStrategyErrors"] = []
+			let date = dayToDate(start)
+			let someDataIsNotCached = false
+			while (date <= dayToDate(end)) {
+				const dailyResult = await errorsIDB.readDailyErrors(
+					strategyKey,
+					dateToDay(date)
+				)
+				if (!dailyResult) {
+					someDataIsNotCached = true
+					continue
+				}
+				cachedData.push(...dailyResult)
+				date = getDate(date).plusOne.day
+			}
+			setData(cachedData)
+			if (someDataIsNotCached)
+				await request({
+					start: dateToDay(date),
+					end,
+					...strategyKey
+				})
+		},
+		...rest
+	}
 }
 
 export function useReadStrategyOrders() {

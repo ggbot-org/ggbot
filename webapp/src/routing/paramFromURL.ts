@@ -13,7 +13,7 @@ export const accountKeyParamsFromURL = (url: URL): AccountKey | undefined => {
 	if (isAccountKey(accountKey)) return accountKey
 }
 
-export const strategyKeyParamsFromURL = (url: URL): StrategyKey | undefined => {
+export function strategyKeyParamsFromURL(url: URL): StrategyKey | undefined {
 	const strategyKey = {
 		strategyId: url.searchParams.get("strategyId"),
 		strategyKind: url.searchParams.get("strategyKind")

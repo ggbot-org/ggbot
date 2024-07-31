@@ -28,6 +28,7 @@
 			"@workspace/indexeddb-binance": [
 				"./indexeddb-binance/src/index.ts"
 			],
+			"@workspace/indexeddb-errors": ["./indexeddb-errors/src/index.ts"],
 			"@workspace/indexeddb-orders": ["./indexeddb-orders/src/index.ts"],
 			"@workspace/locators": ["./locators/src/index.ts"],
 			"@workspace/logging": ["./logging/src/index.ts"],

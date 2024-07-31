@@ -61,6 +61,7 @@ module.exports = {
 				}
 			}
 		],
+		// TODO "func-style": ["warn", "declaration"],
 		"import/extensions": "off",
 		// TODO why import/no-cycle complains?
 		"import/no-cycle": "off",

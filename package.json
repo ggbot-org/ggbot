@@ -182,6 +182,7 @@
     "http",
     "indexeddb",
     "indexeddb-binance",
+    "indexeddb-errors",
     "indexeddb-orders",
     "infrastructure",
     "locators",

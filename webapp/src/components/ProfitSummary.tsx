@@ -184,12 +184,8 @@ export function ProfitSummary({
 
 			<Level>
 				<LevelItem>
-					<div
-						className={classnames(
-							"is-flex",
-							"is-flex-direction-column",
-							"mx-2"
-						)}
+					<Div
+						bulma={["is-flex", "is-flex-direction-column", "mx-2"]}
 					>
 						<_Label>
 							<FormattedMessage id="DailyInterval.from" />
@@ -198,14 +194,10 @@ export function ProfitSummary({
 						<_Value>
 							<DateTime format="day" value={dayInterval?.start} />
 						</_Value>
-					</div>
+					</Div>
 
-					<div
-						className={classnames(
-							"is-flex",
-							"is-flex-direction-column",
-							"mx-2"
-						)}
+					<Div
+						bulma={["is-flex", "is-flex-direction-column", "mx-2"]}
 					>
 						<_Label>
 							<FormattedMessage id="DailyInterval.to" />
@@ -214,7 +206,7 @@ export function ProfitSummary({
 						<_Value>
 							<DateTime format="day" value={dayInterval?.end} />
 						</_Value>
-					</div>
+					</Div>
 				</LevelItem>
 
 				<LevelItem bulma="has-text-centered">

@@ -9,6 +9,8 @@ export const quotaType: Record<string, QuotaType> = Object.fromEntries(
 	quotaTypes.map((quotaType) => [quotaType, quotaType])
 )
 
+// TODO add quota for max history, for example ReadStrategyErrors and ReadStrategyOrders can go max to 180 days
+
 export const quota: Record<
 	QuotaType,
 	(arg: SubscriptionPlan | null | undefined) => number

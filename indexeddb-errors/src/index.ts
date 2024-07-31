@@ -3,11 +3,11 @@ import {
 	IDBInstance,
 	IDBProvider
 } from "@workspace/indexeddb"
-import { Order, StrategyKey } from "@workspace/models"
+import { StrategyError, StrategyKey } from "@workspace/models"
 import { Day } from "minimal-time-helpers"
 
-export class OrdersIDB extends IDBProvider implements IDBInstance {
-	readonly databaseName = "orders"
+export class ErrorsIDB extends IDBProvider implements IDBInstance {
+	readonly databaseName = "errors"
 	readonly databaseVersion = 1
 
 	private objectStore: CacheObjectStore
@@ -21,7 +21,7 @@ export class OrdersIDB extends IDBProvider implements IDBInstance {
 		super.open(this)
 	}
 
-	static dailyOrdersKey({ strategyId, strategyKind }: StrategyKey, day: Day) {
+	static dailyErrorsKey({ strategyId, strategyKind }: StrategyKey, day: Day) {
 		return `${strategyKind}:${strategyId}/${day}`
 	}
 
@@ -29,26 +29,26 @@ export class OrdersIDB extends IDBProvider implements IDBInstance {
 		if (version === 1) this.objectStore.create(db)
 	}
 
-	readDailyOrders(
+	readDailyErrors(
 		strategyKey: StrategyKey,
 		day: Day
-	): Promise<Order[] | undefined> {
+	): Promise<StrategyError[] | undefined> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.read<Order[]>(
+		return this.objectStore.read<StrategyError[]>(
 			this.db,
-			OrdersIDB.dailyOrdersKey(strategyKey, day)
+			ErrorsIDB.dailyErrorsKey(strategyKey, day)
 		)
 	}
 
-	writeDailyOrders(
+	writeDailyErrors(
 		strategyKey: StrategyKey,
 		day: Day,
-		data: Order[]
+		data: StrategyError[]
 	): Promise<void> {
 		if (!this.db) return Promise.reject()
-		return this.objectStore.write<Order[]>(
+		return this.objectStore.write<StrategyError[]>(
 			this.db,
-			OrdersIDB.dailyOrdersKey(strategyKey, day),
+			ErrorsIDB.dailyErrorsKey(strategyKey, day),
 			data
 		)
 	}

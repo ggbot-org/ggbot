@@ -6,13 +6,14 @@ import {
 } from "_/components/library"
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
-import { StrategyContext } from "_/contexts/Strategy"
 import { useReadStrategyOrders } from "_/hooks/user/api"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { getDay, today } from "minimal-time-helpers"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export function StrategyProfits() {
-	const { strategyKey, strategyKind } = useContext(StrategyContext)
+	const strategyKey = useStrategyKey()
+	const strategyKind = strategyKey?.strategyKind
 
 	// TODO use indexedDB to cache orders
 	const numDays = 30

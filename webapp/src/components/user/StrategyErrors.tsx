@@ -8,13 +8,13 @@ import {
 	StrategyErrorsTable,
 	StrategyErrorsTableProps
 } from "_/components/StrategyErrorsTable"
-import { StrategyContext } from "_/contexts/Strategy"
 import { useReadStrategyErrors } from "_/hooks/user/api"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { getDay, today } from "minimal-time-helpers"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export function StrategyErrors() {
-	const { strategyKey } = useContext(StrategyContext)
+	const strategyKey = useStrategyKey()
 
 	// TODO use indexedDB to cache errors
 	const numDays = 30
