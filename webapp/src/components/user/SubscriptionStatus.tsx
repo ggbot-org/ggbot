@@ -1,4 +1,4 @@
-import { Tag, TagProps } from "_/components/library"
+import { MainColor, Tag } from "_/components/library"
 import { SubscriptionStatus as Status } from "@workspace/models"
 import { FC, ReactNode } from "react"
 import { useIntl } from "react-intl"
@@ -7,7 +7,7 @@ type Props = {
 	status: Status | undefined
 }
 
-type SubscriptionStatusColor = Extract<TagProps["color"], "primary" | "warning">
+type SubscriptionStatusColor = Extract<MainColor, "primary" | "warning">
 
 const colorOf: Record<Status, SubscriptionStatusColor> = {
 	active: "primary",

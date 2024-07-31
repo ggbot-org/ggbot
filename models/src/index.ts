@@ -38,7 +38,7 @@ export {
 } from "./oneTimePassword.js"
 export * from "./order.js"
 export * from "./paymentProviders.js"
-export { quotaType } from "./quotas.js"
+export { quota, quotaType } from "./quotas.js"
 export type { SchedulingStatus } from "./scheduling.js"
 export {
 	getSchedulingSummary,

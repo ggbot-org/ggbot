@@ -25,9 +25,9 @@
 	user-select: none;
 }
 
-.Calendar__body {
+/* One column for every week day. */
+.Calendar__grid {
 	display: grid;
-	/* One column for every week day. */
 	grid-template-columns: repeat(7, 1fr);
 }
 
@@ -37,6 +37,7 @@
 	font-size: 0.8em;
 	text-align: center;
 	user-select: none;
+	pointer-events: none;
 }
 
 .Calendar__cell {
@@ -48,8 +49,15 @@
 	width: 2.2em;
 }
 
+@media (prefers-color-scheme: dark) {
+	.Calendar__cell {
+		color: var(--bulma-white);
+	}
+}
+
 .Calendar__cell:hover {
 	background: var(--bulma-primary);
+	color: var(--bulma-black);
 }
 
 .Calendar__cell--selected {
@@ -63,4 +71,5 @@
 
 .Calendar__cell--disabled:hover {
 	background: transparent;
+	color: var(--bulma-grey-light);
 }

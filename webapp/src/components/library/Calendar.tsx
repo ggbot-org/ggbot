@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { dateToDay, Day } from "minimal-time-helpers"
-import { memo, MouseEventHandler, useCallback, useMemo, useState } from "react"
+import { MouseEventHandler, useCallback, useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
@@ -11,7 +11,7 @@ const randomKey = () =>
 		.replace(/[^a-z]+/g, "")
 		.substring(0, 5)
 
-const CalendarWeekDays = memo(() => {
+function CalendarWeekDays() {
 	const { formatDate } = useIntl()
 
 	const weekDayNames = [
@@ -28,17 +28,20 @@ const CalendarWeekDays = memo(() => {
 	}))
 
 	return (
-		<>
+		<div
+			className="Calendar__grid"
+			onClick={(event) => {
+				event.stopPropagation()
+			}}
+		>
 			{weekDayNames.map(({ day, label }) => (
 				<div key={day} className={classnames("Calendar__week-day")}>
 					{label}
 				</div>
 			))}
-		</>
+		</div>
 	)
-})
-
-CalendarWeekDays.displayName = "CalendarWeekDays"
+}
 
 export type CalendarProps = {
 	min?: Day
@@ -219,9 +222,9 @@ export function Calendar({
 				</div>
 			</div>
 
-			<div className={classnames("Calendar__body")}>
-				<CalendarWeekDays />
+			<CalendarWeekDays />
 
+			<div className={classnames("Calendar__grid")}>
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div

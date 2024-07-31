@@ -7,13 +7,14 @@ import {
 type CalendarClassname =
 	| "Calendar"
 	| "Calendar__body"
+	| "Calendar__cell"
+	| "Calendar__cell--disabled"
+	| "Calendar__cell--selected"
+	| "Calendar__grid"
 	| "Calendar__head"
 	| "Calendar__head-icon"
 	| "Calendar__head-text"
 	| "Calendar__week-day"
-	| "Calendar__cell"
-	| "Calendar__cell--selected"
-	| "Calendar__cell--disabled"
 
 type DailyIntervalClassname = "DailyInterval"
 

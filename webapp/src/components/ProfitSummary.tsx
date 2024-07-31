@@ -176,6 +176,9 @@ export function ProfitSummary({
 			}
 	}
 
+	if (orders === undefined) return null
+	if (orders.length === 0) return null
+
 	return (
 		<Div bulma="box">
 			<Title>

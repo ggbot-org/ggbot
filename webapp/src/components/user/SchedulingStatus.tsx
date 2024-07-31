@@ -1,16 +1,14 @@
 import { classnames } from "_/classnames"
-import { Tag, TagProps, Tags } from "_/components/library"
+import { MainColor, Tag, Tags } from "_/components/library"
 import { SchedulingStatus as Status } from "@workspace/models"
 import { useIntl } from "react-intl"
 
-type SchedulingStatusColor = Extract<
-	TagProps["color"],
-	"primary" | "danger" | "light"
->
-
-const colorOf: Record<Status, SchedulingStatusColor> = {
+const colorOf: Record<
+	Status,
+	Extract<MainColor, "primary" | "danger"> | undefined
+> = {
 	active: "primary",
-	inactive: "light",
+	inactive: undefined,
 	suspended: "danger"
 }
 

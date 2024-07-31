@@ -9,18 +9,14 @@ import {
 	StrategyErrorsTableProps
 } from "_/components/StrategyErrorsTable"
 import { useReadStrategyErrors } from "_/hooks/user/api"
+import { useDailyInterval } from "_/hooks/user/useDailyInterval"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { getDay, today } from "minimal-time-helpers"
 import { useCallback, useEffect, useState } from "react"
 
 export function StrategyErrors() {
 	const strategyKey = useStrategyKey()
 
-	// TODO use indexedDB to cache errors
-	const numDays = 30
-
-	const [start, setStart] = useState(getDay(today()).minus(numDays).days)
-	const [end, setEnd] = useState(today())
+	const { min, max, start, setStart, end, setEnd } = useDailyInterval()
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
@@ -48,6 +44,8 @@ export function StrategyErrors() {
 				<OneColumn>
 					<DailyIntervalBox
 						isLoading={READ.isPending}
+						min={min}
+						max={max}
 						start={start}
 						setStart={setStart}
 						setEnd={setEnd}

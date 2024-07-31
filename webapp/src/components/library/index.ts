@@ -18,7 +18,6 @@ export * from "./Page"
 export * from "./Paragraph"
 export * from "./SelectField"
 export * from "./Tabs"
-export * from "./Tag"
 export * from "./Toast"
 export * from "./ToastContainer"
 export type { ButtonProps, MainColor, ProgressProps, SizeProp } from "trunx"
@@ -42,6 +41,7 @@ export {
 	Progress,
 	Section,
 	Table,
+	Tag,
 	Tags,
 	Title
 } from "trunx"
