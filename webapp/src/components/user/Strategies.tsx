@@ -8,7 +8,7 @@ import {
 	Message
 } from "_/components/library"
 import { StrategyItem } from "_/components/user/StrategyItem"
-import { useAccountStrategies } from "_/hooks/useAccountStrategies"
+import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import {

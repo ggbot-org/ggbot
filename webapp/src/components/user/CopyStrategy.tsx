@@ -13,9 +13,8 @@ import { StrategyName } from "_/components/StrategyName"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { StrategyContext } from "_/contexts/Strategy"
-import { UseActionError } from "_/hooks/useAction"
-import { useUserApi } from "_/hooks/userApi"
-import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
+import { useCopyStrategy } from "_/hooks/user/api"
+import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -36,15 +35,12 @@ const fields = Object.keys(fieldName)
 export function CopyStrategy() {
 	const { strategyKey, strategyName } = useContext(StrategyContext)
 
-	const [error, setError] = useState<UseActionError>()
+	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-	const COPY = useUserApi.CopyStrategy()
-	const readOnly = COPY.isPending || COPY.isDone
-	const isLoading = COPY.isPending || COPY.isDone
-	const newStrategy = COPY.data
+	const COPY = useCopyStrategy()
 
 	const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
@@ -84,8 +80,6 @@ export function CopyStrategy() {
 			COPY.reset()
 		}
 	}, [COPY])
-
-	useRedirectToNewStrategyPage(newStrategy)
 
 	return (
 		<Section>
@@ -131,15 +125,14 @@ export function CopyStrategy() {
 							name={fieldName.name}
 							onChange={onChangeName}
 							placeholder={strategyName}
-							readOnly={readOnly}
+							readOnly={COPY.isPending || COPY.isDone}
 						/>
 
 						<Buttons>
 							<Button
 								bulma={{ "is-light": color !== "primary" }}
 								color={color}
-								isLoading={isLoading}
-								isOutlined={color === "primary"}
+								isLoading={COPY.isPending || COPY.isDone}
 							>
 								<FormattedMessage id="CopyStrategy.button" />
 							</Button>

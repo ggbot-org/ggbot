@@ -5,7 +5,7 @@ import {
 } from "_/components/FlowViewContainer"
 import { Button, Buttons } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
-import { useUserApi } from "_/hooks/userApi"
+import { useWriteStrategyFlow } from "_/hooks/user/api"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { GOTO } from "_/routing/navigation"
@@ -28,7 +28,7 @@ export function EditableFlow() {
 
 	const [canSave, setCanSave] = useState(false)
 
-	const WRITE = useUserApi.WriteStrategyFlow()
+	const WRITE = useWriteStrategyFlow()
 
 	const onClickSave = useCallback(() => {
 		if (!strategyKey) return

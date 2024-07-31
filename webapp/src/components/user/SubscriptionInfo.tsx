@@ -9,7 +9,7 @@ import {
 import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
 import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
-import { useSubscription } from "_/hooks/useSubscription"
+import { useSubscription } from "_/hooks/user/useSubscription"
 import { FormattedMessage } from "react-intl"
 
 export function SubscriptionInfo() {

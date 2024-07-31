@@ -1,6 +1,6 @@
 import { AccountId } from "_/components/AccountId"
 import { Column, Columns, Div } from "_/components/library"
-import { useAdminApi } from "_/hooks/useAdminApi"
+import { useListAccountKeys } from "_/hooks/admin/api"
 import { webapp } from "_/routing/webapp"
 import { AccountKey, isAccountKey } from "@workspace/models"
 import { useEffect } from "react"
@@ -10,7 +10,7 @@ type AccountItem = AccountKey & {
 }
 
 export function Accounts() {
-	const READ = useAdminApi.ListAccountKeys()
+	const READ = useListAccountKeys()
 	const { data } = READ
 
 	const accountItems: AccountItem[] = []

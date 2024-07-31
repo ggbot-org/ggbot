@@ -102,7 +102,7 @@ module.exports = {
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
 		"react/self-closing-comp": ["error", { component: true, html: true }],
-		"react-compiler/react-compiler": "warn"
+		"react-compiler/react-compiler": "error"
 	},
 	settings: {
 		react: {

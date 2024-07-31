@@ -10,12 +10,12 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { useUserApi } from "_/hooks/userApi"
+import { useDeleteAccount } from "_/hooks/user/api"
 import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const DeleteAccount: FC = () => {
+export function DeleteAccount() {
 	const { formatMessage } = useIntl()
 
 	const account = useStoredAccountInfo()
@@ -27,7 +27,7 @@ export const DeleteAccount: FC = () => {
 		? "danger"
 		: undefined
 
-	const DELETE = useUserApi.DeleteAccount()
+	const DELETE = useDeleteAccount()
 	const isLoading = DELETE.isPending
 
 	const [hasConsent, setHasConsent] = useState<boolean>(false)
@@ -43,7 +43,6 @@ export const DeleteAccount: FC = () => {
 	return (
 		<>
 			<Button
-				isOutlined
 				color="danger"
 				onClick={() => {
 					setModalIsActive(true)

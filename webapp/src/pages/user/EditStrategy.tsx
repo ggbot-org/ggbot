@@ -1,11 +1,11 @@
 import { Backtesting } from "_/components/Backtesting"
-import { EditableFlow } from "_/components/EditableFlow"
 import { TabId, Tabs } from "_/components/Tabs"
+import { EditableFlow } from "_/components/user/EditableFlow"
 import { PageContainer } from "_/components/user/PageContainer"
 import { StrategyProvider } from "_/contexts/Strategy"
-import { FC, useState } from "react"
+import { useState } from "react"
 
-export const EditStrategyPage: FC = () => {
+export function EditStrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("flow")
 
 	return (

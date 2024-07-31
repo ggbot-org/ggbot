@@ -6,20 +6,20 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { useUserApi } from "_/hooks/userApi"
-import { FC, useCallback, useEffect, useState } from "react"
+import { useDeleteBinanceApiConfig } from "_/hooks/user/api"
+import { useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Props = {
 	refetchApiKey: () => void
 }
 
-export const DeleteBinanceApi: FC<Props> = ({ refetchApiKey }) => {
+export function DeleteBinanceApi({ refetchApiKey }: Props) {
 	const color: MainColor = "warning"
 
 	const { formatMessage } = useIntl()
 
-	const DELETE = useUserApi.DeleteBinanceApiConfig()
+	const DELETE = useDeleteBinanceApiConfig()
 	const canCloseModal = DELETE.isDone
 	const isLoading = DELETE.isPending
 

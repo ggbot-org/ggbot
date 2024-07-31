@@ -6,7 +6,7 @@ import {
 	BinanceApiKeyPermissionsProps
 } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
-import { useUserApi } from "_/hooks/userApi"
+import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"
 import { GatewayTimeoutError } from "@workspace/http"
 import {
 	ChangeEventHandler,
@@ -29,7 +29,7 @@ export function BinanceApi({ apiKey }: Props) {
 	const [permissions, setPermissions] =
 		useState<BinanceApiKeyPermissionsProps["permissions"]>()
 
-	const READ = useUserApi.ReadBinanceAccountApiRestrictions()
+	const READ = useReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending
 
 	const onSubmit = useCallback<ChangeEventHandler<HTMLFormElement>>(

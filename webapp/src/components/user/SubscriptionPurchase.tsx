@@ -14,8 +14,8 @@ import {
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
-import { useStripeApi } from "_/hooks/useStripeApi"
-import { useSubscription } from "_/hooks/useSubscription"
+import { useCreateCheckoutSession } from "_/hooks/user/api"
+import { useSubscription } from "_/hooks/user/useSubscription"
 import { GOTO } from "_/routing/navigation"
 import {
 	isNaturalNumber,
@@ -56,7 +56,7 @@ export function SubscriptionPurchase() {
 	const monthlyPrice = Number(STRIPE_PLAN_BASIC_MONTHLY_PRICE)
 	const currency = "EUR"
 
-	const CREATE_CHECKOUT = useStripeApi.CreateCheckoutSession()
+	const CREATE_CHECKOUT = useCreateCheckoutSession()
 	const { data: checkoutData, isPending } = CREATE_CHECKOUT
 
 	let newSubscriptionEnd: SubscriptionEndProps["value"]
@@ -197,8 +197,7 @@ export function SubscriptionPurchase() {
 
 					<Buttons>
 						<Button
-							color="primary"
-							isOutlined={!isYearly}
+							color={isYearly ? "primary" : undefined}
 							isLoading={isPending}
 						>
 							<FormattedMessage id="SubscriptionPurchase.button" />

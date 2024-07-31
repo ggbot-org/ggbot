@@ -7,7 +7,7 @@ import {
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { StrategyContext } from "_/contexts/Strategy"
-import { useUserApi } from "_/hooks/userApi"
+import { useReadStrategyOrders } from "_/hooks/user/api"
 import { getDay, today } from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useState } from "react"
 
@@ -24,7 +24,7 @@ export function StrategyProfits() {
 
 	const dayInterval = { start, end }
 
-	const READ = useUserApi.ReadStrategyOrders()
+	const READ = useReadStrategyOrders()
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return

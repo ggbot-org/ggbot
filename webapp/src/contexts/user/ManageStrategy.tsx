@@ -1,6 +1,7 @@
+// TODO remove this
 import { StrategyContext } from "_/contexts/Strategy"
-import { UseActionError } from "_/hooks/useAction"
-import { useUserApi } from "_/hooks/userApi"
+import { useRenameStrategy } from "_/hooks/user/api"
+import { ApiActionError } from "@workspace/api"
 import {
 	createContext,
 	FC,
@@ -16,7 +17,7 @@ type ContextValue = {
 	renameStrategy: (name: string) => void
 	renameIsDone: boolean
 	renameIsPending?: boolean | undefined
-	renameError?: UseActionError
+	renameError?: ApiActionError
 }
 
 export const ManageStrategyContext = createContext<ContextValue>({
@@ -29,9 +30,9 @@ ManageStrategyContext.displayName = "ManageStrategyContext"
 export const ManageStrategyProvider: FC<PropsWithChildren> = ({ children }) => {
 	const { strategyKey, resetStrategy } = useContext(StrategyContext)
 
-	const [renameError, setRenameError] = useState<UseActionError>()
+	const [renameError, setRenameError] = useState<ApiActionError>()
 
-	const RENAME = useUserApi.RenameStrategy()
+	const RENAME = useRenameStrategy()
 	const renameIsDone = RENAME.isDone
 	const renameIsPending = RENAME.isPending
 

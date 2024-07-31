@@ -1,10 +1,9 @@
 export type {
 	ActionInput,
 	ActionIO,
-	ApiActionClientSideError,
+	ApiActionError,
 	ApiActionOutputData,
-	ApiActionOutputError,
-	ApiActionServerSideError
+	ApiActionOutputError
 } from "./action.js"
 export {
 	isActionInput,

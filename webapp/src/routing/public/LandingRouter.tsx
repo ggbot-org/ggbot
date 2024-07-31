@@ -1,6 +1,6 @@
-import { HomePage } from "_/pages/HomePage"
-import { PrivacyPage } from "_/pages/Privacy"
-import { TermsPage } from "_/pages/Terms"
+import { Homepage } from "_/pages/landing/Homepage"
+import { PrivacyPage } from "_/pages/landing/Privacy"
+import { TermsPage } from "_/pages/landing/Terms"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
 
@@ -8,7 +8,7 @@ function Router() {
 	const { pathname } = location
 
 	if (pathname === "/" || pathname === webapp.homepage.pathname)
-		return <HomePage />
+		return <Homepage />
 
 	if (pathname === webapp.privacy.pathname) return <PrivacyPage />
 

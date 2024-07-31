@@ -1,4 +1,4 @@
-import { useReadStrategies } from "_/hooks/userApi"
+import { useReadStrategies } from "_/hooks/user/api"
 import { sessionWebStorage } from "_/storages/session"
 import { AccountStrategy } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"

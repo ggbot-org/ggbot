@@ -1,8 +1,7 @@
 import { localWebStorage } from "_/storages/local"
 import {
 	ActionIO,
-	ApiActionClientSideError,
-	ApiActionServerSideError,
+	ApiActionError,
 	clientAction,
 	ClientActionHeaders,
 	GenericError,
@@ -21,11 +20,6 @@ import { logging } from "@workspace/logging"
 import { useCallback, useState } from "react"
 
 const { debug, warn } = logging("use-action")
-
-export type UseActionError =
-	| ApiActionClientSideError
-	| ApiActionServerSideError
-	| undefined
 
 export type UseActionApiArg = {
 	url: Parameters<typeof clientAction>[0]
@@ -70,7 +64,7 @@ export function useAction<
 	Output extends ActionIO
 >({ url, withAuth }: UseActionApiArg, type: ActionType) {
 	const [data, setData] = useState<Output | undefined>()
-	const [error, setError] = useState<UseActionError>()
+	const [error, setError] = useState<ApiActionError | undefined>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
 
 	const reset = useCallback(() => {

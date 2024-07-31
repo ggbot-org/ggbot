@@ -133,7 +133,7 @@ export type UserDatabaseActionOutput = {
 }
 
 export type UserClientActionType =
-	| UserDatabaseActionType
+	| Exclude<UserDatabaseActionType, "ReadSubscription">
 	| Extract<BinanceClientActionType, "ReadBinanceAccountApiRestrictions">
 
 export const userClientActions: ActionTypes<UserClientActionType> = [
@@ -150,7 +150,6 @@ export const userClientActions: ActionTypes<UserClientActionType> = [
 	"ReadStrategies",
 	"ReadStrategyErrors",
 	"ReadStrategyOrders",
-	"ReadSubscription",
 	"RenameStrategy",
 	"WriteAccountStrategiesItemSchedulings",
 	"WriteStrategyFlow",

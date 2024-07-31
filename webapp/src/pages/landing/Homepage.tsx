@@ -16,7 +16,7 @@ import { webapp } from "_/routing/webapp"
 import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export function HomePage() {
+export function Homepage() {
 	const { gotFirstPageView } = useGotFirstPageView()
 	const [ctaIsActive, setCtaIsActive] = useState(false)
 

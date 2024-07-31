@@ -1,7 +1,8 @@
+// TODO remove this
 import { AccountNotFound } from "_/components/admin/AccountNotFound"
 import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey"
 import { Section } from "_/components/library"
-import { useAdminApi } from "_/hooks/useAdminApi"
+import { useReadAccount } from "_/hooks/admin/api"
 import { accountKeyParamsFromURL } from "_/routing/paramFromURL"
 import { Account } from "@workspace/models"
 import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
@@ -19,7 +20,7 @@ AccountContext.displayName = "AccountContext"
 export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 	const accountKey = accountKeyParamsFromURL(new URL(location.href))
 
-	const READ_ACCOUNT = useAdminApi.ReadAccount()
+	const READ_ACCOUNT = useReadAccount()
 	const account = READ_ACCOUNT.data
 
 	const contextValue = useMemo<ContextValue>(

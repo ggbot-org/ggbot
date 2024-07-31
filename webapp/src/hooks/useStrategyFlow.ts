@@ -1,4 +1,4 @@
-import { usePublicApi } from "_/hooks/usePublicApi"
+import { useReadStrategyFlow } from "_/hooks/public/api"
 import { StrategyFlow, StrategyKey } from "@workspace/models"
 import { useEffect } from "react"
 
@@ -7,7 +7,7 @@ export type UseStrategyFlowOutput = StrategyFlow["view"] | null | undefined
 export const useStrategyFlow = (
 	strategyKey: StrategyKey | undefined
 ): UseStrategyFlowOutput => {
-	const { data, canRun, request } = usePublicApi.ReadStrategyFlow()
+	const { data, canRun, request } = useReadStrategyFlow()
 
 	// Fetch flow.
 	useEffect(() => {

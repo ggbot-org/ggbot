@@ -2,16 +2,16 @@ import { Column, Columns } from "_/components/library"
 import { BinanceApi } from "_/components/user/BinanceApi"
 import { CreateBinanceApi } from "_/components/user/CreateBinanceApi"
 import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi"
-import { useUserApi } from "_/hooks/userApi"
+import { useReadBinanceApiKey } from "_/hooks/user/api"
 import { useCallback, useEffect } from "react"
 
 export function BinanceSettings() {
-	const READ_API_KEY = useUserApi.ReadBinanceApiKey()
-	const remoteApiKey = READ_API_KEY.data
+	const READ = useReadBinanceApiKey()
+	const remoteApiKey = READ.data
 
 	const refetchApiKey = useCallback(() => {
-		READ_API_KEY.reset()
-	}, [READ_API_KEY])
+		READ.reset()
+	}, [READ])
 
 	let apiKey
 	if (remoteApiKey === null) apiKey = null
@@ -19,8 +19,8 @@ export function BinanceSettings() {
 
 	// Fetch apiKey.
 	useEffect(() => {
-		if (READ_API_KEY.canRun) READ_API_KEY.request()
-	}, [READ_API_KEY])
+		if (READ.canRun) READ.request()
+	}, [READ])
 
 	return (
 		<>

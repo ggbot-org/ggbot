@@ -60,7 +60,7 @@ type ApiActionServerSideErrorName =
 const isApiActionServerSideErrorName =
 	isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
 
-export type ApiActionServerSideError = {
+type ApiActionServerSideError = {
 	name: ApiActionServerSideErrorName
 	info?: SerializableObject
 }
@@ -85,7 +85,7 @@ const apiActionClientSideErrorNames = [
 type ApiActionClientSideErrorName =
 	(typeof apiActionClientSideErrorNames)[number]
 
-export type ApiActionClientSideError = {
+type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName
 }
 
@@ -100,3 +100,8 @@ export const isActionInput = <ActionType extends string>(
 	objectTypeGuard<ActionInput<ActionType>>(({ type }) =>
 		isLiteralType<ActionType>(actionTypes)(type)
 	)
+
+// Common
+// //////
+
+export type ApiActionError = ApiActionClientSideError | ApiActionServerSideError

@@ -1,4 +1,3 @@
-import { GoSettings } from "_/components/GoSettings"
 import {
 	Buttons,
 	Checkbox,
@@ -6,7 +5,8 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
-import { useSubscription } from "_/hooks/useSubscription"
+import { GoSettings } from "_/components/user/GoSettings"
+import { useSubscription } from "_/hooks/user/useSubscription"
 import { sessionWebStorage } from "_/storages/session"
 import {
 	ChangeEventHandler,

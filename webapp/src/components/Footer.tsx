@@ -1,5 +1,5 @@
 import { classnames } from "_/classnames"
-import { SocialLinks } from "_/components/SocialLinks"
+import { SocialLinks } from "_/components/landing/SocialLinks"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { dayFormat } from "_/i18n/formats"
 import { FormattedMessage, useIntl } from "react-intl"

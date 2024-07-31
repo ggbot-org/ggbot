@@ -1,7 +1,7 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
-import { useUserApi } from "_/hooks/userApi"
+import { useReadAccountInfo } from "_/hooks/user/api"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
 import { sessionWebStorage } from "_/storages/session"
@@ -110,7 +110,7 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 		AccountInfo | undefined
 	>(sessionWebStorage.accountInfo.get())
 
-	const READ = useUserApi.ReadAccountInfo()
+	const READ = useReadAccountInfo()
 	const accountInfo = READ.data
 
 	const setToken = useCallback<AuthVerifyProps["setToken"]>(

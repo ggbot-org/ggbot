@@ -1,12 +1,11 @@
 import { AccountId } from "_/components/AccountId"
 import { Column, Columns, Content, Message } from "_/components/library"
 import { AccountKey } from "@workspace/models"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = AccountKey
 
-export const AccountNotFound: FC<Props> = ({ accountId }) => {
+export function AccountNotFound({ accountId }: Props) {
 	const { formatMessage } = useIntl()
 
 	return (

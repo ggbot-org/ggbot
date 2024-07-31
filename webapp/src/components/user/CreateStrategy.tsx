@@ -8,10 +8,8 @@ import {
 } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
-import { useAccountStrategies } from "_/hooks/useAccountStrategies"
-import { UseActionError } from "_/hooks/useAction"
-import { useUserApi } from "_/hooks/userApi"
-import { useRedirectToNewStrategyPage } from "_/hooks/useRedirectToNewStrategyPage"
+import { useCreateStrategy } from "_/hooks/user/api"
+import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
 import {
 	ChangeEventHandler,
@@ -29,14 +27,11 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export function CreateStrategy() {
-	const { resetAccountStrategies } = useAccountStrategies()
-
-	const CREATE = useUserApi.CreateStrategy()
-	const newStrategy = CREATE.data
+	const CREATE = useCreateStrategy()
 	const readOnly = CREATE.isPending
 	const isLoading = CREATE.isPending || CREATE.isDone
 
-	const [error, setError] = useState<UseActionError>()
+	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
@@ -64,12 +59,9 @@ export function CreateStrategy() {
 			}
 			const name = eventTarget[fieldName.name]?.value
 			if (isName(name)) CREATE.request({ kind: "binance", name })
-			resetAccountStrategies()
 		},
-		[CREATE, canCreate, resetAccountStrategies]
+		[CREATE, canCreate]
 	)
-
-	useRedirectToNewStrategyPage(newStrategy)
 
 	useEffect(() => {
 		if (CREATE.error) {

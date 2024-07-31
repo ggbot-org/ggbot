@@ -110,7 +110,6 @@ export function RenameStrategy() {
 								bulma={{ "is-light": color !== "primary" }}
 								color={color}
 								isLoading={isPending}
-								isOutlined={color === "primary"}
 							>
 								<FormattedMessage id="RenameStrategy.save" />
 							</Button>

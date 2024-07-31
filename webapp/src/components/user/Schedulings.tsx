@@ -17,11 +17,11 @@ import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
 import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
 import { ToastContext } from "_/contexts/Toast"
-import { useAccountStrategies } from "_/hooks/useAccountStrategies"
-import { useUserApi } from "_/hooks/userApi"
+import { useWriteAccountStrategiesItemSchedulings } from "_/hooks/user/api"
+import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
+import { useSubscription } from "_/hooks/user/useSubscription"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { useSubscription } from "_/hooks/useSubscription"
 import {
 	AccountStrategy,
 	isStrategyScheduling,
@@ -44,22 +44,21 @@ import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
 export function Schedulings() {
 	const { formatMessage } = useIntl()
 
+	const { toast } = useContext(ToastContext)
+
 	const strategyKey = useStrategyKey()
 	const strategyId = strategyKey?.strategyId
 
 	const flowViewGraph = useStrategyFlow(strategyKey)
 
 	const { hasActiveSubscription, isPro } = useSubscription()
-	const { accountStrategies, resetAccountStrategies } = useAccountStrategies()
-	const { toast } = useContext(ToastContext)
+	const { accountStrategies } = useAccountStrategies()
 
 	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
 		AccountStrategy[]
 	>([])
 
-	const WRITE = useUserApi.WriteAccountStrategiesItemSchedulings()
-	const isDone = WRITE.isDone
-	const isLoading = WRITE.isPending
+	const WRITE = useWriteAccountStrategiesItemSchedulings()
 	const error = WRITE.error
 
 	const [schedulingItems, setSchedulingItems] = useState<
@@ -247,11 +246,6 @@ export function Schedulings() {
 		if (WRITE.error) WRITE.reset()
 	}, [WRITE])
 
-	// Reset strategies once done.
-	useEffect(() => {
-		if (isDone) resetAccountStrategies()
-	}, [resetAccountStrategies, isDone])
-
 	return (
 		<>
 			<Columns>
@@ -280,7 +274,7 @@ export function Schedulings() {
 								<LevelItem className={classnames("ml-5")}>
 									<SchedulingsStatusBadges
 										schedulings={currentSchedulings}
-									/>{" "}
+									/>
 								</LevelItem>
 							}
 						/>
@@ -294,7 +288,7 @@ export function Schedulings() {
 											color={
 												canSave ? "primary" : undefined
 											}
-											isLoading={isLoading}
+											isLoading={WRITE.isPending}
 										>
 											<FormattedMessage id="Schedulings.save" />
 										</Button>

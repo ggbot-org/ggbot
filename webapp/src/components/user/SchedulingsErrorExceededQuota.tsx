@@ -1,15 +1,13 @@
 import { Message } from "_/components/library"
-import { UseActionError } from "_/hooks/useAction"
-import { isApiActionServerSideError } from "@workspace/api"
+import { ApiActionError, isApiActionServerSideError } from "@workspace/api"
 import { ErrorExceededQuota, quotaType } from "@workspace/models"
-import { FC } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
-	error: UseActionError
+	error: ApiActionError | undefined
 }
 
-export const SchedulingsErrorExceededQuota: FC<Props> = ({ error }) => {
+export function SchedulingsErrorExceededQuota({ error }: Props) {
 	if (!isApiActionServerSideError(error)) return null
 
 	if (

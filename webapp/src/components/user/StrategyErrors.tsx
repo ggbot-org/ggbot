@@ -9,7 +9,7 @@ import {
 	StrategyErrorsTableProps
 } from "_/components/StrategyErrorsTable"
 import { StrategyContext } from "_/contexts/Strategy"
-import { useUserApi } from "_/hooks/userApi"
+import { useReadStrategyErrors } from "_/hooks/user/api"
 import { getDay, today } from "minimal-time-helpers"
 import { useCallback, useContext, useEffect, useState } from "react"
 
@@ -24,7 +24,7 @@ export function StrategyErrors() {
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
-	const READ = useUserApi.ReadStrategyErrors()
+	const READ = useReadStrategyErrors()
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return

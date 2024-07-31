@@ -1,11 +1,10 @@
 import { Message } from "_/components/library"
-import { UseActionError } from "_/hooks/useAction"
-import { isApiActionServerSideError } from "@workspace/api"
+import { ApiActionError, isApiActionServerSideError } from "@workspace/api"
 import { ErrorExceededQuota } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
-	error: UseActionError
+	error: ApiActionError | undefined
 }
 
 export function StrategiesErrorExceededQuota({ error }: Props) {

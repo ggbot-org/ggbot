@@ -2,7 +2,7 @@ import { classnames } from "_/classnames"
 import { Button, Control, Field, Title } from "_/components/library"
 import { ApiKey } from "_/components/user/ApiKey"
 import { ApiSecret } from "_/components/user/ApiSecret"
-import { useUserApi } from "_/hooks/userApi"
+import { useCreateBinanceApiConfig } from "_/hooks/user/api"
 import { FormEventHandler, useCallback, useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -17,7 +17,7 @@ type Props = {
 }
 
 export function CreateBinanceApi({ refetchApiKey }: Props) {
-	const CREATE = useUserApi.CreateBinanceApiConfig()
+	const CREATE = useCreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending
 	const isDone = CREATE.isDone
