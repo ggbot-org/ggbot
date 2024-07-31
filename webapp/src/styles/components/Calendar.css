@@ -1,0 +1,66 @@
+.Calendar {
+	margin-inline: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.Calendar__head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding-inline: 4px;
+	line-height: 2;
+}
+
+.Calendar__head-icon {
+	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.Calendar__head-text {
+	user-select: none;
+}
+
+.Calendar__body {
+	display: grid;
+	/* One column for every week day. */
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.Calendar__week-day {
+	margin-block: 10px;
+	font-weight: 600;
+	font-size: 0.8em;
+	text-align: center;
+	user-select: none;
+}
+
+.Calendar__cell {
+	margin: 1px;
+	text-align: center;
+	user-select: none;
+	font-size: 1.1em;
+	border-radius: 0.125em;
+	width: 2.2em;
+}
+
+.Calendar__cell:hover {
+	background: var(--bulma-primary);
+}
+
+.Calendar__cell--selected {
+	background: var(--bulma-primary);
+	color: var(--bulma-black);
+}
+
+.Calendar__cell--disabled {
+	color: var(--bulma-grey-light);
+}
+
+.Calendar__cell--disabled:hover {
+	background: transparent;
+}

@@ -1,0 +1,19 @@
+.Footer__top {
+	margin-top: var(--bulma-size-1);
+	height: var(--bulma-size-1);
+	background: linear-gradient(
+		180deg,
+		var(--bulma-body-background-color) 0%,
+		var(--footer-background-color) 100%
+	);
+}
+
+.Footer__body {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.Footer__body a {
+	text-decoration: none;
+}

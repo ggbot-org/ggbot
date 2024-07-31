@@ -1,0 +1,24 @@
+.FlowEditor__menu {
+	max-height: 4rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: var(--bulma-size-5);
+}
+
+.FlowEditor__strategyName {
+	flex: auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-inline: var(--bulma-size-6);
+}
+
+.FlowEditor__actions {
+	display: flex;
+	gap: var(--bulma-size-7);
+}
+
+.FlowEditor__container {
+	height: 800px;
+}
