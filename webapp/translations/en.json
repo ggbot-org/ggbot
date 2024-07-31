@@ -32,9 +32,6 @@
 	"AuthExit.submit": {
 		"defaultMessage": "Exit"
 	},
-	"AuthExit.reset": {
-		"defaultMessage": "Cancel"
-	},
 	"AuthExit.message": {
 		"defaultMessage": "Exit from your current account session."
 	},
@@ -131,6 +128,12 @@
 	"BrandName.label": {
 		"defaultMessage": "{name}"
 	},
+	"Button.cancel": {
+		"defaultMessage": "Cancel"
+	},
+	"Button.save": {
+		"defaultMessage": "Save"
+	},
 	"CopyStrategy.chooseName": {
 		"defaultMessage": "Choose a new name for the copied strategy."
 	},
@@ -223,9 +226,6 @@
 	},
 	"DeleteStrategy.title": {
 		"defaultMessage": "Strategy deletion"
-	},
-	"EditableFlow.save": {
-		"defaultMessage": "Save"
 	},
 	"Email.label": {
 		"defaultMessage": "Email"
@@ -416,9 +416,6 @@
 	"RenameStrategy.title": {
 		"defaultMessage": "Rename strategy"
 	},
-	"RenameStrategy.save": {
-		"defaultMessage": "Save"
-	},
 	"SchedulingItem.activate": {
 		"defaultMessage": "Activate"
 	},
@@ -434,14 +431,8 @@
 	"Schedulings.title": {
 		"defaultMessage": "Schedulings"
 	},
-	"Schedulings.cancel": {
-		"defaultMessage": "Cancel"
-	},
 	"Schedulings.noActiveSubscription": {
 		"defaultMessage": "Cannot manage schedulings without a subscription."
-	},
-	"Schedulings.save": {
-		"defaultMessage": "Save"
 	},
 	"SchedulingsErrorExceededQuota.message": {
 		"defaultMessage": "Cannot create more schedulings. Check your account quotas."

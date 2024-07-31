@@ -1,0 +1,14 @@
+/* Property --footer-background-color is used also by .Footer__top class. */
+:root {
+	--footer-background-color: hsl(179deg, 10%, 94%);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--footer-background-color: hsl(179deg, 1%, 17%);
+	}
+}
+
+.footer {
+	--bulma-footer-background-color: var(--footer-background-color);
+}

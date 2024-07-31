@@ -1,21 +1,23 @@
 // Load whole bulma first
 @use "bulma/sass";
 
-// then CSS custom props.
+// then CSS custom props. Use colors and fonts first.
 @use "./theme/fonts";
 @use "./theme/colors";
 
 @use "./theme/a";
+@use "./theme/box";
 @use "./theme/checkbox";
+@use "./theme/footer";
 @use "./theme/modal";
 @use "./theme/navbar";
+@use "./theme/select";
 @use "./theme/tabs";
 @use "./theme/tables";
 
 // Components.
 @use "./components/Calendar";
-@use "./components/FlowMenu";
-@use "./components/FlowViewContainer";
+@use "./components/FlowEditor";
 @use "./components/Footer";
 @use "./components/DailyInterval";
 @use "./components/Input";

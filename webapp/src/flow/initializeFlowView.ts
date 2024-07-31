@@ -5,11 +5,12 @@ import { nodeTextToViewType } from "@workspace/dflow"
 import { DflowNodesCatalog } from "dflow"
 import { FlowView, FlowViewNode } from "flow-view"
 
-export const initializeFlowView = (
+export function initializeFlowView(
 	container: HTMLDivElement,
 	nodesCatalog: DflowNodesCatalog
-) => {
+) {
 	const flowView = new FlowView(container)
+
 	flowView.addNodeClass(
 		FlowViewNodeInfo.type,
 		FlowViewNodeInfo as unknown as FlowViewNode

@@ -1,7 +1,6 @@
 /* eslint-disable smells/no-switch */
 // TODO remove switch in this file, when upgrading flow-view
 import { binance } from "_/binance/exchange"
-import { FlowViewContainerElement } from "_/components/FlowViewContainer"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import {
@@ -25,7 +24,7 @@ import {
 	FlowViewSerializableGraph
 } from "flow-view"
 import { now, Time, truncateTime } from "minimal-time-helpers"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 const { debug } = logging("useFlowView")
 
@@ -43,19 +42,21 @@ class BinanceClient
 	}
 }
 
-export const useFlowView = ({
+export function useFlowView({
 	container,
 	initialFlowViewGraph,
 	strategyKind
 }: {
-	container: FlowViewContainerElement
+	container: HTMLDivElement | null
 	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined
 	strategyKind?: StrategyKind
-}): UseFlowViewOutput => {
+}): UseFlowViewOutput {
 	const [output, setOutput] = useState<UseFlowViewOutput>({
 		whenUpdatedFlowView: undefined,
 		flowViewGraph: undefined
 	})
+
+	const [flowView, setFlowView] = useState<FlowView | undefined>()
 
 	const nodesCatalog = useNodesCatalog()
 
@@ -246,12 +247,12 @@ export const useFlowView = ({
 	)
 
 	// Initialize flow-view.
-	const flowView = useMemo(() => {
-		if (!nodesCatalog) return
-		if (!container) return
+	useEffect(() => {
+		if (flowView) return
+		if (!nodesCatalog || !container) return
 		if (strategyKind === "binance")
-			return initializeBinanceFlowView(container, nodesCatalog)
-	}, [container, initializeBinanceFlowView, nodesCatalog, strategyKind])
+			setFlowView(initializeBinanceFlowView(container, nodesCatalog))
+	}, [flowView, nodesCatalog, container, strategyKind])
 
 	// Load initial graph.
 	useEffect(() => {

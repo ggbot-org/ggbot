@@ -25,5 +25,11 @@
 	--bulma-success-s: 72%;
 	--bulma-success-l: 43%;
 
-	--bulma-body-background-color: #faffff;
+	--bulma-body-background-color: hsl(180, 100%, 99%);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bulma-body-background-color: hsl(171, 4%, 29%);
+	}
 }

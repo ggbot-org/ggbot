@@ -290,14 +290,14 @@ export function Schedulings() {
 											}
 											isLoading={WRITE.isPending}
 										>
-											<FormattedMessage id="Schedulings.save" />
+											<FormattedMessage id="Button.save" />
 										</Button>
 
 										<Button
 											onClick={onClickCancel}
 											disabled={!canCancel}
 										>
-											<FormattedMessage id="Schedulings.cancel" />
+											<FormattedMessage id="Button.cancel" />
 										</Button>
 									</Buttons>
 								</LevelItem>

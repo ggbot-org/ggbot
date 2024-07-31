@@ -70,7 +70,7 @@ export function AuthExit({ isActive, setIsActive, exit }: Props) {
 					</Button>
 
 					<Button type="reset">
-						<FormattedMessage id="AuthExit.reset" />
+						<FormattedMessage id="Button.cancel" />
 					</Button>
 				</Buttons>
 			</form>

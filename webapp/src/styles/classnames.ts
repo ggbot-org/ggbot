@@ -17,9 +17,11 @@ type CalendarClassname =
 
 type DailyIntervalClassname = "DailyInterval"
 
-type FlowMenuClassname = "FlowMenu" | "FlowMenu__strategyName"
-
-type FlowViewContainerClassname = "FlowViewContainer"
+type FlowEditorClassname =
+	| "FlowEditor__menu"
+	| "FlowEditor__strategyName"
+	| "FlowEditor__actions"
+	| "FlowEditor__container"
 
 type FooterClassname = "Footer__top" | "Footer__body"
 
@@ -47,8 +49,7 @@ type Classname =
 	| Bulma
 	| CalendarClassname
 	| DailyIntervalClassname
-	| FlowMenuClassname
-	| FlowViewContainerClassname
+	| FlowEditorClassname
 	| FooterClassname
 	| InputClassname
 	| ModalClassname

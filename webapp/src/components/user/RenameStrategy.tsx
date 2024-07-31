@@ -111,7 +111,7 @@ export function RenameStrategy() {
 								color={color}
 								isLoading={isPending}
 							>
-								<FormattedMessage id="RenameStrategy.save" />
+								<FormattedMessage id="Button.save" />
 							</Button>
 						</Control>
 					</Field>

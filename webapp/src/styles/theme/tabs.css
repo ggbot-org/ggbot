@@ -1,5 +1,8 @@
 .tabs {
 	--bulma-tabs-link-active-color: var(--bulma-tabs-link-color);
+	--bulma-tabs-boxed-link-active-background-color: var(
+		--bulma-body-background-color
+	);
 }
 
 /* Hide scrollbar on Chrome. */

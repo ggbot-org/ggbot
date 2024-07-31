@@ -1,24 +1,20 @@
-import { FlowMenu } from "_/components/FlowMenu"
-import {
-	FlowViewContainer,
-	FlowViewContainerElement
-} from "_/components/FlowViewContainer"
-import { Button, Buttons } from "_/components/library"
+import { classnames } from "_/classnames"
+import { StrategyContext } from "_/contexts/Strategy"
+import { Button, Input } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export function EditableFlow() {
-	const strategyKey = useStrategyKey()
+export function FlowEditor() {
+	const { strategyName, strategyKey } = useContext(StrategyContext)
 
 	const initialFlowViewGraph = useStrategyFlow(strategyKey)
 
-	const flowViewContainerRef = useRef<FlowViewContainerElement>(null)
+	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
 		container: flowViewContainerRef.current,
@@ -54,8 +50,12 @@ export function EditableFlow() {
 
 	return (
 		<>
-			<FlowMenu>
-				<Buttons>
+			<div className={classnames("FlowEditor__menu")}>
+				<div className={classnames("FlowEditor__strategyName")}>
+					<Input isStatic defaultValue={strategyName} />
+				</div>
+
+				<div className={classnames("FlowEditor__actions")}>
 					<Button
 						onClick={() => {
 							if (!strategyKey) return
@@ -70,12 +70,15 @@ export function EditableFlow() {
 						isLoading={WRITE.isPending}
 						onClick={onClickSave}
 					>
-						<FormattedMessage id="EditableFlow.save" />
+						<FormattedMessage id="Button.save" />
 					</Button>
-				</Buttons>
-			</FlowMenu>
+				</div>
+			</div>
 
-			<FlowViewContainer ref={flowViewContainerRef} />
+			<div
+				ref={flowViewContainerRef}
+				className={classnames("FlowEditor__container")}
+			/>
 		</>
 	)
 }

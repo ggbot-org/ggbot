@@ -1,3 +1,7 @@
+.checkbox {
+	display: flex;
+}
+
 input[type="checkbox"] {
 	margin-right: 0.5em;
 	accent-color: var(--bulma-black);
