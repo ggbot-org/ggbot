@@ -1,18 +1,18 @@
 import { InputField, InputFieldProps } from "_/components/library"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = Omit<InputFieldProps, "label" | "defaultValue">
 
-const truncateApiKey = (apiKey: InputFieldProps["value"]) =>
-	typeof apiKey === "string"
+function truncateApiKey(apiKey: InputFieldProps["value"]) {
+	return typeof apiKey === "string"
 		? `${apiKey.substring(0, 10)}...${apiKey.substring(
 				apiKey.length - 10,
 				apiKey.length
 			)}`
 		: ""
+}
 
-export const ApiKey: FC<Props> = ({ isStatic, value, ...props }) => {
+export function ApiKey({ isStatic, value, ...props }: Props) {
 	const { formatMessage } = useIntl()
 
 	return (

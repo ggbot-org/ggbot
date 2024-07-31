@@ -42,7 +42,7 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 
 	return (
 		<>
-			<Button isOutlined color={color} onClick={toggleModal}>
+			<Button color={color} onClick={toggleModal}>
 				<FormattedMessage id="DeleteBinanceApi.button" />
 			</Button>
 

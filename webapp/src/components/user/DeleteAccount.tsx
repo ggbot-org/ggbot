@@ -65,6 +65,7 @@ export function DeleteAccount() {
 						<Columns>
 							<Column bulma="is-half">
 								<InputField
+									color={color}
 									value={accountIdConfirmation}
 									label={formatMessage({
 										id: "AccountId.label"
