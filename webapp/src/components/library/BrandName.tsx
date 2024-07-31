@@ -1,26 +1,24 @@
-import { classnames } from "_/classnames"
 import { FormattedMessage } from "react-intl"
-import { SizeProp } from "trunx"
+import { SizeProp, Span } from "trunx"
 
-type Props = SizeProp<"medium" | "normal" | "large">
+type Props = Partial<SizeProp<"large">>
 
-export function BrandName({ size = "normal" }: Props) {
+export function BrandName({ size }: Props) {
 	return (
-		<span
-			className={classnames({
-				"is-size-1": size === "large",
-				"has-text-weight-semibold": size === "large",
-				"has-text-weight-medium":
-					size === "medium" || size === "normal",
-				"is-size-3": size === "medium",
-				"is-size-5": size === "normal",
-				"mb-1": size === "normal"
-			})}
+		<Span
+			bulma={[
+				"is-unselectable",
+				"has-text-weight-semibold",
+				{
+					"is-size-1": size === "large",
+					"is-size-5": size === undefined
+				}
+			]}
 		>
 			<FormattedMessage
 				id="BrandName.label"
 				values={{ name: PROJECT_SHORT_NAME }}
 			/>
-		</span>
+		</Span>
 	)
 }

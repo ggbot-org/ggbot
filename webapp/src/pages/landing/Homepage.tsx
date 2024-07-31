@@ -1,7 +1,7 @@
-import { classnames } from "_/classnames"
 import {
 	BrandName,
 	Button,
+	Div,
 	Hero,
 	HeroBody,
 	HeroFoot,
@@ -22,7 +22,7 @@ export function Homepage() {
 
 	return (
 		<PageContainer>
-			<Hero className={classnames("is-black")}>
+			<Hero bulma="is-black">
 				<HeroBody>
 					<Level>
 						<LevelItem>
@@ -30,30 +30,27 @@ export function Homepage() {
 						</LevelItem>
 
 						<LevelItem>
-							<div
-								className={classnames(
-									"is-flex",
-									"is-flex-direction-column"
-								)}
+							<Div
+								bulma={["is-flex", "is-flex-direction-column"]}
 							>
 								<BrandName size="large" />
 
-								<i>
+								<i className="is-unselectable">
 									<FormattedMessage id="HomePage.tagline" />
 								</i>
-							</div>
+							</Div>
 						</LevelItem>
 					</Level>
 				</HeroBody>
 
 				<HeroFoot>
-					<div
-						className={classnames(
+					<Div
+						bulma={[
 							"is-flex",
 							"is-justify-content-center",
 							"is-align-content-center",
 							"mb-6"
-						)}
+						]}
 					>
 						<Button
 							isOutlined={!ctaIsActive}
@@ -69,7 +66,7 @@ export function Homepage() {
 						>
 							<FormattedMessage id="HomePage.callToAction" />
 						</Button>
-					</div>
+					</Div>
 				</HeroFoot>
 			</Hero>
 		</PageContainer>

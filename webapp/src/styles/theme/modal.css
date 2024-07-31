@@ -1,4 +1,8 @@
-:root {
+.modal {
 	--bulma-modal-close-top: 0.6rem;
 	--bulma-modal-close-right: 0.6rem;
+}
+
+.modal-close {
+	--bulma-delete-color: var(--bulma-grey-light);
 }

@@ -13,7 +13,6 @@ import {
 } from "trunx"
 
 import { BrandName } from "./BrandName"
-import { Logo } from "./Logo"
 
 // Once updated trunx, remove this and import it from trunx
 function NavbarBrand({
@@ -53,20 +52,18 @@ export function Navbar({
 
 	return (
 		<_Navbar className={className} color="black">
-			<NavbarBrand
-				onClick={() => {
-					const { pathname } = location
-					if (
-						pathname === "/" ||
-						pathname === webapp.homepage.pathname
-					)
-						return
-					location.pathname = "/"
-				}}
-			>
-				<NavbarItem className={classnames("is-unselectable")}>
-					<Logo size={34} />
-
+			<NavbarBrand>
+				<NavbarItem
+					onClick={() => {
+						const { pathname } = location
+						if (
+							pathname === "/" ||
+							pathname === webapp.homepage.pathname
+						)
+							return
+						location.pathname = "/"
+					}}
+				>
 					<BrandName />
 				</NavbarItem>
 
