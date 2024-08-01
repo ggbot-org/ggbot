@@ -1,6 +1,12 @@
 import { classnames } from "_/classnames"
 import { dateToDay, Day } from "minimal-time-helpers"
-import { MouseEventHandler, useCallback, useMemo, useState } from "react"
+import {
+	MouseEvent,
+	MouseEventHandler,
+	useCallback,
+	useMemo,
+	useState
+} from "react"
 import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
@@ -129,7 +135,7 @@ export function Calendar({
 					isDateOfCurrentMonth,
 					isSelectable,
 					num: date.getDate(),
-					onClick(event: MouseEvent) {
+					onClick(event: MouseEvent<HTMLDivElement>) {
 						event.stopPropagation()
 						if (isSelectable) {
 							setSelectedDay(day)

@@ -19,7 +19,7 @@ export function EditStrategyPage() {
 					tabs={[
 						{
 							tabId: "flow",
-							content: <FlowEditor />
+							content: <FlowEditor strategyKey={strategyKey} />
 						},
 						{
 							tabId: "backtesting",

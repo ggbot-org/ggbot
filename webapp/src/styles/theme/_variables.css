@@ -1,3 +1,21 @@
+/*
+ * Fonts.
+ */
+
+:root {
+	--bulma-family-primary: sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+	:root {
+		--bulma-family-primary: "Inter var", sans-serif;
+	}
+}
+
+/*
+ * Colors.
+ */
+
 :root {
 	--bulma-white: #ffffff;
 	--bulma-black: #070900;
@@ -32,4 +50,13 @@
 	:root {
 		--bulma-body-background-color: hsl(171, 4%, 29%);
 	}
+}
+
+/*
+ * Breakpoints.
+ */
+
+:root {
+	/* Copied from bulma/sass/utilities/initial-variables.scss */
+	--tablet: 769px;
 }

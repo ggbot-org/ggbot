@@ -15,8 +15,8 @@ export function DateTime({ format, value }: Props) {
 	if (!value) return null
 
 	let formatOptions: DayFormat | TimeFormat | undefined
-	if (format === "day") return dayFormat
-	if (format === "time") return timeFormat
+	if (format === "day") formatOptions = dayFormat
+	if (format === "time") formatOptions = timeFormat
 
 	return (
 		<time dateTime={value}>

@@ -1,4 +1,4 @@
 .Modal__content {
 	width: 98%;
-	max-width: var(--bulma-tablet);
+	max-width: var(--tablet);
 }

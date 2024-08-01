@@ -1,9 +1,8 @@
-// Load whole bulma first
+// Load whole bulma first, then
 @use "bulma/sass";
 
-// then CSS custom props. Use colors and fonts first.
-@use "./theme/fonts";
-@use "./theme/colors";
+// CSS custom props. Use variables first.
+@use "./theme/_variables";
 
 @use "./theme/a";
 @use "./theme/box";
