@@ -1,7 +1,6 @@
-import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import { Div, Title } from "_/components/library"
-import { WhenCreated } from "_/components/WhenCreated"
+import { AccountId, WhenCreated } from "_/components/readonlyFields"
 import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
 import { FormattedMessage } from "react-intl"
 

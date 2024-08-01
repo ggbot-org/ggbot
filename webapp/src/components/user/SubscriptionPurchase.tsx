@@ -7,10 +7,7 @@ import {
 	Message,
 	Title
 } from "_/components/library"
-import {
-	SubscriptionEnd,
-	SubscriptionEndProps
-} from "_/components/user/SubscriptionEnd"
+import { SubscriptionEnd } from "_/components/readonlyFields"
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
 import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
@@ -25,7 +22,7 @@ import {
 	SubscriptionPlan
 } from "@workspace/models"
 import { isYearlyPurchase } from "@workspace/models"
-import { getTime, now } from "minimal-time-helpers"
+import { getTime, now, Time } from "minimal-time-helpers"
 import {
 	FormEventHandler,
 	useCallback,
@@ -59,7 +56,7 @@ export function SubscriptionPurchase() {
 	const CREATE_CHECKOUT = useCreateCheckoutSession()
 	const { data: checkoutData, isPending } = CREATE_CHECKOUT
 
-	let newSubscriptionEnd: SubscriptionEndProps["value"]
+	let newSubscriptionEnd: Time | undefined
 	if (isNaturalNumber(numMonths)) {
 		const start = subscriptionEnd
 			? getTime(subscriptionEnd).plusOne.day
@@ -182,10 +179,7 @@ export function SubscriptionPurchase() {
 						</Column>
 
 						<Column>
-							<SubscriptionEnd
-								isStatic
-								value={newSubscriptionEnd}
-							/>
+							<SubscriptionEnd value={newSubscriptionEnd} />
 						</Column>
 					</Columns>
 

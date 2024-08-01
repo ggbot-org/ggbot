@@ -1,6 +1,5 @@
 import { Column, Columns, Content, Message } from "_/components/library"
-import { StrategyId } from "_/components/StrategyId"
-import { StrategyKind } from "_/components/StrategyKind"
+import { StrategyId, StrategyKind } from "_/components/readonlyFields"
 import { StrategyKey } from "@workspace/models"
 import { useIntl } from "react-intl"
 

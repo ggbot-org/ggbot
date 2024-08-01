@@ -12,7 +12,6 @@ export type InputFieldProps = Omit<InputProps, "id"> & {
 
 export function InputField({ color, help, label, ...props }: InputFieldProps) {
 	const id = useId()
-
 	return (
 		<Field>
 			<Label htmlFor={id}>{label}</Label>

@@ -6,8 +6,7 @@ import {
 	OneColumn,
 	Title
 } from "_/components/library"
-import { SubscriptionEnd } from "_/components/user/SubscriptionEnd"
-import { SubscriptionPlan } from "_/components/user/SubscriptionPlan"
+import { SubscriptionEnd, SubscriptionPlan } from "_/components/readonlyFields"
 import { SubscriptionStatus } from "_/components/user/SubscriptionStatus"
 import { useSubscription } from "_/hooks/user/useSubscription"
 import { FormattedMessage } from "react-intl"
@@ -40,9 +39,9 @@ export function SubscriptionInfo() {
 						</Control>
 					</Field>
 
-					<SubscriptionPlan isStatic value={subscriptionPlan} />
+					<SubscriptionPlan value={subscriptionPlan} />
 
-					<SubscriptionEnd isStatic value={subscriptionEnd} />
+					<SubscriptionEnd value={subscriptionEnd} />
 				</Div>
 			</OneColumn>
 		</Columns>

@@ -6,7 +6,6 @@ import {
 import {
 	ChangeEventHandler,
 	Dispatch,
-	FC,
 	InputHTMLAttributes,
 	SetStateAction,
 	useCallback
@@ -21,12 +20,12 @@ type Props = Omit<
 	setValue: Dispatch<SetStateAction<number | undefined>>
 }
 
-export const SubscriptionNumMonths: FC<Props> = ({
+export function SubscriptionNumMonths({
 	isYearlyPurchase,
 	setValue,
 	value,
 	...props
-}) => {
+}: Props) {
 	const { formatMessage } = useIntl()
 
 	const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(

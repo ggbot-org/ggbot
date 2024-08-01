@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react"
 export function useStrategy(strategyKey: StrategyKey | undefined) {
 	const { data, canRun, request, reset } = useReadStrategy()
 
-	const [strategy, setStrategy] = useState<Strategy | undefined>(
+	const [strategy, setStrategy] = useState<Strategy | null | undefined>(
 		strategyKey ? sessionWebStorage.strategy(strategyKey).get() : undefined
 	)
 
@@ -25,9 +25,10 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 	// Store strategy in web storage.
 	useEffect(() => {
 		if (!strategyKey) return
-		if (!data) return
-		sessionWebStorage.strategy(strategyKey).set(data)
+		if (data === undefined) return
 		setStrategy(data)
+		// Do not store strategy if it is null.
+		if (data) sessionWebStorage.strategy(strategyKey).set(data)
 	}, [data, strategyKey])
 
 	// Handle case when account strategies changes or is deleted from localWebStorage in other tabs.

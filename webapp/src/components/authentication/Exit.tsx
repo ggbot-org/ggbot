@@ -1,5 +1,4 @@
 import { classnames } from "_/classnames"
-import { AccountId } from "_/components/AccountId"
 import { Email } from "_/components/Email"
 import {
 	Button,
@@ -10,6 +9,7 @@ import {
 	Modal,
 	Title
 } from "_/components/library"
+import { AccountId } from "_/components/readonlyFields"
 import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
 import { FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"

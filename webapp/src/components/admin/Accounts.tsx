@@ -1,5 +1,5 @@
-import { AccountId } from "_/components/AccountId"
 import { Column, Columns, Div } from "_/components/library"
+import { AccountId } from "_/components/readonlyFields"
 import { useListAccountKeys } from "_/hooks/admin/api"
 import { webapp } from "_/routing/webapp"
 import { AccountKey, isAccountKey } from "@workspace/models"

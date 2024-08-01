@@ -1,5 +1,5 @@
-import { AccountId } from "_/components/AccountId"
 import { Column, Columns, Content, Message } from "_/components/library"
+import { AccountId } from "_/components/readonlyFields"
 import { AccountKey } from "@workspace/models"
 import { useIntl } from "react-intl"
 

@@ -1,7 +1,6 @@
 import { Column, Columns } from "_/components/library"
-import { StrategyId } from "_/components/StrategyId"
+import { StrategyId, WhenCreated } from "_/components/readonlyFields"
 import { StrategyName } from "_/components/StrategyName"
-import { WhenCreated } from "_/components/WhenCreated"
 import { useStrategy } from "_/hooks/useStrategy"
 import { StrategyKey } from "@workspace/models"
 
