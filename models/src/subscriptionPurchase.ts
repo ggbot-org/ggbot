@@ -48,7 +48,7 @@ export const isSubscriptionPurchaseKey =
 			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
 	)
 
-export const newMonthlySubscriptionPurchase = ({
+export function newMonthlySubscriptionPurchase({
 	plan,
 	paymentProvider,
 	startDay,
@@ -56,7 +56,7 @@ export const newMonthlySubscriptionPurchase = ({
 }: Pick<NewItem<SubscriptionPurchase>, "plan" | "paymentProvider"> & {
 	startDay: Day
 	numMonths: NaturalNumber
-}): SubscriptionPurchase => {
+}): SubscriptionPurchase {
 	const startDate = dayToDate(startDay)
 	const endDate = getDate(startDate).plus(numMonths).months
 	const endDay = dateToDay(endDate)
@@ -70,13 +70,13 @@ export const newMonthlySubscriptionPurchase = ({
 	}
 }
 
-export const newYearlySubscriptionPurchase = ({
+export function newYearlySubscriptionPurchase({
 	plan,
 	paymentProvider,
 	startDay
 }: Pick<NewItem<SubscriptionPurchase>, "plan" | "paymentProvider"> & {
 	startDay: Day
-}): SubscriptionPurchase => {
+}): SubscriptionPurchase {
 	const startDate = dayToDate(startDay)
 	const endDate = getDate(startDate).plusOne.year
 	const endDay = dateToDay(endDate)
@@ -90,11 +90,11 @@ export const newYearlySubscriptionPurchase = ({
 	}
 }
 
-export const isYearlyPurchase = ({
+export function isYearlyPurchase({
 	numMonths
 }: {
 	numMonths: unknown
-}): boolean | undefined => {
+}): boolean | undefined {
 	if (typeof numMonths !== "number") return
 	return numMonths === purchaseMaxNumMonths
 }

@@ -20,7 +20,7 @@ export const isOneTimePassword = objectTypeGuard<OneTimePassword>(
 		isOneTimePasswordCode(code) && isCreationTime(creationTime)
 )
 
-export const generateOneTimePassword = (): OneTimePassword => {
+export function generateOneTimePassword(): OneTimePassword {
 	const chars = []
 	while (chars.length < oneTimePasswordCodeLength)
 		chars.push(String(Math.floor(Math.random() * 10)))

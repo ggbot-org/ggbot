@@ -2,7 +2,7 @@ import { ErrorInvalidArg } from "./errors.js"
 
 export type EmailAddress = string
 
-export const isEmailAddress = (arg: unknown): arg is EmailAddress => {
+export function isEmailAddress(arg: unknown): arg is EmailAddress {
 	// EmailAddress is a string.
 	if (typeof arg !== "string") return false
 

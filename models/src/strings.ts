@@ -7,9 +7,11 @@ export const isFiniteString = (arg: unknown): arg is FiniteString =>
 
 export type NonEmptyString<T = string> = T extends "" ? never : T
 
-export const isNonEmptyString = (
+export function isNonEmptyString(
 	arg: unknown
-): arg is NonEmptyString<FiniteString> => isFiniteString(arg) && arg !== ""
+): arg is NonEmptyString<FiniteString> {
+	return isFiniteString(arg) && arg !== ""
+}
 
 /**
  * A string is an `IdentifierString` if it is finite, not empty and has no line
@@ -17,5 +19,6 @@ export const isNonEmptyString = (
  */
 export type IdentifierString = NonEmptyString<FiniteString>
 
-export const isIdentifierString = (arg: unknown): arg is IdentifierString =>
-	isNonEmptyString(arg) && arg === arg.replace(/[\r\n]/gm, "")
+export function isIdentifierString(arg: unknown): arg is IdentifierString {
+	return isNonEmptyString(arg) && arg === arg.replace(/[\r\n]/gm, "")
+}

@@ -6,8 +6,9 @@ type ItemId = string
 
 export const nullId = "00000000"
 
-export const isItemId = (arg: unknown): arg is ItemId =>
-	typeof arg === "string" && arg.length === nullId.length
+export function isItemId(arg: unknown): arg is ItemId {
+	return typeof arg === "string" && arg.length === nullId.length
+}
 
 /** An `Item` can have a "key" that associate it to other items. */
 export type ItemKey<Key> = Readonly<Key extends object ? Key : never>
@@ -17,10 +18,11 @@ export type Item = ItemKey<{
 	id: ItemId
 }>
 
-export const newId = (): ItemId =>
-	nullId.replace(/0/g, () =>
+export function newId(): ItemId {
+	return nullId.replace(/0/g, () =>
 		(Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)
 	)
+}
 
 export type NewItem<T extends Item> = T extends Item & CreationTime
 	? Omit<T, "id" | "whenCreated">

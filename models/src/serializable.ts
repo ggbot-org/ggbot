@@ -9,13 +9,16 @@ import {
 
 export type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
 
-export const isSerializablePrimitive = (
+export function isSerializablePrimitive(
 	arg: unknown
-): arg is SerializablePrimitive =>
-	isFiniteNumber(arg) ||
-	isNonEmptyString(arg) ||
-	typeof arg === "boolean" ||
-	arg === null
+): arg is SerializablePrimitive {
+	return (
+		isFiniteNumber(arg) ||
+		isNonEmptyString(arg) ||
+		typeof arg === "boolean" ||
+		arg === null
+	)
+}
 
 type SerializableArray = SerializableData[] | readonly SerializableData[]
 
@@ -32,10 +35,11 @@ export type SerializableData =
 	| SerializableArray
 	| SerializableObject
 
-const isSerializableArray = (arg: unknown): arg is SerializableArray =>
-	Array.isArray(arg) && arg.every(isSerializableData)
+function isSerializableArray(arg: unknown): arg is SerializableArray {
+	return Array.isArray(arg) && arg.every(isSerializableData)
+}
 
-const isSerializableData = (arg: unknown): arg is SerializableData => {
+function isSerializableData(arg: unknown): arg is SerializableData {
 	if (arg === undefined) return false
 	return (
 		isSerializablePrimitive(arg) ||
@@ -44,9 +48,7 @@ const isSerializableData = (arg: unknown): arg is SerializableData => {
 	)
 }
 
-export const isSerializableObject = (
-	arg: unknown
-): arg is SerializableObject => {
+export function isSerializableObject(arg: unknown): arg is SerializableObject {
 	if (arg === null || typeof arg !== "object" || Array.isArray(arg))
 		return false
 	return Object.entries(arg).every(

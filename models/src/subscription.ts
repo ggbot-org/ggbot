@@ -11,10 +11,14 @@ const numDaysBeforeSubscriptionEnd = 30
  */
 export const numDaysSubscriptionExpirationTolerance = 7
 
-export const shouldPurchaseSubscription = (
+export function shouldPurchaseSubscription(
 	subscription: Subscription
-): boolean =>
-	getDay(subscription.end).minus(numDaysBeforeSubscriptionEnd).days < today()
+): boolean {
+	return (
+		getDay(subscription.end).minus(numDaysBeforeSubscriptionEnd).days <
+		today()
+	)
+}
 
 const subscriptionPlans = ["basic", "pro"] as const
 export type SubscriptionPlan = (typeof subscriptionPlans)[number]
@@ -36,12 +40,14 @@ export const isSubscription = objectTypeGuard<Subscription>(
  * Get subscription status, consireding expiration date and num days of
  * tolerance.
  */
-export const statusOfSubscription = ({
+export function statusOfSubscription({
 	end
-}: Pick<Subscription, "end">): SubscriptionStatus =>
-	getDay(end).plus(numDaysSubscriptionExpirationTolerance).days >= today()
+}: Pick<Subscription, "end">): SubscriptionStatus {
+	return getDay(end).plus(numDaysSubscriptionExpirationTolerance).days >=
+		today()
 		? "active"
 		: "expired"
+}
 
 /**
  * Only accounts with "pro" subscription plan can schedule with these frequency

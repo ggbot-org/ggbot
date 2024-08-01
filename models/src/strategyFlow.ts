@@ -63,15 +63,18 @@ export type StrategyFlow = UpdateTime & {
 	// and parse the graph to get the view and viceversa
 }
 
-export const newStrategyFlow = ({
+export function newStrategyFlow({
 	view
-}: Pick<StrategyFlow, "view">): StrategyFlow => ({
-	view,
-	...updatedNow()
-})
+}: Pick<StrategyFlow, "view">): StrategyFlow {
+	return {
+		view,
+		...updatedNow()
+	}
+}
 
-export const isStrategyFlowView = (arg: unknown): arg is StrategyFlowView =>
-	Boolean(arg) // TODO improve this or remove type-guard
+export function isStrategyFlowView(arg: unknown): arg is StrategyFlowView {
+	return Boolean(arg) // TODO improve this or remove type-guard
+}
 
 // TODO welcomeFlow should contain "docs" node
 export const welcomeFlow: StrategyFlowView = {

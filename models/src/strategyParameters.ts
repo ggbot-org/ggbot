@@ -8,9 +8,7 @@ export type StrategyParameters = {
 	[key in IdentifierString]?: SerializablePrimitive | undefined
 }
 
-export const isStrategyParameters = (
-	arg: unknown
-): arg is StrategyParameters => {
+export function isStrategyParameters(arg: unknown): arg is StrategyParameters {
 	if (arg === null || typeof arg !== "object" || Array.isArray(arg))
 		return false
 	return Object.entries(arg).every(

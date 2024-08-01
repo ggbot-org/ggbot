@@ -35,15 +35,14 @@ export const isStrategy = objectTypeGuard<Strategy>(
 			: isFrequency(frequency)
 )
 
-export const newStrategy = ({
-	name,
-	...rest
-}: NewItem<Strategy>): Strategy => ({
-	id: newId(),
-	name,
-	...rest,
-	...createdNow()
-})
+export function newStrategy({ name, ...rest }: NewItem<Strategy>): Strategy {
+	return {
+		id: newId(),
+		name,
+		...rest,
+		...createdNow()
+	}
+}
 
 export type StrategyKey = ItemKey<{
 	strategyId: Strategy["id"]

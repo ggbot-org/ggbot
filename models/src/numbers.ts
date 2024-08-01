@@ -1,9 +1,11 @@
 export type NaturalNumber = number
 
-export const isNaturalNumber = (arg: unknown): arg is NaturalNumber =>
-	typeof arg === "number" && Number.isInteger(arg) && arg > 0
+export function isNaturalNumber(arg: unknown): arg is NaturalNumber {
+	return typeof arg === "number" && Number.isInteger(arg) && arg > 0
+}
 
 export type FiniteNumber = number
 
-export const isFiniteNumber = (arg: unknown): arg is FiniteNumber =>
-	typeof arg === "number" && Number.isFinite(arg)
+export function isFiniteNumber(arg: unknown): arg is FiniteNumber {
+	return typeof arg === "number" && Number.isFinite(arg)
+}

@@ -12,7 +12,9 @@ export const isCreationTime = objectTypeGuard<CreationTime>(({ whenCreated }) =>
 	isTime(whenCreated)
 )
 
-export const createdNow = (): CreationTime => ({ whenCreated: now() })
+export function createdNow(): CreationTime {
+	return { whenCreated: now() }
+}
 
 export type CreationDay = {
 	creationDay: Day
@@ -27,11 +29,15 @@ export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) =>
 
 export type DeletionTime = { readonly whenDeleted: Time }
 
-export const deletedNow = (): DeletionTime => ({ whenDeleted: now() })
+export function deletedNow(): DeletionTime {
+	return { whenDeleted: now() }
+}
 
 // Update.
 // //////
 
 export type UpdateTime = { readonly whenUpdated: Time }
 
-export const updatedNow = (): UpdateTime => ({ whenUpdated: now() })
+export function updatedNow(): UpdateTime {
+	return { whenUpdated: now() }
+}

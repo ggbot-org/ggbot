@@ -22,10 +22,10 @@ const frequencyIntervalTimeUnit: Record<FrequencyInterval, FrequencyTimeUnit> =
 		"1d": "day"
 	}
 
-export const frequencyIntervalDuration = ({
+export function frequencyIntervalDuration({
 	every,
 	interval
-}: Frequency): Time => {
+}: Frequency): Time {
 	const timeUnit = frequencyIntervalTimeUnit[interval]
 	return timeUnitDuration[timeUnit] * every
 }
@@ -35,9 +35,11 @@ export const isFrequency = objectTypeGuard<Frequency>(
 		isNaturalNumber(every) && isFrequencyInterval(interval)
 )
 
-export const everyOneHour = (): Frequency => ({ every: 1, interval: "1h" })
+export function everyOneHour(): Frequency {
+	return { every: 1, interval: "1h" }
+}
 
-export const frequenciesAreEqual = (a: Frequency, b: unknown): boolean => {
+export function frequenciesAreEqual(a: Frequency, b: unknown): boolean {
 	if (!isFrequency(b)) return false
 	return a.every === b.every && a.interval === b.interval
 }

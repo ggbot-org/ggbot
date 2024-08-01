@@ -7,6 +7,10 @@ import { SubscriptionPlan } from "./subscription.js"
 
 export type AccountStrategyItemKey = Omit<AccountStrategyKey, "strategyKind">
 
+// TODO this should be a class, like
+// const accountStrategiesModifier = new AccountStrategiesModifier(accountStrategies)
+// accountStrategiesModifier.insertAccountStrategy(accountStrategy, subscriptionPlan)
+
 export const accountStrategiesModifier = {
 	insertAccountStrategy(
 		previousAccountStrategies: AccountStrategy[],
