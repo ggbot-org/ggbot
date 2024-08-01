@@ -2,17 +2,21 @@ import { Column, Columns } from "_/components/library"
 import { StrategyId } from "_/components/StrategyId"
 import { StrategyName } from "_/components/StrategyName"
 import { WhenCreated } from "_/components/WhenCreated"
-import { StrategyContext } from "_/contexts/Strategy"
-import { useContext } from "react"
+import { useStrategy } from "_/hooks/useStrategy"
+import { StrategyKey } from "@workspace/models"
 
-export function StrategyRecord() {
-	const { strategy } = useContext(StrategyContext)
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
+
+export function StrategyRecord({ strategyKey }: Props) {
+	const { strategy, strategyName } = useStrategy(strategyKey)
 
 	return (
 		<>
 			<Columns>
 				<Column>
-					<StrategyName isStatic value={strategy?.name} />
+					<StrategyName isStatic value={strategyName} />
 				</Column>
 			</Columns>
 

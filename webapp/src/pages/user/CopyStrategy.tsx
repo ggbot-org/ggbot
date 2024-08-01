@@ -1,13 +1,13 @@
 import { CopyStrategy } from "_/components/user/CopyStrategy"
 import { PageContainer } from "_/components/user/PageContainer"
-import { StrategyProvider } from "_/contexts/Strategy"
+import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 
 export function CopyStrategyPage() {
 	return (
 		<PageContainer>
-			<StrategyProvider>
+			<StrategyPageContainer>
 				<CopyStrategy />
-			</StrategyProvider>
+			</StrategyPageContainer>
 		</PageContainer>
 	)
 }

@@ -20,7 +20,7 @@ export function StrategyProfits() {
 
 	const dayInterval = { start, end }
 
-	const READ = useReadStrategyOrders()
+	const READ = useReadStrategyOrders(strategyKey)
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return

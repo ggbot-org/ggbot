@@ -1,5 +1,6 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
+import { useStrategy } from "_/hooks/useStrategy"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -12,6 +13,7 @@ import {
 	UserClientActionOutput,
 	UserClientActionType
 } from "@workspace/api"
+import { StrategyKey } from "@workspace/models"
 import {
 	dateToDay,
 	Day,
@@ -23,8 +25,6 @@ import {
 	today
 } from "minimal-time-helpers"
 import { useCallback, useEffect, useState } from "react"
-
-import { useStrategyKey } from "../useStrategyKey"
 
 // Stripe Api
 
@@ -110,8 +110,9 @@ export function useDeleteBinanceApiConfig() {
 	>(userApiOptions, "DeleteBinanceApiConfig")
 }
 
-export function useDeleteStrategy() {
+export function useDeleteStrategy(strategyKey: StrategyKey | undefined) {
 	const { resetAccountStrategies } = useAccountStrategies()
+	const { resetStrategy } = useStrategy(strategyKey)
 	const { isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["DeleteStrategy"],
@@ -120,8 +121,9 @@ export function useDeleteStrategy() {
 	useEffect(() => {
 		if (!isDone) return
 		resetAccountStrategies()
+		resetStrategy()
 		GOTO(webapp.user.dashboard)
-	}, [isDone, resetAccountStrategies])
+	}, [isDone, resetAccountStrategies, resetStrategy])
 	return { isDone, ...rest }
 }
 
@@ -157,14 +159,13 @@ export function useReadStrategies() {
 	>(userApiOptions, "ReadStrategies")
 }
 
-export function useReadStrategyErrors() {
+export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 	const [toBeCachedDayInterval, setToBeCachedDayInterval] = useState<
 		DayInterval | undefined
 	>()
 	const [data, setData] = useState<
 		UserClientActionOutput["ReadStrategyErrors"]
 	>([])
-	const { strategyKey } = useStrategyKey()
 	const {
 		request,
 		data: requestData,
@@ -250,14 +251,13 @@ export function useReadStrategyErrors() {
 	}
 }
 
-export function useReadStrategyOrders() {
+export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 	const [toBeCachedDayInterval, setToBeCachedDayInterval] = useState<
 		DayInterval | undefined
 	>()
 	const [data, setData] = useState<
 		UserClientActionOutput["ReadStrategyOrders"]
 	>([])
-	const { strategyKey } = useStrategyKey()
 	const {
 		request,
 		data: requestData,
@@ -343,12 +343,20 @@ export function useReadStrategyOrders() {
 	}
 }
 
-export function useRenameStrategy() {
-	return useAction<
+export function useRenameStrategy(strategyKey: StrategyKey | undefined) {
+	const { resetAccountStrategies } = useAccountStrategies()
+	const { resetStrategy } = useStrategy(strategyKey)
+	const { isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["RenameStrategy"],
 		UserClientActionOutput["RenameStrategy"]
 	>(userApiOptions, "RenameStrategy")
+	useEffect(() => {
+		if (!isDone) return
+		resetAccountStrategies()
+		resetStrategy()
+	}, [isDone, resetAccountStrategies, resetStrategy])
+	return { isDone, ...rest }
 }
 
 export function useWriteAccountStrategiesItemSchedulings() {

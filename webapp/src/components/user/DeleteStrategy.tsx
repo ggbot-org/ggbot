@@ -21,7 +21,7 @@ const color: MainColor = "warning"
 export function DeleteStrategy({ strategyKey }: Props) {
 	const { formatMessage } = useIntl()
 
-	const DELETE = useDeleteStrategy()
+	const DELETE = useDeleteStrategy(strategyKey)
 
 	const [modalIsActive, setModalIsActive] = useState(false)
 
@@ -46,7 +46,7 @@ export function DeleteStrategy({ strategyKey }: Props) {
 							<FormattedMessage id="DeleteStrategy.message" />
 						</p>
 
-						<StrategyRecord />
+						<StrategyRecord strategyKey={strategyKey} />
 					</Content>
 
 					<Buttons>

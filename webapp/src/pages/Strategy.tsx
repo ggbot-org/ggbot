@@ -2,15 +2,15 @@ import { Backtesting } from "_/components/Backtesting"
 import { PageContainer } from "_/components/PageContainer"
 import { StrategyActions } from "_/components/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
-import { StrategyProvider } from "_/contexts/Strategy"
-import { FC, useState } from "react"
+import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
+import { useState } from "react"
 
-export const StrategyPage: FC = () => {
+export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("info")
 
 	return (
 		<PageContainer>
-			<StrategyProvider>
+			<StrategyPageContainer>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -25,7 +25,7 @@ export const StrategyPage: FC = () => {
 						}
 					]}
 				/>
-			</StrategyProvider>
+			</StrategyPageContainer>
 		</PageContainer>
 	)
 }

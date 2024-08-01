@@ -1,4 +1,4 @@
-import { Strategy } from "@workspace/models"
+import { StrategyKey } from "@workspace/models"
 
 const itemKeys = [
 	"DEBUG_backtesting",
@@ -31,7 +31,8 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",
 	hideInactiveStrategies: () => "hideInactiveStrategies:v1",
-	strategy: (id: Strategy["id"]) => `strategy:${id}:v1`,
+	strategy: ({ strategyId, strategyKind }: StrategyKey) =>
+		`strategy:${strategyKind}:${strategyId}:v1`,
 	// Debug keys.
 	DEBUG_backtesting: () => "DEBUG_backtesting"
 }

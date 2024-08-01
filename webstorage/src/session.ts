@@ -1,4 +1,9 @@
-import { AccountInfo, AccountStrategy } from "@workspace/models"
+import {
+	AccountInfo,
+	AccountStrategy,
+	Strategy,
+	StrategyKey
+} from "@workspace/models"
 
 import { cachedBoolean, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
@@ -24,6 +29,13 @@ export class SessionWebStorage {
 
 	get gotFirstPageView() {
 		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
+	}
+
+	strategy(strategyKey: StrategyKey) {
+		return cachedObject<Strategy>(
+			this.storage,
+			itemKey.strategy(strategyKey)
+		)
 	}
 
 	clear() {

@@ -10,6 +10,12 @@ export function useAccountStrategies() {
 		AccountStrategy[] | undefined
 	>(sessionWebStorage.accountStrategies.get())
 
+	const resetAccountStrategies = useCallback(() => {
+		sessionWebStorage.accountStrategies.delete()
+		reset()
+	}, [reset])
+
+	// Fetch account strategies if not found in web storage.
 	useEffect(() => {
 		if (accountStrategies) return
 		if (canRun) request()
@@ -32,11 +38,6 @@ export function useAccountStrategies() {
 			removeEventListener("storage", onLocalStorageChange)
 		}
 	}, [onLocalStorageChange])
-
-	const resetAccountStrategies = useCallback(() => {
-		sessionWebStorage.accountStrategies.delete()
-		reset()
-	}, [reset])
 
 	return {
 		accountStrategies,

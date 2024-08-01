@@ -1,18 +1,21 @@
 import { classnames } from "_/classnames"
 import { Button, Input } from "_/components/library"
-import { StrategyContext } from "_/contexts/Strategy"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
+import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function FlowEditor() {
-	const { strategyName, strategyKey } = useContext(StrategyContext)
+	const { strategyKey } = useStrategyKey()
+	const { strategyName } = useStrategy(strategyKey)
 
-	const initialFlowViewGraph = useStrategyFlow(strategyKey)
+	const { strategyFlow } = useStrategyFlow(strategyKey)
+	const initialFlowViewGraph = strategyFlow?.view
 
 	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 

@@ -2,7 +2,7 @@ import { Backtesting } from "_/components/Backtesting"
 import { TabId, Tabs } from "_/components/Tabs"
 import { FlowEditor } from "_/components/user/FlowEditor"
 import { PageContainer } from "_/components/user/PageContainer"
-import { StrategyProvider } from "_/contexts/Strategy"
+import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 import { useState } from "react"
 
 export function EditStrategyPage() {
@@ -10,7 +10,7 @@ export function EditStrategyPage() {
 
 	return (
 		<PageContainer>
-			<StrategyProvider>
+			<StrategyPageContainer>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -25,7 +25,7 @@ export function EditStrategyPage() {
 						}
 					]}
 				/>
-			</StrategyProvider>
+			</StrategyPageContainer>
 		</PageContainer>
 	)
 }

@@ -4,13 +4,12 @@ import {
 	SchedulingParameterItemProps
 } from "_/components/user/SchedulingParameterItem"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { UseStrategyFlowOutput } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import {
 	extractBinanceParametersFromFlow,
 	extractCommonParametersFromFlow
 } from "@workspace/dflow"
-import { StrategyParameters } from "@workspace/models"
+import { StrategyFlow, StrategyParameters } from "@workspace/models"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -18,7 +17,7 @@ export type SchedulingParametersProps = Pick<
 	SchedulingParameterItemProps,
 	"setParam"
 > & {
-	flowViewGraph: UseStrategyFlowOutput
+	flowViewGraph: StrategyFlow["view"] | undefined
 	params: StrategyParameters | undefined
 }
 

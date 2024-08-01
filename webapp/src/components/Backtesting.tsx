@@ -27,9 +27,9 @@ import {
 	SchedulingParameters,
 	SchedulingParametersProps
 } from "_/components/user/SchedulingParameters"
-import { StrategyContext } from "_/contexts/Strategy"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
+import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { isFrequency } from "@workspace/models"
@@ -47,10 +47,11 @@ export function Backtesting() {
 	const { formatMessage } = useIntl()
 
 	const { strategyKey, strategyKind } = useStrategyKey()
-	const { strategy, strategyName } = useContext(StrategyContext)
+	const { strategy, strategyName } = useStrategy(strategyKey)
 	const { toast } = useContext(ToastContext)
 
-	const flowViewGraph = useStrategyFlow(strategyKey)
+	const { strategyFlow } = useStrategyFlow(strategyKey)
+	const flowViewGraph = strategyFlow?.view
 
 	const hasFlow = Boolean(flowViewGraph)
 

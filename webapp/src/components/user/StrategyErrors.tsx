@@ -20,7 +20,7 @@ export function StrategyErrors() {
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
-	const READ = useReadStrategyErrors()
+	const READ = useReadStrategyErrors(strategyKey)
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return

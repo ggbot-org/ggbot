@@ -49,7 +49,8 @@ export function Schedulings() {
 	const { strategyKey } = useStrategyKey()
 	const strategyId = strategyKey?.strategyId
 
-	const flowViewGraph = useStrategyFlow(strategyKey)
+	const { strategyFlow } = useStrategyFlow(strategyKey)
+	const flowViewGraph = strategyFlow?.view
 
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const { accountStrategies } = useAccountStrategies()

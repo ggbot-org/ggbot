@@ -12,19 +12,12 @@ import {
 import { StrategyName } from "_/components/StrategyName"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
-import { StrategyContext } from "_/contexts/Strategy"
 import { useCopyStrategy } from "_/hooks/user/api"
+import { useStrategy } from "_/hooks/useStrategy"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
-import {
-	ChangeEventHandler,
-	FormEventHandler,
-	InputHTMLAttributes,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 const fieldName = {
@@ -33,7 +26,8 @@ const fieldName = {
 const fields = Object.keys(fieldName)
 
 export function CopyStrategy() {
-	const { strategyKey, strategyName } = useContext(StrategyContext)
+	const { strategyKey } = useStrategyKey()
+	const { strategyName } = useStrategy(strategyKey)
 
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
@@ -41,19 +35,6 @@ export function CopyStrategy() {
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
 	const COPY = useCopyStrategy()
-
-	const onChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			setCanCreate(
-				isName(
-					(
-						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-					).value
-				)
-			)
-		},
-		[]
-	)
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
@@ -100,7 +81,7 @@ export function CopyStrategy() {
 							<FormattedMessage id="CopyStrategy.strategyInfo" />
 						</Message>
 
-						<StrategyRecord />
+						<StrategyRecord strategyKey={strategyKey} />
 					</Div>
 				</Column>
 
@@ -123,7 +104,9 @@ export function CopyStrategy() {
 						<StrategyName
 							required
 							name={fieldName.name}
-							onChange={onChangeName}
+							onChange={(event) => {
+								setCanCreate(isName(event.target.value))
+							}}
 							placeholder={strategyName}
 							readOnly={COPY.isPending || COPY.isDone}
 						/>

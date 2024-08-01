@@ -5,8 +5,8 @@ import { ShareStrategy, ShareStrategyProps } from "_/components/ShareStrategy"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
 import { RenameStrategy } from "_/components/user/RenameStrategy"
-import { StrategyContext } from "_/contexts/Strategy"
-import { useContext } from "react"
+import { useStrategy } from "_/hooks/useStrategy"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { FormattedMessage } from "react-intl"
 
 type Props = ShareStrategyProps & {
@@ -14,7 +14,8 @@ type Props = ShareStrategyProps & {
 }
 
 export function StrategyActions({ readOnly }: Props) {
-	const { strategyKey, strategyName } = useContext(StrategyContext)
+	const { strategyKey } = useStrategyKey()
+	const { strategyName } = useStrategy(strategyKey)
 
 	return (
 		<Columns>
@@ -24,7 +25,7 @@ export function StrategyActions({ readOnly }: Props) {
 						<FormattedMessage id="StrategyActions.title" />
 					</Title>
 
-					<StrategyRecord />
+					<StrategyRecord strategyKey={strategyKey} />
 
 					<Buttons>
 						{readOnly ? null : <RenameStrategy />}

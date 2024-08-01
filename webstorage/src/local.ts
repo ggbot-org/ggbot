@@ -1,7 +1,6 @@
 import type { ManagedCacheProvider } from "@workspace/cache"
-import { Strategy } from "@workspace/models"
 
-import { cachedBoolean, cachedObject } from "./cache.js"
+import { cachedBoolean } from "./cache.js"
 import { itemKey } from "./items.js"
 import { LocalWebStorageProvider } from "./providers.js"
 
@@ -36,13 +35,6 @@ export class LocalWebStorage {
 
 	get DEBUG_backtesting() {
 		return cachedBoolean(this.storage, itemKey.DEBUG_backtesting())
-	}
-
-	strategy(strategyId: Strategy["id"]) {
-		return cachedObject<Strategy>(
-			this.storage,
-			itemKey.strategy(strategyId)
-		)
 	}
 
 	addEventListener(
