@@ -13,10 +13,7 @@ import { StrategyFlow, StrategyParameters } from "@workspace/models"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export type SchedulingParametersProps = Pick<
-	SchedulingParameterItemProps,
-	"setParam"
-> & {
+type Props = Pick<SchedulingParameterItemProps, "setParam"> & {
 	flowViewGraph: StrategyFlow["view"] | undefined
 	params: StrategyParameters | undefined
 }
@@ -25,7 +22,7 @@ export function SchedulingParameters({
 	flowViewGraph,
 	setParam,
 	params
-}: SchedulingParametersProps) {
+}: Props) {
 	const { strategyKind } = useStrategyKey()
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 

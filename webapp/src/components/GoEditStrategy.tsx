@@ -9,15 +9,14 @@ type Props = {
 }
 
 export function GoEditStrategy({ strategyKey }: Props) {
-	const onClick = () => {
-		if (!strategyKey) return
-		GOTO(webapp.user.editStrategy(strategyKey))
-	}
-
 	if (!strategyKey) return null
-
 	return (
-		<Button onClick={onClick}>
+		<Button
+			onClick={() => {
+				if (!strategyKey) return
+				GOTO(webapp.user.editStrategy(strategyKey))
+			}}
+		>
 			<FormattedMessage id="GoEditStrategy.label" />
 		</Button>
 	)

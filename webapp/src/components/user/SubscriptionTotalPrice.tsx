@@ -1,5 +1,4 @@
 import { InputField } from "_/components/library"
-import { FC } from "react"
 import { useIntl } from "react-intl"
 
 type Props = {
@@ -8,13 +7,12 @@ type Props = {
 	numMonths: number | undefined
 }
 
-export const SubscriptionTotalPrice: FC<Props> = ({
+export function SubscriptionTotalPrice({
 	currency,
 	monthlyPrice,
 	numMonths
-}) => {
+}: Props) {
 	const { formatMessage, formatNumber } = useIntl()
-
 	return (
 		<InputField
 			isStatic

@@ -11,7 +11,9 @@ import { html } from "./html.js"
 
 const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
 
-const jsPath = (path: string[]) => `/${path.join("/")}`
+function jsPath(path: string[]) {
+	return `/${path.join("/")}`
+}
 
 const adminJs = jsPath(webappEcmaScriptsConfig.admin.jsPath)
 const designJs = jsPath(webappEcmaScriptsConfig.design.jsPath)

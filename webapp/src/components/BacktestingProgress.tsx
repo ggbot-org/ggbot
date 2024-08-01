@@ -1,11 +1,11 @@
 import { classnames } from "_/classnames"
 import { Div, Progress, ProgressProps, Title } from "_/components/library"
-import type { UseBacktestingOutput } from "_/hooks/useBacktesting"
+import type { UseBacktestingState } from "_/hooks/useBacktesting"
 import { dayFormat, timeFormat } from "_/i18n/formats"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export type BacktestingProgressProps = Pick<
-	UseBacktestingOutput["state"],
+	UseBacktestingState,
 	"currentTimestamp" | "dayInterval"
 > & {
 	progress: Pick<ProgressProps, "value" | "max">

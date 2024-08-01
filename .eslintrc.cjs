@@ -24,10 +24,10 @@ module.exports = {
 		// Accept expressions like
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
 		"@typescript-eslint/no-explicit-any": [
-			"warn",
+			"error",
 			{ ignoreRestArgs: true }
 		],
-		"@typescript-eslint/no-extra-semi": "warn",
+		"@typescript-eslint/no-extra-semi": "error",
 		"@typescript-eslint/no-invalid-void-type": "off",
 		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unused-vars": [
@@ -59,21 +59,20 @@ module.exports = {
 		"import/newline-after-import": "error",
 		"import/no-cycle": "error",
 		"import/no-extraneous-dependencies": "error",
-		"import/no-internal-modules": "error",
 		"no-case-declarations": "error",
 		"no-console": "error",
-		"no-extra-label": "warn",
+		"no-extra-label": "error",
 		"no-extra-semi": "off",
 		"no-floating-decimal": "error",
 		"no-global-assign": "error",
-		"no-implicit-coercion": "warn",
+		"no-implicit-coercion": "error",
 		"no-implicit-globals": "error",
 		"no-lonely-if": "error",
 		// Prettier uses tabs for indentation but can use spaces to align things, such as in ternaries.
 		// This behavior is known as [SmartTabs](https://www.emacswiki.org/emacs/SmartTabs).
 		"no-mixed-spaces-and-tabs": "off",
 		"no-multi-assign": "error",
-		// TODO se no-warning-comments to "warn"
+		// TODO set no-warning-comments to "warn"
 		"no-warning-comments": "off",
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",

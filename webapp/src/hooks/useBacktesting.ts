@@ -34,10 +34,7 @@ type State = Pick<
 	numSteps: number
 }
 
-export type UseBacktestingOutput = {
-	state: State
-	dispatch: Dispatch<Action>
-}
+export type { State as UseBacktestingState }
 
 const { info, warn } = logging(
 	"useBacktesting",
@@ -46,17 +43,13 @@ const { info, warn } = logging(
 
 const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 
-const getMaxDay: () => State["maxDay"] = yesterday
-
-const defaultDayInterval = (): State["dayInterval"] => {
-	const maxDay = getMaxDay()
+function defaultDayInterval(): State["dayInterval"] {
+	const maxDay = yesterday()
 	return {
 		start: getDay(maxDay).minus(7).days,
 		end: maxDay
 	}
 }
-
-const defaultFrequency = (): State["frequency"] => everyOneHour()
 
 const partialInitialState: Pick<
 	State,
@@ -77,19 +70,10 @@ const partialInitialState: Pick<
 	stepIndex: 0
 }
 
-const initializer = ({
-	frequency,
-	dayInterval
-}: Pick<State, "frequency" | "dayInterval">): State => ({
-	afterStepBehaviour: BacktestingSession.defaultAfterStepBehaviour,
-	dayInterval,
-	frequency,
-	maxDay: getMaxDay(),
-	numSteps: 0,
-	...partialInitialState
-})
-
-export const useBacktesting = (): UseBacktestingOutput => {
+export function useBacktesting(): {
+	state: State
+	dispatch: Dispatch<Action>
+} {
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
 			const { type: actionType } = action
@@ -181,10 +165,15 @@ export const useBacktesting = (): UseBacktestingOutput => {
 
 			return state
 		},
-		initializer({
-			frequency: defaultFrequency(),
-			dayInterval: defaultDayInterval()
-		})
+		// Initial state.
+		{
+			frequency: everyOneHour(),
+			dayInterval: defaultDayInterval(),
+			afterStepBehaviour: BacktestingSession.defaultAfterStepBehaviour,
+			maxDay: yesterday(),
+			numSteps: 0,
+			...partialInitialState
+		}
 	)
 
 	// Dispatch action on every backtesting message received.

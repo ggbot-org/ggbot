@@ -8,12 +8,14 @@ import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
 import { useDailyInterval } from "_/hooks/user/useDailyInterval"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
+import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
-export function StrategyProfits() {
-	const { strategyKey, strategyKind } = useStrategyKey()
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
 
+export function StrategyProfits({ strategyKey }: Props) {
 	const { min, max, start, setStart, end, setEnd } = useDailyInterval()
 
 	const [orders, setOrders] = useState<ProfitSummaryProps["orders"]>()
@@ -60,7 +62,7 @@ export function StrategyProfits() {
 					<ProfitSummary
 						orders={orders}
 						dayInterval={dayInterval}
-						strategyKind={strategyKind}
+						strategyKind={strategyKey?.strategyKind}
 					/>
 				</OneColumn>
 			</Columns>

@@ -6,7 +6,6 @@ import { useState } from "react"
 
 export function DashboardPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("strategies")
-
 	return (
 		<PageContainer>
 			<Tabs

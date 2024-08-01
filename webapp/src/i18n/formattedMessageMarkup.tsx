@@ -50,9 +50,11 @@ export const formattedMessageMarkup: FormattedMessageValues = {
  * )
  * ```
  */
-export const formattedMessageMarkupWithLinkTo = (
+export function formattedMessageMarkupWithLinkTo(
 	url: string
-): FormattedMessageValues => ({
-	a: (text) => <a href={url}>{text}</a>,
-	...formattedMessageMarkup
-})
+): FormattedMessageValues {
+	return {
+		a: (text) => <a href={url}>{text}</a>,
+		...formattedMessageMarkup
+	}
+}

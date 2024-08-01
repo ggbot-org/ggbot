@@ -23,16 +23,12 @@ import {
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
-import {
-	SchedulingParameters,
-	SchedulingParametersProps
-} from "_/components/user/SchedulingParameters"
+import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
 import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { isFrequency } from "@workspace/models"
+import { isFrequency, StrategyKey } from "@workspace/models"
 import {
 	ChangeEventHandler,
 	InputHTMLAttributes,
@@ -43,10 +39,13 @@ import {
 } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export function Backtesting() {
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
+
+export function Backtesting({ strategyKey }: Props) {
 	const { formatMessage } = useIntl()
 
-	const { strategyKey, strategyKind } = useStrategyKey()
 	const { strategy, strategyName } = useStrategy(strategyKey)
 	const { toast } = useContext(ToastContext)
 
@@ -80,8 +79,6 @@ export function Backtesting() {
 
 	const [frequencyArg, setFrequencyArg] =
 		useState<FrequencyInputProps["frequency"]>(frequency)
-
-	const setParam: SchedulingParametersProps["setParam"] = () => {}
 
 	const onChangePauseOnMemoryChange = useCallback<
 		ChangeEventHandler<HTMLInputElement>
@@ -275,7 +272,9 @@ export function Backtesting() {
 				<Column bulma="is-one-third">
 					<SchedulingParameters
 						flowViewGraph={flowViewGraph}
-						setParam={setParam}
+						setParam={() => {
+							// TODO
+						}}
 						params={undefined}
 					/>
 				</Column>
@@ -290,7 +289,7 @@ export function Backtesting() {
 					<ProfitSummary
 						orders={orders}
 						dayInterval={dayInterval}
-						strategyKind={strategyKind}
+						strategyKind={strategyKey?.strategyKind}
 					/>
 				</OneColumn>
 			</Columns>

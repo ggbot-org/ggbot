@@ -5,7 +5,7 @@ import { Section } from "_/components/library"
 import { useReadAccount } from "_/hooks/admin/api"
 import { accountKeyParamsFromURL } from "_/routing/paramFromURL"
 import { Account } from "@workspace/models"
-import { createContext, FC, PropsWithChildren, useEffect, useMemo } from "react"
+import { createContext, PropsWithChildren, useEffect, useMemo } from "react"
 
 type ContextValue = {
 	account: Account | undefined | null
@@ -17,7 +17,7 @@ export const AccountContext = createContext<ContextValue>({
 
 AccountContext.displayName = "AccountContext"
 
-export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
+export function AccountProvider({ children }: PropsWithChildren) {
 	const accountKey = accountKeyParamsFromURL(new URL(location.href))
 
 	const READ_ACCOUNT = useReadAccount()

@@ -14,9 +14,8 @@ import { StrategyRecord } from "_/components/StrategyRecord"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { useCopyStrategy } from "_/hooks/user/api"
 import { useStrategy } from "_/hooks/useStrategy"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { ApiActionError } from "@workspace/api"
-import { isName } from "@workspace/models"
+import { isName, StrategyKey } from "@workspace/models"
 import { FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
@@ -25,8 +24,11 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-export function CopyStrategy() {
-	const { strategyKey } = useStrategyKey()
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
+
+export function CopyStrategy({ strategyKey }: Props) {
 	const { strategyName } = useStrategy(strategyKey)
 
 	const [error, setError] = useState<ApiActionError | undefined>()

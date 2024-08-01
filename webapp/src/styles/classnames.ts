@@ -65,5 +65,6 @@ type Classname =
 
 // TODO why ts-prune complain?
 // ts-prune-ignore-next
-export const classnames = (...args: Array<_ClassnamesArg<Classname>>) =>
-	_classnames(...args)
+export function classnames(...args: Array<_ClassnamesArg<Classname>>) {
+	return _classnames(...args)
+}

@@ -1,4 +1,4 @@
-export const GOTO = (url: URL) => {
+export function GOTO(url: URL) {
 	if (url.pathname === location.pathname) return
 	location.assign(url)
 }

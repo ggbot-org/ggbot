@@ -41,7 +41,7 @@ export function Navbar({
 
 	// Close menu on outside click.
 	useEffect(() => {
-		const closeMenu = () => {
+		function closeMenu() {
 			setIsActive(false)
 		}
 		addEventListener("click", closeMenu)

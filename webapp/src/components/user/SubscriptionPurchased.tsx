@@ -4,10 +4,9 @@ import {
 	formattedMessageMarkupWithLinkTo
 } from "_/i18n/formattedMessageMarkup"
 import { telegram } from "@workspace/locators"
-import { FC } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-export const SubscriptionPurchased: FC = () => {
+export function SubscriptionPurchased() {
 	const { formatMessage } = useIntl()
 
 	return (

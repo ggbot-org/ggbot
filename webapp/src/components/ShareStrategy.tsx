@@ -8,56 +8,56 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 const { debug } = logging("ShareStrategy")
 
-export type ShareStrategyProps = Partial<{
+type Props = Partial<{
 	strategyKey: StrategyKey
 	strategyName: Strategy["name"]
 }>
 
-export function ShareStrategy({
-	strategyKey,
-	strategyName
-}: ShareStrategyProps) {
+export function ShareStrategy({ strategyKey, strategyName }: Props) {
 	const { formatMessage } = useIntl()
 	const { toast } = useContext(ToastContext)
-
-	const onClick = () => {
-		try {
-			const shareData:
-				| Pick<ShareData, "title" | "text" | "url">
-				| undefined = strategyKey
-				? {
-						title: PROJECT_SHORT_NAME,
-						url: webapp.strategy(strategyKey).href,
-						text: strategyName
-					}
-				: undefined
-			if (!shareData) return
-			if (
-				"share" in navigator &&
-				"canShare" in navigator &&
-				navigator.canShare(shareData)
-			) {
-				navigator.share(shareData).catch(debug)
-			} else if ("clipboard" in navigator && shareData.url) {
-				navigator.clipboard
-					.writeText(shareData.url)
-					.then(() => {
-						toast.info(
-							formatMessage({ id: "ShareStrategy.copied" })
-						)
-					})
-					.catch(debug)
-			} else {
-				toast.warning(formatMessage({ id: "ShareStrategy.error" }))
-			}
-		} catch (error) {
-			debug(error)
-			toast.warning(formatMessage({ id: "ShareStrategy.error" }))
-		}
-	}
-
 	return (
-		<Button onClick={onClick}>
+		<Button
+			onClick={() => {
+				try {
+					const shareData:
+						| Pick<ShareData, "title" | "text" | "url">
+						| undefined = strategyKey
+						? {
+								title: PROJECT_SHORT_NAME,
+								url: webapp.strategy(strategyKey).href,
+								text: strategyName
+							}
+						: undefined
+					if (!shareData) return
+					if (
+						"share" in navigator &&
+						"canShare" in navigator &&
+						navigator.canShare(shareData)
+					) {
+						navigator.share(shareData).catch(debug)
+					} else if ("clipboard" in navigator && shareData.url) {
+						navigator.clipboard
+							.writeText(shareData.url)
+							.then(() => {
+								toast.info(
+									formatMessage({
+										id: "ShareStrategy.copied"
+									})
+								)
+							})
+							.catch(debug)
+					} else {
+						toast.warning(
+							formatMessage({ id: "ShareStrategy.error" })
+						)
+					}
+				} catch (error) {
+					debug(error)
+					toast.warning(formatMessage({ id: "ShareStrategy.error" }))
+				}
+			}}
+		>
 			<FormattedMessage id="ShareStrategy.label" />
 		</Button>
 	)

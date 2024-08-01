@@ -3,10 +3,10 @@ import { DflowBinanceSymbolInfo } from "@workspace/dflow"
 const symbolInfoMap = new Map<string, DflowBinanceSymbolInfo>()
 
 /** Get `symbolInfo` from cache map or look for it in `binanceSymbols`. */
-export const getBinanceSymbolInfo = (
+export function getBinanceSymbolInfo(
 	symbol: string,
 	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
-) => {
+) {
 	const hasSymbolInfo = symbolInfoMap.has(symbol)
 	const symbolInfo = hasSymbolInfo
 		? symbolInfoMap.get(symbol)

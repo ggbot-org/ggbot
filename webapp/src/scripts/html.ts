@@ -37,19 +37,21 @@ const appleTouchIconUrl = `${logoBaseUrl}/logo-180.png`
 const fontBaseUrl = "https://rsms.me"
 const fontFaceUrl = `${fontBaseUrl}/inter/inter.css`
 
-const linkTag = ({ href }: LinkTag) => `<link rel="stylesheet" href="${href}">`
-
-const scriptTag = ({ src }: ScriptTag) =>
-	`<script type="module" src="${src}"></script>`
-
-type StyleTag = {
-	content: string
+function linkTag({ href }: LinkTag) {
+	return `<link rel="stylesheet" href="${href}">`
 }
 
-const styleTag = ({ content }: StyleTag) => `<style>${content}</style>`
+function scriptTag({ src }: ScriptTag) {
+	return `<script type="module" src="${src}"></script>`
+}
 
-const baseStyle = () =>
-	[`html, body, #${reactRootId} { min-height: 100vh; }`].join("\n")
+function styleTag(content: string) {
+	return `<style>${content}</style>`
+}
+
+function baseStyle() {
+	return [`html, body, #${reactRootId} { min-height: 100vh; }`].join("\n")
+}
 
 const logoTags = [
 	`<link rel="icon" href="${faviconIcoUrl}" sizes="any">`,
@@ -62,45 +64,54 @@ const fontTags = [
 	`<link href="${fontFaceUrl}" rel="stylesheet">`
 ]
 
-const metaTags = ({ title }: HeadTagArgs["meta"]) => [
-	'<meta charset="UTF-8" />',
-	'<meta name="viewport" content="width=device-width" />',
-	`<title>${title}</title>`,
-	...logoTags,
-	...fontTags
-]
+function metaTags({ title }: HeadTagArgs["meta"]) {
+	return [
+		'<meta charset="UTF-8" />',
+		'<meta name="viewport" content="width=device-width" />',
+		`<title>${title}</title>`,
+		...logoTags,
+		...fontTags
+	]
+}
 
-const headTag = ({ meta, stylesheets }: HeadTagArgs) => [
-	"<head>",
-	...metaTags(meta),
-	styleTag({ content: baseStyle() }),
-	...stylesheets.map(linkTag),
-	"</head>"
-]
+function headTag({ meta, stylesheets }: HeadTagArgs) {
+	return [
+		"<head>",
+		...metaTags(meta),
+		styleTag(baseStyle()),
+		...stylesheets.map(linkTag),
+		"</head>"
+	]
+}
 
-const bodyTag = ({ hasRootDiv, scripts }: BodyTagArgs) => [
-	"<body>",
-	hasRootDiv ? `<div id="${reactRootId}"></div>` : "",
-	...scripts.map(scriptTag),
-	"</body>"
-]
+function bodyTag({ hasRootDiv, scripts }: BodyTagArgs) {
+	return [
+		"<body>",
+		hasRootDiv ? `<div id="${reactRootId}"></div>` : "",
+		...scripts.map(scriptTag),
+		"</body>"
+	]
+}
 
-const htmlTag = ({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) => [
-	'<html lang="en">',
-	...headTag({ meta, stylesheets }),
-	...bodyTag({ hasRootDiv, scripts }),
-	"</html>"
-]
+function htmlTag({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) {
+	return [
+		'<html lang="en">',
+		...headTag({ meta, stylesheets }),
+		...bodyTag({ hasRootDiv, scripts }),
+		"</html>"
+	]
+}
 
-const htmlPageContent = (args: HtmlTagArgs) =>
-	["<!DOCTYPE html>", ...htmlTag(args)]
+export function html(scriptJs: string) {
+	return [
+		"<!DOCTYPE html>",
+		...htmlTag({
+			hasRootDiv: true,
+			meta: { title: "ggbot2" },
+			scripts: [{ src: scriptJs }],
+			stylesheets: [{ href: "/main.css" }]
+		})
+	]
 		.filter((tag) => Boolean(tag))
 		.join("\n")
-
-export const html = (scriptJs: string) =>
-	htmlPageContent({
-		hasRootDiv: true,
-		meta: { title: "ggbot2" },
-		scripts: [{ src: scriptJs }],
-		stylesheets: [{ href: "/main.css" }]
-	})
+}

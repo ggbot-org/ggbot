@@ -5,12 +5,6 @@ import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
 
-const randomKey = () =>
-	Math.random()
-		.toString(36)
-		.replace(/[^a-z]+/g, "")
-		.substring(0, 5)
-
 function CalendarWeekDays() {
 	const { formatDate } = useIntl()
 
@@ -130,31 +124,30 @@ export function Calendar({
 					isDateOfCurrentMonth,
 					isSelectable,
 					selected
-				}) => {
-					const onClick: MouseEventHandler<HTMLDivElement> = (
-						event
-					) => {
+				}) => ({
+					day,
+					isDateOfCurrentMonth,
+					isSelectable,
+					num: date.getDate(),
+					onClick(event: MouseEvent) {
 						event.stopPropagation()
 						if (isSelectable) {
 							setSelectedDay(day)
 							setMonthOffset(0)
 						}
-					}
-					return {
-						day,
-						isDateOfCurrentMonth,
-						isSelectable,
-						num: date.getDate(),
-						onClick,
-						selected,
+					},
+					selected,
 
-						// Need a random key, using day is not enough, it can raise React warning:
-						//
-						//     Encountered two children with the same key.
-						//
-						key: randomKey()
-					}
-				}
+					// Need a random key, using day is not enough, it can raise React warning:
+					//
+					//     Encountered two children with the same key.
+					//
+					key: Math.random()
+						.toString(36)
+						.replace(/[^a-z]+/g, "")
+						.substring(0, 5)
+					// TODO fix this
+				})
 			)
 
 		return { firstDate, lastDate, dateCells, monthName, year }

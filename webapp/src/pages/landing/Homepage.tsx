@@ -10,15 +10,19 @@ import {
 	Logo
 } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import { useGotFirstPageView } from "_/hooks/useGotFirstPageView"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { useState } from "react"
+import { sessionWebStorage } from "_/storages/session"
+import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function Homepage() {
-	const { gotFirstPageView } = useGotFirstPageView()
 	const [ctaIsActive, setCtaIsActive] = useState(false)
+
+	const gotFirstPageView = sessionWebStorage.gotFirstPageView.get()
+	useEffect(() => {
+		if (!gotFirstPageView) sessionWebStorage.gotFirstPageView.set(true)
+	}, [gotFirstPageView])
 
 	return (
 		<PageContainer>

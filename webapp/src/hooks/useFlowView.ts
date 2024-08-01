@@ -18,9 +18,10 @@ import {
 } from "dflow"
 import {
 	FlowView,
-	FlowViewOnChange,
+	FlowViewOnChangeArg,
 	FlowViewOnChangeDataEdge,
 	FlowViewOnChangeDataNode,
+	FlowViewOnChangeInfo,
 	FlowViewSerializableGraph
 } from "flow-view"
 import { now, Time, truncateTime } from "minimal-time-helpers"
@@ -76,10 +77,10 @@ export function useFlowView({
 
 			const flowView = initializeFlowView(container, nodesCatalog)
 
-			const onChangeFlowView: FlowViewOnChange = (
-				{ action, data },
-				info
-			) => {
+			function onChangeFlowView(
+				{ action, data }: FlowViewOnChangeArg,
+				info: FlowViewOnChangeInfo
+			) {
 				try {
 					if (!flowView) return
 					const { isLoadGraph, isProgrammatic } = info

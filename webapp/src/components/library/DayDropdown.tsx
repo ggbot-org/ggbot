@@ -1,5 +1,5 @@
 import { dayFormat } from "_/i18n/formats"
-import { FC, useCallback } from "react"
+import { useCallback } from "react"
 import { FormattedDate } from "react-intl"
 import { Control, Field } from "trunx"
 
@@ -19,7 +19,7 @@ export type DayDropdownProps = Partial<{ disabled: boolean }> &
 		label: string
 	} & { close: () => void }
 
-export const DayDropdown: FC<DayDropdownProps> = ({
+export function DayDropdown({
 	close,
 	day,
 	disabled,
@@ -30,35 +30,37 @@ export const DayDropdown: FC<DayDropdownProps> = ({
 	min,
 	onClick,
 	setDay
-}) => (
-	<Field>
-		<Label>{label}</Label>
+}: DayDropdownProps) {
+	return (
+		<Field>
+			<Label>{label}</Label>
 
-		<Control>
-			<Dropdown
-				isActive={disabled ? undefined : isActive}
-				isRight={isRight}
-				onClick={disabled ? undefined : onClick}
-			>
-				<DropdownTrigger disabled={disabled}>
-					<FormattedDate value={day} {...dayFormat} />
-				</DropdownTrigger>
+			<Control>
+				<Dropdown
+					isActive={disabled ? undefined : isActive}
+					isRight={isRight}
+					onClick={disabled ? undefined : onClick}
+				>
+					<DropdownTrigger disabled={disabled}>
+						<FormattedDate value={day} {...dayFormat} />
+					</DropdownTrigger>
 
-				<DropdownMenu>
-					<Calendar
-						day={day}
-						setDay={useCallback<DayDropdownProps["setDay"]>(
-							(day) => {
-								setDay(day)
-								close()
-							},
-							[close, setDay]
-						)}
-						min={min}
-						max={max}
-					/>
-				</DropdownMenu>
-			</Dropdown>
-		</Control>
-	</Field>
-)
+					<DropdownMenu>
+						<Calendar
+							day={day}
+							setDay={useCallback<DayDropdownProps["setDay"]>(
+								(day) => {
+									setDay(day)
+									close()
+								},
+								[close, setDay]
+							)}
+							min={min}
+							max={max}
+						/>
+					</DropdownMenu>
+				</Dropdown>
+			</Control>
+		</Field>
+	)
+}

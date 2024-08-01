@@ -2,7 +2,6 @@ import { detectLanguage, translationPathname } from "_/i18n/locales"
 import { logging } from "@workspace/logging"
 import { defaultLanguage } from "@workspace/models"
 import {
-	FC,
 	PropsWithChildren,
 	Reducer,
 	useCallback,
@@ -14,7 +13,7 @@ import { IntlProvider } from "react-intl"
 
 const { debug } = logging("i18n")
 
-export const I18nProvider: FC<PropsWithChildren> = ({ children }) => {
+export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] =
 		useReducer<
 			Reducer<

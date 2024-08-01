@@ -2,9 +2,9 @@ import { Account } from "_/components/admin/Account"
 import { PageContainer } from "_/components/admin/PageContainer"
 import { TabId, Tabs } from "_/components/Tabs"
 import { AccountProvider } from "_/contexts/admin/Account"
-import { FC, useState } from "react"
+import { useState } from "react"
 
-export const AccountDetailsPage: FC = () => {
+export function AccountDetailsPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("account")
 
 	return (

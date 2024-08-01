@@ -1,14 +1,17 @@
+import { StrategyActions } from "_/components/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
-import { ManageStrategy } from "_/components/user/ManageStrategy"
 import { PageContainer } from "_/components/user/PageContainer"
 import { PleasePurchase } from "_/components/user/PleasePurchase"
+import { Schedulings } from "_/components/user/Schedulings"
 import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useState } from "react"
 
 export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("manage")
+	const { strategyKey } = useStrategyKey()
 
 	return (
 		<PageContainer>
@@ -19,11 +22,22 @@ export function StrategyPage() {
 					tabs={[
 						{
 							tabId: "manage",
-							content: <ManageStrategy />
+							content: (
+								<>
+									<StrategyActions
+										readOnly={false}
+										strategyKey={strategyKey}
+									/>
+
+									<Schedulings />
+								</>
+							)
 						},
 						{
 							tabId: "profits",
-							content: <StrategyProfits />
+							content: (
+								<StrategyProfits strategyKey={strategyKey} />
+							)
 						},
 						{
 							tabId: "errors",

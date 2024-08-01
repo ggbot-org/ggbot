@@ -1,9 +1,9 @@
 import { Accounts } from "_/components/admin/Accounts"
 import { PageContainer } from "_/components/admin/PageContainer"
 import { TabId, Tabs } from "_/components/Tabs"
-import { FC, useState } from "react"
+import { useState } from "react"
 
-export const DashboardPage: FC = () => {
+export function DashboardPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("accounts")
 
 	return (

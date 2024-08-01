@@ -4,14 +4,17 @@ import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
 import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
+import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export function FlowEditor() {
-	const { strategyKey } = useStrategyKey()
+type Props = {
+	strategyKey: StrategyKey | undefined
+}
+
+export function FlowEditor({ strategyKey }: Props) {
 	const { strategyName } = useStrategy(strategyKey)
 
 	const { strategyFlow } = useStrategyFlow(strategyKey)

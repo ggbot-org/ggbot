@@ -25,17 +25,11 @@ module.exports = {
 		"simple-import-sort",
 		"smells"
 	],
-	root: true,
 	rules: {
 		// TODO set "@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/ban-ts-comment": "off",
-		"@typescript-eslint/no-array-constructor": "off",
 		"@typescript-eslint/no-empty-function": "off",
-		"@typescript-eslint/no-extra-semi": "off",
-		// A non-null assertion is used in ./src/react/mount.tsx
-		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
-		"@typescript-eslint/no-unsafe-assignment": "off",
 		// @typescript-eslint/unbound-method rule is not compatible with hooks,
 		// it reports this as an error:
 		// ```ts
@@ -61,16 +55,9 @@ module.exports = {
 				}
 			}
 		],
-		// TODO "func-style": ["warn", "declaration"],
+		// TODO remove "func-style" from here and add it on root eslint config
+		"func-style": ["error", "declaration"],
 		"import/extensions": "off",
-		// TODO why import/no-cycle complains?
-		"import/no-cycle": "off",
-		"import/no-internal-modules": [
-			"error",
-			{
-				allow: ["react-dom/client"]
-			}
-		],
 		"jsx-a11y/aria-props": "error",
 		"jsx-a11y/aria-proptypes": "error",
 		"jsx-a11y/aria-unsupported-elements": "error",
