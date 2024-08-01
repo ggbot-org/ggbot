@@ -164,7 +164,7 @@ export function useReadStrategyErrors() {
 	const [data, setData] = useState<
 		UserClientActionOutput["ReadStrategyErrors"]
 	>([])
-	const strategyKey = useStrategyKey()
+	const { strategyKey } = useStrategyKey()
 	const {
 		request,
 		data: requestData,
@@ -257,7 +257,7 @@ export function useReadStrategyOrders() {
 	const [data, setData] = useState<
 		UserClientActionOutput["ReadStrategyOrders"]
 	>([])
-	const strategyKey = useStrategyKey()
+	const { strategyKey } = useStrategyKey()
 	const {
 		request,
 		data: requestData,

@@ -5,6 +5,7 @@ import {
 } from "_/components/user/SchedulingParameterItem"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { UseStrategyFlowOutput } from "_/hooks/useStrategyFlow"
+import { useStrategyKey } from "_/hooks/useStrategyKey"
 import {
 	extractBinanceParametersFromFlow,
 	extractCommonParametersFromFlow
@@ -26,7 +27,8 @@ export function SchedulingParameters({
 	setParam,
 	params
 }: SchedulingParametersProps) {
-	const binanceSymbols = useBinanceSymbols()
+	const { strategyKind } = useStrategyKey()
+	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
 		Array<

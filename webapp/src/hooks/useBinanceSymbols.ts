@@ -1,22 +1,18 @@
 import { binance } from "_/binance/exchange"
-import { StrategyContext } from "_/contexts/Strategy"
 import {
 	binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols,
 	DflowBinanceSymbolInfo
 } from "@workspace/dflow"
 import { logging } from "@workspace/logging"
-import { useContext, useEffect, useState } from "react"
-
-type UseBinanceSymbolsOutput = DflowBinanceSymbolInfo[] | undefined
+import { StrategyKind } from "@workspace/models"
+import { useEffect, useState } from "react"
 
 const { debug } = logging("useBinanceSymbols")
 
-export function useBinanceSymbols(): UseBinanceSymbolsOutput {
-	const { strategyKind } = useContext(StrategyContext)
-
+export function useBinanceSymbols(strategyKind: StrategyKind | undefined) {
 	const [binanceSymbols, setBinanceSymbols] = useState<
-		DflowBinanceSymbolInfo[]
-	>([])
+		DflowBinanceSymbolInfo[] | undefined
+	>()
 
 	useEffect(() => {
 		if (strategyKind !== "binance") return

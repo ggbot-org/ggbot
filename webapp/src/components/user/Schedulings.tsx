@@ -46,7 +46,7 @@ export function Schedulings() {
 
 	const { toast } = useContext(ToastContext)
 
-	const strategyKey = useStrategyKey()
+	const { strategyKey } = useStrategyKey()
 	const strategyId = strategyKey?.strategyId
 
 	const flowViewGraph = useStrategyFlow(strategyKey)

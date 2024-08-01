@@ -2,11 +2,11 @@
 // TODO remove switch in this file, when upgrading flow-view
 import { binance } from "_/binance/exchange"
 import { initializeFlowView } from "_/flow/initializeFlowView"
-import { useNodesCatalog } from "_/hooks/useNodesCatalog"
 import {
 	DflowBinanceClient,
 	DflowBinanceClientDummy,
 	DflowBinanceHost,
+	getDflowBinanceNodesCatalog,
 	parsePercentage
 } from "@workspace/dflow"
 import { logging } from "@workspace/logging"
@@ -25,6 +25,8 @@ import {
 } from "flow-view"
 import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useState } from "react"
+
+import { useBinanceSymbols } from "./useBinanceSymbols"
 
 const { debug } = logging("useFlowView")
 
@@ -49,7 +51,7 @@ export function useFlowView({
 }: {
 	container: HTMLDivElement | null
 	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined
-	strategyKind?: StrategyKind
+	strategyKind: StrategyKind | undefined
 }): UseFlowViewOutput {
 	const [output, setOutput] = useState<UseFlowViewOutput>({
 		whenUpdatedFlowView: undefined,
@@ -58,7 +60,7 @@ export function useFlowView({
 
 	const [flowView, setFlowView] = useState<FlowView | undefined>()
 
-	const nodesCatalog = useNodesCatalog()
+	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	const initializeBinanceFlowView = useCallback(
 		(
@@ -249,14 +251,21 @@ export function useFlowView({
 	// Initialize flow-view.
 	useEffect(() => {
 		if (flowView) return
-		if (!nodesCatalog || !container) return
-		if (strategyKind === "binance")
-			setFlowView(initializeBinanceFlowView(container, nodesCatalog))
+		if (!container) return
+		if (strategyKind === "binance") {
+			if (!binanceSymbols) return
+			setFlowView(
+				initializeBinanceFlowView(
+					container,
+					getDflowBinanceNodesCatalog(binanceSymbols)
+				)
+			)
+		}
 	}, [
-		flowView,
-		nodesCatalog,
-		initializeBinanceFlowView,
+		binanceSymbols,
 		container,
+		flowView,
+		initializeBinanceFlowView,
 		strategyKind
 	])
 

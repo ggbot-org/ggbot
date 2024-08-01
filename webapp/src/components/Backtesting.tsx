@@ -46,8 +46,8 @@ import { FormattedMessage, useIntl } from "react-intl"
 export function Backtesting() {
 	const { formatMessage } = useIntl()
 
-	const strategyKey = useStrategyKey()
-	const { strategy, strategyKind, strategyName } = useContext(StrategyContext)
+	const { strategyKey, strategyKind } = useStrategyKey()
+	const { strategy, strategyName } = useContext(StrategyContext)
 	const { toast } = useContext(ToastContext)
 
 	const flowViewGraph = useStrategyFlow(strategyKey)

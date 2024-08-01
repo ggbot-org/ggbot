@@ -76,7 +76,7 @@ export function ProfitSummary({
 	dayInterval,
 	strategyKind
 }: ProfitSummaryProps) {
-	const binanceSymbols = useBinanceSymbols()
+	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	let numBuys: number | undefined = undefined
 	let numSells: number | undefined = undefined

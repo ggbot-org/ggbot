@@ -14,7 +14,7 @@ import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useCallback, useEffect, useState } from "react"
 
 export function StrategyErrors() {
-	const strategyKey = useStrategyKey()
+	const { strategyKey } = useStrategyKey()
 
 	const { min, max, start, setStart, end, setEnd } = useDailyInterval()
 

@@ -5,11 +5,10 @@ import {
 	StrategyKey
 } from "@workspace/models"
 
-export const accountKeyParamsFromURL = (url: URL): AccountKey | undefined => {
+export function accountKeyParamsFromURL(url: URL): AccountKey | undefined {
 	const accountKey = {
 		accountId: url.searchParams.get("accountId")
 	}
-
 	if (isAccountKey(accountKey)) return accountKey
 }
 
@@ -18,6 +17,5 @@ export function strategyKeyParamsFromURL(url: URL): StrategyKey | undefined {
 		strategyId: url.searchParams.get("strategyId"),
 		strategyKind: url.searchParams.get("strategyKind")
 	}
-
 	if (isStrategyKey(strategyKey)) return strategyKey
 }

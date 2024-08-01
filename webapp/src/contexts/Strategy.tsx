@@ -29,7 +29,7 @@ export const StrategyContext = createContext<ContextValue>({
 StrategyContext.displayName = "StrategyContext"
 
 export function StrategyProvider({ children }: PropsWithChildren) {
-	const strategyKey = useStrategyKey()
+	const { strategyKey } = useStrategyKey()
 
 	const READ = useReadStrategy()
 	const { data: remoteStrategy, reset } = READ
