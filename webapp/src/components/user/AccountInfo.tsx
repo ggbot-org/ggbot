@@ -1,7 +1,7 @@
 import { Email } from "_/components/Email"
 import { Div, Title } from "_/components/library"
 import { AccountId, WhenCreated } from "_/components/readonlyFields"
-import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
+import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
 import { FormattedMessage } from "react-intl"
 
 export function AccountInfo() {

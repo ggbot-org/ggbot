@@ -1,7 +1,7 @@
 import { Account } from "_/components/admin/Account"
+import { AccountPageContainer } from "_/components/admin/AccountPageContainer"
 import { PageContainer } from "_/components/admin/PageContainer"
 import { TabId, Tabs } from "_/components/Tabs"
-import { AccountProvider } from "_/contexts/admin/Account"
 import { useState } from "react"
 
 export function AccountDetailsPage() {
@@ -9,7 +9,7 @@ export function AccountDetailsPage() {
 
 	return (
 		<PageContainer>
-			<AccountProvider>
+			<AccountPageContainer>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -20,7 +20,7 @@ export function AccountDetailsPage() {
 						}
 					]}
 				/>
-			</AccountProvider>
+			</AccountPageContainer>
 		</PageContainer>
 	)
 }

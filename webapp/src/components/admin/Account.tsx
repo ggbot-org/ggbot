@@ -1,14 +1,20 @@
 import { Email } from "_/components/Email"
 import { Div, Title } from "_/components/library"
 import { AccountId, WhenCreated } from "_/components/readonlyFields"
-import { AccountContext } from "_/contexts/admin/Account"
-import { useContext } from "react"
+import { useReadAccount } from "_/hooks/admin/api"
+import { useAccountKey } from "_/hooks/admin/useAccountKey"
+import { useEffect } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function Account() {
-	const { account } = useContext(AccountContext)
+	const { accountKey } = useAccountKey()
 
-	if (!account) return null
+	const { canRun, data: account, request } = useReadAccount()
+
+	useEffect(() => {
+		if (!accountKey) return
+		if (canRun) request(accountKey)
+	}, [canRun, request, accountKey])
 
 	return (
 		<Div bulma="box">
@@ -16,11 +22,11 @@ export function Account() {
 				<FormattedMessage id="AccountInfo.title" />
 			</Title>
 
-			<Email isStatic value={account.email} />
+			<Email isStatic value={account?.email} />
 
-			<WhenCreated value={account.whenCreated} />
+			<WhenCreated value={account?.whenCreated} />
 
-			<AccountId value={account.id} />
+			<AccountId value={account?.id} />
 		</Div>
 	)
 }

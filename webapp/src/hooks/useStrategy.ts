@@ -16,7 +16,7 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 		reset()
 	}, [reset, strategyKey])
 
-	// Store strategy in web storage.
+	// Fetch strategy if not found in web storage.
 	useEffect(() => {
 		if (!strategyKey) return
 		if (canRun) request(strategyKey)

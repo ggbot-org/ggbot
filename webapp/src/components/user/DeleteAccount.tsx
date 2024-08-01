@@ -11,7 +11,7 @@ import {
 	Modal
 } from "_/components/library"
 import { useDeleteAccount } from "_/hooks/user/api"
-import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
+import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
 import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

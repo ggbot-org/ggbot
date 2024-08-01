@@ -10,7 +10,7 @@ import {
 	Title
 } from "_/components/library"
 import { AccountId } from "_/components/readonlyFields"
-import { useStoredAccountInfo } from "_/hooks/useStoredAccountInfo"
+import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
 import { FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 

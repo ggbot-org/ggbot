@@ -3,11 +3,12 @@ import { AccountId } from "_/components/readonlyFields"
 import { AccountKey } from "@workspace/models"
 import { useIntl } from "react-intl"
 
-type Props = AccountKey
+type Props = {
+	accountKey: AccountKey
+}
 
-export function AccountNotFound({ accountId }: Props) {
+export function AccountNotFound({ accountKey: { accountId } }: Props) {
 	const { formatMessage } = useIntl()
-
 	return (
 		<Message
 			color="warning"
