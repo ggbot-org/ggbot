@@ -30,8 +30,7 @@ export function Strategies({ goCreateStrategy }: Props) {
 		localWebStorage.hideInactiveStrategies.get()
 	)
 
-	const allAreInactive = accountStrategies?.every(({ schedulings }) =>
-		schedulingsAreInactive(schedulings)
+	const allAreInactive = accountStrategies?.every(({ schedulings }) => schedulingsAreInactive(schedulings)
 	)
 
 	const items: AccountStrategy[] = []
@@ -55,36 +54,35 @@ export function Strategies({ goCreateStrategy }: Props) {
 
 	if (accountStrategies === undefined) return null
 
-	if (accountStrategies.length === 0)
-		return (
-			<Columns>
-				<Column
-					bulma={[
-						"is-full-tablet",
-						"is-three-quarters-widescreen",
-						"is-half-fullhd"
-					]}
+	if (accountStrategies.length === 0) return (
+		<Columns>
+			<Column
+				bulma={[
+					"is-full-tablet",
+					"is-three-quarters-widescreen",
+					"is-half-fullhd"
+				]}
+			>
+				<form
+					className={classnames("box")}
+					onSubmit={(event) => {
+						event.preventDefault()
+						goCreateStrategy()
+					}}
 				>
-					<form
-						className={classnames("box")}
-						onSubmit={(event) => {
-							event.preventDefault()
-							goCreateStrategy()
-						}}
-					>
-						<Message color="info">
-							<FormattedMessage id="Strategies.noStrategy" />
-						</Message>
+					<Message color="info">
+						<FormattedMessage id="Strategies.noStrategy" />
+					</Message>
 
-						<Buttons>
-							<Button>
-								<FormattedMessage id="Tabs.newStrategy" />
-							</Button>
-						</Buttons>
-					</form>
-				</Column>
-			</Columns>
-		)
+					<Buttons>
+						<Button>
+							<FormattedMessage id="Tabs.newStrategy" />
+						</Button>
+					</Buttons>
+				</form>
+			</Column>
+		</Columns>
+	)
 
 	return (
 		<>

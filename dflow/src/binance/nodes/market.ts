@@ -37,8 +37,7 @@ export class Candles extends DflowNode {
 			typeof symbol !== "string" ||
 			!isDflowBinanceKlineInterval(interval) ||
 			typeof count !== "number"
-		)
-			return this.clearOutputs()
+		) return this.clearOutputs()
 		const limit = Math.min(count, binanceKlineMaxLimit)
 		const klines = await binance.klines(symbol, interval, {
 			endTime: currentTime,

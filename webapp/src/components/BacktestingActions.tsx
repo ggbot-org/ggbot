@@ -55,23 +55,21 @@ export function BacktestingActions({
 	onClickStart,
 	onClickStop
 }: Props) {
-	if (isPaused)
-		return (
-			<Buttons>
-				<ResumeButton onClick={onClickResume} />
+	if (isPaused) return (
+		<Buttons>
+			<ResumeButton onClick={onClickResume} />
 
-				<StopButton onClick={onClickStop} />
-			</Buttons>
-		)
+			<StopButton onClick={onClickStop} />
+		</Buttons>
+	)
 
-	if (isRunning)
-		return (
-			<Buttons>
-				<PauseButton onClick={onClickPause} />
+	if (isRunning) return (
+		<Buttons>
+			<PauseButton onClick={onClickPause} />
 
-				<StopButton onClick={onClickStop} />
-			</Buttons>
-		)
+			<StopButton onClick={onClickStop} />
+		</Buttons>
+	)
 
 	return <StartButton onClick={onClickStart} disabled={!canStart} />
 }

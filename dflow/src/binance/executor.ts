@@ -24,10 +24,7 @@ type DflowBinanceExecutorContext = DflowCommonExecutorContext & {
 	binance: DflowBinanceClient
 }
 
-export class DflowBinanceExecutor
-	implements
-		DflowExecutor<DflowBinanceExecutorContext, DflowBinanceExecutorOutput>
-{
+export class DflowBinanceExecutor implements DflowExecutor<DflowBinanceExecutorContext, DflowBinanceExecutorOutput> {
 	nodesCatalog: DflowNodesCatalog
 	binanceSymbols: DflowBinanceSymbolInfo[]
 
@@ -56,8 +53,8 @@ export class DflowBinanceExecutor
 			: []
 		const orders = execution
 			? getOrdersFromExecutionSteps(execution.steps).map((info) => ({
-					info
-				}))
+				info
+			}))
 			: []
 		return { balance, execution, memory, memoryChanged, orders }
 	}

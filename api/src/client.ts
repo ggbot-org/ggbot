@@ -77,8 +77,7 @@ export async function clientAction<ActionType extends string>(
 			InternalServerError,
 			GatewayTimeoutError,
 			UnauthorizedError
-		])
-			if (error === ErrorClass.statusCode) throw new ErrorClass()
+		]) if (error === ErrorClass.statusCode) throw new ErrorClass()
 
 		throw error
 	}

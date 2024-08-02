@@ -21,9 +21,9 @@ export function SubscriptionTotalPrice({
 			value={
 				numMonths
 					? formatNumber(monthlyPrice * numMonths, {
-							style: "currency",
-							currency
-						})
+						style: "currency",
+						currency
+					})
 					: ""
 			}
 		/>

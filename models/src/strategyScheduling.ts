@@ -15,8 +15,7 @@ export type StrategyScheduling = Item &
 	}
 
 export const isStrategyScheduling = objectTypeGuard<StrategyScheduling>(
-	({ id, memory, params, ...scheduling }) =>
-		isItemId(id) &&
+	({ id, memory, params, ...scheduling }) => isItemId(id) &&
 		isScheduling(scheduling) &&
 		(params === undefined ? true : isStrategyParameters(params)) &&
 		(memory === undefined ? true : isStrategyMemory(memory))

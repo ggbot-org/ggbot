@@ -7,8 +7,8 @@ import { Label } from "./Label"
 export type InputFieldProps = Omit<InputProps, "id"> & {
 	label: string
 } & Partial<{
-		help: ReactNode
-	}>
+	help: ReactNode
+}>
 
 export function InputField({ color, help, label, ...props }: InputFieldProps) {
 	const id = useId()

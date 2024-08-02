@@ -8,8 +8,7 @@ type FrequenciesAreEqualArgs = Parameters<typeof frequenciesAreEqual>
 
 test("frequenciesAreEqual", () => {
 	assertEqual<FrequenciesAreEqualArgs, boolean>(
-		(frequencies: FrequenciesAreEqualArgs) =>
-			frequenciesAreEqual(...frequencies),
+		(frequencies: FrequenciesAreEqualArgs) => frequenciesAreEqual(...frequencies),
 		[
 			{
 				input: [everyOneHour(), undefined],

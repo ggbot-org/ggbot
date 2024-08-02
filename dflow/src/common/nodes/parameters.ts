@@ -18,8 +18,7 @@ export class BooleanParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isIdentifierString(key) || typeof defaultValue !== "boolean")
-			return this.clearOutputs()
+		if (!isIdentifierString(key) || typeof defaultValue !== "boolean") return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
@@ -37,8 +36,7 @@ export class NumberParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isIdentifierString(key) || !isFiniteNumber(defaultValue))
-			return this.clearOutputs()
+		if (!isIdentifierString(key) || !isFiniteNumber(defaultValue)) return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
 			const inputValue = params[key]
@@ -56,8 +54,7 @@ export class StringParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isIdentifierString(key) || !isNonEmptyString(defaultValue))
-			return this.clearOutputs()
+		if (!isIdentifierString(key) || !isNonEmptyString(defaultValue)) return this.clearOutputs()
 		let value = defaultValue
 		if (key in params) {
 			const inputValue = params[key]

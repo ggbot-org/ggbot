@@ -88,92 +88,89 @@ export function ProfitSummary({
 	>()
 
 	if (strategyKind === "binance") {
-		if (orders)
-			for (const { info } of orders) {
-				if (
-					!objectTypeGuard<{
-						fills: unknown[]
-						side: string
-						status: string
-						symbol: string
-						type: string
-					}>(
-						({ fills, side, status, symbol, type }) =>
-							Array.isArray(fills) &&
+		if (orders) for (const { info } of orders) {
+			if (
+				!objectTypeGuard<{
+					fills: unknown[]
+					side: string
+					status: string
+					symbol: string
+					type: string
+				}>(
+					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
 							[side, status, symbol, type].every(
 								(item) => typeof item === "string"
 							)
-					)(info)
-				)
-					continue
+				)(info)
+			) continue
 
-				if (info.status !== "FILLED") continue
-				if (info.type !== "MARKET") continue
-				const { fills, side, symbol } = info
+			if (info.status !== "FILLED") continue
+			if (info.type !== "MARKET") continue
+			const { fills, side, symbol } = info
 
-				const isBuy = side === "BUY"
+			const isBuy = side === "BUY"
 
-				// Count buys and sells.
-				if (isBuy) {
-					numBuys === undefined ? (numBuys = 1) : numBuys++
+			// Count buys and sells.
+			if (isBuy) {
+				numBuys === undefined ? (numBuys = 1) : numBuys++
+			} else {
+				numSells === undefined ? (numSells = 1) : numSells++
+			}
+
+			if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
+
+			for (const {
+				commission,
+				commissionAsset,
+				price,
+				qty: baseQty
+			} of fills) {
+				const quoteQty = mul(price, baseQty)
+
+				// Sum fees.
+				const previousFees = feesMap.get(commissionAsset)
+				if (previousFees) {
+					feesMap.set(
+						commissionAsset,
+						add(previousFees, commission)
+					)
 				} else {
-					numSells === undefined ? (numSells = 1) : numSells++
+					feesMap.set(commissionAsset, commission)
 				}
 
-				if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
-
-				for (const {
-					commission,
-					commissionAsset,
-					price,
-					qty: baseQty
-				} of fills) {
-					const quoteQty = mul(price, baseQty)
-
-					// Sum fees.
-					const previousFees = feesMap.get(commissionAsset)
-					if (previousFees) {
-						feesMap.set(
-							commissionAsset,
-							add(previousFees, commission)
-						)
-					} else {
-						feesMap.set(commissionAsset, commission)
-					}
-
-					// Statistics.
-					const previousSymbolStats = symbolStats.get(symbol)
-					if (previousSymbolStats) {
-						const {
-							minPrice,
-							maxPrice,
-							baseQuantity,
-							quoteQuantity
-						} = previousSymbolStats
-						symbolStats.set(symbol, {
-							baseQuantity: isBuy
-								? add(baseQuantity, baseQty)
-								: sub(baseQuantity, baseQty),
-							maxPrice: greaterThan(price, maxPrice)
-								? price
-								: maxPrice,
-							minPrice: lessThan(price, minPrice)
-								? price
-								: minPrice,
-							quoteQuantity: isBuy
-								? sub(quoteQuantity, quoteQty)
-								: add(quoteQuantity, quoteQty)
-						})
-					} else {
-						symbolStats.set(symbol, {
-							baseQuantity: isBuy ? baseQty : neg(baseQty),
-							maxPrice: price,
-							minPrice: price,
-							quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
-						})
-					}
+				// Statistics.
+				const previousSymbolStats = symbolStats.get(symbol)
+				if (previousSymbolStats) {
+					const {
+						minPrice,
+						maxPrice,
+						baseQuantity,
+						quoteQuantity
+					} = previousSymbolStats
+					symbolStats.set(symbol, {
+						baseQuantity: isBuy
+							? add(baseQuantity, baseQty)
+							: sub(baseQuantity, baseQty),
+						maxPrice: greaterThan(price, maxPrice)
+							? price
+							: maxPrice,
+						minPrice: lessThan(price, minPrice)
+							? price
+							: minPrice,
+						quoteQuantity: isBuy
+							? sub(quoteQuantity, quoteQty)
+							: add(quoteQuantity, quoteQty)
+					})
+				} else {
+					symbolStats.set(symbol, {
+						baseQuantity: isBuy ? baseQty : neg(baseQty),
+						maxPrice: price,
+						minPrice: price,
+						quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
+					})
 				}
 			}
+		}
 	}
 
 	if (orders === undefined) return null
@@ -251,15 +248,14 @@ export function ProfitSummary({
 						symbol,
 						binanceSymbols
 					)
-					if (!symbolInfo)
-						return {
-							baseAsset: "",
-							baseAssetPrecision: undefined,
-							quoteAsset: "",
-							quoteAssetPrecision: undefined,
-							symbol,
-							...rest
-						}
+					if (!symbolInfo) return {
+						baseAsset: "",
+						baseAssetPrecision: undefined,
+						quoteAsset: "",
+						quoteAssetPrecision: undefined,
+						symbol,
+						...rest
+					}
 					const {
 						baseAsset,
 						baseAssetPrecision,

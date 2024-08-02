@@ -28,84 +28,79 @@ export function StrategyOrdersTable({ orders }: Props) {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []
-	if (orders)
-		for (const { info } of orders) {
-			if (
-				!objectTypeGuard<{
-					cummulativeQuoteQty: string
-					executedQty: string
-					fills: unknown[]
-					orderId: number
-					side: string
-					symbol: string
-					transactTime: number
-				}>(
-					({
-						cummulativeQuoteQty,
-						executedQty,
-						fills,
-						orderId,
-						side,
-						symbol,
-						transactTime
-					}) =>
-						Array.isArray(fills) &&
+	if (orders) for (const { info } of orders) {
+		if (
+			!objectTypeGuard<{
+				cummulativeQuoteQty: string
+				executedQty: string
+				fills: unknown[]
+				orderId: number
+				side: string
+				symbol: string
+				transactTime: number
+			}>(
+				({
+					cummulativeQuoteQty,
+					executedQty,
+					fills,
+					orderId,
+					side,
+					symbol,
+					transactTime
+				}) => Array.isArray(fills) &&
 						[cummulativeQuoteQty, executedQty, side, symbol].every(
 							(item) => typeof item === "string"
 						) &&
 						[orderId, transactTime].every(
 							(item) => typeof item === "number"
 						)
-				)(info)
-			)
-				continue
+			)(info)
+		) continue
 
-			const {
-				cummulativeQuoteQty,
-				executedQty,
-				fills,
-				orderId,
-				side,
-				symbol,
-				transactTime
-			} = info
+		const {
+			cummulativeQuoteQty,
+			executedQty,
+			fills,
+			orderId,
+			side,
+			symbol,
+			transactTime
+		} = info
 
-			let price: BinanceDecimal = "0"
-			const precision = 8
+		let price: BinanceDecimal = "0"
+		const precision = 8
 
-			if (arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) {
-				const numFills = fills.length
-				if (numFills === 1) {
-					price = fills[0].price
-				} else {
-					let sumFillPrice = "0"
-					for (const fill of fills)
-						sumFillPrice = add(sumFillPrice, fill.price, precision)
-					price = (Number(sumFillPrice) / fills.length).toFixed(
-						precision
-					)
-				}
+		if (arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) {
+			const numFills = fills.length
+			if (numFills === 1) {
+				price = fills[0].price
+			} else {
+				let sumFillPrice = "0"
+				for (const fill of fills) sumFillPrice = add(sumFillPrice, fill.price, precision)
+				price = (Number(sumFillPrice) / fills.length).toFixed(
+					precision
+				)
 			}
-
-			rows.push({
-				side,
-				orderId,
-				symbol,
-				time: formatDate(transactTime, timeFormat),
-				baseQuantity: executedQty,
-				quoteQuantity: cummulativeQuoteQty,
-				price
-			})
 		}
+
+		rows.push({
+			side,
+			orderId,
+			symbol,
+			time: formatDate(transactTime, timeFormat),
+			baseQuantity: executedQty,
+			quoteQuantity: cummulativeQuoteQty,
+			price
+		})
+	}
 
 	if (!orders) return null
 
-	if (orders.length === 0)
-		return (
-			<Message>
-				<FormattedMessage id="StrategyOrders.noOrder" />
-			</Message>
-		)
+	if (orders.length === 0) return (
+		<Message>
+			<FormattedMessage id="StrategyOrders.noOrder" />
+		</Message>
+	)
 
 	return (
 		<Table>

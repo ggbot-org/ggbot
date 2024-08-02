@@ -35,13 +35,11 @@ export class IamPolicy implements AwsResource {
 	}: NonNullable<IamPolicy["policyDocument"]>) {
 		return (
 			policyDocumentStatementActions: PolicyDocumentStatementAction[]
-		) =>
-			Statement.find(({ Action }) =>
-				Array.isArray(Action)
-					? Action.slice().sort().join() ===
+		) => Statement.find(({ Action }) => Array.isArray(Action)
+			? Action.slice().sort().join() ===
 						policyDocumentStatementActions.slice().sort().join()
-					: Action === policyDocumentStatementActions[0]
-			)
+			: Action === policyDocumentStatementActions[0]
+		)
 	}
 
 	static parsePolicyVersionDocument(policyVersionDocument: string) {

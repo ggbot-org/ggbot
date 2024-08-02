@@ -25,7 +25,6 @@ export class RepositoryTsconfigJson implements FileProvider {
 		for (const [key, path] of Object.entries(paths).map(([key, list]) => [
 			key,
 			list[0]
-		]))
-			this.paths.set(key, path)
+		])) this.paths.set(key, path)
 	}
 }

@@ -37,10 +37,9 @@ export class WorkspacePackageJson implements FileProvider {
 		internalDependency: string
 	): Workspace["pathname"] {
 		const workspacePathname = internalDependency.split("/").pop()
-		if (!workspacePathname)
-			throw new Error(
-				`Cannot get workspace pathname from ${internalDependency}`
-			)
+		if (!workspacePathname) throw new Error(
+			`Cannot get workspace pathname from ${internalDependency}`
+		)
 		return workspacePathname
 	}
 
@@ -59,10 +58,8 @@ export class WorkspacePackageJson implements FileProvider {
 			const dependencyWorkspace = workspaces.get(
 				dependencyWorkspacePathname
 			)
-			if (!dependencyWorkspace)
-				throw Error(`Cannot get workspace ${dependencyWorkspace}`)
-			if (dependencyWorkspace.packageJson.internalDependencies.size === 0)
-				continue
+			if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
+			if (dependencyWorkspace.packageJson.internalDependencies.size === 0) continue
 			result = WorkspacePackageJson.internalDependenciesChain(
 				dependencyWorkspacePathname,
 				workspaces
@@ -84,20 +81,15 @@ export class WorkspacePackageJson implements FileProvider {
 		this.packageName = name
 		this.isPrivate = Boolean(isPrivate)
 
-		if (dependencies)
-			for (const [key, value] of Object.entries(dependencies)) {
-				if (typeof value === "string") this.dependencies.set(key, value)
-				if (key.startsWith(WorkspacePackageJson.scope))
-					this.internalDependencies.add(key)
-			}
+		if (dependencies) for (const [key, value] of Object.entries(dependencies)) {
+			if (typeof value === "string") this.dependencies.set(key, value)
+			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
+		}
 
-		if (devDependencies)
-			for (const [key, value] of Object.entries(devDependencies)) {
-				if (typeof value === "string")
-					this.devDependencies.set(key, value)
-				if (key.startsWith(WorkspacePackageJson.scope))
-					this.internalDependencies.add(key)
-			}
+		if (devDependencies) for (const [key, value] of Object.entries(devDependencies)) {
+			if (typeof value === "string") this.devDependencies.set(key, value)
+			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
+		}
 
 		if (scripts && typeof scripts === "object") {
 			this.buildScriptCommand =

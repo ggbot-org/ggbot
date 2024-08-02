@@ -19,11 +19,9 @@ const repositoryDocsDir = join(repository.pathname, "repository", "docs")
 const pathname = join(repositoryDocsDir, "npm-dependencies.md")
 
 // Node text cannot contain `@`
-const packageGraphNode = (packageName: string) =>
-	packageName.startsWith("@") ? packageName.substring(1) : packageName
+const packageGraphNode = (packageName: string) => packageName.startsWith("@") ? packageName.substring(1) : packageName
 
-const isInternalDependency = (packageName: string) =>
-	packageName.startsWith(WorkspacePackageJson.scope)
+const isInternalDependency = (packageName: string) => packageName.startsWith(WorkspacePackageJson.scope)
 
 const allDependencies = (
 	wantedPackageName: string,
@@ -57,14 +55,12 @@ const isRedundantDependency = (
 		const siblingDependencyRelations = packageDependencies.filter(
 			([_, dependency]) => dependencyRelation[1] !== dependency
 		)
-		for (const [_, siblingDependency] of siblingDependencyRelations)
-			if (
-				allDependencies(
-					siblingDependency,
-					internalDependencyGraph
-				).includes(dependency)
-			)
-				return true
+		for (const [_, siblingDependency] of siblingDependencyRelations) if (
+			allDependencies(
+				siblingDependency,
+				internalDependencyGraph
+			).includes(dependency)
+		) return true
 	}
 
 	return false
@@ -73,23 +69,18 @@ const isRedundantDependency = (
 for (const workspace of repository.workspaces.values()) {
 	const workspacePackageJson = workspace.packageJson
 	const packageName = workspacePackageJson.packageName
-	for (const dependency of workspacePackageJson.dependencies.keys())
-		if (isInternalDependency(dependency))
-			internalDependencyGraph.push([packageName, dependency])
+	for (const dependency of workspacePackageJson.dependencies.keys()) if (isInternalDependency(dependency)) internalDependencyGraph.push([packageName, dependency])
 }
 
-for (const dependencyRelation of internalDependencyGraph)
-	if (!isRedundantDependency(dependencyRelation, internalDependencyGraph))
-		graphInternalDependencyRows.push(
-			`    ${packageGraphNode(
-				dependencyRelation[0]
-			)} --- ${packageGraphNode(dependencyRelation[1])}`
-		)
+for (const dependencyRelation of internalDependencyGraph) if (!isRedundantDependency(dependencyRelation, internalDependencyGraph)) graphInternalDependencyRows.push(
+	`    ${packageGraphNode(
+		dependencyRelation[0]
+	)} --- ${packageGraphNode(dependencyRelation[1])}`
+)
 
-const graphRows = (graphInternalDependencyRows: string[]) =>
-	["```mermaid", "graph LR", ...graphInternalDependencyRows, "```", ""].join(
-		"\n"
-	)
+const graphRows = (graphInternalDependencyRows: string[]) => ["```mermaid", "graph LR", ...graphInternalDependencyRows, "```", ""].join(
+	"\n"
+)
 
 const content = `
 # npm dependencies

@@ -2,8 +2,7 @@ export type FiniteString = string
 
 export const stringMaxLength = 256
 
-export const isFiniteString = (arg: unknown): arg is FiniteString =>
-	typeof arg === "string" && arg.length <= stringMaxLength
+export const isFiniteString = (arg: unknown): arg is FiniteString => typeof arg === "string" && arg.length <= stringMaxLength
 
 export type NonEmptyString<T = string> = T extends "" ? never : T
 

@@ -127,8 +127,7 @@ const isFieldName = isLiteralType<FieldName>(fieldNames)
 
 const fieldSeparator = "="
 
-const fieldJoin = (name: FieldName, value: string) =>
-	[name, value].join(fieldSeparator)
+const fieldJoin = (name: FieldName, value: string) => [name, value].join(fieldSeparator)
 
 export const dirnamePrefix = {
 	account: "account",
@@ -214,105 +213,84 @@ export const locatorToItemKey = {
 
 const itemKeyToDirname = {
 	account: ({ accountId }: AccountKey) => fieldJoin("accountId", accountId),
-	accountDailyBalanceEvents: ({ day, ...key }: AccountDailyKey) =>
-		dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
-	accountDailyOrders: ({ day, ...key }: AccountDailyKey) =>
-		dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
-	accountStrategy: ({ accountId, ...strategyKey }: AccountStrategyKey) =>
-		dirJoin([
-			itemKeyToDirname.account({ accountId }),
-			itemKeyToDirname.strategy(strategyKey)
-		]),
+	accountDailyBalanceEvents: ({ day, ...key }: AccountDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
+	accountDailyOrders: ({ day, ...key }: AccountDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
+	accountStrategy: ({ accountId, ...strategyKey }: AccountStrategyKey) => dirJoin([
+		itemKeyToDirname.account({ accountId }),
+		itemKeyToDirname.strategy(strategyKey)
+	]),
 	day: ({ day }: DayKey) => {
 		const [yyyy, mm, dd] = splitDay(day)
 		return dirJoin([`y=${yyyy}`, `m=${mm}`, `d=${dd}`])
 	},
-	strategy: ({ strategyId, strategyKind }: StrategyKey) =>
-		dirJoin([
-			fieldJoin("strategyKind", strategyKind),
-			fieldJoin("strategyId", strategyId)
-		]),
-	strategyDailyErrors: ({ day, ...key }: AccountStrategyDailyKey) =>
-		dirJoin([
-			itemKeyToDirname.day({ day }),
-			itemKeyToDirname.accountStrategy(key)
-		]),
-	strategyDailyOrders: ({ day, ...key }: AccountStrategyDailyKey) =>
-		dirJoin([
-			itemKeyToDirname.day({ day }),
-			itemKeyToDirname.accountStrategy(key)
-		]),
+	strategy: ({ strategyId, strategyKind }: StrategyKey) => dirJoin([
+		fieldJoin("strategyKind", strategyKind),
+		fieldJoin("strategyId", strategyId)
+	]),
+	strategyDailyErrors: ({ day, ...key }: AccountStrategyDailyKey) => dirJoin([
+		itemKeyToDirname.day({ day }),
+		itemKeyToDirname.accountStrategy(key)
+	]),
+	strategyDailyOrders: ({ day, ...key }: AccountStrategyDailyKey) => dirJoin([
+		itemKeyToDirname.day({ day }),
+		itemKeyToDirname.accountStrategy(key)
+	]),
 	subscriptionPurchase: ({
 		accountId,
 		day,
 		purchaseId
-	}: SubscriptionPurchaseKey) =>
-		dirJoin([
-			itemKeyToDirname.account({ accountId }),
-			itemKeyToDirname.day({ day }),
-			fieldJoin("purchaseId", purchaseId)
-		])
+	}: SubscriptionPurchaseKey) => dirJoin([
+		itemKeyToDirname.account({ accountId }),
+		itemKeyToDirname.day({ day }),
+		fieldJoin("purchaseId", purchaseId)
+	])
 }
 
 const dirname = {
-	account: (arg: AccountKey) =>
-		dirJoin([
-			`${dirnamePrefix.account}`,
-			`${itemKeyToDirname.account(arg)}`
-		]),
-	accountDailyBalanceEvents: (arg: AccountDailyKey) =>
-		dirJoin([
-			dirnamePrefix.accountDailyBalanceEvents,
-			itemKeyToDirname.accountDailyBalanceEvents(arg)
-		]),
-	accountConfig: (arg: AccountKey) =>
-		dirJoin([dirnamePrefix.accountConfig, itemKeyToDirname.account(arg)]),
-	accountDailyOrders: (arg: AccountDailyKey) =>
-		dirJoin([
-			dirnamePrefix.accountDailyOrders,
-			itemKeyToDirname.accountDailyOrders(arg)
-		]),
-	accountStrategies: (arg: AccountKey) =>
-		dirJoin([
-			dirnamePrefix.accountStrategies,
-			itemKeyToDirname.account(arg)
-		]),
-	email: (arg: EmailAddress) =>
-		dirJoin(normalizeEmailAddress(arg).split("@").reverse()),
-	strategy: (arg: StrategyKey) =>
-		dirJoin([dirnamePrefix.strategy, itemKeyToDirname.strategy(arg)]),
-	strategyDailyErrors: (arg: AccountStrategyDailyKey) =>
-		dirJoin([
-			dirnamePrefix.strategyDailyErrors,
-			itemKeyToDirname.strategyDailyErrors(arg)
-		]),
-	strategyDailyOrders: (arg: AccountStrategyDailyKey) =>
-		dirJoin([
-			dirnamePrefix.strategyDailyOrders,
-			itemKeyToDirname.strategyDailyOrders(arg)
-		]),
-	strategyExecution: (arg: AccountStrategyKey) =>
-		dirJoin([
-			dirnamePrefix.strategyExecution,
-			itemKeyToDirname.accountStrategy(arg)
-		]),
-	strategyFlow: (arg: StrategyKey) =>
-		dirJoin([dirnamePrefix.strategyFlow, itemKeyToDirname.strategy(arg)]),
-	strategyOrdersPool: (arg: StrategyKey) =>
-		dirJoin([
-			dirnamePrefix.strategyOrdersPool,
-			itemKeyToDirname.strategy(arg)
-		]),
-	subscription: (arg: AccountKey) =>
-		dirJoin([
-			`${dirnamePrefix.subscription}`,
-			`${itemKeyToDirname.account(arg)}`
-		]),
-	subscriptionPurchase: (arg: SubscriptionPurchaseKey) =>
-		dirJoin([
-			`${dirnamePrefix.subscriptionPurchase}`,
-			`${itemKeyToDirname.subscriptionPurchase(arg)}`
-		])
+	account: (arg: AccountKey) => dirJoin([
+		`${dirnamePrefix.account}`,
+		`${itemKeyToDirname.account(arg)}`
+	]),
+	accountDailyBalanceEvents: (arg: AccountDailyKey) => dirJoin([
+		dirnamePrefix.accountDailyBalanceEvents,
+		itemKeyToDirname.accountDailyBalanceEvents(arg)
+	]),
+	accountConfig: (arg: AccountKey) => dirJoin([dirnamePrefix.accountConfig, itemKeyToDirname.account(arg)]),
+	accountDailyOrders: (arg: AccountDailyKey) => dirJoin([
+		dirnamePrefix.accountDailyOrders,
+		itemKeyToDirname.accountDailyOrders(arg)
+	]),
+	accountStrategies: (arg: AccountKey) => dirJoin([
+		dirnamePrefix.accountStrategies,
+		itemKeyToDirname.account(arg)
+	]),
+	email: (arg: EmailAddress) => dirJoin(normalizeEmailAddress(arg).split("@").reverse()),
+	strategy: (arg: StrategyKey) => dirJoin([dirnamePrefix.strategy, itemKeyToDirname.strategy(arg)]),
+	strategyDailyErrors: (arg: AccountStrategyDailyKey) => dirJoin([
+		dirnamePrefix.strategyDailyErrors,
+		itemKeyToDirname.strategyDailyErrors(arg)
+	]),
+	strategyDailyOrders: (arg: AccountStrategyDailyKey) => dirJoin([
+		dirnamePrefix.strategyDailyOrders,
+		itemKeyToDirname.strategyDailyOrders(arg)
+	]),
+	strategyExecution: (arg: AccountStrategyKey) => dirJoin([
+		dirnamePrefix.strategyExecution,
+		itemKeyToDirname.accountStrategy(arg)
+	]),
+	strategyFlow: (arg: StrategyKey) => dirJoin([dirnamePrefix.strategyFlow, itemKeyToDirname.strategy(arg)]),
+	strategyOrdersPool: (arg: StrategyKey) => dirJoin([
+		dirnamePrefix.strategyOrdersPool,
+		itemKeyToDirname.strategy(arg)
+	]),
+	subscription: (arg: AccountKey) => dirJoin([
+		`${dirnamePrefix.subscription}`,
+		`${itemKeyToDirname.account(arg)}`
+	]),
+	subscriptionPurchase: (arg: SubscriptionPurchaseKey) => dirJoin([
+		`${dirnamePrefix.subscriptionPurchase}`,
+		`${itemKeyToDirname.subscriptionPurchase(arg)}`
+	])
 }
 
 const filename = {
@@ -334,54 +312,39 @@ const filename = {
 }
 
 export const pathname = {
-	account: (arg: AccountKey) =>
-		dirJoin([dirname.account(arg), filename.account]),
-	accountDailyBalanceEvents: (arg: AccountDailyKey) =>
-		dirJoin([
-			dirname.accountDailyBalanceEvents(arg),
-			filename.accountDailyBalanceEvents
-		]),
-	accountDailyOrders: (arg: AccountDailyKey) =>
-		dirJoin([dirname.accountDailyOrders(arg), filename.accountDailyOrders]),
-	accountStrategies: (arg: AccountKey) =>
-		dirJoin([dirname.accountStrategies(arg), filename.accountStrategies]),
-	binanceApiConfig: (arg: AccountKey) =>
-		dirJoin([dirname.accountConfig(arg), filename.binanceApiConfig]),
-	emailAccount: (arg: EmailAddress) =>
-		dirJoin([
-			dirnamePrefix.emailAccount,
-			dirname.email(arg),
-			filename.emailAccount
-		]),
-	oneTimePassword: (arg: EmailAddress) =>
-		dirJoin([
-			dirnamePrefix.oneTimePassword,
-			dirname.email(arg),
-			filename.oneTimePassword
-		]),
-	strategy: (arg: StrategyKey) =>
-		dirJoin([dirname.strategy(arg), filename.strategy]),
-	strategyDailyErrors: (arg: AccountStrategyDailyKey) =>
-		dirJoin([
-			dirname.strategyDailyErrors(arg),
-			filename.strategyDailyErrors
-		]),
-	strategyDailyOrders: (arg: AccountStrategyDailyKey) =>
-		dirJoin([
-			dirname.strategyDailyOrders(arg),
-			filename.strategyDailyOrders
-		]),
-	strategyExecution: (arg: AccountStrategyKey) =>
-		dirJoin([dirname.strategyExecution(arg), filename.strategyExecution]),
-	strategyFlow: (arg: StrategyKey) =>
-		dirJoin([dirname.strategyFlow(arg), filename.strategyFlow]),
-	strategyOrdersPool: (arg: AccountStrategyKey) =>
-		dirJoin([dirname.strategyOrdersPool(arg), filename.strategyOrdersPool]),
-	subscription: (arg: AccountKey) =>
-		dirJoin([dirname.subscription(arg), filename.subscription]),
-	subscriptionPurchase: (arg: SubscriptionPurchaseKey) =>
-		dirJoin([
-			dirname.subscriptionPurchase(arg),
-			filename.subscriptionPurchase
-		])
+	account: (arg: AccountKey) => dirJoin([dirname.account(arg), filename.account]),
+	accountDailyBalanceEvents: (arg: AccountDailyKey) => dirJoin([
+		dirname.accountDailyBalanceEvents(arg),
+		filename.accountDailyBalanceEvents
+	]),
+	accountDailyOrders: (arg: AccountDailyKey) => dirJoin([dirname.accountDailyOrders(arg), filename.accountDailyOrders]),
+	accountStrategies: (arg: AccountKey) => dirJoin([dirname.accountStrategies(arg), filename.accountStrategies]),
+	binanceApiConfig: (arg: AccountKey) => dirJoin([dirname.accountConfig(arg), filename.binanceApiConfig]),
+	emailAccount: (arg: EmailAddress) => dirJoin([
+		dirnamePrefix.emailAccount,
+		dirname.email(arg),
+		filename.emailAccount
+	]),
+	oneTimePassword: (arg: EmailAddress) => dirJoin([
+		dirnamePrefix.oneTimePassword,
+		dirname.email(arg),
+		filename.oneTimePassword
+	]),
+	strategy: (arg: StrategyKey) => dirJoin([dirname.strategy(arg), filename.strategy]),
+	strategyDailyErrors: (arg: AccountStrategyDailyKey) => dirJoin([
+		dirname.strategyDailyErrors(arg),
+		filename.strategyDailyErrors
+	]),
+	strategyDailyOrders: (arg: AccountStrategyDailyKey) => dirJoin([
+		dirname.strategyDailyOrders(arg),
+		filename.strategyDailyOrders
+	]),
+	strategyExecution: (arg: AccountStrategyKey) => dirJoin([dirname.strategyExecution(arg), filename.strategyExecution]),
+	strategyFlow: (arg: StrategyKey) => dirJoin([dirname.strategyFlow(arg), filename.strategyFlow]),
+	strategyOrdersPool: (arg: AccountStrategyKey) => dirJoin([dirname.strategyOrdersPool(arg), filename.strategyOrdersPool]),
+	subscription: (arg: AccountKey) => dirJoin([dirname.subscription(arg), filename.subscription]),
+	subscriptionPurchase: (arg: SubscriptionPurchaseKey) => dirJoin([
+		dirname.subscriptionPurchase(arg),
+		filename.subscriptionPurchase
+	])
 }

@@ -66,8 +66,7 @@ export class Executor {
 		const key = "accountKeys"
 		return {
 			get: (): AccountKey[] | undefined => this.accountKeysCache.get(key),
-			set: (data: AccountKey[]): void =>
-				this.accountKeysCache.set(key, data),
+			set: (data: AccountKey[]): void => this.accountKeysCache.set(key, data),
 			delete: (accountId: AccountKey["accountId"]): void => {
 				const items = this.accountKeysCache.get(key)
 				if (!items) return
@@ -106,8 +105,7 @@ export class Executor {
 
 	static itemIdToNaturalNumber(itemId: Item["id"]) {
 		const firstCharacter = itemId.charAt(0)
-		for (let i = 0; i < itemIdCharacters.length; i++)
-			if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
+		for (let i = 0; i < itemIdCharacters.length; i++) if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
 		throw new TypeError()
 	}
 
@@ -139,8 +137,7 @@ export class Executor {
 					accountId
 				})) ?? []
 			if (!Array.isArray(data)) return accountStrategies
-			for (const item of data)
-				if (isAccountStrategy(item)) accountStrategies.push(item)
+			for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
 			cache.set(key, accountStrategies)
 			return accountStrategies
 		} catch (error) {
@@ -167,21 +164,19 @@ export class Executor {
 			const key = accountId
 			const { subscriptionsCache: cache } = this
 			const cached = cache.get(key)
-			if (cached)
-				return {
-					hasActiveSubscription:
+			if (cached) return {
+				hasActiveSubscription:
 						statusOfSubscription(cached) === "active",
-					subscriptionPlan: cached.plan
-				}
+				subscriptionPlan: cached.plan
+			}
 			info("readSubscription", accountId)
 			const subscription = await this.executorDatabase.ReadSubscription({
 				accountId
 			})
-			if (!isSubscription(subscription))
-				return {
-					hasActiveSubscription: false,
-					subscriptionPlan: undefined
-				}
+			if (!isSubscription(subscription)) return {
+				hasActiveSubscription: false,
+				subscriptionPlan: undefined
+			}
 			cache.set(key, subscription)
 			return {
 				hasActiveSubscription:
@@ -310,32 +305,31 @@ export class Executor {
 					strategyId,
 					strategyKind,
 					schedulings
-				} of accountStrategies)
-					for (const scheduling of schedulings) {
-						// Suspend scheduling if frequency interval is not allowed in subscription plan.
-						if (
-							subscriptionPlan !== "pro" &&
+				} of accountStrategies) for (const scheduling of schedulings) {
+					// Suspend scheduling if frequency interval is not allowed in subscription plan.
+					if (
+						subscriptionPlan !== "pro" &&
 							PRO_FREQUENCY_INTERVALS.includes(
 								scheduling.frequency.interval
 							)
-						) {
-							await this.suspendAccountStrategyScheduling(
-								{
-									accountId,
-									strategyId,
-									schedulingId: scheduling.id
-								}
-								// TODO enable emails
-								// strategyKind
-							)
-							continue
-						}
-
-						await this.manageStrategyExecution(
-							{ accountId, strategyId, strategyKind },
-							scheduling
+					) {
+						await this.suspendAccountStrategyScheduling(
+							{
+								accountId,
+								strategyId,
+								schedulingId: scheduling.id
+							}
+							// TODO enable emails
+							// strategyKind
 						)
+						continue
 					}
+
+					await this.manageStrategyExecution(
+						{ accountId, strategyId, strategyKind },
+						scheduling
+					)
+				}
 			} catch (error) {
 				if (error instanceof ErrorStrategyItemNotFound) {
 					await this.suspendAccountStrategySchedulings({

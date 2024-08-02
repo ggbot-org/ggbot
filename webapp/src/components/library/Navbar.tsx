@@ -59,8 +59,7 @@ export function Navbar({
 						if (
 							pathname === "/" ||
 							pathname === webapp.homepage.pathname
-						)
-							return
+						) return
 						location.pathname = "/"
 					}}
 				>

@@ -18,8 +18,7 @@ export type DflowBinanceSymbolInfo = Pick<
 >
 
 export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
-	({ baseAsset, isSpotTradingAllowed, quoteAsset, status, symbol }) =>
-		isSpotTradingAllowed === true &&
+	({ baseAsset, isSpotTradingAllowed, quoteAsset, status, symbol }) => isSpotTradingAllowed === true &&
 		status === "TRADING" &&
 		typeof symbol === "string" &&
 		typeof baseAsset === "string" &&

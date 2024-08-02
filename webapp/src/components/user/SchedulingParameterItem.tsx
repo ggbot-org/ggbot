@@ -130,23 +130,19 @@ export function SchedulingParameterItem({
 	// Validate incoming value to show UI feedback.
 	useEffect(() => {
 		if (paramValue === undefined) return
-		if (kind === BooleanParameter.kind && typeof paramValue === "boolean")
-			return
+		if (kind === BooleanParameter.kind && typeof paramValue === "boolean") return
 
-		if (kind === NumberParameter.kind && isFiniteNumber(Number(paramValue)))
-			return
+		if (kind === NumberParameter.kind && isFiniteNumber(Number(paramValue))) return
 
 		if (
 			kind === IntervalParameter.kind &&
 			isDflowBinanceKlineInterval(paramValue)
-		)
-			return
+		) return
 
 		if (kind === SymbolParameter.kind) {
 			if (!binanceSymbols) return
 			const isSymbol = binanceSymbols.some(
-				({ baseAsset, quoteAsset }) =>
-					baseAsset + quoteAsset === paramValue
+				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === paramValue
 			)
 			if (isSymbol) return
 		}
@@ -158,11 +154,9 @@ export function SchedulingParameterItem({
 		if (SymbolParameter.kind === kind) {
 			if (!binanceSymbols) return ""
 			const symbolInfo = binanceSymbols.find(
-				({ baseAsset, quoteAsset }) =>
-					baseAsset + quoteAsset === defaultParamValue
+				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === defaultParamValue
 			)
-			if (symbolInfo)
-				return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
+			if (symbolInfo) return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
 		}
 		return String(defaultParamValue ?? "")
 	}, [binanceSymbols, kind, defaultParamValue])
@@ -171,11 +165,9 @@ export function SchedulingParameterItem({
 		if (SymbolParameter.kind === kind) {
 			if (!binanceSymbols) return ""
 			const symbolInfo = binanceSymbols.find(
-				({ baseAsset, quoteAsset }) =>
-					baseAsset + quoteAsset === paramValue
+				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === paramValue
 			)
-			if (symbolInfo)
-				return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
+			if (symbolInfo) return `${symbolInfo.baseAsset}${dflowBinanceSymbolSeparator}${symbolInfo.quoteAsset}`
 		}
 		return String(paramValue ?? "")
 	}, [binanceSymbols, kind, paramValue])

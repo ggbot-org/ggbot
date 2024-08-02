@@ -14,8 +14,8 @@ type Action =
 	| BacktestingMessageInData
 	| BacktestingMessageOutData
 	| {
-			type: "INITALIZED"
-	  }
+		type: "INITALIZED"
+	}
 
 type State = Pick<
 	BacktestingSession,

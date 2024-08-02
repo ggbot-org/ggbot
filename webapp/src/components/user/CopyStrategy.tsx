@@ -48,11 +48,10 @@ export function CopyStrategy({ strategyKey }: Props) {
 				[key in (typeof fields)[number]]?: { value: string }
 			}
 			const name = eventTarget[fieldName.name]?.value
-			if (isName(name))
-				COPY.request({
-					name,
-					...strategyKey
-				})
+			if (isName(name)) COPY.request({
+				name,
+				...strategyKey
+			})
 		},
 		[COPY, canCreate, strategyKey]
 	)

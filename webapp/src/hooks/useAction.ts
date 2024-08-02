@@ -75,7 +75,7 @@ export function useAction<
 
 	const request = useCallback(
 		(inputData?: Input) => {
-			;(async function () {
+			(async function () {
 				try {
 					const headers = new ClientActionHeaders()
 					if (withAuth) {
@@ -114,18 +114,14 @@ export function useAction<
 					if (
 						error instanceof DOMException &&
 						error.name === "AbortError"
-					)
-						return
+					) return
 
-					if (error instanceof GatewayTimeoutError)
-						return setError({ name: GatewayTimeoutError.errorName })
+					if (error instanceof GatewayTimeoutError) return setError({ name: GatewayTimeoutError.errorName })
 
-					if (error instanceof TimeoutError)
-						return setError({ name: TimeoutError.errorName })
+					if (error instanceof TimeoutError) return setError({ name: TimeoutError.errorName })
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error instanceof BadRequestError)
-						return setError({ name: BadRequestError.errorName })
+					if (error instanceof BadRequestError) return setError({ name: BadRequestError.errorName })
 
 					if (error instanceof UnauthorizedError) {
 						localWebStorage.authToken.delete()
@@ -133,13 +129,11 @@ export function useAction<
 					}
 
 					// TODO consider using a toast to display: Something went wrong
-					if (error instanceof InternalServerError)
-						return setError({ name: InternalServerError.name })
+					if (error instanceof InternalServerError) return setError({ name: InternalServerError.name })
 
 					// TODO in case of test Binance error a toast and the proxy is down
 					// the toast should say contact support.
-					if (error instanceof BadGatewayError)
-						return setError({ name: BadGatewayError.name })
+					if (error instanceof BadGatewayError) return setError({ name: BadGatewayError.name })
 
 					debug(error)
 					setError({ name: GenericError.errorName })

@@ -68,11 +68,9 @@ export const requestListener = (
 				response.write(JSON.stringify(output), "utf-8")
 			})
 			.catch((error) => {
-				if (error instanceof BadRequestError)
-					return response.writeHead(error.statusCode)
+				if (error instanceof BadRequestError) return response.writeHead(error.statusCode)
 
-				if (error instanceof ErrorAccountItemNotFound)
-					return response.writeHead(UNAUTHORIZED__401)
+				if (error instanceof ErrorAccountItemNotFound) return response.writeHead(UNAUTHORIZED__401)
 
 				if (error instanceof ErrorBinanceHTTP) {
 					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)

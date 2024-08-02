@@ -41,8 +41,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		info(event)
 
-		if (event.httpMethod !== "POST")
-			return errorResponse(METHOD_NOT_ALLOWED__405)
+		if (event.httpMethod !== "POST") return errorResponse(METHOD_NOT_ALLOWED__405)
 
 		if (!event.body) {
 			debug("Missing body")
@@ -77,16 +76,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 			const subscriptionPurchase = isYearly
 				? newYearlySubscriptionPurchase({
-						plan,
-						paymentProvider,
-						startDay
-					})
+					plan,
+					paymentProvider,
+					startDay
+				})
 				: newMonthlySubscriptionPurchase({
-						plan,
-						paymentProvider,
-						numMonths,
-						startDay
-					})
+					plan,
+					paymentProvider,
+					numMonths,
+					startDay
+				})
 
 			await dataProvider.WriteSubscriptionPurchase({
 				accountId,

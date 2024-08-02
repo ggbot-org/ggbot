@@ -45,14 +45,14 @@ type Action =
 	| { type: "SET_HAS_INVALID_INPUT" }
 	| { type: "VERIFY_REQUEST" }
 	| {
-			type: "VERIFY_RESPONSE"
-			data: Partial<
-				Pick<
-					State,
+		type: "VERIFY_RESPONSE"
+		data: Partial<
+			Pick<
+				State,
 					"needToGenerateOneTimePasswordAgain" | "verificationFailed"
-				>
 			>
-	  }
+		>
+	}
 	| { type: "VERIFY_FAILURE" }
 	| { type: "VERIFY_TIMEOUT" }
 
@@ -70,13 +70,11 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 		},
 		dispatch
 	] = useReducer<Reducer<State, Action>>((state, action) => {
-		if (action.type === "SET_HAS_INVALID_INPUT")
-			return { hasInvalidInput: true }
+		if (action.type === "SET_HAS_INVALID_INPUT") return { hasInvalidInput: true }
 
 		if (action.type === "VERIFY_REQUEST") return { isPending: true }
 
-		if (action.type === "VERIFY_RESPONSE")
-			return { hasGenericError: true, ...action.data }
+		if (action.type === "VERIFY_RESPONSE") return { hasGenericError: true, ...action.data }
 
 		if (action.type === "VERIFY_FAILURE") return { hasGenericError: true }
 

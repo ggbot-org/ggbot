@@ -117,8 +117,7 @@ export function Backtesting({ strategyKey }: Props) {
 	const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>(
 		(frequency) => {
 			setFrequencyArg(frequency)
-			if (isFrequency(frequency))
-				dispatch({ type: "SET_FREQUENCY", frequency })
+			if (isFrequency(frequency)) dispatch({ type: "SET_FREQUENCY", frequency })
 		},
 		[dispatch]
 	)
@@ -195,8 +194,7 @@ export function Backtesting({ strategyKey }: Props) {
 			isPaused &&
 			(afterStepBehaviour.pauseOnMemoryChange ||
 				afterStepBehaviour.pauseOnNewOrder)
-		)
-			toast.warning(formatMessage({ id: "Backtesting.paused" }))
+		) toast.warning(formatMessage({ id: "Backtesting.paused" }))
 	}, [afterStepBehaviour, formatMessage, isPaused, toast])
 
 	return (

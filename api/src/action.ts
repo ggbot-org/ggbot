@@ -67,8 +67,7 @@ type ApiActionServerSideError = {
 
 export const isApiActionServerSideError =
 	objectTypeGuard<ApiActionServerSideError>(
-		({ name, info }) =>
-			isApiActionServerSideErrorName(name) &&
+		({ name, info }) => isApiActionServerSideErrorName(name) &&
 			(info === undefined ? true : isSerializableObject(info))
 	)
 
@@ -96,10 +95,8 @@ export type ActionInput<ActionType extends string> = {
 
 export const isActionInput = <ActionType extends string>(
 	actionTypes: readonly ActionType[]
-) =>
-	objectTypeGuard<ActionInput<ActionType>>(({ type }) =>
-		isLiteralType<ActionType>(actionTypes)(type)
-	)
+) => objectTypeGuard<ActionInput<ActionType>>(({ type }) => isLiteralType<ActionType>(actionTypes)(type)
+)
 
 // Common
 // //////

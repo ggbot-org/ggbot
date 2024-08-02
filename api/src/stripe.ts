@@ -47,7 +47,6 @@ export const isStripeClientActionInput = {
 	CreateCheckoutSession: objectTypeGuard<
 		StripeClientActionInput["CreateCheckoutSession"]
 	>(
-		({ numMonths, plan }) =>
-			isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
+		({ numMonths, plan }) => isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
 	)
 }

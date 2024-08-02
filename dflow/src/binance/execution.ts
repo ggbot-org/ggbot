@@ -73,11 +73,10 @@ export const getBalanceFromExecutionSteps = (
 					})
 				}
 				// Commissions.
-				if (balanceIsNotEmpty(commissionBalance))
-					balanceMap.set(commissionAsset, {
-						...commissionBalance,
-						free: sub(commissionBalance.free, commission)
-					})
+				if (balanceIsNotEmpty(commissionBalance)) balanceMap.set(commissionAsset, {
+					...commissionBalance,
+					free: sub(commissionBalance.free, commission)
+				})
 			}
 		}
 	}
@@ -86,11 +85,10 @@ export const getBalanceFromExecutionSteps = (
 
 export const getOrdersFromExecutionSteps = (
 	steps: DflowExecutionReport["steps"]
-): BinanceOrderRespFULL[] =>
-	steps.reduce<BinanceOrderRespFULL[]>((result, { k: kind, o: outputs }) => {
-		if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result
-		if (!Array.isArray(outputs)) return result
-		const order = outputs[orderOutputPosition].d
-		if (!isBinanceOrderRespFULL(order)) return result
-		return [...result, order]
-	}, [])
+): BinanceOrderRespFULL[] => steps.reduce<BinanceOrderRespFULL[]>((result, { k: kind, o: outputs }) => {
+	if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result
+	if (!Array.isArray(outputs)) return result
+	const order = outputs[orderOutputPosition].d
+	if (!isBinanceOrderRespFULL(order)) return result
+	return [...result, order]
+}, [])

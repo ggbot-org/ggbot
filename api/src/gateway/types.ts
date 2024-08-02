@@ -15,8 +15,8 @@ type APIGatewayEventDefaultAuthorizerContext =
 	| undefined
 	| null
 	| {
-			[name: string]: unknown
-	  }
+		[name: string]: unknown
+	}
 
 type APIGatewayEventClientCertificate = {
 	clientCertPem: string
@@ -129,13 +129,13 @@ export type APIGatewayProxyResult = {
 	statusCode: number
 	headers?:
 		| {
-				[header: string]: boolean | number | string
-		  }
+			[header: string]: boolean | number | string
+		}
 		| undefined
 	multiValueHeaders?:
 		| {
-				[header: string]: Array<boolean | number | string>
-		  }
+			[header: string]: Array<boolean | number | string>
+		}
 		| undefined
 	body: string
 	isBase64Encoded?: boolean | undefined

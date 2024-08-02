@@ -62,8 +62,7 @@ export const isBinanceClientActionInput = {
 	CreateBinanceOrder: objectTypeGuard<
 		BinanceClientInput["CreateBinanceOrder"]
 	>(
-		({ symbol, side, type, orderOptions }) =>
-			typeof symbol === "string" &&
+		({ symbol, side, type, orderOptions }) => typeof symbol === "string" &&
 			typeof side === "string" &&
 			typeof type === "string" &&
 			orderOptions !== null &&

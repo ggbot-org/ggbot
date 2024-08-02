@@ -19,10 +19,9 @@ export class StripeWebhook {
 	private stripe = newStripe()
 
 	constructor() {
-		if (DEPLOY_STAGE === "local")
-			throw new Error(
-				"A StripeWebhook on local deploy stage does not make sense."
-			)
+		if (DEPLOY_STAGE === "local") throw new Error(
+			"A StripeWebhook on local deploy stage does not make sense."
+		)
 	}
 
 	get url() {

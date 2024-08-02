@@ -32,11 +32,10 @@ export const executeBinanceStrategy = async (
 	executorDatabase: ExecutorDatabase
 ): Promise<Pick<DflowCommonContext, "memory" | "memoryChanged">> => {
 	const strategyFlow = await publicDatabase.ReadStrategyFlow(strategyKey)
-	if (!strategyFlow)
-		throw new ErrorStrategyItemNotFound({
-			type: "StrategyFlow",
-			...strategyKey
-		})
+	if (!strategyFlow) throw new ErrorStrategyItemNotFound({
+		type: "StrategyFlow",
+		...strategyKey
+	})
 
 	const memoryInput = scheduling.memory ?? {}
 	const params = scheduling.params ?? {}
@@ -57,11 +56,10 @@ export const executeBinanceStrategy = async (
 	// TODO should use the StrategyFlowGraph
 	// it may be on another file or in { graph } or parsed from view
 	const { view } = strategyFlow
-	if (!isStrategyFlowGraph(view))
-		return {
-			memoryChanged: false,
-			memory: {}
-		}
+	if (!isStrategyFlowGraph(view)) return {
+		memoryChanged: false,
+		memory: {}
+	}
 
 	const executor = new DflowBinanceExecutor()
 	executor.nodesCatalog = nodesCatalog

@@ -9,11 +9,9 @@ export type StrategyParameters = {
 }
 
 export function isStrategyParameters(arg: unknown): arg is StrategyParameters {
-	if (arg === null || typeof arg !== "object" || Array.isArray(arg))
-		return false
+	if (arg === null || typeof arg !== "object" || Array.isArray(arg)) return false
 	return Object.entries(arg).every(
-		([key, value]) =>
-			isIdentifierString(key) &&
+		([key, value]) => isIdentifierString(key) &&
 			(value === undefined ? true : isSerializablePrimitive(value))
 	)
 }

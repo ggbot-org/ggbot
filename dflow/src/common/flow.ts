@@ -43,13 +43,11 @@ export const extractCommonParametersFromFlow = async (
 						if (
 							!isIdentifierString(key) ||
 							typeof defaultValue !== "boolean"
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						let value = defaultValue
 						if (key in params) {
 							const inputValue = params[key]
-							if (typeof inputValue === "boolean")
-								value = inputValue
+							if (typeof inputValue === "boolean") value = inputValue
 						}
 						this.output(0).data = value
 						// Set parameter
@@ -72,8 +70,7 @@ export const extractCommonParametersFromFlow = async (
 						if (
 							!isIdentifierString(key) ||
 							!isFiniteNumber(defaultValue)
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						let value = defaultValue
 						if (key in params) {
 							const inputValue = params[key]
@@ -100,8 +97,7 @@ export const extractCommonParametersFromFlow = async (
 						if (
 							!isIdentifierString(key) ||
 							!isNonEmptyString(defaultValue)
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						let value = defaultValue
 						if (key in params) {
 							const inputValue = params[key]

@@ -16,12 +16,10 @@ export function Accounts() {
 	const accountItems: AccountItem[] = []
 
 	if (Array.isArray(data)) {
-		for (const item of data)
-			if (isAccountKey(item))
-				accountItems.push({
-					...item,
-					href: webapp.admin.accountDetails(item).pathname
-				})
+		for (const item of data) if (isAccountKey(item)) accountItems.push({
+			...item,
+			href: webapp.admin.accountDetails(item).pathname
+		})
 	}
 
 	useEffect(() => {

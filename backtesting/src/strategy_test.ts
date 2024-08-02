@@ -5,12 +5,11 @@ import { nullStrategyKey } from "@workspace/models"
 
 import { BacktestingStrategy } from "./strategy.js"
 
-export const emptyStrategy = () =>
-	new BacktestingStrategy({
-		flow: { nodes: [], edges: [] },
-		strategyKey: nullStrategyKey,
-		strategyName: "empty strategy"
-	})
+export const emptyStrategy = () => new BacktestingStrategy({
+	flow: { nodes: [], edges: [] },
+	strategyKey: nullStrategyKey,
+	strategyName: "empty strategy"
+})
 
 describe("BacktestingStrategy", () => {
 	test("constructor", () => {

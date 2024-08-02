@@ -102,18 +102,16 @@ const executeTrailingStop = async (
 		}
 	]
 
-	if (hasInitialStopPrice)
-		nodes.push({
-			id: "initialStopPrice",
-			text: JSON.stringify(initialStopPrice),
-			outs: [{ id: "o" }]
-		})
-	if (hasResetTrailing)
-		nodes.push({
-			id: "resetTrailing",
-			text: JSON.stringify(resetTrailing),
-			outs: [{ id: "o" }]
-		})
+	if (hasInitialStopPrice) nodes.push({
+		id: "initialStopPrice",
+		text: JSON.stringify(initialStopPrice),
+		outs: [{ id: "o" }]
+	})
+	if (hasResetTrailing) nodes.push({
+		id: "resetTrailing",
+		text: JSON.stringify(resetTrailing),
+		outs: [{ id: "o" }]
+	})
 
 	const edges: StrategyFlowGraphEdge[] = [
 		{
@@ -134,18 +132,16 @@ const executeTrailingStop = async (
 		}
 	]
 
-	if (hasInitialStopPrice)
-		edges.push({
-			id: "e5",
-			from: ["initialStopPrice", "o"],
-			to: [nodeId, "i5"]
-		})
-	if (hasResetTrailing)
-		edges.push({
-			id: "e6",
-			from: ["resetTrailing", "o"],
-			to: [nodeId, "i6"]
-		})
+	if (hasInitialStopPrice) edges.push({
+		id: "e5",
+		from: ["initialStopPrice", "o"],
+		to: [nodeId, "i5"]
+	})
+	if (hasResetTrailing) edges.push({
+		id: "e6",
+		from: ["resetTrailing", "o"],
+		to: [nodeId, "i6"]
+	})
 
 	const executor = new DflowCommonExecutor({ graph: { nodes, edges } })
 	const {

@@ -44,8 +44,7 @@ export type SubscriptionPurchaseKey = AccountKey &
 
 export const isSubscriptionPurchaseKey =
 	objectTypeGuard<SubscriptionPurchaseKey>(
-		({ day, accountId, purchaseId }) =>
-			isItemId(accountId) && isDay(day) && isItemId(purchaseId)
+		({ day, accountId, purchaseId }) => isItemId(accountId) && isDay(day) && isItemId(purchaseId)
 	)
 
 export function newMonthlySubscriptionPurchase({

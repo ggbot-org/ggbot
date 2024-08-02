@@ -36,20 +36,17 @@ export class RepositoryPackageJson implements FileProvider {
 					).map(
 						WorkspacePackageJson.workspacePathnameFromInternalDependency
 					)
-				for (const dependency of dependencies)
-					seenDependency.add(dependency)
+				for (const dependency of dependencies) seenDependency.add(dependency)
 
 				// If workspace is a dependency of some other workspace in the list, add it before other list elements.
-				if (seenDependency.has(workspacePathname))
-					return [...dependencies, workspacePathname, ...list]
+				if (seenDependency.has(workspacePathname)) return [...dependencies, workspacePathname, ...list]
 				// Otherwise append it to the list.
 				return [...list, ...dependencies, workspacePathname]
 			}, [])
 			.filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
 
 		return [...new Set(workspacePathnamesSortedByDependencies)]
-			.map((workspacePathname) =>
-				RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
+			.map((workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
 			)
 			.join(" && ")
 	}
@@ -79,14 +76,12 @@ export class RepositoryPackageJson implements FileProvider {
 		workspaces: Repository["workspaces"]
 	) {
 		return internalDependenciesChain
-			.map((internalDependency) =>
-				WorkspacePackageJson.workspacePathnameFromInternalDependency(
-					internalDependency
-				)
+			.map((internalDependency) => WorkspacePackageJson.workspacePathnameFromInternalDependency(
+				internalDependency
+			)
 			)
 			.filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
-			.map((workspacePathname) =>
-				RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
+			.map((workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
 			)
 			.join(" && ")
 	}

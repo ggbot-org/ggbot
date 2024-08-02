@@ -47,8 +47,7 @@ export class BinanceConnector {
 				? `["${value.join('","')}"]`
 				: value
 			url.searchParams.append(key, String(valueString))
-			if (key !== "signature")
-				debugUrl.searchParams.append(key, String(valueString))
+			if (key !== "signature") debugUrl.searchParams.append(key, String(valueString))
 		}
 
 		const response = await fetch(url, fetchOptions)

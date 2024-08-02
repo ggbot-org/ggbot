@@ -15,8 +15,7 @@ test("Relative Strength Index", () => {
 		RelativeStrengthIndexInput,
 		ReturnType<RelativeStrengthIndex>
 	>(
-		({ values, period }: RelativeStrengthIndexInput) =>
-			relativeStrengthIndex(values, period),
+		({ values, period }: RelativeStrengthIndexInput) => relativeStrengthIndex(values, period),
 
 		[
 			{
@@ -29,14 +28,35 @@ test("Relative Strength Index", () => {
 			{
 				input: {
 					values: [
-						81.59, 81.06, 82.87, 83.0, 83.61, 83.15, 82.84, 83.99,
-						84.55, 84.36, 85.53, 86.54, 86.89, 87.77, 87.29
+						81.59,
+						81.06,
+						82.87,
+						83.0,
+						83.61,
+						83.15,
+						82.84,
+						83.99,
+						84.55,
+						84.36,
+						85.53,
+						86.54,
+						86.89,
+						87.77,
+						87.29
 					],
 					period: 5
 				},
 				output: [
-					72.033898, 64.926798, 75.936238, 79.796498, 74.713414,
-					83.03286, 87.478287, 88.754544, 91.482854, 78.497831
+					72.033898,
+					64.926798,
+					75.936238,
+					79.796498,
+					74.713414,
+					83.03286,
+					87.478287,
+					88.754544,
+					91.482854,
+					78.497831
 				]
 			}
 		]

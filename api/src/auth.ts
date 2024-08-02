@@ -73,12 +73,10 @@ export type AuthClientActionOutput = {
 }
 
 export const isAuthClientActionInput = {
-	Enter: objectTypeGuard<AuthClientInput["Enter"]>(({ email }) =>
-		isEmailAddress(email)
+	Enter: objectTypeGuard<AuthClientInput["Enter"]>(({ email }) => isEmailAddress(email)
 	),
 	Verify: objectTypeGuard<AuthClientInput["Verify"]>(
-		({ code, email }) =>
-			isOneTimePasswordCode(code) && isEmailAddress(email)
+		({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)
 	)
 }
 
@@ -87,8 +85,7 @@ type ApiAuthEnterRequestData = {
 }
 
 export const isApiAuthEnterRequestData =
-	objectTypeGuard<ApiAuthEnterRequestData>(({ email }) =>
-		isEmailAddress(email)
+	objectTypeGuard<ApiAuthEnterRequestData>(({ email }) => isEmailAddress(email)
 	)
 
 type ApiAuthEnterResponseData = {
@@ -106,8 +103,7 @@ type ApiAuthVerifyRequestData = Pick<OneTimePassword, "code"> & {
 
 export const isApiAuthVerifyRequestData =
 	objectTypeGuard<ApiAuthVerifyRequestData>(
-		({ code, email }) =>
-			isOneTimePasswordCode(code) && isEmailAddress(email)
+		({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)
 	)
 
 type ApiAuthVerifyResponseData = {
@@ -115,6 +111,5 @@ type ApiAuthVerifyResponseData = {
 }
 
 export const isApiAuthVerifyResponseData =
-	objectTypeGuard<ApiAuthVerifyResponseData>(({ token }) =>
-		token === undefined ? true : typeof token === "string"
+	objectTypeGuard<ApiAuthVerifyResponseData>(({ token }) => token === undefined ? true : typeof token === "string"
 	)

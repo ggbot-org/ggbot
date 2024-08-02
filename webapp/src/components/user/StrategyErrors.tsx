@@ -24,12 +24,11 @@ export function StrategyErrors() {
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
-		if (READ.canRun)
-			READ.request({
-				end,
-				start,
-				...strategyKey
-			})
+		if (READ.canRun) READ.request({
+			end,
+			start,
+			...strategyKey
+		})
 	}, [READ, end, start, strategyKey])
 
 	useEffect(() => {

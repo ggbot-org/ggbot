@@ -36,8 +36,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		info(event)
 
-		if (event.httpMethod === "OPTIONS")
-			return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod !== apiActionMethod) {
 			debug("Method not allowed")
@@ -74,11 +73,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			BadGatewayError,
 			GatewayTimeoutError,
 			UnauthorizedError
-		])
-			if (error instanceof ErrorClass) {
-				debug(error)
-				return errorResponse(ErrorClass.statusCode)
-			}
+		]) if (error instanceof ErrorClass) {
+			debug(error)
+			return errorResponse(ErrorClass.statusCode)
+		}
 
 		if (error instanceof ErrorExceededQuota) return ERROR(error.toJSON())
 

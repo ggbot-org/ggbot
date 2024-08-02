@@ -18,8 +18,7 @@ export type Account = Item &
 	}>
 
 export const isAccount = objectTypeGuard<Account>(
-	({ id, email, role, ...creationTime }) =>
-		isItemId(id) &&
+	({ id, email, role, ...creationTime }) => isItemId(id) &&
 		isEmailAddress(email) &&
 		isCreationTime(creationTime) &&
 		(role === undefined ? true : isAccountRole(role))
@@ -39,8 +38,7 @@ export type AccountKey = ItemKey<{
 	accountId: Account["id"]
 }>
 
-export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) =>
-	isItemId(accountId)
+export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) => isItemId(accountId)
 )
 
 export const nullAccountKey: AccountKey = {

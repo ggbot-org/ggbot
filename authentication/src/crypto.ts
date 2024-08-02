@@ -41,8 +41,7 @@ export async function decrypt(
 	password: string
 ): Promise<string> {
 	// Convert base64 string to Uint8Array.
-	const inputVector = Uint8Array.from(atob(encryptedData), (value) =>
-		value.charCodeAt(0)
+	const inputVector = Uint8Array.from(atob(encryptedData), (value) => value.charCodeAt(0)
 	)
 	const saltVector = inputVector.slice(0, saltVectorLength)
 	const initializationVector = inputVector.slice(

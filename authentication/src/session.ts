@@ -38,7 +38,6 @@ export async function readSessionFromAuthorizationHeader(
 	if (!isClientSession(session)) throw new UnauthorizedError()
 	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays`
 	// is not in the past yet.
-	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today())
-		throw new UnauthorizedError()
+	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today()) throw new UnauthorizedError()
 	return session
 }

@@ -16,11 +16,9 @@ export function SchedulingsStatusBadges({ schedulings }: Props) {
 
 	const schedulingSummary = getSchedulingSummary(schedulings)
 
-	if (schedulingsAreInactive(schedulings))
-		return <SchedulingStatus status="inactive" />
+	if (schedulingsAreInactive(schedulings)) return <SchedulingStatus status="inactive" />
 
-	if (schedulings.length === 1)
-		return <SchedulingStatus status={schedulings[0].status} />
+	if (schedulings.length === 1) return <SchedulingStatus status={schedulings[0].status} />
 
 	return (
 		<Field isGrouped="multiline">

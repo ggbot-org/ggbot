@@ -26,25 +26,22 @@ export function I18nProvider({ children }: PropsWithChildren) {
 				| { type: "READ_INTL_MESSAGES_FAILURE" }
 			>
 		>((state, action) => {
-			if (action.type === "READ_INTL_MESSAGES_REQUEST")
-				return {
-					...state,
-					readIntlMessagesIsPending: true
-				}
+			if (action.type === "READ_INTL_MESSAGES_REQUEST") return {
+				...state,
+				readIntlMessagesIsPending: true
+			}
 
-			if (action.type === "READ_INTL_MESSAGES_SUCCESS")
-				return {
-					...state,
-					intlMessagesLoaded: true,
-					readIntlMessagesIsPending: false
-				}
+			if (action.type === "READ_INTL_MESSAGES_SUCCESS") return {
+				...state,
+				intlMessagesLoaded: true,
+				readIntlMessagesIsPending: false
+			}
 
-			if (action.type === "READ_INTL_MESSAGES_FAILURE")
-				return {
-					...state,
-					intlMessagesLoaded: false,
-					readIntlMessagesIsPending: false
-				}
+			if (action.type === "READ_INTL_MESSAGES_FAILURE") return {
+				...state,
+				intlMessagesLoaded: false,
+				readIntlMessagesIsPending: false
+			}
 
 			return state
 		}, {})

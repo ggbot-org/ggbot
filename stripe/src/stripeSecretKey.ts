@@ -32,6 +32,5 @@ export const checkStripeSecretKey = (
 	if (stripeMode === "live" && deployStage !== "main") isInconsistent = true
 	if (stripeMode === "test" && deployStage === "main") isInconsistent = true
 
-	if (isInconsistent)
-		throw new ErrorStripeModeInconsistency(deployStage, stripeMode)
+	if (isInconsistent) throw new ErrorStripeModeInconsistency(deployStage, stripeMode)
 }

@@ -25,14 +25,13 @@ export type Strategy = Item &
 	}
 
 export const isStrategy = objectTypeGuard<Strategy>(
-	({ id, kind, accountId, name, frequency }) =>
-		isItemId(id) &&
+	({ id, kind, accountId, name, frequency }) => isItemId(id) &&
 		isStrategyKind(kind) &&
 		isAccountKey({ accountId }) &&
 		isName(name) &&
 		frequency === undefined
-			? true
-			: isFrequency(frequency)
+		? true
+		: isFrequency(frequency)
 )
 
 export function newStrategy({ name, ...rest }: NewItem<Strategy>): Strategy {
@@ -50,8 +49,7 @@ export type StrategyKey = ItemKey<{
 }>
 
 export const isStrategyKey = objectTypeGuard<StrategyKey>(
-	({ strategyId, strategyKind }) =>
-		isItemId(strategyId) && isStrategyKind(strategyKind)
+	({ strategyId, strategyKind }) => isItemId(strategyId) && isStrategyKind(strategyKind)
 )
 
 export const nullStrategyKey: StrategyKey = {

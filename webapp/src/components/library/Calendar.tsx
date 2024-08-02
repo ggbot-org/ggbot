@@ -243,8 +243,8 @@ export function Calendar({
 					/* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
 					dateCells.length === 35
 						? [0, 1, 2, 3, 4, 5, 6].map((i) => (
-								<div key={i}>&nbsp;</div>
-							))
+							<div key={i}>&nbsp;</div>
+						))
 						: null
 				}
 			</div>

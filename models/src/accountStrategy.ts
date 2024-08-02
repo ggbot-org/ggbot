@@ -12,8 +12,7 @@ import {
 export type AccountStrategyKey = AccountKey & StrategyKey
 
 export const isAccountStrategyKey = objectTypeGuard<AccountStrategyKey>(
-	({ accountId, ...strategyKey }) =>
-		isAccountKey({ accountId }) && isStrategyKey(strategyKey)
+	({ accountId, ...strategyKey }) => isAccountKey({ accountId }) && isStrategyKey(strategyKey)
 )
 
 export type AccountStrategy = StrategyKey &
@@ -22,8 +21,7 @@ export type AccountStrategy = StrategyKey &
 	}
 
 export const isAccountStrategy = objectTypeGuard<AccountStrategy>(
-	({ name, schedulings, ...strategyKey }) =>
-		isStrategyKey(strategyKey) &&
+	({ name, schedulings, ...strategyKey }) => isStrategyKey(strategyKey) &&
 		isName(name) &&
 		isStrategySchedulings(schedulings)
 )

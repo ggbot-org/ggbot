@@ -181,7 +181,7 @@ export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 			end,
 			...strategyKey
 		}: UserClientActionInput["ReadStrategyErrors"]) => {
-			;(async () => {
+			(async () => {
 				const cachedData: UserClientActionOutput["ReadStrategyErrors"] =
 					[]
 				let date = dayToDate(start)
@@ -203,14 +203,13 @@ export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 					// Never cache current day.
 					const maxDay = today()
 					const start = dateToDay(date)
-					if (start < maxDay)
-						setToBeCachedDayInterval({
-							start,
-							end:
+					if (start < maxDay) setToBeCachedDayInterval({
+						start,
+						end:
 								end === today()
 									? getDay(end).minus(1).days
 									: end
-						})
+					})
 					// Fetch missing data.
 					await request({
 						start,
@@ -241,8 +240,7 @@ export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 			const day = timeToDay(item.whenCreated)
 			toBeCachedDailyResults.get(day)?.push(item)
 		}
-		for (const [day, data] of toBeCachedDailyResults)
-			errorsIDB.writeDailyErrors(strategyKey, day, data)
+		for (const [day, data] of toBeCachedDailyResults) errorsIDB.writeDailyErrors(strategyKey, day, data)
 	}, [requestData, strategyKey, toBeCachedDayInterval])
 	return {
 		data,
@@ -273,7 +271,7 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 			end,
 			...strategyKey
 		}: UserClientActionInput["ReadStrategyOrders"]) => {
-			;(async () => {
+			(async () => {
 				const cachedData: UserClientActionOutput["ReadStrategyOrders"] =
 					[]
 				let date = dayToDate(start)
@@ -295,14 +293,13 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 					// Never cache current day.
 					const maxDay = today()
 					const start = dateToDay(date)
-					if (start < maxDay)
-						setToBeCachedDayInterval({
-							start,
-							end:
+					if (start < maxDay) setToBeCachedDayInterval({
+						start,
+						end:
 								end === today()
 									? getDay(end).minus(1).days
 									: end
-						})
+					})
 					// Fetch missing data.
 					await request({
 						start,
@@ -333,8 +330,7 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 			const day = timeToDay(item.whenCreated)
 			toBeCachedDailyResults.get(day)?.push(item)
 		}
-		for (const [day, data] of toBeCachedDailyResults)
-			ordersIDB.writeDailyOrders(strategyKey, day, data)
+		for (const [day, data] of toBeCachedDailyResults) ordersIDB.writeDailyOrders(strategyKey, day, data)
 	}, [requestData, strategyKey, toBeCachedDayInterval])
 	return {
 		data,

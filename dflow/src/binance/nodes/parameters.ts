@@ -13,8 +13,7 @@ export class SymbolParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
-			return this.clearOutputs()
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue)) return this.clearOutputs()
 		let value = defaultValue
 		const inputValue = params[key]
 		if (isNonEmptyString(inputValue)) value = inputValue
@@ -30,8 +29,7 @@ export class IntervalParameter extends DflowNode {
 		const { params } = this.host.context as Context
 		const key = this.input(0).data
 		const defaultValue = this.input(1).data
-		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue))
-			return this.clearOutputs()
+		if (!isNonEmptyString(key) || !isNonEmptyString(defaultValue)) return this.clearOutputs()
 		let value = defaultValue
 		const inputValue = params[key]
 		if (isNonEmptyString(inputValue)) value = inputValue

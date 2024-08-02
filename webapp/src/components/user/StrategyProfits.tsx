@@ -26,12 +26,11 @@ export function StrategyProfits({ strategyKey }: Props) {
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
-		if (READ.canRun)
-			READ.request({
-				end,
-				start,
-				...strategyKey
-			})
+		if (READ.canRun) READ.request({
+			end,
+			start,
+			...strategyKey
+		})
 	}, [READ, end, start, strategyKey])
 
 	useEffect(() => {

@@ -171,13 +171,12 @@ export const isUserClientActionInput = {
 		UserClientActionInput["CreateBinanceApiConfig"]
 	>((binanceApiConfig) => isBinanceApiConfig(binanceApiConfig)),
 	CreateStrategy: objectTypeGuard<UserClientActionInput["CreateStrategy"]>(
-		(arg) =>
-			isStrategy({
-				...arg,
-				accountId: nullId,
-				id: nullId,
-				whenCreated: 1
-			})
+		(arg) => isStrategy({
+			...arg,
+			accountId: nullId,
+			id: nullId,
+			whenCreated: 1
+		})
 	),
 	DeleteStrategy: isStrategyKey,
 	ReadBalances:
@@ -185,14 +184,12 @@ export const isUserClientActionInput = {
 	ReadStrategyErrors: objectTypeGuard<
 		UserClientActionInput["ReadStrategyErrors"]
 	>(
-		({ start, end, ...strategyKey }) =>
-			isDayInterval({ start, end }) && isStrategyKey(strategyKey)
+		({ start, end, ...strategyKey }) => isDayInterval({ start, end }) && isStrategyKey(strategyKey)
 	),
 	ReadStrategyOrders: objectTypeGuard<
 		UserClientActionInput["ReadStrategyOrders"]
 	>(
-		({ start, end, ...strategyKey }) =>
-			isDayInterval({ start, end }) && isStrategyKey(strategyKey)
+		({ start, end, ...strategyKey }) => isDayInterval({ start, end }) && isStrategyKey(strategyKey)
 	),
 	RenameStrategy: objectTypeGuard<UserClientActionInput["RenameStrategy"]>(
 		({ name, ...strategyKey }) => isName(name) && isStrategyKey(strategyKey)
@@ -200,13 +197,11 @@ export const isUserClientActionInput = {
 	WriteAccountStrategiesItemSchedulings: objectTypeGuard<
 		UserClientActionInput["WriteAccountStrategiesItemSchedulings"]
 	>(
-		({ schedulings, ...strategyKey }) =>
-			isStrategyKey(strategyKey) && isStrategySchedulings(schedulings)
+		({ schedulings, ...strategyKey }) => isStrategyKey(strategyKey) && isStrategySchedulings(schedulings)
 	),
 	WriteStrategyFlow: objectTypeGuard<
 		UserClientActionInput["WriteStrategyFlow"]
 	>(
-		({ view, ...strategyKey }) =>
-			isStrategyFlowView(view) && isStrategyKey(strategyKey)
+		({ view, ...strategyKey }) => isStrategyFlowView(view) && isStrategyKey(strategyKey)
 	)
 }

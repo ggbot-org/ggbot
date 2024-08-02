@@ -50,8 +50,7 @@ export async function extractBinanceParametersFromFlow(
 						if (
 							!isNonEmptyString(key) ||
 							!isNonEmptyString(defaultValue)
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						let value = defaultValue
 						const inputValue = params[key]
 						if (isNonEmptyString(inputValue)) value = inputValue
@@ -76,8 +75,7 @@ export async function extractBinanceParametersFromFlow(
 						if (
 							!isNonEmptyString(key) ||
 							!isNonEmptyString(defaultValue)
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						let value = defaultValue
 						const inputValue = params[key]
 						if (isNonEmptyString(inputValue)) value = inputValue
@@ -129,8 +127,7 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 						if (
 							typeof symbol !== "string" ||
 							!isDflowBinanceKlineInterval(interval)
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						// Additional code
 						symbolsAndIntervals.push({
 							symbol,
@@ -149,11 +146,9 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 	return symbolsAndIntervals
 		.filter(
 			// Remove duplicates.
-			({ symbol, interval }, index, array) =>
-				index ===
+			({ symbol, interval }, index, array) => index ===
 				array.findIndex(
-					(element) =>
-						element.symbol === symbol &&
+					(element) => element.symbol === symbol &&
 						element.interval === interval
 				)
 		)
@@ -209,8 +204,7 @@ export async function extractsBinanceSymbolsFromFlow(
 							(quantity === undefined &&
 								quoteOrderQty === undefined) ||
 							!execute
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						// Additional code
 						symbolsSet.add(symbol)
 					}
@@ -234,8 +228,7 @@ export async function extractsBinanceSymbolsFromFlow(
 							(quantity === undefined &&
 								quoteOrderQty === undefined) ||
 							!execute
-						)
-							return this.clearOutputs()
+						) return this.clearOutputs()
 						// Additional code
 						symbolsSet.add(symbol)
 					}
@@ -247,8 +240,7 @@ export async function extractsBinanceSymbolsFromFlow(
 					run() {
 						// 👇 Sync with TickerPrice run()
 						const symbol = this.input(0).data
-						if (typeof symbol !== "string")
-							return this.clearOutputs()
+						if (typeof symbol !== "string") return this.clearOutputs()
 						// Additional code
 						symbolsSet.add(symbol)
 					}

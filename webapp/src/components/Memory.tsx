@@ -9,9 +9,7 @@ type Props = { memory: DflowCommonContext["memory"] | undefined }
 export function Memory({ memory }: Props) {
 	const items: MemoryItemProps[] = []
 
-	if (memory)
-		for (const [key, value] of Object.entries(memory))
-			items.push({ name: key, value })
+	if (memory) for (const [key, value] of Object.entries(memory)) items.push({ name: key, value })
 
 	return (
 		<Div bulma="box">

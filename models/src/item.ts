@@ -19,8 +19,7 @@ export type Item = ItemKey<{
 }>
 
 export function newId(): ItemId {
-	return nullId.replace(/0/g, () =>
-		(Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)
+	return nullId.replace(/0/g, () => (Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)
 	)
 }
 

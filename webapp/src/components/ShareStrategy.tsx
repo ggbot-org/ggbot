@@ -23,12 +23,12 @@ export function ShareStrategy({ strategyKey, strategyName }: Props) {
 					const shareData:
 						| Pick<ShareData, "title" | "text" | "url">
 						| undefined = strategyKey
-						? {
+							? {
 								title: PROJECT_SHORT_NAME,
 								url: webapp.strategy(strategyKey).href,
 								text: strategyName
 							}
-						: undefined
+							: undefined
 					if (!shareData) return
 					if (
 						"share" in navigator &&

@@ -285,12 +285,11 @@ export class UserDatabase implements UserDatabaseAction {
 			// Use first frequency as `suggestedFrequency`.
 			suggestedFrequency = schedulings[0]?.frequency
 		}
-		if (suggestedFrequency)
-			await this.upsertStrategyFrequency({
-				strategyId,
-				strategyKind,
-				frequency: suggestedFrequency
-			})
+		if (suggestedFrequency) await this.upsertStrategyFrequency({
+			strategyId,
+			strategyKind,
+			frequency: suggestedFrequency
+		})
 		return this.documentProvider.setItem(
 			pathname.accountStrategies(this.accountKey),
 			data
@@ -313,13 +312,12 @@ export class UserDatabase implements UserDatabaseAction {
 	async deleteStrategyFlow(strategyKey: StrategyKey) {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId(strategyKey)
-		if (accountId !== ownerId)
-			throw new ErrorPermissionOnStrategyItem({
-				type: "StrategyFlow",
-				action: "delete",
-				accountId,
-				...strategyKey
-			})
+		if (accountId !== ownerId) throw new ErrorPermissionOnStrategyItem({
+			type: "StrategyFlow",
+			action: "delete",
+			accountId,
+			...strategyKey
+		})
 		await this.documentProvider.removeItem(
 			pathname.strategyFlow(strategyKey)
 		)
@@ -360,8 +358,7 @@ export class UserDatabase implements UserDatabaseAction {
 		const account = await this.documentProvider.getItem<Account>(
 			pathname.account({ accountId })
 		)
-		if (!account)
-			throw new ErrorAccountItemNotFound({ type: "Account", accountId })
+		if (!account) throw new ErrorAccountItemNotFound({ type: "Account", accountId })
 		return account
 	}
 
@@ -375,11 +372,10 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 	async readStrategy(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategy(strategyKey)
-		if (!data)
-			throw new ErrorStrategyItemNotFound({
-				type: "Strategy",
-				...strategyKey
-			})
+		if (!data) throw new ErrorStrategyItemNotFound({
+			type: "Strategy",
+			...strategyKey
+		})
 		return data
 	}
 
@@ -415,11 +411,10 @@ export class UserDatabase implements UserDatabaseAction {
 
 	async readStrategyFlow(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategyFlow(strategyKey)
-		if (!data)
-			throw new ErrorStrategyItemNotFound({
-				type: "StrategyFlow",
-				...strategyKey
-			})
+		if (!data) throw new ErrorStrategyItemNotFound({
+			type: "StrategyFlow",
+			...strategyKey
+		})
 		return data
 	}
 
@@ -442,14 +437,13 @@ export class UserDatabase implements UserDatabaseAction {
 	async writeStrategy(strategy: Strategy) {
 		const { accountId } = this.accountKey
 		const { id: strategyId, kind: strategyKind } = strategy
-		if (accountId !== strategy.accountId)
-			throw new ErrorPermissionOnStrategyItem({
-				type: "Strategy",
-				action: "write",
-				accountId,
-				strategyId,
-				strategyKind
-			})
+		if (accountId !== strategy.accountId) throw new ErrorPermissionOnStrategyItem({
+			type: "Strategy",
+			action: "write",
+			accountId,
+			strategyId,
+			strategyKind
+		})
 		return this.documentProvider.setItem(
 			pathname.strategy({ strategyId, strategyKind }),
 			strategy
@@ -466,14 +460,13 @@ export class UserDatabase implements UserDatabaseAction {
 			strategyId,
 			strategyKind
 		})
-		if (accountId !== ownerId)
-			throw new ErrorPermissionOnStrategyItem({
-				type: "StrategyFlow",
-				action: "write",
-				accountId,
-				strategyId,
-				strategyKind
-			})
+		if (accountId !== ownerId) throw new ErrorPermissionOnStrategyItem({
+			type: "StrategyFlow",
+			action: "write",
+			accountId,
+			strategyId,
+			strategyKind
+		})
 		return this.documentProvider.setItem(
 			pathname.strategyFlow({ strategyId, strategyKind }),
 			data

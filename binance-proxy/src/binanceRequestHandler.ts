@@ -22,11 +22,10 @@ export const binanceRequestHandler = async (
 
 	const binanceDatabase = new BinanceDatabase({ accountId }, documentProvider)
 	const binanceApiConfig = await binanceDatabase.ReadBinanceApiConfig()
-	if (!binanceApiConfig)
-		throw new ErrorAccountItemNotFound({
-			type: "BinanceApiConfig",
-			accountId
-		})
+	if (!binanceApiConfig) throw new ErrorAccountItemNotFound({
+		type: "BinanceApiConfig",
+		accountId
+	})
 
 	const { apiKey, apiSecret } = binanceApiConfig
 	const service = new BinanceService(apiKey, apiSecret)

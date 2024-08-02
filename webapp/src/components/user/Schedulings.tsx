@@ -73,8 +73,8 @@ export function Schedulings() {
 				(accountStrategy) => accountStrategy.strategyId === strategyId
 			)
 			.reduce<
-				StrategyScheduling[]
-			>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
+			StrategyScheduling[]
+		>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
 	}, [currentAccountStrategies, strategyId])
 
 	const someSchedulingChanged = useMemo(() => {
@@ -98,25 +98,19 @@ export function Schedulings() {
 						currentScheduling.frequency.every ||
 					schedulingItem.frequency.interval !==
 						currentScheduling.frequency.interval)
-			)
-				return true
+			) return true
 			// Compare startegy params.
-			if (currentScheduling.params === undefined && schedulingItem.params)
-				return true
-			if (currentScheduling.params && schedulingItem.params === undefined)
-				return true
+			if (currentScheduling.params === undefined && schedulingItem.params) return true
+			if (currentScheduling.params && schedulingItem.params === undefined) return true
 			if (currentScheduling.params && schedulingItem.params) {
 				if (
 					Object.keys(currentScheduling.params).length !==
 					Object.keys(schedulingItem.params).length
-				)
-					return true
-				for (const key in currentScheduling.params)
-					if (
-						currentScheduling.params[key] !==
+				) return true
+				for (const key in currentScheduling.params) if (
+					currentScheduling.params[key] !==
 						schedulingItem.params[key]
-					)
-						return true
+				) return true
 			}
 		}
 		return false
@@ -135,39 +129,36 @@ export function Schedulings() {
 	const setSchedulingItemFrequency = useCallback<
 		(id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
 	>(
-		(id) => (frequency) => {
-			setSchedulingItems((schedulingItems) =>
-				schedulingItems.map((schedulingItem) => {
+			(id) => (frequency) => {
+				setSchedulingItems((schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					return { ...schedulingItem, frequency }
 				})
+				)
+			},
+			[]
 			)
-		},
-		[]
-	)
 
 	const setSchedulingItemStatus = useCallback<
 		(id: StrategyScheduling["id"]) => SchedulingItemProps["setStatus"]
 	>(
-		(id) => (status) => {
-			setSchedulingItems((schedulingItems) =>
-				schedulingItems.map((schedulingItem) => {
+			(id) => (status) => {
+				setSchedulingItems((schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					return { ...schedulingItem, status }
 				})
+				)
+			},
+			[]
 			)
-		},
-		[]
-	)
 
 	const setSchedulingParam = useCallback<
 		(
-			id: StrategyScheduling["id"]
+		id: StrategyScheduling["id"]
 		) => SchedulingParameterItemProps["setParam"]
 	>(
-		(id) => (key, value) => {
-			setSchedulingItems((schedulingItems) =>
-				schedulingItems.map((schedulingItem) => {
+			(id) => (key, value) => {
+				setSchedulingItems((schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					const params = Object.assign({}, schedulingItem.params)
 					if (value === undefined) {
@@ -177,25 +168,24 @@ export function Schedulings() {
 					}
 					return { ...schedulingItem, params }
 				})
+				)
+			},
+			[]
 			)
-		},
-		[]
-	)
 
 	const removeSchedulingItem = useCallback<
 		(
-			id: StrategyScheduling["id"]
+		id: StrategyScheduling["id"]
 		) => SchedulingItemProps["removeScheduling"]
 	>(
-		(id) => () => {
-			setSchedulingItems((schedulingItems) =>
-				schedulingItems.filter(
+			(id) => () => {
+				setSchedulingItems((schedulingItems) => schedulingItems.filter(
 					(schedulingItem) => schedulingItem.id !== id
 				)
+				)
+			},
+			[]
 			)
-		},
-		[]
-	)
 
 	const addSchedulingItem = useCallback(() => {
 		if (!hasActiveSubscription) {
@@ -204,13 +194,12 @@ export function Schedulings() {
 			)
 			return
 		}
-		setSchedulingItems((schedulingItems) =>
-			schedulingItems.concat(
-				newStrategyScheduling({
-					frequency: { every: 1, interval: "1h" },
-					status: "inactive"
-				})
-			)
+		setSchedulingItems((schedulingItems) => schedulingItems.concat(
+			newStrategyScheduling({
+				frequency: { every: 1, interval: "1h" },
+				status: "inactive"
+			})
+		)
 		)
 	}, [formatMessage, hasActiveSubscription, toast])
 

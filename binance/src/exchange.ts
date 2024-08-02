@@ -71,24 +71,21 @@ export class BinanceExchange {
 		minNotionalFilter?: BinanceSymbolFilterMinNotional
 	) {
 		if (minNotionalFilter === undefined) return
-		if (type === "MARKET" && minNotionalFilter.applyToMarket !== true)
-			return
-		if (!minNotionalIsValid(minNotionalFilter, quoteOrderQty))
-			throw new ErrorBinanceSymbolFilter({
-				filterType: "MIN_NOTIONAL",
-				detail: `quoteOrderQty=${quoteOrderQty}`
-			})
+		if (type === "MARKET" && minNotionalFilter.applyToMarket !== true) return
+		if (!minNotionalIsValid(minNotionalFilter, quoteOrderQty)) throw new ErrorBinanceSymbolFilter({
+			filterType: "MIN_NOTIONAL",
+			detail: `quoteOrderQty=${quoteOrderQty}`
+		})
 	}
 
 	static throwIfLotSizeFilterIsInvalid(
 		quantity: NonNullable<BinanceNewOrderOptions["quantity"]>,
 		lotSizeFilter?: BinanceSymbolFilterLotSize
 	) {
-		if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity))
-			throw new ErrorBinanceSymbolFilter({
-				filterType: "LOT_SIZE",
-				detail: `quantity=${quantity}`
-			})
+		if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity)) throw new ErrorBinanceSymbolFilter({
+			filterType: "LOT_SIZE",
+			detail: `quantity=${quantity}`
+		})
 	}
 
 	/**
@@ -103,8 +100,7 @@ export class BinanceExchange {
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceNewOrderOptions> {
 		const symbolInfo = await this.symbolInfo(symbol)
-		if (!symbolInfo)
-			throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
+		if (!symbolInfo) throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
 
 		const { filters } = symbolInfo
 
@@ -125,12 +121,9 @@ export class BinanceExchange {
 			() => BinanceNewOrderOptions
 		> = {
 			LIMIT: () => {
-				if (price === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
-				if (quoteOrderQty === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
-				if (timeInForce === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
+				if (price === undefined) throw new ErrorBinanceInvalidOrderOptions()
+				if (quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
+				if (timeInForce === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				BinanceExchange.throwIfMinNotionalFilterIsInvalid(
 					quoteOrderQty,
 					orderType,
@@ -140,16 +133,13 @@ export class BinanceExchange {
 			},
 
 			LIMIT_MAKER: () => {
-				if (quantity === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
-				if (price === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
+				if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions()
+				if (price === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				return orderOptions
 			},
 
 			MARKET: () => {
-				if (quantity === undefined && quoteOrderQty === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
+				if (quantity === undefined && quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				if (quantity) {
 					BinanceExchange.throwIfLotSizeFilterIsInvalid(
 						quantity,
@@ -168,10 +158,8 @@ export class BinanceExchange {
 			},
 
 			STOP_LOSS: () => {
-				if (quantity === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
-				if (stopPrice === undefined && trailingDelta === undefined)
-					throw new ErrorBinanceInvalidOrderOptions()
+				if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions()
+				if (stopPrice === undefined && trailingDelta === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				return orderOptions
 			},
 
@@ -181,8 +169,7 @@ export class BinanceExchange {
 					quantity === undefined ||
 					price === undefined ||
 					(stopPrice === undefined && trailingDelta === undefined)
-				)
-					throw new ErrorBinanceInvalidOrderOptions()
+				) throw new ErrorBinanceInvalidOrderOptions()
 				return orderOptions
 			},
 
@@ -190,8 +177,7 @@ export class BinanceExchange {
 				if (
 					quantity === undefined ||
 					(stopPrice === undefined && trailingDelta === undefined)
-				)
-					throw new ErrorBinanceInvalidOrderOptions()
+				) throw new ErrorBinanceInvalidOrderOptions()
 				return orderOptions
 			},
 
@@ -201,8 +187,7 @@ export class BinanceExchange {
 					quantity === undefined ||
 					price === undefined ||
 					(stopPrice === undefined && trailingDelta === undefined)
-				)
-					throw new ErrorBinanceInvalidOrderOptions()
+				) throw new ErrorBinanceInvalidOrderOptions()
 				return orderOptions
 			}
 		}
@@ -268,10 +253,8 @@ export class BinanceExchange {
 		let someKlineNotFoundInCache = false
 		const { limit } = optionalParameters
 		let { startTime, endTime } = optionalParameters
-		if (limit && startTime && !endTime)
-			endTime = getBinanceIntervalTime[interval](startTime).plus(limit)
-		if (limit && !startTime && endTime)
-			startTime = getBinanceIntervalTime[interval](endTime).minus(limit)
+		if (limit && startTime && !endTime) endTime = getBinanceIntervalTime[interval](startTime).plus(limit)
+		if (limit && !startTime && endTime) startTime = getBinanceIntervalTime[interval](endTime).minus(limit)
 		if (cache && startTime && endTime) {
 			let time = startTime
 			while (time < endTime) {
@@ -297,9 +280,7 @@ export class BinanceExchange {
 			}
 		)
 		// Cache all klines found.
-		if (cache)
-			for (const kline of klines)
-				await cache.setKline(symbol, interval, kline)
+		if (cache) for (const kline of klines) await cache.setKline(symbol, interval, kline)
 		return klines
 	}
 

@@ -15,7 +15,7 @@ import { DflowBinanceKlineInterval } from "./klineIntervals.js"
 /** Binance API used by dflow binance nodes. */
 export interface DflowBinanceClient
 	extends DflowBinanceClientPublic,
-		DflowBinanceClientPrivate {}
+	DflowBinanceClientPrivate {}
 
 /** Binance Public API used by dflow binance nodes. */
 interface DflowBinanceClientPublic {

@@ -37,22 +37,20 @@ export function ToastProvider({ children }: PropsWithChildren) {
 			| ({ type: "REMOVE_NOTIFICATION" } & Pick<Notification, "id">)
 		>
 	>((notifications, action) => {
-		if (action.type === "ADD_NOTIFICATION")
-			// Add new notification at the beginning of the stack.
-			// They are displayed on bottom, so new notifications will be on top.
-			return [action.notification, ...notifications]
+					// Add new notification at the beginning of the stack.
+					// They are displayed on bottom, so new notifications will be on top.
+					if (action.type === "ADD_NOTIFICATION") return [action.notification, ...notifications]
 
-		if (action.type === "REMOVE_NOTIFICATION")
-			return notifications.filter(({ id }) => id !== action.id)
+					if (action.type === "REMOVE_NOTIFICATION") return notifications.filter(({ id }) => id !== action.id)
 
-		return notifications
-	}, [])
+					return notifications
+				}, [])
 
 	const close = useCallback<(id: Notification["id"]) => () => void>(
 		(id) => () => {
 			dispatch({ type: "REMOVE_NOTIFICATION", id })
 		},
-		[]
+	[]
 	)
 
 	const contextValue = useMemo<ContextValue>(() => {

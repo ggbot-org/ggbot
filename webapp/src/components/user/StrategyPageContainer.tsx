@@ -9,21 +9,19 @@ export function StrategyPageContainer({ children }: PropsWithChildren) {
 	const { strategyKey } = useStrategyKey()
 	const { strategy } = useStrategy(strategyKey)
 
-	if (!strategyKey)
-		return (
-			<Section>
-				<InvalidStrategyKey />
-			</Section>
-		)
+	if (!strategyKey) return (
+		<Section>
+			<InvalidStrategyKey />
+		</Section>
+	)
 
 	if (strategy === undefined) return null
 
-	if (strategy === null)
-		return (
-			<Section>
-				<StrategyNotFound {...strategyKey} />
-			</Section>
-		)
+	if (strategy === null) return (
+		<Section>
+			<StrategyNotFound {...strategyKey} />
+		</Section>
+	)
 
 	return children
 }

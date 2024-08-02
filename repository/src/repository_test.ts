@@ -124,8 +124,7 @@ describe("repository", () => {
 				test("does not have duplicated dependencies", () => {
 					const seenDependency = new Set()
 					for (const dependency of allDependencyKeys) {
-						if (seenDependency.has(dependency))
-							assert.fail(assertionError)
+						if (seenDependency.has(dependency)) assert.fail(assertionError)
 						seenDependency.add(dependency)
 					}
 				})
@@ -134,11 +133,10 @@ describe("repository", () => {
 					for (const [key, value] of [
 						...Array.from(dependencies.entries()),
 						...Array.from(devDependencies.entries())
-					])
-						assert.ok(
-							Number.isInteger(Number(value.split(".")[0])),
-							`${assertionError} dependency ${key} version ${value} is not exact`
-						)
+					]) assert.ok(
+						Number.isInteger(Number(value.split(".")[0])),
+						`${assertionError} dependency ${key} version ${value} is not exact`
+					)
 				})
 			})
 		}
@@ -152,8 +150,7 @@ describe("repository", () => {
 				if (!key.startsWith(WorkspacePackageJson.scope)) continue
 				assert.ok(
 					Array.from(workspaces.values()).find(
-						({ packageJson: { packageName } }) =>
-							packageName === key
+						({ packageJson: { packageName } }) => packageName === key
 					),
 					`compilerOptions.paths key ${key} does not reference existing workspace`
 				)

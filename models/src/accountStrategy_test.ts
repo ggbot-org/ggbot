@@ -73,12 +73,11 @@ describe("accountStrategiesModifier", () => {
 					previousAccountStrategies,
 					accountStrategy,
 					subscriptionPlan
-				}: InsertAccountStrategyInput) =>
-					insertAccountStrategy(
-						previousAccountStrategies,
-						accountStrategy,
-						subscriptionPlan
-					),
+				}: InsertAccountStrategyInput) => insertAccountStrategy(
+					previousAccountStrategies,
+					accountStrategy,
+					subscriptionPlan
+				),
 				[
 					{
 						input: {

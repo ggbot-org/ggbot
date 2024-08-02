@@ -67,8 +67,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 		if (action.type === "ENTER_REQUEST") return { isPending: true }
 		if (action.type === "ENTER_FAILURE") return { hasGenericError: true }
 		if (action.type === "ENTER_TIMEOUT") return { gotTimeout: true }
-		if (action.type === "SET_HAS_INVALID_INPUT")
-			return { hasInvalidInput: true }
+		if (action.type === "SET_HAS_INVALID_INPUT") return { hasInvalidInput: true }
 		return state
 	}, {})
 

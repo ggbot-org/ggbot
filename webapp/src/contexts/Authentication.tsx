@@ -30,13 +30,13 @@ type Action =
 	| { type: "EXIT" }
 	| { type: "SET_EMAIL"; data: Pick<State, "email"> }
 	| {
-			type: "SET_EXIT_CONFIRMATION_IS_ACTIVE"
-			data: Pick<State, "exitConfirmationIsActive">
-	  }
+		type: "SET_EXIT_CONFIRMATION_IS_ACTIVE"
+		data: Pick<State, "exitConfirmationIsActive">
+	}
 	| {
-			type: "SET_TOKEN"
-			data: NonNullable<Pick<State, "token">>
-	  }
+		type: "SET_TOKEN"
+		data: NonNullable<Pick<State, "token">>
+	}
 	| { type: "RESET_TOKEN" }
 
 type ContextValue = {
@@ -64,38 +64,33 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 		Reducer<State, Action>
 	>(
 		(state, action) => {
-			if (action.type === "EXIT")
-				return {
-					email: undefined,
-					exitConfirmationIsActive: false,
-					token: undefined
-				}
+			if (action.type === "EXIT") return {
+				email: undefined,
+				exitConfirmationIsActive: false,
+				token: undefined
+			}
 
-			if (action.type === "RESET_TOKEN")
-				return {
-					...state,
-					// Need to reset `email` together with `token`.
-					email: undefined,
-					token: undefined
-				}
+			if (action.type === "RESET_TOKEN") return {
+				...state,
+				// Need to reset `email` together with `token`.
+				email: undefined,
+				token: undefined
+			}
 
-			if (action.type === "SET_EMAIL")
-				return { ...state, email: action.data.email }
+			if (action.type === "SET_EMAIL") return { ...state, email: action.data.email }
 
-			if (action.type === "SET_EXIT_CONFIRMATION_IS_ACTIVE")
-				return {
-					...state,
-					exitConfirmationIsActive:
+			if (action.type === "SET_EXIT_CONFIRMATION_IS_ACTIVE") return {
+				...state,
+				exitConfirmationIsActive:
 						action.data.exitConfirmationIsActive
-				}
+			}
 
-			if (action.type === "SET_TOKEN")
-				return {
-					...state,
-					// Need also to reset `email` whenever `token` changes.
-					email: undefined,
-					token: action.data.token
-				}
+			if (action.type === "SET_TOKEN") return {
+				...state,
+				// Need also to reset `email` whenever `token` changes.
+				email: undefined,
+				token: action.data.token
+			}
 
 			return state
 		},
@@ -178,11 +173,10 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	// Handle errors.
 	useEffect(() => {
 		if (READ.error) {
-			if (READ.error.name === UnauthorizedError.errorName)
-				if (token) {
-					localWebStorage.authToken.delete()
-					dispatch({ type: "RESET_TOKEN" })
-				}
+			if (READ.error.name === UnauthorizedError.errorName) if (token) {
+				localWebStorage.authToken.delete()
+				dispatch({ type: "RESET_TOKEN" })
+			}
 
 			if (READ.error.name === BadGatewayError.errorName) {
 				// Re-fetch.
@@ -221,16 +215,15 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 		}
 	}, [onLocalStorageChange])
 
-	if (accountInfo === null || token === undefined)
-		return email ? (
-			<AuthVerify
-				email={email}
-				setToken={setToken}
-				resetEmail={resetEmail}
-			/>
-		) : (
-			<AuthEnter setEmail={setEmail} />
-		)
+	if (accountInfo === null || token === undefined) return email ? (
+		<AuthVerify
+			email={email}
+			setToken={setToken}
+			resetEmail={resetEmail}
+		/>
+	) : (
+		<AuthEnter setEmail={setEmail} />
+	)
 
 	return (
 		<AuthenticationContext.Provider value={contextValue}>

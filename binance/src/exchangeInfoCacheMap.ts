@@ -6,8 +6,7 @@ import { BinanceExchangeInfo } from "./types.js"
 const ONE_DAY = 86_400_000
 
 export class BinanceExchangeInfoCacheMap
-	implements BinanceExchangeInfoCacheProvider
-{
+implements BinanceExchangeInfoCacheProvider {
 	private readonly exchangeInfoKey = "exchangeInfo"
 
 	private readonly exchangeInfoMap = new CacheMap<BinanceExchangeInfo>(

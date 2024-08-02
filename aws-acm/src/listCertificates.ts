@@ -26,8 +26,6 @@ export const listCertificates = async (
 	const result = await client.send(command)
 	const CertificateSummaryList: AwsCertificateSummary[] = []
 	const list = result.CertificateSummaryList
-	if (Array.isArray(list))
-		for (const item of list)
-			if (isAwsCertificateSummary(item)) CertificateSummaryList.push(item)
+	if (Array.isArray(list)) for (const item of list) if (isAwsCertificateSummary(item)) CertificateSummaryList.push(item)
 	return { CertificateSummaryList }
 }

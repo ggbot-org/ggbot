@@ -31,8 +31,7 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",
 	hideInactiveStrategies: () => "hideInactiveStrategies:v1",
-	strategy: ({ strategyId, strategyKind }: StrategyKey) =>
-		`strategy:${strategyKind}:${strategyId}:v1`,
+	strategy: ({ strategyId, strategyKind }: StrategyKey) => `strategy:${strategyKind}:${strategyId}:v1`,
 	// Debug keys.
 	DEBUG_backtesting: () => "DEBUG_backtesting"
 }

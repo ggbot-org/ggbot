@@ -27,8 +27,7 @@ for (const pathname of [
 	webapp.homepage.pathname,
 	webapp.privacy.pathname,
 	webapp.terms.pathname
-])
-	await writeFile(join(publicDir, pathname), html(landingJs))
+]) await writeFile(join(publicDir, pathname), html(landingJs))
 
 // Try strategy.
 
@@ -36,8 +35,7 @@ await writeFile(join(publicDir, webappPagePathname.strategy), html(strategyJs))
 
 // Admin app.
 
-for (const pathname of adminHtmlPathnames)
-	await writeFile(join(publicDir, pathname), html(adminJs))
+for (const pathname of adminHtmlPathnames) await writeFile(join(publicDir, pathname), html(adminJs))
 
 // User app.
 
@@ -49,8 +47,7 @@ const userHtmlPathnames = [
 	webappPagePathname.user.strategy
 ]
 
-for (const pathname of userHtmlPathnames)
-	await writeFile(join(publicDir, pathname), html(userJs))
+for (const pathname of userHtmlPathnames) await writeFile(join(publicDir, pathname), html(userJs))
 
 // Subscription pages.
 

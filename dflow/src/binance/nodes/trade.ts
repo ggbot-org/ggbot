@@ -31,8 +31,7 @@ export class BuyMarket extends DflowNode {
 			typeof symbol !== "string" ||
 			(quantity === undefined && quoteOrderQty === undefined) ||
 			!execute
-		)
-			return this.clearOutputs()
+		) return this.clearOutputs()
 		const symbolInfo = await binance.symbolInfo(symbol)
 		if (!symbolInfo) return this.clearOutputs()
 		const order = await binance.newOrder(symbol, "BUY", "MARKET", {
@@ -40,16 +39,16 @@ export class BuyMarket extends DflowNode {
 				quantity === undefined
 					? undefined
 					: numberToBinanceDecimal(
-							quantity,
-							symbolInfo.baseAssetPrecision
-						),
+						quantity,
+						symbolInfo.baseAssetPrecision
+					),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
 					: numberToBinanceDecimal(
-							quoteOrderQty,
-							symbolInfo.quotePrecision
-						)
+						quoteOrderQty,
+						symbolInfo.quotePrecision
+					)
 		})
 		this.output(0).data = order
 	}
@@ -69,8 +68,7 @@ export class SellMarket extends DflowNode {
 			typeof symbol !== "string" ||
 			(quantity === undefined && quoteOrderQty === undefined) ||
 			!execute
-		)
-			return this.clearOutputs()
+		) return this.clearOutputs()
 		const symbolInfo = await binance.symbolInfo(symbol)
 		if (!symbolInfo) return this.clearOutputs()
 		const order = await binance.newOrder(symbol, "SELL", "MARKET", {
@@ -78,16 +76,16 @@ export class SellMarket extends DflowNode {
 				quantity === undefined
 					? undefined
 					: numberToBinanceDecimal(
-							quantity,
-							symbolInfo.baseAssetPrecision
-						),
+						quantity,
+						symbolInfo.baseAssetPrecision
+					),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
 					: numberToBinanceDecimal(
-							quoteOrderQty,
-							symbolInfo.quotePrecision
-						)
+						quoteOrderQty,
+						symbolInfo.quotePrecision
+					)
 		})
 		this.output(0).data = order
 	}

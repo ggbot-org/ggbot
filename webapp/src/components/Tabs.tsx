@@ -45,27 +45,25 @@ export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 	const { formatMessage } = useIntl()
 
 	const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
-		() =>
-			tabs.map(({ tabId }) => ({
-				tabId,
-				isActive: activeTabId === tabId,
-				onClick: (event) => {
-					event.preventDefault()
-					event.stopPropagation()
-					setActiveTabId(tabId)
-				},
-				children: formatMessage({ id: `Tabs.${tabId}` })
-			})),
+		() => tabs.map(({ tabId }) => ({
+			tabId,
+			isActive: activeTabId === tabId,
+			onClick: (event) => {
+				event.preventDefault()
+				event.stopPropagation()
+				setActiveTabId(tabId)
+			},
+			children: formatMessage({ id: `Tabs.${tabId}` })
+		})),
 		[activeTabId, formatMessage, setActiveTabId, tabs]
 	)
 
 	const tabContents = useMemo<ItemList<TabContentProps>>(
-		() =>
-			tabs.map(({ tabId, content }) => ({
-				tabId,
-				isActive: activeTabId === tabId,
-				children: content
-			})),
+		() => tabs.map(({ tabId, content }) => ({
+			tabId,
+			isActive: activeTabId === tabId,
+			children: content
+		})),
 		[activeTabId, tabs]
 	)
 

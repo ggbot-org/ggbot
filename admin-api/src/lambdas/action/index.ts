@@ -27,8 +27,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		info(event)
 
-		if (event.httpMethod === "OPTIONS")
-			return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod !== apiActionMethod) {
 			debug("Method not allowed")
@@ -54,11 +53,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		info(input.type, JSON.stringify(output, null, 2))
 		return OK(output)
 	} catch (error) {
-		for (const ErrorClass of [BadGatewayError, UnauthorizedError])
-			if (error instanceof ErrorClass) {
-				debug(error)
-				return errorResponse(ErrorClass.statusCode)
-			}
+		for (const ErrorClass of [BadGatewayError, UnauthorizedError]) if (error instanceof ErrorClass) {
+			debug(error)
+			return errorResponse(ErrorClass.statusCode)
+		}
 
 		// Fallback to print error if not handled.
 		debug(error)

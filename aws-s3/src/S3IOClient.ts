@@ -15,13 +15,12 @@ import { s3Client } from "./client.js"
 import { s3ServiceExceptionName } from "./errors.js"
 import { S3BucketProvider, S3Path } from "./types.js"
 
-const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
-	new Promise((resolve, reject) => {
-		const chunks: Uint8Array[] = []
-		stream.on("data", (chunk) => chunks.push(chunk as Uint8Array))
-		stream.on("error", reject)
-		stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
-	})
+const streamToString = (stream: NodeJS.ReadableStream): Promise<string> => new Promise((resolve, reject) => {
+	const chunks: Uint8Array[] = []
+	stream.on("data", (chunk) => chunks.push(chunk as Uint8Array))
+	stream.on("error", reject)
+	stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
+})
 
 type ListObjectsOutput = Pick<
 	ListObjectsV2CommandOutput,

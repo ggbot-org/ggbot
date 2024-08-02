@@ -26,19 +26,16 @@ export const accountStrategiesModifier = {
 		if (
 			accountStrategies.length >
 			quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
-		)
-			throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" })
+		) throw new ErrorExceededQuota({ type: "MAX_STRATEGIES_PER_ACCOUNT" })
 
 		// Check num active schedulings does not exceed quota, according to subscription.
 		let numSchedulings = 0
-		for (const { schedulings } of accountStrategies)
-			numSchedulings += schedulings.length
+		for (const { schedulings } of accountStrategies) numSchedulings += schedulings.length
 		if (
 			numSchedulings > quota.MAX_SCHEDULINGS_PER_ACCOUNT(subscriptionPlan)
-		)
-			throw new ErrorExceededQuota({
-				type: "MAX_SCHEDULINGS_PER_ACCOUNT"
-			})
+		) throw new ErrorExceededQuota({
+			type: "MAX_SCHEDULINGS_PER_ACCOUNT"
+		})
 
 		return accountStrategies
 	},
@@ -62,14 +59,14 @@ export const accountStrategiesModifier = {
 			schedulings:
 				item.strategyId === strategyId
 					? item.schedulings.map<StrategyScheduling>(
-							({ status, ...scheduling }) => ({
-								...scheduling,
-								status:
+						({ status, ...scheduling }) => ({
+							...scheduling,
+							status:
 									schedulingId === scheduling.id
 										? "suspended"
 										: status
-							})
-						)
+						})
+					)
 					: item.schedulings
 		}))
 	},
@@ -83,11 +80,11 @@ export const accountStrategiesModifier = {
 			schedulings:
 				item.strategyId === strategyId
 					? item.schedulings.map<StrategyScheduling>(
-							({ status: _status, ...scheduling }) => ({
-								...scheduling,
-								status: "suspended"
-							})
-						)
+						({ status: _status, ...scheduling }) => ({
+							...scheduling,
+							status: "suspended"
+						})
+					)
 					: item.schedulings
 		}))
 	},
@@ -103,14 +100,14 @@ export const accountStrategiesModifier = {
 			schedulings:
 				item.strategyId === strategyId
 					? item.schedulings.map<StrategyScheduling>(
-							(scheduling) => ({
-								...scheduling,
-								memory:
+						(scheduling) => ({
+							...scheduling,
+							memory:
 									schedulingId === scheduling.id
 										? memory
 										: scheduling.memory
-							})
-						)
+						})
+					)
 					: item.schedulings
 		}))
 	}

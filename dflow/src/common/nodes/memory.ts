@@ -32,8 +32,7 @@ export class GetMemory extends DflowNode {
 		if (!isIdentifierString(key)) return
 		const value = context.memory[key]
 		if (value === undefined) {
-			if (!isSerializablePrimitive(defaultValue))
-				return this.clearOutputs()
+			if (!isSerializablePrimitive(defaultValue)) return this.clearOutputs()
 			this.output(0).data = defaultValue
 		} else {
 			if (!isSerializablePrimitive(value)) return this.clearOutputs()

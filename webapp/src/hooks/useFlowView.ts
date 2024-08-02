@@ -38,8 +38,7 @@ type UseFlowViewOutput = {
 
 class BinanceClient
 	extends DflowBinanceClientDummy
-	implements DflowBinanceClient
-{
+	implements DflowBinanceClient {
 	async exchangeInfo() {
 		return binance.exchangeInfo()
 	}
@@ -91,11 +90,10 @@ export function useFlowView({
 							const { id, from, to } =
 								data as FlowViewOnChangeDataEdge
 							dflow.newEdge({ id, source: from, target: to })
-							if (isUserInput)
-								setOutput({
-									whenUpdatedFlowView: now(),
-									flowViewGraph: flowView.graph
-								})
+							if (isUserInput) setOutput({
+								whenUpdatedFlowView: now(),
+								flowViewGraph: flowView.graph
+							})
 							break
 						}
 
@@ -186,22 +184,20 @@ export function useFlowView({
 									break
 								}
 							}
-							if (isUserInput)
-								setOutput({
-									whenUpdatedFlowView: now(),
-									flowViewGraph: flowView.graph
-								})
+							if (isUserInput) setOutput({
+								whenUpdatedFlowView: now(),
+								flowViewGraph: flowView.graph
+							})
 							break
 						}
 
 						case "DELETE_EDGE":
 						case "DELETE_NODE":
 						case "UPDATE_NODE":
-							if (isUserInput)
-								setOutput({
-									whenUpdatedFlowView: now(),
-									flowViewGraph: flowView.graph
-								})
+							if (isUserInput) setOutput({
+								whenUpdatedFlowView: now(),
+								flowViewGraph: flowView.graph
+							})
 							break
 
 						default:

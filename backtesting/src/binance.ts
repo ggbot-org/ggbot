@@ -69,13 +69,10 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 
 		const { baseAssetPrecision, quoteAssetPrecision } = symbolInfo
 		let { quantity: baseQuantity, quoteOrderQty: quoteQuantity } = options
-		if (quoteQuantity && baseQuantity === undefined)
-			baseQuantity = div(quoteQuantity, price, quoteAssetPrecision)
-		if (baseQuantity && quoteQuantity === undefined)
-			quoteQuantity = mul(baseQuantity, price, baseAssetPrecision)
+		if (quoteQuantity && baseQuantity === undefined) baseQuantity = div(quoteQuantity, price, quoteAssetPrecision)
+		if (baseQuantity && quoteQuantity === undefined) quoteQuantity = mul(baseQuantity, price, baseAssetPrecision)
 		if (!baseQuantity) baseQuantity = dflowBinanceZero(baseAssetPrecision)
-		if (!quoteQuantity)
-			quoteQuantity = dflowBinanceZero(quoteAssetPrecision)
+		if (!quoteQuantity) quoteQuantity = dflowBinanceZero(quoteAssetPrecision)
 
 		return {
 			clientOrderId: "",

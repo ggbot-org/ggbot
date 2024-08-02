@@ -71,13 +71,12 @@ export function SubscriptionPurchase() {
 	let itemName = ""
 	if (isYearly) {
 		itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
-	} else if (numMonths)
-		itemName = formatMessage(
-			{
-				id: "SubscriptionPurchase.monthlyItemName"
-			},
-			{ numMonths }
-		)
+	} else if (numMonths) itemName = formatMessage(
+		{
+			id: "SubscriptionPurchase.monthlyItemName"
+		},
+		{ numMonths }
+	)
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
@@ -124,8 +123,7 @@ export function SubscriptionPurchase() {
 		if (CREATE_CHECKOUT.isDone) CREATE_CHECKOUT.reset()
 	}, [CREATE_CHECKOUT])
 
-	if (canPurchaseSubscription === undefined || !canPurchaseSubscription)
-		return null
+	if (canPurchaseSubscription === undefined || !canPurchaseSubscription) return null
 
 	return (
 		<Columns>

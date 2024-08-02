@@ -19,13 +19,11 @@ type FindSymbolFilter<Filter> = (
 
 export const findSymbolFilterLotSize: FindSymbolFilter<
 	BinanceSymbolFilterLotSize
-> = (filters: BinanceSymbolFilter[]) =>
-	filters.find(isBinanceSymbolFilterLotSize)
+> = (filters: BinanceSymbolFilter[]) => filters.find(isBinanceSymbolFilterLotSize)
 
 export const findSymbolFilterMinNotional: FindSymbolFilter<
 	BinanceSymbolFilterMinNotional
-> = (filters: BinanceSymbolFilter[]) =>
-	filters.find(isBinanceSymbolFilterMinNotional)
+> = (filters: BinanceSymbolFilter[]) => filters.find(isBinanceSymbolFilterMinNotional)
 
 export const lotSizeIsValid = (
 	// TODO { minQty, maxQty, stepSize }: BinanceSymbolFilterLotSize,

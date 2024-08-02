@@ -21,11 +21,10 @@ export function useSubscription(): UseSubscriptionOutput {
 	const { subscription } = useContext(AuthenticationContext)
 
 	if (subscription === undefined) return {}
-	if (subscription === null)
-		return {
-			canPurchaseSubscription: true,
-			hasActiveSubscription: false
-		}
+	if (subscription === null) return {
+		canPurchaseSubscription: true,
+		hasActiveSubscription: false
+	}
 	const subscriptionStatus = statusOfSubscription(subscription)
 	return {
 		canPurchaseSubscription: shouldPurchaseSubscription(subscription),

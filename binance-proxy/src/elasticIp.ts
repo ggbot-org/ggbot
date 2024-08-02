@@ -32,8 +32,7 @@ export const associateIp = async () => {
 	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, {
 		PublicIps: [elasticIpFromEnv]
 	})
-	if (!Addresses)
-		throw new Error("Cannot associate Elastic IP, empty address list")
+	if (!Addresses) throw new Error("Cannot associate Elastic IP, empty address list")
 
 	for (const elasticIpInfo of Addresses) {
 		const { AllocationId, PublicIp } = elasticIpInfo
@@ -55,10 +54,9 @@ export const associateIp = async () => {
 		info("Elastic IP associated", elasticIp)
 	}
 
-	if (!elasticIp)
-		throw new Error(
-			"Cannot associate Elastic IP, no available address found"
-		)
+	if (!elasticIp) throw new Error(
+		"Cannot associate Elastic IP, no available address found"
+	)
 }
 
 export const disassociateIp = async () => {

@@ -9,8 +9,7 @@ export type BinanceApiConfig = ItemKey<{
 }>
 
 export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
-	({ apiKey, apiSecret }) =>
-		isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
+	({ apiKey, apiSecret }) => isNonEmptyString(apiKey) && isNonEmptyString(apiSecret)
 )
 
 /**

@@ -38,8 +38,7 @@ export class S3Bucket implements AwsResource {
 			await this.client.send(command)
 			return true
 		} catch (error) {
-			if (error instanceof S3ServiceException)
-				if (error.name === s3ServiceExceptionName.NotFound) return false
+			if (error instanceof S3ServiceException) if (error.name === s3ServiceExceptionName.NotFound) return false
 			throw error
 		}
 	}

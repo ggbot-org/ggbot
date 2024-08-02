@@ -7,8 +7,7 @@ import { webapp } from "_/routing/webapp"
 function Router() {
 	const { pathname } = location
 
-	if (pathname === "/" || pathname === webapp.homepage.pathname)
-		return <Homepage />
+	if (pathname === "/" || pathname === webapp.homepage.pathname) return <Homepage />
 
 	if (pathname === webapp.privacy.pathname) return <PrivacyPage />
 

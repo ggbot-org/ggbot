@@ -10,8 +10,7 @@ import { kline } from "./klines.js"
 
 export class DflowBinanceClientMock
 	extends DflowBinanceClientDummy
-	implements DflowBinanceClient
-{
+	implements DflowBinanceClient {
 	async exchangeInfo() {
 		return Promise.resolve(exchangeInfo)
 	}

@@ -142,13 +142,11 @@ export class TrailingStopUp extends DflowNode {
 			if (
 				typeof initialStopPrice === "number" &&
 				initialStopPrice < marketPrice
-			)
-				stopPrice = initialStopPrice
-			else
-				stopPrice = computeStopPriceUp({
-					marketPrice,
-					percentageDelta
-				})
+			) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceUp({
+				marketPrice,
+				percentageDelta
+			})
 		}
 
 		// Nothing to do if there is no `stopPrice`.
@@ -227,13 +225,11 @@ export class TrailingStopDown extends DflowNode {
 			if (
 				typeof initialStopPrice === "number" &&
 				initialStopPrice > marketPrice
-			)
-				stopPrice = initialStopPrice
-			else
-				stopPrice = computeStopPriceDown({
-					marketPrice,
-					percentageDelta
-				})
+			) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceDown({
+				marketPrice,
+				percentageDelta
+			})
 		}
 
 		// Nothing to do if there is no `stopPrice`.

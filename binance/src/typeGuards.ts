@@ -21,8 +21,7 @@ export const isBinanceErrorPayload = objectTypeGuard<BinanceErrorPayload>(
 )
 
 export const isBinanceFill = objectTypeGuard<BinanceFill>(
-	({ price, qty, commission, commissionAsset }) =>
-		isBinanceDecimal(price) &&
+	({ price, qty, commission, commissionAsset }) => isBinanceDecimal(price) &&
 		isBinanceDecimal(qty) &&
 		isBinanceDecimal(commission) &&
 		typeof commissionAsset === "string"
@@ -71,16 +70,14 @@ export function isBinanceOrderRespFULL(
 
 export const isBinanceSymbolFilterLotSize =
 	objectTypeGuard<BinanceSymbolFilterLotSize>(
-		({ filterType, minQty, maxQty, stepSize }) =>
-			filterType === "LOT_SIZE" &&
+		({ filterType, minQty, maxQty, stepSize }) => filterType === "LOT_SIZE" &&
 			isBinanceDecimal(minQty) &&
 			isBinanceDecimal(maxQty) &&
 			isBinanceDecimal(stepSize)
 	)
 export const isBinanceSymbolFilterMinNotional =
 	objectTypeGuard<BinanceSymbolFilterMinNotional>(
-		({ filterType, minNotional, applyToMarket, avgPriceMins }) =>
-			filterType === "MIN_NOTIONAL" &&
+		({ filterType, minNotional, applyToMarket, avgPriceMins }) => filterType === "MIN_NOTIONAL" &&
 			isBinanceDecimal(minNotional) &&
 			typeof applyToMarket === "boolean" &&
 			typeof avgPriceMins === "number"

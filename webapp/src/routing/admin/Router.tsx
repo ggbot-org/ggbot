@@ -11,8 +11,7 @@ function Router() {
 
 	if (pathname === adminDashboardHtmlPathname) return <DashboardPage />
 
-	if (pathname === adminAccountDetailsHtmlPathname)
-		return <AccountDetailsPage />
+	if (pathname === adminAccountDetailsHtmlPathname) return <AccountDetailsPage />
 
 	return null
 }

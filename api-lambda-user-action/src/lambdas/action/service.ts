@@ -100,8 +100,7 @@ export class Service implements ApiService<UserClientActionType> {
 	}
 
 	WriteAccountStrategiesItemSchedulings(arg: unknown) {
-		if (!isInput.WriteAccountStrategiesItemSchedulings(arg))
-			throw new BadRequestError()
+		if (!isInput.WriteAccountStrategiesItemSchedulings(arg)) throw new BadRequestError()
 		return this.dataProvider.WriteAccountStrategiesItemSchedulings(arg)
 	}
 

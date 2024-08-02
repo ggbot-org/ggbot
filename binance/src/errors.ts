@@ -16,8 +16,7 @@ type ErrorBinanceHTTPInfo = {
 }
 
 export const isErrorBinanceHTTPInfo = objectTypeGuard<ErrorBinanceHTTPInfo>(
-	({ payload, pathname, searchParams, status, statusText }) =>
-		isBinanceErrorPayload(payload) &&
+	({ payload, pathname, searchParams, status, statusText }) => isBinanceErrorPayload(payload) &&
 		typeof pathname === "string" &&
 		typeof searchParams === "string" &&
 		typeof status === "number" &&

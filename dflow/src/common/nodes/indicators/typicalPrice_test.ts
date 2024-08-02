@@ -13,8 +13,7 @@ type TypicalPriceInput = {
 
 test("Typical Price", () => {
 	assertDeepEqual<TypicalPriceInput, ReturnType<TypicalPrice>>(
-		({ high, low, close }: TypicalPriceInput) =>
-			typicalPrice(high, low, close),
+		({ high, low, close }: TypicalPriceInput) => typicalPrice(high, low, close),
 		[
 			{ input: { high: 0, low: 0, close: 0 }, output: 0 },
 			{ input: { high: 10, low: 20, close: 30 }, output: 20 },

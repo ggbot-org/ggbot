@@ -106,12 +106,10 @@ async function runBinance(
 			if (memoryChanged) {
 				memoryChangedOnSomeStep = true
 				session.memory = memory
-				if (session.afterStepBehaviour.pauseOnMemoryChange)
-					shouldUpdateUI = true
+				if (session.afterStepBehaviour.pauseOnMemoryChange) shouldUpdateUI = true
 			}
 			if (orders.length) {
-				if (session.afterStepBehaviour.pauseOnNewOrder)
-					shouldUpdateUI = true
+				if (session.afterStepBehaviour.pauseOnNewOrder) shouldUpdateUI = true
 				for (const { info } of orders) {
 					const order = {
 						id: newId(),

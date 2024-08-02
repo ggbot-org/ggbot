@@ -6,15 +6,14 @@ type Props = Omit<InputFieldProps, "label" | "defaultValue">
 function truncateApiKey(apiKey: InputFieldProps["value"]) {
 	return typeof apiKey === "string"
 		? `${apiKey.substring(0, 10)}...${apiKey.substring(
-				apiKey.length - 10,
-				apiKey.length
-			)}`
+			apiKey.length - 10,
+			apiKey.length
+		)}`
 		: ""
 }
 
 export function ApiKey({ isStatic, value, ...props }: Props) {
 	const { formatMessage } = useIntl()
-
 	return (
 		<InputField
 			label={formatMessage({ id: "ApiKey.label" })}

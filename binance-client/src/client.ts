@@ -47,9 +47,7 @@ export class BinanceClient {
 		params?: BinanceApiRequestParams
 	) {
 		const searchParams = new URLSearchParams()
-		if (params)
-			for (const [key, value] of Object.entries(params))
-				searchParams.append(key, String(value))
+		if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value))
 
 		const timestamp = Date.now()
 		searchParams.append("timestamp", String(timestamp))

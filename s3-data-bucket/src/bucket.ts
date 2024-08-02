@@ -14,10 +14,9 @@ export const getS3DataBucketName = (
 	deployStage: DeployStage,
 	dnsDomain: string,
 	awsRegion: AwsRegion
-): S3Bucket["name"] =>
-	deployStage === "local"
-		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
-		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
+): S3Bucket["name"] => deployStage === "local"
+	? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
+	: `${deployStage}-data.${awsRegion}.${dnsDomain}`
 
 export class S3DataBucketProvider implements DocumentProviderLevel3 {
 	private s3: S3IOClient

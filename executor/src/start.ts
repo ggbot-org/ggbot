@@ -5,10 +5,9 @@ import { Item } from "@workspace/models"
 import { Executor } from "./Executor.js"
 import { info, warn } from "./logging.js"
 
-const sleep = (delay: number) =>
-	new Promise((resolve) => {
-		setTimeout(resolve, delay)
-	})
+const sleep = (delay: number) => new Promise((resolve) => {
+	setTimeout(resolve, delay)
+})
 
 const start = async () => {
 	// TODO if it is a dedicated server, it will run only strategies of one account

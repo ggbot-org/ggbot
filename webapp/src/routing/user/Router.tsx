@@ -14,22 +14,17 @@ function Router() {
 
 	if (pathname === webapp.user.dashboard.pathname) return <DashboardPage />
 
-	if (pathname === webapp.user.copyStrategy(nullStrategyKey).pathname)
-		return <CopyStrategyPage />
+	if (pathname === webapp.user.copyStrategy(nullStrategyKey).pathname) return <CopyStrategyPage />
 
-	if (pathname === webapp.user.editStrategy(nullStrategyKey).pathname)
-		return <EditStrategyPage />
+	if (pathname === webapp.user.editStrategy(nullStrategyKey).pathname) return <EditStrategyPage />
 
 	if (pathname === webapp.user.settings.pathname) return <SettingsPage />
 
-	if (pathname === webapp.user.strategy(nullStrategyKey).pathname)
-		return <StrategyPage />
+	if (pathname === webapp.user.strategy(nullStrategyKey).pathname) return <StrategyPage />
 
-	if (pathname === webapp.purchaseCanceled.pathname)
-		return <PurchaseCanceledPage />
+	if (pathname === webapp.purchaseCanceled.pathname) return <PurchaseCanceledPage />
 
-	if (pathname === webapp.subscriptionPurchased.pathname)
-		return <SubscriptionPurchasedPage />
+	if (pathname === webapp.subscriptionPurchased.pathname) return <SubscriptionPurchasedPage />
 
 	return null
 }

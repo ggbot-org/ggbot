@@ -9,21 +9,19 @@ export function AccountPageContainer({ children }: PropsWithChildren) {
 	const { accountKey } = useAccountKey()
 	const { account } = useAccount(accountKey)
 
-	if (!accountKey)
-		return (
-			<Section>
-				<InvalidAccountKey />
-			</Section>
-		)
+	if (!accountKey) return (
+		<Section>
+			<InvalidAccountKey />
+		</Section>
+	)
 
 	if (account === undefined) return null
 
-	if (account === null)
-		return (
-			<Section>
-				<AccountNotFound accountKey={accountKey} />
-			</Section>
-		)
+	if (account === null) return (
+		<Section>
+			<AccountNotFound accountKey={accountKey} />
+		</Section>
+	)
 
 	return children
 }

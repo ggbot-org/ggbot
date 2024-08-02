@@ -36,35 +36,33 @@ export function SchedulingParameters({
 	>([])
 
 	useEffect(() => {
-		;(async () => {
+		(async () => {
 			const items = []
 			if (!flowViewGraph) return
 
 			const commonParams =
 				await extractCommonParametersFromFlow(flowViewGraph)
 
-			for (const { key, kind, defaultValue } of commonParams)
-				items.push({
-					kind,
-					label: key,
-					defaultParamValue: defaultValue,
-					paramValue: params?.[key]
-				})
+			for (const { key, kind, defaultValue } of commonParams) items.push({
+				kind,
+				label: key,
+				defaultParamValue: defaultValue,
+				paramValue: params?.[key]
+			})
 
 			const binanceParams = binanceSymbols
 				? await extractBinanceParametersFromFlow(
-						binanceSymbols,
-						flowViewGraph
-					)
+					binanceSymbols,
+					flowViewGraph
+				)
 				: []
 
-			for (const { key, kind, defaultValue } of binanceParams)
-				items.push({
-					kind,
-					label: key,
-					defaultParamValue: defaultValue,
-					paramValue: params?.[key]
-				})
+			for (const { key, kind, defaultValue } of binanceParams) items.push({
+				kind,
+				label: key,
+				defaultParamValue: defaultValue,
+				paramValue: params?.[key]
+			})
 
 			setSchedulingParameterItems(items)
 		})()

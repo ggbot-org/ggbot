@@ -31,8 +31,7 @@ export function frequencyIntervalDuration({
 }
 
 export const isFrequency = objectTypeGuard<Frequency>(
-	({ every, interval }) =>
-		isNaturalNumber(every) && isFrequencyInterval(interval)
+	({ every, interval }) => isNaturalNumber(every) && isFrequencyInterval(interval)
 )
 
 export function everyOneHour(): Frequency {

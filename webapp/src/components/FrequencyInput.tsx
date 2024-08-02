@@ -61,11 +61,10 @@ export function FrequencyInput({
 			const { value } =
 				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 			const every = value === "" ? value : Number(value)
-			if (isNaturalNumber(every) || every === "")
-				setFrequency({
-					interval,
-					every
-				})
+			if (isNaturalNumber(every) || every === "") setFrequency({
+				interval,
+				every
+			})
 		},
 		[interval, setFrequency]
 	)
@@ -76,11 +75,10 @@ export function FrequencyInput({
 		(event) => {
 			const { value } =
 				event.target as unknown as SelectHTMLAttributes<HTMLSelectElement>
-			if (isFrequencyInterval(value))
-				setFrequency({
-					every,
-					interval: value
-				})
+			if (isFrequencyInterval(value)) setFrequency({
+				every,
+				interval: value
+			})
 		},
 		[every, setFrequency]
 	)
