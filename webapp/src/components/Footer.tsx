@@ -9,9 +9,9 @@ export function Footer() {
 
 	return (
 		<>
-			<div className={classnames("Footer__top")} />
+			<div className={classnames("footer__top")} />
 
-			<footer className={classnames("footer", "Footer__body")}>
+			<footer className={classnames("footer", "footer__body")}>
 				<TermsAndPolicyLinks />
 
 				<SocialLinks />

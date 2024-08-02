@@ -2,16 +2,16 @@
  * Full height page with footer on bottom.
  */
 
-.Page {
+.page {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
 
-.Page__content {
+.page__content {
 	flex: 1 0 auto;
 }
 
-.Page__footer {
+.page__footer {
 	flex-shrink: 0;
 }

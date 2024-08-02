@@ -54,7 +54,7 @@ export function DailyInterval({
 	}, [closeDropdowns])
 
 	return (
-		<div className={classnames("DailyInterval")}>
+		<div className={classnames("daily-interval")}>
 			<DayDropdown
 				close={closeDropdowns}
 				disabled={disabled}

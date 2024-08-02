@@ -29,13 +29,13 @@ function CalendarWeekDays() {
 
 	return (
 		<div
-			className="Calendar__grid"
+			className={classnames("calendar__grid")}
 			onClick={(event) => {
 				event.stopPropagation()
 			}}
 		>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={classnames("Calendar__week-day")}>
+				<div key={day} className={classnames("calendar__week-day")}>
 					{label}
 				</div>
 			))}
@@ -189,15 +189,15 @@ export function Calendar({
 	)
 
 	return (
-		<div className={classnames("Calendar")}>
+		<div className={classnames("calendar")}>
 			<div
-				className={classnames("Calendar__head")}
+				className={classnames("calendar__head")}
 				onClick={(event) => {
 					event.stopPropagation()
 				}}
 			>
 				<div
-					className={classnames("Calendar__head-icon", {
+					className={classnames("calendar__head-icon", {
 						"has-text-grey-lighter": isFirstMonth
 					})}
 					onClick={onClickPrevious}
@@ -205,14 +205,14 @@ export function Calendar({
 					<Icon name="caret-left" />
 				</div>
 
-				<div className={classnames("Calendar__head-text")}>
+				<div className={classnames("calendar__head-text")}>
 					{monthName}
 				</div>
 
-				<div className={classnames("Calendar__head-text")}>{year}</div>
+				<div className={classnames("calendar__head-text")}>{year}</div>
 
 				<div
-					className={classnames("Calendar__head-icon", {
+					className={classnames("calendar__head-icon", {
 						"has-text-grey-lighter": isLastMonth
 					})}
 					onClick={onClickNext}
@@ -223,14 +223,14 @@ export function Calendar({
 
 			<CalendarWeekDays />
 
-			<div className={classnames("Calendar__grid")}>
+			<div className={classnames("calendar__grid")}>
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
 							key={key}
-							className={classnames("Calendar__cell", {
-								"Calendar__cell--selected": selected,
-								"Calendar__cell--disabled": !isSelectable
+							className={classnames("calendar__cell", {
+								"calendar__cell--selected": selected,
+								"calendar__cell--disabled": !isSelectable
 							})}
 							onClick={onClick}
 						>

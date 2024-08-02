@@ -17,7 +17,7 @@ export function Input({
 	return (
 		<_Input
 			className={classnames({
-				"Input--isStatic": isStatic,
+				"input--is-static": isStatic,
 				"is-static": isStatic
 			})}
 			color={color}

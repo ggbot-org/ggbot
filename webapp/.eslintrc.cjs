@@ -55,6 +55,7 @@ module.exports = {
 				}
 			}
 		],
+		"formatjs/prefer-pound-in-plural": "error",
 		// TODO remove "func-style" from here and add it on root eslint config
 		"func-style": ["error", "declaration"],
 		"import/extensions": "off",

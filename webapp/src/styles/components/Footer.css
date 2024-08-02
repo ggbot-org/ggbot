@@ -1,4 +1,4 @@
-.Footer__top {
+.footer__top {
 	margin-top: var(--bulma-size-1);
 	height: var(--bulma-size-1);
 	background: linear-gradient(
@@ -8,12 +8,12 @@
 	);
 }
 
-.Footer__body {
+.footer__body {
 	display: flex;
 	flex-direction: column;
 	gap: 1em;
 }
 
-.Footer__body a {
+.footer__body a {
 	text-decoration: none;
 }

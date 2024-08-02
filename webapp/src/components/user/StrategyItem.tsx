@@ -9,7 +9,7 @@ type Props = AccountStrategy
 export function StrategyItem({ name, schedulings, ...strategyKey }: Props) {
 	return (
 		<div
-			className={classnames("box", "StrategyItem")}
+			className={classnames("box", "strategy-item")}
 			tabIndex={0}
 			onClick={() => {
 				GOTO(new URL(webapp.user.strategy(strategyKey)))

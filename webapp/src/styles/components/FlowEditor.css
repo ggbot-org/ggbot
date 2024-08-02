@@ -1,4 +1,4 @@
-.FlowEditor__menu {
+.flow-editor__menu {
 	max-height: 4rem;
 	display: flex;
 	align-items: center;
@@ -6,7 +6,7 @@
 	padding-bottom: var(--bulma-size-5);
 }
 
-.FlowEditor__strategyName {
+.flow-editor__strategy-name {
 	flex: auto;
 	white-space: nowrap;
 	overflow: hidden;
@@ -14,11 +14,11 @@
 	padding-inline: var(--bulma-size-6);
 }
 
-.FlowEditor__actions {
+.flow-editor__actions {
 	display: flex;
 	gap: var(--bulma-size-7);
 }
 
-.FlowEditor__container {
+.flow-editor__container {
 	height: 800px;
 }

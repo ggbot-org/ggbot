@@ -7,11 +7,11 @@ type Props = {
 
 export function Page({ children, footer }: PropsWithChildren<Props>) {
 	return (
-		<div className={classnames("Page")}>
-			<div className={classnames("Page__content")}>{children}</div>
+		<div className={classnames("page")}>
+			<div className={classnames("page__content")}>{children}</div>
 
 			{footer ? (
-				<div className={classnames("Page__footer")}>{footer}</div>
+				<div className={classnames("page__footer")}>{footer}</div>
 			) : null}
 		</div>
 	)

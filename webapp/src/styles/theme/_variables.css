@@ -2,61 +2,52 @@
  * Fonts.
  */
 
-:root {
-	--bulma-family-primary: sans-serif;
-}
-
 @supports (font-variation-settings: normal) {
 	:root {
 		--bulma-family-primary: "Inter var", sans-serif;
 	}
 }
 
-/*
+:root {
+	--bulma-family-primary: sans-serif;
+
+	/*
+ * Breakpoints.
+ */
+
+	/* Copied from bulma/sass/utilities/initial-variables.scss */
+	--tablet: 769px;
+
+	/*
  * Colors.
  */
 
-:root {
-	--bulma-white: #ffffff;
+	--bulma-white: #fff;
 	--bulma-black: #070900;
-
 	--bulma-primary-h: 179deg;
 	--bulma-primary-s: 93%;
 	--bulma-primary-l: 48%;
 
-	/* --bulma-link is used for anchors and
-	   also as focus color for select, input, button, etc. */
+	/* --bulma-link is used for anchors
+	   and also as focus color for select, input, button, etc. */
 	--bulma-link-h: 177deg;
 	--bulma-link-s: 71%;
 	--bulma-link-l: 34%;
 	--bulma-link-on-scheme-l: 34%;
-
 	--bulma-warning-h: 56deg;
 	--bulma-warning-s: 90%;
 	--bulma-warning-l: 64%;
-
 	--bulma-danger-h: 320deg;
 	--bulma-danger-s: 100%;
 	--bulma-danger-l: 36%;
-
 	--bulma-success-h: 120deg;
 	--bulma-success-s: 72%;
 	--bulma-success-l: 43%;
-
-	--bulma-body-background-color: hsl(180, 100%, 99%);
+	--bulma-body-background-color: hsl(180deg 100% 99%);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--bulma-body-background-color: hsl(171, 4%, 29%);
+		--bulma-body-background-color: hsl(171deg 4% 29%);
 	}
-}
-
-/*
- * Breakpoints.
- */
-
-:root {
-	/* Copied from bulma/sass/utilities/initial-variables.scss */
-	--tablet: 769px;
 }

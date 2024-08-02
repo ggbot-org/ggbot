@@ -5,46 +5,46 @@ import {
 } from "trunx"
 
 type CalendarClassname =
-	| "Calendar"
-	| "Calendar__body"
-	| "Calendar__cell"
-	| "Calendar__cell--disabled"
-	| "Calendar__cell--selected"
-	| "Calendar__grid"
-	| "Calendar__head"
-	| "Calendar__head-icon"
-	| "Calendar__head-text"
-	| "Calendar__week-day"
+	| "calendar"
+	| "calendar__body"
+	| "calendar__cell"
+	| "calendar__cell--disabled"
+	| "calendar__cell--selected"
+	| "calendar__grid"
+	| "calendar__head"
+	| "calendar__head-icon"
+	| "calendar__head-text"
+	| "calendar__week-day"
 
-type DailyIntervalClassname = "DailyInterval"
+type DailyIntervalClassname = "daily-interval"
 
 type FlowEditorClassname =
-	| "FlowEditor__menu"
-	| "FlowEditor__strategyName"
-	| "FlowEditor__actions"
-	| "FlowEditor__container"
+	| "flow-editor__menu"
+	| "flow-editor__strategy-name"
+	| "flow-editor__actions"
+	| "flow-editor__container"
 
-type FooterClassname = "Footer__top" | "Footer__body"
+type FooterClassname = "footer__top" | "footer__body"
 
-type InputClassname = "Input--isStatic"
+type InputClassname = "input--is-static"
 
-type ModalClassname = "Modal__content"
+type ModalClassname = "modal__content"
 
-type NavigationClassname = "Navigation"
+type NavigationClassname = "navigation"
 
-type OneColumn = "OneColumn"
+type OneColumn = "one-column"
 
-type PageClassname = "Page" | "Page__content" | "Page__footer"
+type PageClassname = "page" | "page__content" | "page__footer"
 
-type ParagraphClassname = "Paragraph"
+type ParagraphClassname = "paragraph"
 
-type StrategyItemClassname = "StrategyItem"
+type StrategyItemClassname = "strategy-item"
 
-type TabSelectorClassname = "TabSelector"
+type TabSelectorClassname = "tab-selector"
 
-type TermsAndPolicyLinksClassname = "TermsAndPolicyLinks"
+type TermsAndPolicyLinksClassname = "terms-and-policy-links"
 
-type ToastContainerClassname = "ToastContainer"
+type ToastContainerClassname = "toast-container"
 
 type Classname =
 	| Bulma

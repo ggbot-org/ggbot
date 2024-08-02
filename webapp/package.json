@@ -66,6 +66,8 @@
     "onchange": "7.1.0",
     "read-file-utf8": "3.0.0",
     "sass": "1.71.1",
+    "stylelint": "16.8.1",
+    "stylelint-config-standard-scss": "13.1.0",
     "tsc-alias": "1.8.8",
     "write-file-utf8": "3.0.2"
   }

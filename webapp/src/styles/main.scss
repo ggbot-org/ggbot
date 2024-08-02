@@ -3,7 +3,6 @@
 
 // CSS custom props. Use variables first.
 @use "./theme/_variables";
-
 @use "./theme/a";
 @use "./theme/box";
 @use "./theme/checkbox";
@@ -20,7 +19,6 @@
 @use "./components/Footer";
 @use "./components/DailyInterval";
 @use "./components/Input";
-@use "./components/Modal";
 @use "./components/Navigation";
 @use "./components/OneColumn";
 @use "./components/Paragraph";

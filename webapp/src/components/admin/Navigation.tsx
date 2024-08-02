@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl"
 
 export function Navigation() {
 	return (
-		<Navbar className={classnames("Navigation")}>
+		<Navbar className={classnames("navigation")}>
 			<NavbarStart>
 				<NavbarLink
 					onClick={() => {

@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { PropsWithChildren, useCallback, useEffect } from "react"
-import { Modal as _Modal, ModalClose, ModalContent } from "trunx"
+import { Div, Modal as _Modal, ModalClose, ModalContent } from "trunx"
 
 type Props = Partial<{
 	isActive: boolean
@@ -47,9 +47,9 @@ export function Modal({
 	// and use isActive prop instead.
 	return (
 		<_Modal noBackground bulma={{ "is-active": isActive }}>
-			<div className="modal-background" onClick={closeModal} />
+			<Div bulma="modal-background" onClick={closeModal} />
 
-			<ModalContent className={classnames("Modal__content")}>
+			<ModalContent className={classnames("modal__content")}>
 				{children}
 			</ModalContent>
 

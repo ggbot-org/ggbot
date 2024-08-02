@@ -56,12 +56,12 @@ export function FlowEditor({ strategyKey }: Props) {
 
 	return (
 		<>
-			<div className={classnames("FlowEditor__menu")}>
-				<div className={classnames("FlowEditor__strategyName")}>
+			<div className={classnames("flow-editor__menu")}>
+				<div className={classnames("flow-editor__strategy-name")}>
 					<Input isStatic defaultValue={strategyName} />
 				</div>
 
-				<div className={classnames("FlowEditor__actions")}>
+				<div className={classnames("flow-editor__actions")}>
 					<Button
 						onClick={() => {
 							if (!strategyKey) return
@@ -83,7 +83,7 @@ export function FlowEditor({ strategyKey }: Props) {
 
 			<div
 				ref={flowViewContainerRef}
-				className={classnames("FlowEditor__container")}
+				className={classnames("flow-editor__container")}
 			/>
 		</>
 	)

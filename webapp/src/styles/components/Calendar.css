@@ -1,11 +1,11 @@
-.Calendar {
+.calendar {
 	margin-inline: 4px;
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
 }
 
-.Calendar__head {
+.calendar__head {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -14,24 +14,24 @@
 	line-height: 2;
 }
 
-.Calendar__head-icon {
+.calendar__head-icon {
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 }
 
-.Calendar__head-text {
+.calendar__head-text {
 	user-select: none;
 }
 
 /* One column for every week day. */
-.Calendar__grid {
+.calendar__grid {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 }
 
-.Calendar__week-day {
+.calendar__week-day {
 	margin-block: 10px;
 	font-weight: 600;
 	font-size: 0.8em;
@@ -40,7 +40,7 @@
 	pointer-events: none;
 }
 
-.Calendar__cell {
+.calendar__cell {
 	margin: 1px;
 	text-align: center;
 	user-select: none;
@@ -50,26 +50,26 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	.Calendar__cell {
+	.calendar__cell {
 		color: var(--bulma-white);
 	}
 }
 
-.Calendar__cell:hover {
+.calendar__cell:hover {
 	background: var(--bulma-primary);
 	color: var(--bulma-black);
 }
 
-.Calendar__cell--selected {
+.calendar__cell--selected {
 	background: var(--bulma-primary);
 	color: var(--bulma-black);
 }
 
-.Calendar__cell--disabled {
+.calendar__cell--disabled {
 	color: var(--bulma-grey-light);
 }
 
-.Calendar__cell--disabled:hover {
+.calendar__cell--disabled:hover {
 	background: transparent;
 	color: var(--bulma-grey-light);
 }

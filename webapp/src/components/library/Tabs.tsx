@@ -12,7 +12,7 @@ export function TabSelector({
 	...props
 }: PropsWithChildren<TabSelectorProps>) {
 	return (
-		<li className={classnames("TabSelector", { "is-active": isActive })}>
+		<li className={classnames("tab-selector", { "is-active": isActive })}>
 			<a {...props}>{children}</a>
 		</li>
 	)

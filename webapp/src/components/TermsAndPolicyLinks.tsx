@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl"
 
 export function TermsAndPolicyLinks() {
 	return (
-		<ul className={classnames("TermsAndPolicyLinks")}>
+		<ul className={classnames("terms-and-policy-links")}>
 			<li>
 				<a href={webapp.privacy.pathname}>
 					<FormattedMessage id="Privacy.title" />
