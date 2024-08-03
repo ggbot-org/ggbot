@@ -1,10 +1,4 @@
-import {
-	BacktestingBinanceClient,
-	BacktestingMessageInData,
-	BacktestingMessageOutData,
-	BacktestingSession,
-	BacktestingStrategy
-} from "@workspace/backtesting"
+import { BacktestingBinanceClient, BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession, BacktestingStrategy } from "@workspace/backtesting"
 import { DflowBinanceExecutor } from "@workspace/dflow"
 import { newId, Order, StrategyKind } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
@@ -111,11 +105,7 @@ async function runBinance(
 			if (orders.length) {
 				if (session.afterStepBehaviour.pauseOnNewOrder) shouldUpdateUI = true
 				for (const { info } of orders) {
-					const order = {
-						id: newId(),
-						info,
-						whenCreated: time
-					} satisfies Order
+					const order = { id: newId(), info, whenCreated: time } satisfies Order
 					orderSet.add(order)
 					session.orders.push(order)
 				}

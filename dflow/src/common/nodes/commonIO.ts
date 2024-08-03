@@ -35,7 +35,7 @@ export const outputOpen = output("array", { name: "open" })
 export const inputPeriod = input("number", { name: "period" })
 
 export const pinSymbolName = "symbol"
-export const inputSymbol = input("string", { name: pinSymbolName })
+export const inputSymbol = input("string", { name: pinSymbolName, optional: true })
 export const outputSymbol = input("string", { name: pinSymbolName })
 
 export const pinIntervalName = "interval"

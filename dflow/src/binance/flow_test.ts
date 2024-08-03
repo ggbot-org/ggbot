@@ -1,15 +1,13 @@
 import { strict as assert } from "node:assert"
 import { test } from "node:test"
 
-import {
-	extractBinanceParametersFromFlow,
-	extractBinanceSymbolsAndIntervalsFromFlow,
-	extractsBinanceSymbolsFromFlow
-} from "./flow.js"
+import { DefaultSymbol } from "../common/nodes/defaults.js"
+import { extractBinanceParametersFromFlow, extractBinanceSymbolsAndIntervalsFromFlow, extractsBinanceDefaultsFromFlow, extractsBinanceSymbolsFromFlow } from "./flow.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
+import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 import { getDflowBinanceNodeSymbolKind } from "./symbols.js"
 
 test("extractBinanceParametersFromFlow", async () => {
@@ -65,10 +63,7 @@ test("extractBinanceParametersFromFlow", async () => {
 				},
 				{
 					id: "n2",
-					text: getDflowBinanceNodeSymbolKind({
-						baseAsset: symbolBaseAsset,
-						quoteAsset: symbolQuoteAsset
-					}),
+					text: getDflowBinanceNodeSymbolKind({ baseAsset: symbolBaseAsset, quoteAsset: symbolQuoteAsset }),
 					outs: [{ id: "o1" }]
 				},
 				{
@@ -90,6 +85,37 @@ test("extractBinanceParametersFromFlow", async () => {
 				defaultValue: `${symbolBaseAsset}${symbolQuoteAsset}`
 			}
 		]
+	)
+})
+
+test("extractBinanceDefaultsFromFlow", async () => {
+	const binance = new DflowBinanceClientMock()
+	const { symbols } = await binance.exchangeInfo()
+	const symbolBaseAsset = "BTC"
+	const symbolQuoteAsset = "BUSD"
+	const nodesCatalog = getDflowBinanceNodesCatalog(symbols)
+
+	assert.deepEqual(
+		await extractsBinanceDefaultsFromFlow(nodesCatalog, {
+			nodes: [
+				{
+					id: "n1",
+					text: getDflowBinanceNodeSymbolKind({ baseAsset: symbolBaseAsset, quoteAsset: symbolQuoteAsset }),
+					outs: [{ id: "o1" }]
+				},
+				{
+					id: "n2",
+					text: DefaultSymbol.kind,
+					ins: [{ id: "i1" }]
+				}
+			],
+			edges: [
+				{ id: "e1", from: ["n1", "o1"], to: ["n2", "i1"] }
+			]
+		}),
+		{
+			symbol: `${symbolBaseAsset}${symbolQuoteAsset}`
+		}
 	)
 })
 

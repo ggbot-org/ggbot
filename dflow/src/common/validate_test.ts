@@ -50,7 +50,12 @@ describe("dflowValidate", () => {
 	test("validates json nodes", () => {
 		const dflow = new DflowCommonHost(
 			{ nodesCatalog: {} },
-			{ params: {}, memory: {}, time: now() }
+			{
+				defaults: {},
+				params: {},
+				memory: {},
+				time: now()
+			}
 		)
 		const graph: StrategyFlowGraph = {
 			nodes: [

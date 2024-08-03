@@ -71,7 +71,13 @@ export function useFlowView({
 			const binance = new BinanceClient()
 			const dflow = new DflowBinanceHost(
 				{ nodesCatalog },
-				{ binance, params: {}, memory: {}, time }
+				{
+					binance,
+					defaults: {},
+					params: {},
+					memory: {},
+					time
+				}
 			)
 
 			const flowView = initializeFlowView(container, nodesCatalog)
@@ -108,12 +114,7 @@ export function useFlowView({
 									dflow.newNode({
 										id,
 										kind: "data",
-										outputs: [
-											{
-												data: JSON.parse(text),
-												id: outputId
-											}
-										]
+										outputs: [ { data: JSON.parse(text), id: outputId } ]
 									})
 									break
 								}
@@ -122,12 +123,7 @@ export function useFlowView({
 									dflow.newNode({
 										id,
 										kind: "data",
-										outputs: [
-											{
-												data: parsePercentage(text),
-												id: outputId
-											}
-										]
+										outputs: [ { data: parsePercentage(text), id: outputId } ]
 									})
 									break
 								}
@@ -136,11 +132,8 @@ export function useFlowView({
 									const node = dflow.newNode({
 										id,
 										kind,
-
 										inputs: ins?.map(({ id }) => ({ id })),
-										outputs: outs?.map(({ id }) => ({
-											id
-										}))
+										outputs: outs?.map(({ id }) => ({ id }))
 									})
 
 									if (node instanceof DflowNodeUnknown) {
@@ -151,8 +144,7 @@ export function useFlowView({
 									// Complete node inputs and outputs.
 
 									const NodeClass = nodesCatalog[kind]
-									const { inputs = [], outputs = [] } =
-										NodeClass
+									const { inputs = [], outputs = [] } = NodeClass
 									const nodeView = flowView.node(id)
 
 									for (let i = 0; i < inputs.length; i++) {
@@ -161,10 +153,7 @@ export function useFlowView({
 											nodeView.inputs[i].name = name
 											nodeView.inputs[i].text = name
 										} else {
-											nodeView.newInput({
-												id: node.input(i).id as string,
-												name
-											})
+											nodeView.newInput({ id: node.input(i).id as string, name })
 										}
 									}
 
@@ -174,10 +163,7 @@ export function useFlowView({
 											nodeView.outputs[i].name = name
 											nodeView.outputs[i].text = name
 										} else {
-											nodeView.newOutput({
-												id: node.output(i).id as string,
-												name
-											})
+											nodeView.newOutput({ id: node.output(i).id as string, name })
 										}
 									}
 

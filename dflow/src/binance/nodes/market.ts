@@ -30,8 +30,8 @@ export class Candles extends DflowNode {
 		outputVolume
 	]
 	async run() {
-		const { binance, time: currentTime } = this.host.context as Context
-		const symbol = this.input(0).data as string
+		const { binance, defaults, time: currentTime } = this.host.context as Context
+		const symbol = this.input(0).data ?? defaults.symbol
 		const interval = this.input(1).data as string
 		const count = this.input(2).data as number
 		if (
@@ -79,8 +79,9 @@ export class TickerPrice extends DflowNode {
 	static inputs = [inputSymbol]
 	static outputs = [output("number", { name: "price" })]
 	async run() {
-		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data
+		const { binance, defaults } = this.host.context as Context
+		const symbol = this.input(0).data ?? defaults.symbol
+
 		if (typeof symbol !== "string") return this.clearOutputs()
 		const data = await binance.tickerPrice(symbol)
 		this.output(0).data = Number(data.price)

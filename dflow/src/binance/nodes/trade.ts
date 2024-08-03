@@ -23,8 +23,8 @@ export class BuyMarket extends DflowNode {
 	static inputs = marketOrderInputs
 	static outputs = outputs
 	async run() {
-		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data
+		const { binance, defaults } = this.host.context as Context
+		const symbol = this.input(0).data ?? defaults.symbol
 		const quantity = this.input(1).data as number | undefined
 		const quoteOrderQty = this.input(2).data as number | undefined
 		const execute = this.input(3).data
@@ -60,8 +60,8 @@ export class SellMarket extends DflowNode {
 	static inputs = marketOrderInputs
 	static outputs = outputs
 	async run() {
-		const { binance } = this.host.context as Context
-		const symbol = this.input(0).data
+		const { binance, defaults } = this.host.context as Context
+		const symbol = this.input(0).data ?? defaults.symbol
 		const quantity = this.input(1).data as number | undefined
 		const quoteOrderQty = this.input(2).data as number | undefined
 		const execute = this.input(3).data

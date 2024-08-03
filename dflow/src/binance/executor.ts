@@ -1,19 +1,12 @@
 import { Balance, Order, StrategyFlowGraph } from "@workspace/models"
 import { DflowNodesCatalog } from "dflow"
 
-import {
-	DflowCommonExecutorContext,
-	DflowCommonExecutorOutput,
-	DflowExecutor
-} from "../common/executor.js"
+import { DflowCommonExecutorContext, DflowCommonExecutorOutput, DflowExecutor } from "../common/executor.js"
 import { DflowBinanceClient } from "./client.js"
 import { DflowBinanceContext } from "./context.js"
-import {
-	getBalanceFromExecutionSteps,
-	getOrdersFromExecutionSteps
-} from "./execution.js"
+import { getBalanceFromExecutionSteps, getOrdersFromExecutionSteps } from "./execution.js"
+import { extractsBinanceDefaultsFromFlow } from "./flow.js"
 import { DflowBinanceHost } from "./host.js"
-import { DflowBinanceSymbolInfo } from "./symbols.js"
 
 type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
 	balance: Balance
@@ -26,19 +19,19 @@ type DflowBinanceExecutorContext = DflowCommonExecutorContext & {
 
 export class DflowBinanceExecutor implements DflowExecutor<DflowBinanceExecutorContext, DflowBinanceExecutorOutput> {
 	nodesCatalog: DflowNodesCatalog
-	binanceSymbols: DflowBinanceSymbolInfo[]
 
 	constructor() {
-		this.binanceSymbols = []
 		this.nodesCatalog = {}
 	}
 
 	/** Execute flow on given context. */
 	async run(context: DflowBinanceExecutorContext, graph: StrategyFlowGraph) {
+		const { nodesCatalog } = this
 		const { binance } = context
+		const defaults = await extractsBinanceDefaultsFromFlow(nodesCatalog, graph)
 		const dflow = new DflowBinanceHost(
-			{ nodesCatalog: this.nodesCatalog },
-			context
+			{ nodesCatalog },
+			{ defaults, ...context }
 		)
 		dflow.load(graph)
 		await dflow.run()

@@ -17,6 +17,7 @@ describe("DflowBinanceHost", () => {
 				{ nodesCatalog },
 				{
 					binance,
+					defaults: {},
 					params: {},
 					memory: {},
 					time: truncateTime(now()).to.minute

@@ -1,23 +1,18 @@
 import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
-import { DflowNode } from "dflow"
+import { DflowNode, DflowNodesCatalog } from "dflow"
 import { now } from "minimal-time-helpers"
 
+import { DefaultSymbol } from "../common/nodes/defaults.js"
 import { DflowParameter } from "../common/parameters.js"
 import { DflowBinanceContext as Context } from "./context.js"
 import { DflowBinanceHost } from "./host.js"
-import {
-	dflowBinanceKlineIntervals,
-	isDflowBinanceKlineInterval
-} from "./klineIntervals.js"
+import { dflowBinanceKlineIntervals, isDflowBinanceKlineInterval } from "./klineIntervals.js"
 import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
-import {
-	DflowBinanceSymbolAndInterval,
-	DflowBinanceSymbolInfo
-} from "./symbols.js"
+import { DflowBinanceSymbolAndInterval, DflowBinanceSymbolInfo } from "./symbols.js"
 
 const binanceClientMock = new DflowBinanceClientMock()
 
@@ -28,6 +23,7 @@ export async function extractBinanceParametersFromFlow(
 	const parameters: DflowParameter[] = []
 	const context: Context = {
 		binance: binanceClientMock,
+		defaults: {},
 		params: {},
 		memory: {},
 		time: now()
@@ -105,6 +101,7 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 ): Promise<DflowBinanceSymbolAndInterval[]> {
 	const symbolsAndIntervals: DflowBinanceSymbolAndInterval[] = []
 	const context: Context = {
+		defaults: {},
 		binance: binanceClientMock,
 		params: {},
 		memory: {},
@@ -168,12 +165,52 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 		)
 }
 
+export async function extractsBinanceDefaultsFromFlow(
+	nodesCatalog: DflowNodesCatalog,
+	graph: StrategyFlowGraph
+): Promise<Context["defaults"]> {
+	let defaultSymbol: string|undefined
+	const context: Context = {
+		defaults: {},
+		binance: binanceClientMock,
+		params: {},
+		memory: {},
+		time: now()
+	}
+
+	const dflow = new DflowBinanceHost(
+		{
+			nodesCatalog: {
+				...nodesCatalog,
+				[DefaultSymbol.kind]: class MockedDefaultSymbol extends DflowNode {
+					static kind = DefaultSymbol.kind
+					static inputs = DefaultSymbol.inputs
+					static outputs = DefaultSymbol.outputs
+					run() {
+						const symbol = this.input(0).data
+						if (typeof symbol !== "string") return
+						defaultSymbol = symbol
+					}
+				}
+			}
+		},
+		context
+	)
+
+	dflow.load(graph)
+	await dflow.run()
+
+	if (defaultSymbol) return { symbol: defaultSymbol }
+	return {}
+}
+
 export async function extractsBinanceSymbolsFromFlow(
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	graph: StrategyFlowGraph
 ): Promise<string[]> {
 	const symbolsSet = new Set<string>()
 	const context: Context = {
+		defaults: {},
 		binance: binanceClientMock,
 		params: {},
 		memory: {},

@@ -24,6 +24,10 @@ import { Time } from "minimal-time-helpers"
  * ```
  */
 export type DflowCommonContext = {
+	/** Used by any node that as `inputSymbol`. */
+	defaults: {
+		symbol?: string
+	},
 	/** Used by input nodes: `InputBoolean`, `InputNumber`, `InputString`, etc. */
 	params: StrategyParameters
 	/** Used by memory nodes: `GetMemory`, `SetMemory`, `DeleteMemory`. */

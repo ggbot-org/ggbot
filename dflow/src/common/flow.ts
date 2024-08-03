@@ -22,6 +22,7 @@ export const extractCommonParametersFromFlow = async (
 ): Promise<DflowParameter[]> => {
 	const parameters: DflowParameter[] = []
 	const context: Context = {
+		defaults: {},
 		params: {},
 		memory: {},
 		time: now()
