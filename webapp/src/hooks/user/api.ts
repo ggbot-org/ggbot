@@ -342,17 +342,18 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 export function useRenameStrategy(strategyKey: StrategyKey | undefined) {
 	const { resetAccountStrategies } = useAccountStrategies()
 	const { resetStrategy } = useStrategy(strategyKey)
-	const { isDone, ...rest } = useAction<
+	const { isDone, reset, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["RenameStrategy"],
 		UserClientActionOutput["RenameStrategy"]
 	>(userApiOptions, "RenameStrategy")
 	useEffect(() => {
 		if (!isDone) return
+		reset()
 		resetAccountStrategies()
 		resetStrategy()
-	}, [isDone, resetAccountStrategies, resetStrategy])
-	return { isDone, ...rest }
+	}, [isDone, reset, resetAccountStrategies, resetStrategy])
+	return { isDone, reset, ...rest }
 }
 
 export function useWriteAccountStrategiesItemSchedulings() {

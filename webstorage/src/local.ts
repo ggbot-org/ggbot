@@ -1,32 +1,14 @@
 import type { ManagedCacheProvider } from "@workspace/cache"
 
-import { cachedBoolean } from "./cache.js"
+import { cachedBoolean, cachedString } from "./cache.js"
 import { itemKey } from "./items.js"
 import { LocalWebStorageProvider } from "./providers.js"
 
-type LocalWebStorageEventType = "authTokenDeleted"
-
 export class LocalWebStorage {
 	private storage = new LocalWebStorageProvider()
-	private eventTarget = new EventTarget()
 
 	get authToken(): ManagedCacheProvider<string> {
-		const key = itemKey.authToken()
-		return {
-			get: () => {
-				const value = this.storage.getItem(key)
-				if (value) return value
-			},
-			set: (value: string) => {
-				this.storage.setItem(key, value)
-			},
-			delete: () => {
-				this.storage.removeItem(key)
-				this.eventTarget.dispatchEvent(
-					new CustomEvent("authTokenDeleted")
-				)
-			}
-		}
+		return cachedString(this.storage, itemKey.authToken())
 	}
 
 	get hideInactiveStrategies() {
@@ -35,20 +17,6 @@ export class LocalWebStorage {
 
 	get DEBUG_backtesting() {
 		return cachedBoolean(this.storage, itemKey.DEBUG_backtesting())
-	}
-
-	addEventListener(
-		type: LocalWebStorageEventType,
-		callback: EventListenerOrEventListenerObject
-	): void {
-		this.eventTarget.addEventListener(type, callback)
-	}
-
-	removeEventListener(
-		type: LocalWebStorageEventType,
-		callback: EventListenerOrEventListenerObject
-	): void {
-		this.eventTarget.removeEventListener(type, callback)
 	}
 
 	clear() {

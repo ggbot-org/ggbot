@@ -1,11 +1,4 @@
-import {
-	Button,
-	Buttons,
-	Content,
-	MainColor,
-	Message,
-	Modal
-} from "_/components/library"
+import { Button, Buttons, Content, MainColor, Message, Modal } from "_/components/library"
 import { StrategyRecord } from "_/components/StrategyRecord"
 import { useDeleteStrategy } from "_/hooks/user/api"
 import { StrategyKey } from "@workspace/models"
@@ -16,22 +9,23 @@ type Props = {
 	strategyKey: StrategyKey | undefined
 }
 
-const color: MainColor = "warning"
-
 export function DeleteStrategy({ strategyKey }: Props) {
 	const { formatMessage } = useIntl()
 
 	const DELETE = useDeleteStrategy(strategyKey)
 
 	const [modalIsActive, setModalIsActive] = useState(false)
+	const [color, setColor] = useState<Extract<MainColor, "warning">|undefined>()
 
 	return (
 		<>
 			<Button
 				color={color}
-				onClick={() => {
-					setModalIsActive((active) => !active)
-				}}
+				onClick={() => setModalIsActive((active) => !active)}
+				onFocus={() => setColor("warning")}
+				onBlur={() => setColor(undefined)}
+				onPointerEnter={() => setColor("warning")}
+				onPointerLeave={() => setColor(undefined)}
 			>
 				<FormattedMessage id="DeleteStrategy.button" />
 			</Button>
@@ -39,7 +33,7 @@ export function DeleteStrategy({ strategyKey }: Props) {
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					header={formatMessage({ id: "DeleteStrategy.title" })}
-					color={color}
+					color="warning"
 				>
 					<Content>
 						<p>
@@ -51,7 +45,7 @@ export function DeleteStrategy({ strategyKey }: Props) {
 
 					<Buttons>
 						<Button
-							color={color}
+							color="warning"
 							disabled={DELETE.isDone}
 							isLoading={DELETE.isPending}
 							onClick={() => {

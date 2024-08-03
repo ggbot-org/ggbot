@@ -204,13 +204,6 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	}, [accountInfo])
 
 	useEffect(() => {
-		localWebStorage.addEventListener("authTokenDeleted", exit)
-		return () => {
-			localWebStorage.removeEventListener("authTokenDeleted", exit)
-		}
-	}, [exit])
-
-	useEffect(() => {
 		addEventListener("storage", onLocalStorageChange)
 		return () => {
 			removeEventListener("storage", onLocalStorageChange)
