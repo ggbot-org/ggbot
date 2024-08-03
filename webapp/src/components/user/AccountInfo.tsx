@@ -1,11 +1,12 @@
 import { Email } from "_/components/Email"
 import { Div, Title } from "_/components/library"
 import { AccountId, WhenCreated } from "_/components/readonlyFields"
-import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
+import { AuthenticationContext } from "_/contexts/Authentication"
+import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function AccountInfo() {
-	const account = useStoredAccountInfo()
+	const { accountId, accountEmail, accountWhenCreated } = useContext(AuthenticationContext)
 
 	return (
 		<Div bulma="box">
@@ -13,11 +14,11 @@ export function AccountInfo() {
 				<FormattedMessage id="AccountInfo.title" />
 			</Title>
 
-			<Email isStatic value={account?.email} />
+			<Email isStatic value={accountEmail} />
 
-			<WhenCreated value={account?.whenCreated} />
+			<WhenCreated value={accountWhenCreated} />
 
-			<AccountId value={account?.id} />
+			<AccountId value={accountId} />
 		</Div>
 	)
 }

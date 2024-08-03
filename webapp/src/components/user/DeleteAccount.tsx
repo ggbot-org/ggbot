@@ -10,19 +10,18 @@ import {
 	Message,
 	Modal
 } from "_/components/library"
+import { AuthenticationContext } from "_/contexts/Authentication"
 import { useDeleteAccount } from "_/hooks/user/api"
-import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export function DeleteAccount() {
 	const { formatMessage } = useIntl()
-
-	const account = useStoredAccountInfo()
+	const { accountId } = useContext(AuthenticationContext)
 
 	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
 
-	const accountIdConfirmed = accountIdConfirmation === account?.id
+	const accountIdConfirmed = accountIdConfirmation === accountId
 	const color: MainColor | undefined = accountIdConfirmed
 		? "danger"
 		: undefined
@@ -43,11 +42,11 @@ export function DeleteAccount() {
 	return (
 		<>
 			<Button
+				bulma={{ "is-skeleton": !accountId }}
 				color="danger"
 				onClick={() => {
 					setModalIsActive(true)
 				}}
-				disabled={account === undefined}
 			>
 				<FormattedMessage id="DeleteAccount.button" />
 			</Button>

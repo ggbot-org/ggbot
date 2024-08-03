@@ -137,8 +137,10 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 		})
 	}, [])
 
-	// Handle case when `authToken` is deleted from localWebStorage in other tabs.
 	const onLocalStorageChange = useCallback(() => {
+		// Handle case when `accountInfo` changes or is deleted from localWebStorage in other tabs.
+		setStoredAccountInfo(sessionWebStorage.accountInfo.get())
+		// Handle case when `authToken` is deleted from localWebStorage in other tabs.
 		if (!token) return
 		const authToken = localWebStorage.authToken.get()
 		if (!authToken) exit()
@@ -230,6 +232,8 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 			{children}
 
 			<AuthExit
+				accountEmail={contextValue.accountEmail}
+				accountId={contextValue.accountId}
 				isActive={exitConfirmationIsActive}
 				setIsActive={(exitConfirmationIsActive) => {
 					dispatch({

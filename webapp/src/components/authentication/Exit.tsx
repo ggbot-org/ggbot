@@ -10,18 +10,18 @@ import {
 	Title
 } from "_/components/library"
 import { AccountId } from "_/components/readonlyFields"
-import { useStoredAccountInfo } from "_/hooks/user/useStoredAccountInfo"
 import { FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
+	accountEmail: string
+	accountId: string
 	isActive: boolean
 	setIsActive: (arg: boolean) => void
 	exit: () => void
 }
 
-export function AuthExit({ isActive, setIsActive, exit }: Props) {
-	const account = useStoredAccountInfo()
+export function AuthExit({ accountEmail, accountId, isActive, setIsActive, exit }: Props) {
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
@@ -56,11 +56,11 @@ export function AuthExit({ isActive, setIsActive, exit }: Props) {
 
 				<Columns>
 					<Column bulma="is-half">
-						<Email isStatic value={account?.email} />
+						<Email isStatic value={accountEmail} />
 					</Column>
 
 					<Column bulma="is-half">
-						<AccountId value={account?.id} />
+						<AccountId value={accountId} />
 					</Column>
 				</Columns>
 
