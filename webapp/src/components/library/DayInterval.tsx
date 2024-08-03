@@ -4,7 +4,7 @@ import { useIntl } from "react-intl"
 
 import { DayDropdown, DayDropdownProps } from "./DayDropdown"
 
-export type DailyIntervalProps = Pick<
+export type DayIntervalProps = Pick<
 	DayDropdownProps,
 	"disabled" | "min" | "max"
 > & {
@@ -12,13 +12,13 @@ export type DailyIntervalProps = Pick<
 	end: Pick<DayDropdownProps, "day" | "setDay">
 }
 
-export function DailyInterval({
+export function DayInterval({
 	disabled,
 	min,
 	max,
 	start,
 	end
-}: DailyIntervalProps) {
+}: DayIntervalProps) {
 	const { formatMessage } = useIntl()
 
 	const [activeDropdown, setActiveDropdown] = useState<

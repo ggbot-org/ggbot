@@ -1,9 +1,5 @@
-import {
-	AccountInfo,
-	AccountStrategy,
-	Strategy,
-	StrategyKey
-} from "@workspace/models"
+import { AccountInfo, AccountStrategy, Strategy, StrategyKey } from "@workspace/models"
+import { Day } from "minimal-time-helpers"
 
 import { cachedBoolean, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
@@ -21,6 +17,14 @@ export class SessionWebStorage {
 			this.storage,
 			itemKey.accountStrategies()
 		)
+	}
+
+	get strategiesDayIntervalStart() {
+		return cachedObject<Day>(this.storage, itemKey.strategiesDayIntervalStart())
+	}
+
+	get strategiesDayIntervalEnd() {
+		return cachedObject<Day>(this.storage, itemKey.strategiesDayIntervalEnd())
 	}
 
 	get doNotShowPleasePurchase() {

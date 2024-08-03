@@ -9,7 +9,9 @@ const itemKeys = [
 	"doNotShowPleasePurchase",
 	"gotFirstPageView",
 	"hideInactiveStrategies",
-	"strategy"
+	"strategy",
+	"strategiesDayIntervalStart",
+	"strategiesDayIntervalEnd",
 ] as const
 
 type ItemKey = (typeof itemKeys)[number]
@@ -28,10 +30,12 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	accountStrategies: () => "accountStrategies:v1",
 	activeTabId: (pageName: string) => `${pageName}:activeTab:v2`,
 	authToken: () => "authToken:v1",
+	strategiesDayIntervalStart: () => "strategiesDayIntervalStart:v1",
+	strategiesDayIntervalEnd: () => "strategiesDayIntervalEnd:v1",
 	doNotShowPleasePurchase: () => "doNotShowPleasePurchase:v1",
 	gotFirstPageView: () => "gotFirstPageView:v1",
 	hideInactiveStrategies: () => "hideInactiveStrategies:v1",
 	strategy: ({ strategyId, strategyKind }: StrategyKey) => `strategy:${strategyKind}:${strategyId}:v1`,
 	// Debug keys.
-	DEBUG_backtesting: () => "DEBUG_backtesting"
+	DEBUG_backtesting: () => "DEBUG_backtesting",
 }

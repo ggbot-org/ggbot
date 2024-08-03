@@ -1,7 +1,7 @@
 import {
 	Column,
 	Columns,
-	DailyIntervalBox,
+	DayIntervalBox,
 	OneColumn
 } from "_/components/library"
 import {
@@ -9,14 +9,14 @@ import {
 	StrategyErrorsTableProps
 } from "_/components/StrategyErrorsTable"
 import { useReadStrategyErrors } from "_/hooks/user/api"
-import { useDailyInterval } from "_/hooks/user/useDailyInterval"
+import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useCallback, useEffect, useState } from "react"
 
 export function StrategyErrors() {
 	const { strategyKey } = useStrategyKey()
 
-	const { min, max, start, setStart, end, setEnd } = useDailyInterval()
+	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
@@ -41,7 +41,7 @@ export function StrategyErrors() {
 		<>
 			<Columns>
 				<OneColumn>
-					<DailyIntervalBox
+					<DayIntervalBox
 						isLoading={READ.isPending}
 						min={min}
 						max={max}

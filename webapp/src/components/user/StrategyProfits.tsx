@@ -1,13 +1,13 @@
 import {
 	Column,
 	Columns,
-	DailyIntervalBox,
+	DayIntervalBox,
 	OneColumn
 } from "_/components/library"
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
-import { useDailyInterval } from "_/hooks/user/useDailyInterval"
+import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export function StrategyProfits({ strategyKey }: Props) {
-	const { min, max, start, setStart, end, setEnd } = useDailyInterval()
+	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const [orders, setOrders] = useState<ProfitSummaryProps["orders"]>()
 
@@ -43,7 +43,7 @@ export function StrategyProfits({ strategyKey }: Props) {
 		<>
 			<Columns>
 				<OneColumn>
-					<DailyIntervalBox
+					<DayIntervalBox
 						isLoading={READ.isPending}
 						min={min}
 						max={max}

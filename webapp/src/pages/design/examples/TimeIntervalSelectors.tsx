@@ -1,4 +1,4 @@
-import { DailyInterval } from "_/components/library"
+import { DayInterval } from "_/components/library"
 import { getDay, today } from "minimal-time-helpers"
 import { useState } from "react"
 
@@ -8,7 +8,7 @@ export function TimeIntervalSelectors() {
 	const [endDay, setEndDay] = useState(max)
 
 	return (
-		<DailyInterval
+		<DayInterval
 			start={{
 				setDay: setStartDay,
 				day: startDay

@@ -13,8 +13,8 @@ import {
 	Column,
 	Columns,
 	Control,
-	DailyInterval,
-	DailyIntervalProps,
+	DayInterval,
+	DayIntervalProps,
 	Div,
 	Field,
 	OneColumn,
@@ -122,7 +122,7 @@ export function Backtesting({ strategyKey }: Props) {
 		[dispatch]
 	)
 
-	const setEnd = useCallback<DailyIntervalProps["end"]["setDay"]>(
+	const setEnd = useCallback<DayIntervalProps["end"]["setDay"]>(
 		(day) => {
 			dispatch({
 				type: "SET_DAY_INTERVAL",
@@ -132,7 +132,7 @@ export function Backtesting({ strategyKey }: Props) {
 		[dispatch, dayInterval]
 	)
 
-	const setStart = useCallback<DailyIntervalProps["start"]["setDay"]>(
+	const setStart = useCallback<DayIntervalProps["start"]["setDay"]>(
 		(day) => {
 			dispatch({
 				type: "SET_DAY_INTERVAL",
@@ -206,7 +206,7 @@ export function Backtesting({ strategyKey }: Props) {
 							<FormattedMessage id="Backtesting.title" />
 						</Title>
 
-						<DailyInterval
+						<DayInterval
 							disabled={disabled}
 							start={{ day: dayInterval.start, setDay: setStart }}
 							end={{ day: dayInterval.end, setDay: setEnd }}
