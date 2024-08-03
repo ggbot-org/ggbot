@@ -7,12 +7,6 @@ module.exports = {
 	],
 	ignorePatterns: ["dist"],
 	parser: "@typescript-eslint/parser",
-	parserOptions: {
-		ecmaFeatures: {
-			jsx: true
-		},
-		project: ["./tsconfig.json", "./tsconfig.scripts.json"]
-	},
 	plugins: [
 		"@typescript-eslint",
 		"eslint-plugin-react-compiler",
@@ -56,7 +50,7 @@ module.exports = {
 			}
 		],
 		"formatjs/prefer-pound-in-plural": "error",
-		// TODO remove "func-style" from here and add it on root eslint config
+		// Define React components as functions.
 		"func-style": ["error", "declaration"],
 		"import/extensions": "off",
 		"jsx-a11y/aria-props": "error",

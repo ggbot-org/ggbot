@@ -88,7 +88,6 @@ module.exports = {
 		"default-param-last": "error",
 		"dot-notation": "error",
 		eqeqeq: ["error", "smart"],
-		// TODO "func-style": ["error", "declaration"],
 		"import/extensions": ["error", "ignorePackages"],
 		"import/first": "error",
 		"import/newline-after-import": "error",

@@ -2,41 +2,130 @@ import { test } from "node:test"
 
 import { assertDeepEqual } from "minimal-assertion-helpers"
 
-import { mediation, MediatorInput, MediatorOutput } from "./mediator.js"
+import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput } from "./mediator.js"
 
-test("mediation", () => {
-	assertDeepEqual<MediatorInput, MediatorOutput>(mediation, [
+test("addMediation", () => {
+	assertDeepEqual<AddMediationInput, AddMediationOutput>(addMediation, [
+		// First iteration.
+		{
+			input: {
+				averagePrice: 0,
+				numPositions: 0,
+				percentageGain: 0.01,
+				price: 100_000,
+				quantity: 42,
+				totalQuantity: 0,
+			},
+			output: {
+				numPositions: 1,
+				totalQuantity: 42,
+				averagePrice: 100000
+			}
+		},
+
+		// First iteration.
+		{
+			input: {
+				averagePrice: 0,
+				numPositions: 0,
+				percentageGain: 0.01,
+				price: 100_000,
+				quantity: 42,
+				totalQuantity: 0,
+			},
+			output: {
+				numPositions: 1,
+				totalQuantity: 42,
+				averagePrice: 100000
+			}
+		},
+
+		{
+			input: {
+				averagePrice: 80_000,
+				numPositions: 1,
+				percentageGain: 0.1,
+				price: 70_000,
+				quantity: 2,
+				totalQuantity: 1,
+			},
+			output: {
+				numPositions: 2,
+				totalQuantity: 3,
+				averagePrice: 73333.33333333
+			}
+		},
+		{
+			input: {
+				averagePrice: 70_000,
+				numPositions: 1,
+				percentageGain: 0.1,
+				price: 80_000,
+				quantity: 2,
+				totalQuantity: 1,
+			},
+			output: {
+				numPositions: 2,
+				totalQuantity: 3,
+				averagePrice: 76666.66666667
+			}
+		},
+
+		{
+			input: {
+				averagePrice: 80_000,
+				numPositions: 1,
+				percentageGain: 0.017,
+				price: 70_000,
+				quantity: 2,
+				totalQuantity: 1,
+			},
+			output: {
+				numPositions: 2,
+				totalQuantity: 3,
+				averagePrice: 73333.33333333
+			}
+		},
+		{
+			input: {
+				averagePrice: 70_000,
+				numPositions: 1,
+				percentageGain: 0.017,
+				price: 80_000,
+				quantity: 2,
+				totalQuantity: 1,
+			},
+			output: {
+				numPositions: 2,
+				totalQuantity: 3,
+				averagePrice: 76666.66666667
+			}
+		},
+	])
+})
+
+test("exitMediation", () => {
+	assertDeepEqual<ExitMediationInput, ReturnType<typeof exitMediation>>(exitMediation, [
+		// First iteration.
 		{
 			input: {
 				direction: "LONG",
-				addPosition: false,
-				numPositions: 0
+				averagePrice: 0,
+				percentageGain: 0.01,
+				price: 100_000,
 			},
-			output: { exitMediation: false, numPositions: 0 }
+			output: false
 		},
+
+		// First iteration.
 		{
 			input: {
 				direction: "SHORT",
-				addPosition: false,
-				numPositions: 0
+				averagePrice: 0,
+				percentageGain: 0.01,
+				price: 100_000,
 			},
-			output: { exitMediation: false, numPositions: 0 }
+			output: false
 		},
-		{
-			input: {
-				direction: "LONG",
-				addPosition: true,
-				numPositions: 0
-			},
-			output: { exitMediation: false, numPositions: 1 }
-		},
-		{
-			input: {
-				direction: "SHORT",
-				addPosition: true,
-				numPositions: 0
-			},
-			output: { exitMediation: false, numPositions: 1 }
-		}
 	])
 })

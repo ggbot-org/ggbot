@@ -3,7 +3,7 @@ import { DflowNode } from "dflow"
 import { inputSymbol } from "./commonIO.js"
 
 export class DefaultSymbol extends DflowNode {
-	static kind = "symbol"
+	static kind = "defaultSymbol"
 	static inputs = [inputSymbol]
 	static outputs = []
 	run () {
