@@ -1,4 +1,5 @@
 import { reactRootId } from "_/react/root"
+import { ENV } from "@workspace/env"
 
 type LinkTag = {
 	href: string
@@ -34,9 +35,6 @@ const logoBaseUrl = "/logo"
 const faviconSvgUrl = `${logoBaseUrl}/favicon.svg`
 const appleTouchIconUrl = `${logoBaseUrl}/logo-180.png`
 
-const fontBaseUrl = "https://rsms.me"
-const fontFaceUrl = `${fontBaseUrl}/inter/inter.css`
-
 function linkTag({ href }: LinkTag) {
 	return `<link rel="stylesheet" href="${href}">`
 }
@@ -59,18 +57,12 @@ const logoTags = [
 	`<link rel="icon" href="${faviconSvgUrl}" type="image/svg+xml">`
 ]
 
-const fontTags = [
-	`<link rel="preconnect" href="${fontBaseUrl}" crossorigin="">`,
-	`<link href="${fontFaceUrl}" rel="stylesheet">`
-]
-
 function metaTags({ title }: HeadTagArgs["meta"]) {
 	return [
 		'<meta charset="UTF-8" />',
 		'<meta name="viewport" content="width=device-width" />',
 		`<title>${title}</title>`,
 		...logoTags,
-		...fontTags
 	]
 }
 
@@ -103,11 +95,12 @@ function htmlTag({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) {
 }
 
 export function html(scriptJs: string) {
+	const title = ENV.PROJECT_SHORT_NAME()
 	return [
 		"<!DOCTYPE html>",
 		...htmlTag({
 			hasRootDiv: true,
-			meta: { title: "ggbot2" },
+			meta: { title },
 			scripts: [{ src: scriptJs }],
 			stylesheets: [{ href: "/main.css" }]
 		})
