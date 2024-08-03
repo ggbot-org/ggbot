@@ -10,7 +10,7 @@ test("mediation", () => {
 			input: {
 				direction: "LONG",
 				addPosition: false,
-				numPositionsInMemory: 0
+				numPositions: 0
 			},
 			output: { exitMediation: false, numPositions: 0 }
 		},
@@ -18,7 +18,7 @@ test("mediation", () => {
 			input: {
 				direction: "SHORT",
 				addPosition: false,
-				numPositionsInMemory: 0
+				numPositions: 0
 			},
 			output: { exitMediation: false, numPositions: 0 }
 		},
@@ -26,7 +26,7 @@ test("mediation", () => {
 			input: {
 				direction: "LONG",
 				addPosition: true,
-				numPositionsInMemory: 0
+				numPositions: 0
 			},
 			output: { exitMediation: false, numPositions: 1 }
 		},
@@ -34,7 +34,7 @@ test("mediation", () => {
 			input: {
 				direction: "SHORT",
 				addPosition: true,
-				numPositionsInMemory: 0
+				numPositions: 0
 			},
 			output: { exitMediation: false, numPositions: 1 }
 		}

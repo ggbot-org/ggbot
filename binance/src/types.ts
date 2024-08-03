@@ -204,7 +204,7 @@ export type BinanceNewOrderOptions = Partial<{
 	recvWindow: number
 }>
 
-type BinanceOrder = {
+export type BinanceOrder = {
 	symbol: string
 	orderId: number
 	orderListId: number
@@ -479,18 +479,18 @@ type BinanceSymbolFilterPercentPrice = {
 type BinanceSymbolFilterPrice = {
 	filterType: "PRICE_FILTER"
 	/**
-	 * Defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice`
-	 * == 0
+	 * Defines the minimum `price`/`stopPrice` allowed;
+	 * disabled on `minPrice` == 0
 	 */
 	minPrice: BinanceDecimal
 	/**
-	 * Defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice`
-	 * == 0
+	 * Defines the maximum `price`/`stopPrice` allowed;
+	 * disabled on `maxPrice` == 0
 	 */
 	maxPrice: BinanceDecimal
 	/**
-	 * Defines the intervals that a `price`/`stopPrice` can be
-	 * increased/decreased by; disabled on `tickSize` == 0
+	 * Defines the intervals that a `price`/`stopPrice` can be * increased/decreased by;
+	 * disabled on `tickSize` == 0
 	 */
 	tickSize: BinanceDecimal
 }

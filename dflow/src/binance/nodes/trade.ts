@@ -1,14 +1,15 @@
-import { numberToBinanceDecimal } from "@workspace/binance"
+import { BinanceOrder, numberToBinanceDecimal } from "@workspace/binance"
 import { Dflow, DflowNode, DflowOutputDefinition } from "dflow"
+import { objectTypeGuard } from "minimal-type-guard-helpers"
 
-import { inputExecute } from "../../common/nodes/commonIO.js"
+import { inputExecute, inputOrderQuantity, inputSymbol, outputOrderQuantity, outputSymbol } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
 
 const { input, output } = Dflow
 
 const marketOrderInputs = [
-	input("string", { name: "symbol" }),
-	input("number", { name: "quantity", optional: true }),
+	inputSymbol,
+	inputOrderQuantity,
 	input("number", { name: "quoteOrderQty", optional: true }),
 	inputExecute
 ]
@@ -88,5 +89,28 @@ export class SellMarket extends DflowNode {
 					)
 		})
 		this.output(0).data = order
+	}
+}
+
+const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side"|"symbol"|"executedQty"> >(
+	({ side, symbol, executedQty }) => typeof side === "string" && typeof symbol === "string" && typeof executedQty === "number"
+)
+
+export class OrderInfo extends DflowNode {
+	static kind = "orderInfo"
+	static inputs = [
+		input("object", { name: "order" })
+	]
+	static outputs = [
+		output("string", { name: "side" }),
+		outputSymbol,
+		outputOrderQuantity
+	]
+	run () {
+		const order = this.input(0).data
+		if (!isOrderInfo(order)) return this.clearOutputs()
+		this.output(0).data = order.side
+		this.output(1).data = order.symbol
+		this.output(2).data = order.executedQty
 	}
 }

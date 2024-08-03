@@ -27,6 +27,7 @@ export type {
 	BinanceKlineInterval,
 	BinanceKlineOptionalParameters,
 	BinanceNewOrderOptions,
+	BinanceOrder,
 	BinanceOrderRespACK,
 	BinanceOrderRespFULL,
 	BinanceOrderSide,
