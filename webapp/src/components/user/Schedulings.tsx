@@ -189,9 +189,7 @@ export function Schedulings() {
 
 	const addSchedulingItem = useCallback(() => {
 		if (!hasActiveSubscription) {
-			toast.warning(
-				formatMessage({ id: "Schedulings.noActiveSubscription" })
-			)
+			toast.warning(formatMessage({ id: "Schedulings.noActiveSubscription" }))
 			return
 		}
 		setSchedulingItems((schedulingItems) => schedulingItems.concat(

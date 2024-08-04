@@ -1,52 +1,28 @@
 import { classnames } from "_/classnames"
 import { BacktestingActions } from "_/components/BacktestingActions"
-import {
-	BacktestingProgress,
-	BacktestingProgressProps
-} from "_/components/BacktestingProgress"
-import {
-	FrequencyInput,
-	FrequencyInputProps
-} from "_/components/FrequencyInput"
-import {
-	Checkbox,
-	Column,
-	Columns,
-	Control,
-	DayInterval,
-	DayIntervalProps,
-	Div,
-	Field,
-	OneColumn,
-	Title
-} from "_/components/library"
+import { BacktestingProgress, BacktestingProgressProps } from "_/components/BacktestingProgress"
+import { FrequencyInput, FrequencyInputProps } from "_/components/FrequencyInput"
+import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Title } from "_/components/library"
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting } from "_/hooks/useBacktesting"
-import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { isFrequency, StrategyKey } from "@workspace/models"
-import {
-	ChangeEventHandler,
-	InputHTMLAttributes,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Props = {
+	strategyFrequency: Frequency|undefined
 	strategyKey: StrategyKey | undefined
+	strategyName: string
 }
 
-export function Backtesting({ strategyKey }: Props) {
+export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Props) {
 	const { formatMessage } = useIntl()
 
-	const { strategy, strategyName } = useStrategy(strategyKey)
 	const { toast } = useContext(ToastContext)
 
 	const { strategyFlow } = useStrategyFlow(strategyKey)
@@ -74,7 +50,6 @@ export function Backtesting({ strategyKey }: Props) {
 
 	let disabled = false
 	if (isRunning || isPaused) disabled = true
-	if (!strategy) disabled = true
 	if (!hasFlow) disabled = true
 
 	const [frequencyArg, setFrequencyArg] =
@@ -153,7 +128,7 @@ export function Backtesting({ strategyKey }: Props) {
 
 	const onClickStart = useCallback(() => {
 		if (!flowViewGraph) return
-		if (!strategyKey) return
+		if (!strategyKey || !strategyName) return
 		dispatch({
 			dayInterval,
 			flow: flowViewGraph,
@@ -179,11 +154,11 @@ export function Backtesting({ strategyKey }: Props) {
 		dispatch({ type: "RESUME" })
 	}, [dispatch])
 
+	// Backtesting frequency defaults to the suggested frequency, if found in the strategy.
 	useEffect(() => {
-		if (!strategy) return
-		const suggestedFrequency = strategy.frequency
-		if (suggestedFrequency) setFrequency(suggestedFrequency)
-	}, [setFrequency, strategy])
+		if (!strategyFrequency) return
+		setFrequency(strategyFrequency)
+	}, [setFrequency, strategyFrequency])
 
 	useEffect(() => {
 		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))

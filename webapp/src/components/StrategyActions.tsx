@@ -2,33 +2,49 @@ import { GoCopyStrategy } from "_/components/GoCopyStrategy"
 import { GoEditStrategy } from "_/components/GoEditStrategy"
 import { Buttons, Columns, Div, OneColumn, Title } from "_/components/library"
 import { ShareStrategy } from "_/components/ShareStrategy"
-import { StrategyRecord } from "_/components/StrategyRecord"
+import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
-import { RenameStrategy } from "_/components/user/RenameStrategy"
-import { useStrategy } from "_/hooks/useStrategy"
+import { RenameStrategy, RenameStrategyProps } from "_/components/user/RenameStrategy"
 import { StrategyKey } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
 	readOnly: boolean
+	readStrategyIsPending: boolean | undefined
 	strategyKey: StrategyKey | undefined
-}
+} & StrategyRecordProps & Partial<Pick<RenameStrategyProps, "resetStrategy">>
 
-export function StrategyActions({ readOnly, strategyKey }: Props) {
-	const { strategyName } = useStrategy(strategyKey)
-
+export function StrategyActions({
+	readOnly,
+	readStrategyIsPending,
+	resetStrategy,
+	strategyKey,
+	strategyName,
+	strategyId,
+	strategyWhenCreated
+}: Props) {
 	return (
 		<Columns>
 			<OneColumn>
-				<Div bulma="box">
+				<Div bulma={["box", { "is-skeleton": readStrategyIsPending }]}>
 					<Title>
 						<FormattedMessage id="StrategyActions.title" />
 					</Title>
 
-					<StrategyRecord strategyKey={strategyKey} />
+					<StrategyRecord
+						strategyId={strategyId}
+						strategyName={strategyName}
+						strategyWhenCreated={strategyWhenCreated}
+					/>
 
 					<Buttons>
-						{readOnly ? null : <RenameStrategy />}
+						{resetStrategy ? (
+							<RenameStrategy
+								strategyKey={strategyKey}
+								strategyName={strategyName}
+								resetStrategy={resetStrategy}
+							/>
+						): null}
 
 						<GoCopyStrategy strategyKey={strategyKey} />
 
@@ -41,7 +57,12 @@ export function StrategyActions({ readOnly, strategyKey }: Props) {
 							<>
 								<GoEditStrategy strategyKey={strategyKey} />
 
-								<DeleteStrategy strategyKey={strategyKey} />
+								<DeleteStrategy
+									strategyKey={strategyKey}
+									strategyId={strategyId}
+									strategyName={strategyName}
+									strategyWhenCreated={strategyWhenCreated}
+								/>
 							</>
 						)}
 					</Buttons>

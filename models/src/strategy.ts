@@ -16,7 +16,7 @@ export type Strategy = Item &
 		readonly kind: StrategyKind
 		name: Name
 		/**
-		 * Optional scheduling frequency.
+		 * Suggested scheduling frequency.
 		 *
 		 * When the strategy is scheduled, the first scheduling is write here to
 		 * be used as suggestion when another user copies the strategy.

@@ -2,7 +2,6 @@ import { classnames } from "_/classnames"
 import { Button, Input } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
-import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -12,11 +11,10 @@ import { FormattedMessage } from "react-intl"
 
 type Props = {
 	strategyKey: StrategyKey | undefined
+	strategyName: string
 }
 
-export function FlowEditor({ strategyKey }: Props) {
-	const { strategyName } = useStrategy(strategyKey)
-
+export function FlowEditor({ strategyKey, strategyName }: Props) {
 	const { strategyFlow } = useStrategyFlow(strategyKey)
 	const initialFlowViewGraph = strategyFlow?.view
 

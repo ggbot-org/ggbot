@@ -22,36 +22,39 @@ module.exports = {
 	rules: {
 		// TODO set "@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/ban-ts-comment": "off",
+
 		"@typescript-eslint/no-empty-function": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unsafe-argument": "off",
+
 		// @typescript-eslint/unbound-method rule is not compatible with hooks,
 		// it reports this as an error:
 		// ```ts
 		// const { formatMessage } = useIntl()
 		// ```
 		"@typescript-eslint/unbound-method": "off",
+
 		"formatjs/enforce-placeholders": "error",
-		"formatjs/no-literal-string-in-jsx": [
-			"warn",
-			{
-				props: {
-					include: [
-						// check aria attributes that the screen reader announces.
-						["*", "aria-{label,description,details,errormessage}"],
-						// check placeholder and title attribute of all native DOM elements.
-						["[a-z]*([a-z0-9])", "(placeholder|title)"],
-						// check alt attribute of the img tag.
-						["img", "alt"],
-						// check other props that may contain literal strings
-						["*", "header"],
-						["*", "label"]
-					]
-				}
+		"formatjs/no-literal-string-in-jsx": ["warn", {
+			props: {
+				include: [
+					// check aria attributes that the screen reader announces.
+					["*", "aria-{label,description,details,errormessage}"],
+					// check placeholder and title attribute of all native DOM elements.
+					["[a-z]*([a-z0-9])", "(placeholder|title)"],
+					// check alt attribute of the img tag.
+					["img", "alt"],
+					// check other props that may contain literal strings
+					["*", "header"],
+					["*", "label"]
+				]
 			}
-		],
+		}],
 		"formatjs/prefer-pound-in-plural": "error",
+
 		// Define React components as functions.
 		"func-style": ["error", "declaration"],
+
 		"import/extensions": "off",
 		"jsx-a11y/aria-props": "error",
 		"jsx-a11y/aria-proptypes": "error",
@@ -71,25 +74,20 @@ module.exports = {
 		"react/jsx-no-leaked-render": "error",
 		"react/jsx-no-useless-fragment": "error",
 		"react/jsx-pascal-case": ["error", { allowLeadingUnderscore: true }],
-		"react/jsx-sort-props": [
-			"error",
-			{
-				noSortAlphabetically: true,
-				reservedFirst: true,
-				shorthandFirst: true
-			}
-		],
+		"react/jsx-sort-props": ["error", {
+			noSortAlphabetically: true,
+			reservedFirst: true,
+			shorthandFirst: true
+		}],
 		"react/jsx-wrap-multilines": "error",
 		"react/no-array-index-key": "error",
 		"react/no-danger": "error",
 		"react/no-deprecated": "error",
 		"react/prop-types": "off",
 		"react/self-closing-comp": ["error", { component: true, html: true }],
-		"react-compiler/react-compiler": "error"
+		"react-compiler/react-compiler": "error",
 	},
 	settings: {
-		react: {
-			version: "detect"
-		}
+		react: { version: "detect" }
 	}
 }

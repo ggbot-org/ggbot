@@ -6,16 +6,24 @@ import { Schedulings } from "_/components/user/Schedulings"
 import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
+import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
 import { useState } from "react"
 
 export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("manage")
 	const { strategyKey } = useStrategyKey()
-
+	const {
+		strategyId,
+		strategyName,
+		strategyWhenCreated,
+		strategyNotFound,
+		readStrategyIsPending,
+		resetStrategy
+	} = useStrategy(strategyKey)
 	return (
 		<PageContainer>
-			<StrategyPageContainer>
+			<StrategyPageContainer strategyNotFound={strategyNotFound} strategyKey={strategyKey}>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -26,7 +34,12 @@ export function StrategyPage() {
 								<>
 									<StrategyActions
 										readOnly={false}
+										readStrategyIsPending={readStrategyIsPending}
+										resetStrategy={resetStrategy}
+										strategyId={strategyId}
 										strategyKey={strategyKey}
+										strategyName={strategyName}
+										strategyWhenCreated={strategyWhenCreated}
 									/>
 
 									<Schedulings />

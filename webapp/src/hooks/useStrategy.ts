@@ -1,10 +1,10 @@
 import { useReadStrategy } from "_/hooks/public/api"
 import { sessionWebStorage } from "_/storages/session"
 import { Strategy, StrategyKey } from "@workspace/models"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 export function useStrategy(strategyKey: StrategyKey | undefined) {
-	const { data, canRun, request, reset } = useReadStrategy()
+	const { data, canRun, isPending, request, reset } = useReadStrategy()
 
 	const [strategy, setStrategy] = useState<Strategy | null | undefined>(
 		strategyKey ? sessionWebStorage.strategy(strategyKey).get() : undefined
@@ -31,21 +31,13 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 		if (data) sessionWebStorage.strategy(strategyKey).set(data)
 	}, [data, strategyKey])
 
-	// Handle case when account strategies changes or is deleted from localWebStorage in other tabs.
-	const onLocalStorageChange = useCallback(() => {
-		if (!strategyKey) return
-		setStrategy(sessionWebStorage.strategy(strategyKey).get())
-	}, [strategyKey])
-	useEffect(() => {
-		addEventListener("storage", onLocalStorageChange)
-		return () => {
-			removeEventListener("storage", onLocalStorageChange)
-		}
-	}, [onLocalStorageChange])
-
-	return {
-		strategy,
+	return useMemo(() => ({
+		strategyNotFound: strategy === null,
 		strategyName: strategy?.name ?? "",
+		strategyId: strategy?.id ?? "",
+		strategyWhenCreated: strategy?.whenCreated,
+		strategyFrequency: strategy?.frequency,
+		readStrategyIsPending: isPending,
 		resetStrategy
-	}
+	}), [isPending, resetStrategy, strategy])
 }

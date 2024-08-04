@@ -53,11 +53,7 @@ export function SubscriptionPlan({ value }: ValueProp<SubscriptionPlanValue>) {
 	return (
 		<ReadonlyField
 			label={formatMessage({ id: "SubscriptionPlan.label" })}
-			value={
-				value
-					? formatMessage({ id: `SubscriptionPlan.${value}` })
-					: undefined
-			}
+			value={value ? formatMessage({ id: `SubscriptionPlan.${value}` }) : undefined}
 		/>
 	)
 }

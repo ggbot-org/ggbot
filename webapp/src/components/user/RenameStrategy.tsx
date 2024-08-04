@@ -1,58 +1,51 @@
 import { classnames } from "_/classnames"
-import {
-	Button,
-	Control,
-	Field,
-	Message,
-	Modal,
-	Title
-} from "_/components/library"
+import { Button, Control, Field, Message, Modal, Title } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { useRenameStrategy } from "_/hooks/user/api"
-import { useStrategy } from "_/hooks/useStrategy"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { isName } from "@workspace/models"
-import { useEffect, useState } from "react"
+import { isName, StrategyKey } from "@workspace/models"
+import { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-const fieldName = {
-	name: "name"
-}
+const fieldName = { name: "name" }
 const fields = Object.keys(fieldName)
 
-export function RenameStrategy() {
-	const { strategyKey } = useStrategyKey()
-	const { strategyName } = useStrategy(strategyKey)
+export type RenameStrategyProps = {
+	strategyKey: StrategyKey|undefined
+	strategyName: string
+	resetStrategy: () => void
+}
+
+export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: RenameStrategyProps) {
 	const { request, error, isDone, isPending } = useRenameStrategy(strategyKey)
 
 	const [canRename, setCanRename] = useState(false)
 	const [modalIsActive, setModalIsActive] = useState(false)
 
+	const formRef = useRef<HTMLFormElement>(null)
+
 	useEffect(() => {
-		if (isDone) setModalIsActive(false)
-	}, [isDone])
+		if (!isDone) return
+		resetStrategy()
+		setModalIsActive(false)
+		formRef.current!.reset()
+	}, [isDone, resetStrategy])
 
 	return (
 		<>
-			<Button
-				onClick={() => {
-					setModalIsActive((active) => !active)
-				}}
-			>
+			<Button onClick={() => setModalIsActive((active) => !active)}>
 				<FormattedMessage id="RenameStrategy.button" />
 			</Button>
 
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<form
+					ref={formRef}
 					className={classnames("box")}
 					autoComplete="off"
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!strategyKey) return
 						const eventTarget = event.target as EventTarget & {
-							[key in (typeof fields)[number]]?: {
-								value: unknown
-							}
+							[key in (typeof fields)[number]]?: { value: unknown }
 						}
 						const newName = eventTarget[fieldName.name]?.value
 						if (!isName(newName)) return
@@ -71,22 +64,14 @@ export function RenameStrategy() {
 						required
 						placeholder={strategyName}
 						name={fieldName.name}
-						onChange={(event) => {
-							setCanRename(isName(event.target.value))
-						}}
+						onChange={(event) => setCanRename(isName(event.target.value))}
 						readOnly={isPending}
 					/>
 
 					<Field isGrouped>
 						<Control>
 							<Button
-								color={
-									canRename
-										? error
-											? "warning"
-											: "primary"
-										: undefined
-								}
+								color={canRename ? error ? "warning" : "primary" : undefined}
 								isLoading={isPending}
 							>
 								<FormattedMessage id="Button.save" />

@@ -1,16 +1,19 @@
 import { Column, Columns } from "_/components/library"
 import { StrategyId, WhenCreated } from "_/components/readonlyFields"
 import { StrategyName } from "_/components/StrategyName"
-import { useStrategy } from "_/hooks/useStrategy"
-import { StrategyKey } from "@workspace/models"
+import { Time } from "minimal-time-helpers"
 
-type Props = {
-	strategyKey: StrategyKey | undefined
+export type StrategyRecordProps = {
+	strategyId: string
+	strategyName: string
+	strategyWhenCreated: Time | undefined
 }
 
-export function StrategyRecord({ strategyKey }: Props) {
-	const { strategy, strategyName } = useStrategy(strategyKey)
-
+export function StrategyRecord({
+	strategyId,
+	strategyName,
+	strategyWhenCreated
+}: StrategyRecordProps) {
 	return (
 		<>
 			<Columns>
@@ -21,11 +24,11 @@ export function StrategyRecord({ strategyKey }: Props) {
 
 			<Columns>
 				<Column>
-					<StrategyId value={strategy?.id} />
+					<StrategyId value={strategyId} />
 				</Column>
 
 				<Column>
-					<WhenCreated value={strategy?.whenCreated} />
+					<WhenCreated value={strategyWhenCreated} />
 				</Column>
 			</Columns>
 		</>
