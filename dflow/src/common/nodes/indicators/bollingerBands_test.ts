@@ -2,19 +2,19 @@ import { test } from "node:test"
 
 import { assertDeepEqual } from "minimal-assertion-helpers"
 
-import { bollingerBands } from "./bollingerBands.js"
+import { bollinger } from "./bollingerBands.js"
 
-type BollingerBands = typeof bollingerBands
+type Bollinger = typeof bollinger
 
-type BollingerBandsInput = {
-	values: Parameters<BollingerBands>[0]
-	period: Parameters<BollingerBands>[1]
-	amplitude: Parameters<BollingerBands>[2]
+type BollingerInput = {
+	values: Parameters<Bollinger>[0]
+	period: Parameters<Bollinger>[1]
+	amplitude: Parameters<Bollinger>[2]
 }
 
-test("Bollinger Bands", () => {
-	assertDeepEqual<BollingerBandsInput, ReturnType<typeof bollingerBands>>(
-		({ values, period, amplitude }: BollingerBandsInput) => bollingerBands(values, period, amplitude),
+test("bollinger", () => {
+	assertDeepEqual<BollingerInput, ReturnType<typeof bollinger>>(
+		({ values, period, amplitude }: BollingerInput) => bollinger(values, period, amplitude),
 		[
 			{
 				input: { values: [], period: 1, amplitude: 2 },

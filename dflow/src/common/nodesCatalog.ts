@@ -3,7 +3,7 @@ import { Pop, Push, Shift } from "./nodes/array.js"
 import { If } from "./nodes/conditional.js"
 import { DefaultSymbol } from "./nodes/defaults.js"
 import { DeltaPercentage } from "./nodes/deltaPercentage.js"
-import { BollingerBands } from "./nodes/indicators/bollingerBands.js"
+import { Bollinger, BollingerEMA } from "./nodes/indicators/bollingerBands.js"
 import { HeikinAshi } from "./nodes/indicators/candles.js"
 import { CrossOver } from "./nodes/indicators/cross.js"
 import { ExponentialMovingAverage, SimpleMovingAverage, WilderMovingAverage } from "./nodes/indicators/movingAverages.js"
@@ -45,7 +45,8 @@ export const nodesCatalog = {
 	[NullishCoaleshing.kind]: NullishCoaleshing,
 	[Or.kind]: Or,
 	// indicators
-	[BollingerBands.kind]: BollingerBands,
+	[Bollinger.kind]: Bollinger,
+	[BollingerEMA.kind]: BollingerEMA,
 	[ExponentialMovingAverage.kind]: ExponentialMovingAverage,
 	[HeikinAshi.kind]: HeikinAshi,
 	[MediatorLong.kind]: MediatorLong,
