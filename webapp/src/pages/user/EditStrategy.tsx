@@ -14,7 +14,7 @@ export function EditStrategyPage() {
 
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyNotFound={strategyNotFound} strategyKey={strategyKey}>
+			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -32,9 +32,9 @@ export function EditStrategyPage() {
 							tabId: "backtesting",
 							content: (
 								<Backtesting
+									strategyFrequency={strategyFrequency}
 									strategyKey={strategyKey}
 									strategyName={strategyName}
-									strategyFrequency={strategyFrequency}
 								/>
 							)
 						}

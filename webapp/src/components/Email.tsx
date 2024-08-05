@@ -8,10 +8,10 @@ export function Email({ isStatic, value, ...props }: Props) {
 
 	return (
 		<InputField
-			type={isStatic ? "text" : "email"}
-			label={formatMessage({ id: "Email.label" })}
 			isStatic={isStatic}
+			label={formatMessage({ id: "Email.label" })}
 			readOnly={isStatic}
+			type={isStatic ? "text" : "email"}
 			value={value}
 			{...props}
 		/>

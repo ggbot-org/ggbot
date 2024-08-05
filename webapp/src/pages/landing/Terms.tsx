@@ -1,17 +1,6 @@
-import {
-	Container,
-	Content,
-	H1,
-	H2,
-	H3,
-	Paragraph,
-	Section
-} from "_/components/library"
+import { Container, Content, H1, H2, H3, Paragraph, Section } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import {
-	formattedMessageMarkup,
-	formattedMessageMarkupWithLinkTo
-} from "_/i18n/formattedMessageMarkup"
+import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
 import { webapp } from "_/routing/webapp"
 import { binance, telegram } from "@workspace/locators"
 import { FormattedMessage } from "react-intl"
@@ -27,10 +16,7 @@ export function TermsPage() {
 						</H1>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.welcome"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Terms.welcome" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H2>
@@ -38,10 +24,7 @@ export function TermsPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.accessWithEmail"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Terms.accessWithEmail" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H2>
@@ -49,19 +32,11 @@ export function TermsPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.strategies"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Terms.strategies" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.profitAndLoss"
-								values={formattedMessageMarkupWithLinkTo(
-									telegram.support
-								)}
-							/>
+							<FormattedMessage id="Terms.profitAndLoss" values={formattedMessageMarkupWithLinkTo(telegram.support)} />
 						</Paragraph>
 
 						<H2>
@@ -69,19 +44,11 @@ export function TermsPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.binanceApi"
-								values={formattedMessageMarkupWithLinkTo(
-									binance.homepage
-								)}
-							/>
+							<FormattedMessage id="Terms.binanceApi" values={formattedMessageMarkupWithLinkTo(binance.homepage)} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.binanceNoWithdrawals"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Terms.binanceNoWithdrawals" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H2>
@@ -89,13 +56,7 @@ export function TermsPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.binanceUSisNotSupported"
-								values={{
-									b: (chunks) => <b>{chunks}</b>,
-									em: (chunks) => <em>{chunks}</em>
-								}}
-							/>
+							<FormattedMessage id="Terms.binanceUSisNotSupported" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H2>
@@ -115,12 +76,7 @@ export function TermsPage() {
 						</H3>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.fullfillmentPolicies"
-								values={formattedMessageMarkupWithLinkTo(
-									telegram.support
-								)}
-							/>
+							<FormattedMessage id="Terms.fullfillmentPolicies" values={formattedMessageMarkupWithLinkTo(telegram.support)} />
 						</Paragraph>
 
 						<H2>
@@ -128,12 +84,7 @@ export function TermsPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Terms.privacy"
-								values={formattedMessageMarkupWithLinkTo(
-									webapp.privacy.pathname
-								)}
-							/>
+							<FormattedMessage id="Terms.privacy" values={formattedMessageMarkupWithLinkTo(webapp.privacy.pathname)} />
 						</Paragraph>
 					</Content>
 				</Section>

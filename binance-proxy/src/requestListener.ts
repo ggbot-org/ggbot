@@ -1,23 +1,9 @@
 import { Buffer } from "node:buffer"
 import { IncomingMessage, ServerResponse } from "node:http"
 
-import {
-	apiActionMethod,
-	ApiActionOutputData,
-	ApiActionOutputError
-} from "@workspace/api"
+import { apiActionMethod, ApiActionOutputData, ApiActionOutputError } from "@workspace/api"
 import { ErrorBinanceHTTP } from "@workspace/binance"
-import {
-	BAD_GATEWAY__502,
-	BAD_REQUEST__400,
-	BadGatewayError,
-	BadRequestError,
-	INTERNAL_SERVER_ERROR__500,
-	METHOD_NOT_ALLOWED__405,
-	NOT_FOUND__404,
-	OK__200,
-	UNAUTHORIZED__401
-} from "@workspace/http"
+import { BAD_GATEWAY__502, BAD_REQUEST__400, BadGatewayError, BadRequestError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, NOT_FOUND__404, OK__200, UNAUTHORIZED__401 } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { ErrorAccountItemNotFound } from "@workspace/models"
 
@@ -30,10 +16,7 @@ const ContentTypeJSON = { "Content-Type": "application/json" }
 // just to get its URLs pathnames.
 const binanceProxy = new BinanceProxyURLs("localhost")
 
-export const requestListener = (
-	request: IncomingMessage,
-	response: ServerResponse
-) => {
+export function requestListener (request: IncomingMessage, response: ServerResponse) {
 	const { method, url } = request
 
 	if (typeof url !== "string") {
@@ -74,12 +57,7 @@ export const requestListener = (
 
 				if (error instanceof ErrorBinanceHTTP) {
 					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
-					const output: ApiActionOutputError = {
-						error: {
-							name: BadGatewayError.errorName,
-							info: error.info
-						}
-					}
+					const output: ApiActionOutputError = { error: { name: BadGatewayError.errorName, info: error.info } }
 					return response.write(JSON.stringify(output), "utf-8")
 				}
 
@@ -87,8 +65,6 @@ export const requestListener = (
 				debug(error)
 				response.writeHead(INTERNAL_SERVER_ERROR__500)
 			})
-			.finally(() => {
-				response.end()
-			})
+			.finally(() => response.end())
 	})
 }

@@ -1,12 +1,7 @@
 import { DflowNode } from "dflow"
 
 import { add, div, mul, sub } from "../arithmetic.js"
-import {
-	inputPeriod,
-	inputValues,
-	outputLastValue,
-	outputValues
-} from "../commonIO.js"
+import { inputPeriod, inputValues, outputLastValue, outputValues } from "../commonIO.js"
 
 export type MovingAverage = (values: number[], period: number) => number[]
 
@@ -51,9 +46,7 @@ export const simpleMovingAverage: MovingAverage = (values, period) => {
 		const movingValues = array.slice(index - period + 1, index + 1)
 		const sum = movingValues.reduce<number>(
 			// It is ok to cast to `number` cause inputs are numbers.
-			(a, b) => add(a, b) as number,
-			0
-		)
+			(a, b) => add(a, b) as number, 0)
 		// It is ok to cast to `number`, since `period` is greater than `index + 1` where `index` starts from zero.
 		const average = div(sum, period) as number
 		return result.concat(average)
@@ -87,9 +80,7 @@ export const wilderSmoothing: MovingAverage = (values, period) => {
 	]
 	for (let i = period; i < size; i++) {
 		const previous = result[i - period]
-		result.push(
-			add(div(sub(values[i], previous), period), previous) as number
-		)
+		result.push(add(div(sub(values[i], previous), period), previous) as number)
 	}
 	return result
 }

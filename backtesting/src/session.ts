@@ -1,24 +1,11 @@
-import {
-	Frequency,
-	frequencyIntervalDuration,
-	Order,
-	StrategyMemory
-} from "@workspace/models"
-import {
-	dateToTime,
-	DayInterval,
-	dayIntervalToDate,
-	Time
-} from "minimal-time-helpers"
+import { Frequency, frequencyIntervalDuration, Order, StrategyMemory } from "@workspace/models"
+import { dateToTime, DayInterval, dayIntervalToDate, Time } from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
 import { BacktestingStrategy } from "./strategy.js"
 
 export class BacktestingSession implements BacktestingStatusController {
-	static defaultAfterStepBehaviour = {
-		pauseOnMemoryChange: false,
-		pauseOnNewOrder: false
-	}
+	static defaultAfterStepBehaviour = { pauseOnMemoryChange: false, pauseOnNewOrder: false }
 
 	afterStepBehaviour = BacktestingSession.defaultAfterStepBehaviour
 	memory: StrategyMemory = {}

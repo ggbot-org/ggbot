@@ -25,8 +25,7 @@ const policyDocumentStatementActions = [
 	"s3:ListBucket",
 	"s3:PutObject"
 ] as const
-export type PolicyDocumentStatementAction =
-	(typeof policyDocumentStatementActions)[number]
+export type PolicyDocumentStatementAction = (typeof policyDocumentStatementActions)[number]
 
 export type PolicyDocumentStatement = {
 	Action: PolicyDocumentStatementAction[]

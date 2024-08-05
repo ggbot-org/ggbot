@@ -31,8 +31,7 @@ export async function prepareBinance(
 
 	// Pre-fetch klines for "candles" nodes.
 
-	const symbolsAndIntervalsFromCandlesNodes =
-		await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
+	const symbolsAndIntervalsFromCandlesNodes = await extractBinanceSymbolsAndIntervalsFromFlow(binanceSymbols, flow)
 
 	for (const { interval, symbol } of symbolsAndIntervalsFromCandlesNodes) {
 		let startTime = firstTime

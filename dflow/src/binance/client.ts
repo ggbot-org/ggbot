@@ -1,14 +1,4 @@
-import {
-	BinanceExchangeInfo,
-	BinanceKline,
-	BinanceKlineOptionalParameters,
-	BinanceNewOrderOptions,
-	BinanceOrderRespFULL,
-	BinanceOrderSide,
-	BinanceOrderType,
-	BinanceSymbolInfo,
-	BinanceTickerPrice
-} from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice } from "@workspace/binance"
 
 import { DflowBinanceKlineInterval } from "./klineIntervals.js"
 
@@ -41,28 +31,14 @@ interface DflowBinanceClientPrivate {
 
 export class DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo(): Promise<BinanceExchangeInfo> {
-		return Promise.resolve({
-			timezone: "UTC",
-			serverTime: 0,
-			rateLimits: [],
-			symbols: []
-		})
+		return Promise.resolve({ timezone: "UTC", serverTime: 0, rateLimits: [], symbols: [] })
 	}
 
-	klines(
-		_symbol: string,
-		_interval: DflowBinanceKlineInterval,
-		_optionalParameters: BinanceKlineOptionalParameters
-	): Promise<BinanceKline[]> {
+	klines(_symbol: string, _interval: DflowBinanceKlineInterval, _optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
 		return Promise.resolve([])
 	}
 
-	newOrder(
-		symbol: string,
-		side: BinanceOrderSide,
-		type: Extract<BinanceOrderType, "MARKET">,
-		_orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceOrderRespFULL> {
+	newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, _orderOptions: BinanceNewOrderOptions): Promise<BinanceOrderRespFULL> {
 		return Promise.resolve({
 			clientOrderId: "",
 			cummulativeQuoteQty: "0",

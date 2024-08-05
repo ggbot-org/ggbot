@@ -1,24 +1,8 @@
 import { getBinanceSymbolInfo } from "_/binance/getSymbolInfo"
 import { classnames } from "_/classnames"
-import {
-	DateTime,
-	Div,
-	Level,
-	LevelItem,
-	SizeProp,
-	Title
-} from "_/components/library"
+import { DateTime, Div, Level, LevelItem, SizeProp, Title } from "_/components/library"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import {
-	add,
-	BinanceFill,
-	greaterThan,
-	isBinanceFill,
-	lessThan,
-	mul,
-	neg,
-	sub
-} from "@workspace/binance"
+import { add, BinanceFill, greaterThan, isBinanceFill, lessThan, mul, neg, sub } from "@workspace/binance"
 import { Order, StrategyKind } from "@workspace/models"
 import { DayInterval } from "minimal-time-helpers"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"

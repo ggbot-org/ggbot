@@ -7,7 +7,6 @@ type Props = StrategyKey
 
 export function StrategyNotFound({ strategyId, strategyKind }: Props) {
 	const { formatMessage } = useIntl()
-
 	return (
 		<Message
 			color="warning"

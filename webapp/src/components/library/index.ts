@@ -22,27 +22,4 @@ export * from "./Tabs"
 export * from "./Toast"
 export * from "./ToastContainer"
 export type { ButtonProps, MainColor, ProgressProps, SizeProp } from "trunx"
-export {
-	Button,
-	Buttons,
-	Checkbox,
-	Column,
-	Columns,
-	Container,
-	Content,
-	Control,
-	Div,
-	Field,
-	Hero,
-	HeroBody,
-	HeroFoot,
-	Message,
-	NavbarEnd,
-	NavbarStart,
-	Progress,
-	Section,
-	Table,
-	Tag,
-	Tags,
-	Title
-} from "trunx"
+export { Button, Buttons, Checkbox, Column, Columns, Container, Content, Control, Div, Field, Hero, HeroBody, HeroFoot, Message, NavbarEnd, NavbarStart, Progress, Section, Table, Tag, Tags, Title } from "trunx"

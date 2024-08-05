@@ -18,62 +18,34 @@ describe("repository", () => {
 
 		describe("script", () => {
 			for (const workspacePathname of packageJson.workspaces) {
-				const buildScript =
-					packageJson.workspaceBuildScriptCommand(workspacePathname)
+				const buildScript = packageJson.workspaceBuildScriptCommand(workspacePathname)
 				if (!buildScript) continue
-				const buildScriptKey =
-					RepositoryPackageJson.workspaceBuildScriptKey(
-						workspacePathname
-					)
+				const buildScriptKey = RepositoryPackageJson.workspaceBuildScriptKey(workspacePathname)
+
 				describe(buildScriptKey, () => {
 					const assertionError = `check repository package.json ${buildScriptKey} script`
 					test("has expected command", () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
 						if (workspace.packageJson.buildScriptCommand) {
-							assert.equal(
-								RepositoryPackageJson.workspaceBuildCommand(
-									workspacePathname
-								),
-								buildScript,
-								assertionError
-							)
+							assert.equal(RepositoryPackageJson.workspaceBuildCommand(workspacePathname), buildScript, assertionError)
 						} else {
 							assert.equal(buildScript, undefined, assertionError)
 						}
 					})
 				})
 
-				const prebuildScriptKey =
-					RepositoryPackageJson.workspacePrebuildScriptKey(
-						workspacePathname
-					)
+				const prebuildScriptKey = RepositoryPackageJson.workspacePrebuildScriptKey(workspacePathname)
 				describe(prebuildScriptKey, () => {
 					const assertionError = `check repository package.json ${prebuildScriptKey} script`
 					test("has expected command", () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
-						const prebuildScript =
-							packageJson.workspacePrebuildScriptCommand(
-								workspacePathname
-							)
-						if (
-							workspace.packageJson.internalDependencies.size ===
-							0
-						) {
-							assert.equal(
-								prebuildScript,
-								undefined,
-								assertionError
-							)
+						const prebuildScript = packageJson.workspacePrebuildScriptCommand(workspacePathname)
+						if (workspace.packageJson.internalDependencies.size === 0) {
+							assert.equal(prebuildScript, undefined, assertionError)
 						} else {
-							assert.equal(
-								prebuildScript,
-								RepositoryPackageJson.workspacePrebuildCommand(
-									workspacePathname
-								),
-								assertionError
-							)
+							assert.equal(prebuildScript, RepositoryPackageJson.workspacePrebuildCommand(workspacePathname), assertionError)
 						}
 					})
 				})
@@ -82,15 +54,11 @@ describe("repository", () => {
 	})
 
 	describe("workspace", () => {
-		for (const [
-			workspacePathname,
-			{ packageJson }
-		] of repository.workspaces.entries()) {
+		for (const [workspacePathname, { packageJson }] of repository.workspaces.entries()) {
 			const assertionError = `check ${workspacePathname}/package.json`
 
 			describe(`${workspacePathname} package.json`, () => {
-				const { packageName, dependencies, devDependencies } =
-					packageJson
+				const { packageName, dependencies, devDependencies } = packageJson
 
 				const allDependencyKeys = [
 					...Array.from(dependencies.keys()),
@@ -102,10 +70,7 @@ describe("repository", () => {
 				})
 
 				test("has scope", () => {
-					assert.ok(
-						packageName.startsWith(
-							`${WorkspacePackageJson.scope}/`
-						),
+					assert.ok(packageName.startsWith(`${WorkspacePackageJson.scope}/`),
 						assertionError
 					)
 				})
@@ -115,10 +80,7 @@ describe("repository", () => {
 				})
 
 				test("does not depend on itself", () => {
-					assert.ok(
-						!allDependencyKeys.includes(packageName),
-						assertionError
-					)
+					assert.ok(!allDependencyKeys.includes(packageName), assertionError)
 				})
 
 				test("does not have duplicated dependencies", () => {
@@ -130,13 +92,9 @@ describe("repository", () => {
 				})
 
 				test("dependencies has exact version", () => {
-					for (const [key, value] of [
-						...Array.from(dependencies.entries()),
-						...Array.from(devDependencies.entries())
-					]) assert.ok(
-						Number.isInteger(Number(value.split(".")[0])),
-						`${assertionError} dependency ${key} version ${value} is not exact`
-					)
+					for (const [key, value] of [...Array.from(dependencies.entries()), ...Array.from(devDependencies.entries())]) {
+						assert.ok(Number.isInteger(Number(value.split(".")[0])), `${assertionError} dependency ${key} version ${value} is not exact`)
+					}
 				})
 			})
 		}

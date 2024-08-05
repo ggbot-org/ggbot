@@ -52,11 +52,11 @@ const iconRecord: Record<IconName, IconDefinition> = {
 	"dots-vertical": {
 		jsx: (
 			<g fill="currentColor">
-				<circle r={2} cx={10} cy={4} />
+				<circle cx={10} cy={4} r={2} />
 
-				<circle r={2} cx={10} cy={10} />
+				<circle cx={10} cy={10} r={2} />
 
-				<circle r={2} cx={10} cy={16} />
+				<circle cx={10} cy={16} r={2} />
 			</g>
 		),
 		viewBox: "0 0 20 20"
@@ -79,12 +79,12 @@ export function Icon({ name, onClick, size = "1em" }: IconProps) {
 
 	return (
 		<svg
-			width={size}
-			height={size}
-			viewBox={viewBox}
-			xmlns="http://www.w3.org/2000/svg"
 			className={className}
+			height={size}
 			onClick={onClick}
+			viewBox={viewBox}
+			width={size}
+			xmlns="http://www.w3.org/2000/svg"
 		>
 			{jsx}
 		</svg>

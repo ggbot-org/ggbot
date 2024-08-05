@@ -1,11 +1,7 @@
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { isBinanceErrorPayload } from "./typeGuards.js"
-import {
-	BinanceErrorPayload,
-	BinanceOrderType,
-	BinanceSymbolFilter
-} from "./types.js"
+import { BinanceErrorPayload, BinanceOrderType, BinanceSymbolFilter } from "./types.js"
 
 type ErrorBinanceHTTPInfo = {
 	payload: BinanceErrorPayload
@@ -59,10 +55,7 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
 	static errorName = "ErrorBinanceCannotTradeSymbol"
 	readonly symbol: unknown
 	readonly orderType: BinanceOrderType
-	constructor({
-		symbol,
-		orderType
-	}: Pick<ErrorBinanceCannotTradeSymbol, "symbol" | "orderType">) {
+	constructor({ symbol, orderType }: Pick<ErrorBinanceCannotTradeSymbol, "symbol" | "orderType">) {
 		super(ErrorBinanceCannotTradeSymbol.message())
 		this.symbol = symbol
 		this.orderType = orderType
@@ -75,10 +68,7 @@ export class ErrorBinanceCannotTradeSymbol extends Error {
 export class ErrorBinanceSymbolFilter extends Error {
 	static errorName = "ErrorBinanceSymbolFilter"
 	filterType: BinanceSymbolFilter["filterType"]
-	constructor({
-		filterType,
-		detail
-	}: Pick<ErrorBinanceSymbolFilter, "filterType"> & { detail: string }) {
+	constructor({ filterType, detail }: Pick<ErrorBinanceSymbolFilter, "filterType"> & { detail: string }) {
 		super(ErrorBinanceSymbolFilter.message(filterType, detail))
 		this.filterType = filterType
 	}

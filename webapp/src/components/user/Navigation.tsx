@@ -1,10 +1,5 @@
 import { classnames } from "_/classnames"
-import {
-	Navbar,
-	NavbarEnd,
-	NavbarLink,
-	NavbarStart
-} from "_/components/library"
+import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -19,18 +14,12 @@ export function Navigation() {
 			<NavbarStart>
 				<NavbarLink
 					className="is-arrowless"
-					onClick={() => {
-						GOTO(webapp.user.dashboard)
-					}}
+					onClick={() => GOTO(webapp.user.dashboard)}
 				>
 					<FormattedMessage id="Navigation.dashboard" />
 				</NavbarLink>
 
-				<NavbarLink
-					onClick={() => {
-						GOTO(webapp.user.settings)
-					}}
-				>
+				<NavbarLink onClick={() => GOTO(webapp.user.settings)}>
 					<FormattedMessage id="Navigation.settings" />
 				</NavbarLink>
 			</NavbarStart>
@@ -39,19 +28,13 @@ export function Navigation() {
 				{accountIsAdmin ? (
 					<NavbarLink
 						className={classnames("has-text-primary")}
-						onClick={() => {
-							GOTO(webapp.admin.dashboard)
-						}}
+						onClick={() => GOTO(webapp.admin.dashboard)}
 					>
 						<FormattedMessage id="Navigation.admin" />
 					</NavbarLink>
 				) : null}
 
-				<NavbarLink
-					onClick={() => {
-						showAuthExit()
-					}}
-				>
+				<NavbarLink onClick={() => showAuthExit()}>
 					<FormattedMessage id="Navigation.exit" />
 				</NavbarLink>
 			</NavbarEnd>

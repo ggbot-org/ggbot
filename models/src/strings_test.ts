@@ -3,12 +3,7 @@ import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 
-import {
-	isFiniteString,
-	isIdentifierString,
-	isNonEmptyString,
-	stringMaxLength
-} from "./strings.js"
+import { isFiniteString, isIdentifierString, isNonEmptyString, stringMaxLength } from "./strings.js"
 
 const fooString = "foo"
 const stringTooLong = "x".repeat(999)

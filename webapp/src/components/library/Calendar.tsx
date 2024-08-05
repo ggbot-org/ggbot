@@ -1,12 +1,6 @@
 import { classnames } from "_/classnames"
 import { dateToDay, Day } from "minimal-time-helpers"
-import {
-	MouseEvent,
-	MouseEventHandler,
-	useCallback,
-	useMemo,
-	useState
-} from "react"
+import { MouseEvent, MouseEventHandler, useCallback, useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
@@ -14,30 +8,17 @@ import { Icon } from "./Icon"
 function CalendarWeekDays() {
 	const { formatDate } = useIntl()
 
-	const weekDayNames = [
-		"1970-01-04",
-		"1970-01-05",
-		"1970-01-06",
-		"1970-01-07",
-		"1970-01-08",
-		"1970-01-09",
-		"1970-01-10"
-	].map((day) => ({
-		day,
-		label: formatDate(day, { weekday: "short" })
-	}))
+	const weekDayNames = ["1970-01-04", "1970-01-05", "1970-01-06", "1970-01-07", "1970-01-08", "1970-01-09", "1970-01-10"].map(
+		(day) => ({ day, label: formatDate(day, { weekday: "short" }) })
+	)
 
 	return (
 		<div
 			className={classnames("calendar__grid")}
-			onClick={(event) => {
-				event.stopPropagation()
-			}}
+			onClick={(event) => event.stopPropagation()}
 		>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={classnames("calendar__week-day")}>
-					{label}
-				</div>
+				<div key={day} className={classnames("calendar__week-day")}>{label}</div>
 			))}
 		</div>
 	)
@@ -50,12 +31,7 @@ export type CalendarProps = {
 	setDay: (arg: Day) => void
 }
 
-export function Calendar({
-	min,
-	max,
-	day: selectedDay,
-	setDay: setSelectedDay
-}: CalendarProps) {
+export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }: CalendarProps) {
 	const { formatDate } = useIntl()
 
 	const [monthOffset, setMonthOffset] = useState(0)
@@ -97,40 +73,19 @@ export function Calendar({
 		}
 
 		const dateCells = [
-			...datesBeforeFirstDate.map((date) => ({
-				date,
-				isDateOfCurrentMonth: false
-			})),
-			...datesOfMonth.map((date) => ({
-				date,
-				isDateOfCurrentMonth: true
-			})),
-			...datesAfterLastDate.map((date) => ({
-				date,
-				isDateOfCurrentMonth: false
-			}))
+			...datesBeforeFirstDate.map((date) => ({ date, isDateOfCurrentMonth: false })),
+			...datesOfMonth.map((date) => ({ date, isDateOfCurrentMonth: true })),
+			...datesAfterLastDate.map((date) => ({ date, isDateOfCurrentMonth: false }))
 		]
-			.map(({ date, ...rest }) => ({
-				day: dateToDay(date),
-				date,
-				...rest
-			}))
+			.map(({ date, ...rest }) => ({ day: dateToDay(date), date, ...rest }))
 			.map(({ day, ...rest }) => ({
 				selected: day === selectedDay,
-				isSelectable:
-					(min && day ? day >= min : true) &&
-					(max && day ? day <= max : true),
+				isSelectable: (min && day ? day >= min : true) && (max && day ? day <= max : true),
 				day,
 				...rest
 			}))
 			.map(
-				({
-					date,
-					day,
-					isDateOfCurrentMonth,
-					isSelectable,
-					selected
-				}) => ({
+				({ date, day, isDateOfCurrentMonth, isSelectable, selected }) => ({
 					day,
 					isDateOfCurrentMonth,
 					isSelectable,
@@ -148,24 +103,13 @@ export function Calendar({
 					//
 					//     Encountered two children with the same key.
 					//
-					key: Math.random()
-						.toString(36)
-						.replace(/[^a-z]+/g, "")
-						.substring(0, 5)
+					key: Math.random().toString(36).replace(/[^a-z]+/g, "").substring(0, 5)
 					// TODO fix this
 				})
 			)
 
 		return { firstDate, lastDate, dateCells, monthName, year }
-	}, [
-		formatDate,
-		min,
-		max,
-		monthOffset,
-		selectedDay,
-		setSelectedDay,
-		setMonthOffset
-	])
+	}, [formatDate, min, max, monthOffset, selectedDay, setSelectedDay, setMonthOffset])
 
 	const isLastMonth = max && dateToDay(lastDate) >= max
 	const isFirstMonth = min && dateToDay(firstDate) <= min
@@ -197,24 +141,18 @@ export function Calendar({
 				}}
 			>
 				<div
-					className={classnames("calendar__head-icon", {
-						"has-text-grey-lighter": isFirstMonth
-					})}
+					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isFirstMonth })}
 					onClick={onClickPrevious}
 				>
 					<Icon name="caret-left" />
 				</div>
 
-				<div className={classnames("calendar__head-text")}>
-					{monthName}
-				</div>
+				<div className={classnames("calendar__head-text")}>{monthName}</div>
 
 				<div className={classnames("calendar__head-text")}>{year}</div>
 
 				<div
-					className={classnames("calendar__head-icon", {
-						"has-text-grey-lighter": isLastMonth
-					})}
+					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isLastMonth })}
 					onClick={onClickNext}
 				>
 					<Icon name="caret-right" />
@@ -228,10 +166,7 @@ export function Calendar({
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
 							key={key}
-							className={classnames("calendar__cell", {
-								"calendar__cell--selected": selected,
-								"calendar__cell--disabled": !isSelectable
-							})}
+							className={classnames("calendar__cell", { "calendar__cell--selected": selected, "calendar__cell--disabled": !isSelectable })}
 							onClick={onClick}
 						>
 							{num}
@@ -241,11 +176,7 @@ export function Calendar({
 
 				{
 					/* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
-					dateCells.length === 35
-						? [0, 1, 2, 3, 4, 5, 6].map((i) => (
-							<div key={i}>&nbsp;</div>
-						))
-						: null
+					dateCells.length === 35 ? [0, 1, 2, 3, 4, 5, 6].map((i) => (<div key={i}>&nbsp;</div>)) : null
 				}
 			</div>
 		</div>

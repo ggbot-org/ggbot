@@ -1,27 +1,7 @@
 import { InputField } from "_/components/library"
-import {
-	BooleanParameter,
-	DflowBinanceSymbolInfo,
-	dflowBinanceSymbolSeparator,
-	IntervalParameter,
-	isDflowBinanceKlineInterval,
-	NumberParameter,
-	StringParameter,
-	SymbolParameter
-} from "@workspace/dflow"
-import {
-	IdentifierString,
-	isFiniteNumber,
-	isFiniteString,
-	SerializablePrimitive
-} from "@workspace/models"
-import {
-	ChangeEventHandler,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState
-} from "react"
+import { BooleanParameter, dflowBinanceKlineIntervals, DflowBinanceSymbolInfo, dflowBinanceSymbolSeparator, IntervalParameter, isDflowBinanceKlineInterval, NumberParameter, StringParameter, SymbolParameter } from "@workspace/dflow"
+import { IdentifierString, isFiniteNumber, isFiniteString, SerializablePrimitive } from "@workspace/models"
+import { ChangeEventHandler, useCallback, useEffect, useMemo, useState } from "react"
 
 export type SchedulingParameterItemProps = {
 	binanceSymbols: DflowBinanceSymbolInfo[] | undefined
@@ -45,13 +25,7 @@ export function SchedulingParameterItem({
 }: SchedulingParameterItemProps) {
 	const [hasError, setHasError] = useState(false)
 
-	const onChange = useCallback<
-		ChangeEventHandler<
-			HTMLInputElement & {
-				value: SchedulingParameterItemProps["paramValue"]
-			}
-		>
-	>(
+	const onChange = useCallback<ChangeEventHandler<HTMLInputElement & { value: SchedulingParameterItemProps["paramValue"] }>>(
 		(event) => {
 			const value = event.target.value
 			if (typeof value !== "string") return
@@ -130,23 +104,18 @@ export function SchedulingParameterItem({
 	// Validate incoming value to show UI feedback.
 	useEffect(() => {
 		if (paramValue === undefined) return
-		if (kind === BooleanParameter.kind && typeof paramValue === "boolean") return
-
-		if (kind === NumberParameter.kind && isFiniteNumber(Number(paramValue))) return
-
-		if (
-			kind === IntervalParameter.kind &&
-			isDflowBinanceKlineInterval(paramValue)
-		) return
-
-		if (kind === SymbolParameter.kind) {
-			if (!binanceSymbols) return
-			const isSymbol = binanceSymbols.some(
-				({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === paramValue
-			)
-			if (isSymbol) return
+		if (kind === BooleanParameter.kind) {
+			if (typeof paramValue === "boolean") return
 		}
-
+		if (kind === NumberParameter.kind) {
+			if (isFiniteNumber(paramValue)) return
+		}
+		if (kind === IntervalParameter.kind) {
+			if (isDflowBinanceKlineInterval(paramValue)) return
+		}
+		if (kind === SymbolParameter.kind) {
+			if (binanceSymbols?.some(({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === paramValue)) return
+		}
 		setHasError(true)
 	}, [kind, paramValue, binanceSymbols])
 
@@ -176,20 +145,25 @@ export function SchedulingParameterItem({
 		<>
 			<InputField
 				color={hasError ? "danger" : undefined}
+				defaultValue={defaultValue}
+				label={label}
 				list={label}
 				onChange={onChange}
 				placeholder={placeholder}
-				label={label}
-				defaultValue={defaultValue}
 			/>
+
+			{kind === IntervalParameter.kind && (
+				<datalist id={label}>
+					{dflowBinanceKlineIntervals.map((value) => (
+						<option key={value} value={value} />
+					))}
+				</datalist>
+			)}
 
 			{kind === SymbolParameter.kind && (
 				<datalist id={label}>
 					{binanceSymbols?.map(({ baseAsset, quoteAsset }) => (
-						<option
-							key={baseAsset + quoteAsset}
-							value={`${baseAsset}${dflowBinanceSymbolSeparator}${quoteAsset}`}
-						/>
+						<option key={baseAsset + quoteAsset} value={`${baseAsset}${dflowBinanceSymbolSeparator}${quoteAsset}`} />
 					))}
 				</datalist>
 			)}

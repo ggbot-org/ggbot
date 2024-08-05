@@ -1,35 +1,16 @@
 import { classnames } from "_/classnames"
-import {
-	Button,
-	Buttons,
-	Column,
-	Columns,
-	Message,
-	Title
-} from "_/components/library"
-import { SubscriptionEnd } from "_/components/readonlyFields"
+import { Button, Buttons, Column, Columns, Message, Title } from "_/components/library"
+import { SubscriptionEnd, SubscriptionTotalPrice } from "_/components/readonlyFields"
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
-import { SubscriptionTotalPrice } from "_/components/user/SubscriptionTotalPrice"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useCreateCheckoutSession } from "_/hooks/user/api"
 import { useSubscription } from "_/hooks/user/useSubscription"
+import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { GOTO } from "_/routing/navigation"
-import {
-	isNaturalNumber,
-	purchaseDefaultNumMonths as defaultNumMonths,
-	purchaseMaxNumMonths as maxNumMonths,
-	purchaseMinNumMonths as minNumMonths,
-	SubscriptionPlan
-} from "@workspace/models"
+import { isNaturalNumber, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from "@workspace/models"
 import { isYearlyPurchase } from "@workspace/models"
 import { getTime, now, Time } from "minimal-time-helpers"
-import {
-	FormEventHandler,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { FormEventHandler, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 const fieldName = {
@@ -42,12 +23,9 @@ export function SubscriptionPurchase() {
 
 	const { accountEmail } = useContext(AuthenticationContext)
 
-	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } =
-		useSubscription()
+	const { canPurchaseSubscription, hasActiveSubscription, subscriptionEnd } = useSubscription()
 
-	const [numMonths, setNumMonths] = useState<number | undefined>(
-		defaultNumMonths
-	)
+	const [numMonths, setNumMonths] = useState<number | undefined>(defaultNumMonths)
 
 	const subscriptionPlan: SubscriptionPlan = "basic"
 	const monthlyPrice = Number(STRIPE_PLAN_BASIC_MONTHLY_PRICE)
@@ -58,37 +36,23 @@ export function SubscriptionPurchase() {
 
 	let newSubscriptionEnd: Time | undefined
 	if (isNaturalNumber(numMonths)) {
-		const start = subscriptionEnd
-			? getTime(subscriptionEnd).plusOne.day
-			: now()
-		newSubscriptionEnd = getTime(start).plus(
-			numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths
-		).months
+		const start = subscriptionEnd ? getTime(subscriptionEnd).plusOne.day : now()
+		newSubscriptionEnd = getTime(start).plus(numMonths >= maxNumMonths - 1 ? maxNumMonths : numMonths).months
 	}
 
 	const isYearly = isYearlyPurchase({ numMonths })
 
 	let itemName = ""
-	if (isYearly) {
-		itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
-	} else if (numMonths) itemName = formatMessage(
-		{
-			id: "SubscriptionPurchase.monthlyItemName"
-		},
-		{ numMonths }
-	)
+	if (isYearly) itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
+	else if (numMonths) itemName = formatMessage({ id: "SubscriptionPurchase.monthlyItemName" }, { numMonths })
 
 	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
 		(event) => {
 			event.preventDefault()
 			if (!CREATE_CHECKOUT.canRun) return
 
-			const eventTarget = event.target as EventTarget & {
-				[key in (typeof fields)[number]]?: { value: unknown }
-			}
-
+			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: unknown } }
 			const numMonthsStr = eventTarget[fieldName.numMonths]?.value
-
 			const numMonths = Number(numMonthsStr)
 
 			let purchaseIsDisabled = false
@@ -150,27 +114,18 @@ export function SubscriptionPurchase() {
 					)}
 
 					<Message>
-						<FormattedMessage
-							id="SubscriptionPurchase.oneMonthPrice"
-							values={{ price: formattedMonthlyPrice }}
-						/>
+						<FormattedMessage id="SubscriptionPurchase.oneMonthPrice" values={{ price: formattedMonthlyPrice }} />
 
 						<br />
 
-						<FormattedMessage
-							id="SubscriptionPurchase.hint"
-							values={{
-								numMonths: maxNumMonths,
-								em: (chunks) => <em>{chunks}</em>
-							}}
-						/>
+						<FormattedMessage id="SubscriptionPurchase.hint" values={{ numMonths: maxNumMonths, ...formattedMessageMarkup }} />
 					</Message>
 
 					<Columns isMobile>
 						<Column bulma="is-narrow">
 							<SubscriptionNumMonths
-								name={fieldName.numMonths}
 								isYearlyPurchase={isYearly}
+								name={fieldName.numMonths}
 								setValue={setNumMonths}
 								value={numMonths}
 							/>

@@ -12,7 +12,9 @@ export function PageContainer({ children }: PropsWithChildren) {
 				<Page>
 					<Navigation />
 
-					<ToastProvider>{children}</ToastProvider>
+					<ToastProvider>
+						{children}
+					</ToastProvider>
 				</Page>
 			</AuthenticationProvider>
 		</I18nProvider>

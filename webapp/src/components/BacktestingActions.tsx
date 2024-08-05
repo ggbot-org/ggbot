@@ -71,5 +71,5 @@ export function BacktestingActions({
 		</Buttons>
 	)
 
-	return <StartButton onClick={onClickStart} disabled={!canStart} />
+	return <StartButton disabled={!canStart} onClick={onClickStart} />
 }

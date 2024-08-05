@@ -28,22 +28,14 @@ describe("DevopsPolicy", () => {
 	}
 
 	if (policyDocument) {
-		const findStatementByActions =
-			IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
+		const findStatementByActions = IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
 
-		for (const [statementName, actionList] of Object.entries(
-			devopsPolicy.statementAction
-		)) {
+		for (const [statementName, actionList] of Object.entries(devopsPolicy.statementAction)) {
 			const statement = findStatementByActions(actionList)
 			const exists = statement !== undefined
 			describe(statementName, () => {
 				test("exists", () => {
-					assert.ok(
-						exists,
-						`devopsPolicy ${statementName} statement actions should be ${JSON.stringify(
-							actionList
-						)}`
-					)
+					assert.ok(exists, `devopsPolicy ${statementName} statement actions should be ${JSON.stringify(actionList)}`)
 				})
 			})
 

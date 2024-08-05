@@ -1,7 +1,4 @@
-import {
-	FrequencyInput,
-	FrequencyInputProps
-} from "_/components/FrequencyInput"
+import { FrequencyInput, FrequencyInputProps } from "_/components/FrequencyInput"
 import { Button, Buttons, Div, Level, LevelItem } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
@@ -20,29 +17,19 @@ export type SchedulingItemProps = Pick<
 	removeScheduling: () => void
 }
 
-export function SchedulingItem({
-	disabledIntervalOptions,
-	scheduling,
-	setFrequency,
-	removeScheduling,
-	setStatus
-}: SchedulingItemProps) {
+export function SchedulingItem({ disabledIntervalOptions, scheduling, setFrequency, removeScheduling, setStatus }: SchedulingItemProps) {
 	const { formatMessage } = useIntl()
 
 	const { frequency, status } = scheduling
 
 	const onClickStatusButton = useCallback(() => {
-		if (status !== "active") {
-			setStatus("active")
-		} else {
-			setStatus("inactive")
-		}
+		if (status !== "active") setStatus("active")
+		else setStatus("inactive")
 	}, [status, setStatus])
 
-	const statusButtonLabel =
-		status === "active"
-			? formatMessage({ id: "SchedulingItem.dismiss" })
-			: formatMessage({ id: "SchedulingItem.activate" })
+	const statusButtonLabel = status === "active"
+		? formatMessage({ id: "SchedulingItem.dismiss" })
+		: formatMessage({ id: "SchedulingItem.activate" })
 
 	return (
 		<Div bulma="box">
@@ -68,9 +55,9 @@ export function SchedulingItem({
 			/>
 
 			<FrequencyInput
+				disabledIntervalOptions={disabledIntervalOptions}
 				frequency={frequency}
 				setFrequency={setFrequency}
-				disabledIntervalOptions={disabledIntervalOptions}
 			/>
 		</Div>
 	)

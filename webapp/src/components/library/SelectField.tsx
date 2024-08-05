@@ -22,7 +22,7 @@ export function SelectField({
 			<Label htmlFor={id}>{label}</Label>
 
 			<Control>
-				<Select id={id} color={color} {...props} />
+				<Select color={color} id={id} {...props} />
 			</Control>
 
 			{help ? <Help color={color}>{help}</Help> : null}

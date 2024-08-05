@@ -2,12 +2,7 @@ import { describe, test } from "node:test"
 
 import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
 
-import {
-	getSchedulingSummary,
-	Scheduling,
-	schedulingsAreInactive,
-	SchedulingSummary
-} from "./scheduling.js"
+import { getSchedulingSummary, Scheduling, schedulingsAreInactive, SchedulingSummary } from "./scheduling.js"
 
 describe("getSchedulingSummary", () => {
 	test("return a SchedulingSummary", () => {

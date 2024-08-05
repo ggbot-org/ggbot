@@ -1,13 +1,7 @@
 import { DflowNode } from "dflow"
 
 import { add, div } from "../arithmetic.js"
-import {
-	inputClose,
-	inputHigh,
-	inputLow,
-	outputLastValue,
-	outputValues
-} from "../commonIO.js"
+import { inputClose, inputHigh, inputLow, outputLastValue, outputValues } from "../commonIO.js"
 
 export function typicalPrice(high: number, low: number, close: number): number {
 	const sum = add(add(high, low), close)

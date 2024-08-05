@@ -17,7 +17,7 @@ export function InputField({ color, help, label, ...props }: InputFieldProps) {
 			<Label htmlFor={id}>{label}</Label>
 
 			<Control>
-				<Input id={id} color={color} {...props} />
+				<Input color={color} id={id} {...props} />
 			</Control>
 
 			{help ? <Help color={color}>{help}</Help> : null}

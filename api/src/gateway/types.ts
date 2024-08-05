@@ -122,8 +122,7 @@ type APIGatewayProxyEventBase<TAuthorizerContext> = {
  *
  * @see - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html
  */
-type APIGatewayProxyEvent =
-	APIGatewayProxyEventBase<APIGatewayEventDefaultAuthorizerContext>
+type APIGatewayProxyEvent = APIGatewayProxyEventBase<APIGatewayEventDefaultAuthorizerContext>
 
 export type APIGatewayProxyResult = {
 	statusCode: number

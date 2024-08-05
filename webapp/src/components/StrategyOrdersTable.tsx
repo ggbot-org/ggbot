@@ -1,11 +1,6 @@
 import { Message, Table } from "_/components/library"
 import { timeFormat } from "_/i18n/formats"
-import {
-	add,
-	BinanceDecimal,
-	BinanceFill,
-	isBinanceFill
-} from "@workspace/binance"
+import { add, BinanceDecimal, BinanceFill, isBinanceFill } from "@workspace/binance"
 import { Order } from "@workspace/models"
 import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -134,15 +129,7 @@ export function StrategyOrdersTable({ orders }: Props) {
 
 			<tbody>
 				{rows.map(
-					({
-						baseQuantity,
-						orderId,
-						price,
-						quoteQuantity,
-						side,
-						symbol,
-						time
-					}) => (
+					({ baseQuantity, orderId, price, quoteQuantity, side, symbol, time }) => (
 						<tr key={orderId}>
 							<td>{time}</td>
 

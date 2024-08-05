@@ -1,14 +1,8 @@
 import { Div, Title } from "_/components/library"
-import {
-	SchedulingParameterItem,
-	SchedulingParameterItemProps
-} from "_/components/user/SchedulingParameterItem"
+import { SchedulingParameterItem, SchedulingParameterItemProps } from "_/components/user/SchedulingParameterItem"
 import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
-import {
-	extractBinanceParametersFromFlow,
-	extractCommonParametersFromFlow
-} from "@workspace/dflow"
+import { extractBinanceParametersFromFlow, extractCommonParametersFromFlow } from "@workspace/dflow"
 import { StrategyFlow, StrategyParameters } from "@workspace/models"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -27,12 +21,7 @@ export function SchedulingParameters({
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
-		Array<
-			Pick<
-				SchedulingParameterItemProps,
-				"kind" | "label" | "paramValue" | "defaultParamValue"
-			>
-		>
+		Array<Pick<SchedulingParameterItemProps, "kind" | "label" | "paramValue" | "defaultParamValue" >>
 	>([])
 
 	useEffect(() => {
@@ -40,8 +29,7 @@ export function SchedulingParameters({
 			const items = []
 			if (!flowViewGraph) return
 
-			const commonParams =
-				await extractCommonParametersFromFlow(flowViewGraph)
+			const commonParams = await extractCommonParametersFromFlow(flowViewGraph)
 
 			for (const { key, kind, defaultValue } of commonParams) items.push({
 				kind,
@@ -85,8 +73,8 @@ export function SchedulingParameters({
 					<SchedulingParameterItem
 						key={label}
 						binanceSymbols={binanceSymbols}
-						setParam={setParam}
 						label={label}
+						setParam={setParam}
 						{...rest}
 					/>
 				))}

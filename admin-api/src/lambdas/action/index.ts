@@ -1,20 +1,6 @@
-import {
-	adminActions,
-	ALLOWED_METHODS,
-	apiActionMethod,
-	APIGatewayProxyHandler,
-	errorResponse,
-	isActionInput,
-	OK
-} from "@workspace/api"
+import { adminActions, ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, errorResponse, isActionInput, OK } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import {
-	BAD_REQUEST__400,
-	BadGatewayError,
-	INTERNAL_SERVER_ERROR__500,
-	METHOD_NOT_ALLOWED__405,
-	UnauthorizedError
-} from "@workspace/http"
+import { BAD_REQUEST__400, BadGatewayError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 import { documentProvider } from "@workspace/s3-data-bucket"
 

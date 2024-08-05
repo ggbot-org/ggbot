@@ -27,16 +27,9 @@ await repository.read()
 
 const { workspaces } = repository
 
-const internalDependenciesChain =
-	WorkspacePackageJson.internalDependenciesChain(
-		workspacePathname,
-		workspaces
-	)
+const internalDependenciesChain = WorkspacePackageJson.internalDependenciesChain(workspacePathname, workspaces)
 
-const command = RepositoryPackageJson.workspacePrebuildCommandSequence(
-	internalDependenciesChain,
-	workspaces
-)
+const command = RepositoryPackageJson.workspacePrebuildCommandSequence(internalDependenciesChain, workspaces)
 
 exec(command, { cwd: repository.pathname }, (error) => {
 	if (error) {

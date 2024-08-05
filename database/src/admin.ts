@@ -1,9 +1,4 @@
-import {
-	AdminAction,
-	AdminActionInput as Input,
-	AdminActionOutput as Output,
-	DocumentProviderLevel1
-} from "@workspace/api"
+import { AdminAction, AdminActionInput as Input, AdminActionOutput as Output, DocumentProviderLevel1 } from "@workspace/api"
 
 import { pathname } from "./locators.js"
 
@@ -34,8 +29,6 @@ export class AdminDatabase implements AdminAction {
 	// }
 
 	ReadAccount(arg: Input["ReadAccount"]) {
-		return this.documentProvider.getItem<Output["ReadAccount"]>(
-			pathname.account(arg)
-		)
+		return this.documentProvider.getItem<Output["ReadAccount"]>(pathname.account(arg))
 	}
 }

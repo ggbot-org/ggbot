@@ -23,7 +23,6 @@ export function DayIntervalBox({
 	setStart,
 	setEnd
 }: Props) {
-
 	return (
 		<Div bulma={["box", { "is-skeleton": isLoading }]}>
 			<Title>
@@ -32,14 +31,14 @@ export function DayIntervalBox({
 
 			<DayInterval
 				disabled={isLoading}
-				min={min}
-				max={max}
-				start={{ day: start, setDay: setStart }}
 				end={{ day: end, setDay: setEnd }}
+				max={max}
+				min={min}
+				start={{ day: start, setDay: setStart }}
 			/>
 
 			<Buttons>
-				<Button onClick={onClickUpdate} isLoading={isLoading}>
+				<Button isLoading={isLoading} onClick={onClickUpdate}>
 					<FormattedMessage id="DailyIntervalBox.update" />
 				</Button>
 			</Buttons>

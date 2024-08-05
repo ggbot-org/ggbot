@@ -1,14 +1,5 @@
-import {
-	BinanceNewOrderOptions,
-	BinanceOrderRespFULL,
-	BinanceOrderSide,
-	BinanceOrderType
-} from "@workspace/binance"
-import {
-	AccountKey,
-	BinanceApiConfig,
-	BinanceApiKeyPermissionCriteria
-} from "@workspace/models"
+import { BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType } from "@workspace/binance"
+import { AccountKey, BinanceApiConfig, BinanceApiKeyPermissionCriteria } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { Action, ActionTypes } from "./action.js"

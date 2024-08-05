@@ -18,9 +18,7 @@ type _TagLabelProps = {
 
 function _TagLabel({ status }: _TagLabelProps) {
 	const { formatMessage } = useIntl()
-
 	if (!status) return null
-
 	return (
 		<Tag className={classnames("is-uppercase")} color={colorOf[status]}>
 			{formatMessage({ id: `SchedulingStatus.${status}` })}
@@ -34,9 +32,7 @@ type SchedulingStatusProps = Pick<_TagLabelProps, "status"> & {
 
 export function SchedulingStatus({ status, count }: SchedulingStatusProps) {
 	if (count === undefined) return <_TagLabel status={status} />
-
 	if (count === 0) return null
-
 	return (
 		<Tags hasAddons>
 			<_TagLabel status={status} />

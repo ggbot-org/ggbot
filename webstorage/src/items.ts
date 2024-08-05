@@ -11,7 +11,7 @@ const itemKeys = [
 	"hideInactiveStrategies",
 	"strategy",
 	"strategiesDayIntervalStart",
-	"strategiesDayIntervalEnd",
+	"strategiesDayIntervalEnd"
 ] as const
 
 type ItemKey = (typeof itemKeys)[number]
@@ -37,5 +37,5 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	hideInactiveStrategies: () => "hideInactiveStrategies:v1",
 	strategy: ({ strategyId, strategyKind }: StrategyKey) => `strategy:${strategyKind}:${strategyId}:v1`,
 	// Debug keys.
-	DEBUG_backtesting: () => "DEBUG_backtesting",
+	DEBUG_backtesting: () => "DEBUG_backtesting"
 }

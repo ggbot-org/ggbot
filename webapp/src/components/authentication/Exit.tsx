@@ -1,16 +1,7 @@
 import { classnames } from "_/classnames"
 import { Email } from "_/components/Email"
-import {
-	Button,
-	Buttons,
-	Column,
-	Columns,
-	Message,
-	Modal,
-	Title
-} from "_/components/library"
+import { Button, Buttons, Column, Columns, Message, Modal, Title } from "_/components/library"
 import { AccountId } from "_/components/readonlyFields"
-import { FormEventHandler, useCallback } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
@@ -22,29 +13,18 @@ type Props = {
 }
 
 export function AuthExit({ accountEmail, accountId, isActive, setIsActive, exit }: Props) {
-
-	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
-		(event) => {
-			event.preventDefault()
-			exit()
-		},
-		[exit]
-	)
-
-	const onReset = useCallback<FormEventHandler<HTMLFormElement>>(
-		(event) => {
-			event.preventDefault()
-			setIsActive(false)
-		},
-		[setIsActive]
-	)
-
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
 			<form
 				className={classnames("box")}
-				onSubmit={onSubmit}
-				onReset={onReset}
+				onReset={(event) => {
+					event.preventDefault()
+					setIsActive(false)
+				}}
+				onSubmit={(event) => {
+					event.preventDefault()
+					exit()
+				}}
 			>
 				<Title>
 					<FormattedMessage id="AuthExit.title" />
@@ -65,7 +45,7 @@ export function AuthExit({ accountEmail, accountId, isActive, setIsActive, exit 
 				</Columns>
 
 				<Buttons>
-					<Button type="submit" color="warning">
+					<Button color="warning" type="submit">
 						<FormattedMessage id="AuthExit.submit" />
 					</Button>
 

@@ -3,13 +3,7 @@ import { test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { getDay, today } from "minimal-time-helpers"
 
-import {
-	isSubscription,
-	numDaysSubscriptionExpirationTolerance,
-	statusOfSubscription,
-	Subscription,
-	SubscriptionStatus
-} from "./subscription.js"
+import { isSubscription, numDaysSubscriptionExpirationTolerance, statusOfSubscription, Subscription, SubscriptionStatus } from "./subscription.js"
 
 test("isSubscription", () => {
 	assertEqual<Subscription, boolean>(isSubscription, [

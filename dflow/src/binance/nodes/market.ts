@@ -1,15 +1,7 @@
 import { binanceKlineMaxLimit } from "@workspace/binance"
 import { Dflow, DflowNode } from "dflow"
 
-import {
-	inputInterval,
-	inputSymbol,
-	outputClose,
-	outputHigh,
-	outputLow,
-	outputOpen,
-	outputVolume
-} from "../../common/nodes/commonIO.js"
+import { inputInterval, inputSymbol, outputClose, outputHigh, outputLow, outputOpen, outputVolume } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 
@@ -58,13 +50,7 @@ export class Candles extends DflowNode {
 				close: [...close, Number(kline[4])],
 				volume: [...volume, Number(kline[5])]
 			}),
-			{
-				open: [],
-				high: [],
-				low: [],
-				close: [],
-				volume: []
-			}
+			{ open: [], high: [], low: [], close: [], volume: [] }
 		)
 		this.output(0).data = open
 		this.output(1).data = high

@@ -1,31 +1,21 @@
 import * as stream from "node:stream"
 
-import {
-	DeleteObjectCommand,
-	GetObjectCommand,
-	ListObjectsV2Command,
-	ListObjectsV2CommandInput,
-	ListObjectsV2CommandOutput,
-	PutObjectCommand,
-	S3Client,
-	S3ServiceException
-} from "@aws-sdk/client-s3"
+import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, PutObjectCommand, S3Client, S3ServiceException } from "@aws-sdk/client-s3"
 
 import { s3Client } from "./client.js"
 import { s3ServiceExceptionName } from "./errors.js"
 import { S3BucketProvider, S3Path } from "./types.js"
 
-const streamToString = (stream: NodeJS.ReadableStream): Promise<string> => new Promise((resolve, reject) => {
-	const chunks: Uint8Array[] = []
-	stream.on("data", (chunk) => chunks.push(chunk as Uint8Array))
-	stream.on("error", reject)
-	stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
-})
+function streamToString (stream: NodeJS.ReadableStream): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const chunks: Uint8Array[] = []
+		stream.on("data", (chunk) => chunks.push(chunk as Uint8Array))
+		stream.on("error", reject)
+		stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
+	})
+}
 
-type ListObjectsOutput = Pick<
-	ListObjectsV2CommandOutput,
-	"Contents" | "CommonPrefixes"
->
+type ListObjectsOutput = Pick< ListObjectsV2CommandOutput, "Contents" | "CommonPrefixes" >
 
 export class S3IOClient implements S3BucketProvider {
 	readonly client: S3Client
@@ -67,11 +57,7 @@ export class S3IOClient implements S3BucketProvider {
 			| "Prefix"
 			| "StartAfter"
 		>): Promise<ListObjectsOutput> {
-		const command = new ListObjectsV2Command({
-			Bucket: this.Bucket,
-			ContinuationToken,
-			...params
-		})
+		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ContinuationToken, ...params })
 		const {
 			CommonPrefixes: CurrentCommonPrefixes = [],
 			Contents: CurrentContents = [],
@@ -79,19 +65,16 @@ export class S3IOClient implements S3BucketProvider {
 			NextContinuationToken
 		} = await this.client.send(command)
 
-		const CommonPrefixes = previousCommonPrefixes.concat(
-			CurrentCommonPrefixes
-		)
+		const CommonPrefixes = previousCommonPrefixes.concat(CurrentCommonPrefixes)
 		const Contents = previousContents.concat(CurrentContents)
 
 		if (!IsTruncated) return { Contents, CommonPrefixes }
 
-		const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } =
-			await this.listObjects({
-				CommonPrefixes,
-				Contents,
-				ContinuationToken: NextContinuationToken
-			})
+		const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } = await this.listObjects({
+			CommonPrefixes,
+			Contents,
+			ContinuationToken: NextContinuationToken
+		})
 		return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes }
 	}
 

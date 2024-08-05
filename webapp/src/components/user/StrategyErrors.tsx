@@ -1,13 +1,5 @@
-import {
-	Column,
-	Columns,
-	DayIntervalBox,
-	OneColumn
-} from "_/components/library"
-import {
-	StrategyErrorsTable,
-	StrategyErrorsTableProps
-} from "_/components/StrategyErrorsTable"
+import { Column, Columns, DayIntervalBox, OneColumn } from "_/components/library"
+import { StrategyErrorsTable, StrategyErrorsTableProps } from "_/components/StrategyErrorsTable"
 import { useReadStrategyErrors } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
@@ -20,36 +12,32 @@ export function StrategyErrors() {
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
-	const READ = useReadStrategyErrors(strategyKey)
+	const { canRun, data, isDone, isPending, request, reset } = useReadStrategyErrors(strategyKey)
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
-		if (READ.canRun) READ.request({
-			end,
-			start,
-			...strategyKey
-		})
-	}, [READ, end, start, strategyKey])
+		if (canRun) request({ end, start, ...strategyKey })
+	}, [canRun, end, request, start, strategyKey])
 
 	useEffect(() => {
-		if (!READ.isDone) return
-		setErrors(READ.data)
-		READ.reset()
-	}, [READ])
+		if (!isDone) return
+		setErrors(data)
+		reset()
+	}, [isDone, data, reset])
 
 	return (
 		<>
 			<Columns>
 				<OneColumn>
 					<DayIntervalBox
-						isLoading={READ.isPending}
-						min={min}
-						max={max}
-						start={start}
-						setStart={setStart}
-						setEnd={setEnd}
 						end={end}
+						isLoading={isPending}
+						max={max}
+						min={min}
 						onClickUpdate={onClickUpdate}
+						setEnd={setEnd}
+						setStart={setStart}
+						start={start}
 					/>
 				</OneColumn>
 			</Columns>

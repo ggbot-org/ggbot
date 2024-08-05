@@ -1,14 +1,7 @@
 import { DflowNode } from "dflow"
 
 import { add, div, MaybeNumber } from "../arithmetic.js"
-import {
-	inputClose,
-	inputHigh,
-	inputLow,
-	inputOpen,
-	outputClose,
-	outputOpen
-} from "../commonIO.js"
+import { inputClose, inputHigh, inputLow, inputOpen, outputClose, outputOpen } from "../commonIO.js"
 
 /**
  * Heikin-Ashi is a Japanese trading indicator that means "average pace".
@@ -25,11 +18,7 @@ export class HeikinAshi extends DflowNode {
 		const low = this.input(2).data as number[]
 		const close = this.input(3).data as number[]
 		const size = open.length
-		if (
-			high.length !== size ||
-			close.length !== size ||
-			low.length !== size
-		) {
+		if (high.length !== size || close.length !== size || low.length !== size) {
 			this.clearOutputs()
 			return
 		}
@@ -38,10 +27,7 @@ export class HeikinAshi extends DflowNode {
 		for (let i = 1; i < size; i++) {
 			const heikinAshiOpen = div(add(open[i], close[i]), 2)
 			openOutput.push(heikinAshiOpen)
-			const heikinAshiClose = div(
-				add(add(add(open[i], high[i]), low[i]), close[i]),
-				4
-			)
+			const heikinAshiClose = div(add(add(add(open[i], high[i]), low[i]), close[i]), 4)
 			closeOutput.push(heikinAshiClose)
 		}
 		this.output(0).data = openOutput

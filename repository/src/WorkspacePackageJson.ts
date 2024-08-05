@@ -43,27 +43,16 @@ export class WorkspacePackageJson implements FileProvider {
 		return workspacePathname
 	}
 
-	static internalDependenciesChain(
-		workspacePathname: Workspace["pathname"],
-		workspaces: Repository["workspaces"]
-	) {
+	static internalDependenciesChain(workspacePathname: Workspace["pathname"], workspaces: Repository["workspaces"]) {
 		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
 		let result = Array.from(workspace.packageJson.internalDependencies)
 		for (const internalDependency of result) {
-			const dependencyWorkspacePathname =
-				WorkspacePackageJson.workspacePathnameFromInternalDependency(
-					internalDependency
-				)
-			const dependencyWorkspace = workspaces.get(
-				dependencyWorkspacePathname
-			)
+			const dependencyWorkspacePathname = WorkspacePackageJson.workspacePathnameFromInternalDependency(internalDependency)
+			const dependencyWorkspace = workspaces.get(dependencyWorkspacePathname)
 			if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
 			if (dependencyWorkspace.packageJson.internalDependencies.size === 0) continue
-			result = WorkspacePackageJson.internalDependenciesChain(
-				dependencyWorkspacePathname,
-				workspaces
-			).concat(result)
+			result = WorkspacePackageJson.internalDependenciesChain(dependencyWorkspacePathname, workspaces).concat(result)
 		}
 		return [...new Set(result)]
 	}
@@ -92,8 +81,7 @@ export class WorkspacePackageJson implements FileProvider {
 		}
 
 		if (scripts && typeof scripts === "object") {
-			this.buildScriptCommand =
-				scripts[WorkspacePackageJson.buildScriptKey]
+			this.buildScriptCommand = scripts[WorkspacePackageJson.buildScriptKey]
 		}
 	}
 }

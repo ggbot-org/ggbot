@@ -40,11 +40,11 @@ export function StrategyActions({
 					<Buttons>
 						{resetStrategy ? (
 							<RenameStrategy
+								resetStrategy={resetStrategy}
 								strategyKey={strategyKey}
 								strategyName={strategyName}
-								resetStrategy={resetStrategy}
 							/>
-						): null}
+						) : null}
 
 						<GoCopyStrategy strategyKey={strategyKey} />
 
@@ -58,8 +58,8 @@ export function StrategyActions({
 								<GoEditStrategy strategyKey={strategyKey} />
 
 								<DeleteStrategy
-									strategyKey={strategyKey}
 									strategyId={strategyId}
+									strategyKey={strategyKey}
 									strategyName={strategyName}
 									strategyWhenCreated={strategyWhenCreated}
 								/>

@@ -6,11 +6,7 @@ import { dflowBinanceKlineIntervals } from "./klineIntervals.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, OrderInfo, SellMarket } from "./nodes/trade.js"
-import {
-	DflowBinanceSymbolInfo,
-	getDflowBinanceNodeSymbolKind,
-	isDflowBinanceSymbolInfo
-} from "./symbols.js"
+import { DflowBinanceSymbolInfo, getDflowBinanceNodeSymbolKind, isDflowBinanceSymbolInfo } from "./symbols.js"
 
 const { output } = Dflow
 
@@ -22,52 +18,33 @@ type GetDflowBinanceNodesCatalog = (
  * Creates a dynamic set of dflow nodes generated according to Binance
  * definitions.
  */
-export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog = (
-	symbols
-) => {
+export const getDflowBinanceDynamicNodesCatalog: GetDflowBinanceNodesCatalog = (symbols) => {
 	const klineIntervalNodes = dflowBinanceKlineIntervals.reduce(
 		(catalog, klineInterval) => {
 			class NodeClass extends DflowNode {
 				static kind = klineInterval
 				static outputs = [
-					output("string", {
-						name: pinIntervalName,
-						data: klineInterval
-					})
-				]
-			}
-			return { ...catalog, [NodeClass.kind]: NodeClass }
-		},
-		{}
-	)
-
-	const symbolNodes = symbols
-		.filter(isDflowBinanceSymbolInfo)
-		.reduce((catalog, { baseAsset, quoteAsset, symbol }) => {
-			class NodeClass extends DflowNode {
-				static kind = getDflowBinanceNodeSymbolKind({
-					baseAsset,
-					quoteAsset
-				})
-				static outputs = [
-					output("string", {
-						name: pinSymbolName,
-						data: symbol
-					})
+					output("string", { name: pinIntervalName, data: klineInterval })
 				]
 			}
 			return { ...catalog, [NodeClass.kind]: NodeClass }
 		}, {})
 
-	return {
-		...klineIntervalNodes,
-		...symbolNodes
-	}
+	const symbolNodes = symbols.filter(isDflowBinanceSymbolInfo).reduce(
+		(catalog, { baseAsset, quoteAsset, symbol }) => {
+			class NodeClass extends DflowNode {
+				static kind = getDflowBinanceNodeSymbolKind({ baseAsset, quoteAsset })
+				static outputs = [
+					output("string", { name: pinSymbolName, data: symbol })
+				]
+			}
+			return { ...catalog, [NodeClass.kind]: NodeClass }
+		}, {})
+
+	return { ...klineIntervalNodes, ...symbolNodes }
 }
 
-export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
-	symbols
-) => {
+export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (symbols) => {
 	const staticNodes = {
 		// market
 		[Candles.kind]: Candles,
@@ -85,8 +62,5 @@ export const getDflowBinanceNodesCatalog: GetDflowBinanceNodesCatalog = (
 
 	const dynamicNodes = getDflowBinanceDynamicNodesCatalog(symbols)
 
-	return {
-		...dynamicNodes,
-		...staticNodes
-	}
+	return { ...dynamicNodes, ...staticNodes }
 }

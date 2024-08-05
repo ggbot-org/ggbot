@@ -1,17 +1,6 @@
 import { Column, Columns, InputField, SelectField } from "_/components/library"
-import {
-	Frequency,
-	FrequencyInterval,
-	isFrequencyInterval,
-	isNaturalNumber,
-	NaturalNumber
-} from "@workspace/models"
-import {
-	ChangeEventHandler,
-	InputHTMLAttributes,
-	SelectHTMLAttributes,
-	useCallback
-} from "react"
+import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from "@workspace/models"
+import { ChangeEventHandler, useCallback } from "react"
 import { useIntl } from "react-intl"
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
@@ -54,31 +43,19 @@ export function FrequencyInput({
 		}
 	]
 
-	const onChangeFrequencyEvery = useCallback<
-		ChangeEventHandler<HTMLInputElement>
-	>(
+	const onChangeFrequencyEvery = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
-			const { value } =
-				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+			const value = event.target.value
 			const every = value === "" ? value : Number(value)
-			if (isNaturalNumber(every) || every === "") setFrequency({
-				interval,
-				every
-			})
+			if (isNaturalNumber(every) || every === "") setFrequency({ interval, every })
 		},
 		[interval, setFrequency]
 	)
 
-	const onChangeFrequencyInterval = useCallback<
-		ChangeEventHandler<HTMLSelectElement>
-	>(
+	const onChangeFrequencyInterval = useCallback<ChangeEventHandler<HTMLSelectElement>>(
 		(event) => {
-			const { value } =
-				event.target as unknown as SelectHTMLAttributes<HTMLSelectElement>
-			if (isFrequencyInterval(value)) setFrequency({
-				every,
-				interval: value
-			})
+			const value = event.target.value
+			if (isFrequencyInterval(value)) setFrequency({ every, interval: value })
 		},
 		[every, setFrequency]
 	)
@@ -89,8 +66,8 @@ export function FrequencyInput({
 				<InputField
 					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.every" })}
-					onChange={onChangeFrequencyEvery}
 					min={1}
+					onChange={onChangeFrequencyEvery}
 					step={1}
 					value={every}
 				/>

@@ -4,12 +4,7 @@ import { FormattedDate } from "react-intl"
 import { Control, Field } from "trunx"
 
 import { Calendar, CalendarProps } from "./Calendar"
-import {
-	Dropdown,
-	DropdownMenu,
-	DropdownProps,
-	DropdownTrigger
-} from "./DropDown"
+import { Dropdown, DropdownMenu, DropdownProps, DropdownTrigger } from "./DropDown"
 import { Label } from "./Label"
 
 export type DayDropdownProps = Partial<{ disabled: boolean }> &
@@ -19,18 +14,7 @@ export type DayDropdownProps = Partial<{ disabled: boolean }> &
 		label: string
 	} & { close: () => void }
 
-export function DayDropdown({
-	close,
-	day,
-	disabled,
-	isActive,
-	isRight,
-	label,
-	max,
-	min,
-	onClick,
-	setDay
-}: DayDropdownProps) {
+export function DayDropdown({ close, day, disabled, isActive, isRight, label, max, min, onClick, setDay }: DayDropdownProps) {
 	return (
 		<Field>
 			<Label>{label}</Label>
@@ -48,6 +32,8 @@ export function DayDropdown({
 					<DropdownMenu>
 						<Calendar
 							day={day}
+							max={max}
+							min={min}
 							setDay={useCallback<DayDropdownProps["setDay"]>(
 								(day) => {
 									setDay(day)
@@ -55,8 +41,6 @@ export function DayDropdown({
 								},
 								[close, setDay]
 							)}
-							min={min}
-							max={max}
 						/>
 					</DropdownMenu>
 				</Dropdown>

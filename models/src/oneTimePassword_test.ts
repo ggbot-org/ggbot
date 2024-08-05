@@ -4,11 +4,7 @@ import { test } from "node:test"
 import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
-import {
-	generateOneTimePassword,
-	isOneTimePassword,
-	OneTimePassword
-} from "./oneTimePassword.js"
+import { generateOneTimePassword, isOneTimePassword, OneTimePassword } from "./oneTimePassword.js"
 import { createdNow } from "./time.js"
 
 test("isOneTimePassword", () => {

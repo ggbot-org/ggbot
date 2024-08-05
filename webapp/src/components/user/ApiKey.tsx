@@ -16,9 +16,9 @@ export function ApiKey({ isStatic, value, ...props }: Props) {
 	const { formatMessage } = useIntl()
 	return (
 		<InputField
+			defaultValue={isStatic ? truncateApiKey(value) : undefined}
 			label={formatMessage({ id: "ApiKey.label" })}
 			value={isStatic ? undefined : value}
-			defaultValue={isStatic ? truncateApiKey(value) : undefined}
 			{...props}
 		/>
 	)

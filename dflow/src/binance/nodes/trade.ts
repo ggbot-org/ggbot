@@ -92,7 +92,7 @@ export class SellMarket extends DflowNode {
 	}
 }
 
-const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side"|"symbol"|"executedQty"> >(
+const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side" | "symbol" | "executedQty"> >(
 	({ side, symbol, executedQty }) => typeof side === "string" && typeof symbol === "string" && typeof executedQty === "number"
 )
 

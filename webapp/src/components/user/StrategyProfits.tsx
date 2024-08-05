@@ -1,9 +1,4 @@
-import {
-	Column,
-	Columns,
-	DayIntervalBox,
-	OneColumn
-} from "_/components/library"
+import { Column, Columns, DayIntervalBox, OneColumn } from "_/components/library"
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
@@ -26,11 +21,7 @@ export function StrategyProfits({ strategyKey }: Props) {
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
-		if (READ.canRun) READ.request({
-			end,
-			start,
-			...strategyKey
-		})
+		if (READ.canRun) READ.request({ end, start, ...strategyKey })
 	}, [READ, end, start, strategyKey])
 
 	useEffect(() => {
@@ -44,14 +35,14 @@ export function StrategyProfits({ strategyKey }: Props) {
 			<Columns>
 				<OneColumn>
 					<DayIntervalBox
-						isLoading={READ.isPending}
-						min={min}
-						max={max}
-						start={start}
 						end={end}
-						setStart={setStart}
-						setEnd={setEnd}
+						isLoading={READ.isPending}
+						max={max}
+						min={min}
 						onClickUpdate={onClickUpdate}
+						setEnd={setEnd}
+						setStart={setStart}
+						start={start}
 					/>
 				</OneColumn>
 			</Columns>
@@ -59,8 +50,8 @@ export function StrategyProfits({ strategyKey }: Props) {
 			<Columns>
 				<OneColumn>
 					<ProfitSummary
-						orders={orders}
 						dayInterval={dayInterval}
+						orders={orders}
 						strategyKind={strategyKey?.strategyKind}
 					/>
 				</OneColumn>

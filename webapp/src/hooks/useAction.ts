@@ -1,21 +1,6 @@
 import { localWebStorage } from "_/storages/local"
-import {
-	ActionIO,
-	ApiActionError,
-	clientAction,
-	ClientActionHeaders,
-	GenericError,
-	isApiActionOutputData,
-	isApiActionOutputError,
-	TimeoutError
-} from "@workspace/api"
-import {
-	BadGatewayError,
-	BadRequestError,
-	GatewayTimeoutError,
-	InternalServerError,
-	UnauthorizedError
-} from "@workspace/http"
+import { ActionIO, ApiActionError, clientAction, ClientActionHeaders, GenericError, isApiActionOutputData, isApiActionOutputError, TimeoutError } from "@workspace/api"
+import { BadGatewayError, BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 import { useCallback, useState } from "react"
 
@@ -58,11 +43,10 @@ export type UseActionApiArg = {
  * }, [FooBar])
  * ```
  */
-export function useAction<
-	ActionType extends string,
-	Input extends ActionIO,
-	Output extends ActionIO
->({ url, withAuth }: UseActionApiArg, type: ActionType) {
+export function useAction<ActionType extends string, Input extends ActionIO, Output extends ActionIO >(
+	{ url, withAuth }: UseActionApiArg,
+	type: ActionType
+) {
 	const [data, setData] = useState<Output | undefined>()
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
@@ -80,20 +64,12 @@ export function useAction<
 					const headers = new ClientActionHeaders()
 					if (withAuth) {
 						const token = localWebStorage.authToken.get()
-						if (token) {
-							headers.appendAuthorization(token)
-						} else {
-							return setError({
-								name: UnauthorizedError.errorName
-							})
-						}
+						if (token) headers.appendAuthorization(token)
+						else return setError({ name: UnauthorizedError.errorName })
 					}
 
 					setIsPending(true)
-					const output = await clientAction(url, headers, {
-						type,
-						data: inputData
-					})
+					const output = await clientAction(url, headers, { type, data: inputData })
 
 					if (isApiActionOutputData(output)) {
 						const { data: outputData } = output
@@ -102,11 +78,7 @@ export function useAction<
 
 					if (isApiActionOutputError(output)) {
 						const { error } = output
-						warn(
-							type,
-							JSON.stringify(inputData),
-							JSON.stringify(error)
-						)
+						warn(type, JSON.stringify(inputData), JSON.stringify(error))
 						setError(error)
 					}
 				} catch (error) {
@@ -152,14 +124,5 @@ export function useAction<
 	const hasError = error !== undefined
 	const canRun = [hasError, isDone, isPending].every((item) => !item)
 
-	return {
-		canRun,
-		data,
-		error,
-		hasError,
-		isDone,
-		isPending,
-		request,
-		reset
-	}
+	return { canRun, data, error, hasError, isDone, isPending, request, reset }
 }

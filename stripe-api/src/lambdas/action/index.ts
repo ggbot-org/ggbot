@@ -1,21 +1,6 @@
-import {
-	ALLOWED_METHODS,
-	apiActionMethod,
-	APIGatewayProxyHandler,
-	errorResponse,
-	isActionInput,
-	OK,
-	stripeClientActions
-} from "@workspace/api"
+import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, errorResponse, isActionInput, OK, stripeClientActions } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import {
-	BAD_REQUEST__400,
-	BadGatewayError,
-	GatewayTimeoutError,
-	INTERNAL_SERVER_ERROR__500,
-	METHOD_NOT_ALLOWED__405,
-	UnauthorizedError
-} from "@workspace/http"
+import { BAD_REQUEST__400, BadGatewayError, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
 
 import { Service } from "./service.js"
@@ -41,8 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		}
 
 		const authorization = event.headers.Authorization
-		const accountKey =
-			await readSessionFromAuthorizationHeader(authorization)
+		const accountKey = await readSessionFromAuthorizationHeader(authorization)
 		const service = new Service(accountKey)
 
 		const input: unknown = JSON.parse(event.body)

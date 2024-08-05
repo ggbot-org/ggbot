@@ -1,28 +1,10 @@
-import {
-	APIGatewayProxyHandler,
-	BAD_REQUEST,
-	errorResponse,
-	OK,
-	StripeMetadata
-} from "@workspace/api"
+import { APIGatewayProxyHandler, BAD_REQUEST, errorResponse, OK, StripeMetadata } from "@workspace/api"
 import { PaymentDatabase } from "@workspace/database"
-import {
-	BAD_REQUEST__400,
-	INTERNAL_SERVER_ERROR__500,
-	METHOD_NOT_ALLOWED__405
-} from "@workspace/http"
+import { BAD_REQUEST__400, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405 } from "@workspace/http"
 import { logging } from "@workspace/logging"
-import {
-	newMonthlySubscriptionPurchase,
-	newYearlySubscriptionPurchase,
-	PaymentProvider
-} from "@workspace/models"
+import { newMonthlySubscriptionPurchase, newYearlySubscriptionPurchase, PaymentProvider } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
-import {
-	Stripe,
-	StripeClient,
-	StripeSignatureVerificationError
-} from "@workspace/stripe"
+import { Stripe, StripeClient, StripeSignatureVerificationError } from "@workspace/stripe"
 import { getDay, today } from "minimal-time-helpers"
 
 const { info, debug } = logging("stripe-api")
@@ -75,35 +57,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			const { quantity: numMonths, isYearly } = checkout
 
 			const subscriptionPurchase = isYearly
-				? newYearlySubscriptionPurchase({
-					plan,
-					paymentProvider,
-					startDay
-				})
-				: newMonthlySubscriptionPurchase({
-					plan,
-					paymentProvider,
-					numMonths,
-					startDay
-				})
+				? newYearlySubscriptionPurchase({ plan, paymentProvider, startDay })
+				: newMonthlySubscriptionPurchase({ plan, paymentProvider, numMonths, startDay })
 
-			await dataProvider.WriteSubscriptionPurchase({
-				accountId,
-				day: today(),
-				purchaseId: subscriptionPurchase.id,
-				...subscriptionPurchase
-			})
+			await dataProvider.WriteSubscriptionPurchase({ accountId, day: today(), purchaseId: subscriptionPurchase.id, ...subscriptionPurchase })
 
 			// Compute the new subscription end day, considering if it is yearly or monthly purchase.
 			const subscriptionEnd = isYearly
 				? getDay(startDay).plus(1).years
 				: getDay(startDay).plus(numMonths).months
 
-			await dataProvider.WriteSubscription({
-				accountId,
-				plan,
-				end: subscriptionEnd
-			})
+			await dataProvider.WriteSubscription({ accountId, plan, end: subscriptionEnd })
 
 			return OK(received)
 		} else {

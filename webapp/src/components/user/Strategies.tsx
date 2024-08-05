@@ -1,22 +1,10 @@
 import { classnames } from "_/classnames"
-import {
-	Button,
-	Buttons,
-	Checkbox,
-	Column,
-	Columns,
-	Message
-} from "_/components/library"
+import { Button, Buttons, Checkbox, Column, Columns, Message, OneColumn } from "_/components/library"
 import { StrategyItem } from "_/components/user/StrategyItem"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { localWebStorage } from "_/storages/local"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
-import {
-	ChangeEventHandler,
-	InputHTMLAttributes,
-	useCallback,
-	useState
-} from "react"
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 type Props = {
@@ -30,8 +18,7 @@ export function Strategies({ goCreateStrategy }: Props) {
 		localWebStorage.hideInactiveStrategies.get()
 	)
 
-	const allAreInactive = accountStrategies?.every(({ schedulings }) => schedulingsAreInactive(schedulings)
-	)
+	const allAreInactive = accountStrategies?.every(({ schedulings }) => schedulingsAreInactive(schedulings))
 
 	const items: AccountStrategy[] = []
 
@@ -43,11 +30,8 @@ export function Strategies({ goCreateStrategy }: Props) {
 		}
 	}
 
-	const onChangeHideInactive = useCallback<
-		ChangeEventHandler<HTMLInputElement>
-	>((event) => {
-		const { checked } =
-			event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+	const onChangeHideInactive = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
+		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		setHideInactive(checked)
 		localWebStorage.hideInactiveStrategies.set(checked)
 	}, [])
@@ -56,13 +40,7 @@ export function Strategies({ goCreateStrategy }: Props) {
 
 	if (accountStrategies.length === 0) return (
 		<Columns>
-			<Column
-				bulma={[
-					"is-full-tablet",
-					"is-three-quarters-widescreen",
-					"is-half-fullhd"
-				]}
-			>
+			<OneColumn>
 				<form
 					className={classnames("box")}
 					onSubmit={(event) => {
@@ -80,7 +58,7 @@ export function Strategies({ goCreateStrategy }: Props) {
 						</Button>
 					</Buttons>
 				</form>
-			</Column>
+			</OneColumn>
 		</Columns>
 	)
 

@@ -1,8 +1,5 @@
 import { binance } from "_/binance/exchange"
-import {
-	binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols,
-	DflowBinanceSymbolInfo
-} from "@workspace/dflow"
+import { binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols, DflowBinanceSymbolInfo } from "@workspace/dflow"
 import { logging } from "@workspace/logging"
 import { StrategyKind } from "@workspace/models"
 import { useEffect, useState } from "react"

@@ -1,11 +1,6 @@
 import { Control, Field } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
-import {
-	AccountStrategy,
-	getSchedulingSummary,
-	schedulingsAreInactive,
-	schedulingStatuses
-} from "@workspace/models"
+import { AccountStrategy, getSchedulingSummary, schedulingsAreInactive, schedulingStatuses } from "@workspace/models"
 
 type Props = {
 	schedulings: AccountStrategy["schedulings"] | undefined
@@ -25,8 +20,8 @@ export function SchedulingsStatusBadges({ schedulings }: Props) {
 			{schedulingStatuses.map((schedulingStatus) => (
 				<Control key={schedulingStatus}>
 					<SchedulingStatus
-						status={schedulingStatus}
 						count={schedulingSummary[schedulingStatus]}
+						status={schedulingStatus}
 					/>
 				</Control>
 			))}

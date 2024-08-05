@@ -1,14 +1,4 @@
-import {
-	BrandName,
-	Button,
-	Div,
-	Hero,
-	HeroBody,
-	HeroFoot,
-	Level,
-	LevelItem,
-	Logo
-} from "_/components/library"
+import { BrandName, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -57,16 +47,16 @@ export function Homepage() {
 						]}
 					>
 						<Button
+							color="primary"
 							isOutlined={!ctaIsActive}
+							onBlur={() => setCtaIsActive(false)}
 							onClick={() => {
 								GOTO(webapp.user.dashboard)
 							}}
 							onFocus={() => setCtaIsActive(true)}
-							onBlur={() => setCtaIsActive(false)}
 							onPointerEnter={() => setCtaIsActive(true)}
 							onPointerLeave={() => setCtaIsActive(false)}
 							size="large"
-							color="primary"
 						>
 							<FormattedMessage id="HomePage.callToAction" />
 						</Button>

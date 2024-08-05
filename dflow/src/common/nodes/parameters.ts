@@ -1,8 +1,4 @@
-import {
-	isFiniteNumber,
-	isIdentifierString,
-	isNonEmptyString
-} from "@workspace/models"
+import { isFiniteNumber, isIdentifierString, isNonEmptyString } from "@workspace/models"
 import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"

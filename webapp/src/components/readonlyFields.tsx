@@ -58,6 +58,24 @@ export function SubscriptionPlan({ value }: ValueProp<SubscriptionPlanValue>) {
 	)
 }
 
+export function SubscriptionTotalPrice({
+	currency,
+	monthlyPrice,
+	numMonths
+}: {
+	currency: string
+	monthlyPrice: number
+	numMonths: number | undefined
+}) {
+	const { formatMessage, formatNumber } = useIntl()
+	return (
+		<ReadonlyField
+			label={formatMessage({ id: "SubscriptionTotalPrice.label" })}
+			value={numMonths ? formatNumber(monthlyPrice * numMonths, { style: "currency", currency }) : ""}
+		/>
+	)
+}
+
 export function WhenCreated({ value }: ValueProp<Time>) {
 	const { formatDate, formatMessage } = useIntl()
 	return (

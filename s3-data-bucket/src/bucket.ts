@@ -1,22 +1,15 @@
 import { DocumentProviderLevel3 } from "@workspace/api"
 import { S3Bucket, S3IOClient } from "@workspace/aws-s3"
 import { AwsRegion } from "@workspace/aws-types"
-import {
-	deletedNow,
-	DeployStage,
-	SerializableData,
-	updatedNow
-} from "@workspace/models"
+import { deletedNow, DeployStage, SerializableData, updatedNow } from "@workspace/models"
 
 const nextDeployStage: DeployStage = "next"
 
-export const getS3DataBucketName = (
-	deployStage: DeployStage,
-	dnsDomain: string,
-	awsRegion: AwsRegion
-): S3Bucket["name"] => deployStage === "local"
-	? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
-	: `${deployStage}-data.${awsRegion}.${dnsDomain}`
+export function getS3DataBucketName (deployStage: DeployStage, dnsDomain: string, awsRegion: AwsRegion): S3Bucket["name"] {
+	return deployStage === "local"
+		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
+		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
+}
 
 export class S3DataBucketProvider implements DocumentProviderLevel3 {
 	private s3: S3IOClient
@@ -44,11 +37,6 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 
 	async listItems(Prefix: string) {
 		const { Contents } = await this.s3.listObjects({ Prefix })
-		return (
-			Contents?.reduce<string[]>(
-				(list, { Key }) => (Key ? list.concat(Key) : list),
-				[]
-			) ?? []
-		)
+		return Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? []
 	}
 }

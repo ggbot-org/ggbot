@@ -1,24 +1,12 @@
 import { classnames } from "_/classnames"
 import { webapp } from "_/routing/webapp"
 import { HTMLAttributes, PropsWithChildren, useEffect, useState } from "react"
-import {
-	Bulma,
-	Navbar as _Navbar,
-	NavbarBurger,
-	NavbarItem,
-	NavbarLink as _NavbarLink,
-	NavbarLinkProps,
-	NavbarMenu,
-	NavbarProps
-} from "trunx"
+import { Bulma, Navbar as _Navbar, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from "trunx"
 
 import { BrandName } from "./BrandName"
 
 // Once updated trunx, remove this and import it from trunx
-function NavbarBrand({
-	children,
-	...props
-}: PropsWithChildren<NavbarBrandProps>) {
+function NavbarBrand({ children, ...props }: PropsWithChildren<NavbarBrandProps>) {
 	return (
 		<div className="navbar-brand" {...props}>
 			{children}
@@ -27,16 +15,9 @@ function NavbarBrand({
 }
 type NavbarBrandProps = HTMLAttributes<HTMLDivElement>
 
-type Props = Partial<{
-	noMenu: boolean
-}> &
-	Pick<NavbarProps, "className">
+type Props = Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
 
-export function Navbar({
-	children,
-	className,
-	noMenu
-}: PropsWithChildren<Props>) {
+export function Navbar({ children, className, noMenu }: PropsWithChildren<Props>) {
 	const [isActive, setIsActive] = useState(false)
 
 	// Close menu on outside click.
@@ -45,9 +26,7 @@ export function Navbar({
 			setIsActive(false)
 		}
 		addEventListener("click", closeMenu)
-		return () => {
-			removeEventListener("click", closeMenu)
-		}
+		return () => removeEventListener("click", closeMenu)
 	}, [])
 
 	return (
@@ -85,11 +64,7 @@ export function Navbar({
 // TODO trunx has no is-arrowless class in Bulma, find a way to fix it
 // for example add missing classes manually (they are all inside a :not())
 // and add a test to make sure typings are working
-export function NavbarLink({
-	className,
-	children,
-	...props
-}: PropsWithChildren<NavbarLinkProps>) {
+export function NavbarLink({ className, children, ...props }: PropsWithChildren<NavbarLinkProps>) {
 	return (
 		<_NavbarLink
 			className={classnames("is-arrowless" as Bulma, className as Bulma)}

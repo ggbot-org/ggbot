@@ -1,16 +1,4 @@
-import {
-	ActionInput,
-	ApiService,
-	BinanceClientActionType,
-	clientAction,
-	ClientActionHeaders,
-	GenericError,
-	isApiActionOutputData,
-	isApiActionOutputError,
-	isUserClientActionInput as isInput,
-	TimeoutError,
-	UserClientActionType
-} from "@workspace/api"
+import { ActionInput, ApiService, BinanceClientActionType, clientAction, ClientActionHeaders, GenericError, isApiActionOutputData, isApiActionOutputError, isUserClientActionInput as isInput, TimeoutError, UserClientActionType } from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
 import { BadRequestError, GatewayTimeoutError } from "@workspace/http"
@@ -67,9 +55,7 @@ export class Service implements ApiService<UserClientActionType> {
 	}
 
 	ReadBinanceAccountApiRestrictions() {
-		return this.binanceClientAction({
-			type: "ReadBinanceAccountApiRestrictions"
-		})
+		return this.binanceClientAction({ type: "ReadBinanceAccountApiRestrictions" })
 	}
 
 	ReadBinanceApiKey() {
@@ -116,12 +102,7 @@ export class Service implements ApiService<UserClientActionType> {
 		headers.appendAuthorization(this.authorization)
 
 		try {
-			const output = await clientAction<BinanceClientActionType>(
-				binanceProxy.action,
-				headers,
-				{ type }
-			)
-
+			const output = await clientAction<BinanceClientActionType>(binanceProxy.action, headers, { type })
 			if (isApiActionOutputData(output)) return output.data
 			if (isApiActionOutputError(output)) return output.error
 			throw new GenericError()

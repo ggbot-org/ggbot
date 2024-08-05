@@ -5,7 +5,6 @@ type Props = Omit<NameProps, "label">
 
 export function StrategyName(props: Props) {
 	const { formatMessage } = useIntl()
-
 	return (
 		<Name label={formatMessage({ id: "StrategyName.label" })} {...props} />
 	)

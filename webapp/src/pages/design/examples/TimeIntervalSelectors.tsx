@@ -6,18 +6,11 @@ export function TimeIntervalSelectors() {
 	const max = today()
 	const [startDay, setStartDay] = useState(getDay(max).minus(45).days)
 	const [endDay, setEndDay] = useState(max)
-
 	return (
 		<DayInterval
-			start={{
-				setDay: setStartDay,
-				day: startDay
-			}}
-			end={{
-				setDay: setEndDay,
-				day: endDay
-			}}
+			end={{ setDay: setEndDay, day: endDay }}
 			max={max}
+			start={{ setDay: setStartDay, day: startDay }}
 		/>
 	)
 }

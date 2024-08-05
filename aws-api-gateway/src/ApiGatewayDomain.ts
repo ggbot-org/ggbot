@@ -1,8 +1,4 @@
-import {
-	APIGatewayClient,
-	GetDomainNameCommand,
-	GetDomainNamesCommandOutput
-} from "@aws-sdk/client-api-gateway"
+import { APIGatewayClient, GetDomainNameCommand, GetDomainNamesCommandOutput } from "@aws-sdk/client-api-gateway"
 import { AwsAccountId, AwsRegion, AwsResource } from "@workspace/aws-types"
 
 import { apiGatewayClient } from "./client.js"

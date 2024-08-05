@@ -10,11 +10,7 @@ export function useStrategyFlow(strategyKey: StrategyKey | undefined) {
 		if (canRun) request(strategyKey)
 	}, [canRun, request, strategyKey])
 
-	if (!strategyKey) return {
-		strategyFlow: undefined
-	}
+	if (!strategyKey) return { strategyFlow: undefined }
 
-	return {
-		strategyFlow
-	}
+	return { strategyFlow }
 }

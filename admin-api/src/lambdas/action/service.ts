@@ -1,9 +1,4 @@
-import {
-	AdminActionType,
-	ApiService,
-	DocumentProviderLevel2,
-	isAdminActionInput as isInput
-} from "@workspace/api"
+import { AdminActionType, ApiService, DocumentProviderLevel2, isAdminActionInput as isInput } from "@workspace/api"
 import { AdminDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
 

@@ -3,32 +3,7 @@ import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import {
-	AccountKey,
-	AccountStrategy,
-	AccountStrategyKey,
-	AccountStrategySchedulingKey,
-	createdNow,
-	ErrorAccountItemNotFound,
-	ErrorStrategyItemNotFound,
-	ErrorUnknownItem,
-	frequencyIntervalDuration,
-	isAccount,
-	isAccountKey,
-	isAccountStrategy,
-	isSubscription,
-	Item,
-	itemIdCharacters,
-	newId,
-	PRO_FREQUENCY_INTERVALS,
-	statusOfSubscription,
-	// TODO enable emails
-	// StrategyKind,
-	StrategyMemory,
-	StrategyScheduling,
-	Subscription,
-	SubscriptionPlan
-} from "@workspace/models"
+import { AccountKey, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccount, isAccountKey, isAccountStrategy, isSubscription, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, statusOfSubscription, StrategyMemory, StrategyScheduling, Subscription, SubscriptionPlan } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -57,10 +32,7 @@ export class Executor {
 	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
 
-	constructor(
-		readonly capacity: number,
-		readonly index: number
-	) {}
+	constructor(readonly capacity: number, readonly index: number) {}
 
 	get cachedAccountKeys(): ManagedCacheProvider<AccountKey[]> {
 		const key = "accountKeys"
@@ -70,9 +42,7 @@ export class Executor {
 			delete: (accountId: AccountKey["accountId"]): void => {
 				const items = this.accountKeysCache.get(key)
 				if (!items) return
-				const updatedItems = items.filter(
-					(item) => item.accountId !== accountId
-				)
+				const updatedItems = items.filter((item) => item.accountId !== accountId)
 				this.accountKeysCache.set(key, updatedItems)
 			}
 		}
@@ -122,9 +92,7 @@ export class Executor {
 		}
 	}
 
-	async getAccountStrategies({
-		accountId
-	}: AccountKey): Promise<AccountStrategy[]> {
+	async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
 		const accountStrategies: AccountStrategy[] = []
 		try {
 			const key = accountId
@@ -132,10 +100,7 @@ export class Executor {
 			const cached = cache.get(key)
 			if (cached) return cached
 			info("readAccountStrategies")
-			const data =
-				(await this.executorDatabase.ReadAccountStrategies({
-					accountId
-				})) ?? []
+			const data = (await this.executorDatabase.ReadAccountStrategies({ accountId })) ?? []
 			if (!Array.isArray(data)) return accountStrategies
 			for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
 			cache.set(key, accountStrategies)
@@ -150,10 +115,7 @@ export class Executor {
 	 * Check if subscription is active.
 	 *
 	 * ```ts
-	 * const { hasActiveSubscription, subscriptionPlan } =
-	 * 	await this.checkSubscription({
-	 * 		accountId
-	 * 	})
+	 * const { hasActiveSubscription, subscriptionPlan } = await this.checkSubscription({ accountId	})
 	 * ```
 	 */
 	async checkSubscription({ accountId }: AccountKey): Promise<{
@@ -165,14 +127,11 @@ export class Executor {
 			const { subscriptionsCache: cache } = this
 			const cached = cache.get(key)
 			if (cached) return {
-				hasActiveSubscription:
-						statusOfSubscription(cached) === "active",
+				hasActiveSubscription: statusOfSubscription(cached) === "active",
 				subscriptionPlan: cached.plan
 			}
 			info("readSubscription", accountId)
-			const subscription = await this.executorDatabase.ReadSubscription({
-				accountId
-			})
+			const subscription = await this.executorDatabase.ReadSubscription({ accountId })
 			if (!isSubscription(subscription)) return {
 				hasActiveSubscription: false,
 				subscriptionPlan: undefined
@@ -193,10 +152,7 @@ export class Executor {
 	 * Execute strategies if scheduling is active and according to scheduling
 	 * frequency.
 	 */
-	async manageStrategyExecution(
-		{ accountId, strategyKind, strategyId }: AccountStrategyKey,
-		scheduling: StrategyScheduling
-	) {
+	async manageStrategyExecution({ accountId, strategyKind, strategyId }: AccountStrategyKey, scheduling: StrategyScheduling) {
 		const { strategyWhenExecuted } = this
 		const { status, frequency } = scheduling
 		const schedulingId = scheduling.id
@@ -219,17 +175,12 @@ export class Executor {
 					this.executorDatabase
 				)
 				if (memoryChanged) {
-					await this.updateAccountStrategySchedulingMemory(
-						{ accountId, strategyId, schedulingId },
-						memory
-					)
+					await this.updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }, memory)
 				}
 			} catch (error) {
 				if (error instanceof ErrorBinanceHTTP) {
 					await this.executorDatabase.AppendStrategyDailyErrors({
-						accountId,
-						strategyId,
-						strategyKind,
+						accountId, strategyId, strategyKind,
 						day: today(),
 						items: [{ error: error.toJSON(), ...createdNow() }]
 					})
@@ -272,10 +223,7 @@ export class Executor {
 	}
 
 	managesItem(itemId: Item["id"]) {
-		return (
-			Executor.itemIdToNaturalNumber(itemId) % this.capacity ===
-			this.index
-		)
+		return Executor.itemIdToNaturalNumber(itemId) % this.capacity === this.index
 	}
 
 	async runTasks() {
@@ -288,8 +236,7 @@ export class Executor {
 			try {
 				// Check subscription or suspend account strategies.
 
-				const { hasActiveSubscription, subscriptionPlan } =
-					await this.checkSubscription(accountKey)
+				const { hasActiveSubscription, subscriptionPlan } = await this.checkSubscription(accountKey)
 
 				if (!hasActiveSubscription) {
 					// Cleanup cache.
@@ -298,44 +245,24 @@ export class Executor {
 				}
 
 				// Get strategies.
-				const accountStrategies =
-					await this.getAccountStrategies(accountKey)
+				const accountStrategies = await this.getAccountStrategies(accountKey)
 
-				for (const {
-					strategyId,
-					strategyKind,
-					schedulings
-				} of accountStrategies) for (const scheduling of schedulings) {
+				for (
+					const { strategyId, strategyKind, schedulings } of accountStrategies
+				) for (const scheduling of schedulings) {
 					// Suspend scheduling if frequency interval is not allowed in subscription plan.
-					if (
-						subscriptionPlan !== "pro" &&
-							PRO_FREQUENCY_INTERVALS.includes(
-								scheduling.frequency.interval
-							)
-					) {
-						await this.suspendAccountStrategyScheduling(
-							{
-								accountId,
-								strategyId,
-								schedulingId: scheduling.id
-							}
-							// TODO enable emails
-							// strategyKind
-						)
+					if (subscriptionPlan !== "pro" && PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)) {
+						// TODO enable emails
+						// pass strategyKind
+						await this.suspendAccountStrategyScheduling({ accountId, strategyId, schedulingId: scheduling.id })
 						continue
 					}
 
-					await this.manageStrategyExecution(
-						{ accountId, strategyId, strategyKind },
-						scheduling
-					)
+					await this.manageStrategyExecution({ accountId, strategyId, strategyKind }, scheduling)
 				}
 			} catch (error) {
 				if (error instanceof ErrorStrategyItemNotFound) {
-					await this.suspendAccountStrategySchedulings({
-						accountId,
-						strategyId: error.strategyId
-					})
+					await this.suspendAccountStrategySchedulings({ accountId, strategyId: error.strategyId })
 					continue
 				}
 
@@ -357,19 +284,13 @@ export class Executor {
 		// TODO enable emails
 		// strategyKind: StrategyKind
 	) {
-		warn(
-			`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
-		)
+		warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
 		// Cleanup cache locally.
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await this.executorDatabase.SuspendAccountStrategyScheduling({
-			accountId,
-			strategyId,
-			schedulingId
-		})
+		await this.executorDatabase.SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId })
 
 		// Send email notification.
 		const account = await this.executorDatabase.ReadAccount({ accountId })
@@ -385,39 +306,23 @@ export class Executor {
 		// })
 	}
 
-	async suspendAccountStrategySchedulings({
-		accountId,
-		strategyId
-	}: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
+	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
 		info(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
 		// Cleanup cache locally.
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await this.executorDatabase.SuspendAccountStrategySchedulings({
-			accountId,
-			strategyId
-		})
+		await this.executorDatabase.SuspendAccountStrategySchedulings({ accountId, strategyId })
 	}
 
-	async updateAccountStrategySchedulingMemory(
-		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey,
-		memory: StrategyMemory
-	) {
-		info(
-			`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`
-		)
+	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
+		info(`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
 		// Cleanup cache locally.
 		this.accountStrategiesCache.delete(accountId)
 
 		// Update database remotely.
-		await this.executorDatabase.UpdateAccountStrategySchedulingMemory({
-			accountId,
-			strategyId,
-			schedulingId,
-			memory
-		})
+		await this.executorDatabase.UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory })
 	}
 }

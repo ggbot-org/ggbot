@@ -7,9 +7,7 @@ import { useCallback, useContext, useState } from "react"
 export function useStrategiesDayInterval() {
 	const { subscription } = useContext(AuthenticationContext)
 	const max = today()
-	const min = getDay(max).minus(
-		quota.MAX_OPERATIONS_HISTORY_DAYS(subscription?.plan)
-	).days
+	const min = getDay(max).minus(quota.MAX_OPERATIONS_HISTORY_DAYS(subscription?.plan)).days
 	const storedDayIntervalStart = sessionWebStorage.strategiesDayIntervalStart.get()
 	const storedDayIntervalEnd = sessionWebStorage.strategiesDayIntervalEnd.get()
 	const numDays = 30
@@ -17,8 +15,8 @@ export function useStrategiesDayInterval() {
 		start: getDay(max).minus(numDays).days,
 		end: max
 	}
-	const [start, setStart] = useState(storedDayIntervalStart??defaultDayInterval.start)
-	const [end, setEnd] = useState(storedDayIntervalEnd??defaultDayInterval.end)
+	const [start, setStart] = useState(storedDayIntervalStart ?? defaultDayInterval.start)
+	const [end, setEnd] = useState(storedDayIntervalEnd ?? defaultDayInterval.end)
 	const setStartDay = useCallback((day: Day) => {
 		sessionWebStorage.strategiesDayIntervalStart.set(day)
 		setStart(day)

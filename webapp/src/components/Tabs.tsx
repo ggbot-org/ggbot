@@ -1,18 +1,6 @@
 import { classnames } from "_/classnames"
-import {
-	TabContent,
-	TabContentProps,
-	TabSelector,
-	TabSelectorProps,
-	TabSelectors
-} from "_/components/library"
-import {
-	Dispatch,
-	PropsWithChildren,
-	ReactNode,
-	SetStateAction,
-	useMemo
-} from "react"
+import { TabContent, TabContentProps, TabSelector, TabSelectorProps, TabSelectors } from "_/components/library"
+import { Dispatch, PropsWithChildren, ReactNode, SetStateAction, useMemo } from "react"
 import { useIntl } from "react-intl"
 
 const tabIds = [
@@ -27,7 +15,7 @@ const tabIds = [
 	"manage",
 	"newStrategy",
 	"profits",
-	"strategies"
+	"strategies",
 ] as const
 export type TabId = (typeof tabIds)[number]
 

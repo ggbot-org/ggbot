@@ -5,8 +5,7 @@ const binanceApiPrivateEndpoints = [
 	"/sapi/v1/account/apiRestrictions"
 ] as const
 
-export type BinanceApiPrivateEndpoint =
-	(typeof binanceApiPrivateEndpoints)[number]
+export type BinanceApiPrivateEndpoint = (typeof binanceApiPrivateEndpoints)[number]
 
 const binanceApiPublicEndpoints = [
 	"/api/v3/avgPrice",

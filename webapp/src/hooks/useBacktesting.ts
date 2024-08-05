@@ -1,10 +1,6 @@
 import { localWebStorage } from "_/storages/local"
 import { workerScriptPath } from "_/workers"
-import {
-	BacktestingMessageInData,
-	BacktestingMessageOutData,
-	BacktestingSession
-} from "@workspace/backtesting"
+import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from "@workspace/backtesting"
 import { logging } from "@workspace/logging"
 import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
@@ -178,15 +174,11 @@ export function useBacktesting(): {
 
 	// Dispatch action on every backtesting message received.
 	useEffect(() => {
-		backtesting.onmessage = ({
-			data: action
-		}: MessageEvent<BacktestingMessageOutData>) => {
+		backtesting.onmessage = ({ data: action }: MessageEvent<BacktestingMessageOutData>) => {
 			dispatch(action)
 		}
 
-		backtesting.addEventListener("error", (error) => {
-			warn(error)
-		})
+		backtesting.addEventListener("error", (error) => warn(error))
 
 		// Terminate backtesting worker on onmount.
 		return () => {

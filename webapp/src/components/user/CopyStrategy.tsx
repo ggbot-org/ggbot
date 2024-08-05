@@ -1,5 +1,5 @@
 import { classnames } from "_/classnames"
-import { Button, Buttons, Column, Columns, Div, Message, Section, Title } from "_/components/library"
+import { Button, Buttons, Columns, Div, Message, OneColumn, Section, Title } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
@@ -12,16 +12,9 @@ import { FormattedMessage } from "react-intl"
 const fieldName = { name: "name" }
 const fields = Object.keys(fieldName)
 
-type Props = {
-	strategyKey: StrategyKey | undefined
-} & StrategyRecordProps
+type Props = { strategyKey: StrategyKey | undefined } & StrategyRecordProps
 
-export function CopyStrategy({
-	strategyId,
-	strategyKey,
-	strategyName,
-	strategyWhenCreated
-}: Props) {
+export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWhenCreated }: Props) {
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
@@ -35,9 +28,7 @@ export function CopyStrategy({
 			if (!strategyKey) return
 			if (!canCreate) return
 			if (!COPY.canRun) return
-			const eventTarget = event.target as EventTarget & {
-				[key in (typeof fields)[number]]?: { value: string }
-			}
+			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
 			const name = eventTarget[fieldName.name]?.value
 			if (isName(name)) COPY.request({ name, ...strategyKey })
 		},
@@ -53,8 +44,8 @@ export function CopyStrategy({
 
 	return (
 		<Section>
-			<Columns isMultiline>
-				<Column bulma={[ "is-full-tablet", "is-three-quarters-desktop", "is-half-fullhd" ]}>
+			<Columns >
+				<OneColumn>
 					<Div bulma="box">
 						<Title>
 							<FormattedMessage id="CopyStrategy.title" />
@@ -70,15 +61,9 @@ export function CopyStrategy({
 							strategyWhenCreated={strategyWhenCreated}
 						/>
 					</Div>
-				</Column>
+				</OneColumn>
 
-				<Column
-					bulma={[
-						"is-full-tablet",
-						"is-three-quarters-desktop",
-						"is-half-fullhd"
-					]}
-				>
+				<OneColumn>
 					<form className={classnames("box")} onSubmit={onSubmit}>
 						{error ? null : (
 							<Message color="info">
@@ -106,7 +91,7 @@ export function CopyStrategy({
 							</Button>
 						</Buttons>
 					</form>
-				</Column>
+				</OneColumn>
 			</Columns>
 		</Section>
 	)

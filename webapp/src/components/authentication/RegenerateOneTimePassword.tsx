@@ -1,10 +1,4 @@
-import {
-	Button,
-	ButtonProps,
-	Control,
-	Field,
-	Message
-} from "_/components/library"
+import { Button, ButtonProps, Control, Field, Message } from "_/components/library"
 import { FormattedMessage } from "react-intl"
 
 type Props = Pick<ButtonProps, "onClick">

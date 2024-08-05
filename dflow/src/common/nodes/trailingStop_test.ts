@@ -1,29 +1,13 @@
 import { strict as assert } from "node:assert"
 import { describe, test } from "node:test"
 
-import type {
-	StrategyFlowGraphEdge,
-	StrategyFlowGraphNode
-} from "@workspace/models"
+import type { StrategyFlowGraphEdge, StrategyFlowGraphNode } from "@workspace/models"
 import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
 import { now } from "minimal-time-helpers"
 
 import { DflowCommonContext } from "../context.js"
-import {
-	DflowCommonExecutor,
-	getDflowExecutionOutputData
-} from "../executor.js"
-import {
-	ComputeStopPriceArg,
-	computeStopPriceDown,
-	computeStopPriceUp,
-	trailingStop,
-	TrailingStopDown,
-	TrailingStopInput,
-	trailingStopMemoryKeys,
-	TrailingStopOutput,
-	TrailingStopUp
-} from "./trailingStop.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
+import { ComputeStopPriceArg, computeStopPriceDown, computeStopPriceUp, trailingStop, TrailingStopDown, TrailingStopInput, trailingStopMemoryKeys, TrailingStopOutput, TrailingStopUp } from "./trailingStop.js"
 
 type ExecuteTrailingStopInput = {
 	enterTrailing: unknown
@@ -51,18 +35,10 @@ const exitTrailingAssertionError = "check exitTrailing"
 const memoryAssertionError = "check memory"
 const memoryChangedAssertionError = "check memoryChanged"
 
-const executeTrailingStop = async (
+async function executeTrailingStop (
 	nodeKind: typeof TrailingStopUp.kind,
-	{
-		enterTrailing,
-		memoryLabel,
-		marketPrice,
-		percentageDelta,
-		initialStopPrice,
-		resetTrailing,
-		memory: memoryInput
-	}: ExecuteTrailingStopInput
-): Promise<ExecuteTrailingStopOutput> => {
+	{ enterTrailing, memoryLabel, marketPrice, percentageDelta, initialStopPrice, resetTrailing, memory: memoryInput }: ExecuteTrailingStopInput
+): Promise<ExecuteTrailingStopOutput> {
 	const nodeId = "testId"
 	const hasInitialStopPrice = typeof initialStopPrice === "number"
 	const hasResetTrailing = typeof resetTrailing !== "undefined"
@@ -144,21 +120,12 @@ const executeTrailingStop = async (
 	})
 
 	const executor = new DflowCommonExecutor({ graph: { nodes, edges } })
-	const {
-		execution,
-		memory: memoryOutput,
-		memoryChanged
-	} = await executor.run({
-		params: {},
-		memory: memoryInput,
-		time: now()
-	})
+	const { execution, memory: memoryOutput, memoryChanged } = await executor.run({ params: {}, memory: memoryInput, time: now() })
 
 	const exitTrailing = getDflowExecutionOutputData(execution, nodeId, 0)
 
 	return {
-		exitTrailing:
-			typeof exitTrailing === "boolean" ? exitTrailing : undefined,
+		exitTrailing: typeof exitTrailing === "boolean" ? exitTrailing : undefined,
 		memory: memoryOutput,
 		memoryChanged
 	}
@@ -166,8 +133,7 @@ const executeTrailingStop = async (
 
 describe("Trailing Stop", () => {
 	test("TrailingStopUp", async () => {
-		const { entryPriceMemoryKey, stopPriceMemoryKey } =
-			trailingStopMemoryKeys(memoryLabel)
+		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
 
 		const testData: TrailingStopTestData[] = [
 			// If percentageDelta is not valid, algorithm does not run.
@@ -358,25 +324,15 @@ describe("Trailing Stop", () => {
 		]
 
 		for (const { input, output } of testData) {
-			const { exitTrailing, memory, memoryChanged } =
-				await executeTrailingStop(TrailingStopUp.kind, input)
-			assert.equal(
-				exitTrailing,
-				output.exitTrailing,
-				exitTrailingAssertionError
-			)
-			assert.equal(
-				memoryChanged,
-				output.memoryChanged,
-				memoryChangedAssertionError
-			)
+			const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopUp.kind, input)
+			assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
+			assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
 			assert.deepEqual(memory, output.memory, memoryAssertionError)
 		}
 	})
 
 	test("TrailingStopDown", async () => {
-		const { entryPriceMemoryKey, stopPriceMemoryKey } =
-			trailingStopMemoryKeys(memoryLabel)
+		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
 
 		const testData: TrailingStopTestData[] = [
 			// If percentageDelta is not valid, algorithm does not run.
@@ -567,18 +523,9 @@ describe("Trailing Stop", () => {
 		]
 
 		for (const { input, output } of testData) {
-			const { exitTrailing, memory, memoryChanged } =
-				await executeTrailingStop(TrailingStopDown.kind, input)
-			assert.equal(
-				exitTrailing,
-				output.exitTrailing,
-				exitTrailingAssertionError
-			)
-			assert.equal(
-				memoryChanged,
-				output.memoryChanged,
-				memoryChangedAssertionError
-			)
+			const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopDown.kind, input)
+			assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
+			assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
 			assert.deepEqual(memory, output.memory, memoryAssertionError)
 		}
 	})

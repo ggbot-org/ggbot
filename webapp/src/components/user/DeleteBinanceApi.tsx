@@ -1,13 +1,6 @@
-import {
-	Button,
-	Buttons,
-	Content,
-	MainColor,
-	Message,
-	Modal
-} from "_/components/library"
+import { Button, Buttons, Content, MainColor, Message, Modal } from "_/components/library"
 import { useDeleteBinanceApiConfig } from "_/hooks/user/api"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Props = {
@@ -25,14 +18,6 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 
 	const [modalIsActive, setModalIsActive] = useState(false)
 
-	const toggleModal = useCallback(() => {
-		setModalIsActive((active) => !active)
-	}, [])
-
-	const onClickConfirmation = useCallback(() => {
-		if (DELETE.canRun) DELETE.request()
-	}, [DELETE])
-
 	useEffect(() => {
 		if (canCloseModal) {
 			setModalIsActive(false)
@@ -42,14 +27,14 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 
 	return (
 		<>
-			<Button color={color} onClick={toggleModal}>
+			<Button color={color} onClick={() => setModalIsActive(true)}>
 				<FormattedMessage id="DeleteBinanceApi.button" />
 			</Button>
 
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
-					header={formatMessage({ id: "DeleteBinanceApi.title" })}
 					color={color}
+					header={formatMessage({ id: "DeleteBinanceApi.title" })}
 				>
 					<Content>
 						<p>
@@ -69,12 +54,14 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 						<Button
 							color={color}
 							isLoading={isLoading}
-							onClick={onClickConfirmation}
+							onClick={() => {
+								if (DELETE.canRun) DELETE.request()
+							}}
 						>
 							<FormattedMessage id="DeleteBinanceApi.confirmation" />
 						</Button>
 
-						<Button onClick={toggleModal}>
+						<Button onClick={() => setModalIsActive(false)}>
 							<FormattedMessage id="DeleteBinanceApi.dismiss" />
 						</Button>
 					</Buttons>

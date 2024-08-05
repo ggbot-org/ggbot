@@ -9,8 +9,7 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 const api = new ApiURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
 
 export class StripeWebhook {
-	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion =
-		"2023-08-16"
+	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion = "2023-08-16"
 	static enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
 		"checkout.session.completed"
 	]
@@ -19,9 +18,7 @@ export class StripeWebhook {
 	private stripe = newStripe()
 
 	constructor() {
-		if (DEPLOY_STAGE === "local") throw new Error(
-			"A StripeWebhook on local deploy stage does not make sense."
-		)
+		if (DEPLOY_STAGE === "local") throw new Error("A StripeWebhook on local deploy stage does not make sense.")
 	}
 
 	get url() {

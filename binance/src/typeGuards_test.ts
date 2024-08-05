@@ -2,12 +2,7 @@ import { test } from "node:test"
 
 import { assertEqual } from "minimal-assertion-helpers"
 
-import {
-	isBinanceKline,
-	isBinanceKlineInterval,
-	isBinanceSymbolFilterLotSize,
-	isBinanceSymbolFilterMinNotional
-} from "./typeGuards.js"
+import { isBinanceKline, isBinanceKlineInterval, isBinanceSymbolFilterLotSize, isBinanceSymbolFilterMinNotional } from "./typeGuards.js"
 
 test("isBinanceKline", () => {
 	assertEqual(isBinanceKline, [

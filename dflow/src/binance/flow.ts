@@ -143,11 +143,9 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 	return symbolsAndIntervals
 		.filter(
 			// Remove duplicates.
-			({ symbol, interval }, index, array) => index ===
-				array.findIndex(
-					(element) => element.symbol === symbol &&
-						element.interval === interval
-				)
+			({ symbol, interval }, index, array) => index === array.findIndex(
+				(element) => element.symbol === symbol && element.interval === interval
+			)
 		)
 		.sort(
 			// Sort by symbol and interval.
@@ -157,10 +155,7 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 			) => {
 				if (symbolA > symbolB) return 1
 				if (symbolA < symbolB) return -1
-				return dflowBinanceKlineIntervals.indexOf(intervalA) >
-					dflowBinanceKlineIntervals.indexOf(intervalB)
-					? 1
-					: -1
+				return dflowBinanceKlineIntervals.indexOf(intervalA) > dflowBinanceKlineIntervals.indexOf(intervalB) ? 1 : -1
 			}
 		)
 }
@@ -169,33 +164,24 @@ export async function extractsBinanceDefaultsFromFlow(
 	nodesCatalog: DflowNodesCatalog,
 	graph: StrategyFlowGraph
 ): Promise<Context["defaults"]> {
-	let defaultSymbol: string|undefined
-	const context: Context = {
-		defaults: {},
-		binance: binanceClientMock,
-		params: {},
-		memory: {},
-		time: now()
-	}
+	let defaultSymbol: string | undefined
+	const context: Context = { defaults: {}, binance: binanceClientMock, params: {}, memory: {}, time: now() }
 
-	const dflow = new DflowBinanceHost(
-		{
-			nodesCatalog: {
-				...nodesCatalog,
-				[DefaultSymbol.kind]: class MockedDefaultSymbol extends DflowNode {
-					static kind = DefaultSymbol.kind
-					static inputs = DefaultSymbol.inputs
-					static outputs = DefaultSymbol.outputs
-					run() {
-						const symbol = this.input(0).data
-						if (typeof symbol !== "string") return
-						defaultSymbol = symbol
-					}
+	const dflow = new DflowBinanceHost({
+		nodesCatalog: {
+			...nodesCatalog,
+			[DefaultSymbol.kind]: class MockedDefaultSymbol extends DflowNode {
+				static kind = DefaultSymbol.kind
+				static inputs = DefaultSymbol.inputs
+				static outputs = DefaultSymbol.outputs
+				run() {
+					const symbol = this.input(0).data
+					if (typeof symbol !== "string") return
+					defaultSymbol = symbol
 				}
 			}
-		},
-		context
-	)
+		}
+	}, context)
 
 	dflow.load(graph)
 	await dflow.run()
@@ -229,17 +215,12 @@ export async function extractsBinanceSymbolsFromFlow(
 					run() {
 						// 👇 Sync with BuyMarket run()
 						const symbol = this.input(0).data
-						const quantity = this.input(1).data as
-							| number
-							| undefined
-						const quoteOrderQty = this.input(2).data as
-							| number
-							| undefined
+						const quantity = this.input(1).data as | number | undefined
+						const quoteOrderQty = this.input(2).data as | number | undefined
 						const execute = this.input(3).data
 						if (
 							typeof symbol !== "string" ||
-							(quantity === undefined &&
-								quoteOrderQty === undefined) ||
+							(quantity === undefined && quoteOrderQty === undefined) ||
 							!execute
 						) return this.clearOutputs()
 						// Additional code
@@ -253,17 +234,12 @@ export async function extractsBinanceSymbolsFromFlow(
 					run() {
 						// 👇 Sync with SellMarket run()
 						const symbol = this.input(0).data
-						const quantity = this.input(1).data as
-							| number
-							| undefined
-						const quoteOrderQty = this.input(2).data as
-							| number
-							| undefined
+						const quantity = this.input(1).data as | number | undefined
+						const quoteOrderQty = this.input(2).data as | number | undefined
 						const execute = this.input(3).data
 						if (
 							typeof symbol !== "string" ||
-							(quantity === undefined &&
-								quoteOrderQty === undefined) ||
+							(quantity === undefined && quoteOrderQty === undefined) ||
 							!execute
 						) return this.clearOutputs()
 						// Additional code

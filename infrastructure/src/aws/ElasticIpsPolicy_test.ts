@@ -28,22 +28,14 @@ describe("ElasticIpsPolicy", () => {
 	}
 
 	if (policyDocument) {
-		const findStatementByActions =
-			IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
+		const findStatementByActions = IamPolicy.findPolicyDocumentStatementByActions(policyDocument)
 
-		for (const [statementName, actionList] of Object.entries(
-			elasticIpsPolicy.statementAction
-		)) {
+		for (const [statementName, actionList] of Object.entries(elasticIpsPolicy.statementAction)) {
 			const statement = findStatementByActions(actionList)
 			const exists = statement !== undefined
 			describe(statementName, () => {
 				test("exists", () => {
-					assert.ok(
-						exists,
-						`elasticIpsPolicy ${statementName} statement actions should be ${JSON.stringify(
-							actionList
-						)}`
-					)
+					assert.ok(exists, `elasticIpsPolicy ${statementName} statement actions should be ${JSON.stringify(actionList)}`)
 				})
 			})
 

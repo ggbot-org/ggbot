@@ -1,10 +1,6 @@
 import { ENV } from "@workspace/env"
 import { UnauthorizedError } from "@workspace/http"
-import {
-	ClientSession,
-	clientSessionNumDays,
-	isClientSession
-} from "@workspace/models"
+import { ClientSession, clientSessionNumDays, isClientSession } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
 
 import { decrypt, encrypt } from "./crypto.js"
@@ -20,13 +16,10 @@ export async function signSession(session: ClientSession) {
  *
  * ```ts
  * const authorization = event.headers.Authorization
- * const { accountId, creationDay } =
- * 	await readSessionFromAuthorizationHeader(authorization)
+ * const { accountId, creationDay } = await readSessionFromAuthorizationHeader(authorization)
  * ```
  */
-export async function readSessionFromAuthorizationHeader(
-	headerContent: unknown
-): Promise<ClientSession> {
+export async function readSessionFromAuthorizationHeader(headerContent: unknown): Promise<ClientSession> {
 	if (typeof headerContent !== "string") throw new UnauthorizedError()
 	let sessionJson = ""
 	try {

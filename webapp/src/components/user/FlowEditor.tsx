@@ -20,11 +20,7 @@ export function FlowEditor({ strategyKey, strategyName }: Props) {
 
 	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 
-	const { whenUpdatedFlowView, flowViewGraph } = useFlowView({
-		container: flowViewContainerRef.current,
-		initialFlowViewGraph,
-		strategyKind: strategyKey?.strategyKind
-	})
+	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(flowViewContainerRef.current, initialFlowViewGraph, strategyKey?.strategyKind)
 
 	const [canSave, setCanSave] = useState(false)
 

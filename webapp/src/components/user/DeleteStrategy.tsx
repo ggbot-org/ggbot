@@ -15,15 +15,15 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 	const DELETE = useDeleteStrategy(strategyKey)
 
 	const [modalIsActive, setModalIsActive] = useState(false)
-	const [color, setColor] = useState<Extract<MainColor, "warning">|undefined>()
+	const [color, setColor] = useState<Extract<MainColor, "warning"> | undefined>()
 
 	return (
 		<>
 			<Button
 				color={color}
-				onClick={() => setModalIsActive((active) => !active)}
-				onFocus={() => setColor("warning")}
 				onBlur={() => setColor(undefined)}
+				onClick={() => setModalIsActive(true)}
+				onFocus={() => setColor("warning")}
 				onPointerEnter={() => setColor("warning")}
 				onPointerLeave={() => setColor(undefined)}
 			>
@@ -32,8 +32,8 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
-					header={formatMessage({ id: "DeleteStrategy.title" })}
 					color="warning"
+					header={formatMessage({ id: "DeleteStrategy.title" })}
 				>
 					<Content>
 						<p>
@@ -55,11 +55,7 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 							<FormattedMessage id="DeleteStrategy.confirmation" />
 						</Button>
 
-						<Button
-							onClick={() => {
-								setModalIsActive((active) => !active)
-							}}
-						>
+						<Button onClick={() => setModalIsActive(false)}>
 							<FormattedMessage id="DeleteStrategy.dismiss" />
 						</Button>
 					</Buttons>

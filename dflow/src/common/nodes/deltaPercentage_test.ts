@@ -3,10 +3,7 @@ import { test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import {
-	DflowCommonExecutor,
-	getDflowExecutionOutputData
-} from "../executor.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
 
 test("deltaPercentage", async () => {
 	const nodeId = "nodeId"
@@ -37,14 +34,7 @@ test("deltaPercentage", async () => {
 			]
 		}
 	})
-	const { execution } = await executor.run({
-		params: {},
-		memory: {},
-		time: now()
-	})
-	assert.deepEqual(
-		getDflowExecutionOutputData(execution, nodeId, 0),
-		[-33.33, 100, -2, 2]
-	)
+	const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
+	assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [-33.33, 100, -2, 2])
 	assert.equal(getDflowExecutionOutputData(execution, nodeId, 1), 2)
 })

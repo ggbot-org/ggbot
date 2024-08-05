@@ -1,10 +1,7 @@
 import { AccountDetailsPage } from "_/pages/admin/AccountDetails"
 import { DashboardPage } from "_/pages/admin/Dashboard"
 import { mount } from "_/react/mount"
-import {
-	adminAccountDetailsHtmlPathname,
-	adminDashboardHtmlPathname
-} from "_/routing/admin/pages"
+import { adminAccountDetailsHtmlPathname, adminDashboardHtmlPathname } from "_/routing/admin/pages"
 
 function Router() {
 	const pathname = location.pathname

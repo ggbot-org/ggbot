@@ -1,9 +1,4 @@
-import {
-	CreateBucketCommand,
-	HeadBucketCommand,
-	S3Client,
-	S3ServiceException
-} from "@aws-sdk/client-s3"
+import { CreateBucketCommand, HeadBucketCommand, S3Client, S3ServiceException } from "@aws-sdk/client-s3"
 import { AwsResource } from "@workspace/aws-types"
 
 import { s3Client } from "./client.js"

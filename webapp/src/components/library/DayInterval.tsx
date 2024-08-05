@@ -72,8 +72,8 @@ export function DayInterval({
 				disabled={disabled}
 				isActive={activeDropdown === "end"}
 				label={formatMessage({ id: "DailyInterval.to" })}
-				min={start.day}
 				max={max}
+				min={start.day}
 				onClick={onClickEnd}
 				{...end}
 			/>

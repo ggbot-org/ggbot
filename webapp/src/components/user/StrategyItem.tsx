@@ -10,17 +10,10 @@ export function StrategyItem({ name, schedulings, ...strategyKey }: Props) {
 	return (
 		<div
 			className={classnames("box", "strategy-item")}
+			onClick={() => GOTO(new URL(webapp.user.strategy(strategyKey)))}
 			tabIndex={0}
-			onClick={() => {
-				GOTO(new URL(webapp.user.strategy(strategyKey)))
-			}}
 		>
-			<div
-				className={classnames(
-					"is-flex",
-					"is-justify-content-space-between"
-				)}
-			>
+			<div className={classnames("is-flex", "is-justify-content-space-between")} >
 				<span className={classnames("is-unselectable")}>{name}</span>
 
 				<SchedulingsStatusBadges schedulings={schedulings} />

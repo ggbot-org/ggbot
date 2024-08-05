@@ -88,14 +88,10 @@ async function runBinance(
 		binance.time = time
 		// Run executor.
 		try {
-			const { memory, memoryChanged, orders } = await binanceExecutor.run(
-				{
-					binance,
-					params: {},
-					memory: session.memory,
-					time
-				},
-				flow
+			const {
+				memory, memoryChanged, orders
+			} = await binanceExecutor.run(
+				{ binance, params: {}, memory: session.memory, time }, flow
 			)
 			if (memoryChanged) {
 				memoryChangedOnSomeStep = true
@@ -139,9 +135,7 @@ function getStrategyFlow(): BacktestingStrategy["flow"] {
 	return flow
 }
 
-self.onmessage = async ({
-	data: message
-}: MessageEvent<BacktestingMessageInData>) => {
+self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData>) => {
 	const { type: messageType } = message
 
 	if (messageType === "SET_AFTER_STEP_BEHAVIOUR") {
@@ -160,18 +154,13 @@ self.onmessage = async ({
 	}
 
 	if (messageType === "START") {
-		const { dayInterval, flow, frequency, strategyKey, strategyName } =
-			message
+		const { dayInterval, flow, frequency, strategyKey, strategyName } = message
 		const { interval: schedulingInterval } = frequency
 		// Initialize session.
 		session.dayInterval = dayInterval
 		session.frequency = frequency
 		session.computeTimes()
-		const strategy = new BacktestingStrategy({
-			strategyKey,
-			strategyName,
-			flow
-		})
+		const strategy = new BacktestingStrategy({ strategyKey, strategyName, flow })
 		session.strategy = strategy
 		session.computeTimes()
 
@@ -192,13 +181,7 @@ self.onmessage = async ({
 			binance: async () => {
 				const flow = getStrategyFlow()
 				const binance = getBinance(schedulingInterval)
-				await prepareBinance(
-					binance,
-					binanceExecutor,
-					session,
-					schedulingInterval,
-					flow
-				)
+				await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
 				await runBinance(binance, binanceExecutor, flow)
 			},
 			none: () => Promise.resolve()
@@ -236,13 +219,7 @@ self.onmessage = async ({
 			binance: async () => {
 				const flow = getStrategyFlow()
 				const binance = getBinance(schedulingInterval)
-				await prepareBinance(
-					binance,
-					binanceExecutor,
-					session,
-					schedulingInterval,
-					flow
-				)
+				await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
 				await runBinance(binance, binanceExecutor, flow)
 			},
 			none: () => Promise.resolve()

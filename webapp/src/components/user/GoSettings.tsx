@@ -5,11 +5,7 @@ import { FormattedMessage } from "react-intl"
 
 export function GoSettings() {
 	return (
-		<Button
-			onClick={() => {
-				GOTO(webapp.user.settings)
-			}}
-		>
+		<Button onClick={() => GOTO(webapp.user.settings)}>
 			<FormattedMessage id="GoSettings.label" />
 		</Button>
 	)

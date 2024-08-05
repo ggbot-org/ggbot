@@ -1,9 +1,4 @@
-import {
-	AccountKey,
-	isAccountKey,
-	isStrategyKey,
-	StrategyKey
-} from "@workspace/models"
+import { AccountKey, isAccountKey, isStrategyKey, StrategyKey } from "@workspace/models"
 
 export function accountKeyParamsFromURL(url: URL): AccountKey | undefined {
 	const accountKey = {

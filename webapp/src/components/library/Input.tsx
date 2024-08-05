@@ -21,8 +21,8 @@ export function Input({
 				"is-static": isStatic
 			})}
 			color={color}
-			readOnly={readOnly || isStatic}
 			maxLength={type === "text" ? stringMaxLength : undefined}
+			readOnly={readOnly || isStatic}
 			type={type}
 			{...props}
 		/>

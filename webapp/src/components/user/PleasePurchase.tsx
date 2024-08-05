@@ -1,20 +1,9 @@
-import {
-	Buttons,
-	Checkbox,
-	Content,
-	Message,
-	Modal
-} from "_/components/library"
+import { Buttons, Checkbox, Content, Message, Modal } from "_/components/library"
 import { GoSettings } from "_/components/user/GoSettings"
 import { useSubscription } from "_/hooks/user/useSubscription"
+import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { sessionWebStorage } from "_/storages/session"
-import {
-	ChangeEventHandler,
-	InputHTMLAttributes,
-	useCallback,
-	useEffect,
-	useState
-} from "react"
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export function PleasePurchase() {
@@ -22,20 +11,14 @@ export function PleasePurchase() {
 
 	const { hasActiveSubscription } = useSubscription()
 
-	const [doNotShow, setDoNotShow] = useState<boolean>(
-		Boolean(sessionWebStorage.doNotShowPleasePurchase.get())
-	)
+	const [doNotShow, setDoNotShow] = useState<boolean>(Boolean(sessionWebStorage.doNotShowPleasePurchase.get()))
 	const [isActive, setIsActive] = useState(false)
 
-	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			const { checked } =
-				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-			setDoNotShow(Boolean(checked))
-			sessionWebStorage.doNotShowPleasePurchase.set(checked)
-		},
-		[]
-	)
+	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
+		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
+		setDoNotShow(Boolean(checked))
+		sessionWebStorage.doNotShowPleasePurchase.set(checked)
+	}, [])
 
 	useEffect(() => {
 		if (sessionWebStorage.doNotShowPleasePurchase.get()) return
@@ -51,13 +34,7 @@ export function PleasePurchase() {
 					</p>
 
 					<p>
-						<FormattedMessage
-							id="PleasePurchase.goToSettings"
-							values={{
-								b: (chunks) => <b>{chunks}</b>,
-								em: (chunks) => <em>{chunks}</em>
-							}}
-						/>
+						<FormattedMessage id="PleasePurchase.goToSettings" values={formattedMessageMarkup} />
 					</p>
 
 					<Checkbox checked={doNotShow} onChange={onChangeDoNotShow}>

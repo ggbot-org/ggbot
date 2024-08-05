@@ -5,7 +5,6 @@ import { useState } from "react"
 
 export function DashboardPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("accounts")
-
 	return (
 		<PageContainer>
 			<Tabs

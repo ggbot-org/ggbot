@@ -1,20 +1,11 @@
 import { classnames } from "_/classnames"
 import { Button, Control, Field, Title } from "_/components/library"
 import { ApiKey } from "_/components/user/ApiKey"
-import {
-	BinanceApiKeyPermissions,
-	BinanceApiKeyPermissionsProps
-} from "_/components/user/BinanceApiKeyPermissions"
+import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
 import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"
 import { GatewayTimeoutError } from "@workspace/http"
-import {
-	ChangeEventHandler,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react"
+import { ChangeEventHandler, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 type Props = {
@@ -26,8 +17,7 @@ export function BinanceApi({ apiKey }: Props) {
 
 	const { toast } = useContext(ToastContext)
 
-	const [permissions, setPermissions] =
-		useState<BinanceApiKeyPermissionsProps["permissions"]>()
+	const [permissions, setPermissions] = useState<BinanceApiKeyPermissionsProps["permissions"]>()
 
 	const READ = useReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending
@@ -48,9 +38,7 @@ export function BinanceApi({ apiKey }: Props) {
 		if (READ.error) {
 			READ.reset()
 			if (READ.error.name === GatewayTimeoutError.name) {
-				toast.warning(
-					formatMessage({ id: "BinanceApi.GatewayTimeoutError" })
-				)
+				toast.warning(formatMessage({ id: "BinanceApi.GatewayTimeoutError" }))
 				return
 			}
 			toast.warning(formatMessage({ id: "BinanceApi.GenericError" }))

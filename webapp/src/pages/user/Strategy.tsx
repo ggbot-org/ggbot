@@ -23,7 +23,7 @@ export function StrategyPage() {
 	} = useStrategy(strategyKey)
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyNotFound={strategyNotFound} strategyKey={strategyKey}>
+			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}

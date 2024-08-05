@@ -5,10 +5,7 @@ import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
 import { PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
-function BinanceApiKeyPermission({
-	children,
-	ok
-}: PropsWithChildren<Pick<CheckmarkProps, "ok">>) {
+function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, "ok">>) {
 	if (ok === undefined) return null
 	return (
 		<div className={classnames("is-flex")}>
@@ -34,9 +31,7 @@ function BinanceApiKeyPermissionEnableReading({
 
 function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
 	enableSpotAndMarginTrading
-}: Partial<
-	Pick<BinanceApiKeyPermissionCriteria, "enableSpotAndMarginTrading">
->) {
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableSpotAndMarginTrading">>) {
 	return (
 		<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
 			<FormattedMessage
@@ -83,9 +78,7 @@ export type BinanceApiKeyPermissionsProps = {
 	permissions: BinanceApiKeyPermissionCriteria | undefined
 }
 
-export function BinanceApiKeyPermissions({
-	permissions
-}: BinanceApiKeyPermissionsProps) {
+export function BinanceApiKeyPermissions({ permissions }: BinanceApiKeyPermissionsProps) {
 	if (!permissions) return null
 
 	const {

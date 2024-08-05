@@ -24,13 +24,7 @@ export function BacktestingProgress({
 
 			<Progress {...progress} />
 
-			<div
-				className={classnames(
-					"is-flex",
-					"my-2",
-					"is-flex-direction-column"
-				)}
-			>
+			<div className={classnames("is-flex", "my-2", "is-flex-direction-column")} >
 				<div className={classnames("is-flex")}>
 					<FormattedMessage
 						id="BacktestingProgress.dayInterval"
@@ -41,12 +35,7 @@ export function BacktestingProgress({
 					/>
 				</div>
 
-				{progress.max ? (
-					<FormattedMessage
-						id="BacktestingProgress.intervals"
-						values={progress}
-					/>
-				) : null}
+				{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
 
 				{currentTimestamp ? (
 					<div className={classnames("is-flex")}>

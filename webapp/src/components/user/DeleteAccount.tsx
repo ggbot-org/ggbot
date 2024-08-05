@@ -1,15 +1,4 @@
-import {
-	Button,
-	Buttons,
-	Checkbox,
-	Column,
-	Columns,
-	Content,
-	InputField,
-	MainColor,
-	Message,
-	Modal
-} from "_/components/library"
+import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainColor, Message, Modal } from "_/components/library"
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useDeleteAccount } from "_/hooks/user/api"
 import { useContext, useEffect, useState } from "react"
@@ -53,8 +42,8 @@ export function DeleteAccount() {
 
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
-					header={formatMessage({ id: "DeleteAccount.title" })}
 					color={color}
+					header={formatMessage({ id: "DeleteAccount.title" })}
 				>
 					<Content>
 						<p>
@@ -65,7 +54,9 @@ export function DeleteAccount() {
 							<Column bulma="is-half">
 								<InputField
 									color={color}
-									value={accountIdConfirmation}
+									help={
+										<FormattedMessage id="DeleteAccount.accountIdInputHelp" />
+									}
 									label={formatMessage({
 										id: "AccountId.label"
 									})}
@@ -74,20 +65,18 @@ export function DeleteAccount() {
 											event.target.value
 										)
 									}}
-									help={
-										<FormattedMessage id="DeleteAccount.accountIdInputHelp" />
-									}
+									value={accountIdConfirmation}
 								/>
 							</Column>
 						</Columns>
 
 						<Checkbox
 							checked={hasConsent}
+							color={color}
 							disabled={!accountIdConfirmed}
 							onChange={(event) => {
 								setHasConsent(event.target.checked)
 							}}
-							color={color}
 						/>
 
 						<FormattedMessage id="DeleteAccount.consent" />

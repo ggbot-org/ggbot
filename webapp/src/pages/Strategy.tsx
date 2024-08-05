@@ -16,11 +16,11 @@ export function StrategyPage() {
 		strategyWhenCreated,
 		strategyFrequency,
 		strategyNotFound,
-		readStrategyIsPending,
+		readStrategyIsPending
 	} = useStrategy(strategyKey)
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyNotFound={strategyNotFound} strategyKey={strategyKey}>
+			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
 				<Tabs
 					activeTabId={activeTabId}
 					setActiveTabId={setActiveTabId}
@@ -42,9 +42,9 @@ export function StrategyPage() {
 							tabId: "backtesting",
 							content: (
 								<Backtesting
+									strategyFrequency={strategyFrequency}
 									strategyKey={strategyKey}
 									strategyName={strategyName}
-									strategyFrequency={strategyFrequency}
 								/>
 							)
 						}

@@ -1,7 +1,4 @@
-import {
-	BinanceExchangeInfo,
-	BinanceExchangeInfoCacheProvider
-} from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceExchangeInfoCacheProvider } from "@workspace/binance"
 
 import { BinanceIDB } from "./BinanceIDB.js"
 

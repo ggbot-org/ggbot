@@ -6,7 +6,6 @@ import { useState } from "react"
 
 export function AccountDetailsPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("account")
-
 	return (
 		<PageContainer>
 			<AccountPageContainer>

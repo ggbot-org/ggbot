@@ -21,26 +21,26 @@ const strategyFlow: StrategyFlow = {
 			{
 				id: "n1",
 				text: "BTC/USDT",
-				outs: [ { id: "o0" } ],
+				outs: [{ id: "o0" }],
 				x, y
 			},
 			{
 				id: "n2",
 				text: "0.001",
-				outs: [ { id: "o0" } ],
+				outs: [{ id: "o0" }],
 				x, y
 			},
 			{
 				id: "n3",
 				text: "true",
-				outs: [ { id: "o0" } ],
+				outs: [{ id: "o0" }],
 				x, y
 			},
 			{
 				id: "n4",
 				text: "buyMarket",
-				ins: [ { id: "i0" }, { id: "i1" }, { id: "i2" }, { id: "i3" } ],
-				outs: [ { id: "o0" } ],
+				ins: [{ id: "i0" }, { id: "i1" }, { id: "i2" }, { id: "i3" }],
+				outs: [{ id: "o0" }],
 				x, y
 			}
 		],

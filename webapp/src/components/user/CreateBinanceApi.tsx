@@ -26,9 +26,7 @@ export function CreateBinanceApi({ refetchApiKey }: Props) {
 		(event) => {
 			event.preventDefault()
 			if (!CREATE.canRun) return
-			const eventTarget = event.target as EventTarget & {
-				[key in (typeof fields)[number]]?: { value: string }
-			}
+			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
 			const apiKey = eventTarget[fieldName.apiKey]?.value
 			const apiSecret = eventTarget[fieldName.apiSecret]?.value
 			if (!apiKey || !apiSecret) return

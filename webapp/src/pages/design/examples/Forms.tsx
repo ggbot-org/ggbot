@@ -1,15 +1,6 @@
 import { classnames } from "_/classnames"
-import {
-	Button,
-	Buttons,
-	Checkbox,
-	Control,
-	Field,
-	InputField,
-	SelectField,
-	Title
-} from "_/components/library"
-import { InputHTMLAttributes, SelectHTMLAttributes, useState } from "react"
+import { Button, Buttons, Checkbox, Control, Field, InputField, SelectField, Title } from "_/components/library"
+import { useState } from "react"
 
 export function SimpleForm() {
 	const [isPending, setIsPending] = useState(false)
@@ -29,63 +20,41 @@ export function SimpleForm() {
 			<Title>Create account</Title>
 
 			<InputField
-				type="text"
-				name="nick"
 				label="nick"
+				name="nick"
+				onChange={(event) => setNick(event.target.value)}
+				type="text"
 				value={nick}
-				onChange={(event) => {
-					const { value } =
-						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-					if (typeof value === "string") setNick(value)
-				}}
 			/>
 
 			<InputField
-				type="password"
-				name="password"
 				label="password"
+				name="password"
+				onChange={(event) => setPassword(event.target.value)}
+				type="password"
 				value={password}
-				onChange={(event) => {
-					const { value } =
-						event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-					if (typeof value === "string") setPassword(value)
-				}}
 			/>
 
 			<SelectField
-				value={gender}
-				name="gender"
-				label="gender"
 				help={<>&nbsp;</>}
-				onChange={(event) => {
-					const { value } =
-						event.target as unknown as SelectHTMLAttributes<HTMLSelectElement>
-					if (typeof value === "string") setGender(value)
-				}}
+				label="gender"
+				name="gender"
+				onChange={(event) => setGender(event.target.value)}
 				options={[
 					{ value: "M", label: "Male" },
 					{ value: "F", label: "Female" },
 					{ value: "X", label: "Other" }
 				]}
+				value={gender}
 			/>
 
 			<Field>
 				<Control>
 					<Checkbox
 						checked={hasConsent}
-						onChange={(event) => {
-							setHasConsent(
-								Boolean(
-									(
-										event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-									).checked
-								)
-							)
-						}}
+						onChange={(event) => setHasConsent(Boolean(event.target.checked))}
 					>
-						<span className={classnames("ml-2")}>
-							I agree with Terms of service.
-						</span>
+						<span className={classnames("ml-2")}>I agree with Terms of service.</span>
 					</Checkbox>
 				</Control>
 			</Field>

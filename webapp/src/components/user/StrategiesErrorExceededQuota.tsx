@@ -9,9 +9,7 @@ type Props = {
 
 export function StrategiesErrorExceededQuota({ error }: Props) {
 	if (!isApiActionServerSideError(error)) return null
-
 	if (error.name !== ErrorExceededQuota.errorName) return null
-
 	return (
 		<Message color="warning">
 			<FormattedMessage id="StrategiesErrorExceededQuota.message" />

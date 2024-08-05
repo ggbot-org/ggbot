@@ -9,7 +9,7 @@ export function CopyStrategyPage() {
 	const { strategyId, strategyName, strategyWhenCreated, strategyNotFound } = useStrategy(strategyKey)
 	return (
 		<PageContainer>
-			<StrategyPageContainer strategyNotFound={strategyNotFound} strategyKey={strategyKey}>
+			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
 				<CopyStrategy
 					strategyId={strategyId}
 					strategyKey={strategyKey}

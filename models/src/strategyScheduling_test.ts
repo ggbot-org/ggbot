@@ -4,10 +4,7 @@ import { assertEqual } from "minimal-assertion-helpers"
 import { MaybeObject } from "minimal-type-guard-helpers"
 
 import { nullId } from "./item.js"
-import {
-	isStrategyScheduling,
-	StrategyScheduling
-} from "./strategyScheduling.js"
+import { isStrategyScheduling, StrategyScheduling } from "./strategyScheduling.js"
 
 test("isStrategyScheduling", () => {
 	assertEqual<MaybeObject<StrategyScheduling>, boolean>(

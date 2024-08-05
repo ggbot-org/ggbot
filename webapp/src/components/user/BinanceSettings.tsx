@@ -25,18 +25,10 @@ export function BinanceSettings() {
 	return (
 		<>
 			<Columns isMultiline>
-				<Column
-					bulma={[
-						"is-half-tablet",
-						"is-two-thirds-desktop",
-						"is-one-third-widescreen"
-					]}
-				>
+				<Column bulma={["is-half-tablet", "is-two-thirds-desktop", "is-one-third-widescreen"]}>
 					{apiKey ? <BinanceApi apiKey={apiKey} /> : null}
 
-					{apiKey === null && (
-						<CreateBinanceApi refetchApiKey={refetchApiKey} />
-					)}
+					{apiKey === null && <CreateBinanceApi refetchApiKey={refetchApiKey} />}
 				</Column>
 			</Columns>
 

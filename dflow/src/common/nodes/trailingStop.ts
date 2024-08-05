@@ -113,8 +113,7 @@ export class TrailingStopUp extends DflowNode {
 
 		const context = this.host.context as Context
 
-		const { entryPriceMemoryKey, stopPriceMemoryKey } =
-			trailingStopMemoryKeys(memoryLabel)
+		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
 
 		const cleanupMemory = () => {
 			delete context.memory[entryPriceMemoryKey]
@@ -132,44 +131,26 @@ export class TrailingStopUp extends DflowNode {
 		// Read memory.
 		const stopPriceInMemory = context.memory[stopPriceMemoryKey]
 		const entryPriceInMemory = context.memory[entryPriceMemoryKey]
-		let stopPrice =
-			typeof stopPriceInMemory === "number"
-				? stopPriceInMemory
-				: undefined
+		let stopPrice = typeof stopPriceInMemory === "number" ? stopPriceInMemory : undefined
 
 		// Initialize `stopPrice`, if needed.
 		if (stopPrice === undefined && enterTrailing) {
-			if (
-				typeof initialStopPrice === "number" &&
-				initialStopPrice < marketPrice
-			) stopPrice = initialStopPrice
-			else stopPrice = computeStopPriceUp({
-				marketPrice,
-				percentageDelta
-			})
+			if (typeof initialStopPrice === "number" && initialStopPrice < marketPrice) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceUp({ marketPrice, percentageDelta })
 		}
 
 		// Nothing to do if there is no `stopPrice`.
 		if (typeof stopPrice !== "number") return
 
 		// Save `entryPrice` and `stopPrice` in memory.
-		if (
-			enterTrailing &&
-			entryPriceInMemory === undefined &&
-			stopPriceInMemory === undefined
-		) {
+		if (enterTrailing && entryPriceInMemory === undefined && stopPriceInMemory === undefined) {
 			context.memoryChanged = true
 			context.memory[entryPriceMemoryKey] = marketPrice
 			context.memory[stopPriceMemoryKey] = stopPrice
 		}
 
 		// Compute trailing.
-		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({
-			direction,
-			marketPrice,
-			percentageDelta,
-			stopPrice
-		})
+		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, marketPrice, percentageDelta, stopPrice })
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			cleanupMemory()
@@ -196,8 +177,7 @@ export class TrailingStopDown extends DflowNode {
 
 		const context = this.host.context as Context
 
-		const { entryPriceMemoryKey, stopPriceMemoryKey } =
-			trailingStopMemoryKeys(memoryLabel)
+		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
 
 		const cleanupMemory = () => {
 			delete context.memory[entryPriceMemoryKey]
@@ -215,21 +195,12 @@ export class TrailingStopDown extends DflowNode {
 		// Read memory.
 		const stopPriceInMemory = context.memory[stopPriceMemoryKey]
 		const entryPriceInMemory = context.memory[entryPriceMemoryKey]
-		let stopPrice =
-			typeof stopPriceInMemory === "number"
-				? stopPriceInMemory
-				: undefined
+		let stopPrice = typeof stopPriceInMemory === "number" ? stopPriceInMemory : undefined
 
 		// Initialize `stopPrice`, if needed.
 		if (stopPrice === undefined && enterTrailing) {
-			if (
-				typeof initialStopPrice === "number" &&
-				initialStopPrice > marketPrice
-			) stopPrice = initialStopPrice
-			else stopPrice = computeStopPriceDown({
-				marketPrice,
-				percentageDelta
-			})
+			if (typeof initialStopPrice === "number" && initialStopPrice > marketPrice) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
 		}
 
 		// Nothing to do if there is no `stopPrice`.
@@ -247,12 +218,7 @@ export class TrailingStopDown extends DflowNode {
 		}
 
 		// Compute trailing.
-		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({
-			direction,
-			marketPrice,
-			percentageDelta,
-			stopPrice
-		})
+		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, marketPrice, percentageDelta, stopPrice })
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			cleanupMemory()

@@ -1,8 +1,4 @@
-import {
-	Bulma,
-	classnames as _classnames,
-	ClassnamesArg as _ClassnamesArg
-} from "trunx"
+import { Bulma, classnames as _classnames, ClassnamesArg as _ClassnamesArg } from "trunx"
 
 type CalendarClassname =
 	| "calendar"

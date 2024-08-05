@@ -1,34 +1,10 @@
-import {
-	BinanceExchangeInfoCacheProvider,
-	BinanceKlinesCacheProvider
-} from "./cacheProviders.js"
+import { BinanceExchangeInfoCacheProvider, BinanceKlinesCacheProvider } from "./cacheProviders.js"
 import { BinanceConnector } from "./connector.js"
-import {
-	ErrorBinanceCannotTradeSymbol,
-	ErrorBinanceInvalidOrderOptions,
-	ErrorBinanceSymbolFilter
-} from "./errors.js"
-import {
-	findSymbolFilterLotSize,
-	findSymbolFilterMinNotional,
-	lotSizeIsValid,
-	minNotionalIsValid
-} from "./symbolFilters.js"
+import { ErrorBinanceCannotTradeSymbol, ErrorBinanceInvalidOrderOptions, ErrorBinanceSymbolFilter } from "./errors.js"
+import { findSymbolFilterLotSize, findSymbolFilterMinNotional, lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js"
 import { getBinanceIntervalTime } from "./time.js"
-import {
-	BinanceAvgPrice,
-	BinanceExchangeInfo,
-	BinanceKline,
-	BinanceKlineInterval,
-	BinanceKlineOptionalParameters,
-	BinanceNewOrderOptions,
-	BinanceOrderType,
-	BinanceSymbolFilterLotSize,
-	BinanceSymbolFilterMinNotional,
-	BinanceSymbolInfo,
-	BinanceTicker24hr,
-	BinanceTickerPrice
-} from "./types.js"
+import { BinanceAvgPrice, BinanceExchangeInfo, BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderType, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional, BinanceSymbolInfo, BinanceTicker24hr,
+	BinanceTickerPrice } from "./types.js"
 
 /**
  * BinanceExchange implements public API requests.
@@ -82,10 +58,12 @@ export class BinanceExchange {
 		quantity: NonNullable<BinanceNewOrderOptions["quantity"]>,
 		lotSizeFilter?: BinanceSymbolFilterLotSize
 	) {
-		if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity)) throw new ErrorBinanceSymbolFilter({
-			filterType: "LOT_SIZE",
-			detail: `quantity=${quantity}`
-		})
+		if (lotSizeFilter && !lotSizeIsValid(lotSizeFilter, quantity)) {
+			throw new ErrorBinanceSymbolFilter({
+				filterType: "LOT_SIZE",
+				detail: `quantity=${quantity}`
+			})
+		}
 	}
 
 	/**
@@ -107,19 +85,9 @@ export class BinanceExchange {
 		const lotSizeFilter = findSymbolFilterLotSize(filters)
 		const minNotionalFilter = findSymbolFilterMinNotional(filters)
 
-		const {
-			price,
-			quantity,
-			quoteOrderQty,
-			stopPrice,
-			timeInForce,
-			trailingDelta
-		} = orderOptions
+		const { price, quantity, quoteOrderQty, stopPrice, timeInForce, trailingDelta } = orderOptions
 
-		const prepareOptions: Record<
-			BinanceOrderType,
-			() => BinanceNewOrderOptions
-		> = {
+		const prepareOptions: Record< BinanceOrderType, () => BinanceNewOrderOptions > = {
 			LIMIT: () => {
 				if (price === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				if (quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
@@ -141,18 +109,11 @@ export class BinanceExchange {
 			MARKET: () => {
 				if (quantity === undefined && quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				if (quantity) {
-					BinanceExchange.throwIfLotSizeFilterIsInvalid(
-						quantity,
-						lotSizeFilter
-					)
+					BinanceExchange.throwIfLotSizeFilterIsInvalid(quantity, lotSizeFilter)
 					return { quantity }
 				}
 				if (quoteOrderQty) {
-					BinanceExchange.throwIfMinNotionalFilterIsInvalid(
-						quoteOrderQty,
-						orderType,
-						minNotionalFilter
-					)
+					BinanceExchange.throwIfMinNotionalFilterIsInvalid(quoteOrderQty, orderType, minNotionalFilter)
 				}
 				return { quoteOrderQty }
 			},
@@ -174,10 +135,9 @@ export class BinanceExchange {
 			},
 
 			TAKE_PROFIT: () => {
-				if (
-					quantity === undefined ||
-					(stopPrice === undefined && trailingDelta === undefined)
-				) throw new ErrorBinanceInvalidOrderOptions()
+				if (quantity === undefined || (stopPrice === undefined && trailingDelta === undefined)) {
+					throw new ErrorBinanceInvalidOrderOptions()
+				}
 				return orderOptions
 			},
 
@@ -201,11 +161,7 @@ export class BinanceExchange {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
 	 */
 	avgPrice(symbol: string): Promise<BinanceAvgPrice> {
-		return this.connector.request<BinanceAvgPrice>(
-			"GET",
-			"/api/v3/avgPrice",
-			{ symbol }
-		)
+		return this.connector.request<BinanceAvgPrice>("GET", "/api/v3/avgPrice", { symbol })
 	}
 
 	/** Check if `symbol` can be traded. */
@@ -229,10 +185,7 @@ export class BinanceExchange {
 		const { exchangeInfoCache: cache } = this
 		const cached = await cache?.getExchangeInfo()
 		if (cached) return cached
-		const data = await this.connector.request<BinanceExchangeInfo>(
-			"GET",
-			"/api/v3/exchangeInfo"
-		)
+		const data = await this.connector.request<BinanceExchangeInfo>("GET", "/api/v3/exchangeInfo")
 		await cache?.setExchangeInfo(data)
 		return data
 	}
@@ -242,11 +195,7 @@ export class BinanceExchange {
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data}
 	 */
-	async klines(
-		symbol: string,
-		interval: BinanceKlineInterval,
-		optionalParameters: BinanceKlineOptionalParameters
-	): Promise<BinanceKline[]> {
+	async klines(symbol: string, interval: BinanceKlineInterval, optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
 		// Look for cached data.
 		const { klinesCache: cache } = this
 		const cachedKlines: BinanceKline[] = []
@@ -270,15 +219,7 @@ export class BinanceExchange {
 			if (!someKlineNotFoundInCache) return cachedKlines
 		}
 		// If any data was not found in cache, fetch it from Binance API.
-		const klines = await this.connector.request<BinanceKline[]>(
-			"GET",
-			"/api/v3/klines",
-			{
-				symbol,
-				interval,
-				...optionalParameters
-			}
-		)
+		const klines = await this.connector.request<BinanceKline[]>("GET", "/api/v3/klines", { symbol, interval, ...optionalParameters })
 		// Cache all klines found.
 		if (cache) for (const kline of klines) await cache.setKline(symbol, interval, kline)
 		return klines
@@ -293,19 +234,8 @@ export class BinanceExchange {
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
 	 */
-	async uiKlines(
-		symbol: string,
-		interval: string,
-		optionalParameters: BinanceKlineOptionalParameters
-	): Promise<BinanceKline[]> {
-		return await this.connector.request<BinanceKline[]>(
-			"GET",
-			"/api/v3/uiKlines",
-			{
-				symbol,
-				interval,
-				...optionalParameters
-			}
+	async uiKlines(symbol: string, interval: string, optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
+		return await this.connector.request<BinanceKline[]>("GET", "/api/v3/uiKlines", { symbol, interval, ...optionalParameters }
 		)
 	}
 
@@ -321,11 +251,7 @@ export class BinanceExchange {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#24hr-ticker-price-change-statistics}
 	 */
 	async ticker24hr(symbol: string): Promise<BinanceTicker24hr> {
-		return await this.connector.request<BinanceTicker24hr>(
-			"GET",
-			"/api/v3/ticker/24hr",
-			{ symbol }
-		)
+		return await this.connector.request<BinanceTicker24hr>("GET", "/api/v3/ticker/24hr", { symbol })
 	}
 
 	/**
@@ -334,10 +260,6 @@ export class BinanceExchange {
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#symbol-price-ticker}
 	 */
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		return await this.connector.request<BinanceTickerPrice>(
-			"GET",
-			"/api/v3/ticker/price",
-			{ symbol }
-		)
+		return await this.connector.request<BinanceTickerPrice>("GET", "/api/v3/ticker/price", { symbol })
 	}
 }

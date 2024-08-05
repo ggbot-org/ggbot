@@ -81,8 +81,8 @@ export function ToastProvider({ children }: PropsWithChildren) {
 				{notifications.map(({ id, toast: { message, color } }) => (
 					<Toast
 						key={id}
-						color={color}
 						close={close(id)}
+						color={color}
 						message={message}
 					/>
 				))}

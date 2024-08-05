@@ -3,10 +3,7 @@ import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import {
-	DflowCommonExecutor,
-	getDflowExecutionOutputData
-} from "../executor.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
 
 describe("booleanParameter", () => {
 	test("reads context params", async () => {
@@ -40,11 +37,7 @@ describe("booleanParameter", () => {
 			}
 		})
 		const value = false
-		const { execution } = await executor.run({
-			params: { foo: value },
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: { foo: value }, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
@@ -76,11 +69,7 @@ describe("booleanParameter", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), false)
 	})
 })
@@ -117,11 +106,7 @@ describe("numberParameter", () => {
 			}
 		})
 		const value = 10
-		const { execution } = await executor.run({
-			params: { foo: value },
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: { foo: value }, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
@@ -153,11 +138,7 @@ describe("numberParameter", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), -1.2)
 	})
 })
@@ -194,11 +175,7 @@ describe("stringParameter", () => {
 			}
 		})
 		const value = "bar"
-		const { execution } = await executor.run({
-			params: { foo: value },
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: { foo: value }, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), value)
 	})
 
@@ -230,11 +207,7 @@ describe("stringParameter", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), "bar")
 	})
 })

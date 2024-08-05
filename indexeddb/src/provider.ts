@@ -45,18 +45,11 @@ export class IDBProvider {
 		request.onsuccess = cleanup
 	}
 
-	open(
-		instance: Pick<
-			IDBInstance,
-			"databaseName" | "databaseVersion" | "databaseUpgrade"
-		>
+	open(instance: Pick< IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade" >
 	) {
 		if (this.isOpen) return
 		if (this.openRequestState === "pending") return
-		const request = indexedDB.open(
-			instance.databaseName,
-			instance.databaseVersion
-		)
+		const request = indexedDB.open(instance.databaseName, instance.databaseVersion)
 		this.openRequestState = request.readyState
 		let updgradeGotError = false
 		request.onsuccess = () => {
@@ -67,28 +60,20 @@ export class IDBProvider {
 		}
 		request.onupgradeneeded = ({ oldVersion, newVersion }) => {
 			if (newVersion === null) return
-			for (let i = oldVersion + 1; i <= newVersion; i++) {
-				try {
-					instance.databaseUpgrade(request.result, newVersion)
-				} catch (error) {
-					warn(error)
-					updgradeGotError = true
-				}
+			for (let i = oldVersion + 1; i <= newVersion; i++) try {
+				instance.databaseUpgrade(request.result, newVersion)
+			} catch (error) {
+				warn(error)
+				updgradeGotError = true
 			}
 		}
 	}
 
-	addEventListener(
-		type: IDBEventType,
-		callback: IDBEventListenerOrEventListenerObject
-	): void {
+	addEventListener(type: IDBEventType, callback: IDBEventListenerOrEventListenerObject): void {
 		this.eventTarget.addEventListener(type, callback)
 	}
 
-	removeEventListener(
-		type: IDBEventType,
-		callback: IDBEventListenerOrEventListenerObject
-	): void {
+	removeEventListener(type: IDBEventType, callback: IDBEventListenerOrEventListenerObject): void {
 		this.eventTarget.removeEventListener(type, callback)
 	}
 }

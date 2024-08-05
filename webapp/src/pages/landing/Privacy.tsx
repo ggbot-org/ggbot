@@ -1,17 +1,6 @@
-import {
-	Container,
-	Content,
-	H1,
-	H2,
-	H3,
-	Paragraph,
-	Section
-} from "_/components/library"
+import { Container, Content, H1, H2, H3, Paragraph, Section } from "_/components/library"
 import { PageContainer } from "_/components/PageContainer"
-import {
-	formattedMessageMarkup,
-	formattedMessageMarkupWithLinkTo
-} from "_/i18n/formattedMessageMarkup"
+import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
 import { amazonWebServices, binance, stripe } from "@workspace/locators"
 import { numYearsTradingOperationsRetention } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
@@ -27,10 +16,7 @@ export function PrivacyPage() {
 						</H1>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.welcome"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Privacy.welcome" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H2>
@@ -38,17 +24,11 @@ export function PrivacyPage() {
 						</H2>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.personalDataOnlyEmail"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Privacy.personalDataOnlyEmail" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.personalDataNotShared"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Privacy.personalDataNotShared" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H3>
@@ -56,26 +36,15 @@ export function PrivacyPage() {
 						</H3>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.personalDataSecureStorage"
-								values={formattedMessageMarkupWithLinkTo(
-									amazonWebServices.homepage
-								)}
-							/>
+							<FormattedMessage id="Privacy.personalDataSecureStorage" values={formattedMessageMarkupWithLinkTo(amazonWebServices.homepage)} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.personalDataEmailService"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Privacy.personalDataEmailService" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.personalDataEmailUsage"
-								values={formattedMessageMarkup}
-							/>
+							<FormattedMessage id="Privacy.personalDataEmailUsage" values={formattedMessageMarkup} />
 						</Paragraph>
 
 						<H3>
@@ -83,12 +52,7 @@ export function PrivacyPage() {
 						</H3>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.stripe"
-								values={formattedMessageMarkupWithLinkTo(
-									stripe.homepage
-								)}
-							/>
+							<FormattedMessage id="Privacy.stripe" values={formattedMessageMarkupWithLinkTo(stripe.homepage)} />
 						</Paragraph>
 
 						<H2>
@@ -100,23 +64,11 @@ export function PrivacyPage() {
 						</H3>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.binanceCustomerData"
-								values={formattedMessageMarkupWithLinkTo(
-									binance.homepage
-								)}
-							/>
+							<FormattedMessage id="Privacy.binanceCustomerData" values={formattedMessageMarkupWithLinkTo(binance.homepage)} />
 						</Paragraph>
 
 						<Paragraph>
-							<FormattedMessage
-								id="Privacy.binanceTradingData"
-								values={{
-									numYears:
-										numYearsTradingOperationsRetention,
-									...formattedMessageMarkup
-								}}
-							/>
+							<FormattedMessage id="Privacy.binanceTradingData" values={{ numYears: numYearsTradingOperationsRetention, ...formattedMessageMarkup }} />
 						</Paragraph>
 					</Section>
 				</Content>

@@ -1,50 +1,42 @@
 import { detectLanguage, translationPathname } from "_/i18n/locales"
 import { logging } from "@workspace/logging"
 import { defaultLanguage } from "@workspace/models"
-import {
-	PropsWithChildren,
-	Reducer,
-	useCallback,
-	useEffect,
-	useReducer,
-	useRef
-} from "react"
+import { PropsWithChildren, Reducer, useCallback, useEffect, useReducer, useRef } from "react"
 import { IntlProvider } from "react-intl"
 
 const { debug } = logging("i18n")
 
 export function I18nProvider({ children }: PropsWithChildren) {
-	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] =
-		useReducer<
-			Reducer<
-				{
-					intlMessagesLoaded?: boolean | undefined
-					readIntlMessagesIsPending?: boolean | undefined
-				},
+	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] = useReducer<
+		Reducer<
+			{
+				intlMessagesLoaded?: boolean | undefined
+				readIntlMessagesIsPending?: boolean | undefined
+			},
 				| { type: "READ_INTL_MESSAGES_REQUEST" }
 				| { type: "READ_INTL_MESSAGES_SUCCESS" }
 				| { type: "READ_INTL_MESSAGES_FAILURE" }
-			>
-		>((state, action) => {
-			if (action.type === "READ_INTL_MESSAGES_REQUEST") return {
-				...state,
-				readIntlMessagesIsPending: true
-			}
+		>
+	>((state, action) => {
+		if (action.type === "READ_INTL_MESSAGES_REQUEST") return {
+			...state,
+			readIntlMessagesIsPending: true
+		}
 
-			if (action.type === "READ_INTL_MESSAGES_SUCCESS") return {
-				...state,
-				intlMessagesLoaded: true,
-				readIntlMessagesIsPending: false
-			}
+		if (action.type === "READ_INTL_MESSAGES_SUCCESS") return {
+			...state,
+			intlMessagesLoaded: true,
+			readIntlMessagesIsPending: false
+		}
 
-			if (action.type === "READ_INTL_MESSAGES_FAILURE") return {
-				...state,
-				intlMessagesLoaded: false,
-				readIntlMessagesIsPending: false
-			}
+		if (action.type === "READ_INTL_MESSAGES_FAILURE") return {
+			...state,
+			intlMessagesLoaded: false,
+			readIntlMessagesIsPending: false
+		}
 
-			return state
-		}, {})
+		return state
+	}, {})
 
 	const intlMessages = useRef()
 
@@ -71,8 +63,8 @@ export function I18nProvider({ children }: PropsWithChildren) {
 
 	return intlMessagesLoaded ? (
 		<IntlProvider
-			locale={language}
 			defaultLocale={defaultLanguage}
+			locale={language}
 			messages={intlMessages.current}
 		>
 			{children}

@@ -4,16 +4,8 @@ import { test } from "node:test"
 import { Dflow } from "dflow"
 import { now } from "minimal-time-helpers"
 
-import {
-	DflowCommonExecutor,
-	getDflowExecutionOutputData
-} from "../executor.js"
-import {
-	Addition,
-	Division,
-	Multiplication,
-	Subtraction
-} from "./arithmetic.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
+import { Addition, Division, Multiplication, Subtraction } from "./arithmetic.js"
 
 test("add", async () => {
 	const operator: ArithmeticNodeKind = "add"
@@ -104,10 +96,7 @@ type ExecuteOperatorTestData = {
 	output: ExecuteOperatorOutput
 }
 
-const executeOperator = async (
-	nodeKind: ArithmeticNodeKind,
-	{ a, b }: ExecuteOperatorInput
-): Promise<ExecuteOperatorOutput> => {
+async function executeOperator (nodeKind: ArithmeticNodeKind, { a, b }: ExecuteOperatorInput): Promise<ExecuteOperatorOutput> {
 	const nodeId = "operator"
 	const executor = new DflowCommonExecutor({
 		graph: {

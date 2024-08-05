@@ -1,23 +1,5 @@
-import {
-	BinanceConnector,
-	BinanceExchange,
-	BinanceExchangeInfo,
-	BinanceKline,
-	BinanceKlineOptionalParameters,
-	BinanceNewOrderOptions,
-	BinanceOrderRespFULL,
-	BinanceOrderSide,
-	BinanceOrderType,
-	BinanceSymbolInfo,
-	BinanceTickerPrice,
-	div,
-	mul
-} from "@workspace/binance"
-import {
-	DflowBinanceClient,
-	DflowBinanceKlineInterval,
-	dflowBinanceZero
-} from "@workspace/dflow"
+import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from "@workspace/binance"
+import { DflowBinanceClient, DflowBinanceKlineInterval, dflowBinanceZero } from "@workspace/dflow"
 import { now, Time } from "minimal-time-helpers"
 
 import { ErrorCannotCreateOrder } from "./errors.js"
@@ -56,11 +38,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
-		const options = await this.publicClient.prepareOrder(
-			symbol,
-			type,
-			orderOptions
-		)
+		const options = await this.publicClient.prepareOrder(symbol, type, orderOptions)
 		const { price } = await this.tickerPrice(symbol)
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		if (!symbolInfo) throw new ErrorCannotCreateOrder()
@@ -88,7 +66,6 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 			timeInForce: "GTC",
 			transactTime: this.time,
 			type,
-
 			fills: [
 				{
 					commission: "0",
@@ -106,14 +83,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 	}
 
 	async tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		const klines = await this.publicClient.klines(
-			symbol,
-			this.schedulingInterval,
-			{
-				limit: 1,
-				endTime: this.time
-			}
-		)
+		const klines = await this.publicClient.klines(symbol, this.schedulingInterval, { limit: 1, endTime: this.time })
 		return {
 			symbol,
 			// Since klines parameters are `limit` and `extends`,

@@ -1,9 +1,4 @@
-import {
-	isStrategyKey,
-	Strategy,
-	StrategyFlow,
-	StrategyKey
-} from "@workspace/models"
+import { isStrategyKey, Strategy, StrategyFlow, StrategyKey } from "@workspace/models"
 
 import { ActionTypes } from "./action.js"
 

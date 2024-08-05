@@ -62,7 +62,7 @@ function metaTags({ title }: HeadTagArgs["meta"]) {
 		'<meta charset="UTF-8" />',
 		'<meta name="viewport" content="width=device-width" />',
 		`<title>${title}</title>`,
-		...logoTags,
+		...logoTags
 	]
 }
 

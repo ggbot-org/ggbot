@@ -1,18 +1,5 @@
-import {
-	BadGatewayError,
-	BadRequestError,
-	InternalServerError,
-	NotFoundError,
-	UnauthorizedError
-} from "@workspace/http"
-import {
-	ErrorAccountItemNotFound,
-	ErrorExceededQuota,
-	ErrorUnknownItem,
-	isSerializableObject,
-	SerializableData,
-	SerializableObject
-} from "@workspace/models"
+import { BadGatewayError, BadRequestError, InternalServerError, NotFoundError, UnauthorizedError } from "@workspace/http"
+import { ErrorAccountItemNotFound, ErrorExceededQuota, ErrorUnknownItem, isSerializableObject, SerializableData, SerializableObject } from "@workspace/models"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { GenericError, TimeoutError } from "./errors.js"
@@ -55,21 +42,17 @@ const apiActionServerSideErrorNames = [
 	BadGatewayError.errorName,
 	InternalServerError.errorName
 ] as const
-type ApiActionServerSideErrorName =
-	(typeof apiActionServerSideErrorNames)[number]
-const isApiActionServerSideErrorName =
-	isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
+type ApiActionServerSideErrorName = (typeof apiActionServerSideErrorNames)[number]
+const isApiActionServerSideErrorName = isLiteralType<ApiActionServerSideErrorName>(apiActionServerSideErrorNames)
 
 type ApiActionServerSideError = {
 	name: ApiActionServerSideErrorName
 	info?: SerializableObject
 }
 
-export const isApiActionServerSideError =
-	objectTypeGuard<ApiActionServerSideError>(
-		({ name, info }) => isApiActionServerSideErrorName(name) &&
-			(info === undefined ? true : isSerializableObject(info))
-	)
+export const isApiActionServerSideError = objectTypeGuard<ApiActionServerSideError>(
+	({ name, info }) => isApiActionServerSideErrorName(name) && (info === undefined ? true : isSerializableObject(info))
+)
 
 // Client errors
 // ////////////
@@ -81,8 +64,7 @@ const apiActionClientSideErrorNames = [
 	GenericError.errorName,
 	TimeoutError.errorName
 ] as const
-type ApiActionClientSideErrorName =
-	(typeof apiActionClientSideErrorNames)[number]
+type ApiActionClientSideErrorName = (typeof apiActionClientSideErrorNames)[number]
 
 type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName

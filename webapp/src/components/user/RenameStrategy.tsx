@@ -10,7 +10,7 @@ const fieldName = { name: "name" }
 const fields = Object.keys(fieldName)
 
 export type RenameStrategyProps = {
-	strategyKey: StrategyKey|undefined
+	strategyKey: StrategyKey | undefined
 	strategyName: string
 	resetStrategy: () => void
 }
@@ -39,14 +39,12 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<form
 					ref={formRef}
-					className={classnames("box")}
 					autoComplete="off"
+					className={classnames("box")}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!strategyKey) return
-						const eventTarget = event.target as EventTarget & {
-							[key in (typeof fields)[number]]?: { value: unknown }
-						}
+						const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
 						const newName = eventTarget[fieldName.name]?.value
 						if (!isName(newName)) return
 						request({ name: newName, ...strategyKey })
@@ -62,9 +60,9 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 
 					<StrategyName
 						required
-						placeholder={strategyName}
 						name={fieldName.name}
 						onChange={(event) => setCanRename(isName(event.target.value))}
+						placeholder={strategyName}
 						readOnly={isPending}
 					/>
 

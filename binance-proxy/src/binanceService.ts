@@ -1,8 +1,4 @@
-import {
-	ApiService,
-	BinanceClientActionType,
-	isBinanceClientActionInput as isInput
-} from "@workspace/api"
+import { ApiService, BinanceClientActionType, isBinanceClientActionInput as isInput } from "@workspace/api"
 import { BinanceClient } from "@workspace/binance-client"
 import { BadRequestError } from "@workspace/http"
 

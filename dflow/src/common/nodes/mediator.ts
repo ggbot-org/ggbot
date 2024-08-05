@@ -17,7 +17,7 @@ const outputs = [
 	output("boolean", { name: "exitMediation" }),
 	output("number", { name: "numPositions" }),
 	output("number", { name: "totalQuantity" }),
-	output("number", { name: "averagePrice" }),
+	output("number", { name: "averagePrice" })
 ]
 
 type MediatorDirection = "LONG" | "SHORT"
@@ -45,7 +45,7 @@ export function addMediation ({
 	// Memory parameters.
 	averagePrice: previousAveragePrice,
 	numPositions: previousNumPositions,
-	totalQuantity: previousTotalQuantity,
+	totalQuantity: previousTotalQuantity
 }: AddMediationInput): AddMediationOutput {
 	const numPositions = previousNumPositions + 1
 	const totalQuantity = previousTotalQuantity + quantity
@@ -53,7 +53,7 @@ export function addMediation ({
 	if (numPositions === 1) return {
 		averagePrice: price,
 		numPositions,
-		totalQuantity,
+		totalQuantity
 	}
 	const averagePrice = div(
 		add(previousAveragePrice, mul(price, quantity)),
@@ -62,13 +62,13 @@ export function addMediation ({
 	return {
 		averagePrice,
 		numPositions,
-		totalQuantity,
+		totalQuantity
 	}
 }
 
 export type ExitMediationInput = {
 	direction: MediatorDirection
-} & Pick<AddMediationInput, "averagePrice"|"percentageGain"|"price">
+} & Pick<AddMediationInput, "averagePrice" | "percentageGain" | "price">
 
 export function exitMediation ({ direction, averagePrice, percentageGain, price }: ExitMediationInput) {
 	if (averagePrice === 0) return false
@@ -87,8 +87,8 @@ type MemoryKey = "averagePrice" | "numPositions" | "totalQuantity"
 class Memory {
 	readonly context: Context
 	readonly memoryKey: Record<MemoryKey, string>
-	constructor(context:Context, memoryLabel?:string) {
-		this.context=context
+	constructor(context: Context, memoryLabel?: string) {
+		this.context = context
 		this.memoryKey = {
 			averagePrice: Memory.key("averagePrice", memoryLabel),
 			numPositions: Memory.key("numPositions", memoryLabel),
@@ -123,8 +123,8 @@ class Memory {
 		this.context.memoryChanged = value !== this.totalQuantity
 		this.context.memory[this.memoryKey.numPositions] = value
 	}
-	static key(memoryKey: MemoryKey, memoryLabel?:string) {
-		return memoryLabel? `mediator:${memoryKey}:${memoryLabel}`:`mediator:${memoryKey}`
+	static key(memoryKey: MemoryKey, memoryLabel?: string) {
+		return memoryLabel ? `mediator:${memoryKey}:${memoryLabel}` : `mediator:${memoryKey}`
 	}
 	cleanup() {
 		delete this.context.memory[this.memoryKey.numPositions]
@@ -156,21 +156,21 @@ export class MediatorLong extends DflowNode {
 		const {
 			averagePrice: averagePriceInMemory,
 			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory,
+			totalQuantity: totalQuantityInMemory
 		} = memory
 
 		// Add mediation.
 		const {
 			averagePrice,
 			numPositions,
-			totalQuantity,
+			totalQuantity
 		} = addMediation({
 			quantity,
 			price,
 			percentageGain,
 			averagePrice: averagePriceInMemory,
 			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory,
+			totalQuantity: totalQuantityInMemory
 		})
 
 		const exited = exitMediation({ direction, averagePrice, percentageGain, price })
@@ -216,21 +216,21 @@ export class MediatorShort extends DflowNode {
 		const {
 			averagePrice: averagePriceInMemory,
 			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory,
+			totalQuantity: totalQuantityInMemory
 		} = memory
 
 		// Add mediation.
 		const {
 			averagePrice,
 			numPositions,
-			totalQuantity,
+			totalQuantity
 		} = addMediation({
 			quantity,
 			price,
 			percentageGain,
 			averagePrice: averagePriceInMemory,
 			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory,
+			totalQuantity: totalQuantityInMemory
 		})
 
 		const exited = exitMediation({ direction, averagePrice, percentageGain, price })

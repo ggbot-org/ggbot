@@ -13,13 +13,13 @@ export const cachedBoolean = (
 		return false
 	},
 	set: (value: boolean) => storage.setItem(key, String(value)),
-	delete: () => storage.removeItem(key),
+	delete: () => storage.removeItem(key)
 })
 
 export const cachedString = (storage: WebStorageProvider, key: string): ManagedCacheProvider<string> => ({
 	get: () => storage.getItem(key) ?? "",
 	set: (value: boolean) => storage.setItem(key, String(value)),
-	delete: () => storage.removeItem(key),
+	delete: () => storage.removeItem(key)
 })
 
 export const cachedObject = <Data>(storage: WebStorageProvider, key: string): ManagedCacheProvider<Data> => ({
@@ -37,5 +37,5 @@ export const cachedObject = <Data>(storage: WebStorageProvider, key: string): Ma
 		}
 	},
 	set: (value: Data) => storage.setItem(key, JSON.stringify(value)),
-	delete: () => storage.removeItem(key),
+	delete: () => storage.removeItem(key)
 })

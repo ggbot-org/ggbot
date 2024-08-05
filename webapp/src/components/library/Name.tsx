@@ -1,12 +1,6 @@
 import { InputField, InputFieldProps } from "_/components/library"
 import { isName, normalizeName } from "@workspace/models"
-import {
-	ChangeEventHandler,
-	Dispatch,
-	InputHTMLAttributes,
-	SetStateAction,
-	useCallback
-} from "react"
+import { ChangeEventHandler, Dispatch, SetStateAction, useCallback } from "react"
 import { useIntl } from "react-intl"
 
 export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
@@ -14,23 +8,13 @@ export type NameProps = Omit<InputFieldProps, "color" | "help" | "type"> &
 		setValue: Dispatch<SetStateAction<string>>
 	}>
 
-export function Name({
-	isStatic,
-	readOnly,
-	setValue,
-	value,
-	...props
-}: NameProps) {
+export function Name({ isStatic, readOnly, setValue, value, ...props }: NameProps) {
 	const { formatMessage } = useIntl()
 
 	const name = typeof value === "string" ? value : ""
 
 	const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			const { value } =
-				event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-			if (typeof value === "string") setValue?.(value)
-		},
+		(event) => setValue?.(event.target.value),
 		[setValue]
 	)
 
@@ -51,13 +35,13 @@ export function Name({
 	return (
 		<InputField
 			color={color}
+			defaultValue={isStatic ? value : undefined}
 			help={help}
 			isStatic={isStatic}
 			onChange={isStatic ? undefined : setValue ? onChange : undefined}
 			readOnly={readOnly}
 			spellCheck="false"
 			type="text"
-			defaultValue={isStatic ? value : undefined}
 			value={isStatic ? undefined : value}
 			{...props}
 		/>

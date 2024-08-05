@@ -3,10 +3,7 @@ import { describe, test } from "node:test"
 
 import { now } from "minimal-time-helpers"
 
-import {
-	DflowCommonExecutor,
-	getDflowExecutionOutputData
-} from "../executor.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
 
 describe("shift", () => {
 	test("implements Array.prototype.shift()", async () => {
@@ -30,16 +27,9 @@ describe("shift", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 1)
-		assert.deepEqual(
-			getDflowExecutionOutputData(execution, nodeId, 1),
-			[2, 3]
-		)
+		assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 1), [2, 3])
 	})
 })
 
@@ -65,16 +55,9 @@ describe("pop", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), 3)
-		assert.deepEqual(
-			getDflowExecutionOutputData(execution, nodeId, 1),
-			[1, 2]
-		)
+		assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 1), [1, 2])
 	})
 })
 
@@ -110,16 +93,7 @@ describe("push", () => {
 				]
 			}
 		})
-		const { execution } = await executor.run({
-			params: {},
-			memory: {},
-			time: now()
-		})
-		assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [
-			1,
-			2,
-			3,
-			{ foo: true }
-		])
+		const { execution } = await executor.run({ params: {}, memory: {}, time: now() })
+		assert.deepEqual(getDflowExecutionOutputData(execution, nodeId, 0), [1, 2, 3, { foo: true }])
 	})
 })

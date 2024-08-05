@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.rules.customizations": [
+    { "rule": "@stylistic/*", "severity": "off" },
+    { "rule": "react/jsx-newline", "severity": "off" },
+    { "rule": "simple-import-sort/*", "severity": "off" }
+  ]
+}
