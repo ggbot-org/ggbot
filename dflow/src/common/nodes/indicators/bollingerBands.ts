@@ -1,15 +1,16 @@
 import { Dflow, DflowNode } from "dflow"
 
-import { add, div, MaybeNumber, mul, sub } from "../arithmetic.js"
+import { add, defaultPrecision, div, MaybeNumber, mul, sub } from "../arithmetic.js"
 import { inputPeriod, inputValues } from "../commonIO.js"
 import { simpleMovingAverage } from "./movingAverages.js"
 
 const { input, output } = Dflow
 
+// Compute the variance with double precision.
+const precision = defaultPrecision * 2
+
 export function bollingerBands(
-	values: number[],
-	period: number,
-	amplitude = 2
+	values: number[], period: number, amplitude = 2
 ): [lower: MaybeNumber[], middle: MaybeNumber[], upper: MaybeNumber[]] {
 	const size = values.length
 	if (size < period) return [[], [], []]
@@ -22,9 +23,8 @@ export function bollingerBands(
 			.slice(index - period, index)
 			.reduce<number>((sum, decimal, index, array) => {
 				const distance = sub(decimal, average)
-				const result = add(sum, mul(distance, distance)) as number
-				const isLast = index === array.length - 1
-				return isLast ? (div(result, period) as number) : result
+				const result = add(sum, mul(distance, distance, precision), precision) as number
+				return index === array.length - 1 ? (div(result, period, precision) as number) : result
 			}, 0)
 		if (variance === undefined) {
 			lower.push(undefined)

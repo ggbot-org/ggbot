@@ -1,10 +1,13 @@
 {
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.rules.customizations": [
     { "rule": "@stylistic/*", "severity": "off" },
+    { "rule": "@typescript-eslint/no-unused-vars", "severity": "off" },
+    { "rule": "no-console", "severity": "off" },
+    { "rule": "no-mixed-spaces-and-tabs", "severity": "off" },
     { "rule": "react/jsx-newline", "severity": "off" },
     { "rule": "simple-import-sort/*", "severity": "off" }
   ]

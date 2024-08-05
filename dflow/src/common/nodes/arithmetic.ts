@@ -9,7 +9,7 @@ export type MaybeNumber = string | number | undefined
 
 type ValidNumber = number
 
-const isValidNumber = (arg: MaybeNumber): arg is ValidNumber => {
+function isValidNumber (arg: MaybeNumber): arg is ValidNumber {
 	const num = Number(arg)
 	if (Number.isNaN(num)) return false
 	return Number.isFinite(num)
@@ -17,30 +17,36 @@ const isValidNumber = (arg: MaybeNumber): arg is ValidNumber => {
 
 type BinaryOperator = (
 	a: MaybeNumber,
-	b: MaybeNumber
+	b: MaybeNumber,
+	precision?: number
 ) => ValidNumber | undefined
+
+/**
+ * Quantities in crypto do not have precision greater than eight.
+ */
+export const defaultPrecision = 8
 
 /**
  * Fix floating point issues by coercing to a number with precision eight.
  *
- * @remarks
- * Quantities in crypto do not have precision greater than eight.
  * @example
  *
  * ```ts
  * 0.1 + 0.2 // 0.30000000000000004
- * num8(0.1 + 0.2) // 0.3
+ * num(0.1 + 0.2) // 0.3
  *
  * 1111.11 + 1111.11 + 1111.11 + 1111.11 + 1111.11 // 5555.549999999999
- * num8(1111.11 + 1111.11 + 1111.11 + 1111.11 + 1111.11) // 5555.55
+ * num(1111.11 + 1111.11 + 1111.11 + 1111.11 + 1111.11) // 5555.55
  * ```
  *
  * @internal
  */
-const num8 = (n: number) => Number(n.toFixed(8))
+function num(n: number, precision = defaultPrecision) {
+	return Number(n.toFixed(precision))
+}
 
-export const add: BinaryOperator = (a, b) => {
-	if (isValidNumber(a) && isValidNumber(b)) return num8(a + b)
+export const add: BinaryOperator = (a, b, precision) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num(a + b, precision)
 }
 
 export class Addition extends DflowNode {
@@ -54,8 +60,8 @@ export class Addition extends DflowNode {
 	}
 }
 
-export const sub: BinaryOperator = (a, b) => {
-	if (isValidNumber(a) && isValidNumber(b)) return num8(a - b)
+export const sub: BinaryOperator = (a, b, precision) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num(a - b, precision)
 }
 
 export class Subtraction extends DflowNode {
@@ -69,8 +75,8 @@ export class Subtraction extends DflowNode {
 	}
 }
 
-export const mul: BinaryOperator = (a, b) => {
-	if (isValidNumber(a) && isValidNumber(b)) return num8(a * b)
+export const mul: BinaryOperator = (a, b, precision) => {
+	if (isValidNumber(a) && isValidNumber(b)) return num(a * b, precision)
 }
 
 export class Multiplication extends DflowNode {
@@ -84,9 +90,9 @@ export class Multiplication extends DflowNode {
 	}
 }
 
-export const div: BinaryOperator = (a, b) => {
+export const div: BinaryOperator = (a, b, precision) => {
 	if (!isValidNumber(a) || !isValidNumber(b)) return
-	const result = num8(a / b)
+	const result = num(a / b, precision)
 	return Number.isFinite(result) ? result : undefined
 }
 
