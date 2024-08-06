@@ -66,27 +66,22 @@ export function ProfitSummary({
 	let numSells: number | undefined = undefined
 
 	const feesMap = new Map<Fee["asset"], Fee["quantity"]>()
-	const symbolStats = new Map<
-		SymbolStats["symbol"],
-		Omit<SymbolStats, "symbol">
-	>()
+	const symbolStats = new Map<SymbolStats["symbol"], Omit<SymbolStats, "symbol">>()
 
 	if (strategyKind === "binance") {
 		if (orders) for (const { info } of orders) {
-			if (
-				!objectTypeGuard<{
-					fills: unknown[]
-					side: string
-					status: string
-					symbol: string
-					type: string
-				}>(
-					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
-							[side, status, symbol, type].every(
-								(item) => typeof item === "string"
-							)
-				)(info)
-			) continue
+			if (!objectTypeGuard<{
+				fills: unknown[]
+				side: string
+				status: string
+				symbol: string
+				type: string
+			}>(
+				({ fills, side, status, symbol, type }) => (
+					Array.isArray(fills) &&
+						[side, status, symbol, type].every((item) => typeof item === "string")
+				)
+			)(info)) continue
 
 			if (info.status !== "FILLED") continue
 			if (info.type !== "MARKET") continue
@@ -95,32 +90,18 @@ export function ProfitSummary({
 			const isBuy = side === "BUY"
 
 			// Count buys and sells.
-			if (isBuy) {
-				numBuys === undefined ? (numBuys = 1) : numBuys++
-			} else {
-				numSells === undefined ? (numSells = 1) : numSells++
-			}
+			if (isBuy) numBuys === undefined ? (numBuys = 1) : numBuys++
+			else numSells === undefined ? (numSells = 1) : numSells++
 
 			if (!arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) continue
 
-			for (const {
-				commission,
-				commissionAsset,
-				price,
-				qty: baseQty
-			} of fills) {
+			for (const { commission, commissionAsset, price, qty: baseQty } of fills) {
 				const quoteQty = mul(price, baseQty)
 
 				// Sum fees.
 				const previousFees = feesMap.get(commissionAsset)
-				if (previousFees) {
-					feesMap.set(
-						commissionAsset,
-						add(previousFees, commission)
-					)
-				} else {
-					feesMap.set(commissionAsset, commission)
-				}
+				if (previousFees) feesMap.set(commissionAsset, add(previousFees, commission))
+				else feesMap.set(commissionAsset, commission)
 
 				// Statistics.
 				const previousSymbolStats = symbolStats.get(symbol)
@@ -215,46 +196,22 @@ export function ProfitSummary({
 			</Level>
 
 			{Array.from(
-				symbolStats,
-				([
+				symbolStats, ([
+					symbol, { baseQuantity, maxPrice, minPrice, quoteQuantity }
+				]) => ({ baseQuantity, maxPrice, minPrice, quoteQuantity, symbol })
+			).map(({ symbol, ...rest }) => {
+				const symbolInfo = getBinanceSymbolInfo(symbol, binanceSymbols)
+				if (!symbolInfo) return {
+					baseAsset: "",
+					baseAssetPrecision: undefined,
+					quoteAsset: "",
+					quoteAssetPrecision: undefined,
 					symbol,
-					{ baseQuantity, maxPrice, minPrice, quoteQuantity }
-				]) => ({
-					baseQuantity,
-					maxPrice,
-					minPrice,
-					quoteQuantity,
-					symbol
-				})
-			)
-				.map(({ symbol, ...rest }) => {
-					const symbolInfo = getBinanceSymbolInfo(
-						symbol,
-						binanceSymbols
-					)
-					if (!symbolInfo) return {
-						baseAsset: "",
-						baseAssetPrecision: undefined,
-						quoteAsset: "",
-						quoteAssetPrecision: undefined,
-						symbol,
-						...rest
-					}
-					const {
-						baseAsset,
-						baseAssetPrecision,
-						quoteAsset,
-						quoteAssetPrecision
-					} = symbolInfo
-					return {
-						baseAsset,
-						baseAssetPrecision,
-						quoteAsset,
-						quoteAssetPrecision,
-						symbol,
-						...rest
-					}
-				})
+					...rest
+				}
+				const { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision } = symbolInfo
+				return { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision, symbol, ...rest }
+			})
 				.map(
 					({
 						baseAsset,
@@ -346,10 +303,9 @@ export function ProfitSummary({
 					</p>
 				</LevelItem>
 
-				{Array.from(feesMap, ([asset, quantity]) => ({
-					asset,
-					quantity
-				})).map(({ asset, quantity }) => (
+				{Array.from(
+					feesMap, ([asset, quantity]) => ({ asset, quantity })
+				).map(({ asset, quantity }) => (
 					<LevelItem key={asset} bulma="has-text-centered">
 						<div>
 							<_Label>{asset}</_Label>

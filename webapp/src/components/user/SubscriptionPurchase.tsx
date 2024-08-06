@@ -13,9 +13,7 @@ import { getTime, now, Time } from "minimal-time-helpers"
 import { FormEventHandler, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-const fieldName = {
-	numMonths: "numMonths"
-}
+const fieldName = { numMonths: "numMonths" }
 const fields = Object.keys(fieldName)
 
 export function SubscriptionPurchase() {

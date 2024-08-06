@@ -16,9 +16,7 @@ export function DashboardPage() {
 						tabId: "strategies",
 						content: (
 							<Strategies
-								goCreateStrategy={() => {
-									setActiveTabId("newStrategy")
-								}}
+								goCreateStrategy={() => setActiveTabId("newStrategy")}
 							/>
 						)
 					},

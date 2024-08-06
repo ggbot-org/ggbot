@@ -4,16 +4,20 @@ import { AccountStrategy } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
 export function useAccountStrategies() {
-	const { canRun, data, request, reset } = useReadStrategies()
+	const { canRun, data, isPending, request, reset } = useReadStrategies()
 
-	const [accountStrategies, setAccountStrategies] = useState<
-		AccountStrategy[] | undefined
-	>(sessionWebStorage.accountStrategies.get())
+	const [accountStrategies, setAccountStrategies] = useState<AccountStrategy[] | undefined>(
+		sessionWebStorage.accountStrategies.get()
+	)
+
+	const resetAccountStrategiesCache = useCallback(() => {
+		sessionWebStorage.accountStrategies.delete()
+	}, [])
 
 	const resetAccountStrategies = useCallback(() => {
-		sessionWebStorage.accountStrategies.delete()
+		resetAccountStrategiesCache()
 		reset()
-	}, [reset])
+	}, [reset, resetAccountStrategiesCache])
 
 	// Fetch account strategies if not found in web storage.
 	useEffect(() => {
@@ -34,13 +38,13 @@ export function useAccountStrategies() {
 	}, [])
 	useEffect(() => {
 		addEventListener("storage", onLocalStorageChange)
-		return () => {
-			removeEventListener("storage", onLocalStorageChange)
-		}
+		return () => removeEventListener("storage", onLocalStorageChange)
 	}, [onLocalStorageChange])
 
 	return {
 		accountStrategies,
-		resetAccountStrategies
+		readStrategiesIsPending: isPending,
+		resetAccountStrategies,
+		resetAccountStrategiesCache
 	}
 }

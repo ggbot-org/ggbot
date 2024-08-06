@@ -1,4 +1,4 @@
-import { Buttons, Checkbox, Content, Message, Modal } from "_/components/library"
+import { Button, Buttons, Checkbox, Content, Message, Modal } from "_/components/library"
 import { GoSettings } from "_/components/user/GoSettings"
 import { useSubscription } from "_/hooks/user/useSubscription"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
@@ -11,7 +11,7 @@ export function PleasePurchase() {
 
 	const { hasActiveSubscription } = useSubscription()
 
-	const [doNotShow, setDoNotShow] = useState<boolean>(Boolean(sessionWebStorage.doNotShowPleasePurchase.get()))
+	const [doNotShow, setDoNotShow] = useState<boolean | undefined>(sessionWebStorage.doNotShowPleasePurchase.get())
 	const [isActive, setIsActive] = useState(false)
 
 	const onChangeDoNotShow = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
@@ -44,6 +44,10 @@ export function PleasePurchase() {
 
 				<Buttons>
 					<GoSettings />
+
+					<Button onClick={() => setIsActive(false)}>
+						<FormattedMessage id="Button.cancel" />
+					</Button>
 				</Buttons>
 			</Message>
 		</Modal>

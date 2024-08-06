@@ -25,9 +25,7 @@ export class LocalWebStorage {
 
 	clearAnyThingButDebugFlags() {
 		const DEBUG_backtesting = this.DEBUG_backtesting.get()
-
 		this.storage.clear()
-
 		if (DEBUG_backtesting) this.DEBUG_backtesting.set(true)
 	}
 }

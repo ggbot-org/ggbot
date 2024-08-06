@@ -1,15 +1,15 @@
 import { classnames } from "_/classnames"
-import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
+import { SchedulingsStatusBadges, SchedulingsStatusBadgesProps } from "_/components/user/SchedulingsStatusBadges"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { AccountStrategy } from "@workspace/models"
 
-type Props = AccountStrategy
+type Props = Omit<AccountStrategy, "schedulings"> & SchedulingsStatusBadgesProps & Partial<{ isLoading: boolean }>
 
-export function StrategyItem({ name, schedulings, ...strategyKey }: Props) {
+export function StrategyItem({ isLoading, name, schedulings, ...strategyKey }: Props) {
 	return (
 		<div
-			className={classnames("box", "strategy-item")}
+			className={classnames("box", "strategy-item", { "skeleton-block": isLoading })}
 			onClick={() => GOTO(new URL(webapp.user.strategy(strategyKey)))}
 			tabIndex={0}
 		>

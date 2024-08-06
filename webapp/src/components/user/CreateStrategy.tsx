@@ -9,9 +9,7 @@ import { isName } from "@workspace/models"
 import { FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-const fieldName = {
-	name: "name"
-}
+const fieldName = { name: "name" }
 const fields = Object.keys(fieldName)
 
 export function CreateStrategy() {

@@ -2,11 +2,11 @@ import { Control, Field } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { AccountStrategy, getSchedulingSummary, schedulingsAreInactive, schedulingStatuses } from "@workspace/models"
 
-type Props = {
+export type SchedulingsStatusBadgesProps = {
 	schedulings: AccountStrategy["schedulings"] | undefined
 }
 
-export function SchedulingsStatusBadges({ schedulings }: Props) {
+export function SchedulingsStatusBadges({ schedulings }: SchedulingsStatusBadgesProps) {
 	if (!schedulings) return null
 
 	const schedulingSummary = getSchedulingSummary(schedulings)

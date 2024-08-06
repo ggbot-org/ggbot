@@ -13,10 +13,7 @@ export class SessionWebStorage {
 	}
 
 	get accountStrategies() {
-		return cachedObject<AccountStrategy[]>(
-			this.storage,
-			itemKey.accountStrategies()
-		)
+		return cachedObject<AccountStrategy[]>(this.storage, itemKey.accountStrategies())
 	}
 
 	get strategiesDayIntervalStart() {
@@ -36,10 +33,7 @@ export class SessionWebStorage {
 	}
 
 	strategy(strategyKey: StrategyKey) {
-		return cachedObject<Strategy>(
-			this.storage,
-			itemKey.strategy(strategyKey)
-		)
+		return cachedObject<Strategy>(this.storage, itemKey.strategy(strategyKey))
 	}
 
 	clear() {

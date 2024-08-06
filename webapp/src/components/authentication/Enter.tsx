@@ -23,9 +23,7 @@ type ApiState = {
 	isPending: boolean
 }
 
-const fieldName = {
-	email: "email"
-}
+const fieldName = { email: "email" }
 const fields = Object.keys(fieldName)
 
 export function AuthEnter({ setEmail }: AuthEnterProps) {
