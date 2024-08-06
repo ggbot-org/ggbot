@@ -24,10 +24,6 @@ type FooterClassname = "footer__top" | "footer__body"
 
 type InputClassname = "input--is-static"
 
-type ModalClassname = "modal__content"
-
-type NavigationClassname = "navigation"
-
 type OneColumn = "one-column"
 
 type PageClassname = "page" | "page__content" | "page__footer"
@@ -49,8 +45,6 @@ type Classname =
 	| FlowEditorClassname
 	| FooterClassname
 	| InputClassname
-	| ModalClassname
-	| NavigationClassname
 	| OneColumn
 	| PageClassname
 	| ParagraphClassname

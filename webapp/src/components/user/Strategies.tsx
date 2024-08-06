@@ -1,5 +1,6 @@
 import { classnames } from "_/classnames"
-import { Button, Buttons, Checkbox, Column, Columns, Message, OneColumn } from "_/components/library"
+import { Button, Buttons, Column, Columns, Message, OneColumn } from "_/components/library"
+import { StrategiesToolbar } from "_/components/user/StrategiesToolbar"
 import { StrategyItem } from "_/components/user/StrategyItem"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { localWebStorage } from "_/storages/local"
@@ -7,29 +8,8 @@ import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
 import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-function Toolbar({ hideInactive, setHideInactive, isInvisible }: Partial<{
-	hideInactive: boolean | undefined
-	setHideInactive: (value: boolean | undefined) => void
-	isInvisible: boolean
-}>) {
-	return (
-		<div className={classnames("is-flex", "mb-5", "ml-3", { "is-invisible": isInvisible })}>
-			<Checkbox
-				checked={hideInactive}
-				onChange={(event) => {
-					if (!setHideInactive) return
-					setHideInactive(event.target.checked)
-					localWebStorage.hideInactiveStrategies.set(event.target.checked)
-				}}
-			>
-				<FormattedMessage id="Strategies.hideInactive" />
-			</Checkbox>
-		</div>
-	)
-}
-
 export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void }) {
-	const { accountStrategies, readStrategiesIsPending } = useAccountStrategies()
+	const { accountStrategies, estimatedNumStragies, readStrategiesIsPending } = useAccountStrategies()
 
 	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
 		localWebStorage.hideInactiveStrategies.get()
@@ -49,17 +29,19 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 
 	if (readStrategiesIsPending) return (
 		<>
-			<Toolbar isInvisible />
+			<StrategiesToolbar isInvisible />
 			<Columns isMultiline>
-				<Column bulma={["is-half-tablet", "is-one-third-desktop"]}>
-					<StrategyItem
-						isLoading
-						name=""
-						schedulings={undefined}
-						strategyId=""
-						strategyKind="none"
-					/>
-				</Column>
+				{[...Array(estimatedNumStragies)].map((_, index) => String(index)).map((key) => (
+					<Column key={key} bulma={["is-half-tablet", "is-one-third-desktop"]}>
+						<StrategyItem
+							isLoading
+							name=""
+							schedulings={undefined}
+							strategyId=""
+							strategyKind="none"
+						/>
+					</Column>
+				))}
 			</Columns>
 		</>
 	)
@@ -89,7 +71,7 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 
 	return (
 		<>
-			<Toolbar
+			<StrategiesToolbar
 				hideInactive={hideInactive}
 				isInvisible={readStrategiesIsPending}
 				setHideInactive={setHideInactive}

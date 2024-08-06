@@ -1,4 +1,3 @@
-import { classnames } from "_/classnames"
 import { PropsWithChildren, useCallback, useEffect } from "react"
 import { Div, Modal as _Modal, ModalClose, ModalContent } from "trunx"
 
@@ -44,9 +43,7 @@ export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 	return (
 		<_Modal noBackground bulma={{ "is-active": isActive }}>
 			<Div bulma="modal-background" onClick={closeModal} />
-			<ModalContent className={classnames("modal__content")}>
-				{children}
-			</ModalContent>
+			<ModalContent>{children}</ModalContent>
 			{
 				/* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
 					<ModalClose onClick={closeModal} size="large" />

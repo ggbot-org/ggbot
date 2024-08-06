@@ -1,3 +1,4 @@
+import { I18nProvider } from "_/contexts/I18n"
 import { Homepage } from "_/pages/landing/Homepage"
 import { PrivacyPage } from "_/pages/landing/Privacy"
 import { TermsPage } from "_/pages/landing/Terms"
@@ -16,4 +17,8 @@ function Router() {
 	return null
 }
 
-mount(<Router />)
+mount(
+	<I18nProvider>
+		<Router />
+	</I18nProvider>
+)

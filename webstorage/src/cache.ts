@@ -18,10 +18,24 @@ export function cachedBoolean (
 	})
 }
 
-export function cachedString (storage: WebStorageProvider, key: string): ManagedCacheProvider<string> {
+export function cachedString(storage: WebStorageProvider, key: string): ManagedCacheProvider<string> {
 	return ({
 		get: () => storage.getItem(key) ?? "",
 		set: (value: boolean) => storage.setItem(key, String(value)),
+		delete: () => storage.removeItem(key)
+	})
+}
+
+export function cachedNumber(storage: WebStorageProvider, key: string): ManagedCacheProvider<number> {
+	return ({
+		get: () => {
+			const value = storage.getItem(key)
+			if (value === null) return undefined
+			const num = Number(value)
+			if (Number.isFinite(num)) return num
+			else storage.removeItem(key)
+		},
+		set: (value: number) => storage.setItem(key, String(value)),
 		delete: () => storage.removeItem(key)
 	})
 }

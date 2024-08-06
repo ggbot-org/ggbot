@@ -10,29 +10,31 @@ export function useAccountStrategies() {
 		sessionWebStorage.accountStrategies.get()
 	)
 
-	const resetAccountStrategiesCache = useCallback(() => {
-		sessionWebStorage.accountStrategies.delete()
-	}, [])
+	const [estimatedNumStragies, setEstimatedNumStragies] = useState<number | undefined>(
+		sessionWebStorage.estimatedNumStragies.get() ?? 1
+	)
 
 	const resetAccountStrategies = useCallback(() => {
-		resetAccountStrategiesCache()
 		reset()
-	}, [reset, resetAccountStrategiesCache])
+	}, [reset])
 
-	// Fetch account strategies if not found in web storage.
+	// Fetch account strategies.
 	useEffect(() => {
 		if (accountStrategies) return
 		if (canRun) request()
 	}, [canRun, request, accountStrategies])
 
-	// Store account strategies in web storage.
+	// Store account strategies.
 	useEffect(() => {
 		if (!data) return
-		sessionWebStorage.accountStrategies.set(data)
 		setAccountStrategies(data)
+		const estimatedNumStragies = data.length ?? 1
+		sessionWebStorage.estimatedNumStragies.set(estimatedNumStragies)
+		setEstimatedNumStragies(estimatedNumStragies)
 	}, [data])
 
-	// Handle case when account strategies changes or is deleted from localWebStorage in other tabs.
+	// Handle case when account strategies list changes
+	// or is deleted from localWebStorage in other tabs.
 	const onLocalStorageChange = useCallback(() => {
 		setAccountStrategies(sessionWebStorage.accountStrategies.get())
 	}, [])
@@ -43,8 +45,8 @@ export function useAccountStrategies() {
 
 	return {
 		accountStrategies,
+		estimatedNumStragies,
 		readStrategiesIsPending: isPending,
 		resetAccountStrategies,
-		resetAccountStrategiesCache
 	}
 }

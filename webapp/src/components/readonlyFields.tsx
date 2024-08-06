@@ -59,9 +59,7 @@ export function SubscriptionPlan({ value }: ValueProp<SubscriptionPlanValue>) {
 }
 
 export function SubscriptionTotalPrice({
-	currency,
-	monthlyPrice,
-	numMonths
+	currency, monthlyPrice, numMonths
 }: {
 	currency: string
 	monthlyPrice: number

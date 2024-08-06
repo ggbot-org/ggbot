@@ -1,6 +1,7 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
+import { PageContainer } from "_/components/PageContainer"
 import { useReadAccountInfo } from "_/hooks/user/api"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
@@ -9,6 +10,7 @@ import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { AccountInfo, EmailAddress, Subscription } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 import { createContext, PropsWithChildren, Reducer, useCallback, useEffect, useMemo, useReducer, useState } from "react"
+import { Section } from "trunx"
 
 type State = {
 	email: EmailAddress | undefined
@@ -35,6 +37,7 @@ type ContextValue = {
 	accountEmail: string
 	accountIsAdmin: boolean | undefined
 	accountWhenCreated: Time | undefined
+	exit: () => void
 	subscription: Subscription | null | undefined
 	showAuthExit: () => void
 }
@@ -44,6 +47,7 @@ export const AuthenticationContext = createContext<ContextValue>({
 	accountEmail: "",
 	accountIsAdmin: undefined,
 	accountWhenCreated: undefined,
+	exit: () => { /* do nothing */ },
 	subscription: undefined,
 	showAuthExit: () => { /* do nothing */ }
 })
@@ -134,10 +138,11 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 			accountIsAdmin: storedAccountInfo?.role === "admin",
 			accountEmail: storedAccountInfo?.email ?? "",
 			accountWhenCreated: storedAccountInfo?.whenCreated,
+			exit,
 			subscription: storedAccountInfo?.subscription,
 			showAuthExit
 		}),
-		[showAuthExit, storedAccountInfo]
+		[exit, showAuthExit, storedAccountInfo]
 	)
 
 	// Fetch account info.
@@ -190,15 +195,19 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 		return () => removeEventListener("storage", onLocalStorageChange)
 	}, [onLocalStorageChange])
 
-	if (accountInfo === null || token === undefined) return email ? (
-		<AuthVerify
-			email={email}
-			resetEmail={resetEmail}
-			setToken={setToken}
-		/>
-	) : (
-		<AuthEnter setEmail={setEmail} />
-	)
+	if (accountInfo === null || token === undefined) {
+		return (
+			<PageContainer>
+				<Section>
+					{email ? (
+						<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
+					) : (
+						<AuthEnter setEmail={setEmail} />
+					)}
+				</Section>
+			</PageContainer>
+		)
+	}
 
 	return (
 		<AuthenticationContext.Provider value={contextValue}>

@@ -1,5 +1,4 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
-import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { useStrategy } from "_/hooks/useStrategy"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
@@ -33,7 +32,6 @@ const userApiOptions: UseActionApiArg = {
 }
 
 export function useCopyStrategy() {
-	const { resetAccountStrategiesCache } = useAccountStrategies()
 	const { data: newStrategy, isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["CopyStrategy"],
@@ -41,9 +39,8 @@ export function useCopyStrategy() {
 	>(userApiOptions, "CopyStrategy")
 	useEffect(() => {
 		if (!isDone || !newStrategy) return
-		resetAccountStrategiesCache()
 		GOTO(webapp.user.strategy(newStrategy))
-	}, [isDone, newStrategy, resetAccountStrategiesCache])
+	}, [isDone, newStrategy])
 	return { data: newStrategy, isDone, ...rest }
 }
 
@@ -56,7 +53,6 @@ export function useCreateBinanceApiConfig() {
 }
 
 export function useCreateStrategy() {
-	const { resetAccountStrategiesCache } = useAccountStrategies()
 	const { data: newStrategy, isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["CreateStrategy"],
@@ -64,9 +60,8 @@ export function useCreateStrategy() {
 	>(userApiOptions, "CreateStrategy")
 	useEffect(() => {
 		if (!isDone || !newStrategy) return
-		resetAccountStrategiesCache()
 		GOTO(webapp.user.strategy(newStrategy))
-	}, [isDone, newStrategy, resetAccountStrategiesCache])
+	}, [isDone, newStrategy])
 	return { data: newStrategy, isDone, ...rest }
 }
 
@@ -87,7 +82,6 @@ export function useDeleteBinanceApiConfig() {
 }
 
 export function useDeleteStrategy(strategyKey: StrategyKey | undefined) {
-	const { resetAccountStrategiesCache } = useAccountStrategies()
 	const { resetStrategy } = useStrategy(strategyKey)
 	const { isDone, ...rest } = useAction<
 		UserClientActionType,
@@ -96,10 +90,9 @@ export function useDeleteStrategy(strategyKey: StrategyKey | undefined) {
 	>(userApiOptions, "DeleteStrategy")
 	useEffect(() => {
 		if (!isDone) return
-		resetAccountStrategiesCache()
 		resetStrategy()
 		GOTO(webapp.user.dashboard)
-	}, [isDone, resetAccountStrategiesCache, resetStrategy])
+	}, [isDone, resetStrategy])
 	return { isDone, ...rest }
 }
 
@@ -254,7 +247,6 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 }
 
 export function useRenameStrategy(strategyKey: StrategyKey | undefined) {
-	const { resetAccountStrategiesCache } = useAccountStrategies()
 	const { resetStrategy } = useStrategy(strategyKey)
 	const { isDone, reset, ...rest } = useAction<
 		UserClientActionType,
@@ -264,22 +256,17 @@ export function useRenameStrategy(strategyKey: StrategyKey | undefined) {
 	useEffect(() => {
 		if (!isDone) return
 		reset()
-		resetAccountStrategiesCache()
 		resetStrategy()
-	}, [isDone, reset, resetAccountStrategiesCache, resetStrategy])
+	}, [isDone, reset, resetStrategy])
 	return { isDone, reset, ...rest }
 }
 
 export function useWriteAccountStrategiesItemSchedulings() {
-	const { resetAccountStrategiesCache } = useAccountStrategies()
 	const { isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["WriteAccountStrategiesItemSchedulings"],
 		UserClientActionOutput["WriteAccountStrategiesItemSchedulings"]
 	>(userApiOptions, "WriteAccountStrategiesItemSchedulings")
-	useEffect(() => {
-		if (isDone) resetAccountStrategiesCache()
-	}, [resetAccountStrategiesCache, isDone])
 	return { isDone, ...rest }
 }
 

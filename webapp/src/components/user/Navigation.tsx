@@ -10,7 +10,7 @@ export function Navigation() {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
 
 	return (
-		<Navbar className={classnames("navigation")}>
+		<Navbar>
 			<NavbarStart>
 				<NavbarLink
 					className="is-arrowless"

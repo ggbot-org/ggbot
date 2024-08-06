@@ -1,3 +1,4 @@
+import { I18nProvider } from "_/contexts/I18n"
 import { CopyStrategyPage } from "_/pages/user/CopyStrategy"
 import { DashboardPage } from "_/pages/user/Dashboard"
 import { EditStrategyPage } from "_/pages/user/EditStrategy"
@@ -29,4 +30,8 @@ function Router() {
 	return null
 }
 
-mount(<Router />)
+mount(
+	<I18nProvider>
+		<Router />
+	</I18nProvider>
+)

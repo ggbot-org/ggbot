@@ -1,3 +1,4 @@
+import { I18nProvider } from "_/contexts/I18n"
 import { AccountDetailsPage } from "_/pages/admin/AccountDetails"
 import { DashboardPage } from "_/pages/admin/Dashboard"
 import { mount } from "_/react/mount"
@@ -13,4 +14,8 @@ function Router() {
 	return null
 }
 
-mount(<Router />)
+mount(
+	<I18nProvider>
+		<Router />
+	</I18nProvider>
+)

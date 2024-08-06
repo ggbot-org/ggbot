@@ -1,8 +1,11 @@
+import { AuthenticationContext } from "_/contexts/Authentication"
+import { ToastContext } from "_/contexts/Toast"
 import { localWebStorage } from "_/storages/local"
 import { ActionIO, ApiActionError, clientAction, ClientActionHeaders, GenericError, isApiActionOutputData, isApiActionOutputError, TimeoutError } from "@workspace/api"
 import { BadGatewayError, BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from "@workspace/http"
 import { logging } from "@workspace/logging"
-import { useCallback, useState } from "react"
+import { useCallback, useContext, useState } from "react"
+import { useIntl } from "react-intl"
 
 const { debug, warn } = logging("use-action")
 
@@ -47,9 +50,15 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 	{ url, withAuth }: UseActionApiArg,
 	type: ActionType
 ) {
+	const { formatMessage } = useIntl()
+	const { toast } = useContext(ToastContext)
+	const { exit } = useContext(AuthenticationContext)
+
 	const [data, setData] = useState<Output | undefined>()
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
+
+	const genericError = formatMessage({ id: "GenericError.message" })
 
 	const reset = useCallback(() => {
 		setData(undefined)
@@ -65,7 +74,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					if (withAuth) {
 						const token = localWebStorage.authToken.get()
 						if (token) headers.appendAuthorization(token)
-						else return setError({ name: UnauthorizedError.errorName })
+						else throw new UnauthorizedError()
 					}
 
 					setIsPending(true)
@@ -83,31 +92,39 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					}
 				} catch (error) {
 					// This AbortError is called on component unmount.
-					if (
-						error instanceof DOMException &&
-						error.name === "AbortError"
-					) return
+					if (error instanceof DOMException && error.name === "AbortError") return
 
-					if (error instanceof GatewayTimeoutError) return setError({ name: GatewayTimeoutError.errorName })
+					debug(error)
 
-					if (error instanceof TimeoutError) return setError({ name: TimeoutError.errorName })
+					if (error instanceof GatewayTimeoutError) {
+						toast.warning(genericError)
+						return setError({ name: GatewayTimeoutError.errorName })
+					}
 
-					// TODO consider using a toast to display: Something went wrong
-					if (error instanceof BadRequestError) return setError({ name: BadRequestError.errorName })
+					if (error instanceof TimeoutError) {
+						toast.warning(genericError)
+						return setError({ name: TimeoutError.errorName })
+					}
+
+					if (error instanceof BadRequestError) {
+						toast.warning(genericError)
+						return setError({ name: BadRequestError.errorName })
+					}
 
 					if (error instanceof UnauthorizedError) {
-						localWebStorage.authToken.delete()
+						exit()
 						return setError({ name: UnauthorizedError.errorName })
 					}
 
-					// TODO consider using a toast to display: Something went wrong
-					if (error instanceof InternalServerError) return setError({ name: InternalServerError.name })
+					if (error instanceof InternalServerError) {
+						toast.warning(genericError)
+						return setError({ name: InternalServerError.name })
+					}
 
 					// TODO in case of test Binance error a toast and the proxy is down
 					// the toast should say contact support.
 					if (error instanceof BadGatewayError) return setError({ name: BadGatewayError.name })
 
-					debug(error)
 					setError({ name: GenericError.errorName })
 				} finally {
 					setIsPending(false)
@@ -117,7 +134,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 				setError({ name: GenericError.errorName })
 			})
 		},
-		[url, type, withAuth]
+		[exit, url, type, withAuth, toast, genericError]
 	)
 
 	const isDone = data !== undefined

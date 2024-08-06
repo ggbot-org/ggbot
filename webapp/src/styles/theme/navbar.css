@@ -1,3 +1,7 @@
 .navbar {
 	--bulma-navbar-burger-color: var(--bulma-white);
 }
+
+.navbar-brand a {
+	text-decoration: none;
+}
