@@ -30,7 +30,7 @@
     "e2e:execute": "npm run e2e:execute -w executor",
     "e2e:listAccountKeys": "npm run e2e:listAccountKeys -w executor",
     "e2e:newOrder": "npm run e2e:newOrder -w binance-client",
-    "eslint": "eslint --fix --ext .ts --ext .tsx .",
+    "eslint": "eslint --ext .ts --ext .tsx .",
     "generate_docs": "npm run generate_docs -w repository",
     "git_pull": "git pull origin main --quiet --rebase",
     "install_dependencies": "npm ci",
@@ -102,7 +102,7 @@
     "@stylistic/eslint-plugin": "2.6.1",
     "@typescript-eslint/eslint-plugin": "7.14.1",
     "@typescript-eslint/parser": "7.14.1",
-    "eslint": "8.56.0",
+    "eslint": "8.57.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-smells": "1.0.1",
@@ -116,7 +116,7 @@
     "ts-prune": "0.10.3"
   },
   "lint-staged": {
-    "**/*.{js,ts,tsx}": [
+    "**/*.{ts,tsx}": [
       "eslint --fix"
     ],
     "**/*.{css,scss}": [

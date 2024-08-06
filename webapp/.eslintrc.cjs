@@ -34,19 +34,8 @@ module.exports = {
 		// TODO set "@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/ban-ts-comment": "off",
 
-		"@typescript-eslint/no-empty-function": "off",
-		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-unsafe-argument": "off",
-
-		// @typescript-eslint/unbound-method rule is not compatible with hooks,
-		// it reports this as an error:
-		// ```ts
-		// const { formatMessage } = useIntl()
-		// ```
-		"@typescript-eslint/unbound-method": "off",
-
 		"formatjs/enforce-placeholders": "error",
-		"formatjs/no-literal-string-in-jsx": ["warn",
+		"formatjs/no-literal-string-in-jsx": ["error",
 			{
 				props: {
 					include: [
@@ -67,14 +56,13 @@ module.exports = {
 		// Define React components as functions.
 		"func-style": ["error", "declaration"],
 
+		// Imports in bundled code do not need extension.
 		"import/extensions": "off",
 
 		"jsx-a11y/aria-props": "error",
 		"jsx-a11y/aria-proptypes": "error",
 		"jsx-a11y/aria-unsupported-elements": "error",
 		"jsx-a11y/role-has-required-aria-props": "error",
-
-		"no-case-declarations": "error",
 
 		"react-hooks/exhaustive-deps": "error",
 		"react-hooks/rules-of-hooks": "error",

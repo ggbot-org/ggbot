@@ -11,7 +11,7 @@ export class BacktestingSession implements BacktestingStatusController {
 	memory: StrategyMemory = {}
 	orders: Order[] = []
 	status: BacktestingStatus = "initial"
-	stepIndex: number = 0
+	stepIndex = 0
 	times: Time[] = []
 
 	#dayInterval: DayInterval | undefined = undefined

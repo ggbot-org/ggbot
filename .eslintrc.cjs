@@ -2,8 +2,7 @@ module.exports = {
 	env: { browser: false, es2020: true, node: true },
 	extends: [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/strict",
-		"plugin:workspaces/recommended"
+		"plugin:@typescript-eslint/strict"
 	],
 	ignorePatterns: ["dist", "temp"],
 	parser: "@typescript-eslint/parser",
@@ -27,6 +26,7 @@ module.exports = {
 		"@stylistic/brace-style": "error",
 		"@stylistic/comma-dangle": ["error", "only-multiline"],
 		"@stylistic/comma-spacing": "error",
+		"@stylistic/comma-style": "error",
 		"@stylistic/computed-property-spacing": "error",
 		"@stylistic/function-call-argument-newline": ["error", "consistent"],
 		"@stylistic/function-call-spacing": "error",
@@ -38,6 +38,7 @@ module.exports = {
 		"@stylistic/key-spacing": "error",
 		"@stylistic/keyword-spacing": "error",
 		"@stylistic/no-extra-semi": "error",
+		"@typescript-eslint/no-invalid-this": "error",
 		"@stylistic/no-mixed-spaces-and-tabs": "error",
 		"@stylistic/no-multi-spaces": "error",
 		"@stylistic/no-multiple-empty-lines": ["error", { "max": 1 }],
@@ -52,23 +53,24 @@ module.exports = {
 		"@stylistic/space-unary-ops": "error",
 		"@stylistic/template-tag-spacing": "error",
 		"@stylistic/type-generic-spacing": "error",
+		"@stylistic/type-named-tuple-spacing": "error",
 
 		"@typescript-eslint/array-type": ["error", { default: "array-simple" }],
 		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-dynamic-delete": "off",
 		"@typescript-eslint/no-empty-function": "error",
 		// Accept expressions like
+		// ```ts
 		// type Output<Operation extends (...args: any[]) => Promise<unknown>> = Awaited<ReturnType<Operation>>
+		// ```
 		"@typescript-eslint/no-explicit-any": ["error", { ignoreRestArgs: true }],
-		"@typescript-eslint/no-extra-semi": "off",
+		"@typescript-eslint/no-inferrable-types": "error",
 		"@typescript-eslint/no-invalid-void-type": "off",
-		"@typescript-eslint/no-unsafe-assignment": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{
-				// Follow the TypeScript convention to prepend an underscore to
-				// ignore when a variable is not used.
-				// This works also with TypeScript compiler options
+				// Follow the TypeScript convention to prepend an underscore to ignore when a variable is not used.
+				// This works also with TypeScript compiler options:
 				// ```json
 				// "noUnusedLocals": true,
 				// "noUnusedParameters": true,
@@ -79,8 +81,9 @@ module.exports = {
 				varsIgnorePattern: "^_"
 			}
 		],
+		"@typescript-eslint/prefer-for-of": "error",
 		"@typescript-eslint/no-useless-empty-export": "error",
-		"@typescript-eslint/unbound-method": "off",
+
 		"arrow-body-style": ["error", "as-needed"],
 		"block-scoped-var": "error",
 		"default-param-last": "error",
@@ -96,21 +99,25 @@ module.exports = {
 		"no-case-declarations": "error",
 		"no-console": "error",
 		"no-extra-label": "error",
+		// Turn off no-extra-semi, in favour of @stylistic/no-extra-semi
 		"no-extra-semi": "off",
 		"no-floating-decimal": "error",
 		"no-global-assign": "error",
 		"no-implicit-coercion": "error",
 		"no-implicit-globals": "error",
+		// Turn off no-invalid-this, in favour of @stylistic/no-invalid-this
+		"no-invalid-this": "off",
 		"no-lonely-if": "error",
 		"no-multi-assign": "error",
-
 		// TODO set no-warning-comments to "warn"
 		"no-warning-comments": "off",
 
 		"simple-import-sort/exports": "error",
 		"simple-import-sort/imports": "error",
+
 		"smells/no-switch": "error",
 		"tsdoc/syntax": "error",
-		"workspaces/no-relative-imports": "off"
+
+		"workspaces/require-dependency": "error"
 	}
 }

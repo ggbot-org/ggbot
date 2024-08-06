@@ -45,7 +45,7 @@ export const AuthenticationContext = createContext<ContextValue>({
 	accountIsAdmin: undefined,
 	accountWhenCreated: undefined,
 	subscription: undefined,
-	showAuthExit: () => {}
+	showAuthExit: () => { /* do nothing */ }
 })
 
 AuthenticationContext.displayName = "AuthenticationContext"

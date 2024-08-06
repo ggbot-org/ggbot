@@ -27,7 +27,7 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 		if (!isDone) return
 		resetStrategy()
 		setModalIsActive(false)
-		formRef.current!.reset()
+		formRef.current?.reset()
 	}, [isDone, resetStrategy])
 
 	return (

@@ -8,9 +8,9 @@ type ContextValue = {
 
 export const ToastContext = createContext<ContextValue>({
 	toast: {
-		info: () => {},
-		danger: () => {},
-		warning: () => {}
+		info: () => { /* do nothing */ },
+		danger: () => { /* do nothing */ },
+		warning: () => { /* do nothing */ }
 	}
 })
 
