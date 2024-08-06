@@ -52,14 +52,12 @@ export function CreateStrategy() {
 							<FormattedMessage id="CreateStrategy.chooseName" values={formattedMessageMarkup} />
 						</Message>
 					)}
-
 					<StrategyName
 						required
 						name={fieldName.name}
 						onChange={(event) => setCanCreate(isName((event.target.value)))}
 						readOnly={readOnly}
 					/>
-
 					<Buttons>
 						<Button
 							bulma={{ "is-light": color !== "primary" }}

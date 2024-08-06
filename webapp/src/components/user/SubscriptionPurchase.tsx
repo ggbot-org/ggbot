@@ -94,9 +94,7 @@ export function SubscriptionPurchase() {
 					<Title>
 						<FormattedMessage id="SubscriptionPurchase.title" />
 					</Title>
-
 					<Title is={5}>{itemName}</Title>
-
 					{hasActiveSubscription ? (
 						<Message color="danger">
 							<FormattedMessage id="SubscriptionPurchase.couldRenew" />
@@ -104,21 +102,15 @@ export function SubscriptionPurchase() {
 					) : (
 						<Message color="info">
 							<FormattedMessage id="SubscriptionPurchase.pleasePurchase" />
-
 							<br />
-
 							<FormattedMessage id="SubscriptionPurchase.purchaseCurrency" />
 						</Message>
 					)}
-
 					<Message>
 						<FormattedMessage id="SubscriptionPurchase.oneMonthPrice" values={{ price: formattedMonthlyPrice }} />
-
 						<br />
-
 						<FormattedMessage id="SubscriptionPurchase.hint" values={{ numMonths: maxNumMonths, ...formattedMessageMarkup }} />
 					</Message>
-
 					<Columns isMobile>
 						<Column bulma="is-narrow">
 							<SubscriptionNumMonths
@@ -128,18 +120,15 @@ export function SubscriptionPurchase() {
 								value={numMonths}
 							/>
 						</Column>
-
 						<Column>
 							<SubscriptionEnd value={newSubscriptionEnd} />
 						</Column>
 					</Columns>
-
 					<SubscriptionTotalPrice
 						currency={currency}
 						monthlyPrice={monthlyPrice}
 						numMonths={numMonths}
 					/>
-
 					<Buttons>
 						<Button
 							color={isYearly ? "primary" : undefined}

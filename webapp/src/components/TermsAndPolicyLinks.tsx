@@ -10,7 +10,6 @@ export function TermsAndPolicyLinks() {
 					<FormattedMessage id="Privacy.title" />
 				</a>
 			</li>
-
 			<li>
 				<a href={webapp.terms.pathname}>
 					<FormattedMessage id="Terms.title" />

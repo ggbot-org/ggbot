@@ -11,9 +11,7 @@ export function DeleteAccount() {
 	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
 
 	const accountIdConfirmed = accountIdConfirmation === accountId
-	const color: MainColor | undefined = accountIdConfirmed
-		? "danger"
-		: undefined
+	const color: MainColor | undefined = accountIdConfirmed ? "danger" : undefined
 
 	const DELETE = useDeleteAccount()
 	const isLoading = DELETE.isPending
@@ -33,13 +31,10 @@ export function DeleteAccount() {
 			<Button
 				bulma={{ "is-skeleton": !accountId }}
 				color="danger"
-				onClick={() => {
-					setModalIsActive(true)
-				}}
+				onClick={() => setModalIsActive(true)}
 			>
 				<FormattedMessage id="DeleteAccount.button" />
 			</Button>
-
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					color={color}
@@ -49,39 +44,25 @@ export function DeleteAccount() {
 						<p>
 							<FormattedMessage id="DeleteAccount.question" />
 						</p>
-
 						<Columns>
 							<Column bulma="is-half">
 								<InputField
 									color={color}
-									help={
-										<FormattedMessage id="DeleteAccount.accountIdInputHelp" />
-									}
-									label={formatMessage({
-										id: "AccountId.label"
-									})}
-									onChange={(event) => {
-										setAccountIdConfirmation(
-											event.target.value
-										)
-									}}
+									help={<FormattedMessage id="DeleteAccount.accountIdInputHelp" />}
+									label={formatMessage({ id: "AccountId.label" })}
+									onChange={(event) => setAccountIdConfirmation(event.target.value)}
 									value={accountIdConfirmation}
 								/>
 							</Column>
 						</Columns>
-
 						<Checkbox
 							checked={hasConsent}
 							color={color}
 							disabled={!accountIdConfirmed}
-							onChange={(event) => {
-								setHasConsent(event.target.checked)
-							}}
+							onChange={(event) => setHasConsent(event.target.checked)}
 						/>
-
 						<FormattedMessage id="DeleteAccount.consent" />
 					</Content>
-
 					<Buttons>
 						<Button
 							color={hasConsent ? color : undefined}
@@ -94,12 +75,7 @@ export function DeleteAccount() {
 						>
 							<FormattedMessage id="DeleteAccount.confirmation" />
 						</Button>
-
-						<Button
-							onClick={() => {
-								setModalIsActive(false)
-							}}
-						>
+						<Button onClick={() => setModalIsActive(false)} >
 							<FormattedMessage id="DeleteAccount.dismiss" />
 						</Button>
 					</Buttons>

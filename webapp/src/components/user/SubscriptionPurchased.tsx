@@ -16,7 +16,6 @@ export function SubscriptionPurchased() {
 					values={formattedMessageMarkup}
 				/>
 			</p>
-
 			<p>
 				<FormattedMessage
 					id="SubscriptionPurchased.support"

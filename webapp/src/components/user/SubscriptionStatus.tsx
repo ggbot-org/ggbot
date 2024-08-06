@@ -2,10 +2,6 @@ import { MainColor, Tag } from "_/components/library"
 import { SubscriptionStatus as Status } from "@workspace/models"
 import { useIntl } from "react-intl"
 
-type Props = {
-	status: Status | undefined
-}
-
 type SubscriptionStatusColor = Extract<MainColor, "primary" | "warning">
 
 const colorOf: Record<Status, SubscriptionStatusColor> = {
@@ -13,7 +9,7 @@ const colorOf: Record<Status, SubscriptionStatusColor> = {
 	expired: "warning"
 }
 
-export function SubscriptionStatus({ status }: Props) {
+export function SubscriptionStatus({ status }: { status: Status | undefined }) {
 	const { formatMessage } = useIntl()
 
 	let color: SubscriptionStatusColor | undefined

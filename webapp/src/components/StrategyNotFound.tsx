@@ -3,9 +3,7 @@ import { StrategyId, StrategyKind } from "_/components/readonlyFields"
 import { StrategyKey } from "@workspace/models"
 import { useIntl } from "react-intl"
 
-type Props = StrategyKey
-
-export function StrategyNotFound({ strategyId, strategyKind }: Props) {
+export function StrategyNotFound({ strategyId, strategyKind }: StrategyKey) {
 	const { formatMessage } = useIntl()
 	return (
 		<Message
@@ -17,7 +15,6 @@ export function StrategyNotFound({ strategyId, strategyKind }: Props) {
 					<Column>
 						<StrategyKind value={strategyKind} />
 					</Column>
-
 					<Column>
 						<StrategyId value={strategyId} />
 					</Column>

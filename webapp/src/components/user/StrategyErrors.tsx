@@ -41,7 +41,6 @@ export function StrategyErrors() {
 					/>
 				</OneColumn>
 			</Columns>
-
 			<Columns>
 				<Column bulma="is-narrow">
 					<StrategyErrorsTable errors={errors} />

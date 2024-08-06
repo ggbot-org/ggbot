@@ -151,7 +151,6 @@ export function SchedulingParameterItem({
 				onChange={onChange}
 				placeholder={placeholder}
 			/>
-
 			{kind === IntervalParameter.kind && (
 				<datalist id={label}>
 					{dflowBinanceKlineIntervals.map((value) => (
@@ -159,7 +158,6 @@ export function SchedulingParameterItem({
 					))}
 				</datalist>
 			)}
-
 			{kind === SymbolParameter.kind && (
 				<datalist id={label}>
 					{binanceSymbols?.map(({ baseAsset, quoteAsset }) => (

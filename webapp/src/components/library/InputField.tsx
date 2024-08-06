@@ -15,11 +15,9 @@ export function InputField({ color, help, label, ...props }: InputFieldProps) {
 	return (
 		<Field>
 			<Label htmlFor={id}>{label}</Label>
-
 			<Control>
 				<Input color={color} id={id} {...props} />
 			</Control>
-
 			{help ? <Help color={color}>{help}</Help> : null}
 		</Field>
 	)

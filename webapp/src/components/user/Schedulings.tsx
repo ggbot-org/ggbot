@@ -31,9 +31,7 @@ export function Schedulings() {
 	const { hasActiveSubscription, isPro } = useSubscription()
 	const { accountStrategies } = useAccountStrategies()
 
-	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<
-		AccountStrategy[]
-	>([])
+	const [currentAccountStrategies, setCurrentAccountStrategies] = useState<AccountStrategy[]>([])
 
 	const WRITE = useWriteAccountStrategiesItemSchedulings()
 	const error = WRITE.error
@@ -44,7 +42,9 @@ export function Schedulings() {
 		if (currentAccountStrategies === undefined) return
 		return currentAccountStrategies
 			.filter((accountStrategy) => accountStrategy.strategyId === strategyId)
-			.reduce<StrategyScheduling[]>((list, accountStrategy) => list.concat(accountStrategy.schedulings), [])
+			.reduce<StrategyScheduling[]>(
+				(list, accountStrategy) => list.concat(accountStrategy.schedulings), []
+			)
 	}, [currentAccountStrategies, strategyId])
 
 	const someSchedulingChanged = useMemo(() => {
@@ -55,25 +55,28 @@ export function Schedulings() {
 		// Here the number of schedulingItem and currentSchedulings is the same.
 		// Check every schedulingItem:
 		for (const schedulingItem of schedulingItems) {
-			const currentScheduling = currentSchedulings.find(
-				({ id }) => schedulingItem.id === id
-			)
+			const currentScheduling = currentSchedulings.find(({ id }) => schedulingItem.id === id)
 			// if there is no corresponding currentScheduling, it is a new item;
 			if (!currentScheduling) return true
 			// check if schedulingItem is valid, and some of its attribute changed.
 			if (
-				isStrategyScheduling(schedulingItem) && (
-					schedulingItem.status !== currentScheduling.status ||
+				isStrategyScheduling(schedulingItem) &&
+				(schedulingItem.status !== currentScheduling.status ||
 					schedulingItem.frequency.every !== currentScheduling.frequency.every ||
-					schedulingItem.frequency.interval !== currentScheduling.frequency.interval
-				)
+					schedulingItem.frequency.interval !== currentScheduling.frequency.interval)
 			) return true
 			// Compare startegy params.
 			if (currentScheduling.params === undefined && schedulingItem.params) return true
 			if (currentScheduling.params && schedulingItem.params === undefined) return true
 			if (currentScheduling.params && schedulingItem.params) {
-				if (Object.keys(currentScheduling.params).length !== Object.keys(schedulingItem.params).length) return true
-				for (const key in currentScheduling.params) if (currentScheduling.params[key] !== schedulingItem.params[key]) return true
+				if (
+					Object.keys(currentScheduling.params).length !== Object.keys(schedulingItem.params).length
+				) return true
+				for (const key in currentScheduling.params) {
+					if (
+						currentScheduling.params[key] !== schedulingItem.params[key]
+					) return true
+				}
 			}
 		}
 		return false
@@ -103,25 +106,22 @@ export function Schedulings() {
 				})), [])
 
 	const setSchedulingParam = useCallback<
-		(id: StrategyScheduling["id"]
-		) => SchedulingParameterItemProps["setParam"]
+		(id: StrategyScheduling["id"],) => SchedulingParameterItemProps["setParam"]
 	>((id) => (key, value) => setSchedulingItems(
 				(schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
 					const params = Object.assign({}, schedulingItem.params)
-					if (value === undefined) {
-						delete params[key]
-					} else {
-						params[key] = value
-					}
+					if (value === undefined) delete params[key]
+					else params[key] = value
 					return { ...schedulingItem, params }
 				})), [])
 
 	const removeSchedulingItem = useCallback<
-		(id: StrategyScheduling["id"]) => SchedulingItemProps["removeScheduling"]
-	>((id) => () => setSchedulingItems((schedulingItems) => schedulingItems.filter(
-				(schedulingItem) => schedulingItem.id !== id
-			)), [])
+		(id: StrategyScheduling["id"],) => SchedulingItemProps["removeScheduling"]
+	>((id) => () => setSchedulingItems(
+				(schedulingItems) => schedulingItems.filter(
+					(schedulingItem) => schedulingItem.id !== id,
+				)), [])
 
 	const addSchedulingItem = useCallback(() => {
 		if (!hasActiveSubscription) {
@@ -132,7 +132,7 @@ export function Schedulings() {
 			(schedulingItems) => schedulingItems.concat(
 				newStrategyScheduling({
 					frequency: { every: 1, interval: "1h" },
-					status: "inactive"
+					status: "inactive",
 				})
 			))
 	}, [formatMessage, hasActiveSubscription, toast])
@@ -140,20 +140,14 @@ export function Schedulings() {
 	const onClickSave = useCallback(() => {
 		if (!strategyKey) return
 		if (!canSave) return
-		WRITE.request({
-			schedulings: wantedSchedulings,
-			...strategyKey
-		})
+		WRITE.request({ schedulings: wantedSchedulings, ...strategyKey })
 	}, [WRITE, canSave, strategyKey, wantedSchedulings])
 
-	const onClickCancel = useCallback<MouseEventHandler>(
-		(event) => {
-			event.preventDefault()
-			if (!currentSchedulings) return
-			setSchedulingItems(currentSchedulings)
-		},
-		[currentSchedulings]
-	)
+	const onClickCancel = useCallback<MouseEventHandler>((event) => {
+		event.preventDefault()
+		if (!currentSchedulings) return
+		setSchedulingItems(currentSchedulings)
+	}, [currentSchedulings])
 
 	// Update accountStrategies once fetched.
 	useEffect(() => {
@@ -174,16 +168,11 @@ export function Schedulings() {
 		<>
 			<Columns>
 				<Column
-					bulma={[
-						"is-narrow",
-						{ "is-skeleton": accountStrategies === undefined }
-					]}
+					bulma={["is-narrow", { "is-skeleton": accountStrategies === undefined }]}
 				>
 					<form
 						className={classnames("box")}
-						onSubmit={(event) => {
-							event.preventDefault()
-						}}
+						onSubmit={(event) => event.preventDefault()}
 					>
 						<Level
 							isMobile
@@ -196,13 +185,10 @@ export function Schedulings() {
 							}
 							right={
 								<LevelItem className={classnames("ml-5")}>
-									<SchedulingsStatusBadges
-										schedulings={currentSchedulings}
-									/>
+									<SchedulingsStatusBadges schedulings={currentSchedulings} />
 								</LevelItem>
 							}
 						/>
-
 						<Level
 							left={
 								<LevelItem>
@@ -216,7 +202,6 @@ export function Schedulings() {
 										>
 											<FormattedMessage id="Button.save" />
 										</Button>
-
 										<Button
 											disabled={!someSchedulingChanged}
 											onClick={onClickCancel}
@@ -229,11 +214,7 @@ export function Schedulings() {
 							right={
 								<LevelItem>
 									<Buttons>
-										<Button
-											isRounded
-											onClick={addSchedulingItem}
-											size="small"
-										>
+										<Button isRounded onClick={addSchedulingItem} size="small">
 											<FormattedMessage id="Schedulings.add" />
 										</Button>
 									</Buttons>
@@ -243,7 +224,6 @@ export function Schedulings() {
 					</form>
 				</Column>
 			</Columns>
-
 			{schedulingItems.map((scheduling) => (
 				<Columns key={scheduling.id}>
 					<Column bulma="is-narrow">
@@ -255,7 +235,6 @@ export function Schedulings() {
 							setStatus={setSchedulingItemStatus(scheduling.id)}
 						/>
 					</Column>
-
 					<Column>
 						<SchedulingParameters
 							flowViewGraph={flowViewGraph}
@@ -263,13 +242,11 @@ export function Schedulings() {
 							setParam={setSchedulingParam(scheduling.id)}
 						/>
 					</Column>
-
 					<Column>
 						<Memory memory={scheduling.memory} />
 					</Column>
 				</Columns>
 			))}
-
 			<SchedulingsErrorExceededQuota error={error} />
 		</>
 	)

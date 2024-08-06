@@ -4,11 +4,9 @@ import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
+export function GoCopyStrategy({ strategyKey }: {
 	strategyKey: StrategyKey | undefined
-}
-
-export function GoCopyStrategy({ strategyKey }: Props) {
+}) {
 	return (
 		<Button
 			onClick={() => {

@@ -146,7 +146,6 @@ export function ProfitSummary({
 			<Title>
 				<FormattedMessage id="ProfitSummary.title" />
 			</Title>
-
 			<Level>
 				<LevelItem>
 					<Div
@@ -155,46 +154,38 @@ export function ProfitSummary({
 						<_Label>
 							<FormattedMessage id="DailyInterval.from" />
 						</_Label>
-
 						<_Value>
 							<DateTime format="day" value={dayInterval?.start} />
 						</_Value>
 					</Div>
-
 					<Div
 						bulma={["is-flex", "is-flex-direction-column", "mx-2"]}
 					>
 						<_Label>
 							<FormattedMessage id="DailyInterval.to" />
 						</_Label>
-
 						<_Value>
 							<DateTime format="day" value={dayInterval?.end} />
 						</_Value>
 					</Div>
 				</LevelItem>
-
 				<LevelItem bulma="has-text-centered">
 					<div>
 						<_Label size="large">
 							<FormattedMessage id="ProfitSummary.numBuys" />
 						</_Label>
-
 						<_Value size="large">{numBuys}</_Value>
 					</div>
 				</LevelItem>
-
 				<LevelItem bulma="has-text-centered">
 					<div>
 						<_Label size="large">
 							<FormattedMessage id="ProfitSummary.numSells" />
 						</_Label>
-
 						<_Value size="large">{numSells}</_Value>
 					</div>
 				</LevelItem>
 			</Level>
-
 			{Array.from(
 				symbolStats, ([
 					symbol, { baseQuantity, maxPrice, minPrice, quoteQuantity }
@@ -229,13 +220,11 @@ export function ProfitSummary({
 								<LevelItem>
 									<Title is={4}>{symbol}</Title>
 								</LevelItem>
-
 								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label size="large">
 											{baseAsset}
 										</_Label>
-
 										<_Value size="large">
 											{toNumber(
 												baseQuantity,
@@ -244,13 +233,11 @@ export function ProfitSummary({
 										</_Value>
 									</div>
 								</LevelItem>
-
 								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label size="large">
 											{quoteAsset}
 										</_Label>
-
 										<_Value size="large">
 											{toNumber(
 												quoteQuantity,
@@ -260,14 +247,12 @@ export function ProfitSummary({
 									</div>
 								</LevelItem>
 							</Level>
-
 							<Level>
 								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label>
 											<FormattedMessage id="ProfitSummary.minPrice" />
 										</_Label>
-
 										<_Value>
 											{toNumber(
 												minPrice,
@@ -276,13 +261,11 @@ export function ProfitSummary({
 										</_Value>
 									</div>
 								</LevelItem>
-
 								<LevelItem bulma="has-text-centered">
 									<div>
 										<_Label>
 											<FormattedMessage id="ProfitSummary.maxPrice" />
 										</_Label>
-
 										<_Value>
 											{toNumber(
 												maxPrice,
@@ -295,21 +278,18 @@ export function ProfitSummary({
 						</Fragment>
 					)
 				)}
-
 			<Level>
 				<LevelItem>
 					<p>
 						<FormattedMessage id="ProfitSummary.fees" />
 					</p>
 				</LevelItem>
-
 				{Array.from(
 					feesMap, ([asset, quantity]) => ({ asset, quantity })
 				).map(({ asset, quantity }) => (
 					<LevelItem key={asset} bulma="has-text-centered">
 						<div>
 							<_Label>{asset}</_Label>
-
 							<_Value>{quantity}</_Value>
 						</div>
 					</LevelItem>

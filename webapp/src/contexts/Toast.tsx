@@ -76,7 +76,6 @@ export function ToastProvider({ children }: PropsWithChildren) {
 	return (
 		<ToastContext.Provider value={contextValue}>
 			{children}
-
 			<ToastContainer>
 				{notifications.map(({ id, toast: { message, color } }) => (
 					<Toast

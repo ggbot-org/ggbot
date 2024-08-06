@@ -15,7 +15,8 @@ function Toolbar({ hideInactive, setHideInactive, isInvisible }: Partial<{
 	return (
 		<div className={classnames("is-flex", "mb-5", "ml-3", { "is-invisible": isInvisible })}>
 			<Checkbox
-				checked={hideInactive} onChange={(event) => {
+				checked={hideInactive}
+				onChange={(event) => {
 					if (!setHideInactive) return
 					setHideInactive(event.target.checked)
 					localWebStorage.hideInactiveStrategies.set(event.target.checked)
@@ -23,7 +24,8 @@ function Toolbar({ hideInactive, setHideInactive, isInvisible }: Partial<{
 			>
 				<FormattedMessage id="Strategies.hideInactive" />
 			</Checkbox>
-		</div>)
+		</div>
+	)
 }
 
 export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void }) {
@@ -48,10 +50,15 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 	if (readStrategiesIsPending) return (
 		<>
 			<Toolbar isInvisible />
-
 			<Columns isMultiline>
 				<Column bulma={["is-half-tablet", "is-one-third-desktop"]}>
-					<StrategyItem isLoading name="" schedulings={undefined} strategyId="" strategyKind="none" />
+					<StrategyItem
+						isLoading
+						name=""
+						schedulings={undefined}
+						strategyId=""
+						strategyKind="none"
+					/>
 				</Column>
 			</Columns>
 		</>
@@ -70,7 +77,6 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 					<Message color="info">
 						<FormattedMessage id="Strategies.noStrategy" />
 					</Message>
-
 					<Buttons>
 						<Button>
 							<FormattedMessage id="Tabs.newStrategy" />
@@ -88,7 +94,6 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 				isInvisible={readStrategiesIsPending}
 				setHideInactive={setHideInactive}
 			/>
-
 			<Columns isMultiline>
 				{items.map((props) => (
 					<Column

@@ -5,11 +5,11 @@ import { StrategyKey } from "@workspace/models"
 import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-type Props = {
+export function DeleteStrategy({
+	strategyKey, ...strategyRecordProps
+}: StrategyRecordProps & {
 	strategyKey: StrategyKey | undefined
-} & StrategyRecordProps
-
-export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
+}) {
 	const { formatMessage } = useIntl()
 
 	const DELETE = useDeleteStrategy(strategyKey)
@@ -29,7 +29,6 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 			>
 				<FormattedMessage id="DeleteStrategy.button" />
 			</Button>
-
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					color="warning"
@@ -39,10 +38,8 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 						<p>
 							<FormattedMessage id="DeleteStrategy.message" />
 						</p>
-
 						<StrategyRecord {...strategyRecordProps} />
 					</Content>
-
 					<Buttons>
 						<Button
 							color="warning"
@@ -54,7 +51,6 @@ export function DeleteStrategy({ strategyKey, ...strategyRecordProps }: Props) {
 						>
 							<FormattedMessage id="DeleteStrategy.confirmation" />
 						</Button>
-
 						<Button onClick={() => setModalIsActive(false)}>
 							<FormattedMessage id="DeleteStrategy.dismiss" />
 						</Button>

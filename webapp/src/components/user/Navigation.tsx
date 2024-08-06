@@ -18,12 +18,10 @@ export function Navigation() {
 				>
 					<FormattedMessage id="Navigation.dashboard" />
 				</NavbarLink>
-
 				<NavbarLink onClick={() => GOTO(webapp.user.settings)}>
 					<FormattedMessage id="Navigation.settings" />
 				</NavbarLink>
 			</NavbarStart>
-
 			<NavbarEnd>
 				{accountIsAdmin ? (
 					<NavbarLink
@@ -33,7 +31,6 @@ export function Navigation() {
 						<FormattedMessage id="Navigation.admin" />
 					</NavbarLink>
 				) : null}
-
 				<NavbarLink onClick={() => showAuthExit()}>
 					<FormattedMessage id="Navigation.exit" />
 				</NavbarLink>

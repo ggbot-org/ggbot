@@ -21,11 +21,8 @@ export function Account() {
 			<Title>
 				<FormattedMessage id="AccountInfo.title" />
 			</Title>
-
 			<Email isStatic value={account?.email} />
-
 			<WhenCreated value={account?.whenCreated} />
-
 			<AccountId value={account?.id} />
 		</Div>
 	)

@@ -20,11 +20,9 @@ export function SelectField({
 	return (
 		<Field>
 			<Label htmlFor={id}>{label}</Label>
-
 			<Control>
 				<Select color={color} id={id} {...props} />
 			</Control>
-
 			{help ? <Help color={color}>{help}</Help> : null}
 		</Field>
 	)

@@ -1,4 +1,5 @@
-import { FrequencyInput, FrequencyInputProps } from "_/components/FrequencyInput"
+import { FrequencyInput,
+	FrequencyInputProps } from "_/components/FrequencyInput"
 import { Button, Buttons, Div, Level, LevelItem } from "_/components/library"
 import { SchedulingStatus } from "_/components/user/SchedulingStatus"
 import { StrategyScheduling } from "@workspace/models"
@@ -10,14 +11,20 @@ export type SchedulingItemProps = Pick<
 	"disabledIntervalOptions" | "setFrequency"
 > & {
 	scheduling: Omit<StrategyScheduling, "frequency"> &
-		Pick<FrequencyInputProps, "frequency">
+		Pick<FrequencyInputProps, "frequency">;
 	setStatus: (
-		arg: Extract<StrategyScheduling["status"], "active" | "inactive">
-	) => void
-	removeScheduling: () => void
+		arg: Extract<StrategyScheduling["status"], "active" | "inactive">,
+	) => void;
+	removeScheduling: () => void;
 }
 
-export function SchedulingItem({ disabledIntervalOptions, scheduling, setFrequency, removeScheduling, setStatus }: SchedulingItemProps) {
+export function SchedulingItem({
+	disabledIntervalOptions,
+	scheduling,
+	setFrequency,
+	removeScheduling,
+	setStatus,
+}: SchedulingItemProps) {
 	const { formatMessage } = useIntl()
 
 	const { frequency, status } = scheduling
@@ -40,7 +47,6 @@ export function SchedulingItem({ disabledIntervalOptions, scheduling, setFrequen
 							<Button isRounded onClick={removeScheduling}>
 								<FormattedMessage id="SchedulingItem.remove" />
 							</Button>
-
 							<Button isRounded onClick={onClickStatusButton}>
 								{statusButtonLabel}
 							</Button>
@@ -53,7 +59,6 @@ export function SchedulingItem({ disabledIntervalOptions, scheduling, setFrequen
 					</LevelItem>
 				}
 			/>
-
 			<FrequencyInput
 				disabledIntervalOptions={disabledIntervalOptions}
 				frequency={frequency}

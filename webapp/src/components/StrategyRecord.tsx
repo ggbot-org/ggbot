@@ -21,12 +21,10 @@ export function StrategyRecord({
 					<StrategyName isStatic value={strategyName} />
 				</Column>
 			</Columns>
-
 			<Columns>
 				<Column>
 					<StrategyId value={strategyId} />
 				</Column>
-
 				<Column>
 					<WhenCreated value={strategyWhenCreated} />
 				</Column>

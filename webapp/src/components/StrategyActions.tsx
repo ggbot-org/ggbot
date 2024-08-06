@@ -8,12 +8,6 @@ import { RenameStrategy, RenameStrategyProps } from "_/components/user/RenameStr
 import { StrategyKey } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
-	readOnly: boolean
-	readStrategyIsPending: boolean | undefined
-	strategyKey: StrategyKey | undefined
-} & StrategyRecordProps & Partial<Pick<RenameStrategyProps, "resetStrategy">>
-
 export function StrategyActions({
 	readOnly,
 	readStrategyIsPending,
@@ -22,7 +16,11 @@ export function StrategyActions({
 	strategyName,
 	strategyId,
 	strategyWhenCreated
-}: Props) {
+}: {
+	readOnly: boolean
+	readStrategyIsPending: boolean | undefined
+	strategyKey: StrategyKey | undefined
+} & StrategyRecordProps & Partial<Pick<RenameStrategyProps, "resetStrategy">>) {
 	return (
 		<Columns>
 			<OneColumn>
@@ -30,13 +28,11 @@ export function StrategyActions({
 					<Title>
 						<FormattedMessage id="StrategyActions.title" />
 					</Title>
-
 					<StrategyRecord
 						strategyId={strategyId}
 						strategyName={strategyName}
 						strategyWhenCreated={strategyWhenCreated}
 					/>
-
 					<Buttons>
 						{resetStrategy ? (
 							<RenameStrategy
@@ -45,18 +41,14 @@ export function StrategyActions({
 								strategyName={strategyName}
 							/>
 						) : null}
-
 						<GoCopyStrategy strategyKey={strategyKey} />
-
 						<ShareStrategy
 							strategyKey={strategyKey}
 							strategyName={strategyName}
 						/>
-
 						{readOnly ? null : (
 							<>
 								<GoEditStrategy strategyKey={strategyKey} />
-
 								<DeleteStrategy
 									strategyId={strategyId}
 									strategyKey={strategyKey}

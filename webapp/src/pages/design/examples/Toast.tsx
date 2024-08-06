@@ -7,9 +7,7 @@ export function ToastExample() {
 	return (
 		<Buttons>
 			<Button onClick={() => toast.info("This is an information message")}>Show info</Button>
-
 			<Button onClick={() => toast.danger("Some error occurred")}>Show error</Button>
-
 			<Button onClick={() => toast.warning("Attention!")}>Show warning</Button>
 		</Buttons>
 	)

@@ -38,7 +38,6 @@ export function Toast({ close, color, message }: ToastProps) {
 	return (
 		<Notification color={color} onClick={onClickMessage}>
 			<Delete onClick={onClickClose} size="small" />
-
 			{message}
 		</Notification>
 	)

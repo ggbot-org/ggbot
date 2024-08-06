@@ -4,11 +4,9 @@ import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
+export function GoEditStrategy({ strategyKey }: {
 	strategyKey: StrategyKey | undefined
-}
-
-export function GoEditStrategy({ strategyKey }: Props) {
+}) {
 	if (!strategyKey) return null
 	return (
 		<Button

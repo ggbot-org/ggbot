@@ -8,11 +8,7 @@ import { GatewayTimeoutError } from "@workspace/http"
 import { ChangeEventHandler, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-type Props = {
-	apiKey: string
-}
-
-export function BinanceApi({ apiKey }: Props) {
+export function BinanceApi({ apiKey }: { apiKey: string }) {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
@@ -50,9 +46,7 @@ export function BinanceApi({ apiKey }: Props) {
 			<Title>
 				<FormattedMessage id="BinanceApi.title" />
 			</Title>
-
 			<ApiKey isStatic value={apiKey} />
-
 			<Field>
 				<Control>
 					<Button isLoading={isLoading}>
@@ -60,7 +54,6 @@ export function BinanceApi({ apiKey }: Props) {
 					</Button>
 				</Control>
 			</Field>
-
 			<BinanceApiKeyPermissions permissions={permissions} />
 		</form>
 	)

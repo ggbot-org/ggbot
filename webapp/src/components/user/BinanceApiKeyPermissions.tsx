@@ -10,7 +10,6 @@ function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<Checkm
 	return (
 		<div className={classnames("is-flex")}>
 			<div>{children}</div>
-
 			<Checkmark ok={ok} />
 		</div>
 	)
@@ -93,15 +92,12 @@ export function BinanceApiKeyPermissions({ permissions }: BinanceApiKeyPermissio
 			<BinanceApiKeyPermissionEnableReading
 				enableReading={enableReading}
 			/>
-
 			<BinanceApiKeyPermissionEnableWithdrawals
 				enableWithdrawals={enableWithdrawals}
 			/>
-
 			<BinanceApiKeyPermissionEnableSpotAndMarginTrading
 				enableSpotAndMarginTrading={enableSpotAndMarginTrading}
 			/>
-
 			<BinanceApiKeyPermissionIpRestrict ipRestrict={ipRestrict} />
 		</div>
 	)

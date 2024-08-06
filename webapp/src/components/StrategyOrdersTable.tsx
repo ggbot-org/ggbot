@@ -15,11 +15,7 @@ type Row = {
 	price: string
 }
 
-type Props = {
-	orders: Order[] | undefined
-}
-
-export function StrategyOrdersTable({ orders }: Props) {
+export function StrategyOrdersTable({ orders }: { orders: Order[] | undefined }) {
 	const { formatDate } = useIntl()
 
 	const rows: Row[] = []
@@ -34,42 +30,25 @@ export function StrategyOrdersTable({ orders }: Props) {
 				symbol: string
 				transactTime: number
 			}>(
-				({
-					cummulativeQuoteQty,
-					executedQty,
-					fills,
-					orderId,
-					side,
-					symbol,
-					transactTime
-				}) => Array.isArray(fills) &&
-						[cummulativeQuoteQty, executedQty, side, symbol].every(
-							(item) => typeof item === "string"
-						) &&
-						[orderId, transactTime].every(
-							(item) => typeof item === "number"
-						)
+				({ cummulativeQuoteQty, executedQty, fills, orderId, side, symbol, transactTime }) => (
+					Array.isArray(fills) && [cummulativeQuoteQty, executedQty, side, symbol].every(
+						(item) => typeof item === "string"
+					) && [orderId, transactTime].every(
+						(item) => typeof item === "number"
+					)
+				)
 			)(info)
 		) continue
 
-		const {
-			cummulativeQuoteQty,
-			executedQty,
-			fills,
-			orderId,
-			side,
-			symbol,
-			transactTime
-		} = info
+		const { cummulativeQuoteQty, executedQty, fills, orderId, side, symbol, transactTime } = info
 
 		let price: BinanceDecimal = "0"
 		const precision = 8
 
 		if (arrayTypeGuard<BinanceFill>(isBinanceFill)(fills)) {
 			const numFills = fills.length
-			if (numFills === 1) {
-				price = fills[0].price
-			} else {
+			if (numFills === 1) price = fills[0].price
+			else {
 				let sumFillPrice = "0"
 				for (const fill of fills) sumFillPrice = add(sumFillPrice, fill.price, precision)
 				price = (Number(sumFillPrice) / fills.length).toFixed(
@@ -104,43 +83,32 @@ export function StrategyOrdersTable({ orders }: Props) {
 					<th>
 						<FormattedMessage id="StrategyOrders.time" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyOrders.side" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyOrders.symbol" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyOrders.baseQuantity" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyOrders.quoteQuantity" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyOrders.price" />
 					</th>
 				</tr>
 			</thead>
-
 			<tbody>
 				{rows.map(
 					({ baseQuantity, orderId, price, quoteQuantity, side, symbol, time }) => (
 						<tr key={orderId}>
 							<td>{time}</td>
-
 							<td>{side}</td>
-
 							<td>{symbol}</td>
-
 							<td>{baseQuantity}</td>
-
 							<td>{quoteQuantity}</td>
-
 							<td>{price}</td>
 						</tr>
 					)

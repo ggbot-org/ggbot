@@ -146,11 +146,8 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 				>
 					<Icon name="caret-left" />
 				</div>
-
 				<div className={classnames("calendar__head-text")}>{monthName}</div>
-
 				<div className={classnames("calendar__head-text")}>{year}</div>
-
 				<div
 					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isLastMonth })}
 					onClick={onClickNext}
@@ -158,9 +155,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 					<Icon name="caret-right" />
 				</div>
 			</div>
-
 			<CalendarWeekDays />
-
 			<div className={classnames("calendar__grid")}>
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
@@ -173,7 +168,6 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 						</div>
 					)
 				)}
-
 				{
 					/* Avoid layout shifting: in case there are 5 rows, fill with an empty row. */
 					dateCells.length === 35 ? [0, 1, 2, 3, 4, 5, 6].map((i) => (<div key={i}>&nbsp;</div>)) : null

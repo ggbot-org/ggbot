@@ -18,7 +18,6 @@ export function DayDropdown({ close, day, disabled, isActive, isRight, label, ma
 	return (
 		<Field>
 			<Label>{label}</Label>
-
 			<Control>
 				<Dropdown
 					isActive={disabled ? undefined : isActive}
@@ -28,7 +27,6 @@ export function DayDropdown({ close, day, disabled, isActive, isRight, label, ma
 					<DropdownTrigger disabled={disabled}>
 						<FormattedDate value={day} {...dayFormat} />
 					</DropdownTrigger>
-
 					<DropdownMenu>
 						<Calendar
 							day={day}

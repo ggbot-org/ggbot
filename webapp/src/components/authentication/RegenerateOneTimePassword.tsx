@@ -1,15 +1,12 @@
 import { Button, ButtonProps, Control, Field, Message } from "_/components/library"
 import { FormattedMessage } from "react-intl"
 
-type Props = Pick<ButtonProps, "onClick">
-
-export function RegenerateOneTimePassword({ onClick }: Props) {
+export function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, "onClick">) {
 	return (
 		<>
 			<Message>
 				<FormattedMessage id="RegenerateOneTimePassword.message" />
 			</Message>
-
 			<Field>
 				<Control>
 					<Button onClick={onClick}>

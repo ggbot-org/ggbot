@@ -6,12 +6,13 @@ import { FormattedDate } from "react-intl"
 const dateTimeFormats = ["day", "time"] as const
 type DateTimeFormat = (typeof dateTimeFormats)[number]
 
-type Props = {
+export function DateTime({
+	format, value
+}: Omit<
+	TimeHTMLAttributes<HTMLTimeElement>, "dateTime"
+> & Partial<{ value: Day }> & {
 	format: DateTimeFormat
-} & Omit<TimeHTMLAttributes<HTMLTimeElement>, "dateTime"> &
-	Partial<{ value: Day }>
-
-export function DateTime({ format, value }: Props) {
+}) {
 	if (!value) return null
 
 	let formatOptions: DayFormat | TimeFormat | undefined

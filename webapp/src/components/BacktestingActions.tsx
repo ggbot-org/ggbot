@@ -38,14 +38,6 @@ function StopButton(props: ButtonProps) {
 	)
 }
 
-type Props = Pick<UseBacktestingState, "isPaused" | "isRunning"> & {
-	canStart: boolean
-	onClickPause: ButtonProps["onClick"]
-	onClickResume: ButtonProps["onClick"]
-	onClickStart: ButtonProps["onClick"]
-	onClickStop: ButtonProps["onClick"]
-}
-
 export function BacktestingActions({
 	canStart,
 	isPaused,
@@ -54,11 +46,16 @@ export function BacktestingActions({
 	onClickResume,
 	onClickStart,
 	onClickStop
-}: Props) {
+}: Pick<UseBacktestingState, "isPaused" | "isRunning"> & {
+	canStart: boolean
+	onClickPause: ButtonProps["onClick"]
+	onClickResume: ButtonProps["onClick"]
+	onClickStart: ButtonProps["onClick"]
+	onClickStop: ButtonProps["onClick"]
+}) {
 	if (isPaused) return (
 		<Buttons>
 			<ResumeButton onClick={onClickResume} />
-
 			<StopButton onClick={onClickStop} />
 		</Buttons>
 	)
@@ -66,7 +63,6 @@ export function BacktestingActions({
 	if (isRunning) return (
 		<Buttons>
 			<PauseButton onClick={onClickPause} />
-
 			<StopButton onClick={onClickStop} />
 		</Buttons>
 	)

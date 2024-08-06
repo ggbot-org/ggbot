@@ -35,7 +35,6 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 			<Button onClick={() => setModalIsActive((active) => !active)}>
 				<FormattedMessage id="RenameStrategy.button" />
 			</Button>
-
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<form
 					ref={formRef}
@@ -53,11 +52,9 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 					<Title>
 						<FormattedMessage id="RenameStrategy.title" />
 					</Title>
-
 					<Message>
 						<FormattedMessage id="RenameStrategy.chooseName" />
 					</Message>
-
 					<StrategyName
 						required
 						name={fieldName.name}
@@ -65,7 +62,6 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 						placeholder={strategyName}
 						readOnly={isPending}
 					/>
-
 					<Field isGrouped>
 						<Control>
 							<Button

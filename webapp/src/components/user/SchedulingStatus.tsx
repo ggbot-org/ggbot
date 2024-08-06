@@ -36,7 +36,6 @@ export function SchedulingStatus({ status, count }: SchedulingStatusProps) {
 	return (
 		<Tags hasAddons>
 			<_TagLabel status={status} />
-
 			<Tag color={status ? colorOf[status] : undefined}>{count}</Tag>
 		</Tags>
 	)

@@ -1,7 +1,7 @@
 import { InputField, InputFieldProps } from "_/components/library"
 
-type Props = Pick<InputFieldProps, "label" | "value">
-
-export function ReadonlyField({ label, value }: Props) {
+export function ReadonlyField({
+	label, value
+}: Pick<InputFieldProps, "label" | "value">) {
 	return <InputField isStatic readOnly defaultValue={value} label={label} />
 }

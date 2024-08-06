@@ -4,15 +4,6 @@ import { Button, ButtonProps, Buttons, Div, Title } from "trunx"
 
 import { DayInterval, DayIntervalProps } from "./DayInterval"
 
-type Props = Pick<ButtonProps, "isLoading"> &
-	Pick<DayIntervalProps, "min" | "max"> & {
-		onClickUpdate: ButtonProps["onClick"]
-		start: Day
-		end: Day
-		setStart: (day: Day) => void
-		setEnd: (day: Day) => void
-	}
-
 export function DayIntervalBox({
 	onClickUpdate,
 	isLoading,
@@ -22,13 +13,18 @@ export function DayIntervalBox({
 	max,
 	setStart,
 	setEnd
-}: Props) {
+}: Pick<ButtonProps, "isLoading"> & Pick<DayIntervalProps, "min" | "max"> & {
+	onClickUpdate: ButtonProps["onClick"]
+	start: Day
+	end: Day
+	setStart: (day: Day) => void
+	setEnd: (day: Day) => void
+}) {
 	return (
 		<Div bulma={["box", { "is-skeleton": isLoading }]}>
 			<Title>
 				<FormattedMessage id="DailyIntervalBox.title" />
 			</Title>
-
 			<DayInterval
 				disabled={isLoading}
 				end={{ day: end, setDay: setEnd }}
@@ -36,7 +32,6 @@ export function DayIntervalBox({
 				min={min}
 				start={{ day: start, setDay: setStart }}
 			/>
-
 			<Buttons>
 				<Button isLoading={isLoading} onClick={onClickUpdate}>
 					<FormattedMessage id="DailyIntervalBox.update" />

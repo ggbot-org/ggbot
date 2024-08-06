@@ -9,7 +9,6 @@ export function SocialLinks() {
 					<FormattedMessage id="SocialLinks.telegramSupport" />
 				</a>
 			</li>
-
 			<li>
 				<a href={github.organization}>
 					<FormattedMessage id="SocialLinks.githubOrganizaton" />

@@ -12,9 +12,11 @@ import { FormattedMessage } from "react-intl"
 const fieldName = { name: "name" }
 const fields = Object.keys(fieldName)
 
-type Props = { strategyKey: StrategyKey | undefined } & StrategyRecordProps
-
-export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWhenCreated }: Props) {
+export function CopyStrategy({
+	strategyId, strategyKey, strategyName, strategyWhenCreated
+}: StrategyRecordProps & {
+	strategyKey: StrategyKey | undefined
+}) {
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
@@ -50,11 +52,9 @@ export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWh
 						<Title>
 							<FormattedMessage id="CopyStrategy.title" />
 						</Title>
-
 						<Message>
 							<FormattedMessage id="CopyStrategy.strategyInfo" />
 						</Message>
-
 						<StrategyRecord
 							strategyId={strategyId}
 							strategyName={strategyName}
@@ -62,7 +62,6 @@ export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWh
 						/>
 					</Div>
 				</OneColumn>
-
 				<OneColumn>
 					<form className={classnames("box")} onSubmit={onSubmit}>
 						{error ? null : (
@@ -70,9 +69,7 @@ export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWh
 								<FormattedMessage id="CopyStrategy.chooseName" />
 							</Message>
 						)}
-
 						<StrategiesErrorExceededQuota error={error} />
-
 						<StrategyName
 							required
 							name={fieldName.name}
@@ -80,7 +77,6 @@ export function CopyStrategy({ strategyId, strategyKey, strategyName, strategyWh
 							placeholder={strategyName}
 							readOnly={COPY.isPending || COPY.isDone}
 						/>
-
 						<Buttons>
 							<Button
 								bulma={{ "is-light": color !== "primary" }}

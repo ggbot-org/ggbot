@@ -6,11 +6,7 @@ import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
-type Props = {
-	strategyKey: StrategyKey | undefined
-}
-
-export function StrategyProfits({ strategyKey }: Props) {
+export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const [orders, setOrders] = useState<ProfitSummaryProps["orders"]>()
@@ -46,7 +42,6 @@ export function StrategyProfits({ strategyKey }: Props) {
 					/>
 				</OneColumn>
 			</Columns>
-
 			<Columns>
 				<OneColumn>
 					<ProfitSummary
@@ -56,7 +51,6 @@ export function StrategyProfits({ strategyKey }: Props) {
 					/>
 				</OneColumn>
 			</Columns>
-
 			<Columns>
 				<Column bulma="is-narrow">
 					<StrategyOrdersTable orders={orders} />

@@ -17,9 +17,7 @@ export function PageContainer({ children }: PropsWithChildren) {
 		<I18nProvider>
 			<Page footer={<Footer />}>
 				{isHomepage() ? null : <Navbar noMenu className="Navigation" />}
-
 				<NoNetwork />
-
 				<ToastProvider>{children}</ToastProvider>
 			</Page>
 		</I18nProvider>

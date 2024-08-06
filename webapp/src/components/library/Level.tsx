@@ -25,9 +25,7 @@ export function Level({
 			{...props}
 		>
 			{left ? <div className="level-left">{left}</div> : null}
-
 			{children}
-
 			{right ? <div className="level-right">{right}</div> : null}
 		</div>
 	)

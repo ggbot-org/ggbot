@@ -10,7 +10,6 @@ export function AccountSettings() {
 					<AccountInfo />
 				</OneColumn>
 			</Columns>
-
 			<DeleteAccount />
 		</>
 	)

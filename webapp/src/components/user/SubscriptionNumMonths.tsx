@@ -2,15 +2,15 @@ import { InputField, InputFieldProps } from "_/components/library"
 import { purchaseMaxNumMonths as max, purchaseMinNumMonths as min } from "@workspace/models"
 import { useIntl } from "react-intl"
 
-type Props = Omit<
+export function SubscriptionNumMonths({
+	isYearlyPurchase, setValue, value, ...props
+}: Omit<
 	InputFieldProps,
 	"label" | "min" | "max" | "onChange" | "step" | "type"
 > & {
 	isYearlyPurchase: boolean | undefined
 	setValue: (value: number | undefined) => void
-}
-
-export function SubscriptionNumMonths({ isYearlyPurchase, setValue, value, ...props }: Props) {
+}) {
 	const { formatMessage } = useIntl()
 	return (
 		<InputField

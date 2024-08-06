@@ -32,19 +32,15 @@ export function PleasePurchase() {
 					<p>
 						<FormattedMessage id="PleasePurchase.message" />
 					</p>
-
 					<p>
 						<FormattedMessage id="PleasePurchase.goToSettings" values={formattedMessageMarkup} />
 					</p>
-
 					<Checkbox checked={doNotShow} onChange={onChangeDoNotShow}>
 						<FormattedMessage id="PleasePurchase.doNotShow" />
 					</Checkbox>
 				</Content>
-
 				<Buttons>
 					<GoSettings />
-
 					<Button onClick={() => setIsActive(false)}>
 						<FormattedMessage id="Button.cancel" />
 					</Button>

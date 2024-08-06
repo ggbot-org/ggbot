@@ -1,11 +1,10 @@
 import { InputField, InputFieldProps } from "_/components/library"
 import { useIntl } from "react-intl"
 
-type Props = Omit<InputFieldProps, "label" | "type" | "defaultValue">
-
-export function Email({ isStatic, value, ...props }: Props) {
+export function Email({
+	isStatic, value, ...props
+}: Omit<InputFieldProps, "label" | "type" | "defaultValue">) {
 	const { formatMessage } = useIntl()
-
 	return (
 		<InputField
 			isStatic={isStatic}

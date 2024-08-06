@@ -14,13 +14,11 @@ import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-type Props = {
+export function Backtesting({ strategyKey, strategyName, strategyFrequency }: {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined
 	strategyName: string
-}
-
-export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Props) {
+}) {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
@@ -111,26 +109,21 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 						<Title>
 							<FormattedMessage id="Backtesting.title" />
 						</Title>
-
 						<DayInterval
 							disabled={disabled}
 							end={{ day: dayInterval.end, setDay: setEnd }}
 							max={maxDay}
 							start={{ day: dayInterval.start, setDay: setStart }}
 						/>
-
 						<FrequencyInput
 							disabled={disabled}
 							frequency={frequencyArg}
 							setFrequency={setFrequency}
 						/>
-
 						<Field>
 							<Control>
 								<Checkbox
-									checked={
-										afterStepBehaviour.pauseOnMemoryChange
-									}
+									checked={afterStepBehaviour.pauseOnMemoryChange}
 									className={classnames("mx-1")}
 									onChange={onChangePauseOnMemoryChange}
 								>
@@ -138,7 +131,6 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 								</Checkbox>
 							</Control>
 						</Field>
-
 						<Field>
 							<Control>
 								<Checkbox
@@ -150,7 +142,6 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 								</Checkbox>
 							</Control>
 						</Field>
-
 						<BacktestingActions
 							canStart={hasFlow}
 							isPaused={isPaused}
@@ -162,7 +153,6 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 						/>
 					</Div>
 				</Column>
-
 				<Column bulma={["is-half-tablet", "is-one-third-fullhd"]}>
 					<BacktestingProgress
 						currentTimestamp={currentTimestamp}
@@ -171,7 +161,6 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 					/>
 				</Column>
 			</Columns>
-
 			<Columns>
 				<Column bulma="is-one-third">
 					<SchedulingParameters
@@ -182,12 +171,10 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 						}}
 					/>
 				</Column>
-
 				<Column bulma="is-one-third">
 					<Memory memory={memory} />
 				</Column>
 			</Columns>
-
 			<Columns>
 				<OneColumn>
 					<ProfitSummary
@@ -197,7 +184,6 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: Pr
 					/>
 				</OneColumn>
 			</Columns>
-
 			<Columns>
 				<Column bulma="is-narrow">
 					<StrategyOrdersTable orders={orders} />

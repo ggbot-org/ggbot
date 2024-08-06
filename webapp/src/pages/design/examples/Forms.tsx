@@ -18,7 +18,6 @@ export function SimpleForm() {
 			}}
 		>
 			<Title>Create account</Title>
-
 			<InputField
 				label="nick"
 				name="nick"
@@ -26,7 +25,6 @@ export function SimpleForm() {
 				type="text"
 				value={nick}
 			/>
-
 			<InputField
 				label="password"
 				name="password"
@@ -34,7 +32,6 @@ export function SimpleForm() {
 				type="password"
 				value={password}
 			/>
-
 			<SelectField
 				help={<>&nbsp;</>}
 				label="gender"
@@ -47,7 +44,6 @@ export function SimpleForm() {
 				]}
 				value={gender}
 			/>
-
 			<Field>
 				<Control>
 					<Checkbox
@@ -58,7 +54,6 @@ export function SimpleForm() {
 					</Checkbox>
 				</Control>
 			</Field>
-
 			<Buttons>
 				<Button
 					color={hasConsent ? "primary" : undefined}

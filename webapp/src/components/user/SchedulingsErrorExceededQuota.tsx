@@ -3,11 +3,7 @@ import { ApiActionError, isApiActionServerSideError } from "@workspace/api"
 import { ErrorExceededQuota, quotaType } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
-	error: ApiActionError | undefined
-}
-
-export function SchedulingsErrorExceededQuota({ error }: Props) {
+export function SchedulingsErrorExceededQuota({ error }: { error: ApiActionError | undefined }) {
 	if (!isApiActionServerSideError(error)) return null
 	if (
 		error.name !== ErrorExceededQuota.name &&

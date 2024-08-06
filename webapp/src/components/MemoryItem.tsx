@@ -11,7 +11,6 @@ export function MemoryItem({ name, value }: MemoryItemProps) {
 	return (
 		<div className={classnames("is-flex", "is-flex-direction-column", "my-1", "is-flex-grow-1")}>
 			<span>{name}</span>
-
 			<pre className={classnames("p-2")}>
 				<code>{formattedValue}</code>
 			</pre>

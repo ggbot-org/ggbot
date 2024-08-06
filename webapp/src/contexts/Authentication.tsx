@@ -203,7 +203,6 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	return (
 		<AuthenticationContext.Provider value={contextValue}>
 			{children}
-
 			<AuthExit
 				accountEmail={contextValue.accountEmail}
 				accountId={contextValue.accountId}

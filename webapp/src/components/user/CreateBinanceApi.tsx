@@ -12,11 +12,7 @@ const fieldName = {
 }
 const fields = Object.keys(fieldName)
 
-type Props = {
-	refetchApiKey: () => void
-}
-
-export function CreateBinanceApi({ refetchApiKey }: Props) {
+export function CreateBinanceApi({ refetchApiKey }: { refetchApiKey: () => void }) {
 	const CREATE = useCreateBinanceApiConfig()
 	const isLoading = CREATE.isPending
 	const readOnly = CREATE.isPending
@@ -44,15 +40,12 @@ export function CreateBinanceApi({ refetchApiKey }: Props) {
 			<Title>
 				<FormattedMessage id="CreateBinanceApi.title" />
 			</Title>
-
 			<ApiKey required name={fieldName.apiKey} readOnly={readOnly} />
-
 			<ApiSecret
 				required
 				name={fieldName.apiSecret}
 				readOnly={readOnly}
 			/>
-
 			<Field>
 				<Control>
 					<Button isLoading={isLoading}>

@@ -3,11 +3,7 @@ import { useDeleteBinanceApiConfig } from "_/hooks/user/api"
 import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
-type Props = {
-	refetchApiKey: () => void
-}
-
-export function DeleteBinanceApi({ refetchApiKey }: Props) {
+export function DeleteBinanceApi({ refetchApiKey }: { refetchApiKey: () => void }) {
 	const color: MainColor = "warning"
 
 	const { formatMessage } = useIntl()
@@ -30,7 +26,6 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 			<Button color={color} onClick={() => setModalIsActive(true)}>
 				<FormattedMessage id="DeleteBinanceApi.button" />
 			</Button>
-
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					color={color}
@@ -40,16 +35,13 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 						<p>
 							<FormattedMessage id="DeleteBinanceApi.question" />
 						</p>
-
 						<p>
 							<FormattedMessage id="DeleteBinanceApi.warning" />
 						</p>
-
 						<p>
 							<FormattedMessage id="DeleteBinanceApi.info" />
 						</p>
 					</Content>
-
 					<Buttons>
 						<Button
 							color={color}
@@ -60,7 +52,6 @@ export function DeleteBinanceApi({ refetchApiKey }: Props) {
 						>
 							<FormattedMessage id="DeleteBinanceApi.confirmation" />
 						</Button>
-
 						<Button onClick={() => setModalIsActive(false)}>
 							<FormattedMessage id="DeleteBinanceApi.dismiss" />
 						</Button>

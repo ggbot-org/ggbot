@@ -6,21 +6,16 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 export function Footer() {
 	const { formatDate } = useIntl()
-
 	return (
 		<>
 			<div className={classnames("footer__top")} />
-
 			<footer className={classnames("footer", "footer__body")}>
 				<TermsAndPolicyLinks />
-
 				<SocialLinks />
-
 				<FormattedMessage
 					id="Footer.lastUpdate"
 					values={{ day: formatDate(BUILD_DATE, dayFormat) }}
 				/>
-
 				<sub>
 					<FormattedMessage id="Footer.noTracking" />
 				</sub>

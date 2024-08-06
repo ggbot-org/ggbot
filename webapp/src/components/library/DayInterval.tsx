@@ -65,7 +65,6 @@ export function DayInterval({
 				onClick={onClickStart}
 				{...start}
 			/>
-
 			<DayDropdown
 				isRight
 				close={closeDropdowns}

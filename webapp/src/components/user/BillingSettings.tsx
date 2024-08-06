@@ -5,7 +5,6 @@ export function BillingSettings() {
 	return (
 		<>
 			<SubscriptionInfo />
-
 			<SubscriptionPurchase />
 		</>
 	)

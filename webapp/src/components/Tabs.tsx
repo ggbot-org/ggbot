@@ -64,7 +64,6 @@ export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 					</TabSelector>
 				))}
 			</TabSelectors>
-
 			{tabContents.map(({ children, tabId, ...props }) => (
 				<TabContent key={tabId} {...props}>
 					{children}

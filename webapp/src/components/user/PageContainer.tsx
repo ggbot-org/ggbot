@@ -11,7 +11,6 @@ export function PageContainer({ children }: PropsWithChildren) {
 			<AuthenticationProvider>
 				<Page>
 					<Navigation />
-
 					<ToastProvider>
 						{children}
 					</ToastProvider>

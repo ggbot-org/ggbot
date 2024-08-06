@@ -41,7 +41,6 @@ export function StrategyPage() {
 										strategyName={strategyName}
 										strategyWhenCreated={strategyWhenCreated}
 									/>
-
 									<Schedulings />
 								</>
 							)
@@ -58,7 +57,6 @@ export function StrategyPage() {
 						}
 					]}
 				/>
-
 				<PleasePurchase />
 			</StrategyPageContainer>
 		</PageContainer>

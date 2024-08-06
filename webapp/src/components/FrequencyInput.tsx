@@ -72,14 +72,9 @@ export function FrequencyInput({
 					value={every}
 				/>
 			</Column>
-
 			<Column bulma="is-half">
 				<SelectField
-					color={
-						disabledIntervalOptions.includes(interval)
-							? "danger"
-							: undefined
-					}
+					color={disabledIntervalOptions.includes(interval) ? "danger" : undefined}
 					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.interval" })}
 					onChange={onChangeFrequencyInterval}

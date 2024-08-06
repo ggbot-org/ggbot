@@ -21,15 +21,27 @@ module.exports = {
 	rules: {
 		"@stylistic/jsx-closing-bracket-location": "error",
 		"@stylistic/jsx-closing-tag-location": "error",
+		"@stylistic/jsx-curly-brace-presence": ["error", { children: "never", props: "never", propElementValues: "always" }],
 		"@stylistic/jsx-curly-spacing": "error",
 		"@stylistic/jsx-equals-spacing": "error",
 		"@stylistic/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
+		"@stylistic/jsx-indent": ["error", "tab"],
+		"@stylistic/jsx-max-props-per-line": ["error", { maximum: 1, when: "multiline" }],
 		"@stylistic/jsx-props-no-multi-spaces": "error",
 		"@stylistic/jsx-quotes": ["error", "prefer-double"],
 		"@stylistic/jsx-self-closing-comp": "error",
 		"@stylistic/jsx-sort-props": ["error", { "reservedFirst": true, "shorthandFirst": true }],
 		"@stylistic/jsx-tag-spacing": "error",
-		"@stylistic/jsx-wrap-multilines": "error",
+		"@stylistic/jsx-wrap-multilines": ["error",
+			{
+				assignment: "parens-new-line",
+				condition: "parens-new-line",
+				declaration: "parens-new-line",
+				logical: "parens-new-line",
+				prop: "ignore",
+				propertyValue: "parens-new-line",
+				return: "parens-new-line",
+			}],
 
 		// TODO set "@typescript-eslint/ban-ts-comment": "warn",
 		"@typescript-eslint/ban-ts-comment": "off",
@@ -51,7 +63,6 @@ module.exports = {
 					],
 				},
 			}],
-		"formatjs/prefer-formatted-message": "error",
 		"formatjs/prefer-pound-in-plural": "error",
 
 		// Define React components as functions.
@@ -72,7 +83,7 @@ module.exports = {
 
 		"react/jsx-boolean-value": "error",
 		"react/jsx-key": "error",
-		"react/jsx-newline": ["error", { prevent: false }],
+		"react/jsx-newline": ["error", { prevent: true }],
 		"react/jsx-no-comment-textnodes": "error",
 		"react/jsx-no-constructed-context-values": "error",
 		"react/jsx-no-duplicate-props": "error",

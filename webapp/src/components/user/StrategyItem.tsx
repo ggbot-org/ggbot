@@ -4,9 +4,11 @@ import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { AccountStrategy } from "@workspace/models"
 
-type Props = Omit<AccountStrategy, "schedulings"> & SchedulingsStatusBadgesProps & Partial<{ isLoading: boolean }>
-
-export function StrategyItem({ isLoading, name, schedulings, ...strategyKey }: Props) {
+export function StrategyItem({
+	isLoading, name, schedulings, ...strategyKey
+}: Omit<AccountStrategy, "schedulings"> &
+	SchedulingsStatusBadgesProps &
+	Partial<{ isLoading: boolean }>) {
 	return (
 		<div
 			className={classnames("box", "strategy-item", { "skeleton-block": isLoading })}
@@ -15,7 +17,6 @@ export function StrategyItem({ isLoading, name, schedulings, ...strategyKey }: P
 		>
 			<div className={classnames("is-flex", "is-justify-content-space-between")} >
 				<span className={classnames("is-unselectable")}>{name}</span>
-
 				<SchedulingsStatusBadges schedulings={schedulings} />
 			</div>
 		</div>

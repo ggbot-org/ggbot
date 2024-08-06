@@ -117,17 +117,14 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 				<Title>
 					<FormattedMessage id="AuthEnter.title" />
 				</Title>
-
 				<Message>
 					<FormattedMessage id="AuthEnter.info" values={formattedMessageMarkup} />
 				</Message>
-
 				<Columns>
 					<Column bulma="is-half-desktop">
 						<Email required name={fieldName.email} readOnly={isPending} />
 					</Column>
 				</Columns>
-
 				<Field>
 					<Control>
 						<Checkbox
@@ -145,7 +142,6 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 						</Checkbox>
 					</Control>
 				</Field>
-
 				<Field isGrouped>
 					<Control>
 						<Button
@@ -157,11 +153,8 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 						</Button>
 					</Control>
 				</Field>
-
 				<TermsAndPolicyLinks />
-
 				{hasGenericError || (hasInvalidInput && <GenericError />)}
-
 				{gotTimeout ? <TimeoutError /> : null}
 			</form>
 		</Modal>

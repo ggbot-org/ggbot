@@ -36,18 +36,15 @@ export function StrategyErrorsTable({ errors }: StrategyErrorsTableProps) {
 					<th>
 						<FormattedMessage id="StrategyErrors.whenCreated" />
 					</th>
-
 					<th>
 						<FormattedMessage id="StrategyErrors.detail" />
 					</th>
 				</tr>
 			</thead>
-
 			<tbody>
 				{rows.map(({ whenCreated, error }) => (
 					<tr key={whenCreated}>
 						<td>{whenCreated}</td>
-
 						<td>{error}</td>
 					</tr>
 				))}

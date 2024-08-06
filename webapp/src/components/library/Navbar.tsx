@@ -15,9 +15,11 @@ function NavbarBrand({ children, ...props }: PropsWithChildren<NavbarBrandProps>
 }
 type NavbarBrandProps = HTMLAttributes<HTMLDivElement>
 
-type Props = Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
-
-export function Navbar({ children, className, noMenu }: PropsWithChildren<Props>) {
+export function Navbar({
+	children, className, noMenu
+}: PropsWithChildren<
+	Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
+>) {
 	const [isActive, setIsActive] = useState(false)
 
 	// Close menu on outside click.
@@ -44,7 +46,6 @@ export function Navbar({ children, className, noMenu }: PropsWithChildren<Props>
 				>
 					<BrandName />
 				</NavbarItem>
-
 				{noMenu || (
 					<NavbarBurger
 						isActive={isActive}
@@ -55,7 +56,6 @@ export function Navbar({ children, className, noMenu }: PropsWithChildren<Props>
 					/>
 				)}
 			</NavbarBrand>
-
 			{noMenu || <NavbarMenu isActive={isActive}>{children}</NavbarMenu>}
 		</_Navbar>
 	)

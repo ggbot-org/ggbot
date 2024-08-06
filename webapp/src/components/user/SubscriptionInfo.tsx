@@ -16,15 +16,12 @@ export function SubscriptionInfo() {
 					<Title>
 						<FormattedMessage id="SubscriptionInfo.title" />
 					</Title>
-
 					<Field>
 						<Control>
 							{subscriptionStatus ? (<SubscriptionStatus status={subscriptionStatus} />) : null}
 						</Control>
 					</Field>
-
 					<SubscriptionPlan value={subscriptionPlan} />
-
 					<SubscriptionEnd value={subscriptionEnd} />
 				</Div>
 			</OneColumn>

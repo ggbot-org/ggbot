@@ -119,20 +119,17 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 				<Title>
 					<FormattedMessage id="AuthVerify.title" />
 				</Title>
-
 				<Message>
 					<FormattedMessage
 						id="AuthVerify.checkEmail"
 						values={formattedMessageMarkup}
 					/>
 				</Message>
-
 				<Columns>
 					<Column bulma="is-half-desktop">
 						<Label htmlFor="email">
 							<FormattedMessage id="Email.label" />
 						</Label>
-
 						<Field hasAddons>
 							<Control isExpanded>
 								<Input
@@ -141,7 +138,6 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 									id="email"
 								/>
 							</Control>
-
 							<Control>
 								<Button onClick={resetEmail} type="reset">
 									<FormattedMessage id="AuthVerify.resetEmail" />
@@ -150,19 +146,15 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						</Field>
 					</Column>
 				</Columns>
-
 				<Message>
 					<FormattedMessage id="AuthVerify.enterOneTimePassword" values={formattedMessageMarkup} />
 				</Message>
-
 				<Columns>
 					<Column bulma="is-half-desktop">
 						<OneTimePassword required name={fieldName.code} readOnly={isPending} />
 					</Column>
-
 					<Column bulma="is-half" />
 				</Columns>
-
 				<Field>
 					<Control>
 						<Button color="primary" isLoading={isPending}>
@@ -170,17 +162,13 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						</Button>
 					</Control>
 				</Field>
-
 				{hasGenericError || (hasInvalidInput && <GenericError />)}
-
 				{gotTimeout ? <TimeoutError /> : null}
-
 				{verificationFailed ? (
 					<Message color="warning">
 						<FormattedMessage id="AuthVerify.failed" values={formattedMessageMarkup} />
 					</Message>
 				) : null}
-
 				{needToGenerateOneTimePasswordAgain ? (
 					<RegenerateOneTimePassword onClick={resetEmail} />
 				) : null}

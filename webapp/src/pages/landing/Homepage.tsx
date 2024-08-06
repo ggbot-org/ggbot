@@ -22,13 +22,11 @@ export function Homepage() {
 						<LevelItem>
 							<Logo animated={!gotFirstPageView} size={200} />
 						</LevelItem>
-
 						<LevelItem>
 							<Div
 								bulma={["is-flex", "is-flex-direction-column"]}
 							>
 								<BrandName size="large" />
-
 								<i className="is-unselectable">
 									<FormattedMessage id="HomePage.tagline" />
 								</i>
@@ -36,7 +34,6 @@ export function Homepage() {
 						</LevelItem>
 					</Level>
 				</HeroBody>
-
 				<HeroFoot>
 					<Div
 						bulma={[

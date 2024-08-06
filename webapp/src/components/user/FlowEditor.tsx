@@ -9,12 +9,10 @@ import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-type Props = {
+export function FlowEditor({ strategyKey, strategyName }: {
 	strategyKey: StrategyKey | undefined
 	strategyName: string
-}
-
-export function FlowEditor({ strategyKey, strategyName }: Props) {
+}) {
 	const { strategyFlow } = useStrategyFlow(strategyKey)
 	const initialFlowViewGraph = strategyFlow?.view
 
@@ -54,7 +52,6 @@ export function FlowEditor({ strategyKey, strategyName }: Props) {
 				<div className={classnames("flow-editor__strategy-name")}>
 					<Input isStatic defaultValue={strategyName} />
 				</div>
-
 				<div className={classnames("flow-editor__actions")}>
 					<Button
 						onClick={() => {
@@ -64,7 +61,6 @@ export function FlowEditor({ strategyKey, strategyName }: Props) {
 					>
 						<FormattedMessage id="Tabs.manage" />
 					</Button>
-
 					<Button
 						color={canSave ? "primary" : undefined}
 						isLoading={WRITE.isPending}
@@ -74,7 +70,6 @@ export function FlowEditor({ strategyKey, strategyName }: Props) {
 					</Button>
 				</div>
 			</div>
-
 			<div
 				ref={flowViewContainerRef}
 				className={classnames("flow-editor__container")}

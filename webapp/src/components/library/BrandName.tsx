@@ -1,9 +1,7 @@
 import { FormattedMessage } from "react-intl"
 import { SizeProp, Span } from "trunx"
 
-type Props = Partial<SizeProp<"large">>
-
-export function BrandName({ size }: Props) {
+export function BrandName({ size }: Partial<SizeProp<"large">>) {
 	return (
 		<Span
 			bulma={[

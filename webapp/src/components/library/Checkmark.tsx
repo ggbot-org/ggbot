@@ -9,7 +9,6 @@ export function Checkmark({ label, ok }: CheckmarkProps) {
 	return ok === undefined ? null : (
 		<div>
 			<span>{label}</span>
-
 			<span
 				className={classnames(
 					{ "has-text-success": ok, "has-text-danger": !ok },
