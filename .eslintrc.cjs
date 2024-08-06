@@ -45,7 +45,13 @@ module.exports = {
 		"@stylistic/no-trailing-spaces": "error",
 		"@stylistic/no-whitespace-before-property": "error",
 		"@stylistic/nonblock-statement-body-position": "error",
-		"@stylistic/object-curly-newline": ["error", { "consistent": true }],
+		"@stylistic/object-curly-newline": ["error",
+			{
+				"ExportDeclaration": "never",
+				"ImportDeclaration": "never",
+				"ObjectExpression": { "consistent": true },
+				"ObjectPattern": { "consistent": true },
+			}],
 		"@stylistic/object-curly-spacing": ["error", "always"],
 		"@stylistic/quotes": ["error", "double", { "avoidEscape": true }],
 		"@stylistic/semi": ["error", "never"],
@@ -66,8 +72,7 @@ module.exports = {
 		"@typescript-eslint/no-explicit-any": ["error", { ignoreRestArgs: true }],
 		"@typescript-eslint/no-inferrable-types": "error",
 		"@typescript-eslint/no-invalid-void-type": "off",
-		"@typescript-eslint/no-unused-vars": [
-			"error",
+		"@typescript-eslint/no-unused-vars": ["error",
 			{
 				// Follow the TypeScript convention to prepend an underscore to ignore when a variable is not used.
 				// This works also with TypeScript compiler options:
@@ -79,8 +84,7 @@ module.exports = {
 				caughtErrorsIgnorePattern: "^_",
 				destructuredArrayIgnorePattern: "^_",
 				varsIgnorePattern: "^_"
-			}
-		],
+			}],
 		"@typescript-eslint/prefer-for-of": "error",
 		"@typescript-eslint/no-useless-empty-export": "error",
 

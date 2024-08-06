@@ -1,13 +1,9 @@
 import { reactRootId } from "_/react/root"
 import { ENV } from "@workspace/env"
 
-type LinkTag = {
-	href: string
-}
+type LinkTag = { href: string }
 
-type ScriptTag = {
-	src: string
-}
+type ScriptTag = { src: string }
 
 type BodyTagArgs = {
 	/** Add a `<div id="root"></div>`. */

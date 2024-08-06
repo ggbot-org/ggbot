@@ -51,6 +51,7 @@ module.exports = {
 					],
 				},
 			}],
+		"formatjs/prefer-formatted-message": "error",
 		"formatjs/prefer-pound-in-plural": "error",
 
 		// Define React components as functions.
