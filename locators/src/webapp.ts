@@ -25,17 +25,18 @@ export const webappPagePathname = {
 	strategy: "strategy.html",
 	purchaseCanceled: "purchase-canceled.html",
 	subscriptionPurchased: "subscription-purchased.html",
-	admin: {
-		accountDetails: `${webappDirname.admin}/account-details.html`,
-		dashboard: `${webappDirname.admin}/dashboard.html`
-	},
 	user: {
 		copyStrategy: `${webappDirname.user}/copy-strategy.html`,
 		editStrategy: `${webappDirname.user}/edit-strategy.html`,
 		dashboard: `${webappDirname.user}/dashboard.html`,
 		settings: `${webappDirname.user}/settings.html`,
 		strategy: `${webappDirname.user}/strategy.html`
-	}
+	},
+	admin: {
+		accountDetails: `${webappDirname.admin}/account-details.html`,
+		dashboard: `${webappDirname.admin}/dashboard.html`
+	},
+	design: { showcase: `${webappDirname.design}/showcase.html` }
 } as const
 
 const appendAccountKeyToURLSearchParams = (
@@ -107,6 +108,15 @@ export class WebappURLs {
 			},
 			get dashboard() {
 				return new URL(webappPagePathname.admin.dashboard, baseURL)
+			}
+		}
+	}
+
+	get design() {
+		const { baseURL } = this
+		return {
+			get showcase() {
+				return new URL(webappPagePathname.design.showcase, baseURL)
 			}
 		}
 	}

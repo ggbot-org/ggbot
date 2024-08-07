@@ -17,8 +17,9 @@ const srcDir = join(workspaceDir, "src")
 
 export const typesDir = join(srcDir, "types")
 
-const srcRoutingDir = join(srcDir, "routing")
-const srcPublicRoutingDir = join(srcRoutingDir, "public")
+function routingFile(filename: string) {
+	return join(srcDir, "routing", filename)
+}
 
 type AppName = "admin" | "design" | "landing" | "strategy" | "user"
 
@@ -33,31 +34,28 @@ const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
 	...workerScriptPath
 }
 
-export const webappEcmaScriptsConfig: Record<
-	EcmaScriptName,
-	{
-		entryPoint: string
-		jsPath: string[]
-	}
-> = {
+export const webappEcmaScriptsConfig: Record< EcmaScriptName, {
+	entryPoint: string
+	jsPath: string[]
+}> = {
 	landing: {
-		entryPoint: join(srcPublicRoutingDir, "LandingRouter.tsx"),
+		entryPoint: routingFile("RouterLanding.tsx"),
 		jsPath: ecmaScriptPath.landing
 	},
 	strategy: {
-		entryPoint: join(srcPublicRoutingDir, "StrategyRouter.tsx"),
+		entryPoint: routingFile("RouterStrategy.tsx"),
 		jsPath: ecmaScriptPath.strategy
 	},
 	user: {
-		entryPoint: join(srcRoutingDir, webappDirname.user, "Router.tsx"),
+		entryPoint: routingFile("RouterUser.tsx"),
 		jsPath: ecmaScriptPath.user
 	},
 	admin: {
-		entryPoint: join(srcRoutingDir, webappDirname.admin, "Router.tsx"),
+		entryPoint: routingFile("RouterAdmin.tsx"),
 		jsPath: ecmaScriptPath.admin
 	},
 	design: {
-		entryPoint: join(srcRoutingDir, webappDirname.design, "Router.tsx"),
+		entryPoint: routingFile("RouterDesign.tsx"),
 		jsPath: ecmaScriptPath.design
 	},
 	backtesting: {

@@ -1,7 +1,5 @@
 import { join } from "node:path"
 
-import { adminHtmlPathnames } from "_/routing/admin/pages.js"
-import { designShowcaseHtmlPathname } from "_/routing/design/pages.js"
 import { ENV } from "@workspace/env"
 import { webappPagePathname, WebappURLs } from "@workspace/locators"
 import writeFile from "write-file-utf8"
@@ -26,28 +24,29 @@ const userJs = jsPath(webappEcmaScriptsConfig.user.jsPath)
 for (const pathname of [
 	webapp.homepage.pathname,
 	webapp.privacy.pathname,
-	webapp.terms.pathname
+	webapp.terms.pathname,
 ]) await writeFile(join(publicDir, pathname), html(landingJs))
 
-// Try strategy.
+// Shared strategy.
 
 await writeFile(join(publicDir, webappPagePathname.strategy), html(strategyJs))
 
 // Admin app.
 
-for (const pathname of adminHtmlPathnames) await writeFile(join(publicDir, pathname), html(adminJs))
+for (const pathname of [
+	webappPagePathname.admin.dashboard,
+	webappPagePathname.admin.accountDetails,
+]) await writeFile(join(publicDir, pathname), html(adminJs))
 
 // User app.
 
-const userHtmlPathnames = [
+for (const pathname of [
 	webappPagePathname.user.dashboard,
 	webappPagePathname.user.copyStrategy,
 	webappPagePathname.user.editStrategy,
 	webappPagePathname.user.settings,
-	webappPagePathname.user.strategy
-]
-
-for (const pathname of userHtmlPathnames) await writeFile(join(publicDir, pathname), html(userJs))
+	webappPagePathname.user.strategy,
+]) await writeFile(join(publicDir, pathname), html(userJs))
 
 // Subscription pages.
 
@@ -63,4 +62,4 @@ await writeFile(
 
 // Design.
 
-await writeFile(join(publicDir, designShowcaseHtmlPathname), html(designJs))
+await writeFile(join(publicDir, webappPagePathname.design.showcase), html(designJs))

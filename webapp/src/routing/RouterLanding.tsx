@@ -1,7 +1,7 @@
 import { I18nProvider } from "_/contexts/I18n"
-import { Homepage } from "_/pages/landing/Homepage"
-import { PrivacyPage } from "_/pages/landing/Privacy"
-import { TermsPage } from "_/pages/landing/Terms"
+import { Homepage } from "_/pages/public/Homepage"
+import { PrivacyPage } from "_/pages/public/Privacy"
+import { TermsPage } from "_/pages/public/Terms"
 import { mount } from "_/react/mount"
 import { webapp } from "_/routing/webapp"
 

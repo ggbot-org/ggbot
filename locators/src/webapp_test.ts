@@ -29,4 +29,7 @@ test("WebappURLs", () => {
 
 	assert.equal(webapp.admin.accountDetails(accountKey).href, "https://www.example.com/admin/account-details.html?accountId=00000000")
 	assert.equal(webapp.admin.dashboard.href, "https://www.example.com/admin/dashboard.html")
+
+	// Design
+	assert.equal(webapp.design.showcase.href, "https://www.example.com/design/showcase.html")
 })

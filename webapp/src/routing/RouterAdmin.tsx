@@ -2,14 +2,15 @@ import { I18nProvider } from "_/contexts/I18n"
 import { AccountDetailsPage } from "_/pages/admin/AccountDetails"
 import { DashboardPage } from "_/pages/admin/Dashboard"
 import { mount } from "_/react/mount"
-import { adminAccountDetailsHtmlPathname, adminDashboardHtmlPathname } from "_/routing/admin/pages"
+import { webapp } from "_/routing/webapp"
+import { nullAccountKey } from "@workspace/models"
 
 function Router() {
 	const pathname = location.pathname
 
-	if (pathname === adminDashboardHtmlPathname) return <DashboardPage />
+	if (pathname === webapp.admin.dashboard.pathname) return <DashboardPage />
 
-	if (pathname === adminAccountDetailsHtmlPathname) return <AccountDetailsPage />
+	if (pathname === webapp.admin.accountDetails(nullAccountKey).pathname) return <AccountDetailsPage />
 
 	return null
 }
