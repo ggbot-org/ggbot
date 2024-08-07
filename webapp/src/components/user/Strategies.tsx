@@ -47,26 +47,24 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 	)
 
 	if (accountStrategies?.length === 0) return (
-		<Columns>
-			<OneColumn>
-				<form
-					className={classnames("box")}
-					onSubmit={(event) => {
-						event.preventDefault()
-						goCreateStrategy()
-					}}
-				>
-					<Message color="info">
-						<FormattedMessage id="Strategies.noStrategy" />
-					</Message>
-					<Buttons>
-						<Button>
-							<FormattedMessage id="Tabs.newStrategy" />
-						</Button>
-					</Buttons>
-				</form>
-			</OneColumn>
-		</Columns>
+		<OneColumn>
+			<form
+				className={classnames("box")}
+				onSubmit={(event) => {
+					event.preventDefault()
+					goCreateStrategy()
+				}}
+			>
+				<Message color="info">
+					<FormattedMessage id="Strategies.noStrategy" />
+				</Message>
+				<Buttons>
+					<Button>
+						<FormattedMessage id="Tabs.newStrategy" />
+					</Button>
+				</Buttons>
+			</form>
+		</OneColumn>
 	)
 
 	return (

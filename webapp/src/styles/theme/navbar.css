@@ -1,7 +1,17 @@
 .navbar {
 	--bulma-navbar-burger-color: var(--bulma-white);
+
+	padding-inline: var(--page-padding);
 }
 
 .navbar-brand a {
+	text-decoration: none;
+}
+
+.navbar-start a {
+	text-decoration: none;
+}
+
+.navbar-end a {
 	text-decoration: none;
 }

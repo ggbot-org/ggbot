@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { FormField, FormFieldName } from "_/components/formFields"
-import { Button, Buttons, Columns, Message, OneColumn } from "_/components/library"
+import { Button, Buttons, Message, OneColumn } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { useCreateStrategy } from "_/hooks/user/api"
@@ -40,33 +40,31 @@ export function CreateStrategy() {
 	}, [CREATE])
 
 	return (
-		<Columns>
-			<OneColumn>
-				<form className={classnames("box")} onSubmit={onSubmit}>
-					{error ? (
-						<StrategiesErrorExceededQuota error={error} />
-					) : (
-						<Message>
-							<FormattedMessage id="CreateStrategy.chooseName" values={formattedMessageMarkup} />
-						</Message>
-					)}
-					<StrategyName
-						required
-						name={"name" satisfies FormFieldName}
-						onChange={(event) => setCanCreate(isName((event.target.value)))}
-						readOnly={readOnly}
-					/>
-					<Buttons>
-						<Button
-							bulma={{ "is-light": color !== "primary" }}
-							color={color}
-							isLoading={isLoading}
-						>
-							<FormattedMessage id="CreateStrategy.button" />
-						</Button>
-					</Buttons>
-				</form>
-			</OneColumn>
-		</Columns>
+		<OneColumn>
+			<form className={classnames("box")} onSubmit={onSubmit}>
+				{error ? (
+					<StrategiesErrorExceededQuota error={error} />
+				) : (
+					<Message>
+						<FormattedMessage id="CreateStrategy.chooseName" values={formattedMessageMarkup} />
+					</Message>
+				)}
+				<StrategyName
+					required
+					name={"name" satisfies FormFieldName}
+					onChange={(event) => setCanCreate(isName((event.target.value)))}
+					readOnly={readOnly}
+				/>
+				<Buttons>
+					<Button
+						bulma={{ "is-light": color !== "primary" }}
+						color={color}
+						isLoading={isLoading}
+					>
+						<FormattedMessage id="CreateStrategy.button" />
+					</Button>
+				</Buttons>
+			</form>
+		</OneColumn>
 	)
 }

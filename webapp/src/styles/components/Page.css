@@ -10,6 +10,8 @@
 
 .page__content {
 	flex: 1 0 auto;
+	padding-block: var(--page-padding-block);
+	padding-inline: var(--page-padding-inline);
 }
 
 .page__footer {

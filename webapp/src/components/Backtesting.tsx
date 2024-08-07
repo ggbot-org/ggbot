@@ -175,15 +175,13 @@ export function Backtesting({ strategyKey, strategyName, strategyFrequency }: {
 					<Memory memory={memory} />
 				</Column>
 			</Columns>
-			<Columns>
-				<OneColumn>
-					<ProfitSummary
-						dayInterval={dayInterval}
-						orders={orders}
-						strategyKind={strategyKey?.strategyKind}
-					/>
-				</OneColumn>
-			</Columns>
+			<OneColumn>
+				<ProfitSummary
+					dayInterval={dayInterval}
+					orders={orders}
+					strategyKind={strategyKey?.strategyKind}
+				/>
+			</OneColumn>
 			<Columns>
 				<Column bulma="is-narrow">
 					<StrategyOrdersTable orders={orders} />

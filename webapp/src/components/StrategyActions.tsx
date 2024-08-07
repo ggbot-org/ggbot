@@ -1,5 +1,5 @@
 import { GoCopyStrategy } from "_/components/GoCopyStrategy"
-import { Buttons, Columns, Div, OneColumn, Title } from "_/components/library"
+import { Buttons, Div, OneColumn, Title } from "_/components/library"
 import { ShareStrategy } from "_/components/ShareStrategy"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { StrategyKey } from "@workspace/models"
@@ -12,19 +12,17 @@ export function StrategyActions({
 	strategyKey: StrategyKey | undefined
 }) {
 	return (
-		<Columns>
-			<OneColumn>
-				<Div bulma={["box", { "is-skeleton": readStrategyIsPending }]}>
-					<Title>
-						<FormattedMessage id="StrategyActions.title" />
-					</Title>
-					<StrategyRecord strategyId={strategyId} strategyName={strategyName} strategyWhenCreated={strategyWhenCreated} />
-					<Buttons>
-						<GoCopyStrategy strategyKey={strategyKey} />
-						<ShareStrategy strategyKey={strategyKey} strategyName={strategyName} />
-					</Buttons>
-				</Div>
-			</OneColumn>
-		</Columns>
+		<OneColumn>
+			<Div bulma={["box", { "is-skeleton": readStrategyIsPending }]}>
+				<Title>
+					<FormattedMessage id="StrategyActions.title" />
+				</Title>
+				<StrategyRecord strategyId={strategyId} strategyName={strategyName} strategyWhenCreated={strategyWhenCreated} />
+				<Buttons>
+					<GoCopyStrategy strategyKey={strategyKey} />
+					<ShareStrategy strategyKey={strategyKey} strategyName={strategyName} />
+				</Buttons>
+			</Div>
+		</OneColumn>
 	)
 }

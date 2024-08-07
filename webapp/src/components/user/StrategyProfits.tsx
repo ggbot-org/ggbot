@@ -1,4 +1,4 @@
-import { Column, Columns, DayIntervalBox, OneColumn } from "_/components/library"
+import { Column, DayIntervalBox, OneColumn } from "_/components/library"
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
@@ -28,34 +28,28 @@ export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | un
 
 	return (
 		<>
-			<Columns>
-				<OneColumn>
-					<DayIntervalBox
-						end={end}
-						isLoading={READ.isPending}
-						max={max}
-						min={min}
-						onClickUpdate={onClickUpdate}
-						setEnd={setEnd}
-						setStart={setStart}
-						start={start}
-					/>
-				</OneColumn>
-			</Columns>
-			<Columns>
-				<OneColumn>
-					<ProfitSummary
-						dayInterval={dayInterval}
-						orders={orders}
-						strategyKind={strategyKey?.strategyKind}
-					/>
-				</OneColumn>
-			</Columns>
-			<Columns>
-				<Column bulma="is-narrow">
-					<StrategyOrdersTable orders={orders} />
-				</Column>
-			</Columns>
+			<OneColumn>
+				<DayIntervalBox
+					end={end}
+					isLoading={READ.isPending}
+					max={max}
+					min={min}
+					onClickUpdate={onClickUpdate}
+					setEnd={setEnd}
+					setStart={setStart}
+					start={start}
+				/>
+			</OneColumn>
+			<OneColumn>
+				<ProfitSummary
+					dayInterval={dayInterval}
+					orders={orders}
+					strategyKind={strategyKey?.strategyKind}
+				/>
+			</OneColumn>
+			<Column bulma="is-narrow">
+				<StrategyOrdersTable orders={orders} />
+			</Column>
 		</>
 	)
 }

@@ -1,8 +1,6 @@
-// Load whole bulma first, then
 @use "bulma/sass";
-
-// CSS custom props. Use variables first.
-@use "./theme/_variables";
+@use "./colors";
+@use "./variables";
 @use "./theme/a";
 @use "./theme/box";
 @use "./theme/checkbox";
@@ -12,8 +10,6 @@
 @use "./theme/select";
 @use "./theme/tabs";
 @use "./theme/tables";
-
-// Components.
 @use "./components/Calendar";
 @use "./components/FlowEditor";
 @use "./components/Footer";

@@ -27,20 +27,18 @@ export function StrategyErrors() {
 
 	return (
 		<>
-			<Columns>
-				<OneColumn>
-					<DayIntervalBox
-						end={end}
-						isLoading={isPending}
-						max={max}
-						min={min}
-						onClickUpdate={onClickUpdate}
-						setEnd={setEnd}
-						setStart={setStart}
-						start={start}
-					/>
-				</OneColumn>
-			</Columns>
+			<OneColumn>
+				<DayIntervalBox
+					end={end}
+					isLoading={isPending}
+					max={max}
+					min={min}
+					onClickUpdate={onClickUpdate}
+					setEnd={setEnd}
+					setStart={setStart}
+					start={start}
+				/>
+			</OneColumn>
 			<Columns>
 				<Column bulma="is-narrow">
 					<StrategyErrorsTable errors={errors} />

@@ -1,7 +1,8 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
-import { PageContainer } from "_/components/PageContainer"
+import { Columns, OneColumn, Page } from "_/components/library"
+import { Navigation } from "_/components/public/Navigation"
 import { useReadAccountInfo } from "_/hooks/user/api"
 import { clearStorages } from "_/storages/clearStorages"
 import { localWebStorage } from "_/storages/local"
@@ -10,7 +11,6 @@ import { BadGatewayError, UnauthorizedError } from "@workspace/http"
 import { AccountInfo, EmailAddress, Subscription } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 import { createContext, PropsWithChildren, Reducer, useCallback, useEffect, useMemo, useReducer, useState } from "react"
-import { Section } from "trunx"
 
 type State = {
 	email: EmailAddress | undefined
@@ -162,19 +162,17 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	// Handle errors.
 	useEffect(() => {
 		if (READ.error) {
-			if (READ.error.name === UnauthorizedError.errorName) if (token) {
-				localWebStorage.authToken.delete()
-				dispatch({ type: "RESET_TOKEN" })
+			if (READ.error.name === UnauthorizedError.errorName) {
+				if (token) {
+					localWebStorage.authToken.delete()
+					dispatch({ type: "RESET_TOKEN" })
+				}
 			}
 
 			if (READ.error.name === BadGatewayError.errorName) {
 				// Re-fetch.
-				const timeoutId = setTimeout(() => {
-					READ.reset()
-				}, 5_000)
-				return () => {
-					clearTimeout(timeoutId)
-				}
+				const timeoutId = setTimeout(() => READ.reset(), 5_000)
+				return () => clearTimeout(timeoutId)
 			}
 		}
 	}, [READ, dispatch, token])
@@ -197,15 +195,17 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 
 	if (accountInfo === null || token === undefined) {
 		return (
-			<PageContainer>
-				<Section>
-					{email ? (
-						<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
-					) : (
-						<AuthEnter setEmail={setEmail} />
-					)}
-				</Section>
-			</PageContainer>
+			<Page header={<Navigation />}>
+				<Columns>
+					<OneColumn>
+						{email ? (
+							<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
+						) : (
+							<AuthEnter setEmail={setEmail} />
+						)}
+					</OneColumn>
+				</Columns>
+			</Page>
 		)
 	}
 

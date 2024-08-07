@@ -1,0 +1,16 @@
+/* Copied from bulma/sass/utilities/initial-variables.scss */
+$tablet: 769px;
+
+:root {
+	 /* Copied from bulma/sass/utilities/initial-variables.scss */
+	 --tablet: #{$tablet};
+	 --page-padding-block: 2rem;
+	 --page-padding-inline: 1.5rem;
+}
+
+@media only screen and (1px <= width <= $tablet) {
+	:root {
+		--page-padding-block: 1.25rem;
+		--page-padding-inline: 0.75rem;
+	}
+}

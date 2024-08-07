@@ -8,9 +8,13 @@ import { PropsWithChildren } from "react"
 export function PageContainer({ children }: PropsWithChildren) {
 	return (
 		<AuthenticationProvider>
-			<Page>
-				<Navigation />
-				<NoNetwork />
+			<Page header={
+				<>
+					<NoNetwork />
+					<Navigation />
+				</>
+			}
+			>
 				<ToastProvider>{children}</ToastProvider>
 			</Page>
 		</AuthenticationProvider>

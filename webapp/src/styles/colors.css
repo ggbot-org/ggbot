@@ -1,15 +1,4 @@
 :root {
-   /*
-    * Breakpoints.
-    */
-
-	/* Copied from bulma/sass/utilities/initial-variables.scss */
-	--tablet: 769px;
-
-	/*
-     * Colors.
-     */
-
 	--bulma-white: #fff;
 	--bulma-black: #070900;
 	--bulma-primary-h: 179deg;

@@ -8,7 +8,8 @@ import { Icon } from "./Icon"
 function CalendarWeekDays() {
 	const { formatDate } = useIntl()
 
-	const weekDayNames = ["1970-01-04", "1970-01-05", "1970-01-06", "1970-01-07", "1970-01-08", "1970-01-09", "1970-01-10"].map(
+	// The day 1970-01-04 was a Sunday.
+	const weekDayNames = ["04", "05", "06", "07", "08", "09", "10"].map((dd) => `1970-01-${dd}`).map(
 		(day) => ({ day, label: formatDate(day, { weekday: "short" }) })
 	)
 
@@ -98,13 +99,11 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 						}
 					},
 					selected,
-
 					// Need a random key, using day is not enough, it can raise React warning:
 					//
 					//     Encountered two children with the same key.
 					//
 					key: Math.random().toString(36).replace(/[^a-z]+/g, "").substring(0, 5)
-					// TODO fix this
 				})
 			)
 
@@ -136,9 +135,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 		<div className={classnames("calendar")}>
 			<div
 				className={classnames("calendar__head")}
-				onClick={(event) => {
-					event.stopPropagation()
-				}}
+				onClick={(event) => event.stopPropagation()}
 			>
 				<div
 					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isFirstMonth })}

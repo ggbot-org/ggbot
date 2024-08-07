@@ -1,5 +1,4 @@
 import { InvalidStrategyKey } from "_/components/InvalidStrategyKey"
-import { Section } from "_/components/library"
 import { StrategyNotFound } from "_/components/StrategyNotFound"
 import { StrategyKey } from "@workspace/models"
 import { PropsWithChildren } from "react"
@@ -10,17 +9,9 @@ export function StrategyPageContainer({
 	strategyKey: StrategyKey | undefined
 	strategyNotFound: boolean
 }>) {
-	if (!strategyKey) return (
-		<Section>
-			<InvalidStrategyKey />
-		</Section>
-	)
+	if (!strategyKey) return <InvalidStrategyKey />
 
-	if (strategyNotFound) return (
-		<Section>
-			<StrategyNotFound {...strategyKey} />
-		</Section>
-	)
+	if (strategyNotFound) return <StrategyNotFound {...strategyKey} />
 
 	return children
 }

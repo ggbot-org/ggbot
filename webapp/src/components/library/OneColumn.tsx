@@ -1,7 +1,11 @@
 import { classnames } from "_/classnames"
 import { PropsWithChildren } from "react"
-import { Column } from "trunx"
+import { Column, Columns } from "trunx"
 
 export function OneColumn({ children }: PropsWithChildren) {
-	return <Column className={classnames("one-column")}>{children}</Column>
+	return (
+		<Columns>
+			<Column className={classnames("one-column")}>{children}</Column>
+		</Columns>
+	)
 }
