@@ -1,8 +1,8 @@
-import { StrategyActions } from "_/components/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
 import { PageContainer } from "_/components/user/PageContainer"
 import { PleasePurchase } from "_/components/user/PleasePurchase"
 import { Schedulings } from "_/components/user/Schedulings"
+import { StrategyActions } from "_/components/user/StrategyActions"
 import { StrategyErrors } from "_/components/user/StrategyErrors"
 import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 import { StrategyProfits } from "_/components/user/StrategyProfits"
@@ -33,7 +33,6 @@ export function StrategyPage() {
 							content: (
 								<>
 									<StrategyActions
-										readOnly={false}
 										readStrategyIsPending={readStrategyIsPending}
 										resetStrategy={resetStrategy}
 										strategyId={strategyId}

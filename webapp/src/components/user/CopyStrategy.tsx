@@ -1,4 +1,5 @@
 import { classnames } from "_/classnames"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, Columns, Div, Message, OneColumn, Section, Title } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
@@ -8,9 +9,6 @@ import { ApiActionError } from "@workspace/api"
 import { isName, StrategyKey } from "@workspace/models"
 import { FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-const fieldName = { name: "name" }
-const fields = Object.keys(fieldName)
 
 export function CopyStrategy({
 	strategyId, strategyKey, strategyName, strategyWhenCreated
@@ -30,8 +28,8 @@ export function CopyStrategy({
 			if (!strategyKey) return
 			if (!canCreate) return
 			if (!COPY.canRun) return
-			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
-			const name = eventTarget[fieldName.name]?.value
+			const eventTarget = event.target as EventTarget & FormField
+			const name = eventTarget.name.value
 			if (isName(name)) COPY.request({ name, ...strategyKey })
 		},
 		[COPY, canCreate, strategyKey]
@@ -72,7 +70,7 @@ export function CopyStrategy({
 						<StrategiesErrorExceededQuota error={error} />
 						<StrategyName
 							required
-							name={fieldName.name}
+							name={"name" satisfies FormFieldName}
 							onChange={(event) => setCanCreate(isName(event.target.value))}
 							placeholder={strategyName}
 							readOnly={COPY.isPending || COPY.isDone}

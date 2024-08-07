@@ -27,16 +27,10 @@ export const isAccount = objectTypeGuard<Account>(
 export type AccountInfo = Account & { subscription: Subscription | null }
 
 export function newAccount({ email }: NewItem<Account>): Account {
-	return {
-		...createdNow(),
-		id: newId(),
-		email
-	}
+	return { id: newId(), email, ...createdNow() }
 }
 
-export type AccountKey = ItemKey<{
-	accountId: Account["id"]
-}>
+export type AccountKey = ItemKey<"accountId", { accountId: Account["id"] }>
 
 export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) => isItemId(accountId)
 )

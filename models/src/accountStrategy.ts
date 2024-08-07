@@ -23,9 +23,11 @@ export const isAccountStrategy = objectTypeGuard<AccountStrategy>(
 		isStrategySchedulings(schedulings)
 )
 
-export function newAccountStrategy({ name, ...strategyKey }: Pick< AccountStrategy, "strategyId" | "strategyKind" | "name" >): AccountStrategy {
+export function newAccountStrategy({ name, ...strategyKey }: Pick<
+	AccountStrategy, "strategyId" | "strategyKind" | "name"
+>): AccountStrategy {
 	return { ...strategyKey, name, schedulings: [] }
 }
 
-export type AccountStrategySchedulingKey = Pick< AccountStrategyKey, "accountId" | "strategyId" > &
-	ItemKey<{ schedulingId: StrategyScheduling["id"] }>
+export type AccountStrategySchedulingKey = Pick<AccountStrategyKey, "accountId" | "strategyId"> &
+	ItemKey<"schedulingId", { schedulingId: StrategyScheduling["id"] }>

@@ -1,3 +1,5 @@
+import { accountKeyFieldNames, strategyKeyFieldNames, subscriptionPurchaseKeyFieldNames } from "./fields.js"
+import { SerializablePrimitive } from "./serializable.js"
 import { CreationTime } from "./time.js"
 
 export const itemIdCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -10,13 +12,24 @@ export function isItemId(arg: unknown): arg is ItemId {
 	return typeof arg === "string" && arg.length === nullId.length
 }
 
+const itemKeyFieldNames = [
+	...accountKeyFieldNames,
+	...strategyKeyFieldNames,
+	...subscriptionPurchaseKeyFieldNames,
+	"apiKey",
+	"apiSecret",
+	"email",
+	"schedulingId"
+]
+type ItemKeyFieldName = typeof itemKeyFieldNames[number]
+
 /** An `Item` can have a "key" that associate it to other items. */
-export type ItemKey<Key> = Readonly<Key extends object ? Key : never>
+export type ItemKey<Fields extends ItemKeyFieldName, Key> = Readonly<
+	Key extends { [fieldName in Fields]: SerializablePrimitive } ? Key : never
+>
 
 /** An `Item` is identified by its `id`. */
-export type Item = ItemKey<{
-	id: ItemId
-}>
+export type Item = ItemKey<"id", { id: ItemId }>
 
 export function newId(): ItemId {
 	return nullId.replace(/0/g, () => (Math.floor(Date.now() + Math.random() * 16) % 16).toString(16)

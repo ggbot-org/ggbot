@@ -1,5 +1,6 @@
 import { classnames } from "_/classnames"
 import { Email } from "_/components/Email"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
 import { Button, Checkbox, Column, Columns, Control, Field, Message, Title } from "_/components/library"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
@@ -22,9 +23,6 @@ type ApiState = {
 	hasInvalidInput: boolean
 	isPending: boolean
 }
-
-const fieldName = { email: "email" }
-const fields = Object.keys(fieldName)
 
 export function AuthEnter({ setEmail }: AuthEnterProps) {
 	const { formatMessage } = useIntl()
@@ -62,10 +60,8 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 					event.preventDefault()
 					if (isPending) return
 
-					const eventTarget = event.target as EventTarget & {
-						[key in (typeof fields)[number]]?: { value: string }
-					}
-					const email = eventTarget[fieldName.email]?.value
+					const eventTarget = event.target as EventTarget & FormField
+					const email = eventTarget.email.value
 
 					if (!isEmailAddress(email)) return
 
@@ -88,9 +84,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 
 					const response = await fetch(auth.enter.href, {
 						body: JSON.stringify(requestData),
-						headers: new Headers({
-							"Content-Type": "application/json"
-						}),
+						headers: new Headers({ "Content-Type": "application/json" }),
 						method: "POST",
 						signal: controller.signal
 					})
@@ -120,7 +114,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 			</Message>
 			<Columns>
 				<Column bulma="is-half-desktop">
-					<Email required name={fieldName.email} readOnly={isPending} />
+					<Email required name={"email" satisfies FormFieldName} readOnly={isPending} />
 				</Column>
 			</Columns>
 			<Field>

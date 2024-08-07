@@ -1,8 +1,7 @@
 import { classnames } from "_/classnames"
-import { OneTimePassword } from "_/components/authentication/OneTimePassword"
-import { RegenerateOneTimePassword } from "_/components/authentication/RegenerateOneTimePassword"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
-import { Button, Column, Columns, Control, Field, Input, Label, Message, Title } from "_/components/library"
+import { Button, ButtonProps, Column, Columns, Control, Field, Input, InputField, InputFieldProps, Label, Message, Title } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { auth } from "_/routing/auth"
@@ -10,10 +9,7 @@ import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from "@worksp
 import { logging } from "@workspace/logging"
 import { EmailAddress } from "@workspace/models"
 import { Reducer, useReducer } from "react"
-import { FormattedMessage } from "react-intl"
-
-const fieldName = { code: "code" }
-const fields = Object.keys(fieldName)
+import { FormattedMessage, useIntl } from "react-intl"
 
 export type AuthVerifyProps = {
 	email: EmailAddress
@@ -42,6 +38,33 @@ type Action =
 
 const { debug } = logging("authentication")
 
+function OneTimePassword(props: Pick<InputFieldProps, "required" | "name" | "readOnly">) {
+	const { formatMessage } = useIntl()
+	return (
+		<InputField
+			label={formatMessage({ id: "OneTimePassword.label" })}
+			{...props}
+		/>
+	)
+}
+
+function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, "onClick">) {
+	return (
+		<>
+			<Message>
+				<FormattedMessage id="RegenerateOneTimePassword.message" />
+			</Message>
+			<Field>
+				<Control>
+					<Button onClick={onClick}>
+						<FormattedMessage id="RegenerateOneTimePassword.button" />
+					</Button>
+				</Control>
+			</Field>
+		</>
+	)
+}
+
 export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending, needToGenerateOneTimePasswordAgain, verificationFailed }, dispatch] = useReducer<Reducer<State, Action>>((state, action) => {
 		if (action.type === "SET_HAS_INVALID_INPUT") return { hasInvalidInput: true }
@@ -65,8 +88,8 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						event.preventDefault()
 						if (isPending) return
 
-						const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
-						const code = eventTarget[fieldName.code]?.value
+						const eventTarget = event.target as EventTarget & FormField
+						const code = eventTarget.code.value
 
 						const requestData = { code, email }
 
@@ -86,9 +109,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 
 						const response = await fetch(auth.verify.href, {
 							body: JSON.stringify(requestData),
-							headers: new Headers({
-								"Content-Type": "application/json"
-							}),
+							headers: new Headers({ "Content-Type": "application/json" }),
 							method: "POST",
 							signal: controller.signal
 						})
@@ -102,12 +123,8 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						if (data === null) {
 							dispatch({ type: "VERIFY_RESPONSE", data: { needToGenerateOneTimePasswordAgain: true } })
 						} else if (isApiAuthVerifyResponseData(data)) {
-							const { token } = data
-							if (token) {
-								setToken(token)
-							} else {
-								dispatch({ type: "VERIFY_RESPONSE", data: { verificationFailed: true } })
-							}
+							if (data.token) setToken(data.token)
+							else dispatch({ type: "VERIFY_RESPONSE", data: { verificationFailed: true } })
 						}
 					} catch (error) {
 						dispatch({ type: "VERIFY_FAILURE" })
@@ -119,10 +136,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 				<FormattedMessage id="AuthVerify.title" />
 			</Title>
 			<Message>
-				<FormattedMessage
-					id="AuthVerify.checkEmail"
-					values={formattedMessageMarkup}
-				/>
+				<FormattedMessage id="AuthVerify.checkEmail" values={formattedMessageMarkup} />
 			</Message>
 			<Columns>
 				<Column bulma="is-half-desktop">
@@ -131,11 +145,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 					</Label>
 					<Field hasAddons>
 						<Control isExpanded>
-							<Input
-								isStatic
-								defaultValue={email}
-								id="email"
-							/>
+							<Input isStatic defaultValue={email} id="email" />
 						</Control>
 						<Control>
 							<Button onClick={resetEmail} type="reset">
@@ -150,7 +160,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 			</Message>
 			<Columns>
 				<Column bulma="is-half-desktop">
-					<OneTimePassword required name={fieldName.code} readOnly={isPending} />
+					<OneTimePassword required name={"code" satisfies FormFieldName} readOnly={isPending} />
 				</Column>
 				<Column bulma="is-half" />
 			</Columns>

@@ -1,5 +1,5 @@
 import { Column, Columns, DayIntervalBox, OneColumn } from "_/components/library"
-import { StrategyErrorsTable, StrategyErrorsTableProps } from "_/components/StrategyErrorsTable"
+import { StrategyErrorsTable, StrategyErrorsTableProps } from "_/components/user/StrategyErrorsTable"
 import { useReadStrategyErrors } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { useStrategyKey } from "_/hooks/useStrategyKey"

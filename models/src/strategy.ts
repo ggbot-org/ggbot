@@ -43,7 +43,7 @@ export function newStrategy({ name, ...rest }: NewItem<Strategy>): Strategy {
 	}
 }
 
-export type StrategyKey = ItemKey<{
+export type StrategyKey = ItemKey<"strategyId" | "strategyKind", {
 	strategyId: Strategy["id"]
 	strategyKind: Strategy["kind"]
 }>

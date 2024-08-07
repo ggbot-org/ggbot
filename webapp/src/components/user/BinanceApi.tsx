@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { Button, Control, Field, Title } from "_/components/library"
-import { ApiKey } from "_/components/user/ApiKey"
+import { ApiKey } from "_/components/user/apiFields"
 import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
 import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"

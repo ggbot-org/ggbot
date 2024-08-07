@@ -29,7 +29,6 @@ export function StrategyPage() {
 							tabId: "info",
 							content: (
 								<StrategyActions
-									readOnly
 									readStrategyIsPending={readStrategyIsPending}
 									strategyId={strategyId}
 									strategyKey={strategyKey}

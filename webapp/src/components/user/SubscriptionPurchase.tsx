@@ -1,4 +1,5 @@
 import { classnames } from "_/classnames"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, Column, Columns, Message, Title } from "_/components/library"
 import { SubscriptionEnd, SubscriptionTotalPrice } from "_/components/readonlyFields"
 import { SubscriptionNumMonths } from "_/components/user/SubscriptionNumMonths"
@@ -12,9 +13,6 @@ import { isYearlyPurchase } from "@workspace/models"
 import { getTime, now, Time } from "minimal-time-helpers"
 import { FormEventHandler, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-
-const fieldName = { numMonths: "numMonths" }
-const fields = Object.keys(fieldName)
 
 export function SubscriptionPurchase() {
 	const { formatNumber, formatMessage } = useIntl()
@@ -49,8 +47,8 @@ export function SubscriptionPurchase() {
 			event.preventDefault()
 			if (!CREATE_CHECKOUT.canRun) return
 
-			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: unknown } }
-			const numMonthsStr = eventTarget[fieldName.numMonths]?.value
+			const eventTarget = event.target as EventTarget & FormField
+			const numMonthsStr = eventTarget.numMonths.value
 			const numMonths = Number(numMonthsStr)
 
 			let purchaseIsDisabled = false
@@ -115,7 +113,7 @@ export function SubscriptionPurchase() {
 						<Column bulma="is-narrow">
 							<SubscriptionNumMonths
 								isYearlyPurchase={isYearly}
-								name={fieldName.numMonths}
+								name={"numMonths" satisfies FormFieldName}
 								setValue={setNumMonths}
 								value={numMonths}
 							/>

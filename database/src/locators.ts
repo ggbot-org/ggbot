@@ -87,23 +87,20 @@
 		     └╴purchase.json
 */
 
-import { AccountDailyKey, AccountKey, AccountStrategyDailyKey, AccountStrategyKey, DayKey, EmailAddress, isAccountDailyKey, isAccountKey, isAccountStrategyKey, isStrategyKey, isSubscriptionPurchaseKey, normalizeEmailAddress, StrategyKey, SubscriptionPurchaseKey } from "@workspace/models"
+import { AccountDailyKey, AccountKey, accountKeyFieldNames, AccountStrategyDailyKey, AccountStrategyKey, DayKey, EmailAddress, isAccountDailyKey, isAccountKey, isAccountStrategyKey, isStrategyKey, isSubscriptionPurchaseKey, normalizeEmailAddress, StrategyKey, strategyKeyFieldNames, SubscriptionPurchaseKey, subscriptionPurchaseKeyFieldNames } from "@workspace/models"
 import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
 import { isLiteralType } from "minimal-type-guard-helpers"
 
 export const dirnameDelimiter = "/"
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)
 
-const dayKeyFields = ["y", "m", "d"] as const
-const accountKeyFields = ["accountId"] as const
-const strategyKeyFields = ["strategyKind", "strategyId"] as const
-const subscriptionPurchaseKeyFields = ["purchaseId"] as const
+const dayKeyFieldNames = ["y", "m", "d"] as const
 
 const fieldNames = [
-	...accountKeyFields,
-	...strategyKeyFields,
-	...dayKeyFields,
-	...subscriptionPurchaseKeyFields
+	...accountKeyFieldNames,
+	...strategyKeyFieldNames,
+	...dayKeyFieldNames,
+	...subscriptionPurchaseKeyFieldNames
 ] as const
 
 type FieldName = (typeof fieldNames)[number]
@@ -150,27 +147,27 @@ export const locatorToItemKey = {
 		return isAccountKey(obj) ? obj : undefined
 	},
 	accountDailyBalanceEvents: (locator: string): AccountDailyKey | undefined => {
-		const obj = destructureLocator(locator, [...dayKeyFields, ...accountKeyFields, ...strategyKeyFields])
+		const obj = destructureLocator(locator, [...dayKeyFieldNames, ...accountKeyFieldNames, ...strategyKeyFieldNames])
 		return isAccountDailyKey(obj) ? obj : undefined
 	},
 	accountDailyOrders: (locator: string): AccountDailyKey | undefined => {
-		const obj = destructureLocator(locator, [...accountKeyFields, ...dayKeyFields])
+		const obj = destructureLocator(locator, [...accountKeyFieldNames, ...dayKeyFieldNames])
 		return isAccountDailyKey(obj) ? obj : undefined
 	},
 	accountStrategy: (locator: string): AccountStrategyKey | undefined => {
-		const obj = destructureLocator(locator, [...accountKeyFields, ...strategyKeyFields])
+		const obj = destructureLocator(locator, [...accountKeyFieldNames, ...strategyKeyFieldNames])
 		return isAccountStrategyKey(obj) ? obj : undefined
 	},
 	day: (locator: string): DayKey | undefined => {
-		const obj = destructureLocator(locator, dayKeyFields)
+		const obj = destructureLocator(locator, dayKeyFieldNames)
 		return isSplittedDay(obj) ? { day: joinDay(obj) } : undefined
 	},
 	strategy: (locator: string): StrategyKey | undefined => {
-		const obj = destructureLocator(locator, strategyKeyFields)
+		const obj = destructureLocator(locator, strategyKeyFieldNames)
 		return isStrategyKey(obj) ? obj : undefined
 	},
 	subscriptionPurchase: (locator: string): SubscriptionPurchaseKey | undefined => {
-		const obj = destructureLocator(locator, [...dayKeyFields, ...accountKeyFields, "purchaseId"])
+		const obj = destructureLocator(locator, [...dayKeyFieldNames, ...accountKeyFieldNames, "purchaseId"])
 		return isSubscriptionPurchaseKey(obj) ? obj : undefined
 	}
 }

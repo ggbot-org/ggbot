@@ -1,4 +1,5 @@
 import { classnames } from "_/classnames"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, Columns, Message, OneColumn } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
@@ -8,9 +9,6 @@ import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
 import { FormEventHandler, useCallback, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-const fieldName = { name: "name" }
-const fields = Object.keys(fieldName)
 
 export function CreateStrategy() {
 	const CREATE = useCreateStrategy()
@@ -27,8 +25,8 @@ export function CreateStrategy() {
 			event.preventDefault()
 			if (!canCreate) return
 			if (!CREATE.canRun) return
-			const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
-			const name = eventTarget[fieldName.name]?.value
+			const eventTarget = event.target as EventTarget & FormField
+			const name = eventTarget.name.value
 			if (isName(name)) CREATE.request({ kind: "binance", name })
 		},
 		[CREATE, canCreate]
@@ -54,7 +52,7 @@ export function CreateStrategy() {
 					)}
 					<StrategyName
 						required
-						name={fieldName.name}
+						name={"name" satisfies FormFieldName}
 						onChange={(event) => setCanCreate(isName((event.target.value)))}
 						readOnly={readOnly}
 					/>

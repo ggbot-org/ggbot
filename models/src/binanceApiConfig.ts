@@ -3,7 +3,7 @@ import { objectTypeGuard } from "minimal-type-guard-helpers"
 import { ItemKey } from "./item.js"
 import { isNonEmptyString, NonEmptyString } from "./strings.js"
 
-export type BinanceApiConfig = ItemKey<{
+export type BinanceApiConfig = ItemKey<"apiKey" | "apiSecret", {
 	apiKey: NonEmptyString
 	apiSecret: NonEmptyString
 }>

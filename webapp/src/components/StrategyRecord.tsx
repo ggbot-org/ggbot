@@ -10,9 +10,7 @@ export type StrategyRecordProps = {
 }
 
 export function StrategyRecord({
-	strategyId,
-	strategyName,
-	strategyWhenCreated
+	strategyId, strategyName, strategyWhenCreated
 }: StrategyRecordProps) {
 	return (
 		<>

@@ -1,13 +1,11 @@
 import { classnames } from "_/classnames"
+import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Control, Field, Message, Modal, Title } from "_/components/library"
 import { StrategyName } from "_/components/StrategyName"
 import { useRenameStrategy } from "_/hooks/user/api"
 import { isName, StrategyKey } from "@workspace/models"
 import { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
-
-const fieldName = { name: "name" }
-const fields = Object.keys(fieldName)
 
 export type RenameStrategyProps = {
 	strategyKey: StrategyKey | undefined
@@ -43,8 +41,8 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!strategyKey) return
-						const eventTarget = event.target as EventTarget & { [key in (typeof fields)[number]]?: { value: string } }
-						const newName = eventTarget[fieldName.name]?.value
+						const eventTarget = event.target as EventTarget & FormField
+						const newName = eventTarget.name.value
 						if (!isName(newName)) return
 						request({ name: newName, ...strategyKey })
 					}}
@@ -57,7 +55,7 @@ export function RenameStrategy({ strategyKey, strategyName, resetStrategy }: Ren
 					</Message>
 					<StrategyName
 						required
-						name={fieldName.name}
+						name={"name" satisfies FormFieldName}
 						onChange={(event) => setCanRename(isName(event.target.value))}
 						placeholder={strategyName}
 						readOnly={isPending}
