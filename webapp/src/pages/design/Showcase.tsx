@@ -1,7 +1,8 @@
 import { classnames } from "_/classnames"
-import { Column, Columns, Logo, Navbar, Page, Title } from "_/components/library"
+import { Column, Columns, Logo, Page, Title } from "_/components/library"
 import { NoNetwork } from "_/components/NoNetwork"
 import { Footer } from "_/components/public/Footer"
+import { Navigation } from "_/components/public/Navigation"
 import { ToastProvider } from "_/contexts/Toast"
 import { Section } from "trunx"
 
@@ -23,7 +24,7 @@ export function ShowcasePage() {
 			header={
 				<>
 					<NoNetwork />
-					<Navbar noMenu />
+					<Navigation />
 				</>
 			}
 		>

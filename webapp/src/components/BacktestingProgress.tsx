@@ -12,9 +12,7 @@ export type BacktestingProgressProps = Pick<
 }
 
 export function BacktestingProgress({
-	dayInterval,
-	progress,
-	currentTimestamp
+	dayInterval, progress, currentTimestamp
 }: BacktestingProgressProps) {
 	const { formatDate, formatMessage } = useIntl()
 
@@ -37,9 +35,7 @@ export function BacktestingProgress({
 					<div className={classnames("is-flex")}>
 						<FormattedMessage
 							id="BacktestingProgress.currentTime"
-							values={{
-								time: formatDate(currentTimestamp, timeFormat)
-							}}
+							values={{ time: formatDate(currentTimestamp, timeFormat) }}
 						/>
 					</div>
 				) : null}

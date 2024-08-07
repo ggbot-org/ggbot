@@ -1,6 +1,7 @@
-import { Content, H1, H2, H3, Navbar, Page, Paragraph } from "_/components/library"
+import { Content, H1, H2, H3, Page, Paragraph } from "_/components/library"
 import { NoNetwork } from "_/components/NoNetwork"
 import { Footer } from "_/components/public/Footer"
+import { Navigation } from "_/components/public/Navigation"
 import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
 import { amazonWebServices, binance, stripe } from "@workspace/locators"
 import { numYearsTradingOperationsRetention } from "@workspace/models"
@@ -13,7 +14,7 @@ export function PrivacyPage() {
 			header={
 				<>
 					<NoNetwork />
-					<Navbar noMenu />
+					<Navigation />
 				</>
 			}
 		>

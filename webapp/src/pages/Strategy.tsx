@@ -1,8 +1,9 @@
 import { Backtesting } from "_/components/Backtesting"
-import { Navbar, Page } from "_/components/library"
+import { Page } from "_/components/library"
 import { NoNetwork } from "_/components/NoNetwork"
 import { Footer } from "_/components/public/Footer"
-import { StrategyActions } from "_/components/StrategyActions"
+import { Navigation } from "_/components/public/Navigation"
+import { StrategyActions } from "_/components/public/StrategyActions"
 import { TabId, Tabs } from "_/components/Tabs"
 import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
 import { ToastProvider } from "_/contexts/Toast"
@@ -27,7 +28,7 @@ export function StrategyPage() {
 			header={
 				<>
 					<NoNetwork />
-					<Navbar noMenu />
+					<Navigation />
 				</>
 			}
 		>

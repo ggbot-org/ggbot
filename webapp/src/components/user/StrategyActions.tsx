@@ -1,12 +1,21 @@
-import { GoCopyStrategy } from "_/components/GoCopyStrategy"
-import { Buttons, Div, OneColumn, Title } from "_/components/library"
+import { Button, Buttons, Div, OneColumn, Title } from "_/components/library"
+import { GoCopyStrategy } from "_/components/public/StrategyActions"
 import { ShareStrategy } from "_/components/ShareStrategy"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
-import { GoEditStrategy } from "_/components/user/GoEditStrategy"
 import { RenameStrategy, RenameStrategyProps } from "_/components/user/RenameStrategy"
+import { GOTO } from "_/routing/navigation"
+import { webapp } from "_/routing/webapp"
 import { StrategyKey } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
+
+function GoEditStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
+	return strategyKey ? (
+		<Button onClick={() => GOTO(webapp.user.editStrategy(strategyKey))}>
+			<FormattedMessage id="GoEditStrategy.label" />
+		</Button>
+	) : null
+}
 
 export function StrategyActions({
 	readStrategyIsPending, resetStrategy, strategyKey, strategyName, strategyId, strategyWhenCreated
