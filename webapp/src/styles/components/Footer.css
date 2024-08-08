@@ -1,7 +1,50 @@
+:root {
+	--bulma-footer-padding: 1rem 1.5rem 2rem;
+	--footer-background-color-h: 179deg;
+	--footer-background-color-s: 10%;
+	--footer-background-color-l: 94%;
+	--footer-background-color-l2: 90%;
+	--footer-background-color: hsl(
+		var(--footer-background-color-h)
+		var(--footer-background-color-s)
+		var(--footer-background-color-l)
+	);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--footer-background-color-s: 1%;
+		--footer-background-color-l: 17%;
+		--footer-background-color-l2: 24%;
+		--footer-background-color: hsl(
+			var(--footer-background-color-h)
+			var(--footer-background-color-s)
+			var(--footer-background-color-l)
+		);
+	}
+}
+
+.footer {
+	--bulma-footer-background-color: var(--footer-background-color);
+}
+
 .footer__top {
 	margin-top: var(--bulma-size-1);
 	height: 171px;
-	background: linear-gradient(180deg, var(--bulma-body-background-color) 0%, var(--footer-background-color) 100%);
+	background: linear-gradient(
+		180deg,
+		var(--bulma-body-background-color) 0%,
+		hsl(
+			var(--footer-background-color-h)
+			var(--footer-background-color-s)
+			var(--footer-background-color-l2)
+		) 50%,
+		hsl(
+			var(--footer-background-color-h)
+			var(--footer-background-color-s)
+			var(--footer-background-color-l)
+		) 100%
+	);
 }
 
 .footer__body {

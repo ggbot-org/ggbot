@@ -1,7 +1,7 @@
 import { AuthEnter, AuthEnterProps } from "_/components/authentication/Enter"
 import { AuthExit } from "_/components/authentication/Exit"
 import { AuthVerify, AuthVerifyProps } from "_/components/authentication/Verify"
-import { Columns, OneColumn, Page } from "_/components/library"
+import { OneColumn, Page } from "_/components/library"
 import { Navigation } from "_/components/public/Navigation"
 import { useReadAccountInfo } from "_/hooks/user/api"
 import { clearStorages } from "_/storages/clearStorages"
@@ -196,15 +196,13 @@ export function AuthenticationProvider({ children }: PropsWithChildren) {
 	if (accountInfo === null || token === undefined) {
 		return (
 			<Page header={<Navigation />}>
-				<Columns>
-					<OneColumn>
-						{email ? (
-							<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
-						) : (
-							<AuthEnter setEmail={setEmail} />
-						)}
-					</OneColumn>
-				</Columns>
+				<OneColumn>
+					{email ? (
+						<AuthVerify email={email} resetEmail={resetEmail} setToken={setToken} />
+					) : (
+						<AuthEnter setEmail={setEmail} />
+					)}
+				</OneColumn>
 			</Page>
 		)
 	}

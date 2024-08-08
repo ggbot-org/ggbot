@@ -1,15 +1,21 @@
+// Load whole bulma.
 @use "bulma/sass";
+
+// Load colors and variables first.
 @use "./colors";
 @use "./variables";
+
+// Bulma theme customizations.
 @use "./theme/a";
 @use "./theme/box";
 @use "./theme/checkbox";
-@use "./theme/footer";
 @use "./theme/modal";
 @use "./theme/navbar";
 @use "./theme/select";
 @use "./theme/tabs";
 @use "./theme/tables";
+
+// Components.
 @use "./components/Calendar";
 @use "./components/FlowEditor";
 @use "./components/Footer";
