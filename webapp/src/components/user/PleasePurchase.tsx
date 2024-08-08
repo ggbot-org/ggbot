@@ -4,11 +4,9 @@ import { useSubscription } from "_/hooks/user/useSubscription"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { sessionWebStorage } from "_/storages/session"
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export function PleasePurchase() {
-	const { formatMessage } = useIntl()
-
 	const { hasActiveSubscription } = useSubscription()
 
 	const [doNotShow, setDoNotShow] = useState<boolean | undefined>(sessionWebStorage.doNotShowPleasePurchase.get())
@@ -27,7 +25,7 @@ export function PleasePurchase() {
 
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
-			<Message header={formatMessage({ id: "PleasePurchase.title" })}>
+			<Message header={<FormattedMessage id="PleasePurchase.title" />}>
 				<Content>
 					<p>
 						<FormattedMessage id="PleasePurchase.message" />

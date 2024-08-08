@@ -1,19 +1,59 @@
 import { classnames } from "_/classnames"
 import { BacktestingActions } from "_/components/BacktestingActions"
-import { BacktestingProgress, BacktestingProgressProps } from "_/components/BacktestingProgress"
 import { FrequencyInput, FrequencyInputProps } from "_/components/FrequencyInput"
-import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Title } from "_/components/library"
+import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Progress, ProgressProps, Title } from "_/components/library"
 import { Memory } from "_/components/Memory"
 import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { ToastContext } from "_/contexts/Toast"
-import { useBacktesting } from "_/hooks/useBacktesting"
+import { useBacktesting, UseBacktestingState } from "_/hooks/useBacktesting"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
+import { dayFormat, timeFormat } from "_/i18n/formats"
 import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
+type BacktestingProgressProps = Pick<
+	UseBacktestingState, "currentTimestamp" | "dayInterval"
+> & {
+	progress: Pick<ProgressProps, "value" | "max">
+}
+
+function BacktestingProgress({
+	dayInterval, progress, currentTimestamp
+}: BacktestingProgressProps) {
+	const { formatDate } = useIntl()
+
+	return (
+		<Div bulma="box">
+			<Title>
+				<FormattedMessage id="BacktestingProgress.title" />
+			</Title>
+			<Progress {...progress} />
+			<div className={classnames("is-flex", "my-2", "is-flex-direction-column")} >
+				<div className={classnames("is-flex")}>
+					<FormattedMessage
+						id="BacktestingProgress.dayInterval"
+						values={{
+							start: formatDate(dayInterval.start, dayFormat),
+							end: formatDate(dayInterval.end, dayFormat)
+						}}
+					/>
+				</div>
+				{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
+				{currentTimestamp ? (
+					<div className={classnames("is-flex")}>
+						<FormattedMessage
+							id="BacktestingProgress.currentTime"
+							values={{ time: formatDate(currentTimestamp, timeFormat) }}
+						/>
+					</div>
+				) : null}
+			</div>
+		</Div>
+	)
+}
 export function Backtesting({ strategyKey, strategyName, strategyFrequency }: {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined

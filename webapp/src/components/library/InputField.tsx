@@ -5,7 +5,7 @@ import { Input, InputProps } from "./Input"
 import { Label } from "./Label"
 
 export type InputFieldProps = Omit<InputProps, "id"> & {
-	label: string
+	label: ReactNode
 } & Partial<{
 	help: ReactNode
 }>

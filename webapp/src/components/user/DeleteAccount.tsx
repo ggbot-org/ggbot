@@ -2,10 +2,9 @@ import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainCo
 import { AuthenticationContext } from "_/contexts/Authentication"
 import { useDeleteAccount } from "_/hooks/user/api"
 import { useContext, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export function DeleteAccount() {
-	const { formatMessage } = useIntl()
 	const { accountId } = useContext(AuthenticationContext)
 
 	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
@@ -38,7 +37,7 @@ export function DeleteAccount() {
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					color={color}
-					header={formatMessage({ id: "DeleteAccount.title" })}
+					header={<FormattedMessage id="DeleteAccount.title" />}
 				>
 					<Content>
 						<p>
@@ -49,7 +48,7 @@ export function DeleteAccount() {
 								<InputField
 									color={color}
 									help={<FormattedMessage id="DeleteAccount.accountIdInputHelp" />}
-									label={formatMessage({ id: "AccountId.label" })}
+									label={<FormattedMessage id="AccountId.label" />}
 									onChange={(event) => setAccountIdConfirmation(event.target.value)}
 									value={accountIdConfirmation}
 								/>

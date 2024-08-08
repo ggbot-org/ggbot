@@ -3,15 +3,13 @@ import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord
 import { useDeleteStrategy } from "_/hooks/user/api"
 import { StrategyKey } from "@workspace/models"
 import { useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export function DeleteStrategy({
 	strategyKey, ...strategyRecordProps
 }: StrategyRecordProps & {
 	strategyKey: StrategyKey | undefined
 }) {
-	const { formatMessage } = useIntl()
-
 	const DELETE = useDeleteStrategy(strategyKey)
 
 	const [modalIsActive, setModalIsActive] = useState(false)
@@ -32,7 +30,7 @@ export function DeleteStrategy({
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
 				<Message
 					color="warning"
-					header={formatMessage({ id: "DeleteStrategy.title" })}
+					header={<FormattedMessage id="DeleteStrategy.title" />}
 				>
 					<Content>
 						<p>

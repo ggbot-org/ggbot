@@ -21,11 +21,10 @@ function SubscriptionNumMonths({
 	isYearlyPurchase: boolean | undefined
 	setValue: (value: number | undefined) => void
 }) {
-	const { formatMessage } = useIntl()
 	return (
 		<InputField
 			color={isYearlyPurchase ? "primary" : undefined}
-			label={formatMessage({ id: "SubscriptionNumMonths.label" })}
+			label={<FormattedMessage id="SubscriptionNumMonths.label" />}
 			max={maxNumMonths}
 			min={minNumMonths}
 			onChange={(event) => {
@@ -48,7 +47,7 @@ function SubscriptionNumMonths({
 }
 
 export function SubscriptionPurchase() {
-	const { formatNumber, formatMessage } = useIntl()
+	const { formatNumber } = useIntl()
 
 	const { accountEmail } = useContext(AuthenticationContext)
 
@@ -70,10 +69,6 @@ export function SubscriptionPurchase() {
 	}
 
 	const isYearly = isYearlyPurchase({ numMonths })
-
-	let itemName = ""
-	if (isYearly) itemName = formatMessage({ id: "SubscriptionPurchase.yearlyItemName" })
-	else if (numMonths) itemName = formatMessage({ id: "SubscriptionPurchase.monthlyItemName" }, { numMonths })
 
 	useEffect(() => {
 		if (!checkoutData) return
@@ -114,7 +109,18 @@ export function SubscriptionPurchase() {
 					<Title>
 						<FormattedMessage id="SubscriptionPurchase.title" />
 					</Title>
-					<Title is={5}>{itemName}</Title>
+					<Title is={5}>
+						{(isYearly ? (
+							<FormattedMessage id="SubscriptionPurchase.yearlyItemName" />
+						) : (
+							numMonths ? (
+								<FormattedMessage
+									id="SubscriptionPurchase.monthlyItemName"
+									values={{ numMonths }}
+								/>
+							) : null
+						))}
+					</Title>
 					{hasActiveSubscription ? (
 						<Message color="danger">
 							<FormattedMessage id="SubscriptionPurchase.couldRenew" />

@@ -1,10 +1,8 @@
 import { Message, Modal } from "_/components/library"
 import { useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export function NoNetwork() {
-	const { formatMessage } = useIntl()
-
 	const [isOffline, setIsOffline] = useState(false)
 
 	useEffect(() => {
@@ -28,7 +26,7 @@ export function NoNetwork() {
 		<Modal isActive>
 			<Message
 				color="warning"
-				header={formatMessage({ id: "NoNetwork.title" })}
+				header={<FormattedMessage id="NoNetwork.title" />}
 			>
 				<FormattedMessage id="NoNetwork.message" />
 			</Message>

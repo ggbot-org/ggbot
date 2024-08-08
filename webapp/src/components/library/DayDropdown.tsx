@@ -1,5 +1,5 @@
 import { dayFormat } from "_/i18n/formats"
-import { useCallback } from "react"
+import { ReactNode, useCallback } from "react"
 import { FormattedDate } from "react-intl"
 import { Control, Field } from "trunx"
 
@@ -11,7 +11,7 @@ export type DayDropdownProps = Partial<{ disabled: boolean }> &
 	Required<Pick<DropdownProps, "isActive" | "onClick">> &
 	Pick<DropdownProps, "isRight"> &
 	Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
-		label: string
+		label: ReactNode
 	} & { close: () => void }
 
 export function DayDropdown({ close, day, disabled, isActive, isRight, label, max, min, onClick, setDay }: DayDropdownProps) {

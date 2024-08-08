@@ -1,39 +1,35 @@
 import { Button, ButtonProps, Buttons } from "_/components/library"
 import type { UseBacktestingState } from "_/hooks/useBacktesting"
-import { useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 function PauseButton(props: ButtonProps) {
-	const { formatMessage } = useIntl()
 	return (
 		<Button {...props}>
-			{formatMessage({ id: "BacktestingActions.pause" })}
+			<FormattedMessage id="BacktestingActions.pause" />
 		</Button>
 	)
 }
 
 function ResumeButton(props: ButtonProps) {
-	const { formatMessage } = useIntl()
 	return (
 		<Button color="primary" {...props}>
-			{formatMessage({ id: "BacktestingActions.resume" })}
+			<FormattedMessage id="BacktestingActions.resume" />
 		</Button>
 	)
 }
 
 function StartButton(props: ButtonProps) {
-	const { formatMessage } = useIntl()
 	return (
 		<Button color="primary" {...props}>
-			{formatMessage({ id: "BacktestingActions.start" })}
+			<FormattedMessage id="BacktestingActions.start" />
 		</Button>
 	)
 }
 
 function StopButton(props: ButtonProps) {
-	const { formatMessage } = useIntl()
 	return (
 		<Button {...props}>
-			{formatMessage({ id: "BacktestingActions.stop" })}
+			<FormattedMessage id="BacktestingActions.stop" />
 		</Button>
 	)
 }

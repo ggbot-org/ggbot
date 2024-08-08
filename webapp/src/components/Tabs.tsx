@@ -1,7 +1,7 @@
 import { classnames } from "_/classnames"
 import { TabContent, TabContentProps, TabSelector, TabSelectorProps, TabSelectors } from "_/components/library"
 import { Dispatch, PropsWithChildren, ReactNode, SetStateAction, useMemo } from "react"
-import { useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 const tabIds = [
 	"account",
@@ -30,8 +30,6 @@ type TabsProps = {
 type ItemList<Props> = Array<PropsWithChildren<Props> & Pick<Tab, "tabId">>
 
 export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
-	const { formatMessage } = useIntl()
-
 	const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
 		() => tabs.map(({ tabId }) => ({
 			tabId,
@@ -41,9 +39,9 @@ export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 				event.stopPropagation()
 				setActiveTabId(tabId)
 			},
-			children: formatMessage({ id: `Tabs.${tabId}` })
+			children: (<FormattedMessage id={`Tabs.${tabId}`} />)
 		})),
-		[activeTabId, formatMessage, setActiveTabId, tabs]
+		[activeTabId, setActiveTabId, tabs]
 	)
 
 	const tabContents = useMemo<ItemList<TabContentProps>>(

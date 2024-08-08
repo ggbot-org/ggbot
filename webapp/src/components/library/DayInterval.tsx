@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { useCallback, useEffect, useState } from "react"
-import { useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 import { DayDropdown, DayDropdownProps } from "./DayDropdown"
 
@@ -19,8 +19,6 @@ export function DayInterval({
 	start,
 	end
 }: DayIntervalProps) {
-	const { formatMessage } = useIntl()
-
 	const [activeDropdown, setActiveDropdown] = useState<
 		"start" | "end" | undefined
 	>()
@@ -59,7 +57,7 @@ export function DayInterval({
 				close={closeDropdowns}
 				disabled={disabled}
 				isActive={activeDropdown === "start"}
-				label={formatMessage({ id: "DailyInterval.from" })}
+				label={<FormattedMessage id="DailyInterval.from" />}
 				max={end.day}
 				min={min}
 				onClick={onClickStart}
@@ -70,7 +68,7 @@ export function DayInterval({
 				close={closeDropdowns}
 				disabled={disabled}
 				isActive={activeDropdown === "end"}
-				label={formatMessage({ id: "DailyInterval.to" })}
+				label={<FormattedMessage id="DailyInterval.to" />}
 				max={max}
 				min={start.day}
 				onClick={onClickEnd}

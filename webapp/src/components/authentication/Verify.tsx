@@ -9,7 +9,7 @@ import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from "@worksp
 import { logging } from "@workspace/logging"
 import { EmailAddress } from "@workspace/models"
 import { Reducer, useReducer } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 export type AuthVerifyProps = {
 	email: EmailAddress
@@ -39,10 +39,9 @@ type Action =
 const { debug } = logging("authentication")
 
 function OneTimePassword(props: Pick<InputFieldProps, "required" | "name" | "readOnly">) {
-	const { formatMessage } = useIntl()
 	return (
 		<InputField
-			label={formatMessage({ id: "OneTimePassword.label" })}
+			label={<FormattedMessage id="OneTimePassword.label" />}
 			{...props}
 		/>
 	)

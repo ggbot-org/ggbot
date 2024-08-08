@@ -1,7 +1,7 @@
 import { classnames } from "_/classnames"
 import { MainColor, Tag, Tags } from "_/components/library"
 import { SchedulingStatus as Status } from "@workspace/models"
-import { useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 
 const colorOf: Record<
 	Status,
@@ -17,11 +17,10 @@ type _TagLabelProps = {
 }
 
 function _TagLabel({ status }: _TagLabelProps) {
-	const { formatMessage } = useIntl()
 	if (!status) return null
 	return (
 		<Tag className={classnames("is-uppercase")} color={colorOf[status]}>
-			{formatMessage({ id: `SchedulingStatus.${status}` })}
+			<FormattedMessage id={`SchedulingStatus.${status}`} />
 		</Tag>
 	)
 }
