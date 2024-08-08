@@ -1,6 +1,5 @@
 import { Column, Columns } from "_/components/library"
-import { StrategyId, WhenCreated } from "_/components/readonlyFields"
-import { StrategyName } from "_/components/StrategyName"
+import { StrategyId, StrategyName, WhenCreated } from "_/components/readonlyFields"
 import { Time } from "minimal-time-helpers"
 
 export type StrategyRecordProps = {
@@ -16,7 +15,7 @@ export function StrategyRecord({
 		<>
 			<Columns>
 				<Column>
-					<StrategyName isStatic value={strategyName} />
+					<StrategyName value={strategyName} />
 				</Column>
 			</Columns>
 			<Columns>

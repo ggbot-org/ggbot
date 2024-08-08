@@ -2,12 +2,10 @@ import { Column, Columns, DayIntervalBox, OneColumn } from "_/components/library
 import { StrategyErrorsTable, StrategyErrorsTableProps } from "_/components/user/StrategyErrorsTable"
 import { useReadStrategyErrors } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
+import { StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useState } from "react"
 
-export function StrategyErrors() {
-	const { strategyKey } = useStrategyKey()
-
+export function StrategyErrors({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()

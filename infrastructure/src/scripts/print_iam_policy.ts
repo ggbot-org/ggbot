@@ -11,7 +11,7 @@ if (iamPolicyIdentifier === "devops") {
 	// TODO print the whole policy document
 
 	// eslint-disable-next-line no-console
-	console.log(policy.statementAction)
+	console.info(policy.statementAction)
 
 	// TODO create a deploy_iam_policy script
 }

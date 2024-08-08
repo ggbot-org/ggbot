@@ -43,7 +43,7 @@ export const webappEcmaScriptsConfig: Record< EcmaScriptName, {
 		jsPath: ecmaScriptPath.landing
 	},
 	strategy: {
-		entryPoint: routingFile("RouterStrategy.tsx"),
+		entryPoint: routingFile("RouterSharedStrategy.tsx"),
 		jsPath: ecmaScriptPath.strategy
 	},
 	user: {

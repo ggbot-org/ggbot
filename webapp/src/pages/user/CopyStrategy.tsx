@@ -6,16 +6,11 @@ import { useStrategyKey } from "_/hooks/useStrategyKey"
 
 export function CopyStrategyPage() {
 	const { strategyKey } = useStrategyKey()
-	const { strategyId, strategyName, strategyWhenCreated, strategyNotFound } = useStrategy(strategyKey)
+	const { strategyId, strategyName, strategyNotFound, strategyWhenCreated } = useStrategy(strategyKey)
 	return (
 		<PageContainer>
 			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
-				<CopyStrategy
-					strategyId={strategyId}
-					strategyKey={strategyKey}
-					strategyName={strategyName}
-					strategyWhenCreated={strategyWhenCreated}
-				/>
+				<CopyStrategy strategyId={strategyId} strategyKey={strategyKey} strategyName={strategyName} strategyWhenCreated={strategyWhenCreated} />
 			</StrategyPageContainer>
 		</PageContainer>
 	)

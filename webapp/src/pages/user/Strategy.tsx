@@ -13,14 +13,7 @@ import { useState } from "react"
 export function StrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("manage")
 	const { strategyKey } = useStrategyKey()
-	const {
-		strategyId,
-		strategyName,
-		strategyWhenCreated,
-		strategyNotFound,
-		readStrategyIsPending,
-		resetStrategy
-	} = useStrategy(strategyKey)
+	const { strategyNotFound, ...otherStrategyActionProps } = useStrategy(strategyKey)
 	return (
 		<PageContainer>
 			<StrategyPageContainer strategyKey={strategyKey} strategyNotFound={strategyNotFound}>
@@ -32,15 +25,8 @@ export function StrategyPage() {
 							tabId: "manage",
 							content: (
 								<>
-									<StrategyActions
-										readStrategyIsPending={readStrategyIsPending}
-										resetStrategy={resetStrategy}
-										strategyId={strategyId}
-										strategyKey={strategyKey}
-										strategyName={strategyName}
-										strategyWhenCreated={strategyWhenCreated}
-									/>
-									<Schedulings />
+									<StrategyActions strategyKey={strategyKey} {...otherStrategyActionProps} />
+									<Schedulings strategyKey={strategyKey} />
 								</>
 							)
 						},
@@ -52,7 +38,7 @@ export function StrategyPage() {
 						},
 						{
 							tabId: "errors",
-							content: <StrategyErrors />
+							content: <StrategyErrors strategyKey={strategyKey} />
 						}
 					]}
 				/>

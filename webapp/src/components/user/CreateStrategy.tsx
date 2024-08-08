@@ -1,13 +1,12 @@
 import { classnames } from "_/classnames"
 import { FormField, FormFieldName } from "_/components/formFields"
-import { Button, Buttons, Message, OneColumn } from "_/components/library"
-import { StrategyName } from "_/components/StrategyName"
+import { Button, Buttons, InputFieldName, Message, OneColumn } from "_/components/library"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { useCreateStrategy } from "_/hooks/user/api"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
-import { FormEventHandler, useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function CreateStrategy() {
@@ -20,18 +19,6 @@ export function CreateStrategy() {
 
 	const color = canCreate ? (error ? "warning" : "primary") : undefined
 
-	const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
-		(event) => {
-			event.preventDefault()
-			if (!canCreate) return
-			if (!CREATE.canRun) return
-			const eventTarget = event.target as EventTarget & FormField
-			const name = eventTarget.name.value
-			if (isName(name)) CREATE.request({ kind: "binance", name })
-		},
-		[CREATE, canCreate]
-	)
-
 	useEffect(() => {
 		if (CREATE.error) {
 			setError(CREATE.error)
@@ -41,7 +28,17 @@ export function CreateStrategy() {
 
 	return (
 		<OneColumn>
-			<form className={classnames("box")} onSubmit={onSubmit}>
+			<form
+				className={classnames("box")}
+				onSubmit={(event) => {
+					event.preventDefault()
+					if (!canCreate) return
+					if (!CREATE.canRun) return
+					const eventTarget = event.target as EventTarget & FormField
+					const name = eventTarget.name.value
+					if (isName(name)) CREATE.request({ kind: "binance", name })
+				}}
+			>
 				{error ? (
 					<StrategiesErrorExceededQuota error={error} />
 				) : (
@@ -49,8 +46,9 @@ export function CreateStrategy() {
 						<FormattedMessage id="CreateStrategy.chooseName" values={formattedMessageMarkup} />
 					</Message>
 				)}
-				<StrategyName
+				<InputFieldName
 					required
+					label={<FormattedMessage id="StrategyName.label" />}
 					name={"name" satisfies FormFieldName}
 					onChange={(event) => setCanCreate(isName((event.target.value)))}
 					readOnly={readOnly}

@@ -35,6 +35,15 @@ export function StrategyKind({ value }: ValueProp<string>) {
 	)
 }
 
+export function StrategyName({ value }: ValueProp<string>) {
+	return (
+		<ReadonlyField
+			label={<FormattedMessage id="StrategyName.label" />}
+			value={value}
+		/>
+	)
+}
+
 export function SubscriptionEnd({ value }: ValueProp<Time>) {
 	const { formatDate } = useIntl()
 	return (

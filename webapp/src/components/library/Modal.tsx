@@ -38,14 +38,17 @@ export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 		}
 	}, [userCannotCloseModal, isActive, onKeydown])
 
+	if (!isActive) return null
+
 	// TODO update trunx Modal, then remove div with modal-background class
 	// and use isActive prop instead.
 	return (
-		<_Modal noBackground bulma={{ "is-active": isActive }}>
+		<_Modal noBackground bulma="is-active">
 			<Div bulma="modal-background" onClick={closeModal} />
 			<ModalContent>{children}</ModalContent>
 			{
-				/* Hide close button if modal cannot be closed. */ userCannotCloseModal ? null : (
+				/* Hide close button if modal cannot be closed. */
+				userCannotCloseModal ? null : (
 					<ModalClose onClick={closeModal} size="large" />
 				)
 			}

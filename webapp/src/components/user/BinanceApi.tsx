@@ -5,7 +5,7 @@ import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from "_/compo
 import { ToastContext } from "_/contexts/Toast"
 import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"
 import { GatewayTimeoutError } from "@workspace/http"
-import { ChangeEventHandler, useCallback, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 export function BinanceApi({ apiKey }: { apiKey: string }) {
@@ -17,14 +17,6 @@ export function BinanceApi({ apiKey }: { apiKey: string }) {
 
 	const READ = useReadBinanceAccountApiRestrictions()
 	const isLoading = READ.isPending
-
-	const onSubmit = useCallback<ChangeEventHandler<HTMLFormElement>>(
-		(event) => {
-			event.preventDefault()
-			if (READ.canRun) READ.request()
-		},
-		[READ]
-	)
 
 	useEffect(() => {
 		if (READ.isDone) {
@@ -42,7 +34,13 @@ export function BinanceApi({ apiKey }: { apiKey: string }) {
 	}, [READ, formatMessage, toast])
 
 	return (
-		<form className={classnames("box")} onSubmit={onSubmit}>
+		<form
+			className={classnames("box")}
+			onSubmit={(event) => {
+				event.preventDefault()
+				if (READ.canRun) READ.request()
+			}}
+		>
 			<Title>
 				<FormattedMessage id="BinanceApi.title" />
 			</Title>

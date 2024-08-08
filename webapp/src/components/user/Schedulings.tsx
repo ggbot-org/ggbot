@@ -10,20 +10,18 @@ import { useWriteAccountStrategiesItemSchedulings } from "_/hooks/user/api"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { useSubscription } from "_/hooks/user/useSubscription"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from "@workspace/models"
+import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyKey, StrategyScheduling } from "@workspace/models"
 import { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
 import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
 
-export function Schedulings() {
+export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
+	const strategyId = strategyKey?.strategyId
+
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
-
-	const { strategyKey } = useStrategyKey()
-	const strategyId = strategyKey?.strategyId
 
 	const { strategyFlow } = useStrategyFlow(strategyKey)
 	const flowViewGraph = strategyFlow?.view

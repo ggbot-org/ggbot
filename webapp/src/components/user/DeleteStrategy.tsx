@@ -6,11 +6,10 @@ import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function DeleteStrategy({
-	strategyKey, ...strategyRecordProps
-}: StrategyRecordProps & {
-	strategyKey: StrategyKey | undefined
-}) {
-	const DELETE = useDeleteStrategy(strategyKey)
+	strategyKey,
+	...strategyRecordProps
+}: StrategyRecordProps & { strategyKey: StrategyKey | undefined }) {
+	const DELETE = useDeleteStrategy()
 
 	const [modalIsActive, setModalIsActive] = useState(false)
 	const [color, setColor] = useState<Extract<MainColor, "warning"> | undefined>()
@@ -28,10 +27,7 @@ export function DeleteStrategy({
 				<FormattedMessage id="DeleteStrategy.button" />
 			</Button>
 			<Modal isActive={modalIsActive} setIsActive={setModalIsActive}>
-				<Message
-					color="warning"
-					header={<FormattedMessage id="DeleteStrategy.title" />}
-				>
+				<Message color="warning" header={<FormattedMessage id="DeleteStrategy.title" />} >
 					<Content>
 						<p>
 							<FormattedMessage id="DeleteStrategy.message" />

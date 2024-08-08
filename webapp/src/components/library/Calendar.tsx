@@ -4,6 +4,7 @@ import { MouseEvent, MouseEventHandler, useCallback, useMemo, useState } from "r
 import { useIntl } from "react-intl"
 
 import { Icon } from "./Icon"
+import { randomKey } from "./randomKey"
 
 function CalendarWeekDays() {
 	const { formatDate } = useIntl()
@@ -103,7 +104,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 					//
 					//     Encountered two children with the same key.
 					//
-					key: Math.random().toString(36).replace(/[^a-z]+/g, "").substring(0, 5)
+					key: randomKey()
 				})
 			)
 

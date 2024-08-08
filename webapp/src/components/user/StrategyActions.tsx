@@ -3,10 +3,12 @@ import { GoCopyStrategy } from "_/components/public/StrategyActions"
 import { ShareStrategy } from "_/components/ShareStrategy"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
-import { RenameStrategy, RenameStrategyProps } from "_/components/user/RenameStrategy"
+import { RenameStrategy } from "_/components/user/RenameStrategy"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { StrategyKey } from "@workspace/models"
+import { sessionWebStorage } from "_/storages/session"
+import { Strategy, StrategyKey } from "@workspace/models"
+import { useCallback, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 function GoEditStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
@@ -18,11 +20,21 @@ function GoEditStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined 
 }
 
 export function StrategyActions({
-	readStrategyIsPending, resetStrategy, strategyKey, strategyName, strategyId, strategyWhenCreated
-}: StrategyRecordProps & Pick<RenameStrategyProps, "resetStrategy"> & {
-	readStrategyIsPending: boolean | undefined
+	strategy, strategyKey, strategyId, strategyName: _strategyName, strategyWhenCreated, readStrategyIsPending
+}: StrategyRecordProps & {
+	strategy: Strategy | null | undefined
 	strategyKey: StrategyKey | undefined
+	readStrategyIsPending: boolean | undefined
 }) {
+	const [strategyName, setStrategyName] = useState(_strategyName)
+
+	const renameStrategy = useCallback((name: string) => {
+		if (!strategy || !strategyKey) return
+		const updatedStrategy = { ...strategy, name }
+		sessionWebStorage.strategy(strategyKey).set(updatedStrategy)
+		setStrategyName(name)
+	}, [strategy, strategyKey])
+
 	return (
 		<OneColumn>
 			<Div bulma={["box", { "is-skeleton": readStrategyIsPending }]}>
@@ -31,7 +43,7 @@ export function StrategyActions({
 				</Title>
 				<StrategyRecord strategyId={strategyId} strategyName={strategyName} strategyWhenCreated={strategyWhenCreated} />
 				<Buttons>
-					<RenameStrategy resetStrategy={resetStrategy} strategyKey={strategyKey} strategyName={strategyName} />
+					<RenameStrategy renameStrategy={renameStrategy} strategyKey={strategyKey} strategyName={strategyName} />
 					<GoCopyStrategy strategyKey={strategyKey} />
 					<ShareStrategy strategyKey={strategyKey} strategyName={strategyName} />
 					<GoEditStrategy strategyKey={strategyKey} />

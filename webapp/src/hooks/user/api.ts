@@ -1,5 +1,4 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
-import { useStrategy } from "_/hooks/useStrategy"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -81,8 +80,7 @@ export function useDeleteBinanceApiConfig() {
 	>(userApiOptions, "DeleteBinanceApiConfig")
 }
 
-export function useDeleteStrategy(strategyKey: StrategyKey | undefined) {
-	const { resetStrategy } = useStrategy(strategyKey)
+export function useDeleteStrategy() {
 	const { isDone, ...rest } = useAction<
 		UserClientActionType,
 		UserClientActionInput["DeleteStrategy"],
@@ -90,9 +88,8 @@ export function useDeleteStrategy(strategyKey: StrategyKey | undefined) {
 	>(userApiOptions, "DeleteStrategy")
 	useEffect(() => {
 		if (!isDone) return
-		resetStrategy()
 		GOTO(webapp.user.dashboard)
-	}, [isDone, resetStrategy])
+	}, [isDone])
 	return { isDone, ...rest }
 }
 
@@ -246,28 +243,20 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 	return { data, request: cachedRequest, ...rest }
 }
 
-export function useRenameStrategy(strategyKey: StrategyKey | undefined) {
-	const { resetStrategy } = useStrategy(strategyKey)
-	const { isDone, reset, ...rest } = useAction<
+export function useRenameStrategy() {
+	return useAction<
 		UserClientActionType,
 		UserClientActionInput["RenameStrategy"],
 		UserClientActionOutput["RenameStrategy"]
 	>(userApiOptions, "RenameStrategy")
-	useEffect(() => {
-		if (!isDone) return
-		reset()
-		resetStrategy()
-	}, [isDone, reset, resetStrategy])
-	return { isDone, reset, ...rest }
 }
 
 export function useWriteAccountStrategiesItemSchedulings() {
-	const { isDone, ...rest } = useAction<
+	return useAction<
 		UserClientActionType,
 		UserClientActionInput["WriteAccountStrategiesItemSchedulings"],
 		UserClientActionOutput["WriteAccountStrategiesItemSchedulings"]
 	>(userApiOptions, "WriteAccountStrategiesItemSchedulings")
-	return { isDone, ...rest }
 }
 
 export function useWriteStrategyFlow() {

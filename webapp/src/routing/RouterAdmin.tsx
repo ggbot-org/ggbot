@@ -1,4 +1,5 @@
 import { I18nProvider } from "_/contexts/I18n"
+import { ToastProvider } from "_/contexts/Toast"
 import { AccountDetailsPage } from "_/pages/admin/AccountDetails"
 import { DashboardPage } from "_/pages/admin/Dashboard"
 import { mount } from "_/react/mount"
@@ -17,6 +18,8 @@ function Router() {
 
 mount(
 	<I18nProvider>
-		<Router />
+		<ToastProvider>
+			<Router />
+		</ToastProvider>
 	</I18nProvider>
 )
