@@ -13,39 +13,23 @@ export type AuthDatabaseAction = {
 
 export type AuthDatabaseActionInput = {
 	CreateAccount: Parameters<AuthDatabaseAction["CreateAccount"]>[0]
-	CreateOneTimePassword: Parameters<
-		AuthDatabaseAction["CreateOneTimePassword"]
-	>[0]
-	DeleteOneTimePassword: Parameters<
-		AuthDatabaseAction["DeleteOneTimePassword"]
-	>[0]
+	CreateOneTimePassword: Parameters<AuthDatabaseAction["CreateOneTimePassword"]>[0]
+	DeleteOneTimePassword: Parameters<AuthDatabaseAction["DeleteOneTimePassword"]>[0]
 	ReadEmailAccount: Parameters<AuthDatabaseAction["ReadEmailAccount"]>[0]
-	ReadOneTimePassword: Parameters<
-		AuthDatabaseAction["ReadOneTimePassword"]
-	>[0]
+	ReadOneTimePassword: Parameters<AuthDatabaseAction["ReadOneTimePassword"]>[0]
 }
 
 export type AuthDatabaseActionOutput = {
 	CreateAccount: Awaited<ReturnType<AuthDatabaseAction["CreateAccount"]>>
-	CreateOneTimePassword: Awaited<
-		ReturnType<AuthDatabaseAction["CreateOneTimePassword"]>
-	>
-	DeleteOneTimePassword: Awaited<
-		ReturnType<AuthDatabaseAction["DeleteOneTimePassword"]>
-	>
-	ReadEmailAccount: Awaited<
-		ReturnType<AuthDatabaseAction["ReadEmailAccount"]>
-	>
-	ReadOneTimePassword: Awaited<
-		ReturnType<AuthDatabaseAction["ReadOneTimePassword"]>
-	>
+	CreateOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["CreateOneTimePassword"]>>
+	DeleteOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["DeleteOneTimePassword"]>>
+	ReadEmailAccount: Awaited<ReturnType<AuthDatabaseAction["ReadEmailAccount"]>>
+	ReadOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["ReadOneTimePassword"]>>
 }
 
 type AuthClientAction = {
 	Enter: (arg: Pick<Account, "email">) => Promise<{ emailSent: boolean }>
-	Verify: (
-		arg: Pick<OneTimePassword, "code"> & { email: EmailAddress }
-	) => Promise<{ token?: string }>
+	Verify: (arg: Pick<OneTimePassword, "code"> & { email: EmailAddress }) => Promise<{ token?: string }>
 }
 
 export type AuthClientActionType = keyof AuthClientAction
@@ -66,7 +50,8 @@ export type AuthClientActionOutput = {
 }
 
 export const isAuthClientActionInput = {
-	Enter: objectTypeGuard<AuthClientInput["Enter"]>(({ email }) => isEmailAddress(email)
+	Enter: objectTypeGuard<AuthClientInput["Enter"]>(
+		({ email }) => isEmailAddress(email)
 	),
 	Verify: objectTypeGuard<AuthClientInput["Verify"]>(
 		({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)

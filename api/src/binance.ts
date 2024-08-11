@@ -11,9 +11,7 @@ type BinanceClientAction = {
 		type: Extract<BinanceOrderType, "MARKET">
 		orderOptions: BinanceNewOrderOptions
 	}) => Promise<BinanceOrderRespFULL>
-	ReadBinanceAccountApiRestrictions: (
-		arg: void
-	) => Promise<BinanceApiKeyPermissionCriteria>
+	ReadBinanceAccountApiRestrictions: (arg: void) => Promise<BinanceApiKeyPermissionCriteria>
 }
 
 export type BinanceClientActionType = keyof BinanceClientAction
