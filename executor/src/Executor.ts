@@ -3,7 +3,7 @@ import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import { AccountKey, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccount, isAccountKey, isAccountStrategy, isSubscription, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, statusOfSubscription, StrategyMemory, StrategyScheduling, Subscription, SubscriptionPlan } from "@workspace/models"
+import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccount, isAccountKey, isAccountStrategy, isSubscription, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, statusOfSubscription, StrategyMemory, StrategyScheduling, Subscription, SubscriptionPlan } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -18,18 +18,18 @@ import { debug, info, warn } from "./logging.js"
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
 const ONE_HOUR = 3_600_000
+const ONE_DAY = 86_400_000
 
 export class Executor {
-	accountKeysCache = new CacheMap<AccountKey[]>(ONE_HOUR)
+	accountKeysCache = new CacheMap<AccountKey[]>(ONE_DAY)
 	accountStrategiesCache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
-	subscriptionsCache = new CacheMap<Subscription>(ONE_HOUR)
+	subscriptionsCache = new CacheMap<Subscription>(ONE_DAY)
 
 	readonly publicDatabase = new PublicDatabase(documentProvider)
 	readonly executorDatabase = new ExecutorDatabase(documentProvider)
 	// TODO enable emails
 	// readonly sendEmailProvider = new SendEmailProvider()
 
-	// TODO should also write somewhere this info, in case server restarts.
 	strategyWhenExecuted = new Map<string, Time>()
 
 	constructor(readonly capacity: number, readonly index: number) {}
@@ -49,22 +49,20 @@ export class Executor {
 	}
 
 	/**
-	 * Read `executorId` from local disc or create a new one if it does not
-	 * exist.
+	 * Read `executorId` from local disc or create a new one if it does not exist.
 	 */
 	static async getExecutorId(): Promise<Item["id"]> {
 		try {
 			const executorId = await readFile(executorIdFile)
+			info("executorId", executorId)
 			return executorId
 		} catch (error) {
-			if (
-				objectTypeGuard<{ code: string }>(
-					({ code }) => typeof code === "string"
-				)(error)
-			) {
-				const { code } = error
-				if (code === "ENOENT") {
+			if (objectTypeGuard<{ code: string }>(
+				({ code }) => typeof code === "string"
+			)(error)) {
+				if (error.code === "ENOENT") {
 					const executorId = newId()
+					info("new executorId", executorId)
 					await writeFile(executorIdFile, executorId)
 					return executorId
 				}
@@ -75,7 +73,9 @@ export class Executor {
 
 	static itemIdToNaturalNumber(itemId: Item["id"]) {
 		const firstCharacter = itemId.charAt(0)
-		for (let i = 0; i < itemIdCharacters.length; i++) if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
+		for (let i = 0; i < itemIdCharacters.length; i++) {
+			if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
+		}
 		throw new TypeError()
 	}
 
@@ -149,8 +149,7 @@ export class Executor {
 	}
 
 	/**
-	 * Execute strategies if scheduling is active and according to scheduling
-	 * frequency.
+	 * Execute strategies if scheduling is active and according to scheduling frequency.
 	 */
 	async manageStrategyExecution({ accountId, strategyKind, strategyId }: AccountStrategyKey, scheduling: StrategyScheduling) {
 		const { strategyWhenExecuted } = this
@@ -200,12 +199,9 @@ export class Executor {
 					}
 
 					// If error code is not handled, suspend startegy.
-					await this.suspendAccountStrategyScheduling(
-						{
-							accountId,
-							strategyId,
-							schedulingId
-						}
+					await this.suspendAccountStrategyScheduling({
+						accountId, strategyId, schedulingId
+					}
 						// TODO enable emails
 						// strategyKind
 					)
@@ -286,8 +282,12 @@ export class Executor {
 	) {
 		warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
-		// Cleanup cache locally.
-		this.accountStrategiesCache.delete(accountId)
+		// Update cache locally.
+		const items = this.accountStrategiesCache.get(accountId)
+		if (items) {
+			const data = accountStrategiesModifier.suspendScheduling(items, strategyId, schedulingId)
+			this.accountStrategiesCache.set(accountId, data)
+		}
 
 		// Update database remotely.
 		await this.executorDatabase.SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId })
@@ -309,8 +309,12 @@ export class Executor {
 	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
 		info(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
-		// Cleanup cache locally.
-		this.accountStrategiesCache.delete(accountId)
+		// Update cache locally.
+		const items = this.accountStrategiesCache.get(accountId)
+		if (items) {
+			const data = accountStrategiesModifier.suspendStrategySchedulings(items, strategyId)
+			this.accountStrategiesCache.set(accountId, data)
+		}
 
 		// Update database remotely.
 		await this.executorDatabase.SuspendAccountStrategySchedulings({ accountId, strategyId })
@@ -319,8 +323,12 @@ export class Executor {
 	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
 		info(`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
-		// Cleanup cache locally.
-		this.accountStrategiesCache.delete(accountId)
+		// Update cache locally.
+		const items = this.accountStrategiesCache.get(accountId)
+		if (items) {
+			const data = accountStrategiesModifier.updateSchedulingMemory(items, strategyId, schedulingId, memory)
+			this.accountStrategiesCache.set(accountId, data)
+		}
 
 		// Update database remotely.
 		await this.executorDatabase.UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory })
