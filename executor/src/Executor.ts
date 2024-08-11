@@ -1,9 +1,8 @@
 import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
-import { CacheMap, ManagedCacheProvider } from "@workspace/cache"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccount, isAccountKey, isAccountStrategy, isSubscription, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, statusOfSubscription, StrategyMemory, StrategyScheduling, Subscription, SubscriptionPlan } from "@workspace/models"
+import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
@@ -12,40 +11,35 @@ import { join } from "path"
 import readFile from "read-file-utf8"
 import writeFile from "write-file-utf8"
 
+import { AccountKeysProvider } from "./AccountKeysProvider.js"
+import { AccountStrategiesProvider } from "./AccountStrategiesProvider.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { debug, info, warn } from "./logging.js"
+import { debug, info } from "./logging.js"
+import { SubscriptionProvider } from "./SubscriptionProvider.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
 
-const ONE_HOUR = 3_600_000
-const ONE_DAY = 86_400_000
-
 export class Executor {
-	accountKeysCache = new CacheMap<AccountKey[]>(ONE_DAY)
-	accountStrategiesCache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
-	subscriptionsCache = new CacheMap<Subscription>(ONE_DAY)
-
-	readonly publicDatabase = new PublicDatabase(documentProvider)
-	readonly executorDatabase = new ExecutorDatabase(documentProvider)
+	capacity: number
+	index: number
+	readonly publicDatabase: PublicDatabase
+	readonly executorDatabase: ExecutorDatabase
+	readonly accountKeysProvider: AccountKeysProvider
+	readonly accountStrategiesProvider: AccountStrategiesProvider
+	readonly subscriptionProvider: SubscriptionProvider
 	// TODO enable emails
 	// readonly sendEmailProvider = new SendEmailProvider()
 
 	strategyWhenExecuted = new Map<string, Time>()
 
-	constructor(readonly capacity: number, readonly index: number) {}
-
-	get cachedAccountKeys(): ManagedCacheProvider<AccountKey[]> {
-		const key = "accountKeys"
-		return {
-			get: (): AccountKey[] | undefined => this.accountKeysCache.get(key),
-			set: (data: AccountKey[]): void => this.accountKeysCache.set(key, data),
-			delete: (accountId: AccountKey["accountId"]): void => {
-				const items = this.accountKeysCache.get(key)
-				if (!items) return
-				const updatedItems = items.filter((item) => item.accountId !== accountId)
-				this.accountKeysCache.set(key, updatedItems)
-			}
-		}
+	constructor(capacity: number, index: number) {
+		this.capacity = capacity
+		this.index = index
+		this.publicDatabase = new PublicDatabase(documentProvider)
+		this.executorDatabase = new ExecutorDatabase(documentProvider)
+		this.accountKeysProvider = new AccountKeysProvider(this.executorDatabase)
+		this.accountStrategiesProvider = new AccountStrategiesProvider(this.executorDatabase)
+		this.subscriptionProvider = new SubscriptionProvider(this.executorDatabase)
 	}
 
 	/**
@@ -79,75 +73,6 @@ export class Executor {
 		throw new TypeError()
 	}
 
-	async getAccountKeys(): Promise<AccountKey[]> {
-		try {
-			const cached = this.cachedAccountKeys.get()
-			if (cached) return cached
-			const data = await this.executorDatabase.ListAccountKeys()
-			this.cachedAccountKeys.set(data)
-			return data
-		} catch (error) {
-			warn(error)
-			return []
-		}
-	}
-
-	async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
-		const accountStrategies: AccountStrategy[] = []
-		try {
-			const key = accountId
-			const { accountStrategiesCache: cache } = this
-			const cached = cache.get(key)
-			if (cached) return cached
-			info("readAccountStrategies")
-			const data = (await this.executorDatabase.ReadAccountStrategies({ accountId })) ?? []
-			if (!Array.isArray(data)) return accountStrategies
-			for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
-			cache.set(key, accountStrategies)
-			return accountStrategies
-		} catch (error) {
-			warn(error)
-			return accountStrategies
-		}
-	}
-
-	/**
-	 * Check if subscription is active.
-	 *
-	 * ```ts
-	 * const { hasActiveSubscription, subscriptionPlan } = await this.checkSubscription({ accountId	})
-	 * ```
-	 */
-	async checkSubscription({ accountId }: AccountKey): Promise<{
-		hasActiveSubscription: boolean
-		subscriptionPlan: SubscriptionPlan | undefined
-	}> {
-		try {
-			const key = accountId
-			const { subscriptionsCache: cache } = this
-			const cached = cache.get(key)
-			if (cached) return {
-				hasActiveSubscription: statusOfSubscription(cached) === "active",
-				subscriptionPlan: cached.plan
-			}
-			info("readSubscription", accountId)
-			const subscription = await this.executorDatabase.ReadSubscription({ accountId })
-			if (!isSubscription(subscription)) return {
-				hasActiveSubscription: false,
-				subscriptionPlan: undefined
-			}
-			cache.set(key, subscription)
-			return {
-				hasActiveSubscription:
-					statusOfSubscription(subscription) === "active",
-				subscriptionPlan: subscription.plan
-			}
-		} catch (error) {
-			warn(error)
-			return { hasActiveSubscription: false, subscriptionPlan: undefined }
-		}
-	}
-
 	/**
 	 * Execute strategies if scheduling is active and according to scheduling frequency.
 	 */
@@ -174,7 +99,7 @@ export class Executor {
 					this.executorDatabase
 				)
 				if (memoryChanged) {
-					await this.updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }, memory)
+					await this.accountStrategiesProvider.updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }, memory)
 				}
 			} catch (error) {
 				if (error instanceof ErrorBinanceHTTP) {
@@ -194,12 +119,12 @@ export class Executor {
 					if (code === BinanceErrorCode.SERVER_BUSY) return
 
 					if (code === BinanceErrorCode.UNAUTHORIZED) {
-						this.cachedAccountKeys.delete(accountId)
+						this.accountKeysProvider.deleteCachedAccountId(accountId)
 						return
 					}
 
 					// If error code is not handled, suspend startegy.
-					await this.suspendAccountStrategyScheduling({
+					await this.accountStrategiesProvider.suspendAccountStrategyScheduling({
 						accountId, strategyId, schedulingId
 					}
 						// TODO enable emails
@@ -223,7 +148,7 @@ export class Executor {
 	}
 
 	async runTasks() {
-		const accountKeys = await this.getAccountKeys()
+		const accountKeys = await this.accountKeysProvider.getAccountKeys()
 		for (const accountKey of accountKeys) {
 			// Get account.
 			if (!isAccountKey(accountKey)) continue
@@ -232,16 +157,16 @@ export class Executor {
 			try {
 				// Check subscription or suspend account strategies.
 
-				const { hasActiveSubscription, subscriptionPlan } = await this.checkSubscription(accountKey)
+				const { hasActiveSubscription, subscriptionPlan } = await this.subscriptionProvider.checkSubscription(accountKey)
 
 				if (!hasActiveSubscription) {
 					// Cleanup cache.
-					this.cachedAccountKeys.delete(accountId)
+					this.accountKeysProvider.deleteCachedAccountId(accountId)
 					continue
 				}
 
 				// Get strategies.
-				const accountStrategies = await this.getAccountStrategies(accountKey)
+				const accountStrategies = await this.accountStrategiesProvider.getAccountStrategies(accountKey)
 
 				for (
 					const { strategyId, strategyKind, schedulings } of accountStrategies
@@ -250,7 +175,7 @@ export class Executor {
 					if (subscriptionPlan !== "pro" && PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)) {
 						// TODO enable emails
 						// pass strategyKind
-						await this.suspendAccountStrategyScheduling({ accountId, strategyId, schedulingId: scheduling.id })
+						await this.accountStrategiesProvider.suspendAccountStrategyScheduling({ accountId, strategyId, schedulingId: scheduling.id })
 						continue
 					}
 
@@ -258,13 +183,13 @@ export class Executor {
 				}
 			} catch (error) {
 				if (error instanceof ErrorStrategyItemNotFound) {
-					await this.suspendAccountStrategySchedulings({ accountId, strategyId: error.strategyId })
+					await this.accountStrategiesProvider.suspendAccountStrategySchedulings({ accountId, strategyId: error.strategyId })
 					continue
 				}
 
 				if (error instanceof ErrorAccountItemNotFound) {
 					if (error.type === "BinanceApiConfig") {
-						this.cachedAccountKeys.delete(accountId)
+						this.accountKeysProvider.deleteCachedAccountId(accountId)
 						continue
 					}
 				}
@@ -272,65 +197,5 @@ export class Executor {
 				debug(error)
 			}
 		}
-	}
-
-	async suspendAccountStrategyScheduling(
-		{ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey
-		// The `strategyKind` is needed to send email notification.
-		// TODO enable emails
-		// strategyKind: StrategyKind
-	) {
-		warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
-
-		// Update cache locally.
-		const items = this.accountStrategiesCache.get(accountId)
-		if (items) {
-			const data = accountStrategiesModifier.suspendScheduling(items, strategyId, schedulingId)
-			this.accountStrategiesCache.set(accountId, data)
-		}
-
-		// Update database remotely.
-		await this.executorDatabase.SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId })
-
-		// Send email notification.
-		const account = await this.executorDatabase.ReadAccount({ accountId })
-		// Account may be null in case user deleted the account.
-		if (!isAccount(account)) return
-		// If there is an account, notify the user via email.
-		// TODO enable emails
-		// await this.sendEmailProvider.SuspendedStrategy({
-		// 	language: "en",
-		// 	email: account.email,
-		// 	strategyId,
-		// 	strategyKind
-		// })
-	}
-
-	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
-		info(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
-
-		// Update cache locally.
-		const items = this.accountStrategiesCache.get(accountId)
-		if (items) {
-			const data = accountStrategiesModifier.suspendStrategySchedulings(items, strategyId)
-			this.accountStrategiesCache.set(accountId, data)
-		}
-
-		// Update database remotely.
-		await this.executorDatabase.SuspendAccountStrategySchedulings({ accountId, strategyId })
-	}
-
-	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
-		info(`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
-
-		// Update cache locally.
-		const items = this.accountStrategiesCache.get(accountId)
-		if (items) {
-			const data = accountStrategiesModifier.updateSchedulingMemory(items, strategyId, schedulingId, memory)
-			this.accountStrategiesCache.set(accountId, data)
-		}
-
-		// Update database remotely.
-		await this.executorDatabase.UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory })
 	}
 }
