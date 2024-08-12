@@ -11,21 +11,13 @@ export class BinanceKlinesCacheMap implements BinanceKlinesCacheProvider {
 		this.klinesMap = new CacheMap<BinanceKline>(timeToLive)
 	}
 
-	getKline(
-		symbol: string,
-		interval: BinanceKlineInterval,
-		time: number
-	): Promise<BinanceKline | undefined> {
+	getKline(symbol: string, interval: BinanceKlineInterval, time: number): Promise<BinanceKline | undefined> {
 		const key = binanceKlineKey(symbol, interval, time)
 		const kline = this.klinesMap.get(key)
 		return Promise.resolve(kline)
 	}
 
-	setKline(
-		symbol: string,
-		interval: BinanceKlineInterval,
-		kline: BinanceKline
-	): Promise<void> {
+	setKline(symbol: string, interval: BinanceKlineInterval, kline: BinanceKline): Promise<void> {
 		const key = binanceKlineKey(symbol, interval, kline[0])
 		this.klinesMap.set(key, kline)
 		return Promise.resolve()

@@ -13,7 +13,7 @@ export class ExecutorDatabase implements ExecutorAction {
 	async AppendAccountBalanceEvent({ item, ...key }: Input["AppendAccountBalanceEvent"]) {
 		const currentItems = await this.readAccountDailyBalanceEvents(key)
 		const data = [...currentItems, item]
-		await this.documentProvider.setItem(pathname.accountDailyOrders(key), data)
+		await this.documentProvider.setItem(pathname.accountDailyBalanceEvents(key), data)
 	}
 
 	async AppendAccountDailyOrders({ items, ...key }: Input["AppendAccountDailyOrders"]) {

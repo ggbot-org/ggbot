@@ -15,6 +15,7 @@ import { AccountKeysProvider } from "./AccountKeysProvider.js"
 import { AccountStrategiesProvider } from "./AccountStrategiesProvider.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
 import { debug, info } from "./logging.js"
+import { StrategyFlowProvider } from "./StrategyFlowProvider.js"
 import { SubscriptionProvider } from "./SubscriptionProvider.js"
 
 const executorIdFile = join(homedir(), ".ggbot-executor")
@@ -22,11 +23,11 @@ const executorIdFile = join(homedir(), ".ggbot-executor")
 export class Executor {
 	capacity: number
 	index: number
-	readonly publicDatabase: PublicDatabase
 	readonly executorDatabase: ExecutorDatabase
 	readonly accountKeysProvider: AccountKeysProvider
 	readonly accountStrategiesProvider: AccountStrategiesProvider
 	readonly subscriptionProvider: SubscriptionProvider
+	readonly strategyFlowProvider: StrategyFlowProvider
 	// TODO enable emails
 	// readonly sendEmailProvider = new SendEmailProvider()
 
@@ -35,10 +36,11 @@ export class Executor {
 	constructor(capacity: number, index: number) {
 		this.capacity = capacity
 		this.index = index
-		this.publicDatabase = new PublicDatabase(documentProvider)
+		const publicDatabase = new PublicDatabase(documentProvider)
 		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.accountKeysProvider = new AccountKeysProvider(this.executorDatabase)
 		this.accountStrategiesProvider = new AccountStrategiesProvider(this.executorDatabase)
+		this.strategyFlowProvider = new StrategyFlowProvider(publicDatabase)
 		this.subscriptionProvider = new SubscriptionProvider(this.executorDatabase)
 	}
 
@@ -92,10 +94,13 @@ export class Executor {
 
 		if (strategyKind === "binance") {
 			try {
+				const strategyFlow = await this.strategyFlowProvider.readStrategyFlow({ strategyId, strategyKind })
+				if (!strategyFlow) throw new ErrorStrategyItemNotFound({ type: "StrategyFlow", strategyId, strategyKind })
+
 				const { memory, memoryChanged } = await executeBinanceStrategy(
 					{ accountId, strategyId, strategyKind },
 					scheduling,
-					this.publicDatabase,
+					strategyFlow,
 					this.executorDatabase
 				)
 				if (memoryChanged) {

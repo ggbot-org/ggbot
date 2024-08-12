@@ -1,24 +1,21 @@
 import { BinanceExchangeInfoCacheMap, BinanceKlinesCacheMap } from "@workspace/binance"
-import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
+import { ExecutorDatabase } from "@workspace/database"
 import { DflowBinanceExecutor, DflowCommonContext, getDflowBinanceNodesCatalog } from "@workspace/dflow"
-import { AccountStrategyKey, BalanceEvent, createdNow, ErrorStrategyItemNotFound, isStrategyFlowGraph, newOrder, StrategyScheduling } from "@workspace/models"
+import { AccountStrategyKey, BalanceEvent, createdNow, isStrategyFlowGraph, newOrder, StrategyFlow, StrategyScheduling } from "@workspace/models"
 import { now, today, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "./binance.js"
+import { FOUR_WEEKS } from "./durations.js"
 
-const ONE_WEEK = 604_800_000
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
-const klinesCache = new BinanceKlinesCacheMap(ONE_WEEK)
+const klinesCache = new BinanceKlinesCacheMap(FOUR_WEEKS)
 
 export async function executeBinanceStrategy (
 	{ accountId, ...strategyKey }: AccountStrategyKey,
 	scheduling: StrategyScheduling,
-	publicDatabase: PublicDatabase,
+	strategyFlow: StrategyFlow,
 	executorDatabase: ExecutorDatabase
 ): Promise<Pick<DflowCommonContext, "memory" | "memoryChanged">> {
-	const strategyFlow = await publicDatabase.ReadStrategyFlow(strategyKey)
-	if (!strategyFlow) throw new ErrorStrategyItemNotFound({ type: "StrategyFlow", ...strategyKey })
-
 	const memoryInput = scheduling.memory ?? {}
 	const params = scheduling.params ?? {}
 
