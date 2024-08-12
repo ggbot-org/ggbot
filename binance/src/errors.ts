@@ -28,16 +28,8 @@ export class ErrorBinanceHTTP extends Error {
 		this.info = info
 	}
 
-	static message({
-		status,
-		statusText,
-		pathname,
-		payload,
-		searchParams
-	}: ErrorBinanceHTTPInfo) {
-		return `Server responded with status=${status} payload=${JSON.stringify(
-			payload
-		)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
+	static message({ status, statusText, pathname, payload, searchParams }: ErrorBinanceHTTPInfo) {
+		return `Server responded with status=${status} payload=${JSON.stringify(payload)} statusText=${statusText} pathname=${pathname} searchParams=${searchParams}`
 	}
 
 	toJSON(): {
