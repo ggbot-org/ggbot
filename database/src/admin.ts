@@ -1,11 +1,14 @@
-import { AdminAction, AdminActionInput as Input, AdminActionOutput as Output, DocumentProviderLevel1 } from "@workspace/api"
+import { AdminDatabaseAction, AdminDatabaseActionInput as Input, AdminDatabaseActionOutput as Output, DocumentProviderLevel3 } from "@workspace/api"
 
+import { AuthDatabase } from "./auth.js"
 import { pathname } from "./locators.js"
 
-export class AdminDatabase implements AdminAction {
-	private documentProvider: DocumentProviderLevel1
+export class AdminDatabase implements AdminDatabaseAction {
+	private documentProvider: DocumentProviderLevel3
+	private authDatabase: AuthDatabase
 
 	constructor(documentProvider: AdminDatabase["documentProvider"]) {
+		this.authDatabase = new AuthDatabase(documentProvider)
 		this.documentProvider = documentProvider
 	}
 
@@ -30,5 +33,9 @@ export class AdminDatabase implements AdminAction {
 
 	ReadAccount(arg: Input["ReadAccount"]) {
 		return this.documentProvider.getItem<Output["ReadAccount"]>(pathname.account(arg))
+	}
+
+	ReadEmailAccount(arg: Input["ReadEmailAccount"]) {
+		return this.authDatabase.ReadEmailAccount(arg)
 	}
 }

@@ -21,9 +21,10 @@ export type UserDatabaseAction = {
 	ReadSubscription: (arg: void) => Promise<Subscription | null>
 	RenameStrategy: (arg: StrategyKey & Required<Pick<Strategy, "name">>) => Promise<UpdateTime>
 	/**
+	 * Write schedulings for strategy.
+	 *
 	 * @remarks
-	 * Need also `strategyKind` in order to write suggested `frequency` to
-	 * strategy.
+	 * Needs also `strategyKind` in order to write suggested `frequency` to strategy.
 	 */
 	WriteAccountStrategiesItemSchedulings: (arg: StrategyKey & Pick<AccountStrategy, "schedulings">) => Promise<UpdateTime>
 	WriteStrategyFlow: (arg: StrategyKey & Omit<StrategyFlow, "whenUpdated">) => Promise<UpdateTime>

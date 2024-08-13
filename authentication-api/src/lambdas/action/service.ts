@@ -40,19 +40,13 @@ export class Service implements ApiService<AuthClientActionType> {
 
 		if (emailAccount) {
 			// Given email is associated with an account: create a session.
-			const session: ClientSession = {
-				creationDay,
-				accountId: emailAccount.accountId
-			}
+			const session: ClientSession = { creationDay, accountId: emailAccount.accountId }
 			const token = await signSession(session)
 			output.token = token
 		} else {
 			// Given email is new: create account first, then create a session.
 			const account = await this.dataProvider.CreateAccount(email)
-			const session: ClientSession = {
-				creationDay,
-				accountId: account.id
-			}
+			const session: ClientSession = { creationDay, accountId: account.id }
 			const token = await signSession(session)
 			output.token = token
 		}

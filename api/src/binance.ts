@@ -29,12 +29,8 @@ export type BinanceClientInput = {
 }
 
 export type BinanceClientOutput = {
-	CreateBinanceOrder: Awaited<
-		ReturnType<BinanceClientAction["CreateBinanceOrder"]>
-	>
-	ReadBinanceAccountApiRestrictions: Awaited<
-		ReturnType<BinanceClientAction["ReadBinanceAccountApiRestrictions"]>
-	>
+	CreateBinanceOrder: Awaited<ReturnType<BinanceClientAction["CreateBinanceOrder"]>>
+	ReadBinanceAccountApiRestrictions: Awaited<ReturnType<BinanceClientAction["ReadBinanceAccountApiRestrictions"]>>
 }
 
 export type BinanceDatabaseAction = {

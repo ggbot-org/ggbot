@@ -26,6 +26,7 @@
     "@workspace/database": "0.0.0",
     "@workspace/http": "0.0.0",
     "@workspace/logging": "0.0.0",
+    "@workspace/models": "0.0.0",
     "@workspace/s3-data-bucket": "0.0.0"
   },
   "devDependencies": {
