@@ -11,7 +11,21 @@ export type DocumentProviderLevel2 = DocumentProviderLevel1 & {
 	removeItem(key: string): Promise<DeletionTime>
 }
 
+export type DocumentProviderListItemsInput = {
+	token?: string
+	prefix: string
+}
+
+export type DocumentProviderListItemsOutput = {
+	keys: string[]
+	token?: string
+	nextToken?: string
+	isTruncated?: boolean
+}
+
 /** Provides documents listing. */
 export type DocumentProviderLevel3 = DocumentProviderLevel2 & {
-	listItems(Prefix: string): Promise<string[]>
+	listItems(
+		{ token, prefix }: DocumentProviderListItemsInput
+	): Promise<DocumentProviderListItemsOutput>
 }

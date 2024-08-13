@@ -1,7 +1,7 @@
 import { Email } from "_/components/Email"
 import { Div, Title } from "_/components/library"
 import { AccountId, WhenCreated } from "_/components/readonlyFields"
-import { useReadAccount } from "_/hooks/admin/api"
+import { useReadAccountInfo } from "_/hooks/admin/api"
 import { useAccountKey } from "_/hooks/admin/useAccountKey"
 import { useEffect } from "react"
 import { FormattedMessage } from "react-intl"
@@ -9,7 +9,7 @@ import { FormattedMessage } from "react-intl"
 export function Account() {
 	const { accountKey } = useAccountKey()
 
-	const { canRun, data: account, request } = useReadAccount()
+	const { canRun, data: account, request } = useReadAccountInfo()
 
 	useEffect(() => {
 		if (!accountKey) return

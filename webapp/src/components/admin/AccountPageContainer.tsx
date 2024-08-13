@@ -1,12 +1,17 @@
 import { AccountNotFound } from "_/components/admin/AccountNotFound"
 import { InvalidAccountKey } from "_/components/admin/InvalidAccountKey"
-import { useAccount } from "_/hooks/admin/useAccount"
+import { useReadAccountInfo } from "_/hooks/admin/api"
 import { useAccountKey } from "_/hooks/admin/useAccountKey"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useEffect } from "react"
 
 export function AccountPageContainer({ children }: PropsWithChildren) {
 	const { accountKey } = useAccountKey()
-	const { account } = useAccount(accountKey)
+	const { data: account, canRun, request } = useReadAccountInfo()
+
+	useEffect(() => {
+		if (!accountKey) return
+		if (canRun) request(accountKey)
+	}, [canRun, request, accountKey])
 
 	if (!accountKey) return <InvalidAccountKey />
 

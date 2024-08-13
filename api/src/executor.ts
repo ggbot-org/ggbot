@@ -1,13 +1,14 @@
 import { Account, AccountDailyKey, AccountDailyOrder, AccountKey, AccountStrategy, AccountStrategyDailyKey, AccountStrategyItemKey, AccountStrategySchedulingKey, BalanceEvent, Order, StrategyError, StrategyMemory, Subscription } from "@workspace/models"
 
 import { Action } from "./action.js"
+import { DocumentProviderListItemsInput, DocumentProviderListItemsOutput } from "./documentProvider.js"
 
 export type ExecutorAction = {
 	AppendAccountBalanceEvent: (arg: AccountDailyKey & { item: BalanceEvent }) => Promise<void>
 	AppendAccountDailyOrders: (arg: AccountDailyKey & { items: AccountDailyOrder[] }) => Promise<void>
 	AppendStrategyDailyErrors: Action<AccountStrategyDailyKey & { items: StrategyError[] }, void>
 	AppendStrategyDailyOrders: Action<AccountStrategyDailyKey & { items: Order[] }, void>
-	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
+	ListAccountKeys: (arg: Pick<DocumentProviderListItemsInput, "token">) => Promise<{ accountKeys: AccountKey[] } & Omit<DocumentProviderListItemsOutput, "keys">>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 	ReadAccountStrategies: (arg: AccountKey) => Promise<AccountStrategy[]>
 	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>

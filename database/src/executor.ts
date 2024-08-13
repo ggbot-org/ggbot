@@ -34,13 +34,18 @@ export class ExecutorDatabase implements ExecutorAction {
 		await this.documentProvider.setItem(pathname.strategyDailyOrders(key), data)
 	}
 
-	async ListAccountKeys() {
-		const Prefix = dirnamePrefix.account + dirnameDelimiter
-		const itemLocators = await this.documentProvider.listItems(Prefix)
-		return itemLocators.reduce<Output["ListAccountKeys"]>((list, item) => {
-			const itemKey = locatorToItemKey.account(item)
-			return itemKey ? list.concat(itemKey) : list
-		}, [])
+	async ListAccountKeys({ token }: Input["ListAccountKeys"]) {
+		const { keys: locators, ...rest } = await this.documentProvider.listItems({
+			prefix: `${dirnamePrefix.account}${dirnameDelimiter}`,
+			token
+		})
+		return {
+			accountKeys: locators.reduce<AccountKey[]>((list, locator) => {
+				const itemKey = locatorToItemKey.account(locator)
+				return itemKey ? list.concat(itemKey) : list
+			}, []),
+			...rest
+		}
 	}
 
 	async ReadAccountStrategies(arg: Input["ReadAccountStrategies"]) {

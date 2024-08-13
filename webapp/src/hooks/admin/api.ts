@@ -15,10 +15,10 @@ export function useListAccountKeys() {
 	>(apiOptions, "ListAccountKeys")
 }
 
-export function useReadAccount() {
+export function useReadAccountInfo() {
 	return useAction<
 		ActionType,
-		Input["ReadAccount"],
-		Output["ReadAccount"]
-	>(apiOptions, "ReadAccount")
+		Input["ReadAccountInfo"],
+		Output["ReadAccountInfo"]
+	>(apiOptions, "ReadAccountInfo")
 }

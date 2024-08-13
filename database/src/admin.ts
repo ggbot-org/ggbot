@@ -1,38 +1,27 @@
-import { AdminDatabaseAction, AdminDatabaseActionInput as Input, AdminDatabaseActionOutput as Output, DocumentProviderLevel3 } from "@workspace/api"
+import { AdminDatabaseAction, AdminDatabaseActionInput as Input, DocumentProviderLevel3 } from "@workspace/api"
 
 import { AuthDatabase } from "./auth.js"
-import { pathname } from "./locators.js"
+import { ExecutorDatabase } from "./executor.js"
+import { UserDatabase } from "./user.js"
 
 export class AdminDatabase implements AdminDatabaseAction {
 	private documentProvider: DocumentProviderLevel3
 	private authDatabase: AuthDatabase
+	private executorDatabase: ExecutorDatabase
 
 	constructor(documentProvider: AdminDatabase["documentProvider"]) {
 		this.authDatabase = new AuthDatabase(documentProvider)
+		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.documentProvider = documentProvider
 	}
 
-	ListAccountKeys() {
-		// TODO
-		return Promise.resolve([])
+	async ListAccountKeys(arg: Input["ListAccountKeys"]) {
+		return this.executorDatabase.ListAccountKeys(arg)
 	}
-	// export const listAccountKeys: AdminOperation["ListAccountKeys"] = async () => {
-	// 	const Prefix = dirnamePrefix.account + dirnameDelimiter
-	// 	const results = await LIST({
-	// 		Prefix
-	// 	})
-	// 	if (!Array.isArray(results.Contents)) return Promise.resolve([])
-	// 	return (
-	// 		results.Contents.reduce<AccountKey[]>((list, { Key }) => {
-	// 			if (typeof Key !== "string") return list
-	// 			const itemKey = locatorToItemKey.account(Key)
-	// 			return isAccountKey(itemKey) ? list.concat(itemKey) : list
-	// 		}, []) ?? []
-	// 	)
-	// }
 
-	ReadAccount(arg: Input["ReadAccount"]) {
-		return this.documentProvider.getItem<Output["ReadAccount"]>(pathname.account(arg))
+	ReadAccountInfo(accountKey: Input["ReadAccountInfo"]) {
+		const userDatabase = new UserDatabase(accountKey, this.documentProvider)
+		return userDatabase.ReadAccountInfo()
 	}
 
 	ReadEmailAccount(arg: Input["ReadEmailAccount"]) {

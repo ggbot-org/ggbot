@@ -1,4 +1,4 @@
-import { DocumentProviderLevel3 } from "@workspace/api"
+import { DocumentProviderLevel3, DocumentProviderListItemsInput } from "@workspace/api"
 import { S3Bucket, S3IOClient } from "@workspace/aws-s3"
 import { AwsRegion } from "@workspace/aws-types"
 import { deletedNow, DeployStage, SerializableData, updatedNow } from "@workspace/models"
@@ -35,8 +35,18 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 		return updatedNow()
 	}
 
-	async listItems(Prefix: string) {
-		const { Contents } = await this.s3.listObjects({ Prefix })
-		return Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? []
+	async listItems({ prefix, token }: DocumentProviderListItemsInput) {
+		const {
+			Contents,
+			ContinuationToken,
+			NextContinuationToken,
+			IsTruncated
+		} = await this.s3.listObjects({ Prefix: prefix, ContinuationToken: token })
+		return {
+			keys: Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? [],
+			token: ContinuationToken,
+			nextToken: NextContinuationToken,
+			isTruncated: IsTruncated
+		}
 	}
 }

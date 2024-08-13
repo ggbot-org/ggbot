@@ -15,8 +15,6 @@ function streamToString (stream: NodeJS.ReadableStream): Promise<string> {
 	})
 }
 
-type ListObjectsOutput = Pick< ListObjectsV2CommandOutput, "Contents" | "CommonPrefixes" >
-
 export class S3IOClient implements S3BucketProvider {
 	readonly client: S3Client
 	readonly Bucket: string
@@ -43,39 +41,31 @@ export class S3IOClient implements S3BucketProvider {
 		}
 	}
 
-	async listObjects({
-		ContinuationToken,
-		Contents: previousContents = [],
-		CommonPrefixes: previousCommonPrefixes = [],
-		...params
-	}: ListObjectsOutput &
-		Pick<
-			ListObjectsV2CommandInput,
+	async listObjects(params: Pick<ListObjectsV2CommandInput,
+		| "ContinuationToken"
+		| "Delimiter"
+		| "MaxKeys"
+		| "Prefix"
+	>): Promise<Pick<ListObjectsV2CommandOutput,
+			| "Contents"
 			| "ContinuationToken"
-			| "Delimiter"
-			| "MaxKeys"
-			| "Prefix"
-			| "StartAfter"
-		>): Promise<ListObjectsOutput> {
-		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ContinuationToken, ...params })
+			| "NextContinuationToken"
+			| "IsTruncated">
+		> {
+		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ...params })
 		const {
-			CommonPrefixes: CurrentCommonPrefixes = [],
-			Contents: CurrentContents = [],
+			Contents,
+			ContinuationToken,
 			IsTruncated,
-			NextContinuationToken
+			NextContinuationToken,
 		} = await this.client.send(command)
 
-		const CommonPrefixes = previousCommonPrefixes.concat(CurrentCommonPrefixes)
-		const Contents = previousContents.concat(CurrentContents)
-
-		if (!IsTruncated) return { Contents, CommonPrefixes }
-
-		const { Contents: nextContents, CommonPrefixes: nextCommonPrefixes } = await this.listObjects({
-			CommonPrefixes,
+		return {
 			Contents,
-			ContinuationToken: NextContinuationToken
-		})
-		return { Contents: nextContents, CommonPrefixes: nextCommonPrefixes }
+			ContinuationToken,
+			IsTruncated,
+			NextContinuationToken,
+		}
 	}
 
 	async putObject(Key: S3Path["Key"], data: string) {

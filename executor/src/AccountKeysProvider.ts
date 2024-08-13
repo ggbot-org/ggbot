@@ -27,7 +27,7 @@ export class AccountKeysProvider {
 		try {
 			const cached = this.cache.get(key)
 			if (cached) return cached
-			const data = await this.database.ListAccountKeys()
+			const { accountKeys: data } = await this.database.ListAccountKeys({ token: undefined })
 			this.cache.set(key, data)
 			return data
 		} catch (error) {

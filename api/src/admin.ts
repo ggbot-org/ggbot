@@ -1,24 +1,26 @@
-import { Account, AccountKey, isAccountKey, isEmailAddress } from "@workspace/models"
+import { Account, AccountInfo, AccountKey, isAccountKey, isEmailAddress } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ActionTypes } from "./action.js"
 import { AuthDatabaseAction, AuthDatabaseActionInput } from "./auth.js"
+import { ExecutorAction } from "./executor.js"
 
 export type AdminDatabaseAction = {
-	ListAccountKeys: (arg: void) => Promise<AccountKey[]>
-	ReadAccount: (arg: AccountKey) => Promise<Account | null>
-} & Pick<AuthDatabaseAction, "ReadEmailAccount">
+	ReadAccountInfo: (arg: AccountKey) => Promise<AccountInfo | null>
+} &
+ Pick<AuthDatabaseAction, "ReadEmailAccount"> &
+ Pick<ExecutorAction, "ListAccountKeys">
 
 type AdminDatabaseActionType = keyof AdminDatabaseAction
 
 export type AdminDatabaseActionInput = {
 	ListAccountKeys: Parameters<AdminDatabaseAction["ListAccountKeys"]>[0]
-	ReadAccount: Parameters<AdminDatabaseAction["ReadAccount"]>[0]
+	ReadAccountInfo: Parameters<AdminDatabaseAction["ReadAccountInfo"]>[0]
 } & Pick<AuthDatabaseActionInput, "ReadEmailAccount">
 
-export type AdminDatabaseActionOutput = {
+type AdminDatabaseActionOutput = {
 	ListAccountKeys: Awaited<ReturnType<AdminDatabaseAction["ListAccountKeys"]>>
-	ReadAccount: Awaited<ReturnType<AdminDatabaseAction["ReadAccount"]>>
+	ReadAccountInfo: Awaited<ReturnType<AdminDatabaseAction["ReadAccountInfo"]>>
 }
 
 type AdminClientAction = {
@@ -37,11 +39,12 @@ export type AdminClientActionOutput = Exclude<AdminDatabaseActionOutput, "ReadEm
 
 export const isAdminClientActionInput = {
 	EnterAsUser: objectTypeGuard<AdminClientActionInput["EnterAsUser"]>(({ email }) => isEmailAddress(email)),
+	ListAccountKeys: objectTypeGuard<AdminClientActionInput["ListAccountKeys"]>(({ token }) => token === undefined || typeof token === "string"),
 	ReadAccount: isAccountKey
 }
 
 export const adminClientActions: ActionTypes<AdminClientActionType> = [
 	"ListAccountKeys",
-	"ReadAccount",
+	"ReadAccountInfo",
 	"EnterAsUser",
 ] as const

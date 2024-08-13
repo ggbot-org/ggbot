@@ -48,7 +48,7 @@ Check which Node.js version was installed.
 node --version
 ```
 
-Update [Node.js section](../../repository/docs/tech-stack.md#nodejs) with latest version.
+Check taht `volta` attribute in [package.json](../../package.json) is compatible, see also [Node.js section](../../repository/docs/tech-stack.md#nodejs) on Teck Stack docs.
 
 ## Create AMI
 
