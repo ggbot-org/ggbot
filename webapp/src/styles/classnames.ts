@@ -30,8 +30,6 @@ type PageClassname = "page" | "page__content" | "page__footer"
 
 type ParagraphClassname = "paragraph"
 
-type StrategyItemClassname = "strategy-item"
-
 type TabSelectorClassname = "tab-selector"
 
 type TermsAndPolicyLinksClassname = "terms-and-policy-links"
@@ -48,7 +46,6 @@ type Classname =
 	| OneColumn
 	| PageClassname
 	| ParagraphClassname
-	| StrategyItemClassname
 	| TabSelectorClassname
 	| TermsAndPolicyLinksClassname
 	| ToastContainerClassname

@@ -1,5 +1,6 @@
+import { EnterAsAccount } from "_/components/admin/EnterAsAccount"
 import { Email } from "_/components/Email"
-import { Div, Title } from "_/components/library"
+import { Div, OneColumn, Title } from "_/components/library"
 import { AccountId, WhenCreated } from "_/components/readonlyFields"
 import { useReadAccountInfo } from "_/hooks/admin/api"
 import { useAccountKey } from "_/hooks/admin/useAccountKey"
@@ -17,13 +18,18 @@ export function Account() {
 	}, [canRun, request, accountKey])
 
 	return (
-		<Div bulma="box">
-			<Title>
-				<FormattedMessage id="AccountInfo.title" />
-			</Title>
-			<Email isStatic value={account?.email} />
-			<WhenCreated value={account?.whenCreated} />
-			<AccountId value={account?.id} />
-		</Div>
+		<>
+			<OneColumn>
+				<Div bulma="box">
+					<Title>
+						<FormattedMessage id="AccountInfo.title" />
+					</Title>
+					<Email isStatic value={account?.email} />
+					<WhenCreated value={account?.whenCreated} />
+					<AccountId value={account?.id} />
+				</Div>
+			</OneColumn>
+			<EnterAsAccount />
+		</>
 	)
 }
