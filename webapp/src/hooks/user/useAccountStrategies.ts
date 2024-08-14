@@ -10,10 +10,6 @@ export function useAccountStrategies() {
 		sessionWebStorage.accountStrategies.get()
 	)
 
-	const [estimatedNumStragies, setEstimatedNumStragies] = useState<number | undefined>(
-		sessionWebStorage.estimatedNumStragies.get() ?? 1
-	)
-
 	const resetAccountStrategies = useCallback(() => {
 		reset()
 	}, [reset])
@@ -28,9 +24,6 @@ export function useAccountStrategies() {
 	useEffect(() => {
 		if (!data) return
 		setAccountStrategies(data)
-		const estimatedNumStragies = data.length ?? 1
-		sessionWebStorage.estimatedNumStragies.set(estimatedNumStragies)
-		setEstimatedNumStragies(estimatedNumStragies)
 	}, [data])
 
 	// Handle case when account strategies list changes
@@ -45,7 +38,6 @@ export function useAccountStrategies() {
 
 	return {
 		accountStrategies,
-		estimatedNumStragies,
 		readStrategiesIsPending: isPending,
 		resetAccountStrategies,
 	}

@@ -35,18 +35,13 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 		return updatedNow()
 	}
 
-	async listItems({ prefix, token }: DocumentProviderListItemsInput) {
+	async listItems({ prefix, token, numItems }: DocumentProviderListItemsInput) {
 		const {
-			Contents,
-			ContinuationToken,
-			NextContinuationToken,
-			IsTruncated
-		} = await this.s3.listObjects({ Prefix: prefix, ContinuationToken: token })
+			Contents, NextContinuationToken,
+		} = await this.s3.listObjects({ Prefix: prefix, ContinuationToken: token, MaxKeys: numItems })
 		return {
 			keys: Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? [],
-			token: ContinuationToken,
 			nextToken: NextContinuationToken,
-			isTruncated: IsTruncated
 		}
 	}
 }

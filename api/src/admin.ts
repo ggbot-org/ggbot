@@ -39,7 +39,7 @@ export type AdminClientActionOutput = Exclude<AdminDatabaseActionOutput, "ReadEm
 
 export const isAdminClientActionInput = {
 	EnterAsUser: objectTypeGuard<AdminClientActionInput["EnterAsUser"]>(({ email }) => isEmailAddress(email)),
-	ListAccountKeys: objectTypeGuard<AdminClientActionInput["ListAccountKeys"]>(({ token }) => token === undefined || typeof token === "string"),
+	ListAccountKeys: objectTypeGuard<AdminClientActionInput["ListAccountKeys"]>(({ token, numItems }) => (token === undefined || typeof token === "string") && (numItems === undefined || typeof numItems === "number")),
 	ReadAccount: isAccountKey
 }
 

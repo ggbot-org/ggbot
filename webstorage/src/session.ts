@@ -16,7 +16,7 @@ export class SessionWebStorage {
 		return cachedObject<AccountStrategy[]>(this.storage, itemKey.accountStrategies())
 	}
 
-	get estimatedNumStragies() {
+	get estimatedNumStrategies() {
 		return cachedNumber(this.storage, itemKey.estimatedNumStrategies())
 	}
 

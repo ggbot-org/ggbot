@@ -1,4 +1,4 @@
-import { Column, Columns, Content, Message } from "_/components/library"
+import { Column, Columns, Content, Message, OneColumn } from "_/components/library"
 import { StrategyId, StrategyKind } from "_/components/readonlyFields"
 import { StrategyKey } from "@workspace/models"
 import { PropsWithChildren } from "react"
@@ -36,11 +36,21 @@ export function StrategyPageContainer({
 	strategyKey, strategyNotFound, children
 }: PropsWithChildren<{
 	strategyKey: StrategyKey | undefined
-	strategyNotFound: boolean
+	strategyNotFound: boolean | undefined
 }>) {
-	if (!strategyKey) return <InvalidStrategyKey />
+	if (!strategyKey) return (
+		<OneColumn>
+			<InvalidStrategyKey />
+		</OneColumn>
+	)
 
-	if (strategyNotFound) return <StrategyNotFound {...strategyKey} />
+	if (strategyNotFound) return (
+		<OneColumn>
+			<StrategyNotFound {...strategyKey} />
+		</OneColumn>
+	)
+
+	if (strategyNotFound === undefined) return null
 
 	return children
 }

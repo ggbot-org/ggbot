@@ -12,20 +12,17 @@ export type DocumentProviderLevel2 = DocumentProviderLevel1 & {
 }
 
 export type DocumentProviderListItemsInput = {
-	token?: string
 	prefix: string
+	token: string | undefined
+	numItems?: number
 }
 
 export type DocumentProviderListItemsOutput = {
 	keys: string[]
-	token?: string
-	nextToken?: string
-	isTruncated?: boolean
+	nextToken: string | undefined
 }
 
 /** Provides documents listing. */
 export type DocumentProviderLevel3 = DocumentProviderLevel2 & {
-	listItems(
-		{ token, prefix }: DocumentProviderListItemsInput
-	): Promise<DocumentProviderListItemsOutput>
+	listItems(arg: DocumentProviderListItemsInput): Promise<DocumentProviderListItemsOutput>
 }

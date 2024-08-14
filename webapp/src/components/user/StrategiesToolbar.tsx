@@ -1,15 +1,14 @@
-import { classnames } from "_/classnames"
 import { Checkbox } from "_/components/library"
+import { Toolbar, ToolbarProps } from "_/components/Toolbar"
 import { localWebStorage } from "_/storages/local"
 import { FormattedMessage } from "react-intl"
 
 export function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: Partial<{
 	hideInactive: boolean | undefined
 	setHideInactive: (value: boolean | undefined) => void
-	isInvisible: boolean
-}>) {
+}> & ToolbarProps) {
 	return (
-		<div className={classnames("is-flex", "mb-5", "ml-3", { "is-invisible": isInvisible })}>
+		<Toolbar isInvisible={isInvisible}>
 			<Checkbox
 				checked={hideInactive}
 				onChange={(event) => {
@@ -20,6 +19,6 @@ export function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }
 			>
 				<FormattedMessage id="Strategies.hideInactive" />
 			</Checkbox>
-		</div>
+		</Toolbar>
 	)
 }

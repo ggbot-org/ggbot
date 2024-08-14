@@ -8,7 +8,7 @@ export type ExecutorAction = {
 	AppendAccountDailyOrders: (arg: AccountDailyKey & { items: AccountDailyOrder[] }) => Promise<void>
 	AppendStrategyDailyErrors: Action<AccountStrategyDailyKey & { items: StrategyError[] }, void>
 	AppendStrategyDailyOrders: Action<AccountStrategyDailyKey & { items: Order[] }, void>
-	ListAccountKeys: (arg: Pick<DocumentProviderListItemsInput, "token">) => Promise<{ accountKeys: AccountKey[] } & Omit<DocumentProviderListItemsOutput, "keys">>
+	ListAccountKeys: (arg: Omit<DocumentProviderListItemsInput, "prefix">) => Promise<{ accountKeys: AccountKey[] } & Omit<DocumentProviderListItemsOutput, "keys">>
 	ReadAccount: (arg: AccountKey) => Promise<Account | null>
 	ReadAccountStrategies: (arg: AccountKey) => Promise<AccountStrategy[]>
 	ReadSubscription: (arg: AccountKey) => Promise<Subscription | null>

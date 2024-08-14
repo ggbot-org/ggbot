@@ -26,7 +26,7 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 
 	return {
 		strategy,
-		strategyNotFound: strategy === null,
+		strategyNotFound: strategy === undefined ? undefined : strategy === null,
 		strategyName: strategy?.name ?? "",
 		strategyId: strategy?.id ?? "",
 		strategyWhenCreated: strategy?.whenCreated,

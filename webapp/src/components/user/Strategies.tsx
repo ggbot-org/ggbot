@@ -4,34 +4,49 @@ import { StrategiesToolbar } from "_/components/user/StrategiesToolbar"
 import { StrategyItem } from "_/components/user/StrategyItem"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { localWebStorage } from "_/storages/local"
+import { sessionWebStorage } from "_/storages/session"
 import { AccountStrategy, schedulingsAreInactive } from "@workspace/models"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
 export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void }) {
-	const { accountStrategies, estimatedNumStragies, readStrategiesIsPending } = useAccountStrategies()
+	const { accountStrategies, readStrategiesIsPending } = useAccountStrategies()
 
 	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
 		localWebStorage.hideInactiveStrategies.get()
 	)
 
-	const allAreInactive = accountStrategies?.every(({ schedulings }) => schedulingsAreInactive(schedulings))
+	const [estimatedNumItems, setEstimatedNumItems] = useState<number | undefined>(
+		sessionWebStorage.estimatedNumStrategies.get() ?? 1
+	)
 
-	const items: AccountStrategy[] = []
-
-	if (accountStrategies) {
-		for (const item of accountStrategies) {
-			const isInactive = schedulingsAreInactive(item.schedulings)
-			if (hideInactive && isInactive && !allAreInactive) continue
-			items.push(item)
+	const { items, numItems } = useMemo(() => {
+		const items: AccountStrategy[] = []
+		let numItems: number | undefined
+		if (accountStrategies) {
+			const allAreInactive = accountStrategies.every(({ schedulings }) => schedulingsAreInactive(schedulings))
+			for (const item of accountStrategies) {
+				const isInactive = schedulingsAreInactive(item.schedulings)
+				if (hideInactive && isInactive && !allAreInactive) continue
+				items.push(item)
+			}
+			numItems = items.length
 		}
-	}
+		return { items, numItems }
+	}, [accountStrategies, hideInactive])
+
+	useEffect(() => {
+		if (numItems === undefined) return
+		const estimatedNumItems = numItems ?? 1
+		sessionWebStorage.estimatedNumStrategies.set(estimatedNumItems)
+		setEstimatedNumItems(estimatedNumItems)
+	}, [numItems])
 
 	if (readStrategiesIsPending) return (
 		<>
 			<StrategiesToolbar isInvisible />
 			<Columns isMultiline>
-				{[...Array(estimatedNumStragies)].map((_, index) => String(index)).map((key) => (
+				{[...Array(estimatedNumItems)].map((_, index) => String(index)).map((key) => (
 					<Column key={key} bulma={["is-half-tablet", "is-one-third-desktop"]}>
 						<StrategyItem
 							isLoading
