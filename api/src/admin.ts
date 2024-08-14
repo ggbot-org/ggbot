@@ -1,4 +1,4 @@
-import { Account, AccountInfo, AccountKey, isAccountKey, isEmailAddress } from "@workspace/models"
+import { AccountInfo, AccountKey, isAccountKey } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ActionTypes } from "./action.js"
@@ -8,8 +8,8 @@ import { ExecutorAction } from "./executor.js"
 export type AdminDatabaseAction = {
 	ReadAccountInfo: (arg: AccountKey) => Promise<AccountInfo | null>
 } &
- Pick<AuthDatabaseAction, "ReadEmailAccount"> &
- Pick<ExecutorAction, "ListAccountKeys">
+	Pick<AuthDatabaseAction, "ReadEmailAccount"> &
+	Pick<ExecutorAction, "ListAccountKeys">
 
 type AdminDatabaseActionType = keyof AdminDatabaseAction
 
@@ -24,21 +24,21 @@ type AdminDatabaseActionOutput = {
 }
 
 type AdminClientAction = {
-	EnterAsUser: (arg: Pick<Account, "email">) => Promise<{ token?: string }>
+	EnterAsAccount: (arg: AccountKey) => Promise<{ token?: string }>
 }
 
 export type AdminClientActionType = keyof AdminClientAction | Exclude<AdminDatabaseActionType, "ReadEmailAccount">
 
 export type AdminClientActionInput = Exclude<AdminDatabaseActionInput, "ReadEmailAccount"> & {
-	EnterAsUser: Parameters<AdminClientAction["EnterAsUser"]>[0]
+	EnterAsAccount: Parameters<AdminClientAction["EnterAsAccount"]>[0]
 }
 
 export type AdminClientActionOutput = Exclude<AdminDatabaseActionOutput, "ReadEmailAccount"> & {
-	EnterAsUser: Awaited<ReturnType<AdminClientAction["EnterAsUser"]>>
+	EnterAsAccount: Awaited<ReturnType<AdminClientAction["EnterAsAccount"]>>
 }
 
 export const isAdminClientActionInput = {
-	EnterAsUser: objectTypeGuard<AdminClientActionInput["EnterAsUser"]>(({ email }) => isEmailAddress(email)),
+	EnterAsAccount: isAccountKey,
 	ListAccountKeys: objectTypeGuard<AdminClientActionInput["ListAccountKeys"]>(({ token, numItems }) => (token === undefined || typeof token === "string") && (numItems === undefined || typeof numItems === "number")),
 	ReadAccount: isAccountKey
 }
@@ -46,5 +46,5 @@ export const isAdminClientActionInput = {
 export const adminClientActions: ActionTypes<AdminClientActionType> = [
 	"ListAccountKeys",
 	"ReadAccountInfo",
-	"EnterAsUser",
+	"EnterAsAccount",
 ] as const

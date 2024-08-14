@@ -20,7 +20,7 @@ function StrategyItem({
 		<Column bulma={["is-half-tablet", "is-one-third-desktop"]}>
 			<Div
 				bulma={["box", { "is-clickable": !isLoading, "skeleton-block": isLoading }]}
-				onClick={() => GOTO(new URL(webapp.user.strategy(strategyKey)))}
+				onClick={() => GOTO(webapp.user.strategy(strategyKey))}
 				tabIndex={0}
 			>
 				<Div bulma={["is-flex", "is-justify-content-space-between"]} >

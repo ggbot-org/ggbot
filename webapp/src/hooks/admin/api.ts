@@ -7,6 +7,14 @@ const apiOptions: UseActionApiArg = {
 	withAuth: true
 }
 
+export function useEnterAsAccount() {
+	return useAction<
+		ActionType,
+		Input["EnterAsAccount"],
+		Output["EnterAsAccount"]
+	>(apiOptions, "EnterAsAccount")
+}
+
 export function useListAccountKeys() {
 	return useAction<
 		ActionType,

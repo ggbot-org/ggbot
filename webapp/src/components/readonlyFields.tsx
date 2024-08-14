@@ -1,6 +1,6 @@
 import { ReadonlyField } from "_/components/library"
 import { dayFormat } from "_/i18n/formats"
-import { SubscriptionPlan as SubscriptionPlanValue } from "@workspace/models"
+import { EmailAddress, SubscriptionPlan as SubscriptionPlanValue } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -12,6 +12,15 @@ export function AccountId({ value }: ValueProp<string>) {
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="AccountId.label" />}
+			value={value}
+		/>
+	)
+}
+
+export function Email({ value }: ValueProp<EmailAddress>) {
+	return (
+		<ReadonlyField
+			label={<FormattedMessage id="Email.label" />}
 			value={value}
 		/>
 	)

@@ -12,7 +12,7 @@ function AccountItem ({ accountId, isLoading }: AccountKey & Partial<{ isLoading
 		<Column>
 			<Div
 				bulma={classnames("box", { "is-clickable": !isLoading, "skeleton-block": isLoading })}
-				onClick={() => GOTO(new URL(webapp.admin.accountDetails({ accountId })))}
+				onClick={() => GOTO(webapp.admin.accountDetails({ accountId }))}
 			>
 				<AccountId value={accountId} />
 			</Div>

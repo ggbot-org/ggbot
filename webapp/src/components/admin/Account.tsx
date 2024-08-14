@@ -1,7 +1,6 @@
 import { EnterAsAccount } from "_/components/admin/EnterAsAccount"
-import { Email } from "_/components/Email"
 import { Div, OneColumn, Title } from "_/components/library"
-import { AccountId, WhenCreated } from "_/components/readonlyFields"
+import { AccountId, Email, WhenCreated } from "_/components/readonlyFields"
 import { useReadAccountInfo } from "_/hooks/admin/api"
 import { useAccountKey } from "_/hooks/admin/useAccountKey"
 import { useEffect } from "react"
@@ -24,12 +23,12 @@ export function Account() {
 					<Title>
 						<FormattedMessage id="AccountInfo.title" />
 					</Title>
-					<Email isStatic value={account?.email} />
+					<Email value={account?.email} />
 					<WhenCreated value={account?.whenCreated} />
 					<AccountId value={account?.id} />
 				</Div>
 			</OneColumn>
-			<EnterAsAccount />
+			<EnterAsAccount accountId={account?.id} />
 		</>
 	)
 }

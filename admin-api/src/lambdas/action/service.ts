@@ -12,20 +12,15 @@ export class Service implements ApiService<AdminClientActionType> {
 		this.dataProvider = new AdminDatabase(documentProvider)
 	}
 
-	async EnterAsUser(arg: unknown) {
-		if (!isInput.EnterAsUser(arg)) throw new BadRequestError()
-		const { email } = arg
+	async EnterAsAccount(arg: unknown) {
+		if (!isInput.EnterAsAccount(arg)) throw new BadRequestError()
+		const { accountId } = arg
 
-		const output: Output["EnterAsUser"] = { token: undefined }
+		const output: Output["EnterAsAccount"] = { token: undefined }
 
-		const emailAccount = await this.dataProvider.ReadEmailAccount(email)
-		const creationDay = today()
-
-		if (emailAccount) {
-			const session: ClientSession = { creationDay, accountId: emailAccount.accountId }
-			const token = await signSession(session)
-			output.token = token
-		}
+		const session: ClientSession = { creationDay: today(), accountId }
+		const token = await signSession(session)
+		output.token = token
 
 		return output
 	}
