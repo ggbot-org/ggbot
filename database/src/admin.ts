@@ -1,30 +1,31 @@
 import { AdminDatabaseAction, AdminDatabaseActionInput as Input, DocumentProviderLevel3 } from "@workspace/api"
+import { Account } from "@workspace/models"
 
-import { AuthDatabase } from "./auth.js"
 import { ExecutorDatabase } from "./executor.js"
+import { pathname } from "./locators.js"
 import { UserDatabase } from "./user.js"
 
 export class AdminDatabase implements AdminDatabaseAction {
 	private documentProvider: DocumentProviderLevel3
-	private authDatabase: AuthDatabase
 	private executorDatabase: ExecutorDatabase
 
 	constructor(documentProvider: AdminDatabase["documentProvider"]) {
-		this.authDatabase = new AuthDatabase(documentProvider)
 		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.documentProvider = documentProvider
 	}
 
-	async ListAccountKeys(arg: Input["ListAccountKeys"]) {
-		return this.executorDatabase.ListAccountKeys(arg)
+	async ListAccounts(arg: Input["ListAccounts"]) {
+		const { accountKeys, nextToken } = await this.executorDatabase.ListAccountKeys(arg)
+		const accounts: Account[] = []
+		for (const { accountId } of accountKeys) {
+			const account = await this.documentProvider.getItem<Account>(pathname.account({ accountId }))
+			if (account) accounts.push(account)
+		}
+		return { accounts, nextToken }
 	}
 
 	ReadAccountInfo(accountKey: Input["ReadAccountInfo"]) {
 		const userDatabase = new UserDatabase(accountKey, this.documentProvider)
 		return userDatabase.ReadAccountInfo()
-	}
-
-	ReadEmailAccount(arg: Input["ReadEmailAccount"]) {
-		return this.authDatabase.ReadEmailAccount(arg)
 	}
 }

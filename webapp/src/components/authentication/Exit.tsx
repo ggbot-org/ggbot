@@ -1,7 +1,6 @@
 import { classnames } from "_/classnames"
-import { Email } from "_/components/Email"
 import { Button, Buttons, Column, Columns, Message, Modal, Title } from "_/components/library"
-import { AccountId } from "_/components/readonlyFields"
+import { AccountId, Email } from "_/components/readonlyFields"
 import { FormattedMessage } from "react-intl"
 
 export function AuthExit({
@@ -34,7 +33,7 @@ export function AuthExit({
 				</Message>
 				<Columns>
 					<Column bulma="is-half">
-						<Email isStatic value={accountEmail} />
+						<Email value={accountEmail} />
 					</Column>
 					<Column bulma="is-half">
 						<AccountId value={accountId} />

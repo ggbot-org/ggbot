@@ -8,25 +8,13 @@ const apiOptions: UseActionApiArg = {
 }
 
 export function useEnterAsAccount() {
-	return useAction<
-		ActionType,
-		Input["EnterAsAccount"],
-		Output["EnterAsAccount"]
-	>(apiOptions, "EnterAsAccount")
+	return useAction<ActionType, Input["EnterAsAccount"], Output["EnterAsAccount"]>(apiOptions, "EnterAsAccount")
 }
 
-export function useListAccountKeys() {
-	return useAction<
-		ActionType,
-		Input["ListAccountKeys"],
-		Output["ListAccountKeys"]
-	>(apiOptions, "ListAccountKeys")
+export function useListAccounts() {
+	return useAction<ActionType, Input["ListAccounts"], Output["ListAccounts"]>(apiOptions, "ListAccounts")
 }
 
 export function useReadAccountInfo() {
-	return useAction<
-		ActionType,
-		Input["ReadAccountInfo"],
-		Output["ReadAccountInfo"]
-	>(apiOptions, "ReadAccountInfo")
+	return useAction<ActionType, Input["ReadAccountInfo"], Output["ReadAccountInfo"]>(apiOptions, "ReadAccountInfo")
 }

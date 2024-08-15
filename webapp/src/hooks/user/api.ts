@@ -10,25 +10,15 @@ import { useCallback, useEffect, useState } from "react"
 
 // Stripe Api
 
-const stripeApiOptions: UseActionApiArg = {
-	url: api.stripe.action,
-	withAuth: true
-}
+const stripeApiOptions: UseActionApiArg = { url: api.stripe.action, withAuth: true }
 
 export function useCreateCheckoutSession() {
-	return useAction<
-		StripeClientActionType,
-		StripeClientActionInput["CreateCheckoutSession"],
-		StripeClientActionOutput["CreateCheckoutSession"]
-	>(stripeApiOptions, "CreateCheckoutSession")
+	return useAction<StripeClientActionType, StripeClientActionInput["CreateCheckoutSession"], StripeClientActionOutput["CreateCheckoutSession"]>(stripeApiOptions, "CreateCheckoutSession")
 }
 
 // User Api
 
-const userApiOptions: UseActionApiArg = {
-	url: api.user.action,
-	withAuth: true
-}
+const userApiOptions: UseActionApiArg = { url: api.user.action, withAuth: true }
 
 export function useCopyStrategy() {
 	const { data: newStrategy, isDone, ...rest } = useAction<
@@ -44,11 +34,7 @@ export function useCopyStrategy() {
 }
 
 export function useCreateBinanceApiConfig() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["CreateBinanceApiConfig"],
-		UserClientActionOutput["CreateBinanceApiConfig"]
-	>(userApiOptions, "CreateBinanceApiConfig")
+	return useAction<UserClientActionType, UserClientActionInput["CreateBinanceApiConfig"], UserClientActionOutput["CreateBinanceApiConfig"]>(userApiOptions, "CreateBinanceApiConfig")
 }
 
 export function useCreateStrategy() {
@@ -65,19 +51,11 @@ export function useCreateStrategy() {
 }
 
 export function useDeleteAccount() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["DeleteAccount"],
-		UserClientActionOutput["DeleteAccount"]
-	>(userApiOptions, "DeleteAccount")
+	return useAction<UserClientActionType, UserClientActionInput["DeleteAccount"], UserClientActionOutput["DeleteAccount"]>(userApiOptions, "DeleteAccount")
 }
 
 export function useDeleteBinanceApiConfig() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["DeleteBinanceApiConfig"],
-		UserClientActionOutput["DeleteBinanceApiConfig"]
-	>(userApiOptions, "DeleteBinanceApiConfig")
+	return useAction<UserClientActionType, UserClientActionInput["DeleteBinanceApiConfig"], UserClientActionOutput["DeleteBinanceApiConfig"]>(userApiOptions, "DeleteBinanceApiConfig")
 }
 
 export function useDeleteStrategy() {
@@ -94,35 +72,19 @@ export function useDeleteStrategy() {
 }
 
 export function useReadAccountInfo() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["ReadAccountInfo"],
-		UserClientActionOutput["ReadAccountInfo"]
-	>(userApiOptions, "ReadAccountInfo")
+	return useAction<UserClientActionType, UserClientActionInput["ReadAccountInfo"], UserClientActionOutput["ReadAccountInfo"]>(userApiOptions, "ReadAccountInfo")
 }
 
 export function useReadBinanceAccountApiRestrictions() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["ReadBinanceAccountApiRestrictions"],
-		UserClientActionOutput["ReadBinanceAccountApiRestrictions"]
-	>(userApiOptions, "ReadBinanceAccountApiRestrictions")
+	return useAction<UserClientActionType, UserClientActionInput["ReadBinanceAccountApiRestrictions"], UserClientActionOutput["ReadBinanceAccountApiRestrictions"]>(userApiOptions, "ReadBinanceAccountApiRestrictions")
 }
 
 export function useReadBinanceApiKey() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["ReadBinanceApiKey"],
-		UserClientActionOutput["ReadBinanceApiKey"]
-	>(userApiOptions, "ReadBinanceApiKey")
+	return useAction<UserClientActionType, UserClientActionInput["ReadBinanceApiKey"], UserClientActionOutput["ReadBinanceApiKey"]>(userApiOptions, "ReadBinanceApiKey")
 }
 
 export function useReadStrategies() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["ReadStrategies"],
-		UserClientActionOutput["ReadStrategies"]
-	>(userApiOptions, "ReadStrategies")
+	return useAction<UserClientActionType, UserClientActionInput["ReadStrategies"], UserClientActionOutput["ReadStrategies"]>(userApiOptions, "ReadStrategies")
 }
 
 export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
@@ -258,25 +220,13 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 }
 
 export function useRenameStrategy() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["RenameStrategy"],
-		UserClientActionOutput["RenameStrategy"]
-	>(userApiOptions, "RenameStrategy")
+	return useAction<UserClientActionType, UserClientActionInput["RenameStrategy"], UserClientActionOutput["RenameStrategy"]>(userApiOptions, "RenameStrategy")
 }
 
 export function useWriteAccountStrategiesItemSchedulings() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["WriteAccountStrategiesItemSchedulings"],
-		UserClientActionOutput["WriteAccountStrategiesItemSchedulings"]
-	>(userApiOptions, "WriteAccountStrategiesItemSchedulings")
+	return useAction<UserClientActionType, UserClientActionInput["WriteAccountStrategiesItemSchedulings"], UserClientActionOutput["WriteAccountStrategiesItemSchedulings"]>(userApiOptions, "WriteAccountStrategiesItemSchedulings")
 }
 
 export function useWriteStrategyFlow() {
-	return useAction<
-		UserClientActionType,
-		UserClientActionInput["WriteStrategyFlow"],
-		UserClientActionOutput["WriteStrategyFlow"]
-	>(userApiOptions, "WriteStrategyFlow")
+	return useAction<UserClientActionType, UserClientActionInput["WriteStrategyFlow"], UserClientActionOutput["WriteStrategyFlow"]>(userApiOptions, "WriteStrategyFlow")
 }

@@ -1,25 +1,21 @@
-import { AccountInfo, AccountKey, isAccountKey } from "@workspace/models"
+import { Account, AccountInfo, AccountKey, isAccountKey } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { ActionTypes } from "./action.js"
-import { AuthDatabaseAction, AuthDatabaseActionInput } from "./auth.js"
-import { ExecutorAction } from "./executor.js"
+import { DocumentProviderListItemsInput, DocumentProviderListItemsOutput } from "./documentProvider.js"
 
 export type AdminDatabaseAction = {
+	ListAccounts: (arg: Omit<DocumentProviderListItemsInput, "prefix">) => Promise<{ accounts: Account[] } & Omit<DocumentProviderListItemsOutput, "keys">>
 	ReadAccountInfo: (arg: AccountKey) => Promise<AccountInfo | null>
-} &
-	Pick<AuthDatabaseAction, "ReadEmailAccount"> &
-	Pick<ExecutorAction, "ListAccountKeys">
-
-type AdminDatabaseActionType = keyof AdminDatabaseAction
+}
 
 export type AdminDatabaseActionInput = {
-	ListAccountKeys: Parameters<AdminDatabaseAction["ListAccountKeys"]>[0]
+	ListAccounts: Parameters<AdminDatabaseAction["ListAccounts"]>[0]
 	ReadAccountInfo: Parameters<AdminDatabaseAction["ReadAccountInfo"]>[0]
-} & Pick<AuthDatabaseActionInput, "ReadEmailAccount">
+}
 
 type AdminDatabaseActionOutput = {
-	ListAccountKeys: Awaited<ReturnType<AdminDatabaseAction["ListAccountKeys"]>>
+	ListAccounts: Awaited<ReturnType<AdminDatabaseAction["ListAccounts"]>>
 	ReadAccountInfo: Awaited<ReturnType<AdminDatabaseAction["ReadAccountInfo"]>>
 }
 
@@ -27,24 +23,24 @@ type AdminClientAction = {
 	EnterAsAccount: (arg: AccountKey) => Promise<{ token?: string }>
 }
 
-export type AdminClientActionType = keyof AdminClientAction | Exclude<AdminDatabaseActionType, "ReadEmailAccount">
+export type AdminClientActionType = keyof AdminClientAction | keyof AdminDatabaseAction
 
-export type AdminClientActionInput = Exclude<AdminDatabaseActionInput, "ReadEmailAccount"> & {
+export type AdminClientActionInput = AdminDatabaseActionInput & {
 	EnterAsAccount: Parameters<AdminClientAction["EnterAsAccount"]>[0]
 }
 
-export type AdminClientActionOutput = Exclude<AdminDatabaseActionOutput, "ReadEmailAccount"> & {
+export type AdminClientActionOutput = AdminDatabaseActionOutput & {
 	EnterAsAccount: Awaited<ReturnType<AdminClientAction["EnterAsAccount"]>>
 }
 
 export const isAdminClientActionInput = {
 	EnterAsAccount: isAccountKey,
-	ListAccountKeys: objectTypeGuard<AdminClientActionInput["ListAccountKeys"]>(({ token, numItems }) => (token === undefined || typeof token === "string") && (numItems === undefined || typeof numItems === "number")),
+	ListAccounts: objectTypeGuard<AdminClientActionInput["ListAccounts"]>(({ token, numItems }) => (token === undefined || typeof token === "string") && (numItems === undefined || typeof numItems === "number")),
 	ReadAccount: isAccountKey
 }
 
 export const adminClientActions: ActionTypes<AdminClientActionType> = [
-	"ListAccountKeys",
+	"ListAccounts",
 	"ReadAccountInfo",
 	"EnterAsAccount",
 ] as const

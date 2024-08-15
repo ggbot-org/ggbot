@@ -30,8 +30,8 @@ export class Service implements ApiService<AdminClientActionType> {
 		return this.dataProvider.ReadAccountInfo(arg)
 	}
 
-	ListAccountKeys(arg: unknown) {
-		if (!isInput.ListAccountKeys(arg)) throw new BadRequestError()
-		return this.dataProvider.ListAccountKeys(arg)
+	ListAccounts(arg: unknown) {
+		if (!isInput.ListAccounts(arg)) throw new BadRequestError()
+		return this.dataProvider.ListAccounts(arg)
 	}
 }

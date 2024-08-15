@@ -1,13 +1,15 @@
 import { classnames } from "_/classnames"
 import { Column, Columns, Div } from "_/components/library"
-import { AccountId } from "_/components/readonlyFields"
-import { useListAccountKeys } from "_/hooks/admin/api"
+import { AccountId, Email } from "_/components/readonlyFields"
+import { useListAccounts } from "_/hooks/admin/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { AccountKey, isAccountKey } from "@workspace/models"
+import { Account, AccountKey } from "@workspace/models"
 import { useEffect } from "react"
 
-function AccountItem ({ accountId, isLoading }: AccountKey & Partial<{ isLoading: boolean }>) {
+function AccountItem ({
+	accountId, email, isLoading
+}: AccountKey & Pick<Account, "email"> & Partial<{ isLoading: boolean }>) {
 	return (
 		<Column>
 			<Div
@@ -15,42 +17,38 @@ function AccountItem ({ accountId, isLoading }: AccountKey & Partial<{ isLoading
 				onClick={() => GOTO(webapp.admin.accountDetails({ accountId }))}
 			>
 				<AccountId value={accountId} />
+				<Email value={email} />
 			</Div>
 		</Column>
 	)
 }
 
 export function Accounts() {
-	const { data, canRun, request, isPending } = useListAccountKeys()
+	const { data, canRun, request, isPending } = useListAccounts()
 
-	const items: AccountKey[] = []
-
-	if (data) for (const item of data.accountKeys) {
-		if (isAccountKey(item)) items.push(item)
-	}
+	const items: Account[] = data ? data.accounts : []
 
 	useEffect(() => {
-		// TODO ListAccountKeys input should be optional ContinuationToken to implement pagination
-		// for now I am forced to pass undefined
+		// TODO ListAccounts input accepts token to implement pagination
 		if (canRun) request({ token: undefined, numItems: 100 })
 	}, [canRun, request])
 
 	if (isPending) return (
 		<Columns isMultiline>
 			<Column bulma={["is-half-tablet", "is-one-third-desktop"]} >
-				<AccountItem accountId="" />
+				<AccountItem accountId="" email="" />
 			</Column>
 		</Columns>
 	)
 
 	return (
 		<Columns isMultiline>
-			{items.map(({ accountId }) => (
+			{items.map(({ id, email }) => (
 				<Column
-					key={accountId}
+					key={id}
 					bulma={["is-half-tablet", "is-one-third-desktop"]}
 				>
-					<AccountItem accountId={accountId} />
+					<AccountItem accountId={id} email={email} />
 				</Column>
 			))}
 		</Columns>
