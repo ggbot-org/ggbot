@@ -1,5 +1,5 @@
 import { logging } from "@workspace/logging"
 
-const { debug, info, warn } = logging("stripe")
+const { info, warn } = logging("stripe")
 
-export { debug, info, warn }
+export { info, warn }

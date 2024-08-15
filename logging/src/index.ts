@@ -10,9 +10,9 @@
  * ```ts
  * import { logging } from "@workspace/logging"
  *
- * const { warn, debug } = logging("my-prefix")
+ * const { warn } = logging("my-prefix")
  *
- * export { warn, debug }
+ * export { warn }
  * ```
  *
  * To enable info logging, on Node runtime you can do something like this:
@@ -46,8 +46,4 @@ export const logging = (prefix: string, isDev = false) => ({
 			})
 		)
 	},
-	/** Prints error and its stacktrace to STDERR. */
-	debug: (error: unknown) => {
-		console.debug(new Date().toJSON(), error)
-	}
 })

@@ -101,7 +101,7 @@ module.exports = {
 		"import/no-extraneous-dependencies": "error",
 
 		"no-case-declarations": "error",
-		"no-console": "error",
+		"no-console": ["error", { allow: ["debug"] }],
 		"no-extra-label": "error",
 		// Turn off no-extra-semi, in favour of @stylistic/no-extra-semi
 		"no-extra-semi": "off",

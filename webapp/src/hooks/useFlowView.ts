@@ -3,7 +3,6 @@
 import { binance } from "_/binance/exchange"
 import { initializeFlowView } from "_/flow/initializeFlowView"
 import { DflowBinanceClient, DflowBinanceClientDummy, DflowBinanceHost, getDflowBinanceNodesCatalog, parsePercentage } from "@workspace/dflow"
-import { logging } from "@workspace/logging"
 import { StrategyKind } from "@workspace/models"
 import { DflowErrorCannotConnectSourceToTarget, DflowNodesCatalog, DflowNodeUnknown } from "dflow"
 import { FlowView, FlowViewOnChangeArg, FlowViewOnChangeDataEdge, FlowViewOnChangeDataNode, FlowViewOnChangeInfo, FlowViewSerializableGraph } from "flow-view"
@@ -11,8 +10,6 @@ import { now, Time, truncateTime } from "minimal-time-helpers"
 import { useCallback, useEffect, useState } from "react"
 
 import { useBinanceSymbols } from "./useBinanceSymbols"
-
-const { debug } = logging("useFlowView")
 
 class BinanceClient
 	extends DflowBinanceClientDummy
@@ -138,7 +135,7 @@ export function useFlowView(
 					default: break
 				}
 			} catch (error) {
-				debug(error)
+				console.debug(error)
 				if (action === "CREATE_EDGE") {
 					if (typeof data !== "object" || data === null) return
 					const edgeId = data.id

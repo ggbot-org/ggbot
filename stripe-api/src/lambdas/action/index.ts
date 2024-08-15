@@ -5,7 +5,7 @@ import { logging } from "@workspace/logging"
 
 import { Service } from "./service.js"
 
-const { debug, info } = logging("stripe-api")
+const { info } = logging("stripe-api")
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -14,26 +14,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
-		if (event.httpMethod !== apiActionMethod) {
-			debug("Method not allowed")
-			return errorResponse(METHOD_NOT_ALLOWED__405)
-		}
+		if (event.httpMethod !== apiActionMethod) return errorResponse(METHOD_NOT_ALLOWED__405)
 
 		info(event.httpMethod, event.body)
-		if (!event.body) {
-			debug("Missing body")
-			return errorResponse(BAD_REQUEST__400)
-		}
+		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const authorization = event.headers.Authorization
 		const accountKey = await readSessionFromAuthorizationHeader(authorization)
 		const service = new Service(accountKey)
 
 		const input: unknown = JSON.parse(event.body)
-		if (!isActionInput(stripeClientActions)(input)) {
-			debug("Unknown input")
-			return errorResponse(BAD_REQUEST__400)
-		}
+		if (!isActionInput(stripeClientActions)(input)) return errorResponse(BAD_REQUEST__400)
 
 		const output = await service[input.type](input.data)
 		info(input.type, JSON.stringify(output, null, 2))
@@ -44,12 +35,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			GatewayTimeoutError,
 			UnauthorizedError
 		]) if (error instanceof ErrorClass) {
-			debug(error)
 			return errorResponse(ErrorClass.statusCode)
 		}
-
-		// Fallback to print error if not handled.
-		debug(error)
+		// Fallback if error is not handled: should not arrive here.
+		console.debug(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }

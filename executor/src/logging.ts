@@ -6,4 +6,3 @@ const log = logging(`executor ${pid}`)
 
 export const info = log.info
 export const warn = log.warn
-export const debug = log.debug

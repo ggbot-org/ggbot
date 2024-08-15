@@ -4,7 +4,7 @@ import { newId, Order, StrategyKind } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
 import { getBinance, prepareBinance } from "./binance.js"
-import { debug, warn } from "./logging.js"
+import { warn } from "./logging.js"
 
 type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 
@@ -98,7 +98,7 @@ async function runBinance(
 				}
 			}
 		} catch (error) {
-			debug(error)
+			console.debug(error)
 			const statusChanged = session.stop()
 			if (statusChanged) POST(statusChangedMessage(session))
 		}
@@ -177,7 +177,7 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 						await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
 						await runBinance(binance, binanceExecutor, flow)
 					} catch (error) {
-						debug(error)
+						console.debug(error)
 					}
 				},
 				none: () => Promise.resolve()
@@ -219,7 +219,7 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 						await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
 						await runBinance(binance, binanceExecutor, flow)
 					} catch (error) {
-						debug(error)
+						console.debug(error)
 					}
 				},
 				none: () => Promise.resolve()
@@ -234,6 +234,6 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 		}
 	} catch (error) {
 		warn(message)
-		debug(error)
+		console.debug(error)
 	}
 }

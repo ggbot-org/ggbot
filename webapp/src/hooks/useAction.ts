@@ -7,7 +7,7 @@ import { logging } from "@workspace/logging"
 import { useCallback, useContext, useState } from "react"
 import { useIntl } from "react-intl"
 
-const { debug, warn } = logging("use-action")
+const { warn } = logging("use-action")
 
 export type UseActionApiArg = {
 	url: Parameters<typeof clientAction>[0]
@@ -94,7 +94,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					// This AbortError is called on component unmount.
 					if (error instanceof DOMException && error.name === "AbortError") return
 
-					debug(error)
+					console.debug(error)
 
 					if (error instanceof GatewayTimeoutError) {
 						toast.warning(genericError)
@@ -130,7 +130,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					setIsPending(false)
 				}
 			})().catch((error) => {
-				debug(error)
+				console.debug(error)
 				setError({ name: GenericError.errorName })
 			})
 		},

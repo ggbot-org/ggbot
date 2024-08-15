@@ -14,7 +14,7 @@ import writeFile from "write-file-utf8"
 import { AccountKeysProvider } from "./AccountKeysProvider.js"
 import { AccountStrategiesProvider } from "./AccountStrategiesProvider.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { debug, info } from "./logging.js"
+import { info } from "./logging.js"
 import { StrategyFlowProvider } from "./StrategyFlowProvider.js"
 import { SubscriptionProvider } from "./SubscriptionProvider.js"
 
@@ -199,7 +199,8 @@ export class Executor {
 					}
 				}
 
-				debug(error)
+				// Fallback if error is not handled: should not arrive here.
+				console.debug(error)
 			}
 		}
 	}

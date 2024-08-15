@@ -136,29 +136,33 @@ export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 	const cachedRequest = useCallback(
 		({ start, end, ...strategyKey }: UserClientActionInput["ReadStrategyErrors"]) => {
 			(async () => {
-				const cachedData: UserClientActionOutput["ReadStrategyErrors"] = []
-				let date = dayToDate(start)
-				let allDataIsCached = true
-				while (date <= dayToDate(end)) {
-					const dailyResult = await errorsIDB.readDailyErrors(strategyKey, dateToDay(date))
-					if (!dailyResult) {
-						allDataIsCached = false
-						break
+				try {
+					const cachedData: UserClientActionOutput["ReadStrategyErrors"] = []
+					let date = dayToDate(start)
+					let allDataIsCached = true
+					while (date <= dayToDate(end)) {
+						const dailyResult = await errorsIDB.readDailyErrors(strategyKey, dateToDay(date))
+						if (!dailyResult) {
+							allDataIsCached = false
+							break
+						}
+						cachedData.push(...dailyResult)
+						date = getDate(date).plusOne.day
 					}
-					cachedData.push(...dailyResult)
-					date = getDate(date).plusOne.day
-				}
-				setData(cachedData)
-				if (!allDataIsCached) {
+					setData(cachedData)
+					if (!allDataIsCached) {
 					// Never cache current day.
-					const maxDay = today()
-					const start = dateToDay(date)
-					if (start < maxDay) setToBeCachedDayInterval({
-						start,
-						end: end === today() ? getDay(end).minus(1).days : end
-					})
-					// Fetch missing data.
-					await request({ start, end, ...strategyKey })
+						const maxDay = today()
+						const start = dateToDay(date)
+						if (start < maxDay) setToBeCachedDayInterval({
+							start,
+							end: end === today() ? getDay(end).minus(1).days : end
+						})
+						// Fetch missing data.
+						await request({ start, end, ...strategyKey })
+					}
+				} catch (error) {
+					console.debug(error)
 				}
 			})()
 		},
@@ -196,27 +200,33 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 	const cachedRequest = useCallback(
 		({ start, end, ...strategyKey }: UserClientActionInput["ReadStrategyOrders"]) => {
 			(async () => {
-				const cachedData: UserClientActionOutput["ReadStrategyOrders"] = []
-				let date = dayToDate(start)
-				let allDataIsCached = true
-				while (date <= dayToDate(end)) {
-					const dailyResult = await ordersIDB.readDailyOrders(strategyKey, dateToDay(date))
-					if (!dailyResult) {
-						allDataIsCached = false
-						break
+				try {
+					const cachedData: UserClientActionOutput["ReadStrategyOrders"] = []
+					let date = dayToDate(start)
+					let allDataIsCached = true
+					while (date <= dayToDate(end)) {
+						const dailyResult = await ordersIDB.readDailyOrders(strategyKey, dateToDay(date))
+						if (!dailyResult) {
+							allDataIsCached = false
+							break
+						}
+						cachedData.push(...dailyResult)
+						date = getDate(date).plusOne.day
 					}
-					cachedData.push(...dailyResult)
-					date = getDate(date).plusOne.day
-				}
-				setData(cachedData)
-				if (!allDataIsCached) {
+					setData(cachedData)
+					if (!allDataIsCached) {
 					// Never cache current day.
-					const maxDay = today()
-					const start = dateToDay(date)
-					if (start < maxDay) setToBeCachedDayInterval({ start,
-						end: end === today() ? getDay(end).minus(1).days : end })
-					// Fetch missing data.
-					await request({ start, end, ...strategyKey })
+						const maxDay = today()
+						const start = dateToDay(date)
+						if (start < maxDay) setToBeCachedDayInterval({
+							start,
+							end: end === today() ? getDay(end).minus(1).days : end
+						})
+						// Fetch missing data.
+						await request({ start, end, ...strategyKey })
+					}
+				} catch (error) {
+					console.debug(error)
 				}
 			})()
 		},

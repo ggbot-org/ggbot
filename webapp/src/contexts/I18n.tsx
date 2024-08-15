@@ -1,10 +1,7 @@
 import { detectLanguage, translationPathname } from "_/i18n/locales"
-import { logging } from "@workspace/logging"
 import { defaultLanguage } from "@workspace/models"
 import { PropsWithChildren, Reducer, useCallback, useEffect, useReducer, useRef } from "react"
 import { IntlProvider } from "react-intl"
-
-const { debug } = logging("i18n")
 
 export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ intlMessagesLoaded, readIntlMessagesIsPending }, dispatch] = useReducer<
@@ -50,7 +47,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
 			intlMessages.current = json
 			dispatch({ type: "READ_INTL_MESSAGES_SUCCESS" })
 		} catch (error) {
-			debug(error)
+			console.debug(error)
 			dispatch({ type: "READ_INTL_MESSAGES_FAILURE" })
 		}
 	}, [language])
@@ -58,7 +55,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
 	useEffect(() => {
 		if (readIntlMessagesIsPending !== undefined) return
 		if (intlMessagesLoaded) return
-		readIntlMessages().catch(debug)
+		readIntlMessages().catch((error) => console.debug(error))
 	}, [readIntlMessages, intlMessagesLoaded, readIntlMessagesIsPending])
 
 	return intlMessagesLoaded ? (

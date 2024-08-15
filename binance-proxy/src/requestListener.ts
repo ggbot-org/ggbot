@@ -8,7 +8,7 @@ import { BinanceProxyURLs } from "@workspace/locators"
 import { ErrorAccountItemNotFound } from "@workspace/models"
 
 import { binanceRequestHandler } from "./binanceRequestHandler.js"
-import { debug, warn } from "./logging.js"
+import { warn } from "./logging.js"
 
 const ContentTypeJSON = { "Content-Type": "application/json" }
 
@@ -62,7 +62,7 @@ export function requestListener (request: IncomingMessage, response: ServerRespo
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.
-				debug(error)
+				console.debug(error)
 				response.writeHead(INTERNAL_SERVER_ERROR__500)
 			})
 			.finally(() => response.end())

@@ -4,7 +4,7 @@ import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { StrategyKey } from "@workspace/models"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
@@ -13,28 +13,27 @@ export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | un
 
 	const dayInterval = { start, end }
 
-	const READ = useReadStrategyOrders(strategyKey)
-
-	const onClickUpdate = useCallback(() => {
-		if (!strategyKey) return
-		if (READ.canRun) READ.request({ end, start, ...strategyKey })
-	}, [READ, end, start, strategyKey])
+	const { canRun, request, isDone, isPending, reset, data } = useReadStrategyOrders(strategyKey)
 
 	useEffect(() => {
-		if (!READ.isDone) return
-		setOrders(READ.data)
-		READ.reset()
-	}, [READ])
+		if (!isDone) return
+		setOrders(data)
+		reset()
+	}, [isDone, data, reset])
+
+	if (!strategyKey) return null
 
 	return (
 		<>
 			<OneColumn>
 				<DayIntervalBox
 					end={end}
-					isLoading={READ.isPending}
+					isLoading={isPending}
 					max={max}
 					min={min}
-					onClickUpdate={onClickUpdate}
+					onClickUpdate={() => {
+						if (canRun) request({ end, start, ...strategyKey })
+					}}
 					setEnd={setEnd}
 					setStart={setStart}
 					start={start}
@@ -44,7 +43,7 @@ export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | un
 				<ProfitSummary
 					dayInterval={dayInterval}
 					orders={orders}
-					strategyKind={strategyKey?.strategyKind}
+					strategyKind={strategyKey.strategyKind}
 				/>
 			</OneColumn>
 			<Column bulma="is-narrow">

@@ -6,7 +6,6 @@ import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { auth } from "_/routing/auth"
 import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from "@workspace/api"
-import { logging } from "@workspace/logging"
 import { EmailAddress } from "@workspace/models"
 import { Reducer, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
@@ -35,8 +34,6 @@ type Action =
 	}
 	| { type: "VERIFY_FAILURE" }
 	| { type: "VERIFY_TIMEOUT" }
-
-const { debug } = logging("authentication")
 
 function OneTimePassword(props: Pick<InputFieldProps, "required" | "name" | "readOnly">) {
 	return (
@@ -127,7 +124,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						}
 					} catch (error) {
 						dispatch({ type: "VERIFY_FAILURE" })
-						debug(error)
+						console.debug(error)
 					}
 				}}
 		>

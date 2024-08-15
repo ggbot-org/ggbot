@@ -7,7 +7,7 @@ import { documentProvider } from "@workspace/s3-data-bucket"
 import { Stripe, StripeClient, StripeSignatureVerificationError } from "@workspace/stripe"
 import { getDay, today } from "minimal-time-helpers"
 
-const { info, debug } = logging("stripe-api")
+const { info, warn } = logging("stripe-api")
 
 const stripe = new StripeClient()
 
@@ -25,10 +25,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		if (event.httpMethod !== "POST") return errorResponse(METHOD_NOT_ALLOWED__405)
 
-		if (!event.body) {
-			debug("Missing body")
-			return errorResponse(BAD_REQUEST__400)
-		}
+		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const stripeEvent = JSON.parse(event.body) as unknown as Stripe.Event
 		info(stripeEvent)
@@ -43,10 +40,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			const checkout = await stripe.retreiveCheckoutSession(
 				stripeEvent.data.object.id
 			)
-			if (!checkout) {
-				debug("Checkout session not found")
-				return BAD_REQUEST()
-			}
+			if (!checkout) return BAD_REQUEST()
 
 			// The `startDay` may be when current subscription ends, if any.
 			const subscription = await dataProvider.ReadSubscription({
@@ -71,18 +65,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 			return OK(received)
 		} else {
-			debug(`Unhandled event type: ${stripeEvent.type}`)
+			warn(`Unhandled event type: ${stripeEvent.type}`)
 		}
 
 		return OK(notReceived)
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError) {
-			debug(error)
+			warn(error)
 			return errorResponse(BAD_REQUEST__400)
 		}
-
-		// Fallback to print error if not handled.
-		debug(error)
+		// Fallback if error is not handled: should not arrive here.
+		console.debug(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }
