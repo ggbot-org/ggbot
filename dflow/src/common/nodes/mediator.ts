@@ -1,14 +1,14 @@
 import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
-import { add, div, mul, sub } from "./arithmetic.js"
+import { add, defaultPrecision, div, mul, sub } from "./arithmetic.js"
 import { inputPrice } from "./commonIO.js"
 
 const { input, output } = Dflow
 
 const inputs = [
 	inputPrice,
-	input("number", { name: "quantity", optional: true }),
+	input("number", { name: "quantity" }),
 	input("number", { name: "percentageGain" }),
 	input("string", { name: "memoryLabel", optional: true }),
 	input([], { name: "resetMediation", optional: true })
@@ -49,17 +49,24 @@ export function addMediation ({
 	totalQuantity: previousTotalQuantity
 }: AddMediationInput): AddMediationOutput {
 	const numPositions = previousNumPositions + 1
-	const totalQuantity = previousTotalQuantity + quantity
+	const totalQuantity = add(previousTotalQuantity, quantity) as number
+
 	// First iteration needs no computation.
 	if (numPositions === 1) return {
 		averagePrice: price,
 		numPositions,
 		totalQuantity
 	}
+	// TODO averagePrice computation is not correct.
 	const averagePrice = div(
-		add(previousAveragePrice, mul(price, quantity)),
+		add(
+			previousAveragePrice,
+			mul(price, quantity, defaultPrecision * 2),
+			defaultPrecision * 2
+		),
 		totalQuantity
 	) as number
+
 	return {
 		averagePrice,
 		numPositions,
@@ -139,8 +146,8 @@ export class MediatorLong extends DflowNode {
 	static outputs = outputs
 	run() {
 		const direction: MediatorDirection = "LONG"
-		const quantity = this.input(0).data as number
-		const price = this.input(1).data as number
+		const price = this.input(0).data as number
+		const quantity = this.input(1).data as number
 		const percentageGain = this.input(2).data as number
 		const memoryLabel = this.input(3).data as string | undefined
 		const resetMediation = this.input(4).data
@@ -199,8 +206,8 @@ export class MediatorShort extends DflowNode {
 	static outputs = outputs
 	run() {
 		const direction: MediatorDirection = "SHORT"
-		const quantity = this.input(0).data as number
-		const price = this.input(1).data as number
+		const price = this.input(0).data as number
+		const quantity = this.input(1).data as number
 		const percentageGain = this.input(2).data as number
 		const memoryLabel = this.input(3).data as string | undefined
 		const resetMediation = this.input(4).data

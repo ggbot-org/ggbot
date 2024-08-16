@@ -93,7 +93,7 @@ export class SellMarket extends DflowNode {
 }
 
 const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side" | "symbol" | "executedQty"> >(
-	({ side, symbol, executedQty }) => typeof side === "string" && typeof symbol === "string" && typeof executedQty === "number"
+	({ side, symbol, executedQty }) => typeof side === "string" && typeof symbol === "string" && typeof executedQty === "string"
 )
 
 export class OrderInfo extends DflowNode {
@@ -111,6 +111,6 @@ export class OrderInfo extends DflowNode {
 		if (!isOrderInfo(order)) return this.clearOutputs()
 		this.output(0).data = order.side
 		this.output(1).data = order.symbol
-		this.output(2).data = order.executedQty
+		this.output(2).data = Number(order.executedQty)
 	}
 }
