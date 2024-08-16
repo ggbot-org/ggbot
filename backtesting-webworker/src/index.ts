@@ -70,7 +70,7 @@ async function runBinance(
 	binanceExecutor: DflowBinanceExecutor,
 	flow: BacktestingStrategy["flow"]
 ) {
-	const updateInterval = 1000
+	const updateInterval = 2_000
 	let time: Time | undefined
 	// Initialize `shouldUpdateUI` to true, so first iteration will update UI.
 	let shouldUpdateUI = true

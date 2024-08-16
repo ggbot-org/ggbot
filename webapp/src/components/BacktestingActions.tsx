@@ -49,13 +49,18 @@ export function BacktestingActions({
 			<StopButton onClick={onClickStop} />
 		</Buttons>
 	)
-
 	if (isRunning) return (
 		<Buttons>
 			<PauseButton onClick={onClickPause} />
 			<StopButton onClick={onClickStop} />
 		</Buttons>
 	)
-
-	return <StartButton disabled={!canStart} onClick={onClickStart} />
+	return (
+		<Buttons>
+			<StartButton
+				disabled={!canStart}
+				onClick={onClickStart}
+			/>
+		</Buttons>
+	)
 }

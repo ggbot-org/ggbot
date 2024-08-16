@@ -32,10 +32,7 @@ type State = Pick<
 
 export type { State as UseBacktestingState }
 
-const { info, warn } = logging(
-	"useBacktesting",
-	localWebStorage.DEBUG_backtesting.get()
-)
+const { info, warn } = logging("useBacktesting", localWebStorage.DEBUG_backtesting.get())
 
 const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 
@@ -179,12 +176,6 @@ export function useBacktesting(): {
 		}
 
 		backtesting.addEventListener("error", (error) => warn(error))
-
-		// Terminate backtesting worker on onmount.
-		return () => {
-			info("Terminate backtesting worker")
-			backtesting.terminate()
-		}
 	}, [dispatch])
 
 	return { dispatch, state }

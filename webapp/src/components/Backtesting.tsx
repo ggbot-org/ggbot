@@ -8,9 +8,8 @@ import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting, UseBacktestingState } from "_/hooks/useBacktesting"
-import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { dayFormat, timeFormat } from "_/i18n/formats"
-import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
+import { Frequency, isFrequency, StrategyFlow, StrategyKey } from "@workspace/models"
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -54,16 +53,16 @@ function BacktestingProgress({
 		</Div>
 	)
 }
-export function Backtesting({ strategyKey, strategyName, strategyFrequency }: {
+export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyFrequency }: {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined
 	strategyName: string
+	strategyFlow: StrategyFlow | null | undefined
 }) {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
 
-	const { strategyFlow } = useStrategyFlow(strategyKey)
 	const flowViewGraph = strategyFlow?.view
 
 	const hasFlow = Boolean(flowViewGraph)

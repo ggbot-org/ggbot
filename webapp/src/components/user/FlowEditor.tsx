@@ -2,18 +2,17 @@ import { classnames } from "_/classnames"
 import { Button, Input } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
-import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
-import { StrategyKey } from "@workspace/models"
+import { StrategyFlow, StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export function FlowEditor({ strategyKey, strategyName }: {
+export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
 	strategyKey: StrategyKey | undefined
 	strategyName: string
+	strategyFlow: StrategyFlow | null | undefined
 }) {
-	const { strategyFlow } = useStrategyFlow(strategyKey)
 	const initialFlowViewGraph = strategyFlow?.view
 
 	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
