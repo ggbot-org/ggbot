@@ -13,12 +13,12 @@ test("addMediation", () => {
 				numPositions: 0,
 				percentageGain: 0.01,
 				price: 100_000,
-				quantity: 42,
+				quantity: 0.42,
 				totalQuantity: 0
 			},
 			output: {
 				numPositions: 1,
-				totalQuantity: 42,
+				totalQuantity: 0.42,
 				averagePrice: 100000
 			}
 		},
@@ -30,12 +30,12 @@ test("addMediation", () => {
 				numPositions: 0,
 				percentageGain: 0.01,
 				price: 100_000,
-				quantity: 42,
+				quantity: 0.42,
 				totalQuantity: 0
 			},
 			output: {
 				numPositions: 1,
-				totalQuantity: 42,
+				totalQuantity: 0.42,
 				averagePrice: 100000
 			}
 		},
@@ -46,12 +46,12 @@ test("addMediation", () => {
 				numPositions: 1,
 				percentageGain: 0.1,
 				price: 70_000,
-				quantity: 2,
-				totalQuantity: 1
+				quantity: 0.2,
+				totalQuantity: 0.1
 			},
 			output: {
 				numPositions: 2,
-				totalQuantity: 3,
+				totalQuantity: 0.3,
 				averagePrice: 73333.33333333
 			}
 		},
@@ -61,16 +61,15 @@ test("addMediation", () => {
 				numPositions: 1,
 				percentageGain: 0.1,
 				price: 80_000,
-				quantity: 2,
-				totalQuantity: 1
+				quantity: 0.002,
+				totalQuantity: 0.01
 			},
 			output: {
 				numPositions: 2,
-				totalQuantity: 3,
-				averagePrice: 76666.66666667
+				totalQuantity: 0.012,
+				averagePrice: 71666.66666667
 			}
 		},
-
 		{
 			input: {
 				averagePrice: 80_000,
@@ -88,17 +87,17 @@ test("addMediation", () => {
 		},
 		{
 			input: {
-				averagePrice: 70_000,
+				averagePrice: 0.0007,
 				numPositions: 1,
 				percentageGain: 0.017,
-				price: 80_000,
-				quantity: 2,
-				totalQuantity: 1
+				price: 0.0008,
+				quantity: 0.0002,
+				totalQuantity: 0.001
 			},
 			output: {
 				numPositions: 2,
-				totalQuantity: 3,
-				averagePrice: 76666.66666667
+				totalQuantity: 0.0012,
+				averagePrice: 0.00071667
 			}
 		}
 	])

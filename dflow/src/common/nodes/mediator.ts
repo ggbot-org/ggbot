@@ -60,9 +60,8 @@ export function addMediation ({
 	// TODO averagePrice computation is not correct.
 	const averagePrice = div(
 		add(
-			previousAveragePrice,
-			mul(price, quantity, defaultPrecision * 2),
-			defaultPrecision * 2
+			mul(previousAveragePrice, previousTotalQuantity, defaultPrecision * 2),
+			mul(price, quantity, defaultPrecision * 2)
 		),
 		totalQuantity
 	) as number
