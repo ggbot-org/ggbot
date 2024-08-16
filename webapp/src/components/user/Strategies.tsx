@@ -67,7 +67,11 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 
 	if (readStrategiesIsPending) return (
 		<>
-			<StrategiesToolbar isInvisible />
+			<StrategiesToolbar
+				isInvisible
+				hideInactive={hideInactive}
+				setHideInactive={setHideInactive}
+			/>
 			<Columns isMultiline>
 				{[...Array(estimatedNumItems)].map((_, index) => String(index)).map((key) => (
 					<StrategyItem

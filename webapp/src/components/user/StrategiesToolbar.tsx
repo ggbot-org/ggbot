@@ -3,16 +3,15 @@ import { Toolbar, ToolbarProps } from "_/components/Toolbar"
 import { localWebStorage } from "_/storages/local"
 import { FormattedMessage } from "react-intl"
 
-export function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: Partial<{
+export function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: {
 	hideInactive: boolean | undefined
 	setHideInactive: (value: boolean | undefined) => void
-}> & ToolbarProps) {
+} & ToolbarProps) {
 	return (
 		<Toolbar isInvisible={isInvisible}>
 			<Checkbox
 				checked={hideInactive}
 				onChange={(event) => {
-					if (!setHideInactive) return
 					setHideInactive(event.target.checked)
 					localWebStorage.hideInactiveStrategies.set(event.target.checked)
 				}}

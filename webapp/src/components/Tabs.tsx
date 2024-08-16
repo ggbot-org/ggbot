@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
-import { TabContent, TabContentProps, TabSelector, TabSelectorProps, TabSelectors } from "_/components/library"
-import { Dispatch, PropsWithChildren, ReactNode, SetStateAction, useMemo } from "react"
+import { TabContent, TabContentProps, TabSelector, TabSelectors } from "_/components/library"
+import { Dispatch, ReactNode, SetStateAction } from "react"
 import { FormattedMessage } from "react-intl"
 
 const tabIds = [
@@ -19,7 +19,10 @@ const tabIds = [
 ] as const
 export type TabId = (typeof tabIds)[number]
 
-type Tab = { tabId: TabId; content: ReactNode }
+type Tab = {
+	tabId: TabId
+	content: ReactNode
+} & Pick<TabContentProps, "renderIfInactive">
 
 type TabsProps = {
 	activeTabId: TabId
@@ -27,44 +30,31 @@ type TabsProps = {
 	tabs: Tab[]
 }
 
-type ItemList<Props> = Array<PropsWithChildren<Props> & Pick<Tab, "tabId">>
-
 export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
-	const tabSelectors = useMemo<ItemList<TabSelectorProps>>(
-		() => tabs.map(({ tabId }) => ({
-			tabId,
-			isActive: activeTabId === tabId,
-			onClick: (event) => {
-				event.preventDefault()
-				event.stopPropagation()
-				setActiveTabId(tabId)
-			},
-			children: (<FormattedMessage id={`Tabs.${tabId}`} />)
-		})),
-		[activeTabId, setActiveTabId, tabs]
-	)
-
-	const tabContents = useMemo<ItemList<TabContentProps>>(
-		() => tabs.map(({ tabId, content }) => ({
-			tabId,
-			isActive: activeTabId === tabId,
-			children: content
-		})),
-		[activeTabId, tabs]
-	)
-
 	return (
 		<div className={classnames("m-3")}>
 			<TabSelectors>
-				{tabSelectors.map(({ children, tabId, ...props }) => (
-					<TabSelector key={tabId} {...props}>
-						{children}
+				{tabs.map(({ tabId }) => (
+					<TabSelector
+						key={tabId}
+						isActive={activeTabId === tabId}
+						onClick={(event) => {
+							event.preventDefault()
+							event.stopPropagation()
+							setActiveTabId(tabId)
+						}}
+					>
+						<FormattedMessage id={`Tabs.${tabId}`} />
 					</TabSelector>
 				))}
 			</TabSelectors>
-			{tabContents.map(({ children, tabId, ...props }) => (
-				<TabContent key={tabId} {...props}>
-					{children}
+			{tabs.map(({ content, tabId, renderIfInactive }) => (
+				<TabContent
+					key={tabId}
+					isActive={activeTabId === tabId}
+					renderIfInactive={renderIfInactive}
+				>
+					{content}
 				</TabContent>
 			))}
 		</div>

@@ -21,6 +21,7 @@ export function EditStrategyPage() {
 					tabs={[
 						{
 							tabId: "flow",
+							renderIfInactive: true,
 							content: (
 								<FlowEditor
 									strategyKey={strategyKey}
@@ -30,6 +31,7 @@ export function EditStrategyPage() {
 						},
 						{
 							tabId: "backtesting",
+							renderIfInactive: true,
 							content: (
 								<Backtesting
 									strategyFrequency={strategyFrequency}

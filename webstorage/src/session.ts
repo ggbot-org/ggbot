@@ -1,4 +1,4 @@
-import { AccountInfo, AccountStrategy, Strategy, StrategyKey } from "@workspace/models"
+import { AccountInfo, Strategy, StrategyKey } from "@workspace/models"
 import { Day } from "minimal-time-helpers"
 
 import { cachedBoolean, cachedNumber, cachedObject } from "./cache.js"
@@ -10,10 +10,6 @@ export class SessionWebStorage {
 
 	get accountInfo() {
 		return cachedObject<AccountInfo>(this.storage, itemKey.accountInfo())
-	}
-
-	get accountStrategies() {
-		return cachedObject<AccountStrategy[]>(this.storage, itemKey.accountStrategies())
 	}
 
 	get estimatedNumStrategies() {

@@ -14,6 +14,7 @@ export function DashboardPage() {
 				tabs={[
 					{
 						tabId: "strategies",
+						renderIfInactive: true,
 						content: (
 							<Strategies
 								goCreateStrategy={() => setActiveTabId("newStrategy")}

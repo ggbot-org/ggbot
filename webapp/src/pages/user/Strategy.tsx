@@ -23,6 +23,7 @@ export function StrategyPage() {
 					tabs={[
 						{
 							tabId: "manage",
+							renderIfInactive: true,
 							content: (
 								<>
 									<StrategyActions strategyKey={strategyKey} {...otherStrategyActionProps} />

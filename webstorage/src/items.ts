@@ -3,7 +3,6 @@ import { StrategyKey } from "@workspace/models"
 const itemKeys = [
 	"DEBUG_backtesting",
 	"accountInfo",
-	"accountStrategies",
 	"activeTabId",
 	"authToken",
 	"doNotShowPleasePurchase",
@@ -28,7 +27,6 @@ type ItemKey = (typeof itemKeys)[number]
  */
 export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	accountInfo: () => "accountInfo",
-	accountStrategies: () => "accountStrategies",
 	activeTabId: (pageName: string) => `${pageName}:activeTab`,
 	authToken: () => "authToken",
 	estimatedNumStrategies: () => "estimatedNumStrategies",

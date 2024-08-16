@@ -122,7 +122,7 @@ class Memory {
 	}
 	set totalQuantity (value: number) {
 		this.context.memoryChanged = value !== this.totalQuantity
-		this.context.memory[this.memoryKey.numPositions] = value
+		this.context.memory[this.memoryKey.totalQuantity] = value
 	}
 	static key(memoryKey: MemoryKey, memoryLabel?: string) {
 		return memoryLabel ? `mediator:${memoryKey}:${memoryLabel}` : `mediator:${memoryKey}`
