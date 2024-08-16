@@ -7,8 +7,9 @@ const { input, output } = Dflow
 
 const inputs = [
 	input([], { name: "enterTrailing" }),
-	input("string", { name: "memoryLabel" }),
-	input("number", { name: "marketPrice" }),
+	// TODO move memoryLabel position before resetTrailing
+	input("string", { name: "memoryLabel", optional: true }),
+	input("number", { name: "price" }),
 	input("number", { name: "percentageDelta" }),
 	input("number", { name: "initialStopPrice", optional: true }),
 	input([], { name: "resetTrailing", optional: true })
@@ -21,7 +22,7 @@ type TrailingStopInputDirection = (typeof trailingStopInputDirections)[number]
 
 export type TrailingStopInput = {
 	direction: TrailingStopInputDirection
-	marketPrice: number
+	price: number
 	percentageDelta: number
 	stopPrice: number
 }
@@ -30,21 +31,14 @@ export type TrailingStopOutput = Pick<TrailingStopInput, "stopPrice"> & {
 	exitTrailing: boolean
 }
 
-export type ComputeStopPriceArg = Pick<
-	TrailingStopInput,
-	"marketPrice" | "percentageDelta"
->
-type ComputeStopPrice = (
-	arg: ComputeStopPriceArg
-) => TrailingStopInput["stopPrice"]
+export type ComputeStopPriceArg = Pick<TrailingStopInput, "price" | "percentageDelta">
+type ComputeStopPrice = (arg: ComputeStopPriceArg) => TrailingStopInput["stopPrice"]
 export const computeStopPriceDown: ComputeStopPrice = ({
-	marketPrice,
-	percentageDelta
-}): number => add(marketPrice, mul(marketPrice, percentageDelta)) as number
+	price, percentageDelta
+}): number => add(price, mul(price, percentageDelta)) as number
 export const computeStopPriceUp: ComputeStopPrice = ({
-	marketPrice,
-	percentageDelta
-}): number => sub(marketPrice, mul(marketPrice, percentageDelta)) as number
+	price, percentageDelta
+}): number => sub(price, mul(price, percentageDelta)) as number
 
 /**
  * Prevent percentageDelta from be zero or negative or one or greater than one,
@@ -56,36 +50,33 @@ const isValidPercentageDelta = (percentageDelta: number) => {
 	return true
 }
 
-export const trailingStop = ({
-	direction,
-	marketPrice,
-	percentageDelta,
-	stopPrice
-}: TrailingStopInput): TrailingStopOutput => {
+export function trailingStop ({
+	direction, price, percentageDelta, stopPrice
+}: TrailingStopInput): TrailingStopOutput {
 	if (direction === "UP") {
-		// If `direction` is "UP" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
-		if (marketPrice < stopPrice) return { exitTrailing: true, stopPrice }
+		// If `direction` is "UP" and `price` is above `stopPrice`, then `exitTrailing` is true.
+		if (price < stopPrice) return { exitTrailing: true, stopPrice }
 
 		return {
 			exitTrailing: false,
 			// Compute next `stopPrice`.
 			stopPrice: Math.max(
 				stopPrice,
-				computeStopPriceUp({ marketPrice, percentageDelta })
+				computeStopPriceUp({ price, percentageDelta })
 			)
 		}
 	}
 
 	if (direction === "DOWN") {
-		// If `direction` is "DOWN" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
-		if (marketPrice > stopPrice) return { exitTrailing: true, stopPrice }
+		// If `direction` is "DOWN" and `price` is below `stopPrice`, then `exitTrailing` is true.
+		if (price > stopPrice) return { exitTrailing: true, stopPrice }
 
 		return {
 			exitTrailing: false,
 			// Compute next `stopPrice`.
 			stopPrice: Math.min(
 				stopPrice,
-				computeStopPriceDown({ marketPrice, percentageDelta })
+				computeStopPriceDown({ price, percentageDelta })
 			)
 		}
 	}
@@ -93,10 +84,12 @@ export const trailingStop = ({
 	return { exitTrailing: false, stopPrice }
 }
 
-export const trailingStopMemoryKeys = (memoryLabel: string) => ({
-	entryPriceMemoryKey: `trailing:entryPrice:${memoryLabel}`,
-	stopPriceMemoryKey: `trailing:stopPrice:${memoryLabel}`
-})
+export function trailingStopMemoryKeys (memoryLabel?: string) {
+	return ({
+		entryPriceMemoryKey: memoryLabel ? `trailing:entryPrice:${memoryLabel}` : "trailing:entryPrice",
+		stopPriceMemoryKey: memoryLabel ? `trailing:stopPrice:${memoryLabel}` : "trailing:stopPrice"
+	})
+}
 
 export class TrailingStopUp extends DflowNode {
 	static kind = "trailingStopUp"
@@ -105,8 +98,8 @@ export class TrailingStopUp extends DflowNode {
 	run() {
 		const direction: TrailingStopInputDirection = "UP"
 		const enterTrailing = this.input(0).data
-		const memoryLabel = this.input(1).data as string
-		const marketPrice = this.input(2).data as number
+		const memoryLabel = this.input(1).data as string | undefined
+		const price = this.input(2).data as number
 		const percentageDelta = this.input(3).data as number
 		const initialStopPrice = this.input(4).data as number | undefined
 		const resetTrailing = this.input(5).data
@@ -135,8 +128,8 @@ export class TrailingStopUp extends DflowNode {
 
 		// Initialize `stopPrice`, if needed.
 		if (stopPrice === undefined && enterTrailing) {
-			if (typeof initialStopPrice === "number" && initialStopPrice < marketPrice) stopPrice = initialStopPrice
-			else stopPrice = computeStopPriceUp({ marketPrice, percentageDelta })
+			if (typeof initialStopPrice === "number" && initialStopPrice < price) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceUp({ price, percentageDelta })
 		}
 
 		// Nothing to do if there is no `stopPrice`.
@@ -145,12 +138,12 @@ export class TrailingStopUp extends DflowNode {
 		// Save `entryPrice` and `stopPrice` in memory.
 		if (enterTrailing && entryPriceInMemory === undefined && stopPriceInMemory === undefined) {
 			context.memoryChanged = true
-			context.memory[entryPriceMemoryKey] = marketPrice
+			context.memory[entryPriceMemoryKey] = price
 			context.memory[stopPriceMemoryKey] = stopPrice
 		}
 
 		// Compute trailing.
-		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, marketPrice, percentageDelta, stopPrice })
+		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, price, percentageDelta, stopPrice })
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			cleanupMemory()
@@ -170,7 +163,7 @@ export class TrailingStopDown extends DflowNode {
 		const direction: TrailingStopInputDirection = "DOWN"
 		const enterTrailing = this.input(0).data
 		const memoryLabel = this.input(1).data as string
-		const marketPrice = this.input(2).data as number
+		const price = this.input(2).data as number
 		const percentageDelta = this.input(3).data as number
 		const initialStopPrice = this.input(4).data as number | undefined
 		const resetTrailing = this.input(5).data
@@ -199,8 +192,8 @@ export class TrailingStopDown extends DflowNode {
 
 		// Initialize `stopPrice`, if needed.
 		if (stopPrice === undefined && enterTrailing) {
-			if (typeof initialStopPrice === "number" && initialStopPrice > marketPrice) stopPrice = initialStopPrice
-			else stopPrice = computeStopPriceDown({ marketPrice, percentageDelta })
+			if (typeof initialStopPrice === "number" && initialStopPrice > price) stopPrice = initialStopPrice
+			else stopPrice = computeStopPriceDown({ price, percentageDelta })
 		}
 
 		// Nothing to do if there is no `stopPrice`.
@@ -213,12 +206,12 @@ export class TrailingStopDown extends DflowNode {
 			stopPriceInMemory === undefined
 		) {
 			context.memoryChanged = true
-			context.memory[entryPriceMemoryKey] = marketPrice
+			context.memory[entryPriceMemoryKey] = price
 			context.memory[stopPriceMemoryKey] = stopPrice
 		}
 
 		// Compute trailing.
-		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, marketPrice, percentageDelta, stopPrice })
+		const { exitTrailing, stopPrice: nextStopPrice } = trailingStop({ direction, price, percentageDelta, stopPrice })
 		this.output(0).data = exitTrailing
 		if (exitTrailing) {
 			cleanupMemory()

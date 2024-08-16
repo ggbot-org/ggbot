@@ -3,11 +3,9 @@ import { Dflow, DflowConstructorArg } from "dflow"
 
 import { DflowLoader, load } from "../common/loader.js"
 import { DflowBinanceContext } from "./context.js"
-import { binanceNodeTextToDflowKind } from "./nodeResolution.js"
 
 /**
- * `DflowBinanceHost` extends `DflowHost` adding DflowCommonContext and an
- * instance of Binance client.
+ * `DflowBinanceHost` extends `DflowHost` adding an instance of Binance client to the context.
  */
 export class DflowBinanceHost extends Dflow implements DflowLoader {
 	constructor(
@@ -24,10 +22,6 @@ export class DflowBinanceHost extends Dflow implements DflowLoader {
 	}
 
 	load(graph: StrategyFlowGraph): void {
-		load({
-			dflow: this,
-			nodeTextToDflowKind: binanceNodeTextToDflowKind,
-			graph
-		})
+		load({ dflow: this, graph })
 	}
 }

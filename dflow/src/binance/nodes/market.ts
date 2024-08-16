@@ -1,11 +1,11 @@
 import { binanceKlineMaxLimit } from "@workspace/binance"
 import { Dflow, DflowNode } from "dflow"
 
-import { inputInterval, inputSymbol, outputClose, outputHigh, outputLow, outputOpen, outputVolume } from "../../common/nodes/commonIO.js"
+import { inputInterval, inputSymbol, outputClose, outputHigh, outputLow, outputOpen, outputPrice, outputVolume } from "../../common/nodes/commonIO.js"
 import { DflowBinanceContext as Context } from "../context.js"
 import { isDflowBinanceKlineInterval } from "../klineIntervals.js"
 
-const { input, output } = Dflow
+const { input } = Dflow
 
 export class Candles extends DflowNode {
 	static kind = "candles"
@@ -63,7 +63,7 @@ export class Candles extends DflowNode {
 export class TickerPrice extends DflowNode {
 	static kind = "price"
 	static inputs = [inputSymbol]
-	static outputs = [output("number", { name: "price" })]
+	static outputs = [outputPrice]
 	async run() {
 		const { binance, defaults } = this.host.context as Context
 		const symbol = this.input(0).data ?? defaults.symbol

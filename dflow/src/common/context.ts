@@ -28,7 +28,7 @@ export type DflowCommonContext = {
 	defaults: {
 		symbol?: string
 	},
-	/** Used by input nodes: `InputBoolean`, `InputNumber`, `InputString`, etc. */
+	/** Used by parameter nodes: `BooleanParameter`, `NumberParameter`, etc. */
 	params: StrategyParameters
 	/** Used by memory nodes: `GetMemory`, `SetMemory`, `DeleteMemory`. */
 	memory: StrategyMemory

@@ -3,7 +3,6 @@ import { Dflow, DflowConstructorArg } from "dflow"
 
 import { DflowCommonContext } from "./context.js"
 import { DflowLoader, load } from "./loader.js"
-import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 
 export class DflowCommonHost extends Dflow implements DflowLoader {
 	constructor(arg: DflowConstructorArg, context: DflowCommonContext) {
@@ -15,10 +14,6 @@ export class DflowCommonHost extends Dflow implements DflowLoader {
 		this.context.time = context.time
 	}
 	load(graph: StrategyFlowGraph): void {
-		load({
-			dflow: this,
-			nodeTextToDflowKind: commonNodeTextToDflowKind,
-			graph
-		})
+		load({ dflow: this, graph })
 	}
 }

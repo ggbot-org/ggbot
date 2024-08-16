@@ -7,7 +7,6 @@ import { now } from "minimal-time-helpers"
 
 import { ErrorUknownDflowNodes } from "../errors.js"
 import { DflowCommonHost } from "./host.js"
-import { commonNodeTextToDflowKind } from "./nodeResolution.js"
 import { dflowValidate } from "./validate.js"
 
 describe("dflowValidate", () => {
@@ -19,11 +18,7 @@ describe("dflowValidate", () => {
 		}
 		assert.throws(
 			() => {
-				dflowValidate({
-					nodesCatalog,
-					nodeTextToDflowKind: commonNodeTextToDflowKind,
-					graph
-				})
+				dflowValidate({ nodesCatalog, graph })
 			},
 			{
 				name: "Error",
@@ -39,11 +34,7 @@ describe("dflowValidate", () => {
 			edges: []
 		}
 		assert.doesNotThrow(() => {
-			dflowValidate({
-				nodesCatalog,
-				nodeTextToDflowKind: commonNodeTextToDflowKind,
-				graph
-			})
+			dflowValidate({ nodesCatalog, graph })
 		}, Error)
 	})
 
@@ -68,11 +59,7 @@ describe("dflowValidate", () => {
 			edges: []
 		}
 		assert.doesNotThrow(() => {
-			dflowValidate({
-				nodesCatalog: dflow.nodesCatalog,
-				nodeTextToDflowKind: commonNodeTextToDflowKind,
-				graph
-			})
+			dflowValidate({ nodesCatalog: dflow.nodesCatalog, graph })
 		}, Error)
 	})
 })

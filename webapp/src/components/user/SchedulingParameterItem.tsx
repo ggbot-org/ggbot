@@ -1,5 +1,5 @@
 import { InputField } from "_/components/library"
-import { BooleanParameter, dflowBinanceKlineIntervals, DflowBinanceSymbolInfo, dflowBinanceSymbolSeparator, IntervalParameter, isDflowBinanceKlineInterval, NumberParameter, StringParameter, SymbolParameter } from "@workspace/dflow"
+import { BooleanParameter, dflowBinanceKlineIntervals, DflowBinanceSymbolInfo, dflowBinanceSymbolSeparator, IntervalParameter, isDflowBinanceKlineInterval, NumberParameter, parsePercentage, PercentageParameter, StringParameter, SymbolParameter } from "@workspace/dflow"
 import { IdentifierString, isFiniteNumber, isFiniteString, SerializablePrimitive } from "@workspace/models"
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useState } from "react"
 
@@ -64,6 +64,16 @@ export function SchedulingParameterItem({
 				}
 			}
 
+			if (kind === PercentageParameter.kind) {
+				const maybeNum = parsePercentage(value)
+				if (isFiniteNumber(maybeNum)) {
+					setHasError(false)
+					setParam(label, maybeNum)
+				} else {
+					setHasError(true)
+				}
+			}
+
 			if (kind === StringParameter.kind) {
 				if (isFiniteString(value)) {
 					setHasError(false)
@@ -83,13 +93,8 @@ export function SchedulingParameterItem({
 			}
 
 			if (kind === SymbolParameter.kind) {
-				const maybeSymbol = value
-					.split(dflowBinanceSymbolSeparator)
-					.join("")
-					.toUpperCase()
-				const isSymbol = binanceSymbols?.some(
-					({ symbol }) => symbol === maybeSymbol
-				)
+				const maybeSymbol = value.split(dflowBinanceSymbolSeparator).join("").toUpperCase()
+				const isSymbol = binanceSymbols?.some(({ symbol }) => symbol === maybeSymbol)
 				if (isSymbol) {
 					setHasError(false)
 					setParam(label, maybeSymbol)
@@ -107,11 +112,14 @@ export function SchedulingParameterItem({
 		if (kind === BooleanParameter.kind) {
 			if (typeof paramValue === "boolean") return
 		}
+		if (kind === IntervalParameter.kind) {
+			if (isDflowBinanceKlineInterval(paramValue)) return
+		}
 		if (kind === NumberParameter.kind) {
 			if (isFiniteNumber(paramValue)) return
 		}
-		if (kind === IntervalParameter.kind) {
-			if (isDflowBinanceKlineInterval(paramValue)) return
+		if (kind === PercentageParameter.kind) {
+			if (typeof paramValue === "string" && parsePercentage(paramValue) !== undefined) return
 		}
 		if (kind === SymbolParameter.kind) {
 			if (binanceSymbols?.some(({ baseAsset, quoteAsset }) => baseAsset + quoteAsset === paramValue)) return
@@ -120,6 +128,9 @@ export function SchedulingParameterItem({
 	}, [kind, paramValue, binanceSymbols])
 
 	const placeholder = useMemo(() => {
+		if (PercentageParameter.kind === kind) {
+			if (typeof defaultParamValue === "number") return `${defaultParamValue * 100}%`
+		}
 		if (SymbolParameter.kind === kind) {
 			if (!binanceSymbols) return ""
 			const symbolInfo = binanceSymbols.find(

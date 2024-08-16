@@ -4,7 +4,7 @@ import { now } from "minimal-time-helpers"
 
 import { DflowCommonContext as Context } from "./context.js"
 import { DflowCommonHost } from "./host.js"
-import { BooleanParameter, NumberParameter, StringParameter } from "./nodes/parameters.js"
+import { BooleanParameter, NumberParameter, PercentageParameter, StringParameter } from "./nodes/parameters.js"
 import { nodesCatalog } from "./nodesCatalog.js"
 import { DflowParameter } from "./parameters.js"
 
@@ -58,6 +58,26 @@ export async function extractCommonParametersFromFlow (graph: StrategyFlowGraph)
 					this.output(0).data = value
 					// Set parameter
 					parameters.push({ kind: NumberParameter.kind, key, defaultValue })
+				}
+			},
+			[PercentageParameter.kind]: class MockedNumberParameter extends DflowNode {
+				static kind = NumberParameter.kind
+				static inputs = NumberParameter.inputs
+				static outputs = NumberParameter.outputs
+				run() {
+					// 👇 Sync with PercentageParameter run()
+					const { params } = this.host.context as Context
+					const key = this.input(0).data
+					const defaultValue = this.input(1).data
+					if (!isIdentifierString(key) || !isFiniteNumber(defaultValue)) return this.clearOutputs()
+					let value = defaultValue
+					if (key in params) {
+						const inputValue = params[key]
+						if (isFiniteNumber(inputValue)) value = inputValue
+					}
+					this.output(0).data = value
+					// Set parameter
+					parameters.push({ kind: PercentageParameter.kind, key, defaultValue })
 				}
 			},
 			[StringParameter.kind]: class MockedStringParameter extends DflowNode {

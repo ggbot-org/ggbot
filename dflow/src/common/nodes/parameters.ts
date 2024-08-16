@@ -42,6 +42,23 @@ export class NumberParameter extends DflowNode {
 	}
 }
 
+export class PercentageParameter extends DflowNode {
+	static kind = "percentageParameter"
+	static inputs = [inputKey, inputDefaultParameter("number")]
+	static outputs = [output("number")]
+	run() {
+		const { params } = this.host.context as Context
+		const key = this.input(0).data
+		const defaultValue = this.input(1).data
+		if (!isIdentifierString(key) || !isFiniteNumber(defaultValue)) return this.clearOutputs()
+		let value = defaultValue
+		if (key in params) {
+			const inputValue = params[key]
+			if (isFiniteNumber(inputValue)) value = inputValue
+		}
+		this.output(0).data = value
+	}
+}
 export class StringParameter extends DflowNode {
 	static kind = "stringParameter"
 	static inputs = [inputKey, inputDefaultParameter("string")]

@@ -13,7 +13,7 @@ import { And, Equal, Not, NotEqual, NullishCoaleshing, Or } from "./nodes/logic.
 import { Max, Min } from "./nodes/mathFunctions.js"
 import { MediatorLong, MediatorShort } from "./nodes/mediator.js"
 import { DeleteMemory, GetMemory, SetMemory } from "./nodes/memory.js"
-import { BooleanParameter, NumberParameter, StringParameter } from "./nodes/parameters.js"
+import { BooleanParameter, NumberParameter, PercentageParameter, StringParameter } from "./nodes/parameters.js"
 import { Time, TimeMinus, TimePlus, TimeToDay, Today } from "./nodes/time.js"
 import { TrailingStopDown, TrailingStopUp } from "./nodes/trailingStop.js"
 
@@ -67,6 +67,7 @@ export const nodesCatalog = {
 	// parameters
 	[BooleanParameter.kind]: BooleanParameter,
 	[NumberParameter.kind]: NumberParameter,
+	[PercentageParameter.kind]: PercentageParameter,
 	[StringParameter.kind]: StringParameter,
 	// time
 	[Time.kind]: Time,

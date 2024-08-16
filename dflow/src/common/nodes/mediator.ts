@@ -2,11 +2,12 @@ import { Dflow, DflowNode } from "dflow"
 
 import { DflowCommonContext as Context } from "../context.js"
 import { add, div, mul, sub } from "./arithmetic.js"
+import { inputPrice } from "./commonIO.js"
 
 const { input, output } = Dflow
 
 const inputs = [
-	input("number", { name: "price" }),
+	inputPrice,
 	input("number", { name: "quantity", optional: true }),
 	input("number", { name: "percentageGain" }),
 	input("string", { name: "memoryLabel", optional: true }),

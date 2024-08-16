@@ -43,6 +43,7 @@ export const sub: BinanceBinaryOperator = (a, b, precision) => (Number(a) - Numb
 
 export const mul: BinanceBinaryOperator = (a, b, precision) => (Number(a) * Number(b)).toFixed(precision ?? maxNumOfDecimals([a, b]))
 
+// TODO are these actually used by dflow workspace?
 export const div: BinanceBinaryOperator = (a, b, precision) => {
 	const result = Number(a) / Number(b)
 	if (Number.isFinite(result)) return result.toFixed(precision ?? maxNumOfDecimals([a, b]))

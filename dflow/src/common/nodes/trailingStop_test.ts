@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { test } from "node:test"
 
 import type { StrategyFlowGraphEdge, StrategyFlowGraphNode } from "@workspace/models"
 import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
@@ -14,7 +14,7 @@ type ExecuteTrailingStopInput = {
 	resetTrailing?: unknown
 	memoryLabel: string
 	initialStopPrice?: number | undefined
-} & Pick<TrailingStopInput, "marketPrice" | "percentageDelta"> &
+} & Pick<TrailingStopInput, "price" | "percentageDelta"> &
 	Pick<DflowCommonContext, "memory">
 type ExecuteTrailingStopOutput = Partial<TrailingStopOutput> &
 	Pick<DflowCommonContext, "memory" | "memoryChanged">
@@ -37,7 +37,7 @@ const memoryChangedAssertionError = "check memoryChanged"
 
 async function executeTrailingStop (
 	nodeKind: typeof TrailingStopUp.kind,
-	{ enterTrailing, memoryLabel, marketPrice, percentageDelta, initialStopPrice, resetTrailing, memory: memoryInput }: ExecuteTrailingStopInput
+	{ enterTrailing, memoryLabel, price, percentageDelta, initialStopPrice, resetTrailing, memory: memoryInput }: ExecuteTrailingStopInput
 ): Promise<ExecuteTrailingStopOutput> {
 	const nodeId = "testId"
 	const hasInitialStopPrice = typeof initialStopPrice === "number"
@@ -55,8 +55,8 @@ async function executeTrailingStop (
 			outs: [{ id: "o" }]
 		},
 		{
-			id: "marketPrice",
-			text: JSON.stringify(marketPrice),
+			id: "price",
+			text: JSON.stringify(price),
 			outs: [{ id: "o" }]
 		},
 		{
@@ -98,7 +98,7 @@ async function executeTrailingStop (
 		{ id: "e2", from: ["memoryLabel", "o"], to: [nodeId, "i2"] },
 		{
 			id: "e3",
-			from: ["marketPrice", "o"],
+			from: ["price", "o"],
 			to: [nodeId, "i3"]
 		},
 		{
@@ -131,424 +131,422 @@ async function executeTrailingStop (
 	}
 }
 
-describe("Trailing Stop", () => {
-	test("TrailingStopUp", async () => {
-		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
+test("TrailingStopUp", async () => {
+	const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
 
-		const testData: TrailingStopTestData[] = [
-			// If percentageDelta is not valid, algorithm does not run.
-			...invalidPercentageDeltaValues.map((percentageDelta) => ({
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta,
-					memory: {}
-				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: false
-				}
-			})),
+	const testData: TrailingStopTestData[] = [
+		// If percentageDelta is not valid, algorithm does not run.
+		...invalidPercentageDeltaValues.map((percentageDelta) => ({
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				percentageDelta,
+				memory: {}
+			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: false
+			}
+		})),
 
-			// If `enterTrailing` is truthy, it gets initialized.
-			...truthyValues.map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					memory: {}
+		// If `enterTrailing` is truthy, it gets initialized.
+		...truthyValues.map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 100,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99
 				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99
-					},
-					memoryChanged: true
-				}
-			})),
+				memoryChanged: true
+			}
+		})),
 
-			// If `initialStopPrice` is provided
-			// and it is lower then `marketPrice`
-			// then it is used instead of `percentageDelta`
-			// to set `stopPriceMemoryKey`.
-			{
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					initialStopPrice: 99.5,
-					percentageDelta: 0.01,
-					memory: {}
+		// If `initialStopPrice` is provided
+		// and it is lower then `price`
+		// then it is used instead of `percentageDelta`
+		// to set `stopPriceMemoryKey`.
+		{
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				initialStopPrice: 99.5,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99.5
 				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99.5
-					},
-					memoryChanged: true
+				memoryChanged: true
+			}
+		},
+
+		// If `initialStopPrice` is provided
+		// and it is greater (or equal) then `price`
+		// then it is ignored
+		// and `percentageDelta` is used to set `stopPriceMemoryKey`.
+		{
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				initialStopPrice: 100.5,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99
+				},
+				memoryChanged: true
+			}
+		},
+
+		// If `enterTrailing` is falsy, it does not get initialized.
+		...falsyValues.map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 100,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: false
+			}
+		})),
+
+		// Regardless of `enterTrailing`,
+		// `stopPrice` is read from memory as input and written as output.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 106,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99
 				}
 			},
-
-			// If `initialStopPrice` is provided
-			// and it is greater (or equal) then `marketPrice`
-			// then it is ignored
-			// and `percentageDelta` is used to set `stopPriceMemoryKey`.
-			{
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					initialStopPrice: 100.5,
-					percentageDelta: 0.01,
-					memory: {}
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 104.94
 				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99
-					},
-					memoryChanged: true
+				memoryChanged: true
+			}
+		})),
+
+		// Regardless of `enterTrailing`,
+		// `stopPrice` does not change if `price` gets closer.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 105,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 104.94
 				}
 			},
-
-			// If `enterTrailing` is falsy, it does not get initialized.
-			...falsyValues.map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					memory: {}
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 104.94
 				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: false
-				}
-			})),
+				memoryChanged: false
+			}
+		})),
 
-			// Regardless of `enterTrailing`,
-			// `stopPrice` is read from memory as input and written as output.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 106,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99
-					}
-				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 104.94
-					},
-					memoryChanged: true
-				}
-			})),
-
-			// Regardless of `enterTrailing`,
-			// `stopPrice` does not change if `marketPrice` gets closer.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 105,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 104.94
-					}
-				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 104.94
-					},
-					memoryChanged: false
-				}
-			})),
-
-			// Regardless of `enterTrailing`,
-			// if `marketPrice` goes beyond `stopPrice`
-			// then `exitTrailing` is true and memory is cleaned up.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 104.8,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 104.94
-					}
-				},
-				output: {
-					exitTrailing: true,
-					memory: {},
-					memoryChanged: true
-				}
-			})),
-
-			// If `resetTrailing` is truthy, it cleans up memory.
-			...truthyValues.map((resetTrailing) => ({
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
-					percentageDelta: invalidPercentageDeltaValues[0],
-					initialStopPrice: 99.5,
-					resetTrailing,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99
-					}
-				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: true
-				}
-			}))
-		]
-
-		for (const { input, output } of testData) {
-			const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopUp.kind, input)
-			assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
-			assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
-			assert.deepEqual(memory, output.memory, memoryAssertionError)
-		}
-	})
-
-	test("TrailingStopDown", async () => {
-		const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
-
-		const testData: TrailingStopTestData[] = [
-			// If percentageDelta is not valid, algorithm does not run.
-			...invalidPercentageDeltaValues.map((percentageDelta) => ({
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta,
-					memory: {}
-				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: false
-				}
-			})),
-
-			// If `enterTrailing` is truthy, it gets initialized.
-			...truthyValues.map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					memory: {}
-				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 101
-					},
-					memoryChanged: true
-				}
-			})),
-
-			// If `initialStopPrice` is provided
-			// and it is greater then `marketPrice`
-			// then it is used instead of `percentageDelta`
-			// to set `stopPriceMemoryKey`.
-			{
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					initialStopPrice: 100.5,
-					percentageDelta: 0.01,
-					memory: {}
-				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 100.5
-					},
-					memoryChanged: true
+		// Regardless of `enterTrailing`,
+		// if `price` goes beyond `stopPrice`
+		// then `exitTrailing` is true and memory is cleaned up.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 104.8,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 104.94
 				}
 			},
+			output: {
+				exitTrailing: true,
+				memory: {},
+				memoryChanged: true
+			}
+		})),
 
-			// If `initialStopPrice` is provided
-			// and it is lower (or equal) then `marketPrice`
-			// then it is ignored
-			// and `percentageDelta` is used to set `stopPriceMemoryKey`.
-			{
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					initialStopPrice: 99.5,
-					percentageDelta: 0.01,
-					memory: {}
-				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 101
-					},
-					memoryChanged: true
+		// If `resetTrailing` is truthy, it cleans up memory.
+		...truthyValues.map((resetTrailing) => ({
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
+				percentageDelta: invalidPercentageDeltaValues[0],
+				initialStopPrice: 99.5,
+				resetTrailing,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99
 				}
 			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: true
+			}
+		}))
+	]
 
-			// If `enterTrailing` is falsy, it does not get initialized.
-			...falsyValues.map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 100,
-					percentageDelta: 0.01,
-					memory: {}
+	for (const { input, output } of testData) {
+		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopUp.kind, input)
+		assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
+		assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
+		assert.deepEqual(memory, output.memory, memoryAssertionError)
+	}
+})
+
+test("TrailingStopDown", async () => {
+	const { entryPriceMemoryKey, stopPriceMemoryKey } = trailingStopMemoryKeys(memoryLabel)
+
+	const testData: TrailingStopTestData[] = [
+		// If percentageDelta is not valid, algorithm does not run.
+		...invalidPercentageDeltaValues.map((percentageDelta) => ({
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				percentageDelta,
+				memory: {}
+			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: false
+			}
+		})),
+
+		// If `enterTrailing` is truthy, it gets initialized.
+		...truthyValues.map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 100,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 101
 				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: false
-				}
-			})),
+				memoryChanged: true
+			}
+		})),
 
-			// Regardless of `enterTrailing`,
-			// `stopPrice` is read from memory as input and written as output.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 94,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 99
-					}
+		// If `initialStopPrice` is provided
+		// and it is greater then `price`
+		// then it is used instead of `percentageDelta`
+		// to set `stopPriceMemoryKey`.
+		{
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				initialStopPrice: 100.5,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 100.5
 				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 94.94
-					},
-					memoryChanged: true
-				}
-			})),
+				memoryChanged: true
+			}
+		},
 
-			// Regardless of `enterTrailing`,
-			// `stopPrice` does not change if `marketPrice` gets closer.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 94.9,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 94.94
-					}
+		// If `initialStopPrice` is provided
+		// and it is lower (or equal) then `price`
+		// then it is ignored
+		// and `percentageDelta` is used to set `stopPriceMemoryKey`.
+		{
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				initialStopPrice: 99.5,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 101
 				},
-				output: {
-					exitTrailing: false,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 94.94
-					},
-					memoryChanged: false
-				}
-			})),
+				memoryChanged: true
+			}
+		},
 
-			// Regardless of `enterTrailing`,
-			// if `marketPrice` goes beyond `stopPrice`
-			// then `exitTrailing` is true and memory is cleaned up.
-			...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
-				input: {
-					enterTrailing,
-					memoryLabel,
-					marketPrice: 94.98,
-					percentageDelta: 0.01,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 94.94
-					}
+		// If `enterTrailing` is falsy, it does not get initialized.
+		...falsyValues.map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 100,
+				percentageDelta: 0.01,
+				memory: {}
+			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: false
+			}
+		})),
+
+		// Regardless of `enterTrailing`,
+		// `stopPrice` is read from memory as input and written as output.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 94,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 99
+				}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 94.94
 				},
-				output: {
-					exitTrailing: true,
-					memory: {},
-					memoryChanged: true
-				}
-			})),
+				memoryChanged: true
+			}
+		})),
 
-			// If `resetTrailing` is truthy, it cleans up memory.
-			...truthyValues.map((resetTrailing) => ({
-				input: {
-					enterTrailing: true,
-					memoryLabel,
-					marketPrice: 100,
-					// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
-					percentageDelta: invalidPercentageDeltaValues[0],
-					initialStopPrice: 100.5,
-					resetTrailing,
-					memory: {
-						[entryPriceMemoryKey]: 100,
-						[stopPriceMemoryKey]: 101
-					}
+		// Regardless of `enterTrailing`,
+		// `stopPrice` does not change if `price` gets closer.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 94.9,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 94.94
+				}
+			},
+			output: {
+				exitTrailing: false,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 94.94
 				},
-				output: {
-					exitTrailing: undefined,
-					memory: {},
-					memoryChanged: true
-				}
-			}))
-		]
+				memoryChanged: false
+			}
+		})),
 
-		for (const { input, output } of testData) {
-			const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopDown.kind, input)
-			assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
-			assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
-			assert.deepEqual(memory, output.memory, memoryAssertionError)
-		}
-	})
+		// Regardless of `enterTrailing`,
+		// if `price` goes beyond `stopPrice`
+		// then `exitTrailing` is true and memory is cleaned up.
+		...[...falsyValues, ...truthyValues].map((enterTrailing) => ({
+			input: {
+				enterTrailing,
+				memoryLabel,
+				price: 94.98,
+				percentageDelta: 0.01,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 94.94
+				}
+			},
+			output: {
+				exitTrailing: true,
+				memory: {},
+				memoryChanged: true
+			}
+		})),
+
+		// If `resetTrailing` is truthy, it cleans up memory.
+		...truthyValues.map((resetTrailing) => ({
+			input: {
+				enterTrailing: true,
+				memoryLabel,
+				price: 100,
+				// Invalid `percentageDelta` value, but `resetTrailing` has precedence.
+				percentageDelta: invalidPercentageDeltaValues[0],
+				initialStopPrice: 100.5,
+				resetTrailing,
+				memory: {
+					[entryPriceMemoryKey]: 100,
+					[stopPriceMemoryKey]: 101
+				}
+			},
+			output: {
+				exitTrailing: undefined,
+				memory: {},
+				memoryChanged: true
+			}
+		}))
+	]
+
+	for (const { input, output } of testData) {
+		const { exitTrailing, memory, memoryChanged } = await executeTrailingStop(TrailingStopDown.kind, input)
+		assert.equal(exitTrailing, output.exitTrailing, exitTrailingAssertionError)
+		assert.equal(memoryChanged, output.memoryChanged, memoryChangedAssertionError)
+		assert.deepEqual(memory, output.memory, memoryAssertionError)
+	}
 })
 
 test("trailingStop", () => {
 	assertDeepEqual<TrailingStopInput, TrailingStopOutput>(trailingStop, [
-		// If `direction` is "UP" and `marketPrice` is below `stopPrice`, then `exitTrailing` is true.
+		// If `direction` is "UP" and `price` is below `stopPrice`, then `exitTrailing` is true.
 		{
 			input: {
 				direction: "UP",
-				marketPrice: 99,
+				price: 99,
 				percentageDelta: 0,
 				stopPrice: 100
 			},
 			output: { exitTrailing: true, stopPrice: 100 }
 		},
 
-		// If `direction` is "DOWN" and `marketPrice` is above `stopPrice`, then `exitTrailing` is true.
+		// If `direction` is "DOWN" and `price` is above `stopPrice`, then `exitTrailing` is true.
 		{
 			input: {
 				direction: "DOWN",
-				marketPrice: 101,
+				price: 101,
 				percentageDelta: 0,
 				stopPrice: 100
 			},
@@ -559,7 +557,7 @@ test("trailingStop", () => {
 		{
 			input: {
 				direction: "UP",
-				marketPrice: 100,
+				price: 100,
 				percentageDelta: 0.01,
 				stopPrice: 50
 			},
@@ -568,18 +566,18 @@ test("trailingStop", () => {
 		{
 			input: {
 				direction: "DOWN",
-				marketPrice: 100,
+				price: 100,
 				percentageDelta: 0.01,
 				stopPrice: 150
 			},
 			output: { exitTrailing: false, stopPrice: 101 }
 		},
 
-		// Leave `stopPrice` as is when `marketPrice` gets closer.
+		// Leave `stopPrice` as is when `price` gets closer.
 		{
 			input: {
 				direction: "UP",
-				marketPrice: 100,
+				price: 100,
 				percentageDelta: 0.02,
 				stopPrice: 99
 			},
@@ -588,7 +586,7 @@ test("trailingStop", () => {
 		{
 			input: {
 				direction: "DOWN",
-				marketPrice: 100,
+				price: 100,
 				percentageDelta: 0.02,
 				stopPrice: 101
 			},
@@ -600,7 +598,7 @@ test("trailingStop", () => {
 test("computeStopPriceDown", () => {
 	assertEqual<ComputeStopPriceArg, number>(computeStopPriceDown, [
 		{
-			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+			input: { price: 12345.6789, percentageDelta: 0.01 },
 			output: 12469.135689
 		}
 	])
@@ -609,7 +607,7 @@ test("computeStopPriceDown", () => {
 test("computeStopPriceUp", () => {
 	assertEqual<ComputeStopPriceArg, number>(computeStopPriceUp, [
 		{
-			input: { marketPrice: 12345.6789, percentageDelta: 0.01 },
+			input: { price: 12345.6789, percentageDelta: 0.01 },
 			output: 12222.222111
 		}
 	])
