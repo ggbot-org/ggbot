@@ -12,6 +12,23 @@ export AWS_ACCOUNT_ID=888777666555
 
 Choose a string to prefix project entities and set `PROJECT_SHORT_NAME` environment variable, for instance **ggbot**.
 
+```sh
+export export PROJECT_SHORT_NAME=ggbot
+```
+
+## Admin accounts
+
+You should not access the _AWS Console_ using the _root_ account.
+Go to _IAM_ and create a **superpowers** user group. Attach it the following policies:
+
+- PowerUserAccess
+- IAMFullAccess
+- IAMUserSSHKeys
+
+Create at least one admin account, to be used with the _AWS console_, and add it to the group.
+
+## Choose a data region
+
 Choose an AWS region to host your data, for instance let's assume **ggbot data** and activities will be inside **Europe** and let's go for _Europe (Frankfurt)_ region (which identifier is `eu-central-1`). Once you chose a region, set the environment variable `AWS_DATA_REGION` as
 
 ```sh
@@ -30,16 +47,28 @@ Create an SSL certificate with [AWS Certificate Manager](https://aws.amazon.com/
 
 Go to ACM on AWS console, check that you are in the wanted AWS region, for instance, _eu-central-1 Europe (Frankfurt)_.
 Click on "Request a certificate", flag "Request a public certificate" and click "Next".
-Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.com`.
-Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.com`.
+Use `DNS_DOMAIN` as "Fully qualified domain name", for instance `ggbot.org`.
+Click on "Add another name to this certificate" and add a third level domain **wildcard**, for instance, `*.ggbot.org`.
 Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
 Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.
 
 ## SES - Amazon Simple Email Service
 
-Setup your project email, for example to send email from an address like `noreply@ggbot.com`.
+Setup your project email, for example to send email from an address like `noreply@ggbot.org`.
 
-TODO add instructions about SES bootstrapping
+Choose an AWS region, it can be the same as _ggbot data_ region for instance _Europe (Frankfurt)_,
+in that case set the environment variable `AWS_SES_REGION` as
+
+```sh
+export AWS_SES_REGION=eu-central-1
+```
+
+Go to SES on AWS console, select the choosen region and configure a new identity which _Identity type_ will be **Domain**.
+Insert your DNS domain, for example `ggbot.org`.
+Expand _Advanced DKIM settings_ and select _Easy DKIM_ with **RSA_2048_BIT** _DKIM signing key length_.
+Finally click on _Create Identity_ then go for _Publish DNS records to Route53_.
+
+Once the email domain address is verified, your SES enters in a sandbox.
 
 ## Devops account
 
@@ -87,3 +116,14 @@ Of course, the test is expected to fail on first run. To update devops policy ru
 ```sh
 TODO npm run push_infrastructure:aws:bootstrap
 ```
+
+## Further steps
+
+Continue with the following steps:
+
+- [S3 storage lens](./s3-storage-lens.md)
+- [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)
+
+TODO complete steps list
+
+Finally try out the [end to end tests](./end-to-end-tests.md)

@@ -4,6 +4,7 @@ List of end to end test documentations, per workspace:
 
 -   [binance-client](../../binance-client/docs/end-to-end-tests.md)
 -   [executor](../../executor/docs/end-to-end-tests.md)
+-   [aws-ses](../../aws-ses/docs/end-to-end-tests.md)
 
 They contain a list of available commands to launch end to end tests as well as information about custom environment variables to set in order to run tests.
 

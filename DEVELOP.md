@@ -1,4 +1,4 @@
-## Development
+# Development
 
 To start developing locally, use the following instructions.
 

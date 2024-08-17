@@ -11,15 +11,13 @@ type SendEmailInput = {
 	toAddresses: string[]
 }
 
-export const sendEmail = async (
+export async function sendEmail (
 	region: AwsRegion,
 	{ html, source, subject, toAddresses, text }: SendEmailInput
-) => {
+) {
 	const Charset = "UTF-8"
 	const command = new SendEmailCommand({
-		Destination: {
-			ToAddresses: toAddresses
-		},
+		Destination: { ToAddresses: toAddresses },
 		Message: {
 			Body: {
 				Html: { Charset, Data: html },
