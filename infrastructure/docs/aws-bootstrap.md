@@ -29,17 +29,21 @@ Create at least one admin account, to be used with the _AWS console_, and add it
 
 ## Choose a data region
 
-Choose an AWS region to host your data, for instance let's assume **ggbot data** and activities will be inside **Europe** and let's go for _Europe (Frankfurt)_ region (which identifier is `eu-central-1`). Once you chose a region, set the environment variable `AWS_DATA_REGION` as
+Choose an AWS region to host your data, for instance **ggbot data** and activities will be inside **Europe** and let's go for _Europe (Frankfurt)_ region (which identifier is `eu-central-1`). Once you chose a region, set the environment variable `AWS_DATA_REGION` as
 
 ```sh
 export AWS_DATA_REGION=eu-central-1
 ```
+
+Notice that **this choice cannot be changed** as any other configuration parameter
+and must be clearly exposed on the _Terms of Service_ and _Privacy Policy_ pages.
 
 ## DNS domain
 
 Buy a domain, for instance _ggbot.com_ and set the `DNS_DOMAIN` environment variable.
 You can get a domain on [Amazon Route 53](https://aws.amazon.com/it/route53/).
 In any case, you need to add your domain to _Route 53_ as hosted zone.
+Notice that it may take up to 48 hours for DNS records to propagate on the Internet.
 
 ## SSL certificate
 
@@ -52,74 +56,18 @@ Click on "Add another name to this certificate" and add a third level domain **w
 Choose "DNS validation" as validation method. Default _RSA 2048_ algorithm is fine.
 Click "Request", then go to the certificates status, find the button "Create records in Route 53" and complete the DNS validation.
 
-## SES - Amazon Simple Email Service
-
-Setup your project email, for example to send email from an address like `noreply@ggbot.org`.
-
-Choose an AWS region, it can be the same as _ggbot data_ region for instance _Europe (Frankfurt)_,
-in that case set the environment variable `AWS_SES_REGION` as
-
-```sh
-export AWS_SES_REGION=eu-central-1
-```
-
-Go to SES on AWS console, select the choosen region and configure a new identity which _Identity type_ will be **Domain**.
-Insert your DNS domain, for example `ggbot.org`.
-Expand _Advanced DKIM settings_ and select _Easy DKIM_ with **RSA_2048_BIT** _DKIM signing key length_.
-Finally click on _Create Identity_ then go for _Publish DNS records to Route53_.
-
-Once the email domain address is verified, your SES enters in a sandbox.
-
-## Devops account
-
-Create a _devops_ account. Once the IAM permissions are set, every other operation can be done by infrastructure automation.
-
-Go to _IAM > Policies_ and click _Create policy_.
-Choose name `${PROJECT_SHORT_NAME}-devops-policy`, for instance _ggbot-devops-policy_.
-Add the following JSON.
-
-```json
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Effect": "Allow",
-			"Action": ["iam:GetPolicy", "iam:GetPolicyVersion"],
-			"Resource": "*"
-		}
-	]
-}
-```
-
-TODO notice the wildcard in Resource will be fixed on infrastructure test step below
-
-TODO add also permissions to update policy.
-
-Go to _IAM > Users_ and click _Create user_.
-As user name, choose `${PROJECT_SHORT_NAME}-devops`, for instance _ggbot-devops_.
-On "Set permissions" choose "Attach policies directly" and choose previously created policy.
-
-Once the user is created, go to user IAM page, for instance _IAM > Users > ggbot-devops_. Go to _Security credentials_ tab and click _Create access key_.
-Get the access keys and set environment variables:
-
--   `AWS_ACCESS_KEY_ID`
--   `AWS_SECRET_ACCESS_KEY`
-
-To check devops policy run
-
-```sh
-npm run test_infrastructure:aws:bootstrap
-```
-
-Of course, the test is expected to fail on first run. To update devops policy run
-
-```sh
-TODO npm run push_infrastructure:aws:bootstrap
-```
+Create another certificate with exactly the same steps of the previous one but in _us-east-1 US East (N. Virginia)_.
+It is needed by _Cloudfront_ distributions.
 
 ## Further steps
 
-Continue with the following steps:
+The following steps are needed, order matters:
+
+1. [Devops account setup](./devops-account-setup.md)
+2. [Create the main website](./www-setup.md)
+3. [SES setup](./ses-setup.md)
+
+Continue with the following steps in any order:
 
 - [S3 storage lens](./s3-storage-lens.md)
 - [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)
