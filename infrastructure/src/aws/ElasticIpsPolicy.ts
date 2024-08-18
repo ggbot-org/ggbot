@@ -1,27 +1,29 @@
-import { IamPolicy, PolicyDocumentStatement } from "@workspace/aws-iam"
+import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
+
+import { IamAction } from "./iamActions.js"
 
 const statementNames = [
 	"describeAddresses",
 	"handleAddressesAssociation"
 ] as const
-type ElasticIpsPolicyStatementName = (typeof statementNames)[number]
+type StatementName = (typeof statementNames)[number]
+type StatementAction = Extract<IamAction,
+	| "ec2:DescribeAddresses"
+	| "ec2:AssociateAddress"
+	| "ec2:DisassociateAddress"
+>
 
 export class ElasticIpsPolicy extends IamPolicy {
 	constructor() {
-		super(
-			ENV.AWS_ACCOUNT_ID(),
-			ENV.AWS_DATA_REGION(),
-			`${ENV.PROJECT_SHORT_NAME()}-elastic-ips-policy`
-		)
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), `${ENV.PROJECT_SHORT_NAME()}-elastic-ips-policy`)
 	}
 
-	get statementAction(): Record<
-		ElasticIpsPolicyStatementName,
-		PolicyDocumentStatement["Action"]
-	> {
+	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
-			describeAddresses: ["ec2:DescribeAddresses"],
+			describeAddresses: [
+				"ec2:DescribeAddresses",
+			],
 			handleAddressesAssociation: [
 				"ec2:AssociateAddress",
 				"ec2:DisassociateAddress"
@@ -29,10 +31,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 		}
 	}
 
-	get statementResource(): Record<
-		ElasticIpsPolicyStatementName,
-		PolicyDocumentStatement["Resource"]
-	> {
+	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
 		const { accountId } = this
 		return {
 			describeAddresses: "*",
@@ -44,21 +43,12 @@ export class ElasticIpsPolicy extends IamPolicy {
 		}
 	}
 
-	get statement(): Record<
-		ElasticIpsPolicyStatementName,
-		PolicyDocumentStatement
-	> {
-		const allow = (
-			statementName: ElasticIpsPolicyStatementName
-		): PolicyDocumentStatement => ({
-			Effect: "Allow",
-			Action: this.statementAction[statementName],
-			Resource: this.statementAction[statementName]
-		})
-
+	get policyDocument(): IamPolicyDocument<StatementName, StatementAction>["policyDocument"] {
 		return {
-			describeAddresses: allow("describeAddresses"),
-			handleAddressesAssociation: allow("handleAddressesAssociation")
+			Version: "2012-10-17",
+			Statement: statementNames.map(
+				(statementName) => IamPolicy.allowStatement(this.statementAction[statementName], this.statementResource[statementName])
+			)
 		}
 	}
 }

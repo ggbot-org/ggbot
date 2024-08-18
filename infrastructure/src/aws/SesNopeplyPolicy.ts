@@ -1,31 +1,52 @@
-import { IamPolicy } from "@workspace/aws-iam"
+import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
+import { IamAction } from "./iamActions.js"
 import { SesIdentity } from "./SesIdentity.js"
 
-export class SesNoreplyPolicy extends IamPolicy {
+const statementNames = [
+	"sendEmail",
+] as const
+type StatementName = (typeof statementNames)[number]
+type StatementAction = Extract<IamAction,
+	| "SES:SendEmail"
+	| "SES:SendRawEmail"
+>
+export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<StatementName, StatementAction> {
 	sesIdentity: SesIdentity = new SesIdentity()
 
 	constructor() {
-		super(
-			ENV.AWS_ACCOUNT_ID(),
-			ENV.AWS_SES_REGION(),
-			`${ENV.PROJECT_SHORT_NAME()}-main-ses-noreply-policy`
-		)
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-main-ses-noreply-policy`)
 	}
 
-	get statement() {
+	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
-			Effect: "Allow",
-			Resource: this.sesIdentity.arn,
-			Action: ["SES:SendEmail", "SES:SendRawEmail"]
-			// TODO try
-			// "Condition": {
-			//    "StringLike": {
-			//        "ses:FromAddress": "noreply@ggbot2.com"
-			//        where addres comes from @wrokspace locators noReplyEmailAddress
-			//    }
-			// }
+			sendEmail: [
+				"SES:SendEmail",
+				"SES:SendRawEmail",
+			],
 		}
+	}
+
+	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
+		return {
+			sendEmail: this.sesIdentity.arn,
+		}
+	}
+
+	get policyDocument(): IamPolicyDocument<StatementName, StatementAction>["policyDocument"] {
+		return {
+			Version: "2012-10-17",
+			Statement: statementNames.map(
+				(statementName) => IamPolicy.allowStatement(this.statementAction[statementName], this.statementResource[statementName])
+			)
+		}
+		// TODO try
+		// "Condition": {
+		//    "StringLike": {
+		//        "ses:FromAddress": "noreply@ggbot2.com"
+		//        where addres comes from @wrokspace locators noReplyEmailAddress
+		//    }
+		// }
 	}
 }

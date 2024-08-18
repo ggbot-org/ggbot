@@ -1,16 +1,10 @@
-import { S3Bucket, S3BucketACL } from "@workspace/aws-s3"
+import { S3Bucket } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
-
-import { fqdn } from "./fqdn.js"
+import { FQDN } from "@workspace/locators"
+import { DeployStage } from "@workspace/models"
 
 export class StaticWebsiteBucket extends S3Bucket {
-	readonly ACL: S3BucketACL = "public-read"
-
-	constructor() {
-		super(ENV.AWS_DATA_REGION(), fqdn.webappDomain)
-	}
-
-	async create() {
-		await super.create(this.ACL)
+	constructor(deployState: DeployStage) {
+		super(ENV.AWS_DATA_REGION(), new FQDN(deployState, ENV.DNS_DOMAIN()).webappDomain)
 	}
 }

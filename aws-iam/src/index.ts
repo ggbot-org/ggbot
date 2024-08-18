@@ -1,2 +1,2 @@
-export { IamPolicy } from "./IamPolicy.js"
-export type { PolicyDocumentStatement } from "./types.js"
+export * from "./IamPolicy.js"
+export type { IamPolicyDocument, PolicyDocumentStatement } from "./types.js"

@@ -1,3 +1,4 @@
+
 # npm dependencies
 
 This is the internal dependencies graph: it shows how workspaces depend on each other.
@@ -24,7 +25,6 @@ graph LR
     workspace/authentication-api --- workspace/logging
     workspace/authentication-api --- workspace/s3-data-bucket
     workspace/aws-acm --- workspace/aws-types
-    workspace/aws-api-gateway --- workspace/aws-types
     workspace/aws-ec2 --- workspace/aws-types
     workspace/aws-iam --- workspace/aws-types
     workspace/aws-s3 --- workspace/aws-types

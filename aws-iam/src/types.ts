@@ -1,39 +1,20 @@
 import { AwsResource } from "@workspace/aws-types"
 
-import { iamVersion } from "./client.js"
+const iamVersion = "2012-10-17"
 
 export type { Policy } from "@aws-sdk/client-iam"
 
-const policyDocumentStatementActions = [
-	"acm:ListCertificates",
-	"apigateway:GET",
-	"ec2:AssociateAddress",
-	"ec2:DescribeAddresses",
-	"ec2:DisassociateAddress",
-	"elasticloadbalancing:DescribeLoadBalancers",
-	"iam:GetPolicy",
-	"iam:GetPolicyVersion",
-	"iam:PassRole",
-	"lambda:CreateFunction",
-	"lambda:UpdateFunctionCode",
-	"lambda:UpdateFunctionConfiguration",
-	"logs:CreateLogGroup",
-	"logs:PutRetentionPolicy",
-	"s3:CreateBucket",
-	"s3:DeleteObject",
-	"s3:GetBucketAcl",
-	"s3:ListBucket",
-	"s3:PutObject"
-] as const
-export type PolicyDocumentStatementAction = (typeof policyDocumentStatementActions)[number]
-
-export type PolicyDocumentStatement = {
-	Action: PolicyDocumentStatementAction[]
+export type PolicyDocumentStatement<Action extends string> = {
+	Action: Action[]
 	Effect: "Allow"
 	Resource: AwsResource["arn"] | Array<AwsResource["arn"]>
 }
 
-export type PolicyDocument = {
-	Version: typeof iamVersion
-	Statement: PolicyDocumentStatement[]
+export type IamPolicyDocument<StatementName extends string, StatementAction extends string> = {
+	readonly policyDocument: {
+		Version: typeof iamVersion
+		Statement: Array<PolicyDocumentStatement<StatementAction>>
+	}
+	readonly statementAction: Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]>
+	readonly statementResource: Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]>
 }

@@ -5,16 +5,10 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit",
-    "push_infrastructure:aws": "ACTIVE_TEST=1 node --test $npm_package_config_tsnode ./src/aws/*_test.ts",
-    "push_infrastructure:aws:bootstrap": "ACTIVE_TEST=1 node --test $npm_package_config_tsnode ./src/bootstrap/*.ts",
-    "print_iam_policy": "node $npm_package_config_tsnode ./src/scripts/print_iam_policy.ts",
-    "test_infrastructure:aws": "node --test $npm_package_config_tsnode ./src/aws/*_test.ts",
-    "test_infrastructure:aws:bootstrap": "node --test $npm_package_config_tsnode ./src/bootstrap/*_test.ts"
+    "generate_iam_policies": "node $npm_package_config_tsnode ./src/scripts/generate_iam_policies.ts"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
-    "@workspace/aws-acm": "0.0.0",
-    "@workspace/aws-api-gateway": "0.0.0",
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/aws-iam": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
@@ -23,9 +17,9 @@
     "@workspace/database": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
+    "@workspace/models": "0.0.0",
     "@workspace/repository": "0.0.0",
-    "@workspace/s3-data-bucket": "0.0.0",
-    "minimal-type-guard-helpers": "0.2.0"
+    "@workspace/s3-data-bucket": "0.0.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0",
