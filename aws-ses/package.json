@@ -16,7 +16,7 @@
     "e2e:sendEmail": "node $npm_package_config_tsnode ./src/end-to-end-tests/sendEmail.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-ses": "3.427.0",
+    "@aws-sdk/client-ses": "3.632.0",
     "@workspace/aws-types": "0.0.0"
   },
   "devDependencies": {

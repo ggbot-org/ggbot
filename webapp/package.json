@@ -54,21 +54,21 @@
   },
   "devDependencies": {
     "@formatjs/cli": "6.2.12",
-    "@types/react-dom": "18.2.7",
+    "@types/react-dom": "18.3.0",
     "@workspace/env": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
     "esbuild": "0.23.0",
     "eslint-plugin-formatjs": "4.10.3",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.35.0",
-    "eslint-plugin-react-compiler": "0.0.0-experimental-9ed098e-20240725",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-eeb1b2a-20240818",
     "eslint-plugin-react-hooks": "4.6.2",
     "onchange": "7.1.0",
     "read-file-utf8": "3.0.0",
-    "sass": "1.71.1",
-    "stylelint": "16.8.1",
+    "sass": "1.77.8",
+    "stylelint": "16.8.2",
     "stylelint-config-standard-scss": "13.1.0",
-    "tsc-alias": "1.8.8",
+    "tsc-alias": "1.8.10",
     "write-file-utf8": "3.0.2"
   }
 }

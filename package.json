@@ -101,7 +101,7 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "2.6.1",
+    "@stylistic/eslint-plugin": "2.6.4",
     "@typescript-eslint/eslint-plugin": "7.14.1",
     "@typescript-eslint/parser": "7.14.1",
     "eslint": "8.57.0",
@@ -110,7 +110,7 @@
     "eslint-plugin-smells": "1.0.1",
     "eslint-plugin-tsdoc": "0.2.17",
     "eslint-plugin-workspaces": "0.10.0",
-    "lint-staged": "15.2.5",
+    "lint-staged": "15.2.9",
     "markdownlint-cli2": "0.12.1",
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
