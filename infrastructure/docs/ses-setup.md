@@ -23,4 +23,10 @@ Check your email inbox and for an email from `no-reply-aws@amazon.com` and click
 Once done, go to _Send test email_, choose _Formatted_ email format and _Successfully delivered_ scenario.
 Enter subject and body and click on _Send test email_.
 
-When all required steps have green light click on _Request production access_.
+When all required steps have green light click on _Request production access_. Set
+
+- _Mail type_ to _Transactional_
+- _Website URL_ to the webapp URL previously deployed, for example `https://www.ggbot.org`
+- optionally add another email in _Additional contacts_, AWS support will contact by default on your root email account
+
+Follow the steps you will receive by email, the support will ask for the use case and other info before enabling the production access.
