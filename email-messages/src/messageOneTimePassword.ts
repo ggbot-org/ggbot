@@ -2,13 +2,13 @@ import { ENV } from "@workspace/env"
 import { Language, OneTimePassword } from "@workspace/models"
 
 import { emailBody } from "./emailFragments.js"
-import { EmailMessageContent, GetEmailMessageContent } from "./emailMessage.js"
+import { EmailMessageContent } from "./types.js"
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 
-export const oneTimePasswordEmailMessage: GetEmailMessageContent<{
-	oneTimePassword: OneTimePassword
-}> = (language, { oneTimePassword: { code } }): EmailMessageContent => {
+export function oneTimePasswordEmailMessage(
+	language: Language,
+	{ oneTimePassword: { code } }: { oneTimePassword: OneTimePassword }): EmailMessageContent {
 	const html: Record<Language, string> = {
 		en: emailBody(`
           <tr>

@@ -32,7 +32,7 @@ const ecmaScriptPath: Record<EcmaScriptName, string[]> = {
 	...workerScriptPath
 }
 
-export const webappEcmaScriptsConfig: Record< EcmaScriptName, {
+export const webappEcmaScriptsConfig: Record<EcmaScriptName, {
 	entryPoint: string
 	jsPath: string[]
 }> = {

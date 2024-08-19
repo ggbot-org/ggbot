@@ -1,1 +1,3 @@
-export const noReplyEmailAddress = (dnsDomain: string) => `noreply@${dnsDomain}`
+export function noReplyEmailAddress (dnsDomain: string) {
+	return `noreply@${dnsDomain}`
+}

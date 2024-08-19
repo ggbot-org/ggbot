@@ -2,19 +2,18 @@ export type FiniteString = string
 
 export const stringMaxLength = 256
 
-export const isFiniteString = (arg: unknown): arg is FiniteString => typeof arg === "string" && arg.length <= stringMaxLength
+export function isFiniteString(arg: unknown): arg is FiniteString {
+	return typeof arg === "string" && arg.length <= stringMaxLength
+}
 
 export type NonEmptyString<T = string> = T extends "" ? never : T
 
-export function isNonEmptyString(
-	arg: unknown
-): arg is NonEmptyString<FiniteString> {
+export function isNonEmptyString(arg: unknown): arg is NonEmptyString<FiniteString> {
 	return isFiniteString(arg) && arg !== ""
 }
 
 /**
- * A string is an `IdentifierString` if it is finite, not empty and has no line
- * break.
+ * A string is an `IdentifierString` if it is finite, not empty and has no line break.
  */
 export type IdentifierString = NonEmptyString<FiniteString>
 

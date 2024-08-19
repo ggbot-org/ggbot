@@ -2,18 +2,16 @@ import { ENV } from "@workspace/env"
 import { Language, StrategyKey } from "@workspace/models"
 
 import { emailBody } from "./emailFragments.js"
-import { EmailMessageContent, GetEmailMessageContent } from "./emailMessage.js"
+import { EmailMessageContent } from "./types.js"
 import { webapp } from "./webapp.js"
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 
-export const suspendedStrategyEmailMessage: GetEmailMessageContent<
-	StrategyKey
-> = (language, { strategyId, strategyKind }): EmailMessageContent => {
-	const linkToStrategy = webapp.user.strategy({
-		strategyId,
-		strategyKind
-	}).href
+export function suspendedStrategyEmailMessage(
+	language: Language,
+	{ strategyId, strategyKind }: StrategyKey
+): EmailMessageContent {
+	const linkToStrategyHref = webapp.user.strategy({ strategyId, strategyKind }).href
 
 	const html: Record<Language, string> = {
 		en: emailBody(`
@@ -45,7 +43,7 @@ export const suspendedStrategyEmailMessage: GetEmailMessageContent<
 
           <tr>
             <td>
-              This is the <a href="${linkToStrategy}">link to your strategy</a>.
+              This is the <a href="${linkToStrategyHref}">link to your strategy</a>.
             </td>
           </tr>
         `)
@@ -60,7 +58,7 @@ Your ${PROJECT_SHORT_NAME} strategy has been suspended.
 
 Please check your funds or any other error.
 
-This is the link to your strategy: ${linkToStrategy}
+This is the link to your strategy: ${linkToStrategyHref}
 `
 	}
 

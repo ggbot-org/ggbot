@@ -2,9 +2,8 @@ import { DflowNode } from "dflow"
 
 import { add, div, MaybeNumber, mul, sub } from "../arithmetic.js"
 import { inputPeriod, inputValues, outputLastValue, outputValues } from "../commonIO.js"
-import { MovingAverage } from "./movingAverages.js"
 
-export const relativeStrengthIndex: MovingAverage = (values, period) => {
+export function relativeStrengthIndex(values: number[], period: number): number[] {
 	const size = values.length
 	if (size < period) return []
 	const upwards: MaybeNumber[] = []
@@ -26,7 +25,6 @@ export const relativeStrengthIndex: MovingAverage = (values, period) => {
 	// TODO
 	// try to avoid castings to number (see below untile ned of function body),
 	// there could be a divide by zero
-	// MovingAverage should use MaybeNumber?
 	const result: number[] = [
 		mul(100, div(smoothUp, add(smoothUp, smoothDown))) as number
 	]

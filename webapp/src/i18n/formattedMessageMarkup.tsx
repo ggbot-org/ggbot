@@ -1,9 +1,6 @@
 import { ReactNode } from "react"
 
-type FormattedMessageValues = Record<
-	string,
-	(chunks: ReactNode[]) => JSX.Element
->
+type FormattedMessageValues = Record<string, (chunks: ReactNode[]) => JSX.Element>
 
 /**
  * Common JSX values to define markup used by <FormattedMessage> component.
@@ -12,15 +9,19 @@ type FormattedMessageValues = Record<
  *
  * ```tsx
  * import {formattedMessageMarkup} from "_/i18n/formattedMessageMarkup"
- * import { FC } from "react"
  * import { FormattedMessage } from "react-intl"
  *
- * export const MyComponent: FC<{ name: string }> = ({name}) => (
- *   <FormattedMessage id="MyComponent.message", values={{
- *   name: "Satoshi",
- *   ...formattedMessageMarkup
- *   }}	/>
- * )
+ * export function MyComponent ({ name }: { name: string }) {
+ *   return (
+ *    <FormattedMessage
+ *      id="MyComponent.message"
+ *      values={{
+ *        name,
+ *        ...formattedMessageMarkup
+ *      }}
+ *    />
+ *  )
+ * }
  * ```
  */
 export const formattedMessageMarkup: FormattedMessageValues = {
@@ -40,19 +41,19 @@ export const formattedMessageMarkup: FormattedMessageValues = {
  *
  * ```tsx
  * import {formattedMessageMarkupWithLinkTo} from "_/i18n/formattedMessageMarkup"
- * import { FC } from "react"
  * import { FormattedMessage } from "react-intl"
  *
- * export const MyComponent: FC = () => (
- *   <FormattedMessage id="MyComponent.message", values={
- *   formattedMessageMarkupWithLinkTo("https://example.com")
- *   }	/>
- * )
+ * export function MyComponent() {
+ *   return (
+ *     <FormattedMessage
+ *       id="MyComponent.message"
+ *       values={formattedMessageMarkupWithLinkTo("https://example.com")}
+ *     />
+ *   )
+ * }
  * ```
  */
-export function formattedMessageMarkupWithLinkTo(
-	url: string
-): FormattedMessageValues {
+export function formattedMessageMarkupWithLinkTo(url: string): FormattedMessageValues {
 	return {
 		a: (text) => <a href={url}>{text}</a>,
 		...formattedMessageMarkup

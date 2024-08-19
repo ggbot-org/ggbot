@@ -3,13 +3,11 @@ import { DflowNode } from "dflow"
 import { add, div, mul, sub } from "../arithmetic.js"
 import { inputPeriod, inputValues, outputLastValue, outputValues } from "../commonIO.js"
 
-export type MovingAverage = (values: number[], period: number) => number[]
-
 const movingAverageInputs = [inputValues, inputPeriod]
 
 const movingAverageOutputs = [outputValues, outputLastValue]
 
-export const exponentialMovingAverage: MovingAverage = (values, period) => {
+export function exponentialMovingAverage(values: number[], period: number): number[] {
 	const size = values.length
 	if (size < period) return []
 	const result: number[] = [values[0]]
@@ -39,7 +37,7 @@ export class ExponentialMovingAverage extends DflowNode {
 	}
 }
 
-export const simpleMovingAverage: MovingAverage = (values, period) => {
+export function simpleMovingAverage(values: number[], period: number): number[] {
 	if (values.length < period) return []
 	return values.reduce<number[]>((result, _value, index, array) => {
 		if (index < period - 1) return result
@@ -66,7 +64,7 @@ export class SimpleMovingAverage extends DflowNode {
 	}
 }
 
-export const wilderSmoothing: MovingAverage = (values, period) => {
+export function wilderSmoothing(values: number[], period: number): number[] {
 	const size = values.length
 	if (size < period) return []
 	const sum = values.slice(0, period).reduce<number>(

@@ -10,9 +10,7 @@ export { StripeSignatureVerificationError }
 export class ErrorCannotInferStripeMode extends Error {
 	static errorName = "ErrorCannotInferStripeMode"
 	constructor() {
-		super(
-			"Cannot infer Stripe mode, check STRIPE_SECRET_KEY environment variable"
-		)
+		super("Cannot infer Stripe mode, check STRIPE_SECRET_KEY environment variable")
 	}
 }
 

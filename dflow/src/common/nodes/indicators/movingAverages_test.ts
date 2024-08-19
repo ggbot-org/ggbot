@@ -11,10 +11,7 @@ type ExponentialMovingAverageInput = {
 }
 
 test("Exponential Moving Average", () => {
-	assertDeepEqual<
-		ExponentialMovingAverageInput,
-		ReturnType<ExponentialMovingAverage>
-	>(
+	assertDeepEqual<ExponentialMovingAverageInput, ReturnType<ExponentialMovingAverage>>(
 		({ values, period }: ExponentialMovingAverageInput) => exponentialMovingAverage(values, period),
 		[
 			{ input: { values: [], period: 1 }, output: [] },
