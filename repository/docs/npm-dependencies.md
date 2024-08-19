@@ -10,7 +10,6 @@ graph LR
     workspace/admin-api --- workspace/logging
     workspace/admin-api --- workspace/s3-data-bucket
     workspace/api --- workspace/binance
-    workspace/api --- workspace/env
     workspace/api --- workspace/http
     workspace/api --- workspace/locators
     workspace/api-lambda-user-action --- workspace/authentication
@@ -24,7 +23,6 @@ graph LR
     workspace/authentication-api --- workspace/email-messages
     workspace/authentication-api --- workspace/logging
     workspace/authentication-api --- workspace/s3-data-bucket
-    workspace/aws-acm --- workspace/aws-types
     workspace/aws-ec2 --- workspace/aws-types
     workspace/aws-iam --- workspace/aws-types
     workspace/aws-s3 --- workspace/aws-types
@@ -60,15 +58,12 @@ graph LR
     workspace/indexeddb-binance --- workspace/indexeddb
     workspace/indexeddb-errors --- workspace/indexeddb
     workspace/indexeddb-orders --- workspace/indexeddb
-    workspace/infrastructure --- workspace/aws-acm
-    workspace/infrastructure --- workspace/aws-api-gateway
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
-    workspace/infrastructure --- workspace/repository
     workspace/infrastructure --- workspace/s3-data-bucket
-    workspace/locators --- workspace/models
+    workspace/locators --- workspace/env
     workspace/public-api --- workspace/database
     workspace/public-api --- workspace/logging
     workspace/public-api --- workspace/s3-data-bucket

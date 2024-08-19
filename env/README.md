@@ -2,25 +2,28 @@
 
 The following environment variables are used:
 
--   `AUTHENTICATION_SECRET`: used by APIs for authentication.
--   `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, are AWS CLI credentials for _devops_ account](../infrastructure/docs/aws-bootstrap.md#devops-account).
--   `AWS_ACCOUNT_ID`: used locally for devops.
--   `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
--   `AWS_DATA_REGION`: for example `eu-central-1`.
--   `AWS_SES_REGION`: for example `us-east-1`.
--   `BINANCE_PROXY_IP`: for example `1.2.3.4`.
--   `DEPLOY_STAGE`: can be `main`, `next` or `local`.
--   `DNS_DOMAIN`: _example.com_.
--   `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
--   Used by Stripe APIs for payments:
-    -   `STRIPE_SECRET_KEY`
-    -   `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
-    -   `STRIPE_PLAN_BASIC_PRICE_ID`
+- `AUTHENTICATION_SECRET`: used by APIs for authentication.
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`: used locally, are AWS CLI credentials for _devops_ account](../infrastructure/docs/aws-bootstrap.md#devops-account).
+- `AWS_ACCOUNT_ID`: used locally for devops.
+- `AWS_BINANCE_PROXY_REGION`: for example `eu-central-1`.
+- `AWS_DATA_REGION`: for example `eu-central-1`.
+- `AWS_SES_REGION`: for example `us-east-1`.
+- `BINANCE_PROXY_IP`: for example `1.2.3.4`.
+- `DEPLOY_STAGE`: can be `main`, `next` or `local`.
+- `DNS_DOMAIN`: _example.com_.
+- `PROJECT_SHORT_NAME`: string used for example as a prefix for resource names.
+- Used by Stripe APIs for payments:
+  - `STRIPE_SECRET_KEY`
+  - `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
+  - `STRIPE_PLAN_BASIC_PRICE_ID`
+- Social links, used by [locators workspace](../locators/):
+  - `TELEGRAM_SUPPORT_URL`
+  - `GITHUB_ORG_URL`
 
 Optional environment variables needed to launch [binance-client end to end tests](../binance-client/docs/end-to-end-tests.md).
 
--   `BINANCE_API_KEY`
--   `BINANCE_API_SECRET`
+- `BINANCE_API_KEY`
+- `BINANCE_API_SECRET`
 
 ## .envrc file
 
@@ -50,6 +53,10 @@ export BINANCE_PROXY_IP=1.2.3.4
 export STRIPE_SECRET_KEY=xxx
 export STRIPE_PLAN_BASIC_PRICE_ID=xxx
 export STRIPE_PLAN_BASIC_MONTHLY_PRICE=2
+
+# Social links
+export TELEGRAM_SUPPORT_URL=https://t.me/ggbot_support
+export GITHUB_ORG_URL=https://github.com/ggbot-org
 
 export BINANCE_API_KEY=xxx
 export BINANCE_API_SECRET=xxx

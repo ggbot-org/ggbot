@@ -1,5 +1,7 @@
+import { ENV } from "@workspace/env"
+
 export const github = {
-	organization: "https://github.com/ggbot-org"
+	organization: ENV.GITHUB_ORG_URL()
 }
 
 export const telegram = {

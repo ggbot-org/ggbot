@@ -17,10 +17,7 @@ class EnvironmentVariables {
 	}
 
 	AUTHENTICATION_SECRET() {
-		return getVariable(
-			process.env.AUTHENTICATION_SECRET,
-			"AUTHENTICATION_SECRET"
-		)
+		return getVariable(process.env.AUTHENTICATION_SECRET, "AUTHENTICATION_SECRET")
 	}
 
 	AWS_ACCOUNT_ID() {
@@ -28,10 +25,7 @@ class EnvironmentVariables {
 	}
 
 	AWS_BINANCE_PROXY_REGION() {
-		return getVariable(
-			process.env.AWS_BINANCE_PROXY_REGION,
-			"AWS_BINANCE_PROXY_REGION"
-		)
+		return getVariable(process.env.AWS_BINANCE_PROXY_REGION, "AWS_BINANCE_PROXY_REGION")
 	}
 
 	AWS_DATA_REGION() {
@@ -47,14 +41,15 @@ class EnvironmentVariables {
 	}
 
 	DEPLOY_STAGE(): DeployStage {
-		return getVariable(
-			process.env.DEPLOY_STAGE,
-			"DEPLOY_STAGE"
-		) as DeployStage
+		return getVariable(process.env.DEPLOY_STAGE, "DEPLOY_STAGE") as DeployStage
 	}
 
 	DNS_DOMAIN() {
 		return getVariable(process.env.DNS_DOMAIN, "DNS_DOMAIN")
+	}
+
+	GITHUB_ORG_URL() {
+		return getVariable(process.env.GITHUB_ORG_URL, "GITHUB_ORG_URL")
 	}
 
 	PROJECT_SHORT_NAME() {
@@ -62,21 +57,19 @@ class EnvironmentVariables {
 	}
 
 	STRIPE_PLAN_BASIC_MONTHLY_PRICE() {
-		return getVariable(
-			process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE,
-			"STRIPE_PLAN_BASIC_MONTHLY_PRICE"
-		)
+		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, "STRIPE_PLAN_BASIC_MONTHLY_PRICE")
 	}
 
 	STRIPE_PLAN_BASIC_PRICE_ID() {
-		return getVariable(
-			process.env.STRIPE_PLAN_BASIC_PRICE_ID,
-			"STRIPE_PLAN_BASIC_PRICE_ID"
-		)
+		return getVariable(process.env.STRIPE_PLAN_BASIC_PRICE_ID, "STRIPE_PLAN_BASIC_PRICE_ID")
 	}
 
 	STRIPE_SECRET_KEY() {
 		return getVariable(process.env.STRIPE_SECRET_KEY, "STRIPE_SECRET_KEY")
+	}
+
+	TELEGRAM_SUPPORT_URL() {
+		return getVariable(process.env.TELEGRAM_SUPPORT_URL, "TELEGRAM_SUPPORT_URL")
 	}
 }
 

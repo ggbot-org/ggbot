@@ -7,10 +7,12 @@ const environmentVariableNames = [
 	"BINANCE_PROXY_IP",
 	"DEPLOY_STAGE",
 	"DNS_DOMAIN",
+	"GITHUB_ORG_URL",
 	"NODE_ENV",
 	"PROJECT_SHORT_NAME",
 	"STRIPE_PLAN_BASIC_MONTHLY_PRICE",
 	"STRIPE_PLAN_BASIC_PRICE_ID",
-	"STRIPE_SECRET_KEY"
+	"STRIPE_SECRET_KEY",
+	"TELEGRAM_SUPPORT_URL",
 ] as const
 export type EnvironmentVariableName = (typeof environmentVariableNames)[number]
