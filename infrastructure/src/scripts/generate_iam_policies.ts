@@ -4,9 +4,9 @@ import { IamPolicy, IamPolicyDocument } from "@workspace/aws-iam"
 import writeFile from "write-file-utf8"
 
 import { DevopsPolicy } from "../aws/DevopsPolicy.js"
+import { ElasticIpsPolicy } from "../aws/ElasticIpsPolicy.js"
+import { SesNoreplyPolicy } from "../aws/SesNopeplyPolicy.js"
 import { iamDir } from "../package.js"
-
-const devopsPolicy = new DevopsPolicy()
 
 function writePolicy ({
 	policyName, policyDocument
@@ -17,4 +17,6 @@ function writePolicy ({
 	)
 }
 
-await writePolicy(devopsPolicy)
+await writePolicy(new DevopsPolicy())
+await writePolicy(new ElasticIpsPolicy())
+await writePolicy(new SesNoreplyPolicy())

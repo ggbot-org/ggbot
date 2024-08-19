@@ -18,7 +18,6 @@
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
-    "@workspace/repository": "0.0.0",
     "@workspace/s3-data-bucket": "0.0.0"
   },
   "devDependencies": {

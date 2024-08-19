@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
+ # TODO conver it to TS script in infrastructure workspace
 BUCKET=""
 
 if [ "$DEPLOY_STAGE" == "main" ]; then
-	BUCKET=www.ggbot2.com
+	BUCKET=www.${DNS_DOMAIN}
 elif [ "$DEPLOY_STAGE" == "next" ]; then
-	BUCKET=next.ggbot2.com
+	BUCKET=next.${DNS_DOMAIN}
 else
 	echo DEPLOY_STAGE must be main or next
 	exit

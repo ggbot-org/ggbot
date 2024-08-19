@@ -1,13 +1,15 @@
 import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
+import { S3Bucket } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 
 import { ApiRole } from "../aws/ApiRole.js"
 import { LambdaFunction } from "../aws/LambdaFunction.js"
 import { IamAction } from "./iamActions.js"
-import { StaticWebsiteBucket } from "./StaticWebsiteBucket.js"
+import { DataBucket, WebappBucket } from "./s3Buckets.js"
 
 const statementNames = [
-	"deployStaticWebsites",
+	"deployWebapp",
+	"downloadDataBuckets",
 	"manageLambdas",
 	"manageLambdasPassRole",
 	"manageLogGroups",
@@ -21,10 +23,14 @@ type StatementAction = Extract<IamAction,
 	| "logs:CreateLogGroup"
 	| "logs:PutRetentionPolicy"
 	| "s3:DeleteObject"
+	| "s3:GetObject"
 	| "s3:ListBucket"
 	| "s3:PutObject"
 >
 
+function wholeBucket(bucket: S3Bucket) {
+	return [bucket.arn, `${bucket.arn}/*`]
+}
 export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<StatementName, StatementAction> {
 	apiRole: ApiRole
 
@@ -36,10 +42,14 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 
 	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
-			deployStaticWebsites: [
+			deployWebapp: [
 				"s3:DeleteObject",
 				"s3:ListBucket",
 				"s3:PutObject",
+			],
+			downloadDataBuckets: [
+				"s3:ListBucket",
+				"s3:GetObject",
 			],
 			manageLambdas: [
 				"lambda:CreateFunction",
@@ -58,14 +68,14 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 	}
 
 	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
-		const mainWebappBucket = new StaticWebsiteBucket("main")
-		const nextWebappBucket = new StaticWebsiteBucket("next")
 		return {
-			deployStaticWebsites: [
-				mainWebappBucket.arn,
-				`${mainWebappBucket.arn}/*`,
-				nextWebappBucket.arn,
-				`${nextWebappBucket.arn}/*`,
+			deployWebapp: [
+				...wholeBucket(new WebappBucket("main")),
+				...wholeBucket(new WebappBucket("next")),
+			],
+			downloadDataBuckets: [
+				...wholeBucket(new DataBucket("main")),
+				...wholeBucket(new DataBucket("next")),
 			],
 			manageLambdas: LambdaFunction.everyArn(),
 			manageLogGroups: "*",

@@ -2,8 +2,6 @@ import { AwsResource } from "@workspace/aws-types"
 
 const iamVersion = "2012-10-17"
 
-export type { Policy } from "@aws-sdk/client-iam"
-
 export type PolicyDocumentStatement<Action extends string> = {
 	Action: Action[]
 	Effect: "Allow"

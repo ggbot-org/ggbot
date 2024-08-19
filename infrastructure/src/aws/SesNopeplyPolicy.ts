@@ -4,9 +4,7 @@ import { ENV } from "@workspace/env"
 import { IamAction } from "./iamActions.js"
 import { SesIdentity } from "./SesIdentity.js"
 
-const statementNames = [
-	"sendEmail",
-] as const
+const statementNames = ["sendEmail"] as const
 type StatementName = (typeof statementNames)[number]
 type StatementAction = Extract<IamAction,
 	| "SES:SendEmail"
@@ -16,7 +14,7 @@ export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<Sta
 	sesIdentity: SesIdentity = new SesIdentity()
 
 	constructor() {
-		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-main-ses-noreply-policy`)
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-ses-noreply-policy`)
 	}
 
 	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {

@@ -5,7 +5,7 @@ import { IamAction } from "./iamActions.js"
 
 const statementNames = [
 	"describeAddresses",
-	"handleAddressesAssociation"
+	"handleAddressesAssociation",
 ] as const
 type StatementName = (typeof statementNames)[number]
 type StatementAction = Extract<IamAction,
