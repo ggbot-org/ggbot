@@ -3,7 +3,7 @@ import { webapp } from "_/routing/webapp"
 import { HTMLAttributes, PropsWithChildren, useEffect, useState } from "react"
 import { Bulma, Navbar as _Navbar, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from "trunx"
 
-import { BrandName } from "./BrandName"
+import { BrandName } from "./brand"
 
 // Once updated trunx, remove this and import it from trunx
 function NavbarBrand({ children, ...props }: PropsWithChildren<NavbarBrandProps>) {

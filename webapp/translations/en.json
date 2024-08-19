@@ -125,8 +125,11 @@
 	"BinanceApiKeyPermissionIpRestrict.description": {
 		"defaultMessage": "<em>IP access restrictions</em> are activated."
 	},
-	"BrandName.label": {
+	"Brand.name": {
 		"defaultMessage": "{name}"
+	},
+	"Brand.tagline": {
+		"defaultMessage": "crypto flow"
 	},
 	"Button.cancel": {
 		"defaultMessage": "Cancel"
@@ -265,9 +268,6 @@
 	},
 	"HomePage.callToAction": {
 		"defaultMessage": "Launch App"
-	},
-	"HomePage.tagline": {
-		"defaultMessage": "crypto flow"
 	},
 	"InvalidAccountKey.message": {
 		"defaultMessage": "Invalid account key. Check this URL parameters."

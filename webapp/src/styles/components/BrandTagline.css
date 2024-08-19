@@ -1,0 +1,22 @@
+/* TODO
+ * there are 11 chars in "crypto flow", what happens with translations?
+ * the tagline could be translated the same
+ * or there is a way to set width and steps dynamically according to language.
+ * Also, the font is not monospaced and the animation is delayed.
+ *
+ * original code here https://markodenic.com/css-tips/ */
+.brand-tagline--animated {
+	width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	animation: brand-tagline-typing 1.17s steps(11) forwards;
+
+	/** This is an empiric delay to start the tagline animation after the logo animation. */
+	animation-delay: 1.7s;
+}
+
+@keyframes brand-tagline-typing {
+  to {
+    width: 11ch;
+  }
+}

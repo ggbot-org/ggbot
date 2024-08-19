@@ -6,6 +6,8 @@ import { sessionWebStorage } from "_/storages/session"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
+import { BrandTagline } from "../../components/library"
+
 export function Homepage() {
 	const [ctaIsActive, setCtaIsActive] = useState(false)
 
@@ -29,9 +31,7 @@ export function Homepage() {
 									bulma={["is-flex", "is-flex-direction-column"]}
 								>
 									<BrandName size="large" />
-									<i className="is-unselectable">
-										<FormattedMessage id="HomePage.tagline" />
-									</i>
+									<BrandTagline animated={!gotFirstPageView} />
 								</Div>
 							</LevelItem>
 						</Level>
@@ -49,9 +49,7 @@ export function Homepage() {
 								color="primary"
 								isOutlined={!ctaIsActive}
 								onBlur={() => setCtaIsActive(false)}
-								onClick={() => {
-									GOTO(webapp.user.dashboard)
-								}}
+								onClick={() => GOTO(webapp.user.dashboard)}
 								onFocus={() => setCtaIsActive(true)}
 								onPointerEnter={() => setCtaIsActive(true)}
 								onPointerLeave={() => setCtaIsActive(false)}

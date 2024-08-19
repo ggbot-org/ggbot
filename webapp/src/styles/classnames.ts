@@ -1,5 +1,7 @@
 import { Bulma, classnames as _classnames, ClassnamesArg as _ClassnamesArg } from "trunx"
 
+type BrandTaglineClassname = "brand-tagline--animated"
+
 type CalendarClassname =
 	| "calendar"
 	| "calendar__body"
@@ -20,13 +22,18 @@ type FlowEditorClassname =
 	| "flow-editor__actions"
 	| "flow-editor__container"
 
-type FooterClassname = "footer__top" | "footer__body"
+type FooterClassname =
+	| "footer__top"
+	| "footer__body"
 
 type InputClassname = "input--is-static"
 
 type OneColumn = "one-column"
 
-type PageClassname = "page" | "page__content" | "page__footer"
+type PageClassname =
+	| "page"
+	| "page__content"
+	| "page__footer"
 
 type ParagraphClassname = "paragraph"
 
@@ -36,8 +43,8 @@ type TermsAndPolicyLinksClassname = "terms-and-policy-links"
 
 type ToastContainerClassname = "toast-container"
 
-type Classname =
-	| Bulma
+type Classname = Bulma
+	| BrandTaglineClassname
 	| CalendarClassname
 	| DailyIntervalClassname
 	| FlowEditorClassname
