@@ -1,0 +1,24 @@
+{
+  "name": "@workspace/aws-logs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "cleanup": "tsc --build --clean",
+    "check_types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "3.632.0",
+    "@workspace/aws-types": "0.0.0"
+  },
+  "devDependencies": {
+    "@workspace/tsconfig": "0.0.0"
+  }
+}

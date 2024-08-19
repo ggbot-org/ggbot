@@ -140,6 +140,7 @@
     "authentication-api",
     "aws-ec2",
     "aws-iam",
+    "aws-logs",
     "aws-s3",
     "aws-ses",
     "aws-types",
