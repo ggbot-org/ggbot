@@ -1,3 +1,4 @@
+import { classnames } from "_/classnames"
 import { BrandName, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo, Page } from "_/components/library"
 import { Footer } from "_/components/public/Footer"
 import { GOTO } from "_/routing/navigation"
@@ -21,7 +22,7 @@ export function Homepage() {
 			footer={<Footer />}
 			header={
 				<Hero bulma="is-black">
-					<HeroBody>
+					<HeroBody className={classnames("homepage-hero-content")}>
 						<Level>
 							<LevelItem>
 								<Logo animated={!gotFirstPageView} size={200} />
@@ -36,7 +37,7 @@ export function Homepage() {
 							</LevelItem>
 						</Level>
 					</HeroBody>
-					<HeroFoot>
+					<HeroFoot className={classnames("homepage-hero-content")}>
 						<Div
 							bulma={[
 								"is-flex",

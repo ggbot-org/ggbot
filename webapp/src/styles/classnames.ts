@@ -26,6 +26,8 @@ type FooterClassname =
 	| "footer__top"
 	| "footer__body"
 
+type HomepageClassname = "homepage-hero-content"
+
 type InputClassname = "input--is-static"
 
 type OneColumn = "one-column"
@@ -49,6 +51,7 @@ type Classname = Bulma
 	| DailyIntervalClassname
 	| FlowEditorClassname
 	| FooterClassname
+	| HomepageClassname
 	| InputClassname
 	| OneColumn
 	| PageClassname
