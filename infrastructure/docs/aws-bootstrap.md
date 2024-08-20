@@ -27,6 +27,8 @@ Go to _IAM_ and create a **superpowers** user group. Attach it the following pol
 
 Create at least one admin account, to be used with the _AWS console_, and add it to the group.
 
+Notice that you do not need to generate AWS secret and access keys for the account, you can use _AWS Cloud Shell_ instead.
+
 ## Choose a data region
 
 Choose an AWS region to host your data, for instance **ggbot data** and activities will be inside **Europe** and let's go for _Europe (Frankfurt)_ region (which identifier is `eu-central-1`). Once you chose a region, set the environment variable `AWS_DATA_REGION` as

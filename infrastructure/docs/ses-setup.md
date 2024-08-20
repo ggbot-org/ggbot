@@ -30,3 +30,6 @@ When all required steps have green light click on _Request production access_. S
 - optionally add another email in _Additional contacts_, AWS support will contact by default on your root email account
 
 Follow the steps you will receive by email, the support will ask for the use case and other info before enabling the production access.
+
+Once you receive the email that confirms your account was moved out of the Amazon SES sandbox,
+you can try to [send a test email](../../aws-ses/docs/end-to-end-tests.md).
