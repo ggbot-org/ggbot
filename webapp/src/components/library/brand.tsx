@@ -2,6 +2,7 @@ import { classnames } from "_/classnames"
 import { FormattedMessage } from "react-intl"
 import { SizeProp, Span } from "trunx"
 
+// TODO this should not use translations, use a logotype instead
 export function BrandName({ size }: Partial<SizeProp<"large">>) {
 	return (
 		<Span
