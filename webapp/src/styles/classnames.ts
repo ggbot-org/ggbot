@@ -16,7 +16,7 @@ type CalendarClassname =
 	| "calendar__head-text"
 	| "calendar__week-day"
 
-type DailyIntervalClassname = "daily-interval"
+type DayIntervalClassname = "day-interval"
 
 type FlowEditorClassname =
 	| "flow-editor__menu"
@@ -27,6 +27,10 @@ type FlowEditorClassname =
 type FooterClassname =
 	| "footer__top"
 	| "footer__body"
+
+type FrequencyInputClassname =
+	| "frequency-input"
+	| "frequency-input__every"
 
 type HomepageClassname = "homepage-hero-content"
 
@@ -51,9 +55,10 @@ type Classname = Bulma
 	| AuthVerifyClassname
 	| BrandTaglineClassname
 	| CalendarClassname
-	| DailyIntervalClassname
+	| DayIntervalClassname
 	| FlowEditorClassname
 	| FooterClassname
+	| FrequencyInputClassname
 	| HomepageClassname
 	| InputClassname
 	| OneColumn

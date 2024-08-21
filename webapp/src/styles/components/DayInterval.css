@@ -1,0 +1,14 @@
+.day-interval {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	max-width: 320px;
+	min-width: fit-content;
+}
+
+@media (1px <= width <= 350px) {
+	.day-interval {
+		flex-direction: column;
+		margin-bottom: var(--bulma-block-spacing);
+	}
+}

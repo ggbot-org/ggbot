@@ -23,15 +23,14 @@ function BacktestingProgress({
 	dayInterval, progress, currentTimestamp
 }: BacktestingProgressProps) {
 	const { formatDate } = useIntl()
-
 	return (
 		<Div bulma="box">
 			<Title>
 				<FormattedMessage id="BacktestingProgress.title" />
 			</Title>
 			<Progress {...progress} />
-			<div className={classnames("is-flex", "my-2", "is-flex-direction-column")} >
-				<div className={classnames("is-flex")}>
+			<Div bulma={["is-flex", "my-2", "is-flex-direction-column"]}>
+				<Div bulma="is-flex">
 					<FormattedMessage
 						id="BacktestingProgress.dayInterval"
 						values={{
@@ -39,20 +38,21 @@ function BacktestingProgress({
 							end: formatDate(dayInterval.end, dayFormat)
 						}}
 					/>
-				</div>
+				</Div>
 				{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
 				{currentTimestamp ? (
-					<div className={classnames("is-flex")}>
+					<Div bulma="is-flex">
 						<FormattedMessage
 							id="BacktestingProgress.currentTime"
 							values={{ time: formatDate(currentTimestamp, timeFormat) }}
 						/>
-					</div>
+					</Div>
 				) : null}
-			</div>
+			</Div>
 		</Div>
 	)
 }
+
 export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyFrequency }: {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined
@@ -80,12 +80,12 @@ export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyF
 
 	const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps["frequency"]>(frequency)
 
-	const onChangePauseOnMemoryChange = useCallback< ChangeEventHandler<HTMLInputElement> >((event) => {
+	const onChangePauseOnMemoryChange = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		dispatch({ type: "SET_AFTER_STEP_BEHAVIOUR", afterStepBehaviour: { ...afterStepBehaviour, pauseOnMemoryChange: Boolean(checked) } })
 	}, [afterStepBehaviour, dispatch])
 
-	const onChangePauseOnNewOrder = useCallback< ChangeEventHandler<HTMLInputElement> >((event) => {
+	const onChangePauseOnNewOrder = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		if (checked === undefined) return
 		dispatch({ type: "SET_AFTER_STEP_BEHAVIOUR", afterStepBehaviour: { ...afterStepBehaviour, pauseOnNewOrder: checked } })

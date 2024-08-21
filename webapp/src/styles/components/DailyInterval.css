@@ -1,5 +1,0 @@
-.daily-interval {
-	display: flex;
-	flex-direction: row;
-	gap: var(--bulma-size-2);
-}

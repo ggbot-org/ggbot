@@ -1,4 +1,5 @@
-import { Column, Columns, InputField, SelectField } from "_/components/library"
+import { classnames } from "_/classnames"
+import { Control, Field, InputField, SelectField } from "_/components/library"
 import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from "@workspace/models"
 import { ChangeEventHandler, useCallback } from "react"
 import { useIntl } from "react-intl"
@@ -61,18 +62,20 @@ export function FrequencyInput({
 	)
 
 	return (
-		<Columns isMobile>
-			<Column bulma="is-one-third">
+		<Field isGrouped>
+			<Control>
 				<InputField
+					className={classnames("frequency-input__every")}
 					disabled={disabled}
 					label={formatMessage({ id: "FrequencyInput.every" })}
 					min={1}
 					onChange={onChangeFrequencyEvery}
 					step={1}
+					type="number"
 					value={every}
 				/>
-			</Column>
-			<Column bulma="is-half">
+			</Control>
+			<Control>
 				<SelectField
 					color={disabledIntervalOptions.includes(interval) ? "danger" : undefined}
 					disabled={disabled}
@@ -81,7 +84,7 @@ export function FrequencyInput({
 					options={frequencyIntervalOptions}
 					value={interval}
 				/>
-			</Column>
-		</Columns>
+			</Control>
+		</Field>
 	)
 }
