@@ -42,7 +42,7 @@
 		"defaultMessage": "Enter"
 	},
 	"AuthVerify.failed": {
-		"defaultMessage": "Verification failed. Check you <em>One Time Password</em>."
+		"defaultMessage": "Verification failed. Check your <em>One Time Password</em>."
 	},
 	"AuthVerify.checkEmail": {
 		"defaultMessage": "Check your email to get the <em>One Time Password</em>."

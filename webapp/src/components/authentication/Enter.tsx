@@ -1,8 +1,7 @@
 import { classnames } from "_/classnames"
-import { Email } from "_/components/Email"
 import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
-import { Button, Checkbox, Column, Columns, Control, Field, Message, Title } from "_/components/library"
+import { Button, Checkbox, Control, Field, InputField, Message, Title } from "_/components/library"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
@@ -112,11 +111,14 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 			<Message>
 				<FormattedMessage id="AuthEnter.info" values={formattedMessageMarkup} />
 			</Message>
-			<Columns>
-				<Column bulma="is-half-desktop">
-					<Email required name={"email" satisfies FormFieldName} readOnly={isPending} />
-				</Column>
-			</Columns>
+			<InputField
+				required
+				autoComplete="email"
+				label={<FormattedMessage id="Email.label" />}
+				name={"email" satisfies FormFieldName}
+				readOnly={isPending}
+				type="email"
+			/>
 			<Field>
 				<Control>
 					<Checkbox

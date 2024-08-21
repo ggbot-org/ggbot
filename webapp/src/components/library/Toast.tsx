@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { Delete, DeleteProps, Notification, NotificationProps } from "trunx"
 
 export type ToastProps = {
@@ -10,22 +10,24 @@ export type ToastProps = {
 
 export function Toast({ close, color, message }: ToastProps) {
 	const timeout = 10000
-	const timeoutIdRef = useRef(0)
+	const [timeoutId, setTimeoutId] = useState(0)
 
 	// Close notification after a while.
 	useEffect(() => {
-		timeoutIdRef.current = window.setTimeout(() => {
+		if (timeoutId) return
+		setTimeoutId(window.setTimeout(() => {
 			close()
-		}, timeout)
+		}, timeout))
 		return () => {
-			window.clearTimeout(timeoutIdRef.current)
+			window.clearTimeout(timeoutId)
 		}
-	}, [close, timeoutIdRef])
+	}, [close, timeoutId])
 
 	// If user interacts with the notification, it will stay around.
 	const onClickMessage = useCallback(() => {
-		window.clearTimeout(timeoutIdRef.current)
-	}, [timeoutIdRef])
+		if (!timeoutId) return
+		window.clearTimeout(timeoutId)
+	}, [timeoutId])
 
 	const onClickClose = useCallback<NonNullable<DeleteProps["onClick"]>>(
 		(event) => {

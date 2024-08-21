@@ -1,7 +1,7 @@
 import { classnames } from "_/classnames"
 import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
-import { Button, ButtonProps, Column, Columns, Control, Field, Input, InputField, InputFieldProps, Label, Message, Title } from "_/components/library"
+import { Button, ButtonProps, Column, Columns, Control, Field, Input, InputField, Label, Message, Title } from "_/components/library"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { auth } from "_/routing/auth"
@@ -34,15 +34,6 @@ type Action =
 	}
 	| { type: "VERIFY_FAILURE" }
 	| { type: "VERIFY_TIMEOUT" }
-
-function OneTimePassword(props: Pick<InputFieldProps, "required" | "name" | "readOnly">) {
-	return (
-		<InputField
-			label={<FormattedMessage id="OneTimePassword.label" />}
-			{...props}
-		/>
-	)
-}
 
 function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, "onClick">) {
 	return (
@@ -154,12 +145,20 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 			<Message>
 				<FormattedMessage id="AuthVerify.enterOneTimePassword" values={formattedMessageMarkup} />
 			</Message>
-			<Columns>
-				<Column bulma="is-half-desktop">
-					<OneTimePassword required name={"code" satisfies FormFieldName} readOnly={isPending} />
-				</Column>
-				<Column bulma="is-half" />
-			</Columns>
+			{/*
+TODO do inputMode pattern maxLength work, at least on mobile?
+ */}
+			<InputField
+				required
+				autoComplete="one-time-code"
+				className={classnames("auth-verify__one-time-password")}
+				inputMode="numeric"
+				label={<FormattedMessage id="OneTimePassword.label" />}
+				maxLength={6}
+				name={"code" satisfies FormFieldName}
+				pattern="\d{6}"
+				readOnly={isPending}
+			/>
 			<Field>
 				<Control>
 					<Button color="primary" isLoading={isPending}>

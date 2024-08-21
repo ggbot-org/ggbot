@@ -43,7 +43,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
 		if (messages) return
 		// read Intl messages
 		dispatch({ type: "READ_INTL_MESSAGES_REQUEST" })
-		fetch(translationPathname(language) + "x").then((response) => response.json())
+		fetch(translationPathname(language)).then((response) => response.json())
 			.then((json) => dispatch({ type: "READ_INTL_MESSAGES_SUCCESS", messages: json }))
 			.catch((error) => {
 				console.debug(error)

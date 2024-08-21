@@ -8,6 +8,7 @@ export type InputProps = _InputProps &
 	}>
 
 export function Input({
+	autoComplete = "off",
 	color,
 	readOnly,
 	isStatic,
@@ -16,6 +17,7 @@ export function Input({
 }: InputProps) {
 	return (
 		<_Input
+			autoComplete={autoComplete}
 			className={classnames({
 				"input--is-static": isStatic,
 				"is-static": isStatic

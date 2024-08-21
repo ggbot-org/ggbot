@@ -1,5 +1,7 @@
 import { Bulma, classnames as _classnames, ClassnamesArg as _ClassnamesArg } from "trunx"
 
+type AuthVerifyClassname = "auth-verify__one-time-password"
+
 type BrandTaglineClassname = "brand-tagline--animated"
 
 type CalendarClassname =
@@ -46,6 +48,7 @@ type TermsAndPolicyLinksClassname = "terms-and-policy-links"
 type ToastContainerClassname = "toast-container"
 
 type Classname = Bulma
+	| AuthVerifyClassname
 	| BrandTaglineClassname
 	| CalendarClassname
 	| DailyIntervalClassname

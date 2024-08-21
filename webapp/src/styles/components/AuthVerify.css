@@ -1,0 +1,5 @@
+.auth-verify__one-time-password {
+	/* TODO why 5 ? It should be 6. */
+	max-width: 5em;
+}
+
