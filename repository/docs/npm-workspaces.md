@@ -71,16 +71,13 @@ This is a sample _package.json_ for a generic workspace.
 		"build": "tsc --build tsconfig.build.json",
 		"cleanup": "tsc --build --clean tsconfig.build.json",
 		"check_types": "tsc --noEmit",
-		"test": "node --test $npm_package_config_tsnode **/*_test.ts"
+		"test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
 	},
 	"dependencies": {
 		"@workspace/another-package": "0.0.0"
 	},
 	"devDependencies": {
 		"@workspace/tsconfig": "0.0.0"
-	},
-	"config": {
-		"tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
 	}
 }
 ```

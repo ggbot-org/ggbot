@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit",
-    "build_workspace_dependencies": "node $npm_package_config_tsnode src/scripts/build_workspace_dependencies.ts",
-    "build_workspaces": "node $npm_package_config_tsnode src/scripts/build_workspaces.ts",
-    "generate_docs": "node $npm_package_config_tsnode src/scripts/generate_npm_dependencies_doc.ts",
-    "test": "node --test $npm_package_config_tsnode **/*_test.ts"
+    "build_workspace_dependencies": "node --env-file ../.typescript.env src/scripts/build_workspace_dependencies.ts",
+    "build_workspaces": "node --env-file ../.typescript.env src/scripts/build_workspaces.ts",
+    "generate_docs": "node --env-file ../.typescript.env src/scripts/generate_npm_dependencies_doc.ts",
+    "test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
   },
   "dependencies": {
     "read-file-utf8": "3.0.0",
@@ -16,8 +16,5 @@
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"
-  },
-  "config": {
-    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

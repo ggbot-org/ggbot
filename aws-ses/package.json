@@ -13,7 +13,7 @@
     "build": "tsc --build tsconfig.build.json",
     "cleanup": "tsc --build --clean tsconfig.build.json",
     "check_types": "tsc --noEmit",
-    "e2e:sendEmail": "node $npm_package_config_tsnode ./src/end-to-end-tests/sendEmail.ts"
+    "e2e:sendEmail": "node --env-file=../.typescript.env ./src/end-to-end-tests/sendEmail.ts"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "3.632.0",
@@ -21,8 +21,5 @@
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"
-  },
-  "config": {
-    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

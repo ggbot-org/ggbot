@@ -13,8 +13,8 @@
     "build": "tsc --build tsconfig.build.json",
     "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean tsconfig.build.json",
-    "e2e:apiRestrictions": "node $npm_package_config_tsnode ./src/end-to-end-tests/apiRestrictions.ts",
-    "e2e:newOrder": "node $npm_package_config_tsnode ./src/end-to-end-tests/newOrder.ts"
+    "e2e:apiRestrictions": "node --env-file ../.typescript.env ./src/end-to-end-tests/apiRestrictions.ts",
+    "e2e:newOrder": "node --env-file ../.typescript.env ./src/end-to-end-tests/newOrder.ts"
   },
   "dependencies": {
     "@workspace/binance": "0.0.0"
@@ -24,8 +24,5 @@
   },
   "optionalDependencies": {
     "@workspace/logging": "0.0.0"
-  },
-  "config": {
-    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }

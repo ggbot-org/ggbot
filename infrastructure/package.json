@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit",
-    "generate_iam_policies": "node $npm_package_config_tsnode ./src/scripts/generate_iam_policies.ts"
+    "generate_iam_policies": "node --env-file ../.typescript.env ./src/scripts/generate_iam_policies.ts"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
@@ -24,8 +24,5 @@
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0",
     "write-file-utf8": "3.0.2"
-  },
-  "config": {
-    "tsnode": "--no-warnings=ExperimentalWarning --loader ts-node/esm"
   }
 }
