@@ -1,7 +1,7 @@
 import { classnames } from "_/classnames"
-import { Button, Buttons, Column, Columns, Div, Message, OneColumn, Span } from "_/components/library"
+import { Button, Buttons, Checkbox, Column, Columns, Div, Message, OneColumn, Span } from "_/components/library"
+import { Toolbar, ToolbarProps } from "_/components/Toolbar"
 import { SchedulingsStatusBadges, SchedulingsStatusBadgesProps } from "_/components/user/SchedulingsStatusBadges"
-import { StrategiesToolbar } from "_/components/user/StrategiesToolbar"
 import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -32,11 +32,31 @@ function StrategyItem({
 	)
 }
 
+function StrategiesToolbar({ hideInactive, setHideInactive, isInvisible }: {
+	hideInactive: boolean | undefined
+	setHideInactive: (value: boolean) => void
+} & ToolbarProps) {
+	return (
+		<Toolbar isInvisible={isInvisible}>
+			<Checkbox
+				checked={hideInactive}
+				onChange={(event) => {
+					const checked = event.target.checked ?? false
+					setHideInactive(checked)
+					localWebStorage.hideInactiveStrategies.set(checked)
+				}}
+			>
+				<FormattedMessage id="Strategies.hideInactive" />
+			</Checkbox>
+		</Toolbar>
+	)
+}
+
 export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void }) {
 	const { accountStrategies, readStrategiesIsPending } = useAccountStrategies()
 
-	const [hideInactive, setHideInactive] = useState<boolean | undefined>(
-		localWebStorage.hideInactiveStrategies.get()
+	const [hideInactive, setHideInactive] = useState<boolean>(
+		localWebStorage.hideInactiveStrategies.get() ?? false
 	)
 
 	const [estimatedNumItems, setEstimatedNumItems] = useState<number | undefined>(

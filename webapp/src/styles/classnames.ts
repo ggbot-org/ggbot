@@ -34,7 +34,7 @@ type FrequencyInputClassname =
 
 type HomepageClassname = "homepage-hero-content"
 
-type InputClassname = "input--is-static"
+type ReadonlyInputClassname = "readonly-input"
 
 type OneColumn = "one-column"
 
@@ -60,10 +60,10 @@ type Classname = Bulma
 	| FooterClassname
 	| FrequencyInputClassname
 	| HomepageClassname
-	| InputClassname
 	| OneColumn
 	| PageClassname
 	| ParagraphClassname
+	| ReadonlyInputClassname
 	| TabSelectorClassname
 	| TermsAndPolicyLinksClassname
 	| ToastContainerClassname

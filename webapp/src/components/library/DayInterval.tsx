@@ -12,12 +12,8 @@ export type DayIntervalProps = Pick<
 	end: Pick<DayDropdownProps, "day" | "setDay">
 }
 
-export function DayInterval({
-	disabled, min, max, start, end
-}: DayIntervalProps) {
-	const [activeDropdown, setActiveDropdown] = useState<
-		"start" | "end" | undefined
-	>()
+export function DayInterval({ disabled, min, max, start, end }: DayIntervalProps) {
+	const [activeDropdown, setActiveDropdown] = useState<"start" | "end" | undefined>()
 
 	const closeDropdowns = useCallback<DayDropdownProps["close"]>(() => {
 		setActiveDropdown(undefined)

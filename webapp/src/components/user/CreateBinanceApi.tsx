@@ -1,10 +1,31 @@
 import { classnames } from "_/classnames"
 import { FormField } from "_/components/formFields"
-import { Button, Control, Field, Title } from "_/components/library"
-import { ApiKey, ApiSecret } from "_/components/user/apiFields"
+import { FormFieldName } from "_/components/formFields"
+import { Button, Control, Field, InputField, InputFieldProps, Title } from "_/components/library"
 import { useCreateBinanceApiConfig } from "_/hooks/user/api"
 import { useEffect } from "react"
 import { FormattedMessage } from "react-intl"
+
+function ApiKey({ value, ...props }: Omit<InputFieldProps, "label" | "name">) {
+	return (
+		<InputField
+			label={<FormattedMessage id="ApiKey.label" />}
+			name={"apiKey" satisfies FormFieldName}
+			value={value}
+			{...props}
+		/>
+	)
+}
+
+function ApiSecret(props: Omit<InputFieldProps, "label" | "name">) {
+	return (
+		<InputField
+			label={<FormattedMessage id="ApiSecret.label" />}
+			name={"apiSecret" satisfies FormFieldName}
+			{...props}
+		/>
+	)
+}
 
 export function CreateBinanceApi({ refetchApiKey }: { refetchApiKey: () => void }) {
 	const CREATE = useCreateBinanceApiConfig()

@@ -16,12 +16,7 @@ export type SchedulingParameterItemProps = {
 }
 
 export function SchedulingParameterItem({
-	binanceSymbols,
-	kind,
-	defaultParamValue,
-	label,
-	paramValue,
-	setParam
+	binanceSymbols, kind, defaultParamValue, label, paramValue, setParam
 }: SchedulingParameterItemProps) {
 	const [hasError, setHasError] = useState(false)
 
@@ -46,11 +41,7 @@ export function SchedulingParameterItem({
 						setHasError(true)
 					}
 				} catch (error) {
-					if (error instanceof SyntaxError) {
-						setHasError(true)
-						return
-					}
-					throw error
+					setHasError(true)
 				}
 			}
 
@@ -141,7 +132,7 @@ export function SchedulingParameterItem({
 		return String(defaultParamValue ?? "")
 	}, [binanceSymbols, kind, defaultParamValue])
 
-	const defaultValue = useMemo(() => {
+	const value = useMemo(() => {
 		if (SymbolParameter.kind === kind) {
 			if (!binanceSymbols) return ""
 			const symbolInfo = binanceSymbols.find(
@@ -156,11 +147,11 @@ export function SchedulingParameterItem({
 		<>
 			<InputField
 				color={hasError ? "danger" : undefined}
-				defaultValue={defaultValue}
 				label={label}
 				list={label}
 				onChange={onChange}
 				placeholder={placeholder}
+				value={value}
 			/>
 			{kind === IntervalParameter.kind && (
 				<datalist id={label}>

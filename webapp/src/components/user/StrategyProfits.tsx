@@ -1,4 +1,5 @@
-import { Column, DayIntervalBox, OneColumn } from "_/components/library"
+import { DayIntervalBox } from "_/components/DayIntervalBox"
+import { Column, OneColumn } from "_/components/library"
 import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"

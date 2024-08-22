@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { Button, Control, Field, Title } from "_/components/library"
-import { ApiKey } from "_/components/user/apiFields"
+import { ApiKey } from "_/components/readonlyFields"
 import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
 import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"
@@ -44,7 +44,7 @@ export function BinanceApi({ apiKey }: { apiKey: string }) {
 			<Title>
 				<FormattedMessage id="BinanceApi.title" />
 			</Title>
-			<ApiKey isStatic value={apiKey} />
+			<ApiKey value={apiKey} />
 			<Field>
 				<Control>
 					<Button isLoading={isLoading}>

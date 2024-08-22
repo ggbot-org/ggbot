@@ -1,5 +1,5 @@
 import { classnames } from "_/classnames"
-import { Button, Input } from "_/components/library"
+import { Button, ReadonlyInput } from "_/components/library"
 import { useFlowView } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
 import { GOTO } from "_/routing/navigation"
@@ -17,6 +17,9 @@ export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
 
 	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 
+	// TODO solve issue
+	// Ref values (the `current` property) may not be accessed during render. (https://react.dev/reference/react/useRef)  react-compiler/react-compiler
+	// eslint-disable-next-line
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(flowViewContainerRef.current, initialFlowViewGraph, strategyKey?.strategyKind)
 
 	const [canSave, setCanSave] = useState(false)
@@ -49,7 +52,7 @@ export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
 		<>
 			<div className={classnames("flow-editor__menu")}>
 				<div className={classnames("flow-editor__strategy-name")}>
-					<Input isStatic defaultValue={strategyName} />
+					<ReadonlyInput value={strategyName} />
 				</div>
 				<div className={classnames("flow-editor__actions")}>
 					<Button

@@ -15,7 +15,7 @@ function NavbarBrand({ children, ...props }: PropsWithChildren<NavbarBrandProps>
 }
 type NavbarBrandProps = HTMLAttributes<HTMLDivElement>
 
-export function Navbar({ children, className, noMenu }: PropsWithChildren<
+export function Navbar({ children, noMenu }: PropsWithChildren<
 	Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
 >) {
 	const [isActive, setIsActive] = useState(false)
@@ -30,7 +30,7 @@ export function Navbar({ children, className, noMenu }: PropsWithChildren<
 	}, [])
 
 	return (
-		<_Navbar className={className} color="black">
+		<_Navbar color="black">
 			<NavbarBrand>
 				<NavbarItem
 					onClick={() => {

@@ -1,4 +1,4 @@
-.input--is-static {
+.readonly-input {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

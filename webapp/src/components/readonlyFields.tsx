@@ -17,6 +17,19 @@ export function AccountId({ value }: ValueProp<string>) {
 	)
 }
 
+function truncateApiKey(apiKey: string | undefined): string {
+	if (!apiKey) return ""
+	return `${apiKey.substring(0, 10)}...${ apiKey.substring(apiKey.length - 10, apiKey.length) }`
+}
+export function ApiKey({ value }: ValueProp<string>) {
+	return (
+		<ReadonlyField
+			label={<FormattedMessage id="ApiKey.label" />}
+			value={truncateApiKey(value)}
+		/>
+	)
+}
+
 export function Email({ value }: ValueProp<EmailAddress>) {
 	return (
 		<ReadonlyField

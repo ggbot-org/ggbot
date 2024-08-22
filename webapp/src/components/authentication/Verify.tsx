@@ -1,7 +1,8 @@
 import { classnames } from "_/classnames"
 import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
-import { Button, ButtonProps, Column, Columns, Control, Field, Input, InputField, Label, Message, Title } from "_/components/library"
+import { Button, ButtonProps, Column, Columns, Control, Field, InputField, Label, Message, Title } from "_/components/library"
+import { Email } from "_/components/readonlyFields"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
 import { auth } from "_/routing/auth"
@@ -132,7 +133,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 					</Label>
 					<Field hasAddons>
 						<Control isExpanded>
-							<Input isStatic defaultValue={email} id="email" />
+							<Email value={email} />
 						</Control>
 						<Control>
 							<Button onClick={resetEmail} type="reset">
