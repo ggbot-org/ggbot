@@ -1,5 +1,4 @@
 import { classnames } from "_/classnames"
-import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, Column, Columns, InputField, InputFieldProps, Message, Title } from "_/components/library"
 import { SubscriptionEnd, SubscriptionTotalPrice } from "_/components/readonlyFields"
 import { AuthenticationContext } from "_/contexts/Authentication"
@@ -11,6 +10,11 @@ import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultN
 import { getTime, now, Time } from "minimal-time-helpers"
 import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+
+type FormField = {
+	numMonths: { value: number }
+}
+type FormFieldName = keyof FormField
 
 function SubscriptionNumMonths({
 	isYearlyPurchase, setValue, value, ...props

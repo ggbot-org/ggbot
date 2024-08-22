@@ -1,10 +1,14 @@
 import { classnames } from "_/classnames"
-import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, InputFieldName, Message, Modal, Title } from "_/components/library"
 import { useRenameStrategy } from "_/hooks/user/api"
 import { isName, StrategyKey } from "@workspace/models"
 import { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
+
+type FormField = {
+	name: { value: string }
+}
+type FormFieldName = keyof FormField
 
 export function RenameStrategy({
 	strategyKey, strategyName, renameStrategy

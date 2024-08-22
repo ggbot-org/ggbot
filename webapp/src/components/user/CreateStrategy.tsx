@@ -1,5 +1,4 @@
 import { classnames } from "_/classnames"
-import { FormField, FormFieldName } from "_/components/formFields"
 import { Button, Buttons, InputFieldName, Message, OneColumn } from "_/components/library"
 import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
 import { useCreateStrategy } from "_/hooks/user/api"
@@ -8,6 +7,11 @@ import { ApiActionError } from "@workspace/api"
 import { isName } from "@workspace/models"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
+
+type FormField = {
+	name: { value: string }
+}
+type FormFieldName = keyof FormField
 
 export function CreateStrategy() {
 	const CREATE = useCreateStrategy()

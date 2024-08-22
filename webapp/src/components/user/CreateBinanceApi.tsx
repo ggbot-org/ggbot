@@ -1,10 +1,14 @@
 import { classnames } from "_/classnames"
-import { FormField } from "_/components/formFields"
-import { FormFieldName } from "_/components/formFields"
 import { Button, Control, Field, InputField, InputFieldProps, Title } from "_/components/library"
 import { useCreateBinanceApiConfig } from "_/hooks/user/api"
 import { useEffect } from "react"
 import { FormattedMessage } from "react-intl"
+
+type FormField = {
+	apiKey: { value: string }
+	apiSecret: { value: string }
+}
+type FormFieldName = keyof FormField
 
 function ApiKey({ value, ...props }: Omit<InputFieldProps, "label" | "name">) {
 	return (

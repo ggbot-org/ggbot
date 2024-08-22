@@ -1,5 +1,4 @@
 import { classnames } from "_/classnames"
-import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
 import { Button, Checkbox, Control, Field, InputField, Message, Title } from "_/components/library"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
@@ -11,6 +10,11 @@ import { EmailAddress, isEmailAddress } from "@workspace/models"
 import { isMaybeObject } from "minimal-type-guard-helpers"
 import { ChangeEventHandler, InputHTMLAttributes, Reducer, useCallback, useReducer, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+
+type FormField = {
+	email: { value: string }
+}
+type FormFieldName = keyof FormField
 
 export type AuthEnterProps = {
 	setEmail: (email: EmailAddress) => void

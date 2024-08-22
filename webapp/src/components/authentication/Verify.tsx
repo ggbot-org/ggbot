@@ -1,5 +1,4 @@
 import { classnames } from "_/classnames"
-import { FormField, FormFieldName } from "_/components/formFields"
 import { GenericError } from "_/components/GenericError"
 import { Button, ButtonProps, Column, Columns, Control, Field, InputField, Label, Message, Title } from "_/components/library"
 import { Email } from "_/components/readonlyFields"
@@ -10,6 +9,11 @@ import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from "@worksp
 import { EmailAddress } from "@workspace/models"
 import { Reducer, useReducer } from "react"
 import { FormattedMessage } from "react-intl"
+
+type FormField = {
+	code: { value: string }
+}
+type FormFieldName = keyof FormField
 
 export type AuthVerifyProps = {
 	email: EmailAddress
