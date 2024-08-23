@@ -35,10 +35,7 @@ export function SchedulingParameters({
 			})
 
 			const binanceParams = binanceSymbols
-				? await extractBinanceParametersFromFlow(
-					binanceSymbols,
-					flowViewGraph
-				)
+				? await extractBinanceParametersFromFlow(binanceSymbols, flowViewGraph)
 				: []
 
 			for (const { key, kind, defaultValue } of binanceParams) items.push({

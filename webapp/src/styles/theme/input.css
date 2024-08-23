@@ -1,15 +1,7 @@
-.select {
-	--bulma-arrow-color: var(--bulma-black);
-
+.input {
 	/* Focus colors. */
 	--bulma-input-focus-shadow-alpha: var(--focus-shadow-alpha);
 	--bulma-input-focus-h: var(--focus-h);
 	--bulma-input-focus-s: var(--focus-s);
 	--bulma-input-focus-l: var(--focus-l);
-}
-
-@media (prefers-color-scheme: dark) {
-	.select {
-		--bulma-arrow-color: var(--bulma-white);
-	}
 }

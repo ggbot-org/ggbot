@@ -1,0 +1,4 @@
+.button {
+	/* Focus colors. */
+	--bulma-focus-shadow-alpha: var(--focus-shadow-alpha);
+}

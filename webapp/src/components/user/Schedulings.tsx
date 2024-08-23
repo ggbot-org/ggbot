@@ -165,9 +165,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	return (
 		<>
 			<Columns>
-				<Column
-					bulma={["is-narrow", { "is-skeleton": accountStrategies === undefined }]}
-				>
+				<Column bulma={["is-narrow", { "is-skeleton": accountStrategies === undefined }]}>
 					<form
 						className={classnames("box")}
 						onSubmit={(event) => event.preventDefault()}
