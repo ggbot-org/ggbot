@@ -88,6 +88,15 @@ export function useReadStrategies() {
 }
 
 export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
+	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyErrors"], UserClientActionOutput["ReadStrategyErrors"]>(userApiOptions, "ReadStrategyErrors")
+}
+
+export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
+	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyOrders"], UserClientActionOutput["ReadStrategyOrders"]>(userApiOptions, "ReadStrategyOrders")
+}
+
+/*
+export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 	const { db, dbIsOpen } = useErrorsIDB()
 	const [toBeCachedDayInterval, setToBeCachedDayInterval] = useState<DayInterval | undefined>()
 	const [data, setData] = useState<UserClientActionOutput["ReadStrategyErrors"]>([])
@@ -218,6 +227,7 @@ export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
 	}, [db, requestData, strategyKey, toBeCachedDayInterval])
 	return { data, request: cachedRequest, ...rest }
 }
+*/
 
 export function useRenameStrategy() {
 	return useAction<UserClientActionType, UserClientActionInput["RenameStrategy"], UserClientActionOutput["RenameStrategy"]>(userApiOptions, "RenameStrategy")
