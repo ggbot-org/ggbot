@@ -1,0 +1,22 @@
+{
+  "name": "@workspace/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "check_types": "tsc --noEmit",
+    "test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
+  },
+  "devDependencies": {
+    "@workspace/tsconfig": "0.0.0",
+    "minimal-assertion-helpers": "0.1.0"
+  }
+}

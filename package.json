@@ -156,6 +156,7 @@
     "env",
     "executor",
     "http",
+    "i18n",
     "indexeddb",
     "indexeddb-binance",
     "indexeddb-errors",
