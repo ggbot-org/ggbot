@@ -73,6 +73,7 @@ Continue with the following steps in any order:
 
 - [S3 storage lens](./s3-storage-lens.md)
 - [EC2 Auto Scaling groups](./ec2-auto-scaling-groups.md)
+- [Cost management](./aws-cost-management.md)
 
 TODO complete steps list
 
