@@ -61,6 +61,8 @@ For example
     Environment="DNS_DOMAIN=ggbot.org"
     Environment="BINANCE_PROXY_IP=1.2.3.4"
     Environment="AUTHENTICATION_SECRET=xxx"
+    Environment="GITHUB_ORG_URL=xxx"
+    Environment="TELEGRAM_SUPPORT_URL=xxx"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 
