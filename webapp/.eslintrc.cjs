@@ -79,6 +79,7 @@ module.exports = {
 		"react-hooks/exhaustive-deps": "error",
 		"react-hooks/rules-of-hooks": "error",
 		"react/display-name": "error",
+		"react/function-component-definition": ["error", { "namedComponents": "function-declaration" }],
 		"react/hook-use-state": ["error", { allowDestructuredState: true }],
 
 		"react/jsx-boolean-value": "error",

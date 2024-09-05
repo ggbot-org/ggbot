@@ -14,7 +14,7 @@ export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | un
 
 	const dayInterval = { start, end }
 
-	const { canRun, request, isDone, isPending, reset, data } = useReadStrategyOrders(strategyKey)
+	const { canRun, request, isDone, isPending, reset, data } = useReadStrategyOrders()
 
 	useEffect(() => {
 		if (!isDone) return

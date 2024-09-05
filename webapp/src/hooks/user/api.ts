@@ -1,12 +1,9 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
-import { useErrorsIDB, useOrdersIDB } from "_/hooks/user/indexedDBs"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StripeClientActionInput, StripeClientActionOutput, StripeClientActionType, UserClientActionInput, UserClientActionOutput, UserClientActionType } from "@workspace/api"
-import { StrategyKey } from "@workspace/models"
-import { dateToDay, Day, DayInterval, dayToDate, getDate, getDay, timeToDay, today } from "minimal-time-helpers"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 
 // Stripe Api
 
@@ -87,15 +84,16 @@ export function useReadStrategies() {
 	return useAction<UserClientActionType, UserClientActionInput["ReadStrategies"], UserClientActionOutput["ReadStrategies"]>(userApiOptions, "ReadStrategies")
 }
 
-export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
+export function useReadStrategyErrors() {
 	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyErrors"], UserClientActionOutput["ReadStrategyErrors"]>(userApiOptions, "ReadStrategyErrors")
 }
 
-export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
+export function useReadStrategyOrders() {
 	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyOrders"], UserClientActionOutput["ReadStrategyOrders"]>(userApiOptions, "ReadStrategyOrders")
 }
 
 /*
+TODO
 export function useReadStrategyErrors(strategyKey: StrategyKey | undefined) {
 	const { db, dbIsOpen } = useErrorsIDB()
 	const [toBeCachedDayInterval, setToBeCachedDayInterval] = useState<DayInterval | undefined>()

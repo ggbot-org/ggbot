@@ -11,7 +11,7 @@ export function StrategyErrors({ strategyKey }: { strategyKey: StrategyKey | und
 
 	const [errors, setErrors] = useState<StrategyErrorsTableProps["errors"]>()
 
-	const { canRun, data, isDone, isPending, request, reset } = useReadStrategyErrors(strategyKey)
+	const { canRun, data, isDone, isPending, request, reset } = useReadStrategyErrors()
 
 	const onClickUpdate = useCallback(() => {
 		if (!strategyKey) return
