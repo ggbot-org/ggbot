@@ -1,5 +1,5 @@
 import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow, DflowConstructorArg } from "dflow"
+import { Dflow } from "dflow"
 
 import { DflowLoader, load } from "../common/loader.js"
 import { DflowBinanceContext } from "./context.js"
@@ -9,7 +9,7 @@ import { DflowBinanceContext } from "./context.js"
  */
 export class DflowBinanceHost extends Dflow implements DflowLoader {
 	constructor(
-		arg: DflowConstructorArg,
+		arg: ConstructorParameters<typeof Dflow>[0],
 		context: Omit<DflowBinanceContext, "memoryChanged">
 	) {
 		super(arg)

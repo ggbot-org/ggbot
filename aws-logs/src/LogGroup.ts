@@ -3,7 +3,7 @@ import { AwsAccountId, AwsRegion, AwsResource } from "@workspace/aws-types"
 
 import { cloudwatchLogsClient } from "./client.js"
 
-export class LogGroup implements AwsResource{
+export class LogGroup implements AwsResource {
 	readonly accountId: AwsAccountId
 	readonly region: string
 	readonly name: string

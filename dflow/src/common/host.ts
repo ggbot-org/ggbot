@@ -1,11 +1,14 @@
 import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow, DflowConstructorArg } from "dflow"
+import { Dflow } from "dflow"
 
 import { DflowCommonContext } from "./context.js"
 import { DflowLoader, load } from "./loader.js"
 
 export class DflowCommonHost extends Dflow implements DflowLoader {
-	constructor(arg: DflowConstructorArg, context: DflowCommonContext) {
+	constructor(
+		arg: ConstructorParameters<typeof Dflow>[0],
+		context: DflowCommonContext
+	) {
 		super(arg)
 		this.context.defaults = context.defaults
 		this.context.params = context.params

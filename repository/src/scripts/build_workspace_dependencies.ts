@@ -10,12 +10,12 @@ import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
  *
  * @example
  *
- * For example in the root package.json, for workspace `foo` add the following
- * scripts.
+ * For example in the root package.json, for workspace `foo` add the following scripts.
  *
  * ```json
  * "scripts": {
- * 	"build:foo":"npmrunbuild-wfoo","prebuild:foo": "npm run build_workspace_dependencies -w repository foo";
+ * 	"build:foo": "npm run build -w foo",
+ * 	"prebuild:foo": "npm run build_workspace_dependencies -w repository foo",
  * }
  * ```
  */

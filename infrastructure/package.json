@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit",
+    "create_api_lambda": "node --env-file ../.typescript.env ./src/scripts/create_api_lambda.ts",
     "generate_iam_policies": "node --env-file ../.typescript.env ./src/scripts/generate_iam_policies.ts"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/aws-iam": "0.0.0",
+    "@workspace/aws-lambda": "0.0.0",
     "@workspace/aws-logs": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
     "@workspace/aws-ses": "0.0.0",
