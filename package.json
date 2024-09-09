@@ -19,8 +19,8 @@
     "build:webapp": "npm run build -w webapp",
     "check_types": "npm run check_types --workspaces --if-present",
     "cleanup": "npm run cleanup --workspaces --if-present",
-   	"create_api_lambda:user-action": "npm run create_api_lambda -w infrastructure api-lambda-user-action",
-   	"precreate_api_lambda:user-action": "npm run build_workspace_dependencies -w repository api-lambda-user-action",
+    "create_api_lambda:user-action": "npm run create_api_lambda -w infrastructure api-lambda-user-action",
+    "precreate_api_lambda:user-action": "npm run build_workspace_dependencies -w repository api-lambda-user-action",
     "deploy:api": "npm run deploy:api:admin && npm run deploy:api:authentication && npm run deploy:api:stripe && npm run deploy:api:public && npm run deploy:api:user",
     "deploy:api:admin": "npm run deploy -w admin-api",
     "deploy:api:authentication": "npm run deploy -w authentication-api",
@@ -117,9 +117,13 @@
     "markdownlint-rule-github-internal-links": "0.1.0",
     "markdownlint-rule-relative-links": "2.1.2",
     "pre-commit": "1.2.2",
+    "prettier": "3.3.3",
     "ts-prune": "0.10.3"
   },
   "lint-staged": {
+    "**/*.json": [
+      "prettier --write"
+    ],
     "**/*.{ts,tsx}": [
       "eslint --fix"
     ],
