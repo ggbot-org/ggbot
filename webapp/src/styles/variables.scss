@@ -10,10 +10,11 @@ $tablet: 769px;
 	--page-padding-inline: 1.5rem;
 
 	/* Used by form components on focus. */
+	--focus-outline: 0.117em;
 	--focus-shadow-alpha: 1;
 	--focus-h: 0deg;
 	--focus-s: 0%;
-	--focus-l: 0%;
+	--focus-l: 17%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,7 +24,7 @@ $tablet: 769px;
 		/* Used by form components on focus. */
 		--focus-h: 0deg;
 		--focus-s: 0%;
-		--focus-l: 100%;
+		--focus-l: 83%;
 	}
 }
 

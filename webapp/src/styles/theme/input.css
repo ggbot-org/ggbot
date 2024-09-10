@@ -1,4 +1,7 @@
 .input {
+	/* Focus outline size */
+	--bulma-input-focus-shadow-size: 0 0 0 var(--focus-outline);
+
 	/* Focus colors. */
 	--bulma-input-focus-shadow-alpha: var(--focus-shadow-alpha);
 	--bulma-input-focus-h: var(--focus-h);
