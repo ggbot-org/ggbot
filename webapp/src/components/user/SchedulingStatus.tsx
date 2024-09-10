@@ -1,4 +1,3 @@
-import { classnames } from "_/classnames"
 import { MainColor, Tag, Tags } from "_/components/library"
 import { SchedulingStatus as Status } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
@@ -19,7 +18,7 @@ type _TagLabelProps = {
 function _TagLabel({ status }: _TagLabelProps) {
 	if (!status) return null
 	return (
-		<Tag className={classnames("is-uppercase")} color={colorOf[status]}>
+		<Tag bulma={["is-unselectable", "is-uppercase"]} color={colorOf[status]}>
 			<FormattedMessage id={`SchedulingStatus.${status}`} />
 		</Tag>
 	)

@@ -1,14 +1,12 @@
 import { ReactNode, useId } from "react"
-import { ColorProp, Control, Field, Help, Select, SelectProps } from "trunx"
+import { Control, Field, Help, Select, SelectProps } from "trunx"
 
 import { Label } from "./Label"
 
-// TODO update trunx then use color from SelectProps
-type SelectFieldProps = ColorProp &
-	Omit<SelectProps, "id"> & {
-		help?: ReactNode
-		label: string
-	}
+type SelectFieldProps = Omit<SelectProps, "id"> & {
+	help?: ReactNode
+	label: string
+}
 
 export function SelectField({
 	color,

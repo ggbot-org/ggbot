@@ -1,19 +1,8 @@
-import { classnames } from "_/classnames"
 import { webapp } from "_/routing/webapp"
-import { HTMLAttributes, PropsWithChildren, useEffect, useState } from "react"
-import { Bulma, Navbar as _Navbar, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from "trunx"
+import { PropsWithChildren, useEffect, useState } from "react"
+import { Navbar as _Navbar, NavbarBrand, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from "trunx"
 
 import { BrandName } from "./brand"
-
-// Once updated trunx, remove this and import it from trunx
-function NavbarBrand({ children, ...props }: PropsWithChildren<NavbarBrandProps>) {
-	return (
-		<div className="navbar-brand" {...props}>
-			{children}
-		</div>
-	)
-}
-type NavbarBrandProps = HTMLAttributes<HTMLDivElement>
 
 export function Navbar({ children, noMenu }: PropsWithChildren<
 	Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
@@ -59,13 +48,12 @@ export function Navbar({ children, noMenu }: PropsWithChildren<
 	)
 }
 
-// TODO trunx has no is-arrowless class in Bulma, find a way to fix it
-// for example add missing classes manually (they are all inside a :not())
-// and add a test to make sure typings are working
-export function NavbarLink({ className, children, ...props }: PropsWithChildren<NavbarLinkProps>) {
+export function NavbarLink({
+	children, ...props
+}: PropsWithChildren<Exclude<NavbarLinkProps, "isArrowless">>) {
 	return (
 		<_NavbarLink
-			className={classnames("is-arrowless" as Bulma, className as Bulma)}
+			isArrowless
 			{...props}
 		>
 			{children}

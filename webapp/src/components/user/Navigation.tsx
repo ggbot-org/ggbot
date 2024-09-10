@@ -13,7 +13,6 @@ export function Navigation() {
 		<Navbar>
 			<NavbarStart>
 				<NavbarLink
-					className="is-arrowless"
 					onClick={() => GOTO(webapp.user.dashboard)}
 				>
 					<FormattedMessage id="Navigation.dashboard" />

@@ -1,12 +1,11 @@
 import { PropsWithChildren, useCallback, useEffect } from "react"
-import { Div, Modal as _Modal, ModalClose, ModalContent } from "trunx"
+import { Modal as _Modal, ModalBackground, ModalClose, ModalContent } from "trunx"
 
 export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 	Partial<{
 		isActive: boolean
 		/**
-		 * To prevent user from closing the modal, do not pass `setIsActive` or set
-		 * it to `undefined`.
+		 * To prevent user from closing the modal, do not pass `setIsActive` or set it to `undefined`.
 		 */
 		setIsActive: (arg: boolean) => void
 	}>
@@ -40,11 +39,9 @@ export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 
 	if (!isActive) return null
 
-	// TODO update trunx Modal, then remove div with modal-background class
-	// and use isActive prop instead.
 	return (
-		<_Modal noBackground bulma="is-active">
-			<Div bulma="modal-background" onClick={closeModal} />
+		<_Modal isActive>
+			<ModalBackground onClick={closeModal} />
 			<ModalContent>{children}</ModalContent>
 			{
 				/* Hide close button if modal cannot be closed. */
