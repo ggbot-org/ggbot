@@ -9,8 +9,8 @@ import { SesNoreplyPolicy } from "../aws/SesNopeplyPolicy.js"
 import { iamDir } from "../package.js"
 
 function writePolicy ({
-	policyName, policyDocument
-}: Pick<IamPolicy, "policyName"> & Pick<IamPolicyDocument<string, string>, "policyDocument">) {
+	name: policyName, policyDocument
+}: Pick<IamPolicy, "name"> & Pick<IamPolicyDocument<string, string>, "policyDocument">) {
 	return writeFile(
 		join(iamDir, `${policyName}.json`),
 		JSON.stringify(policyDocument, null, 2)
