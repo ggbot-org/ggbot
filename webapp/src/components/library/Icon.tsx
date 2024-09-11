@@ -1,5 +1,5 @@
-import { classnames } from "_/classnames"
-import { PropsWithChildren, ReactNode, SVGAttributes } from "react"
+import { ReactNode, SVGAttributes } from "react"
+import { Span } from "trunx"
 
 export const iconNames = [
 	"account",
@@ -79,39 +79,27 @@ const iconRecord: Record<IconName, IconDefinition> = {
 	}
 }
 
-type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
+export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 	name: IconName
 	/**
-	 * Icon `size` can be a number to represent pixel units, or a string to
-	 * represent em or rem units.
+     * Icon `size` can be a number to represent pixel units,
+     * or a string to represent em or rem units.
 	 */
 	size?: number | `${number}em` | `${number}rem`
 }
 
-export function Icon({ name, onClick, size = "1em" }: IconProps) {
+export function Icon({ name, onClick, size = "1.5em" }: IconProps) {
 	return (
-		<svg
-			className={classnames({ "is-clickable": onClick })}
-			height={size}
-			onClick={onClick}
-			viewBox={iconRecord[name].viewBox}
-			width={size}
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			{iconRecord[name].jsx}
-		</svg>
-	)
-}
-
-export function IconText({ children, ...props }: PropsWithChildren<IconProps>) {
-	return (
-		<span className={classnames("icon-text")}>
-			<span className={classnames("icon")}>
-				<Icon {...props} />
-			</span>
-			<span>
-				{children}
-			</span>
-		</span>
+		<Span bulma={["icon", { "is-clickable": onClick }]}>
+			<svg
+				height={size}
+				onClick={onClick}
+				viewBox={iconRecord[name].viewBox}
+				width={size}
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				{iconRecord[name].jsx}
+			</svg>
+		</Span>
 	)
 }

@@ -1,9 +1,9 @@
 import { classnames } from "_/classnames"
 import { dateToDay, Day } from "minimal-time-helpers"
-import { MouseEvent, MouseEventHandler, useCallback, useMemo, useState } from "react"
+import { Dispatch, MouseEvent, SetStateAction, useMemo, useState } from "react"
 import { useIntl } from "react-intl"
 
-import { Icon } from "./Icon"
+import { Icon, IconProps } from "./Icon"
 import { randomKey } from "./randomKey"
 
 function CalendarWeekDays() {
@@ -22,6 +22,49 @@ function CalendarWeekDays() {
 			{weekDayNames.map(({ day, label }) => (
 				<div key={day} className={classnames("calendar__week-day")}>{label}</div>
 			))}
+		</div>
+	)
+}
+
+function CalendarHead({
+	caretSize = "1.2em", isFirstMonth, isLastMonth, monthName, setMonthOffset, year
+}: {
+	caretSize?: IconProps["size"]
+	isFirstMonth: boolean
+	isLastMonth: boolean
+	monthName: string
+	setMonthOffset: Dispatch<SetStateAction<number>>
+	year: number
+}) {
+	return (
+		<div
+			className={classnames("calendar__head")}
+			onClick={(event) => event.stopPropagation()}
+		>
+			<div
+				className={classnames("calendar__head-icon", { "has-text-grey-lighter": isFirstMonth })}
+				onClick={
+					(event) => {
+						event.stopPropagation()
+						if (isFirstMonth) return
+						setMonthOffset((n) => n - 1)
+					}
+				}
+			>
+				<Icon name="caret-left" size={caretSize} />
+			</div>
+			<div className={classnames("calendar__head-text")}>{monthName}</div>
+			<div className={classnames("calendar__head-text")}>{year}</div>
+			<div
+				className={classnames("calendar__head-icon", { "has-text-grey-lighter": isLastMonth })}
+				onClick={(event) => {
+					event.stopPropagation()
+					if (isLastMonth) return
+					setMonthOffset((n) => n + 1)
+				}}
+			>
+				<Icon name="caret-right" size={caretSize} />
+			</div>
 		</div>
 	)
 }
@@ -111,48 +154,15 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 		return { firstDate, lastDate, dateCells, monthName, year }
 	}, [formatDate, min, max, monthOffset, selectedDay, setSelectedDay, setMonthOffset])
 
-	const isLastMonth = max && dateToDay(lastDate) >= max
-	const isFirstMonth = min && dateToDay(firstDate) <= min
-
-	const onClickPrevious = useCallback<MouseEventHandler<HTMLDivElement>>(
-		(event) => {
-			event.stopPropagation()
-			if (isFirstMonth) return
-			setMonthOffset((n) => n - 1)
-		},
-		[isFirstMonth, setMonthOffset]
-	)
-
-	const onClickNext = useCallback<MouseEventHandler<HTMLDivElement>>(
-		(event) => {
-			event.stopPropagation()
-			if (isLastMonth) return
-			setMonthOffset((n) => n + 1)
-		},
-		[isLastMonth, setMonthOffset]
-	)
-
 	return (
 		<div className={classnames("calendar")}>
-			<div
-				className={classnames("calendar__head")}
-				onClick={(event) => event.stopPropagation()}
-			>
-				<div
-					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isFirstMonth })}
-					onClick={onClickPrevious}
-				>
-					<Icon name="caret-left" />
-				</div>
-				<div className={classnames("calendar__head-text")}>{monthName}</div>
-				<div className={classnames("calendar__head-text")}>{year}</div>
-				<div
-					className={classnames("calendar__head-icon", { "has-text-grey-lighter": isLastMonth })}
-					onClick={onClickNext}
-				>
-					<Icon name="caret-right" />
-				</div>
-			</div>
+			<CalendarHead
+				isFirstMonth={Boolean(min && dateToDay(firstDate) <= min)}
+				isLastMonth={Boolean(max && dateToDay(lastDate) >= max)}
+				monthName={monthName}
+				setMonthOffset={setMonthOffset}
+				year={year}
+			/>
 			<CalendarWeekDays />
 			<div className={classnames("calendar__grid")}>
 				{dateCells.map(

@@ -1,5 +1,5 @@
 import { classnames } from "_/classnames"
-import { Column, Columns, IconText } from "_/components/library"
+import { Column, Columns, Icon, IconText } from "_/components/library"
 import { TermsAndPolicyLinks } from "_/components/TermsAndPolicyLinks"
 import { dayFormat } from "_/i18n/formats"
 import { github, telegram } from "@workspace/locators"
@@ -10,15 +10,21 @@ function SocialLinks() {
 		<ul>
 			<li>
 				<a href={telegram.support}>
-					<IconText name="telegram" size="1.5em">
-						<FormattedMessage id="SocialLinks.telegramSupport" />
+					<IconText>
+						<Icon name="telegram" />
+						<span>
+							<FormattedMessage id="SocialLinks.telegramSupport" />
+						</span>
 					</IconText>
 				</a>
 			</li>
 			<li>
 				<a href={github.organization}>
-					<IconText name="github" size="1.5em">
-						<FormattedMessage id="SocialLinks.githubOrganizaton" />
+					<IconText>
+						<Icon name="github" />
+						<span>
+							<FormattedMessage id="SocialLinks.githubOrganizaton" />
+						</span>
 					</IconText>
 				</a>
 			</li>
