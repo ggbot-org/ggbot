@@ -7,8 +7,7 @@
     "build": "tsc --build",
     "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean",
-    "prebuild": "npm run cleanup",
-    "start": "node dist/server"
+    "prebuild": "npm run cleanup"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",

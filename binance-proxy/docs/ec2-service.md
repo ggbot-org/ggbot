@@ -4,19 +4,21 @@ See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.m
 
 ## Deploy stage
 
-First of all, define the _Deploy stage_: it can be `main` or `next`.
+First of all, the only _Deploy stage_ that makes sense for `binance-proxy` service is `main`.
 
 ## Update code
 
 ```sh
 cd ggbot
-git pull
-npm ci
+npm run git_pull
 ```
 
 ## Build
 
--   `npm run build:binance-proxy`
+```sh
+npm run install_dependencies
+npm run build:binance-proxy
+```
 
 ## Create service
 
@@ -36,7 +38,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/npm run update_and_start:binance-proxy
+ExecStart=/usr/bin/node binance-proxy/dist/server.js
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"
@@ -74,6 +76,8 @@ For example
     Environment="DNS_DOMAIN=ggbot2.com"
     Environment="BINANCE_PROXY_IP=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
+    Environment="GITHUB_ORG_URL=xxx"
+    Environment="TELEGRAM_SUPPORT_URL=xxx"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 
