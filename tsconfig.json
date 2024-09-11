@@ -10,6 +10,7 @@
 			"@workspace/authentication": ["./authentication/src/index.ts"],
 			"@workspace/aws-ec2": ["./aws-ec2/src/index.ts"],
 			"@workspace/aws-iam": ["./aws-iam/src/index.ts"],
+			"@workspace/aws-lambda": ["./aws-lambda/src/index.ts"],
 			"@workspace/aws-logs": ["./aws-logs/src/index.ts"],
 			"@workspace/aws-s3": ["./aws-s3/src/index.ts"],
 			"@workspace/aws-ses": ["./aws-ses/src/index.ts"],
@@ -23,8 +24,11 @@
 			"@workspace/email-messages": ["./email-messages/src/index.ts"],
 			"@workspace/env": ["./env/src/index.ts"],
 			"@workspace/http": ["./http/src/index.ts"],
+			"@workspace/i18n": ["./i18n/src/index.ts"],
 			"@workspace/indexeddb": ["./indexeddb/src/index.ts"],
-			"@workspace/indexeddb-binance": ["./indexeddb-binance/src/index.ts"],
+			"@workspace/indexeddb-binance": [
+				"./indexeddb-binance/src/index.ts"
+			],
 			"@workspace/indexeddb-errors": ["./indexeddb-errors/src/index.ts"],
 			"@workspace/indexeddb-orders": ["./indexeddb-orders/src/index.ts"],
 			"@workspace/locators": ["./locators/src/index.ts"],
@@ -37,9 +41,13 @@
 			"_/binance/*": ["./webapp/src/binance/*"],
 			"_/classnames": ["./webapp/src/styles/classenames.ts"],
 			"_/components/*": ["./webapp/src/components/*"],
-			"_/components/library": ["./webapp/src/components/library/index.ts"],
+			"_/components/library": [
+				"./webapp/src/components/library/index.ts"
+			],
 			"_/contexts/*": ["./webapp/src/contexts/*"],
-			"_/esbuild/browserBundle": ["./webapp/src/esbuild/browserBundle.ts"],
+			"_/esbuild/browserBundle": [
+				"./webapp/src/esbuild/browserBundle.ts"
+			],
 			"_/flow/*": ["./webapp/src/flow/*"],
 			"_/hooks/*": ["./webapp/src/hooks/*"],
 			"_/i18n/*": ["./webapp/src/i18n/*"],

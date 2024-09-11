@@ -1,4 +1,5 @@
-import { detectLanguage, translationPathname } from "_/i18n/locales"
+import { translationPathname } from "_/i18n/locales"
+import { detectLanguage } from "@workspace/i18n"
 import { defaultLanguage } from "@workspace/models"
 import { PropsWithChildren, Reducer, useEffect, useReducer } from "react"
 import { IntlConfig, IntlProvider } from "react-intl"

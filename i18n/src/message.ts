@@ -76,6 +76,7 @@ export function translateMessage(messages: Messages, { id, values }: TranslateMe
 			const value = values?.[key]
 			return translation.concat(typeof value === "string" ? value : "")
 		}
+		console.error("Cannot parse token", token)
 		return translation
 	}, "")
 }
