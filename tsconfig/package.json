@@ -3,11 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./build": "./build.json",
     "./default": "./default.json",
-    "./code-quality": "./code-quality.json",
-    "./lambda": "./lambda.json",
-    "./webworker": "./webworker.json"
+    "./lambda": "./lambda.json"
   },
   "dependencies": {
     "@types/node": "20.14.12",

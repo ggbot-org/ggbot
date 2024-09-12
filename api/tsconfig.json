@@ -2,5 +2,5 @@
 	"compilerOptions": {
 		"lib": ["dom", "es2015"]
 	},
-	"extends": "@workspace/tsconfig/build"
+	"extends": "@workspace/tsconfig/default"
 }

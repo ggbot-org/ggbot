@@ -60,6 +60,5 @@
 		},
 		"target": "es2022"
 	},
-	"extends": "./tsconfig/code-quality.json",
 	"include": ["**/*.ts", "**/*.tsx"]
 }

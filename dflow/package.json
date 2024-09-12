@@ -10,8 +10,8 @@
     }
   },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "build": "tsc --build",
+    "cleanup": "tsc --build --clean",
     "check_types": "tsc --noEmit",
     "test": "node --test --env-file ../.typescript.env `find src/ -name '*_test.ts'`"
   },

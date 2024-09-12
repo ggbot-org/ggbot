@@ -2,5 +2,5 @@
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "es2022"]
 	},
-	"extends": "@workspace/tsconfig/build"
+	"extends": "@workspace/tsconfig/default"
 }

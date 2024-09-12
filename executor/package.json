@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
+    "build": "tsc --build",
     "check_types": "tsc --noEmit",
-    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "cleanup": "tsc --build --clean",
     "e2e:execute": "node --env-file ../.typescript.env ./src/end-to-end-tests/execute.ts",
     "e2e:listAccountKeys": "node --env-file ../.typescript.env ./src/end-to-end-tests/listAccountKeys.ts",
     "prebuild": "npm run cleanup",

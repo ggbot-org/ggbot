@@ -60,16 +60,9 @@ This is a sample _package.json_ for a generic workspace.
 			"import": "./dist/index.js"
 		}
 	},
-	// If workspace has no tests, its `scripts` can be the following
-	//
-	// "scripts": {
-	// 	"build": "tsc --build",
-	// 	"cleanup": "tsc --build --clean",
-	// 	"check_types": "tsc --noEmit"
-	// },
 	"scripts": {
-		"build": "tsc --build tsconfig.build.json",
-		"cleanup": "tsc --build --clean tsconfig.build.json",
+		"build": "tsc --build",
+		"cleanup": "tsc --build",
 		"check_types": "tsc --noEmit",
 		"test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
 	},

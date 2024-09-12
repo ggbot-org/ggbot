@@ -1,2 +1,2 @@
 export * from "./detectLanguage.js"
-export * from "./message.js"
+export { translateMessage } from "./message.js"

@@ -1,13 +1,25 @@
 {
 	"compilerOptions": {
 		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
 		"module": "esnext",
 		"moduleResolution": "node",
-		"noEmit": true,
+		"noEmit": false,
+		"noFallthroughCasesInSwitch": true,
+		"outDir": "${configDir}/dist",
 		"rootDir": "${configDir}/src",
 		"skipLibCheck": true,
-		"target": "es2022"
+		"strict": true,
+		"target": "es2022",
+		"tsBuildInfoFile": "${configDir}/dist/tsconfig.tsbuildinfo",
+		"useDefineForClassFields": true
+		// These options are replaced by enabling
+		// @typescript-eslint/no-unused-vars in ESLint config.
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
 	},
-	"extends": "./code-quality.json",
 	"include": ["${configDir}/src"]
 }

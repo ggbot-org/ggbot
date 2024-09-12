@@ -2,5 +2,5 @@
 	"compilerOptions": {
 		"lib": ["webworker"]
 	},
-	"extends": "@workspace/tsconfig/build"
+	"extends": "@workspace/tsconfig/default"
 }

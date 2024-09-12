@@ -10,8 +10,8 @@
     }
   },
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "cleanup": "tsc --build --clean tsconfig.build.json",
+    "build": "tsc --build",
+    "cleanup": "tsc --build",
     "check_types": "tsc --noEmit",
     "e2e:sendEmail": "node --env-file=../.typescript.env ./src/end-to-end-tests/sendEmail.ts"
   },

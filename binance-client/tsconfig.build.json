@@ -1,4 +1,0 @@
-{
-	"extends": "@workspace/tsconfig/build",
-	"exclude": ["./src/end-to-end-tests/"]
-}

@@ -18,7 +18,8 @@
 			"_/routing/*": ["./src/routing/*"],
 			"_/storages/*": ["./src/storages/*"],
 			"_/workers": ["./src/workers.ts"]
-		}
+		},
+		"tsBuildInfoFile": "temp/tsconfig.tsbuildinfo"
 	},
 	"extends": ["@workspace/tsconfig/default"]
 }
