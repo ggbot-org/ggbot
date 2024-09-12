@@ -88,6 +88,7 @@ export function ReadonlyInput ({ value }: ReadonlyInputProps) {
 			readOnly
 			className={classnames(["readonly-input", "is-static"])}
 			defaultValue={value}
+			tabIndex={-1}
 		/>
 	)
 }

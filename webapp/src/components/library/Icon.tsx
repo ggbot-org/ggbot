@@ -1,5 +1,5 @@
 import { ReactNode, SVGAttributes } from "react"
-import { Span } from "trunx"
+import { Icon as _Icon } from "trunx"
 
 export const iconNames = [
 	"account",
@@ -8,7 +8,8 @@ export const iconNames = [
 	"danger",
 	"dots-vertical",
 	"github",
-	"telegram"
+	"telegram",
+	"x"
 ] as const
 type IconName = (typeof iconNames)[number]
 
@@ -76,7 +77,15 @@ const iconRecord: Record<IconName, IconDefinition> = {
 			</g>
 		),
 		viewBox: "0 0 50 50"
-	}
+	},
+	x: {
+		jsx: (
+			<g fill="currentColor">
+				<path d="M202.82861,197.17188a3.99991,3.99991,0,1,1-5.65722,5.65624L128,133.65723,58.82861,202.82812a3.99991,3.99991,0,0,1-5.65722-5.65624L122.343,128,53.17139,58.82812a3.99991,3.99991,0,0,1,5.65722-5.65624L128,122.34277l69.17139-69.17089a3.99991,3.99991,0,0,1,5.65722,5.65624L133.657,128Z" />
+			</g>
+		),
+		viewBox: "0 0 256 256"
+	},
 }
 
 export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
@@ -90,7 +99,7 @@ export type IconProps = Pick<SVGAttributes<SVGSVGElement>, "onClick"> & {
 
 export function Icon({ name, onClick, size = "1.5em" }: IconProps) {
 	return (
-		<Span bulma={["icon", { "is-clickable": onClick }]}>
+		<_Icon bulma={{ "is-clickable": onClick }}>
 			<svg
 				height={size}
 				onClick={onClick}
@@ -100,6 +109,6 @@ export function Icon({ name, onClick, size = "1.5em" }: IconProps) {
 			>
 				{iconRecord[name].jsx}
 			</svg>
-		</Span>
+		</_Icon>
 	)
 }

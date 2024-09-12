@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { GenericError } from "_/components/GenericError"
-import { Button, ButtonProps, Column, Columns, Control, Field, InputField, Label, Message, Title } from "_/components/library"
+import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField, Message, Title } from "_/components/library"
 import { Email } from "_/components/readonlyFields"
 import { TimeoutError } from "_/components/TimeoutError"
 import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
@@ -131,20 +131,14 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 				<FormattedMessage id="AuthVerify.checkEmail" values={formattedMessageMarkup} />
 			</Message>
 			<Columns>
-				<Column bulma="is-half-desktop">
-					<Label htmlFor="email">
-						<FormattedMessage id="Email.label" />
-					</Label>
-					<Field hasAddons>
-						<Control isExpanded>
-							<Email value={email} />
-						</Control>
-						<Control>
-							<Button onClick={resetEmail} type="reset">
-								<FormattedMessage id="AuthVerify.resetEmail" />
-							</Button>
-						</Control>
-					</Field>
+				<Column bulma="is-two-fifths-desktop">
+					<Email value={email} />
+					<Button onClick={resetEmail} size="small" tabIndex={-1} type="reset">
+						<span>
+							<FormattedMessage id="AuthVerify.resetEmail" />
+						</span>
+						<Icon name="x" size="1em" />
+					</Button>
 				</Column>
 			</Columns>
 			<Message>
