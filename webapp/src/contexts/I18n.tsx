@@ -1,33 +1,19 @@
-import { translationPathname } from "_/i18n/locales"
-import { detectLanguage, I18nMessageDescriptor, I18nMessages, translateMessage } from "@workspace/i18n"
-import { createContext, PropsWithChildren, Reducer, useEffect, useMemo, useReducer } from "react"
-
-type ContextValue = {
-	formatMessage(descriptor: I18nMessageDescriptor): string
-}
-
-export const I18nContext = createContext<ContextValue>({
-	formatMessage(_descriptor: I18nMessageDescriptor) {
-		return ""
-	},
-})
-
-I18nContext.displayName = "I18nContext"
-
-type State = {
-	messages?: I18nMessages
-	readIsPending: boolean
-	readHasError: boolean
-}
-
-type Action =
-	| { type: "READ_INTL_MESSAGES_REQUEST" }
-	| { type: "READ_INTL_MESSAGES_FAILURE" }
-	| { type: "READ_INTL_MESSAGES_SUCCESS" } & Required<Pick<State, "messages">>
+import { detectLanguage, translationPathname } from "_/i18n/locales"
+import { defaultLanguage } from "@workspace/models"
+import { PropsWithChildren, Reducer, useEffect, useReducer } from "react"
+import { IntlConfig, IntlProvider } from "react-intl"
 
 export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ messages, readHasError, readIsPending }, dispatch] = useReducer<
-		Reducer<State, Action>>((state, action) => {
+		Reducer<Pick<IntlConfig, "messages"> & {
+			readIsPending: boolean
+			readHasError: boolean
+		},
+			| { type: "READ_INTL_MESSAGES_REQUEST" }
+			| { type: "READ_INTL_MESSAGES_FAILURE" }
+			| { type: "READ_INTL_MESSAGES_SUCCESS" } & Required<Pick<IntlConfig, "messages">>
+		>
+	>((state, action) => {
 		if (action.type === "READ_INTL_MESSAGES_REQUEST") return {
 			readHasError: false,
 			readIsPending: true,
@@ -65,20 +51,17 @@ export function I18nProvider({ children }: PropsWithChildren) {
 			})
 	}, [language, messages, readHasError, readIsPending])
 
-	const contextValue = useMemo<ContextValue>(() => ({
-		formatMessage({ id }: I18nMessageDescriptor) {
-			if (!messages) return ""
-			return translateMessage(messages, { id })
-		},
-	}), [messages])
-
 	// TODO instead of a blank page should show something, like
 	// if (!messages) return <Navbar noMenu/>
 	if (!messages) return null
 
 	return (
-		<I18nContext.Provider value={contextValue}>
+		<IntlProvider
+			defaultLocale={defaultLanguage}
+			locale={language}
+			messages={messages}
+		>
 			{children}
-		</I18nContext.Provider>
+		</IntlProvider>
 	)
 }

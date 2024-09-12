@@ -36,7 +36,6 @@
     "@workspace/cache": "0.0.0",
     "@workspace/dflow": "0.0.0",
     "@workspace/http": "0.0.0",
-    "@workspace/i18n": "0.0.0",
     "@workspace/indexeddb-binance": "0.0.0",
     "@workspace/indexeddb-errors": "0.0.0",
     "@workspace/indexeddb-orders": "0.0.0",

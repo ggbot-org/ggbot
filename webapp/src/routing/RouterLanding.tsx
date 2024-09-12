@@ -1,5 +1,4 @@
 import { I18nProvider } from "_/contexts/I18n"
-import { IntlProvider } from "_/contexts/Intl"
 import { Homepage } from "_/pages/public/Homepage"
 import { PrivacyPage } from "_/pages/public/Privacy"
 import { TermsPage } from "_/pages/public/Terms"
@@ -20,8 +19,6 @@ function Router() {
 
 mount(
 	<I18nProvider>
-		<IntlProvider>
-			<Router />
-		</IntlProvider>
+		<Router />
 	</I18nProvider>
 )
