@@ -58,16 +58,20 @@ export function parseMessage(message: string): Token[] {
 	return tokens
 }
 
-type Messages = { [key in string]: string }
+export type I18nMessages = { [key in string]: string }
 
-type TranslateMessageArg = {
+export type I18nMessageDescriptor = {
 	id: string
 	values?: { [key in string]: string }
 }
 
-export function translateMessage(messages: Messages, { id, values }: TranslateMessageArg) {
+const translatedMessageMap = new Map<string, string>()
+
+export function translateMessage(messages: I18nMessages, { id, values }: I18nMessageDescriptor) {
 	if (!(id in messages)) return ""
-	return parseMessage(messages[id]).reduce((translation, token) => {
+	let translatedMessage = translatedMessageMap.get(id)
+	if (translatedMessage) return translatedMessage
+	translatedMessage = parseMessage(messages[id]).reduce((translation, token) => {
 		if (token.kind === "messageText") {
 			return translation.concat(token.value)
 		}
@@ -79,4 +83,6 @@ export function translateMessage(messages: Messages, { id, values }: TranslateMe
 		console.error("Cannot parse token", token)
 		return translation
 	}, "")
+	translatedMessageMap.set(id, translatedMessage)
+	return translatedMessage
 }

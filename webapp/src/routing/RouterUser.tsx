@@ -1,4 +1,5 @@
 import { I18nProvider } from "_/contexts/I18n"
+import { IntlProvider } from "_/contexts/Intl"
 import { ToastProvider } from "_/contexts/Toast"
 import { CopyStrategyPage } from "_/pages/user/CopyStrategy"
 import { DashboardPage } from "_/pages/user/Dashboard"
@@ -33,8 +34,10 @@ function Router() {
 
 mount(
 	<I18nProvider>
-		<ToastProvider>
-			<Router />
-		</ToastProvider>
+		<IntlProvider>
+			<ToastProvider>
+				<Router />
+			</ToastProvider>
+		</IntlProvider>
 	</I18nProvider>
 )

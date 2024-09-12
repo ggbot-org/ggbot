@@ -1,8 +1,8 @@
 import { classnames } from "_/classnames"
 import { Control, Field, InputField, SelectField } from "_/components/library"
+import { I18nContext } from "_/contexts/I18n"
 import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from "@workspace/models"
-import { ChangeEventHandler, useCallback } from "react"
-import { useIntl } from "react-intl"
+import { ChangeEventHandler, useCallback, useContext } from "react"
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
 	frequency: Pick<Frequency, "interval"> & {
@@ -24,7 +24,7 @@ export function FrequencyInput({
 	frequency: { interval, every },
 	setFrequency
 }: FrequencyInputProps) {
-	const { formatMessage } = useIntl()
+	const { formatMessage } = useContext(I18nContext)
 
 	const frequencyIntervalOptions: FrequencyIntervalOption[] = [
 		{
