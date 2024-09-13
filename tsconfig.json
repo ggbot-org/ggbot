@@ -24,7 +24,6 @@
 			"@workspace/email-messages": ["./email-messages/src/index.ts"],
 			"@workspace/env": ["./env/src/index.ts"],
 			"@workspace/http": ["./http/src/index.ts"],
-			"@workspace/i18n": ["./i18n/src/index.ts"],
 			"@workspace/indexeddb": ["./indexeddb/src/index.ts"],
 			"@workspace/indexeddb-binance": [
 				"./indexeddb-binance/src/index.ts"
