@@ -133,6 +133,9 @@
     "test",
     "ts-prune"
   ],
+  "prettier": {
+    "printWidth": 120
+  },
   "workspaces": [
     "admin-api",
     "api",
@@ -160,7 +163,6 @@
     "http",
     "indexeddb",
     "indexeddb-binance",
-    "indexeddb-errors",
     "indexeddb-orders",
     "infrastructure",
     "locators",

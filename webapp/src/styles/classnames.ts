@@ -1,4 +1,6 @@
 import { Bulma, classnames as _classnames, ClassnamesArg as _ClassnamesArg } from "trunx"
+// TODO update trunx and use this import
+// import {classnames as _classnames, ClassnamesArg as _ClassnamesArg} from "trunx/classnames"
 
 type AuthVerifyClassname = "auth-verify__one-time-password"
 
