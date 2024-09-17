@@ -37,7 +37,6 @@
     "@workspace/dflow": "0.0.0",
     "@workspace/http": "0.0.0",
     "@workspace/indexeddb-binance": "0.0.0",
-    "@workspace/indexeddb-orders": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",

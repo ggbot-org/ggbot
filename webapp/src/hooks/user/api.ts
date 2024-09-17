@@ -1,12 +1,9 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
-import { useOrdersIDB } from "_/hooks/user/indexedDBs"
 import { api } from "_/routing/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
 import { StripeClientActionInput, StripeClientActionOutput, StripeClientActionType, UserClientActionInput, UserClientActionOutput, UserClientActionType } from "@workspace/api"
-import { StrategyKey } from "@workspace/models"
-import { dateToDay, Day, DayInterval, dayToDate, getDate, getDay, timeToDay, today } from "minimal-time-helpers"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 
 // Stripe Api
 
@@ -91,83 +88,8 @@ export function useReadStrategyErrors() {
 	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyErrors"], UserClientActionOutput["ReadStrategyErrors"]>(userApiOptions, "ReadStrategyErrors")
 }
 
-/*
-TODO
-
 export function useReadStrategyOrders() {
 	return useAction<UserClientActionType, UserClientActionInput["ReadStrategyOrders"], UserClientActionOutput["ReadStrategyOrders"]>(userApiOptions, "ReadStrategyOrders")
-}
-
-*/
-
-export function useReadStrategyOrders(strategyKey: StrategyKey | undefined) {
-	const { db, dbIsOpen } = useOrdersIDB()
-	const [toBeCachedDayInterval, setToBeCachedDayInterval] = useState<DayInterval | undefined>()
-	const [data, setData] = useState<UserClientActionOutput["ReadStrategyOrders"] | undefined>()
-	const { data: requestData, request, ...rest } = useAction<
-		UserClientActionType,
-		UserClientActionInput["ReadStrategyOrders"],
-		UserClientActionOutput["ReadStrategyOrders"]
-	>(userApiOptions, "ReadStrategyOrders")
-	const requestWithCache = useCallback(
-		({ start, end, ...strategyKey }: UserClientActionInput["ReadStrategyOrders"]) => {
-			if (!dbIsOpen) return
-			(async () => {
-				try {
-					const cachedData: UserClientActionOutput["ReadStrategyOrders"] = []
-					let date = dayToDate(start)
-					let allDataIsCached = true
-					while (date <= dayToDate(end)) {
-						const dailyResult = await db.readDailyOrders(strategyKey, dateToDay(date))
-						if (!dailyResult) {
-							allDataIsCached = false
-							break
-						}
-						cachedData.push(...dailyResult)
-						date = getDate(date).plusOne.day
-					}
-					if (allDataIsCached) {
-						setData(cachedData)
-					} else {
-						// Never cache current day.
-						const maxDay = today()
-						const start = dateToDay(date)
-						if (start < maxDay) setToBeCachedDayInterval({
-							start,
-							end: end === today() ? getDay(end).minus(1).days : end
-						})
-						// Fetch missing data.
-						request({ start, end, ...strategyKey })
-					}
-				} catch (error) {
-					console.debug(error)
-				}
-			})()
-		},
-		[request, db, dbIsOpen]
-	)
-	useEffect(() => {
-		if (!strategyKey) return
-		if (!requestData) return
-		// Write to cache.
-		if (!toBeCachedDayInterval) return
-		const toBeCachedDailyResults = new Map<Day, UserClientActionOutput["ReadStrategyOrders"]>()
-		let date = dayToDate(toBeCachedDayInterval.start)
-		while (date <= dayToDate(toBeCachedDayInterval.end)) {
-			toBeCachedDailyResults.set(dateToDay(date), [])
-			date = getDate(date).plusOne.day
-		}
-		for (const item of requestData) {
-			const day = timeToDay(item.whenCreated)
-			toBeCachedDailyResults.get(day)?.push(item)
-		}
-		for (const [day, data] of toBeCachedDailyResults) {
-			db.writeDailyOrders(strategyKey, day, data)
-		}
-		// Set data and reset request.
-		setData((data) => data === undefined ? requestData : [...data, ...requestData])
-	}, [db, requestData, strategyKey, toBeCachedDayInterval])
-	return { data, request: requestWithCache, ...rest }
 }
 
 export function useRenameStrategy() {

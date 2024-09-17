@@ -58,7 +58,6 @@ graph LR
     workspace/indexeddb --- workspace/models
     workspace/indexeddb-binance --- workspace/binance
     workspace/indexeddb-binance --- workspace/indexeddb
-    workspace/indexeddb-orders --- workspace/indexeddb
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-lambda
@@ -80,7 +79,6 @@ graph LR
     workspace/stripe-api --- workspace/s3-data-bucket
     workspace/webapp --- workspace/api
     workspace/webapp --- workspace/backtesting-webworker
-    workspace/webapp --- workspace/indexeddb-orders
     workspace/webstorage --- workspace/cache
     workspace/webstorage --- workspace/models
 ```

@@ -163,7 +163,6 @@
     "http",
     "indexeddb",
     "indexeddb-binance",
-    "indexeddb-orders",
     "infrastructure",
     "locators",
     "logging",
