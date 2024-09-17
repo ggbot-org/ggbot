@@ -9,12 +9,6 @@ import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { Fragment, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
-export type ProfitSummaryProps = {
-	dayInterval: DayInterval | undefined
-	orders: Order[] | undefined
-	strategyKind: StrategyKind | undefined
-}
-
 function toNumber(value: string, precision = 8) {
 	return Number(value).toFixed(precision)
 }
@@ -55,11 +49,13 @@ type SymbolStats = {
 	quoteQuantity: string
 }
 
-export function ProfitSummary({
-	orders,
-	dayInterval,
-	strategyKind
-}: ProfitSummaryProps) {
+type ProfitSummaryProps = {
+	dayInterval: DayInterval | undefined
+	orders: Order[] | undefined
+	strategyKind: StrategyKind | undefined
+}
+
+export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSummaryProps) {
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	let numBuys: number | undefined = undefined

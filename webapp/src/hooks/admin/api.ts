@@ -1,6 +1,7 @@
 import { useAction, UseActionApiArg } from "_/hooks/useAction"
 import { api } from "_/routing/api"
 import { AdminClientActionInput as Input, AdminClientActionOutput as Output, AdminClientActionType as ActionType } from "@workspace/api"
+import { Account } from "@workspace/models"
 
 const apiOptions: UseActionApiArg = {
 	url: api.admin.action,
@@ -12,7 +13,10 @@ export function useEnterAsAccount() {
 }
 
 export function useListAccounts() {
-	return useAction<ActionType, Input["ListAccounts"], Output["ListAccounts"]>(apiOptions, "ListAccounts")
+	// TODO why this makes complain tsserver?
+	// The inferred type of 'useListAccounts' cannot be named without a reference to '../../../../node_modules/@workspace/api/dist/documentProvider'. This is likely not portable. A type annotation is necessary.
+	// return useAction<ActionType, Input["ListAccounts"], Output["ListAccounts"]>(apiOptions, "ListAccounts")
+	return useAction<ActionType, Input["ListAccounts"], { accounts: Account[] }>(apiOptions, "ListAccounts")
 }
 
 export function useReadAccountInfo() {

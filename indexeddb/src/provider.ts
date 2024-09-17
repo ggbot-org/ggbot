@@ -45,7 +45,7 @@ export class IDBProvider {
 		request.onsuccess = cleanup
 	}
 
-	open(instance: Pick< IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade" >
+	open(instance: Pick<IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade">
 	) {
 		if (this.isOpen) return
 		if (this.openRequestState === "pending") return

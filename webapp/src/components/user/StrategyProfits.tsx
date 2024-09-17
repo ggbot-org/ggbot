@@ -1,26 +1,23 @@
 import { DayIntervalBox } from "_/components/DayIntervalBox"
 import { Column, OneColumn } from "_/components/library"
-import { ProfitSummary, ProfitSummaryProps } from "_/components/ProfitSummary"
+import { ProfitSummary } from "_/components/ProfitSummary"
 import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { StrategyKey } from "@workspace/models"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
-	const [orders, setOrders] = useState<ProfitSummaryProps["orders"]>()
-
 	const dayInterval = { start, end }
 
-	const { canRun, request, isDone, isPending, reset, data } = useReadStrategyOrders()
+	const { canRun, request, isDone, isPending, reset, data: orders } = useReadStrategyOrders()
 
 	useEffect(() => {
 		if (!isDone) return
-		setOrders(data)
 		reset()
-	}, [isDone, data, reset])
+	}, [isDone, reset])
 
 	if (!strategyKey) return null
 
