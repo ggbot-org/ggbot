@@ -11,9 +11,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { useBinanceSymbols } from "./useBinanceSymbols"
 
-class BinanceClient
-	extends DflowBinanceClientDummy
-	implements DflowBinanceClient {
+class BinanceClient extends DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo() {
 		return binance.exchangeInfo()
 	}

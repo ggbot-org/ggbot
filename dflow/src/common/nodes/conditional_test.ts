@@ -5,7 +5,7 @@ import { now } from "minimal-time-helpers"
 
 import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
 
-test("implements `if` condition", async () => {
+test("if", async () => {
 	const nodeId = "if"
 	const executor = new DflowCommonExecutor({
 		graph: {
