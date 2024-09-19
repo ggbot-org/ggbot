@@ -57,14 +57,12 @@ export const isApiActionServerSideError = objectTypeGuard<ApiActionServerSideErr
 // Client errors
 // ////////////
 
-const apiActionClientSideErrorNames = [
-	BadRequestError.errorName,
-	UnauthorizedError.errorName,
-	NotFoundError.errorName,
-	GenericError.errorName,
-	TimeoutError.errorName
-] as const
-type ApiActionClientSideErrorName = (typeof apiActionClientSideErrorNames)[number]
+type ApiActionClientSideErrorName =
+	| typeof BadRequestError.errorName
+	| typeof UnauthorizedError.errorName
+	| typeof NotFoundError.errorName
+	| typeof GenericError.errorName
+	| typeof TimeoutError.errorName
 
 type ApiActionClientSideError = {
 	name: ApiActionClientSideErrorName

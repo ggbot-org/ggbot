@@ -40,7 +40,7 @@ export function SchedulingParameterItem({
 					} else {
 						setHasError(true)
 					}
-				} catch (error) {
+				} catch {
 					setHasError(true)
 				}
 			}

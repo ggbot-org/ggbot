@@ -1,7 +1,5 @@
 import { AwsResource } from "@workspace/aws-types"
 
-const iamVersion = "2012-10-17"
-
 export type PolicyDocumentStatement<Action extends string> = {
 	Action: Action[]
 	Effect: "Allow"
@@ -10,7 +8,7 @@ export type PolicyDocumentStatement<Action extends string> = {
 
 export type IamPolicyDocument<StatementName extends string, StatementAction extends string> = {
 	readonly policyDocument: {
-		Version: typeof iamVersion
+		Version: "2012-10-17"
 		Statement: Array<PolicyDocumentStatement<StatementAction>>
 	}
 	readonly statementAction: Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]>

@@ -3,21 +3,19 @@ import { TabContent, TabContentProps, TabSelector, TabSelectors } from "_/compon
 import { Dispatch, ReactNode, SetStateAction } from "react"
 import { FormattedMessage } from "react-intl"
 
-const tabIds = [
-	"account",
-	"accounts",
-	"backtesting",
-	"billing",
-	"binance",
-	"errors",
-	"flow",
-	"info",
-	"manage",
-	"newStrategy",
-	"profits",
-	"strategies",
-] as const
-export type TabId = (typeof tabIds)[number]
+export type TabId =
+	| "account"
+	| "accounts"
+	| "backtesting"
+	| "billing"
+	| "binance"
+	| "errors"
+	| "flow"
+	| "info"
+	| "manage"
+	| "newStrategy"
+	| "profits"
+	| "strategies"
 
 type Tab = {
 	tabId: TabId

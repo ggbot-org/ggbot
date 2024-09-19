@@ -12,7 +12,7 @@ export function isItemId(arg: unknown): arg is ItemId {
 	return typeof arg === "string" && arg.length === nullId.length
 }
 
-const itemKeyFieldNames = [
+const _itemKeyFieldNames = [
 	...accountKeyFieldNames,
 	...strategyKeyFieldNames,
 	...subscriptionPurchaseKeyFieldNames,
@@ -21,7 +21,7 @@ const itemKeyFieldNames = [
 	"email",
 	"schedulingId"
 ]
-type ItemKeyFieldName = typeof itemKeyFieldNames[number]
+type ItemKeyFieldName = typeof _itemKeyFieldNames[number]
 
 /** An `Item` can have a "key" that associate it to other items. */
 export type ItemKey<Fields extends ItemKeyFieldName, Key> = Readonly<

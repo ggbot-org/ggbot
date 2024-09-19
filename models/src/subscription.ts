@@ -19,8 +19,7 @@ const subscriptionPlans = ["basic", "pro"] as const
 export type SubscriptionPlan = (typeof subscriptionPlans)[number]
 export const isSubscriptionPlan = isLiteralType<SubscriptionPlan>(subscriptionPlans)
 
-const subscriptionStatuses = ["active", "expired"] as const
-export type SubscriptionStatus = (typeof subscriptionStatuses)[number]
+export type SubscriptionStatus = "active" | "expired"
 
 export type Subscription = Pick<DayInterval, "end"> & {
 	plan: SubscriptionPlan

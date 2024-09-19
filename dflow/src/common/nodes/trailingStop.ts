@@ -17,8 +17,7 @@ const inputs = [
 
 const outputs = [output("boolean", { name: "exitTrailing" })]
 
-const trailingStopInputDirections = ["UP", "DOWN"] as const
-type TrailingStopInputDirection = (typeof trailingStopInputDirections)[number]
+type TrailingStopInputDirection = "UP" | "DOWN"
 
 export type TrailingStopInput = {
 	direction: TrailingStopInputDirection

@@ -3,8 +3,7 @@ import { Day } from "minimal-time-helpers"
 import { TimeHTMLAttributes } from "react"
 import { FormattedDate } from "react-intl"
 
-const dateTimeFormats = ["day", "time"] as const
-type DateTimeFormat = (typeof dateTimeFormats)[number]
+type DateTimeFormat = "day" | "time"
 
 export function DateTime({
 	format, value

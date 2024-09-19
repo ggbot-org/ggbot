@@ -1,3 +1,4 @@
-const nodeViewTypes = ["json", "info", "perc"] as const
-
-export type NodeViewType = (typeof nodeViewTypes)[number]
+export type NodeViewType =
+	| "json"
+	| "info"
+	| "perc"

@@ -1,20 +1,17 @@
 import { StrategyKey } from "@workspace/models"
 
-const itemKeys = [
-	"DEBUG_backtesting",
-	"accountInfo",
-	"activeTabId",
-	"authToken",
-	"doNotShowPleasePurchase",
-	"estimatedNumStrategies",
-	"gotFirstPageView",
-	"hideInactiveStrategies",
-	"strategy",
-	"strategiesDayIntervalStart",
-	"strategiesDayIntervalEnd"
-] as const
-
-type ItemKey = (typeof itemKeys)[number]
+type ItemKey =
+	| "DEBUG_backtesting"
+	| "accountInfo"
+	| "activeTabId"
+	| "authToken"
+	| "doNotShowPleasePurchase"
+	| "estimatedNumStrategies"
+	| "gotFirstPageView"
+	| "hideInactiveStrategies"
+	| "strategy"
+	| "strategiesDayIntervalStart"
+	| "strategiesDayIntervalEnd"
 
 /**
  * Get item keys used by session and local storage.

@@ -3,16 +3,13 @@
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods}
  */
-
-const httpMethods = [
-	"GET",
-	"HEAD",
-	"POST",
-	"PUT",
-	"DELETE",
-	"CONNECT",
-	"OPTIONS",
-	"TRACE",
-	"PATCH"
-] as const
-export type HTTP_METHOD = (typeof httpMethods)[number]
+export type HTTP_METHOD =
+	| "GET"
+	| "HEAD"
+	| "POST"
+	| "PUT"
+	| "DELETE"
+	| "CONNECT"
+	| "OPTIONS"
+	| "TRACE"
+	| "PATCH"

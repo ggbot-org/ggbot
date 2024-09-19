@@ -15,7 +15,6 @@ export class DeleteMemory extends DflowNode {
 		if (!isIdentifierString(key)) return
 		const value = context.memory[key]
 		if (value === undefined) return
-		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 		delete context.memory[key]
 		context.memoryChanged = true
 	}

@@ -19,7 +19,7 @@ export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
 
 	// TODO solve issue
 	// Ref values (the `current` property) may not be accessed during render. (https://react.dev/reference/react/useRef)  react-compiler/react-compiler
-	// eslint-disable-next-line
+
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(flowViewContainerRef.current, initialFlowViewGraph, strategyKey?.strategyKind)
 
 	const [canSave, setCanSave] = useState(false)

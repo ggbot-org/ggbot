@@ -76,13 +76,11 @@ test("div", async () => {
 	}
 })
 
-const arithmeticOperators = [
-	Addition.kind,
-	Subtraction.kind,
-	Multiplication.kind,
-	Division.kind
-] as const
-type ArithmeticNodeKind = (typeof arithmeticOperators)[number]
+type ArithmeticNodeKind =
+	| typeof Addition.kind
+	| typeof Subtraction.kind
+	| typeof Multiplication.kind
+	| typeof Division.kind
 
 type ExecuteOperatorInput = {
 	a: number

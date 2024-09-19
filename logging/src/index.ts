@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 
 /**
  * Output log with a prefix string and a timestamp.

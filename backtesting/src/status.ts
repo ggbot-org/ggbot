@@ -1,5 +1,8 @@
-const backtestingStatuses = ["done", "initial", "paused", "running"] as const
-export type BacktestingStatus = (typeof backtestingStatuses)[number]
+export type BacktestingStatus =
+	| "done"
+	| "initial"
+	| "paused"
+	| "running"
 
 /**
  * Methods to modify a `BacktestingStatus`, every method must return true if

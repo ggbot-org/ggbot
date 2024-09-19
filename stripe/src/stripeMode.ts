@@ -1,7 +1,6 @@
 import { ErrorCannotInferStripeMode } from "./errors.js"
 
-const stripeModes = ["live", "test"] as const
-export type StripeMode = (typeof stripeModes)[number]
+export type StripeMode = "live" | "test"
 
 export function inferStripeModeFromSecretKey(secretKey: string): StripeMode {
 	if (secretKey.startsWith("sk_test_")) return "test"

@@ -16,9 +16,9 @@ const binanceApiPublicEndpoints = [
 	"/api/v3/uiKlines"
 ] as const
 
-const binanceApiEndpoints = [
+const _binanceApiEndpoints = [
 	...binanceApiPublicEndpoints,
 	...binanceApiPrivateEndpoints
 ] as const
 
-export type BinanceApiEndpoint = (typeof binanceApiEndpoints)[number]
+export type BinanceApiEndpoint = (typeof _binanceApiEndpoints)[number]

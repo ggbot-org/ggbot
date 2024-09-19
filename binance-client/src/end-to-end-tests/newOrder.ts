@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+
 import { BinanceClient } from "../client.js"
 import { apiKey, apiSecret } from "./apiKeys.js"
 
