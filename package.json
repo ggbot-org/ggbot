@@ -56,9 +56,6 @@
     "predeploy:api:stripe": "npm run build:stripe-api",
     "predeploy:api-lambda-user-action": "npm run build:api-lambda-user-action",
     "predeploy:webapp": "npm run build:webapp",
-    "preinstall_dependencies": "npm run git_pull",
-    "preupdate:executor": "npm run install_dependencies",
-    "preupdate_and_start:executor": "npm run update:executor",
     "print_iam_policy:devops": "npm run print_iam_policy -w infrastructure devops",
     "push_infrastructure:aws": "npm run push_infrastructure:aws -w infrastructure",
     "push_infrastructure:aws:bootstrap": "npm run push_infrastructure:aws:bootstrap -w infrastructure",
@@ -91,8 +88,6 @@
     "start:webapp": "npm run start -w webapp",
     "stylelint": "stylelint --fix webapp/src/styles/**/*.{css,scss}",
     "stripe:create_webhook": "npm run  create_webhook -w stripe",
-    "update:executor": "npm run build:executor",
-    "update_and_start:executor": "npm run start:executor",
     "test": "npm run test --workspaces --if-present 1> /dev/null",
     "test_repository": "npm run test -w repository",
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"

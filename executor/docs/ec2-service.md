@@ -6,6 +6,20 @@ See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.m
 
 First of all, define the _Deploy stage_: it can be `main` or `next`.
 
+## Update code
+
+```sh
+cd ggbot
+npm run git_pull
+```
+
+## Build
+
+```sh
+npm run install_dependencies
+npm run build:executor
+```
+
 ## Create service
 
 Switch to **root** user: `sudo su -`.
@@ -24,7 +38,7 @@ Type=simple
 User=ec2-user
 Group=ec2-user
 WorkingDirectory=/home/ec2-user/ggbot
-ExecStart=/usr/bin/npm run update_and_start:executor
+ExecStart=/usr/bin/node executor/dist/start.js
 Restart=on-failure
 RestartSec=10
 Environment="NODE_ENV=production"

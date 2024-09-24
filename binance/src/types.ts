@@ -171,7 +171,7 @@ export type BinanceNewOrderOptions = Partial<{
 	/**
 	 * Used with STOP_LOSS, STOP_LOSS_LIMIT, TAKE_PROFIT, and TAKE_PROFIT_LIMIT
 	 * orders.
-	 */
+	*/
 	stopPrice: number
 	/**
 	 * Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to create an
