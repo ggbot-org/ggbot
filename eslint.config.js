@@ -1,3 +1,4 @@
+import json from "@eslint/json"
 import stylisticPlugin from "@stylistic/eslint-plugin"
 import typeScriptEslintPlugin from "@typescript-eslint/eslint-plugin"
 import typeScriptParser from "@typescript-eslint/parser"
@@ -7,7 +8,7 @@ import workspaces from "eslint-plugin-workspaces"
 
 // An ignores key used without any other keys acts as global ignores.
 const globalIgnores = {
-	ignores: ["*/dist/", "*/temp/"]
+	ignores: ["*/dist/", "*/temp/", "./webapp/public/**/*.js"]
 }
 
 const simpleImportSortRules = {
@@ -86,6 +87,8 @@ const stylisticJsxRules = {
 		}],
 }
 
+const tsconfigFiles = ["**/tsconfig*.json", "tsconfig/default.json", "tsconfig/lambda.json"]
+
 export default [
 	globalIgnores,
 	{
@@ -103,12 +106,12 @@ export default [
 		rules: {
 			"@typescript-eslint/no-unused-vars": ["error",
 				{
-				// Follow the TypeScript convention to prepend an underscore to ignore when a variable is not used.
-				// This works also with TypeScript compiler options:
-				// ```json
-				// "noUnusedLocals": true,
-				// "noUnusedParameters": true,
-				// ```
+					// Follow the TypeScript convention to prepend an underscore to ignore when a variable is not used.
+					// This works also with TypeScript compiler options:
+					// ```json
+					// "noUnusedLocals": true,
+					// "noUnusedParameters": true,
+					// ```
 					argsIgnorePattern: "^_",
 					caughtErrorsIgnorePattern: "^_",
 					destructuredArrayIgnorePattern: "^_",
@@ -116,7 +119,7 @@ export default [
 				}],
 
 			"no-case-declarations": "error",
-			"no-console": ["error", { allow: ["debug", "error", "info"] }],
+			"no-console": ["error", { allow: ["debug", "error", "info", "warn"] }],
 
 			"tsdoc/syntax": "error",
 
@@ -127,6 +130,7 @@ export default [
 			...stylisticJsxRules,
 		}
 	},
+
 	{
 		files: ["eslint.config.js"],
 		plugins: {
@@ -138,5 +142,19 @@ export default [
 			...simpleImportSortRules,
 			...stylisticRules,
 		}
-	}
+	},
+
+	// JSON files.
+	{
+		files: ["**/*.json"],
+		ignores: ["package-lock.json", ...tsconfigFiles],
+		language: "json/json",
+		...json.configs.recommended,
+	},
+	{
+		files: tsconfigFiles,
+		language: "json/jsonc",
+		plugins: { json },
+		...json.configs.recommended,
+	},
 ]

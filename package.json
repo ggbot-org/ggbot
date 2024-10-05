@@ -93,6 +93,7 @@
     "ts-prune": "ts-prune --error --ignore 'dist|temp'"
   },
   "devDependencies": {
+    "@eslint/json": "0.5.0",
     "@stylistic/eslint-plugin": "2.8.0",
     "eslint": "9.10.0",
     "eslint-plugin-react": "7.36.1",
@@ -108,7 +109,7 @@
     "prettier": "3.3.3",
     "ts-prune": "0.10.3",
     "typescript": "5.6.2",
-    "typescript-eslint": "8.6.0"
+    "typescript-eslint": "8.8.0"
   },
   "lint-staged": {
     "**/*.json": [
