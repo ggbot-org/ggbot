@@ -1,8 +1,10 @@
+import { strict as assert } from "node:assert"
 import { test } from "node:test"
 
 import { assertDeepEqual } from "minimal-assertion-helpers"
 
-import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput } from "./mediator.js"
+import { DflowCommonContext as Context } from "../context.js"
+import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput, MediatorMemory } from "./mediator.js"
 
 test("addMediation", () => {
 	assertDeepEqual<AddMediationInput, AddMediationOutput>(addMediation, [
@@ -127,4 +129,22 @@ test("exitMediation", () => {
 			output: false
 		}
 	])
+})
+
+test("MediatorMemory", () => {
+	const memoryValue = "some memory value"
+	const context: Context = {
+		defaults: {}, params: {}, time: 0,
+		memory: { value: memoryValue },
+	}
+	const memory = new MediatorMemory(context, "LABEL")
+	memory.averagePrice = 100
+	assert.equal(context.memory["mediator:averagePrice:LABEL"], 100)
+	memory.numPositions = 1
+	assert.equal(context.memory["mediator:numPositions:LABEL"], 1)
+	memory.totalQuantity = 10
+	assert.equal(context.memory["mediator:totalQuantity:LABEL"], 10)
+	memory.cleanup()
+	assert.equal(Object.keys(context.memory).length, 1)
+	assert.equal(context.memory.value, memoryValue)
 })

@@ -91,15 +91,15 @@ export function exitMediation ({ direction, averagePrice, percentageGain, price 
 
 type MemoryKey = "averagePrice" | "numPositions" | "totalQuantity"
 
-class Memory {
+export class MediatorMemory {
 	readonly context: Context
 	readonly memoryKey: Record<MemoryKey, string>
 	constructor(context: Context, memoryLabel?: string) {
 		this.context = context
 		this.memoryKey = {
-			averagePrice: Memory.key("averagePrice", memoryLabel),
-			numPositions: Memory.key("numPositions", memoryLabel),
-			totalQuantity: Memory.key("totalQuantity", memoryLabel)
+			averagePrice: MediatorMemory.key("averagePrice", memoryLabel),
+			numPositions: MediatorMemory.key("numPositions", memoryLabel),
+			totalQuantity: MediatorMemory.key("totalQuantity", memoryLabel)
 		}
 	}
 	get averagePrice () {
@@ -134,7 +134,9 @@ class Memory {
 		return memoryLabel ? `mediator:${memoryKey}:${memoryLabel}` : `mediator:${memoryKey}`
 	}
 	cleanup() {
-		delete this.context.memory[this.memoryKey.numPositions]
+		for (const key of Object.values(this.memoryKey)) {
+			delete this.context.memory[key]
+		}
 		this.context.memoryChanged = true
 	}
 }
@@ -152,7 +154,7 @@ export class MediatorLong extends DflowNode {
 		const resetMediation = this.input(4).data
 
 		const context = this.host.context as Context
-		const memory = new Memory(context, memoryLabel)
+		const memory = new MediatorMemory(context, memoryLabel)
 
 		if (resetMediation) {
 			memory.cleanup()
@@ -212,7 +214,7 @@ export class MediatorShort extends DflowNode {
 		const resetMediation = this.input(4).data
 
 		const context = this.host.context as Context
-		const memory = new Memory(context, memoryLabel)
+		const memory = new MediatorMemory(context, memoryLabel)
 
 		if (resetMediation) {
 			memory.cleanup()
