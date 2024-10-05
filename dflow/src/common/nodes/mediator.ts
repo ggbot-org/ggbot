@@ -8,7 +8,7 @@ const { input, output } = Dflow
 
 const inputs = [
 	inputPrice,
-	input("number", { name: "quantity" }),
+	input("number", { name: "quantity", optional: true }),
 	input("number", { name: "percentageGain" }),
 	input("string", { name: "memoryLabel", optional: true }),
 	input([], { name: "resetMediation", optional: true })
@@ -148,7 +148,7 @@ export class MediatorLong extends DflowNode {
 	run() {
 		const direction: MediatorDirection = "LONG"
 		const price = this.input(0).data as number
-		const quantity = this.input(1).data as number
+		const quantity = this.input(1).data as number | undefined
 		const percentageGain = this.input(2).data as number
 		const memoryLabel = this.input(3).data as string | undefined
 		const resetMediation = this.input(4).data
@@ -168,36 +168,54 @@ export class MediatorLong extends DflowNode {
 			totalQuantity: totalQuantityInMemory
 		} = memory
 
-		// Add mediation.
-		const {
-			averagePrice,
-			numPositions,
-			totalQuantity
-		} = addMediation({
-			quantity,
-			price,
-			percentageGain,
-			averagePrice: averagePriceInMemory,
-			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory
-		})
+		if (quantity) {
+			// Add mediation.
+			const {
+				averagePrice,
+				numPositions,
+				totalQuantity
+			} = addMediation({
+				quantity,
+				price,
+				percentageGain,
+				averagePrice: averagePriceInMemory,
+				numPositions: numPositionsInMemory,
+				totalQuantity: totalQuantityInMemory
+			})
 
-		const exited = exitMediation({ direction, averagePrice, percentageGain, price })
+			const exited = exitMediation({ direction, averagePrice, percentageGain, price })
 
-		// Set outputs.
-		this.output(0).data = exited
-		this.output(1).data = numPositions
-		this.output(2).data = totalQuantity
-		this.output(3).data = averagePrice
+			// Set outputs.
+			this.output(0).data = exited
+			this.output(1).data = numPositions
+			this.output(2).data = totalQuantity
+			this.output(3).data = averagePrice
 
-		// Write memory.
-		if (exited) {
-			memory.cleanup()
-			return
+			// Write memory.
+			if (exited) {
+				memory.cleanup()
+				return
+			}
+			memory.averagePrice = averagePrice
+			memory.numPositions = numPositions
+			memory.totalQuantity = totalQuantity
+		} else {
+			// No mediation added.
+
+			const exited = exitMediation({ direction, averagePrice: averagePriceInMemory, percentageGain, price })
+
+			// Set outputs.
+			this.output(0).data = exited
+			this.output(1).data = numPositionsInMemory
+			this.output(2).data = totalQuantityInMemory
+			this.output(3).data = averagePriceInMemory
+
+			// Write memory.
+			if (exited) {
+				memory.cleanup()
+				return
+			}
 		}
-		memory.averagePrice = averagePrice
-		memory.numPositions = numPositions
-		memory.totalQuantity = totalQuantity
 	}
 }
 
@@ -208,7 +226,7 @@ export class MediatorShort extends DflowNode {
 	run() {
 		const direction: MediatorDirection = "SHORT"
 		const price = this.input(0).data as number
-		const quantity = this.input(1).data as number
+		const quantity = this.input(1).data as number | undefined
 		const percentageGain = this.input(2).data as number
 		const memoryLabel = this.input(3).data as string | undefined
 		const resetMediation = this.input(4).data
@@ -228,35 +246,53 @@ export class MediatorShort extends DflowNode {
 			totalQuantity: totalQuantityInMemory
 		} = memory
 
-		// Add mediation.
-		const {
-			averagePrice,
-			numPositions,
-			totalQuantity
-		} = addMediation({
-			quantity,
-			price,
-			percentageGain,
-			averagePrice: averagePriceInMemory,
-			numPositions: numPositionsInMemory,
-			totalQuantity: totalQuantityInMemory
-		})
+		if (quantity) {
+			// Add mediation.
+			const {
+				averagePrice,
+				numPositions,
+				totalQuantity
+			} = addMediation({
+				quantity,
+				price,
+				percentageGain,
+				averagePrice: averagePriceInMemory,
+				numPositions: numPositionsInMemory,
+				totalQuantity: totalQuantityInMemory
+			})
 
-		const exited = exitMediation({ direction, averagePrice, percentageGain, price })
+			const exited = exitMediation({ direction, averagePrice, percentageGain, price })
 
-		// Set outputs.
-		this.output(0).data = exited
-		this.output(1).data = numPositions
-		this.output(2).data = totalQuantity
-		this.output(3).data = averagePrice
+			// Set outputs.
+			this.output(0).data = exited
+			this.output(1).data = numPositions
+			this.output(2).data = totalQuantity
+			this.output(3).data = averagePrice
 
-		// Write memory.
-		if (exited) {
-			memory.cleanup()
-			return
+			// Write memory.
+			if (exited) {
+				memory.cleanup()
+				return
+			}
+			memory.averagePrice = averagePrice
+			memory.numPositions = numPositions
+			memory.totalQuantity = totalQuantity
+		} else {
+			// No mediation added.
+
+			const exited = exitMediation({ direction, averagePrice: averagePriceInMemory, percentageGain, price })
+
+			// Set outputs.
+			this.output(0).data = exited
+			this.output(1).data = numPositionsInMemory
+			this.output(2).data = totalQuantityInMemory
+			this.output(3).data = averagePriceInMemory
+
+			// Write memory.
+			if (exited) {
+				memory.cleanup()
+				return
+			}
 		}
-		memory.averagePrice = averagePrice
-		memory.numPositions = numPositions
-		memory.totalQuantity = totalQuantity
 	}
 }
