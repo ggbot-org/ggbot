@@ -8,9 +8,9 @@ const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
  * BinanceClient implements private and public Binance API requests.
  *
  * @remarks
- * Binance restricts _Spot & Margin Trading_ APIs to trusted IPs only. Notice
- * that the _trusted IP_ must be configured on the Binance account for the given
- * `apiKey` provided as parameter to the constructor.
+ * Binance restricts _Spot & Margin Trading_ APIs to trusted IPs only.
+ * Notice that the _trusted IP_ must be configured on the Binance account
+ * for the given `apiKey` provided as parameter to the constructor.
  */
 export class BinanceClient {
 	readonly apiSecret: string
@@ -26,7 +26,11 @@ export class BinanceClient {
 		this.exchange.exchangeInfoCache = exchangeInfoCache
 	}
 
-	async privateRequest<Data>(method: BinanceApiRequestMethod, endpoint: BinanceApiPrivateEndpoint, params?: BinanceApiRequestParams) {
+	async privateRequest<Data>(
+		method: BinanceApiRequestMethod,
+		endpoint: BinanceApiPrivateEndpoint,
+		params?: BinanceApiRequestParams
+	) {
 		const searchParams = new URLSearchParams()
 		if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value))
 
@@ -63,7 +67,12 @@ export class BinanceClient {
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
 	 */
-	async newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, orderOptions: BinanceNewOrderOptions): Promise<BinanceOrderRespFULL> {
+	async newOrder(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Extract<BinanceOrderType, "MARKET">,
+		orderOptions: BinanceNewOrderOptions
+	): Promise<BinanceOrderRespFULL> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
 		return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order", { symbol, side, type, ...options })
 	}
@@ -74,7 +83,12 @@ export class BinanceClient {
 	 * Binance API will validate new order but will not send it into the
 	 * matching engine. Parameters are the same as `newOrder`.
 	 */
-	async newOrderTest(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, orderOptions: BinanceNewOrderOptions): Promise<BinanceOrderRespFULL> {
+	async newOrderTest(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Extract<BinanceOrderType, "MARKET">,
+		orderOptions: BinanceNewOrderOptions
+	): Promise<BinanceOrderRespFULL> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
 		return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order/test", { symbol, side, type, ...options })
 	}
@@ -84,7 +98,11 @@ export class BinanceClient {
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
 	 */
-	async newOrderACK(symbol: string, side: BinanceOrderSide, type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">, orderOptions: BinanceNewOrderOptions
+	async newOrderACK(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
+		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrderRespACK> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
 		return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order", { symbol, side, type, ...options })
@@ -96,7 +114,12 @@ export class BinanceClient {
 	 * Binance API will validate new order but will not send it into the
 	 * matching engine. Parameters are the same as `newOrderACK`.
 	 */
-	async newOrderACKTest(symbol: string, side: BinanceOrderSide, type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">, orderOptions: BinanceNewOrderOptions): Promise<BinanceOrderRespACK> {
+	async newOrderACKTest(
+		symbol: string,
+		side: BinanceOrderSide,
+		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
+		orderOptions: BinanceNewOrderOptions
+	): Promise<BinanceOrderRespACK> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
 		return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order/test", { symbol, side, type, ...options })
 	}

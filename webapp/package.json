@@ -55,7 +55,7 @@
     "@types/react-dom": "18.3.0",
     "@workspace/env": "0.0.0",
     "@workspace/tsconfig": "0.0.0",
-    "esbuild": "0.23.0",
+    "esbuild": "0.24.0",
     "onchange": "7.1.0",
     "read-file-utf8": "3.0.0",
     "sass": "1.78.0",
