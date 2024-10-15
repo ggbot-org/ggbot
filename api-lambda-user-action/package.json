@@ -17,6 +17,7 @@
     "set_environment": "sh src/scripts/set_environment.sh",
     "set_memory_size": "sh src/scripts/set_memory_size.sh",
     "set_timeout": "sh src/scripts/set_timeout.sh",
+    "test": "node --test --env-file ../.typescript.env ./src/*_test.ts",
     "zip": "sh src/scripts/zip.sh"
   },
   "dependencies": {

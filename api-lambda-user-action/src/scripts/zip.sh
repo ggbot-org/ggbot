@@ -8,7 +8,7 @@ for LAMBDA in action; do
 
 	# Install external deps.
 	mkdir -p $DIST_DIR
-	cp src/lambdas/$LAMBDA/external-dependencies.json $DIST_DIR/package.json
+	cp external-dependencies.json $DIST_DIR/package.json
 	cd $DIST_DIR
 	npm install
 	cd -

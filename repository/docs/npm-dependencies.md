@@ -26,7 +26,6 @@ graph LR
     workspace/aws-ec2 --- workspace/aws-types
     workspace/aws-iam --- workspace/aws-types
     workspace/aws-lambda --- workspace/aws-types
-    workspace/aws-logs --- workspace/aws-types
     workspace/aws-s3 --- workspace/aws-types
     workspace/aws-ses --- workspace/aws-types
     workspace/backtesting --- workspace/dflow
@@ -61,7 +60,6 @@ graph LR
     workspace/infrastructure --- workspace/aws-ec2
     workspace/infrastructure --- workspace/aws-iam
     workspace/infrastructure --- workspace/aws-lambda
-    workspace/infrastructure --- workspace/aws-logs
     workspace/infrastructure --- workspace/aws-ses
     workspace/infrastructure --- workspace/database
     workspace/infrastructure --- workspace/s3-data-bucket

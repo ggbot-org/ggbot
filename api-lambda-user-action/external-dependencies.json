@@ -2,8 +2,8 @@
 	"name": "lambda",
 	"type": "module",
 	"dependencies": {
-		"@aws-sdk/client-s3": "3.427.0",
-		"dflow": "0.42.0",
+		"@aws-sdk/client-s3": "3.668.0",
+		"dflow": "0.43.1",
 		"minimal-time-helpers": "0.1.0",
 		"minimal-type-guard-helpers": "0.2.0"
 	}
