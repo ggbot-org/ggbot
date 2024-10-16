@@ -3,6 +3,7 @@ import { TabId, Tabs } from "_/components/Tabs"
 import { FlowEditor } from "_/components/user/FlowEditor"
 import { PageContainer } from "_/components/user/PageContainer"
 import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
+import { UseFlowViewOutput } from "_/hooks/useFlowView"
 import { useStrategy } from "_/hooks/useStrategy"
 import { useStrategyFlow } from "_/hooks/useStrategyFlow"
 import { useStrategyKey } from "_/hooks/useStrategyKey"
@@ -10,6 +11,8 @@ import { useState } from "react"
 
 export function EditStrategyPage() {
 	const [activeTabId, setActiveTabId] = useState<TabId>("flow")
+	const [flowView, setFlowView] = useState<UseFlowViewOutput>({ flowViewGraph: undefined, whenUpdatedFlowView: undefined })
+
 	const { strategyKey } = useStrategyKey()
 	const { strategyName, strategyFrequency, strategyNotFound } = useStrategy(strategyKey)
 	const { strategyFlow } = useStrategyFlow(strategyKey)
@@ -26,6 +29,7 @@ export function EditStrategyPage() {
 							renderIfInactive: true,
 							content: (
 								<FlowEditor
+									setFlowView={setFlowView}
 									strategyFlow={strategyFlow}
 									strategyKey={strategyKey}
 									strategyName={strategyName}
@@ -37,7 +41,7 @@ export function EditStrategyPage() {
 							renderIfInactive: true,
 							content: (
 								<Backtesting
-									strategyFlow={strategyFlow}
+									{...flowView}
 									strategyFrequency={strategyFrequency}
 									strategyKey={strategyKey}
 									strategyName={strategyName}

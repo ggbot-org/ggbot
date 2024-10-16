@@ -10,6 +10,11 @@ import { useCallback, useEffect, useState } from "react"
 
 import { useBinanceSymbols } from "./useBinanceSymbols"
 
+export type UseFlowViewOutput = {
+	whenUpdatedFlowView: Time | undefined
+	flowViewGraph: FlowViewSerializableGraph | undefined
+}
+
 class BinanceClient extends DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo() {
 		return binance.exchangeInfo()
@@ -21,10 +26,7 @@ export function useFlowView(
 	initialFlowViewGraph: FlowViewSerializableGraph | null | undefined,
 	strategyKind: StrategyKind | undefined,
 ) {
-	const [output, setOutput] = useState<{
-		whenUpdatedFlowView: Time | undefined
-		flowViewGraph: FlowViewSerializableGraph | undefined
-	}>({ whenUpdatedFlowView: undefined, flowViewGraph: undefined })
+	const [output, setOutput] = useState<UseFlowViewOutput>({ whenUpdatedFlowView: undefined, flowViewGraph: undefined })
 	const [flowView, setFlowView] = useState<FlowView | undefined>()
 
 	const binanceSymbols = useBinanceSymbols(strategyKind)

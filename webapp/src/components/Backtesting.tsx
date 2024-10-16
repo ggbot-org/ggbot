@@ -8,8 +8,10 @@ import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { SchedulingParameters } from "_/components/user/SchedulingParameters"
 import { ToastContext } from "_/contexts/Toast"
 import { useBacktesting, UseBacktestingState } from "_/hooks/useBacktesting"
+import { UseFlowViewOutput } from "_/hooks/useFlowView"
 import { dayFormat, timeFormat } from "_/i18n/formats"
-import { Frequency, isFrequency, StrategyFlow, StrategyKey } from "@workspace/models"
+import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
+import { Time } from "minimal-time-helpers"
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 
@@ -53,17 +55,16 @@ function BacktestingProgress({
 	)
 }
 
-export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyFrequency }: {
+export function Backtesting({
+	flowViewGraph, strategyKey, strategyName, strategyFrequency, whenUpdatedFlowView
+}: UseFlowViewOutput & {
 	strategyFrequency: Frequency | undefined
 	strategyKey: StrategyKey | undefined
 	strategyName: string
-	strategyFlow: StrategyFlow | null | undefined
 }) {
 	const { formatMessage } = useIntl()
 
 	const { toast } = useContext(ToastContext)
-
-	const flowViewGraph = strategyFlow?.view
 
 	const hasFlow = Boolean(flowViewGraph)
 
@@ -79,6 +80,8 @@ export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyF
 	if (!hasFlow) disabled = true
 
 	const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps["frequency"]>(frequency)
+
+	const [lastWhenUpdatedFlowView, setLastWhenUpdatedFlowView] = useState<Time>(0)
 
 	const onChangePauseOnMemoryChange = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
@@ -139,6 +142,17 @@ export function Backtesting({ strategyKey, strategyName, strategyFlow, strategyF
 			toast.warning(formatMessage({ id: "Backtesting.paused" }))
 		}
 	}, [afterStepBehaviour, formatMessage, isPaused, toast])
+
+	// Stop backtesting if flow changed.
+	useEffect(() => {
+		if (whenUpdatedFlowView && isRunning) setLastWhenUpdatedFlowView(whenUpdatedFlowView)
+	}, [whenUpdatedFlowView, isRunning])
+	useEffect(() => {
+		if (!lastWhenUpdatedFlowView) return
+		if (whenUpdatedFlowView === lastWhenUpdatedFlowView) return
+		dispatch({ type: "STOP" })
+		toast.warning(formatMessage({ id: "Backtesting.stopped" }))
+	}, [dispatch, lastWhenUpdatedFlowView, whenUpdatedFlowView, isRunning, toast])
 
 	return (
 		<>

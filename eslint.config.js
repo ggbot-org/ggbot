@@ -8,7 +8,11 @@ import workspaces from "eslint-plugin-workspaces"
 
 // An ignores key used without any other keys acts as global ignores.
 const globalIgnores = {
-	ignores: ["*/dist/", "*/temp/", "./webapp/public/**/*.js"]
+	ignores: [
+		"*/dist/",
+		"*/temp/",
+		"webapp/public/**/*.js",
+	]
 }
 
 const simpleImportSortRules = {

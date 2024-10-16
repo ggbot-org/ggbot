@@ -49,10 +49,11 @@ export function SharedStrategyPage() {
 							renderIfInactive: true,
 							content: (
 								<Backtesting
-									strategyFlow={strategyFlow}
+									flowViewGraph={strategyFlow?.view}
 									strategyFrequency={strategyFrequency}
 									strategyKey={strategyKey}
 									strategyName={strategyName}
+									whenUpdatedFlowView={0}
 								/>
 							)
 						}

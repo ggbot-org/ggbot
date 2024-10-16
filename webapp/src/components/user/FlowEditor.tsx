@@ -1,6 +1,6 @@
 import { classnames } from "_/classnames"
 import { Button, ReadonlyInput } from "_/components/library"
-import { useFlowView } from "_/hooks/useFlowView"
+import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView"
 import { useWriteStrategyFlow } from "_/hooks/user/api"
 import { GOTO } from "_/routing/navigation"
 import { webapp } from "_/routing/webapp"
@@ -8,7 +8,8 @@ import { StrategyFlow, StrategyKey } from "@workspace/models"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 
-export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
+export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlow }: {
+	setFlowView: (arg: UseFlowViewOutput) => void
 	strategyKey: StrategyKey | undefined
 	strategyName: string
 	strategyFlow: StrategyFlow | null | undefined
@@ -45,8 +46,11 @@ export function FlowEditor({ strategyKey, strategyName, strategyFlow }: {
 	}, [WRITE])
 
 	useEffect(() => {
-		if (whenUpdatedFlowView) setCanSave(true)
-	}, [whenUpdatedFlowView])
+		if (whenUpdatedFlowView) {
+			setCanSave(true)
+			setFlowView({ flowViewGraph, whenUpdatedFlowView })
+		}
+	}, [flowViewGraph, whenUpdatedFlowView])
 
 	return (
 		<>

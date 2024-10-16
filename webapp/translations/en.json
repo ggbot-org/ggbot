@@ -80,6 +80,9 @@
 	"Backtesting.pauseOnNewOrder": {
 		"defaultMessage": "Pause on new order"
 	},
+	"Backtesting.stopped": {
+		"defaultMessage": "Backtesting stopped"
+	},
 	"Backtesting.title": {
 		"defaultMessage": "Backtesting"
 	},
