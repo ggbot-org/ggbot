@@ -5,9 +5,7 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
+    "import": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc --build",
@@ -17,7 +15,7 @@
   "dependencies": {
     "@workspace/cache": "0.0.0",
     "@workspace/models": "0.0.0",
-		"minimal-time-helpers": "0.1.0"
+    "minimal-time-helpers": "0.1.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

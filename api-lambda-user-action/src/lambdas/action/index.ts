@@ -2,24 +2,18 @@ import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST, 
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { ErrorBinanceHTTP } from "@workspace/binance"
 import { BAD_REQUEST__400, BadGatewayError, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, UnauthorizedError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import { ErrorAccountItemNotFound, ErrorExceededQuota, ErrorUnknownItem } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
 import { Service } from "./service.js"
 
-const { info } = logging("user-api")
-
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		info(event)
-
 		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod !== apiActionMethod) return errorResponse(METHOD_NOT_ALLOWED__405)
 
-		info(event.httpMethod, event.body)
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const authorization = event.headers.Authorization
@@ -35,7 +29,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (!isActionInput(userClientActions)(input)) return errorResponse(BAD_REQUEST__400)
 
 		const output = await service[input.type](input.data)
-		info(input.type, JSON.stringify(output, null, 2))
 		return OK(output)
 	} catch (error) {
 		for (const ErrorClass of [

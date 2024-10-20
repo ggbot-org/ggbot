@@ -5,9 +5,7 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
+    "import": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc --build",
@@ -19,7 +17,6 @@
     "@workspace/binance": "0.0.0",
     "@workspace/indexeddb-binance": "0.0.0",
     "@workspace/dflow": "0.0.0",
-    "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0",
     "@workspace/webstorage": "0.0.0",
     "minimal-time-helpers": "0.1.0"

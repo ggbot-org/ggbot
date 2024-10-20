@@ -3,11 +3,8 @@ import { ToastContext } from "_/contexts/Toast"
 import { localWebStorage } from "_/storages/local"
 import { ActionIO, ApiActionError, clientAction, ClientActionHeaders, GenericError, isApiActionOutputData, isApiActionOutputError, TimeoutError } from "@workspace/api"
 import { BadGatewayError, BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import { useCallback, useContext, useState } from "react"
 import { useIntl } from "react-intl"
-
-const { warn } = logging("use-action")
 
 export type UseActionApiArg = {
 	url: Parameters<typeof clientAction>[0]
@@ -87,7 +84,6 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 
 					if (isApiActionOutputError(output)) {
 						const { error } = output
-						warn(type, JSON.stringify(inputData), JSON.stringify(error))
 						setError(error)
 					}
 				} catch (error) {

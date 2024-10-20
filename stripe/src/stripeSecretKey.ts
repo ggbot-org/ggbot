@@ -1,6 +1,5 @@
 import { DeployStage } from "@workspace/models"
 
-import { ErrorStripeModeInconsistency } from "./errors.js"
 import { inferStripeModeFromSecretKey } from "./stripeMode.js"
 
 /**
@@ -15,22 +14,16 @@ import { inferStripeModeFromSecretKey } from "./stripeMode.js"
  * const STRIPE_SECRET_KEY = ENV.STRIPE_SECRET_KEY()
  * const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
  *
- * try {
- * 	checkStripeSecretKey(DEPLOY_STAGE, STRIPE_SECRET_KEY)
- * } catch (error) {
- * 	console.error(error)
- * }
+ * checkStripeSecretKey(DEPLOY_STAGE, STRIPE_SECRET_KEY)
  * ```
  */
-export const checkStripeSecretKey = (
-	deployStage: DeployStage,
-	secretKey: string
-) => {
+export function checkStripeSecretKey(deployStage: DeployStage, secretKey: string) {
 	const stripeMode = inferStripeModeFromSecretKey(secretKey)
 
-	let isInconsistent = false
-	if (stripeMode === "live" && deployStage !== "main") isInconsistent = true
-	if (stripeMode === "test" && deployStage === "main") isInconsistent = true
-
-	if (isInconsistent) throw new ErrorStripeModeInconsistency(deployStage, stripeMode)
+	if (
+		// Check if stripeMode is consistent with deployStage.
+		(stripeMode === "live" && deployStage !== "main") || (stripeMode === "test" && deployStage === "main")
+	) {
+		throw new Error(`Stripe mode is inconsistent with deploy stage, deployStage=${deployStage} stripeMode=${stripeMode}`)
+	}
 }

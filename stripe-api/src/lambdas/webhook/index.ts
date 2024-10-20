@@ -1,13 +1,10 @@
 import { APIGatewayProxyHandler, BAD_REQUEST, errorResponse, OK, StripeMetadata } from "@workspace/api"
 import { PaymentDatabase } from "@workspace/database"
 import { BAD_REQUEST__400, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405 } from "@workspace/http"
-import { logging } from "@workspace/logging"
 import { newMonthlySubscriptionPurchase, newYearlySubscriptionPurchase, PaymentProvider } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { Stripe, StripeClient, StripeSignatureVerificationError } from "@workspace/stripe"
 import { getDay, today } from "minimal-time-helpers"
-
-const { info, warn } = logging("stripe-api")
 
 const stripe = new StripeClient()
 
@@ -21,14 +18,11 @@ const notReceived: ResponseData = { received: false }
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		info(event)
-
 		if (event.httpMethod !== "POST") return errorResponse(METHOD_NOT_ALLOWED__405)
 
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const stripeEvent = JSON.parse(event.body) as unknown as Stripe.Event
-		info(stripeEvent)
 
 		const dataProvider = new PaymentDatabase(documentProvider)
 		const paymentProvider: PaymentProvider = "stripe"
@@ -65,15 +59,16 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 			return OK(received)
 		} else {
-			warn(`Unhandled event type: ${stripeEvent.type}`)
+			console.info(stripeEvent)
+			console.error(`Unhandled event type: ${stripeEvent.type}`)
 		}
 
 		return OK(notReceived)
 	} catch (error) {
 		if (error instanceof StripeSignatureVerificationError) {
-			warn(error)
 			return errorResponse(BAD_REQUEST__400)
 		}
+
 		// Fallback if error is not handled: should not arrive here.
 		console.debug(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)

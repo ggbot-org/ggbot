@@ -11,10 +11,9 @@ import { iamDir } from "../package.js"
 function writePolicy ({
 	name: policyName, policyDocument
 }: Pick<IamPolicy, "name"> & Pick<IamPolicyDocument<string, string>, "policyDocument">) {
-	return writeFile(
-		join(iamDir, `${policyName}.json`),
-		JSON.stringify(policyDocument, null, 2)
-	)
+	const filePath = join(iamDir, `${policyName}.json`)
+	console.info(`Generate IAM policy ${filePath}`)
+	return writeFile(filePath, JSON.stringify(policyDocument, null, 2))
 }
 
 await writePolicy(new DevopsPolicy())

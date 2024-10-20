@@ -3,7 +3,6 @@ import { ExecutorDatabase } from "@workspace/database"
 import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccount, isAccountStrategy, StrategyMemory } from "@workspace/models"
 
 import { ONE_HOUR } from "./durations.js"
-import { info, warn } from "./logging.js"
 
 export class AccountStrategiesProvider {
 	readonly cache: CacheMap<AccountStrategy[]>
@@ -16,19 +15,12 @@ export class AccountStrategiesProvider {
 
 	async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
 		const accountStrategies: AccountStrategy[] = []
-		try {
-			const cached = this.cache.get(accountId)
-			if (cached) return cached
-			info("readAccountStrategies")
-			const data = (await this.database.ReadAccountStrategies({ accountId })) ?? []
-			if (!Array.isArray(data)) return accountStrategies
-			for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
-			this.cache.set(accountId, accountStrategies)
-			return accountStrategies
-		} catch (error) {
-			warn(error)
-			return accountStrategies
-		}
+		const cached = this.cache.get(accountId)
+		if (cached) return cached
+		const data = await this.database.ReadAccountStrategies({ accountId })
+		for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
+		this.cache.set(accountId, accountStrategies)
+		return accountStrategies
 	}
 
 	async suspendAccountStrategyScheduling(
@@ -37,7 +29,7 @@ export class AccountStrategiesProvider {
 		// TODO enable emails
 		// strategyKind: StrategyKind
 	) {
-		warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
+		console.warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
 		// Update cache locally.
 		const items = this.cache.get(accountId)
@@ -64,7 +56,7 @@ export class AccountStrategiesProvider {
 	}
 
 	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
-		info(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
+		console.warn(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
 		// Update cache locally.
 		const items = this.cache.get(accountId)
@@ -78,8 +70,6 @@ export class AccountStrategiesProvider {
 	}
 
 	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
-		info(`Update strategy memory accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
-
 		// Update cache locally.
 		const items = this.cache.get(accountId)
 		if (items) {

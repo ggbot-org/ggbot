@@ -3,7 +3,6 @@ import { ExecutorDatabase } from "@workspace/database"
 import { AccountKey, isSubscription, statusOfSubscription, Subscription, SubscriptionPlan } from "@workspace/models"
 
 import { ONE_DAY } from "./durations.js"
-import { info, warn } from "./logging.js"
 
 export class SubscriptionProvider {
 	readonly cache: CacheMap<Subscription>
@@ -20,27 +19,21 @@ export class SubscriptionProvider {
 		hasActiveSubscription: boolean
 		subscriptionPlan: SubscriptionPlan | undefined
 	}> {
-		try {
-			const cached = this.cache.get(accountId)
-			if (cached) return {
-				hasActiveSubscription: statusOfSubscription(cached) === "active",
-				subscriptionPlan: cached.plan
-			}
-			info("readSubscription", accountId)
-			const subscription = await this.database.ReadSubscription({ accountId })
-			if (!isSubscription(subscription)) return {
-				hasActiveSubscription: false,
-				subscriptionPlan: undefined
-			}
-			this.cache.set(accountId, subscription)
-			return {
-				hasActiveSubscription:
+		const cached = this.cache.get(accountId)
+		if (cached) return {
+			hasActiveSubscription: statusOfSubscription(cached) === "active",
+			subscriptionPlan: cached.plan
+		}
+		const subscription = await this.database.ReadSubscription({ accountId })
+		if (!isSubscription(subscription)) return {
+			hasActiveSubscription: false,
+			subscriptionPlan: undefined
+		}
+		this.cache.set(accountId, subscription)
+		return {
+			hasActiveSubscription:
 					statusOfSubscription(subscription) === "active",
-				subscriptionPlan: subscription.plan
-			}
-		} catch (error) {
-			warn(error)
-			return { hasActiveSubscription: false, subscriptionPlan: undefined }
+			subscriptionPlan: subscription.plan
 		}
 	}
 }

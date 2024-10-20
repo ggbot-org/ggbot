@@ -1,19 +1,17 @@
 import { associateElasticIp, describeElasticIps, disassociateElasticIp, getOwnEc2InstanceId } from "@workspace/aws-ec2"
 import { ENV } from "@workspace/env"
 
-import { info } from "./logging.js"
-
 const BINANCE_PROXY_IP = ENV.BINANCE_PROXY_IP()
 const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
 
 let elasticIp = ""
 let associationId = ""
 
-export async function associateIp () {
+export async function associateIp() {
 	const InstanceId = await getOwnEc2InstanceId
-	info("Got instanceId", InstanceId)
+	console.info("Got instanceId", InstanceId)
 
-	info("Elastic IP", BINANCE_PROXY_IP)
+	console.info("Elastic IP", BINANCE_PROXY_IP)
 
 	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, { PublicIps: [BINANCE_PROXY_IP] })
 	if (!Addresses) throw new Error("Cannot associate Elastic IP, empty address list")
@@ -29,14 +27,14 @@ export async function associateIp () {
 		elasticIp = PublicIp
 		if (AssociationId) associationId = AssociationId
 
-		info("Elastic IP associated", elasticIp)
+		console.info("Elastic IP associated", elasticIp)
 	}
 
 	if (!elasticIp) throw new Error("Cannot associate Elastic IP, no available address found")
 }
 
-export async function disassociateIp () {
+export async function disassociateIp() {
 	if (!elasticIp || !associationId) return
-	info("Release IP", elasticIp)
+	console.info("Release IP", elasticIp)
 	await disassociateElasticIp(AWS_BINANCE_PROXY_REGION, { AssociationId: associationId })
 }

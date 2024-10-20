@@ -6,10 +6,7 @@ import { GenericError, TimeoutError } from "./errors.js"
 
 export class ClientActionHeaders extends Headers {
 	constructor() {
-		super({
-			Accept: "application/json",
-			"Content-Type": "application/json"
-		})
+		super({ Accept: "application/json", "Content-Type": "application/json" })
 	}
 	appendAuthorization(token: string) {
 		this.append("Authorization", token)
@@ -18,19 +15,15 @@ export class ClientActionHeaders extends Headers {
 
 class ActionAbortController extends AbortController {
 	timeoutId: ReturnType<typeof setTimeout>
-
 	constructor(timeout = 10_000) {
 		super()
-
 		this.timeoutId = setTimeout(() => {
 			this.abort()
 		}, timeout)
-
 		this.signal.addEventListener("abort", () => {
 			this.clearTimeout()
 		})
 	}
-
 	clearTimeout() {
 		clearTimeout(this.timeoutId)
 	}

@@ -8,7 +8,6 @@ import { BinanceProxyURLs } from "@workspace/locators"
 import { ErrorAccountItemNotFound } from "@workspace/models"
 
 import { binanceRequestHandler } from "./binanceRequestHandler.js"
-import { warn } from "./logging.js"
 
 const ContentTypeJSON = { "Content-Type": "application/json" }
 
@@ -16,7 +15,7 @@ const ContentTypeJSON = { "Content-Type": "application/json" }
 // just to get its URLs pathnames.
 const binanceProxy = new BinanceProxyURLs("localhost")
 
-export function requestListener (request: IncomingMessage, response: ServerResponse) {
+export function requestListener(request: IncomingMessage, response: ServerResponse) {
 	const { method, url } = request
 
 	if (typeof url !== "string") {
@@ -25,7 +24,6 @@ export function requestListener (request: IncomingMessage, response: ServerRespo
 	}
 
 	if (url !== binanceProxy.action.pathname) {
-		warn(NOT_FOUND__404, url)
 		response.writeHead(NOT_FOUND__404)
 		return response.end()
 	}

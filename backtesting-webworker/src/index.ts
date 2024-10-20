@@ -4,7 +4,6 @@ import { newId, Order, StrategyKind } from "@workspace/models"
 import { Time } from "minimal-time-helpers"
 
 import { getBinance, prepareBinance } from "./binance.js"
-import { warn } from "./logging.js"
 
 type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
 
@@ -14,14 +13,14 @@ const binanceExecutor = new DflowBinanceExecutor()
 let memoryChangedOnSomeStep = false
 const orderSet = new Set<Order>()
 
-function statusChangedMessage (session: BacktestingSession): BacktestingMessageOutData {
+function statusChangedMessage(session: BacktestingSession): BacktestingMessageOutData {
 	return ({
 		type: "STATUS_CHANGED",
 		status: session.status
 	})
 }
 
-function updatedProgressMessage (session: BacktestingSession): BacktestingMessageOutData {
+function updatedProgressMessage(session: BacktestingSession): BacktestingMessageOutData {
 	return ({
 		type: "UPDATED_PROGRESS",
 		currentTimestamp: session.currentTimestamp,
@@ -30,7 +29,7 @@ function updatedProgressMessage (session: BacktestingSession): BacktestingMessag
 	})
 }
 
-function POST (message: BacktestingMessageOutData) {
+function POST(message: BacktestingMessageOutData) {
 	self.postMessage(message)
 }
 
@@ -41,7 +40,7 @@ class ErrorMissingFlow extends Error {
 	}
 }
 
-function updateUI (session: BacktestingSession) {
+function updateUI(session: BacktestingSession) {
 	// Check if session should be stopped before handling memory or orders.
 	if (
 		(memoryChangedOnSomeStep && session.afterStepBehaviour.pauseOnMemoryChange) ||
@@ -118,11 +117,7 @@ async function runBinance(
 /** Get strategy flow from session or throw. */
 function getStrategyFlow(): BacktestingStrategy["flow"] {
 	const flow = session.strategy?.flow
-	if (!flow) {
-		const error = new ErrorMissingFlow()
-		warn(error)
-		throw error
-	}
+	if (!flow) throw new ErrorMissingFlow()
 	return flow
 }
 
@@ -233,7 +228,6 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 			}
 		}
 	} catch (error) {
-		warn(message)
 		console.debug(error)
 	}
 }

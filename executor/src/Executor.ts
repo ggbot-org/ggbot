@@ -1,29 +1,18 @@
-import { homedir } from "node:os"
-import { join } from "node:path"
-
 import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
 import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, Item, itemIdCharacters, newId, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from "@workspace/models"
+import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 import { now, Time, today, truncateTime } from "minimal-time-helpers"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
-import readFile from "read-file-utf8"
-import writeFile from "write-file-utf8"
 
 import { AccountKeysProvider } from "./AccountKeysProvider.js"
 import { AccountStrategiesProvider } from "./AccountStrategiesProvider.js"
 import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { info } from "./logging.js"
 import { StrategyFlowProvider } from "./StrategyFlowProvider.js"
 import { SubscriptionProvider } from "./SubscriptionProvider.js"
 
-const executorIdFile = join(homedir(), ".ggbot-executor")
-
 export class Executor {
-	capacity: number
-	index: number
 	readonly executorDatabase: ExecutorDatabase
 	readonly accountKeysProvider: AccountKeysProvider
 	readonly accountStrategiesProvider: AccountStrategiesProvider
@@ -34,46 +23,13 @@ export class Executor {
 
 	strategyWhenExecuted = new Map<string, Time>()
 
-	constructor(capacity: number, index: number) {
-		this.capacity = capacity
-		this.index = index
+	constructor() {
 		const publicDatabase = new PublicDatabase(documentProvider)
 		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.accountKeysProvider = new AccountKeysProvider(this.executorDatabase)
 		this.accountStrategiesProvider = new AccountStrategiesProvider(this.executorDatabase)
 		this.strategyFlowProvider = new StrategyFlowProvider(publicDatabase)
 		this.subscriptionProvider = new SubscriptionProvider(this.executorDatabase)
-	}
-
-	/**
-	 * Read `executorId` from local disc or create a new one if it does not exist.
-	 */
-	static async getExecutorId(): Promise<Item["id"]> {
-		try {
-			const executorId = await readFile(executorIdFile)
-			info("executorId", executorId)
-			return executorId
-		} catch (error) {
-			if (objectTypeGuard<{ code: string }>(
-				({ code }) => typeof code === "string"
-			)(error)) {
-				if (error.code === "ENOENT") {
-					const executorId = newId()
-					info("new executorId", executorId)
-					await writeFile(executorIdFile, executorId)
-					return executorId
-				}
-			}
-			throw error
-		}
-	}
-
-	static itemIdToNaturalNumber(itemId: Item["id"]) {
-		const firstCharacter = itemId.charAt(0)
-		for (let i = 0; i < itemIdCharacters.length; i++) {
-			if (itemIdCharacters.charAt(i) === firstCharacter) return i + 1
-		}
-		throw new TypeError()
 	}
 
 	/**
@@ -91,7 +47,6 @@ export class Executor {
 			if (whenExecuted + pauseDuration > time) return
 		}
 		strategyWhenExecuted.set(strategyId, time)
-		info("execute strategy", strategyId)
 
 		if (strategyKind === "binance") {
 			try {
@@ -147,10 +102,6 @@ export class Executor {
 		if (strategyKind === "none") return
 
 		throw new ErrorUnknownItem("strategyKind", strategyKind)
-	}
-
-	managesItem(itemId: Item["id"]) {
-		return Executor.itemIdToNaturalNumber(itemId) % this.capacity === this.index
 	}
 
 	async runTasks() {

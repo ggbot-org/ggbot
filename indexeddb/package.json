@@ -5,9 +5,7 @@
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
+    "import": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc --build",
@@ -15,7 +13,6 @@
     "cleanup": "tsc --build --clean"
   },
   "dependencies": {
-    "@workspace/logging": "0.0.0",
     "@workspace/models": "0.0.0"
   },
   "devDependencies": {

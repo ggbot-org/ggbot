@@ -1,7 +1,5 @@
-import { localWebStorage } from "_/storages/local"
 import { workerScriptPath } from "_/workers"
 import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from "@workspace/backtesting"
-import { logging } from "@workspace/logging"
 import { everyOneHour, Frequency } from "@workspace/models"
 import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
 import { Dispatch, Reducer, useEffect, useReducer } from "react"
@@ -31,8 +29,6 @@ type State = Pick<
 }
 
 export type { State as UseBacktestingState }
-
-const { info, warn } = logging("useBacktesting", localWebStorage.DEBUG_backtesting.get())
 
 const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
 
@@ -71,7 +67,6 @@ export function useBacktesting(): {
 		(state, action) => {
 			const { type: actionType } = action
 			if (["STOP", "START"].includes(actionType)) {
-				info(actionType)
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -80,14 +75,12 @@ export function useBacktesting(): {
 			}
 
 			if (["PAUSE", "RESUME"].includes(actionType)) {
-				info(actionType)
 				backtesting.postMessage(action)
 				return state
 			}
 
 			if (actionType === "SET_AFTER_STEP_BEHAVIOUR") {
 				const { afterStepBehaviour } = action
-				info(actionType, afterStepBehaviour)
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -97,7 +90,6 @@ export function useBacktesting(): {
 
 			if (actionType === "SET_DAY_INTERVAL") {
 				const { dayInterval } = action
-				info(actionType, dayInterval)
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -107,7 +99,6 @@ export function useBacktesting(): {
 
 			if (actionType === "SET_FREQUENCY") {
 				const { frequency } = action
-				info(actionType, frequency)
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -117,7 +108,6 @@ export function useBacktesting(): {
 
 			if (actionType === "STATUS_CHANGED") {
 				const { status } = action
-				info(actionType, status)
 				return {
 					...state,
 					isDone: status === "done",
@@ -129,7 +119,6 @@ export function useBacktesting(): {
 
 			if (actionType === "UPDATED_MEMORY") {
 				const { memory } = action
-				info(actionType, memory)
 				return {
 					...state,
 					memory
@@ -138,7 +127,6 @@ export function useBacktesting(): {
 
 			if (actionType === "UPDATED_PROGRESS") {
 				const { currentTimestamp, numSteps, stepIndex } = action
-				info(actionType, { numSteps, stepIndex })
 				return {
 					...state,
 					currentTimestamp,
@@ -149,7 +137,6 @@ export function useBacktesting(): {
 
 			if (actionType === "UPDATED_ORDERS") {
 				const { orders } = action
-				info(actionType, orders)
 				return {
 					...state,
 					orders: state.orders.concat(orders)
@@ -175,7 +162,7 @@ export function useBacktesting(): {
 			dispatch(action)
 		}
 
-		backtesting.addEventListener("error", (error) => warn(error))
+		backtesting.addEventListener("error", (error) => console.error(error))
 	}, [dispatch])
 
 	return { dispatch, state }

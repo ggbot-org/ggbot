@@ -1,14 +1,10 @@
 import { DflowBinanceExecutor, getDflowBinanceNodesCatalog } from "@workspace/dflow"
-import { logging } from "@workspace/logging"
 import { StrategyFlow } from "@workspace/models"
 import { now, truncateTime } from "minimal-time-helpers"
 
 import { Binance } from "../binance.js"
 
-const { info } = logging("e2e:execute")
-
 const accountId = process.env.ACCOUNT_ID
-
 if (!accountId) throw new Error("Set ACCOUNT_ID environment variable")
 
 const binance = new Binance(accountId)
@@ -18,7 +14,7 @@ const strategyFlow: StrategyFlow = {
 	view: {
 		nodes: [
 			{
-				id: "n1", text: "BTC/USDT",
+				id: "n1", text: "BTC/USDC",
 				outs: [{ id: "o0" }],
 				x, y
 			},
@@ -62,4 +58,4 @@ const { orders } = await executor.run(
 	view
 )
 
-info("orders", orders)
+console.info("orders", orders)

@@ -28,9 +28,7 @@ npm start
 To launch linting, type checking and tests:
 
 ```sh
-npm run lint
+npm run eslint
 npm run check_types
 npm test
 ```
-
-See also here [how to enable debugging in the webapp](./webstorage/docs/webapp-debug.md).

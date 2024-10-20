@@ -1,7 +1,6 @@
 import { ENV } from "@workspace/env"
 import { ApiURLs } from "@workspace/locators"
 
-import { info, warn } from "./logging.js"
 import { newStripe } from "./newStripe.js"
 import { Stripe } from "./Stripe.js"
 
@@ -28,10 +27,10 @@ export class StripeWebhook {
 	/** Create WebhookEndpoint if it does not exist. */
 	async create() {
 		const { url } = this
-		info("Create StripeWebhook", url)
+		console.info("Create StripeWebhook", url)
 		const exists = await this.exists()
 		if (exists) {
-			warn("Cannot create StripeWebhook, it already exists.")
+			console.warn("Cannot create StripeWebhook, it already exists.")
 			return
 		}
 		return await this.stripe.webhookEndpoints.create({

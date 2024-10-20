@@ -1,5 +1,4 @@
 import { IDBInstance } from "./instance.js"
-import { warn } from "./logging.js"
 
 type IDBEventType = "open"
 
@@ -39,32 +38,26 @@ export class IDBProvider {
 			this.openRequestState = undefined
 		}
 		request.onerror = () => {
-			warn(`Cannot delete database ${databaseName}`)
+			console.error(`Cannot delete database ${databaseName}`)
 			cleanup()
 		}
 		request.onsuccess = cleanup
 	}
 
-	open(instance: Pick<IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade">
-	) {
+	open(instance: Pick<IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade">) {
 		if (this.isOpen) return
 		if (this.openRequestState === "pending") return
 		const request = indexedDB.open(instance.databaseName, instance.databaseVersion)
 		this.openRequestState = request.readyState
-		let updgradeGotError = false
 		request.onsuccess = () => {
-			if (updgradeGotError) return
 			this.db = request.result
 			this.openRequestState = request.readyState
 			this.eventTarget.dispatchEvent(new CustomEvent("open"))
 		}
 		request.onupgradeneeded = ({ oldVersion, newVersion }) => {
 			if (newVersion === null) return
-			for (let i = oldVersion + 1; i <= newVersion; i++) try {
+			for (let i = oldVersion + 1; i <= newVersion; i++) {
 				instance.databaseUpgrade(request.result, newVersion)
-			} catch (error) {
-				warn(error)
-				updgradeGotError = true
 			}
 		}
 	}

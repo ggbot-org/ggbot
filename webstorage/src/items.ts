@@ -1,7 +1,6 @@
 import { StrategyKey } from "@workspace/models"
 
 type ItemKey =
-	| "DEBUG_backtesting"
 	| "accountInfo"
 	| "activeTabId"
 	| "authToken"
@@ -33,6 +32,4 @@ export const itemKey: Record<ItemKey, (...args: any[]) => string> = {
 	gotFirstPageView: () => "gotFirstPageView",
 	hideInactiveStrategies: () => "hideInactiveStrategies",
 	strategy: ({ strategyId, strategyKind }: StrategyKey) => `strategy:${strategyKind}:${strategyId}`,
-	// Debug keys.
-	DEBUG_backtesting: () => "DEBUG_backtesting"
 }

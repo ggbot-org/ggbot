@@ -2,8 +2,6 @@ import { accountKeyFieldNames, strategyKeyFieldNames, subscriptionPurchaseKeyFie
 import { SerializablePrimitive } from "./serializable.js"
 import { CreationTime } from "./time.js"
 
-export const itemIdCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
-
 type ItemId = string
 
 export const nullId = "00000000"

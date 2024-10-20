@@ -8,11 +8,11 @@ export type CacheProvider<Data> = {
 	delete(key: string): void
 }
 
-/** Same methods as `CacheProvider` but can have any arguments. */
+/** Same methods as `CacheProvider` but can have arbitrary arguments. */
 export type ManagedCacheProvider<Data> = {
 	/**
-	 * Read item from cache. Arguments can be any or none but it should always
-	 * return data, if any.
+	 * Read item from cache.
+	 * Arguments can be any or none but it should always return data, if any.
 	 */
 	get(...args: any[]): Data | undefined
 	/** Set item value. */

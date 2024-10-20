@@ -1,7 +1,6 @@
 import { SerializableData } from "@workspace/models"
 
 import { IDBInstance } from "./instance.js"
-import { warn } from "./logging.js"
 
 type IDBObjectStoreProvider = {
 	readonly storeName: string
@@ -21,49 +20,34 @@ export class CacheObjectStore implements IDBObjectStoreProvider {
 
 	delete(db: IDBDatabase, key: string): Promise<void> {
 		return new Promise((resolve, reject) => {
-			try {
-				const { storeName } = this
-				const transaction = db.transaction(storeName, "readwrite")
-				const objectStore = transaction.objectStore(storeName)
-				const request: IDBRequest<undefined> = objectStore.delete(key)
-				request.onerror = () => reject()
-				request.onsuccess = () => resolve()
-			} catch (error) {
-				warn(error)
-				reject()
-			}
+			const { storeName } = this
+			const transaction = db.transaction(storeName, "readwrite")
+			const objectStore = transaction.objectStore(storeName)
+			const request: IDBRequest<undefined> = objectStore.delete(key)
+			request.onerror = () => reject()
+			request.onsuccess = () => resolve()
 		})
 	}
 
 	read<Data extends SerializableData>(db: IDBDatabase, key: string): Promise<Data | undefined> {
 		return new Promise((resolve, reject) => {
-			try {
-				const { storeName } = this
-				const transaction = db.transaction(storeName, "readonly")
-				const objectStore = transaction.objectStore(storeName)
-				const request: IDBRequest<{ data: Data } | undefined> = objectStore.get(key)
-				request.onerror = () => reject(undefined)
-				request.onsuccess = () => resolve(request.result?.data)
-			} catch (error) {
-				warn(error)
-				reject(undefined)
-			}
+			const { storeName } = this
+			const transaction = db.transaction(storeName, "readonly")
+			const objectStore = transaction.objectStore(storeName)
+			const request: IDBRequest<{ data: Data } | undefined> = objectStore.get(key)
+			request.onerror = () => reject(undefined)
+			request.onsuccess = () => resolve(request.result?.data)
 		})
 	}
 
 	write<Data extends SerializableData>(db: IDBDatabase, key: string, data: Data): Promise<void> {
 		return new Promise((resolve, reject) => {
-			try {
-				const { storeName } = this
-				const transaction = db.transaction(storeName, "readwrite")
-				const objectStore = transaction.objectStore(storeName)
-				const request = objectStore.put({ key, data })
-				request.onerror = () => reject()
-				request.onsuccess = () => resolve()
-			} catch (error) {
-				warn(error)
-				reject()
-			}
+			const { storeName } = this
+			const transaction = db.transaction(storeName, "readwrite")
+			const objectStore = transaction.objectStore(storeName)
+			const request = objectStore.put({ key, data })
+			request.onerror = () => reject()
+			request.onsuccess = () => resolve()
 		})
 	}
 }

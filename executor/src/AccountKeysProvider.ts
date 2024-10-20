@@ -3,7 +3,6 @@ import { ExecutorDatabase } from "@workspace/database"
 import { AccountKey } from "@workspace/models"
 
 import { ONE_DAY } from "./durations.js"
-import { warn } from "./logging.js"
 
 const key = "accountKeys"
 
@@ -24,15 +23,10 @@ export class AccountKeysProvider {
 	}
 
 	async getAccountKeys(): Promise<AccountKey[]> {
-		try {
-			const cached = this.cache.get(key)
-			if (cached) return cached
-			const { accountKeys: data } = await this.database.ListAccountKeys({ token: undefined })
-			this.cache.set(key, data)
-			return data
-		} catch (error) {
-			warn(error)
-			return []
-		}
+		const cached = this.cache.get(key)
+		if (cached) return cached
+		const { accountKeys: data } = await this.database.ListAccountKeys({ token: undefined })
+		this.cache.set(key, data)
+		return data
 	}
 }

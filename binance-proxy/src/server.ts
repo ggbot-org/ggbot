@@ -4,7 +4,6 @@ import { exit } from "node:process"
 import { BinanceProxyBaseURL } from "@workspace/locators"
 
 import { associateIp, disassociateIp } from "./elasticIp.js"
-import { info, warn } from "./logging.js"
 import { requestListener } from "./requestListener.js"
 
 const { port } = BinanceProxyBaseURL
@@ -14,18 +13,18 @@ let gotSIGHUP = false
 let gotSIGTERM = false
 
 createServer(requestListener).listen(port, () => {
-	info("Server running on port", port)
-
-	associateIp().catch(warn)
+	associateIp().then(() => {
+		console.info("Server running on port", port)
+	})
 })
 
-const terminate = () => {
+function terminate() {
 	disassociateIp()
 		.then(() => {
 			exit(0)
 		})
 		.catch((error) => {
-			warn(error)
+			console.error(error)
 			exit(1)
 		})
 }
@@ -33,29 +32,29 @@ const terminate = () => {
 process.on("SIGHUP", () => {
 	if (gotSIGHUP) return
 	gotSIGHUP = true
-	warn("got SIGHUP")
+	console.info("got SIGHUP")
 	terminate()
 })
 
 process.on("SIGINT", () => {
 	if (gotSIGINT) return
 	gotSIGINT = true
-	warn("got SIGINT")
+	console.info("got SIGINT")
 	terminate()
 })
 
 process.on("SIGTERM", () => {
 	if (gotSIGTERM) return
 	gotSIGTERM = true
-	warn("got SIGTERM")
+	console.info("got SIGTERM")
 	terminate()
 })
 
 process.on("exit", (code) => {
-	if (code) warn("Exit with error")
-	else warn("Exit")
+	if (code) console.warn("Exit with error code", code)
+	else console.info("Exit")
 })
 
 process.on("uncaughtException", (error) => {
-	warn("Uncaught Exception", error)
+	console.warn("Uncaught Exception", error)
 })

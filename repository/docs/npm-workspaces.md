@@ -56,9 +56,7 @@ This is a sample _package.json_ for a generic workspace.
 	// Package may not be consumed as a dependency: `types` and `exports` are optional
 	"types": "./dist/index.d.ts",
 	"exports": {
-		".": {
-			"import": "./dist/index.js"
-		}
+		"import": "./dist/index.js"
 	},
 	"scripts": {
 		"build": "tsc --build",

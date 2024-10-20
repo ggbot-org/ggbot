@@ -7,21 +7,18 @@ This is the internal dependencies graph: it shows how workspaces depend on each 
 graph LR
     workspace/admin-api --- workspace/authentication
     workspace/admin-api --- workspace/database
-    workspace/admin-api --- workspace/logging
     workspace/admin-api --- workspace/s3-data-bucket
     workspace/api --- workspace/binance
     workspace/api --- workspace/http
     workspace/api --- workspace/locators
     workspace/api-lambda-user-action --- workspace/authentication
     workspace/api-lambda-user-action --- workspace/database
-    workspace/api-lambda-user-action --- workspace/logging
     workspace/api-lambda-user-action --- workspace/s3-data-bucket
     workspace/authentication --- workspace/env
     workspace/authentication --- workspace/http
     workspace/authentication-api --- workspace/authentication
     workspace/authentication-api --- workspace/database
     workspace/authentication-api --- workspace/email-messages
-    workspace/authentication-api --- workspace/logging
     workspace/authentication-api --- workspace/s3-data-bucket
     workspace/aws-ec2 --- workspace/aws-types
     workspace/aws-iam --- workspace/aws-types
@@ -38,7 +35,6 @@ graph LR
     workspace/binance-proxy --- workspace/authentication
     workspace/binance-proxy --- workspace/binance-client
     workspace/binance-proxy --- workspace/database
-    workspace/binance-proxy --- workspace/logging
     workspace/binance-proxy --- workspace/s3-data-bucket
     workspace/database --- workspace/api
     workspace/database --- workspace/aws-s3
@@ -51,9 +47,7 @@ graph LR
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database
     workspace/executor --- workspace/email-messages
-    workspace/executor --- workspace/logging
     workspace/executor --- workspace/s3-data-bucket
-    workspace/indexeddb --- workspace/logging
     workspace/indexeddb --- workspace/models
     workspace/indexeddb-binance --- workspace/binance
     workspace/indexeddb-binance --- workspace/indexeddb
@@ -65,12 +59,10 @@ graph LR
     workspace/infrastructure --- workspace/s3-data-bucket
     workspace/locators --- workspace/env
     workspace/public-api --- workspace/database
-    workspace/public-api --- workspace/logging
     workspace/public-api --- workspace/s3-data-bucket
     workspace/s3-data-bucket --- workspace/api
     workspace/s3-data-bucket --- workspace/aws-s3
     workspace/stripe --- workspace/api
-    workspace/stripe --- workspace/logging
     workspace/stripe-api --- workspace/authentication
     workspace/stripe-api --- workspace/database
     workspace/stripe-api --- workspace/stripe
