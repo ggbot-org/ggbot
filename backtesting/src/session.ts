@@ -57,6 +57,10 @@ export class BacktestingSession implements BacktestingStatusController {
 		return this.#strategy
 	}
 
+	get strategyFlow(): BacktestingStrategy["flow"] | undefined {
+		return this.#strategy?.flow
+	}
+
 	set dayInterval(value: DayInterval) {
 		if (this.status !== "initial") return
 		this.#dayInterval = value

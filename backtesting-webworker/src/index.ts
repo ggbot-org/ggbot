@@ -5,8 +5,6 @@ import { Time } from "minimal-time-helpers"
 
 import { getBinance, prepareBinance } from "./binance.js"
 
-type HandleStrategyKind = Record<StrategyKind, () => Promise<void>>
-
 const session = new BacktestingSession()
 const binanceExecutor = new DflowBinanceExecutor()
 
@@ -33,13 +31,6 @@ function POST(message: BacktestingMessageOutData) {
 	self.postMessage(message)
 }
 
-class ErrorMissingFlow extends Error {
-	static message = "Cannot run backtesting without a strategy flow"
-	constructor() {
-		super(ErrorMissingFlow.message)
-	}
-}
-
 function updateUI(session: BacktestingSession) {
 	// Check if session should be stopped before handling memory or orders.
 	if (
@@ -64,11 +55,20 @@ function updateUI(session: BacktestingSession) {
 	}
 }
 
+// TODO runBinance should be decoupled and moved in ./binance.js
+// needs to modify DflowExecutor generic to accept only first parameter
+// and merge DflowBinanceExecutorOutput and DflowCommonExecutorOutput
+// into DflowExecutorOutput
 async function runBinance(
 	binance: BacktestingBinanceClient,
 	binanceExecutor: DflowBinanceExecutor,
-	flow: BacktestingStrategy["flow"]
+	session: BacktestingSession,
 ) {
+	const flow = session.strategy?.flow
+	if (!flow) {
+		console.error("Cannot run prepareBinance, flow is undefined")
+		return
+	}
 	const updateInterval = 2_000
 	let time: Time | undefined
 	// Initialize `shouldUpdateUI` to true, so first iteration will update UI.
@@ -97,7 +97,7 @@ async function runBinance(
 				}
 			}
 		} catch (error) {
-			console.debug(error)
+			console.error(error)
 			const statusChanged = session.stop()
 			if (statusChanged) POST(statusChangedMessage(session))
 		}
@@ -114,11 +114,19 @@ async function runBinance(
 	}
 }
 
-/** Get strategy flow from session or throw. */
-function getStrategyFlow(): BacktestingStrategy["flow"] {
-	const flow = session.strategy?.flow
-	if (!flow) throw new ErrorMissingFlow()
-	return flow
+function getHandleStrategyKind(session: BacktestingSession): Record<StrategyKind, () => Promise<void>> {
+	return {
+		binance: async () => {
+			try {
+				const binance = getBinance(session.frequency?.interval ?? "1h")
+				await prepareBinance(binance, binanceExecutor, session)
+				await runBinance(binance, binanceExecutor, session)
+			} catch (error) {
+				console.error(error)
+			}
+		},
+		none: () => Promise.resolve()
+	}
 }
 
 self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData>) => {
@@ -142,7 +150,6 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 
 		if (messageType === "START") {
 			const { dayInterval, flow, frequency, strategyKey, strategyName } = message
-			const { interval: schedulingInterval } = frequency
 			// Initialize session.
 			session.dayInterval = dayInterval
 			session.frequency = frequency
@@ -164,21 +171,7 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 
 			const { strategyKind } = strategyKey
 
-			const handleStrategyKind: HandleStrategyKind = {
-				binance: async () => {
-					try {
-						const flow = getStrategyFlow()
-						const binance = getBinance(schedulingInterval)
-						await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
-						await runBinance(binance, binanceExecutor, flow)
-					} catch (error) {
-						console.debug(error)
-					}
-				},
-				none: () => Promise.resolve()
-			}
-
-			await handleStrategyKind[strategyKind]()
+			await getHandleStrategyKind(session)[strategyKind]()
 
 			if (session.status === "done") {
 				updateUI(session)
@@ -188,7 +181,10 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 
 		if (messageType === "STOP") {
 			const statusChanged = session.stop()
-			if (statusChanged) POST(statusChangedMessage(session))
+			if (statusChanged) {
+				POST(statusChangedMessage(session))
+				updateUI(session)
+			}
 			POST(updatedProgressMessage(session))
 		}
 
@@ -201,26 +197,10 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 		if (messageType === "RESUME") {
 			const strategyKind = session.strategy?.strategyKey.strategyKind
 			if (!strategyKind) return
-			const schedulingInterval = session.frequency?.interval
-			if (!schedulingInterval) return
 			const statusChanged = session.resume()
 			if (statusChanged) POST(statusChangedMessage(session))
 
-			const handleStrategyKind: HandleStrategyKind = {
-				binance: async () => {
-					try {
-						const flow = getStrategyFlow()
-						const binance = getBinance(schedulingInterval)
-						await prepareBinance(binance, binanceExecutor, session, schedulingInterval, flow)
-						await runBinance(binance, binanceExecutor, flow)
-					} catch (error) {
-						console.debug(error)
-					}
-				},
-				none: () => Promise.resolve()
-			}
-
-			await handleStrategyKind[strategyKind]()
+			await getHandleStrategyKind(session)[strategyKind]()
 
 			if (session.status === "done") {
 				updateUI(session)
@@ -228,6 +208,6 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 			}
 		}
 	} catch (error) {
-		console.debug(error)
+		console.error(error)
 	}
 }

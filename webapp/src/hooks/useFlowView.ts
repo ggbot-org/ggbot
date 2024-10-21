@@ -134,7 +134,7 @@ export function useFlowView(
 					default: break
 				}
 			} catch (error) {
-				console.debug(error)
+				console.error(error)
 				if (action === "CREATE_EDGE") {
 					if (typeof data !== "object" || data === null) return
 					const edgeId = data.id

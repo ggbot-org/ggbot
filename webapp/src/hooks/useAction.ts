@@ -90,7 +90,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					// This AbortError is called on component unmount.
 					if (error instanceof DOMException && error.name === "AbortError") return
 
-					console.debug(error)
+					console.error(error)
 
 					if (error instanceof GatewayTimeoutError) {
 						toast.warning(genericError)
@@ -126,7 +126,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					setIsPending(false)
 				}
 			})().catch((error) => {
-				console.debug(error)
+				console.error(error)
 				setError({ name: GenericError.errorName })
 			})
 		},

@@ -23,7 +23,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (error instanceof BadGatewayError) return errorResponse(BAD_REQUEST__400)
 
 		// Fallback if error is not handled: should not arrive here.
-		console.debug(error)
+		console.error(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }

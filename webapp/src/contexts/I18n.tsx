@@ -46,7 +46,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
 		fetch(translationPathname(language)).then((response) => response.json())
 			.then((json) => dispatch({ type: "READ_INTL_MESSAGES_SUCCESS", messages: json }))
 			.catch((error) => {
-				console.debug(error)
+				console.error(error)
 				dispatch({ type: "READ_INTL_MESSAGES_FAILURE" })
 			})
 	}, [language, messages, readHasError, readIsPending])

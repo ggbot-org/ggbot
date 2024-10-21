@@ -12,7 +12,7 @@ export function useBinanceSymbols(strategyKind: StrategyKind | undefined) {
 			setBinanceSymbols(
 				binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(symbols)
 			)
-		}).catch((error) => console.debug(error))
+		}).catch((error) => console.error(error))
 	}, [strategyKind])
 
 	return binanceSymbols

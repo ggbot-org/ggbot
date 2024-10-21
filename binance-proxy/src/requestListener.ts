@@ -60,7 +60,7 @@ export function requestListener(request: IncomingMessage, response: ServerRespon
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.
-				console.debug(error)
+				console.error(error)
 				response.writeHead(INTERNAL_SERVER_ERROR__500)
 			})
 			.finally(() => response.end())

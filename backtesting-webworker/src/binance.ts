@@ -1,4 +1,4 @@
-import { BacktestingBinanceClient, BacktestingSession, BacktestingStrategy } from "@workspace/backtesting"
+import { BacktestingBinanceClient, BacktestingSession } from "@workspace/backtesting"
 import { binanceKlineMaxLimit, getBinanceIntervalTime } from "@workspace/binance"
 import { DflowBinanceExecutor, extractBinanceSymbolsAndIntervalsFromFlow, extractsBinanceSymbolsFromFlow, getDflowBinanceNodesCatalog } from "@workspace/dflow"
 import { BinanceExchangeInfoCacheIDB, BinanceIDB, BinanceKlinesCacheIDB } from "@workspace/indexeddb-binance"
@@ -20,9 +20,17 @@ export async function prepareBinance(
 	binance: BacktestingBinanceClient,
 	binanceExecutor: DflowBinanceExecutor,
 	session: BacktestingSession,
-	schedulingInterval: BacktestingBinanceClient["schedulingInterval"],
-	flow: BacktestingStrategy["flow"]
 ) {
+	const schedulingInterval = session.frequency?.interval
+	if (!schedulingInterval) {
+		console.error("Cannot run prepareBinance, schedulingInterval is undefined")
+		return
+	}
+	const flow = session.strategyFlow
+	if (!flow) {
+		console.error("Cannot run prepareBinance, flow is undefined")
+		return
+	}
 	const { symbols: binanceSymbols } = await binance.exchangeInfo()
 	binanceExecutor.nodesCatalog = getDflowBinanceNodesCatalog(binanceSymbols)
 
@@ -38,38 +46,25 @@ export async function prepareBinance(
 		while (startTime < lastTime) {
 			const endTime = Math.min(
 				lastTime,
-				getBinanceIntervalTime[interval](startTime).plus(
-					binanceKlineMaxLimit
-				)
+				getBinanceIntervalTime[interval](startTime).plus(binanceKlineMaxLimit)
 			)
-			await binance.klines(symbol, interval, {
-				startTime,
-				endTime
-			})
+			await binance.klines(symbol, interval, { startTime, endTime })
 			startTime = endTime
 		}
 	}
 
 	// Pre-fetch klines for "price" nodes.
 
-	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(
-		binanceSymbols,
-		flow
-	)
+	const symbolsFromNodes = await extractsBinanceSymbolsFromFlow(binanceSymbols, flow)
 
 	for (const symbol of symbolsFromNodes) {
 		let startTime = firstTime
 		while (startTime < lastTime) {
 			const endTime = Math.min(
 				lastTime,
-				getBinanceIntervalTime[schedulingInterval](startTime).plus(
-					binanceKlineMaxLimit
-				)
+				getBinanceIntervalTime[schedulingInterval](startTime).plus(binanceKlineMaxLimit)
 			)
-			await binance.klines(symbol, schedulingInterval, {
-				startTime,
-				endTime
-			})
+			await binance.klines(symbol, schedulingInterval, { startTime, endTime })
 			startTime = endTime
 		}
 	}

@@ -120,7 +120,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						}
 					} catch (error) {
 						dispatch({ type: "VERIFY_FAILURE" })
-						console.debug(error)
+						console.error(error)
 					}
 				}}
 		>

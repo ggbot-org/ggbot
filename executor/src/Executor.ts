@@ -152,7 +152,7 @@ export class Executor {
 				}
 
 				// Fallback if error is not handled: should not arrive here.
-				console.debug(error)
+				console.error(error)
 			}
 		}
 	}

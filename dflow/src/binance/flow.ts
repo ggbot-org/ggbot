@@ -1,18 +1,28 @@
+import { BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters } from "@workspace/binance"
 import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
 import { DflowNode, DflowNodesCatalog } from "dflow"
 import { now } from "minimal-time-helpers"
 
 import { DefaultSymbol } from "../common/nodes/defaults.js"
 import { DflowParameter } from "../common/parameters.js"
+import { DflowBinanceClient, DflowBinanceClientDummy } from "./client.js"
 import { DflowBinanceContext as Context } from "./context.js"
 import { DflowBinanceHost } from "./host.js"
 import { dflowBinanceKlineIntervals, isDflowBinanceKlineInterval } from "./klineIntervals.js"
-import { DflowBinanceClientMock } from "./mocks/client.js"
 import { Candles, TickerPrice } from "./nodes/market.js"
 import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
 import { BuyMarket, SellMarket } from "./nodes/trade.js"
 import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
 import { DflowBinanceSymbolAndInterval, DflowBinanceSymbolInfo } from "./symbols.js"
+
+class DflowBinanceClientMock extends DflowBinanceClientDummy implements DflowBinanceClient {
+	async exchangeInfo() {
+		return Promise.resolve({ timezone: "", serverTime: 0, symbols: [], rateLimits: [] })
+	}
+	async klines(_symbol: string, _interval: BinanceKlineInterval, _optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
+		return Promise.resolve([])
+	}
+}
 
 const binanceClientMock = new DflowBinanceClientMock()
 

@@ -27,15 +27,15 @@ export function ShareStrategy({
 					if (!shareData) return
 					if (
 						"share" in navigator && navigator.canShare?.(shareData)
-					) navigator.share(shareData).catch((error) => console.debug(error))
+					) navigator.share(shareData).catch((error) => console.error(error))
 					else if (
 						"clipboard" in navigator && shareData.url
 					) navigator.clipboard.writeText(shareData.url).then(() => {
 						toast.info(formatMessage({ id: "ShareStrategy.copied" }))
-					}).catch((error) => console.debug(error))
+					}).catch((error) => console.error(error))
 					else toast.warning(formatMessage({ id: "ShareStrategy.error" }))
 				} catch (error) {
-					console.debug(error)
+					console.error(error)
 					toast.warning(formatMessage({ id: "ShareStrategy.error" }))
 				}
 			}}

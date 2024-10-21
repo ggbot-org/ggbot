@@ -43,7 +43,7 @@ export const computeStopPriceUp: ComputeStopPrice = ({
  * Prevent percentageDelta from be zero or negative or one or greater than one,
  * otherwise algorithm does not make sense.
  */
-const isValidPercentageDelta = (percentageDelta: number) => {
+function isValidPercentageDelta (percentageDelta: number) {
 	if (percentageDelta <= 0) return false
 	if (percentageDelta >= 1) return false
 	return true

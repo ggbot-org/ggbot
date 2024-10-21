@@ -31,7 +31,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 			return errorResponse(ErrorClass.statusCode)
 		}
 		// Fallback if error is not handled: should not arrive here.
-		console.debug(error)
+		console.error(error)
 		return errorResponse(INTERNAL_SERVER_ERROR__500)
 	}
 }
