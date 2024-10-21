@@ -89,12 +89,6 @@
 	"BacktestingProgress.currentTime": {
 		"defaultMessage": "Current time is {time}"
 	},
-	"BacktestingProgress.dayInterval": {
-		"defaultMessage": "From {start} to {end}"
-	},
-	"BacktestingProgress.title": {
-		"defaultMessage": "Progress"
-	},
 	"BacktestingProgress.intervals": {
 		"defaultMessage": "{value} of {max} intervals"
 	},

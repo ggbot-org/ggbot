@@ -4,6 +4,8 @@ import { Bulma, classnames as _classnames, ClassnamesArg as _ClassnamesArg } fro
 
 type AuthVerifyClassname = "auth-verify__one-time-password"
 
+type BacktestingProgressClassname = "backtesting-progress__info"
+
 type BrandTaglineClassname = "brand-tagline--animated"
 
 type CalendarClassname =
@@ -55,6 +57,7 @@ type ToastContainerClassname = "toast-container"
 
 type Classname = Bulma
 	| AuthVerifyClassname
+	| BacktestingProgressClassname
 	| BrandTaglineClassname
 	| CalendarClassname
 	| DayIntervalClassname
