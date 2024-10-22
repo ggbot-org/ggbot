@@ -1,4 +1,4 @@
-import { Frequency, frequencyIntervalDuration, Order, StrategyMemory } from "@workspace/models"
+import { Frequency, frequencyIntervalDuration, Order, StrategyFlowGraph, StrategyKind, StrategyMemory } from "@workspace/models"
 import { dateToTime, DayInterval, dayIntervalToDate, Time } from "minimal-time-helpers"
 
 import { BacktestingStatus, BacktestingStatusController } from "./status.js"
@@ -57,22 +57,26 @@ export class BacktestingSession implements BacktestingStatusController {
 		return this.#strategy
 	}
 
-	get strategyFlow(): BacktestingStrategy["flow"] | undefined {
+	get strategyFlow(): StrategyFlowGraph | undefined {
 		return this.#strategy?.flow
 	}
 
+	get strategyKind(): StrategyKind | undefined {
+		return this.#strategy?.strategyKey.strategyKind
+	}
+
 	set dayInterval(value: DayInterval) {
-		if (this.status !== "initial") return
+		if (["running", "paused"].includes(this.status)) return
 		this.#dayInterval = value
 	}
 
 	set frequency(value: Frequency) {
-		if (this.status !== "initial") return
+		if (["running", "paused"].includes(this.status)) return
 		this.#frequency = value
 	}
 
 	set strategy(value: BacktestingStrategy) {
-		if (this.status !== "initial") return
+		if (["running", "paused"].includes(this.status)) return
 		this.#strategy = value
 	}
 
@@ -94,6 +98,12 @@ export class BacktestingSession implements BacktestingStatusController {
 		if (this.status !== "running") return false
 		this.status = "paused"
 		return true
+	}
+
+	reset() {
+		this.memory = {}
+		this.orders = []
+		this.stepIndex = 0
 	}
 
 	/**
@@ -125,10 +135,7 @@ export class BacktestingSession implements BacktestingStatusController {
 		// it will run again and (hopefully :) produce same results.
 		if (this.status !== "initial" && this.status !== "done") return false
 		this.status = "running"
-		// Reset before run.
-		this.memory = {}
-		this.orders = []
-		this.stepIndex = 0
+		this.reset()
 		return true
 	}
 
@@ -142,6 +149,7 @@ export class BacktestingSession implements BacktestingStatusController {
 	stop(): boolean {
 		if (["paused", "running"].includes(this.status)) {
 			this.status = "initial"
+			this.reset()
 			return true
 		}
 		return false

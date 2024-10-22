@@ -133,7 +133,10 @@ export function Backtesting({
 							frequency={frequencyArg}
 							setFrequency={setFrequency}
 						/>
-						<BacktestingProgress currentTimestamp={currentTimestamp} progress={progress} />
+						<BacktestingProgress
+							currentTimestamp={(isRunning || isPaused) ? currentTimestamp : undefined}
+							progress={progress}
+						/>
 						<Field>
 							<Control>
 								<Checkbox

@@ -6,16 +6,16 @@ import { FormattedMessage, useIntl } from "react-intl"
 
 export type BacktestingProgressProps = Pick<
 	UseBacktestingState, "currentTimestamp"
-> & {
+> & Partial<{
 	progress: Pick<ProgressProps, "value" | "max">
-}
+}>
 
 export function BacktestingProgress({ progress, currentTimestamp }: BacktestingProgressProps) {
 	const { formatDate } = useIntl()
 	return (
-		<Div bulma={["my-3", "mx-1"]}>
+		<Div bulma={["my-2", "mx-1"]}>
 			<div className={classnames("backtesting-progress__info")}>
-				{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
+				{progress ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
 			</div>
 			<div className={classnames("backtesting-progress__info")}>
 				{currentTimestamp ? (
@@ -25,7 +25,9 @@ export function BacktestingProgress({ progress, currentTimestamp }: BacktestingP
 					/>
 				) : null}
 			</div>
-			<Progress size="small" {...progress} />
+			<div className={classnames("backtesting-progress__info")}>
+				{progress ? (<Progress size="small" {...progress} />) : null}
+			</div>
 		</Div>
 	)
 }

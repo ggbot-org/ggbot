@@ -65,8 +65,7 @@ export function useBacktesting(): {
 } {
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
-			const { type: actionType } = action
-			if (["STOP", "START"].includes(actionType)) {
+			if (["STOP", "START"].includes(action.type)) {
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -74,12 +73,12 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (["PAUSE", "RESUME"].includes(actionType)) {
+			if (["PAUSE", "RESUME"].includes(action.type)) {
 				backtesting.postMessage(action)
 				return state
 			}
 
-			if (actionType === "SET_AFTER_STEP_BEHAVIOUR") {
+			if (action.type === "SET_AFTER_STEP_BEHAVIOUR") {
 				const { afterStepBehaviour } = action
 				backtesting.postMessage(action)
 				return {
@@ -88,7 +87,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "SET_DAY_INTERVAL") {
+			if (action.type === "SET_DAY_INTERVAL") {
 				const { dayInterval } = action
 				backtesting.postMessage(action)
 				return {
@@ -97,7 +96,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "SET_FREQUENCY") {
+			if (action.type === "SET_FREQUENCY") {
 				const { frequency } = action
 				backtesting.postMessage(action)
 				return {
@@ -106,7 +105,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "STATUS_CHANGED") {
+			if (action.type === "STATUS_CHANGED") {
 				const { status } = action
 				return {
 					...state,
@@ -117,7 +116,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "UPDATED_MEMORY") {
+			if (action.type === "UPDATED_MEMORY") {
 				const { memory } = action
 				return {
 					...state,
@@ -125,7 +124,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "UPDATED_PROGRESS") {
+			if (action.type === "UPDATED_PROGRESS") {
 				const { currentTimestamp, numSteps, stepIndex } = action
 				return {
 					...state,
@@ -135,7 +134,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (actionType === "UPDATED_ORDERS") {
+			if (action.type === "UPDATED_ORDERS") {
 				const { orders } = action
 				return {
 					...state,
@@ -158,10 +157,11 @@ export function useBacktesting(): {
 
 	// Dispatch action on every backtesting message received.
 	useEffect(() => {
-		backtesting.onmessage = ({ data: action }: MessageEvent<BacktestingMessageOutData>) => {
+		backtesting.onmessage = (
+			{ data: action }: MessageEvent<BacktestingMessageOutData>
+		) => {
 			dispatch(action)
 		}
-
 		backtesting.addEventListener("error", (error) => console.error(error))
 	}, [dispatch])
 
