@@ -13,21 +13,19 @@ export type BacktestingProgressProps = Pick<
 export function BacktestingProgress({ progress, currentTimestamp }: BacktestingProgressProps) {
 	const { formatDate } = useIntl()
 	return (
-		<Div bulma="block">
+		<Div bulma={["my-3", "mx-1"]}>
+			<div className={classnames("backtesting-progress__info")}>
+				{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
+			</div>
+			<div className={classnames("backtesting-progress__info")}>
+				{currentTimestamp ? (
+					<FormattedMessage
+						id="BacktestingProgress.currentTime"
+						values={{ time: formatDate(currentTimestamp, timeFormat) }}
+					/>
+				) : null}
+			</div>
 			<Progress size="small" {...progress} />
-			<Div bulma={["is-flex", "my-2", "is-flex-direction-column"]}>
-				<div className={classnames("backtesting-progress__info")}>
-					{progress.max ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
-				</div>
-				<div className={classnames("backtesting-progress__info")}>
-					{currentTimestamp ? (
-						<FormattedMessage
-							id="BacktestingProgress.currentTime"
-							values={{ time: formatDate(currentTimestamp, timeFormat) }}
-						/>
-					) : null}
-				</div>
-			</Div>
 		</Div>
 	)
 }
