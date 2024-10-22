@@ -1,23 +1,18 @@
-import { Balance, Order, StrategyFlowGraph } from "@workspace/models"
+import { StrategyFlowGraph } from "@workspace/models"
 import { DflowNodesCatalog } from "dflow"
 
-import { DflowCommonExecutorContext, DflowCommonExecutorOutput, DflowExecutor } from "../common/executor.js"
+import { DflowCommonExecutorContext, DflowExecutor } from "../common/executor.js"
 import { DflowBinanceClient } from "./client.js"
 import { DflowBinanceContext } from "./context.js"
 import { getBalanceFromExecutionSteps, getOrdersFromExecutionSteps } from "./execution.js"
 import { extractsBinanceDefaultsFromFlow } from "./flow.js"
 import { DflowBinanceHost } from "./host.js"
 
-type DflowBinanceExecutorOutput = DflowCommonExecutorOutput & {
-	balance: Balance
-	orders: Array<Pick<Order, "info">>
-}
-
 type DflowBinanceExecutorContext = DflowCommonExecutorContext & {
 	binance: DflowBinanceClient
 }
 
-export class DflowBinanceExecutor implements DflowExecutor<DflowBinanceExecutorContext, DflowBinanceExecutorOutput> {
+export class DflowBinanceExecutor implements DflowExecutor<DflowBinanceExecutorContext> {
 	nodesCatalog: DflowNodesCatalog
 
 	constructor() {

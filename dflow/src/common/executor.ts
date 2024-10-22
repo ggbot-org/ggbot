@@ -1,4 +1,4 @@
-import { StrategyFlowGraph } from "@workspace/models"
+import { Balance, Order, StrategyFlowGraph } from "@workspace/models"
 import { DflowExecutionReport, DflowNodesCatalog } from "dflow"
 
 import { DflowCommonContext } from "./context.js"
@@ -7,22 +7,21 @@ import { nodesCatalog } from "./nodesCatalog.js"
 
 export type DflowCommonExecutorContext = Omit<DflowCommonContext, "defaults" | "memoryChanged">
 
-export type DflowCommonExecutorOutput = Pick<
+type DflowExecutorOutput = Pick<
 	DflowCommonContext,
 	"memory" | "memoryChanged"
 > & {
+	balance: Balance
 	execution: null | DflowExecutionReport
+	orders: Array<Pick<Order, "info">>
 }
 
-export type DflowExecutor<
-	RunContext extends DflowCommonExecutorContext,
-	RunOutput extends DflowCommonExecutorOutput
-> = {
+export type DflowExecutor<RunContext extends DflowCommonExecutorContext> = {
 	readonly nodesCatalog: DflowNodesCatalog
-	run(context: RunContext, graph: StrategyFlowGraph): Promise<RunOutput>
+	run(context: RunContext, graph: StrategyFlowGraph): Promise<DflowExecutorOutput>
 }
 
-export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorContext, DflowCommonExecutorOutput> {
+export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorContext> {
 	readonly graph: StrategyFlowGraph
 	nodesCatalog: DflowNodesCatalog
 	constructor({ graph }: Pick<DflowCommonExecutor, "graph">) {
@@ -40,14 +39,16 @@ export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorCon
 		const execution = dflow.executionReport
 		const { memory, memoryChanged } = dflow.context as DflowCommonContext
 		return {
+			balance: [],
 			execution,
 			memory,
-			memoryChanged
+			memoryChanged,
+			orders: [],
 		}
 	}
 }
 export const getDflowExecutionOutputData = (
-	execution: undefined | DflowCommonExecutorOutput["execution"],
+	execution: undefined | DflowExecutorOutput["execution"],
 	nodeId: string,
 	outputPosition: number
 ) => {
