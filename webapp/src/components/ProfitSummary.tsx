@@ -14,11 +14,7 @@ function toNumber(value: string, precision = 8) {
 }
 
 function _Label({ children, size }: PropsWithChildren<SizeProp<"large">>) {
-	return (
-		<p className={classnames({ "is-size-6": size === "large" })}>
-			{children}
-		</p>
-	)
+	return <p className={classnames({ "is-size-6": size === "large" })}>{children}</p>
 }
 
 function _Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
@@ -26,7 +22,7 @@ function _Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
 		<p
 			className={classnames("has-text-weight-medium", {
 				"is-size-5": size === undefined,
-				"is-size-3": size === "large"
+				"is-size-3": size === "large",
 			})}
 		>
 			{children}
@@ -37,22 +33,22 @@ function _Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
 }
 
 type Fee = {
-	asset: string
-	quantity: string
+	asset: string;
+	quantity: string;
 }
 
 type SymbolStats = {
-	symbol: string
-	maxPrice: string
-	minPrice: string
-	baseQuantity: string
-	quoteQuantity: string
+	symbol: string;
+	maxPrice: string;
+	minPrice: string;
+	baseQuantity: string;
+	quoteQuantity: string;
 }
 
 type ProfitSummaryProps = {
-	dayInterval: DayInterval | undefined
-	orders: Order[] | undefined
-	strategyKind: StrategyKind | undefined
+	dayInterval: DayInterval | undefined;
+	orders: Order[] | undefined;
+	strategyKind: StrategyKind | undefined;
 }
 
 export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSummaryProps) {
@@ -66,18 +62,18 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 
 	if (strategyKind === "binance") {
 		if (orders) for (const { info } of orders) {
-			if (!objectTypeGuard<{
-				fills: unknown[]
-				side: string
-				status: string
-				symbol: string
-				type: string
-			}>(
-				({ fills, side, status, symbol, type }) => (
-					Array.isArray(fills) &&
-						[side, status, symbol, type].every((item) => typeof item === "string")
-				)
-			)(info)) continue
+			if (
+				!objectTypeGuard<{
+					fills: unknown[];
+					side: string;
+					status: string;
+					symbol: string;
+					type: string;
+				}>(
+					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
+							[side, status, symbol, type].every((item) => typeof item === "string"),
+				)(info)
+			) continue
 
 			if (info.status !== "FILLED") continue
 			if (info.type !== "MARKET") continue
@@ -102,32 +98,19 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 				// Statistics.
 				const previousSymbolStats = symbolStats.get(symbol)
 				if (previousSymbolStats) {
-					const {
-						minPrice,
-						maxPrice,
-						baseQuantity,
-						quoteQuantity
-					} = previousSymbolStats
+					const { minPrice, maxPrice, baseQuantity, quoteQuantity } = previousSymbolStats
 					symbolStats.set(symbol, {
-						baseQuantity: isBuy
-							? add(baseQuantity, baseQty)
-							: sub(baseQuantity, baseQty),
-						maxPrice: greaterThan(price, maxPrice)
-							? price
-							: maxPrice,
-						minPrice: lessThan(price, minPrice)
-							? price
-							: minPrice,
-						quoteQuantity: isBuy
-							? sub(quoteQuantity, quoteQty)
-							: add(quoteQuantity, quoteQty)
+						baseQuantity: isBuy ? add(baseQuantity, baseQty) : sub(baseQuantity, baseQty),
+						maxPrice: greaterThan(price, maxPrice) ? price : maxPrice,
+						minPrice: lessThan(price, minPrice) ? price : minPrice,
+						quoteQuantity: isBuy ? sub(quoteQuantity, quoteQty) : add(quoteQuantity, quoteQty),
 					})
 				} else {
 					symbolStats.set(symbol, {
 						baseQuantity: isBuy ? baseQty : neg(baseQty),
 						maxPrice: price,
 						minPrice: price,
-						quoteQuantity: isBuy ? neg(quoteQty) : quoteQty
+						quoteQuantity: isBuy ? neg(quoteQty) : quoteQty,
 					})
 				}
 			}
@@ -144,9 +127,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 			</Title>
 			<Level>
 				<LevelItem>
-					<Div
-						bulma={["is-flex", "is-flex-direction-column", "mx-2"]}
-					>
+					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
 						<_Label>
 							<FormattedMessage id="DailyInterval.from" />
 						</_Label>
@@ -154,9 +135,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 							<DateTime format="day" value={dayInterval?.start} />
 						</_Value>
 					</Div>
-					<Div
-						bulma={["is-flex", "is-flex-direction-column", "mx-2"]}
-					>
+					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
 						<_Label>
 							<FormattedMessage id="DailyInterval.to" />
 						</_Label>
@@ -182,11 +161,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 					</div>
 				</LevelItem>
 			</Level>
-			{Array.from(
-				symbolStats, ([
-					symbol, { baseQuantity, maxPrice, minPrice, quoteQuantity }
-				]) => ({ baseQuantity, maxPrice, minPrice, quoteQuantity, symbol })
-			).map(({ symbol, ...rest }) => {
+			{Array.from(symbolStats, ([symbol, stats]) => {
 				const symbolInfo = getBinanceSymbolInfo(symbol, binanceSymbols)
 				if (!symbolInfo) return {
 					baseAsset: "",
@@ -194,95 +169,68 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 					quoteAsset: "",
 					quoteAssetPrecision: undefined,
 					symbol,
-					...rest
+					...stats,
 				}
 				const { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision } = symbolInfo
-				return { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision, symbol, ...rest }
-			})
-				.map(
-					({
-						baseAsset,
-						baseAssetPrecision,
-						baseQuantity,
-						maxPrice,
-						minPrice,
-						quoteAsset,
-						quoteAssetPrecision,
-						quoteQuantity,
-						symbol
-					}) => (
-						<Fragment key={symbol}>
-							<Level>
-								<LevelItem>
-									<Title is={4}>{symbol}</Title>
-								</LevelItem>
-								<LevelItem bulma="has-text-centered">
-									<div>
-										<_Label size="large">
-											{baseAsset}
-										</_Label>
-										<_Value size="large">
-											{toNumber(
-												baseQuantity,
-												baseAssetPrecision
-											)}
-										</_Value>
-									</div>
-								</LevelItem>
-								<LevelItem bulma="has-text-centered">
-									<div>
-										<_Label size="large">
-											{quoteAsset}
-										</_Label>
-										<_Value size="large">
-											{toNumber(
-												quoteQuantity,
-												quoteAssetPrecision
-											)}
-										</_Value>
-									</div>
-								</LevelItem>
-							</Level>
-							<Level>
-								<LevelItem bulma="has-text-centered">
-									<div>
-										<_Label>
-											<FormattedMessage id="ProfitSummary.minPrice" />
-										</_Label>
-										<_Value>
-											{toNumber(
-												minPrice,
-												quoteAssetPrecision
-											)}
-										</_Value>
-									</div>
-								</LevelItem>
-								<LevelItem bulma="has-text-centered">
-									<div>
-										<_Label>
-											<FormattedMessage id="ProfitSummary.maxPrice" />
-										</_Label>
-										<_Value>
-											{toNumber(
-												maxPrice,
-												quoteAssetPrecision
-											)}
-										</_Value>
-									</div>
-								</LevelItem>
-							</Level>
-						</Fragment>
-					)
-				)}
+				return { baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision, symbol, ...stats }
+			}).map(
+				({
+					baseAsset,
+					baseAssetPrecision,
+					baseQuantity,
+					maxPrice,
+					minPrice,
+					quoteAsset,
+					quoteAssetPrecision,
+					quoteQuantity,
+					symbol,
+				}) => (
+					<Fragment key={symbol}>
+						<Level>
+							<LevelItem>
+								<Title is={4}>{symbol}</Title>
+							</LevelItem>
+							<LevelItem bulma="has-text-centered">
+								<div>
+									<_Label size="large">{baseAsset}</_Label>
+									<_Value size="large">{toNumber(baseQuantity, baseAssetPrecision)}</_Value>
+								</div>
+							</LevelItem>
+							<LevelItem bulma="has-text-centered">
+								<div>
+									<_Label size="large">{quoteAsset}</_Label>
+									<_Value size="large">{toNumber(quoteQuantity, quoteAssetPrecision)}</_Value>
+								</div>
+							</LevelItem>
+						</Level>
+						<Level>
+							<LevelItem bulma="has-text-centered">
+								<div>
+									<_Label>
+										<FormattedMessage id="ProfitSummary.minPrice" />
+									</_Label>
+									<_Value>{toNumber(minPrice, quoteAssetPrecision)}</_Value>
+								</div>
+							</LevelItem>
+							<LevelItem bulma="has-text-centered">
+								<div>
+									<_Label>
+										<FormattedMessage id="ProfitSummary.maxPrice" />
+									</_Label>
+									<_Value>{toNumber(maxPrice, quoteAssetPrecision)}</_Value>
+								</div>
+							</LevelItem>
+						</Level>
+					</Fragment>
+				),
+			)}
 			<Level>
 				<LevelItem>
 					<p>
 						<FormattedMessage id="ProfitSummary.fees" />
 					</p>
 				</LevelItem>
-				{Array.from(
-					feesMap, ([asset, quantity]) => ({ asset, quantity })
-				).map(({ asset, quantity }) => (
+				{Array.from(feesMap, ([asset, quantity]) => ({ asset, quantity })).map(({ asset, quantity }) => (
 					<LevelItem key={asset} bulma="has-text-centered">
 						<div>
 							<_Label>{asset}</_Label>
