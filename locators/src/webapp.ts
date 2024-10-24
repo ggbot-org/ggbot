@@ -39,18 +39,18 @@ export const webappPagePathname = {
 	design: { showcase: `${webappDirname.design}/showcase.html` }
 } as const
 
-const appendAccountKeyToURLSearchParams = (
+function appendAccountKeyToURLSearchParams(
 	{ accountId }: AccountKey,
 	url: URL
-) => {
+) {
 	url.searchParams.append("accountId", accountId)
 	return url
 }
 
-const appendStrategyKeyToURLSearchParams = (
+function appendStrategyKeyToURLSearchParams(
 	{ strategyId, strategyKind }: StrategyKey,
 	url: URL
-) => {
+) {
 	url.searchParams.append("strategyId", strategyId)
 	url.searchParams.append("strategyKind", strategyKind)
 	return url
@@ -70,10 +70,7 @@ const appendStrategyKeyToURLSearchParams = (
 export class WebappURLs {
 	baseURL: WebappBaseURL
 
-	constructor(
-		deployStage: FQDN["deployStage"],
-		dnsDomain: FQDN["dnsDomain"]
-	) {
+	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
 		this.baseURL = new WebappBaseURL(new FQDN(deployStage, dnsDomain))
 	}
 

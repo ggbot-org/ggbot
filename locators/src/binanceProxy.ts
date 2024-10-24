@@ -5,10 +5,6 @@ export class BinanceProxyBaseURL extends URL {
 	}
 }
 
-const apiEndpoint = {
-	action: "action"
-}
-
 /**
  * Defines binance-proxy service URLs.
  *
@@ -29,6 +25,6 @@ export class BinanceProxyURLs {
 	}
 
 	get action() {
-		return new URL(apiEndpoint.action, this.baseURL)
+		return new URL("action", this.baseURL)
 	}
 }

@@ -23,39 +23,33 @@ export class FQDN {
 	readonly deployStage: DeployStage
 	readonly dnsDomain: string
 
-	constructor(
-		deployStage: FQDN["deployStage"],
-		dnsDomain: FQDN["dnsDomain"]
-	) {
+	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
 		this.deployStage = deployStage
 		this.dnsDomain = dnsDomain
 	}
 
 	get apiDomain() {
-		const subDomain: Record<DeployStage, string> = {
+		return `${{
 			main: "api",
 			next: "api-next",
 			local: "api-local"
-		}
-		return `${subDomain[this.deployStage]}.${this.dnsDomain}`
+		}[this.deployStage]}.${this.dnsDomain}`
 	}
 
 	get authDomain() {
-		const subDomain: Record<DeployStage, string> = {
+		return `${{
 			main: "auth",
 			next: "auth-next",
 			local: "auth-local"
-		}
-		return `${subDomain[this.deployStage]}.${this.dnsDomain}`
+		}[this.deployStage]}.${this.dnsDomain}`
 	}
 
 	get webappDomain() {
-		return FQDN.webappDomain(this.deployStage, this.dnsDomain)
-	}
-
-	static webappDomain(deployStage: DeployStage, dnsDomain: string) {
-		if (deployStage === "main") return `www.${dnsDomain}`
-		// Both `next` and `local` deploy stages point to "next" webapp.
-		return `next.${dnsDomain}`
+		return `${{
+			main: "www",
+			// Both `next` and `local` deploy stages point to "next" webapp.
+			next: "next",
+			local: "next",
+		}[this.deployStage]}.${this.dnsDomain}`
 	}
 }
