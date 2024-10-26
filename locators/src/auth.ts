@@ -4,7 +4,7 @@ export class AuthURLs {
 	baseURL: URL
 
 	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
-		this.baseURL = new URL(new FQDN(deployStage, dnsDomain).authDomain)
+		this.baseURL = new URL(`https://${new FQDN(deployStage, dnsDomain).authDomain}`)
 	}
 
 	get enter() {

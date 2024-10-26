@@ -1,14 +1,13 @@
 import { DeployStage } from "@workspace/models"
 
 import { EnvironmentVariableName } from "./environmentVariableNames.js"
-import { ErrorMissingEnvironmentVariable } from "./errors.js"
 
 function getVariable(
 	VARIABLE_VALUE: unknown,
 	VARIABLE_NAME: EnvironmentVariableName
 ) {
 	if (typeof VARIABLE_VALUE === "string") return VARIABLE_VALUE
-	throw new ErrorMissingEnvironmentVariable(VARIABLE_NAME)
+	throw new Error(`Missing environment variable ${VARIABLE_NAME}`)
 }
 
 class EnvironmentVariables {

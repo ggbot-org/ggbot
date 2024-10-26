@@ -76,8 +76,6 @@ For example
     Environment="DNS_DOMAIN=ggbot2.com"
     Environment="BINANCE_PROXY_IP=1.2.3.4"
     Environment="AWS_BINANCE_PROXY_REGION=eu-central-1"
-    Environment="GITHUB_ORG_URL=xxx"
-    Environment="TELEGRAM_SUPPORT_URL=xxx"
 
 Notice that command `systemctl edit` uses nano, to "exit and save" do <kbd>CTRL-x</kbd> <kbd>SHIFT-y</kbd> <kbd>ENTER</kbd>.
 

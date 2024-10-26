@@ -1,9 +1,13 @@
 import { ENV } from "@workspace/env"
 
 export const github = {
-	organization: ENV.GITHUB_ORG_URL()
+	get organization() {
+		return ENV.GITHUB_ORG_URL()
+	}
 }
 
 export const telegram = {
-	support: "https://t.me/ggbot_support"
+	get support() {
+		return ENV.TELEGRAM_SUPPORT_URL()
+	}
 }
