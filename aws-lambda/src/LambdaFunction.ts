@@ -1,4 +1,4 @@
-import { Architecture, CreateFunctionCommand, CreateFunctionCommandInput, PackageType, Runtime } from "@aws-sdk/client-lambda"
+import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from "@aws-sdk/client-lambda"
 import { AwsAccountId, AwsRegion, AwsResource } from "@workspace/aws-types"
 
 import { lambdaClient } from "./client.js"
@@ -6,31 +6,46 @@ import { lambdaClient } from "./client.js"
 export class LambdaFunction implements AwsResource {
 	readonly accountId: AwsAccountId
 	readonly region: string
-	readonly name: string
+	readonly functionName: string
+	readonly architecture = Architecture.arm64
+	readonly executionRoleArn: string
+	readonly runtime = Runtime.nodejs20x
+	readonly handler = "index.handler"
 
-	constructor(accountId: AwsAccountId, region: AwsRegion, name: string) {
+	constructor(accountId: AwsAccountId, region: AwsRegion, functionName: string, executionRoleArn: string) {
 		this.accountId = accountId
 		this.region = region
-		this.name = name
+		this.functionName = functionName
+		this.executionRoleArn = executionRoleArn
 	}
 
-	get arn () {
-		return LambdaFunction.arn(this.accountId, this.region, this.name)
+	get arn() {
+		return LambdaFunction.arn(this.accountId, this.region, this.functionName)
 	}
 
-	static arn (accountId: AwsAccountId, region: AwsRegion, name: string) {
-		return `arn:aws:lambda:${region}:${accountId}:function:${name}`
+	static arn(accountId: AwsAccountId, region: AwsRegion, functionName: string) {
+		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
 	}
 
-	async create({ Code, FunctionName, Role }: Pick<CreateFunctionCommandInput, "Code" | "FunctionName" | "Role">) {
+	async create({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
 		const command = new CreateFunctionCommand({
-			Code,
-			FunctionName,
-			Role,
-			Architectures: [Architecture.arm64],
-			Handler: "index.handler",
+			Code: { ZipFile },
+			FunctionName: this.functionName,
+			Role: this.executionRoleArn,
+			Architectures: [this.architecture],
+			Handler: this.handler,
 			PackageType: PackageType.Zip,
-			Runtime: Runtime.nodejs16x,
+			Runtime: this.runtime,
+		})
+		const client = lambdaClient(this.region)
+		await client.send(command)
+	}
+
+	async updateFunctionCode({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
+		const command = new UpdateFunctionCodeCommand({
+			ZipFile,
+			FunctionName: this.functionName,
+			Architectures: [this.architecture],
 		})
 		const client = lambdaClient(this.region)
 		await client.send(command)

@@ -1,9 +1,14 @@
 import { LambdaFunction } from "@workspace/aws-lambda"
 import { ENV } from "@workspace/env"
 
+import { ApiRole } from "./ApiRole.js"
+
 export class ApiLambda extends LambdaFunction {
+	readonly apiName: string
+
 	constructor(apiName: string) {
-		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), ApiLambda.functionName(apiName))
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), ApiLambda.functionName(apiName), new ApiRole().arn)
+		this.apiName = apiName
 	}
 
 	static functionName(apiName: string) {
