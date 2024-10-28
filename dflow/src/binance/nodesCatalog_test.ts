@@ -47,14 +47,13 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 	test("creates a Dflow node for a Binance symbol if it is a valid DflowBinanceSymbolInfo", () => {
 		const validSymbol: DflowBinanceSymbolInfo = {
 			symbol: "AAABTC",
-			status: "TRADING",
 			baseAsset: "AAA",
 			baseAssetPrecision: 8,
 			quoteAsset: "BTC",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
 			isSpotTradingAllowed: true,
+			status: "TRADING",
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -104,7 +103,6 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 				baseAsset: "XXA",
 				baseAssetPrecision: 8,
 				quoteAsset: "BUSD",
-				quotePrecision: 8,
 				quoteAssetPrecision: 8,
 				baseCommissionPrecision: 8,
 				isSpotTradingAllowed: true,
@@ -116,40 +114,12 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 				baseAsset: "XXB",
 				baseAssetPrecision: 8,
 				quoteAsset: "BUSD",
-				quotePrecision: 8,
 				quoteAssetPrecision: 8,
 				baseCommissionPrecision: 8,
 				// isSpotTradingAllowed is not true
 				isSpotTradingAllowed: false,
 				filters: []
 			},
-			{
-				symbol: "XXCBUSD",
-				status: "TRADING",
-				baseAsset: "XXC",
-				// baseAssetPrecision is not 8
-				baseAssetPrecision: 1,
-				quoteAsset: "BUSD",
-				quotePrecision: 8,
-				quoteAssetPrecision: 8,
-				baseCommissionPrecision: 8,
-				// isSpotTradingAllowed is not true
-				isSpotTradingAllowed: false,
-				filters: []
-			},
-			{
-				// symbol mismatch with baseAsset/quoteAsset
-				symbol: "XXXBUSD",
-				status: "TRADING",
-				baseAsset: "XXE",
-				baseAssetPrecision: 8,
-				quoteAsset: "BUSD",
-				quotePrecision: 8,
-				quoteAssetPrecision: 8,
-				baseCommissionPrecision: 8,
-				isSpotTradingAllowed: true,
-				filters: []
-			}
 		]
 
 		const symbols = [validSymbol, ...invalidSymbols]
@@ -160,8 +130,5 @@ describe("getDflowBinanceDynamicNodesCatalog", () => {
 		// Invalid nodes.
 		assert.ok(nodesCatalog["XXA/BUSD"] === undefined)
 		assert.ok(nodesCatalog["XXB/BUSD"] === undefined)
-		assert.ok(nodesCatalog["XXC/BUSD"] === undefined)
-		assert.ok(nodesCatalog["XXD/YYYY"] === undefined)
-		assert.ok(nodesCatalog["XXE/BUSD"] === undefined)
 	})
 })

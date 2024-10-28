@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto"
 
-import { balanceIsNotEmpty, BinanceAccountInformation, BinanceApiKeyPermission, BinanceApiPrivateEndpoint, BinanceApiRequestMethod, BinanceApiRequestParams, BinanceConnector, BinanceExchange, BinanceExchangeInfoCacheMap, BinanceNewOrderOptions, BinanceOrderRespACK, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType } from "@workspace/binance"
+import { balanceIsNotEmpty, BinanceAccountInformation, BinanceApiKeyPermission, BinanceApiPrivateEndpoint, BinanceApiRequestMethod, BinanceApiRequestParams, BinanceConnector, BinanceExchange, BinanceExchangeInfoCacheMap, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType } from "@workspace/binance"
 
 const exchangeInfoCache = new BinanceExchangeInfoCacheMap()
 
@@ -34,11 +34,12 @@ export class BinanceClient {
 		const searchParams = new URLSearchParams()
 		if (params) for (const [key, value] of Object.entries(params)) searchParams.append(key, String(value))
 
-		const timestamp = Date.now()
-		searchParams.append("timestamp", String(timestamp))
+		searchParams.append("timestamp", String(Date.now()))
 
-		const signature = createHmac("sha256", this.apiSecret).update(searchParams.toString()).digest("hex")
-		searchParams.append("signature", signature)
+		searchParams.append(
+			"signature",
+			createHmac("sha256", this.apiSecret).update(searchParams.toString()).digest("hex")
+		)
 
 		return await this.connector.request<Data>(method, endpoint, Object.fromEntries(searchParams))
 	}
@@ -72,55 +73,8 @@ export class BinanceClient {
 		side: BinanceOrderSide,
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceOrderRespFULL> {
+	): Promise<BinanceOrder> {
 		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
-		return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order", { symbol, side, type, ...options })
-	}
-
-	/**
-	 * Test a new order.
-	 *
-	 * Binance API will validate new order but will not send it into the
-	 * matching engine. Parameters are the same as `newOrder`.
-	 */
-	async newOrderTest(
-		symbol: string,
-		side: BinanceOrderSide,
-		type: Extract<BinanceOrderType, "MARKET">,
-		orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceOrderRespFULL> {
-		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
-		return await this.privateRequest<BinanceOrderRespFULL>("POST", "/api/v3/order/test", { symbol, side, type, ...options })
-	}
-
-	/**
-	 * Send in a new order with type other than MARKET or LIMIT order.
-	 *
-	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
-	 */
-	async newOrderACK(
-		symbol: string,
-		side: BinanceOrderSide,
-		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
-		orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceOrderRespACK> {
-		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
-		return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order", { symbol, side, type, ...options })
-	}
-
-	/**
-	 * Test a new order with type other than MARKET or LIMIT order.
-	 *
-	 * Binance API will validate new order but will not send it into the
-	 * matching engine. Parameters are the same as `newOrderACK`.
-	 */
-	async newOrderACKTest(
-		symbol: string,
-		side: BinanceOrderSide,
-		type: Exclude<BinanceOrderType, "LIMIT" | "MARKET">,
-		orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceOrderRespACK> {
-		const options = await this.exchange.prepareOrder(symbol, type, orderOptions)
-		return await this.privateRequest<BinanceOrderRespACK>("POST", "/api/v3/order/test", { symbol, side, type, ...options })
+		return await this.privateRequest<BinanceOrder>("POST", "/api/v3/order", { symbol, side, type, ...options })
 	}
 }

@@ -13,9 +13,10 @@ export const isBinanceApiConfig = objectTypeGuard<BinanceApiConfig>(
 )
 
 /**
- * BinanceApiKeyPermissionCriteria defines a set of conditions that validate if
- * a Binance API key can be used with ggbot2. It is important to notice that
- * withdrawals MUST not be enabled for security reasons.
+ * A set of conditions that validate if a Binance API key can be used.
+ *
+ * @remarks
+ * It is important to notice that withdrawals MUST not be enabled for security reasons.
  */
 export type BinanceApiKeyPermissionCriteria = {
 	enableReading: boolean

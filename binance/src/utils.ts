@@ -11,11 +11,15 @@ import { BinanceBalance, BinanceKlineInterval } from "./types.js"
  * { "asset": "LUNA", "free": "0.00000000", "locked": "0.00000000" }
  * ```
  */
-export const balanceIsNotEmpty = ({ free, locked }: BinanceBalance) => Number(free) + Number(locked) > 0
+export function balanceIsNotEmpty({ free, locked }: BinanceBalance): boolean {
+	return Number(free) + Number(locked) > 0
+}
 
-export const binanceKlineKey = (
+export function binanceKlineKey(
 	symbol: string,
 	interval: BinanceKlineInterval,
 	/* THe kline open time. */
 	time: number
-) => [symbol, interval, time].join(":")
+) {
+	return [symbol, interval, time].join(":")
+}

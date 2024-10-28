@@ -1,17 +1,12 @@
-import { BinanceOrderRespFULL } from "@workspace/binance"
+import { BinanceOrder } from "@workspace/binance"
 
-export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {
+export const orderBuyBTCBUSD1: BinanceOrder = {
 	symbol: "BTCBUSD",
 	orderId: 6906110758,
-	orderListId: -1,
-	clientOrderId: "wTZV3TMi8cjYymQ7YAaHWx",
 	transactTime: 1667846175202,
 	price: "0.00000000",
-	origQty: "0.00096000",
 	executedQty: "0.00096000",
-	cummulativeQuoteQty: "19.88286720",
 	status: "FILLED",
-	timeInForce: "GTC",
 	type: "MARKET",
 	side: "BUY",
 	fills: [
@@ -20,7 +15,6 @@ export const orderBuyBTCBUSD1: BinanceOrderRespFULL = {
 			qty: "0.00096000",
 			commission: "0.00000000",
 			commissionAsset: "BNB",
-			tradeId: 594514232
 		}
 	]
 }

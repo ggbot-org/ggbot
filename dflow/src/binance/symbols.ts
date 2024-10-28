@@ -1,5 +1,4 @@
 import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { DflowBinanceKlineInterval } from "./klineIntervals.js"
 
@@ -12,25 +11,15 @@ export type DflowBinanceSymbolInfo = Pick<
 	| "isSpotTradingAllowed"
 	| "quoteAsset"
 	| "quoteAssetPrecision"
-	| "quotePrecision"
 	| "status"
 	| "symbol"
 >
-
-export const isDflowBinanceSymbolInfo = objectTypeGuard<DflowBinanceSymbolInfo>(
-	({ baseAsset, isSpotTradingAllowed, quoteAsset, status, symbol }) => isSpotTradingAllowed === true &&
-		status === "TRADING" &&
-		typeof symbol === "string" &&
-		typeof baseAsset === "string" &&
-		typeof quoteAsset === "string" &&
-		symbol === `${baseAsset}${quoteAsset}`
-)
 
 export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 	symbols: BinanceExchangeInfo["symbols"]
 ): DflowBinanceSymbolInfo[] {
 	return symbols
-		.filter(isDflowBinanceSymbolInfo)
+		.filter(({ isSpotTradingAllowed }) => isSpotTradingAllowed)
 		.map(
 			({
 				baseAsset,
@@ -40,7 +29,6 @@ export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 				isSpotTradingAllowed,
 				quoteAsset,
 				quoteAssetPrecision,
-				quotePrecision,
 				status,
 				symbol
 			}) => ({
@@ -51,9 +39,8 @@ export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 				isSpotTradingAllowed,
 				quoteAsset,
 				quoteAssetPrecision,
-				quotePrecision,
 				status,
-				symbol
+				symbol,
 			})
 		)
 }

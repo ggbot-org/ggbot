@@ -1,8 +1,6 @@
-import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from "@workspace/binance"
+import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from "@workspace/binance"
 import { DflowBinanceClient, DflowBinanceKlineInterval, dflowBinanceZero } from "@workspace/dflow"
 import { now, Time } from "minimal-time-helpers"
-
-import { ErrorCannotCreateOrder } from "./errors.js"
 
 let orderId = 0
 
@@ -38,10 +36,13 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		type: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
 	) {
-		const options = await this.publicClient.prepareOrder(symbol, type, orderOptions)
-		const { price } = await this.tickerPrice(symbol)
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
-		if (!symbolInfo) throw new ErrorCannotCreateOrder()
+		const options = await this.publicClient.prepareOrder(symbol, type, orderOptions)
+		if (!options || !symbolInfo) {
+			console.error("Cannot create order", side, symbol, orderOptions)
+			return
+		}
+		const { price } = await this.tickerPrice(symbol)
 
 		orderId++
 
@@ -53,17 +54,12 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 		if (!quoteQuantity) quoteQuantity = dflowBinanceZero(quoteAssetPrecision)
 
 		return {
-			clientOrderId: "",
-			cummulativeQuoteQty: quoteQuantity,
 			executedQty: baseQuantity,
 			orderId,
-			orderListId: -1,
-			origQty: baseQuantity,
 			price,
 			side,
 			status: "FILLED",
 			symbol,
-			timeInForce: "GTC",
 			transactTime: this.time,
 			type,
 			fills: [
@@ -72,10 +68,9 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 					commissionAsset: "BNB",
 					price,
 					qty: baseQuantity,
-					tradeId: orderId
 				}
 			]
-		} satisfies BinanceOrderRespFULL
+		} satisfies BinanceOrder
 	}
 
 	symbolInfo(symbol: string): Promise<BinanceSymbolInfo | undefined> {

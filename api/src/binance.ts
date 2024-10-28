@@ -1,4 +1,4 @@
-import { BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType } from "@workspace/binance"
+import { BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType } from "@workspace/binance"
 import { AccountKey, BinanceApiConfig, BinanceApiKeyPermissionCriteria } from "@workspace/models"
 import { objectTypeGuard } from "minimal-type-guard-helpers"
 
@@ -10,7 +10,7 @@ type BinanceClientAction = {
 		side: BinanceOrderSide
 		type: Extract<BinanceOrderType, "MARKET">
 		orderOptions: BinanceNewOrderOptions
-	}) => Promise<BinanceOrderRespFULL>
+	}) => Promise<BinanceOrder>
 	ReadBinanceAccountApiRestrictions: (arg: void) => Promise<BinanceApiKeyPermissionCriteria>
 }
 

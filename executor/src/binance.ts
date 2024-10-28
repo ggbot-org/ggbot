@@ -1,6 +1,6 @@
 import { ActionInput, BinanceClientActionType, clientAction, ClientActionHeaders, isApiActionOutputData, isApiActionOutputError } from "@workspace/api"
 import { signSession } from "@workspace/authentication"
-import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderRespFULL, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from "@workspace/binance"
+import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from "@workspace/binance"
 import { DflowBinanceClient } from "@workspace/dflow"
 import { ENV } from "@workspace/env"
 import { BadGatewayError } from "@workspace/http"
@@ -68,7 +68,7 @@ export class Binance implements DflowBinanceClient {
 	}
 
 	async newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, orderOptions: BinanceNewOrderOptions) {
-		return this.binanceClientAction<BinanceOrderRespFULL>({
+		return this.binanceClientAction<BinanceOrder>({
 			type: "CreateBinanceOrder",
 			data: { symbol, side, type, orderOptions }
 		})

@@ -1,10 +1,10 @@
 import { BinanceExchangeInfoCacheProvider, BinanceKlinesCacheProvider } from "./cacheProviders.js"
 import { BinanceConnector } from "./connector.js"
-import { ErrorBinanceCannotTradeSymbol, ErrorBinanceInvalidOrderOptions, ErrorBinanceSymbolFilter } from "./errors.js"
-import { findSymbolFilterLotSize, findSymbolFilterMinNotional, lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js"
+import { ErrorBinanceInvalidOrderOptions, ErrorBinanceSymbolFilter } from "./errors.js"
+import { lotSizeIsValid, minNotionalIsValid } from "./symbolFilters.js"
 import { getBinanceIntervalTime } from "./time.js"
-import { BinanceAvgPrice, BinanceExchangeInfo, BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderType, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional, BinanceSymbolInfo, BinanceTicker24hr,
-	BinanceTickerPrice } from "./types.js"
+import { isBinanceSymbolFilterLotSize, isBinanceSymbolFilterMinNotional } from "./typeGuards.js"
+import { BinanceExchangeInfo, BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrderType, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional, BinanceSymbolInfo, BinanceTicker24hr, BinanceTickerPrice } from "./types.js"
 
 /**
  * BinanceExchange implements public API requests.
@@ -67,45 +67,29 @@ export class BinanceExchange {
 	}
 
 	/**
-	 * Validate order parameters and try to adjust them; otherwise throw an
-	 * error.
+	 * Validate order parameters and try to adjust them.
 	 *
 	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#new-order-trade}
 	 */
 	async prepareOrder(
 		symbol: string,
-		orderType: BinanceOrderType,
+		orderType: Extract<BinanceOrderType, "MARKET">,
 		orderOptions: BinanceNewOrderOptions
-	): Promise<BinanceNewOrderOptions> {
+	): Promise<BinanceNewOrderOptions | undefined> {
 		const symbolInfo = await this.symbolInfo(symbol)
-		if (!symbolInfo) throw new ErrorBinanceCannotTradeSymbol({ symbol, orderType })
+		if (!symbolInfo) {
+			console.error(`No info for Binance symbol ${symbol}.`)
+			return
+		}
 
 		const { filters } = symbolInfo
 
-		const lotSizeFilter = findSymbolFilterLotSize(filters)
-		const minNotionalFilter = findSymbolFilterMinNotional(filters)
+		const lotSizeFilter = filters.find(isBinanceSymbolFilterLotSize)
+		const minNotionalFilter = filters.find(isBinanceSymbolFilterMinNotional)
 
-		const { price, quantity, quoteOrderQty, stopPrice, timeInForce, trailingDelta } = orderOptions
+		const { quantity, quoteOrderQty } = orderOptions
 
-		const prepareOptions: Record< BinanceOrderType, () => BinanceNewOrderOptions > = {
-			LIMIT: () => {
-				if (price === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				if (quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				if (timeInForce === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				BinanceExchange.throwIfMinNotionalFilterIsInvalid(
-					quoteOrderQty,
-					orderType,
-					minNotionalFilter
-				)
-				return orderOptions
-			},
-
-			LIMIT_MAKER: () => {
-				if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				if (price === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				return orderOptions
-			},
-
+		const prepareOptions: Record<typeof orderType, () => BinanceNewOrderOptions> = {
 			MARKET: () => {
 				if (quantity === undefined && quoteOrderQty === undefined) throw new ErrorBinanceInvalidOrderOptions()
 				if (quantity) {
@@ -117,63 +101,9 @@ export class BinanceExchange {
 				}
 				return { quoteOrderQty }
 			},
-
-			STOP_LOSS: () => {
-				if (quantity === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				if (stopPrice === undefined && trailingDelta === undefined) throw new ErrorBinanceInvalidOrderOptions()
-				return orderOptions
-			},
-
-			STOP_LOSS_LIMIT: () => {
-				if (
-					timeInForce === undefined ||
-					quantity === undefined ||
-					price === undefined ||
-					(stopPrice === undefined && trailingDelta === undefined)
-				) throw new ErrorBinanceInvalidOrderOptions()
-				return orderOptions
-			},
-
-			TAKE_PROFIT: () => {
-				if (quantity === undefined || (stopPrice === undefined && trailingDelta === undefined)) {
-					throw new ErrorBinanceInvalidOrderOptions()
-				}
-				return orderOptions
-			},
-
-			TAKE_PROFIT_LIMIT: () => {
-				if (
-					timeInForce === undefined ||
-					quantity === undefined ||
-					price === undefined ||
-					(stopPrice === undefined && trailingDelta === undefined)
-				) throw new ErrorBinanceInvalidOrderOptions()
-				return orderOptions
-			}
 		}
 
 		return prepareOptions[orderType]()
-	}
-
-	/**
-	 * Current average price for a symbol.
-	 *
-	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#current-average-price}
-	 */
-	avgPrice(symbol: string): Promise<BinanceAvgPrice> {
-		return this.connector.request<BinanceAvgPrice>("GET", "/api/v3/avgPrice", { symbol })
-	}
-
-	/** Check if `symbol` can be traded. */
-	async canTradeSymbol(
-		symbol: string,
-		orderType: BinanceOrderType
-	): Promise<boolean> {
-		const symbolInfo = await this.symbolInfo(symbol)
-		if (!symbolInfo) return false
-		if (!symbolInfo.orderTypes.includes(orderType)) return false
-		if (!symbolInfo.permissions.includes("SPOT")) return false
-		return symbolInfo.status === "TRADING"
 	}
 
 	/**
@@ -185,7 +115,16 @@ export class BinanceExchange {
 		const { exchangeInfoCache: cache } = this
 		const cached = await cache?.getExchangeInfo()
 		if (cached) return cached
-		const data = await this.connector.request<BinanceExchangeInfo>("GET", "/api/v3/exchangeInfo")
+		// Get response and filter unnecessary data.
+		const { serverTime, symbols } = await this.connector.request<BinanceExchangeInfo>("GET", "/api/v3/exchangeInfo")
+		const data = {
+			serverTime,
+			symbols: symbols.map(({
+				baseAsset, baseAssetPrecision, baseCommissionPrecision, filters, isSpotTradingAllowed, quoteAsset, quoteAssetPrecision, status, symbol
+			}) => ({
+				baseAsset, baseAssetPrecision, baseCommissionPrecision, filters, isSpotTradingAllowed, quoteAsset, quoteAssetPrecision, status, symbol
+			})),
+		} satisfies BinanceExchangeInfo
 		await cache?.setExchangeInfo(data)
 		return data
 	}
@@ -223,20 +162,6 @@ export class BinanceExchange {
 		// Cache all klines found.
 		if (cache) for (const kline of klines) await cache.setKline(symbol, interval, kline)
 		return klines
-	}
-
-	/**
-	 * UIKlines.
-	 *
-	 * The request is similar to klines having the same parameters and response
-	 * but `uiKlines` return modified kline data, optimized for presentation of
-	 * candlestick charts.
-	 *
-	 * @see {@link https://binance-docs.github.io/apidocs/spot/en/#uiklines}
-	 */
-	async uiKlines(symbol: string, interval: string, optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
-		return await this.connector.request<BinanceKline[]>("GET", "/api/v3/uiKlines", { symbol, interval, ...optionalParameters }
-		)
 	}
 
 	/** Get `BinanceSymbolInfo` for `symbol`, if any. */

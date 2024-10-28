@@ -1,34 +1,7 @@
 import { BinanceExchangeInfo } from "@workspace/binance"
 
 export const exchangeInfo: BinanceExchangeInfo = {
-	timezone: "UTC",
 	serverTime: 1661290003214,
-	rateLimits: [
-		{
-			rateLimitType: "REQUEST_WEIGHT",
-			interval: "MINUTE",
-			intervalNum: 1,
-			limit: 1200
-		},
-		{
-			rateLimitType: "ORDERS",
-			interval: "SECOND",
-			intervalNum: 10,
-			limit: 50
-		},
-		{
-			rateLimitType: "ORDERS",
-			interval: "DAY",
-			intervalNum: 1,
-			limit: 160000
-		},
-		{
-			rateLimitType: "RAW_REQUESTS",
-			interval: "MINUTE",
-			intervalNum: 5,
-			limit: 6100
-		}
-	],
 	symbols: [
 		{
 			symbol: "ETHBTC",
@@ -36,24 +9,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "ETH",
 			baseAssetPrecision: 8,
 			quoteAsset: "BTC",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -96,7 +54,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "BNBBTC",
@@ -104,24 +61,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "BNB",
 			baseAssetPrecision: 8,
 			quoteAsset: "BTC",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -164,7 +106,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "BNBETH",
@@ -172,24 +113,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "BNB",
 			baseAssetPrecision: 8,
 			quoteAsset: "ETH",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -232,7 +158,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "BNBETH",
@@ -240,24 +165,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "BNB",
 			baseAssetPrecision: 8,
 			quoteAsset: "ETH",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -300,7 +210,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "BTCBUSD",
@@ -308,24 +217,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "BTC",
 			baseAssetPrecision: 8,
 			quoteAsset: "BUSD",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -368,7 +262,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "ETHBUSD",
@@ -376,24 +269,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "ETH",
 			baseAssetPrecision: 8,
 			quoteAsset: "BUSD",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -436,7 +314,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		},
 		{
 			symbol: "BNBBUSD",
@@ -444,24 +321,9 @@ export const exchangeInfo: BinanceExchangeInfo = {
 			baseAsset: "BNB",
 			baseAssetPrecision: 8,
 			quoteAsset: "BUSD",
-			quotePrecision: 8,
 			quoteAssetPrecision: 8,
 			baseCommissionPrecision: 8,
-			quoteCommissionPrecision: 8,
-			orderTypes: [
-				"LIMIT",
-				"LIMIT_MAKER",
-				"MARKET",
-				"STOP_LOSS_LIMIT",
-				"TAKE_PROFIT_LIMIT"
-			],
-			icebergAllowed: true,
-			ocoAllowed: true,
-			quoteOrderQtyMarketAllowed: true,
-			allowTrailingStop: true,
-			cancelReplaceAllowed: true,
 			isSpotTradingAllowed: true,
-			isMarginTradingAllowed: true,
 			filters: [
 				{
 					filterType: "PRICE_FILTER",
@@ -504,7 +366,6 @@ export const exchangeInfo: BinanceExchangeInfo = {
 				{ filterType: "MAX_NUM_ORDERS", maxNumOrders: 200 },
 				{ filterType: "MAX_NUM_ALGO_ORDERS", maxNumAlgoOrders: 5 }
 			],
-			permissions: ["SPOT", "MARGIN", "TRD_GRP_004"]
 		}
 	]
 }

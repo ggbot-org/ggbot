@@ -17,7 +17,7 @@ import { DflowBinanceSymbolAndInterval, DflowBinanceSymbolInfo } from "./symbols
 
 class DflowBinanceClientMock extends DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo() {
-		return Promise.resolve({ timezone: "", serverTime: 0, symbols: [], rateLimits: [] })
+		return Promise.resolve({ serverTime: 0, symbols: [] })
 	}
 	async klines(_symbol: string, _interval: BinanceKlineInterval, _optionalParameters: BinanceKlineOptionalParameters): Promise<BinanceKline[]> {
 		return Promise.resolve([])

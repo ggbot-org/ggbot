@@ -1,4 +1,4 @@
-import { add, balanceIsNotEmpty, BinanceOrderRespFULL, isBinanceOrderRespFULL, mul, sub } from "@workspace/binance"
+import { add, balanceIsNotEmpty, BinanceOrder, mul, sub } from "@workspace/binance"
 import { Balance, BalanceItem } from "@workspace/models"
 import { DflowExecutionReport } from "dflow"
 
@@ -6,7 +6,7 @@ import { dflowBinanceZero as zero } from "./arithmetic.js"
 import { BuyMarket, orderOutputPosition, SellMarket } from "./nodes/trade.js"
 import { DflowBinanceSymbolInfo } from "./symbols.js"
 
-export function getBalanceFromExecutionSteps (
+export function getBalanceFromExecutionSteps(
 	binanceSymbols: DflowBinanceSymbolInfo[],
 	steps: DflowExecutionReport["steps"]
 ): Balance {
@@ -46,12 +46,11 @@ export function getBalanceFromExecutionSteps (
 	return Array.from(balanceMap.values())
 }
 
-export function getOrdersFromExecutionSteps (steps: DflowExecutionReport["steps"]): BinanceOrderRespFULL[] {
-	return steps.reduce<BinanceOrderRespFULL[]>((result, { k: kind, o: outputs }) => {
+export function getOrdersFromExecutionSteps(steps: DflowExecutionReport["steps"]): BinanceOrder[] {
+	return steps.reduce<BinanceOrder[]>((result, { k: kind, o: outputs }) => {
 		if (![BuyMarket.kind, SellMarket.kind].includes(kind)) return result
 		if (!Array.isArray(outputs)) return result
 		const order = outputs[orderOutputPosition].d
-		if (!isBinanceOrderRespFULL(order)) return result
-		return [...result, order]
+		return [...result, order as BinanceOrder]
 	}, [])
 }

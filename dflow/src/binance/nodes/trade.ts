@@ -39,17 +39,11 @@ export class BuyMarket extends DflowNode {
 			quantity:
 				quantity === undefined
 					? undefined
-					: numberToBinanceDecimal(
-						quantity,
-						symbolInfo.baseAssetPrecision
-					),
+					: numberToBinanceDecimal(quantity, symbolInfo.baseAssetPrecision),
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: numberToBinanceDecimal(
-						quoteOrderQty,
-						symbolInfo.quotePrecision
-					)
+					: numberToBinanceDecimal(quoteOrderQty, symbolInfo.quoteAssetPrecision)
 		})
 		this.output(0).data = order
 	}
@@ -83,16 +77,13 @@ export class SellMarket extends DflowNode {
 			quoteOrderQty:
 				quoteOrderQty === undefined
 					? undefined
-					: numberToBinanceDecimal(
-						quoteOrderQty,
-						symbolInfo.quotePrecision
-					)
+					: numberToBinanceDecimal(quoteOrderQty, symbolInfo.quoteAssetPrecision)
 		})
 		this.output(0).data = order
 	}
 }
 
-const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side" | "symbol" | "executedQty"> >(
+const isOrderInfo = objectTypeGuard<Pick<BinanceOrder, "side" | "symbol" | "executedQty">>(
 	({ side, symbol, executedQty }) => typeof side === "string" && typeof symbol === "string" && typeof executedQty === "string"
 )
 
@@ -106,7 +97,7 @@ export class OrderInfo extends DflowNode {
 		outputSymbol,
 		outputOrderQuantity
 	]
-	run () {
+	run() {
 		const order = this.input(0).data
 		if (!isOrderInfo(order)) return this.clearOutputs()
 		this.output(0).data = order.side

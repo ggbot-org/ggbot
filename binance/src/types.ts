@@ -1,4 +1,4 @@
-import { binanceKlineIntervals, binanceOrderRespTypes, binanceOrderSides, binanceOrderStatuses, binanceOrderTypes, binancePermissions, binanceRateLimitIntervals, binanceRateLimitTypes, binanceSymbolStatuses, binanceTimeInForces } from "./constants.js"
+import { binanceKlineIntervals, binanceOrderRespTypes, binanceOrderSides, binanceOrderStatuses, binanceOrderTypes, binancePermissions, binanceSymbolStatuses, binanceTimeInForces } from "./constants.js"
 
 export type BinanceAccountInformation = {
 	accountType: string
@@ -31,48 +31,19 @@ type BinanceAccountTrade = {
 	isBestMatch: boolean
 }
 
+/**
+ * @remarks This is a subset of the actual Binance API response.
+ */
 export type BinanceApiKeyPermission = {
 	ipRestrict: boolean
-	createTime: number
 	/**
 	 * This option allows you to withdraw via API. You must apply the IP Access
 	 * Restriction filter in order to enable withdrawals.
 	 */
 	enableWithdrawals: boolean
-	/**
-	 * This option authorizes this key to transfer funds between your master
-	 * account and your sub account instantly.
-	 */
-	enableInternalTransfer: boolean
-	/**
-	 * Authorizes this key to be used for a dedicated universal transfer API to
-	 * transfer multiple supported currencies. Each business's own transfer API
-	 * rights are not affected by this authorization.
-	 */
-	permitsUniversalTransfer: boolean
-	/** Authorizes this key to Vanilla options trading. */
-	enableVanillaOptions: boolean
 	enableReading: boolean
-	/**
-	 * API Key created before your futures account opened does not support
-	 * futures API service.
-	 */
-	enableFutures: boolean
-	/**
-	 * This option can be adjusted after the Cross Margin account transfer is
-	 * completed.
-	 */
-	enableMargin: boolean
 	/** Spot and margin trading. */
 	enableSpotAndMarginTrading: boolean
-	/** Expiration time for spot and margin trading permission. */
-	tradingAuthorityExpirationTime: number
-}
-
-export type BinanceAvgPrice = {
-	/** Is the number of minutes the average price is calculated over. */
-	mins: number
-	price: string
 }
 
 /**
@@ -99,19 +70,23 @@ export type BinanceErrorPayload = {
 	msg: string
 }
 
+/**
+ * @remarks This is a subset of the actual Binance API response.
+ */
 export type BinanceExchangeInfo = {
-	timezone: string
 	serverTime: number
 	symbols: BinanceSymbolInfo[]
-	rateLimits: BinanceRateLimitInfo[]
+	// timezone
+	// rateLimits
 }
 
+/**
+ * @remarks This is a subset of the actual Binance API response.
+ */
 export type BinanceFill = Pick<
 	BinanceAccountTrade,
 	"price" | "qty" | "commission" | "commissionAsset"
-> & {
-	tradeId: BinanceAccountTrade["id"]
-}
+>
 
 /**
  * Kline/candlestick bars for a symbol.
@@ -193,49 +168,18 @@ export type BinanceNewOrderOptions = Partial<{
 	recvWindow: number
 }>
 
+/**
+ * @remarks This is a subset of the actual Binance API response.
+ */
 export type BinanceOrder = {
 	symbol: string
 	orderId: number
-	orderListId: number
-	clientOrderId: string
 	price: BinanceDecimal
-	origQty: BinanceDecimal
 	executedQty: BinanceDecimal
-	cummulativeQuoteQty: BinanceDecimal
 	transactTime: number
 	status: BinanceOrderStatus
-	timeInForce: BinanceTimeInForce
 	type: BinanceOrderType
 	side: BinanceOrderSide
-	stopPrice: BinanceDecimal
-	icebergQty: BinanceDecimal
-	time: number
-	updateTime: number
-	isWorking: boolean
-	origQuoteOrderQty: BinanceDecimal
-}
-
-export type BinanceOrderRespACK = Pick<
-	BinanceOrder,
-	"symbol" | "orderId" | "orderListId" | "clientOrderId" | "transactTime"
->
-
-export type BinanceOrderRespFULL = Pick<
-	BinanceOrder,
-	| "symbol"
-	| "orderId"
-	| "orderListId"
-	| "clientOrderId"
-	| "transactTime"
-	| "price"
-	| "origQty"
-	| "executedQty"
-	| "cummulativeQuoteQty"
-	| "status"
-	| "timeInForce"
-	| "type"
-	| "side"
-> & {
 	fills: BinanceFill[]
 }
 
@@ -249,38 +193,31 @@ export type BinanceOrderType = (typeof binanceOrderTypes)[number]
 
 type BinancePermission = (typeof binancePermissions)[number]
 
-type BinanceRateLimitInfo = {
-	rateLimitType: BinanceRateLimitType
-	interval: BinanceRateLimitInterval
-	intervalNum: number
-	limit: number
-}
-
-type BinanceRateLimitInterval = (typeof binanceRateLimitIntervals)[number]
-
-type BinanceRateLimitType = (typeof binanceRateLimitTypes)[number]
-
+/**
+ * @remarks This is a subset of the actual Binance API response.
+ */
 export type BinanceSymbolInfo = {
-	allowTrailingStop: boolean
+	// allowTrailingStop: boolean
 	baseAsset: string
 	baseAssetPrecision: number
 	baseCommissionPrecision: number
-	cancelReplaceAllowed: boolean
+	// cancelReplaceAllowed: boolean
 	filters: BinanceSymbolFilter[]
-	icebergAllowed: boolean
-	isMarginTradingAllowed: boolean
+	// icebergAllowed
+	// isMarginTradingAllowed
 	isSpotTradingAllowed: boolean
-	ocoAllowed: boolean
-	orderTypes: BinanceOrderType[]
-	permissions: BinancePermission[]
+	// ocoAllowed: boolean
+	// orderTypes: BinanceOrderType[]
 	quoteAsset: string
 	quoteAssetPrecision: number
-	quoteCommissionPrecision: number
-	quoteOrderQtyMarketAllowed: boolean
-	quotePrecision: number
+	// quoteCommissionPrecision: number
+	// quoteOrderQtyMarketAllowed: boolean
+	// quotePrecision: number
 	status: BinanceSymbolStatus
 	symbol: string
 }
+
+type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
 
 export type BinanceSymbolFilter =
 	| BinanceSymbolFilterLotSize
@@ -505,8 +442,6 @@ type BinanceSymbolFilterTrailingDelta = {
 	maxTrailingBelowDelta: number
 }
 
-type BinanceSymbolStatus = (typeof binanceSymbolStatuses)[number]
-
 export type BinanceTickerPrice = {
 	symbol: string
 	price: BinanceDecimal
@@ -562,12 +497,12 @@ export type BinanceTicker24hr = {
 	quoteVolume: BinanceDecimal
 	openTime: number
 	closeTime: number
-	/** First tradeId. */
-	firstId: 28385
-	/** Last tradeId. */
-	lastId: 28460
 	/** Trade count. */
 	count: number
+	// First tradeId
+	// firstId
+	// Last tradeId
+	// lastId: number
 }
 
 type BinanceTimeInForce = (typeof binanceTimeInForces)[number]
