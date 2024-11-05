@@ -1,14 +1,13 @@
 import { S3Client } from "@aws-sdk/client-s3"
-import { AwsRegion, AwsResource } from "@workspace/aws-types"
 
 import { s3Client } from "./client.js"
 
-export class S3Bucket implements AwsResource {
+export class S3Bucket {
 	readonly name: string
-	readonly region: AwsRegion
+	readonly region: string
 	readonly client: S3Client
 
-	constructor(region: AwsRegion, name: string) {
+	constructor(region: string, name: string) {
 		this.region = region
 		this.name = name
 		this.client = s3Client(region)

@@ -13,8 +13,7 @@
     "check_types": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.668.0",
-    "@workspace/aws-types": "0.0.0"
+    "@aws-sdk/client-s3": "3.668.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

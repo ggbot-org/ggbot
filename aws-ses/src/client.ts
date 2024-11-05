@@ -1,6 +1,5 @@
 import { SESClient } from "@aws-sdk/client-ses"
-import { AwsRegion } from "@workspace/aws-types"
 
-export function sesClient (region: AwsRegion) {
+export function sesClient (region: string) {
 	return new SESClient({ apiVersion: "2010-12-01", region })
 }

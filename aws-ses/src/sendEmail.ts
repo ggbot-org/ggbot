@@ -1,5 +1,4 @@
 import { SendEmailCommand } from "@aws-sdk/client-ses"
-import { AwsRegion } from "@workspace/aws-types"
 
 import { sesClient } from "./client.js"
 
@@ -12,7 +11,7 @@ type SendEmailInput = {
 }
 
 export async function sendEmail (
-	region: AwsRegion,
+	region: string,
 	{ html, source, subject, toAddresses, text }: SendEmailInput
 ) {
 	const Charset = "UTF-8"

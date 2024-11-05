@@ -1,9 +1,7 @@
-import { AwsResource } from "@workspace/aws-types"
-
 export type PolicyDocumentStatement<Action extends string> = {
 	Action: Action[]
 	Effect: "Allow"
-	Resource: AwsResource["arn"] | Array<AwsResource["arn"]>
+	Resource: string | Array<string>
 }
 
 export type IamPolicyDocument<StatementName extends string, StatementAction extends string> = {

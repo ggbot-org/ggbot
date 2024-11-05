@@ -1,13 +1,11 @@
-import { AwsAccountId, AwsRegion, AwsResource } from "@workspace/aws-types"
-
 import { PolicyDocumentStatement } from "./types.js"
 
-export class IamPolicy implements AwsResource {
-	readonly accountId: AwsAccountId
-	readonly region: AwsRegion
+export class IamPolicy {
+	readonly accountId: string
+	readonly region: string
 	readonly name: string
 
-	constructor(accountId: AwsAccountId, region: AwsRegion, name: string) {
+	constructor(accountId: string, region: string, name: string) {
 		this.accountId = accountId
 		this.region = region
 		this.name = name

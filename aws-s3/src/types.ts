@@ -1,8 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3"
-import { AwsRegion } from "@workspace/aws-types"
 
 export type S3BucketProvider = {
-	readonly region: AwsRegion
+	readonly region: string
 	readonly Bucket: string
 	readonly client: S3Client
 }

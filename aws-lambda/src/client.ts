@@ -1,6 +1,5 @@
 import { LambdaClient } from "@aws-sdk/client-lambda"
-import { AwsRegion } from "@workspace/aws-types"
 
-export function lambdaClient(region: AwsRegion) {
+export function lambdaClient(region: string) {
 	return new LambdaClient({ region })
 }

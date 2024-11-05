@@ -1,10 +1,9 @@
 import { AssociateAddressCommand, AssociateAddressCommandInput, AssociateAddressCommandOutput, DescribeAddressesCommand, DescribeAddressesCommandInput, DescribeAddressesCommandOutput, DisassociateAddressCommand, DisassociateAddressCommandInput, DisassociateAddressCommandOutput } from "@aws-sdk/client-ec2"
-import { AwsRegion } from "@workspace/aws-types"
 
 import { ec2Client } from "./client.js"
 
 export async function associateElasticIp (
-	region: AwsRegion,
+	region: string,
 	{ AllocationId, InstanceId }: Required< Pick<AssociateAddressCommandInput, "AllocationId" | "InstanceId"> >
 ): Promise<AssociateAddressCommandOutput> {
 	const command = new AssociateAddressCommand({ AllocationId, InstanceId })
@@ -13,7 +12,7 @@ export async function associateElasticIp (
 }
 
 export async function describeElasticIps (
-	region: AwsRegion,
+	region: string,
 	{ PublicIps }: Required<Pick<DescribeAddressesCommandInput, "PublicIps">>
 ): Promise<DescribeAddressesCommandOutput> {
 	const command = new DescribeAddressesCommand({ PublicIps })
@@ -22,7 +21,7 @@ export async function describeElasticIps (
 }
 
 export async function disassociateElasticIp (
-	region: AwsRegion,
+	region: string,
 	{ AssociationId }: Required<Pick<DisassociateAddressCommandInput, "AssociationId">>
 ): Promise<DisassociateAddressCommandOutput> {
 	const command = new DisassociateAddressCommand({ AssociationId })

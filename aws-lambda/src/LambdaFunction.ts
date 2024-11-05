@@ -1,10 +1,9 @@
 import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from "@aws-sdk/client-lambda"
-import { AwsAccountId, AwsRegion, AwsResource } from "@workspace/aws-types"
 
 import { lambdaClient } from "./client.js"
 
-export class LambdaFunction implements AwsResource {
-	readonly accountId: AwsAccountId
+export class LambdaFunction {
+	readonly accountId: string
 	readonly region: string
 	readonly functionName: string
 	readonly architecture = Architecture.arm64
@@ -12,7 +11,7 @@ export class LambdaFunction implements AwsResource {
 	readonly runtime = Runtime.nodejs20x
 	readonly handler = "index.handler"
 
-	constructor(accountId: AwsAccountId, region: AwsRegion, functionName: string, executionRoleArn: string) {
+	constructor(accountId: string, region: string, functionName: string, executionRoleArn: string) {
 		this.accountId = accountId
 		this.region = region
 		this.functionName = functionName
@@ -23,7 +22,7 @@ export class LambdaFunction implements AwsResource {
 		return LambdaFunction.arn(this.accountId, this.region, this.functionName)
 	}
 
-	static arn(accountId: AwsAccountId, region: AwsRegion, functionName: string) {
+	static arn(accountId: string, region: string, functionName: string) {
 		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
 	}
 

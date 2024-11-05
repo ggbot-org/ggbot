@@ -15,7 +15,6 @@
     "@workspace/aws-lambda": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
     "@workspace/aws-ses": "0.0.0",
-    "@workspace/aws-types": "0.0.0",
     "@workspace/database": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",

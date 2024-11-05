@@ -14,8 +14,7 @@
     "e2e:sendEmail": "node --env-file=../.typescript.env ./src/end-to-end-tests/sendEmail.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-ses": "3.668.0",
-    "@workspace/aws-types": "0.0.0"
+    "@aws-sdk/client-ses": "3.668.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

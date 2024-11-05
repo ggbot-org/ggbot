@@ -12,9 +12,7 @@
     "cleanup": "tsc --build --clean",
     "check_types": "tsc --noEmit"
   },
-  "dependencies": {
-    "@workspace/aws-types": "0.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"
   }

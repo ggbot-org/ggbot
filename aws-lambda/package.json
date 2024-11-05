@@ -13,8 +13,7 @@
     "check_types": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "3.645.0",
-    "@workspace/aws-types": "0.0.0"
+    "@aws-sdk/client-lambda": "3.645.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

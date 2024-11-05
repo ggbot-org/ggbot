@@ -20,11 +20,6 @@ graph LR
     workspace/authentication-api --- workspace/database
     workspace/authentication-api --- workspace/email-messages
     workspace/authentication-api --- workspace/s3-data-bucket
-    workspace/aws-ec2 --- workspace/aws-types
-    workspace/aws-iam --- workspace/aws-types
-    workspace/aws-lambda --- workspace/aws-types
-    workspace/aws-s3 --- workspace/aws-types
-    workspace/aws-ses --- workspace/aws-types
     workspace/backtesting --- workspace/dflow
     workspace/backtesting-webworker --- workspace/backtesting
     workspace/backtesting-webworker --- workspace/indexeddb-binance
