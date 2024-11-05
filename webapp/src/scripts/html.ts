@@ -23,6 +23,8 @@ type HeadTagArgs = {
 
 type HtmlTagArgs = HeadTagArgs & BodyTagArgs
 
+const title = ENV.PROJECT_SHORT_NAME()
+
 // Use default path for favicon.ico, i.e. put in the root public folder,
 // in case some browser does not read the `link rel="icon"` tag.
 const faviconIcoUrl = "/favicon.ico"
@@ -91,7 +93,6 @@ function htmlTag({ hasRootDiv, meta, stylesheets, scripts }: HtmlTagArgs) {
 }
 
 export function html(scriptJs: string) {
-	const title = ENV.PROJECT_SHORT_NAME()
 	return [
 		"<!DOCTYPE html>",
 		...htmlTag({

@@ -1,15 +1,9 @@
 # Development
 
-To start developing locally, use the following instructions.
-
-See [env/README.md](./env/README.md) for the complete list of environment variables used.
-
 To run the webapp locally, set the following environment variables
 
 ```sh
-export DEPLOY_STAGE=local
 export DNS_DOMAIN=ggbot.org
-export PROJECT_SHORT_NAME=ggbot
 ```
 
 Install dependencies and build packages.
@@ -25,10 +19,23 @@ Start webapp with
 npm start
 ```
 
+Notice that to deploy webapp you need to set the following environment variables
+
+- `DEPLOY_STAGE`
+- `PROJECT_SHORT_NAME`
+- `STRIPE_PLAN_BASIC_MONTHLY_PRICE`
+- `GITHUB_ORG_URL`
+- `TELEGRAM_SUPPORT_URL`
+
+See [env/README.md](./env/README.md) for the complete list of environment variables used.
+
 To launch linting, type checking and tests:
 
 ```sh
 npm run eslint
+npm run stylelint
 npm run check_types
 npm test
 ```
+
+Launch eslint with fix flag: `npm run eslint--fix`.

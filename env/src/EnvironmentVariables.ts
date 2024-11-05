@@ -1,12 +1,17 @@
-import { DeployStage } from "@workspace/models"
+import { DeployStage, isDeployStage } from "@workspace/models"
 
 import { EnvironmentVariableName } from "./environmentVariableNames.js"
 
 function getVariable(
 	VARIABLE_VALUE: unknown,
-	VARIABLE_NAME: EnvironmentVariableName
+	VARIABLE_NAME: EnvironmentVariableName,
+	DEFAULT_VALUE?: string
 ) {
 	if (typeof VARIABLE_VALUE === "string") return VARIABLE_VALUE
+	if (DEFAULT_VALUE) {
+		console.error(`Missing environment variable ${VARIABLE_NAME}, using default value ${DEFAULT_VALUE}`)
+		return DEFAULT_VALUE
+	}
 	throw new Error(`Missing environment variable ${VARIABLE_NAME}`)
 }
 
@@ -40,23 +45,25 @@ class EnvironmentVariables {
 	}
 
 	DEPLOY_STAGE(): DeployStage {
-		return getVariable(process.env.DEPLOY_STAGE, "DEPLOY_STAGE") as DeployStage
+		const deployStage = getVariable(process.env.DEPLOY_STAGE, "DEPLOY_STAGE", "local")
+		if (isDeployStage(deployStage)) return deployStage
+		throw new Error(`Invalid DeployStage ${deployStage}`)
 	}
 
 	DNS_DOMAIN() {
 		return getVariable(process.env.DNS_DOMAIN, "DNS_DOMAIN")
 	}
 
-	GITHUB_ORG_URL() {
-		return getVariable(process.env.GITHUB_ORG_URL, "GITHUB_ORG_URL")
+	GITHUB_ORG_URL(defaultValue?: string) {
+		return getVariable(process.env.GITHUB_ORG_URL, "GITHUB_ORG_URL", defaultValue)
 	}
 
 	PROJECT_SHORT_NAME() {
-		return getVariable(process.env.PROJECT_SHORT_NAME, "PROJECT_SHORT_NAME")
+		return getVariable(process.env.PROJECT_SHORT_NAME, "PROJECT_SHORT_NAME", "project")
 	}
 
-	STRIPE_PLAN_BASIC_MONTHLY_PRICE() {
-		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, "STRIPE_PLAN_BASIC_MONTHLY_PRICE")
+	STRIPE_PLAN_BASIC_MONTHLY_PRICE(defaultValue?: string) {
+		return getVariable(process.env.STRIPE_PLAN_BASIC_MONTHLY_PRICE, "STRIPE_PLAN_BASIC_MONTHLY_PRICE", defaultValue)
 	}
 
 	STRIPE_PLAN_BASIC_PRICE_ID() {
@@ -67,8 +74,8 @@ class EnvironmentVariables {
 		return getVariable(process.env.STRIPE_SECRET_KEY, "STRIPE_SECRET_KEY")
 	}
 
-	TELEGRAM_SUPPORT_URL() {
-		return getVariable(process.env.TELEGRAM_SUPPORT_URL, "TELEGRAM_SUPPORT_URL")
+	TELEGRAM_SUPPORT_URL(defaultValue?: string) {
+		return getVariable(process.env.TELEGRAM_SUPPORT_URL, "TELEGRAM_SUPPORT_URL", defaultValue)
 	}
 }
 
