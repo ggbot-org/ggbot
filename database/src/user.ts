@@ -16,7 +16,7 @@ export class UserDatabase implements UserDatabaseAction {
 	private binanceDatabase: BinanceDatabase
 	private publicDatabase: PublicDatabase
 
-	constructor(accountKey: UserDatabase["accountKey"], documentProvider: UserDatabase["documentProvider"]) {
+	constructor(accountKey: AccountKey, documentProvider: DocumentProviderLevel2) {
 		this.accountKey = accountKey
 		this.binanceDatabase = new BinanceDatabase(accountKey, documentProvider)
 		this.publicDatabase = new PublicDatabase(documentProvider)

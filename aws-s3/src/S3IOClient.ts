@@ -20,7 +20,7 @@ export class S3IOClient implements S3BucketProvider {
 	readonly Bucket: string
 	readonly region: string
 
-	constructor(region: S3IOClient["region"], Bucket: S3IOClient["Bucket"]) {
+	constructor(region: string, Bucket: string) {
 		this.client = s3Client(region)
 		this.Bucket = Bucket
 		this.region = region

@@ -5,7 +5,7 @@ import { pathname } from "./locators.js"
 export class PaymentDatabase implements PaymentAction {
 	private documentProvider: DocumentProviderLevel2
 
-	constructor(documentProvider: PaymentDatabase["documentProvider"]) {
+	constructor(documentProvider: DocumentProviderLevel2) {
 		this.documentProvider = documentProvider
 	}
 

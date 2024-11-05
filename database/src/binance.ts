@@ -7,7 +7,7 @@ export class BinanceDatabase implements BinanceDatabaseAction {
 	private accountKey: AccountKey
 	private documentProvider: DocumentProviderLevel1
 
-	constructor(accountKey: BinanceDatabase["accountKey"], documentProvider: BinanceDatabase["documentProvider"]) {
+	constructor(accountKey: AccountKey, documentProvider: DocumentProviderLevel1) {
 		this.accountKey = accountKey
 		this.documentProvider = documentProvider
 	}

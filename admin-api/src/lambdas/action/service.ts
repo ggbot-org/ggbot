@@ -1,4 +1,4 @@
-import { AdminClientActionOutput as Output, AdminClientActionType, ApiService, DocumentProviderLevel2, isAdminClientActionInput as isInput } from "@workspace/api"
+import { AdminClientActionOutput as Output, AdminClientActionType, ApiService, DocumentProviderLevel3, isAdminClientActionInput as isInput } from "@workspace/api"
 import { signSession } from "@workspace/authentication"
 import { AdminDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
@@ -8,7 +8,7 @@ import { today } from "minimal-time-helpers"
 export class Service implements ApiService<AdminClientActionType> {
 	dataProvider: AdminDatabase
 
-	constructor(documentProvider: DocumentProviderLevel2) {
+	constructor(documentProvider: DocumentProviderLevel3) {
 		this.dataProvider = new AdminDatabase(documentProvider)
 	}
 

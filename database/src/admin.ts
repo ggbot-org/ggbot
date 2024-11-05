@@ -9,7 +9,7 @@ export class AdminDatabase implements AdminDatabaseAction {
 	private documentProvider: DocumentProviderLevel3
 	private executorDatabase: ExecutorDatabase
 
-	constructor(documentProvider: AdminDatabase["documentProvider"]) {
+	constructor(documentProvider: DocumentProviderLevel3) {
 		this.executorDatabase = new ExecutorDatabase(documentProvider)
 		this.documentProvider = documentProvider
 	}

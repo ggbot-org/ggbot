@@ -119,7 +119,7 @@ async function executeTrailingStop (
 		to: [nodeId, "i6"]
 	})
 
-	const executor = new DflowCommonExecutor({ graph: { nodes, edges } })
+	const executor = new DflowCommonExecutor({ nodes, edges })
 	const { execution, memory: memoryOutput, memoryChanged } = await executor.run({ params: {}, memory: memoryInput, time: now() })
 
 	const exitTrailing = getDflowExecutionOutputData(execution, nodeId, 0)

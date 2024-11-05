@@ -26,8 +26,5 @@
 export type IDBInstance = {
 	readonly databaseName: string
 	readonly databaseVersion: number
-	databaseUpgrade(
-		db: IDBDatabase,
-		version: IDBInstance["databaseVersion"]
-	): void
+	databaseUpgrade(db: IDBDatabase, version: IDBInstance["databaseVersion"]): void
 }

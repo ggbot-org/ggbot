@@ -6,7 +6,7 @@ import { dirnameDelimiter, dirnamePrefix, locatorToItemKey, pathname } from "./l
 export class ExecutorDatabase implements ExecutorAction {
 	private documentProvider: DocumentProviderLevel3
 
-	constructor(documentProvider: ExecutorDatabase["documentProvider"]) {
+	constructor(documentProvider: DocumentProviderLevel3) {
 		this.documentProvider = documentProvider
 	}
 

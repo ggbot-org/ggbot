@@ -24,7 +24,7 @@ export type DflowExecutor<RunContext extends DflowCommonExecutorContext> = {
 export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorContext> {
 	readonly graph: StrategyFlowGraph
 	nodesCatalog: DflowNodesCatalog
-	constructor({ graph }: Pick<DflowCommonExecutor, "graph">) {
+	constructor(graph: StrategyFlowGraph) {
 		this.graph = graph
 		this.nodesCatalog = nodesCatalog
 	}

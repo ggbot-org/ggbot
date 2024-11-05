@@ -5,7 +5,7 @@ import { pathname } from "./locators.js"
 export class PublicDatabase implements PublicAction {
 	private documentProvider: DocumentProviderLevel1
 
-	constructor(documentProvider: PublicDatabase["documentProvider"]) {
+	constructor(documentProvider: DocumentProviderLevel1) {
 		this.documentProvider = documentProvider
 	}
 

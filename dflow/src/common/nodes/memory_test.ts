@@ -14,23 +14,21 @@ describe("deleteMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
-				graph: {
-					nodes: [
-						{
-							id: "key",
-							text: JSON.stringify(key),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: nodeId,
-							text: "deleteMemory",
-							ins: [{ id: "key" }]
-						}
-					],
-					edges: [
-						{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
-					]
-				}
+				nodes: [
+					{
+						id: "key",
+						text: JSON.stringify(key),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: nodeId,
+						text: "deleteMemory",
+						ins: [{ id: "key" }]
+					}
+				],
+				edges: [
+					{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+				]
 			})
 			const { memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
 			assert.equal(memoryChanged, true)
@@ -45,23 +43,21 @@ describe("getMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
-				graph: {
-					nodes: [
-						{
-							id: "key",
-							text: JSON.stringify(key),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: nodeId,
-							text: "getMemory",
-							ins: [{ id: "key" }, { id: "default" }]
-						}
-					],
-					edges: [
-						{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
-					]
-				}
+				nodes: [
+					{
+						id: "key",
+						text: JSON.stringify(key),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: nodeId,
+						text: "getMemory",
+						ins: [{ id: "key" }, { id: "default" }]
+					}
+				],
+				edges: [
+					{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+				]
 			})
 			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
 			assert.equal(memoryChanged, false)
@@ -75,33 +71,31 @@ describe("getMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
-				graph: {
-					nodes: [
-						{
-							id: "key",
-							text: JSON.stringify(key),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: "default",
-							text: JSON.stringify(value),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: nodeId,
-							text: "getMemory",
-							ins: [{ id: "key" }, { id: "default" }]
-						}
-					],
-					edges: [
-						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
-						{
-							id: "e2",
-							from: ["default", "out"],
-							to: [nodeId, "default"]
-						}
-					]
-				}
+				nodes: [
+					{
+						id: "key",
+						text: JSON.stringify(key),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: "default",
+						text: JSON.stringify(value),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: nodeId,
+						text: "getMemory",
+						ins: [{ id: "key" }, { id: "default" }]
+					}
+				],
+				edges: [
+					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{
+						id: "e2",
+						from: ["default", "out"],
+						to: [nodeId, "default"]
+					}
+				]
 			})
 			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
 			assert.equal(memoryChanged, false)
@@ -116,33 +110,31 @@ describe("getMemory", () => {
 		const defaultValue = "my default value"
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
-				graph: {
-					nodes: [
-						{
-							id: "key",
-							text: JSON.stringify(key),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: "default",
-							text: JSON.stringify(defaultValue),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: nodeId,
-							text: "getMemory",
-							ins: [{ id: "key" }, { id: "default" }]
-						}
-					],
-					edges: [
-						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
-						{
-							id: "e2",
-							from: ["default", "out"],
-							to: [nodeId, "default"]
-						}
-					]
-				}
+				nodes: [
+					{
+						id: "key",
+						text: JSON.stringify(key),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: "default",
+						text: JSON.stringify(defaultValue),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: nodeId,
+						text: "getMemory",
+						ins: [{ id: "key" }, { id: "default" }]
+					}
+				],
+				edges: [
+					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{
+						id: "e2",
+						from: ["default", "out"],
+						to: [nodeId, "default"]
+					}
+				]
 			})
 			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
 			assert.equal(memoryChanged, false)
@@ -158,33 +150,31 @@ describe("setMemory", () => {
 		const key = "memory key"
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
-				graph: {
-					nodes: [
-						{
-							id: "key",
-							text: JSON.stringify(key),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: "value",
-							text: JSON.stringify(value),
-							outs: [{ id: "out" }]
-						},
-						{
-							id: nodeId,
-							text: "setMemory",
-							ins: [{ id: "key" }, { id: "value" }]
-						}
-					],
-					edges: [
-						{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
-						{
-							id: "e2",
-							from: ["value", "out"],
-							to: [nodeId, "value"]
-						}
-					]
-				}
+				nodes: [
+					{
+						id: "key",
+						text: JSON.stringify(key),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: "value",
+						text: JSON.stringify(value),
+						outs: [{ id: "out" }]
+					},
+					{
+						id: nodeId,
+						text: "setMemory",
+						ins: [{ id: "key" }, { id: "value" }]
+					}
+				],
+				edges: [
+					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{
+						id: "e2",
+						from: ["value", "out"],
+						to: [nodeId, "value"]
+					}
+				]
 			})
 			const { memory, memoryChanged } = await executor.run({ params: {}, memory: {}, time: now() })
 			assert.equal(memoryChanged, true)

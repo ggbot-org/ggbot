@@ -97,29 +97,27 @@ type ExecuteOperatorTestData = {
 async function executeOperator (nodeKind: ArithmeticNodeKind, { a, b }: ExecuteOperatorInput): Promise<ExecuteOperatorOutput> {
 	const nodeId = "operator"
 	const executor = new DflowCommonExecutor({
-		graph: {
-			nodes: [
-				{
-					id: "i1",
-					text: JSON.stringify(a),
-					outs: [{ id: "o1" }]
-				},
-				{
-					id: "i2",
-					text: JSON.stringify(b),
-					outs: [{ id: "o2" }]
-				},
-				{
-					id: nodeId,
-					text: nodeKind,
-					ins: [{ id: "a" }, { id: "b" }]
-				}
-			],
-			edges: [
-				{ id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-				{ id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] }
-			]
-		}
+		nodes: [
+			{
+				id: "i1",
+				text: JSON.stringify(a),
+				outs: [{ id: "o1" }]
+			},
+			{
+				id: "i2",
+				text: JSON.stringify(b),
+				outs: [{ id: "o2" }]
+			},
+			{
+				id: nodeId,
+				text: nodeKind,
+				ins: [{ id: "a" }, { id: "b" }]
+			}
+		],
+		edges: [
+			{ id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
+			{ id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] }
+		]
 	})
 	const { execution } = await executor.run({
 		params: {},

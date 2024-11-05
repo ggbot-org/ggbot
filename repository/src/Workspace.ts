@@ -5,9 +5,9 @@ export class Workspace implements DirectoryProvider {
 	pathname: string
 	packageJson: WorkspacePackageJson
 
-	constructor(pathname: Workspace["pathname"]) {
+	constructor(pathname: string) {
 		this.pathname = pathname
-		this.packageJson = new WorkspacePackageJson(this.pathname)
+		this.packageJson = new WorkspacePackageJson(pathname)
 	}
 
 	async read() {

@@ -8,7 +8,7 @@ export class BinanceExchangeInfoCacheIDB
 implements BinanceExchangeInfoCacheProvider {
 	private binanceIDB: BinanceIDB
 
-	constructor(binanceIDB: BinanceExchangeInfoCacheIDB["binanceIDB"]) {
+	constructor(binanceIDB: BinanceIDB) {
 		this.binanceIDB = binanceIDB
 	}
 

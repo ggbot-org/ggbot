@@ -12,9 +12,7 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 	/** The `time` used by simulated run. It is needed to manage cache. */
 	time: Time = now()
 
-	constructor(
-		schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
-	) {
+	constructor(schedulingInterval: DflowBinanceKlineInterval) {
 		this.schedulingInterval = schedulingInterval
 	}
 

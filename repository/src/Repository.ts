@@ -7,17 +7,12 @@ import { RepositoryTsconfigJson } from "./RepositoryTsconfigJson.js"
 import { Workspace } from "./Workspace.js"
 
 export class Repository implements DirectoryProvider {
-	static pathname: Repository["pathname"] = resolve(
-		dirname(dirname(dirname(fileURLToPath(import.meta.url))))
-	)
-
-	pathname: string
+	pathname = resolve(dirname(dirname(dirname(fileURLToPath(import.meta.url)))))
 	packageJson: RepositoryPackageJson
 	tsconfigJson: RepositoryTsconfigJson
 	readonly workspaces = new Map<Workspace["pathname"], Workspace>()
 
 	constructor() {
-		this.pathname = Repository.pathname
 		this.packageJson = new RepositoryPackageJson(this.pathname)
 		this.tsconfigJson = new RepositoryTsconfigJson(this.pathname)
 	}

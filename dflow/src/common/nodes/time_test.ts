@@ -26,12 +26,8 @@ describe("today", () => {
 		const day = "1978-12-31"
 		const nodeId = "a"
 		const executor = new DflowCommonExecutor({
-			graph: {
-				nodes: [
-					{ id: nodeId, text: "today" }
-				],
-				edges: []
-			}
+			nodes: [{ id: nodeId, text: "today" }],
+			edges: []
 		})
 		const { execution } = await executor.run({ params: {}, memory: {}, time: dayToTime(day) })
 		assert.equal(getDflowExecutionOutputData(execution, nodeId, 0), day)
