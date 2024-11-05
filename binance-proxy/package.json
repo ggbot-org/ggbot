@@ -7,14 +7,14 @@
     "build": "tsc --build",
     "check_types": "tsc --noEmit",
     "cleanup": "tsc --build --clean",
-    "prebuild": "npm run cleanup"
+    "e2e:apiRestrictions": "node --env-file ../.typescript.env ./src/end-to-end-tests/apiRestrictions.ts",
+    "e2e:newOrder": "node --env-file ../.typescript.env ./src/end-to-end-tests/newOrder.ts"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
     "@workspace/aws-ec2": "0.0.0",
     "@workspace/authentication": "0.0.0",
     "@workspace/binance": "0.0.0",
-    "@workspace/binance-client": "0.0.0",
     "@workspace/database": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/http": "0.0.0",

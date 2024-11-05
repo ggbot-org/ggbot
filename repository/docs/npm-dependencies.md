@@ -25,10 +25,8 @@ graph LR
     workspace/backtesting-webworker --- workspace/indexeddb-binance
     workspace/backtesting-webworker --- workspace/webstorage
     workspace/binance --- workspace/cache
-    workspace/binance-client --- workspace/binance
     workspace/binance-proxy --- workspace/aws-ec2
     workspace/binance-proxy --- workspace/authentication
-    workspace/binance-proxy --- workspace/binance-client
     workspace/binance-proxy --- workspace/database
     workspace/binance-proxy --- workspace/s3-data-bucket
     workspace/database --- workspace/api

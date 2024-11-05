@@ -14,7 +14,7 @@ for LAMBDA in action; do
 	cd -
 
 	# Copy internal deps.
-	for WORKSPACE in api authentication aws-s3 binance binance-client cache database dflow env email-messages http locators models s3-data-bucket; do
+	for WORKSPACE in api authentication aws-s3 binance cache database dflow env email-messages http locators models s3-data-bucket; do
 		WORKSPACE_DIR=$DIST_DIR/node_modules/@workspace/$WORKSPACE
 		mkdir -p $WORKSPACE_DIR/dist
 		cp -R ../$WORKSPACE/dist/* $WORKSPACE_DIR/dist

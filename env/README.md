@@ -20,7 +20,7 @@ The following environment variables are used:
   - `TELEGRAM_SUPPORT_URL`
   - `GITHUB_ORG_URL`
 
-Optional environment variables needed to launch [binance-client end to end tests](../binance-client/docs/end-to-end-tests.md).
+Optional environment variables needed to launch [binance-proxy end to end tests](../binance-proxy/docs/end-to-end-tests.md).
 
 - `BINANCE_API_KEY`
 - `BINANCE_API_SECRET`

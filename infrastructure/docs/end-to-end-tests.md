@@ -2,7 +2,7 @@
 
 List of end to end test documentations, per workspace:
 
--   [binance-client](../../binance-client/docs/end-to-end-tests.md)
+-   [binance-proxy](../../binance-proxy/docs/end-to-end-tests.md)
 -   [executor](../../executor/docs/end-to-end-tests.md)
 -   [aws-ses](../../aws-ses/docs/end-to-end-tests.md)
 

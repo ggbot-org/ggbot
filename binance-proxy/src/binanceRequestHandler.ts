@@ -3,11 +3,12 @@ import { IncomingMessage } from "node:http"
 import { binanceClientActions, isActionInput } from "@workspace/api"
 import { ApiService, BinanceClientActionType, isBinanceClientActionInput as isInput } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import { BinanceClient } from "@workspace/binance-client"
 import { BinanceDatabase } from "@workspace/database"
 import { BadRequestError } from "@workspace/http"
 import { BinanceApiConfig, ErrorAccountItemNotFound, SerializableData } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
+
+import { BinanceClient } from "./BinanceClient.js"
 
 class BinanceService implements ApiService<BinanceClientActionType> {
 	binance: BinanceClient
