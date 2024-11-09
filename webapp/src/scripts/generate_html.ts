@@ -1,13 +1,13 @@
 import { join } from "node:path"
 
-import { ENV } from "@workspace/env"
 import { webappPagePathname, WebappURLs } from "@workspace/locators"
 import writeFile from "write-file-utf8"
 
 import { publicDir, webappEcmaScriptsConfig } from "../package.js"
 import { html } from "./html.js"
 
-const webapp = new WebappURLs(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())
+// Here webapp is used only for pathnames. Any URL is fine as baseURL.
+const webapp = new WebappURLs(new URL("http://i.com"))
 
 function jsPath(path: string[]) {
 	return `/${path.join("/")}`

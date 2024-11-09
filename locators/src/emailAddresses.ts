@@ -1,3 +1,3 @@
-export function noReplyEmailAddress (dnsDomain: string) {
+export function noReplyEmailAddress(dnsDomain: string) {
 	return `noreply@${dnsDomain}`
 }

@@ -3,7 +3,7 @@ import { NoNetwork } from "_/components/NoNetwork"
 import { Footer } from "_/components/public/Footer"
 import { Navigation } from "_/components/public/Navigation"
 import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
-import { amazonWebServices, binance, stripe } from "@workspace/locators"
+import { amazonWebServices, exchange, stripe } from "@workspace/locators"
 import { numYearsTradingOperationsRetention } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
@@ -59,7 +59,7 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.binance" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.binanceCustomerData" values={formattedMessageMarkupWithLinkTo(binance.homepage)} />
+					<FormattedMessage id="Privacy.binanceCustomerData" values={formattedMessageMarkupWithLinkTo(exchange.binance.homepage)} />
 				</Paragraph>
 				<Paragraph>
 					<FormattedMessage id="Privacy.binanceTradingData" values={{ numYears: numYearsTradingOperationsRetention, ...formattedMessageMarkup }} />

@@ -1,9 +1,11 @@
+import { DeployStage } from "@workspace/models"
+
 import { FQDN } from "./FQDNs.js"
 
 export class AuthURLs {
 	baseURL: URL
 
-	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
+	constructor(deployStage: DeployStage, dnsDomain: string) {
 		this.baseURL = new URL(`https://${new FQDN(deployStage, dnsDomain).authDomain}`)
 	}
 

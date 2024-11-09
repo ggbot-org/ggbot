@@ -1,6 +1,5 @@
 import { Button, Buttons, Div, OneColumn, Title } from "_/components/library"
-import { GoCopyStrategy } from "_/components/public/StrategyActions"
-import { ShareStrategy } from "_/components/ShareStrategy"
+import { GoCopyStrategy, ShareStrategy } from "_/components/public/StrategyActions"
 import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
 import { DeleteStrategy } from "_/components/user/DeleteStrategy"
 import { RenameStrategy } from "_/components/user/RenameStrategy"

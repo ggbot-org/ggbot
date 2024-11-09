@@ -3,10 +3,12 @@ import { test } from "node:test"
 
 import { nullAccountKey as accountKey, nullStrategyKey as strategyKey } from "@workspace/models"
 
-import { WebappURLs } from "./webapp.js"
+import { FQDN } from "./FQDNs.js"
+import { WebappBaseURL, WebappURLs } from "./webapp.js"
 
 test("WebappURLs", () => {
-	const webapp = new WebappURLs("main", "example.com")
+	const baseURL = new WebappBaseURL(new FQDN("main", "example.com"))
+	const webapp = new WebappURLs(baseURL)
 
 	// Public
 

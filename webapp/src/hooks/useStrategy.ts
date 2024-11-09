@@ -13,15 +13,17 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 	// Fetch strategy if not found in web storage.
 	useEffect(() => {
 		if (!strategyKey) return
+		if (strategy) return
 		if (canRun) request(strategyKey)
 	}, [canRun, request, strategyKey])
 
 	// Store strategy in web storage.
 	useEffect(() => {
 		if (!strategyKey) return
-		setStrategy(data)
-		// Do not store strategy if it is null.
-		if (data) sessionWebStorage.strategy(strategyKey).set(data)
+		if (data) {
+			setStrategy(data)
+			sessionWebStorage.strategy(strategyKey).set(data)
+		}
 	}, [data, strategyKey])
 
 	return {

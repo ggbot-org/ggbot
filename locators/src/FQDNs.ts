@@ -23,7 +23,7 @@ export class FQDN {
 	readonly deployStage: DeployStage
 	readonly dnsDomain: string
 
-	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
+	constructor(deployStage: DeployStage, dnsDomain: string) {
 		this.deployStage = deployStage
 		this.dnsDomain = dnsDomain
 	}

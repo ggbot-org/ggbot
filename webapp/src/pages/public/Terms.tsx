@@ -4,7 +4,7 @@ import { Footer } from "_/components/public/Footer"
 import { Navigation } from "_/components/public/Navigation"
 import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
 import { webapp } from "_/routing/webapp"
-import { binance, telegram } from "@workspace/locators"
+import { exchange, telegram } from "@workspace/locators"
 import { FormattedMessage } from "react-intl"
 
 export function TermsPage() {
@@ -44,7 +44,7 @@ export function TermsPage() {
 					<FormattedMessage id="Terms.binance" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.binanceApi" values={formattedMessageMarkupWithLinkTo(binance.homepage)} />
+					<FormattedMessage id="Terms.binanceApi" values={formattedMessageMarkupWithLinkTo(exchange.binance.homepage)} />
 				</Paragraph>
 				<Paragraph>
 					<FormattedMessage id="Terms.binanceNoWithdrawals" values={formattedMessageMarkup} />

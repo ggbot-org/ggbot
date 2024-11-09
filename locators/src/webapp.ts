@@ -62,16 +62,19 @@ function appendStrategyKeyToURLSearchParams(
  * @example
  *
  * ```ts
- * const webapp = new WebappURLs("main", "example.com")
+ * import { FQDN, WebappBaseURL	} from "@workspace/locators"
+ *
+ * const baseURL = new WebappBaseURL(new FQDN("main", "example.com"))
+ * const webapp = new WebappURLs(baseURL)
  *
  * window.open(webapp.homepage)
  * ```
  */
 export class WebappURLs {
-	baseURL: WebappBaseURL
+	baseURL: string | URL
 
-	constructor(deployStage: FQDN["deployStage"], dnsDomain: FQDN["dnsDomain"]) {
-		this.baseURL = new WebappBaseURL(new FQDN(deployStage, dnsDomain))
+	constructor(baseURL: string | URL) {
+		this.baseURL = baseURL
 	}
 
 	get homepage() {
@@ -99,8 +102,7 @@ export class WebappURLs {
 		return {
 			accountDetails(accountKey: AccountKey) {
 				return appendAccountKeyToURLSearchParams(
-					accountKey,
-					new URL(webappPagePathname.admin.accountDetails, baseURL)
+					accountKey, new URL(webappPagePathname.admin.accountDetails, baseURL)
 				)
 			},
 			get dashboard() {
@@ -126,14 +128,12 @@ export class WebappURLs {
 			},
 			copyStrategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey,
-					new URL(webappPagePathname.user.copyStrategy, baseURL)
+					strategyKey, new URL(webappPagePathname.user.copyStrategy, baseURL)
 				)
 			},
 			editStrategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey,
-					new URL(webappPagePathname.user.editStrategy, baseURL)
+					strategyKey, new URL(webappPagePathname.user.editStrategy, baseURL)
 				)
 			},
 			get settings() {
@@ -141,8 +141,7 @@ export class WebappURLs {
 			},
 			strategy(strategyKey: StrategyKey) {
 				return appendStrategyKeyToURLSearchParams(
-					strategyKey,
-					new URL(webappPagePathname.user.strategy, baseURL)
+					strategyKey, new URL(webappPagePathname.user.strategy, baseURL)
 				)
 			}
 		}
