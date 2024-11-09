@@ -5,19 +5,13 @@ import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
 import { useReadStrategyOrders } from "_/hooks/user/api"
 import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
 import { StrategyKey } from "@workspace/models"
-import { useEffect } from "react"
 
 export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()
 
 	const dayInterval = { start, end }
 
-	const { canRun, request, isDone, isPending, reset, data: orders } = useReadStrategyOrders()
-
-	useEffect(() => {
-		if (!isDone) return
-		reset()
-	}, [isDone, reset])
+	const { request, isPending, reset, data: orders } = useReadStrategyOrders()
 
 	if (!strategyKey) return null
 
@@ -30,7 +24,8 @@ export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | un
 					max={max}
 					min={min}
 					onClickUpdate={() => {
-						if (canRun) request({ end, start, ...strategyKey })
+						reset()
+						request({ end, start, ...strategyKey })
 					}}
 					setEnd={setEnd}
 					setStart={setStart}

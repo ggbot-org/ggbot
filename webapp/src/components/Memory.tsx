@@ -1,8 +1,27 @@
+import { classnames } from "_/classnames"
 import { Div, Title } from "_/components/library"
 import { DflowCommonContext } from "@workspace/dflow"
+import { SerializablePrimitive } from "@workspace/models"
 import { FormattedMessage } from "react-intl"
 
-import { MemoryItem, MemoryItemProps } from "./MemoryItem"
+type MemoryItemProps = {
+	name: string
+	value: SerializablePrimitive | undefined
+}
+
+function MemoryItem({ name, value }: MemoryItemProps) {
+	return (
+		<div className={classnames("is-flex", "is-flex-direction-column", "my-1", "is-flex-grow-1")}>
+			<span>{name}</span>
+			<pre className={classnames("p-2")}>
+				<code>{
+					value === undefined ? "" : JSON.stringify(value, null, 2)
+				}
+				</code>
+			</pre>
+		</div>
+	)
+}
 
 export function Memory({ memory }: {
 	memory: DflowCommonContext["memory"] | undefined

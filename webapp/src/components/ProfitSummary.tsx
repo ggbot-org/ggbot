@@ -9,15 +9,15 @@ import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
 import { Fragment, PropsWithChildren } from "react"
 import { FormattedMessage } from "react-intl"
 
-function toNumber(value: string, precision = 8) {
+function toNumber(value: string, precision: number) {
 	return Number(value).toFixed(precision)
 }
 
-function _Label({ children, size }: PropsWithChildren<SizeProp<"large">>) {
+function Label({ children, size }: PropsWithChildren<SizeProp<"large">>) {
 	return <p className={classnames({ "is-size-6": size === "large" })}>{children}</p>
 }
 
-function _Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
+function Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
 	return children ? (
 		<p
 			className={classnames("has-text-weight-medium", {
@@ -128,36 +128,36 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 			<Level>
 				<LevelItem>
 					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
-						<_Label>
+						<Label>
 							<FormattedMessage id="DailyInterval.from" />
-						</_Label>
-						<_Value>
+						</Label>
+						<Value>
 							<DateTime format="day" value={dayInterval?.start} />
-						</_Value>
+						</Value>
 					</Div>
 					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
-						<_Label>
+						<Label>
 							<FormattedMessage id="DailyInterval.to" />
-						</_Label>
-						<_Value>
+						</Label>
+						<Value>
 							<DateTime format="day" value={dayInterval?.end} />
-						</_Value>
+						</Value>
 					</Div>
 				</LevelItem>
 				<LevelItem bulma="has-text-centered">
 					<div>
-						<_Label size="large">
+						<Label size="large">
 							<FormattedMessage id="ProfitSummary.numBuys" />
-						</_Label>
-						<_Value size="large">{numBuys}</_Value>
+						</Label>
+						<Value size="large">{numBuys}</Value>
 					</div>
 				</LevelItem>
 				<LevelItem bulma="has-text-centered">
 					<div>
-						<_Label size="large">
+						<Label size="large">
 							<FormattedMessage id="ProfitSummary.numSells" />
-						</_Label>
-						<_Value size="large">{numSells}</_Value>
+						</Label>
+						<Value size="large">{numSells}</Value>
 					</div>
 				</LevelItem>
 			</Level>
@@ -165,9 +165,9 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 				const symbolInfo = getBinanceSymbolInfo(symbol, binanceSymbols)
 				if (!symbolInfo) return {
 					baseAsset: "",
-					baseAssetPrecision: undefined,
+					baseAssetPrecision: 0,
 					quoteAsset: "",
-					quoteAssetPrecision: undefined,
+					quoteAssetPrecision: 0,
 					symbol,
 					...stats,
 				}
@@ -192,32 +192,32 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 							</LevelItem>
 							<LevelItem bulma="has-text-centered">
 								<div>
-									<_Label size="large">{baseAsset}</_Label>
-									<_Value size="large">{toNumber(baseQuantity, baseAssetPrecision)}</_Value>
+									<Label size="large">{baseAsset}</Label>
+									<Value size="large">{toNumber(baseQuantity, baseAssetPrecision)}</Value>
 								</div>
 							</LevelItem>
 							<LevelItem bulma="has-text-centered">
 								<div>
-									<_Label size="large">{quoteAsset}</_Label>
-									<_Value size="large">{toNumber(quoteQuantity, quoteAssetPrecision)}</_Value>
+									<Label size="large">{quoteAsset}</Label>
+									<Value size="large">{toNumber(quoteQuantity, quoteAssetPrecision)}</Value>
 								</div>
 							</LevelItem>
 						</Level>
 						<Level>
 							<LevelItem bulma="has-text-centered">
 								<div>
-									<_Label>
+									<Label>
 										<FormattedMessage id="ProfitSummary.minPrice" />
-									</_Label>
-									<_Value>{toNumber(minPrice, quoteAssetPrecision)}</_Value>
+									</Label>
+									<Value>{toNumber(minPrice, quoteAssetPrecision)}</Value>
 								</div>
 							</LevelItem>
 							<LevelItem bulma="has-text-centered">
 								<div>
-									<_Label>
+									<Label>
 										<FormattedMessage id="ProfitSummary.maxPrice" />
-									</_Label>
-									<_Value>{toNumber(maxPrice, quoteAssetPrecision)}</_Value>
+									</Label>
+									<Value>{toNumber(maxPrice, quoteAssetPrecision)}</Value>
 								</div>
 							</LevelItem>
 						</Level>
@@ -233,8 +233,8 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 				{Array.from(feesMap, ([asset, quantity]) => ({ asset, quantity })).map(({ asset, quantity }) => (
 					<LevelItem key={asset} bulma="has-text-centered">
 						<div>
-							<_Label>{asset}</_Label>
-							<_Value>{quantity}</_Value>
+							<Label>{asset}</Label>
+							<Value>{quantity}</Value>
 						</div>
 					</LevelItem>
 				))}
