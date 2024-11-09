@@ -17,8 +17,8 @@ type IDBEventListenerOrEventListenerObject =
 
 export class IDBProvider {
 	db: IDBDatabase | undefined
-	private openRequestState: IDBRequestReadyState | undefined
-	private eventTarget = new EventTarget()
+	openRequestState: IDBRequestReadyState | undefined
+	eventTarget = new EventTarget()
 
 	get isOpen(): boolean | undefined {
 		if (this.openRequestState !== "done") return

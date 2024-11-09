@@ -7,7 +7,7 @@ export class BinanceIDB extends IDBProvider implements IDBInstance {
 	readonly databaseName = "binance"
 	readonly databaseVersion = 1
 
-	private objectStore: CacheObjectStore
+	objectStore: CacheObjectStore
 
 	constructor() {
 		super()

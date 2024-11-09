@@ -5,38 +5,38 @@ import { cachedBoolean, cachedNumber, cachedObject } from "./cache.js"
 import { itemKey } from "./items.js"
 import { SessionWebStorageProvider } from "./providers.js"
 
-export class SessionWebStorage {
-	private storage = new SessionWebStorageProvider()
+const storage = new SessionWebStorageProvider()
 
+export class SessionWebStorage {
 	get accountInfo() {
-		return cachedObject<AccountInfo>(this.storage, itemKey.accountInfo())
+		return cachedObject<AccountInfo>(storage, itemKey.accountInfo())
 	}
 
 	get estimatedNumStrategies() {
-		return cachedNumber(this.storage, itemKey.estimatedNumStrategies())
+		return cachedNumber(storage, itemKey.estimatedNumStrategies())
 	}
 
 	get strategiesDayIntervalStart() {
-		return cachedObject<Day>(this.storage, itemKey.strategiesDayIntervalStart())
+		return cachedObject<Day>(storage, itemKey.strategiesDayIntervalStart())
 	}
 
 	get strategiesDayIntervalEnd() {
-		return cachedObject<Day>(this.storage, itemKey.strategiesDayIntervalEnd())
+		return cachedObject<Day>(storage, itemKey.strategiesDayIntervalEnd())
 	}
 
 	get doNotShowPleasePurchase() {
-		return cachedBoolean(this.storage, itemKey.doNotShowPleasePurchase())
+		return cachedBoolean(storage, itemKey.doNotShowPleasePurchase())
 	}
 
 	get gotFirstPageView() {
-		return cachedBoolean(this.storage, itemKey.gotFirstPageView())
+		return cachedBoolean(storage, itemKey.gotFirstPageView())
 	}
 
 	strategy(strategyKey: StrategyKey) {
-		return cachedObject<Strategy>(this.storage, itemKey.strategy(strategyKey))
+		return cachedObject<Strategy>(storage, itemKey.strategy(strategyKey))
 	}
 
 	clear() {
-		this.storage.clear()
+		storage.clear()
 	}
 }

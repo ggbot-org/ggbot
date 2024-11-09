@@ -1,9 +1,9 @@
 import { PolicyDocumentStatement } from "./types.js"
 
 export class IamPolicy {
-	readonly accountId: string
-	readonly region: string
-	readonly name: string
+	accountId: string
+	region: string
+	name: string
 
 	constructor(accountId: string, region: string, name: string) {
 		this.accountId = accountId

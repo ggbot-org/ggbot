@@ -5,7 +5,7 @@ import { BinanceKline, BinanceKlineInterval } from "./types.js"
 import { binanceKlineKey } from "./utils.js"
 
 export class BinanceKlinesCacheMap implements BinanceKlinesCacheProvider {
-	private readonly klinesMap: CacheMap<BinanceKline>
+	readonly klinesMap: CacheMap<BinanceKline>
 
 	constructor(timeToLive?: CacheMap<BinanceKline>["timeToLive"]) {
 		this.klinesMap = new CacheMap<BinanceKline>(timeToLive)

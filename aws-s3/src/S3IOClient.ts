@@ -6,7 +6,7 @@ import { s3Client } from "./client.js"
 import { s3ServiceExceptionName } from "./errors.js"
 import { S3BucketProvider, S3Path } from "./types.js"
 
-function streamToString (stream: NodeJS.ReadableStream): Promise<string> {
+function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const chunks: Uint8Array[] = []
 		stream.on("data", (chunk) => chunks.push(chunk as Uint8Array))
@@ -16,9 +16,9 @@ function streamToString (stream: NodeJS.ReadableStream): Promise<string> {
 }
 
 export class S3IOClient implements S3BucketProvider {
-	readonly client: S3Client
-	readonly Bucket: string
-	readonly region: string
+	client: S3Client
+	Bucket: string
+	region: string
 
 	constructor(region: string, Bucket: string) {
 		this.client = s3Client(region)
@@ -47,10 +47,10 @@ export class S3IOClient implements S3BucketProvider {
 		| "MaxKeys"
 		| "Prefix"
 	>): Promise<Pick<ListObjectsV2CommandOutput,
-			| "Contents"
-			| "ContinuationToken"
-			| "NextContinuationToken"
-			| "IsTruncated">
+		| "Contents"
+		| "ContinuationToken"
+		| "NextContinuationToken"
+		| "IsTruncated">
 		> {
 		const command = new ListObjectsV2Command({ Bucket: this.Bucket, ...params })
 		const {

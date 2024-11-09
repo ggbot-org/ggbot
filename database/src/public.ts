@@ -3,7 +3,7 @@ import { DocumentProviderLevel1, PublicAction, PublicActionInput as Input, Publi
 import { pathname } from "./locators.js"
 
 export class PublicDatabase implements PublicAction {
-	private documentProvider: DocumentProviderLevel1
+	documentProvider: DocumentProviderLevel1
 
 	constructor(documentProvider: DocumentProviderLevel1) {
 		this.documentProvider = documentProvider

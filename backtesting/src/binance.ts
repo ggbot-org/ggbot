@@ -5,7 +5,7 @@ import { now, Time } from "minimal-time-helpers"
 let orderId = 0
 
 export class BacktestingBinanceClient implements DflowBinanceClient {
-	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
+	publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 	/** The `schedulingInterval` is needed to manage cache. */
 	schedulingInterval: DflowBinanceKlineInterval
 

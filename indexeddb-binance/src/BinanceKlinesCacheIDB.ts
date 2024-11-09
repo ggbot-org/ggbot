@@ -3,7 +3,7 @@ import { BinanceKline, BinanceKlineInterval, binanceKlineKey, BinanceKlinesCache
 import { BinanceIDB } from "./BinanceIDB.js"
 
 export class BinanceKlinesCacheIDB implements BinanceKlinesCacheProvider {
-	private binanceIDB: BinanceIDB
+	binanceIDB: BinanceIDB
 
 	constructor(binanceIDB: BinanceIDB) {
 		this.binanceIDB = binanceIDB

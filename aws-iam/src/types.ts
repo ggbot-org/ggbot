@@ -5,10 +5,10 @@ export type PolicyDocumentStatement<Action extends string> = {
 }
 
 export type IamPolicyDocument<StatementName extends string, StatementAction extends string> = {
-	readonly policyDocument: {
+	policyDocument: {
 		Version: "2012-10-17"
 		Statement: Array<PolicyDocumentStatement<StatementAction>>
 	}
-	readonly statementAction: Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]>
-	readonly statementResource: Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]>
+	statementAction: Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]>
+	statementResource: Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]>
 }

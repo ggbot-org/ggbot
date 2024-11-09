@@ -4,14 +4,14 @@ import { deletedNow, DeployStage, SerializableData, updatedNow } from "@workspac
 
 const nextDeployStage: DeployStage = "next"
 
-export function getS3DataBucketName (deployStage: DeployStage, dnsDomain: string, awsRegion: string): S3Bucket["name"] {
+export function getS3DataBucketName(deployStage: DeployStage, dnsDomain: string, awsRegion: string): S3Bucket["name"] {
 	return deployStage === "local"
 		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
 		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
 }
 
 export class S3DataBucketProvider implements DocumentProviderLevel3 {
-	private s3: S3IOClient
+	s3: S3IOClient
 
 	constructor(awsRegion: string, bucketName: string) {
 		this.s3 = new S3IOClient(awsRegion, bucketName)

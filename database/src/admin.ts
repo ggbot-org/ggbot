@@ -6,8 +6,8 @@ import { pathname } from "./locators.js"
 import { UserDatabase } from "./user.js"
 
 export class AdminDatabase implements AdminDatabaseAction {
-	private documentProvider: DocumentProviderLevel3
-	private executorDatabase: ExecutorDatabase
+	documentProvider: DocumentProviderLevel3
+	executorDatabase: ExecutorDatabase
 
 	constructor(documentProvider: DocumentProviderLevel3) {
 		this.executorDatabase = new ExecutorDatabase(documentProvider)

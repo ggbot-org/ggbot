@@ -4,18 +4,18 @@ import { cachedBoolean, cachedString } from "./cache.js"
 import { itemKey } from "./items.js"
 import { LocalWebStorageProvider } from "./providers.js"
 
-export class LocalWebStorage {
-	private storage = new LocalWebStorageProvider()
+const storage = new LocalWebStorageProvider()
 
+export class LocalWebStorage {
 	get authToken(): ManagedCacheProvider<string> {
-		return cachedString(this.storage, itemKey.authToken())
+		return cachedString(storage, itemKey.authToken())
 	}
 
 	get hideInactiveStrategies() {
-		return cachedBoolean(this.storage, itemKey.hideInactiveStrategies())
+		return cachedBoolean(storage, itemKey.hideInactiveStrategies())
 	}
 
 	clear() {
-		this.storage.clear()
+		storage.clear()
 	}
 }

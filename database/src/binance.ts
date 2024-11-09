@@ -4,8 +4,8 @@ import { AccountKey } from "@workspace/models"
 import { pathname } from "./locators.js"
 
 export class BinanceDatabase implements BinanceDatabaseAction {
-	private accountKey: AccountKey
-	private documentProvider: DocumentProviderLevel1
+	accountKey: AccountKey
+	documentProvider: DocumentProviderLevel1
 
 	constructor(accountKey: AccountKey, documentProvider: DocumentProviderLevel1) {
 		this.accountKey = accountKey

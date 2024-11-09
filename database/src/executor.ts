@@ -4,7 +4,7 @@ import { AccountDailyKey, AccountDailyOrder, AccountKey, accountStrategiesModifi
 import { dirnameDelimiter, dirnamePrefix, locatorToItemKey, pathname } from "./locators.js"
 
 export class ExecutorDatabase implements ExecutorAction {
-	private documentProvider: DocumentProviderLevel3
+	documentProvider: DocumentProviderLevel3
 
 	constructor(documentProvider: DocumentProviderLevel3) {
 		this.documentProvider = documentProvider

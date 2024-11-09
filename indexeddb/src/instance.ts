@@ -5,8 +5,8 @@
  *
  * ```ts
  * class MyDB extends IDBProvider implements IDBInstance {
- * 	readonly databaseName: string
- * 	readonly databaseVersion: number
+ * 	databaseName: string
+ * 	databaseVersion: number
  *
  * 	constructor() {
  * 		super()
@@ -24,7 +24,7 @@
  * ```
  */
 export type IDBInstance = {
-	readonly databaseName: string
-	readonly databaseVersion: number
+	databaseName: string
+	databaseVersion: number
 	databaseUpgrade(db: IDBDatabase, version: IDBInstance["databaseVersion"]): void
 }

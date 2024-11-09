@@ -4,7 +4,7 @@ import { createdNow, EmailAccount, generateOneTimePassword, newAccount } from "@
 import { pathname } from "./locators.js"
 
 export class AuthDatabase implements AuthDatabaseAction {
-	private documentProvider: DocumentProviderLevel2
+	documentProvider: DocumentProviderLevel2
 
 	constructor(documentProvider: DocumentProviderLevel2) {
 		this.documentProvider = documentProvider

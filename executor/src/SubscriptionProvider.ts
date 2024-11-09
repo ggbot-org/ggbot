@@ -4,12 +4,12 @@ import { AccountKey, isSubscription, statusOfSubscription, Subscription, Subscri
 
 import { ONE_DAY } from "./durations.js"
 
+const cache = new CacheMap<Subscription>(ONE_DAY)
+
 export class SubscriptionProvider {
-	readonly cache: CacheMap<Subscription>
-	private readonly database: ExecutorDatabase
+	readonly database: ExecutorDatabase
 
 	constructor(database: ExecutorDatabase) {
-		this.cache = new CacheMap<Subscription>(ONE_DAY)
 		this.database = database
 	}
 	/**
@@ -19,7 +19,7 @@ export class SubscriptionProvider {
 		hasActiveSubscription: boolean
 		subscriptionPlan: SubscriptionPlan | undefined
 	}> {
-		const cached = this.cache.get(accountId)
+		const cached = cache.get(accountId)
 		if (cached) return {
 			hasActiveSubscription: statusOfSubscription(cached) === "active",
 			subscriptionPlan: cached.plan
@@ -29,10 +29,10 @@ export class SubscriptionProvider {
 			hasActiveSubscription: false,
 			subscriptionPlan: undefined
 		}
-		this.cache.set(accountId, subscription)
+		cache.set(accountId, subscription)
 		return {
 			hasActiveSubscription:
-					statusOfSubscription(subscription) === "active",
+				statusOfSubscription(subscription) === "active",
 			subscriptionPlan: subscription.plan
 		}
 	}

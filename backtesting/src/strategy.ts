@@ -4,8 +4,8 @@ export class BacktestingStrategy {
 	/** The graph of the strategy flow. */
 	flow: StrategyFlowGraph
 
-	readonly strategyKey: StrategyKey
-	readonly strategyName: Strategy["name"]
+	strategyKey: StrategyKey
+	strategyName: Strategy["name"]
 
 	constructor({
 		flow, strategyKey, strategyName

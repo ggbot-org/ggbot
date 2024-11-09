@@ -3,12 +3,12 @@ import { SerializableData } from "@workspace/models"
 import { IDBInstance } from "./instance.js"
 
 type IDBObjectStoreProvider = {
-	readonly storeName: string
+	storeName: string
 	create(db: IDBDatabase): void
 }
 
 export class CacheObjectStore implements IDBObjectStoreProvider {
-	readonly storeName: string
+	storeName: string
 
 	constructor(storeBasename: string, databaseVersion: IDBInstance["databaseVersion"]) {
 		this.storeName = `${storeBasename}-v${databaseVersion}`

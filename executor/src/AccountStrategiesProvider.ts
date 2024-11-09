@@ -4,22 +4,22 @@ import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategy
 
 import { ONE_HOUR } from "./durations.js"
 
+const cache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
+
 export class AccountStrategiesProvider {
-	readonly cache: CacheMap<AccountStrategy[]>
 	readonly database: ExecutorDatabase
 
 	constructor(database: ExecutorDatabase) {
-		this.cache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
 		this.database = database
 	}
 
 	async getAccountStrategies({ accountId }: AccountKey): Promise<AccountStrategy[]> {
 		const accountStrategies: AccountStrategy[] = []
-		const cached = this.cache.get(accountId)
+		const cached = cache.get(accountId)
 		if (cached) return cached
 		const data = await this.database.ReadAccountStrategies({ accountId })
 		for (const item of data) if (isAccountStrategy(item)) accountStrategies.push(item)
-		this.cache.set(accountId, accountStrategies)
+		cache.set(accountId, accountStrategies)
 		return accountStrategies
 	}
 
@@ -32,10 +32,10 @@ export class AccountStrategiesProvider {
 		console.warn(`Suspend strategy scheduling accountId=${accountId} strategyId=${strategyId} schedulingId=${schedulingId}`)
 
 		// Update cache locally.
-		const items = this.cache.get(accountId)
+		const items = cache.get(accountId)
 		if (items) {
 			const data = accountStrategiesModifier.suspendScheduling(items, strategyId, schedulingId)
-			this.cache.set(accountId, data)
+			cache.set(accountId, data)
 		}
 
 		// Update database remotely.
@@ -59,10 +59,10 @@ export class AccountStrategiesProvider {
 		console.warn(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
 		// Update cache locally.
-		const items = this.cache.get(accountId)
+		const items = cache.get(accountId)
 		if (items) {
 			const data = accountStrategiesModifier.suspendStrategySchedulings(items, strategyId)
-			this.cache.set(accountId, data)
+			cache.set(accountId, data)
 		}
 
 		// Update database remotely.
@@ -71,10 +71,10 @@ export class AccountStrategiesProvider {
 
 	async updateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId }: AccountStrategySchedulingKey, memory: StrategyMemory) {
 		// Update cache locally.
-		const items = this.cache.get(accountId)
+		const items = cache.get(accountId)
 		if (items) {
 			const data = accountStrategiesModifier.updateSchedulingMemory(items, strategyId, schedulingId, memory)
-			this.cache.set(accountId, data)
+			cache.set(accountId, data)
 		}
 
 		// Update database remotely.

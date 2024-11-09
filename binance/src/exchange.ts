@@ -32,7 +32,7 @@ import { BinanceExchangeInfo, BinanceKline, BinanceKlineInterval, BinanceKlineOp
  * ```
  */
 export class BinanceExchange {
-	readonly connector: BinanceConnector
+	connector: BinanceConnector
 
 	exchangeInfoCache: BinanceExchangeInfoCacheProvider | undefined
 	klinesCache: BinanceKlinesCacheProvider | undefined

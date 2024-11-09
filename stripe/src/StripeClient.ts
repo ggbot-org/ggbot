@@ -6,8 +6,8 @@ import { isYearlyPurchase } from "@workspace/models"
 import { newStripe } from "./newStripe.js"
 
 export class StripeClient {
-	#stripe = newStripe()
-	#webapp = new WebappURLs(new WebappBaseURL(new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())))
+	stripe = newStripe()
+	webapp = new WebappURLs(new WebappBaseURL(new FQDN(ENV.DEPLOY_STAGE(), ENV.DNS_DOMAIN())))
 
 	/** Call `stripe.checkout.sessions.create()` adding context. */
 	createCheckoutSession({
@@ -21,19 +21,19 @@ export class StripeClient {
 		price: string
 		quantity: number
 	}) {
-		return this.#stripe.checkout.sessions.create({
+		return this.stripe.checkout.sessions.create({
 			customer_email: email,
 			line_items: [{ price, quantity }],
 			metadata,
 			mode: "payment",
-			success_url: this.#webapp.subscriptionPurchased.href,
-			cancel_url: this.#webapp.purchaseCanceled.href
+			success_url: this.webapp.subscriptionPurchased.href,
+			cancel_url: this.webapp.purchaseCanceled.href
 		})
 	}
 
 	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
 	async retreiveCheckoutSession(id: string) {
-		const session = await this.#stripe.checkout.sessions.retrieve(id, {
+		const session = await this.stripe.checkout.sessions.retrieve(id, {
 			expand: ["line_items"]
 		})
 		const quantity = session.line_items?.data[0].quantity

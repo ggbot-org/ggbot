@@ -10,7 +10,7 @@ export class Repository implements DirectoryProvider {
 	pathname = resolve(dirname(dirname(dirname(fileURLToPath(import.meta.url)))))
 	packageJson: RepositoryPackageJson
 	tsconfigJson: RepositoryTsconfigJson
-	readonly workspaces = new Map<Workspace["pathname"], Workspace>()
+	workspaces = new Map<Workspace["pathname"], Workspace>()
 
 	constructor() {
 		this.packageJson = new RepositoryPackageJson(this.pathname)

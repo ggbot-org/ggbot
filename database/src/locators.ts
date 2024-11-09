@@ -84,7 +84,7 @@
 	   └╴m=MM/
 		 └╴d=DD/
 		   └╴purchaseId=XXX/
-		     └╴purchase.json
+			 └╴purchase.json
 */
 
 import { AccountDailyKey, AccountKey, accountKeyFieldNames, AccountStrategyDailyKey, AccountStrategyKey, DayKey, EmailAddress, isAccountDailyKey, isAccountKey, isAccountStrategyKey, isStrategyKey, isSubscriptionPurchaseKey, normalizeEmailAddress, StrategyKey, strategyKeyFieldNames, SubscriptionPurchaseKey, subscriptionPurchaseKeyFieldNames } from "@workspace/models"
@@ -129,7 +129,7 @@ export const dirnamePrefix = {
 	subscriptionPurchase: "subscriptionPurchase"
 }
 
-function destructureLocator (locator: string, fieldNames: readonly FieldName[]) {
+function destructureLocator(locator: string, fieldNames: readonly FieldName[]) {
 	const result: Record<string, string> = {}
 	for (const locatorPart of locator.split(dirnameDelimiter)) {
 		const [fieldName, value] = locatorPart.split(fieldSeparator)

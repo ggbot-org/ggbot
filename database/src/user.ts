@@ -7,14 +7,13 @@ import { BinanceDatabase } from "./binance.js"
 import { pathname } from "./locators.js"
 import { PublicDatabase } from "./public.js"
 
-export class UserDatabase implements UserDatabaseAction {
-	// TODO cache should be attached after to the instance, to be reused
-	readonly strategyAccountIdCache = new CacheMap<Account["id"]>()
+const strategyAccountIdCache = new CacheMap<Account["id"]>()
 
-	private accountKey: AccountKey
-	private documentProvider: DocumentProviderLevel2
-	private binanceDatabase: BinanceDatabase
-	private publicDatabase: PublicDatabase
+export class UserDatabase implements UserDatabaseAction {
+	accountKey: AccountKey
+	documentProvider: DocumentProviderLevel2
+	binanceDatabase: BinanceDatabase
+	publicDatabase: PublicDatabase
 
 	constructor(accountKey: AccountKey, documentProvider: DocumentProviderLevel2) {
 		this.accountKey = accountKey
@@ -114,7 +113,7 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	async ReadStrategies() {
-		const data = await this.documentProvider.getItem< Output["ReadStrategies"] >(pathname.accountStrategies(this.accountKey))
+		const data = await this.documentProvider.getItem<Output["ReadStrategies"]>(pathname.accountStrategies(this.accountKey))
 		return data ?? []
 	}
 
@@ -221,17 +220,16 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	async readStrategyAccountId(strategyKey: StrategyKey): Promise<Account["id"] | null> {
-		const { strategyAccountIdCache: cache } = this
 		const { strategyId } = strategyKey
-		const cachedData = cache.get(strategyId)
+		const cachedData = strategyAccountIdCache.get(strategyId)
 		if (cachedData) return cachedData
 		const { accountId } = await this.readStrategy(strategyKey)
-		cache.set(strategyId, accountId)
+		strategyAccountIdCache.set(strategyId, accountId)
 		return accountId
 	}
 
 	async readStrategyDailyErrors(arg: AccountStrategyDailyKey): Promise<StrategyError[]> {
-		const data = await this.documentProvider.getItem< StrategyError[] | null >(pathname.strategyDailyErrors(arg))
+		const data = await this.documentProvider.getItem<StrategyError[] | null>(pathname.strategyDailyErrors(arg))
 		return data ?? []
 	}
 

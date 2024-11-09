@@ -39,7 +39,7 @@ export type AddMediationOutput = {
 	totalQuantity: number
 }
 
-export function addMediation ({
+export function addMediation({
 	// Input parameters.
 	price,
 	quantity,
@@ -77,7 +77,7 @@ export type ExitMediationInput = {
 	direction: MediatorDirection
 } & Pick<AddMediationInput, "averagePrice" | "percentageGain" | "price">
 
-export function exitMediation ({ direction, averagePrice, percentageGain, price }: ExitMediationInput) {
+export function exitMediation({ direction, averagePrice, percentageGain, price }: ExitMediationInput) {
 	if (averagePrice === 0) return false
 	if (direction === "LONG") {
 		const breakingPrice = mul(averagePrice, add(1, percentageGain)) as number
@@ -92,8 +92,8 @@ export function exitMediation ({ direction, averagePrice, percentageGain, price 
 type MemoryKey = "averagePrice" | "numPositions" | "totalQuantity"
 
 export class MediatorMemory {
-	readonly context: Context
-	readonly memoryKey: Record<MemoryKey, string>
+	context: Context
+	memoryKey: Record<MemoryKey, string>
 	constructor(context: Context, memoryLabel?: string) {
 		this.context = context
 		this.memoryKey = {
@@ -102,31 +102,31 @@ export class MediatorMemory {
 			totalQuantity: MediatorMemory.key("totalQuantity", memoryLabel)
 		}
 	}
-	get averagePrice () {
+	get averagePrice() {
 		const value = this.context.memory[this.memoryKey.averagePrice]
 		if (typeof value === "number") return value
 		// Actually zero is not correct, but the mediator algorithm handles it.
 		return 0
 	}
-	get numPositions () {
+	get numPositions() {
 		const value = this.context.memory[this.memoryKey.numPositions]
 		if (typeof value === "number") return value
 		return 0
 	}
-	get totalQuantity () {
+	get totalQuantity() {
 		const value = this.context.memory[this.memoryKey.totalQuantity]
 		if (typeof value === "number") return value
 		return 0
 	}
-	set averagePrice (value: number) {
+	set averagePrice(value: number) {
 		this.context.memoryChanged = value !== this.averagePrice
 		this.context.memory[this.memoryKey.averagePrice] = value
 	}
-	set numPositions (value: number) {
+	set numPositions(value: number) {
 		this.context.memoryChanged = value !== this.numPositions
 		this.context.memory[this.memoryKey.numPositions] = value
 	}
-	set totalQuantity (value: number) {
+	set totalQuantity(value: number) {
 		this.context.memoryChanged = value !== this.totalQuantity
 		this.context.memory[this.memoryKey.totalQuantity] = value
 	}

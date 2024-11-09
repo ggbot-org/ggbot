@@ -4,9 +4,8 @@ import { BinanceIDB } from "./BinanceIDB.js"
 
 const ONE_DAY = 86_400_000
 
-export class BinanceExchangeInfoCacheIDB
-implements BinanceExchangeInfoCacheProvider {
-	private binanceIDB: BinanceIDB
+export class BinanceExchangeInfoCacheIDB implements BinanceExchangeInfoCacheProvider {
+	binanceIDB: BinanceIDB
 
 	constructor(binanceIDB: BinanceIDB) {
 		this.binanceIDB = binanceIDB

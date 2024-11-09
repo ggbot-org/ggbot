@@ -7,6 +7,8 @@ import { Stripe } from "./Stripe.js"
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 const api = new ApiURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
 
+const stripe = newStripe()
+
 export class StripeWebhook {
 	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion = "2023-08-16"
 	static enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
@@ -14,7 +16,6 @@ export class StripeWebhook {
 	]
 
 	endpoint: Stripe.WebhookEndpoint | undefined
-	private stripe = newStripe()
 
 	constructor() {
 		if (DEPLOY_STAGE === "local") throw new Error("A StripeWebhook on local deploy stage does not make sense.")
@@ -33,7 +34,7 @@ export class StripeWebhook {
 			console.warn("Cannot create StripeWebhook, it already exists.")
 			return
 		}
-		return await this.stripe.webhookEndpoints.create({
+		return await stripe.webhookEndpoints.create({
 			api_version: StripeWebhook.apiVersion,
 			enabled_events: StripeWebhook.enabledEvents,
 			url
@@ -49,7 +50,7 @@ export class StripeWebhook {
 		// If `endpoint` is defined, there is not need to read it twice.
 		if (this.endpoint) return
 		// List all webhooks and look for one with same URL.
-		const webhookEndpoints = await this.stripe.webhookEndpoints.list()
+		const webhookEndpoints = await stripe.webhookEndpoints.list()
 		for (const webhookEndpoint of webhookEndpoints.data) {
 			if (webhookEndpoint.url === this.url) {
 				this.endpoint = webhookEndpoint

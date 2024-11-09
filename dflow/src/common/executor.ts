@@ -17,12 +17,12 @@ type DflowExecutorOutput = Pick<
 }
 
 export type DflowExecutor<RunContext extends DflowCommonExecutorContext> = {
-	readonly nodesCatalog: DflowNodesCatalog
+	nodesCatalog: DflowNodesCatalog
 	run(context: RunContext, graph: StrategyFlowGraph): Promise<DflowExecutorOutput>
 }
 
 export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorContext> {
-	readonly graph: StrategyFlowGraph
+	graph: StrategyFlowGraph
 	nodesCatalog: DflowNodesCatalog
 	constructor(graph: StrategyFlowGraph) {
 		this.graph = graph

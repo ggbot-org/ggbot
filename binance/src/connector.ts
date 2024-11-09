@@ -10,7 +10,7 @@ export class BinanceConnector {
 	static defaultBaseUrl = BinanceConnector.baseUrl(binanceApiDomain)
 
 	baseUrl: string
-	readonly requestHeaders: BinanceRequestHeaders
+	requestHeaders: BinanceRequestHeaders
 
 	constructor(baseUrl = BinanceConnector.defaultBaseUrl) {
 		this.baseUrl = baseUrl

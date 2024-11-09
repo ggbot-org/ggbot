@@ -3,7 +3,7 @@ import { DocumentProviderLevel2, PaymentAction, PaymentActionInput as Input, Pay
 import { pathname } from "./locators.js"
 
 export class PaymentDatabase implements PaymentAction {
-	private documentProvider: DocumentProviderLevel2
+	documentProvider: DocumentProviderLevel2
 
 	constructor(documentProvider: DocumentProviderLevel2) {
 		this.documentProvider = documentProvider

@@ -4,7 +4,7 @@ import { ENV } from "@workspace/env"
 import { ApiRole } from "./ApiRole.js"
 
 export class ApiLambda extends LambdaFunction {
-	readonly apiName: string
+	apiName: string
 
 	constructor(apiName: string) {
 		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), ApiLambda.functionName(apiName), new ApiRole().arn)

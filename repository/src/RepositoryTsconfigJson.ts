@@ -7,9 +7,9 @@ import { TsconfigJson } from "./TsconfigJson.js"
 
 export class RepositoryTsconfigJson implements FileProvider {
 	directoryPathname: string
-	readonly filename = "tsconfig.json"
+	filename = "tsconfig.json"
 	/** Maps the compilerOptions.paths key to the first element of its value */
-	readonly paths = new Map<string, string>()
+	paths = new Map<string, string>()
 
 	constructor(directoryPathname: string) {
 		this.directoryPathname = directoryPathname
