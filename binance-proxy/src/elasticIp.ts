@@ -1,20 +1,18 @@
-import { associateElasticIp, describeElasticIps, disassociateElasticIp, getOwnEc2InstanceId } from "@workspace/aws-ec2"
+import { AssociateAddressCommand, DescribeAddressesCommand, DisassociateAddressCommand, EC2Client } from "@aws-sdk/client-ec2"
 import { ENV } from "@workspace/env"
 
-const BINANCE_PROXY_IP = ENV.BINANCE_PROXY_IP()
-const AWS_BINANCE_PROXY_REGION = ENV.AWS_BINANCE_PROXY_REGION()
+import { getOwnEc2InstanceId } from "./ec2InstanceId.js"
 
-let elasticIp = ""
-let associationId = ""
+const BINANCE_PROXY_IP = ENV.BINANCE_PROXY_IP()
+
+let elasticIp: string | undefined
+let associationId: string | undefined
+
+const ec2Client = new EC2Client({ apiVersion: "2010-12-01", region: ENV.AWS_BINANCE_PROXY_REGION() })
 
 export async function associateIp() {
-	const InstanceId = await getOwnEc2InstanceId
-	console.info("Got instanceId", InstanceId)
-
-	console.info("Elastic IP", BINANCE_PROXY_IP)
-
-	const { Addresses } = await describeElasticIps(AWS_BINANCE_PROXY_REGION, { PublicIps: [BINANCE_PROXY_IP] })
-	if (!Addresses) throw new Error("Cannot associate Elastic IP, empty address list")
+	const { Addresses } = await ec2Client.send(new DescribeAddressesCommand({ PublicIps: [BINANCE_PROXY_IP] }))
+	if (!Addresses) throw new Error("Cannot associate Elastic IP, no Addresses")
 
 	for (const elasticIpInfo of Addresses) {
 		const { AllocationId, PublicIp } = elasticIpInfo
@@ -23,9 +21,10 @@ export async function associateIp() {
 
 		if (!AllocationId || !PublicIp) continue
 
-		const { AssociationId } = await associateElasticIp(AWS_BINANCE_PROXY_REGION, { AllocationId, InstanceId })
+		const InstanceId = await getOwnEc2InstanceId
+		const { AssociationId } = await ec2Client.send(new AssociateAddressCommand({ AllocationId, InstanceId }))
 		elasticIp = PublicIp
-		if (AssociationId) associationId = AssociationId
+		associationId = AssociationId
 
 		console.info("Elastic IP associated", elasticIp)
 	}
@@ -36,5 +35,5 @@ export async function associateIp() {
 export async function disassociateIp() {
 	if (!elasticIp || !associationId) return
 	console.info("Release IP", elasticIp)
-	await disassociateElasticIp(AWS_BINANCE_PROXY_REGION, { AssociationId: associationId })
+	await ec2Client.send(new DisassociateAddressCommand({ AssociationId: associationId }))
 }

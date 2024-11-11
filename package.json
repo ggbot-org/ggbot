@@ -135,7 +135,6 @@
     "api-lambda-user-action",
     "authentication",
     "authentication-api",
-    "aws-ec2",
     "aws-iam",
     "aws-lambda",
     "aws-s3",

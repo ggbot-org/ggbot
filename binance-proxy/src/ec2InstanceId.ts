@@ -1,7 +1,5 @@
 import { exec } from "node:child_process"
 
-import { ErrorCannotGetOwnEc2InstanceId } from "./errors.js"
-
 /**
  * Get `instance-id` from EC2 metadata.
  *
@@ -26,6 +24,6 @@ export const getOwnEc2InstanceId = new Promise<string>((resolve, reject) => {
 		// Get string after colon, remove new line and spaces.
 		const instanceId = stdout.split(":").pop()?.replace(/\n/, "").trim()
 		if (typeof instanceId === "string") resolve(instanceId)
-		reject(new ErrorCannotGetOwnEc2InstanceId())
+		reject(new Error("Cannot get own EC2 instance-id"))
 	})
 })
