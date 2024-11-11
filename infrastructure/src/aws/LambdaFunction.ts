@@ -1,21 +1,21 @@
+import { LambdaClient } from "@aws-sdk/client-lambda"
 import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from "@aws-sdk/client-lambda"
 
-import { lambdaClient } from "./client.js"
-
 export class LambdaFunction {
-	readonly accountId: string
-	readonly region: string
-	readonly functionName: string
-	readonly architecture = Architecture.arm64
-	readonly executionRoleArn: string
-	readonly runtime = Runtime.nodejs20x
-	readonly handler = "index.handler"
+	client: LambdaClient
+	accountId: string
+	region: string
+	functionName: string
+	architecture = Architecture.arm64
+	executionRoleArn = ""
+	runtime = Runtime.nodejs20x
+	handler = "index.handler"
 
-	constructor(accountId: string, region: string, functionName: string, executionRoleArn: string) {
+	constructor(accountId: string, region: string, functionName: string) {
+		this.client = new LambdaClient({ region })
 		this.accountId = accountId
 		this.region = region
 		this.functionName = functionName
-		this.executionRoleArn = executionRoleArn
 	}
 
 	get arn() {
@@ -27,7 +27,7 @@ export class LambdaFunction {
 	}
 
 	async create({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
-		const command = new CreateFunctionCommand({
+		await this.client.send(new CreateFunctionCommand({
 			Code: { ZipFile },
 			FunctionName: this.functionName,
 			Role: this.executionRoleArn,
@@ -35,18 +35,14 @@ export class LambdaFunction {
 			Handler: this.handler,
 			PackageType: PackageType.Zip,
 			Runtime: this.runtime,
-		})
-		const client = lambdaClient(this.region)
-		await client.send(command)
+		}))
 	}
 
 	async updateFunctionCode({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
-		const command = new UpdateFunctionCodeCommand({
+		await this.client.send(new UpdateFunctionCodeCommand({
 			ZipFile,
 			FunctionName: this.functionName,
 			Architectures: [this.architecture],
-		})
-		const client = lambdaClient(this.region)
-		await client.send(command)
+		}))
 	}
 }

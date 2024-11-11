@@ -1,11 +1,11 @@
-import { LambdaFunction } from "@workspace/aws-lambda"
 import { ENV } from "@workspace/env"
 
-import { ApiLambda } from "../aws/ApiLambda.js"
-import { ApiRole } from "../aws/ApiRole.js"
-import { S3Bucket } from "../aws/s3Buckets"
+import { ApiLambda } from "./ApiLambda.js"
+import { ApiRole } from "./ApiRole.js"
 import { IamAction } from "./iamActions.js"
 import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
+import { LambdaFunction } from "./LambdaFunction.js"
+import { S3Bucket } from "./s3Buckets"
 import { DataBucket, WebappBucket } from "./s3Buckets.js"
 
 const statementNames = [

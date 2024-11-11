@@ -9,15 +9,15 @@
     "generate_iam_policies": "node --env-file ../.typescript.env ./src/scripts/generate_iam_policies.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-lambda": "3.645.0",
     "@workspace/api": "0.0.0",
-    "@workspace/aws-lambda": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
-    "@workspace/s3-data-bucket": "0.0.0"
+    "@workspace/s3-data-bucket": "0.0.0",
+    "write-file-utf8": "3.0.2"
   },
   "devDependencies": {
-    "@workspace/tsconfig": "0.0.0",
-    "write-file-utf8": "3.0.2"
+    "@workspace/tsconfig": "0.0.0"
   }
 }

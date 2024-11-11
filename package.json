@@ -136,7 +136,6 @@
     "api-lambda-user-action",
     "authentication",
     "authentication-api",
-    "aws-lambda",
     "backtesting",
     "backtesting-webworker",
     "binance",

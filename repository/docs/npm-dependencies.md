@@ -41,7 +41,6 @@ graph LR
     workspace/indexeddb --- workspace/models
     workspace/indexeddb-binance --- workspace/binance
     workspace/indexeddb-binance --- workspace/indexeddb
-    workspace/infrastructure --- workspace/aws-lambda
     workspace/infrastructure --- workspace/s3-data-bucket
     workspace/locators --- workspace/env
     workspace/public-api --- workspace/database
