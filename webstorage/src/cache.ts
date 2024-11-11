@@ -1,11 +1,9 @@
-import type { ManagedCacheProvider } from "@workspace/cache"
-
 import { WebStorageProvider } from "./providers.js"
 
 export function cachedBoolean (
 	storage: WebStorageProvider,
 	key: string
-): ManagedCacheProvider<boolean> {
+) {
 	return ({
 		get: () => {
 			const value = storage.getItem(key)
@@ -18,7 +16,7 @@ export function cachedBoolean (
 	})
 }
 
-export function cachedString(storage: WebStorageProvider, key: string): ManagedCacheProvider<string> {
+export function cachedString(storage: WebStorageProvider, key: string) {
 	return ({
 		get: () => storage.getItem(key) ?? "",
 		set: (value: boolean) => storage.setItem(key, String(value)),
@@ -26,7 +24,7 @@ export function cachedString(storage: WebStorageProvider, key: string): ManagedC
 	})
 }
 
-export function cachedNumber(storage: WebStorageProvider, key: string): ManagedCacheProvider<number> {
+export function cachedNumber(storage: WebStorageProvider, key: string) {
 	return ({
 		get: () => {
 			const value = storage.getItem(key)
@@ -40,7 +38,7 @@ export function cachedNumber(storage: WebStorageProvider, key: string): ManagedC
 	})
 }
 
-export function cachedObject<Data>(storage: WebStorageProvider, key: string): ManagedCacheProvider<Data> {
+export function cachedObject<Data>(storage: WebStorageProvider, key: string) {
 	return ({
 		get: () => {
 			const value = storage.getItem(key)

@@ -32,4 +32,4 @@ When all required steps have green light click on _Request production access_. S
 Follow the steps you will receive by email, the support will ask for the use case and other info before enabling the production access.
 
 Once you receive the email that confirms your account was moved out of the Amazon SES sandbox,
-you can try to [send a test email](../../aws-ses/docs/end-to-end-tests.md).
+you can try to [send a test email](../../email-messages/docs/end-to-end-tests.md).

@@ -32,7 +32,6 @@ graph LR
     workspace/dflow --- workspace/binance
     workspace/dflow --- workspace/models
     workspace/email-messages --- workspace/api
-    workspace/email-messages --- workspace/aws-ses
     workspace/env --- workspace/models
     workspace/executor --- workspace/authentication
     workspace/executor --- workspace/database
@@ -48,7 +47,6 @@ graph LR
     workspace/public-api --- workspace/database
     workspace/public-api --- workspace/s3-data-bucket
     workspace/s3-data-bucket --- workspace/api
-    workspace/s3-data-bucket --- workspace/aws-s3
     workspace/stripe --- workspace/api
     workspace/stripe-api --- workspace/authentication
     workspace/stripe-api --- workspace/database

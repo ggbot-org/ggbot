@@ -1,14 +1,12 @@
-import type { CacheProvider } from "./providers.js"
-
 /**
- * Implements a simple CacheProvider with Maps.
+ * Implements a simple cache with Maps.
  *
  * @example
  *
  * ```ts
  *   const isValidValueCache = new CacheMap<boolean>()
  *
- *   async function isValid(value: unkown): booelan {
+ *   async function isValid(value: unkown): boolean {
  *     if (typeof value !== 'string') return false;
  *     // Here the value is used also as its key.
  *     // Return cached value, if any.
@@ -25,7 +23,7 @@ import type { CacheProvider } from "./providers.js"
  *   }
  * ```
  */
-export class CacheMap<Data> implements CacheProvider<Data> {
+export class CacheMap<Data> {
 	/**
 	 * A time duration expressed in milliseconds.
 	 * If it is undefined, it means it lives for ever.
@@ -49,14 +47,10 @@ export class CacheMap<Data> implements CacheProvider<Data> {
 		if (!this.itemMap.has(key)) return
 		// No `timeToLive` found means item is cached for ever.
 		if (!this.timeToLive) return this.itemMap.get(key)
-		// No `whenUpdated` found means it is not possible to know if `isUpToDate`.
+		// No `whenUpdated` found means it is not possible to know if it is up to date.
 		const whenUpdated = this.whenUpdatedMap.get(key)
-		if (!whenUpdated) {
-			this.delete(key)
-			return
-		}
 		// If is not up to date, delete item and return.
-		if (whenUpdated + this.timeToLive < Date.now()) {
+		if (!whenUpdated || (whenUpdated + this.timeToLive < Date.now())) {
 			this.delete(key)
 			return
 		}

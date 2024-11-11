@@ -9,4 +9,3 @@ export const externalDependenciesJson = join(workspaceDir, "external-dependencie
 
 export const dflowWorkspacePackageJson = join(monorepoDir, "dflow", "package.json")
 export const modelsWorkspacePackageJson = join(monorepoDir, "models", "package.json")
-export const awsS3WorkspacePackageJson = join(monorepoDir, "aws-s3", "package.json")

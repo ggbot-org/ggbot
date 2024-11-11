@@ -1,5 +1,3 @@
-import type { ManagedCacheProvider } from "@workspace/cache"
-
 import { cachedBoolean, cachedString } from "./cache.js"
 import { itemKey } from "./items.js"
 import { LocalWebStorageProvider } from "./providers.js"
@@ -7,7 +5,7 @@ import { LocalWebStorageProvider } from "./providers.js"
 const storage = new LocalWebStorageProvider()
 
 export class LocalWebStorage {
-	get authToken(): ManagedCacheProvider<string> {
+	get authToken() {
 		return cachedString(storage, itemKey.authToken())
 	}
 

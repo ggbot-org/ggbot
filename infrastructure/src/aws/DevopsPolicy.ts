@@ -1,9 +1,9 @@
 import { LambdaFunction } from "@workspace/aws-lambda"
-import { S3Bucket } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 
 import { ApiLambda } from "../aws/ApiLambda.js"
 import { ApiRole } from "../aws/ApiRole.js"
+import { S3Bucket } from "../aws/s3Buckets"
 import { IamAction } from "./iamActions.js"
 import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
 import { DataBucket, WebappBucket } from "./s3Buckets.js"

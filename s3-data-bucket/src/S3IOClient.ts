@@ -1,10 +1,7 @@
 import * as stream from "node:stream"
 
-import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, PutObjectCommand, S3Client, S3ServiceException } from "@aws-sdk/client-s3"
-
-import { s3Client } from "./client.js"
-import { s3ServiceExceptionName } from "./errors.js"
-import { S3BucketProvider, S3Path } from "./types.js"
+import { S3Client } from "@aws-sdk/client-s3"
+import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, PutObjectCommand, S3ServiceException } from "@aws-sdk/client-s3"
 
 function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
 	return new Promise((resolve, reject) => {
@@ -15,18 +12,18 @@ function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
 	})
 }
 
-export class S3IOClient implements S3BucketProvider {
+export class S3IOClient {
 	client: S3Client
 	Bucket: string
 	region: string
 
 	constructor(region: string, Bucket: string) {
-		this.client = s3Client(region)
+		this.client = new S3Client({ apiVersion: "2006-03-01", region })
 		this.Bucket = Bucket
 		this.region = region
 	}
 
-	async getObject(Key: S3Path["Key"]) {
+	async getObject(Key: string) {
 		try {
 			const command = new GetObjectCommand({ Bucket: this.Bucket, Key })
 			const output = await this.client.send(command)
@@ -35,7 +32,7 @@ export class S3IOClient implements S3BucketProvider {
 			return await streamToString(body)
 		} catch (error) {
 			if (error instanceof S3ServiceException) {
-				if (error.name === s3ServiceExceptionName.NoSuchKey) return null
+				if (error.name === "NoSuchKey") return null
 			}
 			throw error
 		}
@@ -68,13 +65,13 @@ export class S3IOClient implements S3BucketProvider {
 		}
 	}
 
-	async putObject(Key: S3Path["Key"], data: string) {
+	async putObject(Key: string, data: string) {
 		const Body = Buffer.from(data)
 		const command = new PutObjectCommand({ Body, Bucket: this.Bucket, Key })
 		return await this.client.send(command)
 	}
 
-	async deleteObject(Key: S3Path["Key"]) {
+	async deleteObject(Key: string) {
 		const command = new DeleteObjectCommand({ Bucket: this.Bucket, Key })
 		return await this.client.send(command)
 	}

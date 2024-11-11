@@ -1,4 +1,3 @@
-import { S3Bucket } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
 import { FQDN } from "@workspace/locators"
 import { DeployStage } from "@workspace/models"
@@ -6,6 +5,20 @@ import { getS3DataBucketName } from "@workspace/s3-data-bucket"
 
 const AWS_REGION = ENV.AWS_DATA_REGION()
 const DNS_DOMAIN = ENV.DNS_DOMAIN()
+
+export class S3Bucket {
+	name: string
+	region: string
+
+	constructor(region: string, name: string) {
+		this.region = region
+		this.name = name
+	}
+
+	get arn() {
+		return `arn:aws:s3:::${this.name}`
+	}
+}
 
 export class DataBucket extends S3Bucket {
 	constructor(deployStage: DeployStage) {
