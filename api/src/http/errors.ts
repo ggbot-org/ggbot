@@ -1,4 +1,4 @@
-import { BAD_GATEWAY__502, BAD_REQUEST__400, GATEWAY_TIMEOUT__504, HTTPStatusCode, INTERNAL_SERVER_ERROR__500, NOT_FOUND__404, UNAUTHORIZED__401 } from "./codes.js"
+import { BAD_GATEWAY__502, BAD_REQUEST__400, GATEWAY_TIMEOUT__504, HTTPStatusCode, INTERNAL_SERVER_ERROR__500, UNAUTHORIZED__401 } from "./codes.js"
 
 type HTTPError = {
 	statusCode: HTTPStatusCode
@@ -19,15 +19,6 @@ export class UnauthorizedError extends Error implements HTTPError {
 	statusCode: HTTPStatusCode = UNAUTHORIZED__401
 	constructor() {
 		super(String(UNAUTHORIZED__401))
-	}
-}
-
-export class NotFoundError extends Error implements HTTPError {
-	static errorName = "NotFound"
-	static statusCode: HTTPStatusCode = NOT_FOUND__404
-	statusCode: HTTPStatusCode = NOT_FOUND__404
-	constructor() {
-		super(String(NOT_FOUND__404))
 	}
 }
 

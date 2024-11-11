@@ -1,6 +1,5 @@
-import { adminClientActions, ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, errorResponse, isActionInput, OK } from "@workspace/api"
+import { adminClientActions, ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST__400, BadGatewayError, errorResponse, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK, UNAUTHORIZED__401 } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import { BAD_REQUEST__400, BadGatewayError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, UnauthorizedError } from "@workspace/http"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
 import { Service } from "./service.js"
@@ -12,7 +11,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
 		if (event.httpMethod !== apiActionMethod) return errorResponse(METHOD_NOT_ALLOWED__405)
 
-		await readSessionFromAuthorizationHeader(event.headers.Authorization)
+		const session = await readSessionFromAuthorizationHeader(event.headers.Authorization)
+		if (!session) return errorResponse(UNAUTHORIZED__401)
 
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
@@ -25,7 +25,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 	} catch (error) {
 		for (const ErrorClass of [
 			BadGatewayError,
-			UnauthorizedError,
 		]) if (error instanceof ErrorClass) {
 			return errorResponse(ErrorClass.statusCode)
 		}

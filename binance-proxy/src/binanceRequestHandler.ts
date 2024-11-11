@@ -1,10 +1,8 @@
 import { IncomingMessage } from "node:http"
 
-import { binanceClientActions, isActionInput } from "@workspace/api"
-import { ApiService, BinanceClientActionType, isBinanceClientActionInput as isInput } from "@workspace/api"
+import { ApiService, BadRequestError, binanceClientActions, BinanceClientActionType, isActionInput, isBinanceClientActionInput as isInput, UNAUTHORIZED__401 } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { BinanceDatabase } from "@workspace/database"
-import { BadRequestError } from "@workspace/http"
 import { BinanceApiConfig, ErrorAccountItemNotFound, SerializableData } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
@@ -34,13 +32,13 @@ export async function binanceRequestHandler(
 	const input: unknown = JSON.parse(body)
 	if (!isActionInput(binanceClientActions)(input)) throw new BadRequestError()
 
-	const { accountId } = await readSessionFromAuthorizationHeader(headers.authorization)
+	const session = await readSessionFromAuthorizationHeader(headers.authorization)
+	if (!session) return UNAUTHORIZED__401
+	const { accountId } = session
 
 	const binanceDatabase = new BinanceDatabase({ accountId }, documentProvider)
 	const binanceApiConfig = await binanceDatabase.ReadBinanceApiConfig()
-	if (!binanceApiConfig) {
-		throw new ErrorAccountItemNotFound({ type: "BinanceApiConfig", accountId })
-	}
+	if (!binanceApiConfig) throw new ErrorAccountItemNotFound({ type: "BinanceApiConfig", accountId })
 
 	const service = new BinanceService(binanceApiConfig)
 

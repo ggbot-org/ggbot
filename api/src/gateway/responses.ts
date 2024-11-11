@@ -1,9 +1,11 @@
-import { BAD_REQUEST__400, HTTP_METHOD, OK__200 } from "@workspace/http"
 
 import { ApiActionOutputData, ApiActionOutputError } from "../action.js"
+import { BAD_REQUEST__400, OK__200 } from "../http/codes.js"
 import { commonHeaders } from "./commonHeaders.js"
 import { responseBody } from "./responseBody.js"
 import { APIGatewayProxyResult } from "./types.js"
+
+type HTTP_METHOD = "GET" | "POST"
 
 export function ALLOWED_METHODS(methods: HTTP_METHOD[]) {
 	return {

@@ -1,13 +1,12 @@
-import { ApiService, isStripeClientActionInput as isInput, StripeClientActionType, StripeMetadata } from "@workspace/api"
+import { ApiService, BadRequestError, isStripeClientActionInput as isInput, StripeClientActionType, StripeMetadata } from "@workspace/api"
 import { ENV } from "@workspace/env"
-import { BadRequestError } from "@workspace/http"
 import { StripeClient } from "@workspace/stripe"
 
 export class Service implements ApiService<StripeClientActionType> {
 	accountId: StripeMetadata["accountId"]
 	stripe = new StripeClient()
 
-	constructor({ accountId }: Pick<Service, "accountId">) {
+	constructor({ accountId }: Pick<StripeMetadata, "accountId">) {
 		this.accountId = accountId
 	}
 

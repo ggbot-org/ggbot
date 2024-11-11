@@ -1,9 +1,8 @@
 import { Buffer } from "node:buffer"
 import { IncomingMessage, ServerResponse } from "node:http"
 
-import { apiActionMethod, ApiActionOutputData, ApiActionOutputError } from "@workspace/api"
+import { apiActionMethod, ApiActionOutputData, ApiActionOutputError, BAD_GATEWAY__502, BAD_REQUEST__400, BadGatewayError, BadRequestError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, NOT_FOUND__404, OK__200, UNAUTHORIZED__401 } from "@workspace/api"
 import { ErrorBinanceHTTP } from "@workspace/binance"
-import { BAD_GATEWAY__502, BAD_REQUEST__400, BadGatewayError, BadRequestError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, NOT_FOUND__404, OK__200, UNAUTHORIZED__401 } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 import { ErrorAccountItemNotFound } from "@workspace/models"
 
@@ -44,9 +43,12 @@ export function requestListener(request: IncomingMessage, response: ServerRespon
 
 		binanceRequestHandler(request.headers, body)
 			.then((data) => {
+				if (data === UNAUTHORIZED__401) {
+					response.writeHead(UNAUTHORIZED__401, ContentTypeJSON)
+					return response.write(UNAUTHORIZED__401)
+				}
 				response.writeHead(OK__200, ContentTypeJSON)
-				const output: ApiActionOutputData = { data }
-				response.write(JSON.stringify(output), "utf-8")
+				response.write(JSON.stringify({ data } satisfies ApiActionOutputData), "utf-8")
 			})
 			.catch((error) => {
 				if (error instanceof BadRequestError) return response.writeHead(error.statusCode)
@@ -55,8 +57,9 @@ export function requestListener(request: IncomingMessage, response: ServerRespon
 
 				if (error instanceof ErrorBinanceHTTP) {
 					response.writeHead(BAD_GATEWAY__502, ContentTypeJSON)
-					const output: ApiActionOutputError = { error: { name: BadGatewayError.errorName, info: error.info } }
-					return response.write(JSON.stringify(output), "utf-8")
+					return response.write(JSON.stringify(
+						{ error: { name: BadGatewayError.errorName, info: error.info } } satisfies ApiActionOutputError
+					), "utf-8")
 				}
 
 				// Fallback to print out error an return an "Internal Server Error" code.

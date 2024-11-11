@@ -9,13 +9,11 @@ graph LR
     workspace/admin-api --- workspace/database
     workspace/admin-api --- workspace/s3-data-bucket
     workspace/api --- workspace/binance
-    workspace/api --- workspace/http
     workspace/api --- workspace/locators
     workspace/api-lambda-user-action --- workspace/authentication
     workspace/api-lambda-user-action --- workspace/database
     workspace/api-lambda-user-action --- workspace/s3-data-bucket
     workspace/authentication --- workspace/env
-    workspace/authentication --- workspace/http
     workspace/authentication-api --- workspace/authentication
     workspace/authentication-api --- workspace/database
     workspace/authentication-api --- workspace/email-messages

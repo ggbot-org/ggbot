@@ -1,7 +1,6 @@
-import { ActionInput, ApiService, BinanceClientActionType, clientAction, ClientActionHeaders, GenericError, isApiActionOutputData, isApiActionOutputError, isUserClientActionInput as isInput, TimeoutError, UserClientActionType } from "@workspace/api"
+import { ActionInput, ApiService, BadRequestError, BinanceClientActionType, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, isApiActionOutputData, isApiActionOutputError, isUserClientActionInput as isInput, TimeoutError, UserClientActionType } from "@workspace/api"
 import { UserDatabase } from "@workspace/database"
 import { ENV } from "@workspace/env"
-import { BadRequestError, GatewayTimeoutError } from "@workspace/http"
 import { BinanceProxyURLs } from "@workspace/locators"
 
 export class Service implements ApiService<UserClientActionType> {

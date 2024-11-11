@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
-  "author": "Gianluca Casati (http://fibo.github.io/)",
+  "author": "Gianluca Casati (https://fibo.github.io/)",
   "scripts": {
     "build": "npm run build_workspaces -w repository",
     "build:admin-api": "npm run build -w admin-api",
@@ -146,7 +146,6 @@
     "email-messages",
     "env",
     "executor",
-    "http",
     "indexeddb",
     "indexeddb-binance",
     "infrastructure",

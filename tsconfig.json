@@ -15,7 +15,6 @@
 			"@workspace/dflow": ["./dflow/src/index.ts"],
 			"@workspace/email-messages": ["./email-messages/src/index.ts"],
 			"@workspace/env": ["./env/src/index.ts"],
-			"@workspace/http": ["./http/src/index.ts"],
 			"@workspace/indexeddb": ["./indexeddb/src/index.ts"],
 			"@workspace/indexeddb-binance": ["./indexeddb-binance/src/index.ts"],
 			"@workspace/locators": ["./locators/src/index.ts"],

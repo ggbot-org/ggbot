@@ -1,8 +1,8 @@
-import { BadGatewayError, BadRequestError, InternalServerError, NotFoundError, UnauthorizedError } from "@workspace/http"
 import { ErrorAccountItemNotFound, ErrorExceededQuota, ErrorUnknownItem, isSerializableObject, SerializableData, SerializableObject } from "@workspace/models"
 import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
 
 import { GenericError, TimeoutError } from "./errors.js"
+import { BadGatewayError, BadRequestError, InternalServerError, UnauthorizedError } from "./http/errors.js"
 
 export type ActionIO = void | SerializableData
 
@@ -60,7 +60,6 @@ export const isApiActionServerSideError = objectTypeGuard<ApiActionServerSideErr
 type ApiActionClientSideErrorName =
 	| typeof BadRequestError.errorName
 	| typeof UnauthorizedError.errorName
-	| typeof NotFoundError.errorName
 	| typeof GenericError.errorName
 	| typeof TimeoutError.errorName
 

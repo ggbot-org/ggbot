@@ -1,8 +1,7 @@
-import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, DocumentProviderLevel2, isAuthClientActionInput as isInput } from "@workspace/api"
+import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, BadRequestError, DocumentProviderLevel2, isAuthClientActionInput as isInput } from "@workspace/api"
 import { signSession } from "@workspace/authentication"
 import { AuthDatabase } from "@workspace/database"
 import { SendEmailProvider } from "@workspace/email-messages"
-import { BadRequestError } from "@workspace/http"
 import { ClientSession } from "@workspace/models"
 import { today } from "minimal-time-helpers"
 

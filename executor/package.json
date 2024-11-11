@@ -24,7 +24,6 @@
     "@workspace/dflow": "0.0.0",
     "@workspace/email-messages": "0.0.0",
     "@workspace/env": "0.0.0",
-    "@workspace/http": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
     "@workspace/s3-data-bucket": "0.0.0",

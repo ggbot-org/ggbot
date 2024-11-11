@@ -1,7 +1,6 @@
-import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST, ERROR, errorResponse, isActionInput, OK, userClientActions } from "@workspace/api"
+import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST, BAD_REQUEST__400, BadGatewayError, ERROR, errorResponse, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK, UNAUTHORIZED__401, UnauthorizedError, userClientActions } from "@workspace/api"
 import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
 import { ErrorBinanceHTTP } from "@workspace/binance"
-import { BAD_REQUEST__400, BadGatewayError, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, UnauthorizedError } from "@workspace/http"
 import { ErrorAccountItemNotFound, ErrorExceededQuota, ErrorUnknownItem } from "@workspace/models"
 import { documentProvider } from "@workspace/s3-data-bucket"
 
@@ -17,7 +16,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const authorization = event.headers.Authorization
-		const { accountId } = await readSessionFromAuthorizationHeader(authorization)
+		const session = await readSessionFromAuthorizationHeader(authorization)
+		if (!session) return errorResponse(UNAUTHORIZED__401)
+
+		const { accountId } = session
 		const service = new Service(
 			{ accountId },
 			documentProvider,

@@ -4,7 +4,7 @@ import { ApiKey } from "_/components/readonlyFields"
 import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from "_/components/user/BinanceApiKeyPermissions"
 import { ToastContext } from "_/contexts/Toast"
 import { useReadBinanceAccountApiRestrictions } from "_/hooks/user/api"
-import { GatewayTimeoutError } from "@workspace/http"
+import { GatewayTimeoutError } from "@workspace/api"
 import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 

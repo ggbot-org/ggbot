@@ -1,8 +1,7 @@
-import { BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from "@workspace/http"
-
 import { ActionInput, ApiActionOutput, isApiActionOutputData, isApiActionOutputError } from "./action.js"
 import { apiActionMethod } from "./api.js"
 import { GenericError, TimeoutError } from "./errors.js"
+import { BadRequestError, GatewayTimeoutError, InternalServerError, UnauthorizedError } from "./http/errors.js"
 
 export class ClientActionHeaders extends Headers {
 	constructor() {

@@ -1,5 +1,4 @@
 import { ENV } from "@workspace/env"
-import { UnauthorizedError } from "@workspace/http"
 import { ClientSession, clientSessionNumDays, isClientSession } from "@workspace/models"
 import { getDay, today } from "minimal-time-helpers"
 
@@ -16,21 +15,21 @@ export async function signSession(session: ClientSession) {
  *
  * ```ts
  * const authorization = event.headers.Authorization
- * const { accountId, creationDay } = await readSessionFromAuthorizationHeader(authorization)
+ * const session = await readSessionFromAuthorizationHeader(authorization)
+ * if (!session) console.error(401) // Unauthorized
  * ```
  */
-export async function readSessionFromAuthorizationHeader(headerContent: unknown): Promise<ClientSession> {
-	if (typeof headerContent !== "string") throw new UnauthorizedError()
+export async function readSessionFromAuthorizationHeader(headerContent: unknown): Promise<ClientSession | null> {
+	if (typeof headerContent !== "string") return null
 	let sessionJson = ""
 	try {
 		sessionJson = await decrypt(headerContent, ENV.AUTHENTICATION_SECRET())
 	} catch {
-		throw new UnauthorizedError()
+		return null
 	}
 	const session: unknown = JSON.parse(sessionJson)
-	if (!isClientSession(session)) throw new UnauthorizedError()
-	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays`
-	// is not in the past yet.
-	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today()) throw new UnauthorizedError()
+	if (!isClientSession(session)) return null
+	// Check that "expiration day" i.e. `creationDay` + `clientSessionNumDays` is not in the past yet.
+	if (getDay(session.creationDay).plus(clientSessionNumDays).days < today()) return null
 	return session
 }
