@@ -1,7 +1,7 @@
-import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
 import { IamAction } from "./iamActions.js"
+import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
 import { SesIdentity } from "./SesIdentity.js"
 
 const statementNames = ["sendEmail"] as const
@@ -17,7 +17,7 @@ export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<Sta
 		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-ses-noreply-policy`)
 	}
 
-	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
+	get statementAction(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
 			sendEmail: [
 				"SES:SendEmail",
@@ -26,7 +26,7 @@ export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<Sta
 		}
 	}
 
-	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
+	get statementResource(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Resource"]> {
 		return {
 			sendEmail: this.sesIdentity.arn,
 		}

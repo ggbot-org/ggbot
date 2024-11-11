@@ -31,8 +31,6 @@ A basic workspace package is a folder with the following files:
 -   package.json
 -   src/index.ts
 -   tsconfig.json
--   tsconfig.build.json
--   tsconfig.test.json
 
 ### .gitignore
 
@@ -49,7 +47,7 @@ This is a sample _package.json_ for a generic workspace.
 {
 	// Package name, for instance `foo-bar`, prefixed by `@workspace` project namespace.
 	"name": "@workspace/foo-bar",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	// Package must be a private module.
 	"private": true,
 	"type": "module",
@@ -85,68 +83,10 @@ export * from "./foo.js"
 
 ### tsconfig.json
 
-```jsonc
-{
-	"compilerOptions": {
-		"lib": ["dom", "es2015"],
-		"module": "esnext",
-		"moduleResolution": "node",
-		// Specify the root folder within your source files.
-		// It is set explicitly, since tsconfig.build.json set `"composite": true`
-		"rootDir": "./src",
-		"target": "esnext"
-	},
-	// Extend common set of `compilerOptions`, used to improve code quality.
-	"extends": "@workspace/tsconfig",
-	"include": ["./src/**/*.ts"]
-}
-```
-
-### tsconfig.build.json
+A generic tsconfig could be just the following
 
 ```jsonc
 {
-	"compilerOptions": {
-		// Enable constraints that allow a TypeScript project to be used with project references.
-		// It implies: `"declaration": true`; `"incremental": true`.
-		"composite": true,
-
-		// Go to JS file when using IDE functions like "Go to Definition" in VSCode.
-		"declarationMap": true,
-
-		"outDir": "./dist",
-
-		// Keep .tsbuildinfo into temp/ folder.
-		"tsBuildInfoFile": "temp/tsconfig.build.tsbuildinfo",
-
-		// Disable emitting declarations that have @internal in their JSDoc comments.
-		"stripInternal": true
-	},
-	"extends": "./tsconfig.json",
-	"exclude": [
-		"node_modules",
-
-		// Exclude tests.
-		"**/*_test.ts"
-	]
-}
-```
-
-### tsconfig.test.json
-
-If package has no test, `tsconfig.test.json` can be omitted.
-
-```jsonc
-{
-	"compilerOptions": {
-		"outDir": "./temp",
-
-		// Keep .tsbuildinfo into temp/ folder.
-		"tsBuildInfoFile": "temp/tsconfig.temp.tsbuildinfo"
-	},
-	// Extend build config to reproduce its result:
-	// notice that // `outDir` and `exclude` are overridden.
-	"extends": "./tsconfig.build.json",
-	"exclude": ["node_modules"]
+	"extends": "@workspace/tsconfig/default"
 }
 ```

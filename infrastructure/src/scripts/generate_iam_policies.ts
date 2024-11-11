@@ -1,10 +1,10 @@
 import { join } from "node:path"
 
-import { IamPolicy, IamPolicyDocument } from "@workspace/aws-iam"
 import writeFile from "write-file-utf8"
 
 import { DevopsPolicy } from "../aws/DevopsPolicy.js"
 import { ElasticIpsPolicy } from "../aws/ElasticIpsPolicy.js"
+import { IamPolicy, IamPolicyDocument } from "../aws/IamPolicy.js"
 import { SesNoreplyPolicy } from "../aws/SesNopeplyPolicy.js"
 import { iamDir } from "../package.js"
 

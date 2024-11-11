@@ -1,4 +1,3 @@
-import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { LambdaFunction } from "@workspace/aws-lambda"
 import { S3Bucket } from "@workspace/aws-s3"
 import { ENV } from "@workspace/env"
@@ -6,6 +5,7 @@ import { ENV } from "@workspace/env"
 import { ApiLambda } from "../aws/ApiLambda.js"
 import { ApiRole } from "../aws/ApiRole.js"
 import { IamAction } from "./iamActions.js"
+import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
 import { DataBucket, WebappBucket } from "./s3Buckets.js"
 
 const statementNames = [
@@ -41,7 +41,7 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 		this.apiRole = new ApiRole()
 	}
 
-	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
+	get statementAction(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
 			deployWebapp: [
 				"s3:DeleteObject",
@@ -68,7 +68,7 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 		}
 	}
 
-	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
+	get statementResource(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Resource"]> {
 		return {
 			deployWebapp: [
 				...wholeBucket(new WebappBucket("main")),

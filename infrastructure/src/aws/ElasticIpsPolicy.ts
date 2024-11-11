@@ -1,7 +1,7 @@
-import { IamPolicy, IamPolicyDocument, PolicyDocumentStatement } from "@workspace/aws-iam"
 import { ENV } from "@workspace/env"
 
 import { IamAction } from "./iamActions.js"
+import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
 
 const statementNames = [
 	"describeAddresses",
@@ -19,7 +19,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), `${ENV.PROJECT_SHORT_NAME()}-elastic-ips-policy`)
 	}
 
-	get statementAction(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Action"]> {
+	get statementAction(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
 			describeAddresses: [
 				"ec2:DescribeAddresses",
@@ -31,7 +31,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 		}
 	}
 
-	get statementResource(): Record<StatementName, PolicyDocumentStatement<StatementAction>["Resource"]> {
+	get statementResource(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Resource"]> {
 		const { accountId } = this
 		return {
 			describeAddresses: "*",

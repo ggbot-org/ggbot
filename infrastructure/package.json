@@ -10,11 +10,8 @@
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
-    "@workspace/aws-iam": "0.0.0",
     "@workspace/aws-lambda": "0.0.0",
     "@workspace/aws-s3": "0.0.0",
-    "@workspace/aws-ses": "0.0.0",
-    "@workspace/database": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",

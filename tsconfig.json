@@ -8,7 +8,6 @@
 		"paths": {
 			"@workspace/api": ["./api/src/index.ts"],
 			"@workspace/authentication": ["./authentication/src/index.ts"],
-			"@workspace/aws-iam": ["./aws-iam/src/index.ts"],
 			"@workspace/aws-lambda": ["./aws-lambda/src/index.ts"],
 			"@workspace/aws-s3": ["./aws-s3/src/index.ts"],
 			"@workspace/aws-ses": ["./aws-ses/src/index.ts"],
