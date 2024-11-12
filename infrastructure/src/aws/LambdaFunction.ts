@@ -19,10 +19,7 @@ export class LambdaFunction {
 	}
 
 	get arn() {
-		return LambdaFunction.arn(this.accountId, this.region, this.functionName)
-	}
-
-	static arn(accountId: string, region: string, functionName: string) {
+		const { accountId, region, functionName } = this
 		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
 	}
 

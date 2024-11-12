@@ -1,7 +1,5 @@
 # EC2 service
 
-See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.md).
-
 ## Deploy stage
 
 First of all, the only _Deploy stage_ that makes sense for `binance-proxy` service is `main`.

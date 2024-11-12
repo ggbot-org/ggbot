@@ -1,12 +1,9 @@
 import { ENV } from "@workspace/env"
 
-import { ApiLambda } from "./ApiLambda.js"
 import { ApiRole } from "./ApiRole.js"
-import { IamAction } from "./iamActions.js"
-import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
+import { IamAction, IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IAM.js"
 import { LambdaFunction } from "./LambdaFunction.js"
-import { S3Bucket } from "./s3Buckets"
-import { DataBucket, WebappBucket } from "./s3Buckets.js"
+import { DataBucket, WebappBucket, wholeBucket } from "./s3Buckets.js"
 
 const statementNames = [
 	"deployWebapp",
@@ -29,9 +26,6 @@ type StatementAction = Extract<IamAction,
 	| "s3:PutObject"
 >
 
-function wholeBucket(bucket: S3Bucket) {
-	return [bucket.arn, `${bucket.arn}/*`]
-}
 export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<StatementName, StatementAction> {
 	apiRole: ApiRole
 
@@ -55,7 +49,7 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 			manageApiLambdas: [
 				"lambda:CreateFunction",
 				"lambda:UpdateFunctionCode",
-				"lambda:UpdateFunctionConfiguration"
+				"lambda:UpdateFunctionConfiguration",
 			],
 			// iam:PassRole is needed by lambda:CreateFunction
 			manageLambdasPassRole: [
@@ -78,7 +72,7 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 				...wholeBucket(new DataBucket("main")),
 				...wholeBucket(new DataBucket("next")),
 			],
-			manageApiLambdas: LambdaFunction.arn(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), ApiLambda.functionName("*")),
+			manageApiLambdas: new LambdaFunction(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), "*").arn,
 			manageLogGroups: "*",
 			manageLambdasPassRole: this.apiRole.arn,
 		}

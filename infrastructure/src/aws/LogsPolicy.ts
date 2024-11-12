@@ -1,33 +1,36 @@
 import { ENV } from "@workspace/env"
 
 import { IamAction, IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IAM.js"
-import { SesIdentity } from "./SesIdentity.js"
 
-const statementNames = ["sendEmail"] as const
+const statementNames = [
+	"handleLogs",
+] as const
 type StatementName = (typeof statementNames)[number]
 type StatementAction = Extract<IamAction,
-	| "SES:SendEmail"
-	| "SES:SendRawEmail"
+	| "logs:CreateLogGroup"
+	| "logs:CreateLogStream"
+	| "logs:PutLogEvents"
 >
-export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<StatementName, StatementAction> {
-	sesIdentity: SesIdentity = new SesIdentity()
 
+export class LogsPolicy extends IamPolicy {
 	constructor() {
-		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-ses-noreply-policy`)
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), `${ENV.PROJECT_SHORT_NAME()}-logs-policy`)
 	}
 
 	get statementAction(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
-			sendEmail: [
-				"SES:SendEmail",
-				"SES:SendRawEmail",
+			handleLogs: [
+				"logs:CreateLogGroup",
+				"logs:CreateLogStream",
+				"logs:PutLogEvents",
 			],
 		}
 	}
 
 	get statementResource(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Resource"]> {
+		const { accountId, region } = this
 		return {
-			sendEmail: this.sesIdentity.arn,
+			handleLogs: `arn:aws:logs:${region}:${accountId}:*`
 		}
 	}
 
@@ -38,12 +41,6 @@ export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<Sta
 				(statementName) => IamPolicy.allowStatement(this.statementAction[statementName], this.statementResource[statementName])
 			)
 		}
-		// TODO try
-		// "Condition": {
-		//    "StringLike": {
-		//        "ses:FromAddress": "noreply@ggbot2.com"
-		//        where addres comes from @wrokspace locators noReplyEmailAddress
-		//    }
-		// }
 	}
 }
+

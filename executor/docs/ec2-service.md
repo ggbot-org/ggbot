@@ -1,7 +1,5 @@
 # EC2 service
 
-See [how to launch EC2 instance](../../infrastructure/docs/ec2-launch-instance.md).
-
 ## Deploy stage
 
 First of all, define the _Deploy stage_: it can be `main` or `next`.

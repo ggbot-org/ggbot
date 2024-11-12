@@ -6,7 +6,7 @@ import { getS3DataBucketName } from "@workspace/s3-data-bucket"
 const AWS_REGION = ENV.AWS_DATA_REGION()
 const DNS_DOMAIN = ENV.DNS_DOMAIN()
 
-export class S3Bucket {
+class S3Bucket {
 	name: string
 	region: string
 
@@ -18,6 +18,10 @@ export class S3Bucket {
 	get arn() {
 		return `arn:aws:s3:::${this.name}`
 	}
+}
+
+export function wholeBucket(bucket: S3Bucket) {
+	return [bucket.arn, `${bucket.arn}/*`]
 }
 
 export class DataBucket extends S3Bucket {

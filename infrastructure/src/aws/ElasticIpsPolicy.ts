@@ -1,7 +1,6 @@
 import { ENV } from "@workspace/env"
 
-import { IamAction } from "./iamActions.js"
-import { IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IamPolicy.js"
+import { IamAction, IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IAM.js"
 
 const statementNames = [
 	"describeAddresses",
@@ -26,7 +25,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 			],
 			handleAddressesAssociation: [
 				"ec2:AssociateAddress",
-				"ec2:DisassociateAddress"
+				"ec2:DisassociateAddress",
 			]
 		}
 	}
@@ -38,7 +37,7 @@ export class ElasticIpsPolicy extends IamPolicy {
 			handleAddressesAssociation: [
 				`arn:aws:ec2:*:${accountId}:network-interface/*`,
 				`arn:aws:ec2:*:${accountId}:elastic-ip/*`,
-				`arn:aws:ec2:*:${accountId}:instance/*`
+				`arn:aws:ec2:*:${accountId}:instance/*`,
 			]
 		}
 	}

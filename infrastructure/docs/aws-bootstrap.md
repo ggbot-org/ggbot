@@ -68,6 +68,7 @@ The following steps are needed, order matters:
 1. [Devops account setup](./devops-account-setup.md)
 2. [Create the main website](./www-setup.md)
 3. [SES setup](./ses-setup.md)
+4. [IAM setup](./iam-setup.md)
 
 Continue with the following steps in any order:
 

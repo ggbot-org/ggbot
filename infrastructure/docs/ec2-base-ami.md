@@ -4,8 +4,6 @@
 
 Create a new instance starting from _Amazon Linux 2023 AMI_.
 
-See [how to launch EC2 instance](./ec2-launch-instance.md).
-
 Update all software.
 
 ```sh

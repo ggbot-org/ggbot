@@ -1,33 +1,41 @@
 import { ENV } from "@workspace/env"
 
 import { IamAction, IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from "./IAM.js"
-import { SesIdentity } from "./SesIdentity.js"
+import { DataBucket, wholeBucket } from "./s3Buckets.js"
 
-const statementNames = ["sendEmail"] as const
+const statementNames = [
+	"readWriteDataBucket",
+] as const
 type StatementName = (typeof statementNames)[number]
 type StatementAction = Extract<IamAction,
-	| "SES:SendEmail"
-	| "SES:SendRawEmail"
+	| "s3:DeleteObject"
+	| "s3:GetObject"
+	| "s3:ListBucket"
+	| "s3:PutObject"
 >
-export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<StatementName, StatementAction> {
-	sesIdentity: SesIdentity = new SesIdentity()
 
+export class S3ReadWriteDataPolicy extends IamPolicy {
 	constructor() {
-		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_SES_REGION(), `${ENV.PROJECT_SHORT_NAME()}-ses-noreply-policy`)
+		super(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), `${ENV.PROJECT_SHORT_NAME()}-s3-readwrite-data-policy`)
 	}
 
 	get statementAction(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Action"]> {
 		return {
-			sendEmail: [
-				"SES:SendEmail",
-				"SES:SendRawEmail",
+			readWriteDataBucket: [
+				"s3:DeleteObject",
+				"s3:GetObject",
+				"s3:ListBucket",
+				"s3:PutObject",
 			],
 		}
 	}
 
 	get statementResource(): Record<StatementName, IamPolicyDocumentStatement<StatementAction>["Resource"]> {
 		return {
-			sendEmail: this.sesIdentity.arn,
+			readWriteDataBucket: [
+				...wholeBucket(new DataBucket("main")),
+				...wholeBucket(new DataBucket("next")),
+			]
 		}
 	}
 
@@ -38,12 +46,6 @@ export class SesNoreplyPolicy extends IamPolicy implements IamPolicyDocument<Sta
 				(statementName) => IamPolicy.allowStatement(this.statementAction[statementName], this.statementResource[statementName])
 			)
 		}
-		// TODO try
-		// "Condition": {
-		//    "StringLike": {
-		//        "ses:FromAddress": "noreply@ggbot2.com"
-		//        where addres comes from @wrokspace locators noReplyEmailAddress
-		//    }
-		// }
 	}
 }
+
