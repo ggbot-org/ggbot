@@ -1,10 +1,10 @@
-import { CacheMap } from "@workspace/cache"
-import { ExecutorDatabase } from "@workspace/database"
-import { AccountKey } from "@workspace/models"
+import { CacheMap } from '@workspace/cache'
+import { ExecutorDatabase } from '@workspace/database'
+import { AccountKey } from '@workspace/models'
 
-import { ONE_DAY } from "./durations.js"
+import { ONE_DAY } from './durations.js'
 
-const key = "accountKeys"
+const key = 'accountKeys'
 const cache = new CacheMap<AccountKey[]>(ONE_DAY)
 
 export class AccountKeysProvider {
@@ -14,7 +14,7 @@ export class AccountKeysProvider {
 		this.database = database
 	}
 
-	deleteCachedAccountId(accountId: AccountKey["accountId"]): void {
+	deleteCachedAccountId(accountId: AccountKey['accountId']): void {
 		const items = cache.get(key)
 		if (!items) return
 		const updatedItems = items.filter((item) => item.accountId !== accountId)

@@ -1,23 +1,23 @@
-import { workerScriptPath } from "_/workers"
-import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from "@workspace/backtesting"
-import { everyOneHour, Frequency } from "@workspace/models"
-import { Day, DayInterval, getDay, yesterday } from "minimal-time-helpers"
-import { Dispatch, Reducer, useEffect, useReducer } from "react"
+import { workerScriptPath } from '_/workers'
+import { BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession } from '@workspace/backtesting'
+import { everyOneHour, Frequency } from '@workspace/models'
+import { Day, DayInterval, getDay, yesterday } from 'minimal-time-helpers'
+import { Dispatch, Reducer, useEffect, useReducer } from 'react'
 
 type Action =
 	| BacktestingMessageInData
 	| BacktestingMessageOutData
 	| {
-		type: "INITALIZED"
+		type: 'INITALIZED'
 	}
 
 type State = Pick<
 	BacktestingSession,
-	| "afterStepBehaviour"
-	| "currentTimestamp"
-	| "memory"
-	| "orders"
-	| "stepIndex"
+	| 'afterStepBehaviour'
+	| 'currentTimestamp'
+	| 'memory'
+	| 'orders'
+	| 'stepIndex'
 > & {
 	dayInterval: DayInterval
 	frequency: Frequency
@@ -30,9 +30,9 @@ type State = Pick<
 
 export type { State as UseBacktestingState }
 
-const backtesting = new Worker(`/${workerScriptPath.backtesting.join("/")}`)
+const backtesting = new Worker(`/${workerScriptPath.backtesting.join('/')}`)
 
-function defaultDayInterval(): State["dayInterval"] {
+function defaultDayInterval(): State['dayInterval'] {
 	const maxDay = yesterday()
 	return {
 		start: getDay(maxDay).minus(7).days,
@@ -42,13 +42,13 @@ function defaultDayInterval(): State["dayInterval"] {
 
 const partialInitialState: Pick<
 	State,
-	| "currentTimestamp"
-	| "isPaused"
-	| "isDone"
-	| "isRunning"
-	| "memory"
-	| "orders"
-	| "stepIndex"
+	| 'currentTimestamp'
+	| 'isPaused'
+	| 'isDone'
+	| 'isRunning'
+	| 'memory'
+	| 'orders'
+	| 'stepIndex'
 > = {
 	currentTimestamp: undefined,
 	isPaused: false,
@@ -65,7 +65,7 @@ export function useBacktesting(): {
 } {
 	const [state, dispatch] = useReducer<Reducer<State, Action>>(
 		(state, action) => {
-			if (["STOP", "START"].includes(action.type)) {
+			if (['STOP', 'START'].includes(action.type)) {
 				backtesting.postMessage(action)
 				return {
 					...state,
@@ -73,12 +73,12 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (["PAUSE", "RESUME"].includes(action.type)) {
+			if (['PAUSE', 'RESUME'].includes(action.type)) {
 				backtesting.postMessage(action)
 				return state
 			}
 
-			if (action.type === "SET_AFTER_STEP_BEHAVIOUR") {
+			if (action.type === 'SET_AFTER_STEP_BEHAVIOUR') {
 				const { afterStepBehaviour } = action
 				backtesting.postMessage(action)
 				return {
@@ -87,7 +87,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (action.type === "SET_DAY_INTERVAL") {
+			if (action.type === 'SET_DAY_INTERVAL') {
 				const { dayInterval } = action
 				backtesting.postMessage(action)
 				return {
@@ -96,7 +96,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (action.type === "SET_FREQUENCY") {
+			if (action.type === 'SET_FREQUENCY') {
 				const { frequency } = action
 				backtesting.postMessage(action)
 				return {
@@ -105,18 +105,18 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (action.type === "STATUS_CHANGED") {
+			if (action.type === 'STATUS_CHANGED') {
 				const { status } = action
 				return {
 					...state,
-					isDone: status === "done",
-					isPaused: status === "paused",
-					isRunning: status === "running",
-					...(status === "initial" ? partialInitialState : {})
+					isDone: status === 'done',
+					isPaused: status === 'paused',
+					isRunning: status === 'running',
+					...(status === 'initial' ? partialInitialState : {})
 				}
 			}
 
-			if (action.type === "UPDATED_MEMORY") {
+			if (action.type === 'UPDATED_MEMORY') {
 				const { memory } = action
 				return {
 					...state,
@@ -124,7 +124,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (action.type === "UPDATED_PROGRESS") {
+			if (action.type === 'UPDATED_PROGRESS') {
 				const { currentTimestamp, numSteps, stepIndex } = action
 				return {
 					...state,
@@ -134,7 +134,7 @@ export function useBacktesting(): {
 				}
 			}
 
-			if (action.type === "UPDATED_ORDERS") {
+			if (action.type === 'UPDATED_ORDERS') {
 				const { orders } = action
 				return {
 					...state,
@@ -162,7 +162,7 @@ export function useBacktesting(): {
 		) => {
 			dispatch(action)
 		}
-		backtesting.addEventListener("error", (error) => console.error(error))
+		backtesting.addEventListener('error', (error) => console.error(error))
 	}, [dispatch])
 
 	return { dispatch, state }

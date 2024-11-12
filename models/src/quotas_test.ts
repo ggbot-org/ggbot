@@ -1,12 +1,12 @@
-import { describe, test } from "node:test"
+import { describe, test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
 
-import { quota } from "./quotas.js"
-import { SubscriptionPlan } from "./subscription.js"
+import { quota } from './quotas.js'
+import { SubscriptionPlan } from './subscription.js'
 
-describe("quota", () => {
-	test("MAX_SCHEDULINGS_PER_ACCOUNT", () => {
+describe('quota', () => {
+	test('MAX_SCHEDULINGS_PER_ACCOUNT', () => {
 		assertEqual<SubscriptionPlan | undefined, number>(
 			quota.MAX_SCHEDULINGS_PER_ACCOUNT,
 			[
@@ -15,18 +15,18 @@ describe("quota", () => {
 					output: 0
 				},
 				{
-					input: "basic",
+					input: 'basic',
 					output: 10
 				},
 				{
-					input: "pro",
+					input: 'pro',
 					output: 30
 				}
 			]
 		)
 	})
 
-	test("MAX_STRATEGIES_PER_ACCOUNT", () => {
+	test('MAX_STRATEGIES_PER_ACCOUNT', () => {
 		assertEqual<SubscriptionPlan | undefined, number>(
 			quota.MAX_STRATEGIES_PER_ACCOUNT,
 			[
@@ -35,11 +35,11 @@ describe("quota", () => {
 					output: 2
 				},
 				{
-					input: "basic",
+					input: 'basic',
 					output: 20
 				},
 				{
-					input: "pro",
+					input: 'pro',
 					output: 50
 				}
 			]

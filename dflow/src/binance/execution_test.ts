@@ -1,12 +1,12 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { getBalanceFromExecutionSteps } from "./execution.js"
-import { DflowBinanceClientMock } from "./mocks/client.js"
-import { executionStepsBuyBTCUSD } from "./mocks/executionSteps.js"
+import { getBalanceFromExecutionSteps } from './execution.js'
+import { DflowBinanceClientMock } from './mocks/client.js'
+import { executionStepsBuyBTCUSD } from './mocks/executionSteps.js'
 
-test("getBalanceFromExecutionSteps", async () => {
+test('getBalanceFromExecutionSteps', async () => {
 	const binance = new DflowBinanceClientMock()
 	const { symbols } = await binance.exchangeInfo()
 
@@ -23,14 +23,14 @@ test("getBalanceFromExecutionSteps", async () => {
 				input: executionStepsBuyBTCUSD,
 				output: [
 					{
-						asset: "BTC",
-						free: "0.00096",
-						locked: "0.00000000"
+						asset: 'BTC',
+						free: '0.00096',
+						locked: '0.00000000'
 					},
 					{
-						asset: "BUSD",
-						free: "-19.88287",
-						locked: "0.00000000"
+						asset: 'BUSD',
+						free: '-19.88287',
+						locked: '0.00000000'
 					}
 				]
 			}

@@ -1,54 +1,54 @@
-import { classnames } from "_/classnames"
-import { useCallback, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { useCallback, useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
-import { DayDropdown, DayDropdownProps } from "./DayDropdown"
+import { DayDropdown, DayDropdownProps } from './DayDropdown'
 
 export type DayIntervalProps = Pick<
 	DayDropdownProps,
-	"disabled" | "min" | "max"
+	'disabled' | 'min' | 'max'
 > & {
-	start: Pick<DayDropdownProps, "day" | "setDay">
-	end: Pick<DayDropdownProps, "day" | "setDay">
+	start: Pick<DayDropdownProps, 'day' | 'setDay'>
+	end: Pick<DayDropdownProps, 'day' | 'setDay'>
 }
 
 export function DayInterval({ disabled, min, max, start, end }: DayIntervalProps) {
-	const [activeDropdown, setActiveDropdown] = useState<"start" | "end" | undefined>()
+	const [activeDropdown, setActiveDropdown] = useState<'start' | 'end' | undefined>()
 
-	const closeDropdowns = useCallback<DayDropdownProps["close"]>(() => {
+	const closeDropdowns = useCallback<DayDropdownProps['close']>(() => {
 		setActiveDropdown(undefined)
 	}, [])
 
-	const onClickStart = useCallback<DayDropdownProps["onClick"]>((event) => {
+	const onClickStart = useCallback<DayDropdownProps['onClick']>((event) => {
 		event.stopPropagation()
 		setActiveDropdown((activeDropdown) => {
-			if (activeDropdown === "start") return undefined
-			return "start"
+			if (activeDropdown === 'start') return undefined
+			return 'start'
 		})
 	}, [])
 
-	const onClickEnd = useCallback<DayDropdownProps["onClick"]>((event) => {
+	const onClickEnd = useCallback<DayDropdownProps['onClick']>((event) => {
 		event.stopPropagation()
 		setActiveDropdown((activeDropdown) => {
-			if (activeDropdown === "end") return undefined
-			return "end"
+			if (activeDropdown === 'end') return undefined
+			return 'end'
 		})
 	}, [])
 
 	// Close both day dropdowns on outside click.
 	useEffect(() => {
-		addEventListener("click", closeDropdowns)
+		addEventListener('click', closeDropdowns)
 		return () => {
-			removeEventListener("click", closeDropdowns)
+			removeEventListener('click', closeDropdowns)
 		}
 	}, [closeDropdowns])
 
 	return (
-		<div className={classnames("day-interval")}>
+		<div className={classnames('day-interval')}>
 			<DayDropdown
 				close={closeDropdowns}
 				disabled={disabled}
-				isActive={activeDropdown === "start"}
+				isActive={activeDropdown === 'start'}
 				label={<FormattedMessage id="DailyInterval.from" />}
 				max={end.day}
 				min={min}
@@ -59,7 +59,7 @@ export function DayInterval({ disabled, min, max, start, end }: DayIntervalProps
 				isRight
 				close={closeDropdowns}
 				disabled={disabled}
-				isActive={activeDropdown === "end"}
+				isActive={activeDropdown === 'end'}
 				label={<FormattedMessage id="DailyInterval.to" />}
 				max={max}
 				min={start.day}

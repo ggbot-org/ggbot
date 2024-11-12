@@ -1,7 +1,7 @@
-import { Message } from "_/components/library"
-import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from "_/i18n/formattedMessageMarkup"
-import { telegram } from "@workspace/locators"
-import { FormattedMessage } from "react-intl"
+import { Message } from '_/components/library'
+import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from '_/i18n/formattedMessageMarkup'
+import { telegram } from '@workspace/locators'
+import { FormattedMessage } from 'react-intl'
 
 export function SubscriptionPurchased() {
 	return (

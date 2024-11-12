@@ -1,12 +1,12 @@
-import { DocumentProviderLevel3, DocumentProviderListItemsInput } from "@workspace/api"
-import { deletedNow, DeployStage, SerializableData, updatedNow } from "@workspace/models"
+import { DocumentProviderLevel3, DocumentProviderListItemsInput } from '@workspace/api'
+import { deletedNow, DeployStage, SerializableData, updatedNow } from '@workspace/models'
 
-import { S3IOClient } from "./S3IOClient.js"
+import { S3IOClient } from './S3IOClient.js'
 
-const nextDeployStage: DeployStage = "next"
+const nextDeployStage: DeployStage = 'next'
 
 export function getS3DataBucketName(deployStage: DeployStage, dnsDomain: string, awsRegion: string): string {
-	return deployStage === "local"
+	return deployStage === 'local'
 		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
 		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
 }

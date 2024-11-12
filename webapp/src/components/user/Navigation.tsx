@@ -1,10 +1,10 @@
-import { classnames } from "_/classnames"
-import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { GOTO } from "_/routing/navigation"
-import { webapp } from "_/routing/webapp"
-import { useContext } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from '_/components/library'
+import { AuthenticationContext } from '_/contexts/Authentication'
+import { GOTO } from '_/routing/navigation'
+import { webapp } from '_/routing/webapp'
+import { useContext } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export function Navigation() {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)
@@ -24,7 +24,7 @@ export function Navigation() {
 			<NavbarEnd>
 				{accountIsAdmin ? (
 					<NavbarLink
-						className={classnames("has-text-primary")}
+						className={classnames('has-text-primary')}
 						onClick={() => GOTO(webapp.admin.dashboard)}
 					>
 						<FormattedMessage id="Navigation.admin" />

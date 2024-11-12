@@ -1,9 +1,9 @@
-import { isDay } from "minimal-time-helpers"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { isDay } from 'minimal-time-helpers'
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { AccountKey, isAccountKey } from "./account.js"
-import { AccountStrategyKey } from "./accountStrategy.js"
-import { DayKey } from "./time.js"
+import { AccountKey, isAccountKey } from './account.js'
+import { AccountStrategyKey } from './accountStrategy.js'
+import { DayKey } from './time.js'
 
 /** Used to aggregate daily data regarding an account. */
 export type AccountDailyKey = AccountKey & DayKey

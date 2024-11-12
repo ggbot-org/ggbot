@@ -1,12 +1,12 @@
-import { classnames } from "_/classnames"
-import { Button, ReadonlyInput } from "_/components/library"
-import { useFlowView, UseFlowViewOutput } from "_/hooks/useFlowView"
-import { useWriteStrategyFlow } from "_/hooks/user/api"
-import { GOTO } from "_/routing/navigation"
-import { webapp } from "_/routing/webapp"
-import { StrategyFlow, StrategyKey } from "@workspace/models"
-import { useCallback, useEffect, useRef, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, ReadonlyInput } from '_/components/library'
+import { useFlowView, UseFlowViewOutput } from '_/hooks/useFlowView'
+import { useWriteStrategyFlow } from '_/hooks/user/api'
+import { GOTO } from '_/routing/navigation'
+import { webapp } from '_/routing/webapp'
+import { StrategyFlow, StrategyKey } from '@workspace/models'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlow }: {
 	setFlowView: (arg: UseFlowViewOutput) => void
@@ -54,11 +54,11 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 
 	return (
 		<>
-			<div className={classnames("flow-editor__menu")}>
-				<div className={classnames("flow-editor__strategy-name")}>
+			<div className={classnames('flow-editor__menu')}>
+				<div className={classnames('flow-editor__strategy-name')}>
 					<ReadonlyInput value={strategyName} />
 				</div>
-				<div className={classnames("flow-editor__actions")}>
+				<div className={classnames('flow-editor__actions')}>
 					<Button
 						onClick={() => {
 							if (!strategyKey) return
@@ -68,7 +68,7 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 						<FormattedMessage id="Tabs.manage" />
 					</Button>
 					<Button
-						color={canSave ? "primary" : undefined}
+						color={canSave ? 'primary' : undefined}
 						isLoading={WRITE.isPending}
 						onClick={onClickSave}
 					>
@@ -78,7 +78,7 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 			</div>
 			<div
 				ref={flowViewContainerRef}
-				className={classnames("flow-editor__container")}
+				className={classnames('flow-editor__container')}
 			/>
 		</>
 	)

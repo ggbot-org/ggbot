@@ -1,11 +1,11 @@
-import { BAD_GATEWAY__502, BAD_REQUEST__400, GATEWAY_TIMEOUT__504, HTTPStatusCode, INTERNAL_SERVER_ERROR__500, UNAUTHORIZED__401 } from "./codes.js"
+import { BAD_GATEWAY__502, BAD_REQUEST__400, GATEWAY_TIMEOUT__504, HTTPStatusCode, INTERNAL_SERVER_ERROR__500, UNAUTHORIZED__401 } from './codes.js'
 
 type HTTPError = {
 	statusCode: HTTPStatusCode
 }
 
 export class BadRequestError extends Error implements HTTPError {
-	static errorName = "BadRequest"
+	static errorName = 'BadRequest'
 	static statusCode: HTTPStatusCode = BAD_REQUEST__400
 	statusCode: HTTPStatusCode = BAD_REQUEST__400
 	constructor() {
@@ -14,7 +14,7 @@ export class BadRequestError extends Error implements HTTPError {
 }
 
 export class UnauthorizedError extends Error implements HTTPError {
-	static errorName = "Unauthorized"
+	static errorName = 'Unauthorized'
 	static statusCode: HTTPStatusCode = UNAUTHORIZED__401
 	statusCode: HTTPStatusCode = UNAUTHORIZED__401
 	constructor() {
@@ -23,7 +23,7 @@ export class UnauthorizedError extends Error implements HTTPError {
 }
 
 export class InternalServerError extends Error implements HTTPError {
-	static errorName = "InternalServerError"
+	static errorName = 'InternalServerError'
 	static statusCode: HTTPStatusCode = INTERNAL_SERVER_ERROR__500
 	statusCode: HTTPStatusCode = INTERNAL_SERVER_ERROR__500
 	constructor() {
@@ -32,7 +32,7 @@ export class InternalServerError extends Error implements HTTPError {
 }
 
 export class BadGatewayError extends Error implements HTTPError {
-	static errorName = "BadGateway"
+	static errorName = 'BadGateway'
 	static statusCode: HTTPStatusCode = BAD_GATEWAY__502
 	statusCode: HTTPStatusCode = BAD_GATEWAY__502
 	constructor() {
@@ -41,7 +41,7 @@ export class BadGatewayError extends Error implements HTTPError {
 }
 
 export class GatewayTimeoutError extends Error implements HTTPError {
-	static errorName = "BadGateway"
+	static errorName = 'BadGateway'
 	static statusCode: HTTPStatusCode = GATEWAY_TIMEOUT__504
 	statusCode: HTTPStatusCode = GATEWAY_TIMEOUT__504
 	constructor() {

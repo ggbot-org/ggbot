@@ -1,5 +1,5 @@
-import { BinanceClient } from "../BinanceClient.js"
-import { apiKey, apiSecret } from "./apiKeys.js"
+import { BinanceClient } from '../BinanceClient.js'
+import { apiKey, apiSecret } from './apiKeys.js'
 
 const binance = new BinanceClient(apiKey, apiSecret)
 

@@ -1,20 +1,20 @@
-import { BinanceOrder } from "@workspace/binance"
+import { BinanceOrder } from '@workspace/binance'
 
 export const orderBuyBTCBUSD1: BinanceOrder = {
-	symbol: "BTCBUSD",
+	symbol: 'BTCBUSD',
 	orderId: 6906110758,
 	transactTime: 1667846175202,
-	price: "0.00000000",
-	executedQty: "0.00096000",
-	status: "FILLED",
-	type: "MARKET",
-	side: "BUY",
+	price: '0.00000000',
+	executedQty: '0.00096000',
+	status: 'FILLED',
+	type: 'MARKET',
+	side: 'BUY',
 	fills: [
 		{
-			price: "20711.32000000",
-			qty: "0.00096000",
-			commission: "0.00000000",
-			commissionAsset: "BNB",
+			price: '20711.32000000',
+			qty: '0.00096000',
+			commission: '0.00000000',
+			commissionAsset: 'BNB',
 		}
 	]
 }

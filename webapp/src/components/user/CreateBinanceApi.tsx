@@ -1,8 +1,8 @@
-import { classnames } from "_/classnames"
-import { Button, Control, Field, InputField, InputFieldProps, Title } from "_/components/library"
-import { useCreateBinanceApiConfig } from "_/hooks/user/api"
-import { useEffect } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Control, Field, InputField, InputFieldProps, Title } from '_/components/library'
+import { useCreateBinanceApiConfig } from '_/hooks/user/api'
+import { useEffect } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	apiKey: { value: string }
@@ -10,22 +10,22 @@ type FormField = {
 }
 type FormFieldName = keyof FormField
 
-function ApiKey({ value, ...props }: Omit<InputFieldProps, "label" | "name">) {
+function ApiKey({ value, ...props }: Omit<InputFieldProps, 'label' | 'name'>) {
 	return (
 		<InputField
 			label={<FormattedMessage id="ApiKey.label" />}
-			name={"apiKey" satisfies FormFieldName}
+			name={'apiKey' satisfies FormFieldName}
 			value={value}
 			{...props}
 		/>
 	)
 }
 
-function ApiSecret(props: Omit<InputFieldProps, "label" | "name">) {
+function ApiSecret(props: Omit<InputFieldProps, 'label' | 'name'>) {
 	return (
 		<InputField
 			label={<FormattedMessage id="ApiSecret.label" />}
-			name={"apiSecret" satisfies FormFieldName}
+			name={'apiSecret' satisfies FormFieldName}
 			{...props}
 		/>
 	)
@@ -43,7 +43,7 @@ export function CreateBinanceApi({ refetchApiKey }: { refetchApiKey: () => void 
 
 	return (
 		<form
-			className={classnames("box")}
+			className={classnames('box')}
 			onSubmit={(event) => {
 				event.preventDefault()
 				if (!CREATE.canRun) return

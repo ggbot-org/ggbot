@@ -1,6 +1,6 @@
-import { cachedBoolean, cachedString } from "./cache.js"
-import { itemKey } from "./items.js"
-import { LocalWebStorageProvider } from "./providers.js"
+import { cachedBoolean, cachedString } from './cache.js'
+import { itemKey } from './items.js'
+import { LocalWebStorageProvider } from './providers.js'
 
 const storage = new LocalWebStorageProvider()
 

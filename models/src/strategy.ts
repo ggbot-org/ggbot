@@ -1,12 +1,12 @@
-import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
+import { isLiteralType, objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { AccountKey, isAccountKey } from "./account.js"
-import { Frequency, isFrequency } from "./frequency.js"
-import { isItemId, Item, ItemKey, newId, NewItem, nullId } from "./item.js"
-import { isName, Name } from "./name.js"
-import { createdNow, CreationTime } from "./time.js"
+import { AccountKey, isAccountKey } from './account.js'
+import { Frequency, isFrequency } from './frequency.js'
+import { isItemId, Item, ItemKey, newId, NewItem, nullId } from './item.js'
+import { isName, Name } from './name.js'
+import { createdNow, CreationTime } from './time.js'
 
-const strategyKinds = ["binance", "none"] as const
+const strategyKinds = ['binance', 'none'] as const
 export type StrategyKind = (typeof strategyKinds)[number]
 const isStrategyKind = isLiteralType<StrategyKind>(strategyKinds)
 
@@ -43,9 +43,9 @@ export function newStrategy({ name, ...rest }: NewItem<Strategy>): Strategy {
 	}
 }
 
-export type StrategyKey = ItemKey<"strategyId" | "strategyKind", {
-	strategyId: Strategy["id"]
-	strategyKind: Strategy["kind"]
+export type StrategyKey = ItemKey<'strategyId' | 'strategyKind', {
+	strategyId: Strategy['id']
+	strategyKind: Strategy['kind']
 }>
 
 export const isStrategyKey = objectTypeGuard<StrategyKey>(
@@ -54,5 +54,5 @@ export const isStrategyKey = objectTypeGuard<StrategyKey>(
 
 export const nullStrategyKey: StrategyKey = {
 	strategyId: nullId,
-	strategyKind: "none"
+	strategyKind: 'none'
 }

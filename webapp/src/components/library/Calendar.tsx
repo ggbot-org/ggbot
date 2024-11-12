@@ -1,35 +1,35 @@
-import { classnames } from "_/classnames"
-import { dateToDay, Day } from "minimal-time-helpers"
-import { Dispatch, MouseEvent, SetStateAction, useMemo, useState } from "react"
-import { useIntl } from "react-intl"
+import { classnames } from '_/classnames'
+import { dateToDay, Day } from 'minimal-time-helpers'
+import { Dispatch, MouseEvent, SetStateAction, useMemo, useState } from 'react'
+import { useIntl } from 'react-intl'
 
-import { Icon, IconProps } from "./Icon"
-import { randomKey } from "./randomKey"
+import { Icon, IconProps } from './Icon'
+import { randomKey } from './randomKey'
 
 function CalendarWeekDays() {
 	const { formatDate } = useIntl()
 
 	// The day 1970-01-04 was a Sunday.
-	const weekDayNames = ["04", "05", "06", "07", "08", "09", "10"].map((dd) => `1970-01-${dd}`).map(
-		(day) => ({ day, label: formatDate(day, { weekday: "short" }) })
+	const weekDayNames = ['04', '05', '06', '07', '08', '09', '10'].map((dd) => `1970-01-${dd}`).map(
+		(day) => ({ day, label: formatDate(day, { weekday: 'short' }) })
 	)
 
 	return (
 		<div
-			className={classnames("calendar__grid")}
+			className={classnames('calendar__grid')}
 			onClick={(event) => event.stopPropagation()}
 		>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={classnames("calendar__week-day")}>{label}</div>
+				<div key={day} className={classnames('calendar__week-day')}>{label}</div>
 			))}
 		</div>
 	)
 }
 
 function CalendarHead({
-	caretSize = "1.2em", isFirstMonth, isLastMonth, monthName, setMonthOffset, year
+	caretSize = '1.2em', isFirstMonth, isLastMonth, monthName, setMonthOffset, year
 }: {
-	caretSize?: IconProps["size"]
+	caretSize?: IconProps['size']
 	isFirstMonth: boolean
 	isLastMonth: boolean
 	monthName: string
@@ -38,11 +38,11 @@ function CalendarHead({
 }) {
 	return (
 		<div
-			className={classnames("calendar__head")}
+			className={classnames('calendar__head')}
 			onClick={(event) => event.stopPropagation()}
 		>
 			<div
-				className={classnames("calendar__head-icon", { "has-text-grey-lighter": isFirstMonth })}
+				className={classnames('calendar__head-icon', { 'has-text-grey-lighter': isFirstMonth })}
 				onClick={
 					(event) => {
 						event.stopPropagation()
@@ -53,10 +53,10 @@ function CalendarHead({
 			>
 				<Icon name="caret-left" size={caretSize} />
 			</div>
-			<div className={classnames("calendar__head-text")}>{monthName}</div>
-			<div className={classnames("calendar__head-text")}>{year}</div>
+			<div className={classnames('calendar__head-text')}>{monthName}</div>
+			<div className={classnames('calendar__head-text')}>{year}</div>
 			<div
-				className={classnames("calendar__head-icon", { "has-text-grey-lighter": isLastMonth })}
+				className={classnames('calendar__head-icon', { 'has-text-grey-lighter': isLastMonth })}
 				onClick={(event) => {
 					event.stopPropagation()
 					if (isLastMonth) return
@@ -87,7 +87,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 		firstDate.setMonth(firstDate.getMonth() + monthOffset)
 
 		const year = firstDate.getFullYear()
-		const monthName = formatDate(firstDate, { month: "long" })
+		const monthName = formatDate(firstDate, { month: 'long' })
 
 		const lastDate = new Date(firstDate)
 		lastDate.setMonth(lastDate.getMonth() + monthOffset + 1)
@@ -155,7 +155,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 	}, [formatDate, min, max, monthOffset, selectedDay, setSelectedDay, setMonthOffset])
 
 	return (
-		<div className={classnames("calendar")}>
+		<div className={classnames('calendar')}>
 			<CalendarHead
 				isFirstMonth={Boolean(min && dateToDay(firstDate) <= min)}
 				isLastMonth={Boolean(max && dateToDay(lastDate) >= max)}
@@ -164,12 +164,12 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 				year={year}
 			/>
 			<CalendarWeekDays />
-			<div className={classnames("calendar__grid")}>
+			<div className={classnames('calendar__grid')}>
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
 							key={key}
-							className={classnames("calendar__cell", { "calendar__cell--selected": selected, "calendar__cell--disabled": !isSelectable })}
+							className={classnames('calendar__cell', { 'calendar__cell--selected': selected, 'calendar__cell--disabled': !isSelectable })}
 							onClick={onClick}
 						>
 							{num}

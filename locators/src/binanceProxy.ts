@@ -25,6 +25,6 @@ export class BinanceProxyURLs {
 	}
 
 	get action() {
-		return new URL("action", this.baseURL)
+		return new URL('action', this.baseURL)
 	}
 }

@@ -1,20 +1,20 @@
-import { classnames } from "_/classnames"
-import { Column, Columns, Logo, Page, Title } from "_/components/library"
-import { NoNetwork } from "_/components/NoNetwork"
-import { Footer } from "_/components/public/Footer"
-import { Navigation } from "_/components/public/Navigation"
-import { Section } from "trunx"
+import { classnames } from '_/classnames'
+import { Column, Columns, Logo, Page, Title } from '_/components/library'
+import { NoNetwork } from '_/components/NoNetwork'
+import { Footer } from '_/components/public/Footer'
+import { Navigation } from '_/components/public/Navigation'
+import { Section } from 'trunx'
 
-import { ButtonColors, LoadingButtons } from "./examples/Buttons"
-import { SimpleForm } from "./examples/Forms"
-import { Icons } from "./examples/Icons"
-import { InputFields } from "./examples/InputFields"
-import { Palette } from "./examples/Palette"
-import { SimpleTable } from "./examples/Tables"
-import { TagsExample } from "./examples/Tags"
-import { TimeIntervalSelectors } from "./examples/TimeIntervalSelectors"
-import { ToastExample } from "./examples/Toast"
-import { Typography } from "./examples/Typography"
+import { ButtonColors, LoadingButtons } from './examples/Buttons'
+import { SimpleForm } from './examples/Forms'
+import { Icons } from './examples/Icons'
+import { InputFields } from './examples/InputFields'
+import { Palette } from './examples/Palette'
+import { SimpleTable } from './examples/Tables'
+import { TagsExample } from './examples/Tags'
+import { TimeIntervalSelectors } from './examples/TimeIntervalSelectors'
+import { ToastExample } from './examples/Toast'
+import { Typography } from './examples/Typography'
 
 export function ShowcasePage() {
 	return (
@@ -29,7 +29,7 @@ export function ShowcasePage() {
 		>
 			<Section>
 				<Title>Logo</Title>
-				<div className={classnames("is-flex")}>
+				<div className={classnames('is-flex')}>
 					<Logo size={200} />
 					<Logo animated size={200} />
 				</div>

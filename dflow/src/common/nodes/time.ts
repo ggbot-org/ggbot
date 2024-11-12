@@ -1,32 +1,32 @@
-import { Dflow, DflowNode } from "dflow"
-import { getTime, isTime, isTimeUnit, timeToDay, timeToTimestamp, TimeUnit } from "minimal-time-helpers"
+import { Dflow, DflowNode } from 'dflow'
+import { getTime, isTime, isTimeUnit, timeToDay, timeToTimestamp, TimeUnit } from 'minimal-time-helpers'
 
-import { DflowCommonContext as Context } from "../context.js"
+import { DflowCommonContext as Context } from '../context.js'
 
 const { input, output } = Dflow
 
-const outputDay = output("string", { name: "yyyy-mm-dd" })
+const outputDay = output('string', { name: 'yyyy-mm-dd' })
 
-const inputTime = input("number", { name: "time" })
-const outputTime = output("number", { name: "time" })
+const inputTime = input('number', { name: 'time' })
+const outputTime = output('number', { name: 'time' })
 
-const inputTimeUnit = input("string", { name: "timeUnit" })
+const inputTimeUnit = input('string', { name: 'timeUnit' })
 
-const timeOutputs = [outputTime, output("string", { name: "timestamp" })]
+const timeOutputs = [outputTime, output('string', { name: 'timestamp' })]
 
 export const coerceToTimeUnit = (arg: string): TimeUnit | undefined => {
 	if (isTimeUnit(arg)) return arg
-	if (["1s", "seconds"].includes(arg)) return "second"
-	if (["1m", "minutes"].includes(arg)) return "minute"
-	if (["1h", "hours"].includes(arg)) return "hour"
-	if (["1d", "days"].includes(arg)) return "day"
+	if (['1s', 'seconds'].includes(arg)) return 'second'
+	if (['1m', 'minutes'].includes(arg)) return 'minute'
+	if (['1h', 'hours'].includes(arg)) return 'hour'
+	if (['1d', 'days'].includes(arg)) return 'day'
 	return
 }
 
 const timeTranslatorInputs = [
 	inputTime,
 	inputTimeUnit,
-	input("number", { name: "num" })
+	input('number', { name: 'num' })
 ]
 
 const translateTime = (
@@ -36,14 +36,14 @@ const translateTime = (
 ): number | undefined => {
 	if (!isTime(time)) return
 	const timeUnit = coerceToTimeUnit(timeUnitStr)
-	if (timeUnit === "second") return getTime(time).plus(num).seconds
-	if (timeUnit === "minute") return getTime(time).plus(num).minutes
-	if (timeUnit === "hour") return getTime(time).plus(num).hours
-	if (timeUnit === "day") return getTime(time).plus(num).days
+	if (timeUnit === 'second') return getTime(time).plus(num).seconds
+	if (timeUnit === 'minute') return getTime(time).plus(num).minutes
+	if (timeUnit === 'hour') return getTime(time).plus(num).hours
+	if (timeUnit === 'day') return getTime(time).plus(num).days
 }
 
 export class Time extends DflowNode {
-	static kind = "time"
+	static kind = 'time'
 	static outputs = timeOutputs
 	run() {
 		const { time } = this.host.context as Context
@@ -54,7 +54,7 @@ export class Time extends DflowNode {
 }
 
 export class TimeMinus extends DflowNode {
-	static kind = "timeMinus"
+	static kind = 'timeMinus'
 	static inputs = timeTranslatorInputs
 	static outputs = timeOutputs
 	run() {
@@ -68,7 +68,7 @@ export class TimeMinus extends DflowNode {
 }
 
 export class TimePlus extends DflowNode {
-	static kind = "timePlus"
+	static kind = 'timePlus'
 	static inputs = timeTranslatorInputs
 	static outputs = timeOutputs
 	run() {
@@ -82,7 +82,7 @@ export class TimePlus extends DflowNode {
 }
 
 export class TimeToDay extends DflowNode {
-	static kind = "timeToDay"
+	static kind = 'timeToDay'
 	static inputs = [inputTime]
 	static outputs = [outputDay]
 	run() {
@@ -93,7 +93,7 @@ export class TimeToDay extends DflowNode {
 }
 
 export class Today extends DflowNode {
-	static kind = "today"
+	static kind = 'today'
 	static outputs = [outputDay]
 	run() {
 		const { time } = this.host.context as Context

@@ -1,8 +1,8 @@
-import { BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters } from "@workspace/binance"
+import { BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters } from '@workspace/binance'
 
-import { DflowBinanceClient, DflowBinanceClientDummy } from "../client.js"
-import { exchangeInfo } from "./exchangeInfo.js"
-import { kline } from "./klines.js"
+import { DflowBinanceClient, DflowBinanceClientDummy } from '../client.js'
+import { exchangeInfo } from './exchangeInfo.js'
+import { kline } from './klines.js'
 
 export class DflowBinanceClientMock extends DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo() {

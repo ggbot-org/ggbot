@@ -1,3 +1,3 @@
-export * from "./instance.js"
-export * from "./objectStore.js"
-export * from "./provider.js"
+export * from './instance.js'
+export * from './objectStore.js'
+export * from './provider.js'

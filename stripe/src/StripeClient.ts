@@ -1,9 +1,9 @@
-import { StripeMetadata } from "@workspace/api"
-import { ENV } from "@workspace/env"
-import { FQDN, WebappBaseURL, WebappURLs } from "@workspace/locators"
-import { isYearlyPurchase } from "@workspace/models"
+import { StripeMetadata } from '@workspace/api'
+import { ENV } from '@workspace/env'
+import { FQDN, WebappBaseURL, WebappURLs } from '@workspace/locators'
+import { isYearlyPurchase } from '@workspace/models'
 
-import { newStripe } from "./newStripe.js"
+import { newStripe } from './newStripe.js'
 
 export class StripeClient {
 	stripe = newStripe()
@@ -25,7 +25,7 @@ export class StripeClient {
 			customer_email: email,
 			line_items: [{ price, quantity }],
 			metadata,
-			mode: "payment",
+			mode: 'payment',
 			success_url: this.webapp.subscriptionPurchased.href,
 			cancel_url: this.webapp.purchaseCanceled.href
 		})
@@ -34,11 +34,11 @@ export class StripeClient {
 	/** Call `stripe.checkout.sessions.retrieve()` and return relevant data. */
 	async retreiveCheckoutSession(id: string) {
 		const session = await this.stripe.checkout.sessions.retrieve(id, {
-			expand: ["line_items"]
+			expand: ['line_items']
 		})
 		const quantity = session.line_items?.data[0].quantity
-		if (typeof quantity !== "number") {
-			console.warn("No quantity found in line_items")
+		if (typeof quantity !== 'number') {
+			console.warn('No quantity found in line_items')
 			return
 		}
 		return {

@@ -1,4 +1,4 @@
-import { DeletionTime, SerializableData, UpdateTime } from "@workspace/models"
+import { DeletionTime, SerializableData, UpdateTime } from '@workspace/models'
 
 /** Provides read-only access to documents. */
 export type DocumentProviderLevel1 = {

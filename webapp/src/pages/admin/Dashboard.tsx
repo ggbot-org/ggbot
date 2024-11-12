@@ -1,10 +1,10 @@
-import { Accounts } from "_/components/admin/Accounts"
-import { PageContainer } from "_/components/admin/PageContainer"
-import { TabId, Tabs } from "_/components/Tabs"
-import { useState } from "react"
+import { Accounts } from '_/components/admin/Accounts'
+import { PageContainer } from '_/components/admin/PageContainer'
+import { TabId, Tabs } from '_/components/Tabs'
+import { useState } from 'react'
 
 export function DashboardPage() {
-	const [activeTabId, setActiveTabId] = useState<TabId>("accounts")
+	const [activeTabId, setActiveTabId] = useState<TabId>('accounts')
 	return (
 		<PageContainer>
 			<Tabs
@@ -12,7 +12,7 @@ export function DashboardPage() {
 				setActiveTabId={setActiveTabId}
 				tabs={[
 					{
-						tabId: "accounts",
+						tabId: 'accounts',
 						content: <Accounts />
 					}
 				]}

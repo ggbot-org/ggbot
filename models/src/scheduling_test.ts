@@ -1,11 +1,11 @@
-import { describe, test } from "node:test"
+import { describe, test } from 'node:test'
 
-import { assertDeepEqual, assertEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual, assertEqual } from 'minimal-assertion-helpers'
 
-import { getSchedulingSummary, Scheduling, schedulingsAreInactive, SchedulingSummary } from "./scheduling.js"
+import { getSchedulingSummary, Scheduling, schedulingsAreInactive, SchedulingSummary } from './scheduling.js'
 
-describe("getSchedulingSummary", () => {
-	test("return a SchedulingSummary", () => {
+describe('getSchedulingSummary', () => {
+	test('return a SchedulingSummary', () => {
 		assertDeepEqual<Scheduling[], SchedulingSummary>(getSchedulingSummary, [
 			{
 				input: [],
@@ -18,8 +18,8 @@ describe("getSchedulingSummary", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 1, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 1, interval: '1h' }
 					}
 				],
 				output: {
@@ -31,12 +31,12 @@ describe("getSchedulingSummary", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 2, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 2, interval: '1h' }
 					},
 					{
-						status: "active",
-						frequency: { every: 3, interval: "1h" }
+						status: 'active',
+						frequency: { every: 3, interval: '1h' }
 					}
 				],
 				output: {
@@ -48,16 +48,16 @@ describe("getSchedulingSummary", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 2, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 2, interval: '1h' }
 					},
 					{
-						status: "inactive",
-						frequency: { every: 3, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 3, interval: '1h' }
 					},
 					{
-						status: "suspended",
-						frequency: { every: 3, interval: "1h" }
+						status: 'suspended',
+						frequency: { every: 3, interval: '1h' }
 					}
 				],
 				output: {
@@ -70,8 +70,8 @@ describe("getSchedulingSummary", () => {
 	})
 })
 
-describe("schedulingsAreInactive", () => {
-	test("checks if schedulings are inactive overall", () => {
+describe('schedulingsAreInactive', () => {
+	test('checks if schedulings are inactive overall', () => {
 		assertEqual<Scheduling[], boolean>(schedulingsAreInactive, [
 			{
 				input: [],
@@ -80,8 +80,8 @@ describe("schedulingsAreInactive", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 1, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 1, interval: '1h' }
 					}
 				],
 				output: true
@@ -89,12 +89,12 @@ describe("schedulingsAreInactive", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 2, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 2, interval: '1h' }
 					},
 					{
-						status: "active",
-						frequency: { every: 3, interval: "1h" }
+						status: 'active',
+						frequency: { every: 3, interval: '1h' }
 					}
 				],
 				output: false
@@ -102,12 +102,12 @@ describe("schedulingsAreInactive", () => {
 			{
 				input: [
 					{
-						status: "inactive",
-						frequency: { every: 2, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 2, interval: '1h' }
 					},
 					{
-						status: "inactive",
-						frequency: { every: 3, interval: "1h" }
+						status: 'inactive',
+						frequency: { every: 3, interval: '1h' }
 					}
 				],
 				output: true

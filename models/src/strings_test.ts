@@ -1,13 +1,13 @@
-import { strict as assert } from "node:assert"
-import { test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
 
-import { isFiniteString, isIdentifierString, isNonEmptyString, stringMaxLength } from "./strings.js"
+import { isFiniteString, isIdentifierString, isNonEmptyString, stringMaxLength } from './strings.js'
 
-const fooString = "foo"
-const stringTooLong = "x".repeat(999)
-const emptyString = ""
+const fooString = 'foo'
+const stringTooLong = 'x'.repeat(999)
+const emptyString = ''
 const stringWithLineBreaks = `
 hello
 world
@@ -18,7 +18,7 @@ export const invalidIdentifierStrings = [
 	stringWithLineBreaks
 ]
 
-test("isFiniteString", () => {
+test('isFiniteString', () => {
 	assert.ok(stringTooLong.length > stringMaxLength)
 
 	assertEqual<unknown, boolean>(isFiniteString, [
@@ -29,7 +29,7 @@ test("isFiniteString", () => {
 	])
 })
 
-test("isNonEmptyString", () => {
+test('isNonEmptyString', () => {
 	assertEqual<unknown, boolean>(isNonEmptyString, [
 		{ input: fooString, output: true },
 		{ input: stringWithLineBreaks, output: true },
@@ -38,11 +38,11 @@ test("isNonEmptyString", () => {
 	])
 })
 
-test("isIdentifierString", () => {
+test('isIdentifierString', () => {
 	assertEqual<unknown, boolean>(isIdentifierString, [
 		{ input: fooString, output: true },
 		...invalidIdentifierStrings.map((key) => ({
-			input: { [key]: "value" },
+			input: { [key]: 'value' },
 			output: false
 		}))
 	])

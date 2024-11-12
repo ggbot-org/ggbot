@@ -1,13 +1,13 @@
-import { join } from "node:path"
+import { join } from 'node:path'
 
-import readFile from "read-file-utf8"
+import readFile from 'read-file-utf8'
 
-import { FileProvider } from "./filesystemProviders.js"
-import { TsconfigJson } from "./TsconfigJson.js"
+import { FileProvider } from './filesystemProviders.js'
+import { TsconfigJson } from './TsconfigJson.js'
 
 export class RepositoryTsconfigJson implements FileProvider {
 	directoryPathname: string
-	filename = "tsconfig.json"
+	filename = 'tsconfig.json'
 	/** Maps the compilerOptions.paths key to the first element of its value */
 	paths = new Map<string, string>()
 

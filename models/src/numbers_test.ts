@@ -1,12 +1,12 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
 
-import { isFiniteNumber, isNaturalNumber } from "./numbers.js"
+import { isFiniteNumber, isNaturalNumber } from './numbers.js'
 
 const notAllowed = [NaN, Infinity]
 
-test("isFiniteNumber", () => {
+test('isFiniteNumber', () => {
 	assertEqual<unknown, boolean>(isFiniteNumber, [
 		{
 			input: 1,
@@ -20,7 +20,7 @@ test("isFiniteNumber", () => {
 	])
 })
 
-test("isNaturalNumber", () => {
+test('isNaturalNumber', () => {
 	assertEqual<unknown, boolean>(isNaturalNumber, [
 		{
 			input: 1,

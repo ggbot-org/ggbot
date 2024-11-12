@@ -1,6 +1,6 @@
-import { DflowNode } from "dflow"
+import { DflowNode } from 'dflow'
 
-import { inputValues1, inputValues2, outputLastValue, outputValues } from "../commonIO.js"
+import { inputValues1, inputValues2, outputLastValue, outputValues } from '../commonIO.js'
 
 export function crossOver (values1: number[], values2: number[]): number[] {
 	const result: number[] = []
@@ -22,7 +22,7 @@ export function crossOver (values1: number[], values2: number[]): number[] {
 }
 
 export class CrossOver extends DflowNode {
-	static kind = "crossOver"
+	static kind = 'crossOver'
 	static inputs = [inputValues1, inputValues2]
 	static outputs = [outputValues, outputLastValue]
 	run() {

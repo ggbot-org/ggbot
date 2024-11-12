@@ -1,21 +1,21 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
-import { add, defaultPrecision, div, MaybeNumber, mul, sub } from "../arithmetic.js"
-import { inputPeriod, inputValues } from "../commonIO.js"
-import { exponentialMovingAverage, simpleMovingAverage } from "./movingAverages.js"
+import { add, defaultPrecision, div, MaybeNumber, mul, sub } from '../arithmetic.js'
+import { inputPeriod, inputValues } from '../commonIO.js'
+import { exponentialMovingAverage, simpleMovingAverage } from './movingAverages.js'
 
 const { input, output } = Dflow
 
 const bollingerInputs = [
 	inputValues,
 	inputPeriod,
-	input("number", { name: "amplitude", optional: true })
+	input('number', { name: 'amplitude', optional: true })
 ]
 
 const bollingerOutputs = [
-	output("array", { name: "lower" }),
-	output("array", { name: "middle" }),
-	output("array", { name: "upper" })
+	output('array', { name: 'lower' }),
+	output('array', { name: 'middle' }),
+	output('array', { name: 'upper' })
 ]
 
 // Compute the variance with double precision.
@@ -55,7 +55,7 @@ export function bollinger(
 }
 
 export class Bollinger extends DflowNode {
-	static kind = "Bollinger"
+	static kind = 'Bollinger'
 	static inputs = bollingerInputs
 	static outputs = bollingerOutputs
 	run() {
@@ -102,7 +102,7 @@ function bollingerEMA(
 }
 
 export class BollingerEMA extends DflowNode {
-	static kind = "BollingerEMA"
+	static kind = 'BollingerEMA'
 	static inputs = bollingerInputs
 	static outputs = bollingerOutputs
 	run() {

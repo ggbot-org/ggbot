@@ -1,34 +1,34 @@
-import { join } from "node:path"
+import { join } from 'node:path'
 
-import readFile from "read-file-utf8"
+import readFile from 'read-file-utf8'
 
-import { FileProvider } from "./filesystemProviders.js"
-import { PackageJson } from "./PackageJson.js"
-import type { Repository } from "./Repository.js"
-import { Workspace } from "./Workspace.js"
-import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
+import { FileProvider } from './filesystemProviders.js'
+import { PackageJson } from './PackageJson.js'
+import type { Repository } from './Repository.js'
+import { Workspace } from './Workspace.js'
+import { WorkspacePackageJson } from './WorkspacePackageJson.js'
 
 export class RepositoryPackageJson implements FileProvider {
-	static buildScriptKey = "build"
+	static buildScriptKey = 'build'
 
 	directoryPathname: string
-	filename = "package.json"
+	filename = 'package.json'
 
-	isPrivate: PackageJson["private"]
-	dependencies: PackageJson["dependencies"] = {}
-	scripts: NonNullable<PackageJson["scripts"]> = {}
-	workspaces: NonNullable<PackageJson["workspaces"]> = []
+	isPrivate: PackageJson['private']
+	dependencies: PackageJson['dependencies'] = {}
+	scripts: NonNullable<PackageJson['scripts']> = {}
+	workspaces: NonNullable<PackageJson['workspaces']> = []
 
 	constructor(directoryPathname: string) {
 		this.directoryPathname = directoryPathname
 	}
 
-	static buildCommandSequence(workspaces: Repository["workspaces"]) {
+	static buildCommandSequence(workspaces: Repository['workspaces']) {
 		const workspacePathnames = Array.from(workspaces.keys())
 		const seenDependency = new Set()
 
 		const workspacePathnamesSortedByDependencies = workspacePathnames
-			.reduce<Array<Workspace["pathname"]>>((list, workspacePathname) => {
+			.reduce<Array<Workspace['pathname']>>((list, workspacePathname) => {
 				const dependencies = WorkspacePackageJson.internalDependenciesChain(workspacePathname, workspaces).map(
 					WorkspacePackageJson.workspacePathnameFromInternalDependency
 				)
@@ -43,10 +43,10 @@ export class RepositoryPackageJson implements FileProvider {
 
 		return [...new Set(workspacePathnamesSortedByDependencies)].map(
 			(workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
-		).join(" && ")
+		).join(' && ')
 	}
 
-	static onlyWorkspacesWithBuild(workspaces: Repository["workspaces"]) {
+	static onlyWorkspacesWithBuild(workspaces: Repository['workspaces']) {
 		return (workspacePathname: string) => {
 			const workspace = workspaces.get(workspacePathname)
 			if (!workspace) throw Error()
@@ -68,12 +68,12 @@ export class RepositoryPackageJson implements FileProvider {
 
 	static workspacePrebuildCommandSequence(
 		internalDependenciesChain: string[],
-		workspaces: Repository["workspaces"]
+		workspaces: Repository['workspaces']
 	) {
 		return internalDependenciesChain
 			.map((internalDependency) => WorkspacePackageJson.workspacePathnameFromInternalDependency(internalDependency))
 			.filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
-			.map((workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)).join(" && ")
+			.map((workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)).join(' && ')
 	}
 
 	static workspacePrebuildScriptKey(workspacePathname: string) {

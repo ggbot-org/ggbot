@@ -1,6 +1,6 @@
-import { IDBInstance } from "./instance.js"
+import { IDBInstance } from './instance.js'
 
-type IDBEventType = "open"
+type IDBEventType = 'open'
 
 type IDBEventListener = {
 	(evt: Event): void
@@ -21,7 +21,7 @@ export class IDBProvider {
 	eventTarget = new EventTarget()
 
 	get isOpen(): boolean | undefined {
-		if (this.openRequestState !== "done") return
+		if (this.openRequestState !== 'done') return
 		return this.db !== undefined
 	}
 
@@ -40,15 +40,15 @@ export class IDBProvider {
 		request.onsuccess = cleanup
 	}
 
-	open(instance: Pick<IDBInstance, "databaseName" | "databaseVersion" | "databaseUpgrade">) {
+	open(instance: Pick<IDBInstance, 'databaseName' | 'databaseVersion' | 'databaseUpgrade'>) {
 		if (this.isOpen) return
-		if (this.openRequestState === "pending") return
+		if (this.openRequestState === 'pending') return
 		const request = indexedDB.open(instance.databaseName, instance.databaseVersion)
 		this.openRequestState = request.readyState
 		request.onsuccess = () => {
 			this.db = request.result
 			this.openRequestState = request.readyState
-			this.eventTarget.dispatchEvent(new CustomEvent("open"))
+			this.eventTarget.dispatchEvent(new CustomEvent('open'))
 		}
 		request.onupgradeneeded = ({ oldVersion, newVersion }) => {
 			if (newVersion === null) return

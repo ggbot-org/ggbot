@@ -1,1 +1,1 @@
-export * from "./EnvironmentVariables.js"
+export * from './EnvironmentVariables.js'

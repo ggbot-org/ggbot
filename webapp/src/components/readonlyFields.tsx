@@ -1,8 +1,8 @@
-import { ReadonlyField } from "_/components/library"
-import { dayFormat } from "_/i18n/formats"
-import { EmailAddress, SubscriptionPlan as SubscriptionPlanValue } from "@workspace/models"
-import { Time } from "minimal-time-helpers"
-import { FormattedMessage, useIntl } from "react-intl"
+import { ReadonlyField } from '_/components/library'
+import { dayFormat } from '_/i18n/formats'
+import { EmailAddress, SubscriptionPlan as SubscriptionPlanValue } from '@workspace/models'
+import { Time } from 'minimal-time-helpers'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 type ValueProp<T> = {
 	value: T | undefined
@@ -18,7 +18,7 @@ export function AccountId({ value }: ValueProp<string>) {
 }
 
 function truncateApiKey(apiKey: string | undefined): string {
-	if (!apiKey) return ""
+	if (!apiKey) return ''
 	return `${apiKey.substring(0, 10)}...${ apiKey.substring(apiKey.length - 10, apiKey.length) }`
 }
 export function ApiKey({ value }: ValueProp<string>) {
@@ -97,7 +97,7 @@ export function SubscriptionTotalPrice({
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="SubscriptionTotalPrice.label" />}
-			value={numMonths ? formatNumber(monthlyPrice * numMonths, { style: "currency", currency }) : ""}
+			value={numMonths ? formatNumber(monthlyPrice * numMonths, { style: 'currency', currency }) : ''}
 		/>
 	)
 }
@@ -107,7 +107,7 @@ export function WhenCreated({ value }: ValueProp<Time>) {
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="WhenCreated.label" />}
-			value={value ? formatDate(value, dayFormat) : ""}
+			value={value ? formatDate(value, dayFormat) : ''}
 		/>
 	)
 }

@@ -1,7 +1,7 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
-import { ApiRole } from "./ApiRole.js"
-import { LambdaFunction } from "./LambdaFunction.js"
+import { ApiRole } from './ApiRole.js'
+import { LambdaFunction } from './LambdaFunction.js'
 
 export class ApiLambda extends LambdaFunction {
 	apiName: string

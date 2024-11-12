@@ -1,6 +1,6 @@
-import { DeployStage } from "@workspace/models"
+import { DeployStage } from '@workspace/models'
 
-import { inferStripeModeFromSecretKey } from "./stripeMode.js"
+import { inferStripeModeFromSecretKey } from './stripeMode.js'
 
 /**
  * Check that Stripe secret key is consistent with deploy stage, otherwise throw
@@ -22,7 +22,7 @@ export function checkStripeSecretKey(deployStage: DeployStage, secretKey: string
 
 	if (
 		// Check if stripeMode is consistent with deployStage.
-		(stripeMode === "live" && deployStage !== "main") || (stripeMode === "test" && deployStage === "main")
+		(stripeMode === 'live' && deployStage !== 'main') || (stripeMode === 'test' && deployStage === 'main')
 	) {
 		throw new Error(`Stripe mode is inconsistent with deploy stage, deployStage=${deployStage} stripeMode=${stripeMode}`)
 	}

@@ -1,22 +1,22 @@
-import { join } from "node:path"
+import { join } from 'node:path'
 
-import readFile from "read-file-utf8"
+import readFile from 'read-file-utf8'
 
-import { FileProvider } from "./filesystemProviders.js"
-import { PackageJson } from "./PackageJson.js"
-import type { Repository } from "./Repository.js"
-import type { Workspace } from "./Workspace.js"
+import { FileProvider } from './filesystemProviders.js'
+import { PackageJson } from './PackageJson.js'
+import type { Repository } from './Repository.js'
+import type { Workspace } from './Workspace.js'
 
 export class WorkspacePackageJson implements FileProvider {
-	static scope = "@workspace"
+	static scope = '@workspace'
 
-	static buildScriptKey = "build"
+	static buildScriptKey = 'build'
 
 	directoryPathname: string
-	filename = "package.json"
+	filename = 'package.json'
 
-	packageName = ""
-	isPrivate: PackageJson["private"] = false
+	packageName = ''
+	isPrivate: PackageJson['private'] = false
 
 	buildScriptCommand: string | undefined
 
@@ -35,15 +35,15 @@ export class WorkspacePackageJson implements FileProvider {
 
 	static workspacePathnameFromInternalDependency(
 		internalDependency: string
-	): Workspace["pathname"] {
-		const workspacePathname = internalDependency.split("/").pop()
+	): Workspace['pathname'] {
+		const workspacePathname = internalDependency.split('/').pop()
 		if (!workspacePathname) throw new Error(
 			`Cannot get workspace pathname from ${internalDependency}`
 		)
 		return workspacePathname
 	}
 
-	static internalDependenciesChain(workspacePathname: Workspace["pathname"], workspaces: Repository["workspaces"]) {
+	static internalDependenciesChain(workspacePathname: Workspace['pathname'], workspaces: Repository['workspaces']) {
 		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
 		let result = Array.from(workspace.packageJson.internalDependencies)
@@ -61,7 +61,7 @@ export class WorkspacePackageJson implements FileProvider {
 		const pathname = join(this.directoryPathname, this.filename)
 		const packageContent = await readFile<PackageJson>(pathname)
 		const {
-			name = "",
+			name = '',
 			private: isPrivate,
 			dependencies,
 			devDependencies,
@@ -71,16 +71,16 @@ export class WorkspacePackageJson implements FileProvider {
 		this.isPrivate = Boolean(isPrivate)
 
 		if (dependencies) for (const [key, value] of Object.entries(dependencies)) {
-			if (typeof value === "string") this.dependencies.set(key, value)
+			if (typeof value === 'string') this.dependencies.set(key, value)
 			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
 		}
 
 		if (devDependencies) for (const [key, value] of Object.entries(devDependencies)) {
-			if (typeof value === "string") this.devDependencies.set(key, value)
+			if (typeof value === 'string') this.devDependencies.set(key, value)
 			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
 		}
 
-		if (scripts && typeof scripts === "object") {
+		if (scripts && typeof scripts === 'object') {
 			this.buildScriptCommand = scripts[WorkspacePackageJson.buildScriptKey]
 		}
 	}

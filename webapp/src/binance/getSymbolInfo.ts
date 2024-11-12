@@ -1,4 +1,4 @@
-import { DflowBinanceSymbolInfo } from "@workspace/dflow"
+import { DflowBinanceSymbolInfo } from '@workspace/dflow'
 
 const symbolInfoMap = new Map<string, DflowBinanceSymbolInfo>()
 

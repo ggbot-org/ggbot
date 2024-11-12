@@ -1,8 +1,8 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { relativeStrengthIndex } from "./relativeStrengthIndex.js"
+import { relativeStrengthIndex } from './relativeStrengthIndex.js'
 
 type RelativeStrengthIndex = typeof relativeStrengthIndex
 type RelativeStrengthIndexInput = {
@@ -10,7 +10,7 @@ type RelativeStrengthIndexInput = {
 	period: Parameters<RelativeStrengthIndex>[1]
 }
 
-test("Relative Strength Index", () => {
+test('Relative Strength Index', () => {
 	assertDeepEqual<
 		RelativeStrengthIndexInput,
 		ReturnType<RelativeStrengthIndex>

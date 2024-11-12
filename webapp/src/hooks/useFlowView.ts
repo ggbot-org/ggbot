@@ -1,14 +1,14 @@
 // TODO remove switch in this file, when upgrading flow-view
-import { binance } from "_/binance/exchange"
-import { initializeFlowView } from "_/flow/initializeFlowView"
-import { DflowBinanceClient, DflowBinanceClientDummy, DflowBinanceHost, getDflowBinanceNodesCatalog, parsePercentage } from "@workspace/dflow"
-import { StrategyKind } from "@workspace/models"
-import { DflowErrorCannotConnectSourceToTarget, DflowNodesCatalog, DflowNodeUnknown } from "dflow"
-import { FlowView, FlowViewOnChangeArg, FlowViewOnChangeDataEdge, FlowViewOnChangeDataNode, FlowViewOnChangeInfo, FlowViewSerializableGraph } from "flow-view"
-import { now, Time, truncateTime } from "minimal-time-helpers"
-import { useCallback, useEffect, useState } from "react"
+import { binance } from '_/binance/exchange'
+import { initializeFlowView } from '_/flow/initializeFlowView'
+import { DflowBinanceClient, DflowBinanceClientDummy, DflowBinanceHost, getDflowBinanceNodesCatalog, parsePercentage } from '@workspace/dflow'
+import { StrategyKind } from '@workspace/models'
+import { DflowErrorCannotConnectSourceToTarget, DflowNodesCatalog, DflowNodeUnknown } from 'dflow'
+import { FlowView, FlowViewOnChangeArg, FlowViewOnChangeDataEdge, FlowViewOnChangeDataNode, FlowViewOnChangeInfo, FlowViewSerializableGraph } from 'flow-view'
+import { now, Time, truncateTime } from 'minimal-time-helpers'
+import { useCallback, useEffect, useState } from 'react'
 
-import { useBinanceSymbols } from "./useBinanceSymbols"
+import { useBinanceSymbols } from './useBinanceSymbols'
 
 export type UseFlowViewOutput = {
 	whenUpdatedFlowView: Time | undefined
@@ -48,32 +48,32 @@ export function useFlowView(
 				const isUserInput = !isLoadGraph && !isProgrammatic
 
 				switch (action) {
-					case "CREATE_EDGE": {
+					case 'CREATE_EDGE': {
 						const { id, from, to } = data as FlowViewOnChangeDataEdge
 						dflow.newEdge({ id, source: from, target: to })
 						if (isUserInput) setOutput({ whenUpdatedFlowView: now(), flowViewGraph: flowView.graph })
 						break
 					}
 
-					case "CREATE_NODE": {
+					case 'CREATE_NODE': {
 						const { text, type, id, ins, outs } = data as FlowViewOnChangeDataNode
 						switch (type) {
-							case "info":
+							case 'info':
 								break
-							case "json": {
+							case 'json': {
 								const outputId = outs?.[0]?.id
 								dflow.newNode({
 									id,
-									kind: "data",
+									kind: 'data',
 									outputs: [{ data: JSON.parse(text), id: outputId }]
 								})
 								break
 							}
-							case "perc": {
+							case 'perc': {
 								const outputId = outs?.[0]?.id
 								dflow.newNode({
 									id,
-									kind: "data",
+									kind: 'data',
 									outputs: [{ data: parsePercentage(text), id: outputId }]
 								})
 								break
@@ -125,9 +125,9 @@ export function useFlowView(
 						break
 					}
 
-					case "DELETE_EDGE":
-					case "DELETE_NODE":
-					case "UPDATE_NODE":
+					case 'DELETE_EDGE':
+					case 'DELETE_NODE':
+					case 'UPDATE_NODE':
 						if (isUserInput) setOutput({ whenUpdatedFlowView: now(), flowViewGraph: flowView.graph })
 						break
 
@@ -135,10 +135,10 @@ export function useFlowView(
 				}
 			} catch (error) {
 				console.error(error)
-				if (action === "CREATE_EDGE") {
-					if (typeof data !== "object" || data === null) return
+				if (action === 'CREATE_EDGE') {
+					if (typeof data !== 'object' || data === null) return
 					const edgeId = data.id
-					if (typeof edgeId !== "string") return
+					if (typeof edgeId !== 'string') return
 					if (error instanceof DflowErrorCannotConnectSourceToTarget) {
 						flowView.deleteEdge(edgeId)
 						return
@@ -146,10 +146,10 @@ export function useFlowView(
 					const viewEdge = flowView.edge(edgeId)
 					viewEdge.hasError = true
 				}
-				if (action === "CREATE_NODE") {
-					if (typeof data !== "object" || data === null) return
+				if (action === 'CREATE_NODE') {
+					if (typeof data !== 'object' || data === null) return
 					const nodeId = data.id
-					if (typeof nodeId !== "string") return
+					if (typeof nodeId !== 'string') return
 					const viewNode = flowView.node(nodeId)
 					viewNode.hasError = true
 				}
@@ -165,7 +165,7 @@ export function useFlowView(
 	useEffect(() => {
 		if (flowView) return
 		if (!container) return
-		if (strategyKind === "binance") {
+		if (strategyKind === 'binance') {
 			if (!binanceSymbols) return
 			setFlowView(initializeBinanceFlowView(container, getDflowBinanceNodesCatalog(binanceSymbols)))
 		}

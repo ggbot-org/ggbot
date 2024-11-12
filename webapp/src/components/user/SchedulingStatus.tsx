@@ -1,14 +1,14 @@
-import { MainColor, Tag, Tags } from "_/components/library"
-import { SchedulingStatus as Status } from "@workspace/models"
-import { FormattedMessage } from "react-intl"
+import { MainColor, Tag, Tags } from '_/components/library'
+import { SchedulingStatus as Status } from '@workspace/models'
+import { FormattedMessage } from 'react-intl'
 
 const colorOf: Record<
 	Status,
-	Extract<MainColor, "primary" | "danger"> | undefined
+	Extract<MainColor, 'primary' | 'danger'> | undefined
 > = {
-	active: "primary",
+	active: 'primary',
 	inactive: undefined,
-	suspended: "danger"
+	suspended: 'danger'
 }
 
 type _TagLabelProps = {
@@ -18,13 +18,13 @@ type _TagLabelProps = {
 function _TagLabel({ status }: _TagLabelProps) {
 	if (!status) return null
 	return (
-		<Tag bulma={["is-unselectable", "is-uppercase"]} color={colorOf[status]}>
+		<Tag bulma={['is-unselectable', 'is-uppercase']} color={colorOf[status]}>
 			<FormattedMessage id={`SchedulingStatus.${status}`} />
 		</Tag>
 	)
 }
 
-type SchedulingStatusProps = Pick<_TagLabelProps, "status"> & {
+type SchedulingStatusProps = Pick<_TagLabelProps, 'status'> & {
 	count?: number
 }
 

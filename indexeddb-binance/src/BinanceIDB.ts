@@ -1,10 +1,10 @@
-import { BinanceExchangeInfo, BinanceKline } from "@workspace/binance"
-import { CacheObjectStore, IDBInstance, IDBProvider } from "@workspace/indexeddb"
+import { BinanceExchangeInfo, BinanceKline } from '@workspace/binance'
+import { CacheObjectStore, IDBInstance, IDBProvider } from '@workspace/indexeddb'
 
 export class BinanceIDB extends IDBProvider implements IDBInstance {
-	static exchangeInfoKey = "exchangeInfo"
+	static exchangeInfoKey = 'exchangeInfo'
 
-	readonly databaseName = "binance"
+	readonly databaseName = 'binance'
 	readonly databaseVersion = 1
 
 	objectStore: CacheObjectStore

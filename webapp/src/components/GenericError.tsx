@@ -1,5 +1,5 @@
-import { Message } from "_/components/library"
-import { FormattedMessage } from "react-intl"
+import { Message } from '_/components/library'
+import { FormattedMessage } from 'react-intl'
 
 // TODO use a toast instead
 export function GenericError() {

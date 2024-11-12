@@ -1,17 +1,17 @@
-import { classnames } from "_/classnames"
-import { FormattedMessage } from "react-intl"
-import { SizeProp, Span } from "trunx"
+import { classnames } from '_/classnames'
+import { FormattedMessage } from 'react-intl'
+import { SizeProp, Span } from 'trunx'
 
 // TODO this should not use translations, use a logotype instead
-export function BrandName({ size }: Partial<SizeProp<"large">>) {
+export function BrandName({ size }: Partial<SizeProp<'large'>>) {
 	return (
 		<Span
 			bulma={[
-				"is-unselectable",
-				"has-text-weight-semibold",
+				'is-unselectable',
+				'has-text-weight-semibold',
 				{
-					"is-size-1": size === "large",
-					"is-size-5": size === undefined
+					'is-size-1': size === 'large',
+					'is-size-5': size === undefined
 				}
 			]}
 		>
@@ -27,7 +27,7 @@ export function BrandTagline({ animated }: {
 	animated?: boolean
 }) {
 	return (
-		<div className={classnames({ "brand-tagline--animated": animated }, "is-unselectable", "is-italic")}>
+		<div className={classnames({ 'brand-tagline--animated': animated }, 'is-unselectable', 'is-italic')}>
 			<FormattedMessage id="Brand.tagline" />
 		</div>
 	)

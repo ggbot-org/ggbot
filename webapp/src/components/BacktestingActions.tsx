@@ -1,6 +1,6 @@
-import { Button, ButtonProps, Buttons } from "_/components/library"
-import type { UseBacktestingState } from "_/hooks/useBacktesting"
-import { FormattedMessage } from "react-intl"
+import { Button, ButtonProps, Buttons } from '_/components/library'
+import type { UseBacktestingState } from '_/hooks/useBacktesting'
+import { FormattedMessage } from 'react-intl'
 
 function PauseButton(props: ButtonProps) {
 	return (
@@ -36,12 +36,12 @@ function StopButton(props: ButtonProps) {
 
 export function BacktestingActions({
 	canStart, isPaused, isRunning, onClickPause, onClickResume, onClickStart, onClickStop
-}: Pick<UseBacktestingState, "isPaused" | "isRunning"> & {
+}: Pick<UseBacktestingState, 'isPaused' | 'isRunning'> & {
 	canStart: boolean
-	onClickPause: ButtonProps["onClick"]
-	onClickResume: ButtonProps["onClick"]
-	onClickStart: ButtonProps["onClick"]
-	onClickStop: ButtonProps["onClick"]
+	onClickPause: ButtonProps['onClick']
+	onClickResume: ButtonProps['onClick']
+	onClickStart: ButtonProps['onClick']
+	onClickStop: ButtonProps['onClick']
 }) {
 	if (isPaused) return (
 		<Buttons>

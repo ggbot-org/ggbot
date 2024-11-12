@@ -1,12 +1,12 @@
-import { IncomingMessage } from "node:http"
+import { IncomingMessage } from 'node:http'
 
-import { ApiService, BadRequestError, binanceClientActions, BinanceClientActionType, isActionInput, isBinanceClientActionInput as isInput, UNAUTHORIZED__401 } from "@workspace/api"
-import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
-import { BinanceDatabase } from "@workspace/database"
-import { BinanceApiConfig, ErrorAccountItemNotFound, SerializableData } from "@workspace/models"
-import { documentProvider } from "@workspace/s3-data-bucket"
+import { ApiService, BadRequestError, binanceClientActions, BinanceClientActionType, isActionInput, isBinanceClientActionInput as isInput, UNAUTHORIZED__401 } from '@workspace/api'
+import { readSessionFromAuthorizationHeader } from '@workspace/authentication'
+import { BinanceDatabase } from '@workspace/database'
+import { BinanceApiConfig, ErrorAccountItemNotFound, SerializableData } from '@workspace/models'
+import { documentProvider } from '@workspace/s3-data-bucket'
 
-import { BinanceClient } from "./BinanceClient.js"
+import { BinanceClient } from './BinanceClient.js'
 
 class BinanceService implements ApiService<BinanceClientActionType> {
 	binance: BinanceClient
@@ -27,7 +27,7 @@ class BinanceService implements ApiService<BinanceClientActionType> {
 }
 
 export async function binanceRequestHandler(
-	headers: IncomingMessage["headers"], body: string
+	headers: IncomingMessage['headers'], body: string
 ): Promise<SerializableData> {
 	const input: unknown = JSON.parse(body)
 	if (!isActionInput(binanceClientActions)(input)) throw new BadRequestError()
@@ -38,7 +38,7 @@ export async function binanceRequestHandler(
 
 	const binanceDatabase = new BinanceDatabase({ accountId }, documentProvider)
 	const binanceApiConfig = await binanceDatabase.ReadBinanceApiConfig()
-	if (!binanceApiConfig) throw new ErrorAccountItemNotFound({ type: "BinanceApiConfig", accountId })
+	if (!binanceApiConfig) throw new ErrorAccountItemNotFound({ type: 'BinanceApiConfig', accountId })
 
 	const service = new BinanceService(binanceApiConfig)
 

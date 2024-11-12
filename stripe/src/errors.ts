@@ -1,4 +1,4 @@
-import { Stripe } from "./Stripe.js"
+import { Stripe } from './Stripe.js'
 
 const { StripeSignatureVerificationError } = Stripe.errors
 

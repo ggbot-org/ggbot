@@ -1,9 +1,9 @@
-import { DflowNode } from "dflow"
+import { DflowNode } from 'dflow'
 
-import { inputSymbol } from "./commonIO.js"
+import { inputSymbol } from './commonIO.js'
 
 export class DefaultSymbol extends DflowNode {
-	static kind = "defaultSymbol"
+	static kind = 'defaultSymbol'
 	static inputs = [inputSymbol]
 	static outputs = []
 	run () {

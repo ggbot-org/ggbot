@@ -1,4 +1,4 @@
-import { defaultLanguage, Language, languages } from "@workspace/models"
+import { defaultLanguage, Language, languages } from '@workspace/models'
 
 export function detectLanguage(): Language {
 	for (const language of languages) {

@@ -1,12 +1,12 @@
-import { isFiniteNumber, isIdentifierString, isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
-import { DflowNode } from "dflow"
-import { now } from "minimal-time-helpers"
+import { isFiniteNumber, isIdentifierString, isNonEmptyString, StrategyFlowGraph } from '@workspace/models'
+import { DflowNode } from 'dflow'
+import { now } from 'minimal-time-helpers'
 
-import { DflowCommonContext as Context } from "./context.js"
-import { DflowCommonHost } from "./host.js"
-import { BooleanParameter, NumberParameter, PercentageParameter, StringParameter } from "./nodes/parameters.js"
-import { nodesCatalog } from "./nodesCatalog.js"
-import { DflowParameter } from "./parameters.js"
+import { DflowCommonContext as Context } from './context.js'
+import { DflowCommonHost } from './host.js'
+import { BooleanParameter, NumberParameter, PercentageParameter, StringParameter } from './nodes/parameters.js'
+import { nodesCatalog } from './nodesCatalog.js'
+import { DflowParameter } from './parameters.js'
 
 export async function extractCommonParametersFromFlow (graph: StrategyFlowGraph): Promise<DflowParameter[]> {
 	const parameters: DflowParameter[] = []
@@ -29,11 +29,11 @@ export async function extractCommonParametersFromFlow (graph: StrategyFlowGraph)
 					const { params } = this.host.context as Context
 					const key = this.input(0).data
 					const defaultValue = this.input(1).data
-					if (!isIdentifierString(key) || typeof defaultValue !== "boolean") return this.clearOutputs()
+					if (!isIdentifierString(key) || typeof defaultValue !== 'boolean') return this.clearOutputs()
 					let value = defaultValue
 					if (key in params) {
 						const inputValue = params[key]
-						if (typeof inputValue === "boolean") value = inputValue
+						if (typeof inputValue === 'boolean') value = inputValue
 					}
 					this.output(0).data = value
 					// Set parameter

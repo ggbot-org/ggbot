@@ -1,4 +1,4 @@
-import { getRandomValues, webcrypto } from "node:crypto"
+import { getRandomValues, webcrypto } from 'node:crypto'
 
 const saltVectorLength = 16
 const initializationVectorLength = 12
@@ -9,17 +9,17 @@ const decoder = new TextDecoder()
 async function deriveKey(
 	passwordBasedKey: CryptoKey,
 	salt: BufferSource,
-	keyUsage: Extract<KeyUsage, "encrypt" | "decrypt">
+	keyUsage: Extract<KeyUsage, 'encrypt' | 'decrypt'>
 ) {
 	return webcrypto.subtle.deriveKey(
 		{
-			name: "PBKDF2",
+			name: 'PBKDF2',
 			salt,
 			iterations: 250000,
-			hash: "SHA-256"
+			hash: 'SHA-256'
 		},
 		passwordBasedKey,
-		{ name: "AES-GCM", length: 256 },
+		{ name: 'AES-GCM', length: 256 },
 		false,
 		[keyUsage]
 	)
@@ -27,11 +27,11 @@ async function deriveKey(
 
 async function getPasswordBasedKey(password: string) {
 	return webcrypto.subtle.importKey(
-		"raw",
+		'raw',
 		encoder.encode(password),
-		"PBKDF2",
+		'PBKDF2',
 		false,
-		["deriveKey"]
+		['deriveKey']
 	)
 }
 
@@ -52,10 +52,10 @@ export async function decrypt(
 		saltVectorLength + initializationVectorLength
 	)
 	const passwordBasedKey = await getPasswordBasedKey(password)
-	const aesKey = await deriveKey(passwordBasedKey, saltVector, "decrypt")
+	const aesKey = await deriveKey(passwordBasedKey, saltVector, 'decrypt')
 	const decryptedContent = await webcrypto.subtle.decrypt(
 		{
-			name: "AES-GCM",
+			name: 'AES-GCM',
 			iv: initializationVector
 		},
 		aesKey,
@@ -71,10 +71,10 @@ export async function encrypt(data: string, password: string): Promise<string> {
 		new Uint8Array(initializationVectorLength)
 	)
 	const passwordBasedKey = await getPasswordBasedKey(password)
-	const aesKey = await deriveKey(passwordBasedKey, saltVector, "encrypt")
+	const aesKey = await deriveKey(passwordBasedKey, saltVector, 'encrypt')
 	const encryptedDataVector = await webcrypto.subtle.encrypt(
 		{
-			name: "AES-GCM",
+			name: 'AES-GCM',
 			iv: initializationVector
 		},
 		aesKey,
@@ -96,7 +96,7 @@ export async function encrypt(data: string, password: string): Promise<string> {
 	return btoa(
 		outputVector.reduce(
 			(data, byte) => data + String.fromCharCode(byte),
-			""
+			''
 		)
 	)
 }

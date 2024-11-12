@@ -1,23 +1,23 @@
-import { Div, Title } from "_/components/library"
-import { SchedulingParameterItem, SchedulingParameterItemProps } from "_/components/user/SchedulingParameterItem"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { extractBinanceParametersFromFlow, extractCommonParametersFromFlow } from "@workspace/dflow"
-import { StrategyFlow, StrategyParameters } from "@workspace/models"
-import { useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { Div, Title } from '_/components/library'
+import { SchedulingParameterItem, SchedulingParameterItemProps } from '_/components/user/SchedulingParameterItem'
+import { useBinanceSymbols } from '_/hooks/useBinanceSymbols'
+import { useStrategyKey } from '_/hooks/useStrategyKey'
+import { extractBinanceParametersFromFlow, extractCommonParametersFromFlow } from '@workspace/dflow'
+import { StrategyFlow, StrategyParameters } from '@workspace/models'
+import { useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export function SchedulingParameters({
 	flowViewGraph, setParam, params
-}: Pick<SchedulingParameterItemProps, "setParam"> & {
-	flowViewGraph: StrategyFlow["view"] | undefined
+}: Pick<SchedulingParameterItemProps, 'setParam'> & {
+	flowViewGraph: StrategyFlow['view'] | undefined
 	params: StrategyParameters | undefined
 }) {
 	const { strategyKind } = useStrategyKey()
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
-		Array<Pick<SchedulingParameterItemProps, "kind" | "label" | "paramValue" | "defaultParamValue" >>
+		Array<Pick<SchedulingParameterItemProps, 'kind' | 'label' | 'paramValue' | 'defaultParamValue' >>
 	>([])
 
 	useEffect(() => {

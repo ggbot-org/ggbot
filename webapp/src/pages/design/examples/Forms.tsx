@@ -1,17 +1,17 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, Checkbox, Control, Field, InputField, SelectField, Title } from "_/components/library"
-import { useState } from "react"
+import { classnames } from '_/classnames'
+import { Button, Buttons, Checkbox, Control, Field, InputField, SelectField, Title } from '_/components/library'
+import { useState } from 'react'
 
 export function SimpleForm() {
 	const [isPending, setIsPending] = useState(false)
 	const [hasConsent, setHasConsent] = useState<boolean>(false)
-	const [gender, setGender] = useState("")
-	const [nick, setNick] = useState("satoshi")
-	const [password, setPassword] = useState("")
+	const [gender, setGender] = useState('')
+	const [nick, setNick] = useState('satoshi')
+	const [password, setPassword] = useState('')
 
 	return (
 		<form
-			className={classnames("box")}
+			className={classnames('box')}
 			onSubmit={(event) => {
 				event.preventDefault()
 				setIsPending(true)
@@ -38,9 +38,9 @@ export function SimpleForm() {
 				name="gender"
 				onChange={(event) => setGender(event.target.value)}
 				options={[
-					{ value: "M", label: "Male" },
-					{ value: "F", label: "Female" },
-					{ value: "X", label: "Other" }
+					{ value: 'M', label: 'Male' },
+					{ value: 'F', label: 'Female' },
+					{ value: 'X', label: 'Other' }
 				]}
 				value={gender}
 			/>
@@ -50,13 +50,13 @@ export function SimpleForm() {
 						checked={hasConsent}
 						onChange={(event) => setHasConsent(Boolean(event.target.checked))}
 					>
-						<span className={classnames("ml-2")}>I agree with Terms of service.</span>
+						<span className={classnames('ml-2')}>I agree with Terms of service.</span>
 					</Checkbox>
 				</Control>
 			</Field>
 			<Buttons>
 				<Button
-					color={hasConsent ? "primary" : undefined}
+					color={hasConsent ? 'primary' : undefined}
 					disabled={!hasConsent}
 					isLoading={isPending}
 				>

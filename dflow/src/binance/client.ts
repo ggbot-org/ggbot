@@ -1,6 +1,6 @@
-import { BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice } from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice } from '@workspace/binance'
 
-import { DflowBinanceKlineInterval } from "./klineIntervals.js"
+import { DflowBinanceKlineInterval } from './klineIntervals.js'
 
 /** Binance API used by dflow binance nodes. */
 export interface DflowBinanceClient
@@ -24,7 +24,7 @@ interface DflowBinanceClientPrivate {
 	newOrder(
 		symbol: string,
 		side: BinanceOrderSide,
-		type: Extract<BinanceOrderType, "MARKET">,
+		type: Extract<BinanceOrderType, 'MARKET'>,
 		orderOptions: BinanceNewOrderOptions
 	): Promise<BinanceOrder | undefined>
 }
@@ -38,19 +38,19 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 		return Promise.resolve([])
 	}
 
-	newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, _orderOptions: BinanceNewOrderOptions): Promise<BinanceOrder> {
+	newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, 'MARKET'>, _orderOptions: BinanceNewOrderOptions): Promise<BinanceOrder> {
 		return Promise.resolve({
-			clientOrderId: "",
-			executedQty: "0",
+			clientOrderId: '',
+			executedQty: '0',
 			fills: [
-				{ commission: "0", commissionAsset: "BNB", price: "0", qty: "0", tradeId: -1 }
+				{ commission: '0', commissionAsset: 'BNB', price: '0', qty: '0', tradeId: -1 }
 			],
 			orderId: -1,
-			price: "0",
+			price: '0',
 			side,
-			status: "FILLED",
+			status: 'FILLED',
 			symbol,
-			timeInForce: "GTC",
+			timeInForce: 'GTC',
 			transactTime: 0,
 			type
 		})
@@ -61,6 +61,6 @@ export class DflowBinanceClientDummy implements DflowBinanceClient {
 	}
 
 	tickerPrice(symbol: string): Promise<BinanceTickerPrice> {
-		return Promise.resolve({ symbol, price: "0" })
+		return Promise.resolve({ symbol, price: '0' })
 	}
 }

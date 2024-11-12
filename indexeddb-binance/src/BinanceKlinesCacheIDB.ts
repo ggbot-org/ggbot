@@ -1,6 +1,6 @@
-import { BinanceKline, BinanceKlineInterval, binanceKlineKey, BinanceKlinesCacheProvider } from "@workspace/binance"
+import { BinanceKline, BinanceKlineInterval, binanceKlineKey, BinanceKlinesCacheProvider } from '@workspace/binance'
 
-import { BinanceIDB } from "./BinanceIDB.js"
+import { BinanceIDB } from './BinanceIDB.js'
 
 export class BinanceKlinesCacheIDB implements BinanceKlinesCacheProvider {
 	binanceIDB: BinanceIDB

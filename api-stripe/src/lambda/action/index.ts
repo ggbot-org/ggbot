@@ -1,12 +1,12 @@
-import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST__400, BadGatewayError, errorResponse, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK, stripeClientActions, UNAUTHORIZED__401 } from "@workspace/api"
-import { readSessionFromAuthorizationHeader } from "@workspace/authentication"
+import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST__400, BadGatewayError, errorResponse, GatewayTimeoutError, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK, stripeClientActions, UNAUTHORIZED__401 } from '@workspace/api'
+import { readSessionFromAuthorizationHeader } from '@workspace/authentication'
 
-import { Service } from "./service.js"
+import { Service } from './service.js'
 
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod === "OPTIONS") return ALLOWED_METHODS([apiActionMethod])
+		if (event.httpMethod === 'OPTIONS') return ALLOWED_METHODS([apiActionMethod])
 
 		if (event.httpMethod !== apiActionMethod) return errorResponse(METHOD_NOT_ALLOWED__405)
 

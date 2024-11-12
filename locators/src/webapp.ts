@@ -1,30 +1,30 @@
-import { AccountKey, StrategyKey } from "@workspace/models"
+import { AccountKey, StrategyKey } from '@workspace/models'
 
-import { FQDN } from "./FQDNs.js"
+import { FQDN } from './FQDNs.js'
 
 export class WebappBaseURL extends URL {
 	constructor(fqdn: FQDN) {
 		super(
-			fqdn.deployStage === "local"
-				? "http://localhost:8000"
+			fqdn.deployStage === 'local'
+				? 'http://localhost:8000'
 				: `https://${fqdn.webappDomain}`
 		)
 	}
 }
 
 export const webappDirname = {
-	admin: "admin",
-	design: "design",
-	user: "user"
+	admin: 'admin',
+	design: 'design',
+	user: 'user'
 } as const
 
 export const webappPagePathname = {
-	homepage: "index.html",
-	privacy: "privacy.html",
-	terms: "terms.html",
-	strategy: "strategy.html",
-	purchaseCanceled: "purchase-canceled.html",
-	subscriptionPurchased: "subscription-purchased.html",
+	homepage: 'index.html',
+	privacy: 'privacy.html',
+	terms: 'terms.html',
+	strategy: 'strategy.html',
+	purchaseCanceled: 'purchase-canceled.html',
+	subscriptionPurchased: 'subscription-purchased.html',
 	user: {
 		copyStrategy: `${webappDirname.user}/copy-strategy.html`,
 		editStrategy: `${webappDirname.user}/edit-strategy.html`,
@@ -43,7 +43,7 @@ function appendAccountKeyToURLSearchParams(
 	{ accountId }: AccountKey,
 	url: URL
 ) {
-	url.searchParams.append("accountId", accountId)
+	url.searchParams.append('accountId', accountId)
 	return url
 }
 
@@ -51,8 +51,8 @@ function appendStrategyKeyToURLSearchParams(
 	{ strategyId, strategyKind }: StrategyKey,
 	url: URL
 ) {
-	url.searchParams.append("strategyId", strategyId)
-	url.searchParams.append("strategyKind", strategyKind)
+	url.searchParams.append('strategyId', strategyId)
+	url.searchParams.append('strategyKind', strategyKind)
 	return url
 }
 

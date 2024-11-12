@@ -1,4 +1,4 @@
-import { InputField } from "_/components/library"
+import { InputField } from '_/components/library'
 
 export function InputFields() {
 	return (

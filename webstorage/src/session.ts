@@ -1,9 +1,9 @@
-import { AccountInfo, Strategy, StrategyKey } from "@workspace/models"
-import { Day } from "minimal-time-helpers"
+import { AccountInfo, Strategy, StrategyKey } from '@workspace/models'
+import { Day } from 'minimal-time-helpers'
 
-import { cachedBoolean, cachedNumber, cachedObject } from "./cache.js"
-import { itemKey } from "./items.js"
-import { SessionWebStorageProvider } from "./providers.js"
+import { cachedBoolean, cachedNumber, cachedObject } from './cache.js'
+import { itemKey } from './items.js'
+import { SessionWebStorageProvider } from './providers.js'
 
 const storage = new SessionWebStorageProvider()
 

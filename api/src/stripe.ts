@@ -1,9 +1,9 @@
-import { AccountKey, isNaturalNumber, isSubscriptionPlan, NaturalNumber, Subscription } from "@workspace/models"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { AccountKey, isNaturalNumber, isSubscriptionPlan, NaturalNumber, Subscription } from '@workspace/models'
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { ActionTypes } from "./action.js"
+import { ActionTypes } from './action.js'
 
-export type StripeMetadata = AccountKey & Pick<Subscription, "plan">
+export type StripeMetadata = AccountKey & Pick<Subscription, 'plan'>
 
 type StripeClientAction = {
 	CreateCheckoutSession: (
@@ -12,7 +12,7 @@ type StripeClientAction = {
 			email: string
 			/** Number of months to subscribe. */
 			numMonths: NaturalNumber
-		} & Pick<StripeMetadata, "plan">
+		} & Pick<StripeMetadata, 'plan'>
 	) => Promise<{
 		/** The webapp will redirect to this checkout session URL. */
 		url: string
@@ -22,19 +22,19 @@ type StripeClientAction = {
 export type StripeClientActionType = keyof StripeClientAction
 
 export type StripeClientActionInput = {
-	CreateCheckoutSession: Parameters<StripeClientAction["CreateCheckoutSession"]>[0]
+	CreateCheckoutSession: Parameters<StripeClientAction['CreateCheckoutSession']>[0]
 }
 
 export type StripeClientActionOutput = {
-	CreateCheckoutSession: Awaited<ReturnType<StripeClientAction["CreateCheckoutSession"]>>
+	CreateCheckoutSession: Awaited<ReturnType<StripeClientAction['CreateCheckoutSession']>>
 }
 
 export const stripeClientActions: ActionTypes<StripeClientActionType> = [
-	"CreateCheckoutSession"
+	'CreateCheckoutSession'
 ]
 
 export const isStripeClientActionInput = {
-	CreateCheckoutSession: objectTypeGuard<StripeClientActionInput["CreateCheckoutSession"]>(
+	CreateCheckoutSession: objectTypeGuard<StripeClientActionInput['CreateCheckoutSession']>(
 		({ numMonths, plan }) => isNaturalNumber(numMonths) && isSubscriptionPlan(plan)
 	)
 }

@@ -1,16 +1,16 @@
-import { Backtesting } from "_/components/Backtesting"
-import { TabId, Tabs } from "_/components/Tabs"
-import { FlowEditor } from "_/components/user/FlowEditor"
-import { PageContainer } from "_/components/user/PageContainer"
-import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
-import { UseFlowViewOutput } from "_/hooks/useFlowView"
-import { useStrategy } from "_/hooks/useStrategy"
-import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { useState } from "react"
+import { Backtesting } from '_/components/Backtesting'
+import { TabId, Tabs } from '_/components/Tabs'
+import { FlowEditor } from '_/components/user/FlowEditor'
+import { PageContainer } from '_/components/user/PageContainer'
+import { StrategyPageContainer } from '_/components/user/StrategyPageContainer'
+import { UseFlowViewOutput } from '_/hooks/useFlowView'
+import { useStrategy } from '_/hooks/useStrategy'
+import { useStrategyFlow } from '_/hooks/useStrategyFlow'
+import { useStrategyKey } from '_/hooks/useStrategyKey'
+import { useState } from 'react'
 
 export function EditStrategyPage() {
-	const [activeTabId, setActiveTabId] = useState<TabId>("flow")
+	const [activeTabId, setActiveTabId] = useState<TabId>('flow')
 	const [flowView, setFlowView] = useState<UseFlowViewOutput>({ flowViewGraph: undefined, whenUpdatedFlowView: undefined })
 
 	const { strategyKey } = useStrategyKey()
@@ -25,7 +25,7 @@ export function EditStrategyPage() {
 					setActiveTabId={setActiveTabId}
 					tabs={[
 						{
-							tabId: "flow",
+							tabId: 'flow',
 							renderIfInactive: true,
 							content: (
 								<FlowEditor
@@ -37,7 +37,7 @@ export function EditStrategyPage() {
 							)
 						},
 						{
-							tabId: "backtesting",
+							tabId: 'backtesting',
 							renderIfInactive: true,
 							content: (
 								<Backtesting

@@ -1,14 +1,14 @@
-import { classnames } from "_/classnames"
-import { stringMaxLength } from "@workspace/models"
-import { isName, normalizeName } from "@workspace/models"
-import { ChangeEventHandler, ReactNode, useCallback, useEffect, useId, useState } from "react"
-import { FormattedMessage } from "react-intl"
-import { Control, Field, Help, Input, InputProps, Label as _Label, LabelProps as _LabelProps } from "trunx"
+import { classnames } from '_/classnames'
+import { stringMaxLength } from '@workspace/models'
+import { isName, normalizeName } from '@workspace/models'
+import { ChangeEventHandler, ReactNode, useCallback, useEffect, useId, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { Control, Field, Help, Input, InputProps, Label as _Label, LabelProps as _LabelProps } from 'trunx'
 
-import { Label } from "./Label"
-import { randomKey } from "./randomKey"
+import { Label } from './Label'
+import { randomKey } from './randomKey'
 
-export function InputField({ autoComplete = "off", color, help, label, maxLength, spellCheck = "false", type, ...props }: InputFieldProps) {
+export function InputField({ autoComplete = 'off', color, help, label, maxLength, spellCheck = 'false', type, ...props }: InputFieldProps) {
 	const id = useId()
 	return (
 		<Field>
@@ -18,7 +18,7 @@ export function InputField({ autoComplete = "off", color, help, label, maxLength
 					autoComplete={autoComplete}
 					color={color}
 					id={id}
-					maxLength={maxLength ? maxLength : type === "text" ? stringMaxLength : undefined}
+					maxLength={maxLength ? maxLength : type === 'text' ? stringMaxLength : undefined}
 					spellCheck={spellCheck}
 					type={type}
 					{...props}
@@ -28,27 +28,27 @@ export function InputField({ autoComplete = "off", color, help, label, maxLength
 		</Field>
 	)
 }
-export type InputFieldProps = Omit<InputProps, "id" | "defaultValue"> & {
+export type InputFieldProps = Omit<InputProps, 'id' | 'defaultValue'> & {
 	label: ReactNode
 } & Partial<{
 	help: ReactNode
 }>
 
 export function InputFieldName({ onChange, value, ...props }: Omit<
-	InputFieldProps, "color" | "help" | "onBlur" | "type"
+	InputFieldProps, 'color' | 'help' | 'onBlur' | 'type'
 >) {
 	const [{ color, help }, setFeedback] = useState<{
-		color: InputFieldProps["color"] | undefined
+		color: InputFieldProps['color'] | undefined
 		help: ReactNode
 	}>({ color: undefined, help: <>&nbsp;</> })
 
 	const onBlur = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const name = event.target.value
 		if (!isName(name)) {
-			setFeedback({ color: "danger", help: <FormattedMessage id="Name.invalid" /> })
+			setFeedback({ color: 'danger', help: <FormattedMessage id="Name.invalid" /> })
 		}
 		if (name !== normalizeName(name)) {
-			setFeedback({ color: "warning", help: <FormattedMessage id="Name.hasSpaces" /> })
+			setFeedback({ color: 'warning', help: <FormattedMessage id="Name.hasSpaces" /> })
 		}
 	}, [])
 
@@ -86,13 +86,13 @@ export function ReadonlyInput ({ value }: ReadonlyInputProps) {
 		<Input
 			key={key}
 			readOnly
-			className={classnames(["readonly-input", "is-static"])}
+			className={classnames(['readonly-input', 'is-static'])}
 			defaultValue={value}
 			tabIndex={-1}
 		/>
 	)
 }
-type ReadonlyInputProps = Pick<InputProps, "value">
+type ReadonlyInputProps = Pick<InputProps, 'value'>
 
 export function ReadonlyField({ label, ...props }: ReadonlyInputProps & { label: ReactNode }) {
 	return (

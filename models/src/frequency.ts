@@ -1,9 +1,9 @@
-import { Time, TimeUnit, timeUnitDuration } from "minimal-time-helpers"
-import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
+import { Time, TimeUnit, timeUnitDuration } from 'minimal-time-helpers'
+import { isLiteralType, objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { isNaturalNumber, NaturalNumber } from "./numbers.js"
+import { isNaturalNumber, NaturalNumber } from './numbers.js'
 
-const frequencyIntervals = ["1d", "1h", "1m"] as const
+const frequencyIntervals = ['1d', '1h', '1m'] as const
 export type FrequencyInterval = (typeof frequencyIntervals)[number]
 export const isFrequencyInterval = isLiteralType<FrequencyInterval>(frequencyIntervals)
 
@@ -12,12 +12,12 @@ export type Frequency = {
 	interval: FrequencyInterval
 }
 
-type FrequencyTimeUnit = Extract<TimeUnit, "minute" | "hour" | "day">
+type FrequencyTimeUnit = Extract<TimeUnit, 'minute' | 'hour' | 'day'>
 
 const frequencyIntervalTimeUnit: Record<FrequencyInterval, FrequencyTimeUnit> = {
-	"1m": "minute",
-	"1h": "hour",
-	"1d": "day"
+	'1m': 'minute',
+	'1h': 'hour',
+	'1d': 'day'
 }
 
 export function frequencyIntervalDuration({ every, interval }: Frequency): Time {
@@ -30,7 +30,7 @@ export const isFrequency = objectTypeGuard<Frequency>(
 )
 
 export function everyOneHour(): Frequency {
-	return { every: 1, interval: "1h" }
+	return { every: 1, interval: '1h' }
 }
 
 export function frequenciesAreEqual(a: Frequency, b: unknown): boolean {

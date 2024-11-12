@@ -1,8 +1,8 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { exponentialMovingAverage, simpleMovingAverage, wilderSmoothing } from "./movingAverages.js"
+import { exponentialMovingAverage, simpleMovingAverage, wilderSmoothing } from './movingAverages.js'
 
 type ExponentialMovingAverage = typeof exponentialMovingAverage
 type ExponentialMovingAverageInput = {
@@ -10,7 +10,7 @@ type ExponentialMovingAverageInput = {
 	period: Parameters<ExponentialMovingAverage>[1]
 }
 
-test("Exponential Moving Average", () => {
+test('Exponential Moving Average', () => {
 	assertDeepEqual<ExponentialMovingAverageInput, ReturnType<ExponentialMovingAverage>>(
 		({ values, period }: ExponentialMovingAverageInput) => exponentialMovingAverage(values, period),
 		[
@@ -36,7 +36,7 @@ type SimpleMovingAverageInput = {
 	period: Parameters<SimpleMovingAverage>[1]
 }
 
-test("Simple Moving Average", () => {
+test('Simple Moving Average', () => {
 	assertDeepEqual<SimpleMovingAverageInput, ReturnType<SimpleMovingAverage>>(
 		({ values, period }: SimpleMovingAverageInput) => simpleMovingAverage(values, period),
 		[

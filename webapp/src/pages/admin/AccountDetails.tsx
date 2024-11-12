@@ -1,11 +1,11 @@
-import { Account } from "_/components/admin/Account"
-import { AccountPageContainer } from "_/components/admin/AccountPageContainer"
-import { PageContainer } from "_/components/admin/PageContainer"
-import { TabId, Tabs } from "_/components/Tabs"
-import { useState } from "react"
+import { Account } from '_/components/admin/Account'
+import { AccountPageContainer } from '_/components/admin/AccountPageContainer'
+import { PageContainer } from '_/components/admin/PageContainer'
+import { TabId, Tabs } from '_/components/Tabs'
+import { useState } from 'react'
 
 export function AccountDetailsPage() {
-	const [activeTabId, setActiveTabId] = useState<TabId>("account")
+	const [activeTabId, setActiveTabId] = useState<TabId>('account')
 	return (
 		<PageContainer>
 			<AccountPageContainer>
@@ -14,7 +14,7 @@ export function AccountDetailsPage() {
 					setActiveTabId={setActiveTabId}
 					tabs={[
 						{
-							tabId: "account",
+							tabId: 'account',
 							content: <Account />
 						}
 					]}

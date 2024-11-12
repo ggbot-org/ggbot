@@ -1,16 +1,16 @@
-import { dirname, join, resolve } from "node:path"
-import { fileURLToPath } from "node:url"
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import { DirectoryProvider } from "./filesystemProviders.js"
-import { RepositoryPackageJson } from "./RepositoryPackageJson.js"
-import { RepositoryTsconfigJson } from "./RepositoryTsconfigJson.js"
-import { Workspace } from "./Workspace.js"
+import { DirectoryProvider } from './filesystemProviders.js'
+import { RepositoryPackageJson } from './RepositoryPackageJson.js'
+import { RepositoryTsconfigJson } from './RepositoryTsconfigJson.js'
+import { Workspace } from './Workspace.js'
 
 export class Repository implements DirectoryProvider {
 	pathname = resolve(dirname(dirname(dirname(fileURLToPath(import.meta.url)))))
 	packageJson: RepositoryPackageJson
 	tsconfigJson: RepositoryTsconfigJson
-	workspaces = new Map<Workspace["pathname"], Workspace>()
+	workspaces = new Map<Workspace['pathname'], Workspace>()
 
 	constructor() {
 		this.packageJson = new RepositoryPackageJson(this.pathname)

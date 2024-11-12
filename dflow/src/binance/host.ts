@@ -1,8 +1,8 @@
-import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow } from "dflow"
+import { StrategyFlowGraph } from '@workspace/models'
+import { Dflow } from 'dflow'
 
-import { DflowLoader, load } from "../common/loader.js"
-import { DflowBinanceContext } from "./context.js"
+import { DflowLoader, load } from '../common/loader.js'
+import { DflowBinanceContext } from './context.js'
 
 /**
  * `DflowBinanceHost` extends `DflowHost` adding an instance of Binance client to the context.
@@ -10,7 +10,7 @@ import { DflowBinanceContext } from "./context.js"
 export class DflowBinanceHost extends Dflow implements DflowLoader {
 	constructor(
 		arg: ConstructorParameters<typeof Dflow>[0],
-		context: Omit<DflowBinanceContext, "memoryChanged">
+		context: Omit<DflowBinanceContext, 'memoryChanged'>
 	) {
 		super(arg)
 		this.context.binance = context.binance

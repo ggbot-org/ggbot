@@ -1,9 +1,9 @@
-import { Column, Columns } from "_/components/library"
-import { BinanceApi } from "_/components/user/BinanceApi"
-import { CreateBinanceApi } from "_/components/user/CreateBinanceApi"
-import { DeleteBinanceApi } from "_/components/user/DeleteBinanceApi"
-import { useReadBinanceApiKey } from "_/hooks/user/api"
-import { useCallback, useEffect } from "react"
+import { Column, Columns } from '_/components/library'
+import { BinanceApi } from '_/components/user/BinanceApi'
+import { CreateBinanceApi } from '_/components/user/CreateBinanceApi'
+import { DeleteBinanceApi } from '_/components/user/DeleteBinanceApi'
+import { useReadBinanceApiKey } from '_/hooks/user/api'
+import { useCallback, useEffect } from 'react'
 
 export function BinanceSettings() {
 	const READ = useReadBinanceApiKey()
@@ -25,7 +25,7 @@ export function BinanceSettings() {
 	return (
 		<>
 			<Columns isMultiline>
-				<Column bulma={["is-half-tablet", "is-two-thirds-desktop", "is-one-third-widescreen"]}>
+				<Column bulma={['is-half-tablet', 'is-two-thirds-desktop', 'is-one-third-widescreen']}>
 					{apiKey ? <BinanceApi apiKey={apiKey} /> : null}
 					{apiKey === null && <CreateBinanceApi refetchApiKey={refetchApiKey} />}
 				</Column>

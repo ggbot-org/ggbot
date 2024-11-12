@@ -1,12 +1,12 @@
-import { Button } from "_/components/library"
-import { useEnterAsAccount } from "_/hooks/admin/api"
-import { GOTO } from "_/routing/navigation"
-import { webapp } from "_/routing/webapp"
-import { localWebStorage } from "_/storages/local"
-import { AccountKey } from "@workspace/models"
-import { useEffect } from "react"
+import { Button } from '_/components/library'
+import { useEnterAsAccount } from '_/hooks/admin/api'
+import { GOTO } from '_/routing/navigation'
+import { webapp } from '_/routing/webapp'
+import { localWebStorage } from '_/storages/local'
+import { AccountKey } from '@workspace/models'
+import { useEffect } from 'react'
 
-export function EnterAsAccount ({ accountId }: { accountId?: AccountKey["accountId"] }) {
+export function EnterAsAccount ({ accountId }: { accountId?: AccountKey['accountId'] }) {
 	const { data, request, isPending } = useEnterAsAccount()
 
 	useEffect(() => {

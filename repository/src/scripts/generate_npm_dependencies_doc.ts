@@ -1,9 +1,9 @@
-import { join } from "node:path"
+import { join } from 'node:path'
 
-import write from "write-file-utf8"
+import write from 'write-file-utf8'
 
-import { Repository } from "../Repository.js"
-import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
+import { Repository } from '../Repository.js'
+import { WorkspacePackageJson } from '../WorkspacePackageJson.js'
 
 type InternalDependencyRelation = [packageName: string, dependency: string]
 
@@ -14,9 +14,9 @@ const graphInternalDependencyRows: string[] = []
 
 const repository = new Repository()
 await repository.read()
-const repositoryDocsDir = join(repository.pathname, "repository", "docs")
+const repositoryDocsDir = join(repository.pathname, 'repository', 'docs')
 
-const pathname = join(repositoryDocsDir, "npm-dependencies.md")
+const pathname = join(repositoryDocsDir, 'npm-dependencies.md')
 
 function internalPackageGraphNode(packageName: string) {
 	return packageName.substring(WorkspacePackageJson.scope.length + 1)
@@ -83,8 +83,8 @@ for (const dependencyRelation of internalDependencyGraph) {
 	}
 }
 
-const graphRows = (graphInternalDependencyRows: string[]) => ["```mermaid", "graph LR", ...graphInternalDependencyRows, "```", ""].join(
-	"\n"
+const graphRows = (graphInternalDependencyRows: string[]) => ['```mermaid', 'graph LR', ...graphInternalDependencyRows, '```', ''].join(
+	'\n'
 )
 
 const content = `

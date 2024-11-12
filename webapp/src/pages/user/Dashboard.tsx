@@ -1,11 +1,11 @@
-import { TabId, Tabs } from "_/components/Tabs"
-import { CreateStrategy } from "_/components/user/CreateStrategy"
-import { PageContainer } from "_/components/user/PageContainer"
-import { Strategies } from "_/components/user/Strategies"
-import { useState } from "react"
+import { TabId, Tabs } from '_/components/Tabs'
+import { CreateStrategy } from '_/components/user/CreateStrategy'
+import { PageContainer } from '_/components/user/PageContainer'
+import { Strategies } from '_/components/user/Strategies'
+import { useState } from 'react'
 
 export function DashboardPage() {
-	const [activeTabId, setActiveTabId] = useState<TabId>("strategies")
+	const [activeTabId, setActiveTabId] = useState<TabId>('strategies')
 	return (
 		<PageContainer>
 			<Tabs
@@ -13,16 +13,16 @@ export function DashboardPage() {
 				setActiveTabId={setActiveTabId}
 				tabs={[
 					{
-						tabId: "strategies",
+						tabId: 'strategies',
 						renderIfInactive: true,
 						content: (
 							<Strategies
-								goCreateStrategy={() => setActiveTabId("newStrategy")}
+								goCreateStrategy={() => setActiveTabId('newStrategy')}
 							/>
 						)
 					},
 					{
-						tabId: "newStrategy",
+						tabId: 'newStrategy',
 						content: <CreateStrategy />
 					}
 				]}

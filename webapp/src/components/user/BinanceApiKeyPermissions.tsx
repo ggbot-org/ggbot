@@ -1,14 +1,14 @@
-import { classnames } from "_/classnames"
-import { Checkmark, CheckmarkProps } from "_/components/library"
-import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { BinanceApiKeyPermissionCriteria } from "@workspace/models"
-import { PropsWithChildren } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Checkmark, CheckmarkProps } from '_/components/library'
+import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { BinanceApiKeyPermissionCriteria } from '@workspace/models'
+import { PropsWithChildren } from 'react'
+import { FormattedMessage } from 'react-intl'
 
-function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, "ok">>) {
+function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, 'ok'>>) {
 	if (ok === undefined) return null
 	return (
-		<div className={classnames("is-flex")}>
+		<div className={classnames('is-flex')}>
 			<div>{children}</div>
 			<Checkmark ok={ok} />
 		</div>
@@ -17,7 +17,7 @@ function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<Checkm
 
 function BinanceApiKeyPermissionEnableReading({
 	enableReading
-}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableReading">>) {
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableReading'>>) {
 	return (
 		<BinanceApiKeyPermission ok={enableReading}>
 			<FormattedMessage
@@ -30,7 +30,7 @@ function BinanceApiKeyPermissionEnableReading({
 
 function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
 	enableSpotAndMarginTrading
-}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableSpotAndMarginTrading">>) {
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableSpotAndMarginTrading'>>) {
 	return (
 		<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
 			<FormattedMessage
@@ -43,11 +43,11 @@ function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
 
 function BinanceApiKeyPermissionEnableWithdrawals({
 	enableWithdrawals
-}: Partial<Pick<BinanceApiKeyPermissionCriteria, "enableWithdrawals">>) {
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableWithdrawals'>>) {
 	return (
 		<BinanceApiKeyPermission
 			ok={
-				typeof enableWithdrawals === "boolean"
+				typeof enableWithdrawals === 'boolean'
 					? enableWithdrawals === false
 					: undefined
 			}
@@ -62,7 +62,7 @@ function BinanceApiKeyPermissionEnableWithdrawals({
 
 function BinanceApiKeyPermissionIpRestrict({
 	ipRestrict
-}: Partial<Pick<BinanceApiKeyPermissionCriteria, "ipRestrict">>) {
+}: Partial<Pick<BinanceApiKeyPermissionCriteria, 'ipRestrict'>>) {
 	return (
 		<BinanceApiKeyPermission ok={ipRestrict}>
 			<FormattedMessage

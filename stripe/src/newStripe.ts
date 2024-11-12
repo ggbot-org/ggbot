@@ -1,7 +1,7 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
-import { Stripe } from "./Stripe.js"
-import { checkStripeSecretKey } from "./stripeSecretKey.js"
+import { Stripe } from './Stripe.js'
+import { checkStripeSecretKey } from './stripeSecretKey.js'
 
 export function newStripe() {
 	// Check Stripe secret key is consistent with deploy stage.
@@ -10,5 +10,5 @@ export function newStripe() {
 	checkStripeSecretKey(DEPLOY_STAGE, STRIPE_SECRET_KEY)
 
 	// If all good, return Stripe client.
-	return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" })
+	return new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2023-10-16' })
 }

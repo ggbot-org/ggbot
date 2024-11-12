@@ -1,8 +1,8 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { crossOver } from "./cross.js"
+import { crossOver } from './cross.js'
 
 type CrossOver = typeof crossOver
 type CrossOverInput = {
@@ -10,7 +10,7 @@ type CrossOverInput = {
 	values2: Parameters<CrossOver>[1]
 }
 
-test("CrossOver", () => {
+test('CrossOver', () => {
 	assertDeepEqual<CrossOverInput, ReturnType<CrossOver>>(
 		({ values1, values2 }: CrossOverInput) => crossOver(values1, values2),
 		[

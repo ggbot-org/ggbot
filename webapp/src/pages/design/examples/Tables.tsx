@@ -1,4 +1,4 @@
-import { Table } from "_/components/library"
+import { Table } from '_/components/library'
 
 function list(length: number) {
 	return Array.from({ length }).map((_, index) => `${index}`)

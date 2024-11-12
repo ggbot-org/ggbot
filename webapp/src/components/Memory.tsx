@@ -1,8 +1,8 @@
-import { classnames } from "_/classnames"
-import { Div, Title } from "_/components/library"
-import { DflowCommonContext } from "@workspace/dflow"
-import { SerializablePrimitive } from "@workspace/models"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Div, Title } from '_/components/library'
+import { DflowCommonContext } from '@workspace/dflow'
+import { SerializablePrimitive } from '@workspace/models'
+import { FormattedMessage } from 'react-intl'
 
 type MemoryItemProps = {
 	name: string
@@ -11,11 +11,11 @@ type MemoryItemProps = {
 
 function MemoryItem({ name, value }: MemoryItemProps) {
 	return (
-		<div className={classnames("is-flex", "is-flex-direction-column", "my-1", "is-flex-grow-1")}>
+		<div className={classnames('is-flex', 'is-flex-direction-column', 'my-1', 'is-flex-grow-1')}>
 			<span>{name}</span>
-			<pre className={classnames("p-2")}>
+			<pre className={classnames('p-2')}>
 				<code>{
-					value === undefined ? "" : JSON.stringify(value, null, 2)
+					value === undefined ? '' : JSON.stringify(value, null, 2)
 				}
 				</code>
 			</pre>
@@ -24,7 +24,7 @@ function MemoryItem({ name, value }: MemoryItemProps) {
 }
 
 export function Memory({ memory }: {
-	memory: DflowCommonContext["memory"] | undefined
+	memory: DflowCommonContext['memory'] | undefined
 }) {
 	const items: MemoryItemProps[] = []
 	if (memory) {

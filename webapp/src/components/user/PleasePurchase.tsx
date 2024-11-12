@@ -1,10 +1,10 @@
-import { Button, Buttons, Checkbox, Content, Message, Modal } from "_/components/library"
-import { GoSettings } from "_/components/user/GoSettings"
-import { useSubscription } from "_/hooks/user/useSubscription"
-import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { sessionWebStorage } from "_/storages/session"
-import { ChangeEventHandler, InputHTMLAttributes, useCallback, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { Button, Buttons, Checkbox, Content, Message, Modal } from '_/components/library'
+import { GoSettings } from '_/components/user/GoSettings'
+import { useSubscription } from '_/hooks/user/useSubscription'
+import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { sessionWebStorage } from '_/storages/session'
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export function PleasePurchase() {
 	const { hasActiveSubscription } = useSubscription()

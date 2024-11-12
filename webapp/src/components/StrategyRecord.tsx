@@ -1,6 +1,6 @@
-import { Column, Columns } from "_/components/library"
-import { StrategyId, StrategyName, WhenCreated } from "_/components/readonlyFields"
-import { Time } from "minimal-time-helpers"
+import { Column, Columns } from '_/components/library'
+import { StrategyId, StrategyName, WhenCreated } from '_/components/readonlyFields'
+import { Time } from 'minimal-time-helpers'
 
 export type StrategyRecordProps = {
 	strategyId: string

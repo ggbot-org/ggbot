@@ -1,4 +1,4 @@
-import { Button, Buttons } from "_/components/library"
+import { Button, Buttons } from '_/components/library'
 
 export function ButtonColors() {
 	return (

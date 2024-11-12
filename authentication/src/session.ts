@@ -1,8 +1,8 @@
-import { ENV } from "@workspace/env"
-import { ClientSession, clientSessionNumDays, isClientSession } from "@workspace/models"
-import { getDay, today } from "minimal-time-helpers"
+import { ENV } from '@workspace/env'
+import { ClientSession, clientSessionNumDays, isClientSession } from '@workspace/models'
+import { getDay, today } from 'minimal-time-helpers'
 
-import { decrypt, encrypt } from "./crypto.js"
+import { decrypt, encrypt } from './crypto.js'
 
 export async function signSession(session: ClientSession) {
 	return encrypt(JSON.stringify(session), ENV.AUTHENTICATION_SECRET())
@@ -20,8 +20,8 @@ export async function signSession(session: ClientSession) {
  * ```
  */
 export async function readSessionFromAuthorizationHeader(headerContent: unknown): Promise<ClientSession | null> {
-	if (typeof headerContent !== "string") return null
-	let sessionJson = ""
+	if (typeof headerContent !== 'string') return null
+	let sessionJson = ''
 	try {
 		sessionJson = await decrypt(headerContent, ENV.AUTHENTICATION_SECRET())
 	} catch {

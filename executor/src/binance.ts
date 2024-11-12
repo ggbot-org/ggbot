@@ -1,11 +1,11 @@
-import { ActionInput, BadGatewayError, BinanceClientActionType, clientAction, ClientActionHeaders, isApiActionOutputData, isApiActionOutputError } from "@workspace/api"
-import { signSession } from "@workspace/authentication"
-import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from "@workspace/binance"
-import { DflowBinanceClient } from "@workspace/dflow"
-import { ENV } from "@workspace/env"
-import { BinanceProxyURLs } from "@workspace/locators"
-import { Account, ClientSession, SerializableData } from "@workspace/models"
-import { today } from "minimal-time-helpers"
+import { ActionInput, BadGatewayError, BinanceClientActionType, clientAction, ClientActionHeaders, isApiActionOutputData, isApiActionOutputError } from '@workspace/api'
+import { signSession } from '@workspace/authentication'
+import { BinanceConnector, BinanceExchange, BinanceKlineInterval, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, ErrorBinanceHTTP, isErrorBinanceHTTPInfo } from '@workspace/binance'
+import { DflowBinanceClient } from '@workspace/dflow'
+import { ENV } from '@workspace/env'
+import { BinanceProxyURLs } from '@workspace/locators'
+import { Account, ClientSession, SerializableData } from '@workspace/models'
+import { today } from 'minimal-time-helpers'
 
 /**
  * A Binance client that uses a proxy for private requests.
@@ -18,12 +18,12 @@ import { today } from "minimal-time-helpers"
  * ```
  */
 export class Binance implements DflowBinanceClient {
-	readonly accountId: Account["id"]
+	readonly accountId: Account['id']
 	binanceProxyApiActionHeaders: ClientActionHeaders | undefined
 	readonly binanceProxy = new BinanceProxyURLs(ENV.BINANCE_PROXY_IP())
 	readonly publicClient = new BinanceExchange(BinanceConnector.defaultBaseUrl)
 
-	constructor(accountId: Account["id"]) {
+	constructor(accountId: Account['id']) {
 		this.accountId = accountId
 	}
 
@@ -66,9 +66,9 @@ export class Binance implements DflowBinanceClient {
 		return this.publicClient.klines(symbol, interval, optionalParameters)
 	}
 
-	async newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, "MARKET">, orderOptions: BinanceNewOrderOptions) {
+	async newOrder(symbol: string, side: BinanceOrderSide, type: Extract<BinanceOrderType, 'MARKET'>, orderOptions: BinanceNewOrderOptions) {
 		return this.binanceClientAction<BinanceOrder>({
-			type: "CreateBinanceOrder",
+			type: 'CreateBinanceOrder',
 			data: { symbol, side, type, orderOptions }
 		})
 	}

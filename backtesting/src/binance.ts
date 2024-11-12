@@ -1,6 +1,6 @@
-import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from "@workspace/binance"
-import { DflowBinanceClient, DflowBinanceKlineInterval, dflowBinanceZero } from "@workspace/dflow"
-import { now, Time } from "minimal-time-helpers"
+import { BinanceConnector, BinanceExchange, BinanceExchangeInfo, BinanceKline, BinanceKlineOptionalParameters, BinanceNewOrderOptions, BinanceOrder, BinanceOrderSide, BinanceOrderType, BinanceSymbolInfo, BinanceTickerPrice, div, mul } from '@workspace/binance'
+import { DflowBinanceClient, DflowBinanceKlineInterval, dflowBinanceZero } from '@workspace/dflow'
+import { now, Time } from 'minimal-time-helpers'
 
 let orderId = 0
 
@@ -31,13 +31,13 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 	async newOrder(
 		symbol: string,
 		side: BinanceOrderSide,
-		type: Extract<BinanceOrderType, "MARKET">,
+		type: Extract<BinanceOrderType, 'MARKET'>,
 		orderOptions: BinanceNewOrderOptions
 	) {
 		const symbolInfo = await this.publicClient.symbolInfo(symbol)
 		const options = await this.publicClient.prepareOrder(symbol, type, orderOptions)
 		if (!options || !symbolInfo) {
-			console.error("Cannot create order", side, symbol, orderOptions)
+			console.error('Cannot create order', side, symbol, orderOptions)
 			return
 		}
 		const { price } = await this.tickerPrice(symbol)
@@ -56,14 +56,14 @@ export class BacktestingBinanceClient implements DflowBinanceClient {
 			orderId,
 			price,
 			side,
-			status: "FILLED",
+			status: 'FILLED',
 			symbol,
 			transactTime: this.time,
 			type,
 			fills: [
 				{
-					commission: "0",
-					commissionAsset: "BNB",
+					commission: '0',
+					commissionAsset: 'BNB',
 					price,
 					qty: baseQuantity,
 				}

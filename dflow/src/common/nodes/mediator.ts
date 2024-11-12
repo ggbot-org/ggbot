@@ -1,27 +1,27 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
-import { DflowCommonContext as Context } from "../context.js"
-import { add, defaultPrecision, div, mul, sub } from "./arithmetic.js"
-import { inputPrice } from "./commonIO.js"
+import { DflowCommonContext as Context } from '../context.js'
+import { add, defaultPrecision, div, mul, sub } from './arithmetic.js'
+import { inputPrice } from './commonIO.js'
 
 const { input, output } = Dflow
 
 const inputs = [
 	inputPrice,
-	input("number", { name: "quantity", optional: true }),
-	input("number", { name: "percentageGain" }),
-	input("string", { name: "memoryLabel", optional: true }),
-	input([], { name: "resetMediation", optional: true })
+	input('number', { name: 'quantity', optional: true }),
+	input('number', { name: 'percentageGain' }),
+	input('string', { name: 'memoryLabel', optional: true }),
+	input([], { name: 'resetMediation', optional: true })
 ]
 
 const outputs = [
-	output("boolean", { name: "exitMediation" }),
-	output("number", { name: "numPositions" }),
-	output("number", { name: "totalQuantity" }),
-	output("number", { name: "averagePrice" })
+	output('boolean', { name: 'exitMediation' }),
+	output('number', { name: 'numPositions' }),
+	output('number', { name: 'totalQuantity' }),
+	output('number', { name: 'averagePrice' })
 ]
 
-type MediatorDirection = "LONG" | "SHORT"
+type MediatorDirection = 'LONG' | 'SHORT'
 
 export type AddMediationInput = {
 	// Parameters.
@@ -75,21 +75,21 @@ export function addMediation({
 
 export type ExitMediationInput = {
 	direction: MediatorDirection
-} & Pick<AddMediationInput, "averagePrice" | "percentageGain" | "price">
+} & Pick<AddMediationInput, 'averagePrice' | 'percentageGain' | 'price'>
 
 export function exitMediation({ direction, averagePrice, percentageGain, price }: ExitMediationInput) {
 	if (averagePrice === 0) return false
-	if (direction === "LONG") {
+	if (direction === 'LONG') {
 		const breakingPrice = mul(averagePrice, add(1, percentageGain)) as number
 		return price > breakingPrice
 	}
-	if (direction === "SHORT") {
+	if (direction === 'SHORT') {
 		const breakingPrice = mul(averagePrice, sub(1, percentageGain)) as number
 		return price < breakingPrice
 	}
 }
 
-type MemoryKey = "averagePrice" | "numPositions" | "totalQuantity"
+type MemoryKey = 'averagePrice' | 'numPositions' | 'totalQuantity'
 
 export class MediatorMemory {
 	context: Context
@@ -97,25 +97,25 @@ export class MediatorMemory {
 	constructor(context: Context, memoryLabel?: string) {
 		this.context = context
 		this.memoryKey = {
-			averagePrice: MediatorMemory.key("averagePrice", memoryLabel),
-			numPositions: MediatorMemory.key("numPositions", memoryLabel),
-			totalQuantity: MediatorMemory.key("totalQuantity", memoryLabel)
+			averagePrice: MediatorMemory.key('averagePrice', memoryLabel),
+			numPositions: MediatorMemory.key('numPositions', memoryLabel),
+			totalQuantity: MediatorMemory.key('totalQuantity', memoryLabel)
 		}
 	}
 	get averagePrice() {
 		const value = this.context.memory[this.memoryKey.averagePrice]
-		if (typeof value === "number") return value
+		if (typeof value === 'number') return value
 		// Actually zero is not correct, but the mediator algorithm handles it.
 		return 0
 	}
 	get numPositions() {
 		const value = this.context.memory[this.memoryKey.numPositions]
-		if (typeof value === "number") return value
+		if (typeof value === 'number') return value
 		return 0
 	}
 	get totalQuantity() {
 		const value = this.context.memory[this.memoryKey.totalQuantity]
-		if (typeof value === "number") return value
+		if (typeof value === 'number') return value
 		return 0
 	}
 	set averagePrice(value: number) {
@@ -142,11 +142,11 @@ export class MediatorMemory {
 }
 
 export class MediatorLong extends DflowNode {
-	static kind = "mediatorLong"
+	static kind = 'mediatorLong'
 	static inputs = inputs
 	static outputs = outputs
 	run() {
-		const direction: MediatorDirection = "LONG"
+		const direction: MediatorDirection = 'LONG'
 		const price = this.input(0).data as number
 		const quantity = this.input(1).data as number | undefined
 		const percentageGain = this.input(2).data as number
@@ -220,11 +220,11 @@ export class MediatorLong extends DflowNode {
 }
 
 export class MediatorShort extends DflowNode {
-	static kind = "mediatorShort"
+	static kind = 'mediatorShort'
 	static inputs = inputs
 	static outputs = outputs
 	run() {
-		const direction: MediatorDirection = "SHORT"
+		const direction: MediatorDirection = 'SHORT'
 		const price = this.input(0).data as number
 		const quantity = this.input(1).data as number | undefined
 		const percentageGain = this.input(2).data as number

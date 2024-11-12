@@ -1,7 +1,7 @@
-import { DocumentProviderLevel3, ExecutorAction, ExecutorActionInput as Input, ExecutorActionOutput as Output } from "@workspace/api"
-import { AccountDailyKey, AccountDailyOrder, AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyDailyKey, BalanceEvent, Order, StrategyError } from "@workspace/models"
+import { DocumentProviderLevel3, ExecutorAction, ExecutorActionInput as Input, ExecutorActionOutput as Output } from '@workspace/api'
+import { AccountDailyKey, AccountDailyOrder, AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyDailyKey, BalanceEvent, Order, StrategyError } from '@workspace/models'
 
-import { dirnameDelimiter, dirnamePrefix, locatorToItemKey, pathname } from "./locators.js"
+import { dirnameDelimiter, dirnamePrefix, locatorToItemKey, pathname } from './locators.js'
 
 export class ExecutorDatabase implements ExecutorAction {
 	documentProvider: DocumentProviderLevel3
@@ -10,31 +10,31 @@ export class ExecutorDatabase implements ExecutorAction {
 		this.documentProvider = documentProvider
 	}
 
-	async AppendAccountBalanceEvent({ item, ...key }: Input["AppendAccountBalanceEvent"]) {
+	async AppendAccountBalanceEvent({ item, ...key }: Input['AppendAccountBalanceEvent']) {
 		const currentItems = await this.readAccountDailyBalanceEvents(key)
 		const data = [...currentItems, item]
 		await this.documentProvider.setItem(pathname.accountDailyBalanceEvents(key), data)
 	}
 
-	async AppendAccountDailyOrders({ items, ...key }: Input["AppendAccountDailyOrders"]) {
+	async AppendAccountDailyOrders({ items, ...key }: Input['AppendAccountDailyOrders']) {
 		const currentItems = await this.readAccountDailyOrders(key)
 		const data = [...currentItems, ...items]
 		await this.documentProvider.setItem(pathname.accountDailyOrders(key), data)
 	}
 
-	async AppendStrategyDailyErrors({ items, ...key }: Input["AppendStrategyDailyErrors"]) {
+	async AppendStrategyDailyErrors({ items, ...key }: Input['AppendStrategyDailyErrors']) {
 		const currentItems = await this.readStrategyDailyErrors(key)
 		const data = [...currentItems, ...items]
 		await this.documentProvider.setItem(pathname.strategyDailyErrors(key), data)
 	}
 
-	async AppendStrategyDailyOrders({ items, ...key }: Input["AppendStrategyDailyOrders"]) {
+	async AppendStrategyDailyOrders({ items, ...key }: Input['AppendStrategyDailyOrders']) {
 		const currentItems = await this.readStrategyDailyOrders(key)
 		const data = [...currentItems, ...items]
 		await this.documentProvider.setItem(pathname.strategyDailyOrders(key), data)
 	}
 
-	async ListAccountKeys(args: Input["ListAccountKeys"]) {
+	async ListAccountKeys(args: Input['ListAccountKeys']) {
 		const { keys: locators, ...rest } = await this.documentProvider.listItems({
 			prefix: `${dirnamePrefix.account}${dirnameDelimiter}`,
 			...args
@@ -48,33 +48,33 @@ export class ExecutorDatabase implements ExecutorAction {
 		}
 	}
 
-	async ReadAccountStrategies(arg: Input["ReadAccountStrategies"]) {
-		const data = await this.documentProvider.getItem<Output["ReadAccountStrategies"]>(pathname.accountStrategies(arg))
+	async ReadAccountStrategies(arg: Input['ReadAccountStrategies']) {
+		const data = await this.documentProvider.getItem<Output['ReadAccountStrategies']>(pathname.accountStrategies(arg))
 		if (!data) return []
 		return data
 	}
 
-	ReadAccount(arg: Input["ReadAccount"]) {
-		return this.documentProvider.getItem<Output["ReadAccount"]>(pathname.account(arg))
+	ReadAccount(arg: Input['ReadAccount']) {
+		return this.documentProvider.getItem<Output['ReadAccount']>(pathname.account(arg))
 	}
 
-	ReadSubscription(arg: Input["ReadSubscription"]) {
-		return this.documentProvider.getItem<Output["ReadSubscription"]>(pathname.subscription(arg))
+	ReadSubscription(arg: Input['ReadSubscription']) {
+		return this.documentProvider.getItem<Output['ReadSubscription']>(pathname.subscription(arg))
 	}
 
-	async SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId }: Input["SuspendAccountStrategyScheduling"]) {
+	async SuspendAccountStrategyScheduling({ accountId, strategyId, schedulingId }: Input['SuspendAccountStrategyScheduling']) {
 		const items = await this.ReadAccountStrategies({ accountId })
 		const data = accountStrategiesModifier.suspendScheduling(items, strategyId, schedulingId)
 		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	async SuspendAccountStrategySchedulings({ accountId, strategyId }: Input["SuspendAccountStrategySchedulings"]) {
+	async SuspendAccountStrategySchedulings({ accountId, strategyId }: Input['SuspendAccountStrategySchedulings']) {
 		const items = await this.ReadAccountStrategies({ accountId })
 		const data = accountStrategiesModifier.suspendStrategySchedulings(items, strategyId)
 		await this.writeAccountStrategies({ accountId }, data)
 	}
 
-	async UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory }: Input["UpdateAccountStrategySchedulingMemory"]) {
+	async UpdateAccountStrategySchedulingMemory({ accountId, strategyId, schedulingId, memory }: Input['UpdateAccountStrategySchedulingMemory']) {
 		const items = await this.ReadAccountStrategies({ accountId })
 		const data = accountStrategiesModifier.updateSchedulingMemory(items, strategyId, schedulingId, memory)
 		await this.writeAccountStrategies({ accountId }, data)

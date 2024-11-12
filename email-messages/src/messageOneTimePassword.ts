@@ -1,8 +1,8 @@
-import { ENV } from "@workspace/env"
-import { Language, OneTimePassword } from "@workspace/models"
+import { ENV } from '@workspace/env'
+import { Language, OneTimePassword } from '@workspace/models'
 
-import { emailBody } from "./emailFragments.js"
-import { EmailMessageContent } from "./types.js"
+import { emailBody } from './emailFragments.js'
+import { EmailMessageContent } from './types.js'
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 

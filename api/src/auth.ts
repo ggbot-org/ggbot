@@ -1,7 +1,7 @@
-import { Account, EmailAccount, EmailAddress, isEmailAddress, isOneTimePasswordCode, OneTimePassword } from "@workspace/models"
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { Account, EmailAccount, EmailAddress, isEmailAddress, isOneTimePasswordCode, OneTimePassword } from '@workspace/models'
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { ActionTypes } from "./action.js"
+import { ActionTypes } from './action.js'
 
 export type AuthDatabaseAction = {
 	CreateAccount: (arg: EmailAddress) => Promise<Account>
@@ -12,46 +12,46 @@ export type AuthDatabaseAction = {
 }
 
 export type AuthDatabaseActionInput = {
-	CreateAccount: Parameters<AuthDatabaseAction["CreateAccount"]>[0]
-	CreateOneTimePassword: Parameters<AuthDatabaseAction["CreateOneTimePassword"]>[0]
-	DeleteOneTimePassword: Parameters<AuthDatabaseAction["DeleteOneTimePassword"]>[0]
-	ReadEmailAccount: Parameters<AuthDatabaseAction["ReadEmailAccount"]>[0]
-	ReadOneTimePassword: Parameters<AuthDatabaseAction["ReadOneTimePassword"]>[0]
+	CreateAccount: Parameters<AuthDatabaseAction['CreateAccount']>[0]
+	CreateOneTimePassword: Parameters<AuthDatabaseAction['CreateOneTimePassword']>[0]
+	DeleteOneTimePassword: Parameters<AuthDatabaseAction['DeleteOneTimePassword']>[0]
+	ReadEmailAccount: Parameters<AuthDatabaseAction['ReadEmailAccount']>[0]
+	ReadOneTimePassword: Parameters<AuthDatabaseAction['ReadOneTimePassword']>[0]
 }
 
 export type AuthDatabaseActionOutput = {
-	CreateAccount: Awaited<ReturnType<AuthDatabaseAction["CreateAccount"]>>
-	CreateOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["CreateOneTimePassword"]>>
-	DeleteOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["DeleteOneTimePassword"]>>
-	ReadEmailAccount: Awaited<ReturnType<AuthDatabaseAction["ReadEmailAccount"]>>
-	ReadOneTimePassword: Awaited<ReturnType<AuthDatabaseAction["ReadOneTimePassword"]>>
+	CreateAccount: Awaited<ReturnType<AuthDatabaseAction['CreateAccount']>>
+	CreateOneTimePassword: Awaited<ReturnType<AuthDatabaseAction['CreateOneTimePassword']>>
+	DeleteOneTimePassword: Awaited<ReturnType<AuthDatabaseAction['DeleteOneTimePassword']>>
+	ReadEmailAccount: Awaited<ReturnType<AuthDatabaseAction['ReadEmailAccount']>>
+	ReadOneTimePassword: Awaited<ReturnType<AuthDatabaseAction['ReadOneTimePassword']>>
 }
 
 type AuthClientAction = {
-	Enter: (arg: Pick<Account, "email">) => Promise<{ emailSent: boolean }>
-	Verify: (arg: Pick<OneTimePassword, "code"> & Pick<Account, "email">) => Promise<{ token?: string }>
+	Enter: (arg: Pick<Account, 'email'>) => Promise<{ emailSent: boolean }>
+	Verify: (arg: Pick<OneTimePassword, 'code'> & Pick<Account, 'email'>) => Promise<{ token?: string }>
 }
 
 export type AuthClientActionType = keyof AuthClientAction
 
 export const authClientActions: ActionTypes<AuthClientActionType> = [
-	"Enter",
-	"Verify"
+	'Enter',
+	'Verify'
 ] as const
 
 type AuthClientInput = {
-	Enter: Parameters<AuthClientAction["Enter"]>[0]
-	Verify: Parameters<AuthClientAction["Verify"]>[0]
+	Enter: Parameters<AuthClientAction['Enter']>[0]
+	Verify: Parameters<AuthClientAction['Verify']>[0]
 }
 
 export type AuthClientActionOutput = {
-	Enter: Awaited<ReturnType<AuthClientAction["Enter"]>>
-	Verify: Awaited<ReturnType<AuthClientAction["Verify"]>>
+	Enter: Awaited<ReturnType<AuthClientAction['Enter']>>
+	Verify: Awaited<ReturnType<AuthClientAction['Verify']>>
 }
 
 export const isAuthClientActionInput = {
-	Enter: objectTypeGuard<AuthClientInput["Enter"]>(({ email }) => isEmailAddress(email)),
-	Verify: objectTypeGuard<AuthClientInput["Verify"]>(({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)),
+	Enter: objectTypeGuard<AuthClientInput['Enter']>(({ email }) => isEmailAddress(email)),
+	Verify: objectTypeGuard<AuthClientInput['Verify']>(({ code, email }) => isOneTimePasswordCode(code) && isEmailAddress(email)),
 }
 
 type ApiAuthEnterRequestData = {
@@ -67,10 +67,10 @@ type ApiAuthEnterResponseData = {
 }
 
 export const isApiAuthEnterResponseData = objectTypeGuard<ApiAuthEnterResponseData>(
-	({ emailSent }) => typeof emailSent === "boolean"
+	({ emailSent }) => typeof emailSent === 'boolean'
 )
 
-type ApiAuthVerifyRequestData = Pick<OneTimePassword, "code"> & {
+type ApiAuthVerifyRequestData = Pick<OneTimePassword, 'code'> & {
 	email: EmailAddress
 }
 
@@ -83,5 +83,5 @@ type ApiAuthVerifyResponseData = {
 }
 
 export const isApiAuthVerifyResponseData = objectTypeGuard<ApiAuthVerifyResponseData>(
-	({ token }) => token === undefined ? true : typeof token === "string"
+	({ token }) => token === undefined ? true : typeof token === 'string'
 )

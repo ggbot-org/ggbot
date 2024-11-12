@@ -1,20 +1,20 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, Column, Columns, Level, LevelItem, Title } from "_/components/library"
-import { Memory } from "_/components/Memory"
-import { SchedulingItem, SchedulingItemProps } from "_/components/user/SchedulingItem"
-import { SchedulingParameters } from "_/components/user/SchedulingParameters"
-import { SchedulingsErrorExceededQuota } from "_/components/user/SchedulingsErrorExceededQuota"
-import { SchedulingsStatusBadges } from "_/components/user/SchedulingsStatusBadges"
-import { ToastContext } from "_/contexts/Toast"
-import { useWriteAccountStrategiesItemSchedulings } from "_/hooks/user/api"
-import { useAccountStrategies } from "_/hooks/user/useAccountStrategies"
-import { useSubscription } from "_/hooks/user/useSubscription"
-import { useStrategyFlow } from "_/hooks/useStrategyFlow"
-import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyKey, StrategyScheduling } from "@workspace/models"
-import { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Buttons, Column, Columns, Level, LevelItem, Title } from '_/components/library'
+import { Memory } from '_/components/Memory'
+import { SchedulingItem, SchedulingItemProps } from '_/components/user/SchedulingItem'
+import { SchedulingParameters } from '_/components/user/SchedulingParameters'
+import { SchedulingsErrorExceededQuota } from '_/components/user/SchedulingsErrorExceededQuota'
+import { SchedulingsStatusBadges } from '_/components/user/SchedulingsStatusBadges'
+import { ToastContext } from '_/contexts/Toast'
+import { useWriteAccountStrategiesItemSchedulings } from '_/hooks/user/api'
+import { useAccountStrategies } from '_/hooks/user/useAccountStrategies'
+import { useSubscription } from '_/hooks/user/useSubscription'
+import { useStrategyFlow } from '_/hooks/useStrategyFlow'
+import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyKey, StrategyScheduling } from '@workspace/models'
+import { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import { SchedulingParameterItemProps } from "./SchedulingParameterItem"
+import { SchedulingParameterItemProps } from './SchedulingParameterItem'
 
 export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const strategyId = strategyKey?.strategyId
@@ -34,7 +34,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	const WRITE = useWriteAccountStrategiesItemSchedulings()
 	const error = WRITE.error
 
-	const [schedulingItems, setSchedulingItems] = useState<Array<SchedulingItemProps["scheduling"]>>([])
+	const [schedulingItems, setSchedulingItems] = useState<Array<SchedulingItemProps['scheduling']>>([])
 
 	const currentSchedulings = useMemo<StrategyScheduling[] | undefined>(() => {
 		if (currentAccountStrategies === undefined) return
@@ -88,7 +88,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	const canSave = someSchedulingChanged && schedulingItems.every(isStrategyScheduling)
 
 	const setSchedulingItemFrequency = useCallback<
-		(id: StrategyScheduling["id"]) => SchedulingItemProps["setFrequency"]
+		(id: StrategyScheduling['id']) => SchedulingItemProps['setFrequency']
 	>((id) => (frequency) => setSchedulingItems(
 				(schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
@@ -96,7 +96,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 				})), [])
 
 	const setSchedulingItemStatus = useCallback<
-		(id: StrategyScheduling["id"]) => SchedulingItemProps["setStatus"]
+		(id: StrategyScheduling['id']) => SchedulingItemProps['setStatus']
 	>((id) => (status) => setSchedulingItems(
 				(schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
@@ -104,7 +104,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 				})), [])
 
 	const setSchedulingParam = useCallback<
-		(id: StrategyScheduling["id"],) => SchedulingParameterItemProps["setParam"]
+		(id: StrategyScheduling['id'],) => SchedulingParameterItemProps['setParam']
 	>((id) => (key, value) => setSchedulingItems(
 				(schedulingItems) => schedulingItems.map((schedulingItem) => {
 					if (schedulingItem.id !== id) return schedulingItem
@@ -115,7 +115,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 				})), [])
 
 	const removeSchedulingItem = useCallback<
-		(id: StrategyScheduling["id"],) => SchedulingItemProps["removeScheduling"]
+		(id: StrategyScheduling['id'],) => SchedulingItemProps['removeScheduling']
 	>((id) => () => setSchedulingItems(
 				(schedulingItems) => schedulingItems.filter(
 					(schedulingItem) => schedulingItem.id !== id,
@@ -123,14 +123,14 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 
 	const addSchedulingItem = useCallback(() => {
 		if (!hasActiveSubscription) {
-			toast.warning(formatMessage({ id: "Schedulings.noActiveSubscription" }))
+			toast.warning(formatMessage({ id: 'Schedulings.noActiveSubscription' }))
 			return
 		}
 		setSchedulingItems(
 			(schedulingItems) => schedulingItems.concat(
 				newStrategyScheduling({
-					frequency: { every: 1, interval: "1h" },
-					status: "inactive",
+					frequency: { every: 1, interval: '1h' },
+					status: 'inactive',
 				})
 			))
 	}, [formatMessage, hasActiveSubscription, toast])
@@ -165,9 +165,9 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 	return (
 		<>
 			<Columns>
-				<Column bulma={["is-narrow", { "is-skeleton": accountStrategies === undefined }]}>
+				<Column bulma={['is-narrow', { 'is-skeleton': accountStrategies === undefined }]}>
 					<form
-						className={classnames("box")}
+						className={classnames('box')}
 						onSubmit={(event) => event.preventDefault()}
 					>
 						<Level
@@ -180,7 +180,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 								</LevelItem>
 							}
 							right={
-								<LevelItem className={classnames("ml-5")}>
+								<LevelItem className={classnames('ml-5')}>
 									<SchedulingsStatusBadges schedulings={currentSchedulings} />
 								</LevelItem>
 							}
@@ -191,7 +191,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 									<Buttons>
 										<Button
 											color={
-												canSave ? "primary" : undefined
+												canSave ? 'primary' : undefined
 											}
 											isLoading={WRITE.isPending}
 											onClick={onClickSave}

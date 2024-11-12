@@ -1,4 +1,4 @@
-import { WebStorageProvider } from "./providers.js"
+import { WebStorageProvider } from './providers.js'
 
 export function cachedBoolean (
 	storage: WebStorageProvider,
@@ -7,8 +7,8 @@ export function cachedBoolean (
 	return ({
 		get: () => {
 			const value = storage.getItem(key)
-			if (typeof value !== "string") return undefined
-			if (value === "true") return true
+			if (typeof value !== 'string') return undefined
+			if (value === 'true') return true
 			return false
 		},
 		set: (value: boolean | undefined) => storage.setItem(key, String(Boolean(value))),
@@ -18,7 +18,7 @@ export function cachedBoolean (
 
 export function cachedString(storage: WebStorageProvider, key: string) {
 	return ({
-		get: () => storage.getItem(key) ?? "",
+		get: () => storage.getItem(key) ?? '',
 		set: (value: string) => storage.setItem(key, value),
 		delete: () => storage.removeItem(key)
 	})
@@ -42,7 +42,7 @@ export function cachedObject<Data>(storage: WebStorageProvider, key: string) {
 	return ({
 		get: () => {
 			const value = storage.getItem(key)
-			if (typeof value !== "string") return undefined
+			if (typeof value !== 'string') return undefined
 			try {
 				return JSON.parse(value) as Data
 			} catch (error) {

@@ -1,4 +1,4 @@
-import { FlowViewNode } from "flow-view"
+import { FlowViewNode } from 'flow-view'
 
 export class FlowViewNodeEditable extends FlowViewNode {
 	isEditing: boolean | undefined
@@ -9,17 +9,17 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		super.init(arg)
 
 		// @ts-expect-error
-		this.contentDiv.style.outline = "none"
+		this.contentDiv.style.outline = 'none'
 
 		// @ts-expect-error
 		this._onDblclick = this.onDblclick.bind(this)
 		// @ts-expect-error
-		this.element.addEventListener("dblclick", this._onDblclick)
+		this.element.addEventListener('dblclick', this._onDblclick)
 	}
 
 	dispose() {
 		// @ts-expect-error
-		this.element.removeEventListener("dblclick", this._onDblclick)
+		this.element.removeEventListener('dblclick', this._onDblclick)
 		this.disposeEditor()
 		// @ts-expect-error
 		super.dispose()
@@ -29,13 +29,13 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		if (!this.isEditing) return
 
 		// @ts-expect-error
-		this.contentDiv.removeAttribute("contenteditable")
+		this.contentDiv.removeAttribute('contenteditable')
 		// @ts-expect-error
-		this.contentDiv.removeEventListener("blur", this._onBlur)
+		this.contentDiv.removeEventListener('blur', this._onBlur)
 		// @ts-expect-error
 		this._onBlur = undefined
 		// @ts-expect-error
-		this.contentDiv.removeEventListener("keydown", this._onKeydown)
+		this.contentDiv.removeEventListener('keydown', this._onKeydown)
 		// @ts-expect-error
 		this._onKeydown = undefined
 
@@ -49,7 +49,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		// @ts-expect-error
 		const { contentDiv } = this
 
-		contentDiv.setAttribute("contenteditable", true)
+		contentDiv.setAttribute('contenteditable', true)
 		this.isEditing = true
 
 		// Move cursor to end of text
@@ -67,11 +67,11 @@ export class FlowViewNodeEditable extends FlowViewNode {
 		// @ts-expect-error
 		this._onKeydown = this.onKeydown.bind(this)
 		// @ts-expect-error
-		contentDiv.addEventListener("keydown", this._onKeydown)
+		contentDiv.addEventListener('keydown', this._onKeydown)
 		// @ts-expect-error
 		this._onBlur = this.onBlur.bind(this)
 		// @ts-expect-error
-		contentDiv.addEventListener("blur", this._onBlur)
+		contentDiv.addEventListener('blur', this._onBlur)
 
 		contentDiv.focus()
 	}
@@ -97,7 +97,7 @@ export class FlowViewNodeEditable extends FlowViewNode {
 	onKeydown(event: KeyboardEvent) {
 		event.stopPropagation()
 
-		if (event.code === "Enter") {
+		if (event.code === 'Enter') {
 			// @ts-expect-error
 			this.contentDiv.blur()
 		}

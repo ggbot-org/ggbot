@@ -1,14 +1,14 @@
-import { BacktestingBinanceClient, BacktestingSession } from "@workspace/backtesting"
-import { binanceKlineMaxLimit, getBinanceIntervalTime } from "@workspace/binance"
-import { DflowBinanceExecutor, extractBinanceSymbolsAndIntervalsFromFlow, extractsBinanceSymbolsFromFlow, getDflowBinanceNodesCatalog } from "@workspace/dflow"
-import { BinanceExchangeInfoCacheIDB, BinanceIDB, BinanceKlinesCacheIDB } from "@workspace/indexeddb-binance"
+import { BacktestingBinanceClient, BacktestingSession } from '@workspace/backtesting'
+import { binanceKlineMaxLimit, getBinanceIntervalTime } from '@workspace/binance'
+import { DflowBinanceExecutor, extractBinanceSymbolsAndIntervalsFromFlow, extractsBinanceSymbolsFromFlow, getDflowBinanceNodesCatalog } from '@workspace/dflow'
+import { BinanceExchangeInfoCacheIDB, BinanceIDB, BinanceKlinesCacheIDB } from '@workspace/indexeddb-binance'
 
 const binanceIDB = new BinanceIDB()
 const binanceExchangeInfoCache = new BinanceExchangeInfoCacheIDB(binanceIDB)
 const binanceKlinesCache = new BinanceKlinesCacheIDB(binanceIDB)
 
 export function getBinance(
-	schedulingInterval: BacktestingBinanceClient["schedulingInterval"]
+	schedulingInterval: BacktestingBinanceClient['schedulingInterval']
 ) {
 	const binance = new BacktestingBinanceClient(schedulingInterval)
 	binance.publicClient.exchangeInfoCache = binanceExchangeInfoCache
@@ -23,12 +23,12 @@ export async function prepareBinance(
 ) {
 	const schedulingInterval = session.frequency?.interval
 	if (!schedulingInterval) {
-		console.error("Cannot run prepareBinance, schedulingInterval is undefined")
+		console.error('Cannot run prepareBinance, schedulingInterval is undefined')
 		return
 	}
 	const flow = session.strategyFlow
 	if (!flow) {
-		console.error("Cannot run prepareBinance, flow is undefined")
+		console.error('Cannot run prepareBinance, flow is undefined')
 		return
 	}
 	const { symbols: binanceSymbols } = await binance.exchangeInfo()

@@ -1,4 +1,4 @@
-import { Icon, iconNames } from "_/components/library"
+import { Icon, iconNames } from '_/components/library'
 
 export function Icons() {
 	return (

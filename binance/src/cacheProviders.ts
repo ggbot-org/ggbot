@@ -1,4 +1,4 @@
-import { BinanceExchangeInfo, BinanceKline, BinanceKlineInterval } from "./types.js"
+import { BinanceExchangeInfo, BinanceKline, BinanceKlineInterval } from './types.js'
 
 export type BinanceExchangeInfoCacheProvider = {
 	getExchangeInfo(): Promise<BinanceExchangeInfo | undefined>

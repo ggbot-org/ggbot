@@ -1,11 +1,11 @@
-import { Button, Buttons, Div, OneColumn, Title } from "_/components/library"
-import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
-import { ToastContext } from "_/contexts/Toast"
-import { GOTO } from "_/routing/navigation"
-import { webapp } from "_/routing/webapp"
-import { Strategy, StrategyKey } from "@workspace/models"
-import { useContext } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { Button, Buttons, Div, OneColumn, Title } from '_/components/library'
+import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
+import { ToastContext } from '_/contexts/Toast'
+import { GOTO } from '_/routing/navigation'
+import { webapp } from '_/routing/webapp'
+import { Strategy, StrategyKey } from '@workspace/models'
+import { useContext } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export function GoCopyStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	return strategyKey ? (
@@ -19,7 +19,7 @@ export function ShareStrategy({
 	strategyKey, strategyName
 }: Partial<{
 	strategyKey: StrategyKey
-	strategyName: Strategy["name"]
+	strategyName: Strategy['name']
 }>) {
 	const { formatMessage } = useIntl()
 	const { toast } = useContext(ToastContext)
@@ -27,7 +27,7 @@ export function ShareStrategy({
 		<Button
 			onClick={() => {
 				try {
-					const shareData: Pick<ShareData, "title" | "text" | "url"> | undefined = strategyKey ? {
+					const shareData: Pick<ShareData, 'title' | 'text' | 'url'> | undefined = strategyKey ? {
 						title: PROJECT_SHORT_NAME,
 						url: webapp.strategy(strategyKey).href,
 						text: strategyName
@@ -35,22 +35,22 @@ export function ShareStrategy({
 					if (!shareData) return
 					if (
 						// Use native share API if available, only on mobile.
-						"share" in navigator && navigator.canShare?.(shareData) &&
+						'share' in navigator && navigator.canShare?.(shareData) &&
 						(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i))
 					) {
 						navigator.share(shareData)
-					} else if ("clipboard" in navigator && shareData.url) {
+					} else if ('clipboard' in navigator && shareData.url) {
 						navigator.clipboard.writeText(shareData.url).then(
-							() => toast.info(formatMessage({ id: "ShareStrategy.copied" }))
+							() => toast.info(formatMessage({ id: 'ShareStrategy.copied' }))
 						)
 					} else throw new Error(`Cannot share ${shareData}`)
 				} catch (error) {
 					console.error(error)
-					toast.warning(formatMessage({ id: "ShareStrategy.error" }))
+					toast.warning(formatMessage({ id: 'ShareStrategy.error' }))
 				}
 			}}
 		>
-			{formatMessage({ id: "ShareStrategy.label" })}
+			{formatMessage({ id: 'ShareStrategy.label' })}
 		</Button>
 	)
 }
@@ -62,7 +62,7 @@ export function StrategyActions({
 }) {
 	return (
 		<OneColumn>
-			<Div bulma={["box", { "is-skeleton": readStrategyIsPending }]}>
+			<Div bulma={['box', { 'is-skeleton': readStrategyIsPending }]}>
 				<Title>
 					<FormattedMessage id="StrategyActions.title" />
 				</Title>

@@ -1,4 +1,4 @@
-import { classnames } from "_/classnames"
+import { classnames } from '_/classnames'
 
 export type CheckmarkProps = {
 	label?: string
@@ -10,9 +10,9 @@ export function Checkmark({ label, ok }: CheckmarkProps) {
 		<div>
 			<span>{label}</span>
 			<span
-				className={classnames({ "has-text-success": ok, "has-text-danger": !ok }, "mx-2")}
+				className={classnames({ 'has-text-success': ok, 'has-text-danger': !ok }, 'mx-2')}
 			>
-				{ok ? "✓" : "✗"}
+				{ok ? '✓' : '✗'}
 			</span>
 		</div>
 	)

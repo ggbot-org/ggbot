@@ -1,9 +1,9 @@
-import { ReactNode, useCallback, useEffect, useState } from "react"
-import { Delete, DeleteProps, Notification, NotificationProps } from "trunx"
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { Delete, DeleteProps, Notification, NotificationProps } from 'trunx'
 
 export type ToastProps = {
 	close: () => void
-	color: Extract<NotificationProps["color"], "info" | "danger" | "warning">
+	color: Extract<NotificationProps['color'], 'info' | 'danger' | 'warning'>
 	message: ReactNode
 	timeout?: number
 }
@@ -29,7 +29,7 @@ export function Toast({ close, color, message }: ToastProps) {
 		window.clearTimeout(timeoutId)
 	}, [timeoutId])
 
-	const onClickClose = useCallback<NonNullable<DeleteProps["onClick"]>>(
+	const onClickClose = useCallback<NonNullable<DeleteProps['onClick']>>(
 		(event) => {
 			event.stopPropagation()
 			close()

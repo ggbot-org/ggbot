@@ -1,9 +1,9 @@
-import { FlowViewNodeInfo } from "_/flow/nodes/info"
-import { FlowViewNodeJson } from "_/flow/nodes/json"
-import { FlowViewNodePercentage } from "_/flow/nodes/percentage"
-import { nodeTextToViewType } from "@workspace/dflow"
-import { DflowNodesCatalog } from "dflow"
-import { FlowView, FlowViewNode } from "flow-view"
+import { FlowViewNodeInfo } from '_/flow/nodes/info'
+import { FlowViewNodeJson } from '_/flow/nodes/json'
+import { FlowViewNodePercentage } from '_/flow/nodes/percentage'
+import { nodeTextToViewType } from '@workspace/dflow'
+import { DflowNodesCatalog } from 'dflow'
+import { FlowView, FlowViewNode } from 'flow-view'
 
 export function initializeFlowView(
 	container: HTMLDivElement,

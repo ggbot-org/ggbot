@@ -1,4 +1,4 @@
-import { accountKeyParamsFromURL } from "_/routing/paramFromURL"
+import { accountKeyParamsFromURL } from '_/routing/paramFromURL'
 
 export function useAccountKey() {
 	return {

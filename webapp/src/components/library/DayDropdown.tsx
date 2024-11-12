@@ -1,15 +1,15 @@
-import { dayFormat } from "_/i18n/formats"
-import { ReactNode, useCallback } from "react"
-import { FormattedDate } from "react-intl"
-import { Control, Dropdown, DropdownMenu, DropdownProps, DropdownTrigger, Field } from "trunx"
+import { dayFormat } from '_/i18n/formats'
+import { ReactNode, useCallback } from 'react'
+import { FormattedDate } from 'react-intl'
+import { Control, Dropdown, DropdownMenu, DropdownProps, DropdownTrigger, Field } from 'trunx'
 
-import { Calendar, CalendarProps } from "./Calendar"
-import { Label } from "./Label"
+import { Calendar, CalendarProps } from './Calendar'
+import { Label } from './Label'
 
 export type DayDropdownProps = Partial<{ disabled: boolean }> &
-	Required<Pick<DropdownProps, "isActive" | "onClick">> &
-	Pick<DropdownProps, "isRight"> &
-	Pick<CalendarProps, "day" | "setDay" | "min" | "max"> & {
+	Required<Pick<DropdownProps, 'isActive' | 'onClick'>> &
+	Pick<DropdownProps, 'isRight'> &
+	Pick<CalendarProps, 'day' | 'setDay' | 'min' | 'max'> & {
 		label: ReactNode
 	} & { close: () => void }
 
@@ -31,7 +31,7 @@ export function DayDropdown({ close, day, disabled, isActive, isRight, label, ma
 							day={day}
 							max={max}
 							min={min}
-							setDay={useCallback<DayDropdownProps["setDay"]>(
+							setDay={useCallback<DayDropdownProps['setDay']>(
 								(day) => {
 									setDay(day)
 									close()

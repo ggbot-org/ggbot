@@ -1,17 +1,17 @@
-import { TabId, Tabs } from "_/components/Tabs"
-import { PageContainer } from "_/components/user/PageContainer"
-import { PleasePurchase } from "_/components/user/PleasePurchase"
-import { Schedulings } from "_/components/user/Schedulings"
-import { StrategyActions } from "_/components/user/StrategyActions"
-import { StrategyErrors } from "_/components/user/StrategyErrors"
-import { StrategyPageContainer } from "_/components/user/StrategyPageContainer"
-import { StrategyProfits } from "_/components/user/StrategyProfits"
-import { useStrategy } from "_/hooks/useStrategy"
-import { useStrategyKey } from "_/hooks/useStrategyKey"
-import { useState } from "react"
+import { TabId, Tabs } from '_/components/Tabs'
+import { PageContainer } from '_/components/user/PageContainer'
+import { PleasePurchase } from '_/components/user/PleasePurchase'
+import { Schedulings } from '_/components/user/Schedulings'
+import { StrategyActions } from '_/components/user/StrategyActions'
+import { StrategyErrors } from '_/components/user/StrategyErrors'
+import { StrategyPageContainer } from '_/components/user/StrategyPageContainer'
+import { StrategyProfits } from '_/components/user/StrategyProfits'
+import { useStrategy } from '_/hooks/useStrategy'
+import { useStrategyKey } from '_/hooks/useStrategyKey'
+import { useState } from 'react'
 
 export function StrategyPage() {
-	const [activeTabId, setActiveTabId] = useState<TabId>("manage")
+	const [activeTabId, setActiveTabId] = useState<TabId>('manage')
 	const { strategyKey } = useStrategyKey()
 	const { strategyNotFound, ...otherStrategyActionProps } = useStrategy(strategyKey)
 	return (
@@ -22,7 +22,7 @@ export function StrategyPage() {
 					setActiveTabId={setActiveTabId}
 					tabs={[
 						{
-							tabId: "manage",
+							tabId: 'manage',
 							renderIfInactive: true,
 							content: (
 								<>
@@ -32,13 +32,13 @@ export function StrategyPage() {
 							)
 						},
 						{
-							tabId: "profits",
+							tabId: 'profits',
 							content: (
 								<StrategyProfits strategyKey={strategyKey} />
 							)
 						},
 						{
-							tabId: "errors",
+							tabId: 'errors',
 							content: <StrategyErrors strategyKey={strategyKey} />
 						}
 					]}

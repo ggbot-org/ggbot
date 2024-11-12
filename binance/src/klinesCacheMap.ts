@@ -1,13 +1,13 @@
-import { CacheMap } from "@workspace/cache"
+import { CacheMap } from '@workspace/cache'
 
-import { BinanceKlinesCacheProvider } from "./cacheProviders.js"
-import { BinanceKline, BinanceKlineInterval } from "./types.js"
-import { binanceKlineKey } from "./utils.js"
+import { BinanceKlinesCacheProvider } from './cacheProviders.js'
+import { BinanceKline, BinanceKlineInterval } from './types.js'
+import { binanceKlineKey } from './utils.js'
 
 export class BinanceKlinesCacheMap implements BinanceKlinesCacheProvider {
 	readonly klinesMap: CacheMap<BinanceKline>
 
-	constructor(timeToLive?: CacheMap<BinanceKline>["timeToLive"]) {
+	constructor(timeToLive?: CacheMap<BinanceKline>['timeToLive']) {
 		this.klinesMap = new CacheMap<BinanceKline>(timeToLive)
 	}
 

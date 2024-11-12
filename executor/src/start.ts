@@ -1,4 +1,4 @@
-import { Executor } from "./Executor.js"
+import { Executor } from './Executor.js'
 
 function sleep (delay: number) {
 	return new Promise((resolve) => {
@@ -15,27 +15,27 @@ async function start () {
 	let gotSIGTERM = false
 
 	const terminate = () => {
-		console.info("terminating")
+		console.info('terminating')
 		canRun = false
 	}
 
-	process.on("SIGHUP", () => {
+	process.on('SIGHUP', () => {
 		if (gotSIGHUP) return
 		gotSIGHUP = true
-		console.info("got SIGHUP")
+		console.info('got SIGHUP')
 	})
 
-	process.on("SIGINT", () => {
+	process.on('SIGINT', () => {
 		if (gotSIGINT) return
 		gotSIGINT = true
-		console.info("got SIGINT")
+		console.info('got SIGINT')
 		terminate()
 	})
 
-	process.on("SIGTERM", () => {
+	process.on('SIGTERM', () => {
 		if (gotSIGTERM) return
 		gotSIGTERM = true
-		console.info("got SIGTERM")
+		console.info('got SIGTERM')
 		terminate()
 	})
 
@@ -46,7 +46,7 @@ async function start () {
 	}
 }
 
-process.on("uncaughtException", (error) => {
+process.on('uncaughtException', (error) => {
 	console.error(error)
 })
 

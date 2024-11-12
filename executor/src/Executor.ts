@@ -1,16 +1,16 @@
-import { BinanceErrorCode, ErrorBinanceHTTP } from "@workspace/binance"
-import { ExecutorDatabase, PublicDatabase } from "@workspace/database"
+import { BinanceErrorCode, ErrorBinanceHTTP } from '@workspace/binance'
+import { ExecutorDatabase, PublicDatabase } from '@workspace/database'
 // TODO enable emails
 // import { SendEmailProvider } from "@workspace/email-messages"
-import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from "@workspace/models"
-import { documentProvider } from "@workspace/s3-data-bucket"
-import { now, Time, today, truncateTime } from "minimal-time-helpers"
+import { AccountStrategyKey, createdNow, ErrorAccountItemNotFound, ErrorStrategyItemNotFound, ErrorUnknownItem, frequencyIntervalDuration, isAccountKey, PRO_FREQUENCY_INTERVALS, StrategyScheduling } from '@workspace/models'
+import { documentProvider } from '@workspace/s3-data-bucket'
+import { now, Time, today, truncateTime } from 'minimal-time-helpers'
 
-import { AccountKeysProvider } from "./AccountKeysProvider.js"
-import { AccountStrategiesProvider } from "./AccountStrategiesProvider.js"
-import { executeBinanceStrategy } from "./executeBinanceStrategy.js"
-import { StrategyFlowProvider } from "./StrategyFlowProvider.js"
-import { SubscriptionProvider } from "./SubscriptionProvider.js"
+import { AccountKeysProvider } from './AccountKeysProvider.js'
+import { AccountStrategiesProvider } from './AccountStrategiesProvider.js'
+import { executeBinanceStrategy } from './executeBinanceStrategy.js'
+import { StrategyFlowProvider } from './StrategyFlowProvider.js'
+import { SubscriptionProvider } from './SubscriptionProvider.js'
 
 export class Executor {
 	readonly executorDatabase: ExecutorDatabase
@@ -39,7 +39,7 @@ export class Executor {
 		const { strategyWhenExecuted } = this
 		const { status, frequency } = scheduling
 		const schedulingId = scheduling.id
-		if (status !== "active") return
+		if (status !== 'active') return
 		const whenExecuted = strategyWhenExecuted.get(strategyId)
 		const time = truncateTime(now()).to.minute
 		if (whenExecuted) {
@@ -48,10 +48,10 @@ export class Executor {
 		}
 		strategyWhenExecuted.set(strategyId, time)
 
-		if (strategyKind === "binance") {
+		if (strategyKind === 'binance') {
 			try {
 				const strategyFlow = await this.strategyFlowProvider.readStrategyFlow({ strategyId, strategyKind })
-				if (!strategyFlow) throw new ErrorStrategyItemNotFound({ type: "StrategyFlow", strategyId, strategyKind })
+				if (!strategyFlow) throw new ErrorStrategyItemNotFound({ type: 'StrategyFlow', strategyId, strategyKind })
 
 				const { memory, memoryChanged } = await executeBinanceStrategy(
 					{ accountId, strategyId, strategyKind },
@@ -99,9 +99,9 @@ export class Executor {
 			return
 		}
 
-		if (strategyKind === "none") return
+		if (strategyKind === 'none') return
 
-		throw new ErrorUnknownItem("strategyKind", strategyKind)
+		throw new ErrorUnknownItem('strategyKind', strategyKind)
 	}
 
 	async runTasks() {
@@ -129,7 +129,7 @@ export class Executor {
 					const { strategyId, strategyKind, schedulings } of accountStrategies
 				) for (const scheduling of schedulings) {
 					// Suspend scheduling if frequency interval is not allowed in subscription plan.
-					if (subscriptionPlan !== "pro" && PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)) {
+					if (subscriptionPlan !== 'pro' && PRO_FREQUENCY_INTERVALS.includes(scheduling.frequency.interval)) {
 						// TODO enable emails
 						// pass strategyKind
 						await this.accountStrategiesProvider.suspendAccountStrategyScheduling({ accountId, strategyId, schedulingId: scheduling.id })
@@ -145,7 +145,7 @@ export class Executor {
 				}
 
 				if (error instanceof ErrorAccountItemNotFound) {
-					if (error.type === "BinanceApiConfig") {
+					if (error.type === 'BinanceApiConfig') {
 						this.accountKeysProvider.deleteCachedAccountId(accountId)
 						continue
 					}

@@ -1,7 +1,7 @@
-import { useReadStrategy } from "_/hooks/public/api"
-import { sessionWebStorage } from "_/storages/session"
-import { Strategy, StrategyKey } from "@workspace/models"
-import { useEffect, useState } from "react"
+import { useReadStrategy } from '_/hooks/public/api'
+import { sessionWebStorage } from '_/storages/session'
+import { Strategy, StrategyKey } from '@workspace/models'
+import { useEffect, useState } from 'react'
 
 export function useStrategy(strategyKey: StrategyKey | undefined) {
 	const { data, canRun, isPending, request } = useReadStrategy()
@@ -29,8 +29,8 @@ export function useStrategy(strategyKey: StrategyKey | undefined) {
 	return {
 		strategy,
 		strategyNotFound: strategy === undefined ? undefined : strategy === null,
-		strategyName: strategy?.name ?? "",
-		strategyId: strategy?.id ?? "",
+		strategyName: strategy?.name ?? '',
+		strategyId: strategy?.id ?? '',
 		strategyWhenCreated: strategy?.whenCreated,
 		strategyFrequency: strategy?.frequency,
 		readStrategyIsPending: isPending,

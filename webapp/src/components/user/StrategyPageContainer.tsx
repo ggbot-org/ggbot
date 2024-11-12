@@ -1,8 +1,8 @@
-import { Column, Columns, Content, Message, OneColumn } from "_/components/library"
-import { StrategyId, StrategyKind } from "_/components/readonlyFields"
-import { StrategyKey } from "@workspace/models"
-import { PropsWithChildren } from "react"
-import { FormattedMessage } from "react-intl"
+import { Column, Columns, Content, Message, OneColumn } from '_/components/library'
+import { StrategyId, StrategyKind } from '_/components/readonlyFields'
+import { StrategyKey } from '@workspace/models'
+import { PropsWithChildren } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 function InvalidStrategyKey() {
 	return (

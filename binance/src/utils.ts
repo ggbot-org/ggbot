@@ -1,4 +1,4 @@
-import { BinanceBalance, BinanceKlineInterval } from "./types.js"
+import { BinanceBalance, BinanceKlineInterval } from './types.js'
 
 /**
  * Check if a balance is not empty.
@@ -21,5 +21,5 @@ export function binanceKlineKey(
 	/* THe kline open time. */
 	time: number
 ) {
-	return [symbol, interval, time].join(":")
+	return [symbol, interval, time].join(':')
 }

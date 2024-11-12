@@ -1,6 +1,6 @@
-import { SerializableData } from "@workspace/models"
+import { SerializableData } from '@workspace/models'
 
-export const apiActionMethod = "POST"
+export const apiActionMethod = 'POST'
 
 /**
  * An `ApiService` implements an API that can be consumed by a client. An

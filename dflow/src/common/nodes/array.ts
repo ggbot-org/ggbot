@@ -1,15 +1,15 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
-import { inputArray } from "./commonIO.js"
+import { inputArray } from './commonIO.js'
 
 const { input, output } = Dflow
 
-const inputElement = input([], { name: "element" })
-const outputElement = output([], { name: "element" })
-const outputRest = output("array", { name: "rest" })
+const inputElement = input([], { name: 'element' })
+const outputElement = output([], { name: 'element' })
+const outputRest = output('array', { name: 'rest' })
 
 export class Shift extends DflowNode {
-	static kind = "shift"
+	static kind = 'shift'
 	static inputs = [inputArray]
 	static outputs = [outputElement, outputRest]
 	run() {
@@ -20,7 +20,7 @@ export class Shift extends DflowNode {
 }
 
 export class Pop extends DflowNode {
-	static kind = "pop"
+	static kind = 'pop'
 	static inputs = [inputArray]
 	static outputs = [outputElement, outputRest]
 	run() {
@@ -31,9 +31,9 @@ export class Pop extends DflowNode {
 }
 
 export class Push extends DflowNode {
-	static kind = "push"
+	static kind = 'push'
 	static inputs = [
-		input("array", { name: "array", optional: true }),
+		input('array', { name: 'array', optional: true }),
 		inputElement
 	]
 	static outputs = [outputElement, outputRest]

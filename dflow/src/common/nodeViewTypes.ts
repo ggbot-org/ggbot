@@ -1,4 +1,4 @@
 export type NodeViewType =
-	| "json"
-	| "info"
-	| "perc"
+	| 'json'
+	| 'info'
+	| 'perc'

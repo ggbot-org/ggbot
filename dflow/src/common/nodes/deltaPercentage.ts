@@ -1,15 +1,15 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
-import { div, mul, sub } from "./arithmetic.js"
-import { outputLastValue, outputValues } from "./commonIO.js"
+import { div, mul, sub } from './arithmetic.js'
+import { outputLastValue, outputValues } from './commonIO.js'
 
 const { input } = Dflow
 
 export class DeltaPercentage extends DflowNode {
-	static kind = "deltaPercentage"
+	static kind = 'deltaPercentage'
 	static inputs = [
-		input("array", { name: "a" }),
-		input("array", { name: "b" })
+		input('array', { name: 'a' }),
+		input('array', { name: 'b' })
 	]
 	static outputs = [outputValues, outputLastValue]
 	run() {

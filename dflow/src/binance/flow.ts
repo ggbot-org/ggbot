@@ -1,19 +1,19 @@
-import { BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters } from "@workspace/binance"
-import { isNonEmptyString, StrategyFlowGraph } from "@workspace/models"
-import { DflowNode, DflowNodesCatalog } from "dflow"
-import { now } from "minimal-time-helpers"
+import { BinanceKline, BinanceKlineInterval, BinanceKlineOptionalParameters } from '@workspace/binance'
+import { isNonEmptyString, StrategyFlowGraph } from '@workspace/models'
+import { DflowNode, DflowNodesCatalog } from 'dflow'
+import { now } from 'minimal-time-helpers'
 
-import { DefaultSymbol } from "../common/nodes/defaults.js"
-import { DflowParameter } from "../common/parameters.js"
-import { DflowBinanceClient, DflowBinanceClientDummy } from "./client.js"
-import { DflowBinanceContext as Context } from "./context.js"
-import { DflowBinanceHost } from "./host.js"
-import { dflowBinanceKlineIntervals, isDflowBinanceKlineInterval } from "./klineIntervals.js"
-import { Candles, TickerPrice } from "./nodes/market.js"
-import { IntervalParameter, SymbolParameter } from "./nodes/parameters.js"
-import { BuyMarket, SellMarket } from "./nodes/trade.js"
-import { getDflowBinanceNodesCatalog } from "./nodesCatalog.js"
-import { DflowBinanceSymbolAndInterval, DflowBinanceSymbolInfo } from "./symbols.js"
+import { DefaultSymbol } from '../common/nodes/defaults.js'
+import { DflowParameter } from '../common/parameters.js'
+import { DflowBinanceClient, DflowBinanceClientDummy } from './client.js'
+import { DflowBinanceContext as Context } from './context.js'
+import { DflowBinanceHost } from './host.js'
+import { dflowBinanceKlineIntervals, isDflowBinanceKlineInterval } from './klineIntervals.js'
+import { Candles, TickerPrice } from './nodes/market.js'
+import { IntervalParameter, SymbolParameter } from './nodes/parameters.js'
+import { BuyMarket, SellMarket } from './nodes/trade.js'
+import { getDflowBinanceNodesCatalog } from './nodesCatalog.js'
+import { DflowBinanceSymbolAndInterval, DflowBinanceSymbolInfo } from './symbols.js'
 
 class DflowBinanceClientMock extends DflowBinanceClientDummy implements DflowBinanceClient {
 	async exchangeInfo() {
@@ -132,7 +132,7 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 						const symbol = this.input(0).data as string
 						const interval = this.input(1).data as string
 						if (
-							typeof symbol !== "string" ||
+							typeof symbol !== 'string' ||
 							!isDflowBinanceKlineInterval(interval)
 						) return this.clearOutputs()
 						// Additional code
@@ -173,7 +173,7 @@ export async function extractBinanceSymbolsAndIntervalsFromFlow(
 export async function extractsBinanceDefaultsFromFlow(
 	nodesCatalog: DflowNodesCatalog,
 	graph: StrategyFlowGraph
-): Promise<Context["defaults"]> {
+): Promise<Context['defaults']> {
 	let defaultSymbol: string | undefined
 	const context: Context = { defaults: {}, binance: binanceClientMock, params: {}, memory: {}, time: now() }
 
@@ -186,7 +186,7 @@ export async function extractsBinanceDefaultsFromFlow(
 				static outputs = DefaultSymbol.outputs
 				run() {
 					const symbol = this.input(0).data
-					if (typeof symbol !== "string") return
+					if (typeof symbol !== 'string') return
 					defaultSymbol = symbol
 				}
 			}
@@ -229,7 +229,7 @@ export async function extractsBinanceSymbolsFromFlow(
 						const quoteOrderQty = this.input(2).data as | number | undefined
 						const execute = this.input(3).data
 						if (
-							typeof symbol !== "string" ||
+							typeof symbol !== 'string' ||
 							(quantity === undefined && quoteOrderQty === undefined) ||
 							!execute
 						) return this.clearOutputs()
@@ -248,7 +248,7 @@ export async function extractsBinanceSymbolsFromFlow(
 						const quoteOrderQty = this.input(2).data as | number | undefined
 						const execute = this.input(3).data
 						if (
-							typeof symbol !== "string" ||
+							typeof symbol !== 'string' ||
 							(quantity === undefined && quoteOrderQty === undefined) ||
 							!execute
 						) return this.clearOutputs()
@@ -263,7 +263,7 @@ export async function extractsBinanceSymbolsFromFlow(
 					run() {
 						// 👇 Sync with TickerPrice run()
 						const symbol = this.input(0).data
-						if (typeof symbol !== "string") return this.clearOutputs()
+						if (typeof symbol !== 'string') return this.clearOutputs()
 						// Additional code
 						symbolsSet.add(symbol)
 					}

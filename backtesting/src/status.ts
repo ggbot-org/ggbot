@@ -1,8 +1,8 @@
 export type BacktestingStatus =
-	| "done"
-	| "initial"
-	| "paused"
-	| "running"
+	| 'done'
+	| 'initial'
+	| 'paused'
+	| 'running'
 
 /**
  * Methods to modify a `BacktestingStatus`, every method must return true if

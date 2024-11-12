@@ -1,9 +1,9 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
 const { input, output } = Dflow
 
-const binaryOperatorInputs = [input("number"), input("number")]
-const binaryOperatorOutputs = [output("number")]
+const binaryOperatorInputs = [input('number'), input('number')]
+const binaryOperatorOutputs = [output('number')]
 
 export type MaybeNumber = string | number | undefined
 
@@ -50,7 +50,7 @@ export const add: BinaryOperator = (a, b, precision) => {
 }
 
 export class Addition extends DflowNode {
-	static kind = "add"
+	static kind = 'add'
 	static inputs = binaryOperatorInputs
 	static outputs = binaryOperatorOutputs
 	run() {
@@ -65,7 +65,7 @@ export const sub: BinaryOperator = (a, b, precision) => {
 }
 
 export class Subtraction extends DflowNode {
-	static kind = "sub"
+	static kind = 'sub'
 	static inputs = binaryOperatorInputs
 	static outputs = binaryOperatorOutputs
 	run() {
@@ -80,7 +80,7 @@ export const mul: BinaryOperator = (a, b, precision) => {
 }
 
 export class Multiplication extends DflowNode {
-	static kind = "mul"
+	static kind = 'mul'
 	static inputs = binaryOperatorInputs
 	static outputs = binaryOperatorOutputs
 	run() {
@@ -97,7 +97,7 @@ export const div: BinaryOperator = (a, b, precision) => {
 }
 
 export class Division extends DflowNode {
-	static kind = "div"
+	static kind = 'div'
 	static inputs = binaryOperatorInputs
 	static outputs = binaryOperatorOutputs
 	run() {
@@ -108,9 +108,9 @@ export class Division extends DflowNode {
 }
 
 export class LessThan extends DflowNode {
-	static kind = "<"
+	static kind = '<'
 	static inputs = binaryOperatorInputs
-	static outputs = [output("boolean")]
+	static outputs = [output('boolean')]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number
@@ -119,9 +119,9 @@ export class LessThan extends DflowNode {
 }
 
 export class GreaterThan extends DflowNode {
-	static kind = ">"
+	static kind = '>'
 	static inputs = binaryOperatorInputs
-	static outputs = [output("boolean")]
+	static outputs = [output('boolean')]
 	run() {
 		const a = this.input(0).data as number
 		const b = this.input(1).data as number

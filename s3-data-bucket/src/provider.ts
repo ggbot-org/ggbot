@@ -1,6 +1,6 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
-import { getS3DataBucketName, S3DataBucketProvider } from "./bucket.js"
+import { getS3DataBucketName, S3DataBucketProvider } from './bucket.js'
 
 const awsDataRegion = ENV.AWS_DATA_REGION()
 

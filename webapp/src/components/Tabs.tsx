@@ -1,26 +1,26 @@
-import { classnames } from "_/classnames"
-import { TabContent, TabContentProps, TabSelector, TabSelectors } from "_/components/library"
-import { Dispatch, ReactNode, SetStateAction } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { TabContent, TabContentProps, TabSelector, TabSelectors } from '_/components/library'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export type TabId =
-	| "account"
-	| "accounts"
-	| "backtesting"
-	| "billing"
-	| "binance"
-	| "errors"
-	| "flow"
-	| "info"
-	| "manage"
-	| "newStrategy"
-	| "profits"
-	| "strategies"
+	| 'account'
+	| 'accounts'
+	| 'backtesting'
+	| 'billing'
+	| 'binance'
+	| 'errors'
+	| 'flow'
+	| 'info'
+	| 'manage'
+	| 'newStrategy'
+	| 'profits'
+	| 'strategies'
 
 type Tab = {
 	tabId: TabId
 	content: ReactNode
-} & Pick<TabContentProps, "renderIfInactive">
+} & Pick<TabContentProps, 'renderIfInactive'>
 
 type TabsProps = {
 	activeTabId: TabId
@@ -30,7 +30,7 @@ type TabsProps = {
 
 export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 	return (
-		<div className={classnames("m-3")}>
+		<div className={classnames('m-3')}>
 			<TabSelectors>
 				{tabs.map(({ tabId }) => (
 					<TabSelector

@@ -1,9 +1,9 @@
-import { ENV } from "@workspace/env"
-import { Language, StrategyKey } from "@workspace/models"
+import { ENV } from '@workspace/env'
+import { Language, StrategyKey } from '@workspace/models'
 
-import { emailBody } from "./emailFragments.js"
-import { EmailMessageContent } from "./types.js"
-import { webapp } from "./webapp.js"
+import { emailBody } from './emailFragments.js'
+import { EmailMessageContent } from './types.js'
+import { webapp } from './webapp.js'
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 

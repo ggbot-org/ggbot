@@ -1,9 +1,9 @@
-import { APIGatewayProxyHandler, BAD_REQUEST, BAD_REQUEST__400, errorResponse, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, OK, StripeMetadata } from "@workspace/api"
-import { PaymentDatabase } from "@workspace/database"
-import { newMonthlySubscriptionPurchase, newYearlySubscriptionPurchase, PaymentProvider } from "@workspace/models"
-import { documentProvider } from "@workspace/s3-data-bucket"
-import { Stripe, StripeClient, StripeSignatureVerificationError } from "@workspace/stripe"
-import { getDay, today } from "minimal-time-helpers"
+import { APIGatewayProxyHandler, BAD_REQUEST, BAD_REQUEST__400, errorResponse, INTERNAL_SERVER_ERROR__500, METHOD_NOT_ALLOWED__405, OK, StripeMetadata } from '@workspace/api'
+import { PaymentDatabase } from '@workspace/database'
+import { newMonthlySubscriptionPurchase, newYearlySubscriptionPurchase, PaymentProvider } from '@workspace/models'
+import { documentProvider } from '@workspace/s3-data-bucket'
+import { Stripe, StripeClient, StripeSignatureVerificationError } from '@workspace/stripe'
+import { getDay, today } from 'minimal-time-helpers'
 
 const stripe = new StripeClient()
 
@@ -17,16 +17,16 @@ const notReceived: ResponseData = { received: false }
 // ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
-		if (event.httpMethod !== "POST") return errorResponse(METHOD_NOT_ALLOWED__405)
+		if (event.httpMethod !== 'POST') return errorResponse(METHOD_NOT_ALLOWED__405)
 
 		if (!event.body) return errorResponse(BAD_REQUEST__400)
 
 		const stripeEvent = JSON.parse(event.body) as unknown as Stripe.Event
 
 		const dataProvider = new PaymentDatabase(documentProvider)
-		const paymentProvider: PaymentProvider = "stripe"
+		const paymentProvider: PaymentProvider = 'stripe'
 
-		if (stripeEvent.type === "checkout.session.completed") {
+		if (stripeEvent.type === 'checkout.session.completed') {
 			const { accountId, plan } = stripeEvent.data.object
 				.metadata as StripeMetadata
 

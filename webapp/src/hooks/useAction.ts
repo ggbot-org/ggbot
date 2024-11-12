@@ -1,9 +1,9 @@
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { ToastContext } from "_/contexts/Toast"
-import { localWebStorage } from "_/storages/local"
-import { ActionIO, ApiActionError, BadGatewayError, BadRequestError, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, InternalServerError, isApiActionOutputData, isApiActionOutputError, TimeoutError, UnauthorizedError } from "@workspace/api"
-import { useCallback, useContext, useState } from "react"
-import { useIntl } from "react-intl"
+import { AuthenticationContext } from '_/contexts/Authentication'
+import { ToastContext } from '_/contexts/Toast'
+import { localWebStorage } from '_/storages/local'
+import { ActionIO, ApiActionError, BadGatewayError, BadRequestError, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, InternalServerError, isApiActionOutputData, isApiActionOutputError, TimeoutError, UnauthorizedError } from '@workspace/api'
+import { useCallback, useContext, useState } from 'react'
+import { useIntl } from 'react-intl'
 
 export type UseActionApiArg = {
 	url: Parameters<typeof clientAction>[0]
@@ -54,7 +54,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [isPending, setIsPending] = useState<boolean | undefined>()
 
-	const genericError = formatMessage({ id: "GenericError.message" })
+	const genericError = formatMessage({ id: 'GenericError.message' })
 
 	const reset = useCallback(() => {
 		setData(undefined)
@@ -87,7 +87,7 @@ export function useAction<ActionType extends string, Input extends ActionIO, Out
 					}
 				} catch (error) {
 					// This AbortError is called on component unmount.
-					if (error instanceof DOMException && error.name === "AbortError") return
+					if (error instanceof DOMException && error.name === 'AbortError') return
 
 					console.error(error)
 

@@ -87,14 +87,14 @@
 			 └╴purchase.json
 */
 
-import { AccountDailyKey, AccountKey, accountKeyFieldNames, AccountStrategyDailyKey, AccountStrategyKey, DayKey, EmailAddress, isAccountDailyKey, isAccountKey, isAccountStrategyKey, isStrategyKey, isSubscriptionPurchaseKey, normalizeEmailAddress, StrategyKey, strategyKeyFieldNames, SubscriptionPurchaseKey, subscriptionPurchaseKeyFieldNames } from "@workspace/models"
-import { isSplittedDay, joinDay, splitDay } from "minimal-time-helpers"
-import { isLiteralType } from "minimal-type-guard-helpers"
+import { AccountDailyKey, AccountKey, accountKeyFieldNames, AccountStrategyDailyKey, AccountStrategyKey, DayKey, EmailAddress, isAccountDailyKey, isAccountKey, isAccountStrategyKey, isStrategyKey, isSubscriptionPurchaseKey, normalizeEmailAddress, StrategyKey, strategyKeyFieldNames, SubscriptionPurchaseKey, subscriptionPurchaseKeyFieldNames } from '@workspace/models'
+import { isSplittedDay, joinDay, splitDay } from 'minimal-time-helpers'
+import { isLiteralType } from 'minimal-type-guard-helpers'
 
-export const dirnameDelimiter = "/"
+export const dirnameDelimiter = '/'
 const dirJoin = (parts: string[]) => parts.join(dirnameDelimiter)
 
-const dayKeyFieldNames = ["y", "m", "d"] as const
+const dayKeyFieldNames = ['y', 'm', 'd'] as const
 
 const fieldNames = [
 	...accountKeyFieldNames,
@@ -107,26 +107,26 @@ type FieldName = (typeof fieldNames)[number]
 
 const isFieldName = isLiteralType<FieldName>(fieldNames)
 
-const fieldSeparator = "="
+const fieldSeparator = '='
 
 const fieldJoin = (name: FieldName, value: string) => [name, value].join(fieldSeparator)
 
 export const dirnamePrefix = {
-	account: "account",
-	accountDailyBalanceEvents: "accountBalanceEvents",
-	accountConfig: "accountConfig",
-	accountDailyOrders: "accountOrders",
-	accountStrategies: "accountStrategies",
-	emailAccount: "emailAccount",
-	oneTimePassword: "oneTimePassword",
-	strategy: "strategy",
-	strategyDailyErrors: "strategyErrors",
-	strategyDailyOrders: "strategyOrders",
-	strategyExecution: "strategyExecution",
-	strategyFlow: "strategyFlow",
-	strategyOrdersPool: "strategyOrdersPool",
-	subscription: "subscription",
-	subscriptionPurchase: "subscriptionPurchase"
+	account: 'account',
+	accountDailyBalanceEvents: 'accountBalanceEvents',
+	accountConfig: 'accountConfig',
+	accountDailyOrders: 'accountOrders',
+	accountStrategies: 'accountStrategies',
+	emailAccount: 'emailAccount',
+	oneTimePassword: 'oneTimePassword',
+	strategy: 'strategy',
+	strategyDailyErrors: 'strategyErrors',
+	strategyDailyOrders: 'strategyOrders',
+	strategyExecution: 'strategyExecution',
+	strategyFlow: 'strategyFlow',
+	strategyOrdersPool: 'strategyOrdersPool',
+	subscription: 'subscription',
+	subscriptionPurchase: 'subscriptionPurchase'
 }
 
 function destructureLocator(locator: string, fieldNames: readonly FieldName[]) {
@@ -143,7 +143,7 @@ function destructureLocator(locator: string, fieldNames: readonly FieldName[]) {
 
 export const locatorToItemKey = {
 	account: (locator: string): AccountKey | undefined => {
-		const obj = destructureLocator(locator, ["accountId"])
+		const obj = destructureLocator(locator, ['accountId'])
 		return isAccountKey(obj) ? obj : undefined
 	},
 	accountDailyBalanceEvents: (locator: string): AccountDailyKey | undefined => {
@@ -167,13 +167,13 @@ export const locatorToItemKey = {
 		return isStrategyKey(obj) ? obj : undefined
 	},
 	subscriptionPurchase: (locator: string): SubscriptionPurchaseKey | undefined => {
-		const obj = destructureLocator(locator, [...dayKeyFieldNames, ...accountKeyFieldNames, "purchaseId"])
+		const obj = destructureLocator(locator, [...dayKeyFieldNames, ...accountKeyFieldNames, 'purchaseId'])
 		return isSubscriptionPurchaseKey(obj) ? obj : undefined
 	}
 }
 
 const itemKeyToDirname = {
-	account: ({ accountId }: AccountKey) => fieldJoin("accountId", accountId),
+	account: ({ accountId }: AccountKey) => fieldJoin('accountId', accountId),
 	accountDailyBalanceEvents: ({ day, ...key }: AccountDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
 	accountDailyOrders: ({ day, ...key }: AccountDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.account(key)]),
 	accountStrategy: ({ accountId, ...strategyKey }: AccountStrategyKey) => dirJoin([itemKeyToDirname.account({ accountId }), itemKeyToDirname.strategy(strategyKey)]),
@@ -181,10 +181,10 @@ const itemKeyToDirname = {
 		const [yyyy, mm, dd] = splitDay(day)
 		return dirJoin([`y=${yyyy}`, `m=${mm}`, `d=${dd}`])
 	},
-	strategy: ({ strategyId, strategyKind }: StrategyKey) => dirJoin([fieldJoin("strategyKind", strategyKind), fieldJoin("strategyId", strategyId)]),
+	strategy: ({ strategyId, strategyKind }: StrategyKey) => dirJoin([fieldJoin('strategyKind', strategyKind), fieldJoin('strategyId', strategyId)]),
 	strategyDailyErrors: ({ day, ...key }: AccountStrategyDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.accountStrategy(key)]),
 	strategyDailyOrders: ({ day, ...key }: AccountStrategyDailyKey) => dirJoin([itemKeyToDirname.day({ day }), itemKeyToDirname.accountStrategy(key)]),
-	subscriptionPurchase: ({ accountId, day, purchaseId }: SubscriptionPurchaseKey) => dirJoin([itemKeyToDirname.account({ accountId }), itemKeyToDirname.day({ day }), fieldJoin("purchaseId", purchaseId)])
+	subscriptionPurchase: ({ accountId, day, purchaseId }: SubscriptionPurchaseKey) => dirJoin([itemKeyToDirname.account({ accountId }), itemKeyToDirname.day({ day }), fieldJoin('purchaseId', purchaseId)])
 }
 
 const dirname = {
@@ -193,7 +193,7 @@ const dirname = {
 	accountConfig: (arg: AccountKey) => dirJoin([dirnamePrefix.accountConfig, itemKeyToDirname.account(arg)]),
 	accountDailyOrders: (arg: AccountDailyKey) => dirJoin([dirnamePrefix.accountDailyOrders, itemKeyToDirname.accountDailyOrders(arg)]),
 	accountStrategies: (arg: AccountKey) => dirJoin([dirnamePrefix.accountStrategies, itemKeyToDirname.account(arg)]),
-	email: (arg: EmailAddress) => dirJoin(normalizeEmailAddress(arg).split("@").reverse()),
+	email: (arg: EmailAddress) => dirJoin(normalizeEmailAddress(arg).split('@').reverse()),
 	strategy: (arg: StrategyKey) => dirJoin([dirnamePrefix.strategy, itemKeyToDirname.strategy(arg)]),
 	strategyDailyErrors: (arg: AccountStrategyDailyKey) => dirJoin([dirnamePrefix.strategyDailyErrors, itemKeyToDirname.strategyDailyErrors(arg)]), strategyDailyOrders: (arg: AccountStrategyDailyKey) => dirJoin([dirnamePrefix.strategyDailyOrders, itemKeyToDirname.strategyDailyOrders(arg)]), strategyExecution: (arg: AccountStrategyKey) => dirJoin([dirnamePrefix.strategyExecution, itemKeyToDirname.accountStrategy(arg)]),
 	strategyFlow: (arg: StrategyKey) => dirJoin([dirnamePrefix.strategyFlow, itemKeyToDirname.strategy(arg)]),
@@ -203,21 +203,21 @@ const dirname = {
 }
 
 const filename = {
-	account: "account.json",
-	accountDailyBalanceEvents: "balance.json",
-	accountDailyOrders: "orders.json",
-	accountStrategies: "strategies.json",
-	binanceApiConfig: "binance.json",
-	emailAccount: "email.json",
-	oneTimePassword: "otp.json",
-	strategy: "strategy.json",
-	strategyDailyErrors: "errors.json",
-	strategyDailyOrders: "orders.json",
-	strategyExecution: "execution.json",
-	strategyFlow: "flow.json",
-	strategyOrdersPool: "orders.json",
-	subscription: "subscription.json",
-	subscriptionPurchase: "purchase.json"
+	account: 'account.json',
+	accountDailyBalanceEvents: 'balance.json',
+	accountDailyOrders: 'orders.json',
+	accountStrategies: 'strategies.json',
+	binanceApiConfig: 'binance.json',
+	emailAccount: 'email.json',
+	oneTimePassword: 'otp.json',
+	strategy: 'strategy.json',
+	strategyDailyErrors: 'errors.json',
+	strategyDailyOrders: 'orders.json',
+	strategyExecution: 'execution.json',
+	strategyFlow: 'flow.json',
+	strategyOrdersPool: 'orders.json',
+	subscription: 'subscription.json',
+	subscriptionPurchase: 'purchase.json'
 }
 
 export const pathname = {

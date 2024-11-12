@@ -1,9 +1,9 @@
-import { ReactNode, useId } from "react"
-import { Control, Field, Help, Select, SelectProps } from "trunx"
+import { ReactNode, useId } from 'react'
+import { Control, Field, Help, Select, SelectProps } from 'trunx'
 
-import { Label } from "./Label"
+import { Label } from './Label'
 
-type SelectFieldProps = Omit<SelectProps, "id"> & {
+type SelectFieldProps = Omit<SelectProps, 'id'> & {
 	help?: ReactNode
 	label: string
 }

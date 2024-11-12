@@ -1,14 +1,14 @@
-import { strict as assert } from "node:assert"
-import { test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { test } from 'node:test'
 
-import { Dflow } from "dflow"
-import { now } from "minimal-time-helpers"
+import { Dflow } from 'dflow'
+import { now } from 'minimal-time-helpers'
 
-import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
-import { Addition, Division, Multiplication, Subtraction } from "./arithmetic.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
+import { Addition, Division, Multiplication, Subtraction } from './arithmetic.js'
 
-test("add", async () => {
-	const operator: ArithmeticNodeKind = "add"
+test('add', async () => {
+	const operator: ArithmeticNodeKind = 'add'
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
@@ -26,8 +26,8 @@ test("add", async () => {
 	}
 })
 
-test("sub", async () => {
-	const operator: ArithmeticNodeKind = "sub"
+test('sub', async () => {
+	const operator: ArithmeticNodeKind = 'sub'
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
@@ -41,8 +41,8 @@ test("sub", async () => {
 	}
 })
 
-test("mul", async () => {
-	const operator: ArithmeticNodeKind = "mul"
+test('mul', async () => {
+	const operator: ArithmeticNodeKind = 'mul'
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 2, b: 3 },
@@ -56,8 +56,8 @@ test("mul", async () => {
 	}
 })
 
-test("div", async () => {
-	const operator: ArithmeticNodeKind = "div"
+test('div', async () => {
+	const operator: ArithmeticNodeKind = 'div'
 	const testData: ExecuteOperatorTestData[] = [
 		{
 			input: { a: 3, b: 2 },
@@ -95,28 +95,28 @@ type ExecuteOperatorTestData = {
 }
 
 async function executeOperator (nodeKind: ArithmeticNodeKind, { a, b }: ExecuteOperatorInput): Promise<ExecuteOperatorOutput> {
-	const nodeId = "operator"
+	const nodeId = 'operator'
 	const executor = new DflowCommonExecutor({
 		nodes: [
 			{
-				id: "i1",
+				id: 'i1',
 				text: JSON.stringify(a),
-				outs: [{ id: "o1" }]
+				outs: [{ id: 'o1' }]
 			},
 			{
-				id: "i2",
+				id: 'i2',
 				text: JSON.stringify(b),
-				outs: [{ id: "o2" }]
+				outs: [{ id: 'o2' }]
 			},
 			{
 				id: nodeId,
 				text: nodeKind,
-				ins: [{ id: "a" }, { id: "b" }]
+				ins: [{ id: 'a' }, { id: 'b' }]
 			}
 		],
 		edges: [
-			{ id: "e1", from: ["i1", "o1"], to: [nodeId, "a"] },
-			{ id: "e2", from: ["i2", "o2"], to: [nodeId, "b"] }
+			{ id: 'e1', from: ['i1', 'o1'], to: [nodeId, 'a'] },
+			{ id: 'e2', from: ['i2', 'o2'], to: [nodeId, 'b'] }
 		]
 	})
 	const { execution } = await executor.run({

@@ -1,7 +1,7 @@
-import { DflowNode } from "dflow"
+import { DflowNode } from 'dflow'
 
-import { add, div, MaybeNumber, mul, sub } from "../arithmetic.js"
-import { inputPeriod, inputValues, outputLastValue, outputValues } from "../commonIO.js"
+import { add, div, MaybeNumber, mul, sub } from '../arithmetic.js'
+import { inputPeriod, inputValues, outputLastValue, outputValues } from '../commonIO.js'
 
 export function relativeStrengthIndex(values: number[], period: number): number[] {
 	const size = values.length
@@ -43,7 +43,7 @@ export function relativeStrengthIndex(values: number[], period: number): number[
 }
 
 export class RelativeStrengthIndex extends DflowNode {
-	static kind = "RSI"
+	static kind = 'RSI'
 	static inputs = [inputValues, inputPeriod]
 	static outputs = [outputValues, outputLastValue]
 	run() {

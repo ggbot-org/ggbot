@@ -1,4 +1,4 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
 export class SesIdentity {
 	get arn() {

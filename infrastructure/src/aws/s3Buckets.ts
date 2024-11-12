@@ -1,7 +1,7 @@
-import { ENV } from "@workspace/env"
-import { FQDN } from "@workspace/locators"
-import { DeployStage } from "@workspace/models"
-import { getS3DataBucketName } from "@workspace/s3-data-bucket"
+import { ENV } from '@workspace/env'
+import { FQDN } from '@workspace/locators'
+import { DeployStage } from '@workspace/models'
+import { getS3DataBucketName } from '@workspace/s3-data-bucket'
 
 const AWS_REGION = ENV.AWS_DATA_REGION()
 const DNS_DOMAIN = ENV.DNS_DOMAIN()

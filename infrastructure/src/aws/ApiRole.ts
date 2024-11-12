@@ -1,4 +1,4 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
 export class ApiRole {
 	get arn() {

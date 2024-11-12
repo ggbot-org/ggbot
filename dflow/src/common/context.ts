@@ -1,5 +1,5 @@
-import { StrategyMemory, StrategyParameters } from "@workspace/models"
-import { Time } from "minimal-time-helpers"
+import { StrategyMemory, StrategyParameters } from '@workspace/models'
+import { Time } from 'minimal-time-helpers'
 
 /**
  * DflowCommonContext to be shared among all dflow host implementations.

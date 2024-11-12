@@ -1,12 +1,12 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
-import { MaybeObject } from "minimal-type-guard-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
+import { MaybeObject } from 'minimal-type-guard-helpers'
 
-import { isStrategyMemory, StrategyMemory } from "./strategyMemory.js"
-import { invalidIdentifierStrings } from "./strings_test.js"
+import { isStrategyMemory, StrategyMemory } from './strategyMemory.js'
+import { invalidIdentifierStrings } from './strings_test.js'
 
-test("isStrategyMemory", () => {
+test('isStrategyMemory', () => {
 	assertEqual<MaybeObject<StrategyMemory>, boolean>(isStrategyMemory, [
 		{
 			input: {},
@@ -14,14 +14,14 @@ test("isStrategyMemory", () => {
 		},
 		{
 			input: {
-				"label 1": true,
-				"label 2": 123,
-				label3: "hello world"
+				'label 1': true,
+				'label 2': 123,
+				label3: 'hello world'
 			},
 			output: true
 		},
 		...invalidIdentifierStrings.map((key) => ({
-			input: { [key]: "value" },
+			input: { [key]: 'value' },
 			output: false
 		}))
 	])

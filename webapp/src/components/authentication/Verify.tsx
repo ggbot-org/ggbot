@@ -1,14 +1,14 @@
-import { classnames } from "_/classnames"
-import { GenericError } from "_/components/GenericError"
-import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField, Message, Title } from "_/components/library"
-import { Email } from "_/components/readonlyFields"
-import { TimeoutError } from "_/components/TimeoutError"
-import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { auth } from "_/routing/auth"
-import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from "@workspace/api"
-import { EmailAddress } from "@workspace/models"
-import { Reducer, useReducer } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { GenericError } from '_/components/GenericError'
+import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField, Message, Title } from '_/components/library'
+import { Email } from '_/components/readonlyFields'
+import { TimeoutError } from '_/components/TimeoutError'
+import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { auth } from '_/routing/auth'
+import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from '@workspace/api'
+import { EmailAddress } from '@workspace/models'
+import { Reducer, useReducer } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	code: { value: string }
@@ -31,16 +31,16 @@ type State = Partial<{
 }>
 
 type Action =
-	| { type: "SET_HAS_INVALID_INPUT" }
-	| { type: "VERIFY_REQUEST" }
+	| { type: 'SET_HAS_INVALID_INPUT' }
+	| { type: 'VERIFY_REQUEST' }
 	| {
-		type: "VERIFY_RESPONSE"
-		data: Partial<Pick<State, "needToGenerateOneTimePasswordAgain" | "verificationFailed">>
+		type: 'VERIFY_RESPONSE'
+		data: Partial<Pick<State, 'needToGenerateOneTimePasswordAgain' | 'verificationFailed'>>
 	}
-	| { type: "VERIFY_FAILURE" }
-	| { type: "VERIFY_TIMEOUT" }
+	| { type: 'VERIFY_FAILURE' }
+	| { type: 'VERIFY_TIMEOUT' }
 
-function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, "onClick">) {
+function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, 'onClick'>) {
 	return (
 		<>
 			<Message>
@@ -59,17 +59,17 @@ function RegenerateOneTimePassword({ onClick }: Pick<ButtonProps, "onClick">) {
 
 export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 	const [{ gotTimeout, hasGenericError, hasInvalidInput, isPending, needToGenerateOneTimePasswordAgain, verificationFailed }, dispatch] = useReducer<Reducer<State, Action>>((state, action) => {
-		if (action.type === "SET_HAS_INVALID_INPUT") return { hasInvalidInput: true }
-		if (action.type === "VERIFY_REQUEST") return { isPending: true }
-		if (action.type === "VERIFY_RESPONSE") return { hasGenericError: true, ...action.data }
-		if (action.type === "VERIFY_FAILURE") return { hasGenericError: true }
-		if (action.type === "VERIFY_TIMEOUT") return { gotTimeout: true }
+		if (action.type === 'SET_HAS_INVALID_INPUT') return { hasInvalidInput: true }
+		if (action.type === 'VERIFY_REQUEST') return { isPending: true }
+		if (action.type === 'VERIFY_RESPONSE') return { hasGenericError: true, ...action.data }
+		if (action.type === 'VERIFY_FAILURE') return { hasGenericError: true }
+		if (action.type === 'VERIFY_TIMEOUT') return { gotTimeout: true }
 		return state
 	}, {})
 
 	return (
 		<form
-			className={classnames("box")}
+			className={classnames('box')}
 			onReset={(event) => {
 				event.preventDefault()
 				resetEmail()
@@ -86,7 +86,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						const requestData = { code, email }
 
 						if (!isApiAuthVerifyRequestData(requestData)) {
-							dispatch({ type: "SET_HAS_INVALID_INPUT" })
+							dispatch({ type: 'SET_HAS_INVALID_INPUT' })
 							return
 						}
 
@@ -94,15 +94,15 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 
 						const timeoutId = setTimeout(() => {
 							controller.abort()
-							dispatch({ type: "VERIFY_TIMEOUT" })
+							dispatch({ type: 'VERIFY_TIMEOUT' })
 						}, 10_000)
 
-						dispatch({ type: "VERIFY_REQUEST" })
+						dispatch({ type: 'VERIFY_REQUEST' })
 
 						const response = await fetch(auth.verify.href, {
 							body: JSON.stringify(requestData),
-							headers: new Headers({ "Content-Type": "application/json" }),
-							method: "POST",
+							headers: new Headers({ 'Content-Type': 'application/json' }),
+							method: 'POST',
 							signal: controller.signal
 						})
 
@@ -113,13 +113,13 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 						const { data } = await response.json()
 
 						if (data === null) {
-							dispatch({ type: "VERIFY_RESPONSE", data: { needToGenerateOneTimePasswordAgain: true } })
+							dispatch({ type: 'VERIFY_RESPONSE', data: { needToGenerateOneTimePasswordAgain: true } })
 						} else if (isApiAuthVerifyResponseData(data)) {
 							if (data.token) setToken(data.token)
-							else dispatch({ type: "VERIFY_RESPONSE", data: { verificationFailed: true } })
+							else dispatch({ type: 'VERIFY_RESPONSE', data: { verificationFailed: true } })
 						}
 					} catch (error) {
-						dispatch({ type: "VERIFY_FAILURE" })
+						dispatch({ type: 'VERIFY_FAILURE' })
 						console.error(error)
 					}
 				}}
@@ -150,11 +150,11 @@ TODO do inputMode pattern maxLength work, at least on mobile?
 			<InputField
 				required
 				autoComplete="one-time-code"
-				className={classnames("auth-verify__one-time-password")}
+				className={classnames('auth-verify__one-time-password')}
 				inputMode="numeric"
 				label={<FormattedMessage id="OneTimePassword.label" />}
 				maxLength={6}
-				name={"code" satisfies FormFieldName}
+				name={'code' satisfies FormFieldName}
 				pattern="\d{6}"
 				readOnly={isPending}
 			/>

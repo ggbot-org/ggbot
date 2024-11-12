@@ -1,6 +1,6 @@
-import { DayInterval } from "_/components/library"
-import { getDay, today } from "minimal-time-helpers"
-import { useState } from "react"
+import { DayInterval } from '_/components/library'
+import { getDay, today } from 'minimal-time-helpers'
+import { useState } from 'react'
 
 export function TimeIntervalSelectors() {
 	const max = today()

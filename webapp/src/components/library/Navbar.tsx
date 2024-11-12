@@ -1,11 +1,11 @@
-import { webapp } from "_/routing/webapp"
-import { PropsWithChildren, useEffect, useState } from "react"
-import { Navbar as _Navbar, NavbarBrand, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from "trunx"
+import { webapp } from '_/routing/webapp'
+import { PropsWithChildren, useEffect, useState } from 'react'
+import { Navbar as _Navbar, NavbarBrand, NavbarBurger, NavbarItem, NavbarLink as _NavbarLink, NavbarLinkProps, NavbarMenu, NavbarProps } from 'trunx'
 
-import { BrandName } from "./brand"
+import { BrandName } from './brand'
 
 export function Navbar({ children, noMenu }: PropsWithChildren<
-	Partial<{ noMenu: boolean }> & Pick<NavbarProps, "className">
+	Partial<{ noMenu: boolean }> & Pick<NavbarProps, 'className'>
 >) {
 	const [isActive, setIsActive] = useState(false)
 
@@ -14,8 +14,8 @@ export function Navbar({ children, noMenu }: PropsWithChildren<
 		function closeMenu() {
 			setIsActive(false)
 		}
-		addEventListener("click", closeMenu)
-		return () => removeEventListener("click", closeMenu)
+		addEventListener('click', closeMenu)
+		return () => removeEventListener('click', closeMenu)
 	}, [])
 
 	return (
@@ -25,10 +25,10 @@ export function Navbar({ children, noMenu }: PropsWithChildren<
 					onClick={() => {
 						const { pathname } = location
 						if (
-							pathname === "/" ||
+							pathname === '/' ||
 							pathname === webapp.homepage.pathname
 						) return
-						location.pathname = "/"
+						location.pathname = '/'
 					}}
 				>
 					<BrandName />
@@ -50,7 +50,7 @@ export function Navbar({ children, noMenu }: PropsWithChildren<
 
 export function NavbarLink({
 	children, ...props
-}: PropsWithChildren<Exclude<NavbarLinkProps, "isArrowless">>) {
+}: PropsWithChildren<Exclude<NavbarLinkProps, 'isArrowless'>>) {
 	return (
 		<_NavbarLink
 			isArrowless

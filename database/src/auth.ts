@@ -1,7 +1,7 @@
-import { AuthDatabaseAction, AuthDatabaseActionInput as Input, AuthDatabaseActionOutput as Output, DocumentProviderLevel2 } from "@workspace/api"
-import { createdNow, EmailAccount, generateOneTimePassword, newAccount } from "@workspace/models"
+import { AuthDatabaseAction, AuthDatabaseActionInput as Input, AuthDatabaseActionOutput as Output, DocumentProviderLevel2 } from '@workspace/api'
+import { createdNow, EmailAccount, generateOneTimePassword, newAccount } from '@workspace/models'
 
-import { pathname } from "./locators.js"
+import { pathname } from './locators.js'
 
 export class AuthDatabase implements AuthDatabaseAction {
 	documentProvider: DocumentProviderLevel2
@@ -10,7 +10,7 @@ export class AuthDatabase implements AuthDatabaseAction {
 		this.documentProvider = documentProvider
 	}
 
-	async CreateAccount(email: Input["CreateAccount"]) {
+	async CreateAccount(email: Input['CreateAccount']) {
 		const account = newAccount({ email })
 		const accountId = account.id
 		await this.documentProvider.setItem(pathname.account({ accountId }), account)
@@ -19,21 +19,21 @@ export class AuthDatabase implements AuthDatabaseAction {
 		return account
 	}
 
-	async CreateOneTimePassword(email: Input["CreateOneTimePassword"]) {
+	async CreateOneTimePassword(email: Input['CreateOneTimePassword']) {
 		const data = generateOneTimePassword()
 		await this.documentProvider.setItem(pathname.oneTimePassword(email), data)
 		return data
 	}
 
-	async DeleteOneTimePassword(email: Input["DeleteOneTimePassword"]) {
+	async DeleteOneTimePassword(email: Input['DeleteOneTimePassword']) {
 		await this.documentProvider.removeItem(pathname.oneTimePassword(email))
 	}
 
-	ReadEmailAccount(email: Input["ReadEmailAccount"]) {
-		return this.documentProvider.getItem<Output["ReadEmailAccount"]>(pathname.emailAccount(email))
+	ReadEmailAccount(email: Input['ReadEmailAccount']) {
+		return this.documentProvider.getItem<Output['ReadEmailAccount']>(pathname.emailAccount(email))
 	}
 
-	ReadOneTimePassword(email: Input["ReadOneTimePassword"]) {
-		return this.documentProvider.getItem<Output["ReadOneTimePassword"]>(pathname.oneTimePassword(email))
+	ReadOneTimePassword(email: Input['ReadOneTimePassword']) {
+		return this.documentProvider.getItem<Output['ReadOneTimePassword']>(pathname.oneTimePassword(email))
 	}
 }

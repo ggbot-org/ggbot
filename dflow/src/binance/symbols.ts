@@ -1,22 +1,22 @@
-import { BinanceExchangeInfo, BinanceSymbolInfo } from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceSymbolInfo } from '@workspace/binance'
 
-import { DflowBinanceKlineInterval } from "./klineIntervals.js"
+import { DflowBinanceKlineInterval } from './klineIntervals.js'
 
 export type DflowBinanceSymbolInfo = Pick<
 	BinanceSymbolInfo,
-	| "baseAsset"
-	| "baseAssetPrecision"
-	| "baseCommissionPrecision"
-	| "filters"
-	| "isSpotTradingAllowed"
-	| "quoteAsset"
-	| "quoteAssetPrecision"
-	| "status"
-	| "symbol"
+	| 'baseAsset'
+	| 'baseAssetPrecision'
+	| 'baseCommissionPrecision'
+	| 'filters'
+	| 'isSpotTradingAllowed'
+	| 'quoteAsset'
+	| 'quoteAssetPrecision'
+	| 'status'
+	| 'symbol'
 >
 
 export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
-	symbols: BinanceExchangeInfo["symbols"]
+	symbols: BinanceExchangeInfo['symbols']
 ): DflowBinanceSymbolInfo[] {
 	return symbols
 		.filter(({ isSpotTradingAllowed }) => isSpotTradingAllowed)
@@ -45,12 +45,12 @@ export function binanceExchangeInfoSymbolsToDflowBinanceExchangeInfoSymbols(
 		)
 }
 
-export const dflowBinanceSymbolSeparator = "/"
+export const dflowBinanceSymbolSeparator = '/'
 
 export function getDflowBinanceNodeSymbolKind({
 	baseAsset,
 	quoteAsset
-}: Pick<BinanceSymbolInfo, "baseAsset" | "quoteAsset">) {
+}: Pick<BinanceSymbolInfo, 'baseAsset' | 'quoteAsset'>) {
 	return [baseAsset, quoteAsset].join(dflowBinanceSymbolSeparator)
 }
 

@@ -1,6 +1,6 @@
-import { EmailAddress, Language, OneTimePassword, StrategyKey } from "@workspace/models"
+import { EmailAddress, Language, OneTimePassword, StrategyKey } from '@workspace/models'
 
-import { Action } from "./action.js"
+import { Action } from './action.js'
 
 type SendEmailCommonArgs = {
 	email: EmailAddress
@@ -13,6 +13,6 @@ export type SendEmailAction = {
 }
 
 export type SendEmailActionInput = {
-	SendOneTimePassword: Parameters<SendEmailAction["SendOneTimePassword"]>[0]
-	SuspendedStrategy: Parameters<SendEmailAction["SuspendedStrategy"]>[0]
+	SendOneTimePassword: Parameters<SendEmailAction['SendOneTimePassword']>[0]
+	SuspendedStrategy: Parameters<SendEmailAction['SuspendedStrategy']>[0]
 }

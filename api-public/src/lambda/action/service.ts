@@ -1,5 +1,5 @@
-import { ApiService, BadRequestError, DocumentProviderLevel1, isPublicActionInput as isInput, PublicActionType } from "@workspace/api"
-import { PublicDatabase } from "@workspace/database"
+import { ApiService, BadRequestError, DocumentProviderLevel1, isPublicActionInput as isInput, PublicActionType } from '@workspace/api'
+import { PublicDatabase } from '@workspace/database'
 
 export class Service implements ApiService<PublicActionType> {
 	dataProvider: PublicDatabase

@@ -1,6 +1,6 @@
-import { useReadStrategyFlow } from "_/hooks/public/api"
-import { StrategyKey } from "@workspace/models"
-import { useEffect } from "react"
+import { useReadStrategyFlow } from '_/hooks/public/api'
+import { StrategyKey } from '@workspace/models'
+import { useEffect } from 'react'
 
 export function useStrategyFlow(strategyKey: StrategyKey | undefined) {
 	const { data: strategyFlow, canRun, request } = useReadStrategyFlow()

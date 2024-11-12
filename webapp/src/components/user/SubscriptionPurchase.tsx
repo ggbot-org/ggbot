@@ -1,15 +1,15 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, Column, Columns, InputField, InputFieldProps, Message, Title } from "_/components/library"
-import { SubscriptionEnd, SubscriptionTotalPrice } from "_/components/readonlyFields"
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { useCreateCheckoutSession } from "_/hooks/user/api"
-import { useSubscription } from "_/hooks/user/useSubscription"
-import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { GOTO } from "_/routing/navigation"
-import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from "@workspace/models"
-import { getTime, now, Time } from "minimal-time-helpers"
-import { useContext, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Buttons, Column, Columns, InputField, InputFieldProps, Message, Title } from '_/components/library'
+import { SubscriptionEnd, SubscriptionTotalPrice } from '_/components/readonlyFields'
+import { AuthenticationContext } from '_/contexts/Authentication'
+import { useCreateCheckoutSession } from '_/hooks/user/api'
+import { useSubscription } from '_/hooks/user/useSubscription'
+import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { GOTO } from '_/routing/navigation'
+import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from '@workspace/models'
+import { getTime, now, Time } from 'minimal-time-helpers'
+import { useContext, useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 type FormField = {
 	numMonths: { value: number }
@@ -20,21 +20,21 @@ function SubscriptionNumMonths({
 	isYearlyPurchase, setValue, value, ...props
 }: Omit<
 	InputFieldProps,
-	"label" | "min" | "max" | "onChange" | "step" | "type"
+	'label' | 'min' | 'max' | 'onChange' | 'step' | 'type'
 > & {
 	isYearlyPurchase: boolean | undefined
 	setValue: (value: number | undefined) => void
 }) {
 	return (
 		<InputField
-			color={isYearlyPurchase ? "primary" : undefined}
+			color={isYearlyPurchase ? 'primary' : undefined}
 			label={<FormattedMessage id="SubscriptionNumMonths.label" />}
 			max={maxNumMonths}
 			min={minNumMonths}
 			onChange={(event) => {
 				const value = event.target.value as string
 				const num = Number(value)
-				if (value === "" || isNaN(num)) {
+				if (value === '' || isNaN(num)) {
 					setValue(undefined)
 					return
 				}
@@ -59,9 +59,9 @@ export function SubscriptionPurchase() {
 
 	const [numMonths, setNumMonths] = useState<number | undefined>(defaultNumMonths)
 
-	const subscriptionPlan: SubscriptionPlan = "basic"
+	const subscriptionPlan: SubscriptionPlan = 'basic'
 	const monthlyPrice = Number(STRIPE_PLAN_BASIC_MONTHLY_PRICE)
-	const currency = "EUR"
+	const currency = 'EUR'
 
 	const CREATE_CHECKOUT = useCreateCheckoutSession()
 	const { data: checkoutData, isPending } = CREATE_CHECKOUT
@@ -89,7 +89,7 @@ export function SubscriptionPurchase() {
 		<Columns>
 			<Column bulma="is-narrow">
 				<form
-					className={classnames("box")}
+					className={classnames('box')}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!CREATE_CHECKOUT.canRun) return
@@ -105,7 +105,7 @@ export function SubscriptionPurchase() {
 						}
 						if (purchaseIsDisabled) return
 
-						if (typeof numMonths !== "number") return
+						if (typeof numMonths !== 'number') return
 
 						CREATE_CHECKOUT.request({ email: accountEmail, numMonths, plan: subscriptionPlan })
 					}}
@@ -139,7 +139,7 @@ export function SubscriptionPurchase() {
 					<Message>
 						<FormattedMessage
 							id="SubscriptionPurchase.oneMonthPrice"
-							values={{ price: formatNumber(monthlyPrice, { style: "currency", currency }) }}
+							values={{ price: formatNumber(monthlyPrice, { style: 'currency', currency }) }}
 						/>
 						<br />
 						<FormattedMessage
@@ -151,7 +151,7 @@ export function SubscriptionPurchase() {
 						<Column bulma="is-narrow">
 							<SubscriptionNumMonths
 								isYearlyPurchase={isYearly}
-								name={"numMonths" satisfies FormFieldName}
+								name={'numMonths' satisfies FormFieldName}
 								setValue={setNumMonths}
 								value={numMonths}
 							/>
@@ -167,7 +167,7 @@ export function SubscriptionPurchase() {
 					/>
 					<Buttons>
 						<Button
-							color={isYearly ? "primary" : undefined}
+							color={isYearly ? 'primary' : undefined}
 							isLoading={isPending}
 						>
 							<FormattedMessage id="SubscriptionPurchase.button" />

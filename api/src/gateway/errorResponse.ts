@@ -1,11 +1,11 @@
-import { commonHeaders } from "./commonHeaders.js"
-import { APIGatewayProxyResult } from "./types.js"
+import { commonHeaders } from './commonHeaders.js'
+import { APIGatewayProxyResult } from './types.js'
 
 export function errorResponse(
-	statusCode: APIGatewayProxyResult["statusCode"]
+	statusCode: APIGatewayProxyResult['statusCode']
 ): APIGatewayProxyResult {
 	return {
-		body: "",
+		body: '',
 		headers: commonHeaders,
 		isBase64Encoded: false,
 		statusCode

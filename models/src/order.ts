@@ -1,7 +1,7 @@
-import { Item, newId, NewItem } from "./item.js"
-import { SerializableObject } from "./serializable.js"
-import { StrategyKey } from "./strategy.js"
-import { createdNow, CreationTime } from "./time.js"
+import { Item, newId, NewItem } from './item.js'
+import { SerializableObject } from './serializable.js'
+import { StrategyKey } from './strategy.js'
+import { createdNow, CreationTime } from './time.js'
 
 export type Order = Item &
 	CreationTime & {

@@ -1,6 +1,6 @@
 // Credits: inspired by `JsonValue` in type-fest package.
-import { FiniteNumber, isFiniteNumber } from "./numbers.js"
-import { FiniteString, IdentifierString, isIdentifierString, isNonEmptyString } from "./strings.js"
+import { FiniteNumber, isFiniteNumber } from './numbers.js'
+import { FiniteString, IdentifierString, isIdentifierString, isNonEmptyString } from './strings.js'
 
 export type SerializablePrimitive = FiniteString | FiniteNumber | boolean | null
 
@@ -8,7 +8,7 @@ export function isSerializablePrimitive(arg: unknown): arg is SerializablePrimit
 	return (
 		isFiniteNumber(arg) ||
 		isNonEmptyString(arg) ||
-		typeof arg === "boolean" ||
+		typeof arg === 'boolean' ||
 		arg === null
 	)
 }
@@ -42,7 +42,7 @@ function isSerializableData(arg: unknown): arg is SerializableData {
 }
 
 export function isSerializableObject(arg: unknown): arg is SerializableObject {
-	if (arg === null || typeof arg !== "object" || Array.isArray(arg)) return false
+	if (arg === null || typeof arg !== 'object' || Array.isArray(arg)) return false
 	return Object.entries(arg).every(
 		([key, value]) => isIdentifierString(key) && (value === undefined ? true : isSerializableData(value))
 	)

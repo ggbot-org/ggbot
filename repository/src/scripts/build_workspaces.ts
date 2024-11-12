@@ -1,8 +1,8 @@
 
-import { exec } from "node:child_process"
+import { exec } from 'node:child_process'
 
-import { Repository } from "../Repository.js"
-import { RepositoryPackageJson } from "../RepositoryPackageJson.js"
+import { Repository } from '../Repository.js'
+import { RepositoryPackageJson } from '../RepositoryPackageJson.js'
 
 const repository = new Repository()
 await repository.read()

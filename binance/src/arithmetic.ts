@@ -1,4 +1,4 @@
-import { BinanceDecimal } from "./types.js"
+import { BinanceDecimal } from './types.js'
 
 export const numberToBinanceDecimal = (num: number, precision: number) => num.toFixed(precision)
 
@@ -16,8 +16,8 @@ type BinanceComparisonOperator = (
 ) => boolean
 
 const numOfDecimals = (num: BinanceDecimal): number => {
-	const [_integer, mantissa] = String(num).split(".")
-	if (typeof mantissa !== "string") return 0
+	const [_integer, mantissa] = String(num).split('.')
+	if (typeof mantissa !== 'string') return 0
 	// Remove right padded zeros.
 	//
 	// Create a new number

@@ -1,6 +1,6 @@
-import { useReadStrategies } from "_/hooks/user/api"
-import { AccountStrategy } from "@workspace/models"
-import { useCallback, useEffect, useState } from "react"
+import { useReadStrategies } from '_/hooks/user/api'
+import { AccountStrategy } from '@workspace/models'
+import { useCallback, useEffect, useState } from 'react'
 
 export function useAccountStrategies() {
 	const { canRun, data, isPending, request, reset } = useReadStrategies()

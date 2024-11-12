@@ -1,16 +1,16 @@
-import { FlowViewNode } from "flow-view"
+import { FlowViewNode } from 'flow-view'
 
 export class FlowViewNodeInfo extends FlowViewNode {
-	static type = "info"
+	static type = 'info'
 
 	static style = {
 		textarea: {
-			border: "0",
-			"font-size": "16px",
-			outline: "none",
-			padding: "4px 17px"
+			border: '0',
+			'font-size': '16px',
+			outline: 'none',
+			padding: '4px 17px'
 		},
-		"textarea::selection": { "background-color": "transparent" }
+		'textarea::selection': { 'background-color': 'transparent' }
 	}
 
 	static minNumCols = 5
@@ -22,7 +22,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
 		const { textarea } = this
 		if (!textarea) return
 		const numCols = textarea.value
-			.split("\n")
+			.split('\n')
 			.reduce((max, line) => Math.max(max, line.length), 0)
 		textarea.cols = Math.max(FlowViewNodeInfo.minNumCols, numCols)
 	}
@@ -30,7 +30,7 @@ export class FlowViewNodeInfo extends FlowViewNode {
 	setNumRows() {
 		const { textarea } = this
 		if (!textarea) return
-		const numRows = textarea.value.split("\n").length
+		const numRows = textarea.value.split('\n').length
 		textarea.rows = Math.max(FlowViewNodeInfo.minNumRows, numRows)
 	}
 
@@ -38,13 +38,13 @@ export class FlowViewNodeInfo extends FlowViewNode {
 		// TODO update FlowViewNode definition
 		// should be also a generic like createElement<HTMLTextAreaElement>
 		// @ts-expect-error
-		const textarea = this.createElement("textarea")
+		const textarea = this.createElement('textarea')
 		this.textarea = textarea
 
 		textarea.spellcheck = false
 		textarea.tabIndex = -1
 		textarea.value = this.text
-		textarea.wrap = "off"
+		textarea.wrap = 'off'
 
 		this.setNumRows()
 		this.setNumCols()
@@ -70,8 +70,8 @@ export class FlowViewNodeInfo extends FlowViewNode {
 
 		textarea.onkeydown = (event: KeyboardEvent) => {
 			event.stopPropagation()
-			if (event.code === "Tab") event.preventDefault()
-			if (event.code === "Escape") textarea.blur()
+			if (event.code === 'Tab') event.preventDefault()
+			if (event.code === 'Escape') textarea.blur()
 		}
 
 		textarea.onkeyup = (event: KeyboardEvent) => {

@@ -1,5 +1,5 @@
-import { PropsWithChildren, useCallback, useEffect } from "react"
-import { Modal as _Modal, ModalBackground, ModalClose, ModalContent } from "trunx"
+import { PropsWithChildren, useCallback, useEffect } from 'react'
+import { Modal as _Modal, ModalBackground, ModalClose, ModalContent } from 'trunx'
 
 export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 	Partial<{
@@ -20,7 +20,7 @@ export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 	const onKeydown = useCallback(
 		(event: KeyboardEvent) => {
 			if (userCannotCloseModal) return
-			if (event.code === "Escape") setIsActive(false)
+			if (event.code === 'Escape') setIsActive(false)
 		},
 		[setIsActive, userCannotCloseModal]
 	)
@@ -28,12 +28,12 @@ export function Modal({ children, isActive, setIsActive }: PropsWithChildren<
 	useEffect(() => {
 		if (userCannotCloseModal) return
 		if (isActive) {
-			addEventListener("keydown", onKeydown)
+			addEventListener('keydown', onKeydown)
 		} else {
-			removeEventListener("keydown", onKeydown)
+			removeEventListener('keydown', onKeydown)
 		}
 		return () => {
-			removeEventListener("keydown", onKeydown)
+			removeEventListener('keydown', onKeydown)
 		}
 	}, [userCannotCloseModal, isActive, onKeydown])
 

@@ -1,4 +1,4 @@
-import { esbuildDefinitions } from "_/esbuild/definitions"
+import { esbuildDefinitions } from '_/esbuild/definitions'
 
 declare global {
 	const BUILD_DATE: typeof esbuildDefinitions.BUILD_DATE

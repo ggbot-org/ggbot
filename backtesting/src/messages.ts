@@ -1,9 +1,9 @@
-import { Frequency } from "@workspace/models"
-import { DayInterval } from "minimal-time-helpers"
+import { Frequency } from '@workspace/models'
+import { DayInterval } from 'minimal-time-helpers'
 
-import { BacktestingSession } from "./session.js"
-import { BacktestingStatus } from "./status.js"
-import { BacktestingStrategy } from "./strategy.js"
+import { BacktestingSession } from './session.js'
+import { BacktestingStatus } from './status.js'
+import { BacktestingStrategy } from './strategy.js'
 
 /**
  * @example
@@ -17,25 +17,25 @@ import { BacktestingStrategy } from "./strategy.js"
  * ```
  */
 export type BacktestingMessageInData =
-	| { type: "PAUSE" }
-	| { type: "RESUME" }
-	| { type: "STOP" }
+	| { type: 'PAUSE' }
+	| { type: 'RESUME' }
+	| { type: 'STOP' }
 	| {
-		type: "SET_AFTER_STEP_BEHAVIOUR"
-	} & Pick<BacktestingSession, "afterStepBehaviour">
+		type: 'SET_AFTER_STEP_BEHAVIOUR'
+	} & Pick<BacktestingSession, 'afterStepBehaviour'>
 	| {
-		type: "SET_DAY_INTERVAL"
+		type: 'SET_DAY_INTERVAL'
 		dayInterval: DayInterval
 	}
 	| {
-		type: "SET_FREQUENCY"
+		type: 'SET_FREQUENCY'
 		frequency: Frequency
 	}
 	| {
-		type: "START"
+		type: 'START'
 		dayInterval: DayInterval
 		frequency: Frequency
-	} & Pick<BacktestingStrategy, "flow" | "strategyKey" | "strategyName">
+	} & Pick<BacktestingStrategy, 'flow' | 'strategyKey' | 'strategyName'>
 
 /**
  * @example
@@ -50,15 +50,15 @@ export type BacktestingMessageInData =
  */
 export type BacktestingMessageOutData =
 	| {
-		type: "STATUS_CHANGED"
+		type: 'STATUS_CHANGED'
 		status: BacktestingStatus
 	}
 	| {
-		type: "UPDATED_MEMORY"
-	} & Pick<BacktestingSession, "memory">
+		type: 'UPDATED_MEMORY'
+	} & Pick<BacktestingSession, 'memory'>
 	| {
-		type: "UPDATED_ORDERS"
-	} & Pick<BacktestingSession, "orders">
+		type: 'UPDATED_ORDERS'
+	} & Pick<BacktestingSession, 'orders'>
 	| {
-		type: "UPDATED_PROGRESS"
-	} & Pick<BacktestingSession, "currentTimestamp" | "stepIndex" | "numSteps">
+		type: 'UPDATED_PROGRESS'
+	} & Pick<BacktestingSession, 'currentTimestamp' | 'stepIndex' | 'numSteps'>

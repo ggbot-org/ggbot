@@ -1,3 +1,3 @@
-import { BinanceIDB } from "@workspace/indexeddb-binance"
+import { BinanceIDB } from '@workspace/indexeddb-binance'
 
 export const binanceIDB = new BinanceIDB()

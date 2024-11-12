@@ -1,12 +1,12 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, InputFieldName, Message, OneColumn } from "_/components/library"
-import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
-import { useCreateStrategy } from "_/hooks/user/api"
-import { formattedMessageMarkup } from "_/i18n/formattedMessageMarkup"
-import { ApiActionError } from "@workspace/api"
-import { isName } from "@workspace/models"
-import { useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Buttons, InputFieldName, Message, OneColumn } from '_/components/library'
+import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
+import { useCreateStrategy } from '_/hooks/user/api'
+import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { ApiActionError } from '@workspace/api'
+import { isName } from '@workspace/models'
+import { useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }
@@ -21,7 +21,7 @@ export function CreateStrategy() {
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
-	const color = canCreate ? (error ? "warning" : "primary") : undefined
+	const color = canCreate ? (error ? 'warning' : 'primary') : undefined
 
 	useEffect(() => {
 		if (CREATE.error) {
@@ -33,14 +33,14 @@ export function CreateStrategy() {
 	return (
 		<OneColumn>
 			<form
-				className={classnames("box")}
+				className={classnames('box')}
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (!canCreate) return
 					if (!CREATE.canRun) return
 					const eventTarget = event.target as EventTarget & FormField
 					const name = eventTarget.name.value
-					if (isName(name)) CREATE.request({ kind: "binance", name })
+					if (isName(name)) CREATE.request({ kind: 'binance', name })
 				}}
 			>
 				{error ? (
@@ -53,13 +53,13 @@ export function CreateStrategy() {
 				<InputFieldName
 					required
 					label={<FormattedMessage id="StrategyName.label" />}
-					name={"name" satisfies FormFieldName}
+					name={'name' satisfies FormFieldName}
 					onChange={(event) => setCanCreate(isName((event.target.value)))}
 					readOnly={readOnly}
 				/>
 				<Buttons>
 					<Button
-						bulma={{ "is-light": color !== "primary" }}
+						bulma={{ 'is-light': color !== 'primary' }}
 						color={color}
 						isLoading={isLoading}
 					>

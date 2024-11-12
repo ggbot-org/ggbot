@@ -1,8 +1,8 @@
-import { CacheMap } from "@workspace/cache"
-import { ExecutorDatabase } from "@workspace/database"
-import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccount, isAccountStrategy, StrategyMemory } from "@workspace/models"
+import { CacheMap } from '@workspace/cache'
+import { ExecutorDatabase } from '@workspace/database'
+import { AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyKey, AccountStrategySchedulingKey, isAccount, isAccountStrategy, StrategyMemory } from '@workspace/models'
 
-import { ONE_HOUR } from "./durations.js"
+import { ONE_HOUR } from './durations.js'
 
 const cache = new CacheMap<AccountStrategy[]>(ONE_HOUR)
 
@@ -55,7 +55,7 @@ export class AccountStrategiesProvider {
 		// })
 	}
 
-	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, "accountId" | "strategyId">) {
+	async suspendAccountStrategySchedulings({ accountId, strategyId }: Pick<AccountStrategyKey, 'accountId' | 'strategyId'>) {
 		console.warn(`Suspend strategy accountId=${accountId} strategyId=${strategyId}`)
 
 		// Update cache locally.

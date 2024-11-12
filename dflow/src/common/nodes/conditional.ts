@@ -1,13 +1,13 @@
-import { Dflow, DflowNode } from "dflow"
+import { Dflow, DflowNode } from 'dflow'
 
 const { input, output } = Dflow
 
 export class If extends DflowNode {
-	static kind = "if"
+	static kind = 'if'
 	static inputs = [
-		input([], { name: "condition" }),
-		input([], { name: "then" }),
-		input([], { name: "else" })
+		input([], { name: 'condition' }),
+		input([], { name: 'then' }),
+		input([], { name: 'else' })
 	]
 	static outputs = [output()]
 	run() {

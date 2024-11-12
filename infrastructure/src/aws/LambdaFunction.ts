@@ -1,5 +1,5 @@
-import { LambdaClient } from "@aws-sdk/client-lambda"
-import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from "@aws-sdk/client-lambda"
+import { LambdaClient } from '@aws-sdk/client-lambda'
+import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from '@aws-sdk/client-lambda'
 
 export class LambdaFunction {
 	client: LambdaClient
@@ -7,9 +7,9 @@ export class LambdaFunction {
 	region: string
 	functionName: string
 	architecture = Architecture.arm64
-	executionRoleArn = ""
+	executionRoleArn = ''
 	runtime = Runtime.nodejs20x
-	handler = "index.handler"
+	handler = 'index.handler'
 
 	constructor(accountId: string, region: string, functionName: string) {
 		this.client = new LambdaClient({ region })
@@ -23,7 +23,7 @@ export class LambdaFunction {
 		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
 	}
 
-	async create({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
+	async create({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
 		await this.client.send(new CreateFunctionCommand({
 			Code: { ZipFile },
 			FunctionName: this.functionName,
@@ -35,7 +35,7 @@ export class LambdaFunction {
 		}))
 	}
 
-	async updateFunctionCode({ ZipFile }: Required<Pick<FunctionCode, "ZipFile">>) {
+	async updateFunctionCode({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
 		await this.client.send(new UpdateFunctionCodeCommand({
 			ZipFile,
 			FunctionName: this.functionName,

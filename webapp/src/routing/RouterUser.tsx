@@ -1,15 +1,15 @@
-import { I18nProvider } from "_/contexts/I18n"
-import { ToastProvider } from "_/contexts/Toast"
-import { CopyStrategyPage } from "_/pages/user/CopyStrategy"
-import { DashboardPage } from "_/pages/user/Dashboard"
-import { EditStrategyPage } from "_/pages/user/EditStrategy"
-import { PurchaseCanceledPage } from "_/pages/user/PurchaseCanceled"
-import { SettingsPage } from "_/pages/user/Settings"
-import { StrategyPage } from "_/pages/user/Strategy"
-import { SubscriptionPurchasedPage } from "_/pages/user/SubscriptionPurchased"
-import { mount } from "_/react/mount"
-import { webapp } from "_/routing/webapp"
-import { nullStrategyKey } from "@workspace/models"
+import { I18nProvider } from '_/contexts/I18n'
+import { ToastProvider } from '_/contexts/Toast'
+import { CopyStrategyPage } from '_/pages/user/CopyStrategy'
+import { DashboardPage } from '_/pages/user/Dashboard'
+import { EditStrategyPage } from '_/pages/user/EditStrategy'
+import { PurchaseCanceledPage } from '_/pages/user/PurchaseCanceled'
+import { SettingsPage } from '_/pages/user/Settings'
+import { StrategyPage } from '_/pages/user/Strategy'
+import { SubscriptionPurchasedPage } from '_/pages/user/SubscriptionPurchased'
+import { mount } from '_/react/mount'
+import { webapp } from '_/routing/webapp'
+import { nullStrategyKey } from '@workspace/models'
 
 function Router() {
 	const pathname = location.pathname

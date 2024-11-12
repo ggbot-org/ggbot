@@ -1,12 +1,12 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, Div, InputFieldName, Message, OneColumn, Title } from "_/components/library"
-import { StrategyRecord, StrategyRecordProps } from "_/components/StrategyRecord"
-import { StrategiesErrorExceededQuota } from "_/components/user/StrategiesErrorExceededQuota"
-import { useCopyStrategy } from "_/hooks/user/api"
-import { ApiActionError } from "@workspace/api"
-import { isName, StrategyKey } from "@workspace/models"
-import { useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Buttons, Div, InputFieldName, Message, OneColumn, Title } from '_/components/library'
+import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
+import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
+import { useCopyStrategy } from '_/hooks/user/api'
+import { ApiActionError } from '@workspace/api'
+import { isName, StrategyKey } from '@workspace/models'
+import { useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }
@@ -19,7 +19,7 @@ export function CopyStrategy({
 	const [error, setError] = useState<ApiActionError | undefined>()
 	const [canCreate, setCanCreate] = useState(false)
 
-	const color = canCreate ? (error ? "warning" : "primary") : undefined
+	const color = canCreate ? (error ? 'warning' : 'primary') : undefined
 
 	const COPY = useCopyStrategy()
 
@@ -45,7 +45,7 @@ export function CopyStrategy({
 			</OneColumn>
 			<OneColumn>
 				<form
-					className={classnames("box")}
+					className={classnames('box')}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!strategyKey) return
@@ -65,14 +65,14 @@ export function CopyStrategy({
 					<InputFieldName
 						required
 						label={<FormattedMessage id="StrategyName.label" />}
-						name={"name" satisfies FormFieldName}
+						name={'name' satisfies FormFieldName}
 						onChange={(event) => setCanCreate(isName(event.target.value))}
 						placeholder={strategyName}
 						readOnly={COPY.isPending || COPY.isDone}
 					/>
 					<Buttons>
 						<Button
-							bulma={{ "is-light": color !== "primary" }}
+							bulma={{ 'is-light': color !== 'primary' }}
 							color={color}
 							isLoading={COPY.isPending || COPY.isDone}
 						>

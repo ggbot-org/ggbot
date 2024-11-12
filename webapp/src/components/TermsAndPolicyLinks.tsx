@@ -1,10 +1,10 @@
-import { classnames } from "_/classnames"
-import { webapp } from "_/routing/webapp"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { webapp } from '_/routing/webapp'
+import { FormattedMessage } from 'react-intl'
 
 export function TermsAndPolicyLinks() {
 	return (
-		<ul className={classnames("terms-and-policy-links")}>
+		<ul className={classnames('terms-and-policy-links')}>
 			<li>
 				<a href={webapp.privacy.pathname}>
 					<FormattedMessage id="Privacy.title" />

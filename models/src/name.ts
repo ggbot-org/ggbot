@@ -1,4 +1,4 @@
-import { isNonEmptyString, NonEmptyString } from "./strings.js"
+import { isNonEmptyString, NonEmptyString } from './strings.js'
 
 /** A Name is any not empty string, with a max length. */
 export type Name = NonEmptyString

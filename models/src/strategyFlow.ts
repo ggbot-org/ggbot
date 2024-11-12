@@ -1,6 +1,6 @@
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { updatedNow, UpdateTime } from "./time.js"
+import { updatedNow, UpdateTime } from './time.js'
 
 type StrategyFlowViewItem = {
 	id: string
@@ -27,10 +27,10 @@ type StrategyFlowViewNode = StrategyFlowViewItem & {
 
 type StrategyFlowViewEdge = StrategyFlowViewItem & {
 	/** Describes the output where edge starts from. */
-	from: [StrategyFlowViewNode["id"], StrategyFlowViewOutput["id"]]
+	from: [StrategyFlowViewNode['id'], StrategyFlowViewOutput['id']]
 
 	/** Describes the input where edge ends to. */
-	to: [StrategyFlowViewNode["id"], StrategyFlowViewInput["id"]]
+	to: [StrategyFlowViewNode['id'], StrategyFlowViewInput['id']]
 }
 
 type StrategyFlowView = {
@@ -40,11 +40,11 @@ type StrategyFlowView = {
 
 export type StrategyFlowGraphEdge = Pick<
 	StrategyFlowViewEdge,
-	"id" | "from" | "to"
+	'id' | 'from' | 'to'
 >
 export type StrategyFlowGraphNode = Pick<
 	StrategyFlowViewNode,
-	"id" | "text" | "ins" | "outs"
+	'id' | 'text' | 'ins' | 'outs'
 >
 
 export type StrategyFlowGraph = {
@@ -65,7 +65,7 @@ export type StrategyFlow = UpdateTime & {
 
 export function newStrategyFlow({
 	view
-}: Pick<StrategyFlow, "view">): StrategyFlow {
+}: Pick<StrategyFlow, 'view'>): StrategyFlow {
 	return {
 		view,
 		...updatedNow()
@@ -80,34 +80,34 @@ export function isStrategyFlowView(arg: unknown): arg is StrategyFlowView {
 export const welcomeFlow: StrategyFlowView = {
 	nodes: [
 		{
-			id: "aaaaa",
-			text: "candles",
+			id: 'aaaaa',
+			text: 'candles',
 			ins: [
 				{
-					id: "i0"
+					id: 'i0'
 				},
 				{
-					id: "i1"
+					id: 'i1'
 				},
 				{
-					id: "i2"
+					id: 'i2'
 				}
 			],
 			outs: [
 				{
-					id: "o0"
+					id: 'o0'
 				},
 				{
-					id: "o1"
+					id: 'o1'
 				},
 				{
-					id: "o2"
+					id: 'o2'
 				},
 				{
-					id: "o3"
+					id: 'o3'
 				},
 				{
-					id: "o4"
+					id: 'o4'
 				}
 			],
 			x: 100,

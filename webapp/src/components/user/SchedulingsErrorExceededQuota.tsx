@@ -1,7 +1,7 @@
-import { Message } from "_/components/library"
-import { ApiActionError, isApiActionServerSideError } from "@workspace/api"
-import { ErrorExceededQuota, quotaType } from "@workspace/models"
-import { FormattedMessage } from "react-intl"
+import { Message } from '_/components/library'
+import { ApiActionError, isApiActionServerSideError } from '@workspace/api'
+import { ErrorExceededQuota, quotaType } from '@workspace/models'
+import { FormattedMessage } from 'react-intl'
 
 export function SchedulingsErrorExceededQuota({ error }: { error: ApiActionError | undefined }) {
 	if (!isApiActionServerSideError(error)) return null

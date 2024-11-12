@@ -1,4 +1,4 @@
-import { Tag, Tags } from "_/components/library"
+import { Tag, Tags } from '_/components/library'
 
 export function TagsExample() {
 	return (

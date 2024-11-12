@@ -1,7 +1,7 @@
-import { Columns, OneColumn } from "_/components/library"
-import { Message } from "_/components/library"
-import { PageContainer } from "_/components/user/PageContainer"
-import { FormattedMessage } from "react-intl"
+import { Columns, OneColumn } from '_/components/library'
+import { Message } from '_/components/library'
+import { PageContainer } from '_/components/user/PageContainer'
+import { FormattedMessage } from 'react-intl'
 
 export function PurchaseCanceledPage() {
 	return (

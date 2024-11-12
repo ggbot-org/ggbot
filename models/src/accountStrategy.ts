@@ -1,10 +1,10 @@
-import { objectTypeGuard } from "minimal-type-guard-helpers"
+import { objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { AccountKey, isAccountKey } from "./account.js"
-import { ItemKey } from "./item.js"
-import { isName } from "./name.js"
-import { isStrategyKey, Strategy, StrategyKey } from "./strategy.js"
-import { isStrategySchedulings, StrategyScheduling } from "./strategyScheduling.js"
+import { AccountKey, isAccountKey } from './account.js'
+import { ItemKey } from './item.js'
+import { isName } from './name.js'
+import { isStrategyKey, Strategy, StrategyKey } from './strategy.js'
+import { isStrategySchedulings, StrategyScheduling } from './strategyScheduling.js'
 
 export type AccountStrategyKey = AccountKey & StrategyKey
 
@@ -13,7 +13,7 @@ export const isAccountStrategyKey = objectTypeGuard<AccountStrategyKey>(
 )
 
 export type AccountStrategy = StrategyKey &
-	Pick<Strategy, "name"> & {
+	Pick<Strategy, 'name'> & {
 		schedulings: StrategyScheduling[]
 	}
 
@@ -24,10 +24,10 @@ export const isAccountStrategy = objectTypeGuard<AccountStrategy>(
 )
 
 export function newAccountStrategy({ name, ...strategyKey }: Pick<
-	AccountStrategy, "strategyId" | "strategyKind" | "name"
+	AccountStrategy, 'strategyId' | 'strategyKind' | 'name'
 >): AccountStrategy {
 	return { ...strategyKey, name, schedulings: [] }
 }
 
-export type AccountStrategySchedulingKey = Pick<AccountStrategyKey, "accountId" | "strategyId"> &
-	ItemKey<"schedulingId", { schedulingId: StrategyScheduling["id"] }>
+export type AccountStrategySchedulingKey = Pick<AccountStrategyKey, 'accountId' | 'strategyId'> &
+	ItemKey<'schedulingId', { schedulingId: StrategyScheduling['id'] }>

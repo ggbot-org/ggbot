@@ -1,16 +1,16 @@
-import { join } from "node:path"
+import { join } from 'node:path'
 
-import { webappPagePathname, WebappURLs } from "@workspace/locators"
-import writeFile from "write-file-utf8"
+import { webappPagePathname, WebappURLs } from '@workspace/locators'
+import writeFile from 'write-file-utf8'
 
-import { publicDir, webappEcmaScriptsConfig } from "../package.js"
-import { html } from "./html.js"
+import { publicDir, webappEcmaScriptsConfig } from '../package.js'
+import { html } from './html.js'
 
 // Here webapp is used only for pathnames. Any URL is fine as baseURL.
-const webapp = new WebappURLs(new URL("http://i.com"))
+const webapp = new WebappURLs(new URL('http://i.com'))
 
 function jsPath(path: string[]) {
-	return `/${path.join("/")}`
+	return `/${path.join('/')}`
 }
 
 const adminJs = jsPath(webappEcmaScriptsConfig.admin.jsPath)

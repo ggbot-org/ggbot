@@ -1,8 +1,8 @@
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { sessionWebStorage } from "_/storages/session"
-import { quota } from "@workspace/models"
-import { Day, DayInterval, getDay, today } from "minimal-time-helpers"
-import { useCallback, useContext, useState } from "react"
+import { AuthenticationContext } from '_/contexts/Authentication'
+import { sessionWebStorage } from '_/storages/session'
+import { quota } from '@workspace/models'
+import { Day, DayInterval, getDay, today } from 'minimal-time-helpers'
+import { useCallback, useContext, useState } from 'react'
 
 export function useStrategiesDayInterval() {
 	const { subscription } = useContext(AuthenticationContext)

@@ -1,9 +1,9 @@
-import { BinanceApiEndpoint } from "./endpoints.js"
-import { ErrorBinanceHTTP } from "./errors.js"
-import { BinanceApiDomain, binanceApiDomain } from "./FQDN.js"
-import { BinanceRequestHeaders } from "./headers.js"
-import { BinanceApiRequestMethod, BinanceApiRequestParams } from "./request.js"
-import { BinanceErrorPayload } from "./types.js"
+import { BinanceApiEndpoint } from './endpoints.js'
+import { ErrorBinanceHTTP } from './errors.js'
+import { BinanceApiDomain, binanceApiDomain } from './FQDN.js'
+import { BinanceRequestHeaders } from './headers.js'
+import { BinanceApiRequestMethod, BinanceApiRequestParams } from './request.js'
+import { BinanceErrorPayload } from './types.js'
 
 /** BinanceConnector handles requests to Binance API. */
 export class BinanceConnector {
@@ -47,7 +47,7 @@ export class BinanceConnector {
 				? `["${value.join('","')}"]`
 				: value
 			url.searchParams.append(key, String(valueString))
-			if (key !== "signature") debugUrl.searchParams.append(key, String(valueString))
+			if (key !== 'signature') debugUrl.searchParams.append(key, String(valueString))
 		}
 
 		const response = await fetch(url, fetchOptions)

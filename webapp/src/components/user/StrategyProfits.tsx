@@ -1,10 +1,10 @@
-import { DayIntervalBox } from "_/components/DayIntervalBox"
-import { Column, OneColumn } from "_/components/library"
-import { ProfitSummary } from "_/components/ProfitSummary"
-import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
-import { useReadStrategyOrders } from "_/hooks/user/api"
-import { useStrategiesDayInterval } from "_/hooks/user/useStrategiesDayInterval"
-import { StrategyKey } from "@workspace/models"
+import { DayIntervalBox } from '_/components/DayIntervalBox'
+import { Column, OneColumn } from '_/components/library'
+import { ProfitSummary } from '_/components/ProfitSummary'
+import { StrategyOrdersTable } from '_/components/StrategyOrdersTable'
+import { useReadStrategyOrders } from '_/hooks/user/api'
+import { useStrategiesDayInterval } from '_/hooks/user/useStrategiesDayInterval'
+import { StrategyKey } from '@workspace/models'
 
 export function StrategyProfits({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	const { min, max, start, setStart, end, setEnd } = useStrategiesDayInterval()

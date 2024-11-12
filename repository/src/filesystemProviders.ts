@@ -4,7 +4,7 @@ export type DirectoryProvider = {
 }
 
 export type FileProvider = {
-	directoryPathname: DirectoryProvider["pathname"]
+	directoryPathname: DirectoryProvider['pathname']
 	filename: string
 	read(): Promise<void>
 }

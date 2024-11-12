@@ -1,16 +1,16 @@
-import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainColor, Message, Modal } from "_/components/library"
-import { AuthenticationContext } from "_/contexts/Authentication"
-import { useDeleteAccount } from "_/hooks/user/api"
-import { useContext, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainColor, Message, Modal } from '_/components/library'
+import { AuthenticationContext } from '_/contexts/Authentication'
+import { useDeleteAccount } from '_/hooks/user/api'
+import { useContext, useEffect, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export function DeleteAccount() {
 	const { accountId } = useContext(AuthenticationContext)
 
-	const [accountIdConfirmation, setAccountIdConfirmation] = useState("")
+	const [accountIdConfirmation, setAccountIdConfirmation] = useState('')
 
 	const accountIdConfirmed = accountIdConfirmation === accountId
-	const color: MainColor | undefined = accountIdConfirmed ? "danger" : undefined
+	const color: MainColor | undefined = accountIdConfirmed ? 'danger' : undefined
 
 	const DELETE = useDeleteAccount()
 	const isLoading = DELETE.isPending
@@ -22,13 +22,13 @@ export function DeleteAccount() {
 	useEffect(() => {
 		if (modalIsActive) return
 		setHasConsent(false)
-		setAccountIdConfirmation("")
+		setAccountIdConfirmation('')
 	}, [modalIsActive])
 
 	return (
 		<>
 			<Button
-				bulma={{ "is-skeleton": !accountId }}
+				bulma={{ 'is-skeleton': !accountId }}
 				color="danger"
 				onClick={() => setModalIsActive(true)}
 			>

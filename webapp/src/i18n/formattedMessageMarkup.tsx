@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
 type FormattedMessageValues = Record<string, (chunks: ReactNode[]) => JSX.Element>
 

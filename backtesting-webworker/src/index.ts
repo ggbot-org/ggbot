@@ -1,9 +1,9 @@
-import { BacktestingBinanceClient, BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession, BacktestingStrategy } from "@workspace/backtesting"
-import { DflowBinanceExecutor } from "@workspace/dflow"
-import { newId, Order } from "@workspace/models"
-import { Time } from "minimal-time-helpers"
+import { BacktestingBinanceClient, BacktestingMessageInData, BacktestingMessageOutData, BacktestingSession, BacktestingStrategy } from '@workspace/backtesting'
+import { DflowBinanceExecutor } from '@workspace/dflow'
+import { newId, Order } from '@workspace/models'
+import { Time } from 'minimal-time-helpers'
 
-import { getBinance, prepareBinance } from "./binance.js"
+import { getBinance, prepareBinance } from './binance.js'
 
 const { postMessage } = self
 
@@ -15,14 +15,14 @@ const orderSet = new Set<Order>()
 
 function STATUS_CHANGED(session: BacktestingSession) {
 	return ({
-		type: "STATUS_CHANGED",
+		type: 'STATUS_CHANGED',
 		status: session.status
 	} satisfies BacktestingMessageOutData)
 }
 
 function UPDATED_PROGRESS(session: BacktestingSession) {
 	return ({
-		type: "UPDATED_PROGRESS",
+		type: 'UPDATED_PROGRESS',
 		currentTimestamp: session.currentTimestamp,
 		stepIndex: session.stepIndex,
 		numSteps: session.numSteps
@@ -44,13 +44,13 @@ function updateUI(session: BacktestingSession) {
 	postMessage(UPDATED_PROGRESS(session))
 	// Update memory.
 	if (memoryChangedOnSomeStep) {
-		postMessage({ type: "UPDATED_MEMORY", memory: session.memory } satisfies BacktestingMessageOutData)
+		postMessage({ type: 'UPDATED_MEMORY', memory: session.memory } satisfies BacktestingMessageOutData)
 		memoryChangedOnSomeStep = false
 	}
 	// Update orders.
 	if (orderSet.size > 0) {
 		const orders = Array.from(orderSet.values())
-		postMessage({ type: "UPDATED_ORDERS", orders } satisfies BacktestingMessageOutData)
+		postMessage({ type: 'UPDATED_ORDERS', orders } satisfies BacktestingMessageOutData)
 		orderSet.clear()
 	}
 }
@@ -63,7 +63,7 @@ async function runBinance(
 ) {
 	const flow = session.strategy?.flow
 	if (!flow) {
-		console.error("Cannot run backtesting, flow is undefined")
+		console.error('Cannot run backtesting, flow is undefined')
 		return
 	}
 	const updateInterval = 2_000
@@ -111,13 +111,13 @@ async function runBinance(
 }
 
 async function runBacktesting(session: BacktestingSession): Promise<void> {
-	if (session.strategyKind === "binance") {
-		const binance = getBinance(session.frequency?.interval ?? "1h")
+	if (session.strategyKind === 'binance') {
+		const binance = getBinance(session.frequency?.interval ?? '1h')
 		await prepareBinance(binance, binanceExecutor, session)
 		await runBinance(binance, binanceExecutor, session)
 	}
 
-	if (session.status === "done") {
+	if (session.status === 'done') {
 		updateUI(session)
 		postMessage(STATUS_CHANGED(session))
 		session.reset()
@@ -129,24 +129,24 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 	try {
 		const { type: messageType } = message
 
-		if (messageType === "SET_AFTER_STEP_BEHAVIOUR") {
+		if (messageType === 'SET_AFTER_STEP_BEHAVIOUR') {
 			const { afterStepBehaviour } = message
 			session.afterStepBehaviour = afterStepBehaviour
 		}
 
-		if (messageType === "SET_DAY_INTERVAL") {
+		if (messageType === 'SET_DAY_INTERVAL') {
 			session.dayInterval = message.dayInterval
 			session.computeTimes()
 			postMessage(UPDATED_PROGRESS(session))
 		}
 
-		if (messageType === "SET_FREQUENCY") {
+		if (messageType === 'SET_FREQUENCY') {
 			session.frequency = message.frequency
 			session.computeTimes()
 			postMessage(UPDATED_PROGRESS(session))
 		}
 
-		if (messageType === "START") {
+		if (messageType === 'START') {
 			const { dayInterval, flow, frequency, strategyKey, strategyName } = message
 			// Initialize session.
 			session.dayInterval = dayInterval
@@ -167,7 +167,7 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 			await runBacktesting(session)
 		}
 
-		if (messageType === "STOP") {
+		if (messageType === 'STOP') {
 			const statusChanged = session.stop()
 			if (statusChanged) {
 				session.computeTimes()
@@ -176,13 +176,13 @@ self.onmessage = async ({ data: message }: MessageEvent<BacktestingMessageInData
 			}
 		}
 
-		if (messageType === "PAUSE") {
+		if (messageType === 'PAUSE') {
 			const statusChanged = session.pause()
 			if (statusChanged) postMessage(STATUS_CHANGED(session))
 			postMessage(UPDATED_PROGRESS(session))
 		}
 
-		if (messageType === "RESUME") {
+		if (messageType === 'RESUME') {
 			const statusChanged = session.resume()
 			if (statusChanged) postMessage(STATUS_CHANGED(session))
 

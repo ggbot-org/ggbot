@@ -1,28 +1,28 @@
-import { getBinanceSymbolInfo } from "_/binance/getSymbolInfo"
-import { classnames } from "_/classnames"
-import { DateTime, Div, Level, LevelItem, SizeProp, Title } from "_/components/library"
-import { useBinanceSymbols } from "_/hooks/useBinanceSymbols"
-import { add, BinanceFill, greaterThan, isBinanceFill, lessThan, mul, neg, sub } from "@workspace/binance"
-import { Order, StrategyKind } from "@workspace/models"
-import { DayInterval } from "minimal-time-helpers"
-import { arrayTypeGuard, objectTypeGuard } from "minimal-type-guard-helpers"
-import { Fragment, PropsWithChildren } from "react"
-import { FormattedMessage } from "react-intl"
+import { getBinanceSymbolInfo } from '_/binance/getSymbolInfo'
+import { classnames } from '_/classnames'
+import { DateTime, Div, Level, LevelItem, SizeProp, Title } from '_/components/library'
+import { useBinanceSymbols } from '_/hooks/useBinanceSymbols'
+import { add, BinanceFill, greaterThan, isBinanceFill, lessThan, mul, neg, sub } from '@workspace/binance'
+import { Order, StrategyKind } from '@workspace/models'
+import { DayInterval } from 'minimal-time-helpers'
+import { arrayTypeGuard, objectTypeGuard } from 'minimal-type-guard-helpers'
+import { Fragment, PropsWithChildren } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 function toNumber(value: string, precision: number) {
 	return Number(value).toFixed(precision)
 }
 
-function Label({ children, size }: PropsWithChildren<SizeProp<"large">>) {
-	return <p className={classnames({ "is-size-6": size === "large" })}>{children}</p>
+function Label({ children, size }: PropsWithChildren<SizeProp<'large'>>) {
+	return <p className={classnames({ 'is-size-6': size === 'large' })}>{children}</p>
 }
 
-function Value({ children, size }: PropsWithChildren<SizeProp<"large">>) {
+function Value({ children, size }: PropsWithChildren<SizeProp<'large'>>) {
 	return children ? (
 		<p
-			className={classnames("has-text-weight-medium", {
-				"is-size-5": size === undefined,
-				"is-size-3": size === "large",
+			className={classnames('has-text-weight-medium', {
+				'is-size-5': size === undefined,
+				'is-size-3': size === 'large',
 			})}
 		>
 			{children}
@@ -57,10 +57,10 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 	let numBuys: number | undefined = undefined
 	let numSells: number | undefined = undefined
 
-	const feesMap = new Map<Fee["asset"], Fee["quantity"]>()
-	const symbolStats = new Map<SymbolStats["symbol"], Omit<SymbolStats, "symbol">>()
+	const feesMap = new Map<Fee['asset'], Fee['quantity']>()
+	const symbolStats = new Map<SymbolStats['symbol'], Omit<SymbolStats, 'symbol'>>()
 
-	if (strategyKind === "binance") {
+	if (strategyKind === 'binance') {
 		if (orders) for (const { info } of orders) {
 			if (
 				!objectTypeGuard<{
@@ -71,15 +71,15 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 					type: string;
 				}>(
 					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
-							[side, status, symbol, type].every((item) => typeof item === "string"),
+							[side, status, symbol, type].every((item) => typeof item === 'string'),
 				)(info)
 			) continue
 
-			if (info.status !== "FILLED") continue
-			if (info.type !== "MARKET") continue
+			if (info.status !== 'FILLED') continue
+			if (info.type !== 'MARKET') continue
 			const { fills, side, symbol } = info
 
-			const isBuy = side === "BUY"
+			const isBuy = side === 'BUY'
 
 			// Count buys and sells.
 			if (isBuy) numBuys === undefined ? (numBuys = 1) : numBuys++
@@ -127,7 +127,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 			</Title>
 			<Level>
 				<LevelItem>
-					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
+					<Div bulma={['is-flex', 'is-flex-direction-column', 'mx-2']}>
 						<Label>
 							<FormattedMessage id="DailyInterval.from" />
 						</Label>
@@ -135,7 +135,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 							<DateTime format="day" value={dayInterval?.start} />
 						</Value>
 					</Div>
-					<Div bulma={["is-flex", "is-flex-direction-column", "mx-2"]}>
+					<Div bulma={['is-flex', 'is-flex-direction-column', 'mx-2']}>
 						<Label>
 							<FormattedMessage id="DailyInterval.to" />
 						</Label>
@@ -164,9 +164,9 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 			{Array.from(symbolStats, ([symbol, stats]) => {
 				const symbolInfo = getBinanceSymbolInfo(symbol, binanceSymbols)
 				if (!symbolInfo) return {
-					baseAsset: "",
+					baseAsset: '',
 					baseAssetPrecision: 0,
-					quoteAsset: "",
+					quoteAsset: '',
 					quoteAssetPrecision: 0,
 					symbol,
 					...stats,

@@ -1,8 +1,8 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { typicalPrice } from "./typicalPrice.js"
+import { typicalPrice } from './typicalPrice.js'
 
 type TypicalPrice = typeof typicalPrice
 type TypicalPriceInput = {
@@ -11,7 +11,7 @@ type TypicalPriceInput = {
 	close: Parameters<TypicalPrice>[2]
 }
 
-test("Typical Price", () => {
+test('Typical Price', () => {
 	assertDeepEqual<TypicalPriceInput, ReturnType<TypicalPrice>>(
 		({ high, low, close }: TypicalPriceInput) => typicalPrice(high, low, close),
 		[

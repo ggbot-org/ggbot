@@ -1,4 +1,4 @@
-import { strategyKeyParamsFromURL } from "_/routing/paramFromURL"
+import { strategyKeyParamsFromURL } from '_/routing/paramFromURL'
 
 export function useStrategyKey() {
 	const strategyKey = strategyKeyParamsFromURL(new URL(location.href))

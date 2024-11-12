@@ -1,13 +1,13 @@
-import { isIdentifierString, isSerializablePrimitive } from "@workspace/models"
-import { Dflow, DflowNode } from "dflow"
+import { isIdentifierString, isSerializablePrimitive } from '@workspace/models'
+import { Dflow, DflowNode } from 'dflow'
 
-import { DflowCommonContext as Context } from "../context.js"
-import { inputKey } from "./commonIO.js"
+import { DflowCommonContext as Context } from '../context.js'
+import { inputKey } from './commonIO.js'
 
 const { input, output } = Dflow
 
 export class DeleteMemory extends DflowNode {
-	static kind = "deleteMemory"
+	static kind = 'deleteMemory'
 	static inputs = [inputKey]
 	run() {
 		const context = this.host.context as Context
@@ -21,9 +21,9 @@ export class DeleteMemory extends DflowNode {
 }
 
 export class GetMemory extends DflowNode {
-	static kind = "getMemory"
-	static inputs = [inputKey, input([], { name: "default", optional: true })]
-	static outputs = [output([], { name: "value" })]
+	static kind = 'getMemory'
+	static inputs = [inputKey, input([], { name: 'default', optional: true })]
+	static outputs = [output([], { name: 'value' })]
 	run() {
 		const context = this.host.context as Context
 		const key = this.input(0).data
@@ -41,8 +41,8 @@ export class GetMemory extends DflowNode {
 }
 
 export class SetMemory extends DflowNode {
-	static kind = "setMemory"
-	static inputs = [inputKey, input([], { name: "value" })]
+	static kind = 'setMemory'
+	static inputs = [inputKey, input([], { name: 'value' })]
 	run() {
 		const context = this.host.context as Context
 		const key = this.input(0).data

@@ -1,8 +1,8 @@
-import { Frequency, frequencyIntervalDuration, Order, StrategyFlowGraph, StrategyKind, StrategyMemory } from "@workspace/models"
-import { dateToTime, DayInterval, dayIntervalToDate, Time } from "minimal-time-helpers"
+import { Frequency, frequencyIntervalDuration, Order, StrategyFlowGraph, StrategyKind, StrategyMemory } from '@workspace/models'
+import { dateToTime, DayInterval, dayIntervalToDate, Time } from 'minimal-time-helpers'
 
-import { BacktestingStatus, BacktestingStatusController } from "./status.js"
-import { BacktestingStrategy } from "./strategy.js"
+import { BacktestingStatus, BacktestingStatusController } from './status.js'
+import { BacktestingStrategy } from './strategy.js'
 
 export class BacktestingSession implements BacktestingStatusController {
 	static defaultAfterStepBehaviour = { pauseOnMemoryChange: false, pauseOnNewOrder: false }
@@ -10,7 +10,7 @@ export class BacktestingSession implements BacktestingStatusController {
 	afterStepBehaviour = BacktestingSession.defaultAfterStepBehaviour
 	memory: StrategyMemory = {}
 	orders: Order[] = []
-	status: BacktestingStatus = "initial"
+	status: BacktestingStatus = 'initial'
 	stepIndex = 0
 	times: Time[] = []
 
@@ -42,10 +42,10 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	get nextTime(): Time | undefined {
-		if (this.status !== "running") return
+		if (this.status !== 'running') return
 		const time = this.times[this.stepIndex]
 		this.stepIndex++
-		if (this.times.length === this.stepIndex) this.status = "done"
+		if (this.times.length === this.stepIndex) this.status = 'done'
 		return time
 	}
 
@@ -66,22 +66,22 @@ export class BacktestingSession implements BacktestingStatusController {
 	}
 
 	set dayInterval(value: DayInterval) {
-		if (["running", "paused"].includes(this.status)) return
+		if (['running', 'paused'].includes(this.status)) return
 		this.#dayInterval = value
 	}
 
 	set frequency(value: Frequency) {
-		if (["running", "paused"].includes(this.status)) return
+		if (['running', 'paused'].includes(this.status)) return
 		this.#frequency = value
 	}
 
 	set strategy(value: BacktestingStrategy) {
-		if (["running", "paused"].includes(this.status)) return
+		if (['running', 'paused'].includes(this.status)) return
 		this.#strategy = value
 	}
 
-	set strategyFlow(value: BacktestingStrategy["flow"]) {
-		if (this.status !== "initial") return
+	set strategyFlow(value: BacktestingStrategy['flow']) {
+		if (this.status !== 'initial') return
 		if (this.#strategy === undefined) return
 		this.#strategy.flow = value
 	}
@@ -95,8 +95,8 @@ export class BacktestingSession implements BacktestingStatusController {
 	 */
 	pause(): boolean {
 		// Can pause only if status is "running".
-		if (this.status !== "running") return false
-		this.status = "paused"
+		if (this.status !== 'running') return false
+		this.status = 'paused'
 		return true
 	}
 
@@ -116,8 +116,8 @@ export class BacktestingSession implements BacktestingStatusController {
 	resume(): boolean {
 		if (!this.canRun) return false
 		// Can resume only if status is "paused".
-		if (this.status !== "paused") return false
-		this.status = "running"
+		if (this.status !== 'paused') return false
+		this.status = 'running'
 		return true
 	}
 
@@ -133,8 +133,8 @@ export class BacktestingSession implements BacktestingStatusController {
 		// Can start only if status is "initial" or "done".
 		// In case status is "done" and input parameters are unchanged
 		// it will run again and (hopefully :) produce same results.
-		if (this.status !== "initial" && this.status !== "done") return false
-		this.status = "running"
+		if (this.status !== 'initial' && this.status !== 'done') return false
+		this.status = 'running'
 		this.reset()
 		return true
 	}
@@ -147,8 +147,8 @@ export class BacktestingSession implements BacktestingStatusController {
 	 * ```
 	 */
 	stop(): boolean {
-		if (["paused", "running"].includes(this.status)) {
-			this.status = "initial"
+		if (['paused', 'running'].includes(this.status)) {
+			this.status = 'initial'
 			this.reset()
 			return true
 		}

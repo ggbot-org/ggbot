@@ -1,22 +1,22 @@
-import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { describe, test } from 'node:test'
 
-import { Frequency } from "@workspace/models"
-import { DayInterval, isTime, Time } from "minimal-time-helpers"
+import { Frequency } from '@workspace/models'
+import { DayInterval, isTime, Time } from 'minimal-time-helpers'
 
-import { BacktestingSession } from "./session.js"
-import { BacktestingStrategy } from "./strategy.js"
-import { emptyStrategy } from "./strategy_test.js"
+import { BacktestingSession } from './session.js'
+import { BacktestingStrategy } from './strategy.js'
+import { emptyStrategy } from './strategy_test.js'
 
-const strategyName = "my strategy"
+const strategyName = 'my strategy'
 const newSession = ({
 	dayInterval,
 	frequency,
 	strategy
 }: {
-	dayInterval: NonNullable<BacktestingSession["dayInterval"]>
-	frequency: NonNullable<BacktestingSession["frequency"]>
-	strategy: NonNullable<BacktestingSession["strategy"]>
+	dayInterval: NonNullable<BacktestingSession['dayInterval']>
+	frequency: NonNullable<BacktestingSession['frequency']>
+	strategy: NonNullable<BacktestingSession['strategy']>
 }) => {
 	const session = new BacktestingSession()
 	session.strategy = strategy
@@ -26,15 +26,15 @@ const newSession = ({
 	return session
 }
 
-describe("BacktestingSession", () => {
-	test("`canRun` is true only when `dayInterval`, `frequency` and `strategy` are provided", () => {
+describe('BacktestingSession', () => {
+	test('`canRun` is true only when `dayInterval`, `frequency` and `strategy` are provided', () => {
 		const session = new BacktestingSession()
 		assert.ok(!session.canRun)
 		session.dayInterval = {
-			start: "2000-01-01",
-			end: "2001-01-01"
+			start: '2000-01-01',
+			end: '2001-01-01'
 		}
-		session.frequency = { every: 1, interval: "1h" }
+		session.frequency = { every: 1, interval: '1h' }
 		assert.ok(!session.canRun)
 		session.strategy = emptyStrategy()
 		assert.ok(!session.canRun)
@@ -44,16 +44,16 @@ describe("BacktestingSession", () => {
 
 	test('cannot set `dayInterval` while `status` is "running"', () => {
 		const dayInterval1: DayInterval = {
-			start: "2000-01-01",
-			end: "2001-01-01"
+			start: '2000-01-01',
+			end: '2001-01-01'
 		}
 		const dayInterval2: DayInterval = {
-			start: "2021-01-01",
-			end: "2022-01-01"
+			start: '2021-01-01',
+			end: '2022-01-01'
 		}
 		const session = newSession({
 			dayInterval: dayInterval1,
-			frequency: { every: 1, interval: "1h" },
+			frequency: { every: 1, interval: '1h' },
 			strategy: emptyStrategy()
 		})
 		assert.deepEqual(session.dayInterval, dayInterval1)
@@ -78,14 +78,14 @@ describe("BacktestingSession", () => {
 	test('cannot set `frequency` while `status` is "running"', () => {
 		const frequency1: Frequency = {
 			every: 1,
-			interval: "1h"
+			interval: '1h'
 		}
 		const frequency2: Frequency = {
 			every: 20,
-			interval: "1m"
+			interval: '1m'
 		}
 		const session = newSession({
-			dayInterval: { start: "2000-01-01", end: "2001-01-01" },
+			dayInterval: { start: '2000-01-01', end: '2001-01-01' },
 			frequency: frequency1,
 			strategy: emptyStrategy()
 		})
@@ -111,16 +111,16 @@ describe("BacktestingSession", () => {
 	test('cannot set `strategy` while `status` is "running"', () => {
 		const strategy1 = emptyStrategy()
 		const strategy2 = new BacktestingStrategy({
-			strategyKey: { strategyKind: "none", strategyId: "01010101" },
+			strategyKey: { strategyKind: 'none', strategyId: '01010101' },
 			strategyName,
-			flow: { nodes: [{ id: "a", text: "true" }], edges: [] }
+			flow: { nodes: [{ id: 'a', text: 'true' }], edges: [] }
 		})
 		const session = newSession({
 			dayInterval: {
-				start: "2000-01-01",
-				end: "2001-01-01"
+				start: '2000-01-01',
+				end: '2001-01-01'
 			},
-			frequency: { every: 1, interval: "1h" },
+			frequency: { every: 1, interval: '1h' },
 			strategy: strategy1
 		})
 		assert.deepEqual(session.strategy?.strategyKey, strategy1.strategyKey)
@@ -150,16 +150,16 @@ describe("BacktestingSession", () => {
 	test('cannot set `strategyFlow` while `status` is "running"', () => {
 		const strategy = emptyStrategy()
 		const strategyFlow1 = strategy.flow
-		const strategyFlow2: BacktestingStrategy["flow"] = {
-			nodes: [{ id: "a", text: "true" }],
+		const strategyFlow2: BacktestingStrategy['flow'] = {
+			nodes: [{ id: 'a', text: 'true' }],
 			edges: []
 		}
 		const session = newSession({
 			dayInterval: {
-				start: "2000-01-01",
-				end: "2001-01-01"
+				start: '2000-01-01',
+				end: '2001-01-01'
 			},
-			frequency: { every: 1, interval: "1h" },
+			frequency: { every: 1, interval: '1h' },
 			strategy
 		})
 		assert.deepEqual(session.strategy?.flow, strategyFlow1)
@@ -184,10 +184,10 @@ describe("BacktestingSession", () => {
 	test('`nextTime` return Time if status is "running"', () => {
 		const session = newSession({
 			dayInterval: {
-				start: "2000-01-01",
-				end: "2000-01-01"
+				start: '2000-01-01',
+				end: '2000-01-01'
 			},
-			frequency: { every: 1, interval: "1h" },
+			frequency: { every: 1, interval: '1h' },
 			strategy: emptyStrategy()
 		})
 		assert.equal(session.nextTime, undefined)
@@ -200,31 +200,31 @@ describe("BacktestingSession", () => {
 			dateIsoStrings.push(new Date(time).toISOString())
 		}
 		assert.deepEqual(dateIsoStrings, [
-			"2000-01-01T00:00:00.000Z",
-			"2000-01-01T01:00:00.000Z",
-			"2000-01-01T02:00:00.000Z",
-			"2000-01-01T03:00:00.000Z",
-			"2000-01-01T04:00:00.000Z",
-			"2000-01-01T05:00:00.000Z",
-			"2000-01-01T06:00:00.000Z",
-			"2000-01-01T07:00:00.000Z",
-			"2000-01-01T08:00:00.000Z",
-			"2000-01-01T09:00:00.000Z",
-			"2000-01-01T10:00:00.000Z",
-			"2000-01-01T11:00:00.000Z",
-			"2000-01-01T12:00:00.000Z",
-			"2000-01-01T13:00:00.000Z",
-			"2000-01-01T14:00:00.000Z",
-			"2000-01-01T15:00:00.000Z",
-			"2000-01-01T16:00:00.000Z",
-			"2000-01-01T17:00:00.000Z",
-			"2000-01-01T18:00:00.000Z",
-			"2000-01-01T19:00:00.000Z",
-			"2000-01-01T20:00:00.000Z",
-			"2000-01-01T21:00:00.000Z",
-			"2000-01-01T22:00:00.000Z",
-			"2000-01-01T23:00:00.000Z"
+			'2000-01-01T00:00:00.000Z',
+			'2000-01-01T01:00:00.000Z',
+			'2000-01-01T02:00:00.000Z',
+			'2000-01-01T03:00:00.000Z',
+			'2000-01-01T04:00:00.000Z',
+			'2000-01-01T05:00:00.000Z',
+			'2000-01-01T06:00:00.000Z',
+			'2000-01-01T07:00:00.000Z',
+			'2000-01-01T08:00:00.000Z',
+			'2000-01-01T09:00:00.000Z',
+			'2000-01-01T10:00:00.000Z',
+			'2000-01-01T11:00:00.000Z',
+			'2000-01-01T12:00:00.000Z',
+			'2000-01-01T13:00:00.000Z',
+			'2000-01-01T14:00:00.000Z',
+			'2000-01-01T15:00:00.000Z',
+			'2000-01-01T16:00:00.000Z',
+			'2000-01-01T17:00:00.000Z',
+			'2000-01-01T18:00:00.000Z',
+			'2000-01-01T19:00:00.000Z',
+			'2000-01-01T20:00:00.000Z',
+			'2000-01-01T21:00:00.000Z',
+			'2000-01-01T22:00:00.000Z',
+			'2000-01-01T23:00:00.000Z'
 		])
-		assert.equal(session.status, "done")
+		assert.equal(session.status, 'done')
 	})
 })

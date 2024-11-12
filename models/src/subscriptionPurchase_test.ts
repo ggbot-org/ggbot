@@ -1,17 +1,17 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
 
-import { isYearlyPurchase } from "./subscriptionPurchase.js"
+import { isYearlyPurchase } from './subscriptionPurchase.js'
 
-test("isYearlyPurchase", () => {
+test('isYearlyPurchase', () => {
 	assertEqual<
 		Parameters<typeof isYearlyPurchase>[0],
 		ReturnType<typeof isYearlyPurchase>
 	>(isYearlyPurchase, [
 		{
 			input: {
-				numMonths: "any"
+				numMonths: 'any'
 			},
 			output: undefined
 		},

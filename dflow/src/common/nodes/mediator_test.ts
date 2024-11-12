@@ -1,12 +1,12 @@
-import { strict as assert } from "node:assert"
-import { test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { DflowCommonContext as Context } from "../context.js"
-import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput, MediatorMemory } from "./mediator.js"
+import { DflowCommonContext as Context } from '../context.js'
+import { addMediation, AddMediationInput, AddMediationOutput, exitMediation, ExitMediationInput, MediatorMemory } from './mediator.js'
 
-test("addMediation", () => {
+test('addMediation', () => {
 	assertDeepEqual<AddMediationInput, AddMediationOutput>(addMediation, [
 		// First iteration.
 		{
@@ -105,12 +105,12 @@ test("addMediation", () => {
 	])
 })
 
-test("exitMediation", () => {
+test('exitMediation', () => {
 	assertDeepEqual<ExitMediationInput, ReturnType<typeof exitMediation>>(exitMediation, [
 		// First iteration.
 		{
 			input: {
-				direction: "LONG",
+				direction: 'LONG',
 				averagePrice: 0,
 				percentageGain: 0.01,
 				price: 100_000
@@ -121,7 +121,7 @@ test("exitMediation", () => {
 		// First iteration.
 		{
 			input: {
-				direction: "SHORT",
+				direction: 'SHORT',
 				averagePrice: 0,
 				percentageGain: 0.01,
 				price: 100_000
@@ -131,19 +131,19 @@ test("exitMediation", () => {
 	])
 })
 
-test("MediatorMemory", () => {
-	const memoryValue = "some memory value"
+test('MediatorMemory', () => {
+	const memoryValue = 'some memory value'
 	const context: Context = {
 		defaults: {}, params: {}, time: 0,
 		memory: { value: memoryValue },
 	}
-	const memory = new MediatorMemory(context, "LABEL")
+	const memory = new MediatorMemory(context, 'LABEL')
 	memory.averagePrice = 100
-	assert.equal(context.memory["mediator:averagePrice:LABEL"], 100)
+	assert.equal(context.memory['mediator:averagePrice:LABEL'], 100)
 	memory.numPositions = 1
-	assert.equal(context.memory["mediator:numPositions:LABEL"], 1)
+	assert.equal(context.memory['mediator:numPositions:LABEL'], 1)
 	memory.totalQuantity = 10
-	assert.equal(context.memory["mediator:totalQuantity:LABEL"], 10)
+	assert.equal(context.memory['mediator:totalQuantity:LABEL'], 10)
 	memory.cleanup()
 	assert.equal(Object.keys(context.memory).length, 1)
 	assert.equal(context.memory.value, memoryValue)

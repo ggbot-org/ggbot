@@ -1,7 +1,7 @@
-import { ActionInput, ApiService, BadRequestError, BinanceClientActionType, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, isApiActionOutputData, isApiActionOutputError, isUserClientActionInput as isInput, TimeoutError, UserClientActionType } from "@workspace/api"
-import { UserDatabase } from "@workspace/database"
-import { ENV } from "@workspace/env"
-import { BinanceProxyURLs } from "@workspace/locators"
+import { ActionInput, ApiService, BadRequestError, BinanceClientActionType, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, isApiActionOutputData, isApiActionOutputError, isUserClientActionInput as isInput, TimeoutError, UserClientActionType } from '@workspace/api'
+import { UserDatabase } from '@workspace/database'
+import { ENV } from '@workspace/env'
+import { BinanceProxyURLs } from '@workspace/locators'
 
 export class Service implements ApiService<UserClientActionType> {
 	dataProvider: UserDatabase
@@ -10,7 +10,7 @@ export class Service implements ApiService<UserClientActionType> {
 	constructor(
 		accountKey: ConstructorParameters<typeof UserDatabase>[0],
 		documentProvider: ConstructorParameters<typeof UserDatabase>[1],
-		authorization: Service["authorization"]
+		authorization: Service['authorization']
 	) {
 		this.dataProvider = new UserDatabase(accountKey, documentProvider)
 		this.authorization = authorization
@@ -54,7 +54,7 @@ export class Service implements ApiService<UserClientActionType> {
 	}
 
 	ReadBinanceAccountApiRestrictions() {
-		return this.binanceClientAction({ type: "ReadBinanceAccountApiRestrictions" })
+		return this.binanceClientAction({ type: 'ReadBinanceAccountApiRestrictions' })
 	}
 
 	ReadBinanceApiKey() {

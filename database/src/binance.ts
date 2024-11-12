@@ -1,7 +1,7 @@
-import { BinanceDatabaseAction, BinanceDatabaseActionOutput as Output, DocumentProviderLevel1 } from "@workspace/api"
-import { AccountKey } from "@workspace/models"
+import { BinanceDatabaseAction, BinanceDatabaseActionOutput as Output, DocumentProviderLevel1 } from '@workspace/api'
+import { AccountKey } from '@workspace/models'
 
-import { pathname } from "./locators.js"
+import { pathname } from './locators.js'
 
 export class BinanceDatabase implements BinanceDatabaseAction {
 	accountKey: AccountKey
@@ -13,6 +13,6 @@ export class BinanceDatabase implements BinanceDatabaseAction {
 	}
 
 	ReadBinanceApiConfig() {
-		return this.documentProvider.getItem<Output["ReadBinanceApiConfig"]>(pathname.binanceApiConfig(this.accountKey))
+		return this.documentProvider.getItem<Output['ReadBinanceApiConfig']>(pathname.binanceApiConfig(this.accountKey))
 	}
 }

@@ -1,6 +1,6 @@
-import { StrategyKey } from "./strategy.js"
-import { NonEmptyString } from "./strings.js"
-import { CreationTime } from "./time.js"
+import { StrategyKey } from './strategy.js'
+import { NonEmptyString } from './strings.js'
+import { CreationTime } from './time.js'
 
 /** A BalanceItem represents an asset inflow or outflow. */
 export type BalanceItem = {

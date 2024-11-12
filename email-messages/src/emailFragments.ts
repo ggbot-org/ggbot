@@ -1,4 +1,4 @@
-import { ENV } from "@workspace/env"
+import { ENV } from '@workspace/env'
 
 const PROJECT_SHORT_NAME = ENV.PROJECT_SHORT_NAME()
 

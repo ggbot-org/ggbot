@@ -1,6 +1,6 @@
-import { BinanceExchangeInfo, BinanceExchangeInfoCacheProvider } from "@workspace/binance"
+import { BinanceExchangeInfo, BinanceExchangeInfoCacheProvider } from '@workspace/binance'
 
-import { BinanceIDB } from "./BinanceIDB.js"
+import { BinanceIDB } from './BinanceIDB.js'
 
 const ONE_DAY = 86_400_000
 

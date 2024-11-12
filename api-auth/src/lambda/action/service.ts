@@ -1,9 +1,9 @@
-import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, BadRequestError, DocumentProviderLevel2, isAuthClientActionInput as isInput } from "@workspace/api"
-import { signSession } from "@workspace/authentication"
-import { AuthDatabase } from "@workspace/database"
-import { SendEmailProvider } from "@workspace/email-messages"
-import { ClientSession } from "@workspace/models"
-import { today } from "minimal-time-helpers"
+import { ApiService, AuthClientActionOutput as Output, AuthClientActionType, BadRequestError, DocumentProviderLevel2, isAuthClientActionInput as isInput } from '@workspace/api'
+import { signSession } from '@workspace/authentication'
+import { AuthDatabase } from '@workspace/database'
+import { SendEmailProvider } from '@workspace/email-messages'
+import { ClientSession } from '@workspace/models'
+import { today } from 'minimal-time-helpers'
 
 export class Service implements ApiService<AuthClientActionType> {
 	dataProvider: AuthDatabase
@@ -18,15 +18,15 @@ export class Service implements ApiService<AuthClientActionType> {
 		if (!isInput.Enter(arg)) throw new BadRequestError()
 		const { email } = arg
 		const oneTimePassword = await this.dataProvider.CreateOneTimePassword(email)
-		await this.sendEmailProvider.SendOneTimePassword({ language: "en", email, oneTimePassword })
-		return { emailSent: true } satisfies Output["Enter"]
+		await this.sendEmailProvider.SendOneTimePassword({ language: 'en', email, oneTimePassword })
+		return { emailSent: true } satisfies Output['Enter']
 	}
 
 	async Verify(arg: unknown) {
 		if (!isInput.Verify(arg)) throw new BadRequestError()
 		const { code, email } = arg
 
-		const output: Output["Verify"] = { token: undefined }
+		const output: Output['Verify'] = { token: undefined }
 
 		const storedOneTimePassword = await this.dataProvider.ReadOneTimePassword(email)
 		const verified = code === storedOneTimePassword?.code

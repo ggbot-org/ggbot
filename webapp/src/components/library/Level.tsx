@@ -1,7 +1,7 @@
 // TODO add Level and LevelItem to trunx, then remove this file
-import { classnames } from "_/classnames"
-import { HTMLAttributes, PropsWithChildren, ReactNode } from "react"
-import { BulmaProp } from "trunx"
+import { classnames } from '_/classnames'
+import { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
+import { BulmaProp } from 'trunx'
 
 type LevelProps = HTMLAttributes<HTMLDivElement> &
 	BulmaProp &
@@ -21,7 +21,7 @@ export function Level({
 }: PropsWithChildren<LevelProps>) {
 	return (
 		<div
-			className={classnames("level", { "is-mobile": isMobile }, bulma)}
+			className={classnames('level', { 'is-mobile': isMobile }, bulma)}
 			{...props}
 		>
 			{left ? <div className="level-left">{left}</div> : null}
@@ -39,7 +39,7 @@ export function LevelItem({
 	...props
 }: PropsWithChildren<LevelItemProps>) {
 	return (
-		<div className={classnames("level-item", bulma)} {...props}>
+		<div className={classnames('level-item', bulma)} {...props}>
 			{children}
 		</div>
 	)

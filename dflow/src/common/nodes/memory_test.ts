@@ -1,33 +1,33 @@
-import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { describe, test } from 'node:test'
 
-import { SerializablePrimitive } from "@workspace/models"
-import { now } from "minimal-time-helpers"
+import { SerializablePrimitive } from '@workspace/models'
+import { now } from 'minimal-time-helpers'
 
-import { DflowCommonExecutor, getDflowExecutionOutputData } from "../executor.js"
+import { DflowCommonExecutor, getDflowExecutionOutputData } from '../executor.js'
 
-const testValues: SerializablePrimitive[] = [42, "a string"]
+const testValues: SerializablePrimitive[] = [42, 'a string']
 
-describe("deleteMemory", () => {
-	test("can delete context memory", async () => {
-		const nodeId = "test"
-		const key = "memory key"
+describe('deleteMemory', () => {
+	test('can delete context memory', async () => {
+		const nodeId = 'test'
+		const key = 'memory key'
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
 				nodes: [
 					{
-						id: "key",
+						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
 						id: nodeId,
-						text: "deleteMemory",
-						ins: [{ id: "key" }]
+						text: 'deleteMemory',
+						ins: [{ id: 'key' }]
 					}
 				],
 				edges: [
-					{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+					{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }
 				]
 			})
 			const { memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
@@ -37,26 +37,26 @@ describe("deleteMemory", () => {
 	})
 })
 
-describe("getMemory", () => {
-	test("can read context memory", async () => {
-		const nodeId = "test"
-		const key = "memory key"
+describe('getMemory', () => {
+	test('can read context memory', async () => {
+		const nodeId = 'test'
+		const key = 'memory key'
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
 				nodes: [
 					{
-						id: "key",
+						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
 						id: nodeId,
-						text: "getMemory",
-						ins: [{ id: "key" }, { id: "default" }]
+						text: 'getMemory',
+						ins: [{ id: 'key' }, { id: 'default' }]
 					}
 				],
 				edges: [
-					{ id: "e", from: ["key", "out"], to: [nodeId, "key"] }
+					{ id: 'e', from: ['key', 'out'], to: [nodeId, 'key'] }
 				]
 			})
 			const { execution, memory, memoryChanged } = await executor.run({ params: {}, memory: { [key]: value }, time: now() })
@@ -66,34 +66,34 @@ describe("getMemory", () => {
 		}
 	})
 
-	test("can fallback to default", async () => {
-		const nodeId = "test"
-		const key = "memory key"
+	test('can fallback to default', async () => {
+		const nodeId = 'test'
+		const key = 'memory key'
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
 				nodes: [
 					{
-						id: "key",
+						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
-						id: "default",
+						id: 'default',
 						text: JSON.stringify(value),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
 						id: nodeId,
-						text: "getMemory",
-						ins: [{ id: "key" }, { id: "default" }]
+						text: 'getMemory',
+						ins: [{ id: 'key' }, { id: 'default' }]
 					}
 				],
 				edges: [
-					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
-						id: "e2",
-						from: ["default", "out"],
-						to: [nodeId, "default"]
+						id: 'e2',
+						from: ['default', 'out'],
+						to: [nodeId, 'default']
 					}
 				]
 			})
@@ -104,35 +104,35 @@ describe("getMemory", () => {
 		}
 	})
 
-	test("default value is ignored if memory is defined", async () => {
-		const nodeId = "test"
-		const key = "memory key"
-		const defaultValue = "my default value"
+	test('default value is ignored if memory is defined', async () => {
+		const nodeId = 'test'
+		const key = 'memory key'
+		const defaultValue = 'my default value'
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
 				nodes: [
 					{
-						id: "key",
+						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
-						id: "default",
+						id: 'default',
 						text: JSON.stringify(defaultValue),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
 						id: nodeId,
-						text: "getMemory",
-						ins: [{ id: "key" }, { id: "default" }]
+						text: 'getMemory',
+						ins: [{ id: 'key' }, { id: 'default' }]
 					}
 				],
 				edges: [
-					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
-						id: "e2",
-						from: ["default", "out"],
-						to: [nodeId, "default"]
+						id: 'e2',
+						from: ['default', 'out'],
+						to: [nodeId, 'default']
 					}
 				]
 			})
@@ -144,35 +144,35 @@ describe("getMemory", () => {
 	})
 })
 
-describe("setMemory", () => {
-	test("can set context memory", async () => {
-		const nodeId = "test"
-		const key = "memory key"
+describe('setMemory', () => {
+	test('can set context memory', async () => {
+		const nodeId = 'test'
+		const key = 'memory key'
 		for (const value of testValues) {
 			const executor = new DflowCommonExecutor({
 				nodes: [
 					{
-						id: "key",
+						id: 'key',
 						text: JSON.stringify(key),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
-						id: "value",
+						id: 'value',
 						text: JSON.stringify(value),
-						outs: [{ id: "out" }]
+						outs: [{ id: 'out' }]
 					},
 					{
 						id: nodeId,
-						text: "setMemory",
-						ins: [{ id: "key" }, { id: "value" }]
+						text: 'setMemory',
+						ins: [{ id: 'key' }, { id: 'value' }]
 					}
 				],
 				edges: [
-					{ id: "e1", from: ["key", "out"], to: [nodeId, "key"] },
+					{ id: 'e1', from: ['key', 'out'], to: [nodeId, 'key'] },
 					{
-						id: "e2",
-						from: ["value", "out"],
-						to: [nodeId, "value"]
+						id: 'e2',
+						from: ['value', 'out'],
+						to: [nodeId, 'value']
 					}
 				]
 			})

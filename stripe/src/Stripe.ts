@@ -1,1 +1,1 @@
-export { default as Stripe } from "stripe"
+export { default as Stripe } from 'stripe'

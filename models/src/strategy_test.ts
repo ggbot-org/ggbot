@@ -1,19 +1,19 @@
-import { test } from "node:test"
+import { test } from 'node:test'
 
-import { assertEqual } from "minimal-assertion-helpers"
-import { MaybeObject } from "minimal-type-guard-helpers"
+import { assertEqual } from 'minimal-assertion-helpers'
+import { MaybeObject } from 'minimal-type-guard-helpers'
 
-import { nullId } from "./item.js"
-import { invalidId } from "./item_test.js"
-import { normalizeName } from "./name.js"
-import { invalidNames } from "./name_test.js"
-import { isStrategy, newStrategy, Strategy } from "./strategy.js"
-import { createdNow } from "./time.js"
+import { nullId } from './item.js'
+import { invalidId } from './item_test.js'
+import { normalizeName } from './name.js'
+import { invalidNames } from './name_test.js'
+import { isStrategy, newStrategy, Strategy } from './strategy.js'
+import { createdNow } from './time.js'
 
-test("isStrategy", () => {
+test('isStrategy', () => {
 	const accountId = nullId
-	const kind = "none"
-	const name = "Name"
+	const kind = 'none'
+	const name = 'Name'
 	const { whenCreated } = createdNow()
 	assertEqual<Partial<MaybeObject<Strategy>>, boolean>(isStrategy, [
 		{
@@ -34,7 +34,7 @@ test("isStrategy", () => {
 			input: {
 				accountId,
 				id: nullId,
-				whenCreated: "not a timestamp"
+				whenCreated: 'not a timestamp'
 			},
 			output: false
 		},

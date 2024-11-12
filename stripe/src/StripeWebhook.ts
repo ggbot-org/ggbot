@@ -1,8 +1,8 @@
-import { ENV } from "@workspace/env"
-import { ApiURLs } from "@workspace/locators"
+import { ENV } from '@workspace/env'
+import { ApiURLs } from '@workspace/locators'
 
-import { newStripe } from "./newStripe.js"
-import { Stripe } from "./Stripe.js"
+import { newStripe } from './newStripe.js'
+import { Stripe } from './Stripe.js'
 
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 const api = new ApiURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
@@ -10,15 +10,15 @@ const api = new ApiURLs(DEPLOY_STAGE, ENV.DNS_DOMAIN())
 const stripe = newStripe()
 
 export class StripeWebhook {
-	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion = "2023-08-16"
+	static apiVersion: Stripe.WebhookEndpointCreateParams.ApiVersion = '2023-08-16'
 	static enabledEvents: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
-		"checkout.session.completed"
+		'checkout.session.completed'
 	]
 
 	endpoint: Stripe.WebhookEndpoint | undefined
 
 	constructor() {
-		if (DEPLOY_STAGE === "local") throw new Error("A StripeWebhook on local deploy stage does not make sense.")
+		if (DEPLOY_STAGE === 'local') throw new Error('A StripeWebhook on local deploy stage does not make sense.')
 	}
 
 	get url() {
@@ -28,10 +28,10 @@ export class StripeWebhook {
 	/** Create WebhookEndpoint if it does not exist. */
 	async create() {
 		const { url } = this
-		console.info("Create StripeWebhook", url)
+		console.info('Create StripeWebhook', url)
 		const exists = await this.exists()
 		if (exists) {
-			console.warn("Cannot create StripeWebhook, it already exists.")
+			console.warn('Cannot create StripeWebhook, it already exists.')
 			return
 		}
 		return await stripe.webhookEndpoints.create({

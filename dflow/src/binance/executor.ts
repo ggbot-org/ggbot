@@ -1,12 +1,12 @@
-import { StrategyFlowGraph } from "@workspace/models"
-import { DflowNodesCatalog } from "dflow"
+import { StrategyFlowGraph } from '@workspace/models'
+import { DflowNodesCatalog } from 'dflow'
 
-import { DflowCommonExecutorContext, DflowExecutor } from "../common/executor.js"
-import { DflowBinanceClient } from "./client.js"
-import { DflowBinanceContext } from "./context.js"
-import { getBalanceFromExecutionSteps, getOrdersFromExecutionSteps } from "./execution.js"
-import { extractsBinanceDefaultsFromFlow } from "./flow.js"
-import { DflowBinanceHost } from "./host.js"
+import { DflowCommonExecutorContext, DflowExecutor } from '../common/executor.js'
+import { DflowBinanceClient } from './client.js'
+import { DflowBinanceContext } from './context.js'
+import { getBalanceFromExecutionSteps, getOrdersFromExecutionSteps } from './execution.js'
+import { extractsBinanceDefaultsFromFlow } from './flow.js'
+import { DflowBinanceHost } from './host.js'
 
 type DflowBinanceExecutorContext = DflowCommonExecutorContext & {
 	binance: DflowBinanceClient
@@ -33,7 +33,7 @@ export class DflowBinanceExecutor implements DflowExecutor<DflowBinanceExecutorC
 		const execution = dflow.executionReport
 		const { memory, memoryChanged } = dflow.context as Pick<
 			DflowBinanceContext,
-			"memory" | "memoryChanged"
+			'memory' | 'memoryChanged'
 		>
 		const { symbols } = await binance.exchangeInfo()
 		const balance = execution

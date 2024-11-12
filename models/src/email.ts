@@ -1,27 +1,27 @@
-import { ErrorInvalidArg } from "./errors.js"
+import { ErrorInvalidArg } from './errors.js'
 
 export type EmailAddress = string
 
 export function isEmailAddress(arg: unknown): arg is EmailAddress {
 	// EmailAddress is a string.
-	if (typeof arg !== "string") return false
+	if (typeof arg !== 'string') return false
 
 	// EmailAddress contains two parts separated by '@'.
-	const parts = arg.split("@")
+	const parts = arg.split('@')
 	if (parts.length !== 2) return false
 
 	const [firstPart, domain] = parts
 
 	// EmailAddress first part is not empty.
-	if (firstPart === "") return false
+	if (firstPart === '') return false
 
 	// EmailAddress domain has at least one ".".
-	const domainParts = domain.split(".")
+	const domainParts = domain.split('.')
 	if (domainParts.length < 2) return false
 
 	// EmailAddress domain extension is not empty.
 	const domainExtension = domainParts.pop()
-	if (domainExtension === "") return false
+	if (domainExtension === '') return false
 
 	return true
 }
@@ -42,13 +42,13 @@ export function isEmailAddress(arg: unknown): arg is EmailAddress {
  */
 export function normalizeEmailAddress(email: EmailAddress): EmailAddress {
 	// Split EmailAddress
-	const [firstPart, domain] = email.split("@")
+	const [firstPart, domain] = email.split('@')
 	// Remove labels
-	const [user] = firstPart.split("+")
+	const [user] = firstPart.split('+')
 	// Remove dots
-	const userWithNoDots = user.replace(/\./g, "")
+	const userWithNoDots = user.replace(/\./g, '')
 	// Return normalized email as a lowercase string
 	const normalizeEmail = `${userWithNoDots}@${domain}`.toLowerCase()
-	if (!isEmailAddress(normalizeEmail)) throw new ErrorInvalidArg({ type: "EmailAddress", arg: normalizeEmail })
+	if (!isEmailAddress(normalizeEmail)) throw new ErrorInvalidArg({ type: 'EmailAddress', arg: normalizeEmail })
 	return normalizeEmail
 }

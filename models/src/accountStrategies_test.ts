@@ -1,45 +1,45 @@
-import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { describe, test } from 'node:test'
 
-import { assertDeepEqual } from "minimal-assertion-helpers"
+import { assertDeepEqual } from 'minimal-assertion-helpers'
 
-import { accountStrategiesModifier } from "./accountStrategies.js"
-import { AccountStrategy } from "./accountStrategy.js"
-import { ErrorExceededQuota } from "./errors.js"
-import { newId } from "./item.js"
-import { StrategyScheduling } from "./strategyScheduling.js"
+import { accountStrategiesModifier } from './accountStrategies.js'
+import { AccountStrategy } from './accountStrategy.js'
+import { ErrorExceededQuota } from './errors.js'
+import { newId } from './item.js'
+import { StrategyScheduling } from './strategyScheduling.js'
 
 const accountStrategy1: AccountStrategy = {
-	strategyId: "11111111",
-	strategyKind: "binance",
-	name: "name 1",
+	strategyId: '11111111',
+	strategyKind: 'binance',
+	name: 'name 1',
 	schedulings: []
 }
 
 const accountStrategy2: AccountStrategy = {
-	strategyId: "22222222",
-	strategyKind: "binance",
-	name: "name 2",
+	strategyId: '22222222',
+	strategyKind: 'binance',
+	name: 'name 2',
 	schedulings: []
 }
 
 const accountStrategy3: AccountStrategy = {
-	strategyId: "33333333",
-	strategyKind: "binance",
-	name: "name 3",
+	strategyId: '33333333',
+	strategyKind: 'binance',
+	name: 'name 3',
 	schedulings: []
 }
 
 const accountStrategy4Scheduling1: StrategyScheduling = {
 	id: newId(),
-	frequency: { every: 2, interval: "1h" },
-	status: "active"
+	frequency: { every: 2, interval: '1h' },
+	status: 'active'
 }
 
 const accountStrategy4Active: AccountStrategy = {
-	strategyId: "44444444",
-	strategyKind: "binance",
-	name: "name 4",
+	strategyId: '44444444',
+	strategyKind: 'binance',
+	name: 'name 4',
 	schedulings: [accountStrategy4Scheduling1]
 }
 
@@ -48,14 +48,14 @@ const accountStrategy4Suspended: AccountStrategy = {
 	schedulings: [
 		{
 			...accountStrategy4Scheduling1,
-			status: "suspended"
+			status: 'suspended'
 		}
 	]
 }
 
-describe("accountStrategiesModifier", () => {
-	describe("insertAccountStrategy", () => {
-		test("inserts a new item", () => {
+describe('accountStrategiesModifier', () => {
+	describe('insertAccountStrategy', () => {
+		test('inserts a new item', () => {
 			assertDeepEqual<
 				Parameters<
 					typeof accountStrategiesModifier.insertAccountStrategy
@@ -82,7 +82,7 @@ describe("accountStrategiesModifier", () => {
 			)
 		})
 
-		test("throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT", () => {
+		test('throws ErrorExceededQuota with MAX_STRATEGIES_PER_ACCOUNT', () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertAccountStrategy(
@@ -92,15 +92,15 @@ describe("accountStrategiesModifier", () => {
 					)
 				},
 				{
-					name: "Error",
+					name: 'Error',
 					message: ErrorExceededQuota.message(
-						"MAX_STRATEGIES_PER_ACCOUNT"
+						'MAX_STRATEGIES_PER_ACCOUNT'
 					)
 				}
 			)
 		})
 
-		test("throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT", () => {
+		test('throws ErrorExceededQuota with MAX_SCHEDULINGS_PER_ACCOUNT', () => {
 			assert.throws(
 				() => {
 					accountStrategiesModifier.insertAccountStrategy(
@@ -110,16 +110,16 @@ describe("accountStrategiesModifier", () => {
 					)
 				},
 				{
-					name: "Error",
+					name: 'Error',
 					message: ErrorExceededQuota.message(
-						"MAX_SCHEDULINGS_PER_ACCOUNT"
+						'MAX_SCHEDULINGS_PER_ACCOUNT'
 					)
 				}
 			)
 		})
 	})
 
-	test("deleteAccountStrategy", () => {
+	test('deleteAccountStrategy', () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.deleteAccountStrategy>,
 			ReturnType<typeof accountStrategiesModifier.deleteAccountStrategy>
@@ -143,7 +143,7 @@ describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	test("suspendScheduling", () => {
+	test('suspendScheduling', () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.suspendScheduling>,
 			ReturnType<typeof accountStrategiesModifier.suspendScheduling>
@@ -168,7 +168,7 @@ describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	test("suspendStrategySchedulings", () => {
+	test('suspendStrategySchedulings', () => {
 		assertDeepEqual<
 			Parameters<
 				typeof accountStrategiesModifier.suspendStrategySchedulings
@@ -202,7 +202,7 @@ describe("accountStrategiesModifier", () => {
 		)
 	})
 
-	test("updateSchedulingMemory", () => {
+	test('updateSchedulingMemory', () => {
 		assertDeepEqual<
 			Parameters<typeof accountStrategiesModifier.updateSchedulingMemory>,
 			ReturnType<typeof accountStrategiesModifier.updateSchedulingMemory>
@@ -222,7 +222,7 @@ describe("accountStrategiesModifier", () => {
 						[accountStrategy4Active],
 						accountStrategy4Active.strategyId,
 						accountStrategy4Scheduling1.id,
-						{ foo: "bar" }
+						{ foo: 'bar' }
 					],
 					output: [
 						{
@@ -230,7 +230,7 @@ describe("accountStrategiesModifier", () => {
 							schedulings: [
 								{
 									...accountStrategy4Scheduling1,
-									memory: { foo: "bar" }
+									memory: { foo: 'bar' }
 								}
 							]
 						}

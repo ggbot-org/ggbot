@@ -1,19 +1,19 @@
-import { Balance, Order, StrategyFlowGraph } from "@workspace/models"
-import { DflowExecutionReport, DflowNodesCatalog } from "dflow"
+import { Balance, Order, StrategyFlowGraph } from '@workspace/models'
+import { DflowExecutionReport, DflowNodesCatalog } from 'dflow'
 
-import { DflowCommonContext } from "./context.js"
-import { DflowCommonHost } from "./host.js"
-import { nodesCatalog } from "./nodesCatalog.js"
+import { DflowCommonContext } from './context.js'
+import { DflowCommonHost } from './host.js'
+import { nodesCatalog } from './nodesCatalog.js'
 
-export type DflowCommonExecutorContext = Omit<DflowCommonContext, "defaults" | "memoryChanged">
+export type DflowCommonExecutorContext = Omit<DflowCommonContext, 'defaults' | 'memoryChanged'>
 
 type DflowExecutorOutput = Pick<
 	DflowCommonContext,
-	"memory" | "memoryChanged"
+	'memory' | 'memoryChanged'
 > & {
 	balance: Balance
 	execution: null | DflowExecutionReport
-	orders: Array<Pick<Order, "info">>
+	orders: Array<Pick<Order, 'info'>>
 }
 
 export type DflowExecutor<RunContext extends DflowCommonExecutorContext> = {
@@ -48,7 +48,7 @@ export class DflowCommonExecutor implements DflowExecutor<DflowCommonExecutorCon
 	}
 }
 export const getDflowExecutionOutputData = (
-	execution: undefined | DflowExecutorOutput["execution"],
+	execution: undefined | DflowExecutorOutput['execution'],
 	nodeId: string,
 	outputPosition: number
 ) => {

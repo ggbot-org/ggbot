@@ -1,6 +1,6 @@
-import { classnames } from "_/classnames"
-import { AnchorHTMLAttributes, PropsWithChildren } from "react"
-import { Div, Tabs } from "trunx"
+import { classnames } from '_/classnames'
+import { AnchorHTMLAttributes, PropsWithChildren } from 'react'
+import { Div, Tabs } from 'trunx'
 
 type TabSelectorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
 	isActive: boolean
@@ -12,7 +12,7 @@ export function TabSelector({
 	...props
 }: PropsWithChildren<TabSelectorProps>) {
 	return (
-		<li className={classnames("tab-selector", { "is-active": isActive })}>
+		<li className={classnames('tab-selector', { 'is-active': isActive })}>
 			<a {...props}>{children}</a>
 		</li>
 	)
@@ -25,7 +25,7 @@ export type TabContentProps = {
 
 export function TabContent({ children, isActive, renderIfInactive }: PropsWithChildren<TabContentProps>) {
 	if (renderIfInactive) return (
-		<Div bulma={{ "is-hidden": !isActive }}>{children}</Div>
+		<Div bulma={{ 'is-hidden': !isActive }}>{children}</Div>
 	)
 	if (!isActive) return null
 	return <div>{children}</div>

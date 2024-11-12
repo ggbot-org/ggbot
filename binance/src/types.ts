@@ -1,4 +1,4 @@
-import { binanceKlineIntervals, binanceOrderRespTypes, binanceOrderSides, binanceOrderStatuses, binanceOrderTypes, binancePermissions, binanceSymbolStatuses, binanceTimeInForces } from "./constants.js"
+import { binanceKlineIntervals, binanceOrderRespTypes, binanceOrderSides, binanceOrderStatuses, binanceOrderTypes, binancePermissions, binanceSymbolStatuses, binanceTimeInForces } from './constants.js'
 
 export type BinanceAccountInformation = {
 	accountType: string
@@ -85,7 +85,7 @@ export type BinanceExchangeInfo = {
  */
 export type BinanceFill = Pick<
 	BinanceAccountTrade,
-	"price" | "qty" | "commission" | "commissionAsset"
+	'price' | 'qty' | 'commission' | 'commissionAsset'
 >
 
 /**
@@ -241,7 +241,7 @@ export type BinanceSymbolFilter =
  * ```
  */
 type BinanceSymbolFilterIcebergParts = {
-	filterType: "ICEBERG_PARTS"
+	filterType: 'ICEBERG_PARTS'
 	limit: number
 }
 
@@ -268,7 +268,7 @@ type BinanceSymbolFilterIcebergParts = {
  * ```
  */
 export type BinanceSymbolFilterLotSize = {
-	filterType: "LOT_SIZE"
+	filterType: 'LOT_SIZE'
 	/** Defines the minimum `quantity`/`icebergQty` allowed */
 	minQty: string
 	/** Defines the maximum `quantity`/`icebergQty` allowed */
@@ -293,7 +293,7 @@ export type BinanceSymbolFilterLotSize = {
  * ```
  */
 type BinanceSymbolFilterMarketLotSize = {
-	filterType: "MARKET_LOT_SIZE"
+	filterType: 'MARKET_LOT_SIZE'
 	minQty: string
 	maxQty: string
 	stepSize: string
@@ -310,7 +310,7 @@ type BinanceSymbolFilterMarketLotSize = {
  * ```
  */
 type BinanceSymbolFilterMaxNumOrders = {
-	filterType: "MAX_NUM_ORDERS"
+	filterType: 'MAX_NUM_ORDERS'
 	maxNumOrders: number
 }
 
@@ -325,7 +325,7 @@ type BinanceSymbolFilterMaxNumOrders = {
  * ```
  */
 type BinanceSymbolFilterMaxNumAlgoOrders = {
-	filterType: "MAX_NUM_ALGO_ORDERS"
+	filterType: 'MAX_NUM_ALGO_ORDERS'
 	maxNumAlgoOrders: number
 }
 
@@ -355,7 +355,7 @@ type BinanceSymbolFilterMaxNumAlgoOrders = {
  * ```
  */
 export type BinanceSymbolFilterMinNotional = {
-	filterType: "MIN_NOTIONAL"
+	filterType: 'MIN_NOTIONAL'
 	minNotional: string
 	applyToMarket: boolean
 	avgPriceMins: number
@@ -374,7 +374,7 @@ export type BinanceSymbolFilterMinNotional = {
  * ```
  */
 type BinanceSymbolFilterPercentPrice = {
-	filterType: "PERCENT_PRICE"
+	filterType: 'PERCENT_PRICE'
 	multiplierUp: string
 	multiplierDown: string
 	avgPriceMins: number
@@ -403,7 +403,7 @@ type BinanceSymbolFilterPercentPrice = {
  * ```
  */
 type BinanceSymbolFilterPrice = {
-	filterType: "PRICE_FILTER"
+	filterType: 'PRICE_FILTER'
 	/**
 	 * Defines the minimum `price`/`stopPrice` allowed;
 	 * disabled on `minPrice` == 0
@@ -435,7 +435,7 @@ type BinanceSymbolFilterPrice = {
  * ```
  */
 type BinanceSymbolFilterTrailingDelta = {
-	filterType: "TRAILING_DELTA"
+	filterType: 'TRAILING_DELTA'
 	minTrailingAboveDelta: number
 	maxTrailingAboveDelta: number
 	minTrailingBelowDelta: number

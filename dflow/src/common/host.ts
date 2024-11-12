@@ -1,8 +1,8 @@
-import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow } from "dflow"
+import { StrategyFlowGraph } from '@workspace/models'
+import { Dflow } from 'dflow'
 
-import { DflowCommonContext } from "./context.js"
-import { DflowLoader, load } from "./loader.js"
+import { DflowCommonContext } from './context.js'
+import { DflowLoader, load } from './loader.js'
 
 export class DflowCommonHost extends Dflow implements DflowLoader {
 	constructor(

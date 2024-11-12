@@ -1,8 +1,8 @@
-import { StrategyFlowGraph } from "@workspace/models"
-import { Dflow, DflowData, DflowErrorItemNotFound } from "dflow"
+import { StrategyFlowGraph } from '@workspace/models'
+import { Dflow, DflowData, DflowErrorItemNotFound } from 'dflow'
 
-import { nodeTextToDflowKind } from "./nodeResolution.js"
-import { parsePercentage } from "./nodeTextParser.js"
+import { nodeTextToDflowKind } from './nodeResolution.js'
+import { parsePercentage } from './nodeTextParser.js'
 
 /**
  * A Dflow instance that can load a StrategyFlowGraph.
@@ -46,8 +46,8 @@ export function load ({ dflow, graph }: {
 	// Create nodes.
 	for (const { id, ins, outs, text } of graph.nodes) {
 		const type = nodeTextToDflowKind(text)
-		if (type === "info") continue
-		if (type === "data") {
+		if (type === 'info') continue
+		if (type === 'data') {
 			// If node has type "data", parse text as JSON and create a DflowNode with kind "data".
 			const out = outs?.[0]
 			if (!out) throw new NodeHasNoOutputError(id)
@@ -59,12 +59,12 @@ export function load ({ dflow, graph }: {
 				throw error
 			}
 		}
-		if (type === "perc") {
+		if (type === 'perc') {
 			// If node has type "perc", parse text as percentage and create a DflowNode with kind "data".
 			const out = outs?.[0]
 			if (!out) throw new NodeHasNoOutputError(id)
 			const data = parsePercentage(text) as number
-			dflow.newNode({ id, kind: "data", outputs: [{ id: out.id, data }] })
+			dflow.newNode({ id, kind: 'data', outputs: [{ id: out.id, data }] })
 		}
 		if (nodeKinds.includes(text)) {
 			// By default create a Dflow node with `kind` given by `text`.

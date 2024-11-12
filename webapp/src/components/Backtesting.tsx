@@ -1,19 +1,19 @@
-import { classnames } from "_/classnames"
-import { BacktestingActions } from "_/components/BacktestingActions"
-import { BacktestingProgress, BacktestingProgressProps } from "_/components/BacktestingProgress"
-import { FrequencyInput, FrequencyInputProps } from "_/components/FrequencyInput"
-import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Title } from "_/components/library"
-import { Memory } from "_/components/Memory"
-import { ProfitSummary } from "_/components/ProfitSummary"
-import { StrategyOrdersTable } from "_/components/StrategyOrdersTable"
-import { SchedulingParameters } from "_/components/user/SchedulingParameters"
-import { ToastContext } from "_/contexts/Toast"
-import { useBacktesting } from "_/hooks/useBacktesting"
-import { UseFlowViewOutput } from "_/hooks/useFlowView"
-import { Frequency, isFrequency, StrategyKey } from "@workspace/models"
-import { Time } from "minimal-time-helpers"
-import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { classnames } from '_/classnames'
+import { BacktestingActions } from '_/components/BacktestingActions'
+import { BacktestingProgress, BacktestingProgressProps } from '_/components/BacktestingProgress'
+import { FrequencyInput, FrequencyInputProps } from '_/components/FrequencyInput'
+import { Checkbox, Column, Columns, Control, DayInterval, DayIntervalProps, Div, Field, OneColumn, Title } from '_/components/library'
+import { Memory } from '_/components/Memory'
+import { ProfitSummary } from '_/components/ProfitSummary'
+import { StrategyOrdersTable } from '_/components/StrategyOrdersTable'
+import { SchedulingParameters } from '_/components/user/SchedulingParameters'
+import { ToastContext } from '_/contexts/Toast'
+import { useBacktesting } from '_/hooks/useBacktesting'
+import { UseFlowViewOutput } from '_/hooks/useFlowView'
+import { Frequency, isFrequency, StrategyKey } from '@workspace/models'
+import { Time } from 'minimal-time-helpers'
+import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export function Backtesting({
 	flowViewGraph, strategyKey, strategyName, strategyFrequency, whenUpdatedFlowView
@@ -39,52 +39,52 @@ export function Backtesting({
 	if (isRunning || isPaused) disabled = true
 	if (!hasFlow) disabled = true
 
-	const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps["frequency"]>(frequency)
+	const [frequencyArg, setFrequencyArg] = useState<FrequencyInputProps['frequency']>(frequency)
 
 	const [lastWhenUpdatedFlowView, setLastWhenUpdatedFlowView] = useState<Time>(0)
 
 	const onChangePauseOnMemoryChange = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
-		dispatch({ type: "SET_AFTER_STEP_BEHAVIOUR", afterStepBehaviour: { ...afterStepBehaviour, pauseOnMemoryChange: Boolean(checked) } })
+		dispatch({ type: 'SET_AFTER_STEP_BEHAVIOUR', afterStepBehaviour: { ...afterStepBehaviour, pauseOnMemoryChange: Boolean(checked) } })
 	}, [afterStepBehaviour, dispatch])
 
 	const onChangePauseOnNewOrder = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		if (checked === undefined) return
-		dispatch({ type: "SET_AFTER_STEP_BEHAVIOUR", afterStepBehaviour: { ...afterStepBehaviour, pauseOnNewOrder: checked } })
+		dispatch({ type: 'SET_AFTER_STEP_BEHAVIOUR', afterStepBehaviour: { ...afterStepBehaviour, pauseOnNewOrder: checked } })
 	}, [afterStepBehaviour, dispatch])
 
-	const setFrequency = useCallback<FrequencyInputProps["setFrequency"]>((frequency) => {
+	const setFrequency = useCallback<FrequencyInputProps['setFrequency']>((frequency) => {
 		setFrequencyArg(frequency)
-		if (isFrequency(frequency)) dispatch({ type: "SET_FREQUENCY", frequency })
+		if (isFrequency(frequency)) dispatch({ type: 'SET_FREQUENCY', frequency })
 	}, [dispatch])
 
-	const setEnd = useCallback<DayIntervalProps["end"]["setDay"]>((day) => {
-		dispatch({ type: "SET_DAY_INTERVAL", dayInterval: { start: dayInterval.start, end: day } })
+	const setEnd = useCallback<DayIntervalProps['end']['setDay']>((day) => {
+		dispatch({ type: 'SET_DAY_INTERVAL', dayInterval: { start: dayInterval.start, end: day } })
 	}, [dispatch, dayInterval])
 
-	const setStart = useCallback<DayIntervalProps["start"]["setDay"]>((day) => {
-		dispatch({ type: "SET_DAY_INTERVAL", dayInterval: { start: day, end: dayInterval.end } })
+	const setStart = useCallback<DayIntervalProps['start']['setDay']>((day) => {
+		dispatch({ type: 'SET_DAY_INTERVAL', dayInterval: { start: day, end: dayInterval.end } })
 	}, [dispatch, dayInterval])
 
-	const progress: BacktestingProgressProps["progress"] = { value: stepIndex, max: numSteps }
+	const progress: BacktestingProgressProps['progress'] = { value: stepIndex, max: numSteps }
 
 	const onClickStop = useCallback(() => {
-		dispatch({ type: "STOP" })
+		dispatch({ type: 'STOP' })
 	}, [dispatch])
 
 	const onClickStart = useCallback(() => {
 		if (!flowViewGraph) return
 		if (!strategyKey || !strategyName) return
-		dispatch({ type: "START", dayInterval, flow: flowViewGraph, frequency, strategyName, strategyKey })
+		dispatch({ type: 'START', dayInterval, flow: flowViewGraph, frequency, strategyName, strategyKey })
 	}, [dayInterval, dispatch, flowViewGraph, frequency, strategyKey, strategyName])
 
 	const onClickPause = useCallback(() => {
-		dispatch({ type: "PAUSE" })
+		dispatch({ type: 'PAUSE' })
 	}, [dispatch])
 
 	const onClickResume = useCallback(() => {
-		dispatch({ type: "RESUME" })
+		dispatch({ type: 'RESUME' })
 	}, [dispatch])
 
 	// Backtesting frequency defaults to the suggested frequency, if found in the strategy.
@@ -94,12 +94,12 @@ export function Backtesting({
 	}, [setFrequency, strategyFrequency])
 
 	useEffect(() => {
-		if (isDone) toast.info(formatMessage({ id: "Backtesting.done" }))
+		if (isDone) toast.info(formatMessage({ id: 'Backtesting.done' }))
 	}, [formatMessage, isDone, toast])
 
 	useEffect(() => {
 		if (isPaused && (afterStepBehaviour.pauseOnMemoryChange || afterStepBehaviour.pauseOnNewOrder)) {
-			toast.warning(formatMessage({ id: "Backtesting.paused" }))
+			toast.warning(formatMessage({ id: 'Backtesting.paused' }))
 		}
 	}, [afterStepBehaviour, formatMessage, isPaused, toast])
 
@@ -110,14 +110,14 @@ export function Backtesting({
 	useEffect(() => {
 		if (!lastWhenUpdatedFlowView) return
 		if (whenUpdatedFlowView === lastWhenUpdatedFlowView) return
-		dispatch({ type: "STOP" })
-		toast.warning(formatMessage({ id: "Backtesting.stopped" }))
+		dispatch({ type: 'STOP' })
+		toast.warning(formatMessage({ id: 'Backtesting.stopped' }))
 	}, [dispatch, lastWhenUpdatedFlowView, whenUpdatedFlowView, isRunning, toast])
 
 	return (
 		<>
 			<Columns>
-				<Column bulma={["is-half-tablet", "is-one-third-fullhd"]}>
+				<Column bulma={['is-half-tablet', 'is-one-third-fullhd']}>
 					<Div bulma="box">
 						<Title>
 							<FormattedMessage id="Backtesting.title" />
@@ -141,7 +141,7 @@ export function Backtesting({
 							<Control>
 								<Checkbox
 									checked={afterStepBehaviour.pauseOnMemoryChange}
-									className={classnames("mx-1")}
+									className={classnames('mx-1')}
 									onChange={onChangePauseOnMemoryChange}
 								>
 									<FormattedMessage id="Backtesting.pauseOnMemoryChange" />
@@ -152,7 +152,7 @@ export function Backtesting({
 							<Control>
 								<Checkbox
 									checked={afterStepBehaviour.pauseOnNewOrder}
-									className={classnames("mx-1")}
+									className={classnames('mx-1')}
 									onChange={onChangePauseOnNewOrder}
 								>
 									<FormattedMessage id="Backtesting.pauseOnNewOrder" />
@@ -170,7 +170,7 @@ export function Backtesting({
 						/>
 					</Div>
 				</Column>
-				<Column bulma={["is-half-tablet", "is-one-third-fullhd"]}>
+				<Column bulma={['is-half-tablet', 'is-one-third-fullhd']}>
 					<SchedulingParameters
 						flowViewGraph={flowViewGraph}
 						params={undefined}

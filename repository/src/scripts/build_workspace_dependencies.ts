@@ -1,9 +1,9 @@
 
-import { exec } from "node:child_process"
+import { exec } from 'node:child_process'
 
-import { Repository } from "../Repository.js"
-import { RepositoryPackageJson } from "../RepositoryPackageJson.js"
-import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
+import { Repository } from '../Repository.js'
+import { RepositoryPackageJson } from '../RepositoryPackageJson.js'
+import { WorkspacePackageJson } from '../WorkspacePackageJson.js'
 
 /**
  * This script accepts the `workspacePathname` as parameter.
@@ -20,7 +20,7 @@ import { WorkspacePackageJson } from "../WorkspacePackageJson.js"
  * ```
  */
 const workspacePathname = process.argv[2]
-if (typeof workspacePathname !== "string") process.exit(1)
+if (typeof workspacePathname !== 'string') process.exit(1)
 
 const repository = new Repository()
 await repository.read()

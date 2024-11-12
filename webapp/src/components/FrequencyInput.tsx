@@ -1,15 +1,15 @@
-import { classnames } from "_/classnames"
-import { Control, Field, InputField, SelectField } from "_/components/library"
-import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from "@workspace/models"
-import { ChangeEventHandler, useCallback } from "react"
-import { useIntl } from "react-intl"
+import { classnames } from '_/classnames'
+import { Control, Field, InputField, SelectField } from '_/components/library'
+import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from '@workspace/models'
+import { ChangeEventHandler, useCallback } from 'react'
+import { useIntl } from 'react-intl'
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
-	frequency: Pick<Frequency, "interval"> & {
-		every: NaturalNumber | ""
+	frequency: Pick<Frequency, 'interval'> & {
+		every: NaturalNumber | ''
 	}
 	disabledIntervalOptions?: FrequencyInterval[]
-	setFrequency: (arg: FrequencyInputProps["frequency"]) => void
+	setFrequency: (arg: FrequencyInputProps['frequency']) => void
 }
 
 type FrequencyIntervalOption = {
@@ -28,27 +28,27 @@ export function FrequencyInput({
 
 	const frequencyIntervalOptions: FrequencyIntervalOption[] = [
 		{
-			value: "1d",
-			disabled: disabledIntervalOptions.includes("1d"),
-			label: formatMessage({ id: "FrequencyInput.day" })
+			value: '1d',
+			disabled: disabledIntervalOptions.includes('1d'),
+			label: formatMessage({ id: 'FrequencyInput.day' })
 		},
 		{
-			value: "1h",
-			disabled: disabledIntervalOptions.includes("1h"),
-			label: formatMessage({ id: "FrequencyInput.hour" })
+			value: '1h',
+			disabled: disabledIntervalOptions.includes('1h'),
+			label: formatMessage({ id: 'FrequencyInput.hour' })
 		},
 		{
-			disabled: disabledIntervalOptions.includes("1m"),
-			value: "1m",
-			label: formatMessage({ id: "FrequencyInput.minute" })
+			disabled: disabledIntervalOptions.includes('1m'),
+			value: '1m',
+			label: formatMessage({ id: 'FrequencyInput.minute' })
 		}
 	]
 
 	const onChangeFrequencyEvery = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
 			const value = event.target.value
-			const every = value === "" ? value : Number(value)
-			if (isNaturalNumber(every) || every === "") setFrequency({ interval, every })
+			const every = value === '' ? value : Number(value)
+			if (isNaturalNumber(every) || every === '') setFrequency({ interval, every })
 		},
 		[interval, setFrequency]
 	)
@@ -65,9 +65,9 @@ export function FrequencyInput({
 		<Field isGrouped>
 			<Control>
 				<InputField
-					className={classnames("frequency-input__every")}
+					className={classnames('frequency-input__every')}
 					disabled={disabled}
-					label={formatMessage({ id: "FrequencyInput.every" })}
+					label={formatMessage({ id: 'FrequencyInput.every' })}
 					min={1}
 					onChange={onChangeFrequencyEvery}
 					step={1}
@@ -77,9 +77,9 @@ export function FrequencyInput({
 			</Control>
 			<Control>
 				<SelectField
-					color={disabledIntervalOptions.includes(interval) ? "danger" : undefined}
+					color={disabledIntervalOptions.includes(interval) ? 'danger' : undefined}
 					disabled={disabled}
-					label={formatMessage({ id: "FrequencyInput.interval" })}
+					label={formatMessage({ id: 'FrequencyInput.interval' })}
 					onChange={onChangeFrequencyInterval}
 					options={frequencyIntervalOptions}
 					value={interval}

@@ -1,7 +1,7 @@
-import { DflowNode } from "dflow"
+import { DflowNode } from 'dflow'
 
-import { add, div, mul, sub } from "../arithmetic.js"
-import { inputPeriod, inputValues, outputLastValue, outputValues } from "../commonIO.js"
+import { add, div, mul, sub } from '../arithmetic.js'
+import { inputPeriod, inputValues, outputLastValue, outputValues } from '../commonIO.js'
 
 const movingAverageInputs = [inputValues, inputPeriod]
 
@@ -25,7 +25,7 @@ export function exponentialMovingAverage(values: number[], period: number): numb
 }
 
 export class ExponentialMovingAverage extends DflowNode {
-	static kind = "EMA"
+	static kind = 'EMA'
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
 	run() {
@@ -52,7 +52,7 @@ export function simpleMovingAverage(values: number[], period: number): number[] 
 }
 
 export class SimpleMovingAverage extends DflowNode {
-	static kind = "SMA"
+	static kind = 'SMA'
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
 	run() {
@@ -84,7 +84,7 @@ export function wilderSmoothing(values: number[], period: number): number[] {
 }
 
 export class WilderMovingAverage extends DflowNode {
-	static kind = "WilderMA"
+	static kind = 'WilderMA'
 	static inputs = movingAverageInputs
 	static outputs = movingAverageOutputs
 	run() {

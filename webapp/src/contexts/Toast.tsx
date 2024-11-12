@@ -1,9 +1,9 @@
-import { Toast, ToastContainer, ToastProps } from "_/components/library"
-import { createContext, PropsWithChildren, ReactNode, Reducer, useCallback, useMemo, useReducer } from "react"
-import { Notification } from "trunx"
+import { Toast, ToastContainer, ToastProps } from '_/components/library'
+import { createContext, PropsWithChildren, ReactNode, Reducer, useCallback, useMemo, useReducer } from 'react'
+import { Notification } from 'trunx'
 
 type ContextValue = {
-	toast: Record<ToastProps["color"], (message: ToastProps["message"]) => void>
+	toast: Record<ToastProps['color'], (message: ToastProps['message']) => void>
 }
 
 export const ToastContext = createContext<ContextValue>({
@@ -14,33 +14,33 @@ export const ToastContext = createContext<ContextValue>({
 	}
 })
 
-ToastContext.displayName = "ToastContext"
+ToastContext.displayName = 'ToastContext'
 
 type Notification = {
 	id: number
-	toast: Omit<ToastProps, "close">
+	toast: Omit<ToastProps, 'close'>
 }
 
 export function ToastProvider({ children }: PropsWithChildren) {
 	const [notifications, dispatch] = useReducer<
 		Reducer<
 			Notification[],
-			| { type: "ADD_NOTIFICATION"; notification: Notification }
-			| ({ type: "REMOVE_NOTIFICATION" } & Pick<Notification, "id">)
+			| { type: 'ADD_NOTIFICATION'; notification: Notification }
+			| ({ type: 'REMOVE_NOTIFICATION' } & Pick<Notification, 'id'>)
 		>
 	>((notifications, action) => {
 					// Add new notification at the beginning of the stack.
 					// They are displayed on bottom, so new notifications will be on top.
-					if (action.type === "ADD_NOTIFICATION") return [action.notification, ...notifications]
+					if (action.type === 'ADD_NOTIFICATION') return [action.notification, ...notifications]
 
-					if (action.type === "REMOVE_NOTIFICATION") return notifications.filter(({ id }) => id !== action.id)
+					if (action.type === 'REMOVE_NOTIFICATION') return notifications.filter(({ id }) => id !== action.id)
 
 					return notifications
 				}, [])
 
-	const close = useCallback<(id: Notification["id"]) => () => void>(
+	const close = useCallback<(id: Notification['id']) => () => void>(
 		(id) => () => {
-			dispatch({ type: "REMOVE_NOTIFICATION", id })
+			dispatch({ type: 'REMOVE_NOTIFICATION', id })
 		},
 	[]
 	)
@@ -49,9 +49,9 @@ export function ToastProvider({ children }: PropsWithChildren) {
 		function notify({
 			color,
 			message
-		}: Pick<ToastProps, "color" | "message">) {
+		}: Pick<ToastProps, 'color' | 'message'>) {
 			dispatch({
-				type: "ADD_NOTIFICATION",
+				type: 'ADD_NOTIFICATION',
 				notification: {
 					id: Date.now(),
 					toast: { color, message }
@@ -61,13 +61,13 @@ export function ToastProvider({ children }: PropsWithChildren) {
 		return {
 			toast: {
 				info(message: ReactNode) {
-					notify({ color: "info", message })
+					notify({ color: 'info', message })
 				},
 				danger(message: ReactNode) {
-					notify({ color: "danger", message })
+					notify({ color: 'danger', message })
 				},
 				warning(message: ReactNode) {
-					notify({ color: "warning", message })
+					notify({ color: 'warning', message })
 				}
 			}
 		}

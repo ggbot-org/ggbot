@@ -1,4 +1,4 @@
-export type WebStorageProvider = Pick<Storage, "getItem" | "setItem" | "removeItem" | "clear">
+export type WebStorageProvider = Pick<Storage, 'getItem' | 'setItem' | 'removeItem' | 'clear'>
 
 export class LocalWebStorageProvider implements WebStorageProvider {
 	getItem(key: string) {

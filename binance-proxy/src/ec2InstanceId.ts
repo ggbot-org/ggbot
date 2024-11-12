@@ -1,4 +1,4 @@
-import { exec } from "node:child_process"
+import { exec } from 'node:child_process'
 
 /**
  * Get `instance-id` from EC2 metadata.
@@ -14,7 +14,7 @@ import { exec } from "node:child_process"
  * @see {@link https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html}
  */
 export const getOwnEc2InstanceId = new Promise<string>((resolve, reject) => {
-	exec("ec2-metadata --instance-id", (_error, stdout) => {
+	exec('ec2-metadata --instance-id', (_error, stdout) => {
 		// Expected output for command
 		//     ec2-metadata --instance-id
 		//
@@ -22,8 +22,8 @@ export const getOwnEc2InstanceId = new Promise<string>((resolve, reject) => {
 		//     instance-id: i-087a42553011030b0
 		//
 		// Get string after colon, remove new line and spaces.
-		const instanceId = stdout.split(":").pop()?.replace(/\n/, "").trim()
-		if (typeof instanceId === "string") resolve(instanceId)
-		reject(new Error("Cannot get own EC2 instance-id"))
+		const instanceId = stdout.split(':').pop()?.replace(/\n/, '').trim()
+		if (typeof instanceId === 'string') resolve(instanceId)
+		reject(new Error('Cannot get own EC2 instance-id'))
 	})
 })

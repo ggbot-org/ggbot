@@ -1,1 +1,1 @@
-export type PaymentProvider = "stripe"
+export type PaymentProvider = 'stripe'

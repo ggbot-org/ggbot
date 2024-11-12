@@ -1,22 +1,22 @@
-import { strict as assert } from "node:assert"
-import { describe, test } from "node:test"
+import { strict as assert } from 'node:assert'
+import { describe, test } from 'node:test'
 
-import { Repository } from "./Repository.js"
-import { RepositoryPackageJson } from "./RepositoryPackageJson.js"
-import { WorkspacePackageJson } from "./WorkspacePackageJson.js"
+import { Repository } from './Repository.js'
+import { RepositoryPackageJson } from './RepositoryPackageJson.js'
+import { WorkspacePackageJson } from './WorkspacePackageJson.js'
 
 const repository = new Repository()
 await repository.read()
 
-describe("repository", () => {
-	describe("package.json", () => {
+describe('repository', () => {
+	describe('package.json', () => {
 		const { packageJson, workspaces } = repository
 
-		test("is private", () => {
+		test('is private', () => {
 			assert.equal(packageJson.isPrivate, true)
 		})
 
-		describe("script", () => {
+		describe('script', () => {
 			for (const workspacePathname of packageJson.workspaces) {
 				const buildScript = packageJson.workspaceBuildScriptCommand(workspacePathname)
 				if (!buildScript) continue
@@ -24,7 +24,7 @@ describe("repository", () => {
 
 				describe(buildScriptKey, () => {
 					const assertionError = `check repository package.json ${buildScriptKey} script`
-					test("has expected command", () => {
+					test('has expected command', () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
 						if (workspace.packageJson.buildScriptCommand) {
@@ -38,7 +38,7 @@ describe("repository", () => {
 				const prebuildScriptKey = RepositoryPackageJson.workspacePrebuildScriptKey(workspacePathname)
 				describe(prebuildScriptKey, () => {
 					const assertionError = `check repository package.json ${prebuildScriptKey} script`
-					test("has expected command", () => {
+					test('has expected command', () => {
 						const workspace = workspaces.get(workspacePathname)
 						if (!workspace) throw Error()
 						const prebuildScript = packageJson.workspacePrebuildScriptCommand(workspacePathname)
@@ -53,7 +53,7 @@ describe("repository", () => {
 		})
 	})
 
-	describe("workspace", () => {
+	describe('workspace', () => {
 		for (const [workspacePathname, { packageJson }] of repository.workspaces.entries()) {
 			const assertionError = `check ${workspacePathname}/package.json`
 
@@ -65,25 +65,25 @@ describe("repository", () => {
 					...Array.from(devDependencies.keys())
 				]
 
-				test("has name", () => {
-					assert.ok(packageName !== "", assertionError)
+				test('has name', () => {
+					assert.ok(packageName !== '', assertionError)
 				})
 
-				test("has scope", () => {
+				test('has scope', () => {
 					assert.ok(packageName.startsWith(`${WorkspacePackageJson.scope}/`),
 						assertionError
 					)
 				})
 
-				test("is private", () => {
+				test('is private', () => {
 					assert.ok(packageJson.isPrivate, assertionError)
 				})
 
-				test("does not depend on itself", () => {
+				test('does not depend on itself', () => {
 					assert.ok(!allDependencyKeys.includes(packageName), assertionError)
 				})
 
-				test("does not have duplicated dependencies", () => {
+				test('does not have duplicated dependencies', () => {
 					const seenDependency = new Set()
 					for (const dependency of allDependencyKeys) {
 						if (seenDependency.has(dependency)) assert.fail(assertionError)
@@ -91,19 +91,19 @@ describe("repository", () => {
 					}
 				})
 
-				test("dependencies has exact version", () => {
+				test('dependencies has exact version', () => {
 					for (const [key, value] of [...Array.from(dependencies.entries()), ...Array.from(devDependencies.entries())]) {
-						assert.ok(Number.isInteger(Number(value.split(".")[0])), `${assertionError} dependency ${key} version ${value} is not exact`)
+						assert.ok(Number.isInteger(Number(value.split('.')[0])), `${assertionError} dependency ${key} version ${value} is not exact`)
 					}
 				})
 			})
 		}
 	})
 
-	describe("tsconfig.json", () => {
+	describe('tsconfig.json', () => {
 		const { tsconfigJson, workspaces } = repository
 
-		test("compilerOptions.paths keys references existing workspaces", () => {
+		test('compilerOptions.paths keys references existing workspaces', () => {
 			for (const key of tsconfigJson.paths.keys()) {
 				if (!key.startsWith(WorkspacePackageJson.scope)) continue
 				assert.ok(

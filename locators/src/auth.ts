@@ -1,6 +1,6 @@
-import { DeployStage } from "@workspace/models"
+import { DeployStage } from '@workspace/models'
 
-import { FQDN } from "./FQDNs.js"
+import { FQDN } from './FQDNs.js'
 
 export class AuthURLs {
 	baseURL: URL
@@ -10,10 +10,10 @@ export class AuthURLs {
 	}
 
 	get enter() {
-		return new URL("enter", this.baseURL)
+		return new URL('enter', this.baseURL)
 	}
 
 	get verify() {
-		return new URL("verify", this.baseURL)
+		return new URL('verify', this.baseURL)
 	}
 }

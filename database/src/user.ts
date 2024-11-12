@@ -1,13 +1,13 @@
-import { DocumentProviderLevel2, UserDatabaseAction, UserDatabaseActionInput as Input, UserDatabaseActionOutput as Output } from "@workspace/api"
-import { CacheMap } from "@workspace/cache"
-import { Account, AccountDailyKey, AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyDailyKey, BalanceEvent, createdNow, deletedNow, ErrorAccountItemNotFound, ErrorPermissionOnStrategyItem, ErrorStrategyItemNotFound, frequenciesAreEqual, Frequency, newAccountStrategy, newStrategy, newStrategyFlow, Order, Strategy, StrategyError, StrategyFlow, StrategyKey, updatedNow, welcomeFlow } from "@workspace/models"
-import { dateToDay, dayToDate, getDate } from "minimal-time-helpers"
+import { DocumentProviderLevel2, UserDatabaseAction, UserDatabaseActionInput as Input, UserDatabaseActionOutput as Output } from '@workspace/api'
+import { CacheMap } from '@workspace/cache'
+import { Account, AccountDailyKey, AccountKey, accountStrategiesModifier, AccountStrategy, AccountStrategyDailyKey, BalanceEvent, createdNow, deletedNow, ErrorAccountItemNotFound, ErrorPermissionOnStrategyItem, ErrorStrategyItemNotFound, frequenciesAreEqual, Frequency, newAccountStrategy, newStrategy, newStrategyFlow, Order, Strategy, StrategyError, StrategyFlow, StrategyKey, updatedNow, welcomeFlow } from '@workspace/models'
+import { dateToDay, dayToDate, getDate } from 'minimal-time-helpers'
 
-import { BinanceDatabase } from "./binance.js"
-import { pathname } from "./locators.js"
-import { PublicDatabase } from "./public.js"
+import { BinanceDatabase } from './binance.js'
+import { pathname } from './locators.js'
+import { PublicDatabase } from './public.js'
 
-const strategyAccountIdCache = new CacheMap<Account["id"]>()
+const strategyAccountIdCache = new CacheMap<Account['id']>()
 
 export class UserDatabase implements UserDatabaseAction {
 	accountKey: AccountKey
@@ -22,7 +22,7 @@ export class UserDatabase implements UserDatabaseAction {
 		this.documentProvider = documentProvider
 	}
 
-	async CopyStrategy({ strategyId, strategyKind, name }: Input["CopyStrategy"]) {
+	async CopyStrategy({ strategyId, strategyKind, name }: Input['CopyStrategy']) {
 		const { accountId } = this.accountKey
 		const sourceStrategy = await this.readStrategy({ strategyId, strategyKind })
 		const targetStrategy = newStrategy({ name, kind: strategyKind, accountId, frequency: sourceStrategy.frequency })
@@ -35,7 +35,7 @@ export class UserDatabase implements UserDatabaseAction {
 		return targetStrategyKey
 	}
 
-	async CreateBinanceApiConfig(arg: Input["CreateBinanceApiConfig"]) {
+	async CreateBinanceApiConfig(arg: Input['CreateBinanceApiConfig']) {
 		await this.documentProvider.setItem(pathname.binanceApiConfig(this.accountKey), arg)
 		return createdNow()
 	}
@@ -44,7 +44,7 @@ export class UserDatabase implements UserDatabaseAction {
 		return Promise.resolve(null)
 	}
 
-	async CreateStrategy({ name, ...rest }: Input["CreateStrategy"]) {
+	async CreateStrategy({ name, ...rest }: Input['CreateStrategy']) {
 		const { accountId } = this.accountKey
 		const strategy = newStrategy({ name, accountId, ...rest })
 		const strategyKey: StrategyKey = { strategyId: strategy.id, strategyKind: strategy.kind }
@@ -81,7 +81,7 @@ export class UserDatabase implements UserDatabaseAction {
 	 * The `strategy` file is **not** deleted: it may be referenced by some
 	 * order or other data.
 	 */
-	async DeleteStrategy(strategyKey: Input["DeleteStrategy"]) {
+	async DeleteStrategy(strategyKey: Input['DeleteStrategy']) {
 		await this.deleteAccountStrategiesItem(strategyKey.strategyId)
 		await this.deleteStrategyFlow(strategyKey)
 		return deletedNow()
@@ -93,8 +93,8 @@ export class UserDatabase implements UserDatabaseAction {
 		return { subscription, ...account }
 	}
 
-	async ReadBalances({ start, end }: Input["ReadBalances"]) {
-		const result: Output["ReadBalances"] = []
+	async ReadBalances({ start, end }: Input['ReadBalances']) {
+		const result: Output['ReadBalances'] = []
 		let date = dayToDate(start)
 		while (date <= dayToDate(end)) {
 			const dailyResult = await this.readAccountDailyBalanceEvents({ day: dateToDay(date), ...this.accountKey })
@@ -113,12 +113,12 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	async ReadStrategies() {
-		const data = await this.documentProvider.getItem<Output["ReadStrategies"]>(pathname.accountStrategies(this.accountKey))
+		const data = await this.documentProvider.getItem<Output['ReadStrategies']>(pathname.accountStrategies(this.accountKey))
 		return data ?? []
 	}
 
-	async ReadStrategyErrors({ start, end, ...strategyKey }: Input["ReadStrategyErrors"]) {
-		const result: Output["ReadStrategyErrors"] = []
+	async ReadStrategyErrors({ start, end, ...strategyKey }: Input['ReadStrategyErrors']) {
+		const result: Output['ReadStrategyErrors'] = []
 		let date = dayToDate(start)
 		while (date <= dayToDate(end)) {
 			const dailyResult = await this.readStrategyDailyErrors({ day: dateToDay(date), ...this.accountKey, ...strategyKey })
@@ -129,8 +129,8 @@ export class UserDatabase implements UserDatabaseAction {
 		return result
 	}
 
-	async ReadStrategyOrders({ start, end, ...strategyKey }: Input["ReadStrategyOrders"]) {
-		const result: Output["ReadStrategyOrders"] = []
+	async ReadStrategyOrders({ start, end, ...strategyKey }: Input['ReadStrategyOrders']) {
+		const result: Output['ReadStrategyOrders'] = []
 		let date = dayToDate(start)
 		while (date <= dayToDate(end)) {
 			const dailyResult = await this.readStrategyDailyOrders({ day: dateToDay(date), ...this.accountKey, ...strategyKey })
@@ -142,10 +142,10 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 
 	ReadSubscription() {
-		return this.documentProvider.getItem<Output["ReadSubscription"]>(pathname.subscription(this.accountKey))
+		return this.documentProvider.getItem<Output['ReadSubscription']>(pathname.subscription(this.accountKey))
 	}
 
-	async RenameStrategy({ name: newName, strategyId, strategyKind }: Input["RenameStrategy"]) {
+	async RenameStrategy({ name: newName, strategyId, strategyKind }: Input['RenameStrategy']) {
 		const { name: oldName, ...strategy } = await this.readStrategy({ strategyId, strategyKind })
 		if (newName === oldName) return updatedNow()
 		await this.writeStrategy({ name: newName, ...strategy })
@@ -157,7 +157,7 @@ export class UserDatabase implements UserDatabaseAction {
 		return this.writeAccountStrategies(data)
 	}
 
-	async WriteAccountStrategiesItemSchedulings({ schedulings, strategyId, strategyKind }: Input["WriteAccountStrategiesItemSchedulings"]) {
+	async WriteAccountStrategiesItemSchedulings({ schedulings, strategyId, strategyKind }: Input['WriteAccountStrategiesItemSchedulings']) {
 		const items = await this.ReadStrategies()
 		const data: AccountStrategy[] = []
 		let suggestedFrequency: Frequency | undefined
@@ -174,7 +174,7 @@ export class UserDatabase implements UserDatabaseAction {
 		return this.documentProvider.setItem(pathname.accountStrategies(this.accountKey), data)
 	}
 
-	async WriteStrategyFlow({ view, strategyId, strategyKind }: Input["WriteStrategyFlow"]) {
+	async WriteStrategyFlow({ view, strategyId, strategyKind }: Input['WriteStrategyFlow']) {
 		return this.writeStrategyFlow({ strategyId, strategyKind, view, ...updatedNow() })
 	}
 
@@ -182,7 +182,7 @@ export class UserDatabase implements UserDatabaseAction {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId(strategyKey)
 		if (accountId !== ownerId) {
-			throw new ErrorPermissionOnStrategyItem({ type: "StrategyFlow", action: "delete", accountId, ...strategyKey })
+			throw new ErrorPermissionOnStrategyItem({ type: 'StrategyFlow', action: 'delete', accountId, ...strategyKey })
 		}
 		await this.documentProvider.removeItem(pathname.strategyFlow(strategyKey))
 	}
@@ -195,7 +195,7 @@ export class UserDatabase implements UserDatabaseAction {
 		await this.documentProvider.setItem(pathname.accountStrategies({ accountId }), newItems)
 	}
 
-	async deleteAccountStrategiesItem(strategyId: AccountStrategy["strategyId"]) {
+	async deleteAccountStrategiesItem(strategyId: AccountStrategy['strategyId']) {
 		const { accountId } = this.accountKey
 		const items = await this.ReadStrategies()
 		const newItems = accountStrategiesModifier.deleteAccountStrategy(items, strategyId)
@@ -205,7 +205,7 @@ export class UserDatabase implements UserDatabaseAction {
 	async readAccount() {
 		const { accountId } = this.accountKey
 		const account = await this.documentProvider.getItem<Account>(pathname.account({ accountId }))
-		if (!account) throw new ErrorAccountItemNotFound({ type: "Account", accountId })
+		if (!account) throw new ErrorAccountItemNotFound({ type: 'Account', accountId })
 		return account
 	}
 
@@ -215,11 +215,11 @@ export class UserDatabase implements UserDatabaseAction {
 	}
 	async readStrategy(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategy(strategyKey)
-		if (!data) throw new ErrorStrategyItemNotFound({ type: "Strategy", ...strategyKey })
+		if (!data) throw new ErrorStrategyItemNotFound({ type: 'Strategy', ...strategyKey })
 		return data
 	}
 
-	async readStrategyAccountId(strategyKey: StrategyKey): Promise<Account["id"] | null> {
+	async readStrategyAccountId(strategyKey: StrategyKey): Promise<Account['id'] | null> {
 		const { strategyId } = strategyKey
 		const cachedData = strategyAccountIdCache.get(strategyId)
 		if (cachedData) return cachedData
@@ -240,7 +240,7 @@ export class UserDatabase implements UserDatabaseAction {
 
 	async readStrategyFlow(strategyKey: StrategyKey) {
 		const data = await this.publicDatabase.ReadStrategyFlow(strategyKey)
-		if (!data) throw new ErrorStrategyItemNotFound({ type: "StrategyFlow", ...strategyKey })
+		if (!data) throw new ErrorStrategyItemNotFound({ type: 'StrategyFlow', ...strategyKey })
 		return data
 	}
 
@@ -258,7 +258,7 @@ export class UserDatabase implements UserDatabaseAction {
 		const { accountId } = this.accountKey
 		const { id: strategyId, kind: strategyKind } = strategy
 		if (accountId !== strategy.accountId) {
-			throw new ErrorPermissionOnStrategyItem({ type: "Strategy", action: "write", accountId, strategyId, strategyKind })
+			throw new ErrorPermissionOnStrategyItem({ type: 'Strategy', action: 'write', accountId, strategyId, strategyKind })
 		}
 		return this.documentProvider.setItem(pathname.strategy({ strategyId, strategyKind }), strategy)
 	}
@@ -267,7 +267,7 @@ export class UserDatabase implements UserDatabaseAction {
 		const { accountId } = this.accountKey
 		const ownerId = await this.readStrategyAccountId({ strategyId, strategyKind })
 		if (accountId !== ownerId) {
-			throw new ErrorPermissionOnStrategyItem({ type: "StrategyFlow", action: "write", accountId, strategyId, strategyKind })
+			throw new ErrorPermissionOnStrategyItem({ type: 'StrategyFlow', action: 'write', accountId, strategyId, strategyKind })
 		}
 		return this.documentProvider.setItem(pathname.strategyFlow({ strategyId, strategyKind }), data)
 	}

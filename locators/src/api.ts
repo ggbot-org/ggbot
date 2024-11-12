@@ -1,6 +1,6 @@
-import { DeployStage } from "@workspace/models"
+import { DeployStage } from '@workspace/models'
 
-import { FQDN } from "./FQDNs.js"
+import { FQDN } from './FQDNs.js'
 
 export class ApiURLs {
 	baseURL: URL
@@ -13,7 +13,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL("admin/action", baseURL)
+				return new URL('admin/action', baseURL)
 			}
 		}
 	}
@@ -22,7 +22,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL("public/action", baseURL)
+				return new URL('public/action', baseURL)
 			}
 		}
 	}
@@ -31,10 +31,10 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL("stripe/action", baseURL)
+				return new URL('stripe/action', baseURL)
 			},
 			get webhook() {
-				return new URL("stripe/webhook", baseURL)
+				return new URL('stripe/webhook', baseURL)
 			},
 		}
 	}
@@ -43,7 +43,7 @@ export class ApiURLs {
 		const { baseURL } = this
 		return {
 			get action() {
-				return new URL("user/action", baseURL)
+				return new URL('user/action', baseURL)
 			}
 		}
 	}

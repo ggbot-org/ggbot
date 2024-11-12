@@ -1,8 +1,8 @@
-import { isLiteralType, objectTypeGuard } from "minimal-type-guard-helpers"
+import { isLiteralType, objectTypeGuard } from 'minimal-type-guard-helpers'
 
-import { Frequency, isFrequency } from "./frequency.js"
+import { Frequency, isFrequency } from './frequency.js'
 
-export const schedulingStatuses = ["active", "inactive", "suspended"] as const
+export const schedulingStatuses = ['active', 'inactive', 'suspended'] as const
 export type SchedulingStatus = (typeof schedulingStatuses)[number]
 
 const isSchedulingStatus = isLiteralType<SchedulingStatus>(schedulingStatuses)
@@ -18,7 +18,7 @@ export const isScheduling = objectTypeGuard<Scheduling>(
 
 export function schedulingsAreInactive(schedulings: Scheduling[]) {
 	if (schedulings.length === 0) return true
-	return schedulings.every(({ status }) => status === "inactive")
+	return schedulings.every(({ status }) => status === 'inactive')
 }
 
 export type SchedulingSummary = Record<SchedulingStatus, number>

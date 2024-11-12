@@ -1,7 +1,7 @@
-import { ENV } from "@workspace/env"
-import { build, BuildOptions } from "esbuild"
+import { ENV } from '@workspace/env'
+import { build, BuildOptions } from 'esbuild'
 
-import { esbuildDefinitions } from "./definitions.js"
+import { esbuildDefinitions } from './definitions.js'
 
 const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 
@@ -23,20 +23,20 @@ const DEPLOY_STAGE = ENV.DEPLOY_STAGE()
 export function browserBundle({
 	entryPoints,
 	outfile
-}: Pick<BuildOptions, "entryPoints" | "outfile">) {
+}: Pick<BuildOptions, 'entryPoints' | 'outfile'>) {
 	return build({
 		alias: {
 			// `react-intl` without the parser is 40% smaller,
 			// see https://formatjs.io/docs/guides/advanced-usage/
-			"@formatjs/icu-messageformat-parser":
-				"@formatjs/icu-messageformat-parser/no-parser"
+			'@formatjs/icu-messageformat-parser':
+				'@formatjs/icu-messageformat-parser/no-parser'
 		},
 		bundle: true,
 		define: esbuildDefinitions,
 		entryPoints,
-		legalComments: "none",
-		minify: DEPLOY_STAGE !== "local",
+		legalComments: 'none',
+		minify: DEPLOY_STAGE !== 'local',
 		outfile,
-		platform: "browser"
+		platform: 'browser'
 	})
 }

@@ -1,1 +1,1 @@
-export const reactRootId = "root"
+export const reactRootId = 'root'

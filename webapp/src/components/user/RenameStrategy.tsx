@@ -1,9 +1,9 @@
-import { classnames } from "_/classnames"
-import { Button, Buttons, InputFieldName, Message, Modal, Title } from "_/components/library"
-import { useRenameStrategy } from "_/hooks/user/api"
-import { isName, StrategyKey } from "@workspace/models"
-import { useEffect, useRef, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { classnames } from '_/classnames'
+import { Button, Buttons, InputFieldName, Message, Modal, Title } from '_/components/library'
+import { useRenameStrategy } from '_/hooks/user/api'
+import { isName, StrategyKey } from '@workspace/models'
+import { useEffect, useRef, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }
@@ -20,7 +20,7 @@ export function RenameStrategy({
 	const { request, reset, error, isDone, isPending } = useRenameStrategy()
 
 	const [canRename, setCanRename] = useState(false)
-	const [newName, setNewName] = useState("")
+	const [newName, setNewName] = useState('')
 	const [modalIsActive, setModalIsActive] = useState(false)
 
 	const formRef = useRef<HTMLFormElement>(null)
@@ -48,7 +48,7 @@ export function RenameStrategy({
 				<form
 					ref={formRef}
 					autoComplete="off"
-					className={classnames("box")}
+					className={classnames('box')}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!canRename) return
@@ -65,7 +65,7 @@ export function RenameStrategy({
 					<InputFieldName
 						required
 						label={<FormattedMessage id="StrategyName.label" />}
-						name={"name" satisfies FormFieldName}
+						name={'name' satisfies FormFieldName}
 						onChange={(event) => {
 							const name = event.target.value
 							if (isName(name)) {
@@ -78,7 +78,7 @@ export function RenameStrategy({
 					/>
 					<Buttons>
 						<Button
-							color={canRename ? error ? "warning" : "primary" : undefined}
+							color={canRename ? error ? 'warning' : 'primary' : undefined}
 							isLoading={isPending}
 						>
 							<FormattedMessage id="Button.save" />

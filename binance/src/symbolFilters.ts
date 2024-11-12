@@ -1,8 +1,8 @@
-import { BinanceNewOrderOptions, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional } from "./types.js"
+import { BinanceNewOrderOptions, BinanceSymbolFilterLotSize, BinanceSymbolFilterMinNotional } from './types.js'
 
-type IcebergQty = NonNullable<BinanceNewOrderOptions["icebergQty"]>
-type Quantity = NonNullable<BinanceNewOrderOptions["quantity"]>
-type QuoteOrderQuantity = NonNullable<BinanceNewOrderOptions["quoteOrderQty"]>
+type IcebergQty = NonNullable<BinanceNewOrderOptions['icebergQty']>
+type Quantity = NonNullable<BinanceNewOrderOptions['quantity']>
+type QuoteOrderQuantity = NonNullable<BinanceNewOrderOptions['quoteOrderQty']>
 
 export function lotSizeIsValid(
 	// TODO { minQty, maxQty, stepSize }: BinanceSymbolFilterLotSize,
