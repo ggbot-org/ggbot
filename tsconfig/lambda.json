@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
-		"lib": ["dom", "es2020"],
-		"noEmit": false,
-		"tsBuildInfoFile": "${configDir}/temp/tsconfig.tsbuildinfo"
+		"composite": false,
+		"declaration": false,
+		"declarationMap": false
 	},
 	"extends": "./default.json"
 }

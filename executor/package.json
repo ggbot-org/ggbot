@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --build",
-    "check_types": "tsc --noEmit",
+    "check_types": "tsc --build",
     "cleanup": "tsc --build --clean",
     "e2e:execute": "node --env-file ../.typescript.env ./src/end-to-end-tests/execute.ts",
     "e2e:listAccountKeys": "node --env-file ../.typescript.env ./src/end-to-end-tests/listAccountKeys.ts",

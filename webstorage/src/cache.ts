@@ -11,7 +11,7 @@ export function cachedBoolean (
 			if (value === "true") return true
 			return false
 		},
-		set: (value: boolean) => storage.setItem(key, String(value)),
+		set: (value: boolean | undefined) => storage.setItem(key, String(Boolean(value))),
 		delete: () => storage.removeItem(key)
 	})
 }
@@ -19,7 +19,7 @@ export function cachedBoolean (
 export function cachedString(storage: WebStorageProvider, key: string) {
 	return ({
 		get: () => storage.getItem(key) ?? "",
-		set: (value: boolean) => storage.setItem(key, String(value)),
+		set: (value: string) => storage.setItem(key, value),
 		delete: () => storage.removeItem(key)
 	})
 }

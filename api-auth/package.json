@@ -1,21 +1,18 @@
 {
-  "name": "@workspace/binance-proxy",
+  "name": "@workspace/api-auth",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "tsc --build",
     "check_types": "tsc --build",
-    "cleanup": "tsc --build --clean",
-    "e2e:apiRestrictions": "node --env-file ../.typescript.env ./src/end-to-end-tests/apiRestrictions.ts",
-    "e2e:newOrder": "node --env-file ../.typescript.env ./src/end-to-end-tests/newOrder.ts"
+    "cleanup": "tsc --build --clean"
   },
   "dependencies": {
-    "@aws-sdk/client-ec2": "3.668.0",
     "@workspace/api": "0.0.0",
     "@workspace/authentication": "0.0.0",
-    "@workspace/binance": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/email-messages": "0.0.0",
     "@workspace/env": "0.0.0",
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",

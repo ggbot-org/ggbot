@@ -1,12 +1,12 @@
 {
-  "name": "@workspace/api-lambda-user-action",
+  "name": "@workspace/api-user",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc --build tsconfig.build.json",
-    "check_types": "tsc --noEmit",
-    "cleanup": "rm -rf dist/ temp/",
+    "build": "tsc --build",
+    "check_types": "tsc --build",
+    "cleanup": "tsc --build --clean",
     "create": "sh src/scripts/create.sh",
     "deploy": "sh src/scripts/deploy.sh",
     "prebuild": "npm run cleanup",

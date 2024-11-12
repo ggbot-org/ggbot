@@ -10,7 +10,7 @@ export function EnterAsAccount ({ accountId }: { accountId?: AccountKey["account
 	const { data, request, isPending } = useEnterAsAccount()
 
 	useEffect(() => {
-		if (!data) return
+		if (!data?.token) return
 		localWebStorage.authToken.set(data.token)
 		GOTO(webapp.user.dashboard)
 	}, [data])

@@ -1,7 +1,0 @@
-{
-	"compilerOptions": {
-		"outDir": "./temp"
-	},
-	"extends": "./tsconfig.json",
-	"exclude": ["node_modules"]
-}

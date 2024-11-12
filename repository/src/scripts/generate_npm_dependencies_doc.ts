@@ -18,8 +18,9 @@ const repositoryDocsDir = join(repository.pathname, "repository", "docs")
 
 const pathname = join(repositoryDocsDir, "npm-dependencies.md")
 
-// Node text cannot contain `@`
-const packageGraphNode = (packageName: string) => packageName.startsWith("@") ? packageName.substring(1) : packageName
+function internalPackageGraphNode(packageName: string) {
+	return packageName.substring(WorkspacePackageJson.scope.length + 1)
+}
 
 const isInternalDependency = (packageName: string) => packageName.startsWith(WorkspacePackageJson.scope)
 
@@ -69,14 +70,18 @@ const isRedundantDependency = (
 for (const workspace of repository.workspaces.values()) {
 	const workspacePackageJson = workspace.packageJson
 	const packageName = workspacePackageJson.packageName
-	for (const dependency of workspacePackageJson.dependencies.keys()) if (isInternalDependency(dependency)) internalDependencyGraph.push([packageName, dependency])
+	for (const dependency of workspacePackageJson.dependencies.keys()) {
+		if (isInternalDependency(dependency)) internalDependencyGraph.push([packageName, dependency])
+	}
 }
 
-for (const dependencyRelation of internalDependencyGraph) if (!isRedundantDependency(dependencyRelation, internalDependencyGraph)) graphInternalDependencyRows.push(
-	`    ${packageGraphNode(
-		dependencyRelation[0]
-	)} --- ${packageGraphNode(dependencyRelation[1])}`
-)
+for (const dependencyRelation of internalDependencyGraph) {
+	if (!isRedundantDependency(dependencyRelation, internalDependencyGraph)) {
+		graphInternalDependencyRows.push(
+			`    ${internalPackageGraphNode(dependencyRelation[0])} --- ${internalPackageGraphNode(dependencyRelation[1])}`
+		)
+	}
+}
 
 const graphRows = (graphInternalDependencyRows: string[]) => ["```mermaid", "graph LR", ...graphInternalDependencyRows, "```", ""].join(
 	"\n"
