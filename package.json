@@ -20,11 +20,11 @@
     "check_types": "npm run check_types --workspaces --if-present",
     "cleanup": "npm run cleanup --workspaces --if-present",
     "deploy:api": "npm run deploy:api:admin && npm run deploy:api:auth && npm run deploy:api:stripe && npm run deploy:api:public && npm run deploy:api:user",
-    "deploy:api:user": "npm run deploy -w api-user",
-    "deploy:api:admin": "npm run deploy -w api-admin",
-    "deploy:api:auth": "npm run deploy -w api-auth",
-    "deploy:api:public": "npm run deploy -w api-public",
-    "deploy:api:stripe": "npm run deploy -w api-stripe",
+    "deploy:api:user": "npm run deploy_api -w infrastructure api-user",
+    "deploy:api:admin": "npm run deploy_api -w infrastructure api-admin",
+    "deploy:api:auth": "npm run deploy_api -w infrastructure api-auth",
+    "deploy:api:public": "npm run deploy_api -w infrastructure api-public",
+    "deploy:api:stripe": "npm run deploy_api -w infrastructure api-stripe",
     "deploy:webapp": "npm run deploy -w webapp",
     "e2e:apiRestrictions": "npm run e2e:apiRestrictions -w binance-proxy",
     "e2e:execute": "npm run e2e:execute -w executor",
@@ -105,8 +105,10 @@
     "markdownlint-rule-relative-links": "3.0.0",
     "pre-commit": "1.2.2",
     "prettier": "3.3.3",
+    "read-file-utf8": "3.0.0",
     "ts-prune": "0.10.3",
-    "typescript-eslint": "8.14.0"
+    "typescript-eslint": "8.14.0",
+    "write-file-utf8": "3.0.2"
   },
   "lint-staged": {
     "**/*.json": [

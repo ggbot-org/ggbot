@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-import write from 'write-file-utf8'
+import writeFile from 'write-file-utf8'
 
 import { Repository } from '../Repository.js'
 import { WorkspacePackageJson } from '../WorkspacePackageJson.js'
@@ -22,46 +22,34 @@ function internalPackageGraphNode(packageName: string) {
 	return packageName.substring(WorkspacePackageJson.scope.length + 1)
 }
 
-const isInternalDependency = (packageName: string) => packageName.startsWith(WorkspacePackageJson.scope)
-
-const allDependencies = (
+function allDependencies(
 	wantedPackageName: string,
 	internalDependencyGraph: InternalDependencyGraph,
 	foundDependencies: string[] = []
-): string[] => {
+): string[] {
 	const dependencies: string[] = foundDependencies
 	for (const [packageName, dependency] of internalDependencyGraph) {
 		if (packageName !== wantedPackageName) continue
 		if (dependencies.includes(dependency)) continue
 		dependencies.push(dependency)
-		dependencies.push(
-			...allDependencies(
-				dependency,
-				internalDependencyGraph,
-				dependencies
-			)
-		)
+		dependencies.push(...allDependencies(dependency, internalDependencyGraph, dependencies))
 	}
 	return dependencies
 }
 
-const isRedundantDependency = (
+function isRedundantDependency(
 	[packageName, dependency]: InternalDependencyRelation,
 	internalDependencyGraph: InternalDependencyGraph
-): boolean => {
-	const packageDependencies = internalDependencyGraph.filter(
-		(item) => item[0] === packageName
-	)
+): boolean {
+	const packageDependencies = internalDependencyGraph.filter((item) => item[0] === packageName)
+
 	for (const dependencyRelation of packageDependencies) {
 		const siblingDependencyRelations = packageDependencies.filter(
 			([_, dependency]) => dependencyRelation[1] !== dependency
 		)
-		for (const [_, siblingDependency] of siblingDependencyRelations) if (
-			allDependencies(
-				siblingDependency,
-				internalDependencyGraph
-			).includes(dependency)
-		) return true
+		for (const [_, siblingDependency] of siblingDependencyRelations) {
+			if (allDependencies(siblingDependency, internalDependencyGraph).includes(dependency)) return true
+		}
 	}
 
 	return false
@@ -71,7 +59,9 @@ for (const workspace of repository.workspaces.values()) {
 	const workspacePackageJson = workspace.packageJson
 	const packageName = workspacePackageJson.packageName
 	for (const dependency of workspacePackageJson.dependencies.keys()) {
-		if (isInternalDependency(dependency)) internalDependencyGraph.push([packageName, dependency])
+		if (WorkspacePackageJson.isInternalDependency(dependency)) {
+			internalDependencyGraph.push([packageName, dependency])
+		}
 	}
 }
 
@@ -83,9 +73,9 @@ for (const dependencyRelation of internalDependencyGraph) {
 	}
 }
 
-const graphRows = (graphInternalDependencyRows: string[]) => ['```mermaid', 'graph LR', ...graphInternalDependencyRows, '```', ''].join(
-	'\n'
-)
+function graphRows(graphInternalDependencyRows: string[]){
+	return ['```mermaid', 'graph LR', ...graphInternalDependencyRows, '```', ''].join('\n')
+}
 
 const content = `
 # npm dependencies
@@ -96,4 +86,4 @@ ${graphRows(graphInternalDependencyRows)}
 
 `
 
-await write(pathname, content)
+await writeFile(pathname, content)

@@ -3,16 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js"
+  },
   "scripts": {
+    "build": "tsc --build",
     "check_types": "tsc --noEmit",
     "build_workspace_dependencies": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/scripts/build_workspace_dependencies.ts",
     "build_workspaces": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/scripts/build_workspaces.ts",
     "generate_docs": "node --env-file ../.typescript.env src/scripts/generate_npm_dependencies_doc.ts",
     "test": "node --test --env-file ../.typescript.env ./src/*_test.ts"
-  },
-  "dependencies": {
-    "read-file-utf8": "3.0.0",
-    "write-file-utf8": "3.0.2"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

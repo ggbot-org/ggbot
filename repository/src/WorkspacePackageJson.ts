@@ -4,8 +4,8 @@ import readFile from 'read-file-utf8'
 
 import { FileProvider } from './filesystemProviders.js'
 import { PackageJson } from './PackageJson.js'
-import type { Repository } from './Repository.js'
-import type { Workspace } from './Workspace.js'
+import { Repository } from './Repository.js'
+import { Workspace } from './Workspace.js'
 
 export class WorkspacePackageJson implements FileProvider {
 	static scope = '@workspace'
@@ -33,26 +33,55 @@ export class WorkspacePackageJson implements FileProvider {
 		this.directoryPathname = directoryPathname
 	}
 
-	static workspacePathnameFromInternalDependency(
-		internalDependency: string
-	): Workspace['pathname'] {
+	static isInternalDependency(packageName: string){
+		return packageName.startsWith(WorkspacePackageJson.scope)
+	}
+
+	static workspacePathnameFromInternalDependency(internalDependency: string): Workspace['pathname'] {
 		const workspacePathname = internalDependency.split('/').pop()
-		if (!workspacePathname) throw new Error(
-			`Cannot get workspace pathname from ${internalDependency}`
-		)
+		if (!workspacePathname) throw new Error(`Cannot get workspace pathname from ${internalDependency}`)
 		return workspacePathname
+	}
+
+	static externalDependenciesChain(workspacePathname: Workspace['pathname'], workspaces: Repository['workspaces']) {
+		const workspace = workspaces.get(workspacePathname)
+		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
+		const seen = new Set<string>()
+		const result: [string, string][] = []
+		for (const dependency of workspace.packageJson.dependencies) {
+			const [dependencyName] = dependency
+			if (WorkspacePackageJson.isInternalDependency(dependencyName)) {
+				const dependencyWorkspacePathname = WorkspacePackageJson.workspacePathnameFromInternalDependency(dependencyName)
+				const dependencyWorkspace = workspaces.get(dependencyWorkspacePathname)
+				if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
+				if (dependencyWorkspace.packageJson.dependencies.size === 0) continue
+				for (const subDependency of WorkspacePackageJson.externalDependenciesChain(dependencyWorkspacePathname, workspaces)) {
+					const [subDependencyName] = subDependency
+					if (!seen.has(subDependencyName)) {
+						seen.add(subDependencyName)
+						result.push(subDependency)
+					}
+				}
+			} else {
+				if (!seen.has(dependencyName)) {
+					seen.add(dependencyName)
+					result.push(dependency)
+				}
+			}
+		}
+		return result
 	}
 
 	static internalDependenciesChain(workspacePathname: Workspace['pathname'], workspaces: Repository['workspaces']) {
 		const workspace = workspaces.get(workspacePathname)
 		if (!workspace) throw Error(`Cannot get workspace ${workspacePathname}`)
-		let result = Array.from(workspace.packageJson.internalDependencies)
+		const result = Array.from(workspace.packageJson.internalDependencies)
 		for (const internalDependency of result) {
 			const dependencyWorkspacePathname = WorkspacePackageJson.workspacePathnameFromInternalDependency(internalDependency)
 			const dependencyWorkspace = workspaces.get(dependencyWorkspacePathname)
 			if (!dependencyWorkspace) throw Error(`Cannot get workspace ${dependencyWorkspace}`)
 			if (dependencyWorkspace.packageJson.internalDependencies.size === 0) continue
-			result = WorkspacePackageJson.internalDependenciesChain(dependencyWorkspacePathname, workspaces).concat(result)
+			result.push(...WorkspacePackageJson.internalDependenciesChain(dependencyWorkspacePathname, workspaces))
 		}
 		return [...new Set(result)]
 	}

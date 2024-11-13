@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 
-import type { StrategyFlowGraphEdge, StrategyFlowGraphNode } from '@workspace/models'
+import { StrategyFlowGraphEdge, StrategyFlowGraphNode } from '@workspace/models'
 import { assertDeepEqual, assertEqual } from 'minimal-assertion-helpers'
 import { now } from 'minimal-time-helpers'
 

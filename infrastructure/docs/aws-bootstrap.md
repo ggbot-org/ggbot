@@ -69,6 +69,7 @@ The following steps are needed, order matters:
 2. [Create the main website](./www-setup.md)
 3. [SES setup](./ses-setup.md)
 4. [IAM setup](./iam-setup.md)
+5. [API setup](./api-setup.md)
 
 Continue with the following steps in any order:
 

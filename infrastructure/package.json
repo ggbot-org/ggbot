@@ -6,6 +6,7 @@
   "scripts": {
     "check_types": "tsc --noEmit",
     "create_api_lambda": "node --env-file ../.typescript.env ./src/scripts/create_api_lambda.ts",
+    "deploy_api": "node --env-file ../.typescript.env ./src/scripts/deploy_api.ts",
     "generate_iam_policies": "node --env-file ../.typescript.env ./src/scripts/generate_iam_policies.ts"
   },
   "dependencies": {
@@ -15,7 +16,7 @@
     "@workspace/locators": "0.0.0",
     "@workspace/models": "0.0.0",
     "@workspace/s3-data-bucket": "0.0.0",
-    "write-file-utf8": "3.0.2"
+    "@workspace/repository": "0.0.0"
   },
   "devDependencies": {
     "@workspace/tsconfig": "0.0.0"

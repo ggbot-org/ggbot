@@ -4,7 +4,7 @@ import readFile from 'read-file-utf8'
 
 import { FileProvider } from './filesystemProviders.js'
 import { PackageJson } from './PackageJson.js'
-import type { Repository } from './Repository.js'
+import { Repository } from './Repository.js'
 import { Workspace } from './Workspace.js'
 import { WorkspacePackageJson } from './WorkspacePackageJson.js'
 

@@ -46,6 +46,7 @@ graph LR
     indexeddb-binance --- binance
     indexeddb-binance --- indexeddb
     infrastructure --- s3-data-bucket
+    infrastructure --- repository
     locators --- env
     s3-data-bucket --- api
     stripe --- api
