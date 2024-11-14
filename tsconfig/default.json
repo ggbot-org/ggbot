@@ -1,14 +1,18 @@
 {
 	"compilerOptions": {
-		"composite": true,
+		// This option is replaced by enabling no-unreachable in ESLint config
+		// "allowUnreachableCode": false,
 		"declaration": true,
-		"declarationMap": true,
+		"declarationMap": false,
 		"forceConsistentCasingInFileNames": true,
+		"incremental": true,
 		"isolatedModules": true,
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": false,
+		"noErrorTruncation": false,
 		"noFallthroughCasesInSwitch": true,
+		"noImplicitThis": true,
 		"outDir": "${configDir}/dist",
 		"rootDir": "${configDir}/src",
 		"skipLibCheck": true,
@@ -16,8 +20,7 @@
 		"target": "es2022",
 		"tsBuildInfoFile": "${configDir}/dist/tsconfig.tsbuildinfo",
 		"useDefineForClassFields": true
-		// These options are replaced by enabling
-		// @typescript-eslint/no-unused-vars in ESLint config.
+		// These options are replaced by enabling @typescript-eslint/no-unused-vars in ESLint config.
 		// "noUnusedLocals": true,
 		// "noUnusedParameters": true,
 	},

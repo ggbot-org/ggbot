@@ -124,6 +124,7 @@ export default [
 
 			'no-case-declarations': 'error',
 			'no-console': ['error', { allow: ['debug', 'error', 'info', 'warn'] }],
+			'no-unreachable': 'error',
 
 			'tsdoc/syntax': 'error',
 

@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
-		"composite": false,
-		"declaration": false,
-		"declarationMap": false
+		"declaration": false
 	},
 	"extends": "./default.json"
 }
