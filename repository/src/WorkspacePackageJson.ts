@@ -26,7 +26,6 @@ export class WorkspacePackageJson implements FileProvider {
 	/** Key = "package name", value = "package version" */
 	devDependencies = new Map<string, string>()
 
-	/** Can be a dependency or a dev dependency. */
 	internalDependencies = new Set<string>()
 
 	constructor(directoryPathname: string) {
@@ -106,7 +105,6 @@ export class WorkspacePackageJson implements FileProvider {
 
 		if (devDependencies) for (const [key, value] of Object.entries(devDependencies)) {
 			if (typeof value === 'string') this.devDependencies.set(key, value)
-			if (key.startsWith(WorkspacePackageJson.scope)) this.internalDependencies.add(key)
 		}
 
 		if (scripts && typeof scripts === 'object') {

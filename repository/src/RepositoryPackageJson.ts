@@ -5,7 +5,6 @@ import readFile from 'read-file-utf8'
 import { FileProvider } from './filesystemProviders.js'
 import { PackageJson } from './PackageJson.js'
 import { Repository } from './Repository.js'
-import { Workspace } from './Workspace.js'
 import { WorkspacePackageJson } from './WorkspacePackageJson.js'
 
 export class RepositoryPackageJson implements FileProvider {
@@ -24,24 +23,27 @@ export class RepositoryPackageJson implements FileProvider {
 	}
 
 	static buildCommandSequence(workspaces: Repository['workspaces']) {
-		const workspacePathnames = Array.from(workspaces.keys())
-		const seenDependency = new Set()
+		const workspacePathnames = Array.from(workspaces.keys()).filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
 
-		const workspacePathnamesSortedByDependencies = workspacePathnames
-			.reduce<Array<Workspace['pathname']>>((list, workspacePathname) => {
-				const dependencies = WorkspacePackageJson.internalDependenciesChain(workspacePathname, workspaces).map(
-					WorkspacePackageJson.workspacePathnameFromInternalDependency
-				)
-				for (const dependency of dependencies) seenDependency.add(dependency)
+		const dependenciesMap = new Map<string, string[]>()
+		for (const workspacePathname of workspacePathnames) {
+			const dependencies = WorkspacePackageJson.internalDependenciesChain(
+				workspacePathname, workspaces
+			).map(WorkspacePackageJson.workspacePathnameFromInternalDependency)
+			dependenciesMap.set(workspacePathname, dependencies)
+		}
 
-				// If workspace is a dependency of some other workspace in the list, add it before other list elements.
-				if (seenDependency.has(workspacePathname)) return [...dependencies, workspacePathname, ...list]
-				// Otherwise append it to the list.
-				return [...list, ...dependencies, workspacePathname]
-			}, [])
-			.filter(RepositoryPackageJson.onlyWorkspacesWithBuild(workspaces))
+		function levelOf (dependency: string): number {
+			const dependencies = dependenciesMap.get(dependency) ?? []
+			if (dependencies.length == 0) return 0
+			let max = 0
+			for (const dep of dependencies) {
+				max = Math.max(levelOf(dep), max)
+			}
+			return max + 1
+		}
 
-		return [...new Set(workspacePathnamesSortedByDependencies)].map(
+		return workspacePathnames.sort((a, b) => levelOf(a) > levelOf(b) ? 1 : -1).map(
 			(workspacePathname) => RepositoryPackageJson.workspaceBuildCommand(workspacePathname)
 		).join(' && ')
 	}
