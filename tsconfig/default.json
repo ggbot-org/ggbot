@@ -3,7 +3,7 @@
 		// This option is replaced by enabling no-unreachable in ESLint config
 		// "allowUnreachableCode": false,
 		"declaration": true,
-		"declarationMap": false,
+		"declarationMap": true,
 		"forceConsistentCasingInFileNames": true,
 		"incremental": true,
 		"isolatedModules": true,
