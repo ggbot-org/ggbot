@@ -16,10 +16,13 @@ graph LR
     api-auth --- s3-data-bucket
     api-public --- database
     api-public --- s3-data-bucket
-    api-stripe --- authentication
-    api-stripe --- database
-    api-stripe --- stripe
-    api-stripe --- s3-data-bucket
+    api-stripe-action --- authentication
+    api-stripe-action --- database
+    api-stripe-action --- stripe
+    api-stripe-action --- s3-data-bucket
+    api-stripe-webhook --- database
+    api-stripe-webhook --- stripe
+    api-stripe-webhook --- s3-data-bucket
     api-user --- authentication
     api-user --- database
     api-user --- s3-data-bucket

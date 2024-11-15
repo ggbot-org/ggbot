@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --build",
     "check_types": "tsc --build",
-    "cleanup": "tsc --build --clean"
+    "cleanup": "rm -rf dist"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",

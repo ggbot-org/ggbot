@@ -22,6 +22,12 @@ export class ApiLambdaPublic extends ApiLambda {
 	}
 }
 
+export class ApiLambdaStripeAction extends ApiLambda {
+	constructor() {
+		super(ENV.AWS_DATA_REGION(), 'stripe-action')
+	}
+}
+
 export class ApiLambdaUser extends ApiLambda {
 	constructor() {
 		super(ENV.AWS_DATA_REGION(), 'user')

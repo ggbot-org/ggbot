@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/api-admin",
+  "name": "@workspace/api-stripe-action",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,9 @@
     "@workspace/api": "0.0.0",
     "@workspace/authentication": "0.0.0",
     "@workspace/database": "0.0.0",
+    "@workspace/env": "0.0.0",
     "@workspace/models": "0.0.0",
+    "@workspace/stripe": "0.0.0",
     "@workspace/s3-data-bucket": "0.0.0"
   },
   "devDependencies": {

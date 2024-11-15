@@ -6,18 +6,7 @@
   "scripts": {
     "build": "tsc --build",
     "check_types": "tsc --build",
-    "cleanup": "tsc --build --clean",
-    "create": "sh src/scripts/create.sh",
-    "deploy": "sh src/scripts/deploy.sh",
-    "prebuild": "npm run cleanup",
-    "precreate": "npm run zip",
-    "predeploy": "npm run zip",
-    "prezip": "npm run build",
-    "set_log_retention": "sh src/scripts/set_log_retention.sh",
-    "set_environment": "sh src/scripts/set_environment.sh",
-    "set_memory_size": "sh src/scripts/set_memory_size.sh",
-    "set_timeout": "sh src/scripts/set_timeout.sh",
-    "zip": "sh src/scripts/zip.sh"
+    "cleanup": "rm -rf dist"
   },
   "dependencies": {
     "@workspace/api": "0.0.0",
