@@ -1,4 +1,5 @@
 import { exec } from 'node:child_process'
+import { exit } from 'node:process'
 
 import { Repository } from '../Repository.js'
 import { RepositoryPackageJson } from '../RepositoryPackageJson.js'
@@ -11,6 +12,6 @@ const command = RepositoryPackageJson.buildCommandSequence(repository.workspaces
 exec(command, { cwd: repository.pathname }, (error) => {
 	if (error) {
 		console.error(error)
-		process.exit(1)
+		exit(1)
 	}
 })

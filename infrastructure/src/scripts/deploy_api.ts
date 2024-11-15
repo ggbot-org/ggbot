@@ -1,10 +1,13 @@
 import { execSync } from 'node:child_process'
 import { cpSync, mkdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
+import { exit } from 'node:process'
 
 import { Repository, WorkspacePackageJson } from '@workspace/repository'
 import readFile from 'read-file-utf8'
 import writeFile from 'write-file-utf8'
+
+import { ApiLambda, ApiLambdaPublic, ApiLambdaUser } from '../aws/apiLambdas.js'
 
 /**
  * This script accepts the `workspacePathname` as parameter.
@@ -23,18 +26,33 @@ import writeFile from 'write-file-utf8'
  * ```
  */
 const workspacePathname = process.argv[2]
-if (typeof workspacePathname !== 'string') process.exit(1)
+if (typeof workspacePathname != 'string') exit(1)
+
+// Instantiate ApiLambda.
+
+let apiLamda: ApiLambda | undefined
+
+if (workspacePathname == 'api-user') apiLamda = new ApiLambdaUser()
+if (workspacePathname == 'api-public') apiLamda = new ApiLambdaPublic()
+
+if (!apiLamda) {
+	console.error('Cannot instantiate API Lambda for workspace', workspacePathname)
+	exit(1)
+}
+
+// Prepare workspace folders.
 
 const repository = new Repository()
 await repository.read()
 
 const { workspaces } = repository
 
-const lambdaDir = join(repository.pathname, workspacePathname, 'dist', 'lambda')
+const distDir = join(repository.pathname, workspacePathname, 'dist')
+const lambdaDir = join(distDir, 'lambda')
 const nodeModulesDir = join(lambdaDir, 'node_modules')
 
-// Cleanup node_modules directory, if any.
-rmSync(nodeModulesDir, { force: true, recursive: true })
+// Cleanup dist directory, if any.
+rmSync(distDir, { force: true, recursive: true })
 
 // Create temporary package.json with external dependencies and install them.
 
@@ -62,3 +80,7 @@ for (const internalDependency of internalDependencies) {
 	await writeFile(join(nodeModulesWorkspaceDir, 'package.json'), JSON.stringify(packageJson, null, 2))
 	cpSync(join(workspaceDir, 'dist'), join(nodeModulesWorkspaceDir, 'dist'), { recursive: true })
 }
+
+// Create zip file.
+
+execSync('zip -X -r ../lambda.zip *', { cwd: lambdaDir })

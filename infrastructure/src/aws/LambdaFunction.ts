@@ -23,19 +23,22 @@ export class LambdaFunction {
 		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
 	}
 
-	async create({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
+	async create({ Role, ZipFile }: Required<Pick<FunctionCode, 'ZipFile'> & {
+		/* Execution role ARN */
+		Role: string
+	}>) {
 		await this.client.send(new CreateFunctionCommand({
+			Architectures: [this.architecture],
 			Code: { ZipFile },
 			FunctionName: this.functionName,
-			Role: this.executionRoleArn,
-			Architectures: [this.architecture],
 			Handler: this.handler,
 			PackageType: PackageType.Zip,
+			Role,
 			Runtime: this.runtime,
 		}))
 	}
 
-	async updateFunctionCode({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
+	async update({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
 		await this.client.send(new UpdateFunctionCodeCommand({
 			ZipFile,
 			FunctionName: this.functionName,
