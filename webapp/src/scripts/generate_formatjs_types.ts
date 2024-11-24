@@ -21,7 +21,7 @@ const content = `// This file is generated
 
 // ts-prune-ignore-next
 export declare type FormatjsIntlMessageId =
-  | ${translationKeys.map((key) => `"${key}"`).join('\n  | ')}
+  | ${translationKeys.map((key) => `'${key}'`).join('\n  | ')}
 
 declare global {
 	namespace FormatjsIntl {

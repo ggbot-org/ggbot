@@ -2,6 +2,7 @@ import json from '@eslint/json'
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import typeScriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typeScriptParser from '@typescript-eslint/parser'
+import react from 'eslint-plugin-react'
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort'
 import tsdoc from 'eslint-plugin-tsdoc'
 import workspaces from 'eslint-plugin-workspaces'
@@ -95,11 +96,11 @@ const tsconfigFiles = ['**/tsconfig*.json', 'tsconfig/default.json', 'tsconfig/l
 
 export default [
 	globalIgnores,
+
+	// All TypeScript files.
 	{
 		files: ['**/*.{ts,tsx}'],
-		languageOptions: {
-			parser: typeScriptParser,
-		},
+		languageOptions: { parser: typeScriptParser },
 		plugins: {
 			'@stylistic': stylisticPlugin,
 			'@typescript-eslint': typeScriptEslintPlugin,
@@ -136,6 +137,47 @@ export default [
 		}
 	},
 
+	// WebApp JSX files.
+	{
+		files: ['webapp/**/*.tsx'],
+		languageOptions: {
+			parser: typeScriptParser,
+			parserOptions: { ecmaFeatures: { jsx: true } }
+		},
+		plugins: {
+			react,
+		},
+		rules: {
+			'react/display-name': 'error',
+			'react/function-component-definition': ['error', { 'namedComponents': 'function-declaration' }],
+			'react/hook-use-state': ['error', { allowDestructuredState: true }],
+
+			'react/jsx-boolean-value': 'error',
+			'react/jsx-key': 'error',
+			'react/jsx-newline': ['error', { prevent: true }],
+			'react/jsx-no-comment-textnodes': 'error',
+			'react/jsx-no-constructed-context-values': 'error',
+			'react/jsx-no-duplicate-props': 'error',
+			'react/jsx-no-leaked-render': 'error',
+			'react/jsx-no-useless-fragment': 'error',
+			'react/jsx-pascal-case': ['error', { allowLeadingUnderscore: true }],
+			'react/jsx-sort-props': ['error', { noSortAlphabetically: true, reservedFirst: true, shorthandFirst: true }],
+			'react/jsx-wrap-multilines': 'error',
+
+			'react/no-array-index-key': 'error',
+			'react/no-danger': 'error',
+			'react/no-deprecated': 'error',
+			'react/prop-types': 'off',
+			'react/self-closing-comp': ['error', { component: true, html: true }],
+		},
+		settings: {
+			react: {
+				version: 'detect'
+			}
+		}
+	},
+
+	// ESLint config.
 	{
 		files: ['eslint.config.js'],
 		plugins: {
