@@ -1,7 +1,7 @@
 import { Message } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { ApiActionError, isApiActionServerSideError } from '@workspace/api'
 import { ErrorExceededQuota } from '@workspace/models'
-import { FormattedMessage } from 'react-intl'
 
 export function StrategiesErrorExceededQuota({ error }: { error: ApiActionError | undefined }) {
 	if (!isApiActionServerSideError(error)) return null

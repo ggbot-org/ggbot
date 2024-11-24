@@ -3,12 +3,12 @@ import { GoCopyStrategy, ShareStrategy } from '_/components/public/StrategyActio
 import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
 import { DeleteStrategy } from '_/components/user/DeleteStrategy'
 import { RenameStrategy } from '_/components/user/RenameStrategy'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { sessionWebStorage } from '_/storages/session'
 import { Strategy, StrategyKey } from '@workspace/models'
 import { useCallback, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 function GoEditStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	return strategyKey ? (

@@ -4,9 +4,10 @@ import { ApiKey } from '_/components/readonlyFields'
 import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from '_/components/user/BinanceApiKeyPermissions'
 import { ToastContext } from '_/contexts/Toast'
 import { useReadBinanceAccountApiRestrictions } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
+import { useIntl } from '_/i18n/hooks'
 import { GatewayTimeoutError } from '@workspace/api'
 import { useContext, useEffect, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 export function BinanceApi({ apiKey }: { apiKey: string }) {
 	const { formatMessage } = useIntl()

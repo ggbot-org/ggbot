@@ -1,9 +1,9 @@
 import { classnames } from '_/classnames'
 import { Button, Buttons, InputFieldName, Message, Modal, Title } from '_/components/library'
 import { useRenameStrategy } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { isName, StrategyKey } from '@workspace/models'
 import { useEffect, useRef, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }

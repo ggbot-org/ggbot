@@ -1,7 +1,8 @@
 import { Message, Table } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { timeFormat } from '_/i18n/formats'
+import { useIntl } from '_/i18n/hooks'
 import { StrategyError } from '@workspace/models'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 type Row = {
 	whenCreated: string

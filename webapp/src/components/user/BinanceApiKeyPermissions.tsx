@@ -1,9 +1,9 @@
 import { classnames } from '_/classnames'
 import { Checkmark, CheckmarkProps } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { BinanceApiKeyPermissionCriteria } from '@workspace/models'
 import { PropsWithChildren } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, 'ok'>>) {
 	if (ok === undefined) return null

@@ -1,6 +1,9 @@
+import { I18nMessageMarkupTag } from '_/i18n/messages'
 import { ReactNode } from 'react'
 
-type FormattedMessageValues = Record<string, (chunks: ReactNode[]) => JSX.Element>
+type FormattedMessageValues = Record<I18nMessageMarkupTag, (chunks: ReactNode[]) => JSX.Element>
+
+// TODO update examples here, react-intl is not used anymore
 
 /**
  * Common JSX values to define markup used by <FormattedMessage> component.
@@ -24,7 +27,7 @@ type FormattedMessageValues = Record<string, (chunks: ReactNode[]) => JSX.Elemen
  * }
  * ```
  */
-export const formattedMessageMarkup: FormattedMessageValues = {
+export const formattedMessageMarkup: Omit<FormattedMessageValues, 'a'> = {
 	b: (chunks) => <b>{chunks}</b>,
 	em: (chuncks) => <em>{chuncks}</em>,
 	strong: (chunks) => <strong>{chunks}</strong>
@@ -37,6 +40,7 @@ export const formattedMessageMarkup: FormattedMessageValues = {
  * @remarks
  * Having a single link is not a limitation, actually is better for UX; a
  * message should have no more than one link to click.
+ *
  * @example
  *
  * ```tsx
@@ -55,7 +59,7 @@ export const formattedMessageMarkup: FormattedMessageValues = {
  */
 export function formattedMessageMarkupWithLinkTo(url: string): FormattedMessageValues {
 	return {
-		a: (text) => <a href={url}>{text}</a>,
+		a: (content: ReactNode[]) => <a href={url}>{content}</a>,
 		...formattedMessageMarkup
 	}
 }

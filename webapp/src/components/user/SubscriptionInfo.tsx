@@ -1,8 +1,8 @@
 import { Control, Div, Field, MainColor, OneColumn, Tag, Title } from '_/components/library'
 import { SubscriptionEnd, SubscriptionPlan } from '_/components/readonlyFields'
 import { useSubscription } from '_/hooks/user/useSubscription'
+import { FormattedMessage } from '_/i18n/components'
 import { SubscriptionStatus as Status } from '@workspace/models'
-import { FormattedMessage } from 'react-intl'
 
 const colorOf: Record<Status, Extract<MainColor, 'primary' | 'warning'>> = {
 	active: 'primary',

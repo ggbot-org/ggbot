@@ -1,8 +1,8 @@
 import { classnames } from '_/classnames'
 import { Div, Title } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { DflowCommonContext } from '@workspace/dflow'
 import { SerializablePrimitive } from '@workspace/models'
-import { FormattedMessage } from 'react-intl'
 
 type MemoryItemProps = {
 	name: string

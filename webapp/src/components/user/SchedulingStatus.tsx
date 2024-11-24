@@ -1,6 +1,6 @@
 import { MainColor, Tag, Tags } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { SchedulingStatus as Status } from '@workspace/models'
-import { FormattedMessage } from 'react-intl'
 
 const colorOf: Record<
 	Status,

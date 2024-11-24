@@ -1,6 +1,6 @@
 import { classnames } from '_/classnames'
+import { FormattedMessage } from '_/i18n/components'
 import { webapp } from '_/routing/webapp'
-import { FormattedMessage } from 'react-intl'
 
 export function TermsAndPolicyLinks() {
 	return (

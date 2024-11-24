@@ -1,7 +1,7 @@
 import { classnames } from '_/classnames'
 import { Button, Buttons, Column, Columns, Message, Modal, Title } from '_/components/library'
 import { AccountId, Email } from '_/components/readonlyFields'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from '_/i18n/components'
 
 export function AuthExit({
 	accountEmail, accountId, isActive, setIsActive, exit

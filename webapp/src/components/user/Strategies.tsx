@@ -3,13 +3,13 @@ import { Button, Buttons, Checkbox, Column, Columns, Div, Message, OneColumn, Sp
 import { Toolbar, ToolbarProps } from '_/components/Toolbar'
 import { SchedulingsStatusBadges, SchedulingsStatusBadgesProps } from '_/components/user/SchedulingsStatusBadges'
 import { useAccountStrategies } from '_/hooks/user/useAccountStrategies'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { localWebStorage } from '_/storages/local'
 import { sessionWebStorage } from '_/storages/session'
 import { AccountStrategy, schedulingsAreInactive } from '@workspace/models'
 import { useEffect, useMemo, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 function StrategyItem({
 	isLoading, name, schedulings, ...strategyKey

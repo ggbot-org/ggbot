@@ -1,8 +1,8 @@
 import { classnames } from '_/classnames'
+import { FormattedMessage } from '_/i18n/components'
 import { stringMaxLength } from '@workspace/models'
 import { isName, normalizeName } from '@workspace/models'
 import { ChangeEventHandler, ReactNode, useCallback, useEffect, useId, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { Control, Field, Help, Input, InputProps, Label as _Label, LabelProps as _LabelProps } from 'trunx'
 
 import { Label } from './Label'
@@ -74,7 +74,7 @@ export function InputFieldName({ onChange, value, ...props }: Omit<
 	)
 }
 
-export function ReadonlyInput ({ value }: ReadonlyInputProps) {
+export function ReadonlyInput({ value }: ReadonlyInputProps) {
 	// Notice that React does not re-render an input if its defaultValue changes;
 	// so a key is used to force re-render.
 	const [key, setKey] = useState(randomKey())

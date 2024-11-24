@@ -2,16 +2,16 @@ import { FrequencyInput,
 	FrequencyInputProps } from '_/components/FrequencyInput'
 import { Button, Buttons, Div, Level, LevelItem } from '_/components/library'
 import { SchedulingStatus } from '_/components/user/SchedulingStatus'
+import { FormattedMessage } from '_/i18n/components'
 import { StrategyScheduling } from '@workspace/models'
 import { useCallback } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export type SchedulingItemProps = Pick<
 	FrequencyInputProps,
 	'disabledIntervalOptions' | 'setFrequency'
 > & {
 	scheduling: Omit<StrategyScheduling, 'frequency'> &
-		Pick<FrequencyInputProps, 'frequency'>;
+	Pick<FrequencyInputProps, 'frequency'>;
 	setStatus: (
 		arg: Extract<StrategyScheduling['status'], 'active' | 'inactive'>,
 	) => void;

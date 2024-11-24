@@ -1,9 +1,10 @@
 import { classnames } from '_/classnames'
 import { Column, Columns, Icon, IconText } from '_/components/library'
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
+import { FormattedMessage } from '_/i18n/components'
 import { dayFormat } from '_/i18n/formats'
+import { useIntl } from '_/i18n/hooks'
 import { github, telegram } from '@workspace/locators'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 function SocialLinks() {
 	return (

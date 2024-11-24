@@ -1,9 +1,9 @@
 import { Button, Buttons, Content, MainColor, Message, Modal } from '_/components/library'
 import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
 import { useDeleteStrategy } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { StrategyKey } from '@workspace/models'
 import { useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function DeleteStrategy({
 	strategyKey,

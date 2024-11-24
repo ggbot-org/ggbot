@@ -1,6 +1,6 @@
 import { Button, ButtonProps, Buttons } from '_/components/library'
 import { UseBacktestingState } from '_/hooks/useBacktesting'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from '_/i18n/components'
 
 function PauseButton(props: ButtonProps) {
 	return (

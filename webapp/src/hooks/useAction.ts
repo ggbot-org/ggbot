@@ -1,9 +1,9 @@
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { ToastContext } from '_/contexts/Toast'
+import { useIntl } from '_/i18n/hooks'
 import { localWebStorage } from '_/storages/local'
 import { ActionIO, ApiActionError, BadGatewayError, BadRequestError, clientAction, ClientActionHeaders, GatewayTimeoutError, GenericError, InternalServerError, isApiActionOutputData, isApiActionOutputError, TimeoutError, UnauthorizedError } from '@workspace/api'
 import { useCallback, useContext, useState } from 'react'
-import { useIntl } from 'react-intl'
 
 export type UseActionApiArg = {
 	url: Parameters<typeof clientAction>[0]
@@ -42,7 +42,7 @@ export type UseActionApiArg = {
  * }, [FooBar])
  * ```
  */
-export function useAction<ActionType extends string, Input extends ActionIO, Output extends ActionIO >(
+export function useAction<ActionType extends string, Input extends ActionIO, Output extends ActionIO>(
 	{ url, withAuth }: UseActionApiArg,
 	type: ActionType
 ) {

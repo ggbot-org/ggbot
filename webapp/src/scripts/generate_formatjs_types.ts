@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-import { translationPathname } from '_/i18n/locales.js'
+import { translationPathname } from '_/i18n/languages.js'
 import { defaultLanguage } from '@workspace/models'
 import readFile from 'read-file-utf8'
 import writeFile from 'write-file-utf8'

@@ -1,6 +1,6 @@
 import { DayInterval, DayIntervalProps } from '_/components/library/DayInterval'
+import { FormattedMessage } from '_/i18n/components'
 import { Day } from 'minimal-time-helpers'
-import { FormattedMessage } from 'react-intl'
 import { Button, ButtonProps, Buttons, Div, Title } from 'trunx'
 
 export function DayIntervalBox({

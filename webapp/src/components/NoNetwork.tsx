@@ -1,6 +1,6 @@
 import { Message, Modal } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function NoNetwork() {
 	const [isOffline, setIsOffline] = useState(false)

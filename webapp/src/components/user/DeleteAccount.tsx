@@ -1,8 +1,8 @@
 import { Button, Buttons, Checkbox, Column, Columns, Content, InputField, MainColor, Message, Modal } from '_/components/library'
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { useDeleteAccount } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { useContext, useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function DeleteAccount() {
 	const { accountId } = useContext(AuthenticationContext)

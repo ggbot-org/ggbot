@@ -1,7 +1,7 @@
 import { classnames } from '_/classnames'
+import { useIntl } from '_/i18n/hooks'
 import { dateToDay, Day } from 'minimal-time-helpers'
 import { Dispatch, MouseEvent, SetStateAction, useMemo, useState } from 'react'
-import { useIntl } from 'react-intl'
 
 import { Icon, IconProps } from './Icon'
 import { randomKey } from './randomKey'

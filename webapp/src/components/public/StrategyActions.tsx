@@ -1,11 +1,12 @@
 import { Button, Buttons, Div, OneColumn, Title } from '_/components/library'
 import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
 import { ToastContext } from '_/contexts/Toast'
+import { FormattedMessage } from '_/i18n/components'
+import { useIntl } from '_/i18n/hooks'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { Strategy, StrategyKey } from '@workspace/models'
 import { useContext } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 export function GoCopyStrategy({ strategyKey }: { strategyKey: StrategyKey | undefined }) {
 	return strategyKey ? (

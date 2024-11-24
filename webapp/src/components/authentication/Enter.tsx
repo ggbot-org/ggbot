@@ -3,13 +3,14 @@ import { GenericError } from '_/components/GenericError'
 import { Button, Checkbox, Control, Field, InputField, Message, Title } from '_/components/library'
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { TimeoutError } from '_/components/TimeoutError'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { useIntl } from '_/i18n/hooks'
 import { auth } from '_/routing/auth'
 import { isApiAuthEnterRequestData, isApiAuthEnterResponseData } from '@workspace/api'
 import { EmailAddress, isEmailAddress } from '@workspace/models'
 import { isMaybeObject } from 'minimal-type-guard-helpers'
 import { ChangeEventHandler, InputHTMLAttributes, Reducer, useCallback, useReducer, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 type FormField = {
 	email: { value: string }
@@ -50,7 +51,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 
 	const disabled = !termsAndPolicyAccepted
 
-	const onChangeTermsAndPolicyAccepted = useCallback< ChangeEventHandler<HTMLInputElement> >((event) => {
+	const onChangeTermsAndPolicyAccepted = useCallback<ChangeEventHandler<HTMLInputElement>>((event) => {
 		const { checked } = event.target as unknown as InputHTMLAttributes<HTMLInputElement>
 		setTermsAndPolicyAccepted(Boolean(checked))
 	}, [])

@@ -3,12 +3,12 @@ import { GenericError } from '_/components/GenericError'
 import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField, Message, Title } from '_/components/library'
 import { Email } from '_/components/readonlyFields'
 import { TimeoutError } from '_/components/TimeoutError'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { auth } from '_/routing/auth'
 import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from '@workspace/api'
 import { EmailAddress } from '@workspace/models'
 import { Reducer, useReducer } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	code: { value: string }

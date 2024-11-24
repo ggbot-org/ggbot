@@ -1,7 +1,7 @@
 import { Button } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
-import { FormattedMessage } from 'react-intl'
 
 export function GoSettings() {
 	return (

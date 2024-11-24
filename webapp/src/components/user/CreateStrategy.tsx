@@ -2,11 +2,11 @@ import { classnames } from '_/classnames'
 import { Button, Buttons, InputFieldName, Message, OneColumn } from '_/components/library'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCreateStrategy } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { ApiActionError } from '@workspace/api'
 import { isName } from '@workspace/models'
 import { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }

@@ -1,8 +1,8 @@
 import { classnames } from '_/classnames'
 import { Control, Field, InputField, SelectField } from '_/components/library'
+import { useIntl } from '_/i18n/hooks'
 import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from '@workspace/models'
 import { ChangeEventHandler, useCallback } from 'react'
-import { useIntl } from 'react-intl'
 
 export type FrequencyInputProps = Partial<{ disabled: boolean }> & {
 	frequency: Pick<Frequency, 'interval'> & {

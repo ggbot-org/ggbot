@@ -10,9 +10,10 @@ import { useWriteAccountStrategiesItemSchedulings } from '_/hooks/user/api'
 import { useAccountStrategies } from '_/hooks/user/useAccountStrategies'
 import { useSubscription } from '_/hooks/user/useSubscription'
 import { useStrategyFlow } from '_/hooks/useStrategyFlow'
+import { FormattedMessage } from '_/i18n/components'
+import { useIntl } from '_/i18n/hooks'
 import { AccountStrategy, isStrategyScheduling, newStrategyScheduling, PRO_FREQUENCY_INTERVALS, StrategyKey, StrategyScheduling } from '@workspace/models'
 import { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 import { SchedulingParameterItemProps } from './SchedulingParameterItem'
 

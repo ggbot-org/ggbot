@@ -2,10 +2,10 @@ import { Div, Title } from '_/components/library'
 import { SchedulingParameterItem, SchedulingParameterItemProps } from '_/components/user/SchedulingParameterItem'
 import { useBinanceSymbols } from '_/hooks/useBinanceSymbols'
 import { useStrategyKey } from '_/hooks/useStrategyKey'
+import { FormattedMessage } from '_/i18n/components'
 import { extractBinanceParametersFromFlow, extractCommonParametersFromFlow } from '@workspace/dflow'
 import { StrategyFlow, StrategyParameters } from '@workspace/models'
 import { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function SchedulingParameters({
 	flowViewGraph, setParam, params
@@ -17,7 +17,7 @@ export function SchedulingParameters({
 	const binanceSymbols = useBinanceSymbols(strategyKind)
 
 	const [schedulingParameterItems, setSchedulingParameterItems] = useState<
-		Array<Pick<SchedulingParameterItemProps, 'kind' | 'label' | 'paramValue' | 'defaultParamValue' >>
+		Array<Pick<SchedulingParameterItemProps, 'kind' | 'label' | 'paramValue' | 'defaultParamValue'>>
 	>([])
 
 	useEffect(() => {

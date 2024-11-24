@@ -10,10 +10,11 @@ import { SchedulingParameters } from '_/components/user/SchedulingParameters'
 import { ToastContext } from '_/contexts/Toast'
 import { useBacktesting } from '_/hooks/useBacktesting'
 import { UseFlowViewOutput } from '_/hooks/useFlowView'
+import { FormattedMessage } from '_/i18n/components'
+import { useIntl } from '_/i18n/hooks'
 import { Frequency, isFrequency, StrategyKey } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useContext, useEffect, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 export function Backtesting({
 	flowViewGraph, strategyKey, strategyName, strategyFrequency, whenUpdatedFlowView

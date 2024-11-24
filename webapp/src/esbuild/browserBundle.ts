@@ -26,6 +26,7 @@ export function browserBundle({
 }: Pick<BuildOptions, 'entryPoints' | 'outfile'>) {
 	return build({
 		alias: {
+			// TODO remove this, not using formatjs anymore
 			// `react-intl` without the parser is 40% smaller,
 			// see https://formatjs.io/docs/guides/advanced-usage/
 			'@formatjs/icu-messageformat-parser':

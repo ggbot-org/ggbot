@@ -1,8 +1,8 @@
 import { classnames } from '_/classnames'
 import { Button, Control, Field, InputField, InputFieldProps, Title } from '_/components/library'
 import { useCreateBinanceApiConfig } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { useEffect } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	apiKey: { value: string }

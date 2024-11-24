@@ -1,7 +1,7 @@
 import { classnames } from '_/classnames'
 import { TabContent, TabContentProps, TabSelector, TabSelectors } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export type TabId =
 	| 'account'

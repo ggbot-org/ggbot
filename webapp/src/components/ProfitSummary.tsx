@@ -2,12 +2,12 @@ import { getBinanceSymbolInfo } from '_/binance/getSymbolInfo'
 import { classnames } from '_/classnames'
 import { DateTime, Div, Level, LevelItem, SizeProp, Title } from '_/components/library'
 import { useBinanceSymbols } from '_/hooks/useBinanceSymbols'
+import { FormattedMessage } from '_/i18n/components'
 import { add, BinanceFill, greaterThan, isBinanceFill, lessThan, mul, neg, sub } from '@workspace/binance'
 import { Order, StrategyKind } from '@workspace/models'
 import { DayInterval } from 'minimal-time-helpers'
 import { arrayTypeGuard, objectTypeGuard } from 'minimal-type-guard-helpers'
 import { Fragment, PropsWithChildren } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 function toNumber(value: string, precision: number) {
 	return Number(value).toFixed(precision)
@@ -71,7 +71,7 @@ export function ProfitSummary({ orders, dayInterval, strategyKind }: ProfitSumma
 					type: string;
 				}>(
 					({ fills, side, status, symbol, type }) => Array.isArray(fills) &&
-							[side, status, symbol, type].every((item) => typeof item === 'string'),
+						[side, status, symbol, type].every((item) => typeof item === 'string'),
 				)(info)
 			) continue
 

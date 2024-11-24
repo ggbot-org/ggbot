@@ -1,6 +1,6 @@
 import { classnames } from '_/classnames'
+import { FormattedMessage } from '_/i18n/components'
 import { useCallback, useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 import { DayDropdown, DayDropdownProps } from './DayDropdown'
 

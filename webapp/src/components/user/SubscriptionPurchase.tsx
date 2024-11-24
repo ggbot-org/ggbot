@@ -4,12 +4,13 @@ import { SubscriptionEnd, SubscriptionTotalPrice } from '_/components/readonlyFi
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { useCreateCheckoutSession } from '_/hooks/user/api'
 import { useSubscription } from '_/hooks/user/useSubscription'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
+import { useIntl } from '_/i18n/hooks'
 import { GOTO } from '_/routing/navigation'
 import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from '@workspace/models'
 import { getTime, now, Time } from 'minimal-time-helpers'
 import { useContext, useEffect, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 type FormField = {
 	numMonths: { value: number }

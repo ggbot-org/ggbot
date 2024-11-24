@@ -2,9 +2,9 @@ import { Column, Columns, Content, Message, OneColumn } from '_/components/libra
 import { AccountId } from '_/components/readonlyFields'
 import { useReadAccountInfo } from '_/hooks/admin/api'
 import { useAccountKey } from '_/hooks/admin/useAccountKey'
+import { FormattedMessage } from '_/i18n/components'
 import { AccountKey } from '@workspace/models'
 import { PropsWithChildren, useEffect } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 function AccountNotFound({ accountKey: { accountId } }: { accountKey: AccountKey }) {
 	return (

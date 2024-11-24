@@ -3,10 +3,10 @@ import { Button, Buttons, Div, InputFieldName, Message, OneColumn, Title } from 
 import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCopyStrategy } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { ApiActionError } from '@workspace/api'
 import { isName, StrategyKey } from '@workspace/models'
 import { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 type FormField = {
 	name: { value: string }

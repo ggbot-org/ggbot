@@ -2,10 +2,10 @@ import { Content, H1, H2, H3, Page, Paragraph } from '_/components/library'
 import { NoNetwork } from '_/components/NoNetwork'
 import { Footer } from '_/components/public/Footer'
 import { Navigation } from '_/components/public/Navigation'
+import { FormattedMessage } from '_/i18n/components'
 import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from '_/i18n/formattedMessageMarkup'
 import { amazonWebServices, exchange, stripe } from '@workspace/locators'
 import { numYearsTradingOperationsRetention } from '@workspace/models'
-import { FormattedMessage } from 'react-intl'
 
 export function PrivacyPage() {
 	return (

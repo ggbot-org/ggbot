@@ -1,10 +1,10 @@
 import { classnames } from '_/classnames'
 import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from '_/components/library'
 import { AuthenticationContext } from '_/contexts/Authentication'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { useContext } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function Navigation() {
 	const { accountIsAdmin, showAuthExit } = useContext(AuthenticationContext)

@@ -1,9 +1,10 @@
 import { Message, Table } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { timeFormat } from '_/i18n/formats'
+import { useIntl } from '_/i18n/hooks'
 import { add, BinanceDecimal, BinanceFill, isBinanceFill } from '@workspace/binance'
 import { Order } from '@workspace/models'
 import { arrayTypeGuard, objectTypeGuard } from 'minimal-type-guard-helpers'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 type Row = {
 	orderId: number

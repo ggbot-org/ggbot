@@ -1,7 +1,7 @@
+import { FormattedDate } from '_/i18n/components'
 import { DayFormat, dayFormat, TimeFormat, timeFormat } from '_/i18n/formats'
 import { Day } from 'minimal-time-helpers'
 import { TimeHTMLAttributes } from 'react'
-import { FormattedDate } from 'react-intl'
 
 type DateTimeFormat = 'day' | 'time'
 

@@ -1,6 +1,6 @@
+import { FormattedDate } from '_/i18n/components'
 import { dayFormat } from '_/i18n/formats'
 import { ReactNode, useCallback } from 'react'
-import { FormattedDate } from 'react-intl'
 import { Control, Dropdown, DropdownMenu, DropdownProps, DropdownTrigger, Field } from 'trunx'
 
 import { Calendar, CalendarProps } from './Calendar'

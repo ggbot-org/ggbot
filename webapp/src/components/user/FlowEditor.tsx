@@ -2,11 +2,11 @@ import { classnames } from '_/classnames'
 import { Button, ReadonlyInput } from '_/components/library'
 import { useFlowView, UseFlowViewOutput } from '_/hooks/useFlowView'
 import { useWriteStrategyFlow } from '_/hooks/user/api'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { StrategyFlow, StrategyKey } from '@workspace/models'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
 
 export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlow }: {
 	setFlowView: (arg: UseFlowViewOutput) => void

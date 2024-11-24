@@ -1,13 +1,11 @@
 import { classnames } from '_/classnames'
-import { BrandName, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo, Page } from '_/components/library'
+import { BrandName, BrandTagline, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo, Page } from '_/components/library'
 import { Footer } from '_/components/public/Footer'
+import { FormattedMessage } from '_/i18n/components'
 import { GOTO } from '_/routing/navigation'
 import { webapp } from '_/routing/webapp'
 import { sessionWebStorage } from '_/storages/session'
 import { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
-
-import { BrandTagline } from '../../components/library'
 
 export function Homepage() {
 	const [ctaIsActive, setCtaIsActive] = useState(false)

@@ -1,8 +1,9 @@
 import { ReadonlyField } from '_/components/library'
+import { FormattedMessage } from '_/i18n/components'
 import { dayFormat } from '_/i18n/formats'
+import { useIntl } from '_/i18n/hooks'
 import { EmailAddress, SubscriptionPlan as SubscriptionPlanValue } from '@workspace/models'
 import { Time } from 'minimal-time-helpers'
-import { FormattedMessage, useIntl } from 'react-intl'
 
 type ValueProp<T> = {
 	value: T | undefined
@@ -19,7 +20,7 @@ export function AccountId({ value }: ValueProp<string>) {
 
 function truncateApiKey(apiKey: string | undefined): string {
 	if (!apiKey) return ''
-	return `${apiKey.substring(0, 10)}...${ apiKey.substring(apiKey.length - 10, apiKey.length) }`
+	return `${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 10, apiKey.length)}`
 }
 export function ApiKey({ value }: ValueProp<string>) {
 	return (
@@ -71,7 +72,7 @@ export function SubscriptionEnd({ value }: ValueProp<Time>) {
 	return (
 		<ReadonlyField
 			label={<FormattedMessage id="SubscriptionEnd.label" />}
-			value={formatDate(value, dayFormat)}
+			value={value ? formatDate(value, dayFormat) : ''}
 		/>
 	)
 }

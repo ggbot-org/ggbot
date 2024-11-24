@@ -1,8 +1,9 @@
 import { classnames } from '_/classnames'
 import { Div, Progress, ProgressProps } from '_/components/library'
 import { UseBacktestingState } from '_/hooks/useBacktesting'
+import { FormattedMessage } from '_/i18n/components'
 import { timeFormat } from '_/i18n/formats'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from '_/i18n/hooks'
 
 export type BacktestingProgressProps = Pick<
 	UseBacktestingState, 'currentTimestamp'
