@@ -2,7 +2,6 @@ import { Button, Buttons, Checkbox, Content, Message, Modal } from '_/components
 import { GoSettings } from '_/components/user/GoSettings'
 import { useSubscription } from '_/hooks/user/useSubscription'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { sessionWebStorage } from '_/storages/session'
 import { ChangeEventHandler, InputHTMLAttributes, useCallback, useEffect, useState } from 'react'
 
@@ -31,7 +30,7 @@ export function PleasePurchase() {
 						<FormattedMessage id="PleasePurchase.message" />
 					</p>
 					<p>
-						<FormattedMessage id="PleasePurchase.goToSettings" values={formattedMessageMarkup} />
+						<FormattedMessage id="PleasePurchase.goToSettings" />
 					</p>
 					<Checkbox checked={doNotShow} onChange={onChangeDoNotShow}>
 						<FormattedMessage id="PleasePurchase.doNotShow" />

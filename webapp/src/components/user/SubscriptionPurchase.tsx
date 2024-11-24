@@ -5,7 +5,6 @@ import { AuthenticationContext } from '_/contexts/Authentication'
 import { useCreateCheckoutSession } from '_/hooks/user/api'
 import { useSubscription } from '_/hooks/user/useSubscription'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { useIntl } from '_/i18n/hooks'
 import { GOTO } from '_/routing/navigation'
 import { isNaturalNumber, isYearlyPurchase, purchaseDefaultNumMonths as defaultNumMonths, purchaseMaxNumMonths as maxNumMonths, purchaseMinNumMonths as minNumMonths, SubscriptionPlan } from '@workspace/models'
@@ -143,10 +142,7 @@ export function SubscriptionPurchase() {
 							values={{ price: formatNumber(monthlyPrice, { style: 'currency', currency }) }}
 						/>
 						<br />
-						<FormattedMessage
-							id="SubscriptionPurchase.hint"
-							values={{ numMonths: maxNumMonths, ...formattedMessageMarkup }}
-						/>
+						<FormattedMessage id="SubscriptionPurchase.hint" values={{ numMonths: maxNumMonths }} />
 					</Message>
 					<Columns isMobile>
 						<Column bulma="is-narrow">

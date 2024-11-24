@@ -3,7 +3,6 @@ import { NoNetwork } from '_/components/NoNetwork'
 import { Footer } from '_/components/public/Footer'
 import { Navigation } from '_/components/public/Navigation'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from '_/i18n/formattedMessageMarkup'
 import { amazonWebServices, exchange, stripe } from '@workspace/locators'
 import { numYearsTradingOperationsRetention } from '@workspace/models'
 
@@ -23,34 +22,34 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.title" />
 				</H1>
 				<Paragraph>
-					<FormattedMessage id="Privacy.welcome" values={formattedMessageMarkup} />
+					<FormattedMessage id="Privacy.welcome" />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Privacy.personalData" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataOnlyEmail" values={formattedMessageMarkup} />
+					<FormattedMessage id="Privacy.personalDataOnlyEmail" />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataNotShared" values={formattedMessageMarkup} />
+					<FormattedMessage id="Privacy.personalDataNotShared" />
 				</Paragraph>
 				<H3>
 					<FormattedMessage id="Privacy.cloudProvider" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataSecureStorage" values={formattedMessageMarkupWithLinkTo(amazonWebServices.homepage)} />
+					<FormattedMessage id="Privacy.personalDataSecureStorage" values={{ href: amazonWebServices.homepage }} />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataEmailService" values={formattedMessageMarkup} />
+					<FormattedMessage id="Privacy.personalDataEmailService" />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Privacy.personalDataEmailUsage" values={formattedMessageMarkup} />
+					<FormattedMessage id="Privacy.personalDataEmailUsage" />
 				</Paragraph>
 				<H3>
 					<FormattedMessage id="Privacy.paymentProvider" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.stripe" values={formattedMessageMarkupWithLinkTo(stripe.homepage)} />
+					<FormattedMessage id="Privacy.stripe" values={{ href: stripe.homepage }} />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Privacy.marketProviders" />
@@ -59,10 +58,10 @@ export function PrivacyPage() {
 					<FormattedMessage id="Privacy.binance" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Privacy.binanceCustomerData" values={formattedMessageMarkupWithLinkTo(exchange.binance.homepage)} />
+					<FormattedMessage id="Privacy.binanceCustomerData" values={{ href: exchange.binance.homepage }} />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Privacy.binanceTradingData" values={{ numYears: numYearsTradingOperationsRetention, ...formattedMessageMarkup }} />
+					<FormattedMessage id="Privacy.binanceTradingData" values={{ numYears: numYearsTradingOperationsRetention }} />
 				</Paragraph>
 			</Content>
 		</Page>

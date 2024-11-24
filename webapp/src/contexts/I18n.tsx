@@ -1,16 +1,12 @@
 import { Navbar } from '_/components/library'
 import { detectLanguage, translationPathname } from '_/i18n/languages'
-import { I18nMessage } from '_/i18n/messages'
+import { I18nMessagesRecord } from '_/i18n/messages'
 import { defaultLanguage, Language } from '@workspace/models'
 import { createContext, PropsWithChildren, Reducer, useEffect, useMemo, useReducer } from 'react'
 
-import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
-
-	type Messages = Record<FormatjsIntlMessageId, I18nMessage[]>
-
 type ContextValue = {
 	language: Language
-	messages?: Messages
+	messages?: I18nMessagesRecord
 }
 
 export const I18nContext = createContext<ContextValue>({
@@ -20,7 +16,7 @@ export const I18nContext = createContext<ContextValue>({
 export function I18nProvider({ children }: PropsWithChildren) {
 	const [{ messages, readHasError, readIsPending }, dispatch] = useReducer<
 		Reducer<{
-			messages?: Messages
+			messages?: I18nMessagesRecord
 			readIsPending: boolean
 			readHasError: boolean
 		},
@@ -28,7 +24,7 @@ export function I18nProvider({ children }: PropsWithChildren) {
 			| { type: 'READ_INTL_MESSAGES_FAILURE' }
 			| {
 				type: 'READ_INTL_MESSAGES_SUCCESS'
-				messages: Messages
+				messages: I18nMessagesRecord
 			}
 		>
 	>((state, action) => {

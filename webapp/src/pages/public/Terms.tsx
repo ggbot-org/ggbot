@@ -3,7 +3,6 @@ import { NoNetwork } from '_/components/NoNetwork'
 import { Footer } from '_/components/public/Footer'
 import { Navigation } from '_/components/public/Navigation'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup, formattedMessageMarkupWithLinkTo } from '_/i18n/formattedMessageMarkup'
 import { webapp } from '_/routing/webapp'
 import { exchange, telegram } from '@workspace/locators'
 
@@ -23,37 +22,37 @@ export function TermsPage() {
 					<FormattedMessage id="Terms.title" />
 				</H1>
 				<Paragraph>
-					<FormattedMessage id="Terms.welcome" values={formattedMessageMarkup} />
+					<FormattedMessage id="Terms.welcome" />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.access" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.accessWithEmail" values={formattedMessageMarkup} />
+					<FormattedMessage id="Terms.accessWithEmail" />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.product" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.strategies" values={formattedMessageMarkup} />
+					<FormattedMessage id="Terms.strategies" />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Terms.profitAndLoss" values={formattedMessageMarkupWithLinkTo(telegram.support)} />
+					<FormattedMessage id="Terms.profitAndLoss" values={{ href: telegram.support }} />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.binance" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.binanceApi" values={formattedMessageMarkupWithLinkTo(exchange.binance.homepage)} />
+					<FormattedMessage id="Terms.binanceApi" values={{ href: exchange.binance.homepage }} />
 				</Paragraph>
 				<Paragraph>
-					<FormattedMessage id="Terms.binanceNoWithdrawals" values={formattedMessageMarkup} />
+					<FormattedMessage id="Terms.binanceNoWithdrawals" />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.supportedCountries" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.binanceUSisNotSupported" values={formattedMessageMarkup} />
+					<FormattedMessage id="Terms.binanceUSisNotSupported" />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Terms.payments" />
@@ -68,13 +67,13 @@ export function TermsPage() {
 					<FormattedMessage id="Terms.paymentsFullfillment" />
 				</H3>
 				<Paragraph>
-					<FormattedMessage id="Terms.fullfillmentPolicies" values={formattedMessageMarkupWithLinkTo(telegram.support)} />
+					<FormattedMessage id="Terms.fullfillmentPolicies" values={{ href: telegram.support }} />
 				</Paragraph>
 				<H2>
 					<FormattedMessage id="Privacy.title" />
 				</H2>
 				<Paragraph>
-					<FormattedMessage id="Terms.privacy" values={formattedMessageMarkupWithLinkTo(webapp.privacy.pathname)} />
+					<FormattedMessage id="Terms.privacy" values={{ href: webapp.privacy.pathname }} />
 				</Paragraph>
 			</Content>
 		</Page>

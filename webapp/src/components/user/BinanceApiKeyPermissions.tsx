@@ -1,7 +1,6 @@
 import { classnames } from '_/classnames'
 import { Checkmark, CheckmarkProps } from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { BinanceApiKeyPermissionCriteria } from '@workspace/models'
 import { PropsWithChildren } from 'react'
 
@@ -20,10 +19,7 @@ function BinanceApiKeyPermissionEnableReading({
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableReading'>>) {
 	return (
 		<BinanceApiKeyPermission ok={enableReading}>
-			<FormattedMessage
-				id="BinanceApiKeyPermissionEnableReading.description"
-				values={formattedMessageMarkup}
-			/>
+			<FormattedMessage id="BinanceApiKeyPermissionEnableReading.description" />
 		</BinanceApiKeyPermission>
 	)
 }
@@ -33,10 +29,7 @@ function BinanceApiKeyPermissionEnableSpotAndMarginTrading({
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'enableSpotAndMarginTrading'>>) {
 	return (
 		<BinanceApiKeyPermission ok={enableSpotAndMarginTrading}>
-			<FormattedMessage
-				id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description"
-				values={formattedMessageMarkup}
-			/>
+			<FormattedMessage id="BinanceApiKeyPermissionEnableSpotAndMarginTrading.description" />
 		</BinanceApiKeyPermission>
 	)
 }
@@ -52,10 +45,7 @@ function BinanceApiKeyPermissionEnableWithdrawals({
 					: undefined
 			}
 		>
-			<FormattedMessage
-				id="BinanceApiKeyPermissionEnableWithdrawals.description"
-				values={formattedMessageMarkup}
-			/>
+			<FormattedMessage id="BinanceApiKeyPermissionEnableWithdrawals.description" />
 		</BinanceApiKeyPermission>
 	)
 }
@@ -65,10 +55,7 @@ function BinanceApiKeyPermissionIpRestrict({
 }: Partial<Pick<BinanceApiKeyPermissionCriteria, 'ipRestrict'>>) {
 	return (
 		<BinanceApiKeyPermission ok={ipRestrict}>
-			<FormattedMessage
-				id="BinanceApiKeyPermissionIpRestrict.description"
-				values={formattedMessageMarkup}
-			/>
+			<FormattedMessage id="BinanceApiKeyPermissionIpRestrict.description" />
 		</BinanceApiKeyPermission>
 	)
 }

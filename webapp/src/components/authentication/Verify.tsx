@@ -4,7 +4,6 @@ import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField,
 import { Email } from '_/components/readonlyFields'
 import { TimeoutError } from '_/components/TimeoutError'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { auth } from '_/routing/auth'
 import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from '@workspace/api'
 import { EmailAddress } from '@workspace/models'
@@ -128,7 +127,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 				<FormattedMessage id="AuthVerify.title" />
 			</Title>
 			<Message>
-				<FormattedMessage id="AuthVerify.checkEmail" values={formattedMessageMarkup} />
+				<FormattedMessage id="AuthVerify.checkEmail" />
 			</Message>
 			<Columns>
 				<Column bulma="is-two-fifths-desktop">
@@ -142,7 +141,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 				</Column>
 			</Columns>
 			<Message>
-				<FormattedMessage id="AuthVerify.enterOneTimePassword" values={formattedMessageMarkup} />
+				<FormattedMessage id="AuthVerify.enterOneTimePassword" />
 			</Message>
 			{/*
 TODO do inputMode pattern maxLength work, at least on mobile?
@@ -169,7 +168,7 @@ TODO do inputMode pattern maxLength work, at least on mobile?
 			{gotTimeout ? <TimeoutError /> : null}
 			{verificationFailed ? (
 				<Message color="warning">
-					<FormattedMessage id="AuthVerify.failed" values={formattedMessageMarkup} />
+					<FormattedMessage id="AuthVerify.failed" />
 				</Message>
 			) : null}
 			{needToGenerateOneTimePasswordAgain ? (

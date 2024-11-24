@@ -4,7 +4,6 @@ import { Button, Checkbox, Control, Field, InputField, Message, Title } from '_/
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { TimeoutError } from '_/components/TimeoutError'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { useIntl } from '_/i18n/hooks'
 import { auth } from '_/routing/auth'
 import { isApiAuthEnterRequestData, isApiAuthEnterResponseData } from '@workspace/api'
@@ -114,7 +113,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 				<FormattedMessage id="AuthEnter.title" />
 			</Title>
 			<Message>
-				<FormattedMessage id="AuthEnter.info" values={formattedMessageMarkup} />
+				<FormattedMessage id="AuthEnter.info" />
 			</Message>
 			<InputField
 				required

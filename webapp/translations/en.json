@@ -21,13 +21,13 @@
 		"defaultMessage": "Send"
 	},
 	"AuthEnter.info": {
-		"defaultMessage": "Use your email to access ggbot."
+		"defaultMessage": "Use your email to access {appName}."
 	},
 	"AuthEnter.termsAndPolicy": {
 		"defaultMessage": "I accept {terms} and {policy}"
 	},
 	"AuthEnter.title": {
-		"defaultMessage": "Enter ggbot"
+		"defaultMessage": "Enter {appName}"
 	},
 	"AuthExit.submit": {
 		"defaultMessage": "Exit"
@@ -36,7 +36,7 @@
 		"defaultMessage": "Exit from your current account session."
 	},
 	"AuthExit.title": {
-		"defaultMessage": "Exit ggbot"
+		"defaultMessage": "Exit {appName}"
 	},
 	"AuthVerify.button": {
 		"defaultMessage": "Enter"
@@ -204,10 +204,10 @@
 		"defaultMessage": "Binance API deletion"
 	},
 	"DeleteBinanceApi.question": {
-		"defaultMessage": "Are you sure you want to delete your Binance API configuration on ggbot?"
+		"defaultMessage": "Are you sure you want to delete your Binance API configuration on {appName}?"
 	},
 	"DeleteBinanceApi.warning": {
-		"defaultMessage": "All your ggbot strategies will not able to be run!"
+		"defaultMessage": "All your {appName} strategies will not able to be run!"
 	},
 	"DeleteBinanceApi.info": {
 		"defaultMessage": "This action will not delete your API key on Binance."
@@ -336,7 +336,7 @@
 		"defaultMessage": "Privacy Policy"
 	},
 	"Privacy.welcome": {
-		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>ggbot</em> platform."
+		"defaultMessage": "Welcome to <em>{appName}</em>. Please read this Privacy Policy carefully as you agree to be bound by it while using the <em>{appName}</em> platform."
 	},
 	"Privacy.personalData": {
 		"defaultMessage": "Personal Data"
@@ -357,13 +357,13 @@
 		"defaultMessage": "Binance"
 	},
 	"Privacy.binanceCustomerData": {
-		"defaultMessage": "<a>Binance exchange</a> is used as a market provider. You will be asked to give information about your account, according to your Country's regulations. The <em>ggbot</em> platform is <strong>not involved at all</strong> in this process, and <strong>does not have access</strong> to the data you are required to share with <em>Binance</em>."
+		"defaultMessage": "<a>Binance exchange</a> is used as a market provider. You will be asked to give information about your account, according to your Country's regulations. The <em>{appName}</em> platform is <strong>not involved at all</strong> in this process, and <strong>does not have access</strong> to the data you are required to share with <em>Binance</em>."
 	},
 	"Privacy.binanceTradingData": {
-		"defaultMessage": "<em>Binance</em> holds all your trading data, including orders, staking and any other crypto activity you perform on that exchange. The <em>ggbot</em> platform <strong>does not retrieve</strong> your trading data from <em>Binance</em> but it keeps track of the operations you perform using the <em>ggbot</em> strategies in order to provide you information about your orders, profits, etc. and stores these data with a retention period of {numYears} years."
+		"defaultMessage": "<em>Binance</em> holds all your trading data, including orders, staking and any other crypto activity you perform on that exchange. The <em>{appName}</em> platform <strong>does not retrieve</strong> your trading data from <em>Binance</em> but it keeps track of the operations you perform using the <em>{appName}</em> strategies in order to provide you information about your orders, profits, etc. and stores these data with a retention period of {numYears} years."
 	},
 	"Privacy.stripe": {
-		"defaultMessage": "<a>Stripe</a> is used as payments provider: during checkout your <em>email</em> will be prefilled and you will be asked to enter your <em>country</em> and <em>credit card</em> information such as <em>cardholder name</em>. The <em>ggbot</em> platform <strong>does not store</strong> your country nor your credit card information."
+		"defaultMessage": "<a>Stripe</a> is used as payments provider: during checkout your <em>email</em> will be prefilled and you will be asked to enter your <em>country</em> and <em>credit card</em> information such as <em>cardholder name</em>. The <em>{appName}</em> platform <strong>does not store</strong> your country nor your credit card information."
 	},
 	"Privacy.personalDataOnlyEmail": {
 		"defaultMessage": "No <em>Personal Data</em> is collected other than your <em>account email</em>. This website does not use cookies and <strong>does not track you</strong> at all."
@@ -561,7 +561,7 @@
 		"defaultMessage": "Thank you for your purchase!"
 	},
 	"SubscriptionPurchased.message": {
-		"defaultMessage": "You are now able to use <em>ggbot</em> strategies."
+		"defaultMessage": "You are now able to use <em>{appName}</em> strategies."
 	},
 	"SubscriptionPurchased.support": {
 		"defaultMessage": "For any issue, please contact <a>Telegram support group</a>."
@@ -612,7 +612,7 @@
 		"defaultMessage": "Strategies"
 	},
 	"Terms.welcome": {
-		"defaultMessage": "Welcome to <em>ggbot</em>. Please read this <em>Terms of Service</em> carefully as you agree to be bound by it while using the <em>ggbot</em> website."
+		"defaultMessage": "Welcome to <em>{appName}</em>. Please read this <em>Terms of Service</em> carefully as you agree to be bound by it while using the <em>{appName}</em> website."
 	},
 	"Terms.title": {
 		"defaultMessage": "Terms of Service"
@@ -621,22 +621,22 @@
 		"defaultMessage": "Website access"
 	},
 	"Terms.accessWithEmail": {
-		"defaultMessage": "You access <em>ggbot</em> website with your account email. Keep your email safe, it is your responsibility."
+		"defaultMessage": "You access <em>{appName}</em> website with your account email. Keep your email safe, it is your responsibility."
 	},
 	"Terms.binance": {
 		"defaultMessage": "Binance API"
 	},
 	"Terms.binanceApi": {
-		"defaultMessage": "The <em>ggbot</em> platform interacts with <a>Binance Exchange</a> and needs your approval to access your Binance account using a <em>Binance API key</em>."
+		"defaultMessage": "The <em>{appName}</em> platform interacts with <a>Binance Exchange</a> and needs your approval to access your Binance account using a <em>Binance API key</em>."
 	},
 	"Terms.binanceNoWithdrawals": {
-		"defaultMessage": "It is crucial to understand that <em>ggbot</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>ggbot</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
+		"defaultMessage": "It is crucial to understand that <em>{appName}</em> will use a Binance API key only if its <b>withdrawal permission is disabled</b>. This means that <em>{appName}</em> as well as any other human or software that will access the Binance API key you provided, will not be able to withdraw from your Binance account."
 	},
 	"Terms.supportedCountries": {
 		"defaultMessage": "Supported countries"
 	},
 	"Terms.binanceUSisNotSupported": {
-		"defaultMessage": "Currently <em>ggbot</em> is <strong>not available in the United States</strong>. We are sorry but <em>Binance US</em> is <b>not supported</b>. While this would be easily achievable technically and <em>ggbot</em> could already provide this feature out of the box, it could be hard for us for legal reasons. We are a small and growing team and we would love to enter the US market! Right now it is out of our scope."
+		"defaultMessage": "Currently <em>{appName}</em> is <strong>not available in the United States</strong>. We are sorry but <em>Binance US</em> is <b>not supported</b>. While this would be easily achievable technically and <em>{appName}</em> could already provide this feature out of the box, it could be hard for us for legal reasons. We are a small and growing team and we would love to enter the US market! Right now it is out of our scope."
 	},
 	"Terms.payments": {
 		"defaultMessage": "Payments"
@@ -645,16 +645,16 @@
 		"defaultMessage": "Fullfillment policies"
 	},
 	"Terms.fullfillmentPolicies": {
-		"defaultMessage": "Once you have purchased a payment plan, <em>ggbot</em> will be able to trade using your <em>Binance</em> account and make profits with trading strategies. There is no recurrent subscription, so cancellation does not apply. You can opt out at any time but <em>refund</em> is not handled automatically: please contact <a>support group on Telegram</a> in case you want a refund."
+		"defaultMessage": "Once you have purchased a payment plan, <em>{appName}</em> will be able to trade using your <em>Binance</em> account and make profits with trading strategies. There is no recurrent subscription, so cancellation does not apply. You can opt out at any time but <i>refund</i> is not handled automatically: please contact <a>support group on Telegram</a> in case you want a refund."
 	},
 	"Terms.product": {
 		"defaultMessage": "Products offered"
 	},
 	"Terms.strategies": {
-		"defaultMessage": "The <em>ggbot</em> platform let you run trading strategies on <em>Binance Exchange</em>. You can copy strategies from other users, and schedule them with custom parameters according to your needs (for instance the <em>amount</em>). You can also modify a strategy as well as create a new one or share them."
+		"defaultMessage": "The <em>{appName}</em> platform let you run trading strategies on <em>Binance Exchange</em>. You can copy strategies from other users, and schedule them with custom parameters according to your needs (for instance the <i>amount</i>). You can also modify a strategy as well as create a new one or share them."
 	},
 	"Terms.profitAndLoss": {
-		"defaultMessage": "A strategy can be profitable, many of them are already generating a considerable amount of profit yearly. Be aware that you may misuse a strategy by setting wrong parameters or creating a failing strategy that can cause losses. There can be other issues like setting a strategy without having enough budget. The <em>ggbot</em> team will be available to share successfull strategies but <strong>we are not responsible of any loss</strong> you may have for any reason. To avoid losses it is a <em>good practice</em> to run a <em>backtest</em> on your strategy: you can do so using the <em>ggbot</em> website. For any question do not hesitate to contact the <a>ggbot support group on Telegram</a>."
+		"defaultMessage": "A strategy can be profitable, many of them are already generating a considerable amount of profit yearly. Be aware that you may misuse a strategy by setting wrong parameters or creating a failing strategy that can cause losses. There can be other issues like setting a strategy without having enough budget. The <em>{appName}</em> team will be available to share successfull strategies but <strong>we are not responsible of any loss</strong> you may have for any reason. To avoid losses it is a <em>good practice</em> to run a <i>backtest</i> on your strategy: you can do so using the <em>{appName}</em> website. For any question do not hesitate to contact the <a>{appName} support group on Telegram</a>."
 	},
 	"Terms.pricing": {
 		"defaultMessage": "Product pricing"
@@ -663,7 +663,7 @@
 		"defaultMessage": "All prices shown on the website include the applicable VAT rate. Depending on your country of purchase, other local charges and taxes may also apply."
 	},
 	"Terms.privacy": {
-		"defaultMessage": "Please review our <a>Privacy Policy</a> as it governs the privacy practices undertaken by <em>ggbot</em>."
+		"defaultMessage": "Please review our <a>Privacy Policy</a> as it governs the privacy practices undertaken by <em>{appName}</em>."
 	},
 	"TimeoutError.message": {
 		"defaultMessage": "Request not sent. Please check connectivity and try again."

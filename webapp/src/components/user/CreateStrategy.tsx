@@ -3,7 +3,6 @@ import { Button, Buttons, InputFieldName, Message, OneColumn } from '_/component
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCreateStrategy } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
-import { formattedMessageMarkup } from '_/i18n/formattedMessageMarkup'
 import { ApiActionError } from '@workspace/api'
 import { isName } from '@workspace/models'
 import { useEffect, useState } from 'react'
@@ -47,7 +46,7 @@ export function CreateStrategy() {
 					<StrategiesErrorExceededQuota error={error} />
 				) : (
 					<Message>
-						<FormattedMessage id="CreateStrategy.chooseName" values={formattedMessageMarkup} />
+						<FormattedMessage id="CreateStrategy.chooseName" />
 					</Message>
 				)}
 				<InputFieldName

@@ -1,11 +1,15 @@
-export type I18nMessageMarkupTag = 'a' | 'b' | 'em' | 'strong'
+import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
 
-type I18nMessageString = {
+export const i18nRichTextTags = ['b', 'em', 'i', 'strong'] as const
+type I18nRichTextTag = typeof i18nRichTextTags[number]
+type I18nMessageMarkupTag = I18nRichTextTag | 'a'
+
+export type I18nMessageString = {
 	type: 0
 	value: string
 }
 
-type I18nMessageParam = {
+export type I18nMessageParam = {
 	type: 1
 	/** Parameter name */
 	value: string
@@ -17,4 +21,19 @@ type I18nMessageMarkup = {
 	value: I18nMessageMarkupTag
 }
 
-export type I18nMessage = I18nMessageMarkup | I18nMessageParam | I18nMessageString
+type I18nMessage = I18nMessageMarkup | I18nMessageParam | I18nMessageString
+
+export type I18nMessagesRecord = Record<FormatjsIntlMessageId, I18nMessage[]>
+
+export type FormatMessageValues = Record<string, string | number>
+
+export function formatMessage(message: I18nMessageParam | I18nMessageString, values?: FormatMessageValues) {
+	if (message.type == 0) return message.value
+	if (message.type == 1) {
+		// Here `value` is a parameter name.
+		const { value: paramName } = message
+		if (paramName == 'appName') return PROJECT_SHORT_NAME
+		if (values) return values[paramName] ?? ''
+	}
+	return ''
+}

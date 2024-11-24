@@ -19,7 +19,6 @@ const translationKeys = Object.keys(defaultTranslation)
 
 const content = `// This file is generated
 
-// ts-prune-ignore-next
 export declare type FormatjsIntlMessageId =
   | ${translationKeys.map((key) => `'${key}'`).join('\n  | ')}
 
@@ -31,5 +30,8 @@ declare global {
 	}
 }
 `
+// TODO write article about this namespace FormatjsIntl trick
+// then remove it, rename it properly like I18nMessageId, etc
+// and write the file in i18n folder
 
 await writeFile(pathname, content)

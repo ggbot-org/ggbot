@@ -9,7 +9,7 @@
     "check_types": "npm run check_types:webapp && npm run check_types:scripts",
     "check_types:scripts": "tsc --noEmit --project ./tsconfig.scripts.json",
     "check_types:webapp": "tsc --noEmit --project ./tsconfig.json",
-    "cleanup": "rm -rf temp/ public/main.css public/*.js public/*.html public/admin/ public/design public/user",
+    "cleanup": "rm -rf temp/ public/main.css public/sitemap.xml public/*.js public/*.html public/admin/ public/design/ public/translations/ public/user/ public/workers/",
     "compile_translations": "npm run formatjs:compile:en",
     "deploy": "sh src/scripts/deploy.sh",
     "formatjs:compile:en": "formatjs compile translations/en.json --ast --out-file public/translations/en.json",
@@ -25,7 +25,7 @@
     "pregenerate_public_files": "npm run tsc:scripts",
     "sass": "sass --style=compressed --load-path=../node_modules/ --no-source-map src/styles/main.scss public/main.css",
     "server": "npm run generate_public_files && esbuild --servedir=public",
-    "start": "onchange --initial --kill 'translations/*.json' 'src/components/' 'src/contexts/' 'src/flow/' 'src/hooks/' 'src/pages/' 'src/routing/' 'src/storages/' 'src/styles/' -- npm run server",
+    "start": "onchange --initial --kill 'translations/*.json' 'src/components/' 'src/contexts/' 'src/flow/' 'src/hooks/' 'src/i18n/' 'src/pages/' 'src/routing/' 'src/storages/' 'src/styles/' -- npm run server",
     "tsc:scripts": "tsc --build tsconfig.scripts.json && tsc-alias -p tsconfig.scripts.json"
   },
   "dependencies": {
