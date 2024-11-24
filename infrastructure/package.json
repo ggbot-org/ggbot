@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "check_types": "tsc --noEmit",
-    "create_api_lambda": "node --env-file ../.typescript.env ./src/scripts/create_api_lambda.ts",
+    "create_api": "node --env-file ../.typescript.env ./src/scripts/create_api.ts",
     "deploy_api": "node --env-file ../.typescript.env ./src/scripts/deploy_api.ts",
     "generate_iam_policies": "node --env-file ../.typescript.env ./src/scripts/generate_iam_policies.ts"
   },

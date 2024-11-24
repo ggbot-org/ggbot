@@ -18,9 +18,12 @@ export class LambdaFunction {
 		this.functionName = functionName
 	}
 
-	get arn() {
-		const { accountId, region, functionName } = this
+	static arn(accountId: string, region: string, functionName: string) {
 		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
+	}
+
+	get arn() {
+		return LambdaFunction.arn(this.accountId, this.region, this.functionName)
 	}
 
 	async create({ Role, ZipFile }: Required<Pick<FunctionCode, 'ZipFile'> & {

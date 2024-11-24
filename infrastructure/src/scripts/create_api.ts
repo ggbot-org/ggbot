@@ -14,7 +14,7 @@ import { instantiateApiLambda } from '../aws/apiLambdas.js'
  *
  * ```json
  * "scripts": {
- * 	"deploy:api:foo": "npm run deploy_api -w infrastructure api-foo",
+ * 	"create:api:foo": "npm run deploy_api -w infrastructure api-foo",
  * }
  * ```
  */
@@ -23,8 +23,14 @@ if (typeof workspacePathname != 'string') exit(1)
 
 const apiLamda = instantiateApiLambda(workspacePathname)
 
+// Create Lambda function.
+
 const lambdaZipFilename = await prepareApi(workspacePathname)
 
 const ZipFile = await readFile(lambdaZipFilename)
 
-await apiLamda.update({ ZipFile })
+await apiLamda.create({ ZipFile })
+
+// TODO Create log group.
+
+// TODO Set Environment variables.

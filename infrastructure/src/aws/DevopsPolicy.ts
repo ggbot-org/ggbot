@@ -1,5 +1,6 @@
 import { ENV } from '@workspace/env'
 
+import { ApiLambda } from './ApiLambda.js'
 import { ApiRole } from './ApiRole.js'
 import { IamAction, IamPolicy, IamPolicyDocument, IamPolicyDocumentStatement } from './IAM.js'
 import { LambdaFunction } from './LambdaFunction.js'
@@ -72,7 +73,7 @@ export class DevopsPolicy extends IamPolicy implements IamPolicyDocument<Stateme
 				...wholeBucket(new DataBucket('main')),
 				...wholeBucket(new DataBucket('next')),
 			],
-			manageApiLambdas: new LambdaFunction(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), '*').arn,
+			manageApiLambdas: LambdaFunction.arn(ENV.AWS_ACCOUNT_ID(), ENV.AWS_DATA_REGION(), `${ApiLambda.apiNamePrefix()}*`),
 			manageLogGroups: '*',
 			manageLambdasPassRole: this.apiRole.arn,
 		}

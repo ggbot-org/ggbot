@@ -1,35 +1,18 @@
-import { FunctionCode } from '@aws-sdk/client-lambda'
 import { ENV } from '@workspace/env'
 
-import { ApiRole } from './ApiRole.js'
-import { LambdaFunction } from './LambdaFunction.js'
+import { ApiLambda } from './ApiLambda.js'
 
-export class ApiLambda extends LambdaFunction {
-	executionRole = new ApiRole()
+export function instantiateApiLambda(workspacePathname: string): ApiLambda {
+	const apiName = workspacePathname.substring('api-'.length)
 
-	constructor(region: string, apiName: string) {
-		super(ENV.AWS_ACCOUNT_ID(), region, `${ENV.DEPLOY_STAGE()}-api-${apiName}`)
+	if ([
+		'api-public',
+		'api-stripe-action',
+		'api-user',
+	].includes(workspacePathname)) {
+		return new ApiLambda(ENV.AWS_DATA_REGION(), apiName)
 	}
 
-	async create({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
-		await super.create({ Role: this.executionRole.arn, ZipFile })
-	}
+	throw new Error(`Cannot instantiate ApiLambda for ${workspacePathname}`)
 }
 
-export class ApiLambdaPublic extends ApiLambda {
-	constructor() {
-		super(ENV.AWS_DATA_REGION(), 'public')
-	}
-}
-
-export class ApiLambdaStripeAction extends ApiLambda {
-	constructor() {
-		super(ENV.AWS_DATA_REGION(), 'stripe-action')
-	}
-}
-
-export class ApiLambdaUser extends ApiLambda {
-	constructor() {
-		super(ENV.AWS_DATA_REGION(), 'user')
-	}
-}

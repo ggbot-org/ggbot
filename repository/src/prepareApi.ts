@@ -1,29 +1,18 @@
 import { execSync } from 'node:child_process'
 import { cpSync, mkdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
-import { exit } from 'node:process'
 
-import { buildWorkspacesDependencies, Repository, WorkspacePackageJson } from '@workspace/repository'
 import readFile from 'read-file-utf8'
 import writeFile from 'write-file-utf8'
 
-import { ApiLambda, ApiLambdaPublic, ApiLambdaStripeAction, ApiLambdaUser } from './apiLambdas.js'
+import { buildWorkspacesDependencies } from './buildWorkspaceDependencies.js'
+import { Repository } from './Repository.js'
+import { WorkspacePackageJson } from './WorkspacePackageJson.js'
 
-export async function prepareApi(workspacePathname: string) {
-	// Instantiate ApiLambda.
-	// TODO put this in a function in apiLambdas to be imported by deploy_api and create_api scripts.
-
-	let apiLamda: ApiLambda | undefined
-
-	if (workspacePathname == 'api-user') apiLamda = new ApiLambdaUser()
-	if (workspacePathname == 'api-public') apiLamda = new ApiLambdaPublic()
-	if (workspacePathname == 'api-stripe-action') apiLamda = new ApiLambdaStripeAction()
-
-	if (!apiLamda) {
-		console.error('Cannot instantiate API Lambda for workspace', workspacePathname)
-		exit(1)
-	}
-
+/**
+ * Prepare API workspace for deployment.
+ */
+export async function prepareApi(workspacePathname: string): Promise<string> {
 	// Prepare workspace folders.
 
 	const repository = new Repository()
@@ -34,6 +23,9 @@ export async function prepareApi(workspacePathname: string) {
 	const distDir = join(repository.pathname, workspacePathname, 'dist')
 	const lambdaDir = join(distDir, 'lambda')
 	const nodeModulesDir = join(lambdaDir, 'node_modules')
+
+	const lambdaZipFilename = 'lambda.zip'
+	const lambdaZipPathname = join(distDir, lambdaZipFilename)
 
 	// Build API workspace.
 
@@ -53,7 +45,7 @@ export async function prepareApi(workspacePathname: string) {
 		dependencies: Object.fromEntries(externalDependencies)
 	}, null, 2))
 
-	execSync('npm install', { cwd: lambdaDir })
+	execSync('npm install --no-package-lock', { cwd: lambdaDir })
 
 	// Copy internal dependencies.
 
@@ -72,5 +64,7 @@ export async function prepareApi(workspacePathname: string) {
 
 	// Create zip file.
 
-	execSync('zip -X -r ../lambda.zip *', { cwd: lambdaDir })
+	execSync(`zip -X -r ../${lambdaZipFilename} *`, { cwd: lambdaDir })
+
+	return lambdaZipPathname
 }
