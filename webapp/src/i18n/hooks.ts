@@ -5,11 +5,10 @@ import { useContext } from 'react'
 import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
 
 export function useIntl() {
-	const { messages } = useContext(I18nContext)
+	const { language, messages } = useContext(I18nContext)
 	return {
-		formatDate(date: Date | number | string, _format: Intl.DateTimeFormatOptions) {
-			// TODO
-			return String(date)
+		formatDate(date: Date | number | string, format: Intl.DateTimeFormatOptions) {
+			return new Intl.DateTimeFormat(language,	format).format(new Date(date))
 		},
 		formatMessage({ id, values }: {
 			id: FormatjsIntlMessageId

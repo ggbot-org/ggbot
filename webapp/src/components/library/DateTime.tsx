@@ -15,8 +15,8 @@ export function DateTime({
 	if (!value) return null
 
 	let formatOptions: DayFormat | TimeFormat | undefined
-	if (format === 'day') formatOptions = dayFormat
-	if (format === 'time') formatOptions = timeFormat
+	if (format == 'day') formatOptions = dayFormat
+	if (format == 'time') formatOptions = timeFormat
 
 	return (
 		<time dateTime={value}>

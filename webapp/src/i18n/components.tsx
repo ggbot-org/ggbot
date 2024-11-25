@@ -5,11 +5,11 @@ import { ReactNode, useContext, useMemo } from 'react'
 
 import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
 
-export function FormattedDate({ value }: {
+export function FormattedDate({ value, ...format }: {
 	value: string
-}) {
-	// TODO
-	return value
+} & Intl.DateTimeFormatOptions) {
+	const { language } = useContext(I18nContext)
+	return new Intl.DateTimeFormat(language,	format).format(new Date(value))
 }
 
 export function FormattedMessage({ id, values }: {
