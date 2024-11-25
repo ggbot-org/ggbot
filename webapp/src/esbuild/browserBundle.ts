@@ -26,6 +26,10 @@ export function browserBundle({
 }: Pick<BuildOptions, 'entryPoints' | 'outfile'>) {
 	return build({
 		alias: {
+			'react': 'preact/compat',
+			'react-dom/test-utils': 'preact/test-utils',
+			'react-dom': 'preact/compat',
+			'react/jsx-runtime': 'preact/jsx-runtime',
 			// TODO remove this, not using formatjs anymore
 			// `react-intl` without the parser is 40% smaller,
 			// see https://formatjs.io/docs/guides/advanced-usage/

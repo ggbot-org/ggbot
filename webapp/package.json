@@ -43,8 +43,7 @@
     "flow-view": "6.0.1",
     "minimal-time-helpers": "0.1.0",
     "minimal-type-guard-helpers": "0.2.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "preact": "10.25.0",
     "trunx": "1.1.0"
   },
   "devDependencies": {
