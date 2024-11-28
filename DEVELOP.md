@@ -9,7 +9,7 @@ export DNS_DOMAIN=ggbot.org
 Install dependencies and build packages.
 
 ```sh
-npm install
+npm ci
 npm run build
 ```
 
@@ -39,3 +39,5 @@ npm test
 ```
 
 Launch eslint with fix flag: `npm run eslint--fix`.
+
+Checks run on commit, triggered by [this git commit hook](./repository/src/git-hook/pre-commit.sh).
