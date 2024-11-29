@@ -18,7 +18,9 @@ export class AdminDatabase implements AdminDatabaseAction {
 		const { accountKeys, nextToken } = await this.executorDatabase.ListAccountKeys(arg)
 		const accounts: Account[] = []
 		for (const { accountId } of accountKeys) {
-			const account = await this.documentProvider.getItem<Account>(pathname.account({ accountId }))
+			const account = await this.documentProvider.getItem<Account>(
+				pathname.account({ accountId })
+			)
 			if (account) accounts.push(account)
 		}
 		return { accounts, nextToken }

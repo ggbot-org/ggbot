@@ -35,6 +35,4 @@ export type AccountKey = ItemKey<'accountId', { accountId: Account['id'] }>
 export const isAccountKey = objectTypeGuard<AccountKey>(({ accountId }) => isItemId(accountId)
 )
 
-export const nullAccountKey: AccountKey = {
-	accountId: nullId
-}
+export const nullAccountKey: AccountKey = { accountId: nullId }

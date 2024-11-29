@@ -15,9 +15,7 @@ export function createdNow(): CreationTime {
 	return { whenCreated: now() }
 }
 
-export type CreationDay = {
-	creationDay: Day
-}
+export type CreationDay = { creationDay: Day }
 
 export const isCreationDay = objectTypeGuard<CreationDay>(({ creationDay }) => isDay(creationDay)
 )

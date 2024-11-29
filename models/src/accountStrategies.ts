@@ -19,13 +19,12 @@ export const accountStrategiesModifier = {
 	) {
 		const accountStrategies = [
 			...previousAccountStrategies,
-			accountStrategy
+			accountStrategy,
 		]
 
 		// Check num strategies does not exceed quota, according to subscription.
 		if (
-			accountStrategies.length >
-			quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
+			accountStrategies.length > quota.MAX_STRATEGIES_PER_ACCOUNT(subscriptionPlan)
 		) throw new ErrorExceededQuota({ type: 'MAX_STRATEGIES_PER_ACCOUNT' })
 
 		// Check num active schedulings does not exceed quota, according to subscription.
@@ -56,18 +55,15 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings:
-				item.strategyId === strategyId
-					? item.schedulings.map<StrategyScheduling>(
-						({ status, ...scheduling }) => ({
-							...scheduling,
-							status:
-									schedulingId === scheduling.id
-										? 'suspended'
-										: status
-						})
-					)
-					: item.schedulings
+			schedulings: item.strategyId === strategyId
+				? item.schedulings.map<StrategyScheduling>(
+					({ status, ...scheduling }) => ({
+						...scheduling,
+						status: schedulingId === scheduling.id
+							? 'suspended'
+							: status
+					}))
+				: item.schedulings
 		}))
 	},
 
@@ -77,15 +73,13 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings:
-				item.strategyId === strategyId
-					? item.schedulings.map<StrategyScheduling>(
-						({ status: _status, ...scheduling }) => ({
-							...scheduling,
-							status: 'suspended'
-						})
-					)
-					: item.schedulings
+			schedulings: item.strategyId === strategyId
+				? item.schedulings.map<StrategyScheduling>(
+					({ status: _status, ...scheduling }) => ({
+						...scheduling,
+						status: 'suspended'
+					}))
+				: item.schedulings
 		}))
 	},
 
@@ -97,18 +91,15 @@ export const accountStrategiesModifier = {
 	) {
 		return accountStrategies.map((item) => ({
 			...item,
-			schedulings:
-				item.strategyId === strategyId
-					? item.schedulings.map<StrategyScheduling>(
-						(scheduling) => ({
-							...scheduling,
-							memory:
-									schedulingId === scheduling.id
-										? memory
-										: scheduling.memory
-						})
-					)
-					: item.schedulings
+			schedulings: item.strategyId === strategyId
+				? item.schedulings.map<StrategyScheduling>(
+					(scheduling) => ({
+						...scheduling,
+						memory: schedulingId === scheduling.id
+							? memory
+							: scheduling.memory
+					}))
+				: item.schedulings
 		}))
 	}
 }
