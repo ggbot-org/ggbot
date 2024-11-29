@@ -30,11 +30,6 @@ export function browserBundle({
 			'react-dom/test-utils': 'preact/test-utils',
 			'react-dom': 'preact/compat',
 			'react/jsx-runtime': 'preact/jsx-runtime',
-			// TODO remove this, not using formatjs anymore
-			// `react-intl` without the parser is 40% smaller,
-			// see https://formatjs.io/docs/guides/advanced-usage/
-			'@formatjs/icu-messageformat-parser':
-				'@formatjs/icu-messageformat-parser/no-parser'
 		},
 		bundle: true,
 		define: esbuildDefinitions,
