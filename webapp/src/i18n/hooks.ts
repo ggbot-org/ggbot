@@ -8,7 +8,7 @@ export function useIntl() {
 	const { language, messages } = useContext(I18nContext)
 	return {
 		formatDate(date: Date | number | string, format: Intl.DateTimeFormatOptions) {
-			return new Intl.DateTimeFormat(language,	format).format(new Date(date))
+			return new Intl.DateTimeFormat(language, format).format(new Date(date))
 		},
 		formatMessage({ id, values }: {
 			id: FormatjsIntlMessageId
@@ -22,9 +22,8 @@ export function useIntl() {
 				(message as I18nMessageParam | I18nMessageString), values)
 			).join('')
 		},
-		formatNumber(value: number, _format: Intl.NumberFormatOptions) {
-			// TODO
-			return value
+		formatNumber(value: number, format: Intl.NumberFormatOptions) {
+			return new Intl.NumberFormat(language, format).format(value)
 		}
 	}
 }

@@ -15,12 +15,12 @@ export type I18nMessageParam = {
 	value: string
 }
 
-export type I18nMessageSpace = {
+type I18nMessagePluralValue = {
 	type: 7
 }
 
 type I18nPluralOption = {
-	value: Array<I18nMessageSpace | I18nMessageString>
+	value: Array<I18nMessagePluralValue | I18nMessageString>
 }
 
 type I18nMessagePlural = {
@@ -48,7 +48,7 @@ export type I18nMessagesRecord = Record<FormatjsIntlMessageId, I18nMessage[]>
 
 export type FormatMessageValues = Record<string, string | number>
 
-export function formatMessage(message: I18nMessageParam | I18nMessageSpace | I18nMessageString, values?: FormatMessageValues) {
+export function formatMessage(message: I18nMessageParam | I18nMessageString | I18nMessagePluralValue, values?: FormatMessageValues, pluralValue?: number) {
 	if (message.type == 0) return message.value
 	if (message.type == 1) {
 		// Here `value` is a parameter name.
@@ -56,6 +56,6 @@ export function formatMessage(message: I18nMessageParam | I18nMessageSpace | I18
 		if (paramName == 'appName') return PROJECT_SHORT_NAME
 		if (values) return values[paramName] ?? ''
 	}
-	if (message.type == 7) return ' '
+	if (message.type == 7) return pluralValue
 	return ''
 }

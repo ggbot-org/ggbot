@@ -39,5 +39,3 @@ npm test
 ```
 
 Launch eslint with fix flag: `npm run eslint--fix`.
-
-Checks run on commit, triggered by [this git commit hook](./repository/src/git-hook/pre-commit.sh).

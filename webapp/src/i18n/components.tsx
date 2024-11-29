@@ -1,6 +1,6 @@
 import { randomKey } from '_/components/library/randomKey'
 import { I18nContext } from '_/contexts/I18n'
-import { formatMessage, FormatMessageValues, I18nMessageParam, I18nMessageSpace, I18nMessageString, i18nRichTextTags } from '_/i18n/messages'
+import { formatMessage, FormatMessageValues, i18nRichTextTags } from '_/i18n/messages'
 import { ReactNode, useContext, useMemo } from 'react'
 
 import { FormatjsIntlMessageId } from '../types/FormatjsIntlMessageIds'
@@ -22,19 +22,19 @@ export function FormattedMessage({ id, values }: {
 		if (!messages) return null
 		const messageList = messages[id]
 
-		function formatter(message: I18nMessageParam | I18nMessageSpace | I18nMessageString) {
+		function formatter(message: Parameters<typeof formatMessage>[0]) {
 			return formatMessage(message, values)
+		}
+
+		function pluralFormatter(pluralValue: number) {
+			return function (message: Parameters<typeof formatMessage>[0]) {
+				return formatMessage(message, values, pluralValue)
+			}
 		}
 
 		// If no message list is found, show nothing.
 		if (!messageList) return null
 
-		// TODO write a test that checks messages integrity
-		// for example type 8 can have children
-		// markup tags must be b, em, strong, etc.
-		// but children of b cannot contain markup tags, it does not make sense.
-		// Same for other markup tags.
-		// there are some special values like appName.
 		return messageList.map((message) => {
 			const { type, value } = message
 			if (type == 0) return value
@@ -49,9 +49,9 @@ export function FormattedMessage({ id, values }: {
 				if (typeof num != 'number') return null
 				num += offset
 				if (pluralType == 'cardinal') {
-					if (options['=0'] && num == 0) return options['=0'].value.map(formatter)
-					if (options['=1'] && num == 1) return options['=1'].value.map(formatter)
-					if (options.other) return options.other.value.map(formatter)
+					if (options['=0'] && num == 0) return options['=0'].value.map(pluralFormatter(num))
+					if (options['=1'] && num == 1) return options['=1'].value.map(pluralFormatter(num))
+					if (options.other) return options.other.value.map(pluralFormatter(num))
 				}
 			}
 			if (type == 8) {
