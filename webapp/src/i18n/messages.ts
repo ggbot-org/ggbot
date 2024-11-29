@@ -15,19 +15,40 @@ export type I18nMessageParam = {
 	value: string
 }
 
+export type I18nMessageSpace = {
+	type: 7
+}
+
+type I18nPluralOption = {
+	value: Array<I18nMessageSpace | I18nMessageString>
+}
+
+type I18nMessagePlural = {
+	offset: number
+	options: Partial<{
+		'=0': I18nPluralOption
+		'=1': I18nPluralOption
+		'other': I18nPluralOption
+	}>
+	type: 6
+	pluralType: 'cardinal'
+	/** Parameter name */
+	value: string
+}
+
 type I18nMessageMarkup = {
 	children: Array<I18nMessageParam | I18nMessageString>
 	type: 8
 	value: I18nMessageMarkupTag
 }
 
-type I18nMessage = I18nMessageMarkup | I18nMessageParam | I18nMessageString
+type I18nMessage = I18nMessageMarkup | I18nMessageParam | I18nMessagePlural | I18nMessageString
 
 export type I18nMessagesRecord = Record<FormatjsIntlMessageId, I18nMessage[]>
 
 export type FormatMessageValues = Record<string, string | number>
 
-export function formatMessage(message: I18nMessageParam | I18nMessageString, values?: FormatMessageValues) {
+export function formatMessage(message: I18nMessageParam | I18nMessageSpace | I18nMessageString, values?: FormatMessageValues) {
 	if (message.type == 0) return message.value
 	if (message.type == 1) {
 		// Here `value` is a parameter name.
@@ -35,5 +56,6 @@ export function formatMessage(message: I18nMessageParam | I18nMessageString, val
 		if (paramName == 'appName') return PROJECT_SHORT_NAME
 		if (values) return values[paramName] ?? ''
 	}
+	if (message.type == 7) return ' '
 	return ''
 }
