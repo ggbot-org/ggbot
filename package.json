@@ -63,8 +63,7 @@
     "stripe:create_webhook": "npm run  create_webhook -w stripe",
     "stylelint": "stylelint --fix webapp/src/styles/**/*.{css,scss}",
     "test": "npm run test --workspaces --if-present 1> /dev/null",
-    "test_repository": "npm run test -w repository",
-    "ts-prune": "ts-prune --error --ignore 'dist|temp'"
+    "test_repository": "npm run test -w repository"
   },
   "devDependencies": {
     "@eslint/json": "0.5.0",
@@ -82,7 +81,6 @@
     "pre-commit": "1.2.2",
     "prettier": "3.3.3",
     "read-file-utf8": "3.0.0",
-    "ts-prune": "0.10.3",
     "typescript-eslint": "8.14.0",
     "write-file-utf8": "3.0.2"
   },
@@ -102,8 +100,7 @@
     "lint-staged",
     "markdownlint",
     "check_types",
-    "test",
-    "ts-prune"
+    "test"
   ],
   "prettier": {
     "printWidth": 120

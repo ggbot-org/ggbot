@@ -1,9 +1,18 @@
-import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, BAD_REQUEST__400, BadGatewayError, errorResponse, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK, publicActions } from '@workspace/api'
+import { ALLOWED_METHODS,
+	apiActionMethod,
+	APIGatewayProxyHandler,
+	BAD_REQUEST__400,
+	BadGatewayError,
+	errorResponse,
+	INTERNAL_SERVER_ERROR__500,
+	isActionInput,
+	METHOD_NOT_ALLOWED__405,
+	OK,
+	publicActions } from '@workspace/api'
 import { documentProvider } from '@workspace/s3-data-bucket'
 
 import { Service } from './service.js'
 
-// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		if (event.httpMethod === 'OPTIONS') return ALLOWED_METHODS([apiActionMethod])
@@ -19,9 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		const output = await service[input.type](input.data)
 		return OK(output)
 	} catch (error) {
-		for (const ErrorClass of [
-			BadGatewayError
-		]) if (error instanceof ErrorClass) {
+		for (const ErrorClass of [BadGatewayError]) if (error instanceof ErrorClass) {
 			return errorResponse(ErrorClass.statusCode)
 		}
 		// Fallback if error is not handled: should not arrive here.

@@ -1,9 +1,18 @@
-import { ALLOWED_METHODS, apiActionMethod, APIGatewayProxyHandler, authClientActions, BAD_REQUEST__400, BadGatewayError, errorResponse, INTERNAL_SERVER_ERROR__500, isActionInput, METHOD_NOT_ALLOWED__405, OK } from '@workspace/api'
+import { ALLOWED_METHODS,
+	apiActionMethod,
+	APIGatewayProxyHandler,
+	authClientActions,
+	BAD_REQUEST__400,
+	BadGatewayError,
+	errorResponse,
+	INTERNAL_SERVER_ERROR__500,
+	isActionInput,
+	METHOD_NOT_ALLOWED__405,
+	OK } from '@workspace/api'
 import { documentProvider } from '@workspace/s3-data-bucket'
 
 import { Service } from './service.js'
 
-// ts-prune-ignore-next
 export const handler: APIGatewayProxyHandler = async (event) => {
 	try {
 		if (event.httpMethod === 'OPTIONS') return ALLOWED_METHODS([apiActionMethod])

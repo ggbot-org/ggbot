@@ -28,7 +28,6 @@
     -   [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
     -   [dflow](#dflow)
     -   [flow-view](#flow-view)
-    -   [ts-prune](#ts-prune)
     -   [typescript](#typescript)
 
 ## Git
@@ -190,10 +189,6 @@ https://www.npmjs.com/package/flow-view
 ### pre-commit
 
 https://www.npmjs.com/package/pre-commit
-
-### ts-prune
-
-https://www.npmjs.com/package/ts-prune
 
 ### typescript
 

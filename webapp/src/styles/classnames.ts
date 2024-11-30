@@ -68,8 +68,6 @@ export type Classname =
 	| ToastContainerClassname
 
 // TODO should export classname from trunx then use something like namespace to set the Classname type
-// TODO why ts-prune complain?
-// ts-prune-ignore-next
 export function classnames(...args: Array<_ClassnamesArg<Classname>>) {
 	return _classnames(...args)
 }
