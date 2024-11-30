@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { GenericError } from '_/components/GenericError'
 import { Button, Checkbox, Control, Field, InputField, Message, Title } from '_/components/library'
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
@@ -57,7 +57,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 
 	return (
 		<form
-			className={classnames('box')}
+			className={'box' satisfies Classname}
 			onSubmit={async (event) => {
 				try {
 					event.preventDefault()

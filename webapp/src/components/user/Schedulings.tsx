@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Column, Columns, Level, LevelItem, Title } from '_/components/library'
 import { Memory } from '_/components/Memory'
 import { SchedulingItem, SchedulingItemProps } from '_/components/user/SchedulingItem'
@@ -168,7 +168,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 			<Columns>
 				<Column bulma={['is-narrow', { 'is-skeleton': accountStrategies === undefined }]}>
 					<form
-						className={classnames('box')}
+						className={'box' satisfies Classname}
 						onSubmit={(event) => event.preventDefault()}
 					>
 						<Level
@@ -181,7 +181,7 @@ export function Schedulings({ strategyKey }: { strategyKey: StrategyKey | undefi
 								</LevelItem>
 							}
 							right={
-								<LevelItem className={classnames('ml-5')}>
+								<LevelItem className={'ml-5' satisfies Classname}>
 									<SchedulingsStatusBadges schedulings={currentSchedulings} />
 								</LevelItem>
 							}

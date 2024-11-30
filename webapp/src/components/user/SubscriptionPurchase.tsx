@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Column, Columns, InputField, InputFieldProps, Message, Title } from '_/components/library'
 import { SubscriptionEnd, SubscriptionTotalPrice } from '_/components/readonlyFields'
 import { AuthenticationContext } from '_/contexts/Authentication'
@@ -89,7 +89,7 @@ export function SubscriptionPurchase() {
 		<Columns>
 			<Column bulma="is-narrow">
 				<form
-					className={classnames('box')}
+					className={'box' satisfies Classname}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!CREATE_CHECKOUT.canRun) return

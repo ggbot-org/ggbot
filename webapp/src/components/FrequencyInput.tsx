@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Control, Field, InputField, SelectField } from '_/components/library'
 import { useIntl } from '_/i18n/hooks'
 import { Frequency, FrequencyInterval, isFrequencyInterval, isNaturalNumber, NaturalNumber } from '@workspace/models'
@@ -65,7 +65,7 @@ export function FrequencyInput({
 		<Field isGrouped>
 			<Control>
 				<InputField
-					className={classnames('frequency-input__every')}
+					className={'frequency-input__every' satisfies Classname}
 					disabled={disabled}
 					label={formatMessage({ id: 'FrequencyInput.every' })}
 					min={1}

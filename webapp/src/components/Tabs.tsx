@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { TabContent, TabContentProps, TabSelector, TabSelectors } from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
@@ -30,7 +30,7 @@ type TabsProps = {
 
 export function Tabs({ activeTabId, setActiveTabId, tabs }: TabsProps) {
 	return (
-		<div className={classnames('m-3')}>
+		<div className={'m-3' satisfies Classname}>
 			<TabSelectors>
 				{tabs.map(({ tabId }) => (
 					<TabSelector

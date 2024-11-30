@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Control, Field, InputField, InputFieldProps, Title } from '_/components/library'
 import { useCreateBinanceApiConfig } from '_/hooks/user/api'
 import { FormattedMessage } from '_/i18n/components'
@@ -43,7 +43,7 @@ export function CreateBinanceApi({ refetchApiKey }: { refetchApiKey: () => void 
 
 	return (
 		<form
-			className={classnames('box')}
+			className={'box' satisfies Classname}
 			onSubmit={(event) => {
 				event.preventDefault()
 				if (!CREATE.canRun) return

@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, ReadonlyInput } from '_/components/library'
 import { useFlowView, UseFlowViewOutput } from '_/hooks/useFlowView'
 import { useWriteStrategyFlow } from '_/hooks/user/api'
@@ -16,10 +16,9 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 }) {
 	const initialFlowViewGraph = strategyFlow?.view
 
-	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
-
 	// TODO solve issue
 	// Ref values (the `current` property) may not be accessed during render. (https://react.dev/reference/react/useRef)  react-compiler/react-compiler
+	const flowViewContainerRef = useRef<HTMLDivElement | null>(null)
 
 	const { whenUpdatedFlowView, flowViewGraph } = useFlowView(flowViewContainerRef.current, initialFlowViewGraph, strategyKey?.strategyKind)
 
@@ -54,11 +53,11 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 
 	return (
 		<>
-			<div className={classnames('flow-editor__menu')}>
-				<div className={classnames('flow-editor__strategy-name')}>
+			<div className={'flow-editor__menu' satisfies Classname}>
+				<div className={'flow-editor__strategy-name' satisfies Classname}>
 					<ReadonlyInput value={strategyName} />
 				</div>
-				<div className={classnames('flow-editor__actions')}>
+				<div className={'flow-editor__actions' satisfies Classname}>
 					<Button
 						onClick={() => {
 							if (!strategyKey) return
@@ -78,7 +77,7 @@ export function FlowEditor({ setFlowView, strategyKey, strategyName, strategyFlo
 			</div>
 			<div
 				ref={flowViewContainerRef}
-				className={classnames('flow-editor__container')}
+				className={'flow-editor__container' satisfies Classname}
 			/>
 		</>
 	)

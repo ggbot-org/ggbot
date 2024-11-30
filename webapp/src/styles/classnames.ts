@@ -28,13 +28,9 @@ type FlowEditorClassname =
 	| 'flow-editor__actions'
 	| 'flow-editor__container'
 
-type FooterClassname =
-	| 'footer__top'
-	| 'footer__body'
+type FooterClassname = 'footer__top' | 'footer__body'
 
-type FrequencyInputClassname =
-	| 'frequency-input'
-	| 'frequency-input__every'
+type FrequencyInputClassname = 'frequency-input' | 'frequency-input__every'
 
 type HomepageClassname = 'homepage-hero-content'
 
@@ -42,10 +38,7 @@ type ReadonlyInputClassname = 'readonly-input'
 
 type OneColumn = 'one-column'
 
-type PageClassname =
-	| 'page'
-	| 'page__content'
-	| 'page__footer'
+type PageClassname = 'page' | 'page__content' | 'page__footer'
 
 type ParagraphClassname = 'paragraph'
 
@@ -55,7 +48,8 @@ type TermsAndPolicyLinksClassname = 'terms-and-policy-links'
 
 type ToastContainerClassname = 'toast-container'
 
-type Classname = Bulma
+export type Classname =
+	| Bulma
 	| AuthVerifyClassname
 	| BacktestingProgressClassname
 	| BrandTaglineClassname
@@ -73,6 +67,7 @@ type Classname = Bulma
 	| TermsAndPolicyLinksClassname
 	| ToastContainerClassname
 
+// TODO should export classname from trunx then use something like namespace to set the Classname type
 // TODO why ts-prune complain?
 // ts-prune-ignore-next
 export function classnames(...args: Array<_ClassnamesArg<Classname>>) {

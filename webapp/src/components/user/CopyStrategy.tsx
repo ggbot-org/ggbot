@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Div, InputFieldName, Message, OneColumn, Title } from '_/components/library'
 import { StrategyRecord, StrategyRecordProps } from '_/components/StrategyRecord'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
@@ -45,7 +45,7 @@ export function CopyStrategy({
 			</OneColumn>
 			<OneColumn>
 				<form
-					className={classnames('box')}
+					className={'box' satisfies Classname}
 					onSubmit={(event) => {
 						event.preventDefault()
 						if (!strategyKey) return

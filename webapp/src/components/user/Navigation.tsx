@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Navbar, NavbarEnd, NavbarLink, NavbarStart } from '_/components/library'
 import { AuthenticationContext } from '_/contexts/Authentication'
 import { FormattedMessage } from '_/i18n/components'
@@ -24,7 +24,7 @@ export function Navigation() {
 			<NavbarEnd>
 				{accountIsAdmin ? (
 					<NavbarLink
-						className={classnames('has-text-primary')}
+						className={'has-text-primary' satisfies Classname}
 						onClick={() => GOTO(webapp.admin.dashboard)}
 					>
 						<FormattedMessage id="Navigation.admin" />

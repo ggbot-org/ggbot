@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Control, Field, Title } from '_/components/library'
 import { ApiKey } from '_/components/readonlyFields'
 import { BinanceApiKeyPermissions, BinanceApiKeyPermissionsProps } from '_/components/user/BinanceApiKeyPermissions'
@@ -36,7 +36,7 @@ export function BinanceApi({ apiKey }: { apiKey: string }) {
 
 	return (
 		<form
-			className={classnames('box')}
+			className={'box' satisfies Classname}
 			onSubmit={(event) => {
 				event.preventDefault()
 				if (READ.canRun) READ.request()

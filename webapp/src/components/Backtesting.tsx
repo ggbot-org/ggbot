@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { BacktestingActions } from '_/components/BacktestingActions'
 import { BacktestingProgress, BacktestingProgressProps } from '_/components/BacktestingProgress'
 import { FrequencyInput, FrequencyInputProps } from '_/components/FrequencyInput'
@@ -142,7 +142,7 @@ export function Backtesting({
 							<Control>
 								<Checkbox
 									checked={afterStepBehaviour.pauseOnMemoryChange}
-									className={classnames('mx-1')}
+									className={'mx-1' satisfies Classname}
 									onChange={onChangePauseOnMemoryChange}
 								>
 									<FormattedMessage id="Backtesting.pauseOnMemoryChange" />
@@ -153,7 +153,7 @@ export function Backtesting({
 							<Control>
 								<Checkbox
 									checked={afterStepBehaviour.pauseOnNewOrder}
-									className={classnames('mx-1')}
+									className={'mx-1' satisfies Classname}
 									onChange={onChangePauseOnNewOrder}
 								>
 									<FormattedMessage id="Backtesting.pauseOnNewOrder" />

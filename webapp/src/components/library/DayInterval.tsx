@@ -1,13 +1,10 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { FormattedMessage } from '_/i18n/components'
 import { useCallback, useEffect, useState } from 'react'
 
 import { DayDropdown, DayDropdownProps } from './DayDropdown'
 
-export type DayIntervalProps = Pick<
-	DayDropdownProps,
-	'disabled' | 'min' | 'max'
-> & {
+export type DayIntervalProps = Pick<DayDropdownProps, 'disabled' | 'min' | 'max'> & {
 	start: Pick<DayDropdownProps, 'day' | 'setDay'>
 	end: Pick<DayDropdownProps, 'day' | 'setDay'>
 }
@@ -44,7 +41,7 @@ export function DayInterval({ disabled, min, max, start, end }: DayIntervalProps
 	}, [closeDropdowns])
 
 	return (
-		<div className={classnames('day-interval')}>
+		<div className={'day-interval' satisfies Classname}>
 			<DayDropdown
 				close={closeDropdowns}
 				disabled={disabled}

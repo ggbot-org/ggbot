@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, InputFieldName, Message, OneColumn } from '_/components/library'
 import { StrategiesErrorExceededQuota } from '_/components/user/StrategiesErrorExceededQuota'
 import { useCreateStrategy } from '_/hooks/user/api'
@@ -32,7 +32,7 @@ export function CreateStrategy() {
 	return (
 		<OneColumn>
 			<form
-				className={classnames('box')}
+				className={'box' satisfies Classname}
 				onSubmit={(event) => {
 					event.preventDefault()
 					if (!canCreate) return

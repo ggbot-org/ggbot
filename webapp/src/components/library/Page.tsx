@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { PropsWithChildren, ReactNode } from 'react'
 
 export function Page({ footer, header, children }: PropsWithChildren<{
@@ -6,10 +6,10 @@ export function Page({ footer, header, children }: PropsWithChildren<{
 	footer?: ReactNode
 }>) {
 	return (
-		<div className={classnames('page')}>
+		<div className={'page' satisfies Classname}>
 			{header}
-			<div className={classnames('page__content')}>{children}</div>
-			{footer ? (<div className={classnames('page__footer')}>{footer}</div>) : null}
+			<div className={'page__content' satisfies Classname}>{children}</div>
+			{footer ? (<div className={'page__footer' satisfies Classname}>{footer}</div>) : null}
 		</div>
 	)
 }

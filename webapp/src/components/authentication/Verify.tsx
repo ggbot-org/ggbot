@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { GenericError } from '_/components/GenericError'
 import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField, Message, Title } from '_/components/library'
 import { Email } from '_/components/readonlyFields'
@@ -68,7 +68,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 
 	return (
 		<form
-			className={classnames('box')}
+			className={'box' satisfies Classname}
 			onReset={(event) => {
 				event.preventDefault()
 				resetEmail()
@@ -149,7 +149,7 @@ TODO do inputMode pattern maxLength work, at least on mobile?
 			<InputField
 				required
 				autoComplete="one-time-code"
-				className={classnames('auth-verify__one-time-password')}
+				className={'auth-verify__one-time-password' satisfies Classname}
 				inputMode="numeric"
 				label={<FormattedMessage id="OneTimePassword.label" />}
 				maxLength={6}

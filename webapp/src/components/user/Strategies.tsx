@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Checkbox, Column, Columns, Div, Message, OneColumn, Span } from '_/components/library'
 import { Toolbar, ToolbarProps } from '_/components/Toolbar'
 import { SchedulingsStatusBadges, SchedulingsStatusBadgesProps } from '_/components/user/SchedulingsStatusBadges'
@@ -110,7 +110,7 @@ export function Strategies({ goCreateStrategy }: { goCreateStrategy: () => void 
 	if (accountStrategies?.length === 0) return (
 		<OneColumn>
 			<form
-				className={classnames('box')}
+				className={'box' satisfies Classname}
 				onSubmit={(event) => {
 					event.preventDefault()
 					goCreateStrategy()

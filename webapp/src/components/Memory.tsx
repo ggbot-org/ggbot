@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname, classnames } from '_/classnames'
 import { Div, Title } from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
 import { DflowCommonContext } from '@workspace/dflow'
@@ -13,7 +13,7 @@ function MemoryItem({ name, value }: MemoryItemProps) {
 	return (
 		<div className={classnames('is-flex', 'is-flex-direction-column', 'my-1', 'is-flex-grow-1')}>
 			<span>{name}</span>
-			<pre className={classnames('p-2')}>
+			<pre className={'p-2' satisfies Classname}>
 				<code>{
 					value === undefined ? '' : JSON.stringify(value, null, 2)
 				}

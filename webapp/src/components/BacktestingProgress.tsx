@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Div, Progress } from '_/components/library'
 import { UseBacktestingState } from '_/hooks/useBacktesting'
 import { FormattedMessage } from '_/i18n/components'
@@ -18,10 +18,10 @@ export function BacktestingProgress({ progress, currentTimestamp }: BacktestingP
 	const { formatDate } = useIntl()
 	return (
 		<Div bulma={['my-2', 'mx-1']}>
-			<div className={classnames('backtesting-progress__info')}>
+			<div className={'backtesting-progress__info' satisfies Classname}>
 				{progress ? (<FormattedMessage id="BacktestingProgress.intervals" values={progress} />) : null}
 			</div>
-			<div className={classnames('backtesting-progress__info')}>
+			<div className={'backtesting-progress__info' satisfies Classname}>
 				{currentTimestamp ? (
 					<FormattedMessage
 						id="BacktestingProgress.currentTime"
@@ -29,7 +29,7 @@ export function BacktestingProgress({ progress, currentTimestamp }: BacktestingP
 					/>
 				) : null}
 			</div>
-			<div className={classnames('backtesting-progress__info')}>
+			<div className={'backtesting-progress__info' satisfies Classname}>
 				{progress ? (<Progress size="small" {...progress} />) : null}
 			</div>
 		</Div>

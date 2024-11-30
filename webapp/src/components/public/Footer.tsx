@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname, classnames } from '_/classnames'
 import { Column, Columns, Icon, IconText } from '_/components/library'
 import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { FormattedMessage } from '_/i18n/components'
@@ -37,7 +37,7 @@ export function Footer() {
 	const { formatDate } = useIntl()
 	return (
 		<>
-			<div className={classnames('footer__top')} />
+			<div className={'footer__top' satisfies Classname} />
 			<footer className={classnames('footer', 'footer__body')}>
 				<Columns>
 					<Column bulma="is-narrow">
@@ -49,7 +49,7 @@ export function Footer() {
 						<SocialLinks />
 					</Column>
 				</Columns>
-				<div className={classnames('ml-1')}>
+				<div className={'ml-1' satisfies Classname}>
 					<FormattedMessage
 						id="Footer.lastUpdate"
 						values={{ day: formatDate(BUILD_DATE, dayFormat) }}

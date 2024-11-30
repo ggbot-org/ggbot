@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Checkmark, CheckmarkProps } from '_/components/library'
 import { FormattedMessage } from '_/i18n/components'
 import { BinanceApiKeyPermissionCriteria } from '@workspace/models'
@@ -7,7 +7,7 @@ import { PropsWithChildren } from 'react'
 function BinanceApiKeyPermission({ children, ok }: PropsWithChildren<Pick<CheckmarkProps, 'ok'>>) {
 	if (ok === undefined) return null
 	return (
-		<div className={classnames('is-flex')}>
+		<div className={'is-flex' satisfies Classname}>
 			<div>{children}</div>
 			<Checkmark ok={ok} />
 		</div>

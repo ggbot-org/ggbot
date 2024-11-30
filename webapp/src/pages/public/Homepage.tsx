@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { BrandName, BrandTagline, Button, Div, Hero, HeroBody, HeroFoot, Level, LevelItem, Logo, Page } from '_/components/library'
 import { Footer } from '_/components/public/Footer'
 import { FormattedMessage } from '_/i18n/components'
@@ -20,7 +20,7 @@ export function Homepage() {
 			footer={<Footer />}
 			header={
 				<Hero bulma="is-black">
-					<HeroBody className={classnames('homepage-hero-content')}>
+					<HeroBody className={'homepage-hero-content' satisfies Classname}>
 						<Level>
 							<LevelItem>
 								<Logo animated={!gotFirstPageView} size={200} />
@@ -35,7 +35,7 @@ export function Homepage() {
 							</LevelItem>
 						</Level>
 					</HeroBody>
-					<HeroFoot className={classnames('homepage-hero-content')}>
+					<HeroFoot className={'homepage-hero-content' satisfies Classname}>
 						<Div
 							bulma={[
 								'is-flex',

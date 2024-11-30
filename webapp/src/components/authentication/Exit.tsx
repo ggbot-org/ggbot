@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Column, Columns, Message, Modal, Title } from '_/components/library'
 import { AccountId, Email } from '_/components/readonlyFields'
 import { FormattedMessage } from '_/i18n/components'
@@ -15,7 +15,7 @@ export function AuthExit({
 	return (
 		<Modal isActive={isActive} setIsActive={setIsActive}>
 			<form
-				className={classnames('box')}
+				className={'box' satisfies Classname}
 				onReset={(event) => {
 					event.preventDefault()
 					setIsActive(false)

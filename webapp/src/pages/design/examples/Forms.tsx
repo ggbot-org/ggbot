@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname } from '_/classnames'
 import { Button, Buttons, Checkbox, Control, Field, InputField, SelectField, Title } from '_/components/library'
 import { useState } from 'react'
 
@@ -11,7 +11,7 @@ export function SimpleForm() {
 
 	return (
 		<form
-			className={classnames('box')}
+			className={'box' satisfies Classname}
 			onSubmit={(event) => {
 				event.preventDefault()
 				setIsPending(true)
@@ -50,7 +50,7 @@ export function SimpleForm() {
 						checked={hasConsent}
 						onChange={(event) => setHasConsent(Boolean(event.target.checked))}
 					>
-						<span className={classnames('ml-2')}>I agree with Terms of service.</span>
+						<span className={'ml-2' satisfies Classname}>I agree with Terms of service.</span>
 					</Checkbox>
 				</Control>
 			</Field>

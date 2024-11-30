@@ -1,4 +1,4 @@
-import { classnames } from '_/classnames'
+import { Classname, classnames } from '_/classnames'
 import { useIntl } from '_/i18n/hooks'
 import { dateToDay, Day } from 'minimal-time-helpers'
 import { Dispatch, MouseEvent, SetStateAction, useMemo, useState } from 'react'
@@ -16,11 +16,11 @@ function CalendarWeekDays() {
 
 	return (
 		<div
-			className={classnames('calendar__grid')}
+			className={'calendar__grid' satisfies Classname}
 			onClick={(event) => event.stopPropagation()}
 		>
 			{weekDayNames.map(({ day, label }) => (
-				<div key={day} className={classnames('calendar__week-day')}>{label}</div>
+				<div key={day} className={'calendar__week-day' satisfies Classname}>{label}</div>
 			))}
 		</div>
 	)
@@ -38,7 +38,7 @@ function CalendarHead({
 }) {
 	return (
 		<div
-			className={classnames('calendar__head')}
+			className={'calendar__head' satisfies Classname}
 			onClick={(event) => event.stopPropagation()}
 		>
 			<div
@@ -53,8 +53,8 @@ function CalendarHead({
 			>
 				<Icon name="caret-left" size={caretSize} />
 			</div>
-			<div className={classnames('calendar__head-text')}>{monthName}</div>
-			<div className={classnames('calendar__head-text')}>{year}</div>
+			<div className={'calendar__head-text' satisfies Classname}>{monthName}</div>
+			<div className={'calendar__head-text' satisfies Classname}>{year}</div>
 			<div
 				className={classnames('calendar__head-icon', { 'has-text-grey-lighter': isLastMonth })}
 				onClick={(event) => {
@@ -155,7 +155,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 	}, [formatDate, min, max, monthOffset, selectedDay, setSelectedDay, setMonthOffset])
 
 	return (
-		<div className={classnames('calendar')}>
+		<div className={'calendar' satisfies Classname}>
 			<CalendarHead
 				isFirstMonth={Boolean(min && dateToDay(firstDate) <= min)}
 				isLastMonth={Boolean(max && dateToDay(lastDate) >= max)}
@@ -164,7 +164,7 @@ export function Calendar({ min, max, day: selectedDay, setDay: setSelectedDay }:
 				year={year}
 			/>
 			<CalendarWeekDays />
-			<div className={classnames('calendar__grid')}>
+			<div className={'calendar__grid' satisfies Classname}>
 				{dateCells.map(
 					({ isSelectable, key, num, onClick, selected }) => (
 						<div
