@@ -39,3 +39,5 @@ npm test
 ```
 
 Launch eslint with fix flag: `npm run eslint--fix`.
+
+See [Tech stack](./repository/docs/tech-stack.md) for the list of tools used.

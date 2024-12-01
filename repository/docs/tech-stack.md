@@ -14,7 +14,7 @@
 -   [Node.js](#nodejs)
 -   [npm workspaces](#npm-workspaces)
 -   [Volta](#volta)
--   [React](#react)
+-   [React](#react) (aliased by [Preact](#preact))
 -   [Stripe](#stripe)
 -   npm packages
     -   [@types/node](#typesnode)
@@ -23,7 +23,6 @@
     -   [aws-sdk](#aws-sdk)
     -   [eslint](#eslint)
     -   [eslint-plugin-import](#eslint-plugin-import)
-    -   [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
     -   [eslint-plugin-react](#eslint-plugin-react)
     -   [eslint-plugin-react-hooks](#eslint-plugin-react-hooks)
     -   [dflow](#dflow)
@@ -85,10 +84,7 @@ https://direnv.net/
 
 ## Google Search Console
 
-Created the following properties:
-
--   [ggbot2.com and www.ggbot2.com](https://search.google.com/search-console?resource_id=sc-domain%3Aggbot2.com)
--   [app.ggbot2.com](https://search.google.com/search-console/sitemaps?resource_id=sc-domain%3Aapp.ggbot2.com)
+Use _Google Search_ to manage SEO: set a domain property, submit a sitemap, etc. see [../../infrastructure/docs/google-search-setup.md].
 
 ## Node.js
 
@@ -97,12 +93,6 @@ https://nodejs.org/it/
 To install Node.js locally, use [Volta](#volta).
 
 Package manager used is _npm_.
-
-To install dependencies for development, launch
-
-```sh
-npm ci --include=optional
-```
 
 Node is also used for tests, with `node:test` module: see [Node Test runner documentation](https://nodejs.org/api/test.html).
 
@@ -131,6 +121,8 @@ volta pin node@18.1.0
 > The library for web and native user interfaces
 
 https://react.dev/
+
+Actually `react` and `react-dom` packages are aliased by [Preact](#preact).
 
 ## Stripe
 
@@ -168,10 +160,6 @@ https://www.npmjs.com/package/eslint
 
 https://www.npmjs.com/package eslint-plugin-import
 
-### eslint-plugin-jsx-a11y
-
-https://www.npmjs.com/package eslint-plugin-jsx-a11y
-
 ### eslint-plugin-react
 
 https://www.npmjs.com/package/eslint-plugin-react
@@ -180,15 +168,21 @@ https://www.npmjs.com/package/eslint-plugin-react
 
 https://www.npmjs.com/package/eslint-plugin-react-hooks
 
-<!-- TODO the webapp tech-stack should be in webapp/docs -->
-
 ### flow-view
 
 https://www.npmjs.com/package/flow-view
 
+### preact
+
+https://preactjs.com/
+
 ### pre-commit
 
 https://www.npmjs.com/package/pre-commit
+
+### trunx
+
+https://github.com/fibo/trunx
 
 ### typescript
 

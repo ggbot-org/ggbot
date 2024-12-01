@@ -89,3 +89,5 @@ Finally deploy the webapp with
 export DEPLOY_STAGE=main
 npm run deploy:webapp
 ```
+
+Once the webapp is deployed, you can configure SEO via [Google Search](./google-search-setup.md).
