@@ -27,15 +27,19 @@ export async function prepareApi(workspacePathname: string): Promise<string> {
 	const lambdaZipFilename = 'lambda.zip'
 	const lambdaZipPathname = join(distDir, lambdaZipFilename)
 
-	// Build API workspace.
-
-	await buildWorkspacesDependencies(workspacePathname)
-	execSync(`npm run build:api:${workspacePathname.substring('api-'.length)}`, { cwd: repository.pathname })
-
 	// Cleanup dist directory, if any.
 	rmSync(distDir, { force: true, recursive: true })
 
+	// Build API workspace.
+
+	await buildWorkspacesDependencies(workspacePathname)
+
+	const buildCommand = `npm run build:api:${workspacePathname.substring('api-'.length)}`
+	console.info(buildCommand)
+	execSync(buildCommand, { cwd: repository.pathname })
+
 	// Create temporary package.json with external dependencies and install them.
+	console.info('Install external dependencies')
 
 	const externalDependencies = WorkspacePackageJson.externalDependenciesChain(workspacePathname, workspaces)
 
@@ -48,6 +52,7 @@ export async function prepareApi(workspacePathname: string): Promise<string> {
 	execSync('npm install --no-package-lock', { cwd: lambdaDir })
 
 	// Copy internal dependencies.
+	console.info('Install internal dependencies')
 
 	const internalDependencies = WorkspacePackageJson.internalDependenciesChain(workspacePathname, workspaces)
 
@@ -64,7 +69,7 @@ export async function prepareApi(workspacePathname: string): Promise<string> {
 
 	// Create zip file.
 
-	execSync(`zip -X -r ../${lambdaZipFilename} *`, { cwd: lambdaDir })
+	execSync(`zip -X -r ../${lambdaZipFilename} * `, { cwd: lambdaDir })
 
 	return lambdaZipPathname
 }
