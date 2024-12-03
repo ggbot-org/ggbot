@@ -9,7 +9,6 @@ export const workspaceDir = resolve(dirname(dirname(fileURLToPath(import.meta.ur
 const monorepoDir = dirname(workspaceDir)
 
 export const publicDir = join(workspaceDir, 'public')
-export const sitemap = join(publicDir, 'sitemap.xml')
 
 const srcDir = join(workspaceDir, 'src')
 

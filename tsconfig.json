@@ -32,7 +32,6 @@
 			"_/flow/*": ["./webapp/src/flow/*"],
 			"_/hooks/*": ["./webapp/src/hooks/*"],
 			"_/i18n/*": ["./webapp/src/i18n/*"],
-			"_/logging": ["./webapp/src/logging.ts"],
 			"_/pages/*": ["./webapp/src/pages/*"],
 			"_/react/mount": ["./webapp/src/react/mount.tsx"],
 			"_/routing/*": ["./webapp/src/routing/*"],

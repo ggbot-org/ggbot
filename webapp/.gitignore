@@ -3,10 +3,12 @@ public/*.css
 public/*.css.map
 public/*.js
 public/*.html
-public/sitemap.xml
 public/admin/
 public/design/
 public/user/
 public/translations/*.json
 public/workers/
 src/types/FormatjsIntlMessageIds.d.ts
+# Created by generate_seo_files script
+public/robots.txt
+public/sitemap.xml
