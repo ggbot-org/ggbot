@@ -2,6 +2,7 @@ import json from '@eslint/json'
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import typeScriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typeScriptParser from '@typescript-eslint/parser'
+import playwright from 'eslint-plugin-playwright'
 import react from 'eslint-plugin-react'
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort'
 import tsdoc from 'eslint-plugin-tsdoc'
@@ -172,8 +173,26 @@ export default [
 		},
 		settings: {
 			react: {
-				version: 'detect'
+				version: '18'
 			}
+		}
+	},
+
+	// WebApp end to end tests.
+	{
+		...playwright.configs['flat/recommended'],
+		files: ['playwright-tests/src/**.spec.ts'],
+		rules: {
+			'playwright/no-commented-out-tests': 'error',
+			'playwright/no-duplicate-hooks': 'error',
+			'playwright/no-get-by-title': 'error',
+			'playwright/no-nth-methods': 'error',
+			'playwright/no-raw-locators': 'error',
+			'playwright/prefer-hooks-in-order': 'error',
+			'playwright/prefer-hooks-on-top': 'error',
+			'playwright/prefer-to-contain': 'error',
+			'playwright/prefer-to-have-count': 'error',
+			...playwright.configs['flat/recommended'].rules,
 		}
 	},
 

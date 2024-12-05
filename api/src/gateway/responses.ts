@@ -32,9 +32,7 @@ export function OK(data: ApiActionOutputData['data']): APIGatewayProxyResult {
 	}
 }
 
-export function ERROR(
-	error: ApiActionOutputError['error']
-): APIGatewayProxyResult {
+export function ERROR(error: ApiActionOutputError['error']): APIGatewayProxyResult {
 	return {
 		...responseBody({ error }),
 		headers: {

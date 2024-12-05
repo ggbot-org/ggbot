@@ -1,5 +1,9 @@
 # Development
 
+See [Tech stack](./repository/docs/tech-stack.md) for the list of tools used.
+
+## Get started
+
 To run the webapp locally, set the following environment variables
 
 ```sh
@@ -9,7 +13,7 @@ export DNS_DOMAIN=ggbot.org
 Install dependencies and build packages.
 
 ```sh
-npm ci
+npm ci --include=optional
 npm run build
 ```
 
@@ -18,6 +22,8 @@ Start webapp with
 ```sh
 npm start
 ```
+
+<!-- TODO remove this env variables list and put them in webapp deploy script -->
 
 Notice that to deploy webapp you need to set the following environment variables
 
@@ -28,6 +34,8 @@ Notice that to deploy webapp you need to set the following environment variables
 - `TELEGRAM_SUPPORT_URL`
 
 See [env/README.md](./env/README.md#envrc-file) for the complete list of environment variables used and how to set them.
+
+## Code tools
 
 To launch linting, type checking and tests:
 
@@ -40,4 +48,18 @@ npm test
 
 Launch eslint with fix flag: `npm run eslint--fix`.
 
-See [Tech stack](./repository/docs/tech-stack.md) for the list of tools used.
+## Webapp end to end tests
+
+To launch webapp end to end tests locally: `npm run playwright`.
+To launch them on **next** `DEPLOY_STAGE` do
+
+```sh
+export DEPLOY_STAGE=next
+npm run playwright
+```
+
+Or run test in UI mode with
+
+```sh
+npm run playwright--ui
+```

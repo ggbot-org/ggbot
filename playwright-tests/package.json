@@ -1,0 +1,27 @@
+{
+  "name": "@workspace/playwright-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "check_types": "tsc --noEmit",
+    "cleanup": "tsc --build --clean"
+  },
+  "dependencies": {
+    "@workspace/api": "0.0.0",
+    "@workspace/env": "0.0.0",
+    "@workspace/models": "0.0.0",
+    "@workspace/locators": "0.0.0"
+  },
+  "devDependencies": {
+    "@workspace/tsconfig": "0.0.0"
+  },
+  "optionalDependencies": {
+    "@playwright/test": "1.49.0"
+  }
+}

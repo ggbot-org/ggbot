@@ -16,6 +16,7 @@
 -   [Volta](#volta)
 -   [React](#react) (aliased by [Preact](#preact))
 -   [Stripe](#stripe)
+-   [Playwright](#playwright)
 -   npm packages
     -   [@types/node](#typesnode)
     -   [@typescript-eslint/eslint-plugin](#typescript-eslinteslint-plugin)
@@ -129,6 +130,12 @@ Actually `react` and `react-dom` packages are aliased by [Preact](#preact).
 > Payments infrastructure for the internet
 
 https://stripe.com/
+
+## Playwright
+
+> Enables reliable end-to-end testing for modern web apps
+
+https://playwright.dev/
 
 ## npm packages
 

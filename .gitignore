@@ -1,5 +1,14 @@
-.envrc
-*.swp
 dist/
 node_modules/
 temp/
+
+# Playwright output folders.
+playwright-output/
+playwright-report/
+
+# Stores environment variables, read by direnv.
+.envrc
+
+# Miscellanea.
+.DS_Store
+*.swp
