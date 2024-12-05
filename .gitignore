@@ -3,3 +3,7 @@
 dist/
 node_modules/
 temp/
+
+# Playwright output folders.
+playwright/
+playwright-report/

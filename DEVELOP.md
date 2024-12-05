@@ -9,7 +9,7 @@ export DNS_DOMAIN=ggbot.org
 Install dependencies and build packages.
 
 ```sh
-npm ci
+npm ci --include=optional
 npm run build
 ```
 
@@ -39,5 +39,13 @@ npm test
 ```
 
 Launch eslint with fix flag: `npm run eslint--fix`.
+
+To launch webapp end to end tests locally: `npm run playwright`.
+To launch them on **next** `DEPLOY_STAGE` do
+
+```sh
+export DEPLOY_STAGE=next
+npm run playwright
+```
 
 See [Tech stack](./repository/docs/tech-stack.md) for the list of tools used.

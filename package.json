@@ -47,6 +47,7 @@
     "lint-staged": "lint-staged --allow-empty --quiet",
     "markdownlint": "markdownlint-cli2 *.md */README.md */docs/*.md 1> /dev/null",
     "markdownlint--fix": "markdownlint-cli2 --fix *.md */README.md */docs/*.md",
+    "playwright": "playwright test",
     "prebuild:binance-proxy": "npm run build_workspace_dependencies -w repository binance-proxy",
     "prebuild:executor": "npm run build_workspace_dependencies -w repository executor",
     "prebuild:webapp": "npm run build_workspace_dependencies -w repository webapp",
@@ -68,8 +69,10 @@
   "devDependencies": {
     "@eslint/json": "0.5.0",
     "@stylistic/eslint-plugin": "2.10.1",
+    "@types/node": "22.10.1",
     "esbuild": "0.24.0",
     "eslint": "9.12.0",
+    "eslint-plugin-playwright": "2.1.0",
     "eslint-plugin-react": "7.37.2",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-tsdoc": "0.4.0",
@@ -83,6 +86,9 @@
     "read-file-utf8": "3.0.0",
     "typescript-eslint": "8.14.0",
     "write-file-utf8": "3.0.2"
+  },
+  "optionalDependencies": {
+    "@playwright/test": "1.49.0"
   },
   "lint-staged": {
     "**/*.json": [

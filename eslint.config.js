@@ -2,6 +2,7 @@ import json from '@eslint/json'
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import typeScriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typeScriptParser from '@typescript-eslint/parser'
+import playwright from 'eslint-plugin-playwright'
 import react from 'eslint-plugin-react'
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort'
 import tsdoc from 'eslint-plugin-tsdoc'
@@ -172,7 +173,7 @@ export default [
 		},
 		settings: {
 			react: {
-				version: 'detect'
+				version: '18'
 			}
 		}
 	},
@@ -189,6 +190,12 @@ export default [
 			...simpleImportSortRules,
 			...stylisticRules,
 		}
+	},
+
+	// WebApp end to end tests.
+	{
+		files: ['./webapp/src/end-to-end-tests/**'],
+		rules: playwright.configs['flat/recommended'].rules,
 	},
 
 	// JSON files.
