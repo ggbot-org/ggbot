@@ -1,7 +1,4 @@
-import { readFile } from 'node:fs/promises'
 import { exit } from 'node:process'
-
-import { prepareApi } from '@workspace/repository'
 
 import { instantiateApiLambda } from '../aws/apiLambdas.js'
 
@@ -14,7 +11,7 @@ import { instantiateApiLambda } from '../aws/apiLambdas.js'
  *
  * ```json
  * "scripts": {
- * 	"create:api:foo": "npm run deploy_api -w infrastructure api-foo",
+ * 	"set_environment:api-foo": "npm run set_api_environment -w infrastructure api-foo",
  * }
  * ```
  */
@@ -23,17 +20,4 @@ if (typeof workspacePathname != 'string') exit(1)
 
 const apiLamda = instantiateApiLambda(workspacePathname)
 
-// Create Lambda function.
-
-const lambdaZipFilename = await prepareApi(workspacePathname)
-
-console.info(`Create ${workspacePathname} Lambda function with zip file ${lambdaZipFilename}`)
-
-const ZipFile = await readFile(lambdaZipFilename)
-
-await apiLamda.create({ ZipFile })
-
 await apiLamda.setEnvironment()
-
-// TODO Create log group.
-
