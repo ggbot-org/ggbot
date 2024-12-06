@@ -30,7 +30,7 @@ npm run create:api:user
 Once an API is created you also need to set its environment variables, for instance
 
 ```sh
-npm run set_environment:api:user
+npm run set_environment:api-user
 ```
 
 You may also want to set its timeout and memory: go to _AWS Console > Lambda > Functions_ and open the _Configuration > General configuration_ tab for the Lambda function.

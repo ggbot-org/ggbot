@@ -1,4 +1,4 @@
-import { LambdaClient } from '@aws-sdk/client-lambda'
+import { LambdaClient, UpdateFunctionConfigurationCommand } from '@aws-sdk/client-lambda'
 import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from '@aws-sdk/client-lambda'
 
 export class LambdaFunction {
@@ -38,6 +38,13 @@ export class LambdaFunction {
 			PackageType: PackageType.Zip,
 			Role,
 			Runtime: this.runtime,
+		}))
+	}
+
+	async setEnvironment(Variables: Record<string, string>) {
+		await this.client.send(new UpdateFunctionConfigurationCommand({
+			FunctionName: this.functionName,
+			Environment: { Variables }
 		}))
 	}
 
