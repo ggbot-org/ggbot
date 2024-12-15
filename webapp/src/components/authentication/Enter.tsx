@@ -5,7 +5,7 @@ import { TermsAndPolicyLinks } from '_/components/TermsAndPolicyLinks'
 import { TimeoutError } from '_/components/TimeoutError'
 import { FormattedMessage } from '_/i18n/components'
 import { useIntl } from '_/i18n/hooks'
-import { auth } from '_/routing/auth'
+import { api } from '_/routing/api'
 import { isApiAuthEnterRequestData, isApiAuthEnterResponseData } from '@workspace/api'
 import { EmailAddress, isEmailAddress } from '@workspace/models'
 import { isMaybeObject } from 'minimal-type-guard-helpers'
@@ -85,7 +85,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 
 					dispatch({ type: 'ENTER_REQUEST' })
 
-					const response = await fetch(auth.enter.href, {
+					const response = await fetch(api.auth.href, {
 						body: JSON.stringify(requestData),
 						headers: new Headers({ 'Content-Type': 'application/json' }),
 						method: 'POST',

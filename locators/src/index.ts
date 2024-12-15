@@ -1,5 +1,4 @@
 export * from './api.js'
-export * from './auth.js'
 export * from './binanceProxy.js'
 export * from './emailAddresses.js'
 export * from './exchanges.js'

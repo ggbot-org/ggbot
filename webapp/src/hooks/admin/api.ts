@@ -3,10 +3,7 @@ import { api } from '_/routing/api'
 import { AdminClientActionInput as Input, AdminClientActionOutput as Output, AdminClientActionType as ActionType } from '@workspace/api'
 import { Account } from '@workspace/models'
 
-const apiOptions: UseActionApiArg = {
-	url: api.admin.action,
-	withAuth: true
-}
+const apiOptions: UseActionApiArg = { url: api.admin, withAuth: true }
 
 export function useEnterAsAccount() {
 	return useAction<ActionType, Input['EnterAsAccount'], Output['EnterAsAccount']>(apiOptions, 'EnterAsAccount')

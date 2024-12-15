@@ -15,7 +15,7 @@ export function useCreateCheckoutSession() {
 
 // User Api
 
-const userApiOptions: UseActionApiArg = { url: api.user.action, withAuth: true }
+const userApiOptions: UseActionApiArg = { url: api.user, withAuth: true }
 
 export function useCopyStrategy() {
 	const { data: newStrategy, isDone, ...rest } = useAction<

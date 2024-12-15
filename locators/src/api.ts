@@ -9,22 +9,16 @@ export class ApiURLs {
 		this.baseURL = new URL(`https://${new FQDN(deployStage, dnsDomain).apiDomain}`)
 	}
 
+	get auth() {
+		return new URL('auth', this.baseURL)
+	}
+
 	get admin() {
-		const { baseURL } = this
-		return {
-			get action() {
-				return new URL('admin/action', baseURL)
-			}
-		}
+		return new URL('admin', this.baseURL)
 	}
 
 	get public() {
-		const { baseURL } = this
-		return {
-			get action() {
-				return new URL('public/action', baseURL)
-			}
-		}
+		return new URL('public', this.baseURL)
 	}
 
 	get stripe() {
@@ -40,11 +34,6 @@ export class ApiURLs {
 	}
 
 	get user() {
-		const { baseURL } = this
-		return {
-			get action() {
-				return new URL('user/action', baseURL)
-			}
-		}
+		return new URL('user', this.baseURL)
 	}
 }

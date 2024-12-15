@@ -2,7 +2,7 @@ import { useAction, UseActionApiArg } from '_/hooks/useAction'
 import { api } from '_/routing/api'
 import { PublicActionInput as Input, PublicActionOutput as Output, PublicActionType as ActionType } from '@workspace/api'
 
-const apiOptions: UseActionApiArg = { url: api.public.action }
+const apiOptions: UseActionApiArg = { url: api.public }
 
 export function useReadStrategy() {
 	return useAction<ActionType, Input['ReadStrategy'], Output['ReadStrategy']>(apiOptions, 'ReadStrategy')

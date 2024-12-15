@@ -4,7 +4,7 @@ import { Button, ButtonProps, Column, Columns, Control, Field, Icon, InputField,
 import { Email } from '_/components/readonlyFields'
 import { TimeoutError } from '_/components/TimeoutError'
 import { FormattedMessage } from '_/i18n/components'
-import { auth } from '_/routing/auth'
+import { api } from '_/routing/api'
 import { isApiAuthVerifyRequestData, isApiAuthVerifyResponseData } from '@workspace/api'
 import { EmailAddress } from '@workspace/models'
 import { Reducer, useReducer } from 'react'
@@ -98,7 +98,7 @@ export function AuthVerify({ email, resetEmail, setToken }: AuthVerifyProps) {
 
 						dispatch({ type: 'VERIFY_REQUEST' })
 
-						const response = await fetch(auth.verify.href, {
+						const response = await fetch(api.auth.href, {
 							body: JSON.stringify(requestData),
 							headers: new Headers({ 'Content-Type': 'application/json' }),
 							method: 'POST',
