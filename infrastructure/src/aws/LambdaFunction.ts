@@ -1,9 +1,9 @@
 import { LambdaClient, UpdateFunctionConfigurationCommand } from '@aws-sdk/client-lambda'
 import { Architecture, CreateFunctionCommand, FunctionCode, PackageType, Runtime, UpdateFunctionCodeCommand } from '@aws-sdk/client-lambda'
+import { ENV } from '@workspace/env'
 
 export class LambdaFunction {
 	client: LambdaClient
-	accountId: string
 	region: string
 	functionName: string
 	architecture = Architecture.arm64
@@ -11,19 +11,18 @@ export class LambdaFunction {
 	runtime = Runtime.nodejs20x
 	handler = 'index.handler'
 
-	constructor(accountId: string, region: string, functionName: string) {
+	constructor(region: string, functionName: string) {
 		this.client = new LambdaClient({ region })
-		this.accountId = accountId
 		this.region = region
 		this.functionName = functionName
 	}
 
-	static arn(accountId: string, region: string, functionName: string) {
-		return `arn:aws:lambda:${region}:${accountId}:function:${functionName}`
+	static arn(region: string, functionName: string) {
+		return `arn:aws:lambda:${region}:${ENV.AWS_ACCOUNT_ID()}:function:${functionName}`
 	}
 
 	get arn() {
-		return LambdaFunction.arn(this.accountId, this.region, this.functionName)
+		return LambdaFunction.arn(this.region, this.functionName)
 	}
 
 	async create({ Role, ZipFile }: Required<Pick<FunctionCode, 'ZipFile'> & {

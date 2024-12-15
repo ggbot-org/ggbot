@@ -3,6 +3,7 @@ import { ENV } from '@workspace/env'
 
 import { ApiRole } from './ApiRole.js'
 import { LambdaFunction } from './LambdaFunction.js'
+import { LogGroup } from './LogGroup.js'
 
 export class ApiLambda extends LambdaFunction {
 	executionRole = new ApiRole()
@@ -12,7 +13,7 @@ export class ApiLambda extends LambdaFunction {
 		/** @remarks The API workspacePathname starts with `api-` prefix. */
 		workspacePathname: string
 	) {
-		super(ENV.AWS_ACCOUNT_ID(), region, `${ApiLambda.apiNamePrefix()}${ENV.DEPLOY_STAGE()}-${workspacePathname}`)
+		super(region, `${ApiLambda.apiNamePrefix()}${ENV.DEPLOY_STAGE()}-${workspacePathname}`)
 	}
 
 	static apiNamePrefix() {
@@ -29,6 +30,11 @@ export class ApiLambda extends LambdaFunction {
 
 	async create({ ZipFile }: Required<Pick<FunctionCode, 'ZipFile'>>) {
 		await super.create({ Role: this.executionRole.arn, ZipFile })
+	}
+
+	async createLogGroup() {
+		const logGroup = new LogGroup(this.region, `/aws/lambda/${this.functionName}`)
+		await logGroup.create()
 	}
 }
 

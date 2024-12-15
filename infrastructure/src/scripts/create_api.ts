@@ -33,7 +33,4 @@ const ZipFile = await readFile(lambdaZipFilename)
 
 await apiLamda.create({ ZipFile })
 
-await apiLamda.setEnvironment()
-
-// TODO Create log group.
-
+await apiLamda.createLogGroup()
