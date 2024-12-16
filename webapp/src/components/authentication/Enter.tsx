@@ -86,7 +86,7 @@ export function AuthEnter({ setEmail }: AuthEnterProps) {
 					dispatch({ type: 'ENTER_REQUEST' })
 
 					const response = await fetch(api.auth.href, {
-						body: JSON.stringify(requestData),
+						body: JSON.stringify({ type: 'Enter', ...requestData }),
 						headers: new Headers({ 'Content-Type': 'application/json' }),
 						method: 'POST',
 						signal: controller.signal
