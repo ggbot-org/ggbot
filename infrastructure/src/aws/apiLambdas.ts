@@ -2,6 +2,35 @@ import { ENV } from '@workspace/env'
 
 import { ApiLambda } from './ApiLambda.js'
 
+class ApiAdminLambda extends ApiLambda {
+	static workspacePathname = 'api-admin'
+	constructor() {
+		super(ENV.AWS_DATA_REGION(), ApiAdminLambda.workspacePathname)
+	}
+	async setEnvironment() {
+		await super.setEnvironment({
+			AUTHENTICATION_SECRET: ENV.AUTHENTICATION_SECRET(),
+			AWS_DATA_REGION: ENV.AWS_DATA_REGION(),
+			...ApiLambda.commonEnvironmentVariables()
+		})
+	}
+}
+
+class ApiAuthLambda extends ApiLambda {
+	static workspacePathname = 'api-auth'
+	constructor() {
+		super(ENV.AWS_DATA_REGION(), ApiAuthLambda.workspacePathname)
+	}
+	async setEnvironment() {
+		await super.setEnvironment({
+			AUTHENTICATION_SECRET: ENV.AUTHENTICATION_SECRET(),
+			AWS_DATA_REGION: ENV.AWS_DATA_REGION(),
+			AWS_SES_REGION: ENV.AWS_SES_REGION(),
+			...ApiLambda.commonEnvironmentVariables()
+		})
+	}
+}
+
 class ApiPublicLambda extends ApiLambda {
 	static workspacePathname = 'api-public'
 	constructor() {
@@ -62,6 +91,8 @@ class ApiUserLambda extends ApiLambda {
 
 export function instantiateApiLambda(workspacePathname: string) {
 	switch (workspacePathname) {
+		case ApiAdminLambda.workspacePathname: return new ApiAdminLambda()
+		case ApiAuthLambda.workspacePathname: return new ApiAuthLambda()
 		case ApiPublicLambda.workspacePathname: return new ApiPublicLambda()
 		case ApiStripeActionLambda.workspacePathname: return new ApiStripeActionLambda()
 		case ApiStripeWebhookLambda.workspacePathname: return new ApiStripeWebhookLambda()
