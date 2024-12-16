@@ -14,3 +14,7 @@ input[type="checkbox"][color="primary"] {
 input[type="checkbox"][color="warning"] {
 	accent-color: var(--bulma-warning);
 }
+
+input[type="checkbox"]:focus-visible {
+	outline-color: var(--focus-outline);
+}
