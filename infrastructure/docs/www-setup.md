@@ -3,7 +3,7 @@
 ## Naked domain
 
 First of all create an S3 bucket for the naked domain, its name will be `DNS_DOMAIN` and its region the `AWS_DATA_REGION`.
-For instance, move to the _Europe (Frankfurt)_ region and create an S3 bucket names `ggbot.org`.
+For instance, move to the _Europe (Frankfurt)_ region and create an S3 bucket named `ggbot.org`.
 Once created go to bucket _Properties_ tab and enable _Static website hosting_.
 Choose _Redirect requests for an object_ to an host named `www.${DNS_DOMAIN}` that is for instance `www.ggbot.org`.
 Choose the `https` _protocol_ as latest option.
@@ -27,9 +27,11 @@ Then on _Route 53_ go to corresponding hosted zone, click on _Create record_ and
 ## Webapp domain
 
 Create an S3 bucket for the **www** domain, its name will be `www.${DNS_DOMAIN}` and its region the `AWS_DATA_REGION`.
-For instance, move to the _Europe (Frankfurt)_ region and create an S3 bucket names `www.ggbot.org`.
-Once created go to bucket _Properties_ tab and enable _Static website hosting_. Set `index.html` as _Index document_.
-Then go to bucket _Permissions_ tab
+For instance, move to the _Europe (Frankfurt)_ region and create an S3 bucket named `www.ggbot.org`.
+Once created go to bucket _Properties_ tab and enable _Static website hosting_.
+Set `index.html` as _Index document_.
+Set `error.html` as _Error document_.
+Click on _Save changes_ and go to bucket _Permissions_ tab.
 On _Block public access (bucket settings)_ click _Edit_ and uncheck the _Block all public access_ flag.
 On _Bucket policy_ click _Edit_ and enter a JSON like the following
 
@@ -91,3 +93,14 @@ npm run deploy:webapp
 ```
 
 Once the webapp is deployed, you can configure SEO via [Google Search](./google-search-setup.md).
+
+### Deploy for testing (optional)
+
+To deploy the webapp on `next` stage follow same instructions for [webapp domain](#webapp-domain) above but for a `next.${DNS_DOMAIN}` domain name. S
+
+Then finally do
+
+```sh
+export DEPLOY_STAGE=next
+npm run deploy:webapp
+```

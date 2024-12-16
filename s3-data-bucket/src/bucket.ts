@@ -3,11 +3,9 @@ import { deletedNow, DeployStage, SerializableData, updatedNow } from '@workspac
 
 import { S3IOClient } from './S3IOClient.js'
 
-const nextDeployStage: DeployStage = 'next'
-
 export function getS3DataBucketName(deployStage: DeployStage, dnsDomain: string, awsRegion: string): string {
-	return deployStage === 'local'
-		? `${nextDeployStage}-data.${awsRegion}.${dnsDomain}`
+	return deployStage == 'local'
+		? `${'next' satisfies DeployStage}-data.${awsRegion}.${dnsDomain}`
 		: `${deployStage}-data.${awsRegion}.${dnsDomain}`
 }
 
@@ -36,9 +34,11 @@ export class S3DataBucketProvider implements DocumentProviderLevel3 {
 	}
 
 	async listItems({ prefix, token, numItems }: DocumentProviderListItemsInput) {
-		const {
-			Contents, NextContinuationToken,
-		} = await this.s3.listObjects({ Prefix: prefix, ContinuationToken: token, MaxKeys: numItems })
+		const { Contents, NextContinuationToken } = await this.s3.listObjects({
+			Prefix: prefix,
+			ContinuationToken: token,
+			MaxKeys: numItems,
+		})
 		return {
 			keys: Contents?.reduce<string[]>((list, { Key }) => (Key ? list.concat(Key) : list), []) ?? [],
 			nextToken: NextContinuationToken,

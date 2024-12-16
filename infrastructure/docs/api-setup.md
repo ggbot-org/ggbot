@@ -9,15 +9,16 @@ APIs are implemented by workspaces prefixed by `api-`:
 - [api-stripe-webhook](../../api-stripe-webhook/)
 - [api-user](../../api-user/)
 
-## Deploy an API
+## Deploy an API Lambda
 
-To deploy an API, for instance `api-user` launch script
+Once an API Gateway is created, to deploy and API Lambda is as simple as select the wanted `DEPLOY_STAGE` and run the deploy command, for example
 
 ```sh
+export DEPLOY_STAGE=main
 npm run deploy:api:user
 ```
 
-Before deploying, you need to create the API: see below.
+Before deploying, you need to create the API Lambda as well as the API Gateway, see below.
 
 ## Create an API
 
@@ -48,7 +49,7 @@ Add resources, see [locators api](../../locators/src/api.ts) for implemented end
 
 A resource must have both `OPTIONS` and its handled methods, for instance all internal APIs are implemented with a `POST`. Choose the corresponding Lambda and flag _Lambda proxy integration_.
 
-Deploy API: if it is the first time follow the prompt to create a new stage and name it as the API deploy stage. So `ggbot-api-gateway-main` will have a `main` stage. Then click again on _Deploy API_ and choose the corresponding stage.
+Deploy API Gateway: if it is the first time follow the prompt to create a new stage and name it as the API deploy stage. So `ggbot-api-gateway-main` will have a `main` stage. Then click again on _Deploy API_ and choose the corresponding stage.
 
 After first deploy, go to _API Gateway > Custom domain names_ and add a domain name: notice that the domain name depends on the `DNS_DOMAIN` and `DEPLOY_STAGE` environment variables, check [locators FQDN](../../locators/src/FQDNs.ts) for the actual implementation. Select and _ACM Certificate_ (an ACM certificate should be available in the dropdown). _Domain name_ is _public_ and _API endpoint type_ is _regional_.
 
