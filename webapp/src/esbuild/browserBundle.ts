@@ -37,6 +37,7 @@ export function browserBundle({
 		legalComments: 'none',
 		minify: DEPLOY_STAGE !== 'local',
 		outfile,
-		platform: 'browser'
+		platform: 'browser',
+		sourcemap: false
 	})
 }
